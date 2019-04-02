@@ -232,7 +232,7 @@ function prototypeHas( superPrototype, subPrototype )
  * Is prototype.
  * @function prototypeIs
  * @param {object} src - entity to check
- * @memberof wTools#
+ * @memberof wTools
  */
 
 function prototypeIs( src )
@@ -263,7 +263,7 @@ function prototypeIsStandard( src )
  * Is constructor.
  * @function constructorIs
  * @param {object} cls - entity to check
- * @memberof wTools#
+ * @memberof wTools
  */
 
 function constructorIs( cls )
@@ -288,7 +288,7 @@ function constructorIsStandard( cls )
  * Is instance.
  * @function instanceIs
  * @param {object} src - entity to check
- * @memberof wTools#
+ * @memberof wTools
  */
 
 function instanceIs( src )

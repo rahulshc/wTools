@@ -297,7 +297,7 @@ function mapContain( src, ins )
  * Short-cut for _mapSatisfy() routine.
  * Checks if object( o.src ) has at least one key/value pair that is represented in( o.template ).
  * Also works with ( o.template ) as routine that check( o.src ) with own rules.
- * @param {wTools~mapSatisfyOptions} o - Default options {@link wTools~mapSatisfyOptions}.
+ * @param {wTools.mapSatisfyOptions} o - Default options {@link wTools.mapSatisfyOptions}.
  * @returns {boolean} Returns true if( o.src ) has same key/value pair(s) with( o.template )
  * or result if ( o.template ) routine call is true.
  *
@@ -348,7 +348,7 @@ mapSatisfy.defaults =
 
 /**
  * Default options for _mapSatisfy() routine.
- * @typedef {object} wTools~mapSatisfyOptions
+ * @typedef {object} wTools.mapSatisfyOptions
  * @property {object|function} [ template=null ] - Map to compare with( src ) or routine that checks each value of( src ).
  * @property {object} [ src=null ] - Source map.
  * @property {number} [ levels=256 ] - Number of levels in map structure.
@@ -359,7 +359,7 @@ mapSatisfy.defaults =
  * Checks if object( src ) has at least one key/value pair that is represented in( template ).
  * Returns true if( template ) has one or more indentical key/value pair with( src ).
  * If( template ) is provided as routine, routine uses it to check( src ).
- * @param {wTools~mapSatisfyOptions} args - Arguments list {@link wTools~mapSatisfyOptions}.
+ * @param {wTools.mapSatisfyOptions} args - Arguments list {@link wTools.mapSatisfyOptions}.
  * @returns {boolean} Returns true if( src ) has same key/value pair(s) with( template ).
  *
  * @example
@@ -946,7 +946,7 @@ function mapShallowClone( src )
 //
 
 /**
- * @callback mapCloneAssigning~onField
+ * @callback mapCloneAssigning.onField
  * @param { objectLike } dstContainer - destination object.
  * @param { objectLike } srcContainer - source object.
  * @param { string } key - key to coping from one object to another.
@@ -967,7 +967,7 @@ function mapShallowClone( src )
  * @param { objectLike } srcMap - The source object.
  * @param { Object } o - The options.
  * @param { objectLike } [options.dst = Object.create( null )] - The target object.
- * @param { mapCloneAssigning~onField } [options.onField()] - The callback function to copy each [ key, value ]
+ * @param { mapCloneAssigning.onField } [options.onField()] - The callback function to copy each [ key, value ]
  * of the {-srcMap-} to the (result).
  *
  * @example

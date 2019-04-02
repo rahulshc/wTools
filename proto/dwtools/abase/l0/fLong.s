@@ -187,7 +187,7 @@ function unrollAppend( dstArray )
  * } )( 'Hello there!' );
  *
  * @returns { boolean } Returns true if {-srcMap-} is an array-like or an Array.
- * @function longIs.
+ * @function longIs
  * @memberof wTools
  */
 
@@ -1464,7 +1464,7 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
  *
  * @param { longIs } arr - Entity to check.
  * @param { * } ins - Element to locate in the array.
- * @param { wTools~compareCallback } evaluator1 - A callback function.
+ * @param { wTools.compareCallback } evaluator1 - A callback function.
  *
  * @example
  * // returns { index : 3, element : 'str' }
@@ -1694,7 +1694,7 @@ alteration Tense : [ - , ed ]                                 // what to return
 alteration Second : [ -, element, array, array ]              // how to treat src arguments
 alteration How : [ - , Once , OnceStrictly ]                  // how to treat repeats
 
-~ 60 routines
+. 60 routines
 
 */
 
@@ -1779,7 +1779,7 @@ function arrayPrepend( dstArray, ins )
  *
  * @param { Array } dstArray - The destination array.
  * @param { * } ins - The value to add.
- * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 5, 1, 2, 3, 4 ]
@@ -1836,7 +1836,7 @@ function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
  *
  * @param { Array } dstArray - The destination array.
  * @param { * } ins - The value to add.
- * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 5, 1, 2, 3, 4 ]
@@ -1915,7 +1915,7 @@ function arrayPrepended( dstArray, ins )
  *
  * @param { Array } dstArray - The destination array.
  * @param { * } ins - The value to add.
- * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns 0
@@ -2176,7 +2176,7 @@ function arrayPrependArray( dstArray, insArray )
  *
  * @param { Array } dstArray - The destination array.
  * @param { ArrayLike } insArray - The source array.
- * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 0, 1, 2, 3, 4 ]
@@ -2225,7 +2225,7 @@ function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
  *
  * @param { Array } dstArray - The destination array.
  * @param { ArrayLike } insArray - The source array.
- * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 0, 1, 2, 3, 4 ]
@@ -2328,7 +2328,7 @@ function arrayPrependedArray( dstArray, insArray )
  *
  * @param { Array } dstArray - The destination array.
  * @param { ArrayLike } insArray - The source array.
- * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns 3
@@ -2494,7 +2494,7 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
  * @param { Array } dstArray - The destination array.
  * @param { longIs | * } arguments[...] - Source arguments.
- * @param { wTools~compareCallback } onEqualize - A callback function that can be provided through routine`s context. By default, it checks the equality of two arguments.
+ * @param { wTools.compareCallback } onEqualize - A callback function that can be provided through routine`s context. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 5, 6, 7, 8, 1, 2, 3, 4 ]
@@ -3443,7 +3443,7 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
  * @see  wTools.arrayRemovedElementOnce
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools.compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -3523,7 +3523,7 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 /**
  * The callback function to compare two values.
  *
- * @callback wTools~compareCallback
+ * @callback wTools.compareCallback
  * @param { * } el - The element of the array.
  * @param { * } ins - The value to compare.
  */
@@ -3543,7 +3543,7 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools.compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -3704,7 +3704,7 @@ function arrayRemovedArray( dstArray, insArray )
 /**
  * The callback function to compare two values.
  *
- * @callback arrayRemovedArrayOnce~onEvaluate
+ * @callback arrayRemovedArrayOnce.onEvaluate
  * @param { * } el - The element of the (dstArray[n]) array.
  * @param { * } ins - The value to compare (insArray[n]).
  */
@@ -3973,7 +3973,7 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
 /**
  * Callback for compare two value.
  *
- * @callback arrayRemoveAll~compareCallback
+ * @callback arrayRemoveAll.compareCallback
  * @param { * } el - Element of the array.
  * @param { * } ins - Value to compare.
  */
@@ -3992,7 +3992,7 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools.compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example

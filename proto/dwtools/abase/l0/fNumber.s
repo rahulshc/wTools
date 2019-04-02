@@ -34,7 +34,7 @@ let _floor = Math.floor;
  *
  * @param {*} src.
  * @return {Boolean}.
- * @function numberIs.
+ * @function numberIs
  * @memberof wTools
  */
 

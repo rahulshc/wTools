@@ -199,7 +199,7 @@ function timeOnce( delay, onBegin, onEnd )
 
 /**
  * Routine creates timer that executes provided routine( onReady ) after some amout of time( delay ).
- * Returns wConsequence instance. @see {@link https://github.com/Wandalen/wConsequence }
+ * Returns wConsequence instance. @see {@link module:Tools/base/mixin/Consequence.wConsequence }
  *
  * If ( onReady ) is not provided, timeOut returns consequence that gives empty message after ( delay ).
  * If ( onReady ) is a routine, timeOut returns consequence that gives message with value returned or error throwed by ( onReady ).
@@ -405,7 +405,7 @@ let timeSoon = typeof process === 'undefined' ? function( h ){ return setTimeout
 //
 
 /**
- * Routine works moslty same like {@link wTools~timeOut} but has own small features:
+ * Routine works moslty same like {@link wTools.timeOut} but has own small features:
  *  Is used to set execution time limit for async routines that can run forever or run too long.
  *  wConsequence instance returned by timeOutError always give an error:
  *  - Own 'timeOut' error message if ( onReady ) was not provided or it execution dont give any error.
