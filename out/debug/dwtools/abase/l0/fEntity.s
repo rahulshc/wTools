@@ -725,7 +725,7 @@ function _filter_functor( condition, levels )
 
 /**
  * Function that produces an elements for entityMap result
- * @callback wTools~onEach
+ * @callback wTools.onEach
  * @param {*} val - The current element being processed in the entity.
  * @param {string|number} key - The index (if entity is array) or key of processed element.
  * @param {Array|Object} src - The src passed to entityMap.
@@ -765,7 +765,7 @@ function _filter_functor( condition, levels )
  // [ true, true, true ]
  *
  * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
- * @param {wTools~onEach} onEach - Function that produces an element of the new entity.
+ * @param {wTools.onEach} onEach - Function that produces an element of the new entity.
  * @returns {ArrayLike|ObjectLike} New entity.
  * @thorws {Error} If number of arguments less or more than 2.
  * @thorws {Error} If( src ) is not Array or ObjectLike.
@@ -1194,7 +1194,7 @@ function entityAssign( dst, src, onRecursive )
  * @param {object} dstContainer - Destination object.
  * @param {object} srcContainer - Source object.
  * @param {string} name - Field name.
- * @param {mapCloneAssigning~onField} onRecursive - The callback function to copy each [ key, value ].
+ * @param {mapCloneAssigning.onField} onRecursive - The callback function to copy each [ key, value ].
  * @see {@link wTools.mapCloneAssigning} Check this function for more info about( onRecursive ) callback.
  * @returns {object} Returns result of entities copy operation.
  *
@@ -1254,7 +1254,7 @@ function entityAssignFieldFromContainer( dstContainer, srcContainer, name, onRec
  * @param {object} dstContainer - Destination object.
  * @param {object} srcValue - Source value.
  * @param {string} name - Field name.
- * @param {mapCloneAssigning~onField} onRecursive - The callback function to copy each [ key, value ].
+ * @param {mapCloneAssigning.onField} onRecursive - The callback function to copy each [ key, value ].
  * @see {@link wTools.mapCloneAssigning} Check this function for more info about( onRecursive ) callback.
  * @returns {object} Returns result of entity field assignment operation.
  *
@@ -1301,7 +1301,7 @@ function entityAssignField( dstContainer, srcValue, name, onRecursive )
 
 /**
  * The result of _entityMost routine object.
- * @typedef {Object} wTools~entityMostResult
+ * @typedef {Object} wTools.entityMostResult
  * @property {Number} index - Index of found element.
  * @property {String|Number} key - If the search was on map, the value of this property sets to key of found element.
  * Else if search was on array - to index of found element.
@@ -1310,12 +1310,12 @@ function entityAssignField( dstContainer, srcValue, name, onRecursive )
  */
 
 /**
- * Returns object( wTools~entityMostResult ) that contains min or max element of entity, it depends on( returnMax ).
+ * Returns object( wTools.entityMostResult ) that contains min or max element of entity, it depends on( returnMax ).
  *
  * @param {ArrayLike|Object} src - Source entity.
  * @param {Function} onEvaluate  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
  * @param {Boolean} returnMax  - If true - routine returns maximum, else routine returns minimum value from entity.
- * @returns {wTools~entityMostResult} Object with result of search.
+ * @returns {wTools.entityMostResult} Object with result of search.
  *
  * @example
  * //returns { index: 0, key: 0, value: 1, element: 1 }
@@ -1420,19 +1420,19 @@ function _entityMost( src, onEvaluate, returnMax )
 //
 
 /**
- * Short-cut for _entityMost() routine. Returns object( wTools~entityMostResult ) with smallest value from( src ).
+ * Short-cut for _entityMost() routine. Returns object( wTools.entityMostResult ) with smallest value from( src ).
  *
  * @param {ArrayLike|Object} src - Source entity.
  * @param {Function} onEvaluate  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
- * @returns {wTools~entityMostResult} Object with result of search.
+ * @returns {wTools.entityMostResult} Object with result of search.
  *
  * @example
  *  //returns { index : 2, key : 'c', value 3: , element : 9  };
  *  let obj = { a : 25, b : 16, c : 9 };
  *  let min = wTools.entityMin( obj, Math.sqrt );
  *
- * @see wTools~onEach
- * @see wTools~entityMostResult
+ * @see wTools.onEach
+ * @see wTools.entityMostResult
  * @function entityMin
  * @throws {Exception} If missed arguments.
  * @throws {Exception} If passed extra arguments.
@@ -1448,19 +1448,19 @@ function entityMin( src, onEvaluate )
 //
 
 /**
- * Short-cut for _entityMost() routine. Returns object( wTools~entityMostResult ) with biggest value from( src ).
+ * Short-cut for _entityMost() routine. Returns object( wTools.entityMostResult ) with biggest value from( src ).
  *
  * @param {ArrayLike|Object} src - Source entity.
  * @param {Function} onEvaluate  - ( onEach ) function is called for each element of( src ).If undefined routine uses it own function.
- * @returns {wTools~entityMostResult} Object with result of search.
+ * @returns {wTools.entityMostResult} Object with result of search.
  *
  * @example
  *  //returns { index: 0, key: "a", value: 25, element: 25 };
  *  let obj = { a: 25, b: 16, c: 9 };
  *  let max = wTools.entityMax( obj );
  *
- * @see wTools~onEach
- * @see wTools~entityMostResult
+ * @see wTools.onEach
+ * @see wTools.entityMostResult
  * @function entityMax
  * @throws {Exception} If missed arguments.
  * @throws {Exception} If passed extra arguments.
