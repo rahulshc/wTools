@@ -3440,7 +3440,9 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
  * [arrayRemovedElementOnce( dstArray, ins )]{@link wTools.arrayRemovedElementOnce}
  * Otherwise, if passed three arguments, it calls the routine
  * [arrayRemovedElementOnce( dstArray, ins, onEvaluate )]{@link wTools.arrayRemovedElementOnce}
- * @see  wTools.arrayRemovedElementOnce
+ *
+ * @see wTools.arrayRemovedElementOnce
+ *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
  * @param { wTools.compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
@@ -3539,6 +3541,7 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
  * Otherwise, if passed three arguments, it calls the routine
  * [arrayLeftIndex( dstArray, ins, onEvaluate )]{@link wTools.arrayLeftIndex}
  * If callback function(onEvaluate) returns true, it returns the index that will be removed from (dstArray).
+ *
  * @see {@link wTools.arrayLeftIndex} - See for more information.
  *
  * @param { Array } dstArray - The source array.
