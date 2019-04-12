@@ -5192,6 +5192,15 @@ function arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )
 
 let unrollSymbol = Symbol.for( 'unroll' );
 
+/**
+ * @property {Array} ArrayType=Array
+ * @property {Number} accuracy=1e-7
+ * @property {Number} accuracySqrt=1e-4
+ * @property {Number} accuracySqr=1e-14
+ * @name fLongFields
+ * @memberof wTools
+ */
+
 let Fields =
 {
 

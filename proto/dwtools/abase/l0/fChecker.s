@@ -260,9 +260,9 @@ function prototypeIsStandard( src )
 //
 
 /**
- * Is constructor.
+ * Checks if argument( cls ) is a constructor.
  * @function constructorIs
- * @param {object} cls - entity to check
+ * @param {Object} cls - entity to check
  * @memberof wTools
  */
 

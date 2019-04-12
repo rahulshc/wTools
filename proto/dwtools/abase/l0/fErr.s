@@ -1339,6 +1339,13 @@ function assertOwnNoConstructor( ins )
 
 // let error = Object.create( null );
 
+/**
+ * @property {Object} error={}
+ * @property {Boolean} debuggerEnabled=!!Config.debug
+ * @name ErrFields
+ * @memberof wTools
+ */
+
 let Fields =
 {
   // error : error,
