@@ -1910,7 +1910,156 @@ function arrayFromCoercing( test )
     _.arrayFromCoercing( true );
   });
 
-};
+}
+
+//
+
+function scalarAppend( test )
+{
+
+  test.case = 'none arguments';
+  var got = _.scalarAppend();
+  test.identical( got, [] );
+
+  test.case = 'single undefined';
+  var got = _.scalarAppend( undefined );
+  test.identical( got, [] );
+
+  test.case = 'two undefined';
+  var got = _.scalarAppend( undefined, undefined );
+  test.identical( got, [] );
+
+  test.case = 'three undefined';
+  var got = _.scalarAppend( undefined, undefined, undefined );
+  test.identical( got, [] );
+
+  test.case = 'dstArray is undefined, src is scalar';
+  var got = _.scalarAppend( undefined, 1 );
+  test.identical( got, 1 );
+
+  test.case = 'dstArray is undefined, src is array';
+  var src = [ 1 ];
+  var got = _.scalarAppend( undefined, src );
+  test.identical( got, [ 1 ] );
+  test.is( src !== got );
+
+  test.case = 'dstArray is scalar, src is undefined';
+  var got = _.scalarAppend( 1, undefined );
+  test.identical( got, 1 );
+
+  test.case = 'dstArray is array, src is undefined';
+  var dst = [ 1 ];
+  var got = _.scalarAppend( dst, undefined );
+  test.identical( got, [ 1 ] );
+  test.is( dst === got );
+
+  test.case = 'dstArray is null, src is scalar';
+  var got = _.scalarAppend( null, 1 );
+  test.identical( got, [ null, 1 ] );
+
+  test.case = 'dstArray is null, src is array';
+  var src = [ 1 ];
+  var got = _.scalarAppend( null, src );
+  test.identical( got, [ null, 1 ] );
+  test.is( src !== got );
+
+  test.case = 'nothing';
+  var got = _.scalarAppend( [], [] );
+  var expected = [  ];
+  test.identical( got, expected );
+
+  test.case = 'simple';
+  var dst = [];
+  var got = _.scalarAppend( dst, [ 1, 2, 3 ] );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.is( got === dst );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.scalarAppend( dst,[ 4, 5 ] );
+  test.identical( dst, [ 1, 2, 3, 4, 5 ] );
+  test.is( got === dst );
+
+  var dst = [ 1, 1, 1 ];
+  var got = _.scalarAppend( dst, [ 1, 1 ] );
+  test.identical( dst, [ 1, 1, 1, 1, 1 ] );
+  test.is( got === dst );
+
+  var dst = [ 1, 2, 3 ];
+  var got = _.scalarAppend( dst, [ 1 ], [ 2 ], [ 3, [ 5 ] ] );
+  test.identical( dst, [ 1, 2, 3, 1, 2, 3, [ 5 ] ] );
+  test.is( got === dst );
+
+  var dst = [ 1, 2, 3 ];
+  var insArray = [ [ 1 ], [ 2 ], [ 3, [ 5 ] ] ];
+  var got = _.scalarAppend( dst, insArray );
+  test.identical( dst, [ 1, 2, 3, [ 1 ], [ 2 ], [ 3, [ 5 ] ] ] );
+  test.is( got === dst );
+
+  test.case = 'arguments are not arrays';
+  var dst = [];
+  var got = _.scalarAppend( dst, [ 1, 2, 3 ]);
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.is( got === dst );
+
+  test.case = 'mixed arguments types';
+  var dst = [ 1 ];
+  var insArray = [ 'a', 1, [ { a : 1 } ], { b : 2 } ];
+  var got = _.scalarAppend( dst, insArray );
+  test.identical( dst, [  1, 'a', 1, [ { a : 1 } ], { b : 2 } ] );
+  test.is( got === dst );
+
+  test.case = 'mixed arguments types';
+  var dst = [ 1 ];
+  var got = _.scalarAppend( dst, 'a', 1, [ { a : 1 } ], { b : 2 } );
+  test.identical( dst, [  1, 'a', 1, { a : 1 }, { b : 2 } ] );
+  test.is( got === dst );
+
+  test.case = 'argument is undefined';
+  var dst = [ 1 ];
+  var got = _.scalarAppend( dst, undefined );
+  test.identical( dst, [ 1 ] );
+  test.is( got === dst );
+
+  test.case = 'argument is undefined';
+  var dst = [];
+  var got = _.scalarAppend( dst, [ 1 ], [ 3 ] );
+  test.identical( dst, [ 1, 3 ] );
+  test.is( got === dst );
+
+  test.case = 'argument is undefined';
+  var dst = [ 0 ];
+  var got = _.scalarAppend( dst, [ 1 ], [ 3 ] );
+  test.identical( dst, [ 0, 1, 3 ] );
+  test.is( got === dst );
+
+  test.case = 'argument is undefined';
+  var dst = [];
+  var got = _.scalarAppend( dst, undefined );
+  test.identical( dst, [] );
+  test.is( got === dst );
+
+  test.case = 'array has undefined';
+  var dst = [ 1 ];
+  var got = _.scalarAppend( dst, [ undefined, 2 ] );
+  test.identical( dst, [ 1, undefined, 2 ] );
+  test.is( got === dst );
+
+  test.case = 'array has undefined';
+  var got = _.scalarAppend( 1, [ 2 ] );
+  test.identical( got, [ 1, 2 ] );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  // test.case = 'no arguments';
+  // test.shouldThrowError( function()
+  // {
+  //   _.scalarAppend();
+  // });
+
+}
 
 //
 
@@ -9133,9 +9282,24 @@ function arrayAppendedArrayOnceStrictly( test )
 
 function arrayAppendArrays( test )
 {
-  test.case = 'dstArray is null';
+
+  test.case = 'dstArray is null, src is scalar';
+  var got = _.arrayAppendArrays( null, 1 );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dstArray is null, src is array';
   var got = _.arrayAppendArrays( null, [ 1 ] );
   test.identical( got, [ 1 ] );
+
+  // test.case = 'dstArray is undefined, src is scalar';
+  // var got = _.arrayAppendArrays( undefined, 1 );
+  // test.identical( got, 1 );
+  //
+  // test.case = 'dstArray is undefined, src is array';
+  // let src = [ 1 ];
+  // var got = _.arrayAppendArrays( undefined, src );
+  // test.identical( got, [ 1 ] );
+  // test.is( src === got );
 
   test.case = 'nothing';
   var got = _.arrayAppendArrays( [], [] );
@@ -9211,7 +9375,7 @@ function arrayAppendArrays( test )
   test.case = 'second arg is not a ArrayLike entity';
   test.shouldThrowError( function()
   {
-    _.arrayAppendArrays( [], 1 );
+    _.arrayAppendArrays( [], undefined );
   });
 
   test.case = 'too many args';
@@ -9322,12 +9486,6 @@ function arrayAppendArraysOnce( test )
     _.arrayAppendArraysOnce( dst, undefined );
   });
   test.identical( dst, [ 1 ] );
-
-  test.case = 'second arg is not a ArrayLike entity';
-  test.shouldThrowError( function()
-  {
-    _.arrayAppendArraysOnce( [], 1 );
-  });
 
 }
 
@@ -9521,7 +9679,7 @@ function arrayAppendedArrays( test )
   test.case = 'second arg is not a ArrayLike entity';
   test.shouldThrowError( function()
   {
-    _.arrayAppendedArrays( [], 1 );
+    _.arrayAppendedArrays( [], undefined );
   });
 
   test.case = 'too many args';
@@ -9635,7 +9793,7 @@ function arrayAppendedArraysOnce( test )
   test.case = 'second arg is not a ArrayLike entity';
   test.shouldThrowError( function()
   {
-    _.arrayAppendedArraysOnce( [], 1 );
+    _.arrayAppendedArraysOnce( [], undefined );
   });
 
 }
@@ -19074,11 +19232,13 @@ var Self =
 
     arrayMake : arrayMake,
     arrayFrom : arrayFrom,
+    arrayFromCoercing : arrayFromCoercing,
+
+    scalarAppend : scalarAppend,
 
     arrayMakeRandom : arrayMakeRandom,
     arrayFromNumber : arrayFromNumber,
     arrayFromRange : arrayFromRange,
-    arrayFromCoercing : arrayFromCoercing,
     arrayAs : arrayAs,
 
     arrayToMap : arrayToMap,

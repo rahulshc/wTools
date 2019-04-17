@@ -645,37 +645,37 @@ function dateToStr( date )
 
 //
 
-let _timeSleepBuffer = new Int32Array( new SharedArrayBuffer( 4 ) );
-function timeSleep( time )
-{
-  _.assert( time >= 0 );
-  Atomics.wait( _timeSleepBuffer, 0, 1, time );
-}
-
+// let _timeSleepBuffer = new Int32Array( new SharedArrayBuffer( 4 ) );
+// function timeSleep( time )
+// {
+//   _.assert( time >= 0 );
+//   Atomics.wait( _timeSleepBuffer, 0, 1, time );
+// }
 //
-
-function timeSleepUntil( o )
-{
-  if( _.routineIs( o ) )
-  o = { onCondition : o }
-
-  if( o.periodicity === undefined )
-  o.periodicity = timeSleepUntil.defaults.periodicity;
-
-  let i = 0;
-  while( !o.onCondition() )
-  {
-    _.timeSleep( o.periodicity );
-  }
-
-  return true;
-}
-
-timeSleepUntil.defaults =
-{
-  onCondition : null,
-  periodicity : 100,
-}
+// //
+//
+// function timeSleepUntil( o )
+// {
+//   if( _.routineIs( o ) )
+//   o = { onCondition : o }
+//
+//   if( o.periodicity === undefined )
+//   o.periodicity = timeSleepUntil.defaults.periodicity;
+//
+//   let i = 0;
+//   while( !o.onCondition() )
+//   {
+//     _.timeSleep( o.periodicity );
+//   }
+//
+//   return true;
+// }
+//
+// timeSleepUntil.defaults =
+// {
+//   onCondition : null,
+//   periodicity : 100,
+// }
 
 // --
 // fields
@@ -714,8 +714,8 @@ let Routines =
   timeSpentFormat,
   dateToStr,
 
-  timeSleep, /* experimental */
-  timeSleepUntil, /* experimental */
+  // timeSleep, /* experimental */
+  // timeSleepUntil, /* experimental */
 
 }
 
