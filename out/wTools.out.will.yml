@@ -5,14 +5,17 @@ about:
     Collection of general purpose tools for solving problems. Fundamentally
     extend JavaScript without corrupting it, so may be used solely or in
     conjunction with another module of such kind
-  version: 0.8.425
   enabled: 1
-  interpreters:
-    - nodejs >= 6.0.0
-    - chrome >= 60.0.0
-    - firefox >= 60.0.0
-  keywords:
-    - wTools
+  version: 0.8.425
+  values:
+    enabled: 1
+    name: wTools
+    interpreters:
+      - nodejs >= 6.0.0
+      - chrome >= 60.0.0
+      - firefox >= 60.0.0
+    keywords:
+      - wTools
 execution:
   scripts:
     test: wtest proto
