@@ -22,8 +22,8 @@ let _floor = Math.floor;
 // --
 
 /**
- * Function numberIs checks incoming param whether it is number.
- * Returns "true" if incoming param is object. Othervise "false" returned.
+ * @summary Checks if argument( src ) is a Number.
+ * @returns Returns true if ( src ) is a Number, otherwise returns false.
  *
  * @example
  * //returns true

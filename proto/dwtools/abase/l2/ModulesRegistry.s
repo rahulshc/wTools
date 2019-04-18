@@ -8,6 +8,11 @@ if( !Object.hasOwnProperty.call( _global, 'ModuleRegistry' ) )
 _global.ModulesRegistry = Object.create( null );
 let Self = _global.ModulesRegistry;
 
+/**
+ * @typedef {Object} ModulesRegistry - Map that contains info about modules, is uses by {@link wTools.include}.
+ * @memberof wTools
+ */
+
 // --
 // helper
 // --

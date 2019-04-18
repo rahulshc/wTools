@@ -12,6 +12,14 @@ let Self = _global_.wTools;
 // routine
 // --
 
+
+/**
+ * Returns true if entity ( src ) is a String.
+ * @function strIs
+ * @param {} src - entity to check
+ * @memberof wTools
+ */
+
 function strIs( src )
 {
   let result = _ObjectToString.call( src ) === '[object String]';
@@ -20,12 +28,26 @@ function strIs( src )
 
 //
 
+/**
+ * Returns true if entity ( src ) is a Function.
+ * @function routineIs
+ * @param {} src - entity to check
+ * @memberof wTools
+ */
+
 function routineIs( src )
 {
   return _ObjectToString.call( src ) === '[object Function]';
 }
 
 //
+
+/**
+ * Returns true if entity ( src ) is an Object.
+ * @function objectIs
+ * @param {} src - entity to check
+ * @memberof wTools
+ */
 
 function objectIs( src )
 {
@@ -34,12 +56,39 @@ function objectIs( src )
 
 //
 
+/**
+ * Returns true if entity ( src ) is an Arguments object.
+ * @function argumentsArrayIs
+ * @param {} src - entity to check
+ * @memberof wTools
+ */
+
 function argumentsArrayIs( src )
 {
   return _ObjectToString.call( src ) === '[object Arguments]';
 }
 
 //
+
+/**
+ * @summary Tests if provided condidion is true.
+ *
+ * @description
+ *
+ * * If ( msg ) is a Function - overrides ( msg ) with result of execution.
+ * * If ( msg ) is a String - uses it as message.
+ * * If ( msg ) is not defined - uses default message: 'Assertion fails'.
+ * * If ( msg ) has any other type - uses it as argument for 'throw' statement
+ *
+ * @example
+ * _.assert( _.strIs( src ), 'Src is not a string' );
+ *
+ * @function assert
+ * @param {} condition - condition to check
+ * @param {} msg - error message
+ * @throws {Error} If condition fails. Uses second argument ( msg ) as error message.
+ * @memberof wTools
+ */
 
 function assert( condition, msg )
 {
@@ -71,6 +120,44 @@ function assert( condition, msg )
 }
 
 //
+
+/**
+ * @summary Supplements source options map with defaults of current function( routine ) and checks if all options are known.
+ *
+ * @description
+ *
+ * * If ( args ) is an Arguments array, first argument should be a source options map;
+ * * If ( args ) is not defined, creates a copy of default options;
+ * * If ( defaults ) is not defined, uses defaults map from 'routine.defaults' property;
+ *
+ * @example
+ *
+ * function add( o )
+ * {
+ *  _.routineOptions( add, o );
+ *  return o.a + o.b;
+ * }
+ *
+ * add.defaults =
+ * {
+ *  a : 0,
+ *  b : 0
+ * }
+ *
+ * add({ a : 1, b : 1 }) // 2
+ * add({ b : 1 }) // 1
+ * add({ a : 1, c : 3 }) // throws an error, option "c" is unknown
+ *
+ * @function routineOptions
+ * @param {Function} routine - target routine
+ * @param {Arguments|Object} args - arguments array or options map
+ * @param {Object} defaults - map with default options
+ * @throws {Error} If first argument( routine ) is not a Function.
+ * @throws {Error} If second argument( args ) is not an Arguments array or Map.
+ * @throws {Error} If third argument( defaults ) is not an Object.
+ * @throws {Error} If source options map has unknown properties.
+ * @memberof wTools
+ */
 
 function routineOptions( routine, args, defaults )
 {

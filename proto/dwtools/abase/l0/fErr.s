@@ -826,7 +826,8 @@ function error_functor( name, onMake )
  * If passed several strings (or mixed error and strings) as arguments, the result error message is created by
  concatenating them. Prints the created error.
  * If _global_.logger defined, routine will use it to print error, else uses console
- * @see wTools.err
+ *
+ * @see {@link wTools.err See err}
  *
  * @example
    function divide( x, y )
@@ -1096,7 +1097,10 @@ function sureOwnNoConstructor( ins )
 // --
 
 /**
- * Checks condition passed by argument( condition ). Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * Checks condition passed by argument( condition ). Works only in debug mode. Uses StackTrace level 2.
+ *
+ * @see {@link wTools.err err}
+ *
  * If condition is true routine returns without exceptions, otherwise routine generates and throws exception. By default generates error with message 'Assertion fails'.
  * Also generates error using message(s) or existing error object(s) passed after first argument.
  *
@@ -1334,6 +1338,13 @@ function assertOwnNoConstructor( ins )
 // --
 
 // let error = Object.create( null );
+
+/**
+ * @property {Object} error={}
+ * @property {Boolean} debuggerEnabled=!!Config.debug
+ * @name ErrFields
+ * @memberof wTools
+ */
 
 let Fields =
 {
