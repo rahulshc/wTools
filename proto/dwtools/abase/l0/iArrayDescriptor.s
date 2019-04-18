@@ -1,6 +1,6 @@
 (function _kArrayDescriptor_s_() {
 
-'use strict'; 
+'use strict';
 
 let _global = _global_;
 let _ = _global.wTools;
@@ -47,6 +47,14 @@ nameSpace = _.mapExtend( null,nameSpace );
 
 //
 
+/**
+ * @summary Creates new array based on type of `src` array. Takes length of new array from second argument `length`.
+ * @param {} src Source array
+ * @param {Number} [ length ] Lengthof target array.
+ * @function makeSimilar
+ * @memberof wTools."wTools.array"
+ */
+
 function makeSimilar( src,length )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -57,6 +65,21 @@ function makeSimilar( src,length )
 }
 
 //
+
+/**
+ * @summary Creates new array of length( length ).
+ * @description Type of array depends on `ArrayType`( see examples ).
+ * @param {Number} length Lengthof new array.
+ *
+ * @example
+ * _.array.makeArrayOfLength(1);// return instance of Array
+ *
+ * @example
+ * _.withArray.Float32.makeArrayOfLength(1);// return instance of Float32Array
+ *
+ * @function makeArrayOfLength
+ * @memberof wTools."wTools.array"
+ */
 
 function makeArrayOfLength( length )
 {
@@ -73,6 +96,22 @@ function makeArrayOfLength( length )
 }
 
 //
+
+/**
+ * @summary Creates new array of length( length ) filled with zeroes.
+ * @description Type of array depends on `ArrayType`( see examples ).
+ * @param {Number} length Lengthof new array.
+ *
+ * @example
+ * _.array.makeArrayOfLengthZeroed( 2 );//Array [ 0,0 ]
+ *
+ * @example
+ * _.withArray.Float32.makeArrayOfLength( 2 );// Float32Array [ 0,0 ]
+ *
+ * @function makeArrayOfLengthZeroed
+ * @memberof wTools."wTools.array"
+ */
+
 
 function makeArrayOfLengthZeroed( length )
 {
@@ -92,6 +131,28 @@ function makeArrayOfLengthZeroed( length )
 }
 
 //
+
+/**
+ * @summary Creates new array taking elements from source array `src`.
+ * @description Type of new array depends on `ArrayType`( see examples ).
+ * Returns new array of type `ArrayType` or src if types are same.
+ * @param {} src Source array.
+ *
+ * @example
+ * let src =  _.withArray.Float32.makeArrayOfLength( 2 );
+ * _.array.arrayFromCoercing( src );//Array [ 0,0 ]
+ *
+ * @example
+ * let src =  _.array.makeArrayOfLength( 2 );
+ * _.withArray.Float32.arrayFromCoercing( src );// Float32Array [ 0,0 ]
+ *
+ * @example
+ * let src =  _.array.makeArrayOfLength( 2 );
+ * _.array.arrayFromCoercing( src );// returns src
+ *
+ * @function arrayFromCoercing
+ * @memberof wTools."wTools.array"
+ */
 
 function arrayFromCoercing( src )
 {
@@ -303,25 +364,7 @@ _.assert( !_.withArray );
 
 /**
  * @summary Array namespace
- * @namespace Array
- * @memberof wTools
- */
-
-/**
- * @summary Float32Array namespace
- * @namespace Float32
- * @memberof wTools
- */
-
- /**
- * @summary Int32Array namespace
- * @namespace Int32
- * @memberof wTools
- */
-
- /**
- * @summary Uint32Array namespace
- * @namespace Wrd32
+ * @namespace "wTools.array"
  * @memberof wTools
  */
 
