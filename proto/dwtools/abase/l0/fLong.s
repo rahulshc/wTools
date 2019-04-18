@@ -2,20 +2,14 @@
 
 'use strict';
 
-let _global = _global_;
-let _ = _global_.wTools;
-let Self = _global_.wTools;
-
-//
-
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 let _ArraySlice = Array.prototype.slice;
-let _ArraySplice = Array.prototype.splice;
-let _FunctionBind = Function.prototype.bind;
 let _ObjectToString = Object.prototype.toString;
-let _ObjectHasOwnProperty = Object.hasOwnProperty;
-let _propertyIsEumerable = Object.propertyIsEnumerable;
+
+let _global = _global_;
+let _ = _global_.wTools;
+let Self = _global_.wTools;
 
 // --
 // arguments array
@@ -46,15 +40,6 @@ function _argumentsArrayMake()
 }
 
 //
-//
-// function argumentsArrayOfLength( length )
-// {
-//   debugger; xxx
-//   let a = new Arguments( length );
-//   return a;
-// }
-//
-//
 
 function argumentsArrayFrom( src )
 {
@@ -72,7 +57,7 @@ function unrollIs( src )
 {
   if( !_.arrayIs( src ) )
   return false;
-  return !!src[ unrollSymbol ];
+  return !!src[ _.unroll ];
 }
 
 //
@@ -91,7 +76,7 @@ function unrollMake( src )
   let result = _.arrayMake( src );
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( result ) );
-  result[ unrollSymbol ] = true;
+  result[ _.unroll ] = true;
   return result;
 }
 
@@ -126,7 +111,7 @@ function unrollPrepend( dstArray )
     }
   }
 
-  dstArray[ unrollSymbol ] = true;
+  dstArray[ _.unroll ] = true;
 
   return dstArray;
 }
@@ -152,7 +137,7 @@ function unrollAppend( dstArray )
     }
   }
 
-  dstArray[ unrollSymbol ] = true;
+  dstArray[ _.unroll ] = true;
 
   return dstArray;
 }
@@ -160,8 +145,6 @@ function unrollAppend( dstArray )
 // --
 // long
 // --
-
-//
 
 /**
  * The longIs() routine determines whether the passed value is an array-like or an Array.
@@ -187,7 +170,7 @@ function unrollAppend( dstArray )
  * } )( 'Hello there!' );
  *
  * @returns { boolean } Returns true if {-srcMap-} is an array-like or an Array.
- * @function longIs
+ * @function longIs.
  * @memberof wTools
  */
 
@@ -1332,6 +1315,75 @@ function arrayFrom( src )
   return _.arrayMake.call( _, src );
 }
 
+//
+
+/**
+ * Produce a single array from all arguments if cant return single argument as a scalar.
+ * If {-scalarAppend-} gets a single argument it returns the argument as is.
+ * If {-scalarAppend-} gets an argument and one or more undefined it returns the argument as is.
+ * If {-scalarAppend-} gets more than one or less than one defined arguments then it returns array having all defined arguments.
+ * If some argument is a long ( for example array ) then each element of the long is treated as an argument, not recursively.
+ *
+ * @function scalarAppend.
+ * @memberof wTools
+ */
+
+function scalarAppend( dst, src )
+{
+
+  if( arguments.length > 2 )
+  {
+    for( let a = 1 ; a < arguments.length ; a++ )
+    dst = _.scalarAppend( dst, arguments[ a ] );
+    return dst;
+  }
+
+  _.assert( arguments.length <= 2 );
+
+  if( dst === undefined )
+  {
+    if( _.longIs( src ) )
+    {
+      dst = [];
+    }
+    else
+    {
+      if( src === undefined )
+      return [];
+      else
+      return src;
+    }
+  }
+
+  if( _.longIs( dst ) )
+  {
+
+    if( !_.arrayIs( dst ) )
+    dst = _.arrayFrom( dst );
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    _.arrayAppendArray( dst, src );
+    else
+    dst.push( src );
+
+  }
+  else
+  {
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    dst = _.arrayAppendArray( [ dst ], src );
+    else
+    dst = [ dst, src ];
+
+  }
+
+  return dst;
+}
+
 // --
 // array sequential search
 // --
@@ -1464,7 +1516,7 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
  *
  * @param { longIs } arr - Entity to check.
  * @param { * } ins - Element to locate in the array.
- * @param { wTools.compareCallback } evaluator1 - A callback function.
+ * @param { wTools~compareCallback } evaluator1 - A callback function.
  *
  * @example
  * // returns { index : 3, element : 'str' }
@@ -1694,7 +1746,7 @@ alteration Tense : [ - , ed ]                                 // what to return
 alteration Second : [ -, element, array, array ]              // how to treat src arguments
 alteration How : [ - , Once , OnceStrictly ]                  // how to treat repeats
 
-. 60 routines
+~ 60 routines
 
 */
 
@@ -1779,7 +1831,7 @@ function arrayPrepend( dstArray, ins )
  *
  * @param { Array } dstArray - The destination array.
  * @param { * } ins - The value to add.
- * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 5, 1, 2, 3, 4 ]
@@ -1836,7 +1888,7 @@ function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
  *
  * @param { Array } dstArray - The destination array.
  * @param { * } ins - The value to add.
- * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 5, 1, 2, 3, 4 ]
@@ -1885,7 +1937,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   {
     debugger;
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+    _.assert( result >= 0, () => 'Array should have only unique elements, but has several ' + _.strShort( ins ) );
   }
   else
   {
@@ -1915,7 +1967,7 @@ function arrayPrepended( dstArray, ins )
  *
  * @param { Array } dstArray - The destination array.
  * @param { * } ins - The value to add.
- * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns 0
@@ -1973,7 +2025,7 @@ function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   {
     debugger;
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+    _.assert( result >= 0, () => 'Array should have only unique elements, but has several ' + _.strShort( ins ) );
   }
   else
   {
@@ -2047,7 +2099,7 @@ function arrayPrependElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
   {
     debugger;
     result = arrayPrependedElementOnce.apply( this, arguments );
-    _.assert( result !== undefined, 'array should have only unique elements, but has several', ins );
+    _.assert( result !== undefined, 'Array should have only unique elements, but has several', ins );
   }
   else
   {
@@ -2062,7 +2114,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+  _.assert( result >= 0, () => 'Array should have only unique elements, but has several ' + _.strShort( ins ) );
 
   return dstArray;
 }
@@ -2122,7 +2174,7 @@ function arrayPrependedElementOnceStrictly( dstArray, ins, evaluator1, evaluator
   {
     debugger;
     result = arrayPrependedElementOnce.apply( this, arguments );
-    _.assert( result !== undefined, 'array should have only unique elements, but has several', ins );
+    _.assert( result !== undefined, 'Array should have only unique elements, but has several', ins );
   }
   else
   {
@@ -2176,7 +2228,7 @@ function arrayPrependArray( dstArray, insArray )
  *
  * @param { Array } dstArray - The destination array.
  * @param { ArrayLike } insArray - The source array.
- * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 0, 1, 2, 3, 4 ]
@@ -2225,7 +2277,7 @@ function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
  *
  * @param { Array } dstArray - The destination array.
  * @param { ArrayLike } insArray - The source array.
- * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 0, 1, 2, 3, 4 ]
@@ -2328,7 +2380,7 @@ function arrayPrependedArray( dstArray, insArray )
  *
  * @param { Array } dstArray - The destination array.
  * @param { ArrayLike } insArray - The source array.
- * @param { wTools.compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
+ * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns 3
@@ -2494,7 +2546,7 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
  * @param { Array } dstArray - The destination array.
  * @param { longIs | * } arguments[...] - Source arguments.
- * @param { wTools.compareCallback } onEqualize - A callback function that can be provided through routine`s context. By default, it checks the equality of two arguments.
+ * @param { wTools~compareCallback } onEqualize - A callback function that can be provided through routine`s context. By default, it checks the equality of two arguments.
  *
  * @example
  * // returns [ 5, 6, 7, 8, 1, 2, 3, 4 ]
@@ -2861,7 +2913,7 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   if( Config.debug )
   {
     result = arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+    _.assert( result >= 0, () => 'Array should have only unique elements, but has several ' + _.strShort( ins ) );
   }
   else
   {
@@ -2902,7 +2954,7 @@ function arrayAppendedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   if( Config.debug )
   {
     result = arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, 'array should have only unique elements, but has several', ins );
+    _.assert( result >= 0, () => 'Array should have only unique elements, but has several ' + _.strShort( ins ) );
   }
   else
   {
@@ -2954,7 +3006,7 @@ function arrayAppendElementOnceStrictly( dstArray, ins )
   if( Config.debug )
   {
     result = arrayAppendedElementOnce.apply( this, arguments );
-    _.assert( result !== false, 'array should have only unique elements, but has several', ins );
+    _.assert( result !== false, 'Array should have only unique elements, but has several', ins );
   }
   else
   {
@@ -2997,7 +3049,7 @@ function arrayAppendedElementOnceStrictly( dstArray, ins )
   if( Config.debug )
   {
     result = arrayAppendedElementOnce.apply( this, arguments );
-    _.assert( result !== false, 'array should have only unique elements, but has several', ins );
+    _.assert( result !== false, 'Array should have only unique elements, but has several', ins );
   }
   else
   {
@@ -3162,7 +3214,7 @@ function arrayAppendedArrayOnceStrictly( dstArray, ins )
   if( Config.debug )
   {
     result = arrayAppendedArrayOnce.apply( this, arguments );
-    _.assert( result === ins.length , 'array should have only unique elements, but has several', ins );
+    _.assert( result === ins.length , 'Array should have only unique elements, but has several', ins );
   }
   else
   {
@@ -3173,15 +3225,23 @@ function arrayAppendedArrayOnceStrictly( dstArray, ins )
 
 //
 
-function arrayAppendArrays( dstArray )
+function arrayAppendArrays( dstArray, insArray )
 {
+
   if( dstArray === null )
   {
     dstArray = [];
     arguments[ 0 ] = dstArray;
   }
 
-  arrayAppendedArrays.apply( this, arguments );
+  if( dstArray === undefined )
+  {
+    _.assert( arguments.length === 2 );
+    return insArray;
+  }
+
+  _.arrayAppendedArrays.apply( this, arguments );
+
   return dstArray;
 }
 
@@ -3189,13 +3249,28 @@ function arrayAppendArrays( dstArray )
 
 function arrayAppendArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
+
   if( dstArray === null )
   {
     dstArray = [];
     arguments[ 0 ] = dstArray;
   }
+  else if( dstArray === undefined )
+  {
+    if( _.arrayIs( insArray ) )
+    {
+      dstArray = [];
+      arguments[ 0 ] = dstArray;
+    }
+    else
+    {
+      _.assert( 2 <= arguments.length && arguments.length <= 4 );
+      return insArray;
+    }
+  }
 
   arrayAppendedArraysOnce.apply( this, arguments );
+
   return dstArray;
 }
 
@@ -3233,37 +3308,30 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
   return dstArray;
 }
 
-/*
-function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
-{
-  let result = arrayAppendedArraysOnce.apply( this, arguments );
-
-  if( Config.debug )
-  {
-
-    let expected = 0;
-    for( let i = insArray.length - 1; i >= 0; i-- )
-    {
-      if( _.longIs( insArray[ i ] ) )
-      expected += insArray[ i ].length;
-      else
-      expected += 1;
-    }
-
-    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
-
-  }
-
-  return dstArray;
-}
-*/
-
 //
 
 function arrayAppendedArrays( dstArray, insArray )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( !_.longIs( insArray ) && insArray !== undefined )
+  insArray = [ insArray ];
+
+  // if( !_.longIs( insArray ) )
+  // {
+  //   if( !_.arrayIs( dstArray ) )
+  //   return [ dstArray, insArray ];
+  //   else
+  //   dstArray.push( insArray );
+  //   return 1;
+  // }
+
+  // if( !_.arrayIs( insArray ) && insArray !== undefined )
+  // insArray = [ insArray ];
+  // if( !_.arrayIs( insArray ) && insArray !== undefined )
+  // insArray = [ insArray ];
+
   _.assert( _.arrayIs( dstArray ), 'Expects array' );
   _.assert( _.longIs( insArray ), 'Expects longIs entity' );
 
@@ -3290,21 +3358,19 @@ function arrayAppendedArrays( dstArray, insArray )
 
 function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
+
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ), 'arrayAppendedArraysOnce :', 'Expects array' );
-  _.assert( _.longIs( insArray ), 'arrayAppendedArraysOnce :', 'Expects longIs entity' );
+
+  if( dstArray === undefined )
+  return insArray;
+
+  if( !_.arrayIs( insArray ) && insArray !== undefined )
+  insArray = [ insArray ];
+
+  _.assert( _.arrayIs( dstArray ), 'Expects array' );
+  _.assert( _.longIs( insArray ), 'Expects longIs entity' );
 
   let result = 0;
-
-  function _appendOnce( argument )
-  {
-    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
-    if( index === -1 )
-    {
-      dstArray.push( argument );
-      result += 1;
-    }
-  }
 
   for( let a = 0, len = insArray.length; a < len; a++ )
   {
@@ -3321,6 +3387,17 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
 
   return result;
+
+  function _appendOnce( argument )
+  {
+    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+    if( index === -1 )
+    {
+      dstArray.push( argument );
+      result += 1;
+    }
+  }
+
 }
 
 //
@@ -3440,12 +3517,10 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
  * [arrayRemovedElementOnce( dstArray, ins )]{@link wTools.arrayRemovedElementOnce}
  * Otherwise, if passed three arguments, it calls the routine
  * [arrayRemovedElementOnce( dstArray, ins, onEvaluate )]{@link wTools.arrayRemovedElementOnce}
- *
- * @see wTools.arrayRemovedElementOnce
- *
+ * @see  wTools.arrayRemovedElementOnce
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { wTools.compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -3525,7 +3600,7 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 /**
  * The callback function to compare two values.
  *
- * @callback wTools.compareCallback
+ * @callback wTools~compareCallback
  * @param { * } el - The element of the array.
  * @param { * } ins - The value to compare.
  */
@@ -3541,12 +3616,11 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
  * Otherwise, if passed three arguments, it calls the routine
  * [arrayLeftIndex( dstArray, ins, onEvaluate )]{@link wTools.arrayLeftIndex}
  * If callback function(onEvaluate) returns true, it returns the index that will be removed from (dstArray).
- *
  * @see {@link wTools.arrayLeftIndex} - See for more information.
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { wTools.compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -3707,7 +3781,7 @@ function arrayRemovedArray( dstArray, insArray )
 /**
  * The callback function to compare two values.
  *
- * @callback arrayRemovedArrayOnce.onEvaluate
+ * @callback arrayRemovedArrayOnce~onEvaluate
  * @param { * } el - The element of the (dstArray[n]) array.
  * @param { * } ins - The value to compare (insArray[n]).
  */
@@ -3976,7 +4050,7 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
 /**
  * Callback for compare two value.
  *
- * @callback arrayRemoveAll.compareCallback
+ * @callback arrayRemoveAll~compareCallback
  * @param { * } el - Element of the array.
  * @param { * } ins - Value to compare.
  */
@@ -3995,7 +4069,7 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
- * @param { wTools.compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
+ * @param { wTools~compareCallback } [ onEvaluate ] - The callback that compares (ins) with elements of the array.
  * By default, it checks the equality of two arguments.
  *
  * @example
@@ -4135,38 +4209,6 @@ function arrayRemoveDuplicates( dstArray, evaluator )
  * @memberof wTools
  */
 
-// function arrayFlatten()
-// {
-//   let result = _.arrayIs( this ) ? this : [];
-//
-//   for( let a = 0 ; a < arguments.length ; a++ )
-//   {
-//
-//     let src = arguments[ a ];
-//
-//     if( !_.longIs( src ) )
-//     {
-//       if( src !== undefined ) result.push( src );
-//       continue;
-//     }
-//
-//     for( let s = 0 ; s < src.length ; s++ )
-//     {
-//       if( _.arrayIs( src[ s ] ) )
-//       _.arrayFlatten.call( result, src[ s ] );
-//       else if( src[ s ] !== undefined )
-//       result.push( src[ s ] );
-//       else if( src[ s ] === undefined )
-//       throw _.err( 'array should have no undefined' );
-//     }
-//
-//   }
-//
-//   return result;
-// }
-//
-//
-
 function arrayFlatten( dstArray, insArray )
 {
   if( dstArray === null )
@@ -4203,93 +4245,13 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 }
 
 //
-/*
-function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
-{
-  if( dstArray === null )
-  {
-    dstArray = [];
-    arguments[ 0 ] = dstArray;
-  }
-
-  let result;
-  if( Config.debug )
-  {
-    result = arrayFlattenedOnce.apply( this, arguments );
-
-    if( _.longIs( result ) )
-    return result;
-
-    /* function _count( arr )
-    {
-      arr = _.arrayAs( arr );
-
-      let expected = 0;
-      for( let i = arr.length - 1; i >= 0; i-- )
-      {
-        if( _.longIs( arr[ i ] ) )
-        expected += _count( arr[ i ] );
-        else
-        expected += 1;
-      }
-      return expected;
-    } */
-/*
-    let expected = 1;
-
-    if( _.longIs( insArray ) )
-    expected = _.arrayFlattenOnce( insArray ).length;
-    logger.log( result, expected)
-    _.assert( result === expected );
-  }
-  else
-  {
-    arrayFlattened.apply( this, [ dstArray, insArray ] );
-  }
-
- return dstArray;
-}
-
-/*
-function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
-{
-  let result = arrayFlattenedOnce.apply( this, arguments );
-
-  function _count( arr )
-  {
-    let expected = 0;
-    for( let i = arr.length - 1; i >= 0; i-- )
-    {
-      if( _.longIs( arr[ i ] ) )
-      expected += _count( arr[ i ] );
-      else
-      expected += 1;
-    }
-    return expected;
-  }
-
- _.assert( result === _count( insArray ) );
-
- return dstArray;
-}
-*/
-
-//
 
 function arrayFlattened( dstArray, insArray )
 {
 
-  /* !!! xxx : reuse arrayRemoveDuplicates for single argument call */
-
-  // if( arguments.length <= 2 && insArray === undefined )
-  // return _.longRemoveDuplicates( dstArray );
-
-
   _.assert( arguments.length >= 1 );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ) );
-  // _.assert( _.longIs( insArray ) );
-
 
   if( arguments.length === 1 )
   {
@@ -4320,7 +4282,7 @@ function arrayFlattened( dstArray, insArray )
         }
         else
         {
-          _.assert( insArray[ i ] !== undefined, 'The array should have no undefined' );
+          _.assert( insArray[ i ] !== undefined, 'The Array should have no undefined' );
           dstArray.push( insArray[ i ] );
           result += 1;
         }
@@ -4328,6 +4290,7 @@ function arrayFlattened( dstArray, insArray )
     }
     else
     {
+      _.assert( insArray !== undefined, 'The Array should have no undefined' );
       dstArray.push( insArray );
       result += 1;
     }
@@ -4358,12 +4321,6 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   _.assert( arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ) );
-  // _.assert( _.longIs( insArray ) );
-
-  // if( arguments.length <= 2 && insArray === undefined )
-  // return _.longRemoveDuplicates( dstArray );
-
-
 
   if( arguments.length === 1 )
   {
@@ -4385,7 +4342,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   {
     for( let i = 0, len = insArray.length; i < len; i++ )
     {
-      _.assert( insArray[ i ] !== undefined );
+      _.assert( insArray[ i ] !== undefined, 'The Array should have no undefined' );
       if( _.longIs( insArray[ i ] ) )
       {
         let c = _.arrayFlattenedOnce( dstArray, insArray[ i ], evaluator1, evaluator2 );
@@ -4404,6 +4361,8 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
   else
   {
+
+    _.assert( insArray !== undefined, 'The Array should have no undefined' );
 
     let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
     if( index === -1 )
@@ -4462,7 +4421,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
   {
     for( let i = 0, len = insArray.length; i < len; i++ )
     {
-      _.assert( insArray[ i ] !== undefined );
+      _.assert( insArray[ i ] !== undefined, 'The Array should have no undefined' );
       if( _.longIs( insArray[ i ] ) )
       {
         let c = _.arrayFlattenedOnceStrictly( dstArray, insArray[ i ], evaluator1, evaluator2 );
@@ -4484,6 +4443,280 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
   }
   else
   {
+    _.assert( insArray !== undefined, 'The Array should have no undefined' );
+    let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
+    if( Config.debug )
+    _.assert( index === -1, 'Elements must not be repeated' );
+
+    if( index === -1 )
+    {
+      dstArray.push( insArray );
+      result += 1;
+    }
+  }
+
+  return result;
+
+  /* */
+
+  function onLongOnce( insArray, insIndex )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      onLongOnce( insArray[ i ], insIndex )
+      else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
+      dstArray.splice( insIndex++, 0, insArray[ i ] );
+      else if( Config.debug )
+      _.assert( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1, 'Elements must not be repeated' );
+    }
+  }
+}
+
+// xxx
+
+function arrayFlattenDefined( dstArray, insArray )
+{
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
+  arrayFlattenedDefined.apply( this, arguments );
+
+  return dstArray;
+}
+
+//
+
+function arrayFlattenDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
+{
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
+  arrayFlattenedDefinedOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayFlattenDefinedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+  arrayFlattenedDefinedOnceStrictly.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayFlattenedDefined( dstArray, insArray )
+{
+
+  _.assert( arguments.length >= 1 );
+  _.assert( _.objectIs( this ) );
+  _.assert( _.arrayIs( dstArray ) );
+
+  if( arguments.length === 1 )
+  {
+    for( let i = dstArray.length-1; i >= 0; --i )
+    if( _.longIs( dstArray[ i ] ) )
+    {
+      let insArray = dstArray[ i ];
+      dstArray.splice( i, 1 );
+      onLong( insArray, i );
+    }
+    return dstArray;
+  }
+
+  let result = 0;
+
+  for( let a = 1 ; a < arguments.length ; a++ )
+  {
+    let insArray = arguments[ a ];
+
+    if( _.longIs( insArray ) )
+    {
+      for( let i = 0, len = insArray.length; i < len; i++ )
+      {
+        if( _.longIs( insArray[ i ] ) )
+        {
+          let c = _.arrayFlattenedDefined( dstArray, insArray[ i ] );
+          result += c;
+        }
+        else
+        {
+          // _.assert( insArray[ i ] !== undefined, 'The Array should have no undefined' );
+          if( insArray[ i ] !== undefined )
+          {
+            dstArray.push( insArray[ i ] );
+            result += 1;
+          }
+        }
+      }
+    }
+    else
+    {
+      _.assert( insArray !== undefined, 'The Array should have no undefined' );
+      if( insArray !== undefined )
+      {
+        dstArray.push( insArray );
+        result += 1;
+      }
+    }
+
+  }
+
+  return result;
+
+  /* */
+
+  function onLong( insArray, insIndex )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      onLong( insArray[ i ], insIndex )
+      else
+      dstArray.splice( insIndex++, 0, insArray[ i ] );
+    }
+  }
+
+}
+
+//
+
+function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
+{
+
+  _.assert( arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( dstArray ) );
+
+  if( arguments.length === 1 )
+  {
+    _.arrayRemoveDuplicates( dstArray );
+
+    for( let i = dstArray.length-1; i >= 0; --i )
+    if( _.longIs( dstArray[ i ] ) )
+    {
+      let insArray = dstArray[ i ];
+      dstArray.splice( i, 1 );
+      onLongOnce( insArray, i );
+    }
+    return dstArray;
+  }
+
+  let result = 0;
+
+  if( _.longIs( insArray ) )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      _.assert( insArray[ i ] !== undefined );
+      if( _.longIs( insArray[ i ] ) )
+      {
+        let c = _.arrayFlattenedDefinedOnce( dstArray, insArray[ i ], evaluator1, evaluator2 );
+        result += c;
+      }
+      else
+      {
+        let index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+        if( index === -1 )
+        {
+          dstArray.push( insArray[ i ] );
+          result += 1;
+        }
+      }
+    }
+  }
+  else if( insArray !== undefined )
+  {
+
+    let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
+    if( index === -1 )
+    {
+      dstArray.push( insArray );
+      result += 1;
+    }
+  }
+
+  return result;
+
+  /* */
+
+  function onLongOnce( insArray, insIndex )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      if( _.longIs( insArray[ i ] ) )
+      onLongOnce( insArray[ i ], insIndex )
+      else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
+      dstArray.splice( insIndex++, 0, insArray[ i ] );
+    }
+  }
+
+}
+
+//
+
+function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+
+  _.assert( arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( dstArray ) );
+
+  let oldLength = dstArray.length;
+  _.arrayRemoveDuplicates( dstArray );
+  let newLength = dstArray.length;
+  if( Config.debug )
+  _.assert( oldLength === newLength, 'Elements in dstArray must not be repeated' );
+
+
+  if( arguments.length === 1 )
+  {
+    for( let i = dstArray.length-1; i >= 0; --i )
+    if( _.longIs( dstArray[ i ] ) )
+    {
+      let insArray = dstArray[ i ];
+      dstArray.splice( i, 1 );
+      onLongOnce( insArray, i );
+    }
+    return dstArray;
+  }
+
+  let result = 0;
+
+  if( _.longIs( insArray ) )
+  {
+    for( let i = 0, len = insArray.length; i < len; i++ )
+    {
+      // _.assert( insArray[ i ] !== undefined );
+      if( insArray[ i ] === undefined )
+      {
+      }
+      else if( _.longIs( insArray[ i ] ) )
+      {
+        let c = _.arrayFlattenedDefinedOnceStrictly( dstArray, insArray[ i ], evaluator1, evaluator2 );
+        result += c;
+      }
+      else
+      {
+        let index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+        if( Config.debug )
+        _.assert( index === -1, 'Elements must not be repeated' );
+        if( index === -1 )
+        {
+          dstArray.push( insArray[ i ] );
+          result += 1;
+        }
+      }
+    }
+  }
+  else if( insArray !== undefined )
+  {
+
     let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
     if( Config.debug )
     _.assert( index === -1, 'Elements must not be repeated' );
@@ -5190,16 +5423,7 @@ function arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )
 // fields
 // --
 
-let unrollSymbol = Symbol.for( 'unroll' );
-
-/**
- * @property {Array} ArrayType=Array
- * @property {Number} accuracy=1e-7
- * @property {Number} accuracySqrt=1e-4
- * @property {Number} accuracySqr=1e-14
- * @name fLongFields
- * @memberof wTools
- */
+// let unrollSymbol = Symbol.for( 'unroll' );
 
 let Fields =
 {
@@ -5295,6 +5519,7 @@ let Routines =
 
   arrayMake,
   arrayFrom,
+  scalarAppend,
 
   // array sequential search
 
@@ -5422,6 +5647,23 @@ let Routines =
   arrayFlattened,
   arrayFlattenedOnce,
   arrayFlattenedOnceStrictly,
+
+  /*
+  qqq : review all arrayFlatten* routines and tests for them
+
+  src = [ undefined, undefined ]
+  dst = arrayFlattenDefined( src ) -> []
+  src === dst
+
+  */
+
+  arrayFlattenDefined,
+  arrayFlattenDefinedOnce,
+  arrayFlattenDefinedOnceStrictly,
+  arrayFlattenedDefined,
+  arrayFlattenedDefinedOnce,
+  arrayFlattenedDefinedOnceStrictly,
+
 
   // array replace
 

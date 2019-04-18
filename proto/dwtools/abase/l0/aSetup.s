@@ -1,6 +1,6 @@
 (function _aSetup_s_() {
 
-'use strict';
+'use strict'; 
 
 let _global = _global_;
 let _realGlobal = _global._realGlobal_

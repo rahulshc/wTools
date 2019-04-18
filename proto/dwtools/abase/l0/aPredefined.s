@@ -1,6 +1,6 @@
 ( function _aPredefined_s_() {
 
-'use strict';
+'use strict'; 
 
 /**
  * @file aPredefined.s.

@@ -1,6 +1,6 @@
 ( function _Field_s_() {
 
-'use strict';
+'use strict'; 
 
 let Self = _global_.wTools.field = _global_.wTools.field || Object.create( null );
 let _global = _global_;
