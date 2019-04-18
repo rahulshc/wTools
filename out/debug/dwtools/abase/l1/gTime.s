@@ -199,7 +199,7 @@ function timeOnce( delay, onBegin, onEnd )
 
 /**
  * Routine creates timer that executes provided routine( onReady ) after some amout of time( delay ).
- * Returns wConsequence instance. @see {@link module:Tools/base/mixin/Consequence.wConsequence }
+ * Returns wConsequence instance. {@link module:Tools/base/Consequence.wConsequence wConsequence}
  *
  * If ( onReady ) is not provided, timeOut returns consequence that gives empty message after ( delay ).
  * If ( onReady ) is a routine, timeOut returns consequence that gives message with value returned or error throwed by ( onReady ).

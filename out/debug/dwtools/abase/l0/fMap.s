@@ -4277,7 +4277,7 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 
 /**
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
@@ -4355,7 +4355,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
 
 /**
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
- * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2.{@link wTools.err See err}
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
@@ -4437,7 +4437,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
 
 /**
  * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks all enumerable properties.
- * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2.{@link wTools.err See err}
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -4508,7 +4508,7 @@ function sureMapHasAll( srcMap, all, msg )
 
 /**
  * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
- * Works only in Config.debug mode. Uses StackTrace level 2. @see wTools.err
+ * Works only in Config.debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -4578,7 +4578,7 @@ function sureMapOwnAll( srcMap, all, msg )
 
 /**
  * Checks if map passed by argument {-srcMap-} has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -4672,7 +4672,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
 //
 
 /**
- * Checks if map passed by argument {-srcMap-} not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * Checks if map passed by argument {-srcMap-} not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found undefined property it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed after first argument.
  *
@@ -4759,7 +4759,7 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
 
 /**
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
@@ -4809,7 +4809,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
 
 /**
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
- * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2.{@link wTools.err See err}
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument.
  *
@@ -4866,7 +4866,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
 
 /**
  * Checks if map passed by argument {-srcMap-} has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
- * Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -4930,7 +4930,7 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
 
 /**
  * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks all enumerable properties.
- * Works only in debug mode. Uses StackTrace level 2.@see wTools.err
+ * Works only in debug mode. Uses StackTrace level 2.{@link wTools.err See err}
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -4985,7 +4985,7 @@ function assertMapHasAll( srcMap, all, msg )
 
 /**
  * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
- * Works only in Config.debug mode. Uses StackTrace level 2. @see wTools.err
+ * Works only in Config.debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed as last argument( msg ).
  *
@@ -5038,7 +5038,7 @@ function assertMapOwnAll( srcMap, all, msg )
 //
 
 /**
- * Checks if map passed by argument {-srcMap-} not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. @see wTools.err
+ * Checks if map passed by argument {-srcMap-} not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found undefined property it generates and throws exception, otherwise returns without exception.
  * Also generates error using message passed after first argument.
  *

@@ -301,6 +301,30 @@ _.assert( !_.withArray );
 
 // debugger;
 
+/**
+ * @summary Array namespace
+ * @namespace Array
+ * @memberof wTools
+ */
+
+/**
+ * @summary Float32Array namespace
+ * @namespace Float32
+ * @memberof wTools
+ */
+
+ /**
+ * @summary Int32Array namespace
+ * @namespace Int32
+ * @memberof wTools
+ */
+
+ /**
+ * @summary Uint32Array namespace
+ * @namespace Wrd32
+ * @memberof wTools
+ */
+
 let ArrayNameSpaces = Object.create( null );
 
 _._arrayNameSpaceApplyTo = _arrayNameSpaceApplyTo;

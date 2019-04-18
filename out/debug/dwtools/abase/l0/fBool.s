@@ -15,12 +15,26 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 // bool
 // --
 
+/**
+ * Returns true if entity ( src ) is a Boolean.
+ * @function boolIs
+ * @param {} src - entity to check
+ * @memberof wTools
+ */
+
 function boolIs( src )
 {
   return src === true || src === false;
 }
 
 //
+
+/**
+ * Returns true if entity ( src ) is a Boolean or Number.
+ * @function boolLike
+ * @param {} src - entity to check
+ * @memberof wTools
+ */
 
 function boolLike( src )
 {
@@ -47,6 +61,16 @@ function boolLike( src )
 
 //
 
+/**
+ * @summary Returns copy of array( src ) with only boolean elements.
+ * @description
+ * Returns false if ( src ) is not ArrayLike object.
+ * @function boolsAre
+ * @param {Array} src - array of entities
+ * @throws {Error} If more or less than one argument is provided.
+ * @memberof wTools
+ */
+
 function boolsAre( src )
 {
   _.assert( arguments.length === 1 );
@@ -56,6 +80,16 @@ function boolsAre( src )
 }
 
 //
+
+/**
+ * @summary Checks if all elements of array( src ) are booleans.
+ * @description
+ * * If ( src ) is not an array, routine checks if ( src ) is a boolean.
+ * @function boolsAllAre
+ * @param {Array} src - array of entities
+ * @throws {Error} If more or less than one argument is provided.
+ * @memberof wTools
+ */
 
 function boolsAllAre( src )
 {
@@ -67,6 +101,16 @@ function boolsAllAre( src )
 
 //
 
+/**
+ * @summary Checks if at least one element from array( src ) is a boolean.
+ * @description
+ * * If ( src ) is not an array, routine checks if ( src ) is a boolean.
+ * @function boolsAnyAre
+ * @param {Array} src - array of entities
+ * @throws {Error} If more or less than one argument is provided.
+ * @memberof wTools
+ */
+
 function boolsAnyAre( src )
 {
   _.assert( arguments.length === 1 );
@@ -76,6 +120,16 @@ function boolsAnyAre( src )
 }
 
 //
+
+/**
+ * @summary Checks if array( src ) doesn't have booleans.
+ * @description
+ * * If ( src ) is not an array, routine checks if ( src ) is not a boolean.
+ * @function boolsAnyAre
+ * @param {Array} src - array of entities
+ * @throws {Error} If more or less than one argument is provided.
+ * @memberof wTools
+ */
 
 function boolsNoneAre( src )
 {
