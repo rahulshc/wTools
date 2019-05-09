@@ -115,6 +115,73 @@ path:
     path: debug/dwtools/abase/Layer2.s
   npm.files:
     path: debug
+  exportedDir.doc.export:
+    path: ./doc
+    criterion:
+      content: doc
+      export: 1
+  exportedFiles.doc.export:
+    path:
+      - doc
+      - doc/.DS_Store
+      - doc/ArrayAppend.md
+      - doc/ArrayFamily.md
+      - doc/ArrayRoutines.md
+      - doc/CharCodes.md
+      - doc/Core-Level.xml
+      - doc/junior.introduction.ua.md
+      - doc/Types.md
+      - doc/img
+      - doc/img/1.png
+      - doc/img/2.1.png
+      - doc/img/2.2.png
+      - doc/img/3.png
+      - doc/img/5.png
+      - doc/img/6.png
+      - doc/reference
+      - doc/reference/component_NameTools.s.html
+      - doc/reference/component_StringTools.s.html
+      - doc/reference/global.html
+      - doc/reference/index.html
+      - doc/reference/wTools.html
+      - doc/reference/wTools.s.html
+      - doc/reference/fonts
+      - doc/reference/fonts/OpenSans-Bold-webfont.eot
+      - doc/reference/fonts/OpenSans-Bold-webfont.svg
+      - doc/reference/fonts/OpenSans-Bold-webfont.woff
+      - doc/reference/fonts/OpenSans-BoldItalic-webfont.eot
+      - doc/reference/fonts/OpenSans-BoldItalic-webfont.svg
+      - doc/reference/fonts/OpenSans-BoldItalic-webfont.woff
+      - doc/reference/fonts/OpenSans-Italic-webfont.eot
+      - doc/reference/fonts/OpenSans-Italic-webfont.svg
+      - doc/reference/fonts/OpenSans-Italic-webfont.woff
+      - doc/reference/fonts/OpenSans-Light-webfont.eot
+      - doc/reference/fonts/OpenSans-Light-webfont.svg
+      - doc/reference/fonts/OpenSans-Light-webfont.woff
+      - doc/reference/fonts/OpenSans-LightItalic-webfont.eot
+      - doc/reference/fonts/OpenSans-LightItalic-webfont.svg
+      - doc/reference/fonts/OpenSans-LightItalic-webfont.woff
+      - doc/reference/fonts/OpenSans-Regular-webfont.eot
+      - doc/reference/fonts/OpenSans-Regular-webfont.svg
+      - doc/reference/fonts/OpenSans-Regular-webfont.woff
+      - doc/reference/img
+      - doc/reference/scripts
+      - doc/reference/scripts/linenumber.js
+      - doc/reference/scripts/prettify
+      - doc/reference/scripts/prettify/Apache-License-2.0.txt
+      - doc/reference/scripts/prettify/lang-css.js
+      - doc/reference/scripts/prettify/prettify.js
+      - doc/reference/styles
+      - doc/reference/styles/jsdoc-default.css
+      - doc/reference/styles/prettify-jsdoc.css
+      - doc/reference/styles/prettify-tomorrow.css
+    criterion:
+      content: doc
+      export: 1
+  original.willfiles:
+    path:
+      - .im.will.yml
+      - .ex.will.yml
   exportedDir.proto.export:
     path: ./proto
     criterion:
@@ -182,73 +249,6 @@ path:
       - proto/dwtools/atop
     criterion:
       content: proto
-      export: 1
-  original.willfiles:
-    path:
-      - .im.will.yml
-      - .ex.will.yml
-  exportedDir.doc.export:
-    path: ./doc
-    criterion:
-      content: doc
-      export: 1
-  exportedFiles.doc.export:
-    path:
-      - doc
-      - doc/.DS_Store
-      - doc/ArrayAppend.md
-      - doc/ArrayFamily.md
-      - doc/ArrayRoutines.md
-      - doc/CharCodes.md
-      - doc/Core-Level.xml
-      - doc/junior.introduction.ua.md
-      - doc/Types.md
-      - doc/img
-      - doc/img/1.png
-      - doc/img/2.1.png
-      - doc/img/2.2.png
-      - doc/img/3.png
-      - doc/img/5.png
-      - doc/img/6.png
-      - doc/reference
-      - doc/reference/component_NameTools.s.html
-      - doc/reference/component_StringTools.s.html
-      - doc/reference/global.html
-      - doc/reference/index.html
-      - doc/reference/wTools.html
-      - doc/reference/wTools.s.html
-      - doc/reference/fonts
-      - doc/reference/fonts/OpenSans-Bold-webfont.eot
-      - doc/reference/fonts/OpenSans-Bold-webfont.svg
-      - doc/reference/fonts/OpenSans-Bold-webfont.woff
-      - doc/reference/fonts/OpenSans-BoldItalic-webfont.eot
-      - doc/reference/fonts/OpenSans-BoldItalic-webfont.svg
-      - doc/reference/fonts/OpenSans-BoldItalic-webfont.woff
-      - doc/reference/fonts/OpenSans-Italic-webfont.eot
-      - doc/reference/fonts/OpenSans-Italic-webfont.svg
-      - doc/reference/fonts/OpenSans-Italic-webfont.woff
-      - doc/reference/fonts/OpenSans-Light-webfont.eot
-      - doc/reference/fonts/OpenSans-Light-webfont.svg
-      - doc/reference/fonts/OpenSans-Light-webfont.woff
-      - doc/reference/fonts/OpenSans-LightItalic-webfont.eot
-      - doc/reference/fonts/OpenSans-LightItalic-webfont.svg
-      - doc/reference/fonts/OpenSans-LightItalic-webfont.woff
-      - doc/reference/fonts/OpenSans-Regular-webfont.eot
-      - doc/reference/fonts/OpenSans-Regular-webfont.svg
-      - doc/reference/fonts/OpenSans-Regular-webfont.woff
-      - doc/reference/img
-      - doc/reference/scripts
-      - doc/reference/scripts/linenumber.js
-      - doc/reference/scripts/prettify
-      - doc/reference/scripts/prettify/Apache-License-2.0.txt
-      - doc/reference/scripts/prettify/lang-css.js
-      - doc/reference/scripts/prettify/prettify.js
-      - doc/reference/styles
-      - doc/reference/styles/jsdoc-default.css
-      - doc/reference/styles/prettify-jsdoc.css
-      - doc/reference/styles/prettify-tomorrow.css
-    criterion:
-      content: doc
       export: 1
   module.willfiles:
     path: out/wTools.out.will.yml
@@ -502,25 +502,6 @@ reflector:
     mandatory: 1
     inherit:
       - predefined.*
-  exported.proto.export:
-    src:
-      filePath:
-        .: null
-      prefixPath: proto
-    criterion:
-      content: proto
-      export: 1
-    mandatory: 1
-  exportedFiles.proto.export:
-    src:
-      filePath: 'path::exportedFiles.proto.export'
-      basePath: .
-      prefixPath: 'path::exportedDir.proto.export'
-    criterion:
-      content: proto
-      export: 1
-    recursive: 0
-    mandatory: 1
   exported.doc.export:
     src:
       filePath:
@@ -537,6 +518,25 @@ reflector:
       prefixPath: 'path::exportedDir.doc.export'
     criterion:
       content: doc
+      export: 1
+    recursive: 0
+    mandatory: 1
+  exported.proto.export:
+    src:
+      filePath:
+        .: null
+      prefixPath: proto
+    criterion:
+      content: proto
+      export: 1
+    mandatory: 1
+  exportedFiles.proto.export:
+    src:
+      filePath: 'path::exportedFiles.proto.export'
+      basePath: .
+      prefixPath: 'path::exportedDir.proto.export'
+    criterion:
+      content: proto
       export: 1
     recursive: 0
     mandatory: 1
@@ -906,20 +906,8 @@ build:
       default: 1
       export: 1
     steps:
-      - 'build::npm'
       - 'build::proto.export'
-      - 'build::doc.export'
 exported:
-  doc.export:
-    version: 0.8.425
-    criterion:
-      content: doc
-      export: 1
-    exportedReflector: 'reflector::exported.doc.export'
-    exportedFilesReflector: 'reflector::exportedFiles.doc.export'
-    exportedDirPath: 'path::exportedDir.doc.export'
-    exportedFilesPath: 'path::exportedFiles.doc.export'
-    originalWillFilesPath: 'path::original.willfiles'
   proto.export:
     version: 0.8.425
     criterion:
@@ -929,5 +917,15 @@ exported:
     exportedFilesReflector: 'reflector::exportedFiles.proto.export'
     exportedDirPath: 'path::exportedDir.proto.export'
     exportedFilesPath: 'path::exportedFiles.proto.export'
+    originalWillFilesPath: 'path::original.willfiles'
+  doc.export:
+    version: 0.8.425
+    criterion:
+      content: doc
+      export: 1
+    exportedReflector: 'reflector::exported.doc.export'
+    exportedFilesReflector: 'reflector::exportedFiles.doc.export'
+    exportedDirPath: 'path::exportedDir.doc.export'
+    exportedFilesPath: 'path::exportedFiles.doc.export'
     originalWillFilesPath: 'path::original.willfiles'
 format: willfile-1.0.0
