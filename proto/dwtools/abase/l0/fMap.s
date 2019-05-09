@@ -1,6 +1,6 @@
 ( function _fMap_s_() {
 
-'use strict'; 
+'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
@@ -127,6 +127,15 @@ function mapIs( src )
   _.assert( proto === null || !!proto, 'unexpected' );
 
   return false;
+}
+
+//
+
+function mapIsEmpty( src )
+{
+  if( !_.mapIs( src ) )
+  return false;
+  return Object.keys( src ).length === 0;
 }
 
 //
@@ -5103,6 +5112,7 @@ let Routines =
   objectLikeOrRoutine,
 
   mapIs,
+  mapIsEmpty,
   mapIsPure,
   mapIsPopulated,
   mapLike,

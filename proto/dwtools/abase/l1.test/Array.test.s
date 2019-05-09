@@ -13268,7 +13268,9 @@ function arrayFlatten( test )
 
   //
 
-  test.open( 'single argument' );
+  test.open( 'another criteria' );
+
+  test.open( 'single argument' ); //
 
   var got = _.arrayFlatten([ 0,1,2,3 ])
   var expected = [ 0,1,2,3 ];
@@ -13294,7 +13296,37 @@ function arrayFlatten( test )
   var expected = [ 1,1,3,3,5,5 ];
   test.identical( got, expected );
 
-  test.close( 'single argument' );
+  test.close( 'single argument' ); //
+
+  test.open( 'two arguments' ); //
+
+  var got = _.arrayFlatten([ 0,1,2,3 ])
+  var expected = [ 0,1,2,3 ];
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ 0,1,0,1 ])
+  var expected = [ 0,1,0,1 ];
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ [ 0,0 ],[ 1,1 ] ]);
+  var expected = [ 0,0,1,1 ];
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ [ 0 ],0,1,[ 0,1 ] ]);
+  var expected = [ 0,0,1,0,1 ];
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten([ [ [ 0 ] ] ]);
+  var expected = [ 0 ];
+  test.identical( got, expected );
+
+  var got = _.arrayFlatten( [ 1,1,3,3, [ 5,5 ] ] );
+  var expected = [ 1,1,3,3,5,5 ];
+  test.identical( got, expected );
+
+  test.close( 'two arguments' ); //
+
+  test.close( 'another criteria' );
 
   //
 
@@ -19034,6 +19066,8 @@ function arraySetContainAny( test )
 function arraySetIdentical( test )
 {
 
+  console.log( 'xxx' );
+
   test.case = '2 arguments, empty';
   var a = [];
   var b = [];
@@ -19196,7 +19230,7 @@ var Self =
   name : 'Tools/base/l1/Array',
   silencing : 1,
   enabled : 1,
-  // verbosity : 7,
+  // verbosity : 9,
   // routine : 'bufferRelen',
 
   tests :

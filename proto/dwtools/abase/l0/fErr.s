@@ -1,6 +1,6 @@
 ( function _fErr_s_() {
 
-'use strict'; 
+'use strict';
 
 /*
 
@@ -417,15 +417,15 @@ function _err( o )
   }
   else
   {
-    message += ' * Message\n' + originalMessage + '\n';
+    message += ' = Message\n' + originalMessage + '\n';
     if( o.condensingStack )
-    message += '\n * Condensed calls stack\n' + stackCondensed + '';
+    message += '\n = Condensed calls stack\n' + stackCondensed + '';
     else
-    message += '\n * Functions stack\n' + stack + '';
-    message += '\n * Catches stack\n' + catches + '\n';
+    message += '\n = Functions stack\n' + stack + '';
+    message += '\n = Catches stack\n' + catches + '\n';
 
     if( sourceCode )
-    message += ' * Source code from ' + sourceCode + '\n';
+    message += ' = Source code from ' + sourceCode + '\n';
 
   }
 

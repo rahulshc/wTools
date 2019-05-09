@@ -1384,6 +1384,29 @@ function scalarAppend( dst, src )
   return dst;
 }
 
+//
+
+function scalarFrom( src )
+{
+  if( _.longIs( src ) && src.length === 1 )
+  return src[ 0 ];
+  return src;
+}
+
+//
+
+function scalarFromOrNull( src )
+{
+  if( _.longIs( src ) )
+  {
+    if( src.length === 1 )
+    return src[ 0 ];
+    else if( src.length === 0 )
+    return null;
+  }
+  return src;
+}
+
 // --
 // array sequential search
 // --
@@ -5520,6 +5543,8 @@ let Routines =
   arrayMake,
   arrayFrom,
   scalarAppend,
+  scalarFrom,
+  scalarFromOrNull,
 
   // array sequential search
 
