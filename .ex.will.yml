@@ -56,21 +56,21 @@ path :
 step :
 
   proto.export :
-    inherit : predefined.export
+    inherit : module.export
     export : path::proto
     tar : 0
     criterion :
       content : 'proto'
 
   doc.export :
-    inherit : predefined.export
+    inherit : module.export
     export : path::doc
     tar : 0
     criterion :
       content : 'doc'
 
   npm.export :
-    inherit : predefined.export
+    inherit : module.export
     export : out.npm
     tar : 0
     criterion :

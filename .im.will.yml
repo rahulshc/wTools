@@ -78,7 +78,7 @@ reflector :
 
   transpile.proto.raw :
     inherit : predefined.*
-    step : predefined.transpile
+    step : files.transpile
     criterion :
       raw : raw
       debug : release
@@ -88,7 +88,7 @@ reflector :
 
   transpile.proto.no.tests.compiled :
     inherit : predefined.*
-    step : predefined.transpile
+    step : files.transpile
     criterion :
       tests : 'no.tests'
       raw : compiled
@@ -100,7 +100,7 @@ reflector :
       path::proto : '{path::out.*=1}/Main.s'
 
   transpile.proto.only.tests.compiled :
-    step : predefined.transpile
+    step : files.transpile
     inherit : predefined.*
     criterion :
       tests : 'only.tests'

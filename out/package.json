@@ -1,0 +1,27 @@
+{
+  "name" : "wTools", 
+  "version" : "0.8.425", 
+  "enabled" : 1, 
+  "keywords" : [ "base", "basic", "core", "platform", "tools", "wTools", "wBase", "generic" ], 
+  "license" : "MIT", 
+  "engine" : "nodejs >= 6.0.0", 
+  "author" : "Kostiantyn Wandalen <wanalen@willbe.so>", 
+  "contributors" : 
+  [
+    { "name" : "Kostiantyn Wandalen", "email" : "wanalen@willbe.so" }, 
+    { "name" : "Volodymyr M.", "email" : "volodymyr.migdal@gmail.com" }, 
+    { "name" : "Ihor O.", "email" : "iostashvxi@gmail.com" }
+  ], 
+  "dependencies" : [], 
+  "devDependencies" : 
+  {
+    "wFiles" : "", 
+    "wcloner" : "", 
+    "wstringer" : "", 
+    "wTesting" : ""
+  }, 
+  "repository" : "git+https:///github.com/Wandalen/wTools.git", 
+  "bugs" : "https:///github.com/Wandalen/wTools/issues", 
+  "entry" : "debug/dwtools/abase/Layer2.s", 
+  "files" : "debug"
+}
