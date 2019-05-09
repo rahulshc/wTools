@@ -107,6 +107,6 @@ build :
       default : 1
       export : 1
     steps :
-      - build::npm
+      # - build::npm
       - build::proto.export
-      - build::doc.export
+      # - build::doc.export
