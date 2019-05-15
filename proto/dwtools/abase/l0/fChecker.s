@@ -452,19 +452,33 @@ function processIs( src )
 
 //
 
+let Inspector = null;
+
 function processIsDebugged()
 {
   _.assert( arguments.length === 0 );
-
+  
   if( typeof process === 'undefined' )
   return false;
+  
+  if( Inspector === null )
+  try
+  { 
+    Inspector = require( 'inspector' ); 
+  } 
+  catch( err )
+  {
+    Inspector = false;
+  }
+  
+  if( Inspector )
+  return _.strIs( Inspector.url() );
 
   if( !process.execArgv.length )
   return false;
-
-  let execArgv = process.execArgv.join();
-  return _.strHas( execArgv, '--inspect' );
-
+  
+  let execArgvString = process.execArgv.join();
+  return _.strHasAny( execArgvString, [ '--inspect', '--inspect-brk', '--debug-brk' ] );
 }
 
 //
