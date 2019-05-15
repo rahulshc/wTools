@@ -1,6 +1,6 @@
 ( function _fChecker_s_() {
 
-'use strict'; 
+'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
@@ -499,45 +499,45 @@ let Routines =
 
   /* qqq : requires good tests */
 
-  nothingIs : nothingIs,
-  definedIs : definedIs,
-  primitiveIs : primitiveIs,
-  containerIs : containerIs,
-  containerLike : containerLike,
+  nothingIs,
+  definedIs,
+  primitiveIs,
+  containerIs,
+  containerLike,
 
-  symbolIs : symbolIs,
-  bigIntIs : bigIntIs,
+  symbolIs,
+  bigIntIs,
 
-  vectorIs : vectorIs,
-  constructorIsVector : constructorIsVector,
-  spaceIs : spaceIs,
-  constructorIsSpace : constructorIsSpace,
+  vectorIs,
+  constructorIsVector,
+  spaceIs,
+  constructorIsSpace,
 
-  consequenceIs : consequenceIs,
-  consequenceLike : consequenceLike,
-  promiseIs : promiseIs,
-  promiseLike : promiseLike,
+  consequenceIs,
+  consequenceLike,
+  promiseIs,
+  promiseLike,
 
-  typeOf : typeOf,
-  prototypeOf : prototypeOf,
-  prototypeHas : prototypeHas,
-  prototypeIs : prototypeIs,
-  prototypeIsStandard : prototypeIsStandard,
-  constructorIs : constructorIs,
-  constructorIsStandard : constructorIsStandard,
-  instanceIs : instanceIs,
-  instanceIsStandard : instanceIsStandard,
-  instanceLike : instanceLike,
+  typeOf,
+  prototypeOf,
+  prototypeHas,
+  prototypeIs,
+  prototypeIsStandard,
+  constructorIs,
+  constructorIsStandard,
+  instanceIs,
+  instanceIsStandard,
+  instanceLike,
 
-  workerIs : workerIs,
-  streamIs : streamIs,
-  consoleIs : consoleIs,
-  printerLike : printerLike,
-  printerIs : printerIs,
-  loggerIs : loggerIs,
-  processIs : processIs,
-  processIsDebugged : processIsDebugged,
-  definitionIs : definitionIs,
+  workerIs,
+  streamIs,
+  consoleIs,
+  printerLike,
+  printerIs,
+  loggerIs,
+  processIs,
+  processIsDebugged,
+  definitionIs,
 
 }
 
@@ -550,9 +550,9 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
