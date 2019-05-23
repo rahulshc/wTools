@@ -2110,21 +2110,21 @@ function arrayMakeRandom( test )
 
 //
 
-function arrayFromNumber( test )
+function scalarToVector( test )
 {
 
   test.case = 'nothing';
-  var got = _.arrayFromNumber( [  ], 0 );
+  var got = _.scalarToVector( [  ], 0 );
   var expected = [  ];
   test.identical( got, expected );
 
   test.case = 'static array';
-  var got = _.arrayFromNumber( 3, 7 );
+  var got = _.scalarToVector( 3, 7 );
   var expected = [ 3, 3, 3, 3, 3, 3, 3 ];
   test.identical( got, expected );
 
   test.case = 'original array';
-  var got = _.arrayFromNumber( [ 3, 7, 13 ], 3 );
+  var got = _.scalarToVector( [ 3, 7, 13 ], 3 );
   var expected = [ 3, 7, 13 ];
   test.identical( got, expected );
 
@@ -2136,37 +2136,37 @@ function arrayFromNumber( test )
   test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.arrayFromNumber();
+    _.scalarToVector();
   });
 
   test.case = 'not enough arguments';
   test.shouldThrowError( function()
   {
-    _.arrayFromNumber( [ 1, 2, 3 ] );
+    _.scalarToVector( [ 1, 2, 3 ] );
   });
 
   test.case = 'extra argument';
   test.shouldThrowError( function()
   {
-    _.arrayFromNumber( [ 1, 2, 3 ], 3, 'redundant argument' );
+    _.scalarToVector( [ 1, 2, 3 ], 3, 'redundant argument' );
   });
 
   test.case = 'wrong type of arguments';
   test.shouldThrowError( function()
   {
-    _.arrayFromNumber('wrong argument', 'wrong argument');
+    _.scalarToVector('wrong argument', 'wrong argument');
   });
 
   test.case = 'second argument too much';
   test.shouldThrowError( function()
   {
-    _.arrayFromNumber( [ 1, 2, 3 ], 4 );
+    _.scalarToVector( [ 1, 2, 3 ], 4 );
   });
 
   test.case = 'first three arguments are not wrapped into array';
   test.shouldThrowError( function()
   {
-    _.arrayFromNumber( 1, 2, 3, 3 );
+    _.scalarToVector( 1, 2, 3, 3 );
   });
 
 };
@@ -19271,7 +19271,7 @@ var Self =
     scalarAppend : scalarAppend,
 
     arrayMakeRandom : arrayMakeRandom,
-    arrayFromNumber : arrayFromNumber,
+    scalarToVector : scalarToVector,
     arrayFromRange : arrayFromRange,
     arrayAs : arrayAs,
 

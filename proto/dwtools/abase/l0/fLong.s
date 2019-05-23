@@ -1288,34 +1288,8 @@ function arrayNone( src )
 }
 
 // --
-// array producer
+// scalar
 // --
-
-function arrayMake( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( _.numberIs( src ) || _.longIs( src ) );
-
-  if( _.numberIs( src ) )
-  return Array( src );
-
-  if( src.length === 1 )
-  return [ src[ 0 ] ];
-  else
-  return Array.apply( Array, src );
-}
-
-//
-
-function arrayFrom( src )
-{
-  _.assert( arguments.length === 1 );
-  if( _.arrayIs( src ) && !_.unrollIs( src ) )
-  return src;
-  return _.arrayMake.call( _, src );
-}
-
-//
 
 /**
  * Produce a single array from all arguments if cant return single argument as a scalar.
@@ -1386,6 +1360,60 @@ function scalarAppend( dst, src )
 
 //
 
+/**
+ * The scalarToVector() routine returns a new array
+ * which containing the static elements only type of Number.
+ *
+ * It takes two arguments (dst) and (length)
+ * checks if the (dst) is a Number, If the (length) is greater than or equal to zero.
+ * If true, it returns the new array of static (dst) numbers.
+ * Otherwise, if the first argument (dst) is an Array,
+ * and its (dst.length) is equal to the (length),
+ * it returns the original (dst) Array.
+ * Otherwise, it throws an Error.
+ *
+ * @param { ( Number | Array ) } dst - A number or an Array.
+ * @param { Number } length - The length of the new array.
+ *
+ * @example
+ * // returns [ 3, 3, 3, 3, 3, 3, 3 ]
+ * let arr = _.scalarToVector( 3, 7 );
+ *
+ * @example
+ * // returns [ 3, 7, 13 ]
+ * let arr = _.scalarToVector( [ 3, 7, 13 ], 3 );
+ *
+ * @returns { Number[] | Array } - Returns the new array of static numbers or the original array.
+ * @function scalarToVector
+ * @throws { Error } If missed argument, or got less or more than two arguments.
+ * @throws { Error } If type of the first argument is not a number or array.
+ * @throws { Error } If the second argument is less than 0.
+ * @throws { Error } If (dst.length) is not equal to the (length).
+ * @memberof wTools
+ */
+
+// function arrayFromNumber( dst, length )
+function scalarToVector( dst, length )
+{
+
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
+  _.assert( length >= 0 );
+
+  if( _.numberIs( dst ) )
+  {
+    dst = _.arrayFillTimes( [], length, dst );
+  }
+  else
+  {
+    _.assert( dst.length === length, () => 'Expects array of length ' + length + ' but got ' + dst );
+  }
+
+  return dst;
+}
+
+//
+
 function scalarFrom( src )
 {
   if( _.longIs( src ) && src.length === 1 )
@@ -1405,6 +1433,69 @@ function scalarFromOrNull( src )
     return null;
   }
   return src;
+}
+
+// --
+// array producer
+// --
+
+function arrayMake( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.numberIs( src ) || _.longIs( src ) );
+
+  if( _.numberIs( src ) )
+  return Array( src );
+
+  if( src.length === 1 )
+  return [ src[ 0 ] ];
+  else
+  return Array.apply( Array, src );
+}
+
+//
+
+function arrayFrom( src )
+{
+  _.assert( arguments.length === 1 );
+  if( _.arrayIs( src ) && !_.unrollIs( src ) )
+  return src;
+  return _.arrayMake.call( _, src );
+}
+
+//
+
+/**
+ * The arrayAs() routine copies passed argument to the array.
+ *
+ * @param { * } src - The source value.
+ *
+ * @example
+ * // returns [ false ]
+ * let arr = _.arrayAs( false );
+ *
+ * @example
+ * // returns [ { a : 1, b : 2 } ]
+ * let arr = _.arrayAs( { a : 1, b : 2 } );
+ *
+ * @returns { Array } - If passed null or undefined than return the empty array. If passed an array then return it.
+ * Otherwise return an array which contains the element from argument.
+ * @function arrayAs
+ * @memberof wTools
+ */
+
+function arrayAs( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( src !== undefined );
+
+  if( src === null )
+  return [];
+  else if( _.arrayLike( src ) )
+  return src;
+  else
+  return [ src ];
+
 }
 
 // --
@@ -5538,13 +5629,18 @@ let Routines =
   arrayAny,
   arrayNone,
 
+  // scalar
+
+  scalarAppend,
+  scalarToVector,
+  scalarFrom,
+  scalarFromOrNull,
+
   // array producer
 
   arrayMake,
   arrayFrom,
-  scalarAppend,
-  scalarFrom,
-  scalarFromOrNull,
+  arrayAs,
 
   // array sequential search
 
