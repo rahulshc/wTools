@@ -730,32 +730,27 @@ function error_functor( name, onMake )
       debugger;
       let arg = _.arrayAppendArrays( [], [ prepend, arguments ] );
       return args;
-      // return _.err.apply( _, arguments );
     }
   }
   else if( !onMake )
   onMake = function onErrorMake()
   {
     return arguments;
-    // return _.err.apply( _, arguments );
   }
 
   let Error =
   {
     [ name ] : function()
     {
-      // console.log( name );
-      // debugger;
 
       if( !( this instanceof ErrorConstructor ) )
       {
         let err1 = new ErrorConstructor();
         let args1 = onMake.apply( err1, arguments );
         _.assert( _.arrayLike( args1 ) );
-        let args2 = _.arrayAppendArrays( [], [ args1, [ ( arguments.length ? '\n' : '' ), err1 ] ] );
+        // let args2 = _.arrayAppendArrays( [], [ args1, [ ( arguments.length ? '\n' : '' ), err1 ] ] );
+        let args2 = _.arrayAppendArrays( [], [ [ err1, ( arguments.length ? '\n' : '' ) ], args1 ] );
         let err2 = _._err({ args : args2, level : 3 });
-        // let err2 = _.err.apply( _, args2 );
-        // let err = _._err({ args : [ o.err ], level : _.numberIs( o.level ) ? o.level+1 : o.level });
 
         _.assert( err1 === err2 );
         _.assert( err2 instanceof _global.Error );
@@ -766,24 +761,11 @@ function error_functor( name, onMake )
       }
       else
       {
-        // debugger;
-        // let r = Error.call( this );
-        // debugger;
         _.assert( arguments.length === 0 );
         return this;
       }
     }
   }
-
-  // let wrap =
-  // {
-  //   [ name ] : function()
-  //   {
-  //     console.log( name );
-  //     debugger;
-  //     return act.apply( this, arguments );
-  //   }
-  // }
 
   let ErrorConstructor = Error[ name ];
 
@@ -794,29 +776,6 @@ function error_functor( name, onMake )
   ErrorConstructor.constructor = ErrorConstructor;
 
   return ErrorConstructor;
-
-  /* */
-
-  // function act()
-  // {
-  //
-  //   if( !( this instanceof Error1 ) )
-  //   {
-  //     let err1 = new Error1();
-  //     let args = _.arrayAppendArrays( [], [ arguments, [ ( arguments.length ? '\n' : '' ), err1 ] ] );
-  //     let err2 = onMake.apply( this, args );
-  //
-  //     _.assert( err2 instanceof Error );
-  //     _.assert( err2 instanceof Error1 );
-  //     _.assert( !!err2.stack );
-  //
-  //     return err2;
-  //   }
-  //
-  //   _.assert( arguments.length === 0 );
-  //   return this;
-  // }
-
 }
 
 //
