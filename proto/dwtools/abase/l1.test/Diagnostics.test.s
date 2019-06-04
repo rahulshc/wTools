@@ -200,6 +200,162 @@ function errLog( test )
 }
 
 //
+    
+function surer( test )
+{    
+  test.open( 'standard input' );
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var otherMap = { 'd' : 13 };
+  var msg = function(){ return srcMap.a + screenMaps.b };
+  
+  test.case = 'check sureMapHasExactly';
+  test.identical( _.sureMapHasExactly( srcMap, screenMaps, msg ), true );
+    
+  test.case = 'check sureMapOwnExactly';
+  test.identical( _.sureMapHasExactly( srcMap, screenMaps, msg ), true );
+    
+  test.case = 'check sureMapOwnExactly';
+  test.identical( _.sureMapHasOnly( srcMap, screenMaps, msg ), true );
+    
+  test.case = 'check sureMapOwnOnly';
+  test.identical( _.sureMapOwnOnly( srcMap, screenMaps, msg ), true );
+    
+  test.case = 'check sureMapHasAll';
+  test.identical( _.sureMapHasAll( srcMap, screenMaps, 'msg' ), true );
+
+  test.case = 'check sureMapOwnAll';
+  test.identical( _.sureMapOwnAll( srcMap, screenMaps, 'msg' ), true );
+    
+  test.case = 'check sureMapHasNone';
+  test.identical( _.sureMapHasNone( srcMap, otherMap, msg ), true );
+    
+  test.case = 'check sureMapOwnNone';
+  test.identical( _.sureMapOwnNone( srcMap, otherMap, 'msg' ), true );
+    
+  test.case = 'check sureMapHasNoUndefine';
+  test.identical( _.sureMapHasNoUndefine( srcMap, msg ), true );
+    
+  test.close( 'standard input' );
+    
+  test.open( 'failure input' );
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var otherMap = { 'd' : undefined };
+  var msg = function(){ return srcMap.a + screenMaps.b };
+  
+  test.case = 'check error message sureMapHasExactly';
+    try
+    {
+      _.sureMapHasExactly( srcMap, screenMaps, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "d"' ), true );    
+    
+  test.case = 'check error message sureMapOwnExactly';
+    try
+    {
+      _.sureMapOwnExactly( srcMap, screenMaps, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "d"' ), true );    
+    
+  test.case = 'check error message sureMapHasOnly';
+    try
+    {
+      _.sureMapHasOnly( srcMap, screenMaps, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "d"' ), true );
+    
+  test.case = 'check error message sureMapOwnOnly';
+    try
+    {
+      _.sureMapOwnOnly( srcMap, screenMaps, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "d"' ), true );
+    
+  test.case = 'check error message sureMapHasAll';
+    try
+    {
+      _.sureMapHasAll( srcMap, screenMaps, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "name"' ), true );
+
+  test.case = 'check sureMapOwnAll';
+    try
+    {
+      _.sureMapOwnAll( srcMap, screenMaps, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "name"' ), true );
+   
+  test.case = 'check sureMapHasNone';
+    try
+    {
+      _.sureMapHasNone( srcMap, screenMaps, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "a", "b", "c"' ), true );
+   
+  test.case = 'check sureMapOwnNone';
+    try
+    {
+      _.sureMapOwnNone( srcMap, screenMaps, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "a", "b", "c"' ), true );  
+    
+  test.case = 'check sureMapHasNoUndefine';
+    try
+    {
+      _.sureMapHasNoUndefine( otherMap, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'Object 90 : "d"' ), true );
+    
+  test.close( 'failure input' );
+};
+    
+//
 
 function assert( test )
 {
@@ -298,6 +454,8 @@ var Self =
     _err   : _err,
     err    : err,
     errLog : errLog,
+    
+    surer : surer,
 
     assert : assert,
     diagnosticStack  : diagnosticStack

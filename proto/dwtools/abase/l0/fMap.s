@@ -4262,11 +4262,11 @@ _mapOnly.defaults =
 
 function sureMapHasExactly( srcMap, screenMaps, msg )
 {
-  let result = true;
-
-  result = result && _.sureMapHasOnly( srcMap, screenMaps );
-  result = result && _.sureMapHasAll( srcMap, screenMaps );
-
+  let result = true;  
+  
+  result = result && _.sureMapHasOnly( srcMap, screenMaps, msg );
+  result = result && _.sureMapHasAll( srcMap, screenMaps, msg );  
+    
   return true;
 }
 
@@ -4276,8 +4276,8 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 {
   let result = true;
 
-  result = result && _.sureMapOwnOnly( srcMap, screenMaps );
-  result = result && _.sureMapOwnAll( srcMap, screenMaps );
+  result = result && _.sureMapOwnOnly( srcMap, screenMaps, msg );
+  result = result && _.sureMapOwnAll( srcMap, screenMaps, msg );
 
   return true;
 }
@@ -4494,7 +4494,7 @@ function sureMapHasAll( srcMap, all, msg )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
 
   // let l = arguments.length;
   let but = Object.keys( _.mapBut( all, srcMap ) );
@@ -4564,7 +4564,7 @@ function sureMapOwnAll( srcMap, all, msg )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
 
   // let l = arguments.length;
   let but = Object.keys( _.mapOwnBut( all, srcMap ) );
@@ -4637,9 +4637,9 @@ function sureMapHasNone( srcMap, screenMaps, msg )
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
 
-  let but = _.mapOnly( srcMap, screenMaps );
-  let keys = Object.keys( but );
-  if( keys.length )
+  let but = Object.keys( _.mapOnly( srcMap, screenMaps ) );
+ 
+  if( but.length )
   {
     debugger;
     throw _._err
@@ -4659,7 +4659,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
+  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
 
   // let l = arguments.length;
   let but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
