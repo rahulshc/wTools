@@ -4330,10 +4330,10 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 function sureMapHasOnly( srcMap, screenMaps, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
+  //_.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+  //_.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
 
-  let l = arguments.length;
+  //let l = arguments.length;
   let but = Object.keys( _.mapBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
@@ -4347,13 +4347,26 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     }
     // if( _.strJoin && !msg )
     // console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null, ' ]).join( '\n' ) );
-    let err = _._err
+    debugger;
+    if( arguments.length === 1 )
+    throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : _.strType( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ 'Expected single argument' ],
       level : 2,
     });
-    debugger;
-    throw err;
+    else if( arguments.length === 2 )
+    throw _._err
+    ({
+      args : [ _.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
+      level : 2,
+    });
+    else
+    throw _._err
+    ({
+      args : _.longSlice( arguments, 2 ),
+      level : 2,
+    });
+      
     return false;
   }
 
