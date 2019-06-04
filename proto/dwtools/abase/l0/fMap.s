@@ -4329,9 +4329,9 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 
 function sureMapHasOnly( srcMap, screenMaps, msg )
 {
-
+       
   let but = Object.keys( _.mapBut( srcMap, screenMaps ) );
-
+    
   if( but.length > 0 )
   {
     debugger;
@@ -4342,12 +4342,24 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
       level : 2,
     });
     else
+    {
+    // dm: this is my mistake. I didn't know how to make array of values if a value is result of execution of function in argument
+    
+    let arr = [];
+    if( arguments.length >= 2 )
+    {
+    for (let i = 2; i < arguments.length; i++)
+      {
+      if(_.routineIs(arguments[i])) arguments[i] = (arguments[i])();    
+      arr[i] = arguments[i];
+      }    
+    }
     throw _._err
     ({
-      args : _.longSlice( arguments, 2 ),
+      args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
-      
+    }
     return false;
   }
 
