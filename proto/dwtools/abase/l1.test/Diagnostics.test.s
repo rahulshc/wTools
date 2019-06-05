@@ -24,16 +24,16 @@ function _err( test )
     errObj2 = new Error( 'Error #3' ),
     errMsg3 = errObj2.message,
     optionsObj3 =
-    {
+  {
       level : 1,
       args : [ errObj1 ]
-    },
+  },
 
     optionsObj4 =
-    {
+  {
       level : 3,
       args : [ errMsg1, errObj2 ]
-    };
+  };
 
   /* - */
 
@@ -205,7 +205,6 @@ function sureMapHasExactly( test )
 {        
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   var msg = function(){ return srcMap.a + screenMaps.b };    
   
   test.case = 'correct input';
@@ -213,76 +212,100 @@ function sureMapHasExactly( test )
   test.identical( _.sureMapHasExactly( srcMap, screenMap, msg ), true );
   test.identical( _.sureMapHasExactly( srcMap, screenMap, msg, 'msg' ), true );
   test.identical( _.sureMapHasExactly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
+  
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
     
   test.case = 'check error message, no msg';
-    try
-    {
-      _.sureMapHasExactly( srcMap, screenMaps )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasExactly( srcMap, screenMaps )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Object should have no fields : "d"' ), true );
     
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var msg = function(){ return srcMap.a + screenMaps.b }; 
+    
   test.case = 'check error message, msg routine';
-    try
-    {
-      _.sureMapHasExactly( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasExactly( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, '90 "d"' ), true ); 
     
+    
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var msg = function(){ return srcMap.a + screenMaps.b }; 
+    
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasExactly( srcMap, screenMaps, 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasExactly( srcMap, screenMaps, 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg "d"' ), true );
     
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var msg = function(){ return srcMap.a + screenMaps.b }; 
+    
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasExactly( srcMap, screenMaps, 'msg', msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasExactly( srcMap, screenMaps, 'msg', msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
     
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var msg = function(){ return srcMap.a + screenMaps.b }; 
+    
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasExactly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasExactly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
     
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var msg = function(){ return srcMap.a + screenMaps.b }; 
+    
   test.case = 'check error message, five or more arguments';
-    try
-    {
-      _.sureMapHasExactly( srcMap, screenMaps, msg, 'msg', 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasExactly( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
 }
@@ -303,74 +326,74 @@ function sureMapOwnExactly( test )
   test.identical( _.sureMapOwnExactly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
     
   test.case = 'check error message, no msg';
-    try
-    {
-      _.sureMapOwnExactly( srcMap, screenMaps )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnExactly( srcMap, screenMaps )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Object should own no fields : "d"' ), true );
     
   test.case = 'check error message, msg routine';
-    try
-    {
-      _.sureMapOwnExactly( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnExactly( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, '90 "d"' ), true ); 
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnExactly( srcMap, screenMaps, 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnExactly( srcMap, screenMaps, 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg "d"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnExactly( srcMap, screenMaps, 'msg', msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnExactly( srcMap, screenMaps, 'msg', msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnExactly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnExactly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
     
   test.case = 'check error message, five or more arguments';
-    try
-    {
-      _.sureMapOwnExactly( srcMap, screenMaps, msg, 'msg', 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnExactly( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
 }
@@ -391,74 +414,74 @@ function sureMapHasOnly( test )
   test.identical( _.sureMapHasOnly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
     
   test.case = 'check error message, no msg';
-    try
-    {
-      _.sureMapHasOnly( srcMap, screenMaps )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasOnly( srcMap, screenMaps )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Object should have no fields : "d"' ), true );
     
   test.case = 'check error message, msg routine';
-    try
-    {
-      _.sureMapHasOnly( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasOnly( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, '90 "d"' ), true ); 
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasOnly( srcMap, screenMaps, 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasOnly( srcMap, screenMaps, 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg "d"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasOnly( srcMap, screenMaps, 'msg', msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasOnly( srcMap, screenMaps, 'msg', msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
     
   test.case = 'check error message, five or more arguments';
-    try
-    {
-      _.sureMapHasOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
 }
@@ -479,74 +502,74 @@ function sureMapOwnOnly( test )
   test.identical( _.sureMapOwnOnly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
     
   test.case = 'check error message, no msg';
-    try
-    {
-      _.sureMapOwnOnly( srcMap, screenMaps )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnOnly( srcMap, screenMaps )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Object should own no fields : "d"' ), true );
     
   test.case = 'check error message, msg routine';
-    try
-    {
-      _.sureMapOwnOnly( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnOnly( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, '90 "d"' ), true ); 
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnOnly( srcMap, screenMaps, 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnOnly( srcMap, screenMaps, 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg "d"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnOnly( srcMap, screenMaps, 'msg', msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnOnly( srcMap, screenMaps, 'msg', msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
     
   test.case = 'check error message, five or more arguments';
-    try
-    {
-      _.sureMapOwnOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
 }
@@ -567,74 +590,74 @@ function sureMapHasAll( test )
   test.identical( _.sureMapHasAll( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
     
   test.case = 'check error message, no msg';
-    try
-    {
-      _.sureMapHasAll( srcMap, screenMaps )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasAll( srcMap, screenMaps )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Object should have fields : "name"' ), true );
     
   test.case = 'check error message, msg routine';
-    try
-    {
-      _.sureMapHasAll( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasAll( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, '90 "name"' ), true ); 
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasAll( srcMap, screenMaps, 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasAll( srcMap, screenMaps, 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg "name"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasAll( srcMap, screenMaps, 'msg', msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasAll( srcMap, screenMaps, 'msg', msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg 90 "name"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'This is explanation "name"' ), true );
     
   test.case = 'check error message, five or more arguments';
-    try
-    {
-      _.sureMapHasAll( srcMap, screenMaps, msg, 'msg', 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasAll( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
 }
@@ -655,74 +678,74 @@ function sureMapOwnAll( test )
   test.identical( _.sureMapOwnAll( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
     
   test.case = 'check error message, no msg';
-    try
-    {
-      _.sureMapOwnAll( srcMap, screenMaps )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnAll( srcMap, screenMaps )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Object should own fields : "name"' ), true );
     
   test.case = 'check error message, msg routine';
-    try
-    {
-      _.sureMapOwnAll( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnAll( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, '90 "name"' ), true ); 
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnAll( srcMap, screenMaps, 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnAll( srcMap, screenMaps, 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg "name"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnAll( srcMap, screenMaps, 'msg', msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnAll( srcMap, screenMaps, 'msg', msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg 90 "name"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'This is explanation "name"' ), true );
     
   test.case = 'check error message, five or more arguments';
-    try
-    {
-      _.sureMapOwnAll( srcMap, screenMaps, msg, 'msg', 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnAll( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
 }
@@ -743,74 +766,74 @@ function sureMapHasNone( test )
   test.identical( _.sureMapHasNone( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
     
   test.case = 'check error message, no msg';
-    try
-    {
-      _.sureMapHasNone( srcMap, screenMaps )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNone( srcMap, screenMaps )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Object should have no fields : "a", "b", "c"' ), true );
     
   test.case = 'check error message, msg routine';
-    try
-    {
-      _.sureMapHasNone( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNone( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, '90 "a", "b", "c"' ), true ); 
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasNone( srcMap, screenMaps, 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNone( srcMap, screenMaps, 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg "a", "b", "c"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasNone( srcMap, screenMaps, 'msg', msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNone( srcMap, screenMaps, 'msg', msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg 90 "a", "b", "c"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'This is explanation "a", "b", "c"' ), true );
     
   test.case = 'check error message, five or more arguments';
-    try
-    {
-      _.sureMapHasNone( srcMap, screenMaps, msg, 'msg', 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNone( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
 }
@@ -831,74 +854,74 @@ function sureMapOwnNone( test )
   test.identical( _.sureMapOwnNone( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
     
   test.case = 'check error message, no msg';
-    try
-    {
-      _.sureMapOwnNone( srcMap, screenMaps )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnNone( srcMap, screenMaps )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Object should own no fields : "a", "b", "c"' ), true );
     
   test.case = 'check error message, msg routine';
-    try
-    {
-      _.sureMapOwnNone( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnNone( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, '90 "a", "b", "c"' ), true ); 
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnNone( srcMap, screenMaps, 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnNone( srcMap, screenMaps, 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg "a", "b", "c"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnNone( srcMap, screenMaps, 'msg', msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnNone( srcMap, screenMaps, 'msg', msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg 90 "a", "b", "c"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapOwnNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'This is explanation "a", "b", "c"' ), true );
     
   test.case = 'check error message, five or more arguments';
-    try
-    {
-      _.sureMapOwnNone( srcMap, screenMaps, msg, 'msg', 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapOwnNone( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
 }
@@ -918,77 +941,197 @@ function sureMapHasNoUndefine( test )
   test.identical( _.sureMapHasNoUndefine( srcMap, () => 'This is ' + 'explanation' ), true ); 
     
   test.case = 'check error message, no msg';
-    try
-    {
-      _.sureMapHasNoUndefine( otherMap )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNoUndefine( otherMap )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Object should have no undefines, but has : "d"' ), true );
     
   test.case = 'check error message, msg routine';
-    try
-    {
-      _.sureMapHasNoUndefine( otherMap, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNoUndefine( otherMap, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
     
   test.identical( _.strHas( err.message, '90 "d"' ), true ); 
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasNoUndefine( otherMap, 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNoUndefine( otherMap, 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg "d"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasNoUndefine( otherMap, 'msg', msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNoUndefine( otherMap, 'msg', msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'msg 90 "d"' ), true );
     
   test.case = 'check error message, msg string';
-    try
-    {
-      _.sureMapHasNoUndefine( otherMap, () => 'This is ' + 'explanation' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNoUndefine( otherMap, () => 'This is ' + 'explanation' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
     
   test.case = 'check error message, four or more arguments';
-    try
-    {
-      _.sureMapHasNoUndefine( srcMap, msg, 'msg', 'msg' )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.sureMapHasNoUndefine( srcMap, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects one, two or three arguments' ), true );
+}
+    
+//
+    
+function assertMapHasFields( test )
+{    
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var msg = function(){ return srcMap.a + screenMaps.b };
+    
+  test.case = 'correct input';
+  test.identical( _.assertMapHasFields( srcMap, screenMap ), true );
+  test.identical( _.assertMapHasFields( srcMap, screenMap, msg ), true );
+  test.identical( _.assertMapHasFields( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.assertMapHasFields( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
+  
+  test.case = 'check error message assertMapHasFields';
+  try
+  {
+    _.assertMapHasFields( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "d"' ), true ); 
+    
+  test.case = 'check error message, four or more arguments';
+  try
+  {
+    _.assertMapHasFields( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );  
+}
+    
+//
+    
+function assertMapOwnFields( test )
+{    
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var msg = function(){ return srcMap.a + screenMaps.b };
+    
+  test.case = 'correct input';
+  test.identical( _.assertMapOwnFields( srcMap, screenMap ), true );
+  test.identical( _.assertMapOwnFields( srcMap, screenMap, msg ), true );
+  test.identical( _.assertMapOwnFields( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.assertMapOwnFields( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
+  
+  test.case = 'check error message assertMapHasFields';
+  try
+  {
+    _.assertMapOwnFields( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "d"' ), true ); 
+    
+  test.case = 'check error message, four or more arguments';
+  try
+  {
+    _.assertMapOwnFields( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );  
+}
+    
+//
+    
+function assertMapHasOnly( test )
+{    
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var msg = function(){ return srcMap.a + screenMaps.b };
+    
+  test.case = 'correct input';
+  test.identical( _.assertMapHasOnly( srcMap, screenMap ), true );
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg ), true );
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.assertMapHasOnly( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
+  
+  test.case = 'check error message assertMapHasFields';
+  try
+  {
+    _.assertMapHasOnly( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "d"' ), true ); 
+    
+  test.case = 'check error message, four or more arguments';
+  try
+  {
+    _.assertMapHasOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );  
 }
     
 //
@@ -999,113 +1142,77 @@ function assertSurer( test )
   var srcMap1 = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   var otherMap = { 'd' : undefined };
-  var msg = function(){ return srcMap.a + screenMaps.b };
-  
-  test.case = 'check error message assertMapHasFields';
-    try
-    {
-      _.assertMapHasFields( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
-  test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );  
-    
-  test.case = 'check error message assertMapOwnFields';
-    try
-    {
-      _.assertMapOwnFields( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
-  test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );    
-    
-  test.case = 'check error message assertMapHasOnly';
-    try
-    {
-      _.assertMapHasOnly( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
-  test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, '90 "d"' ), true );
+  var msg = function(){ return srcMap.a + screenMaps.b };   
     
   test.case = 'check error message assertMapOwnOnly';
-    try
-    {
-      _.assertMapOwnOnly( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.assertMapOwnOnly( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, '90 "d"' ), true );
     
 //  test.case = 'check error message sureMapHasAll';
-//    try
-//    {
-//      _.sureMapHasAll( srcMap, screenMaps, msg )
-//    }
-//    catch ( e )
-//    {
-//      err = e;
-//    }
+//  try
+//  {
+//    _.sureMapHasAll( srcMap, screenMaps, msg )
+//  }
+//  catch ( e )
+//  {
+//    err = e;
+//  }
 //  test.identical( err instanceof Error, true );
 //  test.identical( _.strHas( err.message, '90 "name"' ), true );
 //
 //  test.case = 'check sureMapOwnAll';
-//    try
-//    {
-//      _.sureMapOwnAll( srcMap, screenMaps, msg )
-//    }
-//    catch ( e )
-//    {
-//      err = e;
-//    }
+//  try
+//  {
+//    _.sureMapOwnAll( srcMap, screenMaps, msg )
+//  }
+//  catch ( e )
+//  {
+//    err = e;
+//  }
 //  test.identical( err instanceof Error, true );
 //  test.identical( _.strHas( err.message, '90 "name"' ), true );
    
   test.case = 'check error message assertMapHasNone';
-    try
-    {
-      _.assertMapHasNone( srcMap, screenMaps, msg )
-    }
-    catch ( e )
-    {
-      err = e;
-    }
+  try
+  {
+    _.assertMapHasNone( srcMap, screenMaps, msg )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, '90 "a", "b", "c"' ), true );
    
 //  test.case = 'check sureMapOwnNone';
-//    try
-//    {
-//      _.sureMapOwnNone( srcMap, screenMaps, msg )
-//    }
-//    catch ( e )
-//    {
-//      err = e;
-//    }
+//  try
+//  {
+//    _.sureMapOwnNone( srcMap, screenMaps, msg )
+//  }
+//  catch ( e )
+//  {
+//    err = e;
+//  }
 //  test.identical( err instanceof Error, true );
 //  test.identical( _.strHas( err.message, '90 "a", "b", "c"' ), true );  
 //    
 //  test.case = 'check sureMapHasNoUndefine';
-//    try
-//    {
-//      _.sureMapHasNoUndefine( otherMap, msg )
-//    }
-//    catch ( e )
-//    {
-//      err = e;
-//    }
+//  try
+//  {
+//    _.sureMapHasNoUndefine( otherMap, msg )
+//  }
+//  catch ( e )
+//  {
+//    err = e;
+//  }
 //  test.identical( err instanceof Error, true );
 //  test.identical( _.strHas( err.message, 'Object 90 : "d"' ), true );
 }
@@ -1219,7 +1326,10 @@ var Self =
     sureMapHasNone : sureMapHasNone,
     sureMapOwnNone : sureMapOwnNone,
     sureMapHasNoUndefine : sureMapHasNoUndefine,
-      
+    
+    assertMapHasFields : assertMapHasFields,
+    assertMapOwnFields : assertMapOwnFields,
+    assertMapHasOnly : assertMapHasOnly,
     assertSurer : assertSurer,
 
     assert : assert,
