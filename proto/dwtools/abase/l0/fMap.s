@@ -4329,7 +4329,7 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 
 function sureMapHasOnly( srcMap, screenMaps, msg )
 {
-       
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects five or more arguments' );     
   let but = Object.keys( _.mapBut( srcMap, screenMaps ) );
     
   if( but.length > 0 )
@@ -4343,15 +4343,15 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     });
     else
     {
-    // dm: this is my mistake. I didn't know how to make array of values if a value is result of execution of function in argument
+    // dm: this is my mistake. I didn't know how to make array with values of an argument, when some argument is a function
     
     let arr = [];
-    if( arguments.length >= 2 )
+    if( arguments.length > 2 )
     {
-      for (let i = 2; i < arguments.length; i++ )
+    for (let i = 2; i < arguments.length; i++)
       {
-        if( _.routineIs( arguments[ i ] ) ) arguments[ i ] = ( arguments[ i ] )();    
-        arr[ i ] = arguments[ i ];
+      if(_.routineIs(arguments[i])) arguments[i] = (arguments[i])();    
+      arr[i] = arguments[i];
       }    
     }
     throw _._err
@@ -4365,6 +4365,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
 
   return true;
 }
+
 
 //
 
