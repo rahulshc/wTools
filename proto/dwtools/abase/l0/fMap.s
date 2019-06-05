@@ -4344,8 +4344,6 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     });
     else
     {
-    // dm: this is my mistake. I didn't know how to make array of values if a value is result of execution of function in argument
-    
     let arr = [];
     if( arguments.length >= 2 )
     {
