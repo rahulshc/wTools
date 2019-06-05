@@ -4329,7 +4329,7 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 
 function sureMapHasOnly( srcMap, screenMaps, msg )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects five or more arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, tree or four arguments' );
     
   let but = Object.keys( _.mapBut( srcMap, screenMaps ) );
     
