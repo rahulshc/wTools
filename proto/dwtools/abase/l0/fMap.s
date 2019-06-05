@@ -4345,14 +4345,11 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     else
     {
       let arr = [];
-      if( arguments.length >= 2 )
+      for ( let i = 2; i < arguments.length; i++ )
       {
-        for ( let i = 2; i < arguments.length; i++ )
-        {
-          if( _.routineIs( arguments[ i ] ) ) arguments[ i ] = ( arguments[ i ] )();    
-          arr[ i ] = arguments[ i ];
-        }    
-      }
+        if( _.routineIs( arguments[ i ] ) ) arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
     throw _._err
     ({
       args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
