@@ -282,7 +282,6 @@ function sureMapOwnOnly( test )
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var otherMap = { 'd' : undefined };
   var msg = function(){ return srcMap.a + screenMaps.b };    
   
   test.case = 'correct input';
@@ -350,6 +349,159 @@ function sureMapOwnOnly( test )
     }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'This is explanation "d"' ), true );
+}
+    
+//
+  
+function sureMapHasAll( test )
+{        
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var msg = function(){ return srcMap.a + screenMaps.b };    
+  
+  test.case = 'correct input';
+  test.identical( _.sureMapHasAll( srcMap, screenMap ), true );
+  test.identical( _.sureMapHasAll( srcMap, screenMap, msg ), true );
+  test.identical( _.sureMapHasAll( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.sureMapHasAll( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
+    
+  test.case = 'check error message, no msg';
+    try
+    {
+      _.sureMapHasAll( srcMap, screenMaps )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'Object should have fields : "name"' ), true );
+    
+  test.case = 'check error message, msg routine';
+    try
+    {
+      _.sureMapHasAll( srcMap, screenMaps, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "name"' ), true ); 
+    
+  test.case = 'check error message, msg string';
+    try
+    {
+      _.sureMapHasAll( srcMap, screenMaps, 'msg' )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'msg "name"' ), true );
+    
+  test.case = 'check error message, msg string';
+    try
+    {
+      _.sureMapHasAll( srcMap, screenMaps, 'msg', msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'msg 90 "name"' ), true );
+    
+  test.case = 'check error message, msg string';
+    try
+    {
+      _.sureMapHasAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'This is explanation "name"' ), true );
+}
+    
+//
+  
+function sureMapOwnAll( test )
+{        
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  var otherMap = { 'd' : undefined };
+  var msg = function(){ return srcMap.a + screenMaps.b };    
+  
+  test.case = 'correct input';
+  test.identical( _.sureMapOwnAll( srcMap, screenMap ), true );
+  test.identical( _.sureMapOwnAll( srcMap, screenMap, msg ), true );
+  test.identical( _.sureMapOwnAll( srcMap, screenMap, msg, 'msg' ), true );
+  test.identical( _.sureMapOwnAll( srcMap, screenMap, () => 'This is ' + 'explanation' ), true ); 
+    
+  test.case = 'check error message, no msg';
+    try
+    {
+      _.sureMapOwnAll( srcMap, screenMaps )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'Object should own fields : "name"' ), true );
+    
+  test.case = 'check error message, msg routine';
+    try
+    {
+      _.sureMapOwnAll( srcMap, screenMaps, msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, '90 "name"' ), true ); 
+    
+  test.case = 'check error message, msg string';
+    try
+    {
+      _.sureMapOwnAll( srcMap, screenMaps, 'msg' )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'msg "name"' ), true );
+    
+  test.case = 'check error message, msg string';
+    try
+    {
+      _.sureMapOwnAll( srcMap, screenMaps, 'msg', msg )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'msg 90 "name"' ), true );
+    
+  test.case = 'check error message, msg string';
+    try
+    {
+      _.sureMapOwnAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
+    }
+    catch ( e )
+    {
+      err = e;
+    }
+  test.identical( err instanceof Error, true );
+  test.identical( _.strHas( err.message, 'This is explanation "name"' ), true );
 }
     
 //
@@ -573,6 +725,8 @@ var Self =
     
     sureMapHasOnly : sureMapHasOnly,
     sureMapOwnOnly : sureMapOwnOnly,
+    sureMapHasAll : sureMapHasAll,
+    sureMapOwnAll : sureMapOwnAll,
       
     assertSurer : assertSurer,
 
