@@ -4262,11 +4262,11 @@ _mapOnly.defaults =
 
 function sureMapHasExactly( srcMap, screenMaps, msg )
 {
-  let result = true;  
-  
-  result = result && _.sureMapHasOnly( srcMap, screenMaps, msg );
-  result = result && _.sureMapHasAll( srcMap, screenMaps, msg );  
-    
+  let result = true;
+
+  result = result && _.sureMapHasOnly.apply( this, arguments );
+  result = result && _.sureMapHasAll.apply( this, arguments );  
+
   return true;
 }
 
@@ -4276,8 +4276,8 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 {
   let result = true;
 
-  result = result && _.sureMapOwnOnly( srcMap, screenMaps, msg );
-  result = result && _.sureMapOwnAll( srcMap, screenMaps, msg );
+  result = result && _.sureMapOwnOnly.apply( this, arguments );
+  result = result && _.sureMapOwnAll.apply( this, arguments );  
 
   return true;
 }
@@ -4329,7 +4329,7 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 
 function sureMapHasOnly( srcMap, screenMaps, msg )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, tree or four arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
     
   let but = Object.keys( _.mapBut( srcMap, screenMaps ) );
     
@@ -4347,14 +4347,15 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
       let arr = [];
       for ( let i = 2; i < arguments.length; i++ )
       {
-        if( _.routineIs( arguments[ i ] ) ) arguments[ i ] = ( arguments[ i ] )();    
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
         arr[ i ] = arguments[ i ];
       }    
-    throw _._err
-    ({
-      args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
-      level : 2,
-    });
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
     }
       
     return false;
@@ -4415,30 +4416,35 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
 
 function sureMapOwnOnly( srcMap, screenMaps, msg )
 {
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
-
-  let l = arguments.length;
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
+    
   let but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
-    if( !msg )
-    {
-      let butArray = [];
-      for( let b = 0 ; b < but.length ; b++ )
-      butArray[ b ] = '  ', but[ b ], ' : null, ';
-      console.error( 'Consider extending object by :\n' + butArray.join( '\n' ) );
-    }
-    // if( _.strJoin && !msg )
-    // console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null, ' ]).join( '\n' ) );
     debugger;
+    if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should own no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4496,20 +4502,35 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
 function sureMapHasAll( srcMap, all, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  // let l = arguments.length;
   let but = Object.keys( _.mapBut( all, srcMap ) );
 
   if( but.length > 0 )
   {
     debugger;
+    if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should have fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should have fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4566,20 +4587,35 @@ function sureMapHasAll( srcMap, all, msg )
 function sureMapOwnAll( srcMap, all, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  // let l = arguments.length;
   let but = Object.keys( _.mapOwnBut( all, srcMap ) );
 
   if( but.length > 0 )
   {
     debugger;
+    if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should own fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should own fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4637,19 +4673,35 @@ function sureMapOwnAll( srcMap, all, msg )
 function sureMapHasNone( srcMap, screenMaps, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
+ _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
   let but = Object.keys( _.mapOnly( srcMap, screenMaps ) );
- 
-  if( but.length )
+
+  if( but.length > 0 )
   {
     debugger;
+    if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : _.strType( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4661,20 +4713,35 @@ function sureMapHasNone( srcMap, screenMaps, msg )
 function sureMapOwnNone( srcMap, screenMaps, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  // let l = arguments.length;
   let but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
 
-  if( but.length )
+  if( but.length > 0 )
   {
     debugger;
+    if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should own no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4723,24 +4790,39 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
 function sureMapHasNoUndefine( srcMap, msg )
 {
 
-  _.assert( arguments.length === 1 || arguments.length === 2 )
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3, 'Expects one, two or three arguments' )
 
   let but = [];
-  let l = arguments.length;
-
+  
   for( let s in srcMap )
   if( srcMap[ s ] === undefined )
   but.push( s );
-
-  if( but.length )
+  
+  if( but.length > 0 )
   {
     debugger;
-    let listStr = _.strQuote ? _.strQuote( but ).join( ', ' ) : String( but );
+    if( arguments.length === 1 )
     throw _._err
     ({
-      args : [ 'Object ' + ( msg ? _.strConcat( msg ) : 'should have no undefines, but has' ) + ' : ' + listStr ],
+      args : [ _.strType( srcMap ) + ' should have no undefines, but has :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 1; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
