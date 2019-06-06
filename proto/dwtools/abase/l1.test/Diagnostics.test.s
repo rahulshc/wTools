@@ -1124,7 +1124,16 @@ function sureMapHasNoUndefine( test )
 //
     
 function assertMapHasFields( test )
-{    
+{
+  // in normal mode this test should throw error. The routine return true when Config.debug === false
+  if( !Config.debug )
+  {
+    test.case = 'Config.debug === false';
+    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+    test.identical( _.assertMapHasFields( srcMap, screenMaps ), true );
+  }
+    
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -1221,13 +1230,21 @@ function assertMapHasFields( test )
     err = e;
   }
   test.identical( err instanceof Error, true );
-  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );  
+  test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true ); 
 }
     
 //
     
 function assertMapOwnFields( test )
-{    
+{
+// in normal mode this test should throw error. The routine return true when Config.debug === false
+  if( !Config.debug )
+  {
+    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+    test.identical( _.assertMapOwnFields( srcMap, screenMaps ), true );
+  }
+
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -1330,7 +1347,16 @@ function assertMapOwnFields( test )
 //
     
 function assertMapHasOnly( test )
-{    
+{
+// in normal mode this test should throw error. The routine return true when Config.debug === false
+  if( !Config.debug )
+  {
+    test.case = 'Config.debug === false';
+    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+    test.identical( _.assertMapHasOnly( srcMap, screenMaps ), true );
+  }
+
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -1433,7 +1459,16 @@ function assertMapHasOnly( test )
 //
     
 function assertMapOwnOnly( test )
-{    
+{
+// in normal mode this test should throw error. The routine return true when Config.debug === false
+  if( !Config.debug )
+  {
+    test.case = 'Config.debug === false';
+    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+    test.identical( _.assertMapOwnOnly( srcMap, screenMaps ), true );
+  }
+
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
@@ -1536,7 +1571,16 @@ function assertMapOwnOnly( test )
 //
 
 function assertMapHasNone( test )
-{        
+{
+// in normal mode this test should throw error. The routine return true when Config.debug === false
+  if( !Config.debug )
+  {
+    test.case = 'Config.debug === false';
+    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+    test.identical( _.assertMapHasNone( srcMap, screenMaps ), true );
+  }
+
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'e' : 13, 'f' : 77, 'g' : 3, 'h' : 'Mikle' };
@@ -1639,7 +1683,16 @@ function assertMapHasNone( test )
 //
   
 function assertMapOwnNone( test )
-{        
+{
+// in normal mode this test should throw error. The routine return true when Config.debug === false
+  if( !Config.debug )
+  {
+    test.case = 'Config.debug === false';
+    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+    test.identical( _.assertMapOwnNone( srcMap, screenMaps ), true );
+  }
+
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'e' : 13, 'f' : 77, 'g' : 3, 'h' : 'Mikle' };
@@ -1742,7 +1795,15 @@ function assertMapOwnNone( test )
 //
     
 function assertMapHasNoUndefine( test )
-{        
+{
+// in normal mode this test should throw error. The routine return true when Config.debug === false
+  if( !Config.debug )
+  {
+    test.case = 'Config.debug === false';
+    var otherMap = { 'd' : undefined };
+    test.identical( _.assertMapHasNoUndefine( otherMap ), true );
+  }
+
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var msg = function(){ return srcMap.a + srcMap.b };
