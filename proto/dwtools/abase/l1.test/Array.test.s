@@ -4877,6 +4877,11 @@ function arrayCountElement( test )
   var expected = 0;
   test.identical( got, expected );
 
+  test.case = 'With evaluators - 1 matches';
+  var got = _.arrayCountElement( [ [ 1, 3 ], [ 2, 2 ], [ 3, 1 ] ], 1, ( e ) => e[ 1 ], ( e ) => e + 2 );
+  var expected = 1;
+  test.identical( got, expected );
+    
   test.case = 'With evaluators - 4 matches';
   var got = _.arrayCountElement( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ], 0, ( e ) => e[ 0 ], ( e ) => e );
   var expected = 4;

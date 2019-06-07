@@ -1710,6 +1710,7 @@ function arrayRightDefined( arr )
  *
  * @param { Array } src - The source array.
  * @param { * } element - The value to search.
+ * @param { * } onEvaluate1 - The value to search.
  *
  * @example
  * // returns 2
