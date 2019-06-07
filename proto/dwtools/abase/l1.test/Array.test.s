@@ -4902,7 +4902,7 @@ function arrayCountElement( test )
   var expected = 4;
   test.identical( got, expected );
 
-  /**/
+  /* - */
 
   if( !Config.debug )
   return;
@@ -4947,6 +4947,36 @@ function arrayCountElement( test )
   test.shouldThrowError( function()
   {
     _.arrayCountElement( 3, true );
+  });
+    
+  test.case = 'third argument is wrong - have no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountElement( [ 3, 4, 5, true ], 3, () => 3 );
+  });
+
+  test.case = 'third argument is wrong - have three arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a, b, c ) => _.typeOf( a ) === _.typeOf( b ) === _.typeOf( c ) );
+  });
+
+  test.case = 'fourth element is unnacessary';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a, b ) => _.typeOf( a ) === _.typeOf( b ), ( e ) => e );
+  });
+
+  test.case = 'fourth argument is wrong - have no arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a, b ) => _.typeOf( a ) === _.typeOf( b ), () => e );
+  });
+
+  test.case = 'fourth argument is wrong - have two arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a, b ) => _.typeOf( a ) === _.typeOf( b ), ( a, b ) => e );
   });
 
 };
