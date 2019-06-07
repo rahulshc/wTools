@@ -4288,11 +4288,12 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument.
+ * Also generates error using message passed after last object. Message may be a string, an array, or a function.
  *
  * @param {Object} srcMap - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msgs ] - error message as last argument.
+ * @param {...Object} target - object to compare with.
+ * @param {String} [ msg ] - error message that replaces default message.
+ * @param {String} [ msg ] - error message that adds to the first message.
  *
  * @example
  * let a = { a : 1, c : 3 };
@@ -4319,13 +4320,26 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * // at sureMapHasOnly (file:///.../wTools/staging/Base.s:4188)
  * // at <anonymous>:4
  *
+ * @example
+ * let x = { d : 1 };
+ * let a = Object.create( x );
+ * let b = { a : 1 };
+ * wTools.sureMapHasOnly( a, b, () => 'message, ' + 'map`, ' should have no fields :'  )
+ *
+ * // caught <anonymous>:4:8
+ * // message Object should have no fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at <anonymous>:4
+ *
  * @function sureMapHasOnly
+ * @throws {Exception} If no arguments are provided.
+ * @throws {Exception} If more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains unique property.
  * @memberof wTools
  *
  */
-
-/* qqq : msg also could be a routine */
 
 function sureMapHasOnly( srcMap, screenMaps, msg )
 {
@@ -4370,11 +4384,12 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
  * Works only in debug mode. Uses StackTrace level 2.{@link wTools.err See err}
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument.
+ * Also generates error using message passed after last object. Message may be a string, an array, or a function.
  *
  * @param {Object} srcMap - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msgs ] - error message as last argument.
+ * @param {...Object} target - object to compare with.
+ * @param {String} [ msg ] - error message that replaces default message.
+ * @param {String} [ msg ] - error message that adds to the first message.
  *
  * @example
  * let x = { d : 1 };
@@ -4408,7 +4423,22 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * // at sureMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
  * // at <anonymous>:4
  *
+ * @example
+ * let a = { x : 0, y : 2 };
+ * let b = { c : 0, d : 3};
+ * let c = { a : 1 };
+ * wTools.sureMapOwnOnly( a, b, () => 'error, ' + 'map should', ' no own fields :' );
+ *
+ * // caught <anonymous>:4:9
+ * // error, map should have no own fields : x, y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at <anonymous>:3
+ *
  * @function sureMapOwnOnly
+ * @throws {Exception} If no arguments are provided.
+ * @throws {Exception} If more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains unique property.
  * @memberof wTools
  *
@@ -4457,11 +4487,12 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2.{@link wTools.err See err}
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
+ * Also generates error using message passed after last object. Message may be a string, an array, or a function.
  *
  * @param {Object} srcMap - source map.
  * @param {Object} all - object to compare with.
- * @param {String} [ msgs ] - error message.
+ * @param {String} [ msg ] - error message that replaces default message.
+ * @param {String} [ msg ] - error message that adds to the first message.
  *
  * @example
  * let x = { a : 1 };
@@ -4493,7 +4524,21 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4242)
  * // at <anonymous>:3
  *
+ * @example
+ * let a = { x : 0 };
+ * let b = { x : 1, y : 0};
+ * wTools.sureMapHasAll( a, b, () => 'error, ' + 'map should', ' have fields :' );
+ *
+ * // caught <anonymous>:4:9
+ * // error, map should have fields : y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at <anonymous>:3
+ *
  * @function sureMapHasAll
+ * @throws {Exception} If no arguments are provided.
+ * @throws {Exception} If more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @memberof wTools
  *
@@ -4543,11 +4588,12 @@ function sureMapHasAll( srcMap, all, msg )
  * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
  * Works only in Config.debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
+ * Also generates error using message passed after last object. Message may be a string, an array, or a function.
  *
  * @param {Object} srcMap - source map.
  * @param {Object} all - object to compare with.
- * @param {String} [ msgs ] - error message.
+ * @param {String} [ msg ] - error message that replaces default message.
+ * @param {String} [ msg ] - error message that adds to the first message.
  *
  * @example
  * let a = { a : 1 };
@@ -4563,22 +4609,36 @@ function sureMapHasAll( srcMap, all, msg )
  * // Object should have own fields : b
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4269)
+ * // at sureMapOwnAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * wTools.sureMapHasAll( a, b, 'error msg' );
+ * wTools.sureMapOwnAll( a, b, 'error, should own fields' );
  *
  * // caught <anonymous>:4:9
- * // error msg Object should have fields : y
+ * // error, should own fields : y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+ * // at <anonymous>:3
+ *
+ * @example
+ * let a = { x : 0 };
+ * let b = { x : 1, y : 0};
+ * wTools.sureMapOwnAll( a, b, () => 'error, ' + 'map should', ' own fields :' );
+ *
+ * // caught <anonymous>:4:9
+ * // error, map should own fields : y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at sureMapOwnAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
  * @function sureMapOwnAll
+ * @throws {Exception} If no arguments are provided.
+ * @throws {Exception} If more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @memberof wTools
  *
@@ -4628,16 +4688,17 @@ function sureMapOwnAll( srcMap, all, msg )
  * Checks if map passed by argument {-srcMap-} has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
+ * Also generates error using message passed after last object. Message may be a string, an array, or a function.
  *
  * @param {Object} srcMap - source map.
  * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msg ] - error message as last argument.
+ * @param {String} [ msg ] - error message that replaces default message.
+ * @param {String} [ msg ] - error message that adds to the first message.
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
- * wTools.sureMapHasNone( a, b );// no exception
+ * wTools.sureMapHasNone( a, b ); // no exception
  *
  * @example
  * let x = { a : 1 };
@@ -4655,16 +4716,30 @@ function sureMapOwnAll( srcMap, all, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * wTools.sureMapHasNone( a, b, 'error msg' );
+ * wTools.sureMapHasNone( a, b, 'error, map should have no fields' );
  *
  * // caught <anonymous>:3:9
- * // error msg Object should have no fields : x, y
+ * // error, map should have no fields : x, y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
+ * // at <anonymous>:3
+ *
+ * @example
+ * let a = { x : 0, y : 1 };
+ * let b = { x : 1, y : 0 };
+ * wTools.sureMapHasNone( a, b, () => 'error, ' + 'map should have', 'no fields :' );
+ *
+ * // caught <anonymous>:3:9
+ * // error, map should have no fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:3
  *
  * @function sureMapHasNone
+ * @throws {Exception} If no arguments are provided.
+ * @throws {Exception} If more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
  * @memberof wTools
  *
@@ -4753,9 +4828,10 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
 /**
  * Checks if map passed by argument {-srcMap-} not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found undefined property it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed after first argument.
+ * Also generates error using messages passed after first argument. Message may be a string, an array, or a function
  *
  * @param {Object} srcMap - source map.
+ * @param {String} [ msgs ] - error message for generated exception.
  * @param {String} [ msgs ] - error message for generated exception.
  *
  * @example
@@ -4771,10 +4847,21 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * wTools.sureMapHasNoUndefine( map, '"map"');
+ * wTools.sureMapHasNoUndefine( map, '"map" has undefines :');
  *
  * // caught <anonymous>:2:8
- * // Object "map" should have no undefines, but has : a
+ * // "map" has undefines : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at <anonymous>:2
+ *
+ * @example
+ * let map = { a : undefined, b : '1' };
+ * wTools.sureMapHasNoUndefine( map, '"map"', () => 'should have ' + 'no undefines, but has :' );
+ *
+ * // caught <anonymous>:2:8
+ * // "map" should have no undefines, but has : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at sureMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
@@ -4782,6 +4869,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  *
  * @function sureMapHasNoUndefine
  * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If more than three arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains undefined property.
  * @memberof wTools
  *
