@@ -1,6 +1,6 @@
 ( function _fEntity_s_() {
 
-'use strict'; 
+'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
@@ -824,13 +824,15 @@ function entityFilter( src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( arguments.length === 2 );
-  _.assert( _.objectLike( src ) || _.longIs( src ), () => 'Expects objectLike or longIs src, but got ' + _.strType( src ) );
+  // _.assert( _.objectLike( src ) || _.longIs( src ), () => 'Expects objectLike or longIs src, but got ' + _.strType( src ) );
   _.assert( _.routineIs( onEach ) );
+  _.assert( src !== undefined, 'Expects src' );
 
   /* */
 
   if( _.longIs( src ) )
   {
+
     result = _.longMake( src, 0 );
     let s, d;
     for( s = 0, d = 0 ; s < src.length ; s++ )
@@ -849,9 +851,12 @@ function entityFilter( src, onEach )
     }
     if( d < src.length )
     result = _.arraySlice( result, 0, d );
+
   }
-  else
+  // else if( _.objectLike( src ) )
+  else if( _.mapLike( src ) )
   {
+
     result = _.entityMakeTivial( src );
     for( let s in src )
     {
@@ -859,6 +864,13 @@ function entityFilter( src, onEach )
       if( r !== undefined )
       result[ s ] = r;
     }
+
+  }
+  else
+  {
+
+    result = onEach.call( null, src, null, null );
+
   }
 
   /* */

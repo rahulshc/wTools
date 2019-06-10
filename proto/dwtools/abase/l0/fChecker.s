@@ -284,8 +284,10 @@ function constructorIsStandard( cls )
   return _.prototypeIsStandard( prototype );
 }
 
+//
+
 /**
- * Is instance.
+ * Is instance of a class.
  * @function instanceIs
  * @param {object} src - entity to check
  * @memberof wTools
@@ -298,9 +300,9 @@ function instanceIs( src )
   if( _.primitiveIs( src ) )
   return false;
 
-  if( _ObjectHasOwnProperty.call( src,'constructor' ) )
+  if( _ObjectHasOwnProperty.call( src, 'constructor' ) )
   return false;
-  else if( _ObjectHasOwnProperty.call( src,'prototype' ) && src.prototype )
+  else if( _ObjectHasOwnProperty.call( src, 'prototype' ) && src.prototype )
   return false;
 
   if( Object.getPrototypeOf( src ) === Object.prototype )
@@ -457,26 +459,26 @@ let Inspector = null;
 function processIsDebugged()
 {
   _.assert( arguments.length === 0 );
-  
+
   if( typeof process === 'undefined' )
   return false;
-  
+
   if( Inspector === null )
   try
-  { 
-    Inspector = require( 'inspector' ); 
-  } 
+  {
+    Inspector = require( 'inspector' );
+  }
   catch( err )
   {
     Inspector = false;
   }
-  
+
   if( Inspector )
   return _.strIs( Inspector.url() );
 
   if( !process.execArgv.length )
   return false;
-  
+
   let execArgvString = process.execArgv.join();
   return _.strHasAny( execArgvString, [ '--inspect', '--inspect-brk', '--debug-brk' ] );
 }

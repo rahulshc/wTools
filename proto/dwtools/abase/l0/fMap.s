@@ -174,7 +174,13 @@ function mapLike( src )
   if( src.constructor === Object || src.constructor === null )
   return true;
 
+  if( !_.objectLike( src ) ) // yyy
   return false;
+
+  if( _.instanceIs( src ) ) // yyy
+  return false;
+
+  return true;
 }
 
 //
@@ -428,20 +434,37 @@ function _mapSatisfy( template, src, root, levels )
 
 //
 
-function mapHasKey( object, key )
+function mapHasKey( srcMap, key )
 {
 
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  if( !srcMap )
+  return false;
 
-  if( _.strIs( key ) )
-  return ( key in object );
-  else if( _.mapIs( key ) )
-  return ( _.nameUnfielded( key ).coded in object );
-  else if( _.symbolIs( key ) )
-  return ( key in object );
+  if( typeof srcMap !== 'object' )
+  return false;
 
-  _.assert( 0, 'mapHasKey :', 'unknown type of key :', _.strType( key ) );
+  if( !Reflect.has( srcMap, key ) )
+  return false;
+
+  return true;
 }
+
+// //
+//
+// function mapHasKey( object, key )
+// {
+//
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   if( _.strIs( key ) )
+//   return ( key in object );
+//   else if( _.mapIs( key ) )
+//   return ( _.nameUnfielded( key ).coded in object );
+//   else if( _.symbolIs( key ) )
+//   return ( key in object );
+//
+//   _.assert( 0, 'mapHasKey :', 'unknown type of key :', _.strType( key ) );
+// }
 
 //
 
