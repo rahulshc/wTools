@@ -4881,7 +4881,7 @@ function arrayCountElement( test )
   var got = _.arrayCountElement( [ [ 1, 3 ], [ 2, 2 ], [ 3, 1 ] ], 1, ( e ) => e[ 1 ], ( e ) => e + 2 );
   var expected = 1;
   test.identical( got, expected );
-    
+
   test.case = 'With evaluators - 4 matches';
   var got = _.arrayCountElement( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ], 0, ( e ) => e[ 0 ], ( e ) => e );
   var expected = 4;
@@ -4948,7 +4948,7 @@ function arrayCountElement( test )
   {
     _.arrayCountElement( 3, true );
   });
-    
+
   test.case = 'third argument is wrong - have no arguments';
   test.shouldThrowError( function()
   {
@@ -5253,6 +5253,58 @@ function arraySum( test )
 // ---
 // array transformation
 // ---
+
+//
+
+function arrayPrependUnrolling( test )
+{
+  test.case = 'dstArray is null';
+  var got = _.arrayPrependUnrolling( null );
+  test.identical( got, [] );
+
+  var unroll = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.arrayPrependUnrolling( null, unroll );
+  test.identical( got, unroll );
+
+  test.case = 'only dstArray';
+  var got = _.arrayPrependUnrolling( [ 1 ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dstArray is empty';
+  var got = _.arrayPrependUnrolling( [], null );
+  test.identical( got, [ null ] );
+
+  var unroll = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.arrayPrependUnrolling( [], unroll );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'simple';
+  var unroll = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.arrayPrependUnrolling( [ 1 ], unroll );
+  test.identical( got, [ 1, 2, 3, 1 ] );
+
+  test.case = 'few arguments';
+  var unroll = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.arrayPrependUnrolling( [ 1 ], unroll, [ 'a' ], 4 );
+  test.identical( got, [ 1, 2, 3, [ 'a' ], 4, 1 ] );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependUnrolling();
+  });
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayPrependUnrolling( 1, 1 );
+  });
+}
 
 //
 
@@ -7588,6 +7640,58 @@ function arrayPrependedArraysOnceStrictly( test )
     _.arrayPrependedArraysOnceStrictly( [ 6 ], [ [ 1,2 ], 3, [ 6,4,5,1,2,3 ] ] );
   });
 
+}
+
+//
+
+function arrayAppendUnrolling( test )
+{
+  test.case = 'dstArray is null';
+  var got = _.arrayAppendUnrolling( null );
+  test.identical( got, [] );
+
+  var unroll = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.arrayAppendUnrolling( null, unroll );
+  test.identical( got, unroll );
+
+  test.case = 'only dstArray';
+  var got = _.arrayAppendUnrolling( [ 1 ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dstArray is empty';
+  var got = _.arrayAppendUnrolling( [], null );
+  test.identical( got, [ null ] );
+
+  var unroll = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.arrayAppendUnrolling( [], unroll );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'simple';
+  var unroll = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.arrayAppendUnrolling( [ 1 ], unroll );
+  test.identical( got, [ 1, 1, 2, 3 ] );
+
+  test.case = 'few arguments';
+  var unroll = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.arrayAppendUnrolling( [ 1 ], unroll, [ 'a' ], 4 );
+  test.identical( got, [ 1, 1, 2, 3, [ 'a' ], 4 ] );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendUnrolling();
+  });
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.arrayAppendUnrolling( 1, 1 );
+  });
 }
 
 //
@@ -19369,6 +19473,8 @@ var Self =
 
     // array prepend
 
+    arrayPrependUnrolling : arrayPrependUnrolling,
+
     arrayPrepend : arrayPrepend,
     arrayPrependOnce : arrayPrependOnce,
     arrayPrependOnceStrictly : arrayPrependOnceStrictly,
@@ -19398,6 +19504,8 @@ var Self =
     arrayPrependedArraysOnceStrictly : arrayPrependedArraysOnceStrictly,
 
     // array append
+
+    arrayAppendUnrolling : arrayAppendUnrolling,
 
     arrayAppend : arrayAppend,
     arrayAppendOnce : arrayAppendOnce,
