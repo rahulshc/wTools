@@ -1711,23 +1711,33 @@ function arrayRightDefined( arr )
 
 /**
  * The arrayCountElement() routine returns the count of matched elements in the {-srcArray-} array with the input { element }.
- * Returns 0 if no { element } is provided. It can take evaluators for the routine equalities.
+ * Returns 0 if no { element } is provided. It can take equalizer or evaluators for the routine equalities.
  *
  * @param { Array } src - The source array.
  * @param { * } element - The value to search.
+ * @param { * } [ onEvaluate1 ] - It's a routine. If the routine has two parameters, it is used as an equalizer, and if it has only one, then routine used as the first part of the evaluator.
+ * @param { * } [ onEvaluate2 ] - The second part of evaluator. Change the value to search.
  *
  * @example
- * // returns 2
+ * // Simple exapmle. Returns 2
  * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
  *
  * @example
- * // returns 4
+ * // With equalizer. Returns 4
  * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+ *
+ * @example
+ * // With evaluator. Returns 4
+ * let arr = _.arrayCountElement( [ [ 10, 2 ], [ 10, 2 ], [ 'str', 10 ], [ 10, true ], [ false, 10 ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
  *
  * @returns { Number } - Returns the count of matched elements in the {-srcArray-} with the { element } element.
  * @function arrayCountElement
  * @throws { Error } If passed arguments is less than two or more than four.
  * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If the third or fourth argument is not a routine.
+ * @throws { Error } If the routine in third argument has less than one or more than two arguments.
+ * @throws { Error } If the routine in third argument has two arguments and fourth argument is passed into routine arrayCountElement.
+ * @throws { Error } If the routine in fourth argument has less than one or more than one arguments.
  * @memberof wTools
  */
 

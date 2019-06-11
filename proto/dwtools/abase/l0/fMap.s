@@ -21,14 +21,14 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
  *
  * @example
  * // returns true
- * let obj = {x : 100};
+ * let obj = { x : 100 };
  * objectIs(obj);
  * @example
  * // returns false
  * objectIs( 10 );
  *
- * @param {*} src.
- * @return {Boolean}.
+ * @param { * } src.
+ * @return { Boolean }.
  * @function objectIs
  * @memberof wTools
  */
@@ -313,7 +313,7 @@ function mapContain( src, ins )
  * Checks if object( o.src ) has at least one key/value pair that is represented in( o.template ).
  * Also works with ( o.template ) as routine that check( o.src ) with own rules.
  * @param {wTools.mapSatisfyOptions} o - Default options {@link wTools.mapSatisfyOptions}.
- * @returns {boolean} Returns true if( o.src ) has same key/value pair(s) with( o.template )
+ * @returns { boolean } Returns true if( o.src ) has same key/value pair(s) with( o.template )
  * or result if ( o.template ) routine call is true.
  *
  * @example
@@ -375,7 +375,7 @@ mapSatisfy.defaults =
  * Returns true if( template ) has one or more indentical key/value pair with( src ).
  * If( template ) is provided as routine, routine uses it to check( src ).
  * @param {wTools.mapSatisfyOptions} args - Arguments list {@link wTools.mapSatisfyOptions}.
- * @returns {boolean} Returns true if( src ) has same key/value pair(s) with( template ).
+ * @returns { boolean } Returns true if( src ) has same key/value pair(s) with( template ).
  *
  * @example
  * //returns true
@@ -4287,8 +4287,8 @@ function sureMapHasExactly( srcMap, screenMaps, msg )
 {
   let result = true;
 
-  result = result && _.sureMapHasOnly( srcMap, screenMaps );
-  result = result && _.sureMapHasAll( srcMap, screenMaps );
+  result = result && _.sureMapHasOnly.apply( this, arguments );
+  result = result && _.sureMapHasAll.apply( this, arguments );  
 
   return true;
 }
@@ -4299,8 +4299,8 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
 {
   let result = true;
 
-  result = result && _.sureMapOwnOnly( srcMap, screenMaps );
-  result = result && _.sureMapOwnAll( srcMap, screenMaps );
+  result = result && _.sureMapOwnOnly.apply( this, arguments );
+  result = result && _.sureMapOwnAll.apply( this, arguments );  
 
   return true;
 }
@@ -4311,11 +4311,19 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument.
+ * Also generates error using message passed after last object. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msgs ] - error message as last argument.
+ * @param { Object } srcMap - source map.
+ * @param { Object } screenMaps - object to compare with.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
+ *
+ * @example
+ * let a = { a : 1, b : 3 };
+ * let b = { a : 2, b : 3 };
+ * wTools.sureMapHasOnly( a, b );
+ *
+ * // no exception
  *
  * @example
  * let a = { a : 1, c : 3 };
@@ -4342,41 +4350,57 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * // at sureMapHasOnly (file:///.../wTools/staging/Base.s:4188)
  * // at <anonymous>:4
  *
+ * @example
+ * let x = { d : 1 };
+ * let a = Object.create( x );
+ * let b = { a : 1 };
+ * wTools.sureMapHasOnly( a, b, () => 'message, ' + 'map`, ' should have no fields :'  )
+ *
+ * // caught <anonymous>:4:8
+ * // message Object should have no fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at <anonymous>:4
+ *
  * @function sureMapHasOnly
+ * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains unique property.
  * @memberof wTools
  *
  */
 
-/* qqq : msg also could be a routine */
-
 function sureMapHasOnly( srcMap, screenMaps, msg )
 {
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
-
-  let l = arguments.length;
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
+    
   let but = Object.keys( _.mapBut( srcMap, screenMaps ) );
-
+    
   if( but.length > 0 )
   {
-    if( !msg )
-    {
-      let butArray = [];
-      for( let b = 0 ; b < but.length ; b++ )
-      butArray[ b ] = '  ', but[ b ], ' : null, ';
-      console.error( 'Consider extending object by :\n' + butArray.join( '\n' ) );
-    }
-    // if( _.strJoin && !msg )
-    // console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null, ' ]).join( '\n' ) );
-    let err = _._err
+    debugger;
+    if( arguments.length === 2 )
+    throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : _.strType( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
-    debugger;
-    throw err;
+    else
+    {
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4389,18 +4413,21 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
  * Works only in debug mode. Uses StackTrace level 2.{@link wTools.err See err}
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument.
+ * Also generates error using message passed after last object. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msgs ] - error message as last argument.
+ * @param { Object } srcMap - source map.
+ * @param { Object } screenMaps - object to compare with.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
  *
  * @example
  * let x = { d : 1 };
  * let a = Object.create( x );
  * a.a = 5;
  * let b = { a : 2 };
- * wTools.sureMapOwnOnly( a, b ); //no exception
+ * wTools.sureMapOwnOnly( a, b ); 
+ *
+ * //no exception
  *
  * @example
  * let a = { d : 1 };
@@ -4427,7 +4454,21 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * // at sureMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
  * // at <anonymous>:4
  *
+ * @example
+ * let a = { x : 0, y : 2 };
+ * let b = { c : 0, d : 3};
+ * let c = { a : 1 };
+ * wTools.sureMapOwnOnly( a, b, () => 'error, ' + 'map should', ' no own fields :' );
+ *
+ * // caught <anonymous>:4:9
+ * // error, map should have no own fields : x, y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at <anonymous>:3
+ *
  * @function sureMapOwnOnly
+ * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains unique property.
  * @memberof wTools
  *
@@ -4435,30 +4476,35 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
 
 function sureMapOwnOnly( srcMap, screenMaps, msg )
 {
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
-
-  let l = arguments.length;
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
+    
   let but = Object.keys( _.mapOwnBut( srcMap, screenMaps ) );
 
   if( but.length > 0 )
   {
-    if( !msg )
-    {
-      let butArray = [];
-      for( let b = 0 ; b < but.length ; b++ )
-      butArray[ b ] = '  ', but[ b ], ' : null, ';
-      console.error( 'Consider extending object by :\n' + butArray.join( '\n' ) );
-    }
-    // if( _.strJoin && !msg )
-    // console.error( 'Consider extending object by :\n' + _.strJoin([ '  ', but, ' : null, ' ]).join( '\n' ) );
     debugger;
+    if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should own no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4471,17 +4517,20 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2.{@link wTools.err See err}
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
+ * Also generates error using message passed after last object. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {Object} all - object to compare with.
- * @param {String} [ msgs ] - error message.
+ * @param { Object } srcMap - source map.
+ * @param { Object } all - object to compare with.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
  *
  * @example
  * let x = { a : 1 };
  * let a = Object.create( x );
  * let b = { a : 2 };
- * wTools.sureMapHasAll( a, b );// no exception
+ * wTools.sureMapHasAll( a, b );
+ *
+ * // no exception
  *
  * @example
  * let a = { d : 1 };
@@ -4507,7 +4556,20 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4242)
  * // at <anonymous>:3
  *
+ * @example
+ * let a = { x : 0 };
+ * let b = { x : 1, y : 0};
+ * wTools.sureMapHasAll( a, b, () => 'error, ' + 'map should', ' have fields :' );
+ *
+ * // caught <anonymous>:4:9
+ * // error, map should have fields : y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at <anonymous>:3
+ *
  * @function sureMapHasAll
+ * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @memberof wTools
  *
@@ -4516,20 +4578,35 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
 function sureMapHasAll( srcMap, all, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  // let l = arguments.length;
   let but = Object.keys( _.mapBut( all, srcMap ) );
 
   if( but.length > 0 )
   {
     debugger;
+    if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should have fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should have fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4542,16 +4619,19 @@ function sureMapHasAll( srcMap, all, msg )
  * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
  * Works only in Config.debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
+ * Also generates error using message passed after last object. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {Object} all - object to compare with.
- * @param {String} [ msgs ] - error message.
+ * @param { Object } srcMap - source map.
+ * @param { Object } all - object to compare with.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
  *
  * @example
  * let a = { a : 1 };
  * let b = { a : 2 };
- * wTools.sureMapOwnAll( a, b );// no exception
+ * wTools.sureMapOwnAll( a, b );
+ *
+ * // no exception
  *
  * @example
  * let a = { a : 1 };
@@ -4562,22 +4642,35 @@ function sureMapHasAll( srcMap, all, msg )
  * // Object should have own fields : b
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4269)
+ * // at sureMapOwnAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * wTools.sureMapHasAll( a, b, 'error msg' );
+ * wTools.sureMapOwnAll( a, b, 'error, should own fields' );
  *
  * // caught <anonymous>:4:9
- * // error msg Object should have fields : y
+ * // error, should own fields : y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+ * // at <anonymous>:3
+ *
+ * @example
+ * let a = { x : 0 };
+ * let b = { x : 1, y : 0};
+ * wTools.sureMapOwnAll( a, b, () => 'error, ' + 'map should', ' own fields :' );
+ *
+ * // caught <anonymous>:4:9
+ * // error, map should own fields : y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at sureMapOwnAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
  * @function sureMapOwnAll
+ * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @memberof wTools
  *
@@ -4586,20 +4679,35 @@ function sureMapHasAll( srcMap, all, msg )
 function sureMapOwnAll( srcMap, all, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  // let l = arguments.length;
   let but = Object.keys( _.mapOwnBut( all, srcMap ) );
 
   if( but.length > 0 )
   {
     debugger;
+    if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should own fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should own fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4612,16 +4720,19 @@ function sureMapOwnAll( srcMap, all, msg )
  * Checks if map passed by argument {-srcMap-} has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
+ * Also generates error using message passed after last object. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msg ] - error message as last argument.
+ * @param { Object } srcMap - source map.
+ * @param {...Object} screenMaps - object(s) to compare with.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
- * wTools.sureMapHasNone( a, b );// no exception
+ * wTools.sureMapHasNone( a, b ); 
+ *
+ * // no exception
  *
  * @example
  * let x = { a : 1 };
@@ -4639,16 +4750,29 @@ function sureMapOwnAll( srcMap, all, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * wTools.sureMapHasNone( a, b, 'error msg' );
+ * wTools.sureMapHasNone( a, b, 'error, map should have no fields' );
  *
  * // caught <anonymous>:3:9
- * // error msg Object should have no fields : x, y
+ * // error, map should have no fields : x, y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
+ * // at <anonymous>:3
+ *
+ * @example
+ * let a = { x : 0, y : 1 };
+ * let b = { x : 1, y : 0 };
+ * wTools.sureMapHasNone( a, b, () => 'error, ' + 'map should have', 'no fields :' );
+ *
+ * // caught <anonymous>:3:9
+ * // error, map should have no fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:3
  *
  * @function sureMapHasNone
+ * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
  * @memberof wTools
  *
@@ -4657,19 +4781,35 @@ function sureMapOwnAll( srcMap, all, msg )
 function sureMapHasNone( srcMap, screenMaps, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( arguments[ 2 ] ) || _.arrayIs( arguments[ 2 ] ) || _.routineIs( arguments[ 2 ] ) );
+ _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  let but = _.mapOnly( srcMap, screenMaps );
-  let keys = Object.keys( but );
-  if( keys.length )
+  let but = Object.keys( _.mapOnly( srcMap, screenMaps ) );
+
+  if( but.length > 0 )
   {
     debugger;
+    if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : _.strType( srcMap ) + ' should have no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4681,20 +4821,35 @@ function sureMapHasNone( srcMap, screenMaps, msg )
 function sureMapOwnNone( srcMap, screenMaps, msg )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( arguments.length === 2 || _.strIs( msg ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
-  // let l = arguments.length;
   let but = Object.keys( _.mapOnlyOwn( srcMap, screenMaps ) );
 
-  if( but.length )
+  if( but.length > 0 )
   {
     debugger;
+    if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ ( msg ? _.strConcat( msg ) : 'Object should own no fields :' ), _.strQuote( but ).join( ', ' ) ],
+      args : [ _.strType( srcMap ) + ' should own no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 2; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4706,10 +4861,17 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
 /**
  * Checks if map passed by argument {-srcMap-} not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found undefined property it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed after first argument.
+ * Also generates error using messages passed after first argument. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {String} [ msgs ] - error message for generated exception.
+ * @param { Object } srcMap - source map.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
+ *
+ * @example
+ * let map = { a : '1', b : 'name' };
+ * wTools.sureMapHasNoUndefine( map );
+ *
+ * // no exception
  *
  * @example
  * let map = { a : '1', b : undefined };
@@ -4724,17 +4886,28 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * wTools.sureMapHasNoUndefine( map, '"map"');
+ * wTools.sureMapHasNoUndefine( map, '"map" has undefines :');
  *
  * // caught <anonymous>:2:8
- * // Object "map" should have no undefines, but has : a
+ * // "map" has undefines : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at sureMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at <anonymous>:2
+ *
+ * @example
+ * let map = { a : undefined, b : '1' };
+ * wTools.sureMapHasNoUndefine( map, '"map"', () => 'should have ' + 'no undefines, but has :' );
+ *
+ * // caught <anonymous>:2:8
+ * // "map" should have no undefines, but has : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at sureMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
  * // at <anonymous>:2
  *
  * @function sureMapHasNoUndefine
- * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If no arguments passed or than three arguments passed.
  * @throws {Exception} If map {-srcMap-} contains undefined property.
  * @memberof wTools
  *
@@ -4743,24 +4916,39 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
 function sureMapHasNoUndefine( srcMap, msg )
 {
 
-  _.assert( arguments.length === 1 || arguments.length === 2 )
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3, 'Expects one, two or three arguments' )
 
   let but = [];
-  let l = arguments.length;
-
+  
   for( let s in srcMap )
   if( srcMap[ s ] === undefined )
   but.push( s );
-
-  if( but.length )
+  
+  if( but.length > 0 )
   {
     debugger;
-    let listStr = _.strQuote ? _.strQuote( but ).join( ', ' ) : String( but );
+    if( arguments.length === 1 )
     throw _._err
     ({
-      args : [ 'Object ' + ( msg ? _.strConcat( msg ) : 'should have no undefines, but has' ) + ' : ' + listStr ],
+      args : [ _.strType( srcMap ) + ' should have no undefines, but has :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
+    else
+    {    
+      let arr = [];
+      for ( let i = 1; i < arguments.length; i++ )
+      {
+        if( _.routineIs( arguments[ i ] ) ) 
+        arguments[ i ] = ( arguments[ i ] )();    
+        arr[ i ] = arguments[ i ];
+      }    
+      throw _._err
+      ({
+        args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
+        level : 2,
+      });
+    }
+      
     return false;
   }
 
@@ -4793,11 +4981,19 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument.
+ * Also generates error using message passed after second argument. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msgs ] - error message as last argument.
+ * @param { Object } srcMap - source map.
+ * @param { Object } screenMaps - object to compare with.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
+ *
+ * @example
+ * let a = { a : 1, b : 3 };
+ * let b = { a : 2, b : 3 };
+ * wTools.assertMapHasOnly( a, b );
+ *
+ * //no exception
  *
  * @example
  * let a = { a : 1, c : 3 };
@@ -4815,16 +5011,30 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * let x = { d : 1 };
  * let a = Object.create( x );
  * let b = { a : 1 };
- * wTools.assertMapHasOnly( a, b, 'message' )
+ * wTools.assertMapHasOnly( a, b, 'map should have no fields :' )
  *
  * // caught <anonymous>:4:8
- * // message Object should have no fields : d
+ * // map should have no fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasOnly (file:///.../wTools/staging/Base.s:4188)
+ * // at <anonymous>:4
+ *
+ * @example
+ * let x = { d : 1 };
+ * let a = Object.create( x );
+ * let b = { a : 1 };
+ * wTools.assertMapHasOnly( a, b, 'map', () => ' should' + ' have no fields :' )
+ *
+ * // caught <anonymous>:4:8
+ * // map should have no fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at assertMapHasOnly (file:///.../wTools/staging/Base.s:4188)
  * // at <anonymous>:4
  *
  * @function assertMapHasOnly
+ * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} contains unique property.
  * @memberof wTools
  *
@@ -4843,18 +5053,21 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * Checks if map passed by argument {-srcMap-} has only properties represented in object(s) passed after first argument. Checks only own properties of the objects.
  * Works only in debug mode. Uses StackTrace level 2.{@link wTools.err See err}
  * If routine found some unique properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument.
+ * Also generates error using message passed after second argument. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msgs ] - error message as last argument.
+ * @param { Object } srcMap - source map.
+ * @param { Object } screenMaps - object to compare with.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
  *
  * @example
  * let x = { d : 1 };
  * let a = Object.create( x );
  * a.a = 5;
  * let b = { a : 2 };
- * wTools.assertMapOwnOnly( a, b ); //no exception
+ * wTools.assertMapOwnOnly( a, b ); 
+ *
+ * //no exception
  *
  * @example
  * let a = { d : 1 };
@@ -4872,16 +5085,30 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * let a = { x : 0, y : 2 };
  * let b = { c : 0, d : 3};
  * let c = { a : 1 };
- * wTools.assertMapOwnOnly( a, b, 'error msg' );
+ * wTools.assertMapOwnOnly( a, b, 'error, map should have no own fields :' );
  *
  * // caught <anonymous>:4:8
- * // error msg Object should have no own fields : x, y
+ * // error, map should have no own fields : x, y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
+ * // at <anonymous>:4
+ *
+ * @example
+ * let a = { x : 0, y : 2 };
+ * let b = { c : 0, d : 3};
+ * let c = { a : 1 };
+ * wTools.assertMapOwnOnly( a, b, () => 'error, ' + 'map', ' should have no own fields :' );
+ *
+ * // caught <anonymous>:4:8
+ * // error, map should have no own fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at assertMapOwnOnly (file:///.../wTools/staging/Base.s:4215)
  * // at <anonymous>:4
  *
  * @function assertMapOwnOnly
+ * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} contains unique property.
  * @memberof wTools
  *
@@ -4900,16 +5127,19 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * Checks if map passed by argument {-srcMap-} has no properties represented in object(s) passed after first argument. Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
+ * Also generates error using message passed after second argument. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {...Object} target - object(s) to compare with.
- * @param {String} [ msg ] - error message as last argument.
+ * @param { Object } srcMap - source map.
+ * @param { Object } screenMaps - object to compare with.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
- * wTools.assertMapHasNone( a, b );// no exception
+ * wTools.assertMapHasNone( a, b );
+ *
+ * // no exception
  *
  * @example
  * let x = { a : 1 };
@@ -4927,16 +5157,29 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * wTools.assertMapHasNone( a, b, 'error msg' );
+ * wTools.assertMapHasNone( a, b, 'map should have no fields :' );
  *
  * // caught <anonymous>:3:9
- * // error msg Object should have no fields : x, y
+ * // map should have no fields : x, y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasNone (file:///.../wTools/staging/Base.s:4518)
+ * // at <anonymous>:3
+ *
+ * @example
+ * let a = { x : 0, y : 1 };
+ * let b = { x : 1, y : 0 };
+ * wTools.assertMapHasNone( a, b, () => 'map ' + 'should ', 'have no fields :' );
+ *
+ * // caught <anonymous>:3:9
+ * // map should have no fields : x, y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at assertMapHasNone (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:3
  *
  * @function assertMapHasNone
+ * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
  * @memberof wTools
  *
@@ -4964,17 +5207,20 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks all enumerable properties.
  * Works only in debug mode. Uses StackTrace level 2.{@link wTools.err See err}
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
+ * Also generates error using message passed after second argument. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {Object} all - object to compare with.
- * @param {String} [ msgs ] - error message.
+ * @param { Object } srcMap - source map.
+ * @param { Object } all - object to compare with.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
  *
  * @example
  * let x = { a : 1 };
  * let a = Object.create( x );
  * let b = { a : 2 };
- * wTools.assertMapHasAll( a, b );// no exception
+ * wTools.assertMapHasAll( a, b );
+ *
+ * // no exception
  *
  * @example
  * let a = { d : 1 };
@@ -4991,16 +5237,29 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 2 };
  * let b = { x : 0, d : 3};
- * wTools.assertMapHasAll( a, b, 'error msg' );
+ * wTools.assertMapHasAll( a, b, 'map should have fields :' );
  *
  * // caught <anonymous>:4:9
- * // error msg Object should have fields : d
+ * // map should have fields : d
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4242)
+ * // at <anonymous>:3
+ *
+ * @example
+ * let a = { x : 0, y : 2 };
+ * let b = { x : 0, d : 3};
+ * wTools.assertMapHasAll( a, b, () => 'map' + ' should', ' have fields :' );
+ *
+ * // caught <anonymous>:4:9
+ * // map should have fields : d
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4242)
  * // at <anonymous>:3
  *
  * @function assertMapHasAll
+ * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @memberof wTools
  *
@@ -5019,16 +5278,19 @@ function assertMapHasAll( srcMap, all, msg )
  * Checks if map passed by argument {-srcMap-} has all properties represented in object passed by argument( all ). Checks only own properties of the objects.
  * Works only in Config.debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine did not find some properties in source it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed as last argument( msg ).
+ * Also generates error using message passed after second argument. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {Object} all - object to compare with.
- * @param {String} [ msgs ] - error message.
+ * @param { Object } srcMap - source map.
+ * @param { Object } all - object to compare with.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in third argument.
  *
  * @example
  * let a = { a : 1 };
  * let b = { a : 2 };
- * wTools.assertMapOwnAll( a, b );// no exception
+ * wTools.assertMapOwnAll( a, b );
+ *
+ * // no exception
  *
  * @example
  * let a = { a : 1 };
@@ -5036,7 +5298,7 @@ function assertMapHasAll( srcMap, all, msg )
  * wTools.assertMapOwnAll( a, b );
  *
  * // caught <anonymous>:3:8
- * // Object should have own fields : b
+ * // Object should own fields : b
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at assertMapHasAll (file:///.../wTools/staging/Base.s:4269)
@@ -5045,16 +5307,29 @@ function assertMapHasAll( srcMap, all, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * wTools.assertMapHasAll( a, b, 'error msg' );
+ * wTools.assertMapOwnAll( a, b, 'error msg, map should own fields :' );
  *
  * // caught <anonymous>:4:9
- * // error msg Object should have fields : y
+ * // error msg, map should own fields : y
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapOwnAll (file:///.../wTools/staging/Base.s:4269)
+ * // at <anonymous>:3
+ *
+ * @example
+ * let a = { x : 0 };
+ * let b = { x : 1, y : 0};
+ * wTools.assertMapOwnAll( a, b, 'error msg, ', () => 'map' + ' should own fields :' );
+ *
+ * // caught <anonymous>:4:9
+ * // error msg, map should own fields : y
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at assertMapOwnAll (file:///.../wTools/staging/Base.s:4269)
  * // at <anonymous>:3
  *
  * @function assertMapOwnAll
+ * @throws {Exception} If no arguments passed or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
  * @memberof wTools
  *
@@ -5072,17 +5347,24 @@ function assertMapOwnAll( srcMap, all, msg )
 /**
  * Checks if map passed by argument {-srcMap-} not contains undefined properties. Works only in debug mode. Uses StackTrace level 2. {@link wTools.err See err}
  * If routine found undefined property it generates and throws exception, otherwise returns without exception.
- * Also generates error using message passed after first argument.
+ * Also generates error using messages passed after first argument. Message may be a string, an array, or a function.
  *
- * @param {Object} srcMap - source map.
- * @param {String} [ msgs ] - error message for generated exception.
+ * @param { Object } srcMap - source map.
+ * @param { * } [ msg ] - error message for generated exception.
+ * @param { * } [ msg ] - error message that adds to the message in second argument.
+ *
+ * @example
+ * let map = { a : '1', b : 'name' };
+ * wTools.assertMapHasNoUndefine( map );
+ *
+ * // no exception
  *
  * @example
  * let map = { a : '1', b : undefined };
  * wTools.assertMapHasNoUndefine( map );
  *
  * // caught <anonymous>:2:8
- * // Object  should have no undefines, but has : b
+ * // Object should have no undefines, but has : b
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
@@ -5090,17 +5372,28 @@ function assertMapOwnAll( srcMap, all, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * wTools.assertMapHasNoUndefine( map, '"map"');
+ * wTools.assertMapHasNoUndefine( map, '"map" has undefines :');
  *
  * // caught <anonymous>:2:8
- * // Object "map" should have no undefines, but has : a
+ * // "map" has undefines : a
+ * //
+ * // at _err (file:///.../wTools/staging/Base.s:3707)
+ * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
+ * // at <anonymous>:2
+ *
+ * @example
+ * let map = { a : undefined, b : '1' };
+ * wTools.assertMapHasNoUndefine( map, 'map', () => ' has ' + 'undefines :');
+ *
+ * // caught <anonymous>:2:8
+ * // map has undefines : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
  * // at assertMapHasNoUndefine (file:///.../wTools/staging/Base.s:4087)
  * // at <anonymous>:2
  *
  * @function assertMapHasNoUndefine
- * @throws {Exception} If no arguments provided.
+ * @throws {Exception} If no arguments provided or more than three arguments passed.
  * @throws {Exception} If map {-srcMap-} contains undefined property.
  * @memberof wTools
  *
