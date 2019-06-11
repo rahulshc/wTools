@@ -8,7 +8,7 @@
 | arrayPrependArray          | dstArray            | dstArray            | dstArray                   |
 | arrayPrependArrays         | dstArray            | dstArray            | dstArray                   |
 | arrayPrepended             | index               | index <br> if not element was prepended <br> then -1 | index <br> if not element was prepended <br> then -1 |
-| arrayPrependedElement      | index               | element <br> if not element was prepended <br> then undefined | element if not element was prepended <br> then undefined; <br> if !Config.debug <br> then index |
+| arrayPrependedElement      | index               | element <br> if not element was prepended <br> then undefined | element <br> if not element was prepended <br> then undefined; <br> if !Config.debug <br> then index |
 | arrayPrependedArray        | number              | number              | number                     |
 | arrayPrependedArrays       | number              | number              | number                     |
 
