@@ -57,6 +57,10 @@ path:
   remote:
     criterion:
       predefined: 1
+  module.common:
+    path: out/wTools.out
+    criterion:
+      predefined: 1
   in:
     path: ..
   out:
