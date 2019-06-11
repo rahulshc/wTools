@@ -19,7 +19,7 @@
 | arrayRemovedArray         | number of removed elements | number of removed element <= insArray.length | number of removed element === insArray.length; or if( !Config.debug ) => number of removed elements  |
 | arrayRemovedArrays        | number of removed elements | number of removed elements <= insArray.length | number of removed elements == insArray.length; if( !Config.debug ) => number of removed elements |
 
-| **Array Remove**          | **-**                      | **Once**            | **OnceStrictly**           |
+| **Array Flatten**          | **-**                      | **Once**            | **OnceStrictly**           |
 |---------------------------|----------------------------|---------------------|----------------------------|
 | arrayFlattened             | __( if( arguments.length === 1 ) dstArray; )__ or number of flattened elements in dstArray and insArray  | __( if( arguments.length === 1 ) dstArray; )__  number of flattened elements <= insArray.length; | __( if( arguments.length === 1 ) dstArray; )__  number of flattened elements === insArray.length; |
 | arrayFlattenedDefined      |__( if( arguments.length === 1 ) dstArray; )__  or total number of elements dstArray and insArray | __( if( arguments.length === 1 ) dstArray; )__  number of flattened elements <= total length of elements in insArray | __( if( arguments.length === 1 ) dstArray; )__ number of flattened elements == total length of elements in insArray |
