@@ -1,11 +1,11 @@
-| **Array Prepend**          | -                   | Once                | OnceStrictly               |
-|----------------------------|---------------------|---------------------|----------------------------|
-| arrayPrepended             | return 0    |  return 0; or return -1  |   return 0; or return -1   |
-| arrayPrependedElement      |  return 0    | first element of dstArray; or return undefined | first element of dstArray; or return undefined; if( !Config.debug) => return 0 |
+| **Array Prepend**          | -                            | Once                | OnceStrictly               |
+|----------------------------|------------------------------|---------------------|----------------------------|
+| arrayPrepended             | index of prepended element   |  index of prepended element; or -1 if no element was prepended | index of prepended element; or -1 if no element was prepended   |
+| arrayPrependedElement      | index of prepended element   | prepended element; or return undefined if no element was prepended | prepended element; or return undefined if no element was prepended; if( !Config.debug) => return 0 |
 | arrayPrependedArray        | insArray.length     | number of prepended elements <= insArray.length | number of prepended elements === insArray.length  |
 | arrayPrependedArrays       | length of insArray elements | number of prepended elements <= insArray.length | number of prepended elements === length of all elements in insArray |
 
-| **Array Append**          | -                   | Once                | OnceStrictly               |
+| **Array Append**          | -                   | Once                | OnceStrictly               | 
 |---------------------------|---------------------|---------------------|----------------------------|
 | arrayAppended             |  dstArray.length - 1 | dstArray.length - 1 |  dstArray.length - 1 ; or -1 |
 | arrayAppendedElement      |  dstArray.length - 1  | last element of dstArray; or return false | last element of dstArray; or return false; if( !Config.debug) => dstArray.length - 1                  |
