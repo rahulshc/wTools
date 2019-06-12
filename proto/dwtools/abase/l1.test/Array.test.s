@@ -14410,14 +14410,8 @@ function arrayFlattenDefined( test )
 {
   test.case = 'make array flat, dst is empty';
 
-  var got  = _.arrayFlattenDefined( null, [] );
-  test.identical( got, [] );
-
   var got  = _.arrayFlattenDefined( [], [] );
   test.identical( got, [] );
-
-  var got  = _.arrayFlattenDefined( null, [ 1, 2, 3 ] );
-  test.identical( got, [ 1, 2, 3 ] );
 
   var got  = _.arrayFlattenDefined( [], [ 1, 2, 3 ] );
   test.identical( got, [ 1, 2, 3 ] );
@@ -14529,12 +14523,9 @@ function arrayFlattenDefined( test )
 
 function arrayFlattenDefinedOnce( test )
 {
-  test.case = 'make array flat, dst is empty or null';
+  test.case = 'make array flat, dst is empty';
 
   var got  = _.arrayFlattenDefinedOnce( [], [] );
-  test.identical( got, [] );
-
-  var got  = _.arrayFlattenDefinedOnce( null, [] );
   test.identical( got, [] );
 
   var got  = _.arrayFlattenDefinedOnce( [], [ 1, 1, 2, 2, 3, 3, 3 ] );
@@ -14546,13 +14537,7 @@ function arrayFlattenDefinedOnce( test )
   var got  = _.arrayFlattenDefinedOnce( [], [ [ 1, 1, [ 2, 2, 2, [ 3, 3 ] ] ]  ] );
   test.identical( got, [ 1, 2, 3 ] );
 
-  var got  = _.arrayFlattenDefinedOnce( null, [ [ 1, 1, [ 2, 2, 2, [ 3, 3 ] ] ]  ] );
-  test.identical( got, [ 1, 2, 3 ] );
-
   var got  = _.arrayFlattenDefinedOnce( [], [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
-  test.identical( got, [ 1 ] );
-
-  var got  = _.arrayFlattenDefinedOnce( null, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
   test.identical( got, [ 1 ] );
 
   test.case = 'make array flat, dst is not empty';
@@ -14826,6 +14811,247 @@ function arrayFlattenDefinedOnceStrictly( test )
      _.arrayFlattenDefinedOnceStrictly( [ 0, 0, 1, 1 ], [ 3, 4, [ 5, [ 6 ] ] ] );
   });
 }
+
+//
+
+function arrayFlattenedDefined( test )
+{
+  test.case = 'make array flat, dst is empty';
+
+  var got  = _.arrayFlattenedDefined( [], [] );
+  test.identical( got, 0 );
+
+  var got  = _.arrayFlattenedDefined( [], [ 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  var got  = _.arrayFlattenedDefined( [], [ [ 1 ], [ 2 ], [ 3 ]  ] );
+  test.identical( got, 3 );
+
+  var got  = _.arrayFlattenedDefined( [], [ [ 1, [ 2, [ 3 ] ] ]  ] );
+  test.identical( got, 3 );
+
+  var got  = _.arrayFlattenedDefined( [], [ [ [ [ [ 1 ] ] ] ] ]  );
+  test.identical( got, 1 );
+
+  var got  = _.arrayFlattenedDefined( [], 1, 2, '3'  );
+  test.identical( got, 3 );
+
+  test.case = 'make array flat, dst is not empty';
+
+  var got  = _.arrayFlattenedDefined( [ 1, 2, 3 ], [ 4 ] );
+  test.identical( got, 1 );
+
+  var got  = _.arrayFlattenedDefined( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+  test.identical( got, 3 );
+
+  var got  = _.arrayFlattenedDefined( [ 1, 2, 3 ], [ [ 1 ], [ 2 ], [ 3 ] ] );
+  test.identical( got, 3 );
+
+  var got  = _.arrayFlattenedDefined( [ 1, 2, 3 ], [ [ 1, [ 2, [ 3 ] ] ] ] );
+  test.identical( got, 3 );
+
+  var got  = _.arrayFlattenedDefined( [ 1 ], [ [ [ [ [ 1 ] ] ] ] ]  );
+  test.identical( got, 1 );
+
+  var got = _.arrayFlattenedDefined( [], 1 );
+  test.identical( got, 1 );
+
+  test.case = 'make array flat from multiple arrays as one arg';
+  var got  = _.arrayFlattenedDefined
+  (
+    [],
+    [
+      [ 1 ],
+      [ [ 2 ] ],
+      [ 3, [ [ [ 4 ] ] ] ]
+    ]
+  );
+  test.identical( got, 4 );
+
+  test.case = 'make array flat from different inputs';
+
+  var got = _.arrayFlattenedDefined( [ 1, 1, 3, 3, [ 5, 5 ] ], 5 );
+  test.identical( got, 1 );
+
+  var got = _.arrayFlattenedDefined( [ [ 0 ], [ [ -1, -2 ] ] ], [ 1, 1, 3, 3, [ 5, 5 ] ] );
+  test.identical( got, 6 );
+
+  //
+
+  test.case = 'single argument';
+
+  var got = _.arrayFlattenedDefined( [ 0, 1, 2, 3 ] )
+  test.identical( got, [ 0, 1, 2, 3 ] );
+
+  var got = _.arrayFlattenedDefined( [ [ 0, 0 ], [ 1, 1 ] ] );
+  test.identical( got, [ 0, 0, 1, 1 ] );
+
+  var got = _.arrayFlattenedDefined( [ [ 0 ], 0, 1, [ 0, 1 ] ] );
+  test.identical( got, [ 0, 0, 1, 0, 1 ] );
+
+  var got = _.arrayFlattenedDefined( [ [ [ 0 ] ] ] );
+  test.identical( got, [ 0 ] );
+
+  var got = _.arrayFlattenedDefined( [ 1, 1, 3, 3, [ 5, 5 ] ] );
+  test.identical( got, [ 1, 1, 3, 3, 5, 5 ] );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Empty';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenedDefined();
+  });
+
+  test.case = 'dstArray is not array';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenedDefined( 1, [ 1 ] );
+  });
+
+  test.case = 'insArray is undefined';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenedDefined( [ 1 ], undefined );
+  });
+
+}
+
+//
+
+function arrayFlattenedDefinedOnce( test )
+{
+  test.case = 'make array flat, dst is empty or null';
+
+  var got  = _.arrayFlattenedDefinedOnce( [], [] );
+  test.identical( got, 0 );
+
+  var got  = _.arrayFlattenedDefinedOnce( [], [ 1, 1, 2, 2, 3, 3, 3 ] );
+  test.identical( got, 3 );
+
+  var got  = _.arrayFlattenedDefinedOnce( [], [ [ 1 ], [ 1 ], [ 2 ], [ 2 ], [ 3 ], [ 3 ]  ] );
+  test.identical( got, 3 );
+
+  var got  = _.arrayFlattenedDefinedOnce( [], [ [ 1, 1, [ 2, 2, 2, [ 3, 3 ] ] ]  ] );
+  test.identical( got, 3 );
+
+  var got  = _.arrayFlattenedDefinedOnce( [], [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
+  test.identical( got, 1 );
+
+  test.case = 'make array flat, dst is not empty';
+
+  var got  = _.arrayFlattenedDefinedOnce( [ 1, 2, 3, 4 ], [ 4, 2 ] );
+  test.identical( got, 0 );
+
+  var got  = _.arrayFlattenedDefinedOnce( [ 1, 2, 3 ], [ 1, 2, 3, [ [ 4 ] ] ] );
+  test.identical( got, 1 );
+
+  var got  = _.arrayFlattenedDefinedOnce( [ 'a', 2, 3 ], [ [ 1 ], [ 4 ], [ 'a' ], [ 4 ] ] );
+  test.identical( got, 2 );
+
+  var got  = _.arrayFlattenedDefinedOnce( [ 1, 2, 3 ], [ [ 1, [ 2, [ 3 ] ] ], 4 ] );
+  test.identical( got, 1 );
+
+  var got  = _.arrayFlattenedDefinedOnce( [ 1 ],[ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
+  test.identical( got, 0 );
+
+  test.case = 'make array flat from multiple arrays as one arg';
+  var got  = _.arrayFlattenedDefinedOnce
+  (
+    [ 1, 4 ],
+    [
+      [ 1 ],
+      [ [ 2 ] ],
+      [ 3, [ [ [ 4 ] ] ] ]
+    ]
+  );
+  test.identical( got, 2 );
+
+  //
+
+  test.case = 'onEqualize';
+  var got  = _.arrayFlattenedDefinedOnce( [ 1, 2, 3, 4 ], [ 1, 4, 2, 5 ], ( a, b ) =>  a === b );
+  test.identical( got, 1 );
+
+  test.case = 'onEvaluate - one evaluator';
+  var got  = _.arrayFlattenedDefinedOnce( [ 1, 2, 3, 4 ], [ 1, 4, 2, 5 ], ( a ) => a );
+  test.identical( got, 1 );
+
+  test.case = 'onEvaluate - two evaluator';
+
+  var got  = _.arrayFlattenedDefinedOnce( [ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ], [ 1, 4, 2, 5 ], ( a ) => a[ 0 ], ( b ) => b );
+  test.identical( got, 1 );
+
+  var got  = _.arrayFlattenedDefinedOnce( [ [ 1 ], 5, [ 2 ], [ 3 ], [ 4 ] ], [ 1, 4, 2, 5, [ 6 ] ], ( a ) => a[ 0 ], ( b ) => b );
+  test.identical( got, 2 );
+
+  //
+
+  test.case = 'single argument';
+
+  var got = _.arrayFlattenedDefinedOnce( [ 0, 1, 2, 3 ] );
+  test.identical( got, [ 0, 1, 2, 3 ] );
+
+  var got = _.arrayFlattenedDefinedOnce( [ 0, 1, 0, 1 ] );
+  test.identical( got, [ 0, 1 ] );
+
+  var got = _.arrayFlattenedDefinedOnce( [ [ 0, 0 ], [ 1, 1 ] ] );
+  test.identical( got, [ 0, 1 ] );
+
+  var got = _.arrayFlattenedDefinedOnce( [ [ 0 ], 0, 1, [ 0, 1 ] ] );
+  test.identical( got, [ 0, 1 ] );
+
+  var got = _.arrayFlattenedDefinedOnce( [ 1, [ [ 0 ], 1 ], 1, 0 ] );
+  test.identical( got, [ 1, 0 ] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'not enough arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenedDefinedOnce();
+  });
+
+  test.case = 'too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenedDefinedOnce( [], [ 1 ], ( a ) => a, ( a ) => a, ( a ) => a );
+  });
+
+  test.case = 'first is not longIs';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenedDefinedOnce( 1, [ 1 ] );
+  });
+
+  // // it works but has not
+  // test.case = 'second array has undefined';
+  // test.shouldThrowError( function()
+  // {
+  //   _.arrayFlattenDefinedOnce( [], [ undefined ] );
+  // });
+
+  // it must works but not
+  test.case = 'second array is undefined';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenedDefinedOnce( [], undefined );
+  });
+
+  test.case = 'onEqualize is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenedDefinedOnce( [], [ 1 ], [] );
+  });
+}
+
+//
+
+
 
 //
 // array replace
@@ -20025,6 +20251,8 @@ var Self =
     arrayFlattenDefined : arrayFlattenDefined,
     arrayFlattenDefinedOnce : arrayFlattenDefinedOnce,
     arrayFlattenDefinedOnceStrictly : arrayFlattenDefinedOnceStrictly,
+    arrayFlattenedDefined : arrayFlattenedDefined,
+    arrayFlattenedDefinedOnce : arrayFlattenedDefinedOnce,
 
     // array replace
 
