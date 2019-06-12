@@ -878,8 +878,13 @@ function bufferAnyIs( src )
 {
   if( !src )
   return false;
-  return src.byteLength >= 0;
+  if( typeof src !== 'object' )
+  return false;
+  if( !Reflect.has( src, 'byteLength' ) )
+  return false;
+  // return src.byteLength >= 0;
   // return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
+  return true;
 }
 
 //
@@ -1406,7 +1411,7 @@ function scalarToVector( dst, length )
   }
   else
   {
-    _.assert( dst.length === length, () => 'Expects array of length ' + length + ' but got ' + dst );
+    _.assert( dst.length === length, () => 'Expects array of length ' + length + ' but got ' + dst.length );
   }
 
   return dst;
@@ -5630,10 +5635,10 @@ let Routines =
   arrayCompare,
   arrayIdentical,
 
-  arrayHas, /* dubious */
-  arrayHasAny, /* dubious */
-  arrayHasAll, /* dubious */
-  arrayHasNone, /* dubious */
+  arrayHas,
+  arrayHasAny, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer */
+  arrayHasAll, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer */
+  arrayHasNone, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer */
 
   arrayAll,
   arrayAny,
