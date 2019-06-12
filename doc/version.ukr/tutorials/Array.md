@@ -63,8 +63,8 @@
 | arrayReplaceElement       | dstArray            | dstArray            | dstArray                   |
 | arrayReplaceArray         | dstArray            | dstArray            | dstArray                   |
 | arrayReplaceArrays        | dstArray            | dstArray            | dstArray                   |
-| arrayReplaced             | number              | number of not replaced | number                     |
-| arrayReplaceedElement     | number              | ins <br> if not element was replaced <br> then undefined | ins <br> if not element was replaced <br> then undefined |
+| arrayReplaced             | number              | number of not replaced | number                  |
+| arrayReplacedElement      | number              | ins <br> if not element was replaced <br> then undefined | ins <br> if not element was replaced <br> then undefined |
 | arrayReplacedArray        | number              | number              | number                     |
 | arrayReplacedArrays       | number              | number              | number                     |
 | arrayReplaceAll           | dstArray            | -                   | -                          |
