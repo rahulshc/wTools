@@ -14696,7 +14696,6 @@ function arrayFlattenDefinedOnceStrictly( test )
   test.identical( got, [ 1, 0, 2, 3 ] );
 
   test.case = 'make array flat from multiple arrays as one arg';
-
   var got  = _.arrayFlattenDefinedOnceStrictly
   (
     [ 1, 4 ],
@@ -14707,6 +14706,8 @@ function arrayFlattenDefinedOnceStrictly( test )
   );
   test.identical( got, [ 1, 4, 2, 3, 5 ] );
 
+  //
+
   test.case = 'onEqualize';
   var got  = _.arrayFlattenDefinedOnceStrictly( [ 1, 2, 3, 4 ], [ 5 ], function( a, b )
   {
@@ -14714,54 +14715,40 @@ function arrayFlattenDefinedOnceStrictly( test )
   });
   test.identical( got, [ 1, 2, 3, 4, 5 ] );
 
-  debugger
+  test.case = 'onEvaluate - one evaluator';
+  var got  = _.arrayFlattenDefinedOnceStrictly( [ 1, 2, 3, 4 ], [ 5 ], ( a ) => a );
+  test.identical( got, [ 1, 2, 3, 4, 5 ] );
 
-  test.case = 'dstArray has sub arrays';
-  var got = _.arrayFlattenDefinedOnceStrictly( [ 1, 3, [ 5 ] ], 6 );
-  var expected = [ 1, 3, [ 5 ], 6 ];
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenDefinedOnceStrictly( [ [ 1, [ 3, [ 5 ] ] ], 2 ], 6 );
-  var expected = [ [ 1, [ 3, [ 5 ] ] ], 2, 6 ];
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenDefinedOnceStrictly( [ 1, 3, [ 5 ] ], 5 );
-  var expected = [ 1, 3, [ 5 ], 5 ];
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenDefinedOnceStrictly( [], [ 1, 3, [ 5, 6 ] ] );
-  var expected = [ 1, 3, 5, 6 ];
-  test.identical( got, expected );
+  test.case = 'onEvaluate - two evaluators';
+  var got  = _.arrayFlattenDefinedOnceStrictly( [ 1, 2, 3, 4, 5 ], [ [ 5 ] ], ( a ) => a, ( b ) => b[ 0 ] );
+  test.identical( got, [ 1, 2, 3, 4, 5, 5 ] );
 
   //
 
-  test.open( 'single argument' );
+  test.case = 'dstArray has sub arrays';
 
-  var got = _.arrayFlattenDefinedOnceStrictly([ 0, 1, 2, 3 ]);
-  var expected = [ 0, 1, 2, 3 ];
-  test.identical( got, expected );
+  var got = _.arrayFlattenDefinedOnceStrictly( [ 1, 3, [ 5 ] ], 6 );
+  test.identical( got, [ 1, 3, [ 5 ], 6 ] );
+
+  var got = _.arrayFlattenDefinedOnceStrictly( [ [ 1, [ 3, [ 5 ] ] ], 2 ], 6 );
+  test.identical( got, [ [ 1, [ 3, [ 5 ] ] ], 2, 6 ] );
+
+  test.case = 'single argument';
 
   var got = _.arrayFlattenDefinedOnceStrictly([ 0, [ 1 ] ]);
-  var expected = [ 0, 1 ];
-  test.identical( got, expected );
+  test.identical( got, [ 0, 1 ] );
 
   var got = _.arrayFlattenDefinedOnceStrictly([ [ 0 ], [ 1 ] ]);
-  var expected = [ 0, 1 ];
-  test.identical( got, expected );
+  test.identical( got, [ 0, 1 ] );
 
   var got = _.arrayFlattenDefinedOnceStrictly([ [ 0 ], 1, 2, [ 3, 4 ] ]);
-  var expected = [ 0, 1, 2, 3, 4 ];
-  test.identical( got, expected );
+  test.identical( got, [ 0, 1, 2, 3, 4 ] );
 
-  var got = _.arrayFlattenDefinedOnceStrictly([ 0,[ [ 2 ], 1 ], 3, 4 ]);
-  var expected = [ 0, 1, 2, 3, 4 ];
-  test.identical( got, expected );
+  var got = _.arrayFlattenDefinedOnceStrictly([ 0, [ [ 2 ], 1 ], 3, 4 ]);
+  test.identical( got, [ 0, 1, 2, 3, 4 ] );
 
-  var got = _.arrayFlattenDefinedOnceStrictly( [ 1, 3, [ 5, 7 ] ] );
-  var expected = [ 1, 3, 5, 7 ];
-  test.identical( got, expected );
-
-  test.close( 'single argument' );
+  var got = _.arrayFlattenDefinedOnceStrictly( [ 1, 3, [ 7, 5 ] ] );
+  test.identical( got, [ 1, 3, 7, 5 ] );
 
   //
 
@@ -14774,23 +14761,28 @@ function arrayFlattenDefinedOnceStrictly( test )
     _.arrayFlattenDefinedOnceStrictly();
   });
 
+  test.case = 'too many arguments';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenDefinedOnceStrictly( [], [ 1 ], ( a ) => a, ( b ) => b, ( c ) => c );
+  });
+
   test.case = 'first is not longIs';
   test.shouldThrowError( function()
   {
     _.arrayFlattenDefinedOnceStrictly( 1, [ 1 ] );
   });
 
-  // test.case = 'second is not longIs';
-  // test.shouldThrowError( function()
-  // {
-  //   _.arrayFlattenOnceStrictly( [], 1 );
-
-  // });
-
   test.case = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
     _.arrayFlattenDefinedOnceStrictly( [], [ 1 ], [] );
+  });
+
+  test.case = 'second evaluator is not a routine';
+  test.shouldThrowError( function()
+  {
+    _.arrayFlattenDefinedOnceStrictly( [], [ 1 ], ( a ) => a, [] );
   });
 
   test.case = 'Elements must not be repeated';
@@ -14811,12 +14803,12 @@ function arrayFlattenDefinedOnceStrictly( test )
 
   test.shouldThrowError( function()
   {
-    _.arrayFlattenDefinedOnceStrictly( [], [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
+    _.arrayFlattenDefinedOnceStrictly( [], [ [ [ [ [ 1, 1 ] ] ] ] ]  );
   });
 
   test.shouldThrowError( function()
   {
-     _.arrayFlattenDefinedOnceStrictly( [ 0, 1, 2, 3 ], [ [ 4, [ 5, [ 6 ] ] ], 2 ] );
+     _.arrayFlattenDefinedOnceStrictly( [ 0, 1, 7, 6 ], [ [ 4, [ 5, [ 6 ] ] ], 2 ] );
   });
 
   test.shouldThrowError( function()
@@ -14827,31 +14819,6 @@ function arrayFlattenDefinedOnceStrictly( test )
   test.shouldThrowError( function()
   {
      _.arrayFlattenDefinedOnceStrictly( [ 0, 1, 2, 3 ], [ [ 4, [ 5, [ 0 ] ] ], 7 ] );
-  });
-
-  test.shouldThrowError( function()
-  {
-     _.arrayFlattenDefinedOnceStrictly( [ 0, 0 ] );
-  });
-
-  test.shouldThrowError( function()
-  {
-     _.arrayFlattenDefinedOnceStrictly( [ 0, 0, 1, 1 ] );
-  });
-
-  test.shouldThrowError( function()
-  {
-     _.arrayFlattenDefinedOnceStrictly( [ 0, 0 ], 1 );
-  });
-
-  test.shouldThrowError( function()
-  {
-     _.arrayFlattenDefinedOnceStrictly( [ 0, 0, 1, 1 ], 2 );
-  });
-
-  test.shouldThrowError( function()
-  {
-     _.arrayFlattenDefinedOnceStrictly( [ 0, 0 ], [ 1, 2 ] );
   });
 
   test.shouldThrowError( function()
