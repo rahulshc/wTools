@@ -3721,6 +3721,7 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
     }
     index = _.arrayLeftIndex.apply( this, arguments );
   }
+
   return removedElements;
 }
 
@@ -5019,6 +5020,7 @@ function arrayReplacedOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   let result;
+
   if( Config.debug )
   {
     result = arrayReplacedOnce.apply( this, arguments );
