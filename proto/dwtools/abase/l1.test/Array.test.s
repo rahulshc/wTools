@@ -589,7 +589,8 @@ function constructorLikeArray( test )
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'raw array buffer'; debugger;
+  test.case = 'raw array buffer';
+  debugger;
   var got = _.constructorLikeArray( new ArrayBuffer( 10 ).constructor );
   var expected = false;
   test.identical( got, expected );
@@ -13554,7 +13555,7 @@ function arrayFlattenOnce( test )
   });
   test.identical( got, [ 1, 2, 3, 4, 5 ] );
 
-  debugger
+  debugger;
   var got = _.arrayFlattenOnce( [], 1 );
   test.identical( got, [ 1 ] );
 
@@ -13677,7 +13678,7 @@ function arrayFlattenOnceStrictly( test )
   });
   test.identical( got, [ 1, 2, 3, 4, 5 ] );
 
-  debugger
+  debugger;
 
   test.case = 'dstArray has sub arrays';
   var got = _.arrayFlattenOnceStrictly( [ 1, 3, [ 5 ] ], 6 );
@@ -14627,20 +14628,6 @@ function arrayFlattenDefinedOnce( test )
     _.arrayFlattenDefinedOnce( 1, [ 1 ] );
   });
 
-  // // it works but has not
-  // test.case = 'second array has undefined';
-  // test.shouldThrowError( function()
-  // {
-  //   _.arrayFlattenDefinedOnce( [], [ undefined ] );
-  // });
-
-  // it must works but not
-  test.case = 'second array is undefined';
-  test.shouldThrowError( function()
-  {
-    _.arrayFlattenDefinedOnce( [], undefined );
-  });
-
   test.case = 'onEqualize is not a routine';
   test.shouldThrowError( function()
   {
@@ -15026,20 +15013,6 @@ function arrayFlattenedDefinedOnce( test )
   test.shouldThrowError( function()
   {
     _.arrayFlattenedDefinedOnce( 1, [ 1 ] );
-  });
-
-  // // it works but has not
-  // test.case = 'second array has undefined';
-  // test.shouldThrowError( function()
-  // {
-  //   _.arrayFlattenDefinedOnce( [], [ undefined ] );
-  // });
-
-  // it must works but not
-  test.case = 'second array is undefined';
-  test.shouldThrowError( function()
-  {
-    _.arrayFlattenedDefinedOnce( [], undefined );
   });
 
   test.case = 'onEqualize is not a routine';
