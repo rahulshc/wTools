@@ -1,4 +1,4 @@
-**Array Prepend**
+### Array Prepend
 
 |                            | -                   | Once                | OnceStrictly               |
 |----------------------------|---------------------|---------------------|----------------------------|
@@ -13,7 +13,7 @@
 | arrayPrependedArrays       | number              | number              | number                     |
 
 
-**Array Append**
+### Array Append
 
 |                           | -                   | Once                | OnceStrictly               |
 |---------------------------|---------------------|---------------------|----------------------------|
@@ -28,7 +28,7 @@
 | arrayAppendedArrays       | number              | number <br> if dstArray === undefined <br> then insArray  | number                     |
 
 
-**Array Remove**
+### Array Remove
 
 |                           | -                   | Once                | OnceStrictly               |
 |---------------------------|---------------------|---------------------|----------------------------|
@@ -36,8 +36,8 @@
 | arrayRemoveElement        | dstArray            | dstArray            | dstArray                   |
 | arrayRemoveArray          | dstArray            | dstArray            | dstArray                   |
 | arrayRemoveArrays         | dstArray            | dstArray            | dstArray                   |
-| arrayRemoved              | number              | number of not removed | number                   |
-| arrayRemovedElement       | number              | number of not removed | element                  |
+| arrayRemoved              | number              | index               | index                      |
+| arrayRemovedElement       | number              | index               | element                    |
 | arrayRemovedArray         | number              | number              | number                     |
 | arrayRemovedArrays        | number              | number              | number                     |
 | arrayRemoveAll            | dstArray            | -                   | -                          |
@@ -45,7 +45,7 @@
 | arrayRemoveDuplicates     | dstArray            | -                   | -                          |
 
 
-**Array Flatten**
+### Array Flatten
 
 |                           | -                   | Once                | OnceStrictly               |
 |---------------------------|---------------------|---------------------|----------------------------|
@@ -55,7 +55,7 @@
 | arrayFlattenedDefined     | number <br> if arguments.length === 1 <br> then dstArray | number <br> if arguments.length === 1 <br> then dstArray | number <br> if arguments.length === 1 <br> then dstArray |
 
 
-**Array Replace**
+### Array Replace
 
 |                           | -                   | Once                | OnceStrictly               |
 |---------------------------|---------------------|---------------------|----------------------------|
@@ -63,7 +63,7 @@
 | arrayReplaceElement       | dstArray            | dstArray            | dstArray                   |
 | arrayReplaceArray         | dstArray            | dstArray            | dstArray                   |
 | arrayReplaceArrays        | dstArray            | dstArray            | dstArray                   |
-| arrayReplaced             | number              | number of not replaced | number                  |
+| arrayReplaced             | number              | index               | index                      |
 | arrayReplacedElement      | number              | ins <br> if not element was replaced <br> then undefined | ins <br> if not element was replaced <br> then undefined |
 | arrayReplacedArray        | number              | number              | number                     |
 | arrayReplacedArrays       | number              | number              | number                     |
@@ -71,103 +71,86 @@
 | arrayReplacedAll          | number              | -                   | -                          |
 | arrayUpdate               | dstArray.length     | -                   | -                          |
 
+---
+
 ### Array Prepend
 
-arrayPrependUnrolling - \_arrayPrependUnrolling
-
-arrayPrepend - arrayPrepended ( 2 arg )
-arrayPrependOnce - arrayPrependedOnce ( 2-4 arg )
-arrayPrependOnceStrictly - arrayPrependedOnceStrictly ( 2-4 arg )
-
-arrayPrependElement - arrayPrependedElement ( 2 arg ) - copy of arrayPrepended
-arrayPrependElementOnce - arrayPrependedElementOnce ( 2-4 arg ) - copy of arrayPrependedOnce, difference (return -1 and return undefined)
-arrayPrependElementOnceStrictly - arrayPrependedElementOnceStrictly - ( 2-4 arg ) - copy of arrayPrependedOnceStrictly, difference (return -1 and return undefined)
-
-arrayPrependArray - arrayPrependedArray ( 2 arg )
-arrayPrependArrayOnce - arrayPrependedArrayOnce ( 2-4 arg )
-arrayPrependArrayOnceStrictly - arrayPrependedArrayOnce ( 2-4 arg ) - two routines have similar code
-
-arrayPrependArrays - arrayPrependedArrays ( 2 arg )
-arrayPrependArraysOnce - arrayPrependedArraysOnce ( 2-4 arg )
-arrayPrependArraysOnceStrictly - arrayPrependedArraysOnce ( 2-4 arg ) - two routines have similar code
+|                            | -                   | Once                | OnceStrictly               |
+|----------------------------|---------------------|---------------------|----------------------------|
+| arrayPrependUnrolling      | -                   | -                   | -                          |
+| arrayPrepend               | -                   | -                   | -                          |
+| arrayPrependElement        | copy of arrayPrepend | copy of arrayPrependOnce |  copy of arrayPrependOnceStrictly |
+| arrayPrependArray          | -                   | -                   | has similar code to arrayPrependedArrayOnceStrictly |
+| arrayPrependArrays         | -                   | -                   | has similar code to arrayPrependedArraysOnceStrictly |
+| arrayPrepended             | -                   | if dstArray contains ins <br> then return -1  | if dstArray contains ins <br> then return -1 |
+| arrayPrependedElement      | copy of arrayPrepended | copy of arrayPrependedOnce <br> difference <br> if dstArray conteins ins <br> then return undefined |  copy of arrayPrependedOnceStrictly <br> difference <br> if dstArray conteins ins <br> then return undefined |
+| arrayPrependedArray        | -                   | -                   | has similar code to arrayPrependArrayOnceStrictly |
+| arrayPrependedArrays       | -                   | -                   | has similar code to arrayPrependArraysOnceStrictly |
 
 ### Array Append
 
-arrayAppendUnrolling - \_arrayAppendUnrolling
-
-arrayAppend - arrayAppended ( 2 arg )
-arrayAppendOnce - arrayAppendedOnce ( 2-4 arg )
-arrayAppendOnceStrictly - arrayAppendedOnceStrictly ( 2-4 arg ) - two routines have similar code
-
-arrayAppendElement - arrayAppendedElement ( 2 arg ) - copy of arrayAppended
-arrayAppendElementOnce - arrayAppendedElementOnce ( 2-4 arg ) - copy of arrayAppendedOnce, difference in returned value, but better make one
-arrayAppendElementOnceStrictly - arrayAppendedElementOnceStrictly - ( 2-4 arg ) - copy of arrayAppendedOnceStrictly, difference in assetion message
-
-arrayAppendArray - arrayAppendedArray ( 2 arg )
-arrayAppendArrayOnce - arrayAppendedArrayOnce ( 2-4 arg )
-arrayAppendArrayOnceStrictly - arrayAppendedArrayOnce ( 2-4 arg ) - two routines have similar code
-
-arrayAppendArrays - arrayAppendedArrays ( 2 arg )
-arrayAppendArraysOnce - arrayAppendedArraysOnce ( 2-4 arg )
-arrayAppendArraysOnceStrictly - arrayAppendedArraysOnce ( 2-4 arg ) - two routines have similar code
+|                            | -                   | Once                | OnceStrictly               |
+|----------------------------|---------------------|---------------------|----------------------------|
+| arrayAppendUnrolling       | -                   | -                   | -                          |
+| arrayAppend                | -                   | -                   | has similar code to arrayAppendedOnceStrictly |
+| arrayAppendElement         | copy of arrayAppend | copy of arrayAppendOnce |  copy of arrayAppendOnceStrictly |
+| arrayAppendArray           | -                   | -                   | has similar code to arrayAppendedArrayOnceStrictly |
+| arrayAppendArrays          | -                   | -                   | has similar code to arrayAppendedArraysOnceStrictly |
+| arrayAppended              | -                   | -                   | has similar code to arrayAppendOnceStrictly |
+| arrayAppendedElement       | copy of arrayAppended | copy of arrayAppendedOnce | copy of arrayAppendedOnceStrictly <br> difference in assertion message |
+| arrayAppendedArray         | -                   | -                   | has similar code to arrayAppendArrayOnceStrictly |
+| arrayAppendedArrays        | -                   | -                   | has similar code to arrayAppendArraysOnceStrictly |
 
 ### Array Remove
 
-arrayRemove - arrayRemoved = arrayRemovedElement ( 3-4 arg )
-arrayRemoveOnce - arrayRemovedOnce ( 3-4 arg )
-arrayRemoveOnceStrictly - arrayRemovedOnceStrictly ( 3-4 arg )
-
-arrayRemoveElement - arrayRemovedElement ( 3-4 arg ) - arrayRemoved use this routine
-arrayRemoveElementOnce - arrayRemovedElementOnce ( 3-4 arg ) - copy of arrayRemovedOnce
-arrayRemoveElementOnceStrictly - arrayRemovedElementOnceStrictly - ( 3-4 arg ) - copy of arrayRemovedOnceStrictly difference in a few description of values
-
-arrayRemoveArray - arrayRemovedArray ( 3-4 arg )
-arrayRemoveArrayOnce - arrayRemovedArrayOnce ( 3-4 arg )
-arrayRemoveArrayOnceStrictly - arrayRemovedArrayOnce ( 3-4 arg ) - two routines have similar code
-
-arrayRemoveArrays - arrayRemovedArrays ( 3-4 arg )
-arrayRemoveArraysOnce - arrayRemovedArraysOnce ( 3-4 arg )
-arrayRemoveArraysOnceStrictly - arrayRemovedArraysOnce ( 3-4 arg ) - two routines have similar code
-
-arrayRemoveAll - arrayRemoveAll ( 3-4 arg ) - copy of arrayRemoveElement, difference in cycles
-arrayRemoveDuplicates
+|                            | -                   | Once                | OnceStrictly               |
+|----------------------------|---------------------|---------------------|----------------------------|
+| arrayRemove                | -                   | -                   | -                          |
+| arrayRemoveElement         | copy of arrayRemove | copy of arrayRemoveOnce | copy of arrayRemoveOnceStrictly |
+| arrayRemoveArray           | -                   | -                   | has similar code to arrayRemovedArrayOnceStrictly |
+| arrayRemoveArrays          | -                   | -                   | has similar code to arrayRemovedArraysOnceStrictly |
+| arrayRemoved               | -                   | -                   | -                          |
+| arrayRemovedElement        | arrayRemoved uses this routine | copy of arrayRemovedOnce | copy of arrayRemovedOnceStrictly <br> difference in assertion message |
+| arrayRemovedArray          | -                   | -                   | has similar code to arrayRemoveArrayOnceStrictly |
+| arrayRemovedArrays         | -                   | -                   | has similar code to arrayRemoveArraysOnceStrictly |
+| arrayRemoveAll             | copy of arrayRemoveElement  | -                   | -                          |
+| arrayRemoveDuplicates      | -                   | -                   | -                          |
 
 ### Array flatten
 
-arrayFlatten - arrayFlattened ( 1-4 arg )
-arrayFlattenOnce - arrayFlattenedOnce ( 1-4 arg )
-arrayFlattenOnceStrictly - arrayFlattenedOnceStrictly ( 1-4 arg )
-
-arrayFlattenDefined - arrayFlattenedDefined ( 1-4 arg ) - copy of arrayFlattened, difference in a few lines with checks
-arrayFlattenDefinedOnce - arrayFlattenedDefinedOnce ( 1-4 arg ) - copy of arrayFlattenedOnce
-arrayFlattenDefinedOnceStrictly - arrayFlattenedDefinedOnceStrictly - ( 1-4 arg ) - copy of arrayFlattenedOnceStrictly difference in a few checks and asserts
+|                            | -                   | Once                | OnceStrictly               |
+|----------------------------|---------------------|---------------------|----------------------------|
+| arrayFlatten               | -                   | -                   | -                          |
+| arrayFlattenElement        | -                   | -                   | -                          |
+| arrayFlattenDefined        | -                   | -                   | -                          |
+| arrayFlattenedDefined      | -                   | -                   | -                          |
 
 ### Array Replaced
 
-arrayReplace - arrayReplaced = arrayReplacedElement ( 3-5 arg ) - two routines have similar code
-arrayReplaceOnce - arrayReplacedOnce ( 3-5 arg )
-arrayReplaceOnceStrictly - arrayReplacedOnceStrictly ( 3-5 arg ) - two routines have similar code
+|                            | -                   | Once                | OnceStrictly               |
+|----------------------------|---------------------|---------------------|----------------------------|
+| arrayReplace               | has similar code to arrayReplaced | -                   | has similar code to arrayReplacedOnceStrictly |
+| arrayReplaceElement        | copy of arrayReplace | copy of arrayReplaceOnce |  copy of arrayReplaceOnceStrictly |
+| arrayReplaceArray          | -                   | -                   | has similar code to arrayReplacedArrayOnceStrictly |
+| arrayReplaceArrays         | -                   | -                   | has similar code to arrayReplacedArraysOnceStrictly |
+| arrayReplaced              | has similar code to arrayReplace | return index | has similar code to arrayReplaceOnceStrictly <br> return index |
+| arrayReplacedElement       | copy of arrayReplaceed | copy of arrayReplacedOnce <br> difference <br> routine return ins | copy of arrayReplacedOnceStrictly <br> difference <br> routine return ins |
+| arrayReplacedArray         | -                   | -                   | has similar code to arrayReplaceArrayOnceStrictly |
+| arrayReplacedArrays        | -                   | -                   | has similar code to arrayReplaceArraysOnceStrictly |
+| arrayReplaceAll            | copy of arrayReplacedElement | -                   | -                          |
+| arrayReplaceUpdate      | -                   | -                   | -                          |
 
-arrayReplaceElement - arrayReplacedElement ( 3-5 arg ) - copy of arrayReplaced
-arrayReplaceElementOnce - arrayReplacedElementOnce ( 3-5 arg ) - copy of arrayReplacedOnce but has difference in returned values ( a mistake ins )
-arrayReplaceElementOnceStrictly - arrayReplacedElementOnceStrictly - ( 3-5 arg ) - copy of arrayReplacedOnceStrictly but has difference in returned values ( a mistake ins )
+### Аналіз сімейства рутин arrayPrepend як приклад загальної закономірності
 
-arrayReplaceArray - arrayReplacedArray ( 3-5 arg)
-arrayReplaceArrayOnce - arrayReplacedArrayOnce ( 3-5 arg)
-arrayReplaceArrayOnceStrictly - arrayReplacedArrayOnce ( 3-5 arg) - two routines have similar code
+Рутина arrayPrependElement копіює рутину arrayPrepend. Відмінність між ними в використанні різних рутин для обробки:
+- рутина arrayPrependElement використовує рутину arrayPrependedElement;
+- arrayPrepend - arrayPrepended.
 
-arrayReplaceArrays - arrayReplacedArrays ( 3-5 arg)
-arrayReplaceArraysOnce - arrayReplacedArraysOnce ( 3-5 arg)
-arrayReplaceArraysOnceStrictly - arrayReplacedArraysOnce ( 3-5 arg) - two routines have similar code
+В свою чергу останні рутини arrayPrependedElement i arrayPrepended ідентичні - вони однаково обробляють аргументи і повертають однаковий результат.
 
-arrayReplaceAll - arrayReplaceAll ( 3-5 arg ) - copy of arrayReplacedElement
-arrayReplaceUpdate
+Кількість рядків коду однакова у всіх рутинах.
 
-### Analysis on arrayPrepend family as example of mistakes in each family
-
- arrayPrependElement is a copy of arrayPrepend. Difference between them contains in used routine. arrayPrependElement uses arrayPrependedElement, arrayPrepend uses arrayPrepended. But the last routines is identical in functions and returned values.
-
- Examples:
+Код указаних рутин
 
  ```js
  function arrayPrepend( dstArray, ins )
@@ -215,20 +198,135 @@ arrayReplaceUpdate
  }
  ```
 
- arrayPrependElementOnce is a copy of arrayPrependOnce. Difference between them contains in used routine. arrayPrependElementOnce uses arrayPrependedElementOnce, arrayPrependOnce uses arrayPrependedOnce. So, the last routines is different in returned values. arrayPrependElementOnce returns undefined if ins argument contains in dstArray, arrayPrependOnce - returns -1. It may be standardized.
+ Рутини arrayPrependElementOnce і arrayPrependOnce відрізняються рутинами, які вони використовують:
+ - рутина arrayPrependElementOnce використовує arrayPrependedElementOnce;
+ - arrayPrependOnce - arrayPrependedOnce.
 
- In arrayPrependElementOnceStrictly and arrayPrependOnceStrictly is the same situation.
+ В свою чергу останні мають схожий код. Вони відрізняються поверненим значенням у випадку, якщо масив призначення dstArray включає елемент вставки ins:
+ - arrayPrependElementOnce повертає undefined;
+ - arrayPrependOnce повертає -1.
+ Якщо співпадінь немає, то повернене значення однакове - індекс.
 
- arrayPrependArrayOnceStrictly and arrayPrependedArrayOnce have similar code. This means that working code is identical but returned values is different. arrayPrependArrayOnceStrictly returns dstArray, arrayPrependedArrayOnce returns number. At the same time, routine arrayPrependArrayOnce uses code of arrayPrependedArrayOnce and it returns different values also. Returned values is dstArray and number.
+ Кількість рядків коду однакова.
 
- arrayPrependArraysOnceStrictly and arrayPrependedArraysOnce is the same situation.
+ Код указаних рутин.
 
-### Summary
-- Routines arrayPrepend* should transform to arrayPrependElement*;
-- Routines arrayAppend* should transform to arrayAppendElement*;
-- Routines arrayRemove* should transform to arrayRemoveElement*;
-- Routines arrayRemoveAll should transform to arrayRemoveElement;
-- Routines arrayFlattenDefined* should transform to arrayFlatten*;
-- Routines arrayReplce* should transform to arrayReplaceElement*;
-- Routines arrayReplceAll should transform to arrayReplaceElement;
-- Similar code in routines with Array and Arrays in destination can contains in one routine.
+```js
+function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
+  arrayPrependedOnce.apply( this, arguments );
+  return dstArray;
+}
+
+function arrayPrependElementOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
+  arrayPrependedElementOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  _.assert( _.arrayIs( dstArray ) );
+
+  let i = _.arrayLeftIndex.apply( _, arguments );
+
+  if( i === -1 )
+  {
+    dstArray.unshift( ins );
+    return 0;
+  }
+  return -1;
+}
+
+function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
+{
+  _.assert( _.arrayIs( dstArray ) );
+
+  let i = _.arrayLeftIndex.apply( _, arguments );
+
+  if( i === -1 )
+  {
+    dstArray.unshift( ins );
+    return dstArray[ 0 ];
+  }
+  return undefined;
+}
+```
+
+Рутини arrayPrependElementOnceStrictly і arrayPrependOnceStrictly мають аналогічну ситуацію до попередньої, вони використовуть рутини arrayPrependElementOnce і arrayPrependOnce, відповідно.
+
+Рутини arrayPrependArrayOnceStrictly і arrayPrependedArrayOnceStrictly мають однаковий робочий код, але повертають різні значення:
+- arrayPrependArrayOnceStrictly повертає dstArray;
+- arrayPrependedArrayOnce повертає number, тобто кількість доданих елементів.
+
+Разом з цим, рутини arrayPrependArrayOnce використовує код з рутини arrayPrependedArrayOnce і повертають вони різні значення також. Повернені значення dstArray and number, відповідно.
+
+Код рутин arrayPrependArrayOnceStrictly і arrayPrependedArrayOnceStrictly
+
+```js
+function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
+  let result;
+  if( Config.debug )
+  {
+    result = arrayPrependedArrayOnce.apply( this, arguments );
+    _.assert( result === insArray.length );
+  }
+  else
+  {
+    result = arrayPrependedArray.apply( this, [ dstArray, insArray ] );
+  }
+
+  return dstArray;
+}
+
+//
+
+function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+{
+ let result;
+ if( Config.debug )
+ {
+   result = arrayPrependedArrayOnce.apply( this, arguments );
+   _.assert( result === insArray.length );
+ }
+ else
+ {
+   result = arrayPrependedArray.apply( this, [ dstArray, insArray ] );
+ }
+
+ return result;
+}
+```
+Частина коду arrayPrependArrayOnceStrictly повторюється arrayPrependedArrayOnceStrictly.
+
+Для рутин arrayPrependArraysOnceStrictly і arrayPrependedArraysOnceStrictly ситуація аналогічна до arrayPrependArrayOnceStrictly і arrayPrependedArrayOnce.
+
+### Підсумок
+- Рутини arrayPrepend* можуть використовувати код рутин arrayPrependElement* ( замість * - нічого, або Once OnceStrictly). Або видалити їх.
+- Рутини arrayAppend* можуть використовувати код рутин arrayAppendElement*. Або видалити їх.
+- Рутини arrayRemove* можуть використовувати код рутин arrayRemoveElement*. Або видалити їх.
+- Рутина arrayRemoveAll може використовувати код рутини arrayRemoveElement. Краще її видалити.
+- Рутини arrayReplce* можуть використовувати код рутин arrayReplaceElement*. Або видалити їх.
+- Рутина arrayReplceAll може використовувати код рутини arrayReplaceElement. Краще її видалити.
+- Однаковий код може бути поміщений в одну із рутин, так же як і в багатьох інших.
