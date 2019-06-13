@@ -1,4 +1,22 @@
-### Array Prepend
+# Результати виконання рутин
+
+Назва рутини складається з чотирьох частин:
+
+- array - об'єкт над яким проводиться дія;
+- action - дія, що виконується з об'єктами. Може бути Append, Prepend, Replace, Flatten i Replace, при цьому повертається масив. Або Appended, Prepended, Replaced, Flattened i Replaced - може повертатись індекс, кількість елементів або сам елемент;
+- second - дає зрозуміти як розглядати другий аргумент. Може бути відсутнім, або ж Element, Array i Arrays.
+- how many - дає зрозуміти скільки раз виконувати дію. Може бути відсутнім - рутина виконає дію для кожного елемента масиву, Once - рутина виконає дію принаймні один раз для кожного елемента масиву, OnceStrictly - рутина виконає дію тільки один раз або поверне помилку. Якщо другий елемент - масив або масиви, то дія виконується по одному разу для кожного елемента масиву.
+
+Таким чином рутина
+
+```js
+arrayRemoveArrayOnceStrictly
+```
+Видалить з початкового масиву всі елементи, що є в другому масиві один раз. Якщо в першому масиві буде менше, або більше елементів, то рутина поверне помилку.
+
+### Значення, що повертаються рутинами сімейства arrayPrepend
+
+Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayPrepend. В першій колонці указано рутини, а в наступних приставки how many.
 
 |                            | -                   | Once                | OnceStrictly               |
 |----------------------------|---------------------|---------------------|----------------------------|
@@ -13,7 +31,9 @@
 | arrayPrependedArrays       | number              | number              | number                     |
 
 
-### Array Append
+### Значення, що повертаються рутинами сімейства arrayAppend
+
+Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayAppend.
 
 |                           | -                   | Once                | OnceStrictly               |
 |---------------------------|---------------------|---------------------|----------------------------|
@@ -28,7 +48,9 @@
 | arrayAppendedArrays       | number              | number <br> if dstArray === undefined <br> then insArray  | number                     |
 
 
-### Array Remove
+### Значення, що повертаються рутинами сімейства arrayRemove
+
+Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayRemove.
 
 |                           | -                   | Once                | OnceStrictly               |
 |---------------------------|---------------------|---------------------|----------------------------|
@@ -45,7 +67,9 @@
 | arrayRemoveDuplicates     | dstArray            | -                   | -                          |
 
 
-### Array Flatten
+### Значення, що повертаються рутинами сімейства arrayFlatten
+
+Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayFlatten.
 
 |                           | -                   | Once                | OnceStrictly               |
 |---------------------------|---------------------|---------------------|----------------------------|
@@ -55,7 +79,9 @@
 | arrayFlattenedDefined     | number <br> if arguments.length === 1 <br> then dstArray | number <br> if arguments.length === 1 <br> then dstArray | number <br> if arguments.length === 1 <br> then dstArray |
 
 
-### Array Replace
+### Значення, що повертаються рутинами сімейства arrayReplace
+
+Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayReplace.
 
 |                           | -                   | Once                | OnceStrictly               |
 |---------------------------|---------------------|---------------------|----------------------------|
@@ -71,9 +97,11 @@
 | arrayReplacedAll          | number              | -                   | -                          |
 | arrayUpdate               | dstArray.length     | -                   | -                          |
 
----
+# Особливості коду в рутинах array*
 
-### Array Prepend
+Розглядається код рутин array*, наявність однакового функціоналу і опису.
+
+### Таблиця з особливостями коду рутин сімейства arrayPrepend
 
 |                            | -                   | Once                | OnceStrictly               |
 |----------------------------|---------------------|---------------------|----------------------------|
@@ -87,7 +115,12 @@
 | arrayPrependedArray        | -                   | -                   | has similar code to arrayPrependArrayOnceStrictly |
 | arrayPrependedArrays       | -                   | -                   | has similar code to arrayPrependArraysOnceStrictly |
 
-### Array Append
+В таблицях позначено:
+- copy of - позначає, що рутина копіює код з указної далі рутини;
+- has similar code - позначає, що рутина має частину коду, подібну до вказаної;
+- return - якщо рутини подібні і незначно відрізняються, то указуються значення, що вони повертають.
+
+### Таблиця з особливостями коду рутин сімейства arrayAppend
 
 |                            | -                   | Once                | OnceStrictly               |
 |----------------------------|---------------------|---------------------|----------------------------|
@@ -101,7 +134,7 @@
 | arrayAppendedArray         | -                   | -                   | has similar code to arrayAppendArrayOnceStrictly |
 | arrayAppendedArrays        | -                   | -                   | has similar code to arrayAppendArraysOnceStrictly |
 
-### Array Remove
+### Таблиця з особливостями коду рутин сімейства arrayRemove
 
 |                            | -                   | Once                | OnceStrictly               |
 |----------------------------|---------------------|---------------------|----------------------------|
@@ -116,16 +149,7 @@
 | arrayRemoveAll             | copy of arrayRemoveElement  | -                   | -                          |
 | arrayRemoveDuplicates      | -                   | -                   | -                          |
 
-### Array flatten
-
-|                            | -                   | Once                | OnceStrictly               |
-|----------------------------|---------------------|---------------------|----------------------------|
-| arrayFlatten               | -                   | -                   | -                          |
-| arrayFlattenElement        | -                   | -                   | -                          |
-| arrayFlattenDefined        | -                   | -                   | -                          |
-| arrayFlattenedDefined      | -                   | -                   | -                          |
-
-### Array Replaced
+### Таблиця з особливостями коду рутин сімейства arrayReplaced
 
 |                            | -                   | Once                | OnceStrictly               |
 |----------------------------|---------------------|---------------------|----------------------------|
@@ -140,17 +164,23 @@
 | arrayReplaceAll            | copy of arrayReplacedElement | -                   | -                          |
 | arrayReplaceUpdate      | -                   | -                   | -                          |
 
-### Аналіз сімейства рутин arrayPrepend як приклад загальної закономірності
 
-Рутина arrayPrependElement копіює рутину arrayPrepend. Відмінність між ними в використанні різних рутин для обробки:
+# Пояснення щодо вмісту таблиць з особливостями коду на прикладі сімейства рутин arrayPrepend
+
+### Рутини, що мають однаковий функціонал
+
+Рутина arrayPrependElement копіює рутину arrayPrepend. Відмінність між ними в виклику різних рутин:
 - рутина arrayPrependElement використовує рутину arrayPrependedElement;
 - arrayPrepend - arrayPrepended.
 
-В свою чергу останні рутини arrayPrependedElement i arrayPrepended ідентичні - вони однаково обробляють аргументи і повертають однаковий результат.
+В свою чергу, рутини arrayPrependedElement i arrayPrepended ідентичні:
+- вони однаково обробляють аргументи;
+- повертають однаковий результат.
 
-Кількість рядків коду однакова у всіх рутинах.
+Кількість рядків і структура коду однакова у всіх рутинах.
 
-Код указаних рутин
+<details>
+  <summary><u>Код рутин arrayPrepend і arrayPrependElement</u></summary>
 
  ```js
  function arrayPrepend( dstArray, ins )
@@ -165,6 +195,8 @@
    return dstArray;
  }
 
+ //
+
  function arrayPrependElement( dstArray, ins )
  {
    if( dstArray === null )
@@ -176,9 +208,13 @@
    arrayPrependedElement.apply( this, arguments );
    return dstArray;
  }
+```
 
- //
+</details>
+<details>
+  <summary><u>Код рутин arrayPrepended і arrayPrependedElement</u></summary>
 
+```js
  function arrayPrepended( dstArray, ins )
  {
    _.assert( arguments.length === 2  );
@@ -187,6 +223,8 @@
    dstArray.unshift( ins );
    return 0;
  }
+
+ //
 
  function arrayPrependedElement( dstArray, ins )
  {
@@ -198,18 +236,21 @@
  }
  ```
 
- Рутини arrayPrependElementOnce і arrayPrependOnce відрізняються рутинами, які вони використовують:
+ </details>
+
+ Рутини arrayPrependElementOnce і arrayPrependOnce відрізняються рутинами, які вони викликають:
  - рутина arrayPrependElementOnce використовує arrayPrependedElementOnce;
  - arrayPrependOnce - arrayPrependedOnce.
 
- В свою чергу останні мають схожий код. Вони відрізняються поверненим значенням у випадку, якщо масив призначення dstArray включає елемент вставки ins:
+ В свою чергу останні мають схожий код. Рутини arrayPrependedElementOnce і arrayPrependedOnce відрізняються поверненим значенням у випадку, якщо масив призначення dstArray включає елемент вставки ins:
  - arrayPrependElementOnce повертає undefined;
  - arrayPrependOnce повертає -1.
  Якщо співпадінь немає, то повернене значення однакове - індекс.
 
- Кількість рядків коду однакова.
+ Кількість рядків коду і його структура однакова.
 
- Код указаних рутин.
+ <details>
+   <summary><u>Код рутин arrayPrependOnce і arrayPrependOnceElement</u></summary>
 
 ```js
 function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
@@ -224,6 +265,8 @@ function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
   return dstArray;
 }
 
+//
+
 function arrayPrependElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
   if( dstArray === null )
@@ -235,9 +278,13 @@ function arrayPrependElementOnce( dstArray, ins, evaluator1, evaluator2 )
   arrayPrependedElementOnce.apply( this, arguments );
   return dstArray;
 }
+```
 
-//
+</details>
+<details>
+  <summary><u>Код рутин arrayPrependedOnce і arrayPrependedOnceElement</u></summary>
 
+```js
 function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ) );
@@ -251,6 +298,8 @@ function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
   }
   return -1;
 }
+
+//
 
 function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
@@ -267,15 +316,18 @@ function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 }
 ```
 
+</details>
+
 Рутини arrayPrependElementOnceStrictly і arrayPrependOnceStrictly мають аналогічну ситуацію до попередньої, вони використовуть рутини arrayPrependElementOnce і arrayPrependOnce, відповідно.
+
+### Рутини, що мають однаковий код
 
 Рутини arrayPrependArrayOnceStrictly і arrayPrependedArrayOnceStrictly мають однаковий робочий код, але повертають різні значення:
 - arrayPrependArrayOnceStrictly повертає dstArray;
 - arrayPrependedArrayOnce повертає number, тобто кількість доданих елементів.
 
-Разом з цим, рутини arrayPrependArrayOnce використовує код з рутини arrayPrependedArrayOnce і повертають вони різні значення також. Повернені значення dstArray and number, відповідно.
-
-Код рутин arrayPrependArrayOnceStrictly і arrayPrependedArrayOnceStrictly
+<details>
+  <summary><u>Код рутин arrayPrependArrayOnceStrictly і arrayPrependedArrayOnceStrictly</u></summary>
 
 ```js
 function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
@@ -318,7 +370,55 @@ function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evalua
  return result;
 }
 ```
+
+</details>
+
 Частина коду arrayPrependArrayOnceStrictly повторюється arrayPrependedArrayOnceStrictly.
+
+Разом з цим, рутина arrayPrependArrayOnce, яка має схожий функціонал, використовує код з рутини arrayPrependedArrayOnce. Обидві рутини повертають вони різні значення - dstArray і number, відповідно.
+
+<details>
+  <summary><u>Код рутин arrayPrependArrayOnceStrictly і arrayPrependedArrayOnceStrictly</u></summary>
+
+```js
+function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
+{
+  if( dstArray === null )
+  {
+    dstArray = [];
+    arguments[ 0 ] = dstArray;
+  }
+
+  arrayPrependedArrayOnce.apply( this, arguments );
+  return dstArray;
+}
+
+//
+
+function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
+{
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.longIs( insArray ) );
+  _.assert( dstArray !== insArray );
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+
+  let result = 0;
+
+  for( let i = insArray.length - 1; i >= 0; i-- )
+  {
+    if( _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
+    {
+      dstArray.unshift( insArray[ i ] );
+      result += 1;
+    }
+  }
+
+  return result;
+}
+
+```
+
+</details>
 
 Для рутин arrayPrependArraysOnceStrictly і arrayPrependedArraysOnceStrictly ситуація аналогічна до arrayPrependArrayOnceStrictly і arrayPrependedArrayOnce.
 
