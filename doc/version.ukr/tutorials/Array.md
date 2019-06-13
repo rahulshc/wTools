@@ -1,4 +1,6 @@
-# Результати виконання рутин
+# Призначення рутин array*
+
+Рутини array* призначені для виконання операцій над масивами. Є п'ять операцій, що виконуються над масивами - Append, Prepend, Remove, Flatten, Replace, кожній з них відповідає одне сімейство рутин з відповідним позначенням.
 
 Назва рутини складається з чотирьох частин:
 
@@ -14,7 +16,7 @@ arrayRemoveArrayOnceStrictly
 ```
 Видалить з початкового масиву всі елементи, що є в другому масиві один раз. Якщо в першому масиві буде менше, або більше елементів, то рутина поверне помилку.
 
-### Значення, що повертаються рутинами сімейства arrayPrepend
+### Призначення рутин сімейства arrayPrepend
 
 Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayPrepend. В першій колонці указано рутини, а в наступних приставки how many.
 
@@ -31,7 +33,7 @@ arrayRemoveArrayOnceStrictly
 | arrayPrependedArrays       | number              | number              | number                     |
 
 
-### Значення, що повертаються рутинами сімейства arrayAppend
+### Призначення рутин сімейства arrayAppend
 
 Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayAppend.
 
@@ -48,7 +50,7 @@ arrayRemoveArrayOnceStrictly
 | arrayAppendedArrays       | number              | number <br> if dstArray === undefined <br> then insArray  | number                     |
 
 
-### Значення, що повертаються рутинами сімейства arrayRemove
+### Призначення рутин сімейства arrayRemove
 
 Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayRemove.
 
@@ -67,7 +69,7 @@ arrayRemoveArrayOnceStrictly
 | arrayRemoveDuplicates     | dstArray            | -                   | -                          |
 
 
-### Значення, що повертаються рутинами сімейства arrayFlatten
+### Призначення рутин сімейства arrayFlatten
 
 Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayFlatten.
 
@@ -79,7 +81,7 @@ arrayRemoveArrayOnceStrictly
 | arrayFlattenedDefined     | number <br> if arguments.length === 1 <br> then dstArray | number <br> if arguments.length === 1 <br> then dstArray | number <br> if arguments.length === 1 <br> then dstArray |
 
 
-### Значення, що повертаються рутинами сімейства arrayReplace
+### Призначення рутин сімейства arrayReplace
 
 Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayReplace.
 
@@ -373,7 +375,7 @@ function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evalua
 
 </details>
 
-Частина коду arrayPrependArrayOnceStrictly повторюється arrayPrependedArrayOnceStrictly.
+Частина коду arrayPrependArrayOnceStrictly повторюється в arrayPrependedArrayOnceStrictly.
 
 Разом з цим, рутина arrayPrependArrayOnce, яка має схожий функціонал, використовує код з рутини arrayPrependedArrayOnce. Обидві рутини повертають вони різні значення - dstArray і number, відповідно.
 
