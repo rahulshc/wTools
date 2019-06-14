@@ -998,12 +998,20 @@ function entityNone( test )
 
 function entityMap( test )
 {
+  test.case = 'simple test with mapping array by sqr';
+  var got = _.entityMap( [ 3, 4, 5 ], ( v, i, ent ) => v * v );
+  test.identical( got,[ 9, 16, 25 ] );
 
-  var entity1 = [ 3, 4, 5 ],
-    entity2 = { '3' : 3, '4' : 4, '5' : 5 },
-    expected1 = [ 9, 16, 25 ],
-    expected2 = { '3' : 9, '4' : 16, '5' : 25 },
-    expected3 = entity1.slice();
+  test.case = 'simple test with mapping array by sqr : source array should not be modified';
+  let src = [ 3, 4, 5 ]
+  var got = _.entityMap( src, ( v, i, ent ) => v * v );
+  test.identical( src, src.slice() );
+
+  test.case = 'simple test with mapping object by sqr';
+  var got = _.entityMap( { '3' : 3, '4' : 4, '5' : 5 }, ( v, i, ent ) => v * v );
+  test.identical( got,{ '3' : 9, '4' : 16, '5' : 25 } );
+
+  test.case = 'simple test with mapping object by sqr : using constructor';
 
   function constr1()
   {
@@ -1011,53 +1019,28 @@ function entityMap( test )
     this.b = 3;
     this.c = 4;
   }
-  var entity4 = new constr1(),
-    expected4 = { a : '1a', b : '9b', c : '16c' };
-
-
-  function callback1(v, i, ent )
-  {
-    return v * v;
-  };
-
-  function callback2( v, i, ent )
-  {
-    return v * v + i;
-  };
 
   function callback3( v, i, ent )
   {
-    if( externEnt ) externEnt = ent;
+    if( externEnt )
+    externEnt = ent;
     return v * v + i;
   };
 
-  test.case = 'simple test with mapping array by sqr';
-  var got = _.entityMap( entity1, callback1 );
-  test.identical( got,expected1 );
-
-  test.case = 'simple test with mapping array by sqr : source array should not be modified';
-  var got = _.entityMap( entity1, callback1 );
-  test.identical( entity1, expected3 );
-
-  test.case = 'simple test with mapping object by sqr';
-  var got = _.entityMap( entity2, callback1 );
-  test.identical( got,expected2 );
-
-  test.case = 'simple test with mapping object by sqr : using constructor';
-  var got = _.entityMap( entity4, callback2 );
-  test.identical( got, expected4 );
+  var got = _.entityMap( new constr1(), ( v, i, ent ) => v * v + i );
+  test.identical( got, { a : '1a', b : '9b', c : '16c' } );
   test.is( !( got instanceof constr1 ) );
   test.is( _.mapIs( got ) );
 
   test.case = 'simple test with mapping object by sqr : check callback arguments';
   var externEnt = {};
-  var got = _.entityMap( entity4, callback3 );
-  test.identical( externEnt, entity4 );
+  var got = _.entityMap( new constr1(), callback3 );
+  test.identical( externEnt, { 'a' : 1, 'b' : 3, 'c' : 4 } );
 
   if( Object.is )
   {
     test.case = 'simple test with mapping object by sqr : source object should be unmodified';
-    test.identical( Object.is( got, entity4 ), false );
+    test.identical( Object.is( got, new constr1() ), false );
   }
 
   /**/
