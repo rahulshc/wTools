@@ -100,6 +100,11 @@ function eachSample( test )
 function entityEach( test )
 {
   test.case = 'src is not array or object';
+
+  var got;
+  _.entityEach( null, ( v ) => got = typeof v );
+  test.identical( got, 'object' );
+
   var got;
   _.entityEach( 1, ( v ) => got = typeof v );
   test.identical( got, 'number' );
@@ -127,6 +132,7 @@ function entityEach( test )
   //
 
   test.case = 'src is an array';
+
   var got;
   _.entityEach( [], ( v ) => got = typeof v );
   test.identical( got, 'function undefined' );
@@ -144,6 +150,7 @@ function entityEach( test )
   test.identical( got, [ 0, 2, 6 ] );
 
   test.case = 'routine counter';
+
   function onEach( v, i )
   {
     if( _.strIs( v ) && i >= 0 )
@@ -178,6 +185,7 @@ function entityEach( test )
   //
 
   test.case = 'src is an object';
+
   var got;
   _.entityEach( {}, ( v ) => got = v );
   test.identical( got, -2 );
@@ -195,6 +203,7 @@ function entityEach( test )
   test.identical( got, { a : '1a', b : '9b', c : '25c' } );
 
   test.case = 'routine counter';
+
   function onEach1( v, k )
   {
     if( _.strIs( v ) && k )
@@ -249,6 +258,11 @@ function entityEach( test )
 function entityEachKey( test )
 {
   test.case = 'src is not array or object';
+
+  var got;
+  _.entityEachKey( null, ( v ) => got = typeof v );
+  test.identical( got, 'object' );
+
   var got;
   _.entityEachKey( 1, ( v ) => got = typeof v );
   test.identical( got, 'number' );
@@ -392,6 +406,168 @@ function entityEachKey( test )
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityEachKey( { a : 2 }, [] ) );
 }
+
+//
+
+function entityEachOwn( test )
+{
+  test.case = 'src is not array or object';
+
+  var got;
+  _.entityEachOwn( null, ( v ) => got = typeof v );
+  test.identical( got, 'object' );
+
+  var got;
+  _.entityEachOwn( 1, ( v ) => got = typeof v );
+  test.identical( got, 'number' );
+
+  var got;
+  _.entityEachOwn( 'a', ( v ) => got = typeof v );
+  test.identical( got, 'string' );
+
+  var got;
+  _.entityEachOwn( 'a', ( v ) => got = v + 2 );
+  test.identical( got, 'a2' );
+
+  var got;
+  _.entityEachOwn( function b(){ return 'a'}, ( v ) => got = typeof v );
+  test.identical( got, 'function' );
+
+  var got;
+  _.entityEachOwn( 'a', ( v, i ) => got = v + i );
+  test.identical( got, 'aundefined' );
+
+  var got;
+  _.entityEachOwn( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
+  test.identical( got, 'function undefined' );
+
+  //
+
+  test.case = 'src is an array';
+
+  var got;
+  _.entityEachOwn( [], ( v ) => got = typeof v );
+  test.identical( got, 'function undefined' );
+
+  var got = [];
+  _.entityEachOwn( [], ( v, i ) => got[ i ] = v + i );
+  test.identical( got, [] );
+
+  var got = [];
+  _.entityEachOwn( [ 3 ], ( v, i ) => got[ i ] = v + i + 2 );
+  test.identical( got, [ 5 ] );
+
+  var got = [];
+  _.entityEachOwn( [ 0, 1, 2 ], ( v, i ) => got[ i ] = v * v + i );
+  test.identical( got, [ 0, 2, 6 ] );
+
+  test.case = 'routine counter';
+
+  function onEach( v, i )
+  {
+    if( _.strIs( v ) && i >= 0 )
+    got += 10;
+    got -= 1;
+  }
+
+  var got = 0;
+  _.entityEachOwn( 1, onEach );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachOwn( 'abc', onEach );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachOwn( [ 'abc' ], onEach );
+  test.identical( got, 10 );
+
+  var got = 0;
+  _.entityEachOwn( [ 'abc', 1, 'ab', 'a' ], onEach );
+  test.identical( got, 29 );
+
+  var got = 0;
+  _.entityEachOwn( [ [ 'a', 'b' ], [ 1, 3, 4 ] ], onEach );
+  test.identical( got, -2 );
+
+  var got = 0;
+  _.entityEachOwn( [ { a : 1 }, { b : 2 } ], onEach );
+  test.identical( got, -2 );
+
+  //
+
+  test.case = 'src is an object';
+
+  var got;
+  _.entityEachOwn( {}, ( v ) => got = v );
+  test.identical( got, -2 );
+
+  var got = {};
+  _.entityEachOwn( {}, ( v, k ) => got[ k ] = v + k );
+  test.identical( got, {} );
+
+  var got = {};
+  _.entityEachOwn( { 1 : 2 }, ( v, k ) => got[ k ] = v + k + 2 );
+  test.identical( got, { 1 : '212' } );
+
+  var got = {};
+  _.entityEachOwn( { a : 1, b : 3, c : 5 }, ( v, k ) => got[ k ] = v * v + k );
+  test.identical( got, { a : '1a', b : '9b', c : '25c' } );
+
+  test.case = 'routine counter';
+
+  function onEach1( v, k )
+  {
+    if( _.strIs( v ) && k )
+    got += 10;
+    got -= 1;
+  }
+
+  var got = 0;
+  _.entityEachOwn( 1, onEach1 );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachOwn( 'abc', onEach1 );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachOwn( { a : 'abc' }, onEach1 );
+  test.identical( got, 10 );
+
+  var got = 0;
+  _.entityEachOwn( { a : 'abc', b : 1, c : 'ab', d : 'a' }, onEach1 );
+  test.identical( got, 29 );
+
+  var got = 0;
+  _.entityEachOwn( { a : [ 'a', 'b' ], b : [ 1, 3, 4 ] }, onEach1 );
+  test.identical( got, -2 );
+
+  var got = 0;
+  _.entityEachOwn( { a : { a : 1 }, b : { b : 2 } }, onEach1 );
+  test.identical( got, -2 );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityEachOwn() );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.entityEachOwn( [ 'a' ], ( a ) => a, ( b ) => b ) );
+
+  test.case = 'onEach has more then two arg';
+  test.shouldThrowErrorSync( () => _.entityEachOwn( [ 1 ], ( a, b, c ) => a + b + c ) );
+
+  test.case = 'onEach is not a routine';
+  test.shouldThrowErrorSync( () => _.entityEachOwn( { a : 2 }, [] ) );
+}
+
+//
+
+
 
 //
 
@@ -1125,6 +1301,7 @@ var Self =
 
     entityEach,
     entityEachKey,
+    entityEachOwn,
 
     entityMap,
     entityFilter,
