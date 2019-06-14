@@ -752,7 +752,7 @@ function routineFromPreAndBody_body( o )
 
   if( !o.name )
   {
-    _.assert( _.strDefined( o.body.name ), 'Body routine should have anme' );
+    _.assert( _.strDefined( o.body.name ), 'Body routine should have name' );
     o.name = o.body.name;
     if( o.name.indexOf( '_body' ) === o.name.length-5 && o.name.length > 5 )
     o.name = o.name.substring( 0, o.name.length-5 );
