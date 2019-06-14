@@ -924,57 +924,57 @@ function entityNone( test )
 
   //
 
-  // test.open( 'onEach is undefined' );
-  //
-  // test.case = 'array';
-  //
-  // var got = _.entityNone( [ 1, 'str', undefined ] );
-  // test.identical( got, 1 );
-  //
-  // var got = _.entityNone( [ undefined, false, null ] );
-  // test.identical( got, false );
-  //
-  // var got = _.entityNone( [ 'a : 1', 3, true ] );
-  // test.identical( got, 'a : 1' );
-  //
-  // test.case = 'object';
-  //
-  // var got = _.entityNone( { 1 : 2, c : 4, a : undefined } );
-  // test.identical( got, 2 );
-  //
-  // var got = _.entityNone( { 1 : 2, 2 : 3, a : null } );
-  // test.identical( got, 2 );
-  //
-  // var got = _.entityNone( { a : false, b : null, c : undefined } );
-  // test.identical( got, false );
-  //
-  // var got = _.entityNone( { a : 'a', b : 'str' } );
-  // test.identical( got, 'a' );
-  //
-  // var got = _.entityNone( { a : 1, b : false } );
-  // test.identical( got, 1 );
-  //
-  // test.case = 'no array, no object'
-  //
-  // var got = _.entityNone( undefined );
-  // test.identical( got, false );
-  //
-  // var got = _.entityNone( null );
-  // test.identical( got, false );
-  //
-  // var got = _.entityNone( 1 );
-  // test.identical( got, 1 );
-  //
-  // var got = _.entityNone( 'str' );
-  // test.identical( got, 'str' );
-  //
-  // var got = _.entityNone( false );
-  // test.identical( got, false );
-  //
-  // var got = _.entityNone( true );
-  // test.identical( got, true );
-  //
-  // test.close( 'onEach is undefined' );
+  test.open( 'onEach is undefined' );
+
+  test.case = 'array';
+
+  var got = _.entityNone( [ 1, 'str', undefined ] );
+  test.identical( got, false );
+
+  var got = _.entityNone( [ undefined, false, null ] );
+  test.identical( got, true );
+
+  var got = _.entityNone( [ 'a : 1', 3, true ] );
+  test.identical( got, false );
+
+  test.case = 'object';
+
+  var got = _.entityNone( { 1 : 2, c : 4, a : undefined } );
+  test.identical( got, false );
+
+  var got = _.entityNone( { 1 : 2, 2 : 3, a : null } );
+  test.identical( got, false );
+
+  var got = _.entityNone( { a : false, b : null, c : undefined } );
+  test.identical( got, true );
+
+  var got = _.entityNone( { a : 'a', b : 'str' } );
+  test.identical( got, false );
+
+  var got = _.entityNone( { a : 1, b : false } );
+  test.identical( got, false );
+
+  test.case = 'no array, no object'
+
+  var got = _.entityNone( undefined );
+  test.identical( got, true );
+
+  var got = _.entityNone( null );
+  test.identical( got, true );
+
+  var got = _.entityNone( 1 );
+  test.identical( got, false );
+
+  var got = _.entityNone( 'str' );
+  test.identical( got, false );
+
+  var got = _.entityNone( false );
+  test.identical( got, true );
+
+  var got = _.entityNone( true );
+  test.identical( got, false );
+
+  test.close( 'onEach is undefined' );
 
   //
 
