@@ -1,5 +1,10 @@
 ## Концепції
 
+<details><summary><a href="./concept/MapOptions.md">
+      Мапа опцій
+  </a></summary>
+  Об'єкт, що представляє собою асоціативний масив для зберігання властивостей.
+</details>
 <details><summary><a href="./concept/Evaluator.md">
       Евалуатор
   </a></summary>
