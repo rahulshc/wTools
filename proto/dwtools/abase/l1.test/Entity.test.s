@@ -987,7 +987,7 @@ function entityNone( test )
   test.case = 'too many arguments';
   test.shouldThrowErrorSync( () => _.entityNone( [ 'a' ], ( a ) => a, ( b ) => b ) );
 
-  test.case = 'onEach has more then two arg';
+  test.case = 'onEach has more then two arguments';
   test.shouldThrowErrorSync( () => _.entityNone( [ 1 ], ( a, b, c ) => a + b + c ) );
 
   test.case = 'onEach is not a routine';
@@ -1043,6 +1043,19 @@ function entityMap( test )
     test.identical( Object.is( got, new constr1() ), false );
   }
 
+  test.case = 'no ArrayLike, no ObjectLike';
+  var got = _.entityMap( 2, ( v ) => v + v );
+  test.identical( got, 4 );
+
+  var got = _.entityMap( 'a', ( v ) => v + v );
+  test.identical( got, 'aa' );
+
+  if( Object.is )
+  {
+    test.case = 'simple test with mapping object by sqr : source object should be unmodified';
+    test.identical( Object.is( got, new constr1() ), false );
+  }
+
   /**/
 
   if( !Config.debug )
@@ -1060,10 +1073,10 @@ function entityMap( test )
     _.entityMap( [ 1,3 ], callback1, callback2 );
   });
 
-  test.case = 'passed argument is not ArrayLike, ObjectLike';
+  test.case = 'passed argument is undefined';
   test.shouldThrowError( function()
   {
-    _.entityFilter( 44, callback1 );
+    _.entityMap( [ 1,3, undefined ], ( v, i ) => v );
   });
 
   test.case = 'second argument is not routine';
