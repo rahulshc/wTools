@@ -1091,59 +1091,55 @@ function entityMap( test )
 
 function entityFilter( test )
 {
-  var entity1 = [ 9, -16, 25, 36, -49 ],
-    entity2 = { '3' : 9, '4' : 16, '5' : 25 },
-    expected1 = [ 3, 5, 6 ],
-    expected2 = { '3' : 3, '4' : 4, '5' : 5 },
-    expected3 = entity1.slice();
-
   function callback1( v, i, ent )
   {
     if( v < 0 ) return;
     return Math.sqrt( v );
   };
 
+  //TODO : need to check actuality of this test
+  // it works correctly
+
   function testFn1()
   {
     return _.entityFilter( arguments, callback1 );
   }
 
+  test.case = 'simple test with longIs';
+  var got = null;
+  try
+  {
+    got = testFn1( 9, -16, 25, 36, -49 );
+  }
+  catch(e)
+  {
+    console.log(' test throws errror, but should not ');
+    console.log(e);
+  }
+  finally
+  {
+    test.identical( got, [ 3, 5, 6 ] );
+  }
+
+  //
+
   test.case = 'simple test with mapping array by sqrt';
-  var got = _.entityFilter( entity1, callback1 );
-  test.identical( got,expected1 );
-
-  /*
-    TODO : need to check actuality of this test
-
-    test.case = 'simple test with longIs';
-    var got = null;
-    try
-    {
-      got = testFn1( 9, -16, 25, 36, -49 );
-
-    }
-    catch(e)
-    {
-      console.log(' test throws errror, but should not ');
-      console.log(e);
-    }
-    finally
-    {
-      test.identical( got, expected1 );
-    }
-  */
+  var got = _.entityFilter( [ 9, -16, 25, 36, -49 ], callback1 );
+  test.identical( got, [ 3, 5, 6 ] );
 
   test.case = 'simple test with mapping array by sqrt : source array should not be modified';
+  var entity1 = [ 9, -16, 25, 36, -49 ],
+      expected1 = entity1.slice();
   var got = _.entityFilter( entity1, callback1 );
-  test.identical( entity1, expected3 );
+  test.identical( entity1, expected1 );
 
   test.case = 'simple test with mapping object by sqrt';
-  var got = _.entityFilter( entity2, callback1 );
-  test.identical( got,expected2 );
+  var got = _.entityFilter( { '3' : 9, '4' : 16, '5' : 25 }, callback1 );
+  test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
 
   test.case = 'simple test with mapping array by sqrt';
-  var got = _.entityFilter( entity1, callback1 );
-  test.identical( got,expected1 );
+  var got = _.entityFilter( [ 9, -16, 25, 36, -49 ], callback1 );
+  test.identical( got, [ 3, 5, 6 ] );
 
   /**/
 
@@ -1162,18 +1158,112 @@ function entityFilter( test )
     _.entityFilter( [ 1,3 ], callback1, callback2 );
   });
 
-  test.case = 'passed argument is not ArrayLike, ObjectLike';
-  test.shouldThrowError( function()
-  {
-    _.entityFilter( 44, callback1 );
-  });
-
   test.case = 'second argument is not routine';
   test.shouldThrowError( function()
   {
     _.entityFilter( [ 1,3 ], 'callback' );
   });
 
+  test.case = 'src is undefined';
+  test.shouldThrowError( function()
+  {
+    _.entityFilter( undefined, callback1 );
+  });
+};
+
+//
+
+function enityExtend( test )
+{
+  test.case = 'src and dst is ArrayLike';
+
+  var got = _.enityExtend( [ 9, -16 ], [ 3, 5, 6 ] );
+  test.identical( got, [ 3, 5, 6 ] );
+
+  var got = _.enityExtend( [], [ 3, 5, 6 ] );
+  test.identical( got, [ 3, 5, 6 ] );
+
+  test.case = 'src and dst is ObjectLike';
+
+  var got = _.enityExtend( { a : 1 }, { a : 3, b : 5, c : 6 } );
+  test.identical( got, { a : 3, b : 5, c : 6 } );
+
+  var got = _.enityExtend( {}, { a : 3, b : 5, c : 6 } );
+  test.identical( got, { a : 3, b : 5, c : 6 } );
+
+  var got = _.enityExtend( { d : 4 }, { a : 3, b : 5, c : 6 } );
+  test.identical( got, { d : 4, a : 3, b : 5, c : 6 } );
+
+  test.case = 'dst is ObjectLike, src is ArrayLike';
+
+  var got = _.enityExtend( {}, [ 3, 5, 6 ] );
+  test.identical( got, { 0 : 3, 1 : 5, 2 : 6 } );
+
+  var got = _.enityExtend( { a : 1 }, [ 3, 5, 6 ] );
+  test.identical( got, { a : 1, 0 : 3, 1 : 5, 2 : 6 } );
+
+  test.case = 'src is ObjectLike, dst is ArrayLike';
+
+  var got = _.enityExtend( [ 9, -16 ], { a : 3, b : 5, c : 6 } );
+  test.identical( got, [ 9, -16 ] );
+
+  var got = _.enityExtend( [], { a : 3, b : 5, c : 6 } );
+  test.identical( got, [] );
+
+  var got = _.enityExtend( [ 1, 2, -3], { 0 : 3, 1 : 5, 2 : 6 } );
+  test.identical( got, [ 3, 5, 6 ] );
+
+  test.case = 'src is not ObjectLike or ArrayLike';
+
+  var got = _.enityExtend( [ 9, -16 ], 1 );
+  test.identical( got, 1 );
+
+  var got = _.enityExtend( [], 'str' );
+  test.identical( got, 'str' );
+
+  var got = _.enityExtend( { a : 1 }, 1 );
+  test.identical( got, 1 );
+
+  var got = _.enityExtend( {}, 'str' );
+  test.identical( got, 'str' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'missed arguments';
+  test.shouldThrowError( function()
+  {
+    _.enityExtend();
+  });
+
+  test.case = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.enityExtend( [ 1,3 ], [ 1,3 ], [ 1,3 ] );
+  });
+
+  test.case = 'dst is undefined';
+  test.shouldThrowError( function()
+  {
+    _.enityExtend( undefined, [ 0, 1 ] );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.enityExtend( undefined, { a : 1, b : 2 } );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.enityExtend( null, [ 0, 1 ] );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.enityExtend( null, { a : 1, b : 2 } );
+  });
 };
 
 //
@@ -1730,6 +1820,8 @@ var Self =
 
     entityMap,
     entityFilter,
+
+    enityExtend,
 
     entityAssign,
     entityAssignFieldFromContainer,
