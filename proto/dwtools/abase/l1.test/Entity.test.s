@@ -155,6 +155,7 @@ function entityEach( test )
   {
     if( _.strIs( v ) && i >= 0 )
     got += 10;
+    else
     got -= 1;
   }
 
@@ -208,6 +209,7 @@ function entityEach( test )
   {
     if( _.strIs( v ) && k )
     got += 10;
+    else
     got -= 1;
   }
 
@@ -314,6 +316,7 @@ function entityEachKey( test )
   {
     if( _.strIs( v ) && i === undefined )
     got += 10;
+    else
     got -= 1;
   }
 
@@ -365,6 +368,7 @@ function entityEachKey( test )
   {
     if( _.strIs( v ) && k )
     got += 10;
+    else
     got -= 1;
   }
 
@@ -473,6 +477,7 @@ function entityEachOwn( test )
   {
     if( _.strIs( v ) && i >= 0 )
     got += 10;
+    else
     got -= 1;
   }
 
@@ -526,6 +531,7 @@ function entityEachOwn( test )
   {
     if( _.strIs( v ) && k )
     got += 10;
+    else
     got -= 1;
   }
 
@@ -1044,10 +1050,10 @@ function entityMap( test )
   }
 
   test.case = 'no ArrayLike, no ObjectLike';
-  var got = _.entityMap( 2, ( v ) => v + v );
+  var got = _.entityMap( 2, ( v, i, ent ) => v + v );
   test.identical( got, 4 );
 
-  var got = _.entityMap( 'a', ( v ) => v + v );
+  var got = _.entityMap( 'a', ( v, i, ent ) => v + v );
   test.identical( got, 'aa' );
 
   if( Object.is )
@@ -1057,7 +1063,7 @@ function entityMap( test )
   }
 
   test.case = 'number';
-  var got = _.entityMap( 3, callback1 );
+  var got = _.entityMap( 3, ( v, i, ent ) => v * v );
   test.identical( got, 9 );
 
   /* */
