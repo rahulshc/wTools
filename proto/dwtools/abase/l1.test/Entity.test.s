@@ -1077,6 +1077,14 @@ function entityMap( test )
     _.entityMap( [ 1,3 ], callback1, callback2 );
   });
 
+<<<<<<< HEAD
+=======
+  test.case = 'passed argument is undefined';
+  test.shouldThrowError( function()
+  {
+    _.entityMap( [ 1,3, undefined ], ( v, i ) => v );
+  });
+>>>>>>> 43fbf23f52b6450e22869d94ccd988a3342c64d1
 
   test.case = 'second argument is not routine';
   test.shouldThrowError( function()
