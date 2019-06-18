@@ -1056,7 +1056,11 @@ function entityMap( test )
     test.identical( Object.is( got, new constr1() ), false );
   }
 
-  /**/
+  test.case = 'number';
+  var got = _.entityMap( 3, callback1 );
+  test.identical( got, 9 );
+
+  /* */
 
   if( !Config.debug )
   return;
@@ -1085,7 +1089,7 @@ function entityMap( test )
     _.entityMap( [ 1,3 ], 'callback' );
   });
 
-};
+}
 
 //
 
@@ -1140,6 +1144,10 @@ function entityFilter( test )
   test.case = 'simple test with mapping array by sqrt';
   var got = _.entityFilter( [ 9, -16, 25, 36, -49 ], callback1 );
   test.identical( got, [ 3, 5, 6 ] );
+
+  test.case = 'number';
+  var got = _.entityFilter( 3, callback1 );
+  test.identical( got, Math.sqrt( 3 ) );
 
   /**/
 
@@ -1709,7 +1717,7 @@ function entitySize( test )
 
   test.case = 'atomic type';
   var got = _.entitySize( 6 );
-  var expected = null;
+  var expected = 8;
   test.identical( got, expected );
 
   test.case = 'buffer';
@@ -1733,7 +1741,7 @@ function entitySize( test )
 
   test.case = 'arraylike';
   var got = _.entitySize( [ 1, 2, 3 ] );
-  var expected = 3;
+  var expected = 24;
   test.identical( got, expected );
 
   // wrong because routine has code
@@ -1753,7 +1761,7 @@ function entitySize( test )
 
   test.case = 'object';
   var got = _.entitySize( { a : 1, b : 2 } );
-  var expected = null;
+  var expected = 18;
   test.identical( got, expected );
 
   // wrong because routine has code
@@ -1763,7 +1771,7 @@ function entitySize( test )
 
   test.case = 'empty call';
   var got = _.entitySize( undefined );
-  var expected = null;
+  var expected = 8;
   test.identical( got, expected );
 
   if( !Config.debug )
