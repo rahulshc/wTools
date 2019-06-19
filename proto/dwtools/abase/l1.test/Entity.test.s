@@ -99,43 +99,11 @@ function eachSample( test )
 
 function entityEach( test )
 {
-  test.case = 'src is not array or object';
-
-  var got;
-  _.entityEach( null, ( v ) => got = typeof v );
-  test.identical( got, 'object' );
-
-  var got;
-  _.entityEach( 1, ( v ) => got = typeof v );
-  test.identical( got, 'number' );
-
-  var got;
-  _.entityEach( 'a', ( v ) => got = typeof v );
-  test.identical( got, 'string' );
-
-  var got;
-  _.entityEach( 'a', ( v ) => got = v + 2 );
-  test.identical( got, 'a2' );
-
-  var got;
-  _.entityEach( function b(){ return 'a'}, ( v ) => got = typeof v );
-  test.identical( got, 'function' );
-
-  var got;
-  _.entityEach( 'a', ( v, i ) => got = v + i );
-  test.identical( got, 'aundefined' );
-
-  var got;
-  _.entityEach( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
-  test.identical( got, 'function undefined' );
-
-  //
-
-  test.case = 'src is an array';
+  test.case = 'src is an ArrayLike';
 
   var got;
   _.entityEach( [], ( v ) => got = typeof v );
-  test.identical( got, 'function undefined' );
+  test.identical( got, undefined );
 
   var got = [];
   _.entityEach( [], ( v, i ) => got[ i ] = v + i );
@@ -183,13 +151,26 @@ function entityEach( test )
   _.entityEach( [ { a : 1 }, { b : 2 } ], onEach );
   test.identical( got, -2 );
 
+  test.case = 'Third argument in onEach'
+  function onEach3( v, i, src )
+  {
+    if( _.longIs( src ) )
+    got = src;
+    else
+    got += 10;
+  }
+
+  var got;
+  _.entityEach( [ 0, 1, 3, 5 ], onEach3 );
+  test.identical( got, [ 0, 1, 3, 5 ] );
+
   //
 
   test.case = 'src is an object';
 
-  var got;
+  var got = {};
   _.entityEach( {}, ( v ) => got = v );
-  test.identical( got, -2 );
+  test.identical( got, {} );
 
   var got = {};
   _.entityEach( {}, ( v, k ) => got[ k ] = v + k );
@@ -237,6 +218,51 @@ function entityEach( test )
   _.entityEach( { a : { a : 1 }, b : { b : 2 } }, onEach1 );
   test.identical( got, -2 );
 
+  test.case = 'Third argument in onEach'
+  function onEach4( v, k, src )
+  {
+    if( _.objectIs( src ) )
+    got = src;
+    else
+    got += 10;
+  }
+
+  var got = {};
+  _.entityEach( { a : 1, b : 2, c : 3 }, onEach4 );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  //
+
+  test.case = 'src is not ArrayLike or ObjectLike';
+
+  var got;
+  _.entityEach( null, ( v ) => got = typeof v );
+  test.identical( got, 'object' );
+
+  var got;
+  _.entityEach( 1, ( v ) => got = typeof v );
+  test.identical( got, 'number' );
+
+  var got;
+  _.entityEach( 'a', ( v ) => got = typeof v );
+  test.identical( got, 'string' );
+
+  var got;
+  _.entityEach( 'a', ( v ) => got = v + 2 );
+  test.identical( got, 'a2' );
+
+  var got;
+  _.entityEach( function b(){ return 'a'}, ( v ) => got = typeof v );
+  test.identical( got, 'function' );
+
+  var got;
+  _.entityEach( 'a', ( v, i ) => got = v + i );
+  test.identical( got, 'aundefined' );
+
+  var got;
+  _.entityEach( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
+  test.identical( got, 'function undefined' );
+
   //
 
   if( !Config.debug )
@@ -251,8 +277,8 @@ function entityEach( test )
   test.case = 'too many arguments';
   test.shouldThrowErrorSync( () => _.entityEach( [ 'a' ], ( a ) => a, ( b ) => b ) );
 
-  test.case = 'onEach has more then two arg';
-  test.shouldThrowErrorSync( () => _.entityEach( [ 1 ], ( a, b, c ) => a + b + c ) );
+  test.case = 'onEach has more then three args';
+  test.shouldThrowErrorSync( () => _.entityEach( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
 
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityEach( { a : 2 }, [] ) );
@@ -262,42 +288,11 @@ function entityEach( test )
 
 function entityEachKey( test )
 {
-  test.case = 'src is not array or object';
+  test.case = 'src is an ArrayLike';
 
-  var got;
-  _.entityEachKey( null, ( v ) => got = typeof v );
-  test.identical( got, 'object' );
-
-  var got;
-  _.entityEachKey( 1, ( v ) => got = typeof v );
-  test.identical( got, 'number' );
-
-  var got;
-  _.entityEachKey( 'a', ( v ) => got = typeof v );
-  test.identical( got, 'string' );
-
-  var got;
-  _.entityEachKey( 'a', ( v ) => got = v + 2 );
-  test.identical( got, 'a2' );
-
-  var got;
-  _.entityEachKey( function b(){ return 'a'}, ( v ) => got = typeof v );
-  test.identical( got, 'function' );
-
-  var got;
-  _.entityEachKey( 'a', ( v, i ) => got = v + i );
-  test.identical( got, 'aundefined' );
-
-  var got;
-  _.entityEachKey( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
-  test.identical( got, 'function undefined' );
-
-  //
-
-  test.case = 'src is an array';
   var got;
   _.entityEachKey( [], ( v ) => got = typeof v );
-  test.identical( got, 'function undefined' );
+  test.identical( got, undefined );
 
   var got = [];
   _.entityEachKey( [], ( v, i ) => got[ i ] = v + i );
@@ -344,12 +339,25 @@ function entityEachKey( test )
   _.entityEachKey( [ { a : 1 }, { b : 2 } ], onEach );
   test.identical( got, -2 );
 
+  test.case = 'Third args in onEach'
+  function onEach3( v, u, i )
+  {
+    if( u === undefined )
+    got[ i ] = v;
+    else
+    got += 10;
+  }
+
+  var got = [];
+  _.entityEachKey( [ 0, 1, 3, 5 ], onEach3 );
+  test.identical( got, [ 0, 1, 3, 5 ] );
+
   //
 
-  test.case = 'src is an object';
-  var got;
+  test.case = 'src is an ObjectLike';
+  var got = {};
   _.entityEachKey( {}, ( v ) => got = v );
-  test.identical( got, -2 );
+  test.identical( got, {} );
 
   var got = {};
   _.entityEachKey( {}, ( v, k ) => got[ k ] = v + k );
@@ -396,6 +404,48 @@ function entityEachKey( test )
   _.entityEachKey( { a : { a : 1 }, b : { b : 2 } }, onEach );
   test.identical( got, -2 );
 
+  test.case = 'Third argument in onEach'
+  function onEach4( v, k, i )
+  {
+    got[ i ] = v;
+  }
+
+  var got = {};
+  _.entityEachKey( { a : 1, b : 2, c : 3 }, onEach4 );
+  test.identical( got, { 0 : 'a', 1 : 'b', 2 : 'c' } );
+
+  //
+
+  test.case = 'src is not ArrayLike or ObjectLike';
+
+  var got;
+  _.entityEachKey( null, ( v ) => got = typeof v );
+  test.identical( got, 'object' );
+
+  var got;
+  _.entityEachKey( 1, ( v ) => got = typeof v );
+  test.identical( got, 'number' );
+
+  var got;
+  _.entityEachKey( 'a', ( v ) => got = typeof v );
+  test.identical( got, 'string' );
+
+  var got;
+  _.entityEachKey( 'a', ( v ) => got = v + 2 );
+  test.identical( got, 'a2' );
+
+  var got;
+  _.entityEachKey( function b(){ return 'a'}, ( v ) => got = typeof v );
+  test.identical( got, 'function' );
+
+  var got;
+  _.entityEachKey( 'a', ( v, i ) => got = v + i );
+  test.identical( got, 'aundefined' );
+
+  var got;
+  _.entityEachKey( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
+  test.identical( got, 'function undefined' );
+
   //
 
   if( !Config.debug )
@@ -410,8 +460,8 @@ function entityEachKey( test )
   test.case = 'too many arguments';
   test.shouldThrowErrorSync( () => _.entityEachKey( [ 'a' ], ( a ) => a, ( b ) => b ) );
 
-  test.case = 'onEach has more then two arg';
-  test.shouldThrowErrorSync( () => _.entityEachKey( [ 1 ], ( a, b, c ) => a + b + c ) );
+  test.case = 'onEach has more then three arg';
+  test.shouldThrowErrorSync( () => _.entityEachKey( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
 
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityEachKey( { a : 2 }, [] ) );
@@ -421,43 +471,11 @@ function entityEachKey( test )
 
 function entityEachOwn( test )
 {
-  test.case = 'src is not array or object';
-
-  var got;
-  _.entityEachOwn( null, ( v ) => got = typeof v );
-  test.identical( got, 'object' );
-
-  var got;
-  _.entityEachOwn( 1, ( v ) => got = typeof v );
-  test.identical( got, 'number' );
-
-  var got;
-  _.entityEachOwn( 'a', ( v ) => got = typeof v );
-  test.identical( got, 'string' );
-
-  var got;
-  _.entityEachOwn( 'a', ( v ) => got = v + 2 );
-  test.identical( got, 'a2' );
-
-  var got;
-  _.entityEachOwn( function b(){ return 'a'}, ( v ) => got = typeof v );
-  test.identical( got, 'function' );
-
-  var got;
-  _.entityEachOwn( 'a', ( v, i ) => got = v + i );
-  test.identical( got, 'aundefined' );
-
-  var got;
-  _.entityEachOwn( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
-  test.identical( got, 'function undefined' );
-
-  //
-
-  test.case = 'src is an array';
+  test.case = 'src is an ArrayLike';
 
   var got;
   _.entityEachOwn( [], ( v ) => got = typeof v );
-  test.identical( got, 'function undefined' );
+  test.identical( got, undefined );
 
   var got = [];
   _.entityEachOwn( [], ( v, i ) => got[ i ] = v + i );
@@ -505,13 +523,26 @@ function entityEachOwn( test )
   _.entityEachOwn( [ { a : 1 }, { b : 2 } ], onEach );
   test.identical( got, -2 );
 
-  //
-
-  test.case = 'src is an object';
+  test.case = 'Third argument in onEach'
+  function onEach3( v, i, src )
+  {
+    if( _.longIs( src ) )
+    got = src;
+    else
+    got += 10
+  }
 
   var got;
+  _.entityEachOwn( [ 0, 1, 3, 5 ], onEach3 );
+  test.identical( got, [ 0, 1, 3, 5 ] );
+
+  //
+
+  test.case = 'src is an ObjectLike';
+
+  var got ={};
   _.entityEachOwn( {}, ( v ) => got = v );
-  test.identical( got, -2 );
+  test.identical( got, {} );
 
   var got = {};
   _.entityEachOwn( {}, ( v, k ) => got[ k ] = v + k );
@@ -559,6 +590,51 @@ function entityEachOwn( test )
   _.entityEachOwn( { a : { a : 1 }, b : { b : 2 } }, onEach1 );
   test.identical( got, -2 );
 
+  test.case = 'Third argument in onEach'
+  function onEach4( v, k, src )
+  {
+    if( _.objectIs( src ) )
+    got = src;
+    else
+    got += 10;
+  }
+
+  var got = {};
+  _.entityEachOwn( { a : 1, b : 2, c : 3 }, onEach4 );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  //
+
+  test.case = 'src is not ArrayLike or ObjectLike';
+
+  var got;
+  _.entityEachOwn( null, ( v ) => got = typeof v );
+  test.identical( got, 'object' );
+
+  var got;
+  _.entityEachOwn( 1, ( v ) => got = typeof v );
+  test.identical( got, 'number' );
+
+  var got;
+  _.entityEachOwn( 'a', ( v ) => got = typeof v );
+  test.identical( got, 'string' );
+
+  var got;
+  _.entityEachOwn( 'a', ( v ) => got = v + 2 );
+  test.identical( got, 'a2' );
+
+  var got;
+  _.entityEachOwn( function b(){ return 'a'}, ( v ) => got = typeof v );
+  test.identical( got, 'function' );
+
+  var got;
+  _.entityEachOwn( 'a', ( v, i ) => got = v + i );
+  test.identical( got, 'aundefined' );
+
+  var got;
+  _.entityEachOwn( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
+  test.identical( got, 'function undefined' );
+
   //
 
   if( !Config.debug )
@@ -573,8 +649,8 @@ function entityEachOwn( test )
   test.case = 'too many arguments';
   test.shouldThrowErrorSync( () => _.entityEachOwn( [ 'a' ], ( a ) => a, ( b ) => b ) );
 
-  test.case = 'onEach has more then two arg';
-  test.shouldThrowErrorSync( () => _.entityEachOwn( [ 1 ], ( a, b, c ) => a + b + c ) );
+  test.case = 'onEach has more then three arg';
+  test.shouldThrowErrorSync( () => _.entityEachOwn( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
 
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityEachOwn( { a : 2 }, [] ) );
@@ -587,7 +663,7 @@ function entityAll( test )
 
   test.open( 'onEach is routine' );
 
-  test.case = 'array';
+  test.case = 'ArrayLike';
 
   var got = _.entityAll( [ 1, 'str', undefined ], ( v, i ) => v !== undefined && i + 2 < 5 );
   test.identical( got, false );
@@ -607,7 +683,10 @@ function entityAll( test )
   var got = _.entityAll( [ 'a : 1', false ], ( v, i ) => v !== i );
   test.identical( got, true );
 
-  test.case = 'object';
+  var got = _.entityAll( [ 'a : 1', false ], ( v, i, src ) => src.length == i );
+  test.identical( got, false );
+
+  test.case = 'ObjectLike';
 
   var got = _.entityAll( { 1 : 2, c : 4, a : undefined }, ( v, k ) => v === k );
   test.identical( got, false );
@@ -627,7 +706,10 @@ function entityAll( test )
   var got = _.entityAll( { a : 1, b : false }, ( v, k ) => v === k );
   test.identical( got, false );
 
-  test.case = 'no array, no object'
+  var got = _.entityAll( { a : 1, b : false }, ( v, k, src ) => src.length !== k );
+  test.identical( got, true );
+
+  test.case = 'no ArrayLike, no ObjectLike'
 
   var got = _.entityAll( undefined, ( src, u ) => src !== u );
   test.identical( got, false );
@@ -647,13 +729,16 @@ function entityAll( test )
   var got = _.entityAll( true, ( src, u ) => src !== u );
   test.identical( got, true );
 
+  var got = _.entityAll( true, ( src, u, u2 ) => src !== u2 );
+  test.identical( got, true );
+
   test.close( 'onEach is routine' );
 
   //
 
   test.open( 'onEach is undefined' );
 
-  test.case = 'array';
+  test.case = 'ArrayLike';
 
   var got = _.entityAll( [ 1, 'str', undefined ] );
   test.identical( got, undefined );
@@ -667,7 +752,7 @@ function entityAll( test )
   var got = _.entityAll( [ 'a : 1', false ] );
   test.identical( got, false );
 
-  test.case = 'object';
+  test.case = 'ObjectLike';
 
   var got = _.entityAll( { 1 : 2, c : 4, a : undefined } );
   test.identical( got, undefined );
@@ -684,7 +769,7 @@ function entityAll( test )
   var got = _.entityAll( { a : 1, b : false } );
   test.identical( got, false );
 
-  test.case = 'no array, no object'
+  test.case = 'no ArrayLike, no ObjectLike'
 
   var got = _.entityAll( undefined );
   test.identical( got, undefined );
@@ -717,8 +802,8 @@ function entityAll( test )
   test.case = 'too many arguments';
   test.shouldThrowErrorSync( () => _.entityAll( [ 'a' ], ( a ) => a, ( b ) => b ) );
 
-  test.case = 'onEach has more then two arg';
-  test.shouldThrowErrorSync( () => _.entityAll( [ 1 ], ( a, b, c ) => a + b + c ) );
+  test.case = 'onEach has more then three arg';
+  test.shouldThrowErrorSync( () => _.entityAll( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
 
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityAll( { a : 2 }, [] ) );
@@ -731,7 +816,7 @@ function entityAny( test )
 
   test.open( 'onEach is routine' );
 
-  test.case = 'array';
+  test.case = 'ArrayLike';
 
   var got = _.entityAny( [ 1, 'str', undefined ], ( v, i ) => v !== undefined && i + 2 < 5 );
   test.identical( got, true );
@@ -751,7 +836,10 @@ function entityAny( test )
   var got = _.entityAny( [ 'a : 1', false ], ( v, i ) => v !== i );
   test.identical( got, true );
 
-  test.case = 'object';
+  var got = _.entityAny( [ 'a : 1', false ], ( v, i, u ) => v !== u );
+  test.identical( got, true );
+
+  test.case = 'ObjectLike';
 
   var got = _.entityAny( { 1 : 2, c : 4, a : undefined }, ( v, k ) => v === k );
   test.identical( got, false );
@@ -768,7 +856,10 @@ function entityAny( test )
   var got = _.entityAny( { a : 1, b : false }, ( v, k ) => v === k );
   test.identical( got, false );
 
-  test.case = 'no array, no object'
+  var got = _.entityAny( { a : 1, b : false }, ( v, k, u ) => v !== u );
+  test.identical( got, true );
+
+  test.case = 'no ArrayLike, no ObjectLike'
 
   var got = _.entityAny( undefined, ( src, u ) => src !== u );
   test.identical( got, false );
@@ -788,13 +879,16 @@ function entityAny( test )
   var got = _.entityAny( true, ( src, u ) => src !== u );
   test.identical( got, true );
 
+  var got = _.entityAny( true, ( src, u, u2 ) => src !== u2 );
+  test.identical( got, true );
+
   test.close( 'onEach is routine' );
 
   //
 
   test.open( 'onEach is undefined' );
 
-  test.case = 'array';
+  test.case = 'ArrayLike';
 
   var got = _.entityAny( [ 1, 'str', undefined ] );
   test.identical( got, 1 );
@@ -805,7 +899,7 @@ function entityAny( test )
   var got = _.entityAny( [ 'a : 1', 3, true ] );
   test.identical( got, 'a : 1' );
 
-  test.case = 'object';
+  test.case = 'ObjectLike';
 
   var got = _.entityAny( { 1 : 2, c : 4, a : undefined } );
   test.identical( got, 2 );
@@ -822,7 +916,7 @@ function entityAny( test )
   var got = _.entityAny( { a : 1, b : false } );
   test.identical( got, 1 );
 
-  test.case = 'no array, no object'
+  test.case = 'no ArrayLike, no ObjectLike'
 
   var got = _.entityAny( undefined );
   test.identical( got, false );
@@ -855,8 +949,8 @@ function entityAny( test )
   test.case = 'too many arguments';
   test.shouldThrowErrorSync( () => _.entityAny( [ 'a' ], ( a ) => a, ( b ) => b ) );
 
-  test.case = 'onEach has more then two arg';
-  test.shouldThrowErrorSync( () => _.entityAny( [ 1 ], ( a, b, c ) => a + b + c ) );
+  test.case = 'onEach has more then three arg';
+  test.shouldThrowErrorSync( () => _.entityAny( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
 
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityAny( { a : 2 }, [] ) );
@@ -869,7 +963,7 @@ function entityNone( test )
 
   test.open( 'onEach is routine' );
 
-  test.case = 'array';
+  test.case = 'ArrayLike';
 
   var got = _.entityNone( [ false, undefined, null ], ( v, i ) => v && !i );
   test.identical( got, true );
@@ -889,7 +983,13 @@ function entityNone( test )
   var got = _.entityNone( [ 'a : 1', false ], ( v, i ) => v !== i );
   test.identical( got, false );
 
-  test.case = 'object';
+  var got = _.entityNone( [ 'a : 1', false ], ( v, i, src ) => src.length !== v );
+  test.identical( got, false );
+
+  var got = _.entityNone( [ 'a : 1', false ], ( v, i, src ) => src.length === v );
+  test.identical( got, true );
+
+  test.case = 'ObjectLike';
 
   var got = _.entityNone( { 1 : 2, c : 4, a : undefined }, ( v, k ) => v === k );
   test.identical( got, true );
@@ -906,7 +1006,10 @@ function entityNone( test )
   var got = _.entityNone( { a : 1, b : false }, ( v, k ) => v === k );
   test.identical( got, true );
 
-  test.case = 'no array, no object'
+  var got = _.entityNone( { a : 1, b : false }, ( v, k, src ) => src.length === v );
+  test.identical( got, true );
+
+  test.case = 'no ArrayLike, no ObjectLike'
 
   var got = _.entityNone( undefined, ( src, u ) => src !== u );
   test.identical( got, true );
@@ -926,13 +1029,16 @@ function entityNone( test )
   var got = _.entityNone( true, ( src, u ) => src !== u );
   test.identical( got, false );
 
+  var got = _.entityNone( true, ( src, u, u2 ) => src !== u2 );
+  test.identical( got, false );
+
   test.close( 'onEach is routine' );
 
   //
 
   test.open( 'onEach is undefined' );
 
-  test.case = 'array';
+  test.case = 'ArrayLike';
 
   var got = _.entityNone( [ 1, 'str', undefined ] );
   test.identical( got, false );
@@ -943,7 +1049,7 @@ function entityNone( test )
   var got = _.entityNone( [ 'a : 1', 3, true ] );
   test.identical( got, false );
 
-  test.case = 'object';
+  test.case = 'ObjectLike';
 
   var got = _.entityNone( { 1 : 2, c : 4, a : undefined } );
   test.identical( got, false );
@@ -960,7 +1066,7 @@ function entityNone( test )
   var got = _.entityNone( { a : 1, b : false } );
   test.identical( got, false );
 
-  test.case = 'no array, no object'
+  test.case = 'no ArrayLike, no ObjectLike'
 
   var got = _.entityNone( undefined );
   test.identical( got, true );
@@ -993,8 +1099,8 @@ function entityNone( test )
   test.case = 'too many arguments';
   test.shouldThrowErrorSync( () => _.entityNone( [ 'a' ], ( a ) => a, ( b ) => b ) );
 
-  test.case = 'onEach has more then two arguments';
-  test.shouldThrowErrorSync( () => _.entityNone( [ 1 ], ( a, b, c ) => a + b + c ) );
+  test.case = 'onEach has more then three arguments';
+  test.shouldThrowErrorSync( () => _.entityNone( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
 
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityNone( { a : 2 }, [] ) );
