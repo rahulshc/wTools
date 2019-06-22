@@ -182,7 +182,7 @@ build :
 
   npm :
     criterion :
-      default : 1
+      # default : 1
       debug : debug
       raw : compiled
       content : npm

@@ -669,7 +669,6 @@ build:
       - timelapse.end
   npm:
     criterion:
-      default: 1
       debug: debug
       raw: compiled
       content: npm
