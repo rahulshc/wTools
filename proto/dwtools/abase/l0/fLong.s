@@ -5468,34 +5468,34 @@ function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evalua
 
 }
 
+// //
 //
-
-function arrayReplaceAll( dstArray, ins, sub, evaluator1, evaluator2 )
-{
-  arrayReplacedAll.apply( this, arguments );
-  return dstArray;
-}
-
+// function arrayReplaceAll( dstArray, ins, sub, evaluator1, evaluator2 )
+// {
+//   arrayReplacedAll.apply( this, arguments );
+//   return dstArray;
+// }
 //
-
-function arrayReplacedAll( dstArray, ins, sub, evaluator1, evaluator2 )
-{
-  _.assert( 3 <= arguments.length && arguments.length <= 5 );
-
-  let index = -1;
-  let result = 0;
-
-  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
-
-  while( index !== -1 )
-  {
-    dstArray.splice( index, 1, sub );
-    result += 1;
-    index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
-  }
-
-  return result;
-}
+// //
+//
+// function arrayReplacedAll( dstArray, ins, sub, evaluator1, evaluator2 )
+// {
+//   _.assert( 3 <= arguments.length && arguments.length <= 5 );
+//
+//   let index = -1;
+//   let result = 0;
+//
+//   index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+//
+//   while( index !== -1 )
+//   {
+//     dstArray.splice( index, 1, sub );
+//     result += 1;
+//     index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+//   }
+//
+//   return result;
+// }
 
 //
 
@@ -5832,8 +5832,8 @@ let Routines =
   arrayReplacedArraysOnce,
   arrayReplacedArraysOnceStrictly,
 
-  arrayReplaceAll,
-  arrayReplacedAll,
+  // arrayReplaceAll, // use arrayReplaceElement instead
+  // arrayReplacedAll, // use arrayReplacedElement instead
 
   arrayUpdate,
 
