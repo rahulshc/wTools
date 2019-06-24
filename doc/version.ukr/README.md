@@ -48,3 +48,8 @@
   </a></summary>
   Рутина для підрахунку кількості входжень елемента в масив.
 </details>
+<details><summary><a href="./tutorial/RoutineFromPreAndBody.md">
+      Рутина routineFromPreAndBody
+  </a></summary>
+  Автоматичне об'єднання рутини підготовки даних і рутини для їх обробки.
+</details>
