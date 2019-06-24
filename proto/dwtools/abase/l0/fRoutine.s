@@ -775,7 +775,7 @@ function routineFromPreAndBody_body( o )
 
   let callPreAndBody = r[ o.name ];
 
-  _.assert( _.strDefined( callPreAndBody.name ), 'Looks like your interpreter does not support dynamice naming of functions. Please use ES2015 or later interpreter.' );
+  _.assert( _.strDefined( callPreAndBody.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
 
   _.routineExtend( callPreAndBody, o.body );
 
