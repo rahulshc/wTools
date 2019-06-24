@@ -25,7 +25,7 @@
 ### Створення рутин з допомогою `routineFromPreAndBody`
 
 <details>
-  <summary><u>Структура файлів</u></summary>
+  <summary><u>Структура модуля</u></summary>
 
 ```
 routineFromPreAndBody
@@ -36,7 +36,63 @@ routineFromPreAndBody
 
 </details>
 
-Створіть приведену конфігурацію для дослідження рутини `routineFromPreAndBody`.
+Створіть приведену конфігурацію файлів для дослідження рутини `routineFromPreAndBody`.
+
+<details>
+  <summary><u>Рутини <code>name_pre</code> i <code>name_body</code> в файлі <code>Name.js</code></u></summary>
+
+```js
+function name_pre( routine, args )
+{
+  let o = args[ 0 ];
+  if( _.strIs( o ) )
+  o = { path : o };
+
+  _.routineOptions( routine, o );
+  _.assert( o && _.strIs( o.path ), 'Expects strings {-o.path-}' );
+  _.assert( args.length === 1 );
+  _.assert( arguments.length === 2 );
+
+  return o;
+}
+
+function name_body( o )
+{
+  let i = o.path.lastIndexOf( '/' );
+  if( i !== -1 )
+  o.path = o.path.substr( i+1 );
+
+  if( !o.full )
+  {
+    let i = o.path.lastIndexOf( '.' );
+    if( i !== -1 ) o.path = o.path.substr( 0, i );
+  }
+
+  return o.path;
+}
+
+name_body.defaults =
+{
+  path : null,
+  full : 0,
+}
+```
+
+</details>
+
+Прогляньте код рутин `name_pre` i `name_body`.
+
+Як вже вказувалось, рутина `pre` готує мапу опцій для рутини `body`. Одним аргументом їй передається `routine` - поточна рутина, її налаштування, а другим - масив аргументів `args`. В рутині `name` приймається тільки один аргумент, котрий одразу поміщається в мапу опцій за ключем `path`. Для кожної рутини, що будується з допомогою `routineFromPreAndBody` встановлюються опції за замовчуванням, що поміщені в рутину `body`, щоб використати ці налаштування використовується `routineOptions`. Рутина `routineOptions` перевіряє мапу опцій створену з аргументів і за необхідності додає опції з налаштувань за замовчуванням. Ще однією важливою складовою рутини `pre` є ассерти. Ассерти перевіряють вхідні дані, щоб сформована мапа опцій містила коректні значення. Наприклад, ассерт
+
+```js
+_.assert( args.length === 1 );
+```
+
+перевіряє, що переданий масив аргументів `args` містить тільки один елемент. Якщо значення відрізнятиметься від `1`, то рутина завершить своє виконання викинувши помилку.
+
+Рутина `name_body` складається з двох частин - власне рутини і її налаштувань. Рутина `name_body` приймає мапу опцій та повертає ім'я файла з переданого їй шляху. Шлях формується в форматі `posix`-систем тобто зі звичайним слешем `/` ( перетворення шляхів тут не розглядається ). Крім цього, в тілі рутини використовується опція `full`, що призначена для виділення повної назви файла включаючи розширення. В налаштуваннях за замовчуванням вказуються всі опції, що приймає рутина. Для рутини `name_body` це `path` i `full`.
+
+З використанням рутини `routineFromPreAndBody` можна об'єднати рутини `name_pre` i `name_body` в одну, котра буде приймати шлях, а повертати ім'я файла.
 
 <details>
   <summary><u>Код файла <code>Name.js</code></u></summary>
@@ -82,6 +138,50 @@ name_body.defaults =
 }
 
 let name = _.routineFromPreAndBody( name_pre, name_body );
+
+let nameFull = _.routineFromPreAndBody( name_pre, name_body );
+nameFull.defaults.full = 1;
+
+console.log( name( '/a/b/c/File.js' ) );
+console.log( nameFull( '/a/b/c/File.js' ) );
+```
+
+</details>
+
+Внесіть в файл `Name.js` код, що приведений вище.
+
+Для використання рутини `routineFromPreAndBody` треба підключити модуль `Tools`. Скопіюйте приведений нижче код в файл `package.json`.
+
+<details>
+    <summary><u>Код файла <code>package.json</code></u></summary>
+
+```json    
+{
+  "dependencies": {
+    "wTools": ""
+  }
+}
+```
+
+</details>
+
+Для встановлення залежностей скористуйтесь командою `npm install`. Після встановлення залежностей модуль готовий до роботи.
+
+В кінці файла знайдете рядки з об'явленням рутин `name` i `nameFull`. Вони вказуються як звичайні змінні. Рутина `name` використовує налаштування за замовчуванням, що встановлені в рутині `name_body`, тому вона не перевизначає опції, а рутина `nameFull` повинна повертати повне ім'я файла, тому вона встановлює опцію `full`:
+
+```js
+nameFull.defaults.full = 1;
+```
+
+Запустіть виконання файла `Name.js` в інтерпретаторі `NodeJS`, для цього введіть команду `node Name.js`. Порівняйте вивід з приведеним:
+
+<details>
+  <summary><u>Вивід команди <code>node Name.js</code></u></summary>
+
+```
+[user@user ~]$ node Name.js
+File
+File.js
 ```
 
 </details>
