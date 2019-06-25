@@ -754,7 +754,7 @@ function routineFromPreAndBody_body( o )
 
   if( !o.name )
   {
-    _.assert( _.strDefined( o.body.name ), 'Body routine should have anme' );
+    _.assert( _.strDefined( o.body.name ), 'Body routine should have name' );
     o.name = o.body.name;
     if( o.name.indexOf( '_body' ) === o.name.length-5 && o.name.length > 5 )
     o.name = o.name.substring( 0, o.name.length-5 );
@@ -777,7 +777,7 @@ function routineFromPreAndBody_body( o )
 
   let callPreAndBody = r[ o.name ];
 
-  _.assert( _.strDefined( callPreAndBody.name ), 'Looks like your interpreter does not support dynamice naming of functions. Please use ES2015 or later interpreter.' );
+  _.assert( _.strDefined( callPreAndBody.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
 
   _.routineExtend( callPreAndBody, o.body );
 

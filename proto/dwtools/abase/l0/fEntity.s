@@ -259,7 +259,8 @@ function entityEach( src, onEach )
 {
 
   _.assert( arguments.length === 2 );
-  _.assert( onEach.length <= 2 );
+  _.assert( onEach.length <= 3 );
+  // _.assert( onEach.length <= 2 );
   _.assert( _.routineIs( onEach ) );
 
   /* */
@@ -297,7 +298,8 @@ function entityEach( src, onEach )
 function entityEachKey( src, onEach )
 {
   _.assert( arguments.length === 2 );
-  _.assert( onEach.length <= 2 );
+  _.assert( onEach.length <= 3 );
+  // _.assert( onEach.length <= 2 );
   _.assert( _.routineIs( onEach ) );
 
   /* */
@@ -378,7 +380,8 @@ function entityEachOwn( src, onEach )
 {
 
   _.assert( arguments.length === 2 );
-  _.assert( onEach.length <= 2 );
+  _.assert( onEach.length <= 3 );
+  // _.assert( onEach.length <= 2 );
   _.assert( _.routineIs( onEach ) );
 
   /* */
@@ -420,7 +423,8 @@ function entityAll( src, onEach )
   let result = true;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
 
   /* */
 
@@ -503,7 +507,8 @@ function entityAny( src, onEach )
   let result = false;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
 
   /* */
 
@@ -586,7 +591,8 @@ function entityNone( src, onEach )
   let result = true;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
 
   /* */
 
