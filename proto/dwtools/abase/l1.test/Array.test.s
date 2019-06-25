@@ -2129,6 +2129,114 @@ function arrayToStr( test )
 // unroll
 // --
 
+function unrollIs( test )
+{
+  test.case = 'unroll from empty array';
+
+  var got = _.unrollMake( [] );
+  test.is( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.unrollFrom( [] );
+  test.is( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'unroll from not empty array';
+
+  var got = _.unrollMake( [ 1 ] );
+  test.is( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.unrollFrom( [ 'str' ] );
+  test.is( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'not unroll';
+
+  var got = new Float32Array( [3, 1, 2] );
+  test.identical( _.unrollIs( got ), false );
+
+  test.identical( _.unrollIs( [] ), false );
+
+  test.identical( _.unrollIs( 1 ), false );
+
+  test.identical( _.unrollIs( 'str' ), false );
+
+  test.case = 'second argument is unroll';
+
+  var got = _.unrollMake( [ 2, 4 ] );
+  test.identical( _.unrollIs( [ 1, 'str' ], got ), false );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.unrollFrom( [ 2, 4 ] );
+  test.identical( _.unrollIs( 1, got ), false );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.unrollMake( [ 2, 4 ] );
+  test.identical( _.unrollIs( 'str', got ), false );
+  test.is( _.arrayIs( got ) );
+}
+
+//
+
+function unrollIsPopulated( test )
+{
+  test.case = 'unroll from not empty array';
+
+  var got = _.unrollMake( [ 1 ] );
+  test.is( _.unrollIsPopulated( got ) );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.unrollFrom( [ 'str' ] );
+  test.is( _.unrollIsPopulated( got ) );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.unrollFrom( [ [] ] );
+  test.is( _.unrollIsPopulated( got ) );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.unrollMake( [ null ] );
+  test.is( _.unrollIsPopulated( got ) );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'unroll from empty array';
+
+  var got = _.unrollMake( [] );
+  test.identical( _.unrollIsPopulated( got ), false );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.unrollFrom( [] );
+  test.identical( _.unrollIsPopulated( got ), false );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'not unroll';
+
+  var got = new Float32Array( [3, 1, 2] );
+  test.identical( _.unrollIs( got ), false );
+
+  test.identical( _.unrollIsPopulated( [] ), false );
+
+  test.identical( _.unrollIsPopulated( 1 ), false );
+
+  test.identical( _.unrollIsPopulated( 'str' ), false );
+
+  test.case = 'second argument is unroll';
+
+  var got = _.unrollMake( [ 2, 4 ] );
+  test.identical( _.unrollIsPopulated( [ 1, 'str' ], got ), false );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.unrollFrom( [ 2, 4 ] );
+  test.identical( _.unrollIsPopulated( 1, got ), false );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.unrollMake( [ 2, 4 ] );
+  test.identical( _.unrollIsPopulated( 'str', got ), false );
+  test.is( _.arrayIs( got ) );
+}
+
+//
+
 function unrollMake( test )
 {
 
@@ -2417,7 +2525,11 @@ unrollAppend, unrollPrepend should have test groups :
 - one argument / two arguments / three arguments
 - first argument have array / unroll / complex unroll( unroll in unroll in unroll )
 - non-first argument have array / unroll / complex unroll( unroll in unroll in unroll / Float32Array / ArgumentsArray
+
+Dmytro: notice that unrollIs, unrollIsPopulated have not asserts.
 */
+
+
 
 //
 
@@ -20361,6 +20473,9 @@ var Self =
     arrayToStr,
 
     // unroll
+
+    unrollIs,
+    unrollIsPopulated,
 
     unrollMake,
     unrollFrom,
