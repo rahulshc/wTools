@@ -104,8 +104,14 @@ function unrollNormalize( dstArray )
   {
     if( _.unrollIs( dstArray[ a ] ) )
     {
-      dstArray.splice( a, 1, dstArray[ a ] );
+      let args = [ a, 1 ];
+      args.push.apply( args, dstArray[ a ] );
+      dstArray.splice.apply( dstArray, args );
       a -= 1;
+    }
+    else if( _.arrayIs( dstArray[ a ] ) )
+    {
+      _.unrollNormalize( dstArray[ a ] );
     }
   }
 
@@ -137,6 +143,8 @@ function unrollPrepend( dstArray )
       }
       else
       {
+        if( _.arrayIs( srcArray[ a ] ) )
+        _.unrollNormalize( srcArray[ a ] )
         dstArray.unshift( srcArray[ a ] );
       }
     }
@@ -171,6 +179,8 @@ function unrollAppend( dstArray )
       }
       else
       {
+        if( _.arrayIs( srcArray[ a ] ) )
+        _.unrollNormalize( srcArray[ a ] )
         dstArray.push( srcArray[ a ] );
       }
     }
@@ -179,6 +189,18 @@ function unrollAppend( dstArray )
   }
 
 }
+
+/*
+
+let a1 = _.unrollFrom([ 3, 4, _.unrollFrom([ 5, 6 ]) ]);
+let a2 = [ 7, _.unrollFrom([ 8, 9 ]) ] ];
+_.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
+
+let a1 = _.unrollFrom([ 3, 4, _.unrollFrom([ 5, 6 ]) ]);
+let a2 = [ 7, _.unrollFrom([ 8, 9 ]) ] ];
+_.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
+
+*/
 
 // //
 //
