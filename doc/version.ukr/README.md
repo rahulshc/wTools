@@ -1,5 +1,10 @@
 ## Концепції
 
+<details><summary><a href="./concept/MapOptions.md">
+      Мапа опцій
+  </a></summary>
+  Це спеціальний набір ( масив ) значень, що призначений для передачі даних в рутину та управління її поведінкою.
+</details>
 <details><summary><a href="./concept/Evaluator.md">
       Евалуатор
   </a></summary>
@@ -42,4 +47,9 @@
       Рутина arrayCountElement
   </a></summary>
   Рутина для підрахунку кількості входжень елемента в масив.
+</details>
+<details><summary><a href="./tutorial/RoutineFromPreAndBody.md">
+      Рутина routineFromPreAndBody
+  </a></summary>
+  Автоматичне об'єднання рутини підготовки даних і рутини для їх обробки.
 </details>

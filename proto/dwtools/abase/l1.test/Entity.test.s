@@ -97,14 +97,1033 @@ function eachSample( test )
 
 //
 
-function entityMap( test )
+function entityEach( test )
+{
+  test.case = 'src is an ArrayLike';
+
+  var got;
+  _.entityEach( [], ( v ) => got = typeof v );
+  test.identical( got, undefined );
+
+  var got = [];
+  _.entityEach( [], ( v, i ) => got[ i ] = v + i );
+  test.identical( got, [] );
+
+  var got = [];
+  _.entityEach( [ 3 ], ( v, i ) => got[ i ] = v + i + 2 );
+  test.identical( got, [ 5 ] );
+
+  var got = [];
+  _.entityEach( [ 0, 1, 2 ], ( v, i ) => got[ i ] = v * v + i );
+  test.identical( got, [ 0, 2, 6 ] );
+
+  test.case = 'routine counter';
+
+  function onEach( v, i )
+  {
+    if( _.strIs( v ) && i >= 0 )
+    got += 10;
+    else
+    got -= 1;
+  }
+
+  var got = 0;
+  _.entityEach( 1, onEach );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEach( 'abc', onEach );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEach( [ 'abc' ], onEach );
+  test.identical( got, 10 );
+
+  var got = 0;
+  _.entityEach( [ 'abc', 1, 'ab', 'a' ], onEach );
+  test.identical( got, 29 );
+
+  var got = 0;
+  _.entityEach( [ [ 'a', 'b' ], [ 1, 3, 4 ] ], onEach );
+  test.identical( got, -2 );
+
+  var got = 0;
+  _.entityEach( [ { a : 1 }, { b : 2 } ], onEach );
+  test.identical( got, -2 );
+
+  test.case = 'Third argument in onEach'
+  function onEach3( v, i, src )
+  {
+    if( _.longIs( src ) )
+    got = src;
+    else
+    got += 10;
+  }
+
+  var got;
+  _.entityEach( [ 0, 1, 3, 5 ], onEach3 );
+  test.identical( got, [ 0, 1, 3, 5 ] );
+
+  //
+
+  test.case = 'src is an object';
+
+  var got = {};
+  _.entityEach( {}, ( v ) => got = v );
+  test.identical( got, {} );
+
+  var got = {};
+  _.entityEach( {}, ( v, k ) => got[ k ] = v + k );
+  test.identical( got, {} );
+
+  var got = {};
+  _.entityEach( { 1 : 2 }, ( v, k ) => got[ k ] = v + k + 2 );
+  test.identical( got, { 1 : '212' } );
+
+  var got = {};
+  _.entityEach( { a : 1, b : 3, c : 5 }, ( v, k ) => got[ k ] = v * v + k );
+  test.identical( got, { a : '1a', b : '9b', c : '25c' } );
+
+  test.case = 'routine counter';
+
+  function onEach1( v, k )
+  {
+    if( _.strIs( v ) && k )
+    got += 10;
+    else
+    got -= 1;
+  }
+
+  var got = 0;
+  _.entityEach( 1, onEach1 );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEach( 'abc', onEach1 );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEach( { a : 'abc' }, onEach1 );
+  test.identical( got, 10 );
+
+  var got = 0;
+  _.entityEach( { a : 'abc', b : 1, c : 'ab', d : 'a' }, onEach1 );
+  test.identical( got, 29 );
+
+  var got = 0;
+  _.entityEach( { a : [ 'a', 'b' ], b : [ 1, 3, 4 ] }, onEach1 );
+  test.identical( got, -2 );
+
+  var got = 0;
+  _.entityEach( { a : { a : 1 }, b : { b : 2 } }, onEach1 );
+  test.identical( got, -2 );
+
+  test.case = 'Third argument in onEach'
+  function onEach4( v, k, src )
+  {
+    if( _.objectIs( src ) )
+    got = src;
+    else
+    got += 10;
+  }
+
+  var got = {};
+  _.entityEach( { a : 1, b : 2, c : 3 }, onEach4 );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  //
+
+  test.case = 'src is not ArrayLike or ObjectLike';
+
+  var got;
+  _.entityEach( null, ( v ) => got = typeof v );
+  test.identical( got, 'object' );
+
+  var got;
+  _.entityEach( 1, ( v ) => got = typeof v );
+  test.identical( got, 'number' );
+
+  var got;
+  _.entityEach( 'a', ( v ) => got = typeof v );
+  test.identical( got, 'string' );
+
+  var got;
+  _.entityEach( 'a', ( v ) => got = v + 2 );
+  test.identical( got, 'a2' );
+
+  var got;
+  _.entityEach( function b(){ return 'a'}, ( v ) => got = typeof v );
+  test.identical( got, 'function' );
+
+  var got;
+  _.entityEach( 'a', ( v, i ) => got = v + i );
+  test.identical( got, 'aundefined' );
+
+  var got;
+  _.entityEach( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
+  test.identical( got, 'function undefined' );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityEach() );
+
+  test.case = 'only one argument';
+  test.shouldThrowErrorSync( () => _.entityEach( [ 'a' ] ) );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.entityEach( [ 'a' ], ( a ) => a, ( b ) => b ) );
+
+  test.case = 'onEach has more then three args';
+  test.shouldThrowErrorSync( () => _.entityEach( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
+
+  test.case = 'onEach is not a routine';
+  test.shouldThrowErrorSync( () => _.entityEach( { a : 2 }, [] ) );
+}
+
+//
+
+function entityEachKey( test )
+{
+  test.case = 'src is an ArrayLike';
+
+  var got;
+  _.entityEachKey( [], ( v ) => got = typeof v );
+  test.identical( got, undefined );
+
+  var got = [];
+  _.entityEachKey( [], ( v, i ) => got[ i ] = v + i );
+  test.identical( got, [] );
+
+  var got = [];
+  _.entityEachKey( [ 3 ], ( v ) => got.push( v + 2 ) );
+  test.identical( got, [ 5 ] );
+
+  var got = [];
+  _.entityEachKey( [ 0, 1, 2 ], ( v ) => got.push( v * v ) );
+  test.identical( got, [ 0, 1, 4 ] );
+
+  test.case = 'routine counter';
+  function onEach( v, i )
+  {
+    if( _.strIs( v ) && i === undefined )
+    got += 10;
+    else
+    got -= 1;
+  }
+
+  var got = 0;
+  _.entityEachKey( 1, onEach );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachKey( 'abc', onEach );
+  test.identical( got, 10 );
+
+  var got = 0;
+  _.entityEachKey( [ 'abc' ], onEach );
+  test.identical( got, 10 );
+
+  var got = 0;
+  _.entityEachKey( [ 'abc', 1, 'ab', 'a' ], onEach );
+  test.identical( got, 29 );
+
+  var got = 0;
+  _.entityEachKey( [ [ 'a', 'b' ], [ 1, 3, 4 ] ], onEach );
+  test.identical( got, -2 );
+
+  var got = 0;
+  _.entityEachKey( [ { a : 1 }, { b : 2 } ], onEach );
+  test.identical( got, -2 );
+
+  test.case = 'Third args in onEach'
+  function onEach3( v, u, i )
+  {
+    if( u === undefined )
+    got[ i ] = v;
+    else
+    got += 10;
+  }
+
+  var got = [];
+  _.entityEachKey( [ 0, 1, 3, 5 ], onEach3 );
+  test.identical( got, [ 0, 1, 3, 5 ] );
+
+  //
+
+  test.case = 'src is an ObjectLike';
+  var got = {};
+  _.entityEachKey( {}, ( v ) => got = v );
+  test.identical( got, {} );
+
+  var got = {};
+  _.entityEachKey( {}, ( v, k ) => got[ k ] = v + k );
+  test.identical( got, {} );
+
+  var got = {};
+  _.entityEachKey( { 1 : 2 }, ( k, v ) => got[ k ] = v + k + 2 );
+  test.identical( got, { 1 : '212' } );
+
+  var got = {};
+  _.entityEachKey( { a : 1, b : 3, c : 5 }, ( k, v ) => got[ k ] = v * v + k );
+  test.identical( got, { a : '1a', b : '9b', c : '25c' } );
+
+  test.case = 'routine counter';
+  function onEach1( k, v )
+  {
+    if( _.strIs( v ) && k )
+    got += 10;
+    else
+    got -= 1;
+  }
+
+  var got = 0;
+  _.entityEachKey( 1, onEach1 );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachKey( 'abc', onEach1 );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachKey( { a : 'abc' }, onEach1 );
+  test.identical( got, 10 );
+
+  var got = 0;
+  _.entityEachKey( { a : 'abc', b : 1, c : 'ab', d : 'a' }, onEach1 );
+  test.identical( got, 29 );
+
+  var got = 0;
+  _.entityEachKey( { a : [ 'a', 'b' ], b : [ 1, 3, 4 ] }, onEach1 );
+  test.identical( got, -2 );
+
+  var got = 0;
+  _.entityEachKey( { a : { a : 1 }, b : { b : 2 } }, onEach );
+  test.identical( got, -2 );
+
+  test.case = 'Third argument in onEach'
+  function onEach4( v, k, i )
+  {
+    got[ i ] = v;
+  }
+
+  var got = {};
+  _.entityEachKey( { a : 1, b : 2, c : 3 }, onEach4 );
+  test.identical( got, { 0 : 'a', 1 : 'b', 2 : 'c' } );
+
+  //
+
+  test.case = 'src is not ArrayLike or ObjectLike';
+
+  var got;
+  _.entityEachKey( null, ( v ) => got = typeof v );
+  test.identical( got, 'object' );
+
+  var got;
+  _.entityEachKey( 1, ( v ) => got = typeof v );
+  test.identical( got, 'number' );
+
+  var got;
+  _.entityEachKey( 'a', ( v ) => got = typeof v );
+  test.identical( got, 'string' );
+
+  var got;
+  _.entityEachKey( 'a', ( v ) => got = v + 2 );
+  test.identical( got, 'a2' );
+
+  var got;
+  _.entityEachKey( function b(){ return 'a'}, ( v ) => got = typeof v );
+  test.identical( got, 'function' );
+
+  var got;
+  _.entityEachKey( 'a', ( v, i ) => got = v + i );
+  test.identical( got, 'aundefined' );
+
+  var got;
+  _.entityEachKey( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
+  test.identical( got, 'function undefined' );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityEachKey() );
+
+  test.case = 'only one argument';
+  test.shouldThrowErrorSync( () => _.entityEachKey( [ 'a' ] ) );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.entityEachKey( [ 'a' ], ( a ) => a, ( b ) => b ) );
+
+  test.case = 'onEach has more then three arg';
+  test.shouldThrowErrorSync( () => _.entityEachKey( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
+
+  test.case = 'onEach is not a routine';
+  test.shouldThrowErrorSync( () => _.entityEachKey( { a : 2 }, [] ) );
+}
+
+//
+
+function entityEachOwn( test )
+{
+  test.case = 'src is an ArrayLike';
+
+  var got;
+  _.entityEachOwn( [], ( v ) => got = typeof v );
+  test.identical( got, undefined );
+
+  var got = [];
+  _.entityEachOwn( [], ( v, i ) => got[ i ] = v + i );
+  test.identical( got, [] );
+
+  var got = [];
+  _.entityEachOwn( [ 3 ], ( v, i ) => got[ i ] = v + i + 2 );
+  test.identical( got, [ 5 ] );
+
+  var got = [];
+  _.entityEachOwn( [ 0, 1, 2 ], ( v, i ) => got[ i ] = v * v + i );
+  test.identical( got, [ 0, 2, 6 ] );
+
+  test.case = 'routine counter';
+
+  function onEach( v, i )
+  {
+    if( _.strIs( v ) && i >= 0 )
+    got += 10;
+    else
+    got -= 1;
+  }
+
+  var got = 0;
+  _.entityEachOwn( 1, onEach );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachOwn( 'abc', onEach );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachOwn( [ 'abc' ], onEach );
+  test.identical( got, 10 );
+
+  var got = 0;
+  _.entityEachOwn( [ 'abc', 1, 'ab', 'a' ], onEach );
+  test.identical( got, 29 );
+
+  var got = 0;
+  _.entityEachOwn( [ [ 'a', 'b' ], [ 1, 3, 4 ] ], onEach );
+  test.identical( got, -2 );
+
+  var got = 0;
+  _.entityEachOwn( [ { a : 1 }, { b : 2 } ], onEach );
+  test.identical( got, -2 );
+
+  test.case = 'Third argument in onEach'
+  function onEach3( v, i, src )
+  {
+    if( _.longIs( src ) )
+    got = src;
+    else
+    got += 10
+  }
+
+  var got;
+  _.entityEachOwn( [ 0, 1, 3, 5 ], onEach3 );
+  test.identical( got, [ 0, 1, 3, 5 ] );
+
+  //
+
+  test.case = 'src is an ObjectLike';
+
+  var got ={};
+  _.entityEachOwn( {}, ( v ) => got = v );
+  test.identical( got, {} );
+
+  var got = {};
+  _.entityEachOwn( {}, ( v, k ) => got[ k ] = v + k );
+  test.identical( got, {} );
+
+  var got = {};
+  _.entityEachOwn( { 1 : 2 }, ( v, k ) => got[ k ] = v + k + 2 );
+  test.identical( got, { 1 : '212' } );
+
+  var got = {};
+  _.entityEachOwn( { a : 1, b : 3, c : 5 }, ( v, k ) => got[ k ] = v * v + k );
+  test.identical( got, { a : '1a', b : '9b', c : '25c' } );
+
+  test.case = 'routine counter';
+
+  function onEach1( v, k )
+  {
+    if( _.strIs( v ) && k )
+    got += 10;
+    else
+    got -= 1;
+  }
+
+  var got = 0;
+  _.entityEachOwn( 1, onEach1 );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachOwn( 'abc', onEach1 );
+  test.identical( got, -1 );
+
+  var got = 0;
+  _.entityEachOwn( { a : 'abc' }, onEach1 );
+  test.identical( got, 10 );
+
+  var got = 0;
+  _.entityEachOwn( { a : 'abc', b : 1, c : 'ab', d : 'a' }, onEach1 );
+  test.identical( got, 29 );
+
+  var got = 0;
+  _.entityEachOwn( { a : [ 'a', 'b' ], b : [ 1, 3, 4 ] }, onEach1 );
+  test.identical( got, -2 );
+
+  var got = 0;
+  _.entityEachOwn( { a : { a : 1 }, b : { b : 2 } }, onEach1 );
+  test.identical( got, -2 );
+
+  test.case = 'Third argument in onEach'
+  function onEach4( v, k, src )
+  {
+    if( _.objectIs( src ) )
+    got = src;
+    else
+    got += 10;
+  }
+
+  var got = {};
+  _.entityEachOwn( { a : 1, b : 2, c : 3 }, onEach4 );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  //
+
+  test.case = 'src is not ArrayLike or ObjectLike';
+
+  var got;
+  _.entityEachOwn( null, ( v ) => got = typeof v );
+  test.identical( got, 'object' );
+
+  var got;
+  _.entityEachOwn( 1, ( v ) => got = typeof v );
+  test.identical( got, 'number' );
+
+  var got;
+  _.entityEachOwn( 'a', ( v ) => got = typeof v );
+  test.identical( got, 'string' );
+
+  var got;
+  _.entityEachOwn( 'a', ( v ) => got = v + 2 );
+  test.identical( got, 'a2' );
+
+  var got;
+  _.entityEachOwn( function b(){ return 'a'}, ( v ) => got = typeof v );
+  test.identical( got, 'function' );
+
+  var got;
+  _.entityEachOwn( 'a', ( v, i ) => got = v + i );
+  test.identical( got, 'aundefined' );
+
+  var got;
+  _.entityEachOwn( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
+  test.identical( got, 'function undefined' );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityEachOwn() );
+
+  test.case = 'only one argument';
+  test.shouldThrowErrorSync( () => _.entityEachOwn( [ 'a' ] ) );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.entityEachOwn( [ 'a' ], ( a ) => a, ( b ) => b ) );
+
+  test.case = 'onEach has more then three arg';
+  test.shouldThrowErrorSync( () => _.entityEachOwn( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
+
+  test.case = 'onEach is not a routine';
+  test.shouldThrowErrorSync( () => _.entityEachOwn( { a : 2 }, [] ) );
+}
+
+//
+
+function entityAll( test )
 {
 
-  var entity1 = [ 3, 4, 5 ],
-    entity2 = { '3' : 3, '4' : 4, '5' : 5 },
-    expected1 = [ 9, 16, 25 ],
-    expected2 = { '3' : 9, '4' : 16, '5' : 25 },
-    expected3 = entity1.slice();
+  test.open( 'onEach is routine' );
+
+  test.case = 'ArrayLike';
+
+  var got = _.entityAll( [ 1, 'str', undefined ], ( v, i ) => v !== undefined && i + 2 < 5 );
+  test.identical( got, false );
+
+  var got = _.entityAll( [ 1, 'str', { a : 2 }, 4 ], ( v, i ) => v !== undefined && i + 2 < 5 );
+  test.identical( got, false );
+
+  var got = _.entityAll( [ 1, 'str', { a : 2 } ], ( v, i ) => v !== undefined && i + 2 < 5 );
+  test.identical( got, true );
+
+  var got = _.entityAll( [ 1, 'str', 3, null ], () => undefined );
+  test.identical( got, undefined );
+
+  var got = _.entityAll( [ 'a : 1', 3, true ], ( v, i ) => v !== i );
+  test.identical( got, true );
+
+  var got = _.entityAll( [ 'a : 1', false ], ( v, i ) => v !== i );
+  test.identical( got, true );
+
+  var got = _.entityAll( [ 'a : 1', false ], ( v, i, src ) => src.length == i );
+  test.identical( got, false );
+
+  test.case = 'ObjectLike';
+
+  var got = _.entityAll( { 1 : 2, c : 4, a : undefined }, ( v, k ) => v === k );
+  test.identical( got, false );
+
+  var got = _.entityAll( { 'a' : 'a', '4' : '4', 'true' : 'true' }, ( v, k ) => v === k );
+  test.identical( got, true );
+
+  var got = _.entityAll( { 1 : 2, 2 : 3, a : null }, ( v, k ) => v !== k );
+  test.identical( got, true );
+
+  var got = _.entityAll( { a : 1, b : 3, c : true }, ( v, k ) => v !== k );
+  test.identical( got, true );
+
+  var got = _.entityAll( { 'a' : 'a', 'b' : 'str' }, ( v, k ) => typeof v === typeof k );
+  test.identical( got, true );
+
+  var got = _.entityAll( { a : 1, b : false }, ( v, k ) => v === k );
+  test.identical( got, false );
+
+  var got = _.entityAll( { a : 1, b : false }, ( v, k, src ) => src.length !== k );
+  test.identical( got, true );
+
+  test.case = 'no ArrayLike, no ObjectLike'
+
+  var got = _.entityAll( undefined, ( src, u ) => src !== u );
+  test.identical( got, false );
+
+  var got = _.entityAll( null, ( src, u ) => src === u );
+  test.identical( got, false );
+
+  var got = _.entityAll( 1, ( src, u ) => src === u );
+  test.identical( got, false );
+
+  var got = _.entityAll( 'str', ( src, u ) => src === u );
+  test.identical( got, false );
+
+  var got = _.entityAll( false, ( src, u ) => src === u );
+  test.identical( got, false );
+
+  var got = _.entityAll( true, ( src, u ) => src !== u );
+  test.identical( got, true );
+
+  var got = _.entityAll( true, ( src, u, u2 ) => src !== u2 );
+  test.identical( got, true );
+
+  test.close( 'onEach is routine' );
+
+  //
+
+  test.open( 'onEach is undefined' );
+
+  test.case = 'ArrayLike';
+
+  var got = _.entityAll( [ 1, 'str', undefined ] );
+  test.identical( got, undefined );
+
+  var got = _.entityAll( [ 1, 'str', 3, null ] );
+  test.identical( got, null );
+
+  var got = _.entityAll( [ 'a : 1', 3, true ] );
+  test.identical( got, true );
+
+  var got = _.entityAll( [ 'a : 1', false ] );
+  test.identical( got, false );
+
+  test.case = 'ObjectLike';
+
+  var got = _.entityAll( { 1 : 2, c : 4, a : undefined } );
+  test.identical( got, undefined );
+
+  var got = _.entityAll( { 1 : 2, 2 : 3, a : null } );
+  test.identical( got, null );
+
+  var got = _.entityAll( { a : 1, b : 3, c : true } );
+  test.identical( got, true );
+
+  var got = _.entityAll( { a : 'a', b : 'str' } );
+  test.identical( got, true );
+
+  var got = _.entityAll( { a : 1, b : false } );
+  test.identical( got, false );
+
+  test.case = 'no ArrayLike, no ObjectLike'
+
+  var got = _.entityAll( undefined );
+  test.identical( got, undefined );
+
+  var got = _.entityAll( null );
+  test.identical( got, null );
+
+  var got = _.entityAll( 1 );
+  test.identical( got, true );
+
+  var got = _.entityAll( 'str' );
+  test.identical( got, true );
+
+  var got = _.entityAll( false );
+  test.identical( got, false );
+
+  var got = _.entityAll( true );
+  test.identical( got, true );
+
+  test.close( 'onEach is undefined' );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityAll() );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.entityAll( [ 'a' ], ( a ) => a, ( b ) => b ) );
+
+  test.case = 'onEach has more then three arg';
+  test.shouldThrowErrorSync( () => _.entityAll( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
+
+  test.case = 'onEach is not a routine';
+  test.shouldThrowErrorSync( () => _.entityAll( { a : 2 }, [] ) );
+}
+
+//
+
+function entityAny( test )
+{
+
+  test.open( 'onEach is routine' );
+
+  test.case = 'ArrayLike';
+
+  var got = _.entityAny( [ 1, 'str', undefined ], ( v, i ) => v !== undefined && i + 2 < 5 );
+  test.identical( got, true );
+
+  var got = _.entityAny( [ 1, 'str', { a : 2 }, 4 ], ( v, i ) => v !== undefined && i + 2 < 5 );
+  test.identical( got, true );
+
+  var got = _.entityAny( [ null, null, null ], ( v, i ) => v !== null && i + 5 < 5 );
+  test.identical( got, false );
+
+  var got = _.entityAny( [ 1, 'str', 3, null ], () => undefined );
+  test.identical( got, false );
+
+  var got = _.entityAny( [ 0, 1, 2 ], ( v, i ) => v !== i );
+  test.identical( got, false );
+
+  var got = _.entityAny( [ 'a : 1', false ], ( v, i ) => v !== i );
+  test.identical( got, true );
+
+  var got = _.entityAny( [ 'a : 1', false ], ( v, i, u ) => v !== u );
+  test.identical( got, true );
+
+  test.case = 'ObjectLike';
+
+  var got = _.entityAny( { 1 : 2, c : 4, a : undefined }, ( v, k ) => v === k );
+  test.identical( got, false );
+
+  var got = _.entityAny( { 'a' : false, '4' : false, 'true' : 'true' }, ( v, k ) => v === k );
+  test.identical( got, true );
+
+  var got = _.entityAny( { 1 : 2, 2 : 3, a : null }, ( v, k ) => typeof v === typeof k );
+  test.identical( got, false );
+
+  var got = _.entityAny( { 'a' : [], 'b' : 'str' }, ( v, k ) => typeof v === typeof k );
+  test.identical( got, true );
+
+  var got = _.entityAny( { a : 1, b : false }, ( v, k ) => v === k );
+  test.identical( got, false );
+
+  var got = _.entityAny( { a : 1, b : false }, ( v, k, u ) => v !== u );
+  test.identical( got, true );
+
+  test.case = 'no ArrayLike, no ObjectLike'
+
+  var got = _.entityAny( undefined, ( src, u ) => src !== u );
+  test.identical( got, false );
+
+  var got = _.entityAny( null, ( src, u ) => src === u );
+  test.identical( got, false );
+
+  var got = _.entityAny( 1, ( src, u ) => src !== u );
+  test.identical( got, true );
+
+  var got = _.entityAny( 'str', ( src, u ) => src === u );
+  test.identical( got, false );
+
+  var got = _.entityAny( false, ( src, u ) => src !== u );
+  test.identical( got, true );
+
+  var got = _.entityAny( true, ( src, u ) => src !== u );
+  test.identical( got, true );
+
+  var got = _.entityAny( true, ( src, u, u2 ) => src !== u2 );
+  test.identical( got, true );
+
+  test.close( 'onEach is routine' );
+
+  //
+
+  test.open( 'onEach is undefined' );
+
+  test.case = 'ArrayLike';
+
+  var got = _.entityAny( [ 1, 'str', undefined ] );
+  test.identical( got, 1 );
+
+  var got = _.entityAny( [ undefined, false, null ] );
+  test.identical( got, false );
+
+  var got = _.entityAny( [ 'a : 1', 3, true ] );
+  test.identical( got, 'a : 1' );
+
+  test.case = 'ObjectLike';
+
+  var got = _.entityAny( { 1 : 2, c : 4, a : undefined } );
+  test.identical( got, 2 );
+
+  var got = _.entityAny( { 1 : 2, 2 : 3, a : null } );
+  test.identical( got, 2 );
+
+  var got = _.entityAny( { a : false, b : null, c : undefined } );
+  test.identical( got, false );
+
+  var got = _.entityAny( { a : 'a', b : 'str' } );
+  test.identical( got, 'a' );
+
+  var got = _.entityAny( { a : 1, b : false } );
+  test.identical( got, 1 );
+
+  test.case = 'no ArrayLike, no ObjectLike'
+
+  var got = _.entityAny( undefined );
+  test.identical( got, false );
+
+  var got = _.entityAny( null );
+  test.identical( got, false );
+
+  var got = _.entityAny( 1 );
+  test.identical( got, 1 );
+
+  var got = _.entityAny( 'str' );
+  test.identical( got, 'str' );
+
+  var got = _.entityAny( false );
+  test.identical( got, false );
+
+  var got = _.entityAny( true );
+  test.identical( got, true );
+
+  test.close( 'onEach is undefined' );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityAny() );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.entityAny( [ 'a' ], ( a ) => a, ( b ) => b ) );
+
+  test.case = 'onEach has more then three arg';
+  test.shouldThrowErrorSync( () => _.entityAny( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
+
+  test.case = 'onEach is not a routine';
+  test.shouldThrowErrorSync( () => _.entityAny( { a : 2 }, [] ) );
+}
+
+//
+
+function entityNone( test )
+{
+
+  test.open( 'onEach is routine' );
+
+  test.case = 'ArrayLike';
+
+  var got = _.entityNone( [ false, undefined, null ], ( v, i ) => v && !i );
+  test.identical( got, true );
+
+  var got = _.entityNone( [ 1, [ 2 ], { a : 2 }, 4 ], ( v, i ) => typeof v === 'string' && i + 6 < 5 );
+  test.identical( got, true );
+
+  var got = _.entityNone( [ 1, 'str', null ], ( v, i ) => v !== null );
+  test.identical( got, false );
+
+  var got = _.entityNone( [ 1, 'str', 3, null ], () => undefined );
+  test.identical( got, true );
+
+  var got = _.entityNone( [ 0, 1, 2 ], ( v, i ) => v !== i );
+  test.identical( got, true );
+
+  var got = _.entityNone( [ 'a : 1', false ], ( v, i ) => v !== i );
+  test.identical( got, false );
+
+  var got = _.entityNone( [ 'a : 1', false ], ( v, i, src ) => src.length !== v );
+  test.identical( got, false );
+
+  var got = _.entityNone( [ 'a : 1', false ], ( v, i, src ) => src.length === v );
+  test.identical( got, true );
+
+  test.case = 'ObjectLike';
+
+  var got = _.entityNone( { 1 : 2, c : 4, a : undefined }, ( v, k ) => v === k );
+  test.identical( got, true );
+
+  var got = _.entityNone( { 'a' : false, '4' : false, 'true' : 'true' }, ( v, k ) => v === k );
+  test.identical( got, false );
+
+  var got = _.entityNone( { 1 : 2, 2 : 3, a : null }, ( v, k ) => typeof v === typeof k );
+  test.identical( got, true );
+
+  var got = _.entityNone( { 'a' : [], 'b' : 'str' }, ( v, k ) => typeof v === typeof k );
+  test.identical( got, false );
+
+  var got = _.entityNone( { a : 1, b : false }, ( v, k ) => v === k );
+  test.identical( got, true );
+
+  var got = _.entityNone( { a : 1, b : false }, ( v, k, src ) => src.length === v );
+  test.identical( got, true );
+
+  test.case = 'no ArrayLike, no ObjectLike'
+
+  var got = _.entityNone( undefined, ( src, u ) => src !== u );
+  test.identical( got, true );
+
+  var got = _.entityNone( null, ( src, u ) => src === u );
+  test.identical( got, true );
+
+  var got = _.entityNone( 1, ( src, u ) => src !== u );
+  test.identical( got, false );
+
+  var got = _.entityNone( 'str', ( src, u ) => src === u );
+  test.identical( got, true );
+
+  var got = _.entityNone( false, ( src, u ) => src !== u );
+  test.identical( got, false );
+
+  var got = _.entityNone( true, ( src, u ) => src !== u );
+  test.identical( got, false );
+
+  var got = _.entityNone( true, ( src, u, u2 ) => src !== u2 );
+  test.identical( got, false );
+
+  test.close( 'onEach is routine' );
+
+  //
+
+  test.open( 'onEach is undefined' );
+
+  test.case = 'ArrayLike';
+
+  var got = _.entityNone( [ 1, 'str', undefined ] );
+  test.identical( got, false );
+
+  var got = _.entityNone( [ undefined, false, null ] );
+  test.identical( got, true );
+
+  var got = _.entityNone( [ 'a : 1', 3, true ] );
+  test.identical( got, false );
+
+  test.case = 'ObjectLike';
+
+  var got = _.entityNone( { 1 : 2, c : 4, a : undefined } );
+  test.identical( got, false );
+
+  var got = _.entityNone( { 1 : 2, 2 : 3, a : null } );
+  test.identical( got, false );
+
+  var got = _.entityNone( { a : false, b : null, c : undefined } );
+  test.identical( got, true );
+
+  var got = _.entityNone( { a : 'a', b : 'str' } );
+  test.identical( got, false );
+
+  var got = _.entityNone( { a : 1, b : false } );
+  test.identical( got, false );
+
+  test.case = 'no ArrayLike, no ObjectLike'
+
+  var got = _.entityNone( undefined );
+  test.identical( got, true );
+
+  var got = _.entityNone( null );
+  test.identical( got, true );
+
+  var got = _.entityNone( 1 );
+  test.identical( got, false );
+
+  var got = _.entityNone( 'str' );
+  test.identical( got, false );
+
+  var got = _.entityNone( false );
+  test.identical( got, true );
+
+  var got = _.entityNone( true );
+  test.identical( got, false );
+
+  test.close( 'onEach is undefined' );
+
+  //
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityNone() );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.entityNone( [ 'a' ], ( a ) => a, ( b ) => b ) );
+
+  test.case = 'onEach has more then three arguments';
+  test.shouldThrowErrorSync( () => _.entityNone( [ 1 ], ( a, b, c, d ) => a + b + c + d ) );
+
+  test.case = 'onEach is not a routine';
+  test.shouldThrowErrorSync( () => _.entityNone( { a : 2 }, [] ) );
+}
+
+//
+
+function entityMap( test )
+{
+  test.case = 'simple test with mapping array by sqr';
+  var got = _.entityMap( [ 3, 4, 5 ], ( v, i, ent ) => v * v );
+  test.identical( got,[ 9, 16, 25 ] );
+
+  test.case = 'simple test with mapping array by sqr : source array should not be modified';
+  let src = [ 3, 4, 5 ]
+  var got = _.entityMap( src, ( v, i, ent ) => v * v );
+  test.identical( src, src.slice() );
+
+  test.case = 'simple test with mapping object by sqr';
+  var got = _.entityMap( { '3' : 3, '4' : 4, '5' : 5 }, ( v, i, ent ) => v * v );
+  test.identical( got,{ '3' : 9, '4' : 16, '5' : 25 } );
+
+  test.case = 'simple test with mapping object by sqr : using constructor';
 
   function constr1()
   {
@@ -112,57 +1131,45 @@ function entityMap( test )
     this.b = 3;
     this.c = 4;
   }
-  var entity4 = new constr1(),
-    expected4 = { a : '1a', b : '9b', c : '16c' };
-
-
-  function callback1(v, i, ent )
-  {
-    return v * v;
-  };
-
-  function callback2( v, i, ent )
-  {
-    return v * v + i;
-  };
 
   function callback3( v, i, ent )
   {
-    if( externEnt ) externEnt = ent;
+    if( externEnt )
+    externEnt = ent;
     return v * v + i;
   };
 
-  test.case = 'simple test with mapping array by sqr';
-  var got = _.entityMap( entity1, callback1 );
-  test.identical( got,expected1 );
-
-  test.case = 'simple test with mapping array by sqr : source array should not be modified';
-  var got = _.entityMap( entity1, callback1 );
-  test.identical( entity1, expected3 );
-
-  test.case = 'simple test with mapping object by sqr';
-  var got = _.entityMap( entity2, callback1 );
-  test.identical( got,expected2 );
-
-  test.case = 'simple test with mapping object by sqr : using constructor';
-  var got = _.entityMap( entity4, callback2 );
-  test.identical( got, expected4 );
+  var got = _.entityMap( new constr1(), ( v, i, ent ) => v * v + i );
+  test.identical( got, { a : '1a', b : '9b', c : '16c' } );
   test.is( !( got instanceof constr1 ) );
   test.is( _.mapIs( got ) );
 
   test.case = 'simple test with mapping object by sqr : check callback arguments';
   var externEnt = {};
-  var got = _.entityMap( entity4, callback3 );
-  test.identical( externEnt, entity4 );
+  var got = _.entityMap( new constr1(), callback3 );
+  test.identical( externEnt, { 'a' : 1, 'b' : 3, 'c' : 4 } );
 
   if( Object.is )
   {
     test.case = 'simple test with mapping object by sqr : source object should be unmodified';
-    test.identical( Object.is( got, entity4 ), false );
+    test.identical( Object.is( got, new constr1() ), false );
+  }
+
+  test.case = 'no ArrayLike, no ObjectLike';
+  var got = _.entityMap( 2, ( v, i, ent ) => v + v );
+  test.identical( got, 4 );
+
+  var got = _.entityMap( 'a', ( v, i, ent ) => v + v );
+  test.identical( got, 'aa' );
+
+  if( Object.is )
+  {
+    test.case = 'simple test with mapping object by sqr : source object should be unmodified';
+    test.identical( Object.is( got, new constr1() ), false );
   }
 
   test.case = 'number';
-  var got = _.entityMap( 3, callback1 );
+  var got = _.entityMap( 3, ( v, i, ent ) => v * v );
   test.identical( got, 9 );
 
   /* */
@@ -182,16 +1189,16 @@ function entityMap( test )
     _.entityMap( [ 1,3 ], callback1, callback2 );
   });
 
-  // test.case = 'passed argument is not ArrayLike, ObjectLike';
-  // test.shouldThrowError( function()
-  // {
-  //   _.entityMap( 44, callback1 );
-  // });
+  test.case = 'passed argument is undefined';
+  test.shouldThrowError( function()
+  {
+    _.entityMap( [ 1,3, undefined ], ( v, i ) => v );
+  });
 
   test.case = 'second argument is not routine';
   test.shouldThrowError( function()
   {
-    _.entityMap( [ 1,3 ], 'callback' );
+    _.entityMap( [ 1, 3, undefined ], ( v ) => v );
   });
 
 }
@@ -200,59 +1207,55 @@ function entityMap( test )
 
 function entityFilter( test )
 {
-  var entity1 = [ 9, -16, 25, 36, -49 ],
-    entity2 = { '3' : 9, '4' : 16, '5' : 25 },
-    expected1 = [ 3, 5, 6 ],
-    expected2 = { '3' : 3, '4' : 4, '5' : 5 },
-    expected3 = entity1.slice();
-
   function callback1( v, i, ent )
   {
     if( v < 0 ) return;
     return Math.sqrt( v );
   };
 
+  //TODO : need to check actuality of this test
+  // it works correctly
+
   function testFn1()
   {
     return _.entityFilter( arguments, callback1 );
   }
 
+  test.case = 'simple test with longIs';
+  var got = null;
+  try
+  {
+    got = testFn1( 9, -16, 25, 36, -49 );
+  }
+  catch(e)
+  {
+    console.log(' test throws errror, but should not ');
+    console.log(e);
+  }
+  finally
+  {
+    test.identical( got, [ 3, 5, 6 ] );
+  }
+
+  //
+
   test.case = 'simple test with mapping array by sqrt';
-  var got = _.entityFilter( entity1, callback1 );
-  test.identical( got,expected1 );
-
-  /*
-    TODO : need to check actuality of this test
-
-    test.case = 'simple test with longIs';
-    var got = null;
-    try
-    {
-      got = testFn1( 9, -16, 25, 36, -49 );
-
-    }
-    catch(e)
-    {
-      console.log(' test throws errror, but should not ');
-      console.log(e);
-    }
-    finally
-    {
-      test.identical( got, expected1 );
-    }
-  */
+  var got = _.entityFilter( [ 9, -16, 25, 36, -49 ], callback1 );
+  test.identical( got, [ 3, 5, 6 ] );
 
   test.case = 'simple test with mapping array by sqrt : source array should not be modified';
+  var entity1 = [ 9, -16, 25, 36, -49 ],
+      expected1 = entity1.slice();
   var got = _.entityFilter( entity1, callback1 );
-  test.identical( entity1, expected3 );
+  test.identical( entity1, expected1 );
 
   test.case = 'simple test with mapping object by sqrt';
-  var got = _.entityFilter( entity2, callback1 );
-  test.identical( got,expected2 );
+  var got = _.entityFilter( { '3' : 9, '4' : 16, '5' : 25 }, callback1 );
+  test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
 
   test.case = 'simple test with mapping array by sqrt';
-  var got = _.entityFilter( entity1, callback1 );
-  test.identical( got,expected1 );
+  var got = _.entityFilter( [ 9, -16, 25, 36, -49 ], callback1 );
+  test.identical( got, [ 3, 5, 6 ] );
 
   test.case = 'number';
   var got = _.entityFilter( 3, callback1 );
@@ -275,18 +1278,112 @@ function entityFilter( test )
     _.entityFilter( [ 1,3 ], callback1, callback2 );
   });
 
-  // test.case = 'passed argument is not ArrayLike, ObjectLike';
-  // test.shouldThrowError( function()
-  // {
-  //   _.entityFilter( 44, callback1 );
-  // });
-
   test.case = 'second argument is not routine';
   test.shouldThrowError( function()
   {
     _.entityFilter( [ 1,3 ], 'callback' );
   });
 
+  test.case = 'src is undefined';
+  test.shouldThrowError( function()
+  {
+    _.entityFilter( undefined, callback1 );
+  });
+};
+
+//
+
+function enityExtend( test )
+{
+  test.case = 'src and dst is ArrayLike';
+
+  var got = _.enityExtend( [ 9, -16 ], [ 3, 5, 6 ] );
+  test.identical( got, [ 3, 5, 6 ] );
+
+  var got = _.enityExtend( [], [ 3, 5, 6 ] );
+  test.identical( got, [ 3, 5, 6 ] );
+
+  test.case = 'src and dst is ObjectLike';
+
+  var got = _.enityExtend( { a : 1 }, { a : 3, b : 5, c : 6 } );
+  test.identical( got, { a : 3, b : 5, c : 6 } );
+
+  var got = _.enityExtend( {}, { a : 3, b : 5, c : 6 } );
+  test.identical( got, { a : 3, b : 5, c : 6 } );
+
+  var got = _.enityExtend( { d : 4 }, { a : 3, b : 5, c : 6 } );
+  test.identical( got, { d : 4, a : 3, b : 5, c : 6 } );
+
+  test.case = 'dst is ObjectLike, src is ArrayLike';
+
+  var got = _.enityExtend( {}, [ 3, 5, 6 ] );
+  test.identical( got, { 0 : 3, 1 : 5, 2 : 6 } );
+
+  var got = _.enityExtend( { a : 1 }, [ 3, 5, 6 ] );
+  test.identical( got, { a : 1, 0 : 3, 1 : 5, 2 : 6 } );
+
+  test.case = 'src is ObjectLike, dst is ArrayLike';
+
+  var got = _.enityExtend( [ 9, -16 ], { a : 3, b : 5, c : 6 } );
+  test.identical( got, [ 9, -16 ] );
+
+  var got = _.enityExtend( [], { a : 3, b : 5, c : 6 } );
+  test.identical( got, [] );
+
+  var got = _.enityExtend( [ 1, 2, -3], { 0 : 3, 1 : 5, 2 : 6 } );
+  test.identical( got, [ 3, 5, 6 ] );
+
+  test.case = 'src is not ObjectLike or ArrayLike';
+
+  var got = _.enityExtend( [ 9, -16 ], 1 );
+  test.identical( got, 1 );
+
+  var got = _.enityExtend( [], 'str' );
+  test.identical( got, 'str' );
+
+  var got = _.enityExtend( { a : 1 }, 1 );
+  test.identical( got, 1 );
+
+  var got = _.enityExtend( {}, 'str' );
+  test.identical( got, 'str' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'missed arguments';
+  test.shouldThrowError( function()
+  {
+    _.enityExtend();
+  });
+
+  test.case = 'extra argument';
+  test.shouldThrowError( function()
+  {
+    _.enityExtend( [ 1,3 ], [ 1,3 ], [ 1,3 ] );
+  });
+
+  test.case = 'dst is undefined';
+  test.shouldThrowError( function()
+  {
+    _.enityExtend( undefined, [ 0, 1 ] );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.enityExtend( undefined, { a : 1, b : 2 } );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.enityExtend( null, [ 0, 1 ] );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.enityExtend( null, { a : 1, b : 2 } );
+  });
 };
 
 //
@@ -833,8 +1930,18 @@ var Self =
 
     eachSample,
 
+    entityEach,
+    entityEachKey,
+    entityEachOwn,
+
+    entityAll,
+    entityAny,
+    entityNone,
+
     entityMap,
     entityFilter,
+
+    enityExtend,
 
     entityAssign,
     entityAssignFieldFromContainer,
