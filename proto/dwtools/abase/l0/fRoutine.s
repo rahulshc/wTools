@@ -575,7 +575,9 @@ function _routinesCompose_body( o )
   else act = function composition()
   {
     let result = [];
-    let args = _.unrollAppend( null, arguments );
+    // let args = _.unrollAppend( _.unrollFrom( null ), arguments );
+    // debugger;
+    let args = _.unrollFrom( arguments );
     for( let k = 0 ; k < elements.length ; k++ )
     {
       _.assert( _.unrollIs( args ), () => 'Expects unroll, but got', _.strType( args ) );
@@ -584,7 +586,7 @@ function _routinesCompose_body( o )
       _.assert( r !== false /* && r !== undefined */, 'Temporally forbidden type of result', r );
       _.assert( !_.argumentsArrayIs( r ) );
       if( r !== undefined )
-      _.arrayAppendUnrolling( result, r );
+      _.unrollAppend( result, r );
       // args = chainer( r, k, args, o );
       args = chainer( args, r, o, k );
       _.assert( args !== undefined && args !== false );

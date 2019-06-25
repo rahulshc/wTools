@@ -5255,46 +5255,52 @@ function arraySum( test )
 // array transformation
 // ---
 
-//
+/* qqq
+unrollAppend, unrollPrepend should have test groups :
+- dst is null / unroll / array
+- one argument / two arguments / three arguments
+- first argument have array / unroll / complex unroll( unroll in unroll in unroll )
+- non-first argument have array / unroll / complex unroll( unroll in unroll in unroll / Float32Array / ArgumentsArray
+*/
 
-function arrayPrependUnrolling( test )
+function unrollPrepend( test )
 {
   test.case = 'dstArray is null';
-  var got = _.arrayPrependUnrolling( null );
+  var got = _.unrollPrepend( null );
   test.identical( got, [] );
 
   var unroll = _.unrollMake( [ 1, 2, 3 ] );
-  var got = _.arrayPrependUnrolling( null, unroll );
+  var got = _.unrollPrepend( null, unroll );
   test.identical( got, unroll );
 
   test.case = 'only dstArray';
-  var got = _.arrayPrependUnrolling( [ 1 ] );
+  var got = _.unrollPrepend( [ 1 ] );
   test.identical( got, [ 1 ] );
 
   test.case = 'dstArray is empty';
-  var got = _.arrayPrependUnrolling( [], null );
+  var got = _.unrollPrepend( [], null );
   test.identical( got, [ null ] );
 
   var unroll = _.unrollMake( [ 1, 2, 3 ] );
-  var got = _.arrayPrependUnrolling( [], unroll );
+  var got = _.unrollPrepend( [], unroll );
   test.identical( got, [ 1, 2, 3 ] );
 
   test.case = 'simple';
   var unroll = _.unrollMake( [ 1, 2, 3 ] );
-  var got = _.arrayPrependUnrolling( [ 1 ], unroll );
+  var got = _.unrollPrepend( [ 1 ], unroll );
   test.identical( got, [ 1, 2, 3, 1 ] );
 
   test.case = 'few arguments';
   var unroll = _.unrollMake( [ 1, 2, 3 ] );
-  var got = _.arrayPrependUnrolling( [ 1 ], unroll, [ 'a' ], 4 );
+  var got = _.unrollPrepend( [ 1 ], unroll, [ 'a' ], 4 );
   test.identical( got, [ 1, 2, 3, [ 'a' ], 4, 1 ] );
 
   test.case = 'with undefined element';
   var unroll = _.unrollMake( [ 1, undefined, 3 ] );
-  var got = _.arrayPrependUnrolling( [ 1 ], unroll, [ 'a' ], 4 );
+  var got = _.unrollPrepend( [ 1 ], unroll, [ 'a' ], 4 );
   test.identical( got, [ 1, undefined, 3, [ 'a' ], 4, 1 ] );
 
-  //
+  /* */
 
   if( !Config.debug )
   return;
@@ -5302,13 +5308,13 @@ function arrayPrependUnrolling( test )
   test.case = 'no args';
   test.shouldThrowError( function()
   {
-    _.arrayPrependUnrolling();
+    _.unrollPrepend();
   });
 
   test.case = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.arrayPrependUnrolling( 1, 1 );
+    _.unrollPrepend( 1, 1 );
   });
 }
 
@@ -7650,41 +7656,41 @@ function arrayPrependedArraysOnceStrictly( test )
 
 //
 
-function arrayAppendUnrolling( test )
+function unrollAppend( test )
 {
   test.case = 'dstArray is null';
-  var got = _.arrayAppendUnrolling( null );
+  var got = _.unrollAppend( null );
   test.identical( got, [] );
 
   var unroll = _.unrollMake( [ 1, 2, 3 ] );
-  var got = _.arrayAppendUnrolling( null, unroll );
+  var got = _.unrollAppend( null, unroll );
   test.identical( got, unroll );
 
   test.case = 'only dstArray';
-  var got = _.arrayAppendUnrolling( [ 1 ] );
+  var got = _.unrollAppend( [ 1 ] );
   test.identical( got, [ 1 ] );
 
   test.case = 'dstArray is empty';
-  var got = _.arrayAppendUnrolling( [], null );
+  var got = _.unrollAppend( [], null );
   test.identical( got, [ null ] );
 
   var unroll = _.unrollMake( [ 1, 2, 3 ] );
-  var got = _.arrayAppendUnrolling( [], unroll );
+  var got = _.unrollAppend( [], unroll );
   test.identical( got, [ 1, 2, 3 ] );
 
   test.case = 'simple';
   var unroll = _.unrollMake( [ 1, 2, 3 ] );
-  var got = _.arrayAppendUnrolling( [ 1 ], unroll );
+  var got = _.unrollAppend( [ 1 ], unroll );
   test.identical( got, [ 1, 1, 2, 3 ] );
 
   test.case = 'few arguments';
   var unroll = _.unrollMake( [ 1, 2, 3 ] );
-  var got = _.arrayAppendUnrolling( [ 1 ], unroll, [ 'a' ], 4 );
+  var got = _.unrollAppend( [ 1 ], unroll, [ 'a' ], 4 );
   test.identical( got, [ 1, 1, 2, 3, [ 'a' ], 4 ] );
 
   test.case = 'with undefined element';
   var unroll = _.unrollMake( [ 1, undefined, 3 ] );
-  var got = _.arrayAppendUnrolling( [ 1 ], unroll, [ 'a' ], 4 );
+  var got = _.unrollAppend( [ 1 ], unroll, [ 'a' ], 4 );
   test.identical( got, [ 1, 1, undefined, 3, [ 'a' ], 4 ] );
 
   //
@@ -7695,13 +7701,13 @@ function arrayAppendUnrolling( test )
   test.case = 'no args';
   test.shouldThrowError( function()
   {
-    _.arrayAppendUnrolling();
+    _.unrollAppend();
   });
 
   test.case = 'dst is not an array';
   test.shouldThrowError( function()
   {
-    _.arrayAppendUnrolling( 1, 1 );
+    _.unrollAppend( 1, 1 );
   });
 }
 
@@ -20380,7 +20386,7 @@ var Self =
 
     // array prepend
 
-    arrayPrependUnrolling,
+    unrollPrepend,
 
     arrayPrepend,
     arrayPrependOnce,
@@ -20412,7 +20418,7 @@ var Self =
 
     // array append
 
-    arrayAppendUnrolling,
+    unrollPrepend,
 
     arrayAppend,
     arrayAppendOnce,

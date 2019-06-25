@@ -77,6 +77,8 @@ function unrollMake( src )
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( result ) );
   result[ _.unroll ] = true;
+  if( !_.unrollIs( src ) )
+  result = _.unrollNormalize( result );
   return result;
 }
 
@@ -92,28 +94,56 @@ function unrollFrom( src )
 
 //
 
-function unrollPrepend( dstArray )
+function unrollNormalize( dstArray )
 {
-  _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
 
-  dstArray = dstArray || [];
+  _.assert( _.arrayIs( dstArray ) );
+  _.assert( arguments.length === 1 );
 
-  for( let a = arguments.length - 1 ; a >= 1 ; a-- )
+  for( let a = 0 ; a < dstArray.length ; a++ )
   {
-    if( _.longIs( arguments[ a ] ) )
+    if( _.unrollIs( dstArray[ a ] ) )
     {
-      dstArray.unshift.apply( dstArray, arguments[ a ] );
-    }
-    else
-    {
-      dstArray.unshift( arguments[ a ] );
+      dstArray.splice( a, 1, dstArray[ a ] );
+      a -= 1;
     }
   }
 
-  dstArray[ _.unroll ] = true;
+  return dstArray;
+}
+
+//
+
+function unrollPrepend( dstArray )
+{
+  _.assert( arguments.length >= 1 );
+  _.assert( _.longIs( dstArray ) || dstArray === null, 'Expects long or untroll' );
+
+  dstArray = dstArray || [];
+
+  _unrollPrepend( dstArray, _.longSlice( arguments, 1 ) );
 
   return dstArray;
+
+  function _unrollPrepend( dstArray, srcArray )
+  {
+    _.assert( arguments.length === 2 );
+
+    for( let a = srcArray.length - 1 ; a >= 0 ; a-- )
+    {
+      if( _.unrollIs( srcArray[ a ] ) )
+      {
+        _unrollPrepend( dstArray, srcArray[ a ] );
+      }
+      else
+      {
+        dstArray.unshift( srcArray[ a ] );
+      }
+    }
+
+    return dstArray;
+  }
+
 }
 
 //
@@ -121,26 +151,88 @@ function unrollPrepend( dstArray )
 function unrollAppend( dstArray )
 {
   _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
+  _.assert( _.longIs( dstArray ) || dstArray === null, 'Expects long or untroll' );
 
   dstArray = dstArray || [];
 
-  for( let a = 1, len = arguments.length ; a < len; a++ )
-  {
-    if( _.longIs( arguments[ a ] ) )
-    {
-      dstArray.push.apply( dstArray, arguments[ a ] );
-    }
-    else
-    {
-      dstArray.push( arguments[ a ] );
-    }
-  }
-
-  dstArray[ _.unroll ] = true;
+  _unrollAppend( dstArray, _.longSlice( arguments, 1 ) );
 
   return dstArray;
+
+  function _unrollAppend( dstArray, srcArray )
+  {
+    _.assert( arguments.length === 2 );
+
+    for( let a = 0, len = srcArray.length ; a < len; a++ )
+    {
+      if( _.unrollIs( srcArray[ a ] ) )
+      {
+        _unrollAppend( dstArray, srcArray[ a ] );
+      }
+      else
+      {
+        dstArray.push( srcArray[ a ] );
+      }
+    }
+
+    return dstArray;
+  }
+
 }
+
+// //
+//
+// function unrollPrepend( dstArray )
+// {
+//   _.assert( arguments.length >= 1 );
+//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
+//
+//   dstArray = dstArray || [];
+//
+//   for( let a = arguments.length - 1 ; a >= 1 ; a-- )
+//   {
+//     if( _.longIs( arguments[ a ] ) )
+//     {
+//       dstArray.unshift.apply( dstArray, arguments[ a ] );
+//     }
+//     else
+//     {
+//       dstArray.unshift( arguments[ a ] );
+//     }
+//   }
+//
+//   dstArray[ _.unroll ] = true;
+//
+//   return dstArray;
+// }
+//
+// //
+//
+// function unrollAppend( dstArray )
+// {
+//   _.assert( arguments.length >= 1 );
+//   _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
+//
+//   dstArray = dstArray || [];
+//
+//   for( let a = 1, len = arguments.length ; a < len; a++ )
+//   {
+//     if( _.longIs( arguments[ a ] ) )
+//     {
+//       dstArray.push.apply( dstArray, arguments[ a ] );
+//     }
+//     else
+//     {
+//       dstArray.push( arguments[ a ] );
+//     }
+//   }
+//
+//   dstArray[ _.unroll ] = true;
+//
+//   return dstArray;
+// }
+//
+//
 
 // --
 // long
@@ -1444,10 +1536,18 @@ function scalarFromOrNull( src )
 // array producer
 // --
 
+/* qqq
+add good coverage for arrayMake
+take into account unroll cases
+*/
+
 function arrayMake( src )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.numberIs( src ) || _.longIs( src ) );
+  _.assert( _.numberIs( src ) || _.longIs( src ) || src === null );
+
+  if( src === null )
+  return Array();
 
   if( _.numberIs( src ) )
   return Array( src );
@@ -1459,6 +1559,11 @@ function arrayMake( src )
 }
 
 //
+
+/* qqq
+add good coverage for arrayFrom
+take into account unroll cases
+*/
 
 function arrayFrom( src )
 {
@@ -1878,40 +1983,6 @@ alteration How : [ - , Once , OnceStrictly ]                  // how to treat re
 ~ 60 routines
 
 */
-
-function _arrayPrependUnrolling( dstArray, srcArray )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayIs( dstArray ), 'Expects array' );
-
-  for( let a = srcArray.length - 1 ; a >= 0 ; a-- )
-  {
-    if( _.unrollIs( srcArray[ a ] ) )
-    {
-      _arrayPrependUnrolling( dstArray, srcArray[ a ] );
-    }
-    else
-    {
-      dstArray.unshift( srcArray[ a ] );
-    }
-  }
-
-  return dstArray;
-}
-
-//
-
-function arrayPrependUnrolling( dstArray )
-{
-  _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
-
-  dstArray = dstArray || [];
-
-  _._arrayPrependUnrolling( dstArray, _.longSlice( arguments, 1 ) );
-
-  return dstArray;
-}
 
 //
 
@@ -2910,42 +2981,6 @@ function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evalu
 // --
 // array append
 // --
-
-function _arrayAppendUnrolling( dstArray, srcArray )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.arrayIs( dstArray ), 'Expects array' );
-
-  for( let a = 0, len = srcArray.length ; a < len; a++ )
-  {
-    if( _.unrollIs( srcArray[ a ] ) )
-    {
-      _arrayAppendUnrolling( dstArray, srcArray[ a ] );
-    }
-    else
-    {
-      dstArray.push( srcArray[ a ] );
-    }
-  }
-
-  return dstArray;
-}
-
-//
-
-function arrayAppendUnrolling( dstArray )
-{
-  _.assert( arguments.length >= 1 );
-  _.assert( _.arrayIs( dstArray ) || dstArray === null, 'Expects array' );
-
-  dstArray = dstArray || [];
-
-  _._arrayAppendUnrolling( dstArray, _.longSlice( arguments, 1 ) );
-
-  return dstArray;
-}
-
-//
 
 function arrayAppend_( dstArray )
 {
@@ -5588,8 +5623,13 @@ let Routines =
 
   unrollMake,
   unrollFrom,
+  unrollNormalize,
+
   unrollPrepend,
   unrollAppend,
+
+  // unrollPrepend,
+  // unrollAppend,
 
   // long
 
@@ -5676,8 +5716,6 @@ let Routines =
 
   // array prepend
 
-  _arrayPrependUnrolling,
-  arrayPrependUnrolling,
   arrayPrepend_,
 
   arrayPrepend,
@@ -5710,8 +5748,6 @@ let Routines =
 
   // array append
 
-  _arrayAppendUnrolling,
-  arrayAppendUnrolling,
   arrayAppend_,
 
   arrayAppend,
