@@ -2625,7 +2625,10 @@ unrollAppend, unrollPrepend should have test groups :
 - first argument have array / unroll / complex unroll( unroll in unroll in unroll )
 - non-first argument have array / unroll / complex unroll( unroll in unroll in unroll / Float32Array / ArgumentsArray
 
-Dmytro: notice that unrollIs, unrollIsPopulated have not asserts.
+Dmytro: all tests is added
+qqq: In unrollPrepend and unrollAppend test cases groups by number of arguments and it includes other test cases - array, unroll, complex unroll.
+In previus routines improve unrollMake and unrollFrom tests.
+Notice that unrollIs, unrollIsPopulated have not asserts.
 */
 
 //
@@ -2743,12 +2746,14 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( dst, null );
   test.identical( got, [ null, 1 ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg is unroll';
   var dst = _.unrollMake( [ 1 ] );
   var got = _.unrollPrepend( dst, _.unrollMake( [ 1, 'str' ] ) );
   test.identical( got, [ 1, 'str', 1 ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg is complex unroll';
   var dst = _.unrollMake( [ 1 ] );
@@ -2756,12 +2761,14 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1 ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg is array';
   var dst = _.unrollMake( [ 1 ] );
   var got = _.unrollPrepend( dst, [ 1, 2, 'str' ] );
   test.identical( got, [ [ 1, 2, 'str' ], 1 ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg makes from Float32Array';
   var src = _.unrollMake( new Float32Array( [ 1, 2, 3 ] ) );
@@ -2769,6 +2776,7 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 3, 'str', 0 ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg makes from argumentsArray';
   var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
@@ -2776,6 +2784,7 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 'str', 'str', 0 ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   //
 
@@ -2784,12 +2793,14 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( dst, null );
   test.identical( got, [ null, 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is unroll';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
   var got = _.unrollPrepend( dst, _.unrollMake( [ 1, 'str' ] ) );
   test.identical( got, [ 1, 'str', 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is complex unroll';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
@@ -2797,12 +2808,14 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is array';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
   var got = _.unrollPrepend( dst, [ 1, 2, 'str' ] );
   test.identical( got, [ [ 1, 2, 'str' ], 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg makes from Float32Array';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
@@ -2810,6 +2823,7 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 3, 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg makes from argumentsArray';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake([ 1, [] ]), _.unrollFrom([ 'str', _.unrollMake([ 'str2']) ]) ]);
@@ -2817,6 +2831,7 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 'str', 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.close( 'two arguments' );
 
@@ -2856,6 +2871,7 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( _.unrollFrom( [] ), [ 1, 2 ], a1, [ a2, 10 ] );
   var expected = [ [ 1, 2 ], 3, 4, 5, 6, [[ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, next args have unroll from argumentsArray';
   var a1 = [ 7, _.unrollFrom([ 8, 9 ]) ];
@@ -2863,6 +2879,7 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( _.unrollMake( [ 0 ] ), [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ [ 1, 2, 3, 4, 5, 6 ], [ [ 7, 8, 9 ], 10 ], 0 ];
   test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, next args have unroll from Float32Array';
   var a1 = [ 7, _.unrollFrom([ 8, 9 ]) ];
@@ -2870,6 +2887,7 @@ function unrollPrepend( test )
   var got = _.unrollPrepend( _.unrollMake( [ 0 ] ), [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ [ 1, 2, 3, 4 ], [ [ 7, 8, 9 ], 10 ], 0 ];
   test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is array, complex unrolls';
   var a1 = _.unrollFrom([ 3, 4, _.unrollFrom([ 5, 6 ]) ]);
@@ -3037,12 +3055,14 @@ function unrollAppend( test )
   var got = _.unrollAppend( dst, null );
   test.identical( got, [ 1, null ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg is unroll';
   var dst = _.unrollMake( [ 1 ] );
   var got = _.unrollAppend( dst, _.unrollMake( [ 1, 'str' ] ) );
   test.identical( got, [ 1, 1, 'str' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg is complex unroll';
   var dst = _.unrollMake( [ 1 ] );
@@ -3050,12 +3070,14 @@ function unrollAppend( test )
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 1, 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg is array';
   var dst = _.unrollMake( [ 1 ] );
   var got = _.unrollAppend( dst, [ 1, 2, 'str' ] );
   test.identical( got, [ 1, [ 1, 2, 'str' ] ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg makes from Float32Array';
   var src = _.unrollMake( new Float32Array( [ 1, 2, 3 ] ) );
@@ -3063,6 +3085,7 @@ function unrollAppend( test )
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 'str', 0, 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, second arg makes from argumentsArray';
   var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
@@ -3070,6 +3093,7 @@ function unrollAppend( test )
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 'str', 0, 1, 2, 'str' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   //
 
@@ -3078,12 +3102,14 @@ function unrollAppend( test )
   var got = _.unrollAppend( dst, null );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', null ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is unroll';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
   var got = _.unrollAppend( dst, _.unrollMake( [ 1, 'str' ] ) );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 'str' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is complex unroll';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
@@ -3091,12 +3117,14 @@ function unrollAppend( test )
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is array';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
   var got = _.unrollAppend( dst, [ 1, 2, 'str' ] );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', [ 1, 2, 'str' ] ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg makes from Float32Array';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
@@ -3104,6 +3132,7 @@ function unrollAppend( test )
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg makes from argumentsArray';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake([ 1, [] ]), _.unrollFrom([ 'str', _.unrollMake([ 'str2']) ]) ]);
@@ -3111,6 +3140,7 @@ function unrollAppend( test )
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 2, 'str' ] );
   test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.close( 'two arguments' );
 
@@ -3150,6 +3180,7 @@ function unrollAppend( test )
   var got = _.unrollAppend( _.unrollFrom( [] ), [ 1, 2 ], a1, [ a2, 10 ] );
   var expected = [ [ 1, 2 ], 3, 4, 5, 6, [[ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, next args have unroll from argumentsArray';
   var a1 = [ 7, _.unrollFrom([ 8, 9 ]) ];
@@ -3157,6 +3188,7 @@ function unrollAppend( test )
   var got = _.unrollAppend( _.unrollMake( [ 0 ] ), [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ 0, [ 1, 2, 3, 4, 5, 6 ], [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is unroll, next args have unroll from Float32Array';
   var a1 = [ 7, _.unrollFrom([ 8, 9 ]) ];
@@ -3164,6 +3196,7 @@ function unrollAppend( test )
   var got = _.unrollAppend( _.unrollMake( [ 0 ] ), [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ 0, [ 1, 2, 3, 4 ], [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'dst is array, complex unrolls';
   var a1 = _.unrollFrom([ 3, 4, _.unrollFrom([ 5, 6 ]) ]);
