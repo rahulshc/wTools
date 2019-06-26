@@ -53,6 +53,30 @@ function argumentsArrayFrom( src )
 // unroll
 // --
 
+/**
+ * The unrollIs() routine determines whether the passed value is an unroll-like.
+ *
+ * If {-src-} is an unroll-like, true is returned, otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * _.unrollIs( _.unrollMake( [ 1, 'str' ] ) );
+ *
+ * @example
+ * // returns false
+ * _.unrollIs( [] );
+ *
+ * @example
+ * // returns false
+ * _.unrollIs( 1 );
+ *
+ * @returns { boolean } Returns true if {-src-} is an unroll-like.
+ * @function unrollIs
+ * @memberof wTools
+ */
+
 function unrollIs( src )
 {
   if( !_.arrayIs( src ) )
