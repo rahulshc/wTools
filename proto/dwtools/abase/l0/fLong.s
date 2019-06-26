@@ -86,6 +86,30 @@ function unrollIs( src )
 
 //
 
+/**
+ * The unrollIsPopulated() routine determines whether the unroll-like array has elements (length).
+ *
+ * If {-src-} is an unroll-like and has one or more elements, true is returned, otherwise false is.
+ *
+ * @param { * } src - The object to be checked.
+ *
+ * @example
+ * // returns true
+ * _.unrollIs( _.unrollMake( [ 1, 'str' ] ) );
+ *
+ * @example
+ * // returns false
+ * _.unrollIs( _.unrollMake( [] ) );
+ *
+ * @example
+ * // returns false
+ * _.unrollIs( 1 );
+ *
+ * @returns { boolean } Returns true if argument ( src ) is an unroll-like and has one or more elements ( length ).
+ * @function unrollIsPopulated
+ * @memberof wTools
+ */
+
 function unrollIsPopulated( src )
 {
   if( !_.unrollIs( src ) )
@@ -94,6 +118,33 @@ function unrollIsPopulated( src )
 }
 
 //
+
+/**
+ * The unrollMake() routine returns a new unroll-like array maked from {-src-}.
+ *
+ * It appends (_.unroll) Symbol and normalize array if it has unroll-like elements.
+ * Otherwise, it returns the empty unroll.
+ *
+ * @param { * } src - The number or array-like object to make unroll-like array.
+ *
+ * @example
+ * // returns true
+ * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
+ * _.unrollIs( unroll );
+ *
+ * @example
+ * //returns false
+ * let arr = new Array( 1, 2, 'str' );
+ * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
+ * console.log( arr === unroll );
+ *
+ * @returns { Unroll } Returns a new unroll-like array maked from {-src-}.
+ * Otherwise, it returns the empty unroll.
+ * @function unrollMake
+ * @throws { Error } If ( arguments.length ) is less or more then one.
+ * @throws { Error } If argument ( src ) is not number, not long-like, not null.
+ * @memberof wTools
+ */
 
 function unrollMake( src )
 {
@@ -108,6 +159,38 @@ function unrollMake( src )
 
 //
 
+/**
+ * The unrollFrom() routine returns a new unroll-like array maked from {-src-}.
+ *
+ * If {-src-} is unroll-like returns {-src-}. Else it appends (_.unroll) Symbol and normalize array.
+ * Otherwise, it returns the empty unroll.
+ *
+ * @param { * } src - The object to make unroll-like array.
+ *
+ * @example
+ * // returns true
+ * let unroll = _.unrollFrom( [ 1, 2, 'str' ] );
+ * _.unrollIs( unroll );
+ *
+ * @example
+ * // returns [ 1, 2, 'str' ]
+ * let unroll = _.unrollFrom( [ 1, 2, 'str' ] );
+ * _.unrollFrom( unroll );
+ *
+ * @example
+ * //returns false
+ * let arr = new Array( 1, 2, 'str' );
+ * let unroll = _.unrollFrom( [ 1, 2, 'str' ] );
+ * console.log( arr === unroll );
+ *
+ * @returns { Unroll } Returns a new unroll-like array maked from {-src-}.
+ * Otherwise, it returns the empty unroll.
+ * @function unrollFrom
+ * @throws { Error } If (arguments.length) is less or more then one.
+ * @throws { Error } If argument ( src ) is not number, not long-like, not null.
+ * @memberof wTools
+ */
+
 function unrollFrom( src )
 {
   _.assert( arguments.length === 1 );
@@ -117,6 +200,32 @@ function unrollFrom( src )
 }
 
 //
+
+/**
+ * The unrollNormalize() routine returns an array ( dstArray ) with unrolled unroll-like elements.
+ *
+ * If {-dstArray-} is unroll-like, but it includes not unroll-like elements, routine returns {-dstArray-}.
+ * Else routine returns an array with unrolled elements.
+ *
+ * @param { arrayIs } dstArray - The array to be unrolled (normalized).
+ *
+ * @example
+ * // returns true
+ * let unroll = _.unrollFrom( [ 1, 2, 'str' ] );
+ * _.unrollIs( _.unrollNormalize( unroll ) );
+ *
+ * @example
+ * // returns false
+ * let unroll = _.unrollFrom( [ 1,'str' ] );
+ * let result = _.unrollNormalize( [ 1, unroll ] );
+ * _.unrollIs( result );
+ *
+ * @returns { Array } Returns an array with unrolled unroll-like elements.
+ * @function unrollNormalize
+ * @throws { Error } If ( arguments.length ) is not equal to one.
+ * @throws { Error } If argument ( dstArray ) is not arrayLike.
+ * @memberof wTools
+ */
 
 function unrollNormalize( dstArray )
 {
@@ -143,6 +252,44 @@ function unrollNormalize( dstArray )
 }
 
 //
+
+/**
+ * The unrollPrepend() routine returns an array with elements added to the begin of destination array (dstArray).
+ * The elements that adds to destination array normalizes.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { * } args - The elements to be added.
+ *
+ * @example
+ * // returns [ [ 1 ] ]
+ * _.unrollPrepend( null, [ 1 ] );
+ *
+ * @example
+ * // returns [ 1 ]
+ * _.unrollPrepend( null, _.unrollMake( [ 1 ] ) );
+ *
+ * @example
+ * // returns [ [ 1 ], 1 ]
+ * _.unrollPrepend( _.unrollFrom( [ 1 ] ), [ 1 ] );
+ *
+ * @example
+ * // returns true
+ * let result = _.unrollPrepend( _.unrollFrom( [ 1 ] ), [ 1 ] );
+ * _.unrollIs( result );
+ *
+ * @example
+ * // returns false
+ * let result = _.unrollPrepend( [ 1 ],  _.unrollFrom( [ 1 ] ) );
+ * _.unrollIs( result );
+ *
+ * @returns { Array } If destination array ( dstArray ) is unroll-like,
+ * routine returns updated unroll-like array with normalized elements that are added to the begin of destination array,
+ * otherwise, it returns the updated array ( dstArray ) with normalized added elements.
+ * @function unrollPrepend
+ * @throws { Error } An Error if ( dstArray ) is not an Array or not null.
+ * @throws { Error } An Error if ( arguments.length ) is less then one.
+ * @memberof wTools
+ */
 
 function unrollPrepend( dstArray )
 {
@@ -179,6 +326,44 @@ function unrollPrepend( dstArray )
 }
 
 //
+
+/**
+ * The unrollAppend() routine returns an array with elements added to the end of destination array (dstArray).
+ * The elements that adds to destination array normalizes.
+ *
+ * @param { Array } dstArray - The destination array.
+ * @param { * } args - The elements to be added.
+ *
+ * @example
+ * // returns [ [ 1 ] ]
+ * _.unrollAppend( null, [ 1 ] );
+ *
+ * @example
+ * // returns [ 1 ]
+ * _.unrollAppend( null, _.unrollMake( [ 1 ] ) );
+ *
+ * @example
+ * // returns [ 1, [ 1 ] ]
+ * _.unrollAppend( _.unrollFrom( [ 1 ] ), [ 1 ] );
+ *
+ * @example
+ * // returns true
+ * let result = _.unrollAppend( _.unrollFrom( [ 1 ] ), [ 1 ] );
+ * _.unrollIs( result );
+ *
+ * @example
+ * // returns false
+ * let result = _.unrollAppend( [ 1 ],  _.unrollFrom( [ 1 ] ) );
+ * _.unrollIs( result );
+ *
+ * @returns { Array } If destination array ( dstArray ) is unroll-like,
+ * routine returns updated unroll-like array with normalized elements that are added to the end of destination array,
+ * otherwise, it returns the updated array ( dstArray ) with normalized elements that are added to the end of destination array.
+ * @function unrollAppend
+ * @throws { Error } An Error if ( dstArray ) is not an Array or not null.
+ * @throws { Error } An Error if ( arguments.length ) is less then one.
+ * @memberof wTools
+ */
 
 function unrollAppend( dstArray )
 {
