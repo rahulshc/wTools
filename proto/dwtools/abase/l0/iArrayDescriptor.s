@@ -1,6 +1,6 @@
 (function _kArrayDescriptor_s_() {
 
-'use strict';
+'use strict'; /*aaa*/
 
 let _global = _global_;
 let _ = _global.wTools;

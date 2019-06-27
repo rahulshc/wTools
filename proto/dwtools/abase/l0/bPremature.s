@@ -1,6 +1,6 @@
 ( function _bPremature_s_() {
 
-'use strict';
+'use strict'; /*aaa*/
 
 let _FunctionBind = Function.prototype.bind;
 let _ObjectToString = Object.prototype.toString;

@@ -1,6 +1,6 @@
 ( function _fRoutine_s_() {
 
-'use strict';
+'use strict'; /*aaa*/
 
 let _global = _global_;
 let _ = _global_.wTools;
@@ -637,6 +637,11 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 
 //
 
+/* qqq :
+- cover it by GOOD test coverage
+- document it ( jsdoc )
+*/
+
 function routineExtend( dst )
 {
 
@@ -687,14 +692,14 @@ function routineExtend( dst )
     {
       let property = src[ s ];
       let d = Object.getOwnPropertyDescriptor( dst, s );
-      if( d && !d.wratable )
+      if( d && !d.writable )
       continue;
       if( _.objectIs( property ) )
       {
         _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
         property = Object.create( property );
         if( dst[ s ] )
-        _.mapExtend( property, dst[ s ] );
+        _.mapSupplement( property, dst[ s ] );
       }
       dst[ s ] = property;
     }
