@@ -879,6 +879,9 @@ function routineExtend( test )
   test.identical( got.pre, _.routineFromPreAndBody.pre );
   test.il( typeof got, 'function' );
 
+  test.case = 'dst is routine';
+
+
   if( !Config.debug )
   return;
 
