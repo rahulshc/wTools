@@ -1,6 +1,6 @@
 ( function _fErr_s_() {
 
-'use strict'; /*aaa*/
+'use strict';
 
 /*
 
