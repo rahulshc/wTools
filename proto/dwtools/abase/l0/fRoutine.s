@@ -687,7 +687,8 @@ function routineExtend( dst )
     {
       let property = src[ s ];
       let d = Object.getOwnPropertyDescriptor( dst, s );
-      if( d && !d.wratable )
+      // if( d && !d.wratable )
+      if( d && !d.writable )
       continue;
       if( _.objectIs( property ) )
       {

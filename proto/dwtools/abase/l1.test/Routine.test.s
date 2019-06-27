@@ -872,6 +872,48 @@ function routinesChain( test )
 
 //
 
+function routineExtend( test )
+{
+  test.case = 'dst is null';
+  var got = _.mapExtend( null, _.routineFromPreAndBody );
+  test.identical( got.pre, _.routineFromPreAndBody.pre );
+  test.il( typeof got, 'function' );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend();
+  });
+
+  test.case = 'three arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend( null, { a : 1 }, { b : 2 });
+  });
+
+  test.case = 'second arg has not pre and body properties';
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend( null, _.unrollIs );
+  });
+
+  test.case = 'dst is not routine or null';
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend( 1, { a : 1 } );
+  });
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend( 'str', { a : 1 } );
+  });
+}
+
+//
+
 function vectorize( test )
 {
   function srcRoutine( a,b )
@@ -1546,6 +1588,8 @@ var Self =
     routinesComposeAll,
     routinesComposeAllReturningLast,
     routinesChain,
+
+    routineExtend,
 
     vectorize,
     /* qqq : split test routine vectorize */
