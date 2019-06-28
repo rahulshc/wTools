@@ -637,18 +637,6 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 
 //
 
-/* qqq :
-- cover it by GOOD test coverage
-- document it ( jsdoc )
-
-Dmytro: test shows next:
-
-var got = _.routineExtend( dst, { c : { s : 1 } } );
-test.identical( got.c, {} ); // true
-
-Is it bug or normal work?
-*/
-
 /**
  * The routineExtend() is used to copy the values of all properties
  * from source routine to a target routine.
