@@ -975,7 +975,7 @@ function routineExtend( test )
       enumerable : false,
       writable : false,
     }
-  })
+  });
   var got = _.routineExtend( dst );
   test.identical( got, dst );
   test.identical( typeof got, 'function' );
@@ -1134,26 +1134,30 @@ function routineExtend( test )
   test.identical( got.c, {} );
   test.identical( typeof got, 'function' );
 
-  // test.case = 'dst extends routine, src extends routine, dst extends src';
-  // var dst = function()
-  // {
-  // };
-  // var src = function()
-  // {
-  // };
-  // var routine = function()
-  // {
-  // };
-  // routine.a = 0;
-  // routine.b = [ 'str' ];
-  // var src = _.routineExtend( src, routine );
-  // var src1 = _.routineExtend( dst, routine );
-  // test.identical( got.pre, _.routinesCompose.pre );
-  // test.identical( got.body, _.routinesCompose.body );
-  // test.identical( got.a, [ 'str' ] );
-  // test.identical( got.map, { a : 'str' } );
-  // test.identical( got.c, {} );
-  // test.identical( typeof got, 'function' );
+  test.case = 'dst extends routine, src extends routine1, dst extends src';
+  var dst = function()
+  {
+  };
+  var src = function()
+  {
+  };
+  var routine = function()
+  {
+  };
+  routine.a = 0;
+  routine.b = [ 'str' ];
+  var routine1 = function()
+  {
+  };
+  routine1.a = 2;
+  routine1.c = [ 'str' ];
+  var src1 = _.routineExtend( src, routine );
+  var src2 = _.routineExtend( dst, routine1 );
+  var got = _.routineExtend( scr2, src1 )
+  test.identical( got.a, [ 'str' ] );
+  test.identical( got.map, { a : 'str' } );
+  test.identical( got.c, {} );
+  test.identical( typeof got, 'function' );
 
   test.close( 'a few extends');
 
@@ -1209,10 +1213,10 @@ function routineExtend( test )
 }
 
 //
-function routineExtendExperimental( test )
+function routineExtendExperiment( test )
 {
   test.case = 'map saves';
-  var dst = function( o )
+  var dst = function()
   {
   };
   Object.defineProperties( dst, {
@@ -1226,31 +1230,19 @@ function routineExtendExperimental( test )
       enumerable : false,
       writable : false,
     }
-  })
+  });
   var got = _.routineExtend( dst );
-  test.identical( got, dst );
-  test.identical( typeof got, 'function' );
-  test.identical( got.a, 0 );
   test.identical( got.b, { a : 2 } );
-  var got = Object.getOwnPropertyDescriptor( got, 'b' );
-  test.isNot( got.enumerable );
 
   test.case = 'resulted map is empty';
   var src =
   {
-    pre : _.routineFromPreAndBody.pre,
-    body : _.routineFromPreAndBody.body,
-    a : [ 1 ],
-    b : 'str',
+    pre : _.routinesCompose.pre,
+    body : _.routinesCompose.body,
     c : { str : 'str' }
   }
   var got = _.routineExtend( null, src );
-  test.identical( got.pre, _.routineFromPreAndBody.pre );
-  test.identical( got.body, _.routineFromPreAndBody.body );
-  test.identical( got.a, [ 1 ] );
-  test.identical( got.b, 'str' );
   test.identical( got.c, {} );
-  test.identical( typeof got, 'function' );
 
   test.case = 'resulted map is empty, but should not';
   var dst = function( o )
@@ -1259,12 +1251,9 @@ function routineExtendExperimental( test )
   dst.a = 0;
   dst.b = { a : 2 };
   var got = _.routineExtend( dst, { a : 1, b : { a : 3 } } );
-  test.identical( got, dst );
-  test.identical( typeof got, 'function' );
-  test.identical( got.a, 1 );
   test.identical( got.b, { a : 2 } );
 }
-routineExtendExperimental.experimental = 1;
+routineExtendExperiment.experimental = 1;
 //
 
 function vectorize( test )
@@ -1943,7 +1932,7 @@ var Self =
     routinesChain,
 
     routineExtend,
-    routineExtendExperimental, // experimental
+    routineExtendExperiment, // experimental
 
     vectorize,
     /* qqq : split test routine vectorize */
