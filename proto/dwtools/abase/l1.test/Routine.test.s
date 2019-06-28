@@ -6,6 +6,7 @@ if( typeof module !== 'undefined' )
 {
   let _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
+  // _.include( 'wProto' );
 }
 
 var _global = _global_;
@@ -1217,46 +1218,46 @@ function routineExtend( test )
 function routineExtendExperiment( test )
 {
 
-  test.case = 'map saves';
-  var dst = function()
-  {
-  };
-  Object.defineProperties( dst,
-  {
-    'a' :
-    {
-      value : 0,
-      enumerable : true,
-      writable : false,
-    },
-    'b' :
-    {
-      value : { a : 2 },
-      enumerable : true,
-      writable : true,
-    }
-  });
-  var got = _.routineExtend( dst );
-  test.identical( got.b, { a : 2 } );
-
-  test.case = 'resulted map is empty';
-  var src =
-  {
-    pre : _.routinesCompose.pre,
-    body : _.routinesCompose.body,
-    c : { str : 'str' }
-  }
-  var got = _.routineExtend( null, src );
-  test.identical( got.c, {} );
+  // test.case = 'map saves';
+  // var dst = function()
+  // {
+  // };
+  // Object.defineProperties( dst,
+  // {
+  //   'a' :
+  //   {
+  //     value : 0,
+  //     enumerable : true,
+  //     writable : false,
+  //   },
+  //   'b' :
+  //   {
+  //     value : { a : 2 },
+  //     enumerable : true,
+  //     writable : true,
+  //   }
+  // });
+  // var got = _.routineExtend( dst );
+  // test.identical( got.b, { a : 2 } );
+  //
+  // test.case = 'resulted map is empty';
+  // var src =
+  // {
+  //   pre : _.routinesCompose.pre,
+  //   body : _.routinesCompose.body,
+  //   c : { str : 'str' }
+  // }
+  // var got = _.routineExtend( null, src );
+  // test.identical( got.c, {} );
 
   test.case = 'resulted map is empty, but should not';
-  var dst = function( o )
-  {
-  };
-  dst.a = 0;
+  var dst = function( o ) {};
   dst.b = { a : 2 };
-  var got = _.routineExtend( dst, { a : 1, b : { a : 3 } } );
-  test.identical( got.b, { a : 3 } );
+  var got = _.routineExtend( dst, { b : { a : 3 } } );
+  debugger;
+  test.equivalent( got.b, { a : 3 } );
+  debugger;
+  // test.identical( got.b, { a : 3 } );
 
 }
 
