@@ -1,6 +1,6 @@
 ( function _fLong_s_() {
 
-'use strict'; /*aaa*/
+'use strict';
 
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;

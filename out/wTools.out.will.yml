@@ -41,14 +41,14 @@ path:
     path: wTools.out.will.yml
     criterion:
       predefined: 1
+  module.common:
+    path: wTools.out
+    criterion:
+      predefined: 1
   module.original.willfiles:
     path:
       - ../.im.will.yml
       - ../.ex.will.yml
-    criterion:
-      predefined: 1
-  module.common:
-    path: wTools.out
     criterion:
       predefined: 1
   local:
