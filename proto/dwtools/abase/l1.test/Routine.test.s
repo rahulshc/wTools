@@ -8,8 +8,6 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-debugger;
-
 var _global = _global_;
 var _ = _global_.wTools;
 
@@ -469,7 +467,7 @@ function routinesCompose( test )
     counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
-    return _.unrollAppend( _.unrollMake( null ), arguments, counter );
+    return _.unrollAppend( _.unrollMake( null ), _.unrollMake( arguments ), counter );
   }
 
   function routineNotUnrolling()
@@ -620,7 +618,7 @@ function routinesComposeAll( test )
     counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
-    return _.unrollAppend( _.unrollMake( null ), arguments, counter );
+    return _.unrollAppend( _.unrollMake( null ), _.unrollMake( arguments ), counter );
   }
 
   function routineNotUnrolling()
@@ -711,7 +709,7 @@ function routinesComposeAllReturningLast( test )
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
     debugger;
-    return _.unrollAppend( _.unrollMake( null ), arguments, counter );
+    return _.unrollAppend( _.unrollMake( null ), _.unrollMake( arguments ), counter );
   }
 
   function routineNotUnrolling()
@@ -802,7 +800,7 @@ function routinesChain( test )
     counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
-    return _.unrollAppend( _.unrollMake( null ), arguments, counter );
+    return _.unrollAppend( _.unrollMake( null ), _.unrollMake( arguments ), counter );
   }
 
   function r2()
@@ -874,6 +872,12 @@ function routinesChain( test )
 
 function routineExtend( test )
 {
+
+  // debugger;
+  // var got = _.routineExtend( dst, { c : { s : 1 } } );
+  // test.identical( got.c, {} ); // true
+  // debugger;
+
   test.open( 'dst is null, src has pre and body properties');
 
   test.case = 'dst is null, src is routine maked by routineFromPreAndBody';
@@ -931,6 +935,9 @@ function routineExtend( test )
   test.identical( typeof got, 'function' );
 
   test.close( 'dst is null, src has pre and body properties');
+
+  /* - */
+
   test.open( 'single dst');
 
   test.case = 'single dst';
@@ -1003,7 +1010,7 @@ function routineExtend( test )
   test.identical( got.a, 1 );
   test.identical( got.b, 1 );
 
-  //
+  /* */
 
   test.case = 'dst has non-writable properties';
   var dst = function( o )
@@ -1177,6 +1184,7 @@ function routineExtend( test )
   {
     _.routineExtend( 'str', { a : 1 } );
   });
+
 }
 
 //
