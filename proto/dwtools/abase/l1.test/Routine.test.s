@@ -1213,22 +1213,27 @@ function routineExtend( test )
 }
 
 //
+
 function routineExtendExperiment( test )
 {
+
   test.case = 'map saves';
   var dst = function()
   {
   };
-  Object.defineProperties( dst, {
-    'a' : {
+  Object.defineProperties( dst,
+  {
+    'a' :
+    {
       value : 0,
       enumerable : true,
       writable : false,
     },
-    'b' : {
+    'b' :
+    {
       value : { a : 2 },
-      enumerable : false,
-      writable : false,
+      enumerable : true,
+      writable : true,
     }
   });
   var got = _.routineExtend( dst );
@@ -1251,9 +1256,12 @@ function routineExtendExperiment( test )
   dst.a = 0;
   dst.b = { a : 2 };
   var got = _.routineExtend( dst, { a : 1, b : { a : 3 } } );
-  test.identical( got.b, { a : 2 } );
+  test.identical( got.b, { a : 3 } );
+
 }
+
 routineExtendExperiment.experimental = 1;
+
 //
 
 function vectorize( test )
@@ -1932,7 +1940,7 @@ var Self =
     routinesChain,
 
     routineExtend,
-    routineExtendExperiment, // experimental
+    routineExtendExperiment,
 
     vectorize,
     /* qqq : split test routine vectorize */
