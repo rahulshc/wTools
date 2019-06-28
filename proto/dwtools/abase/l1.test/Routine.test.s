@@ -985,11 +985,12 @@ function routineExtend( test )
   };
   dst.a = 0;
   dst.b = 0;
-  var got = _.routineExtend( dst, { c : 1, d : 1 } );
+  var got = _.routineExtend( dst, { c : 1, d : 1, e : { s : 1 } } );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 0 );
   test.identical( got.b, 0 );
   test.identical( got.c, 1 );
+  test.identical( got.e, {} );
 
   test.case = 'dst has properties, src map has the same properties';
   var dst = function( o )

@@ -640,7 +640,64 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 /* qqq :
 - cover it by GOOD test coverage
 - document it ( jsdoc )
+
+Dmytro: test shows next:
+
+var got = _.routineExtend( dst, { c : { s : 1 } } );
+test.identical( got.c, {} ); // true
+
+Is it bug or normal work?
 */
+
+/**
+ * The routineExtend() is used to copy the values of all properties
+ * from source routine (source map options) to a target routine.
+ *
+ * It takes first routine (dst), and check every property of it.
+ * Then it checks properties of source routine and extends dst by its.
+ * The dst properties can be owerwriten by values of source routine
+ * if descriptor (writable) of dst property is set.
+ *
+ * If the first routine (dst) is null,
+ * the routineExtend() can make a routine from source routine (source map options),
+ * which have pre and body routines in properties
+ * @see {@link wTools.routineFromPreAndBody} - Automatic routine generating
+ * from preparation vroutine and main routine (body).
+ *
+ * @param{ routine } dst - The target routine or null.
+ * @param{ * } src - The source routine or object to copy.
+ *
+ * @example
+ * // returns [ routine routinesCompose ], got.option === 1
+ * var src =
+ * {
+ *   pre : _.routinesCompose.pre,
+ *   body : _.routinesCompose.body,
+ *   option : 1,
+ * }
+ * var got = _.routineExtend( null, src );
+ *
+ * @example
+ * // returns [ routine routinesCompose ]
+ * _.routineExtend( null, _.routinesCompose );
+ *
+ * @example
+ * // returns [ routine routinesCompose ], routinesCompose.option === 1
+ * _.routineExtend( _.routinesCompose, { option : 1 } );
+ *
+ * @example
+ * // returns [ routine routinesCompose ], routinesCompose.option === 1
+ * _.routinesComposes.option = 22;
+ * _.routineExtend( _.routinesCompose, { option : 1 } );
+ *
+ * @returns { routine } It will return the target routine with extended properties.
+ * @function routineExtend
+ * @throws { Error } Throw an error if arguments.length < 1 or arguments.length > 2.
+ * @throws { Error } Throw an error if dst is not routine or not null.
+ * @throws { Error } Throw an error if dst is null and src has not pre and body properties.
+ * @throws { Error } Throw an error if src is primitive value.
+ * @memberof wTools
+ */
 
 function routineExtend( dst )
 {
