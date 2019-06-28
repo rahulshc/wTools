@@ -1256,8 +1256,8 @@ function routineExtendExperiment( test )
   var got = _.routineExtend( dst, { b : { a : 3 } } );
   debugger;
   test.equivalent( got.b, { a : 3 } );
-  debugger;
   // test.identical( got.b, { a : 3 } );
+  debugger;
 
 }
 
