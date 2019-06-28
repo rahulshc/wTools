@@ -1216,8 +1216,10 @@ function routineExtend( test )
 }
 
 //
+
 function routineExtendExperiment( test )
 {
+
   test.case = 'map saves';
   var dst = function()
   {
@@ -1225,8 +1227,8 @@ function routineExtendExperiment( test )
   Object.defineProperties( dst, {
     'b' : {
       value : { a : 2 },
-      enumerable : false,
-      writable : false,
+      enumerable : true,
+      writable : true,
     }
   });
   var got = _.routineExtend( dst );
@@ -1242,6 +1244,7 @@ function routineExtendExperiment( test )
 }
 
 routineExtendExperiment.experimental = 1;
+
 //
 
 function vectorize( test )
@@ -1920,7 +1923,7 @@ var Self =
     routinesChain,
 
     routineExtend,
-    routineExtendExperiment, // experimental
+    routineExtendExperiment,
 
     vectorize,
     /* qqq : split test routine vectorize */

@@ -2382,6 +2382,14 @@ function unrollMake( test )
 
 //
 
+/*
+qqq : split all groups of test cases by / * - * / for all test routines
+*/
+
+/*
+qqq : test routine unrollFrom is poor
+*/
+
 function unrollFrom( test )
 {
 
@@ -2961,6 +2969,11 @@ function unrollAppend( test )
   var got = _.unrollAppend( src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
+
+  /*
+    qqq : not good enough
+    lack of check unrollIs
+  */
 
   test.case = 'dst is array';
   var got = _.unrollAppend( [ 1, 2, 'str' ] );
