@@ -1134,7 +1134,7 @@ function routineExtend( test )
   test.identical( got.c, {} );
   test.identical( typeof got, 'function' );
 
-  test.case = 'dst extends routine, src extends routine1, dst extends src';
+  test.case = 'dst extends routine1, src extends routine, dst extends src';
   var dst = function()
   {
   };
@@ -1150,13 +1150,16 @@ function routineExtend( test )
   {
   };
   routine1.a = 2;
-  routine1.c = [ 'str' ];
+  routine1.c = 'str';
   var src1 = _.routineExtend( src, routine );
   var src2 = _.routineExtend( dst, routine1 );
   var got = _.routineExtend( scr2, src1 )
-  test.identical( got.a, [ 'str' ] );
-  test.identical( got.map, { a : 'str' } );
-  test.identical( got.c, {} );
+  test.identical( got.a, 0 );
+  test.identical( got.b, [ 'str' ] );
+  test.identical( got.c, 'str' );
+  test.identical( dst.a, got.a );
+  test.identical( dst.b, got.b );
+  test.identical( dst.c, got.c );
   test.identical( typeof got, 'function' );
 
   test.close( 'a few extends');
@@ -1220,11 +1223,6 @@ function routineExtendExperiment( test )
   {
   };
   Object.defineProperties( dst, {
-    'a' : {
-      value : 0,
-      enumerable : true,
-      writable : false,
-    },
     'b' : {
       value : { a : 2 },
       enumerable : false,
@@ -1234,25 +1232,15 @@ function routineExtendExperiment( test )
   var got = _.routineExtend( dst );
   test.identical( got.b, { a : 2 } );
 
-  test.case = 'resulted map is empty';
-  var src =
-  {
-    pre : _.routinesCompose.pre,
-    body : _.routinesCompose.body,
-    c : { str : 'str' }
-  }
-  var got = _.routineExtend( null, src );
-  test.identical( got.c, {} );
-
   test.case = 'resulted map is empty, but should not';
   var dst = function( o )
   {
   };
-  dst.a = 0;
-  dst.b = { a : 2 };
-  var got = _.routineExtend( dst, { a : 1, b : { a : 3 } } );
-  test.identical( got.b, { a : 2 } );
+  dst.b = { map : 2 };
+  var got = _.routineExtend( dst, { b : { map : 3 } } );
+  test.identical( got.b, { map : 2 } );
 }
+
 routineExtendExperiment.experimental = 1;
 //
 
