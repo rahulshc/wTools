@@ -43,6 +43,7 @@
   </a></summary>
   Процедура встановлення модуль Tools.
 </details> -->
+
 <details><summary><a href="./tutorial/ArrayCountElement.md">
       Рутина arrayCountElement
   </a></summary>
