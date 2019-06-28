@@ -6,6 +6,7 @@ if( typeof module !== 'undefined' )
 {
   let _ = require( '../../Tools.s' );
   _.include( 'wTesting' );
+  // _.include( 'wProto' );
 }
 
 var _global = _global_;
@@ -1219,7 +1220,6 @@ function routineExtend( test )
 
 function routineExtendExperiment( test )
 {
-
   test.case = 'map saves';
   var dst = function()
   {
