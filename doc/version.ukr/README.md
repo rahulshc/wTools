@@ -1,6 +1,11 @@
 ## Концепції
 
-<details><summary><a href="./concept/MapOptions.md">
+<details><summary><a href="./concept/MapOptions.md#Масив-аргументів">
+      Масив аргументів
+  </a></summary>
+  Це сукупність параметрів рутини, котрі сформовано в псевдомасив <code>arguments</code>.
+</details>
+<details><summary><a href="./concept/MapOptions.md#Мапа-опцій">
       Мапа опцій
   </a></summary>
   Це контейнер, що призначений для передачі даних в рутину та управління її поведінкою.
