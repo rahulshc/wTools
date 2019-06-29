@@ -215,7 +215,9 @@ function unrollNormalize( dstArray )
       let args = [ a, 1 ];
       args.push.apply( args, dstArray[ a ] );
       dstArray.splice.apply( dstArray, args );
-      a -= 1;
+      // a -= 1; // yyy
+      a += args.length - 2 - 1;
+      /* no normalization of ready unrolls, them should be normal */
     }
     else if( _.arrayIs( dstArray[ a ] ) )
     {
@@ -5840,9 +5842,6 @@ let Routines =
 
   unrollPrepend,
   unrollAppend,
-
-  // unrollPrepend,
-  // unrollAppend,
 
   // long
 
