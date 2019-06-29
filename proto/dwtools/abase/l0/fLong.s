@@ -54,7 +54,7 @@ function argumentsArrayFrom( src )
 // --
 
 /**
- * The unrollIs() routine determines whether the passed value is an instance of type unroll ( unroll-array ).
+ * The routine unrollIs() determines whether the passed value is an instance of type unroll ( unroll-array ).
  *
  * If {-src-} is an unroll, then returns true, otherwise returns false.
  *
@@ -87,9 +87,9 @@ function unrollIs( src )
 //
 
 /**
- * The unrollIsPopulated() routine determines whether the unroll-array has elements (length).
+ * The routine unrollIsPopulated() determines whether the unroll-array has elements (length).
  *
- * If {-src-} is an unroll-array and has one or more elements, true is returned, otherwise false is.
+ * If {-src-} is an unroll-array and has one or more elements, then returns true, otherwise returns false.
  *
  * @param { * } src - The object to be checked.
  *
@@ -120,12 +120,18 @@ function unrollIsPopulated( src )
 //
 
 /**
- * The unrollMake() routine returns a new unroll-array maked from {-src-}.
+ * The routine unrollMake() returns a new unroll-array maked from {-src-}.
  *
  * Unroll constructed by attaching symbol _.unroll Symbol to ordinary array.
  * Making an unroll normalizes its content.
  *
  * @param { * } src - The number or array-like object to make unroll-array. Passing null returns an empty unroll.
+ *
+ * @example
+ * // returns true  & false
+ * let unroll = _.unrollMake( null );
+ * _.unrollIs( unroll );
+ * _.unrollIsPopulated( unroll );
  *
  * @example
  * // returns true
@@ -160,9 +166,34 @@ function unrollMake( src )
 //
 
 /**
- * qqq : rewrite please
+ * The routine unrollFrom() performs conversion of {-src-} to unroll-array.
  *
- * @returns { Unroll }
+ * If {-src-} is not unroll-array, routine unrollFrom() returns new unroll-array.
+ * If {-src-} is unroll-array, then routine returns {-src-}.
+ *
+ * @param { * } src - The number, array-like object or unroll-array. Passing null returns an empty unroll.
+ *
+ * @example
+ * // returns true, false
+ * let unroll = _.unrollFrom( null );
+ * _.unrollIs( unroll );
+ * _.unrollIsPopulated( unroll );
+ *
+ * @example
+ * // returns true
+ * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
+ * let result = _.unrollFrom( unroll );
+ * console.log ( unroll === result );
+ *
+ * @example
+ * //returns true, false
+ * let arr = new Array( 1, 2, 'str' );
+ * let unroll = _.unrollFrom( [ 1, 2, 'str' ] );
+ * console.log( _.unrollIs( unroll ) );
+ * console.log( arr === unroll );
+ *
+ * @returns { Unroll } Returns unroll-array converted from {-src-}.
+ * If {-src-} is unroll-array, then routine returns {-src-}.
  * @function unrollFrom
  * @throws { Error } If (arguments.length) is less or more then one.
  * @throws { Error } If argument ( src ) is not number, not long-like, not null.
@@ -180,22 +211,31 @@ function unrollFrom( src )
 //
 
 /**
- * qqq : rewrite
+ * The routine unrollNormalize() performs normalization of {-dstArray-}.
+ * Normalization is unrolling of unroll-arrays, which is elements of {-dstArray-}.
  *
- * @param { arrayIs } dstArray - The array to be unrolled (normalized).
+ * If {-dstArray-} is unroll-array, routine unrollNormalize() returns unroll-array
+ * with normalized elements.
+ * If {-dstArray-} is array, routine unrollNormalize() returns array with unrolled elements.
+ *
+ * @param { arrayIs|Unroll } dstArray - The array to be unrolled (normalized).
  *
  * @example
- * // returns true
- * let unroll = _.unrollFrom( [ 1, 2, 'str' ] );
- * _.unrollIs( _.unrollNormalize( unroll ) );
+ * // returns [ 1, 2, 3, 'str' ], true
+ * let unroll = _.unrollFrom( [ 1, 2, _.unrollMake( [ 3, 'str' ] ) ] );
+ * let result = _.unrollNormalize( unroll )
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
  * @example
- * // returns false
+ * // returns [ 1, 1, 'str', [ 1, 'str' ] ], false
  * let unroll = _.unrollFrom( [ 1,'str' ] );
- * let result = _.unrollNormalize( [ 1, unroll ] );
- * _.unrollIs( result );
+ * let result = _.unrollNormalize( [ 1, unroll, [ unroll ] ] );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
- * @returns { Array } Returns an array with unrolled unroll-array elements.
+ * @returns { Array } If {-dstArray-} is array, routine returns an array with normalized elements.
+ * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns an unroll-array with normalized elements.
  * @function unrollNormalize
  * @throws { Error } If ( arguments.length ) is not equal to one.
  * @throws { Error } If argument ( dstArray ) is not arrayLike.
@@ -233,40 +273,52 @@ qqq : в unrollPrepend, unrollAppend бракує прикладів
 коли src unroll і dst не null
 із виводом результату
 і більше ніж одним елементом
+
+Dmytro: correct JSdoc in unrollFrom, unrollNormalize.
+Improve examples in unrollPrepend, unrollAppend.
 */
 
 /**
- * The unrollPrepend() routine returns an array with elements added to the begin of destination array (dstArray).
+ * The routine unrollPrepend() returns an array with elements added to the begin of destination array (dstArray).
  * During the operation unrolling of unrolls happens.
  *
- * @param { Array } dstArray - The destination array.
+ * @param { Array|Unroll } dstArray - The destination array.
  * @param { * } args - The elements to be added.
  *
  * @example
- * // returns [ [ 1 ] ]
- * _.unrollPrepend( null, [ 1 ] );
+ * // returns [ [ 1, 2, 'str' ] ], false
+ * let result = _.unrollPrepend( null, [ 1, 2, 'str' ] );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
  * @example
- * // returns [ 1 ]
- * _.unrollPrepend( null, _.unrollMake( [ 1 ] ) );
+ * // returns [ 1, 2, str ], false
+ * let result = _.unrollPrepend( null, _.unrollMake( [ 1, 2, 'str' ] ) );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
  * @example
- * // returns [ [ 1 ], 1 ]
- * _.unrollPrepend( _.unrollFrom( [ 1 ] ), [ 1 ] );
+ * // returns [ [ 1, 2 ], 1, 'str' ], true
+ * let result = _.unrollPrepend( _.unrollFrom( [ 1, 'str' ] ), [ 1, 2 ] );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
  * @example
- * // returns true
- * let result = _.unrollPrepend( _.unrollFrom( [ 1 ] ), [ 1 ] );
- * _.unrollIs( result );
+ * // returns [ 2, 3, 1, 'str' ], false
+ * let result = _.unrollPrepend( [ 1, 'str' ],  _.unrollFrom( [ 2, 3 ] ) );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
  * @example
- * // returns false
- * let result = _.unrollPrepend( [ 1 ],  _.unrollFrom( [ 1 ] ) );
- * _.unrollIs( result );
+ * // returns [ 2, 3, 1, 'str' ], true
+ * let result = _.unrollPrepend( _.unrollMake( [ 1, 'str' ] ),  _.unrollFrom( [ 2, 3 ] ) );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
- * @returns { Array } If destination array ( dstArray ) is unroll-array,
- * routine returns updated unroll-array with normalized elements that are added to the begin of destination array,
- * otherwise, it returns the updated array ( dstArray ) with normalized added elements.
+ * @returns { Unroll } If ( dstArray ) is unroll-array, routine returns updated unroll-array
+ * with normalized elements that are added to the begin of ( dstArray ).
+ * @returns { Array } If ( dstArray ) is array, routine returns updated array
+ * with normalized elements that are added to the begin of ( dstArray ).
  * @function unrollPrepend
  * @throws { Error } An Error if ( dstArray ) is not an Array or not null.
  * @throws { Error } An Error if ( arguments.length ) is less then one.
@@ -310,37 +362,46 @@ function unrollPrepend( dstArray )
 //
 
 /**
- * The unrollAppend() routine returns an array with elements added to the end of destination array (dstArray).
+ * The routine unrollAppend() returns an array with elements added to the end of destination array (dstArray).
  * During the operation unrolling of unrolls happens.
  *
  * @param { Array } dstArray - The destination array.
  * @param { * } args - The elements to be added.
  *
  * @example
- * // returns [ [ 1 ] ]
- * _.unrollAppend( null, [ 1 ] );
+ * // returns [ [ 1, 2, 'str' ] ], false
+ * let result = _.unrollAppend( null, [ 1, 2, 'str' ] );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
  * @example
- * // returns [ 1 ]
- * _.unrollAppend( null, _.unrollMake( [ 1 ] ) );
+ * // returns [ 1, 2, str ], false
+ * let result = _.unrollAppend( null, _.unrollMake( [ 1, 2, 'str' ] ) );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
  * @example
- * // returns [ 1, [ 1 ] ]
- * _.unrollAppend( _.unrollFrom( [ 1 ] ), [ 1 ] );
+ * // returns [ 1, 'str', [ 1, 2 ] ], true
+ * let result = _.unrollAppend( _.unrollFrom( [ 1, 'str' ] ), [ 1, 2 ] );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
  * @example
- * // returns true
- * let result = _.unrollAppend( _.unrollFrom( [ 1 ] ), [ 1 ] );
- * _.unrollIs( result );
+ * // returns [ 1, 'str', 2, 3 ], false
+ * let result = _.unrollAppend( [ 1, 'str' ],  _.unrollFrom( [ 2, 3 ] ) );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
  * @example
- * // returns false
- * let result = _.unrollAppend( [ 1 ],  _.unrollFrom( [ 1 ] ) );
- * _.unrollIs( result );
+ * // returns [ 1, 'str', 2, 3 ], true
+ * let result = _.unrollAppend( _.unrollMake( [ 1, 'str' ] ),  _.unrollFrom( [ 2, 3 ] ) );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
  *
- * @returns { Array } If destination array ( dstArray ) is unroll-array,
- * routine returns updated unroll-array with normalized elements that are added to the end of destination array,
- * otherwise, it returns the updated array ( dstArray ) with normalized elements that are added to the end of destination array.
+ * @returns { Unroll } If ( dstArray ) is unroll-array, routine returns updated unroll-array
+ * with normalized elements that are added to the end of ( dstArray ).
+ * @returns { Array } If ( dstArray ) is array, routine returns updated array
+ * with normalized elements that are added to the end of ( dstArray ).
  * @function unrollAppend
  * @throws { Error } An Error if ( dstArray ) is not an Array or not null.
  * @throws { Error } An Error if ( arguments.length ) is less then one.
