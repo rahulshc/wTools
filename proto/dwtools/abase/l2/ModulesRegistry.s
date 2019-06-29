@@ -401,7 +401,7 @@ let wTemplateFileWriter =
 
 let wGraph =
 {
-  includeAny : includeAny( 'amid/agraph/UseTop.s', 'wgraph' ),
+  includeAny : includeAny( 'amid/agraph/UseTop.s', 'wgraphbase' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph },
 }
 
