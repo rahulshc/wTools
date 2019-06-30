@@ -491,7 +491,7 @@ let wMathConcepts =
 
 let wTesting =
 {
-  includeAny : includeAny( 'atop/tester/Main.mid.s', 'wTesting' ),
+  includeAny : includeAny( 'atop/tester/MainTop.s', 'wTesting' ),
   isIncluded : function(){ return _realGlobal_.wTester && _realGlobal_.wTester._isReal_; },
 }
 

@@ -1104,7 +1104,7 @@ function longAreRepeatedProbe( srcArray, onEvaluate )
   //
   // }
   //
-  // return { number : number, array : isUnique };
+  // return { /*ttt*/number, array : isUnique };
 }
 
 // arrayInvestigateUniqueMap.defaults =
@@ -2978,7 +2978,7 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
  * };
  * let dst = [];
  * let arguments = [ dst, [ 1, [ 2 ], [ [ 3 ] ] ], 4 ];
- * _.arrayPrependArraysOnceStrictly.apply( { onEqualize : onEqualize }, arguments );
+ * _.arrayPrependArraysOnceStrictly.apply( { onEqualize }, arguments );
  * //returns [ 1, 2, [ 3 ], 4 ]
  *
  * @returns { Array } Returns updated array( dstArray ).
