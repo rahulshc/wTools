@@ -333,8 +333,12 @@ Improve examples in unrollPrepend, unrollAppend.
 */
 
 /**
- * The routine unrollPrepend() returns an array with elements added to the begin of destination array (dstArray).
+ * The routine unrollPrepend() returns an array with elements added to the begin of destination array {-dstArray-}.
  * During the operation unrolling of unrolls happens.
+ *
+ * If {-dstArray-} is unroll-array, routine unrollPrepend() returns unroll-array
+ * with normalized elements.
+ * If {-dstArray-} is array, routine unrollPrepend() returns array with unrolled elements.
  *
  * @param { Array|Unroll } dstArray - The destination array.
  * @param { * } args - The elements to be added.
@@ -369,12 +373,13 @@ Improve examples in unrollPrepend, unrollAppend.
  * console.log( result );
  * console.log( _.unrollIs( result ) );
  *
- * @returns { Unroll } If ( dstArray ) is unroll-array, routine returns updated unroll-array
- * with normalized elements that are added to the begin of ( dstArray ).
- * @returns { Array } If ( dstArray ) is array, routine returns updated array
- * with normalized elements that are added to the begin of ( dstArray ).
+ * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns updated unroll-array
+ * with normalized elements that are added to the begin of {-dstArray-}.
+ * @returns { Array } If {-dstArray-} is array, routine returns updated array
+ * with normalized elements that are added to the begin of {-dstArray-}.
+ * If {-dstArray-} is null, routine returns empty array.
  * @function unrollPrepend
- * @throws { Error } An Error if ( dstArray ) is not an Array or not null.
+ * @throws { Error } An Error if {-dstArray-} is not an Array or not null.
  * @throws { Error } An Error if ( arguments.length ) is less then one.
  * @memberof wTools
  */
@@ -416,10 +421,14 @@ function unrollPrepend( dstArray )
 //
 
 /**
- * The routine unrollAppend() returns an array with elements added to the end of destination array (dstArray).
+ * The routine unrollAppend() returns an array with elements added to the end of destination array {-dstArray-}.
  * During the operation unrolling of unrolls happens.
  *
- * @param { Array } dstArray - The destination array.
+ * If {-dstArray-} is unroll-array, routine unrollAppend() returns unroll-array
+ * with normalized elements.
+ * If {-dstArray-} is array, routine unrollAppend() returns array with unrolled elements.
+ *
+ * @param { Array|Unroll } dstArray - The destination array.
  * @param { * } args - The elements to be added.
  *
  * @example
@@ -452,12 +461,13 @@ function unrollPrepend( dstArray )
  * console.log( result );
  * console.log( _.unrollIs( result ) );
  *
- * @returns { Unroll } If ( dstArray ) is unroll-array, routine returns updated unroll-array
- * with normalized elements that are added to the end of ( dstArray ).
- * @returns { Array } If ( dstArray ) is array, routine returns updated array
- * with normalized elements that are added to the end of ( dstArray ).
+ * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns updated unroll-array
+ * with normalized elements that are added to the end of {-dstArray-}.
+ * @returns { Array } If {-dstArray-} is array, routine returns updated array
+ * with normalized elements that are added to the end of {-dstArray-}.
+ * If {-dstArray-} is null, routine returns empty array.
  * @function unrollAppend
- * @throws { Error } An Error if ( dstArray ) is not an Array or not null.
+ * @throws { Error } An Error if {-dstArray-} is not an Array or not null.
  * @throws { Error } An Error if ( arguments.length ) is less then one.
  * @memberof wTools
  */
@@ -561,6 +571,69 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
 // }
 
 //
+
+/**
+ * The routine unrollRemove() removes all matching elements in destination array {-dstArray-}
+ * and returns a modified {-dstArray-}. During the operation unrolling of unrolls happens.
+ *
+ * @param { Array|Unroll } dstArray - The destination array.
+ * @param { * } args - The elements to be removed.
+ *
+ * @example
+ * // returns [], false
+ * let result = _.unrollRemove( null, [ 1, 2, 'str' ] );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
+ *
+ * @example
+ * // returns [], true
+ * let result = _.unrollRemove( _.unrollMake( null ), [ 1, 2, 'str' ] );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
+ *
+ * @example
+ * // returns [ 1, 2, 1, 3, 'str' ], false
+ * let result = _.unrollRemove( [ 1, 2, 1, 3, 'str' ], [ 1, 'str', 0, 5 ] );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
+ *
+ * @example
+ * // returns [ 2, 3 ], false
+ * let result = _.unrollRemove( [ 1, 2, 1, 3, 'str' ], _.unrollFrom( [ 1, 'str', 0, 5 ] ) );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
+ *
+ * @example
+ * // returns [ 1, 2, 1, 3, 'str' ], true
+ * let result = _.unrollRemove( _.unrollFrom( [ 1, 2, 1, 3, 'str' ] ), [ 1, 'str', 0, 5 ] );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
+ *
+ * @example
+ * // returns [ 2, 3 ], false
+ * let dstArray = _.unrollFrom( [ 1, 2, 1, 3, 'str' ] );
+ * let ins = _.unrollFrom( [ 1, 'str', 0, 5 ] );
+ * let result = _.unrollRemove( dstArray, ins );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
+ *
+ * @example
+ * // returns [ 2, 3 ], false
+ * let dstArray = _.unrollFrom( [ 1, 2, 1, 3, 'str' ] );
+ * let ins = _.unrollFrom( [ 1, _.unrollMake( [ 'str', 0, 5 ] ) ] );
+ * let result = _.unrollRemove( dstArray, ins );
+ * console.log( result );
+ * console.log( _.unrollIs( result ) );
+ *
+ * @returns { Unroll } If {-dstArray-} is unroll-array, routine removes all matching elements
+ * and returns updated unroll-array.
+ * @returns { Array } If {-dstArray-} is array, routine removes all matching elements
+ * and returns updated array. If {-dstArray-} is null, routine returns empty array.
+ * @function unrollAppend
+ * @throws { Error } An Error if {-dstArray-} is not an Array or not null.
+ * @throws { Error } An Error if ( arguments.length ) is less then one.
+ * @memberof wTools
+ */
 
 function unrollRemove( dstArray )
 {
