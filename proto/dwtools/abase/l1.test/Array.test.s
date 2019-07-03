@@ -2246,7 +2246,6 @@ function unrollIsPopulated( test )
 
 function unrollMake( test )
 {
-
   test.case = 'empty';
   var src = [];
   var got = _.unrollMake( src );
@@ -2285,7 +2284,7 @@ function unrollMake( test )
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
-  test.is( src !== got );
+  test.is( expected !== got );
 
   test.case = 'length';
   var got = _.unrollMake( 3 );
@@ -2293,7 +2292,7 @@ function unrollMake( test )
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
-  test.is( src !== got );
+  test.is( expected !== got );
 
   test.case = 'from empty Float32';
   var src = new Float32Array();
@@ -2348,11 +2347,13 @@ function unrollMake( test )
   if( !Config.debug )
   return;
 
+  test.case = 'not argument';
   test.shouldThrowError( function()
   {
     _.unrollMake();
   });
 
+  test.case = 'many arguments';
   test.shouldThrowError( function()
   {
     _.unrollMake( 1, 3 );
@@ -2368,6 +2369,7 @@ function unrollMake( test )
     _.unrollMake( [], [] );
   });
 
+  test.case = 'not array, not null';
   test.shouldThrowError( function()
   {
     _.unrollMake( {} );
@@ -2377,8 +2379,19 @@ function unrollMake( test )
   {
     _.unrollMake( '1' );
   });
-
 }
+
+//
+
+function unrollMakeExperiment( test )
+{
+  test.case = 'unroll from null';
+  var got = _.unrollMake( null );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+}
+unrollMakeExperiment.experimental = 1;
 
 //
 
@@ -2392,56 +2405,67 @@ qqq : test routine unrollFrom is poor
 
 function unrollFrom( test )
 {
+  test.case = 'src is unroll';
+  var src = _.unrollMake( 0 );
+  var got = _.unrollFrom( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( got !== [] );
 
-  test.case = 'empty';
+  var src = _.unrollMake( 2 );
+  var got = _.unrollFrom( src );
+  test.identical( got, [ undefined, undefined ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  var src = _.unrollMake( [ 1, 'str', 3 ] );
+  var got = _.unrollFrom( src );
+  test.identical( got, [ 1, 'str', 3 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( got !== [ 1, 'str', 3 ] );
+
+  test.case = 'from empty';
   var src = [];
   var got = _.unrollFrom( src );
-  test.equivalent( got, [] );
+  test.equivalent( got, src );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  test.case = 'single number';
+  test.case = 'from array with single element';
   var src = [ 0 ];
   var got = _.unrollFrom( src );
-  test.equivalent( got, [ 0 ] );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'single string';
-  var src = [ 'a' ];
-  var got = _.unrollFrom( src );
-  test.equivalent( got, [ 'a' ] );
+  test.equivalent( got, src );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'several';
-  var src = [ 1, 2, 3 ];
+  var src = [ 1, 2, 'str' ];
   var got = _.unrollFrom( src );
-  test.equivalent( got, [ 1, 2, 3 ] );
+  test.equivalent( got, src );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  test.case = 'zero length';
+  test.case = 'unroll from number';
   var got = _.unrollFrom( 0 );
   var expected = new Array( 0 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
-  test.is( src !== got );
+  test.is( expected !== got );
 
-  test.case = 'length';
   var got = _.unrollFrom( 3 );
   var expected = new Array( 3 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
-  test.is( src !== got );
+  test.is( expected !== got );
 
-  test.case = 'from Float32Array';
+  test.case = 'from Float32';
   var src = new Float32Array();
   var got = _.unrollFrom( src );
   test.equivalent( got, [] );
@@ -2456,49 +2480,30 @@ function unrollFrom( test )
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  /* - */
-
-  test.case = 'preserving empty';
-  var src = _.unrollMake( [] );
+  test.case = 'from arguments array';
+  var src = _.argumentsArrayMake( [] );
   var got = _.unrollFrom( src );
   test.equivalent( got, [] );
   test.is( _.arrayIs( got ) );
-  test.is( src === got );
+  test.is( _.unrollIs( got ) );
+  test.is( src !== got );
 
-  test.case = 'preserving single number';
-  var src = _.unrollMake( [ 0 ] );
-  var got = _.unrollFrom( src );
-  test.equivalent( got, [ 0 ] );
-  test.is( _.arrayIs( got ) );
-  test.is( src === got );
-
-  test.case = 'preserving single string';
-  var src = _.unrollMake( [ 'a' ] );
-  var got = _.unrollFrom( src );
-  test.equivalent( got, [ 'a' ] );
-  test.is( _.arrayIs( got ) );
-  test.is( src === got );
-
-  test.case = 'preserving several';
-  var src = _.unrollMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.unrollFrom( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
-  test.is( src === got );
+  test.is( _.unrollIs( got ) );
+  test.is( src !== got );
 
   /* - */
 
   if( !Config.debug )
   return;
 
+  test.case = 'many arguments';
   test.shouldThrowError( function()
   {
-    _.unrollFrom();
-  });
-
-  test.shouldThrowError( function()
-  {
-    _.unrollFrom( 1,3 );
+    _.unrollFrom( 1, 3 );
   });
 
   test.shouldThrowError( function()
@@ -2511,6 +2516,8 @@ function unrollFrom( test )
     _.unrollFrom( [], [] );
   });
 
+  test.case = 'not array, not null';
+
   test.shouldThrowError( function()
   {
     _.unrollFrom( {} );
@@ -2520,7 +2527,6 @@ function unrollFrom( test )
   {
     _.unrollFrom( '1' );
   });
-
 }
 
 //
@@ -21092,6 +21098,8 @@ var Self =
     unrollIsPopulated,
 
     unrollMake,
+    unrollMakeExperiment,
+
     unrollFrom,
     unrollNormalize,
 

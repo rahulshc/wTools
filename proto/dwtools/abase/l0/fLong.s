@@ -148,7 +148,7 @@ function unrollIsPopulated( src )
  * Otherwise, it returns the empty unroll.
  * @function unrollMake
  * @throws { Error } If ( arguments.length ) is less or more then one.
- * @throws { Error } If argument ( src ) is not number, not long-like, not null.
+ * @throws { Error } If argument ( src ) is not number, not array, not null.
  * @memberof wTools
  */
 
