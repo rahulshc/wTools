@@ -715,9 +715,9 @@ function _filter_functor( condition, levels )
       return;
       let satisfied = _.mapSatisfy
       ({
-        template : template,
+        /*ttt*/template,
         src : e,
-        levels : levels
+        /*ttt*/levels
       });
       if( satisfied )
       return e;
@@ -956,8 +956,8 @@ function entityFilterDeep( src, onEach )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   return _entityFilterDeep
   ({
-    src : src,
-    onEach : onEach,
+    /*ttt*/src,
+    /*ttt*/onEach,
     conditionLevels : 1024,
   });
 }

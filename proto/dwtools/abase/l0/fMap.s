@@ -2068,7 +2068,7 @@ function mapInvertDroppingDuplicates( src, dst )
 //
 //     mapsFlatten
 //     ({
-//       src : src,
+//       /*ttt*/src,
 //       result : o.result,
 //       allowingCollision : o.allowingCollision,
 //     });
@@ -4126,8 +4126,8 @@ function mapOnly( srcMaps, screenMaps )
 
   return _mapOnly
   ({
-    srcMaps : srcMaps,
-    screenMaps : screenMaps,
+    /*ttt*/srcMaps,
+    /*ttt*/screenMaps,
     dstMap : Object.create( null ),
   });
 
@@ -4146,8 +4146,8 @@ function mapOnlyOwn( srcMaps, screenMaps )
   return _mapOnly
   ({
     filter : _.field.mapper.srcOwn,
-    srcMaps : srcMaps,
-    screenMaps : screenMaps,
+    /*ttt*/srcMaps,
+    /*ttt*/screenMaps,
     dstMap : Object.create( null ),
   });
 
@@ -4163,8 +4163,8 @@ function mapOnlyComplementing( srcMaps, screenMaps )
   return _mapOnly
   ({
     filter : _.field.mapper.dstNotOwnOrUndefinedAssigning,
-    srcMaps : srcMaps,
-    screenMaps : screenMaps,
+    /*ttt*/srcMaps,
+    /*ttt*/screenMaps,
     dstMap : Object.create( null ),
   });
 
