@@ -2573,7 +2573,7 @@ function unrollFromMaybe( test )
   test.identical( got, { a : 0, b : 'str' } );
   test.is( _.mapIs(got) );
 
-  test.case = 'src is unsupported primitive';
+  test.case = 'src is incompatible primitive';
   var got = _.unrollFromMaybe( 'str' );
   test.identical( got, 'str' );
   test.is( _.primitiveIs( got ) );
@@ -3477,6 +3477,231 @@ function unrollAppend( test )
   test.shouldThrowError( function()
   {
     _.unrollAppend( undefined, 1 );
+  });
+}
+
+//
+
+function unrollRemove( test )
+{
+  test.case = 'dst is null'
+  var got = _.unrollRemove( null, 0 );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( null, 'str' );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( null, null );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( null, [ 1, 2, 'str' ] );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( null, _.unrollMake( [ 1 ] ) );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  test.case = 'dst is unroll from null'
+  var got = _.unrollRemove( _.unrollMake( null ), 'str' );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( _.unrollMake( null ), _.unrollMake( [ 1 ] ) );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( _.unrollMake( null ), _.unrollMake( null ) );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  /* - */
+
+  test.open( 'dstArray is array' );
+
+  test.case = 'array remove element';
+  var got = _.unrollRemove( [ 1, 1, 2, 'str' ], 1 );
+  test.equivalent( got, [ 2, 'str' ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( [ 1, 1, 2, 'str' ], 'str' );
+  test.equivalent( got, [ 1, 1, 2 ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( [ 1, 1, 2, 'str', {} ], 0 );
+  test.equivalent( got, [ 1, 1, 2, 'str', {} ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  test.case = 'array remove array or object';
+  var got = _.unrollRemove( [ 1, 1, 2, 'str', [ 0 ] ], [ 0 ] );
+  test.equivalent( got, [ 1, 1, 2, 'str', [ 0 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( [ 1, 1, 2, 'str', { a : 1, b : 'str' } ], { a : 1, b : 'str' } );
+  test.equivalent( got, [ 1, 1, 2, 'str', { a : 1, b : 'str' } ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  test.case = 'array remove elements';
+  var got = _.unrollRemove( [ 1, 1, 2, 'str', [ 1 ] ], 1, [ 1 ] );
+  test.equivalent( got, [ 2, 'str', [ 1 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( [ 1, 1, 2, 'str', { a : 2 }, 'str' ], 0, { a : 2 }, 4, 'str' );
+  test.equivalent( got, [ 1, 1, 2, { a : 2 } ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( [ 1, 1, 2, 'str', { a : 2 } ], null, undefined, 4, [] );
+  test.equivalent( got, [ 1, 1, 2, 'str', { a : 2 } ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  test.case = 'array remove elements included array or object';
+  var got = _.unrollRemove( [ 1, 1, 2, 'str', [ 0 ] ], 1, [ 0 ] );
+  test.equivalent( got, [ 2, 'str', [ 0 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( [ 1, 1, 2, 'str', { a : 1, b : 'str' } ], 2, 'str', { a : 1, b : 'str' } );
+  test.equivalent( got, [ 1, 1, { a : 1, b : 'str' } ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  test.case = 'array remove unroll';
+  var got = _.unrollRemove( [ 1, 1, 2, 3, 'str', 3 ], _.unrollFrom( [ 1, 3 ] ) );
+  test.equivalent( got, [ 2, 'str' ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( [ 1, 2, 1, 3, 'str', [ 1 ] ], _.unrollFrom( [ 1, 3, 'str', [ 1 ] ] ) );
+  test.equivalent( got, [ 2, [ 1 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.unrollRemove( [ 1, 2, 3, 'str', [ 1 ] ], _.unrollFrom( [ 0, 'a', [ 2 ] ] ) );
+  test.equivalent( got, [ 1, 2, 3, 'str', [ 1 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var ins =  _.unrollFrom( [ 1, _.unrollMake( [ 2, 3, _.unrollMake( [ 'str', [ 1 ] ] ) ] ) ] );
+  var got = _.unrollRemove( [ 1, 2, 3, 'str', [ 1 ] ], ins );
+  test.equivalent( got, [ [ 1 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  test.close( 'dstArray is array' );
+
+  /* - */
+
+  test.open( 'dstArray is unroll' );
+
+  test.case = 'unroll remove element';
+  var dst = _.unrollMake( [ 1, 1, 2, 'str', [ 1 ] ] );
+  var got = _.unrollRemove( dst, 1);
+  test.equivalent( got, [ 2, 'str', [ 1 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  var dst = _.unrollMake( [ 1, 1, 2, 'str', { a : 2 }, 'str' ] );
+  var got = _.unrollRemove( dst, 'str' );
+  test.equivalent( got, [ 1, 1, 2, { a : 2 } ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  var dst = _.unrollMake( [ 1, 1, 2, 'str', { a : 2 } ] );
+  var got = _.unrollRemove( dst, 4 );
+  test.equivalent( got, [ 1, 1, 2, 'str', { a : 2 } ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'unroll remove elements';
+  var dst = _.unrollMake( [ 1, 1, 2, 'str', [ 1 ] ] );
+  var got = _.unrollRemove( dst, 1, [ 1 ] );
+  test.equivalent( got, [ 2, 'str', [ 1 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  var dst = _.unrollMake( [ 1, 1, 2, 'str', { a : 2 }, 'str' ] );
+  var got = _.unrollRemove( dst, 0, { a : 2 }, 4, 'str' );
+  test.equivalent( got, [ 1, 1, 2, { a : 2 } ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  var dst = _.unrollMake( [ 1, 1, 2, 'str', { a : 2 } ] );
+  var got = _.unrollRemove( dst, null, undefined, 4, [] );
+  test.equivalent( got, [ 1, 1, 2, 'str', { a : 2 } ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'unroll remove unroll';
+  var dst = _.unrollMake( [ 1, 1, 2, 3, 'str', 3 ] );
+  var got = _.unrollRemove( dst, _.unrollFrom( [ 1, 3 ] ) );
+  test.equivalent( got, [ 2, 'str' ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  var dst = _.unrollMake( [ 1, 2, 1, 3, 'str', [ 1 ] ] );
+  var got = _.unrollRemove( dst, _.unrollFrom( [ 1, 3, 'str', [ 1 ] ] ) );
+  test.equivalent( got, [ 2, [ 1 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  var dst = _.unrollMake( [ 1, 2, 3, 'str', [ 1 ] ] );
+  var got = _.unrollRemove( dst, _.unrollFrom( [ 0, 'a', [ 2 ] ] ) );
+  test.equivalent( got, [ 1, 2, 3, 'str', [ 1 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  var ins =  _.unrollFrom( [ 1, _.unrollMake( [ 2, 3, _.unrollMake( [ 'str', [ 1 ] ] ) ] ) ] );
+  var got = _.unrollRemove( _.unrollFrom( [ 1, 2, 3, 'str', [ 1 ] ] ), ins );
+  test.equivalent( got, [ [ 1 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+
+  test.close( 'dstArray is unroll' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no args';
+  test.shouldThrowError( function()
+  {
+    _.unrollRemove();
+  });
+
+  test.case = 'dst is not an array';
+  test.shouldThrowError( function()
+  {
+    _.unrollRemove( 1, 1 );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.unrollRemove( 'str', 1 );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.unrollRemove( undefined, 1 );
   });
 }
 
@@ -21316,6 +21541,7 @@ var Self =
 
     unrollPrepend,
     unrollAppend,
+    unrollRemove,
 
     // long
 

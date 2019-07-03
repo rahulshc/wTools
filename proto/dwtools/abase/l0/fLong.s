@@ -562,6 +562,43 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
 
 //
 
+function unrollRemove( dstArray )
+{
+  _.assert( arguments.length >= 2 );
+  _.assert( _.longIs( dstArray ) || dstArray === null, 'Expects long or untroll' );
+
+  dstArray = dstArray || [];
+
+  _unrollRemove( dstArray, _.longSlice( arguments, 1 ) );
+
+  return dstArray;
+
+  function _unrollRemove( dstArray, srcArray )
+  {
+    _.assert( arguments.length === 2 );
+
+    for( let a = 0, len = srcArray.length ; a < len; a++ )
+    {
+      if( _.unrollIs( srcArray[ a ] ) )
+      {
+        _unrollRemove( dstArray, srcArray[ a ] );
+      }
+      else
+      {
+        if( _.arrayIs( srcArray[ a ] ) )
+        _.unrollNormalize( srcArray[ a ] );
+        while( dstArray.indexOf( srcArray[ a ] ) >= 0 )
+        dstArray.splice( dstArray.indexOf( srcArray[ a ] ), 1 );
+      }
+    }
+
+    return dstArray;
+  }
+
+}
+
+//
+
 // --
 // long
 // --
@@ -5956,6 +5993,7 @@ let Routines =
 
   unrollPrepend,
   unrollAppend,
+  unrollRemove,
 
   // long
 
