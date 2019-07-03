@@ -210,6 +210,48 @@ function unrollFrom( src )
 
 //
 
+/**
+ * The routine unrollFromMaybe() performs conversion of {-src-} to unroll-array.
+ *
+ * If {-src-} is not unroll-array, routine unrollFromMaybe() returns new unroll-array.
+ * If {-src-} is unroll-array, then routine returns {-src-}.
+ * If {-src-} has incompatible type, then routine returns {-src-}.
+ *
+ * @param { * } src - The object to make unroll-array.
+ *
+ * @example
+ * // returns false, true
+ * var src = 'str';
+ * let got = _.unrollFromMaybe( src );
+ * console.log( _.unrollIs( got ) );
+ * console.log( got === src );
+ *
+ * @example
+ * // returns true, false
+ * let unroll = _.unrollFromMaybe( null );
+ * console.log( _.unrollIs( unroll ) );
+ * console.log( _.unrollIsPopulated( unroll ) );
+ *
+ * @example
+ * // returns true
+ * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
+ * let result = _.unrollFromMaybe( unroll );
+ * console.log ( unroll === result );
+ *
+ * @example
+ * //returns true, false
+ * let arr = new Array( 1, 2, 'str' );
+ * let unroll = _.unrollFromMaybe( [ 1, 2, 'str' ] );
+ * console.log( _.unrollIs( unroll ) );
+ * console.log( arr === unroll );
+ *
+ * @returns { Unroll } Returns unroll-array converted from {-src-}.
+ * If {-src-} is unroll-array or incompatible type, then routine returns {-src-}.
+ * @function unrollFromMaybe
+ * @throws { Error } If (arguments.length) is less or more then one.
+ * @memberof wTools
+ */
+
 function unrollFromMaybe( src )
 {
   _.assert( arguments.length === 1 );
@@ -517,7 +559,7 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
 //
 //   return dstArray;
 // }
-//
+
 //
 
 // --

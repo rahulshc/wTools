@@ -2586,6 +2586,13 @@ function unrollFromMaybe( test )
   test.identical( got, false );
   test.is( _.primitiveIs( got ) );
 
+  test.case = 'from null';
+  var got = _.unrollFromMaybe( null );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( [] !== got );
+
   test.case = 'from empty';
   var src = [];
   var got = _.unrollFromMaybe( src );
