@@ -210,6 +210,23 @@ function unrollFrom( src )
 
 //
 
+function unrollsFrom( src )
+{
+  _.assert( arguments.length >= 1 );
+
+  let dst = _.unrollMake( null );
+
+  for( let i = 0; i < arguments.length; i ++ )
+  {
+    if( _.unrollIs( arguments[ i ] ) )
+    dst.push( arguments[ i ] );
+    else
+    dst.push( _.unrollMake( arguments[ i ] ) );
+  }
+
+  return dst;
+}
+
 /**
  * The routine unrollFromMaybe() performs conversion of {-src-} to unroll-array.
  *
@@ -387,7 +404,7 @@ Improve examples in unrollPrepend, unrollAppend.
 function unrollPrepend( dstArray )
 {
   _.assert( arguments.length >= 1 );
-  _.assert( _.longIs( dstArray ) || dstArray === null, 'Expects long or untroll' );
+  _.assert( _.longIs( dstArray ) || dstArray === null, 'Expects long or unroll' );
 
   dstArray = dstArray || [];
 
@@ -475,7 +492,7 @@ function unrollPrepend( dstArray )
 function unrollAppend( dstArray )
 {
   _.assert( arguments.length >= 1 );
-  _.assert( _.longIs( dstArray ) || dstArray === null, 'Expects long or untroll' );
+  _.assert( _.longIs( dstArray ) || dstArray === null, 'Expects long or unroll' );
 
   dstArray = dstArray || [];
 
@@ -638,7 +655,7 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
 function unrollRemove( dstArray )
 {
   _.assert( arguments.length >= 2 );
-  _.assert( _.longIs( dstArray ) || dstArray === null, 'Expects long or untroll' );
+  _.assert( _.longIs( dstArray ) || dstArray === null, 'Expects long or unroll' );
 
   dstArray = dstArray || [];
 
@@ -6061,6 +6078,7 @@ let Routines =
 
   unrollMake,
   unrollFrom,
+  unrollsFrom,
   unrollFromMaybe,
   unrollNormalize,
 

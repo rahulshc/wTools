@@ -2537,6 +2537,174 @@ function unrollFrom( test )
 
 //
 
+function unrollsFrom( test )
+{
+  test.case = 'src has null';
+  var got = _.unrollsFrom( null );
+  test.equivalent( got, [[]] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+
+  var got = _.unrollsFrom( 1, [], null, [ 1, { a : 2 } ] );
+  var expected = [ [ undefined ], [], [], [ 1, { a : 2 } ] ];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( _.unrollIs( got[ 3 ] ) );
+  test.is( got !== expected );
+
+  test.case = 'src has unroll';
+  var src = _.unrollMake( 0 );
+  var got = _.unrollsFrom( src );
+  test.identical( got, [[]] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( got !== [[]] );
+
+  var src = _.unrollMake( 2 );
+  var got = _.unrollsFrom( src );
+  test.identical( got, [[ undefined, undefined ]] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+
+  var src = _.unrollMake( [ 1, 'str', 3 ] );
+  var got = _.unrollsFrom( src );
+  test.identical( got, [[ 1, 'str', 3 ]] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( got !== [[ 1, 'str', 3 ]] );
+
+  var src = _.unrollMake( [ 1, 'str', 3 ] );
+  var got = _.unrollsFrom( 1, [], src );
+  var expected = [ [ undefined ], [], [ 1, 'str', 3 ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( _.unrollIs( got[ 2 ] ) );
+  test.is( got !== expected );
+
+  test.case = 'src has unrolls from Array';
+  var src = new Array( 0 );
+  var got = _.unrollsFrom( src );
+  test.equivalent( got, [ src ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( [ src ] !== got );
+
+  var src = new Array( 3 );
+  var got = _.unrollsFrom( src );
+  test.equivalent( got, [ src ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( [ src ] !== got );
+
+  var src = new Array( 3 );
+  var got = _.unrollsFrom( 1, [], [ 'str', {} ], src );
+  test.equivalent( got, [ [ undefined ], [], [ 'str', {} ], src ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( _.unrollIs( got[ 3 ] ) );
+  test.is( [ src ] !== got );
+
+  test.case = 'src has unroll from Float32';
+  var src = new Float32Array();
+  var got = _.unrollsFrom( src );
+  test.equivalent( got, [[]] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( [ src ] !== got );
+
+  var src = new Float32Array( [ 1, 2, 3 ] );
+  var got = _.unrollsFrom( src );
+  test.equivalent( got, [ [ 1, 2, 3 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( [ src ] !== got );
+
+  var src = new Float32Array( [ 1, 2, 3 ] );
+  var got = _.unrollsFrom( [], 1, src );
+  test.equivalent( got, [ [], [ undefined ], [ 1, 2, 3 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( _.unrollIs( got[ 1 ] ) );
+  test.is( _.unrollIs( got[ 2 ] ) );
+  test.is( [ src ] !== got );
+
+  test.case = 'from arguments array';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.unrollsFrom( src );
+  test.equivalent( got, [[]] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( [ src ] !== got );
+
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.unrollsFrom( src );
+  test.equivalent( got, [ [ 1, 2, 3 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( [ src ] !== got );
+
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.unrollsFrom( [], 1, src );
+  test.equivalent( got, [ [], [ undefined ], [ 1, 2, 3 ] ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+  test.is( _.unrollIs( got[ 1 ] ) );
+  test.is( _.unrollIs( got[ 2 ] ) );
+  test.is( [ src ] !== got );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'not argument';
+  test.shouldThrowError( function()
+  {
+    _.unrollFrom();
+  });
+
+  test.case = 'argument is not array, not null';
+
+  test.shouldThrowError( function()
+  {
+    _.unrollsFrom( {} );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.unrollsFrom( '1' );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.unrollsFrom( 2, {} );
+  });
+
+  test.shouldThrowError( function()
+  {
+    _.unrollsFrom( [ '1' ], [ 1, 'str' ], 'abc' );
+  });
+}
+
+//
+
 function unrollFromMaybe( test )
 {
   test.case = 'src is unroll';
@@ -21536,6 +21704,7 @@ var Self =
 
     unrollMake,
     unrollFrom,
+    unrollsFrom,
     unrollFromMaybe,
     unrollNormalize,
 
