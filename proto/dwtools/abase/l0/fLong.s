@@ -210,6 +210,16 @@ function unrollFrom( src )
 
 //
 
+function unrollFromMaybe( src )
+{
+  _.assert( arguments.length === 1 );
+  if( _.unrollIs( src ) || _.strIs( src ) || _.boolIs( src ) || _.mapIs( src ) || src === undefined )
+  return src;
+  return _.unrollMake( src );
+}
+
+//
+
 /**
  * The routine unrollNormalize() performs normalization of {-dstArray-}.
  * Normalization is unrolling of unroll-arrays, which is elements of {-dstArray-}.
@@ -5899,6 +5909,7 @@ let Routines =
 
   unrollMake,
   unrollFrom,
+  unrollFromMaybe,
   unrollNormalize,
 
   unrollPrepend,
