@@ -2677,7 +2677,7 @@ function unrollsFrom( test )
   test.case = 'not argument';
   test.shouldThrowError( function()
   {
-    _.unrollFrom();
+    _.unrollsFrom();
   });
 
   test.case = 'argument is not array, not null';
@@ -6792,9 +6792,9 @@ function arrayPrepend( test )
   test.identical( got, [ 2, 1 ] );
   test.is( got === dst );
 
-  var dst = [ 1,2,3 ];
+  var dst = [ 1, 2, 3 ];
   var got = _.arrayPrepend( dst, 3 );
-  test.identical( got, [ 3,1,2,3 ] );
+  test.identical( got, [ 3, 1, 2, 3 ] );
   test.is( got === dst );
 
   var dst = [ 1 ];

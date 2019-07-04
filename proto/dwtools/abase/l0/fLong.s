@@ -196,7 +196,7 @@ function unrollMake( src )
  * If {-src-} is unroll-array, then routine returns {-src-}.
  * @function unrollFrom
  * @throws { Error } If (arguments.length) is less or more then one.
- * @throws { Error } If argument ( src ) is not number, not long-like, not null.
+ * @throws { Error } If argument {-src-} is not number, not long-like, not null.
  * @memberof wTools
  */
 
@@ -210,7 +210,51 @@ function unrollFrom( src )
 
 //
 
-function unrollsFrom( src )
+/**
+ * The routine unrollsFrom() performs conversion of each argument to unroll-array.
+ * The routine returns unroll-array contained unroll-arrays converted from arguments.
+ *
+ * @param { * } srcs - The objects to be converted into unrolls.
+ *
+ * @example
+ * // returns [ [] ], true, true
+ * let unroll = _.unrollsFrom( null );
+ * console.log( unroll );
+ * console.log( _.unrollIs( unroll ) );
+ * console.log( _.unrollIsPopulated( unroll ) );
+ *
+ * @example
+ * // returns [ [ 1, 2, 'str' ] ], true, true
+ * let unroll = _.unrollsFrom( [ 1, 2, 'str' ] );
+ * console.log ( unroll );
+ * console.log( _.unrollIs( unroll ) );
+ * console.log( _.unrollIs( unroll[ 0 ] ) );
+ *
+ * @example
+ * //returns true, false
+ * let arr = new Array( 1, 2, 'str' );
+ * let unroll = _.unrollsFrom( [ 1, 2, 'str' ] );
+ * console.log( _.unrollIs( unroll ) );
+ * console.log( arr === unroll );
+ *
+ * @example
+ * // returns [ [], [ undefined ], [], [ 1, [] ] ], true, true, true, true, true
+ * let unroll = _.unrollsFrom( [], 1, null, [ 1, [] ] );
+ * console.log( unroll );
+ * console.log( _.unrollIs( unroll ) );
+ * console.log( _.unrollIs( unroll[ 0 ] ) );
+ * console.log( _.unrollIs( unroll[ 1 ] ) );
+ * console.log( _.unrollIs( unroll[ 2 ] ) );
+ * console.log( _.unrollIs( unroll[ 3 ] ) );
+ *
+ * @returns { Unroll } Returns unroll-array contained unroll-arrays converted from arguments.
+ * @function unrollsFrom
+ * @throws { Error } If (arguments.length) is less then one.
+ * @throws { Error } If any of the arguments is not number, not long-like, not null.
+ * @memberof wTools
+ */
+
+function unrollsFrom( srcs )
 {
   _.assert( arguments.length >= 1 );
 
