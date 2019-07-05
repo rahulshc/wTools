@@ -1913,6 +1913,8 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 
 /*
   qqq : add test
+  Dmytro:
+  qqq : tests is added
 */
 
 function mapSetWithKeys( dstMap, src, val )
