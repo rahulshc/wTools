@@ -10,6 +10,11 @@
   </a></summary>
   Це контейнер, що призначений для передачі даних в рутину та управління її поведінкою.
 </details>
+<details><summary><a href="./concept/Vector.md">
+      Вектор
+  </a></summary>
+  Це контейнер, що призначений для передачі даних в рутину, містить впорядкований скінченний набір елементів (даних).
+</details>
 <details><summary><a href="./concept/Evaluator.md">
       Евалуатор
   </a></summary>
@@ -58,4 +63,9 @@
       Рутина routineFromPreAndBody
   </a></summary>
   Автоматичне об'єднання рутини підготовки даних і рутини для їх обробки.
+</details>
+<details><summary><a href="./tutorial/Vectorize.md">
+      Векторизація рутин
+  </a></summary>
+  Як використовувати рутину vectorize для векторизації скалярних рутин.
 </details>
