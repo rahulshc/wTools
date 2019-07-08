@@ -2280,6 +2280,62 @@ function vectorizeBypassingEmpty( test )
   test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2 , 21 : 3, 31 : 4 } );
   
   test.close( 'vectorizingArray:1, vectorizingMapKeys:1, vectorizingMapVals : 1, bypassingEmpty:0' );
+  
+  // vectorizeForOptionsMapForKeys
+  
+  test.open( 'vectorizingArray:1, select : array, bypassingEmpty:0' );
+  
+  function srcRoutine3( src )
+  { 
+    return src;
+  }
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine3,
+    bypassingEmpty : 0,
+    vectorizingArray : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 0,
+    select : [ '0' ]
+  });
+
+  test.case = 'no arg';
+  test.shouldThrowErrorSync( () => routine() );
+  
+  test.identical( routine( 1 ), [ 1 ] );
+  test.identical( routine( [ 1 ] ), [ [ 1 ] ] );
+  test.identical( routine( [ [ 1 ] ] ), [ [ { 0 : 1 } ] ] );
+  test.identical( routine( { 0 : [ 1 ] } ), [ [ { 0 : 1 } ] ] );
+  
+  test.close( 'vectorizingArray:1, select : array, bypassingEmpty:0' );
+  
+  //
+  
+  test.open( 'vectorizingArray:1, select : array, bypassingEmpty:1' );
+  
+  function srcRoutine3( src )
+  { 
+    return src;
+  }
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine3,
+    bypassingEmpty : 1,
+    vectorizingArray : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 0,
+    select : [ '0' ]
+  });
+
+  test.identical( routine(), [] );
+  test.identical( routine( 1 ), [ 1 ] );
+  test.identical( routine( [ 1 ] ), [ [ 1 ] ] );
+  test.identical( routine( [ [ 1 ] ] ), [ [ { 0 : 1 } ] ] );
+  test.identical( routine( { 0 : [ 1 ] } ), [ [ { 0 : 1 } ] ] );
+  
+  test.close( 'vectorizingArray:1, select : array, bypassingEmpty:1' );
 }
 
 //

@@ -512,8 +512,11 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeForOptionsMapForKeys()
-  {
+  { 
     let result = [];
+    
+    if( bypassingEmpty && !arguments.length )
+    return result;
 
     for( let i = 0; i < o.select.length; i++ )
     {
