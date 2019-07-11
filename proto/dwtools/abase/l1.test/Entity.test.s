@@ -36,6 +36,28 @@ function eachSample( test )
   var expected = [ {} ];
   test.identical( got, expected );
 
+  test.case = 'empty sets and unroll, Array';
+  var got = _.eachSample( _.unrollMake( [] ) );
+  var expected = [ [] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.eachSample( new Array() );
+  var expected = [ [] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.eachSample( _.argumentsArrayMake( 0 ), null );
+  var expected = [ [] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
+  // var got = _.eachSample( new Float32Array( [] ), null );
+  // var expected = [ [] ];
+  // test.identical( got, expected );
+  // test.is( _.arrayIs( got ) );
+
   /* - */
 
   test.case = 'sets with primitive';
@@ -54,6 +76,23 @@ function eachSample( test )
   var got = _.eachSample( { a : 1, b : 2, c : null }, null );
   var expected = [ { a : 1, b : 2, c : null } ];
   test.identical( got, expected );
+
+  test.case = 'sets with primitive and unroll, Array';
+  var got = _.eachSample( _.unrollMake( [ 1 ] ) );
+  var expected = [ [ 1 ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  var got = _.eachSample( new Array( [ 1 ] ) );
+  var expected = [ [ 1 ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.eachSample( _.argumentsArrayMake( [ 1 ] ), null );
+  var expected = [ [ 1 ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
 
   /* - */
 
@@ -82,6 +121,23 @@ function eachSample( test )
   var expected = [ { a : undefined, b : undefined, c : undefined } ];
   test.identical( got, expected );
 
+  test.case = 'sets with empty unrolls, Arrays';
+  var got = _.eachSample( _.unrollMake( [ [], [] ] ) );
+  var expected = [ [ undefined, undefined ] ];
+  test.identical( got, expected );
+  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.eachSample( new Array( [ [], [], [] ] ) );
+  var expected = [ [ [] ], [ [] ], [ [] ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.eachSample( _.argumentsArrayMake( [ [], [] ] ) );
+  var expected = [ [ undefined, undefined ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
   /* - */
 
   test.case = 'sets with primitive, result : null';
@@ -93,6 +149,22 @@ function eachSample( test )
   var got = _.eachSample( { sets : { a : 1, b : 2, c : null }, result : 0 } );
   var expected = 0;
   test.identical( got, expected );
+
+  test.case = 'sets with unroll, Array, result : null';
+  var got = _.eachSample( { sets : _.unrollMake( [ 1, 2, 3 ] ), result : 0 } );
+  var expected = 0;
+  test.identical( got, expected );
+  test.is( _.primitiveIs( got ) );
+
+  var got = _.eachSample( { sets : new Array( [ 1, 2, 3 ] ), result : 0 } );
+  var expected = 2;
+  test.identical( got, expected );
+  test.is( _.primitiveIs( got ) );
+
+  var got = _.eachSample( { sets : _.argumentsArrayMake( [ 1, 2, 3 ] ), result : 0 } );
+  var expected = 0;
+  test.identical( got, expected );
+  test.is( _.primitiveIs( got ) );
 
   /* - */
 
@@ -110,6 +182,25 @@ function eachSample( test )
     { a : 'str' }
   ];
   test.identical( got, expected );
+
+  test.case = 'sets with single not empty unroll, Array';
+  var got = _.eachSample( _.unrollMake( [ [ 1, 2, null, 'str' ] ] ) );
+  var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
+  test.identical( got, expected );
+  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.eachSample( _.argumentsArrayMake( [ [ 1, 2, null, 'str' ] ] ) );
+  var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
+  test.identical( got, expected );
+  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.eachSample( new Array( [ [ 1, 2, null, 'str' ] ] ) );
+  var expected = [ [ [ 1, 2, null, 'str' ] ] ];
+  test.identical( got, expected );
+  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
 
   /* - */
 
@@ -187,6 +278,40 @@ function eachSample( test )
   ];
   test.identical( got, expected );
 
+  test.case = 'simplest, leftToRight : 1, unroll, Array';
+  var got = _.eachSample(
+    {
+      sets : [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ]
+    });
+  var expected =
+  [
+    [ 0, 2 ], [ 1, 2 ],
+    [ 0, 3 ], [ 1, 3 ],
+  ];
+  test.identical( got, expected );
+  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.eachSample(
+    {
+      sets : [ _.argumentsArrayMake( [ 0, 1 ] ), _.argumentsArrayMake( [ 2, 3 ] ) ]
+    });
+  var expected =
+  [
+    [ 0, 2 ], [ 1, 2 ],
+    [ 0, 3 ], [ 1, 3 ],
+  ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
+  var got = _.eachSample(
+    {
+      sets : [ new Array( [ 0, 1 ] ), new Array( [ 2, 3 ] ) ]
+    });
+  var expected = [ [ [ 0, 1 ], [ 2, 3 ] ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
   /* - */
 
   test.case = 'simplest leftToRight : 0';
@@ -230,6 +355,85 @@ function eachSample( test )
   test.identical( got, expected );
 
   /* - */
+
+  test.case = 'simplest, leftToRight : 1, result : 0';
+
+  var got = _.eachSample(
+    {
+      sets : [ [ 0, 1 ], [ 2, 3 ] ],
+      result : 0,
+    });
+  var expected = 3;
+  test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : { a : [ 0, 1 ], b : [ 2, 3 ] },
+      result : 0,
+    });
+  var expected = 3;
+  test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : [ [ 0, 1 ], [ 2, 3 ], 6 ],
+      result : 0,
+    });
+  var expected = 3;
+  test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 },
+      result : 0,
+    });
+  var expected = 3;
+  test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ],
+      result : 0,
+    });
+  var expected = 7;
+  test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : { a : [ 0, 1 ], b : [ 2, 3 ], c: [ 6, null ] },
+      result : 0,
+    });
+  var expected = 7;
+  test.identical( got, expected );
+
+  test.case = 'simplest, leftToRight : 1, unroll, Array';
+  var got = _.eachSample(
+    {
+      sets : [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ],
+      result : 0,
+    });
+  var expected = 3;
+  test.identical( got, expected );
+  test.is( _.primitiveIs( got ) );
+
+  var got = _.eachSample(
+    {
+      sets : [ _.argumentsArrayMake( [ 0, 1 ] ), _.argumentsArrayMake( [ 2, 3 ] ) ],
+      result : 0,
+    });
+  var expected = 3;
+  test.identical( got, expected );
+  test.is( _.primitiveIs( got ) );
+
+  var got = _.eachSample(
+    {
+      sets : [ new Array( [ 0, 1 ] ), new Array( [ 2, 3 ] ) ],
+      result : 0,
+    });
+  var expected = 0;
+  test.identical( got, expected );
+  test.is( _.primitiveIs( got ) );
+
 
   if( !Config.debug )
   return;
