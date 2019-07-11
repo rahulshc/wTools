@@ -53,11 +53,6 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
 
-  // var got = _.eachSample( new Float32Array( [] ), null );
-  // var expected = [ [] ];
-  // test.identical( got, expected );
-  // test.is( _.arrayIs( got ) );
-
   /* - */
 
   test.case = 'sets with primitive';
@@ -279,18 +274,18 @@ function eachSample( test )
   test.identical( got, expected );
 
   test.case = 'simplest, leftToRight : 1, unroll, Array';
-  var got = _.eachSample(
-    {
-      sets : [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ]
-    });
-  var expected =
-  [
-    [ 0, 2 ], [ 1, 2 ],
-    [ 0, 3 ], [ 1, 3 ],
-  ];
-  test.identical( got, expected );
-  test.isNot( _.unrollIs( got ) );
-  test.is( _.arrayIs( got ) );
+  // var got = _.eachSample(
+  //   {
+  //     sets : [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ]
+  //   });
+  // var expected =
+  // [
+  //   [ 0, 2 ], [ 1, 2 ],
+  //   [ 0, 3 ], [ 1, 3 ],
+  // ];
+  // test.identical( got, expected );
+  // test.isNot( _.unrollIs( got ) );
+  // test.is( _.arrayIs( got ) );
 
   var got = _.eachSample(
     {
@@ -434,6 +429,7 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.primitiveIs( got ) );
 
+  /* - */
 
   if( !Config.debug )
   return;
@@ -485,6 +481,19 @@ function eachSampleExperiment( test )
     [ 10, 6 ],[ 1, 11 ]
   ];
   test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ]
+    });
+  var expected =
+  [
+    [ 0, 2 ], [ 1, 2 ],
+    [ 0, 3 ], [ 1, 3 ],
+  ];
+  test.identical( got, expected );
+  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
 }
 eachSampleExperiment.experimental = 1;
 
@@ -492,27 +501,78 @@ eachSampleExperiment.experimental = 1;
 
 function entityEach( test )
 {
-  test.case = 'src is an ArrayLike';
+  test.open( 'src is an ArrayLike');
 
+  test.case = 'empty arrayLike objects'
   var got;
-  _.entityEach( [], ( v ) => got = typeof v );
+  var src = [];
+  _.entityEach( src, ( v ) => got = typeof v );
   test.identical( got, undefined );
 
   var got = [];
-  _.entityEach( [], ( v, i ) => got[ i ] = v + i );
+  var src = _.unrollMake( 0 );
+  _.entityEach( src, ( v, i ) => got[ i ] = v + i );
   test.identical( got, [] );
+  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
 
   var got = [];
-  _.entityEach( [ 3 ], ( v, i ) => got[ i ] = v + i + 2 );
-  test.identical( got, [ 5 ] );
+  var src = _.argumentsArrayMake( 0 );
+  _.entityEach( src, ( v, i ) => got[ i ] = v + i );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) )
 
   var got = [];
-  _.entityEach( [ 0, 1, 2 ], ( v, i ) => got[ i ] = v * v + i );
+  var src = new Array( 0 );
+  _.entityEach( src, ( v, i ) => got[ i ] = v + i );
+  test.identical( got, src );
+  test.is( _.arrayIs( got ) );
+
+  var got = [];
+  var src = new Float32Array( 0 );
+  _.entityEach( src, ( v, i ) => got[ i ] = v + i );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+
+  //
+
+  test.case = 'not empty arrayLike objects';
+
+  var got = [];
+  var src = [ 0, 1, 2 ];
+  _.entityEach( src, ( v, i ) => got[ i ] = v * v + i );
   test.identical( got, [ 0, 2, 6 ] );
+
+  var got = [];
+  var src = _.unrollMake( [ 0, 1, _.unrollMake( [ 2] ) ] );
+  _.entityEach( src, ( v, i ) => got[ i ] = v * v + i );
+  test.identical( got, [ 0, 2, 6 ] );
+  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( src ) );
+
+  var got = [];
+  var src = _.argumentsArrayMake( [ 0, 1, 2 ] );
+  _.entityEach( src, ( v, i ) => got[ i ] = v * v + i );
+  test.identical( got, [ 0, 2, 6 ] );
+  test.is( _.longIs( src ) );
+
+  var got = [];
+  var src = new Array( 0, 1, 2 );
+  _.entityEach( src, ( v, i ) => got[ i ] = v * v + i );
+  test.identical( got, [ 0, 2, 6 ] );
+  test.is( _.longIs( src ) );
+
+  var got = [];
+  var src = new Float32Array( [ 0, 1, 2 ] );
+  _.entityEach( src, ( v, i ) => got[ i ] = v * v + i );
+  test.identical( got, [ 0, 2, 6 ] );
+  test.is( _.longIs( src ) );
+
+  //
 
   test.case = 'routine counter';
 
-  function onEach( v, i )
+  var onEach = function( v, i )
   {
     if( _.strIs( v ) && i >= 0 )
     got += 10;
@@ -529,23 +589,35 @@ function entityEach( test )
   test.identical( got, -1 );
 
   var got = 0;
-  _.entityEach( [ 'abc' ], onEach );
-  test.identical( got, 10 );
-
-  var got = 0;
   _.entityEach( [ 'abc', 1, 'ab', 'a' ], onEach );
   test.identical( got, 29 );
-
-  var got = 0;
-  _.entityEach( [ [ 'a', 'b' ], [ 1, 3, 4 ] ], onEach );
-  test.identical( got, -2 );
 
   var got = 0;
   _.entityEach( [ { a : 1 }, { b : 2 } ], onEach );
   test.identical( got, -2 );
 
+  var got = 0;
+  var src = _.unrollFrom( [ 1, 'str', _.unrollMake( [ 2, 'str' ] ) ] );
+  _.entityEach( src, onEach );
+  test.identical( got, 18 );
+
+  var got = 0;
+  var src = _.argumentsArrayMake( [ 1, 'str', [ 2, 'str' ] ] );
+  _.entityEach( src, onEach );
+  test.identical( got, 8 );
+
+  var got = 0;
+  var src = new Array( 1, 'str', [ 2, 'str' ] );
+  _.entityEach( src, onEach );
+  test.identical( got, 8 );
+
+  var got = 0;
+  var src = new Float32Array( [ 1, 1, [ 2 ] ] );
+  _.entityEach( src, onEach );
+  test.identical( got, -3 );
+
   test.case = 'Third argument in onEach'
-  function onEach3( v, i, src )
+  var onEach = function( v, i, src )
   {
     if( _.longIs( src ) )
     got = src;
@@ -554,32 +626,58 @@ function entityEach( test )
   }
 
   var got;
-  _.entityEach( [ 0, 1, 3, 5 ], onEach3 );
+  var src = [ 0, 1, 3, 5 ];
+  _.entityEach( src, onEach );
+  test.identical( got, src );
+
+  var got;
+  var src = _.unrollMake( [ 0, 1, _.unrollFrom( [ 3, 5 ] ) ] );
+  _.entityEach( src, onEach );
   test.identical( got, [ 0, 1, 3, 5 ] );
+  test.is( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
 
-  //
+  var got;
+  var src = _.argumentsArrayMake( [ 0, 1, [ 3, 5 ] ] );
+  _.entityEach( src, onEach );
+  test.identical( got, src );
+  test.is( _.longIs( got ) );
 
-  test.case = 'src is an object';
+  var got;
+  var src = new Array( 1, 2, null, true );
+  _.entityEach( src, onEach );
+  test.identical( got, src );
+  test.is( _.longIs( got ) );
+
+  var got;
+  var src = new Float32Array( [ 1, 2, 1, 3 ] );
+  _.entityEach( src, onEach );
+  test.equivalent( got, [ 1, 2, 1, 3 ] );
+  test.is( _.longIs( got ) );
+
+  test.close( 'src is an ArrayLike');
+
+  /* - */
+
+  test.open( 'src is an object' );
 
   var got = {};
   _.entityEach( {}, ( v ) => got = v );
   test.identical( got, {} );
 
   var got = {};
-  _.entityEach( {}, ( v, k ) => got[ k ] = v + k );
+  _.entityEach( Object.create( null ), ( v, k ) => got[ k ] = v + k );
   test.identical( got, {} );
-
-  var got = {};
-  _.entityEach( { 1 : 2 }, ( v, k ) => got[ k ] = v + k + 2 );
-  test.identical( got, { 1 : '212' } );
 
   var got = {};
   _.entityEach( { a : 1, b : 3, c : 5 }, ( v, k ) => got[ k ] = v * v + k );
   test.identical( got, { a : '1a', b : '9b', c : '25c' } );
 
+  //
+
   test.case = 'routine counter';
 
-  function onEach1( v, k )
+  var onEach = function( v, k )
   {
     if( _.strIs( v ) && k )
     got += 10;
@@ -588,31 +686,21 @@ function entityEach( test )
   }
 
   var got = 0;
-  _.entityEach( 1, onEach1 );
+  _.entityEach( 'abc', onEach );
   test.identical( got, -1 );
 
   var got = 0;
-  _.entityEach( 'abc', onEach1 );
-  test.identical( got, -1 );
+  _.entityEach( { a : 'abc', b : { a : 1 }, c : [ null ], d : undefined }, onEach );
+  test.identical( got, 7 );
 
   var got = 0;
-  _.entityEach( { a : 'abc' }, onEach1 );
-  test.identical( got, 10 );
-
-  var got = 0;
-  _.entityEach( { a : 'abc', b : 1, c : 'ab', d : 'a' }, onEach1 );
+  _.entityEach( { a : 'abc', b : 1, c : 'ab', d : 'a' }, onEach );
   test.identical( got, 29 );
 
-  var got = 0;
-  _.entityEach( { a : [ 'a', 'b' ], b : [ 1, 3, 4 ] }, onEach1 );
-  test.identical( got, -2 );
-
-  var got = 0;
-  _.entityEach( { a : { a : 1 }, b : { b : 2 } }, onEach1 );
-  test.identical( got, -2 );
+  //
 
   test.case = 'Third argument in onEach'
-  function onEach4( v, k, src )
+  var onEach = function( v, k, src )
   {
     if( _.objectIs( src ) )
     got = src;
@@ -621,10 +709,13 @@ function entityEach( test )
   }
 
   var got = {};
-  _.entityEach( { a : 1, b : 2, c : 3 }, onEach4 );
-  test.identical( got, { a : 1, b : 2, c : 3 } );
+  var src = { a : 1, b : 2, c : 3 };
+  _.entityEach( src, onEach );
+  test.identical( got, src );
 
-  //
+  test.close( 'src is an object' );
+
+  /* - */
 
   test.case = 'src is not ArrayLike or ObjectLike';
 
@@ -637,20 +728,12 @@ function entityEach( test )
   test.identical( got, 'number' );
 
   var got;
-  _.entityEach( 'a', ( v ) => got = typeof v );
-  test.identical( got, 'string' );
-
-  var got;
   _.entityEach( 'a', ( v ) => got = v + 2 );
   test.identical( got, 'a2' );
 
   var got;
   _.entityEach( function b(){ return 'a'}, ( v ) => got = typeof v );
   test.identical( got, 'function' );
-
-  var got;
-  _.entityEach( 'a', ( v, i ) => got = v + i );
-  test.identical( got, 'aundefined' );
 
   var got;
   _.entityEach( function b(){ return 'a'}, ( v, i ) => got = typeof v + ' ' + typeof i );
