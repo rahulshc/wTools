@@ -1307,28 +1307,91 @@ function entityAll( test )
 
   test.open( 'onEach is routine' );
 
-  test.case = 'ArrayLike';
+  test.case = 'array';
 
-  var got = _.entityAll( [ 1, 'str', undefined ], ( v, i ) => v !== undefined && i + 2 < 5 );
+  var got = _.entityAll( [ 1, 'str', undefined ], ( v, i ) => !!v && i + 2 < 4 );
   test.identical( got, false );
 
-  var got = _.entityAll( [ 1, 'str', { a : 2 }, 4 ], ( v, i ) => v !== undefined && i + 2 < 5 );
-  test.identical( got, false );
-
-  var got = _.entityAll( [ 1, 'str', { a : 2 } ], ( v, i ) => v !== undefined && i + 2 < 5 );
+  var got = _.entityAll( [ 1, 'str', { a : 2 }, 4 ], ( v, i ) => !!v && i + 2 < 6 );
   test.identical( got, true );
+
+  var got = _.entityAll( [ 1, 'str', { a : 2 }, false ], ( v, i ) => !!v && i + 2 < 6 );
+  test.identical( got, false );
 
   var got = _.entityAll( [ 1, 'str', 3, null ], () => undefined );
   test.identical( got, undefined );
 
-  var got = _.entityAll( [ 'a : 1', 3, true ], ( v, i ) => v !== i );
-  test.identical( got, true );
+  test.case = 'unroll';
 
-  var got = _.entityAll( [ 'a : 1', false ], ( v, i ) => v !== i );
-  test.identical( got, true );
-
-  var got = _.entityAll( [ 'a : 1', false ], ( v, i, src ) => src.length == i );
+  var src = _.unrollFrom( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 4 );
   test.identical( got, false );
+
+  var src = _.unrollMake( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
+  test.identical( got, true );
+
+  var src = _.unrollMake( [ 1, 2, _.unrollFrom( [ 'str' ] ), undefined, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
+  test.identical( got, false );
+
+  var src = _.unrollMake( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
+  var got = _.entityAll( src, () => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'argument array';
+
+  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 4 );
+  test.identical( got, false );
+
+  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
+  test.identical( got, true );
+
+  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], false, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
+  test.identical( got, false );
+
+  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAll( src, () => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'Array';
+
+  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 4 );
+  test.identical( got, false );
+
+  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
+  test.identical( got, true );
+
+  var src = new Array( 1, 2, [ 'str' ], false, 4 );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
+  test.identical( got, false );
+
+  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
+  var got = _.entityAll( src, () => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'Float32Array';
+
+  var src = new Float32Array( [ 1, 2, [ 8 ], 3, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 4 );
+  test.identical( got, false );
+
+  var src = new Float32Array( [ 1, 2, [ 8 ], 3, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
+  test.identical( got, true );
+
+  var src = new Float32Array( [ 1, 2, [ 8 ], false, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
+  test.identical( got, false );
+
+  var src = new Float32Array( [ 1, 2, [ 8 ], 3, 4 ] );
+  var got = _.entityAll( src, () => undefined );
+  test.identical( got, undefined );
 
   test.case = 'ObjectLike';
 
@@ -1378,22 +1441,76 @@ function entityAll( test )
 
   test.close( 'onEach is routine' );
 
-  //
+  /* - */
 
-  test.open( 'onEach is undefined' );
+  test.open( 'onEach is null' );
 
-  test.case = 'ArrayLike';
+  test.case = 'array';
 
   var got = _.entityAll( [ 1, 'str', undefined ] );
   test.identical( got, undefined );
 
-  var got = _.entityAll( [ 1, 'str', 3, null ] );
-  test.identical( got, null );
-
-  var got = _.entityAll( [ 'a : 1', 3, true ] );
+  var got = _.entityAll( [ 1, 'str', { a : 2 }, 4 ] );
   test.identical( got, true );
 
-  var got = _.entityAll( [ 'a : 1', false ] );
+  var got = _.entityAll( [ 1, 'str', { a : 2 }, false ] );
+  test.identical( got, false );
+
+
+  test.case = 'unroll';
+
+  var src = _.unrollFrom( [ 1, 2, _.unrollFrom( [ 'str' ] ), null, 4 ] );
+  var got = _.entityAll( src );
+  test.identical( got, null );
+
+  var src = _.unrollMake( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
+  var got = _.entityAll( src );
+  test.identical( got, true );
+
+  var src = _.unrollMake( [ 1, 2, _.unrollFrom( [ 'str' ] ), false, 4 ] );
+  var got = _.entityAll( src );
+  test.identical( got, false );
+
+  test.case = 'argument array';
+
+  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], undefined, 4 ] );
+  var got = _.entityAll( src );
+  test.identical( got, undefined );
+
+  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAll( src );
+  test.identical( got, true );
+
+  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], false, 4 ] );
+  var got = _.entityAll( src );
+  test.identical( got, false );
+
+  test.case = 'Array';
+
+  var src = new Array( 1, 2, [ 'str' ], null, 4 );
+  var got = _.entityAll( src );
+  test.identical( got, null );
+
+  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
+  var got = _.entityAll( src );
+  test.identical( got, true );
+
+  var src = new Array( 1, 2, [ 'str' ], false, 4 );
+  var got = _.entityAll( src );
+  test.identical( got, false );
+
+  test.case = 'Float32Array';
+
+  var src = new Float32Array( [ 1, 2, [ 8 ], 3, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 4 );
+  test.identical( got, false );
+
+  var src = new Float32Array( [ 1, 2, [ 8 ], 3, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
+  test.identical( got, true );
+
+  var src = new Float32Array( [ 1, 2, [ 8 ], false, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
   test.identical( got, false );
 
   test.case = 'ObjectLike';
@@ -1433,9 +1550,9 @@ function entityAll( test )
   var got = _.entityAll( true );
   test.identical( got, true );
 
-  test.close( 'onEach is undefined' );
+  test.close( 'onEach is null' );
 
-  //
+  /* - */
 
   if( !Config.debug )
   return;
