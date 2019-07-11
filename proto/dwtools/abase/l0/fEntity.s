@@ -103,6 +103,8 @@ function eachSample( o )
   /* sample */
 
   if( !o.sample )
+  // Dmytro:
+  // qqq: I think entityMakeTivial should be entityMakeTrivial. 7 missprints founded in wTools. Maybe, willbe contains this also.
   o.sample = _.entityMakeTivial( o.sets );
 
   /* */
@@ -843,6 +845,7 @@ function entityFilter( src, onEach )
     let s, d;
     for( s = 0, d = 0 ; s < src.length ; s++ )
     {
+      // Dmytro: two arg 'src'
       let r = onEach.call( src, src[ s ], s, src );
       if( _.unrollIs( r ) )
       {

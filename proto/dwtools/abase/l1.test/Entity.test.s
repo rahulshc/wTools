@@ -23,77 +23,266 @@ var Self = {};
 
 function eachSample( test )
 {
-
-  test.case = 'simplest leftToRight : 1'; /* */
-
-  var expected =
-  [
-    [ 0,2,5 ],[ 1,2,5 ],
-    [ 0,3,5 ],[ 1,3,5 ],
-    [ 0,4,5 ],[ 1,4,5 ],
-  ];
-
-  var got = _.eachSample
-  ({
-    sets : [ [ 0,1 ],[ 2,3,4 ],[ 5 ] ],
-    leftToRight : 1,
-  });
-
+  test.case = 'empty sets';
+  var got = _.eachSample( [] );
+  var expected = [ [] ];
   test.identical( got, expected );
 
-  test.case = 'simplest leftToRight : 0'; /* */
+  var got = _.eachSample( { sets : {} } );
+  var expected = [ {} ];
+  test.identical( got, expected );
 
+  var got = _.eachSample( {}, null );
+  var expected = [ {} ];
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'sets with primitive';
+  var got = _.eachSample( [ 1 ] );
+  var expected = [ [ 1 ] ];
+  test.identical( got, expected );
+
+  var got = _.eachSample( { a : 1 }, null );
+  var expected = [ { a : 1 } ];
+  test.identical( got, expected );
+
+  var got = _.eachSample( [ 1, 2, null ] );
+  var expected = [ [ 1, 2, null ] ];
+  test.identical( got, expected );
+
+  var got = _.eachSample( { a : 1, b : 2, c : null }, null );
+  var expected = [ { a : 1, b : 2, c : null } ];
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'sets with empty array, empty map';
+  var got = _.eachSample( [ [] ] );
+  var expected = [ [ undefined ] ];
+  test.identical( got, expected );
+
+  var got = _.eachSample( { a : [] }, null );
+  var expected = [ { a : undefined } ];
+  test.identical( got, expected );
+
+  var got = _.eachSample( [ [], [] ] );
+  var expected = [ [ undefined, undefined ] ];
+  test.identical( got, expected );
+
+  var got = _.eachSample( { a : [], b : [] }, null );
+  var expected = [ { a : undefined, b : undefined } ];
+  test.identical( got, expected );
+
+  var got = _.eachSample( [ [], [], [] ] );
+  var expected = [ [ undefined, undefined, undefined ] ];
+  test.identical( got, expected );
+
+  var got = _.eachSample( { a : [], b : [], c : [] }, null );
+  var expected = [ { a : undefined, b : undefined, c : undefined } ];
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'sets with primitive, result : null';
+
+  var got = _.eachSample( { sets : [ 1, 2, 3 ], result : 0 } );
+  var expected = 0;
+  test.identical( got, expected );
+
+  var got = _.eachSample( { sets : { a : 1, b : 2, c : null }, result : 0 } );
+  var expected = 0;
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'sets with single not empty array, single not empty map';
+  var got = _.eachSample( [ [ 1, 2, null, 'str' ] ] );
+  var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
+  test.identical( got, expected );
+
+  var got = _.eachSample( { a : [ 1, 2, null, 'str' ] }, null );
   var expected =
   [
-    [ 0,2,5 ],[ 0,3,5 ],[ 0,4,5 ],
-    [ 1,2,5 ],[ 1,3,5 ],[ 1,4,5 ],
+    { a : 1 },
+    { a : 2 },
+    { a : null },
+    { a : 'str' }
   ];
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'simplest, leftToRight : 1';
+
+  var got = _.eachSample(
+    {
+      sets : [ [ 0, 1 ], [ 2, 3 ] ]
+    });
+  var expected =
+  [
+    [ 0, 2 ], [ 1, 2 ],
+    [ 0, 3 ], [ 1, 3 ],
+  ];
+  test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : { a : [ 0, 1 ], b : [ 2, 3 ] }
+    });
+  var expected =
+  [
+    { a : 0, b : 2 }, { a : 1, b : 2 },
+    { a : 0, b : 3 }, { a : 1, b : 3 }
+  ];
+  test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : [ [ 0, 1 ], [ 2, 3 ], 6 ]
+    });
+  var expected =
+  [
+    [ 0, 2, 6 ], [ 1, 2, 6 ],
+    [ 0, 3, 6 ], [ 1, 3, 6 ],
+  ];
+  test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : { a : [ 0, 1 ], b : [ 2, 3 ],  c : 6 }
+    });
+  var expected =
+  [
+    { a : 0, b : 2, c : 6 },
+    { a : 1, b : 2, c : 6 },
+    { a : 0, b : 3, c : 6 },
+    { a : 1, b : 3, c : 6 }
+  ];
+  test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : [ [ 0, 1 ], [ 2, 3 ], [ 6, null ] ]
+    });
+  var expected =
+  [
+    [ 0, 2, 6 ], [ 1, 2, 6 ],
+    [ 0, 3, 6 ], [ 1, 3, 6 ],
+    [ 0, 2, null ], [ 1, 2, null ],
+    [ 0, 3, null ], [ 1, 3, null ],
+  ];
+  test.identical( got, expected );
+
+  var got = _.eachSample(
+    {
+      sets : { a : [ 0, 1 ], b : [ 2, 3 ], c: [ 6, null ] }
+    });
+  var expected =
+  [
+    { a : 0, b : 2, c : 6 }, { a : 1, b : 2, c : 6 },
+    { a : 0, b : 3, c : 6 }, { a : 1, b : 3, c : 6 },
+    { a : 0, b : 2, c : null }, { a : 1, b : 2, c : null },
+    { a : 0, b : 3, c : null }, { a : 1, b : 3, c : null },
+  ];
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'simplest leftToRight : 0';
 
   var got = _.eachSample
   ({
-    sets : [ [ 0,1 ],[ 2,3,4 ],[ 5 ] ],
+    sets : [ [ 0, 1 ], [ 5, 6 ] ],
     leftToRight : 0,
   });
-
-  test.identical( got, expected );
-
-  test.case = 'simplest leftToRight : 1'; /* */
-
   var expected =
   [
-    { a : 0,b : 2,c : 5 },{ a : 1,b : 2,c : 5 },
-    { a : 0,b : 3,c : 5 },{ a : 1,b : 3,c : 5 },
-    { a : 0,b : 4,c : 5 },{ a : 1,b : 4,c : 5 },
+    [ 0, 5 ],[ 0, 6 ],
+    [ 1, 5 ],[ 1, 6 ]
   ];
+  test.identical( got, expected );
 
   var got = _.eachSample
   ({
-    sets : { a : [ 0,1 ],b : [ 2,3,4 ], c : [ 5 ] },
-    leftToRight : 1,
-  });
-
-  test.identical( got, expected );
-
-  test.case = 'simplest leftToRight : 0'; /* */
-
-  var expected =
-  [
-    { a : 0,b : 2,c : 5 },{ a : 0,b : 3,c : 5 },{ a : 0,b : 4,c : 5 },
-    { a : 1,b : 2,c : 5 },{ a : 1,b : 3,c : 5 },{ a : 1,b : 4,c : 5 },
-  ];
-
-  var got = _.eachSample
-  ({
-    sets : { a : [ 0,1 ],b : [ 2,3,4 ], c : [ 5 ] },
+    sets : { a : [ 0, 1 ], b : [ 5, 6 ] },
     leftToRight : 0,
   });
-
+  var expected =
+  [
+    { a : 0, b : 5 }, { a : 0, b : 6 },
+    { a : 1, b : 5 }, { a : 1, b : 6 }
+  ];
   test.identical( got, expected );
 
-  logger.log( 'expected',_.toStr( expected,{ levels : 5 } ) );
-  logger.log( 'got',_.toStr( got,{ levels : 5 } ) );
+  var got = _.eachSample
+  ({
+    sets : [ [ 0, 1 ], [ 'str', null ], [ true, 2 ] ],
+    leftToRight : 0,
+  });
+  var expected =
+  [
+    [ 0, 'str', true ], [ 0, 'str', 2 ],
+    [ 0, null, true ], [ 0, null, 2 ],
+    [ 1, 'str', true ], [ 1, 'str', 2 ],
+    [ 1, null, true ], [ 1, null, 2 ]
+  ];
+  test.identical( got, expected );
 
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'not argument, extra arguments';
+  test.shouldThrowErrorSync( () => _.eachSample() );
+  test.shouldThrowErrorSync( () => _.eachSample( [ [ 1 ], [ 2 ] ], null, [ 1 ] ) );
+
+  test.case = 'o.sets is not arraylike, not mapLike';
+  test.shouldThrowErrorSync( () => _.eachSample( {} ) );
+  test.shouldThrowErrorSync( () => _.eachSample( 1 ) );
+  test.shouldThrowErrorSync( () => _.eachSample( 'str', null ) );
+
+  test.case = 'onEach is not a routine or null';
+  test.shouldThrowErrorSync( () => _.eachSample( [ [ 1 ], [ 2 ] ], 'str' ) );
+
+  test.case = 'o.base has a value';
+  var o = {};
+  o.sets = [ [ 1, 0 ], [ 2, 3 ] ];
+  o.base = [ 5 ];
+  test.shouldThrowErrorSync( () => _.eachSample( o ) );
+
+  test.case = 'o.add has a value';
+  var o = {};
+  o.sets = [ [ 1, 0 ], [ 2, 3 ] ];
+  o.add = [ 5 ];
+  test.shouldThrowErrorSync( () => _.eachSample( o ) );
 }
+
+//
+
+function eachSampleExperiment( test )
+{
+  // o.onEach.call( o.sample, o.sample, index );
+  var onEach = function( s1, s2, i )
+  {
+    return s1[ i ] = i + 10;
+  }
+  debugger;
+  var got = _.eachSample
+  ({
+    sets : [ [ 0, 1 ], [ 5, 6 ] ],
+    onEach : onEach,
+  });
+  debugger;
+  var expected =
+  [
+    [ 10, 5 ],[ 1, 11 ],
+    [ 10, 6 ],[ 1, 11 ]
+  ];
+  test.identical( got, expected );
+}
+eachSampleExperiment.experimental = 1;
 
 //
 
@@ -1929,6 +2118,7 @@ var Self =
   {
 
     eachSample,
+    eachSampleExperiment,
 
     entityEach,
     entityEachKey,
