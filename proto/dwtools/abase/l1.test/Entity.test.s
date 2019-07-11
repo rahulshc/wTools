@@ -2103,97 +2103,113 @@ function entityNone( test )
 
 function entityMap( test )
 {
+  test.open( 'src is arrayLike' );
+
   test.case = 'simple test with mapping array by sqr';
   var got = _.entityMap( [ 3, 4, 5 ], ( v, i, ent ) => v * v );
   test.identical( got,[ 9, 16, 25 ] );
 
-  test.case = 'simple test with mapping array by sqr : source array should not be modified';
-  let src = [ 3, 4, 5 ]
-  var got = _.entityMap( src, ( v, i, ent ) => v * v );
-  test.identical( src, src.slice() );
+  test.case = 'array';
+  var src1 = [ 1, 2, null, 'str' ];
+  var got = _.entityMap( src1, ( v, i, s ) => v + i );
+  test.identical( got, [ 1, 3, 2, 'str3' ] );
+
+  test.case = 'unroll';
+  var src1 = _.unrollFrom( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
+  var got = _.entityMap( src1, ( v, i, s ) => v + i );
+  test.identical( got, [ 1, 3, 'str2', 6, 8 ] );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+
+  test.case = 'argument array';
+  var src1 = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityMap( src1, ( v, i, s ) => v + i );
+  test.identical( got, [ 1, 3, 'str2', 6, 8 ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'Array';
+  var src1 = new Array( 1, 2, [ 'str' ], 3, 4 );
+  var got = _.entityMap( src1, ( v, i, s ) => v + i );
+  test.identical( got, [ 1, 3, 'str2', 6, 8 ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'Float32Array';
+  var src1 = new Float32Array( [ 1, 2, [ 8 ], 3, 4 ] );
+  var got = _.entityMap( src1, ( v, i, s ) => v + i );
+  test.equivalent( got, [ 1, 3, 10, 6, 8 ] );
+  test.is( _.longIs( got ) );
+
+  test.close( 'src is arrayLike' );
+
+  /* - */
+
+  test.open( 'src is objectLike' );
 
   test.case = 'simple test with mapping object by sqr';
   var got = _.entityMap( { '3' : 3, '4' : 4, '5' : 5 }, ( v, i, ent ) => v * v );
   test.identical( got,{ '3' : 9, '4' : 16, '5' : 25 } );
+  test.is( _.mapIs( got ) );
 
-  test.case = 'simple test with mapping object by sqr : using constructor';
+  var src1 = { a : 1, b : 2, c : null, d : 'str' };
+  var got = _.entityMap( src1, ( v, k, s ) => v + k );
+  test.identical( got, { a : '1a', b : '2b', c : 'nullc', d : 'strd' } );
+  test.is( _.mapIs( got ) );
 
-  function constr1()
+  test.case = 'routine constructor';
+  function constr()
   {
     this.a = 1;
     this.b = 3;
     this.c = 4;
   }
+  var got = _.entityMap( new constr(), ( v, i, ent ) => v * v + i );
+  test.identical( got, { a : '1a', b : '9b', c : '16c' } );
+  test.is( !( got instanceof constr ) );
+  test.is( _.mapIs( got ) );
 
-  function callback3( v, i, ent )
+  test.case = 'simple test with mapping object by sqr : check callback arguments';
+  var callback = function( v, i, ent )
   {
     if( externEnt )
     externEnt = ent;
     return v * v + i;
   };
-
-  var got = _.entityMap( new constr1(), ( v, i, ent ) => v * v + i );
-  test.identical( got, { a : '1a', b : '9b', c : '16c' } );
-  test.is( !( got instanceof constr1 ) );
-  test.is( _.mapIs( got ) );
-
-  test.case = 'simple test with mapping object by sqr : check callback arguments';
   var externEnt = {};
-  var got = _.entityMap( new constr1(), callback3 );
+  var got = _.entityMap( Object.assign( {}, { 'a' : 1, 'b' : 3, 'c' : 4 } ), callback );
   test.identical( externEnt, { 'a' : 1, 'b' : 3, 'c' : 4 } );
 
-  if( Object.is )
-  {
-    test.case = 'simple test with mapping object by sqr : source object should be unmodified';
-    test.identical( Object.is( got, new constr1() ), false );
-  }
+  test.case = 'mapping object by sqr : source object should be unmodified';
+  test.identical( Object.is( got, Object.assign( {}, { 'a' : 1, 'b' : 3, 'c' : 4 } ) ), false );
+
+  test.close( 'src is objectLike' );
+
+  /* - */
 
   test.case = 'no ArrayLike, no ObjectLike';
-  var got = _.entityMap( 2, ( v, i, ent ) => v + v );
+  var got = _.entityMap( 2, ( v, u, u2 ) => v + v );
   test.identical( got, 4 );
 
-  var got = _.entityMap( 'a', ( v, i, ent ) => v + v );
+  var got = _.entityMap( 'a', ( v, u, u2 ) => v + v );
   test.identical( got, 'aa' );
 
-  if( Object.is )
-  {
-    test.case = 'simple test with mapping object by sqr : source object should be unmodified';
-    test.identical( Object.is( got, new constr1() ), false );
-  }
-
-  test.case = 'number';
-  var got = _.entityMap( 3, ( v, i, ent ) => v * v );
-  test.identical( got, 9 );
-
-  /* */
+  /* - */
 
   if( !Config.debug )
   return;
 
   test.case = 'missed arguments';
-  test.shouldThrowError( function()
-  {
-    _.entityMap();
-  });
+  test.shouldThrowError( () => _.entityMap() );
 
   test.case = 'extra argument';
-  test.shouldThrowError( function()
-  {
-    _.entityMap( [ 1,3 ], callback1, callback2 );
-  });
+  test.shouldThrowError( () => _.entityMap( [ 1,3 ], callback1, callback2 ) );
 
-  test.case = 'passed argument is undefined';
-  test.shouldThrowError( function()
-  {
-    _.entityMap( [ 1,3, undefined ], ( v, i ) => v );
-  });
+  test.case = 'passed argument has undefines';
+  test.shouldThrowError( () => _.entityMap( [ 1, undefined ], ( v, i ) => v ) );
+  test.shouldThrowError( () => _.entityMap( { a : 2, b : undefined }, ( v, i ) => v ) );
+  test.shouldThrowError( () => _.entityMap( undefined, ( v, i ) => v ) );
 
   test.case = 'second argument is not routine';
-  test.shouldThrowError( function()
-  {
-    _.entityMap( [ 1, 3, undefined ], ( v ) => v );
-  });
-
+  test.shouldThrowError( () => _.entityMap( [ 1, 2 ], {} ) );
 }
 
 //
