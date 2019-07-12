@@ -63,7 +63,11 @@ let c = Infinity;
 let d = -Infinity;
 let e = NaN;
 
-console.log( typeof a, typeof b, typeof c, typeof d, typeof e ); // number number number number number
+console.log( typeof a ); // number
+console.log( typeof b ); // number
+console.log( typeof c ); // number
+console.log( typeof d ); // number
+console.log( typeof e ); // number
 ```
 
 ### Тип symbol
@@ -88,10 +92,12 @@ let a = 'str';
 let b = "string";
 let c = String( true );
 
-console.log( typeof a, typeof b, typeof c ); // string string string
+console.log( typeof a ); // string
+console.log( typeof b ); // string
+console.log( typeof c ); // string
 ```
 
-Рядкові типи позначаються як приведено вище, тобто, в одинарні лапки, в подвійні лапки або створюється тип даних з допомогою глобального об'єкта `String`. При цьому немає різниці між одинарними і подвійними лапками.
+Рядкові типи позначаються як приведено вище, тобто, в одинарні лапки, в подвійні лапки або створюється тип даних з допомогою конструктора класа `String`. При цьому немає різниці між одинарними і подвійними лапками.
 
 Рядки JavaScript після визначення залишаються незмінними.
 
