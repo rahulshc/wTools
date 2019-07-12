@@ -1919,6 +1919,427 @@ function vectorize( test )
 
 //
 
+function vectorizeBypassingEmpty( test )
+{
+  function srcRoutine()
+  {
+    _.sure( arguments.length );
+    return _.longSlice( arguments );
+  }
+  
+  function srcRoutine2()
+  { 
+    _.sure( arguments.length );
+    return arguments[ 0 ] + 1;
+  }
+  
+  //
+  
+  test.open( 'vectorizing off, bypassingEmpty:0' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine,
+    bypassingEmpty : 0,
+    vectorizingArray : 0,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 0,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  test.shouldThrowErrorSync( () => routine() );
+  
+  test.case = 'with arg';
+  var got = routine( 1 );
+  var expected = [ 1 ];
+  test.identical( got, expected )
+  
+  test.close( 'vectorizing off, bypassingEmpty:0' );
+  
+  //
+  
+  test.open( 'vectorizing off, bypassingEmpty:0' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine,
+    bypassingEmpty : 1,
+    vectorizingArray : 0,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 0,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  test.shouldThrowErrorSync( () => routine() );
+  
+  test.case = 'with arg';
+  var got = routine( 1 );
+  var expected = [ 1 ];
+  test.identical( got, expected )
+  
+  test.close( 'vectorizing off, bypassingEmpty:0' );
+  
+  //
+  
+  test.open( 'vectorizingArray:1, bypassingEmpty:0' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine,
+    bypassingEmpty : 0,
+    vectorizingArray : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 0,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  test.shouldThrowErrorSync( () => routine() );
+  
+  test.case = 'with arg';
+  var got = routine( 1 );
+  var expected = [ 1 ];
+  test.identical( got, expected )
+  
+  test.close( 'vectorizingArray:1, bypassingEmpty:0' );
+  
+  //
+  
+  test.open( 'vectorizingArray:1, bypassingEmpty:1' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine,
+    bypassingEmpty : 1,
+    vectorizingArray : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 0,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  var got = routine();
+  var expected = [];
+  test.identical( got, expected )
+  
+  test.case = 'with arg';
+  var got = routine( 1 );
+  var expected = [ 1 ];
+  test.identical( got, expected )
+  
+  test.close( 'vectorizingArray:1, bypassingEmpty:1' );
+  
+  //
+  
+  test.open( 'vectorizingMapVals:1, bypassingEmpty:1' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine2,
+    bypassingEmpty : 1,
+    vectorizingArray : 0,
+    vectorizingMapVals : 1,
+    vectorizingMapKeys : 0,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  var got = routine();
+  var expected = [];
+  test.identical( got, expected )
+  
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), '11' );
+  test.identical( routine( [ 1,2,3 ] ), '1,2,31' );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2 , 2 : 3, 3 : 4 } );
+  
+  test.close( 'vectorizingMapVals:1, bypassingEmpty:1' );
+  
+  //
+  
+  test.open( 'vectorizingMapVals:1, bypassingEmpty:0' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine2,
+    bypassingEmpty : 0,
+    vectorizingArray : 0,
+    vectorizingMapVals : 1,
+    vectorizingMapKeys : 0,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  test.shouldThrowErrorSync( () => routine() );
+  
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), '11' );
+  test.identical( routine( [ 1,2,3 ] ), '1,2,31' );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2 , 2 : 3, 3 : 4 } );
+  
+  test.close( 'vectorizingMapVals:1, bypassingEmpty:0' );
+  
+  //
+  
+  test.open( 'vectorizingArray:1, vectorizingMapVals:1, bypassingEmpty:1' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine2,
+    bypassingEmpty : 1,
+    vectorizingArray : 1,
+    vectorizingMapVals : 1,
+    vectorizingMapKeys : 0,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  var got = routine();
+  var expected = [];
+  test.identical( got, expected )
+  
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), [ 2 ] );
+  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2 , 2 : 3, 3 : 4 } );
+  
+  test.close( 'vectorizingArray:1, vectorizingMapVals:1, bypassingEmpty:1' );
+  
+  //
+  
+  test.open( 'vectorizingArray:1, vectorizingMapVals:1, bypassingEmpty:0' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine2,
+    bypassingEmpty : 0,
+    vectorizingArray : 1,
+    vectorizingMapVals : 1,
+    vectorizingMapKeys : 0,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  test.shouldThrowErrorSync( () => routine() );
+  
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), [ 2 ] );
+  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2 , 2 : 3, 3 : 4 } );
+  
+  test.close( 'vectorizingArray:1, vectorizingMapVals:1, bypassingEmpty:0' );
+  
+  //
+  
+  test.open( 'vectorizingMapKeys:1, bypassingEmpty:1' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine2,
+    bypassingEmpty : 1,
+    vectorizingArray : 0,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 1,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  var got = routine();
+  var expected = [];
+  test.identical( got, expected )
+  
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), '11' );
+  test.identical( routine( [ 1,2,3 ] ), '1,2,31' );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1 , 21 : 2, 31 : 3 } );
+  
+  test.close( 'vectorizingMapKeys:1, bypassingEmpty:1' );
+  
+  //
+  
+  test.open( 'vectorizingMapKeys:1, bypassingEmpty:0' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine2,
+    bypassingEmpty : 0,
+    vectorizingArray : 0,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 1,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  test.shouldThrowErrorSync( () => routine() );
+  
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), '11' );
+  test.identical( routine( [ 1,2,3 ] ), '1,2,31' );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1 , 21 : 2, 31 : 3 } );
+  
+  test.close( 'vectorizingMapKeys:1, bypassingEmpty:0' );
+  
+  //
+  
+  test.open( 'vectorizingArray:1, vectorizingMapKeys:1, bypassingEmpty:1' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine2,
+    bypassingEmpty : 1,
+    vectorizingArray : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 1,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  var got = routine();
+  var expected = [];
+  test.identical( got, expected )
+  
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), [ 2 ] );
+  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1 , 21 : 2, 31 : 3 } );
+  
+  test.close( 'vectorizingArray:1, vectorizingMapKeys:1, bypassingEmpty:1' );
+  
+  //
+  
+  test.open( 'vectorizingArray:1, vectorizingMapKeys:1, bypassingEmpty:0' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine2,
+    bypassingEmpty : 0,
+    vectorizingArray : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 1,
+    select : 1
+  });
+  
+  test.case = 'no arg';
+  test.shouldThrowErrorSync( () => routine() );
+  
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), [ 2 ] );
+  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1 , 21 : 2, 31 : 3 } );
+  
+  test.close( 'vectorizingArray:1, vectorizingMapKeys:1, bypassingEmpty:0' );
+  
+  //
+  
+  test.open( 'vectorizingArray:1, vectorizingMapKeys:1, vectorizingMapVals : 1, bypassingEmpty:1' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine2,
+    bypassingEmpty : 1,
+    vectorizingArray : 1,
+    vectorizingMapVals : 1,
+    vectorizingMapKeys : 1,
+    select : 1
+  });
+
+  test.case = 'no arg';
+  var got = routine();
+  var expected = [];
+  test.identical( got, expected )
+  
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), [ 2 ] );
+  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2 , 21 : 3, 31 : 4 } );
+  
+  test.close( 'vectorizingArray:1, vectorizingMapKeys:1, vectorizingMapVals : 1, bypassingEmpty:1' );
+  
+  //
+  
+  test.open( 'vectorizingArray:1, vectorizingMapKeys:1, vectorizingMapVals : 1, bypassingEmpty:0' );
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine2,
+    bypassingEmpty : 0,
+    vectorizingArray : 1,
+    vectorizingMapVals : 1,
+    vectorizingMapKeys : 1,
+    select : 1
+  });
+
+  test.case = 'no arg';
+  test.shouldThrowErrorSync( () => routine() );
+  
+  test.identical( routine( 1 ), 2 );
+  test.identical( routine( [ 1 ] ), [ 2 ] );
+  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2 , 21 : 3, 31 : 4 } );
+  
+  test.close( 'vectorizingArray:1, vectorizingMapKeys:1, vectorizingMapVals : 1, bypassingEmpty:0' );
+  
+  // vectorizeForOptionsMapForKeys
+  
+  test.open( 'vectorizingArray:1, select : array, bypassingEmpty:0' );
+  
+  function srcRoutine3( src )
+  { 
+    return src;
+  }
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine3,
+    bypassingEmpty : 0,
+    vectorizingArray : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 0,
+    select : [ '0' ]
+  });
+
+  test.case = 'no arg';
+  test.shouldThrowErrorSync( () => routine() );
+  
+  test.identical( routine( 1 ), [ 1 ] );
+  test.identical( routine( [ 1 ] ), [ [ 1 ] ] );
+  test.identical( routine( [ [ 1 ] ] ), [ [ { 0 : 1 } ] ] );
+  test.identical( routine( { 0 : [ 1 ] } ), [ [ { 0 : 1 } ] ] );
+  
+  test.close( 'vectorizingArray:1, select : array, bypassingEmpty:0' );
+  
+  //
+  
+  test.open( 'vectorizingArray:1, select : array, bypassingEmpty:1' );
+  
+  function srcRoutine3( src )
+  { 
+    return src;
+  }
+  
+  var routine = _.vectorize
+  ({
+    routine : srcRoutine3,
+    bypassingEmpty : 1,
+    vectorizingArray : 1,
+    vectorizingMapVals : 0,
+    vectorizingMapKeys : 0,
+    select : [ '0' ]
+  });
+
+  test.identical( routine(), [] );
+  test.identical( routine( 1 ), [ 1 ] );
+  test.identical( routine( [ 1 ] ), [ [ 1 ] ] );
+  test.identical( routine( [ [ 1 ] ] ), [ [ { 0 : 1 } ] ] );
+  test.identical( routine( { 0 : [ 1 ] } ), [ [ { 0 : 1 } ] ] );
+  
+  test.close( 'vectorizingArray:1, select : array, bypassingEmpty:1' );
+}
+
+//
+
 var Self =
 {
 
@@ -1946,6 +2367,7 @@ var Self =
     vectorize,
     /* qqq : split test routine vectorize */
     /* qqq : add tests for vectorize* routines */
+    vectorizeBypassingEmpty
 
   }
 

@@ -429,8 +429,10 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeArray()
-  {
-
+  {  
+    if( bypassingEmpty && !arguments.length )
+    return [];
+    
     let args = arguments;
     let src = args[ 0 ];
 
@@ -453,7 +455,9 @@ function vectorize_body( o )
 
   function vectorizeArrayMultiplying()
   {
-
+    if( bypassingEmpty && !arguments.length )
+    return [];
+    
     let args = multiply( arguments );
     let src = args[ 0 ];
 
@@ -476,7 +480,10 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeForOptionsMap( srcMap )
-  {
+  { 
+    if( bypassingEmpty && !arguments.length )
+    return [];
+    
     let src = srcMap[ select ];
 
     assert( arguments.length === 1, 'Expects single argument' );
@@ -505,8 +512,11 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeForOptionsMapForKeys()
-  {
+  { 
     let result = [];
+    
+    if( bypassingEmpty && !arguments.length )
+    return result;
 
     for( let i = 0; i < o.select.length; i++ )
     {
@@ -520,7 +530,9 @@ function vectorize_body( o )
 
   function vectorizeMapOrArray()
   {
-
+    if( bypassingEmpty && !arguments.length )
+    return []; 
+    
     let args = multiply( arguments );
     let src = args[ 0 ];
 
@@ -556,7 +568,10 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeMapWithKeysOrArray()
-  {
+  { 
+    if( bypassingEmpty && !arguments.length )
+    return [];
+    
     let args = multiply( arguments );
     let srcs = args[ 0 ];
 
@@ -639,7 +654,12 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeKeysOrArray()
-  {
+  { 
+    // yyy
+    if( bypassingEmpty && !arguments.length )
+    return [];
+    // yyy
+    
     let args = multiply( arguments );
     let src = args[ 0 ];
     let args2;
@@ -709,11 +729,6 @@ function vectorize_body( o )
       }
       return result;
     }
-
-    // yyy
-    if( !bypassingEmpty && !arguments.length )
-    return [];
-    // yyy
 
     return routine.apply( this, arguments );
   }
