@@ -845,7 +845,6 @@ function entityFilter( src, onEach )
     let s, d;
     for( s = 0, d = 0 ; s < src.length ; s++ )
     {
-      // Dmytro: two arg 'src'
       let r = onEach.call( src, src[ s ], s, src );
       if( _.unrollIs( r ) )
       {

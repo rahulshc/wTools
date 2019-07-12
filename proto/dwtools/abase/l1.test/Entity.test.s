@@ -2216,6 +2216,23 @@ function entityMap( test )
 
 function entityFilter( test )
 {
+  test.open( 'onEach is routine' );
+
+  test.case = 'src is array, filter make unrolls';
+  var onEach = ( e, i, s ) => _.unrollMake( [ e ] );
+  var src = [ 1, [ 2, 3 ], [ 'str', null, undefined ] ];
+  var got = _.entityFilter( src, onEach );
+  test.identical( got, [ 1, [ 2, 3 ], [ 'str', null, undefined ] ] );
+  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'src is array, filter check equality';
+  var onEach = ( e, i, s ) => e === i;
+  var src = [ 0, 2, 2, [ 'str', null ], undefined ];
+  var got = _.entityFilter( src, onEach );
+  test.identical( got, [ true, false, true, false, false ] );
+  test.is( _.arrayIs( got ) );
+
   function callback1( v, i, ent )
   {
     if( v < 0 ) return;
@@ -2270,34 +2287,28 @@ function entityFilter( test )
   var got = _.entityFilter( 3, callback1 );
   test.identical( got, Math.sqrt( 3 ) );
 
-  /**/
+  test.close( 'onEach is routine' );
+
+  test.open( 'onEach is objectLike - condition' );
+
+  test.close( 'onEach is objectLike - condition' );
+
+  /* - */
 
   if( !Config.debug )
   return;
 
   test.case = 'missed arguments';
-  test.shouldThrowError( function()
-  {
-    _.entityFilter();
-  });
+  test.shouldThrowErrorSync( () => _.entityFilter() );
 
   test.case = 'extra argument';
-  test.shouldThrowError( function()
-  {
-    _.entityFilter( [ 1,3 ], callback1, callback2 );
-  });
+  test.shouldThrowErrorSync( () => _.entityFilter( [ 1,3 ], callback1, callback2 ) );
 
   test.case = 'second argument is not routine';
-  test.shouldThrowError( function()
-  {
-    _.entityFilter( [ 1,3 ], 'callback' );
-  });
+  test.shouldThrowErrorSync( () => _.entityFilter( [ 1,3 ], 'callback' ) );
 
   test.case = 'src is undefined';
-  test.shouldThrowError( function()
-  {
-    _.entityFilter( undefined, callback1 );
-  });
+  test.shouldThrowErrorSync( () => _.entityFilter( undefined, callback1 ) );
 };
 
 //
