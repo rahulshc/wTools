@@ -1292,7 +1292,6 @@ function longRemoveDuplicates( dstLong, onEvaluate )
 
 }
 */
-//
 
 //
 
@@ -1335,68 +1334,7 @@ function longAreRepeatedProbe( srcArray, onEvaluate )
 
   return result;
 
-  // if( _.longIs( o ) )
-  // o = { src : o };
-  //
-  // _.assert( arguments.length === 1, 'Expects single argument' );
-  // _.assert( _.longIs( o.src ) );
-  // _.assertMapHasOnly( o, arrayInvestigateUniqueMap.defaults );
-  //
-  // /* */
-  //
-  // if( o.onEvaluate )
-  // {
-  //   o.src = _.entityMap( o.src, ( e ) => o.onEvaluate( e ) );
-  // }
-  //
-  // /* */
-  //
-  // let number = o.src.length;
-  // let isUnique = _.longMake( o.src );
-  // let index;
-  //
-  // for( let i = 0 ; i < o.src.length ; i++ )
-  // isUnique[ i ] = 1;
-  //
-  // for( let i = 0 ; i < o.src.length ; i++ )
-  // {
-  //
-  //   index = i;
-  //
-  //   if( !isUnique[ i ] )
-  //   continue;
-  //
-  //   let currentUnique = 1;
-  //   do
-  //   {
-  //     index = o.src.indexOf( o.src[ i ], index+1 );
-  //     if( index !== -1 )
-  //     {
-  //       isUnique[ index ] = 0;
-  //       number -= 1;
-  //       currentUnique = 0;
-  //     }
-  //   }
-  //   while( index !== -1 );
-  //
-  //   if( !o.includeFirst )
-  //   if( !currentUnique )
-  //   {
-  //     isUnique[ i ] = 0;
-  //     number -= 1;
-  //   }
-  //
-  // }
-  //
-  // return { /*ttt*/number, array : isUnique };
 }
-
-// arrayInvestigateUniqueMap.defaults =
-// {
-//   src : null,
-//   onEvaluate : null,
-//   includeFirst : 0,
-// }
 
 //
 
@@ -2100,8 +2038,24 @@ function arrayAs( src )
 
   if( src === null )
   return [];
-  else if( _.arrayLike( src ) )
+  else if( _.longIs( src ) )
   return src;
+  else
+  return [ src ];
+
+}
+
+//
+
+function arrayAsShallowing( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( src !== undefined );
+
+  if( src === null )
+  return [];
+  else if( _.longIs( src ) )
+  return _.arraySlice( src );
   else
   return [ src ];
 
@@ -2125,25 +2079,23 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longIs( arr ) );
   _.assert( _.numberIs( fromIndex ) );
-  _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
-  _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
-  _.assert( !evaluator2 || evaluator2.length === 1 );
-  _.assert( !evaluator2 || _.routineIs( evaluator2 ) );
+  _.assert( evaluator1 === undefined || evaluator1.length === 1 || evaluator1.length === 2 );
+  _.assert( evaluator1 === undefined || _.routineIs( evaluator1 ) );
+  _.assert( evaluator2 === undefined || evaluator2.length === 1 );
+  _.assert( evaluator2 === undefined || _.routineIs( evaluator2 ) );
 
   if( !evaluator1 )
   {
     _.assert( !evaluator2 );
     return _ArrayIndexOf.call( arr, ins, fromIndex );
   }
-  else if( evaluator1.length === 2 )
+  else if( evaluator1.length === 2 ) /* equalizer */
   {
     _.assert( !evaluator2 );
     for( let a = fromIndex ; a < arr.length ; a++ )
     {
-
       if( evaluator1( arr[ a ], ins ) )
       return a;
-
     }
   }
   else
@@ -2169,8 +2121,6 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
 
 function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 {
-  if( ins === undefined )
-  debugger;
 
   let fromIndex = arr.length-1;
 
@@ -2183,10 +2133,10 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
   _.assert( _.numberIs( fromIndex ) );
-  _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
-  _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
-  _.assert( !evaluator2 || evaluator2.length === 1 );
-  _.assert( !evaluator2 || _.routineIs( evaluator2 ) );
+  _.assert( evaluator1 === undefined || evaluator1.length === 1 || evaluator1.length === 2 );
+  _.assert( evaluator1 === undefined || _.routineIs( evaluator1 ) );
+  _.assert( evaluator2 === undefined || evaluator2.length === 1 );
+  _.assert( evaluator2 === undefined || _.routineIs( evaluator2 ) );
 
   if( !evaluator1 )
   {
@@ -2195,7 +2145,7 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
     debugger;
     return _ArrayLastIndexOf.call( arr, ins, fromIndex );
   }
-  else if( evaluator1.length === 2 )
+  else if( evaluator1.length === 2 ) /* equalizer */
   {
     _.assert( !evaluator2 );
     for( let a = fromIndex ; a >= 0 ; a-- )
@@ -2845,7 +2795,10 @@ function arrayPrependedElement( dstArray, ins )
   _.assert( _.arrayIs( dstArray ) );
 
   dstArray.unshift( ins );
-  return 0;
+
+  /* xxx qqq : should return element, not index */
+  // return 0;
+  return ins;
 }
 
 //
@@ -4754,28 +4707,28 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
  * @memberof wTools
  */
 
-function arrayRemoveAll( dstArray, ins, evaluator1, evaluator2 )
-{
-  arrayRemovedAll.apply( this, arguments );
-  return dstArray;
-}
-
+// function arrayRemoveAll( dstArray, ins, evaluator1, evaluator2 )
+// {
+//   arrayRemovedAll.apply( this, arguments );
+//   return dstArray;
+// }
 //
-
-function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
-{
-  let index = _.arrayLeftIndex.apply( _, arguments );
-  let result = 0;
-
-  while( index >= 0 )
-  {
-    dstArray.splice( index, 1 );
-    result += 1;
-    index = _.arrayLeftIndex.apply( _, arguments );
-  }
-
-  return result;
-}
+// //
+//
+// function arrayRemovedAll( dstArray, ins, evaluator1, evaluator2  )
+// {
+//   let index = _.arrayLeftIndex.apply( _, arguments );
+//   let result = 0;
+//
+//   while( index >= 0 )
+//   {
+//     dstArray.splice( index, 1 );
+//     result += 1;
+//     index = _.arrayLeftIndex.apply( _, arguments );
+//   }
+//
+//   return result;
+// }
 
 //
 
@@ -5137,7 +5090,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
   }
 }
 
-// xxx
+//
 
 function arrayFlattenDefined( dstArray, insArray )
 {
@@ -6197,6 +6150,7 @@ let Routines =
   arrayMake,
   arrayFrom,
   arrayAs,
+  arrayAsShallowing,
 
   // array sequential search
 
@@ -6307,8 +6261,8 @@ let Routines =
   arrayRemovedArraysOnce,
   arrayRemovedArraysOnceStrictly,
 
-  arrayRemoveAll,
-  arrayRemovedAll,
+  // arrayRemoveAll,
+  // arrayRemovedAll,
 
   arrayRemoveDuplicates,
 
@@ -6320,15 +6274,6 @@ let Routines =
   arrayFlattened,
   arrayFlattenedOnce,
   arrayFlattenedOnceStrictly,
-
-  /*
-  qqq : review all arrayFlatten* routines and tests for them
-
-  src = [ undefined, undefined ]
-  dst = arrayFlattenDefined( src ) -> []
-  src === dst
-
-  */
 
   arrayFlattenDefined,
   arrayFlattenDefinedOnce,

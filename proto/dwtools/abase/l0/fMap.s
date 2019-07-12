@@ -174,10 +174,10 @@ function mapLike( src )
   if( src.constructor === Object || src.constructor === null )
   return true;
 
-  if( !_.objectLike( src ) ) // yyy
+  if( !_.objectLike( src ) )
   return false;
 
-  if( _.instanceIs( src ) ) // yyy
+  if( _.instanceIs( src ) )
   return false;
 
   return true;
@@ -186,7 +186,7 @@ function mapLike( src )
 //
 
 /**
- * The mapIdentical() returns true, if the second object (src2)
+ * The mapsAreIdentical() returns true, if the second object (src2)
  * has the same values as the first object(src1).
  *
  * It takes two objects (scr1, src2), checks
@@ -199,24 +199,24 @@ function mapLike( src )
  *
  * @example
  * // returns true
- * mapIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
+ * mapsAreIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
  *
  * @example
  * returns false
- * _.mapIdentical( { a : 7, b : 13 }, { a : 33, b : 13 } );
+ * _.mapsAreIdentical( { a : 7, b : 13 }, { a : 33, b : 13 } );
  *
  * @example
  * returns false
- * _.mapIdentical( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
+ * _.mapsAreIdentical( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
  *
  * @returns { boolean } Returns true, if the second object (src2)
  * has the same values as the first object(src1).
- * @function mapIdentical
+ * @function mapsAreIdentical
  * @throws Will throw an error if ( arguments.length !== 2 ).
  * @memberof wTools
  */
 
-function mapIdentical( src1, src2 )
+function mapsAreIdentical( src1, src2 )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -288,23 +288,6 @@ function mapContain( src, ins )
 
   return true;
 }
-
-//
-//
-// function mapHas( object, name )
-// {
-//   let name = _.nameUnfielded( name ).coded;
-//
-//   let descriptor = Object.getOwnPropertyDescriptor( object, name );
-//
-//   if( !descriptor )
-//   return false;
-//
-//   if( descriptor.set && descriptor.set.forbid )
-//   return false;
-//
-//   return true;
-// }
 
 //
 
@@ -5435,7 +5418,7 @@ let Routines =
   mapIsPopulated,
   mapLike,
 
-  mapIdentical,
+  mapsAreIdentical,
   mapContain,
 
   mapSatisfy,
@@ -5460,11 +5443,6 @@ let Routines =
 
   mapHasOnly,
   mapOwnOnly,
-
-  // mapHasAll,
-  // mapOwnAll,
-  // mapHasNone,
-  // mapOwnNone,
 
   mapHasNoUndefine,
 
