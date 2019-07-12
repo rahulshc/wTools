@@ -269,8 +269,8 @@ reflector:
   transpile.proto.no.tests.compiled.debug:
     src:
       filePath:
-        '**.test*': 0
-        '**.test/**': 0
+        '**.test*': false
+        '**.test/**': false
         'path::proto': '{path::out.*=1}/Main.s'
     criterion:
       tests: no.tests
@@ -283,8 +283,8 @@ reflector:
   transpile.proto.no.tests.compiled.release:
     src:
       filePath:
-        '**.test*': 0
-        '**.test/**': 0
+        '**.test*': false
+        '**.test/**': false
         'path::proto': '{path::out.*=1}/Main.s'
     criterion:
       tests: no.tests
@@ -297,7 +297,7 @@ reflector:
   transpile.proto.only.tests.compiled.debug:
     src:
       filePath:
-        '**.test*': 1
+        '**.test*': true
         'path::proto': '{path::out.*=1}/Tests.s'
     criterion:
       tests: only.tests
@@ -310,7 +310,7 @@ reflector:
   transpile.proto.only.tests.compiled.release:
     src:
       filePath:
-        '**.test*': 1
+        '**.test*': true
         'path::proto': '{path::out.*=1}/Tests.s'
     criterion:
       tests: only.tests
@@ -331,7 +331,8 @@ reflector:
     mandatory: 1
   exported.files.proto.export:
     src:
-      filePath: 'path::exported.files.proto.export'
+      filePath:
+        'path::exported.files.proto.export': null
       basePath: .
       prefixPath: 'path::exported.dir.proto.export'
     criterion:
@@ -968,8 +969,8 @@ module:
       transpile.proto.no.tests.compiled.debug:
         src:
           filePath:
-            '**.test*': 0
-            '**.test/**': 0
+            '**.test*': false
+            '**.test/**': false
             'path::proto': '{path::out.*=1}/Main.s'
         criterion:
           tests: no.tests
@@ -982,8 +983,8 @@ module:
       transpile.proto.no.tests.compiled.release:
         src:
           filePath:
-            '**.test*': 0
-            '**.test/**': 0
+            '**.test*': false
+            '**.test/**': false
             'path::proto': '{path::out.*=1}/Main.s'
         criterion:
           tests: no.tests
@@ -996,7 +997,7 @@ module:
       transpile.proto.only.tests.compiled.debug:
         src:
           filePath:
-            '**.test*': 1
+            '**.test*': true
             'path::proto': '{path::out.*=1}/Tests.s'
         criterion:
           tests: only.tests
@@ -1009,7 +1010,7 @@ module:
       transpile.proto.only.tests.compiled.release:
         src:
           filePath:
-            '**.test*': 1
+            '**.test*': true
             'path::proto': '{path::out.*=1}/Tests.s'
         criterion:
           tests: only.tests
@@ -1030,7 +1031,8 @@ module:
         mandatory: 1
       exported.files.proto.export:
         src:
-          filePath: 'path::exported.files.proto.export'
+          filePath:
+            'path::exported.files.proto.export': null
           basePath: .
           prefixPath: 'path::exported.dir.proto.export'
         criterion:
