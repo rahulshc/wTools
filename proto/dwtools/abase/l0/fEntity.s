@@ -48,7 +48,7 @@ function multiple( src, times )
 {
   _.assert( arguments.length === 2 );
   if( _.arrayLike( src ) )
-  _.assert( src.length === times, () => 'Vecotr should have ' + times + ' elements, but have ' + src.length );
+  _.assert( src.length === times, () => 'Vector should have ' + times + ' elements, but have ' + src.length );
   else
   src = _.dup( src, times );
   return src;
@@ -103,6 +103,8 @@ function eachSample( o )
   /* sample */
 
   if( !o.sample )
+  // Dmytro:
+  // qqq: I think entityMakeTivial should be entityMakeTrivial. 7 missprints founded in wTools. Maybe, willbe contains this also.
   o.sample = _.entityMakeTivial( o.sets );
 
   /* */
@@ -508,6 +510,7 @@ function entityAny( src, onEach )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
 
   /* */
 
@@ -1515,8 +1518,11 @@ let Routines =
 
   eachSample,
 
+  entityEach,
   each : entityEach,
+  entityEachKey,
   eachKey : entityEachKey,
+  entityEachOwn,
   eachOwn : entityEachOwn,
 
   entityAll,

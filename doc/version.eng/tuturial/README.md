@@ -1,4 +1,4 @@
-## Концепції
+<!-- ## Concepts
 
 <details><summary><a href="./concept/MapOptions.md#Масив-аргументів">
       Масив аргументів
@@ -39,9 +39,9 @@
       Тип <code>unroll</code>
   </a></summary>
   <code>Unroll</code> - тип даних - особливий вид масиву, здатний розготатись в іншому масиві при виконанні операції над ним.
-</details>
+</details> -->
 
-## Туторіали
+## Tutorials
 
 <!-- <details><summary><a href="./tutorial/Abstract.md">
       Загальна інформація
@@ -52,19 +52,21 @@
       Встановлення
   </a></summary>
   Процедура встановлення модуль Tools.
-</details> -->
+</details>
 
 <details><summary><a href="./tutorial/ArrayCountElement.md">
       Рутина arrayCountElement
   </a></summary>
   Рутина для підрахунку кількості входжень елемента в масив.
-</details>
+</details>-->
+
 <details><summary><a href="./tutorial/RoutineFromPreAndBody.md">
-      Рутина routineFromPreAndBody
+      Routine routineFromPreAndBody
   </a></summary>
-  Автоматичне об'єднання рутини підготовки даних і рутини для їх обробки.
+  Automatically combining of the data preparation routine and routine for data processing.
 </details>
-<details><summary><a href="./tutorial/Vectorize.md">
+
+<!-- <details><summary><a href="./tutorial/Vectorize.md">
       Векторизація рутин
   </a></summary>
   Як використовувати рутину <code>vectorize</code> для векторизації скалярних рутин.
@@ -73,4 +75,4 @@
       Налаштування рутин при векторизації
   </a></summary>
   Як використовувати опції рутини <code>vectorize</code> при створенні векторизованої рутини.
-</details>
+</details> -->
