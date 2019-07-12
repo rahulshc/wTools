@@ -510,6 +510,7 @@ function entityAny( src, onEach )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
 
   /* */
 
@@ -1517,8 +1518,11 @@ let Routines =
 
   eachSample,
 
+  entityEach,
   each : entityEach,
+  entityEachKey,
   eachKey : entityEachKey,
+  entityEachOwn,
   eachOwn : entityEachOwn,
 
   entityAll,

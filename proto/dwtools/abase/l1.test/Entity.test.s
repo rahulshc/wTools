@@ -2213,10 +2213,64 @@ function entityMap( test )
 }
 
 //
+  //TODO : need to check actuality of this test
+  // it works correctly
 
 function entityFilter( test )
 {
   test.open( 'onEach is routine' );
+
+  var callback = function( v, i, ent )
+  {
+    if( v < 0 ) return;
+    return Math.sqrt( v );
+  };
+
+  test.case = 'number';
+  var got = _.entityFilter( 3, callback );
+  test.identical( got, Math.sqrt( 3 ) );
+
+  test.case = 'string';
+  var got = _.entityFilter( 'str', ( v ) => v + ' ' + v );
+  test.identical( got, 'str str' );
+
+  test.case = 'simple test with mapping array by sqrt';
+  var got = _.entityFilter( [ 9, -16, 25, 36, -49 ], callback );
+  test.identical( got, [ 3, 5, 6 ] );
+  test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
+
+  var src = _.unrollMake( [ 9, _.unrollMake( [ -16, 25, _.unrollFrom( [ 36, -49 ] ) ] ) ] );
+  var got = _.entityFilter( src, callback );
+  test.identical( got, [ 3, 5, 6 ] );
+  test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
+  test.isNot( _.unrollIs( got) );
+
+  var src = _.argumentsArrayMake( [ 9, -16, 25, 36, -49 ] );
+  var got = _.entityFilter( src, callback );
+  test.identical( got, [ 3, 5, 6 ] );
+
+  var src = new Array( 9, -16, 25, 36, -49 );
+  var got = _.entityFilter( src, callback );
+  test.identical( got, [ 3, 5, 6 ] );
+
+  var src = new Float32Array( [ 9, -16, 25, 36, -49 ] );
+  var src = Array.from( src );
+  var got = _.entityFilter( src, callback );
+  test.identical( got, [ 3, 5, 6 ] );
+  test.notIdentical( got, [ 3, 4, 5, 6, 7 ] );
+
+  test.case = 'simple test with mapping object by sqrt';
+  var got = _.entityFilter( { '3' : 9, '4' : 16, '5' : 25, '6' : -36 }, callback );
+  test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
+  test.notIdentical( got, { '3' : 3, '4' : 4, '5' : 5, '6' : 6 } );
+
+  test.case = 'callback in routine';
+  var testFn1 = function()
+  {
+    return _.entityFilter( arguments, callback );
+  }
+  var got = testFn1( 9, -16, 25, 36, -49 );
+  test.identical( got, [ 3, 5, 6 ] );
 
   test.case = 'src is array, filter make unrolls';
   var onEach = ( e, i, s ) => _.unrollMake( [ e ] );
@@ -2231,67 +2285,23 @@ function entityFilter( test )
   var src = [ 0, 2, 2, [ 'str', null ], undefined ];
   var got = _.entityFilter( src, onEach );
   test.identical( got, [ true, false, true, false, false ] );
+  test.notIdentical( got, [ true, false, true, false, false, false ] );
   test.is( _.arrayIs( got ) );
-
-  function callback1( v, i, ent )
-  {
-    if( v < 0 ) return;
-    return Math.sqrt( v );
-  };
-
-  //TODO : need to check actuality of this test
-  // it works correctly
-
-  function testFn1()
-  {
-    return _.entityFilter( arguments, callback1 );
-  }
-
-  test.case = 'simple test with longIs';
-  var got = null;
-  try
-  {
-    got = testFn1( 9, -16, 25, 36, -49 );
-  }
-  catch(e)
-  {
-    console.log(' test throws errror, but should not ');
-    console.log(e);
-  }
-  finally
-  {
-    test.identical( got, [ 3, 5, 6 ] );
-  }
-
-  //
-
-  test.case = 'simple test with mapping array by sqrt';
-  var got = _.entityFilter( [ 9, -16, 25, 36, -49 ], callback1 );
-  test.identical( got, [ 3, 5, 6 ] );
-
-  test.case = 'simple test with mapping array by sqrt : source array should not be modified';
-  var entity1 = [ 9, -16, 25, 36, -49 ],
-      expected1 = entity1.slice();
-  var got = _.entityFilter( entity1, callback1 );
-  test.identical( entity1, expected1 );
-
-  test.case = 'simple test with mapping object by sqrt';
-  var got = _.entityFilter( { '3' : 9, '4' : 16, '5' : 25 }, callback1 );
-  test.identical( got, { '3' : 3, '4' : 4, '5' : 5 } );
-
-  test.case = 'simple test with mapping array by sqrt';
-  var got = _.entityFilter( [ 9, -16, 25, 36, -49 ], callback1 );
-  test.identical( got, [ 3, 5, 6 ] );
-
-  test.case = 'number';
-  var got = _.entityFilter( 3, callback1 );
-  test.identical( got, Math.sqrt( 3 ) );
 
   test.close( 'onEach is routine' );
 
-  test.open( 'onEach is objectLike - condition' );
+  /* - */
 
-  test.close( 'onEach is objectLike - condition' );
+  test.case = 'onEach is objectLike - condition, one entry';
+  var callback = { '3' : 9 };
+  var got = _.entityFilter( { a : { '3' : 9 }, b : { '3' : 4 } }, callback );
+  test.identical( got, { a : { '3' : 9 } } );
+
+  test.case = 'onEach is objectLike - condition, a few entry';
+  var callback = { '3' : 9 };
+  var src = { a : { '3' : 9 }, b : { '3' : 4 }, c : { '3' : 9 }, d : { '3' : 9 } };
+  var got = _.entityFilter( src, callback );
+  test.identical( got, { a : { '3' : 9 }, c : { '3' : 9 }, d : { '3' : 9 } } );
 
   /* - */
 
@@ -2302,9 +2312,9 @@ function entityFilter( test )
   test.shouldThrowErrorSync( () => _.entityFilter() );
 
   test.case = 'extra argument';
-  test.shouldThrowErrorSync( () => _.entityFilter( [ 1,3 ], callback1, callback2 ) );
+  test.shouldThrowErrorSync( () => _.entityFilter( [ 1,3 ], () => true, 1 ) );
 
-  test.case = 'second argument is not routine';
+  test.case = 'onEach is not routine';
   test.shouldThrowErrorSync( () => _.entityFilter( [ 1,3 ], 'callback' ) );
 
   test.case = 'src is undefined';
