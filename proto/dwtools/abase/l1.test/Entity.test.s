@@ -2410,6 +2410,7 @@ function entityFilterDeep( test )
 
   test.case = 'onEach is objectLike - condition, entry nested to next level';
   // Dmytro: _mapSatisfy works uncorrect, and if onEach is routine recursion is not realized
+  // so it's only one failed test is created
   var callback = { '3' : 9 };
   var src = { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } };
   var got = _.entityFilterDeep( src, callback );
