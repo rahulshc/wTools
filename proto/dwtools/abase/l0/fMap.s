@@ -398,6 +398,9 @@ function _mapSatisfy( template, src, root, levels )
   if( _.routineIs( template ) )
   return template( src );
 
+  if( !_.objectIs( src ) )
+  return false;
+
   if( _.objectIs( template ) )
   {
     for( let t in template )
