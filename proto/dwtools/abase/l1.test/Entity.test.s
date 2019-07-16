@@ -2408,10 +2408,17 @@ function entityFilterDeep( test )
   var got = _.entityFilterDeep( src, callback );
   test.identical( got, { a : { '3' : 9 }, c : { '3' : 9 }, d : { '3' : 9 } } );
 
-  test.case = 'onEach is objectLike - condition, entry nested to next level';
+  test.case = 'onEach is objectLike - condition, entry nested to next levels';
   // Dmytro: _mapSatisfy works uncorrect, and if onEach is routine recursion is not realized
   // so it's only one failed test is created
   var callback = { '3' : 9 };
+  var src = { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } };
+  var got = _.entityFilterDeep( src, callback );
+  test.identical( got, src );
+  test.notIdentical( got, {} );
+
+  test.case = 'onEach is objectLike - condition, deep entry';
+  var callback = { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } };
   var src = { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } };
   var got = _.entityFilterDeep( src, callback );
   test.identical( got, src );
