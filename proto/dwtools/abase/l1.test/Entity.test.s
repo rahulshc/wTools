@@ -5,11 +5,8 @@
 if( typeof module !== 'undefined' )
 {
 
-  let _ = require( '../../Tools.s' );
-
+  let _ = require( '../Layer2.s' );
   _.include( 'wTesting' );
-  // _.include( 'wCloner' );
-  // _.include( 'wStringsExtra' );
 
 }
 
@@ -18,7 +15,7 @@ var _ = _global_.wTools;
 var Self = {};
 
 // --
-//
+// routines
 // --
 
 function eachSample( test )
@@ -2442,6 +2439,7 @@ function entityFilterDeepExperiment( test )
   test.case = 'onEach is objectLike - condition, deep entry';
   var callback = { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } };
   var src = { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } };
+  debugger;
   var got = _.entityFilterDeep( src, callback );
   test.identical( got, src );
   test.notIdentical( got, {} );
