@@ -1625,22 +1625,22 @@ function arrayCompare( src1, src2 )
 //
 
 /**
- * The arrayIdentical() routine checks the equality of two arrays.
+ * The arraysAreIdentical() routine checks the equality of two arrays.
  *
  * @param { longIs } src1 - The first array.
  * @param { longIs } src2 - The second array.
  *
  * @example
  * // returns true
- * let arr = _.arrayIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ * let arr = _.arraysAreIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  *
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
- * @function arrayIdentical
+ * @function arraysAreIdentical
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @memberof wTools
  */
 
-function arrayIdentical( src1, src2 )
+function arraysAreIdentical( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( src1 ) );
@@ -6127,7 +6127,7 @@ let Routines =
   arrayHasArray,
 
   arrayCompare,
-  arrayIdentical,
+  arraysAreIdentical,
 
   arrayHas,
   arrayHasAny, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer */

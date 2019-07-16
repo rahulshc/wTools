@@ -398,6 +398,9 @@ function _mapSatisfy( template, src, root, levels )
   if( _.routineIs( template ) )
   return template( src );
 
+  if( !_.objectIs( src ) )
+  return false;
+
   if( _.objectIs( template ) )
   {
     for( let t in template )
@@ -1896,31 +1899,85 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 
 /*
   qqq : add test
-  Dmytro:
-  qqq : tests is added
+  Dmytro : tests is added
+  qqq : reflect update in tests
 */
 
-function mapSetWithKeys( dstMap, src, val )
+function mapSetWithKeys( dstMap, key, val )
 {
 
   if( dstMap === null )
   dstMap = Object.create( null );
 
   _.assert( _.objectIs( dstMap ) );
-  _.assert( _.arrayIs( src ) || _.strIs( src ) );
+  _.assert( _.arrayIs( key ) || _.strIs( key ) );
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayIs( key ) )
   {
-    for( let s = 0 ; s < src.length ; s++ )
-    dstMap[ src[ s ] ] = val;
+    for( let s = 0 ; s < key.length ; s++ )
+    set( dstMap, key[ s ], val );
   }
   else
   {
-    dstMap[ src ] = val;
+    set( dstMap, key, val );
   }
 
   return dstMap;
+
+  function set( dstMap, key, val )
+  {
+
+    if( val === undefined )
+    delete dstMap[ key ];
+    else
+    dstMap[ key ] = val;
+
+  }
+
+}
+
+//
+
+/* qqq : add test */
+
+function mapSetStrictly( dstMap, key, val )
+{
+
+  if( dstMap === null )
+  dstMap = Object.create( null );
+
+  _.assert( _.objectIs( dstMap ) );
+  _.assert( _.arrayIs( key ) || _.strIs( key ) );
+  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
+
+  if( _.arrayIs( key ) )
+  {
+    for( let s = 0 ; s < key.length ; s++ )
+    set( dstMap, key[ s ], val );
+  }
+  else
+  {
+    set( dstMap, key, val );
+  }
+
+  return dstMap;
+
+  function set( dstMap, key, val )
+  {
+
+    if( val === undefined )
+    {
+      delete dstMap[ key ];
+    }
+    else
+    {
+      _.assert( dstMap[ key ] === undefined || dstMap[ key ] === val );
+      dstMap[ key ] = val;
+    }
+
+  }
+
 }
 
 // --
@@ -2016,59 +2073,6 @@ function mapInvertDroppingDuplicates( src, dst )
 
   return dst;
 }
-
-// //
-//
-// function mapsFlatten( o )
-// {
-//
-//   if( _.arrayIs( o ) )
-//   o = { src : o }
-//
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//   _.routineOptions( mapsFlatten, o );
-//   _.assert( _.arrayIs( o.src ) )
-//
-//   o.result = o.result || Object.create( null );
-//
-//   function extend( r, s )
-//   {
-//     if( !o.allowingCollision )
-//     _.assertMapHasNone( r, s );
-//     _.mapExtend( r, s );
-//   }
-//
-//   for( let a = 0 ; a < o.src.length ; a++ )
-//   {
-//
-//     let src = o.src[ a ];
-//
-//     if( !_.longIs( src ) )
-//     {
-//       _.assert( _.objectLike( src ) );
-//       if( src !== undefined )
-//       extend( o.result, src );
-//       continue;
-//     }
-//
-//     mapsFlatten
-//     ({
-//       /*ttt*/src,
-//       result : o.result,
-//       allowingCollision : o.allowingCollision,
-//     });
-//
-//   }
-//
-//   return o.result;
-// }
-//
-// mapsFlatten.defaults =
-// {
-//   src : null,
-//   result : null,
-//   allowingCollision : 0,
-// }
 
 //
 
@@ -5517,13 +5521,13 @@ let Routines =
 
   mapSetWithKeys,
   mapSet : mapSetWithKeys,
+  mapSetStrictly,
   mapDelete,
 
   // map transformer
 
   mapInvert,
   mapInvertDroppingDuplicates,
-  mapsFlatten,
   mapsFlatten,
 
   mapToArray, /* qqq : test required */
@@ -5634,9 +5638,9 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' )
-if( _global.WTOOLS_PRIVATE )
-{ /* delete require.cache[ module.id ]; */ }
+// if( typeof module !== 'undefined' )
+// if( _global.WTOOLS_PRIVATE )
+// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
