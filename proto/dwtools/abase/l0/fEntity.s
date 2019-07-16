@@ -903,7 +903,9 @@ function _entityFilterDeep( o )
   if( _.longIs( o.src ) )
   {
     result = _.longMake( o.src, 0 );
-    for( let s = 0, d = 0 ; s < o.src.length ; s++, d++ )
+    let s, d;
+    for( s = 0, d = 0 ; s < o.src.length ; s++ )
+    // for( let s = 0, d = 0 ; s < o.src.length ; s++, d++ )
     {
       let r = onEach.call( o.src, o.src[ s ], s, o.src );
 
@@ -933,7 +935,8 @@ function _entityFilterDeep( o )
     result = _.entityMakeTivial( o.src );
     for( let s in o.src )
     {
-      r = onEach.call( o.src, o.src[ s ], s, o.src );
+      let r = onEach.call( o.src, o.src[ s ], s, o.src );
+      // r = onEach.call( o.src, o.src[ s ], s, o.src );
       if( r !== undefined )
       result[ s ] = r;
     }
