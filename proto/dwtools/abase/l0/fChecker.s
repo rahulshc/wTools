@@ -173,7 +173,7 @@ function promiseLike( src )
 {
   if( !src )
   return false;
-  return _.routineIs( src.then ) && _.routineIs( src.catch );
+  return _.routineIs( src.then ) && _.routineIs( src.catch ) && _.routineIs( src.reject ) &&  _.routineIs( src.resolve );
 }
 
 //
