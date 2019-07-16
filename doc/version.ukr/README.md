@@ -59,6 +59,11 @@
   </a></summary>
   Як використовувати <code>callback</code>-и в рутинах сімейства <code>Array</code>.
 </details>
+<details><summary><a href="./tutorial/ConventionDstArgInArray.md">
+      Array routines call conventions: dst argument
+  </a></summary>
+  Рутини сімейства <code>Array</code>, що використовують аргумент <code>dst</code>.
+</details>
 <details><summary><a href="./tutorial/RoutineFromPreAndBody.md">
       Рутина routineFromPreAndBody
   </a></summary>
