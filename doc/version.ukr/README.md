@@ -54,10 +54,10 @@
   Процедура встановлення модуль Tools.
 </details> -->
 
-<details><summary><a href="./tutorial/ArrayCountElement.md">
-      Рутина arrayCountElement
+<details><summary><a href="./tutorial/ConventionCallbecksInArray.md">
+      Array routines call conventions: callbacks
   </a></summary>
-  Рутина для підрахунку кількості входжень елемента в масив.
+  Як використовувати <code>callback</code>-и в рутинах сімейства <code>Array</code>.
 </details>
 <details><summary><a href="./tutorial/RoutineFromPreAndBody.md">
       Рутина routineFromPreAndBody
