@@ -1,6 +1,6 @@
 # Array routines call conventions: dst argument
 
-Рутини сімейства <code>Array</code>, що використовують аргумент <code>dst</code>.
+Про що свідчить використання аргумента <code>dst</code>.
 
 Рутини модуля, що виконують операції з масивами та мапами можуть містити аргументи, котрі містять приставки `src` i `dst`.
 
@@ -91,6 +91,7 @@ console.log( dstArray );
   <summary><u>Вивід команди <code>node SrcAndDst.js</code></u></summary>
 
 ```
+$ node SrcAndDst.js
 The result is:
 2
 The original array is:
@@ -103,7 +104,6 @@ The original array is:
 [ 1, 2, 'a', 'b', true, 1, [ 1 ] ]
 dstArray changed to:
 [ 1, 2, 'a', 'b', true, 1, [ 1 ], 1 ]
-
 ```
 
 </details>

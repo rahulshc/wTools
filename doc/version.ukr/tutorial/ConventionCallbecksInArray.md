@@ -230,7 +230,7 @@ console.log( wTools.arrayCountElement( arr3, elem4, evalutor1, evalutor2 ) );
   <summary><u>Вивід команди <code>node ArrayCountElement.js</code></u></summary>
 
 ```
-[user@user ~]$ node ArrayCountElement.js
+$ node ArrayCountElement.js
 The number of element 1 in the array arr1:
 1
 The number of element [ 1 ] in the array arr1:
