@@ -36,6 +36,9 @@ array[action][second][how many]
 
 Прогляньте таблицю зі значеннями, що повертають рутини сімейства arrayAppend.
 
+<details>
+  <summary><u>Структура файлів</u></summary>
+
 | array[action][second]     | -                   | Once                | OnceStrictly               |
 |---------------------------|---------------------|---------------------|----------------------------|
 | arrayAppend               | dstArray            | dstArray            | dstArray                   |
@@ -46,6 +49,8 @@ array[action][second][how many]
 | arrayAppendedElement      | index               | element             | element / index            |
 | arrayAppendedArray        | number              | number              | number                     |
 | arrayAppendedArrays       | number              | number              | number                     |
+
+</details>
 
 Таким чином, рутина
 
