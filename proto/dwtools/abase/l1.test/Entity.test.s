@@ -2307,24 +2307,27 @@ function entityFilter( test )
   test.identical( got, {} );
   test.notIdentical( got, { a : { b : { '3' : 9 } } } );
 
-  test.case = 'onEach is objectLike - condition, entry nested to next level';
-  var callback = { a : { b : { '3' : 9 } } };
-  var src = { a : { b : { '3' : 9 } } };
-  var got = _.entityFilter( src, callback );
-  test.identical( got, {} );
-  test.notIdentical( got, { a : { b : { '3' : 9 } } } );
-
-  test.case = 'onEach is objectLike - condition, entry nested to next level';
+  test.case = 'onEach is objectLike - routine, entry nested to next level';
   var onEach = function( e )
   {
-    return 9;
+    return true;
   }
   var callback = { '3' : onEach };
   var src = { a : { '3' : 9 } };
   var got = _.entityFilter( src, callback );
-  debugger;
   test.identical( got, {} );
-  test.notIdentical( got, { a : { b : { '3' : 9 } } } );
+  test.notIdentical( got, { a : { '3' : 9 } } );
+
+  test.case = 'onEach is objectLike - condition, identical entry';
+  var onEach = function( e )
+  {
+    return true;
+  }
+  var callback = { '3' : onEach };
+  var src = { a : { '3' : onEach } };
+  var got = _.entityFilter( src, callback );
+  test.identical( got, { a : { '3' : onEach } } );
+  test.notIdentical( got, {} );
 
   /* - */
 
@@ -2431,6 +2434,45 @@ function entityFilterDeep( test )
   var got = _.entityFilterDeep( src, callback );
   test.identical( got, {} );
   test.notIdentical( got, { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } } );
+
+  test.case = 'onEach is objectLike - routine, entry nested to next level';
+  var onEach = function( e )
+  {
+    return true;
+  }
+  var callback = { '3' : onEach };
+  var src = { a : { b : { '3' : 9 } } };
+  var got = _.entityFilterDeep( src, callback );
+  test.identical( got, { a : { b : { '3' : 9 } } } );
+  test.notIdentical( got, {} );
+
+  test.case = 'onEach is objectLike - routine, entry nested to next level';
+  var onEach = function( e )
+  {
+    for( let k in e )
+    {
+      e[ k ] = e[ k ] + 5;
+      if( e[ k ] !== 10 )
+      return false;
+    }
+    return true;
+  }
+  var callback = { '3' : onEach };
+  var src = { a : { b : 5, c : 5, d : 5 } };
+  var got = _.entityFilterDeep( src, callback );
+  test.identical( got, { a : { b : 5, c : 5, d : 5 } } );
+  test.notIdentical( got, {} );
+
+  test.case = 'onEach is objectLike - condition, identical entry';
+  var onEach = function( e )
+  {
+    return true;
+  }
+  var callback = { '3' : onEach };
+  var src = { a : { '3' : onEach } };
+  var got = _.entityFilterDeep( src, callback );
+  test.identical( got, { a : { '3' : onEach } } );
+  test.notIdentical( got, {} );
 
   /* - */
 
