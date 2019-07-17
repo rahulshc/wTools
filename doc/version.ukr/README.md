@@ -54,6 +54,11 @@
   Процедура встановлення модуль Tools.
 </details> -->
 
+<details><summary><a href="./tutorial/ConventionNamingInArray.md">
+      Array routines call conventions: naming
+  </a></summary>
+  Принципи найменування рутин сімейства <code>Array</code>.
+</details>
 <details><summary><a href="./tutorial/ConventionCallbecksInArray.md">
       Array routines call conventions: callbacks
   </a></summary>
