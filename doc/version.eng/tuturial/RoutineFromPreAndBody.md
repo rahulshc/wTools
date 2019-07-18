@@ -4,7 +4,7 @@ Automatically combining of the data preparation routine and routine for data pro
 
 The routine `routineFromPreAndBody` returns routine that is combined from two routines. One of them is routine `pre` and the other is routine `body`.
 
-The routine `pre` is intended to prepare the [map of options](../concept/MapOptions.md) that is passed to the routine `body`. The routine `body` performs processing of data, it receives map of options. The access to any option in the map of options performs by a name. So, the map of options is more convenient to use than an array of arguments because the access to the option in the array of arguments is carried out by index number. So if the array of arguments is used, all options must go consistently and the default values changing becomes more complicated.
+The routine `pre` is intended to prepare the [map of options](../concept/RoutineInput.md) that is passed to the routine `body`. The routine `body` performs processing of data, it receives map of options. The access to any option in the map of options performs by a name. So, the map of options is more convenient to use than an array of arguments because the access to the option in the array of arguments is carried out by index number. So if the array of arguments is used, all options must go consistently and the default values changing becomes more complicated.
 
 This separation of functions is convenient for several reasons:
 

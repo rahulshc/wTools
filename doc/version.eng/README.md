@@ -1,11 +1,11 @@
 <!-- ## Concepts
 
-<details><summary><a href="./concept/MapOptions.md#Масив-аргументів">
+<details><summary><a href="./concept/RoutineInput.md#Масив-аргументів">
       Масив аргументів
   </a></summary>
   Це сукупність параметрів рутини, котрі сформовано в псевдомасив <code>arguments</code>.
 </details>
-<details><summary><a href="./concept/MapOptions.md#Мапа-опцій">
+<details><summary><a href="./concept/RoutineInput.md#Мапа-опцій">
       Мапа опцій
   </a></summary>
   Це контейнер, що призначений для передачі даних в рутину та управління її поведінкою.
