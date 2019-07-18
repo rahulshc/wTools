@@ -194,7 +194,7 @@ nameFull.defaults.full = 1;
   <summary><u>Вивід команди <code>node Name.js</code></u></summary>
 
 ```
-[user@user ~]$ node Name.js
+$ node Name.js
 File
 File.js
 ```
@@ -219,7 +219,7 @@ console.log( nameFull.name );
   <summary><u>Вивід команди <code>node Name.js</code></u></summary>
 
 ```
-[user@user ~]$ node Name.js
+$ node Name.js
 name
 ```
 
@@ -245,7 +245,7 @@ let nameFull = _.routineFromPreAndBody( name_pre, name_body, 'nameFull' );
   <summary><u>Вивід команди <code>node Name.js</code></u></summary>
 
 ```
-[user@user ~]$ node Name.js
+$ node Name.js
 nameFull
 ```
 

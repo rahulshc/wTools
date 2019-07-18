@@ -54,10 +54,25 @@
   Процедура встановлення модуль Tools.
 </details> -->
 
-<details><summary><a href="./tutorial/ArrayCountElement.md">
-      Рутина arrayCountElement
+<details><summary><a href="./tutorial/ConventionNamingInArray.md">
+      Array routines call conventions: naming
   </a></summary>
-  Рутина для підрахунку кількості входжень елемента в масив.
+  Принципи найменування рутин сімейства <code>Array</code>.
+</details>
+<details><summary><a href="./tutorial/ConventionCallbecksInArray.md">
+      Array routines call conventions: callbacks
+  </a></summary>
+  Як використовувати <code>callback</code>-и в рутинах сімейства <code>Array</code>.
+</details>
+<details><summary><a href="./tutorial/ConventionDstArgInArray.md">
+      Array routines call conventions: dst argument
+  </a></summary>
+  Про що свідчить використання аргумента <code>dst</code>.
+</details>
+<details><summary><a href="./tutorial/ConventionDefaultsMapInRoutine.md">
+      Routines call convention: routine defaults map
+  </a></summary>
+  Як зберігаються та змінюються налаштування за замовчуванням в рутинах.
 </details>
 <details><summary><a href="./tutorial/RoutineFromPreAndBody.md">
       Рутина routineFromPreAndBody

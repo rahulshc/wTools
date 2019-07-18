@@ -45,6 +45,12 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
 
+  var src = _.arrayFrom( new Float32Array() )
+  var got = _.eachSample( src );
+  var expected = [ [] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
   var got = _.eachSample( _.argumentsArrayMake( 0 ), null );
   var expected = [ [] ];
   test.identical( got, expected );
@@ -77,6 +83,12 @@ function eachSample( test )
   test.isNot( _.unrollIs( got ) );
 
   var got = _.eachSample( new Array( [ 1 ] ) );
+  var expected = [ [ 1 ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
+  var src = _.arrayFrom( new Float32Array( [ 1 ] ) );
+  var got = _.eachSample( src );
   var expected = [ [ 1 ] ];
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
@@ -125,6 +137,12 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
 
+  var src = _.arrayFrom( new Float32Array( [ [], [], [] ] ) );
+  var got = _.eachSample( src );
+  var expected = [ [ 0, 0, 0 ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
   var got = _.eachSample( _.argumentsArrayMake( [ [], [] ] ) );
   var expected = [ [ undefined, undefined ] ];
   test.identical( got, expected );
@@ -150,6 +168,12 @@ function eachSample( test )
 
   var got = _.eachSample( { sets : new Array( [ 1, 2, 3 ] ), result : 0 } );
   var expected = 2;
+  test.identical( got, expected );
+  test.is( _.primitiveIs( got ) );
+
+  var src = _.arrayFrom( new Float32Array( [ 1, 2, 3 ] ) );
+  var got = _.eachSample( { sets : src, result : 0 } );
+  var expected = 0;
   test.identical( got, expected );
   test.is( _.primitiveIs( got ) );
 
@@ -185,13 +209,16 @@ function eachSample( test )
   var got = _.eachSample( _.argumentsArrayMake( [ [ 1, 2, null, 'str' ] ] ) );
   var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
   test.identical( got, expected );
-  test.isNot( _.unrollIs( got ) );
   test.is( _.arrayIs( got ) );
 
   var got = _.eachSample( new Array( [ [ 1, 2, null, 'str' ] ] ) );
   var expected = [ [ [ 1, 2, null, 'str' ] ] ];
   test.identical( got, expected );
-  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
+  var src = _.arrayFrom( new Float32Array( [ [ 1, 2, 3 ] ] ) );
+  var got = _.eachSample( src );
+  test.notIdentical( got, [ [ [ 1, 2, 3 ] ] ] );
   test.is( _.arrayIs( got ) );
 
   /* - */
@@ -270,20 +297,6 @@ function eachSample( test )
   ];
   test.identical( got, expected );
 
-  test.case = 'simplest, leftToRight : 1, unroll, Array';
-  // var got = _.eachSample(
-  //   {
-  //     sets : [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ]
-  //   });
-  // var expected =
-  // [
-  //   [ 0, 2 ], [ 1, 2 ],
-  //   [ 0, 3 ], [ 1, 3 ],
-  // ];
-  // test.identical( got, expected );
-  // test.isNot( _.unrollIs( got ) );
-  // test.is( _.arrayIs( got ) );
-
   var got = _.eachSample(
     {
       sets : [ _.argumentsArrayMake( [ 0, 1 ] ), _.argumentsArrayMake( [ 2, 3 ] ) ]
@@ -301,6 +314,20 @@ function eachSample( test )
       sets : [ new Array( [ 0, 1 ] ), new Array( [ 2, 3 ] ) ]
     });
   var expected = [ [ [ 0, 1 ], [ 2, 3 ] ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
+  var a = _.arrayFrom( new Float32Array( [ 0, 1 ] ) );
+  var b = _.arrayFrom( new Float32Array( [ 2, 3 ] ) );
+  var got = _.eachSample(
+    {
+      sets : [ a, b ]
+    });
+  var expected =
+  [
+    [ 0, 2 ], [ 1, 2 ],
+    [ 0, 3 ], [ 1, 3 ],
+  ];
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
 
@@ -426,6 +453,17 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.primitiveIs( got ) );
 
+  var a = _.arrayFrom( new Float32Array( [ 0, 1 ] ) );
+  var b = _.arrayFrom( new Float32Array( [ 2, 3 ] ) );
+  var got = _.eachSample(
+    {
+      sets : [ a, b ],
+      result : 0,
+    });
+  var expected = 3;
+  test.identical( got, expected );
+  test.is( _.primitiveIs( got ) );
+
   /* - */
 
   if( !Config.debug )
@@ -460,25 +498,6 @@ function eachSample( test )
 
 function eachSampleExperiment( test )
 {
-  // o.onEach.call( o.sample, o.sample, index );
-  var onEach = function( s1, s2, i )
-  {
-    return s1[ i ] = i + 10;
-  }
-  debugger;
-  var got = _.eachSample
-  ({
-    sets : [ [ 0, 1 ], [ 5, 6 ] ],
-    onEach : onEach,
-  });
-  debugger;
-  var expected =
-  [
-    [ 10, 5 ],[ 1, 11 ],
-    [ 10, 6 ],[ 1, 11 ]
-  ];
-  test.identical( got, expected );
-
   var got = _.eachSample(
     {
       sets : [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ]
@@ -2306,6 +2325,29 @@ function entityFilter( test )
   var got = _.entityFilter( src, callback );
   test.identical( got, {} );
   test.notIdentical( got, { a : { b : { '3' : 9 } } } );
+
+  test.case = 'onEach is objectLike - routine, entry nested to next level';
+  var onEach = function( e )
+  {
+    return true;
+  }
+  var callback = { '3' : onEach };
+  var src = { a : { '3' : 9 } };
+  var got = _.entityFilter( src, callback );
+  test.identical( got, {} );
+  test.notIdentical( got, { a : { '3' : 9 } } );
+
+  test.case = 'onEach is objectLike - condition, identical entry';
+  var onEach = function( e )
+  {
+    return true;
+  }
+  var callback = { '3' : onEach };
+  var src = { a : { '3' : onEach } };
+  var got = _.entityFilter( src, callback );
+  test.identical( got, { a : { '3' : onEach } } );
+  test.notIdentical( got, {} );
+
   /* - */
 
   if( !Config.debug )
@@ -2406,12 +2448,49 @@ function entityFilterDeep( test )
   test.identical( got, { a : { '3' : 9 }, c : { '3' : 9 }, d : { '3' : 9 } } );
 
   test.case = 'onEach is objectLike - condition, entry nested to next levels';
-  // Dmytro: _mapSatisfy works uncorrect, and if onEach is routine recursion is not realized
-  // so it's only one failed test is created
   var callback = { '3' : 9 };
   var src = { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } };
   var got = _.entityFilterDeep( src, callback );
-  test.identical( got, src );
+  test.identical( got, {} );
+  test.notIdentical( got, { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } } );
+
+  test.case = 'onEach is objectLike - routine, entry nested to next level';
+  var onEach = function( e )
+  {
+    return true;
+  }
+  var callback = { '3' : onEach };
+  var src = { a : { b : { '3' : 9 } } };
+  var got = _.entityFilterDeep( src, callback );
+  test.identical( got, { a : { b : { '3' : 9 } } } );
+  test.notIdentical( got, {} );
+
+  test.case = 'onEach is objectLike - routine, entry nested to next level';
+  var onEach = function( e )
+  {
+    for( let k in e )
+    {
+      e[ k ] = e[ k ] + 5;
+      if( e[ k ] !== 10 )
+      return false;
+    }
+    return true;
+  }
+  var callback = { '3' : onEach };
+  var src = { a : { b : 5, c : 5, d : 5 } };
+  var got = _.entityFilterDeep( src, callback );
+  test.identical( got, { a : { b : 5, c : 5, d : 5 } } );
+  test.notIdentical( got, {} );
+
+  test.case = 'onEach is objectLike - condition, identical entry';
+  var onEach = function( e )
+  {
+    return true;
+  }
+  var callback = { '3' : onEach };
+  var src = { a : { '3' : onEach } };
+  var got = _.entityFilterDeep( src, callback );
+  test.identical( got, { a : { '3' : onEach } } );
   test.notIdentical( got, {} );
 
   /* - */
@@ -2431,21 +2510,6 @@ function entityFilterDeep( test )
   test.case = 'src is not arrayLike or mapLike';
   test.shouldThrowErrorSync( () => _.entityFilterDeep( undefined, callback1 ) );
 }
-
-//
-
-function entityFilterDeepExperiment( test )
-{
-  test.case = 'onEach is objectLike - condition, deep entry';
-  var callback = { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } };
-  var src = { a : { a : { b : { c : { '3' : 9, '4' : 6 } } } } };
-  debugger;
-  var got = _.entityFilterDeep( src, callback );
-  test.identical( got, src );
-  test.notIdentical( got, {} );
-}
-
-entityFilterDeepExperiment.experimental = 1;
 
 //
 
@@ -3098,7 +3162,6 @@ var Self =
     entityMap,
     entityFilter,
     entityFilterDeep,
-    entityFilterDeepExperiment,
 
     enityExtend,
 

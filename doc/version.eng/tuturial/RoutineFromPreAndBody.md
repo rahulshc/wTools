@@ -194,7 +194,7 @@ Run `Name.js` in the` NodeJS` interpreter, enter command `node Name.js`. Compare
   <summary><u>Command output <code>node Name.js</code></u></summary>
 
 ```
-[user@user ~]$ node Name.js
+$ node Name.js
 File
 File.js
 ```
@@ -219,7 +219,7 @@ After saving the file, repeat the command `node Name.js`.
   <summary><u>Command output <code>node Name.js</code></u></summary>
 
 ```
-[user@user ~]$ node Name.js
+$ node Name.js
 name
 ```
 
@@ -245,7 +245,7 @@ After saving the file, run the execution of file `Name.js`. Compare the console 
   <summary><u>Console output <code>node Name.js</code></u></summary>
 
 ```
-[user@user ~]$ node Name.js
+$ node Name.js
 nameFull
 ```
 
