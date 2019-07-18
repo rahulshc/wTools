@@ -3,7 +3,7 @@ about :
 
   name : 'wTools'
   description : 'Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind'
-  version : '0.8.425'
+  version : '0.8.500'
   enabled : 1
   interpreters :
   - nodejs >= 6.0.0
@@ -31,7 +31,7 @@ about :
     name : 'Ihor O.'
     email : 'iostashvxi@gmail.com'
 
-  npm.name : 'wTools'
+  npm.name : 'wtools.experiment'
   npm.dependencies : []
   npm.devDependencies :
     wFiles : ''
@@ -50,8 +50,8 @@ path :
   repository : git+https:///github.com/Wandalen/wTools.git
   bugtracker : https:///github.com/Wandalen/wTools/issues
   entry : proto/dwtools/abase/Layer2.s
-  npm.entry : debug/dwtools/abase/Layer2.s
-  npm.files : debug
+  npm.entry : ../proto/dwtools/abase/Layer2.s
+  npm.files : ../proto
 
 step :
 
@@ -75,6 +75,9 @@ step :
     tar : 0
     criterion :
       content : 'npm'
+
+  npm.publish :
+    shell : npm publish
 
 build :
 
@@ -100,7 +103,8 @@ build :
       export : 1
     steps :
       # - build::debug.raw
-      - step::npm.export
+      # - step::npm.export
+      - step::npm.publish
 
   export :
     criterion :
