@@ -46,7 +46,7 @@ defaults
 ### Рутина, що не змінює налаштування за замовчуванням
 
 <details>
-    <summary><u>Код файла <code>DefaultsInRoutine.json</code></u></summary>
+    <summary><u>Код файла <code>DefaultsInRoutine.js</code></u></summary>
 
 ```js
 let _ = require( 'wTools' );
@@ -134,7 +134,7 @@ baz
 Для збільшення гнучкості, рутини можуть встановлювати налаштування за замовчуванням з переданих аргументів. Така рутина може приймати готову мапу опцій, або перетворювати передані аргументи в мапу опцій.
 
 <details>
-    <summary><u>Код файла <code>DefaultsInRoutine.json</code></u></summary>
+    <summary><u>Код файла <code>DefaultsInRoutine.js</code></u></summary>
 
 ```js
 let _ = require( 'wTools' );
@@ -211,7 +211,7 @@ mapKeys.defaults =
 Опція `own` відповідає за пошук власних (не наслідуваних) ключів, а опція `enumerable` встановлює можливість фільтрації ключів в масиві.
 
 <details>
-    <summary><u>Код файла <code>DefaultsInRoutine.json</code></u></summary>
+    <summary><u>Код файла <code>DefaultsInRoutine.js</code></u></summary>
 
 ```js
 let _ = require( 'wTools' );
