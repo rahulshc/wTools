@@ -82,6 +82,37 @@ function multipleAll( dsts )
 // entity iterator
 // --
 
+/**
+ * Routine eachSample() accepts the option {-o.sets-} which contains scalar or vector
+ * elements. Routine returns an array of vectors each of which is unique combination
+ * of vector elements passed in option {-o.sets-}.
+ *
+ * Routine eachSample() accepts the map option {-o-} or two arguments. If map options
+ * is used, all parameters can be set. If passed two arguments, first of them is ( sets )
+ * and second is onEach.
+ *
+ * @param {Array|Map} sets - Container with vector and scalar elements to combine new vectors.
+ * @param {Routine|Null} onEach - Callback. Should not change element of {-sets-}.
+ * @param {Array|Map} sample - Container for new vectors. If not passed, routine create empty container.
+ * @param {boolean} leftToRight - Sets the direction of combining. 1 - left to rigth, 0 - rigth to left. By default is 1.
+ * @param {boolean} result - Set retuned value. 1 - array with verctors, 0 - index of last element. By default is 1.
+ *
+ * @example
+ * //returns  [ [ 0, 2 ], [ 1, 2 ],
+ *              [ 0, 3 ], [ 1, 3 ] ];
+ * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ] });
+ *
+ *
+ * @function eachSample
+ * @returns {Array} Returns array contained  check function.
+ * @throws {exception} If ( arguments.length ) is less then one or more then two.
+ * @throws {exception} If( onEach ) is not a Routine or null.
+ * @throws {exception} If( o.sets ) is not array or objectLike.
+ * @throws {exception} If ( sets ) is mapLike and ( onEach ) not passed.
+ * @throws {exception} If( o.base ) and ( o.add) is undefined.
+ * @memberof wTools
+ */
+
 function eachSample( o )
 {
 
