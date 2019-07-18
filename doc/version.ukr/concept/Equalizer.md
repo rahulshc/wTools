@@ -7,24 +7,24 @@
 ### Приклад
 
 ```js
-var dst = [ { val : 3 }, {}, { val : 0 }, 1, 'str' ];
+var dst = [ { val : 3 }, { val : 5 }, { val : 0 } ];
 
 function equalize( e, arrEl )
 {
-  return typeof e === typeof arrEl;
+  return e.val === arrEl.val;
 }
 
-var result = _.arrayRemoveElement( dst, {}, equalize );
+var result = _.arrayRemoveElement( dst, { val : 5 }, equalize );
 
-console.log( result );  // returns [ 1, 'str' ]
+console.log( result );  // returns [ { val : 3 }, { val : 0 } ]
 ```
 
-Рутина `arrayRemoveElement` виконує видалення елементів з масиву `dst`, що ідентичні другому аргументу `{}`. При порівнянні однієї мапи `{}` з іншою такою ж `{}` результатом буде `false` і рутина не видалить елемент. Тому, в рядку
+Рутина `arrayRemoveElement` видаляє з масиву `dst` мапи, що містять пару `ключ-значення` `val : 5`. Для того, щоб здіснити це видалення, в рядку
 
 ```js
-var result = _.arrayRemoveElement( dst, {}, equalize );
+var result = _.arrayRemoveElement( dst, { val : 5 }, equalize );
 ```
 
-використовується еквалайзер `equalize`. Еквалайзер `equalize` викликається для кожної пари `елемент масиву - елемент порівняння` та порівнює їх типи. Якщо в еквалайзері співпадають типи елементу масива та елемента порівняння, то еквалайзер повертає `true` і рутина `arrayRemoveElement` видаляє цей елемент. Таким чином, з масиву `dst` буде видалено всі елементи, що мають тип `Object` - `{ val : 3 }, {}, { val : 0 }`.
+використовується еквалайзер `equalize`. Еквалайзер `equalize` викликається для кожної пари `елемент масиву - елемент порівняння` та порівнює їх значення за ключем `val`. Якщо в еквалайзері співпадають значення елементу масива та елемента порівняння, то еквалайзер повертає `true` і рутина `arrayRemoveElement` видаляє мапу з масиву. Таким чином, з масиву `dst` буде видалено один елемент `{ val : 5 }`.
 
 [Повернутись до змісту](../README.md#Концепції)
