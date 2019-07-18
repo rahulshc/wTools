@@ -146,6 +146,7 @@ path:
     path:
       - ../proto
       - ../proto/dwtools
+      - ../proto/dwtools/-Tools.s
       - ../proto/dwtools/Tools.s
       - ../proto/dwtools/abase
       - ../proto/dwtools/abase/Layer0.s
@@ -846,6 +847,7 @@ module:
         path:
           - proto
           - proto/dwtools
+          - proto/dwtools/-Tools.s
           - proto/dwtools/Tools.s
           - proto/dwtools/abase
           - proto/dwtools/abase/Layer0.s
