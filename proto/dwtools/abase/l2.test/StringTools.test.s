@@ -1891,7 +1891,7 @@ function strUnicodeEscape( test )
 //--
 
 /* qqq : uncover it please
-Dmytro : test routines strStrip() and strStripLeft() uncovered*/
+Dmytro : test routines strStrip() and strStripLeft(), strStripRight uncovered */
 
 function strStrip( test )
 {
@@ -2277,12 +2277,10 @@ function strStripRight( test )
   test.shouldThrowErrorSync( () => _.strStripRight( src ) );
 }
 
-
 //
 
 function strRemoveAllSpaces( test )
 {
-
   test.case = 'removes the spaces from the borders';
   var got = _.strRemoveAllSpaces( '  abcdef  ' );
   var expected = 'abcdef';
@@ -6672,7 +6670,6 @@ function strSplit( test )
   test.identical( got, expected );
 
   test.case = 'extra quote as delimeter, s:1 q:1 pe:1 pd:1 pq:0 iq:1';
-
   var o =
   {
     stripping : 0,
@@ -6690,7 +6687,6 @@ function strSplit( test )
   test.identical( got, expected );
 
   test.case = 'extra quote as delimeter, s:1 q:1 pe:1 pd:1 pq:1 iq:0';
-
   var o =
   {
     stripping : 0,
@@ -6708,7 +6704,6 @@ function strSplit( test )
   test.identical( got, expected );
 
   test.case = 'extra quote as delimeter, s:1 q:1 pe:1 pd:1 pq:0 iq:0';
-
   var o =
   {
     stripping : 0,
@@ -6731,11 +6726,84 @@ function strSplit( test )
 
 }
 
-// //
 //
+
+function strSplitCamel( test )
+{
+  test.case = 'without uppercase character';
+  var src = '';
+  var got = _.strSplitCamel( src );
+  test.identical( got, [ '' ] );
+
+  var src = 'abc';
+  var got = _.strSplitCamel( src );
+  test.identical( got, [ 'abc' ] );
+
+  var src = '"a" "b" "c"';
+  var got = _.strSplitCamel( src );
+  test.identical( got, [ '"a" "b" "c"' ] );
+
+  test.case = 'src in camelCase';
+  var src = 'heLloWorLd';
+  var got = _.strSplitCamel( src );
+  test.identical( got, [ 'he', 'llo', 'wor', 'ld' ] );
+
+  test.case = 'without uppercase character, special symbols';
+  var src = '"a" \n "b" \r "c"';
+  var got = _.strSplitCamel( src );
+  test.identical( got, [ '"a" \n "b" \r "c"' ] );
+
+  test.case = 'str has uppercase';
+  var src = 'aAb Bc C Dd';
+  var got = _.strSplitCamel( src );
+  test.identical( got, [ 'a', 'ab ', 'bc ', 'c ', 'dd' ] );
+
+  test.case = 'str has uppercase, special symbols';
+  var src = 'aAb \r Bc \n C Dd';
+  var got = _.strSplitCamel( src );
+  test.identical( got, [ 'a', 'ab \r ', 'bc \n ', 'c ', 'dd' ] );
+
+  var src = '\n Ab \r Bc \n C Dd';
+  var got = _.strSplitCamel( src );
+  test.identical( got, [ '\n ', 'ab \r ', 'bc \n ', 'c ', 'dd' ] );
+
+  test.case = 'one character has uppercase';
+  var src = 'A';
+  var got = _.strSplitCamel( src );
+  test.identical( got, [ '', 'a' ] );
+
+  test.case = 'all character has uppercase';
+  var src = 'ABCDE';
+  var got = _.strSplitCamel( src );
+  test.identical( got, [ '', 'a', 'b', 'c', 'd', 'e' ] );
+
+  test.case = 'a few arguments';
+  var got = _.strSplitCamel( 'AaB', 'b', 'c' );
+  test.identical( got, [ '', 'aa', 'b' ] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( () => _.strSplitCamel() );
+
+  test.case = 'argument is wrong';
+  test.shouldThrowError( () => _.strSplitCamel( [] ) );
+
+  test.case = 'argument is wrong';
+  test.shouldThrowError( () => _.strSplitCamel( 13 ) );
+
+  test.case = 'invalid option type';
+  test.shouldThrowError( () => _.strSplitCamel( { src : null } ) );
+
+  test.case = 'invalid option defined';
+  test.shouldThrowError( () => _.strSplitCamel( [ { src : 'word' } ] ) );
+}
+
+//
+
 // function strSplitNaive( test )
 // {
-//
 //   test.case = 'returns an array of strings';
 //   debugger;
 //   var got = _.strSplitNaive( 'test test test' );
@@ -10382,6 +10450,8 @@ var Self =
     strSplitFast,
     strSplitFastRegexp,
     strSplit,
+
+    strSplitCamel,
 
     // strSplitNaive,
 
