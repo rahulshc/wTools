@@ -369,7 +369,7 @@ function isIncluded( src )
 var Proto =
 {
 
-  /* qqq : comment out maybe !!! */
+  /* xxx qqq : comment out maybe !!! */
 
   /*ttt*/usePath,
   /*ttt*/usePathGlobally,

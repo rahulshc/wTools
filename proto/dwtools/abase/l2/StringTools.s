@@ -538,8 +538,6 @@ function strRemove( srcStr, insStr )
 
 //
 
-/* qqq : begin could be regexp + coverage */
-
 function strReplaceBegin( src, begin, ins )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
@@ -556,7 +554,6 @@ function strReplaceBegin( src, begin, ins )
   {
     let prefix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( prefix ) );
-    //result[ k ] = prefix + result[ k ].substr( begin[ j ].length, result[ k ].length );
     result[ k ] = prefix + _.strRemoveBegin( result[ k ] , begin[ j ] );
     break;
   }
@@ -583,11 +580,8 @@ function strReplaceEnd( src, end, ins )
   for( let j = 0, endLength = end.length; j < endLength; j++ )
   if( _.strEnds( result[ k ], end[ j ] ) )
   {
-    logger.log( result[ k ] , end[ j ] )
-    logger.log('It ends')
     let postfix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( postfix ) );
-    // result[ k ] = result[ k ].substring( 0, result[ k ].length-end[ j ].length ) + postfix;
     result[ k ] = _.strRemoveEnd( result[ k ] , end[ j ] ) + postfix;
   }
 
