@@ -6277,6 +6277,8 @@ function strStrip( test )
   var expected = 'jjkk';
   test.identical( got, expected );
 
+  /* - */
+
   if( !Config.debug )
   return;
 
@@ -6309,86 +6311,72 @@ function strStrip( test )
 
 function strStripLeft( test )
 {
-  var cases =
+  test.case = 'defaults, src is a string';
+
+  var got = _.strStripLeft( '   a   ' );
+  test.identical( got, 'a   ' );
+
+  var got = _.strStripLeft( ' \0 a \0 ' );
+  test.identical( got, 'a \u0000 ' );
+
+  var got = _.strStripLeft( '\r\v a \v\r\n\t\f' );
+  test.identical( got, 'a \u000b\r' );
+
+  var got = _.strStripLeft( '\0 hello world \0' );
+  test.identical( got, 'hello world \u0000' );
+
+  /* - */
+
+  test.case = 'defaults, src is an array';
+  var got = _.strStripLeft
+  ({
+    src :
+    [
+      '',
+      'a',
+      '   a   ',
+      ' \0 a \0 ',
+      '\r\n\t\f\v a \v\r'
+    ],
+  });
+  var expected =
   [
-    { description : 'defaults, src is a string' },
-    { src : '   a   ', expected : 'a   ' },
-    { src : ' \0 a \0 ', expected : 'a \u0000 ' },
-    { src : '\r\v a \v\r\n\t\f', expected : 'a \u000b\r' },
-    { src : '\0 hello world \0', expected : 'hello world \u0000' },
+    '',
+    'a',
+    'a   ',
+    'a \u0000 ',
+    'a \u000b\r'
+  ];
+  test.identical( got, expected );
 
-    {
-      description : 'defaults, src is an array',
-      src :
-      [
-        '',
-        'a',
-        '   a   ',
-        ' \0 a \0 ',
-        '\r\n\t\f\v a \v\r'
-      ],
-      expected :
-      [
-        '',
-        'a',
-        'a   ',
-        'a \u0000 ',
-        'a \u000b\r'
-      ]
-    },
-    {
-      description : 'invalid type',
-      args : 0,
-      err : true
-    },
-    {
-      description : 'too many arguments',
-      args : [ 'a', '' ],
-      err : true
-    },
-    {
-      description : 'null argument',
-      args : [ null ],
-      err : true
-    },
-    {
-      description : 'NaN arguments',
-      args : [ NaN ],
-      err : true
-    },
-    {
-      description : 'one string has invalid type',
-      args : [ [ 'a', 0, 'b' ] ],
-      err : true
-    },
+  /* - */
 
-  ]
+  if( !Config.debug )
+  return;
 
-  /**/
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strStripLeft() );
 
-  for( var i = 0; i < cases.length; i++ )
-  {
-    var c = cases[ i ];
+  test.case = 'invalid type';
+  test.shouldThrowErrorSync( () => _.strStripLeft( 10 ) );
+  test.shouldThrowErrorSync( () => _.strStripLeft( null ) );
+  test.shouldThrowErrorSync( () => _.strStripLeft( NaN ) );
 
-    if( c.description )
-    test.case = c.description;
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.strStripLeft( 'a', '' ) );
 
-    if( c.err )
-    test.shouldThrowError( () => _.strStripLeft.apply( _, _.arrayAs( c.args ) ) );
+  test.case = 'one string has invalid type';
+  test.shouldThrowErrorSync( () => _.strStripLeft( [ 'a', 0, 'b' ] ) );
 
-    if( c.src )
-    {
-      var identical = test.identical( _.strStripLeft( c.src ), c.expected );
-      if( !identical )
-      {
-        debugger;
-        test.identical( _.strStripLeft( c.src ), c.expected )
-        debugger;
-      }
-    }
+  test.case = 'stripper has invalid type';
+  test.shouldThrowErrorSync( () => _.strStripLeft( { src : 'a', stripper : 0 } ) );
+  test.shouldThrowErrorSync( () => _.strStripLeft( { src : 'a', stripper : [ 'a', 0 ] } ) );
+  test.shouldThrowErrorSync( () => _.strStripLeft( { src : [ 'a', 'b' ], stripper : null } ) );
+  test.shouldThrowErrorSync( () => _.strStripLeft( { src : [ 'a', 'b' ], stripper : NaN } ) );
 
-  }
-
+  test.case = 'invalid property defined';
+  var src = { src : ' word ', delimeter : ' ', left : 1 };
+  test.shouldThrowErrorSync( () => _.strStripLeft( src ) );
 }
 
 //
