@@ -6063,341 +6063,246 @@ function strSplitStrNumber( test )
 
 //
 
-function strStrip( test )
-{
-
-  test.case = 'simple string, default options';
-  var got = _.strStrip( '\nabc  ' );
-  var expected = 'abc';
-  test.identical( got, expected );
-
-  test.case = 'arguments as map';
-  var got = _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } );
-  var expected = 'b';
-  test.identical( got, expected );
-
-  test.case = 'nothing to remove';
-  var got = _.strStrip( 'test' );
-  var expected = 'test';
-  test.identical( got, expected );
-
-  test.case = 'removes whitespace from both ends of a string';
-  var got = _.strStrip( ' test ' );
-  var expected = 'test';
-  test.identical( got, expected );
-
-  test.case = 'Empty array';
-  var got = _.strStrip( [] );
-  var expected = [];
-  test.identical( got, expected );
-
-  test.case = 'Array with single string';
-  var got = _.strStrip( [ '' ] );
-  var expected = [ '' ];
-  test.identical( got, expected );
-
-  test.case = 'vectorized input';
-  var got = _.strStrip( [ '\nab  ', ' cd\s', ' ef  ' ] );
-  var expected = [ 'ab', 'cd', 'ef' ];
-  test.identical( got, expected );
-
-  test.case = 'vectorized input - map argument';
-  var got = _.strStrip( { src : [ '\nab  ', ' cd\s', ' ef  ' ], stripper : [ 'a', 'f' ] }  );
-  var expected = [ 'b', 'cd', 'f' ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strStrip( '1', '2', '3' );
-  });
-
-  test.case = 'invalid argument type';
-  test.shouldThrowError( function()
-  {
-    _.strStrip( 123 );
-  });
-
-  test.case = 'invalid property type';
-  test.shouldThrowError( function()
-  {
-    _.strStrip( { src : ' word ', delimeter : 0 } );
-  });
-
-  test.case = 'invalid property defined';
-  test.shouldThrowError( function()
-  {
-    _.strStrip( { src : ' word ', delimeter : ' ', left : 1 } );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strStrip();
-  });
-
-  test.case = 'null argument';
-  test.shouldThrowError( function( )
-  {
-    _.strStrip( null );
-  } );
-
-  test.case = 'NaN argument';
-  test.shouldThrowError( function( )
-  {
-    _.strStrip( NaN );
-  } );
-
-  test.case = 'too many arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strStrip( ' test ', 'redundant argument' );
-  } );
-
-}
-
-//
-
 /* qqq : uncover it please */
 
 function strStrip( test )
 {
-  var cases =
+  test.case = 'defaults, src is a string';
+
+  var got = _.strStrip( '' );
+  test.identical( got, '' );
+
+  var got = _.strStrip( 'a' );
+  test.identical( got, 'a' );
+
+  var got = _.strStrip( '   a   ' );
+  test.identical( got, 'a' );
+
+  var got = _.strStrip( '\0 a \0' );
+  test.identical( got, 'a' );
+
+  var got = _.strStrip( '\r\n\t\f\v a \v\r\n\t\f' );
+  test.identical( got, 'a' );
+
+  var got = _.strStrip( '\r\n\t\f\v hello world \v\r\n\t\f' );
+  test.identical( got, 'hello world' );
+
+  var got = _.strStrip( '\nabc  ' );
+  test.identical( got, 'abc' );
+
+  /* - */
+
+  test.case = 'stripper contains regexp special symbols';
+
+  var got = _.strStrip( { src : '\\s\\s', stripper : '\\s' } );
+  test.identical( got, '' );
+
+  var got = _.strStrip( { src : '(x)(x)', stripper : '(x)' } );
+  test.identical( got, '' );
+
+  var got = _.strStrip( { src : 'abc', stripper : '[abc]' } );
+  test.identical( got, 'abc' );
+
+  var got = _.strStrip( { src : '[abc]', stripper : '[abc]' } );
+  test.identical( got, '' );
+
+  var got = _.strStrip( { src : 'abc', stripper : '[^abc]' } );
+  test.identical( got, 'abc' );
+
+  var got = _.strStrip( { src : 'abc', stripper : '[a-c]' } );
+  test.identical( got, 'abc' );
+
+  var got = _.strStrip( { src : '[a-c]', stripper : '[a-c]' } );
+  test.identical( got, '' );
+
+  var got = _.strStrip( { src : 'ab(a|b)', stripper : '(a|b)' } );
+  test.identical( got, 'ab' );
+
+  var got = _.strStrip( { src : 'gp', stripper : 'a+' } );
+  test.identical( got, 'gp' );
+
+  var got = _.strStrip( { src : 'hp', stripper : 'b{3}' } );
+  test.identical( got, 'hp' );
+
+  var got = _.strStrip( { src : 'abc', stripper : '^[ab]c$' } );
+  test.identical( got, 'abc' );
+
+  /* - */
+
+  test.case = 'stripper is regexp';
+
+  var got = _.strStrip( { src : ' abc', stripper : /[abc]/ } );
+  test.identical( got, ' bc' );
+
+  var got = _.strStrip( { src : 'abc', stripper : /\D/ } );
+  test.identical( got, 'bc' );
+
+  var got = _.strStrip( { src : 'abc', stripper : /[abc]$/ } );
+  test.identical( got, 'ab' );
+
+  var got = _.strStrip( { src : 'abc', stripper : /abc/ } );
+  test.identical( got, '' );
+
+  var got = _.strStrip( { src : 'hello', stripper : /lo?/ } );
+  test.identical( got, 'helo' );
+
+  /* - */
+
+  test.case = 'Empty array';
+  var got = _.strStrip( [] );
+  test.identical( got, [] );
+
+  test.case = 'Array with single string';
+  var got = _.strStrip( [ '' ] );
+  test.identical( got, [ '' ] );
+
+  test.case = 'defaults, src is an array';
+  var got = _.strStrip
+  ([
+    '',
+    'a',
+    '   a   ',
+    ' \0 a \0 ',
+    '\r\n\t\f\v a \v\r\n\t\f'
+  ]);
+  var expected =
   [
-    { description : 'defaults, src is a string' },
-    { src : '', expected : '' },
-    { src : 'a', expected : 'a' },
-    { src : '   a   ', expected : 'a' },
-    { src : ' \0 a \0 ', expected : 'a' },
-    { src : '\r\n\t\f\v a \v\r\n\t\f', expected : 'a' },
-    { src : '\r\n\t\f\v hello world \v\r\n\t\f', expected : 'hello world' },
+    '',
+    'a',
+    'a',
+    'a',
+    'a'
+  ];
+  test.identical( got, expected );
 
-    { description : 'stripper contains regexp special symbols' },
-    { src : { src : '\\s\\s', stripper : '\\s' } , expected : '' },
-    { src : { src : '(x)(x)', stripper : '(x)' } , expected : '' },
-    { src : { src : 'abc', stripper : '[abc]' } , expected : 'abc' },
-    { src : { src : '[abc]', stripper : '[abc]' } , expected : '' },
-    { src : { src : 'abc', stripper : '[^abc]' } , expected : 'abc' },
-    { src : { src : 'abc', stripper : '[a-c]' } , expected : 'abc' },
-    { src : { src : '[a-c]', stripper : '[a-c]' } , expected : '' },
-    { src : { src : 'ab(a|b)', stripper : '(a|b)' } , expected : 'ab' },
-    { src : { src : 'gp', stripper : 'a+' } , expected : 'gp' },
-    { src : { src : 'hp', stripper : 'b{3}' } , expected : 'hp' },
-    { src : { src : 'acbc', stripper : '^[ab]c$' } , expected : 'acbc' },
+  test.case = 'src array of strings, custom stripper';
+  var got = _.strStrip
+  ({
+    src :
+    [
+      '',
+      'a',
+      ' a ',
+      '  a  ',
+      ' \n ',
+      ' a b c ',
+    ],
+    stripper : ' '
+  });
+  var expected =
+  [
+    '',
+    'a',
+    'a',
+    'a',
+    '\n',
+    'abc'
+  ];
+  test.identical( got, expected );
 
-    { description : 'stripper is regexp' },
-    { src : { src : ' abc', stripper : /[abc]/ } , expected : ' bc' },
-    { src : { src : 'abc', stripper : /\D/ } , expected : 'bc' },
-    { src : { src : 'abc', stripper : /[abc]$/ } , expected : 'ab' },
-    { src : { src : 'abc', stripper : /abc/ } , expected : '' },
-    { src : { src : 'hello', stripper : /lo?/ } , expected : 'helo' },
+  test.case = 'src array of strings, custom stripper as regexp';
+  var got = _.strStrip
+  ({
+    src :
+    [
+      'x',
+      'xx',
+      'axbxc',
+      'x\nx'
+    ],
+    stripper : new RegExp( 'x' )
+  });
+  var expected =
+  [
+    '',
+    'x',
+    'abxc',
+    '\nx'
+  ];
+  test.identical( got, expected );
 
-    {
-      description : 'defaults, src is an array',
-      src :
-      [
-        '',
-        'a',
-        '   a   ',
-        ' \0 a \0 ',
-        '\r\n\t\f\v a \v\r\n\t\f'
-      ],
-      expected :
-      [
-        '',
-        'a',
-        'a',
-        'a',
-        'a'
-      ]
-    },
-    {
-      description : 'src array of strings, custom stripper',
-      src :
-      {
-        src :
-        [
-          '',
-          'a',
-          ' a ',
-          '  a  ',
-          ' \n ',
-          ' a b c ',
-        ],
-        stripper : ' '
-      },
-      expected :
-      [
-        '',
-        'a',
-        'a',
-        'a',
-        '\n',
-        'abc'
-      ]
-    },
-    {
-      description : 'src array of strings, custom stripper as regexp',
-      src :
-      {
-        src :
-        [
-          'x',
-          'xx',
-          'axbxc',
-          'x\nx'
-        ],
-        stripper : new RegExp( 'x' ),
-      },
-      expected :
-      [
-        '',
-        'x',
-        'abxc',
-        '\nx'
-      ]
-    },
-    {
-      description : 'src array of strings, custom stripper as regexp',
-      src :
-      {
-        src :
-        [
-          'abc',
-          'acb',
-          'bac',
-          'cab',
-        ],
-        stripper : /abc|[abc]/,
-      },
-      expected :
-      [
-        '',
-        'cb',
-        'ac',
-        'ab'
-      ]
-    },
-    {
-      description : 'src array of strings, custom stripper as regexp',
-      src :
-      {
-        src :
-        [
-          'abc',
-          'acb',
-          'bac',
-          'bca',
-          'cba',
-          'cab',
-        ],
-        stripper : /[abc]/g,
-      },
-      expected : [ '','','', '', '', '' ]
-    },
-    {
-      description : 'src string, stripper array of strings',
-      src :
-      {
-        src : 'xxyy',
-        stripper :
-        [
-          'x',
-          'y',
-        ]
-      },
-      expected : ''
-    },
-    {
-      src :
-      {
-        src : 'jjkk',
-        stripper :
-        [
-          'x',
-          'y',
-        ]
-      },
-      expected : 'jjkk'
-    },
-    {
-      description : 'invalid type',
-      args : 0,
-      err : true
-    },
-    {
-      description : 'too many arguments',
-      args : [ 'a', '' ],
-      err : true
-    },
-    {
-      description : 'null argument',
-      args : [ null ],
-      err : true
-    },
-    {
-      description : 'NaN arguments',
-      args : [ NaN ],
-      err : true
-    },
-    {
-      description : 'one string has invalid type',
-      args : [ [ 'a', 0, 'b' ] ],
-      err : true
-    },
-    {
-      description : 'stripper has invalid type',
-      args : [ { src : 'a', stripper : 0 } ],
-      err : true
-    },
-    {
-      description : 'stripper has invalid type',
-      args : [ { src : 'a', stripper : [ 'a', 0 ] } ],
-      err : true
-    },
-    {
-      description : 'null stripper',
-      args : [ { src : [ 'a', 'b' ], stripper : null } ],
-      err : true
-    },
-    {
-      description : 'NaN stripper',
-      args : [ { src : [ 'a', 'b' ], stripper : NaN } ],
-      err : true
-    },
+  test.case = 'src array of strings, custom stripper as regexp';
+  var got = _.strStrip
+  ({
+    src :
+    [
+      'abc',
+      'acb',
+      'bac',
+      'cab',
+    ],
+    stripper : /abc|[abc]/
+  });
+  var expected =
+  [
+    '',
+    'cb',
+    'ac',
+    'ab'
+  ];
+  test.identical( got, expected );
 
-  ]
+  test.case = 'src array of strings, custom stripper as regexp';
+  var got = _.strStrip
+  ({
+    src :
+    [
+      'abc',
+      'acb',
+      'bac',
+      'bca',
+      'cba',
+      'cab',
+    ],
+    stripper : /[abc]/g
+  });
+  var expected = [ '','','', '', '', '' ];
+  test.identical( got, expected );
 
-  /**/
+  test.case = 'src string, stripper array of strings';
+  var got = _.strStrip
+  ({
+    src : 'xxyy',
+    stripper : [ 'x', 'y', ]
+  });
+  var expected = '';
+  test.identical( got, expected );
 
-  for( var i = 0; i < cases.length; i++ )
-  {
-    var c = cases[ i ];
+  test.case = 'src string, stripper array of strings';
+  var got = _.strStrip
+  ({
+    src : 'jjkk',
+    stripper : [ 'x', 'y', ]
+  });
+  var expected = 'jjkk';
+  test.identical( got, expected );
 
-    if( c.description )
-    test.case = c.description;
+  if( !Config.debug )
+  return;
 
-    if( c.err )
-    test.shouldThrowError( () => _.strStrip.apply( _, _.arrayAs( c.args ) ) );
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strStrip() );
 
-    if( c.src )
-    {
-      var identical = test.identical( _.strStrip( c.src ), c.expected );
-      if( !identical )
-      {
-        debugger;
-        test.identical( _.strStrip( c.src ), c.expected )
-        debugger;
-      }
-    }
+  test.case = 'invalid type';
+  test.shouldThrowErrorSync( () => _.strStrip( 10 ) );
+  test.shouldThrowErrorSync( () => _.strStrip( null ) );
+  test.shouldThrowErrorSync( () => _.strStrip( NaN ) );
 
-  }
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.strStrip( 'a', '' ) );
 
+  test.case = 'one string has invalid type';
+  test.shouldThrowErrorSync( () => _.strStrip( [ 'a', 0, 'b' ] ) );
+
+  test.case = 'stripper has invalid type';
+  test.shouldThrowErrorSync( () => _.strStrip( { src : 'a', stripper : 0 } ) );
+  test.shouldThrowErrorSync( () => _.strStrip( { src : 'a', stripper : [ 'a', 0 ] } ) );
+  test.shouldThrowErrorSync( () => _.strStrip( { src : [ 'a', 'b' ], stripper : null } ) );
+  test.shouldThrowErrorSync( () => _.strStrip( { src : [ 'a', 'b' ], stripper : NaN } ) );
+
+  test.case = 'invalid property defined';
+  var src = { src : ' word ', delimeter : ' ', left : 1 };
+  test.shouldThrowErrorSync( () => _.strStrip( src ) );
 }
 
 //
