@@ -8354,9 +8354,8 @@ function strJoin( test )
 
 function strJoinPath( test )
 {
-  // Simple
   test.case = 'Empty';
-  var got = _.strJoinPath( [ ], '' );
+  var got = _.strJoinPath( [], '' );
   var expected = '';
   test.identical( got, expected );
 
@@ -8385,7 +8384,6 @@ function strJoinPath( test )
   var expected = '1/4 is smaller than 2/4';
   test.identical( got, expected );
 
-
   test.case = 'join array and joiner';
   var got = _.strJoinPath( [ '0', [ '1', '2' ] ], '3' );
   var expected = [ '031', '032' ];
@@ -8411,7 +8409,13 @@ function strJoinPath( test )
   var expected = [ '1__3__string', '2__3__string' ];
   test.identical( got, expected );
 
-  //Joiner in src strings
+  test.case = 'arrays with different lengths in array';
+  var src = [ [ [ 1, [ 2 ] ], 2 ],  [ 3, 4 ], 2 ];
+  var got = _.strJoinPath( src, '/' );
+  var expected = [ '1,2/3/2', '2/4/2'];
+  test.identical( got, expected );
+
+  /* Joiner in src strings */
 
   test.case = 'String does not end with joiner';
   var got = _.strJoinPath( [ 'Hi,', 'world' ], '/' );
@@ -8448,96 +8452,56 @@ function strJoinPath( test )
   var expected = '/1//2///4/';
   test.identical( got, expected );
 
-
-  /**/
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'No arguments';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath( );
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strJoinPath() );
 
-  test.case = 'Too few arguments';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath( [ '1' ] );
-  });
+  test.case = 'one argument';
+  test.shouldThrowErrorSync( () => _.strJoinPath( [ '1' ] ) );
 
-  test.case = 'Too many arguments';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath( [ '1' ], '2', '3' );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strJoinPath( [ '1' ], '2', '3' ) );
 
   test.case = 'invalid argument type in array';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath([ { a : 1 }, [ '1' ], [ '2' ] ], '/' );
-  });
+  var src = [ { a : 1 }, [ '1' ] ];
+  test.shouldThrowErrorSync( () => _.strJoinPath( src, '/' ) );
 
   test.case = 'null argument in array';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath([ '1', null ], '/' );
-  });
+  test.shouldThrowErrorSync( () => _.strJoinPath( [ '1', null ], '/' ) );
 
-  test.case = 'null argument in array';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath([ '1', undefined ], '/' );
-  });
+  test.case = 'undefined argument in array';
+  test.shouldThrowErrorSync( () => _.strJoinPath( [ '1', undefined ], '/' ) );
 
   test.case = 'RegExp argument in array';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath([ '1', /a?/ ], '/' );
-  });
+  test.shouldThrowErrorSync( () => _.strJoinPath( [ '1', /a?/ ], '/' ) );
 
   test.case = 'arrays with different lengths in array';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath([ [ 1, 2 ], [ 1 ], [ 2 ] ], '/' );
-  });
+  var src = [ [ 1, 2 ], [ 1 ], [ 2 ] ];
+  test.shouldThrowErrorSync( () => _.strJoinPath( src, '/' ) );
 
-  test.case = 'invalid argument type';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath( { a : 1 }, [ 1 ] );
-  });
+  test.case = 'invalid type of joiner';
+  var src = [ 'foo', 'bar', 'baz' ];
+  test.shouldThrowErrorSync( () => _.strJoinPath( src, [ 1 ] ) );
 
-  test.case = 'null argument';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath( [ '1' ], null );
-  });
+  test.case = 'joiner is null';
+  test.shouldThrowErrorSync( () => _.strJoinPath( [ '1' ], null ) );
 
-  test.case = 'NaN argument';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath( [ '1' ], NaN );
-  });
+  test.case = 'joiner is NaN';
+  test.shouldThrowErrorSync( () => _.strJoinPath( [ '1' ], NaN ) );
 
-  test.case = 'Wrong argument';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath( '1', 2 );
-  });
+  test.case = 'srcs is not arrayLike';
+  test.shouldThrowErrorSync( () => _.strJoinPath( '1', '/' ) );
 
   test.case = 'RegExp argument';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath( '1', /a?/ );
-  });
+  test.shouldThrowErrorSync( () => _.strJoinPath( [ '1' ], /a?/ ) );
 
   test.case = 'arrays with different length';
-  test.shouldThrowError( function()
-  {
-    _.strJoinPath( [ [ 1, 2 ], [ 1 ] ], '/' );
-  });
-
+  var src = [ [ 1, 2 ], [ 1 ] ];
+  test.shouldThrowErrorSync( () => _.strJoinPath( src, '/' ) );
 }
 
 //--
