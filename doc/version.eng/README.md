@@ -26,26 +26,28 @@
   </a></summary>
   Це рутина, котра використовує логічну умову для управління доступом зовнішньої рутини до елементу масиву. Еквалайзер викликається зовнішньою рутиною, він відкриває доступ до елементу масиву, якщо умова виконується.
 </details>
+-->
+
 <details><summary><a href="./concept/TypePrimitive.md">
-      Тип primitive
+      Type <code>primitive</code>
   </a></summary>
-  Усі типи даних, що передають незмінювані величини називають простими або примітивними.
+  In <code>JavaScript</code>, all data types that are integral and have no changeable elements are called primitives.
 </details>
 <details><summary><a href="./concept/TypePrimitive.md#Тип-string">
-      Тип string
+      Type <code>string</code>
   </a></summary>
-  Примітивний тип JavaScript для представлення текстових даних. Це послідовність елементів з 16-бітних беззнакових цілих чисел, де кожен елемент займає визначену позицію.
+  Primitive data type to represent text data.
 </details>
--->
 <details><summary><a href="./concept/TypeUnroll.md">
-      Тип <code>unroll</code>
+      Type <code>unroll</code>
   </a></summary>
   <code>Unroll</code> - data type, it is a special kind of array, capable to be unrolled in another array when performing operations on it.
 </details>
 
 ## Tutorials
 
-<!-- <details><summary><a href="./tutorial/Abstract.md">
+<!--
+<details><summary><a href="./tutorial/Abstract.md">
       Загальна інформація
   </a></summary>
   Загальна інформація про модуль Tools.
@@ -56,11 +58,27 @@
   Процедура встановлення модуль Tools.
 </details>
 
-<details><summary><a href="./tutorial/ArrayCountElement.md">
-      Рутина arrayCountElement
+<details><summary><a href="./tutorial/ConventionNamingInArray.md">
+      Array routines call conventions: naming
   </a></summary>
-  Рутина для підрахунку кількості входжень елемента в масив.
-</details>-->
+  Принципи найменування рутин сімейства <code>Array</code>.
+</details>
+<details><summary><a href="./tutorial/ConventionCallbecksInArray.md">
+      Array routines call conventions: callbacks
+  </a></summary>
+  Як використовувати <code>callback</code>-и в рутинах сімейства <code>Array</code>.
+</details>
+<details><summary><a href="./tutorial/ConventionDstArgInArray.md">
+      Array routines call conventions: dst argument
+  </a></summary>
+  Про що свідчить використання аргумента <code>dst</code>.
+</details>
+<details><summary><a href="./tutorial/ConventionDefaultsMapInRoutine.md">
+      Routines call convention: routine defaults map
+  </a></summary>
+  Як зберігаються та змінюються налаштування за замовчуванням в рутинах.
+</details>
+-->
 
 <details><summary><a href="./tutorial/RoutineFromPreAndBody.md">
       Routine routineFromPreAndBody
@@ -68,7 +86,8 @@
   Automatically combining of the data preparation routine and routine for data processing.
 </details>
 
-<!-- <details><summary><a href="./tutorial/Vectorize.md">
+<!--
+<details><summary><a href="./tutorial/Vectorize.md">
       Векторизація рутин
   </a></summary>
   Як використовувати рутину <code>vectorize</code> для векторизації скалярних рутин.
@@ -77,4 +96,5 @@
       Налаштування рутин при векторизації
   </a></summary>
   Як використовувати опції рутини <code>vectorize</code> при створенні векторизованої рутини.
-</details> -->
+</details>
+-->
