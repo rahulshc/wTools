@@ -12,7 +12,129 @@ var _global = _global_;
 var _ = _global_.wTools;
 
 // --
-//
+// evaluator
+// --
+
+function strCount( test )
+{
+
+  test.open( 'string' );
+
+  test.case = 'none';
+  var got = _.strCount( 'abc', 'z' );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'nl';
+  var got = _.strCount( 'abc\ndef\nghi', '\n' );
+  var expected = 2;
+  test.identical( got, expected );
+
+  test.case = 'simple string';
+  var got = _.strCount( 'ababacabacabaaba','aba' );
+  var expected = 4;
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+  var got = _.strCount( '', 'abc' );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'empty ins';
+  var got = _.strCount( 'abc', '' );
+  var expected = 3;
+  test.identical( got, expected );
+
+  test.close( 'string' );
+
+  /* */
+
+  test.open( 'regexp' );
+
+  test.case = 'none';
+  var got = _.strCount( 'abc', /z/ );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'nl';
+  var got = _.strCount( 'abc\ndef\nghi', /\n/m );
+  var expected = 2;
+  test.identical( got, expected );
+
+  test.case = 'simple string';
+  var got = _.strCount( 'ababacabacabaaba', /aba/ );
+  var expected = 4;
+  test.identical( got, expected );
+
+  test.case = 'empty src';
+  var got = _.strCount( '', /a/ );
+  var expected = 0;
+  test.identical( got, expected );
+
+  test.case = 'empty ins';
+  var got = _.strCount( 'abc', RegExp( '' ) );
+  var expected = 3;
+  test.identical( got, expected );
+
+  test.close( 'regexp' );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strCount( );
+  } );
+
+  test.case = 'first argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strCount( [  ], '\n' );
+  } );
+
+  test.case = 'second argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strCount( 'abc\ndef\nghi', 13 );
+  } );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strCount( 'abc\ndef\nghi' );
+  } );
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strCount( '1', '2', '3' );
+  });
+
+  test.case = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strCount( 123, '1' );
+  });
+
+  test.case = 'invalid second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strCount( 'one two', 123 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strCount();
+  });
+
+}
+
+// --
+// replacer
 // --
 
 function strRemoveBegin( test )
@@ -1199,9 +1321,337 @@ function strAppendOnce( test )
 
 }
 
-// --
 //
+
+function strReplaceWords( test )
+{
+
+  test.case = 'simple string';
+  var got = _.strReplaceWords( 'a b c d',[ 'b', 'c' ], [ 'x', 'y' ] );
+  var expected = 'a x y d';
+  test.identical( got, expected );
+
+  test.case = 'escaping string';
+  var got = _.strReplaceWords( '\na b \n c d',[ 'b', 'c' ], [ 'x', 'y' ] );
+  var expected = '\na x \n y d';
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceWords( '1', '2');
+  });
+
+  test.case = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceWords( 123,[],[] );
+  });
+
+  test.case = 'invalid arrays length';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceWords( 'one two',[ 'one' ],[ 'one', 'two' ] );
+  });
+
+  test.case = 'invalid second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceWords( 'one two',5,[ 'one', 'two' ] );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strReplaceWords();
+  });
+
+}
+
 // --
+// etc
+// --
+
+function strCommonLeft( test )
+{
+  test.case = 'no args';
+  var got = _.strCommonLeft( );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'one argument';
+  var got = _.strCommonLeft( 'abc' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'ins is empty string';
+  var got = _.strCommonLeft( '', 'a', 'b' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'one string is empty';
+  var got = _.strCommonLeft( 'abc', '', 'abc', 'ada' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match';
+  var got = _.strCommonLeft( 'abcd', 'abc', 'd' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'several strings';
+  var got = _.strCommonLeft( 'abc', 'abd', 'abc', 'ada' );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'several strings';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonLeft( 'abc', 'abcd', 'abcde', 'abcdef' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonLeft( 'abcdef', 'abcd', 'abcde', 'abc' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonLeft( 'abcd', 'abc', 'abcd' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'abc', 3 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'abc', NaN );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', [ 3 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', /a/ );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', [ 'abc' ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match case';
+  var got = _.strCommonLeft( 'abcd', 'ab', 'Abc' );
+  var expected = '';
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'ins is array';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( ['a','b','c'], 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is number';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( 3, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is regExp';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( /^a/, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is NaN';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( NaN, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( null, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( 'abd', 'abc', 'ada', null );
+  });
+
+  test.case = 'ins is undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( undefined, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonLeft( 'abd', 'abc', 'ada', undefined );
+  });
+
+}
+
+//
+
+function strCommonRight( test )
+{
+  test.case = 'no args';
+  var got = _.strCommonRight( );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'one argument';
+  var got = _.strCommonRight( 'abc' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'ins is empty string';
+  var got = _.strCommonRight( '', 'ab', 'b' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'one string is empty';
+  var got = _.strCommonRight( 'abc', '', 'abc', 'bc' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match';
+  var got = _.strCommonRight( 'abcd', 'abc', 'd' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'several strings';
+  var got = _.strCommonRight( 'a', 'cba', 'dba', 'ada' );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'several strings';
+  var got = _.strCommonRight( 'abcd', 'cd', 'abcd', 'd' );
+  var expected = 'd';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonRight( 'cdef', 'abcdef', 'def', 'bcdef' );
+  var expected = 'def';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonRight( 'abcdef', 'bcdef', 'cdef', 'def' );
+  var expected = 'def';
+  test.identical( got, expected );
+
+  test.case = 'Several character string';
+  var got = _.strCommonRight( 'abcd', 'bcd', 'abcd' );
+  var expected = 'bcd';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'abc', 'abc', 3 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'acde', 'bcde', NaN );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'abcd', 'abd', 'ad', [ 3 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'c', 'bc', 'abc', /c/ );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'One arg is not a string';
+  var got = _.strCommonRight( 'abcd', 'cd', 'bcd', [ 'abcd' ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'no match case';
+  var got = _.strCommonRight( 'abcd', 'cD', 'AbcD' );
+  var expected = '';
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'ins is array';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( ['a','b','c'], 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is number';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( 3, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is regExp';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( /^a/, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is NaN';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( NaN, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'ins is null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( null, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg null';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( 'abd', 'abc', 'ada', null );
+  });
+
+  test.case = 'ins is undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( undefined, 'abd', 'abc', 'ada' );
+  });
+
+  test.case = 'One arg undefined';
+  test.shouldThrowError( function( )
+  {
+    _.strCommonRight( 'abd', 'abc', 'ada', undefined );
+  });
+
+}
+
+//--
+// formatter
+//--
 
 function strForRange( test )
 {
@@ -1243,9 +1693,96 @@ function strForRange( test )
 
 //
 
-function strCapitalize( test )
+function strStrShort( test )
 {
 
+  test.case = 'simple string';
+  var got = _.strStrShort( 'string', 4 );
+  var expected = '\'st\' ... \'ng\'';
+  test.identical( got, expected );
+
+  test.case = 'string with escaping';
+  var got = _.strStrShort( 's\ntring', 4 );
+  var expected = '\'s\' ... \'ng\'';
+  test.identical( got, expected );
+
+  test.case = 'limit 0';
+  var got = _.strStrShort( 'string', 0 );
+  var expected = 'string';
+  test.identical( got, expected );
+
+  test.case = 'limit 1';
+  var got = _.strStrShort( 'string', 1 );
+  var expected = '\'s\'';
+  test.identical( got, expected );
+
+  test.case = 'string wih spaces';
+  var got = _.strStrShort( 'source and', 5 );
+  var expected = '\'sou\' ... \'nd\'';
+  test.identical( got, expected );
+
+  test.case = 'one argument call';
+  var got = _.strStrShort( { src : 'string', limit : 4, wrap : "'" } );
+  var expected = "'st' ... 'ng'";
+  test.identical( got, expected );
+
+  test.case = 'string with whitespaces';
+  var got = _.strStrShort( { src : '  simple string   ', limit : 4, wrap : "'" } );
+  var expected = "'  ' ... '  '";
+  test.identical( got, expected );
+
+  test.case = 'wrap 0';
+  var got = _.strStrShort( { src : 'simple', limit : 4, wrap : 0 } );
+  var expected = "si ... le";
+  test.identical( got, expected );
+
+  test.case = 'escaping 0';
+  var got = _.strStrShort( { src : 'si\x01mple', limit : 5, wrap : '"',escaping : 0  } );
+  var expected = '"si\x01" ... "le"';
+  test.identical( got, expected );
+
+  test.case = 'escaping 1';
+  var got = _.strStrShort( { src : 's\u001btring', limit : 4, wrap : '"' } );
+  var expected = '"s" ... "ng"';
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strStrShort( 1, 5 );
+  });
+
+  test.case = 'invalid second argument type';
+  test.shouldThrowError( function()
+  {
+    _.strStrShort( 'string', '0' );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strStrShort();
+  });
+
+  test.case = 'unknown property provided';
+  test.shouldThrowError( function()
+  {
+    _.strStrShort( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
+  });
+
+}
+
+//--
+// transformer
+//--
+
+function strCapitalize( test )
+{
   test.case = 'first letter is upper case';
   var got = _.strCapitalize( 'object' );
   var expected = 'Object';
@@ -1306,69 +1843,640 @@ function strCapitalize( test )
 
 //
 
-function strIndentation( test )
+function strUnicodeEscape( test )
 {
-  var got, expected;
+
+  test.case = 'simple string';
+  var got = _.strUnicodeEscape( 'prefix' );
+  var expected = "\\u0070\\u0072\\u0065\\u0066\\u0069\\u0078";
+  test.identical( got, expected );
+
+  test.case = 'escaping';
+  var got = _.strUnicodeEscape( '\npostfix//' );
+  var expected = "\\u000a\\u0070\\u006f\\u0073\\u0074\\u0066\\u0069\\u0078\\u002f\\u002f";
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.strUnicodeEscape( '' );
+  var expected = "";
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strUnicodeEscape( '1', '2', '3' );
+  });
+
+  test.case = 'invalid  argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnicodeEscape( 123 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strUnicodeEscape();
+  });
+
+}
+
+//--
+// stripper
+//--
+
+/* qqq : uncover it please
+Dmytro : test routines strStrip() and strStripLeft() uncovered*/
+
+function strStrip( test )
+{
+  test.case = 'defaults, src is a string';
+
+  var got = _.strStrip( '' );
+  test.identical( got, '' );
+
+  var got = _.strStrip( 'a' );
+  test.identical( got, 'a' );
+
+  var got = _.strStrip( '   a   ' );
+  test.identical( got, 'a' );
+
+  var got = _.strStrip( '\0 a \0' );
+  test.identical( got, 'a' );
+
+  var got = _.strStrip( '\r\n\t\f\v a \v\r\n\t\f' );
+  test.identical( got, 'a' );
+
+  var got = _.strStrip( '\r\n\t\f\v hello world \v\r\n\t\f' );
+  test.identical( got, 'hello world' );
+
+  var got = _.strStrip( '\nabc  ' );
+  test.identical( got, 'abc' );
 
   /* - */
+
+  test.case = 'stripper contains regexp special symbols';
+
+  var got = _.strStrip( { src : '\\s\\s', stripper : '\\s' } );
+  test.identical( got, '' );
+
+  var got = _.strStrip( { src : '(x)(x)', stripper : '(x)' } );
+  test.identical( got, '' );
+
+  var got = _.strStrip( { src : 'abc', stripper : '[abc]' } );
+  test.identical( got, 'abc' );
+
+  var got = _.strStrip( { src : '[abc]', stripper : '[abc]' } );
+  test.identical( got, '' );
+
+  var got = _.strStrip( { src : 'abc', stripper : '[^abc]' } );
+  test.identical( got, 'abc' );
+
+  var got = _.strStrip( { src : 'abc', stripper : '[a-c]' } );
+  test.identical( got, 'abc' );
+
+  var got = _.strStrip( { src : '[a-c]', stripper : '[a-c]' } );
+  test.identical( got, '' );
+
+  var got = _.strStrip( { src : 'ab(a|b)', stripper : '(a|b)' } );
+  test.identical( got, 'ab' );
+
+  var got = _.strStrip( { src : 'gp', stripper : 'a+' } );
+  test.identical( got, 'gp' );
+
+  var got = _.strStrip( { src : 'hp', stripper : 'b{3}' } );
+  test.identical( got, 'hp' );
+
+  var got = _.strStrip( { src : 'abc', stripper : '^[ab]c$' } );
+  test.identical( got, 'abc' );
+
+  /* - */
+
+  test.case = 'stripper is regexp';
+
+  var got = _.strStrip( { src : ' abc', stripper : /[abc]/ } );
+  test.identical( got, ' bc' );
+
+  var got = _.strStrip( { src : 'abc', stripper : /\D/ } );
+  test.identical( got, 'bc' );
+
+  var got = _.strStrip( { src : 'abc', stripper : /[abc]$/ } );
+  test.identical( got, 'ab' );
+
+  var got = _.strStrip( { src : 'abc', stripper : /abc/ } );
+  test.identical( got, '' );
+
+  var got = _.strStrip( { src : 'hello', stripper : /lo?/ } );
+  test.identical( got, 'helo' );
+
+  /* - */
+
+  test.case = 'Empty array';
+  var got = _.strStrip( [] );
+  test.identical( got, [] );
+
+  test.case = 'Array with single string';
+  var got = _.strStrip( [ '' ] );
+  test.identical( got, [ '' ] );
+
+  test.case = 'defaults, src is an array';
+  var got = _.strStrip
+  ([
+    '',
+    'a',
+    '   a   ',
+    ' \0 a \0 ',
+    '\r\n\t\f\v a \v\r\n\t\f'
+  ]);
+  var expected =
+  [
+    '',
+    'a',
+    'a',
+    'a',
+    'a'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'src array of strings, custom stripper';
+  var got = _.strStrip
+  ({
+    src :
+    [
+      '',
+      'a',
+      ' a ',
+      '  a  ',
+      ' \n ',
+      ' a b c ',
+    ],
+    stripper : ' '
+  });
+  var expected =
+  [
+    '',
+    'a',
+    'a',
+    'a',
+    '\n',
+    'abc'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'src array of strings, custom stripper as regexp';
+  var got = _.strStrip
+  ({
+    src :
+    [
+      'x',
+      'xx',
+      'axbxc',
+      'x\nx'
+    ],
+    stripper : new RegExp( 'x' )
+  });
+  var expected =
+  [
+    '',
+    'x',
+    'abxc',
+    '\nx'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'src array of strings, custom stripper as regexp';
+  var got = _.strStrip
+  ({
+    src :
+    [
+      'abc',
+      'acb',
+      'bac',
+      'cab',
+    ],
+    stripper : /abc|[abc]/
+  });
+  var expected =
+  [
+    '',
+    'cb',
+    'ac',
+    'ab'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'src array of strings, custom stripper as regexp';
+  var got = _.strStrip
+  ({
+    src :
+    [
+      'abc',
+      'acb',
+      'bac',
+      'bca',
+      'cba',
+      'cab',
+    ],
+    stripper : /[abc]/g
+  });
+  var expected = [ '','','', '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'src string, stripper array of strings';
+  var got = _.strStrip
+  ({
+    src : 'xxyy',
+    stripper : [ 'x', 'y', ]
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src string, stripper array of strings';
+  var got = _.strStrip
+  ({
+    src : 'jjkk',
+    stripper : [ 'x', 'y', ]
+  });
+  var expected = 'jjkk';
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strStrip() );
+
+  test.case = 'invalid type';
+  test.shouldThrowErrorSync( () => _.strStrip( 10 ) );
+  test.shouldThrowErrorSync( () => _.strStrip( null ) );
+  test.shouldThrowErrorSync( () => _.strStrip( NaN ) );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.strStrip( 'a', '' ) );
+
+  test.case = 'one string has invalid type';
+  test.shouldThrowErrorSync( () => _.strStrip( [ 'a', 0, 'b' ] ) );
+
+  test.case = 'stripper has invalid type';
+  test.shouldThrowErrorSync( () => _.strStrip( { src : 'a', stripper : 0 } ) );
+  test.shouldThrowErrorSync( () => _.strStrip( { src : 'a', stripper : [ 'a', 0 ] } ) );
+  test.shouldThrowErrorSync( () => _.strStrip( { src : [ 'a', 'b' ], stripper : null } ) );
+  test.shouldThrowErrorSync( () => _.strStrip( { src : [ 'a', 'b' ], stripper : NaN } ) );
+
+  test.case = 'invalid property defined';
+  var src = { src : ' word ', delimeter : ' ', left : 1 };
+  test.shouldThrowErrorSync( () => _.strStrip( src ) );
+}
+
+//
+
+function strStripLeft( test )
+{
+  test.case = 'defaults, src is a string';
+
+  var got = _.strStripLeft( '   a   ' );
+  test.identical( got, 'a   ' );
+
+  var got = _.strStripLeft( ' \0 a \0 ' );
+  test.identical( got, 'a \u0000 ' );
+
+  var got = _.strStripLeft( '\r\v a \v\r\n\t\f' );
+  test.identical( got, 'a \u000b\r' );
+
+  var got = _.strStripLeft( '\0 hello world \0' );
+  test.identical( got, 'hello world \u0000' );
+
+  /* - */
+
+  test.case = 'defaults, src is an array';
+  var got = _.strStripLeft
+  ({
+    src :
+    [
+      '',
+      'a',
+      '   a   ',
+      ' \0 a \0 ',
+      '\r\n\t\f\v a \v\r'
+    ],
+  });
+  var expected =
+  [
+    '',
+    'a',
+    'a   ',
+    'a \u0000 ',
+    'a \u000b\r'
+  ];
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strStripLeft() );
+
+  test.case = 'invalid type';
+  test.shouldThrowErrorSync( () => _.strStripLeft( 10 ) );
+  test.shouldThrowErrorSync( () => _.strStripLeft( null ) );
+  test.shouldThrowErrorSync( () => _.strStripLeft( NaN ) );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.strStripLeft( 'a', '' ) );
+
+  test.case = 'one string has invalid type';
+  test.shouldThrowErrorSync( () => _.strStripLeft( [ 'a', 0, 'b' ] ) );
+
+  test.case = 'stripper has invalid type';
+  test.shouldThrowErrorSync( () => _.strStripLeft( { src : 'a', stripper : 0 } ) );
+  test.shouldThrowErrorSync( () => _.strStripLeft( { src : 'a', stripper : [ 'a', 0 ] } ) );
+  test.shouldThrowErrorSync( () => _.strStripLeft( { src : [ 'a', 'b' ], stripper : null } ) );
+  test.shouldThrowErrorSync( () => _.strStripLeft( { src : [ 'a', 'b' ], stripper : NaN } ) );
+
+  test.case = 'invalid property defined';
+  var src = { src : ' word ', delimeter : ' ', left : 1 };
+  test.shouldThrowErrorSync( () => _.strStripLeft( src ) );
+}
+
+//
+
+function strStripRight( test )
+{
+  var cases =
+  [
+    { description : 'defaults, src is a string' },
+    { src : '   ul   ', expected : '   ul' },
+    { src : ' \0 om \0 ', expected : ' \u0000 om' },
+    { src : '\r\v a \v\n\t\f\r', expected : '\r\u000b a' },
+    { src : '\0 hello world \0', expected : '\u0000 hello world' },
+
+    {
+      description : 'defaults, src is an array',
+      src :
+      [
+        '',
+        'a',
+        '   a   ',
+        ' \0 a \0 ',
+        '\r\v a \v\n\t\f\r'
+      ],
+      expected :
+      [
+        '',
+        'a',
+        '   a',
+        ' \u0000 a',
+        '\r\u000b a'
+      ]
+    },
+    {
+      description : 'invalid type',
+      args : 0,
+      err : true
+    },
+    {
+      description : 'too many arguments',
+      args : [ 'a', '' ],
+      err : true
+    },
+    {
+      description : 'null argument',
+      args : [ null ],
+      err : true
+    },
+    {
+      description : 'NaN arguments',
+      args : [ NaN ],
+      err : true
+    },
+    {
+      description : 'one string has invalid type',
+      args : [ [ 'a', 0, 'b' ] ],
+      err : true
+    },
+
+  ]
+
+  /**/
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.description )
+    test.case = c.description;
+
+    if( c.err )
+    test.shouldThrowError( () => _.strStripRight.apply( _, _.arrayAs( c.args ) ) );
+
+    if( c.src )
+    {
+      var identical = test.identical( _.strStripRight( c.src ), c.expected );
+      if( !identical )
+      {
+        debugger;
+        test.identical( _.strStripRight( c.src ), c.expected )
+        debugger;
+      }
+    }
+
+  }
+
+}
+
+
+//
+
+function strRemoveAllSpaces( test )
+{
+
+  test.case = 'removes the spaces from the borders';
+  var got = _.strRemoveAllSpaces( '  abcdef  ' );
+  var expected = 'abcdef';
+  test.identical( got, expected );
+
+  test.case = 'removes the spaces from the given string';
+  var got = _.strRemoveAllSpaces( 'a b c d e f' );
+  var expected = 'abcdef';
+  test.identical( got, expected );
+
+  test.case = 'replaces the all spaces with the commas';
+  var got = _.strRemoveAllSpaces( 'a b c d e f', ',' );
+  var expected = 'a,b,c,d,e,f';
+  test.identical( got, expected );
+
+  test.case = 'simple string, default options';
+  var got = _.strRemoveAllSpaces( 'a b c d e' );
+  var expected = 'abcde';
+  test.identical( got, expected );
+
+  test.case = 'sub defined';
+  var got = _.strRemoveAllSpaces( 'a b c d e', ', ' );
+  var expected = 'a, b, c, d, e';
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.strRemoveAllSpaces( ' ' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'sub as word';
+  var got = _.strRemoveAllSpaces( 'a b c', ' and ' );
+  var expected = 'a and b and c';
+  test.identical( got, expected );
+
+  test.case = 'sub as number';
+  var got = _.strRemoveAllSpaces( 'a b c', 0 );
+  var expected = 'a0b0c';
+  test.identical( got, expected );
+
+  test.case = 'sub as array';
+  var got = _.strRemoveAllSpaces( 'a b c d e', [ 5, 6 ] );
+  var expected = 'a5,6b5,6c5,6d5,6e';
+  test.identical( got, expected );
+
+  test.case = 'sub as null';
+  var got = _.strRemoveAllSpaces( 'a b c d e', null );
+  var expected = 'anullbnullcnulldnulle';
+  test.identical( got, expected );
+
+  test.case = 'sub as NaN';
+  var got = _.strRemoveAllSpaces( 'a b c d e', NaN );
+  var expected = 'aNaNbNaNcNaNdNaNe';
+  test.identical( got, expected );
+
+  test.case = 'sub as regexp';
+  var got = _.strRemoveAllSpaces( 'a b c d e', /a$/ );
+  var expected = 'a/a$/b/a$/c/a$/d/a$/e';
+  test.identical( got, expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ] );
+  var expected = [ 'ab', 'cd', 'ef' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ], '-' );
+  var expected = [ '--a-b-', 'c--d-', '-e-f-' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ], 3 );
+  var expected = [ '33a3b3', 'c33d3', '3e3f3' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input';
+  var got = _.strRemoveAllSpaces( [ 'a b', 'cd ', ' ef' ], [ 0, 1 ] );
+  var expected = [ 'a0,1b', 'cd0,1', '0,1ef' ];
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveAllSpaces( '1', '2', '3' );
+  });
+
+  test.case = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveAllSpaces( 123 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strRemoveAllSpaces();
+  });
+
+  test.case = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( 13 );
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( 'a b c d e f', ',', 'redundant argument' );
+  } );
+
+  test.case = 'Null argument';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( null );
+  } );
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( NaN );
+  } );
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function( )
+  {
+    _.strRemoveAllSpaces( /^a/ );
+  } );
+
+}
+
+//
+
+function strStripEmptyLines( test )
+{
+
+  test.case = 'simple string';
+  var got = _.strStripEmptyLines( 'line_one\n\nline_two' );
+  var expected = 'line_one\nline_two';
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.strStripEmptyLines( '' );
+  var expected = '';
+  test.identical( got, expected );
 
   test.case = 'single line';
-
-  /**/
-
-  got = _.strIndentation( '', '_' );
-  expected = '_';
+  var got = _.strStripEmptyLines( 'b' );
+  var expected = 'b';
   test.identical( got, expected );
 
-  /* no new lines, returns tab + source */
-
-  got = _.strIndentation( 'abc', '_' );
-  expected = '_abc';
+  test.case = 'multiple breaklines';
+  var got = _.strStripEmptyLines( '\n\na\n\nb\n\n\n' );
+  var expected = 'a\nb';
   test.identical( got, expected );
 
-  /* - */
-
-  test.case = 'multiline';
-
-  /**/
-
-  got = _.strIndentation( 'a\nb', '_' );
-  expected = '_a\n_b';
+  test.case = 'Lines with spaces';
+  var got = _.strStripEmptyLines( ' line one\n\n line two \n\n line 3 \n' );
+  var expected = ' line one\n line two \n line 3 ';
   test.identical( got, expected );
 
-  /* tab before first and each new line */
-
-  got = _.strIndentation( '\na\nb\nc', '_' );
-  expected = '_\n_a\n_b\n_c';
+  test.case = 'Lines with spaces and tabs';
+  var got = _.strStripEmptyLines( ' line one\n\t\n\n line \t two \n\n line 3 \n' );
+  var expected = ' line one\n line \t two \n line 3 ';
   test.identical( got, expected );
 
-  /* tabs count = new lines count + 1 for first line */
-
-  got = _.strIndentation( '\n\n\n', '_' );
-  expected = '_\n_\n_\n_';
+  test.case = 'Array input';
+  var got = _.strStripEmptyLines( [ '  a \n\n b ', ' \nc  d \n\n\n ' ] );
+  var expected = [ '  a \n b ', 'c  d ' ];
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strIndentation( 'a\nb\nc','\t' );
-  expected = '\ta\n\tb\n\tc';
-  test.identical( got, expected );
-
-  /* - */
-
-  test.case = 'array';
-
-  /**/
-
-  got = _.strIndentation( [ 'a', 'b', 'c' ],'_' );
-  expected = '_a\n_b\n_c';
-  test.identical( got, expected );
-
-  /* join array to string */
-
-  var arr = [ 'a\nb', 'b\nc', 'c\nd' ];
-  got = _.strIndentation( arr.join( '\n' ), '_' );
-  expected = '_a\n_b\n_b\n_c\n_c\n_d';
+  test.case = 'Empty array input';
+  var got = _.strStripEmptyLines( [ ] );
+  var expected = [ ];
   test.identical( got, expected );
 
 
@@ -1380,26 +2488,92 @@ function strIndentation( test )
   test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
-    _.strIndentation( 'one','two','three' );
+    _.strStripEmptyLines( '1', '2', '3' );
+  });
+
+  test.case = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( 123 );
   });
 
   test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.strIndentation( );
+    _.strStripEmptyLines();
   });
 
-  test.case = 'first argument type is wrong';
+  test.case = 'null argument';
   test.shouldThrowError( function()
   {
-    _.strIndentation( 123,'second' );
+    _.strStripEmptyLines( null );
   });
 
-  test.case = 'second argument type is wrong';
+  test.case = 'NaN argument';
   test.shouldThrowError( function()
   {
-    _.strIndentation( 'first', 321 );
+    _.strStripEmptyLines( NaN );
   });
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( /a?$/ );
+  });
+
+  test.case = 'Array with wrong arguments';
+  test.shouldThrowError( function()
+  {
+    _.strStripEmptyLines( [ null, NaN, 3, /a?$/ ] );
+  });
+
+}
+
+//--
+// splitter
+//--
+
+function strSplitStrNumber( test )
+{
+
+  test.case = 'returns object with one property';
+  var got = _.strSplitStrNumber( 'abcdef' );
+  var expected = { str : 'abcdef' };
+  test.identical( got, expected );
+
+  test.case = 'returns object with two properties';
+  var got = _.strSplitStrNumber( 'abc3def' );
+  var expected = { str : 'abc', number : 3 };
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strSplitStrNumber( );
+  } );
+
+  test.case = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strSplitStrNumber( [  ] );
+  } );
+
+  test.case = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strSplitStrNumber( 13 );
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strSplitStrNumber( 'abc3', 'redundant argument' );
+  } );
 
 }
 
@@ -6015,693 +7189,9 @@ function strSplit( test )
 //
 // }
 
-//
-
-function strSplitStrNumber( test )
-{
-
-  test.case = 'returns object with one property';
-  var got = _.strSplitStrNumber( 'abcdef' );
-  var expected = { str : 'abcdef' };
-  test.identical( got, expected );
-
-  test.case = 'returns object with two properties';
-  var got = _.strSplitStrNumber( 'abc3def' );
-  var expected = { str : 'abc', number : 3 };
-  test.identical( got, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strSplitStrNumber( );
-  } );
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strSplitStrNumber( [  ] );
-  } );
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strSplitStrNumber( 13 );
-  } );
-
-  test.case = 'too many arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strSplitStrNumber( 'abc3', 'redundant argument' );
-  } );
-
-}
-
-//
-
-/* qqq : uncover it please */
-
-function strStrip( test )
-{
-  test.case = 'defaults, src is a string';
-
-  var got = _.strStrip( '' );
-  test.identical( got, '' );
-
-  var got = _.strStrip( 'a' );
-  test.identical( got, 'a' );
-
-  var got = _.strStrip( '   a   ' );
-  test.identical( got, 'a' );
-
-  var got = _.strStrip( '\0 a \0' );
-  test.identical( got, 'a' );
-
-  var got = _.strStrip( '\r\n\t\f\v a \v\r\n\t\f' );
-  test.identical( got, 'a' );
-
-  var got = _.strStrip( '\r\n\t\f\v hello world \v\r\n\t\f' );
-  test.identical( got, 'hello world' );
-
-  var got = _.strStrip( '\nabc  ' );
-  test.identical( got, 'abc' );
-
-  /* - */
-
-  test.case = 'stripper contains regexp special symbols';
-
-  var got = _.strStrip( { src : '\\s\\s', stripper : '\\s' } );
-  test.identical( got, '' );
-
-  var got = _.strStrip( { src : '(x)(x)', stripper : '(x)' } );
-  test.identical( got, '' );
-
-  var got = _.strStrip( { src : 'abc', stripper : '[abc]' } );
-  test.identical( got, 'abc' );
-
-  var got = _.strStrip( { src : '[abc]', stripper : '[abc]' } );
-  test.identical( got, '' );
-
-  var got = _.strStrip( { src : 'abc', stripper : '[^abc]' } );
-  test.identical( got, 'abc' );
-
-  var got = _.strStrip( { src : 'abc', stripper : '[a-c]' } );
-  test.identical( got, 'abc' );
-
-  var got = _.strStrip( { src : '[a-c]', stripper : '[a-c]' } );
-  test.identical( got, '' );
-
-  var got = _.strStrip( { src : 'ab(a|b)', stripper : '(a|b)' } );
-  test.identical( got, 'ab' );
-
-  var got = _.strStrip( { src : 'gp', stripper : 'a+' } );
-  test.identical( got, 'gp' );
-
-  var got = _.strStrip( { src : 'hp', stripper : 'b{3}' } );
-  test.identical( got, 'hp' );
-
-  var got = _.strStrip( { src : 'abc', stripper : '^[ab]c$' } );
-  test.identical( got, 'abc' );
-
-  /* - */
-
-  test.case = 'stripper is regexp';
-
-  var got = _.strStrip( { src : ' abc', stripper : /[abc]/ } );
-  test.identical( got, ' bc' );
-
-  var got = _.strStrip( { src : 'abc', stripper : /\D/ } );
-  test.identical( got, 'bc' );
-
-  var got = _.strStrip( { src : 'abc', stripper : /[abc]$/ } );
-  test.identical( got, 'ab' );
-
-  var got = _.strStrip( { src : 'abc', stripper : /abc/ } );
-  test.identical( got, '' );
-
-  var got = _.strStrip( { src : 'hello', stripper : /lo?/ } );
-  test.identical( got, 'helo' );
-
-  /* - */
-
-  test.case = 'Empty array';
-  var got = _.strStrip( [] );
-  test.identical( got, [] );
-
-  test.case = 'Array with single string';
-  var got = _.strStrip( [ '' ] );
-  test.identical( got, [ '' ] );
-
-  test.case = 'defaults, src is an array';
-  var got = _.strStrip
-  ([
-    '',
-    'a',
-    '   a   ',
-    ' \0 a \0 ',
-    '\r\n\t\f\v a \v\r\n\t\f'
-  ]);
-  var expected =
-  [
-    '',
-    'a',
-    'a',
-    'a',
-    'a'
-  ];
-  test.identical( got, expected );
-
-  test.case = 'src array of strings, custom stripper';
-  var got = _.strStrip
-  ({
-    src :
-    [
-      '',
-      'a',
-      ' a ',
-      '  a  ',
-      ' \n ',
-      ' a b c ',
-    ],
-    stripper : ' '
-  });
-  var expected =
-  [
-    '',
-    'a',
-    'a',
-    'a',
-    '\n',
-    'abc'
-  ];
-  test.identical( got, expected );
-
-  test.case = 'src array of strings, custom stripper as regexp';
-  var got = _.strStrip
-  ({
-    src :
-    [
-      'x',
-      'xx',
-      'axbxc',
-      'x\nx'
-    ],
-    stripper : new RegExp( 'x' )
-  });
-  var expected =
-  [
-    '',
-    'x',
-    'abxc',
-    '\nx'
-  ];
-  test.identical( got, expected );
-
-  test.case = 'src array of strings, custom stripper as regexp';
-  var got = _.strStrip
-  ({
-    src :
-    [
-      'abc',
-      'acb',
-      'bac',
-      'cab',
-    ],
-    stripper : /abc|[abc]/
-  });
-  var expected =
-  [
-    '',
-    'cb',
-    'ac',
-    'ab'
-  ];
-  test.identical( got, expected );
-
-  test.case = 'src array of strings, custom stripper as regexp';
-  var got = _.strStrip
-  ({
-    src :
-    [
-      'abc',
-      'acb',
-      'bac',
-      'bca',
-      'cba',
-      'cab',
-    ],
-    stripper : /[abc]/g
-  });
-  var expected = [ '','','', '', '', '' ];
-  test.identical( got, expected );
-
-  test.case = 'src string, stripper array of strings';
-  var got = _.strStrip
-  ({
-    src : 'xxyy',
-    stripper : [ 'x', 'y', ]
-  });
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'src string, stripper array of strings';
-  var got = _.strStrip
-  ({
-    src : 'jjkk',
-    stripper : [ 'x', 'y', ]
-  });
-  var expected = 'jjkk';
-  test.identical( got, expected );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.strStrip() );
-
-  test.case = 'invalid type';
-  test.shouldThrowErrorSync( () => _.strStrip( 10 ) );
-  test.shouldThrowErrorSync( () => _.strStrip( null ) );
-  test.shouldThrowErrorSync( () => _.strStrip( NaN ) );
-
-  test.case = 'too many arguments';
-  test.shouldThrowErrorSync( () => _.strStrip( 'a', '' ) );
-
-  test.case = 'one string has invalid type';
-  test.shouldThrowErrorSync( () => _.strStrip( [ 'a', 0, 'b' ] ) );
-
-  test.case = 'stripper has invalid type';
-  test.shouldThrowErrorSync( () => _.strStrip( { src : 'a', stripper : 0 } ) );
-  test.shouldThrowErrorSync( () => _.strStrip( { src : 'a', stripper : [ 'a', 0 ] } ) );
-  test.shouldThrowErrorSync( () => _.strStrip( { src : [ 'a', 'b' ], stripper : null } ) );
-  test.shouldThrowErrorSync( () => _.strStrip( { src : [ 'a', 'b' ], stripper : NaN } ) );
-
-  test.case = 'invalid property defined';
-  var src = { src : ' word ', delimeter : ' ', left : 1 };
-  test.shouldThrowErrorSync( () => _.strStrip( src ) );
-}
-
-//
-
-function strStripLeft( test )
-{
-  test.case = 'defaults, src is a string';
-
-  var got = _.strStripLeft( '   a   ' );
-  test.identical( got, 'a   ' );
-
-  var got = _.strStripLeft( ' \0 a \0 ' );
-  test.identical( got, 'a \u0000 ' );
-
-  var got = _.strStripLeft( '\r\v a \v\r\n\t\f' );
-  test.identical( got, 'a \u000b\r' );
-
-  var got = _.strStripLeft( '\0 hello world \0' );
-  test.identical( got, 'hello world \u0000' );
-
-  /* - */
-
-  test.case = 'defaults, src is an array';
-  var got = _.strStripLeft
-  ({
-    src :
-    [
-      '',
-      'a',
-      '   a   ',
-      ' \0 a \0 ',
-      '\r\n\t\f\v a \v\r'
-    ],
-  });
-  var expected =
-  [
-    '',
-    'a',
-    'a   ',
-    'a \u0000 ',
-    'a \u000b\r'
-  ];
-  test.identical( got, expected );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.strStripLeft() );
-
-  test.case = 'invalid type';
-  test.shouldThrowErrorSync( () => _.strStripLeft( 10 ) );
-  test.shouldThrowErrorSync( () => _.strStripLeft( null ) );
-  test.shouldThrowErrorSync( () => _.strStripLeft( NaN ) );
-
-  test.case = 'too many arguments';
-  test.shouldThrowErrorSync( () => _.strStripLeft( 'a', '' ) );
-
-  test.case = 'one string has invalid type';
-  test.shouldThrowErrorSync( () => _.strStripLeft( [ 'a', 0, 'b' ] ) );
-
-  test.case = 'stripper has invalid type';
-  test.shouldThrowErrorSync( () => _.strStripLeft( { src : 'a', stripper : 0 } ) );
-  test.shouldThrowErrorSync( () => _.strStripLeft( { src : 'a', stripper : [ 'a', 0 ] } ) );
-  test.shouldThrowErrorSync( () => _.strStripLeft( { src : [ 'a', 'b' ], stripper : null } ) );
-  test.shouldThrowErrorSync( () => _.strStripLeft( { src : [ 'a', 'b' ], stripper : NaN } ) );
-
-  test.case = 'invalid property defined';
-  var src = { src : ' word ', delimeter : ' ', left : 1 };
-  test.shouldThrowErrorSync( () => _.strStripLeft( src ) );
-}
-
-//
-
-function strStripRight( test )
-{
-  var cases =
-  [
-    { description : 'defaults, src is a string' },
-    { src : '   ul   ', expected : '   ul' },
-    { src : ' \0 om \0 ', expected : ' \u0000 om' },
-    { src : '\r\v a \v\n\t\f\r', expected : '\r\u000b a' },
-    { src : '\0 hello world \0', expected : '\u0000 hello world' },
-
-    {
-      description : 'defaults, src is an array',
-      src :
-      [
-        '',
-        'a',
-        '   a   ',
-        ' \0 a \0 ',
-        '\r\v a \v\n\t\f\r'
-      ],
-      expected :
-      [
-        '',
-        'a',
-        '   a',
-        ' \u0000 a',
-        '\r\u000b a'
-      ]
-    },
-    {
-      description : 'invalid type',
-      args : 0,
-      err : true
-    },
-    {
-      description : 'too many arguments',
-      args : [ 'a', '' ],
-      err : true
-    },
-    {
-      description : 'null argument',
-      args : [ null ],
-      err : true
-    },
-    {
-      description : 'NaN arguments',
-      args : [ NaN ],
-      err : true
-    },
-    {
-      description : 'one string has invalid type',
-      args : [ [ 'a', 0, 'b' ] ],
-      err : true
-    },
-
-  ]
-
-  /**/
-
-  for( var i = 0; i < cases.length; i++ )
-  {
-    var c = cases[ i ];
-
-    if( c.description )
-    test.case = c.description;
-
-    if( c.err )
-    test.shouldThrowError( () => _.strStripRight.apply( _, _.arrayAs( c.args ) ) );
-
-    if( c.src )
-    {
-      var identical = test.identical( _.strStripRight( c.src ), c.expected );
-      if( !identical )
-      {
-        debugger;
-        test.identical( _.strStripRight( c.src ), c.expected )
-        debugger;
-      }
-    }
-
-  }
-
-}
-
-
-//
-
-function strRemoveAllSpaces( test )
-{
-
-  test.case = 'removes the spaces from the borders';
-  var got = _.strRemoveAllSpaces( '  abcdef  ' );
-  var expected = 'abcdef';
-  test.identical( got, expected );
-
-  test.case = 'removes the spaces from the given string';
-  var got = _.strRemoveAllSpaces( 'a b c d e f' );
-  var expected = 'abcdef';
-  test.identical( got, expected );
-
-  test.case = 'replaces the all spaces with the commas';
-  var got = _.strRemoveAllSpaces( 'a b c d e f', ',' );
-  var expected = 'a,b,c,d,e,f';
-  test.identical( got, expected );
-
-  test.case = 'simple string, default options';
-  var got = _.strRemoveAllSpaces( 'a b c d e' );
-  var expected = 'abcde';
-  test.identical( got, expected );
-
-  test.case = 'sub defined';
-  var got = _.strRemoveAllSpaces( 'a b c d e', ', ' );
-  var expected = 'a, b, c, d, e';
-  test.identical( got, expected );
-
-  test.case = 'empty string';
-  var got = _.strRemoveAllSpaces( ' ' );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'sub as word';
-  var got = _.strRemoveAllSpaces( 'a b c', ' and ' );
-  var expected = 'a and b and c';
-  test.identical( got, expected );
-
-  test.case = 'sub as number';
-  var got = _.strRemoveAllSpaces( 'a b c', 0 );
-  var expected = 'a0b0c';
-  test.identical( got, expected );
-
-  test.case = 'sub as array';
-  var got = _.strRemoveAllSpaces( 'a b c d e', [ 5, 6 ] );
-  var expected = 'a5,6b5,6c5,6d5,6e';
-  test.identical( got, expected );
-
-  test.case = 'sub as null';
-  var got = _.strRemoveAllSpaces( 'a b c d e', null );
-  var expected = 'anullbnullcnulldnulle';
-  test.identical( got, expected );
-
-  test.case = 'sub as NaN';
-  var got = _.strRemoveAllSpaces( 'a b c d e', NaN );
-  var expected = 'aNaNbNaNcNaNdNaNe';
-  test.identical( got, expected );
-
-  test.case = 'sub as regexp';
-  var got = _.strRemoveAllSpaces( 'a b c d e', /a$/ );
-  var expected = 'a/a$/b/a$/c/a$/d/a$/e';
-  test.identical( got, expected );
-
-  test.case = 'vectorized input';
-  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ] );
-  var expected = [ 'ab', 'cd', 'ef' ];
-  test.identical( got, expected );
-
-  test.case = 'vectorized input';
-  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ], '-' );
-  var expected = [ '--a-b-', 'c--d-', '-e-f-' ];
-  test.identical( got, expected );
-
-  test.case = 'vectorized input';
-  var got = _.strRemoveAllSpaces( [ '  a b ', 'c  d ', ' e f ' ], 3 );
-  var expected = [ '33a3b3', 'c33d3', '3e3f3' ];
-  test.identical( got, expected );
-
-  test.case = 'vectorized input';
-  var got = _.strRemoveAllSpaces( [ 'a b', 'cd ', ' ef' ], [ 0, 1 ] );
-  var expected = [ 'a0,1b', 'cd0,1', '0,1ef' ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveAllSpaces( '1', '2', '3' );
-  });
-
-  test.case = 'invalid argument type';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveAllSpaces( 123 );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveAllSpaces();
-  });
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strRemoveAllSpaces( 13 );
-  } );
-
-  test.case = 'too many arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strRemoveAllSpaces( 'a b c d e f', ',', 'redundant argument' );
-  } );
-
-  test.case = 'Null argument';
-  test.shouldThrowError( function( )
-  {
-    _.strRemoveAllSpaces( null );
-  } );
-
-  test.case = 'NaN argument';
-  test.shouldThrowError( function( )
-  {
-    _.strRemoveAllSpaces( NaN );
-  } );
-
-  test.case = 'Regexp argument';
-  test.shouldThrowError( function( )
-  {
-    _.strRemoveAllSpaces( /^a/ );
-  } );
-
-}
-
-//
-
-function strStripEmptyLines( test )
-{
-
-  test.case = 'simple string';
-  var got = _.strStripEmptyLines( 'line_one\n\nline_two' );
-  var expected = 'line_one\nline_two';
-  test.identical( got, expected );
-
-  test.case = 'empty string';
-  var got = _.strStripEmptyLines( '' );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'single line';
-  var got = _.strStripEmptyLines( 'b' );
-  var expected = 'b';
-  test.identical( got, expected );
-
-  test.case = 'multiple breaklines';
-  var got = _.strStripEmptyLines( '\n\na\n\nb\n\n\n' );
-  var expected = 'a\nb';
-  test.identical( got, expected );
-
-  test.case = 'Lines with spaces';
-  var got = _.strStripEmptyLines( ' line one\n\n line two \n\n line 3 \n' );
-  var expected = ' line one\n line two \n line 3 ';
-  test.identical( got, expected );
-
-  test.case = 'Lines with spaces and tabs';
-  var got = _.strStripEmptyLines( ' line one\n\t\n\n line \t two \n\n line 3 \n' );
-  var expected = ' line one\n line \t two \n line 3 ';
-  test.identical( got, expected );
-
-  test.case = 'Array input';
-  var got = _.strStripEmptyLines( [ '  a \n\n b ', ' \nc  d \n\n\n ' ] );
-  var expected = [ '  a \n b ', 'c  d ' ];
-  test.identical( got, expected );
-
-  test.case = 'Empty array input';
-  var got = _.strStripEmptyLines( [ ] );
-  var expected = [ ];
-  test.identical( got, expected );
-
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strStripEmptyLines( '1', '2', '3' );
-  });
-
-  test.case = 'invalid argument type';
-  test.shouldThrowError( function()
-  {
-    _.strStripEmptyLines( 123 );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strStripEmptyLines();
-  });
-
-  test.case = 'null argument';
-  test.shouldThrowError( function()
-  {
-    _.strStripEmptyLines( null );
-  });
-
-  test.case = 'NaN argument';
-  test.shouldThrowError( function()
-  {
-    _.strStripEmptyLines( NaN );
-  });
-
-  test.case = 'Regexp argument';
-  test.shouldThrowError( function()
-  {
-    _.strStripEmptyLines( /a?$/ );
-  });
-
-  test.case = 'Array with wrong arguments';
-  test.shouldThrowError( function()
-  {
-    _.strStripEmptyLines( [ null, NaN, 3, /a?$/ ] );
-  });
-
-}
-
-//
+//--
+// extractor
+//--
 
 function strSub( test )
 {
@@ -6858,17 +7348,399 @@ function strSub( test )
 
 //
 
-function strReplaceWords( test )
+function strExtractInlined( test )
 {
 
-  test.case = 'simple string';
-  var got = _.strReplaceWords( 'a b c d',[ 'b', 'c' ], [ 'x', 'y' ] );
-  var expected = 'a x y d';
+  function onInlined( part )
+  {
+    var temp = part.split( ':' )
+    if( temp.length === 2 )
+    {
+      return temp;
+    }
+    return undefined;
+  }
+
+  /* */
+
+  test.case = 'empty';
+  var srcStr = '';
+  var got = _.strExtractInlined( srcStr );
+  var expected = [ '' ];
   test.identical( got, expected );
 
-  test.case = 'escaping string';
-  var got = _.strReplaceWords( '\na b \n c d',[ 'b', 'c' ], [ 'x', 'y' ] );
-  var expected = '\na x \n y d';
+  /* */
+
+  test.case = 'without inlined text';
+  var srcStr = 'a';
+  var got = _.strExtractInlined( srcStr );
+  var expected = [ 'a' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'default options';
+  var srcStr = 'ab#cd#ef';
+  var got = _.strExtractInlined( srcStr );
+  var expected = [ 'ab', [ 'cd' ], 'ef' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'trivial case';
+  var srcStr = 'this #background:red#is#background:default# text and is not';
+  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  });
+  var expected =
+  [
+    'this ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and is not'
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'openning delimeter # does not have closing';
+  var srcStr = 'this #background:red#is#background:default# text and # is not';
+  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  });
+  var expected =
+  [
+    'this ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not'
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'two inlined substrings is not in fact inlined';
+  var srcStr = '#simple # text #background:red#is#background:default# text and # is not#';
+  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  });
+  var expected =
+  [
+    '#simple # text ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not#'
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'inlined at the beginning and false inlined';
+  var srcStr = '#background:red#i#s#background:default##text';
+  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  });
+  var expected =
+  [
+    '', [ 'background', 'red' ], 'i#s', [ 'background', 'default' ], '#text'
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'inlined at the beginning and the end';
+  var srcStr = '#background:red#i#s#background:default#';
+  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  });
+  var expected =
+  [
+    '', [ 'background', 'red' ], 'i#s', [ 'background', 'default' ], ''
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'inlined at the beginning and the end with preservingEmpty:0';
+  var srcStr = '#background:red#i#s#background:default#';
+  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined, preservingEmpty : 0 });
+  var expected =
+  [
+    [ 'background', 'red' ], 'i#s', [ 'background', 'default' ],
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'wrapped by inlined text';
+  var srcStr = '#background:red#text#background:default#';
+  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  } );
+  var expected =
+  [
+    '', [ 'background', 'red' ], 'text', [ 'background', 'default' ], '',
+  ];
+  test.identical( got, expected );
+
+  /* */ //
+
+  test.case = 'preservingEmpty:0, no empty';
+  var srcStr = '#inline1#ordinary#inline2#';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var expected =
+  [
+    [ 'inline1' ], 'ordinary', [ 'inline2' ],
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'preservingEmpty:0, empty left';
+  var srcStr = '##ordinary#inline2#';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var expected =
+  [
+    [ '' ], 'ordinary', [ 'inline2' ],
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'preservingEmpty:0, empty right';
+  var srcStr = '#inline1#ordinary##';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var expected =
+  [
+    [ 'inline1' ], 'ordinary', [ '' ],
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'preservingEmpty:0, empty middle';
+  var srcStr = '#inline1##inline2#';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var expected =
+  [
+    [ 'inline1' ], [ 'inline2' ],
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'preservingEmpty:0, empty all';
+  var srcStr = '####';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var expected = [ [ '' ],[ '' ] ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'preservingEmpty:0, empty all';
+  var srcStr = '';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var expected = [];
+  test.identical( got, expected );
+
+  /* */ //
+
+  test.case = 'preservingEmpty:0, onInlined:null no empty';
+  var srcStr = '#inline1#ordinary#inline2#';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var expected =
+  [
+    'inline1', 'ordinary', 'inline2',
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'preservingEmpty:0, onInlined:null, empty left';
+  var srcStr = '##ordinary#inline2#';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var expected =
+  [
+    'ordinary', 'inline2',
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'preservingEmpty:0, onInlined:null, empty right';
+  var srcStr = '#inline1#ordinary##';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var expected =
+  [
+    'inline1', 'ordinary',
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'preservingEmpty:0, onInlined:null, empty middle';
+  var srcStr = '#inline1##inline2#';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var expected =
+  [
+    'inline1', 'inline2',
+  ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'preservingEmpty:0, onInlined:null, empty all';
+  var srcStr = '####';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var expected = [];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'preservingEmpty:0, onInlined:null, empty all';
+  var srcStr = '';
+  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var expected = [];
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'too many arguments';
+  test.shouldThrowError( () => { debugger; _.strExtractInlined( '',{},'' ) } );
+
+}
+
+//
+
+function strExtractInlinedStereo( test )
+{
+  var got, expected;
+
+  test.case = 'default';
+
+  /* nothing */
+
+  got = _.strExtractInlinedStereo( '' );
+  expected = [ '' ];
+  test.identical( got, expected );
+
+  /* prefix/postfix # by default*/
+
+  debugger;
+  got = _.strExtractInlinedStereo( '#abc#' );
+  debugger;
+  expected = [ '', 'abc', '' ];
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'with options';
+
+  /* pre/post are same*/
+
+  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '/', src : '/abc/' } );
+  expected = [ '', 'abc', '' ];
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '/', src : '//abc//' } );
+  expected = [ '', '', 'abc', '', '' ];
+  test.identical( got, expected );
+
+  /* different pre/post */
+
+  got = _.strExtractInlinedStereo( { prefix : '/#', postfix : '#', src : '/#abc#' } );
+  expected = [ 'abc' ];
+  test.identical( got, expected );
+
+  /* postfix appears in source two times */
+  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '#', src : '/ab#c#' } );
+  expected = [ 'ab', 'c#' ];
+  test.identical( got, expected );
+
+  /* onInlined #1 */
+  function onInlined1( strip )
+  {
+    if( strip.length )
+    return strip;
+  }
+  got = _.strExtractInlinedStereo( { onInlined : onInlined1, src : '#abc#' } );
+  expected = [ '#abc#' ];
+  test.identical( got, expected );
+
+  /* onInlined #2 */
+  function onInlined2( strip )
+  {
+    return strip + strip;
+  }
+  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '#', onInlined : onInlined2, src : '/abc#' } );
+  expected = [ 'abcabc' ];
+  test.identical( got, expected );
+
+}
+
+//
+
+function strUnjoin( test )
+{
+  var any = _.strUnjoin.any;
+
+  test.case = 'case 1';
+  var got = _.strUnjoin( 'prefix_something_postfix',[ 'prefix', any, 'postfix' ] );
+  var expected = [ "prefix", "_something_", "postfix" ];
+  test.identical( got, expected );
+
+  test.case = 'case 2a';
+  var got = _.strUnjoin( 'prefix_something_postfix',[ any, 'something', 'postfix' ] );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'case 2b';
+  var got = _.strUnjoin( 'prefix_something_postfix',[ any, 'something', any, 'postfix' ] );
+  var expected = [ "prefix_", "something", '_', "postfix" ];
+  test.identical( got, expected );
+
+  test.case = 'case 3a';
+  var got = _.strUnjoin( 'prefix_something_postfix', [ 'something', 'postfix', any ] );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'case 3b';
+  var got = _.strUnjoin( 'prefix_something_postfix', [ any, 'something', any, 'postfix', any ] );
+  var expected = [ "prefix_","something","_", "postfix", "" ];
+  test.identical( got, expected );
+
+  test.case = 'case 4';
+  var got = _.strUnjoin( 'abc', [ any ] );
+  var expected = [ "abc" ];
+  test.identical( got, expected );
+
+  test.case = 'case 5';
+  var got = _.strUnjoin( 'abc', [ 'a', any ] );
+  var expected = [ "a", "bc" ];
+  test.identical( got, expected );
+
+  test.case = 'case 5b';
+  var got = _.strUnjoin( 'abc', [ any, 'a'  ] );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'case 6';
+  var got = _.strUnjoin( 'abc', [ 'b', any ] );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'case 6b';
+  var got = _.strUnjoin( 'abc', [ any, 'b' ] );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'case 7';
+  var got = _.strUnjoin( 'abc', [ any, 'c' ] );
+  var expected = [ "ab", "c" ];
+  test.identical( got, expected );
+
+  test.case = 'case 7b';
+  var got = _.strUnjoin( 'abc', [ 'c', any ] );
+  var expected = undefined;
+  test.identical( got, expected );
+
+  test.case = 'case 8';
+  var got = _.strUnjoin( 'abc', [ 'a', any, 'c' ] );
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'case 9';
+  var got = _.strUnjoin( 'abc', [ any, 'b', any ] );
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'case 9b';
+  var got = _.strUnjoin( 'abc', [ any, 'c', any ] );
+  var expected = [ 'ab', 'c', '' ];
   test.identical( got, expected );
 
   /**/
@@ -6876,35 +7748,330 @@ function strReplaceWords( test )
   if( !Config.debug )
   return;
 
-  test.case = 'invalid arguments count';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.strReplaceWords( '1', '2');
+    _.strUnjoin();
   });
 
-  test.case = 'invalid argument type';
+  test.case = 'Not enough arguments';
   test.shouldThrowError( function()
   {
-    _.strReplaceWords( 123,[],[] );
+    _.strUnjoin( '1' );
   });
 
-  test.case = 'invalid arrays length';
+  test.case = 'Too many arguments';
   test.shouldThrowError( function()
   {
-    _.strReplaceWords( 'one two',[ 'one' ],[ 'one', 'two' ] );
+    _.strUnjoin( '1', '2', '3' );
+  });
+
+  test.case = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 123, [] );
   });
 
   test.case = 'invalid second arg type';
   test.shouldThrowError( function()
   {
-    _.strReplaceWords( 'one two',5,[ 'one', 'two' ] );
+    _.strUnjoin( 'one two', 123 );
   });
+
+  test.case = 'invalid array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ 1, 'two' ] );
+  });
+
+  test.case = 'null first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( null, [] );
+  });
+
+  test.case = 'null second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', null );
+  });
+
+  test.case = 'null array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ null, 'two' ] );
+  });
+
+  test.case = 'NaN first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( NaN, [] );
+  });
+
+  test.case = 'NaN second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', NaN );
+  });
+
+  test.case = 'NaN array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ NaN, 'two' ] );
+  });
+
+  test.case = 'RegExp first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( /\d$/, [] );
+  });
+
+  test.case = 'RegExp second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', /\D$/ );
+  });
+
+  test.case = 'RegExp array element type';
+  test.shouldThrowError( function()
+  {
+    _.strUnjoin( 'one two', [ /^\d/, 'two' ] );
+  });
+
+}
+
+//--
+// joiner
+//--
+
+function strDup( test )
+{
+
+  test.case = 'srcString  and number of times remain unchanged';
+  var srcString = 'Hi, ';
+  var times = 3;
+  var got = _.strDup( srcString, times );
+
+  var expected = 'Hi, Hi, Hi, ';
+  test.identical( got, expected );
+
+  var oldSrcString = 'Hi, ';
+  test.identical( srcString, oldSrcString );
+
+  var oldTimes = 3;
+  test.identical( times, oldTimes );
+
+  test.case = 'concatenation test';
+  var got = _.strDup( 'a', 2 );
+  var expected = 'aa';
+  test.identical( got, expected );
+
+  test.case = 'simple string';
+  var got = _.strDup( 'ab', 2 );
+  var expected = 'abab';
+  test.identical( got, expected );
+
+  test.case = 'invalid times value';
+  var got = _.strDup( 'a', -2 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'zero times';
+  var got = _.strDup( 'a', 0 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'returns the empty string';
+  var got = _.strDup( 'abc ', 0 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'Second argument NaN';
+  var got = _.strDup( 'abc', NaN );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'Two words with a spaces';
+  var got = _.strDup( 'Hi world ', 2 );
+  var expected = 'Hi world Hi world ';
+  test.identical( got, expected );
+
+  test.case = 'one space';
+  var got = _.strDup( ' ', 2 );
+  var expected = '  ';
+  test.identical( got, expected );
+
+  test.case = 'returns the first copy of the given string';
+  var got = _.strDup( 'abc', 1 );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'copies and concatenates first argument three times';
+  var got = _.strDup( 'abc', 3 );
+  var expected = 'abcabcabc';
+  test.identical( got, expected );
+
+  test.case = 'copies and concatenates first argument 10 times';
+  var got = _.strDup( '1', 10 );
+  var expected = '1111111111';
+  test.identical( got, expected );
+
+  test.case = 'vectorized input concatenated negative times';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], - 2 );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input concatenated zero times';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 0 );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input concatenated one time';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 1 );
+  var expected = [ 'ab', 'cd', 'ef' ];
+  test.identical( got, expected );
+
+  test.case = 'vectorized input concatenated 3 times';
+  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 3 );
+  var expected = [ 'ababab', 'cdcdcd', 'efefef' ];
+  test.identical( got, expected );
+
+  test.case = 'Empty vectorized input';
+  var got = _.strDup( [ ], 3 );
+  var expected = [];
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
 
   test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.strReplaceWords();
+    _.strDup();
   });
+
+  test.case = 'second argument is not provided';
+  test.shouldThrowError( function( )
+  {
+    _.strDup( 'a' );
+  } );
+
+  test.case = 'first argument is not provided';
+  test.shouldThrowError( function( )
+  {
+    _.strDup( 3 );
+  } );
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '1' );
+  });
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '1', '2', 3 );
+  });
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '1', '2', '3' );
+  });
+
+  test.case = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strDup( 123, 1 );
+  });
+
+  test.case = 'times is not number';
+  test.shouldThrowError( function()
+  {
+    _.strDup( 'ab', [ 3, 4 ] );
+  });
+
+  test.case = 'invalid second arg type';
+  test.shouldThrowError( function()
+  {
+    _.strDup( 'one', 'two'  );
+  });
+
+  test.case = 'second argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strDup( 'a', 'wrong argument' );
+  } );
+
+  test.case = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strDup( 1, 2 );
+  });
+
+  test.case = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strDup( [ 1, 2 ], 2 );
+  });
+
+  test.case = 'invalid first argument type';
+  test.shouldThrowError( function()
+  {
+    _.strDup( [ '1', 2 ], 2 );
+  });
+
+  test.case = 'invalid second argument type';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '1', '2' );
+  });
+
+  test.case = 'null argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( null, 2 );
+  });
+
+  test.case = 'null second argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '2', null );
+  });
+
+  test.case = 'undefined argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( undefined, 2 );
+  });
+
+  test.case = 'undefined second argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '2', undefined );
+  });
+
+  test.case = 'NaN argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( NaN, 2 );
+  });
+
+  test.case = 'Regexp argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( /^\d/, 2 );
+  });
+
+  test.case = 'regExp second argument';
+  test.shouldThrowError( function()
+  {
+    _.strDup( '2', /^\d/ );
+  });
+
 
 }
 
@@ -7321,203 +8488,75 @@ function strJoinPath( test )
 
 }
 
-//
+//--
+// liner
+//--
 
-function strUnjoin( test )
+function strIndentation( test )
 {
-  var any = _.strUnjoin.any;
+  var got, expected;
 
-  test.case = 'case 1';
-  var got = _.strUnjoin( 'prefix_something_postfix',[ 'prefix', any, 'postfix' ] );
-  var expected = [ "prefix", "_something_", "postfix" ];
+  /* - */
+
+  test.case = 'single line';
+
+  /**/
+
+  got = _.strIndentation( '', '_' );
+  expected = '_';
   test.identical( got, expected );
 
-  test.case = 'case 2a';
-  var got = _.strUnjoin( 'prefix_something_postfix',[ any, 'something', 'postfix' ] );
-  var expected = undefined;
+  /* no new lines, returns tab + source */
+
+  got = _.strIndentation( 'abc', '_' );
+  expected = '_abc';
   test.identical( got, expected );
 
-  test.case = 'case 2b';
-  var got = _.strUnjoin( 'prefix_something_postfix',[ any, 'something', any, 'postfix' ] );
-  var expected = [ "prefix_", "something", '_', "postfix" ];
+  /* - */
+
+  test.case = 'multiline';
+
+  /**/
+
+  got = _.strIndentation( 'a\nb', '_' );
+  expected = '_a\n_b';
   test.identical( got, expected );
 
-  test.case = 'case 3a';
-  var got = _.strUnjoin( 'prefix_something_postfix', [ 'something', 'postfix', any ] );
-  var expected = undefined;
+  /* tab before first and each new line */
+
+  got = _.strIndentation( '\na\nb\nc', '_' );
+  expected = '_\n_a\n_b\n_c';
   test.identical( got, expected );
 
-  test.case = 'case 3b';
-  var got = _.strUnjoin( 'prefix_something_postfix', [ any, 'something', any, 'postfix', any ] );
-  var expected = [ "prefix_","something","_", "postfix", "" ];
-  test.identical( got, expected );
+  /* tabs count = new lines count + 1 for first line */
 
-  test.case = 'case 4';
-  var got = _.strUnjoin( 'abc', [ any ] );
-  var expected = [ "abc" ];
-  test.identical( got, expected );
-
-  test.case = 'case 5';
-  var got = _.strUnjoin( 'abc', [ 'a', any ] );
-  var expected = [ "a", "bc" ];
-  test.identical( got, expected );
-
-  test.case = 'case 5b';
-  var got = _.strUnjoin( 'abc', [ any, 'a'  ] );
-  var expected = undefined;
-  test.identical( got, expected );
-
-  test.case = 'case 6';
-  var got = _.strUnjoin( 'abc', [ 'b', any ] );
-  var expected = undefined;
-  test.identical( got, expected );
-
-  test.case = 'case 6b';
-  var got = _.strUnjoin( 'abc', [ any, 'b' ] );
-  var expected = undefined;
-  test.identical( got, expected );
-
-  test.case = 'case 7';
-  var got = _.strUnjoin( 'abc', [ any, 'c' ] );
-  var expected = [ "ab", "c" ];
-  test.identical( got, expected );
-
-  test.case = 'case 7b';
-  var got = _.strUnjoin( 'abc', [ 'c', any ] );
-  var expected = undefined;
-  test.identical( got, expected );
-
-  test.case = 'case 8';
-  var got = _.strUnjoin( 'abc', [ 'a', any, 'c' ] );
-  var expected = [ 'a', 'b', 'c' ];
-  test.identical( got, expected );
-
-  test.case = 'case 9';
-  var got = _.strUnjoin( 'abc', [ any, 'b', any ] );
-  var expected = [ 'a', 'b', 'c' ];
-  test.identical( got, expected );
-
-  test.case = 'case 9b';
-  var got = _.strUnjoin( 'abc', [ any, 'c', any ] );
-  var expected = [ 'ab', 'c', '' ];
+  got = _.strIndentation( '\n\n\n', '_' );
+  expected = '_\n_\n_\n_';
   test.identical( got, expected );
 
   /**/
 
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin();
-  });
-
-  test.case = 'Not enough arguments';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( '1' );
-  });
-
-  test.case = 'Too many arguments';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( '1', '2', '3' );
-  });
-
-  test.case = 'invalid first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( 123, [] );
-  });
-
-  test.case = 'invalid second arg type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( 'one two', 123 );
-  });
-
-  test.case = 'invalid array element type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( 'one two', [ 1, 'two' ] );
-  });
-
-  test.case = 'null first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( null, [] );
-  });
-
-  test.case = 'null second arg type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( 'one two', null );
-  });
-
-  test.case = 'null array element type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( 'one two', [ null, 'two' ] );
-  });
-
-  test.case = 'NaN first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( NaN, [] );
-  });
-
-  test.case = 'NaN second arg type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( 'one two', NaN );
-  });
-
-  test.case = 'NaN array element type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( 'one two', [ NaN, 'two' ] );
-  });
-
-  test.case = 'RegExp first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( /\d$/, [] );
-  });
-
-  test.case = 'RegExp second arg type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( 'one two', /\D$/ );
-  });
-
-  test.case = 'RegExp array element type';
-  test.shouldThrowError( function()
-  {
-    _.strUnjoin( 'one two', [ /^\d/, 'two' ] );
-  });
-
-}
-
-//
-
-function strUnicodeEscape( test )
-{
-
-  test.case = 'simple string';
-  var got = _.strUnicodeEscape( 'prefix' );
-  var expected = "\\u0070\\u0072\\u0065\\u0066\\u0069\\u0078";
+  got = _.strIndentation( 'a\nb\nc','\t' );
+  expected = '\ta\n\tb\n\tc';
   test.identical( got, expected );
 
-  test.case = 'escaping';
-  var got = _.strUnicodeEscape( '\npostfix//' );
-  var expected = "\\u000a\\u0070\\u006f\\u0073\\u0074\\u0066\\u0069\\u0078\\u002f\\u002f";
+  /* - */
+
+  test.case = 'array';
+
+  /**/
+
+  got = _.strIndentation( [ 'a', 'b', 'c' ],'_' );
+  expected = '_a\n_b\n_c';
   test.identical( got, expected );
 
-  test.case = 'empty string';
-  var got = _.strUnicodeEscape( '' );
-  var expected = "";
+  /* join array to string */
+
+  var arr = [ 'a\nb', 'b\nc', 'c\nd' ];
+  got = _.strIndentation( arr.join( '\n' ), '_' );
+  expected = '_a\n_b\n_b\n_c\n_c\n_d';
   test.identical( got, expected );
+
 
   /**/
 
@@ -7527,241 +8566,211 @@ function strUnicodeEscape( test )
   test.case = 'invalid arguments count';
   test.shouldThrowError( function()
   {
-    _.strUnicodeEscape( '1', '2', '3' );
-  });
-
-  test.case = 'invalid  argument type';
-  test.shouldThrowError( function()
-  {
-    _.strUnicodeEscape( 123 );
+    _.strIndentation( 'one','two','three' );
   });
 
   test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.strUnicodeEscape();
+    _.strIndentation( );
+  });
+
+  test.case = 'first argument type is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strIndentation( 123,'second' );
+  });
+
+  test.case = 'second argument type is wrong';
+  test.shouldThrowError( function()
+  {
+    _.strIndentation( 'first', 321 );
   });
 
 }
 
 //
 
-function strCount( test )
+function strLinesStrip( test )
 {
+  test.case = 'Argument is only one string';
 
-  test.open( 'string' );
+  test.case = 'Src stays unchanged';
+  var srcString = '\na\n\nbc\ndef\n';
+  var got = _.strLinesStrip( srcString );
 
-  test.case = 'none';
-  var got = _.strCount( 'abc', 'z' );
-  var expected = 0;
+  var expected = 'a\nbc\ndef';
   test.identical( got, expected );
 
-  test.case = 'nl';
-  var got = _.strCount( 'abc\ndef\nghi', '\n' );
-  var expected = 2;
-  test.identical( got, expected );
-
-  test.case = 'simple string';
-  var got = _.strCount( 'ababacabacabaaba','aba' );
-  var expected = 4;
-  test.identical( got, expected );
-
-  test.case = 'empty src';
-  var got = _.strCount( '', 'abc' );
-  var expected = 0;
-  test.identical( got, expected );
-
-  test.case = 'empty ins';
-  var got = _.strCount( 'abc', '' );
-  var expected = 3;
-  test.identical( got, expected );
-
-  test.close( 'string' );
-
-  /* */
-
-  test.open( 'regexp' );
-
-  test.case = 'none';
-  var got = _.strCount( 'abc', /z/ );
-  var expected = 0;
-  test.identical( got, expected );
-
-  test.case = 'nl';
-  var got = _.strCount( 'abc\ndef\nghi', /\n/m );
-  var expected = 2;
-  test.identical( got, expected );
-
-  test.case = 'simple string';
-  var got = _.strCount( 'ababacabacabaaba', /aba/ );
-  var expected = 4;
-  test.identical( got, expected );
-
-  test.case = 'empty src';
-  var got = _.strCount( '', /a/ );
-  var expected = 0;
-  test.identical( got, expected );
-
-  test.case = 'empty ins';
-  var got = _.strCount( 'abc', RegExp( '' ) );
-  var expected = 3;
-  test.identical( got, expected );
-
-  test.close( 'regexp' );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strCount( );
-  } );
-
-  test.case = 'first argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strCount( [  ], '\n' );
-  } );
-
-  test.case = 'second argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strCount( 'abc\ndef\nghi', 13 );
-  } );
-
-  test.case = 'not enough arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strCount( 'abc\ndef\nghi' );
-  } );
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strCount( '1', '2', '3' );
-  });
-
-  test.case = 'invalid first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strCount( 123, '1' );
-  });
-
-  test.case = 'invalid second arg type';
-  test.shouldThrowError( function()
-  {
-    _.strCount( 'one two', 123 );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strCount();
-  });
-
-}
-
-//
-
-function strDup( test )
-{
-
-  test.case = 'srcString  and number of times remain unchanged';
-  var srcString = 'Hi, ';
-  var times = 3;
-  var got = _.strDup( srcString, times );
-
-  var expected = 'Hi, Hi, Hi, ';
-  test.identical( got, expected );
-
-  var oldSrcString = 'Hi, ';
+  var oldSrcString = '\na\n\nbc\ndef\n';
   test.identical( srcString, oldSrcString );
 
-  var oldTimes = 3;
-  test.identical( times, oldTimes );
-
-  test.case = 'concatenation test';
-  var got = _.strDup( 'a', 2 );
-  var expected = 'aa';
-  test.identical( got, expected );
-
-  test.case = 'simple string';
-  var got = _.strDup( 'ab', 2 );
-  var expected = 'abab';
-  test.identical( got, expected );
-
-  test.case = 'invalid times value';
-  var got = _.strDup( 'a', -2 );
+  test.case = 'Empty string';
+  var got = _.strLinesStrip( '' );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'zero times';
-  var got = _.strDup( 'a', 0 );
+  test.case = 'Only escape sequences';
+  var got = _.strLinesStrip( '\n\t\r' );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'returns the empty string';
-  var got = _.strDup( 'abc ', 0 );
-  var expected = '';
+  test.case = 'String without escape sequences and begin/end spaces';
+  var got = _.strLinesStrip( 'Hello world' );
+  var expected = 'Hello world';
   test.identical( got, expected );
 
-  test.case = 'Second argument NaN';
-  var got = _.strDup( 'abc', NaN );
-  var expected = '';
+  test.case = 'String with begin/end spaces';
+  var got = _.strLinesStrip( '  Hello world   ' );
+  var expected = 'Hello world';
   test.identical( got, expected );
 
-  test.case = 'Two words with a spaces';
-  var got = _.strDup( 'Hi world ', 2 );
-  var expected = 'Hi world Hi world ';
+  test.case = 'String with begin/end escape sequences';
+  var got = _.strLinesStrip( '\t\r\nHello world\r\n\t' );
+  var expected = 'Hello world';
   test.identical( got, expected );
 
-  test.case = 'one space';
-  var got = _.strDup( ' ', 2 );
-  var expected = '  ';
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( '\n\tHello\r\n\tworld\r\n' );
+  var expected = 'Hello\nworld';
   test.identical( got, expected );
 
-  test.case = 'returns the first copy of the given string';
-  var got = _.strDup( 'abc', 1 );
-  var expected = 'abc';
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( '\n\tHello\r\n\t\t\r\nworld\r\n'  );
+  var expected = 'Hello\nworld';
   test.identical( got, expected );
 
-  test.case = 'copies and concatenates first argument three times';
-  var got = _.strDup( 'abc', 3 );
-  var expected = 'abcabcabc';
+  test.case = 'String with escape sequences and spaces';
+  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t'  );
+  var expected = 'Hello\nWorld\n!';
   test.identical( got, expected );
 
-  test.case = 'copies and concatenates first argument 10 times';
-  var got = _.strDup( '1', 10 );
-  var expected = '1111111111';
+  //
+
+  test.case = 'Argument is only one array';
+
+  test.case = 'Src stays unchanged';
+  var srcArray = [ '\na\n\nbc\ndef\n' ];
+  var got = _.strLinesStrip( srcArray );
+
+  var expected = [ 'a\n\nbc\ndef' ];
   test.identical( got, expected );
 
-  test.case = 'vectorized input concatenated negative times';
-  var got = _.strDup( [ 'ab', 'cd', 'ef' ], - 2 );
-  var expected = [ '', '', '' ];
-  test.identical( got, expected );
+  var oldSrcArray = [ '\na\n\nbc\ndef\n' ];
+  test.identical( srcArray, oldSrcArray );
 
-  test.case = 'vectorized input concatenated zero times';
-  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 0 );
-  var expected = [ '', '', '' ];
-  test.identical( got, expected );
-
-  test.case = 'vectorized input concatenated one time';
-  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 1 );
-  var expected = [ 'ab', 'cd', 'ef' ];
-  test.identical( got, expected );
-
-  test.case = 'vectorized input concatenated 3 times';
-  var got = _.strDup( [ 'ab', 'cd', 'ef' ], 3 );
-  var expected = [ 'ababab', 'cdcdcd', 'efefef' ];
-  test.identical( got, expected );
-
-  test.case = 'Empty vectorized input';
-  var got = _.strDup( [ ], 3 );
+  test.case = 'Empty array';
+  var got = _.strLinesStrip( [] );
   var expected = [];
   test.identical( got, expected );
+
+  test.case = 'Empty array with empty string';
+  var got = _.strLinesStrip( [ '' ] );
+  var expected = [ ];
+  test.identical( got, expected );
+
+  test.case = 'Only escape sequences';
+  var got = _.strLinesStrip( [ '', '\t\r\n' ] );
+  var expected = [ ];
+  test.identical( got, expected );
+
+  test.case = 'String without escape sequences and begin/end spaces';
+  var got = _.strLinesStrip( [ 'Hello world', '', '\t\r\n' ] );
+  var expected = [ 'Hello world' ];
+  test.identical( got, expected );
+
+  test.case = 'String with begin/end spaces';
+  var got = _.strLinesStrip( [ '  Hello ', ' world   ' ] );
+  var expected = [ 'Hello', 'world' ];
+  test.identical( got, expected );
+
+  test.case = 'String with begin/end escape sequences';
+  var got = _.strLinesStrip( [ '\t\r\nHello  ', '  world\r\n\t' ] );
+  var expected = [ 'Hello', 'world' ];
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( [ '\n\tHello\r\n\tworld\r\n' ] );
+  var expected = [ 'Hello\r\n\tworld' ];
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences';
+  var got = _.strLinesStrip( '\n\tHello\r\n\t\t\r\nworld\r\n'  );
+  var expected = 'Hello\nworld';
+  test.identical( got, expected );
+
+  test.case = 'String with escape sequences and spaces';
+  var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t', '  \nHow are you?  \r  \n  \t  ' ] );
+  var expected = [ 'Hello  \r\n\t\t\r\n World \t\r\n!', 'How are you?' ] ;
+  test.identical( got, expected );
+
+  //
+
+  test.case = 'Several arguments';
+
+  test.case = 'Several strings';
+  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n',' World \t\r\n! \r\n\t', ' \nHow are you?  ' );
+  var expected = [ 'Hello', 'World\n!', 'How are you?' ] ;
+  test.identical( got, expected );
+
+  test.case = 'Several arrays';
+  var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n', ' World \t\r\n! \r\n\t' ], [ ' \n\nHow  ', ' \r\nare\t', ' you \n ?  \r' ], [ '  \n\r\t ' ]  );
+  var expected = [ [ 'Hello', 'World \t\r\n!' ], [ 'How', 'are', 'you \n ?' ], [ ] ];
+  test.identical( got, expected );
+
+  test.case = 'Several strings and arrays';
+  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n', [ ' World \t\r\n ', ' ! \r\n\t' ], [ ' \n\nHow  ', ' \r\nare\t', ' you \n ?  \r' ], ' I am \n\r\t good \n\n ' );
+  var expected = [ 'Hello', [ 'World', '!' ], [ 'How', 'are', 'you \n ?' ], 'I am\ngood' ];
+  test.identical( got, expected );
+
+  //
+
+  test.case = 'Compare input string and input array';
+
+  test.case = 'Input String';
+  var str = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t\nHow are you?  ';
+  var gotStr = _.strLinesStrip( str );
+  var expected = [ 'Hello', 'World', '!', 'How are you?'];
+  test.identical( gotStr.split( '\n'), expected );
+
+  test.case = 'Input Array';
+  var str = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t\nHow are you?  ';
+  var arrStr = str.split( '\n' );
+  var gotArr = _.strLinesStrip( arrStr );
+  var expected = [ 'Hello', 'World', '!', 'How are you?'];
+  test.identical( gotArr, expected );
+
+  test.case = 'Input one line string and array'
+  var str = '\tHello  World \t! \r';
+  var arrStr = [ str ];
+
+  var gotStr = _.strLinesStrip( str );
+  var gotArr = _.strLinesStrip( arrStr );
+  test.identical( gotArr[ 0 ], gotStr );
+
+  test.case = 'Input string and array'
+  var str = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t';
+  var arrStr = str.split( '\n' );
+
+  var gotStr = _.strLinesStrip( str );
+  var gotArr = _.strLinesStrip( arrStr );
+  test.identical( gotArr, gotStr.split( '\n' ) );
+
+  test.case = 'Several Inputs string and array'
+  var strOne = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t';
+  var arrStrOne = strOne.split( '\n' );
+
+  var strTwo = '  How \n\n Are \r\n\t you   today \t\r\n? \r\n';
+  var arrStrTwo = strTwo.split( '\n' );
+
+  var strThree = '\n\t  I \t am \r\n\t \t\r\n Great ! ';
+  var arrStrThree = strThree.split( '\n' );
+
+  var gotStr = _.strLinesStrip( strOne, strTwo, strThree );
+  var gotArr = _.strLinesStrip( arrStrOne, arrStrTwo, arrStrThree );
+  test.identical( gotArr[ 0 ], gotStr[ 0 ].split( '\n' ) );
+  test.identical( gotArr[ 1 ], gotStr[ 1 ].split( '\n' ) );
+  test.identical( gotArr[ 2 ], gotStr[ 2 ].split( '\n' ) );
 
   /* - */
 
@@ -7769,131 +8778,148 @@ function strDup( test )
   return;
 
   test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strDup();
-  });
+  test.shouldThrowError( () =>  _.strLinesStrip() );
 
-  test.case = 'second argument is not provided';
+  test.case = 'Wrong type of argument';
+  test.shouldThrowError( () =>  _.strLinesStrip( null ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( undefined ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( NaN ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( 3 ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( [ 3 ] ) );
+  test.shouldThrowError( () =>  _.strLinesStrip( /^a/ ) );
+
+}
+
+//
+
+function strLinesNumber( test )
+{
+  var got, expected;
+
+  test.case = 'trivial';
+
+  test.case = 'returns the object';
+  var got = _.strLinesNumber( 'abc\ndef\nghi' );
+  var expected = '1 : abc\n2 : def\n3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'returns the object';
+  var got = _.strLinesNumber( [] );
+  var expected = '';
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'string';
+
+  /**/
+
+  got = _.strLinesNumber( '' );
+  expected = '1 : ';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'a' );
+  expected = '1 : a';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'a\nb' );
+  expected = '1 : a\n2 : b';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'a\nb', 2 );
+  expected = '2 : a\n3 : b';
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( 'line1\nline2\nline3' );
+  expected =
+  [
+    '1 : line1',
+    '2 : line2',
+    '3 : line3',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  /**/
+
+  got = _.strLinesNumber( '\n\n' );
+  var expected =
+  [
+    '1 : ',
+    '2 : ',
+    '3 : ',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'array';
+
+  /**/
+
+  got = _.strLinesNumber( [ 'line1', 'line2', 'line3' ] );
+  expected =
+  [
+    '1 : line1',
+    '2 : line2',
+    '3 : line3',
+  ].join( '\n' );
+
+  /**/
+
+  got = _.strLinesNumber( [ 'line', 'line', 'line' ], 2 );
+  expected =
+  [
+    '2 : line',
+    '3 : line',
+    '4 : line',
+  ].join( '\n' );
+
+  /**/
+
+  got = _.strLinesNumber( [ 'line\n', 'line\n', 'line\n' ] );
+  expected =
+  [
+    '1 : line\n',
+    '2 : line\n',
+    '3 : line\n',
+  ].join( '\n' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
   test.shouldThrowError( function( )
   {
-    _.strDup( 'a' );
+    _.strLinesNumber();
   } );
 
-  test.case = 'first argument is not provided';
+  test.case = 'argument is wrong';
   test.shouldThrowError( function( )
   {
-    _.strDup( 3 );
+    _.strLinesNumber( 13 );
   } );
 
-  test.case = 'invalid arguments count';
+  test.case = 'invalid  argument type';
   test.shouldThrowError( function()
   {
-    _.strDup( '1' );
+    _.strLinesNumber( 123 );
   });
 
-  test.case = 'invalid arguments count';
+  test.case = 'no arguments';
   test.shouldThrowError( function()
   {
-    _.strDup( '1', '2', 3 );
+    _.strLinesNumber();
   });
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strDup( '1', '2', '3' );
-  });
-
-  test.case = 'invalid first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strDup( 123, 1 );
-  });
-
-  test.case = 'times is not number';
-  test.shouldThrowError( function()
-  {
-    _.strDup( 'ab', [ 3, 4 ] );
-  });
-
-  test.case = 'invalid second arg type';
-  test.shouldThrowError( function()
-  {
-    _.strDup( 'one', 'two'  );
-  });
-
-  test.case = 'second argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strDup( 'a', 'wrong argument' );
-  } );
-
-  test.case = 'invalid first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strDup( 1, 2 );
-  });
-
-  test.case = 'invalid first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strDup( [ 1, 2 ], 2 );
-  });
-
-  test.case = 'invalid first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strDup( [ '1', 2 ], 2 );
-  });
-
-  test.case = 'invalid second argument type';
-  test.shouldThrowError( function()
-  {
-    _.strDup( '1', '2' );
-  });
-
-  test.case = 'null argument';
-  test.shouldThrowError( function()
-  {
-    _.strDup( null, 2 );
-  });
-
-  test.case = 'null second argument';
-  test.shouldThrowError( function()
-  {
-    _.strDup( '2', null );
-  });
-
-  test.case = 'undefined argument';
-  test.shouldThrowError( function()
-  {
-    _.strDup( undefined, 2 );
-  });
-
-  test.case = 'undefined second argument';
-  test.shouldThrowError( function()
-  {
-    _.strDup( '2', undefined );
-  });
-
-  test.case = 'NaN argument';
-  test.shouldThrowError( function()
-  {
-    _.strDup( NaN, 2 );
-  });
-
-  test.case = 'Regexp argument';
-  test.shouldThrowError( function()
-  {
-    _.strDup( /^\d/, 2 );
-  });
-
-  test.case = 'regExp second argument';
-  test.shouldThrowError( function()
-  {
-    _.strDup( '2', /^\d/ );
-  });
-
 
 }
 
@@ -8388,424 +9414,6 @@ function strLinesSelect( test )
   {
     _.strLinesSelect( { src : 'lorem\nipsum\n', range : [ 0, 1 ], x : 1 } );
   });
-
-}
-
-//
-
-function strLinesStrip( test )
-{
-  test.case = 'Argument is only one string';
-
-  test.case = 'Src stays unchanged';
-  var srcString = '\na\n\nbc\ndef\n';
-  var got = _.strLinesStrip( srcString );
-
-  var expected = 'a\nbc\ndef';
-  test.identical( got, expected );
-
-  var oldSrcString = '\na\n\nbc\ndef\n';
-  test.identical( srcString, oldSrcString );
-
-  test.case = 'Empty string';
-  var got = _.strLinesStrip( '' );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'Only escape sequences';
-  var got = _.strLinesStrip( '\n\t\r' );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'String without escape sequences and begin/end spaces';
-  var got = _.strLinesStrip( 'Hello world' );
-  var expected = 'Hello world';
-  test.identical( got, expected );
-
-  test.case = 'String with begin/end spaces';
-  var got = _.strLinesStrip( '  Hello world   ' );
-  var expected = 'Hello world';
-  test.identical( got, expected );
-
-  test.case = 'String with begin/end escape sequences';
-  var got = _.strLinesStrip( '\t\r\nHello world\r\n\t' );
-  var expected = 'Hello world';
-  test.identical( got, expected );
-
-  test.case = 'String with escape sequences';
-  var got = _.strLinesStrip( '\n\tHello\r\n\tworld\r\n' );
-  var expected = 'Hello\nworld';
-  test.identical( got, expected );
-
-  test.case = 'String with escape sequences';
-  var got = _.strLinesStrip( '\n\tHello\r\n\t\t\r\nworld\r\n'  );
-  var expected = 'Hello\nworld';
-  test.identical( got, expected );
-
-  test.case = 'String with escape sequences and spaces';
-  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t'  );
-  var expected = 'Hello\nWorld\n!';
-  test.identical( got, expected );
-
-  //
-
-  test.case = 'Argument is only one array';
-
-  test.case = 'Src stays unchanged';
-  var srcArray = [ '\na\n\nbc\ndef\n' ];
-  var got = _.strLinesStrip( srcArray );
-
-  var expected = [ 'a\n\nbc\ndef' ];
-  test.identical( got, expected );
-
-  var oldSrcArray = [ '\na\n\nbc\ndef\n' ];
-  test.identical( srcArray, oldSrcArray );
-
-  test.case = 'Empty array';
-  var got = _.strLinesStrip( [] );
-  var expected = [];
-  test.identical( got, expected );
-
-  test.case = 'Empty array with empty string';
-  var got = _.strLinesStrip( [ '' ] );
-  var expected = [ ];
-  test.identical( got, expected );
-
-  test.case = 'Only escape sequences';
-  var got = _.strLinesStrip( [ '', '\t\r\n' ] );
-  var expected = [ ];
-  test.identical( got, expected );
-
-  test.case = 'String without escape sequences and begin/end spaces';
-  var got = _.strLinesStrip( [ 'Hello world', '', '\t\r\n' ] );
-  var expected = [ 'Hello world' ];
-  test.identical( got, expected );
-
-  test.case = 'String with begin/end spaces';
-  var got = _.strLinesStrip( [ '  Hello ', ' world   ' ] );
-  var expected = [ 'Hello', 'world' ];
-  test.identical( got, expected );
-
-  test.case = 'String with begin/end escape sequences';
-  var got = _.strLinesStrip( [ '\t\r\nHello  ', '  world\r\n\t' ] );
-  var expected = [ 'Hello', 'world' ];
-  test.identical( got, expected );
-
-  test.case = 'String with escape sequences';
-  var got = _.strLinesStrip( [ '\n\tHello\r\n\tworld\r\n' ] );
-  var expected = [ 'Hello\r\n\tworld' ];
-  test.identical( got, expected );
-
-  test.case = 'String with escape sequences';
-  var got = _.strLinesStrip( '\n\tHello\r\n\t\t\r\nworld\r\n'  );
-  var expected = 'Hello\nworld';
-  test.identical( got, expected );
-
-  test.case = 'String with escape sequences and spaces';
-  var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t', '  \nHow are you?  \r  \n  \t  ' ] );
-  var expected = [ 'Hello  \r\n\t\t\r\n World \t\r\n!', 'How are you?' ] ;
-  test.identical( got, expected );
-
-  //
-
-  test.case = 'Several arguments';
-
-  test.case = 'Several strings';
-  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n',' World \t\r\n! \r\n\t', ' \nHow are you?  ' );
-  var expected = [ 'Hello', 'World\n!', 'How are you?' ] ;
-  test.identical( got, expected );
-
-  test.case = 'Several arrays';
-  var got = _.strLinesStrip( [ '\n\tHello  \r\n\t\t\r\n', ' World \t\r\n! \r\n\t' ], [ ' \n\nHow  ', ' \r\nare\t', ' you \n ?  \r' ], [ '  \n\r\t ' ]  );
-  var expected = [ [ 'Hello', 'World \t\r\n!' ], [ 'How', 'are', 'you \n ?' ], [ ] ];
-  test.identical( got, expected );
-
-  test.case = 'Several strings and arrays';
-  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n', [ ' World \t\r\n ', ' ! \r\n\t' ], [ ' \n\nHow  ', ' \r\nare\t', ' you \n ?  \r' ], ' I am \n\r\t good \n\n ' );
-  var expected = [ 'Hello', [ 'World', '!' ], [ 'How', 'are', 'you \n ?' ], 'I am\ngood' ];
-  test.identical( got, expected );
-
-  //
-
-  test.case = 'Compare input string and input array';
-
-  test.case = 'Input String';
-  var str = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t\nHow are you?  ';
-  var gotStr = _.strLinesStrip( str );
-  var expected = [ 'Hello', 'World', '!', 'How are you?'];
-  test.identical( gotStr.split( '\n'), expected );
-
-  test.case = 'Input Array';
-  var str = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t\nHow are you?  ';
-  var arrStr = str.split( '\n' );
-  var gotArr = _.strLinesStrip( arrStr );
-  var expected = [ 'Hello', 'World', '!', 'How are you?'];
-  test.identical( gotArr, expected );
-
-  test.case = 'Input one line string and array'
-  var str = '\tHello  World \t! \r';
-  var arrStr = [ str ];
-
-  var gotStr = _.strLinesStrip( str );
-  var gotArr = _.strLinesStrip( arrStr );
-  test.identical( gotArr[ 0 ], gotStr );
-
-  test.case = 'Input string and array'
-  var str = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t';
-  var arrStr = str.split( '\n' );
-
-  var gotStr = _.strLinesStrip( str );
-  var gotArr = _.strLinesStrip( arrStr );
-  test.identical( gotArr, gotStr.split( '\n' ) );
-
-  test.case = 'Several Inputs string and array'
-  var strOne = '\n\tHello  \r\n\t\t\r\n World \t\r\n! \r\n\t';
-  var arrStrOne = strOne.split( '\n' );
-
-  var strTwo = '  How \n\n Are \r\n\t you   today \t\r\n? \r\n';
-  var arrStrTwo = strTwo.split( '\n' );
-
-  var strThree = '\n\t  I \t am \r\n\t \t\r\n Great ! ';
-  var arrStrThree = strThree.split( '\n' );
-
-  var gotStr = _.strLinesStrip( strOne, strTwo, strThree );
-  var gotArr = _.strLinesStrip( arrStrOne, arrStrTwo, arrStrThree );
-  test.identical( gotArr[ 0 ], gotStr[ 0 ].split( '\n' ) );
-  test.identical( gotArr[ 1 ], gotStr[ 1 ].split( '\n' ) );
-  test.identical( gotArr[ 2 ], gotStr[ 2 ].split( '\n' ) );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowError( () =>  _.strLinesStrip() );
-
-  test.case = 'Wrong type of argument';
-  test.shouldThrowError( () =>  _.strLinesStrip( null ) );
-  test.shouldThrowError( () =>  _.strLinesStrip( undefined ) );
-  test.shouldThrowError( () =>  _.strLinesStrip( NaN ) );
-  test.shouldThrowError( () =>  _.strLinesStrip( 3 ) );
-  test.shouldThrowError( () =>  _.strLinesStrip( [ 3 ] ) );
-  test.shouldThrowError( () =>  _.strLinesStrip( /^a/ ) );
-
-}
-
-//
-
-function strLinesNumber( test )
-{
-  var got, expected;
-
-  test.case = 'trivial';
-
-  test.case = 'returns the object';
-  var got = _.strLinesNumber( 'abc\ndef\nghi' );
-  var expected = '1 : abc\n2 : def\n3 : ghi';
-  test.identical( got, expected );
-
-  test.case = 'returns the object';
-  var got = _.strLinesNumber( [] );
-  var expected = '';
-  test.identical( got, expected );
-
-  /* - */
-
-  test.case = 'string';
-
-  /**/
-
-  got = _.strLinesNumber( '' );
-  expected = '1 : ';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'a' );
-  expected = '1 : a';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'a\nb' );
-  expected = '1 : a\n2 : b';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'a\nb', 2 );
-  expected = '2 : a\n3 : b';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'line1\nline2\nline3' );
-  expected =
-  [
-    '1 : line1',
-    '2 : line2',
-    '3 : line3',
-  ].join( '\n' );
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( '\n\n' );
-  var expected =
-  [
-    '1 : ',
-    '2 : ',
-    '3 : ',
-  ].join( '\n' );
-  test.identical( got, expected );
-
-  /* - */
-
-  test.case = 'array';
-
-  /**/
-
-  got = _.strLinesNumber( [ 'line1', 'line2', 'line3' ] );
-  expected =
-  [
-    '1 : line1',
-    '2 : line2',
-    '3 : line3',
-  ].join( '\n' );
-
-  /**/
-
-  got = _.strLinesNumber( [ 'line', 'line', 'line' ], 2 );
-  expected =
-  [
-    '2 : line',
-    '3 : line',
-    '4 : line',
-  ].join( '\n' );
-
-  /**/
-
-  got = _.strLinesNumber( [ 'line\n', 'line\n', 'line\n' ] );
-  expected =
-  [
-    '1 : line\n',
-    '2 : line\n',
-    '3 : line\n',
-  ].join( '\n' );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strLinesNumber();
-  } );
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strLinesNumber( 13 );
-  } );
-
-  test.case = 'invalid  argument type';
-  test.shouldThrowError( function()
-  {
-    _.strLinesNumber( 123 );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strLinesNumber();
-  });
-
-}
-
-//
-
-function strLinesCount( test )
-{
-
-  test.case = 'returns 1';
-  var func = 'function( x, y ) { return x + y; }';
-  var got = _.strLinesCount( func );
-  var expected = 1;
-  test.identical( got, expected );
-
-  test.case = 'returns 4';
-  var func = 'function( x, y ) \n { \n   return x + y; \n }';
-  var got = _.strLinesCount( func );
-  var expected = 4;
-  test.identical( got, expected );
-
-  test.case = 'one line string test';
-  var got = _.strLinesCount( 'one line' );
-  var expected = 1;
-  test.identical( got, expected );
-
-  test.case = 'multiline string test';
-  var got = _.strLinesCount( 'first line\nsecond line\nthird line' );
-  var expected = 3;
-  test.identical( got, expected );
-
-  test.case = 'multiline  text test';
-  var got = _.strLinesCount( `one
-                             two
-                             three`
-                          );
-  var expected = 3;
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strLinesCount( '1', '2' );
-  });
-
-  test.case = 'invalid argument type';
-  test.shouldThrowError( function()
-  {
-    _.strLinesCount( 123 );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strLinesCount();
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strLinesCount( );
-  } );
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strLinesCount( [ 1, '\n', 2 ] );
-  } );
-
-  test.case = 'argument is wrong';
-  test.shouldThrowError( function( )
-  {
-    _.strLinesCount( 13 );
-  } );
-
-  test.case = 'too many arguments';
-  test.shouldThrowError( function( )
-  {
-    _.strLinesCount( 'function( x, y ) \n { \n   return x + y; \n }', 'redundant argument' );
-  } );
 
 }
 
@@ -9484,6 +10092,90 @@ ghij
 
 //
 
+function strLinesCount( test )
+{
+
+  test.case = 'returns 1';
+  var func = 'function( x, y ) { return x + y; }';
+  var got = _.strLinesCount( func );
+  var expected = 1;
+  test.identical( got, expected );
+
+  test.case = 'returns 4';
+  var func = 'function( x, y ) \n { \n   return x + y; \n }';
+  var got = _.strLinesCount( func );
+  var expected = 4;
+  test.identical( got, expected );
+
+  test.case = 'one line string test';
+  var got = _.strLinesCount( 'one line' );
+  var expected = 1;
+  test.identical( got, expected );
+
+  test.case = 'multiline string test';
+  var got = _.strLinesCount( 'first line\nsecond line\nthird line' );
+  var expected = 3;
+  test.identical( got, expected );
+
+  test.case = 'multiline  text test';
+  var got = _.strLinesCount( `one
+                             two
+                             three`
+                          );
+  var expected = 3;
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'invalid arguments count';
+  test.shouldThrowError( function()
+  {
+    _.strLinesCount( '1', '2' );
+  });
+
+  test.case = 'invalid argument type';
+  test.shouldThrowError( function()
+  {
+    _.strLinesCount( 123 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function()
+  {
+    _.strLinesCount();
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesCount( );
+  } );
+
+  test.case = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesCount( [ 1, '\n', 2 ] );
+  } );
+
+  test.case = 'argument is wrong';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesCount( 13 );
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowError( function( )
+  {
+    _.strLinesCount( 'function( x, y ) \n { \n   return x + y; \n }', 'redundant argument' );
+  } );
+
+}
+
+//
+
 function strLinesRangeWithCharRange( test )
 {
 
@@ -9646,682 +10338,6 @@ ghij`
 
 //
 
-function strStrShort( test )
-{
-
-  test.case = 'simple string';
-  var got = _.strStrShort( 'string', 4 );
-  var expected = '\'st\' ... \'ng\'';
-  test.identical( got, expected );
-
-  test.case = 'string with escaping';
-  var got = _.strStrShort( 's\ntring', 4 );
-  var expected = '\'s\' ... \'ng\'';
-  test.identical( got, expected );
-
-  test.case = 'limit 0';
-  var got = _.strStrShort( 'string', 0 );
-  var expected = 'string';
-  test.identical( got, expected );
-
-  test.case = 'limit 1';
-  var got = _.strStrShort( 'string', 1 );
-  var expected = '\'s\'';
-  test.identical( got, expected );
-
-  test.case = 'string wih spaces';
-  var got = _.strStrShort( 'source and', 5 );
-  var expected = '\'sou\' ... \'nd\'';
-  test.identical( got, expected );
-
-  test.case = 'one argument call';
-  var got = _.strStrShort( { src : 'string', limit : 4, wrap : "'" } );
-  var expected = "'st' ... 'ng'";
-  test.identical( got, expected );
-
-  test.case = 'string with whitespaces';
-  var got = _.strStrShort( { src : '  simple string   ', limit : 4, wrap : "'" } );
-  var expected = "'  ' ... '  '";
-  test.identical( got, expected );
-
-  test.case = 'wrap 0';
-  var got = _.strStrShort( { src : 'simple', limit : 4, wrap : 0 } );
-  var expected = "si ... le";
-  test.identical( got, expected );
-
-  test.case = 'escaping 0';
-  var got = _.strStrShort( { src : 'si\x01mple', limit : 5, wrap : '"',escaping : 0  } );
-  var expected = '"si\x01" ... "le"';
-  test.identical( got, expected );
-
-  test.case = 'escaping 1';
-  var got = _.strStrShort( { src : 's\u001btring', limit : 4, wrap : '"' } );
-  var expected = '"s" ... "ng"';
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'invalid first argument type';
-  test.shouldThrowError( function()
-  {
-    _.strStrShort( 1, 5 );
-  });
-
-  test.case = 'invalid second argument type';
-  test.shouldThrowError( function()
-  {
-    _.strStrShort( 'string', '0' );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strStrShort();
-  });
-
-  test.case = 'unknown property provided';
-  test.shouldThrowError( function()
-  {
-    _.strStrShort( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
-  });
-
-}
-
-//
-
-function strCommonLeft( test )
-{
-  test.case = 'no args';
-  var got = _.strCommonLeft( );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'one argument';
-  var got = _.strCommonLeft( 'abc' );
-  var expected = 'abc';
-  test.identical( got, expected );
-
-  test.case = 'ins is empty string';
-  var got = _.strCommonLeft( '', 'a', 'b' );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'one string is empty';
-  var got = _.strCommonLeft( 'abc', '', 'abc', 'ada' );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'no match';
-  var got = _.strCommonLeft( 'abcd', 'abc', 'd' );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'several strings';
-  var got = _.strCommonLeft( 'abc', 'abd', 'abc', 'ada' );
-  var expected = 'a';
-  test.identical( got, expected );
-
-  test.case = 'several strings';
-  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
-  var expected = 'a';
-  test.identical( got, expected );
-
-  test.case = 'Several character string';
-  var got = _.strCommonLeft( 'abc', 'abcd', 'abcde', 'abcdef' );
-  var expected = 'abc';
-  test.identical( got, expected );
-
-  test.case = 'Several character string';
-  var got = _.strCommonLeft( 'abcdef', 'abcd', 'abcde', 'abc' );
-  var expected = 'abc';
-  test.identical( got, expected );
-
-  test.case = 'Several character string';
-  var got = _.strCommonLeft( 'abcd', 'abc', 'abcd' );
-  var expected = 'abc';
-  test.identical( got, expected );
-
-  test.case = 'One arg is not a string';
-  var got = _.strCommonLeft( 'abcd', 'abc', 3 );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'One arg is not a string';
-  var got = _.strCommonLeft( 'abcd', 'abc', NaN );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'One arg is not a string';
-  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', [ 3 ] );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'One arg is not a string';
-  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', /a/ );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'One arg is not a string';
-  var got = _.strCommonLeft( 'abcd', 'ab', 'abc', [ 'abc' ] );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'no match case';
-  var got = _.strCommonLeft( 'abcd', 'ab', 'Abc' );
-  var expected = '';
-  test.identical( got, expected );
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'ins is array';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonLeft( ['a','b','c'], 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'ins is number';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonLeft( 3, 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'ins is regExp';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonLeft( /^a/, 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'ins is NaN';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonLeft( NaN, 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'ins is null';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonLeft( null, 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'One arg null';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonLeft( 'abd', 'abc', 'ada', null );
-  });
-
-  test.case = 'ins is undefined';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonLeft( undefined, 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'One arg undefined';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonLeft( 'abd', 'abc', 'ada', undefined );
-  });
-
-}
-
-//
-
-function strCommonRight( test )
-{
-  test.case = 'no args';
-  var got = _.strCommonRight( );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'one argument';
-  var got = _.strCommonRight( 'abc' );
-  var expected = 'abc';
-  test.identical( got, expected );
-
-  test.case = 'ins is empty string';
-  var got = _.strCommonRight( '', 'ab', 'b' );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'one string is empty';
-  var got = _.strCommonRight( 'abc', '', 'abc', 'bc' );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'no match';
-  var got = _.strCommonRight( 'abcd', 'abc', 'd' );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'several strings';
-  var got = _.strCommonRight( 'a', 'cba', 'dba', 'ada' );
-  var expected = 'a';
-  test.identical( got, expected );
-
-  test.case = 'several strings';
-  var got = _.strCommonRight( 'abcd', 'cd', 'abcd', 'd' );
-  var expected = 'd';
-  test.identical( got, expected );
-
-  test.case = 'Several character string';
-  var got = _.strCommonRight( 'cdef', 'abcdef', 'def', 'bcdef' );
-  var expected = 'def';
-  test.identical( got, expected );
-
-  test.case = 'Several character string';
-  var got = _.strCommonRight( 'abcdef', 'bcdef', 'cdef', 'def' );
-  var expected = 'def';
-  test.identical( got, expected );
-
-  test.case = 'Several character string';
-  var got = _.strCommonRight( 'abcd', 'bcd', 'abcd' );
-  var expected = 'bcd';
-  test.identical( got, expected );
-
-  test.case = 'One arg is not a string';
-  var got = _.strCommonRight( 'abc', 'abc', 3 );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'One arg is not a string';
-  var got = _.strCommonRight( 'acde', 'bcde', NaN );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'One arg is not a string';
-  var got = _.strCommonRight( 'abcd', 'abd', 'ad', [ 3 ] );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'One arg is not a string';
-  var got = _.strCommonRight( 'c', 'bc', 'abc', /c/ );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'One arg is not a string';
-  var got = _.strCommonRight( 'abcd', 'cd', 'bcd', [ 'abcd' ] );
-  var expected = '';
-  test.identical( got, expected );
-
-  test.case = 'no match case';
-  var got = _.strCommonRight( 'abcd', 'cD', 'AbcD' );
-  var expected = '';
-  test.identical( got, expected );
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'ins is array';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonRight( ['a','b','c'], 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'ins is number';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonRight( 3, 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'ins is regExp';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonRight( /^a/, 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'ins is NaN';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonRight( NaN, 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'ins is null';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonRight( null, 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'One arg null';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonRight( 'abd', 'abc', 'ada', null );
-  });
-
-  test.case = 'ins is undefined';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonRight( undefined, 'abd', 'abc', 'ada' );
-  });
-
-  test.case = 'One arg undefined';
-  test.shouldThrowError( function( )
-  {
-    _.strCommonRight( 'abd', 'abc', 'ada', undefined );
-  });
-
-}
-
-//
-
-function strExtractInlined( test )
-{
-
-  function onInlined( part )
-  {
-    var temp = part.split( ':' )
-    if( temp.length === 2 )
-    {
-      return temp;
-    }
-    return undefined;
-  }
-
-  /* */
-
-  test.case = 'empty';
-  var srcStr = '';
-  var got = _.strExtractInlined( srcStr );
-  var expected = [ '' ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'without inlined text';
-  var srcStr = 'a';
-  var got = _.strExtractInlined( srcStr );
-  var expected = [ 'a' ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'default options';
-  var srcStr = 'ab#cd#ef';
-  var got = _.strExtractInlined( srcStr );
-  var expected = [ 'ab', [ 'cd' ], 'ef' ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'trivial case';
-  var srcStr = 'this #background:red#is#background:default# text and is not';
-  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  });
-  var expected =
-  [
-    'this ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and is not'
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'openning delimeter # does not have closing';
-  var srcStr = 'this #background:red#is#background:default# text and # is not';
-  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  });
-  var expected =
-  [
-    'this ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not'
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'two inlined substrings is not in fact inlined';
-  var srcStr = '#simple # text #background:red#is#background:default# text and # is not#';
-  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  });
-  var expected =
-  [
-    '#simple # text ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not#'
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'inlined at the beginning and false inlined';
-  var srcStr = '#background:red#i#s#background:default##text';
-  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  });
-  var expected =
-  [
-    '', [ 'background', 'red' ], 'i#s', [ 'background', 'default' ], '#text'
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'inlined at the beginning and the end';
-  var srcStr = '#background:red#i#s#background:default#';
-  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  });
-  var expected =
-  [
-    '', [ 'background', 'red' ], 'i#s', [ 'background', 'default' ], ''
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'inlined at the beginning and the end with preservingEmpty:0';
-  var srcStr = '#background:red#i#s#background:default#';
-  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined, preservingEmpty : 0 });
-  var expected =
-  [
-    [ 'background', 'red' ], 'i#s', [ 'background', 'default' ],
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'wrapped by inlined text';
-  var srcStr = '#background:red#text#background:default#';
-  var got = _.strExtractInlined({ src : srcStr, /*ttt*/onInlined,  } );
-  var expected =
-  [
-    '', [ 'background', 'red' ], 'text', [ 'background', 'default' ], '',
-  ];
-  test.identical( got, expected );
-
-  /* */ //
-
-  test.case = 'preservingEmpty:0, no empty';
-  var srcStr = '#inline1#ordinary#inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
-  var expected =
-  [
-    [ 'inline1' ], 'ordinary', [ 'inline2' ],
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'preservingEmpty:0, empty left';
-  var srcStr = '##ordinary#inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
-  var expected =
-  [
-    [ '' ], 'ordinary', [ 'inline2' ],
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'preservingEmpty:0, empty right';
-  var srcStr = '#inline1#ordinary##';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
-  var expected =
-  [
-    [ 'inline1' ], 'ordinary', [ '' ],
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'preservingEmpty:0, empty middle';
-  var srcStr = '#inline1##inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
-  var expected =
-  [
-    [ 'inline1' ], [ 'inline2' ],
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'preservingEmpty:0, empty all';
-  var srcStr = '####';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
-  var expected = [ [ '' ],[ '' ] ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'preservingEmpty:0, empty all';
-  var srcStr = '';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
-  var expected = [];
-  test.identical( got, expected );
-
-  /* */ //
-
-  test.case = 'preservingEmpty:0, onInlined:null no empty';
-  var srcStr = '#inline1#ordinary#inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
-  var expected =
-  [
-    'inline1', 'ordinary', 'inline2',
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'preservingEmpty:0, onInlined:null, empty left';
-  var srcStr = '##ordinary#inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
-  var expected =
-  [
-    'ordinary', 'inline2',
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'preservingEmpty:0, onInlined:null, empty right';
-  var srcStr = '#inline1#ordinary##';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
-  var expected =
-  [
-    'inline1', 'ordinary',
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'preservingEmpty:0, onInlined:null, empty middle';
-  var srcStr = '#inline1##inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
-  var expected =
-  [
-    'inline1', 'inline2',
-  ];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'preservingEmpty:0, onInlined:null, empty all';
-  var srcStr = '####';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
-  var expected = [];
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'preservingEmpty:0, onInlined:null, empty all';
-  var srcStr = '';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
-  var expected = [];
-  test.identical( got, expected );
-
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'too many arguments';
-  test.shouldThrowError( () => { debugger; _.strExtractInlined( '',{},'' ) } );
-
-}
-
-//
-
-function strExtractInlinedStereo( test )
-{
-  var got, expected;
-
-  test.case = 'default';
-
-  /* nothing */
-
-  got = _.strExtractInlinedStereo( '' );
-  expected = [ '' ];
-  test.identical( got, expected );
-
-  /* prefix/postfix # by default*/
-
-  debugger;
-  got = _.strExtractInlinedStereo( '#abc#' );
-  debugger;
-  expected = [ '', 'abc', '' ];
-  test.identical( got, expected );
-
-  /* - */
-
-  test.case = 'with options';
-
-  /* pre/post are same*/
-
-  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '/', src : '/abc/' } );
-  expected = [ '', 'abc', '' ];
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '/', src : '//abc//' } );
-  expected = [ '', '', 'abc', '', '' ];
-  test.identical( got, expected );
-
-  /* different pre/post */
-
-  got = _.strExtractInlinedStereo( { prefix : '/#', postfix : '#', src : '/#abc#' } );
-  expected = [ 'abc' ];
-  test.identical( got, expected );
-
-  /* postfix appears in source two times */
-  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '#', src : '/ab#c#' } );
-  expected = [ 'ab', 'c#' ];
-  test.identical( got, expected );
-
-  /* onInlined #1 */
-  function onInlined1( strip )
-  {
-    if( strip.length )
-    return strip;
-  }
-  got = _.strExtractInlinedStereo( { onInlined : onInlined1, src : '#abc#' } );
-  expected = [ '#abc#' ];
-  test.identical( got, expected );
-
-  /* onInlined #2 */
-  function onInlined2( strip )
-  {
-    return strip + strip;
-  }
-  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '#', onInlined : onInlined2, src : '/abc#' } );
-  expected = [ 'abcabc' ];
-  test.identical( got, expected );
-
-}
-
-//
-
 var Self =
 {
 
@@ -10331,6 +10347,11 @@ var Self =
 
   tests :
   {
+    // evaluator
+
+    strCount,
+
+    // replacer
 
     strRemoveBegin,
     strRemoveEnd,
@@ -10343,51 +10364,65 @@ var Self =
     strPrependOnce,
     strAppendOnce,
 
-    /* - */
+    strReplaceWords,
+
+    // etc
+
+    strCommonLeft,
+    strCommonRight,
+
+    // formatter
 
     strForRange,
+    strStrShort,
+
+    // transformer
+
     strCapitalize,
+    strUnicodeEscape,
 
-    strIndentation,
-
-    strSplitsCoupledGroup,
-
-    strSplitFast,
-    strSplitFastRegexp,
-    strSplit,
-    // strSplitNaive,
-
-    strSplitStrNumber,
+    // stripper
 
     strStrip,
     strStripLeft,
     strStripRight,
     strRemoveAllSpaces,
     strStripEmptyLines,
+
+    // splitter
+
+    strSplitStrNumber,
+
+    strSplitsCoupledGroup,
+
+    strSplitFast,
+    strSplitFastRegexp,
+    strSplit,
+
+    // strSplitNaive,
+
+    // extractor
+
     strSub,
-    strReplaceWords,
-    strJoin,
-    strJoinPath,
-    strUnjoin,
-    strUnicodeEscape,
-    strCount,
-    strDup,
-
-    strLinesSelect,
-    strLinesStrip,
-    strLinesNumber,
-    strLinesCount,
-
-    strLinesNearest,
-    strLinesRangeWithCharRange,
-
-    strStrShort,
-    strCommonLeft,
-    strCommonRight,
-
     strExtractInlined,
     strExtractInlinedStereo,
+    strUnjoin,
 
+    // joiner
+
+    strDup,
+    strJoin,
+    strJoinPath,
+
+    // liner
+
+    strIndentation,
+    strLinesStrip,
+    strLinesNumber,
+    strLinesSelect,
+    strLinesNearest,
+    strLinesCount,
+    strLinesRangeWithCharRange,
   }
 
 }
