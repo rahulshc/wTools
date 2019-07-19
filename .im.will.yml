@@ -1,4 +1,23 @@
 
+submodule :
+
+  wFiles :
+    path : npm:///wFiles
+    criterion :
+      development : 1
+  wCloner :
+    path : npm:///wcloner
+    criterion :
+      development : 1
+  wStringer :
+    path : npm:///wstringer
+    criterion :
+      development : 1
+  wTesting :
+    path : npm:///wTesting
+    criterion :
+      development : 1
+
 path :
 
   in : '.'
@@ -78,7 +97,9 @@ reflector :
 
   transpile.proto.raw :
     inherit : predefined.*
-    step : files.transpile
+    step :
+      inherit : files.transpile
+      entry : path::entry
     criterion :
       raw : raw
       debug : release
@@ -88,7 +109,9 @@ reflector :
 
   transpile.proto.no.tests.compiled :
     inherit : predefined.*
-    step : files.transpile
+    step :
+      inherit : files.transpile
+      entry : path::entry
     criterion :
       tests : 'no.tests'
       raw : compiled
@@ -100,8 +123,10 @@ reflector :
       path::proto : '{path::out.*=1}/Main.s'
 
   transpile.proto.only.tests.compiled :
-    step : files.transpile
     inherit : predefined.*
+    step :
+      inherit : files.transpile
+      entry : path::entry
     criterion :
       tests : 'only.tests'
       raw : compiled
@@ -140,10 +165,10 @@ build :
       raw : raw
       content : prime
     steps :
-      - timelapse.begin
+      # - timelapse.begin
       - step::clean.out*=2
       - reflect.proto.*=1
-      - timelapse.end
+      # - timelapse.end
 
   compiled.debug :
     criterion :
@@ -151,11 +176,11 @@ build :
       raw : compiled
       content : prime
     steps :
-      - timelapse.begin
+      # - timelapse.begin
       - step::clean.out*=2
       - transpile.proto.no.tests*=1
       - transpile.proto.only.tests*=1
-      - timelapse.end
+      # - timelapse.end
 
   raw.release :
     criterion :
@@ -163,10 +188,10 @@ build :
       raw : raw
       content : prime
     steps :
-      - timelapse.begin
+      # - timelapse.begin
       - step::clean.out*=2
       - transpile.proto.raw
-      - timelapse.end
+      # - timelapse.end
 
   release :
     criterion :
@@ -174,15 +199,14 @@ build :
       raw : compiled
       content : prime
     steps :
-      - timelapse.begin
+      # - timelapse.begin
       - step::clean.out*=2
       - transpile.proto.no.tests*=1
       - transpile.proto.only.tests*=1
-      - timelapse.end
+      # - timelapse.end
 
   npm :
     criterion :
-      # default : 1
       debug : debug
       raw : compiled
       content : npm

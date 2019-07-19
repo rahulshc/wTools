@@ -574,6 +574,21 @@ function eachSample( test )
 
 function eachSampleExperiment( test )
 {
+  debugger;
+
+  var got = _.eachSample
+  ({
+    sets : [ [ 0, 1 ], [ 2, 3 ] ]
+  });
+  var expected =
+  [
+    [ 0, 2 ], [ 1, 2 ],
+    [ 0, 3 ], [ 1, 3 ],
+  ];
+  test.identical( got, expected );
+  test.isNot( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
+
   var got = _.eachSample
   ({
     sets : [ _.unrollMake( [ 0, 1 ] ), _.unrollMake( [ 2, 3 ] ) ]
@@ -586,6 +601,7 @@ function eachSampleExperiment( test )
   test.identical( got, expected );
   test.isNot( _.unrollIs( got ) );
   test.is( _.arrayIs( got ) );
+
 }
 eachSampleExperiment.experimental = 1;
 
