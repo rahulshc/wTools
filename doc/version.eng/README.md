@@ -1,5 +1,6 @@
-<!-- ## Concepts
+## Concepts
 
+<!--
 <details><summary><a href="./concept/RoutineInput.md#Масив-аргументів">
       Масив аргументів
   </a></summary>
@@ -35,11 +36,12 @@
   </a></summary>
   Примітивний тип JavaScript для представлення текстових даних. Це послідовність елементів з 16-бітних беззнакових цілих чисел, де кожен елемент займає визначену позицію.
 </details>
+-->
 <details><summary><a href="./concept/TypeUnroll.md">
       Тип <code>unroll</code>
   </a></summary>
-  <code>Unroll</code> - тип даних - особливий вид масиву, здатний розготатись в іншому масиві при виконанні операції над ним.
-</details> -->
+  <code>Unroll</code> - data type, it is a special kind of array, capable to be unrolled in another array when performing operations on it.
+</details>
 
 ## Tutorials
 
