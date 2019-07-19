@@ -82,6 +82,54 @@ function multipleAll( dsts )
 // entity iterator
 // --
 
+/**
+ * Routine eachSample() accepts the container {-o.sets-} with scalar or vector elements.
+ * Routine returns an array of vectors. Each vector is a unique combination of elements of vectors
+ * that is passed in option {-o.sets-}.
+ *
+ * Routine eachSample() accepts the options map {-o-} or two arguments. If options map
+ * is used, all parameters can be set. If passed two arguments, first of them is ( sets )
+ * and second is ( onEach ).
+ *
+ * @param {Array|Map} sets - Container with vector and scalar elements to combine new vectors.
+ * @param {Routine|Null} onEach - Callback. Should not change elements of {-sample-}.
+ * @param {Array|Map} sample - Container for new vectors. If not passed, routine create empty container.
+ * @param {boolean} leftToRight - Sets the direction of combining. 1 - left to rigth, 0 - rigth to left. By default is 1.
+ * @param {boolean} result - Sets retuned value. 1 - array with verctors, 0 - index of last element. By default is 1.
+ *
+ * @example
+ * //returns  [ [ 0, 2 ], [ 1, 2 ] ]
+ * var got = _.eachSample( { sets : [ [ 0, 1 ], 2 ] });
+ *
+ * @example
+ * //returns  [ [ 0, 2 ], [ 1, 2 ],
+ *              [ 0, 3 ], [ 1, 3 ] ]
+ * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ] });
+ *
+ * @example
+ * //returns  [ { a : 0, b : 2}, { a : 1, b : 2},
+ *              { a : 0, b : 3}, { a : 1, b : 3} ]
+ * var got = _.eachSample( { sets : { a : [ 0, 1 ], b : [ 2, 3 ] } });
+ *
+ * @example
+ * //returns  [ [ 3, 0 ], [ 2, 0 ],
+ *              [ 3, 1 ], [ 2, 1 ] ]
+ * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ], leftToRight : 0 });
+ *
+ * @example
+ * //returns  3
+ * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ], result : 0 });
+ *
+ * @function eachSample
+ * @returns {Array} Returns array contained  check function.
+ * @throws {exception} If ( arguments.length ) is less then one or more then two.
+ * @throws {exception} If( onEach ) is not a Routine or null.
+ * @throws {exception} If( o.sets ) is not array or objectLike.
+ * @throws {exception} If ( sets ) is mapLike and ( onEach ) not passed.
+ * @throws {exception} If( o.base ) or ( o.add) is undefined.
+ * @memberof wTools
+ */
+
 function eachSample( o )
 {
 
