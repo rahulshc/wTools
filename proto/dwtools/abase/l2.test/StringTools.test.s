@@ -6915,6 +6915,8 @@ function strSplitCamel( test )
   var got = _.strSplitCamel( 'AaB', 'b', 'c' );
   test.identical( got, [ '', 'aa', 'b' ] );
 
+  /* - */
+
   if( !Config.debug )
   return;
 
@@ -8585,6 +8587,50 @@ function strJoinPath( test )
   var got = _.strJoinPath( [ '/1//', '/2//', '//4/' ], '/' );
   var expected = '/1//2///4/';
   test.identical( got, expected );
+
+  /* - */ 
+
+  test.case = 'srcs is unroll';
+  var srcs = _.unrollFrom( [ 'he', '.llo.', ',', 'world', '!' ] );
+  var got = _.strJoinPath( srcs, '.' );
+  test.identical( got, 'he.llo.,.world.!' );
+
+  test.case = 'srcs is unroll, unroll has nested unroll';
+  var srcs = _.unrollFrom( [ 'he', '.llo.', _.unrollMake( [ ',', 'world', '!' ] ) ] );
+  var got = _.strJoinPath( srcs, '.' );
+  test.identical( got, 'he.llo.,.world.!' );
+  
+  test.case = 'srcs is array, has nested unrolls';
+  var srcs = [ 'he', '.llo.', _.unrollMake( [ ',', 'world', '!' ] ) ];
+  var got = _.strJoinPath( srcs, '.' );
+  test.identical( got, ['he.llo.,', 'he.llo.world', 'he.llo.!' ] );
+
+  var srcs = [ _.unrollFrom( [ 'he', '.llo.' ] ), _.unrollMake( [ ',', 'world' ] ) ];
+  var got = _.strJoinPath( srcs, '.' );
+  test.identical( got, ['he.,', '.llo.world' ] );
+
+  /* - */
+
+  test.case = 'srcs is argumentsArray';
+  var srcs = _.argumentsArrayMake( [ 'he', '.llo.', ',', 'world', '!' ] );
+  var got = _.strJoinPath( srcs, '.' );
+  test.identical( got, 'he.llo.,.world.!' );
+
+  test.case = 'srcs is Array';
+  var srcs = new Array( 'he', '.llo.', ',', 'world', '!' );
+  var got = _.strJoinPath( srcs, '.' );
+  test.identical( got, 'he.llo.,.world.!' );
+
+  test.case = 'srcs is Float32Array';
+  var arr = new Float32Array( [ 1, 2, 3, 4 ] );
+  var srcs = _.arrayFrom( arr );
+  var got = _.strJoinPath( srcs, '.' );
+  test.identical( got, '1.2.3.4' );
+
+  var arr = new Float32Array( [ 1, 2, 3, 'str' ] );
+  var srcs = _.arrayFrom( arr );
+  var got = _.strJoinPath( srcs, '.' );
+  test.identical( got, '1.2.3.NaN' );
 
   /* - */
 
