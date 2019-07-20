@@ -2227,6 +2227,12 @@ function strSplitsDropEmpty_pre( routine, args )
 
 //
 
+/* Dmytro : founded bag in strSplitsDropEmpty.
+This routine no count number 0. 
+Solve : line 2248
+if( !split ) --> if( !split && !_.numberIs( split ) )
+*/
+
 function strSplitsDropEmpty_body( o )
 {
 

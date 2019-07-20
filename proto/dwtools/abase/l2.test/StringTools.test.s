@@ -2853,6 +2853,140 @@ function strSplitsCoupledGroup( test )
 
 //
 
+function strSplitsDropEmpty( test )
+{
+  test.case = 'empty splits array';
+  var got = _.strSplitsDropEmpty( { splits : [] } );
+  test.identical( got, [] );
+
+  test.case = 'splits array has elements';
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 2, 3 ] } );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'splits array has elements : null, undefined, false';
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', null ] } );
+  test.identical( got, [ 1, 'str' ] );
+
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', undefined ] } );
+  test.identical( got, [ 1, 'str' ] );
+
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', false ] } );
+  test.identical( got, [ 1, 'str' ] );
+
+  var got = _.strSplitsDropEmpty( { splits : [ null, false, undefined ] } );
+  test.identical( got, [] );
+
+  test.case = 'splits array has elements in container';
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', [ 2 ] ] } );
+  test.identical( got, [ 1, 'str', [ 2 ] ] );
+
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', { a : 2 } ] } );
+  test.identical( got, [ 1, 'str', { a : 2 } ] );
+
+  test.case = 'splits array has elements in container : null, undefined, false';
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', [ null ] ] } );
+  test.identical( got, [ 1, 'str', [ null ] ] );
+
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', [ undefined ] ] } );
+  test.identical( got, [ 1, 'str', [ undefined ] ] );
+
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', [ false ] ] } );
+  test.identical( got, [ 1, 'str', [ false ] ] );
+
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', { a : null } ] } );
+  test.identical( got, [ 1, 'str', { a : null } ] );
+
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', { a : undefined } ] } );
+  test.identical( got, [ 1, 'str', { a : undefined } ] );
+
+  var got = _.strSplitsDropEmpty( { splits : [ 1, 'str', { a : false } ] } );
+  test.identical( got, [ 1, 'str', { a : false } ] );
+
+  /* - */
+
+  test.case = 'splits is unroll, empty';
+  var splits = _.unrollFrom( [] );
+  var got = _.strSplitsDropEmpty( { splits : splits } );
+  test.identical( got, [] );
+  test.is( _.unrollIs( got ) ); 
+  
+  test.case = 'splits is unroll, no undefines';
+  var splits = _.unrollFrom( [ 1, 3, 'str' ] );
+  var got = _.strSplitsDropEmpty( { splits : splits } );
+  test.identical( got, [ 1, 3, 'str' ] );
+  test.is( _.unrollIs( got ) ); 
+  
+  test.case = 'splits is unroll, has undefines';
+  var splits = _.unrollFrom( [ 1, 'str', null ] );
+  var got = _.strSplitsDropEmpty( { splits : splits } );
+  test.identical( got, [ 1, 'str' ] );
+  test.is( _.unrollIs( got ) ); 
+
+  var splits = _.unrollFrom( [ null, false, undefined ] );
+  var got = _.strSplitsDropEmpty( { splits : splits } );
+  test.identical( got, [] );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'unroll contains another unroll';
+  var splits = _.unrollFrom( [ 1, 'str', _.unrollMake( [ 0 ] ) ] );
+  var got = _.strSplitsDropEmpty( { splits : splits } );
+  test.identical( got, [ 1, 'str', 0 ] );
+  test.is( _.unrollIs( got ) ); 
+
+  test.case = 'unroll contains another unroll, undefines';
+  var splits = _.unrollFrom( [ 1, 'str', _.unrollMake( [ null, undefined, false ] ) ] );
+  var got = _.strSplitsDropEmpty( { splits : splits } );
+  test.identical( got, [ 1, 'str' ] );
+  test.is( _.unrollIs( got ) ); 
+
+  var splits = _.unrollFrom( [ 1, 'str', _.unrollMake( [ [ null, undefined, false ] ] ) ] );
+  var got = _.strSplitsDropEmpty( { splits : splits } );
+  test.identical( got, [ 1, 'str', [ null, undefined, false ] ] );
+  test.is( _.unrollIs( got ) ); 
+
+  /* - */
+
+  test.case = 'another arrayLike objects in splits';
+  var src = _.argumentsArrayMake( [ 0, 'str', false ] );
+  var splits = _.arrayFrom( src ); 
+  var got = _.strSplitsDropEmpty( { splits : splits } );
+  test.identical( got, [ 0, 'str' ] );
+
+  var splits = new Array( 0, 'str', undefined );
+  var got = _.strSplitsDropEmpty( { splits : splits } );
+  test.identical( got, [ 0, 'str' ] );
+  
+  var src = new Float32Array( [ 0, 2, undefined ] );
+  var splits = _.arrayFrom( src );
+  var got = _.strSplitsDropEmpty( { splits : splits } );
+  test.identical( got, [ 0, 2, NaN ] );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strSplitsDropEmpty() );
+  test.shouldThrowErrorSync( () => _.strSplitsDropEmpty( {} ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strSplitsDropEmpty( { splits : [ '1', '2' ] }, 1 ) );
+
+  test.case = 'extra option';
+  var src = { splits : [ 1, 2, 3 ], delimeter : '/' };
+  test.shouldThrowErrorSync( () => _.strSplitsDropEmpty( src ) );
+
+  test.case = 'invalid arguments';
+  test.shouldThrowErrorSync( () => _.strSplitsDropEmpty( 1 ) );
+  test.shouldThrowErrorSync( () => _.strSplitsDropEmpty( 'str' ) );
+  test.shouldThrowErrorSync( () => _.strSplitsDropEmpty( null ) );
+  test.shouldThrowErrorSync( () => _.strSplitsDropEmpty( NaN ) );
+  test.shouldThrowErrorSync( () => _.strSplitsDropEmpty( [ 1, 'str' ] ) );
+}
+
+//
+
 function strSplitFast( test )
 {
 
@@ -10410,6 +10544,7 @@ var Self =
     strSplitStrNumber,
 
     strSplitsCoupledGroup,
+    strSplitsDropEmpty,
 
     strSplitFast,
     strSplitFastRegexp,
