@@ -341,43 +341,27 @@ function strRemoveBegin( test )
   if( !Config.debug )
   return;
 
-  test.shouldThrowError( () => _.strRemoveBegin( 1, '' ) );
-  test.shouldThrowError( () => _.strRemoveBegin( 'a', 1 ) );
+  test.case = 'without arguments';
   test.shouldThrowError( () => _.strRemoveBegin() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowError( () => _.strRemoveBegin( 'abcd','a','a' ) );
+
+  test.case = 'invalid type of src argument';
+  test.shouldThrowError( () => _.strRemoveBegin( 1, '' ) );
+  test.shouldThrowError( () => _.strRemoveBegin( 1,'2' ) );
+  test.shouldThrowError( () => _.strRemoveBegin( [ 'str', 1 ], '2' ) );
+  test.shouldThrowError( () => _.strRemoveBegin( [ 'str', /ex/ ], '2' ) );
+  test.shouldThrowError( () => _.strRemoveBegin( [ 'str', true ], '2' ) );
+
+  test.case = 'invalid type of begin argument';
+  test.shouldThrowError( () => _.strRemoveBegin( 'a', 1 ) );
+  test.shouldThrowError( () => _.strRemoveBegin( 'a', null ) );
+  test.shouldThrowError( () => _.strRemoveBegin( 'aaa', [ ' a', 2 ] ) );
+
+  test.case = 'invalid type of arguments';
   test.shouldThrowError( () => _.strRemoveBegin( undefined, undefined ) );
   test.shouldThrowError( () => _.strRemoveBegin( null, null ) );
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveBegin( 'abcd','a','a' );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveBegin( );
-  });
-
-  test.case = 'first argument is wrong';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveBegin( 1,'2' );
-  });
-
-  test.case = 'second argument is wrong';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveBegin( '1',2 );
-  });
-
-  test.case = 'second argument is array with wrong element';
-  test.shouldThrowError( function()
-  {
-    _.strRemoveBegin( '1', [ ' a', 2 ] );
-  });
-
-
 }
 
 //
