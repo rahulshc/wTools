@@ -150,7 +150,9 @@ function buffersAreEquivalent( src1, src2, accuracy )
   else if( _.bufferViewIs( src1 ) )
   return _.buffersViewAreIdentical( src1, src2 );
   else if( _.bufferNodeIs( src1 ) )
-  return _.buffersNodeAreIdentica( src1, src2 );
+  // Dmytro : correct misprint
+  // return _.buffersNodeAreIdentica( src1, src2 );
+  return _.buffersNodeAreIdentical( src1, src2 );
   else return false;
 
 }
