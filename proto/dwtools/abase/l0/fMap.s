@@ -8,7 +8,7 @@ let Self = _global_.wTools;
 
 let _ArraySlice = Array.prototype.slice;
 let _FunctionBind = Function.prototype.bind;
-let _ObjectToString = Object.prototype.toString;
+// let Object.prototype.toString = Object.prototype.toString;
 let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // --
@@ -45,7 +45,7 @@ function objectIs( src )
   // return true;
   // let prototype = Object.getPrototypeOf( src );
   // return prototype === null;
-  return _ObjectToString.call( src ) === '[object Object]';
+  return Object.prototype.toString.call( src ) === '[object Object]';
 }
 
 //
@@ -4115,8 +4115,8 @@ function mapOnly( srcMaps, screenMaps )
 
   return _mapOnly
   ({
-    /*ttt*/srcMaps,
-    /*ttt*/screenMaps,
+    srcMaps,
+    screenMaps,
     dstMap : Object.create( null ),
   });
 
@@ -4135,8 +4135,8 @@ function mapOnlyOwn( srcMaps, screenMaps )
   return _mapOnly
   ({
     filter : _.field.mapper.srcOwn,
-    /*ttt*/srcMaps,
-    /*ttt*/screenMaps,
+    srcMaps,
+    screenMaps,
     dstMap : Object.create( null ),
   });
 
@@ -4152,8 +4152,8 @@ function mapOnlyComplementing( srcMaps, screenMaps )
   return _mapOnly
   ({
     filter : _.field.mapper.dstNotOwnOrUndefinedAssigning,
-    /*ttt*/srcMaps,
-    /*ttt*/screenMaps,
+    srcMaps,
+    screenMaps,
     dstMap : Object.create( null ),
   });
 
@@ -5637,10 +5637,6 @@ Object.assign( Self, Fields );
 // --
 // export
 // --
-
-// if( typeof module !== 'undefined' )
-// if( _global.WTOOLS_PRIVATE )
-// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

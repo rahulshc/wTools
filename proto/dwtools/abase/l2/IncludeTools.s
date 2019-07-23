@@ -220,13 +220,13 @@ function _includeAnyAct( srcs )
     var result;
     if( handler.include )
     {
-      paths.push({ path : handler.include, /*ttt*/handler }); debugger;
+      paths.push({ path : handler.include, handler }); debugger;
     }
     else if( handler.includeAny )
     {
       _.assert( _.arrayIs( handler.includeAny ),'include handler expect an array ( includeAny ) if present' );
       for( var p = 0 ; p < handler.includeAny.length ; p++ )
-      paths.push({ path : handler.includeAny[ p ], /*ttt*/handler });
+      paths.push({ path : handler.includeAny[ p ], handler });
     }
     else throw _.err( 'Handler does not has ( include ) neither ( includeAny ).\nCant use the handler to include file',src );
 
@@ -371,24 +371,24 @@ var Proto =
 
   /* xxx qqq : comment out maybe !!! */
 
-  /*ttt*/usePath,
-  /*ttt*/usePathGlobally,
-  /*ttt*/_usePathGlobally,
-  /*ttt*/_usePathGloballyChildren,
+  usePath,
+  usePathGlobally,
+  _usePathGlobally,
+  _usePathGloballyChildren,
 
   //
 
-  /*ttt*/_includeWithRequireAct,
-  /*ttt*/_includeAct,
-  /*ttt*/_includeAnyAct,
+  _includeWithRequireAct,
+  _includeAct,
+  _includeAnyAct,
 
-  /*ttt*/_includeWithRequire,
-  /*ttt*/include,
+  _includeWithRequire,
+  include,
 
-  /*ttt*/_includeWithRequireAny,
-  /*ttt*/includeAny,
+  _includeWithRequireAny,
+  includeAny,
 
-  /*ttt*/isIncluded,
+  isIncluded,
 
 }
 
@@ -400,10 +400,6 @@ _.usePath( __dirname + '/../..' );
 // --
 // export
 // --
-
-// if( typeof module !== 'undefined' )
-// if( _global_.WTOOLS_PRIVATE )
-// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

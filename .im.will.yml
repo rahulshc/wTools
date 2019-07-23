@@ -31,56 +31,24 @@ path :
     criterion :
       debug : debug
       raw : raw
-      tests : 'no.tests'
       content : prime
   out.compiled.debug :
     path : '{path::out}/compiled.debug'
     criterion :
       debug : debug
       raw : compiled
-      tests : 'no.tests'
       content : prime
   out.raw.release :
     path : '{path::out}/raw.release'
     criterion :
       debug : release
       raw : raw
-      tests : 'no.tests'
       content : prime
   out.compiled.release :
     path : '{path::out}/release'
     criterion :
       debug : release
       raw : compiled
-      tests : 'no.tests'
-      content : prime
-  out.tests.raw.debug :
-    path : '{path::out}/tests.raw.debug'
-    criterion :
-      debug : debug
-      raw : raw
-      tests : 'only.tests'
-      content : prime
-  out.tests.compiled.debug :
-    path : '{path::out}/tests.compiled.debug'
-    criterion :
-      debug : debug
-      raw : compiled
-      tests : 'only.tests'
-      content : prime
-  out.tests.raw.release :
-    path : '{path::out}/tests.raw.release'
-    criterion :
-      debug : release
-      raw : raw
-      tests : 'only.tests'
-      content : prime
-  out.tests.compiled.release :
-    path : '{path::out}/tests.compiled.release'
-    criterion :
-      debug : release
-      raw : compiled
-      tests : 'only.tests'
       content : prime
 
 reflector :
@@ -99,7 +67,7 @@ reflector :
     inherit : predefined.*
     step :
       inherit : files.transpile
-      entry : path::entry
+      entry : path::entry.no.tests
     criterion :
       raw : raw
       debug : release
@@ -111,7 +79,7 @@ reflector :
     inherit : predefined.*
     step :
       inherit : files.transpile
-      entry : path::entry
+      entry : path::entry.*=1
     criterion :
       tests : 'no.tests'
       raw : compiled
@@ -126,7 +94,8 @@ reflector :
     inherit : predefined.*
     step :
       inherit : files.transpile
-      entry : path::entry
+      entry : path::entry.*=1
+      external.before : '{path::out.*=1}/Main.s'
     criterion :
       tests : 'only.tests'
       raw : compiled
@@ -134,7 +103,7 @@ reflector :
       content : prime
     filePath :
       '**.test*' : 1
-      path::proto : '{path::out.*=1}/Tests.s'
+      path::proto : '{path::out.*=1}/Tests.test.s'
 
 step :
 
@@ -155,6 +124,23 @@ step :
       raw : compiled
       tests : no.tests
       content : npm
+
+  tst.proto :
+    shell : 'tst {path::proto}'
+    criterion :
+      content : proto
+
+  tst.debug :
+    shell : 'tst {path::out.*=1}'
+    criterion :
+      content : prime
+      debug : debug
+
+  tst.release :
+    shell : 'tst {path::out.*=1}'
+    criterion :
+      content : prime
+      debug : release
 
 build :
 

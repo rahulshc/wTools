@@ -5,7 +5,7 @@
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 let _ArraySlice = Array.prototype.slice;
-let _ObjectToString = Object.prototype.toString;
+// let Object.prototype.toString = Object.prototype.toString;
 
 let _global = _global_;
 let _ = _global_.wTools;
@@ -17,7 +17,7 @@ let Self = _global_.wTools;
 
 function argumentsArrayIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Arguments]';
+  return Object.prototype.toString.call( src ) === '[object Arguments]';
 }
 
 //
@@ -1366,7 +1366,7 @@ function longNoneAreRepeated( src, onEvalutate )
 
 function bufferRawIs( src )
 {
-  let type = _ObjectToString.call( src );
+  let type = Object.prototype.toString.call( src );
   let result = type === '[object ArrayBuffer]';
   return result;
 }
@@ -1375,7 +1375,7 @@ function bufferRawIs( src )
 
 function bufferTypedIs( src )
 {
-  let type = _ObjectToString.call( src );
+  let type = Object.prototype.toString.call( src );
   if( !/\wArray/.test( type ) )
   return false;
   if( _.bufferNodeIs( src ) )
@@ -1387,7 +1387,7 @@ function bufferTypedIs( src )
 
 function bufferViewIs( src )
 {
-  let type = _ObjectToString.call( src );
+  let type = Object.prototype.toString.call( src );
   let result = type === '[object DataView]';
   return result;
 }
@@ -1463,7 +1463,7 @@ function constructorIsBuffer( src )
 
 function arrayIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Array]';
+  return Object.prototype.toString.call( src ) === '[object Array]';
 }
 
 //
@@ -1479,7 +1479,7 @@ function arrayIsPopulated( src )
 
 function arrayLikeResizable( src )
 {
-  if( _ObjectToString.call( src ) === '[object Array]' )
+  if( Object.prototype.toString.call( src ) === '[object Array]' )
   return true;
   return false;
 }
@@ -6327,10 +6327,6 @@ Object.assign( Self, Fields );
 // --
 // export
 // --
-
-// if( typeof module !== 'undefined' )
-// if( _global.WTOOLS_PRIVATE )
-// delete require.cache[ module.id ];
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
