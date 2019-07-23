@@ -2227,12 +2227,6 @@ function strSplitsDropEmpty_pre( routine, args )
 
 //
 
-/* Dmytro : founded bag in strSplitsDropEmpty.
-This routine no count number 0. 
-Solve : line 2248
-if( !split ) --> if( !split && !_.numberIs( split ) )
-*/
-
 function strSplitsDropEmpty_body( o )
 {
 
@@ -3434,7 +3428,7 @@ let strJoin = _.routineFromPreAndBody( strJoin_pre, strJoin_body );
  * Routine strJoinPath() joins objects inside the source array, by concatenating their values in order that they are specified.
  * The source array can contain strings, numbers and arrays. If arrays are provided, they must have same length.
  * Joins arrays by concatenating all elements with same index into one string and puts it into new array at same position.
- * Joins array with other object by concatenating each array element with that object value. 
+ * Joins array with other object by concatenating each array element with that object value.
  * Examples: ( [ [ 1, 2 ], 3 ], '' ) -> ( [ '13', '23' ] ), ( [ [ 1, 2 ], [ 1, 2] ] ) -> ( [ '11', '22' ], '' ).
  * Second argument should be string type. This argument ( joiner ) defines the string that joins the
  * srcArray objects.  Examples: ( [ [ 1, 2 ], 3 ], '*' ) -> ( [ '1*3', '2*3' ] ),
