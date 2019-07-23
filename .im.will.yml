@@ -1,22 +1,22 @@
 
 submodule :
 
-  wFiles :
-    path : npm:///wFiles
-    criterion :
-      development : 1
-  wCloner :
-    path : npm:///wcloner
-    criterion :
-      development : 1
-  wStringer :
-    path : npm:///wstringer
-    criterion :
-      development : 1
-  wTesting :
-    path : npm:///wTesting
-    criterion :
-      development : 1
+  # wFiles :
+  #   path : npm:///wFiles
+  #   criterion :
+  #     development : 1
+  # wCloner :
+  #   path : npm:///wcloner
+  #   criterion :
+  #     development : 1
+  # wStringer :
+  #   path : npm:///wstringer
+  #   criterion :
+  #     development : 1
+  # wTesting :
+  #   path : npm:///wTesting
+  #   criterion :
+  #     development : 1
 
 path :
 
