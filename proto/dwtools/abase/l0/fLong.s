@@ -1367,8 +1367,11 @@ function longNoneAreRepeated( src, onEvalutate )
 function bufferRawIs( src )
 {
   let type = Object.prototype.toString.call( src );
-  let result = type === '[object ArrayBuffer]';
-  return result;
+  //let result = type === '[object ArrayBuffer]';
+  //return result;
+  if( type === '[object ArrayBuffer]' || type === '[object SharedArrayBuffer]' )
+  return true;
+  return false;
 }
 
 //
