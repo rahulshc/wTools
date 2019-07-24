@@ -284,6 +284,9 @@ function bufferButRange( src, range, ins )
   _.assert( ins === undefined || _.longIs( ins ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
+  if( ins === undefined )
+  ins = [];
+
   let start = src.slice( 0, range[ 0 ] );
   let end = src.slice( range[ 1 ] );
   result = new src.constructor( start.length + ins.length + end.length );

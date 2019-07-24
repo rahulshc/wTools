@@ -272,10 +272,81 @@ function bufferViewIs( test )
 
 function bufferButRange( test )
 {
-  test.case = 'buffer';
+  test.case = 'ins is undefined';
+  var src = new Int16Array( [ 0, 1, 2, 3 ] );
+  var got = _.bufferButRange( src, [ 1, 2 ] );
+  test.identical( got, new Int16Array( [ 0, 2, 3 ] ) );
+
+  test.case = 'ins is long';
+  var src = new Uint16Array( [ 0, 1, 2, 3 ] );
+  var ins = new Array( 1, 2, 3 );
+  var got = _.bufferButRange( src, [ 1, 2 ], ins );
+  test.identical( got, new Uint16Array( [ 0, 1, 2, 3, 2, 3 ] ) );
+
   var src = new Uint8Array( [ 0, 1, 2, 3 ] );
+  var ins = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.bufferButRange( src, [ 1, 2 ], ins );
+  test.identical( got, new Uint8Array( [ 0, 1, 2, 3, 2, 3 ] ) );
+
+  var src = new Int8Array( [ 0, 1, 2, 3 ] );
+  var ins = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.bufferButRange( src, [ 1, 2 ], ins );
+  test.identical( got, new Int8Array( [ 0, 1, 2, 3, 2, 3 ] ) );
+
+  if( Config.platform === 'nodejs' )
+  {
+  var src = new Uint8ClampedArray( [ 0, 1, 2, 3 ] );
+  var ins = Buffer.from( [ 1, 2, 3 ] );
+  var got = _.bufferButRange( src, [ 1, 2 ], ins );
+  test.identical( got, new Uint8ClampedArray( [ 0, 1, 2, 3, 2, 3 ] ) );
+  }
+
+  var src = new Float32Array( [ 0, 1, 2, 3 ] );
+  var ins = new Int32Array( 2 );
+  var got = _.bufferButRange( src, [ 1, 2 ], ins );
+  test.identical( got, new Float32Array( [ 0, 0, 0, 2, 3 ] ) );
+
+  test.case = 'cut not elements';
+  var src = new Uint32Array( [ 0, 1, 2, 3 ] );
   var got = _.bufferButRange( src, [ 2, 2 ], [ 1 ] );
-  test.identical( got, new Uint8Array( [ 0, 1, 1, 2, 3 ] ) );
+  test.identical( got, new Uint32Array( [ 0, 1, 1, 2, 3 ] ) );
+
+  test.case = 'cut all elements';
+  var src = new Uint32Array( [ 0, 1, 2, 3 ] );
+  var got = _.bufferButRange( src, [ 0, src.length ], [ 1 ] );
+  test.identical( got, new Uint32Array( [ 1 ] ) );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferButRange() );
+
+  test.case = 'extra arguments';
+  var src = new Int16Array( 10 );
+  test.shouldThrowErrorSync( () => _.bufferButRange( src, [ 1, 2 ], [ 1 ], [ 4 ] ) );
+
+  test.case = 'wrong value in range';
+  var src = new Int16Array( 10 );
+  test.shouldThrowErrorSync( () => _.bufferButRange( src, true, [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferButRange( src, null, [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferButRange( src, 'str', [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferButRange( src, [ 'str', 1 ], [ 2 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferButRange( src, [], [ 2 ] ) );
+
+  test.case = 'wrong value in ins';
+  test.shouldThrowErrorSync( () => _.bufferButRange( src, [ 1, 3 ], 'str' ) );
+  test.shouldThrowErrorSync( () => _.bufferButRange( src, [ 1, 3 ], { a : 1 } ) );
+
+  test.case = 'wrong type of src';
+  var buffer = new ArrayBuffer( 10 );
+  test.shouldThrowErrorSync( () => _.bufferButRange( buffer, [ 1, 3 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferButRange( Buffer.alloc( 10 ), [ 1, 3 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferButRange( new DataView( buffer ), [ 1, 3 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferButRange( 'str', [ 1, 3 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.bufferButRange( [ buffer ], [ 1, 3 ], [ 1 ] ) );
 }
 
 //
@@ -411,8 +482,46 @@ function bufferResize( test )
   test.identical( view2[ 10 ], 200 );
   test.is( _.bufferRawIs( got ) );
 
-  /* node buffer */
+  /* view buffer */
 
+  test.case = 'view buffer, size < length';
+  var src = new DataView( new ArrayBuffer( 6 ) );
+  var got = _.bufferResize( src, 1 );
+  test.identical( got, new DataView( new ArrayBuffer( 1 ) ) );
+  test.identical( got.byteLength, 1 );
+  test.is( _.bufferViewIs( got ) );
+
+  var buffer = new ArrayBuffer( 10 );
+  var view = new DataView( buffer );
+  view.setUint8( 2, 200 );
+  var src = new DataView( buffer );
+  var got = _.bufferResize( src, 3 );
+  test.notIdentical( got, new DataView( new ArrayBuffer( 3 ) ) );
+  test.identical( got.byteLength, 3 );
+  test.identical( got.getUint8( 2 ), 200 );
+  test.is( _.bufferViewIs( got ) );
+
+  test.case = 'view buffer, size > length';
+  var src = new DataView( new ArrayBuffer( 6 ) );
+  var got = _.bufferResize( src, 8 );
+  test.identical( got, new DataView( new ArrayBuffer( 8 ) ) );
+  test.identical( got.byteLength, 8 );
+  test.is( _.bufferViewIs( got ) );
+
+  test.case = 'view buffer, size > length';
+  var buffer = new ArrayBuffer( 10 );
+  var view = new DataView( buffer );
+  view.setUint8( 4, 15 );
+  var src = new DataView( buffer );
+  var got = _.bufferResize( src, 20 );
+  test.notIdentical( got, new DataView( new ArrayBuffer( 20 ) ) );
+  test.identical( got.getUint8( 4 ), 15 );
+  test.identical( got.byteLength, 20 );
+  test.is( _.bufferViewIs( got ) );
+
+  /* node buffer */
+  if( Config.platform === 'nodejs' )
+  {
   test.case = 'node buffer, size < length, alloc method';
   var src = Buffer.alloc( 6 );
   var got = _.bufferResize( src, 1 );
@@ -517,43 +626,7 @@ function bufferResize( test )
   var got = _.bufferResize( src, 7 );
   test.identical( got, Buffer.from( [ 178, 218, 0, 0, 0, 0, 0 ] ) );
   test.is( _.bufferNodeIs( got ) );
-
-  /* view buffer */
-
-  test.case = 'view buffer, size < length';
-  var src = new DataView( new ArrayBuffer( 6 ) );
-  var got = _.bufferResize( src, 1 );
-  test.identical( got, new DataView( new ArrayBuffer( 1 ) ) );
-  test.identical( got.byteLength, 1 );
-  test.is( _.bufferViewIs( got ) );
-
-  var buffer = new ArrayBuffer( 10 );
-  var view = new DataView( buffer );
-  view.setUint8( 2, 200 );
-  var src = new DataView( buffer );
-  var got = _.bufferResize( src, 3 );
-  test.notIdentical( got, new DataView( new ArrayBuffer( 3 ) ) );
-  test.identical( got.byteLength, 3 );
-  test.identical( got.getUint8( 2 ), 200 );
-  test.is( _.bufferViewIs( got ) );
-
-  test.case = 'view buffer, size > length';
-  var src = new DataView( new ArrayBuffer( 6 ) );
-  var got = _.bufferResize( src, 8 );
-  test.identical( got, new DataView( new ArrayBuffer( 8 ) ) );
-  test.identical( got.byteLength, 8 );
-  test.is( _.bufferViewIs( got ) );
-
-  test.case = 'view buffer, size > length';
-  var buffer = new ArrayBuffer( 10 );
-  var view = new DataView( buffer );
-  view.setUint8( 4, 15 );
-  var src = new DataView( buffer );
-  var got = _.bufferResize( src, 20 );
-  test.notIdentical( got, new DataView( new ArrayBuffer( 20 ) ) );
-  test.identical( got.getUint8( 4 ), 15 );
-  test.identical( got.byteLength, 20 );
-  test.is( _.bufferViewIs( got ) );
+  }
 
   /* - */
 
