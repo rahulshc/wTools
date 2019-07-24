@@ -271,7 +271,9 @@ function bufferMakeSimilar( ins, src )
 
 //
 
-/* qqq : implement */
+/* qqq : implement
+   Dmytro : implemented for typed buffers
+*/
 
 function bufferButRange( src, range, ins )
 {
@@ -282,11 +284,20 @@ function bufferButRange( src, range, ins )
   _.assert( ins === undefined || _.longIs( ins ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  throw _.err( 'not implemented' )
+  let start = src.slice( 0, range[ 0 ] );
+  let end = src.slice( range[ 1 ] );
+  result = new src.constructor( start.length + ins.length + end.length );
+  result.set( start );
+  result.set( ins, range[ 0 ] );
+  result.set( end, range[ 0 ] + ins.length );
 
-  if( range[ 1 ] - range[ 0 ] <= 0 )
-  return _.bufferSlice( src );
+  return result;
 
+  // throw _.err( 'not implemented' )
+  //
+  // if( range[ 1 ] - range[ 0 ] <= 0 )
+  // return _.bufferSlice( src );
+  //
   // if( size > src.byteLength )
   // {
   //   result = longMake( src, size );
@@ -298,8 +309,8 @@ function bufferButRange( src, range, ins )
   // {
   //   result = src.slice( 0, size );
   // }
-
-  return result;
+  //
+  // return result;
 }
 
 //
