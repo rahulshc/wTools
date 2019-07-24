@@ -289,7 +289,7 @@ function bufferButRange( src, range, ins )
 
   let start = src.slice( 0, range[ 0 ] );
   let end = src.slice( range[ 1 ] );
-  result = new src.constructor( start.length + ins.length + end.length );
+  result = _.longMake( src, start.length + ins.length + end.length );
   result.set( start );
   result.set( ins, range[ 0 ] );
   result.set( end, range[ 0 ] + ins.length );
@@ -397,16 +397,16 @@ function bufferResize( srcBuffer, size )
   {
     if( _.bufferTypedIs( srcBuffer ) )
     {
-      let resultTyped = new srcBuffer.constructor( size );
+      let resultTyped = _.longMake( srcBuffer, size );
       resultTyped.set( srcBuffer );
-      return resultTyped;
+      result = resultTyped;
     }
     if( _.bufferRawIs( srcBuffer ) )
     {
-      let resultTyped = new Uint8Array( new srcBuffer.constructor( size ) );
+      let resultTyped = new Uint8Array( _.longMake( srcBuffer, size ) );
       let srcTyped = new Uint8Array( srcBuffer );
       resultTyped.set( srcTyped );
-      return _.bufferRawFrom( resultTyped );
+      result = _.bufferRawFrom( resultTyped );
     }
     if( _.bufferViewIs( srcBuffer ) )
     {
