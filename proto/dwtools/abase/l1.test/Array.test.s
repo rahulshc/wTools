@@ -270,134 +270,12 @@ function bufferViewIs( test )
 
 //
 
-function bufferFrom( test )
+function bufferButRange( test )
 {
-  /*src: number,str,array,raw,typed,node */
-  /*bufferConstructor: typed,raw,node */
-
-  /* typed buffer */
-
-  test.case = 'src:number,bufferConstructor:typed buffer';
-  var src = 1;
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-  var expected = new Uint8Array([ src ]);
-  test.identical( got, expected );
-
-  test.case = 'src:str,bufferConstructor:typed buffer';
-  var src = 'abc';
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-  var expected = new Uint8Array([ 97,98,99 ]);
-  test.identical( got, expected );
-
-  test.case = 'src:array,bufferConstructor:typed buffer';
-  var src = [ 97,98,99 ];
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-  var expected = new Uint8Array([ 97,98,99 ]);
-  test.identical( got, expected );
-
-  test.case = 'src:raw buffer,bufferConstructor:typed buffer';
-  var src = new ArrayBuffer( 3 );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-  var expected = new Uint8Array([ 0, 0, 0 ]);
-  test.identical( got, expected );
-
-  test.case = 'src:typed,bufferConstructor:typed buffer';
-  var src = new Int32Array([ 97,98,99 ]);
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-  var expected = new Uint8Array([ 97,98,99 ]);
-  test.identical( got, expected );
-
-  if( Config.platform === 'nodejs' )
-  {
-    test.case = 'src:node buffer,bufferConstructor:typed buffer';
-    var src = Buffer.from([ 97,98,99 ]);
-    var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-    var expected = new Uint8Array([ 97,98,99 ]);
-    test.identical( got, expected );
-  }
-
-  /* raw buffer */
-
-  test.case = 'src:number,bufferConstructor:raw buffer';
-  var src = 1;
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-  var expected = new Uint8Array([ 1 ]).buffer;
-  test.identical( got, expected );
-
-  test.case = 'src:str,bufferConstructor:raw buffer';
-  var src = 'abc';
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-  var expected = new Uint8Array([ 97,98,99 ]).buffer;
-  test.identical( got, expected );
-
-  test.case = 'src:array,bufferConstructor:raw buffer';
-  var src = [ 97,98,99 ];
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-  var expected = new Uint8Array([ 97,98,99 ]).buffer;
-  test.identical( got, expected );
-
-  test.case = 'src:raw buffer,bufferConstructor:raw buffer';
-  var src = new ArrayBuffer( 3 );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-  var expected = src;
-  test.identical( got, expected );
-
-  test.case = 'src:typed,bufferConstructor:raw buffer';
-  var src = new Int32Array([ 97,98,99 ]);
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-  var expected = new Int32Array([ 97,98,99 ]).buffer;
-  test.identical( got, expected );
-
-  if( Config.platform === 'nodejs' )
-  {
-    test.case = 'src:node buffer,bufferConstructor:raw buffer';
-    var src = Buffer.from([ 97,98,99 ]);
-    var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-    var expected = new Uint8Array([ 97,98,99 ]).buffer;
-    test.identical( got, expected );
-  }
-
-  if( !Config.platform === 'nodejs' )
-  return;
-
-  /* node buffer */
-
-  test.case = 'src:number,bufferConstructor:node buffer';
-  var src = 1;
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = Buffer.from( [ src ] );
-  test.identical( got, expected );
-
-  test.case = 'src:str,bufferConstructor:node buffer';
-  var src = 'abc';
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = Buffer.from( src );
-  test.identical( got, expected );
-
-  test.case = 'src:array,bufferConstructor:node buffer';
-  var src = [ 97,98,99 ];
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = Buffer.from( src );
-  test.identical( got, expected );
-
-  test.case = 'src:raw buffer,bufferConstructor:node buffer';
-  var src = new ArrayBuffer( 3 );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = Buffer.from( src );
-  test.identical( got, expected );
-
-  test.case = 'src:typed,bufferConstructor:node buffer';
-  var src = new Int32Array([ 97,98,99 ]);
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = Buffer.from( src.buffer, src.buteOffset, src.byteLength );
-  test.identical( got, expected );
-
-  test.case = 'src:node buffer,bufferConstructor:node buffer';
-  var src = Buffer.from([ 97,98,99 ]);
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = src;
-  test.identical( got, expected );
-
+  test.case = 'buffer';
+  var src = new Uint8Array( [ 0, 1, 2, 3 ] );
+  var got = _.bufferButRange( src, [ 2, 2 ], [ 1 ] );
+  test.identical( got, new Uint8Array( [ 0, 1, 1, 2, 3 ] ) );
 }
 
 //
@@ -754,6 +632,176 @@ function bufferRetype( test )
 
 //
 
+function bufferFrom( test )
+{
+  /*src: number,str,array,raw,typed,node */
+  /*bufferConstructor: typed,raw,node */
+
+  /* typed buffer */
+
+  test.case = 'src:number,bufferConstructor:typed buffer';
+  var src = 1;
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
+  var expected = new Uint8Array([ src ]);
+  test.identical( got, expected );
+
+  test.case = 'src:str,bufferConstructor:typed buffer';
+  var src = 'abc';
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
+  var expected = new Uint8Array([ 97,98,99 ]);
+  test.identical( got, expected );
+
+  test.case = 'src:array,bufferConstructor:typed buffer';
+  var src = [ 97,98,99 ];
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
+  var expected = new Uint8Array([ 97,98,99 ]);
+  test.identical( got, expected );
+
+  test.case = 'src:raw buffer,bufferConstructor:typed buffer';
+  var src = new ArrayBuffer( 3 );
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
+  var expected = new Uint8Array([ 0, 0, 0 ]);
+  test.identical( got, expected );
+
+  test.case = 'src:typed,bufferConstructor:typed buffer';
+  var src = new Int32Array([ 97,98,99 ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
+  var expected = new Uint8Array([ 97,98,99 ]);
+  test.identical( got, expected );
+
+  if( Config.platform === 'nodejs' )
+  {
+    test.case = 'src:node buffer,bufferConstructor:typed buffer';
+    var src = Buffer.from([ 97,98,99 ]);
+    var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
+    var expected = new Uint8Array([ 97,98,99 ]);
+    test.identical( got, expected );
+  }
+
+  /* raw buffer */
+
+  test.case = 'src:number,bufferConstructor:raw buffer';
+  var src = 1;
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
+  var expected = new Uint8Array([ 1 ]).buffer;
+  test.identical( got, expected );
+
+  test.case = 'src:str,bufferConstructor:raw buffer';
+  var src = 'abc';
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
+  var expected = new Uint8Array([ 97,98,99 ]).buffer;
+  test.identical( got, expected );
+
+  test.case = 'src:array,bufferConstructor:raw buffer';
+  var src = [ 97,98,99 ];
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
+  var expected = new Uint8Array([ 97,98,99 ]).buffer;
+  test.identical( got, expected );
+
+  test.case = 'src:raw buffer,bufferConstructor:raw buffer';
+  var src = new ArrayBuffer( 3 );
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
+  var expected = src;
+  test.identical( got, expected );
+
+  test.case = 'src:typed,bufferConstructor:raw buffer';
+  var src = new Int32Array([ 97,98,99 ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
+  var expected = new Int32Array([ 97,98,99 ]).buffer;
+  test.identical( got, expected );
+
+  if( Config.platform === 'nodejs' )
+  {
+    test.case = 'src:node buffer,bufferConstructor:raw buffer';
+    var src = Buffer.from([ 97,98,99 ]);
+    var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
+    var expected = new Uint8Array([ 97,98,99 ]).buffer;
+    test.identical( got, expected );
+  }
+
+  if( !Config.platform === 'nodejs' )
+  return;
+
+  /* node buffer */
+
+  test.case = 'src:number,bufferConstructor:node buffer';
+  var src = 1;
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
+  var expected = Buffer.from( [ src ] );
+  test.identical( got, expected );
+
+  test.case = 'src:str,bufferConstructor:node buffer';
+  var src = 'abc';
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
+  var expected = Buffer.from( src );
+  test.identical( got, expected );
+
+  test.case = 'src:array,bufferConstructor:node buffer';
+  var src = [ 97,98,99 ];
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
+  var expected = Buffer.from( src );
+  test.identical( got, expected );
+
+  test.case = 'src:raw buffer,bufferConstructor:node buffer';
+  var src = new ArrayBuffer( 3 );
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
+  var expected = Buffer.from( src );
+  test.identical( got, expected );
+
+  test.case = 'src:typed,bufferConstructor:node buffer';
+  var src = new Int32Array([ 97,98,99 ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
+  var expected = Buffer.from( src.buffer, src.buteOffset, src.byteLength );
+  test.identical( got, expected );
+
+  test.case = 'src:node buffer,bufferConstructor:node buffer';
+  var src = Buffer.from([ 97,98,99 ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
+  var expected = src;
+  test.identical( got, expected );
+
+}
+
+//
+
+function bufferRawFromTyped( test )
+{
+
+  var buffer1 = new ArrayBuffer(10);
+  var view1 = new Int8Array( buffer1 );
+  test.case = 'returns the same length of typed array';
+  var got = _.bufferRawFromTyped( view1 );
+  var expected = got; // [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+  test.identical( got, expected );
+
+  var buffer2 = new ArrayBuffer(10);
+  var view2 = new Int8Array( buffer2, 2 );
+  test.case = 'returns the new sub typed array';
+  var got = _.bufferRawFromTyped( view2 );
+  var expected = got; // [ 0, 0, 0, 0, 0, 0 ]
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.bufferRawFromTyped();
+  });
+
+  test.case = 'arguments are wrong';
+  test.shouldThrowErrorSync( function()
+  {
+    _.bufferRawFromTyped( 'wrong argument' );
+  });
+
+}
+
+//
+
 function bufferRawFrom( test )
 {
   test.case = 'typed';
@@ -933,44 +981,6 @@ function bufferNodeFrom( test )
   test.shouldThrowErrorSync( () => _.bufferNodeFrom( 5 ) );
   // test.shouldThrowErrorSync( () => _.bufferNodeFrom( [] ) );
   test.shouldThrowErrorSync( () => _.bufferNodeFrom( {} ) );
-
-}
-
-//
-
-function bufferRawFromTyped( test )
-{
-
-  var buffer1 = new ArrayBuffer(10);
-  var view1 = new Int8Array( buffer1 );
-  test.case = 'returns the same length of typed array';
-  var got = _.bufferRawFromTyped( view1 );
-  var expected = got; // [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
-  test.identical( got, expected );
-
-  var buffer2 = new ArrayBuffer(10);
-  var view2 = new Int8Array( buffer2, 2 );
-  test.case = 'returns the new sub typed array';
-  var got = _.bufferRawFromTyped( view2 );
-  var expected = got; // [ 0, 0, 0, 0, 0, 0 ]
-  test.identical( got, expected );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.bufferRawFromTyped();
-  });
-
-  test.case = 'arguments are wrong';
-  test.shouldThrowErrorSync( function()
-  {
-    _.bufferRawFromTyped( 'wrong argument' );
-  });
 
 }
 
@@ -21955,22 +21965,25 @@ var Self =
   tests :
   {
 
-    // buffer
+    // buffer, layer0
 
     bufferRawIs,
     bufferTypedIs,
     bufferNodeIs,
     bufferViewIs,
 
-    bufferFrom,
+    // buffer, layer1
+
+    bufferButRange,
     bufferRelen,
     bufferResize,
     bufferResizeExperiment,
     bufferRetype,
+    bufferFrom,
+    bufferRawFromTyped,
     bufferRawFrom,
     bufferBytesFrom,
     bufferNodeFrom,
-    bufferRawFromTyped,
 
     // type test
 
