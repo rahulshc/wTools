@@ -692,7 +692,7 @@ function bufferResize( test )
   test.case = 'not a buffer';
   test.shouldThrowErrorSync( () => _.bufferResize( [ 1, 2 ], 1 ) );
 
-  test.case = 'wrong arguments';
+  test.case = 'wrong buffers';
   var buffer = new ArrayBuffer();
   test.shouldThrowErrorSync( () => _.bufferResize( new DataView() ) );
   test.shouldThrowErrorSync( () => _.bufferResize( new DataView( 1 ) ) );
