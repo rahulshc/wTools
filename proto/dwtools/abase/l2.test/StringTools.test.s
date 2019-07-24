@@ -7013,7 +7013,7 @@ function strSplitCamel( test )
 //   var expected = [ 'Aa',' ','','<<<-','',' ','Bb' ];
 //   var got = _.strSplitNaive
 //   ({
-//     /*ttt*/src,
+//     src,
 //     delimeter : [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ],
 //     preservingEmpty : 1,
 //     preservingDelimeters : 1,
@@ -7028,7 +7028,7 @@ function strSplitCamel( test )
 //   var expected = [ 'a1',' ','a2',' ','a3',' ','','<<<-','',' ','Bb' ];
 //   var got = _.strSplitNaive
 //   ({
-//     /*ttt*/src,
+//     src,
 //     delimeter : [ '->>>','<<<-','->>','<<-','!>>','<<!','>>','<<',' ' ],
 //     preservingEmpty : 1,
 //     preservingDelimeters : 1,
@@ -7042,7 +7042,7 @@ function strSplitCamel( test )
 //   var expected = [ 'a,b,c' ];
 //   var got = _.strSplitNaive
 //   ({
-//     /*ttt*/src,
+//     src,
 //     delimeter : [ '.' ],
 //     preservingDelimeters : 1
 //   });
@@ -7054,7 +7054,7 @@ function strSplitCamel( test )
 //   var expected = [ 'a,b,c' ];
 //   var got = _.strSplitNaive
 //   ({
-//     /*ttt*/src,
+//     src,
 //     delimeter : [ '.' ],
 //     preservingDelimeters : 1
 //   });
@@ -7068,7 +7068,7 @@ function strSplitCamel( test )
 //   var expected = [ 'a', '', 'b', '', 'c', '', 'd' ];
 //   var got = _.strSplitNaive
 //   ({
-//     /*ttt*/src,
+//     src,
 //     delimeter : [ ',', '.' ],
 //     preservingEmpty : 1
 //   });
@@ -7080,7 +7080,7 @@ function strSplitCamel( test )
 //   var expected = [ 'a', 'b', 'c', 'd' ];
 //   var got = _.strSplitNaive
 //   ({
-//     /*ttt*/src,
+//     src,
 //     delimeter : ',',
 //     preservingEmpty : 1
 //   });
@@ -7093,7 +7093,7 @@ function strSplitCamel( test )
 //   var expected = [ '', '' ];
 //   var got = _.strSplitNaive
 //   ({
-//     /*ttt*/src,
+//     src,
 //     delimeter : ',',
 //     preservingEmpty : 1
 //   });
@@ -7105,7 +7105,7 @@ function strSplitCamel( test )
 //   var expected = [];
 //   var got = _.strSplitNaive
 //   ({
-//     /*ttt*/src,
+//     src,
 //     delimeter : ',',
 //     preservingEmpty : 0
 //   });

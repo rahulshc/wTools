@@ -6,7 +6,7 @@ about:
     extend JavaScript without corrupting it, so may be used solely or in
     conjunction with another module of such kind
   enabled: 1
-  version: 0.8.425
+  version: 0.8.500
   interpreters: &ref_0
     - nodejs >= 6.0.0
     - chrome >= 60.0.0
@@ -29,7 +29,7 @@ about:
       email: volodymyr.migdal@gmail.com
     - name: Ihor O.
       email: iostashvxi@gmail.com
-  npm.name: wTools
+  npm.name: wtools.experiment
   npm.dependencies: &ref_3 []
   npm.devDependencies: &ref_4
     wFiles: ''
@@ -76,67 +76,41 @@ path:
     criterion:
       debug: debug
       raw: raw
-      tests: no.tests
       content: prime
   out.compiled.debug:
     path: '{path::out}/compiled.debug'
     criterion:
       debug: debug
       raw: compiled
-      tests: no.tests
       content: prime
   out.raw.release:
     path: '{path::out}/raw.release'
     criterion:
       debug: release
       raw: raw
-      tests: no.tests
       content: prime
   out.compiled.release:
     path: '{path::out}/release'
     criterion:
       debug: release
       raw: compiled
-      tests: no.tests
-      content: prime
-  out.tests.raw.debug:
-    path: '{path::out}/tests.raw.debug'
-    criterion:
-      debug: debug
-      raw: raw
-      tests: only.tests
-      content: prime
-  out.tests.compiled.debug:
-    path: '{path::out}/tests.compiled.debug'
-    criterion:
-      debug: debug
-      raw: compiled
-      tests: only.tests
-      content: prime
-  out.tests.raw.release:
-    path: '{path::out}/tests.raw.release'
-    criterion:
-      debug: release
-      raw: raw
-      tests: only.tests
-      content: prime
-  out.tests.compiled.release:
-    path: '{path::out}/tests.compiled.release'
-    criterion:
-      debug: release
-      raw: compiled
-      tests: only.tests
       content: prime
   repository:
     path: 'git+https:///github.com/Wandalen/wTools.git'
   bugtracker:
     path: 'https:///github.com/Wandalen/wTools/issues'
-  entry:
+  entry.no.tests:
     path: ../proto/dwtools/abase/Layer2.s
+    criterion:
+      tests: no.tests
+  entry.only.tests:
+    path: ../proto/dwtools/abase/**/*.test.s
+    criterion:
+      tests: only.tests
   npm.entry:
-    path: ../debug/dwtools/abase/Layer2.s
+    path: ../proto/dwtools/abase/Layer2.s
   npm.files:
-    path: ../debug
+    path: ../proto
   exported.dir.proto.export:
     path: ../proto
     criterion:
@@ -146,7 +120,6 @@ path:
     path:
       - ../proto
       - ../proto/dwtools
-      - ../proto/dwtools/-Tools.s
       - ../proto/dwtools/Tools.s
       - ../proto/dwtools/abase
       - ../proto/dwtools/abase/Layer0.s
@@ -186,13 +159,14 @@ path:
       - ../proto/dwtools/abase/l1/rFundamental.s
       - ../proto/dwtools/abase/l1/zSetup.s
       - ../proto/dwtools/abase/l1.test
-      - ../proto/dwtools/abase/l1.test/Array.test.s
       - ../proto/dwtools/abase/l1.test/Diagnostics.test.s
       - ../proto/dwtools/abase/l1.test/Entity.test.s
+      - ../proto/dwtools/abase/l1.test/Long.test.s
       - ../proto/dwtools/abase/l1.test/Map.test.s
       - ../proto/dwtools/abase/l1.test/Regexp.test.s
       - ../proto/dwtools/abase/l1.test/Routine.test.s
       - ../proto/dwtools/abase/l1.test/String.test.s
+      - ../proto/dwtools/abase/l1.test/Time.test.s
       - ../proto/dwtools/abase/l1.test/Typing.test.s
       - ../proto/dwtools/abase/l2
       - ../proto/dwtools/abase/l2/IncludeTools.s
@@ -299,7 +273,7 @@ reflector:
     src:
       filePath:
         '**.test*': true
-        'path::proto': '{path::out.*=1}/Tests.s'
+        'path::proto': '{path::out.*=1}/Tests.test.s'
     criterion:
       tests: only.tests
       raw: compiled
@@ -312,7 +286,7 @@ reflector:
     src:
       filePath:
         '**.test*': true
-        'path::proto': '{path::out.*=1}/Tests.s'
+        'path::proto': '{path::out.*=1}/Tests.test.s'
     criterion:
       tests: only.tests
       raw: compiled
@@ -512,6 +486,29 @@ step:
       filePath: 'path::out.*=1'
     inherit:
       - files.delete
+  tst.proto:
+    criterion:
+      content: proto
+    opts:
+      shell: 'tst {path::proto}'
+    inherit:
+      - shell.run
+  tst.debug:
+    criterion:
+      content: prime
+      debug: debug
+    opts:
+      shell: 'tst {path::out.*=1}'
+    inherit:
+      - shell.run
+  tst.release:
+    criterion:
+      content: prime
+      debug: release
+    opts:
+      shell: 'tst {path::out.*=1}'
+    inherit:
+      - shell.run
   reflect.proto.debug.raw:
     criterion:
       tests: no.tests
@@ -558,6 +555,7 @@ step:
       debug: release
       content: prime
     opts:
+      entry: 'path::entry.no.tests'
       reflector: 'reflector::transpile.proto.raw*'
     inherit:
       - files.transpile
@@ -568,6 +566,7 @@ step:
       debug: debug
       content: prime
     opts:
+      entry: 'path::entry.*=1'
       reflector: 'reflector::transpile.proto.no.tests.compiled*'
     inherit:
       - files.transpile
@@ -578,6 +577,7 @@ step:
       debug: release
       content: prime
     opts:
+      entry: 'path::entry.*=1'
       reflector: 'reflector::transpile.proto.no.tests.compiled*'
     inherit:
       - files.transpile
@@ -588,6 +588,8 @@ step:
       debug: debug
       content: prime
     opts:
+      entry: 'path::entry.*=1'
+      external.before: '{path::out.*=1}/Main.s'
       reflector: 'reflector::transpile.proto.only.tests.compiled*'
     inherit:
       - files.transpile
@@ -598,6 +600,8 @@ step:
       debug: release
       content: prime
     opts:
+      entry: 'path::entry.*=1'
+      external.before: '{path::out.*=1}/Main.s'
       reflector: 'reflector::transpile.proto.only.tests.compiled*'
     inherit:
       - files.transpile
@@ -625,6 +629,11 @@ step:
       tar: 0
     inherit:
       - module.export
+  npm.publish:
+    opts:
+      shell: npm publish
+    inherit:
+      - shell.run
 build:
   debug:
     criterion:
@@ -633,42 +642,34 @@ build:
       raw: raw
       content: prime
     steps:
-      - timelapse.begin
       - 'step::clean.out*=2'
       - reflect.proto.*=1
-      - timelapse.end
   compiled.debug:
     criterion:
       debug: debug
       raw: compiled
       content: prime
     steps:
-      - timelapse.begin
       - 'step::clean.out*=2'
       - transpile.proto.no.tests*=1
       - transpile.proto.only.tests*=1
-      - timelapse.end
   raw.release:
     criterion:
       debug: release
       raw: raw
       content: prime
     steps:
-      - timelapse.begin
       - 'step::clean.out*=2'
       - transpile.proto.raw
-      - timelapse.end
   release:
     criterion:
       debug: release
       raw: compiled
       content: prime
     steps:
-      - timelapse.begin
       - 'step::clean.out*=2'
       - transpile.proto.no.tests*=1
       - transpile.proto.only.tests*=1
-      - timelapse.end
   npm:
     criterion:
       debug: debug
@@ -700,7 +701,7 @@ build:
       content: npm
       export: 1
     steps:
-      - 'step::npm.export'
+      - 'step::npm.publish'
   export:
     criterion:
       default: 1
@@ -709,7 +710,7 @@ build:
       - 'build::proto.export'
 exported:
   proto.export:
-    version: 0.8.425
+    version: 0.8.500
     criterion:
       content: proto
       export: 1
@@ -726,13 +727,13 @@ module:
         extend JavaScript without corrupting it, so may be used solely or in
         conjunction with another module of such kind
       enabled: 1
-      version: 0.8.425
+      version: 0.8.500
       interpreters: *ref_0
       keywords: *ref_1
       license: MIT
       author: Kostiantyn Wandalen <wanalen@willbe.so>
       contributors: *ref_2
-      npm.name: wTools
+      npm.name: wtools.experiment
       npm.dependencies: *ref_3
       npm.devDependencies: *ref_4
     path:
@@ -777,67 +778,41 @@ module:
         criterion:
           debug: debug
           raw: raw
-          tests: no.tests
           content: prime
       out.compiled.debug:
         path: '{path::out}/compiled.debug'
         criterion:
           debug: debug
           raw: compiled
-          tests: no.tests
           content: prime
       out.raw.release:
         path: '{path::out}/raw.release'
         criterion:
           debug: release
           raw: raw
-          tests: no.tests
           content: prime
       out.compiled.release:
         path: '{path::out}/release'
         criterion:
           debug: release
           raw: compiled
-          tests: no.tests
-          content: prime
-      out.tests.raw.debug:
-        path: '{path::out}/tests.raw.debug'
-        criterion:
-          debug: debug
-          raw: raw
-          tests: only.tests
-          content: prime
-      out.tests.compiled.debug:
-        path: '{path::out}/tests.compiled.debug'
-        criterion:
-          debug: debug
-          raw: compiled
-          tests: only.tests
-          content: prime
-      out.tests.raw.release:
-        path: '{path::out}/tests.raw.release'
-        criterion:
-          debug: release
-          raw: raw
-          tests: only.tests
-          content: prime
-      out.tests.compiled.release:
-        path: '{path::out}/tests.compiled.release'
-        criterion:
-          debug: release
-          raw: compiled
-          tests: only.tests
           content: prime
       repository:
         path: 'git+https:///github.com/Wandalen/wTools.git'
       bugtracker:
         path: 'https:///github.com/Wandalen/wTools/issues'
-      entry:
+      entry.no.tests:
         path: proto/dwtools/abase/Layer2.s
+        criterion:
+          tests: no.tests
+      entry.only.tests:
+        path: proto/dwtools/abase/**/*.test.s
+        criterion:
+          tests: only.tests
       npm.entry:
-        path: debug/dwtools/abase/Layer2.s
+        path: proto/dwtools/abase/Layer2.s
       npm.files:
-        path: debug
+        path: proto
       exported.dir.proto.export:
         path: ./proto
         criterion:
@@ -847,7 +822,6 @@ module:
         path:
           - proto
           - proto/dwtools
-          - proto/dwtools/-Tools.s
           - proto/dwtools/Tools.s
           - proto/dwtools/abase
           - proto/dwtools/abase/Layer0.s
@@ -887,13 +861,14 @@ module:
           - proto/dwtools/abase/l1/rFundamental.s
           - proto/dwtools/abase/l1/zSetup.s
           - proto/dwtools/abase/l1.test
-          - proto/dwtools/abase/l1.test/Array.test.s
           - proto/dwtools/abase/l1.test/Diagnostics.test.s
           - proto/dwtools/abase/l1.test/Entity.test.s
+          - proto/dwtools/abase/l1.test/Long.test.s
           - proto/dwtools/abase/l1.test/Map.test.s
           - proto/dwtools/abase/l1.test/Regexp.test.s
           - proto/dwtools/abase/l1.test/Routine.test.s
           - proto/dwtools/abase/l1.test/String.test.s
+          - proto/dwtools/abase/l1.test/Time.test.s
           - proto/dwtools/abase/l1.test/Typing.test.s
           - proto/dwtools/abase/l2
           - proto/dwtools/abase/l2/IncludeTools.s
@@ -1000,7 +975,7 @@ module:
         src:
           filePath:
             '**.test*': true
-            'path::proto': '{path::out.*=1}/Tests.s'
+            'path::proto': '{path::out.*=1}/Tests.test.s'
         criterion:
           tests: only.tests
           raw: compiled
@@ -1013,7 +988,7 @@ module:
         src:
           filePath:
             '**.test*': true
-            'path::proto': '{path::out.*=1}/Tests.s'
+            'path::proto': '{path::out.*=1}/Tests.test.s'
         criterion:
           tests: only.tests
           raw: compiled
@@ -1213,6 +1188,29 @@ module:
           filePath: 'path::out.*=1'
         inherit:
           - files.delete
+      tst.proto:
+        criterion:
+          content: proto
+        opts:
+          shell: 'tst {path::proto}'
+        inherit:
+          - shell.run
+      tst.debug:
+        criterion:
+          content: prime
+          debug: debug
+        opts:
+          shell: 'tst {path::out.*=1}'
+        inherit:
+          - shell.run
+      tst.release:
+        criterion:
+          content: prime
+          debug: release
+        opts:
+          shell: 'tst {path::out.*=1}'
+        inherit:
+          - shell.run
       reflect.proto.debug.raw:
         criterion:
           tests: no.tests
@@ -1259,6 +1257,7 @@ module:
           debug: release
           content: prime
         opts:
+          entry: 'path::entry.no.tests'
           reflector: 'reflector::transpile.proto.raw*'
         inherit:
           - files.transpile
@@ -1269,6 +1268,7 @@ module:
           debug: debug
           content: prime
         opts:
+          entry: 'path::entry.*=1'
           reflector: 'reflector::transpile.proto.no.tests.compiled*'
         inherit:
           - files.transpile
@@ -1279,6 +1279,7 @@ module:
           debug: release
           content: prime
         opts:
+          entry: 'path::entry.*=1'
           reflector: 'reflector::transpile.proto.no.tests.compiled*'
         inherit:
           - files.transpile
@@ -1289,6 +1290,8 @@ module:
           debug: debug
           content: prime
         opts:
+          entry: 'path::entry.*=1'
+          external.before: '{path::out.*=1}/Main.s'
           reflector: 'reflector::transpile.proto.only.tests.compiled*'
         inherit:
           - files.transpile
@@ -1299,6 +1302,8 @@ module:
           debug: release
           content: prime
         opts:
+          entry: 'path::entry.*=1'
+          external.before: '{path::out.*=1}/Main.s'
           reflector: 'reflector::transpile.proto.only.tests.compiled*'
         inherit:
           - files.transpile
@@ -1326,6 +1331,11 @@ module:
           tar: 0
         inherit:
           - module.export
+      npm.publish:
+        opts:
+          shell: npm publish
+        inherit:
+          - shell.run
     build:
       debug:
         criterion:
@@ -1334,42 +1344,34 @@ module:
           raw: raw
           content: prime
         steps:
-          - timelapse.begin
           - 'step::clean.out*=2'
           - reflect.proto.*=1
-          - timelapse.end
       compiled.debug:
         criterion:
           debug: debug
           raw: compiled
           content: prime
         steps:
-          - timelapse.begin
           - 'step::clean.out*=2'
           - transpile.proto.no.tests*=1
           - transpile.proto.only.tests*=1
-          - timelapse.end
       raw.release:
         criterion:
           debug: release
           raw: raw
           content: prime
         steps:
-          - timelapse.begin
           - 'step::clean.out*=2'
           - transpile.proto.raw
-          - timelapse.end
       release:
         criterion:
           debug: release
           raw: compiled
           content: prime
         steps:
-          - timelapse.begin
           - 'step::clean.out*=2'
           - transpile.proto.no.tests*=1
           - transpile.proto.only.tests*=1
-          - timelapse.end
       npm:
         criterion:
           debug: debug
@@ -1401,7 +1403,7 @@ module:
           content: npm
           export: 1
         steps:
-          - 'step::npm.export'
+          - 'step::npm.publish'
       export:
         criterion:
           default: 1
@@ -1410,7 +1412,7 @@ module:
           - 'build::proto.export'
     exported:
       proto.export:
-        version: 0.8.425
+        version: 0.8.500
         criterion:
           content: proto
           export: 1

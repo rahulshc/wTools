@@ -464,8 +464,6 @@ function _strRemoved( srcStr, insStr )
 {
   let result = srcStr;
 
-  debugger;
-
   _.assert( arguments.length === 2, 'expects exactly two arguments' );
   _.assert( _.strIs( srcStr ), 'expects string {-src-}' );
 
@@ -3665,6 +3663,10 @@ strConcat.defaults =
  *
  */
 
+/*
+qqq : extend coverage of strIndentation
+*/
+
 function strIndentation( src, tab )
 {
 
@@ -3676,16 +3678,52 @@ function strIndentation( src, tab )
   {
 
     if( src.indexOf( '\n' ) === -1 )
-    return tab + src;
+    return src;
+
+    // if( src.indexOf( '\n' ) === -1 )
+    // return tab + src;
 
     src = src.split( '\n' );
 
   }
 
-  let result = tab + src.join( '\n' + tab );
+/*
+  should be no tab in prolog
+*/
+
+  let result = src.join( '\n' + tab );
+  // let result = tab + src.join( '\n' + tab );
 
   return result;
 }
+
+// //
+//
+// function strIndentationButFirst( src, tab )
+// {
+//
+//   _.assert( _.strIs( src ) || _.arrayIs( src ), 'Expects src as string or array' );
+//   _.assert( _.strIs( tab ), 'Expects string tab' );
+//   _.assert( arguments.length === 2, 'Expects two arguments' );
+//
+//   if( _.strIs( src ) )
+//   {
+//
+//     if( src.indexOf( '\n' ) === -1 )
+//     return tab + src;
+//
+//     src = src.split( '\n' );
+//
+//   }
+//
+// /*
+//   should be no tab in prolog
+// */
+//
+//   let result = src.join( '\n' + tab );
+//
+//   return result;
+// }
 
 //
 
@@ -4438,7 +4476,7 @@ let Proto =
 
   strSplitCamel,
 
-  // /*ttt*/strSplitNaive,
+  // strSplitNaive,
 
   // extractor
 
@@ -4475,28 +4513,7 @@ _.mapExtend( Self, Proto );
 // export
 // --
 
-// if( typeof module !== 'undefined' )
-// if( _global_.WTOOLS_PRIVATE )
-// { /* delete require.cache[ module.id ]; */ }
-
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
-
-/*
-
-qqq :
-
-  strDup,
-  strJoin
-  strJoinPath,
-
-  strCommonLeft
-  strCommonRight
-
-  strLinesStrip
-  strLinesNearest
-
-*/
-
 
 })();

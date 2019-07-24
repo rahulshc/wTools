@@ -8,7 +8,7 @@ let Self = _global_.wTools;
 
 let _ArraySlice = Array.prototype.slice;
 let _FunctionBind = Function.prototype.bind;
-let _ObjectToString = Object.prototype.toString;
+// let Object.prototype.toString = Object.prototype.toString;
 let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // --
@@ -39,7 +39,7 @@ function primitiveIs( src )
 {
   if( !src )
   return true;
-  let t = _ObjectToString.call( src );
+  let t = Object.prototype.toString.call( src );
   return t === '[object Symbol]' || t === '[object Number]' || t === '[object BigInt]' || t === '[object Boolean]' || t === '[object String]';
 }
 
@@ -69,7 +69,7 @@ function containerLike( src )
 
 function symbolIs( src )
 {
-  let result = _ObjectToString.call( src ) === '[object Symbol]';
+  let result = Object.prototype.toString.call( src ) === '[object Symbol]';
   return result;
 }
 
@@ -77,7 +77,7 @@ function symbolIs( src )
 
 function bigIntIs( src )
 {
-  let result = _ObjectToString.call( src ) === '[object BigInt]';
+  let result = Object.prototype.toString.call( src ) === '[object BigInt]';
   return result;
 }
 
@@ -566,10 +566,6 @@ Object.assign( Self, Fields );
 // --
 // export
 // --
-
-// if( typeof module !== 'undefined' )
-// if( _global.WTOOLS_PRIVATE )
-// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
