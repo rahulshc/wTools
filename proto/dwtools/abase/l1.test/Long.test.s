@@ -1,4 +1,4 @@
-( function _Array_test_s_( ) {
+( function _Long_test_s_( ) {
 
 'use strict';
 
