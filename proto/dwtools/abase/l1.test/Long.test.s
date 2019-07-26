@@ -44,7 +44,7 @@ function bufferRawIs( test )
   if( Config.platform === 'nodejs' )
   {
   test.case = 'node buffer';
-  var src = new Buffer( 10 );
+  var src = Buffer.alloc( 10 );
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
@@ -108,7 +108,7 @@ function bufferTypedIs( test )
   if( Config.platform === 'nodejs' )
   {
   test.case = 'node buffer';
-  var src = new Buffer( 10 );
+  var src = Buffer.alloc( 10 );
   var got = _.bufferTypedIs( src );
   test.identical( got, false );
 
@@ -148,7 +148,7 @@ function bufferNodeIs( test )
   return;
 
   test.case = 'node buffer';
-  var src = new Buffer( 10 );
+  var src = Buffer.alloc( 10 );
   var got = _.bufferNodeIs( src );
   test.identical( got, true );
   test.isNot( _.bufferRawIs( src ) );
@@ -246,7 +246,7 @@ function bufferViewIs( test )
   if( Config.platform === 'nodejs' )
   {
   test.case = 'node buffer';
-  var src = new Buffer( 10 );
+  var src = Buffer.alloc( 10 );
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
