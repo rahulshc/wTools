@@ -8669,99 +8669,65 @@ function strJoinPath( test )
 
 function strIndentation( test )
 {
-  var got, expected;
+  /* string */
 
-  /* - */
-
-  test.case = 'single line';
-
-  /**/
-
-  got = _.strIndentation( '', '_' );
-  expected = '_';
+  test.case = 'empty line';
+  var got = _.strIndentation( '', '_' );
+  var expected = '';
   test.identical( got, expected );
 
-  /* no new lines, returns tab + source */
-
-  got = _.strIndentation( 'abc', '_' );
-  expected = '_abc';
+  test.case = 'no new lines';
+  var got = _.strIndentation( 'abc', '_' );
+  var expected = 'abc';
   test.identical( got, expected );
-
-  /* - */
 
   test.case = 'multiline';
-
-  /**/
-
-  got = _.strIndentation( 'a\nb', '_' );
-  expected = '_a\n_b';
+  var got = _.strIndentation( 'a\nb', '_' );
+  var expected = 'a\n_b';
   test.identical( got, expected );
 
-  /* tab before first and each new line */
-
-  got = _.strIndentation( '\na\nb\nc', '_' );
-  expected = '_\n_a\n_b\n_c';
+  test.case = 'tab before first and each new line';
+  var got = _.strIndentation( '\na\nb\nc', '_' );
+  var expected = '\n_a\n_b\n_c';
   test.identical( got, expected );
 
-  /* tabs count = new lines count + 1 for first line */
-
-  got = _.strIndentation( '\n\n\n', '_' );
-  expected = '_\n_\n_\n_';
+  test.case = 'tabs count = new lines count + 1 for first line';
+  var got = _.strIndentation( '\n\n\n', '_' );
+  var expected = '\n_\n_\n_';
   test.identical( got, expected );
 
-  /**/
+  var got = _.strIndentation( 'a\nb\nc','\t' );
+  var expected = 'a\n\tb\n\tc';
+  test.identical( got, expected );
 
-  got = _.strIndentation( 'a\nb\nc','\t' );
-  expected = '\ta\n\tb\n\tc';
+  /* array */
+
+  test.case = 'array';
+  var got = _.strIndentation( [ 'a', 'b', 'c' ], '_' );
+  var expected = 'a\n_b\n_c';
+  test.identical( got, expected );
+
+  var arr = [ 'a\nb', 'b\nc', 'c\nd' ];
+  var got = _.strIndentation( arr.join( '\n' ), '_' );
+  var expected = 'a\n_b\n_b\n_c\n_c\n_d';
   test.identical( got, expected );
 
   /* - */
-
-  test.case = 'array';
-
-  /**/
-
-  got = _.strIndentation( [ 'a', 'b', 'c' ],'_' );
-  expected = '_a\n_b\n_c';
-  test.identical( got, expected );
-
-  /* join array to string */
-
-  var arr = [ 'a\nb', 'b\nc', 'c\nd' ];
-  got = _.strIndentation( arr.join( '\n' ), '_' );
-  expected = '_a\n_b\n_b\n_c\n_c\n_d';
-  test.identical( got, expected );
-
-
-  /**/
 
   if( !Config.debug )
   return;
 
-  test.case = 'invalid arguments count';
-  test.shouldThrowError( function()
-  {
-    _.strIndentation( 'one','two','three' );
-  });
+  test.case = 'without arguments';
+  test.shouldThrowError( () => _.strIndentation() );
 
-  test.case = 'no arguments';
-  test.shouldThrowError( function()
-  {
-    _.strIndentation( );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowError( () => _.strIndentation( 'one','two','three' ) );
 
   test.case = 'first argument type is wrong';
-  test.shouldThrowError( function()
-  {
-    _.strIndentation( 123,'second' );
-  });
+  test.shouldThrowError( () => _.strIndentation( 12, 'two' ) );
 
   test.case = 'second argument type is wrong';
-  test.shouldThrowError( function()
-  {
-    _.strIndentation( 'first', 321 );
-  });
-
+  test.shouldThrowError( () => _.strIndentation( 'one', 12 ) );
 }
 
 //

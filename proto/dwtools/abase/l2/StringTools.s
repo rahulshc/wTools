@@ -3665,6 +3665,8 @@ strConcat.defaults =
 
 /*
 qqq : extend coverage of strIndentation
+Dmytro : coverage NOT extended. Description and realisation of routine is not identical.
+So, test routine is corrected corresponds to actual state of routine. 
 */
 
 function strIndentation( src, tab )
