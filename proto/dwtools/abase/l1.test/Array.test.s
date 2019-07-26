@@ -409,13 +409,11 @@ function bufferResize( test )
 
   test.case = 'typed buffer, size > length';
   var src = new Uint32Array( 1 );
-  debugger;
   var got = _.bufferResize( src, 4 );
   test.identical( got, new Uint32Array( 4 ) );
   test.is( _.bufferTypedIs( got ) );
 
   var src = new Float32Array( [ 1, 2, 3 ] );
-  debugger;
   var got = _.bufferResize( src, 5 );
   test.identical( got, new Float32Array( [ 1, 2, 3, 0, 0 ] ) );
   test.is( _.bufferTypedIs( got ) );
