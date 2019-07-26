@@ -22027,7 +22027,7 @@ function arraySetIdentical( test )
 var Self =
 {
 
-  name : 'Tools/base/l1/Array',
+  name : 'Tools/base/l1/Long',
   silencing : 1,
   enabled : 1,
   // verbosity : 9,
