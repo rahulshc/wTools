@@ -395,7 +395,7 @@ function bufferResize( srcBuffer, size )
 
   if( size > srcBuffer.length )
   {
-    if( _.bufferTypedIs( srcBuffer ) )
+    if( _.bufferTypedIs( srcBuffer ) || _.bufferNodeIs( srcBuffer ) )
     {
       result = _.longMake( srcBuffer, size );
       result.set( srcBuffer );
@@ -414,11 +414,11 @@ function bufferResize( srcBuffer, size )
       resultTyped.set( srcTyped );
       result = new DataView( _.bufferRawFrom( resultTyped ) );
     }
-    if( _.bufferNodeIs( srcBuffer ) )
-    {
-      result = Buffer.alloc( size );
-      result.set( srcBuffer );
-    }
+    // if( _.bufferNodeIs( srcBuffer ) )
+    // {
+    //   result = Buffer.alloc( size );
+    //   result.set( srcBuffer );
+    // }
   }
   else if( size < srcBuffer.length )
   {
