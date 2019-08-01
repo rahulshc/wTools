@@ -15,7 +15,7 @@ let _ArraySplice = Array.prototype.splice;
 let _FunctionBind = Function.prototype.bind;
 let _ObjectToString = Object.prototype.toString;
 let _ObjectHasOwnProperty = Object.hasOwnProperty;
-let _propertyIsEumerable = Object.propertyIsEnumerable;
+let _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
 
 // --
 // buffer
@@ -1427,12 +1427,13 @@ function arrayMakeRandom( o )
   let result = [];
 
   if( _.numberIs( o ) )
-  {
-    o = { length : o };
-  }
+  o = { length : o }
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( arrayMakeRandom, o );
+
+  if( o.range === null )
+  o.range = [ 0, 1 ]
 
   debugger;
 
@@ -1449,7 +1450,7 @@ function arrayMakeRandom( o )
 arrayMakeRandom.defaults =
 {
   int : 0,
-  range : [ 0, 1 ],
+  range : null,
   length : 1,
 }
 

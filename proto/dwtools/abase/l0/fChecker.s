@@ -207,9 +207,9 @@ function typeOf( src, constructor )
 
 //
 
-function prototypeOf( subPrototype, superPrototype )
+function isPrototypeOf( subPrototype, superPrototype )
 {
-  _.assert( arguments.length === 2, 'Expects single argument' );
+  _.assert( arguments.length === 2, 'Expects two arguments, probably you meant routine prototypeOf' );
   if( subPrototype === superPrototype )
   return true;
   if( !subPrototype )
@@ -224,7 +224,7 @@ function prototypeOf( subPrototype, superPrototype )
 function prototypeHas( superPrototype, subPrototype )
 {
   _.assert( arguments.length === 2, 'Expects single argument' );
-  return _.prototypeOf( subPrototype, superPrototype );
+  return _.isPrototypeOf( subPrototype, superPrototype );
 }
 
 //
@@ -275,18 +275,6 @@ function constructorIs( cls )
 
 //
 
-function constructorIsStandard( cls )
-{
-
-  _.assert( _.constructorIs( cls ) );
-
-  let prototype = _.prototypeGet( cls );
-
-  return _.prototypeIsStandard( prototype );
-}
-
-//
-
 /**
  * Is instance of a class.
  * @function instanceIs
@@ -312,23 +300,6 @@ function instanceIs( src )
   return false;
 
   return true;
-}
-
-//
-
-function instanceIsStandard( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( !_.instanceIs( src ) )
-  return false;
-
-  let proto = _.prototypeGet( src );
-
-  if( !proto )
-  return false;
-
-  return _.prototypeIsStandard( proto );
 }
 
 //
@@ -536,14 +507,12 @@ let Routines =
   promiseLike,
 
   typeOf,
-  prototypeOf,
+  isPrototypeOf,
   prototypeHas,
   prototypeIs,
   prototypeIsStandard,
   constructorIs,
-  constructorIsStandard,
   instanceIs,
-  instanceIsStandard,
   instanceLike,
 
   workerIs,
