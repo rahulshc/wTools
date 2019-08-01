@@ -13,6 +13,7 @@
     { "name" : "Volodymyr M.", "email" : "volodymyr.migdal@gmail.com" }, 
     { "name" : "Ihor O.", "email" : "iostashvxi@gmail.com" }
   ], 
+  "main" : "Main.s", 
   "repository" : "git+https://github.com/Wandalen/wTools.git", 
   "bugs" : "https://github.com/Wandalen/wTools/issues"
 }

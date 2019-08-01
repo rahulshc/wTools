@@ -162,6 +162,37 @@ function mapIsPopulated( src )
 
 //
 
+function mapIsHeritated( src )
+{
+
+  if( !_.objectIs( src ) )
+  return false;
+
+  let proto = src;
+
+  do
+  {
+
+    proto = Object.getPrototypeOf( proto );
+
+    if( proto === null )
+    return true;
+
+    if( proto.constructor && proto.constructor.name !== 'Object' )
+    return false;
+
+    src = proto;
+  }
+  while( proto );
+
+  if( proto === null )
+  return true;
+
+  return false;
+}
+
+//
+
 function mapLike( src )
 {
 
@@ -1376,7 +1407,7 @@ function mapSupplementStructureless( dstMap, srcMap )
       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
       {
         debugger;
-        throw Error( 'Source map should have only primitive elements, but have ' + _.strType( srcMap ) );
+        throw Error( 'Source map should have only primitive elements, but have ' + _.strType( srcMap ) + ' ' + _.strQuote( s ) );
       }
       dstMap[ s ] = srcMap[ s ];
     }
@@ -4247,7 +4278,6 @@ function _mapOnly( o )
     let s;
     for( s = srcMaps.length-1 ; s >= 0 ; s-- )
     if( k in srcMaps[ s ] )
-    // if( k in srcMaps[ s ][ k ] !== undefined ) /* xxx */
     break;
 
     if( s === -1 )
@@ -5420,6 +5450,7 @@ let Routines =
   mapIsEmpty,
   mapIsPure,
   mapIsPopulated,
+  mapIsHeritated,
   mapLike,
 
   mapsAreIdentical,

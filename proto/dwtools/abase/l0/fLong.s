@@ -358,7 +358,7 @@ function unrollFromMaybe( src )
 function unrollNormalize( dstArray )
 {
 
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( arguments.length === 1 );
 
   for( let a = 0 ; a < dstArray.length ; a++ )
@@ -2601,7 +2601,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 function arrayPrepended( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   dstArray.unshift( ins );
   return 0;
@@ -2653,7 +2653,7 @@ function arrayPrepended( dstArray, ins )
 
 function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   let i = _.arrayLeftIndex.apply( _, arguments );
 
@@ -2792,7 +2792,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 function arrayPrependedElement( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   dstArray.unshift( ins );
 
@@ -2805,7 +2805,7 @@ function arrayPrependedElement( dstArray, ins )
 
 function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   let i = _.arrayLeftIndex.apply( _, arguments );
 
@@ -3065,7 +3065,7 @@ function arrayPrependedArray( dstArray, insArray )
 
 function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
   _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
@@ -3543,7 +3543,7 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 function arrayAppended( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   dstArray.push( ins );
   return dstArray.length - 1;
 }
@@ -3636,7 +3636,7 @@ function arrayAppendElementOnceStrictly( dstArray, ins )
 function arrayAppendedElement( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   dstArray.push( ins );
   return dstArray.length - 1;
 }
@@ -4372,7 +4372,7 @@ function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
 function arrayRemovedArray( dstArray, insArray )
 {
   _.assert( arguments.length === 2 )
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
   _.assert( dstArray !== insArray );
 
@@ -4447,7 +4447,7 @@ function arrayRemovedArray( dstArray, insArray )
 
 function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
   _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
@@ -4868,7 +4868,7 @@ function arrayFlattened( dstArray, insArray )
 
   _.assert( arguments.length >= 1 );
   _.assert( _.objectIs( this ) );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   if( arguments.length === 1 )
   {
@@ -4937,7 +4937,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
 
   _.assert( arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   if( arguments.length === 1 )
   {
@@ -5011,7 +5011,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
 {
 
   _.assert( arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   let oldLength = dstArray.length;
   _.arrayRemoveDuplicates( dstArray );
@@ -5134,7 +5134,7 @@ function arrayFlattenedDefined( dstArray, insArray )
 
   _.assert( arguments.length >= 1 );
   _.assert( _.objectIs( this ) );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   if( arguments.length === 1 )
   {
@@ -5209,7 +5209,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
 
   _.assert( arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   if( arguments.length === 1 )
   {
@@ -5282,7 +5282,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
 {
 
   _.assert( arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   let oldLength = dstArray.length;
   _.arrayRemoveDuplicates( dstArray );
