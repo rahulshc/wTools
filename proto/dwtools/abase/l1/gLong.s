@@ -416,7 +416,7 @@ function bufferResize( srcBuffer, size )
     }
     if( _.bufferNodeIs( srcBuffer ) )
     {
-      if( parseFloat( process.versions.node[ 0 ] ) === 1 )
+      if( parseInt( process.version[ 1 ] ) === 1 )
       result = Buffer.alloc( size );
       else
       result = _.longMake( srcBuffer, size );
