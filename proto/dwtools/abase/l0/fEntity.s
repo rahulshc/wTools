@@ -83,42 +83,77 @@ function multipleAll( dsts )
 // --
 
 /**
- * Routine eachSample() accepts the container {-o.sets-} with scalar or vector elements.
+ * Routine eachSample() accepts the container {-sets-} with scalar or vector elements.
  * Routine returns an array of vectors. Each vector is a unique combination of elements of vectors
- * that is passed in option {-o.sets-}.
+ * that is passed in option {-sets-}.
  *
  * Routine eachSample() accepts the options map {-o-} or two arguments. If options map
  * is used, all parameters can be set. If passed two arguments, first of them is ( sets )
  * and second is ( onEach ).
  *
+ * Routine eachSample() accepts the callback {-onEach-}. Callback accepts two arguments. The first is
+ * template {-sample-} and second is index of vector in returned array. Callback can change template {-sample-}
+ * and corrupt the building of vectors.
+ *
  * @param {Array|Map} sets - Container with vector and scalar elements to combine new vectors.
- * @param {Routine|Null} onEach - Callback. Should not change elements of {-sample-}.
- * @param {Array|Map} sample - Container for new vectors. If not passed, routine create empty container.
- * @param {boolean} leftToRight - Sets the direction of combining. 1 - left to rigth, 0 - rigth to left. By default is 1.
- * @param {boolean} result - Sets retuned value. 1 - array with verctors, 0 - index of last element. By default is 1.
+ * @param {Routine|Null} onEach - Callback that accepts template {-sample-} and index of new vector.
+ * @param {Array|Map} sample - Template for new vectors. If not passed, routine create empty container.
+ * If sample.length > vector.length, then vector elements replace template elements with the same indexes.
+ * @param {boolean} leftToRight - Sets the direction of reading {-sets-}. 1 - left to rigth, 0 - rigth to left. By default is 1.
+ * @param {boolean} result - Sets retuned value. 1 - routine returns array with verctors, 0 - routine returns index of last element. By default is 1.
  *
  * @example
  * //returns  [ [ 0, 2 ], [ 1, 2 ] ]
  * var got = _.eachSample( { sets : [ [ 0, 1 ], 2 ] });
+ * console.log( got );
+ *
+ * @example
+ * //returns  3
+ * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ], result : 0 });
+ * console.log( got );
  *
  * @example
  * //returns  [ [ 0, 2 ], [ 1, 2 ],
  *              [ 0, 3 ], [ 1, 3 ] ]
  * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ] });
+ * console.log( got );
  *
  * @example
  * //returns  [ { a : 0, b : 2}, { a : 1, b : 2},
  *              { a : 0, b : 3}, { a : 1, b : 3} ]
  * var got = _.eachSample( { sets : { a : [ 0, 1 ], b : [ 2, 3 ] } });
+ * console.log( got );
  *
  * @example
  * //returns  [ [ 3, 0 ], [ 2, 0 ],
  *              [ 3, 1 ], [ 2, 1 ] ]
- * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ], leftToRight : 0 });
+ * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ], leftToRight : 0 } );
+ * console.log( got );
  *
  * @example
- * //returns  3
- * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ], result : 0 });
+ * //returns  [ [ 3, 0, 4, 5 ], [ 2, 0, 4, 5 ],
+ *              [ 3, 1, 4, 5 ], [ 2, 1, 4, 5 ] ]
+ * var got = _.eachSample
+ * ({
+ *   sets : [ [ 0, 1 ], [ 2, 3 ] ],
+ *   sample : [ 2, 3, 4, 5 ]
+ * });
+ * console.log( got );
+ *
+ * @example
+ * //returns  got = [ 0, 2, 'c', 'd' ]
+ * function onEach( sample, i )
+ * {
+ *   _.arrayAppend( got, sample[ i ] );
+ * }
+ * var got = [];
+ * _.eachSample
+ * ({
+ *   sets : [ [ 0, 1 ], [ 2, 3 ] ],
+ *   onEach : onEach,
+ *   sample : [ 'a', 'b', 'c', 'd' ]
+ * });
+ * console.log( got );
  *
  * @function eachSample
  * @returns {Array} Returns array contained  check function.
