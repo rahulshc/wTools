@@ -1391,7 +1391,8 @@ function mapSupplement( dstMap, srcMap )
 
 function mapSupplementStructureless( dstMap, srcMap )
 {
-  if( dstMap === null && arguments.length === 2 )
+
+  if( dstMap === null && arguments.length === 2 ) // xxx
   return Object.assign( Object.create( null ), srcMap );
 
   if( dstMap === null )

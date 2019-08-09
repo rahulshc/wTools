@@ -1839,14 +1839,7 @@ function arrayNone( src )
 function scalarAppend( dst, src )
 {
 
-  if( arguments.length > 2 )
-  {
-    for( let a = 1 ; a < arguments.length ; a++ )
-    dst = _.scalarAppend( dst, arguments[ a ] );
-    return dst;
-  }
-
-  _.assert( arguments.length <= 2 );
+  _.assert( arguments.length === 2 );
 
   if( dst === undefined )
   {
@@ -1886,6 +1879,57 @@ function scalarAppend( dst, src )
     dst = _.arrayAppendArray( [ dst ], src );
     else
     dst = [ dst, src ];
+
+  }
+
+  return dst;
+}
+
+//
+
+function scalarAppendOnce( dst, src )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( dst === undefined )
+  {
+    if( _.longIs( src ) )
+    {
+      dst = [];
+    }
+    else
+    {
+      if( src === undefined )
+      return [];
+      else
+      return src;
+    }
+  }
+
+  if( _.longIs( dst ) )
+  {
+
+    if( !_.arrayIs( dst ) )
+    dst = _.arrayFrom( dst );
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    _.arrayAppendArrayOnce( dst, src );
+    else
+    _.arrayAppendElementOnce( dst, src );
+
+  }
+  else
+  {
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    dst = _.arrayAppendArrayOnce( [ dst ], src );
+    else
+    dst = _.arrayAppendElementOnce( [ dst ], src );
 
   }
 
@@ -6140,7 +6184,8 @@ let Routines =
 
   // scalar
 
-  scalarAppend,
+  scalarAppend, /* qqq : cover routine scalarAppend */
+  scalarAppendOnce, /* qqq : cover routine scalarAppendOnce */
   scalarToVector,
   scalarFrom,
   scalarFromOrNull,

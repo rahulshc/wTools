@@ -17608,7 +17608,7 @@ function arraySetContainAll( src )
           },
           // base / l6
           wComparator: {
-            includeAny: includeAny("abase/l6/LookerComparator.s", "wcomparator"),
+            includeAny: includeAny("abase/l6/LookerComparator.s", "wequaler"),
             isIncluded: function() {
               return !!e.wTools && !!e.wTools.entityIdentical;
             }

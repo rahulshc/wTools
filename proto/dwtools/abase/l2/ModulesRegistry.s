@@ -149,10 +149,16 @@ let wStringsExtra =
 
 // base / l6
 
-let wComparator =
+let wEqualer =
 {
-  includeAny : includeAny( 'abase/l6/LookerComparator.s', 'wcomparator' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entityIdentical },
+  includeAny : includeAny( 'abase/l6/Equaler.s', 'wequaler' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools._equalIt },
+}
+
+let wResolver =
+{
+  includeAny : includeAny( 'abase/l6/Resolver.s', 'wresolver' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Resolver; },
 }
 
 let wSelectorExtra =
@@ -447,13 +453,21 @@ let wCollectionOfInstances =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CollectionOfInstances },
 }
 
-let wStarterMaker =
+let wStarter =
 {
-  includeAny : includeAny( 'amid/starter/StarterMaker.s', 'wstartermaker' ),
+  includeAny : includeAny( 'amid/starter/MainTop.s', 'wstartermaker' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StarterMaker },
 }
 
-// amid / l5
+// mid
+
+let wServletTools =
+{
+  includeAny : includeAny( 'amid/servlet/ServletTools.ss', 'wservlettools' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.servlet },
+}
+
+// mid / l5
 
 let wBitmask =
 {
@@ -531,12 +545,6 @@ let wMaker =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Maker },
 }
 
-let wServlet =
-{
-  includeAny : includeAny( 'atop/servlet/Servlet.ss', 'wServlet' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.servlet },
-}
-
 // --
 // declare
 // --
@@ -572,7 +580,8 @@ let Extend =
 
   // base / l6
 
-  wComparator,
+  wEqualer,
+  wResolver,
   wSelectorExtra,
 
   // base / l7_mixin
@@ -637,10 +646,11 @@ let Extend =
   wCommunicator,
   wIncubator,
   wCollectionOfInstances,
-  wStarterMaker,
+  wStarter,
 
   // amid / l5
 
+  wServletTools,
   wBitmask,
 
   // math
@@ -659,7 +669,6 @@ let Extend =
   wBaker,
   wBakerWithFileExecutor,
   wMaker,
-  wServlet,
 
 }
 

@@ -32126,7 +32126,7 @@ let wStringsExtra =
 
 let wComparator =
 {
-  includeAny : includeAny( 'abase/l6/LookerComparator.s', 'wcomparator' ),
+  includeAny : includeAny( 'abase/l6/LookerComparator.s', 'wequaler' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entityIdentical },
 }
 
