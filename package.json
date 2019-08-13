@@ -18,6 +18,10 @@
     {
       "name": "Ihor O.",
       "email": "iostashvxi@gmail.com"
+    },
+    {
+      "name": "Dmytro Kryvoruchko",
+      "email": "dm.vict.kr@gmail.com"
     }
   ],
   "main": "proto/dwtools/abase/Layer2.s",

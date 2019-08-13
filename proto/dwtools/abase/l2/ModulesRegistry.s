@@ -49,7 +49,7 @@ let wLooker =
 
 let wPathFundamentals =
 {
-  includeAny : includeAny( 'abase/l3/Path.s', 'wpathfundamentals' ),
+  includeAny : includeAny( 'abase/l4/PathsBasic.s', 'wpathfundamentals' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.path },
 }
 
@@ -122,6 +122,12 @@ let wRoutineTransform =
 }
 
 // base / l5
+
+let wPathTools =
+{
+  includeAny : includeAny( 'abase/l5/PathTools.s', 'wpathtools' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.path && !!_global.wTools.path.mapExtend },
+}
 
 let wSelector =
 {
@@ -453,12 +459,6 @@ let wCollectionOfInstances =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CollectionOfInstances },
 }
 
-let wStarter =
-{
-  includeAny : includeAny( 'amid/starter/MainTop.s', 'wstartermaker' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StarterMaker },
-}
-
 // mid
 
 let wServletTools =
@@ -502,6 +502,12 @@ let wMathConcepts =
 }
 
 // top
+
+let wStarter =
+{
+  includeAny : includeAny( 'atop/starter/MainTop.s', 'wstartermaker' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StarterMaker },
+}
 
 let wTesting =
 {
@@ -573,6 +579,7 @@ let Extend =
 
   // base / l5
 
+  wPathTools,
   wSelector,
   wWebUriFundamentals,
   wCloner,
@@ -646,7 +653,6 @@ let Extend =
   wCommunicator,
   wIncubator,
   wCollectionOfInstances,
-  wStarter,
 
   // amid / l5
 
@@ -662,6 +668,7 @@ let Extend =
 
   // top
 
+  wStarter,
   wTesting,
   wTranspilationStrategy,
   wFilesOperationsDirector,

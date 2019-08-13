@@ -842,16 +842,12 @@ function strBeginOf( src, begin )
   _.assert( _.strIs( begin ) || _.regexpIs( begin ) || _.longIs( begin ), 'Expects string/regexp or array of strings/regexps {-begin-}' );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-
   if( !_.longIs( begin ) )
   {
     let result = _._strBeginOf( src, begin );
-    if( result )
-    debugger;
     return result;
   }
 
-  debugger;
   for( let b = 0, blen = begin.length ; b < blen; b++ )
   {
     let result = _._strBeginOf( src, begin[ b ] );
@@ -893,8 +889,6 @@ function strEndOf( src, end )
   _.assert( _.strIs( src ), 'Expects string {-src-}' );
   _.assert( _.strIs( end ) || _.regexpIs( end ) || _.longIs( end ), 'Expects string/regexp or array of strings/regexps {-end-}' );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  debugger;
 
   if( !_.longIs( end ) )
   {
@@ -967,13 +961,9 @@ function strInsideOf( src, begin, end )
   if( beginOf === false )
   return false;
 
-  debugger;
-
   endOf = _.strEndOf( src, end );
   if( endOf === false )
   return false;
-
-  debugger;
 
   let result = src.substring( beginOf.length, src.length - endOf.length );
 
@@ -1244,6 +1234,8 @@ let Routines =
   strReplaceBegin,
   strReplaceEnd,
   strReplace,
+
+  /* qqq : check coverage of each routine of the file fString.s */
 
 }
 
