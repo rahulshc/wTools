@@ -3117,10 +3117,14 @@ function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   let result = 0;
+  
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
 
   for( let i = insArray.length - 1; i >= 0; i-- )
   {
@@ -3855,10 +3859,14 @@ function arrayAppendedArray( dstArray, insArray )
 function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   let result = 0;
+  
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
 
   for( let i = 0 ; i < insArray.length ; i++ )
   {
@@ -4424,7 +4432,10 @@ function arrayRemovedArray( dstArray, insArray )
   _.assert( arguments.length === 2 )
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
+  
+  if( dstArray === insArray )
+  return dstArray.splice( 0 ).length;
 
   let result = 0;
   let index = -1;
@@ -4499,13 +4510,17 @@ function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
+   
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return dstArray.splice( 0 ).length;
 
   let result = 0;
   let index = -1;
 
-  for( let i = 0, len = insArray.length; i < len ; i++ )
+  for( let i = insArray.length - 1; i >= 0 ; i-- )
   {
     index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
 
