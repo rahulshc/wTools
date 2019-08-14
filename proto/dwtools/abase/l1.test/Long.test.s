@@ -9080,6 +9080,18 @@ function arrayPrependedArrayOnce( test )
     _.arrayPrependedArrayOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
+  
+  test.case = 'dst === src'
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArrayOnce( dst, dst );
+  test.identical( got, 0 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  
+  test.case = 'dst === src with evaluators';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArrayOnce( dst, dst, ( e ) => e, ( e ) => e );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, 0 );
 
   /**/
 
@@ -11344,6 +11356,18 @@ function arrayAppendedArrayOnce( test )
     _.arrayAppendedArrayOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
+  
+  test.case = 'dst === src'
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendedArrayOnce( dst, dst );
+  test.identical( got, 0 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  
+  test.case = 'dst === src with evaluators';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendedArrayOnce( dst, dst, ( e ) => e, ( e ) => e );
+  test.identical( got, 0 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
 
   /* */
 
@@ -13894,7 +13918,13 @@ function arrayRemovedArray( test )
   var got = _.arrayRemovedArray( dst, [ undefined, 2 ] );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
-
+  
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ]
+  var got = _.arrayRemovedArray( dst, dst );
+  test.identical( dst, [] );
+  test.identical( got, 3 );
+  
   /**/
 
   if( !Config.debug )
@@ -13963,7 +13993,19 @@ function arrayRemovedArrayOnce( test )
     test.identical( dst, [ 1 ] );
     test.identical( got, 0 );
   });
-
+  
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemovedArrayOnce( dst, dst );
+  test.identical( dst, [] );
+  test.identical( got, 6 );
+  
+  test.case = 'dst === src with evaluators';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemovedArrayOnce( dst, dst, ( e ) => e, ( e ) => e );
+  test.identical( dst, [] );
+  test.identical( got, 6 );
+  
   /**/
 
   if( !Config.debug )
