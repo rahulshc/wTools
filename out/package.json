@@ -1,18 +1,26 @@
 {
-  "name" : "wtools.experiment", 
-  "version" : "0.8.500", 
-  "enabled" : 1, 
-  "description" : "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind", 
-  "keywords" : [ "base", "basic", "core", "platform", "tools", "wTools", "wBase", "generic" ], 
-  "license" : "MIT", 
-  "engine" : "nodejs >= 6.0.0", 
-  "author" : "Kostiantyn Wandalen <wanalen@willbe.so>", 
-  "contributors" : 
+  "name" : "wtools.experiment",
+  "version" : "0.8.500",
+  "enabled" : 1,
+  "description" : "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind",
+  "keywords" : [ "base", "basic", "core", "platform", "tools", "wTools", "wBase", "generic" ],
+  "license" : "MIT",
+  "engine" : "nodejs >= 8.0.0",
+  "author" : "Kostiantyn Wandalen <wanalen@willbe.so>",
+  "contributors" :
   [
-    { "name" : "Kostiantyn Wandalen", "email" : "wanalen@willbe.so" }, 
-    { "name" : "Volodymyr M.", "email" : "volodymyr.migdal@gmail.com" }, 
+    { "name" : "Kostiantyn Wandalen", "email" : "wanalen@willbe.so" },
+    { "name" : "Volodymyr M.", "email" : "volodymyr.migdal@gmail.com" },
     { "name" : "Ihor O.", "email" : "iostashvxi@gmail.com" }
-  ], 
-  "repository" : "git+https://github.com/Wandalen/wTools.git", 
-  "bugs" : "https://github.com/Wandalen/wTools/issues"
+  ],
+  "main" : "debug/source/dwtools/abase/Layer2.s",
+  "repository" : "git+https://github.com/Wandalen/wTools.git",
+  "bugs" : "https://github.com/Wandalen/wTools/issues",
+  "devDependencies" :
+  {
+    "wFiles" : "",
+    "wcloner" : "",
+    "wstringer" : "",
+    "wTesting" : ""
+  }
 }

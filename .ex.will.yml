@@ -3,10 +3,10 @@ about :
 
   name : 'wTools'
   description : 'Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind'
-  version : '0.8.500'
+  version : '0.8.502'
   enabled : 1
   interpreters :
-  - nodejs >= 6.0.0
+  - njs >= 8.0.0
   - chrome >= 60.0.0
   - firefox >= 60.0.0
   keywords :
@@ -21,23 +21,15 @@ about :
   license : MIT
   author : 'Kostiantyn Wandalen <wanalen@willbe.so>'
   contributors :
-  -
-    name : 'Kostiantyn Wandalen'
-    email : 'wanalen@willbe.so'
-  -
-    name : 'Volodymyr M.'
-    email : 'volodymyr.migdal@gmail.com'
-  -
-    name : 'Ihor O.'
-    email : 'iostashvxi@gmail.com'
-
+  - 'Kostiantyn Wandalen <wanalen@willbe.so>'
+  - 'Volodymyr M. <volodymyr.migdal@gmail.com>'
+  - 'Ihor O. <iostashvxi@gmail.com>'
+  - 'Pablo Garcimartin <pablogarcimartinruiz@gmail.com>'
+  - 'Dmytro Kryvoruchko <dm.vict.kr@gmail.com>'
   npm.name : 'wtools.experiment'
-  npm.dependencies : []
-  npm.devDependencies :
-    wFiles : ''
-    wcloner : ''
-    wstringer : ''
-    wTesting : ''
+  npm.scripts :
+    test : 'wtest .run proto/**'
+    docgen : 'wdocgen .build proto'
 
 execution :
 
@@ -49,16 +41,6 @@ path :
 
   repository : git+https:///github.com/Wandalen/wTools.git
   bugtracker : https:///github.com/Wandalen/wTools/issues
-  entry.no.tests :
-    path : proto/dwtools/abase/Layer2.s
-    criterion :
-      tests : 'no.tests'
-  entry.only.tests :
-    path : proto/dwtools/abase/**/*.test.s
-    criterion :
-      tests : 'only.tests'
-  npm.entry : proto/dwtools/abase/Layer2.s
-  npm.files : proto
 
 step :
 
@@ -114,6 +96,7 @@ build :
       - step::npm.publish
 
   export :
+
     criterion :
       default : 1
       export : 1
