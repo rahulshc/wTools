@@ -32010,9 +32010,9 @@ function includeAny( filePath, name )
 //   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.idWithInt; },
 // }
 
-let wEntityFundamentals =
+let wEntityBasic =
 {
-  includeAny : includeAny( 'abase/l3/Entity.s', 'wentityfundamentals' ),
+  includeAny : includeAny( 'abase/l3/Entity.s', 'wentitybasic' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entityVals; },
 }
 
@@ -32022,15 +32022,15 @@ let wLooker =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.look; },
 }
 
-let wPathFundamentals =
+let wPathBasic =
 {
-  includeAny : includeAny( 'abase/l3/Path.s', 'wpathfundamentals' ),
+  includeAny : includeAny( 'abase/l3/Path.s', 'wpathbasic' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.path },
 }
 
-let wRoutineFundamentals =
+let wRoutineBasic =
 {
-  includeAny : includeAny( 'abase/l3/RoutineFundamentals.s', 'wroutinefundamentals' ),
+  includeAny : includeAny( 'abase/l3/RoutineFundamentals.s', 'wroutinebasic' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.exec },
 }
 
@@ -32072,15 +32072,15 @@ let wArraySparse =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.sparse },
 }
 
-let wExternalFundamentals =
+let wAppBasic =
 {
-  includeAny : includeAny( 'abase/l4/External.s', 'wexternalfundamentals' ),
+  includeAny : includeAny( 'abase/l4/External.s', 'wappbasic' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.shell },
 }
 
-let wUriFundamentals =
+let wUriBasic =
 {
-  includeAny : includeAny( 'abase/l4/Uri.s', 'wurifundamentals' ),
+  includeAny : includeAny( 'abase/l4/Uri.s', 'wuribasic' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.uri },
 }
 
@@ -32104,9 +32104,9 @@ let wSelector =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.select; },
 }
 
-let wWebUriFundamentals =
+let wWebUriBasic =
 {
-  includeAny : includeAny( 'abase/l5/WebUri.s', 'wweburifundamentals' ),
+  includeAny : includeAny( 'abase/l5/WebUri.s', 'wweburibasic' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.weburi },
 }
 
@@ -32124,7 +32124,7 @@ let wStringsExtra =
 
 // base / l6
 
-let wComparator =
+let wEqualer =
 {
   includeAny : includeAny( 'abase/l6/LookerComparator.s', 'wequaler' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.entityIdentical },
@@ -32522,8 +32522,8 @@ let Extend =
   // base / l3
 
   wLooker,
-  wPathFundamentals,
-  wRoutineFundamentals,
+  wPathBasic,
+  wRoutineBasic,
   wProto,
 
   // base / l4
@@ -32532,8 +32532,8 @@ let Extend =
   wLookerExtra,
   wArraySorted,
   wArraySparse,
-  wExternalFundamentals,
-  wUriFundamentals,
+  wAppBasic,
+  wUriBasic,
   wTraverser,
   wStringer,
   wRoutineTransform,
@@ -32541,13 +32541,13 @@ let Extend =
   // base / l5
 
   wSelector,
-  wWebUriFundamentals,
+  wWebUriBasic,
   wCloner,
   wStringsExtra,
 
   // base / l6
 
-  wComparator,
+  wEqualer,
   wSelectorExtra,
 
   // base / l7_mixin
