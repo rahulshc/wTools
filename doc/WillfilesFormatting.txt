@@ -1,0 +1,20 @@
+Зміни внесені в файли im.will.yml i ex.will.yml
+
+ex.will.yml
+Section about
+- name - written actual name;
+- description - written actual destination;
+- version - written actual version;
+- keywords - written actual keywords;
+- contributors - written actual contributors;
+- npm.name - written actual npm.name;
+Section path
+- repository -  written actual link to repository;
+- bugtracker - written actual links to bugtracker;
+
+im.will.yml
+Section submodule
+- written actual dependencies of module;
+Section path
+- entry.proto.no.tests - written actual path to file;
+- entry.out.raw.debug - written actual path to file.
