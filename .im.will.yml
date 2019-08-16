@@ -1,6 +1,11 @@
 
 submodule :
 
+  wTools :
+    path : hd://.
+    enabled : 0
+    criterion :
+      development : 1
   wFiles :
     path : npm:///wFiles
     enabled : 0
