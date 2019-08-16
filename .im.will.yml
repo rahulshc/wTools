@@ -21,7 +21,7 @@ submodule :
     enabled : 0
     criterion :
       development : 1
-  Self :
+  wTools :
     path : hd://.
     enabled : 0
     criterion :
