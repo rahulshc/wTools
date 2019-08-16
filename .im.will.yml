@@ -21,6 +21,11 @@ submodule :
     enabled : 0
     criterion :
       development : 1
+  Self :
+    path : hd://.
+    enabled : 0
+    criterion :
+      development : 1
 
 path :
 
@@ -60,7 +65,7 @@ path :
     criterion :
       tests : 'no.tests'
   entry.proto.only.tests :
-    path : proto/dwtools/abase/**/*.test.s
+    path : proto/**/*.test.*
     criterion :
       tests : 'only.tests'
 
