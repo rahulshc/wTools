@@ -1947,6 +1947,60 @@ function scalarAppendOnce( dst, src )
 
 //
 
+function scalarPrependOnce( dst, src )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( dst === src )
+  return dst;
+
+  if( dst === undefined )
+  {
+    if( _.longIs( src ) )
+    {
+      dst = [];
+    }
+    else
+    {
+      if( src === undefined )
+      return [];
+      else
+      return src;
+    }
+  }
+
+  if( _.longIs( dst ) )
+  {
+
+    if( !_.arrayIs( dst ) )
+    dst = _.arrayFrom( dst );
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    _.arrayPrependArrayOnce( dst, src );
+    else
+    _.arrayPrependElementOnce( dst, src );
+
+  }
+  else
+  {
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    dst = _.arrayPrependArrayOnce( [ dst ], src );
+    else
+    dst = _.arrayPrependElementOnce( [ dst ], src );
+
+  }
+
+  return dst;
+}
+
+//
+
 /**
  * The scalarToVector() routine returns a new array
  * which containing the static elements only type of Number.
@@ -6195,6 +6249,7 @@ let Routines =
 
   scalarAppend, /* qqq : cover routine scalarAppend */
   scalarAppendOnce, /* qqq : cover routine scalarAppendOnce */
+  scalarPrependOnce,
   scalarToVector,
   scalarFrom,
   scalarFromOrNull,
