@@ -1898,6 +1898,9 @@ function scalarAppendOnce( dst, src )
 
   _.assert( arguments.length === 2 );
 
+  if( dst === src )
+  return dst;
+
   if( dst === undefined )
   {
     if( _.longIs( src ) )
