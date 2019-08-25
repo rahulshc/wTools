@@ -6877,6 +6877,287 @@ function arrayHasAny( test )
 
 //
 
+function scalarAppend( test )
+{
+  test.case = 'dst is undefined, src is undefined';
+  var dst = undefined;
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is undefined, src is longLike';
+  var dst = undefined;
+  var src = [ null, '', 1 ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, '', 1 ] );
+
+  test.case = 'dst is undefined, src is unroll';
+  var dst = undefined;
+  var src = _.unrollMake( [ null, '', 1 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, '', 1 ] );
+
+  test.case = 'dst is undefined, src is argumentsArray';
+  var dst = undefined;
+  var src = _.argumentsArrayMake( [ null, '', 1 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, '', 1 ] );
+
+  test.case = 'dst is undefined, src is buffer';
+  var dst = undefined;
+  var src = new Float32Array( [ 0, 2, 10 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 0, 2, 10 ] );
+
+  test.case = 'dst is undefined, src is string';
+  var dst = undefined;
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, 'str' );
+
+  test.case = 'dst is undefined, src is map';
+  var dst = undefined;
+  var src = { 'a' : 'str' };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, { 'a' : 'str' } );
+
+  /* dst is array */
+
+  test.case = 'dst is empty array, src is empty array';
+  var dst = [];
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+  test.is( got === dst );
+
+  test.case = 'dst is empty array, src is null';
+  var dst = [];
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is undefined';
+  var dst = [ 1, null, 'str', [] ];
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [] ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is string';
+  var dst = [ 1, null, 'str', [] ];
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'str' ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is map';
+  var dst = [ 1, null, 'str', [] ];
+  var src = { 'a' : 1 };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], { 'a' : 1 } ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is array';
+  var dst = [ 1, null, 'str', [] ];
+  var src = [ 'src', 2, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'src', 2, undefined ] );
+  test.is( got === dst );
+
+  /* dst is unroll */
+
+  test.case = 'dst is empty unroll, src is empty array';
+  var dst = _.unrollMake( [] );
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+  test.is( got === dst );
+
+  test.case = 'dst is empty unroll, src is null';
+  var dst = _.unrollMake( [] );
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is undefined';
+  var dst = _.unrollMake( [ 1, null, 'str', [] ] );
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [] ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is string';
+  var dst = _.unrollMake( [ 1, null, 'str', [] ] );
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'str' ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is map';
+  var dst = _.unrollMake( [ 1, null, 'str', [] ] );
+  var src = { 'a' : 1 };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], { 'a' : 1 } ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is array';
+  var dst = _.unrollMake( [ 1, null, 'str', [] ] );
+  var src = [ 'src', 2, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'src', 2, undefined ] );
+  test.is( got === dst );
+
+  /* dst is argumentsArray */
+
+  test.case = 'dst is empty unroll, src is empty array';
+  var dst = _.argumentsArrayMake( [] );
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is empty unroll, src is null';
+  var dst = _.argumentsArrayMake( [] );
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+
+  test.case = 'dst is unroll, src is undefined';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [] ] );
+
+  test.case = 'dst is unroll, src is string';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'str' ] );
+
+  test.case = 'dst is unroll, src is map';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var src = { 'a' : 1 };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], { 'a' : 1 } ] );
+
+  test.case = 'dst is unroll, src is array';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var src = [ 'src', 2, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'src', 2, undefined ] );
+
+  /* dst is buffer */
+
+  test.case = 'dst is empty buffer, src is undefined';
+  var dst = new Uint8Array();
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is empty buffer, src is empty array';
+  var dst = new Uint8Array();
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is buffer, src is undefined';
+  var dst = new Uint8Array( [ 1, 2, 0, 78 ] );
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78 ] );
+
+  test.case = 'dst is buffer, src is number';
+  var dst = new Int16Array( [ 1, 2, 0, 78 ] );
+  var src = 32;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78, 32 ] );
+
+  test.case = 'dst is buffer, src is empty array';
+  var dst = new Uint16Array( [ 1, 2, 0, 78 ] );
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78 ] );
+
+  test.case = 'dst is buffer, src is array';
+  var dst = new Int32Array( [ 1, 2, 0, 78 ] );
+  var src = [ 'str', null, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78, 'str', null, undefined ] );
+
+  test.case = 'dst is buffer, src is buffer';
+  var dst = new Uint32Array( [ 1, 2, 0, 78 ] );
+  var src = new Float32Array( [ 1, 2, 3, 4 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78, 1, 2, 3, 4 ] );
+
+  /* dst not undefined, not longLike */
+
+  test.case = 'dst is null, src is null';
+  var dst = null;
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, null ] );
+
+  test.case = 'dst is null, src is null';
+  var dst = null;
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, null );
+
+  test.case = 'dst is null, src is empty array';
+  var dst = null;
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+
+  test.case = 'dst is string, src is string';
+  var dst = 'str';
+  var src = '';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 'str', '' ] );
+
+  test.case = 'dst is string, src is string';
+  var dst = 'str';
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, 'str' );
+
+  test.case = 'dst is number, src is string';
+  var dst = 1;
+  var src = '';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, '' ] );
+
+  test.case = 'dst is map, src is buffer';
+  var dst = { 'a' : 1 };
+  var src = new Uint8Array( [ 10, 20, 30 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ { 'a' : 1 }, 10, 20, 30 ] );
+
+  /* */
+
+  test.case = 'dst === src';
+  var arr = [ 1, 2, 'str' ];
+  var dst = arr;
+  var src = arr;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [  1, 2, 'str',  1, 2, 'str' ] );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong arguments.length';
+  test.shouldThrowErrorSync( () => _.scalarAppend() );
+  test.shouldThrowErrorSync( () => _.scalarAppend( 1 ) );
+  test.shouldThrowErrorSync( () => _.scalarAppend( 1, 2, 'str' ) );
+
+}
+
+//
+
 function arrayLeftIndex( test )
 {
 
@@ -22145,6 +22426,10 @@ var Self =
     arraysAreIdentical,
 
     arrayHasAny,
+
+    // scalar
+
+    scalarAppend,
 
     // array sequential search
 
