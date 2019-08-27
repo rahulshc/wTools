@@ -143,12 +143,12 @@ function scalarAppendOnce( dst, src )
  * @param { Number } length - The length of the new array.
  *
  * @example
- * // returns [ 3, 3, 3, 3, 3, 3, 3 ]
  * let arr = _.scalarToVector( 3, 7 );
+ * // returns [ 3, 3, 3, 3, 3, 3, 3 ]
  *
  * @example
- * // returns [ 3, 7, 13 ]
  * let arr = _.scalarToVector( [ 3, 7, 13 ], 3 );
+ * // returns [ 3, 7, 13 ]
  *
  * @returns { Number[] | Array } - Returns the new array of static numbers or the original array.
  * @function scalarToVector
@@ -324,20 +324,20 @@ function unrollIsPopulated( src )
  * @param { * } src - The number or array-like object to make unroll-array. Passing null returns an empty unroll.
  *
  * @example
- * // returns true  & false
  * let unroll = _.unrollMake( null );
  * _.unrollIs( unroll );
+ * // returns true
  *
  * @example
- * // returns true
  * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
  * _.unrollIs( unroll );
+ * // returns true
  *
  * @example
- * //returns false
  * let arr = new Array( 1, 2, 'str' );
  * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
  * console.log( arr === unroll );
+ * // log false
  *
  * @returns { Unroll } Returns a new unroll-array maked from {-src-}.
  * Otherwise, it returns the empty unroll.
@@ -384,22 +384,23 @@ function unrollMakeUndefined( src, length )
  * @param { * } src - The number, array-like object or unroll-array. Passing null returns an empty unroll.
  *
  * @example
- * // returns true, false
  * let unroll = _.unrollFrom( null );
  * _.unrollIs( unroll );
+ * // returns true
  *
  * @example
- * // returns true
  * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
  * let result = _.unrollFrom( unroll );
  * console.log ( unroll === result );
+ * // log true
  *
  * @example
- * //returns true, false
  * let arr = new Array( 1, 2, 'str' );
  * let unroll = _.unrollFrom( [ 1, 2, 'str' ] );
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  * console.log( arr === unroll );
+ * // log false
  *
  * @returns { Unroll } Returns unroll-array converted from {-src-}.
  * If {-src-} is unroll-array, then routine returns {-src-}.
@@ -426,34 +427,43 @@ function unrollFrom( src )
  * @param { * } srcs - The objects to be converted into unrolls.
  *
  * @example
- * // returns [ [] ], true, true
  * let unroll = _.unrollsFrom( null );
  * console.log( unroll );
+ * // log [ [] ]
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  *
  * @example
- * // returns [ [ 1, 2, 'str' ] ], true, true
  * let unroll = _.unrollsFrom( [ 1, 2, 'str' ] );
  * console.log ( unroll );
+ * // log [ [ 1, 2, 'str' ] ]
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  * console.log( _.unrollIs( unroll[ 0 ] ) );
+ * // log true
  *
  * @example
- * //returns true, false
  * let arr = new Array( 1, 2, 'str' );
  * let unroll = _.unrollsFrom( [ 1, 2, 'str' ] );
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  * console.log( arr === unroll );
+ * // log false
  *
  * @example
- * // returns [ [], [ undefined ], [], [ 1, [] ] ], true, true, true, true, true
  * let unroll = _.unrollsFrom( [], 1, null, [ 1, [] ] );
  * console.log( unroll );
+ * // log [ [], [ undefined ], [], [ 1, [] ] ]
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  * console.log( _.unrollIs( unroll[ 0 ] ) );
+ * // log true
  * console.log( _.unrollIs( unroll[ 1 ] ) );
+ * // log true
  * console.log( _.unrollIs( unroll[ 2 ] ) );
+ * // log true
  * console.log( _.unrollIs( unroll[ 3 ] ) );
+ * // log true
  *
  * @returns { Unroll } Returns unroll-array contained unroll-arrays converted from arguments.
  * @function unrollsFrom
@@ -489,22 +499,23 @@ function unrollsFrom( srcs )
  * @param { * } src - The object to make unroll-array.
  *
  * @example
- * // returns false, true
  * var src = 'str';
  * let got = _.unrollFromMaybe( src );
  * console.log( _.unrollIs( got ) );
+ * // log false
  * console.log( got === src );
+ * // log true
  *
  * @example
- * // returns true, false
  * let unroll = _.unrollFromMaybe( null );
  * console.log( _.unrollIs( unroll ) );
+ * // log false
  *
  * @example
- * // returns true
  * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
  * let result = _.unrollFromMaybe( unroll );
  * console.log ( unroll === result );
+ * // log true
  *
 
   qqq : in separate line after each console.log such comment should follow
@@ -513,11 +524,12 @@ function unrollsFrom( srcs )
         3. should be for each console.log
 
  * @example
- * //returns true, false
  * let arr = new Array( 1, 2, 'str' );
  * let unroll = _.unrollFromMaybe( [ 1, 2, 'str' ] );
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  * console.log( arr === unroll );
+ * // log false
  *
  * @returns { Unroll } Returns unroll-array converted from {-src-}.
  * If {-src-} is unroll-array or incompatible type, then routine returns {-src-}.
@@ -547,18 +559,20 @@ function unrollFromMaybe( src )
  * @param { arrayIs|Unroll } dstArray - The array to be unrolled (normalized).
  *
  * @example
- * // returns [ 1, 2, 3, 'str' ], true
  * let unroll = _.unrollFrom( [ 1, 2, _.unrollMake( [ 3, 'str' ] ) ] );
  * let result = _.unrollNormalize( unroll )
  * console.log( result );
+ * // log [ 1, 2, 3, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @example
- * // returns [ 1, 1, 'str', [ 1, 'str' ] ], false
  * let unroll = _.unrollFrom( [ 1,'str' ] );
  * let result = _.unrollNormalize( [ 1, unroll, [ unroll ] ] );
  * console.log( result );
+ * // log [ 1, 1, 'str', [ 1, 'str' ] ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @returns { Array } If {-dstArray-} is array, routine returns an array with normalized elements.
  * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns an unroll-array with normalized elements.
@@ -687,34 +701,39 @@ Improve examples in unrollPrepend, unrollAppend.
  * @param { * } args - The elements to be added.
  *
  * @example
- * // returns [ [ 1, 2, 'str' ] ], false
  * let result = _.unrollPrepend( null, [ 1, 2, 'str' ] );
  * console.log( result );
+ * // log [ [ 1, 2, 'str' ] ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 1, 2, str ], false
  * let result = _.unrollPrepend( null, _.unrollMake( [ 1, 2, 'str' ] ) );
  * console.log( result );
+ * // log [ 1, 2, str ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ [ 1, 2 ], 1, 'str' ], true
  * let result = _.unrollPrepend( _.unrollFrom( [ 1, 'str' ] ), [ 1, 2 ] );
  * console.log( result );
+ * // log [ [ 1, 2 ], 1, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @example
- * // returns [ 2, 3, 1, 'str' ], false
  * let result = _.unrollPrepend( [ 1, 'str' ],  _.unrollFrom( [ 2, 3 ] ) );
  * console.log( result );
+ * // log [ 2, 3, 1, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 2, 3, 1, 'str' ], true
  * let result = _.unrollPrepend( _.unrollMake( [ 1, 'str' ] ),  _.unrollFrom( [ 2, 3 ] ) );
  * console.log( result );
+ * // log [ 2, 3, 1, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns updated unroll-array
  * with normalized elements that are added to the begin of {-dstArray-}.
@@ -774,34 +793,39 @@ function unrollPrepend( dstArray )
  * @param { * } args - The elements to be added.
  *
  * @example
- * // returns [ [ 1, 2, 'str' ] ], false
  * let result = _.unrollAppend( null, [ 1, 2, 'str' ] );
  * console.log( result );
+ * // log [ [ 1, 2, 'str' ] ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 1, 2, str ], false
  * let result = _.unrollAppend( null, _.unrollMake( [ 1, 2, 'str' ] ) );
  * console.log( result );
+ * // log [ 1, 2, str ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 1, 'str', [ 1, 2 ] ], true
  * let result = _.unrollAppend( _.unrollFrom( [ 1, 'str' ] ), [ 1, 2 ] );
  * console.log( result );
+ * // log [ 1, 'str', [ 1, 2 ] ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @example
- * // returns [ 1, 'str', 2, 3 ], false
  * let result = _.unrollAppend( [ 1, 'str' ],  _.unrollFrom( [ 2, 3 ] ) );
  * console.log( result );
+ * // log [ 1, 'str', 2, 3 ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 1, 'str', 2, 3 ], true
  * let result = _.unrollAppend( _.unrollMake( [ 1, 'str' ] ),  _.unrollFrom( [ 2, 3 ] ) );
  * console.log( result );
+ * // log [ 1, 'str', 2, 3 ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns updated unroll-array
  * with normalized elements that are added to the end of {-dstArray-}.
@@ -922,50 +946,57 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
  * @param { * } args - The elements to be removed.
  *
  * @example
- * // returns [], false
  * let result = _.unrollRemove( null, [ 1, 2, 'str' ] );
  * console.log( result );
+ * // log []
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [], true
  * let result = _.unrollRemove( _.unrollMake( null ), [ 1, 2, 'str' ] );
  * console.log( result );
+ * // log []
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @example
- * // returns [ 1, 2, 1, 3, 'str' ], false
  * let result = _.unrollRemove( [ 1, 2, 1, 3, 'str' ], [ 1, 'str', 0, 5 ] );
  * console.log( result );
+ * // log [ 1, 2, 1, 3, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 2, 3 ], false
  * let result = _.unrollRemove( [ 1, 2, 1, 3, 'str' ], _.unrollFrom( [ 1, 'str', 0, 5 ] ) );
  * console.log( result );
+ * // log [ 2, 3 ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 1, 2, 1, 3, 'str' ], true
  * let result = _.unrollRemove( _.unrollFrom( [ 1, 2, 1, 3, 'str' ] ), [ 1, 'str', 0, 5 ] );
  * console.log( result );
+ * // log [ 1, 2, 1, 3, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @example
- * // returns [ 2, 3 ], false
  * let dstArray = _.unrollFrom( [ 1, 2, 1, 3, 'str' ] );
  * let ins = _.unrollFrom( [ 1, 'str', 0, 5 ] );
  * let result = _.unrollRemove( dstArray, ins );
  * console.log( result );
+ * // log [ 2, 3 ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 2, 3 ], false
  * let dstArray = _.unrollFrom( [ 1, 2, 1, 3, 'str' ] );
  * let ins = _.unrollFrom( [ 1, _.unrollMake( [ 'str', 0, 5 ] ) ] );
  * let result = _.unrollRemove( dstArray, ins );
  * console.log( result );
+ * // log [ 2, 3 ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @returns { Unroll } If {-dstArray-} is unroll-array, routine removes all matching elements
  * and returns updated unroll-array.
