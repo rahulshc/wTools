@@ -398,24 +398,28 @@ function bufferResize( test )
 
   test.case = 'typed buffer, size < length';
   var src = new Uint16Array( 3 );
-  var got = _.bufferResize( src, 1 );
-  test.identical( got, new Uint16Array( 1 ) );
+  var got = _.bufferResize( src, 4 );
+  test.identical( got, new Uint16Array( 2 ) );
+  test.identical( got.byteLength, 4 );
   test.is( _.bufferTypedIs( got ) );
 
   var src = new Int8Array( [ 1, 2, 3 ] );
   var got = _.bufferResize( src, 1 );
   test.identical( got, new Int8Array( [ 1 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferTypedIs( got ) );
 
   test.case = 'typed buffer, size > length';
   var src = new Uint32Array( 1 );
-  var got = _.bufferResize( src, 4 );
-  test.identical( got, new Uint32Array( 4 ) );
+  var got = _.bufferResize( src, 8 );
+  test.identical( got, new Uint32Array( 2 ) );
+  test.identical( got.byteLength, 8 );
   test.is( _.bufferTypedIs( got ) );
 
   var src = new Float32Array( [ 1, 2, 3 ] );
-  var got = _.bufferResize( src, 5 );
+  var got = _.bufferResize( src, 20 );
   test.identical( got, new Float32Array( [ 1, 2, 3, 0, 0 ] ) );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferTypedIs( got ) );
 
   /* raw buffer */
@@ -424,6 +428,7 @@ function bufferResize( test )
   var src = new ArrayBuffer( 6 );
   var got = _.bufferResize( src, 1 );
   test.identical( got, new ArrayBuffer( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new ArrayBuffer( 6 );
@@ -433,11 +438,13 @@ function bufferResize( test )
   var view2 = new Uint8Array( got );
   test.notIdentical( got, new ArrayBuffer( 1 ) );
   test.identical( view2[ 0 ], 200 );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 6 );
   var got = _.bufferResize( src, 1 );
   test.identical( got, new SharedArrayBuffer( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 100 );
@@ -445,14 +452,15 @@ function bufferResize( test )
   view1[ 5 ] = 200;
   var got = _.bufferResize( src, 20 );
   var view2 = new Uint8Array( got );
-  // test.notIdentical( got, new SharedArrayBuffer( 20 ) );
   test.identical( view2[ 10 ], 200 );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferRawIs( got ) );
 
   test.case = 'raw buffer, size > length';
   var src = new ArrayBuffer( 6 );
   var got = _.bufferResize( src, 8 );
   test.identical( got, new ArrayBuffer( 8 ) );
+  test.identical( got.byteLength, 8 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new ArrayBuffer( 10 );
@@ -462,12 +470,13 @@ function bufferResize( test )
   var view2 = new Uint8Array( got );
   test.notIdentical( got, new ArrayBuffer( 20 ) );
   test.identical( view2[ 1 ], 200 );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 6 );
   var got = _.bufferResize( src, 10 );
-  debugger;
   test.identical( got, new SharedArrayBuffer( 10 ) );
+  test.identical( got.byteLength, 10 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 16 );
@@ -475,9 +484,8 @@ function bufferResize( test )
   view1[ 5 ] = 200;
   var got = _.bufferResize( src, 30 );
   var view2 = new Uint8Array( got );
-  debugger;
-  // test.notIdentical( got, new SharedArrayBuffer( 30 ) );
   test.identical( view2[ 10 ], 200 );
+  test.identical( got.byteLength, 30 );
   test.is( _.bufferRawIs( got ) );
 
   /* view buffer */
@@ -518,23 +526,27 @@ function bufferResize( test )
   test.is( _.bufferViewIs( got ) );
 
   /* node buffer */
+  
   if( Config.platform === 'nodejs' )
   {
   test.case = 'node buffer, size < length, alloc method';
   var src = Buffer.alloc( 6 );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.alloc( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   var src = Buffer.allocUnsafe( 6 );
   var got = _.bufferResize( src, 1 );
   test.identical( got.length, 1 );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size < length, from array';
   var src = Buffer.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.from( [ 1 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size < length, from buffer';
@@ -542,6 +554,7 @@ function bufferResize( test )
   var src = Buffer.from( buffer );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.alloc( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   var buffer = new ArrayBuffer( 10 );
@@ -550,6 +563,7 @@ function bufferResize( test )
   var src = Buffer.from( buffer );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.from( [ 10 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   var buffer = new ArrayBuffer( 10 );
@@ -558,33 +572,39 @@ function bufferResize( test )
   var src = Buffer.from( buffer );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.from( [ 10 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size < length, from string';
   var src = Buffer.from( 'str' );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.from( 's' ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   var src = Buffer.from( 'str', 'latin1' );
   var got = _.bufferResize( src, 2 );
   test.identical( got, Buffer.from( 'st', 'latin1' ) );
+  test.identical( got.byteLength, 2 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size > length, alloc method';
   var src = Buffer.alloc( 6 );
   var got = _.bufferResize( src, 8 );
   test.identical( got, Buffer.alloc( 8 ) );
+  test.identical( got.byteLength, 8 );
   test.is( _.bufferNodeIs( got ) );
 
   var src = Buffer.allocUnsafe( 6 );
   var got = _.bufferResize( src, 20 );
   test.identical( got.length, 20 );
+  test.identical( got.byteLength, 20 );
 
   test.case = 'node buffer, size > length, from array';
   var src = Buffer.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferResize( src, 7 );
   test.identical( got, Buffer.from( [ 1, 2, 3, 4, 0, 0, 0 ] ) );
+  test.identical( got.byteLength, 7 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size > length, from buffer';
@@ -592,6 +612,7 @@ function bufferResize( test )
   var src = Buffer.from( buffer );
   var got = _.bufferResize( src, 20 );
   test.identical( got, Buffer.alloc( 20 ) );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferNodeIs( got ) );
 
   var buffer = Buffer.alloc( 10 );
@@ -600,6 +621,7 @@ function bufferResize( test )
   var got = _.bufferResize( src, 20 );
   test.notIdentical( got, Buffer.alloc( 20 ) );
   test.identical( got[ 5 ], 12 );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferNodeIs( got ) );
 
   var buffer = new ArrayBuffer( 10 );
@@ -609,17 +631,20 @@ function bufferResize( test )
   var got = _.bufferResize( src, 30 );
   test.notIdentical( got, Buffer.alloc( 30 ) );
   test.identical( got[ 0 ], 10 );
+  test.identical( got.byteLength, 30 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size > length, from string';
   var src = Buffer.from( 'str' );
   var got = _.bufferResize( src, 5 );
   test.identical( got, Buffer.from( [ 115, 116, 114, 0, 0 ] ) );
+  test.identical( got.byteLength, 5 );
   test.is( _.bufferNodeIs( got ) );
 
   var src = Buffer.from( 'str', 'base64' );
   var got = _.bufferResize( src, 7 );
   test.identical( got, Buffer.from( [ 178, 218, 0, 0, 0, 0, 0 ] ) );
+  test.identical( got.byteLength, 7 );
   test.is( _.bufferNodeIs( got ) );
   }
 
@@ -22270,7 +22295,6 @@ var Self =
     // scalar
 
     scalarAppend,
-    scalarAppendOnce,
 
     // array sequential search
 

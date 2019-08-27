@@ -383,19 +383,20 @@ function bufferRelen( src, len )
 function bufferResize( srcBuffer, size )
 {
   let result = srcBuffer;
+  let typedSize;
 
   _.assert( _.bufferAnyIs( srcBuffer ) );
   _.assert( srcBuffer.byteLength >= 0 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  if( _.bufferRawIs( srcBuffer ) || _.bufferViewIs( srcBuffer ) )
-  srcBuffer.length = srcBuffer.byteLength;
+  if( _.bufferTypedIs( srcBuffer ) )
+  typedSize = size / srcBuffer.BYTES_PER_ELEMENT;
 
-  if( size > srcBuffer.length )
+  if( size > srcBuffer.byteLength )
   {
     if( _.bufferTypedIs( srcBuffer ) )
     {
-      result = _.longMake( srcBuffer, size );
+      result = _.longMake( srcBuffer, typedSize );
       result.set( srcBuffer );
     }
     if( _.bufferRawIs( srcBuffer ) )
@@ -422,13 +423,15 @@ function bufferResize( srcBuffer, size )
       result.set( srcBuffer );
     }
   }
-  else if( size < srcBuffer.length )
+  else if( size < srcBuffer.byteLength )
   {
     if( _.bufferViewIs( srcBuffer ) )
     {
-      result = new DataView( srcBuffer.buffer, 0, size );
+      return result = new DataView( srcBuffer.buffer, 0, size );
     }
-    else
+    else if( _.bufferTypedIs( srcBuffer ) )
+    size = typedSize;
+
     result = srcBuffer.slice( 0, size );
   }
 
