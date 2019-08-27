@@ -107,9 +107,9 @@ function rangeInInclusiveRight( range, srcNumber )
 function sureInRange( src, range )
 {
   _.assert( arguments.length >= 2 );
+  if( arguments.length !== 2 )
   debugger;
-  let args = _.unrollFrom( _.rangeIn( range, src ), () => 'Out of range' + _.rangeToStr( range ), _.unrollSelect( arguments, 2 ) );
-  debugger;
+  let args = _.unrollFrom([ _.rangeIn( range, src ), () => 'Out of range' + _.rangeToStr( range ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
 }
@@ -119,9 +119,9 @@ function sureInRange( src, range )
 function assertInRange( src, range )
 {
   _.assert( arguments.length >= 2 );
+  if( arguments.length !== 2 )
   debugger;
-  let args = _.unrollFrom( _.rangeIn( range, src ), () => 'Out of range' + _.rangeToStr( range ), _.unrollSelect( arguments, 2 ) );
-  debugger;
+  let args = _.unrollFrom([ _.rangeIn( range, src ), () => 'Out of range' + _.rangeToStr( range ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
 }

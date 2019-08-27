@@ -308,22 +308,51 @@ function bufferBut( test )
 
   test.case = 'cut not elements'; /* qqq : poor descriptions of cases */
   var src = new Uint32Array( [ 0, 1, 2, 3 ] ); /* xxx qqq : replace name */
-  debugger;
   var got = _.bufferBut( src, [ 2, 2 ], [ 5 ] );
   test.identical( got, new Uint32Array( [ 0, 1, 5, 2, 3 ] ) );
-  debugger;
 
   test.case = 'cut not elements';
   var src = new Uint32Array( [ 0, 1, 2, 3 ] ); /* xxx qqq : replace name */
-  debugger;
   var got = _.bufferBut( src, 2, [ 5 ] );
   test.identical( got, new Uint32Array( [ 0, 1, 5, 3 ] ) );
-  debugger;
 
   test.case = 'cut all elements';
   var src = new Uint32Array( [ 0, 1, 2, 3 ] );
   var got = _.bufferBut( src, [ 0, src.length ], [ 1 ] );
   test.identical( got, new Uint32Array( [ 1 ] ) );
+
+  test.case = '';
+  var src = [];
+  var got = _.bufferBut( src, [ 0, 0 ], [ 2 ] );
+  test.identical( got, [ 2 ] );
+
+  test.case = '';
+  var src = new F32x([]);
+  var got = _.bufferBut( src, [ 0, 0 ], [ 2 ] );
+  test.identical( got, new F32x([ 2 ]) );
+
+  test.case = '';
+  var src = new U32x([]);
+  var got = _.bufferBut( src, [ 0, 0 ], [ 2 ] );
+  test.identical( got, new U32x([ 2 ]) );
+
+  /* qqq : should work */
+  test.case = '';
+  var src = new ArrayBuffer( 10 );
+  var got = _.bufferBut( buffer, [ 1, 3 ], [ 1 ] );
+  test.identical( got, new U32x([ 2 ]) );
+
+  /* qqq : should work */
+  test.case = '';
+  var src = Buffer.alloc( 10 );
+  var got = _.bufferBut( Buffer.alloc( 10 ), [ 1, 3 ], [ 1 ] );
+  test.identical( got, new U32x([ 2 ]) );
+
+  /* qqq : should work */
+  test.case = '';
+  var src = new ArrayBuffer( 10 );
+  var got = _.bufferBut( [ buffer ], [ 1, 3 ], [ 1 ] );
+  test.identical( got, new U32x([ 2 ]) );
 
   /* - */
 
@@ -351,11 +380,9 @@ function bufferBut( test )
 
   test.case = 'wrong type of src';
   var buffer = new ArrayBuffer( 10 );
-  test.shouldThrowErrorSync( () => _.bufferBut( buffer, [ 1, 3 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.bufferBut( Buffer.alloc( 10 ), [ 1, 3 ], [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.bufferBut( new DataView( buffer ), [ 1, 3 ], [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.bufferBut( 'str', [ 1, 3 ], [ 1 ] ) );
-  test.shouldThrowErrorSync( () => _.bufferBut( [ buffer ], [ 1, 3 ], [ 1 ] ) );
+
 }
 
 //
