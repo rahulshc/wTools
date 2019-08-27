@@ -253,16 +253,16 @@ function argumentsArrayFrom( src )
  * @param { * } src - The object to be checked.
  *
  * @example
- * // returns true
  * _.unrollIs( _.unrollMake( [ 1, 'str' ] ) );
+ * // returns true
  *
  * @example
- * // returns false
  * _.unrollIs( [] );
+ * // returns false
  *
  * @example
- * // returns false
  * _.unrollIs( 1 );
+ * // returns false
  *
  * @returns { boolean } Returns true if {-src-} is an unroll.
  * @function unrollIs
@@ -290,16 +290,16 @@ qqq : poor examples
  * @param { * } src - The object to be checked.
  *
  * @example
+ * _.unrollIs( _.unrollFrom( [ 1, 'str' ] ) );
  * // returns true
- * _.unrollIs( _.unrollMake( [ 1, 'str' ] ) );
  *
  * @example
- * // returns false
  * _.unrollIs( _.unrollMake( [] ) );
+ * // returns false
  *
  * @example
+ * _.unrollIs( [ 1 ] );
  * // returns false
- * _.unrollIs( 1 );
  *
  * @returns { boolean } Returns true if argument ( src ) is an unroll-array and has one or more elements ( length ).
  * @function unrollIsPopulated
@@ -1266,7 +1266,7 @@ function _longClone( src )
   debugger;
 
   if( _.bufferRawIs( src ) )
-  return new Uint8Array( new Uint8Array( src ) ).buffer;
+  return new U8x( new U8x( src ) ).buffer;
   else if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
   return new src.constructor( src );
   else if( _.arrayIs( src ) )
@@ -1310,13 +1310,13 @@ function longShallowClone()
   if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
   result = _.longMakeUndefined( arguments[ 0 ], length );
   else if( _.bufferRawIs( arguments[ 0 ] ) )
-  result = new ArrayBuffer( length );
+  result = new BufferRaw( length );
 
   let bufferDst;
   let offset = 0;
   if( _.bufferRawIs( arguments[ 0 ] ) )
   {
-    bufferDst = new Uint8Array( result );
+    bufferDst = new U8x( result );
   }
 
   /* copy */
@@ -1326,7 +1326,7 @@ function longShallowClone()
     let argument = arguments[ a ];
     if( _.bufferRawIs( argument ) )
     {
-      bufferDst.set( new Uint8Array( argument ), offset );
+      bufferDst.set( new U8x( argument ), offset );
       offset += argument.byteLength;
     }
     else if( _.bufferTypedIs( arguments[ 0 ] ) )
@@ -1360,7 +1360,7 @@ function longShallowClone()
  * If ( f ) > ( l ), end index( l ) becomes equal to begin index( f ).
  * If ( f ) < 0, zero is assigned to begin index( f ).
 
- * @param { Array/Buffer } array - Source array or buffer.
+ * @param { Array/BufferNode } array - Source array or buffer.
  * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
  * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
  *
@@ -1380,7 +1380,7 @@ function longShallowClone()
  *
  * @returns { Array } Returns a shallow copy of elements from the original array.
  * @function longSlice
- * @throws { Error } Will throw an Error if ( array ) is not an Array or Buffer.
+ * @throws { Error } Will throw an Error if ( array ) is not an Array or BufferNode.
  * @throws { Error } Will throw an Error if ( f ) is not a Number.
  * @throws { Error } Will throw an Error if ( l ) is not a Number.
  * @throws { Error } Will throw an Error if no arguments provided.
@@ -1455,7 +1455,7 @@ function longSlice( array, f, l )
  * If ( l ) < ( array.length ) - returns array that contains elements with indexies from ( f ) to ( l ).
  * If ( l ) < 0 and ( l ) > ( f ) - returns array filled with some amount of elements with value of argument( val ).
  * If ( f ) < 0 - prepends some number of elements with value of argument( let ) to the result array.
- * @param { Array/Buffer } array - source array or buffer;
+ * @param { Array/BufferNode } array - source array or buffer;
  * @param { Number } [ f = 0 ] - index of a first element to copy into new array;
  * @param { Number } [ l = array.length ] - index of a last element to copy into new array;
  * @param { * } val - value used to fill the space left after copying elements of the original array.
@@ -1496,15 +1496,15 @@ function longSlice( array, f, l )
  * //[ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
  *
  * @example
- * //Source can be also a Buffer
- * let buffer = Buffer.from( '123' );
+ * //Source can be also a BufferNode
+ * let buffer = BufferNode.from( '123' );
  * let result = _.longGrowInplace( buffer, 0, buffer.length + 2, 0 );
  * console.log( result );
  * //[ 49, 50, 51, 0, 0 ]
  *
  * @returns { Array } Returns resized copy of a part of an original array.
  * @function longGrowInplace
- * @throws { Error } Will throw an Error if( array ) is not a Array or Buffer.
+ * @throws { Error } Will throw an Error if( array ) is not a Array or BufferNode.
  * @throws { Error } Will throw an Error if( f ) or ( l ) is not a Number.
  * @throws { Error } Will throw an Error if not enough arguments provided.
  * @memberof wTools
@@ -1859,8 +1859,8 @@ function bufferViewIs( src )
 
 function bufferNodeIs( src )
 {
-  if( typeof Buffer !== 'undefined' )
-  return src instanceof Buffer;
+  if( typeof BufferNode !== 'undefined' )
+  return src instanceof BufferNode;
   return false;
 }
 
@@ -1885,7 +1885,7 @@ function bufferBytesIs( src )
 {
   if( _.bufferNodeIs( src ) )
   return false;
-  return src instanceof Uint8Array;
+  return src instanceof U8x;
 }
 
 //

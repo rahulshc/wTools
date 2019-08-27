@@ -17,7 +17,7 @@ var _ = wTools;
 function bufferRawIs( test )
 {
   test.case = 'array buffer';
-  var src = new ArrayBuffer( [ 1, 2 ] );
+  var src = new BufferRaw( [ 1, 2 ] );
   var got = _.bufferRawIs( src );
   test.identical( got, true );
   test.isNot( _.bufferTypedIs( src ) );
@@ -33,33 +33,33 @@ function bufferRawIs( test )
   test.isNot( _.bufferViewIs( src ) );
 
   test.case = 'typed array';
-  var src = new Float32Array( [ 1, 2 ] );
+  var src = new F32x( [ 1, 2 ] );
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
-  var src = new Uint8ClampedArray( 10*10*4 );
+  var src = new U8ClampedX( 10*10*4 );
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
   if( Config.platform === 'nodejs' )
   {
   test.case = 'node buffer';
-  var src = Buffer.alloc( 10 );
+  var src = BufferNode.alloc( 10 );
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
-  var src = Buffer.from( [ 2, 4 ] );
+  var src = BufferNode.from( [ 2, 4 ] );
   var got = _.bufferRawIs( src );
   test.identical( got, false );
   }
 
-  test.case = 'view buffer, ArrayBuffer';
-  var src = new DataView( new ArrayBuffer( [ 10 ] ) );
+  test.case = 'view buffer, BufferRaw';
+  var src = new BufferView( new BufferRaw( [ 10 ] ) );
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
   test.case = 'view buffer, SharedArrayBuffer';
-  var src = new DataView( new SharedArrayBuffer( [ 10 ] ) );
+  var src = new BufferView( new SharedArrayBuffer( [ 10 ] ) );
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
@@ -71,8 +71,8 @@ function bufferRawIs( test )
   test.identical( got, false );
 
   test.case = 'extra arguments';
-  var src = new ArrayBuffer( [ 1, 2 ] );
-  var got = _.bufferRawIs( src, new Uint8Array( 1 ) );
+  var src = new BufferRaw( [ 1, 2 ] );
+  var got = _.bufferRawIs( src, new U8x( 1 ) );
   test.identical( got, true );
 }
 
@@ -81,14 +81,14 @@ function bufferRawIs( test )
 function bufferTypedIs( test )
 {
   test.case = 'typed array';
-  var src = new Float32Array( [ 1, 2 ] );
+  var src = new F32x( [ 1, 2 ] );
   var got = _.bufferTypedIs( src );
   test.identical( got, true );
   test.isNot( _.bufferRawIs( src ) );
   test.isNot( _.bufferNodeIs( src ) );
   test.isNot( _.bufferViewIs( src ) );
 
-  var src = new Uint8ClampedArray( 10*10*4 );
+  var src = new U8ClampedX( 10*10*4 );
   var got = _.bufferTypedIs( src );
   test.identical( got, true );
   test.isNot( _.bufferRawIs( src ) );
@@ -96,7 +96,7 @@ function bufferTypedIs( test )
   test.isNot( _.bufferViewIs( src ) );
 
   test.case = 'array buffer';
-  var src = new ArrayBuffer( [ 1, 2 ] );
+  var src = new BufferRaw( [ 1, 2 ] );
   var got = _.bufferTypedIs( src );
   test.identical( got, false );
 
@@ -108,22 +108,22 @@ function bufferTypedIs( test )
   if( Config.platform === 'nodejs' )
   {
   test.case = 'node buffer';
-  var src = Buffer.alloc( 10 );
+  var src = BufferNode.alloc( 10 );
   var got = _.bufferTypedIs( src );
   test.identical( got, false );
 
-  var src = Buffer.from( [ 2, 4 ] );
+  var src = BufferNode.from( [ 2, 4 ] );
   var got = _.bufferTypedIs( src );
   test.identical( got, false );
   }
 
-  test.case = 'view buffer, ArrayBuffer';
-  var src = new DataView( new ArrayBuffer( [ 10 ] ) );
+  test.case = 'view buffer, BufferRaw';
+  var src = new BufferView( new BufferRaw( [ 10 ] ) );
   var got = _.bufferTypedIs( src );
   test.identical( got, false );
 
   test.case = 'view buffer, SharedArrayBuffer';
-  var src = new DataView( new SharedArrayBuffer( [ 10 ] ) );
+  var src = new BufferView( new SharedArrayBuffer( [ 10 ] ) );
   var got = _.bufferTypedIs( src );
   test.identical( got, false );
 
@@ -135,7 +135,7 @@ function bufferTypedIs( test )
   test.identical( got, false );
 
   test.case = 'extra arguments';
-  var src = new Int16Array( [ 1, 2 ] );
+  var src = new I16x( [ 1, 2 ] );
   var got = _.bufferTypedIs( src, new SharedArrayBuffer( 1 ) );
   test.identical( got, true );
 }
@@ -148,14 +148,14 @@ function bufferNodeIs( test )
   return;
 
   test.case = 'node buffer';
-  var src = Buffer.alloc( 10 );
+  var src = BufferNode.alloc( 10 );
   var got = _.bufferNodeIs( src );
   test.identical( got, true );
   test.isNot( _.bufferRawIs( src ) );
   test.isNot( _.bufferTypedIs( src ) );
   test.isNot( _.bufferViewIs( src ) );
 
-  var src = Buffer.from( [ 2, 4 ] );
+  var src = BufferNode.from( [ 2, 4 ] );
   var got = _.bufferNodeIs( src );
   test.identical( got, true );
   test.isNot( _.bufferRawIs( src ) );
@@ -163,16 +163,16 @@ function bufferNodeIs( test )
   test.isNot( _.bufferViewIs( src ) );
 
   test.case = 'typed array';
-  var src = new Float32Array( [ 1, 2 ] );
+  var src = new F32x( [ 1, 2 ] );
   var got = _.bufferNodeIs( src );
   test.identical( got, false );
 
-  var src = new Uint8ClampedArray( 10*10*4 );
+  var src = new U8ClampedX( 10*10*4 );
   var got = _.bufferNodeIs( src );
   test.identical( got, false );
 
   test.case = 'array buffer';
-  var src = new ArrayBuffer( [ 1, 2 ] );
+  var src = new BufferRaw( [ 1, 2 ] );
   var got = _.bufferNodeIs( src );
   test.identical( got, false );
 
@@ -181,13 +181,13 @@ function bufferNodeIs( test )
   var got = _.bufferNodeIs( src );
   test.identical( got, false );
 
-  test.case = 'view buffer, ArrayBuffer';
-  var src = new DataView( new ArrayBuffer( [ 10 ] ) );
+  test.case = 'view buffer, BufferRaw';
+  var src = new BufferView( new BufferRaw( [ 10 ] ) );
   var got = _.bufferNodeIs( src );
   test.identical( got, false );
 
   test.case = 'view buffer, SharedArrayBuffer';
-  var src = new DataView( new SharedArrayBuffer( [ 10 ] ) );
+  var src = new BufferView( new SharedArrayBuffer( [ 10 ] ) );
   var got = _.bufferNodeIs( src );
   test.identical( got, false );
 
@@ -199,7 +199,7 @@ function bufferNodeIs( test )
   test.identical( got, false );
 
   test.case = 'extra arguments';
-  var src = Buffer.from( [ 1, 2 ] );
+  var src = BufferNode.from( [ 1, 2 ] );
   var got = _.bufferNodeIs( src, new SharedArrayBuffer( 1 ) );
   test.identical( got, true );
 }
@@ -208,8 +208,8 @@ function bufferNodeIs( test )
 
 function bufferViewIs( test )
 {
-  test.case = 'view buffer, ArrayBuffer';
-  var src = new DataView( new ArrayBuffer( [ 10 ] ) );
+  test.case = 'view buffer, BufferRaw';
+  var src = new BufferView( new BufferRaw( [ 10 ] ) );
   var got = _.bufferViewIs( src );
   test.identical( got, true );
   test.isNot( _.bufferRawIs( src ) );
@@ -217,7 +217,7 @@ function bufferViewIs( test )
   test.isNot( _.bufferTypedIs( src ) );
 
   test.case = 'view buffer, SharedArrayBuffer';
-  var src = new DataView( new SharedArrayBuffer( [ 10 ] ) );
+  var src = new BufferView( new SharedArrayBuffer( [ 10 ] ) );
   var got = _.bufferViewIs( src );
   test.identical( got, true );
   test.isNot( _.bufferRawIs( src ) );
@@ -225,16 +225,16 @@ function bufferViewIs( test )
   test.isNot( _.bufferTypedIs( src ) );
 
   test.case = 'typed array';
-  var src = new Float32Array( [ 1, 2 ] );
+  var src = new F32x( [ 1, 2 ] );
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
-  var src = new Uint8ClampedArray( 10*10*4 );
+  var src = new U8ClampedX( 10*10*4 );
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
   test.case = 'array buffer';
-  var src = new ArrayBuffer( [ 1, 2 ] );
+  var src = new BufferRaw( [ 1, 2 ] );
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
@@ -246,11 +246,11 @@ function bufferViewIs( test )
   if( Config.platform === 'nodejs' )
   {
   test.case = 'node buffer';
-  var src = Buffer.alloc( 10 );
+  var src = BufferNode.alloc( 10 );
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
-  var src = Buffer.from( [ 2, 4 ] );
+  var src = BufferNode.from( [ 2, 4 ] );
   var got = _.bufferViewIs( src );
   test.identical( got, false );
   }
@@ -263,8 +263,8 @@ function bufferViewIs( test )
   test.identical( got, false );
 
   test.case = 'extra arguments';
-  var src = new DataView( new ArrayBuffer( [ 1, 2 ] ) );
-  var got = _.bufferViewIs( src, new Uint8Array( 1 ) );
+  var src = new BufferView( new BufferRaw( [ 1, 2 ] ) );
+  var got = _.bufferViewIs( src, new U8x( 1 ) );
   test.identical( got, true );
 }
 
@@ -273,53 +273,53 @@ function bufferViewIs( test )
 function bufferBut( test )
 {
   test.case = 'ins is undefined';
-  var src = new Int16Array( [ 0, 1, 2, 3 ] );
+  var src = new I16x( [ 0, 1, 2, 3 ] );
   var got = _.bufferBut( src, [ 1, 2 ] );
-  test.identical( got, new Int16Array( [ 0, 2, 3 ] ) );
+  test.identical( got, new I16x( [ 0, 2, 3 ] ) );
 
   test.case = 'ins is long';
-  var src = new Uint16Array( [ 0, 1, 2, 3 ] );
+  var src = new U16x( [ 0, 1, 2, 3 ] );
   var ins = new Array( 1, 2, 3 );
   var got = _.bufferBut( src, [ 1, 2 ], ins );
-  test.identical( got, new Uint16Array( [ 0, 1, 2, 3, 2, 3 ] ) );
+  test.identical( got, new U16x( [ 0, 1, 2, 3, 2, 3 ] ) );
 
-  var src = new Uint8Array( [ 0, 1, 2, 3 ] );
+  var src = new U8x( [ 0, 1, 2, 3 ] );
   var ins = _.unrollMake( [ 1, 2, 3 ] );
   var got = _.bufferBut( src, [ 1, 2 ], ins );
-  test.identical( got, new Uint8Array( [ 0, 1, 2, 3, 2, 3 ] ) );
+  test.identical( got, new U8x( [ 0, 1, 2, 3, 2, 3 ] ) );
 
-  var src = new Int8Array( [ 0, 1, 2, 3 ] );
+  var src = new I8x( [ 0, 1, 2, 3 ] );
   var ins = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.bufferBut( src, [ 1, 2 ], ins );
-  test.identical( got, new Int8Array( [ 0, 1, 2, 3, 2, 3 ] ) );
+  test.identical( got, new I8x( [ 0, 1, 2, 3, 2, 3 ] ) );
 
   if( Config.platform === 'nodejs' )
   {
-  var src = new Uint8ClampedArray( [ 0, 1, 2, 3 ] );
-  var ins = Buffer.from( [ 1, 2, 3 ] );
+  var src = new U8ClampedX( [ 0, 1, 2, 3 ] );
+  var ins = BufferNode.from( [ 1, 2, 3 ] );
   var got = _.bufferBut( src, [ 1, 2 ], ins );
-  test.identical( got, new Uint8ClampedArray( [ 0, 1, 2, 3, 2, 3 ] ) );
+  test.identical( got, new U8ClampedX( [ 0, 1, 2, 3, 2, 3 ] ) );
   }
 
-  var src = new Float32Array( [ 0, 1, 2, 3 ] );
-  var ins = new Int32Array( 2 );
+  var src = new F32x( [ 0, 1, 2, 3 ] );
+  var ins = new I32x( 2 );
   var got = _.bufferBut( src, [ 1, 2 ], ins );
-  test.identical( got, new Float32Array( [ 0, 0, 0, 2, 3 ] ) );
+  test.identical( got, new F32x( [ 0, 0, 0, 2, 3 ] ) );
 
   test.case = 'cut not elements'; /* qqq : poor descriptions of cases */
-  var src = new Uint32Array( [ 0, 1, 2, 3 ] ); /* xxx qqq : replace name */
+  var src = new U32x( [ 0, 1, 2, 3 ] ); /* xxx qqq : replace name */
   var got = _.bufferBut( src, [ 2, 2 ], [ 5 ] );
-  test.identical( got, new Uint32Array( [ 0, 1, 5, 2, 3 ] ) );
+  test.identical( got, new U32x( [ 0, 1, 5, 2, 3 ] ) );
 
   test.case = 'cut not elements';
-  var src = new Uint32Array( [ 0, 1, 2, 3 ] ); /* xxx qqq : replace name */
+  var src = new U32x( [ 0, 1, 2, 3 ] ); /* xxx qqq : replace name */
   var got = _.bufferBut( src, 2, [ 5 ] );
-  test.identical( got, new Uint32Array( [ 0, 1, 5, 3 ] ) );
+  test.identical( got, new U32x( [ 0, 1, 5, 3 ] ) );
 
   test.case = 'cut all elements';
-  var src = new Uint32Array( [ 0, 1, 2, 3 ] );
+  var src = new U32x( [ 0, 1, 2, 3 ] );
   var got = _.bufferBut( src, [ 0, src.length ], [ 1 ] );
-  test.identical( got, new Uint32Array( [ 1 ] ) );
+  test.identical( got, new U32x( [ 1 ] ) );
 
   test.case = '';
   var src = [];
@@ -338,21 +338,39 @@ function bufferBut( test )
 
   /* qqq : should work */
   test.case = '';
-  var src = new ArrayBuffer( 10 );
-  var got = _.bufferBut( buffer, [ 1, 3 ], [ 1 ] );
-  test.identical( got, new U32x([ 2 ]) );
+  var src = new BufferRaw( 10 );
+  var got = _.bufferBut( src, [ 1, 3 ], [ 1 ] );
+  test.identical( got, new BufferRaw( [ 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 ] ) );
 
   /* qqq : should work */
   test.case = '';
-  var src = Buffer.alloc( 10 );
-  var got = _.bufferBut( Buffer.alloc( 10 ), [ 1, 3 ], [ 1 ] );
-  test.identical( got, new U32x([ 2 ]) );
+  var src = BufferNode.alloc( 10 );
+  var got = _.bufferBut( src, [ 1, 3 ], [ 1 ] );
+  test.identical( got, BufferNode.from( [ 0, 1, 0, 0, 0, 0, 0, 0, 0 ] ) );
 
   /* qqq : should work */
   test.case = '';
-  var src = new ArrayBuffer( 10 );
-  var got = _.bufferBut( [ buffer ], [ 1, 3 ], [ 1 ] );
-  test.identical( got, new U32x([ 2 ]) );
+  var src = new BufferRaw( 10 );
+  var got = _.bufferBut( [ src ], [ 1, 3 ], [ 1 ] );
+  test.identical( got, new BufferRaw( [ 0, 1, 0, 0, 0, 0, 0, 0, 0 ] ) );
+
+  // /* qqq : should work */
+  // test.case = '';
+  // var src = new BufferRaw( 10 );
+  // var got = _.bufferBut( buffer, [ 1, 3 ], [ 1 ] );
+  // test.identical( got, new U32x([ 2 ]) );
+  //
+  // /* qqq : should work */
+  // test.case = '';
+  // var src = BufferNode.alloc( 10 );
+  // var got = _.bufferBut( BufferNode.alloc( 10 ), [ 1, 3 ], [ 1 ] );
+  // test.identical( got, new U32x([ 2 ]) );
+  //
+  // /* qqq : should work */
+  // test.case = '';
+  // var src = new BufferRaw( 10 );
+  // var got = _.bufferBut( [ buffer ], [ 1, 3 ], [ 1 ] );
+  // test.identical( got, new U32x([ 2 ]) );
 
   /* - */
 
@@ -363,11 +381,11 @@ function bufferBut( test )
   test.shouldThrowErrorSync( () => _.bufferBut() );
 
   test.case = 'extra arguments';
-  var src = new Int16Array( 10 );
+  var src = new I16x( 10 );
   test.shouldThrowErrorSync( () => _.bufferBut( src, [ 1, 2 ], [ 1 ], [ 4 ] ) );
 
   test.case = 'wrong value in range';
-  var src = new Int16Array( 10 );
+  var src = new I16x( 10 );
   test.shouldThrowErrorSync( () => _.bufferBut( src, true, [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferBut( src, null, [ 2 ] ) );
   test.shouldThrowErrorSync( () => _.bufferBut( src, 'str', [ 2 ] ) );
@@ -379,8 +397,8 @@ function bufferBut( test )
   test.shouldThrowErrorSync( () => _.bufferBut( src, [ 1, 3 ], { a : 1 } ) );
 
   test.case = 'wrong type of src';
-  var buffer = new ArrayBuffer( 10 );
-  test.shouldThrowErrorSync( () => _.bufferBut( new DataView( buffer ), [ 1, 3 ], [ 1 ] ) );
+  var buffer = new BufferRaw( 10 );
+  test.shouldThrowErrorSync( () => _.bufferBut( new BufferView( buffer ), [ 1, 3 ], [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.bufferBut( 'str', [ 1, 3 ], [ 1 ] ) );
 
 }
@@ -391,25 +409,25 @@ function bufferRelen( test )
 {
 
   test.case = 'second argument is more than ints.length';
-  var ints = new Int8Array( [ 3, 7, 13 ] );
+  var ints = new I8x( [ 3, 7, 13 ] );
   var got = _.bufferRelen( ints, 4 );
   var expected = got; // [ 3, 7, 13, 0 ];
   test.identical( got, expected );
 
   test.case = 'second argument is less than ints2.length';
-  var ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
+  var ints2 = new I16x( [ 3, 7, 13, 33, 77 ] );
   var got = _.bufferRelen( ints2, 3 );
   var expected = got; // [ 3, 7, 13 ];
   test.identical( got, expected );
 
   test.case = 'invalid values are replaced by zero';
-  var ints3 = new Int32Array( [ 3, 'a', 13, 'b', 77 ] );
+  var ints3 = new I32x( [ 3, 'a', 13, 'b', 77 ] );
   var got = _.bufferRelen( ints3, 6 );
   var expected = got; // [ 3, 0, 13, 0, 77, 0 ];
   test.identical( got, expected );
 
   test.case = 'returns the initial typed array';
-  var floats = new Float32Array( [ 3.35, 7.5, 13.35, 33.75, 77.25 ] );
+  var floats = new F32x( [ 3.35, 7.5, 13.35, 33.75, 77.25 ] );
   var got = _.bufferRelen( floats, 5 );
   var expected = got; // [ 3.3499999046325684, 7.5, 13.350000381469727, 33.75, 77.25 ];
   test.identical( got, expected );
@@ -433,229 +451,254 @@ function bufferResize( test )
   /* typed buffer */
 
   test.case = 'typed buffer, size < length';
-  var src = new Uint16Array( 3 );
-  var got = _.bufferResize( src, 1 );
-  test.identical( got, new Uint16Array( 1 ) );
+  var src = new U16x( 3 );
+  var got = _.bufferResize( src, 4 );
+  test.identical( got, new U16x( 2 ) );
+  test.identical( got.byteLength, 4 );
   test.is( _.bufferTypedIs( got ) );
 
-  var src = new Int8Array( [ 1, 2, 3 ] );
+  var src = new I8x( [ 1, 2, 3 ] );
   var got = _.bufferResize( src, 1 );
-  test.identical( got, new Int8Array( [ 1 ] ) );
+  test.identical( got, new I8x( [ 1 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferTypedIs( got ) );
 
   test.case = 'typed buffer, size > length';
-  var src = new Uint32Array( 1 );
-  var got = _.bufferResize( src, 4 );
-  test.identical( got, new Uint32Array( 4 ) );
+  var src = new U32x( 1 );
+  var got = _.bufferResize( src, 8 );
+  test.identical( got, new U32x( 2 ) );
+  test.identical( got.byteLength, 8 );
   test.is( _.bufferTypedIs( got ) );
 
-  var src = new Float32Array( [ 1, 2, 3 ] );
-  var got = _.bufferResize( src, 5 );
-  test.identical( got, new Float32Array( [ 1, 2, 3, 0, 0 ] ) );
+  var src = new F32x( [ 1, 2, 3 ] );
+  var got = _.bufferResize( src, 20 );
+  test.identical( got, new F32x( [ 1, 2, 3, 0, 0 ] ) );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferTypedIs( got ) );
 
   /* raw buffer */
 
   test.case = 'raw buffer, size < length';
-  var src = new ArrayBuffer( 6 );
+  var src = new BufferRaw( 6 );
   var got = _.bufferResize( src, 1 );
-  test.identical( got, new ArrayBuffer( 1 ) );
+  test.identical( got, new BufferRaw( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferRawIs( got ) );
 
-  var src = new ArrayBuffer( 6 );
-  var view1 = new Uint8Array( src );
+  var src = new BufferRaw( 6 );
+  var view1 = new U8x( src );
   view1[ 0 ] = 200;
   var got = _.bufferResize( src, 1 );
-  var view2 = new Uint8Array( got );
-  test.notIdentical( got, new ArrayBuffer( 1 ) );
+  var view2 = new U8x( got );
+  test.notIdentical( got, new BufferRaw( 1 ) );
   test.identical( view2[ 0 ], 200 );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 6 );
   var got = _.bufferResize( src, 1 );
   test.identical( got, new SharedArrayBuffer( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 100 );
-  var view1 = new Uint16Array( src );
+  var view1 = new U16x( src );
   view1[ 5 ] = 200;
   var got = _.bufferResize( src, 20 );
-  var view2 = new Uint8Array( got );
-  // test.notIdentical( got, new SharedArrayBuffer( 20 ) );
+  var view2 = new U8x( got );
   test.identical( view2[ 10 ], 200 );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferRawIs( got ) );
 
   test.case = 'raw buffer, size > length';
-  var src = new ArrayBuffer( 6 );
+  var src = new BufferRaw( 6 );
   var got = _.bufferResize( src, 8 );
-  test.identical( got, new ArrayBuffer( 8 ) );
+  test.identical( got, new BufferRaw( 8 ) );
+  test.identical( got.byteLength, 8 );
   test.is( _.bufferRawIs( got ) );
 
-  var src = new ArrayBuffer( 10 );
-  var view1 = new Uint8Array( src );
+  var src = new BufferRaw( 10 );
+  var view1 = new U8x( src );
   view1[ 1 ] = 200;
   var got = _.bufferResize( src, 20 );
-  var view2 = new Uint8Array( got );
-  test.notIdentical( got, new ArrayBuffer( 20 ) );
+  var view2 = new U8x( got );
+  test.notIdentical( got, new BufferRaw( 20 ) );
   test.identical( view2[ 1 ], 200 );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 6 );
   var got = _.bufferResize( src, 10 );
-  debugger;
   test.identical( got, new SharedArrayBuffer( 10 ) );
+  test.identical( got.byteLength, 10 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 16 );
-  var view1 = new Uint16Array( src );
+  var view1 = new U16x( src );
   view1[ 5 ] = 200;
   var got = _.bufferResize( src, 30 );
-  var view2 = new Uint8Array( got );
-  debugger;
-  // test.notIdentical( got, new SharedArrayBuffer( 30 ) );
+  var view2 = new U8x( got );
   test.identical( view2[ 10 ], 200 );
+  test.identical( got.byteLength, 30 );
   test.is( _.bufferRawIs( got ) );
 
   /* view buffer */
 
   test.case = 'view buffer, size < length';
-  var src = new DataView( new ArrayBuffer( 6 ) );
+  var src = new BufferView( new BufferRaw( 6 ) );
   var got = _.bufferResize( src, 1 );
-  test.identical( got, new DataView( new ArrayBuffer( 1 ) ) );
+  test.identical( got, new BufferView( new BufferRaw( 1 ) ) );
   test.identical( got.byteLength, 1 );
   test.is( _.bufferViewIs( got ) );
 
-  var buffer = new ArrayBuffer( 10 );
-  var view = new DataView( buffer );
+  var buffer = new BufferRaw( 10 );
+  var view = new BufferView( buffer );
   view.setUint8( 2, 200 );
-  var src = new DataView( buffer );
+  var src = new BufferView( buffer );
   var got = _.bufferResize( src, 3 );
-  test.notIdentical( got, new DataView( new ArrayBuffer( 3 ) ) );
+  test.notIdentical( got, new BufferView( new BufferRaw( 3 ) ) );
   test.identical( got.byteLength, 3 );
   test.identical( got.getUint8( 2 ), 200 );
   test.is( _.bufferViewIs( got ) );
 
   test.case = 'view buffer, size > length';
-  var src = new DataView( new ArrayBuffer( 6 ) );
+  var src = new BufferView( new BufferRaw( 6 ) );
   var got = _.bufferResize( src, 8 );
-  test.identical( got, new DataView( new ArrayBuffer( 8 ) ) );
+  test.identical( got, new BufferView( new BufferRaw( 8 ) ) );
   test.identical( got.byteLength, 8 );
   test.is( _.bufferViewIs( got ) );
 
   test.case = 'view buffer, size > length';
-  var buffer = new ArrayBuffer( 10 );
-  var view = new DataView( buffer );
+  var buffer = new BufferRaw( 10 );
+  var view = new BufferView( buffer );
   view.setUint8( 4, 15 );
-  var src = new DataView( buffer );
+  var src = new BufferView( buffer );
   var got = _.bufferResize( src, 20 );
-  test.notIdentical( got, new DataView( new ArrayBuffer( 20 ) ) );
+  test.notIdentical( got, new BufferView( new BufferRaw( 20 ) ) );
   test.identical( got.getUint8( 4 ), 15 );
   test.identical( got.byteLength, 20 );
   test.is( _.bufferViewIs( got ) );
 
   /* node buffer */
+
   if( Config.platform === 'nodejs' )
   {
   test.case = 'node buffer, size < length, alloc method';
-  var src = Buffer.alloc( 6 );
+  var src = BufferNode.alloc( 6 );
   var got = _.bufferResize( src, 1 );
-  test.identical( got, Buffer.alloc( 1 ) );
+  test.identical( got, BufferNode.alloc( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
-  var src = Buffer.allocUnsafe( 6 );
+  var src = BufferNode.allocUnsafe( 6 );
   var got = _.bufferResize( src, 1 );
   test.identical( got.length, 1 );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size < length, from array';
-  var src = Buffer.from( [ 1, 2, 3, 4 ] );
+  var src = BufferNode.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferResize( src, 1 );
-  test.identical( got, Buffer.from( [ 1 ] ) );
+  test.identical( got, BufferNode.from( [ 1 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size < length, from buffer';
-  var buffer = new ArrayBuffer( 10 );
-  var src = Buffer.from( buffer );
+  var buffer = new BufferRaw( 10 );
+  var src = BufferNode.from( buffer );
   var got = _.bufferResize( src, 1 );
-  test.identical( got, Buffer.alloc( 1 ) );
+  test.identical( got, BufferNode.alloc( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
-  var buffer = new ArrayBuffer( 10 );
-  var view = new Uint8Array( buffer );
+  var buffer = new BufferRaw( 10 );
+  var view = new U8x( buffer );
   view[ 0 ] = 10;
-  var src = Buffer.from( buffer );
+  var src = BufferNode.from( buffer );
   var got = _.bufferResize( src, 1 );
-  test.identical( got, Buffer.from( [ 10 ] ) );
+  test.identical( got, BufferNode.from( [ 10 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
-  var buffer = new ArrayBuffer( 10 );
-  var view = new Uint8Array( buffer );
+  var buffer = new BufferRaw( 10 );
+  var view = new U8x( buffer );
   view[ 0 ] = 10;
-  var src = Buffer.from( buffer );
+  var src = BufferNode.from( buffer );
   var got = _.bufferResize( src, 1 );
-  test.identical( got, Buffer.from( [ 10 ] ) );
+  test.identical( got, BufferNode.from( [ 10 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size < length, from string';
-  var src = Buffer.from( 'str' );
+  var src = BufferNode.from( 'str' );
   var got = _.bufferResize( src, 1 );
-  test.identical( got, Buffer.from( 's' ) );
+  test.identical( got, BufferNode.from( 's' ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
-  var src = Buffer.from( 'str', 'latin1' );
+  var src = BufferNode.from( 'str', 'latin1' );
   var got = _.bufferResize( src, 2 );
-  test.identical( got, Buffer.from( 'st', 'latin1' ) );
+  test.identical( got, BufferNode.from( 'st', 'latin1' ) );
+  test.identical( got.byteLength, 2 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size > length, alloc method';
-  var src = Buffer.alloc( 6 );
+  var src = BufferNode.alloc( 6 );
   var got = _.bufferResize( src, 8 );
-  test.identical( got, Buffer.alloc( 8 ) );
+  test.identical( got, BufferNode.alloc( 8 ) );
+  test.identical( got.byteLength, 8 );
   test.is( _.bufferNodeIs( got ) );
 
-  var src = Buffer.allocUnsafe( 6 );
+  var src = BufferNode.allocUnsafe( 6 );
   var got = _.bufferResize( src, 20 );
   test.identical( got.length, 20 );
+  test.identical( got.byteLength, 20 );
 
   test.case = 'node buffer, size > length, from array';
-  var src = Buffer.from( [ 1, 2, 3, 4 ] );
+  var src = BufferNode.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferResize( src, 7 );
-  test.identical( got, Buffer.from( [ 1, 2, 3, 4, 0, 0, 0 ] ) );
+  test.identical( got, BufferNode.from( [ 1, 2, 3, 4, 0, 0, 0 ] ) );
+  test.identical( got.byteLength, 7 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size > length, from buffer';
-  var buffer = new ArrayBuffer( 10 );
-  var src = Buffer.from( buffer );
+  var buffer = new BufferRaw( 10 );
+  var src = BufferNode.from( buffer );
   var got = _.bufferResize( src, 20 );
-  test.identical( got, Buffer.alloc( 20 ) );
+  test.identical( got, BufferNode.alloc( 20 ) );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferNodeIs( got ) );
 
-  var buffer = Buffer.alloc( 10 );
+  var buffer = BufferNode.alloc( 10 );
   buffer[ 5 ] = 12;
-  var src = Buffer.from( buffer );
+  var src = BufferNode.from( buffer );
   var got = _.bufferResize( src, 20 );
-  test.notIdentical( got, Buffer.alloc( 20 ) );
+  test.notIdentical( got, BufferNode.alloc( 20 ) );
   test.identical( got[ 5 ], 12 );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferNodeIs( got ) );
 
-  var buffer = new ArrayBuffer( 10 );
-  var view = new Uint8Array( buffer );
+  var buffer = new BufferRaw( 10 );
+  var view = new U8x( buffer );
   view[ 0 ] = 10;
-  var src = Buffer.from( buffer );
+  var src = BufferNode.from( buffer );
   var got = _.bufferResize( src, 30 );
-  test.notIdentical( got, Buffer.alloc( 30 ) );
+  test.notIdentical( got, BufferNode.alloc( 30 ) );
   test.identical( got[ 0 ], 10 );
+  test.identical( got.byteLength, 30 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size > length, from string';
-  var src = Buffer.from( 'str' );
+  var src = BufferNode.from( 'str' );
   var got = _.bufferResize( src, 5 );
-  test.identical( got, Buffer.from( [ 115, 116, 114, 0, 0 ] ) );
+  test.identical( got, BufferNode.from( [ 115, 116, 114, 0, 0 ] ) );
+  test.identical( got.byteLength, 5 );
   test.is( _.bufferNodeIs( got ) );
 
-  var src = Buffer.from( 'str', 'base64' );
+  var src = BufferNode.from( 'str', 'base64' );
   var got = _.bufferResize( src, 7 );
-  test.identical( got, Buffer.from( [ 178, 218, 0, 0, 0, 0, 0 ] ) );
+  test.identical( got, BufferNode.from( [ 178, 218, 0, 0, 0, 0, 0 ] ) );
+  test.identical( got.byteLength, 7 );
   test.is( _.bufferNodeIs( got ) );
   }
 
@@ -668,18 +711,18 @@ function bufferResize( test )
   test.shouldThrowErrorSync( () => _.bufferResize() );
 
   test.case = 'extra arguments';
-  var buffer = new ArrayBuffer( 5 );
+  var buffer = new BufferRaw( 5 );
   test.shouldThrowErrorSync( () => _.bufferResize( buffer, 1 , 2 ) );
 
   test.case = 'not a buffer';
   test.shouldThrowErrorSync( () => _.bufferResize( [ 1, 2 ], 1 ) );
 
   test.case = 'wrong buffers';
-  var buffer = new ArrayBuffer();
-  test.shouldThrowErrorSync( () => _.bufferResize( new DataView() ) );
-  test.shouldThrowErrorSync( () => _.bufferResize( new DataView( 1 ) ) );
-  test.shouldThrowErrorSync( () => _.bufferResize( new DataView( buffer, 1, 2, 3 ) ) );
-  test.shouldThrowErrorSync( () => _.bufferResize( new Float32Array( 1, 2, 3, 4 ) ) );
+  var buffer = new BufferRaw();
+  test.shouldThrowErrorSync( () => _.bufferResize( new BufferView() ) );
+  test.shouldThrowErrorSync( () => _.bufferResize( new BufferView( 1 ) ) );
+  test.shouldThrowErrorSync( () => _.bufferResize( new BufferView( buffer, 1, 2, 3 ) ) );
+  test.shouldThrowErrorSync( () => _.bufferResize( new F32x( 1, 2, 3, 4 ) ) );
 }
 
 //
@@ -687,11 +730,11 @@ function bufferResize( test )
 function bufferResizeExperiment( test )
 {
   var src = new SharedArrayBuffer( 16 );
-  var view1 = new Uint8Array( src );
+  var view1 = new U8x( src );
   view1[ 5 ] = 200;
   var got = _.bufferResize( src, 30 );
   var expected = new SharedArrayBuffer( 30 );
-  var view2 = new Uint8Array( got );
+  var view2 = new U8x( got );
   debugger;
   test.notIdentical( got, expected );
   debugger;
@@ -703,15 +746,15 @@ bufferResizeExperiment.experimental = 1;
 function bufferRetype( test )
 {
 
-  test.case = 'converts and returns the new type of Int16Array';
-  var view1 = new Int8Array( [ 1, 2, 3, 4, 5, 6 ] );
-  var got = _.bufferRetype(view1, Int16Array);
+  test.case = 'converts and returns the new type of I16x';
+  var view1 = new I8x( [ 1, 2, 3, 4, 5, 6 ] );
+  var got = _.bufferRetype(view1, I16x);
   var expected = got; // [ 513, 1027, 1541 ];
   test.identical( got, expected );
 
-  test.case = 'converts and returns the new type of Int8Array';
-  var view1 = new Int16Array( [ 513, 1027, 1541 ] );
-  var got = _.bufferRetype(view1, Int8Array);
+  test.case = 'converts and returns the new type of I8x';
+  var view1 = new I16x( [ 513, 1027, 1541 ] );
+  var got = _.bufferRetype(view1, I8x);
   var expected = got; // [ 1, 2, 3, 4, 5, 6 ];
   test.identical( got, expected );
 
@@ -745,40 +788,40 @@ function bufferFrom( test )
 
   test.case = 'src:number, bufferConstructor:typed buffer';
   var src = 1;
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-  var expected = new Uint8Array([ src ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
+  var expected = new U8x([ src ]);
   test.identical( got, expected );
 
   test.case = 'src:str, bufferConstructor:typed buffer';
   var src = 'abc';
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-  var expected = new Uint8Array([ 97, 98, 99 ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
+  var expected = new U8x([ 97, 98, 99 ]);
   test.identical( got, expected );
 
   test.case = 'src:array, bufferConstructor:typed buffer';
   var src = [ 97, 98, 99 ];
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-  var expected = new Uint8Array([ 97, 98, 99 ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
+  var expected = new U8x([ 97, 98, 99 ]);
   test.identical( got, expected );
 
   test.case = 'src:raw buffer, bufferConstructor:typed buffer';
-  var src = new ArrayBuffer( 3 );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-  var expected = new Uint8Array([ 0, 0, 0 ]);
+  var src = new BufferRaw( 3 );
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
+  var expected = new U8x([ 0, 0, 0 ]);
   test.identical( got, expected );
 
   test.case = 'src:typed, bufferConstructor:typed buffer';
-  var src = new Int32Array([ 97, 98, 99 ]);
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-  var expected = new Uint8Array([ 97, 98, 99 ]);
+  var src = new I32x([ 97, 98, 99 ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
+  var expected = new U8x([ 97, 98, 99 ]);
   test.identical( got, expected );
 
   if( Config.platform === 'nodejs' )
   {
     test.case = 'src:node buffer, bufferConstructor:typed buffer';
-    var src = Buffer.from([ 97, 98, 99 ]);
-    var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Uint8Array });
-    var expected = new Uint8Array([ 97, 98, 99 ]);
+    var src = BufferNode.from([ 97, 98, 99 ]);
+    var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
+    var expected = new U8x([ 97, 98, 99 ]);
     test.identical( got, expected );
   }
 
@@ -786,40 +829,40 @@ function bufferFrom( test )
 
   test.case = 'src:number, bufferConstructor:raw buffer';
   var src = 1;
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-  var expected = new Uint8Array([ 1 ]).buffer;
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
+  var expected = new U8x([ 1 ]).buffer;
   test.identical( got, expected );
 
   test.case = 'src:str, bufferConstructor:raw buffer';
   var src = 'abc';
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-  var expected = new Uint8Array([ 97, 98, 99 ]).buffer;
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
+  var expected = new U8x([ 97, 98, 99 ]).buffer;
   test.identical( got, expected );
 
   test.case = 'src:array, bufferConstructor:raw buffer';
   var src = [ 97, 98, 99 ];
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-  var expected = new Uint8Array([ 97, 98, 99 ]).buffer;
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
+  var expected = new U8x([ 97, 98, 99 ]).buffer;
   test.identical( got, expected );
 
   test.case = 'src:raw buffer, bufferConstructor:raw buffer';
-  var src = new ArrayBuffer( 3 );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
+  var src = new BufferRaw( 3 );
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
   var expected = src;
   test.identical( got, expected );
 
   test.case = 'src:typed, bufferConstructor:raw buffer';
-  var src = new Int32Array([ 97, 98, 99 ]);
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-  var expected = new Int32Array([ 97, 98, 99 ]).buffer;
+  var src = new I32x([ 97, 98, 99 ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
+  var expected = new I32x([ 97, 98, 99 ]).buffer;
   test.identical( got, expected );
 
   if( Config.platform === 'nodejs' )
   {
     test.case = 'src:node buffer, bufferConstructor:raw buffer';
-    var src = Buffer.from([ 97, 98, 99 ]);
-    var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : ArrayBuffer });
-    var expected = new Uint8Array([ 97, 98, 99 ]).buffer;
+    var src = BufferNode.from([ 97, 98, 99 ]);
+    var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
+    var expected = new U8x([ 97, 98, 99 ]).buffer;
     test.identical( got, expected );
   }
 
@@ -830,37 +873,37 @@ function bufferFrom( test )
 
   test.case = 'src:number, bufferConstructor:node buffer';
   var src = 1;
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = Buffer.from( [ src ] );
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
+  var expected = BufferNode.from( [ src ] );
   test.identical( got, expected );
 
   test.case = 'src:str, bufferConstructor:node buffer';
   var src = 'abc';
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = Buffer.from( src );
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
+  var expected = BufferNode.from( src );
   test.identical( got, expected );
 
   test.case = 'src:array, bufferConstructor:node buffer';
   var src = [ 97, 98, 99 ];
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = Buffer.from( src );
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
+  var expected = BufferNode.from( src );
   test.identical( got, expected );
 
   test.case = 'src:raw buffer, bufferConstructor:node buffer';
-  var src = new ArrayBuffer( 3 );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = Buffer.from( src );
+  var src = new BufferRaw( 3 );
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
+  var expected = BufferNode.from( src );
   test.identical( got, expected );
 
   test.case = 'src:typed, bufferConstructor:node buffer';
-  var src = new Int32Array([ 97, 98, 99 ]);
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
-  var expected = Buffer.from( src.buffer, src.buteOffset, src.byteLength );
+  var src = new I32x([ 97, 98, 99 ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
+  var expected = BufferNode.from( src.buffer, src.buteOffset, src.byteLength );
   test.identical( got, expected );
 
   test.case = 'src:node buffer, bufferConstructor:node buffer';
-  var src = Buffer.from([ 97, 98, 99 ]);
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : Buffer });
+  var src = BufferNode.from([ 97, 98, 99 ]);
+  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
   var expected = src;
   test.identical( got, expected );
 
@@ -871,15 +914,15 @@ function bufferFrom( test )
 function bufferRawFromTyped( test )
 {
 
-  var buffer1 = new ArrayBuffer(10);
-  var view1 = new Int8Array( buffer1 );
+  var buffer1 = new BufferRaw(10);
+  var view1 = new I8x( buffer1 );
   test.case = 'returns the same length of typed array';
   var got = _.bufferRawFromTyped( view1 );
   var expected = got; // [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
   test.identical( got, expected );
 
-  var buffer2 = new ArrayBuffer(10);
-  var view2 = new Int8Array( buffer2, 2 );
+  var buffer2 = new BufferRaw(10);
+  var view2 = new I8x( buffer2, 2 );
   test.case = 'returns the new sub typed array';
   var got = _.bufferRawFromTyped( view2 );
   var expected = got; // [ 0, 0, 0, 0, 0, 0 ]
@@ -909,20 +952,20 @@ function bufferRawFromTyped( test )
 function bufferRawFrom( test )
 {
   test.case = 'typed';
-  var src = new Uint8Array( 3 );
+  var src = new U8x( 3 );
   var got = _.bufferRawFrom( src );
-  var expected = new ArrayBuffer( 3 );
+  var expected = new BufferRaw( 3 );
   test.identical( got, expected );
 
   test.case = 'raw';
-  var src = new ArrayBuffer( 3 );
+  var src = new BufferRaw( 3 );
   var got = _.bufferRawFrom( src );
   var expected = src;
   test.identical( got, expected );
 
   test.case = 'view';
-  var buffer = new ArrayBuffer( 10 );
-  var src = new DataView( buffer );
+  var buffer = new BufferRaw( 10 );
+  var src = new BufferView( buffer );
   var got = _.bufferRawFrom( src );
   var expected = buffer;
   test.identical( got, expected );
@@ -930,15 +973,15 @@ function bufferRawFrom( test )
   test.case = 'str';
   var src = 'abc';
   var got = _.bufferRawFrom( src );
-  var expected = new Uint8Array([ 97, 98, 99 ]).buffer;
+  var expected = new U8x([ 97, 98, 99 ]).buffer;
   test.identical( got, expected );
 
   if( Config.platform === 'nodejs' )
   {
     test.case = 'node-buffer';
-    var src = Buffer.from( 'abc' );
+    var src = BufferNode.from( 'abc' );
     var got = _.bufferRawFrom( src );
-    var expected = new Uint8Array([ 97, 98, 99 ]).buffer;
+    var expected = new U8x([ 97, 98, 99 ]).buffer;
     test.identical( got, expected );
   }
 
@@ -957,42 +1000,42 @@ function bufferRawFrom( test )
 function bufferBytesFrom( test )
 {
   test.case = 'raw';
-  var src = new ArrayBuffer( 3 );
+  var src = new BufferRaw( 3 );
   var got = _.bufferBytesFrom( src );
-  var expected = new Uint8Array([ 0, 0, 0 ]);
+  var expected = new U8x([ 0, 0, 0 ]);
   test.identical( got, expected );
 
   test.case = 'arr';
   var src = [ 97, 98, 99 ];
   var got = _.bufferBytesFrom( src );
-  var expected = new Uint8Array([ 97, 98, 99 ]);
+  var expected = new U8x([ 97, 98, 99 ]);
   test.identical( got, expected );
 
   test.case = 'typed';
-  var src = new Int8Array([ 97, 98, 99 ]);
+  var src = new I8x([ 97, 98, 99 ]);
   var got = _.bufferBytesFrom( src );
-  var expected = new Uint8Array([ 97, 98, 99 ]);
+  var expected = new U8x([ 97, 98, 99 ]);
   test.identical( got, expected );
 
   test.case = 'view';
-  var buffer = new ArrayBuffer( 3 );
-  var src = new DataView( buffer );
+  var buffer = new BufferRaw( 3 );
+  var src = new BufferView( buffer );
   var got = _.bufferBytesFrom( src );
-  var expected = new Uint8Array([ 0, 0, 0 ]);
+  var expected = new U8x([ 0, 0, 0 ]);
   test.identical( got, expected );
 
   test.case = 'str';
   var src = 'abc';
   var got = _.bufferBytesFrom( src );
-  var expected = new Uint8Array([ 97, 98, 99 ]);
+  var expected = new U8x([ 97, 98, 99 ]);
   test.identical( got, expected );
 
   if( Config.platform === 'nodejs' )
   {
     test.case = 'node';
-    var src = Buffer.from( 'abc' );
+    var src = BufferNode.from( 'abc' );
     var got = _.bufferBytesFrom( src );
-    var expected = new Uint8Array([ 97, 98, 99 ]);
+    var expected = new U8x([ 97, 98, 99 ]);
     test.identical( got, expected );
   }
 
@@ -1016,50 +1059,50 @@ function bufferNodeFrom( test )
   return;
 
   test.case = 'raw';
-  var src = new ArrayBuffer( 3 );
+  var src = new BufferRaw( 3 );
   var got = _.bufferNodeFrom( src );
-  var expected = Buffer.from([ 0, 0, 0 ])
+  var expected = BufferNode.from([ 0, 0, 0 ])
   test.identical( got, expected );
 
   test.case = 'typed';
-  var src = new Int8Array([ 97, 98, 99 ]);
+  var src = new I8x([ 97, 98, 99 ]);
   var got = _.bufferNodeFrom( src );
-  var expected = Buffer.from([ 97, 98, 99 ]);
+  var expected = BufferNode.from([ 97, 98, 99 ]);
   test.identical( got, expected );
 
   test.case = 'view';
-  var buffer = new ArrayBuffer( 3 );
-  var src = new DataView( buffer );
+  var buffer = new BufferRaw( 3 );
+  var src = new BufferView( buffer );
   var got = _.bufferNodeFrom( src );
-  var expected = Buffer.from([ 0, 0, 0 ]);
+  var expected = BufferNode.from([ 0, 0, 0 ]);
   test.identical( got, expected );
 
   test.case = 'str';
   var src = 'abc';
   var got = _.bufferNodeFrom( src );
-  var expected = Buffer.from( src );
+  var expected = BufferNode.from( src );
   test.identical( got, expected );
 
   test.case = 'node';
-  var src = Buffer.from( 'abc' );
+  var src = BufferNode.from( 'abc' );
   var got = _.bufferNodeFrom( src );
   var expected = src
   test.identical( got, expected );
 
   test.case = 'empty raw';
-  var src = new ArrayBuffer( 0 );
+  var src = new BufferRaw( 0 );
   var got = _.bufferNodeFrom( src );
-  var expected = Buffer.alloc( 0 );
+  var expected = BufferNode.alloc( 0 );
   test.identical( got, expected );
 
   test.case = 'empty typed';
-  var src = new Int8Array([]);
+  var src = new I8x([]);
   var got = _.bufferNodeFrom( src );
-  var expected = Buffer.alloc( 0 );
+  var expected = BufferNode.alloc( 0 );
   test.identical( got, expected );
 
   test.case = 'empty node';
-  var src = Buffer.alloc( 0 );
+  var src = BufferNode.alloc( 0 );
   var got = _.bufferNodeFrom( src );
   var expected = src;
   test.identical( got, expected );
@@ -1067,13 +1110,13 @@ function bufferNodeFrom( test )
   test.case = 'array';
   var src = [ 97, 98, 99 ];
   var got = _.bufferNodeFrom( src );
-  var expected = Buffer.from( src );
+  var expected = BufferNode.from( src );
   test.identical( got, expected );
 
   test.case = 'object';
   var src = new String( 'abc' );
   var got = _.bufferNodeFrom( src );
-  var expected = Buffer.from([ 97, 98, 99 ]);
+  var expected = BufferNode.from([ 97, 98, 99 ]);
   test.identical( got, expected );
 
   /* - */
@@ -1173,12 +1216,12 @@ function longIs( test )
   test.identical( got, expected );
 
   test.case = 'raw array buffer';
-  var got = _.longIs( new ArrayBuffer( 10 ) );
+  var got = _.longIs( new BufferRaw( 10 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'typed array buffer';
-  var got = _.longIs( new Float32Array( 10 ) );
+  var got = _.longIs( new F32x( 10 ) );
   var expected = true;
   test.identical( got, expected );
 
@@ -1241,12 +1284,12 @@ function constructorLikeArray( test )
 
   test.case = 'raw array buffer';
   debugger;
-  var got = _.constructorLikeArray( new ArrayBuffer( 10 ).constructor );
+  var got = _.constructorLikeArray( new BufferRaw( 10 ).constructor );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'typed array buffer';
-  var got = _.constructorLikeArray( new Float32Array( 10 ).constructor );
+  var got = _.constructorLikeArray( new F32x( 10 ).constructor );
   var expected = true;
   test.identical( got, expected );
 
@@ -1594,15 +1637,15 @@ function longMake( test )
   test.identical( got, expected );
 
   // var ins = [];
-  // var src = _.longFill( Buffer.alloc( 3 ), 1 );
+  // var src = _.longFill( BufferNode.alloc( 3 ), 1 );
   // var got = _.longMake( ins, Array.from( src ) );
   // var expected = [ undefined, undefined, undefined ];
   // test.identical( got.length, 3 );
   // test.is( _.arrayIs( got ) );
   // test.identical( got, expected );
 
-  var expected = new Uint8Array( 5 );
-  var ins = new Uint8Array( 5 );
+  var expected = new U8x( 5 );
+  var ins = new U8x( 5 );
   ins[ 0 ] = 1;
   var got = _.longMake( ins );
   test.is( _.bufferTypedIs( got ) );
@@ -1610,19 +1653,19 @@ function longMake( test )
   test.is( got !== ins );
   test.identical( got, expected );
 
-  var ins = new Uint8Array( 5 );
+  var ins = new U8x( 5 );
   var src = [ 1, 2, 3, 4, 5 ];
   var got = _.longMake( ins, src );
-  var expected = new Uint8Array( 5 );
+  var expected = new U8x( 5 );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got instanceof Uint8Array );
+  test.is( got instanceof U8x );
   test.identical( got.length, 5 );
   test.identical( got, expected )
 
   test.case = 'typedArray';
-  var expected = new Uint8Array( 4 );
+  var expected = new U8x( 4 );
   expected[ 0 ] = 1;
-  var ins = new Uint8Array( 5 );
+  var ins = new U8x( 5 );
   ins[ 0 ] = 1;
   var got = _.longMake( ins, 4 );
   test.is( _.bufferTypedIs( got ) );
@@ -1630,30 +1673,30 @@ function longMake( test )
   test.is( got !== ins );
   test.identical( got, expected );
 
-  // test.case = 'ArrayBuffer';
-  // var expected = new ArrayBuffer( 4 );
-  // var ins = new ArrayBuffer( 5 );
+  // test.case = 'BufferRaw';
+  // var expected = new BufferRaw( 4 );
+  // var ins = new BufferRaw( 5 );
   // var got = _.longMake( ins, 4 );
   // test.is( _.bufferRawIs( got ) );
   // test.identical( got.byteLength, 4 );
   // test.identical( got, expected );
   //
   // test.case = 'NodeBuffer'
-  // var expected = Buffer.alloc( 5 );
-  // var got = _.longMake( Buffer.alloc( 5 ) );
+  // var expected = BufferNode.alloc( 5 );
+  // var got = _.longMake( BufferNode.alloc( 5 ) );
   // test.is( _.bufferNodeIs( got ) );
   // test.identical( got.length, 5 );
   // test.identical( got, expected );
   //
   // test.case = 'NodeBuffer and src'
-  // var expected = Buffer.alloc( 5 );
-  // var got = _.longMake( Buffer.alloc( 3 ), src );
+  // var expected = BufferNode.alloc( 5 );
+  // var got = _.longMake( BufferNode.alloc( 3 ), src );
   // test.is( _.bufferNodeIs( got ) );
   // test.identical( got.length, 5 );
   // test.identical( got, expected );
   //
   // test.case = 'NodeBuffer as src'
-  // var src = Buffer.alloc( 4 );
+  // var src = BufferNode.alloc( 4 );
   // for( var i = 0; i < src.length; i++ )
   // src[ i ] = i;
   // var expected = [ undefined, undefined, undefined, undefined ];
@@ -1679,40 +1722,40 @@ function longMake( test )
 
   test.case = 'ins as Array';
   var expected = [ undefined, undefined, undefined, undefined, undefined ];
-  var src = _.longFill( new Float32Array( 5 ), 1 );
+  var src = _.longFill( new F32x( 5 ), 1 );
   var got = _.longMake( Array, src );
   test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
 
-  test.case = 'ins as Buffer';
-  var expected = Buffer.alloc( 5 );
-  var src = _.longFill( new Float32Array( 5 ), 1 );
-  var got = _.longMake( Buffer, src );
+  test.case = 'ins as BufferNode';
+  var expected = BufferNode.alloc( 5 );
+  var src = _.longFill( new F32x( 5 ), 1 );
+  var got = _.longMake( BufferNode, src );
   test.is( _.bufferNodeIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
 
   test.case = 'ins as Array';
   var expected = new Array( 5 );
-  var src = _.longFill( Buffer.alloc( 5 ), 1 );
+  var src = _.longFill( BufferNode.alloc( 5 ), 1 );
   var got = _.longMake( Array, src );
   test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
 
   test.case = 'ins as TypedArray';
-  var expected = new Uint8Array( 3 );
+  var expected = new U8x( 3 );
   var src = [ 1, 2, 3 ];
-  var got = _.longMake( Uint8Array, src );
+  var got = _.longMake( U8x, src );
   test.is( _.bufferTypedIs(  got ) );
   test.identical( got.length, 3 );
   test.identical( got, expected );
 
   test.case = 'ins as TypedArray';
-  var expected = new Float32Array( 5 );
-  var src = _.longFill( Buffer.alloc( 5 ), 1 );
-  var got = _.longMake( Float32Array, src );
+  var expected = new F32x( 5 );
+  var src = _.longFill( BufferNode.alloc( 5 ), 1 );
+  var got = _.longMake( F32x, src );
   test.is( _.bufferTypedIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
@@ -1791,15 +1834,15 @@ function longMakeUndefined( test )
   test.identical( got, expected );
 
   var ins = [];
-  var src = _.longFill( Buffer.alloc( 3 ), 1 );
+  var src = _.longFill( BufferNode.alloc( 3 ), 1 );
   var got = _.longMakeUndefined( ins, Array.from( src ) );
   var expected = [ undefined, undefined, undefined ];
   test.identical( got.length, 3 );
   test.is( _.arrayIs( got ) );
   test.identical( got, expected );
 
-  var expected = new Uint8Array( 5 );
-  var ins = new Uint8Array( 5 );
+  var expected = new U8x( 5 );
+  var ins = new U8x( 5 );
   ins[ 0 ] = 1;
   var got = _.longMakeUndefined( ins );
   test.is( _.bufferTypedIs( got ) );
@@ -1807,18 +1850,18 @@ function longMakeUndefined( test )
   test.is( got !== ins );
   test.identical( got, expected );
 
-  var ins = new Uint8Array( 5 );
+  var ins = new U8x( 5 );
   var src = [ 1, 2, 3, 4, 5 ];
   var got = _.longMakeUndefined( ins, src );
-  var expected = new Uint8Array( 5 );
+  var expected = new U8x( 5 );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got instanceof Uint8Array );
+  test.is( got instanceof U8x );
   test.identical( got.length, 5 );
   test.identical( got, expected )
 
   test.case = 'typedArray';
-  var expected = new Uint8Array( 4 );
-  var ins = new Uint8Array( 5 );
+  var expected = new U8x( 4 );
+  var ins = new U8x( 5 );
   ins[ 0 ] = 1;
   var got = _.longMakeUndefined( ins, 4 );
   test.is( _.bufferTypedIs( got ) );
@@ -1826,30 +1869,30 @@ function longMakeUndefined( test )
   test.is( got !== ins );
   test.identical( got, expected );
 
-  test.case = 'ArrayBuffer';
-  var expected = new ArrayBuffer( 4 );
-  var ins = new ArrayBuffer( 5 );
+  test.case = 'BufferRaw';
+  var expected = new BufferRaw( 4 );
+  var ins = new BufferRaw( 5 );
   var got = _.longMakeUndefined( ins, 4 );
   test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 4 );
   test.identical( got, expected );
 
   test.case = 'NodeBuffer'
-  var expected = Buffer.alloc( 5 );
-  var got = _.longMakeUndefined( Buffer.alloc( 5 ) );
+  var expected = BufferNode.alloc( 5 );
+  var got = _.longMakeUndefined( BufferNode.alloc( 5 ) );
   test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
 
   test.case = 'NodeBuffer and src'
-  var expected = Buffer.alloc( 5 );
-  var got = _.longMakeUndefined( Buffer.alloc( 3 ), src );
+  var expected = BufferNode.alloc( 5 );
+  var got = _.longMakeUndefined( BufferNode.alloc( 3 ), src );
   test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
 
   test.case = 'NodeBuffer as src'
-  var src = Buffer.alloc( 4 );
+  var src = BufferNode.alloc( 4 );
   for( var i = 0; i < src.length; i++ )
   src[ i ] = i;
   var expected = [ undefined, undefined, undefined, undefined ];
@@ -1875,40 +1918,40 @@ function longMakeUndefined( test )
 
   test.case = 'ins as Array';
   var expected = [ undefined, undefined, undefined, undefined, undefined ];
-  var src = _.longFill( new Float32Array( 5 ), 1 );
+  var src = _.longFill( new F32x( 5 ), 1 );
   var got = _.longMakeUndefined( Array, src );
   test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
 
-  test.case = 'ins as Buffer';
-  var expected = Buffer.alloc( 5 );
-  var src = _.longFill( new Float32Array( 5 ), 1 );
-  var got = _.longMakeUndefined( Buffer, src );
+  test.case = 'ins as BufferNode';
+  var expected = BufferNode.alloc( 5 );
+  var src = _.longFill( new F32x( 5 ), 1 );
+  var got = _.longMakeUndefined( BufferNode, src );
   test.is( _.bufferNodeIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
 
   test.case = 'ins as Array';
   var expected = new Array( 5 );
-  var src = _.longFill( Buffer.alloc( 5 ), 1 );
+  var src = _.longFill( BufferNode.alloc( 5 ), 1 );
   var got = _.longMakeUndefined( Array, src );
   test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
 
   test.case = 'ins as TypedArray';
-  var expected = new Uint8Array( 3 );
+  var expected = new U8x( 3 );
   var src = [ 1, 2, 3 ];
-  var got = _.longMakeUndefined( Uint8Array, src );
+  var got = _.longMakeUndefined( U8x, src );
   test.is( _.bufferTypedIs(  got ) );
   test.identical( got.length, 3 );
   test.identical( got, expected );
 
   test.case = 'ins as TypedArray';
-  var expected = new Float32Array( 5 );
-  var src = _.longFill( Buffer.alloc( 5 ), 1 );
-  var got = _.longMakeUndefined( Float32Array, src );
+  var expected = new F32x( 5 );
+  var src = _.longFill( BufferNode.alloc( 5 ), 1 );
+  var got = _.longMakeUndefined( F32x, src );
   test.is( _.bufferTypedIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
@@ -1967,21 +2010,21 @@ function longMakeZeroed( test )
   //
 
   test.case = 'Array';
-  var got = _.longMakeZeroed( Array, new Float32Array( 2 ) );
+  var got = _.longMakeZeroed( Array, new F32x( 2 ) );
   var expected = [ 0, 0 ];
   test.identical( got, expected );
 
   //
 
-  test.case = 'ArrayBuffer';
-  var got = _.longMakeZeroed( ArrayBuffer, 3 );
+  test.case = 'BufferRaw';
+  var got = _.longMakeZeroed( BufferRaw, 3 );
   test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 3 );
 
   //
 
-  test.case = 'Uint8Array';
-  var got = _.longMakeZeroed( Uint8Array, [ 1, 2, 3 ] );
+  test.case = 'U8x';
+  var got = _.longMakeZeroed( U8x, [ 1, 2, 3 ] );
   test.is( _.bufferTypedIs( got ) );
   test.identical( got.length, 3 );
   var isEqual = true;
@@ -1991,8 +2034,8 @@ function longMakeZeroed( test )
 
   //
 
-  // test.case = 'Uint8Array';
-  // var got = _.longMakeZeroed( Buffer, new ArrayBuffer( 3) );
+  // test.case = 'U8x';
+  // var got = _.longMakeZeroed( BufferNode, new BufferRaw( 3) );
   // test.is( _.bufferNodeIs( got ) );
   // test.identical( got.length, 3 );
   // var isEqual = true;
@@ -2039,7 +2082,7 @@ function longMakeZeroed( test )
   //
 
   // test.case = 'same length';
-  // var ins = new ArrayBuffer(5);
+  // var ins = new BufferRaw(5);
   // var got = _.longMakeZeroed( ins );
   // test.is( _.bufferRawIs( got ) );
   // test.identical( got.byteLength, 5 );
@@ -2047,14 +2090,14 @@ function longMakeZeroed( test )
   //
 
   test.case = 'same length';
-  var got = _.longMakeZeroed( ArrayBuffer, 5 );
+  var got = _.longMakeZeroed( BufferRaw, 5 );
   test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 5 );
 
   //
 
   test.case = 'same length, ins is a typed array';
-  var ins = _.longFill( new Uint8Array( 5 ), 1 );
+  var ins = _.longFill( new U8x( 5 ), 1 );
   var got = _.longMakeZeroed( ins );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -2065,7 +2108,7 @@ function longMakeZeroed( test )
   //
 
   test.case = 'same length, ins is a node buffer';
-  var ins = _.longFill( Buffer.alloc( 5 ), 1 );
+  var ins = _.longFill( BufferNode.alloc( 5 ), 1 );
   var got = _.longMakeZeroed( ins );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -2076,7 +2119,7 @@ function longMakeZeroed( test )
   //
 
   var ins = [];
-  var src = _.longFill( Buffer.alloc( 5 ), 1 );
+  var src = _.longFill( BufferNode.alloc( 5 ), 1 );
   var got = _.longMakeZeroed( ins, src );
   test.identical( got.length, 5 );
   test.is( _.arrayIs( got ) );
@@ -2084,7 +2127,7 @@ function longMakeZeroed( test )
 
   //
 
-  var ins = new Uint8Array( 5 );
+  var ins = new U8x( 5 );
   ins[ 0 ] = 1;
   var got = _.longMakeZeroed( ins );
   test.is( _.bufferTypedIs( got ) );
@@ -2097,7 +2140,7 @@ function longMakeZeroed( test )
   //
 
   test.case = 'typedArray';
-  var ins = new Uint8Array( 5 );
+  var ins = new U8x( 5 );
   ins[ 0 ] = 1;
   var got = _.longMakeZeroed( ins, 4 );
   test.is( _.bufferTypedIs( got ) );
@@ -2109,12 +2152,12 @@ function longMakeZeroed( test )
 
   //
 
-  test.case = 'ArrayBuffer';
-  var ins = new ArrayBuffer( 5 );
+  test.case = 'BufferRaw';
+  var ins = new BufferRaw( 5 );
   var got = _.longMakeZeroed( ins, 4 );
   test.is( _.bufferRawIs( got ) );
   test.identical( got.byteLength, 4 );
-  got = new Uint8Array( got );
+  got = new U8x( got );
   var isEqual = true;
   for( var i = 0; i < got.length; i++ )
   isEqual = got[ i ] === 0 ? true : false;
@@ -2122,9 +2165,9 @@ function longMakeZeroed( test )
 
   //
 
-  // test.case = 'ArrayBuffer';
+  // test.case = 'BufferRaw';
   // var ins = [];
-  // var src = new ArrayBuffer( 5 );
+  // var src = new BufferRaw( 5 );
   // var got = _.longMakeZeroed( ins, src );
   // test.is( _.arrayIs( got ) );
   // test.identical( got.length, 5 );
@@ -2136,7 +2179,7 @@ function longMakeZeroed( test )
   //
 
   test.case = 'NodeBuffer'
-  var got = _.longMakeZeroed( Buffer.alloc( 5 ) );
+  var got = _.longMakeZeroed( BufferNode.alloc( 5 ) );
   test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -2147,10 +2190,10 @@ function longMakeZeroed( test )
   //
 
   test.case = 'NodeBuffer and src'
-  var src = new Int8Array(5);
+  var src = new I8x(5);
   for( var i = 0; i < src.length; i++ )
   src[ i ] = i;
-  var got = _.longMakeZeroed( Buffer.alloc( 5 ), src );
+  var got = _.longMakeZeroed( BufferNode.alloc( 5 ), src );
   test.is( _.bufferNodeIs( got ) );
   test.identical( got.length, 5 );
   var isEqual = true;
@@ -2247,7 +2290,7 @@ function arrayMake( test )
   test.is( src !== got );
 
   test.case = 'from empty Float32';
-  var src = new Float32Array();
+  var src = new F32x();
   var got = _.arrayMake( src );
   var expected = [];
   test.equivalent( got, expected );
@@ -2255,7 +2298,7 @@ function arrayMake( test )
   test.is( src !== got );
 
   test.case = 'from Float32';
-  var src = new Float32Array([ 1, 2, 3 ]);
+  var src = new F32x([ 1, 2, 3 ]);
   var got = _.arrayMake( src );
   var expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
@@ -2335,7 +2378,7 @@ function arrayFrom( test )
 {
 
   test.case = 'empty';
-  var src = new Float32Array([]);
+  var src = new F32x([]);
   var got = _.arrayFrom( src );
   var expected = [];
   test.equivalent( got, expected );
@@ -2343,7 +2386,7 @@ function arrayFrom( test )
   test.is( src !== got );
 
   test.case = 'single number';
-  var src = new Float32Array([ 0 ]);
+  var src = new F32x([ 0 ]);
   var got = _.arrayFrom( src );
   var expected = [ 0 ];
   test.equivalent( got, expected );
@@ -2359,7 +2402,7 @@ function arrayFrom( test )
   test.is( src !== got );
 
   test.case = 'several';
-  var src = new Float32Array([ 1, 2, 3 ]);
+  var src = new F32x([ 1, 2, 3 ]);
   var got = _.arrayFrom( src );
   var expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
@@ -3007,7 +3050,7 @@ function unrollIs( test )
 
   test.case = 'not unroll';
 
-  var got = new Float32Array( [3, 1, 2] );
+  var got = new F32x( [3, 1, 2] );
   test.identical( _.unrollIs( got ), false );
 
   test.identical( _.unrollIs( [] ), false );
@@ -3070,7 +3113,7 @@ function unrollIsPopulated( test )
 
   test.case = 'not unroll';
 
-  var got = new Float32Array( [ 3, 1, 2 ] );
+  var got = new F32x( [ 3, 1, 2 ] );
   test.identical( _.unrollIs( got ), false );
 
   test.identical( _.unrollIsPopulated( [] ), false );
@@ -3153,7 +3196,7 @@ function unrollMake( test )
   test.is( expected !== got );
 
   test.case = 'from empty Float32';
-  var src = new Float32Array();
+  var src = new F32x();
   var got = _.unrollMake( src );
   test.equivalent( got, [] );
   test.is( _.arrayIs( got ) );
@@ -3161,7 +3204,7 @@ function unrollMake( test )
   test.is( src !== got );
 
   test.case = 'from Float32';
-  var src = new Float32Array([ 1, 2, 3 ]);
+  var src = new F32x([ 1, 2, 3 ]);
   var got = _.unrollMake( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
@@ -3315,14 +3358,14 @@ function unrollFrom( test )
   test.is( expected !== got );
 
   test.case = 'from Float32';
-  var src = new Float32Array();
+  var src = new F32x();
   var got = _.unrollFrom( src );
   test.equivalent( got, [] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  var src = new Float32Array( [ 1, 2, 3 ] );
+  var src = new F32x( [ 1, 2, 3 ] );
   var got = _.unrollFrom( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
@@ -3461,7 +3504,7 @@ function unrollsFrom( test )
   test.is( [ src ] !== got );
 
   test.case = 'src has unroll from Float32';
-  var src = new Float32Array();
+  var src = new F32x();
   var got = _.unrollsFrom( src );
   test.equivalent( got, [[]] );
   test.is( _.arrayIs( got ) );
@@ -3469,7 +3512,7 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 0 ] ) );
   test.is( [ src ] !== got );
 
-  var src = new Float32Array( [ 1, 2, 3 ] );
+  var src = new F32x( [ 1, 2, 3 ] );
   var got = _.unrollsFrom( src );
   test.equivalent( got, [ [ 1, 2, 3 ] ] );
   test.is( _.arrayIs( got ) );
@@ -3477,7 +3520,7 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 0 ] ) );
   test.is( [ src ] !== got );
 
-  var src = new Float32Array( [ 1, 2, 3 ] );
+  var src = new F32x( [ 1, 2, 3 ] );
   var got = _.unrollsFrom( [], 1, src );
   test.equivalent( got, [ [], [ undefined ], [ 1, 2, 3 ] ] );
   test.is( _.arrayIs( got ) );
@@ -3646,14 +3689,14 @@ function unrollFromMaybe( test )
   test.is( expected !== got );
 
   test.case = 'from Float32';
-  var src = new Float32Array();
+  var src = new F32x();
   var got = _.unrollFromMaybe( src );
   test.equivalent( got, [] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  var src = new Float32Array( [ 1, 2, 3 ] );
+  var src = new F32x( [ 1, 2, 3 ] );
   var got = _.unrollFromMaybe( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
@@ -3742,12 +3785,12 @@ function unrollNormalize( test )
   test.is( _.arrayIs( got ) );
 
   test.case = 'dst is unroll from array';
-  var src = new Float32Array( [] );
+  var src = new F32x( [] );
   var got = _.unrollNormalize( _.unrollFrom( src ) );
   test.identical( got, [] );
   test.is( _.arrayIs( got ) );
 
-  var src = new Float32Array( [ 1, 2, 3 ] );
+  var src = new F32x( [ 1, 2, 3 ] );
   var got = _.unrollNormalize( _.unrollFrom( src ) );
   test.identical( got, [ 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
@@ -3811,7 +3854,7 @@ unrollAppend, unrollPrepend should have test groups :
 - dst is null / unroll / array
 - one argument / two arguments / three arguments
 - first argument have array / unroll / complex unroll( unroll in unroll in unroll )
-- non-first argument have array / unroll / complex unroll( unroll in unroll in unroll / Float32Array / ArgumentsArray
+- non-first argument have array / unroll / complex unroll( unroll in unroll in unroll / F32x / ArgumentsArray
 
 Dmytro: all tests is added
 qqq: In unrollPrepend and unrollAppend test cases groups by number of arguments and it includes other test cases - array, unroll, complex unroll.
@@ -3889,8 +3932,8 @@ function unrollPrepend( test )
   test.is( _.arrayIs( got ) );
   test.isNot( _.unrollIs( got ) );
 
-  test.case = 'dst is null, second arg makes from Float32Array';
-  var src = _.unrollMake( new Float32Array( [ 1, 2, 3 ] ) );
+  test.case = 'dst is null, second arg makes from F32x';
+  var src = _.unrollMake( new F32x( [ 1, 2, 3 ] ) );
   var got = _.unrollPrepend( null, src );
   test.identical( got, [ 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
@@ -3932,8 +3975,8 @@ function unrollPrepend( test )
   test.is( _.arrayIs( got ) );
   test.isNot( _.unrollIs( got ) );
 
-  test.case = 'dst is array, second arg makes from Float32Array';
-  var src = _.unrollMake( new Float32Array( [ 1, 2, 3 ] ) );
+  test.case = 'dst is array, second arg makes from F32x';
+  var src = _.unrollMake( new F32x( [ 1, 2, 3 ] ) );
   var got = _.unrollPrepend( [ 'str', 0 ], src );
   test.identical( got, [ 1, 2, 3, 'str', 0 ] );
   test.is( _.arrayIs( got ) );
@@ -3977,8 +4020,8 @@ function unrollPrepend( test )
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
-  test.case = 'dst is unroll, second arg makes from Float32Array';
-  var src = _.unrollMake( new Float32Array( [ 1, 2, 3 ] ) );
+  test.case = 'dst is unroll, second arg makes from F32x';
+  var src = _.unrollMake( new F32x( [ 1, 2, 3 ] ) );
   var dst = _.unrollMake( [ 'str', 0 ] );
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 3, 'str', 0 ] );
@@ -4024,9 +4067,9 @@ function unrollPrepend( test )
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
-  test.case = 'dst is complex unroll, second arg makes from Float32Array';
+  test.case = 'dst is complex unroll, second arg makes from F32x';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
-  var src = _.unrollMake( new Float32Array( [ 1, 2, 3 ] ) );
+  var src = _.unrollMake( new F32x( [ 1, 2, 3 ] ) );
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 3, 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
@@ -4070,9 +4113,9 @@ function unrollPrepend( test )
   test.identical( got, expected );
   test.isNot( _.unrollIs( got ) );
 
-  test.case = 'dst is null, next args have unroll from Float32Array';
+  test.case = 'dst is null, next args have unroll from F32x';
   var a1 = [ 7, _.unrollFrom([ 8, 9 ]) ];
-  var a2 = _.unrollFrom( new Float32Array( [ 3, 4 ] ) );
+  var a2 = _.unrollFrom( new F32x( [ 3, 4 ] ) );
   var got = _.unrollPrepend( null, [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ [ 1, 2, 3, 4 ], [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
@@ -4094,9 +4137,9 @@ function unrollPrepend( test )
   test.identical( got, expected );
   test.is( _.unrollIs( got ) );
 
-  test.case = 'dst is unroll, next args have unroll from Float32Array';
+  test.case = 'dst is unroll, next args have unroll from F32x';
   var a1 = [ 7, _.unrollFrom([ 8, 9 ]) ];
-  var a2 = _.unrollFrom( new Float32Array( [ 3, 4 ] ) );
+  var a2 = _.unrollFrom( new F32x( [ 3, 4 ] ) );
   var got = _.unrollPrepend( _.unrollMake( [ 0 ] ), [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ [ 1, 2, 3, 4 ], [ [ 7, 8, 9 ], 10 ], 0 ];
   test.identical( got, expected );
@@ -4118,9 +4161,9 @@ function unrollPrepend( test )
   test.identical( got, expected );
   test.isNot( _.unrollIs( got ) );
 
-  test.case = 'dst is array, next args have unroll from Float32Array';
+  test.case = 'dst is array, next args have unroll from F32x';
   var a1 = [ 7, _.unrollFrom([ 8, 9 ]) ];
-  var a2 = _.unrollFrom( new Float32Array( [ 3, 4 ] ) );
+  var a2 = _.unrollFrom( new F32x( [ 3, 4 ] ) );
   var got = _.unrollPrepend( [ 0 ], [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ [ 1, 2, 3, 4 ], [ [ 7, 8, 9 ], 10 ], 0 ];
   test.identical( got, expected );
@@ -4226,8 +4269,8 @@ function unrollAppend( test )
   test.is( _.arrayIs( got ) );
   test.isNot( _.unrollIs( got ) );
 
-  test.case = 'dst is null, second arg makes from Float32Array';
-  var src = _.unrollMake( new Float32Array( [ 1, 2, 3 ] ) );
+  test.case = 'dst is null, second arg makes from F32x';
+  var src = _.unrollMake( new F32x( [ 1, 2, 3 ] ) );
   var got = _.unrollAppend( null, src );
   test.identical( got, [ 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
@@ -4269,8 +4312,8 @@ function unrollAppend( test )
   test.is( _.arrayIs( got ) );
   test.isNot( _.unrollIs( got ) );
 
-  test.case = 'dst is array, second arg makes from Float32Array';
-  var src = _.unrollMake( new Float32Array( [ 1, 2, 3 ] ) );
+  test.case = 'dst is array, second arg makes from F32x';
+  var src = _.unrollMake( new F32x( [ 1, 2, 3 ] ) );
   var got = _.unrollAppend( [ 'str', 0 ], src );
   test.identical( got, [ 'str', 0, 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
@@ -4314,8 +4357,8 @@ function unrollAppend( test )
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
-  test.case = 'dst is unroll, second arg makes from Float32Array';
-  var src = _.unrollMake( new Float32Array( [ 1, 2, 3 ] ) );
+  test.case = 'dst is unroll, second arg makes from F32x';
+  var src = _.unrollMake( new F32x( [ 1, 2, 3 ] ) );
   var dst = _.unrollMake( [ 'str', 0 ] );
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 'str', 0, 1, 2, 3 ] );
@@ -4361,9 +4404,9 @@ function unrollAppend( test )
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
-  test.case = 'dst is complex unroll, second arg makes from Float32Array';
+  test.case = 'dst is complex unroll, second arg makes from F32x';
   var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
-  var src = _.unrollMake( new Float32Array( [ 1, 2, 3 ] ) );
+  var src = _.unrollMake( new F32x( [ 1, 2, 3 ] ) );
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
@@ -4407,9 +4450,9 @@ function unrollAppend( test )
   test.identical( got, expected );
   test.isNot( _.unrollIs( got ) );
 
-  test.case = 'dst is null, next args have unroll from Float32Array';
+  test.case = 'dst is null, next args have unroll from F32x';
   var a1 = [ 7, _.unrollFrom([ 8, 9 ]) ];
-  var a2 = _.unrollFrom( new Float32Array( [ 3, 4 ] ) );
+  var a2 = _.unrollFrom( new F32x( [ 3, 4 ] ) );
   var got = _.unrollAppend( null, [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ [ 1, 2, 3, 4 ], [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
@@ -4431,9 +4474,9 @@ function unrollAppend( test )
   test.identical( got, expected );
   test.is( _.unrollIs( got ) );
 
-  test.case = 'dst is unroll, next args have unroll from Float32Array';
+  test.case = 'dst is unroll, next args have unroll from F32x';
   var a1 = [ 7, _.unrollFrom([ 8, 9 ]) ];
-  var a2 = _.unrollFrom( new Float32Array( [ 3, 4 ] ) );
+  var a2 = _.unrollFrom( new F32x( [ 3, 4 ] ) );
   var got = _.unrollAppend( _.unrollMake( [ 0 ] ), [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ 0, [ 1, 2, 3, 4 ], [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
@@ -4455,9 +4498,9 @@ function unrollAppend( test )
   test.identical( got, expected );
   test.isNot( _.unrollIs( got ) );
 
-  test.case = 'dst is array, next args have unroll from Float32Array';
+  test.case = 'dst is array, next args have unroll from F32x';
   var a1 = [ 7, _.unrollFrom([ 8, 9 ]) ];
-  var a2 = _.unrollFrom( new Float32Array( [ 3, 4 ] ) );
+  var a2 = _.unrollFrom( new F32x( [ 3, 4 ] ) );
   var got = _.unrollAppend( [ 0 ], [ 1, 2, a2 ], [ a1, 10 ] );
   var expected = [ 0, [ 1, 2, 3, 4 ], [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
@@ -4930,111 +4973,111 @@ function longRepresent( test )
 //  test.identical( got, expected );
 //
 //  test.case = 'array + typedArray';
-//  var got = _.arrayJoin( [ 1 ], new Uint8Array([ 1, 2 ]) );
+//  var got = _.arrayJoin( [ 1 ], new U8x([ 1, 2 ]) );
 //  var expected = [ 1, 1, 2 ];
 //  test.identical( got, expected );
 //
-//  var got = _.arrayJoin( new Uint8Array( [ 1, 2 ] ), [ 1 ] );
-//  var expected = new Uint8Array( [ 1, 2, 1 ] );
+//  var got = _.arrayJoin( new U8x( [ 1, 2 ] ), [ 1 ] );
+//  var expected = new U8x( [ 1, 2, 1 ] );
 //  test.identical( got, expected );
 //
 //  test.case = 'typedArray + typedArray';
-//  var got = _.arrayJoin( new Uint8Array( [ 1, 2 ] ), new Uint8Array( [ 1, 2 ] ) );
-//  var expected = new Uint8Array( [ 1, 2, 1, 2 ] );
+//  var got = _.arrayJoin( new U8x( [ 1, 2 ] ), new U8x( [ 1, 2 ] ) );
+//  var expected = new U8x( [ 1, 2, 1, 2 ] );
 //  test.identical( got, expected );
 //
-//  var got = _.arrayJoin( new Uint8Array( [ 1, 2 ] ), new Uint16Array( [ 1, 2 ] ) );
-//  var expected = new Uint8Array( [ 1, 2, 1, 0, 2, 0 ] );
+//  var got = _.arrayJoin( new U8x( [ 1, 2 ] ), new U16x( [ 1, 2 ] ) );
+//  var expected = new U8x( [ 1, 2, 1, 0, 2, 0 ] );
 //  test.identical( got, expected );
 //
 //  test.case = 'arrayBuffer + arrayBuffer';
-//  var src = new Uint8Array( [ 1, 2 ] );
+//  var src = new U8x( [ 1, 2 ] );
 //  var got = _.arrayJoin( src.buffer, src.buffer );
 //  test.is( _.bufferRawIs( got ) );
-//  var expected = new Uint8Array( [ 1, 2, 1, 2 ] );
-//  test.identical( new Uint8Array( got ), expected );
+//  var expected = new U8x( [ 1, 2, 1, 2 ] );
+//  test.identical( new U8x( got ), expected );
 //
 //  test.case = 'arrayBuffer + array';
-//  var src = new Uint8Array( [ 1, 2 ] );
+//  var src = new U8x( [ 1, 2 ] );
 //  var got = _.arrayJoin( src.buffer, [ 1, 2 ] );
 //  test.is( _.bufferRawIs( got ) );
-//  var expected = new Uint8Array( [ 1, 2, 1, 2 ] );
-//  test.identical( new Uint8Array( got ), expected );
+//  var expected = new U8x( [ 1, 2, 1, 2 ] );
+//  test.identical( new U8x( got ), expected );
 //
 //  test.case = 'arrayBuffer + typedArray';
-//  var src = new Uint8Array( [ 1, 2 ] );
+//  var src = new U8x( [ 1, 2 ] );
 //  var got = _.arrayJoin( src.buffer, src );
 //  test.is( _.bufferRawIs( got ) );
-//  var expected = new Uint8Array( [ 1, 2, 1, 2 ] );
-//  test.identical( new Uint8Array( got ), expected );
+//  var expected = new U8x( [ 1, 2, 1, 2 ] );
+//  test.identical( new U8x( got ), expected );
 //
 //  test.case = 'typedArray + arrayBuffer';
-//  var src = new Uint8Array( [ 1, 2 ] );
+//  var src = new U8x( [ 1, 2 ] );
 //  var got = _.arrayJoin( src, src.buffer );
-//  var expected = new Uint8Array( [ 1, 2, 1, 2 ] );
+//  var expected = new U8x( [ 1, 2, 1, 2 ] );
 //  test.identical( got, expected );
 //
 //  test.case = 'typedArray + arrayBuffer + array';
-//  var src = new Uint8Array( [ 1 ] );
+//  var src = new U8x( [ 1 ] );
 //  var got = _.arrayJoin( src, src.buffer, [ 1 ] );
-//  var expected = new Uint8Array( [ 1, 1, 1 ] );
+//  var expected = new U8x( [ 1, 1, 1 ] );
 //  test.identical( got, expected );
 //
 //  test.case = 'array + typedArray + arrayBuffer';
-//  var src = new Uint8Array( [ 1 ] );
+//  var src = new U8x( [ 1 ] );
 //  var got = _.arrayJoin( [ 1 ], src, src.buffer );
 //  var expected = [ 1, 1, 1 ];
 //  test.identical( got, expected );
 //
 //  test.case = 'arrayBuffer + array + typedArray';
-//  var src = new Uint8Array( [ 1 ] );
+//  var src = new U8x( [ 1 ] );
 //  var got = _.arrayJoin( src.buffer, [ 1 ], src  );
 //  test.is( _.bufferRawIs( got ) );
-//  var expected = new Uint8Array( [ 1, 1, 1 ] );
-//  test.identical( new Uint8Array( got ), expected );
+//  var expected = new U8x( [ 1, 1, 1 ] );
+//  test.identical( new U8x( got ), expected );
 //
 //  if( Config.platform === 'nodejs' )
 //  {
 //    test.case = 'buffer';
-//    var got = _.arrayJoin( Buffer.from( '1' ), [ 1 ] );
-//    var expected = Buffer.from( [ 49, 1 ] );
+//    var got = _.arrayJoin( BufferNode.from( '1' ), [ 1 ] );
+//    var expected = BufferNode.from( [ 49, 1 ] );
 //    test.identical( got, expected );
 //
 //    test.case = 'buffer + arrayBuffer';
-//    var raw = new Uint8Array( [ 1 ] ).buffer;
-//    var got = _.arrayJoin( Buffer.from( '1' ), raw );
-//    var expected = Buffer.from( [ 49, 1 ] );
+//    var raw = new U8x( [ 1 ] ).buffer;
+//    var got = _.arrayJoin( BufferNode.from( '1' ), raw );
+//    var expected = BufferNode.from( [ 49, 1 ] );
 //    test.identical( got, expected );
 //
 //    test.case = 'buffer + typedArray';
-//    var typed = new Uint8Array( [ 1 ] );
-//    var got = _.arrayJoin( Buffer.from( '1' ), typed );
-//    var expected = Buffer.from( [ 49, 1 ] );
+//    var typed = new U8x( [ 1 ] );
+//    var got = _.arrayJoin( BufferNode.from( '1' ), typed );
+//    var expected = BufferNode.from( [ 49, 1 ] );
 //    test.identical( got, expected );
 //
 //    test.case = 'buffer + typedArray + raw + array';
-//    var typed = new Uint8Array( [ 1 ] );
-//    var got = _.arrayJoin( Buffer.from( '1' ), typed, typed.buffer, [ 1 ] );
-//    var expected = Buffer.from( [ 49, 1, 1, 1 ] );
+//    var typed = new U8x( [ 1 ] );
+//    var got = _.arrayJoin( BufferNode.from( '1' ), typed, typed.buffer, [ 1 ] );
+//    var expected = BufferNode.from( [ 49, 1, 1, 1 ] );
 //    test.identical( got, expected );
 //
 //    test.case = 'typedArray + buffer + raw + array';
-//    var typed = new Uint8Array( [ 1 ] );
-//    var got = _.arrayJoin( typed, Buffer.from( '1' ), typed.buffer, [ 1 ] );
-//    var expected = new Uint8Array( [ 1, 49, 1, 1 ] );
+//    var typed = new U8x( [ 1 ] );
+//    var got = _.arrayJoin( typed, BufferNode.from( '1' ), typed.buffer, [ 1 ] );
+//    var expected = new U8x( [ 1, 49, 1, 1 ] );
 //    test.identical( got, expected );
 //
 //    test.case = 'raw + typedArray + buffer + array';
-//    var typed = new Uint8Array( [ 1 ] );
-//    var got = _.arrayJoin( typed.buffer, typed, Buffer.from( '1' ), [ 1 ] );
-//    var expected = new Uint8Array( [ 1, 1, 49, 1 ] );
-//    test.identical( new Uint8Array( got ), expected );
+//    var typed = new U8x( [ 1 ] );
+//    var got = _.arrayJoin( typed.buffer, typed, BufferNode.from( '1' ), [ 1 ] );
+//    var expected = new U8x( [ 1, 1, 49, 1 ] );
+//    test.identical( new U8x( got ), expected );
 //
 //    test.case = 'array + raw + typedArray + buffer ';
-//    var typed = new Uint8Array( [ 1 ] );
-//    var got = _.arrayJoin( [ 1 ], typed.buffer, typed, Buffer.from( '1' )  );
-//    var expected = new Uint8Array( [ 1, 1, 1, 49 ] );
-//    test.identical( new Uint8Array( got ), expected );
+//    var typed = new U8x( [ 1 ] );
+//    var got = _.arrayJoin( [ 1 ], typed.buffer, typed, BufferNode.from( '1' )  );
+//    var expected = new U8x( [ 1, 1, 1, 49 ] );
+//    test.identical( new U8x( got ), expected );
 //  }
 //
 //  if( !Config.debug )
@@ -5117,7 +5160,7 @@ function longGrowInplace( test )
   if( Config.platform === 'nodejs' )
   {
     test.case = 'buffer';
-    var got = _.longGrowInplace( Buffer.from( '123' ), 0, 5, 0 );
+    var got = _.longGrowInplace( BufferNode.from( '123' ), 0, 5, 0 );
     var expected = [ 49, 50, 51, 0, 0 ];
     test.identical( got, expected );
   }
@@ -5215,19 +5258,19 @@ function longResize( test )
 
   /* TypedArray */
 
-  var arr = new Uint16Array( array );
+  var arr = new U16x( array );
   arr.src = true;
   got = _.longResize( arr, 0, 3 );
   test.identical( got.src, undefined );
-  expected = new Uint16Array([ 1, 2, 3 ]);
+  expected = new U16x([ 1, 2, 3 ]);
   test.identical( got, expected );
 
-  /* Buffer */
+  /* BufferNode */
 
   if( Config.platform === 'nodejs' )
   {
     test.case = 'buffer';
-    var got = _.longResize( Buffer.from( '123' ), 0, 5, 0 );
+    var got = _.longResize( BufferNode.from( '123' ), 0, 5, 0 );
     var expected = [ 49, 50, 51, 0, 0 ];
     test.identical( got, expected );
   }
@@ -5311,11 +5354,11 @@ function longResize( test )
 
   /* TypedArray */
 
-  var arr = new Uint16Array( array );
+  var arr = new U16x( array );
   arr.src = true;
   got = _.longResize( arr, 0, 4, 4 );
   test.identical( got.src, undefined );
-  expected = new Uint16Array([ 1, 2, 3, 4 ]);
+  expected = new U16x([ 1, 2, 3, 4 ]);
   test.identical( got, expected );
 
   //
@@ -5323,7 +5366,7 @@ function longResize( test )
   if( Config.platform === 'nodejs' )
   {
     test.case = 'buffer';
-    var got = _.longResize( Buffer.from( '123' ), 0, 5, 0 );
+    var got = _.longResize( BufferNode.from( '123' ), 0, 5, 0 );
     var expected = [ 49, 50, 51, 0, 0 ];
     test.identical( got, expected );
   }
@@ -5370,7 +5413,7 @@ function longResize( test )
 
   /**/
 
-  got = _.longResize( Buffer.from( '123' ), 0, 1 );
+  got = _.longResize( BufferNode.from( '123' ), 0, 1 );
   expected = [ 49 ];
   test.identical( got, expected );
 
@@ -5417,7 +5460,7 @@ function longSlice( test )
   test.case = 'raw buffer';
   test.shouldThrowErrorSync( function()
   {
-    _.longSlice( new ArrayBuffer() );
+    _.longSlice( new BufferRaw() );
   });
 
   /* */
@@ -5678,7 +5721,7 @@ function longSlice( test )
     test.case = 'wrong type of argument';
     test.shouldThrowErrorSync( function()
     {
-      var array = new ArrayBuffer();
+      var array = new BufferRaw();
       _.longSlice( array );
     });
 
@@ -5808,7 +5851,7 @@ function longDuplicate( test )
   /* */
 
   test.case = 'different options';
-  var arr = new Uint8Array( 1 );
+  var arr = new U8x( 1 );
   arr[ 0 ] = 5;
   var options =
   {
@@ -6460,20 +6503,20 @@ function longBut( test )
 
   var list =
   [
-    Int8Array,
-    Uint8Array,
-    Uint8ClampedArray,
-    Int16Array,
-    Uint16Array,
-    Int32Array,
-    Uint32Array,
-    Float32Array,
-    Float64Array,
-    ArrayBuffer
+    I8x,
+    U8x,
+    U8ClampedX,
+    I16x,
+    U16x,
+    I32x,
+    U32x,
+    F32x,
+    F64x,
+    BufferRaw
   ];
 
   if( Config.platform === 'nodejs' )
-  list.push( Buffer );
+  list.push( BufferNode );
 
   for( var i = 0; i < list.length; i++ )
   {
@@ -6696,9 +6739,9 @@ function longFillTimes( test )
   test.identical( got, expected );
 
   test.case = 'TypedArray';
-  var arr = new Uint16Array();
+  var arr = new U16x();
   var got = _.longFillTimes( arr, 3, 1 );
-  var expected = new Uint16Array( [ 1, 1, 1 ] );
+  var expected = new U16x( [ 1, 1, 1 ] );
   test.identical( got, expected );
 
   test.case = 'ArrayLike without fill routine';
@@ -6741,7 +6784,7 @@ function longFillTimes( test )
   test.case = 'wrong argument type';
   test.shouldThrowErrorSync( function()
   {
-    _.longFillTimes( new ArrayBuffer(), 1 );
+    _.longFillTimes( new BufferRaw(), 1 );
   });
 
 };
@@ -6776,9 +6819,9 @@ function longFill( test )
   test.identical( got, expected );
 
   test.case = 'TypedArray';
-  var arr = new Uint16Array( 3 );
+  var arr = new U16x( 3 );
   var got = _.longFill( arr );
-  var expected = new Uint16Array( [ 0, 0, 0 ] );
+  var expected = new U16x( [ 0, 0, 0 ] );
   test.identical( got, expected );
 
   test.case = 'no fill routine';
@@ -6803,7 +6846,7 @@ function longFill( test )
   test.case = 'wrong argument type';
   test.shouldThrowErrorSync( function()
   {
-    _.longFillTimes( new ArrayBuffer(), 1 );
+    _.longFillTimes( new BufferRaw(), 1 );
   });
 
 };
@@ -7101,6 +7144,287 @@ function arrayHasAny( test )
   });
 
 };
+
+//
+
+function scalarAppend( test )
+{
+  test.case = 'dst is undefined, src is undefined';
+  var dst = undefined;
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is undefined, src is longLike';
+  var dst = undefined;
+  var src = [ null, '', 1, [], [ 1, [ 2 ] ] ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, '', 1, [], [ 1, [ 2 ] ] ] );
+
+  test.case = 'dst is undefined, src is unroll';
+  var dst = undefined;
+  var src = _.unrollMake( [ null, '', 1 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, '', 1 ] );
+
+  test.case = 'dst is undefined, src is argumentsArray';
+  var dst = undefined;
+  var src = _.argumentsArrayMake( [ null, '', 1 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, '', 1 ] );
+
+  test.case = 'dst is undefined, src is buffer';
+  var dst = undefined;
+  var src = new F32x( [ 0, 2, 10 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 0, 2, 10 ] );
+
+  test.case = 'dst is undefined, src is string';
+  var dst = undefined;
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, 'str' );
+
+  test.case = 'dst is undefined, src is map';
+  var dst = undefined;
+  var src = { 'a' : 'str' };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, { 'a' : 'str' } );
+
+  /* dst is array */
+
+  test.case = 'dst is empty array, src is empty array';
+  var dst = [];
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+  test.is( got === dst );
+
+  test.case = 'dst is empty array, src is null';
+  var dst = [];
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is undefined';
+  var dst = [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ];
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is string';
+  var dst = [ 1, null, 'str', [] ];
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'str' ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is map';
+  var dst = [ 1, null, 'str', [] ];
+  var src = { 'a' : 1 };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], { 'a' : 1 } ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is array';
+  var dst = [ 1, null, 'str', [] ];
+  var src = [ 'src', 2, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'src', 2, undefined ] );
+  test.is( got === dst );
+
+  /* dst is unroll */
+
+  test.case = 'dst is empty unroll, src is empty array';
+  var dst = _.unrollMake( [] );
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+  test.is( got === dst );
+
+  test.case = 'dst is empty unroll, src is null';
+  var dst = _.unrollMake( [] );
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is undefined';
+  var dst = _.unrollMake( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is string';
+  var dst = _.unrollMake( [ 1, null, 'str', [] ] );
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'str' ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is map';
+  var dst = _.unrollMake( [ 1, null, 'str', [] ] );
+  var src = { 'a' : 1 };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], { 'a' : 1 } ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is array';
+  var dst = _.unrollMake( [ 1, null, 'str', [] ] );
+  var src = [ 'src', 2, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'src', 2, undefined ] );
+  test.is( got === dst );
+
+  /* dst is argumentsArray */
+
+  test.case = 'dst is empty unroll, src is empty array';
+  var dst = _.argumentsArrayMake( [] );
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is empty unroll, src is null';
+  var dst = _.argumentsArrayMake( [] );
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+
+  test.case = 'dst is unroll, src is undefined';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+
+  test.case = 'dst is unroll, src is string';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'str' ] );
+
+  test.case = 'dst is unroll, src is map';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var src = { 'a' : 1 };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], { 'a' : 1 } ] );
+
+  test.case = 'dst is unroll, src is array';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var src = [ 'src', 2, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'src', 2, undefined ] );
+
+  /* dst is buffer */
+
+  test.case = 'dst is empty buffer, src is undefined';
+  var dst = new U8x();
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is empty buffer, src is empty array';
+  var dst = new U8x();
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is buffer, src is undefined';
+  var dst = new U8x( [ 1, 2, 0, 78 ] );
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78 ] );
+
+  test.case = 'dst is buffer, src is number';
+  var dst = new I16x( [ 1, 2, 0, 78 ] );
+  var src = 32;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78, 32 ] );
+
+  test.case = 'dst is buffer, src is empty array';
+  var dst = new U16x( [ 1, 2, 0, 78 ] );
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78 ] );
+
+  test.case = 'dst is buffer, src is array';
+  var dst = new I32x( [ 1, 2, 0, 78 ] );
+  var src = [ 'str', null, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78, 'str', null, undefined ] );
+
+  test.case = 'dst is buffer, src is buffer';
+  var dst = new U32x( [ 1, 2, 0, 78 ] );
+  var src = new F32x( [ 1, 2, 3, 4 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78, 1, 2, 3, 4 ] );
+
+  /* dst not undefined, not longLike */
+
+  test.case = 'dst is null, src is null';
+  var dst = null;
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, null ] );
+
+  test.case = 'dst is null, src is null';
+  var dst = null;
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, null );
+
+  test.case = 'dst is null, src is empty array';
+  var dst = null;
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+
+  test.case = 'dst is string, src is string';
+  var dst = 'str';
+  var src = '';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 'str', '' ] );
+
+  test.case = 'dst is string, src is string';
+  var dst = 'str';
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, 'str' );
+
+  test.case = 'dst is number, src is string';
+  var dst = 1;
+  var src = [ '', 2, [], [ { a : 2 } ] ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, '', 2, [], [ { a : 2 } ] ] );
+
+  test.case = 'dst is map, src is buffer';
+  var dst = { 'a' : 1 };
+  var src = new U8x( [ 10, 20, 30 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ { 'a' : 1 }, 10, 20, 30 ] );
+
+  /* */
+
+  test.case = 'dst === src';
+  var arr = [ 1, 2, 'str' ];
+  var dst = arr;
+  var src = arr;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [  1, 2, 'str',  1, 2, 'str' ] );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong arguments.length';
+  test.shouldThrowErrorSync( () => _.scalarAppend() );
+  test.shouldThrowErrorSync( () => _.scalarAppend( 1 ) );
+  test.shouldThrowErrorSync( () => _.scalarAppend( 1, 2, 'str' ) );
+
+}
 
 //
 
@@ -15127,7 +15451,7 @@ function arrayRemoveDuplicates( test )
   test.case = 'dst is not an array';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayRemoveDuplicates( new Uint8Array([1, 2, 3, 4, 5]) );
+    _.arrayRemoveDuplicates( new U8x([1, 2, 3, 4, 5]) );
   })
 
   test.case = 'second arg is not a function';
@@ -15196,49 +15520,49 @@ function longUnduplicate( test )
 
   test.case = 'empty';
 
-  var dst =  new Uint8Array( 0 );
+  var dst =  new U8x( 0 );
   var got = _.longUnduplicate( dst );
-  var expected = new Uint8Array( [] );
+  var expected = new U8x( [] );
   test.identical( dst, expected );
   test.identical( got, expected );
 
   test.case = 'No duplicates - One element';
 
-  var dst = new Uint8ClampedArray( [ 300 ] );
+  var dst = new U8ClampedX( [ 300 ] );
   var got = _.longUnduplicate( dst );
-  var expected = new Uint8ClampedArray( [ 255 ] );
+  var expected = new U8ClampedX( [ 255 ] );
   test.identical( dst, expected );
   test.identical( got, expected );
 
   test.case = 'No duplicates - Several elements';
 
-  var dst = new Int8Array( [ 1, 2, 3, '4', '5' ] );
+  var dst = new I8x( [ 1, 2, 3, '4', '5' ] );
   var got = _.longUnduplicate( dst );
-  var expected = new Int8Array( [ 1, 2, 3, '4', '5' ] );
+  var expected = new I8x( [ 1, 2, 3, '4', '5' ] );
   test.identical( dst, expected );
   test.identical( got, expected );
 
   test.case = 'One duplicated element - new returned instance';
 
-  var dst = new Int8Array( [ 1, 2, 2 ] );
+  var dst = new I8x( [ 1, 2, 2 ] );
   var got = _.longUnduplicate( dst );
-  var expected = new Int8Array( [ 1, 2 ] );
+  var expected = new I8x( [ 1, 2 ] );
   test.identical( got, expected );
   test.is( dst !== got );
 
   test.case = 'One duplicated element - Several elements';
 
-  var dst =  new Uint8ClampedArray( [ -12, 2, - 1, 0, - 11 ] );
+  var dst =  new U8ClampedX( [ -12, 2, - 1, 0, - 11 ] );
   var got = _.longUnduplicate( dst );
-  var expected =  new Uint8ClampedArray( [ 0, 2 ] );
+  var expected =  new U8ClampedX( [ 0, 2 ] );
   test.identical( got, expected );
   test.is( dst !== got );
 
   test.case = 'Several duplicates several times';
 
-  var dst = new Int8Array( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
+  var dst = new I8x( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
   var got = _.longUnduplicate( dst );
-  var expected = new Int8Array( [ 1, 2, 3, '4', 5 ] );
+  var expected = new I8x( [ 1, 2, 3, '4', 5 ] );
   test.identical( got, expected );
   test.is( dst !== got );
 
@@ -15268,24 +15592,24 @@ function longUnduplicate( test )
   // Evaluators
 
   test.case = 'onEqualize';
-  var dst =  new Int8Array( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
+  var dst =  new I8x( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
 
   var got  = _.longUnduplicate( dst, function( a, b )
   {
     return  a === b;
   });
-  var expected =  new Int8Array( [ 1, 2, 3, '4', 5 ] );
+  var expected =  new I8x( [ 1, 2, 3, '4', 5 ] );
   test.identical( got, expected );
   test.is( dst !== got );
 
   test.case = 'Evaluator';
-  var dst =  new Float32Array( [ 1, 1.1, 1.48483, 1.5782920, 1.9 ] );
+  var dst =  new F32x( [ 1, 1.1, 1.48483, 1.5782920, 1.9 ] );
 
   var got  = _.longUnduplicate( dst, function( a )
   {
     return  Math.floor( a );;
   });
-  var expected =  new Float32Array( [ 1 ] );
+  var expected =  new F32x( [ 1 ] );
   test.identical( got, expected );
   test.is( dst !== got );
 
@@ -22274,10 +22598,10 @@ function loggerProblemExperiment( test )
   */
 
   debugger;
-  test.case = 'ins as Buffer';
-  var expected = Buffer.alloc( 5 );
-  var src = _.longFill( new Float32Array( 5 ), 1 );
-  var got = _.longMake( Buffer, src );
+  test.case = 'ins as BufferNode';
+  var expected = BufferNode.alloc( 5 );
+  var src = _.longFill( new F32x( 5 ), 1 );
+  var got = _.longMake( BufferNode, src );
   test.is( _.bufferNodeIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
@@ -22338,8 +22662,6 @@ var Self =
     arrayMake,
     arrayFrom,
     arrayFromCoercing,
-
-    scalarAppend,
 
     arrayMakeRandom,
     scalarToVector,
@@ -22403,6 +22725,10 @@ var Self =
     arraysAreIdentical,
 
     arrayHasAny,
+
+    // scalar
+
+    scalarAppend,
 
     // array sequential search
 

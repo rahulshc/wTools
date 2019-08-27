@@ -123,6 +123,7 @@ _global_.Fx = _global_.F32x;
 if( typeof Buffer !== 'undefined' )
 _global_.BufferNode = Buffer;
 _global_.BufferRaw = ArrayBuffer;
+_global_.BufferRawShared = SharedArrayBuffer;
 _global_.BufferView = DataView;
 
 // --

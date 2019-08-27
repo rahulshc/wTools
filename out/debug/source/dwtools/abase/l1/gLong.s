@@ -85,8 +85,8 @@ function buffersRawAreIdentical( src1, src2 )
   if( src1.byteLength !== src2.byteLength )
   return false;
 
-  src1 = new Uint8Array( src1 );
-  src2 = new Uint8Array( src2 );
+  src1 = new U8x( src1 );
+  src2 = new U8x( src2 );
 
   for( let i = 0 ; i < src1.length ; i++ )
   if( src1[ i ] !== src2[ i ] )
@@ -336,7 +336,7 @@ function bufferMakeUndefined( ins, src )
  * On success returns array with deleted element(s), otherwise returns empty array.
  * For TypedArray's and buffers returns modified copy of ( dstArray ) or original array if nothing changed.
  *
- * @param { Array|TypedArray|Buffer } dstArray - The target array, TypedArray( Int8Array, Int16Array, Uint8Array ... etc ) or Buffer( ArrayBuffer, Buffer ).
+ * @param { Array|TypedArray|BufferNode } dstArray - The target array, TypedArray( I8x, I16x, U8x ... etc ) or BufferNode( BufferRaw, BufferNode ).
  * @param { Array|Number } range - The range of elements or index of single element to remove from ( dstArray ).
  * @param { Array } srcArray - The array of elements to add to( dstArray ) at the start position of provided range( range ).
  * If one of ( range ) indexies is not specified it will be setted to zero.
@@ -367,12 +367,12 @@ function bufferMakeUndefined( ins, src )
  * // returns [ 0, 0, 0, 4 ]
  *
  * @example
- * let dst = new Int32Array( 4 );
+ * let dst = new I32x( 4 );
  * dst.set( [ 1, 2, 3, 4 ] )
  * _.bufferBut( dst, 0 );
  * // returns [ 2, 3, 4 ]
  *
- * @returns { Array|TypedArray|Buffer } For array returns array with deleted element(s), otherwise returns empty array.
+ * @returns { Array|TypedArray|BufferNode } For array returns array with deleted element(s), otherwise returns empty array.
  * For other types returns modified copy or origin( dstArray ).
  * @function bufferBut
  * @throws { Error } If ( arguments.length ) is not equal to two or three.
@@ -411,8 +411,8 @@ function bufferMakeUndefined( ins, src )
 //   // if( size > src.byteLength )
 //   // {
 //   //   result = longMakeUndefined( src, size );
-//   //   let resultTyped = new Uint8Array( result, 0, result.byteLength );
-//   //   let srcTyped = new Uint8Array( src, 0, src.byteLength );
+//   //   let resultTyped = new U8x( result, 0, result.byteLength );
+//   //   let srcTyped = new U8x( src, 0, src.byteLength );
 //   //   resultTyped.set( srcTyped );
 //   // }
 //   // else if( size < src.byteLength )
@@ -486,11 +486,11 @@ function bufferBut( dstArray, range, srcArray )
 
     if( _.bufferRawIs( dstArray ) )
     {
-      result = new ArrayBuffer( newLength );
+      result = new BufferRaw( newLength );
     }
     else if( _.bufferNodeIs( dstArray ) )
     {
-      result = Buffer.alloc( newLength );
+      result = BufferNode.alloc( newLength );
     }
     else
     {
@@ -544,17 +544,17 @@ function bufferBut( dstArray, range, srcArray )
  *
  * @example
  * // returns [ 3, 7, 13, 0 ]
- * let ints = new Int8Array( [ 3, 7, 13 ] );
+ * let ints = new I8x( [ 3, 7, 13 ] );
  * _.bufferRelen( ints, 4 );
  *
  * @example
  * // returns [ 3, 7, 13 ]
- * let ints2 = new Int16Array( [ 3, 7, 13, 33, 77 ] );
+ * let ints2 = new I16x( [ 3, 7, 13, 33, 77 ] );
  * _.bufferRelen( ints2, 3 );
  *
  * @example
  * // returns [ 3, 0, 13, 0, 77, 0 ]
- * let ints3 = new Int32Array( [ 3, 7, 13, 33, 77 ] );
+ * let ints3 = new I32x( [ 3, 7, 13, 33, 77 ] );
  * _.bufferRelen( ints3, 6 );
  *
  * @returns { typedArray } - Returns a new or the same typed array {-srcMap-} with a new or the same length (len).
@@ -616,24 +616,24 @@ function bufferRelen( src, len )
 //     }
 //     if( _.bufferRawIs( srcBuffer ) )
 //     {
-//       let resultTyped = new Uint8Array( _.longMakeUndefined( srcBuffer, size ) );
-//       let srcTyped = new Uint8Array( srcBuffer );
+//       let resultTyped = new U8x( _.longMakeUndefined( srcBuffer, size ) );
+//       let srcTyped = new U8x( srcBuffer );
 //       resultTyped.set( srcTyped );
 //       result = _.bufferRawFrom( resultTyped );
 //     }
 //     if( _.bufferViewIs( srcBuffer ) )
 //     {
-//       let resultTyped = new Uint8Array( size );
-//       let srcTyped = new Uint8Array( srcBuffer.buffer );
+//       let resultTyped = new U8x( size );
+//       let srcTyped = new U8x( srcBuffer.buffer );
 //       resultTyped.set( srcTyped );
-//       result = new DataView( _.bufferRawFrom( resultTyped ) );
+//       result = new BufferView( _.bufferRawFrom( resultTyped ) );
 //     }
 //     if( _.bufferNodeIs( srcBuffer ) )
 //     {
 //       // qqq : ?
 //       _.assert( 0, 'not tested' );
 //       if( parseInt( process.version[ 1 ] ) === 1 )
-//       result = Buffer.alloc( size );
+//       result = BufferNode.alloc( size );
 //       else
 //       result = _.longMakeUndefined( srcBuffer, size );
 //
@@ -644,7 +644,7 @@ function bufferRelen( src, len )
 //   {
 //     if( _.bufferViewIs( srcBuffer ) )
 //     {
-//       result = new DataView( srcBuffer.buffer, 0, size );
+//       result = new BufferView( srcBuffer.buffer, 0, size );
 //     }
 //     else
 //     result = srcBuffer.slice( 0, size );
@@ -664,8 +664,8 @@ function bufferResize( srcBuffer, size )
   if( size > srcBuffer.byteLength )
   {
     result = _.longMakeUndefined( srcBuffer, size );
-    let resultTyped = new Uint8Array( result, 0, result.byteLength );
-    let srcTyped = new Uint8Array( srcBuffer, 0, srcBuffer.byteLength );
+    let resultTyped = new U8x( result, 0, result.byteLength );
+    let srcTyped = new U8x( srcBuffer, 0, srcBuffer.byteLength );
     resultTyped.set( srcTyped );
   }
   else if( size < srcBuffer.byteLength )
@@ -681,24 +681,24 @@ function bufferResize( srcBuffer, size )
 function bufferBytesGet( src )
 {
 
-  if( src instanceof ArrayBuffer )
+  if( src instanceof BufferRaw )
   {
-    return new Uint8Array( src );
+    return new U8x( src );
   }
-  else if( typeof Buffer !== 'undefined' && src instanceof Buffer )
+  else if( typeof BufferNode !== 'undefined' && src instanceof BufferNode )
   {
-    return new Uint8Array( src.buffer, src.byteOffset, src.byteLength );
+    return new U8x( src.buffer, src.byteOffset, src.byteLength );
   }
   else if( _.bufferTypedIs( src ) )
   {
-    return new Uint8Array( src.buffer, src.byteOffset, src.byteLength );
+    return new U8x( src.buffer, src.byteOffset, src.byteLength );
   }
   else if( _.strIs( src ) )
   {
-    if( _global_.Buffer )
-    return new Uint8Array( _.bufferRawFrom( Buffer.from( src, 'utf8' ) ) );
+    if( _global_.BufferNode )
+    return new U8x( _.bufferRawFrom( BufferNode.from( src, 'utf8' ) ) );
     else
-    return new Uint8Array( _.encode.utf8ToBuffer( src ) );
+    return new U8x( _.encode.utf8ToBuffer( src ) );
   }
   else _.assert( 0, 'wrong argument' );
 
@@ -714,13 +714,13 @@ function bufferBytesGet( src )
    *
    * @example
    * // returns [ 513, 1027, 1541 ]
-   * let view1 = new Int8Array( [ 1, 2, 3, 4, 5, 6 ] );
-   * _.bufferRetype(view1, Int16Array);
+   * let view1 = new I8x( [ 1, 2, 3, 4, 5, 6 ] );
+   * _.bufferRetype(view1, I16x);
    *
    * @example
    * // returns [ 1, 2, 3, 4, 5, 6 ]
-   * let view2 = new Int16Array( [ 513, 1027, 1541 ] );
-   * _.bufferRetype(view2, Int8Array);
+   * let view2 = new I16x( [ 513, 1027, 1541 ] );
+   * _.bufferRetype(view2, I8x);
    *
    * @returns { typedArray } Returns a new instance of (bufferType) constructor.
    * @function bufferRetype
@@ -765,15 +765,15 @@ function bufferJoin()
 
     if( _.bufferRawIs( src ) )
     {
-      srcs.push( new Uint8Array( src ) );
+      srcs.push( new U8x( src ) );
     }
-    else if( src instanceof Uint8Array )
+    else if( src instanceof U8x )
     {
       srcs.push( src );
     }
     else
     {
-      srcs.push( new Uint8Array( src.buffer, src.byteOffset, src.byteLength ) );
+      srcs.push( new U8x( src.buffer, src.byteOffset, src.byteLength ) );
     }
 
     _.assert( src.byteLength >= 0, 'Expects buffers, but got', _.strType( src ) );
@@ -789,9 +789,9 @@ function bufferJoin()
 
   /* */
 
-  let resultBuffer = new ArrayBuffer( size );
+  let resultBuffer = new BufferRaw( size );
   let result = _.bufferRawIs( firstSrc ) ? resultBuffer : new firstSrc.constructor( resultBuffer );
-  let resultBytes = result.constructor === Uint8Array ? result : new Uint8Array( resultBuffer );
+  let resultBytes = result.constructor === U8x ? result : new U8x( resultBuffer );
 
   /* */
 
@@ -845,9 +845,9 @@ function bufferMove( dst, src )
 
     if( _.bufferRawIs( dst ) )
     {
-      dst = new Uint8Array( dst );
-      if( _.bufferTypedIs( src ) && !( src instanceof Uint8Array ) )
-      src = new Uint8Array( src.buffer, src.byteOffset, src.byteLength );
+      dst = new U8x( dst );
+      if( _.bufferTypedIs( src ) && !( src instanceof U8x ) )
+      src = new U8x( src.buffer, src.byteOffset, src.byteLength );
     }
 
     _.assert( _.longIs( dst ) );
@@ -883,8 +883,8 @@ function bufferToStr( src )
 {
   let result = '';
 
-  if( src instanceof ArrayBuffer )
-  src = new Uint8Array( src, 0, src.byteLength );
+  if( src instanceof BufferRaw )
+  src = new U8x( src, 0, src.byteLength );
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.bufferAnyIs( src ) );
@@ -1074,7 +1074,7 @@ function bufferFromArrayOfArray( array, options )
 
   //
 
-  if( options.BufferType === undefined ) options.BufferType = Float32Array;
+  if( options.BufferType === undefined ) options.BufferType = F32x;
   if( options.sameLength === undefined ) options.sameLength = 1;
   if( !options.sameLength ) throw _.err( '_.bufferFromArrayOfArray :', 'different length of arrays is not implemented' );
 
@@ -1128,10 +1128,10 @@ function bufferFrom( o )
   if( _.numberIs( o.src ) )
   o.src = [ o.src ];
 
-  if( o.bufferConstructor.name === 'ArrayBuffer' )
+  if( o.bufferConstructor.name === 'BufferRaw' )
   return _.bufferRawFrom( o.src );
 
-  if( o.bufferConstructor.name === 'Buffer' )
+  if( o.bufferConstructor.name === 'BufferNode' )
   return _.bufferNodeFrom( o.src );
 
   /* str / buffer.node / buffer.raw */
@@ -1196,24 +1196,24 @@ bufferFrom.defaults =
 //
 
 /**
- * The bufferRawFromTyped() routine returns a new ArrayBuffer from (buffer.byteOffset) to the end of an ArrayBuffer of a typed array (buffer)
- * or returns the same ArrayBuffer of the (buffer), if (buffer.byteOffset) is not provided.
+ * The bufferRawFromTyped() routine returns a new BufferRaw from (buffer.byteOffset) to the end of an BufferRaw of a typed array (buffer)
+ * or returns the same BufferRaw of the (buffer), if (buffer.byteOffset) is not provided.
  *
  * @param { typedArray } buffer - Entity to check.
  *
  * @example
  * // returns [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
- * let buffer1 = new ArrayBuffer( 10 );
- * let view1 = new Int8Array( buffer1 );
+ * let buffer1 = new BufferRaw( 10 );
+ * let view1 = new I8x( buffer1 );
  * _.bufferRawFromTyped( view1 );
  *
  * @example
  * // returns [ 0, 0, 0, 0, 0, 0 ]
- * let buffer2 = new ArrayBuffer( 10 );
- * let view2 = new Int8Array( buffer2, 2 );
+ * let buffer2 = new BufferRaw( 10 );
+ * let view2 = new I8x( buffer2, 2 );
  * _.bufferRawFromTyped( view2 );
  *
- * @returns { ArrayBuffer } Returns a new or the same ArrayBuffer.
+ * @returns { BufferRaw } Returns a new or the same BufferRaw.
  * If (buffer) is instance of '[object ArrayBuffer]', it returns buffer.
  * @function bufferRawFromTyped
  * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
@@ -1248,14 +1248,14 @@ function bufferRawFrom( buffer )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( buffer instanceof ArrayBuffer )
+  if( buffer instanceof BufferRaw )
   return buffer;
 
   if( _.bufferNodeIs( buffer ) || _.arrayIs( buffer ) )
   {
 
     // result = buffer.buffer;
-    result = new Uint8Array( buffer ).buffer;
+    result = new U8x( buffer ).buffer;
 
   }
   else if( _.bufferTypedIs( buffer ) || _.bufferViewIs( buffer ) )
@@ -1271,9 +1271,9 @@ function bufferRawFrom( buffer )
   else if( _.strIs( buffer ) )
   {
 
-    if( _global_.Buffer )
+    if( _global_.BufferNode )
     {
-      result = _.bufferRawFrom( Buffer.from( buffer, 'utf8' ) );
+      result = _.bufferRawFrom( BufferNode.from( buffer, 'utf8' ) );
     }
     else
     {
@@ -1305,6 +1305,7 @@ function bufferBytesFrom( buffer )
   if( _.bufferNodeIs( buffer ) )
   {
 
+    debugger;
     _.assert( _.bufferRawIs( buffer.buffer ) )
     result = new U8x( buffer.buffer, buffer.byteOffset, buffer.byteLength );
 
@@ -1346,7 +1347,7 @@ function bufferBytesFrom( buffer )
 function bufferBytesFromNode( src )
 {
   _.assert( _.bufferNodeIs( src ) );
-  let result = new Uint8Array( buffer );
+  let result = new U8x( buffer );
   return result;
 }
 
@@ -1384,8 +1385,8 @@ function bufferNodeFrom( buffer )
   if( buffer.length === 0 || buffer.byteLength === 0 )
   {
     // _.assert( 0, 'not tested' );
-    // result = new Buffer([]);
-    result = Buffer.from([]);
+    // result = new BufferNode([]);
+    result = BufferNode.from([]);
   }
   else if( _.strIs( buffer ) )
   {
@@ -1394,17 +1395,17 @@ function bufferNodeFrom( buffer )
   }
   else if( buffer.buffer )
   {
-    result = Buffer.from( buffer.buffer, buffer.byteOffset, buffer.byteLength );
+    result = BufferNode.from( buffer.buffer, buffer.byteOffset, buffer.byteLength );
   }
   else
   {
     // _.assert( 0, 'not tested' );
-    result = Buffer.from( buffer );
+    result = BufferNode.from( buffer );
   }
 
   // if( !buffer.length && !buffer.byteLength )
   // {
-  //   buffer = new Buffer([]);
+  //   buffer = new BufferNode([]);
   // }
   // else if( toBuffer )
   // try
@@ -1419,9 +1420,9 @@ function bufferNodeFrom( buffer )
   // else
   // {
   //   if( _.bufferTypedIs( buffer ) )
-  //   buffer = Buffer.from( buffer.buffer );
+  //   buffer = BufferNode.from( buffer.buffer );
   //   else
-  //   buffer = Buffer.from( buffer );
+  //   buffer = BufferNode.from( buffer );
   // }
 
   _.assert( _.bufferNodeIs( result ) );
@@ -1478,7 +1479,7 @@ function buffersSerialize( o )
   /* make buffer */
 
   if( !store[ 'buffer' ] )
-  store[ 'buffer' ] = new ArrayBuffer( size );
+  store[ 'buffer' ] = new BufferRaw( size );
 
   let dstBuffer = _.bufferBytesGet( store[ 'buffer' ] );
 
@@ -1502,7 +1503,7 @@ function buffersSerialize( o )
     let name = buffers[ b ].name;
     let attribute = buffers[ b ].attribute;
     let buffer = buffers[ b ].buffer;
-    let bytes = buffer ? _.bufferBytesGet( buffer ) : new Uint8Array();
+    let bytes = buffer ? _.bufferBytesGet( buffer ) : new U8x();
     let bufferSize = buffers[ b ].bufferSize;
 
     if( o.dropAttribute && o.dropAttribute[ name ] )
@@ -2101,7 +2102,7 @@ longHasUniques.defaults =
 //  * and free space filled by value of ( val ) if it was provided.
 //  * If ( l ) < 0, ( l ) > ( f ) - returns array filled with some amount of elements with value of argument( val ).
 //  *
-//  * @param { Array/Buffer } array - Source array or buffer.
+//  * @param { Array/BufferNode } array - Source array or buffer.
 //  * @param { Number } [ f = 0 ] f - begin zero-based index at which to begin extraction.
 //  * @param { Number } [ l = array.length ] l - end zero-based index at which to end extraction.
 //  * @param { * } val - value used to fill the space left after copying elements of the original array.
@@ -2149,15 +2150,15 @@ longHasUniques.defaults =
 //  * //[ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
 //  *
 //  * @example
-//  * //Source can be also a Buffer
-//  * let buffer = Buffer.from( '123' );
+//  * //Source can be also a BufferNode
+//  * let buffer = BufferNode.from( '123' );
 //  * let result = _.longResize( buffer, 0, buffer.length + 2, 0 );
 //  * console.log( result );
 //  * //[ 49, 50, 51, 0, 0 ]
 //  *
 //  * @returns { Array } Returns a shallow copy of elements from the original array supplemented with value of( val ) if needed.
 //  * @function longResize
-//  * @throws { Error } Will throw an Error if ( array ) is not an Array-like or Buffer.
+//  * @throws { Error } Will throw an Error if ( array ) is not an Array-like or BufferNode.
 //  * @throws { Error } Will throw an Error if ( f ) is not a Number.
 //  * @throws { Error } Will throw an Error if ( l ) is not a Number.
 //  * @throws { Error } Will throw an Error if no arguments provided.

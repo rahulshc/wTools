@@ -1039,14 +1039,14 @@ function diagnosticsStructureGenerate( o )
     let bufferSrc = _.longFill( [], 0, [ 0, o.bufferSize || o.fieldSize ] );
 
     if( o.bufferNode || o.buffer && o.buffer !== 2 )
-    if( typeof Buffer !== 'undefined' )
-    currentLevel[ 'bufferNode'] = Buffer.from( bufferSrc );
+    if( typeof BufferNode !== 'undefined' )
+    currentLevel[ 'bufferNode'] = BufferNode.from( bufferSrc );
 
     if( o.bufferRaw || o.buffer )
-    currentLevel[ 'bufferRaw'] = new ArrayBuffer( bufferSrc );
+    currentLevel[ 'bufferRaw'] = new BufferRaw( bufferSrc );
 
     if( o.bufferBytes || o.buffer && o.buffer !== 2)
-    currentLevel[ 'bufferBytes'] = new Uint8Array( bufferSrc );
+    currentLevel[ 'bufferBytes'] = new U8x( bufferSrc );
 
     if( o.map || o.structure )
     {

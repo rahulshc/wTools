@@ -2704,7 +2704,7 @@ function mapOnlyPrimitives( test )
     g : function(){},
     h : [ 1 ],
     i : new Date(),
-    j : new ArrayBuffer( 5 )
+    j : new BufferRaw( 5 )
   }
   var got = _.mapOnlyPrimitives( src );
   var expected =
