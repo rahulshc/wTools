@@ -2656,12 +2656,12 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
  * @param { wTools~compareCallback } evaluator1 - A callback function.
  *
  * @example
- * // returns { index : 3, element : 'str' }
  * _.arrayLeft( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
+ * // returns { index : 3, element : 'str' }
  *
  * @example
- * // returns {  }
  * _.arrayLeft( [ 1, 2, 3, 4, 5 ], 6 );
+ * // returns {}
  *
  * @returns { Object } Returns a new object containing the properties, (index, element),
  * corresponding to the found value (ins) from the array (arr).
@@ -2737,16 +2737,19 @@ function arrayRightDefined( arr )
  * @param { * } [ onEvaluate2 ] - The second part of evaluator. Change the value to search.
  *
  * @example
- * // Simple exapmle. Returns 2
- * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
+ * // simple exapmle
+ * _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
+ * // returns 2
  *
  * @example
- * // With equalizer. Returns 4
+ * // with equalizer
  * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+ * // returns 4
  *
  * @example
- * // With evaluator. Returns 4
+ * // with evaluator
  * let arr = _.arrayCountElement( [ [ 10, 2 ], [ 10, 2 ], [ 'str', 10 ], [ 10, true ], [ false, 10 ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
+ * // returns 4
  *
  * @returns { Number } - Returns the count of matched elements in the {-srcArray-} with the { element } element.
  * @function arrayCountElement
@@ -2787,12 +2790,12 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
  * @param { Array } srcArray - The source array.
  *
  * @example
- * // returns 23;
- * let arr = _.arrayCountTotal( [ 1, 2, 10, 10 ] );
+ * _.arrayCountTotal( [ 1, 2, 10, 10 ] );
+ * // returns 23
  *
  * @example
- * // returns 1;
- * let arr = _.arrayCountTotal( [ true, false, false ] );
+ * _.arrayCountTotal( [ true, false, false ] );
+ * // returns 1
  *
  * @returns { Number } - Returns the sum of the elements in { srcArray }.
  * @function arrayCountTotal
@@ -2827,8 +2830,8 @@ function arrayCountTotal( srcArray )
  * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
  *
  * @example
- * // returns 3
  * _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+ * // returns 3
  *
  * @example
  * // returns 0
@@ -2947,20 +2950,20 @@ function arrayPrepend( dstArray, ins )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4 ]
  * _.arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
+ * // returns [ 5, 1, 2, 3, 4 ]
  *
  * @example
- * // returns [ 1, 2, 3, 4, 5 ]
  * _.arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
+ * // returns [ 1, 2, 3, 4, 5 ]
  *
  * @example
- * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
  * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
  *
  * @example
- * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  *
  * @example
  * function onEqualize( a, b )
@@ -3004,20 +3007,20 @@ function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4 ]
  * _.arrayPrependOnceStrictly( [ 1, 2, 3, 4 ], 5 );
+ * // returns [ 5, 1, 2, 3, 4 ]
  *
  * @example
- * // throws error
  * _.arrayPrependOnceStrictly( [ 1, 2, 3, 4, 5 ], 5 );
- *
- * @example
- * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
- * _.arrayPrependOnceStrictly( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
- *
- * @example
  * // throws error
+ *
+ * @example
+ * _.arrayPrependOnceStrictly( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
+ *
+ * @example
  * _.arrayPrependOnceStrictly( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * // throws error
  *
  * @example
  * function onEqualize( a, b )
@@ -3083,20 +3086,20 @@ function arrayPrepended( dstArray, ins )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns 0
  * _.arrayPrependedOnce( [ 1, 2, 3, 4 ], 5 );
- *
- * @example
- * // returns -1
- * _.arrayPrependedOnce( [ 1, 2, 3, 4, 5 ], 5 );
- *
- * @example
  * // returns 0
- * _.arrayPrependedOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
  *
  * @example
+ * _.arrayPrependedOnce( [ 1, 2, 3, 4, 5 ], 5 );
  * // returns -1
+ *
+ * @example
+ * _.arrayPrependedOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * // returns 0
+ *
+ * @example
  * _.arrayPrependedOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * // returns -1
  *
  * @example
  * function onEqualize( a, b )
@@ -3157,12 +3160,12 @@ function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
  * @param { * } ins - The element to add.
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4 ]
  * _.arrayPrependElement( [ 1, 2, 3, 4 ], 5 );
+ * // returns [ 5, 1, 2, 3, 4 ]
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4, 5 ]
  * _.arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 );
+ * // returns [ 5, 1, 2, 3, 4, 5 ]
  *
  * @returns { Array } Returns updated array, that contains new element( ins ).
  * @function arrayPrependElement
@@ -3243,8 +3246,8 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
  * @param { * } ins - The element to add.
  *
  * @example
- * // returns 0
  * _.arrayPrependedElement( [ 1, 2, 3, 4 ], 5 );
+ * // returns 0
  *
  * @returns { Array } Returns updated array, that contains new element( ins ).
  * @function arrayPrependedElement
@@ -3309,12 +3312,12 @@ function arrayPrependedElementOnceStrictly( dstArray, ins, evaluator1, evaluator
  * @param { ArrayLike } insArray - The source array.
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4 ]
  * _.arrayPrependArray( [ 1, 2, 3, 4 ], [ 5 ] );
+ * // returns [ 5, 1, 2, 3, 4 ]
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4, 5 ]
  * _.arrayPrependArray( [ 1, 2, 3, 4, 5 ], [ 5 ] );
+ * // returns [ 5, 1, 2, 3, 4, 5 ]
  *
  * @returns { Array } Returns updated array, that contains elements from( insArray ).
  * @function arrayPrependArray
@@ -3347,12 +3350,12 @@ function arrayPrependArray( dstArray, insArray )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns [ 0, 1, 2, 3, 4 ]
  * _.arrayPrependArrayOnce( [ 1, 2, 3, 4 ], [ 0, 1, 2, 3, 4 ] );
+ * // returns [ 0, 1, 2, 3, 4 ]
  *
  * @example
- * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  * _.arrayPrependArrayOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], [ 'Dmitry' ] );
+ * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  *
  * @example
  * function onEqualize( a, b )
@@ -3396,8 +3399,8 @@ function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns [ 0, 1, 2, 3, 4 ]
  * _.arrayPrependArrayOnceStrictly( [ 1, 2, 3, 4 ], [ 0, 1, 2, 3, 4 ] );
+ * // returns [ 0, 1, 2, 3, 4 ]
  *
  * @example
  * function onEqualize( a, b )
@@ -3467,7 +3470,7 @@ function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
  * _.arrayPrependedArray( dst, [ 5, 6, 7 ] );
  * // returns 3
  * console.log( dst );
- * //returns [ 5, 6, 7, 1, 2, 3, 4 ]
+ * //log [ 5, 6, 7, 1, 2, 3, 4 ]
  *
  * @returns { Array } Returns count of added elements.
  * @function arrayPrependedArray
@@ -3499,16 +3502,16 @@ function arrayPrependedArray( dstArray, insArray )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns 3
  * _.arrayPrependedArrayOnce( [ 1, 2, 3 ], [ 4, 5, 6] );
+ * // returns 3
  *
  * @example
- * // returns 1
  * _.arrayPrependedArrayOnce( [ 0, 2, 3, 4 ], [ 1, 1, 1 ] );
+ * // returns 1
  *
  * @example
- * // returns 0
  * _.arrayPrependedArrayOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], [ 'Dmitry' ] );
+ * // returns 0
  *
  * @example
  * function onEqualize( a, b )
@@ -3580,8 +3583,8 @@ function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evalua
  * @param{ longIs | * } arguments[...] - Source arguments.
  *
  * @example
- * // returns [ 5, 6, 7, 1, 2, 3, 4 ]
  * _.arrayPrependArrays( [ 1, 2, 3, 4 ], [ 5 ], [ 6 ], 7 );
+ * // returns [ 5, 6, 7, 1, 2, 3, 4 ]
  *
  * @example
  * let dst = [ 1, 2, 3, 4 ];
@@ -3621,8 +3624,8 @@ function arrayPrependArrays( dstArray, insArray )
  * @param{ longIs | * } arguments[...] - Source arguments.
  *
  * @example
- * // returns [ 5, 6, 7, 1, 2, 3, 4 ]
  * _.arrayPrependArraysOnce( [ 1, 2, 3, 4 ], [ 5 ], 5, [ 6 ], 6, 7, [ 7 ] );
+ * // returns [ 5, 6, 7, 1, 2, 3, 4 ]
  *
  * @example
  * let dst = [ 1, 2, 3, 4 ];
@@ -3665,12 +3668,12 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
  * @param { wTools~compareCallback } onEqualize - A callback function that can be provided through routine`s context. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  * _.arrayPrependArraysOnceStrictly( [ 1, 2, 3, 4 ], 5, [ 6, [ 7 ] ], 8 );
+ * // returns [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  * @example
- * // throws error
  * _.arrayPrependArraysOnceStrictly( [ 1, 2, 3, 4 ], [ 5 ], 5, [ 6 ], 6, 7, [ 7 ] );
+ * // throws error
  *
  * @example
  * function onEqualize( a, b )
@@ -3680,7 +3683,7 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
  * let dst = [];
  * let arguments = [ dst, [ 1, [ 2 ], [ [ 3 ] ] ], 4 ];
  * _.arrayPrependArraysOnceStrictly.apply( { onEqualize }, arguments );
- * //returns [ 1, 2, [ 3 ], 4 ]
+ * // returns [ 1, 2, [ 3 ], 4 ]
  *
  * @returns { Array } Returns updated array( dstArray ).
  * @function arrayPrependArraysOnceStrictly
@@ -3759,8 +3762,8 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
  * @param{ longIs | * } arguments[...] - Source arguments.
  *
  * @example
- * // returns 3
  * _.arrayPrependedArrays( [ 1, 2, 3, 4 ], [ 5 ], [ 6 ], 7 );
+ * // returns 3
  *
  * @example
  * let dst = [ 1, 2, 3, 4 ];
@@ -3812,12 +3815,12 @@ function arrayPrependedArrays( dstArray, insArray )
  * @param{ longIs | * } arguments[...] - Source arguments.
  *
  * @example
- * // returns 0
  * _.arrayPrependedArraysOnce( [ 1, 2, 3, 4, 5, 6, 7 ], [ 5 ], [ 6 ], 7 );
+ * // returns 0
  *
  * @example
- * // returns 3
  * _.arrayPrependedArraysOnce( [ 1, 2, 3, 4 ], [ 5 ], 5, [ 6 ], 6, 7, [ 7 ] );
+ * // returns 3
  *
  * @example
  * let dst = [ 1, 2, 3, 4 ];
