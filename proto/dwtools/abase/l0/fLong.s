@@ -1057,18 +1057,18 @@ function unrollRemove( dstArray )
  * @param { * } src - The object to be checked.
  *
  * @example
+ * _.longIs( [ 1, 2 ] );
  * // returns true
- * longIs( [ 1, 2 ] );
  *
  * @example
+ * _.longIs( 10 );
  * // returns false
- * longIs( 10 );
  *
  * @example
- * // returns true
  * let isArr = ( function() {
  *   return _.longIs( arguments );
  * } )( 'Hello there!' );
+ * // returns true
  *
  * @returns { boolean } Returns true if {-srcMap-} is an array-like or an Array.
  * @function longIs.
@@ -1405,7 +1405,7 @@ function longShallowClone()
  * // returns [ 1, 2 ]
  *
  * @example
- * //end index is bigger then length of array
+ * // end index is bigger then length of array
  * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], 5, 100 );
  * // returns [ 6, 7 ]
  *
@@ -1492,46 +1492,46 @@ function longSlice( array, f, l )
  * @param { * } val - value used to fill the space left after copying elements of the original array.
  *
  * @example
- * //Just partial copy of origin array
+ * // just partial copy of origin array
  * let arr = [ 1, 2, 3, 4 ]
  * let result = _.longGrowInplace( arr, 0, 2 );
  * console.log( result );
- * //[ 1, 2 ]
+ * // log [ 1, 2 ]
  *
  * @example
- * //Increase size, fill empty with zeroes
+ * // increase size, fill empty with zeroes
  * let arr = [ 1 ]
  * let result = _.longGrowInplace( arr, 0, 5, 0 );
  * console.log( result );
- * //[ 1, 0, 0, 0, 0 ]
+ * // log [ 1, 0, 0, 0, 0 ]
  *
  * @example
- * //Take two last elements from original, other fill with zeroes
+ * // take two last elements from original, other fill with zeroes
  * let arr = [ 1, 2, 3, 4, 5 ]
  * let result = _.longGrowInplace( arr, 3, 8, 0 );
  * console.log( result );
- * //[ 4, 5, 0, 0, 0 ]
+ * // log [ 4, 5, 0, 0, 0 ]
  *
  * @example
- * //Add two zeroes at the beginning
+ * // add two zeroes at the beginning
  * let arr = [ 1, 2, 3, 4, 5 ]
  * let result = _.longGrowInplace( arr, -2, arr.length, 0 );
  * console.log( result );
- * //[ 0, 0, 1, 2, 3, 4, 5 ]
+ * // log [ 0, 0, 1, 2, 3, 4, 5 ]
  *
  * @example
- * //Add two zeroes at the beginning and two at end
+ * // add two zeroes at the beginning and two at end
  * let arr = [ 1, 2, 3, 4, 5 ]
  * let result = _.longGrowInplace( arr, -2, arr.length + 2, 0 );
  * console.log( result );
- * //[ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
+ * // log [ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
  *
  * @example
- * //Source can be also a BufferNode
+ * // Source can be also a BufferNode
  * let buffer = BufferNode.from( '123' );
  * let result = _.longGrowInplace( buffer, 0, buffer.length + 2, 0 );
  * console.log( result );
- * //[ 49, 50, 51, 0, 0 ]
+ * // log [ 49, 50, 51, 0, 0 ]
  *
  * @returns { Array } Returns resized copy of a part of an original array.
  * @function longGrowInplace
@@ -1772,16 +1772,16 @@ function longSelectInplace( array, range, val )
  * @param { Number } end - Index at which to end extraction.
  *
  * @example
+ * _.longRepresent( [ 1, 2, 3, 4, 5 ], 2, 4 );
  * // returns [ 3, 4 ]
- * let arr = _.longRepresent( [ 1, 2, 3, 4, 5 ], 2, 4 );
  *
  * @example
- * // returns [ 2, 3 ]
  * _.longRepresent( [ 1, 2, 3, 4, 5 ], -4, -2 );
+ * // returns [ 2, 3 ]
  *
  * @example
- * // returns [ 1, 2, 3, 4, 5 ]
  * _.longRepresent( [ 1, 2, 3, 4, 5 ] );
+ * // returns [ 1, 2, 3, 4, 5 ]
  *
  * @returns { Array } - Returns a shallow copy of a portion of an array into a new Array.
  * @function longRepresent
