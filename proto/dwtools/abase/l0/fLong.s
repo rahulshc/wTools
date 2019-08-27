@@ -1074,22 +1074,14 @@ function longIsPopulated( src )
 //
 
 /**
- * The longMakeUndefined() routine returns a new array or a new TypedArray with length equal (length)
+ * The longMake() routine returns a new array or a new TypedArray with length equal (length)
  * or new TypedArray with the same length of the initial array if second argument is not provided.
  *
  * @param { longIs } ins - The instance of an array.
  * @param { Number } [ length = ins.length ] - The length of the new array.
  *
- * @example
- * // returns [ , ,  ]
- * let arr = _.longMakeUndefined( [ 1, 2, 3 ] );
- *
- * @example
- * // returns [ , , ,  ]
- * let arr = _.longMakeUndefined( [ 1, 2, 3 ], 4 );
- *
  * @returns { longIs }  Returns an array with a certain (length).
- * @function longMakeUndefined
+ * @function longMake
  * @throws { Error } If the passed arguments is less than two.
  * @throws { Error } If the (length) is not a number.
  * @throws { Error } If the first argument in not an array like object.
@@ -1098,27 +1090,104 @@ function longIsPopulated( src )
  */
 
 /*
+qqq : extend coverage and documentation of longMake
+qqq : longMake does not create unrolls, but should
+*/
+
+function longMake( src, len )
+{
+  // let result, length;
+  let result;
+
+  if( src === null )
+  src = [];
+
+  if( _.longIs( len ) )
+  len = len.length;
+
+  if( len === undefined )
+  {
+    if( _.longIs( src ) )
+    len = src.length;
+    else if( _.numberIs( src ) )
+    len = src;
+    else _.assert( 0 );
+  }
+
+  if( !len )
+  len = 0;
+
+  if( _.argumentsArrayIs( src ) )
+  src = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIsFinite( len ) );
+  _.assert( _.routineIs( src ) || _.longIs( src ), () => 'Expects long, but got ' + _.strType( src ) );
+
+  if( _.routineIs( src ) )
+  {
+    result = new src( len );
+  }
+  else if( _.arrayIs( src ) )
+  {
+    if( len === src.length )
+    {
+      result = new( _.constructorJoin( src.constructor, src ) );
+    }
+    else if( len < src.length )
+    {
+      result = src.slice( 0, len );
+    }
+    else
+    {
+      result = new src.constructor( len );
+      let minLen = Math.min( len, src.length );
+      for( let i = 0 ; i < minLen ; i++ )
+      result[ i ] = src[ i ];
+    }
+  }
+  else
+  {
+    if( len === src.length )
+    {
+      result = new src.constructor( len );
+    }
+    else
+    {
+      result = new src.constructor( len );
+      let minLen = Math.min( len, src.length );
+      for( let i = 0 ; i < minLen ; i++ )
+      result[ i ] = src[ i ];
+    }
+  }
+
+  return result;
+}
+
+//
+
+/*
 qqq : extend coverage and documentation of longMakeUndefined
 qqq : longMakeUndefined does not create unrolls, but should
 */
 
-function longMakeUndefined( ins, src )
+function longMakeUndefined( ins, len )
 {
   let result, length;
 
   if( ins === null )
   ins = [];
 
-  if( src === undefined )
+  if( len === undefined )
   {
     length = ins.length;
   }
   else
   {
-    if( _.longIs( src ) )
-    length = src.length;
-    else if( _.numberIs( src ) )
-    length = src;
+    if( _.longIs( len ) )
+    length = len.length;
+    else if( _.numberIs( len ) )
+    length = len;
     else _.assert( 0 );
   }
 
@@ -1128,37 +1197,12 @@ function longMakeUndefined( ins, src )
   _.assert( !_.argumentsArrayIs( ins ), 'not tested' );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), () => 'Unknown type of array' + _.strType( ins ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ), () => 'Expects long, but got ' + _.strType( ins ) );
 
-  if( _.longIs( src ) )
-  {
-
-    if( ins.constructor === Array )
-    {
-      result = new( _.constructorJoin( ins.constructor, src ) );
-    }
-    else if( _.routineIs( ins ) )
-    {
-      if( ins.prototype.constructor.name === 'Array' )
-      result = _ArraySlice.call( src );
-      else
-      result = new ins( src );
-    }
-    else
-    {
-      result = new ins.constructor( src );
-    }
-
-  }
+  if( _.routineIs( ins ) )
+  result = new ins( length );
   else
-  {
-    _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-    if( _.routineIs( ins ) )
-    result = new ins( length );
-    else
-    result = new ins.constructor( length );
-  }
+  result = new ins.constructor( length );
 
   return result;
 }
@@ -1736,7 +1780,7 @@ function longRepresent( src, begin, end )
 function longBut( src, range, ins )
 {
 
-  _.assertInRange( arguments, [ 2, 4 ] );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
 
   if( _.arrayIs( src ) )
   return _.arrayBut( src, range, ins );
@@ -6420,12 +6464,12 @@ let Routines =
   longIs,
   longIsPopulated,
 
+  longMake,
   longMakeUndefined,
   longMakeZeroed,
 
   _longClone,
   longShallowClone,
-  // longMake : longShallowClone, /* xxx : uncomment later */
 
   longSlice,
   longBut,
