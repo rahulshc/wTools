@@ -143,11 +143,11 @@ function scalarAppendOnce( dst, src )
  * @param { Number } length - The length of the new array.
  *
  * @example
- * let arr = _.scalarToVector( 3, 7 );
+ * _.scalarToVector( 3, 7 );
  * // returns [ 3, 3, 3, 3, 3, 3, 3 ]
  *
  * @example
- * let arr = _.scalarToVector( [ 3, 7, 13 ], 3 );
+ * _.scalarToVector( [ 3, 7, 13 ], 3 );
  * // returns [ 3, 7, 13 ]
  *
  * @returns { Number[] | Array } - Returns the new array of static numbers or the original array.
@@ -1527,7 +1527,7 @@ function longSlice( array, f, l )
  * // log [ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
  *
  * @example
- * // Source can be also a BufferNode
+ * // source can be also a BufferNode
  * let buffer = BufferNode.from( '123' );
  * let result = _.longGrowInplace( buffer, 0, buffer.length + 2, 0 );
  * console.log( result );
@@ -2743,12 +2743,12 @@ function arrayRightDefined( arr )
  *
  * @example
  * // with equalizer
- * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+ * _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
  * // returns 4
  *
  * @example
  * // with evaluator
- * let arr = _.arrayCountElement( [ [ 10, 2 ], [ 10, 2 ], [ 'str', 10 ], [ 10, true ], [ false, 10 ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
+ * _.arrayCountElement( [ [ 10, 2 ], [ 10, 2 ], [ 'str', 10 ], [ 10, true ], [ false, 10 ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
  * // returns 4
  *
  * @returns { Number } - Returns the count of matched elements in the {-srcArray-} with the { element } element.
@@ -2834,8 +2834,8 @@ function arrayCountTotal( srcArray )
  * // returns 3
  *
  * @example
- * // returns 0
  * _.arrayCountUnique( [ 1, 2, 3, 4, 5 ] );
+ * // returns 0
  *
  * @returns { Number } - Returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array {-srcMap-}.
  * @function arrayCountUnique
@@ -3947,20 +3947,20 @@ function arrayAppend( dstArray, ins )
  * @param { * } src - The value to add.
  *
  * @example
- * // returns [ 1, 2, 3, 4, 5 ]
  * _.arrayAppendOnce( [ 1, 2, 3, 4 ], 5 );
- *
- * @example
  * // returns [ 1, 2, 3, 4, 5 ]
+ *
+ * @example
  * _.arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 5 );
+ * // returns [ 1, 2, 3, 4, 5 ]
  *
  * @example
- * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  * _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  *
  * @example
- * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  * _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  *
  * @returns { Array } If an array (dst) doesn't have a value {-srcMap-} it returns the updated array (dst) with the new length,
  * otherwise, it returns the original array (dst).
@@ -4160,8 +4160,8 @@ function arrayAppendedElementOnceStrictly( dstArray, ins )
 * @param {*} arguments[] - One or more argument(s) to add to the end of the (dst) array.
 *
 * @example
+* _.arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
 * // returns [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
-* let arr = _.arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
 *
 * @returns { Array } - Returns an array (dst) with all of the following argument(s) that were added to the end of the (dst) array.
 * @function arrayAppendArray
@@ -4202,8 +4202,8 @@ function arrayAppendArray( dstArray, insArray )
  * @param {*} arguments[] - One or more argument(s).
  *
  * @example
+ * _.arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
  * // returns [ 1, 2, 'str', {}, 5 ]
- * let arr = _.arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
  *
  * @returns { Array } - Returns an array (dst) with only unique following argument(s) that were added to the end of the (dst) array.
  * @function arrayAppendArrayOnce
@@ -4608,14 +4608,14 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
  * By default, it checks the equality of two arguments.
  *
  * @example
+ * _.arrayRemoveElementOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
  * // returns [ 1, 2, 3, 'str' ]
- * let arr = _.arrayRemoveElementOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
  *
  * @example
- * // returns [ 3, 7, 13, 33 ]
- * let arr = _.arrayRemoveElementOnce( [ 3, 7, 33, 13, 33 ], 13, function( el, ins ) {
+ * _.arrayRemoveElementOnce( [ 3, 7, 33, 13, 33 ], 13, function( el, ins ) {
  *   return el > ins;
  * });
+ * // returns [ 3, 7, 13, 33 ]
  *
  * @returns { Array } - Returns the modified (dstArray) array with the new length.
  * @function arrayRemoveElementOnce
@@ -4709,14 +4709,14 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
  * By default, it checks the equality of two arguments.
  *
  * @example
- * // returns 1
- * let arr = _.arrayRemovedElementOnce( [ 2, 4, 6 ], 4, function( el ) {
+ * _.arrayRemovedElementOnce( [ 2, 4, 6 ], 4, function( el ) {
  *   return el;
  * });
+ * // returns 1
  *
  * @example
+ * _.arrayRemovedElementOnce( [ 2, 4, 6 ], 2 );
  * // returns 0
- * let arr = _.arrayRemovedElementOnce( [ 2, 4, 6 ], 2 );
  *
  * @returns { Number } - Returns the index of the value (ins) that was removed from (dstArray).
  * @function arrayRemovedElementOnce
@@ -4892,18 +4892,18 @@ function arrayRemovedArray( dstArray, insArray )
  * @param { function } onEqualize - The callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns 0
  * _.arrayRemovedArrayOnce( [  ], [  ] );
+ * // returns 0
  *
  * @example
- * // returns 2
  * _.arrayRemovedArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ] );
+ * // returns 2
  *
  * @example
- * // returns 4
- * let got = _.arrayRemovedArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
+ * _.arrayRemovedArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
  *   return a < b;
  * } );
+ * // returns 4
  *
  * @returns { number }  Returns amount of the deleted elements from the (dstArray).
  * @function arrayRemovedArrayOnce
@@ -5139,12 +5139,12 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
  * @param { Function } [ evaluator = function( e ) { return e } ] - A callback function.
  *
  * @example
- * // returns [ 1, 2, 'abc', 4, true ]
  * _.arrayRemoveDuplicates( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+ * // returns [ 1, 2, 'abc', 4, true ]
  *
  * @example
- * // [ 1, 2, 3, 4, 5 ]
  * _.arrayRemoveDuplicates( [ 1, 2, 3, 4, 5 ] );
+ * // returns [ 1, 2, 3, 4, 5 ]
  *
  * @returns { Number } - Returns the source array without the duplicated elements.
  * @function arrayRemoveDuplicates
@@ -5217,8 +5217,8 @@ function arrayRemoveDuplicates( dstArray, evaluator )
  * @param {...*} arguments - One or more argument(s).
  *
  * @example
+ * _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
  * // returns [ 'str', {}, 1, 2, 5, true ]
- * let arr = _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
  *
  * @returns { Array } - Returns an array of the passed argument(s).
  * @function arrayFlatten
@@ -5802,20 +5802,20 @@ function arrayReplace( dstArray, ins, sub, evaluator1, evaluator2 )
  * @param { * } sub - The value to replace.
  *
  * @example
- * // returns -1
  * _.arrayReplaceOnce( [ 2, 4, 6, 8, 10 ], 12, 14 );
+ * // returns -1
  *
  * @example
- * // returns 1
  * _.arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
+ * // returns 1
  *
  * @example
- * // returns 3
  * _.arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
+ * // returns 3
  *
  * @example
- * // returns 4
  * _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );
+ * // returns 4
  *
  * @returns { number }  Returns the index of the (dstArray) array which will be replaced by (sub),
  * if (dstArray) has the value (ins).
@@ -6403,19 +6403,22 @@ function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evalua
  * @param { * } sub - The value to add or replace.
  *
  * @example
- * // returns 3
  * let add = _.arrayUpdate( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry', 'Dmitry' );
- * console.log( add ) = > [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
+ * // returns 3
+ * console.log( add );
+ * // log [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  *
  * @example
- * // returns 5
  * let add = _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6 );
- * console.log( add ) => [ 1, 2, 3, 4, 5, 6 ];
+ * // returns 5
+ * console.log( add );
+ * // log [ 1, 2, 3, 4, 5, 6 ]
  *
  * @example
- * // returns 4
  * let replace = _.arrayUpdate( [ true, true, true, true, false ], false, true );
- * console.log( replace ) => [ true, true true, true, true ];
+ * // returns 4
+ * console.log( replace );
+ * // log [ true, true true, true, true ]
  *
  * @returns { number } Returns the last added or the last replaced index.
  * @function arrayUpdate
