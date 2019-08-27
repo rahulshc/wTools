@@ -1855,8 +1855,8 @@ function longBut( src, range, ins )
 function bufferRawIs( src )
 {
   let type = Object.prototype.toString.call( src );
-  //let result = type === '[object ArrayBuffer]';
-  //return result;
+  // let result = type === '[object ArrayBuffer]';
+  // return result;
   if( type === '[object ArrayBuffer]' || type === '[object SharedArrayBuffer]' )
   return true;
   return false;
@@ -1943,12 +1943,12 @@ function constructorIsBuffer( src )
  * @param { * } src - The object to be checked.
  *
  * @example
+ * _.arrayIs( [ 1, 2 ] );
  * // returns true
- * arrayIs( [ 1, 2 ] );
  *
  * @example
+ * _.arrayIs( 10 );
  * // returns false
- * arrayIs( 10 );
  *
  * @returns { boolean } Returns true if {-srcMap-} is an Array.
  * @function arrayIs
@@ -2030,26 +2030,26 @@ function constructorLikeArray( src )
  * @param { * } src - The object to be checked.
  *
  * @example
+ * _.hasLength( [ 1, 2 ] );
  * // returns true
- * hasLength( [ 1, 2 ] );
  *
  * @example
+ * _.hasLength( 'Hello there!' );
  * // returns true
- * hasLength( 'Hello there!' );
  *
  * @example
- * // returns true
  * let isLength = ( function() {
  *   return _.hasLength( arguments );
  * } )( 'Hello there!' );
+ * // returns true
  *
  * @example
+ * _.hasLength( 10 );
  * // returns false
- * hasLength( 10 );
  *
  * @example
+ * _.hasLength( {} );
  * // returns false
- * hasLength( { } );
  *
  * @returns { boolean } Returns true if {-srcMap-} has the property (length).
  * @function hasLength
@@ -2089,8 +2089,8 @@ function arrayHasArray( arr )
  * @param { longIs } src2 - The second array.
  *
  * @example
+ * _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
  * // returns 3
- * let arr = _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
  *
  * @returns { Number } - Returns the first difference between the values of the two arrays.
  * @function arrayCompare
@@ -2129,8 +2129,8 @@ function arrayCompare( src1, src2 )
  * @param { longIs } src2 - The second array.
  *
  * @example
+ * _.arraysAreIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  * // returns true
- * let arr = _.arraysAreIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  *
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
  * @function arraysAreIdentical
@@ -2199,8 +2199,8 @@ function arrayHas( array, value, evaluator1, evaluator2 )
  * @param {...*} arguments - One or more argument(s).
  *
  * @example
+ * _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
  * // returns true
- * let arr = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
  *
  * @returns { Boolean } - Returns true, if {-srcMap-} has at least one value of the following argument(s), otherwise false is returned.
  * @function arrayHasAny
@@ -2388,12 +2388,12 @@ function arrayFrom( src )
  * @param { * } src - The source value.
  *
  * @example
+ * _.arrayAs( false );
  * // returns [ false ]
- * let arr = _.arrayAs( false );
  *
  * @example
+ * _.arrayAs( { a : 1, b : 2 } );
  * // returns [ { a : 1, b : 2 } ]
- * let arr = _.arrayAs( { a : 1, b : 2 } );
  *
  * @returns { Array } - If passed null or undefined than return the empty array. If passed an array then return it.
  * Otherwise return an array which contains the element from argument.
