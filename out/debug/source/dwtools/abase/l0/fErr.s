@@ -141,10 +141,10 @@ function _err( o )
   throw Error( '_err : o.args should be array like' );
 
   if( o.usingSourceCode === undefined )
-  o.usingSourceCode = _err.defaults.usingSourceCode;
+  o.usingSourceCode = _err.defaults ? _err.defaults.usingSourceCode : 0;
 
   if( o.condensingStack === undefined )
-  o.condensingStack = _err.defaults.condensingStack;
+  o.condensingStack = _err.defaults ? _err.defaults.condensingStack : 0;
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   if( _.debuggerEnabled )
@@ -176,7 +176,7 @@ function _err( o )
       arg = o.args[ a ] = arg();
       if( _.unrollIs( arg ) )
       {
-        o.args = _.longButRange( o.args, [ a, a+1 ], arg );
+        o.args = _.longBut( o.args, [ a, a+1 ], arg );
         a -= 1;
         continue;
       }
@@ -214,7 +214,7 @@ function _err( o )
         o.args[ a ] = arg.message || arg.msg || arg.constructor.name || 'unknown error';
         let fields = _.mapFields( arg );
         if( Object.keys( fields ).length )
-        o.args[ a ] += '\n' + _.toStr( fields,{ wrap : 0, multiline : 1, levels : 2 } );
+        o.args[ a ] += '\n' + _.toStr( fields, { wrap : 0, multiline : 1, levels : 2 } );
       }
 
       if( errors.length > 0 )
@@ -246,7 +246,7 @@ function _err( o )
   /* level */
 
   if( !_.numberIs( o.level ) )
-  o.level = _err.defaults.level;
+  o.level = _err.defaults ? _err.defaults.level : 1;
 
   /* make new one if no error in arguments */
 
@@ -271,6 +271,9 @@ function _err( o )
     {
       if( result.originalMessage !== undefined )
       {
+        if( result.originalStack )
+        stack = result.originalStack;
+        else
         stack = result.stack;
         stackCondensed = result.stackCondensed;
       }
@@ -377,7 +380,13 @@ function _err( o )
   nonenurable( 'message', message );
   nonenurable( 'originalMessage', originalMessage );
   nonenurable( 'level', o.level );
+
+  if( Config.platform === 'browser' )
+  nonenurable( 'stack', message );
+  else
   nonenurable( 'stack', stack );
+
+  nonenurable( 'originalStack', stack );
   nonenurable( 'stackCondensed', stackCondensed );
   if( o.briefly )
   nonenurable( 'briefly', o.briefly );
@@ -487,7 +496,7 @@ _err.defaults =
 
 function err()
 {
-  return _err
+  return _._err
   ({
     args : arguments,
     level : 2,
@@ -498,7 +507,7 @@ function err()
 
 function errBriefly()
 {
-  return _err
+  return _._err
   ({
     args : arguments,
     level : 2,
@@ -512,7 +521,7 @@ function errAttend( err, val )
 {
 
   if( arguments.length !== 1 || !_.errIsRefined( err ) )
-  err = _err
+  err = _._err
   ({
     args : arguments,
     level : 2,
@@ -665,7 +674,7 @@ function errLog()
 {
 
   let c = _global.logger || _global.console;
-  let err = _err
+  let err = _._err
   ({
     args : arguments,
     level : 2,
@@ -679,7 +688,7 @@ function errLog()
 function errLogOnce( err )
 {
 
-  err = _err
+  err = _._err
   ({
     args : arguments,
     level : 2,
@@ -731,7 +740,7 @@ function _errLog( err )
 function errOnce( err )
 {
 
-  err = _err
+  err = _._err
   ({
     args : arguments,
     level : 2,
@@ -806,7 +815,8 @@ function sure( condition )
     else
     throw _err
     ({
-      args : _.longSlice( arguments,1 ),
+      // args : _.longSlice( arguments,1 ),
+      args : _.longSlice( arguments, 1 ),
       level : 2,
     });
   }
@@ -846,7 +856,8 @@ function sureBriefly( condition )
     else
     throw _err
     ({
-      args : _.longSlice( arguments,1 ),
+      // args : _.longSlice( arguments,1 ),
+      args : _.longSlice( arguments, 1 ),
       level : 2,
       briefly : 1,
     });
@@ -884,7 +895,8 @@ function sureWithoutDebugger( condition )
     else
     throw _err
     ({
-      args : _.longSlice( arguments,1 ),
+      // args : _.longSlice( arguments,1 ),
+      args : _.longSlice( arguments, 1 ),
       level : 2,
     });
   }
@@ -912,7 +924,8 @@ function sureInstanceOrClass( _constructor, _this )
 function sureOwnNoConstructor( ins )
 {
   _.sure( _.objectLikeOrRoutine( ins ) );
-  let args = _.longSlice( arguments );
+  // let args = _.longSlice( arguments );
+  let args = Array.prototype.slice.call( arguments );
   args[ 0 ] = _.checkOwnNoConstructor( ins );
   _.sure.apply( _, args );
 }
@@ -984,12 +997,12 @@ function _assertDebugger( condition, args )
 {
   if( !_.debuggerEnabled )
   return;
-  let err = _err
+  let err = _._err
   ({
-    args : _.longSlice( args, 1 ),
+    // args : _.longSlice( args, 1 ),
+    args : Array.prototype.slice.call( args, 1 ),
     level : 3,
   });
-  // console.error( 'Assertion failed' );
   debugger;
 }
 
@@ -1019,7 +1032,8 @@ function assert( condition )
     else
     throw _err
     ({
-      args : _.longSlice( arguments,1 ),
+      // args : _.longSlice( arguments, 1 ),
+      args : Array.prototype.slice.call( arguments, 1 ),
       level : 2,
     });
   }
@@ -1061,7 +1075,8 @@ function assertWithoutBreakpoint( condition )
     else
     throw _err
     ({
-      args : _.longSlice( arguments,1 ),
+      // args : _.longSlice( arguments,1 ),
+      args : Array.prototype.slice.call( arguments, 1 ),
       level : 2,
     });
   }
@@ -1124,7 +1139,8 @@ function assertInstanceOrClass( _constructor, _this )
 function assertOwnNoConstructor( ins )
 {
   _.assert( _.objectLikeOrRoutine( ins ) );
-  let args = _.longSlice( arguments );
+  // let args = _.longSlice( arguments );
+  let args = Array.prototype.slice.call( arguments );
   args[ 0 ] = _.checkOwnNoConstructor( ins );
 
   if( args.length === 1 )

@@ -59,7 +59,7 @@ function makeSimilar( src,length )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  let result = _.longMake( src,length );
+  let result = _.longMakeUndefined( src,length );
 
   return result;
 }
