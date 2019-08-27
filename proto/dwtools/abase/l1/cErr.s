@@ -1035,17 +1035,18 @@ function diagnosticsStructureGenerate( o )
       currentLevel[ 'complexRegexp7' ] = /^[A-Za-z0-9]$/
     }
 
-    let bufferSrc = _.longFillTimes( [], o.bufferSize || o.fieldSize, 0 );
+    // let bufferSrc = _.longFillTimes( [], o.bufferSize || o.fieldSize, 0 );
+    let bufferSrc = _.longFill( [], 0, [ 0, o.bufferSize || o.fieldSize ] );
 
     if( o.bufferNode || o.buffer && o.buffer !== 2 )
-    if( typeof Buffer !== 'undefined' )
-    currentLevel[ 'bufferNode'] = Buffer.from( bufferSrc );
+    if( typeof BufferNode !== 'undefined' )
+    currentLevel[ 'bufferNode'] = BufferNode.from( bufferSrc );
 
     if( o.bufferRaw || o.buffer )
-    currentLevel[ 'bufferRaw'] = new ArrayBuffer( bufferSrc );
+    currentLevel[ 'bufferRaw'] = new BufferRaw( bufferSrc );
 
     if( o.bufferBytes || o.buffer && o.buffer !== 2)
-    currentLevel[ 'bufferBytes'] = new Uint8Array( bufferSrc );
+    currentLevel[ 'bufferBytes'] = new U8x( bufferSrc );
 
     if( o.map || o.structure )
     {
@@ -1062,12 +1063,14 @@ function diagnosticsStructureGenerate( o )
     }
 
     if( o.array || o.structure )
-    currentLevel[ 'array' ] = _.longFillTimes( [], o.arraySize || o.fieldSize, 0 )
+    currentLevel[ 'array' ] = _.longFill( [], 0, [ 0, o.arraySize || o.fieldSize ] )
+    // currentLevel[ 'array' ] = _.longFillTimes( [], o.arraySize || o.fieldSize, 0 )
 
     if( o.arrayComplex || o.structure > 1 )
     {
       let src = { a : '1', dir : { b : 2 }, c : [ 1, 2, 3 ] }
-      currentLevel[ 'arrayComplex' ] = _.longFillTimes( [], o.arraySize || o.fieldSize, src )
+      // currentLevel[ 'arrayComplex' ] = _.longFillTimes( [], o.arraySize || o.fieldSize, src )
+      currentLevel[ 'arrayComplex' ] = _.longFill( [], src, [ 0, o.arraySize || o.fieldSize ] )
     }
 
     if( o.recursion || o.structure > 2 )
