@@ -476,8 +476,9 @@ function routinesCompose( test )
     counter += 10;
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
-    // return _.arrayAppend_( null, arguments, counter );
-    return _.arrayAppendArrays( null, [ arguments, counter ] );
+    // return _.arrayAppend_( result, counter );
+    let result = _.arrayAppendArrays( null, arguments );
+    return _.arrayAppend( result, counter );
   }
 
   function r2()
@@ -629,7 +630,8 @@ function routinesComposeAll( test )
     for( var a = 0 ; a < arguments.length ; a++ )
     counter += arguments[ a ];
     // return _.arrayAppend_( null, arguments, counter );
-    return _.arrayAppendArrays( null, [ arguments, counter ] );
+    let result = _.arrayAppendArrays( null, arguments );
+    return _.arrayAppend( result, counter );
   }
 
   function r2()
@@ -722,7 +724,8 @@ function routinesComposeAllReturningLast( test )
     counter += arguments[ a ];
     debugger;
     // return _.arrayAppend_( null, arguments, counter );
-    return _.arrayAppendArrays( null, [ arguments, counter ] );
+    let result = _.arrayAppendArrays( null, arguments );
+    return _.arrayAppend( result, counter );
   }
 
   function r2()

@@ -253,16 +253,16 @@ function argumentsArrayFrom( src )
  * @param { * } src - The object to be checked.
  *
  * @example
- * // returns true
  * _.unrollIs( _.unrollMake( [ 1, 'str' ] ) );
+ * // returns true
  *
  * @example
- * // returns false
  * _.unrollIs( [] );
+ * // returns false
  *
  * @example
- * // returns false
  * _.unrollIs( 1 );
+ * // returns false
  *
  * @returns { boolean } Returns true if {-src-} is an unroll.
  * @function unrollIs
@@ -290,16 +290,16 @@ qqq : poor examples
  * @param { * } src - The object to be checked.
  *
  * @example
+ * _.unrollIs( _.unrollFrom( [ 1, 'str' ] ) );
  * // returns true
- * _.unrollIs( _.unrollMake( [ 1, 'str' ] ) );
  *
  * @example
- * // returns false
  * _.unrollIs( _.unrollMake( [] ) );
+ * // returns false
  *
  * @example
+ * _.unrollIs( [ 1 ] );
  * // returns false
- * _.unrollIs( 1 );
  *
  * @returns { boolean } Returns true if argument ( src ) is an unroll-array and has one or more elements ( length ).
  * @function unrollIsPopulated

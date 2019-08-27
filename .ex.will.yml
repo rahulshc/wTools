@@ -2,8 +2,8 @@
 about :
 
   name : 'wTools'
-  description : 'Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind'
-  version : '0.8.502'
+  description : 'Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind.'
+  version : '0.9.0'
   enabled : 1
   interpreters :
   - njs >= 8.0.0

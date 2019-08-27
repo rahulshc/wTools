@@ -339,20 +339,38 @@ function bufferBut( test )
   /* qqq : should work */
   test.case = '';
   var src = new ArrayBuffer( 10 );
-  var got = _.bufferBut( buffer, [ 1, 3 ], [ 1 ] );
-  test.identical( got, new U32x([ 2 ]) );
+  var got = _.bufferBut( src, [ 1, 3 ], [ 1 ] );
+  test.identical( got, new ArrayBuffer( [ 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 ] ) );
 
   /* qqq : should work */
   test.case = '';
   var src = Buffer.alloc( 10 );
-  var got = _.bufferBut( Buffer.alloc( 10 ), [ 1, 3 ], [ 1 ] );
-  test.identical( got, new U32x([ 2 ]) );
+  var got = _.bufferBut( src, [ 1, 3 ], [ 1 ] );
+  test.identical( got, Buffer.from( [ 0, 1, 0, 0, 0, 0, 0, 0, 0 ] ) );
 
   /* qqq : should work */
   test.case = '';
   var src = new ArrayBuffer( 10 );
-  var got = _.bufferBut( [ buffer ], [ 1, 3 ], [ 1 ] );
-  test.identical( got, new U32x([ 2 ]) );
+  var got = _.bufferBut( [ src ], [ 1, 3 ], [ 1 ] );
+  test.identical( got, new ArrayBuffer( [ 0, 1, 0, 0, 0, 0, 0, 0, 0 ] ) );
+
+  // /* qqq : should work */
+  // test.case = '';
+  // var src = new ArrayBuffer( 10 );
+  // var got = _.bufferBut( buffer, [ 1, 3 ], [ 1 ] );
+  // test.identical( got, new U32x([ 2 ]) );
+  //
+  // /* qqq : should work */
+  // test.case = '';
+  // var src = Buffer.alloc( 10 );
+  // var got = _.bufferBut( Buffer.alloc( 10 ), [ 1, 3 ], [ 1 ] );
+  // test.identical( got, new U32x([ 2 ]) );
+  //
+  // /* qqq : should work */
+  // test.case = '';
+  // var src = new ArrayBuffer( 10 );
+  // var got = _.bufferBut( [ buffer ], [ 1, 3 ], [ 1 ] );
+  // test.identical( got, new U32x([ 2 ]) );
 
   /* - */
 
@@ -434,24 +452,28 @@ function bufferResize( test )
 
   test.case = 'typed buffer, size < length';
   var src = new Uint16Array( 3 );
-  var got = _.bufferResize( src, 1 );
-  test.identical( got, new Uint16Array( 1 ) );
+  var got = _.bufferResize( src, 4 );
+  test.identical( got, new Uint16Array( 2 ) );
+  test.identical( got.byteLength, 4 );
   test.is( _.bufferTypedIs( got ) );
 
   var src = new Int8Array( [ 1, 2, 3 ] );
   var got = _.bufferResize( src, 1 );
   test.identical( got, new Int8Array( [ 1 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferTypedIs( got ) );
 
   test.case = 'typed buffer, size > length';
   var src = new Uint32Array( 1 );
-  var got = _.bufferResize( src, 4 );
-  test.identical( got, new Uint32Array( 4 ) );
+  var got = _.bufferResize( src, 8 );
+  test.identical( got, new Uint32Array( 2 ) );
+  test.identical( got.byteLength, 8 );
   test.is( _.bufferTypedIs( got ) );
 
   var src = new Float32Array( [ 1, 2, 3 ] );
-  var got = _.bufferResize( src, 5 );
+  var got = _.bufferResize( src, 20 );
   test.identical( got, new Float32Array( [ 1, 2, 3, 0, 0 ] ) );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferTypedIs( got ) );
 
   /* raw buffer */
@@ -460,6 +482,7 @@ function bufferResize( test )
   var src = new ArrayBuffer( 6 );
   var got = _.bufferResize( src, 1 );
   test.identical( got, new ArrayBuffer( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new ArrayBuffer( 6 );
@@ -469,11 +492,13 @@ function bufferResize( test )
   var view2 = new Uint8Array( got );
   test.notIdentical( got, new ArrayBuffer( 1 ) );
   test.identical( view2[ 0 ], 200 );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 6 );
   var got = _.bufferResize( src, 1 );
   test.identical( got, new SharedArrayBuffer( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 100 );
@@ -481,14 +506,15 @@ function bufferResize( test )
   view1[ 5 ] = 200;
   var got = _.bufferResize( src, 20 );
   var view2 = new Uint8Array( got );
-  // test.notIdentical( got, new SharedArrayBuffer( 20 ) );
   test.identical( view2[ 10 ], 200 );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferRawIs( got ) );
 
   test.case = 'raw buffer, size > length';
   var src = new ArrayBuffer( 6 );
   var got = _.bufferResize( src, 8 );
   test.identical( got, new ArrayBuffer( 8 ) );
+  test.identical( got.byteLength, 8 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new ArrayBuffer( 10 );
@@ -498,12 +524,13 @@ function bufferResize( test )
   var view2 = new Uint8Array( got );
   test.notIdentical( got, new ArrayBuffer( 20 ) );
   test.identical( view2[ 1 ], 200 );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 6 );
   var got = _.bufferResize( src, 10 );
-  debugger;
   test.identical( got, new SharedArrayBuffer( 10 ) );
+  test.identical( got.byteLength, 10 );
   test.is( _.bufferRawIs( got ) );
 
   var src = new SharedArrayBuffer( 16 );
@@ -511,9 +538,8 @@ function bufferResize( test )
   view1[ 5 ] = 200;
   var got = _.bufferResize( src, 30 );
   var view2 = new Uint8Array( got );
-  debugger;
-  // test.notIdentical( got, new SharedArrayBuffer( 30 ) );
   test.identical( view2[ 10 ], 200 );
+  test.identical( got.byteLength, 30 );
   test.is( _.bufferRawIs( got ) );
 
   /* view buffer */
@@ -554,23 +580,27 @@ function bufferResize( test )
   test.is( _.bufferViewIs( got ) );
 
   /* node buffer */
+
   if( Config.platform === 'nodejs' )
   {
   test.case = 'node buffer, size < length, alloc method';
   var src = Buffer.alloc( 6 );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.alloc( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   var src = Buffer.allocUnsafe( 6 );
   var got = _.bufferResize( src, 1 );
   test.identical( got.length, 1 );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size < length, from array';
   var src = Buffer.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.from( [ 1 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size < length, from buffer';
@@ -578,6 +608,7 @@ function bufferResize( test )
   var src = Buffer.from( buffer );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.alloc( 1 ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   var buffer = new ArrayBuffer( 10 );
@@ -586,6 +617,7 @@ function bufferResize( test )
   var src = Buffer.from( buffer );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.from( [ 10 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   var buffer = new ArrayBuffer( 10 );
@@ -594,33 +626,39 @@ function bufferResize( test )
   var src = Buffer.from( buffer );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.from( [ 10 ] ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size < length, from string';
   var src = Buffer.from( 'str' );
   var got = _.bufferResize( src, 1 );
   test.identical( got, Buffer.from( 's' ) );
+  test.identical( got.byteLength, 1 );
   test.is( _.bufferNodeIs( got ) );
 
   var src = Buffer.from( 'str', 'latin1' );
   var got = _.bufferResize( src, 2 );
   test.identical( got, Buffer.from( 'st', 'latin1' ) );
+  test.identical( got.byteLength, 2 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size > length, alloc method';
   var src = Buffer.alloc( 6 );
   var got = _.bufferResize( src, 8 );
   test.identical( got, Buffer.alloc( 8 ) );
+  test.identical( got.byteLength, 8 );
   test.is( _.bufferNodeIs( got ) );
 
   var src = Buffer.allocUnsafe( 6 );
   var got = _.bufferResize( src, 20 );
   test.identical( got.length, 20 );
+  test.identical( got.byteLength, 20 );
 
   test.case = 'node buffer, size > length, from array';
   var src = Buffer.from( [ 1, 2, 3, 4 ] );
   var got = _.bufferResize( src, 7 );
   test.identical( got, Buffer.from( [ 1, 2, 3, 4, 0, 0, 0 ] ) );
+  test.identical( got.byteLength, 7 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size > length, from buffer';
@@ -628,6 +666,7 @@ function bufferResize( test )
   var src = Buffer.from( buffer );
   var got = _.bufferResize( src, 20 );
   test.identical( got, Buffer.alloc( 20 ) );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferNodeIs( got ) );
 
   var buffer = Buffer.alloc( 10 );
@@ -636,6 +675,7 @@ function bufferResize( test )
   var got = _.bufferResize( src, 20 );
   test.notIdentical( got, Buffer.alloc( 20 ) );
   test.identical( got[ 5 ], 12 );
+  test.identical( got.byteLength, 20 );
   test.is( _.bufferNodeIs( got ) );
 
   var buffer = new ArrayBuffer( 10 );
@@ -645,17 +685,20 @@ function bufferResize( test )
   var got = _.bufferResize( src, 30 );
   test.notIdentical( got, Buffer.alloc( 30 ) );
   test.identical( got[ 0 ], 10 );
+  test.identical( got.byteLength, 30 );
   test.is( _.bufferNodeIs( got ) );
 
   test.case = 'node buffer, size > length, from string';
   var src = Buffer.from( 'str' );
   var got = _.bufferResize( src, 5 );
   test.identical( got, Buffer.from( [ 115, 116, 114, 0, 0 ] ) );
+  test.identical( got.byteLength, 5 );
   test.is( _.bufferNodeIs( got ) );
 
   var src = Buffer.from( 'str', 'base64' );
   var got = _.bufferResize( src, 7 );
   test.identical( got, Buffer.from( [ 178, 218, 0, 0, 0, 0, 0 ] ) );
+  test.identical( got.byteLength, 7 );
   test.is( _.bufferNodeIs( got ) );
   }
 
@@ -7101,6 +7144,287 @@ function arrayHasAny( test )
   });
 
 };
+
+//
+
+function scalarAppend( test )
+{
+  test.case = 'dst is undefined, src is undefined';
+  var dst = undefined;
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is undefined, src is longLike';
+  var dst = undefined;
+  var src = [ null, '', 1, [], [ 1, [ 2 ] ] ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, '', 1, [], [ 1, [ 2 ] ] ] );
+
+  test.case = 'dst is undefined, src is unroll';
+  var dst = undefined;
+  var src = _.unrollMake( [ null, '', 1 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, '', 1 ] );
+
+  test.case = 'dst is undefined, src is argumentsArray';
+  var dst = undefined;
+  var src = _.argumentsArrayMake( [ null, '', 1 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, '', 1 ] );
+
+  test.case = 'dst is undefined, src is buffer';
+  var dst = undefined;
+  var src = new Float32Array( [ 0, 2, 10 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 0, 2, 10 ] );
+
+  test.case = 'dst is undefined, src is string';
+  var dst = undefined;
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, 'str' );
+
+  test.case = 'dst is undefined, src is map';
+  var dst = undefined;
+  var src = { 'a' : 'str' };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, { 'a' : 'str' } );
+
+  /* dst is array */
+
+  test.case = 'dst is empty array, src is empty array';
+  var dst = [];
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+  test.is( got === dst );
+
+  test.case = 'dst is empty array, src is null';
+  var dst = [];
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is undefined';
+  var dst = [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ];
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is string';
+  var dst = [ 1, null, 'str', [] ];
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'str' ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is map';
+  var dst = [ 1, null, 'str', [] ];
+  var src = { 'a' : 1 };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], { 'a' : 1 } ] );
+  test.is( got === dst );
+
+  test.case = 'dst is array, src is array';
+  var dst = [ 1, null, 'str', [] ];
+  var src = [ 'src', 2, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'src', 2, undefined ] );
+  test.is( got === dst );
+
+  /* dst is unroll */
+
+  test.case = 'dst is empty unroll, src is empty array';
+  var dst = _.unrollMake( [] );
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+  test.is( got === dst );
+
+  test.case = 'dst is empty unroll, src is null';
+  var dst = _.unrollMake( [] );
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is undefined';
+  var dst = _.unrollMake( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is string';
+  var dst = _.unrollMake( [ 1, null, 'str', [] ] );
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'str' ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is map';
+  var dst = _.unrollMake( [ 1, null, 'str', [] ] );
+  var src = { 'a' : 1 };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], { 'a' : 1 } ] );
+  test.is( got === dst );
+
+  test.case = 'dst is unroll, src is array';
+  var dst = _.unrollMake( [ 1, null, 'str', [] ] );
+  var src = [ 'src', 2, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'src', 2, undefined ] );
+  test.is( got === dst );
+
+  /* dst is argumentsArray */
+
+  test.case = 'dst is empty unroll, src is empty array';
+  var dst = _.argumentsArrayMake( [] );
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is empty unroll, src is null';
+  var dst = _.argumentsArrayMake( [] );
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+
+  test.case = 'dst is unroll, src is undefined';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', '', 1, [], [ 1, [ 2 ] ] ] );
+
+  test.case = 'dst is unroll, src is string';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var src = 'str';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'str' ] );
+
+  test.case = 'dst is unroll, src is map';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var src = { 'a' : 1 };
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], { 'a' : 1 } ] );
+
+  test.case = 'dst is unroll, src is array';
+  var dst = _.argumentsArrayMake( [ 1, null, 'str', [] ] );
+  var src = [ 'src', 2, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, null, 'str', [], 'src', 2, undefined ] );
+
+  /* dst is buffer */
+
+  test.case = 'dst is empty buffer, src is undefined';
+  var dst = new Uint8Array();
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is empty buffer, src is empty array';
+  var dst = new Uint8Array();
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [] );
+
+  test.case = 'dst is buffer, src is undefined';
+  var dst = new Uint8Array( [ 1, 2, 0, 78 ] );
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78 ] );
+
+  test.case = 'dst is buffer, src is number';
+  var dst = new Int16Array( [ 1, 2, 0, 78 ] );
+  var src = 32;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78, 32 ] );
+
+  test.case = 'dst is buffer, src is empty array';
+  var dst = new Uint16Array( [ 1, 2, 0, 78 ] );
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78 ] );
+
+  test.case = 'dst is buffer, src is array';
+  var dst = new Int32Array( [ 1, 2, 0, 78 ] );
+  var src = [ 'str', null, undefined ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78, 'str', null, undefined ] );
+
+  test.case = 'dst is buffer, src is buffer';
+  var dst = new Uint32Array( [ 1, 2, 0, 78 ] );
+  var src = new Float32Array( [ 1, 2, 3, 4 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, 2, 0, 78, 1, 2, 3, 4 ] );
+
+  /* dst not undefined, not longLike */
+
+  test.case = 'dst is null, src is null';
+  var dst = null;
+  var src = null;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null, null ] );
+
+  test.case = 'dst is null, src is null';
+  var dst = null;
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, null );
+
+  test.case = 'dst is null, src is empty array';
+  var dst = null;
+  var src = [];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ null ] );
+
+  test.case = 'dst is string, src is string';
+  var dst = 'str';
+  var src = '';
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 'str', '' ] );
+
+  test.case = 'dst is string, src is string';
+  var dst = 'str';
+  var src = undefined;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, 'str' );
+
+  test.case = 'dst is number, src is string';
+  var dst = 1;
+  var src = [ '', 2, [], [ { a : 2 } ] ];
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ 1, '', 2, [], [ { a : 2 } ] ] );
+
+  test.case = 'dst is map, src is buffer';
+  var dst = { 'a' : 1 };
+  var src = new Uint8Array( [ 10, 20, 30 ] );
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [ { 'a' : 1 }, 10, 20, 30 ] );
+
+  /* */
+
+  test.case = 'dst === src';
+  var arr = [ 1, 2, 'str' ];
+  var dst = arr;
+  var src = arr;
+  var got = _.scalarAppend( dst, src );
+  test.identical( got, [  1, 2, 'str',  1, 2, 'str' ] );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong arguments.length';
+  test.shouldThrowErrorSync( () => _.scalarAppend() );
+  test.shouldThrowErrorSync( () => _.scalarAppend( 1 ) );
+  test.shouldThrowErrorSync( () => _.scalarAppend( 1, 2, 'str' ) );
+
+}
 
 //
 
@@ -22339,8 +22663,6 @@ var Self =
     arrayFrom,
     arrayFromCoercing,
 
-    scalarAppend,
-
     arrayMakeRandom,
     scalarToVector,
     arrayFromRange,
@@ -22403,6 +22725,10 @@ var Self =
     arraysAreIdentical,
 
     arrayHasAny,
+
+    // scalar
+
+    scalarAppend,
 
     // array sequential search
 
