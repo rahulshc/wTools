@@ -169,7 +169,8 @@ function scalarToVector( dst, length )
 
   if( _.numberIs( dst ) )
   {
-    dst = _.longFillTimes( [], length, dst );
+    dst = _.longFill( [], dst, [ 0, length ] );
+    // dst = _.longFillTimes( [], length, dst );
   }
   else
   {
@@ -3995,6 +3996,7 @@ function arrayAppendedOnce( dstArray, ins, evaluator1, evaluator2 )
   return -1;
 }
 
+//
 
 function arrayAppendedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
