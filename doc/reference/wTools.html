@@ -14568,10 +14568,10 @@ _.arraySpliceArray( [ 1, 2, 3, 4, 5 ], [  ], 1, 2 );</code></pre>
 
     
 
-    <h4 class="name" id=".arraySub"><span class="type-signature">(static) </span>arraySub<span class="signature">(src, begin, end)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    <h4 class="name" id=".longRepresent"><span class="type-signature">(static) </span>longRepresent<span class="signature">(src, begin, end)</span><span class="type-signature"> &rarr; {Array}</span></h4>
 
     
-    <p class="summary"><p>The arraySub() method returns a shallow copy of a portion of an array
+    <p class="summary"><p>The longRepresent() method returns a shallow copy of a portion of an array
 or a new TypedArray that contains
 the elements from (begin) index to the (end) index,
 but not including (end).</p></p>
@@ -14580,7 +14580,7 @@ but not including (end).</p></p>
 
 
 <div class="description">
-    <p>The arraySub() method returns a shallow copy of a portion of an array
+    <p>The longRepresent() method returns a shallow copy of a portion of an array
 or a new TypedArray that contains
 the elements from (begin) index to the (end) index,
 but not including (end).</p>
@@ -14830,13 +14830,13 @@ but not including (end).</p>
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>// returns [ 3, 4 ]
-var arr = _.arraySub( [ 1, 2, 3, 4, 5 ], 2, 4 );</code></pre>
+var arr = _.longRepresent( [ 1, 2, 3, 4, 5 ], 2, 4 );</code></pre>
 
     <pre class="prettyprint"><code>// returns [ 2, 3 ]
-_.arraySub( [ 1, 2, 3, 4, 5 ], -4, -2 );</code></pre>
+_.longRepresent( [ 1, 2, 3, 4, 5 ], -4, -2 );</code></pre>
 
     <pre class="prettyprint"><code>// returns [ 1, 2, 3, 4, 5 ]
-_.arraySub( [ 1, 2, 3, 4, 5 ] );</code></pre>
+_.longRepresent( [ 1, 2, 3, 4, 5 ] );</code></pre>
 
 
 
