@@ -339,20 +339,38 @@ function bufferBut( test )
   /* qqq : should work */
   test.case = '';
   var src = new ArrayBuffer( 10 );
-  var got = _.bufferBut( buffer, [ 1, 3 ], [ 1 ] );
-  test.identical( got, new U32x([ 2 ]) );
+  var got = _.bufferBut( src, [ 1, 3 ], [ 1 ] );
+  test.identical( got, new ArrayBuffer( [ 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 ] ) );
 
   /* qqq : should work */
   test.case = '';
   var src = Buffer.alloc( 10 );
-  var got = _.bufferBut( Buffer.alloc( 10 ), [ 1, 3 ], [ 1 ] );
-  test.identical( got, new U32x([ 2 ]) );
+  var got = _.bufferBut( src, [ 1, 3 ], [ 1 ] );
+  test.identical( got, Buffer.from( [ 0, 1, 0, 0, 0, 0, 0, 0, 0 ] ) );
 
   /* qqq : should work */
   test.case = '';
   var src = new ArrayBuffer( 10 );
-  var got = _.bufferBut( [ buffer ], [ 1, 3 ], [ 1 ] );
-  test.identical( got, new U32x([ 2 ]) );
+  var got = _.bufferBut( [ src ], [ 1, 3 ], [ 1 ] );
+  test.identical( got, new ArrayBuffer( [ 0, 1, 0, 0, 0, 0, 0, 0, 0 ] ) );
+
+  // /* qqq : should work */
+  // test.case = '';
+  // var src = new ArrayBuffer( 10 );
+  // var got = _.bufferBut( buffer, [ 1, 3 ], [ 1 ] );
+  // test.identical( got, new U32x([ 2 ]) );
+  //
+  // /* qqq : should work */
+  // test.case = '';
+  // var src = Buffer.alloc( 10 );
+  // var got = _.bufferBut( Buffer.alloc( 10 ), [ 1, 3 ], [ 1 ] );
+  // test.identical( got, new U32x([ 2 ]) );
+  //
+  // /* qqq : should work */
+  // test.case = '';
+  // var src = new ArrayBuffer( 10 );
+  // var got = _.bufferBut( [ buffer ], [ 1, 3 ], [ 1 ] );
+  // test.identical( got, new U32x([ 2 ]) );
 
   /* - */
 
@@ -562,7 +580,7 @@ function bufferResize( test )
   test.is( _.bufferViewIs( got ) );
 
   /* node buffer */
-  
+
   if( Config.platform === 'nodejs' )
   {
   test.case = 'node buffer, size < length, alloc method';
