@@ -366,7 +366,7 @@ qqq : implement unrollMakeUndefined similar to longMakeUndefined, cover and docu
 function unrollMakeUndefined( src, length )
 {
   let result = _.arrayMakeUndefined( src, length );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.arrayIs( result ) );
   result[ _.unroll ] = true;
   return result;
@@ -610,7 +610,7 @@ function unrollSelect( array, range, val )
   return _.unrollMake( array );
 
   if( _.numberIs( range ) )
-  range = [ range, Infinity ];
+  range = [ range, array.length ];
 
   let f = range ? range[ 0 ] : undefined;
   let l = range ? range[ 1 ] : undefined;
@@ -1555,7 +1555,7 @@ function longSelect( array, range, val )
   return _.longShallowClone( array );
 
   if( _.numberIs( range ) )
-  range = [ range, Infinity ];
+  range = [ range, array.length ];
 
   let f = range ? range[ 0 ] : undefined;
   let l = range ? range[ 1 ] : undefined;
@@ -1623,7 +1623,7 @@ function longSelectInplace( array, range, val )
   return array;
 
   if( _.numberIs( range ) )
-  range = [ range, Infinity ];
+  range = [ range, array.length ];
 
   let f = range ? range[ 0 ] : undefined;
   let l = range ? range[ 1 ] : undefined;
@@ -2378,7 +2378,8 @@ function arrayBut( src, range, ins )
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
-  _.assert( _.arrayLikeResizable( src ) );
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) );
   _.assert( ins === undefined || _.longIs( ins ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
@@ -2404,7 +2405,8 @@ function arrayBut( src, range, ins )
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
-  _.assert( _.arrayLikeResizable( src ) );
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) );
   _.assert( ins === undefined || _.longIs( ins ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
@@ -2431,6 +2433,7 @@ function arrayButInplace( src, range, ins )
   range = [ range, range + 1 ];
 
   _.assert( _.arrayLikeResizable( src ) );
+  _.assert( _.rangeIs( range ) );
   _.assert( ins === undefined || _.longIs( ins ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 

@@ -437,14 +437,14 @@ function bufferBut( dstArray, range, srcArray )
 {
 
   if( !_.bufferAnyIs( dstArray ) )
-  return _.longBut( srcArray, range, srcArray );
+  return _.longBut( dstArray, range, srcArray );
 
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-  _.assert( _.arrayIs( range ) );
+  _.assert( _.rangeIs( range ) );
   // _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
 
@@ -466,11 +466,14 @@ function bufferBut( dstArray, range, srcArray )
   // if( _.bufferAnyIs( dstArray ) )
   // {
 
-    if( first === last )
-    return _.bufferMake( dstArray );
+    // if( first === last )
+    // return _.bufferMake( dstArray );
 
     // if( first === last )
     // return dstArray;
+
+    // if( first === last )
+    // debugger;
 
     let newLength = length - last + first;
     let srcArrayLength = 0;
