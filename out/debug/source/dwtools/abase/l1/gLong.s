@@ -1766,104 +1766,104 @@ longDuplicate.defaults =
 
 /* qqq : routine longUnduplicate requires good test coverage and documentation */
 
-function longUnduplicate( dstLong, onEvaluate )
+// function longUnduplicate( dstLong, onEvaluate )
+// {
+//   _.assert( 1 <= arguments.length || arguments.length <= 2 );
+//   _.assert( _.longIs( dstLong ), 'Expects Long' );
+//
+//   if( _.arrayIs( dstLong ) )
+//   return _.arrayRemoveDuplicates( dstLong, onEvaluate );
+//
+//   if( !dstLong.length )
+//   return dstLong;
+//
+//   let length = dstLong.length;
+//
+//   for( let i = 0; i < dstLong.length; i++ )
+//   if( _.arrayLeftIndex( dstLong, dstLong[ i ], i+1, onEvaluate ) !== -1 )
+//   length--;
+//
+//   if( length === dstLong.length )
+//   return dstLong;
+//
+//   let result = _.longMakeUndefined( dstLong, length );
+//   result[ 0 ] = dstLong[ 0 ];
+//
+//   let j = 1;
+//   for( let i = 1; i < dstLong.length && j < length; i++ )
+//   if( _.arrayRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
+//   result[ j++ ] = dstLong[ i ];
+//
+//   _.assert( j === length );
+//
+//   return result;
+// }
+
+//
+
+function longUnduplicate( dst, src, onEvaluate )
 {
-  _.assert( 1 <= arguments.length || arguments.length <= 2 );
-  _.assert( _.longIs( dstLong ), 'Expects Long' );
 
-  if( _.arrayIs( dstLong ) )
-  return _.arrayRemoveDuplicates( dstLong, onEvaluate );
+  if( _.routineIs( arguments[ 1 ] ) && arguments[ 2 ] === undefined )
+  {
+    onEvaluate = arguments[ 1 ];
+    src = undefined;
+  }
 
-  if( !dstLong.length )
-  return dstLong;
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( dst === null || _.arrayIs( dst ) );
+  _.assert( src === undefined || _.longIs( src ) );
+  _.assert( onEvaluate === undefined || _.routineIs( onEvaluate ) );
 
-  let length = dstLong.length;
+  if( src && dst )
+  {
+    dst = _.arrayAppendArraysOnce( dst, src );
+    src = undefined;
+  }
 
-  for( let i = 0; i < dstLong.length; i++ )
-  if( _.arrayLeftIndex( dstLong, dstLong[ i ], i+1, onEvaluate ) !== -1 )
-  length--;
+  if( src )
+  {
+    _.assert( dst === null );
+    let unique = _.longHasUniques
+    ({
+      src,
+      onEvaluate : onEvaluate,
+      includeFirst : 1,
+    });
 
-  if( length === dstLong.length )
-  return dstLong;
+    let result = _.longMakeUndefined( src, unique.number );
 
-  let result = _.longMakeUndefined( dstLong, length );
-  result[ 0 ] = dstLong[ 0 ];
+    let c = 0;
+    for( let i = 0 ; i < src.length ; i++ )
+    if( unique.is[ i ] )
+    {
+      result[ c ] = src[ i ];
+      c += 1;
+    }
 
-  let j = 1;
-  for( let i = 1; i < dstLong.length && j < length; i++ )
-  if( _.arrayRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
-  result[ j++ ] = dstLong[ i ];
+    return result;
+  }
+  else if( dst )
+  {
+    let unique = _.longHasUniques
+    ({
+      src : dst,
+      onEvaluate : onEvaluate,
+      includeFirst : 1,
+    });
 
-  _.assert( j === length );
+    for( let i = dst.length-1 ; i >= 0 ; i-- )
+    if( !unique.is[ i ] )
+    {
+      dst.splice( i, 1 );
+    }
 
-  return result;
+    return dst;
+  }
+  else _.assert( 0 );
+
 }
 
-
-// function longUnduplicate( dst, src, onEvaluate )
-// {
-//
-//   if( _.routineIs( arguments[ 1 ] ) && arguments[ 2 ] === undefined )
-//   {
-//     onEvaluate = arguments[ 1 ];
-//     src = undefined;
-//   }
-//
-//   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-//   _.assert( dst === null || _.arrayIs( dst ) );
-//   _.assert( src === undefined || _.longIs( src ) );
-//   _.assert( onEvaluate === undefined || _.routineIs( onEvaluate ) );
-//
-//   if( src && dst )
-//   {
-//     dst = _.arrayAppendArraysOnce( dst, src );
-//     src = undefined;
-//   }
-//
-//   if( src )
-//   {
-//     _.assert( dst === null );
-//     let unique = _.longHasUniques
-//     ({
-//       src,
-//       onEvaluate : onEvaluate,
-//       includeFirst : 1,
-//     });
-//
-//     let result = _.longMakeUndefined( src, unique.number );
-//
-//     let c = 0;
-//     for( let i = 0 ; i < src.length ; i++ )
-//     if( unique.is[ i ] )
-//     {
-//       result[ c ] = src[ i ];
-//       c += 1;
-//     }
-//
-//     return result;
-//   }
-//   else if( dst )
-//   {
-//     let unique = _.longHasUniques
-//     ({
-//       src : dst,
-//       onEvaluate : onEvaluate,
-//       includeFirst : 1,
-//     });
-//
-//     for( let i = dst.length-1 ; i >= 0 ; i-- )
-//     if( !unique.is[ i ] )
-//     {
-//       dst.splice( i, 1 );
-//     }
-//
-//     return dst;
-//   }
-//   else _.assert( 0 );
-//
-// }
-//
-//
 
 // function longUnduplicate( dstLong, onEvaluate )
 // {
