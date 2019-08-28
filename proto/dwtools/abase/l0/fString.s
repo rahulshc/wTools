@@ -21,7 +21,7 @@ let Self = _global_.wTools;
  *
  * @example
  * _.strIsIs( 'song' );
- * //returns true
+ * // returns true
  *
  * @example
  * _.strIs( 5 );
@@ -833,11 +833,11 @@ function strEnds( src, end )
  *
  * @example
  * _.strBeginOf( 'abc', 'c' );
- * //returns 'ab'
+ * // returns 'ab'
  *
  * @example
  * _.strBeginOf( 'abc', 'x' );
- * //returns undefined
+ * // returns undefined
  *
  * @returns { String } Returns part of source string without tail( end ) or undefined.
  * @throws { Exception } If all arguments are not strings;
@@ -872,27 +872,27 @@ function strBeginOf( src, begin )
 //
 
 /**
-  * Finds occurrence of( begin ) at the begining of source( src ) and removes it if exists.
-  * Returns end part of a source string if occurrence was finded or empty string if arguments are equal, otherwise returns undefined.
-  * otherwise returns undefined.
-  *
-  * @param { String } src - The source string.
-  * @param { String } begin - String to find.
-  *
-  * @example
-  * _.strEndOf( 'abc', 'a' );
-  * //returns 'bc'
-  *
-  * @example
-  * _.strEndOf( 'abc', 'c' );
-  * //returns undefined
-  *
-  * @returns { String } Returns part of source string without head( begin ) or undefined.
-  * @throws { Exception } If all arguments are not strings;
-  * @throws { Exception } If ( argumets.length ) is not equal 2.
-  * @function strEndOf
-  * @memberof wTools
-  */
+ * Finds occurrence of( begin ) at the begining of source( src ) and removes it if exists.
+ * Returns end part of a source string if occurrence was finded or empty string if arguments are equal, otherwise returns undefined.
+ * otherwise returns undefined.
+ *
+ * @param { String } src - The source string.
+ * @param { String } begin - String to find.
+ *
+ * @example
+ * _.strEndOf( 'abc', 'a' );
+ * // returns 'bc'
+ *
+ * @example
+ * _.strEndOf( 'abc', 'c' );
+ * // returns undefined
+ *
+ * @returns { String } Returns part of source string without head( begin ) or undefined.
+ * @throws { Exception } If all arguments are not strings;
+ * @throws { Exception } If ( argumets.length ) is not equal 2.
+ * @function strEndOf
+ * @memberof wTools
+ */
 
 function strEndOf( src, end )
 {
@@ -920,45 +920,45 @@ function strEndOf( src, end )
 //
 
 /**
-  * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
-  * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
-  * Otherwise returns undefined.
-  *
-  * @param { String } src - The source string.
-  * @param { String } begin - String to find from begin of source.
-  * @param { String } end - String to find from end source.
-  *
-  * @example
-  * _.strInsideOf( 'abcd', 'a', 'd' );
-  * //returns 'bc'
-  *
-  * @example
-  * _.strInsideOf( 'aabcc', 'a', 'c' );
-  * //returns 'aabcc'
-  *
-  * @example
-  * _.strInsideOf( 'aabcc', 'a', 'a' );
-  * //returns 'a'
-  *
-  * @example
-  * _.strInsideOf( 'abc', 'a', 'a' );
-  * //returns undefined
-  *
-  * @example
-  * _.strInsideOf( 'abcd', 'x', 'y' )
-  * //returns undefined
-  *
-  * @example
-  * //index of begin is bigger then index of end
-  * _.strInsideOf( 'abcd', 'c', 'a' )
-  * //returns undefined
-  *
-  * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
-  * @throws { Exception } If all arguments are not strings;
-  * @throws { Exception } If ( argumets.length ) is not equal 3.
-  * @function strInsideOf
-  * @memberof wTools
-  */
+ * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
+ * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
+ * Otherwise returns undefined.
+ *
+ * @param { String } src - The source string.
+ * @param { String } begin - String to find from begin of source.
+ * @param { String } end - String to find from end source.
+ *
+ * @example
+ * _.strInsideOf( 'abcd', 'a', 'd' );
+ * // returns 'bc'
+ *
+ * @example
+ * _.strInsideOf( 'aabcc', 'a', 'c' );
+ * // returns 'aabcc'
+ *
+ * @example
+ * _.strInsideOf( 'aabcc', 'a', 'a' );
+ * // returns 'a'
+ *
+ * @example
+ * _.strInsideOf( 'abc', 'a', 'a' );
+ * // returns undefined
+ *
+ * @example
+ * _.strInsideOf( 'abcd', 'x', 'y' )
+ * // returns undefined
+ *
+ * @example
+ * // index of begin is bigger then index of end
+ * _.strInsideOf( 'abcd', 'c', 'a' )
+ * // returns undefined
+ *
+ * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
+ * @throws { Exception } If all arguments are not strings;
+ * @throws { Exception } If ( argumets.length ) is not equal 3.
+ * @function strInsideOf
+ * @memberof wTools
+ */
 
 function strInsideOf( src, begin, end )
 {
@@ -1015,12 +1015,12 @@ function strOutsideOf( src, begin, end )
  * @returns { String } Returns string with result of prefix removement.
  *
  * @example
- * //returns mple
  * _.strRemoveBegin( 'example', 'exa' );
+ * // returns mple
  *
  * @example
- * //returns example
  * _.strRemoveBegin( 'example', 'abc' );
+ * // returns example
  *
  * @function strRemoveBegin
  * @throws { Exception } Throws a exception if( src ) is not a String.
@@ -1053,12 +1053,12 @@ function strRemoveBegin( src, begin )
  * @returns { String } Returns string with result of postfix removement.
  *
  * @example
- * //returns examp
  * _.strRemoveEnd( 'example', 'le' );
+ * // returns examp
  *
  * @example
- * //returns example
  * _.strRemoveEnd( 'example', 'abc' );
+ * // returns example
  *
  * @function strRemoveEnd
  * @throws { Exception } Throws a exception if( src ) is not a String.
@@ -1085,28 +1085,28 @@ function strRemoveEnd( src, end )
 //
 
 /**
-* Finds substring or regexp ( insStr ) first occurrence from the source string ( srcStr ) and removes it.
-* Returns original string if source( src ) does not have occurrence of ( insStr ).
-*
-* @param { String } srcStr - Source string to parse.
-* @param { String } insStr - String/RegExp that is to be dropped.
-* @returns { String } Returns string with result of substring removement.
-*
-* @example
-* //returns ource tring
-* _.strRemove( 'source string', 's' );
-*
-* @example
-* //returns example
-* _.strRemove( 'example', 's' );
-*
-* @function strRemove
-* @throws { Exception } Throws a exception if( srcStr ) is not a String.
-* @throws { Exception } Throws a exception if( insStr ) is not a String or a RegExp.
-* @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
-* @memberof wTools
-*
-*/
+ * Finds substring or regexp ( insStr ) first occurrence from the source string ( srcStr ) and removes it.
+ * Returns original string if source( src ) does not have occurrence of ( insStr ).
+ *
+ * @param { String } srcStr - Source string to parse.
+ * @param { String } insStr - String/RegExp that is to be dropped.
+ * @returns { String } Returns string with result of substring removement.
+ *
+ * @example
+ * _.strRemove( 'source string', 's' );
+ * // returns ource tring
+ *
+ * @example
+ * _.strRemove( 'example', 's' );
+ * // returns example
+ *
+ * @function strRemove
+ * @throws { Exception } Throws a exception if( srcStr ) is not a String.
+ * @throws { Exception } Throws a exception if( insStr ) is not a String or a RegExp.
+ * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
+ * @memberof wTools
+ *
+ */
 
 function strRemove( srcStr, insStr )
 {
