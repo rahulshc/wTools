@@ -26,7 +26,7 @@ let _floor = Math.floor;
  * @returns Returns true if ( src ) is a Number, otherwise returns false.
  *
  * @example
- * //returns true
+ * // returns true
  * numberIs( 5 );
  * @example
  * // returns false
