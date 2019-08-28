@@ -1054,6 +1054,8 @@ function longIs( src )
   return false;
   if( _.strIs( src ) )
   return false;
+  if( _.bufferNodeIs( src ) )
+  return false;
 
   if( Object.propertyIsEnumerable.call( src, 'length' ) )
   return false;
@@ -1095,7 +1097,114 @@ qqq : extend coverage and documentation of longMake
 qqq : longMake does not create unrolls, but should
 */
 
-function longMake( src, len )
+function longMake( src, ins )
+{
+  // let result, length;
+  let result;
+  let length = ins;
+
+  if( src === null )
+  src = [];
+
+  if( _.longIs( length ) )
+  length = length.length;
+
+  if( length === undefined )
+  {
+    if( _.longIs( src ) )
+    length = src.length;
+    else if( _.numberIs( src ) )
+    length = src;
+    else _.assert( 0 );
+  }
+
+  if( !_.longIs( ins ) )
+  {
+    if( _.longIs( src ) )
+    ins = src;
+    else
+    ins = [];
+  }
+
+  if( !length )
+  length = 0;
+
+  if( _.argumentsArrayIs( src ) )
+  src = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.routineIs( src ) || _.longIs( src ), () => 'Expects long, but got ' + _.strType( src ) );
+
+  if( _.routineIs( src ) )
+  {
+    if( ins.length === length )
+    {
+      debugger;
+      if( src === Array )
+      {
+        if( _.longIs( ins ) )
+        {
+          if( ins.length === 1 )
+          result = [ ins[ 0 ] ];
+          else
+          result = new( _.constructorJoin( src, ins ) );
+        }
+        else
+        {
+          result = new src( ins );
+        }
+      }
+      else
+      {
+        result = new src( ins );
+      }
+    }
+    else
+    {
+      result = new src( length );
+      let minLen = Math.min( length, ins.length );
+      for( let i = 0 ; i < minLen ; i++ )
+      result[ i ] = ins[ i ];
+    }
+  }
+  else if( _.arrayIs( src ) )
+  {
+    if( length === ins.length )
+    {
+      result = new( _.constructorJoin( src.constructor, ins ) );
+    }
+    else
+    {
+      result = new src.constructor( length );
+      let minLen = Math.min( length, ins.length );
+      for( let i = 0 ; i < minLen ; i++ )
+      result[ i ] = ins[ i ];
+    }
+  }
+  else
+  {
+    if( length === ins.length )
+    {
+      result = new src.constructor( ins );
+    }
+    else
+    {
+      result = new src.constructor( length );
+      let minLen = Math.min( length, ins.length );
+      for( let i = 0 ; i < minLen ; i++ )
+      result[ i ] = ins[ i ];
+    }
+  }
+
+  _.assert( _.longIs( result ) );
+
+  return result;
+}
+
+//
+
+function _longMakeOfLength( src, len )
 {
   // let result, length;
   let result;
@@ -1588,19 +1697,12 @@ function longGrowInplace( array, range, val )
 
 //
 
-/*
-  qqq : extend documentation and test coverage of longSelect
-*/
-
-function longSelect( array, range, val )
+function longGrow( array, range, val )
 {
   let result;
 
   if( range === undefined )
-  return _.longShallowClone( array );
-
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
+  return _.longMake( array );
 
   let f = range ? range[ 0 ] : undefined;
   let l = range ? range[ 1 ] : undefined;
@@ -1610,7 +1712,10 @@ function longSelect( array, range, val )
 
   _.assert( _.longIs( array ) );
   _.assert( _.rangeIs( range ) )
+  // _.assert( _.numberIs( f ) );
+  // _.assert( _.numberIs( l ) );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  // _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( l < f )
   l = f;
@@ -1621,8 +1726,18 @@ function longSelect( array, range, val )
     f -= f;
   }
 
-  if( f === 0 && l === array.length )
-  return _.longShallowClone( array );
+  // if( _.bufferTypedIs( array ) )
+  // result = new array.constructor( l-f );
+  // else
+  // result = new Array( l-f );
+
+  if( f > 0 )
+  f = 0;
+  if( l < array.length )
+  l = array.length;
+
+  if( l === array.length )
+  return _.longMake( array );
 
   result = _.longMakeUndefined( array, l-f );
 
@@ -1655,6 +1770,81 @@ function longSelect( array, range, val )
 //
 
 /*
+  qqq : extend documentation and test coverage of longSelect
+*/
+
+function longSelect( array, range, val )
+{
+  let result;
+
+  if( range === undefined )
+  return _.longShallowClone( array );
+
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  // let f = range ? range[ 0 ] : undefined;
+  // let l = range ? range[ 1 ] : undefined;
+  //
+  // f = f !== undefined ? f : 0;
+  // l = l !== undefined ? l : array.length;
+
+  _.assert( _.longIs( array ) );
+  _.assert( _.rangeIs( range ) )
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  // if( f < 0 )
+  // {
+  //   l -= f;
+  //   f -= f;
+  // }
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  // if( l < f )
+  // l = f;
+
+  // if( f < 0 )
+  // f = 0;
+  // if( l > array.length )
+  // l = array.length;
+
+  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+  return _.longShallowClone( array );
+
+  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
+
+  /* */
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-range[ 0 ] ] = array[ r ];
+
+  /* */
+
+  if( val !== undefined )
+  {
+    for( let r = 0 ; r < -range[ 0 ] ; r++ )
+    {
+      result[ r ] = val;
+    }
+    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
+    {
+      result[ r ] = val;
+    }
+  }
+
+  /* */
+
+  return result;
+}
+
+//
+
+/*
   qqq : extend documentation and test coverage of longSelectInplace
   qqq : implement arraySelect
   qqq : implement arraySelectInplace
@@ -1670,11 +1860,11 @@ function longSelectInplace( array, range, val )
   if( _.numberIs( range ) )
   range = [ range, array.length ];
 
-  let f = range ? range[ 0 ] : undefined;
-  let l = range ? range[ 1 ] : undefined;
-
-  f = f !== undefined ? f : 0;
-  l = l !== undefined ? l : array.length;
+  // let f = range ? range[ 0 ] : undefined;
+  // let l = range ? range[ 1 ] : undefined;
+  //
+  // f = f !== undefined ? f : 0;
+  // l = l !== undefined ? l : array.length;
 
   _.assert( _.longIs( array ) );
   _.assert( _.rangeIs( range ) )
@@ -1683,16 +1873,19 @@ function longSelectInplace( array, range, val )
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
   // _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  if( l < f )
-  l = f;
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
 
-  if( f < 0 )
-  {
-    l -= f;
-    f -= f;
-  }
+  // if( l < f )
+  // l = f;
+  //
+  // if( f < 0 )
+  // f = 0;
+  // if( l > array.length )
+  // l = array.length;
 
-  if( f === 0 && l === array.length )
+  if( range[ 0 ] === 0 && l === array.length )
   return array;
 
   // if( _.bufferTypedIs( array ) )
@@ -1700,24 +1893,24 @@ function longSelectInplace( array, range, val )
   // else
   // result = new Array( l-f );
 
-  result = _.longMakeUndefined( array, l-f );
+  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
 
   /* */
 
-  let f2 = Math.max( f, 0 );
-  let l2 = Math.min( array.length, l );
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
   for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f ] = array[ r ];
+  result[ r-range[ 0 ] ] = array[ r ];
 
   /* */
 
   if( val !== undefined )
   {
-    for( let r = 0 ; r < -f ; r++ )
+    for( let r = 0 ; r < -range[ 0 ] ; r++ )
     {
       result[ r ] = val;
     }
-    for( let r = l2 - f; r < result.length ; r++ )
+    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
     {
       result[ r ] = val;
     }
@@ -1778,6 +1971,52 @@ function longRepresent( src, begin, end )
 
 /* qqq : routine longBut requires good test coverage and documentation */
 
+function longButInplace( src, range, ins )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( _.arrayIs( src ) )
+  return _.arrayButInplace( src, range, ins );
+
+  let result;
+
+  _.assert( _.longIs( src ) );
+  _.assert( ins === undefined || _.longIs( ins ) );
+  _.assert( _.longIs( range ), 'not tested' );
+  _.assert( !_.longIs( range ), 'not tested' );
+
+  _.assert( 0, 'not implemented' )
+
+  //
+  // if( _.numberIs( range ) )
+  // range = [ range, range + 1 ];
+  //
+  // _.rangeClamp( range, [ 0, src.length ] );
+  // if( range[ 1 ] < range[ 0 ] )
+  // range[ 1 ] = range[ 0 ];
+  //
+  // let d = range[ 1 ] - range[ 0 ];
+  // let range[ 1 ] = src.length - d + ( ins ? ins.length : 0 );
+  //
+  // result = _.longMakeUndefined( src, range[ 1 ] );
+  //
+  // debugger;
+  // _.assert( 0, 'not tested' )
+  //
+  // for( let i = 0 ; i < range[ 0 ] ; i++ )
+  // result[ i ] = src[ i ];
+  //
+  // for( let i = range[ 1 ] ; i < range[ 1 ] ; i++ )
+  // result[ i-d ] = src[ i ];
+  //
+  // return result;
+}
+
+//
+
+/* qqq : routine longBut requires good test coverage and documentation */
+
 function longBut( src, range, ins )
 {
 
@@ -1790,29 +2029,35 @@ function longBut( src, range, ins )
 
   _.assert( _.longIs( src ) );
   _.assert( ins === undefined || _.longIs( ins ) );
-  _.assert( _.longIs( range ), 'not tested' );
-  _.assert( !_.longIs( range ), 'not tested' );
-
-  // range = _.rangeFromLeft( range );
+  // _.assert( _.longIs( range ), 'not tested' );
+  // _.assert( !_.longIs( range ), 'not tested' );
 
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
   _.rangeClamp( range, [ 0, src.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
 
   let d = range[ 1 ] - range[ 0 ];
-  let l = src.length - d + ( ins ? ins.length : 0 );
+  let len = ( ins ? ins.length : 0 );
+  let d2 = d - len;
+  let l2 = src.length - d2;
 
-  result = _.longMakeUndefined( src, l );
+  result = _.longMakeUndefined( src, l2 );
 
-  debugger;
-  _.assert( 0, 'not tested' )
+  // debugger;
+  // _.assert( 0, 'not tested' )
 
   for( let i = 0 ; i < range[ 0 ] ; i++ )
   result[ i ] = src[ i ];
 
-  for( let i = range[ 1 ] ; i < l ; i++ )
-  result[ i-d ] = src[ i ];
+  for( let i = range[ 1 ] ; i < src.length ; i++ )
+  result[ i-d2 ] = src[ i ];
+
+  if( ins )
+  for( let i = 0 ; i < ins.length ; i++ )
+  result[ range[ 0 ]+i ] = ins[ i ];
 
   return result;
 }
@@ -2415,8 +2660,6 @@ function arraySlice( srcArray, f, l )
 
 //
 
-/* qqq : routine arrayBut requires good test coverage and documentation */
-
 function arrayBut( src, range, ins )
 {
 
@@ -2428,32 +2671,9 @@ function arrayBut( src, range, ins )
   _.assert( ins === undefined || _.longIs( ins ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  let args = [ range[ 0 ], range[ 1 ] - range[ 0 ] ];
-
-  if( ins )
-  _.arrayAppendArray( args, ins );
-
-  /* qqq : no copy! */
-
-  let result = src.slice();
-
-  result.splice.apply( result, args );
-
-  return result;
-}
-
-//
-
-function arrayBut( src, range, ins )
-{
-
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
-
-  _.assert( _.arrayIs( src ) );
-  _.assert( _.rangeIs( range ) );
-  _.assert( ins === undefined || _.longIs( ins ) );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.rangeClamp( range, [ 0, src.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
 
   let args = [ range[ 0 ], range[ 1 ] - range[ 0 ] ];
 
@@ -6467,6 +6687,7 @@ let Routines =
   longIsPopulated,
 
   longMake,
+  _longMakeOfLength,
   longMakeUndefined,
   longMakeZeroed,
 
@@ -6474,10 +6695,13 @@ let Routines =
   longShallowClone,
 
   longSlice,
+  longButInplace,
   longBut,
   longSelect,
   longSelectInplace,
   longGrowInplace,
+  longGrow,
+
   longRepresent,
 
   // buffer checker
@@ -6525,6 +6749,7 @@ let Routines =
   // array transformer
 
   arraySlice,
+  arrayButInplace,
   arrayBut,
   arrayButInplace,
 
