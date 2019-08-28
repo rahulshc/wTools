@@ -20,11 +20,12 @@ let Self = _global_.wTools;
  * Returns "true" if incoming param is string. Othervise "false" returned
  *
  * @example
+ * _.strIsIs( 'song' );
  * //returns true
- * strIsIs( 'song' );
+ *
  * @example
+ * _.strIs( 5 );
  * // returns false
- * strIs( 5 );
  *
  * @param {*} src.
  * @return {Boolean}.
@@ -128,14 +129,16 @@ toStr.routines = toStr;
 //
 
 /**
-  * Return in one string value of all arguments.
-  * @example
-   let args = _.str( 'test2' );
-  * @return {string}
-  * If no arguments return empty string
-  * @function str
-  * @memberof wTools
-  */
+ * Return in one string value of all arguments.
+ *
+ * @example
+ * let args = _.str( 'test2' );
+ *
+ * @return {string}
+ * If no arguments return empty string
+ * @function str
+ * @memberof wTools
+ */
 
 function str()
 {
@@ -231,15 +234,18 @@ function strPrimitive( src )
 //
 
 /**
-  * Return type of src.
-  * @example
-      let str = _.strType( 'testing' );
-  * @param {*} src
-  * @return {string}
-  * string name of type src
-  * @function strType
-  * @memberof wTools
-  */
+ * Return type of src.
+ *
+ * @example
+ * let str = _.strType( 'testing' );
+ *
+ * @param {*} src
+ *
+ * @return {string}
+ * string name of type src
+ * @function strType
+ * @memberof wTools
+ */
 
 function strType( src )
 {
@@ -266,15 +272,18 @@ function strType( src )
 //
 
 /**
-  * Return primitive type of src.
-  * @example
-      let str = _.strPrimitiveType( 'testing' );
-  * @param {*} src
-  * @return {string}
-  * string name of type src
-  * @function strPrimitiveType
-  * @memberof wTools
-  */
+ * Return primitive type of src.
+ *
+ * @example
+ * let str = _.strPrimitiveType( 'testing' );
+ *
+ * @param {*} src
+ *
+ * @return {string}
+ * string name of type src
+ * @function strPrimitiveType
+ * @memberof wTools
+ */
 
 function strPrimitiveType( src )
 {
@@ -724,24 +733,25 @@ function _strEndOf( src, end )
 //
 
 /**
-  * Compares two strings.
-  * @param { String } src - Source string.
-  * @param { String } begin - String to find at begin of source.
-  *
-  * @example
-  * let scr = _.strBegins( "abc", "a" );
-  * // returns true
-  *
-  * @example
-  * let scr = _.strBegins( "abc", "b" );
-  * // returns false
-  *
-  * @returns { Boolean } Returns true if param( begin ) is match with first chars of param( src ), otherwise returns false.
-  * @function strBegins
-  * @throws { Exception } If one of arguments is not a String.
-  * @throws { Exception } If( arguments.length ) is not equal 2.
-  * @memberof wTools
-  */
+ * Compares two strings.
+ *
+ * @param { String } src - Source string.
+ * @param { String } begin - String to find at begin of source.
+ *
+ * @example
+ * let scr = _.strBegins( "abc", "a" );
+ * // returns true
+ *
+ * @example
+ * let scr = _.strBegins( "abc", "b" );
+ * // returns false
+ *
+ * @returns { Boolean } Returns true if param( begin ) is match with first chars of param( src ), otherwise returns false.
+ * @function strBegins
+ * @throws { Exception } If one of arguments is not a String.
+ * @throws { Exception } If( arguments.length ) is not equal 2.
+ * @memberof wTools
+ */
 
 function strBegins( src, begin )
 {
@@ -769,24 +779,25 @@ function strBegins( src, begin )
 //
 
 /**
-  * Compares two strings.
-  * @param { String } src - Source string.
-  * @param { String } end - String to find at end of source.
-  *
-  * @example
-  * let scr = _.strEnds( "abc", "c" );
-  * // returns true
-  *
-  * @example
-  * let scr = _.strEnds( "abc", "b" );
-  * // returns false
-  *
-  * @return { Boolean } Returns true if param( end ) is match with last chars of param( src ), otherwise returns false.
-  * @function strEnds
-  * @throws { Exception } If one of arguments is not a String.
-  * @throws { Exception } If( arguments.length ) is not equal 2.
-  * @memberof wTools
-  */
+ * Compares two strings.
+ *
+ * @param { String } src - Source string.
+ * @param { String } end - String to find at end of source.
+ *
+ * @example
+ * let scr = _.strEnds( "abc", "c" );
+ * // returns true
+ *
+ * @example
+ * let scr = _.strEnds( "abc", "b" );
+ * // returns false
+ *
+ * @return { Boolean } Returns true if param( end ) is match with last chars of param( src ), otherwise returns false.
+ * @function strEnds
+ * @throws { Exception } If one of arguments is not a String.
+ * @throws { Exception } If( arguments.length ) is not equal 2.
+ * @memberof wTools
+ */
 
 function strEnds( src, end )
 {
@@ -814,26 +825,26 @@ function strEnds( src, end )
 //
 
 /**
-  * Finds occurrence of( end ) at the end of source( src ) and removes it if exists.
-  * Returns begin part of a source string if occurrence was finded or empty string if arguments are equal, otherwise returns undefined.
-  *
-  * @param { String } src - The source string.
-  * @param { String } end - String to find.
-  *
-  * @example
-  * _.strBeginOf( 'abc', 'c' );
-  * //returns 'ab'
-  *
-  * @example
-  * _.strBeginOf( 'abc', 'x' );
-  * //returns undefined
-  *
-  * @returns { String } Returns part of source string without tail( end ) or undefined.
-  * @throws { Exception } If all arguments are not strings;
-  * @throws { Exception } If ( argumets.length ) is not equal 2.
-  * @function strBeginOf
-  * @memberof wTools
-  */
+ * Finds occurrence of( end ) at the end of source( src ) and removes it if exists.
+ * Returns begin part of a source string if occurrence was finded or empty string if arguments are equal, otherwise returns undefined.
+ *
+ * @param { String } src - The source string.
+ * @param { String } end - String to find.
+ *
+ * @example
+ * _.strBeginOf( 'abc', 'c' );
+ * //returns 'ab'
+ *
+ * @example
+ * _.strBeginOf( 'abc', 'x' );
+ * //returns undefined
+ *
+ * @returns { String } Returns part of source string without tail( end ) or undefined.
+ * @throws { Exception } If all arguments are not strings;
+ * @throws { Exception } If ( argumets.length ) is not equal 2.
+ * @function strBeginOf
+ * @memberof wTools
+ */
 
 function strBeginOf( src, begin )
 {
