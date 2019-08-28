@@ -425,28 +425,29 @@ diagnosticCode.defaults =
 /**
  * Return stack trace as string.
  * @example
-  let stack;
-  function function1()
-  {
-    function2();
-  }
-
-  function function2()
-  {
-    function3();
-  }
-
-  function function3()
-  {
-    stack = wTools.diagnosticStack();
-  }
-
-  function1();
-  console.log( stack );
- //"    at function3 (<anonymous>:10:17)
- // at function2 (<anonymous>:6:2)
- // at function1 (<anonymous>:2:2)
- // at <anonymous>:1:1"
+ * let stack;
+ * function function1()
+ * {
+ *   function2();
+ * }
+ *
+ * function function2()
+ * {
+ *   function3();
+ * }
+ *
+ * function function3()
+ * {
+ *   stack = _.diagnosticStack();
+ * }
+ *
+ * function1();
+ * console.log( stack );
+ * // log
+ * //"    at function3 (<anonymous>:10:17)
+ * // at function2 (<anonymous>:6:2)
+ * // at function1 (<anonymous>:2:2)
+ * // at <anonymous>:1:1"
  *
  * @returns {String} Return stack trace from call point.
  * @function stack
