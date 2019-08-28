@@ -35,6 +35,11 @@
   </a></summary>
   Примітивний тип даних для представлення текстових даних.
 </details>
+<details><summary><a href="./concept/TypeIndexed.md">
+      Впорядковані типи даних
+  </a></summary>
+  Комплексні типи даних, що містять множину елементів котрі ідентифікуються за індексом.
+</details>
 <details><summary><a href="./concept/TypeUnroll.md">
       Тип <code>unroll</code>
   </a></summary>
@@ -43,7 +48,7 @@
 <details><summary><a href="./concept/Buffer.md">
       Буфер
   </a></summary>
-  В  <code>JavaScript</code>, це спеціальний об'єкт, що призначений для зберігання та обробки необроблених бінарних даних. 
+  В  <code>JavaScript</code>, це спеціальний об'єкт, що призначений для зберігання та обробки необроблених бінарних даних.
 </details>
 
 ## Туторіали

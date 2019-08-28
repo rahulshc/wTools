@@ -470,22 +470,23 @@ _err.defaults =
  concatenating them.
  *
  * @example
-  function divide( x, y )
-  {
-    if( y == 0 )
-      throw wTools.err( 'divide by zero' )
-    return x / y;
-  }
-  divide( 3, 0 );
-
- // Error:
- // caught     at divide (<anonymous>:2:29)
- // divide by zero
- // Error
- //   at _err (file:///.../wTools/staging/Base.s:1418:13)
- //   at wTools.err (file:///.../wTools/staging/Base.s:1449:10)
- //   at divide (<anonymous>:2:29)
- //   at <anonymous>:1:1
+ * function divide( x, y )
+ * {
+ *   if( y == 0 )
+ *     throw _.err( 'divide by zero' )
+ *   return x / y;
+ * }
+ * divide( 3, 0 );
+ *
+ * // log
+ * // Error:
+ * // caught     at divide (<anonymous>:2:29)
+ * // divide by zero
+ * // Error
+ * //   at _err (file:///.../wTools/staging/Base.s:1418:13)
+ * //   at wTools.err (file:///.../wTools/staging/Base.s:1449:10)
+ * //   at divide (<anonymous>:2:29)
+ * //   at <anonymous>:1:1
  *
  * @param {...String|Error} msg Accepts list of messeges/errors.
  * @returns {Error} Created Error. If passed existing error as one of parameters, routine modified it and return
@@ -647,22 +648,23 @@ function error_functor( name, onMake )
  * @see {@link wTools.err See err}
  *
  * @example
-   function divide( x, y )
-   {
-      if( y == 0 )
-        throw wTools.errLog( 'divide by zero' )
-      return x / y;
-   }
-   divide( 3, 0 );
-
-   // Error:
-   // caught     at divide (<anonymous>:2:29)
-   // divide by zero
-   // Error
-   //   at _err (file:///.../wTools/staging/Base.s:1418:13)
-   //   at wTools.errLog (file:///.../wTools/staging/Base.s:1462:13)
-   //   at divide (<anonymous>:2:29)
-   //   at <anonymous>:1:1
+ * function divide( x, y )
+ * {
+ *   if( y == 0 )
+ *    throw _.errLog( 'divide by zero' )
+ *    return x / y;
+ * }
+ * divide( 3, 0 );
+ *
+ * // log
+ * // Error:
+ * // caught     at divide (<anonymous>:2:29)
+ * // divide by zero
+ * // Error
+ * //   at _err (file:///.../wTools/staging/Base.s:1418:13)
+ * //   at wTools.errLog (file:///.../wTools/staging/Base.s:1462:13)
+ * //   at divide (<anonymous>:2:29)
+ * //   at <anonymous>:1:1
  *
  * @param {...String|Error} msg Accepts list of messeges/errors.
  * @returns {Error} Created Error. If passed existing error as one of parameters, routine modified it and return
@@ -947,8 +949,9 @@ function sureOwnNoConstructor( ins )
  *
  * @example
  * let x = 1;
- * wTools.assert( wTools.strIs( x ), 'incorrect variable type->', typeof x, 'Expects string' );
+ * _.assert( _.strIs( x ), 'incorrect variable type->', typeof x, 'Expects string' );
  *
+ * // log
  * // caught eval (<anonymous>:2:8)
  * // incorrect variable type-> number expects string
  * // Error
@@ -960,11 +963,12 @@ function sureOwnNoConstructor( ins )
  * @example
  * function add( x, y )
  * {
- *   wTools.assert( arguments.length === 2, 'incorrect arguments count' );
+ *   _.assert( arguments.length === 2, 'incorrect arguments count' );
  *   return x + y;
  * }
  * add();
  *
+ * // log
  * // caught add (<anonymous>:3:14)
  * // incorrect arguments count
  * // Error
@@ -976,11 +980,12 @@ function sureOwnNoConstructor( ins )
  * @example
  *   function divide ( x, y )
  *   {
- *      wTools.assert( y != 0, 'divide by zero' );
+ *      _.assert( y != 0, 'divide by zero' );
  *      return x / y;
  *   }
  *   divide( 3, 0 );
  *
+ * // log
  * // caught     at divide (<anonymous>:2:29)
  * // divide by zero
  * // Error
@@ -1100,13 +1105,14 @@ function assertNotTested( src )
 /**
  * If condition failed, routine prints warning messages passed after condition argument
  * @example
-  function checkAngles( a, b, c )
-  {
-     wTools.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
-  };
-  checkAngles( 120, 23, 130 );
-
- // triangle with that angles does not exists
+ * function checkAngles( a, b, c )
+ * {
+ *    _.assertWarn( (a + b + c) === 180, 'triangle with that angles does not exists' );
+ * };
+ * checkAngles( 120, 23, 130 );
+ *
+ * // log 'triangle with that angles does not exists'
+ *
  * @param condition Condition to check.
  * @param messages messages to print.
  * @function assertWarn
