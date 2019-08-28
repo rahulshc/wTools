@@ -81,7 +81,9 @@ function argumentsArrayIs( src )
  * * If ( msg ) has any other type - uses it as argument for 'throw' statement
  *
  * @example
+ * src = 10;
  * _.assert( _.strIs( src ), 'Src is not a string' );
+ * // throws error, log 'Src is not a string'
  *
  * @function assert
  * @param {} condition - condition to check
@@ -137,16 +139,18 @@ function assert( condition, msg )
  *  _.routineOptions( add, o );
  *  return o.a + o.b;
  * }
- *
  * add.defaults =
  * {
  *  a : 0,
  *  b : 0
  * }
  *
- * add({ a : 1, b : 1 }) // 2
- * add({ b : 1 }) // 1
- * add({ a : 1, c : 3 }) // throws an error, option "c" is unknown
+ * add({ a : 1, b : 1 });
+ * // returns 2
+ * add({ b : 1 })
+ * // returns 1
+ * add({ a : 1, c : 3 });
+ * // throws an error, option "c" is unknown
  *
  * @function routineOptions
  * @param {Function} routine - target routine
@@ -429,10 +433,10 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeArray()
-  {  
+  {
     if( bypassingEmpty && !arguments.length )
     return [];
-    
+
     let args = arguments;
     let src = args[ 0 ];
 
@@ -457,7 +461,7 @@ function vectorize_body( o )
   {
     if( bypassingEmpty && !arguments.length )
     return [];
-    
+
     let args = multiply( arguments );
     let src = args[ 0 ];
 
@@ -480,10 +484,10 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeForOptionsMap( srcMap )
-  { 
+  {
     if( bypassingEmpty && !arguments.length )
     return [];
-    
+
     let src = srcMap[ select ];
 
     assert( arguments.length === 1, 'Expects single argument' );
@@ -512,9 +516,9 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeForOptionsMapForKeys()
-  { 
+  {
     let result = [];
-    
+
     if( bypassingEmpty && !arguments.length )
     return result;
 
@@ -531,8 +535,8 @@ function vectorize_body( o )
   function vectorizeMapOrArray()
   {
     if( bypassingEmpty && !arguments.length )
-    return []; 
-    
+    return [];
+
     let args = multiply( arguments );
     let src = args[ 0 ];
 
@@ -568,10 +572,10 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeMapWithKeysOrArray()
-  { 
+  {
     if( bypassingEmpty && !arguments.length )
     return [];
-    
+
     let args = multiply( arguments );
     let srcs = args[ 0 ];
 
@@ -654,12 +658,12 @@ function vectorize_body( o )
   /* - */
 
   function vectorizeKeysOrArray()
-  { 
+  {
     // yyy
     if( bypassingEmpty && !arguments.length )
     return [];
     // yyy
-    
+
     let args = multiply( arguments );
     let src = args[ 0 ];
     let args2;

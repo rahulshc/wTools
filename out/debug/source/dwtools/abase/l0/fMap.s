@@ -20,12 +20,13 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
  * Returns "true" if incoming param is object. Othervise "false" returned.
  *
  * @example
- * // returns true
  * let obj = { x : 100 };
- * objectIs(obj);
+ * _.objectIs(obj);
+ * // returns true
+ *
  * @example
+ * _.objectIs( 10 );
  * // returns false
- * objectIs( 10 );
  *
  * @param { * } src.
  * @return { Boolean }.
@@ -91,16 +92,16 @@ function objectLikeOrRoutine( src )
  * @param { * } src - Entity to check.
  *
  * @example
+ * _.mapIs( { a : 7, b : 13 } );
  * // returns true
- * mapIs( { a : 7, b : 13 } );
  *
  * @example
+ * _.mapIs( 13 );
  * // returns false
- * mapIs( 13 );
  *
  * @example
+ * _.mapIs( [ 3, 7, 13 ] );
  * // returns false
- * mapIs( [ 3, 7, 13 ] );
  *
  * @returns { Boolean } Returns true if {-srcMap-} is an Object, and not inherits through the prototype chain.
  * @function mapIs
@@ -229,16 +230,16 @@ function mapLike( src )
  * Objects to compare values.
  *
  * @example
+ * _.mapsAreIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
  * // returns true
- * mapsAreIdentical( { a : 7, b : 13 }, { a : 7, b : 13 } );
  *
  * @example
- * returns false
  * _.mapsAreIdentical( { a : 7, b : 13 }, { a : 33, b : 13 } );
+ * // returns false
  *
  * @example
- * returns false
  * _.mapsAreIdentical( { a : 7, b : 13, c : 33 }, { a : 7, b : 13 } );
+ * // returns false
  *
  * @returns { boolean } Returns true, if the second object (src2)
  * has the same values as the first object(src1).
@@ -283,12 +284,12 @@ function mapsAreIdentical( src1, src2 )
  * Objects to compare values.
  *
  * @example
+ * _.mapContain( { a : 7, b : 13, c : 15 }, { a : 7, b : 13 } );
  * // returns true
- * mapContain( { a : 7, b : 13, c : 15 }, { a : 7, b : 13 } );
  *
  * @example
- * returns false
- * mapContain( { a : 7, b : 13 }, { a : 7, b : 13, c : 15 } );
+ * _.mapContain( { a : 7, b : 13 }, { a : 7, b : 13, c : 15 } );
+ * // returns false
  *
  * @returns { boolean } Returns true, if the first object {-srcMap-}
  * has the same values as the second object(ins).
@@ -331,17 +332,17 @@ function mapContain( src, ins )
  * or result if ( o.template ) routine call is true.
  *
  * @example
- * //returns true
  * _.mapSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
+ * // returns true
  *
  * @example
- * //returns true
  * _.mapSatisfy( { template : {a : 1, b : 1, c : 1 }, src : { a : 1, b : 2 } } );
+ * // returns true
  *
  * @example
- * //returns false
  * function routine( src ){ return src.a === 12 }
  * _.mapSatisfy( { template : routine, src : { a : 1, b : 2 } } );
+ * // returns false
  *
  * @function mapSatisfy
  * @throws {exception} If( arguments.length ) is not equal to 1 or 2.
@@ -392,17 +393,17 @@ mapSatisfy.defaults =
  * @returns { boolean } Returns true if( src ) has same key/value pair(s) with( template ).
  *
  * @example
- * //returns true
  * _._mapSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
+ * // returns true
  *
  * @example
- * //returns false
  * _._mapSatisfy( {a : 1, b : 1, c : 1 }, { y : 1 , j : 1 } );
+ * // returns false
  *
  * @example
- * //returns true
  * function template( src ){ return src.y === 1 }
  * _._mapSatisfy( template, { y : 1 , j : 1 } );
+ * // returns true
  *
  * @function _mapSatisfy
  * @memberof wTools
@@ -496,12 +497,12 @@ function mapHasKey( srcMap, key )
  * @param { name } name - Target property.
  *
  * @example
- * // returns true
  * _.mapOwnKey( { a : 7, b : 13 }, 'a' );
+ * // returns true
  *
  * @example
- * // returns false
  * _.mapOwnKey( { a : 7, b : 13 }, 'c' );
+ * // returns false
  *
  * @returns { boolean } Returns true if (object) has own property.
  * @function mapOwnKey
@@ -555,11 +556,12 @@ function mapOwnVal( object, val )
  * @param { ObjectLike } screen - Map that hold keys.
  *
  * @example
- * // returns true
  * _.mapHasAll( {}, {} );
+ * // returns true
  *
- * // returns false
+ * @example
  * _.mapHasAll( {}, { a : 1 } );
+ * // returns false
  *
  * @returns { boolean } Returns true if object( src ) has all enumerable keys from( screen ).
  * @function mapHasAll
@@ -596,14 +598,16 @@ function mapHasAll( src, screen )
  * @param { ObjectLike } screen - Map that hold keys.
  *
  * @example
- * // returns false
  * _.mapHasAny( {}, {} );
- *
- * // returns true
- * _.mapHasAny( { a : 1, b : 2 }, { a : 1 } );
- *
  * // returns false
+ *
+ * @example
+ * _.mapHasAny( { a : 1, b : 2 }, { a : 1 } );
+ * // returns true
+ *
+ * @example
  * _.mapHasAny( { a : 1, b : 2 }, { c : 1 } );
+ * // returns false
  *
  * @returns { boolean } Returns true if object( src ) has at least one enumerable key from( screen ).
  * @function mapHasAny
@@ -643,14 +647,16 @@ function mapHasAny( src, screen )
  * @param { ObjectLike } screen - Map that hold keys.
  *
  * @example
- * // returns true
  * _.mapHasNone( {}, {} );
- *
- * // returns false
- * _.mapHasNone( { a : 1, b : 2 }, { a : 1 } );
- *
  * // returns true
+ *
+ * @example
+ * _.mapHasNone( { a : 1, b : 2 }, { a : 1 } );
+ * // returns false
+ *
+ * @example
  * _.mapHasNone( { a : 1, b : 2 }, { c : 1 } );
+ * // returns true
  *
  * @returns { boolean } Returns true if object( src ) has at least one enumerable key from( screen ).
  * @function mapHasNone
@@ -687,14 +693,16 @@ function mapHasNone( src, screen )
  * @param { Object } screen - Map that hold keys.
  *
  * @example
- * // returns true
  * _.mapOwnAll( {}, {} );
- *
  * // returns true
- * _.mapOwnAll( { a : 1, b : 2 }, { a : 1 } );
  *
- * // returns false
+ * @example
+ * _.mapOwnAll( { a : 1, b : 2 }, { a : 1 } );
+ * // returns true
+ *
+ * @example
  * _.mapOwnAll( { a : 1, b : 2 }, { c : 1 } );
+ * // returns false
  *
  * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
  * @function mapOwnAll
@@ -734,14 +742,16 @@ function mapOwnAll( src, screen )
  * @param { Object } screen - Map that hold keys.
  *
  * @example
- * // returns false
  * _.mapOwnAny( {}, {} );
- *
- * // returns true
- * _.mapOwnAny( { a : 1, b : 2 }, { a : 1 } );
- *
  * // returns false
+ *
+ * @example
+ * _.mapOwnAny( { a : 1, b : 2 }, { a : 1 } );
+ * // returns true
+ *
+ * @example
  * _.mapOwnAny( { a : 1, b : 2 }, { c : 1 } );
+ * // returns false
  *
  * @returns { boolean } Returns true if object( src ) has own properties from( screen ).
  * @function mapOwnAny
@@ -781,14 +791,16 @@ function mapOwnAny( src, screen )
  * @param { Object } screen - Map that hold keys.
  *
  * @example
- * // returns true
  * _.mapOwnNone( {}, {} );
- *
- * // returns false
- * _.mapOwnNone( { a : 1, b : 2 }, { a : 1 } );
- *
  * // returns true
+ *
+ * @example
+ * _.mapOwnNone( { a : 1, b : 2 }, { a : 1 } );
+ * // returns false
+ *
+ * @example
  * _.mapOwnNone( { a : 1, b : 2 }, { c : 1 } );
+ * // returns true
  *
  * @returns { boolean } Returns true if map( src ) not owns properties from( screen ).
  * @function mapOwnNone
@@ -963,8 +975,8 @@ function mapHasNoUndefine( srcMap )
  * @param { ...objectLike } arguments[] - The source object(s).
  *
  * @example
- * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
  * _.mapMake( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+ * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
  *
  * @returns { objectLike } It will return the new object filled by [ key, value ]
  * from one or more source objects.
@@ -1020,12 +1032,12 @@ function mapShallowClone( src )
  * of the {-srcMap-} to the (result).
  *
  * @example
- * // returns Example { sex : 'Male', name : 'Peter', age : 27 }
  * function Example() {
  *   this.name = 'Peter';
  *   this.age = 27;
  * }
- * mapCloneAssigning( new Example(), { dst : { sex : 'Male' } } );
+ * _.mapCloneAssigning( new Example(), { dst : { sex : 'Male' } } );
+ * // returns Example { sex : 'Male', name : 'Peter', age : 27 }
  *
  * @returns { objectLike }  The (result) object gets returned.
  * @function mapCloneAssigning
@@ -1085,8 +1097,8 @@ mapCloneAssigning.defaults =
  * @param{ ...objectLike } arguments[] - The source object(s).
  *
  * @example
+ * _.mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
  * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
- * mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
  *
  * @returns { objectLike } It will return the target object.
  * @function mapExtend
@@ -1178,8 +1190,8 @@ function mapsExtend( dstMap, srcMaps )
  * @param { ...objectLike } arguments[] - The next object.
  *
  * @example
- * // returns { a : 1, b : 2, c : 3 }
  * _.mapExtendConditional( _.field.mapper.dstNotHas, { a : 1, b : 2 }, { a : 1 , c : 3 } );
+ * // returns { a : 1, b : 2, c : 3 }
  *
  * @returns { objectLike } Returns the unique [ key, value ].
  * @function mapExtendConditional
@@ -1355,8 +1367,8 @@ function mapsExtendNulls( dstMap, srcMaps )
  * @param { ...objectLike } arguments[] - The source object(s).
  *
  * @example
+ * _.mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
  * // returns { a : 1, b : 2, c : 3 }
- * let r = mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
  *
  * @returns { objectLike } Returns an object with unique [ key, value ].
  * @function mapSupplement
@@ -1531,8 +1543,8 @@ function mapSupplementOwnFromDefinitionStrictlyPrimitives( dstMap, srcMap )
  * @param { ...objectLike } arguments[] - The source object(s).
  *
  * @example
- * // returns { a : 1, b : 'ab', c : 3 };
  * _.mapComplement( { a : 1, b : 'ab' }, { a : 12 , c : 3 } );
+ * // returns { a : 1, b : 'ab', c : 3 };
  *
  * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
  * @function mapComplement
@@ -2182,8 +2194,8 @@ mapsFlatten.defaults =
  * @param { objectLike } src - object to get a list of [ key, value ] pairs.
  *
  * @example
- * // returns [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ]
  * _.mapToArray( { a : 3, b : 13, c : 7 } );
+ * // returns [ [ 'a', 3 ], [ 'b', 13 ], [ 'c', 7 ] ]
  *
  * @returns { array } Returns a list of [ [ key, value ] ... ] pairs.
  * @function mapToArray
@@ -2212,16 +2224,16 @@ function mapToArray( src )
  * @param { string } [ tupleSep = '; ' ] tupleSep - semicolon.
  *
  * @example
- * // returns 'a : 1; b : 2; c : 3; d : 4'
  * _.mapToStr( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
+ * // returns 'a : 1; b : 2; c : 3; d : 4'
  *
  * @example
- * // returns '0 : 1; 1 : 2; 2 : 3';
  * _.mapToStr( [ 1, 2, 3 ], ' : ', '; ' );
+ * // returns '0 : 1; 1 : 2; 2 : 3';
  *
  * @example
- * // returns '0 : a; 1 : b; 2 : c';
  * _.mapToStr( 'abc', ' : ', '; ' );
+ * // returns '0 : a; 1 : b; 2 : c';
  *
  * @returns { string } Returns a string (result) representing the passed object {-srcMap-}.
  * @function mapToStr
@@ -2366,13 +2378,13 @@ _mapKeys.defaults =
  * @see {@link wTools.mapVals} - Similar routine returning values.
  *
  * @example
- * // returns [ "a", "b" ]
  * _.mapKeys({ a : 7, b : 13 });
+ * // returns [ "a", "b" ]
  *
  * @example
- * // returns [ "a" ]
  * let o = { own : 1, enumerable : 0 };
  * _.mapKeys.call( o, { a : 1 } );
+ * // returns [ "a" ]
  *
  * @param { objectLike } srcMap - object of interest to extract keys.
  * @param { objectLike } o - routine options can be provided through routine`s context.
@@ -2423,13 +2435,14 @@ mapKeys.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns [ "a", "b" ]
  * _.mapOwnKeys({ a : 7, b : 13 });
+ * // returns [ "a", "b" ]
  *
- * * @example
- * // returns [ "a" ]
+ * @example
  * let o = { enumerable : 0 };
  * _.mapOwnKeys.call( o, { a : 1 } );
+ * // returns [ "a" ]
+
  *
  * @return { array } Returns an array whose elements are strings
  * corresponding to the own enumerable properties found directly upon object or empty
@@ -2477,11 +2490,11 @@ mapOwnKeys.defaults =
  * @param { objectLike } srcMap - The object whose properties keys are to be returned.
  *
  * @example
- * // returns [ "a", "b", "__defineGetter__", ... "isPrototypeOf" ]
  * let x = { a : 1 };
  * let y = { b : 2 };
  * Object.setPrototypeOf( x, y );
  * _.mapAllKeys( x );
+ * // returns [ "a", "b", "__defineGetter__", ... "isPrototypeOf" ]
  *
  * @return { array } Returns an array whose elements are strings
  * corresponding to the all properties found on the object.
@@ -2568,8 +2581,8 @@ _mapVals.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns [ "7", "13" ]
  * _.mapVals( { a : 7, b : 13 } );
+ * // returns [ "7", "13" ]
  *
  * @example
  * let o = { own : 1 };
@@ -2625,8 +2638,8 @@ mapVals.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns [ "7", "13" ]
  * _.mapOwnVals( { a : 7, b : 13 } );
+ * // returns [ "7", "13" ]
  *
  * @example
  * let o = { enumerable : 0 };
@@ -2679,8 +2692,8 @@ mapOwnVals.defaults =
  * @param { objectLike } srcMap - The object whose property values are to be returned.
  *
  * @example
- * // returns [ "7", "13", function __defineGetter__(), ... function isPrototypeOf() ]
  * _.mapAllVals( { a : 7, b : 13 } );
+ * // returns [ "7", "13", function __defineGetter__(), ... function isPrototypeOf() ]
  *
  * @returns { array } Returns an array whose elements are strings.
  * corresponding to the enumerable property values found directly upon object.
@@ -2761,15 +2774,15 @@ _mapPairs.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns [ [ "a", 7 ], [ "b", 13 ] ]
  * _.mapPairs( { a : 7, b : 13 } );
+ * // returns [ [ "a", 7 ], [ "b", 13 ] ]
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapPairs.call( { own : 1 }, a );
- * //returns [ [ "a", 1 ] ]
+ * // returns [ [ "a", 1 ] ]
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapPairs
@@ -2814,15 +2827,15 @@ mapPairs.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns [ [ "a", 7 ], [ "b", 13 ] ]
  * _.mapOwnPairs( { a : 7, b : 13 } );
+ * // returns [ [ "a", 7 ], [ "b", 13 ] ]
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapOwnPairs( a );
- * //returns [ [ "a", 1 ] ]
+ * // returns [ [ "a", 1 ] ]
  *
  * @example
  * let a = { a : 1 };
@@ -2869,15 +2882,15 @@ mapOwnPairs.defaults =
  * @param { objectLike } srcMap - Object to get a list of [ key, value ] pairs.
  *
  * @example
- * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function isPrototypeOf() ] ]
  * _.mapAllPairs( { a : 7, b : 13 } );
+ * // returns [ [ "a", 7 ], [ "b", 13 ], ... [ "isPrototypeOf", function isPrototypeOf() ] ]
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapAllPairs( a );
- * //returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function isPrototypeOf() ]  ]
+ * // returns [ [ "a", 1 ], [ "b", 2 ], ... [ "isPrototypeOf", function isPrototypeOf() ]  ]
  *
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapAllPairs
@@ -2951,22 +2964,22 @@ _mapProperties.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns { a : 7, b : 13 }
  * _.mapProperties( { a : 7, b : 13 } );
+ * // returns { a : 7, b : 13 }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapProperties( a );
- * //returns { a : 1, b : 2 }
+ * // returns { a : 1, b : 2 }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapProperties.call( { own : 1 }, a )
- * //returns { a : 1 }
+ * // returns { a : 1 }
  *
  * @returns { object } A new map with unique enumerable properties from source{-srcMap-}.
  * @function mapProperties
@@ -3010,21 +3023,21 @@ mapProperties.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns { a : 7, b : 13 }
  * _.mapOwnProperties( { a : 7, b : 13 } );
+ * // returns { a : 7, b : 13 }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapOwnProperties( a );
- * //returns { a : 1 }
+ * // returns { a : 1 }
  *
  * @example
  * let a = { a : 1 };
  * Object.defineProperty( a, 'b', { enumerable : 0, value : 2 } );
  * _.mapOwnProperties.call( { enumerable : 0 }, a )
- * //returns { a : 1, b : 2 }
+ * // returns { a : 1, b : 2 }
  *
  * @returns { object } A new map with source {-srcMap-} own enumerable properties.
  * @function mapOwnProperties
@@ -3066,15 +3079,15 @@ mapOwnProperties.defaults =
  * @param { objectLike } srcMap - Source to get a map of all object`s properties.
  *
  * @example
- * // returns { a : 7, b : 13, __defineGetter__ : function...}
  * _.mapAllProperties( { a : 7, b : 13 } );
+ * // returns { a : 7, b : 13, __defineGetter__ : function...}
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapAllProperties( a );
- * //returns { a : 1, b : 2, __defineGetter__ : function...}
+ * // returns { a : 1, b : 2, __defineGetter__ : function...}
  *
  * @returns { object } A new map with all unique properties from source {-srcMap-}.
  * @function mapAllProperties
@@ -3118,22 +3131,22 @@ mapAllProperties.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns { f : function(){} }
  * _.mapRoutines( { a : 7, b : 13, f : function(){} } );
+ * // returns { f : function(){} }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, f : function(){} };
  * Object.setPrototypeOf( a, b );
  * _.mapRoutines( a )
- * //returns { f : function(){} }
+ * // returns { f : function(){} }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, f : function(){} };
  * Object.setPrototypeOf( a, b );
  * _.mapRoutines.call( { own : 1 }, a )
- * //returns {}
+ * // returns {}
  *
  * @returns { object } A new map with unique enumerable routine properties from source {-srcMap-}.
  * @function mapRoutines
@@ -3185,21 +3198,21 @@ mapRoutines.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns { f : function(){} }
  * _.mapOwnRoutines( { a : 7, b : 13, f : function(){} } );
+ * // returns { f : function(){} }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, f : function(){} };
  * Object.setPrototypeOf( a, b );
  * _.mapOwnRoutines( a )
- * //returns {}
+ * // returns {}
  *
  * @example
  * let a = { a : 1 };
  * Object.defineProperty( a, 'b', { enumerable : 0, value : function(){} } );
  * _.mapOwnRoutines.call( { enumerable : 0 }, a )
- * //returns { b : function(){} }
+ * // returns { b : function(){} }
  *
  * @returns { object } A new map with unique object`s own enumerable routine properties from source {-srcMap-}.
  * @function mapOwnRoutines
@@ -3248,8 +3261,8 @@ mapOwnRoutines.defaults =
  * @param { objectLike } srcMap - Source to get a map of object`s properties.
  *
  * @example
- * // returns { f : function, __defineGetter__ : function...}
  * _.mapAllRoutines( { a : 7, b : 13, f : function(){} } );
+ * // returns { f : function, __defineGetter__ : function...}
  *
  * @example
  * let a = { a : 1 };
@@ -3257,7 +3270,6 @@ mapOwnRoutines.defaults =
  * Object.setPrototypeOf( a, b );
  * _.mapAllRoutines( a )
  * // returns { f : function, __defineGetter__ : function...}
- *
  *
  * @returns { object } A new map with all unique object`s {-srcMap-} properties that are routines.
  * @function mapAllRoutines
@@ -3308,22 +3320,22 @@ mapAllRoutines.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns { a : 7, b : 13 }
  * _.mapFields( { a : 7, b : 13, c : function(){} } );
+ * // returns { a : 7, b : 13 }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, c : function(){} };
  * Object.setPrototypeOf( a, b );
  * _.mapFields( a );
- * //returns { a : 1, b : 2 }
+ * // returns { a : 1, b : 2 }
  *
  * @example
  * let a = { a : 1, x : function(){} };
  * let b = { b : 2 };
  * Object.setPrototypeOf( a, b );
  * _.mapFields.call( { own : 1 }, a )
- * //returns { a : 1 }
+ * // returns { a : 1 }
  *
  * @returns { object } A new map with unique enumerable fields( all properties except routines ) from source {-srcMap-}.
  * @function mapFields
@@ -3371,21 +3383,21 @@ mapFields.defaults =
  * @param { boolean } [ o.enumerable = true ] - count only object`s enumerable properties.
  *
  * @example
- * // returns { a : 7, b : 13 }
  * _.mapOwnFields( { a : 7, b : 13, c : function(){} } );
+ * // returns { a : 7, b : 13 }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, c : function(){} };
  * Object.setPrototypeOf( a, b );
  * _.mapOwnFields( a );
- * //returns { a : 1 }
+ * // returns { a : 1 }
  *
  * @example
  * let a = { a : 1, x : function(){} };
  * Object.defineProperty( a, 'b', { enumerable : 0, value : 2 } )
  * _.mapFields.call( { enumerable : 0 }, a )
- * //returns { a : 1, b : 2 }
+ * // returns { a : 1, b : 2 }
  *
  * @returns { object } A new map with object`s {-srcMap-} own enumerable fields( all properties except routines ).
  * @function mapOwnFields
@@ -3431,21 +3443,21 @@ mapOwnFields.defaults =
  * @param { objectLike } srcMap - Object to get a map of all properties.
  *
  * @example
- * // returns { a : 7, b : 13, __proto__ : Object }
  * _.mapAllFields( { a : 7, b : 13, c : function(){} } );
+ * // returns { a : 7, b : 13, __proto__ : Object }
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, c : function(){} };
  * Object.setPrototypeOf( a, b );
  * _.mapAllFields( a );
- * //returns { a : 1, b : 2, __proto__ : Object }
+ * // returns { a : 1, b : 2, __proto__ : Object }
  *
  * @example
  * let a = { a : 1, x : function(){} };
  * Object.defineProperty( a, 'b', { enumerable : 0, value : 2 } )
  * _.mapAllFields( a );
- * //returns { a : 1, b : 2, __proto__ : Object }
+ * // returns { a : 1, b : 2, __proto__ : Object }
  *
  * @returns { object } A new map with all fields( properties except routines ) from source {-srcMap-}.
  * @function mapAllFields
@@ -3503,14 +3515,14 @@ mapAllFields.defaults =
  * let a = {};
  * Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } )
  * _.mapOnlyPrimitives( a );
- * // returns { }
+ * // returns {}
  *
  * @example
  * let a = { a : 1 };
  * let b = { b : 2, c : function(){} };
  * Object.setPrototypeOf( a, b );
  * _.mapOnlyPrimitives( a );
- * //returns { a : 1, b : 2 }
+ * // returns { a : 1, b : 2 }
  *
  * @returns { object } A new map with all atomic fields from source {-srcMap-}.
  * @function mapOnlyPrimitives
@@ -3535,16 +3547,16 @@ function mapOnlyPrimitives( srcMap )
  * @param { objectLike } srcMap - An object like entity of get first pair.
  *
  * @example
- * // returns [ 'a', 3 ]
  * _.mapFirstPair( { a : 3, b : 13 } );
+ * // returns [ 'a', 3 ]
  *
  * @example
- * // returns 'undefined'
  * _.mapFirstPair( {  } );
+ * // returns 'undefined'
  *
  * @example
- * // returns [ '0', [ 'a', 7 ] ]
  * _.mapFirstPair( [ [ 'a', 7 ] ] );
+ * // returns [ '0', [ 'a', 7 ] ]
  *
  * @returns { Array } Returns pair [ key, value ] as array if {-srcMap-} has fields, otherwise, undefined.
  * @function mapFirstPair
@@ -3614,8 +3626,8 @@ function mapSelect( srcMap, keys )
  * @param { number } index - To find the position an element.
  *
  * @example
- * // returns 7
  * _.mapValWithIndex( [ 3, 13, 'c', 7 ], 3 );
+ * // returns 7
  *
  * @returns { * } Returns value of {-srcMap-} by corresponding (index).
  * @function mapValWithIndex
@@ -3654,8 +3666,8 @@ function mapValWithIndex( srcMap, index )
  * @param { number } index - To find the position an element.
  *
  * @example
- * // returns '1'
  * _.mapKeyWithIndex( [ 'a', 'b', 'c', 'd' ], 1 );
+ * // returns '1'
  *
  * @returns { string } Returns key of {-srcMap-} by corresponding (index).
  * @function mapKeyWithIndex
@@ -3783,8 +3795,8 @@ function mapButNulls( srcMap )
  * @param { ...objectLike } arguments[] - The next objects.
  *
  * @example
+ * _.mapButConditional( _.field.mapper.primitive, { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
  * // returns { a : 1, b : "b" }
- * mapButConditional( _.field.mapper.primitive, { a : 1, b : 'b', c : [ 1, 2, 3 ] } );
  *
  * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
  * @function mapButConditional
@@ -3857,8 +3869,8 @@ function mapButConditional( fieldFilter, srcMap, butMap )
  * Objects to return an object without repeating keys.
  *
  * @example
+ * _.mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
  * // returns { c : 3 }
- * mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
  *
  * @throws { Error }
  *  In debug mode it throws an error if any argument is not object like.
@@ -3933,8 +3945,8 @@ function mapBut( srcMap, butMap )
  * Objects to return an object without repeating keys.
  *
  * @example
+ * _.mapButIgnoringUndefines( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
  * // returns { c : 3 }
- * mapButIgnoringUndefines( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
  *
  * @throws { Error }
  *  In debug mode it throws an error if any argument is not object like.
@@ -4086,8 +4098,8 @@ function mapButIgnoringUndefines( srcMap, butMap )
  * @param { ...objectLike } arguments[] - One or more objects.
  *
  * @example
+ * _.mapBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
  * // returns { a : 7 }
- * mapBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
  *
  * @returns { object } Returns new (result) object with unique own keys.
  * @function mapOwnBut
@@ -4127,8 +4139,8 @@ function mapOwnBut( srcMap, butMap )
  * @param { ...objectLike } arguments[] - One or more objects.
  *
  * @example
- * // returns { a : "abc", c : 33, d : "name" };
  * _.mapOnly( { a : 13, b : 77, c : 3, d : 'name' }, { d : 'name', c : 33, a : 'abc' } );
+ * // returns { a : "abc", c : 33, d : "name" };
  *
  * @returns { Object } Returns the object filled by unique [ key, value ]
  * from others objects.
@@ -4216,20 +4228,20 @@ function mapOnlyComplementing( srcMaps, screenMaps )
  * @param { Object } [options.dstMap = Object.create( null )] options.dstMap - The empty object.
  *
  * @example
- * // returns { a : 33, c : 33, name : "Mikle" };
  * let options = Object.create( null );
  * options.dstMap = Object.create( null );
  * options.screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
  * options.srcMaps = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
  * _mapOnly( options );
+ * // returns { a : 33, c : 33, name : "Mikle" };
  *
  * @example
- * // returns { a : "abc", c : 33, d : "name" };
  * let options = Object.create( null );
  * options.dstMap = Object.create( null );
  * options.screenMaps = { a : 13, b : 77, c : 3, d : 'name' };
  * options.srcMaps = { d : 'name', c : 33, a : 'abc' };
  * _mapOnly( options );
+ * // returns { a : "abc", c : 33, d : "name" };
  *
  * @returns { Object } Returns an object filled by unique [ key, value ]
  * from others objects.
@@ -4341,15 +4353,15 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * @example
  * let a = { a : 1, b : 3 };
  * let b = { a : 2, b : 3 };
- * wTools.sureMapHasOnly( a, b );
- *
+ * _.sureMapHasOnly( a, b );
  * // no exception
  *
  * @example
  * let a = { a : 1, c : 3 };
  * let b = { a : 2, b : 3 };
- * wTools.sureMapHasOnly( a, b );
+ * _.sureMapHasOnly( a, b );
  *
+ * // log
  * // caught <anonymous>:3:8
  * // Object should have no fields : c
  * //
@@ -4361,8 +4373,9 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * let x = { d : 1 };
  * let a = Object.create( x );
  * let b = { a : 1 };
- * wTools.sureMapHasOnly( a, b, 'message' )
+ * _.sureMapHasOnly( a, b, 'message' )
  *
+ * // log
  * // caught <anonymous>:4:8
  * // message Object should have no fields : d
  * //
@@ -4374,8 +4387,9 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * let x = { d : 1 };
  * let a = Object.create( x );
  * let b = { a : 1 };
- * wTools.sureMapHasOnly( a, b, () => 'message, ' + 'map`, ' should have no fields :'  )
+ * _.sureMapHasOnly( a, b, () => 'message, ' + 'map`, ' should have no fields :'  )
  *
+ * // log
  * // caught <anonymous>:4:8
  * // message Object should have no fields : d
  * //
@@ -4445,15 +4459,15 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * let a = Object.create( x );
  * a.a = 5;
  * let b = { a : 2 };
- * wTools.sureMapOwnOnly( a, b );
- *
+ * _.sureMapOwnOnly( a, b );
  * //no exception
  *
  * @example
  * let a = { d : 1 };
  * let b = { a : 2 };
- * wTools.sureMapOwnOnly( a, b );
+ * _.sureMapOwnOnly( a, b );
  *
+ * // log
  * // caught <anonymous>:3:10
  * // Object should have no own fields : d
  * //
@@ -4465,8 +4479,9 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * let a = { x : 0, y : 2 };
  * let b = { c : 0, d : 3};
  * let c = { a : 1 };
- * wTools.sureMapOwnOnly( a, b, 'error msg' );
+ * _.sureMapOwnOnly( a, b, 'error msg' );
  *
+ * // log
  * // caught <anonymous>:4:8
  * // error msg Object should have no own fields : x, y
  * //
@@ -4478,8 +4493,9 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * let a = { x : 0, y : 2 };
  * let b = { c : 0, d : 3};
  * let c = { a : 1 };
- * wTools.sureMapOwnOnly( a, b, () => 'error, ' + 'map should', ' no own fields :' );
+ * _.sureMapOwnOnly( a, b, () => 'error, ' + 'map should', ' no own fields :' );
  *
+ * // log
  * // caught <anonymous>:4:9
  * // error, map should have no own fields : x, y
  * //
@@ -4548,15 +4564,15 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * let x = { a : 1 };
  * let a = Object.create( x );
  * let b = { a : 2 };
- * wTools.sureMapHasAll( a, b );
- *
+ * _.sureMapHasAll( a, b );
  * // no exception
  *
  * @example
  * let a = { d : 1 };
  * let b = { a : 2 };
- * wTools.sureMapHasAll( a, b );
+ * _.sureMapHasAll( a, b );
  *
+ * // log
  * // caught <anonymous>:3:10
  * // Object should have fields : a
  * //
@@ -4567,8 +4583,9 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 2 };
  * let b = { x : 0, d : 3};
- * wTools.sureMapHasAll( a, b, 'error msg' );
+ * _.sureMapHasAll( a, b, 'error msg' );
  *
+ * // log
  * // caught <anonymous>:4:9
  * // error msg Object should have fields : d
  * //
@@ -4579,8 +4596,9 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * wTools.sureMapHasAll( a, b, () => 'error, ' + 'map should', ' have fields :' );
+ * _.sureMapHasAll( a, b, () => 'error, ' + 'map should', ' have fields :' );
  *
+ * // log
  * // caught <anonymous>:4:9
  * // error, map should have fields : y
  * //
@@ -4650,14 +4668,14 @@ function sureMapHasAll( srcMap, all, msg )
  * let a = { a : 1 };
  * let b = { a : 2 };
  * wTools.sureMapOwnAll( a, b );
- *
  * // no exception
  *
  * @example
  * let a = { a : 1 };
  * let b = { a : 2, b : 2 }
- * wTools.sureMapOwnAll( a, b );
+ * _.sureMapOwnAll( a, b );
  *
+ * // log
  * // caught <anonymous>:3:8
  * // Object should have own fields : b
  * //
@@ -4668,8 +4686,9 @@ function sureMapHasAll( srcMap, all, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * wTools.sureMapOwnAll( a, b, 'error, should own fields' );
+ * _.sureMapOwnAll( a, b, 'error, should own fields' );
  *
+ * // log
  * // caught <anonymous>:4:9
  * // error, should own fields : y
  * //
@@ -4680,8 +4699,9 @@ function sureMapHasAll( srcMap, all, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * wTools.sureMapOwnAll( a, b, () => 'error, ' + 'map should', ' own fields :' );
+ * _.sureMapOwnAll( a, b, () => 'error, ' + 'map should', ' own fields :' );
  *
+ * // log
  * // caught <anonymous>:4:9
  * // error, map should own fields : y
  * //
@@ -4750,16 +4770,16 @@ function sureMapOwnAll( srcMap, all, msg )
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
- * wTools.sureMapHasNone( a, b );
- *
+ * _.sureMapHasNone( a, b );
  * // no exception
  *
  * @example
  * let x = { a : 1 };
  * let a = Object.create( x );
  * let b = { a : 2, b : 2 }
- * wTools.sureMapHasNone( a, b );
+ * _.sureMapHasNone( a, b );
  *
+ * // log
  * // caught <anonymous>:4:8
  * // Object should have no fields : a
  * //
@@ -4770,8 +4790,9 @@ function sureMapOwnAll( srcMap, all, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * wTools.sureMapHasNone( a, b, 'error, map should have no fields' );
+ * _.sureMapHasNone( a, b, 'error, map should have no fields' );
  *
+ * // log
  * // caught <anonymous>:3:9
  * // error, map should have no fields : x, y
  * //
@@ -4782,8 +4803,9 @@ function sureMapOwnAll( srcMap, all, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * wTools.sureMapHasNone( a, b, () => 'error, ' + 'map should have', 'no fields :' );
+ * _.sureMapHasNone( a, b, () => 'error, ' + 'map should have', 'no fields :' );
  *
+ * // log
  * // caught <anonymous>:3:9
  * // error, map should have no fields : x, y
  * //
@@ -4889,14 +4911,14 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  *
  * @example
  * let map = { a : '1', b : 'name' };
- * wTools.sureMapHasNoUndefine( map );
- *
+ * _.sureMapHasNoUndefine( map );
  * // no exception
  *
  * @example
  * let map = { a : '1', b : undefined };
- * wTools.sureMapHasNoUndefine( map );
+ * _.sureMapHasNoUndefine( map );
  *
+ * // log
  * // caught <anonymous>:2:8
  * // Object  should have no undefines, but has : b
  * //
@@ -4906,8 +4928,9 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * wTools.sureMapHasNoUndefine( map, '"map" has undefines :');
+ * _.sureMapHasNoUndefine( map, '"map" has undefines :');
  *
+ * // log
  * // caught <anonymous>:2:8
  * // "map" has undefines : a
  * //
@@ -4917,8 +4940,9 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * wTools.sureMapHasNoUndefine( map, '"map"', () => 'should have ' + 'no undefines, but has :' );
+ * _.sureMapHasNoUndefine( map, '"map"', () => 'should have ' + 'no undefines, but has :' );
  *
+ * // log
  * // caught <anonymous>:2:8
  * // "map" should have no undefines, but has : a
  * //
@@ -5011,15 +5035,15 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * @example
  * let a = { a : 1, b : 3 };
  * let b = { a : 2, b : 3 };
- * wTools.assertMapHasOnly( a, b );
- *
+ * _.assertMapHasOnly( a, b );
  * //no exception
  *
  * @example
  * let a = { a : 1, c : 3 };
  * let b = { a : 2, b : 3 };
- * wTools.assertMapHasOnly( a, b );
+ * _.assertMapHasOnly( a, b );
  *
+ * // log
  * // caught <anonymous>:3:8
  * // Object should have no fields : c
  * //
@@ -5031,8 +5055,9 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * let x = { d : 1 };
  * let a = Object.create( x );
  * let b = { a : 1 };
- * wTools.assertMapHasOnly( a, b, 'map should have no fields :' )
+ * _.assertMapHasOnly( a, b, 'map should have no fields :' )
  *
+ * // log
  * // caught <anonymous>:4:8
  * // map should have no fields : d
  * //
@@ -5044,8 +5069,9 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * let x = { d : 1 };
  * let a = Object.create( x );
  * let b = { a : 1 };
- * wTools.assertMapHasOnly( a, b, 'map', () => ' should' + ' have no fields :' )
+ * _.assertMapHasOnly( a, b, 'map', () => ' should' + ' have no fields :' )
  *
+ * // log
  * // caught <anonymous>:4:8
  * // map should have no fields : d
  * //
@@ -5085,15 +5111,15 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * let a = Object.create( x );
  * a.a = 5;
  * let b = { a : 2 };
- * wTools.assertMapOwnOnly( a, b );
- *
- * //no exception
+ * _.assertMapOwnOnly( a, b );
+ * // no exception
  *
  * @example
  * let a = { d : 1 };
  * let b = { a : 2 };
- * wTools.assertMapOwnOnly( a, b );
+ * _.assertMapOwnOnly( a, b );
  *
+ * // log
  * // caught <anonymous>:3:10
  * // Object should have no own fields : d
  * //
@@ -5105,8 +5131,9 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * let a = { x : 0, y : 2 };
  * let b = { c : 0, d : 3};
  * let c = { a : 1 };
- * wTools.assertMapOwnOnly( a, b, 'error, map should have no own fields :' );
+ * _.assertMapOwnOnly( a, b, 'error, map should have no own fields :' );
  *
+ * // log
  * // caught <anonymous>:4:8
  * // error, map should have no own fields : x, y
  * //
@@ -5118,8 +5145,9 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * let a = { x : 0, y : 2 };
  * let b = { c : 0, d : 3};
  * let c = { a : 1 };
- * wTools.assertMapOwnOnly( a, b, () => 'error, ' + 'map', ' should have no own fields :' );
+ * _.assertMapOwnOnly( a, b, () => 'error, ' + 'map', ' should have no own fields :' );
  *
+ * // log
  * // caught <anonymous>:4:8
  * // error, map should have no own fields : x, y
  * //
@@ -5157,16 +5185,16 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { a : 1 };
  * let b = { b : 2 };
- * wTools.assertMapHasNone( a, b );
- *
+ * _.assertMapHasNone( a, b );
  * // no exception
  *
  * @example
  * let x = { a : 1 };
  * let a = Object.create( x );
  * let b = { a : 2, b : 2 }
- * wTools.assertMapHasNone( a, b );
+ * _.assertMapHasNone( a, b );
  *
+ * // log
  * // caught <anonymous>:4:8
  * // Object should have no fields : a
  * //
@@ -5177,8 +5205,9 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * wTools.assertMapHasNone( a, b, 'map should have no fields :' );
+ * _.assertMapHasNone( a, b, 'map should have no fields :' );
  *
+ * // log
  * // caught <anonymous>:3:9
  * // map should have no fields : x, y
  * //
@@ -5189,8 +5218,9 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 1 };
  * let b = { x : 1, y : 0 };
- * wTools.assertMapHasNone( a, b, () => 'map ' + 'should ', 'have no fields :' );
+ * _.assertMapHasNone( a, b, () => 'map ' + 'should ', 'have no fields :' );
  *
+ * // log
  * // caught <anonymous>:3:9
  * // map should have no fields : x, y
  * //
@@ -5238,15 +5268,15 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * let x = { a : 1 };
  * let a = Object.create( x );
  * let b = { a : 2 };
- * wTools.assertMapHasAll( a, b );
- *
+ * _.assertMapHasAll( a, b );
  * // no exception
  *
  * @example
  * let a = { d : 1 };
  * let b = { a : 2 };
- * wTools.assertMapHasAll( a, b );
+ * _.assertMapHasAll( a, b );
  *
+ * // log
  * // caught <anonymous>:3:10
  * // Object should have fields : a
  * //
@@ -5257,8 +5287,9 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 2 };
  * let b = { x : 0, d : 3};
- * wTools.assertMapHasAll( a, b, 'map should have fields :' );
+ * _.assertMapHasAll( a, b, 'map should have fields :' );
  *
+ * // log
  * // caught <anonymous>:4:9
  * // map should have fields : d
  * //
@@ -5269,8 +5300,9 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * @example
  * let a = { x : 0, y : 2 };
  * let b = { x : 0, d : 3};
- * wTools.assertMapHasAll( a, b, () => 'map' + ' should', ' have fields :' );
+ * _.assertMapHasAll( a, b, () => 'map' + ' should', ' have fields :' );
  *
+ * // log
  * // caught <anonymous>:4:9
  * // map should have fields : d
  * //
@@ -5308,15 +5340,15 @@ function assertMapHasAll( srcMap, all, msg )
  * @example
  * let a = { a : 1 };
  * let b = { a : 2 };
- * wTools.assertMapOwnAll( a, b );
- *
+ * _.assertMapOwnAll( a, b );
  * // no exception
  *
  * @example
  * let a = { a : 1 };
  * let b = { a : 2, b : 2 }
- * wTools.assertMapOwnAll( a, b );
+ * _.assertMapOwnAll( a, b );
  *
+ * // log
  * // caught <anonymous>:3:8
  * // Object should own fields : b
  * //
@@ -5327,8 +5359,9 @@ function assertMapHasAll( srcMap, all, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * wTools.assertMapOwnAll( a, b, 'error msg, map should own fields :' );
+ * _.assertMapOwnAll( a, b, 'error msg, map should own fields :' );
  *
+ * // log
  * // caught <anonymous>:4:9
  * // error msg, map should own fields : y
  * //
@@ -5339,8 +5372,9 @@ function assertMapHasAll( srcMap, all, msg )
  * @example
  * let a = { x : 0 };
  * let b = { x : 1, y : 0};
- * wTools.assertMapOwnAll( a, b, 'error msg, ', () => 'map' + ' should own fields :' );
+ * _.assertMapOwnAll( a, b, 'error msg, ', () => 'map' + ' should own fields :' );
  *
+ * // log
  * // caught <anonymous>:4:9
  * // error msg, map should own fields : y
  * //
@@ -5375,14 +5409,14 @@ function assertMapOwnAll( srcMap, all, msg )
  *
  * @example
  * let map = { a : '1', b : 'name' };
- * wTools.assertMapHasNoUndefine( map );
- *
+ * _.assertMapHasNoUndefine( map );
  * // no exception
  *
  * @example
  * let map = { a : '1', b : undefined };
- * wTools.assertMapHasNoUndefine( map );
+ * _.assertMapHasNoUndefine( map );
  *
+ * // log
  * // caught <anonymous>:2:8
  * // Object should have no undefines, but has : b
  * //
@@ -5392,8 +5426,9 @@ function assertMapOwnAll( srcMap, all, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * wTools.assertMapHasNoUndefine( map, '"map" has undefines :');
+ * _.assertMapHasNoUndefine( map, '"map" has undefines :');
  *
+ * // log
  * // caught <anonymous>:2:8
  * // "map" has undefines : a
  * //
@@ -5403,8 +5438,9 @@ function assertMapOwnAll( srcMap, all, msg )
  *
  * @example
  * let map = { a : undefined, b : '1' };
- * wTools.assertMapHasNoUndefine( map, 'map', () => ' has ' + 'undefines :');
+ * _.assertMapHasNoUndefine( map, 'map', () => ' has ' + 'undefines :');
  *
+ * // log
  * // caught <anonymous>:2:8
  * // map has undefines : a
  * //

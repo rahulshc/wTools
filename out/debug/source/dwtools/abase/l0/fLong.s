@@ -143,12 +143,12 @@ function scalarAppendOnce( dst, src )
  * @param { Number } length - The length of the new array.
  *
  * @example
+ * _.scalarToVector( 3, 7 );
  * // returns [ 3, 3, 3, 3, 3, 3, 3 ]
- * let arr = _.scalarToVector( 3, 7 );
  *
  * @example
+ * _.scalarToVector( [ 3, 7, 13 ], 3 );
  * // returns [ 3, 7, 13 ]
- * let arr = _.scalarToVector( [ 3, 7, 13 ], 3 );
  *
  * @returns { Number[] | Array } - Returns the new array of static numbers or the original array.
  * @function scalarToVector
@@ -324,20 +324,20 @@ function unrollIsPopulated( src )
  * @param { * } src - The number or array-like object to make unroll-array. Passing null returns an empty unroll.
  *
  * @example
- * // returns true  & false
  * let unroll = _.unrollMake( null );
  * _.unrollIs( unroll );
+ * // returns true
  *
  * @example
- * // returns true
  * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
  * _.unrollIs( unroll );
+ * // returns true
  *
  * @example
- * //returns false
  * let arr = new Array( 1, 2, 'str' );
  * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
  * console.log( arr === unroll );
+ * // log false
  *
  * @returns { Unroll } Returns a new unroll-array maked from {-src-}.
  * Otherwise, it returns the empty unroll.
@@ -384,22 +384,23 @@ function unrollMakeUndefined( src, length )
  * @param { * } src - The number, array-like object or unroll-array. Passing null returns an empty unroll.
  *
  * @example
- * // returns true, false
  * let unroll = _.unrollFrom( null );
  * _.unrollIs( unroll );
+ * // returns true
  *
  * @example
- * // returns true
  * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
  * let result = _.unrollFrom( unroll );
  * console.log ( unroll === result );
+ * // log true
  *
  * @example
- * //returns true, false
  * let arr = new Array( 1, 2, 'str' );
  * let unroll = _.unrollFrom( [ 1, 2, 'str' ] );
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  * console.log( arr === unroll );
+ * // log false
  *
  * @returns { Unroll } Returns unroll-array converted from {-src-}.
  * If {-src-} is unroll-array, then routine returns {-src-}.
@@ -426,34 +427,43 @@ function unrollFrom( src )
  * @param { * } srcs - The objects to be converted into unrolls.
  *
  * @example
- * // returns [ [] ], true, true
  * let unroll = _.unrollsFrom( null );
  * console.log( unroll );
+ * // log [ [] ]
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  *
  * @example
- * // returns [ [ 1, 2, 'str' ] ], true, true
  * let unroll = _.unrollsFrom( [ 1, 2, 'str' ] );
  * console.log ( unroll );
+ * // log [ [ 1, 2, 'str' ] ]
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  * console.log( _.unrollIs( unroll[ 0 ] ) );
+ * // log true
  *
  * @example
- * //returns true, false
  * let arr = new Array( 1, 2, 'str' );
  * let unroll = _.unrollsFrom( [ 1, 2, 'str' ] );
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  * console.log( arr === unroll );
+ * // log false
  *
  * @example
- * // returns [ [], [ undefined ], [], [ 1, [] ] ], true, true, true, true, true
  * let unroll = _.unrollsFrom( [], 1, null, [ 1, [] ] );
  * console.log( unroll );
+ * // log [ [], [ undefined ], [], [ 1, [] ] ]
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  * console.log( _.unrollIs( unroll[ 0 ] ) );
+ * // log true
  * console.log( _.unrollIs( unroll[ 1 ] ) );
+ * // log true
  * console.log( _.unrollIs( unroll[ 2 ] ) );
+ * // log true
  * console.log( _.unrollIs( unroll[ 3 ] ) );
+ * // log true
  *
  * @returns { Unroll } Returns unroll-array contained unroll-arrays converted from arguments.
  * @function unrollsFrom
@@ -489,22 +499,23 @@ function unrollsFrom( srcs )
  * @param { * } src - The object to make unroll-array.
  *
  * @example
- * // returns false, true
  * var src = 'str';
  * let got = _.unrollFromMaybe( src );
  * console.log( _.unrollIs( got ) );
+ * // log false
  * console.log( got === src );
+ * // log true
  *
  * @example
- * // returns true, false
  * let unroll = _.unrollFromMaybe( null );
  * console.log( _.unrollIs( unroll ) );
+ * // log false
  *
  * @example
- * // returns true
  * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
  * let result = _.unrollFromMaybe( unroll );
  * console.log ( unroll === result );
+ * // log true
  *
 
   qqq : in separate line after each console.log such comment should follow
@@ -513,11 +524,12 @@ function unrollsFrom( srcs )
         3. should be for each console.log
 
  * @example
- * //returns true, false
  * let arr = new Array( 1, 2, 'str' );
  * let unroll = _.unrollFromMaybe( [ 1, 2, 'str' ] );
  * console.log( _.unrollIs( unroll ) );
+ * // log true
  * console.log( arr === unroll );
+ * // log false
  *
  * @returns { Unroll } Returns unroll-array converted from {-src-}.
  * If {-src-} is unroll-array or incompatible type, then routine returns {-src-}.
@@ -547,18 +559,20 @@ function unrollFromMaybe( src )
  * @param { arrayIs|Unroll } dstArray - The array to be unrolled (normalized).
  *
  * @example
- * // returns [ 1, 2, 3, 'str' ], true
  * let unroll = _.unrollFrom( [ 1, 2, _.unrollMake( [ 3, 'str' ] ) ] );
  * let result = _.unrollNormalize( unroll )
  * console.log( result );
+ * // log [ 1, 2, 3, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @example
- * // returns [ 1, 1, 'str', [ 1, 'str' ] ], false
  * let unroll = _.unrollFrom( [ 1,'str' ] );
  * let result = _.unrollNormalize( [ 1, unroll, [ unroll ] ] );
  * console.log( result );
+ * // log [ 1, 1, 'str', [ 1, 'str' ] ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @returns { Array } If {-dstArray-} is array, routine returns an array with normalized elements.
  * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns an unroll-array with normalized elements.
@@ -687,34 +701,39 @@ Improve examples in unrollPrepend, unrollAppend.
  * @param { * } args - The elements to be added.
  *
  * @example
- * // returns [ [ 1, 2, 'str' ] ], false
  * let result = _.unrollPrepend( null, [ 1, 2, 'str' ] );
  * console.log( result );
+ * // log [ [ 1, 2, 'str' ] ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 1, 2, str ], false
  * let result = _.unrollPrepend( null, _.unrollMake( [ 1, 2, 'str' ] ) );
  * console.log( result );
+ * // log [ 1, 2, str ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ [ 1, 2 ], 1, 'str' ], true
  * let result = _.unrollPrepend( _.unrollFrom( [ 1, 'str' ] ), [ 1, 2 ] );
  * console.log( result );
+ * // log [ [ 1, 2 ], 1, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @example
- * // returns [ 2, 3, 1, 'str' ], false
  * let result = _.unrollPrepend( [ 1, 'str' ],  _.unrollFrom( [ 2, 3 ] ) );
  * console.log( result );
+ * // log [ 2, 3, 1, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 2, 3, 1, 'str' ], true
  * let result = _.unrollPrepend( _.unrollMake( [ 1, 'str' ] ),  _.unrollFrom( [ 2, 3 ] ) );
  * console.log( result );
+ * // log [ 2, 3, 1, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns updated unroll-array
  * with normalized elements that are added to the begin of {-dstArray-}.
@@ -774,34 +793,39 @@ function unrollPrepend( dstArray )
  * @param { * } args - The elements to be added.
  *
  * @example
- * // returns [ [ 1, 2, 'str' ] ], false
  * let result = _.unrollAppend( null, [ 1, 2, 'str' ] );
  * console.log( result );
+ * // log [ [ 1, 2, 'str' ] ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 1, 2, str ], false
  * let result = _.unrollAppend( null, _.unrollMake( [ 1, 2, 'str' ] ) );
  * console.log( result );
+ * // log [ 1, 2, str ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 1, 'str', [ 1, 2 ] ], true
  * let result = _.unrollAppend( _.unrollFrom( [ 1, 'str' ] ), [ 1, 2 ] );
  * console.log( result );
+ * // log [ 1, 'str', [ 1, 2 ] ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @example
- * // returns [ 1, 'str', 2, 3 ], false
  * let result = _.unrollAppend( [ 1, 'str' ],  _.unrollFrom( [ 2, 3 ] ) );
  * console.log( result );
+ * // log [ 1, 'str', 2, 3 ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 1, 'str', 2, 3 ], true
  * let result = _.unrollAppend( _.unrollMake( [ 1, 'str' ] ),  _.unrollFrom( [ 2, 3 ] ) );
  * console.log( result );
+ * // log [ 1, 'str', 2, 3 ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns updated unroll-array
  * with normalized elements that are added to the end of {-dstArray-}.
@@ -922,50 +946,57 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
  * @param { * } args - The elements to be removed.
  *
  * @example
- * // returns [], false
  * let result = _.unrollRemove( null, [ 1, 2, 'str' ] );
  * console.log( result );
+ * // log []
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [], true
  * let result = _.unrollRemove( _.unrollMake( null ), [ 1, 2, 'str' ] );
  * console.log( result );
+ * // log []
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @example
- * // returns [ 1, 2, 1, 3, 'str' ], false
  * let result = _.unrollRemove( [ 1, 2, 1, 3, 'str' ], [ 1, 'str', 0, 5 ] );
  * console.log( result );
+ * // log [ 1, 2, 1, 3, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 2, 3 ], false
  * let result = _.unrollRemove( [ 1, 2, 1, 3, 'str' ], _.unrollFrom( [ 1, 'str', 0, 5 ] ) );
  * console.log( result );
+ * // log [ 2, 3 ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 1, 2, 1, 3, 'str' ], true
  * let result = _.unrollRemove( _.unrollFrom( [ 1, 2, 1, 3, 'str' ] ), [ 1, 'str', 0, 5 ] );
  * console.log( result );
+ * // log [ 1, 2, 1, 3, 'str' ]
  * console.log( _.unrollIs( result ) );
+ * // log true
  *
  * @example
- * // returns [ 2, 3 ], false
  * let dstArray = _.unrollFrom( [ 1, 2, 1, 3, 'str' ] );
  * let ins = _.unrollFrom( [ 1, 'str', 0, 5 ] );
  * let result = _.unrollRemove( dstArray, ins );
  * console.log( result );
+ * // log [ 2, 3 ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @example
- * // returns [ 2, 3 ], false
  * let dstArray = _.unrollFrom( [ 1, 2, 1, 3, 'str' ] );
  * let ins = _.unrollFrom( [ 1, _.unrollMake( [ 'str', 0, 5 ] ) ] );
  * let result = _.unrollRemove( dstArray, ins );
  * console.log( result );
+ * // log [ 2, 3 ]
  * console.log( _.unrollIs( result ) );
+ * // log false
  *
  * @returns { Unroll } If {-dstArray-} is unroll-array, routine removes all matching elements
  * and returns updated unroll-array.
@@ -1026,18 +1057,18 @@ function unrollRemove( dstArray )
  * @param { * } src - The object to be checked.
  *
  * @example
+ * _.longIs( [ 1, 2 ] );
  * // returns true
- * longIs( [ 1, 2 ] );
  *
  * @example
+ * _.longIs( 10 );
  * // returns false
- * longIs( 10 );
  *
  * @example
- * // returns true
  * let isArr = ( function() {
  *   return _.longIs( arguments );
  * } )( 'Hello there!' );
+ * // returns true
  *
  * @returns { boolean } Returns true if {-srcMap-} is an array-like or an Array.
  * @function longIs.
@@ -1483,7 +1514,7 @@ function longShallowClone()
  * // returns [ 1, 2 ]
  *
  * @example
- * //end index is bigger then length of array
+ * // end index is bigger then length of array
  * _.longSlice( [ 1, 2, 3, 4, 5, 6, 7 ], 5, 100 );
  * // returns [ 6, 7 ]
  *
@@ -1570,46 +1601,46 @@ function longSlice( array, f, l )
  * @param { * } val - value used to fill the space left after copying elements of the original array.
  *
  * @example
- * //Just partial copy of origin array
+ * // just partial copy of origin array
  * let arr = [ 1, 2, 3, 4 ]
  * let result = _.longGrowInplace( arr, 0, 2 );
  * console.log( result );
- * //[ 1, 2 ]
+ * // log [ 1, 2 ]
  *
  * @example
- * //Increase size, fill empty with zeroes
+ * // increase size, fill empty with zeroes
  * let arr = [ 1 ]
  * let result = _.longGrowInplace( arr, 0, 5, 0 );
  * console.log( result );
- * //[ 1, 0, 0, 0, 0 ]
+ * // log [ 1, 0, 0, 0, 0 ]
  *
  * @example
- * //Take two last elements from original, other fill with zeroes
+ * // take two last elements from original, other fill with zeroes
  * let arr = [ 1, 2, 3, 4, 5 ]
  * let result = _.longGrowInplace( arr, 3, 8, 0 );
  * console.log( result );
- * //[ 4, 5, 0, 0, 0 ]
+ * // log [ 4, 5, 0, 0, 0 ]
  *
  * @example
- * //Add two zeroes at the beginning
+ * // add two zeroes at the beginning
  * let arr = [ 1, 2, 3, 4, 5 ]
  * let result = _.longGrowInplace( arr, -2, arr.length, 0 );
  * console.log( result );
- * //[ 0, 0, 1, 2, 3, 4, 5 ]
+ * // log [ 0, 0, 1, 2, 3, 4, 5 ]
  *
  * @example
- * //Add two zeroes at the beginning and two at end
+ * // add two zeroes at the beginning and two at end
  * let arr = [ 1, 2, 3, 4, 5 ]
  * let result = _.longGrowInplace( arr, -2, arr.length + 2, 0 );
  * console.log( result );
- * //[ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
+ * // log [ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
  *
  * @example
- * //Source can be also a BufferNode
+ * // source can be also a BufferNode
  * let buffer = BufferNode.from( '123' );
  * let result = _.longGrowInplace( buffer, 0, buffer.length + 2, 0 );
  * console.log( result );
- * //[ 49, 50, 51, 0, 0 ]
+ * // log [ 49, 50, 51, 0, 0 ]
  *
  * @returns { Array } Returns resized copy of a part of an original array.
  * @function longGrowInplace
@@ -1934,16 +1965,16 @@ function longSelectInplace( array, range, val )
  * @param { Number } end - Index at which to end extraction.
  *
  * @example
+ * _.longRepresent( [ 1, 2, 3, 4, 5 ], 2, 4 );
  * // returns [ 3, 4 ]
- * let arr = _.longRepresent( [ 1, 2, 3, 4, 5 ], 2, 4 );
  *
  * @example
- * // returns [ 2, 3 ]
  * _.longRepresent( [ 1, 2, 3, 4, 5 ], -4, -2 );
+ * // returns [ 2, 3 ]
  *
  * @example
- * // returns [ 1, 2, 3, 4, 5 ]
  * _.longRepresent( [ 1, 2, 3, 4, 5 ] );
+ * // returns [ 1, 2, 3, 4, 5 ]
  *
  * @returns { Array } - Returns a shallow copy of a portion of an array into a new Array.
  * @function longRepresent
@@ -2069,8 +2100,8 @@ function longBut( src, range, ins )
 function bufferRawIs( src )
 {
   let type = Object.prototype.toString.call( src );
-  //let result = type === '[object ArrayBuffer]';
-  //return result;
+  // let result = type === '[object ArrayBuffer]';
+  // return result;
   if( type === '[object ArrayBuffer]' || type === '[object SharedArrayBuffer]' )
   return true;
   return false;
@@ -2157,12 +2188,12 @@ function constructorIsBuffer( src )
  * @param { * } src - The object to be checked.
  *
  * @example
+ * _.arrayIs( [ 1, 2 ] );
  * // returns true
- * arrayIs( [ 1, 2 ] );
  *
  * @example
+ * _.arrayIs( 10 );
  * // returns false
- * arrayIs( 10 );
  *
  * @returns { boolean } Returns true if {-srcMap-} is an Array.
  * @function arrayIs
@@ -2244,26 +2275,26 @@ function constructorLikeArray( src )
  * @param { * } src - The object to be checked.
  *
  * @example
+ * _.hasLength( [ 1, 2 ] );
  * // returns true
- * hasLength( [ 1, 2 ] );
  *
  * @example
+ * _.hasLength( 'Hello there!' );
  * // returns true
- * hasLength( 'Hello there!' );
  *
  * @example
- * // returns true
  * let isLength = ( function() {
  *   return _.hasLength( arguments );
  * } )( 'Hello there!' );
+ * // returns true
  *
  * @example
+ * _.hasLength( 10 );
  * // returns false
- * hasLength( 10 );
  *
  * @example
+ * _.hasLength( {} );
  * // returns false
- * hasLength( { } );
  *
  * @returns { boolean } Returns true if {-srcMap-} has the property (length).
  * @function hasLength
@@ -2303,8 +2334,8 @@ function arrayHasArray( arr )
  * @param { longIs } src2 - The second array.
  *
  * @example
+ * _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
  * // returns 3
- * let arr = _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
  *
  * @returns { Number } - Returns the first difference between the values of the two arrays.
  * @function arrayCompare
@@ -2343,8 +2374,8 @@ function arrayCompare( src1, src2 )
  * @param { longIs } src2 - The second array.
  *
  * @example
+ * _.arraysAreIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  * // returns true
- * let arr = _.arraysAreIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  *
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
  * @function arraysAreIdentical
@@ -2413,8 +2444,8 @@ function arrayHas( array, value, evaluator1, evaluator2 )
  * @param {...*} arguments - One or more argument(s).
  *
  * @example
+ * _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
  * // returns true
- * let arr = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
  *
  * @returns { Boolean } - Returns true, if {-srcMap-} has at least one value of the following argument(s), otherwise false is returned.
  * @function arrayHasAny
@@ -2602,12 +2633,12 @@ function arrayFrom( src )
  * @param { * } src - The source value.
  *
  * @example
+ * _.arrayAs( false );
  * // returns [ false ]
- * let arr = _.arrayAs( false );
  *
  * @example
+ * _.arrayAs( { a : 1, b : 2 } );
  * // returns [ { a : 1, b : 2 } ]
- * let arr = _.arrayAs( { a : 1, b : 2 } );
  *
  * @returns { Array } - If passed null or undefined than return the empty array. If passed an array then return it.
  * Otherwise return an array which contains the element from argument.
@@ -2845,12 +2876,12 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
  * @param { wTools~compareCallback } evaluator1 - A callback function.
  *
  * @example
- * // returns { index : 3, element : 'str' }
  * _.arrayLeft( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
+ * // returns { index : 3, element : 'str' }
  *
  * @example
- * // returns {  }
  * _.arrayLeft( [ 1, 2, 3, 4, 5 ], 6 );
+ * // returns {}
  *
  * @returns { Object } Returns a new object containing the properties, (index, element),
  * corresponding to the found value (ins) from the array (arr).
@@ -2926,16 +2957,19 @@ function arrayRightDefined( arr )
  * @param { * } [ onEvaluate2 ] - The second part of evaluator. Change the value to search.
  *
  * @example
- * // Simple exapmle. Returns 2
- * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
+ * // simple exapmle
+ * _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
+ * // returns 2
  *
  * @example
- * // With equalizer. Returns 4
- * let arr = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+ * // with equalizer
+ * _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+ * // returns 4
  *
  * @example
- * // With evaluator. Returns 4
- * let arr = _.arrayCountElement( [ [ 10, 2 ], [ 10, 2 ], [ 'str', 10 ], [ 10, true ], [ false, 10 ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
+ * // with evaluator
+ * _.arrayCountElement( [ [ 10, 2 ], [ 10, 2 ], [ 'str', 10 ], [ 10, true ], [ false, 10 ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
+ * // returns 4
  *
  * @returns { Number } - Returns the count of matched elements in the {-srcArray-} with the { element } element.
  * @function arrayCountElement
@@ -2976,12 +3010,12 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
  * @param { Array } srcArray - The source array.
  *
  * @example
- * // returns 23;
- * let arr = _.arrayCountTotal( [ 1, 2, 10, 10 ] );
+ * _.arrayCountTotal( [ 1, 2, 10, 10 ] );
+ * // returns 23
  *
  * @example
- * // returns 1;
- * let arr = _.arrayCountTotal( [ true, false, false ] );
+ * _.arrayCountTotal( [ true, false, false ] );
+ * // returns 1
  *
  * @returns { Number } - Returns the sum of the elements in { srcArray }.
  * @function arrayCountTotal
@@ -3016,12 +3050,12 @@ function arrayCountTotal( srcArray )
  * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
  *
  * @example
- * // returns 3
  * _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+ * // returns 3
  *
  * @example
- * // returns 0
  * _.arrayCountUnique( [ 1, 2, 3, 4, 5 ] );
+ * // returns 0
  *
  * @returns { Number } - Returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array {-srcMap-}.
  * @function arrayCountUnique
@@ -3136,20 +3170,20 @@ function arrayPrepend( dstArray, ins )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4 ]
  * _.arrayPrependOnce( [ 1, 2, 3, 4 ], 5 );
+ * // returns [ 5, 1, 2, 3, 4 ]
  *
  * @example
- * // returns [ 1, 2, 3, 4, 5 ]
  * _.arrayPrependOnce( [ 1, 2, 3, 4, 5 ], 5 );
+ * // returns [ 1, 2, 3, 4, 5 ]
  *
  * @example
- * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
  * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
  *
  * @example
- * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  * _.arrayPrependOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  *
  * @example
  * function onEqualize( a, b )
@@ -3193,20 +3227,20 @@ function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4 ]
  * _.arrayPrependOnceStrictly( [ 1, 2, 3, 4 ], 5 );
+ * // returns [ 5, 1, 2, 3, 4 ]
  *
  * @example
- * // throws error
  * _.arrayPrependOnceStrictly( [ 1, 2, 3, 4, 5 ], 5 );
- *
- * @example
- * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
- * _.arrayPrependOnceStrictly( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
- *
- * @example
  * // throws error
+ *
+ * @example
+ * _.arrayPrependOnceStrictly( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * // returns [ 'Dmitry', 'Petre', 'Mikle', 'Oleg' ]
+ *
+ * @example
  * _.arrayPrependOnceStrictly( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * // throws error
  *
  * @example
  * function onEqualize( a, b )
@@ -3272,20 +3306,20 @@ function arrayPrepended( dstArray, ins )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns 0
  * _.arrayPrependedOnce( [ 1, 2, 3, 4 ], 5 );
- *
- * @example
- * // returns -1
- * _.arrayPrependedOnce( [ 1, 2, 3, 4, 5 ], 5 );
- *
- * @example
  * // returns 0
- * _.arrayPrependedOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
  *
  * @example
+ * _.arrayPrependedOnce( [ 1, 2, 3, 4, 5 ], 5 );
  * // returns -1
+ *
+ * @example
+ * _.arrayPrependedOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * // returns 0
+ *
+ * @example
  * _.arrayPrependedOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * // returns -1
  *
  * @example
  * function onEqualize( a, b )
@@ -3346,12 +3380,12 @@ function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
  * @param { * } ins - The element to add.
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4 ]
  * _.arrayPrependElement( [ 1, 2, 3, 4 ], 5 );
+ * // returns [ 5, 1, 2, 3, 4 ]
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4, 5 ]
  * _.arrayPrependElement( [ 1, 2, 3, 4, 5 ], 5 );
+ * // returns [ 5, 1, 2, 3, 4, 5 ]
  *
  * @returns { Array } Returns updated array, that contains new element( ins ).
  * @function arrayPrependElement
@@ -3432,8 +3466,8 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
  * @param { * } ins - The element to add.
  *
  * @example
- * // returns 0
  * _.arrayPrependedElement( [ 1, 2, 3, 4 ], 5 );
+ * // returns 0
  *
  * @returns { Array } Returns updated array, that contains new element( ins ).
  * @function arrayPrependedElement
@@ -3498,12 +3532,12 @@ function arrayPrependedElementOnceStrictly( dstArray, ins, evaluator1, evaluator
  * @param { ArrayLike } insArray - The source array.
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4 ]
  * _.arrayPrependArray( [ 1, 2, 3, 4 ], [ 5 ] );
+ * // returns [ 5, 1, 2, 3, 4 ]
  *
  * @example
- * // returns [ 5, 1, 2, 3, 4, 5 ]
  * _.arrayPrependArray( [ 1, 2, 3, 4, 5 ], [ 5 ] );
+ * // returns [ 5, 1, 2, 3, 4, 5 ]
  *
  * @returns { Array } Returns updated array, that contains elements from( insArray ).
  * @function arrayPrependArray
@@ -3536,12 +3570,12 @@ function arrayPrependArray( dstArray, insArray )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns [ 0, 1, 2, 3, 4 ]
  * _.arrayPrependArrayOnce( [ 1, 2, 3, 4 ], [ 0, 1, 2, 3, 4 ] );
+ * // returns [ 0, 1, 2, 3, 4 ]
  *
  * @example
- * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  * _.arrayPrependArrayOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], [ 'Dmitry' ] );
+ * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  *
  * @example
  * function onEqualize( a, b )
@@ -3585,8 +3619,8 @@ function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns [ 0, 1, 2, 3, 4 ]
  * _.arrayPrependArrayOnceStrictly( [ 1, 2, 3, 4 ], [ 0, 1, 2, 3, 4 ] );
+ * // returns [ 0, 1, 2, 3, 4 ]
  *
  * @example
  * function onEqualize( a, b )
@@ -3656,7 +3690,7 @@ function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
  * _.arrayPrependedArray( dst, [ 5, 6, 7 ] );
  * // returns 3
  * console.log( dst );
- * //returns [ 5, 6, 7, 1, 2, 3, 4 ]
+ * //log [ 5, 6, 7, 1, 2, 3, 4 ]
  *
  * @returns { Array } Returns count of added elements.
  * @function arrayPrependedArray
@@ -3688,16 +3722,16 @@ function arrayPrependedArray( dstArray, insArray )
  * @param { wTools~compareCallback } onEqualize - A callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns 3
  * _.arrayPrependedArrayOnce( [ 1, 2, 3 ], [ 4, 5, 6] );
+ * // returns 3
  *
  * @example
- * // returns 1
  * _.arrayPrependedArrayOnce( [ 0, 2, 3, 4 ], [ 1, 1, 1 ] );
+ * // returns 1
  *
  * @example
- * // returns 0
  * _.arrayPrependedArrayOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], [ 'Dmitry' ] );
+ * // returns 0
  *
  * @example
  * function onEqualize( a, b )
@@ -3769,8 +3803,8 @@ function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evalua
  * @param{ longIs | * } arguments[...] - Source arguments.
  *
  * @example
- * // returns [ 5, 6, 7, 1, 2, 3, 4 ]
  * _.arrayPrependArrays( [ 1, 2, 3, 4 ], [ 5 ], [ 6 ], 7 );
+ * // returns [ 5, 6, 7, 1, 2, 3, 4 ]
  *
  * @example
  * let dst = [ 1, 2, 3, 4 ];
@@ -3810,8 +3844,8 @@ function arrayPrependArrays( dstArray, insArray )
  * @param{ longIs | * } arguments[...] - Source arguments.
  *
  * @example
- * // returns [ 5, 6, 7, 1, 2, 3, 4 ]
  * _.arrayPrependArraysOnce( [ 1, 2, 3, 4 ], [ 5 ], 5, [ 6 ], 6, 7, [ 7 ] );
+ * // returns [ 5, 6, 7, 1, 2, 3, 4 ]
  *
  * @example
  * let dst = [ 1, 2, 3, 4 ];
@@ -3854,12 +3888,12 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
  * @param { wTools~compareCallback } onEqualize - A callback function that can be provided through routine`s context. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  * _.arrayPrependArraysOnceStrictly( [ 1, 2, 3, 4 ], 5, [ 6, [ 7 ] ], 8 );
+ * // returns [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  * @example
- * // throws error
  * _.arrayPrependArraysOnceStrictly( [ 1, 2, 3, 4 ], [ 5 ], 5, [ 6 ], 6, 7, [ 7 ] );
+ * // throws error
  *
  * @example
  * function onEqualize( a, b )
@@ -3869,7 +3903,7 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
  * let dst = [];
  * let arguments = [ dst, [ 1, [ 2 ], [ [ 3 ] ] ], 4 ];
  * _.arrayPrependArraysOnceStrictly.apply( { onEqualize }, arguments );
- * //returns [ 1, 2, [ 3 ], 4 ]
+ * // returns [ 1, 2, [ 3 ], 4 ]
  *
  * @returns { Array } Returns updated array( dstArray ).
  * @function arrayPrependArraysOnceStrictly
@@ -3948,8 +3982,8 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
  * @param{ longIs | * } arguments[...] - Source arguments.
  *
  * @example
- * // returns 3
  * _.arrayPrependedArrays( [ 1, 2, 3, 4 ], [ 5 ], [ 6 ], 7 );
+ * // returns 3
  *
  * @example
  * let dst = [ 1, 2, 3, 4 ];
@@ -4001,12 +4035,12 @@ function arrayPrependedArrays( dstArray, insArray )
  * @param{ longIs | * } arguments[...] - Source arguments.
  *
  * @example
- * // returns 0
  * _.arrayPrependedArraysOnce( [ 1, 2, 3, 4, 5, 6, 7 ], [ 5 ], [ 6 ], 7 );
+ * // returns 0
  *
  * @example
- * // returns 3
  * _.arrayPrependedArraysOnce( [ 1, 2, 3, 4 ], [ 5 ], 5, [ 6 ], 6, 7, [ 7 ] );
+ * // returns 3
  *
  * @example
  * let dst = [ 1, 2, 3, 4 ];
@@ -4133,20 +4167,20 @@ function arrayAppend( dstArray, ins )
  * @param { * } src - The value to add.
  *
  * @example
- * // returns [ 1, 2, 3, 4, 5 ]
  * _.arrayAppendOnce( [ 1, 2, 3, 4 ], 5 );
- *
- * @example
  * // returns [ 1, 2, 3, 4, 5 ]
+ *
+ * @example
  * _.arrayAppendOnce( [ 1, 2, 3, 4, 5 ], 5 );
+ * // returns [ 1, 2, 3, 4, 5 ]
  *
  * @example
- * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  * _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry' );
+ * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  *
  * @example
- * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  * _.arrayAppendOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry' );
+ * // returns [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  *
  * @returns { Array } If an array (dst) doesn't have a value {-srcMap-} it returns the updated array (dst) with the new length,
  * otherwise, it returns the original array (dst).
@@ -4346,8 +4380,8 @@ function arrayAppendedElementOnceStrictly( dstArray, ins )
 * @param {*} arguments[] - One or more argument(s) to add to the end of the (dst) array.
 *
 * @example
+* _.arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
 * // returns [ 1, 2, 'str', false, { a : 1 }, 42, 3, 7, 13 ];
-* let arr = _.arrayAppendArray( [ 1, 2 ], 'str', false, { a : 1 }, 42, [ 3, 7, 13 ] );
 *
 * @returns { Array } - Returns an array (dst) with all of the following argument(s) that were added to the end of the (dst) array.
 * @function arrayAppendArray
@@ -4388,8 +4422,8 @@ function arrayAppendArray( dstArray, insArray )
  * @param {*} arguments[] - One or more argument(s).
  *
  * @example
+ * _.arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
  * // returns [ 1, 2, 'str', {}, 5 ]
- * let arr = _.arrayAppendArrayOnce( [ 1, 2 ], 'str', 2, {}, [ 'str', 5 ] );
  *
  * @returns { Array } - Returns an array (dst) with only unique following argument(s) that were added to the end of the (dst) array.
  * @function arrayAppendArrayOnce
@@ -4794,14 +4828,14 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
  * By default, it checks the equality of two arguments.
  *
  * @example
+ * _.arrayRemoveElementOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
  * // returns [ 1, 2, 3, 'str' ]
- * let arr = _.arrayRemoveElementOnce( [ 1, 'str', 2, 3, 'str' ], 'str' );
  *
  * @example
- * // returns [ 3, 7, 13, 33 ]
- * let arr = _.arrayRemoveElementOnce( [ 3, 7, 33, 13, 33 ], 13, function( el, ins ) {
+ * _.arrayRemoveElementOnce( [ 3, 7, 33, 13, 33 ], 13, function( el, ins ) {
  *   return el > ins;
  * });
+ * // returns [ 3, 7, 13, 33 ]
  *
  * @returns { Array } - Returns the modified (dstArray) array with the new length.
  * @function arrayRemoveElementOnce
@@ -4895,14 +4929,14 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
  * By default, it checks the equality of two arguments.
  *
  * @example
- * // returns 1
- * let arr = _.arrayRemovedElementOnce( [ 2, 4, 6 ], 4, function( el ) {
+ * _.arrayRemovedElementOnce( [ 2, 4, 6 ], 4, function( el ) {
  *   return el;
  * });
+ * // returns 1
  *
  * @example
+ * _.arrayRemovedElementOnce( [ 2, 4, 6 ], 2 );
  * // returns 0
- * let arr = _.arrayRemovedElementOnce( [ 2, 4, 6 ], 2 );
  *
  * @returns { Number } - Returns the index of the value (ins) that was removed from (dstArray).
  * @function arrayRemovedElementOnce
@@ -5078,18 +5112,18 @@ function arrayRemovedArray( dstArray, insArray )
  * @param { function } onEqualize - The callback function. By default, it checks the equality of two arguments.
  *
  * @example
- * // returns 0
  * _.arrayRemovedArrayOnce( [  ], [  ] );
+ * // returns 0
  *
  * @example
- * // returns 2
  * _.arrayRemovedArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ] );
+ * // returns 2
  *
  * @example
- * // returns 4
- * let got = _.arrayRemovedArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
+ * _.arrayRemovedArrayOnce( [ 1, 2, 3, 4, 5 ], [ 6, 2, 7, 5, 8 ], function( a, b ) {
  *   return a < b;
  * } );
+ * // returns 4
  *
  * @returns { number }  Returns amount of the deleted elements from the (dstArray).
  * @function arrayRemovedArrayOnce
@@ -5325,12 +5359,12 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
  * @param { Function } [ evaluator = function( e ) { return e } ] - A callback function.
  *
  * @example
- * // returns [ 1, 2, 'abc', 4, true ]
  * _.arrayRemoveDuplicates( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+ * // returns [ 1, 2, 'abc', 4, true ]
  *
  * @example
- * // [ 1, 2, 3, 4, 5 ]
  * _.arrayRemoveDuplicates( [ 1, 2, 3, 4, 5 ] );
+ * // returns [ 1, 2, 3, 4, 5 ]
  *
  * @returns { Number } - Returns the source array without the duplicated elements.
  * @function arrayRemoveDuplicates
@@ -5403,8 +5437,8 @@ function arrayRemoveDuplicates( dstArray, evaluator )
  * @param {...*} arguments - One or more argument(s).
  *
  * @example
+ * _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
  * // returns [ 'str', {}, 1, 2, 5, true ]
- * let arr = _.arrayFlatten( 'str', {}, [ 1, 2 ], 5, true );
  *
  * @returns { Array } - Returns an array of the passed argument(s).
  * @function arrayFlatten
@@ -5988,20 +6022,20 @@ function arrayReplace( dstArray, ins, sub, evaluator1, evaluator2 )
  * @param { * } sub - The value to replace.
  *
  * @example
- * // returns -1
  * _.arrayReplaceOnce( [ 2, 4, 6, 8, 10 ], 12, 14 );
+ * // returns -1
  *
  * @example
- * // returns 1
  * _.arrayReplaceOnce( [ 1, undefined, 3, 4, 5 ], undefined, 2 );
+ * // returns 1
  *
  * @example
- * // returns 3
  * _.arrayReplaceOnce( [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ], 'Dmitry', 'Bob' );
+ * // returns 3
  *
  * @example
- * // returns 4
  * _.arrayReplaceOnce( [ true, true, true, true, false ], false, true );
+ * // returns 4
  *
  * @returns { number }  Returns the index of the (dstArray) array which will be replaced by (sub),
  * if (dstArray) has the value (ins).
@@ -6589,19 +6623,22 @@ function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evalua
  * @param { * } sub - The value to add or replace.
  *
  * @example
- * // returns 3
  * let add = _.arrayUpdate( [ 'Petre', 'Mikle', 'Oleg' ], 'Dmitry', 'Dmitry' );
- * console.log( add ) = > [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ];
+ * // returns 3
+ * console.log( add );
+ * // log [ 'Petre', 'Mikle', 'Oleg', 'Dmitry' ]
  *
  * @example
- * // returns 5
  * let add = _.arrayUpdate( [ 1, 2, 3, 4, 5 ], 6, 6 );
- * console.log( add ) => [ 1, 2, 3, 4, 5, 6 ];
+ * // returns 5
+ * console.log( add );
+ * // log [ 1, 2, 3, 4, 5, 6 ]
  *
  * @example
- * // returns 4
  * let replace = _.arrayUpdate( [ true, true, true, true, false ], false, true );
- * console.log( replace ) => [ true, true true, true, true ];
+ * // returns 4
+ * console.log( replace );
+ * // log [ true, true true, true, true ]
  *
  * @returns { number } Returns the last added or the last replaced index.
  * @function arrayUpdate
