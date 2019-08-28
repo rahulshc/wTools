@@ -41,7 +41,7 @@ function bufferRawIs( test )
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
   test.case = 'node buffer';
   var src = BufferNode.alloc( 10 );
@@ -105,7 +105,7 @@ function bufferTypedIs( test )
   var got = _.bufferTypedIs( src );
   test.identical( got, false );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
   test.case = 'node buffer';
   var src = BufferNode.alloc( 10 );
@@ -144,7 +144,7 @@ function bufferTypedIs( test )
 
 function bufferNodeIs( test )
 {
-  if( !Config.platform === 'nodejs' )
+  if( !Config.interpreter === 'njs' )
   return;
 
   test.case = 'node buffer';
@@ -243,7 +243,7 @@ function bufferViewIs( test )
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
   test.case = 'node buffer';
   var src = BufferNode.alloc( 10 );
@@ -293,7 +293,7 @@ function bufferBut( test )
   var got = _.bufferBut( src, [ 1, 2 ], ins );
   test.identical( got, new I8x( [ 0, 1, 2, 3, 2, 3 ] ) );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
   var src = new U8ClampedX( [ 0, 1, 2, 3 ] );
   var ins = BufferNode.from( [ 1, 2, 3 ] );
@@ -581,7 +581,7 @@ function bufferResize( test )
 
   /* node buffer */
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
   test.case = 'node buffer, size < length, alloc method';
   var src = BufferNode.alloc( 6 );
@@ -816,7 +816,7 @@ function bufferFrom( test )
   var expected = new U8x([ 97, 98, 99 ]);
   test.identical( got, expected );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'src:node buffer, bufferConstructor:typed buffer';
     var src = BufferNode.from([ 97, 98, 99 ]);
@@ -857,7 +857,7 @@ function bufferFrom( test )
   var expected = new I32x([ 97, 98, 99 ]).buffer;
   test.identical( got, expected );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'src:node buffer, bufferConstructor:raw buffer';
     var src = BufferNode.from([ 97, 98, 99 ]);
@@ -866,7 +866,7 @@ function bufferFrom( test )
     test.identical( got, expected );
   }
 
-  if( !Config.platform === 'nodejs' )
+  if( !Config.interpreter === 'njs' )
   return;
 
   /* node buffer */
@@ -976,7 +976,7 @@ function bufferRawFrom( test )
   var expected = new U8x([ 97, 98, 99 ]).buffer;
   test.identical( got, expected );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'node-buffer';
     var src = BufferNode.from( 'abc' );
@@ -1030,7 +1030,7 @@ function bufferBytesFrom( test )
   var expected = new U8x([ 97, 98, 99 ]);
   test.identical( got, expected );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'node';
     var src = BufferNode.from( 'abc' );
@@ -1055,7 +1055,7 @@ function bufferBytesFrom( test )
 
 function bufferNodeFrom( test )
 {
-  if( Config.platform !== 'nodejs' )
+  if( Config.interpreter !== 'njs' )
   return;
 
   test.case = 'raw';
@@ -5270,7 +5270,7 @@ function longRepresent( test )
 //  var expected = new U8x( [ 1, 1, 1 ] );
 //  test.identical( new U8x( got ), expected );
 //
-//  if( Config.platform === 'nodejs' )
+//  if( Config.interpreter === 'njs' )
 //  {
 //    test.case = 'buffer';
 //    var got = _.arrayJoin( BufferNode.from( '1' ), [ 1 ] );
@@ -5391,7 +5391,7 @@ function longGrowInplace( test )
 
   //
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'buffer';
     var got = _.longGrowInplace( BufferNode.from( '123' ), 0, 5, 0 );
@@ -5501,7 +5501,7 @@ function longResize( test )
 
   /* BufferNode */
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'buffer';
     var got = _.longResize( BufferNode.from( '123' ), 0, 5, 0 );
@@ -5597,7 +5597,7 @@ function longResize( test )
 
   //
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'buffer';
     var got = _.longResize( BufferNode.from( '123' ), 0, 5, 0 );
@@ -6879,7 +6879,7 @@ function longBut( test )
     // BufferRaw
   ];
 
-  // if( Config.platform === 'nodejs' )
+  // if( Config.interpreter === 'njs' )
   // list.push( BufferNode );
 
   for( var i = 0; i < list.length; i++ )
