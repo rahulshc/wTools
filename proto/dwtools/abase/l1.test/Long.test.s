@@ -1955,8 +1955,10 @@ function _longMakeOfLength( test )
 
   test.case = 'ins as Array';
   var expected = new Array( 5 );
-  var src = _.longFill( BufferNode.alloc( 5 ), 1 );
-  var got = _._longMakeOfLength( Array, src );
+  var src = BufferNode.from( [ 1, 1, 1, 1, 1 ] );
+  // var src = _.longFill( BufferNode.alloc( 5 ), 1 );
+  var got = _._longMakeOfLength( Array, Array.from( src ) );
+  // var got = _._longMakeOfLength( Array, src );
   test.is( _.arrayIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
@@ -1971,8 +1973,10 @@ function _longMakeOfLength( test )
 
   test.case = 'ins as TypedArray';
   var expected = new F32x( 5 );
-  var src = _.longFill( BufferNode.alloc( 5 ), 1 );
-  var got = _._longMakeOfLength( F32x, src );
+  var src = BufferNode.from( [ 1, 1, 1, 1, 1 ] );
+  // var src = _.longFill( BufferNode.alloc( 5 ), 1 );
+  var got = _._longMakeOfLength( F32x, Array.from( src ) );
+  // var got = _._longMakeOfLength( F32x, src );
   test.is( _.bufferTypedIs(  got ) );
   test.identical( got.length, 5 );
   test.identical( got, expected );
