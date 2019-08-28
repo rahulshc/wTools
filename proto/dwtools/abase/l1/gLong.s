@@ -3098,7 +3098,7 @@ function longFill( result, value, range )
   let l = range[ 0 ];
   let r = range[ 1 ];
 
-  _.assert( 1 <= arguments.length <= 3 );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
   // _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.longIs( result ) );
   _.assert( _.rangeIs( range ) );
