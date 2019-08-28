@@ -103,45 +103,44 @@ function multipleAll( dsts )
  * @param {boolean} result - Sets retuned value. 1 - routine returns array with verctors, 0 - routine returns index of last element. By default is 1.
  *
  * @example
- * //returns  [ [ 0, 2 ], [ 1, 2 ] ]
  * var got = _.eachSample( { sets : [ [ 0, 1 ], 2 ] });
  * console.log( got );
+ * // log [ [ 0, 2 ], [ 1, 2 ] ]
  *
  * @example
- * //returns  3
  * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ], result : 0 });
  * console.log( got );
+ * // log 3
  *
  * @example
- * //returns  [ [ 0, 2 ], [ 1, 2 ],
- *              [ 0, 3 ], [ 1, 3 ] ]
  * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ] });
  * console.log( got );
+ * // log [ [ 0, 2 ], [ 1, 2 ],
+ *          [ 0, 3 ], [ 1, 3 ] ]
  *
  * @example
- * //returns  [ { a : 0, b : 2}, { a : 1, b : 2},
- *              { a : 0, b : 3}, { a : 1, b : 3} ]
  * var got = _.eachSample( { sets : { a : [ 0, 1 ], b : [ 2, 3 ] } });
  * console.log( got );
+ * // log [ { a : 0, b : 2}, { a : 1, b : 2},
+ *          { a : 0, b : 3}, { a : 1, b : 3} ]
  *
  * @example
- * //returns  [ [ 3, 0 ], [ 2, 0 ],
- *              [ 3, 1 ], [ 2, 1 ] ]
  * var got = _.eachSample( { sets : [ [ 0, 1 ], [ 2, 3 ] ], leftToRight : 0 } );
  * console.log( got );
+ * // log [ [ 3, 0 ], [ 2, 0 ],
+ *          [ 3, 1 ], [ 2, 1 ] ]
  *
  * @example
- * //returns  [ [ 3, 0, 4, 5 ], [ 2, 0, 4, 5 ],
- *              [ 3, 1, 4, 5 ], [ 2, 1, 4, 5 ] ]
  * var got = _.eachSample
  * ({
  *   sets : [ [ 0, 1 ], [ 2, 3 ] ],
  *   sample : [ 2, 3, 4, 5 ]
  * });
  * console.log( got );
+ * // log [ [ 3, 0, 4, 5 ], [ 2, 0, 4, 5 ],
+ *          [ 3, 1, 4, 5 ], [ 2, 1, 4, 5 ] ]
  *
  * @example
- * //returns  got = [ 0, 2, 'c', 'd' ]
  * function onEach( sample, i )
  * {
  *   _.arrayAppend( got, sample[ i ] );
@@ -154,6 +153,7 @@ function multipleAll( dsts )
  *   sample : [ 'a', 'b', 'c', 'd' ]
  * });
  * console.log( got );
+ * // log [ 0, 2, 'c', 'd' ]
  *
  * @function eachSample
  * @returns {Array} Returns array contained  check function.
@@ -765,15 +765,15 @@ function entityNone( src, onEach )
  * @returns {function} Returns condition check function.
  *
  * @example
- * //returns Object {a: 1}
  * let check = _._filter_functor( { a : 1, b : 1, c : 1 } );
  * check( { a : 1 } );
+ * // returns Object {a: 1}
  *
  * @example
- * //returns false
  * function condition( src ){ return src.y === 1 }
  * let check = _._filter_functor( condition );
  * check( { a : 2 } );
+ * // returns false
  *
  * @function _filter_functor
  * @throws {exception} If no argument provided.
@@ -827,33 +827,33 @@ function _filter_functor( condition, levels )
  * function on every element of src. If entity is array, the new array has the same length as source.
  *
  * @example
-  let numbers = [ 3, 4, 6 ];
-
-  function sqr( v )
-  {
-    return v * v
-  };
-
-  let res = wTools.entityMap(numbers, sqr);
-  // [ 9, 16, 36 ]
-  // numbers is still [ 3, 4, 6 ]
-
-  function checkSidesOfTriangle( v, i, src )
-  {
-    let sumOthers = 0,
-      l = src.length,
-      j;
-
-    for ( j = 0; j < l; j++ )
-    {
-      if ( i === j ) continue;
-      sumOthers += src[ j ];
-    }
-    return v < sumOthers;
-  }
-
-  let res = wTools.entityMap( numbers, checkSidesOfTriangle );
- // [ true, true, true ]
+ * let numbers = [ 3, 4, 6 ];
+ * function sqrt( v )
+ * {
+ *   return v * v;
+ * };
+ *
+ * _.entityMap( numbers, sqrt );
+ * // returns [ 9, 16, 36 ]
+ * // numbers is still [ 3, 4, 6 ]
+ *
+ * @example
+ * function checkSidesOfTriangle( v, i, src )
+ * {
+ *   let sumOthers = 0,
+ *     l = src.length,
+ *     j;
+ *
+ *   for ( j = 0; j < l; j++ )
+ *   {
+ *     if ( i === j ) continue;
+ *     sumOthers += src[ j ];
+ *   }
+ *   return v < sumOthers;
+ * }
+ *
+ * _.entityMap( numbers, checkSidesOfTriangle );
+ * // returns [ true, true, true ]
  *
  * @param {ArrayLike|ObjectLike} src - Entity, on each elements of which will be called ( onEach ) function.
  * @param {wTools.onEach} onEach - Function that produces an element of the new entity.
@@ -1206,18 +1206,18 @@ function entityShallowClone( src )
  * let src = { src : 'string' };
  *  _.entityAssign( dst, src );
  * console.log( dst.str )
- * //returns "string"
+ * // log "string"
  *
  * @example
  * let dst = { copy : function( src ) { for( let i in src ) this[ i ] = src[ i ] } }
  * let src = { src : 'string', num : 123 }
  *  _.entityAssign( dst, src );
  * console.log( dst )
- * //returns Object {src: "string", num: 123}
+ * // log Object { src: "string", num: 123 }
  *
  * @example
- * //returns 'string'
  *  _.entityAssign( null, new String( 'string' ) );
+ * // returns 'string'
  *
  * @function entityAssign
  * @throws {exception} If( arguments.length ) is not equal to 3 or 2.
@@ -1310,7 +1310,7 @@ function entityAssign( dst, src, onRecursive )
  * let name = 'a';
  * _.entityAssignFieldFromContainer(dst, src, name );
  * console.log( dst.a === src.a );
- * //returns true
+ * // log true
  *
  * @example
  * let dst = {};
@@ -1323,7 +1323,7 @@ function entityAssign( dst, src, onRecursive )
  * };
  * _.entityAssignFieldFromContainer(dst, src, name, onRecursive );
  * console.log( dst.a === src.a );
- * //returns true
+ * // log true
  *
  * @function entityAssignFieldFromContainer
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
@@ -1370,7 +1370,7 @@ function entityAssignFieldFromContainer( dstContainer, srcContainer, name, onRec
  * let name = 'a';
  * _.entityAssignField( dstContainer, srcValue, name );
  * console.log( dstContainer.a );
- * //returns 15
+ * // log 15
  *
  * @function entityAssignField
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
@@ -1424,16 +1424,16 @@ function entityAssignField( dstContainer, srcValue, name, onRecursive )
  * @returns {wTools.entityMostResult} Object with result of search.
  *
  * @example
- * //returns { index: 0, key: 0, value: 1, element: 1 }
  * _._entityMost([ 1, 3, 3, 9, 10 ], undefined, 0 );
+ * // returns { index: 0, key: 0, value: 1, element: 1 }
  *
  * @example
- * //returns { index: 4, key: 4, value: 10, element: 10 }
  * _._entityMost( [ 1, 3, 3, 9, 10 ], undefined, 1 );
+ * // returns { index: 4, key: 4, value: 10, element: 10 }
  *
  * @example
- * //returns { index: 4, key: 4, value: 10, element: 10 }
  * _._entityMost( { a : 1, b : 2, c : 3 }, undefined, 0 );
+ * // returns { index: 4, key: 4, value: 10, element: 10 }
  *
  * @private
  * @function _entityMost
@@ -1533,9 +1533,9 @@ function _entityMost( src, onEvaluate, returnMax )
  * @returns {wTools.entityMostResult} Object with result of search.
  *
  * @example
- *  //returns { index : 2, key : 'c', value 3: , element : 9  };
  *  let obj = { a : 25, b : 16, c : 9 };
- *  let min = wTools.entityMin( obj, Math.sqrt );
+ *  _.entityMin( obj, Math.sqrt );
+ *  // returns { index : 2, key : 'c', value 3: , element : 9  };
  *
  * @see wTools.onEach
  * @see wTools.entityMostResult
@@ -1561,9 +1561,9 @@ function entityMin( src, onEvaluate )
  * @returns {wTools.entityMostResult} Object with result of search.
  *
  * @example
- *  //returns { index: 0, key: "a", value: 25, element: 25 };
  *  let obj = { a: 25, b: 16, c: 9 };
- *  let max = wTools.entityMax( obj );
+ *  _.entityMax( obj );
+ *  // returns { index: 0, key: "a", value: 25, element: 25 };
  *
  * @see wTools.onEach
  * @see wTools.entityMostResult
