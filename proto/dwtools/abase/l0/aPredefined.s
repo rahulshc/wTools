@@ -6,9 +6,9 @@
  * @file aPredefined.s.
  */
 
-// /**
-//   @module Tools/base/Fundamental - Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind. Tools contain hundreds of routines to operate effectively with Array, SortedArray, Map, RegExp, Buffer, Time, String, Number, Routine, Error and other fundamental types. The module provides advanced tools for diagnostics and errors handling. Use it to have a stronger foundation for the application.
-// */
+/**
+  @module Tools/base/Fundamental - Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind. Tools contain hundreds of routines to operate effectively with Array, SortedArray, Map, RegExp, Buffer, Time, String, Number, Routine, Error and other fundamental types. The module provides advanced tools for diagnostics and errors handling. Use it to have a stronger foundation for the application.
+*/
 
 /**
  * wTools - Generic purpose tools of base level for solving problems in Java Script.
@@ -27,10 +27,8 @@ let _wasGlobal = _global._global_ || _global;
 _global = _wasGlobal;
 _global._global_ = _wasGlobal;
 
-
 // verification
 
-// if( !_global_.WTOOLS_PRIVATE )
 if( _global_.__GLOBAL_WHICH__ === 'real' )
 {
 
@@ -58,23 +56,27 @@ if( !_realGlobal.Config )
 _realGlobal.Config = { debug : true }
 if( _realGlobal.Config.debug === undefined )
 _realGlobal.Config.debug = true;
-if( _realGlobal.Config.platform === undefined )
-_realGlobal.Config.platform = ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) ? 'nodejs' : 'browser';
+if( _realGlobal.Config.interpreter === undefined )
+if( ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) )
+_realGlobal.Config.interpreter = 'njs';
+else
+_realGlobal.Config.interpreter = 'browser';
 if( _realGlobal.Config.isWorker === undefined )
-_realGlobal.Config.isWorker = !!( typeof self !== 'undefined' && self.self === self && typeof importScripts !== 'undefined' );
+if( !!( typeof self !== 'undefined' && self.self === self && typeof importScripts !== 'undefined' ) )
+_realGlobal.Config.isWorker = true;
+else
+_realGlobal.Config.isWorker = false;
 
 if( !_global_.Config )
 _global_.Config = { debug : true }
 if( _global_.Config.debug === undefined )
 _global_.Config.debug = true;
-if( _global_.Config.platform === undefined )
-_global_.Config.platform = ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) ? 'nodejs' : 'browser';
+if( _global_.Config.interpreter === undefined )
+_global_.Config.interpreter = _realGlobal.Config.interpreter;
 if( _global_.Config.isWorker === undefined )
-_global_.Config.isWorker = !!( typeof self !== 'undefined' && self.self === self && typeof importScripts !== 'undefined' );
+_global_.Config.isWorker = _realGlobal.Config.isWorker
 
-// if( !_global_.WTOOLS_PRIVATE  )
 if( _global_.__GLOBAL_WHICH__ === 'real' )
-// if( !_global_.Underscore && _global_._ )
 if( _global_._ )
 {
   _global_.Underscore = _global_._;

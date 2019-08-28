@@ -41,7 +41,7 @@ function bufferRawIs( test )
   var got = _.bufferRawIs( src );
   test.identical( got, false );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
   test.case = 'node buffer';
   var src = BufferNode.alloc( 10 );
@@ -105,7 +105,7 @@ function bufferTypedIs( test )
   var got = _.bufferTypedIs( src );
   test.identical( got, false );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
   test.case = 'node buffer';
   var src = BufferNode.alloc( 10 );
@@ -144,7 +144,7 @@ function bufferTypedIs( test )
 
 function bufferNodeIs( test )
 {
-  if( !Config.platform === 'nodejs' )
+  if( !Config.interpreter === 'njs' )
   return;
 
   test.case = 'node buffer';
@@ -243,7 +243,7 @@ function bufferViewIs( test )
   var got = _.bufferViewIs( src );
   test.identical( got, false );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
   test.case = 'node buffer';
   var src = BufferNode.alloc( 10 );
@@ -293,7 +293,7 @@ function bufferBut( test )
   var got = _.bufferBut( src, [ 1, 2 ], ins );
   test.identical( got, new I8x( [ 0, 1, 2, 3, 2, 3 ] ) );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
   var src = new U8ClampedX( [ 0, 1, 2, 3 ] );
   var ins = BufferNode.from( [ 1, 2, 3 ] );
@@ -581,7 +581,7 @@ function bufferResize( test )
 
   /* node buffer */
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
   test.case = 'node buffer, size < length, alloc method';
   var src = BufferNode.alloc( 6 );
@@ -816,7 +816,7 @@ function bufferFrom( test )
   var expected = new U8x([ 97, 98, 99 ]);
   test.identical( got, expected );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'src:node buffer, bufferConstructor:typed buffer';
     var src = BufferNode.from([ 97, 98, 99 ]);
@@ -857,7 +857,7 @@ function bufferFrom( test )
   var expected = new I32x([ 97, 98, 99 ]).buffer;
   test.identical( got, expected );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'src:node buffer, bufferConstructor:raw buffer';
     var src = BufferNode.from([ 97, 98, 99 ]);
@@ -866,7 +866,7 @@ function bufferFrom( test )
     test.identical( got, expected );
   }
 
-  if( !Config.platform === 'nodejs' )
+  if( !Config.interpreter === 'njs' )
   return;
 
   /* node buffer */
@@ -976,7 +976,7 @@ function bufferRawFrom( test )
   var expected = new U8x([ 97, 98, 99 ]).buffer;
   test.identical( got, expected );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'node-buffer';
     var src = BufferNode.from( 'abc' );
@@ -1030,7 +1030,7 @@ function bufferBytesFrom( test )
   var expected = new U8x([ 97, 98, 99 ]);
   test.identical( got, expected );
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'node';
     var src = BufferNode.from( 'abc' );
@@ -1055,7 +1055,7 @@ function bufferBytesFrom( test )
 
 function bufferNodeFrom( test )
 {
-  if( Config.platform !== 'nodejs' )
+  if( Config.interpreter !== 'njs' )
   return;
 
   test.case = 'raw';
@@ -5270,7 +5270,7 @@ function longRepresent( test )
 //  var expected = new U8x( [ 1, 1, 1 ] );
 //  test.identical( new U8x( got ), expected );
 //
-//  if( Config.platform === 'nodejs' )
+//  if( Config.interpreter === 'njs' )
 //  {
 //    test.case = 'buffer';
 //    var got = _.arrayJoin( BufferNode.from( '1' ), [ 1 ] );
@@ -5391,7 +5391,7 @@ function longGrowInplace( test )
 
   //
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'buffer';
     var got = _.longGrowInplace( BufferNode.from( '123' ), 0, 5, 0 );
@@ -5501,7 +5501,7 @@ function longResize( test )
 
   /* BufferNode */
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'buffer';
     var got = _.longResize( BufferNode.from( '123' ), 0, 5, 0 );
@@ -5597,7 +5597,7 @@ function longResize( test )
 
   //
 
-  if( Config.platform === 'nodejs' )
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'buffer';
     var got = _.longResize( BufferNode.from( '123' ), 0, 5, 0 );
@@ -6879,7 +6879,7 @@ function longBut( test )
     // BufferRaw
   ];
 
-  // if( Config.platform === 'nodejs' )
+  // if( Config.interpreter === 'njs' )
   // list.push( BufferNode );
 
   for( var i = 0; i < list.length; i++ )
@@ -7142,93 +7142,98 @@ function longPut( test )
 
 //
 
-function longFillTimes( test )
-{
-  test.case = 'empty array';
-  var got = _.longFillTimes( [], 1 );
-  var expected = [ 0 ];
-  test.identical( got, expected );
+/*
+ qqq : Dmytro : not used
+*/
+// function longFillTimes( test )
+// {
+//   test.case = 'empty array';
+//   var got = _.longFillTimes( [], 1 );
+//   var expected = [ 0 ];
+//   test.identical( got, expected );
+//
+//   test.case = 'times is negative, times = length + times';
+//   var got = _.longFillTimes( [ 0, 0, 0 ], -1, 1 );
+//   var expected = [ 1, 1, 0 ];
+//   test.identical( got, expected );
+//
+//   test.case = 'times is negative';
+//   var got = _.longFillTimes( [ 0, 0 ], -2, 1 );
+//   var expected = [ 0, 0 ];
+//   test.identical( got, expected );
+//
+//   test.case = 'empty array, value passed';
+//   var got = _.longFillTimes( [], 1, 1 );
+//   var expected = [ 1 ];
+//   test.identical( got, expected );
+//
+//   test.case = 'empty array, value is an array';
+//   var got = _.longFillTimes( [], 1, [ 1, 2, 3 ] );
+//   var expected = [ [ 1, 2, 3 ]];
+//   test.identical( got, expected );
+//
+//   test.case = 'times > array.length';
+//   var got = _.longFillTimes( [ 0 ], 3, 1 );
+//   var expected = [ 1, 1, 1 ];
+//   test.identical( got, expected );
+//
+//   test.case = 'times < array.length';
+//   var got = _.longFillTimes( [ 0, 0, 0 ], 1, 1 );
+//   var expected = [ 1, 0, 0 ];
+//   test.identical( got, expected );
+//
+//   test.case = 'TypedArray';
+//   var arr = new U16x();
+//   var got = _.longFillTimes( arr, 3, 1 );
+//   var expected = new U16x( [ 1, 1, 1 ] );
+//   test.identical( got, expected );
+//
+//   test.case = 'ArrayLike without fill routine';
+//   var arr = (() => arguments )( 1 );
+//   var got = _.longFillTimes( arr, 3, 1 );
+//   var expected = [ 1, 1, 1 ];
+//   test.identical( got, expected );
+//
+//   test.case = 'no fill routine, times is negative';
+//   var arr = [ 1, 1, 1 ];
+//   arr.fill = null;
+//   var got = _.longFillTimes( arr, -1, 3 );
+//   var expected = [ 3, 3, 1 ];
+//   test.identical( got, expected );
+//
+//   /**/
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'no arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longFillTimes();
+//
+//   });
+//
+//   test.case = 'zero';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longFillTimes( 0 );
+//   });
+//
+//   test.case = 'only one argument';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longFillTimes( [  ] );
+//   });
+//
+//   test.case = 'wrong argument type';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longFillTimes( new BufferRaw(), 1 );
+//   });
+//
+// };
 
-  test.case = 'times is negative, times = length + times';
-  var got = _.longFillTimes( [ 0, 0, 0 ], -1, 1 );
-  var expected = [ 1, 1, 0 ];
-  test.identical( got, expected );
-
-  test.case = 'times is negative';
-  var got = _.longFillTimes( [ 0, 0 ], -2, 1 );
-  var expected = [ 0, 0 ];
-  test.identical( got, expected );
-
-  test.case = 'empty array, value passed';
-  var got = _.longFillTimes( [], 1, 1 );
-  var expected = [ 1 ];
-  test.identical( got, expected );
-
-  test.case = 'empty array, value is an array';
-  var got = _.longFillTimes( [], 1, [ 1, 2, 3 ] );
-  var expected = [ [ 1, 2, 3 ]];
-  test.identical( got, expected );
-
-  test.case = 'times > array.length';
-  var got = _.longFillTimes( [ 0 ], 3, 1 );
-  var expected = [ 1, 1, 1 ];
-  test.identical( got, expected );
-
-  test.case = 'times < array.length';
-  var got = _.longFillTimes( [ 0, 0, 0 ], 1, 1 );
-  var expected = [ 1, 0, 0 ];
-  test.identical( got, expected );
-
-  test.case = 'TypedArray';
-  var arr = new U16x();
-  var got = _.longFillTimes( arr, 3, 1 );
-  var expected = new U16x( [ 1, 1, 1 ] );
-  test.identical( got, expected );
-
-  test.case = 'ArrayLike without fill routine';
-  var arr = (() => arguments )( 1 );
-  var got = _.longFillTimes( arr, 3, 1 );
-  var expected = [ 1, 1, 1 ];
-  test.identical( got, expected );
-
-  test.case = 'no fill routine, times is negative';
-  var arr = [ 1, 1, 1 ];
-  arr.fill = null;
-  var got = _.longFillTimes( arr, -1, 3 );
-  var expected = [ 3, 3, 1 ];
-  test.identical( got, expected );
-
-  /**/
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longFillTimes();
-
-  });
-
-  test.case = 'zero';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longFillTimes( 0 );
-  });
-
-  test.case = 'only one argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longFillTimes( [  ] );
-  });
-
-  test.case = 'wrong argument type';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longFillTimes( new BufferRaw(), 1 );
-  });
-
-};
+//
 
 function longFill( test )
 {
@@ -7241,6 +7246,16 @@ function longFill( test )
   var got = _.longFill( [], 1 );
   var expected = [];
   test.identical( got, expected );
+
+  test.case = 'result = empty array, value = number, range';
+  var got = _.longFill( [], 1, [ 0, 3 ] );
+  var expected = [ 1, 1, 1 ];
+  test.identical( got, expected );
+
+  // test.case = 'result = empty array, value = number, left range < 0';
+  // var got = _.longFill( [], 1, [ -2, 3 ] );
+  // var expected = [ 1, 1, 1, 1, 1 ];
+  // test.identical( got, expected );
 
   test.case = 'result = filled array';
   var got = _.longFill( [ 1, 1, 1 ] );
@@ -7284,6 +7299,17 @@ function longFill( test )
   test.shouldThrowErrorSync( () => _.longFill( BufferNode.alloc( 10 ), 1 ) );
 
 };
+
+function longFillExperiment( test )
+{
+  /* qqq : Dmytro : see result.fill in __proto__  */
+  test.case = 'result = empty array, value = number, left range < 0';
+  debugger;
+  var got = _.longFill( [], 1, [ -2, 3 ] );
+  var expected = [ 1, 1, 1, 1, 1 ];
+  test.identical( got, expected );
+}
+longFillExperiment.experimental = 1;
 
 //
 
@@ -23151,6 +23177,7 @@ var Self =
     // arrayFill,
     // longFillTimes,
     longFill,
+    longFillExperiment,
 
     longSupplement,
     longExtendScreening,

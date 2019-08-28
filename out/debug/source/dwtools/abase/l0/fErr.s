@@ -381,7 +381,7 @@ function _err( o )
   nonenurable( 'originalMessage', originalMessage );
   nonenurable( 'level', o.level );
 
-  if( Config.platform === 'browser' )
+  if( Config.interpreter === 'browser' )
   nonenurable( 'stack', message );
   else
   nonenurable( 'stack', stack );

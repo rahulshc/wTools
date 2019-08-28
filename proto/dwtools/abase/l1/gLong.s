@@ -3095,8 +3095,8 @@ function longFill( result, value, range )
   if( range === undefined )
   range = [ 0, result.length ];
 
-  let l = range[ 0 ];
-  let r = range[ 1 ];
+  // let l = range[ 0 ];
+  // let r = range[ 1 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
   // _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -3111,6 +3111,12 @@ function longFill( result, value, range )
 
   result = _.longGrowInplace( result, range );
 
+  if( range[ 0 ] < 0 )
+  {
+    range[ 1 ] = range[ 1 ] - range[ 0 ];
+    range[ 0 ] = 0;
+  }
+
   if( _.routineIs( result.fill ) )
   {
     // result.fill( value, 0, times );
@@ -3124,12 +3130,7 @@ function longFill( result, value, range )
     // for( let t = 0 ; t < times ; t++ )
     // result[ t ] = value;
 
-    if( l < 0 )
-    {
-      r = r - l;
-      l = 0;
-    }
-    for( let t = 0 ; t < r ; t++ )
+    for( let t = 0 ; t < range[ 1 ] ; t++ )
     result[ t ] = value;
 
   }
