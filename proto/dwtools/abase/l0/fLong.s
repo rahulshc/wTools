@@ -2736,6 +2736,12 @@ function arrayButInplace( src, range, ins )
   _.assert( ins === undefined || _.longIs( ins ) );
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
+  // Dmytro : missed
+  _.rangeClamp( range, [ 0, src.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+  //
+
   let args = [ range[ 0 ], range[ 1 ] - range[ 0 ] ];
 
   if( ins )
