@@ -6539,6 +6539,7 @@ function longSwapElements( test )
 qqq : please ask how to improve test routine longBut.
 */
 
+// function bufferBut( test )
 function longBut( test )
 {
 
@@ -6877,6 +6878,7 @@ function longBut( test )
     F32x,
     F64x,
     // BufferRaw
+    // BufferNode
   ];
 
   // if( Config.interpreter === 'njs' )

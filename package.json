@@ -20,7 +20,8 @@
     "proto/dwtools/abase/l2",
     "proto/dwtools/abase/Layer0.s",
     "proto/dwtools/abase/Layer1.s",
-    "proto/dwtools/abase/Layer2.s"
+    "proto/dwtools/abase/Layer2.s",
+    "out"
   ],
   "scripts": {
     "test": "wtest .run proto/**",

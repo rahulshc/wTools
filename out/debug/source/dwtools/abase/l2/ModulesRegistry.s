@@ -55,7 +55,7 @@ let wPathBasic =
 
 let wRoutineBasic =
 {
-  includeAny : includeAny( 'abase/l3/RoutineFundamentals.s', 'wroutinebasic' ),
+  includeAny : includeAny( 'abase/l3/RoutineBasic.s', 'wroutinebasic' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.exec },
 }
 
@@ -113,12 +113,6 @@ let wTraverser =
 {
   includeAny : includeAny( 'abase/l4/Traverser.s', 'wtraverser' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools._traverse },
-}
-
-let wRoutineTransform =
-{
-  includeAny : includeAny( 'abase/l4/RoutineTransform.s', 'wroutinetransform' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.routineNew },
 }
 
 // base / l5
@@ -576,7 +570,6 @@ let Extend =
   wUriBasic,
   wTraverser,
   wStringer,
-  wRoutineTransform,
 
   // base / l5
 

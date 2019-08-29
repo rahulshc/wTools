@@ -449,7 +449,7 @@ diagnosticCode.defaults =
  // at <anonymous>:1:1"
  *
  * @returns {String} Return stack trace from call point.
- * @function stack
+ * @function diagnosticStack
  * @memberof wTools
  */
 
