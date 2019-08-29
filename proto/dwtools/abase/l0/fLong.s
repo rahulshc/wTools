@@ -1660,10 +1660,7 @@ function longGrowInplace( array, range, val )
 {
   let result;
 
-  // Dmytro : in previus place some asserts lose its own sense
-  _.assert( _.longIs( array ) );
-  _.assert( _.rangeIs( range ) || range === undefined )
-  _.assert( 1 <= arguments.length && arguments.length <= 3 ); // this
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );   // Dmytro : in previus place some asserts lose its own sense
 
   if( range === undefined )
   return array;
@@ -1674,10 +1671,10 @@ function longGrowInplace( array, range, val )
   f = f !== undefined ? f : 0;
   l = l !== undefined ? l : array.length;
 
-  // _.assert( _.longIs( array ) );
-  // _.assert( _.rangeIs( range ) )
-  // // _.assert( _.numberIs( f ) );
-  // // _.assert( _.numberIs( l ) );
+  _.assert( _.longIs( array ) );
+  _.assert( _.rangeIs( range ) )
+  // _.assert( _.numberIs( f ) );
+  // _.assert( _.numberIs( l ) );
   // _.assert( 1 <= arguments.length && arguments.length <= 3 );
   // // _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
