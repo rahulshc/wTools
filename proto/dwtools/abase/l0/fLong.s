@@ -2800,6 +2800,44 @@ function arraySelect( src, range, ins )
   return result;
 }
 
+//
+
+function arraySelectInplace( src, range, ins )
+{
+  // let result;
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( range === undefined )
+  return src;
+
+  if( _.numberIs( range ) )
+  range = [ range, src.length ];
+
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) );
+  _.assert( ins === undefined || _.longIs( ins ) );
+
+  _.rangeClamp( range, [ 0, src.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === 0 && range[ 1 ] === src.length )
+  return src;
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( src.length, range[ 1 ] );
+
+  let result = src;
+
+  // Dmytro : do search better implementation
+
+  result.splice.apply( result, [ 0, f2 ] );
+  result.splice.apply( result, [ l2 - f2, src.length ] );
+
+  return result;
+}
+
 // --
 // array sequential search
 // --
@@ -6845,6 +6883,7 @@ let Routines =
   arrayBut,
   arrayButInplace,
   arraySelect,
+  arraySelectInplace,
 
   // array sequential search
 

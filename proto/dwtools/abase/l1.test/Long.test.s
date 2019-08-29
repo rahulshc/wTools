@@ -9443,6 +9443,118 @@ function arraySelect( test )
 
 //
 
+function arraySelectInplace( test )
+{
+  /* range is number */
+
+  test.case = 'range is number, not ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, 1 );
+  var expected = [ 2, 3, 'str', [ 1 ] ];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  test.case = 'range is negative number, not ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, -5 );
+  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  test.case = 'range is number, ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, 0, [ { a : 1 }, 2, [ 10 ] ] );
+  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  test.case = 'range is negative number, ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, -5, [ { a : 1 }, 2, [ 10 ] ] );
+  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  /* range is array range */
+
+  test.case = 'range is array range, not ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, [ 0, 2 ] );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  test.case = 'range is array range, range[ 0 ] < 0, not ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, [ -5, 2 ] );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  test.case = 'range is array range, range[ 1 ] < 0, not ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, [ 0, -5 ] );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  test.case = 'range is array range, ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  test.case = 'range is array range, range[ 0 ] < 0, ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+  var expected = [ 1, 2 ];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  test.case = 'range is array range, range[ 1 ] < 0, ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  test.case = 'range[ 0 ] > range[ 1 ]';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arraySelectInplace( src, [ 3, 0 ] );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got === src );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arraySelectInplace() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( [ 1, 2 ], 0, [ 4 ], 4 ) );
+
+  test.case = 'src is not array';
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( 'str', 0, [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( { a : 1 }, 0, [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( new Fx(), 0, [ 4 ] ) );
+
+  test.case = 'not range';
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( [ 1, 2 ], 'str', [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( [ 1, 2 ], [], [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( [ 1, 2 ], [ 'str' ], [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( [ 1, 2 ], [ 1, 2, 3 ], [ 4 ] ) );
+
+  test.case = 'ins is not long';
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( [ 1, 2 ], 0, 4 ) );
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( [ 1, 2 ], 0, { a : 1 } ) );
+  test.shouldThrowErrorSync( () => _.arraySelectInplace( [ 1, 2 ], 0, new BufferRaw( 2 ) ) );
+
+}
+
+//
+
 function arrayLeftIndex( test )
 {
 
@@ -24756,6 +24868,7 @@ var Self =
     arrayBut,
     arrayButInplace,
     arraySelect,
+    arraySelectInplace,
 
     // array sequential search
 
