@@ -2804,7 +2804,6 @@ function arraySelect( src, range, ins )
 
 function arraySelectInplace( src, range, ins )
 {
-  // let result;
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
