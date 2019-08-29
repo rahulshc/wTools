@@ -5326,106 +5326,293 @@ function longRepresent( test )
 
 function longGrowInplace( test )
 {
-  var got, expected;
-  var array = [ 1, 2, 3, 4, 5 ];
+  test.open( 'array' );
 
-  test.case = 'defaults';
-
-  /* default call returns copy */
-
-  got = _.longGrowInplace( array );
-  expected = array;
+  test.case = 'only dst';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.longGrowInplace( dst );
+  var expected = [ 1, 2, 3, 4, 5 ];
   test.identical( got, expected );
 
-  test.case = 'increase size of array';
-
-  /* without setting value */
-
-  got = _.longGrowInplace( array, 0, array.length + 2 );
-  expected = array.length + 2;
+  test.case = 'range > dst.length, not a val';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ] );
+  var expected = dst.length + 2;
+  test.identical( got, [ 1, 2, 3, 4, 5, undefined, undefined ] );
   test.identical( got.length, expected );
 
-  /* by setting value */
-
-  got = _.longGrowInplace( array, 0, array.length + 2, 0 );
-  expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+  test.case = 'range > dst.length, val = number';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
   test.identical( got, expected );
 
-  /* by taking only last element of source array */
-
-  got = _.longGrowInplace( array, array.length - 1, array.length * 2, 0 );
-  expected = [ 5, 0, 0, 0, 0, 0 ];
+  test.case = 'range > dst.length, val = number';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.longGrowInplace( dst, [ dst.length - 1, dst.length * 2 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ];
   test.identical( got, expected );
 
-  test.case = 'decrease size of array';
-
-  /**/
-
-  got = _.longGrowInplace( array, 0, 3 );
-  expected = [ 1, 2, 3 ];
+  test.case = 'range < dst.length';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.longGrowInplace( dst, [ 0, 3 ] );
+  var expected = [ 1, 2, 3, 4, 5 ];
   test.identical( got, expected );
 
-  /* setting value not affects on array */
-
-  got = _.longGrowInplace( array, 0, 3, 0 );
-  expected = [ 1, 2, 3 ];
+  test.case = 'range < dst.length, val = number';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.longGrowInplace( dst, [ 0, 3 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5 ];
   test.identical( got, expected );
 
-  /* begin index is negative */
-
-  got = _.longGrowInplace( array, -1, 3 );
-  expected = [ undefined, 1, 2, 3 ];
+  test.case = 'f < 0, not a val';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  got = _.longGrowInplace( dst, [ -1, 3 ] );
+  expected = [ 1, 2, 3, 4, 5 ];
   test.identical( got, expected );
 
-  /* end index is negative */
-
-  got = _.longGrowInplace( array, 0, -1 );
-  expected = [];
+  test.case = 'l < 0, not a val';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.longGrowInplace( dst, [ 0, -1 ] );
+  var expected = [ 1, 2, 3, 4, 5 ];
   test.identical( got, expected );
 
-  /* begin index negative, set value */
-
-  got = _.longGrowInplace( array, -1, 3, 0 );
-  expected = [ 0, 1, 2, 3 ];
+  test.case = 'f < 0, val = number';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.longGrowInplace( dst, [ -1, 3 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5 ];
   test.identical( got, expected );
 
-  //
+  test.close( 'array' );
 
-  if( Config.interpreter === 'njs' )
-  {
-    test.case = 'buffer';
-    var got = _.longGrowInplace( BufferNode.from( '123' ), 0, 5, 0 );
-    var expected = [ 49, 50, 51, 0, 0 ];
-    test.identical( got, expected );
-  }
+  /* - */
 
-  //
+  test.open( 'unroll' );
+
+  test.case = 'only dst';
+  var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'range > dst.length, not a val';
+  var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ] );
+  var expected = dst.length + 2;
+  test.identical( got, [ 1, 2, 3, 4, 5, undefined, undefined ] );
+  test.identical( got.length, expected );
+  test.is( !_.unrollIs( got ) );
+
+  test.case = 'range > dst.length, val = number';
+  var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+  test.identical( got, expected );
+  test.is( !_.unrollIs( got ) );
+
+  test.case = 'range > dst.length, val = number';
+  var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ dst.length - 1, dst.length * 2 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ];
+  test.identical( got, expected );
+  test.is( !_.unrollIs( got ) );
+
+  test.case = 'range < dst.length';
+  var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, 3 ] );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'range < dst.length, val = number';
+  var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, 3 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'f < 0, not a val';
+  var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+  got = _.longGrowInplace( dst, [ -1, 3 ] );
+  expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'l < 0, not a val';
+  var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, -1 ] );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'f < 0, val = number';
+  var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ -1, 3 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( _.unrollIs( got ) );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'argumentsArray' );
+
+  test.case = 'only dst';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+
+  test.case = 'range > dst.length, not a val';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ] );
+  var expected = dst.length + 2;
+  test.equivalent( got, [ 1, 2, 3, 4, 5, undefined, undefined ] );
+  test.identical( got.length, expected );
+  test.is( !_.argumentsArrayIs( got ) );
+
+  test.case = 'range > dst.length, val = number';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+  test.equivalent( got, expected );
+  test.is( !_.argumentsArrayIs( got ) );
+
+  test.case = 'range > dst.length, val = number';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ dst.length - 1, dst.length * 2 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ];
+  test.equivalent( got, expected );
+  test.is( !_.argumentsArrayIs( got ) );
+
+  test.case = 'range < dst.length';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, 3 ] );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+
+  test.case = 'range < dst.length, val = number';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, 3 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+
+  test.case = 'f < 0, not a val';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  got = _.longGrowInplace( dst, [ -1, 3 ] );
+  expected = [ 1, 2, 3, 4, 5 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+
+  test.case = 'l < 0, not a val';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, -1 ] );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+
+  test.case = 'f < 0, val = number';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ -1, 3 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+
+  test.close( 'argumentsArray' );
+
+  /* - */
+
+  test.open( 'bufferTyped' );
+
+  test.case = 'only dst';
+  var dst = new U8x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst );
+  var expected = new U8x( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, expected );
+  test.is( _.bufferTypedIs( got ) );
+
+  test.case = 'range > dst.length, not a val';
+  var dst = new I16x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ] );
+  var expected = dst.length + 2;
+  test.identical( got, new I16x( [ 1, 2, 3, 4, 5, 0, 0 ] ) );
+  test.identical( got.length, expected );
+  test.is( _.bufferTypedIs( got ) );
+
+  test.case = 'range > dst.length, val = number';
+  var dst = new F32x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ], 0 );
+  var expected = new F32x( [ 1, 2, 3, 4, 5, 0, 0 ] );
+  test.identical( got, expected );
+  test.is( _.bufferTypedIs( got ) );
+
+  test.case = 'range > dst.length, val = number';
+  var dst = new I8x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ dst.length - 1, dst.length * 2 ], 0 );
+  var expected = new I8x( [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+  test.is( _.bufferTypedIs( got ) );
+
+  test.case = 'range < dst.length';
+  var dst = new U16x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, 3 ] );
+  var expected = new U16x( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, expected );
+  test.is( _.bufferTypedIs( got ) );
+
+  test.case = 'range < dst.length, val = number';
+  var dst = new I32x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, 3 ], 0 );
+  var expected = new I32x( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, expected );
+  test.is( _.bufferTypedIs( got ) );
+
+  test.case = 'f < 0, not a val';
+  var dst = new F64x( [ 1, 2, 3, 4, 5 ] );
+  got = _.longGrowInplace( dst, [ -1, 3 ] );
+  expected = new F64x( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, expected );
+  test.is( _.bufferTypedIs( got ) );
+
+  test.case = 'l < 0, not a val';
+  var dst = new U8ClampedX( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ 0, -1 ] );
+  var expected = new U8ClampedX( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, expected );
+  test.is( _.bufferTypedIs( got ) );
+
+  test.case = 'f < 0, val = number';
+  var dst = new U32x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longGrowInplace( dst, [ -1, 3 ], 0 );
+  var expected = new U32x( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, expected );
+  test.is( _.bufferTypedIs( got ) );
+
+  test.close( 'bufferTyped' );
+
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'invalid arguments type';
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longGrowInplace() );
 
-  /**/
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longGrowInplace( [ 1 ], [ 1, 4 ], '5', 1 ) );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.longGrowInplace( 1 );
-  })
+  test.case = 'array is not long';
+  test.shouldThrowErrorSync( () => _.longGrowInplace( 1 ) );
+  test.shouldThrowErrorSync( () => _.longGrowInplace( new ArrayBuffer( 4 ) ) );
 
-  /**/
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.longGrowInplace( array, '1', array.length )
-  })
-
-  /**/
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.longGrowInplace( array, 0, '1' )
-  })
+  test.case = 'not a range';
+  test.shouldThrowErrorSync( () => _.longGrowInplace( [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.longGrowInplace( [ 1 ], 'str' ) );
 
 }
 
@@ -23315,7 +23502,7 @@ var Self =
     longRepresent,
     // arrayJoin,
     longGrowInplace,
-    longResize,
+    // longResize, // Dmytro : uncomment when it will be reimplemented
     longSlice,
     longDuplicate,
 
