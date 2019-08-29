@@ -1701,7 +1701,8 @@ function longSelectInplace( array, range, val )
   // if( l > array.length )
   // l = array.length;
 
-  if( range[ 0 ] === 0 && l === array.length )
+  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+  // if( range[ 0 ] === 0 && l === array.length ) // Dmytro : l is not defined
   return array;
 
   // if( _.bufferTypedIs( array ) )
