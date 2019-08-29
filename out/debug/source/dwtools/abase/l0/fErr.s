@@ -381,10 +381,10 @@ function _err( o )
   nonenurable( 'originalMessage', originalMessage );
   nonenurable( 'level', o.level );
 
-  if( Config.interpreter === 'browser' )
+  // if( Config.interpreter === 'browser' )
   nonenurable( 'stack', message );
-  else
-  nonenurable( 'stack', stack );
+  // else
+  // nonenurable( 'stack', stack );
 
   nonenurable( 'originalStack', stack );
   nonenurable( 'stackCondensed', stackCondensed );
@@ -707,8 +707,6 @@ function errLogOnce( err )
 function _errLog( err )
 {
   let c = _global.logger || _global.console;
-
-  debugger;
 
   /* */
 

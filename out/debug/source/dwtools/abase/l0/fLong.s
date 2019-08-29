@@ -10,6 +10,17 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
+/*
+               |  can grow   |  can shrink  |   range
+grow                +                -         positive
+select              -                +         positive
+relength            +                +         positive
+but                 -                +         negative
+*/
+
+/* array / long / buffer */
+/* - / inplace */
+
 // --
 // scalar
 // --
