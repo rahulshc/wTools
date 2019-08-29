@@ -2754,6 +2754,41 @@ function arrayButInplace( src, range, ins )
   return result;
 }
 
+//
+
+function arraySelect( src, range, ins )
+{
+  let result;
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( range === undefined )
+  return src.slice();
+
+  if( _.numberIs( range ) )
+  range = [ range, src.length ];
+
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) );
+  _.assert( ins === undefined || _.longIs( ins ) );
+
+  _.rangeClamp( range, [ 0, src.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === 0 && range[ 1 ] === src.length )
+  return src.slice( src );
+
+  result = new Array( range[ 1 ]-range[ 0 ] );
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( src.length, range[ 1 ] );
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-range[ 0 ] ] = src[ r ];
+
+  return result;
+}
+
 // --
 // array sequential search
 // --
@@ -6798,6 +6833,7 @@ let Routines =
   // arrayButInplace, // Dmytro : maybe it should be arraySliceInplace
   arrayBut,
   arrayButInplace,
+  arraySelect,
 
   // array sequential search
 
