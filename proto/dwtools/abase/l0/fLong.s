@@ -1585,6 +1585,160 @@ function longSlice( array, f, l )
 
 //
 
+/*
+  qqq : extend documentation and test coverage of longSelect
+*/
+
+function longSelect( array, range, val )
+{
+  let result;
+
+  if( range === undefined )
+  return _.longShallowClone( array );
+
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  // let f = range ? range[ 0 ] : undefined;
+  // let l = range ? range[ 1 ] : undefined;
+  //
+  // f = f !== undefined ? f : 0;
+  // l = l !== undefined ? l : array.length;
+
+  _.assert( _.longIs( array ) );
+  _.assert( _.rangeIs( range ) )
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  // if( f < 0 )
+  // {
+  //   l -= f;
+  //   f -= f;
+  // }
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  // if( l < f )
+  // l = f;
+
+  // if( f < 0 )
+  // f = 0;
+  // if( l > array.length )
+  // l = array.length;
+
+  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+  return _.longShallowClone( array );
+
+  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
+
+  /* */
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-range[ 0 ] ] = array[ r ];
+
+  /* */
+
+  if( val !== undefined )
+  {
+    for( let r = 0 ; r < -range[ 0 ] ; r++ )
+    {
+      result[ r ] = val;
+    }
+    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
+    {
+      result[ r ] = val;
+    }
+  }
+
+  /* */
+
+  return result;
+}
+
+//
+
+/*
+  qqq : extend documentation and test coverage of longSelectInplace
+  qqq : implement arraySelect
+  qqq : implement arraySelectInplace
+*/
+
+function longSelectInplace( array, range, val )
+{
+  let result;
+
+  if( range === undefined )
+  return array;
+
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  // let f = range ? range[ 0 ] : undefined;
+  // let l = range ? range[ 1 ] : undefined;
+  //
+  // f = f !== undefined ? f : 0;
+  // l = l !== undefined ? l : array.length;
+
+  _.assert( _.longIs( array ) );
+  _.assert( _.rangeIs( range ) )
+  // _.assert( _.numberIs( f ) );
+  // _.assert( _.numberIs( l ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  // _.assert( 1 <= arguments.length && arguments.length <= 4 );
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  // if( l < f )
+  // l = f;
+  //
+  // if( f < 0 )
+  // f = 0;
+  // if( l > array.length )
+  // l = array.length;
+
+  if( range[ 0 ] === 0 && l === array.length )
+  return array;
+
+  // if( _.bufferTypedIs( array ) )
+  // result = new array.constructor( l-f );
+  // else
+  // result = new Array( l-f );
+
+  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
+
+  /* */
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-range[ 0 ] ] = array[ r ];
+
+  /* */
+
+  if( val !== undefined )
+  {
+    for( let r = 0 ; r < -range[ 0 ] ; r++ )
+    {
+      result[ r ] = val;
+    }
+    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
+    {
+      result[ r ] = val;
+    }
+  }
+
+  /* */
+
+  return result;
+}
+
+//
+
 /**
  * Changes length of provided array( array ) by copying it elements to newly created array using begin( f ),
  * end( l ) positions of the original array and value to fill free space after copy( val ). Length of new array is equal to ( l ) - ( f ).
@@ -1790,160 +1944,6 @@ function longGrow( array, range, val )
       result[ r ] = val;
     }
     for( let r = l2 - f; r < result.length ; r++ )
-    {
-      result[ r ] = val;
-    }
-  }
-
-  /* */
-
-  return result;
-}
-
-//
-
-/*
-  qqq : extend documentation and test coverage of longSelect
-*/
-
-function longSelect( array, range, val )
-{
-  let result;
-
-  if( range === undefined )
-  return _.longShallowClone( array );
-
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
-
-  // let f = range ? range[ 0 ] : undefined;
-  // let l = range ? range[ 1 ] : undefined;
-  //
-  // f = f !== undefined ? f : 0;
-  // l = l !== undefined ? l : array.length;
-
-  _.assert( _.longIs( array ) );
-  _.assert( _.rangeIs( range ) )
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  // if( f < 0 )
-  // {
-  //   l -= f;
-  //   f -= f;
-  // }
-
-  _.rangeClamp( range, [ 0, array.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  // if( l < f )
-  // l = f;
-
-  // if( f < 0 )
-  // f = 0;
-  // if( l > array.length )
-  // l = array.length;
-
-  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
-  return _.longShallowClone( array );
-
-  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
-
-  /* */
-
-  let f2 = Math.max( range[ 0 ], 0 );
-  let l2 = Math.min( array.length, range[ 1 ] );
-  for( let r = f2 ; r < l2 ; r++ )
-  result[ r-range[ 0 ] ] = array[ r ];
-
-  /* */
-
-  if( val !== undefined )
-  {
-    for( let r = 0 ; r < -range[ 0 ] ; r++ )
-    {
-      result[ r ] = val;
-    }
-    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
-    {
-      result[ r ] = val;
-    }
-  }
-
-  /* */
-
-  return result;
-}
-
-//
-
-/*
-  qqq : extend documentation and test coverage of longSelectInplace
-  qqq : implement arraySelect
-  qqq : implement arraySelectInplace
-*/
-
-function longSelectInplace( array, range, val )
-{
-  let result;
-
-  if( range === undefined )
-  return array;
-
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
-
-  // let f = range ? range[ 0 ] : undefined;
-  // let l = range ? range[ 1 ] : undefined;
-  //
-  // f = f !== undefined ? f : 0;
-  // l = l !== undefined ? l : array.length;
-
-  _.assert( _.longIs( array ) );
-  _.assert( _.rangeIs( range ) )
-  // _.assert( _.numberIs( f ) );
-  // _.assert( _.numberIs( l ) );
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  // _.assert( 1 <= arguments.length && arguments.length <= 4 );
-
-  _.rangeClamp( range, [ 0, array.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  // if( l < f )
-  // l = f;
-  //
-  // if( f < 0 )
-  // f = 0;
-  // if( l > array.length )
-  // l = array.length;
-
-  if( range[ 0 ] === 0 && l === array.length )
-  return array;
-
-  // if( _.bufferTypedIs( array ) )
-  // result = new array.constructor( l-f );
-  // else
-  // result = new Array( l-f );
-
-  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
-
-  /* */
-
-  let f2 = Math.max( range[ 0 ], 0 );
-  let l2 = Math.min( array.length, range[ 1 ] );
-  for( let r = f2 ; r < l2 ; r++ )
-  result[ r-range[ 0 ] ] = array[ r ];
-
-  /* */
-
-  if( val !== undefined )
-  {
-    for( let r = 0 ; r < -range[ 0 ] ; r++ )
-    {
-      result[ r ] = val;
-    }
-    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
     {
       result[ r ] = val;
     }
