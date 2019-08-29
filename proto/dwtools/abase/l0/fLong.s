@@ -6795,7 +6795,7 @@ let Routines =
   // array transformer
 
   arraySlice,
-  arrayButInplace,
+  // arrayButInplace, // Dmytro : maybe it should be arraySliceInplace
   arrayBut,
   arrayButInplace,
 

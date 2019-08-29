@@ -5254,300 +5254,92 @@ qqq : please ask how to improve test routine longBut.
 
 function longBut( test )
 {
+  test.open( 'array' );
 
-  test.case = 'range as single number';
-
-  /* */
-
+  test.case = 'range = number, not ins';
   var dst = [ 1, 2, 3, 4 ];
-  var select = _.longSelect( dst, 2 );
-  var but = _.longBut( dst, 2 );
-  var expected = [ 1, 2, 3, 4 ];
-  test.identical( dst, expected );
-  var expected = [ 3, 4 ];
-  test.identical( select, expected );
+  var got = _.longBut( dst, 2 );
   var expected = [ 1, 2, 4 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
+  test.is( got !== dst );
 
-  /* */
-
+  test.case = 'range = negative number, not ins';
   var dst = [ 1, 2, 3, 4 ];
-  var select = _.longSelect( dst, -1 );
-  var but = _.longBut( dst, -1 );
+  var got = _.longBut( dst, -1 );
   var expected = [ 1, 2, 3, 4 ];
-  test.identical( dst, expected );
-  var expected = [ 1, 2, 3, 4 ];
-  test.identical( select, expected );
-  var expected = [ 1, 2, 3, 4 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
+  test.is( got !== dst );
 
-  /* */
-
+  test.case = 'range = number, ins';
   var dst = [ 1, 2, 3, 4 ];
-  var select = _.longSelect( dst, 0 );
-  var but = _.longBut( dst, 0, [ 0 ] );
-  var expected = [ 1, 2, 3, 4 ];
-  test.identical( dst, expected );
-  var expected = [ 1, 2, 3, 4 ];
-  test.identical( select, expected );
+  var got = _.longBut( dst, 0, [ 0 ] );
   var expected = [ 0, 2, 3, 4 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
+  test.is( got !== dst );
 
-  /* */
-
+  test.case = 'range = number, empty ins';
   var dst = [ 1, 2, 3, 4 ];
-  var select = _.longSelect( dst, 0 );
-  var but = _.longBut( dst, 0, [] );
-  var expected = [ 1, 2, 3, 4 ];
-  test.identical( dst, expected );
-  var expected = [ 1, 2, 3, 4 ];
-  test.identical( select, expected );
+  var got = _.longBut( dst, 0, [] );
   var expected = [ 2, 3, 4 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
+  test.is( got !== dst );
 
-  /* */
-
-  test.shouldThrowErrorSync( () =>
+  if( Config.debug )
   {
+    test.case = 'wrong range';
+    test.shouldThrowErrorSync( () => _.longBut( [ 1, 2, 3, 4 ], [ 1 ], [ 5 ] ) );
+    test.shouldThrowErrorSync( () => _.longBut( [ 1, 2, 3, 4 ], [ undefined, 1 ], [ 5 ] ) );
+    test.shouldThrowErrorSync( () => _.longBut( [ 1, 2, 3, 4 ], [], [] ) );
 
-    var dst = [ 1, 2, 3, 4 ];
-    var select = _.longSelect( dst, [ 0 ] );
-    var but = _.longBut( dst, [ 0 ], [] );
-    var expected = [ 1, 2, 3, 4 ];
-    var expected = [ 1, 2, 3, 4 ];
-    test.identical( dst, expected );
-    var expected = [ 2, 3 ];
-    test.identical( select, expected );
-    var expected = [ 1, 4, 5 ];
-    test.identical( but, expected );
+  }
 
-  });
-
-  /* */
-
-  test.shouldThrowErrorSync( () =>
-  {
-
-    var dst = [ 1, 2, 3, 4 ];
-    var select = _.longSelect( dst, [ 1 ] );
-    var expected = dst.slice().splice( 1 );
-    var but = _.longBut( dst, [ 1 ], [ 5 ] );
-    var expected = [ 1, 2, 3, 4 ];
-    test.identical( dst, expected );
-    var expected = [ 2, 3 ];
-    test.identical( select, expected );
-    var expected = [ 1, 4, 5 ];
-    test.identical( but, expected );
-
-  });
-
-  /* */
-
-  test.shouldThrowErrorSync( () =>
-  {
-
-    var dst = [ 1, 2, 3, 4 ];
-    var select = _.longSelect( dst, [ undefined, 1 ] );
-    var but = _.longBut( dst, [ undefined, 1 ], [ 5 ] );
-    var expected = [ 1, 2, 3, 4 ];
-    test.identical( dst, expected );
-    var expected = [ 2, 3 ];
-    test.identical( select, expected );
-    var expected = [ 1, 4, 5 ];
-    test.identical( but, expected );
-
-  });
-
-  /* */
-
-  test.shouldThrowErrorSync( () =>
-  {
-
-    test.case = 'empty';
-    var dst = [];
-    var select = _.longSelect( dst, [] );
-    var but = _.longBut( dst, [], [] );
-    var expected = [ 1, 2, 3, 4, 5 ];
-    test.identical( dst, expected );
-    var expected = [ 2, 3 ];
-    test.identical( select, expected );
-    var expected = [ 1, 4, 5 ];
-    test.identical( but, expected );
-
-  });
-
-  /* */
-
-  test.case = 'remove two elements';
+  test.case = 'range, empty ins';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var select = _.longSelect( dst, [ 1, 3 ] );
-  var but = _.longBut( dst, [ 1, 3 ], [] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [ 2, 3 ];
-  test.identical( select, expected );
+  var got = _.longBut( dst, [ 1, 3 ], [] );
   var expected = [ 1, 4, 5 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
 
-  /* */
-
-  test.case = 'remove two elements and incut three';
+  test.case = 'range, not ins';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var select = _.longSelect( dst, [ 1, 3 ] );
-  var but = _.longBut( dst, [ 1, 3 ], [ 11, 22, 33 ] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [ 2, 3 ];
-  test.identical( select, expected );
+  var got = _.longBut( dst, [ 1, 3 ] );
+  var expected = [ 1, 4, 5 ];
+  test.identical( got, expected );
+
+  test.case = 'range, ins';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.longBut( dst, [ 1, 3 ], [ 11, 22, 33 ] );
   var expected = [ 1, 11, 22, 33, 4, 5 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
 
-  /* */
-
-  test.case = 'zero length';
+  test.case = 'range[ 0 ] == range[ 1 ], ins';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var select = _.longSelect( dst, [ 1, 1 ] );
-  var but = _.longBut( dst, [ 1, 1 ], [ 11, 22, 33 ] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [];
-  test.identical( select, expected );
+  var got = _.longBut( dst, [ 1, 1 ], [ 11, 22, 33 ] );
   var expected = [ 1, 11, 22, 33, 2, 3, 4, 5 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
 
-  /* */
-
-  test.case = '1 - length';
+  test.case = 'range[ 0 ] < 0, ins';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var select = _.longSelect( dst, [ 1, 2 ] );
-  var but = _.longBut( dst, [ 1, 2 ], [ 11, 22, 33 ] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [ 2 ];
-  test.identical( select, expected );
-  var expected = [ 1, 11, 22, 33, 3, 4, 5 ];
-  test.identical( but, expected );
-
-  /* */
-
-  test.case = 'scalar';
-  var dst = [ 1, 2, 3, 4, 5 ];
-  var select = _.longSelect( dst, 1 );
-  var but = _.longBut( dst, 1, [ 11, 22, 33 ] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [ 2, 3, 4, 5 ];
-  test.identical( select, expected );
-  var expected = [ 1, 11, 22, 33, 3, 4, 5 ];
-  test.identical( but, expected );
-
-  /* */
-
-  test.case = 'pass empty range';
-  test.shouldThrowErrorSync( () =>
-  {
-    var dst = [ 1, 2, 3, 4, 5 ];
-    var select = _.longSelect( dst, [] );
-    var but = _.longBut( dst, [], [ 11, 22, 33 ] );
-    var expected = [ 1, 2, 3, 4, 5 ];
-    test.identical( dst, expected );
-    var expected = [ 2, 3 ];
-    test.identical( select, expected );
-    var expected = [ 1, 4, 5 ];
-    test.identical( but, expected );
-  });
-
-  /* */
-
-  test.case = 'pass number instead of range';
-  var dst = [ 1, 2, 3, 4, 5 ];
-  var select = _.longSelect( dst, 1 );
-  var but = _.longBut( dst, 1, [ 11, 22, 33 ] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [ 2, 3, 4, 5 ];
-  test.identical( select, expected );
-  var expected = [ 1, 11, 22, 33, 3, 4, 5 ];
-  test.identical( but, expected );
-
-  /* */
-
-  test.case = 'no source, number istead of range';
-  var dst = [ 1, 2, 3, 4, 5 ];
-  var but = _.longBut( dst, 1 );
-  var select = _.longSelect( dst, 1 );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [ 2, 3, 4, 5 ];
-  test.identical( select, expected );
-  var expected = [ 1, 3, 4, 5 ];
-  test.identical( but, expected );
-
-  /* */
-
-  test.case = 'no source';
-  var dst = [ 1, 2, 3, 4, 5 ];
-  var select = _.longSelect( dst, [ 1, 3 ] );
-  var but = _.longBut( dst, [ 1, 3 ] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [ 2, 3 ];
-  test.identical( select, expected );
-  var expected = [ 1, 4, 5 ];
-  test.identical( but, expected );
-
-  /* */
-
-  test.case = 'out of bound, begin';
-  var dst = [ 1, 2, 3, 4, 5 ];
-  var select = _.longSelect( dst, [ -10, 2 ] );
-  var but = _.longBut( dst, [ -10, 2 ], [ 11, 22, 33 ] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [ 1, 2 ];
-  test.identical( select, expected );
+  var got = _.longBut( dst, [ -10, 2 ], [ 11, 22, 33 ] );
   var expected = [ 11, 22, 33, 3, 4, 5 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
 
-  /* */
-
-  test.case = 'out of bound, end';
+  test.case = 'range[ 1 ] > dst.length, ins';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var select = _.longSelect( dst, [ 3, 10 ] );
-  var but = _.longBut( dst, [ 3, 10 ], [ 11, 22, 33 ] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [ 4, 5 ];
-  test.identical( select, expected );
+  var got = _.longBut( dst, [ 3, 10 ], [ 11, 22, 33 ] );
   var expected = [ 1, 2, 3, 11, 22, 33 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
 
-  /* */
-
-  test.case = 'out of bound, both sides';
+  test.case = 'range[ 0 ] < 0, range[ 1 ] > dst.length, ins';
   var dst = [ 1, 2, 3, 4, 5 ];
-  var select = _.longSelect( dst, [ -10, 10 ] );
-  var but = _.longBut( dst, [ -10, 10 ], [ 11, 22, 33 ] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [ 1, 2, 3, 4 ,5 ];
-  test.identical( select, expected );
+  var got = _.longBut( dst, [ -10, 10 ], [ 11, 22, 33 ] );
   var expected = [ 11, 22, 33 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
 
-  /* */
-
-  test.case = 'negative, both sides';
+  test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, ins';
   var dst = [ 1, 2, 3, 4, 5 ];
-  debugger;
-  var select = _.longSelect( dst, [ -1, -1 ] );
-  var but = _.longBut( dst, [ -1, -1 ], [ 11, 22, 33 ] );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( dst, expected );
-  var expected = [];
-  test.identical( select, expected );
+  var got = _.longBut( dst, [ -1, -1 ], [ 11, 22, 33 ] );
   var expected = [ 11, 22, 33, 1, 2, 3, 4, 5 ];
-  test.identical( but, expected );
+  test.identical( got, expected );
 
   /* */
 
@@ -5574,6 +5366,8 @@ function longBut( test )
   test.identical( select, expected );
   var expected = [ 1, 2, 3, 4, 5, 11, 22, 33 ];
   test.identical( but, expected );
+
+  test.close( 'array' );
 
   /* Buffers */
 
