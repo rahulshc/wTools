@@ -2902,6 +2902,65 @@ function arrayGrow( src, range, ins )
   return result;
 }
 
+//
+
+function arrayGrowInplace( src, range, ins )
+{
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( range === undefined )
+  return src;
+
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  let f = range ? range[ 0 ] : undefined;
+  let l = range ? range[ 1 ] : undefined;
+
+  f = f !== undefined ? f : 0;
+  l = l !== undefined ? l : src.length;
+
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) )
+
+  if( l < f )
+  l = f;
+
+  if( f < 0 )
+  {
+    l -= f;
+    f -= f;
+  }
+
+  if( f > 0 )
+  f = 0;
+  if( l < src.length )
+  l = src.length;
+
+  if( l === src.length )
+  return src;
+
+  /* */
+
+  let l2 = Math.min( src.length, l );
+
+  let result = src;
+  result.length = l;
+
+  if( ins !== undefined )
+  {
+    for( let r = l2; r < result.length ; r++ )
+    {
+      result[ r ] = ins;
+    }
+  }
+
+  /* */
+
+  return result;
+}
+
 // --
 // array sequential search
 // --
@@ -6949,6 +7008,7 @@ let Routines =
   arraySelect,
   arraySelectInplace,
   arrayGrow,
+  arrayGrowInplace,
 
   // array sequential search
 
