@@ -2781,7 +2781,6 @@ function arraySelect( src, range, ins )
 
   _.assert( _.arrayIs( src ) );
   _.assert( _.rangeIs( range ) );
-  _.assert( ins === undefined || _.longIs( ins ) );
 
   _.rangeClamp( range, [ 0, src.length ] );
   if( range[ 1 ] < range[ 0 ] )
@@ -2790,7 +2789,7 @@ function arraySelect( src, range, ins )
   if( range[ 0 ] === 0 && range[ 1 ] === src.length )
   return src.slice( src );
 
-  result = new Array( range[ 1 ]-range[ 0 ] );
+  result = _.arrayMakeUndefined( range[ 1 ]-range[ 0 ] );
 
   let f2 = Math.max( range[ 0 ], 0 );
   let l2 = Math.min( src.length, range[ 1 ] );
@@ -2815,7 +2814,6 @@ function arraySelectInplace( src, range, ins )
 
   _.assert( _.arrayIs( src ) );
   _.assert( _.rangeIs( range ) );
-  _.assert( ins === undefined || _.longIs( ins ) );
 
   _.rangeClamp( range, [ 0, src.length ] );
   if( range[ 1 ] < range[ 0 ] )
@@ -2957,6 +2955,56 @@ function arrayGrowInplace( src, range, ins )
   }
 
   /* */
+
+  return result;
+}
+
+//
+
+function arrayRelength( src, range, ins )
+{
+  let result;
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( range === undefined )
+  return src.slice();
+
+  if( _.numberIs( range ) )
+  range = [ range, src.length ];
+
+  let f = range ? range[ 0 ] : undefined;
+  let l = range ? range[ 1 ] : undefined;
+
+  f = f !== undefined ? f : 0;
+  l = l !== undefined ? l : src.length;
+
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) );
+
+  if( l < f )
+  l = f;
+
+  if( f < 0 )
+  f = 0;
+
+  if( f === 0 && l === src.length )
+  return src.slice( src );
+
+  result = _.arrayMakeUndefined( src, l-f );
+
+  let f2 = Math.max( f, 0 );
+  let l2 = Math.min( src.length, l );
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-f ] = src[ r ];
+
+  if( ins !== undefined )
+  {
+    for( let r = l2 - f; r < result.length ; r++ )
+    {
+      result[ r ] = ins;
+    }
+  }
 
   return result;
 }
@@ -7009,6 +7057,7 @@ let Routines =
   arraySelectInplace,
   arrayGrow,
   arrayGrowInplace,
+  arrayRelength,
 
   // array sequential search
 
