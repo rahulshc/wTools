@@ -1332,31 +1332,31 @@ function bufferFrom( test )
   test.case = 'src:number, bufferConstructor:raw buffer';
   var src = 1;
   var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-  var expected = new U8x([ 1 ]).buffer;
+  var expected = new U8x( 1 ).buffer;
   test.identical( got, expected );
 
   test.case = 'src:str, bufferConstructor:raw buffer';
   var src = 'abc';
   var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-  var expected = new U8x([ 97, 98, 99 ]).buffer;
+  var expected = new U8x().buffer;
   test.identical( got, expected );
 
   test.case = 'src:array, bufferConstructor:raw buffer';
   var src = [ 97, 98, 99 ];
   var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-  var expected = new U8x([ 97, 98, 99 ]).buffer;
+  var expected = new U8x().buffer;
   test.identical( got, expected );
 
   test.case = 'src:raw buffer, bufferConstructor:raw buffer';
   var src = new BufferRaw( 3 );
   var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-  var expected = src;
+  var expected = new U8x( 3 ).buffer;
   test.identical( got, expected );
 
   test.case = 'src:typed, bufferConstructor:raw buffer';
   var src = new I32x([ 97, 98, 99 ]);
   var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-  var expected = new I32x([ 97, 98, 99 ]).buffer;
+  var expected = new I32x().buffer;
   test.identical( got, expected );
 
   if( Config.interpreter === 'njs' )
@@ -1364,7 +1364,7 @@ function bufferFrom( test )
     test.case = 'src:node buffer, bufferConstructor:raw buffer';
     var src = BufferNode.from([ 97, 98, 99 ]);
     var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-    var expected = new U8x([ 97, 98, 99 ]).buffer;
+    var expected = new U8x().buffer;
     test.identical( got, expected );
   }
 
@@ -1400,7 +1400,7 @@ function bufferFrom( test )
   test.case = 'src:typed, bufferConstructor:node buffer';
   var src = new I32x([ 97, 98, 99 ]);
   var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
-  var expected = BufferNode.from( src.buffer, src.buteOffset, src.byteLength );
+  var expected = BufferNode.from( src );
   test.identical( got, expected );
 
   test.case = 'src:node buffer, bufferConstructor:node buffer';
