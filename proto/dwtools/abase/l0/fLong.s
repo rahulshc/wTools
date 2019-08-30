@@ -1696,6 +1696,7 @@ function longButInplace( src, range, ins )
 
 /*
   qqq : extend documentation and test coverage of longSelect
+  Dmytro : temporary using of longMake. Need to save longShallowClone.
 */
 
 function longSelect( array, range, val )
@@ -2147,7 +2148,7 @@ function longRelengthInplace( array, range, val )
   return _.arrayRelengthInplace( array, range, val );
   else
   return _.longRelength( array, range, val );
-  
+
 }
 
 //
