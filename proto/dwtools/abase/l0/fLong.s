@@ -2081,6 +2081,77 @@ function longGrowInplace( array, range, val )
   // return result;
 }
 
+function longRelength( array, range, val )
+{
+
+  let result;
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( range === undefined )
+  return _.longMake( array );
+
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  let f = range ? range[ 0 ] : undefined;
+  let l = range ? range[ 1 ] : undefined;
+
+  f = f !== undefined ? f : 0;
+  l = l !== undefined ? l : src.length;
+
+  _.assert( _.longIs( array ) );
+  _.assert( _.rangeIs( range ) )
+
+  if( l < f )
+  l = f;
+
+  if( f < 0 )
+  f = 0;
+
+  if( f === 0 && l === array.length )
+  return _.longMake( array );
+
+  result = _.longMakeUndefined( array, l-f );
+
+  /* */
+
+  let f2 = Math.max( f, 0 );
+  let l2 = Math.min( array.length, l );
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-f2 ] = array[ r ];
+
+  /* */
+
+  if( val !== undefined )
+  {
+    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
+    {
+      result[ r ] = val;
+    }
+  }
+
+  /* */
+
+  return result;
+}
+
+//
+
+function longRelengthInplace( array, range, val )
+{
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( _.arrayLikeResizable( array ) )
+  return _.arrayRelengthInplace( array, range, val );
+  else
+  return _.longRelength( array, range, val );
+  
+}
+
+//
+
 /**
  * The longRepresent() routine returns a shallow copy of a portion of an array
  * or a new TypedArray that contains
@@ -3011,7 +3082,7 @@ function arrayRelength( src, range, ins )
   let f2 = Math.max( f, 0 );
   let l2 = Math.min( src.length, l );
   for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f ] = src[ r ];
+  result[ r-f2 ] = src[ r ];
 
   if( ins !== undefined )
   {
@@ -7066,6 +7137,8 @@ let Routines =
   longSelectInplace,
   longGrow,
   longGrowInplace,
+  longRelength,
+  longRelengthInplace,
 
   longRepresent,
 
