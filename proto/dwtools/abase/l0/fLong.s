@@ -2827,10 +2827,9 @@ function arraySelectInplace( src, range, ins )
 
   let result = src;
 
-  // Dmytro : do search better implementation
-
   result.splice.apply( result, [ 0, f2 ] );
-  result.splice.apply( result, [ l2 - f2, src.length ] );
+  result.length = range[ 1 ] - range[ 0 ];
+  // result.splice.apply( result, [ l2 - f2, src.length ] );
 
   return result;
 }
@@ -2885,10 +2884,6 @@ function arrayGrow( src, range, ins )
 
   if( ins !== undefined )
   {
-    for( let r = 0 ; r < -f ; r++ )
-    {
-      result[ r ] = ins;
-    }
     for( let r = l2 - f; r < result.length ; r++ )
     {
       result[ r ] = ins;
@@ -2997,6 +2992,55 @@ function arrayRelength( src, range, ins )
   let l2 = Math.min( src.length, l );
   for( let r = f2 ; r < l2 ; r++ )
   result[ r-f ] = src[ r ];
+
+  if( ins !== undefined )
+  {
+    for( let r = l2 - f; r < result.length ; r++ )
+    {
+      result[ r ] = ins;
+    }
+  }
+
+  return result;
+}
+
+//
+
+function arrayRelengthInplace( src, range, ins )
+{
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( range === undefined )
+  return src;
+
+  if( _.numberIs( range ) )
+  range = [ range, src.length ];
+
+  let f = range ? range[ 0 ] : undefined;
+  let l = range ? range[ 1 ] : undefined;
+
+  f = f !== undefined ? f : 0;
+  l = l !== undefined ? l : src.length;
+
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) );
+
+  if( l < f )
+  l = f;
+
+  if( f < 0 )
+  f = 0;
+
+  if( f === 0 && l === src.length )
+  return src;
+
+  let f2 = Math.max( f, 0 );
+  let l2 = Math.min( src.length, l );
+
+  let result = src;
+
+  result.splice.apply( result, [ 0, f ] );
+  result.length = l - f;
 
   if( ins !== undefined )
   {
@@ -7058,6 +7102,7 @@ let Routines =
   arrayGrow,
   arrayGrowInplace,
   arrayRelength,
+  arrayRelengthInplace,
 
   // array sequential search
 
