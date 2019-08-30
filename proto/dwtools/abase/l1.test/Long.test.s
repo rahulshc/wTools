@@ -6376,30 +6376,30 @@ function longSelect( test )
 
   test.open( 'argumentsArray' );
 
-  // test.case = 'only dst';
-  // var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
-  // var got = _.longSelect( dst );
-  // var expected = [ 1, 2, 3, 4, 5 ];
-  // test.equivalent( got, expected );
-  // test.is( !_.argumentsArrayIs( got ) );
-  // test.is( got !== dst );
-  //
-  // test.case = 'range > dst.length, not a val';
-  // var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
-  // var got = _.longSelect( dst, [ 0, dst.length + 2 ] );
-  // var expected = [ 1, 2, 3, 4, 5 ];
-  // test.equivalent( got, expected );
-  // test.identical( got.length, 5 );
-  // test.is( !_.argumentsArrayIs( got ) );
-  // test.is( got !== dst );
-  //
-  // test.case = 'range > dst.length, val = number';
-  // var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
-  // var got = _.longSelect( dst, [ 0, dst.length + 2 ], 0 );
-  // var expected = [ 1, 2, 3, 4, 5 ];
-  // test.equivalent( got, expected );
-  // test.is( !_.argumentsArrayIs( got ) );
-  // test.is( got !== dst );
+  test.case = 'only dst';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longSelect( dst );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.equivalent( got, expected );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
+
+  test.case = 'range > dst.length, not a val';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longSelect( dst, [ 0, dst.length + 2 ] );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.equivalent( got, expected );
+  test.identical( got.length, 5 );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
+
+  test.case = 'range > dst.length, val = number';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longSelect( dst, [ 0, dst.length + 2 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.equivalent( got, expected );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
@@ -6711,8 +6711,8 @@ function longSelectInplace( test )
   var got = _.longSelectInplace( dst );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
@@ -6720,64 +6720,64 @@ function longSelectInplace( test )
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
   test.identical( got.length, 5 );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longSelectInplace( dst, [ 0, dst.length + 2 ], 0 );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longSelectInplace( dst, [ dst.length - 1, dst.length * 2 ], 0 );
   var expected = [ 5 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
   //
   test.case = 'range < dst.length';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longSelectInplace( dst, [ 0, 3 ] );
   var expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'range < dst.length, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longSelectInplace( dst, [ 0, 3 ], 0 );
   var expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'f < 0, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   got = _.longSelectInplace( dst, [ -1, 3 ] );
   expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'l < 0, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longSelectInplace( dst, [ 0, -1 ] );
   var expected = [];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'f < 0, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longSelectInplace( dst, [ -1, 3 ], 0 );
   var expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.close( 'argumentsArray' );
 
@@ -6791,7 +6791,7 @@ function longSelectInplace( test )
   var expected = new U8x( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, not a val';
   var dst = new I16x( [ 1, 2, 3, 4, 5 ] );
@@ -6800,7 +6800,7 @@ function longSelectInplace( test )
   test.identical( got, expected );
   test.identical( got.length, 5 );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, val = number';
   var dst = new F32x( [ 1, 2, 3, 4, 5 ] );
@@ -6808,7 +6808,7 @@ function longSelectInplace( test )
   var expected = new F32x( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, val = number';
   var dst = new I8x( [ 1, 2, 3, 4, 5 ] );
@@ -6816,7 +6816,7 @@ function longSelectInplace( test )
   var expected = new I8x( [ 5 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'range < dst.length';
   var dst = new U16x( [ 1, 2, 3, 4, 5 ] );
@@ -6824,7 +6824,7 @@ function longSelectInplace( test )
   var expected = new U16x( [ 1, 2, 3 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'range < dst.length, val = number';
   var dst = new I32x( [ 1, 2, 3, 4, 5 ] );
@@ -6832,7 +6832,7 @@ function longSelectInplace( test )
   var expected = new I32x( [ 1, 2, 3 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'f < 0, not a val';
   var dst = new F64x( [ 1, 2, 3, 4, 5 ] );
@@ -6840,7 +6840,7 @@ function longSelectInplace( test )
   expected = new F64x( [ 1, 2, 3 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'l < 0, not a val';
   var dst = new U8ClampedX( [ 1, 2, 3, 4, 5 ] );
@@ -6848,7 +6848,7 @@ function longSelectInplace( test )
   var expected = new U8ClampedX();
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'f < 0, val = number';
   var dst = new U32x( [ 1, 2, 3, 4, 5 ] );
@@ -6856,7 +6856,7 @@ function longSelectInplace( test )
   var expected = new U32x( [ 1, 2, 3 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.close( 'bufferTyped' );
 
@@ -7227,7 +7227,7 @@ function longGrowInplace( test )
   test.case = 'range > dst.length, not a val';
   var dst = [ 1, 2, 3, 4, 5 ];
   var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ] );
-  var expected = dst.length + 2;
+  var expected = 7;
   test.identical( got, [ 1, 2, 3, 4, 5, undefined, undefined ] );
   test.identical( got.length, expected );
   test.is( got === dst );
@@ -7298,24 +7298,24 @@ function longGrowInplace( test )
   test.case = 'range > dst.length, not a val';
   var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ] );
-  var expected = dst.length + 2;
+  var expected = 7;
   test.identical( got, [ 1, 2, 3, 4, 5, undefined, undefined ] );
   test.identical( got.length, expected );
-  test.is( !_.unrollIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'range > dst.length, val = number';
   var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ], 0 );
   var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
   test.identical( got, expected );
-  test.is( !_.unrollIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'range > dst.length, val = number';
   var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longGrowInplace( dst, [ dst.length - 1, dst.length * 2 ], 0 );
   var expected = [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ];
   test.identical( got, expected );
-  test.is( !_.unrollIs( got ) );
+  test.is( _.unrollIs( got ) );
 
   test.case = 'range < dst.length';
   var dst = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
@@ -7368,13 +7368,13 @@ function longGrowInplace( test )
   var got = _.longGrowInplace( dst );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longGrowInplace( dst, [ 0, dst.length + 2 ] );
-  var expected = dst.length + 2;
+  var expected = 7;
   test.equivalent( got, [ 1, 2, 3, 4, 5, undefined, undefined ] );
   test.identical( got.length, expected );
   test.is( !_.argumentsArrayIs( got ) );
@@ -7398,40 +7398,40 @@ function longGrowInplace( test )
   var got = _.longGrowInplace( dst, [ 0, 3 ] );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'range < dst.length, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longGrowInplace( dst, [ 0, 3 ], 0 );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'f < 0, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   got = _.longGrowInplace( dst, [ -1, 3 ] );
   expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'l < 0, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longGrowInplace( dst, [ 0, -1 ] );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.case = 'f < 0, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longGrowInplace( dst, [ -1, 3 ], 0 );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( got === dst );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( got !== dst );
 
   test.close( 'argumentsArray' );
 
@@ -7445,7 +7445,7 @@ function longGrowInplace( test )
   var expected = new U8x( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, not a val';
   var dst = new I16x( [ 1, 2, 3, 4, 5 ] );
@@ -7454,7 +7454,7 @@ function longGrowInplace( test )
   test.identical( got, new I16x( [ 1, 2, 3, 4, 5, 0, 0 ] ) );
   test.identical( got.length, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, val = number';
   var dst = new F32x( [ 1, 2, 3, 4, 5 ] );
@@ -7462,7 +7462,7 @@ function longGrowInplace( test )
   var expected = new F32x( [ 1, 2, 3, 4, 5, 0, 0 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'range > dst.length, val = number';
   var dst = new I8x( [ 1, 2, 3, 4, 5 ] );
@@ -7470,7 +7470,7 @@ function longGrowInplace( test )
   var expected = new I8x( [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'range < dst.length';
   var dst = new U16x( [ 1, 2, 3, 4, 5 ] );
@@ -7478,7 +7478,7 @@ function longGrowInplace( test )
   var expected = new U16x( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'range < dst.length, val = number';
   var dst = new I32x( [ 1, 2, 3, 4, 5 ] );
@@ -7486,7 +7486,7 @@ function longGrowInplace( test )
   var expected = new I32x( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'f < 0, not a val';
   var dst = new F64x( [ 1, 2, 3, 4, 5 ] );
@@ -7494,7 +7494,7 @@ function longGrowInplace( test )
   expected = new F64x( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'l < 0, not a val';
   var dst = new U8ClampedX( [ 1, 2, 3, 4, 5 ] );
@@ -7502,7 +7502,7 @@ function longGrowInplace( test )
   var expected = new U8ClampedX( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.case = 'f < 0, val = number';
   var dst = new U32x( [ 1, 2, 3, 4, 5 ] );
@@ -7510,7 +7510,7 @@ function longGrowInplace( test )
   var expected = new U32x( [ 1, 2, 3, 4, 5 ] );
   test.identical( got, expected );
   test.is( _.bufferTypedIs( got ) );
-  test.is( got === dst );
+  test.is( got !== dst );
 
   test.close( 'bufferTyped' );
 
@@ -7530,7 +7530,7 @@ function longGrowInplace( test )
   test.shouldThrowErrorSync( () => _.longGrowInplace( new ArrayBuffer( 4 ), [ 0, 5 ] ) );
 
   test.case = 'not a range';
-  test.shouldThrowErrorSync( () => _.longGrowInplace( [ 1 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.longGrowInplace( [ 1 ], [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.longGrowInplace( [ 1 ], 'str' ) );
 
 }
@@ -25840,9 +25840,9 @@ var Self =
     longBut,
     longButInplace,
     longSelect, // Dmytro : argumentsArray failed if f == 0, l == array.length
-    // longSelectInplace, // Dmytro : template, need to clarify requirements for routine
+    longSelectInplace,
     longGrow,
-    // longGrowInplace, Dmytro : template, need to clarify requirements for routine
+    longGrowInplace,
 
     longRepresent,
     // longResize, // Dmytro : uncomment when it will be reimplemented
