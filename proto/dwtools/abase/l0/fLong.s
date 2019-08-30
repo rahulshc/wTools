@@ -2789,7 +2789,7 @@ function arraySelect( src, range, ins )
   if( range[ 0 ] === 0 && range[ 1 ] === src.length )
   return src.slice( src );
 
-  result = _.arrayMakeUndefined( range[ 1 ]-range[ 0 ] );
+  result = _.arrayMakeUndefined( src, range[ 1 ]-range[ 0 ] );
 
   let f2 = Math.max( range[ 0 ], 0 );
   let l2 = Math.min( src.length, range[ 1 ] );
