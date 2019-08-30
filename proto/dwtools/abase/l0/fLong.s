@@ -1652,17 +1652,20 @@ function longButInplace( src, range, ins )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  if( _.arrayIs( src ) )
+  // if( _.arrayIs( src ) )
+  if( _.arrayLikeResizable( src ) )
   return _.arrayButInplace( src, range, ins );
+  else
+  return _.longBut( src, range, ins ); // Dmytro : not resizable longs should be processed by longBut algorithm. If it need, I'll make copy of code.
 
-  let result;
-
-  _.assert( _.longIs( src ) );
-  _.assert( ins === undefined || _.longIs( ins ) );
-  _.assert( _.longIs( range ), 'not tested' );
-  _.assert( !_.longIs( range ), 'not tested' );
-
-  _.assert( 0, 'not implemented' )
+  // let result;
+  //
+  // _.assert( _.longIs( src ) );
+  // _.assert( ins === undefined || _.longIs( ins ) );
+  // _.assert( _.longIs( range ), 'not tested' );
+  // _.assert( !_.longIs( range ), 'not tested' );
+  //
+  // _.assert( 0, 'not implemented' )
 
   //
   // if( _.numberIs( range ) )
