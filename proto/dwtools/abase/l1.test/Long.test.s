@@ -842,7 +842,7 @@ function bufferBut( test )
   test.case = '';
   var src = new BufferRaw( 10 );
   var got = _.bufferBut( src, [ 1, 3 ], [ 1 ] );
-  test.identical( got, new BufferRaw( [ 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 ] ) );
+  test.identical( got, new U8x( [ 0, 1, 0, 0, 0, 0, 0, 0, 0 ] ).buffer );
 
   /* qqq : should work */
   test.case = '';
@@ -852,9 +852,9 @@ function bufferBut( test )
 
   /* qqq : should work */
   test.case = '';
-  var src = new BufferRaw( 10 );
-  var got = _.bufferBut( [ src ], [ 1, 3 ], [ 1 ] );
-  test.identical( got, new BufferRaw( [ 0, 1, 0, 0, 0, 0, 0, 0, 0 ] ) );
+  var src = new BufferView( new ArrayBuffer( 10 ) );
+  var got = _.bufferBut( src, [ 1, 3 ], [ 1 ] );
+  test.identical( got, new DataView( new U8x( [ 0, 1, 0, 0, 0, 0, 0, 0, 0 ]).buffer ) );
 
   // /* qqq : should work */
   // test.case = '';
@@ -899,8 +899,6 @@ function bufferBut( test )
   test.shouldThrowErrorSync( () => _.bufferBut( src, [ 1, 3 ], { a : 1 } ) );
 
   test.case = 'wrong type of src';
-  var buffer = new BufferRaw( 10 );
-  test.shouldThrowErrorSync( () => _.bufferBut( new BufferView( buffer ), [ 1, 3 ], [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.bufferBut( 'str', [ 1, 3 ], [ 1 ] ) );
 
 }

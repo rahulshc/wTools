@@ -382,46 +382,73 @@ function bufferMakeUndefined( ins, src )
  * @memberof wTools
  */
 
-// function bufferBut( src, range, ins )
-// {
-//   let result;
-//   range = _.rangeFromLeft( range );
-//
-//   _.assert( _.bufferTypedIs( src ) );
-//   _.assert( ins === undefined || _.longIs( ins ) );
-//   _.assert( arguments.length === 2 || arguments.length === 3 );
-//
-//   if( ins === undefined )
-//   ins = [];
-//
-//   let bufferStart = src.slice( 0, range[ 0 ] );
-//   let bufferEnd = src.slice( range[ 1 ] );
-//   result = _.longMakeUndefined( src, bufferStart.length + ins.length + bufferEnd.length );
-//   result.set( bufferStart );
-//   result.set( ins, range[ 0 ] );
-//   result.set( bufferEnd, range[ 0 ] + ins.length );
-//
-//   return result;
-//
-//   // throw _.err( 'not implemented' )
-//   //
-//   // if( range[ 1 ] - range[ 0 ] <= 0 )
-//   // return _.bufferSlice( src );
-//   //
-//   // if( size > src.byteLength )
-//   // {
-//   //   result = longMakeUndefined( src, size );
-//   //   let resultTyped = new U8x( result, 0, result.byteLength );
-//   //   let srcTyped = new U8x( src, 0, src.byteLength );
-//   //   resultTyped.set( srcTyped );
-//   // }
-//   // else if( size < src.byteLength )
-//   // {
-//   //   result = src.slice( 0, size );
-//   // }
-//   //
-//   // return result;
-// }
+ function bufferBut( dstArray, range, srcArray )
+ {
+
+   if( !_.bufferAnyIs( dstArray ) )
+   return _.longBut( dstArray, range, srcArray );
+
+   if( _.numberIs( range ) )
+   range = [ range, range + 1 ];
+
+   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
+   _.assert( _.rangeIs( range ) );
+   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
+
+   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
+   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+   let result;
+
+   if( first < 0 )
+   first = 0;
+   if( first > length)
+   first = length;
+   if( last > length)
+   last = length;
+   if( last < first )
+   last = first;
+
+   let newLength = length - last + first;
+   let srcArrayLength = 0;
+
+   if( srcArray )
+   {
+     srcArrayLength = _.definedIs( srcArray.length ) ? srcArray.length : srcArray.byteLength;
+     newLength += srcArrayLength;
+   }
+
+   if( _.bufferViewIs( dstArray ) || _.bufferRawIs( dstArray ) || _.bufferNodeIs( dstArray ) )
+   {
+     result = new U8x( newLength );
+   }
+   else
+   {
+     result = _.longMakeUndefined( dstArray, newLength );
+   }
+
+   if( first > 0 )
+   for( let i = 0; i < first; ++i )
+   result[ i ] = dstArray[ i ];
+
+   if( srcArray )
+   for( let i = first, j = 0; j < srcArrayLength; )
+   result[ i++ ] = srcArray[ j++ ];
+
+   for( let j = last, i = first + srcArrayLength; j < length; )
+   result[ i++ ] = dstArray[ j++ ];
+
+   //
+   if( _.bufferRawIs( dstArray ) )
+   return result.buffer;
+   if( _.bufferNodeIs( dstArray ) )
+   return BufferNode.from( result );
+   if( _.bufferViewIs( dstArray ) )
+   return new BufferView( result.buffer );
+   else
+   return result;
+ }
 
 /* qqq : routine bufferBut requires good test coverage and documentation */
 /* qqq : implement cover and document routine bufferButInplace */
@@ -433,98 +460,100 @@ function bufferMakeUndefined( ins, src )
       ins can be any long or any buffer
 */
 
-function bufferBut( dstArray, range, srcArray )
-{
+// Dmytro : not a my template
 
-  if( !_.bufferAnyIs( dstArray ) )
-  return _.longBut( dstArray, range, srcArray );
-
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
-
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
-  _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
-  _.assert( _.rangeIs( range ) );
-  // _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
-  _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
-
-  /* qqq : jeed separate if fo BufferRaw, bufferNode and bufferView */
-  let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-  let result;
-
-  if( first < 0 )
-  first = 0;
-  if( first > length)
-  first = length;
-  if( last > length)
-  last = length;
-  if( last < first )
-  last = first;
-
-  // if( _.bufferAnyIs( dstArray ) )
-  // {
-
-    // if( first === last )
-    // return _.bufferMake( dstArray );
-
-    // if( first === last )
-    // return dstArray;
-
-    // if( first === last )
-    // debugger;
-
-    let newLength = length - last + first;
-    let srcArrayLength = 0;
-
-    if( srcArray )
-    {
-      srcArrayLength = _.definedIs( srcArray.length ) ? srcArray.length : srcArray.byteLength;
-      newLength += srcArrayLength;
-    }
-
-    if( _.bufferRawIs( dstArray ) )
-    {
-      result = new BufferRaw( newLength );
-    }
-    else if( _.bufferNodeIs( dstArray ) )
-    {
-      result = BufferNode.alloc( newLength );
-    }
-    else
-    {
-      result = _.longMakeUndefined( dstArray, newLength );
-    }
-
-    if( first > 0 )
-    for( let i = 0; i < first; ++i )
-    result[ i ] = dstArray[ i ];
-
-    if( srcArray )
-    for( let i = first, j = 0; j < srcArrayLength; )
-    result[ i++ ] = srcArray[ j++ ];
-
-    for( let j = last, i = first + srcArrayLength; j < length; )
-    result[ i++ ] = dstArray[ j++ ];
-
-    return result;
-
-  // }
-  // else
-  // {
-  //
-  //   return _.longBut( srcArray,  );
-  //
-  //   let args = srcArray ? srcArray.slice() : [];
-  //   args.unshift( last-first );
-  //   args.unshift( first );
-  //
-  //   result = dstArray.splice.apply( dstArray, args );
-  // }
-
-  return result;
-}
+// function bufferBut( dstArray, range, srcArray )
+// {
+//
+//   if( !_.bufferAnyIs( dstArray ) )
+//   return _.longBut( dstArray, range, srcArray );
+//
+//   if( _.numberIs( range ) )
+//   range = [ range, range + 1 ];
+//
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+//   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
+//   _.assert( _.rangeIs( range ) );
+//   // _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
+//   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
+//
+//   /* qqq : jeed separate if fo BufferRaw, bufferNode and bufferView */
+//   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
+//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+//   let result;
+//
+//   if( first < 0 )
+//   first = 0;
+//   if( first > length)
+//   first = length;
+//   if( last > length)
+//   last = length;
+//   if( last < first )
+//   last = first;
+//
+//   // if( _.bufferAnyIs( dstArray ) )
+//   // {
+//
+//     // if( first === last )
+//     // return _.bufferMake( dstArray );
+//
+//     // if( first === last )
+//     // return dstArray;
+//
+//     // if( first === last )
+//     // debugger;
+//
+//     let newLength = length - last + first;
+//     let srcArrayLength = 0;
+//
+//     if( srcArray )
+//     {
+//       srcArrayLength = _.definedIs( srcArray.length ) ? srcArray.length : srcArray.byteLength;
+//       newLength += srcArrayLength;
+//     }
+//
+//     if( _.bufferRawIs( dstArray ) )
+//     {
+//       result = new BufferRaw( newLength );
+//     }
+//     else if( _.bufferNodeIs( dstArray ) )
+//     {
+//       result = BufferNode.alloc( newLength );
+//     }
+//     else
+//     {
+//       result = _.longMakeUndefined( dstArray, newLength );
+//     }
+//
+//     if( first > 0 )
+//     for( let i = 0; i < first; ++i )
+//     result[ i ] = dstArray[ i ];
+//
+//     if( srcArray )
+//     for( let i = first, j = 0; j < srcArrayLength; )
+//     result[ i++ ] = srcArray[ j++ ];
+//
+//     for( let j = last, i = first + srcArrayLength; j < length; )
+//     result[ i++ ] = dstArray[ j++ ];
+//
+//     return result;
+//
+//   // }
+//   // else
+//   // {
+//   //
+//   //   return _.longBut( srcArray,  );
+//   //
+//   //   let args = srcArray ? srcArray.slice() : [];
+//   //   args.unshift( last-first );
+//   //   args.unshift( first );
+//   //
+//   //   result = dstArray.splice.apply( dstArray, args );
+//   // }
+//
+//   return result;
+// }
 
 //
 
