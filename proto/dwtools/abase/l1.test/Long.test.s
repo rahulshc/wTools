@@ -5008,30 +5008,25 @@ function longSlice( test )
   runFor( makeArray );
   test.close( 'Array' );
 
+  /* - */
+
   test.open( 'ArgumentsArray' );
   runFor( makeU8 );
   test.close( 'ArgumentsArray' );
+
+  /* - */
 
   test.open( 'F32x' );
   runFor( makeF32 );
   test.close( 'F32x' );
 
+  /* - */
+
   test.open( 'U8x' );
   runFor( makeU8 );
   test.close( 'U8x' );
 
-  /* */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'raw buffer';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longSlice( new BufferRaw() );
-  });
-
-  /* */
+  /* instance makers */
 
   function makeArray()
   {
@@ -5058,7 +5053,7 @@ function longSlice( test )
     return result;
   }
 
-  /* */
+  /* test routine */
 
   function runFor( a )
   {
@@ -5167,35 +5162,30 @@ function longSlice( test )
     test.identical( got, expected );
 
     test.case = 'third argument is not provided';
-
     var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
     var got = _.longSlice( srcLong, 2 );
     var expected = a( 3, 4, 5, 6, 7 );
     test.identical( got, expected );
 
     test.case = 'second argument is undefined';
-
     var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
     var got = _.longSlice( srcLong, undefined, 4  );
     var expected = a( 1, 2, 3, 4 );
     test.identical( got, expected );
 
     test.case = 'from two to six';
-
     var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
     var got = _.longSlice( srcLong, 2, 6 );
     var expected = a( 3, 4, 5, 6 );
     test.identical( got, expected );
 
     test.case = 'indexes are out of bound';
-
     var srcLong = a( 1, 2, 3 );
     var got = _.longSlice( srcLong, 5, 8 );
     var expected = a();
     test.identical( got, expected );
 
     test.case = 'left bound is negative';
-
     var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
     var got = _.longSlice( srcLong, -1, srcLong.length );
     var expected = a( 7 );
@@ -5203,7 +5193,6 @@ function longSlice( test )
     test.is( srcLong !== got );
 
     test.case = 'rigth bound is negative';
-
     var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
     var got = _.longSlice( srcLong, 0, -1 );
     var expected = a( 1, 2, 3, 4, 5, 6 );
@@ -5211,7 +5200,6 @@ function longSlice( test )
     test.is( srcLong !== got );
 
     test.case = 'rigth bound is out of range';
-
     var srcLong = a( 1, 2, 3, 4, 5, 6, 7 );
     var got = _.longSlice( srcLong, 0, srcLong.length + 2 );
     var expected = srcLong;
@@ -5257,42 +5245,26 @@ function longSlice( test )
     test.is( got !== srcLong );
     test.identical( got, a( 7 ) );
 
-    /* */
+    /* - */
 
     if( !Config.debug )
     return;
 
-    test.case = 'no arguments';
-    test.shouldThrowErrorSync( function()
-    {
-      _.longSlice();
-    });
+    test.case = 'without arguments';
+    test.shouldThrowErrorSync( () => _.longSlice() );
 
-    test.case = 'wrong type of argument';
-    test.shouldThrowErrorSync( function()
-    {
-      _.longSlice( 'x' );
-    });
+    test.case = 'extra arguments';
+    test.shouldThrowErrorSync( () => _.longSlice( [ 1, 2, 3 ], 1, 2, 'extra' ) );
 
-    test.case = 'wrong type of argument';
-    test.shouldThrowErrorSync( function()
-    {
-      _.longSlice( [ 1 ], 'x', 1 );
-    });
+    test.case = 'array is not long';
+    test.shouldThrowErrorSync( () => _.longSlice( 'x' ) );
+    test.shouldThrowErrorSync( () => _.longSlice( new BufferRaw() ) );
 
-    test.case = 'wrong type of argument';
-    test.shouldThrowErrorSync( function()
-    {
-      _.longSlice( [ 1 ], 0, 'x' );
-    });
+    test.case = 'f is not number';
+    test.shouldThrowErrorSync( () => _.longSlice( [ 1 ], 'x', 1 ) );
 
-    test.case = 'wrong type of argument';
-    test.shouldThrowErrorSync( function()
-    {
-      var array = new BufferRaw();
-      _.longSlice( array );
-    });
-
+    test.case = 'l is not number';
+    test.shouldThrowErrorSync( () => _.longSlice( [ 1 ], 0, 'x' ) );
   }
 
 }
@@ -5543,7 +5515,6 @@ function longBut( test )
   [
     Array,
     I8x,
-    U8ClampedX,
     U16x,
     F32x,
     F64x,
@@ -5604,7 +5575,7 @@ function longBut( test )
     test.is( but !== dst );
     test.is( but !== src );
 
-    test.case = 'dst = ' + list[ i ].name + ', range = array range, not src';
+    test.case = 'dst = ' + list[ i ].name + ', range[ 0 ] > 0, range[ 1 ] < dst.length';
     var select = _.longSelect( dst, [ 2, 5 ] );
     var but = _.longBut( dst, [ 2, 5 ] );
     var expected = _.longMake( list[ i ], [ 1, 2, 3, 4, 5 ] );
@@ -5615,7 +5586,7 @@ function longBut( test )
     test.identical( but, expected );
     test.is( but !== dst );
 
-    test.case = 'dst = ' + list[ i ].name + ', range = array range, src';
+    test.case = 'dst = ' + list[ i ].name + ', range[ 0 ] > 0, range[ 1 ] < dst.length, src';
     var select = _.longSelect( dst, [ 4, 5 ] );
     var but = _.longBut( dst, [ 4, 5 ], src );
     var expected = _.longMake( list[ i ], [ 1, 2, 3, 4, 5 ] );
@@ -5649,7 +5620,7 @@ function longBut( test )
     test.identical( but, expected );
     test.is( but !== dst );
 
-    test.case = 'dst = ' + list[ i ].name + ', range[ 0 ] == range[ 1 ], src';
+    test.case = 'dst = ' + list[ i ].name + ', range[ 0 ] === range[ 1 ], src';
     var select = _.longSelect( dst, [ 0, 0 ] );
     var but = _.longBut( dst, [ 0, 0 ], src );
     var expected = _.longMake( list[ i ], [ 1, 2, 3, 4, 5 ] );
@@ -5718,7 +5689,6 @@ function longBut( test )
   test.shouldThrowErrorSync( () => _.longBut( [ 1, 2, 3, 4 ], [ 1 ], [ 5 ] ) );
   test.shouldThrowErrorSync( () => _.longBut( [ 1, 2, 3, 4 ], [ undefined, 1 ], [ 5 ] ) );
   test.shouldThrowErrorSync( () => _.longBut( [ 1, 2, 3, 4 ], [], [] ) );
-
 
 }
 
