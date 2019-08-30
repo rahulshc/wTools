@@ -9555,6 +9555,140 @@ function arraySelectInplace( test )
 
 //
 
+function arrayGrow( test )
+{
+  /* range is number */
+
+  test.case = 'range is number, number < src length, not ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arrayGrow( src, 1 );
+  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'range is negative number, not ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arrayGrow( src, -5 );
+  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'range is number, range > src.length, ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arrayGrow( src, 6, [ { a : 1 }, 2, [ 10 ] ] );
+  var expected = [ 1, 2, 3, 'str', [ 1 ], [ { a : 1 }, 2, [ 10 ] ] ];
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'range is negative number, ins';
+  var src = [ 1, 2, 3, 'str', [ 1 ] ];
+  var got = _.arrayGrow( src, -5, [ { a : 1 }, 2, [ 10 ] ] );
+  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  /* range is array range */
+
+  test.case = 'only dst';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayGrow( dst );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'range > dst.length, not a ins';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayGrow( dst, [ 0, dst.length + 2 ] );
+  var expected = dst.length + 2;
+  test.identical( got, [ 1, 2, 3, 4, 5, undefined, undefined ] );
+  test.identical( got.length, expected );
+  test.is( got !== dst );
+
+  test.case = 'range > dst.length, ins = number';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayGrow( dst, [ 0, dst.length + 2 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'range > dst.length, ins = number';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayGrow( dst, [ dst.length - 1, dst.length * 2 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ];
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'range < dst.length';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayGrow( dst, [ 0, 3 ] );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'range < dst.length, ins = number';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayGrow( dst, [ 0, 3 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'f < 0, not a ins';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  got = _.arrayGrow( dst, [ -1, 3 ] );
+  expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'l < 0, not a ins';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayGrow( dst, [ 0, -1 ] );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'f < 0, ins = number';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayGrow( dst, [ -1, 3 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'f < 0, l < 0, ins = number';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayGrow( dst, [ -1, -1 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  test.case = 'f > l, ins = number';
+  var dst = [ 1, 2, 3, 4, 5 ];
+  var got = _.arrayGrow( dst, [ 6, 3 ], 0 );
+  var expected = [ 1, 2, 3, 4, 5, 0 ];
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayGrow() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayGrow( [ 1 ], [ 1, 4 ], '5', 1 ) );
+
+  test.case = 'src is not long';
+  test.shouldThrowErrorSync( () => _.arrayGrow( 1, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayGrow( new ArrayBuffer( 4 ), [ 0, 5 ] ) );
+
+  test.case = 'not a range';
+  test.shouldThrowErrorSync( () => _.arrayGrow( [ 1 ], 'str' ) );
+
+}
+
+//
+
 function arrayLeftIndex( test )
 {
 
@@ -24869,6 +25003,7 @@ var Self =
     arrayButInplace,
     arraySelect,
     arraySelectInplace,
+    arrayGrow,
 
     // array sequential search
 

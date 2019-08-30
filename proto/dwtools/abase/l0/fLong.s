@@ -2837,6 +2837,71 @@ function arraySelectInplace( src, range, ins )
   return result;
 }
 
+//
+
+function arrayGrow( src, range, ins )
+{
+  let result;
+
+  if( range === undefined )
+  return src.slice();
+
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  let f = range ? range[ 0 ] : undefined;
+  let l = range ? range[ 1 ] : undefined;
+
+  f = f !== undefined ? f : 0;
+  l = l !== undefined ? l : src.length;
+
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) )
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( l < f )
+  l = f;
+
+  if( f < 0 )
+  {
+    l -= f;
+    f -= f;
+  }
+
+  if( f > 0 )
+  f = 0;
+  if( l < src.length )
+  l = src.length;
+
+  if( l === src.length )
+  return src.slice();
+
+  result = _.arrayMakeUndefined( src, l-f );
+
+  /* */
+
+  let f2 = Math.max( f, 0 );
+  let l2 = Math.min( src.length, l );
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-f ] = src[ r ];
+
+  if( ins !== undefined )
+  {
+    for( let r = 0 ; r < -f ; r++ )
+    {
+      result[ r ] = ins;
+    }
+    for( let r = l2 - f; r < result.length ; r++ )
+    {
+      result[ r ] = ins;
+    }
+  }
+
+  /* */
+
+  return result;
+}
+
 // --
 // array sequential search
 // --
@@ -6883,6 +6948,7 @@ let Routines =
   arrayButInplace,
   arraySelect,
   arraySelectInplace,
+  arrayGrow,
 
   // array sequential search
 
