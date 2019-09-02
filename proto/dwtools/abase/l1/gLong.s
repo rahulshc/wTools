@@ -559,6 +559,19 @@ function bufferMakeUndefined( ins, src )
 
 //
 
+function bufferButInplace( dstArray, range, srcArray )
+{
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( !_.bufferAnyIs( dstArray ) )
+  return _.longButInplace( dstArray, range, srcArray );
+  else
+  return _.bufferBut( dstArray, range, srcArray );
+
+}
+
+//
+
 function bufferSelect( dstArray, range, srcArray )
 {
 
@@ -616,6 +629,19 @@ function bufferSelect( dstArray, range, srcArray )
   return new BufferView( result.buffer );
   else
   return result;
+}
+
+//
+
+function bufferSelectInplace( dstArray, range, srcArray )
+{
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( !_.bufferAnyIs( dstArray ) )
+  return _.longSelectInplace( dstArray, range, srcArray );
+  else
+  return _.bufferSelect( dstArray, range, srcArray );
+
 }
 
 //
@@ -691,6 +717,19 @@ function bufferGrow( dstArray, range, srcArray )
 
 //
 
+function bufferGrowInplace( dstArray, range, srcArray )
+{
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( !_.bufferAnyIs( dstArray ) )
+  return _.longGrowInplace( dstArray, range, srcArray );
+  else
+  return _.bufferGrow( dstArray, range, srcArray );
+
+}
+
+//
+
 function bufferRelength( dstArray, range, srcArray )
 {
 
@@ -753,6 +792,19 @@ function bufferRelength( dstArray, range, srcArray )
   return new BufferView( result.buffer );
   else
   return result;
+}
+
+//
+
+function bufferRelengthInplace( dstArray, range, srcArray )
+{
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( !_.bufferAnyIs( dstArray ) )
+  return _.longRelengthInplace( dstArray, range, srcArray );
+  else
+  return _.bufferRelength( dstArray, range, srcArray );
+
 }
 
 //
@@ -4159,9 +4211,13 @@ let Routines =
   bufferMake,
 
   bufferBut,
+  bufferButInplace,
   bufferSelect,
+  bufferSelectInplace,
   bufferGrow,
+  bufferGrowInplace,
   bufferRelength,
+  bufferRelengthInplace,
   bufferRelen,
   bufferResize,
   bufferBytesGet,
