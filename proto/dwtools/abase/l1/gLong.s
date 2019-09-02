@@ -388,10 +388,12 @@ function bufferMakeUndefined( ins, src )
    if( !_.bufferAnyIs( dstArray ) )
    return _.longBut( dstArray, range, srcArray );
 
+   if( range === undefined )
+   range = [ 0, 0 ];
    if( _.numberIs( range ) )
    range = [ range, range + 1 ];
 
-   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+   _.assert( 1 <= arguments.length && arguments.length <= 3 );
    _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
    _.assert( _.rangeIs( range ) );
    _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
@@ -575,7 +577,7 @@ function bufferSelect( dstArray, range, srcArray )
   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
 
-  _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects two or three arguments' );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
   _.assert( _.rangeIs( range ) );
   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );

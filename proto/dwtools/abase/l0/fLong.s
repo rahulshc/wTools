@@ -1601,7 +1601,10 @@ function longSlice( array, f, l )
 function longBut( src, range, ins )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( range === undefined )
+  return _.longMake( src );
 
   if( _.arrayIs( src ) )
   return _.arrayBut( src, range, ins );
@@ -1650,7 +1653,7 @@ function longBut( src, range, ins )
 function longButInplace( src, range, ins )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   // if( _.arrayIs( src ) )
   if( _.arrayLikeResizable( src ) )
@@ -1703,6 +1706,8 @@ function longSelect( array, range, val )
 {
   let result;
 
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
   if( range === undefined )
   return _.longMake( array );
   // return _.longShallowClone( array );
@@ -1718,7 +1723,6 @@ function longSelect( array, range, val )
 
   _.assert( _.longIs( array ) );
   _.assert( _.rangeIs( range ) )
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   // if( f < 0 )
   // {
@@ -1934,6 +1938,8 @@ function longGrow( array, range, val )
 {
   let result;
 
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
   if( range === undefined )
   return _.longMake( array );
 
@@ -1950,7 +1956,6 @@ function longGrow( array, range, val )
   _.assert( _.rangeIs( range ) )
   // _.assert( _.numberIs( f ) );
   // _.assert( _.numberIs( l ) );
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
   // _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( l < f )
@@ -2805,13 +2810,17 @@ function arraySlice( srcArray, f, l )
 function arrayBut( src, range, ins )
 {
 
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( range === undefined )
+  return _.arrayMake( src );
+
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
   _.assert( _.arrayIs( src ) );
   _.assert( _.rangeIs( range ) );
   _.assert( ins === undefined || _.longIs( ins ) );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
 
   _.rangeClamp( range, [ 0, src.length ] );
   if( range[ 1 ] < range[ 0 ] )
@@ -2836,13 +2845,17 @@ function arrayBut( src, range, ins )
 function arrayButInplace( src, range, ins )
 {
 
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( range === undefined )
+  return src;
+
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
   _.assert( _.arrayLikeResizable( src ) );
   _.assert( _.rangeIs( range ) );
   _.assert( ins === undefined || _.longIs( ins ) );
-  _.assert( arguments.length === 2 || arguments.length === 3 );
 
   // Dmytro : missed
   _.rangeClamp( range, [ 0, src.length ] );
@@ -2926,7 +2939,6 @@ function arraySelectInplace( src, range, ins )
 
   result.splice.apply( result, [ 0, f2 ] );
   result.length = range[ 1 ] - range[ 0 ];
-  // result.splice.apply( result, [ l2 - f2, src.length ] );
 
   return result;
 }
@@ -2936,6 +2948,8 @@ function arraySelectInplace( src, range, ins )
 function arrayGrow( src, range, ins )
 {
   let result;
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( range === undefined )
   return src.slice();
@@ -2951,7 +2965,6 @@ function arrayGrow( src, range, ins )
 
   _.assert( _.arrayIs( src ) );
   _.assert( _.rangeIs( range ) )
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( l < f )
   l = f;
@@ -2972,8 +2985,6 @@ function arrayGrow( src, range, ins )
 
   result = _.arrayMakeUndefined( src, l-f );
 
-  /* */
-
   let f2 = Math.max( f, 0 );
   let l2 = Math.min( src.length, l );
   for( let r = f2 ; r < l2 ; r++ )
@@ -2986,8 +2997,6 @@ function arrayGrow( src, range, ins )
       result[ r ] = ins;
     }
   }
-
-  /* */
 
   return result;
 }
@@ -3031,8 +3040,6 @@ function arrayGrowInplace( src, range, ins )
   if( l === src.length )
   return src;
 
-  /* */
-
   let l2 = Math.min( src.length, l );
 
   let result = src;
@@ -3045,8 +3052,6 @@ function arrayGrowInplace( src, range, ins )
       result[ r ] = ins;
     }
   }
-
-  /* */
 
   return result;
 }
