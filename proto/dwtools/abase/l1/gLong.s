@@ -557,6 +557,67 @@ function bufferMakeUndefined( ins, src )
 
 //
 
+function bufferSelect( dstArray, range, srcArray )
+{
+
+  if( !_.bufferAnyIs( dstArray ) )
+  return _.longSelect( dstArray, range, srcArray );
+
+  if( range === undefined )
+  return _.bufferFrom( dstArray );
+
+  let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
+
+  if( _.numberIs( range ) )
+  range = [ range, length ];
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+  _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
+  _.assert( _.rangeIs( range ) );
+  _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
+
+  let result;
+  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+
+  if( first < 0 )
+  first = 0;
+  if( first > length)
+  first = length;
+  if( last > length)
+  last = length;
+  if( last < first )
+  last = first;
+
+  let newLength = last - first;
+
+  if( _.bufferViewIs( dstArray ) || _.bufferRawIs( dstArray ) || _.bufferNodeIs( dstArray ) )
+  {
+    result = new U8x( newLength );
+  }
+  else
+  {
+    result = _.longMakeUndefined( dstArray, newLength );
+  }
+
+  let first2 = Math.max( first, 0 );
+  let last2 = Math.min( length, last );
+  for( let r = first2 ; r < last2 ; r++ )
+  result[ r-first2 ] = dstArray[ r ];
+
+  //
+  if( _.bufferRawIs( dstArray ) )
+  return result.buffer;
+  if( _.bufferNodeIs( dstArray ) )
+  return BufferNode.from( result );
+  if( _.bufferViewIs( dstArray ) )
+  return new BufferView( result.buffer );
+  else
+  return result;
+}
+
+//
+
 /**
  * The bufferRelen() routine returns a new or the same typed array {-srcMap-} with a new or the same length (len).
  *
@@ -3959,6 +4020,7 @@ let Routines =
   bufferMake,
 
   bufferBut,
+  bufferSelect,
   bufferRelen,
   bufferResize,
   bufferBytesGet,
