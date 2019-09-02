@@ -2109,6 +2109,8 @@ function longRelength( array, range, val )
 
   if( l < f )
   l = f;
+  if( f > array.length )
+  f = array.length
 
   if( f < 0 )
   f = 0;
