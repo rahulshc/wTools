@@ -1749,7 +1749,7 @@ function longSelect( array, range, val )
   let f2 = Math.max( range[ 0 ], 0 );
   let l2 = Math.min( array.length, range[ 1 ] );
   for( let r = f2 ; r < l2 ; r++ )
-  result[ r-range[ 0 ] ] = array[ r ];
+  result[ r-f2 ] = array[ r ];
 
   /* */
 
@@ -1937,6 +1937,9 @@ function longGrow( array, range, val )
   if( range === undefined )
   return _.longMake( array );
 
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
   let f = range ? range[ 0 ] : undefined;
   let l = range ? range[ 1 ] : undefined;
 
@@ -1979,7 +1982,7 @@ function longGrow( array, range, val )
   let f2 = Math.max( f, 0 );
   let l2 = Math.min( array.length, l );
   for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f ] = array[ r ];
+  result[ r-f2 ] = array[ r ];
 
   /* */
 

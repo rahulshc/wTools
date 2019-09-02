@@ -212,23 +212,23 @@ function bufferMake( ins, src )
   if( _.routineIs( ins ) )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
+  if( _.argumentsArrayIs( ins ) )
+  ins = [];
+
   if( src === undefined )
   {
     length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
   }
   else
   {
-    if( _.longIs( src ) )
+    if( _.longIs( src ) || _.bufferNodeIs( src ) )
     length = src.length;
-    else if( _.bufferRawIs( src ) )
+    else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
     length = src.byteLength;
     else if( _.numberIs( src ) )
     length = src;
     else _.assert( 0 );
   }
-
-  if( _.argumentsArrayIs( ins ) )
-  ins = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
@@ -563,15 +563,14 @@ function bufferSelect( dstArray, range, srcArray )
   if( !_.bufferAnyIs( dstArray ) )
   return _.longSelect( dstArray, range, srcArray );
 
-  if( range === undefined )
-  return _.bufferFrom( dstArray );
-
   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
 
-  if( _.numberIs( range ) )
+  if( range === undefined )
+  range = [ 0, length ];
+  else if( _.numberIs( range ) )
   range = [ range, length ];
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+  _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects two or three arguments' );
   _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
   _.assert( _.rangeIs( range ) );
   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
@@ -604,6 +603,80 @@ function bufferSelect( dstArray, range, srcArray )
   let last2 = Math.min( length, last );
   for( let r = first2 ; r < last2 ; r++ )
   result[ r-first2 ] = dstArray[ r ];
+
+  //
+  if( _.bufferRawIs( dstArray ) )
+  return result.buffer;
+  if( _.bufferNodeIs( dstArray ) )
+  return BufferNode.from( result );
+  if( _.bufferViewIs( dstArray ) )
+  return new BufferView( result.buffer );
+  else
+  return result;
+}
+
+//
+
+function bufferGrow( dstArray, range, srcArray )
+{
+
+  if( !_.bufferAnyIs( dstArray ) )
+  return _.longGrow( dstArray, range, srcArray );
+
+  let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
+
+  if( range === undefined )
+  range = [ 0, length ];
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  let result;
+  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+
+
+  first = first !== undefined ? first : 0;
+  last = last !== undefined ? last : length;
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects two or three arguments' );
+  _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
+  _.assert( _.rangeIs( range ) );
+
+  if( first < 0 )
+  {
+    last -= first;
+    first -= first;
+  }
+  if( last < first )
+  last = first;
+  if( first > 0 )
+  first = 0;
+  if( last < length )
+  last = length;
+
+  let newLength = last - first;
+
+  if( _.bufferViewIs( dstArray ) || _.bufferRawIs( dstArray ) || _.bufferNodeIs( dstArray ) )
+  {
+    result = new U8x( newLength );
+  }
+  else
+  {
+    result = _.longMakeUndefined( dstArray, newLength );
+  }
+
+  let first2 = Math.max( first, 0 );
+  let last2 = Math.min( length, last );
+  for( let r = first2 ; r < last2 ; r++ )
+  result[ r-first2 ] = dstArray[ r ];
+
+  if( srcArray !== undefined )
+  {
+    for( let r = last2; r < newLength ; r++ )
+    {
+      result[ r ] = srcArray;
+    }
+  }
 
   //
   if( _.bufferRawIs( dstArray ) )
@@ -4021,6 +4094,7 @@ let Routines =
 
   bufferBut,
   bufferSelect,
+  bufferGrow,
   bufferRelen,
   bufferResize,
   bufferBytesGet,
