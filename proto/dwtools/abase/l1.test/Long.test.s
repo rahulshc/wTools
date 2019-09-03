@@ -772,6 +772,18 @@ function bufferViewIs( test )
 
 //
 
+function bufferMakeUndefined( test )
+{
+  test.case = 'trivial';
+  var dst = new U8x( [ 1, 2, 4 ] );
+  var src = [ 1, 2, 3, 4 ];
+  var got = _.bufferMakeUndefined( dst, src );
+  var expected = new U8x( [ 1, 2, 3, 4 ] );
+  test.identical( got, expected );
+  test.is( got !== dst );
+
+}
+
 function bufferBut( test )
 {
   /* not a buffer, trivial */
@@ -29894,6 +29906,8 @@ var Self =
     bufferViewIs,
 
     // buffer, layer1
+
+    bufferMakeUndefined,
 
     bufferBut,
     bufferButInplace,

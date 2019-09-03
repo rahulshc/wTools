@@ -272,8 +272,6 @@ function bufferMakeUndefined( ins, src )
 {
   let result, length;
 
-  throw _.err( 'not tested' );
-
   if( _.routineIs( ins ) )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -283,7 +281,7 @@ function bufferMakeUndefined( ins, src )
   }
   else
   {
-    if( _.longIs( src ) )
+    if( _.longIs( src ) || _.bufferNodeIs( src ) )
     length = src.length;
     else if( _.bufferRawIs( src ) )
     length = src.byteLength;
@@ -297,7 +295,7 @@ function bufferMakeUndefined( ins, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
 
   if( _.longIs( src ) || _.bufferAnyIs( src ) )
   {
@@ -313,6 +311,8 @@ function bufferMakeUndefined( ins, src )
       else
       result = new ins( src );
     }
+    else if( ins.constructor.name === 'Buffer' )
+    result = Buffer.from( src );
     else
     result = new ins.constructor( src );
 
@@ -321,12 +321,74 @@ function bufferMakeUndefined( ins, src )
   {
     if( _.routineIs( ins ) )
     result = new ins( length );
+    else if( ins.constructor.name === 'Buffer' )
+    result = Buffer.from( length );
     else
     result = new ins.constructor( length );
   }
 
   return result;
 }
+
+// function bufferMakeUndefined( ins, src )
+// {
+//   let result, length;
+//
+//   throw _.err( 'not tested' );
+//
+//   if( _.routineIs( ins ) )
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   if( src === undefined )
+//   {
+//     length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+//   }
+//   else
+//   {
+//     if( _.longIs( src ) )
+//     length = src.length;
+//     else if( _.bufferRawIs( src ) )
+//     length = src.byteLength;
+//     else if( _.numberIs( src ) )
+//     length = src;
+//     else _.assert( 0 );
+//   }
+//
+//   if( _.argumentsArrayIs( ins ) )
+//   ins = [];
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+//
+//   if( _.longIs( src ) || _.bufferAnyIs( src ) )
+//   {
+//
+//     if( ins.constructor === Array )
+//     {
+//       result = new( _.constructorJoin( ins.constructor, src ) );
+//     }
+//     else if( _.routineIs( ins ) )
+//     {
+//       if( ins.prototype.constructor.name === 'Array' )
+//       result = _ArraySlice.call( src );
+//       else
+//       result = new ins( src );
+//     }
+//     else
+//     result = new ins.constructor( src );
+//
+//   }
+//   else
+//   {
+//     if( _.routineIs( ins ) )
+//     result = new ins( length );
+//     else
+//     result = new ins.constructor( length );
+//   }
+//
+//   return result;
+// }
 
 //
 
@@ -666,7 +728,7 @@ function bufferSelectInplace( dstArray, range, srcArray )
   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
 
   if( range === undefined )
-  range = [ 0, length ];  
+  range = [ 0, length ];
   if( _.numberIs( range ) )
   range = [ range, length ];
 
@@ -4299,6 +4361,7 @@ let Routines =
   buffersAreIdentical,
 
   bufferMake,
+  bufferMakeUndefined,
 
   bufferBut,
   bufferButInplace,
