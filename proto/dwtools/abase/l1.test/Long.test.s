@@ -2208,14 +2208,14 @@ function bufferSelectInplace( test )
   test.case = 'dst = argumentsArray, src = array, range = negative number';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelectInplace( dst, -5, [ 2 ] );
-  test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.identical( got, _.argumentsArrayFrom( [ 1, 2, 3, 4 ] ) );
+  test.is( got === dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferSelectInplace( dst, [ 0, 0 ], [ 2 ] );
-  test.identical( got, [] );
-  test.is( got !== dst );
+  test.identical( got, _.argumentsArrayFrom( [] ) );
+  test.is( got === dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
@@ -3132,14 +3132,14 @@ function bufferGrowInplace( test )
   test.case = 'dst = argumentsArray, src = array, range = negative number';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrowInplace( dst, -5, [ 2 ] );
-  test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.identical( got, _.argumentsArrayFrom( [ 1, 2, 3, 4 ] ) );
+  test.is( got === dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferGrowInplace( dst, [ 0, 0 ], [ 2 ] );
-  test.identical( got, [] );
-  test.is( got !== dst );
+  test.identical( got, _.argumentsArrayFrom( [] ) );
+  test.is( got === dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
@@ -4052,14 +4052,14 @@ function bufferRelengthInplace( test )
   test.case = 'dst = argumentsArray, src = array, range = negative number';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelengthInplace( dst, -5, [ 2 ] );
-  test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3, 4 ] ) );
+  test.is( got === dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferRelengthInplace( dst, [ 0, 0 ], [ 2 ] );
-  test.identical( got, [] );
-  test.is( got !== dst );
+  test.identical( got, _.argumentsArrayMake( [] ) );
+  test.is( got === dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
@@ -10282,8 +10282,8 @@ function longSelectInplace( test )
   var got = _.longSelectInplace( dst );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-  test.is( got !== dst );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( got === dst );
 
   test.case = 'range > dst.length, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
@@ -10387,7 +10387,7 @@ function longSelectInplace( test )
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range > dst.length, not a val';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
@@ -11467,8 +11467,8 @@ function longRelengthInplace( test )
   var got = _.longRelengthInplace( dst );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-  test.is( got !== dst );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( got === dst );
 
   test.case = 'range > dst.length, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
@@ -11572,7 +11572,7 @@ function longRelengthInplace( test )
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range > dst.length, not a val';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
@@ -12897,13 +12897,13 @@ function longFill( test )
   var got = _.longFill( _.argumentsArrayMake( [] ) );
   var expected = [];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
+  test.is( _.argumentsArrayIs( got ) );
 
   test.case = 'dst = empty argumentsArray, value = number';
   var got = _.longFill( _.argumentsArrayMake( [] ), 1 );
   var expected = [];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
+  test.is( _.argumentsArrayIs( got ) );
 
   test.case = 'dst = empty argumentsArray, value = number, range';
   var got = _.longFill( _.argumentsArrayMake( [] ), 1, [ 0, 3 ] );
@@ -12921,19 +12921,19 @@ function longFill( test )
   var got = _.longFill( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
   var expected = [ 0, 0, 0 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
+  test.is( _.argumentsArrayIs( got ) );
 
   test.case = 'dst = argumentsArray, value = string';
   var got = _.longFill( _.argumentsArrayMake( [ 1, 1, 1 ] ), '5' );
   var expected = [ '5', '5', '5' ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
+  test.is( _.argumentsArrayIs( got ) );
 
   test.case = 'dst = argumentsArray, value = string, range';
   var got = _.longFill( _.argumentsArrayMake( [ 1, 1, 1 ] ), '5', [ 0, 2 ] );
   var expected = [ '5', '5', 1 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
+  test.is( _.argumentsArrayIs( got ) );
 
   test.case = 'dst = argumentsArray, value = string, range';
   var got = _.longFill( _.argumentsArrayMake( [ 1, 1, 1 ] ), '5', [ -2, 2 ] );
