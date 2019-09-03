@@ -666,8 +666,8 @@ function bufferSelectInplace( dstArray, range, srcArray )
   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
 
   if( range === undefined )
-  range = [ 0, length ];
-  else if( _.numberIs( range ) )
+  range = [ 0, length ];  
+  if( _.numberIs( range ) )
   range = [ range, length ];
 
   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;

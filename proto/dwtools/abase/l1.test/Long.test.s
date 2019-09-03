@@ -10291,16 +10291,16 @@ function longSelectInplace( test )
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
   test.identical( got.length, 5 );
-  test.is( !_.argumentsArrayIs( got ) );
-  test.is( got !== dst );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( got === dst );
 
   test.case = 'range > dst.length, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longSelectInplace( dst, [ 0, dst.length + 2 ], 0 );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-  test.is( got !== dst );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( got === dst );
 
   test.case = 'range > dst.length, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
@@ -10396,7 +10396,7 @@ function longSelectInplace( test )
     test.identical( got, expected );
     test.identical( got.length, 5 );
     test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
@@ -10404,7 +10404,7 @@ function longSelectInplace( test )
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );

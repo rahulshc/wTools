@@ -1660,7 +1660,6 @@ function longButInplace( src, range, ins )
 
   if( range === undefined )
   return src;
-
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
@@ -1803,6 +1802,20 @@ function longSelectInplace( array, range, val )
 
   if( _.arrayLikeResizable( array ) )
   return _.arraySelectInplace( array, range, val );
+
+  if( range === undefined )
+  return _.longMake( array );
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  _.assert( _.rangeIs( range ) );
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+  return array;
   else
   return _.longSelect( array, range, val );
   // let result;
