@@ -768,6 +768,31 @@ function bufferGrowInplace( dstArray, range, srcArray )
 
   if( !_.bufferAnyIs( dstArray ) )
   return _.longGrowInplace( dstArray, range, srcArray );
+
+  let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
+
+  if( range === undefined )
+  range = [ 0, length ];
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+
+  _.assert( _.rangeIs( range ) );
+
+  if( first < 0 )
+  {
+    last -= first;
+    first -= first;
+  }
+  if( first > 0 )
+  first = 0;
+  if( last < length )
+  last = length;
+
+  if( first === 0 && last === length )
+  return dstArray;
   else
   return _.bufferGrow( dstArray, range, srcArray );
 
