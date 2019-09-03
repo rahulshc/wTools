@@ -760,8 +760,6 @@ function bufferGrow( dstArray, range, srcArray )
 
 //
 
-// Dmytro : to cover
-
 function bufferGrowInplace( dstArray, range, srcArray )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
@@ -806,7 +804,7 @@ function bufferRelength( dstArray, range, srcArray )
   let result;
 
   if( !_.bufferAnyIs( dstArray ) )
-  return _.longGrow( dstArray, range, srcArray );
+  return _.longRelength( dstArray, range, srcArray );
 
   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
 
@@ -866,14 +864,34 @@ function bufferRelength( dstArray, range, srcArray )
 
 //
 
-// Dmytro : to cover
-
 function bufferRelengthInplace( dstArray, range, srcArray )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( !_.bufferAnyIs( dstArray ) )
   return _.longRelengthInplace( dstArray, range, srcArray );
+
+  let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
+
+  if( range === undefined )
+  range = [ 0, length ];
+  if( _.numberIs( range ) )
+  range = [ range, length ];
+
+  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+
+  _.assert( _.rangeIs( range ) );
+
+  if( first < 0 )
+  first = 0;
+  if( first > length )
+  first = length;
+  if( last < first )
+  last = first;
+
+  if( first === 0 && last === length )
+  return dstArray;
   else
   return _.bufferRelength( dstArray, range, srcArray );
 
