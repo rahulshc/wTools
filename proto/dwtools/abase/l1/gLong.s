@@ -559,8 +559,6 @@ function bufferMakeUndefined( ins, src )
 
 //
 
-// Dmytro : to cover
-
 function bufferButInplace( dstArray, range, srcArray )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
