@@ -565,6 +565,27 @@ function bufferButInplace( dstArray, range, srcArray )
 
   if( !_.bufferAnyIs( dstArray ) )
   return _.longButInplace( dstArray, range, srcArray );
+
+  if( range === undefined )
+  return dstArray;
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
+
+  let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
+  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+
+  if( first < 0 )
+  first = 0;
+  if( first > length)
+  first = length;
+  if( last > length)
+  last = length;
+  if( last < first )
+  last = first;
+
+  if( last === first && srcArray === undefined )
+  return dstArray;
   else
   return _.bufferBut( dstArray, range, srcArray );
 
