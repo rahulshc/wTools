@@ -575,6 +575,8 @@ function bufferButInplace( dstArray, range, srcArray )
   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
 
+  _.assert( _.rangeIs( range ) );
+
   if( first < 0 )
   first = 0;
   if( first > length)
@@ -654,14 +656,32 @@ function bufferSelect( dstArray, range, srcArray )
 
 //
 
-// Dmytro : to cover
-
 function bufferSelectInplace( dstArray, range, srcArray )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( !_.bufferAnyIs( dstArray ) )
   return _.longSelectInplace( dstArray, range, srcArray );
+
+  let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
+
+  if( range === undefined )
+  range = [ 0, length ];
+  else if( _.numberIs( range ) )
+  range = [ range, length ];
+
+  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+
+  _.assert( _.rangeIs( range ) );
+
+  if( first < 0 )
+  first = 0;
+  if( last > length)
+  last = length;
+
+  if( first === 0 && last === length )
+  return dstArray;
   else
   return _.bufferSelect( dstArray, range, srcArray );
 
