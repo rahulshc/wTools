@@ -209,20 +209,20 @@ function timeOnce( delay, onBegin, onEnd )
  * @param {Function|wConsequence} onReady - Routine that will be executed with delay.
  *
  * @example
- * // Simplest, just timer
+ * // simplest, just timer
  * let t = _.timeOut( 1000 );
  * t.give( () => console.log( 'Message with 1000ms delay' ) )
  * console.log( 'Normal message' )
  *
  * @example
- * // Run routine with delay
+ * // run routine with delay
  * let routine = () => console.log( 'Message with 1000ms delay' );
  * let t = _.timeOut( 1000, routine );
  * t.give( () => console.log( 'Routine finished work' ) );
  * console.log( 'Normal message' )
  *
  * @example
- * // Routine returns consequence
+ * // routine returns consequence
  * let routine = () => new _.Consequence().take( 'msg' );
  * let t = _.timeOut( 1000, routine );
  * t.give( ( err, got ) => console.log( 'Message from routine : ', got ) );
