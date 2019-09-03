@@ -10876,8 +10876,8 @@ function longGrowInplace( test )
   var got = _.longGrowInplace( dst );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-  test.is( got !== dst );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( got === dst );
 
   test.case = 'range > dst.length, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
@@ -10906,40 +10906,40 @@ function longGrowInplace( test )
   var got = _.longGrowInplace( dst, [ 0, 3 ] );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-  test.is( got !== dst );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( got === dst );
 
   test.case = 'range < dst.length, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longGrowInplace( dst, [ 0, 3 ], 0 );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-  test.is( got !== dst );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( got === dst );
 
   test.case = 'f < 0, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   got = _.longGrowInplace( dst, [ -1, 3 ] );
   expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-  test.is( got !== dst );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( got === dst );
 
   test.case = 'l < 0, not a val';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longGrowInplace( dst, [ 0, -1 ] );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-  test.is( got !== dst );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( got === dst );
 
   test.case = 'f < 0, val = number';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
   var got = _.longGrowInplace( dst, [ -1, 3 ], 0 );
   var expected = [ 1, 2, 3, 4, 5 ];
   test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-  test.is( got !== dst );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( got === dst );
 
   test.close( 'argumentsArray' );
 
@@ -10978,7 +10978,7 @@ function longGrowInplace( test )
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range > dst.length, not a val';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
@@ -11011,7 +11011,7 @@ function longGrowInplace( test )
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range < dst.length, val = number';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
@@ -11019,7 +11019,7 @@ function longGrowInplace( test )
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'f < 0, not a val';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
@@ -11027,7 +11027,7 @@ function longGrowInplace( test )
     expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'l < 0, not a val';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
@@ -11035,7 +11035,7 @@ function longGrowInplace( test )
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'f < 0, val = number';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
@@ -11043,7 +11043,7 @@ function longGrowInplace( test )
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
+    test.is( got === dst );
   }
 
   /* - */

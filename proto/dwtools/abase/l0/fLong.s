@@ -2044,6 +2044,31 @@ function longGrowInplace( array, range, val )
 
   if( _.arrayLikeResizable( array ) )
   return _.arrayGrowInplace( array, range, val );
+
+  if( range === undefined )
+  return array;
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
+
+  _.assert( _.rangeIs( range ) )
+
+  if( l < f )
+  l = f;
+  if( f < 0 )
+  {
+    l -= f;
+    f -= f;
+  }
+  if( f > 0 )
+  f = 0;
+  if( l < array.length )
+  l = array.length;
+
+  if( l === array.length )
+  return array;
   else
   return _.longGrow( array, range, val );
 
