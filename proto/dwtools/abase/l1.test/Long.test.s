@@ -12233,6 +12233,8 @@ function arrayBut( test )
     test.is( got !== src );
   }
 
+  /* - */
+
   if( !Config.debug )
   return;
 
@@ -12378,6 +12380,8 @@ function arrayButInplace( test )
     test.is( got === src );
   }
 
+  /* - */
+
   if( !Config.debug )
   return;
 
@@ -12409,86 +12413,114 @@ function arrayButInplace( test )
 
 function arraySelect( test )
 {
-  /* range = number */
+  var array = function( src )
+  {
+    return _.arrayMake( src );
+  }
+  var unroll = function( src )
+  {
+    return _.unrollMake( src );
+  }
 
-  test.case = 'range = number, not ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, 1 );
-  var expected = [ 2, 3, 'str', [ 1 ] ];
-  test.identical( got, expected );
-  test.is( got !== src );
+  /* - */
 
-  test.case = 'range = negative number, not ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, -5 );
-  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
-  test.identical( got, expected );
-  test.is( got !== src );
+  test.open( 'array' );
+  run( array );
+  test.close( 'array' );
 
-  test.case = 'range = number, ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, 0, [ { a : 1 }, 2, [ 10 ] ] );
-  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
-  test.identical( got, expected );
-  test.is( got !== src );
+  /* - */
 
-  test.case = 'range = negative number, ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, -5, [ { a : 1 }, 2, [ 10 ] ] );
-  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
-  test.identical( got, expected );
-  test.is( got !== src );
+  test.open( 'unroll' );
+  run( unroll );
+  test.close( 'unroll' );
 
-  /* range = array range */
+  /* - */
 
-  test.case = 'range = array range, not ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, [ 0, 2 ] );
-  var expected = [ 1, 2 ];
-  test.identical( got, expected );
-  test.is( got !== src );
+  function run( make )
+  {
+    /* range = number */
 
-  test.case = 'range = array range, range[ 0 ] < 0, not ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, [ -5, 2 ] );
-  var expected = [ 1, 2 ];
-  test.identical( got, expected );
-  test.is( got !== src );
+    test.case = 'range = number, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, 1 );
+    var expected = [ 2, 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
 
-  test.case = 'range = array range, range[ 1 ] < 0, not ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, [ 0, -5 ] );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( got !== src );
+    test.case = 'range = negative number, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, -5 );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
 
-  test.case = 'range = array range, ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
-  var expected = [ 1, 2 ];
-  test.identical( got, expected );
-  test.is( got !== src );
+    test.case = 'range = number, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, 0, [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
 
-  test.case = 'range = array range, range[ 0 ] < 0, ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
-  var expected = [ 1, 2 ];
-  test.identical( got, expected );
-  test.is( got !== src );
+    test.case = 'range = negative number, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, -5, [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
 
-  test.case = 'range = array range, range[ 1 ] < 0, ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( got !== src );
+    /* range = array range */
 
-  test.case = 'range[ 0 ] > range[ 1 ]';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelect( src, [ 3, 0 ] );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( got !== src );
+    test.case = 'range = array range, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, [ 0, 2 ] );
+    var expected = [ 1, 2 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = array range, range[ 0 ] < 0, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, [ -5, 2 ] );
+    var expected = [ 1, 2 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = array range, range[ 1 ] < 0, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, [ 0, -5 ] );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = array range, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = [ 1, 2 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = array range, range[ 0 ] < 0, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = [ 1, 2 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = array range, range[ 1 ] < 0, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] > range[ 1 ]';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelect( src, [ 3, 0 ] );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+  }
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -12516,86 +12548,114 @@ function arraySelect( test )
 
 function arraySelectInplace( test )
 {
-  /* range = number */
+  var array = function( src )
+  {
+    return _.arrayMake( src );
+  }
+  var unroll = function( src )
+  {
+    return _.unrollMake( src );
+  }
 
-  test.case = 'range = number, not ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, 1 );
-  var expected = [ 2, 3, 'str', [ 1 ] ];
-  test.identical( got, expected );
-  test.is( got === src );
+  /* - */
 
-  test.case = 'range = negative number, not ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, -5 );
-  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
-  test.identical( got, expected );
-  test.is( got === src );
+  test.open( 'array' );
+  run( array );
+  test.close( 'array' );
 
-  test.case = 'range = number, ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, 0, [ { a : 1 }, 2, [ 10 ] ] );
-  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
-  test.identical( got, expected );
-  test.is( got === src );
+  /* - */
 
-  test.case = 'range = negative number, ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, -5, [ { a : 1 }, 2, [ 10 ] ] );
-  var expected = [ 1, 2, 3, 'str', [ 1 ] ];
-  test.identical( got, expected );
-  test.is( got === src );
+  test.open( 'unroll' );
+  run( unroll );
+  test.close( 'unroll' );
 
-  /* range = array range */
+  /* - */
 
-  test.case = 'range = array range, not ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, [ 0, 2 ] );
-  var expected = [ 1, 2 ];
-  test.identical( got, expected );
-  test.is( got === src );
+  function run( make )
+  {
+    /* range = number */
 
-  test.case = 'range = array range, range[ 0 ] < 0, not ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, [ -5, 2 ] );
-  var expected = [ 1, 2 ];
-  test.identical( got, expected );
-  test.is( got === src );
+    test.case = 'range = number, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, 1 );
+    var expected = make( [ 2, 3, 'str', [ 1 ] ] );
+    test.identical( got, expected );
+    test.is( got === src );
 
-  test.case = 'range = array range, range[ 1 ] < 0, not ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, [ 0, -5 ] );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( got === src );
+    test.case = 'range = negative number, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, -5 );
+    var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    test.identical( got, expected );
+    test.is( got === src );
 
-  test.case = 'range = array range, ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
-  var expected = [ 1, 2 ];
-  test.identical( got, expected );
-  test.is( got === src );
+    test.case = 'range = number, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, 0, [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    test.identical( got, expected );
+    test.is( got === src );
 
-  test.case = 'range = array range, range[ 0 ] < 0, ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
-  var expected = [ 1, 2 ];
-  test.identical( got, expected );
-  test.is( got === src );
+    test.case = 'range = negative number, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, -5, [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    test.identical( got, expected );
+    test.is( got === src );
 
-  test.case = 'range = array range, range[ 1 ] < 0, ins';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( got === src );
+    /* range = array range */
 
-  test.case = 'range[ 0 ] > range[ 1 ]';
-  var src = [ 1, 2, 3, 'str', [ 1 ] ];
-  var got = _.arraySelectInplace( src, [ 3, 0 ] );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( got === src );
+    test.case = 'range = array range, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, [ 0, 2 ] );
+    var expected = make( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range = array range, range[ 0 ] < 0, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, [ -5, 2 ] );
+    var expected = make( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range = array range, range[ 1 ] < 0, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, [ 0, -5 ] );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range = array range, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range = array range, range[ 0 ] < 0, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range = array range, range[ 1 ] < 0, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] > range[ 1 ]';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySelectInplace( src, [ 3, 0 ] );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got === src );
+  }
+
+  /* - */
 
   if( !Config.debug )
   return;
