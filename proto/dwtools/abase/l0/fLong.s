@@ -1657,6 +1657,21 @@ function longButInplace( src, range, ins )
   // if( _.arrayIs( src ) )
   if( _.arrayLikeResizable( src ) )
   return _.arrayButInplace( src, range, ins );
+
+  if( range === undefined )
+  return src;
+
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
+
+  _.assert( _.rangeIs( range ) );
+
+  _.rangeClamp( range, [ 0, src.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === range[ 1 ] && ins === undefined )
+  return src;
   else
   return _.longBut( src, range, ins ); // Dmytro : not resizable longs should be processed by longBut algorithm. If it need, I'll make copy of code.
 

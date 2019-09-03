@@ -9595,9 +9595,9 @@ function longButInplace( test )
   test.case = 'range = negative number, not src';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4 ] );
   var got = _.longButInplace( dst, -1 );
-  var expected = [ 1, 2, 3, 4 ];
+  var expected = _.argumentsArrayMake( [ 1, 2, 3, 4 ] );
   test.identical( got, expected );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'range = number, src';
   var dst = _.argumentsArrayMake( [ 1, 2, 3, 4 ] );
@@ -9798,7 +9798,7 @@ function longButInplace( test )
     test.identical( select, expected );
     var expected = _.longMake( list, [ 1, 2, 3, 4, 5 ] );
     test.identical( but, expected );
-    test.is( but !== dst );
+    test.is( but === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, not src';
     var select = _.longSelect( dst, [ -1, -1 ] );
@@ -9809,7 +9809,7 @@ function longButInplace( test )
     test.identical( select, expected );
     var expected = _.longMake( list, [ 1, 2, 3, 4, 5 ] );
     test.identical( but, expected );
-    test.is( but !== dst );
+    test.is( but === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src';
     var select = _.longSelect( dst, [ 0, 0 ] );
