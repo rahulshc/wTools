@@ -559,6 +559,8 @@ function bufferMakeUndefined( ins, src )
 
 //
 
+// Dmytro : to cover
+
 function bufferButInplace( dstArray, range, srcArray )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
@@ -632,6 +634,8 @@ function bufferSelect( dstArray, range, srcArray )
 }
 
 //
+
+// Dmytro : to cover
 
 function bufferSelectInplace( dstArray, range, srcArray )
 {
@@ -717,6 +721,8 @@ function bufferGrow( dstArray, range, srcArray )
 
 //
 
+// Dmytro : to cover
+
 function bufferGrowInplace( dstArray, range, srcArray )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
@@ -795,6 +801,8 @@ function bufferRelength( dstArray, range, srcArray )
 }
 
 //
+
+// Dmytro : to cover
 
 function bufferRelengthInplace( dstArray, range, srcArray )
 {

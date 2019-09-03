@@ -291,6 +291,7 @@ function unrollIs( src )
 
 /*
 qqq : poor examples
+Dmytro : examples is improved
 */
 
 /**
@@ -301,15 +302,13 @@ qqq : poor examples
  * @param { * } src - The object to be checked.
  *
  * @example
- * _.unrollIs( _.unrollFrom( [ 1, 'str' ] ) );
+ * let src = _.unrollFrom( [ 1, 'str' ] );
+ * _.unrollIsPopulated( src );
  * // returns true
  *
  * @example
- * _.unrollIs( _.unrollMake( [] ) );
- * // returns false
- *
- * @example
- * _.unrollIs( [ 1 ] );
+ * let src = _.unrollMake( [] )
+ * _.unrollIsPopulated( src );
  * // returns false
  *
  * @returns { boolean } Returns true if argument ( src ) is an unroll-array and has one or more elements ( length ).
@@ -335,13 +334,13 @@ function unrollIsPopulated( src )
  * @param { * } src - The number or array-like object to make unroll-array. Passing null returns an empty unroll.
  *
  * @example
- * let unroll = _.unrollMake( null );
- * _.unrollIs( unroll );
+ * let src = _.unrollMake( null );
+ * _.unrollIs( src );
  * // returns true
  *
  * @example
- * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
- * _.unrollIs( unroll );
+ * let src = _.unrollMake( [ 1, 2, 'str' ] );
+ * _.unrollIs( src );
  * // returns true
  *
  * @example
