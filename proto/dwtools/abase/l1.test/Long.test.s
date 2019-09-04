@@ -15027,6 +15027,11 @@ function arrayPrependArray( test )
   test.identical( dst, [ undefined, 2, 1 ] );
   test.is( got === dst );
 
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayPrependArray( dst, dst );
+  test.identical( got, [ 1,2,3,1,2,3 ] );
+
   /**/
 
   if( !Config.debug )
@@ -15106,6 +15111,42 @@ function arrayPrependArrayOnce( test )
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayPrependArrayOnce( dst, dst );
+  test.identical( got, [ 1,2,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src'
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArrayOnce( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArrayOnce( dst, dst, ( e ) => e );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArrayOnce( dst, dst, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src with evaluators';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArrayOnce( dst, dst, ( e ) => e, ( e ) => e );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArrayOnce( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
   /**/
 
   if( !Config.debug )
@@ -15182,6 +15223,44 @@ function arrayPrependArrayOnceStrictly( test )
     _.arrayPrependArrayOnceStrictly( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArrayOnceStrictly( dst, dst ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,2,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArrayOnceStrictly( dst, dst ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e )
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e)
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, dst );
 
   /**/
 
@@ -15281,6 +15360,12 @@ function arrayPrependedArray( test )
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayPrependedArray( dst, dst );
+  test.identical( got, 3 );
+  test.identical( dst, [ 1,2,3,1,2,3 ] );
+
   /**/
 
   if( !Config.debug )
@@ -15357,18 +15442,36 @@ function arrayPrependedArrayOnce( test )
     _.arrayPrependedArrayOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
-  
+
   test.case = 'dst === src'
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayPrependedArrayOnce( dst, dst );
   test.identical( got, 0 );
   test.identical( dst, [ 1,1,2,2,3,3 ] );
-  
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArrayOnce( dst, dst, ( e ) => e );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, 0 );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArrayOnce( dst, dst, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, 0 );
+
   test.case = 'dst === src with evaluators';
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayPrependedArrayOnce( dst, dst, ( e ) => e, ( e ) => e );
   test.identical( dst, [ 1,1,2,2,3,3 ] );
   test.identical( got, 0 );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArrayOnce( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( got, 6 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
 
   /**/
 
@@ -15451,6 +15554,56 @@ function arrayPrependedArrayOnceStrictly( test )
     _.arrayPrependedArrayOnceStrictly( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArrayOnceStrictly( dst, dst ) );
+  else
+  {
+    var got = _.arrayPrependedArrayOnceStrictly( dst, dst );
+    test.identical( got, 0 );
+  }
+  test.identical( dst, [ 1,2,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArrayOnceStrictly( dst, dst ) );
+  else
+  {
+    var got = _.arrayPrependArrayOnceStrictly( dst, dst );
+    test.identical( got, 0 );
+  }
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArrayOnceStrictly( dst, dst, ( e ) => e ) );
+  else
+  {
+    var got = _.arrayPrependedArrayOnceStrictly( dst, dst, ( e ) => e )
+    test.identical( got, 0 );
+  }
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e ) );
+  else
+  {
+    var got = _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e)
+    test.identical( got, 0 );
+  }
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, 6 );
 
   /**/
 
@@ -17314,6 +17467,11 @@ function arrayAppendArray( test )
   test.identical( dst, [ 1, undefined, 2 ] );
   test.is( got === dst );
 
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayAppendArray( dst, dst );
+  test.identical( got, [ 1,2,3,1,2,3 ] );
+
   /**/
 
   if( !Config.debug )
@@ -17393,6 +17551,42 @@ function arrayAppendArrayOnce( test )
   });
   test.identical( dst, [ 1, undefined, 2 ] );
 
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayAppendArrayOnce( dst, dst );
+  test.identical( got, [ 1,2,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src'
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendArrayOnce( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendArrayOnce( dst, dst, ( e ) => e );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendArrayOnce( dst, dst, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src with evaluators';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendArrayOnce( dst, dst, ( e ) => e, ( e ) => e );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendArrayOnce( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
   /**/
 
   if( !Config.debug )
@@ -17465,6 +17659,44 @@ function arrayAppendArrayOnceStrictly( test )
     _.arrayAppendArrayOnceStrictly( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayAppendArrayOnceStrictly( dst, dst ) );
+  else
+  _.arrayAppendArrayOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,2,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayAppendArrayOnceStrictly( dst, dst ) );
+  else
+  _.arrayAppendArrayOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayAppendArrayOnceStrictly( dst, dst, ( e ) => e ) );
+  else
+  _.arrayAppendArrayOnceStrictly( dst, dst, ( e ) => e )
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayAppendArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e ) );
+  else
+  _.arrayAppendArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e)
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, dst );
 
   /**/
 
@@ -17564,6 +17796,12 @@ function arrayAppendedArray( test )
   });
   test.identical( dst, [ 1, undefined, 2, ] );
 
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayAppendedArray( dst, dst );
+  test.identical( got, 3 );
+  test.identical( dst, [ 1,2,3,1,2,3 ] );
+
   /**/
 
   if( !Config.debug )
@@ -17633,18 +17871,36 @@ function arrayAppendedArrayOnce( test )
     _.arrayAppendedArrayOnce( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
-  
+
   test.case = 'dst === src'
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayAppendedArrayOnce( dst, dst );
   test.identical( got, 0 );
   test.identical( dst, [ 1,1,2,2,3,3 ] );
-  
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendedArrayOnce( dst, dst, ( e ) => e );
+  test.identical( got, 0 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendedArrayOnce( dst, dst, ( e ) => e + 10 );
+  test.identical( got, 0 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
   test.case = 'dst === src with evaluators';
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayAppendedArrayOnce( dst, dst, ( e ) => e, ( e ) => e );
   test.identical( got, 0 );
   test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendedArrayOnce( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( got, 6 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
 
   /* */
 
@@ -17862,6 +18118,56 @@ function arrayAppendedArrayOnceStrictly( test )
     _.arrayAppendedArrayOnceStrictly( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ 1, undefined, 2 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayAppendedArrayOnceStrictly( dst, dst ) );
+  else
+  {
+    var got = _.arrayAppendedArrayOnceStrictly( dst, dst );
+    test.identical( got, 0 );
+  }
+  test.identical( dst, [ 1,2,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayAppendedArrayOnceStrictly( dst, dst ) );
+  else
+  {
+    var got = _.arrayPrependArrayOnceStrictly( dst, dst );
+    test.identical( got, 0 );
+  }
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayAppendedArrayOnceStrictly( dst, dst, ( e ) => e ) );
+  else
+  {
+    var got = _.arrayAppendedArrayOnceStrictly( dst, dst, ( e ) => e )
+    test.identical( got, 0 );
+  }
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayAppendedArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e ) );
+  else
+  {
+    var got = _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e)
+    test.identical( got, 0 );
+  }
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayAppendedArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, 6 );
 
   /**/
 
@@ -19955,6 +20261,12 @@ function arrayRemoveArray( test )
   test.identical( dst, [ 1 ] );
   test.is( got === dst );
 
+  test.case = 'dstc === src';
+  var dst = [ 1, 1, 1 ];
+  var got = _.arrayRemoveArray( dst, dst );
+  test.identical( dst, [ ] );
+  test.is( got === dst );
+
   /**/
 
   if( !Config.debug )
@@ -20023,10 +20335,36 @@ function arrayRemoveArrayOnce( test )
     test.is( got === dst );
   });
 
-  /**/
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemoveArrayOnce( dst, dst );
+  test.identical( got, [] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemoveArrayOnce( dst, dst, ( e ) => e );
+  test.identical( got, [] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemoveArrayOnce( dst, dst, ( e ) => e + 10 );
+  test.identical( got, [] );
+
+  test.case = 'dst === src with evaluators';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemoveArrayOnce( dst, dst, ( e ) => e, ( e ) => e );
+  test.identical( got, [] );
+
+  test.case = 'dst === src with evaluators, nothing to delete';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemoveArrayOnce( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( got, [ 1,1,2,2,3,3 ] );
+
+  //
 
   if( !Config.debug )
   return;
+
 
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
@@ -20096,6 +20434,41 @@ function arrayRemoveArrayOnceStrictly( test )
   test.identical( got, [ { num : 2 } ] );
   test.is( got === dst );
 
+  test.case = 'dst === src'
+
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemoveArrayOnceStrictly( dst, dst );
+  test.identical( got, [] );
+
+  test.case = 'dst === src with single evaluator'
+
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemoveArrayOnceStrictly( dst, dst, ( e ) => e );
+  test.identical( got, [] );
+
+  test.case = 'dst === src with single evaluator'
+
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemoveArrayOnceStrictly( dst, dst, ( e ) => e + 10 );
+  test.identical( got, [] );
+
+  test.case = 'dst === src with two evaluators'
+
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemoveArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e );
+  test.identical( got, [] );
+
+  test.case = 'dst === src with two evaluators'
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayRemoveArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 ) );
+  else
+  {
+    var got = _.arrayRemoveArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 );
+    test.identical( got, [ 1,1,2,2,3,3 ] );
+  }
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
   //
 
   if( !Config.debug )
@@ -20156,7 +20529,15 @@ function arrayRemoveArrayOnceStrictly( test )
     }
     _.arrayRemoveArrayOnceStrictly( dst, [ 4 ], onEqualize );
   });
-  test.identical( dst, [ { num : 1 }, { num : 2 }, { num : 3 } ] )
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
+
+  test.case = 'dst === src with two evaluators'
+  var dst = [ 1,1,2,2,3,3 ];
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayRemoveArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  });
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
 }
 
 //
@@ -20195,13 +20576,13 @@ function arrayRemovedArray( test )
   var got = _.arrayRemovedArray( dst, [ undefined, 2 ] );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
-  
+
   test.case = 'dst === src';
   var dst = [ 1,2,3 ]
   var got = _.arrayRemovedArray( dst, dst );
   test.identical( dst, [] );
   test.identical( got, 3 );
-  
+
   /**/
 
   if( !Config.debug )
@@ -20270,19 +20651,37 @@ function arrayRemovedArrayOnce( test )
     test.identical( dst, [ 1 ] );
     test.identical( got, 0 );
   });
-  
+
   test.case = 'dst === src';
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayRemovedArrayOnce( dst, dst );
   test.identical( dst, [] );
   test.identical( got, 6 );
-  
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemovedArrayOnce( dst, dst, ( e ) => e );
+  test.identical( dst, [] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemovedArrayOnce( dst, dst, ( e ) => e + 10 );
+  test.identical( dst, [] );
+  test.identical( got, 6 );
+
   test.case = 'dst === src with evaluators';
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayRemovedArrayOnce( dst, dst, ( e ) => e, ( e ) => e );
   test.identical( dst, [] );
   test.identical( got, 6 );
-  
+
+  test.case = 'dst === src with evaluators, nothing to delete';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemovedArrayOnce( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( got, 0 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
   /**/
 
   if( !Config.debug )
@@ -20357,6 +20756,45 @@ function arrayRemovedArrayOnceStrictly( test )
   test.identical( dst, [ { num : 2 } ] );
   test.identical( got, 2 );
 
+  test.case = 'dst === src'
+
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemovedArrayOnceStrictly( dst, dst );
+  test.identical( dst, [] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with single evaluator'
+
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemovedArrayOnceStrictly( dst, dst, ( e ) => e );
+  test.identical( dst, [] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with single evaluator'
+
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemovedArrayOnceStrictly( dst, dst, ( e ) => e + 10 );
+  test.identical( dst, [] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with two evaluators'
+
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayRemovedArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e );
+  test.identical( dst, [] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with two evaluators'
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayRemovedArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 ) );
+  else
+  {
+    var got = _.arrayRemovedArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 );
+    test.identical( got, 0 );
+  }
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
   //
 
   if( !Config.debug )
@@ -20417,7 +20855,15 @@ function arrayRemovedArrayOnceStrictly( test )
     }
     _.arrayRemovedArrayOnceStrictly( dst, [ 4 ], onEqualize );
   });
-  test.identical( dst, [ { num : 1 }, { num : 2 }, { num : 3 } ] )
+  test.identical( dst, [ { num : 1 },{ num : 2 },{ num : 3 } ] )
+
+  test.case = 'dst === src with two evaluators'
+  var dst = [ 1,1,2,2,3,3 ];
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayRemovedArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  });
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
 }
 
 //
@@ -23671,6 +24117,7 @@ function arrayReplacedOnce( test )
   test.identical( dst, expected );
   test.identical( got, 0 );
 
+
   /**/
 
   if( !Config.debug )
@@ -24946,6 +25393,23 @@ function arrayReplacedArray( test )
   test.identical( dst, [ 'c', 'a', 'b', true, 'b', 'a', 'c', false, 2 ] );
   test.identical( got, 8 );
 
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayReplacedArray( dst, dst, [ 4,5,6 ] );
+  test.identical( got, 3 );
+  test.identical( dst, [ 4,5,6 ] );
+
+  test.case = 'dst === src, equalize';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayReplacedArray( dst, dst, [ 4,5,6 ], ( e ) => e );
+  test.identical( got, 3 );
+  test.identical( dst, [ 4,5,6 ] );
+
+  test.case = 'dst === src, equalize';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayReplacedArray( dst, dst, [ 4,5,6 ], ( e ) => e, ( e ) => e + 10 );
+  test.identical( got, 0 );
+  test.identical( dst, [ 1,2,3 ] );
 
   test.case = 'onEqualize'
 
@@ -25086,6 +25550,36 @@ function arrayReplacedArrayOnce( test )
   test.identical( dst, [ [ 0 ], [ 2 ], [ 3 ] ] );
   test.identical( got, 1 );
 
+  test.case = 'dst === src'
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayReplacedArrayOnce( dst, dst, [ 0,0,0,0,0,0 ] );
+  test.identical( got, 6 );
+  test.identical( dst, [ 0,0,0,0,0,0 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayReplacedArrayOnce( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e );
+  test.identical( dst, [ 0,0,0,0,0,0 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayReplacedArrayOnce( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e + 10 );
+  test.identical( dst, [ 0,0,0,0,0,0 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with evaluators';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayReplacedArrayOnce( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e, ( e ) => e );
+  test.identical( dst, [ 0,0,0,0,0,0 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayReplacedArrayOnce( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e, ( e ) => e + 10 );
+  test.identical( got, 0 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
   /* */
 
   if( !Config.debug )
@@ -25184,6 +25678,41 @@ function arrayReplacedArrayOnceStrictly( test )
   var got = _.arrayReplacedArrayOnceStrictly( dst, [ [ 1 ] ], [ [ 0 ] ], onEqualize );
   test.identical( dst, [ [ 0 ], [ 2 ], [ 3 ] ] );
   test.identical( got, 1 );
+
+  test.case = 'dst === src'
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayReplacedArrayOnceStrictly( dst, dst, [ 0,0,0,0,0,0 ] );
+  test.identical( got, 6 );
+  test.identical( dst, [ 0,0,0,0,0,0 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayReplacedArrayOnceStrictly( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e );
+  test.identical( dst, [ 0,0,0,0,0,0 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayReplacedArrayOnceStrictly( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e + 10 );
+  test.identical( dst, [ 0,0,0,0,0,0 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with evaluators';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayReplacedArrayOnceStrictly( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e, ( e ) => e );
+  test.identical( dst, [ 0,0,0,0,0,0 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayReplacedArrayOnceStrictly( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e, ( e ) => e + 10 ) );
+  else
+  {
+    var got = _.arrayReplacedArrayOnceStrictly( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e, ( e ) => e + 10 )
+    test.identical( got, 0 );
+  }
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
 
   /* */
 
