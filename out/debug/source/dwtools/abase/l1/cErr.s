@@ -593,9 +593,10 @@ function diagnosticStackCondense( stack )
 
   stack = stack.split( '\n' );
 
-  for( let s = stack.length-1 ; s >= 1 ; s-- )
+  for( let s = stack.length-1 ; s >= 0 ; s-- )
   {
     let line = stack[ s ];
+    if( s > 0 )
     if( /(\W|^)__\w+/.test( line ) )
     {
       stack.splice( s, 1 );
