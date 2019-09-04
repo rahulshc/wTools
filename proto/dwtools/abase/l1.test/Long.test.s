@@ -851,10 +851,7 @@ function bufferBut( test )
   var bufferTyped = function( buf )
   {
     let name = buf.name;
-    return function name( src )
-    {
-      return new buf( src );
-    };
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
 
   var bufferNode = function( src )
@@ -1047,14 +1044,8 @@ function bufferBut( test )
   /* qqq : should work */
   /* Dmytro : works. Previus 'qqq' implemented */
 
-  var bufferRaw = function( src )
-  {
-    return new BufferRaw( src );
-  };
-  var bufferView = function( src )
-  {
-    return new BufferView( new BufferRaw( src ) );
-  };
+  var bufferRaw = ( src ) => new BufferRaw( src );
+  var bufferView = ( src ) => new BufferView( new BufferRaw( src ) );
 
   var bufferExpected = function( dst, src )
   {
@@ -1326,10 +1317,7 @@ function bufferButInplace( test )
   var bufferTyped = function( buf )
   {
     let name = buf.name;
-    return function name( src )
-    {
-      return new buf( src );
-    };
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
 
   var bufferNode = function( src )
@@ -1516,14 +1504,8 @@ function bufferButInplace( test )
 
   /* BufferRaw and BufferView */
 
-  var bufferRaw = function( src )
-  {
-    return new BufferRaw( src );
-  };
-  var bufferView = function( src )
-  {
-    return new BufferView( new BufferRaw( src ) );
-  };
+  var bufferRaw = ( src ) => new BufferRaw( src );
+  var bufferView = ( src ) => new BufferView( new BufferRaw( src ) );
 
   var bufferExpected = function( dst, src )
   {
@@ -1777,10 +1759,7 @@ function bufferSelect( test )
   var bufferTyped = function( buf )
   {
     let name = buf.name;
-    return function name( src )
-    {
-      return new buf( src );
-    };
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
 
   var bufferNode = function( src )
@@ -1974,14 +1953,8 @@ function bufferSelect( test )
 
   /* BufferRaw and BufferView */
 
-  var bufferRaw = function( src )
-  {
-    return new BufferRaw( src );
-  };
-  var bufferView = function( src )
-  {
-    return new BufferView( new BufferRaw( src ) );
-  };
+  var bufferRaw = ( src ) => new BufferRaw( src );
+  var bufferView = ( src ) => new BufferView( new BufferRaw( src ) );
 
   var bufferExpected = function( dst, src )
   {
@@ -2242,10 +2215,7 @@ function bufferSelectInplace( test )
   var bufferTyped = function( buf )
   {
     let name = buf.name;
-    return function name( src )
-    {
-      return new buf( src );
-    };
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
 
   var bufferNode = function( src )
@@ -2439,14 +2409,8 @@ function bufferSelectInplace( test )
 
   /* BufferRaw and BufferView */
 
-  var bufferRaw = function( src )
-  {
-    return new BufferRaw( src );
-  };
-  var bufferView = function( src )
-  {
-    return new BufferView( new BufferRaw( src ) );
-  };
+  var bufferRaw = ( src ) => new BufferRaw( src );
+  var bufferView = ( src ) => new BufferView( new BufferRaw( src ) );
 
   var bufferExpected = function( dst, src )
   {
@@ -2705,10 +2669,7 @@ function bufferGrow( test )
   var bufferTyped = function( buf )
   {
     let name = buf.name;
-    return function name( src )
-    {
-      return new buf( src );
-    };
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
 
   var bufferNode = function( src )
@@ -2902,14 +2863,8 @@ function bufferGrow( test )
 
   /* BufferRaw and BufferView */
 
-  var bufferRaw = function( src )
-  {
-    return new BufferRaw( src );
-  };
-  var bufferView = function( src )
-  {
-    return new BufferView( new BufferRaw( src ) );
-  };
+  var bufferRaw = ( src ) => new BufferRaw( src );
+  var bufferView = ( src ) => new BufferView( new BufferRaw( src ) );
 
   var bufferExpected = function( dst, src )
   {
@@ -3164,10 +3119,7 @@ function bufferGrowInplace( test )
   var bufferTyped = function( buf )
   {
     let name = buf.name;
-    return function name( src )
-    {
-      return new buf( src );
-    };
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
 
   var bufferNode = function( src )
@@ -3361,14 +3313,8 @@ function bufferGrowInplace( test )
 
   /* BufferRaw and BufferView */
 
-  var bufferRaw = function( src )
-  {
-    return new BufferRaw( src );
-  };
-  var bufferView = function( src )
-  {
-    return new BufferView( new BufferRaw( src ) );
-  };
+  var bufferRaw = ( src ) => new BufferRaw( src );
+  var bufferView = ( src ) => new BufferView( new BufferRaw( src ) );
 
   var bufferExpected = function( dst, src )
   {
@@ -3623,10 +3569,7 @@ function bufferRelength( test )
   var bufferTyped = function( buf )
   {
     let name = buf.name;
-    return function name( src )
-    {
-      return new buf( src );
-    };
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
 
   var bufferNode = function( src )
@@ -3822,14 +3765,8 @@ function bufferRelength( test )
 
   /* BufferRaw and BufferView */
 
-  var bufferRaw = function( src )
-  {
-    return new BufferRaw( src );
-  };
-  var bufferView = function( src )
-  {
-    return new BufferView( new BufferRaw( src ) );
-  };
+  var bufferRaw = ( src ) => new BufferRaw( src );
+  var bufferView = ( src ) => new BufferView( new BufferRaw( src ) );
 
   var bufferExpected = function( dst, src )
   {
@@ -4084,10 +4021,7 @@ function bufferRelengthInplace( test )
   var bufferTyped = function( buf )
   {
     let name = buf.name;
-    return function name( src )
-    {
-      return new buf( src );
-    };
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
 
   var bufferNode = function( src )
@@ -4283,14 +4217,8 @@ function bufferRelengthInplace( test )
 
   /* BufferRaw and BufferView */
 
-  var bufferRaw = function( src )
-  {
-    return new BufferRaw( src );
-  };
-  var bufferView = function( src )
-  {
-    return new BufferView( new BufferRaw( src ) );
-  };
+  var bufferRaw = ( src ) => new BufferRaw( src );
+  var bufferView = ( src ) => new BufferView( new BufferRaw( src ) );
 
   var bufferExpected = function( dst, src )
   {
@@ -5682,216 +5610,188 @@ function argumentsArrayFrom( test )
 
 function longMake( test )
 {
+  /* constructors */
 
-  test.case = 'an empty array';
-  var got = _.longMake( [  ], 0 );
-  var expected = [  ];
-  test.identical( got, expected );
-
-  test.case = 'length = 1';
-  var got = _.longMake( [  ], 1 );
-  var expected = [ undefined ];
-  test.identical( got, expected );
-
-  test.case = 'length = 2';
-  var got = _.longMake( [ 1, 2, 3 ], 2 );
-  var expected = [ 1, 2 ];
-  test.identical( got, expected );
-
-  test.case = 'length = 4';
-  var got = _.longMake( [ 1, 2, 3 ], 4 );
-  var expected = [ 1, 2, 3, undefined ];
-  test.identical( got, expected );
-
-  test.case = 'data from ins';
-  var expected = [ 1, 2, 3 ];
-  var src = [ 0, 1 ];
-  var ins = [ 1, 2, 3 ];
-  var got = _.longMake( src, ins );
-  test.identical( got.length, 3 );
-  test.is( got !== ins );
-  test.is( got !== src );
-  test.identical( got, expected );
-
-  test.case = 'same length';
-  var expected = [ 1, 2, 3 ];
-  var ins = [ 1, 2, 3 ];
-  var got = _.longMake( ins );
-  test.identical( got.length, 3 );
-  test.is( got !== ins );
-  test.identical( got, expected );
-
-  // var ins = [];
-  // var src = _.longFill( BufferNode.alloc( 3 ), 1 );
-  // var got = _.longMake( ins, Array.from( src ) );
-  // var expected = [ undefined, undefined, undefined ];
-  // test.identical( got.length, 3 );
-  // test.is( _.arrayIs( got ) );
-  // test.identical( got, expected );
-
-  var expected = new U8x( 5 );
-  expected[ 0 ] = 1;
-  var ins = new U8x( 5 );
-  ins[ 0 ] = 1;
-  var got = _.longMake( ins );
-  test.is( _.bufferTypedIs( got ) );
-  test.identical( got.length, 5 );
-  test.is( got !== ins );
-  test.identical( got, expected );
-
-  var ins = new U8x( 5 );
-  var src = [ 1, 2, 3, 4, 5 ];
-  var got = _.longMake( ins, src );
-  var expected = new U8x([ 1, 2, 3, 4, 5 ]);
-  test.is( _.bufferTypedIs( got ) );
-  test.is( got instanceof U8x );
-  test.identical( got.length, 5 );
-  test.identical( got, expected )
-
-  test.case = 'typedArray';
-  var expected = new U8x( 4 );
-  expected[ 0 ] = 1;
-  var ins = new U8x( 5 );
-  ins[ 0 ] = 1;
-  var got = _.longMake( ins, 4 );
-  test.is( _.bufferTypedIs( got ) );
-  test.identical( got.length, 4 );
-  test.is( got !== ins );
-  test.identical( got, expected );
-
-  // test.case = 'BufferRaw';
-  // var expected = new BufferRaw( 4 );
-  // var ins = new BufferRaw( 5 );
-  // var got = _.longMake( ins, 4 );
-  // test.is( _.bufferRawIs( got ) );
-  // test.identical( got.byteLength, 4 );
-  // test.identical( got, expected );
-  //
-  // test.case = 'NodeBuffer'
-  // var expected = BufferNode.alloc( 5 );
-  // var got = _.longMake( BufferNode.alloc( 5 ) );
-  // test.is( _.bufferNodeIs( got ) );
-  // test.identical( got.length, 5 );
-  // test.identical( got, expected );
-  //
-  // test.case = 'NodeBuffer and src'
-  // var expected = BufferNode.alloc( 5 );
-  // var got = _.longMake( BufferNode.alloc( 3 ), src );
-  // test.is( _.bufferNodeIs( got ) );
-  // test.identical( got.length, 5 );
-  // test.identical( got, expected );
-  //
-  // test.case = 'NodeBuffer as src'
-  // var src = BufferNode.alloc( 4 );
-  // for( var i = 0; i < src.length; i++ )
-  // src[ i ] = i;
-  // var expected = [ undefined, undefined, undefined, undefined ];
-  // var got = _.longMake( [], Array.from( src ) );
-  // test.is( _.arrayIs( got ) );
-  // test.identical( got.length, src.length );
-  // test.identical( got, expected );
-
-  test.case = 'ins as Array';
-  var expected = new Array( 5 );
-  var got = _.longMake( Array, 5 );
-  test.is( _.arrayIs(  got ) );
-  test.identical( got.length, 5 );
-  test.identical( got, expected );
-
-  test.case = 'ins as Array';
-  var expected = [ 1, 2, 3 ];
-  var src = [ 1, 2, 3 ];
-  var got = _.longMake( Array, src );
-  test.is( _.arrayIs(  got ) );
-  test.identical( got.length, 3 );
-  test.identical( got, expected );
-
-  test.case = 'ins as Array';
-  var expected = [ 1, 1, 1, 1, 1 ];
-  var src = _.longFill( new F32x( 5 ), 1 );
-  var got = _.longMake( Array, src );
-  test.is( _.arrayIs(  got ) );
-  test.identical( got.length, 5 );
-  test.identical( got, expected );
-
-  test.shouldThrowErrorSync( () =>
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => _.argumentsArrayMake( src );
+  var bufferTyped = function( buf )
   {
-    test.case = 'ins as BufferNode';
-    var expected = BufferNode.alloc( 5 );
-    var src = _.longFill( new F32x( 5 ), 1 );
-    debugger;
-    var got = _.longMake( BufferNode, src );
-    test.is( _.bufferNodeIs(  got ) );
-    test.identical( got.length, 5 );
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+  };
+
+  /* results checkers */
+
+  var longResult = function( dst, src )
+  {
+    if( _.bufferTypedIs( dst ) )
+    {
+      return new dst.constructor( src );
+    }
+    if( _.unrollIs( dst ) )
+    return _.unrollMake( src );
+    else
+    return _.arrayMake( src );
+  };
+  var type = function( dst, got )
+  {
+    if( _.unrollIs( dst ) )
+    return _.unrollIs( got );
+    if( _.bufferTypedIs( dst ) )
+    return _.bufferTypedIs( got );
+    else
+    return _.arrayIs( got );
+  };
+
+  /* tests */
+
+  var list =
+  [
+    array,
+    unroll,
+    argumentsArray,
+  ];
+  var typedList =
+  [
+    I8x,
+    U16x,
+    F32x,
+    F64x,
+
+    // I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    // U16x,
+    // I32x,
+    // U32x,
+    // F32x,
+    // F64x,
+  ];
+
+  for( let i = 0; i < typedList.length; i++ )
+  list.push( bufferTyped( typedList[ i ] ) );
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  /* test subroutine */
+
+  function run( long )
+  {
+    test.case = 'dst = null, not src';
+    var got = _.longMake( null );
+    var expected = [];
     test.identical( got, expected );
-  });
 
-  test.shouldThrowErrorSync( () =>
-  {
-    test.case = 'ins as Array';
-    var expected = new Array( 5 );
-    var src = _.longFill( BufferNode.alloc( 5 ), 1 );
+    test.case = 'dst = empty, not src';
+    var dst = long( [] );
+    var got = _.longMake( dst );
+    var expected = longResult( dst, [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = empty, src = number';
+    var dst = long( [] );
+    var got = _.longMake( dst, 2 );
+    var expected = longResult( dst, 2 );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'src = number, src < dst.length';
+    var dst = long( [ 1, 2, 3 ] );
+    var got = _.longMake( dst, 2 );
+    var expected = longResult( dst, [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'src = number, src > dst.length';
+    var dst = long( [ 1, 2, 3 ] );
+    var got = _.longMake( dst, 4 );
+    var expected = _.bufferTypedIs( dst ) ? longResult( dst, [ 1, 2, 3, 0 ] ) : longResult( dst, [ 1, 2, 3, undefined ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'src = long, src.length > dst.length';
+    var dst = long( [ 0, 1 ] );
+    var src = [ 1, 2, 3 ];
+    var got = _.longMake( dst, src );
+    var expected = longResult( dst, [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.identical( got.length, 3 );
+    test.is( got !== src );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = long, not src';
+    var dst = long( [ 1, 2, 3 ] );
+    var got = _.longMake( dst );
+    var expected = longResult( dst, [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.identical( got.length, 3 );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = new long, src = array'
+    var dst = long( 5 );
+    var src = [ 1, 2, 3, 4, 5 ];
+    var got = _.longMake( dst, src );
+    var expected = longResult( dst, [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.identical( got.length, 5 );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = Array constructor, src = long';
+    var src = long( [ 1, 2, 3 ] );
     var got = _.longMake( Array, src );
-    test.is( _.arrayIs(  got ) );
-    test.identical( got.length, 5 );
+    var expected = [ 1, 2, 3 ];
     test.identical( got, expected );
-  });
+    test.identical( got.length, 3 );
+    test.is( _.arrayIs( got ) );
+    test.is( got !== src );
 
-  test.case = 'ins as TypedArray';
-  var expected = new U8x([ 1, 2, 3 ]);
-  var src = [ 1, 2, 3 ];
-  var got = _.longMake( U8x, src );
-  test.is( _.bufferTypedIs(  got ) );
-  test.identical( got.length, 3 );
-  test.identical( got, expected );
-
-  test.shouldThrowErrorSync( () =>
-  {
-    test.case = 'ins as TypedArray';
-    var expected = new F32x( 5 );
-    var src = _.longFill( BufferNode.alloc( 5 ), 1 );
-    var got = _.longMake( F32x, src );
+    test.case = 'dst = BufferTyped constructor, src = long';
+    var src = long( [ 1, 1, 1, 1, 1 ] );
+    var got = _.longMake( U32x, src );
+    var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
+    test.identical( got, expected );
+    test.identical( got.length, 5 );
     test.is( _.bufferTypedIs(  got ) );
-    test.identical( got.length, 5 );
-    test.identical( got, expected );
-  });
+    test.is( got !== src );
+  }
 
-  /**/
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longMake();
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longMake('wrong argument');
-  });
-
-  test.case = 'arguments[1] is wrong';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longMake( [ 1, 2, 3 ], 'wrong type of argument' );
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longMake() );
 
   test.case = 'extra argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longMake( [ 1, 2, 3 ], 4, 'redundant argument' );
-  });
+  test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 4, 'redundant argument' ) );
 
-  test.case = 'argument is not wrapped into array';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longMake( 1, 2, 3, 4 );
-  });
+  test.case = 'wrong type of arguments';
+  test.shouldThrowErrorSync( () => _.longMake( 'wrong argument', 1 ) );
+  test.shouldThrowErrorSync( () => _.longMake( 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.longMake( 1, 2 ) );
+  test.shouldThrowErrorSync( () => _.longMake( Buffer.alloc( 3 ), 2 ) );
+  test.shouldThrowErrorSync( () => _.longMake( Array, Buffer.from( [ 3 ] ) ) );
 
-};
+  test.case = 'arguments[1] is wrong';
+  test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
+
+}
 
 //
 
@@ -9131,22 +9031,19 @@ qqq : please ask how to improve test routine longBut.
 
 function longBut( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
-  var argumentsArray = function( src )
-  {
-    return _.argumentsArrayMake( src );
-  }
-
-  var list = [ array, unroll, argumentsArray ];
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => _.argumentsArrayMake( src );
 
   /* - */
+
+  var list =
+  [
+    array,
+    unroll,
+    argumentsArray
+  ];
+
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
@@ -9458,14 +9355,8 @@ function longBut( test )
 
 function longButInplace( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -9898,14 +9789,8 @@ function longButInplace( test )
 function longSelect( test )
 {
   /* resizable longs */
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -10195,14 +10080,8 @@ function longSelect( test )
 
 function longSelectInplace( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -10492,14 +10371,8 @@ function longSelectInplace( test )
 
 function longGrow( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -10789,14 +10662,8 @@ function longGrow( test )
 
 function longGrowInplace( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -11083,14 +10950,8 @@ function longGrowInplace( test )
 
 function longRelength( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -11380,14 +11241,8 @@ function longRelength( test )
 
 function longRelengthInplace( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -13321,14 +13176,8 @@ function arrayHasAny( test )
 
 function arrayBut( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -13505,14 +13354,8 @@ function arrayBut( test )
 
 function arrayButInplace( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -13652,14 +13495,8 @@ function arrayButInplace( test )
 
 function arraySelect( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -13787,14 +13624,8 @@ function arraySelect( test )
 
 function arraySelectInplace( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -13922,14 +13753,8 @@ function arraySelectInplace( test )
 
 function arrayGrow( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -14082,14 +13907,8 @@ function arrayGrow( test )
 
 function arrayGrowInplace( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -14242,14 +14061,8 @@ function arrayGrowInplace( test )
 
 function arrayRelength( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -14398,14 +14211,8 @@ function arrayRelength( test )
 
 function arrayRelengthInplace( test )
 {
-  var array = function( src )
-  {
-    return _.arrayMake( src );
-  }
-  var unroll = function( src )
-  {
-    return _.unrollMake( src );
-  }
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
 
   /* - */
 
@@ -14611,8 +14418,8 @@ function arrayLeftIndex( test )
   test.identical( got, expected );
 
   test.case = 'fromIndex + evaluator x2';
-  var evaluator1 = function( el ) { return el + 1 }
-  var evaluator2 = function( ins ) { return ins * 2 }
+  var evaluator1 = ( el ) => el + 1;
+  var evaluator2 = ( ins ) => ins * 2;
   var got = _.arrayLeftIndex( [ 6, 6, 5, 5 ], 3, 2, evaluator1, evaluator2 );
   var expected = 2;
   test.identical( got, expected );
