@@ -1136,6 +1136,7 @@ function longIsPopulated( src )
 /*
 qqq : extend coverage and documentation of longMake
 qqq : longMake does not create unrolls, but should
+Dmytro : longMake creates unrolls. It is implemented two variants, one of them should be deleted.
 */
 
 function longMake( src, ins )
@@ -1209,15 +1210,31 @@ function longMake( src, ins )
       result[ i ] = ins[ i ];
     }
   }
+  // else if( _.unrollIs( src ) )  // Dmytro : alternative section for unrolls, but it is copy of section for arrayIs( src )
+  // {
+  //   if( length === ins.length )
+  //   {
+  //     result = _.unrollMake( ins );
+  //   }
+  //   else
+  //   {
+  //     result = _.unrollMake( length );
+  //     let minLen = Math.min( length, ins.length );
+  //     for( let i = 0 ; i < minLen ; i++ )
+  //     result[ i ] = ins[ i ];
+  //   }
+  // }
   else if( _.arrayIs( src ) )
   {
     if( length === ins.length )
     {
-      result = new( _.constructorJoin( src.constructor, ins ) );
+      result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
+      // result = new( _.constructorJoin( src.constructor, ins ) );
     }
     else
     {
-      result = new src.constructor( length );
+      result = _.unrollIs( src ) ? _.unrollMake( length ) : new src.constructor( length );
+      // result = new src.constructor( length );
       let minLen = Math.min( length, ins.length );
       for( let i = 0 ; i < minLen ; i++ )
       result[ i ] = ins[ i ];
