@@ -1337,6 +1337,7 @@ function _longMakeOfLength( src, len )
 /*
 qqq : extend coverage and documentation of longMakeUndefined
 qqq : longMakeUndefined does not create unrolls, but should
+Dmytro : longMakeUndefined creates unrolls.
 */
 
 function longMakeUndefined( ins, len )
