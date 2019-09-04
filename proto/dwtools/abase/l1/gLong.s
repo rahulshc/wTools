@@ -312,7 +312,7 @@ function bufferMakeUndefined( ins, src )
       result = new ins( src );
     }
     else if( ins.constructor.name === 'Buffer' )
-    result = Buffer.from( src );
+    result = BufferNode.from( src );
     else
     result = new ins.constructor( src );
 
@@ -322,7 +322,7 @@ function bufferMakeUndefined( ins, src )
     if( _.routineIs( ins ) )
     result = new ins( length );
     else if( ins.constructor.name === 'Buffer' )
-    result = Buffer.from( length );
+    result = Buffer.alloc( length );
     else
     result = new ins.constructor( length );
   }
@@ -1045,31 +1045,49 @@ function bufferResize( srcBuffer, size )
 
     if( newOffset + range[ 1 ] - range[ 0 ] <= srcBuffer.buffer.byteLength )
     {
-      if( srcBuffer.name === 'Buffer' )
+      if( srcBuffer.constructor.name === 'Buffer' )
       result = Buffer.from( srcBuffer.buffer, newOffset, size );
+      if( srcBuffer.constructor.name === 'DataView' )
+      result = new DataView( srcBuffer.buffer, newOffset, size );
       else
       result = new srcBuffer.constructor( srcBuffer.buffer, newOffset, size / srcBuffer.BYTES_PER_ELEMENT );
     }
     else
     {
-      result = new _.bufferMakeUndefined( srcBuffer, size );
+      if( _.bufferViewIs( srcBuffer ) )
+      {
+        let resultTyped = new U8x( size );
+        let srcTyped = new U8x( srcBuffer.buffer );
 
-      let first = Math.max( range[ 0 ], 0 );
-      let last = Math.min( srcBuffer.byteLength, size );
-      for( let r = first ; r < last ; r++ )
-      result[ r-first ] = dstArray[ r ];
+        let first = Math.max( range[ 0 ], 0 );
+        let last = Math.min( srcBuffer.byteLength, size );
+        for( let r = first ; r < last ; r++ )
+        resultTyped[ r-first ] = srcTyped[ r ];
+
+        result = new DataView( resultTyped.buffer );
+      }
+      else
+      {
+        result = _.bufferMakeUndefined( srcBuffer, size / srcBuffer.BYTES_PER_ELEMENT );
+
+        let first = Math.max( range[ 0 ], 0 );
+        let last = Math.min( srcBuffer.byteLength, size );
+        for( let r = first ; r < last ; r++ )
+        result[ r-first ] = srcBuffer[ r ];
+      }
     }
   }
   else
   {
     let resultTyped = new U8x( size );
     let srcTyped = new U8x( srcBuffer );
+
     let first = Math.max( range[ 0 ], 0 );
     let last = Math.min( srcBuffer.byteLength, size );
     for( let r = first ; r < last ; r++ )
-    result[ r-first ] = dstArray[ r ];
+    resultTyped[ r-first ] = srcTyped[ r ];
 
-    result = result.buffer;
+    result = resultTyped.buffer;
   }
 
   return result;

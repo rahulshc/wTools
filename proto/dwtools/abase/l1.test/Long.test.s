@@ -11503,6 +11503,23 @@ function bufferRelen( test )
 
 function bufferResize( test )
 {
+  test.case = 'not BufferRaw has offset, offset > -range[ 0 ]';
+  var buf = new BufferRaw( 20 );
+  var typed = new U16x( buf, 10, 5 );
+  typed[ 0 ] = 12;
+  debugger;
+  var got = _.bufferResize( typed, [ -10, 6 ] );
+  test.identical( got, new U16x( [ 0, 0, 0, 0, 0, 12, 0, 0 ] ) );
+  test.is( got !== typed );
+
+  test.case = 'not BufferRaw has offset, offset > -range[ 0 ]';
+  var buf = new BufferRaw( 20 );
+  var typed = Buffer.from( buf, 10, 10 );
+  typed[ 0 ] = 12;
+  var got = _.bufferResize( typed, [ -5, 3 ] );
+  test.identical( got, Buffer.from( [ 0, 0, 0, 0, 0, 12, 0, 0 ] ) );
+  test.is( got !== typed );
+
   /* typed buffer */
 
   test.case = 'typed buffer, size < length';
@@ -11527,7 +11544,7 @@ function bufferResize( test )
 
   var src = new F32x( [ 1, 2, 3 ] );
   var got = _.bufferResize( src, 20 );
-  test.identical( got, new F32x( [ 1, 2, 3, 0, 0 ] ) );
+  test.identical( got, new F32x( [ 1, 2, 3, NaN, NaN ] ) );
   test.identical( got.byteLength, 20 );
   test.is( _.bufferTypedIs( got ) );
 
@@ -11550,20 +11567,6 @@ function bufferResize( test )
   test.identical( got.byteLength, 1 );
   test.is( _.bufferRawIs( got ) );
 
-  var src = new SharedArrayBuffer( 6 );
-  var got = _.bufferResize( src, 1 );
-  test.identical( got, new SharedArrayBuffer( 1 ) );
-  test.identical( got.byteLength, 1 );
-  test.is( _.bufferRawIs( got ) );
-
-  var src = new SharedArrayBuffer( 100 );
-  var view1 = new U16x( src );
-  view1[ 5 ] = 200;
-  var got = _.bufferResize( src, 20 );
-  var view2 = new U8x( got );
-  test.identical( view2[ 10 ], 200 );
-  test.identical( got.byteLength, 20 );
-  test.is( _.bufferRawIs( got ) );
 
   test.case = 'raw buffer, size > length';
   var src = new BufferRaw( 6 );
@@ -11582,25 +11585,12 @@ function bufferResize( test )
   test.identical( got.byteLength, 20 );
   test.is( _.bufferRawIs( got ) );
 
-  var src = new SharedArrayBuffer( 6 );
-  var got = _.bufferResize( src, 10 );
-  test.identical( got, new SharedArrayBuffer( 10 ) );
-  test.identical( got.byteLength, 10 );
-  test.is( _.bufferRawIs( got ) );
-
-  var src = new SharedArrayBuffer( 16 );
-  var view1 = new U16x( src );
-  view1[ 5 ] = 200;
-  var got = _.bufferResize( src, 30 );
-  var view2 = new U8x( got );
-  test.identical( view2[ 10 ], 200 );
-  test.identical( got.byteLength, 30 );
-  test.is( _.bufferRawIs( got ) );
-
   /* view buffer */
 
   test.case = 'view buffer, size < length';
-  var src = new BufferView( new BufferRaw( 6 ) );
+  var buffer = new BufferRaw( 6 );
+  var src = new BufferView( buffer );
+  debugger;
   var got = _.bufferResize( src, 1 );
   test.identical( got, new BufferView( new BufferRaw( 1 ) ) );
   test.identical( got.byteLength, 1 );
@@ -11618,6 +11608,7 @@ function bufferResize( test )
 
   test.case = 'view buffer, size > length';
   var src = new BufferView( new BufferRaw( 6 ) );
+  debugger;
   var got = _.bufferResize( src, 8 );
   test.identical( got, new BufferView( new BufferRaw( 8 ) ) );
   test.identical( got.byteLength, 8 );
@@ -11748,12 +11739,6 @@ function bufferResize( test )
   var got = _.bufferResize( src, 5 );
   test.identical( got, BufferNode.from( [ 115, 116, 114, 0, 0 ] ) );
   test.identical( got.byteLength, 5 );
-  test.is( _.bufferNodeIs( got ) );
-
-  var src = BufferNode.from( 'str', 'base64' );
-  var got = _.bufferResize( src, 7 );
-  test.identical( got, BufferNode.from( [ 178, 218, 0, 0, 0, 0, 0 ] ) );
-  test.identical( got.byteLength, 7 );
   test.is( _.bufferNodeIs( got ) );
   }
 
