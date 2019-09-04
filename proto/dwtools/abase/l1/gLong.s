@@ -322,7 +322,7 @@ function bufferMakeUndefined( ins, src )
     if( _.routineIs( ins ) )
     result = new ins( length );
     else if( ins.constructor.name === 'Buffer' )
-    result = Buffer.alloc( length );
+    result = BufferNode.alloc( length );
     else
     result = new ins.constructor( length );
   }
@@ -1039,55 +1039,35 @@ function bufferResize( srcBuffer, size )
   _.assert( _.numberIs( size ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  if( !_.bufferRawIs( srcBuffer ) )
+  var newOffset = srcBuffer.byteOffset + range[ 0 ];
+
+  if( !_.bufferRawIs( srcBuffer ) && newOffset + size <= srcBuffer.buffer.byteLength )
   {
-    var newOffset = srcBuffer.byteOffset + range[ 0 ];
-
-    if( newOffset + range[ 1 ] - range[ 0 ] <= srcBuffer.buffer.byteLength )
-    {
-      if( srcBuffer.constructor.name === 'Buffer' )
-      result = Buffer.from( srcBuffer.buffer, newOffset, size );
-      if( srcBuffer.constructor.name === 'DataView' )
-      result = new DataView( srcBuffer.buffer, newOffset, size );
-      else
-      result = new srcBuffer.constructor( srcBuffer.buffer, newOffset, size / srcBuffer.BYTES_PER_ELEMENT );
-    }
+    if( srcBuffer.constructor.name === 'Buffer' )
+    result = Buffer.from( srcBuffer.buffer, newOffset, size );
+    if( srcBuffer.constructor.name === 'DataView' )
+    result = new DataView( srcBuffer.buffer, newOffset, size );
     else
-    {
-      if( _.bufferViewIs( srcBuffer ) )
-      {
-        let resultTyped = new U8x( size );
-        let srcTyped = new U8x( srcBuffer.buffer );
-
-        let first = Math.max( range[ 0 ], 0 );
-        let last = Math.min( srcBuffer.byteLength, size );
-        for( let r = first ; r < last ; r++ )
-        resultTyped[ r-first ] = srcTyped[ r ];
-
-        result = new DataView( resultTyped.buffer );
-      }
-      else
-      {
-        result = _.bufferMakeUndefined( srcBuffer, size / srcBuffer.BYTES_PER_ELEMENT );
-
-        let first = Math.max( range[ 0 ], 0 );
-        let last = Math.min( srcBuffer.byteLength, size );
-        for( let r = first ; r < last ; r++ )
-        result[ r-first ] = srcBuffer[ r ];
-      }
-    }
+    result = new srcBuffer.constructor( srcBuffer.buffer, newOffset, size / srcBuffer.BYTES_PER_ELEMENT );
   }
   else
   {
     let resultTyped = new U8x( size );
-    let srcTyped = new U8x( srcBuffer );
+    let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
 
     let first = Math.max( range[ 0 ], 0 );
     let last = Math.min( srcBuffer.byteLength, size );
     for( let r = first ; r < last ; r++ )
-    resultTyped[ r-first ] = srcTyped[ r ];
+    resultTyped[ r-first ] = srcBufferToU8x[ r ];
 
+    if( srcBuffer.constructor.name === 'Buffer' )
+    result = Buffer.from( resultTyped.buffer );
+    if( srcBuffer.constructor.name === 'DataView' )
+    result = new DataView( resultTyped.buffer );
+    if( srcBuffer.constructor.name === 'ArrayBuffer' )
     result = resultTyped.buffer;
+    else
+    result = new srcBuffer.constructor( resultTyped.buffer );
   }
 
   return result;

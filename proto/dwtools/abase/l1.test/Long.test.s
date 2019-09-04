@@ -11544,7 +11544,7 @@ function bufferResize( test )
 
   var src = new F32x( [ 1, 2, 3 ] );
   var got = _.bufferResize( src, 20 );
-  test.identical( got, new F32x( [ 1, 2, 3, NaN, NaN ] ) );
+  test.identical( got, new F32x( [ 1, 2, 3, 0, 0 ] ) );
   test.identical( got.byteLength, 20 );
   test.is( _.bufferTypedIs( got ) );
 
