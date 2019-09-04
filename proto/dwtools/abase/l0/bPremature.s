@@ -3,7 +3,6 @@
 'use strict';
 
 let _FunctionBind = Function.prototype.bind;
-let _ObjectToString = Object.prototype.toString;
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
@@ -22,7 +21,7 @@ let Self = _global_.wTools;
 
 function strIs( src )
 {
-  let result = _ObjectToString.call( src ) === '[object String]';
+  let result = Object.prototype.toString.call( src ) === '[object String]';
   return result;
 }
 
@@ -37,7 +36,7 @@ function strIs( src )
 
 function routineIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Function]';
+  return Object.prototype.toString.call( src ) === '[object Function]';
 }
 
 //
@@ -51,7 +50,7 @@ function routineIs( src )
 
 function objectIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Object]';
+  return Object.prototype.toString.call( src ) === '[object Object]';
 }
 
 //
@@ -65,7 +64,7 @@ function objectIs( src )
 
 function argumentsArrayIs( src )
 {
-  return _ObjectToString.call( src ) === '[object Arguments]';
+  return Object.prototype.toString.call( src ) === '[object Arguments]';
 }
 
 //
@@ -139,6 +138,7 @@ function assert( condition, msg )
  *  _.routineOptions( add, o );
  *  return o.a + o.b;
  * }
+ *
  * add.defaults =
  * {
  *  a : 0,
@@ -237,7 +237,7 @@ function vectorize_pre( routine, args )
   assert( arguments.length === 2, 'Expects exactly two arguments' );
   assert( routineIs( o.routine ) || strIs( o.routine ) || _.strsAreAll( o.routine ), () => 'Expects routine {-o.routine-}, but got ' + o.routine );
   assert( args.length === 1 || args.length === 2 );
-  assert( o.select >= 1 || strIs( o.select ) || _.arrayIs( o.select ), () => 'Expects {-o.select-} as number >= 1, string or array, but got ' + o.select );
+  assert( o.select >= 1 || strIs( o.select ) || _.arrayLike( o.select ), () => 'Expects {-o.select-} as number >= 1, string or array, but got ' + o.select );
 
   return o;
 }
@@ -249,7 +249,7 @@ function vectorize_body( o )
 
   _.assertRoutineOptions( vectorize_body, arguments );
 
-  if( _.arrayIs( o.routine ) && o.routine.length === 1 )
+  if( _.arrayLike( o.routine ) && o.routine.length === 1 )
   o.routine = o.routine[ 0 ];
 
   let routine = o.routine;
@@ -349,7 +349,7 @@ function vectorize_body( o )
         return this[ routine ].apply( this, arguments );
       }
     }
-    else if( _.arrayIs( routine ) )
+    else if( _.arrayLike( routine ) )
     {
       assert( routine.length === 2 );
       return function methodCall()
@@ -386,7 +386,7 @@ function vectorize_body( o )
 
     for( let d = 0 ; d < select ; d++ )
     {
-      if( vectorizingArray && _.arrayIs( args[ d ] ) )
+      if( vectorizingArray && _.arrayLike( args[ d ] ) )
       {
         length = args[ d ].length;
         break;
@@ -592,7 +592,7 @@ function vectorize_body( o )
       }
       return result;
     }
-    else if( vectorizingArray && _.arrayIs( srcs ) )
+    else if( vectorizingArray && _.arrayLike( srcs ) )
     {
       let result = [];
       for( let s = 0 ; s < srcs.length ; s++ )
@@ -678,7 +678,7 @@ function vectorize_body( o )
     {
       for( let d = 0; d < select; d++ )
       {
-        if( vectorizingArray && _.arrayIs( args[ d ] ) )
+        if( vectorizingArray && _.arrayLike( args[ d ] ) )
         arr = args[ d ];
         else if( _.mapIs( args[ d ] ) )
         {
@@ -694,7 +694,7 @@ function vectorize_body( o )
       result = Object.create( null );
       args2 = _.longSlice( args );
 
-      if( vectorizingArray && _.arrayIs( arr ) )
+      if( vectorizingArray && _.arrayLike( arr ) )
       {
         for( let i = 0; i < arr.length; i++ )
         {
@@ -908,10 +908,6 @@ Object.assign( Self, Fields );
 // --
 // export
 // --
-
-// if( typeof module !== 'undefined' )
-// if( _global.WTOOLS_PRIVATE )
-// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

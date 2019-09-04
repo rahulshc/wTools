@@ -47,7 +47,7 @@ function strCount( test )
 
   test.close( 'string' );
 
-  /* */
+  /* - */
 
   test.open( 'regexp' );
 
@@ -78,7 +78,7 @@ function strCount( test )
 
   test.close( 'regexp' );
 
-  /* */
+  /* - */
 
   if( !Config.debug )
   return;

@@ -1136,6 +1136,7 @@ function longIsPopulated( src )
 /*
 qqq : extend coverage and documentation of longMake
 qqq : longMake does not create unrolls, but should
+Dmytro : longMake creates unrolls. It is implemented two variants, one of them should be deleted.
 */
 
 function longMake( src, ins )
@@ -1209,15 +1210,31 @@ function longMake( src, ins )
       result[ i ] = ins[ i ];
     }
   }
+  // else if( _.unrollIs( src ) )  // Dmytro : alternative section for unrolls, but it is copy of section for arrayIs( src )
+  // {
+  //   if( length === ins.length )
+  //   {
+  //     result = _.unrollMake( ins );
+  //   }
+  //   else
+  //   {
+  //     result = _.unrollMake( length );
+  //     let minLen = Math.min( length, ins.length );
+  //     for( let i = 0 ; i < minLen ; i++ )
+  //     result[ i ] = ins[ i ];
+  //   }
+  // }
   else if( _.arrayIs( src ) )
   {
     if( length === ins.length )
     {
-      result = new( _.constructorJoin( src.constructor, ins ) );
+      result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
+      // result = new( _.constructorJoin( src.constructor, ins ) );
     }
     else
     {
-      result = new src.constructor( length );
+      result = _.unrollIs( src ) ? _.unrollMake( length ) : new src.constructor( length );
+      // result = new src.constructor( length );
       let minLen = Math.min( length, ins.length );
       for( let i = 0 ; i < minLen ; i++ )
       result[ i ] = ins[ i ];
@@ -1320,6 +1337,7 @@ function _longMakeOfLength( src, len )
 /*
 qqq : extend coverage and documentation of longMakeUndefined
 qqq : longMakeUndefined does not create unrolls, but should
+Dmytro : longMakeUndefined creates unrolls.
 */
 
 function longMakeUndefined( ins, len )
@@ -1352,6 +1370,8 @@ function longMakeUndefined( ins, len )
 
   if( _.routineIs( ins ) )
   result = new ins( length );
+  else if( _.unrollIs( ins ) )
+  result = _.unrollMake( length );
   else
   result = new ins.constructor( length );
 
@@ -1597,50 +1617,50 @@ function longSlice( array, f, l )
 
 /* qqq : routine longBut requires good test coverage and documentation */
 
-function longBut( src, range, ins )
+function longBut( array, range, val )
 {
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( range === undefined )
-  return _.longMake( src );
+  return _.longMake( array );
 
-  if( _.arrayIs( src ) )
-  return _.arrayBut( src, range, ins );
+  if( _.arrayIs( array ) )
+  return _.arrayBut( array, range, val );
 
   let result;
 
-  _.assert( _.longIs( src ) );
-  _.assert( ins === undefined || _.longIs( ins ) );
+  _.assert( _.longIs( array ) );
+  _.assert( val === undefined || _.longIs( val ) );
   // _.assert( _.longIs( range ), 'not tested' );
   // _.assert( !_.longIs( range ), 'not tested' );
 
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
-  _.rangeClamp( range, [ 0, src.length ] );
+  _.rangeClamp( range, [ 0, array.length ] );
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
   let d = range[ 1 ] - range[ 0 ];
-  let len = ( ins ? ins.length : 0 );
+  let len = ( val ? val.length : 0 );
   let d2 = d - len;
-  let l2 = src.length - d2;
+  let l2 = array.length - d2;
 
-  result = _.longMakeUndefined( src, l2 );
+  result = _.longMakeUndefined( array, l2 );
 
   // debugger;
   // _.assert( 0, 'not tested' )
 
   for( let i = 0 ; i < range[ 0 ] ; i++ )
-  result[ i ] = src[ i ];
+  result[ i ] = array[ i ];
 
-  for( let i = range[ 1 ] ; i < src.length ; i++ )
-  result[ i-d2 ] = src[ i ];
+  for( let i = range[ 1 ] ; i < array.length ; i++ )
+  result[ i-d2 ] = array[ i ];
 
-  if( ins )
-  for( let i = 0 ; i < ins.length ; i++ )
-  result[ range[ 0 ]+i ] = ins[ i ];
+  if( val )
+  for( let i = 0 ; i < val.length ; i++ )
+  result[ range[ 0 ]+i ] = val[ i ];
 
   return result;
 }
@@ -1649,16 +1669,31 @@ function longBut( src, range, ins )
 
 /* qqq : routine longBut requires good test coverage and documentation */
 
-function longButInplace( src, range, ins )
+function longButInplace( array, range, val )
 {
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
-  // if( _.arrayIs( src ) )
-  if( _.arrayLikeResizable( src ) )
-  return _.arrayButInplace( src, range, ins );
+  // if( _.arrayIs( array ) )
+  if( _.arrayLikeResizable( array ) )
+  return _.arrayButInplace( array, range, val );
+
+  if( range === undefined )
+  return array;
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
+
+  _.assert( _.longIs( array ) );
+  _.assert( _.rangeIs( range ) );
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === range[ 1 ] && val === undefined )
+  return array;
   else
-  return _.longBut( src, range, ins ); // Dmytro : not resizable longs should be processed by longBut algorithm. If it need, I'll make copy of code.
+  return _.longBut( array, range, val ); // Dmytro : not resizable longs should be processed by longBut algorithm. If it need, I'll make copy of code.
 
   // let result;
   //
@@ -1710,7 +1745,6 @@ function longSelect( array, range, val )
   if( range === undefined )
   return _.longMake( array );
   // return _.longShallowClone( array );
-
   if( _.numberIs( range ) )
   range = [ range, array.length ];
 
@@ -1747,14 +1781,10 @@ function longSelect( array, range, val )
 
   result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
 
-  /* */
-
   let f2 = Math.max( range[ 0 ], 0 );
   let l2 = Math.min( array.length, range[ 1 ] );
   for( let r = f2 ; r < l2 ; r++ )
   result[ r-f2 ] = array[ r ];
-
-  /* */
 
   if( val !== undefined )
   {
@@ -1767,8 +1797,6 @@ function longSelect( array, range, val )
       result[ r ] = val;
     }
   }
-
-  /* */
 
   return result;
 }
@@ -1788,6 +1816,21 @@ function longSelectInplace( array, range, val )
 
   if( _.arrayLikeResizable( array ) )
   return _.arraySelectInplace( array, range, val );
+
+  if( range === undefined )
+  return array;
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  _.assert( _.longIs( array ) );
+  _.assert( _.rangeIs( range ) );
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+  return array;
   else
   return _.longSelect( array, range, val );
   // let result;
@@ -1945,11 +1988,8 @@ function longGrow( array, range, val )
   if( _.numberIs( range ) )
   range = [ 0, range ];
 
-  let f = range ? range[ 0 ] : undefined;
-  let l = range ? range[ 1 ] : undefined;
-
-  f = f !== undefined ? f : 0;
-  l = l !== undefined ? l : array.length;
+  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
 
   _.assert( _.longIs( array ) );
   _.assert( _.rangeIs( range ) )
@@ -2016,6 +2056,32 @@ function longGrowInplace( array, range, val )
 
   if( _.arrayLikeResizable( array ) )
   return _.arrayGrowInplace( array, range, val );
+
+  if( range === undefined )
+  return array;
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
+
+  _.assert( _.longIs( array ) );
+  _.assert( _.rangeIs( range ) )
+
+  if( l < f )
+  l = f;
+  if( f < 0 )
+  {
+    l -= f;
+    f -= f;
+  }
+  if( f > 0 )
+  f = 0;
+  if( l < array.length )
+  l = array.length;
+
+  if( l === array.length )
+  return array;
   else
   return _.longGrow( array, range, val );
 
@@ -2102,11 +2168,8 @@ function longRelength( array, range, val )
   if( _.numberIs( range ) )
   range = [ range, array.length ];
 
-  let f = range ? range[ 0 ] : undefined;
-  let l = range ? range[ 1 ] : undefined;
-
-  f = f !== undefined ? f : 0;
-  l = l !== undefined ? l : src.length;
+  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
 
   _.assert( _.longIs( array ) );
   _.assert( _.rangeIs( range ) )
@@ -2155,6 +2218,27 @@ function longRelengthInplace( array, range, val )
 
   if( _.arrayLikeResizable( array ) )
   return _.arrayRelengthInplace( array, range, val );
+
+  if( range === undefined )
+  return array;
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
+
+  _.assert( _.longIs( array ) );
+  _.assert( _.rangeIs( range ) )
+
+  if( l < f )
+  l = f;
+  if( f > array.length )
+  f = array.length;
+  if( f < 0 )
+  f = 0;
+
+  if( f === 0 && l === array.length )
+  return array;
   else
   return _.longRelength( array, range, val );
 
@@ -2344,13 +2428,13 @@ function arrayLike( src )
 {
   /* yyy : experimental */
 
-  return _.longIs( src );
+  // return _.longIs( src );
 
-  // if( _.arrayIs( src ) )
-  // return true;
-  // if( _.argumentsArrayIs( src ) )
-  // return true;
-  // return false;
+  if( _.arrayIs( src ) )
+  return true;
+  if( _.argumentsArrayIs( src ) )
+  return true;
+  return false;
 }
 
 //

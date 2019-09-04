@@ -405,17 +405,23 @@ let wTemplateFileWriter =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateFileWriter },
 }
 
-let wGraph =
+let wGraphBasic =
 {
-  includeAny : includeAny( 'amid/agraph/UseTop.s', 'wgraphbase' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph },
+  includeAny : includeAny( 'amid/l1/graphBasic/IncludeTop.s', 'wgraphbasic' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph && !!_global.wTools.graph.AbstractGraphSystem },
 }
 
-let wGraphLive =
+let wGraphTools =
 {
-  includeAny : includeAny( 'amid/agraph/UseLive.s', 'wgraphlive' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.LiveSystem },
+  includeAny : includeAny( 'amid/l1/graphTools/IncludeTop.s', 'wgraphtools' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph && !!_global.wTools.graph.GraphSystem },
 }
+
+// let wGraphLive =
+// {
+//   includeAny : includeAny( 'amid/l1/graphTools/IncludeLive', 'wgraphlive' ),
+//   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.LiveSystem },
+// }
 
 let wSchema =
 {
@@ -639,8 +645,12 @@ let Extend =
   wTemplateTreeEnvironment,
   wTemplateFileWriter,
 
-  wGraph,
-  wGraphLive,
+  // wGraph,
+  // wGraphLive,
+
+  wGraphBasic,
+  wGraphTools,
+
   wSchema,
   wScriptLauncher,
   wExchangePoint,
