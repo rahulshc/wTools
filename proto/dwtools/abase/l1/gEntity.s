@@ -21,21 +21,21 @@ let Self = _global_.wTools;
  * @returns {number} Returns "length" of entity.
  *
  * @example
- * //returns 3
  * _.entityLength( [ 1, 2, 3 ] );
+ * // returns 3
  *
  * @example
- * //returns 1
  * _.entityLength( 'string' );
+ * // returns 1
  *
  * @example
- * //returns 2
  * _.entityLength( { a : 1, b : 2 } );
+ * // returns 2
  *
  * @example
- * //returns 0
  * let src = undefined;
  * _.entityLength( src );
+ * // returns 0
  *
  * @function entityLength
  * @memberof wTools
@@ -56,7 +56,7 @@ function entityLength( src )
 /**
  * Returns "size" of entity( src ). Representation of "size" depends on type of( src ):
  *  - For string returns value of it own length property;
- *  - For array-like entity returns value of it own byteLength property for( ArrayBuffer, TypedArray, etc )
+ *  - For array-like entity returns value of it own byteLength property for( BufferRaw, TypedArray, etc )
  *    or length property for other;
  *  - In other cases returns null.
  *
@@ -64,20 +64,20 @@ function entityLength( src )
  * @returns {number} Returns "size" of entity.
  *
  * @example
- * //returns 6
  * _.entitySize( 'string' );
+ * // returns 6
  *
  * @example
- * //returns 3
  * _.entitySize( [ 1, 2, 3 ] );
+ * // returns 3
  *
  * @example
- * //returns 8
- * _.entitySize( new ArrayBuffer( 8 ) );
+ * _.entitySize( new BufferRaw( 8 ) );
+ * // returns 8
  *
  * @example
- * //returns null
  * _.entitySize( 123 );
+ * // returns null
  *
  * @function entitySize
  * @memberof wTools

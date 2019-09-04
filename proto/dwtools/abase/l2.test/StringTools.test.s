@@ -47,7 +47,7 @@ function strCount( test )
 
   test.close( 'string' );
 
-  /* */
+  /* - */
 
   test.open( 'regexp' );
 
@@ -78,7 +78,7 @@ function strCount( test )
 
   test.close( 'regexp' );
 
-  /* */
+  /* - */
 
   if( !Config.debug )
   return;
@@ -8600,13 +8600,13 @@ function strJoinPath( test )
   var got = _.strJoinPath( srcs, '.' );
   test.identical( got, 'he.llo.,.world.!' );
 
-  test.case = 'srcs is Float32Array';
-  var arr = new Float32Array( [ 1, 2, 3, 4 ] );
+  test.case = 'srcs is F32x';
+  var arr = new F32x( [ 1, 2, 3, 4 ] );
   var srcs = _.arrayFrom( arr );
   var got = _.strJoinPath( srcs, '.' );
   test.identical( got, '1.2.3.4' );
 
-  var arr = new Float32Array( [ 1, 2, 3, 'str' ] );
+  var arr = new F32x( [ 1, 2, 3, 'str' ] );
   var srcs = _.arrayFrom( arr );
   var got = _.strJoinPath( srcs, '.' );
   test.identical( got, '1.2.3.NaN' );

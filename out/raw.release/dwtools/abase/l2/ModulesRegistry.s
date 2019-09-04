@@ -23,19 +23,19 @@
     // }
         let e = _global_, n = e.wTools;
     Object.hasOwnProperty.call(e, "ModuleRegistry") || (e.ModulesRegistry = Object.create(null));
-    let o = e.ModulesRegistry, l = (includeAny("abase/l3/Entity.s", "wentityfundamentals"), 
+    let o = e.ModulesRegistry, l = (includeAny("abase/l3/Entity.s", "wentitybasic"), 
     {
       includeAny: includeAny("abase/l3/Looker.s", "wlooker"),
       isIncluded: function() {
         return !!e.wTools && !!e.wTools.look;
       }
     }), i = {
-      includeAny: includeAny("abase/l3/Path.s", "wpathfundamentals"),
+      includeAny: includeAny("abase/l3/Path.s", "wpathbasic"),
       isIncluded: function() {
         return !!e.wTools && !!e.wTools.path;
       }
     }, s = {
-      includeAny: includeAny("abase/l3/RoutineFundamentals.s", "wroutinefundamentals"),
+      includeAny: includeAny("abase/l3/RoutineFundamentals.s", "wroutinebasic"),
       isIncluded: function() {
         return !!e.wTools && !!e.wTools.exec;
       }
@@ -52,8 +52,8 @@
     }, u = {
       // base / l3
       wLooker: l,
-      wPathFundamentals: i,
-      wRoutineFundamentals: s,
+      wPathBasic: i,
+      wRoutineBasic: s,
       wProto: r,
       // base / l4
       wReplicator: {
@@ -80,14 +80,14 @@
           return !!e.wTools && !!e.wTools.sparse;
         }
       },
-      wExternalFundamentals: {
-        includeAny: includeAny("abase/l4/External.s", "wexternalfundamentals"),
+      wAppBasic: {
+        includeAny: includeAny("abase/l4/External.s", "wappbasic"),
         isIncluded: function() {
           return !!e.wTools && !!e.wTools.shell;
         }
       },
-      wUriFundamentals: {
-        includeAny: includeAny("abase/l4/Uri.s", "wurifundamentals"),
+      wUriBasic: {
+        includeAny: includeAny("abase/l4/Uri.s", "wuribasic"),
         isIncluded: function() {
           return !!e.wTools && !!e.wTools.uri;
         }
@@ -112,8 +112,8 @@
           return !!e.wTools && !!e.wTools.select;
         }
       },
-      wWebUriFundamentals: {
-        includeAny: includeAny("abase/l5/WebUri.s", "wweburifundamentals"),
+      wWebUriBasic: {
+        includeAny: includeAny("abase/l5/WebUri.s", "wweburibasic"),
         isIncluded: function() {
           return !!e.wTools && !!e.wTools.weburi;
         }
@@ -131,8 +131,8 @@
         }
       },
       // base / l6
-      wComparator: {
-        includeAny: includeAny("abase/l6/LookerComparator.s", "wcomparator"),
+      wEqualer: {
+        includeAny: includeAny("abase/l6/LookerComparator.s", "wequaler"),
         isIncluded: function() {
           return !!e.wTools && !!e.wTools.entityIdentical;
         }

@@ -33,12 +33,14 @@ function diagnosticLocation( o )
 
   /* */
 
+  if( diagnosticLocation.defaults )
   for( let e in o )
   {
     if( diagnosticLocation.defaults[ e ] === undefined )
     throw Error( 'Unknown option ' + e );
   }
 
+  if( diagnosticLocation.defaults )
   for( let e in diagnosticLocation.defaults )
   {
     if( o[ e ] === undefined )
@@ -50,6 +52,9 @@ function diagnosticLocation( o )
 
   if( !( _.objectIs( o ) ) )
   throw Error( 'Expects options map' );
+
+  if( !o.level )
+  o.level = 0;
 
   // _.routineOptions( diagnosticLocation, o );
   // _.assert( arguments.length === 0 || arguments.length === 1 );
@@ -130,7 +135,14 @@ function diagnosticLocation( o )
 
     if( o.location.full )
     {
-      o.location.fullWithRoutine = o.location.routine + ' @ ' + o.location.full;
+      try
+      {
+        o.location.fullWithRoutine = o.location.routine + ' @ ' + o.location.full;
+      }
+      catch( err )
+      {
+        o.location.fullWithRoutine = '';
+      }
     }
 
     /* name */
@@ -413,31 +425,32 @@ diagnosticCode.defaults =
 /**
  * Return stack trace as string.
  * @example
-  let stack;
-  function function1()
-  {
-    function2();
-  }
-
-  function function2()
-  {
-    function3();
-  }
-
-  function function3()
-  {
-    stack = wTools.diagnosticStack();
-  }
-
-  function1();
-  console.log( stack );
- //"    at function3 (<anonymous>:10:17)
- // at function2 (<anonymous>:6:2)
- // at function1 (<anonymous>:2:2)
- // at <anonymous>:1:1"
+ * let stack;
+ * function function1()
+ * {
+ *   function2();
+ * }
+ *
+ * function function2()
+ * {
+ *   function3();
+ * }
+ *
+ * function function3()
+ * {
+ *   stack = _.diagnosticStack();
+ * }
+ *
+ * function1();
+ * console.log( stack );
+ * // log
+ * //"    at function3 (<anonymous>:10:17)
+ * // at function2 (<anonymous>:6:2)
+ * // at function1 (<anonymous>:2:2)
+ * // at <anonymous>:1:1"
  *
  * @returns {String} Return stack trace from call point.
- * @function stack
+ * @function diagnosticStack
  * @memberof wTools
  */
 
@@ -493,7 +506,7 @@ function diagnosticStack( stack, range )
   let errIs = 0;
   if( _.errIs( stack ) )
   {
-    stack = stack.stack;
+    stack = stack.originalStack || stack.stack;
     errIs = 1;
   }
 
@@ -581,13 +594,6 @@ function diagnosticStackCondense( stack )
 
   stack = stack.split( '\n' );
 
-  // for( let s = 1 ; s < stack.length ; s++ )
-  // if( /(\w)_entry(\W|$)/.test( stack[ s ] ) )
-  // {
-  //   stack.splice( s+1, stack.length );
-  //   break;
-  // }
-
   for( let s = stack.length-1 ; s >= 1 ; s-- )
   {
     let line = stack[ s ];
@@ -596,8 +602,6 @@ function diagnosticStackCondense( stack )
       stack.splice( s, 1 );
       continue;
     }
-    // if( _.strHas( line, '.test.' ) )
-    // line = '  *' + _.strRemoveBegin( line, '   ' );
     if( _.strHas( line, '.test.' ) )
     line += ' *';
     stack[ s ] = line;
@@ -1032,17 +1036,18 @@ function diagnosticsStructureGenerate( o )
       currentLevel[ 'complexRegexp7' ] = /^[A-Za-z0-9]$/
     }
 
-    let bufferSrc = _.arrayFillTimes( [], o.bufferSize || o.fieldSize, 0 );
+    // let bufferSrc = _.longFillTimes( [], o.bufferSize || o.fieldSize, 0 );
+    let bufferSrc = _.longFill( [], 0, [ 0, o.bufferSize || o.fieldSize ] );
 
     if( o.bufferNode || o.buffer && o.buffer !== 2 )
-    if( typeof Buffer !== 'undefined' )
-    currentLevel[ 'bufferNode'] = Buffer.from( bufferSrc );
+    if( typeof BufferNode !== 'undefined' )
+    currentLevel[ 'bufferNode'] = BufferNode.from( bufferSrc );
 
     if( o.bufferRaw || o.buffer )
-    currentLevel[ 'bufferRaw'] = new ArrayBuffer( bufferSrc );
+    currentLevel[ 'bufferRaw'] = new BufferRaw( bufferSrc );
 
     if( o.bufferBytes || o.buffer && o.buffer !== 2)
-    currentLevel[ 'bufferBytes'] = new Uint8Array( bufferSrc );
+    currentLevel[ 'bufferBytes'] = new U8x( bufferSrc );
 
     if( o.map || o.structure )
     {
@@ -1059,12 +1064,14 @@ function diagnosticsStructureGenerate( o )
     }
 
     if( o.array || o.structure )
-    currentLevel[ 'array' ] = _.arrayFillTimes( [], o.arraySize || o.fieldSize, 0 )
+    currentLevel[ 'array' ] = _.longFill( [], 0, [ 0, o.arraySize || o.fieldSize ] )
+    // currentLevel[ 'array' ] = _.longFillTimes( [], o.arraySize || o.fieldSize, 0 )
 
     if( o.arrayComplex || o.structure > 1 )
     {
       let src = { a : '1', dir : { b : 2 }, c : [ 1, 2, 3 ] }
-      currentLevel[ 'arrayComplex' ] = _.arrayFillTimes( [], o.arraySize || o.fieldSize, src )
+      // currentLevel[ 'arrayComplex' ] = _.longFillTimes( [], o.arraySize || o.fieldSize, src )
+      currentLevel[ 'arrayComplex' ] = _.longFill( [], src, [ 0, o.arraySize || o.fieldSize ] )
     }
 
     if( o.recursion || o.structure > 2 )

@@ -17499,19 +17499,19 @@ function arraySetContainAll( src )
         // }
                 let e = _global_, t = e.wTools;
         Object.hasOwnProperty.call(e, "ModuleRegistry") || (e.ModulesRegistry = Object.create(null));
-        let r = e.ModulesRegistry, s = (includeAny("abase/l3/Entity.s", "wentityfundamentals"), 
+        let r = e.ModulesRegistry, s = (includeAny("abase/l3/Entity.s", "wentitybasic"), 
         {
           includeAny: includeAny("abase/l3/Looker.s", "wlooker"),
           isIncluded: function() {
             return !!e.wTools && !!e.wTools.look;
           }
         }), l = {
-          includeAny: includeAny("abase/l3/Path.s", "wpathfundamentals"),
+          includeAny: includeAny("abase/l3/Path.s", "wpathbasic"),
           isIncluded: function() {
             return !!e.wTools && !!e.wTools.path;
           }
         }, a = {
-          includeAny: includeAny("abase/l3/RoutineFundamentals.s", "wroutinefundamentals"),
+          includeAny: includeAny("abase/l3/RoutineFundamentals.s", "wroutinebasic"),
           isIncluded: function() {
             return !!e.wTools && !!e.wTools.exec;
           }
@@ -17528,8 +17528,8 @@ function arraySetContainAll( src )
         }, u = {
           // base / l3
           wLooker: s,
-          wPathFundamentals: l,
-          wRoutineFundamentals: a,
+          wPathBasic: l,
+          wRoutineBasic: a,
           wProto: i,
           // base / l4
           wReplicator: {
@@ -17556,14 +17556,14 @@ function arraySetContainAll( src )
               return !!e.wTools && !!e.wTools.sparse;
             }
           },
-          wExternalFundamentals: {
-            includeAny: includeAny("abase/l4/External.s", "wexternalfundamentals"),
+          wAppBasic: {
+            includeAny: includeAny("abase/l4/External.s", "wappbasic"),
             isIncluded: function() {
               return !!e.wTools && !!e.wTools.shell;
             }
           },
-          wUriFundamentals: {
-            includeAny: includeAny("abase/l4/Uri.s", "wurifundamentals"),
+          wUriBasic: {
+            includeAny: includeAny("abase/l4/Uri.s", "wuribasic"),
             isIncluded: function() {
               return !!e.wTools && !!e.wTools.uri;
             }
@@ -17588,8 +17588,8 @@ function arraySetContainAll( src )
               return !!e.wTools && !!e.wTools.select;
             }
           },
-          wWebUriFundamentals: {
-            includeAny: includeAny("abase/l5/WebUri.s", "wweburifundamentals"),
+          wWebUriBasic: {
+            includeAny: includeAny("abase/l5/WebUri.s", "wweburibasic"),
             isIncluded: function() {
               return !!e.wTools && !!e.wTools.weburi;
             }
@@ -17607,7 +17607,7 @@ function arraySetContainAll( src )
             }
           },
           // base / l6
-          wComparator: {
+          wEqualer: {
             includeAny: includeAny("abase/l6/LookerComparator.s", "wequaler"),
             isIncluded: function() {
               return !!e.wTools && !!e.wTools.entityIdentical;

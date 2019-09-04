@@ -1,28 +1,17 @@
 {
   "name": "wTools",
-  "version": "0.8.499",
-  "engine": "node >= 6.0.0",
+  "version": "0.8.505",
+  "engine": "node >= 8.0.0",
   "enabled": 1,
   "description": "Collection of general purpose tools for solving problems. Fundamentally extend JavaScript without corrupting it, so may be used solely or in conjunction with another module of such kind",
   "license": "MIT",
   "author": "Kostiantyn Wandalen <wanalen@willbe.so>",
   "contributors": [
-    {
-      "name": "Kostiantyn Wandalen",
-      "email": "wanalen@willbe.so"
-    },
-    {
-      "name": "Volodymyr M.",
-      "email": "volodymyr.migdal@gmail.com"
-    },
-    {
-      "name": "Ihor O.",
-      "email": "iostashvxi@gmail.com"
-    },
-    {
-      "name": "Dmytro Kryvoruchko",
-      "email": "dm.vict.kr@gmail.com"
-    }
+    "Kostiantyn Wandalen <wanalen@willbe.so>",
+    "Volodymyr M. <volodymyr.migdal@gmail.com>",
+    "Ihor O. <iostashvxi@gmail.com>",
+    "Pablo Garcimartin <pablogarcimartinruiz@gmail.com>",
+    "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>"
   ],
   "main": "proto/dwtools/abase/Layer2.s",
   "files": [

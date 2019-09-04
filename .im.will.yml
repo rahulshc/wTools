@@ -1,22 +1,36 @@
 
 submodule :
 
-  # wFiles :
-  #   path : npm:///wFiles
-  #   criterion :
-  #     development : 1
-  # wCloner :
-  #   path : npm:///wcloner
-  #   criterion :
-  #     development : 1
-  # wStringer :
-  #   path : npm:///wstringer
-  #   criterion :
-  #     development : 1
-  # wTesting :
-  #   path : npm:///wTesting
-  #   criterion :
-  #     development : 1
+  wTools :
+    path : hd://.
+    enabled : 0 # submodule
+    criterion :
+      development : 1
+  wFiles :
+    path : npm:///wFiles
+    enabled : 0 # submodule
+    criterion :
+      development : 1
+  wCloner :
+    path : npm:///wcloner
+    enabled : 0 # submodule
+    criterion :
+      development : 1
+  wStringer :
+    path : npm:///wstringer
+    enabled : 0 # submodule
+    criterion :
+      development : 1
+  wTesting :
+    path : npm:///wTesting
+    enabled : 0 # submodule
+    criterion :
+      development : 1
+  wTools :
+    path : hd://.
+    enabled : 0
+    criterion :
+      development : 1
 
 path :
 
@@ -51,6 +65,31 @@ path :
       raw : compiled
       content : prime
 
+  entry.proto.no.tests :
+    path : proto/dwtools/abase/Layer2.s
+    criterion :
+      tests : 'no.tests'
+  entry.proto.only.tests :
+    path : proto/**/*.test.*
+    criterion :
+      tests : 'only.tests'
+
+  # npm.entry : proto/dwtools/abase/Layer2.s
+  # npm.files : proto
+
+  entry.out.raw.debug :
+    path : '{path::out.*=1}/source/dwtools/abase/Layer2.s'
+    criterion :
+      debug : [ debug, release ]
+      raw : raw
+      content : prime
+  entry.out.compiled.debug :
+    path : '{path::out.*=}/source/Index.s'
+    criterion :
+      debug : [ debug, release ]
+      raw : compiled
+      content : prime
+
 reflector :
 
   reflect.proto :
@@ -61,13 +100,13 @@ reflector :
       raw : [ raw, compiled ]
       content : prime
     filePath :
-      path::proto : path::out.*=1
+      path::proto : '{path::out.*=1}/source'
 
   transpile.proto.raw :
     inherit : predefined.*
     step :
       inherit : files.transpile
-      entry : path::entry.no.tests
+      entry : path::entry.proto.no.tests
     criterion :
       raw : raw
       debug : release
@@ -79,7 +118,7 @@ reflector :
     inherit : predefined.*
     step :
       inherit : files.transpile
-      entry : path::entry.*=1
+      entry : path::entry.proto.*=1
     criterion :
       tests : 'no.tests'
       raw : compiled
@@ -94,7 +133,7 @@ reflector :
     inherit : predefined.*
     step :
       inherit : files.transpile
-      entry : path::entry.*=1
+      entry : path::entry.proto.*=1
       external.before : '{path::out.*=1}/Main.s'
     criterion :
       tests : 'only.tests'
@@ -107,9 +146,18 @@ reflector :
 
 step :
 
+  npm.generate :
+    inherit : npm.generate
+    entryPath : path::entry.out.*=1
+    packagePath : '{path::out.*=1}/package.json'
+    filesPath : '{path::out.*=1}/source/**'
+    criterion :
+      debug : [ debug, release ]
+      raw : [ raw, compiled ]
+
   clean.out :
     inherit : files.delete
-    filePath : path::out.*=1
+    filePath : '{path::out.*=1}/source'
     criterion :
       debug : [ debug, release ]
       raw : [ raw, compiled ]
@@ -151,10 +199,8 @@ build :
       raw : raw
       content : prime
     steps :
-      # - timelapse.begin
       - step::clean.out*=2
       - reflect.proto.*=1
-      # - timelapse.end
 
   compiled.debug :
     criterion :
@@ -162,11 +208,9 @@ build :
       raw : compiled
       content : prime
     steps :
-      # - timelapse.begin
       - step::clean.out*=2
       - transpile.proto.no.tests*=1
       - transpile.proto.only.tests*=1
-      # - timelapse.end
 
   raw.release :
     criterion :
@@ -174,10 +218,8 @@ build :
       raw : raw
       content : prime
     steps :
-      # - timelapse.begin
       - step::clean.out*=2
       - transpile.proto.raw
-      # - timelapse.end
 
   release :
     criterion :
@@ -185,20 +227,18 @@ build :
       raw : compiled
       content : prime
     steps :
-      # - timelapse.begin
       - step::clean.out*=2
       - transpile.proto.no.tests*=1
       - transpile.proto.only.tests*=1
-      # - timelapse.end
 
   npm :
     criterion :
       debug : debug
-      raw : compiled
+      raw : raw
       content : npm
     steps :
-      # - step::clean.out.npm*=1
-      - npm.generate
+      - npm.generate.*=1
+      # - npm.generate
 
   all :
     steps :
