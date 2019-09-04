@@ -1369,6 +1369,8 @@ function longMakeUndefined( ins, len )
 
   if( _.routineIs( ins ) )
   result = new ins( length );
+  else if( _.unrollIs( ins ) )
+  result = _.unrollMake( length );
   else
   result = new ins.constructor( length );
 
