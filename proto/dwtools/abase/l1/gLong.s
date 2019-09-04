@@ -1019,95 +1019,84 @@ function bufferRelen( src, len )
 
 //
 
-/* qqq : implement for 2 other types of buffer and do code test coverage
-   Dmytro : implemented. This odious code maked this way because different
-   buffers has different implementations
-   Previus implementation of routine bufferResize() has bug when size > length
+/*
+qqq : implement for 2 other types of buffer and do code test coverage
 */
 
 /*
   qqq : wrong! Size and length are different concepts.
 */
 
+function bufferResize( srcBuffer, size )
+{
+  let result = srcBuffer;
+
+  let range = _.rangeIs( size ) ? size : [ 0, size ];
+  size = range[ 1 ] - range[ 0 ];
+
+  _.assert( _.bufferAnyIs( srcBuffer ) );
+  _.assert( srcBuffer.byteLength >= 0 );
+  _.assert( _.numberIs( size ) );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( !_.bufferRawIs( srcBuffer ) )
+  {
+    var newOffset = srcBuffer.byteOffset + range[ 0 ];
+
+    if( newOffset + range[ 1 ] - range[ 0 ] <= srcBuffer.buffer.byteLength )
+    {
+      if( srcBuffer.name === 'Buffer' )
+      result = Buffer.from( srcBuffer.buffer, newOffset, size );
+      else
+      result = new srcBuffer.constructor( srcBuffer.buffer, newOffset, size / srcBuffer.BYTES_PER_ELEMENT );
+    }
+    else
+    {
+      result = new _.bufferMakeUndefined( srcBuffer, size );
+
+      let first = Math.max( range[ 0 ], 0 );
+      let last = Math.min( srcBuffer.byteLength, size );
+      for( let r = first ; r < last ; r++ )
+      result[ r-first ] = dstArray[ r ];
+    }
+  }
+  else
+  {
+    let resultTyped = new U8x( size );
+    let srcTyped = new U8x( srcBuffer );
+    let first = Math.max( range[ 0 ], 0 );
+    let last = Math.min( srcBuffer.byteLength, size );
+    for( let r = first ; r < last ; r++ )
+    result[ r-first ] = dstArray[ r ];
+
+    result = result.buffer;
+  }
+
+  return result;
+}
+
 // function bufferResize( srcBuffer, size )
 // {
 //   let result = srcBuffer;
 //
-//   _.assert( _.bufferAnyIs( srcBuffer ) );
+//   _.assert( _.bufferRawIs( srcBuffer ) || _.bufferTypedIs( srcBuffer ) );
 //   _.assert( srcBuffer.byteLength >= 0 );
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
-//   if( _.bufferRawIs( srcBuffer ) || _.bufferViewIs( srcBuffer ) )
-//   srcBuffer.length = srcBuffer.byteLength;
-//
-//   if( size > srcBuffer.length )
+//   if( size > srcBuffer.byteLength )
 //   {
-//     if( _.bufferTypedIs( srcBuffer ) )
-//     {
-//       result = _.longMakeUndefined( srcBuffer, size );
-//       result.set( srcBuffer );
-//     }
-//     if( _.bufferRawIs( srcBuffer ) )
-//     {
-//       let resultTyped = new U8x( _.longMakeUndefined( srcBuffer, size ) );
-//       let srcTyped = new U8x( srcBuffer );
-//       resultTyped.set( srcTyped );
-//       result = _.bufferRawFrom( resultTyped );
-//     }
-//     if( _.bufferViewIs( srcBuffer ) )
-//     {
-//       let resultTyped = new U8x( size );
-//       let srcTyped = new U8x( srcBuffer.buffer );
-//       resultTyped.set( srcTyped );
-//       result = new BufferView( _.bufferRawFrom( resultTyped ) );
-//     }
-//     if( _.bufferNodeIs( srcBuffer ) )
-//     {
-//       // qqq : ?
-//       _.assert( 0, 'not tested' );
-//       if( parseInt( process.version[ 1 ] ) === 1 )
-//       result = BufferNode.alloc( size );
-//       else
-//       result = _.longMakeUndefined( srcBuffer, size );
-//
-//       result.set( srcBuffer );
-//     }
+//     result = _.longMakeUndefined( srcBuffer, size );
+//     let resultTyped = new U8x( result, 0, result.byteLength );
+//     let srcTyped = new U8x( srcBuffer, 0, srcBuffer.byteLength );
+//     resultTyped.set( srcTyped );
 //   }
-//   else if( size < srcBuffer.length )
+//   else if( size < srcBuffer.byteLength )
 //   {
-//     if( _.bufferViewIs( srcBuffer ) )
-//     {
-//       result = new BufferView( srcBuffer.buffer, 0, size );
-//     }
-//     else
 //     result = srcBuffer.slice( 0, size );
 //   }
 //
 //   return result;
 // }
-
-function bufferResize( srcBuffer, size )
-{
-  let result = srcBuffer;
-
-  _.assert( _.bufferRawIs( srcBuffer ) || _.bufferTypedIs( srcBuffer ) );
-  _.assert( srcBuffer.byteLength >= 0 );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( size > srcBuffer.byteLength )
-  {
-    result = _.longMakeUndefined( srcBuffer, size );
-    let resultTyped = new U8x( result, 0, result.byteLength );
-    let srcTyped = new U8x( srcBuffer, 0, srcBuffer.byteLength );
-    resultTyped.set( srcTyped );
-  }
-  else if( size < srcBuffer.byteLength )
-  {
-    result = srcBuffer.slice( 0, size );
-  }
-
-  return result;
-}
 
 //
 
