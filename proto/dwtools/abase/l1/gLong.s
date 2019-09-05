@@ -1034,6 +1034,9 @@ function bufferResize( srcBuffer, size )
   let range = _.rangeIs( size ) ? size : [ 0, size ];
   size = range[ 1 ] - range[ 0 ];
 
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
   _.assert( _.bufferAnyIs( srcBuffer ) );
   _.assert( srcBuffer.byteLength >= 0 );
   _.assert( _.numberIs( size ) );
@@ -1044,9 +1047,9 @@ function bufferResize( srcBuffer, size )
   if( !_.bufferRawIs( srcBuffer ) && newOffset + size <= srcBuffer.buffer.byteLength )
   {
     if( srcBuffer.constructor.name === 'Buffer' )
-    result = Buffer.from( srcBuffer.buffer, newOffset, size );
+    result = BufferNode.from( srcBuffer.buffer, newOffset, size );
     if( srcBuffer.constructor.name === 'DataView' )
-    result = new DataView( srcBuffer.buffer, newOffset, size );
+    result = new BufferView( srcBuffer.buffer, newOffset, size );
     else
     result = new srcBuffer.constructor( srcBuffer.buffer, newOffset, size / srcBuffer.BYTES_PER_ELEMENT );
   }
@@ -1061,9 +1064,9 @@ function bufferResize( srcBuffer, size )
     resultTyped[ r-first ] = srcBufferToU8x[ r ];
 
     if( srcBuffer.constructor.name === 'Buffer' )
-    result = Buffer.from( resultTyped.buffer );
+    result = BufferNode.from( resultTyped.buffer );
     if( srcBuffer.constructor.name === 'DataView' )
-    result = new DataView( resultTyped.buffer );
+    result = new BufferView( resultTyped.buffer );
     if( srcBuffer.constructor.name === 'ArrayBuffer' )
     result = resultTyped.buffer;
     else
