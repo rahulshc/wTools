@@ -2428,13 +2428,13 @@ function arrayLike( src )
 {
   /* yyy : experimental */
 
-  return _.longIs( src );
+  // return _.longIs( src );
 
-  // if( _.arrayIs( src ) )
-  // return true;
-  // if( _.argumentsArrayIs( src ) )
-  // return true;
-  // return false;
+  if( _.arrayIs( src ) )
+  return true;
+  if( _.argumentsArrayIs( src ) )
+  return true;
+  return false;
 }
 
 //

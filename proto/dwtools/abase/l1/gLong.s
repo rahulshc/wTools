@@ -3517,6 +3517,8 @@ function longFill( result, value, range )
 
   if( range === undefined )
   range = [ 0, result.length ];
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
 
   // let l = range[ 0 ];
   // let r = range[ 1 ];
