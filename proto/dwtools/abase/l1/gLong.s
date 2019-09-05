@@ -1047,7 +1047,7 @@ function bufferResize( srcBuffer, size )
 
   _.assert( _.bufferAnyIs( srcBuffer ) );
   _.assert( srcBuffer.byteLength >= 0 );
-  _.assert( _.numberIs( size ) );
+  _.assert( _.rangeIs( range ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   var newOffset = srcBuffer.byteOffset ? srcBuffer.byteOffset + range[ 0 ] : range[ 0 ];
@@ -1107,6 +1107,22 @@ function bufferResize( srcBuffer, size )
 //
 //   return result;
 // }
+
+//
+
+function bufferResizeInplace( srcBuffer, size )
+{
+  _.assert( _.bufferAnyIs( srcBuffer ) );
+  _.assert( srcBuffer.byteLength >= 0 );
+  _.assert( _.numberIs( size ) || _.rangeIs( size ) );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  let range = _.rangeIs( size ) ? size : [ 0, size ];
+  if( range[ 0 ] === 0 && range[ 1 ] === srcBuffer.byteLength )
+  return srcBuffer;
+  else
+  return bufferResize( srcBuffer, range );
+}
 
 //
 
@@ -4374,6 +4390,7 @@ let Routines =
   bufferRelengthInplace,
   bufferRelen,
   bufferResize,
+  bufferResizeInplace,
   bufferBytesGet,
   bufferRetype,
 
