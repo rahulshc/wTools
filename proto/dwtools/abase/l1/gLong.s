@@ -1050,7 +1050,7 @@ function bufferResize( srcBuffer, size )
   _.assert( _.numberIs( size ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  var newOffset = srcBuffer.byteOffset + range[ 0 ];
+  var newOffset = srcBuffer.byteOffset ? srcBuffer.byteOffset + range[ 0 ] : range[ 0 ];
 
   if( !_.bufferRawIs( srcBuffer ) && newOffset >= 0 && newOffset + size <= srcBuffer.buffer.byteLength )
   {
@@ -1067,7 +1067,7 @@ function bufferResize( srcBuffer, size )
     let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
 
     let first = Math.max( newOffset, 0 );
-    let last = Math.min( srcBufferToU8x.byteLength, size );
+    let last = Math.min( srcBufferToU8x.byteLength, newOffset + size );
     newOffset = newOffset < 0 ? -newOffset : 0;
     for( let r = first ; r < last ; r++ )
     resultTyped[ r - first + newOffset ] = srcBufferToU8x[ r ];
