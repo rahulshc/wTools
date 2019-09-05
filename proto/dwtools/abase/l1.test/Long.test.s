@@ -7453,7 +7453,7 @@ function longFill( test )
   test.shouldThrowErrorSync( () => _.longFill( [ 1, 1, 1 ], 2, [ 1, 3 ], 1, 2 ) );
 
   test.case = 'not a range';
-  test.shouldThrowErrorSync( () => _.longFill( [ 1, 1 ], 2, 1 ) );
+  test.shouldThrowErrorSync( () => _.longFill( [ 1, 1 ], 2, [ 1 ] ) );
 
   test.case = 'wrong argument type';
   test.shouldThrowErrorSync( () => _.longFill( new BufferRaw(), 1 ) );
@@ -11521,21 +11521,16 @@ function bufferResize( test )
     let name = buf.name;
     return { [ name ] : function( src, offset, length ){ return new buf( src, offset, length ) } } [ name ];
   };
-  var bufferRaw = function( buf )
-  {
-    return buf;
-  }
 
   /* expected result */
 
   var expect = function( buf, offset, length )
   {
+    let buffer = _.bufferRelength( buf.buffer, [ offset, offset + length ] );
     if( _.bufferViewIs( buf ) )
-    return bufferView( buf.buffer, offset, length );
-    if( _.bufferRawIs( buf ) )
-    return buf.slice( offset, length );
+    return bufferView( buffer );
     else
-    return new buf.constructor( buf.buffer, offset, length / buf.BYTES_PER_ELEMENT );
+    return new buf.constructor( buffer );
   }
 
   /* tests */
@@ -11560,7 +11555,6 @@ function bufferResize( test )
 
   var list =
   [
-    bufferRaw,
     bufferNode,
     bufferView,
   ];
@@ -11586,6 +11580,22 @@ function bufferResize( test )
     test.is( got !== typed );
 
     test.case = 'not BufferRaw has offset, offset > -range[ 0 ]';
+    var filledBuf = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5 ] ).buffer;
+    var src = buf( filledBuf, 16, 1 );
+    var got = _.bufferResize( src, [ -8, 24 ] );
+    test.identical( got, expect( src, 8, 32 ) );
+    test.is( got !== typed );
+
+    test.case = 'not BufferRaw has offset, offset > -range[ 0 ]';
+    var buf = new BufferRaw( 20 );
+    var typed = new U16x( buf, 10, 5 );
+    typed[ 0 ] = 12;
+    debugger;
+    var got = _.bufferResize( typed, [ -10, 6 ] );
+    test.identical( got, new U16x( [ 0, 0, 0, 0, 0, 12, 0, 0 ] ) );
+    test.is( got !== typed );
+
+    test.case = 'not BufferRaw has offset, offset > -range[ 0 ]';
     var buf = new BufferRaw( 20 );
     var typed = Buffer.from( buf, 10, 10 );
     typed[ 0 ] = 12;
@@ -11593,22 +11603,7 @@ function bufferResize( test )
     test.identical( got, Buffer.from( [ 0, 0, 0, 0, 0, 12, 0, 0 ] ) );
     test.is( got !== typed );
   }
-  // test.case = 'not BufferRaw has offset, offset > -range[ 0 ]';
-  // var buf = new BufferRaw( 20 );
-  // var typed = new U16x( buf, 10, 5 );
-  // typed[ 0 ] = 12;
-  // debugger;
-  // var got = _.bufferResize( typed, [ -10, 6 ] );
-  // test.identical( got, new U16x( [ 0, 0, 0, 0, 0, 12, 0, 0 ] ) );
-  // test.is( got !== typed );
-  //
-  // test.case = 'not BufferRaw has offset, offset > -range[ 0 ]';
-  // var buf = new BufferRaw( 20 );
-  // var typed = Buffer.from( buf, 10, 10 );
-  // typed[ 0 ] = 12;
-  // var got = _.bufferResize( typed, [ -5, 3 ] );
-  // test.identical( got, Buffer.from( [ 0, 0, 0, 0, 0, 12, 0, 0 ] ) );
-  // test.is( got !== typed );
+
   //
   // /* typed buffer */
   //

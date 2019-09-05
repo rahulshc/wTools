@@ -492,16 +492,18 @@ function bufferMakeUndefined( ins, src )
      result = _.longMakeUndefined( dstArray, newLength );
    }
 
+   let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
+
    if( first > 0 )
    for( let i = 0; i < first; ++i )
-   result[ i ] = dstArray[ i ];
+   result[ i ] = dstArrayTyped[ i ];
 
    if( srcArray )
    for( let i = first, j = 0; j < srcArrayLength; )
    result[ i++ ] = srcArray[ j++ ];
 
    for( let j = last, i = first + srcArrayLength; j < length; )
-   result[ i++ ] = dstArray[ j++ ];
+   result[ i++ ] = dstArrayTyped[ j++ ];
 
    //
    if( _.bufferRawIs( dstArray ) )
@@ -700,10 +702,12 @@ function bufferSelect( dstArray, range, srcArray )
     result = _.longMakeUndefined( dstArray, newLength );
   }
 
+  let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
+
   let first2 = Math.max( first, 0 );
   let last2 = Math.min( length, last );
   for( let r = first2 ; r < last2 ; r++ )
-  result[ r-first2 ] = dstArray[ r ];
+  result[ r-first2 ] = dstArrayTyped[ r ];
 
   //
   if( _.bufferRawIs( dstArray ) )
@@ -796,10 +800,12 @@ function bufferGrow( dstArray, range, srcArray )
     result = _.longMakeUndefined( dstArray, newLength );
   }
 
+  let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
+
   let first2 = Math.max( first, 0 );
   let last2 = Math.min( length, last );
   for( let r = first2 ; r < last2 ; r++ )
-  result[ r-first2 ] = dstArray[ r ];
+  result[ r-first2 ] = dstArrayTyped[ r ];
 
   if( srcArray !== undefined )
   {
@@ -900,10 +906,12 @@ function bufferRelength( dstArray, range, srcArray )
     result = _.longMakeUndefined( dstArray, newLength );
   }
 
+  let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
+
   let first2 = Math.max( first, 0 );
   let last2 = Math.min( length, last );
   for( let r = first2 ; r < last2 ; r++ )
-  result[ r-first2 ] = dstArray[ r ];
+  result[ r-first2 ] = dstArrayTyped[ r ];
 
   if( srcArray !== undefined )
   {
@@ -1044,7 +1052,7 @@ function bufferResize( srcBuffer, size )
 
   var newOffset = srcBuffer.byteOffset + range[ 0 ];
 
-  if( !_.bufferRawIs( srcBuffer ) && newOffset + size <= srcBuffer.buffer.byteLength )
+  if( !_.bufferRawIs( srcBuffer ) && newOffset >= 0 && newOffset + size <= srcBuffer.buffer.byteLength )
   {
     if( srcBuffer.constructor.name === 'Buffer' )
     result = BufferNode.from( srcBuffer.buffer, newOffset, size );
@@ -1058,10 +1066,11 @@ function bufferResize( srcBuffer, size )
     let resultTyped = new U8x( size );
     let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
 
-    let first = Math.max( range[ 0 ], 0 );
-    let last = Math.min( srcBuffer.byteLength, size );
+    let first = Math.max( newOffset, 0 );
+    let last = Math.min( srcBufferToU8x.byteLength, size );
+    newOffset = newOffset < 0 ? -newOffset : 0;
     for( let r = first ; r < last ; r++ )
-    resultTyped[ r-first ] = srcBufferToU8x[ r ];
+    resultTyped[ r - first + newOffset ] = srcBufferToU8x[ r ];
 
     if( srcBuffer.constructor.name === 'Buffer' )
     result = BufferNode.from( resultTyped.buffer );
