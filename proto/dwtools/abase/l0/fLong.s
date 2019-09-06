@@ -2767,9 +2767,56 @@ function arrayNone( src )
 // array producer
 // --
 
+/**
+ * The routine arrayMake() returns a new Array maked from {-src-}.
+ *
+ * @param { Number|Long|Null } src - The number or any long object to make new Array. If null passed, routine returns an empty Array.
+ *
+ * @example
+ * _.arrayMake( null );
+ * // returns []
+ *
+ * @example
+ * _.arrayMake( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.arrayMake( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, '5' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = _.unrollMake( [ 1, 2, 'str' ] );
+ * let got = _.arrayMake( src );
+ * console.log( got );
+ * // log [ 1, 2, 'str' ]
+ * console.log( _.unrollIs( got ) );
+ * // log false
+ *
+ * @example
+ * let src = new U32x( [ 1, 2, 3, 4, 5 ] );
+ * let got = _.arrayMake( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( _.arrayIs( got ) );
+ * // log true
+ *
+ * @returns { Array } Returns a new Array maked from {-src-}.
+ * Otherwise, it returns the empty Array.
+ * @function arrayMake
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If argument {-src-} is not a number, not a long, not null.
+ * @memberof wTools
+ */
+
 /* qqq
 add good coverage for arrayMake
 take into account unroll cases
+Dmytro : coverage is extended
+test routine has unroll, arguments array, typed buffers cases
 */
 
 function arrayMake( src )
@@ -2791,7 +2838,68 @@ function arrayMake( src )
 
 //
 
-/* qqq : document and cover arrayMakeUndefined */
+/**
+ * The routine arrayMakeUndefined() returns a new Array with length equal to {-length-}.
+ * If the argument {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
+ *
+ * @param { Number|Long|Null } src - The number or any long object. If {-length-} is not provided, defines length of new Array.
+ * @param { Number } length - Defines length of new Array.
+ *
+ * @example
+ * _.arrayMakeUndefined( null );
+ * // returns []
+ *
+ * @example
+ * _.arrayMakeUndefined( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.arrayMakeUndefined( 5, 2 );
+ * // returns [ undefined, undefined ]
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.arrayMakeUndefined( src );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined, undefined, undefined ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.arrayMakeUndefined( src, 2 );
+ * console.log( got );
+ * // log [ undefined, undefined ]
+ *
+ * @example
+ * let src = _.unrollMake( [ 1, 2, 'str' ] );
+ * let got = _.arrayMakeUndefined( src );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined ]
+ * console.log( _.unrollIs( got ) );
+ * // log false
+ *
+ * @example
+ * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * let got = _.arrayMakeUndefined( src, 3 );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined ]
+ * console.log( _.arrayIs( got ) );
+ * // log true
+ *
+ * @returns { Array } Returns a new Array with length equal to {-length-} or defined from {-src-}.
+ * If null passed, routine returns the empty Array.
+ * @function arrayMakeUndefined
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @throws { Error } If argument {-src-} is not a number, not a long, not null.
+ * @throws { Error } If argument {-length-} is not a number, not undefined.
+ * @memberof wTools
+ */
+
+/*
+qqq : document and cover arrayMakeUndefined
+Dmytro : routine is covered and documented
+*/
 
 function arrayMakeUndefined( src, length )
 {
@@ -2801,6 +2909,10 @@ function arrayMakeUndefined( src, length )
 
   if( src && src.length && length === undefined )
   length = src.length;
+
+  // Dmytro : missed condition
+  if( _.numberIs( src ) && length === undefined )
+  length = src;
 
   if( !length )
   length = 0;
@@ -2814,6 +2926,7 @@ function arrayMakeUndefined( src, length )
 /* qqq
 add good coverage for arrayFrom
 take into account unroll cases
+Dmytro : covered with unroll cases.
 */
 
 function arrayFrom( src )
@@ -2879,7 +2992,51 @@ function arrayAsShallowing( src )
 // array transformer
 // --
 
-/* qqq : routine arraySlice requires good test coverage and documentation */
+/**
+ * The routine arraySlice() returns a shallow copy of a portion of {-srcArray-} into a new array object
+ * selected from first index {-f-} to last index {-l-}. The original {-srcArray-} will not be modified.
+ *
+ * @param { Array|Unroll } srcArray - The Array or Unroll from which makes a shallow copy.
+ * @param { Number } f - Defines the start index of copying.
+ * Negative value of argument {-f-} indicates an offset from the end of the sequence.
+ * If {-f-} is undefined, slice begins from index 0.
+ * If {-f-} is greater than the length of the sequence, an empty array is returned.
+ * @param { Number } l - Defines last index of copying. An element with this index not included.
+ * Negative value of {-l-} indicates an offset from the end of the sequence.
+ * If {-l-} is omitted, slice extracts through the end of the sequence ( srcArray.length ).
+ * If {-l-} is greater than the length of the sequence, slice extracts through to the end of the sequence (arr.length).
+ *
+ * @example
+ * _.arraySlice( [ 1, 2, 3, 4, '5' ] );
+ * // returns [ 1, 2, 3, 4, '5' ]
+ *
+ * @example
+ * _.arraySlice( [ 1, 2, 3, 4, '5' ], 1, 4 );
+ * // returns [ 2, 3, 4 ]
+ *
+ * @example
+ * _.arraySlice( [ 1, 2, 3, 4, '5' ], -2, 5 );
+ * // returns [ 4, '5' ]
+ *
+ * @example
+ * _.arraySlice( [ 1, 2, 3, 4, '5' ], 2, -1 );
+ * // returns [ 3, 4 ]
+ *
+ * @example
+ * _.arraySlice( [ 1, 2, 3, 4, '5' ], 6, 9 );
+ * // returns []
+ *
+ * @returns { Array } Returns a new Array containing the extracted elements.
+ * @function arraySlice
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-srcArray-} is not an array or unroll.
+ * @memberof wTools
+ */
+
+/*
+qqq : routine arraySlice requires good test coverage and documentation
+Dmytro : good test coverage is added, routine is documented
+*/
 
 function arraySlice( srcArray, f, l )
 {
