@@ -13848,6 +13848,13 @@ function arraySlice( test )
     test.identical( got, expected );
     test.is( got !== src );
 
+    test.case = 'f = undefined, l < src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, undefined, -2 );
+    var expected = [ 1, 2, 3 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
     test.case = 'f = undefined, l > src.length';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arraySlice( src, undefined, src.length + 5 );
@@ -13878,6 +13885,13 @@ function arraySlice( test )
     test.case = 'f = 0, l < src.length';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arraySlice( src, 0, src.length - 2 );
+    var expected = [ 1, 2, 3,  ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f = 0, l < 0';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, 0, -2 );
     var expected = [ 1, 2, 3,  ];
     test.identical( got, expected );
     test.is( got !== src );
@@ -13914,6 +13928,13 @@ function arraySlice( test )
     test.identical( got, expected );
     test.is( got !== src );
 
+    test.case = 'f > 0, l < 0';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, 2, -2 );
+    var expected = [ 3 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
     test.case = 'f > 0, l > src.length';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arraySlice( src, 2, src.length + 2 );
@@ -13944,6 +13965,13 @@ function arraySlice( test )
     test.identical( got, expected );
     test.is( got !== src );
 
+    test.case = 'f < 0, l < src.length, l < 0';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, -2, -1 );
+    var expected = [ 'str' ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
     test.case = 'f < 0, l < src.length, l < f';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arraySlice( src, -2, src.length - 3 );
@@ -13970,6 +13998,13 @@ function arraySlice( test )
     test.case = 'f = undefined, l < src.length';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arraySlice( src, src.length + 1, 3 );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f = undefined, l < 0';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, src.length + 1, -2 );
     var expected = [];
     test.identical( got, expected );
     test.is( got !== src );
@@ -23274,102 +23309,102 @@ function longUnduplicate( test )
   test.identical( dst, expected );
   test.identical( got, expected );
 
-  // dst is a typed array
+  // // dst is a typed array
+  //
+  // test.case = 'empty';
+  //
+  // var dst =  new U8x( 0 );
+  // var got = _.longUnduplicate( dst );
+  // var expected = new U8x( [] );
+  // test.identical( dst, expected );
+  // test.identical( got, expected );
+  //
+  // test.case = 'No duplicates - One element';
+  //
+  // var dst = new U8ClampedX( [ 300 ] );
+  // var got = _.longUnduplicate( dst );
+  // var expected = new U8ClampedX( [ 255 ] );
+  // test.identical( dst, expected );
+  // test.identical( got, expected );
+  //
+  // test.case = 'No duplicates - Several elements';
+  //
+  // var dst = new I8x( [ 1, 2, 3, '4', '5' ] );
+  // var got = _.longUnduplicate( dst );
+  // var expected = new I8x( [ 1, 2, 3, '4', '5' ] );
+  // test.identical( dst, expected );
+  // test.identical( got, expected );
+  //
+  // test.case = 'One duplicated element - new returned instance';
+  //
+  // var dst = new I8x( [ 1, 2, 2 ] );
+  // var got = _.longUnduplicate( dst );
+  // var expected = new I8x( [ 1, 2 ] );
+  // test.identical( got, expected );
+  // test.is( dst !== got );
+  //
+  // test.case = 'One duplicated element - Several elements';
+  //
+  // var dst =  new U8ClampedX( [ -12, 2, - 1, 0, - 11 ] );
+  // var got = _.longUnduplicate( dst );
+  // var expected =  new U8ClampedX( [ 0, 2 ] );
+  // test.identical( got, expected );
+  // test.is( dst !== got );
+  //
+  // test.case = 'Several duplicates several times';
+  //
+  // var dst = new I8x( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
+  // var got = _.longUnduplicate( dst );
+  // var expected = new I8x( [ 1, 2, 3, '4', 5 ] );
+  // test.identical( got, expected );
+  // test.is( dst !== got );
 
-  test.case = 'empty';
-
-  var dst =  new U8x( 0 );
-  var got = _.longUnduplicate( dst );
-  var expected = new U8x( [] );
-  test.identical( dst, expected );
-  test.identical( got, expected );
-
-  test.case = 'No duplicates - One element';
-
-  var dst = new U8ClampedX( [ 300 ] );
-  var got = _.longUnduplicate( dst );
-  var expected = new U8ClampedX( [ 255 ] );
-  test.identical( dst, expected );
-  test.identical( got, expected );
-
-  test.case = 'No duplicates - Several elements';
-
-  var dst = new I8x( [ 1, 2, 3, '4', '5' ] );
-  var got = _.longUnduplicate( dst );
-  var expected = new I8x( [ 1, 2, 3, '4', '5' ] );
-  test.identical( dst, expected );
-  test.identical( got, expected );
-
-  test.case = 'One duplicated element - new returned instance';
-
-  var dst = new I8x( [ 1, 2, 2 ] );
-  var got = _.longUnduplicate( dst );
-  var expected = new I8x( [ 1, 2 ] );
-  test.identical( got, expected );
-  test.is( dst !== got );
-
-  test.case = 'One duplicated element - Several elements';
-
-  var dst =  new U8ClampedX( [ -12, 2, - 1, 0, - 11 ] );
-  var got = _.longUnduplicate( dst );
-  var expected =  new U8ClampedX( [ 0, 2 ] );
-  test.identical( got, expected );
-  test.is( dst !== got );
-
-  test.case = 'Several duplicates several times';
-
-  var dst = new I8x( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
-  var got = _.longUnduplicate( dst );
-  var expected = new I8x( [ 1, 2, 3, '4', 5 ] );
-  test.identical( got, expected );
-  test.is( dst !== got );
-
-    // dst is arguments
-
-  function returnArgs( )
-  {
-    var got = _.longUnduplicate( arguments );
-    return got;
-  }
-
-  test.case = 'No duplicates';
-
-  var got = returnArgs( 1, '2', 3 );
-  var expected = [ 1, '2', 3 ];
-  test.identical( got.length, expected.length );
-  test.identical( got[ 0 ], expected[ 0 ] );
-  test.identical( got[ 1 ], expected[ 1 ] );
-  test.identical( got[ 2 ], expected[ 2 ] );
-
-  test.case = 'Duplicates';
-
-  var got = returnArgs( 1, '2', 3, 1, '2', 3 );
-  var expected = [ 1, '2', 3 ];
-  test.identical( got, expected );
-
-  // Evaluators
-
-  test.case = 'onEqualize';
-  var dst =  new I8x( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
-
-  var got  = _.longUnduplicate( dst, function( a, b )
-  {
-    return  a === b;
-  });
-  var expected =  new I8x( [ 1, 2, 3, '4', 5 ] );
-  test.identical( got, expected );
-  test.is( dst !== got );
-
-  test.case = 'Evaluator';
-  var dst =  new F32x( [ 1, 1.1, 1.48483, 1.5782920, 1.9 ] );
-
-  var got  = _.longUnduplicate( dst, function( a )
-  {
-    return  Math.floor( a );;
-  });
-  var expected =  new F32x( [ 1 ] );
-  test.identical( got, expected );
-  test.is( dst !== got );
+  //   // dst is arguments
+  //
+  // function returnArgs( )
+  // {
+  //   var got = _.longUnduplicate( arguments );
+  //   return got;
+  // }
+  //
+  // test.case = 'No duplicates';
+  //
+  // var got = returnArgs( 1, '2', 3 );
+  // var expected = [ 1, '2', 3 ];
+  // test.identical( got.length, expected.length );
+  // test.identical( got[ 0 ], expected[ 0 ] );
+  // test.identical( got[ 1 ], expected[ 1 ] );
+  // test.identical( got[ 2 ], expected[ 2 ] );
+  //
+  // test.case = 'Duplicates';
+  //
+  // var got = returnArgs( 1, '2', 3, 1, '2', 3 );
+  // var expected = [ 1, '2', 3 ];
+  // test.identical( got, expected );
+  //
+  // // Evaluators
+  //
+  // test.case = 'onEqualize';
+  // var dst =  new I8x( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
+  //
+  // var got  = _.longUnduplicate( dst, function( a, b )
+  // {
+  //   return  a === b;
+  // });
+  // var expected =  new I8x( [ 1, 2, 3, '4', 5 ] );
+  // test.identical( got, expected );
+  // test.is( dst !== got );
+  //
+  // test.case = 'Evaluator';
+  // var dst =  new F32x( [ 1, 1.1, 1.48483, 1.5782920, 1.9 ] );
+  //
+  // var got  = _.longUnduplicate( dst, function( a )
+  // {
+  //   return  Math.floor( a );;
+  // });
+  // var expected =  new F32x( [ 1 ] );
+  // test.identical( got, expected );
+  // test.is( dst !== got );
 
   //
 

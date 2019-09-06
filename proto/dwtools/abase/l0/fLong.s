@@ -2992,9 +2992,50 @@ function arrayAsShallowing( src )
 // array transformer
 // --
 
+/**
+ * The routine arraySlice() returns a shallow copy of a portion of {-srcArray-} into a new array object
+ * selected from first index {-f-} to last index {-l-}. The original {-srcArray-} will not be modified.
+ *
+ * @param { Array|Unroll } srcArray - The Array or Unroll from which makes a shallow copy.
+ * @param { Number } f - Defines the start index of copying.
+ * Negative value of argument {-f-} indicates an offset from the end of the sequence.
+ * If {-f-} is undefined, slice begins from index 0.
+ * If {-f-} is greater than the length of the sequence, an empty array is returned.
+ * @param { Number } l - Defines last index of copying. An element with this index not included.
+ * Negative value of {-l-} indicates an offset from the end of the sequence.
+ * If {-l-} is omitted, slice extracts through the end of the sequence ( srcArray.length ).
+ * If {-l-} is greater than the length of the sequence, slice extracts through to the end of the sequence (arr.length).
+ *
+ * @example
+ * _.arraySlice( [ 1, 2, 3, 4, '5' ] );
+ * // returns [ 1, 2, 3, 4, '5' ]
+ *
+ * @example
+ * _.arraySlice( [ 1, 2, 3, 4, '5' ], 1, 4 );
+ * // returns [ 2, 3, 4 ]
+ *
+ * @example
+ * _.arraySlice( [ 1, 2, 3, 4, '5' ], -2, 5 );
+ * // returns [ 4, '5' ]
+ *
+ * @example
+ * _.arraySlice( [ 1, 2, 3, 4, '5' ], 2, -1 );
+ * // returns [ 3, 4 ]
+ *
+ * @example
+ * _.arraySlice( [ 1, 2, 3, 4, '5' ], 6, 9 );
+ * // returns []
+ *
+ * @returns { Array } Returns a new Array containing the extracted elements.
+ * @function arraySlice
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-srcArray-} is not an array or unroll.
+ * @memberof wTools
+ */
+
 /*
 qqq : routine arraySlice requires good test coverage and documentation
-Dmytro : good test coverage is added
+Dmytro : good test coverage is added, routine is documented
 */
 
 function arraySlice( srcArray, f, l )
