@@ -2804,6 +2804,10 @@ function arrayMakeUndefined( src, length )
   if( src && src.length && length === undefined )
   length = src.length;
 
+  // Dmytro : missed condition
+  if( _.numberIs( src ) && length === undefined )
+  length = src;
+
   if( !length )
   length = 0;
 
