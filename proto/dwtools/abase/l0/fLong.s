@@ -2793,7 +2793,10 @@ function arrayMake( src )
 
 //
 
-/* qqq : document and cover arrayMakeUndefined */
+/*
+qqq : document and cover arrayMakeUndefined
+Dmytro : routine is covered, it has not documentation
+*/
 
 function arrayMakeUndefined( src, length )
 {
@@ -2820,6 +2823,7 @@ function arrayMakeUndefined( src, length )
 /* qqq
 add good coverage for arrayFrom
 take into account unroll cases
+Dmytro : covered with unroll cases.
 */
 
 function arrayFrom( src )
