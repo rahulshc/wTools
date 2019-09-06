@@ -2838,9 +2838,67 @@ function arrayMake( src )
 
 //
 
+/**
+ * The routine arrayMakeUndefined() returns a new Array with length equal to {-length-}.
+ * If the argument {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
+ *
+ * @param { Number|Long|Null } src - The number or any long object. If {-length-} is not provided, defines length of new Array.
+ * @param { Number } length - Defines length of new Array.
+ *
+ * @example
+ * _.arrayMakeUndefined( null );
+ * // returns []
+ *
+ * @example
+ * _.arrayMakeUndefined( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.arrayMakeUndefined( 5, 2 );
+ * // returns [ undefined, undefined ]
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.arrayMakeUndefined( src );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined, undefined, undefined ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.arrayMakeUndefined( src, 2 );
+ * console.log( got );
+ * // log [ undefined, undefined ]
+ *
+ * @example
+ * let src = _.unrollMake( [ 1, 2, 'str' ] );
+ * let got = _.arrayMakeUndefined( src );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined ]
+ * console.log( _.unrollIs( got ) );
+ * // log false
+ *
+ * @example
+ * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * let got = _.arrayMakeUndefined( src, 3 );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined ]
+ * console.log( _.arrayIs( got ) );
+ * // log true
+ *
+ * @returns { Array } Returns a new Array with length equal to {-length-} or defined from {-src-}.
+ * If null passed, routine returns the empty Array.
+ * @function arrayMakeUndefined
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @throws { Error } If argument {-src-} is not a number, not a long, not null.
+ * @throws { Error } If argument {-length-} is not a number, not undefined.
+ * @memberof wTools
+ */
+
 /*
 qqq : document and cover arrayMakeUndefined
-Dmytro : routine is covered, it has not documentation
+Dmytro : routine is covered and documented
 */
 
 function arrayMakeUndefined( src, length )
