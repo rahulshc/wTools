@@ -23079,8 +23079,13 @@ function longUnduplicate( test )
 
   /* callbacks */
 
-  var evalutor = ( e ) => e === null ? e : e.v;
-  var equalizer = ( e1, e2 ) => e1.v === e2.v;
+  var evaluator = ( e ) => _.mapIs( e ) ? e.v : e;
+  var equalizer = function( e1, e2 )
+  {
+    e1 = _.mapIs( e1 ) ? e1.v : e1;
+    e2 = _.mapIs( e2 ) ? e2.v : e2;
+    return e1 === e2;
+  }
 
   /* lists */
 
@@ -23119,7 +23124,7 @@ function longUnduplicate( test )
 
   var listOnEvaluate =
   [
-    evalutor,
+    evaluator,
     equalizer,
   ]
 
@@ -23295,10 +23300,10 @@ function longUnduplicate( test )
     test.is( got !== src );
 
     test.case = 'dstArg.length > 0 srcArg.length > 0, duplicates';
-    var dst = makeDst( [ { v : 3 }, 3, 1 ] );
+    var dst = makeDst( [ { v : 3 }, 4, 10 ] );
     var src = [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ];
     var got = _.longUnduplicate( dst, src, onEvaluate );
-    var expected = makeDst( [  { v : 3 }, 3, 1, { v : 1 }, { v : 2 } ] );
+    var expected = makeDst( [  { v : 3 }, 4, 10, { v : 1 }, { v : 2 } ] );
     test.identical( got, expected );
     test.is( got === dst );
     test.is( got !== src );
@@ -23327,9 +23332,9 @@ function longUnduplicate( test )
     test.is( got === dst );
 
     test.case = 'dstArg.length > 0 srcArg.length > 0, duplicates';
-    var dst = makeDst( [ { v : 3 }, 3, 1, [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] ] );
+    var dst = makeDst( [ { v : 3 }, 4, 1, { v : 1 }, { v : 5 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
     var got = _.longUnduplicate( dst, onEvaluate );
-    var expected = makeDst( [  { v : 3 }, 3, 1, { v : 1 }, { v : 2 } ] );
+    var expected = makeDst( [ { v : 3 }, 4, 1, { v : 5 }, { v : 2 } ] );
     test.identical( got, expected );
     test.is( got === dst );
   }
