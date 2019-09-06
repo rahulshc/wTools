@@ -492,16 +492,18 @@ function bufferMakeUndefined( ins, src )
      result = _.longMakeUndefined( dstArray, newLength );
    }
 
+   let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
+
    if( first > 0 )
    for( let i = 0; i < first; ++i )
-   result[ i ] = dstArray[ i ];
+   result[ i ] = dstArrayTyped[ i ];
 
    if( srcArray )
    for( let i = first, j = 0; j < srcArrayLength; )
    result[ i++ ] = srcArray[ j++ ];
 
    for( let j = last, i = first + srcArrayLength; j < length; )
-   result[ i++ ] = dstArray[ j++ ];
+   result[ i++ ] = dstArrayTyped[ j++ ];
 
    //
    if( _.bufferRawIs( dstArray ) )
@@ -700,10 +702,12 @@ function bufferSelect( dstArray, range, srcArray )
     result = _.longMakeUndefined( dstArray, newLength );
   }
 
+  let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
+
   let first2 = Math.max( first, 0 );
   let last2 = Math.min( length, last );
   for( let r = first2 ; r < last2 ; r++ )
-  result[ r-first2 ] = dstArray[ r ];
+  result[ r-first2 ] = dstArrayTyped[ r ];
 
   //
   if( _.bufferRawIs( dstArray ) )
@@ -796,10 +800,12 @@ function bufferGrow( dstArray, range, srcArray )
     result = _.longMakeUndefined( dstArray, newLength );
   }
 
+  let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
+
   let first2 = Math.max( first, 0 );
   let last2 = Math.min( length, last );
   for( let r = first2 ; r < last2 ; r++ )
-  result[ r-first2 ] = dstArray[ r ];
+  result[ r-first2 ] = dstArrayTyped[ r ];
 
   if( srcArray !== undefined )
   {
@@ -900,10 +906,12 @@ function bufferRelength( dstArray, range, srcArray )
     result = _.longMakeUndefined( dstArray, newLength );
   }
 
+  let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
+
   let first2 = Math.max( first, 0 );
   let last2 = Math.min( length, last );
   for( let r = first2 ; r < last2 ; r++ )
-  result[ r-first2 ] = dstArray[ r ];
+  result[ r-first2 ] = dstArrayTyped[ r ];
 
   if( srcArray !== undefined )
   {
@@ -1021,10 +1029,12 @@ function bufferRelen( src, len )
 
 /*
 qqq : implement for 2 other types of buffer and do code test coverage
+Dmytro : implemented for all buffer types
 */
 
 /*
   qqq : wrong! Size and length are different concepts.
+  Dmytro : use concept size in routine
 */
 
 function bufferResize( srcBuffer, size )
@@ -1034,19 +1044,22 @@ function bufferResize( srcBuffer, size )
   let range = _.rangeIs( size ) ? size : [ 0, size ];
   size = range[ 1 ] - range[ 0 ];
 
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
   _.assert( _.bufferAnyIs( srcBuffer ) );
   _.assert( srcBuffer.byteLength >= 0 );
-  _.assert( _.numberIs( size ) );
+  _.assert( _.rangeIs( range ) );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  var newOffset = srcBuffer.byteOffset + range[ 0 ];
+  var newOffset = srcBuffer.byteOffset ? srcBuffer.byteOffset + range[ 0 ] : range[ 0 ];
 
-  if( !_.bufferRawIs( srcBuffer ) && newOffset + size <= srcBuffer.buffer.byteLength )
+  if( !_.bufferRawIs( srcBuffer ) && newOffset >= 0 && newOffset + size <= srcBuffer.buffer.byteLength )
   {
     if( srcBuffer.constructor.name === 'Buffer' )
-    result = Buffer.from( srcBuffer.buffer, newOffset, size );
+    result = BufferNode.from( srcBuffer.buffer, newOffset, size );
     if( srcBuffer.constructor.name === 'DataView' )
-    result = new DataView( srcBuffer.buffer, newOffset, size );
+    result = new BufferView( srcBuffer.buffer, newOffset, size );
     else
     result = new srcBuffer.constructor( srcBuffer.buffer, newOffset, size / srcBuffer.BYTES_PER_ELEMENT );
   }
@@ -1055,15 +1068,16 @@ function bufferResize( srcBuffer, size )
     let resultTyped = new U8x( size );
     let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
 
-    let first = Math.max( range[ 0 ], 0 );
-    let last = Math.min( srcBuffer.byteLength, size );
+    let first = Math.max( newOffset, 0 );
+    let last = Math.min( srcBufferToU8x.byteLength, newOffset + size );
+    newOffset = newOffset < 0 ? -newOffset : 0;
     for( let r = first ; r < last ; r++ )
-    resultTyped[ r-first ] = srcBufferToU8x[ r ];
+    resultTyped[ r - first + newOffset ] = srcBufferToU8x[ r ];
 
     if( srcBuffer.constructor.name === 'Buffer' )
-    result = Buffer.from( resultTyped.buffer );
+    result = BufferNode.from( resultTyped.buffer );
     if( srcBuffer.constructor.name === 'DataView' )
-    result = new DataView( resultTyped.buffer );
+    result = new BufferView( resultTyped.buffer );
     if( srcBuffer.constructor.name === 'ArrayBuffer' )
     result = resultTyped.buffer;
     else
@@ -1095,6 +1109,22 @@ function bufferResize( srcBuffer, size )
 //
 //   return result;
 // }
+
+//
+
+function bufferResizeInplace( srcBuffer, size )
+{
+  _.assert( _.bufferAnyIs( srcBuffer ) );
+  _.assert( srcBuffer.byteLength >= 0 );
+  _.assert( _.numberIs( size ) || _.rangeIs( size ) );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  let range = _.rangeIs( size ) ? size : [ 0, size ];
+  if( range[ 0 ] === 0 && range[ 1 ] === srcBuffer.byteLength )
+  return srcBuffer;
+  else
+  return bufferResize( srcBuffer, range );
+}
 
 //
 
@@ -4364,6 +4394,7 @@ let Routines =
   bufferRelengthInplace,
   bufferRelen,
   bufferResize,
+  bufferResizeInplace,
   bufferBytesGet,
   bufferRetype,
 
