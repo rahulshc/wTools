@@ -12638,6 +12638,7 @@ function arrayMake( test )
   var expected = [];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = arguments array, src.length = 1';
@@ -12646,6 +12647,7 @@ function arrayMake( test )
   var expected = [ {} ];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = arguments array, src.length > 1';
@@ -12654,6 +12656,7 @@ function arrayMake( test )
   var expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   /* */
@@ -12664,6 +12667,7 @@ function arrayMake( test )
   var expected = [];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = unroll, src.length = 1';
@@ -12672,6 +12676,7 @@ function arrayMake( test )
   var expected = [ 'str' ];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = unroll, src.length > 1';
@@ -12680,6 +12685,7 @@ function arrayMake( test )
   var expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   /* - */
@@ -12957,6 +12963,7 @@ function arrayMakeUndefined( test )
   var expected = new Array();
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = empty arguments array, length > 0';
@@ -12965,6 +12972,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 2 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = arguments array, src.length = 1';
@@ -12973,6 +12981,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = arguments array, src.length = 1, length > src.length';
@@ -12981,6 +12990,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 2 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = arguments array, src.length > 1';
@@ -12989,6 +12999,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 3 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = arguments array, src.length > 1, length < src.length';
@@ -12997,6 +13008,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   /* */
@@ -13007,6 +13019,7 @@ function arrayMakeUndefined( test )
   var expected = new Array();
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = empty unroll, length = 2';
@@ -13015,6 +13028,7 @@ function arrayMakeUndefined( test )
   var expected = new Array();
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = unroll, src.length = 1';
@@ -13023,6 +13037,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = unroll, src.length = 1, length > src.length';
@@ -13031,6 +13046,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 2 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = unroll, src.length > 1';
@@ -13039,6 +13055,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 3 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = unroll, src.length > 1, length < src.length';
@@ -13047,6 +13064,7 @@ function arrayMakeUndefined( test )
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   /* - */
@@ -13106,6 +13124,7 @@ function arrayFrom( test )
   var expected = [];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = empty argumentsArray';
@@ -13114,6 +13133,7 @@ function arrayFrom( test )
   var expected = [];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = empty I8x';
@@ -13156,6 +13176,7 @@ function arrayFrom( test )
   var expected = [ 1 ];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = argumentsArray, src.length = 1';
@@ -13164,6 +13185,7 @@ function arrayFrom( test )
   var expected = [ 'str' ];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = I8x, src.length = 1';
@@ -13206,6 +13228,7 @@ function arrayFrom( test )
   var expected = [ 1, 2, 'str' ];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = argumentsArray, src.length = 1';
@@ -13214,6 +13237,7 @@ function arrayFrom( test )
   var expected = [ 1, 2, 'str' ];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
   test.case = 'src = I8x, src.length = 1';

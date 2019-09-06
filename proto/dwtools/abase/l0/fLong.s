@@ -2767,6 +2767,51 @@ function arrayNone( src )
 // array producer
 // --
 
+/**
+ * The routine arrayMake() returns a new Array maked from {-src-}.
+ *
+ * @param { Number|Long|Null } src - The number or any long object to make new Array. If null passed, routine returns an empty Array.
+ *
+ * @example
+ * _.arrayMake( null );
+ * // returns []
+ *
+ * @example
+ * _.arrayMake( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.arrayMake( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, '5' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = _.unrollMake( [ 1, 2, 'str' ] );
+ * let got = _.arrayMake( src );
+ * console.log( got );
+ * // log [ 1, 2, 'str' ]
+ * console.log( _.unrollIs( got ) );
+ * // log false
+ *
+ * @example
+ * let src = new U32x( [ 1, 2, 3, 4, 5 ] );
+ * let got = _.arrayMake( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( _.arrayIs( got ) );
+ * // log true
+ *
+ * @returns { Array } Returns a new Array maked from {-src-}.
+ * Otherwise, it returns the empty Array.
+ * @function arrayMake
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If argument {-src-} is not a number, not a long, not null.
+ * @memberof wTools
+ */
+
 /* qqq
 add good coverage for arrayMake
 take into account unroll cases
