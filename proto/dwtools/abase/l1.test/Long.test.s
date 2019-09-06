@@ -10,9 +10,9 @@ if( typeof module !== 'undefined' )
 
 var _ = wTools;
 
-////
+//--
 // scalar
-////
+//--
 
 function scalarAppend( test )
 {
@@ -512,9 +512,9 @@ function scalarToVector( test )
 
 };
 
-////
+//--
 // arguments array
-////
+//--
 
 function argumentsArrayMake( test )
 {
@@ -2464,9 +2464,9 @@ function unrollRemove( test )
   });
 }
 
-////
+//--
 // long
-////
+//--
 
 //
 
@@ -13779,6 +13779,201 @@ function arrayHasAny( test )
   });
 
 };
+
+//
+
+function arraySlice( test )
+{
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+
+  /* - */
+
+  test.open( 'array' );
+  run( array );
+  test.close( 'array' );
+
+  /* - */
+
+  test.open( 'unroll' );
+  run( unroll );
+  test.close( 'unroll' );
+
+  /* - */
+
+  function run( make )
+  {
+    test.case = 'f = undefined, l = undefined';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f = undefined, l = src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, undefined, src.length );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f = undefined, l < src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, undefined, 3 );
+    var expected = [ 1, 2, 3 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f = undefined, l > src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, undefined, src.length + 5 );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'f = 0, l = undefined';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, 0, src.length );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    var expected2 = _.arraySlice( src );
+    test.identical( got, expected );
+    test.identical( got, expected2 );
+    test.is( got !== src );
+
+    test.case = 'f = 0, l = src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, 0, src.length );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    var expected2 = _.arraySlice( src );
+    test.identical( got, expected );
+    test.identical( got, expected2 );
+    test.is( got !== src );
+
+    test.case = 'f = 0, l < src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, 0, src.length - 2 );
+    var expected = [ 1, 2, 3,  ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f = 0, l > src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, 0, src.length + 5 );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    var expected2 = _.arraySlice( src );
+    test.identical( got, expected );
+    test.identical( got, expected2 );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'f > 0, l = undefined';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, 2 );
+    var expected = [ 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f > 0, l = src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, 2, src.length );
+    var expected = [ 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f > 0, l < src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, 2, src.length - 2 );
+    var expected = [ 3 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f > 0, l > src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, 2, src.length + 2 );
+    var expected = [ 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'f < 0, l = undefined';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, -2 );
+    var expected = [ 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f < 0, l = src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, -2, src.length );
+    var expected = [ 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f < 0, l < src.length, l > f';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, -2, src.length - 1 );
+    var expected = [ 'str' ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f < 0, l < src.length, l < f';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, -2, src.length - 3 );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'f > src.length, l = undefined';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, src.length + 1, src.length );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f > src.length, l = src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, src.length + 1, src.length );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f = undefined, l < src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, src.length + 1, 3 );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'f = undefined, l > src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arraySlice( src, src.length + 1, src.length + 5 );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arraySlice() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arraySlice( [ 1, 2, 3 ], 1, 2, 'extra' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.arraySlice( 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.arraySlice( _.argumentsArrayMake( [ 1, 2 ] ) ) );
+  test.shouldThrowErrorSync( () => _.arraySlice( new F32x( 2 ) ) );
+}
 
 //
 
@@ -30151,9 +30346,9 @@ function loggerProblemExperiment( test )
 
 //
 
-////
+//--
 // unused, routine is not defined
-////
+//--
 
 //function arrayJoin( test )
 //{
@@ -30437,6 +30632,7 @@ var Self =
 
     // array transformer
 
+    arraySlice,
     arrayBut,
     arrayButInplace,
     arraySelect,

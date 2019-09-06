@@ -2889,7 +2889,10 @@ function arrayAsShallowing( src )
 // array transformer
 // --
 
-/* qqq : routine arraySlice requires good test coverage and documentation */
+/*
+qqq : routine arraySlice requires good test coverage and documentation
+Dmytro : good test coverage is added
+*/
 
 function arraySlice( srcArray, f, l )
 {
