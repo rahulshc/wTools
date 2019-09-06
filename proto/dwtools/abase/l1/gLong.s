@@ -1666,6 +1666,8 @@ function bufferRawFrom( buffer )
 {
   let result;
 
+  /* qqq : should do not copying when possible! */
+
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( buffer instanceof BufferRaw )
