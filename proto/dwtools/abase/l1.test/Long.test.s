@@ -6803,198 +6803,6 @@ function longMask( test )
 
 //
 
-function longUnduplicate( test )
-{
-
-  /* */
-
-  test.case = 'dst=empty, two args';
-  var dst = [];
-  var src = undefined;
-  var got = _.longUnduplicate( dst, src );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  test.case = 'dst=empty, single arg';
-  var dst = [];
-  var src = undefined;
-  var got = _.longUnduplicate( dst );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  test.case = 'src=empty';
-  var dst = null;
-  var src = [];
-  var got = _.longUnduplicate( dst, src );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( got !== dst );
-  test.is( got !== src );
-
-  test.case = 'dst=empty, src=empty';
-  var dst = [];
-  var src = [];
-  var got = _.longUnduplicate( dst, src );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'dst=array';
-  var dst = [ 1, 1, 2, 3, 3, 4, 5, 5 ];
-  var src = undefined;
-  var got = _.longUnduplicate( dst, src );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  test.case = 'src=array';
-  var dst = null;
-  var src = [ 2, 2, 4, 4, 6, 6 ];
-  var got = _.longUnduplicate( dst, src );
-  var expected = [ 2, 4, 6 ];
-  test.identical( got, expected );
-  test.is( got !== dst );
-  test.is( got !== src );
-
-  test.case = 'dst=array, src=array';
-  var dst = [ 1, 1, 2, 3, 3, 4, 5, 5 ];
-  var src = [ 2, 2, 4, 4, 6, 6 ];
-  var got = _.longUnduplicate( dst, src );
-  var expected = [ 1, 2, 3, 4, 5, 6 ];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'dst=F32x';
-  var dst = [ 1, 1, 2, 3, 3, 4, 5, 5 ];
-  var src = undefined;
-  var got = _.longUnduplicate( dst, src );
-  var expected = [ 1, 2, 3, 4, 5 ];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  test.case = 'src=F32x';
-  var dst = null;
-  var src = new F32x( [ 2, 2, 4, 4, 6, 6 ] );
-  var got = _.longUnduplicate( dst, src );
-  var expected = new F32x( [ 2, 4, 6 ] );
-  test.identical( got, expected );
-  test.is( got !== dst );
-  test.is( got !== src );
-  test.is( got instanceof F32x );
-
-  test.case = 'dst=F32x, src=F32x';
-  var dst = [ 1, 1, 2, 3, 3, 4, 5, 5 ];
-  var src = new F32x( [ 2, 2, 4, 4, 6, 6 ] );
-  var got = _.longUnduplicate( dst, src );
-  var expected = [ 1, 2, 3, 4, 5, 6 ];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'dst=array, with evaluator';
-  var dst = null;
-  var src = [ { v : 2 }, { v : 2 }, { v : 4 }, { v : 4 }, { v : 6 }, { v : 6 } ];
-  var got = _.longUnduplicate( dst, src, evaluator );
-  var expected = [ { v : 2 }, { v : 4 }, { v : 6 } ];
-  test.identical( got, expected );
-  test.is( got !== dst );
-  test.is( got !== src );
-
-  test.case = 'dst=array, src=undefined, with evaluator';
-  var dst = [ { v : 1 }, { v : 1 }, { v : 2 }, { v : 3 }, { v : 3 }, { v : 4 }, { v : 5 }, { v : 5 } ];
-  var src = undefined;
-  var got = _.longUnduplicate( dst, src, evaluator );
-  var expected = [ { v : 1 }, { v : 2 }, { v : 3 }, { v : 4 }, { v : 5 } ];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  test.case = 'dst=array, src=undefined, with evaluator in 2th argument';
-  var dst = [ { v : 1 }, { v : 1 }, { v : 2 }, { v : 3 }, { v : 3 }, { v : 4 }, { v : 5 }, { v : 5 } ];
-  var src = undefined;
-  var got = _.longUnduplicate( dst, evaluator );
-  var expected = [ { v : 1 }, { v : 2 }, { v : 3 }, { v : 4 }, { v : 5 } ];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  test.case = 'dst=array, src=array, with evaluator';
-  var dst = [ { v : 1 }, { v : 1 }, { v : 2 }, { v : 3 }, { v : 3 }, { v : 4 }, { v : 5 }, { v : 5 } ];
-  var src = [ { v : 2 }, { v : 2 }, { v : 4 }, { v : 4 }, { v : 6 }, { v : 6 } ];
-  var got = _.longUnduplicate( dst, src, evaluator );
-  var expected = [ { v : 1 }, { v : 2 }, { v : 3 }, { v : 4 }, { v : 5 }, { v : 6 } ];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  /* */
-
-  test.case = 'dst=array, with equalizer';
-  var dst = null;
-  var src = [ { v : 2 }, { v : 2 }, { v : 4 }, { v : 4 }, { v : 6 }, { v : 6 } ];
-  var got = _.longUnduplicate( dst, src, equalizer );
-  var expected = [ { v : 2 }, { v : 4 }, { v : 6 } ];
-  test.identical( got, expected );
-  test.is( got !== dst );
-  test.is( got !== src );
-
-  test.case = 'dst=array, src=undefined, with equalizer';
-  var dst = [ { v : 1 }, { v : 1 }, { v : 2 }, { v : 3 }, { v : 3 }, { v : 4 }, { v : 5 }, { v : 5 } ];
-  var src = undefined;
-  var got = _.longUnduplicate( dst, src, equalizer );
-  var expected = [ { v : 1 }, { v : 2 }, { v : 3 }, { v : 4 }, { v : 5 } ];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  test.case = 'dst=array, src=undefined, with equalizer in 2th argument';
-  var dst = [ { v : 1 }, { v : 1 }, { v : 2 }, { v : 3 }, { v : 3 }, { v : 4 }, { v : 5 }, { v : 5 } ];
-  var src = undefined;
-  var got = _.longUnduplicate( dst, equalizer );
-  var expected = [ { v : 1 }, { v : 2 }, { v : 3 }, { v : 4 }, { v : 5 } ];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  test.case = 'dst=array, src=array, with equalizer';
-  var dst = [ { v : 1 }, { v : 1 }, { v : 2 }, { v : 3 }, { v : 3 }, { v : 4 }, { v : 5 }, { v : 5 } ];
-  var src = [ { v : 2 }, { v : 2 }, { v : 4 }, { v : 4 }, { v : 6 }, { v : 6 } ];
-  var got = _.longUnduplicate( dst, src, equalizer );
-  var expected = [ { v : 1 }, { v : 2 }, { v : 3 }, { v : 4 }, { v : 5 }, { v : 6 } ];
-  test.identical( got, expected );
-  test.is( got === dst );
-  test.is( got !== src );
-
-  /* */
-
-  function evaluator( e )
-  {
-    return e.v;
-  }
-
-  function equalizer( e1, e2 )
-  {
-    return e1.v === e2.v;
-  }
-
-}
-
-//
-
 function longSelectWithIndices( test )
 {
 
@@ -23271,18 +23079,24 @@ function longUnduplicate( test )
 
   /* callbacks */
 
-  var callback = ( v ) => v >= 3;
-  var callback2 = ( v1, v2 ) => v1 === v2;
+  var evalutor = ( e ) => e === null ? e : e.v;
+  var equalizer = ( e1, e2 ) => e1.v === e2.v;
 
-  /* tests */
+  /* lists */
 
-  var list =
+  var listDst =
+  [
+    array,
+    unroll,
+  ]
+
+  var listSrc =
   [
     array,
     unroll,
     argumentsArray,
   ];
-  var typedList =
+  var listSrcTyped =
   [
     I8x,
     U16x,
@@ -23300,38 +23114,54 @@ function longUnduplicate( test )
     // F64x,
   ];
 
-  for( let i = 0; i < typedList.length; i++ )
-  list.push( bufferTyped( typedList[ i ] ) );
+  for( let i = 0; i < listSrcTyped.length; i++ )
+  listSrc.push( bufferTyped( listSrcTyped[ i ] ) );
 
-  /* - */
+  var listOnEvaluate =
+  [
+    evalutor,
+    equalizer,
+  ]
 
-  test.open( 'array' );
-  dstOnly( array );
-  test.close( 'array' );
+  /* only dst */
 
-  /* - */
-
-  test.open( 'unroll' );
-  dstOnly( unroll );
-  test.close( 'unroll' );
-
-  /* - */
-
-  for( let i = 0; i < list.length; i++ )
+  for( let d = 0; d < listDst.length; d++ )
   {
-    test.open( 'src = ' + list[ i ].name );
+    test.open( 'dst = ' + listDst[ d ].name );
+    dstOnly( listDst[ d ] );
+    test.close( 'dst = ' + listDst[ d ].name );
+  }
 
-    test.open( 'dst = array' );
-    dstAndSrc( array, list[ i ] );
-    test.close( 'dst = array' );
+  /* dst and src */
 
-    /* - */
+  for( let i = 0; i < listSrc.length; i++ )
+  {
+    test.open( 'src = ' + listSrc[ i ].name );
 
-    test.open( 'dst = unroll' );
-    dstOnly( unroll, list[ i ] );
-    test.close( 'dst = unroll' );
+    for( let d = 0; d < listDst.length; d++ )
+    {
+      test.open( 'dst = ' + listDst[ d ].name );
+      dstAndSrc( listDst[ d ], listSrc[ i ] );
+      test.close( 'dst = ' + listDst[ d ].name );
+    }
 
-    test.close( 'src = ' + list[ i ].name );
+    test.close( 'src = ' + listSrc[ i ].name );
+  }
+
+  /* dst and onEvaluate, src in test cases */
+
+  for( let i = 0; i < listDst.length; i++ )
+  {
+    test.open( 'dst = ' + listDst[ i ].name );
+
+    for( let d = 0; d < listOnEvaluate.length; d++ )
+    {
+      test.open( 'onEvaluate = ' + listOnEvaluate[ d ].name );
+      dstAndOnEvaluate( listDst[ i ], listOnEvaluate[ d ] );
+      test.close( 'onEvaluate = ' + listOnEvaluate[ d ].name );
+    }
+
+    test.close( 'dst = ' + listDst[ i ].name );
   }
 
   /* test routines */
@@ -23431,6 +23261,77 @@ function longUnduplicate( test )
     test.identical( got, expected );
     test.is( got === dst );
     test.is( got !== src );
+  }
+
+  /* - */
+
+  function dstAndOnEvaluate( makeDst, onEvaluate )
+  {
+    test.case = 'dstArg = null, srcArg > 1, duplicates';
+    var dst = makeDst( null );
+    var src = [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ];
+    var got = _.longUnduplicate( dst, src, onEvaluate );
+    var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+    test.is( got !== src );
+
+    test.case = 'dstArg.length = 0 srcArg.length > 1, duplicates';
+    var dst = makeDst( [] );
+    var src = [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ];
+    var got = _.longUnduplicate( dst, src, onEvaluate );
+    var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+    test.is( got !== src );
+
+    test.case = 'dstArg.length > 0 srcArg.length > 0, no duplicates';
+    var dst = makeDst( [ 5, 6 ] );
+    var src = [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ];
+    var got = _.longUnduplicate( dst, src, onEvaluate );
+    var expected = makeDst( [ 5, 6, { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+    test.is( got !== src );
+
+    test.case = 'dstArg.length > 0 srcArg.length > 0, duplicates';
+    var dst = makeDst( [ { v : 3 }, 3, 1 ] );
+    var src = [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ];
+    var got = _.longUnduplicate( dst, src, onEvaluate );
+    var expected = makeDst( [  { v : 3 }, 3, 1, { v : 1 }, { v : 2 } ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+    test.is( got !== src );
+
+    /* */
+
+    test.case = 'dstArg = null, srcArg > 1, duplicates';
+    var dst = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
+    var got = _.longUnduplicate( dst, onEvaluate );
+    var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'dstArg.length = 0 srcArg.length > 1, duplicates';
+    var dst = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
+    var got = _.longUnduplicate( dst, onEvaluate );
+    var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'dstArg.length > 0 srcArg.length > 0, no duplicates';
+    var dst = makeDst( [ 5, 6, { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
+    var got = _.longUnduplicate( dst, onEvaluate );
+    var expected = makeDst( [ 5, 6, { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'dstArg.length > 0 srcArg.length > 0, duplicates';
+    var dst = makeDst( [ { v : 3 }, 3, 1, [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] ] );
+    var got = _.longUnduplicate( dst, onEvaluate );
+    var expected = makeDst( [  { v : 3 }, 3, 1, { v : 1 }, { v : 2 } ] );
+    test.identical( got, expected );
+    test.is( got === dst );
   }
 
   /* - */
