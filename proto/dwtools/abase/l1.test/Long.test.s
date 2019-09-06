@@ -16852,6 +16852,16 @@ function arrayPrependArrays( test )
   test.identical( dst, [ undefined, 2, 1 ] );
   test.is( got === dst );
 
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayPrependArrays( dst, dst );
+  test.identical( got, [ 1,2,3,1,2,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayPrependArrays( dst, [ dst ] );
+  test.identical( got, [ 1,2,3,1,2,3 ] );
+
   /**/
 
   if( !Config.debug )
@@ -16980,6 +16990,60 @@ function arrayPrependArraysOnce( test )
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayPrependArraysOnce( dst, dst );
+  test.identical( got, [ 1,2,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnce( dst, [ dst ] );
+  test.identical( got, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src'
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnce( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnce( dst, dst, ( e ) => e );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnce( dst, dst, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src with evaluators';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnce( dst, dst, ( e ) => e, ( e ) => e );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnce( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnce( dst, [ dst ], ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnce( dst, [ dst,dst ], ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3, 1,1,2,2,3,3, 1,1,2,2,3,3, 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
   /**/
 
   if( !Config.debug )
@@ -17074,6 +17138,88 @@ function arrayPrependArraysOnceStrictly( test )
     _.arrayPrependArraysOnceStrictly( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArraysOnceStrictly( dst, dst ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,2,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArraysOnceStrictly( dst, [ dst ] ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,2,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArraysOnceStrictly( dst, dst ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArraysOnceStrictly( dst, [ dst ] ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArraysOnceStrictly( dst, dst, ( e ) => e ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e )
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArraysOnceStrictly( dst, [ dst ], ( e ) => e ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e )
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArraysOnceStrictly( dst, dst, ( e ) => e, ( e ) => e ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e)
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependArraysOnceStrictly( dst, [ dst ], ( e ) => e, ( e ) => e ) );
+  else
+  _.arrayPrependArrayOnceStrictly( dst, dst, ( e ) => e, ( e ) => e)
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnceStrictly( dst, [ dst ], ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependArraysOnceStrictly( dst, [ dst, dst ], ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3,1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, dst );
 
   /**/
 
@@ -17186,6 +17332,24 @@ function arrayPrependedArrays( test )
   var got = _.arrayPrependedArrays( dst, [ undefined, 2 ] );
   test.identical( dst, [ undefined, 2, 1 ] );
   test.identical( got, 2 );
+
+  test.case = 'dst === ins';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArrays( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === ins';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArrays( dst, [ dst ] );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === ins';
+  var dst = [ 1,1,2,2 ];
+  var got = _.arrayPrependedArrays( dst, [ dst, dst ] );
+  test.identical( dst, [ 1,1,2,2,1,1,2,2,1,1,2,2,1,1,2,2 ] );
+  test.identical( got, 12);
 
   /**/
 
@@ -17312,6 +17476,60 @@ function arrayPrependedArraysOnce( test )
   });
   test.identical( dst, [ undefined, 2, 1 ] );
 
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  var got = _.arrayPrependedArraysOnce( dst, dst );
+  test.identical( dst, [ 1,2,3 ] );
+  test.identical( got, 0 );
+
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnce( dst, [ dst ] );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, 0 );
+
+  test.case = 'dst === src'
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnce( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, 0 );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnce( dst, dst, ( e ) => e );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, 0 );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnce( dst, dst, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, 0 );
+
+  test.case = 'dst === src with evaluators';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnce( dst, dst, ( e ) => e, ( e ) => e );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, 0 );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnce( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnce( dst, [ dst ], ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnce( dst, [ dst,dst ], ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3, 1,1,2,2,3,3, 1,1,2,2,3,3, 1,1,2,2,3,3 ] );
+  test.identical( got, 18 );
+
   /**/
 
   if( !Config.debug )
@@ -17426,6 +17644,88 @@ function arrayPrependedArraysOnceStrictly( test )
     _.arrayPrependedArraysOnceStrictly( dst, [ undefined, 2 ] );
   });
   test.identical( dst, [ undefined, 2, 1 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArraysOnceStrictly( dst, dst ) );
+  else
+  _.arrayPrependedArraysOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,2,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,2,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArraysOnceStrictly( dst, [ dst ] ) );
+  else
+  _.arrayPrependedArraysOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,2,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArraysOnceStrictly( dst, dst ) );
+  else
+  _.arrayPrependedArraysOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArraysOnceStrictly( dst, [ dst ] ) );
+  else
+  _.arrayPrependedArraysOnceStrictly( dst, dst );
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArraysOnceStrictly( dst, dst, ( e ) => e ) );
+  else
+  _.arrayPrependedArraysOnceStrictly( dst, dst, ( e ) => e )
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArraysOnceStrictly( dst, [ dst ], ( e ) => e ) );
+  else
+  _.arrayPrependedArraysOnceStrictly( dst, dst, ( e ) => e )
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArraysOnceStrictly( dst, dst, ( e ) => e, ( e ) => e ) );
+  else
+  _.arrayPrependedArraysOnceStrictly( dst, dst, ( e ) => e, ( e ) => e)
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src single evaluator';
+  var dst = [ 1,1,2,2,3,3 ];
+  if( Config.debug )
+  test.shouldThrowErrorSync( () => _.arrayPrependedArraysOnceStrictly( dst, [ dst ], ( e ) => e, ( e ) => e ) );
+  else
+  _.arrayPrependedArraysOnceStrictly( dst, dst, ( e ) => e, ( e ) => e)
+  test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, dst, ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, [ dst ], ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, 6 );
+
+  test.case = 'dst === src with evaluators, check for forever lopp';
+  var dst = [ 1,1,2,2,3,3 ];
+  var got = _.arrayPrependedArraysOnceStrictly( dst, [ dst, dst ], ( e ) => e, ( e ) => e + 10 );
+  test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3,1,1,2,2,3,3,1,1,2,2,3,3 ] );
+  test.identical( got, 18 );
 
   /**/
 

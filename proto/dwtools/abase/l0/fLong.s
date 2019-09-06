@@ -4428,15 +4428,25 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
-    result = arrayPrependedArraysOnce.apply( this, arguments );
     let expected = 0;
+    let insIsDst = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
       if( _.longIs( insArray[ i ] ) )
-      expected += insArray[ i ].length;
+      {
+        expected += insArray[ i ].length
+
+        if( insArray[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += insArray[ i ].length
+        }
+      }
       else
       expected += 1;
     }
+    result = arrayPrependedArraysOnce.apply( this, arguments );
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
   else
@@ -4508,12 +4518,19 @@ function arrayPrependedArrays( dstArray, insArray )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  {
+    result = insArray.length;
+    dstArray.unshift.apply( dstArray, insArray );
+    return result;
+  }
+
   for( let a = insArray.length - 1 ; a >= 0 ; a-- )
   {
     if( _.longIs( insArray[ a ] ) )
     {
-      dstArray.unshift.apply( dstArray, insArray[ a ] );
       result += insArray[ a ].length;
+      dstArray.unshift.apply( dstArray, insArray[ a ] );
     }
     else
     {
@@ -4565,6 +4582,10 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
+
   function _prependOnce( element )
   {
     let index = _.arrayLeftIndex( dstArray, element, evaluator1, evaluator2 );
@@ -4577,17 +4598,22 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
 
   // for( let ii = insArray.length - 1; ii >= 0; ii-- )
-  for( let ii = 0 ; ii < insArray.length ; ii++ )
+  for( let ii = 0, len = insArray.length; ii < len ; ii++ )
   {
     if( _.longIs( insArray[ ii ] ) )
     {
       let array = insArray[ ii ];
+      if( array === dstArray )
+      array = array.slice();
       // for( let a = array.length - 1; a >= 0; a-- )
-      for( let a = 0 ; a < array.length ; a++ )
+      for( let a = 0, len2 = array.length ; a < len2 ; a++ )
       _prependOnce( array[ a ] );
     }
     else
     {
+      if( dstArray === insArray )
+      _prependOnce( insArray[ ii + result ] );
+      else
       _prependOnce( insArray[ ii ] );
     }
   }
@@ -4602,15 +4628,27 @@ function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evalu
  let result;
  if( Config.debug )
  {
-   result = arrayPrependedArraysOnce.apply( this, arguments );
    let expected = 0;
+   let insIsDst = 0;
    for( let i = insArray.length - 1; i >= 0; i-- )
    {
      if( _.longIs( insArray[ i ] ) )
-     expected += insArray[ i ].length;
+     {
+       expected += insArray[ i ].length
+
+       if( insArray[ i ] === dstArray )
+       {
+         insIsDst += 1;
+         if( insIsDst > 1 )
+         expected += insArray[ i ].length
+       }
+     }
      else
      expected += 1;
    }
+
+   result = arrayPrependedArraysOnce.apply( this, arguments );
+
    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
  }
  else
