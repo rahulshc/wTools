@@ -1029,10 +1029,12 @@ function bufferRelen( src, len )
 
 /*
 qqq : implement for 2 other types of buffer and do code test coverage
+Dmytro : implemented for all buffer types
 */
 
 /*
   qqq : wrong! Size and length are different concepts.
+  Dmytro : use concept size in routine
 */
 
 function bufferResize( srcBuffer, size )

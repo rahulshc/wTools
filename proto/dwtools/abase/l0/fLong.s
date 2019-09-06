@@ -2770,6 +2770,8 @@ function arrayNone( src )
 /* qqq
 add good coverage for arrayMake
 take into account unroll cases
+Dmytro : coverage is extended
+test routine has unroll, arguments array, typed buffers cases
 */
 
 function arrayMake( src )

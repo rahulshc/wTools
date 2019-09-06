@@ -12504,8 +12504,15 @@ function hasLength( test )
 
 function arrayMake( test )
 {
+  test.case = 'src = null';
+  var src = null;
+  var got = _.arrayMake( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
 
-  test.case = 'empty';
+  test.case = 'src = empty array';
   var src = [];
   var got = _.arrayMake( src );
   var expected = [];
@@ -12513,7 +12520,7 @@ function arrayMake( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'single number';
+  test.case = 'src = array, src.length = 1';
   var src = [ 0 ];
   var got = _.arrayMake( src );
   var expected = [ 0 ];
@@ -12521,15 +12528,7 @@ function arrayMake( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'single string';
-  var src = [ 'a' ];
-  var got = _.arrayMake( src );
-  var expected = [ 'a' ];
-  test.equivalent( got, expected );
-  test.is( _.arrayIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'several';
+  test.case = 'src = array, src.length > 1';
   var src = [ 1, 2, 3 ];
   var got = _.arrayMake( src );
   var expected = [ 1, 2, 3 ];
@@ -12537,21 +12536,69 @@ function arrayMake( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'zero length';
+  test.case = 'src = number, src = 0';
   var got = _.arrayMake( 0 );
   var expected = new Array( 0 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'length';
+  test.case = 'src = number, src > 0';
   var got = _.arrayMake( 3 );
   var expected = new Array( 3 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from empty Float32';
+  test.case = 'src = empty U8x';
+  var src = new U8x();
+  var got = _.arrayMake( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = U8x, src.length = 1';
+  var src = new U8x( 1 );
+  var got = _.arrayMake( src );
+  var expected = [ 0 ];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = U8x, src.length > 1';
+  var src = new U8x( [ 1, 2, 3 ] );
+  var got = _.arrayMake( src );
+  var expected = [ 1, 2, 3 ];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = empty I16x';
+  var src = new I16x();
+  var got = _.arrayMake( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = I16x, src.length = 1';
+  var src = new I16x( 1 );
+  var got = _.arrayMake( src );
+  var expected = [ 0 ];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = I16x, src.length > 1';
+  var src = new I16x( [ 1, 2, 3 ] );
+  var got = _.arrayMake( src );
+  var expected = [ 1, 2, 3 ];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = empty F32x';
   var src = new F32x();
   var got = _.arrayMake( src );
   var expected = [];
@@ -12559,23 +12606,39 @@ function arrayMake( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from Float32';
-  var src = new F32x([ 1, 2, 3 ]);
+  test.case = 'src = F32x, src.length = 1';
+  var src = new F32x( 1 );
+  var got = _.arrayMake( src );
+  var expected = [ 0 ];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = F32x, src.length > 1';
+  var src = new F32x( [ 1, 2, 3 ] );
   var got = _.arrayMake( src );
   var expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from empty arguments array';
-  var src = _.argumentsArrayMake([]);
+  test.case = 'src = empty arguments array';
+  var src = _.argumentsArrayMake( [] );
   var got = _.arrayMake( src );
   var expected = [];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from arguments array';
+  test.case = 'src = arguments array, src.length = 1';
+  var src = _.argumentsArrayMake( [ {} ] );
+  var got = _.arrayMake( src );
+  var expected = [ {} ];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = arguments array, src.length > 1';
   var src = _.argumentsArrayMake([ 1, 2, 3 ]);
   var got = _.arrayMake( src );
   var expected = [ 1, 2, 3 ];
@@ -12583,55 +12646,45 @@ function arrayMake( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from empty unroll';
-  var src = _.unrollMake([]);
+  test.case = 'src = empty unroll';
+  var src = _.unrollMake( [] );
   var got = _.arrayMake( src );
   var expected = [];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from unroll';
-  var src = _.unrollMake([ 1, 2, 3 ]);
+  test.case = 'src = unroll, src.length = 1';
+  var src = _.unrollMake( [ 'str' ] );
+  var got = _.arrayMake( src );
+  var expected = [ 'str' ];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = unroll, src.length > 1';
+  var src = _.unrollMake( [ 1, 2, 3 ] );
   var got = _.arrayMake( src );
   var expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
+  /* - */
+
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayMake();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayMake() );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayMake( 1, 3 );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayMake( 1, 3 ) );
+  test.shouldThrowErrorSync( () => _.arrayMake( [], 3 ) );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayMake( [], 3 );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayMake( [], [] );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayMake( {} );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayMake( '1' );
-  });
-
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.arrayMake( {} ) );
+  test.shouldThrowErrorSync( () => _.arrayMake( 'wrong' ) );
 }
 
 //
