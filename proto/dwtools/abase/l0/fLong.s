@@ -3259,6 +3259,68 @@ function arrayButInplace( src, range, ins )
 
 //
 
+/**
+ * The routine arraySelect() returns a copy of a portion of {-src-} into a new array object
+ * selected by {-range-}. The original {-srcArray-} will not be modified.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index is src.length.
+ * If range[ 0 ] < 0, then start index is 0.
+ * If range[ 1 ] > src.length, end idex is src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty array object.
+ * @param { Long } ins - The Long object with elements for insertion.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelect( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelect( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelect( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 2, 3, 4 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelect( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelect( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll containing the extracted elements.
+ * @function arraySelect
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If argument {-ins-} is not long / undefined.
+ * @memberof wTools
+ */
+
 function arraySelect( src, range, ins )
 {
   let result;
@@ -3292,6 +3354,67 @@ function arraySelect( src, range, ins )
 }
 
 //
+
+/**
+ * The routine arraySelectInplace() returns a portion of original {-src-} selected by {-range-}.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll from which selects elements.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index is src.length.
+ * If range[ 0 ] < 0, then start index is 0.
+ * If range[ 1 ] > src.length, end idex is src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty array object.
+ * @param { Long } ins - The Long object with elements for insertion.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelectInplace( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelectInplace( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelectInplace( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 2, 3, 4 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelectInplace( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelectInplace( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log true
+ *
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll containing the extracted elements.
+ * @function arraySelectInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If argument {-ins-} is not long / undefined.
+ * @memberof wTools
+ */
 
 function arraySelectInplace( src, range, ins )
 {
