@@ -5140,17 +5140,27 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
-
-    result = arrayAppendedArraysOnce.apply( this, arguments );
-
     let expected = 0;
+    let insIsDst = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
       if( _.longIs( insArray[ i ] ) )
-      expected += insArray[ i ].length;
+      {
+        expected += insArray[ i ].length
+
+        if( insArray[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += insArray[ i ].length
+        }
+      }
       else
       expected += 1;
     }
+
+    result = arrayAppendedArraysOnce.apply( this, arguments );
+
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
   else
@@ -5225,6 +5235,10 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
+
   for( let a = 0, len = insArray.length; a < len; a++ )
   {
     if( _.longIs( insArray[ a ] ) )
@@ -5260,15 +5274,25 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
   let result;
   if( Config.debug )
   {
-    result = arrayAppendedArraysOnce.apply( this, arguments );
     let expected = 0;
+    let insIsDst = 0;
     for( let i = ins.length - 1; i >= 0; i-- )
     {
       if( _.longIs( ins[ i ] ) )
-      expected += ins[ i ].length;
+      {
+        expected += ins[ i ].length
+
+        if( ins[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += ins[ i ].length
+        }
+      }
       else
       expected += 1;
     }
+    result = arrayAppendedArraysOnce.apply( this, arguments );
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
   else
