@@ -6885,9 +6885,13 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
+    let insArrayLength = ins.length;
     result = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
-    _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+    _.assert( result === insArrayLength, '{-dstArray-} should have each element of {-insArray-}' );
+    _.assert( insArrayLength === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return result;
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
 
@@ -6921,42 +6925,36 @@ function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
-
-  if( dstArray === ins )
-  if( arguments.length === 3 )
-  {
-    result = dstArray.length;
-    dstArray.splice( 0 );
-    dstArray.push.apply( dstArray, sub );
-    return result;
-  }
-
   let index = -1;
-  let oldDstArray = dstArray.slice();  // Array with src values stored
+  // let oldDstArray = dstArray.slice();  // Array with src values stored
   for( let i = 0, len = ins.length; i < len; i++ )
   {
-    let dstArray2 = oldDstArray.slice(); // Array modified for each ins element
-    index = _.arrayLeftIndex( dstArray2, ins[ i ], evaluator1, evaluator2 );
+    // let dstArray2 = oldDstArray.slice(); // Array modified for each ins element
+    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
     while( index !== -1 )
     {
       let subValue = sub[ i ];
+      let insValue = ins[ i ];
       if( subValue === undefined )
       {
         dstArray.splice( index, 1 );
-        dstArray2.splice( index, 1 );
+        // dstArray2.splice( index, 1 );
       }
       else
       {
         dstArray.splice( index, 1, subValue );
-        dstArray2.splice( index, 1, subValue );
+        // dstArray2.splice( index, 1, subValue );
       }
 
       result += 1;
 
-      if( dstArray === ins )
+      // if( dstArray === ins )
+      // break;
+
+      if( subValue === insValue )
       break;
 
-      index = _.arrayLeftIndex( dstArray2, ins[ i ], evaluator1, evaluator2 );
+      index = _.arrayLeftIndex( dstArray, insValue, evaluator1, evaluator2 );
     }
   }
 
@@ -6974,15 +6972,6 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
   let index = -1;
   let result = 0;
-
-  if( dstArray === ins )
-  if( arguments.length === 3 )
-  {
-    result = dstArray.length;
-    dstArray.splice( 0 );
-    dstArray.push.apply( dstArray, sub );
-    return result;
-  }
 
   //let oldDstArray = dstArray.slice();  // Array with src values stored
   for( let i = 0, len = ins.length; i < len; i++ )
@@ -7051,8 +7040,6 @@ function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
-    result = arrayReplacedArraysOnce.apply( this, arguments );
-
     let expected = 0;
     for( let i = ins.length - 1; i >= 0; i-- )
     {
@@ -7062,14 +7049,20 @@ function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
       expected += 1;
     }
 
+    result = arrayReplacedArraysOnce.apply( this, arguments );
+
     _.assert( result === expected, '{-dstArray-} should have each element of {-insArray-}' );
     _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return dstArray;
+
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( newResult === 0, () => 'One element of ' + _.toStrShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
-    result = arrayReplacedArrayOnce.apply( this, arguments );
+    result = arrayReplacedArraysOnce.apply( this, arguments );
   }
 
   return dstArray;
@@ -7091,27 +7084,29 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
 
   function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
   {
-    let dstArray2 = oldDstArray.slice();
+    // let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
-    let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
 
     while( index !== -1 )
     {
-      dstArray2.splice( index, 1, subValue );
+      // dstArray2.splice( index, 1, subValue );
       dstArray.splice( index, 1, subValue );
       result += 1;
-      index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+      if( subValue === argument )
+      break;
+      index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
     }
   }
 
-  for( let a = ins.length - 1; a >= 0; a-- )
+  for( let a = 0, len = ins.length; a < len; a++ )
   {
     if( _.longIs( ins[ a ] ) )
     {
       let insArray = ins[ a ];
       let subArray = sub[ a ];
 
-      for( let i = insArray.length - 1; i >= 0; i-- )
+      for( let i = 0, len2 = insArray.length; i < len2; i++ )
       _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
     }
     else
@@ -7134,30 +7129,31 @@ function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
-  let oldDstArray = dstArray.slice();  // Array with src values stored
+  // let oldDstArray = dstArray.slice();  // Array with src values stored
 
   function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
   {
-    let dstArray2 = oldDstArray.slice();
+    // let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
-    let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    // let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
 
     if( index !== -1 )
     {
-      dstArray2.splice( index, 1, subValue );
+      // dstArray2.splice( index, 1, subValue );
       dstArray.splice( index, 1, subValue );
       result += 1;
     }
   }
 
-  for( let a = ins.length - 1; a >= 0; a-- )
+  for( let a = 0, len = ins.length; a < len ; a++ )
   {
     if( _.longIs( ins[ a ] ) )
     {
       let insArray = ins[ a ];
       let subArray = sub[ a ];
 
-      for( let i = insArray.length - 1; i >= 0; i-- )
+      for( let i = 0, len2 = insArray.length; i < len2; i++ )
       _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
     }
     else
@@ -7189,12 +7185,16 @@ function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evalua
 
     _.assert( result === expected, '{-dstArray-} should have each element of {-insArray-}' );
     _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return result;
+
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( newResult === 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
-    result = arrayReplacedArrayOnce.apply( this, arguments );
+    result = arrayReplacedArraysOnce.apply( this, arguments );
   }
 
   return result;
