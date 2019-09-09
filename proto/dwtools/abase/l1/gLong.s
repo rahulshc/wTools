@@ -1754,6 +1754,10 @@ function bufferBytesFrom( buffer )
 {
   let result;
 
+  // Dmytro : missed
+  if( _.bufferBytesIs( buffer ) )
+  return buffer;
+
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.bufferNodeIs( buffer ) )
