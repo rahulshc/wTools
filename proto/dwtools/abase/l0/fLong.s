@@ -6891,7 +6891,7 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
     _.assert( insArrayLength === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
 
     if( dstArray === ins )
-    return result;
+    return dstArray;
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
 
@@ -6927,6 +6927,9 @@ function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
   let result = 0;
   let index = -1;
   // let oldDstArray = dstArray.slice();  // Array with src values stored
+  if( dstArray === ins )
+  ins = ins.slice();
+
   for( let i = 0, len = ins.length; i < len; i++ )
   {
     // let dstArray2 = oldDstArray.slice(); // Array modified for each ins element
@@ -7080,7 +7083,6 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
-  let oldDstArray = dstArray.slice();  // Array with src values stored
 
   function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
   {
@@ -7099,12 +7101,33 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
     }
   }
 
+  let insCopy = Object.create( null );
+  let subCopy = Object.create( null );
+
+  if( dstArray === ins )
+  {
+    ins = ins.slice();
+  }
+  else
+  {
+    for( let i = ins.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( ins[ i ] ) )
+      if( ins[ i ] === dstArray )
+      insCopy[ i ] = ins[ i ].slice();
+
+      if( _.longIs( sub[ i ] ) )
+      if( sub[ i ] === dstArray )
+      subCopy[ i ] = sub[ i ].slice();
+    }
+  }
+
   for( let a = 0, len = ins.length; a < len; a++ )
   {
     if( _.longIs( ins[ a ] ) )
     {
-      let insArray = ins[ a ];
-      let subArray = sub[ a ];
+      let insArray = insCopy[ a ] || ins[ a ];
+      let subArray = sub[ a ] || subCopy[ a ];
 
       for( let i = 0, len2 = insArray.length; i < len2; i++ )
       _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );

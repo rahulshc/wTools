@@ -27014,7 +27014,7 @@ function arrayReplaceArray( test )
   test.case = 'dst === src, equalize';
   var dst = [ 1,1 ];
   var got = _.arrayReplaceArray( dst, dst, [ 2,1 ] );
-  test.identical( got, [ 1,1 ] );
+  test.identical( got, [ 2,2 ] );
   test.identical( got, dst );
 
   /* */
@@ -27166,6 +27166,12 @@ function arrayReplaceArrayOnce( test )
   test.identical( got, dst );
   test.identical( dst, [ 1,1,2,2,3,3 ] );
 
+  test.case = 'dst === ins';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplaceArrayOnce( dst, dst, [ 2,1 ] );
+  test.identical( got, dst );
+  test.identical( got, [ 2,1 ] );
+
   /* */
 
   if( !Config.debug )
@@ -27277,26 +27283,26 @@ function arrayReplaceArrayOnceStrictly( test )
   test.case = 'dst === src'
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayReplaceArrayOnceStrictly( dst, dst, [ 0,0,0,0,0,0 ] );
-  test.identical( got, 6 );
+  test.identical( got, got );
   test.identical( dst, [ 0,0,0,0,0,0 ] );
 
   test.case = 'dst === src single evaluator';
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayReplaceArrayOnceStrictly( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e );
   test.identical( dst, [ 0,0,0,0,0,0 ] );
-  test.identical( got, 6 );
+  test.identical( got, got );
 
   test.case = 'dst === src single evaluator';
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayReplaceArrayOnceStrictly( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e + 10 );
   test.identical( dst, [ 0,0,0,0,0,0 ] );
-  test.identical( got, 6 );
+  test.identical( got, got );
 
   test.case = 'dst === src with evaluators';
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayReplaceArrayOnceStrictly( dst, dst, [ 0,0,0,0,0,0 ], ( e ) => e, ( e ) => e );
   test.identical( dst, [ 0,0,0,0,0,0 ] );
-  test.identical( got, 6 );
+  test.identical( got, got );
 
   test.case = 'dst === src with evaluators, check for forever lopp';
   var dst = [ 1,1,2,2,3,3 ];
@@ -27308,6 +27314,12 @@ function arrayReplaceArrayOnceStrictly( test )
     test.identical( got, 0 );
   }
   test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === ins';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplaceArrayOnceStrictly( dst, dst, [ 2,1 ] );
+  test.identical( got, dst );
+  test.identical( got, [ 2,1 ] );
 
   /* */
 
@@ -27524,7 +27536,13 @@ function arrayReplacedArray( test )
   test.case = 'dst === src, equalize';
   var dst = [ 1,1 ];
   var got = _.arrayReplacedArray( dst, dst, [ 2,1 ] );
-  test.identical( got, 4 );
+  test.identical( got, 2 );
+  test.identical( dst, [ 2,2 ] );
+
+  test.case = 'dst === ins === sub, equalize';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplacedArray( dst, dst, dst );
+  test.identical( got, 2 );
   test.identical( dst, [ 1,1 ] );
 
   test.case = 'onEqualize'
@@ -27695,6 +27713,12 @@ function arrayReplacedArrayOnce( test )
   test.identical( got, 0 );
   test.identical( dst, [ 1,1,2,2,3,3 ] );
 
+  test.case = 'dst === ins';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplacedArrayOnce( dst, dst, [ 2,1 ] );
+  test.identical( got, 2 );
+  test.identical( dst, [ 2,1 ] );
+
   /* */
 
   if( !Config.debug )
@@ -27828,6 +27852,12 @@ function arrayReplacedArrayOnceStrictly( test )
     test.identical( got, 0 );
   }
   test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === inst';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplacedArrayOnceStrictly( dst, dst, [ 2,1 ] );
+  test.identical( dst, [ 2,1 ] );
+  test.identical( got, 2 );
 
   /* */
 
@@ -28049,7 +28079,7 @@ function arrayReplaceArrays( test )
   test.case = 'dst === src, equalize';
   var dst = [ 1,1 ];
   var got = _.arrayReplaceArrays( dst, dst, [ 2,1 ] );
-  test.identical( got, [ 1,1 ] );
+  test.identical( got, [ 2,2 ] );
   test.identical( got, dst );
 
   /* */
@@ -28249,6 +28279,12 @@ function arrayReplaceArraysOnce( test )
   test.identical( got, dst );
   test.identical( dst, [ 1,1,2,2,3,3 ] );
 
+  test.case = 'dst === src';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplaceArraysOnce( dst, dst, [ 2,1 ] );
+  test.identical( got, dst );
+  test.identical( dst, [ 2,1 ] );
+
   /* */
 
   if( !Config.debug )
@@ -28425,6 +28461,12 @@ function arrayReplaceArraysOnceStrictly( test )
     test.identical( got, dst );
   }
   test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === ins';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplaceArraysOnceStrictly( dst, dst, [ 2,1 ] );
+  test.identical( dst, [ 2,1 ] );
+  test.identical( got, dst );
 
   /* */
 
@@ -28649,7 +28691,19 @@ function arrayReplacedArrays( test )
   test.case = 'dst === src, loop check';
   var dst = [ 1,1 ];
   var got = _.arrayReplacedArrays( dst, dst, [ 2,1 ] );
-  test.identical( got, 4 );
+  test.identical( got, 2 );
+  test.identical( dst, [ 2,2 ] );
+
+  test.case = 'dst === src ';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplacedArrays( dst, [ dst ], [ [ 2,1 ] ] );
+  test.identical( got, 2 );
+  test.identical( dst, [ 2,2 ] );
+
+  test.case = 'dst === src ';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplacedArrays( dst, [ dst ], [ dst ] );
+  test.identical( got, 2 );
   test.identical( dst, [ 1,1 ] );
 
   /* */
@@ -28856,6 +28910,18 @@ function arrayReplacedArraysOnce( test )
   test.identical( got, 2 );
   test.identical( dst, [ 2,1 ] );
 
+  test.case = 'dst === src ';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ dst ], [ [ 2,1 ] ] );
+  test.identical( got, 2 );
+  test.identical( dst, [ 2,1 ] );
+
+  test.case = 'dst === src ';
+  var dst = [ 1,1 ];
+  var got = _.arrayReplacedArraysOnce( dst, [ dst ], [ dst ] );
+  test.identical( got, 2 );
+  test.identical( dst, [ 1,1 ] );
+
 
   /* */
 
@@ -29033,6 +29099,18 @@ function arrayReplacedArraysOnceStrictly( test )
     test.identical( got, 0 );
   }
   test.identical( dst, [ 1,1,2,2,3,3 ] );
+
+  test.case = 'dst === ins'
+  var dst = [ 1,1 ];
+  var got = _.arrayReplacedArraysOnceStrictly( dst, dst, [ 2,1 ] );
+  test.identical( got, 2 );
+  test.identical( dst, [ 2,1 ] );
+
+  test.case = 'dst === ins'
+  var dst = [ 1,1 ];
+  var got = _.arrayReplacedArraysOnceStrictly( dst, [ dst ], [ [ 2,1 ] ] );
+  test.identical( got, 2 );
+  test.identical( dst, [ 2,1 ] );
 
   /* */
 
