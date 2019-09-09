@@ -12272,65 +12272,160 @@ function bufferNodeFrom( test )
   if( Config.interpreter !== 'njs' )
   return;
 
-  test.case = 'raw';
+  test.case = 'from array';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( src );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  var src = [ 1, 2, 3, 4, '5' ];
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( src );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'from BufferRaw, buffer.byteLength = 0';
+  var src = new BufferRaw();
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( 0 );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'from BufferRaw';
   var src = new BufferRaw( 3 );
   var got = _.bufferNodeFrom( src );
-  var expected = BufferNode.from( [ 0, 0, 0 ] )
+  var expected = new BufferNode( 3 );
   test.identical( got, expected );
+  test.is( got !== src );
 
-  test.case = 'typed';
-  var src = new I8x( [ 97, 98, 99 ] );
+  test.case = 'from BufferTyped.buffer';
+  var src = new F32x( 3 ).buffer;
   var got = _.bufferNodeFrom( src );
-  var expected = BufferNode.from( [ 97, 98, 99 ] );
+  var expected = new BufferNode( 12 );
   test.identical( got, expected );
+  test.is( got !== src );
 
-  test.case = 'view';
-  var buffer = new BufferRaw( 3 );
-  var src = new BufferView( buffer );
+  /* */
+
+  test.case = 'empty BufferNode';
+  var src = BufferNode.alloc( 10 );
   var got = _.bufferNodeFrom( src );
-  var expected = BufferNode.from( [ 0, 0, 0 ] );
+  var expected = new BufferNode( 10 );
   test.identical( got, expected );
+  test.is( got === src );
 
-  test.case = 'str';
+  test.case = 'BufferNode from string';
+  var src = BufferNode.from( 'str' );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( [ 115, 116, 114 ] );
+  test.identical( got, expected );
+  test.is( got !== expected );
+
+  test.case = 'BufferNode, buffer.length < result.length';
+  var buffer = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = BufferNode.from( buffer, 0, 3 );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+  test.is( got !== expected );
+
+  test.case = 'BufferNode, offset from src';
+  var buffer = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = BufferNode.from( buffer, 3 );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( [ 4, 5 ] );
+  test.identical( got, expected );
+  test.is( got !== expected );
+
+  test.case = 'BufferNode, offset from src, buffer.length < result.length';
+  var buffer = new U8x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = BufferNode.from( buffer, 2, 2 );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( [ 3, 4 ] );
+  test.identical( got, expected );
+  test.is( got !== expected );
+
+  /* */
+
+  test.case = 'from empty BufferBytes';
+  var src = new U8x();
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( 0 );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'from BufferBytes';
+  var src = new U8x( 3 );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( 3 );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'from BufferBytes, not offset';
+  var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'from BufferTyped, offset';
+  var buffer = new F32x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = new I16x( buffer, 8 );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( [ 0, 0, 64, 64, 0, 0, 128, 64, 0, 0, 160, 64 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'from BufferTyped, not offset, buffer.length < result.length';
+  var buffer = new U16x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = new F32x( buffer, 0, 2 );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( [ 1, 0, 2, 0, 3, 0, 4, 0 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'from BufferTyped, offset, buffer.length < result.length';
+  var buffer = new U32x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = new U8x( buffer, 4, 4 );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( [ 2, 0, 0, 0 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'from BufferView, not offset';
+  var src = new BufferView( new BufferRaw( 10 ) );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( 10 );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'from BufferView, not offset, buffer.length < result.length';
+  var buffer = new F32x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = new BufferView( buffer, 0, 4 );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( [ 0, 0, 128, 63 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'from BufferView, offset';
+  var buffer = new U32x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = new BufferView( buffer, 4, 4 );
+  var got = _.bufferNodeFrom( src );
+  var expected = new BufferNode( [ 2, 0, 0, 0 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'from string';
   var src = 'abc';
   var got = _.bufferNodeFrom( src );
-  var expected = BufferNode.from( src );
-  test.identical( got, expected );
-
-  test.case = 'node';
-  var src = BufferNode.from( 'abc' );
-  var got = _.bufferNodeFrom( src );
-  var expected = src
-  test.identical( got, expected );
-
-  test.case = 'empty raw';
-  var src = new BufferRaw( 0 );
-  var got = _.bufferNodeFrom( src );
-  var expected = BufferNode.alloc( 0 );
-  test.identical( got, expected );
-
-  test.case = 'empty typed';
-  var src = new I8x( [] );
-  var got = _.bufferNodeFrom( src );
-  var expected = BufferNode.alloc( 0 );
-  test.identical( got, expected );
-
-  test.case = 'empty node';
-  var src = BufferNode.alloc( 0 );
-  var got = _.bufferNodeFrom( src );
-  var expected = src;
-  test.identical( got, expected );
-
-  test.case = 'array';
-  var src = [ 97, 98, 99 ];
-  var got = _.bufferNodeFrom( src );
-  var expected = BufferNode.from( src );
-  test.identical( got, expected );
-
-  test.case = 'object';
-  var src = new String( 'abc' );
-  var got = _.bufferNodeFrom( src );
-  var expected = BufferNode.from( [ 97, 98, 99 ] );
+  var expected = new BufferNode( [ 97, 98, 99 ] );
   test.identical( got, expected );
 
   /* - */
@@ -12338,9 +12433,14 @@ function bufferNodeFrom( test )
   if( !Config.debug )
   return;
 
-  test.case = 'unknown source';
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferNodeFrom() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.bufferNodeFrom( [ 1, 2 ], 2 ) );
+
+  test.case = 'wrong buffer type';
   test.shouldThrowErrorSync( () => _.bufferNodeFrom( 5 ) );
-  // test.shouldThrowErrorSync( () => _.bufferNodeFrom( [] ) );
   test.shouldThrowErrorSync( () => _.bufferNodeFrom( {} ) );
 
 }
