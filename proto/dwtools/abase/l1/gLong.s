@@ -1333,11 +1333,13 @@ function bufferToStr( src )
 {
   let result = '';
 
-  if( src instanceof BufferRaw )
-  src = new U8x( src, 0, src.byteLength );
-
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.bufferAnyIs( src ) );
+
+  if( typeof BufferNode !== 'undefined' )
+  src = _.bufferNodeFrom( src );
+  else if( src instanceof BufferRaw )
+  src = new U8x( src, 0, src.byteLength );
 
   if( _.bufferNodeIs( src ) )
   return src.toString( 'utf8' );
@@ -1713,7 +1715,6 @@ function bufferRawFrom( buffer )
   else if( _.bufferTypedIs( buffer ) || _.bufferViewIs( buffer ) )
   {
 
-    debugger;
     // _.assert( 0, 'not implemented' );
     result = buffer.buffer;
     if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
@@ -1763,7 +1764,6 @@ function bufferBytesFrom( buffer )
   if( _.bufferNodeIs( buffer ) )
   {
 
-    debugger;
     _.assert( _.bufferRawIs( buffer.buffer ) )
     result = new U8x( buffer.buffer, buffer.byteOffset, buffer.byteLength );
 

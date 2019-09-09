@@ -170,22 +170,25 @@ function scalarAppendOnce( dst, src )
  * @memberof wTools
  */
 
+/*
+qqq : extend tests of routine scalarToVector, please
+*/
+
 // function arrayFromNumber( dst, length )
 function scalarToVector( dst, length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
+  _.assert( dst !== undefined, 'Expects defined value as the first arguments' );
   _.assert( length >= 0 );
 
-  if( _.numberIs( dst ) )
+  if( _.arrayLike( dst ) )
   {
-    dst = _.longFill( [], dst, [ 0, length ] );
-    // dst = _.longFillTimes( [], length, dst );
+    _.assert( dst.length === length, () => `Expects array of length ${length} but got ${dst.length}` );
   }
   else
   {
-    _.assert( dst.length === length, () => 'Expects array of length ' + length + ' but got ' + dst.length );
+    dst = _.longFill( [], dst, [ 0, length ] );
   }
 
   return dst;
