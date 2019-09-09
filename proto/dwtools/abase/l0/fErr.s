@@ -28,6 +28,13 @@ function diagnosticStack( stack )
 
 //
 
+function diagnosticStackRemoveBegin( stack, include, exclude )
+{
+  return stack;
+}
+
+//
+
 function diagnosticStackCondense( stack )
 {
   if( _.errIs( stack ) )
@@ -288,6 +295,9 @@ function _err( o )
     }
   }
 
+  if( ( o.stackRemobeBeginInclude || o.stackRemobeBeginExclude ) && stack )
+  stack = _.diagnosticStackRemoveBegin( stack, o.stackRemobeBeginInclude || null, o.stackRemobeBeginExclude || null );
+
   if( !stack )
   stack = o.fallBackStack;
 
@@ -452,6 +462,8 @@ _err.defaults =
 {
   /* to make catch stack work properly it should be 1 */
   level : 1,
+  stackRemobeBeginInclude : null,
+  stackRemobeBeginExclude : null,
   usingSourceCode : 1,
   condensingStack : 1,
   location : null,
@@ -1208,6 +1220,7 @@ let Routines =
   // stub
 
   diagnosticStack,
+  diagnosticStackRemoveBegin,
   diagnosticStackCondense,
   diagnosticLocation,
   diagnosticCode,

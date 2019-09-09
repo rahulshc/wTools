@@ -583,6 +583,40 @@ function diagnosticStack( stack, range )
 
 //
 
+function diagnosticStackRemoveBegin( stack, include, exclude )
+{
+  if( arguments.length !== 3 )
+  throw Error( 'Expects two arguments' );
+  if( !_.regexpIs( include ) && include !== null )
+  throw Error( 'Expects regexp either null as the second argument' );
+  if( !_.regexpIs( exclude ) && exclude !== null )
+  throw Error( 'Expects regexp either null as the third argument' );
+
+  if( !_.strIs( stack ) )
+  return stack;
+
+  stack = stack.split( '\n' );
+
+  for( let s = stack.length-1 ; s >= 0 ; s-- )
+  {
+    let line = stack[ s ];
+    if( include && include.test( line ) )
+    {
+      stack.splice( s, 1 );
+      continue;
+    }
+    if( exclude && exclude.test( line ) )
+    {
+      stack.splice( s, 1 );
+      continue;
+    }
+  }
+
+  return stack.join( '\n' );
+}
+
+//
+
 function diagnosticStackCondense( stack )
 {
 
@@ -1185,6 +1219,7 @@ let Extend =
   diagnosticLocation,
   diagnosticCode,
   diagnosticStack,
+  diagnosticStackRemoveBegin,
   diagnosticStackCondense,
   diagnosticBeep,
 
