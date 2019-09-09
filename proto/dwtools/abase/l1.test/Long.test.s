@@ -11938,24 +11938,72 @@ function bufferRawFromTyped( test )
 
 function bufferRawFrom( test )
 {
-  test.case = 'typed';
+  test.case = 'from array';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.bufferRawFrom( src );
+  var expected = new U8x( src ).buffer;
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  var src = [ 1, 2, 3, 4, '5' ];
+  var got = _.bufferRawFrom( src );
+  var expected = new U8x( src ).buffer;
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'from BufferTyped, not offset';
   var src = new U8x( 3 );
   var got = _.bufferRawFrom( src );
   var expected = new BufferRaw( 3 );
   test.identical( got, expected );
+  test.is( got === src.buffer );
 
-  test.case = 'raw';
+  test.case = 'from BufferTyped, not offset, buffer.length < result.length';
+  var buffer = new U16x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = new U8x( buffer, 0, 4 );
+  var got = _.bufferRawFrom( src );
+  var expected = new U8x( [ 1, 0, 2, 0 ] ).buffer;
+  test.identical( got, expected );
+  test.is( got !== src.buffer );
+
+  test.case = 'from BufferTyped, offset, buffer.length < result.length';
+  var buffer = new U32x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = new U8x( buffer, 4, 4 );
+  var got = _.bufferRawFrom( src );
+  var expected = new U8x( [ 2, 0, 0, 0 ] ).buffer;
+  test.identical( got, expected );
+  test.is( got !== src.buffer );
+
+  test.case = 'from BufferRaw';
   var src = new BufferRaw( 3 );
   var got = _.bufferRawFrom( src );
-  var expected = src;
+  var expected = new BufferRaw( 3 );
   test.identical( got, expected );
+  test.is( got === src );
 
-  test.case = 'view';
-  var buffer = new BufferRaw( 10 );
-  var src = new BufferView( buffer );
+  test.case = 'from BufferView, not offset';
+  var src = new BufferView( new BufferRaw( 10 ) );
   var got = _.bufferRawFrom( src );
-  var expected = buffer;
+  var expected = new BufferRaw( 10 );
   test.identical( got, expected );
+  test.is( got === src.buffer );
+
+  test.case = 'from BufferView, not offset, buffer.length < result.length';
+  var buffer = new F32x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  console.log( buffer );
+  var src = new BufferView( buffer, 0, 4 );
+  var got = _.bufferRawFrom( src );
+  var expected = new F32x( [ 1 ] ).buffer;
+  test.identical( got, expected );
+  test.is( got !== src.buffer );
+
+  test.case = 'from BufferView, offset';
+  var buffer = new U32x( [ 1, 2, 3, 4, 5 ] ).buffer;
+  var src = new BufferView( buffer, 4, 4 );
+  var got = _.bufferRawFrom( src );
+  var expected = new U8x( [ 2, 0, 0, 0 ] ).buffer;
+  test.identical( got, expected );
+  test.is( got !== src.buffer );
 
   test.case = 'str';
   var src = 'abc';
@@ -11977,7 +12025,13 @@ function bufferRawFrom( test )
   if( !Config.debug )
   return;
 
-  test.case = 'unknown source';
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferRawFrom() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.bufferRawFrom( [ 1, 2 ], 2 ) );
+
+  test.case = 'wrong buffer type';
   test.shouldThrowErrorSync( () => _.bufferRawFrom( 5 ) );
   test.shouldThrowErrorSync( () => _.bufferRawFrom( {} ) );
 }

@@ -1717,7 +1717,9 @@ function bufferRawFrom( buffer )
     // _.assert( 0, 'not implemented' );
     result = buffer.buffer;
     if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
-    result = result.slice( buffer.byteOffset || 0, buffer.byteLength );
+    // Dmytro : works not correctly, offset + length = right bound of new bufferRaw
+    result = result.slice( buffer.byteOffset, buffer.byteOffset + buffer.byteLength );
+    // result = result.slice( buffer.byteOffset || 0, buffer.byteLength );
 
   }
   else if( _.strIs( buffer ) )
