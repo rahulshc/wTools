@@ -5786,8 +5786,6 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
-    result = arrayRemovedArraysOnce.apply( this, arguments );
-
     let expected = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
@@ -5796,6 +5794,8 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
       else
       expected += 1;
     }
+
+    result = arrayRemovedArraysOnce.apply( this, arguments );
 
     _.assert( result === expected );
     _.assert( arrayRemovedArraysOnce.apply( this, arguments ) === 0 );
@@ -5838,6 +5838,13 @@ function arrayRemovedArrays( dstArray, insArray )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  {
+    result = insArray.length;
+    dstArray.splice( 0 );
+    return result;
+  }
+
   function _remove( argument )
   {
     let index = dstArray.indexOf( argument );
@@ -5876,6 +5883,14 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  {
+    result = insArray.length;
+    dstArray.splice( 0 );
+    return result;
+  }
+
   function _removeOnce( argument )
   {
     let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
@@ -5910,8 +5925,6 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
-    result = arrayRemovedArraysOnce.apply( this, arguments );
-
     let expected = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
@@ -5920,6 +5933,8 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
       else
       expected += 1;
     }
+
+    result = arrayRemovedArraysOnce.apply( this, arguments );
 
     _.assert( result === expected );
     _.assert( arrayRemovedArraysOnce.apply( this, arguments ) === 0 );
