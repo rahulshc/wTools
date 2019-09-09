@@ -3048,16 +3048,17 @@ function arraySlice( srcArray, f, l )
 //
 
 /**
- * The routine arrayBut() returns a copy of a portion of {-src-} into a new array object.
- * Routine removes existing elements from the start index to the end index and adds new elements
- * from start index. The original {-src-} will not be modified.
+ * The routine arrayBut() returns a copy of source array {-src-}. Routine removes existing
+ * elements in bounds defined by {-range-} and insert new elements from {-ins-}. The original
+ * source array {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
  * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
+ * If {-range-} is undefined, routine returns copy of {-src-}.
  * If range[ 0 ] < 0, then start index is 0.
  * If range[ 1 ] > src.length, end idex is src.length.
- * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertions of elements starts at start index.
+ * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements starts at start index.
  * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
  * If quantity of removed elements is not equal to ins.length, then returned array will have length different to src.length.
  *
@@ -3162,21 +3163,22 @@ function arrayBut( src, range, ins )
 //
 
 /**
- * The routine arrayButInplace() returns a portion of original {-src-}. Routine removes existing
- * elements from the start index to the end index and adds new elements from start index.
+ * The routine arrayButInplace() returns a source array {-src-} with removed existing elements in bounds
+ * defined by {-range-} and inserted new elements from {-ins-}.
  *
  * @param { Array|Unroll } src - The Array or Unroll to remove, replace or add elements.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
  * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
+ * If {-range-} is undefined, routine returns {-src-}.
  * If range[ 0 ] < 0, then start index is 0.
  * If range[ 1 ] > src.length, end idex is src.length.
- * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertions of elements starts at start index.
+ * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements starts at start index.
  * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
- * If quantity of removed elements is not equal to ins.length, then returned array will have length different to src.length.
+ * If quantity of removed elements is not equal to ins.length, then returned array will have length different to original src.length.
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayBut( src );
+ * var got = _.arrayButInplace( src );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
@@ -3184,7 +3186,7 @@ function arrayBut( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayBut( src, 2, [ 'str' ] );
+ * var got = _.arrayButInplace( src, 2, [ 'str' ] );
  * console.log( got );
  * // log [ 1, 2, 'str', 4, 5 ]
  * console.log( got === src );
@@ -3192,7 +3194,7 @@ function arrayBut( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayBut( src, [ 1, 4 ], [ 'str' ] );
+ * var got = _.arrayButInplace( src, [ 1, 4 ], [ 'str' ] );
  * console.log( got );
  * // log [ 1, 'str', 5 ]
  * console.log( got === src );
@@ -3200,7 +3202,7 @@ function arrayBut( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayBut( src, [ -5, 10 ], [ 'str' ] );
+ * var got = _.arrayButInplace( src, [ -5, 10 ], [ 'str' ] );
  * console.log( got );
  * // log [ 'str' ]
  * console.log( got === src );
@@ -3208,7 +3210,7 @@ function arrayBut( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayBut( src, [ 4, 1 ], [ 'str' ] );
+ * var got = _.arrayButInplace( src, [ 4, 1 ], [ 'str' ] );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 'str', 5 ]
  * console.log( got === src );
@@ -3266,6 +3268,7 @@ function arrayButInplace( src, range, ins )
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
  * If {-range-} is number, then it defines the start index, and the end index is src.length.
+ * If {-range-} is undefined, routine returns copy of {-src-}.
  * If range[ 0 ] < 0, then start index is 0.
  * If range[ 1 ] > src.length, end idex is src.length.
  * If range[ 1 ] <= range[ 0 ], then routine returns empty array object.
@@ -3361,6 +3364,7 @@ function arraySelect( src, range, ins )
  * @param { Array|Unroll } src - The Array or Unroll from which selects elements.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
  * If {-range-} is number, then it defines the start index, and the end index is src.length.
+ * If {-range-} is undefined, routine returns {-src-}.
  * If range[ 0 ] < 0, then start index is 0.
  * If range[ 1 ] > src.length, end idex is src.length.
  * If range[ 1 ] <= range[ 0 ], then routine returns empty array object.
@@ -3449,6 +3453,68 @@ function arraySelectInplace( src, range, ins )
 }
 
 //
+
+/**
+ * The routine arrayGrow() returns a copy of {-src-} with appended elements. The original {-src-} will not be modified.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
+ * If range[ 0 ] < 0, then start index is 0.
+ * If range[ 1 ] > src.length, end idex is src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertions of elements starts at start index.
+ * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
+ * If quantity of removed elements is not equal to ins.length, then returned array will have length different to src.length.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayBut( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayBut( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 'str', 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayBut( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 'str', 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayBut( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayBut( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 'str', 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll with removed or replaced existing elements and / or added new elements.
+ * @function arrayBut
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If argument {-ins-} is not long / undefined.
+ * @memberof wTools
+ */
 
 function arrayGrow( src, range, ins )
 {
