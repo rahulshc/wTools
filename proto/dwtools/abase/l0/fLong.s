@@ -699,8 +699,72 @@ function unrollNormalize( dstArray )
 
 //
 
+/**
+ * The routine unrollSelect() returns a copy of a portion of {-array-} into a new Unroll. The portion of {-array-} selected by {-range-}. If end index of new Unroll is more then array.length, then routine appends elements with {-val-} value.
+ * The original {-array-} will not be modified.
+ *
+ * @param { Long } array - The Long from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
+ * If {-range-} is undefined, routine returns Unroll with copy of {-array-}.
+ * If range[ 0 ] < 0, then start index sets to 0, the end index increments by absolute value of range[ 0 ].
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty Unroll.
+ * @param { * } val - The object of any type for insertion.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.unrollSelect( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.unrollSelect( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.unrollSelect( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 2, 3, 4 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.unrollSelect( src, [ -2, 6 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str', 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.unrollSelect( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Unroll } Returns a copy of portion of source Long with appended elements that is defined by range.
+ * @function unrollSelect
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 /*
   qqq : extend documentation and test coverage of unrollSelect
+  Dmytro : documented and covered. The behavior of routine is like *Relength.
 */
 
 function unrollSelect( array, range, val )
@@ -713,11 +777,14 @@ function unrollSelect( array, range, val )
   if( _.numberIs( range ) )
   range = [ range, array.length ];
 
-  let f = range ? range[ 0 ] : undefined;
-  let l = range ? range[ 1 ] : undefined;
+  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
 
-  f = f !== undefined ? f : 0;
-  l = l !== undefined ? l : array.length;
+  // let f = range ? range[ 0 ] : undefined;
+  // let l = range ? range[ 1 ] : undefined;
+  //
+  // f = f !== undefined ? f : 0;
+  // l = l !== undefined ? l : array.length;
 
   _.assert( _.longIs( array ) );
   _.assert( _.rangeIs( range ) )
@@ -3814,7 +3881,7 @@ function arrayGrowInplace( src, range, ins )
  * console.log( got === src );
  * // log false
  *
- * @returns { Array|Unroll } Returns a copy of Array / Unroll which modified in defined range.
+ * @returns { Array|Unroll } Returns a copy of portion of Array / Unroll with appended elements that is defined by range.
  * @function arrayRelength
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
@@ -3923,7 +3990,7 @@ function arrayRelength( src, range, ins )
  * console.log( got === src );
  * // log false
  *
- * @returns { Array|Unroll } Returns a original Array / Unroll which modified in defined range.
+ * @returns { Array|Unroll } Returns a portion of original Array / Unroll with appended elements that is defined by range.
  * @function arrayRelengthInplace
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.

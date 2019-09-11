@@ -1875,6 +1875,150 @@ function unrollNormalize( test )
 
 //
 
+function unrollSelect( test )
+{
+  /* constructors */
+
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => _.argumentsArrayMake( src );
+  var bufferTyped = function( buf )
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+  };
+
+  /* lists */
+
+  var listTyped =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    U16x,
+    // I16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
+  var list =
+  [
+    array,
+    unroll,
+    argumentsArray,
+  ];
+  for( let i = 0; i < listTyped.length; i++ )
+  list.push( bufferTyped( listTyped[ i ] ) );
+
+  /* tests */
+
+  for( let t = 0; t < list.length; t++ )
+  {
+    test.open( list[ t ].name );
+    run( list[ t ] );
+    test.close( list[ t ].name );
+  }
+
+  /* test subroutine */
+
+  function run( make )
+  {
+    test.case = 'only dst';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.unrollSelect( dst );
+    var expected = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, not a val';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.unrollSelect( dst, [ 0, dst.length + 2 ] );
+    var expected = _.unrollMake( [ 1, 2, 3, 4, 5, undefined, undefined ] );
+    test.identical( got, expected );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.unrollSelect( dst, [ 0, dst.length + 2 ], 0 );
+    var expected = _.unrollMake( [ 1, 2, 3, 4, 5, 0, 0 ] );
+    test.identical( got, expected );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.unrollSelect( dst, [ dst.length - 1, dst.length * 2 ], 0 );
+    var expected = _.unrollMake( [ 5, 0, 0, 0, 0, 0 ] );
+    test.identical( got, expected );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'range < dst.length';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.unrollSelect( dst, [ 0, 3 ] );
+    var expected = _.unrollMake( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'range < dst.length, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.unrollSelect( dst, [ 0, 3 ], 0 );
+    var expected = _.unrollMake( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'f < 0, not a val';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    got = _.unrollSelect( dst, [ -1, 3 ] );
+    expected = _.unrollMake( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'l < 0, not a val';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.unrollSelect( dst, [ 0, -1 ] );
+    var expected = _.unrollMake( [] );
+    test.identical( got, expected );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'f < 0, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.unrollSelect( dst, [ -1, 3 ], 0 );
+    var expected = _.unrollMake( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== dst );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.unrollSelect() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.unrollSelect( [ 1 ], [ 1, 4 ], '5', 1 ) );
+
+  test.case = 'array is not long';
+  test.shouldThrowErrorSync( () => _.unrollSelect( 1, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.unrollSelect( new ArrayBuffer( 4 ), [ 0, 5 ] ) );
+
+  test.case = 'not a range';
+  test.shouldThrowErrorSync( () => _.unrollSelect( [ 1 ], [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.unrollSelect( [ 1 ], 'str' ) );
+}
+
+//
+
 /* qqq
 unrollAppend, unrollPrepend should have test groups :
 - dst is null / unroll / array
@@ -32954,6 +33098,8 @@ var Self =
     unrollsFrom,
     unrollFromMaybe,
     unrollNormalize,
+
+    unrollSelect,
 
     unrollPrepend,
     unrollAppend,
