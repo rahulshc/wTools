@@ -3320,7 +3320,6 @@ function arrayButInplace( src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @throws { Error } If argument {-ins-} is not long / undefined.
  * @memberof wTools
  */
 
@@ -3416,7 +3415,6 @@ function arraySelect( src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @throws { Error } If argument {-ins-} is not long / undefined.
  * @memberof wTools
  */
 
@@ -3455,7 +3453,7 @@ function arraySelectInplace( src, range, ins )
 //
 
 /**
- * The routine arrayGrow() returns a copy of {-src-} with appended elements. The original {-src-} will not be modified.
+ * The routine arrayGrow() returns a copy of {-src-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value. The original {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -3512,7 +3510,6 @@ function arraySelectInplace( src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @throws { Error } If argument {-ins-} is not long / undefined.
  * @memberof wTools
  */
 
@@ -3575,7 +3572,7 @@ function arrayGrow( src, range, ins )
 //
 
 /**
- * The routine arrayGrow() returns a original {-src-} with appended elements.
+ * The routine arrayGrow() returns a original {-src-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value.
  *
  * @param { Array|Unroll } src - The Array or Unroll to append elements.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -3632,7 +3629,6 @@ function arrayGrow( src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @throws { Error } If argument {-ins-} is not long / undefined.
  * @memberof wTools
  */
 
@@ -3691,6 +3687,65 @@ function arrayGrowInplace( src, range, ins )
 
 //
 
+/**
+ * The routine arrayRelength() returns a copy of portion of {-src-} which defines by {-range-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value. The original {-src-} will not be modified.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty array.
+ * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelength( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelength( src, 7, 'str' );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelength( src, [ 1, 6 ], 'str' );
+ * console.log( got );
+ * // log [ 2, 3, 4, 5, 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelength( src, [ -5, 6 ], [ 7 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelength( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll which modified in defined range.
+ * @function arrayRelength
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 function arrayRelength( src, range, ins )
 {
   let result;
@@ -3740,6 +3795,65 @@ function arrayRelength( src, range, ins )
 }
 
 //
+
+/**
+ * The routine arrayRelengthInplace() returns a portion of {-src-} which defines by {-range-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll to change length.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index of new array.
+ * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty array.
+ * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelengthInplace( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelengthInplace( src, 7, 'str' );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelengthInplace( src, [ 1, 6 ], 'str' );
+ * console.log( got );
+ * // log [ 2, 3, 4, 5, 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelengthInplace( src, [ -5, 6 ], [ 7 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelengthInplace( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Array|Unroll } Returns a original Array / Unroll which modified in defined range.
+ * @function arrayRelengthInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
 
 function arrayRelengthInplace( src, range, ins )
 {
