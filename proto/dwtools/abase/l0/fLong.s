@@ -370,24 +370,75 @@ function unrollMake( src )
 
 //
 
+/**
+ * The routine unrollMakeUndefined() returns a new Unroll with length equal to {-length-}.
+ * If the argument {-length-} is not provided, routine returns new Unroll with the length defined from {-src-}.
+ *
+ * @param { Long|Null } src - Any Long object or null. If {-length-} is not provided, defines length of new Unroll.
+ * @param { Number|Long } length - Defines length of new Unroll.
+ *
+ * @example
+ * _.unrollMakeUndefined( null );
+ * // returns []
+ *
+ * @example
+ * _.unrollMakeUndefined( 3 );
+ * // returns [ undefined, undefined, undefined]
+ *
+ * @example
+ * _.unrollMakeUndefined( [ 1, 2, 3, 4 ], 2 );
+ * // returns [ undefined, undefined ]
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.unrollMakeUndefined( src );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined, undefined, undefined ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.unrollMakeUndefined( src, [ 1, 2 ] );
+ * console.log( got );
+ * // log [ undefined, undefined ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ *
+ * @example
+ * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * let got = _.unrollMakeUndefined( src, 3 );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ *
+ * @returns { Unroll } Returns a new Unroll with length equal to {-length-} or defined from {-src-}.
+ * If null passed, routine returns the empty Unroll.
+ * @function unrollMakeUndefined
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @throws { Error } If argument {-src-} is not a long, not null.
+ * @throws { Error } If argument {-length-} is not a number, not a long.
+ * @memberof wTools
+ */
+
 /*
 qqq : implement unrollMakeUndefined similar to longMakeUndefined, cover and document
+Dmytro : implemented similar to longMakeUndefined, covered, documented.
 */
 
 function unrollMakeUndefined( src, length )
 {
-  let length;
-
   if( src === null )
   src = [];
 
-  if( _.numberIs( length ) )
-  {
-  }
-  else if( length === undefined )
+  if( length === undefined )
   length = src.length;
   else if ( _.longIs( length ) )
   length = length.length;
+  else if( _.numberIs( length ) )
+  {
+  }
   else _.assert( 0 );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -2868,7 +2919,7 @@ function arrayMake( src )
  * The routine arrayMakeUndefined() returns a new Array with length equal to {-length-}.
  * If the argument {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
  *
- * @param { Number|Long|Null } src - The number or any long object. If {-length-} is not provided, defines length of new Array.
+ * @param { Number|Long|Null } src - The number or any Long object. If {-length-} is not provided, defines length of new Array.
  * @param { Number } length - Defines length of new Array.
  *
  * @example
@@ -2918,7 +2969,7 @@ function arrayMake( src )
  * @function arrayMakeUndefined
  * @throws { Error } If arguments.length is less then one or more then two.
  * @throws { Error } If argument {-src-} is not a number, not a long, not null.
- * @throws { Error } If argument {-length-} is not a number, not undefined.
+ * @throws { Error } If argument {-length-} is not a number.
  * @memberof wTools
  */
 
