@@ -1718,7 +1718,9 @@ function bufferRawFrom( buffer )
     // _.assert( 0, 'not implemented' );
     result = buffer.buffer;
     if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
-    result = result.slice( buffer.byteOffset || 0, buffer.byteLength );
+    // Dmytro : works not correctly, offset + length = right bound of new bufferRaw
+    result = result.slice( buffer.byteOffset, buffer.byteOffset + buffer.byteLength );
+    // result = result.slice( buffer.byteOffset || 0, buffer.byteLength );
 
   }
   else if( _.strIs( buffer ) )
@@ -1752,6 +1754,10 @@ function bufferRawFrom( buffer )
 function bufferBytesFrom( buffer )
 {
   let result;
+
+  // Dmytro : missed
+  if( _.bufferBytesIs( buffer ) )
+  return buffer;
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -1807,16 +1813,20 @@ function bufferBytesFromNode( src )
 
 /*
 qqq : cover it
+Dmytro : coverage is extended 
 */
 
 function bufferNodeFrom( buffer )
 {
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects typed or raw buffer, but got', _.strType( buffer ) );
-
   if( _.bufferNodeIs( buffer ) )
   return buffer;
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.bufferAnyIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects buffer, string of array, but got', _.strType( buffer ) );
+  // _.assert( _.bufferViewIs( buffer ) || _.bufferTypedIs( buffer ) || _.bufferRawIs( buffer ) || _.bufferNodeIs( buffer ) || _.strIs( buffer ) || _.arrayIs( buffer ), 'Expects typed or raw buffer, but got', _.strType( buffer ) );
+
+  // if( _.bufferNodeIs( buffer ) )
+  // return buffer;
 
   /* */
 
