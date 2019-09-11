@@ -370,18 +370,92 @@ function unrollMake( src )
 
 //
 
+/**
+ * The routine unrollMakeUndefined() returns a new Unroll with length equal to {-length-}.
+ * If the argument {-length-} is not provided, routine returns new Unroll with the length defined from {-src-}.
+ *
+ * @param { Long|Null } src - Any Long object or null. If {-length-} is not provided, defines length of new Unroll.
+ * @param { Number|Long } length - Defines length of new Unroll.
+ *
+ * @example
+ * _.unrollMakeUndefined( null );
+ * // returns []
+ *
+ * @example
+ * _.unrollMakeUndefined( 3 );
+ * // returns [ undefined, undefined, undefined]
+ *
+ * @example
+ * _.unrollMakeUndefined( [ 1, 2, 3, 4 ], 2 );
+ * // returns [ undefined, undefined ]
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.unrollMakeUndefined( src );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined, undefined, undefined ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.unrollMakeUndefined( src, [ 1, 2 ] );
+ * console.log( got );
+ * // log [ undefined, undefined ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ *
+ * @example
+ * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * let got = _.unrollMakeUndefined( src, 3 );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ *
+ * @returns { Unroll } Returns a new Unroll with length equal to {-length-} or defined from {-src-}.
+ * If null passed, routine returns the empty Unroll.
+ * @function unrollMakeUndefined
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @throws { Error } If argument {-src-} is not a long, not null.
+ * @throws { Error } If argument {-length-} is not a number, not a long.
+ * @memberof wTools
+ */
+
 /*
 qqq : implement unrollMakeUndefined similar to longMakeUndefined, cover and document
+Dmytro : implemented similar to longMakeUndefined, covered, documented.
 */
 
 function unrollMakeUndefined( src, length )
 {
-  let result = _.arrayMakeUndefined( src, length );
+  if( src === null )
+  src = [];
+
+  if( length === undefined )
+  length = src.length;
+  else if ( _.longIs( length ) )
+  length = length.length;
+  else if( _.numberIs( length ) )
+  {
+  }
+  else _.assert( 0 );
+
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.arrayIs( result ) );
-  result[ _.unroll ] = true;
-  return result;
+  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.longIs( src ) );
+
+  return _.unrollMake( length );
 }
+
+// function unrollMakeUndefined( src, length )
+// {
+//   let result = _.arrayMakeUndefined( src, length );
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.arrayIs( result ) );
+//   result[ _.unroll ] = true;
+//   return result;
+// }
 
 //
 
@@ -499,6 +573,14 @@ function unrollsFrom( srcs )
   return dst;
 }
 
+/*
+qqq : in separate line after each console.log such comment should follow
+      1. its lazy
+      2. not returns, but output or log
+      3. should be for each console.log
+Dmytro : implemented in all module
+*/
+
 /**
  * The routine unrollFromMaybe() performs conversion of {-src-} to unroll-array.
  *
@@ -527,12 +609,6 @@ function unrollsFrom( srcs )
  * console.log ( unroll === result );
  * // log true
  *
-
-  qqq : in separate line after each console.log such comment should follow
-        1. its lazy
-        2. not returns, but output or log
-        3. should be for each console.log
-
  * @example
  * let arr = new Array( 1, 2, 'str' );
  * let unroll = _.unrollFromMaybe( [ 1, 2, 'str' ] );
@@ -623,8 +699,72 @@ function unrollNormalize( dstArray )
 
 //
 
+/**
+ * The routine unrollSelect() returns a copy of a portion of {-array-} into a new Unroll. The portion of {-array-} selected by {-range-}. If end index of new Unroll is more then array.length, then routine appends elements with {-val-} value.
+ * The original {-array-} will not be modified.
+ *
+ * @param { Long } array - The Long from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
+ * If {-range-} is undefined, routine returns Unroll with copy of {-array-}.
+ * If range[ 0 ] < 0, then start index sets to 0, the end index increments by absolute value of range[ 0 ].
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty Unroll.
+ * @param { * } val - The object of any type for insertion.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.unrollSelect( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.unrollSelect( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.unrollSelect( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 2, 3, 4 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.unrollSelect( src, [ -2, 6 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str', 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.unrollSelect( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Unroll } Returns a copy of portion of source Long with appended elements that is defined by range.
+ * @function unrollSelect
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 /*
   qqq : extend documentation and test coverage of unrollSelect
+  Dmytro : documented and covered. The behavior of routine is like *Relength.
 */
 
 function unrollSelect( array, range, val )
@@ -637,11 +777,14 @@ function unrollSelect( array, range, val )
   if( _.numberIs( range ) )
   range = [ range, array.length ];
 
-  let f = range ? range[ 0 ] : undefined;
-  let l = range ? range[ 1 ] : undefined;
+  let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
 
-  f = f !== undefined ? f : 0;
-  l = l !== undefined ? l : array.length;
+  // let f = range ? range[ 0 ] : undefined;
+  // let l = range ? range[ 1 ] : undefined;
+  //
+  // f = f !== undefined ? f : 0;
+  // l = l !== undefined ? l : array.length;
 
   _.assert( _.longIs( array ) );
   _.assert( _.rangeIs( range ) )
@@ -1118,23 +1261,49 @@ function longIsPopulated( src )
 //
 
 /**
- * The longMake() routine returns a new array or a new TypedArray with length equal (length)
- * or new TypedArray with the same length of the initial array if second argument is not provided.
+ * The routine longMake() returns a new long object with the same type as source long (src). New long makes from inserted long (ins)
+ * or if (ins) is number, the long makes from (src) with length equal to (ins). If (ins) is not provided, routine returns copy of (src).
  *
- * @param { longIs } ins - The instance of an array.
- * @param { Number } [ length = ins.length ] - The length of the new array.
+ * @param { Long } src - Instance of long object or constructor, defines type of returned long. If null is provided, routine returns empty array.
+ * @param { Number|Long } ins - Defines length of new long. If long object is provided, routine makes new long from (ins) with (src) type.
  *
- * @returns { longIs }  Returns an array with a certain (length).
+ * @example
+ * _.longMake( null );
+ * // returns []
+ *
+ * @example
+ * _.longMake( [ 1, 2, 3, 4 ] );
+ * // returns [ 1, 2, 3, 4 ];
+ *
+ * @example
+ * let src = _.unrollMake( [] )
+ * let got = _.longMake( src, [ 1, 2, 3 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3 ];
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ *
+ * @example
+ * let src = new F32x( [ 1, 2, 3, 4, 5] )
+ * let got = _.longMake( src, 2 );
+ * console.log( got );
+ * // log Float32Array[ 1, 2 ];
+ * console.log( _.bufferTypedIs( got ) );
+ * // log true
+ *
+ * @returns { Long }  Returns a long with type of source long which makes from ins.
  * @function longMake
- * @throws { Error } If the passed arguments is less than two.
- * @throws { Error } If the (length) is not a number.
- * @throws { Error } If the first argument in not an array like object.
+ * @throws { Error } If the passed arguments is less than two or more then two.
+ * @throws { Error } If the (ins) is not a number and not a long.
+ * @throws { Error } If the (src) is not long object or not a constructor.
+ * @throws { Error } If the (ins) or ins.length has a not finite value.
  * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
  * @memberof wTools
  */
 
 /*
 qqq : extend coverage and documentation of longMake
+Dmytro : extended coverage and documentation of routine longMake
 qqq : longMake does not create unrolls, but should
 Dmytro : longMake creates unrolls. It is implemented two variants, one of them should be deleted.
 */
@@ -1334,6 +1503,47 @@ function _longMakeOfLength( src, len )
 
 //
 
+/**
+ * The routine longMakeUndefined() returns a new long object with the same type as source long (src). New long has length equal to (length)
+ * or it has length of source long (src) if second argument is not provided.
+ *
+ * @param { Long } ins - Instance of long object or constructor, defines type of returned long. If null is provided, routine returns empty array.
+ * @param { Number|Long } len - Defines length of new long. If long object is provided, routine makes new long with length equal to ins.length.
+ *
+ * @example
+ * _.longMakeUndefined( null );
+ * // returns []
+ *
+ * @example
+ * _.longMakeUndefined( [ 1, 2, 3, 4 ] );
+ * // returns [ undefined, undefined, undefined, undefined ];
+ *
+ * @example
+ * let src = _.unrollMake( [] )
+ * let got = _.longMakeUndefined( src, [ 1, 2, 3 ] );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined ];
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ *
+ * @example
+ * let src = new F32x( [ 1, 2, 3, 4, 5] )
+ * let got = _.longMakeUndefined( src, 2 );
+ * console.log( got );
+ * // log Float32Array[ undefined, undefined ];
+ * console.log( _.bufferTypedIs( got ) );
+ * // log true
+ *
+ * @returns { Long }  Returns a long with type of source long with a certain (length).
+ * @function longMakeUndefined
+ * @throws { Error } If the passed arguments is less than two or more then two.
+ * @throws { Error } If the (ins) is not a number and not a long.
+ * @throws { Error } If the (src) is not long object or not a constructor.
+ * @throws { Error } If the (ins) or ins.length has a not finite value.
+ * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @memberof wTools
+ */
+
 /*
 qqq : extend coverage and documentation of longMakeUndefined
 qqq : longMakeUndefined does not create unrolls, but should
@@ -1363,7 +1573,8 @@ function longMakeUndefined( ins, len )
   if( _.argumentsArrayIs( ins ) )
   ins = [];
 
-  _.assert( !_.argumentsArrayIs( ins ), 'not tested' );
+  // /* Dmytro : it is unnacessary code, see three lines above */
+  // _.assert( !_.argumentsArrayIs( ins ), 'not tested' );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
   _.assert( _.routineIs( ins ) || _.longIs( ins ), () => 'Expects long, but got ' + _.strType( ins ) );
@@ -2842,7 +3053,7 @@ function arrayMake( src )
  * The routine arrayMakeUndefined() returns a new Array with length equal to {-length-}.
  * If the argument {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
  *
- * @param { Number|Long|Null } src - The number or any long object. If {-length-} is not provided, defines length of new Array.
+ * @param { Number|Long|Null } src - The number or any Long object. If {-length-} is not provided, defines length of new Array.
  * @param { Number } length - Defines length of new Array.
  *
  * @example
@@ -2892,7 +3103,7 @@ function arrayMake( src )
  * @function arrayMakeUndefined
  * @throws { Error } If arguments.length is less then one or more then two.
  * @throws { Error } If argument {-src-} is not a number, not a long, not null.
- * @throws { Error } If argument {-length-} is not a number, not undefined.
+ * @throws { Error } If argument {-length-} is not a number.
  * @memberof wTools
  */
 
@@ -3737,7 +3948,7 @@ function arrayGrowInplace( src, range, ins )
  * console.log( got === src );
  * // log false
  *
- * @returns { Array|Unroll } Returns a copy of Array / Unroll which modified in defined range.
+ * @returns { Array|Unroll } Returns a copy of portion of Array / Unroll with appended elements that is defined by range.
  * @function arrayRelength
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
@@ -3846,7 +4057,7 @@ function arrayRelength( src, range, ins )
  * console.log( got === src );
  * // log false
  *
- * @returns { Array|Unroll } Returns a original Array / Unroll which modified in defined range.
+ * @returns { Array|Unroll } Returns a portion of original Array / Unroll with appended elements that is defined by range.
  * @function arrayRelengthInplace
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
