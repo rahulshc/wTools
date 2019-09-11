@@ -3181,7 +3181,7 @@ function longMake( test )
 
   test.case = 'wrong type of ins';
   test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
-  test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], Infinite  ) );
+  test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], Infinity  ) );
 
 }
 
@@ -3380,40 +3380,36 @@ function longMakeUndefined( test )
     return _.arrayIs( got );
   };
 
-  /* tests */
+  /* lists */
 
+  var typedList =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
   var list =
   [
     array,
     unroll,
     argumentsArray,
   ];
-  var typedList =
-  [
-    I8x,
-    U16x,
-    F32x,
-    F64x,
-
-    // I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
-    // U16x,
-    // I32x,
-    // U32x,
-    // F32x,
-    // F64x,
-  ];
-
   for( let i = 0; i < typedList.length; i++ )
   list.push( bufferTyped( typedList[ i ] ) );
 
-  for( let i = 0; i < list.length; i++ )
+  /* tests */
+
+  for( let t = 0; t < list.length; t++ )
   {
-    test.open( list[ i ].name );
-    run( list[ i ] );
-    test.close( list[ i ].name );
+    test.open( list[ t ].name );
+    run( list[ t ] );
+    test.close( list[ t ].name );
   }
 
   /* test subroutine */
@@ -3514,20 +3510,19 @@ function longMakeUndefined( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.longMakeUndefined() );
 
-  test.case = 'extra argument';
-  test.shouldThrowErrorSync( () => _.longMakeUndefined( [ 1, 2, 3 ], 4, 'redundant argument' ) );
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( [ 1, 2, 3 ], 4, 'extra argument' ) );
 
-  test.case = 'wrong type of arguments';
+  test.case = 'wrong type of ins';
   test.shouldThrowErrorSync( () => _.longMakeUndefined( 'wrong argument', 1 ) );
   test.shouldThrowErrorSync( () => _.longMakeUndefined( 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.longMakeUndefined( 1, 2 ) );
   test.shouldThrowErrorSync( () => _.longMakeUndefined( Buffer.alloc( 3 ), 2 ) );
   test.shouldThrowErrorSync( () => _.longMakeUndefined( new BufferRaw( 3 ), 2 ) );
   test.shouldThrowErrorSync( () => _.longMakeUndefined( Array, Buffer.from( [ 3 ] ) ) );
 
-  test.case = 'arguments[1] is wrong';
+  test.case = 'wrong type of len';
   test.shouldThrowErrorSync( () => _.longMakeUndefined( [ 1, 2, 3 ], 'wrong type of argument' ) );
-
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( [ 1, 2, 3 ], Infinity ) );
 }
 
 //
