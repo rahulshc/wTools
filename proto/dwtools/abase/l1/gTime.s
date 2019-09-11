@@ -123,7 +123,7 @@ function timeReadyJoin( context, routine, args )
 
 function timeOnce( delay, onBegin, onEnd )
 {
-  let con = _.Consequence ? new _.Consequence() : undefined;
+  let con = _.Consequence ? new _.Consequence({ sourcePath : 2 }) : undefined;
   let taken = false;
   let options;
   let optionsDefault =
@@ -328,7 +328,7 @@ function timeOut_pre( routine, args )
 
 function timeOut_body( o )
 {
-  let con = _.Consequence ? new _.Consequence() : undefined;
+  let con = _.Consequence ? new _.Consequence({ sourcePath : 3 }) : undefined;
   let timer = null;
   let handleCalled = false;
 

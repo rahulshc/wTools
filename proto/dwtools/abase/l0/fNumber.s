@@ -56,10 +56,8 @@ function numberIsNotNan( src )
 
 function numberIsFinite( src )
 {
-
   if( !_.numberIs( src ) )
   return false;
-
   return isFinite( src );
 }
 
@@ -241,6 +239,7 @@ let Routines =
   numberIs,
   numberIsNotNan,
   numberIsFinite,
+  numberDefined : numberIsFinite,
   numberIsInfinite,
   numberIsInt,
 

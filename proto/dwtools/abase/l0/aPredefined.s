@@ -106,27 +106,27 @@ Self.unroll = Symbol.for( 'unroll' );
 
 // type aliases
 
-_global_.U32x = Uint32Array;
-_global_.U16x = Uint16Array;
-_global_.U8x = Uint8Array;
-_global_.U8ClampedX = Uint8ClampedArray;
+_realGlobal_.U32x = Uint32Array;
+_realGlobal_.U16x = Uint16Array;
+_realGlobal_.U8x = Uint8Array;
+_realGlobal_.U8ClampedX = Uint8ClampedArray;
 
-_global_.Ux = _global_.U32x;
+_realGlobal_.Ux = _realGlobal_.U32x;
 
-_global_.I32x = Int32Array;
-_global_.I16x = Int16Array;
-_global_.I8x = Int8Array;
-_global_.Ix = _global_.I32x;
+_realGlobal_.I32x = Int32Array;
+_realGlobal_.I16x = Int16Array;
+_realGlobal_.I8x = Int8Array;
+_realGlobal_.Ix = _realGlobal_.I32x;
 
-_global_.F64x = Float64Array;
-_global_.F32x = Float32Array;
-_global_.Fx = _global_.F32x;
+_realGlobal_.F64x = Float64Array;
+_realGlobal_.F32x = Float32Array;
+_realGlobal_.Fx = _realGlobal_.F32x;
 
 if( typeof Buffer !== 'undefined' )
-_global_.BufferNode = Buffer;
-_global_.BufferRaw = ArrayBuffer;
-_global_.BufferRawShared = SharedArrayBuffer;
-_global_.BufferView = DataView;
+_realGlobal_.BufferNode = Buffer;
+_realGlobal_.BufferRaw = ArrayBuffer;
+_realGlobal_.BufferRawShared = SharedArrayBuffer;
+_realGlobal_.BufferView = DataView;
 
 // --
 // export

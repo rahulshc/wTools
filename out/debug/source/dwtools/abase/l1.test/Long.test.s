@@ -1266,29 +1266,29 @@ function unrollsFrom( test )
   return;
 
   test.case = 'not argument';
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollsFrom();
   });
 
   test.case = 'argument is not array, not null';
 
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollsFrom( {} );
   });
 
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollsFrom( '1' );
   });
 
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollsFrom( 2, {} );
   });
 
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollsFrom( [ '1' ], [ 1, 'str' ], 'abc' );
   });
@@ -1427,23 +1427,23 @@ function unrollFromMaybe( test )
   return;
 
   test.case = 'routine has not argument';
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollFromMaybe();
   });
 
   test.case = 'many arguments';
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollFromMaybe( 1, 3 );
   });
 
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollFromMaybe( [], 3 );
   });
 
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollFromMaybe( [], [] );
   });
@@ -2442,23 +2442,23 @@ function unrollRemove( test )
   return;
 
   test.case = 'no args';
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollRemove();
   });
 
   test.case = 'dst is not an array';
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollRemove( 1, 1 );
   });
 
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollRemove( 'str', 1 );
   });
 
-  test.shouldThrowError( function()
+  test.shouldThrowErrorOfAnyKind( function()
   {
     _.unrollRemove( undefined, 1 );
   });

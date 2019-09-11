@@ -4426,7 +4426,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
-        arr[ i ] = arguments[ i ];
+        arr.push( arguments[ i ] );
       }
       throw _._err
       ({
@@ -4532,7 +4532,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
-        arr[ i ] = arguments[ i ];
+        arr.push( arguments[ i ] );
       }
       throw _._err
       ({
@@ -4636,7 +4636,7 @@ function sureMapHasAll( srcMap, all, msg )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
-        arr[ i ] = arguments[ i ];
+        arr.push( arguments[ i ] );
       }
       throw _._err
       ({
@@ -4739,7 +4739,7 @@ function sureMapOwnAll( srcMap, all, msg )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
-        arr[ i ] = arguments[ i ];
+        arr.push( arguments[ i ] );
       }
       throw _._err
       ({
@@ -4843,7 +4843,7 @@ function sureMapHasNone( srcMap, screenMaps, msg )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
-        arr[ i ] = arguments[ i ];
+        arr.push( arguments[ i ] );
       }
       throw _._err
       ({
@@ -4883,7 +4883,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
-        arr[ i ] = arguments[ i ];
+        arr.push( arguments[ i ] );
       }
       throw _._err
       ({
@@ -4984,7 +4984,7 @@ function sureMapHasNoUndefine( srcMap, msg )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
-        arr[ i ] = arguments[ i ];
+        arr.push( arguments[ i ] );
       }
       throw _._err
       ({

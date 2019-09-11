@@ -722,6 +722,7 @@ function _errLog( err )
 
   /* */
 
+  debugger;
   if( _.routineIs( err.toString ) )
   {
     let str = err.toString();
