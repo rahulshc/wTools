@@ -700,15 +700,15 @@ function unrollNormalize( dstArray )
 //
 
 /**
- * The routine unrollSelect() returns a copy of a portion of {-array-} into a new Unroll. The portion of {-array-} selected by {-range-}. If end index of new Unroll is more then array.length, then routine appends elements with {-val-} value.
+ * The routine unrollSelect() returns a copy of a portion of {-array-} into a new unroll. The portion of {-array-} selected by {-range-}. If end index of new unroll is more then array.length, then routine appends elements with {-val-} value.
  * The original {-array-} will not be modified.
  *
- * @param { Long } array - The Long from which makes a shallow copy.
+ * @param { Long } array - The long from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
  * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
- * If {-range-} is undefined, routine returns Unroll with copy of {-array-}.
+ * If {-range-} is undefined, routine returns unroll with copy of {-array-}.
  * If range[ 0 ] < 0, then start index sets to 0, the end index increments by absolute value of range[ 0 ].
- * If range[ 1 ] <= range[ 0 ], then routine returns empty Unroll.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty unroll.
  * @param { * } val - The object of any type for insertion.
  *
  * @example
@@ -753,7 +753,7 @@ function unrollNormalize( dstArray )
  * console.log( got === src );
  * // log false
  *
- * @returns { Unroll } Returns a copy of portion of source Long with appended elements that is defined by range.
+ * @returns { Unroll } Returns a copy of portion of source long object with appended elements that is defined by range.
  * @function unrollSelect
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
@@ -1546,6 +1546,7 @@ function _longMakeOfLength( src, len )
 
 /*
 qqq : extend coverage and documentation of longMakeUndefined
+Dmytro : routine is covered and documented
 qqq : longMakeUndefined does not create unrolls, but should
 Dmytro : longMakeUndefined creates unrolls.
 */
@@ -1826,7 +1827,79 @@ function longSlice( array, f, l )
 
 //
 
-/* qqq : routine longBut requires good test coverage and documentation */
+/**
+ * The routine longBut() returns a shallow copy of source long {-array-}. Routine removes existing
+ * elements in bounds defined by {-range-} and insert new elements from {-val-}. The original
+ * source long {-array-} will not be modified.
+ *
+ * @param { Long } array - The long object from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
+ * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
+ * If {-range-} is undefined, routine returns copy of {-array-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
+ * @param { Long } val - The long object with elements for insertion. Inserting begins at start index.
+ * If quantity of removed elements is not equal to val.length, then returned long will have length different to array.length.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longBut( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longBut( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 'str', 4, 5 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longBut( src, [ 1, 4 ], [ 5, 6, 7 ] );
+ * console.log( got );
+ * // log Float32Array[ 1, 5, 6, 7, 5 ]
+ * console.log( _.bufferTypedIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longBut( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longBut( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 'str', 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Long } Returns a copy of source long with removed or replaced existing elements and / or added new elements. The copy has same type as source long.
+ * @function longBut
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-array-} is not a long.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If argument {-val-} is not long / undefined.
+ * @memberof wTools
+ */
+
+/*
+qqq : routine longBut requires good test coverage and documentation
+Dmytro : extended routine coverage by using given clarifications, documented 
+ */
 
 function longBut( array, range, val )
 {
@@ -1839,15 +1912,17 @@ function longBut( array, range, val )
   if( _.arrayIs( array ) )
   return _.arrayBut( array, range, val );
 
-  let result;
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
 
   _.assert( _.longIs( array ) );
   _.assert( val === undefined || _.longIs( val ) );
+  _.assert( _.rangeIs( range ) );
   // _.assert( _.longIs( range ), 'not tested' );
   // _.assert( !_.longIs( range ), 'not tested' );
 
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
+  // if( _.numberIs( range ) )
+  // range = [ range, range + 1 ];
 
   _.rangeClamp( range, [ 0, array.length ] );
   if( range[ 1 ] < range[ 0 ] )
@@ -1858,7 +1933,7 @@ function longBut( array, range, val )
   let d2 = d - len;
   let l2 = array.length - d2;
 
-  result = _.longMakeUndefined( array, l2 );
+  let result = _.longMakeUndefined( array, l2 );
 
   // debugger;
   // _.assert( 0, 'not tested' )
@@ -3269,8 +3344,8 @@ function arraySlice( srcArray, f, l )
  * If {-range-} is undefined, routine returns copy of {-src-}.
  * If range[ 0 ] < 0, then start index sets to 0.
  * If range[ 1 ] > src.length, end index sets to src.length.
- * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements starts at start index.
- * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
+ * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
+ * @param { Long } ins - The long object with elements for insertion. Inserting begins at start index.
  * If quantity of removed elements is not equal to ins.length, then returned array will have length different to src.length.
  *
  * @example

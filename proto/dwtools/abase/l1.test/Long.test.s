@@ -4055,6 +4055,7 @@ longSlice.timeOut = 20000;
 
 /*
 qqq : please ask how to improve test routine longBut.
+Dmytro : improved by using given clarifications
 */
 
 function longBut( test )
@@ -4071,6 +4072,8 @@ function longBut( test )
     unroll,
     argumentsArray
   ];
+
+  /* - */
 
   for( let i = 0; i < list.length; i++ )
   {
