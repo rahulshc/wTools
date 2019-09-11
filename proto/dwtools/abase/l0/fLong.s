@@ -4839,8 +4839,9 @@ function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
+    let insArrayLength = insArray.length
     result = arrayPrependedArrayOnce.apply( this, arguments );
-    _.assert( result === insArray.length );
+    _.assert( result === insArrayLength );
   }
   else
   {
@@ -4889,8 +4890,9 @@ function arrayPrependedArray( dstArray, insArray )
   _.assert( _.arrayIs( dstArray ), 'arrayPrependedArray :', 'Expects array' );
   _.assert( _.longIs( insArray ), 'arrayPrependedArray :', 'Expects longIs' );
 
+  let result = insArray.length;
   dstArray.unshift.apply( dstArray, insArray );
-  return insArray.length;
+  return result;
 }
 
 //
@@ -4937,16 +4939,24 @@ function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
+
   for( let i = insArray.length - 1; i >= 0; i-- )
   {
-    if( _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
+    let index = i;
+    if( dstArray === insArray )
+    index = i + result;
+
+    if( _.arrayLeftIndex( dstArray, insArray[ index ], evaluator1, evaluator2 ) === -1 )
     {
-      dstArray.unshift( insArray[ i ] );
+      dstArray.unshift( insArray[ index ] );
       result += 1;
     }
   }
@@ -4961,8 +4971,9 @@ function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evalua
  let result;
  if( Config.debug )
  {
+   let insArrayLength = insArray.length;
    result = arrayPrependedArrayOnce.apply( this, arguments );
-   _.assert( result === insArray.length );
+   _.assert( result === insArrayLength );
  }
  else
  {
@@ -5107,15 +5118,25 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
-    result = arrayPrependedArraysOnce.apply( this, arguments );
     let expected = 0;
+    let insIsDst = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
       if( _.longIs( insArray[ i ] ) )
-      expected += insArray[ i ].length;
+      {
+        expected += insArray[ i ].length
+
+        if( insArray[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += insArray[ i ].length
+        }
+      }
       else
       expected += 1;
     }
+    result = arrayPrependedArraysOnce.apply( this, arguments );
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
   else
@@ -5187,12 +5208,19 @@ function arrayPrependedArrays( dstArray, insArray )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  {
+    result = insArray.length;
+    dstArray.unshift.apply( dstArray, insArray );
+    return result;
+  }
+
   for( let a = insArray.length - 1 ; a >= 0 ; a-- )
   {
     if( _.longIs( insArray[ a ] ) )
     {
-      dstArray.unshift.apply( dstArray, insArray[ a ] );
       result += insArray[ a ].length;
+      dstArray.unshift.apply( dstArray, insArray[ a ] );
     }
     else
     {
@@ -5244,6 +5272,10 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
+
   function _prependOnce( element )
   {
     let index = _.arrayLeftIndex( dstArray, element, evaluator1, evaluator2 );
@@ -5256,17 +5288,22 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
 
   // for( let ii = insArray.length - 1; ii >= 0; ii-- )
-  for( let ii = 0 ; ii < insArray.length ; ii++ )
+  for( let ii = 0, len = insArray.length; ii < len ; ii++ )
   {
     if( _.longIs( insArray[ ii ] ) )
     {
       let array = insArray[ ii ];
+      if( array === dstArray )
+      array = array.slice();
       // for( let a = array.length - 1; a >= 0; a-- )
-      for( let a = 0 ; a < array.length ; a++ )
+      for( let a = 0, len2 = array.length ; a < len2 ; a++ )
       _prependOnce( array[ a ] );
     }
     else
     {
+      if( dstArray === insArray )
+      _prependOnce( insArray[ ii + result ] );
+      else
       _prependOnce( insArray[ ii ] );
     }
   }
@@ -5281,15 +5318,27 @@ function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evalu
  let result;
  if( Config.debug )
  {
-   result = arrayPrependedArraysOnce.apply( this, arguments );
    let expected = 0;
+   let insIsDst = 0;
    for( let i = insArray.length - 1; i >= 0; i-- )
    {
      if( _.longIs( insArray[ i ] ) )
-     expected += insArray[ i ].length;
+     {
+       expected += insArray[ i ].length
+
+       if( insArray[ i ] === dstArray )
+       {
+         insIsDst += 1;
+         if( insIsDst > 1 )
+         expected += insArray[ i ].length
+       }
+     }
      else
      expected += 1;
    }
+
+   result = arrayPrependedArraysOnce.apply( this, arguments );
+
    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
  }
  else
@@ -5640,8 +5689,9 @@ function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
   let result;
   if( Config.debug )
   {
+    let insArrayLength = insArray.length
     result = arrayAppendedArrayOnce.apply( this, arguments )
-    _.assert( result === insArray.length );
+    _.assert( result === insArrayLength );
   }
   else
   {
@@ -5667,8 +5717,9 @@ function arrayAppendedArray( dstArray, insArray )
   _.assert( _.arrayIs( dstArray ), 'arrayPrependedArray :', 'Expects array' );
   _.assert( _.longIs( insArray ), 'arrayPrependedArray :', 'Expects longIs' );
 
+  let result = insArray.length;
   dstArray.push.apply( dstArray, insArray );
-  return insArray.length;
+  return result;
 }
 
 //
@@ -5676,12 +5727,16 @@ function arrayAppendedArray( dstArray, insArray )
 function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   let result = 0;
 
-  for( let i = 0 ; i < insArray.length ; i++ )
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
+
+  for( let i = 0, len = insArray.length; i < len ; i++ )
   {
     if( _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
     {
@@ -5700,8 +5755,9 @@ function arrayAppendedArrayOnceStrictly( dstArray, ins )
   let result;
   if( Config.debug )
   {
+    let insArrayLength = ins.length;
     result = arrayAppendedArrayOnce.apply( this, arguments );
-    _.assert( result === ins.length , 'Array should have only unique elements, but has several', ins );
+    _.assert( result === insArrayLength , 'Array should have only unique elements, but has several', ins );
   }
   else
   {
@@ -5774,17 +5830,27 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
-
-    result = arrayAppendedArraysOnce.apply( this, arguments );
-
     let expected = 0;
+    let insIsDst = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
       if( _.longIs( insArray[ i ] ) )
-      expected += insArray[ i ].length;
+      {
+        expected += insArray[ i ].length
+
+        if( insArray[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += insArray[ i ].length
+        }
+      }
       else
       expected += 1;
     }
+
+    result = arrayAppendedArraysOnce.apply( this, arguments );
+
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
   else
@@ -5859,6 +5925,10 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
+
   for( let a = 0, len = insArray.length; a < len; a++ )
   {
     if( _.longIs( insArray[ a ] ) )
@@ -5894,15 +5964,25 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
   let result;
   if( Config.debug )
   {
-    result = arrayAppendedArraysOnce.apply( this, arguments );
     let expected = 0;
+    let insIsDst = 0;
     for( let i = ins.length - 1; i >= 0; i-- )
     {
       if( _.longIs( ins[ i ] ) )
-      expected += ins[ i ].length;
+      {
+        expected += ins[ i ].length
+
+        if( ins[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += ins[ i ].length
+        }
+      }
       else
       expected += 1;
     }
+    result = arrayAppendedArraysOnce.apply( this, arguments );
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
   else
@@ -6212,6 +6292,7 @@ function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
   let result;
   if( Config.debug )
   {
+    let insArrayLength = insArray.length;
     result = arrayRemovedArrayOnce.apply( this, arguments );
     let index = - 1;
     for( let i = 0, len = insArray.length; i < len ; i++ )
@@ -6219,7 +6300,7 @@ function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
       index = dstArray.indexOf( insArray[ i ] );
       _.assert( index < 0 );
     }
-    _.assert( result === insArray.length );
+    _.assert( result === insArrayLength );
 
   }
   else
@@ -6245,7 +6326,10 @@ function arrayRemovedArray( dstArray, insArray )
   _.assert( arguments.length === 2 )
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
+
+  if( dstArray === insArray )
+  return dstArray.splice( 0 ).length;
 
   let result = 0;
   let index = -1;
@@ -6320,13 +6404,17 @@ function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
+
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return dstArray.splice( 0 ).length;
 
   let result = 0;
   let index = -1;
 
-  for( let i = 0, len = insArray.length; i < len ; i++ )
+  for( let i = insArray.length - 1; i >= 0 ; i-- )
   {
     index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
 
@@ -6347,6 +6435,7 @@ function arrayRemovedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
+    let insArrayLength = insArray.length;
     result = arrayRemovedArrayOnce.apply( this, arguments );
     let index = - 1;
     for( let i = 0, len = insArray.length; i < len ; i++ )
@@ -6354,7 +6443,7 @@ function arrayRemovedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
       index = dstArray.indexOf( insArray[ i ] );
       _.assert( index < 0 );
     }
-    _.assert( result === insArray.length );
+    _.assert( result === insArrayLength );
 
   }
   else
@@ -6387,8 +6476,6 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
-    result = arrayRemovedArraysOnce.apply( this, arguments );
-
     let expected = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
@@ -6397,6 +6484,8 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
       else
       expected += 1;
     }
+
+    result = arrayRemovedArraysOnce.apply( this, arguments );
 
     _.assert( result === expected );
     _.assert( arrayRemovedArraysOnce.apply( this, arguments ) === 0 );
@@ -6439,6 +6528,13 @@ function arrayRemovedArrays( dstArray, insArray )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  {
+    result = insArray.length;
+    dstArray.splice( 0 );
+    return result;
+  }
+
   function _remove( argument )
   {
     let index = dstArray.indexOf( argument );
@@ -6477,6 +6573,14 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  {
+    result = insArray.length;
+    dstArray.splice( 0 );
+    return result;
+  }
+
   function _removeOnce( argument )
   {
     let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
@@ -6511,8 +6615,6 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
-    result = arrayRemovedArraysOnce.apply( this, arguments );
-
     let expected = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
@@ -6521,6 +6623,8 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
       else
       expected += 1;
     }
+
+    result = arrayRemovedArraysOnce.apply( this, arguments );
 
     _.assert( result === expected );
     _.assert( arrayRemovedArraysOnce.apply( this, arguments ) === 0 );
@@ -7471,9 +7575,13 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
+    let insArrayLength = ins.length;
     result = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
-    _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+    _.assert( result === insArrayLength, '{-dstArray-} should have each element of {-insArray-}' );
+    _.assert( insArrayLength === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return dstArray;
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
 
@@ -7506,29 +7614,40 @@ function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( _.longIs( sub ) );
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
-  let index = -1;
   let result = 0;
-  let oldDstArray = dstArray.slice();  // Array with src values stored
+  let index = -1;
+  // let oldDstArray = dstArray.slice();  // Array with src values stored
+  if( dstArray === ins )
+  ins = ins.slice();
+
   for( let i = 0, len = ins.length; i < len; i++ )
   {
-    let dstArray2 = oldDstArray.slice(); // Array modified for each ins element
-    index = _.arrayLeftIndex( dstArray2, ins[ i ], evaluator1, evaluator2 );
+    // let dstArray2 = oldDstArray.slice(); // Array modified for each ins element
+    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
     while( index !== -1 )
     {
       let subValue = sub[ i ];
+      let insValue = ins[ i ];
       if( subValue === undefined )
       {
         dstArray.splice( index, 1 );
-        dstArray2.splice( index, 1 );
+        // dstArray2.splice( index, 1 );
       }
       else
       {
         dstArray.splice( index, 1, subValue );
-        dstArray2.splice( index, 1, subValue );
+        // dstArray2.splice( index, 1, subValue );
       }
 
       result += 1;
-      index = _.arrayLeftIndex( dstArray2, ins[ i ], evaluator1, evaluator2 );
+
+      // if( dstArray === ins )
+      // break;
+
+      if( subValue === insValue )
+      break;
+
+      index = _.arrayLeftIndex( dstArray, insValue, evaluator1, evaluator2 );
     }
   }
 
@@ -7546,6 +7665,7 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
   let index = -1;
   let result = 0;
+
   //let oldDstArray = dstArray.slice();  // Array with src values stored
   for( let i = 0, len = ins.length; i < len; i++ )
   {
@@ -7571,9 +7691,14 @@ function arrayReplacedArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
+    let insArrayLength = ins.length
     result = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
-    _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+    _.assert( result === insArrayLength, '{-dstArray-} should have each element of {-insArray-}' );
+    _.assert( insArrayLength === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return result;
+
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( newResult === 0, () => 'One element of ' + _.toStrShort( ins ) + 'is several times in dstArray' );
   }
@@ -7608,8 +7733,6 @@ function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
-    result = arrayReplacedArraysOnce.apply( this, arguments );
-
     let expected = 0;
     for( let i = ins.length - 1; i >= 0; i-- )
     {
@@ -7619,14 +7742,20 @@ function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
       expected += 1;
     }
 
+    result = arrayReplacedArraysOnce.apply( this, arguments );
+
     _.assert( result === expected, '{-dstArray-} should have each element of {-insArray-}' );
     _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return dstArray;
+
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( newResult === 0, () => 'One element of ' + _.toStrShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
-    result = arrayReplacedArrayOnce.apply( this, arguments );
+    result = arrayReplacedArraysOnce.apply( this, arguments );
   }
 
   return dstArray;
@@ -7644,31 +7773,53 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
-  let oldDstArray = dstArray.slice();  // Array with src values stored
 
   function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
   {
-    let dstArray2 = oldDstArray.slice();
+    // let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
-    let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
 
     while( index !== -1 )
     {
-      dstArray2.splice( index, 1, subValue );
+      // dstArray2.splice( index, 1, subValue );
       dstArray.splice( index, 1, subValue );
       result += 1;
-      index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+      if( subValue === argument )
+      break;
+      index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
     }
   }
 
-  for( let a = ins.length - 1; a >= 0; a-- )
+  let insCopy = Object.create( null );
+  let subCopy = Object.create( null );
+
+  if( dstArray === ins )
+  {
+    ins = ins.slice();
+  }
+  else
+  {
+    for( let i = ins.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( ins[ i ] ) )
+      if( ins[ i ] === dstArray )
+      insCopy[ i ] = ins[ i ].slice();
+
+      if( _.longIs( sub[ i ] ) )
+      if( sub[ i ] === dstArray )
+      subCopy[ i ] = sub[ i ].slice();
+    }
+  }
+
+  for( let a = 0, len = ins.length; a < len; a++ )
   {
     if( _.longIs( ins[ a ] ) )
     {
-      let insArray = ins[ a ];
-      let subArray = sub[ a ];
+      let insArray = insCopy[ a ] || ins[ a ];
+      let subArray = sub[ a ] || subCopy[ a ];
 
-      for( let i = insArray.length - 1; i >= 0; i-- )
+      for( let i = 0, len2 = insArray.length; i < len2; i++ )
       _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
     }
     else
@@ -7691,30 +7842,31 @@ function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
-  let oldDstArray = dstArray.slice();  // Array with src values stored
+  // let oldDstArray = dstArray.slice();  // Array with src values stored
 
   function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
   {
-    let dstArray2 = oldDstArray.slice();
+    // let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
-    let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    // let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
 
     if( index !== -1 )
     {
-      dstArray2.splice( index, 1, subValue );
+      // dstArray2.splice( index, 1, subValue );
       dstArray.splice( index, 1, subValue );
       result += 1;
     }
   }
 
-  for( let a = ins.length - 1; a >= 0; a-- )
+  for( let a = 0, len = ins.length; a < len ; a++ )
   {
     if( _.longIs( ins[ a ] ) )
     {
       let insArray = ins[ a ];
       let subArray = sub[ a ];
 
-      for( let i = insArray.length - 1; i >= 0; i-- )
+      for( let i = 0, len2 = insArray.length; i < len2; i++ )
       _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
     }
     else
@@ -7746,12 +7898,16 @@ function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evalua
 
     _.assert( result === expected, '{-dstArray-} should have each element of {-insArray-}' );
     _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return result;
+
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( newResult === 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
-    result = arrayReplacedArrayOnce.apply( this, arguments );
+    result = arrayReplacedArraysOnce.apply( this, arguments );
   }
 
   return result;
