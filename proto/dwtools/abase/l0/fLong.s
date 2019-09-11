@@ -1261,23 +1261,49 @@ function longIsPopulated( src )
 //
 
 /**
- * The longMake() routine returns a new array or a new TypedArray with length equal (length)
- * or new TypedArray with the same length of the initial array if second argument is not provided.
+ * The routine longMake() returns a new long object with the same type as source long (src). New long has length equal to (length)
+ * or it has length of source long (src) if second argument is not provided.
  *
- * @param { longIs } ins - The instance of an array.
- * @param { Number } [ length = ins.length ] - The length of the new array.
+ * @param { Long } src - Instance of long object or constructor, defines type of returned long. If null is provided, routine returns empty array.
+ * @param { Number|Long } ins - Defines length of new long. If long object is provided, routine makes new long from (ins) with (src) type.
  *
- * @returns { longIs }  Returns an array with a certain (length).
+ * @example
+ * _.longMake( null );
+ * // returns []
+ *
+ * @example
+ * _.longMake( [ 1, 2, 3, 4 ] );
+ * // returns [ 1, 2, 3, 4 ];
+ *
+ * @example
+ * let src = _.unrollMake( [] )
+ * let got = _.longMake( src, [ 1, 2, 3 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3 ];
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ *
+ * @example
+ * let src = new F32x( [ 1, 2, 3, 4, 5] )
+ * let got = _.longMake( src, 2 );
+ * console.log( got );
+ * // log Float32Array[ 1, 2 ];
+ * console.log( _.bufferTypedIs( got ) );
+ * // log true
+ *
+ * @returns { Long }  Returns a long with type of source long with a certain (length).
  * @function longMake
- * @throws { Error } If the passed arguments is less than two.
- * @throws { Error } If the (length) is not a number.
- * @throws { Error } If the first argument in not an array like object.
+ * @throws { Error } If the passed arguments is less than two or more then two.
+ * @throws { Error } If the (ins) is not a number and not a long.
+ * @throws { Error } If the (src) is not long object or not a constructor.
+ * @throws { Error } If the (ins) or ins.length has a not finite value.
  * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
  * @memberof wTools
  */
 
 /*
 qqq : extend coverage and documentation of longMake
+Dmytro : extended coverage and documentation of routine longMake
 qqq : longMake does not create unrolls, but should
 Dmytro : longMake creates unrolls. It is implemented two variants, one of them should be deleted.
 */

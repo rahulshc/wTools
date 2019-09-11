@@ -1895,8 +1895,8 @@ function unrollSelect( test )
     I8x,
     // U8x,
     // U8ClampedX,
-    U16x,
     // I16x,
+    U16x,
     // I32x,
     // U32x,
     F32x,
@@ -3038,34 +3038,30 @@ function longMake( test )
     return _.arrayIs( got );
   };
 
-  /* tests */
+  /* lists */
 
+  var typedList =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
   var list =
   [
     array,
     unroll,
     argumentsArray,
   ];
-  var typedList =
-  [
-    I8x,
-    U16x,
-    F32x,
-    F64x,
-
-    // I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
-    // U16x,
-    // I32x,
-    // U32x,
-    // F32x,
-    // F64x,
-  ];
-
   for( let i = 0; i < typedList.length; i++ )
   list.push( bufferTyped( typedList[ i ] ) );
+
+  /* tests */
 
   for( let i = 0; i < list.length; i++ )
   {
@@ -3136,7 +3132,7 @@ function longMake( test )
     test.is( type( dst, got ) );
 
     test.case = 'dst = new long, src = array'
-    var dst = long( 5 );
+    var dst = long( 2 );
     var src = [ 1, 2, 3, 4, 5 ];
     var got = _.longMake( dst, src );
     var expected = longResult( dst, [ 1, 2, 3, 4, 5 ] );
@@ -3173,18 +3169,19 @@ function longMake( test )
   test.shouldThrowErrorSync( () => _.longMake() );
 
   test.case = 'extra argument';
-  test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 4, 'redundant argument' ) );
+  test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 4, 'extra argument' ) );
 
-  test.case = 'wrong type of arguments';
+  test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.longMake( 'wrong argument', 1 ) );
   test.shouldThrowErrorSync( () => _.longMake( 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.longMake( 1, 2 ) );
-  test.shouldThrowErrorSync( () => _.longMake( Buffer.alloc( 3 ), 2 ) );
   test.shouldThrowErrorSync( () => _.longMake( new BufferRaw( 3 ), 2 ) );
   test.shouldThrowErrorSync( () => _.longMake( Array, Buffer.from( [ 3 ] ) ) );
+  if( Config.interpreter === 'njs' )
+  test.shouldThrowErrorSync( () => _.longMake( Buffer.alloc( 3 ), 2 ) );
 
-  test.case = 'arguments[1] is wrong';
+  test.case = 'wrong type of ins';
   test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
+  test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], Infinite  ) );
 
 }
 
