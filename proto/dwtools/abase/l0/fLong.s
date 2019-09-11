@@ -376,12 +376,35 @@ qqq : implement unrollMakeUndefined similar to longMakeUndefined, cover and docu
 
 function unrollMakeUndefined( src, length )
 {
-  let result = _.arrayMakeUndefined( src, length );
+  let length;
+
+  if( src === null )
+  src = [];
+
+  if( _.numberIs( length ) )
+  {
+  }
+  else if( length === undefined )
+  length = src.length;
+  else if ( _.longIs( length ) )
+  length = length.length;
+  else _.assert( 0 );
+
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.arrayIs( result ) );
-  result[ _.unroll ] = true;
-  return result;
+  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.longIs( src ) );
+
+  return _.unrollMake( length );
 }
+
+// function unrollMakeUndefined( src, length )
+// {
+//   let result = _.arrayMakeUndefined( src, length );
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.arrayIs( result ) );
+//   result[ _.unroll ] = true;
+//   return result;
+// }
 
 //
 
@@ -499,6 +522,14 @@ function unrollsFrom( srcs )
   return dst;
 }
 
+/*
+qqq : in separate line after each console.log such comment should follow
+      1. its lazy
+      2. not returns, but output or log
+      3. should be for each console.log
+Dmytro : implemented in all module
+*/
+
 /**
  * The routine unrollFromMaybe() performs conversion of {-src-} to unroll-array.
  *
@@ -527,12 +558,6 @@ function unrollsFrom( srcs )
  * console.log ( unroll === result );
  * // log true
  *
-
-  qqq : in separate line after each console.log such comment should follow
-        1. its lazy
-        2. not returns, but output or log
-        3. should be for each console.log
-
  * @example
  * let arr = new Array( 1, 2, 'str' );
  * let unroll = _.unrollFromMaybe( [ 1, 2, 'str' ] );
@@ -1363,7 +1388,8 @@ function longMakeUndefined( ins, len )
   if( _.argumentsArrayIs( ins ) )
   ins = [];
 
-  _.assert( !_.argumentsArrayIs( ins ), 'not tested' );
+  // /* Dmytro : it is unnacessary code, see three lines above */
+  // _.assert( !_.argumentsArrayIs( ins ), 'not tested' );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
   _.assert( _.routineIs( ins ) || _.longIs( ins ), () => 'Expects long, but got ' + _.strType( ins ) );

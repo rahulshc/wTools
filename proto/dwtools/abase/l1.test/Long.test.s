@@ -1265,33 +1265,14 @@ function unrollsFrom( test )
   if( !Config.debug )
   return;
 
-  test.case = 'not argument';
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollsFrom();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.unrollsFrom() );
 
   test.case = 'argument is not array, not null';
-
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollsFrom( {} );
-  });
-
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollsFrom( '1' );
-  });
-
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollsFrom( 2, {} );
-  });
-
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollsFrom( [ '1' ], [ 1, 'str' ], 'abc' );
-  });
+  test.shouldThrowErrorSync( () => _.unrollsFrom( {} ) );
+  test.shouldThrowErrorSync( () => _.unrollsFrom( 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.unrollsFrom( 2, {} ) );
+  test.shouldThrowErrorSync( () => _.unrollsFrom( [ '1' ], [ 1, 'str' ], 'abc' ) );
 }
 
 //
@@ -1426,27 +1407,13 @@ function unrollFromMaybe( test )
   if( !Config.debug )
   return;
 
-  test.case = 'routine has not argument';
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollFromMaybe();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.unrollFromMaybe() );
 
-  test.case = 'many arguments';
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollFromMaybe( 1, 3 );
-  });
-
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollFromMaybe( [], 3 );
-  });
-
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollFromMaybe( [], [] );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.unrollFromMaybe( 1, 3 ) );
+  test.shouldThrowErrorSync( () => _.unrollFromMaybe( [], 3 ) );
+  test.shouldThrowErrorSync( () => _.unrollFromMaybe( [], [] ) );
 }
 
 //
@@ -2441,27 +2408,13 @@ function unrollRemove( test )
   if( !Config.debug )
   return;
 
-  test.case = 'no args';
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollRemove();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.unrollRemove() );
 
-  test.case = 'dst is not an array';
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollRemove( 1, 1 );
-  });
-
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollRemove( 'str', 1 );
-  });
-
-  test.shouldThrowErrorOfAnyKind( function()
-  {
-    _.unrollRemove( undefined, 1 );
-  });
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.unrollRemove( 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.unrollRemove( 'wrong', 1 ) );
+  test.shouldThrowErrorSync( () => _.unrollRemove( undefined, 1 ) );
 }
 
 //--
