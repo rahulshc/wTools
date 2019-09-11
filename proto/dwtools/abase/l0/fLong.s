@@ -1898,7 +1898,7 @@ function longSlice( array, f, l )
 
 /*
 qqq : routine longBut requires good test coverage and documentation
-Dmytro : extended routine coverage by using given clarifications, documented 
+Dmytro : extended routine coverage by using given clarifications, documented
  */
 
 function longBut( array, range, val )
@@ -1953,7 +1953,83 @@ function longBut( array, range, val )
 
 //
 
-/* qqq : routine longBut requires good test coverage and documentation */
+/**
+ * The routine longButInplace() returns a long {-array-} with removed existing elements in bounds
+ * defined by {-range-} and inserted new elements from {-val-}.
+ * If source long is resizable, routine modifies this long in place, otherwise, return copy.
+ *
+ * @param { Long } array - The long object to remove, replace or add elements.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
+ * If {-range-} is number, then it defines the start index, and the end index defines as start index incremented by one.
+ * If {-range-} is undefined, routine returns {-src-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements begins at start index.
+ * @param { Long } ins - The long object with elements for insertion. Inserting begins at start index.
+ * If quantity of removed elements is not equal to val.length, then returned array will have length different to original array.length.
+ *
+ * @example
+ * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longButInplace( src );
+ * console.log( got );
+ * // log Uint8Array[ 1, 2, 3, 4, 5 ]
+ * console.log( _.bufferTypedIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = new I32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.arrayButInplace( src, 2, [ 6, 7 ] );
+ * console.log( got );
+ * // log Int8Array[ 1, 2, 6, 7, 4, 5 ]
+ * console.log( _.bufferTypedIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.arrayButInplace( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 'str', 5 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.arrayButInplace( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 'str' ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayButInplace( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 'str', 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @returns { Long } Returns long with removed or replaced existing elements and / or added new elements. If long is resizable, routine returns modified source long, otherwise, returns a copy.
+ * @function longButInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-array-} is not a long.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If argument {-val-} is not long / undefined.
+ * @memberof wTools
+ */
+
+/*
+qqq : routine longButInplace requires good test coverage and documentation
+Dmytro : implemented and covered routine longButInplace, documented
+ */
 
 function longButInplace( array, range, val )
 {
@@ -3458,8 +3534,8 @@ function arrayBut( src, range, ins )
  * If {-range-} is undefined, routine returns {-src-}.
  * If range[ 0 ] < 0, then start index sets to 0.
  * If range[ 1 ] > src.length, end index sets to src.length.
- * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements starts at start index.
- * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
+ * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements begins at start index.
+ * @param { Long } ins - The long object with elements for insertion. Inserting begins at start index.
  * If quantity of removed elements is not equal to ins.length, then returned array will have length different to original src.length.
  *
  * @example
