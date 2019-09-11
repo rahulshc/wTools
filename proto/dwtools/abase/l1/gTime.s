@@ -338,9 +338,7 @@ function timeOut_body( o )
 
   if( con )
   {
-    // debugger;
     con.procedure( 'timeOut' ).sourcePath( o.stackLevel + 2 );
-    // debugger;
     con.give( function timeGot( err, arg )
     {
       if( err )
@@ -352,11 +350,6 @@ function timeOut_body( o )
   /* */
 
   timer = _.timeBegin( o.delay, timeEnd );
-
-  // if( o.delay > 0 )
-  // timer = _.timeBegin( o.delay, timeEnd );
-  // else
-  // timeSoon( timeEnd );
 
   return con;
 
@@ -452,7 +445,7 @@ function timeOutError_body( o )
   let con = _.timeOut.body.call( _, o );
 
   con.tag = 'TimeOutError';
-  con.procedure( 'timeOutError' ).sourcePath( stackLevel + 2 );
+  let procedure = con.procedure( 'timeOutError' ).sourcePath( stackLevel + 2 );
   con.finally( function( err, arg )
   {
     if( err )
@@ -470,6 +463,8 @@ function timeOutError_body( o )
 
     return _.Consequence().error( err );
   });
+
+  // procedure.end();
 
   return con;
 }

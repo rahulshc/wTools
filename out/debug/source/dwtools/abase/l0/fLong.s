@@ -170,25 +170,22 @@ function scalarAppendOnce( dst, src )
  * @memberof wTools
  */
 
-/*
-qqq : extend tests of routine scalarToVector, please
-*/
-
 // function arrayFromNumber( dst, length )
 function scalarToVector( dst, length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( dst !== undefined, 'Expects defined value as the first arguments' );
+  _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
   _.assert( length >= 0 );
 
-  if( _.arrayLike( dst ) )
+  if( _.numberIs( dst ) )
   {
-    _.assert( dst.length === length, () => `Expects array of length ${length} but got ${dst.length}` );
+    dst = _.longFill( [], dst, [ 0, length ] );
+    // dst = _.longFillTimes( [], length, dst );
   }
   else
   {
-    dst = _.longFill( [], dst, [ 0, length ] );
+    _.assert( dst.length === length, () => 'Expects array of length ' + length + ' but got ' + dst.length );
   }
 
   return dst;
@@ -2996,8 +2993,8 @@ function arrayAsShallowing( src )
 // --
 
 /**
- * The routine arraySlice() returns a shallow copy of a portion of {-srcArray-} into a new array object
- * selected from first index {-f-} to last index {-l-}. The original {-srcArray-} will not be modified.
+ * The routine arraySlice() returns a shallow copy of a portion of {-srcArray-} into a new array object.
+ * The copy makes from first index {-f-} to last index {-l-}. The original {-srcArray-} will not be modified.
  *
  * @param { Array|Unroll } srcArray - The Array or Unroll from which makes a shallow copy.
  * @param { Number } f - Defines the start index of copying.
@@ -3050,6 +3047,71 @@ function arraySlice( srcArray, f, l )
 
 //
 
+/**
+ * The routine arrayBut() returns a shallow copy of source array {-src-}. Routine removes existing
+ * elements in bounds defined by {-range-} and insert new elements from {-ins-}. The original
+ * source array {-src-} will not be modified.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
+ * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
+ * If {-range-} is undefined, routine returns copy of {-src-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements starts at start index.
+ * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
+ * If quantity of removed elements is not equal to ins.length, then returned array will have length different to src.length.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayBut( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayBut( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 'str', 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayBut( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 'str', 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayBut( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayBut( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 'str', 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll with removed or replaced existing elements and / or added new elements.
+ * @function arrayBut
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If argument {-ins-} is not long / undefined.
+ * @memberof wTools
+ */
+
 function arrayBut( src, range, ins )
 {
 
@@ -3074,7 +3136,22 @@ function arrayBut( src, range, ins )
   if( ins )
   _.arrayAppendArray( args, ins );
 
-  /* qqq : check is it optimal to make double copy */
+  /*
+  qqq : check is it optimal to make double copy
+  Dmytro : it is not double copy. Method slice() makes a copy and method splice replaces some elements in this copy.
+  or uncomment this code
+  let result = [];
+
+  for( let i = 0; i < range[ 0 ]; i++ )
+  result.push( src[ i ] );
+
+  if( ins )
+  for( let i = 0; i < ins.length; i++ )
+  result.push( ins[ i ] );
+
+  for( let i = range[ 1 ]; i < src.length; i++ )
+  result.push( src[ i ] );
+  */
 
   let result = src.slice();
 
@@ -3084,6 +3161,70 @@ function arrayBut( src, range, ins )
 }
 
 //
+
+/**
+ * The routine arrayButInplace() returns a source array {-src-} with removed existing elements in bounds
+ * defined by {-range-} and inserted new elements from {-ins-}.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll to remove, replace or add elements.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
+ * If {-range-} is number, then it defines the start index, and the end index defines as start index incremented by one.
+ * If {-range-} is undefined, routine returns {-src-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements starts at start index.
+ * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
+ * If quantity of removed elements is not equal to ins.length, then returned array will have length different to original src.length.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayButInplace( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayButInplace( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 'str', 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayButInplace( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 'str', 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayButInplace( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 'str' ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayButInplace( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 'str', 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @returns { Array|Unroll } Returns original Array / Unroll with removed or replaced existing elements and / or added new elements.
+ * @function arrayButInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If argument {-ins-} is not long / undefined.
+ * @memberof wTools
+ */
 
 function arrayButInplace( src, range, ins )
 {
@@ -3120,6 +3261,68 @@ function arrayButInplace( src, range, ins )
 
 //
 
+/**
+ * The routine arraySelect() returns a copy of a portion of {-src-} into a new array object
+ * selected by {-range-}. The original {-srcArray-} will not be modified.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
+ * If {-range-} is undefined, routine returns copy of {-src-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty array object.
+ * @param { * } ins - The object of any type for insertion.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelect( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelect( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelect( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 2, 3, 4 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelect( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelect( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll containing the extracted elements.
+ * @function arraySelect
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 function arraySelect( src, range, ins )
 {
   let result;
@@ -3154,6 +3357,67 @@ function arraySelect( src, range, ins )
 
 //
 
+/**
+ * The routine arraySelectInplace() returns a portion of original {-src-} selected by {-range-}.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll from which selects elements.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
+ * If {-range-} is undefined, routine returns {-src-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty array object.
+ * @param { * } ins - The object of any type for insertion.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelectInplace( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelectInplace( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelectInplace( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 2, 3, 4 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelectInplace( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arraySelectInplace( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log true
+ *
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll containing the extracted elements.
+ * @function arraySelectInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 function arraySelectInplace( src, range, ins )
 {
 
@@ -3187,6 +3451,67 @@ function arraySelectInplace( src, range, ins )
 }
 
 //
+
+/**
+ * The routine arrayGrow() returns a copy of {-src-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value. The original {-src-} will not be modified.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the end index, and the start index is 0.
+ * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 0 ] > 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns copy of origin array.
+ * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, 7, 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, [ 1, 6 ], 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, [ -5, 6 ], [ 7 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll with appended elements.
+ * @function arrayGrow
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
 
 function arrayGrow( src, range, ins )
 {
@@ -3246,6 +3571,67 @@ function arrayGrow( src, range, ins )
 
 //
 
+/**
+ * The routine arrayGrow() returns a original {-src-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll to append elements.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the end index, and the start index is 0.
+ * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 0 ] > 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns copy of origin array.
+ * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, 7, 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, [ 1, 6 ], 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str' ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, [ -5, 6 ], [ 7 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @returns { Array|Unroll } Returns a Array / Unroll with appended elements.
+ * @function arrayGrowInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 function arrayGrowInplace( src, range, ins )
 {
 
@@ -3301,6 +3687,65 @@ function arrayGrowInplace( src, range, ins )
 
 //
 
+/**
+ * The routine arrayRelength() returns a copy of portion of {-src-} which defines by {-range-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value. The original {-src-} will not be modified.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty array.
+ * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelength( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelength( src, 7, 'str' );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelength( src, [ 1, 6 ], 'str' );
+ * console.log( got );
+ * // log [ 2, 3, 4, 5, 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelength( src, [ -5, 6 ], [ 7 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelength( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll which modified in defined range.
+ * @function arrayRelength
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 function arrayRelength( src, range, ins )
 {
   let result;
@@ -3350,6 +3795,65 @@ function arrayRelength( src, range, ins )
 }
 
 //
+
+/**
+ * The routine arrayRelengthInplace() returns a portion of {-src-} which defines by {-range-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll to change length.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index of new array.
+ * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty array.
+ * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelengthInplace( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelengthInplace( src, 7, 'str' );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelengthInplace( src, [ 1, 6 ], 'str' );
+ * console.log( got );
+ * // log [ 2, 3, 4, 5, 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelengthInplace( src, [ -5, 6 ], [ 7 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayRelengthInplace( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Array|Unroll } Returns a original Array / Unroll which modified in defined range.
+ * @function arrayRelengthInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
 
 function arrayRelengthInplace( src, range, ins )
 {
@@ -4309,8 +4813,9 @@ function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
+    let insArrayLength = insArray.length
     result = arrayPrependedArrayOnce.apply( this, arguments );
-    _.assert( result === insArray.length );
+    _.assert( result === insArrayLength );
   }
   else
   {
@@ -4359,8 +4864,9 @@ function arrayPrependedArray( dstArray, insArray )
   _.assert( _.arrayIs( dstArray ), 'arrayPrependedArray :', 'Expects array' );
   _.assert( _.longIs( insArray ), 'arrayPrependedArray :', 'Expects longIs' );
 
+  let result = insArray.length;
   dstArray.unshift.apply( dstArray, insArray );
-  return insArray.length;
+  return result;
 }
 
 //
@@ -4407,16 +4913,24 @@ function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
+
   for( let i = insArray.length - 1; i >= 0; i-- )
   {
-    if( _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
+    let index = i;
+    if( dstArray === insArray )
+    index = i + result;
+
+    if( _.arrayLeftIndex( dstArray, insArray[ index ], evaluator1, evaluator2 ) === -1 )
     {
-      dstArray.unshift( insArray[ i ] );
+      dstArray.unshift( insArray[ index ] );
       result += 1;
     }
   }
@@ -4431,8 +4945,9 @@ function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evalua
  let result;
  if( Config.debug )
  {
+   let insArrayLength = insArray.length;
    result = arrayPrependedArrayOnce.apply( this, arguments );
-   _.assert( result === insArray.length );
+   _.assert( result === insArrayLength );
  }
  else
  {
@@ -4577,15 +5092,25 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
-    result = arrayPrependedArraysOnce.apply( this, arguments );
     let expected = 0;
+    let insIsDst = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
       if( _.longIs( insArray[ i ] ) )
-      expected += insArray[ i ].length;
+      {
+        expected += insArray[ i ].length
+
+        if( insArray[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += insArray[ i ].length
+        }
+      }
       else
       expected += 1;
     }
+    result = arrayPrependedArraysOnce.apply( this, arguments );
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
   else
@@ -4657,12 +5182,19 @@ function arrayPrependedArrays( dstArray, insArray )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  {
+    result = insArray.length;
+    dstArray.unshift.apply( dstArray, insArray );
+    return result;
+  }
+
   for( let a = insArray.length - 1 ; a >= 0 ; a-- )
   {
     if( _.longIs( insArray[ a ] ) )
     {
-      dstArray.unshift.apply( dstArray, insArray[ a ] );
       result += insArray[ a ].length;
+      dstArray.unshift.apply( dstArray, insArray[ a ] );
     }
     else
     {
@@ -4714,6 +5246,10 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
+
   function _prependOnce( element )
   {
     let index = _.arrayLeftIndex( dstArray, element, evaluator1, evaluator2 );
@@ -4726,17 +5262,22 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
 
   // for( let ii = insArray.length - 1; ii >= 0; ii-- )
-  for( let ii = 0 ; ii < insArray.length ; ii++ )
+  for( let ii = 0, len = insArray.length; ii < len ; ii++ )
   {
     if( _.longIs( insArray[ ii ] ) )
     {
       let array = insArray[ ii ];
+      if( array === dstArray )
+      array = array.slice();
       // for( let a = array.length - 1; a >= 0; a-- )
-      for( let a = 0 ; a < array.length ; a++ )
+      for( let a = 0, len2 = array.length ; a < len2 ; a++ )
       _prependOnce( array[ a ] );
     }
     else
     {
+      if( dstArray === insArray )
+      _prependOnce( insArray[ ii + result ] );
+      else
       _prependOnce( insArray[ ii ] );
     }
   }
@@ -4751,15 +5292,27 @@ function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evalu
  let result;
  if( Config.debug )
  {
-   result = arrayPrependedArraysOnce.apply( this, arguments );
    let expected = 0;
+   let insIsDst = 0;
    for( let i = insArray.length - 1; i >= 0; i-- )
    {
      if( _.longIs( insArray[ i ] ) )
-     expected += insArray[ i ].length;
+     {
+       expected += insArray[ i ].length
+
+       if( insArray[ i ] === dstArray )
+       {
+         insIsDst += 1;
+         if( insIsDst > 1 )
+         expected += insArray[ i ].length
+       }
+     }
      else
      expected += 1;
    }
+
+   result = arrayPrependedArraysOnce.apply( this, arguments );
+
    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
  }
  else
@@ -5110,8 +5663,9 @@ function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
   let result;
   if( Config.debug )
   {
+    let insArrayLength = insArray.length
     result = arrayAppendedArrayOnce.apply( this, arguments )
-    _.assert( result === insArray.length );
+    _.assert( result === insArrayLength );
   }
   else
   {
@@ -5137,8 +5691,9 @@ function arrayAppendedArray( dstArray, insArray )
   _.assert( _.arrayIs( dstArray ), 'arrayPrependedArray :', 'Expects array' );
   _.assert( _.longIs( insArray ), 'arrayPrependedArray :', 'Expects longIs' );
 
+  let result = insArray.length;
   dstArray.push.apply( dstArray, insArray );
-  return insArray.length;
+  return result;
 }
 
 //
@@ -5146,12 +5701,16 @@ function arrayAppendedArray( dstArray, insArray )
 function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   let result = 0;
 
-  for( let i = 0 ; i < insArray.length ; i++ )
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
+
+  for( let i = 0, len = insArray.length; i < len ; i++ )
   {
     if( _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
     {
@@ -5170,8 +5729,9 @@ function arrayAppendedArrayOnceStrictly( dstArray, ins )
   let result;
   if( Config.debug )
   {
+    let insArrayLength = ins.length;
     result = arrayAppendedArrayOnce.apply( this, arguments );
-    _.assert( result === ins.length , 'Array should have only unique elements, but has several', ins );
+    _.assert( result === insArrayLength , 'Array should have only unique elements, but has several', ins );
   }
   else
   {
@@ -5244,17 +5804,27 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
-
-    result = arrayAppendedArraysOnce.apply( this, arguments );
-
     let expected = 0;
+    let insIsDst = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
       if( _.longIs( insArray[ i ] ) )
-      expected += insArray[ i ].length;
+      {
+        expected += insArray[ i ].length
+
+        if( insArray[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += insArray[ i ].length
+        }
+      }
       else
       expected += 1;
     }
+
+    result = arrayAppendedArraysOnce.apply( this, arguments );
+
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
   else
@@ -5329,6 +5899,10 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return result;
+
   for( let a = 0, len = insArray.length; a < len; a++ )
   {
     if( _.longIs( insArray[ a ] ) )
@@ -5364,15 +5938,25 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
   let result;
   if( Config.debug )
   {
-    result = arrayAppendedArraysOnce.apply( this, arguments );
     let expected = 0;
+    let insIsDst = 0;
     for( let i = ins.length - 1; i >= 0; i-- )
     {
       if( _.longIs( ins[ i ] ) )
-      expected += ins[ i ].length;
+      {
+        expected += ins[ i ].length
+
+        if( ins[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += ins[ i ].length
+        }
+      }
       else
       expected += 1;
     }
+    result = arrayAppendedArraysOnce.apply( this, arguments );
     _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
   }
   else
@@ -5682,6 +6266,7 @@ function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
   let result;
   if( Config.debug )
   {
+    let insArrayLength = insArray.length;
     result = arrayRemovedArrayOnce.apply( this, arguments );
     let index = - 1;
     for( let i = 0, len = insArray.length; i < len ; i++ )
@@ -5689,7 +6274,7 @@ function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
       index = dstArray.indexOf( insArray[ i ] );
       _.assert( index < 0 );
     }
-    _.assert( result === insArray.length );
+    _.assert( result === insArrayLength );
 
   }
   else
@@ -5715,7 +6300,10 @@ function arrayRemovedArray( dstArray, insArray )
   _.assert( arguments.length === 2 )
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
+
+  if( dstArray === insArray )
+  return dstArray.splice( 0 ).length;
 
   let result = 0;
   let index = -1;
@@ -5790,13 +6378,17 @@ function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
   _.assert( _.longIs( insArray ) );
-  _.assert( dstArray !== insArray );
+  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
+
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  return dstArray.splice( 0 ).length;
 
   let result = 0;
   let index = -1;
 
-  for( let i = 0, len = insArray.length; i < len ; i++ )
+  for( let i = insArray.length - 1; i >= 0 ; i-- )
   {
     index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
 
@@ -5817,6 +6409,7 @@ function arrayRemovedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
+    let insArrayLength = insArray.length;
     result = arrayRemovedArrayOnce.apply( this, arguments );
     let index = - 1;
     for( let i = 0, len = insArray.length; i < len ; i++ )
@@ -5824,7 +6417,7 @@ function arrayRemovedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
       index = dstArray.indexOf( insArray[ i ] );
       _.assert( index < 0 );
     }
-    _.assert( result === insArray.length );
+    _.assert( result === insArrayLength );
 
   }
   else
@@ -5857,8 +6450,6 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
-    result = arrayRemovedArraysOnce.apply( this, arguments );
-
     let expected = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
@@ -5867,6 +6458,8 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
       else
       expected += 1;
     }
+
+    result = arrayRemovedArraysOnce.apply( this, arguments );
 
     _.assert( result === expected );
     _.assert( arrayRemovedArraysOnce.apply( this, arguments ) === 0 );
@@ -5909,6 +6502,13 @@ function arrayRemovedArrays( dstArray, insArray )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  {
+    result = insArray.length;
+    dstArray.splice( 0 );
+    return result;
+  }
+
   function _remove( argument )
   {
     let index = dstArray.indexOf( argument );
@@ -5947,6 +6547,14 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   let result = 0;
 
+  if( dstArray === insArray )
+  if( arguments.length === 2 )
+  {
+    result = insArray.length;
+    dstArray.splice( 0 );
+    return result;
+  }
+
   function _removeOnce( argument )
   {
     let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
@@ -5981,8 +6589,6 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
-    result = arrayRemovedArraysOnce.apply( this, arguments );
-
     let expected = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
@@ -5991,6 +6597,8 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
       else
       expected += 1;
     }
+
+    result = arrayRemovedArraysOnce.apply( this, arguments );
 
     _.assert( result === expected );
     _.assert( arrayRemovedArraysOnce.apply( this, arguments ) === 0 );
@@ -6941,9 +7549,13 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
   let result;
   if( Config.debug )
   {
+    let insArrayLength = ins.length;
     result = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
-    _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+    _.assert( result === insArrayLength, '{-dstArray-} should have each element of {-insArray-}' );
+    _.assert( insArrayLength === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return dstArray;
 
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
 
@@ -6976,29 +7588,40 @@ function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( _.longIs( sub ) );
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
-  let index = -1;
   let result = 0;
-  let oldDstArray = dstArray.slice();  // Array with src values stored
+  let index = -1;
+  // let oldDstArray = dstArray.slice();  // Array with src values stored
+  if( dstArray === ins )
+  ins = ins.slice();
+
   for( let i = 0, len = ins.length; i < len; i++ )
   {
-    let dstArray2 = oldDstArray.slice(); // Array modified for each ins element
-    index = _.arrayLeftIndex( dstArray2, ins[ i ], evaluator1, evaluator2 );
+    // let dstArray2 = oldDstArray.slice(); // Array modified for each ins element
+    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
     while( index !== -1 )
     {
       let subValue = sub[ i ];
+      let insValue = ins[ i ];
       if( subValue === undefined )
       {
         dstArray.splice( index, 1 );
-        dstArray2.splice( index, 1 );
+        // dstArray2.splice( index, 1 );
       }
       else
       {
         dstArray.splice( index, 1, subValue );
-        dstArray2.splice( index, 1, subValue );
+        // dstArray2.splice( index, 1, subValue );
       }
 
       result += 1;
-      index = _.arrayLeftIndex( dstArray2, ins[ i ], evaluator1, evaluator2 );
+
+      // if( dstArray === ins )
+      // break;
+
+      if( subValue === insValue )
+      break;
+
+      index = _.arrayLeftIndex( dstArray, insValue, evaluator1, evaluator2 );
     }
   }
 
@@ -7016,6 +7639,7 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
   let index = -1;
   let result = 0;
+
   //let oldDstArray = dstArray.slice();  // Array with src values stored
   for( let i = 0, len = ins.length; i < len; i++ )
   {
@@ -7041,9 +7665,14 @@ function arrayReplacedArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
+    let insArrayLength = ins.length
     result = arrayReplacedArrayOnce.apply( this, arguments );
-    _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
-    _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+    _.assert( result === insArrayLength, '{-dstArray-} should have each element of {-insArray-}' );
+    _.assert( insArrayLength === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return result;
+
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( newResult === 0, () => 'One element of ' + _.toStrShort( ins ) + 'is several times in dstArray' );
   }
@@ -7078,8 +7707,6 @@ function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
   let result;
   if( Config.debug )
   {
-    result = arrayReplacedArraysOnce.apply( this, arguments );
-
     let expected = 0;
     for( let i = ins.length - 1; i >= 0; i-- )
     {
@@ -7089,14 +7716,20 @@ function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
       expected += 1;
     }
 
+    result = arrayReplacedArraysOnce.apply( this, arguments );
+
     _.assert( result === expected, '{-dstArray-} should have each element of {-insArray-}' );
     _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return dstArray;
+
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( newResult === 0, () => 'One element of ' + _.toStrShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
-    result = arrayReplacedArrayOnce.apply( this, arguments );
+    result = arrayReplacedArraysOnce.apply( this, arguments );
   }
 
   return dstArray;
@@ -7114,31 +7747,53 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
-  let oldDstArray = dstArray.slice();  // Array with src values stored
 
   function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
   {
-    let dstArray2 = oldDstArray.slice();
+    // let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
-    let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
 
     while( index !== -1 )
     {
-      dstArray2.splice( index, 1, subValue );
+      // dstArray2.splice( index, 1, subValue );
       dstArray.splice( index, 1, subValue );
       result += 1;
-      index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+      if( subValue === argument )
+      break;
+      index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
     }
   }
 
-  for( let a = ins.length - 1; a >= 0; a-- )
+  let insCopy = Object.create( null );
+  let subCopy = Object.create( null );
+
+  if( dstArray === ins )
+  {
+    ins = ins.slice();
+  }
+  else
+  {
+    for( let i = ins.length - 1; i >= 0; i-- )
+    {
+      if( _.longIs( ins[ i ] ) )
+      if( ins[ i ] === dstArray )
+      insCopy[ i ] = ins[ i ].slice();
+
+      if( _.longIs( sub[ i ] ) )
+      if( sub[ i ] === dstArray )
+      subCopy[ i ] = sub[ i ].slice();
+    }
+  }
+
+  for( let a = 0, len = ins.length; a < len; a++ )
   {
     if( _.longIs( ins[ a ] ) )
     {
-      let insArray = ins[ a ];
-      let subArray = sub[ a ];
+      let insArray = insCopy[ a ] || ins[ a ];
+      let subArray = sub[ a ] || subCopy[ a ];
 
-      for( let i = insArray.length - 1; i >= 0; i-- )
+      for( let i = 0, len2 = insArray.length; i < len2; i++ )
       _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
     }
     else
@@ -7161,30 +7816,31 @@ function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
-  let oldDstArray = dstArray.slice();  // Array with src values stored
+  // let oldDstArray = dstArray.slice();  // Array with src values stored
 
   function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
   {
-    let dstArray2 = oldDstArray.slice();
+    // let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
-    let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    // let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
 
     if( index !== -1 )
     {
-      dstArray2.splice( index, 1, subValue );
+      // dstArray2.splice( index, 1, subValue );
       dstArray.splice( index, 1, subValue );
       result += 1;
     }
   }
 
-  for( let a = ins.length - 1; a >= 0; a-- )
+  for( let a = 0, len = ins.length; a < len ; a++ )
   {
     if( _.longIs( ins[ a ] ) )
     {
       let insArray = ins[ a ];
       let subArray = sub[ a ];
 
-      for( let i = insArray.length - 1; i >= 0; i-- )
+      for( let i = 0, len2 = insArray.length; i < len2; i++ )
       _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
     }
     else
@@ -7216,12 +7872,16 @@ function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evalua
 
     _.assert( result === expected, '{-dstArray-} should have each element of {-insArray-}' );
     _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
+
+    if( dstArray === ins )
+    return result;
+
     let newResult = arrayReplacedArrayOnce.apply( this, arguments );
     _.assert( newResult === 0, () => 'The element ' + _.toStrShort( ins ) + 'is several times in dstArray' );
   }
   else
   {
-    result = arrayReplacedArrayOnce.apply( this, arguments );
+    result = arrayReplacedArraysOnce.apply( this, arguments );
   }
 
   return result;
