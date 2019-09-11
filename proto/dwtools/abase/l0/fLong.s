@@ -170,25 +170,22 @@ function scalarAppendOnce( dst, src )
  * @memberof wTools
  */
 
-/*
-qqq : extend tests of routine scalarToVector, please
-*/
-
 // function arrayFromNumber( dst, length )
 function scalarToVector( dst, length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( dst !== undefined, 'Expects defined value as the first arguments' );
+  _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
   _.assert( length >= 0 );
 
-  if( _.arrayLike( dst ) )
+  if( _.numberIs( dst ) )
   {
-    _.assert( dst.length === length, () => `Expects array of length ${length} but got ${dst.length}` );
+    dst = _.longFill( [], dst, [ 0, length ] );
+    // dst = _.longFillTimes( [], length, dst );
   }
   else
   {
-    dst = _.longFill( [], dst, [ 0, length ] );
+    _.assert( dst.length === length, () => 'Expects array of length ' + length + ' but got ' + dst.length );
   }
 
   return dst;
@@ -2996,8 +2993,8 @@ function arrayAsShallowing( src )
 // --
 
 /**
- * The routine arraySlice() returns a shallow copy of a portion of {-srcArray-} into a new array object
- * selected from first index {-f-} to last index {-l-}. The original {-srcArray-} will not be modified.
+ * The routine arraySlice() returns a shallow copy of a portion of {-srcArray-} into a new array object.
+ * The copy makes from first index {-f-} to last index {-l-}. The original {-srcArray-} will not be modified.
  *
  * @param { Array|Unroll } srcArray - The Array or Unroll from which makes a shallow copy.
  * @param { Number } f - Defines the start index of copying.
@@ -3051,7 +3048,7 @@ function arraySlice( srcArray, f, l )
 //
 
 /**
- * The routine arrayBut() returns a copy of source array {-src-}. Routine removes existing
+ * The routine arrayBut() returns a shallow copy of source array {-src-}. Routine removes existing
  * elements in bounds defined by {-range-} and insert new elements from {-ins-}. The original
  * source array {-src-} will not be modified.
  *
@@ -3059,8 +3056,8 @@ function arraySlice( srcArray, f, l )
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
  * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
  * If {-range-} is undefined, routine returns copy of {-src-}.
- * If range[ 0 ] < 0, then start index is 0.
- * If range[ 1 ] > src.length, end idex is src.length.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
  * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements starts at start index.
  * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
  * If quantity of removed elements is not equal to ins.length, then returned array will have length different to src.length.
@@ -3171,10 +3168,10 @@ function arrayBut( src, range, ins )
  *
  * @param { Array|Unroll } src - The Array or Unroll to remove, replace or add elements.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
- * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
+ * If {-range-} is number, then it defines the start index, and the end index defines as start index incremented by one.
  * If {-range-} is undefined, routine returns {-src-}.
- * If range[ 0 ] < 0, then start index is 0.
- * If range[ 1 ] > src.length, end idex is src.length.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
  * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements starts at start index.
  * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
  * If quantity of removed elements is not equal to ins.length, then returned array will have length different to original src.length.
@@ -3270,12 +3267,12 @@ function arrayButInplace( src, range, ins )
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
- * If {-range-} is number, then it defines the start index, and the end index is src.length.
+ * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
  * If {-range-} is undefined, routine returns copy of {-src-}.
- * If range[ 0 ] < 0, then start index is 0.
- * If range[ 1 ] > src.length, end idex is src.length.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
  * If range[ 1 ] <= range[ 0 ], then routine returns empty array object.
- * @param { Long } ins - The Long object with elements for insertion.
+ * @param { * } ins - The object of any type for insertion.
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
@@ -3366,12 +3363,12 @@ function arraySelect( src, range, ins )
  *
  * @param { Array|Unroll } src - The Array or Unroll from which selects elements.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
- * If {-range-} is number, then it defines the start index, and the end index is src.length.
+ * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
  * If {-range-} is undefined, routine returns {-src-}.
- * If range[ 0 ] < 0, then start index is 0.
- * If range[ 1 ] > src.length, end idex is src.length.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
  * If range[ 1 ] <= range[ 0 ], then routine returns empty array object.
- * @param { Long } ins - The Long object with elements for insertion.
+ * @param { * } ins - The object of any type for insertion.
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
@@ -3462,16 +3459,16 @@ function arraySelectInplace( src, range, ins )
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
- * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
- * If range[ 0 ] < 0, then start index is 0.
- * If range[ 1 ] > src.length, end idex is src.length.
- * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertions of elements starts at start index.
- * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
- * If quantity of removed elements is not equal to ins.length, then returned array will have length different to src.length.
+ * If {-range-} is number, then it defines the end index, and the start index is 0.
+ * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 0 ] > 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns copy of origin array.
+ * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayBut( src );
+ * var got = _.arrayGrow( src );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
@@ -3479,38 +3476,38 @@ function arraySelectInplace( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayBut( src, 2, [ 'str' ] );
+ * var got = _.arrayGrow( src, 7, 'str' );
  * console.log( got );
- * // log [ 1, 2, 'str', 4, 5 ]
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
  * console.log( got === src );
  * // log false
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayBut( src, [ 1, 4 ], [ 'str' ] );
+ * var got = _.arrayGrow( src, [ 1, 6 ], 'str' );
  * console.log( got );
- * // log [ 1, 'str', 5 ]
+ * // log [ 1, 2, 3, 4, 5, 'str' ]
  * console.log( got === src );
  * // log false
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayBut( src, [ -5, 10 ], [ 'str' ] );
+ * var got = _.arrayGrow( src, [ -5, 6 ], [ 7 ] );
  * console.log( got );
- * // log [ 'str' ]
+ * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
  * console.log( got === src );
  * // log false
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayBut( src, [ 4, 1 ], [ 'str' ] );
+ * var got = _.arrayGrow( src, [ 4, 1 ], [ 'str' ] );
  * console.log( got );
- * // log [ 1, 2, 3, 4, 'str', 5 ]
+ * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
  * // log false
  *
- * @returns { Array|Unroll } Returns a copy of Array / Unroll with removed or replaced existing elements and / or added new elements.
- * @function arrayBut
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll with appended elements.
+ * @function arrayGrow
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
@@ -3576,6 +3573,68 @@ function arrayGrow( src, range, ins )
 }
 
 //
+
+/**
+ * The routine arrayGrow() returns a original {-src-} with appended elements.
+ *
+ * @param { Array|Unroll } src - The Array or Unroll to append elements.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the end index, and the start index is 0.
+ * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 0 ] > 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns copy of origin array.
+ * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, 7, 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, [ 1, 6 ], 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str' ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, [ -5, 6 ], [ 7 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.arrayGrow( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @returns { Array|Unroll } Returns a Array / Unroll with appended elements.
+ * @function arrayGrowInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If argument {-ins-} is not long / undefined.
+ * @memberof wTools
+ */
 
 function arrayGrowInplace( src, range, ins )
 {
