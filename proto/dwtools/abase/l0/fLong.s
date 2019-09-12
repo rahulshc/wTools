@@ -2016,7 +2016,8 @@ function longBut( array, range, val )
  * console.log( got === src );
  * // log true
  *
- * @returns { Long } Returns long with removed or replaced existing elements and / or added new elements. If long is resizable, routine returns modified source long, otherwise, returns a copy.
+ * @returns { Long } Returns long with removed or replaced existing elements and / or added new elements.
+ * If long is resizable, routine returns modified source long, otherwise, returns a copy.
  * @function longButInplace
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-array-} is not a long.
@@ -2093,6 +2094,72 @@ function longButInplace( array, range, val )
 
 //
 
+/**
+ * The routine longSelect() returns a copy of a portion of long {-array-} into a new long object
+ * selected by {-range-}. The original {-array-} will not be modified.
+ *
+ * @param { Long } array - The long object from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
+ * If {-range-} is undefined, routine returns copy of {-array-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty long object.
+ * @param { * } val - The object of any type for insertion.
+ *
+ * @example
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelect( src );
+ * console.log( got );
+ * // log Float32Array[ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelect( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longSelect( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 2, 3, 4 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelect( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longSelect( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Long } Returns a copy of source long object containing the extracted elements. The copy has same type as source long.
+ * @function longSelect
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 /*
   qqq : extend documentation and test coverage of longSelect
   Dmytro : temporary using of longMake. Need to save longShallowClone.
@@ -2107,6 +2174,7 @@ function longSelect( array, range, val )
   if( range === undefined )
   return _.longMake( array );
   // return _.longShallowClone( array );
+
   if( _.numberIs( range ) )
   range = [ range, array.length ];
 
@@ -2164,6 +2232,73 @@ function longSelect( array, range, val )
 }
 
 //
+
+/**
+ * The routine longSelectInplace() returns a portion of original {-array-} selected by {-range-}.
+  * If source long is resizable, routine modifies this long in place, otherwise, return copy.
+ *
+ * @param { Long } array - The long object from which selects elements.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
+ * If {-range-} is undefined, routine returns {-array-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty long object.
+ * @param { * } val - The object of any type for insertion.
+ *
+ * @example
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelectInplace( src );
+ * console.log( got );
+ * // log Float32Array[ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelectInplace( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelectInplace( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log Uint8Array[ 2, 3, 4 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelectInplace( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longSelectInplace( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Long } Returns a long object containing the selected elements. If long is resizable,
+ * routine returns modified source long, otherwise, returns a copy.
+ * @function longSelectInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
 
 /*
   qqq : extend documentation and test coverage of longSelectInplace
@@ -3625,7 +3760,7 @@ function arrayButInplace( src, range, ins )
 
 /**
  * The routine arraySelect() returns a copy of a portion of {-src-} into a new array object
- * selected by {-range-}. The original {-srcArray-} will not be modified.
+ * selected by {-range-}. The original {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -3771,7 +3906,7 @@ function arraySelect( src, range, ins )
  * console.log( got === src );
  * // log true
  *
- * @returns { Array|Unroll } Returns a copy of Array / Unroll containing the extracted elements.
+ * @returns { Array|Unroll } Returns a Array / Unroll containing the selected elements.
  * @function arraySelectInplace
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
