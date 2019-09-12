@@ -8712,8 +8712,8 @@ let Routines =
 
   // scalar
 
-  scalarAppend, /* qqq : cover routine scalarAppend */
-  scalarAppendOnce, /* qqq : cover routine scalarAppendOnce */
+  scalarAppend, /* qqq : cover routine scalarAppend | Dmytro : covered */
+  scalarAppendOnce, /* qqq : cover routine scalarAppendOnce | Dmytro : covered*/
 
   scalarToVector,
   scalarFrom,
