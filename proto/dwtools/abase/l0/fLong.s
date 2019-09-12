@@ -1828,7 +1828,7 @@ function longSlice( array, f, l )
 //
 
 /**
- * The routine longBut() returns a shallow copy of source long {-array-}. Routine removes existing
+ * The routine longBut() returns a shallow copy of provided long {-array-}. Routine removes existing
  * elements in bounds defined by {-range-} and insert new elements from {-val-}. The original
  * source long {-array-} will not be modified.
  *
@@ -1956,7 +1956,7 @@ function longBut( array, range, val )
 /**
  * The routine longButInplace() returns a long {-array-} with removed existing elements in bounds
  * defined by {-range-} and inserted new elements from {-val-}.
- * If source long is resizable, routine modifies this long in place, otherwise, return copy.
+ * If provided long is resizable, routine modifies this long in place, otherwise, return copy.
  *
  * @param { Long } array - The long object to remove, replace or add elements.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
@@ -2095,7 +2095,7 @@ function longButInplace( array, range, val )
 //
 
 /**
- * The routine longSelect() returns a copy of a portion of long {-array-} into a new long object
+ * The routine longSelect() returns a copy of a portion of provided long {-array-} into a new long object
  * selected by {-range-}. The original {-array-} will not be modified.
  *
  * @param { Long } array - The long object from which makes a shallow copy.
@@ -2162,7 +2162,8 @@ function longButInplace( array, range, val )
 
 /*
   qqq : extend documentation and test coverage of longSelect
-  Dmytro : temporary using of longMake. Need to save longShallowClone.
+  Dmytro : documented, covered.
+  Now, routine temporary uses routine longMake to make copy of provided long. Routine longShallowClone throws errors in argumentsArray cases.
 */
 
 function longSelect( array, range, val )
@@ -2234,8 +2235,8 @@ function longSelect( array, range, val )
 //
 
 /**
- * The routine longSelectInplace() returns a portion of original {-array-} selected by {-range-}.
-  * If source long is resizable, routine modifies this long in place, otherwise, return copy.
+ * The routine longSelectInplace() returns a portion of provided long {-array-} selected by {-range-}.
+ * If provided long is resizable, routine modifies this long in place, otherwise, return copy.
  *
  * @param { Long } array - The long object from which selects elements.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -2302,8 +2303,11 @@ function longSelect( array, range, val )
 
 /*
   qqq : extend documentation and test coverage of longSelectInplace
+  Dmytro : documented, covered
   qqq : implement arraySelect
+  Dmytro : implemented
   qqq : implement arraySelectInplace
+  Dmytro : implemented
 */
 
 function longSelectInplace( array, range, val )
@@ -2403,74 +2407,78 @@ function longSelectInplace( array, range, val )
 //
 
 /**
- * Changes length of provided array( array ) by copying it elements to newly created array using begin( f ),
- * end( l ) positions of the original array and value to fill free space after copy( val ). Length of new array is equal to ( l ) - ( f ).
- * If ( l ) < ( f ) - value of index ( f ) will be assigned to ( l ).
- * If ( l ) === ( f ) - returns empty array.
- * If ( l ) > ( array.length ) - returns array that contains elements with indexies from ( f ) to ( array.length ),
- * and free space filled by value of ( val ) if it was provided.
- * If ( l ) < ( array.length ) - returns array that contains elements with indexies from ( f ) to ( l ).
- * If ( l ) < 0 and ( l ) > ( f ) - returns array filled with some amount of elements with value of argument( val ).
- * If ( f ) < 0 - prepends some number of elements with value of argument( let ) to the result array.
- * @param { Array/BufferNode } array - source array or buffer;
- * @param { Number } [ f = 0 ] - index of a first element to copy into new array;
- * @param { Number } [ l = array.length ] - index of a last element to copy into new array;
- * @param { * } val - value used to fill the space left after copying elements of the original array.
+ * Routine longGrow() changes length of provided long object (array) by copying it elements to newly created long object of the same
+ * type using range (range) positions of the original array and value to fill free space after copy (val).
+ * The original {-src-} will not be modified.
+ *
+ * @param { Long } array - The long object from which makes a shallow copy.
+ * @param { Range } The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the end index, and the start index is 0.
+ * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 0 ] > 0, then start index sets to 0.
+ * If range[ 1 ] > src.length, end index sets to src.length.
+ * @param { * } val - The object of any type. Used to fill the space left after copying elements of the original long.
  *
  * @example
- * // just partial copy of origin array
- * let arr = [ 1, 2, 3, 4 ]
- * let result = _.longGrowInplace( arr, 0, 2 );
- * console.log( result );
- * // log [ 1, 2 ]
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src );
+ * console.log( got );
+ * // log Float32Array[ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
  *
  * @example
- * // increase size, fill empty with zeroes
- * let arr = [ 1 ]
- * let result = _.longGrowInplace( arr, 0, 5, 0 );
- * console.log( result );
- * // log [ 1, 0, 0, 0, 0 ]
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src, 7, 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
  *
  * @example
- * // take two last elements from original, other fill with zeroes
- * let arr = [ 1, 2, 3, 4, 5 ]
- * let result = _.longGrowInplace( arr, 3, 8, 0 );
- * console.log( result );
- * // log [ 4, 5, 0, 0, 0 ]
+ * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src, [ 1, 6 ], 'str' );
+ * console.log( got );
+ * // log Uint8Array[ 1, 2, 3, 4, 5, 'str' ]
+ * console.log( got === src );
+ * // log false
  *
  * @example
- * // add two zeroes at the beginning
- * let arr = [ 1, 2, 3, 4, 5 ]
- * let result = _.longGrowInplace( arr, -2, arr.length, 0 );
- * console.log( result );
- * // log [ 0, 0, 1, 2, 3, 4, 5 ]
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src, [ -5, 6 ], [ 7 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
  *
  * @example
- * // add two zeroes at the beginning and two at end
- * let arr = [ 1, 2, 3, 4, 5 ]
- * let result = _.longGrowInplace( arr, -2, arr.length + 2, 0 );
- * console.log( result );
- * // log [ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longGrow( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
  *
- * @example
- * // source can be also a BufferNode
- * let buffer = BufferNode.from( '123' );
- * let result = _.longGrowInplace( buffer, 0, buffer.length + 2, 0 );
- * console.log( result );
- * // log [ 49, 50, 51, 0, 0 ]
- *
- * @returns { Array } Returns resized copy of a part of an original array.
- * @function longGrowInplace
- * @throws { Error } Will throw an Error if( array ) is not a Array or BufferNode.
- * @throws { Error } Will throw an Error if( f ) or ( l ) is not a Number.
- * @throws { Error } Will throw an Error if not enough arguments provided.
+ * @returns { Long } Returns a copy of provided long with changed length.
+ * @function longGrow
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
  * @memberof wTools
  */
 
 /*
   qqq : extend documentation and test coverage of longGrowInplace
+  Dmytro : extended documentation, covered routine longGrow, longGrowInplace
   qqq : implement arrayGrow
+  Dmitro : implemented
   qqq : implement arrayGrowInplace
+  Dmitro : implemented
 */
 
 function longGrow( array, range, val )
@@ -2545,6 +2553,74 @@ function longGrow( array, range, val )
 }
 
 //
+
+/**
+ * Routine longGrowInplace() changes length of provided long (array) using range (range) positions of the original
+ * long and value to fill free space after copy (val).
+ * If provided long is resizable, routine modifies this long in place, otherwise, return copy.
+ *
+ * @param { Long } array - The long object to grow length.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the end index, and the start index is 0.
+ * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 0 ] > 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns copy of origin array.
+ * @param { * } val - The object of any type. Used to fill the space left of the original long.
+ *
+ * @example
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src );
+ * console.log( got );
+ * // log Float32Array[ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src, 7, 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src, [ 1, 6 ], 'str' );
+ * console.log( got );
+ * // log Uint8Array[ 1, 2, 3, 4, 5, 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src, [ -5, 6 ], [ 7 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longGrow( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @returns { Long } Returns a long with changed length.
+ * If long is resizable, routine returns modified source long, otherwise, returns a copy.
+ * @function longGrowInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
 
 function longGrowInplace( array, range, val )
 {
@@ -3545,7 +3621,7 @@ function arraySlice( srcArray, f, l )
 //
 
 /**
- * The routine arrayBut() returns a shallow copy of source array {-src-}. Routine removes existing
+ * The routine arrayBut() returns a shallow copy of provided array {-src-}. Routine removes existing
  * elements in bounds defined by {-range-} and insert new elements from {-ins-}. The original
  * source array {-src-} will not be modified.
  *
@@ -3660,7 +3736,7 @@ function arrayBut( src, range, ins )
 //
 
 /**
- * The routine arrayButInplace() returns a source array {-src-} with removed existing elements in bounds
+ * The routine arrayButInplace() returns a provided array {-src-} with removed existing elements in bounds
  * defined by {-range-} and inserted new elements from {-ins-}.
  *
  * @param { Array|Unroll } src - The Array or Unroll to remove, replace or add elements.
@@ -3759,7 +3835,7 @@ function arrayButInplace( src, range, ins )
 //
 
 /**
- * The routine arraySelect() returns a copy of a portion of {-src-} into a new array object
+ * The routine arraySelect() returns a copy of a portion of provided array {-src-} into a new array object
  * selected by {-range-}. The original {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
@@ -3855,7 +3931,7 @@ function arraySelect( src, range, ins )
 //
 
 /**
- * The routine arraySelectInplace() returns a portion of original {-src-} selected by {-range-}.
+ * The routine arraySelectInplace() returns a portion of provided array {-src-} selected by {-range-}.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which selects elements.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -3950,7 +4026,8 @@ function arraySelectInplace( src, range, ins )
 //
 
 /**
- * The routine arrayGrow() returns a copy of {-src-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value. The original {-src-} will not be modified.
+ * Routine arrayGrow() changes length of provided array {-src-} by copying it elements to newly created array
+ * using range {-range-} positions of the original array and value to fill free space after copy {-ins-}. The original {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -3959,7 +4036,7 @@ function arraySelectInplace( src, range, ins )
  * If range[ 0 ] > 0, then start index sets to 0.
  * If range[ 1 ] > src.length, end index sets to src.length.
  * If range[ 1 ] <= range[ 0 ], then routine returns copy of origin array.
- * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ * @param { * } ins -  object of any type. Used to fill the space left after copying elements of the original array.
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
@@ -4001,7 +4078,7 @@ function arraySelectInplace( src, range, ins )
  * console.log( got === src );
  * // log false
  *
- * @returns { Array|Unroll } Returns a copy of Array / Unroll with appended elements.
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll with changed length.
  * @function arrayGrow
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
@@ -4069,16 +4146,17 @@ function arrayGrow( src, range, ins )
 //
 
 /**
- * The routine arrayGrow() returns a original {-src-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value.
+ * Routine arrayGrowInplace() changes length of provided array {-src-} using range {-range-} positions of the original
+ * array and value to fill free space after copy {-ins-}.
  *
- * @param { Array|Unroll } src - The Array or Unroll to append elements.
+ * @param { Array|Unroll } src - The Array or Unroll to grow length.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
  * If {-range-} is number, then it defines the end index, and the start index is 0.
  * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
  * If range[ 0 ] > 0, then start index sets to 0.
  * If range[ 1 ] > src.length, end index sets to src.length.
  * If range[ 1 ] <= range[ 0 ], then routine returns copy of origin array.
- * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ * @param { * } ins - The object of any type. Used to fill the space left of the original array.
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
@@ -4120,7 +4198,7 @@ function arrayGrow( src, range, ins )
  * console.log( got === src );
  * // log true
  *
- * @returns { Array|Unroll } Returns a Array / Unroll with appended elements.
+ * @returns { Array|Unroll } Returns a provided Array / Unroll with changed length.
  * @function arrayGrowInplace
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
