@@ -352,6 +352,8 @@ function mapContain( src, ins )
  * @memberof wTools
 */
 
+/* qqq : cover option strict of routine mapSatisfy */
+
 function mapSatisfy( o )
 {
 
@@ -361,10 +363,9 @@ function mapSatisfy( o )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectIs( o.template ) || _.routineIs( o.template ) );
   _.assert( o.src !== undefined );
-
   _.routineOptions( mapSatisfy, o );
 
-  return _mapSatisfy( o.template, o.src, o.src, o.levels );
+  return _mapSatisfy( o.template, o.src, o.src, o.levels, o.strict );
 }
 
 mapSatisfy.defaults =
@@ -372,6 +373,7 @@ mapSatisfy.defaults =
   template : null,
   src : null,
   levels : 1,
+  strict : 1,
 }
 
 //
@@ -409,8 +411,11 @@ mapSatisfy.defaults =
  * @memberof wTools
 */
 
-function _mapSatisfy( template, src, root, levels )
+function _mapSatisfy( template, src, root, levels, strict )
 {
+
+  if( !strict && src === undefined )
+  return true;
 
   if( template === src )
   return true;
@@ -438,7 +443,7 @@ function _mapSatisfy( template, src, root, levels )
     for( let t in template )
     {
       let satisfy = false;
-      satisfy = _mapSatisfy( template[ t ], src[ t ], root, levels-1 );
+      satisfy = _mapSatisfy( template[ t ], src[ t ], root, levels-1, strict );
       if( !satisfy )
       return false;
     }
