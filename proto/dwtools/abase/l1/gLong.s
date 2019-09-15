@@ -1813,7 +1813,7 @@ function bufferBytesFromNode( src )
 
 /*
 qqq : cover it
-Dmytro : coverage is extended 
+Dmytro : coverage is extended
 */
 
 function bufferNodeFrom( buffer )
@@ -2204,133 +2204,133 @@ longDuplicate.defaults =
 //
 
 /**
- * The longUnduplicate( dstLong, onEvaluator ) routine returns the dstlong with the duplicated elements removed.
+ * The longOnce( dstLong, onEvaluator ) routine returns the dstlong with the duplicated elements removed.
  * The dstLong instance will be returned when possible, if not a new instance of the same type is created.
  *
  * @param { longIs } dstLong - The source and destination long.
  * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
  *
  * @example
- * _.longUnduplicate( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+ * _.longOnce( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
  * // returns [ 1, 2, 'abc', 4, true ]
  *
  * @example
- * _.longUnduplicate( [ 1, 2, 3, 4, 5 ] );
+ * _.longOnce( [ 1, 2, 3, 4, 5 ] );
  * // returns [ 1, 2, 3, 4, 5 ]
  *
  * @returns { Number } - Returns the source long without the duplicated elements.
- * @function longUnduplicate
+ * @function longOnce
  * @throws { Error } If passed arguments is less than one or more than two.
  * @throws { Error } If the first argument is not an long.
  * @throws { Error } If the second argument is not a Function.
  * @memberof wTools
  */
 
-/* qqq : routine longUnduplicate requires good test coverage and documentation */
+/* qqq : routine longOnce requires good test coverage and documentation */
 
-// function longUnduplicate( dstLong, onEvaluate )
-// {
-//   _.assert( 1 <= arguments.length || arguments.length <= 2 );
-//   _.assert( _.longIs( dstLong ), 'Expects Long' );
-//
-//   if( _.arrayIs( dstLong ) )
-//   return _.arrayRemoveDuplicates( dstLong, onEvaluate );
-//
-//   if( !dstLong.length )
-//   return dstLong;
-//
-//   let length = dstLong.length;
-//
-//   for( let i = 0; i < dstLong.length; i++ )
-//   if( _.arrayLeftIndex( dstLong, dstLong[ i ], i+1, onEvaluate ) !== -1 )
-//   length--;
-//
-//   if( length === dstLong.length )
-//   return dstLong;
-//
-//   let result = _.longMakeUndefined( dstLong, length );
-//   result[ 0 ] = dstLong[ 0 ];
-//
-//   let j = 1;
-//   for( let i = 1; i < dstLong.length && j < length; i++ )
-//   if( _.arrayRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
-//   result[ j++ ] = dstLong[ i ];
-//
-//   _.assert( j === length );
-//
-//   return result;
-// }
-
-//
-
-function longUnduplicate( dst, src, onEvaluate )
+function longOnce( dstLong, onEvaluate )
 {
+  _.assert( 1 <= arguments.length || arguments.length <= 2 );
+  _.assert( arguments.length === 1, 'not tested' );
+  _.assert( _.longIs( dstLong ), 'Expects Long' );
 
-  if( _.routineIs( arguments[ 1 ] ) && arguments[ 2 ] === undefined )
-  {
-    onEvaluate = arguments[ 1 ];
-    src = undefined;
-  }
+  if( _.arrayIs( dstLong ) )
+  return _.arrayRemoveDuplicates( dstLong, onEvaluate );
 
-  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( dst === null || _.arrayIs( dst ) );
-  _.assert( src === undefined || _.longIs( src ) );
-  _.assert( onEvaluate === undefined || _.routineIs( onEvaluate ) );
+  if( !dstLong.length )
+  return dstLong;
 
-  if( src && dst )
-  {
-    dst = _.arrayAppendArraysOnce( dst, src );
-    src = undefined;
-  }
+  let length = dstLong.length;
 
-  if( src )
-  {
-    _.assert( dst === null );
-    let unique = _.longHasUniques
-    ({
-      src,
-      onEvaluate : onEvaluate,
-      includeFirst : 1,
-    });
+  for( let i = 0; i < dstLong.length; i++ )
+  if( _.arrayLeftIndex( dstLong, dstLong[ i ], i+1, onEvaluate ) !== -1 )
+  length--;
 
-    let result = _.longMakeUndefined( src, unique.number );
+  if( length === dstLong.length )
+  return dstLong;
 
-    let c = 0;
-    for( let i = 0 ; i < src.length ; i++ )
-    if( unique.is[ i ] )
-    {
-      result[ c ] = src[ i ];
-      c += 1;
-    }
+  let result = _.longMakeUndefined( dstLong, length );
+  result[ 0 ] = dstLong[ 0 ];
 
-    return result;
-  }
-  else if( dst )
-  {
-    let unique = _.longHasUniques
-    ({
-      src : dst,
-      onEvaluate : onEvaluate,
-      includeFirst : 1,
-    });
+  let j = 1;
+  for( let i = 1; i < dstLong.length && j < length; i++ )
+  if( _.arrayRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
+  result[ j++ ] = dstLong[ i ];
 
-    for( let i = dst.length-1 ; i >= 0 ; i-- )
-    if( !unique.is[ i ] )
-    {
-      dst.splice( i, 1 );
-    }
+  _.assert( j === length );
 
-    return dst;
-  }
-  else _.assert( 0 );
-
+  return result;
 }
 
+//
 
-// function longUnduplicate( dstLong, onEvaluate )
+// function longOnce( dst, src, onEvaluate )
+// {
+//
+//   if( _.routineIs( arguments[ 1 ] ) && arguments[ 2 ] === undefined )
+//   {
+//     onEvaluate = arguments[ 1 ];
+//     src = undefined;
+//   }
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+//   _.assert( dst === null || _.arrayIs( dst ) );
+//   _.assert( src === undefined || _.longIs( src ) );
+//   _.assert( onEvaluate === undefined || _.routineIs( onEvaluate ) );
+//
+//   if( src && dst )
+//   {
+//     dst = _.arrayAppendArraysOnce( dst, src );
+//     src = undefined;
+//   }
+//
+//   if( src )
+//   {
+//     _.assert( dst === null );
+//     let unique = _.longHasUniques
+//     ({
+//       src,
+//       onEvaluate : onEvaluate,
+//       includeFirst : 1,
+//     });
+//
+//     let result = _.longMakeUndefined( src, unique.number );
+//
+//     let c = 0;
+//     for( let i = 0 ; i < src.length ; i++ )
+//     if( unique.is[ i ] )
+//     {
+//       result[ c ] = src[ i ];
+//       c += 1;
+//     }
+//
+//     return result;
+//   }
+//   else if( dst )
+//   {
+//     let unique = _.longHasUniques
+//     ({
+//       src : dst,
+//       onEvaluate : onEvaluate,
+//       includeFirst : 1,
+//     });
+//
+//     for( let i = dst.length-1 ; i >= 0 ; i-- )
+//     if( !unique.is[ i ] )
+//     {
+//       dst.splice( i, 1 );
+//     }
+//
+//     return dst;
+//   }
+//   else _.assert( 0 );
+//
+// }
+
+// function longOnce( dstLong, onEvaluate )
 // {
 //   _.assert( 1 <= arguments.length || arguments.length <= 3 );
-//   _.assert( _.longIs( dstLong ), 'longUnduplicate :', 'Expects Long' );
+//   _.assert( _.longIs( dstLong ), 'longOnce :', 'Expects Long' );
 //
 //   if( _.arrayIs( dstLong ) )
 //   {
@@ -2398,10 +2398,10 @@ function longUnduplicate( dst, src, onEvaluate )
 
 // /* qqq : not optimal, no redundant copy */
 // /*
-// function longUnduplicate( dstLong, onEvaluate )
+// function longOnce( dstLong, onEvaluate )
 // {
 //   _.assert( 1 <= arguments.length || arguments.length <= 3 );
-//   _.assert( _.longIs( dstLong ), 'longUnduplicate :', 'Expects Long' );
+//   _.assert( _.longIs( dstLong ), 'longOnce :', 'Expects Long' );
 //
 //   if( _.arrayIs( dstLong ) )
 //   {
@@ -2425,7 +2425,7 @@ function longUnduplicate( dst, src, onEvaluate )
 // */
 
 //
-// function longUnduplicate( dst, src, onEvaluate )
+// function longOnce( dst, src, onEvaluate )
 // {
 //
 //   _.assert( arguments.length === 2 || arguments.length === 3 );
@@ -4432,7 +4432,7 @@ let Routines =
   // long repeater
 
   longDuplicate,
-  longUnduplicate,
+  longOnce,
 
   longHasUniques,
   longAreRepeatedProbe,

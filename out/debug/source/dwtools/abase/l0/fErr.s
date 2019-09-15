@@ -374,6 +374,7 @@ function diagnosticStack( stack, range )
   if( arguments.length === 1 )
   {
     if( !_.errIs( stack ) )
+    if( !_.strIs( stack ) )
     {
       range = arguments[ 0 ];
       stack = undefined;
@@ -420,7 +421,7 @@ function diagnosticStack( stack, range )
   let errIs = 0;
   if( _.errIs( stack ) )
   {
-    stack = stack.originalStack || stack.stack;
+    stack = stack.originalStack || stack[ stackSymbol ] || stack.stack;
     errIs = 1;
   }
 
@@ -441,12 +442,12 @@ function diagnosticStack( stack, range )
 
   /* remove redundant lines */
 
-  if( !errIs )
-  console.debug( 'REMINDER : problem here if !errIs' ); /* xxx */
-  if( !errIs )
-  debugger;
+  // if( !errIs )
+  // console.debug( 'REMINDER : problem here if !errIs' ); /* xxx */
+  // if( !errIs )
+  // debugger;
 
-  if( errIs )
+  // if( errIs )
   {
     while( stack.length )
     {
@@ -464,8 +465,8 @@ function diagnosticStack( stack, range )
   if( stack[ 0 ] )
   if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
   {
+    console.error( 'diagnosticStack : failed to parse stack' );
     debugger;
-    console.error( 'diagnosticStack : cant parse stack\n' + stack );
   }
 
   /* */
@@ -758,18 +759,32 @@ function _err( o )
 
   /* algorithm */
 
-  argumentsPreprocess();
-  locationForm();
-  stackAndErrorForm();
+  // if( o.args[ 0 ] && o.args[ 0 ].originalMessage && _.strHas( o.args[ 0 ].originalMessage, 'Please, re-export modules' ) )
+  // debugger;
 
-  // let briefly = result.briefly || o.briefly;
+  try
+  {
 
-  catchesForm();
-  sourceCodeForm();
+    argumentsPreprocess();
+    locationForm();
+    stackAndErrorForm();
 
-  originalMessageForm();
-  messageForm();
-  fieldsForm();
+    // let briefly = result.briefly || o.briefly;
+
+    catchesForm();
+    sourceCodeForm();
+
+    originalMessageForm();
+    messageForm();
+    fieldsForm();
+
+  }
+  catch( err2 )
+  {
+    debugger;
+    logger.log( err2.message );
+    logger.log( err2.stack );
+  }
 
   return result;
 
@@ -852,7 +867,7 @@ function _err( o )
       result = new Error( originalMessage + '\n' );
       if( !o.stack )
       {
-        o.stack = _.diagnosticStack( result, [ o.level, -1 ] );
+        o.stack = _.diagnosticStack( result, [ o.level, Infinity ] );
         if( !o.stack || o.stack.indexOf( '\n' ) === -1 )
         if( o.location.full )
         o.stack = o.location.full;
@@ -860,25 +875,30 @@ function _err( o )
     }
     else
     {
-      if( result.stack !== undefined )
+
+      if( result.originalMessage !== undefined )
       {
-        if( result.originalMessage !== undefined )
-        {
-          if( result.originalStack )
-          o.stack = result.originalStack;
-          else
-          o.stack = result.stack;
-          stackCondensed = result.stackCondensed;
-        }
+        if( result.originalStack )
+        o.stack = result.originalStack;
+        else if( result[ stackSymbol ] )
+        o.stack = result[ stackSymbol ];
         else
-        {
-          o.stack = _.diagnosticStack( result );
-        }
+        o.stack = result.stack;
+        stackCondensed = result.stackCondensed;
+      }
+      else if( _.strDefined( result.stack ) )
+      {
+        // debugger;
+        // o.stack = result.stack;
+        o.stack = _.diagnosticStack( result.stack );
+        // o.stack = _.diagnosticStack( result.stack, [ o.level, Infinity ] );
       }
       else
       {
+        debugger;
         o.stack = _.diagnosticStack([ o.level, Infinity ]);
       }
+
     }
 
     if( ( o.stackRemobeBeginInclude || o.stackRemobeBeginExclude ) && o.stack )
@@ -948,6 +968,8 @@ function _err( o )
 
   function originalMessageForm()
   {
+    let multiline = false;
+    let result = [];
 
     for( let a = 0 ; a < o.args.length ; a++ )
     {
@@ -992,10 +1014,31 @@ function _err( o )
         str = String( arg );
       }
 
-      if( _.strIs( str ) && str[ str.length-1 ] === '\n' )
-      originalMessage += str;
+      let currentIsMultiline = _.strHas( str, '\n' );
+      if( currentIsMultiline )
+      multiline = true;
+
+      result[ a ] = str;
+
+      // if( _.strIs( str ) && str[ str.length-1 ] === '\n' )
+      // originalMessage += str;
+      // else
+      // originalMessage += str + ' ';
+
+    }
+
+    for( let a = 0 ; a < result.length ; a++ )
+    {
+      let str = result[ a ];
+
+      if( _.strEnds( originalMessage, '\n' ) || _.strBegins( str, '\n' ) )
+      {
+        originalMessage = originalMessage.replace( /\s+$/m, '' ) + '\n' + str.replace( /^\s+/m, '' );
+      }
       else
-      originalMessage += str + ' ';
+      {
+        originalMessage = originalMessage.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
+      }
 
     }
 
@@ -1042,9 +1085,9 @@ function _err( o )
   {
 
     nonenurable( 'toString', function() { return this.message } );
-    nonenurable( 'message', message );
+    logging( 'message', message );
     nonenurable( 'originalMessage', originalMessage );
-    nonenurable( 'stack', message );
+    logging( 'stack', message );
     nonenurable( 'originalStack', o.stack );
     nonenurable( 'stackCondensed', stackCondensed );
     nonenurable( 'catches', catches );
@@ -1089,14 +1132,16 @@ function _err( o )
 
   function logging( fieldName, value )
   {
+    let symbol = Symbol.for( fieldName );
     try
     {
+      result[ symbol ] = value;
       Object.defineProperty( result, fieldName,
       {
         enumerable : false,
         configurable : true,
-        writable : true,
-        getter : getter,
+        get : get,
+        set : set,
       });
     }
     catch( err )
@@ -1107,10 +1152,20 @@ function _err( o )
       if( _.debuggerEnabled )
       debugger;
     }
-    function getter()
+    function get()
+    {
+      // if( !this.logged )
+      // debugger;
+      // if( !this.logged )
+      // logger.log( this.originalMessage, '- logged\n' );
+      _.errLogEnd( this );
+      return this[ symbol ];
+    }
+    function set( src )
     {
       debugger;
-      _.errLogEnd( this );
+      return this[ symbol ] = src;
+      return src;
     }
   }
 
@@ -1470,7 +1525,7 @@ function error_functor( name, onMake )
         _.assert( err1 === err2 );
         _.assert( err2 instanceof _global.Error );
         _.assert( err2 instanceof ErrorConstructor );
-        _.assert( !!err2.stack );
+        // _.assert( !!err2.stack );
 
         return err2;
       }
@@ -1892,6 +1947,8 @@ function assertOwnNoConstructor( ins )
 // --
 // fields
 // --
+
+let stackSymbol = Symbol.for( 'stack' );
 
 // let error = Object.create( null );
 
