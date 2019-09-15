@@ -11,7 +11,7 @@ var _ = wTools;
 /*wConsequence.seal allows to pass arguments to shell through chainers*/
 
 var con = new wConsequence().give();
-con.seal( _,_.shell )
+con.seal( _,_.process.start )
 .doThen( 'echo shelling ping' )
 .doThen( 'ping www.google.com' )
 /*wConsequence returned as 'consequence' property */

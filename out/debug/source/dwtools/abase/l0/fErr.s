@@ -800,10 +800,6 @@ function _err( o )
       if( !_.errIs( arg ) && _.routineIs( arg ) )
       {
         if( arg.length === 0 )
-        debugger;
-        else
-        debugger;
-        if( arg.length === 0 )
         arg = o.args[ a ] = arg();
         if( _.unrollIs( arg ) )
         {
