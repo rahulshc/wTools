@@ -14474,38 +14474,161 @@ function arraysAreIdentical( test )
 function arrayHasAny( test )
 {
 
-  test.case = 'false';
-  var got = _.arrayHasAny( [  ] );
-  var expected = false;
-  test.identical( got, expected );
+  /* constructors */
 
-  test.case = 'false';
-  var got = _.arrayHasAny( [  ], false, 7 );
-  var expected = false;
-  test.identical( got, expected );
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
+  var bufferTyped = function( buf )
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+  };
 
-  test.case = 'true';
-  var got = _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
+  /* lists */
+
+  var listTyped =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
+  var list =
+  [
+    array,
+    unroll,
+    argumentsArray,
+  ];
+  for( let i = 0; i < listTyped.length; i++ )
+  list.push( bufferTyped( listTyped[ i ] ) );
+
+  /* tests */
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  function run( make )
+  {
+    /* without evaluator */
+
+    test.case = 'src = empty long, one argument';
+    var src = make( [] );
+    var got = _.arrayHasAny( src );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = empty long, ins = undefined';
+    var src = make( [] );
+    var got = _.arrayHasAny( src, undefined );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = empty long, ins = string';
+    var src = make( [] );
+    var got = _.arrayHasAny( src, 'str' );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = empty long, ins = array';
+    var src = make( [] );
+    var got = _.arrayHasAny( src, [ false, 7 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = number, matches';
+    var src = make( [ 1, 2, 5, false ] );
+    var got = _.arrayHasAny( src, 5 );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = string, no matches';
+    var src = make( [ 1, 2, 5, false ] );
+    var got = _.arrayHasAny( src, 'str' );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = array, matches';
+    var src = make( [ 5, null, 42, false ] );
+    var got = _.arrayHasAny( src, [ 42, false ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = array, no matches';
+    var src = make( [ 5, null, 42, false ] );
+    var got = _.arrayHasAny( src, [ true, 7 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = long, matches';
+    var src = make( [ 5, null, 42, false ] );
+    var got = _.arrayHasAny( src, make( [ 42, 12 ] ) );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = long, no matches';
+    var src = make( [ 5, null, 42, false ] );
+    var got = _.arrayHasAny( src, make( [ 30, 12 ] ) );
+    var expected = false;
+    test.identical( got, expected );
+  }
+
+  /* with evaluator, equalizer */
+
+  test.case = 'with evaluator, matches';
+  var evaluator = ( e ) => e.a;
+  var src = [ { a : 2 }, { a : 5 }, 'str', 42, false ];
+  var got = _.arrayHasAny( src, [ [false], 7, { a : 2 } ], evaluator );
   var expected = true;
   test.identical( got, expected );
 
-  /**/
+  test.case = 'with evaluator, no matches';
+  var evaluator = ( e ) => e.a;
+  var src = [ { a : 3 }, { a : 5 }, 'str', 42, false ];
+  var got = _.arrayHasAny( src, [ [false], 7, { a : 2 } ], evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'with equalizer, matches';
+  var equalizer = ( e1, e2 ) => e1.a === e2.a;
+  var src = [ { a : 4 }, { a : 2 }, 42, false ];
+  var got = _.arrayHasAny( src, [ { a : 2 }, { b : 7 } ], equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'with equalizer, no matches';
+  var equalizer = ( e1, e2 ) => e1.a === e2.a;
+  var src = [ { a : 4 }, { a : 3 }, 42, false ];
+  var got = _.arrayHasAny( src, [ { a : 2 }, { a : 7 } ], equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayHasAny();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayHasAny() );
 
-  test.case = 'first argument is wrong';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayHasAny( 'wrong argument', false, 7 );
-  });
+  test.case = 'src has wrong type';
+  test.shouldThrowErrorSync( () => _.arrayHasAny( 'wrong argument', false ) );
+  test.shouldThrowErrorSync( () => _.arrayHasAny( 1, false ) );
 
+  test.case = 'ins has wrong type';
+  test.shouldThrowErrorSync( () => _.arrayHasAny( [ 1, 2, 3, false ], new BufferRaw( 2 ) ) );
+
+  test.case = 'evaluator is not a routine';
+  test.shouldThrowErrorSync( () => _.arrayHasAny( [ 1, 2, 3, false ], 2, 3 ) );
 };
 
 //
