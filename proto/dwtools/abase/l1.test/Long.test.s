@@ -14546,7 +14546,7 @@ function arrayHasAny( test )
     test.identical( got, expected );
 
     test.case = 'src = long, ins = number, matches';
-    var src = make( [ 1, 2, 5, false ] );
+    var src = make( [ 1, 2, 1, false, 5 ] );
     var got = _.arrayHasAny( src, 5 );
     var expected = true;
     test.identical( got, expected );
@@ -14564,7 +14564,7 @@ function arrayHasAny( test )
     test.identical( got, expected );
 
     test.case = 'src = long, ins = array, no matches';
-    var src = make( [ 5, null, 42, false ] );
+    var src = make( [ 5, null, 32, false, 42 ] );
     var got = _.arrayHasAny( src, [ true, 7 ] );
     var expected = false;
     test.identical( got, expected );
@@ -14587,15 +14587,15 @@ function arrayHasAny( test )
   test.case = 'with evaluator, matches';
   var evaluator = ( e ) => e.a;
   var src = [ { a : 2 }, { a : 5 }, 'str', 42, false ];
-  var got = _.arrayHasAny( src, [ [false], 7, { a : 2 } ], evaluator );
+  var got = _.arrayHasAny( src, [ [ false ], 7, { a : 2 } ], evaluator );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'with evaluator, no matches';
   var evaluator = ( e ) => e.a;
   var src = [ { a : 3 }, { a : 5 }, 'str', 42, false ];
-  var got = _.arrayHasAny( src, [ [false], 7, { a : 2 } ], evaluator );
-  var expected = true;
+  var got = _.arrayHasAny( src, [ { a : 2 }, { a : 4 } ], evaluator );
+  var expected = false;
   test.identical( got, expected );
 
   test.case = 'with equalizer, matches';
@@ -14629,6 +14629,168 @@ function arrayHasAny( test )
 
   test.case = 'evaluator is not a routine';
   test.shouldThrowErrorSync( () => _.arrayHasAny( [ 1, 2, 3, false ], 2, 3 ) );
+};
+
+//
+
+function arrayHasAll( test )
+{
+
+  /* constructors */
+
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
+  var bufferTyped = function( buf )
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+  };
+
+  /* lists */
+
+  var listTyped =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
+  var list =
+  [
+    array,
+    unroll,
+    argumentsArray,
+  ];
+  for( let i = 0; i < listTyped.length; i++ )
+  list.push( bufferTyped( listTyped[ i ] ) );
+
+  /* tests */
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  function run( make )
+  {
+    /* without evaluator */
+
+    test.case = 'src = empty long, one argument';
+    var src = make( [] );
+    var got = _.arrayHasAll( src );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = empty long, ins = undefined';
+    var src = make( [] );
+    var got = _.arrayHasAll( src, undefined );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = empty long, ins = string';
+    var src = make( [] );
+    var got = _.arrayHasAll( src, 'str' );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = empty long, ins = array';
+    var src = make( [] );
+    var got = _.arrayHasAll( src, [ false, 7 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = number, matches';
+    var src = make( [ 1, 2, 5, false ] );
+    var got = _.arrayHasAll( src, 5 );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = string, no matches';
+    var src = make( [ 1, 2, 5, false ] );
+    var got = _.arrayHasAll( src, 'str' );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = array, matches';
+    var src = make( [ 5, null, 42, false, 1 ] );
+    var got = _.arrayHasAll( src, [ 42, 1 ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = array, no matches';
+    var src = make( [ 5, null, 42, false ] );
+    var got = _.arrayHasAll( src, [ 42, 7 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = long, matches';
+    var src = make( [ 5, null, 42, false, 12 ] );
+    var got = _.arrayHasAll( src, make( [ 42, 12 ] ) );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = long, no matches';
+    var src = make( [ 5, null, 42, false ] );
+    var got = _.arrayHasAll( src, make( [ 30, 42 ] ) );
+    var expected = false;
+    test.identical( got, expected );
+  }
+
+  /* with evaluator, equalizer */
+
+  test.case = 'with evaluator, matches';
+  var evaluator = ( e ) => e.a;
+  var src = [ { a : 2 }, { a : 5 }, 'str', 42, false ];
+  var got = _.arrayHasAll( src, [ [ false ], 7, { a : 2 } ], evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'with evaluator, no matches';
+  var evaluator = ( e ) => e.a;
+  var src = [ { a : 3 }, { a : 5 }, 'str', 42, false ];
+  var got = _.arrayHasAll( src, [ { a : 2 }, { a : 4 } ], evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'with equalizer, matches';
+  var equalizer = ( e1, e2 ) => e1.a === e2.a;
+  var src = [ { a : 4 }, { a : 2 }, 42, false ];
+  var got = _.arrayHasAll( src, [ { a : 2 }, { b : 7 } ], equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'with equalizer, no matches';
+  var equalizer = ( e1, e2 ) => e1.a === e2.a;
+  var src = [ { a : 4 }, { a : 3 }, 42, false ];
+  var got = _.arrayHasAll( src, [ { a : 2 }, { a : 7 } ], equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayHasAll() );
+
+  test.case = 'src has wrong type';
+  test.shouldThrowErrorSync( () => _.arrayHasAll( 'wrong argument', false ) );
+  test.shouldThrowErrorSync( () => _.arrayHasAll( 1, false ) );
+
+  test.case = 'ins has wrong type';
+  test.shouldThrowErrorSync( () => _.arrayHasAll( [ 1, 2, 3, false ], new BufferRaw( 2 ) ) );
+
+  test.case = 'evaluator is not a routine';
+  test.shouldThrowErrorSync( () => _.arrayHasAll( [ 1, 2, 3, false ], 2, 3 ) );
 };
 
 //
@@ -33446,6 +33608,7 @@ var Self =
     arraysAreIdentical,
 
     arrayHasAny,
+    arrayHasAll,
 
     // array transformer
 

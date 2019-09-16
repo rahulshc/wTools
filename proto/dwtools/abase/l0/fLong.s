@@ -3336,18 +3336,18 @@ function arrayHas( array, value, evaluator1, evaluator2 )
 //
 
 /**
- * The arrayHasAny() routine checks if the {-src-} array has at least one value in the argument {-ins-}.
+ * The routine arrayHasAny() checks if the {-src-} array has at least one value in the argument {-ins-}.
  *
- * It iterates over array-like {-src-} copies each element of the array (ins) by the routine
+ * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
  * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
- * Checks, if {-src-} array has at least one value of the (ins) array.
+ * Checks, if {-src-} array has at least one value of the {-ins-} array.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
  * @see {@link wTools.arrayLeftIndex} - See for more information.
  *
  * @param { Long } src - The source array.
- * @param  { Long|Primitive } ins - The elements to locate in the array.
+ * @param  { Long|Primitive } ins - The elements to check in the array.
  * @param { Function } evaluator - A collback function.
  *
  * @example
@@ -3359,12 +3359,12 @@ function arrayHas( array, value, evaluator1, evaluator2 )
  * // returns true
  *
  * @example
- * _.arrayHasAny( [ { a : 2 }, 'str', 42, false ], [ 'var', 7, { a : 2 } ] );
+ * _.arrayHasAny( [ { a : 2 }, 'str', 42, false ], [ { a : 2 }, { a : 3 } ] );
  * // returns false
  *
  * @example
  * var evaluator = ( e ) => e.a;
- * _.arrayHasAny( [ { a : 2 }, 'str', 42, false ], [ [false], 7, { a : 2 } ], evaluator );
+ * _.arrayHasAny( [ { a : 2 }, 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
  * // returns true
  *
  * @returns { Boolean } - Returns true, if {-src-} has at least one value of element in {-ins-}, otherwise false is returned.
@@ -3426,23 +3426,89 @@ function arrayHas( array, value, evaluator1, evaluator2 )
 
 //
 
-function arrayHasAll( src )
-{
-  _.assert( arguments.length >= 1, 'Expects at least one argument' );
-  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasAll :', 'array expected' );
+/**
+ * The routine arrayHasAll() checks if the {-src-} array has all elements of the argument {-ins-}.
+ *
+ * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
+ * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
+ * Checks, if {-src-} array has all elements of the {-ins-} array.
+ * If true, it returns true.
+ * Otherwise, it returns false.
+ *
+ * @see {@link wTools.arrayLeftIndex} - See for more information.
+ *
+ * @param { Long } src - The source array.
+ * @param  { Long|Primitive } ins - The elements to check in the array.
+ * @param { Function } evaluator - A collback function.
+ *
+ * @example
+ * _.arrayHasAll( [ 5, 'str', 42, false ], 7 );
+ * // returns false
+ *
+ * @example
+ * _.arrayHasAny( [ 5, 'str', 42, false ], [ false, 5, 'str' ] );
+ * // returns true
+ *
+ * @example
+ * _.arrayHasAny( [ { a : 2 }, { a : 3 } 'var', 42, false ], [ { a : 2 }, { a : 3 } ] );
+ * // returns false
+ *
+ * @example
+ * var evaluator = ( e ) => e.a;
+ * _.arrayHasAny( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
+ * // returns true
+ *
+ * @returns { Boolean } - Returns true, if {-src-} has all elements in {-ins-}, otherwise false is returned.
+ * @function arrayHasAll
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a long.
+ * @throws { Error } If {-ins-} is not a long, not a primitive.
+ * @throws { Error } If {-evaluator-} is not a routine.
+ * @memberof wTools
+ */
 
-  for( let a = 1 ; a < arguments.length ; a++ )
-  {
+ function arrayHasAll( src, ins, evaluator )
+ {
 
-    let ins = _.arrayAs( arguments[ a ] );
-    for( let i = 0 ; i < ins.length ; i++ )
-    if( src.indexOf( ins[ i ] ) === -1 )
-    return false;
+   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+   _.assert( _.longIs( src ), 'Expects array, but got ' + _.strType( src ) );
+   _.assert( _.longIs( ins ) || _.primitiveIs( ins ) );
 
-  }
+   if( _.primitiveIs( ins ) )
+   ins = [ ins ];
 
-  return true;
-}
+   let i = 0;
+   let result;
+
+   do
+   {
+     result = _.arrayLeftIndex( src, ins[ i ], 0, evaluator );
+     i++;
+   }
+   while( result >= 0 && i < ins.length )
+
+   if( result !== -1 )
+   return true;
+   return false;
+ }
+
+// function arrayHasAll( src )
+// {
+//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
+//   _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasAll :', 'array expected' );
+//
+//   for( let a = 1 ; a < arguments.length ; a++ )
+//   {
+//
+//     let ins = _.arrayAs( arguments[ a ] );
+//     for( let i = 0 ; i < ins.length ; i++ )
+//     if( src.indexOf( ins[ i ] ) === -1 )
+//     return false;
+//
+//   }
+//
+//   return true;
+// }
 
 //
 
