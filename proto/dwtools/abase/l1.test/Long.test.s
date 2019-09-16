@@ -14515,67 +14515,67 @@ function arrayHasAny( test )
     test.close( list[ i ].name );
   }
 
-  function run( make )
+  function run( makeLong )
   {
     /* without evaluator */
 
     test.case = 'src = empty long, one argument';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasAny( src );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = undefined';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasAny( src, undefined );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = string';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasAny( src, 'str' );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = array';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasAny( src, [ false, 7 ] );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = number, matches';
-    var src = make( [ 1, 2, 1, false, 5 ] );
+    var src = makeLong( [ 1, 2, 1, false, 5 ] );
     var got = _.arrayHasAny( src, 5 );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = string, no matches';
-    var src = make( [ 1, 2, 5, false ] );
+    var src = makeLong( [ 1, 2, 5, false ] );
     var got = _.arrayHasAny( src, 'str' );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = array, matches';
-    var src = make( [ 5, null, 42, false ] );
+    var src = makeLong( [ 5, null, 42, false ] );
     var got = _.arrayHasAny( src, [ 42, false ] );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = array, no matches';
-    var src = make( [ 5, null, 32, false, 42 ] );
+    var src = makeLong( [ 5, null, 32, false, 42 ] );
     var got = _.arrayHasAny( src, [ true, 7 ] );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = long, matches';
-    var src = make( [ 5, null, 42, false ] );
-    var got = _.arrayHasAny( src, make( [ 42, 12 ] ) );
+    var src = makeLong( [ 5, null, 42, false ] );
+    var got = _.arrayHasAny( src, makeLong( [ 42, 12 ] ) );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = long, no matches';
-    var src = make( [ 5, null, 42, false ] );
-    var got = _.arrayHasAny( src, make( [ 30, 12 ] ) );
+    var src = makeLong( [ 5, null, 42, false ] );
+    var got = _.arrayHasAny( src, makeLong( [ 30, 12 ] ) );
     var expected = false;
     test.identical( got, expected );
   }
@@ -14676,67 +14676,67 @@ function arrayHasAll( test )
     test.close( list[ i ].name );
   }
 
-  function run( make )
+  function run( makeLong )
   {
     /* without evaluator */
 
     test.case = 'src = empty long, one argument';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasAll( src );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = undefined';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasAll( src, undefined );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = string';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasAll( src, 'str' );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = array';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasAll( src, [ false, 7 ] );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = number, matches';
-    var src = make( [ 1, 2, 5, false ] );
+    var src = makeLong( [ 1, 2, 5, false ] );
     var got = _.arrayHasAll( src, 5 );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = string, no matches';
-    var src = make( [ 1, 2, 5, false ] );
+    var src = makeLong( [ 1, 2, 5, false ] );
     var got = _.arrayHasAll( src, 'str' );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = array, matches';
-    var src = make( [ 5, null, 42, false, 1 ] );
+    var src = makeLong( [ 5, null, 42, false, 1 ] );
     var got = _.arrayHasAll( src, [ 42, 1 ] );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = array, no matches';
-    var src = make( [ 5, null, 42, false ] );
+    var src = makeLong( [ 5, null, 42, false ] );
     var got = _.arrayHasAll( src, [ 42, 7 ] );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = long, matches';
-    var src = make( [ 5, null, 42, false, 12 ] );
-    var got = _.arrayHasAll( src, make( [ 42, 12 ] ) );
+    var src = makeLong( [ 5, null, 42, false, 12 ] );
+    var got = _.arrayHasAll( src, makeLong( [ 42, 12 ] ) );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = long, no matches';
-    var src = make( [ 5, null, 42, false ] );
-    var got = _.arrayHasAll( src, make( [ 30, 42 ] ) );
+    var src = makeLong( [ 5, null, 42, false ] );
+    var got = _.arrayHasAll( src, makeLong( [ 30, 42 ] ) );
     var expected = false;
     test.identical( got, expected );
   }
@@ -14837,67 +14837,67 @@ function arrayHasNone( test )
     test.close( list[ i ].name );
   }
 
-  function run( make )
+  function run( makeLong )
   {
     /* without evaluator */
 
     test.case = 'src = empty long, one argument';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasNone( src );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = undefined';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasNone( src, undefined );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = string';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasNone( src, 'str' );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = array';
-    var src = make( [] );
+    var src = makeLong( [] );
     var got = _.arrayHasNone( src, [ false, 7 ] );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = number, matches';
-    var src = make( [ 1, 2, 1, false, 5 ] );
+    var src = makeLong( [ 1, 2, 1, false, 5 ] );
     var got = _.arrayHasNone( src, 5 );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = string, no matches';
-    var src = make( [ 1, 2, 5, false ] );
+    var src = makeLong( [ 1, 2, 5, false ] );
     var got = _.arrayHasNone( src, 'str' );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = array, matches';
-    var src = make( [ 5, null, 42, false ] );
+    var src = makeLong( [ 5, null, 42, false ] );
     var got = _.arrayHasNone( src, [ 42, false ] );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = array, no matches';
-    var src = make( [ 5, null, 32, false, 42 ] );
+    var src = makeLong( [ 5, null, 32, false, 42 ] );
     var got = _.arrayHasNone( src, [ true, 7 ] );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = long, matches';
-    var src = make( [ 5, null, 42, false ] );
-    var got = _.arrayHasNone( src, make( [ 42, 12 ] ) );
+    var src = makeLong( [ 5, null, 42, false ] );
+    var got = _.arrayHasNone( src, makeLong( [ 42, 12 ] ) );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = long, no matches';
-    var src = make( [ 5, null, 42, false ] );
-    var got = _.arrayHasNone( src, make( [ 30, 12 ] ) );
+    var src = makeLong( [ 5, null, 42, false ] );
+    var got = _.arrayHasNone( src, makeLong( [ 30, 12 ] ) );
     var expected = true;
     test.identical( got, expected );
   }
@@ -16619,158 +16619,169 @@ function arrayLeft( test )
 
 function arrayCountElement( test )
 {
+  /* constructors */
 
-  test.case = 'Empty array';
-  var got = _.arrayCountElement( [  ], 3 );
-  var expected = 0;
-  test.identical( got, expected );
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
+  var bufferTyped = function( buf )
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+  };
 
-  test.case = 'Undefined element';
-  var got = _.arrayCountElement( [  ], undefined );
-  var expected = 0;
-  test.identical( got, expected );
+  /* lists */
 
-  test.case = 'Null element';
-  var got = _.arrayCountElement( [  ], null );
-  var expected = 0;
-  test.identical( got, expected );
+  var listTyped =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
+  var list =
+  [
+    array,
+    unroll,
+    argumentsArray,
+  ];
+  for( let i = 0; i < listTyped.length; i++ )
+  list.push( bufferTyped( listTyped[ i ] ) );
 
-  test.case = 'No match';
-  var got = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 'hi' );
-  var expected = 0;
-  test.identical( got, expected );
+  /* tests */
 
-  test.case = 'One match - bool';
-  var got = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], true );
-  var expected = 1;
-  test.identical( got, expected );
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( list[ i ] );
+    test.close( list[ i ].name );
+  }
 
-  test.case = 'Two matching - number';
-  var got = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
-  var expected = 2;
-  test.identical( got, expected );
+  /* - */
 
-  test.case = 'Three matching - string';
-  var got = _.arrayCountElement( [ 'str', 10, 'str', 10, true, 'str' ], 'str' );
-  var expected = 3;
-  test.identical( got, expected );
+  function run( makeLong )
+  {
+    test.case = 'src = empty long, element = number';
+    var src = makeLong( [] );
+    var got = _.arrayCountElement( src, 3 );
+    var expected = 0;
+    test.identical( got, expected );
 
-  test.case = 'longIs';
-  var src = [ 1, 2, 3 ];
-  src[ 'a' ] = 1;
-  var got = _.arrayCountElement( src, 1 );
-  var expected = 1;
-  test.identical( got, expected );
+    test.case = 'src = empty long, element = undefined';
+    var src = makeLong( [] );
+    var got = _.arrayCountElement( src, undefined );
+    var expected = 0;
+    test.identical( got, expected );
 
-  // Evaluators
+    test.case = 'src = empty long, element = null';
+    var src = makeLong( [] );
+    var got = _.arrayCountElement( src, null );
+    var expected = 0;
+    test.identical( got, expected );
 
-  test.case = 'Without evaluators - no match';
-  var got = _.arrayCountElement( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ], 0 );
-  var expected = 0;
-  test.identical( got, expected );
+    test.case = 'element = string, no matches';
+    var src = makeLong( [ 1, 2, null, 10, 10, true ] );
+    var got = _.arrayCountElement( src, 'hi' );
+    var expected = 0;
+    test.identical( got, expected );
 
-  test.case = 'With evaluators - 1 matches';
-  var got = _.arrayCountElement( [ [ 1, 3 ], [ 2, 2 ], [ 3, 1 ] ], 1, ( e ) => e[ 1 ], ( e ) => e + 2 );
-  var expected = 1;
-  test.identical( got, expected );
+    test.case = 'element = number, one matching';
+    var src = makeLong( [ 1, 2, null, 10, 10, true ] );
+    var got = _.arrayCountElement( src, 2 );
+    var expected = 1;
+    test.identical( got, expected );
 
-  test.case = 'With evaluators - 4 matches';
-  var got = _.arrayCountElement( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ], 0, ( e ) => e[ 0 ], ( e ) => e );
-  var expected = 4;
-  test.identical( got, expected );
+    test.case = 'element = number, four matches';
+    var src = makeLong( [ 1, 2, 'str', 10, 10, true, 2, 2, 10, 10 ] );
+    var got = _.arrayCountElement( src, 10 );
+    var expected = 4;
+    test.identical( got, expected );
 
-  test.case = 'Without equalizer - two matches';
-  var got = _.arrayCountElement( [ true, false, true, false ], true );
-  var expected = 2;
-  test.identical( got, expected );
+    // Evaluators
 
-  test.case = 'With equalizer - 4 matches';
-  var got = _.arrayCountElement( [ true, false, true, false ], true, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
-  var expected = 4;
-  test.identical( got, expected );
+    if( !_.bufferTypedIs( makeLong( 0 ) ) )
+    {
+      test.case = 'src = complex long, no evaluator, no equalizer';
+      var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
+      var got = _.arrayCountElement( src, 0 );
+      var expected = 0;
+      test.identical( got, expected );
 
-  test.case = 'With equalizer - 4 matches';
-  var got = _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
-  var expected = 4;
-  test.identical( got, expected );
+      test.case = 'src = complex long, one evaluator, no matches';
+      var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
+      var got = _.arrayCountElement( src, 2, ( e ) => e[ 0 ] );
+      var expected = 0;
+      test.identical( got, expected );
+
+      test.case = 'src = complex long, one evaluator, four matches';
+      var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
+      var got = _.arrayCountElement( src, 0, ( e ) => e[ 0 ] );
+      var expected = 0;
+      test.identical( got, expected );
+
+      test.case = 'src = complex long, evaluator1 and evaluator2, one matching';
+      var src = makeLong( [ [ 1, 3 ], [ 2, 2 ], [ 3, 1 ] ] );
+      var got = _.arrayCountElement( src, 1, ( e ) => e[ 1 ], ( e ) => e + 2 );
+      var expected = 1;
+      test.identical( got, expected );
+
+      test.case = 'src = complex long, evaluator1 and evaluator2, four matches';
+      var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
+      var got = _.arrayCountElement( src, 0, ( e ) => e[ 0 ], ( e ) => e );
+      var expected = 4;
+      test.identical( got, expected );
+
+      test.case = 'element = number, without equalizer, two mathces';
+      var got = _.arrayCountElement( [ 1, 2, 3, 2, 'str' ], 2 );
+      var expected = 2;
+      test.identical( got, expected );
+
+      test.case = 'element = number, equalizer, four mathces';
+      var got = _.arrayCountElement( [ 1, 2, 3, 2, 'str' ], 2, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+      var expected = 4;
+      test.identical( got, expected );
+    }
+  }
 
   /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayCountElement() );
 
-  test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( [ 1, 2, 3, 'abc', 13 ] );
-  });
+  test.case = 'one argument';
+  test.shouldThrowErrorSync( () => _.arrayCountElement( [ 1, 2, 3, 'abc', 13 ] ) );
 
   test.case = 'extra argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( [ 1, 2, 3, true ], true, 'redundant argument' );
-  });
+  test.shouldThrowErrorSync( () => _.arrayCountElement( [ 1, 2, 3, true ], true, 'extra argument' ) );
 
-  test.case = 'first argument is wrong - undefined';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( undefined, true );
-  });
+  test.case = 'wrong type of first srcArray';
+  test.shouldThrowErrorSync( () => _.arrayCountElement( undefined, true ) );
+  test.shouldThrowErrorSync( () => _.arrayCountElement( null, true ) );
+  test.shouldThrowErrorSync( () => _.arrayCountElement( 'str', true ) );
+  test.shouldThrowErrorSync( () => _.arrayCountElement( 4, true ) );
 
-  test.case = 'first argument is wrong - null';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( null, true );
-  });
+  test.case = 'evaluator is wrong - have no arguments';
+  test.shouldThrowErrorSync( () => _.arrayCountElement( [ 3, 4, 5, true ], 3, () => 3 ) );
 
-  test.case = 'first argument is wrong - string';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( 'wrong argument', true );
-  });
+  test.case = 'evaluator is wrong - have three arguments';
+  test.shouldThrowErrorSync( () => _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a, b, c ) => _.typeOf( a ) === _.typeOf( b ) === _.typeOf( c ) ) );
 
-  test.case = 'first argument is wrong - number';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( 3, true );
-  });
+  test.case = 'evaluator2 is unnacessary';
+  test.shouldThrowErrorSync( () => _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a, b ) => _.typeOf( a ) === _.typeOf( b ), ( e ) => e ) );
 
-  test.case = 'third argument is wrong - have no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( [ 3, 4, 5, true ], 3, () => 3 );
-  });
-
-  test.case = 'third argument is wrong - have three arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a, b, c ) => _.typeOf( a ) === _.typeOf( b ) === _.typeOf( c ) );
-  });
-
-  test.case = 'fourth element is unnacessary';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a, b ) => _.typeOf( a ) === _.typeOf( b ), ( e ) => e );
-  });
-
-  test.case = 'fourth argument is wrong - have no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a, b ) => _.typeOf( a ) === _.typeOf( b ), () => e );
-  });
+  test.case = 'evaluator2 is wrong - have no arguments';
+  test.shouldThrowErrorSync( () => _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a ) => a, () => e ) );
 
   test.case = 'fourth argument is wrong - have two arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a, b ) => _.typeOf( a ) === _.typeOf( b ), ( a, b ) => e );
-  });
-
+  test.shouldThrowErrorSync( () => _.arrayCountElement( [ 3, 4, 5, true ], 3, ( a ) => a, ( a, b ) => e ) );
 };
 
 //

@@ -3337,6 +3337,7 @@ function arrayHas( array, value, evaluator1, evaluator2 )
 
 /**
  * The routine arrayHasAny() checks if the {-src-} array has at least one element of the argument {-ins-}.
+ * It can take equalizer or evaluators for the routine equalities.
  *
  * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
  * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
@@ -3429,6 +3430,7 @@ function arrayHasAny( src, ins, evaluator )
 
 /**
  * The routine arrayHasAll() checks if the {-src-} array has all elements of the argument {-ins-}.
+ * It can take equalizer or evaluators for the routine equalities.
  *
  * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
  * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
@@ -3515,6 +3517,7 @@ function arrayHasAll( src, ins, evaluator )
 
 /**
  * The routine arrayHasNone() checks if the {-src-} array has no one element of the argument {-ins-}.
+ * It can take equalizer or evaluators for the routine equalities.
  *
  * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
  * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
@@ -4992,13 +4995,18 @@ function arrayRightDefined( arr )
 //
 
 /**
- * The arrayCountElement() routine returns the count of matched elements in the {-srcArray-} array with the input { element }.
- * Returns 0 if no { element } is provided. It can take equalizer or evaluators for the routine equalities.
+ * The routine arrayCountElement() returns the count of matched elements {-element-} in the {-srcArray-} array.
+ * Returns 0 if no {-element-} is matched. It can take equalizer or evaluators to check specific equalities.
  *
- * @param { Array } src - The source array.
- * @param { * } element - The value to search.
- * @param { * } [ onEvaluate1 ] - It's a routine. If the routine has two parameters, it is used as an equalizer, and if it has only one, then routine used as the first part of the evaluator.
- * @param { * } [ onEvaluate2 ] - The second part of evaluator. Change the value to search.
+ * @param { Long } srcArray - The source array.
+ * @param { * } element - The value to count matches.
+ * @param { Function } onEvaluate1 - It's a callback. If the routine has two parameters, it is used as an equalizer, and if it has only one, then routine used as the evaluator.
+ * @param { Function } onEvaluate2 - The second part of evaluator. Accepts the value to search.
+ *
+ * @example
+ * // simple exapmle, no matches
+ * _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 3 );
+ * // returns 0
  *
  * @example
  * // simple exapmle
@@ -5011,14 +5019,19 @@ function arrayRightDefined( arr )
  * // returns 4
  *
  * @example
- * // with evaluator
- * _.arrayCountElement( [ [ 10, 2 ], [ 10, 2 ], [ 'str', 10 ], [ 10, true ], [ false, 10 ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
+ * // with single evaluator
+ * _.arrayCountElement( [ [ 10 ], [ 10 ], [ 'str' ], [ 10 ], [ false ] ], [ 'str' ], ( e ) => e[ 0 ] );
+ * // returns 1
+ *
+ * @example
+ * // with two part of evaluator
+ * _.arrayCountElement( [ [ 10 ], [ 10 ], [ 'str' ], [ 10 ], [ false ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
  * // returns 4
  *
- * @returns { Number } - Returns the count of matched elements in the {-srcArray-} with the { element } element.
+ * @returns { Number } - Returns the count of matched elements {-element-} in the {-srcArray-}.
  * @function arrayCountElement
  * @throws { Error } If passed arguments is less than two or more than four.
- * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If the first argument is not a long.
  * @throws { Error } If the third or fourth argument is not a routine.
  * @throws { Error } If the routine in third argument has less than one or more than two arguments.
  * @throws { Error } If the routine in third argument has two arguments and fourth argument is passed into routine arrayCountElement.
@@ -9009,7 +9022,7 @@ let Routines =
   arrayLeftDefined,
   arrayRightDefined,
 
-  arrayCountElement, /* qqq : cover by tests */
+  arrayCountElement, /* qqq : cover by tests | Dmytro : covered */
   arrayCountTotal, /* qqq : cover by tests */
   arrayCountUnique,
 
