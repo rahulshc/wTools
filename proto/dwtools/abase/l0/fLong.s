@@ -3359,6 +3359,28 @@ function arrayHas( array, value, evaluator1, evaluator2 )
  * @memberof wTools
  */
 
+ // function arrayHasAny( src, ins, evaluator )
+ // {
+ //
+ //   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+ //   _.assert( _.longIs( src ) 'Expects array, but got ' + _.strType( src ) );
+ //
+ //   for( let a = 1 ; a < arguments.length ; a++ )
+ //   {
+ //     empty = false;
+ //
+ //     let ins = _.arrayAs( arguments[ a ] );
+ //     for( let i = 0 ; i < ins.length ; i++ )
+ //     {
+ //       if( src.indexOf( ins[ i ] ) !== -1 )
+ //       return true;
+ //     }
+ //
+ //   }
+ //
+ //   return empty;
+ // }
+
 function arrayHasAny( src )
 {
   let empty = true;
