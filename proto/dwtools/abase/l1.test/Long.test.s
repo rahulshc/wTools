@@ -25310,7 +25310,7 @@ function arrayRemoveDuplicates( test )
 
 //
 
-function longUnduplicate( test )
+function longOnce( test )
 {
   /* constructors */
 
@@ -25421,35 +25421,35 @@ function longUnduplicate( test )
   {
     test.case = 'dst = null';
     var dst = makeDst( null );
-    var got = _.longUnduplicate( dst );
+    var got = _.longOnce( dst );
     var expected = makeDst( null );
     test.identical( got, expected );
     test.is( got === dst );
 
     test.case = 'dst.length = 0';
     var dst = makeDst( [] );
-    var got = _.longUnduplicate( dst );
+    var got = _.longOnce( dst );
     var expected = makeDst( [] );
     test.identical( got, expected );
     test.is( got === dst );
 
     test.case = 'dst.length = 1';
     var dst = makeDst( [ 1 ] );
-    var got = _.longUnduplicate( dst );
+    var got = _.longOnce( dst );
     var expected = makeDst( [ 1 ] );
     test.identical( got, expected );
     test.is( got === dst );
 
     test.case = 'dst.length > 1, no duplicates';
     var dst = makeDst( [ 1, 2, 3, '1', '2' ] );
-    var got = _.longUnduplicate( dst );
+    var got = _.longOnce( dst );
     var expected = makeDst( [ 1, 2, 3, '1', '2' ] );
     test.identical( got, expected );
     test.is( got === dst );
 
     test.case = 'dst.length > 1, duplicates';
     var dst = makeDst( [ 1, 2, 2, 1, 'str', 3, 4, 'str', 5, 3 ] );
-    var got = _.longUnduplicate( dst );
+    var got = _.longOnce( dst );
     var expected = makeDst( [ 1, 2, 'str', 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25462,7 +25462,7 @@ function longUnduplicate( test )
     test.case = 'dstArg = null, srcArg = null';
     var dst = makeDst( null );
     var src = makeSrc( null );
-    var got = _.longUnduplicate( dst, src );
+    var got = _.longOnce( dst, src );
     var expected = makeDst( null );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25471,7 +25471,7 @@ function longUnduplicate( test )
     test.case = 'dstArg = null, srcArg > 1, duplicates';
     var dst = makeDst( null );
     var src = makeSrc( [ 0, 1, 2, 0, 1, 2, 0 ] );
-    var got = _.longUnduplicate( dst, src );
+    var got = _.longOnce( dst, src );
     var expected = makeDst( [ 0, 1, 2 ] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25480,7 +25480,7 @@ function longUnduplicate( test )
     test.case = 'dstArg.length = 0 srcArg.length = 0';
     var dst = makeDst( [] );
     var src = makeSrc( [] );
-    var got = _.longUnduplicate( dst, src );
+    var got = _.longOnce( dst, src );
     var expected = makeDst( [] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25489,7 +25489,7 @@ function longUnduplicate( test )
     test.case = 'dstArg.length = 0 srcArg.length > 1, duplicates';
     var dst = makeDst( [] );
     var src = makeSrc( [ 0, 1, 2, 0, 1, 2, 0 ] );
-    var got = _.longUnduplicate( dst, src );
+    var got = _.longOnce( dst, src );
     var expected = makeDst( [ 0, 1, 2 ] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25498,7 +25498,7 @@ function longUnduplicate( test )
     test.case = 'dstArg.length > 0 srcArg.length > 0, no duplicates';
     var dst = makeDst( [ 5, 6 ] );
     var src = makeSrc( [ 0, 1, 2 ] );
-    var got = _.longUnduplicate( dst, src );
+    var got = _.longOnce( dst, src );
     var expected = makeDst( [ 5, 6, 0, 1, 2 ] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25507,7 +25507,7 @@ function longUnduplicate( test )
     test.case = 'dstArg.length > 0 srcArg.length > 0, duplicates';
     var dst = makeDst( [ 5, 6, 0, 3, 1 ] );
     var src = makeSrc( [ 5, 6, 0, 1, 2, 0, 1, 2, 0 ] );
-    var got = _.longUnduplicate( dst, src );
+    var got = _.longOnce( dst, src );
     var expected = makeDst( [  5, 6, 0, 3, 1, 2 ] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25521,7 +25521,7 @@ function longUnduplicate( test )
     test.case = 'dstArg = null, srcArg > 1, duplicates';
     var dst = makeDst( null );
     var src = [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ];
-    var got = _.longUnduplicate( dst, src, onEvaluate );
+    var got = _.longOnce( dst, src, onEvaluate );
     var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25530,7 +25530,7 @@ function longUnduplicate( test )
     test.case = 'dstArg.length = 0 srcArg.length > 1, duplicates';
     var dst = makeDst( [] );
     var src = [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ];
-    var got = _.longUnduplicate( dst, src, onEvaluate );
+    var got = _.longOnce( dst, src, onEvaluate );
     var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25539,7 +25539,7 @@ function longUnduplicate( test )
     test.case = 'dstArg.length > 0 srcArg.length > 0, no duplicates';
     var dst = makeDst( [ 5, 6 ] );
     var src = [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ];
-    var got = _.longUnduplicate( dst, src, onEvaluate );
+    var got = _.longOnce( dst, src, onEvaluate );
     var expected = makeDst( [ 5, 6, { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25548,7 +25548,7 @@ function longUnduplicate( test )
     test.case = 'dstArg.length > 0 srcArg.length > 0, duplicates';
     var dst = makeDst( [ { v : 3 }, 4, 10 ] );
     var src = [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ];
-    var got = _.longUnduplicate( dst, src, onEvaluate );
+    var got = _.longOnce( dst, src, onEvaluate );
     var expected = makeDst( [  { v : 3 }, 4, 10, { v : 1 }, { v : 2 } ] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25558,28 +25558,28 @@ function longUnduplicate( test )
 
     test.case = 'dstArg = null, srcArg > 1, duplicates';
     var dst = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
-    var got = _.longUnduplicate( dst, onEvaluate );
+    var got = _.longOnce( dst, onEvaluate );
     var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.is( got === dst );
 
     test.case = 'dstArg.length = 0 srcArg.length > 1, duplicates';
     var dst = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
-    var got = _.longUnduplicate( dst, onEvaluate );
+    var got = _.longOnce( dst, onEvaluate );
     var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.is( got === dst );
 
     test.case = 'dstArg.length > 0 srcArg.length > 0, no duplicates';
     var dst = makeDst( [ 5, 6, { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
-    var got = _.longUnduplicate( dst, onEvaluate );
+    var got = _.longOnce( dst, onEvaluate );
     var expected = makeDst( [ 5, 6, { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.is( got === dst );
 
     test.case = 'dstArg.length > 0 srcArg.length > 0, duplicates';
     var dst = makeDst( [ { v : 3 }, 4, 1, { v : 1 }, { v : 5 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
-    var got = _.longUnduplicate( dst, onEvaluate );
+    var got = _.longOnce( dst, onEvaluate );
     var expected = makeDst( [ { v : 3 }, 4, 1, { v : 5 }, { v : 2 } ] );
     test.identical( got, expected );
     test.is( got === dst );
@@ -25591,22 +25591,22 @@ function longUnduplicate( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.longUnduplicate() );
+  test.shouldThrowErrorSync( () => _.longOnce() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.longUnduplicate( [ 1, 2 ], [ 1, 3 ], ( a, b ) => a === b, 'extra' ) );
+  test.shouldThrowErrorSync( () => _.longOnce( [ 1, 2 ], [ 1, 3 ], ( a, b ) => a === b, 'extra' ) );
 
   test.case = 'wrong dst type';
-  test.shouldThrowErrorSync( () => _.longUnduplicate( new U8x( [ 1, 1 ] ) ) );
-  test.shouldThrowErrorSync( () => _.longUnduplicate( 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.longOnce( new U8x( [ 1, 1 ] ) ) );
+  test.shouldThrowErrorSync( () => _.longOnce( 'wrong' ) );
 
   test.case = 'wrong src type';
-  test.shouldThrowErrorSync( () => _.longUnduplicate( [ 1, 2 ], 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.longUnduplicate( [ 1, 2 ], { a : 1 } ) );
+  test.shouldThrowErrorSync( () => _.longOnce( [ 1, 2 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.longOnce( [ 1, 2 ], { a : 1 } ) );
 
   test.case = 'onEvaluate is not a routine';
-  test.shouldThrowErrorSync( () => _.longUnduplicate( [ 1, 2 ], [ 1, 3 ], 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.longUnduplicate( [ 1, 2 ], [ 1, 3 ], [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.longOnce( [ 1, 2 ], [ 1, 3 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.longOnce( [ 1, 2 ], [ 1, 3 ], [ 1, 2, 3 ] ) );
 }
 
 //
@@ -33183,7 +33183,7 @@ function loggerProblemExperiment( test )
 var Self =
 {
 
-  name : 'Tools/base/l1/Long',
+  name : 'Tools.base.l1.Long',
   silencing : 1,
   enabled : 1,
   // verbosity : 9,
@@ -33254,7 +33254,7 @@ var Self =
 
     longMask,
 
-    longUnduplicate,
+    longOnce,
     longSelectWithIndices,
 
     // array manipulator
@@ -33447,7 +33447,7 @@ var Self =
     arrayRemovedArraysOnceStrictly,
 
     arrayRemoveDuplicates,
-    longUnduplicate,
+    longOnce,
 
     // array flatten
 

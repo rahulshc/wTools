@@ -175,17 +175,17 @@ function scalarToVector( dst, length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
+  // _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
+  _.assert( dst !== undefined, 'Expects array or scalar' );
   _.assert( length >= 0 );
 
-  if( _.numberIs( dst ) )
+  if( _.arrayIs( dst ) )
   {
-    dst = _.longFill( [], dst, [ 0, length ] );
-    // dst = _.longFillTimes( [], length, dst );
+    _.assert( dst.length === length, () => 'Expects array of length ' + length + ' but got ' + dst.length );
   }
   else
   {
-    _.assert( dst.length === length, () => 'Expects array of length ' + length + ' but got ' + dst.length );
+    dst = _.longFill( [], dst, [ 0, length ] );
   }
 
   return dst;
@@ -4652,7 +4652,7 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
     evaluator2 = arguments[ 4 ];
   }
 
-  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+  _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
   _.assert( _.longIs( arr ) );
   _.assert( _.numberIs( fromIndex ) );
   _.assert( evaluator1 === undefined || evaluator1.length === 1 || evaluator1.length === 2 );
@@ -4707,7 +4707,7 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
     evaluator2 = arguments[ 4 ];
   }
 
-  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+  _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
   _.assert( _.numberIs( fromIndex ) );
   _.assert( evaluator1 === undefined || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( evaluator1 === undefined || _.routineIs( evaluator1 ) );
@@ -8900,7 +8900,7 @@ let Routines =
   arrayAppendedOnce,
   arrayAppendedOnceStrictly,
 
-  arrayAppendElement, /* qqq : fill gaps */
+  arrayAppendElement,
   arrayAppendElementOnce,
   arrayAppendElementOnceStrictly,
   arrayAppendedElement,
@@ -8976,7 +8976,7 @@ let Routines =
   arrayReplaceOnceStrictly,
   arrayReplaced,
   arrayReplacedOnce,
-  arrayReplacedOnceStrictly, /* qqq implement */
+  arrayReplacedOnceStrictly,
 
   arrayReplaceElement,
   arrayReplaceElementOnce,

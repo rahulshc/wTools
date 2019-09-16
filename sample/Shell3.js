@@ -13,4 +13,4 @@ var o =
   // mode : 'spawn',
 }
 
-_.shell( o )
+_.process.start( o )

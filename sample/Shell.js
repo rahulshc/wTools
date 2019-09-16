@@ -7,7 +7,7 @@ if( typeof module !== 'undefined' )
 
 var _ = wTools;
 
-_.shell( 'mkdir -p sample/temp_dir' )
+_.process.start( 'mkdir -p sample/temp_dir' )
 .doThen( function( err,code )
 {
   if( err )
