@@ -3137,29 +3137,6 @@ function longMake( test )
     return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
 
-  /* results checkers */
-
-  var longResult = function( dst, src )
-  {
-    if( _.bufferTypedIs( dst ) )
-    {
-      return new dst.constructor( src );
-    }
-    if( _.unrollIs( dst ) )
-    return _.unrollMake( src );
-    else
-    return _.arrayMake( src );
-  };
-  var type = function( dst, got )
-  {
-    if( _.unrollIs( dst ) )
-    return _.unrollIs( got );
-    if( _.bufferTypedIs( dst ) )
-    return _.bufferTypedIs( got );
-    else
-    return _.arrayIs( got );
-  };
-
   /* lists */
 
   var typedList =
@@ -3196,6 +3173,11 @@ function longMake( test )
 
   function run( long )
   {
+    var type = ( dst, got ) => _.argumentsArrayIs( dst ) ?
+    got.constructor.name === 'Array' : dst.constructor.name === got.constructor.name;
+    var result = ( dst, length ) => _.argumentsArrayIs( dst ) ?
+    array( length ) : long( length );
+
     test.case = 'dst = null, not src';
     var got = _.longMake( null );
     var expected = [];
@@ -3204,7 +3186,7 @@ function longMake( test )
     test.case = 'dst = empty, not src';
     var dst = long( [] );
     var got = _.longMake( dst );
-    var expected = longResult( dst, [] );
+    var expected = result( dst, [] );
     test.identical( got, expected );
     test.is( got !== dst );
     test.is( type( dst, got ) );
@@ -3212,7 +3194,7 @@ function longMake( test )
     test.case = 'dst = empty, src = number';
     var dst = long( [] );
     var got = _.longMake( dst, 2 );
-    var expected = longResult( dst, 2 );
+    var expected = result( dst, 2 );
     test.identical( got, expected );
     test.is( got !== dst );
     test.is( type( dst, got ) );
@@ -3220,7 +3202,7 @@ function longMake( test )
     test.case = 'src = number, src < dst.length';
     var dst = long( [ 1, 2, 3 ] );
     var got = _.longMake( dst, 2 );
-    var expected = longResult( dst, [ 1, 2 ] );
+    var expected = result( dst, [ 1, 2 ] );
     test.identical( got, expected );
     test.is( got !== dst );
     test.is( type( dst, got ) );
@@ -3228,7 +3210,7 @@ function longMake( test )
     test.case = 'src = number, src > dst.length';
     var dst = long( [ 1, 2, 3 ] );
     var got = _.longMake( dst, 4 );
-    var expected = _.bufferTypedIs( dst ) ? longResult( dst, [ 1, 2, 3, 0 ] ) : longResult( dst, [ 1, 2, 3, undefined ] );
+    var expected = _.bufferTypedIs( dst ) ? result( dst, [ 1, 2, 3, 0 ] ) : result( dst, [ 1, 2, 3, undefined ] );
     test.identical( got, expected );
     test.is( got !== dst );
     test.is( type( dst, got ) );
@@ -3237,7 +3219,7 @@ function longMake( test )
     var dst = long( [ 0, 1 ] );
     var src = [ 1, 2, 3 ];
     var got = _.longMake( dst, src );
-    var expected = longResult( dst, [ 1, 2, 3 ] );
+    var expected = result( dst, [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.identical( got.length, 3 );
     test.is( got !== src );
@@ -3247,7 +3229,7 @@ function longMake( test )
     test.case = 'dst = long, not src';
     var dst = long( [ 1, 2, 3 ] );
     var got = _.longMake( dst );
-    var expected = longResult( dst, [ 1, 2, 3 ] );
+    var expected = result( dst, [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.identical( got.length, 3 );
     test.is( got !== dst );
@@ -3257,7 +3239,7 @@ function longMake( test )
     var dst = long( 2 );
     var src = [ 1, 2, 3, 4, 5 ];
     var got = _.longMake( dst, src );
-    var expected = longResult( dst, [ 1, 2, 3, 4, 5 ] );
+    var expected = result( dst, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.identical( got.length, 5 );
     test.is( got !== dst );
@@ -3479,29 +3461,6 @@ function longMakeUndefined( test )
     return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
 
-  /* results checkers */
-
-  var longResult = function( dst, src )
-  {
-    if( _.bufferTypedIs( dst ) )
-    {
-      return new dst.constructor( src );
-    }
-    if( _.unrollIs( dst ) )
-    return _.unrollMake( src );
-    else
-    return _.arrayMake( src );
-  };
-  var type = function( dst, got )
-  {
-    if( _.unrollIs( dst ) )
-    return _.unrollIs( got );
-    if( _.bufferTypedIs( dst ) )
-    return _.bufferTypedIs( got );
-    else
-    return _.arrayIs( got );
-  };
-
   /* lists */
 
   var typedList =
@@ -3538,6 +3497,11 @@ function longMakeUndefined( test )
 
   function run( long )
   {
+    var type = ( dst, got ) => _.argumentsArrayIs( dst ) ?
+    got.constructor.name === 'Array' : dst.constructor.name === got.constructor.name;
+    var result = ( dst, length ) => _.argumentsArrayIs( dst ) ?
+    array( length ) : long( length );
+
     test.case = 'dst = null, not src';
     var got = _.longMakeUndefined( null );
     var expected = [];
@@ -3546,7 +3510,7 @@ function longMakeUndefined( test )
     test.case = 'dst = empty, not src';
     var dst = long( [] );
     var got = _.longMakeUndefined( dst );
-    var expected = longResult( dst, [] );
+    var expected = result( dst, [] );
     test.identical( got, expected );
     test.is( got !== dst );
     test.is( type( dst, got ) );
@@ -3554,7 +3518,7 @@ function longMakeUndefined( test )
     test.case = 'dst = empty, src = number';
     var dst = long( [] );
     var got = _.longMakeUndefined( dst, 2 );
-    var expected = longResult( dst, 2 );
+    var expected = result( dst, 2 );
     test.identical( got, expected );
     test.is( got !== dst );
     test.is( type( dst, got ) );
@@ -3562,7 +3526,7 @@ function longMakeUndefined( test )
     test.case = 'src = number, src < dst.length';
     var dst = long( [ 1, 2, 3 ] );
     var got = _.longMakeUndefined( dst, 2 );
-    var expected = longResult( dst, 2 );
+    var expected = result( dst, 2 );
     test.identical( got, expected );
     test.is( got !== dst );
     test.is( type( dst, got ) );
@@ -3570,7 +3534,7 @@ function longMakeUndefined( test )
     test.case = 'src = number, src > dst.length';
     var dst = long( [ 1, 2, 3 ] );
     var got = _.longMakeUndefined( dst, 4 );
-    var expected = longResult( dst, 4 );
+    var expected = result( dst, 4 );
     test.identical( got, expected );
     test.is( got !== dst );
     test.is( type( dst, got ) );
@@ -3579,7 +3543,7 @@ function longMakeUndefined( test )
     var dst = long( [ 0, 1 ] );
     var src = [ 1, 2, 3 ];
     var got = _.longMakeUndefined( dst, src );
-    var expected = longResult( dst, 3 );
+    var expected = result( dst, 3 );
     test.identical( got, expected );
     test.identical( got.length, 3 );
     test.is( got !== src );
@@ -3589,7 +3553,7 @@ function longMakeUndefined( test )
     test.case = 'dst = long, not src';
     var dst = long( [ 1, 2, 3 ] );
     var got = _.longMakeUndefined( dst );
-    var expected = longResult( dst, 3 );
+    var expected = result( dst, 3 );
     test.identical( got, expected );
     test.identical( got.length, 3 );
     test.is( got !== dst );
@@ -3599,7 +3563,7 @@ function longMakeUndefined( test )
     var dst = long( 5 );
     var src = [ 1, 2, 3, 4, 5 ];
     var got = _.longMakeUndefined( dst, src );
-    var expected = longResult( dst, 5 );
+    var expected = result( dst, 5 );
     test.identical( got, expected );
     test.identical( got.length, 5 );
     test.is( got !== dst );
@@ -8506,15 +8470,174 @@ function bufferViewIs( test )
 
 function bufferMakeUndefined( test )
 {
-  test.case = 'trivial';
-  var dst = new U8x( [ 1, 2, 4 ] );
-  var src = [ 1, 2, 3, 4 ];
-  var got = _.bufferMakeUndefined( dst, src );
-  var expected = new U8x( [ 1, 2, 3, 4 ] );
-  test.identical( got, expected );
-  test.is( got !== dst );
+  /* constructors */
 
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => _.argumentsArrayMake( src );
+  var bufferTyped = function( buf )
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+  };
+  var bufferRaw = ( src ) => _.numberIs( src ) ? new BufferRaw( src ) : new BufferRaw( src.length );
+  var bufferNode = ( src ) => _.numberIs( src ) ? Buffer.alloc( src ) : Buffer.from( src );
+  var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
+
+  /* lists */
+
+  var typedList =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
+  var list =
+  [
+    array,
+    // unroll,
+    // argumentsArray,
+    bufferRaw,
+    bufferView,
+  ];
+  for( let i = 0; i < typedList.length; i++ )
+  list.push( bufferTyped( typedList[ i ] ) );
+  if( Config.interpreter === 'njs' )
+  list.push( bufferNode );
+
+  /* tests */
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  /* test subroutine */
+
+  function run( buffer )
+  {
+    var type = ( dst, got ) => _.argumentsArrayIs( dst ) ?
+    got.constructor.name === 'Array' : dst.constructor.name === got.constructor.name;
+    var result = ( dst, length ) => _.argumentsArrayIs( dst ) ?
+    array( length ) : buffer( length );
+
+    test.case = 'dst = empty, not src';
+    var dst = buffer( [] );
+    var got = _.bufferMakeUndefined( dst );
+    var expected = result( dst, 0 ) ;
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = empty, src = number';
+    var dst = buffer( [] );
+    var got = _.bufferMakeUndefined( dst, 2 );
+    var expected = result( dst, 2 );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'src = number, src < dst.length';
+    var dst = buffer( [ 1, 2, 3 ] );
+    var got = _.bufferMakeUndefined( dst, 2 );
+    var expected = result( dst, 2 );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'src = number, src > dst.length';
+    var dst = buffer( [ 1, 2, 3 ] );
+    var got = _.bufferMakeUndefined( dst, 4 );
+    var expected = result( dst, 4 );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'src = buffer, src.length > dst.length';
+    var dst = buffer( [ 0, 1 ] );
+    var src = [ 1, 2, 3 ];
+    var got = _.bufferMakeUndefined( dst, src );
+    var expected = result( dst, 3 );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = buffer, not src';
+    var dst = buffer( [ 1, 2, 3 ] );
+    var got = _.bufferMakeUndefined( dst );
+    var expected = result( dst, 3 );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = new buffer, src = array'
+    var dst = buffer( 4 );
+    var src = [ 1, 2, 3, 4, 5 ];
+    var got = _.bufferMakeUndefined( dst, src );
+    var expected = result( dst, 5 );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = array, src = buffer';
+    var src = buffer( [ 1, 2, 3 ] );
+    var got = _.bufferMakeUndefined( [ 1, 2, 3, 5 ], src );
+    var expected = [ undefined, undefined, undefined ];
+    test.identical( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( got !== src );
+
+    test.case = 'dst = Array constructor, src = buffer';
+    var src = buffer( [ 1, 2, 3 ] );
+    var got = _.bufferMakeUndefined( Array, src );
+    var expected = [ undefined, undefined, undefined ];
+    test.identical( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( got !== src );
+
+    test.case = 'dst = BufferTyped constructor, src = buffer';
+    var src = buffer( [ 1, 1, 1, 1, 1 ] );
+    var got = _.bufferMakeUndefined( U32x, src );
+    var expected = new U32x( 5 );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs(  got ) );
+    test.is( got !== src );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferMakeUndefined() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( [ 1, 2, 3 ], 4, 'extra argument' ) );
+
+  test.case = 'wrong length when ins is routine';
+  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( Array ) );
+  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( Array, 1, 2 ) );
+
+  test.case = 'wrong type of ins';
+  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( 'wrong argument', 1 ) );
+  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( 1, 1 ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( [ 1, 2, 3 ], 'wrong type of argument' ) );
+  test.shouldThrowErrorSync( () => _.bufferMakeUndefined( [ 1, 2, 3 ], Infinity ) );
 }
+
+//
 
 function bufferBut( test )
 {

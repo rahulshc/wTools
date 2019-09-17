@@ -1504,11 +1504,11 @@ function _longMakeOfLength( src, len )
 //
 
 /**
- * The routine longMakeUndefined() returns a new long object with the same type as source long (src). New long has length equal to (length)
- * or it has length of source long (src) if second argument is not provided.
+ * The routine longMakeUndefined() returns a new Long with the same type as source Long {-src-}. New Long has length equal to {-len-}
+ * or it has length of source Long {-src-} if second argument is not provided.
  *
- * @param { Long } ins - Instance of long object or constructor, defines type of returned long. If null is provided, routine returns empty array.
- * @param { Number|Long } len - Defines length of new long. If long object is provided, routine makes new long with length equal to ins.length.
+ * @param { Long } ins - Long or constructor, defines type of returned Long. If null is provided, routine returns empty array.
+ * @param { Number|Long } len - Defines length of new Long. If Long is provided, routine makes new Long with length equal to ins.length.
  *
  * @example
  * _.longMakeUndefined( null );
@@ -1534,13 +1534,13 @@ function _longMakeOfLength( src, len )
  * console.log( _.bufferTypedIs( got ) );
  * // log true
  *
- * @returns { Long }  Returns a long with type of source long with a certain (length).
+ * @returns { Long }  Returns a Long with type of source Long with a certain length.
  * @function longMakeUndefined
- * @throws { Error } If the passed arguments is less than two or more then two.
- * @throws { Error } If the (ins) is not a number and not a long.
- * @throws { Error } If the (src) is not long object or not a constructor.
- * @throws { Error } If the (ins) or ins.length has a not finite value.
- * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @throws { Error } If arguments.length is less than one or more then two.
+ * @throws { Error } If the {-ins-} is not a Long or not a constructor.
+ * @throws { Error } If the {-len-} is not a Number or not a Long.
+ * @throws { Error } If the {-len-} or ins.length has a not finite value.
+ * @throws { Error } If the {-len-} is undefined and ins.length is not a number.
  * @memberof wTools
  */
 

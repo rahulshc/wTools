@@ -265,6 +265,62 @@ function bufferMake( ins, src )
 
 //
 
+/**
+ * The routine bufferMakeUndefined() returns a new buffer with the same type as buffer in argument {-ins-}.
+ * New buffer has length equal to the length of second argument {-src-} or it has length of initial array {-ins-}
+ * if second argument is not provided.
+ *
+ * @param { Buffer|Long|Routine } ins - Buffer, Long or constructor, defines type of returned buffer.
+ * @param { Buffer|Long|Number } src - Defines length of the new buffer.
+ *
+ * @example
+ * // from array, no src
+ * let ins = [ 1, 2, 3, 4, 5 ];
+ * let got = _.bufferMakeUndefined( ins );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined, undefined, undefined ]
+ * console.log( _.arrayIs( got ) );
+ * // log true
+ *
+ * @example
+ * // from BufferTyped, no src
+ * let ins = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * let got = _.bufferMakeUndefined( ins );
+ * console.log( got );
+ * // log Uint8Array[ 0, 0, 0, 0, 0 ]
+ *
+ * @example
+ * // from array, src.length < array.length
+ * let ins = new Array( [ 1, 2, 3, 4, 5 ] );
+ * let got = _.bufferMakeUndefined( ins, 2 );
+ * console.log( got );
+ * // log [ undefined, undefined ]
+ * console.log( _.arrayIs( got ) );
+ * // log true
+ *
+ * @example
+ * // from BufferRaw, buffer.byteLength < src.length
+ * let ins = new BufferRaw( 2 );
+ * let got = _.bufferMakeUndefined( ins, [ 1, 2, 3, 4, 5 ] );
+ * console.log( got );
+ * // log ArrayBuffer[ 0x0, 0x0, 0x0, 0x0, 0x0 ]
+ *
+ * @example
+ * // from Array constructor
+ * let got = _.bufferMakeUndefined( F32x, 4 );
+ * console.log( got );
+ * // log Float32Array[ 0, 0, 0, 0 ]
+ *
+ * @returns { Buffer }  Returns a new buffer with the same type as inserted buffer {-ins-} with a certain length.
+ * @function bufferMakeUndefined
+ * @throws { Error } If arguments.length is less than one or more then two.
+ * @throws { Error } If {-ins-} is constructor and second argument {-src-} is not provided.
+ * @throws { Error } If {-ins-} is not a buffer, not a Long, not a constructor.
+ * @throws { Error } If {-src-} is not a buffer, not a Long, not a Number.
+ * @throws { Error } If {-src-} has not defined length.
+ * @memberof wTools
+ */
+
 /* qqq : implement, cover, document */
 /* qqq :  */
 
@@ -283,7 +339,7 @@ function bufferMakeUndefined( ins, src )
   {
     if( _.longIs( src ) || _.bufferNodeIs( src ) )
     length = src.length;
-    else if( _.bufferRawIs( src ) )
+    else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
     length = src.byteLength;
     else if( _.numberIs( src ) )
     length = src;
@@ -297,35 +353,16 @@ function bufferMakeUndefined( ins, src )
   _.assert( _.numberIsFinite( length ) );
   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
 
-  if( _.longIs( src ) || _.bufferAnyIs( src ) )
-  {
-
-    if( ins.constructor === Array )
-    {
-      result = new( _.constructorJoin( ins.constructor, src ) );
-    }
-    else if( _.routineIs( ins ) )
-    {
-      if( ins.prototype.constructor.name === 'Array' )
-      result = _ArraySlice.call( src );
-      else
-      result = new ins( src );
-    }
-    else if( ins.constructor.name === 'Buffer' )
-    result = BufferNode.from( src );
-    else
-    result = new ins.constructor( src );
-
-  }
+  if( _.routineIs( ins ) )
+  result = new ins( length );
+  else if( _.bufferNodeIs( ins ) )
+  result = BufferNode.alloc( length );
+  else if( _.bufferViewIs( ins ) )
+  result = new BufferView( new BufferRaw( length ) );
+  else if( _.unrollIs( ins ) )
+  result = _.unrollMake( length );
   else
-  {
-    if( _.routineIs( ins ) )
-    result = new ins( length );
-    else if( ins.constructor.name === 'Buffer' )
-    result = BufferNode.alloc( length );
-    else
-    result = new ins.constructor( length );
-  }
+  result = new ins.constructor( length );
 
   return result;
 }
@@ -2208,7 +2245,7 @@ longDuplicate.defaults =
  * The dstLong instance will be returned when possible, if not a new instance of the same type is created.
  *
  * @param { longIs } dstLong - The source and destination long.
- * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
+ * @param { Routine } [ onEvaluate = function( e ) { return e } ] - A callback function.
  *
  * @example
  * _.longOnce( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
@@ -2222,7 +2259,7 @@ longDuplicate.defaults =
  * @function longOnce
  * @throws { Error } If passed arguments is less than one or more than two.
  * @throws { Error } If the first argument is not an long.
- * @throws { Error } If the second argument is not a Function.
+ * @throws { Error } If the second argument is not a Routine.
  * @memberof wTools
  */
 
@@ -3908,7 +3945,7 @@ function longSort( srcLong, onEvaluate )
 //  * The arraySum() routine returns the sum of an array {-srcMap-}.
 //  *
 //  * @param { longIs } src - The source array.
-//  * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
+//  * @param { Routine } [ onEvaluate = function( e ) { return e } ] - A callback function.
 //  *
 //  * @example
 //  * _.arraySum( [ 1, 2, 3, 4, 5 ] );
@@ -3926,7 +3963,7 @@ function longSort( srcLong, onEvaluate )
 //  * @function arraySum
 //  * @throws { Error } If passed arguments is less than one or more than two.
 //  * @throws { Error } If the first argument is not an array-like object.
-//  * @throws { Error } If the second argument is not a Function.
+//  * @throws { Error } If the second argument is not a Routine.
 //  * @memberof wTools
 //  */
 //
