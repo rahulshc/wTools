@@ -8,7 +8,6 @@ let Self = _global_.wTools;
 
 let _ArraySlice = Array.prototype.slice;
 let _FunctionBind = Function.prototype.bind;
-let _ObjectToString = Object.prototype.toString;
 let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // --
@@ -1621,8 +1620,12 @@ let Routines =
   _filter_functor,
   entityMap,
   map : entityMap,
+  // entityMapInplace, /* qqq : implement routine entityMapInplace */
+  // mapInplace : entityMapInplace,
   entityFilter,
   filter : entityFilter,
+  // entityFilterInplace, /* qqq : implement routine entityFilterInplace */
+  // mapInplace : entityFilterInplace,
   _entityFilterDeep,
   entityFilterDeep,
   filterDeep : entityFilterDeep,
