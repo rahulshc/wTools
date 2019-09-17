@@ -22,199 +22,6 @@ but                 -                +         negative
 /* - / inplace */
 
 // --
-// scalar
-// --
-
-/**
- * Produce a single array from all arguments if cant return single argument as a scalar.
- * If {-scalarAppend-} gets a single argument it returns the argument as is.
- * If {-scalarAppend-} gets an argument and one or more undefined it returns the argument as is.
- * If {-scalarAppend-} gets more than one or less than one defined arguments then it returns array having all defined arguments.
- * If some argument is a Long ( for example array ) then each element of the Long is treated as an argument, not recursively.
- *
- * @function scalarAppend.
- * @memberof wTools
- */
-
-function scalarAppend( dst, src )
-{
-
-  _.assert( arguments.length === 2 );
-
-  if( dst === undefined )
-  {
-    if( _.longIs( src ) )
-    {
-      dst = [];
-    }
-    else
-    {
-      if( src === undefined )
-      return [];
-      else
-      return src;
-    }
-  }
-
-  if( _.longIs( dst ) )
-  {
-
-    if( !_.arrayIs( dst ) )
-    dst = _.arrayFrom( dst );
-
-    if( src === undefined )
-    {}
-    else if( _.longIs( src ) )
-    _.arrayAppendArray( dst, src );
-    else
-    dst.push( src );
-
-  }
-  else
-  {
-
-    if( src === undefined )
-    {}
-    else if( _.longIs( src ) )
-    dst = _.arrayAppendArray( [ dst ], src );
-    else
-    dst = [ dst, src ];
-
-  }
-
-  return dst;
-}
-
-//
-
-function scalarAppendOnce( dst, src )
-{
-
-  _.assert( arguments.length === 2 );
-
-  if( dst === undefined )
-  {
-    if( _.longIs( src ) )
-    {
-      dst = [];
-    }
-    else
-    {
-      if( src === undefined )
-      return [];
-      else
-      return src;
-    }
-  }
-
-  if( _.longIs( dst ) )
-  {
-
-    if( !_.arrayIs( dst ) )
-    dst = _.arrayFrom( dst );
-
-    if( src === undefined )
-    {}
-    else if( _.longIs( src ) )
-    _.arrayAppendArrayOnce( dst, src );
-    else
-    _.arrayAppendElementOnce( dst, src );
-
-  }
-  else
-  {
-
-    if( src === undefined )
-    {}
-    else if( _.longIs( src ) )
-    dst = _.arrayAppendArrayOnce( [ dst ], src );
-    else
-    dst = _.arrayAppendElementOnce( [ dst ], src );
-
-  }
-
-  return dst;
-}
-
-//
-
-/**
- * The scalarToVector() routine returns a new array
- * which containing the static elements only type of Number.
- *
- * It takes two arguments (dst) and (length)
- * checks if the (dst) is a Number, If the (length) is greater than or equal to zero.
- * If true, it returns the new array of static (dst) numbers.
- * Otherwise, if the first argument (dst) is an Array,
- * and its (dst.length) is equal to the (length),
- * it returns the original (dst) Array.
- * Otherwise, it throws an Error.
- *
- * @param { ( Number | Array ) } dst - A number or an Array.
- * @param { Number } length - The length of the new array.
- *
- * @example
- * _.scalarToVector( 3, 7 );
- * // returns [ 3, 3, 3, 3, 3, 3, 3 ]
- *
- * @example
- * _.scalarToVector( [ 3, 7, 13 ], 3 );
- * // returns [ 3, 7, 13 ]
- *
- * @returns { Number[] | Array } - Returns the new array of static numbers or the original array.
- * @function scalarToVector
- * @throws { Error } If missed argument, or got less or more than two arguments.
- * @throws { Error } If type of the first argument is not a number or array.
- * @throws { Error } If the second argument is less than 0.
- * @throws { Error } If (dst.length) is not equal to the (length).
- * @memberof wTools
- */
-
-// function arrayFromNumber( dst, length )
-function scalarToVector( dst, length )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  // _.assert( _.numberIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
-  _.assert( dst !== undefined, 'Expects array or scalar' );
-  _.assert( length >= 0 );
-
-  if( _.arrayIs( dst ) )
-  {
-    _.assert( dst.length === length, () => 'Expects array of length ' + length + ' but got ' + dst.length );
-  }
-  else
-  {
-    dst = _.longFill( [], dst, [ 0, length ] );
-  }
-
-  return dst;
-}
-
-//
-
-function scalarFrom( src )
-{
-  if( _.longIs( src ) && src.length === 1 )
-  return src[ 0 ];
-  return src;
-}
-
-//
-
-function scalarFromOrNull( src )
-{
-  if( _.longIs( src ) )
-  {
-    if( src.length === 1 )
-    return src[ 0 ];
-    else if( src.length === 0 )
-    return null;
-  }
-  return src;
-}
-
-// --
 // arguments array
 // --
 
@@ -1592,6 +1399,10 @@ function longMakeUndefined( ins, len )
 
 //
 
+/*
+qqq : forbid non-long buffers as ins or src
+*/
+
 function longMakeZeroed( ins, src )
 {
   let result, length;
@@ -1637,6 +1448,10 @@ function longMakeZeroed( ins, src )
 
 //
 
+/*
+qqq : find and let me know what is _.buffer* analog of _longClone
+*/
+
 function _longClone( src )
 {
 
@@ -1662,6 +1477,7 @@ function _longClone( src )
 //
 
 /* xxx : review */
+/* qqq : find and let me know what is _.buffer* analog of _.longShallowClone */
 
 function longShallowClone()
 {
@@ -1730,6 +1546,50 @@ function longShallowClone()
   }
 
   return result;
+}
+
+//
+
+/**
+ * The longRepresent() routine returns a shallow copy of a portion of an array
+ * or a new TypedArray that contains
+ * the elements from (begin) index to the (end) index,
+ * but not including (end).
+ *
+ * @param { Array } src - Source array.
+ * @param { Number } begin - Index at which to begin extraction.
+ * @param { Number } end - Index at which to end extraction.
+ *
+ * @example
+ * _.longRepresent( [ 1, 2, 3, 4, 5 ], 2, 4 );
+ * // returns [ 3, 4 ]
+ *
+ * @example
+ * _.longRepresent( [ 1, 2, 3, 4, 5 ], -4, -2 );
+ * // returns [ 2, 3 ]
+ *
+ * @example
+ * _.longRepresent( [ 1, 2, 3, 4, 5 ] );
+ * // returns [ 1, 2, 3, 4, 5 ]
+ *
+ * @returns { Array } - Returns a shallow copy of a portion of an array into a new Array.
+ * @function longRepresent
+ * @throws { Error } If the passed arguments is more than three.
+ * @throws { Error } If the first argument is not an array.
+ * @memberof wTools
+ */
+
+function longRepresent( src, begin, end )
+{
+
+  _.assert( arguments.length <= 3 );
+  _.assert( _.longIs( src ), 'Unknown type of (-src-) argument' );
+  _.assert( _.routineIs( src.slice ) || _.routineIs( src.subarray ) );
+
+  if( _.routineIs( src.subarray ) )
+  return src.subarray( begin, end );
+
+  return src.slice( begin, end );
 }
 
 //
@@ -2951,139 +2811,9 @@ function longRelengthInplace( array, range, val )
 
 }
 
-//
-
-/**
- * The longRepresent() routine returns a shallow copy of a portion of an array
- * or a new TypedArray that contains
- * the elements from (begin) index to the (end) index,
- * but not including (end).
- *
- * @param { Array } src - Source array.
- * @param { Number } begin - Index at which to begin extraction.
- * @param { Number } end - Index at which to end extraction.
- *
- * @example
- * _.longRepresent( [ 1, 2, 3, 4, 5 ], 2, 4 );
- * // returns [ 3, 4 ]
- *
- * @example
- * _.longRepresent( [ 1, 2, 3, 4, 5 ], -4, -2 );
- * // returns [ 2, 3 ]
- *
- * @example
- * _.longRepresent( [ 1, 2, 3, 4, 5 ] );
- * // returns [ 1, 2, 3, 4, 5 ]
- *
- * @returns { Array } - Returns a shallow copy of a portion of an array into a new Array.
- * @function longRepresent
- * @throws { Error } If the passed arguments is more than three.
- * @throws { Error } If the first argument is not an array.
- * @memberof wTools
- */
-
-/* xxx : not array */
-
-function longRepresent( src, begin, end )
-{
-
-  _.assert( arguments.length <= 3 );
-  _.assert( _.longIs( src ), 'Unknown type of (-src-) argument' );
-  _.assert( _.routineIs( src.slice ) || _.routineIs( src.subarray ) );
-
-  if( _.routineIs( src.subarray ) )
-  return src.subarray( begin, end );
-
-  return src.slice( begin, end );
-}
-
-//
-
 // --
-// buffer checker
+// array checker
 // --
-
-function bufferRawIs( src )
-{
-  let type = Object.prototype.toString.call( src );
-  // let result = type === '[object ArrayBuffer]';
-  // return result;
-  if( type === '[object ArrayBuffer]' || type === '[object SharedArrayBuffer]' )
-  return true;
-  return false;
-}
-
-//
-
-function bufferTypedIs( src )
-{
-  let type = Object.prototype.toString.call( src );
-  if( !/\wArray/.test( type ) )
-  return false;
-  // Dmytro : two next lines is added to correct returned result when src is SharedArrayBuffer
-  if( type === '[object SharedArrayBuffer]' )
-  return false;
-  if( _.bufferNodeIs( src ) )
-  return false;
-  return true;
-}
-
-//
-
-function bufferViewIs( src )
-{
-  let type = Object.prototype.toString.call( src );
-  let result = type === '[object DataView]';
-  return result;
-}
-
-//
-
-function bufferNodeIs( src )
-{
-  if( typeof BufferNode !== 'undefined' )
-  return src instanceof BufferNode;
-  return false;
-}
-
-//
-
-function bufferAnyIs( src )
-{
-  if( !src )
-  return false;
-  if( typeof src !== 'object' )
-  return false;
-  if( !Reflect.has( src, 'byteLength' ) )
-  return false;
-  // return src.byteLength >= 0;
-  // return bufferTypedIs( src ) || bufferViewIs( src )  || bufferRawIs( src ) || bufferNodeIs( src );
-  return true;
-}
-
-//
-
-function bufferBytesIs( src )
-{
-  if( _.bufferNodeIs( src ) )
-  return false;
-  return src instanceof U8x;
-}
-
-//
-
-function constructorIsBuffer( src )
-{
-  if( !src )
-  return false;
-  if( !_.numberIs( src.BYTES_PER_ELEMENT ) )
-  return false;
-  if( !_.strIs( src.name ) )
-  return false;
-  return src.name.indexOf( 'Array' ) !== -1;
-}
-
-//
 
 /**
  * The arrayIs() routine determines whether the passed value is an Array.
@@ -8787,35 +8517,6 @@ function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evalua
 
 }
 
-// //
-//
-// function arrayReplaceAll( dstArray, ins, sub, evaluator1, evaluator2 )
-// {
-//   arrayReplacedAll.apply( this, arguments );
-//   return dstArray;
-// }
-//
-// //
-//
-// function arrayReplacedAll( dstArray, ins, sub, evaluator1, evaluator2 )
-// {
-//   _.assert( 3 <= arguments.length && arguments.length <= 5 );
-//
-//   let index = -1;
-//   let result = 0;
-//
-//   index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
-//
-//   while( index !== -1 )
-//   {
-//     dstArray.splice( index, 1, sub );
-//     result += 1;
-//     index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
-//   }
-//
-//   return result;
-// }
-
 //
 
 /**
@@ -8896,15 +8597,6 @@ let Fields =
 let Routines =
 {
 
-  // scalar
-
-  scalarAppend, /* qqq : cover routine scalarAppend | Dmytro : covered */
-  scalarAppendOnce, /* qqq : cover routine scalarAppendOnce | Dmytro : covered*/
-
-  scalarToVector,
-  scalarFrom,
-  scalarFromOrNull,
-
   // arguments array
 
   argumentsArrayIs,
@@ -8939,11 +8631,12 @@ let Routines =
   _longMakeOfLength,
   longMakeUndefined,
   longMakeZeroed,
-
   _longClone,
   longShallowClone,
 
+  longRepresent,
   longSlice,
+
   longBut,
   longButInplace,
   longSelect,
@@ -8952,19 +8645,6 @@ let Routines =
   longGrowInplace,
   longRelength,
   longRelengthInplace,
-
-  longRepresent,
-
-  // buffer checker
-
-  bufferRawIs,
-  bufferTypedIs,
-  bufferViewIs,
-  bufferNodeIs,
-  bufferAnyIs,
-  bufferBytesIs,
-  bufferBytesIs,
-  constructorIsBuffer,
 
   // array checker
 
