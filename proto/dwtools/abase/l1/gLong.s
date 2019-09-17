@@ -2314,10 +2314,10 @@ longDuplicate.defaults =
 //
 
 /**
- * The longOnce( dstLong, onEvaluator ) routine returns the dstlong with the duplicated elements removed.
+ * The longOnce( dstLong, onEvaluator ) routine returns the dstLong with the duplicated elements removed.
  * The dstLong instance will be returned when possible, if not a new instance of the same type is created.
  *
- * @param { longIs } dstLong - The source and destination long.
+ * @param { longIs } dstLong - The source and destination Long.
  * @param { Routine } [ onEvaluate = function( e ) { return e } ] - A callback function.
  *
  * @example
