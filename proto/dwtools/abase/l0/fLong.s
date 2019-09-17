@@ -30,7 +30,7 @@ but                 -                +         negative
  * If {-scalarAppend-} gets a single argument it returns the argument as is.
  * If {-scalarAppend-} gets an argument and one or more undefined it returns the argument as is.
  * If {-scalarAppend-} gets more than one or less than one defined arguments then it returns array having all defined arguments.
- * If some argument is a long ( for example array ) then each element of the long is treated as an argument, not recursively.
+ * If some argument is a Long ( for example array ) then each element of the Long is treated as an argument, not recursively.
  *
  * @function scalarAppend.
  * @memberof wTools
@@ -257,9 +257,9 @@ function argumentsArrayFrom( src )
 // --
 
 /**
- * The routine unrollIs() determines whether the passed value is an instance of type unroll ( unroll-array ).
+ * The routine unrollIs() determines whether the passed value is an instance of type Unroll ( unroll-array ).
  *
- * If {-src-} is an unroll, then returns true, otherwise returns false.
+ * If {-src-} is an Unroll, then returns true, otherwise returns false.
  *
  * @param { * } src - The object to be checked.
  *
@@ -275,7 +275,7 @@ function argumentsArrayFrom( src )
  * _.unrollIs( 1 );
  * // returns false
  *
- * @returns { boolean } Returns true if {-src-} is an unroll.
+ * @returns { boolean } Returns true if {-src-} is an Unroll.
  * @function unrollIs
  * @memberof wTools
  */
@@ -311,7 +311,7 @@ Dmytro : examples is improved
  * _.unrollIsPopulated( src );
  * // returns false
  *
- * @returns { boolean } Returns true if argument ( src ) is an unroll-array and has one or more elements ( length ).
+ * @returns { boolean } Returns true if argument ( src ) is an Unroll and has one or more elements ( length ).
  * @function unrollIsPopulated
  * @memberof wTools
  */
@@ -331,7 +331,7 @@ function unrollIsPopulated( src )
  * Unroll constructed by attaching symbol _.unroll Symbol to ordinary array.
  * Making an unroll normalizes its content.
  *
- * @param { * } src - The number or array-like object to make unroll-array. Passing null returns an empty unroll.
+ * @param { * } src - The number or array-like object to make unroll-array. Passing null returns an empty Unroll.
  *
  * @example
  * let src = _.unrollMake( null );
@@ -349,8 +349,8 @@ function unrollIsPopulated( src )
  * console.log( arr === unroll );
  * // log false
  *
- * @returns { Unroll } Returns a new unroll-array maked from {-src-}.
- * Otherwise, it returns the empty unroll.
+ * @returns { Unroll } Returns a new Unroll maked from {-src-}.
+ * Otherwise, it returns the empty Unroll.
  * @function unrollMake
  * @throws { Error } If ( arguments.length ) is less or more then one.
  * @throws { Error } If argument ( src ) is not number, not array, not null.
@@ -374,7 +374,7 @@ function unrollMake( src )
  * The routine unrollMakeUndefined() returns a new Unroll with length equal to {-length-}.
  * If the argument {-length-} is not provided, routine returns new Unroll with the length defined from {-src-}.
  *
- * @param { Long|Null } src - Any Long object or null. If {-length-} is not provided, defines length of new Unroll.
+ * @param { Long|Null } src - Any Long or null. If {-length-} is not provided, defines length of new Unroll.
  * @param { Number|Long } length - Defines length of new Unroll.
  *
  * @example
@@ -417,8 +417,8 @@ function unrollMake( src )
  * If null passed, routine returns the empty Unroll.
  * @function unrollMakeUndefined
  * @throws { Error } If arguments.length is less then one or more then two.
- * @throws { Error } If argument {-src-} is not a long, not null.
- * @throws { Error } If argument {-length-} is not a number, not a long.
+ * @throws { Error } If argument {-src-} is not a Long, not null.
+ * @throws { Error } If argument {-length-} is not a number, not a Long.
  * @memberof wTools
  */
 
@@ -465,7 +465,7 @@ function unrollMakeUndefined( src, length )
  * If {-src-} is not unroll-array, routine unrollFrom() returns new unroll-array.
  * If {-src-} is unroll-array, then routine returns {-src-}.
  *
- * @param { * } src - The number, array-like object or unroll-array. Passing null returns an empty unroll.
+ * @param { * } src - The number, array-like object or Unroll. Passing null returns an empty Unroll.
  *
  * @example
  * let unroll = _.unrollFrom( null );
@@ -486,11 +486,11 @@ function unrollMakeUndefined( src, length )
  * console.log( arr === unroll );
  * // log false
  *
- * @returns { Unroll } Returns unroll-array converted from {-src-}.
- * If {-src-} is unroll-array, then routine returns {-src-}.
+ * @returns { Unroll } Returns Unroll converted from {-src-}.
+ * If {-src-} is Unroll, then routine returns {-src-}.
  * @function unrollFrom
  * @throws { Error } If (arguments.length) is less or more then one.
- * @throws { Error } If argument {-src-} is not number, not long-like, not null.
+ * @throws { Error } If argument {-src-} is not number, not Long, not null.
  * @memberof wTools
  */
 
@@ -508,7 +508,7 @@ function unrollFrom( src )
  * The routine unrollsFrom() performs conversion of each argument to unroll-array.
  * The routine returns unroll-array contained unroll-arrays converted from arguments.
  *
- * @param { * } srcs - The objects to be converted into unrolls.
+ * @param { * } srcs - The objects to be converted into Unrolls.
  *
  * @example
  * let unroll = _.unrollsFrom( null );
@@ -549,10 +549,10 @@ function unrollFrom( src )
  * console.log( _.unrollIs( unroll[ 3 ] ) );
  * // log true
  *
- * @returns { Unroll } Returns unroll-array contained unroll-arrays converted from arguments.
+ * @returns { Unroll } Returns Unroll contained Unrolls converted from arguments.
  * @function unrollsFrom
  * @throws { Error } If (arguments.length) is less then one.
- * @throws { Error } If any of the arguments is not number, not long-like, not null.
+ * @throws { Error } If any of the arguments is not number, not Long, not null.
  * @memberof wTools
  */
 
@@ -588,7 +588,7 @@ Dmytro : implemented in all module
  * If {-src-} is unroll-array, then routine returns {-src-}.
  * If {-src-} has incompatible type, then routine returns {-src-}.
  *
- * @param { * } src - The object to make unroll-array.
+ * @param { * } src - The object to make Unroll.
  *
  * @example
  * var src = 'str';
@@ -617,8 +617,8 @@ Dmytro : implemented in all module
  * console.log( arr === unroll );
  * // log false
  *
- * @returns { Unroll } Returns unroll-array converted from {-src-}.
- * If {-src-} is unroll-array or incompatible type, then routine returns {-src-}.
+ * @returns { Unroll } Returns Unroll converted from {-src-}.
+ * If {-src-} is Unroll or incompatible type, then routine returns {-src-}.
  * @function unrollFromMaybe
  * @throws { Error } If (arguments.length) is less or more then one.
  * @memberof wTools
@@ -636,13 +636,13 @@ function unrollFromMaybe( src )
 
 /**
  * The routine unrollNormalize() performs normalization of {-dstArray-}.
- * Normalization is unrolling of unroll-arrays, which is elements of {-dstArray-}.
+ * Normalization is unrolling of Unrolls, which is elements of {-dstArray-}.
  *
  * If {-dstArray-} is unroll-array, routine unrollNormalize() returns unroll-array
  * with normalized elements.
  * If {-dstArray-} is array, routine unrollNormalize() returns array with unrolled elements.
  *
- * @param { arrayIs|Unroll } dstArray - The array to be unrolled (normalized).
+ * @param { Array|Unroll } dstArray - The Unroll to be unrolled (normalized).
  *
  * @example
  * let unroll = _.unrollFrom( [ 1, 2, _.unrollMake( [ 3, 'str' ] ) ] );
@@ -661,7 +661,7 @@ function unrollFromMaybe( src )
  * // log false
  *
  * @returns { Array } If {-dstArray-} is array, routine returns an array with normalized elements.
- * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns an unroll-array with normalized elements.
+ * @returns { Unroll } If {-dstArray-} is Unroll, routine returns an Unroll with normalized elements.
  * @function unrollNormalize
  * @throws { Error } If ( arguments.length ) is not equal to one.
  * @throws { Error } If argument ( dstArray ) is not arrayLike.
@@ -756,9 +756,9 @@ function unrollNormalize( dstArray )
  * @returns { Unroll } Returns a copy of portion of source Long with appended elements that is defined by range.
  * @function unrollSelect
  * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If argument {-src-} is not an array or unroll.
+ * @throws { Error } If argument {-src-} is not an Array or Unroll.
  * @throws { Error } If range.length is less or more then two.
- * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If range elements is not a number / undefined.
  * @memberof wTools
  */
 
@@ -844,7 +844,7 @@ Improve examples in unrollPrepend, unrollAppend.
 
 /**
  * The routine unrollPrepend() returns an array with elements added to the begin of destination array {-dstArray-}.
- * During the operation unrolling of unrolls happens.
+ * During the operation unrolling of Unrolls happens.
  *
  * If {-dstArray-} is unroll-array, routine unrollPrepend() returns unroll-array
  * with normalized elements.
@@ -888,7 +888,7 @@ Improve examples in unrollPrepend, unrollAppend.
  * console.log( _.unrollIs( result ) );
  * // log true
  *
- * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns updated unroll-array
+ * @returns { Unroll } If {-dstArray-} is Unroll, routine returns updated Unroll
  * with normalized elements that are added to the begin of {-dstArray-}.
  * @returns { Array } If {-dstArray-} is array, routine returns updated array
  * with normalized elements that are added to the begin of {-dstArray-}.
@@ -936,7 +936,7 @@ function unrollPrepend( dstArray )
 
 /**
  * The routine unrollAppend() returns an array with elements added to the end of destination array {-dstArray-}.
- * During the operation unrolling of unrolls happens.
+ * During the operation unrolling of Unrolls happens.
  *
  * If {-dstArray-} is unroll-array, routine unrollAppend() returns unroll-array
  * with normalized elements.
@@ -980,7 +980,7 @@ function unrollPrepend( dstArray )
  * console.log( _.unrollIs( result ) );
  * // log true
  *
- * @returns { Unroll } If {-dstArray-} is unroll-array, routine returns updated unroll-array
+ * @returns { Unroll } If {-dstArray-} is Unroll, routine returns updated Unroll
  * with normalized elements that are added to the end of {-dstArray-}.
  * @returns { Array } If {-dstArray-} is array, routine returns updated array
  * with normalized elements that are added to the end of {-dstArray-}.
@@ -1093,7 +1093,7 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
 
 /**
  * The routine unrollRemove() removes all matching elements in destination array {-dstArray-}
- * and returns a modified {-dstArray-}. During the operation unrolling of unrolls happens.
+ * and returns a modified {-dstArray-}. During the operation unrolling of Unrolls happens.
  *
  * @param { Array|Unroll } dstArray - The destination array.
  * @param { * } args - The elements to be removed.
@@ -1151,8 +1151,8 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
  * console.log( _.unrollIs( result ) );
  * // log false
  *
- * @returns { Unroll } If {-dstArray-} is unroll-array, routine removes all matching elements
- * and returns updated unroll-array.
+ * @returns { Unroll } If {-dstArray-} is Unroll, routine removes all matching elements
+ * and returns updated Unroll.
  * @returns { Array } If {-dstArray-} is array, routine removes all matching elements
  * and returns updated array. If {-dstArray-} is null, routine returns empty array.
  * @function unrollAppend
@@ -1261,11 +1261,11 @@ function longIsPopulated( src )
 //
 
 /**
- * The routine longMake() returns a new long object with the same type as source long (src). New long makes from inserted long (ins)
- * or if (ins) is number, the long makes from (src) with length equal to (ins). If (ins) is not provided, routine returns copy of (src).
+ * The routine longMake() returns a new Long with the same type as source Long (src). New Long makes from inserted Long (ins)
+ * or if (ins) is number, the Long makes from (src) with length equal to (ins). If (ins) is not provided, routine returns copy of (src).
  *
- * @param { Long } src - Instance of long object or constructor, defines type of returned long. If null is provided, routine returns empty array.
- * @param { Number|Long } ins - Defines length of new long. If long object is provided, routine makes new long from (ins) with (src) type.
+ * @param { Long } src - Instance of Long or constructor, defines type of returned Long. If null is provided, routine returns empty array.
+ * @param { Number|Long } ins - Defines length of new Long. If Long is provided, routine makes new Long from (ins) with (src) type.
  *
  * @example
  * _.longMake( null );
@@ -1291,11 +1291,11 @@ function longIsPopulated( src )
  * console.log( _.bufferTypedIs( got ) );
  * // log true
  *
- * @returns { Long }  Returns a long with type of source long which makes from ins.
+ * @returns { Long }  Returns a Long with type of source Long which makes from ins.
  * @function longMake
  * @throws { Error } If the passed arguments is less than two or more then two.
- * @throws { Error } If the (ins) is not a number and not a long.
- * @throws { Error } If the (src) is not long object or not a constructor.
+ * @throws { Error } If the (ins) is not a number and not a Long.
+ * @throws { Error } If the (src) is not Long or not a constructor.
  * @throws { Error } If the (ins) or ins.length has a not finite value.
  * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
  * @memberof wTools
@@ -1504,11 +1504,11 @@ function _longMakeOfLength( src, len )
 //
 
 /**
- * The routine longMakeUndefined() returns a new long object with the same type as source long (src). New long has length equal to (length)
- * or it has length of source long (src) if second argument is not provided.
+ * The routine longMakeUndefined() returns a new Long with the same type as source Long {-src-}. New Long has length equal to {-len-}
+ * or it has length of source Long {-src-} if second argument is not provided.
  *
- * @param { Long } ins - Instance of long object or constructor, defines type of returned long. If null is provided, routine returns empty array.
- * @param { Number|Long } len - Defines length of new long. If long object is provided, routine makes new long with length equal to ins.length.
+ * @param { Long } ins - Long or constructor, defines type of returned Long. If null is provided, routine returns empty array.
+ * @param { Number|Long } len - Defines length of new Long. If Long is provided, routine makes new Long with length equal to ins.length.
  *
  * @example
  * _.longMakeUndefined( null );
@@ -1534,18 +1534,19 @@ function _longMakeOfLength( src, len )
  * console.log( _.bufferTypedIs( got ) );
  * // log true
  *
- * @returns { Long }  Returns a long with type of source long with a certain (length).
+ * @returns { Long }  Returns a Long with type of source Long with a certain length.
  * @function longMakeUndefined
- * @throws { Error } If the passed arguments is less than two or more then two.
- * @throws { Error } If the (ins) is not a number and not a long.
- * @throws { Error } If the (src) is not long object or not a constructor.
- * @throws { Error } If the (ins) or ins.length has a not finite value.
- * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @throws { Error } If arguments.length is less than one or more then two.
+ * @throws { Error } If the {-ins-} is not a Long or not a constructor.
+ * @throws { Error } If the {-len-} is not a number or not a Long.
+ * @throws { Error } If the {-len-} or ins.length has a not finite value.
+ * @throws { Error } If the {-len-} is undefined and ins.length is not a number.
  * @memberof wTools
  */
 
 /*
 qqq : extend coverage and documentation of longMakeUndefined
+Dmytro : routine is covered and documented
 qqq : longMakeUndefined does not create unrolls, but should
 Dmytro : longMakeUndefined creates unrolls.
 */
@@ -1826,7 +1827,79 @@ function longSlice( array, f, l )
 
 //
 
-/* qqq : routine longBut requires good test coverage and documentation */
+/**
+ * The routine longBut() returns a shallow copy of provided Long {-array-}. Routine removes existing
+ * elements in bounds defined by {-range-} and insert new elements from {-val-}. The original
+ * source Long {-array-} will not be modified.
+ *
+ * @param { Long } array - The Long from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
+ * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
+ * If {-range-} is undefined, routine returns copy of {-array-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
+ * @param { Long } val - The Long with elements for insertion. Inserting begins at start index.
+ * If quantity of removed elements is not equal to val.length, then returned Long will have length different to array.length.
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longBut( src );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longBut( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 'str', 4, 5 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longBut( src, [ 1, 4 ], [ 5, 6, 7 ] );
+ * console.log( got );
+ * // log Float32Array[ 1, 5, 6, 7, 5 ]
+ * console.log( _.bufferTypedIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longBut( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 'str' ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longBut( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 'str', 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Long } Returns a copy of source Long with removed or replaced existing elements and / or added new elements. The copy has same type as source Long.
+ * @function longBut
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-array-} is not a Long.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If argument {-val-} is not Long / undefined.
+ * @memberof wTools
+ */
+
+/*
+qqq : routine longBut requires good test coverage and documentation
+Dmytro : extended routine coverage by using given clarifications, documented
+ */
 
 function longBut( array, range, val )
 {
@@ -1839,15 +1912,17 @@ function longBut( array, range, val )
   if( _.arrayIs( array ) )
   return _.arrayBut( array, range, val );
 
-  let result;
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
 
   _.assert( _.longIs( array ) );
   _.assert( val === undefined || _.longIs( val ) );
+  _.assert( _.rangeIs( range ) );
   // _.assert( _.longIs( range ), 'not tested' );
   // _.assert( !_.longIs( range ), 'not tested' );
 
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
+  // if( _.numberIs( range ) )
+  // range = [ range, range + 1 ];
 
   _.rangeClamp( range, [ 0, array.length ] );
   if( range[ 1 ] < range[ 0 ] )
@@ -1858,7 +1933,7 @@ function longBut( array, range, val )
   let d2 = d - len;
   let l2 = array.length - d2;
 
-  result = _.longMakeUndefined( array, l2 );
+  let result = _.longMakeUndefined( array, l2 );
 
   // debugger;
   // _.assert( 0, 'not tested' )
@@ -1878,7 +1953,84 @@ function longBut( array, range, val )
 
 //
 
-/* qqq : routine longBut requires good test coverage and documentation */
+/**
+ * The routine longButInplace() returns a Long {-array-} with removed existing elements in bounds
+ * defined by {-range-} and inserted new elements from {-val-}.
+ * If provided Long is resizable, routine modifies this Long in place, otherwise, return copy.
+ *
+ * @param { Long } array - The Long to remove, replace or add elements.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
+ * If {-range-} is number, then it defines the start index, and the end index defines as start index incremented by one.
+ * If {-range-} is undefined, routine returns {-src-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements begins at start index.
+ * @param { Long } ins - The Long with elements for insertion. Inserting begins at start index.
+ * If quantity of removed elements is not equal to val.length, then returned array will have length different to original array.length.
+ *
+ * @example
+ * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longButInplace( src );
+ * console.log( got );
+ * // log Uint8Array[ 1, 2, 3, 4, 5 ]
+ * console.log( _.bufferTypedIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = new I32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longButInplace( src, 2, [ 6, 7 ] );
+ * console.log( got );
+ * // log Int8Array[ 1, 2, 6, 7, 4, 5 ]
+ * console.log( _.bufferTypedIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longButInplace( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 'str', 5 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longButInplace( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 'str' ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longButInplace( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 'str', 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @returns { Long } Returns Long with removed or replaced existing elements and / or added new elements.
+ * If long is resizable, routine returns modified source long, otherwise, returns a copy.
+ * @function longButInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-array-} is not a long.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @throws { Error } If argument {-val-} is not long / undefined.
+ * @memberof wTools
+ */
+
+/*
+qqq : routine longButInplace requires good test coverage and documentation
+Dmytro : implemented and covered routine longButInplace, documented
+ */
 
 function longButInplace( array, range, val )
 {
@@ -1942,9 +2094,76 @@ function longButInplace( array, range, val )
 
 //
 
+/**
+ * The routine longSelect() returns a copy of a portion of provided Long {-array-} into a new Long
+ * selected by {-range-}. The original {-array-} will not be modified.
+ *
+ * @param { Long } array - The Long from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
+ * If {-range-} is undefined, routine returns copy of {-array-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty Long.
+ * @param { * } val - The object of any type for insertion.
+ *
+ * @example
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelect( src );
+ * console.log( got );
+ * // log Float32Array[ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelect( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longSelect( src, [ 1, 4 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 2, 3, 4 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelect( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longSelect( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Long } Returns a copy of source Long containing the extracted elements. The copy has same type as source Long.
+ * @function longSelect
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-array-} is not a Long.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 /*
   qqq : extend documentation and test coverage of longSelect
-  Dmytro : temporary using of longMake. Need to save longShallowClone.
+  Dmytro : documented, covered.
+  Now, routine temporary uses routine longMake to make copy of provided long. Routine longShallowClone throws errors in argumentsArray cases.
 */
 
 function longSelect( array, range, val )
@@ -1956,6 +2175,7 @@ function longSelect( array, range, val )
   if( range === undefined )
   return _.longMake( array );
   // return _.longShallowClone( array );
+
   if( _.numberIs( range ) )
   range = [ range, array.length ];
 
@@ -2014,10 +2234,80 @@ function longSelect( array, range, val )
 
 //
 
+/**
+ * The routine longSelectInplace() returns a portion of provided Long {-array-} selected by {-range-}.
+ * If provided Long is resizable, routine modifies this Long in place, otherwise, return copy.
+ *
+ * @param { Long } array - The Long from which selects elements.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
+ * If {-range-} is undefined, routine returns {-array-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty Long.
+ * @param { * } val - The object of any type for insertion.
+ *
+ * @example
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelectInplace( src );
+ * console.log( got );
+ * // log Float32Array[ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelectInplace( src, 2, [ 'str' ] );
+ * console.log( got );
+ * // log [ 3, 4, 5 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelectInplace( src, [ 1, 4 ], [ 1 ] );
+ * console.log( got );
+ * // log Uint8Array[ 2, 3, 4 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longSelectInplace( src, [ -5, 10 ], [ 'str' ] );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longSelectInplace( src, [ 4, 1 ], [ 'str' ] );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Long } Returns a Long containing the selected elements. If Long is resizable,
+ * routine returns modified source Long, otherwise, returns a copy.
+ * @function longSelectInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-array-} is not a Long.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 /*
   qqq : extend documentation and test coverage of longSelectInplace
+  Dmytro : documented, covered
   qqq : implement arraySelect
+  Dmytro : implemented
   qqq : implement arraySelectInplace
+  Dmytro : implemented
 */
 
 function longSelectInplace( array, range, val )
@@ -2117,74 +2407,79 @@ function longSelectInplace( array, range, val )
 //
 
 /**
- * Changes length of provided array( array ) by copying it elements to newly created array using begin( f ),
- * end( l ) positions of the original array and value to fill free space after copy( val ). Length of new array is equal to ( l ) - ( f ).
- * If ( l ) < ( f ) - value of index ( f ) will be assigned to ( l ).
- * If ( l ) === ( f ) - returns empty array.
- * If ( l ) > ( array.length ) - returns array that contains elements with indexies from ( f ) to ( array.length ),
- * and free space filled by value of ( val ) if it was provided.
- * If ( l ) < ( array.length ) - returns array that contains elements with indexies from ( f ) to ( l ).
- * If ( l ) < 0 and ( l ) > ( f ) - returns array filled with some amount of elements with value of argument( val ).
- * If ( f ) < 0 - prepends some number of elements with value of argument( let ) to the result array.
- * @param { Array/BufferNode } array - source array or buffer;
- * @param { Number } [ f = 0 ] - index of a first element to copy into new array;
- * @param { Number } [ l = array.length ] - index of a last element to copy into new array;
- * @param { * } val - value used to fill the space left after copying elements of the original array.
+ * Routine longGrow() changes length of provided Long {-array-} by copying it elements to newly created Long of the same
+ * type using range {-range-} positions of the original Long and value to fill free space after copy {-val-}.
+ * Routine can only grows size of Long. The original {-array-} will not be modified.
+ *
+ * @param { Long } array - The Long from which makes a shallow copy.
+ * @param { Range } The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the end index, and the start index is 0.
+ * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 0 ] > 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns a copy of original Long.
+ * @param { * } val - The object of any type. Used to fill the space left after copying elements of the original Long.
  *
  * @example
- * // just partial copy of origin array
- * let arr = [ 1, 2, 3, 4 ]
- * let result = _.longGrowInplace( arr, 0, 2 );
- * console.log( result );
- * // log [ 1, 2 ]
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src );
+ * console.log( got );
+ * // log Float32Array[ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
  *
  * @example
- * // increase size, fill empty with zeroes
- * let arr = [ 1 ]
- * let result = _.longGrowInplace( arr, 0, 5, 0 );
- * console.log( result );
- * // log [ 1, 0, 0, 0, 0 ]
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src, 7, 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
  *
  * @example
- * // take two last elements from original, other fill with zeroes
- * let arr = [ 1, 2, 3, 4, 5 ]
- * let result = _.longGrowInplace( arr, 3, 8, 0 );
- * console.log( result );
- * // log [ 4, 5, 0, 0, 0 ]
+ * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src, [ 1, 6 ], 7 );
+ * console.log( got );
+ * // log Uint8Array[ 1, 2, 3, 4, 5, 7 ]
+ * console.log( got === src );
+ * // log false
  *
  * @example
- * // add two zeroes at the beginning
- * let arr = [ 1, 2, 3, 4, 5 ]
- * let result = _.longGrowInplace( arr, -2, arr.length, 0 );
- * console.log( result );
- * // log [ 0, 0, 1, 2, 3, 4, 5 ]
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrow( src, [ -5, 6 ], 7 );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
  *
  * @example
- * // add two zeroes at the beginning and two at end
- * let arr = [ 1, 2, 3, 4, 5 ]
- * let result = _.longGrowInplace( arr, -2, arr.length + 2, 0 );
- * console.log( result );
- * // log [ 0, 0, 1, 2, 3, 4, 5, 0, 0 ]
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longGrow( src, [ 4, 1 ], 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
  *
- * @example
- * // source can be also a BufferNode
- * let buffer = BufferNode.from( '123' );
- * let result = _.longGrowInplace( buffer, 0, buffer.length + 2, 0 );
- * console.log( result );
- * // log [ 49, 50, 51, 0, 0 ]
- *
- * @returns { Array } Returns resized copy of a part of an original array.
- * @function longGrowInplace
- * @throws { Error } Will throw an Error if( array ) is not a Array or BufferNode.
- * @throws { Error } Will throw an Error if( f ) or ( l ) is not a Number.
- * @throws { Error } Will throw an Error if not enough arguments provided.
+ * @returns { Long } Returns a copy of provided Long with changed length.
+ * @function longGrow
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-array-} is not a Long.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
  * @memberof wTools
  */
 
 /*
   qqq : extend documentation and test coverage of longGrowInplace
+  Dmytro : extended documentation, covered routine longGrow, longGrowInplace
   qqq : implement arrayGrow
+  Dmitro : implemented
   qqq : implement arrayGrowInplace
+  Dmitro : implemented
 */
 
 function longGrow( array, range, val )
@@ -2259,6 +2554,74 @@ function longGrow( array, range, val )
 }
 
 //
+
+/**
+ * Routine longGrowInplace() changes length of provided Long {-array-} using range {-range-} positions of the original
+ * Long and value to fill free space after copy {-val-}. If provided Long is resizable, routine modifies this
+ * Long in place, otherwise, return copy. Routine can only grows size of Long.
+ *
+ * @param { Long } array - The Long to grow length.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the end index, and the start index is 0.
+ * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 0 ] > 0, then start index sets to 0.
+ * If range[ 1 ] > array.length, end index sets to array.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns origin array.
+ * @param { * } val - The object of any type. Used to fill the space left of the original Long.
+ *
+ * @example
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrowInplace( src );
+ * console.log( got );
+ * // log Float32Array[ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrowInplace( src, 7, 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrowInplace( src, [ 1, 6 ], 7 );
+ * console.log( got );
+ * // log Uint8Array[ 1, 2, 3, 4, 5, 7 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longGrowInplace( src, [ -5, 6 ], 7 );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longGrowInplace( src, [ 4, 1 ], 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @returns { Long } Returns a Long with changed length.
+ * If Long is resizable, routine returns modified source Long, otherwise, returns a copy.
+ * @function longGrowInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-array-} is not a Long.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
 
 function longGrowInplace( array, range, val )
 {
@@ -2366,6 +2729,73 @@ function longGrowInplace( array, range, val )
   // return result;
 }
 
+//
+
+/**
+ * Routine longRelength() changes length of provided Long {-array-} by copying it elements to newly created Long of the same
+ * type using range {-range-} positions of the original Long and value to fill free space after copy {-val-}.
+ * Routine can grows and reduses size of Long. The original {-array-} will not be modified.
+ *
+ * @param { Long } array - The Long from which makes a shallow copy.
+ * @param { Range } The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty Long.
+ * @param { * } val - The object of any type. Used to fill the space left after copying elements of the original Long.
+ *
+ * @example
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longRelength( src );
+ * console.log( got );
+ * // log Float32Array[ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longRelength( src, 7, 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longRelength( src, [ 1, 6 ], 7 );
+ * console.log( got );
+ * // log Uint8Array[ 2, 3, 4, 5, 7 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longRelength( src, [ -5, 6 ], 7 );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7 ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longRelength( src, [ 4, 1 ], 'str' );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log false
+ *
+ * @returns { Long } Returns a copy of provided Long with changed length.
+ * @function longRelength
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-array-} is not a Long.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
+
 function longRelength( array, range, val )
 {
 
@@ -2421,6 +2851,72 @@ function longRelength( array, range, val )
 }
 
 //
+
+/**
+ * Routine longRelengthInplace() changes length of provided Long {-array-} using range {-range-} positions of the original
+ * Long and value to fill free space after copy {-val-}. If provided Long is resizable, routine modifies this
+ * Long in place, otherwise, return copy. Routine can grows and reduce size of Long.
+ *
+ * @param { Long } array - The Long to change length.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty array.
+ * @param { * } val - The object of any type. Used to fill the space left of the original Long.
+ *
+ * @example
+ * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longRelengthInplace( src );
+ * console.log( got );
+ * // log Float32Array[ 1, 2, 3, 4, 5 ]
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longRelengthInplace( src, 7, 'str' );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 'str', 'str' ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( got === src );
+ * // log true
+ *
+ * @example
+ * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longRelengthInplace( src, [ 1, 6 ], 7 );
+ * console.log( got );
+ * // log Uint8Array[ 2, 3, 4, 5, 7 ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+ * var got = _.longRelengthInplace( src, [ -5, 6 ], 7 );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4, 5, 7 ]
+ * console.log( _.argumentsArrayIs( got ) );
+ * // log false
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * var src = [ 1, 2, 3, 4, 5 ];
+ * var got = _.longRelengthInplace( src, [ 4, 1 ], 'str' );
+ * console.log( got );
+ * // log []
+ * console.log( got === src );
+ * // log true
+ *
+ * @returns { Long } Returns a Long with changed length.
+ * If Long is resizable, routine returns modified source Long, otherwise, returns a copy.
+ * @function longRelengthInplace
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If argument {-array-} is not a Long.
+ * @throws { Error } If range.length is less or more then two.
+ * @throws { Error } If range elements is not number / undefined.
+ * @memberof wTools
+ */
 
 function longRelengthInplace( array, range, val )
 {
@@ -2840,92 +3336,269 @@ function arrayHas( array, value, evaluator1, evaluator2 )
 //
 
 /**
- * The arrayHasAny() routine checks if the {-srcMap-} array has at least one value of the following arguments.
+ * The routine arrayHasAny() checks if the {-src-} array has at least one element of the argument {-ins-}.
+ * It can take equalizer or evaluators for the routine equalities.
  *
- * It iterates over array-like (arguments[]) copies each argument to the array (ins) by the routine
- * [arrayAs()]{@link wTools.arrayAs}
- * Checks, if {-srcMap-} array has at least one value of the (ins) array.
+ * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
+ * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
+ * Checks, if {-src-} array has at least one element of the {-ins-} array.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
- * @see {@link wTools.arrayAs} - See for more information.
+ * @see {@link wTools.arrayLeftIndex} - See for more information.
  *
- * @param { longIs } src - The source array.
- * @param {...*} arguments - One or more argument(s).
+ * @param { Long } src - The source array.
+ * @param  { Long|Primitive } ins - The elements to check in the source array.
+ * @param { Function } evaluator - A collback function.
  *
  * @example
- * _.arrayHasAny( [ 5, 'str', 42, false ], false, 7 );
+ * _.arrayHasAny( [ 5, 'str', 42, false ], 7 );
+ * // returns false
+ *
+ * @example
+ * _.arrayHasAny( [ 5, 'str', 42, false ], [ false, 7, 10 ] );
  * // returns true
  *
- * @returns { Boolean } - Returns true, if {-srcMap-} has at least one value of the following argument(s), otherwise false is returned.
+ * @example
+ * _.arrayHasAny( [ { a : 2 }, 'str', 42, false ], [ { a : 2 }, { a : 3 } ] );
+ * // returns false
+ *
+ * @example
+ * var evaluator = ( e ) => e.a;
+ * _.arrayHasAny( [ { a : 2 }, 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
+ * // returns true
+ *
+ * @returns { Boolean } - Returns true, if {-src-} has at least one element of {-ins-}, otherwise false is returned.
  * @function arrayHasAny
- * @throws { Error } If the first argument in not an array.
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long.
+ * @throws { Error } If {-ins-} is not a Long, not a primitive.
+ * @throws { Error } If {-evaluator-} is not a routine.
  * @memberof wTools
  */
 
-function arrayHasAny( src )
+function arrayHasAny( src, ins, evaluator )
 {
-  let empty = true;
-  empty = false;
 
-  _.assert( arguments.length >= 1, 'Expects at least one argument' );
-  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasAny :', 'array expected' );
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( _.longIs( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( _.longIs( ins ) || _.primitiveIs( ins ) );
 
-  for( let a = 1 ; a < arguments.length ; a++ )
+  if( _.primitiveIs( ins ) )
+  ins = [ ins ];
+
+  let i = 0;
+  let result;
+
+  do
   {
-    empty = false;
-
-    let ins = _.arrayAs( arguments[ a ] );
-    for( let i = 0 ; i < ins.length ; i++ )
-    {
-      if( src.indexOf( ins[ i ] ) !== -1 )
-      return true;
-    }
-
+    result = _.arrayLeftIndex( src, ins[ i ], 0, evaluator );
+    i++;
   }
+  while( result < 0 && i < ins.length )
 
-  return empty;
+  if( result !== -1 )
+  return true;
+  return false;
 }
+
+// function arrayHasAny( src )
+// {
+//   let empty = true;
+//   empty = false;
+//
+//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
+//   _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasAny :', 'array expected' );
+//
+//   for( let a = 1 ; a < arguments.length ; a++ )
+//   {
+//     empty = false;
+//
+//     let ins = _.arrayAs( arguments[ a ] );
+//     for( let i = 0 ; i < ins.length ; i++ )
+//     {
+//       if( src.indexOf( ins[ i ] ) !== -1 )
+//       return true;
+//     }
+//
+//   }
+//
+//   return empty;
+// }
 
 //
 
-function arrayHasAll( src )
+/**
+ * The routine arrayHasAll() checks if the {-src-} array has all elements of the argument {-ins-}.
+ * It can take equalizer or evaluators for the routine equalities.
+ *
+ * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
+ * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
+ * Checks, if {-src-} array has all elements of the {-ins-} array.
+ * If true, it returns true.
+ * Otherwise, it returns false.
+ *
+ * @see {@link wTools.arrayLeftIndex} - See for more information.
+ *
+ * @param { Long } src - The source array.
+ * @param  { Long|Primitive } ins - The elements to check in the source array.
+ * @param { Function } evaluator - A collback function.
+ *
+ * @example
+ * _.arrayHasAll( [ 5, 'str', 42, false ], 7 );
+ * // returns false
+ *
+ * @example
+ * _.arrayHasAny( [ 5, 'str', 42, false ], [ false, 5, 'str' ] );
+ * // returns true
+ *
+ * @example
+ * _.arrayHasAny( [ { a : 2 }, { a : 3 } 'var', 42, false ], [ { a : 2 }, { a : 3 } ] );
+ * // returns false
+ *
+ * @example
+ * var evaluator = ( e ) => e.a;
+ * _.arrayHasAny( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
+ * // returns true
+ *
+ * @returns { Boolean } - Returns true, if {-src-} has all elements of {-ins-}, otherwise false is returned.
+ * @function arrayHasAll
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long.
+ * @throws { Error } If {-ins-} is not a Long, not a primitive.
+ * @throws { Error } If {-evaluator-} is not a routine.
+ * @memberof wTools
+ */
+
+function arrayHasAll( src, ins, evaluator )
 {
-  _.assert( arguments.length >= 1, 'Expects at least one argument' );
-  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasAll :', 'array expected' );
 
-  for( let a = 1 ; a < arguments.length ; a++ )
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( _.longIs( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( _.longIs( ins ) || _.primitiveIs( ins ) );
+
+  if( _.primitiveIs( ins ) )
+  ins = [ ins ];
+
+  let i = 0;
+  let result;
+
+  do
   {
-
-    let ins = _.arrayAs( arguments[ a ] );
-    for( let i = 0 ; i < ins.length ; i++ )
-    if( src.indexOf( ins[ i ] ) === -1 )
-    return false;
-
+    result = _.arrayLeftIndex( src, ins[ i ], 0, evaluator );
+    i++;
   }
+  while( result >= 0 && i < ins.length )
 
+  if( result !== -1 )
   return true;
+  return false;
 }
+
+// function arrayHasAll( src )
+// {
+//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
+//   _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasAll :', 'array expected' );
+//
+//   for( let a = 1 ; a < arguments.length ; a++ )
+//   {
+//
+//     let ins = _.arrayAs( arguments[ a ] );
+//     for( let i = 0 ; i < ins.length ; i++ )
+//     if( src.indexOf( ins[ i ] ) === -1 )
+//     return false;
+//
+//   }
+//
+//   return true;
+// }
 
 //
 
-function arrayHasNone( src )
+/**
+ * The routine arrayHasNone() checks if the {-src-} array has no one element of the argument {-ins-}.
+ * It can take equalizer or evaluators for the routine equalities.
+ *
+ * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
+ * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
+ * Checks, if {-src-} array has no one elements of the {-ins-} array.
+ * If true, it returns true.
+ * Otherwise, it returns false.
+ *
+ * @see {@link wTools.arrayLeftIndex} - See for more information.
+ *
+ * @param { Long } src - The source array.
+ * @param  { Long|Primitive } ins - The elements to check in the source array.
+ * @param { Function } evaluator - A collback function.
+ *
+ * @example
+ * _.arrayHasNone( [ 5, 'str', 42, false ], 7 );
+ * // returns true
+ *
+ * @example
+ * _.arrayHasNone( [ 5, 'str', 42, false ], [ false, 5, 'str' ] );
+ * // returns false
+ *
+ * @example
+ * _.arrayHasNone( [ { a : 2 }, { a : 3 } 'var', 42, false ], [ { a : 2 }, { a : 3 } ] );
+ * // returns true
+ *
+ * @example
+ * var evaluator = ( e ) => e.a;
+ * _.arrayHasNone( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { a : 2 }, { a : 4 } ], evaluator );
+ * // returns false
+ *
+ * @returns { Boolean } - Returns true, if {-src-} has no one element of {-ins-}, otherwise false is returned.
+ * @function arrayHasAll
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-src-} is not a Long.
+ * @throws { Error } If {-ins-} is not a Long, not a primitive.
+ * @throws { Error } If {-evaluator-} is not a routine.
+ * @memberof wTools
+ */
+
+function arrayHasNone( src, ins, evaluator )
 {
-  _.assert( arguments.length >= 1, 'Expects at least one argument' );
-  _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasNone :', 'array expected' );
 
-  for( let a = 1 ; a < arguments.length ; a++ )
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( _.longIs( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( _.longIs( ins ) || _.primitiveIs( ins ) );
+
+  if( _.primitiveIs( ins ) )
+  ins = [ ins ];
+
+  let i = 0;
+  let result;
+
+  do
   {
-
-    let ins = _.arrayAs( arguments[ a ] );
-    for( let i = 0 ; i < ins.length ; i++ )
-    if( src.indexOf( ins[ i ] ) !== -1 )
-    return false;
-
+    result = _.arrayLeftIndex( src, ins[ i ], 0, evaluator );
+    i++;
   }
+  while( result < 0 && i < ins.length )
 
+  if( result !== -1 )
+  return false;
   return true;
 }
+
+// function arrayHasNone( src )
+// {
+//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
+//   _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasNone :', 'array expected' );
+//
+//   for( let a = 1 ; a < arguments.length ; a++ )
+//   {
+//
+//     let ins = _.arrayAs( arguments[ a ] );
+//     for( let i = 0 ; i < ins.length ; i++ )
+//     if( src.indexOf( ins[ i ] ) !== -1 )
+//     return false;
+//
+//   }
+//
+//   return true;
+// }
 
 //
 
@@ -2981,7 +3654,7 @@ function arrayNone( src )
 /**
  * The routine arrayMake() returns a new Array maked from {-src-}.
  *
- * @param { Number|Long|Null } src - The number or any long object to make new Array. If null passed, routine returns an empty Array.
+ * @param { Number|Long|Null } src - The number or any Long to make new Array. If null passed, routine returns an empty Array.
  *
  * @example
  * _.arrayMake( null );
@@ -3019,7 +3692,7 @@ function arrayNone( src )
  * Otherwise, it returns the empty Array.
  * @function arrayMake
  * @throws { Error } If arguments.length is less or more then one.
- * @throws { Error } If argument {-src-} is not a number, not a long, not null.
+ * @throws { Error } If argument {-src-} is not a number, not a Long, not null.
  * @memberof wTools
  */
 
@@ -3053,7 +3726,7 @@ function arrayMake( src )
  * The routine arrayMakeUndefined() returns a new Array with length equal to {-length-}.
  * If the argument {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
  *
- * @param { Number|Long|Null } src - The number or any Long object. If {-length-} is not provided, defines length of new Array.
+ * @param { Number|Long|Null } src - The number or any Long. If {-length-} is not provided, defines length of new Array.
  * @param { Number } length - Defines length of new Array.
  *
  * @example
@@ -3102,7 +3775,7 @@ function arrayMake( src )
  * If null passed, routine returns the empty Array.
  * @function arrayMakeUndefined
  * @throws { Error } If arguments.length is less then one or more then two.
- * @throws { Error } If argument {-src-} is not a number, not a long, not null.
+ * @throws { Error } If argument {-src-} is not a number, not a Long, not null.
  * @throws { Error } If argument {-length-} is not a number.
  * @memberof wTools
  */
@@ -3259,7 +3932,7 @@ function arraySlice( srcArray, f, l )
 //
 
 /**
- * The routine arrayBut() returns a shallow copy of source array {-src-}. Routine removes existing
+ * The routine arrayBut() returns a shallow copy of provided array {-src-}. Routine removes existing
  * elements in bounds defined by {-range-} and insert new elements from {-ins-}. The original
  * source array {-src-} will not be modified.
  *
@@ -3269,8 +3942,8 @@ function arraySlice( srcArray, f, l )
  * If {-range-} is undefined, routine returns copy of {-src-}.
  * If range[ 0 ] < 0, then start index sets to 0.
  * If range[ 1 ] > src.length, end index sets to src.length.
- * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements starts at start index.
- * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
+ * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
+ * @param { Long } ins - The Long with elements for insertion. Inserting begins at start index.
  * If quantity of removed elements is not equal to ins.length, then returned array will have length different to src.length.
  *
  * @example
@@ -3319,7 +3992,7 @@ function arraySlice( srcArray, f, l )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @throws { Error } If argument {-ins-} is not long / undefined.
+ * @throws { Error } If argument {-ins-} is not Long / undefined.
  * @memberof wTools
  */
 
@@ -3374,7 +4047,7 @@ function arrayBut( src, range, ins )
 //
 
 /**
- * The routine arrayButInplace() returns a source array {-src-} with removed existing elements in bounds
+ * The routine arrayButInplace() returns a provided array {-src-} with removed existing elements in bounds
  * defined by {-range-} and inserted new elements from {-ins-}.
  *
  * @param { Array|Unroll } src - The Array or Unroll to remove, replace or add elements.
@@ -3383,8 +4056,8 @@ function arrayBut( src, range, ins )
  * If {-range-} is undefined, routine returns {-src-}.
  * If range[ 0 ] < 0, then start index sets to 0.
  * If range[ 1 ] > src.length, end index sets to src.length.
- * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements starts at start index.
- * @param { Long } ins - The Long object with elements for insertion. Inserting begins at start index.
+ * If range[ 1 ] <= range[ 0 ], then routine removes no elements, the insertion of elements begins at start index.
+ * @param { Long } ins - The Long with elements for insertion. Inserting begins at start index.
  * If quantity of removed elements is not equal to ins.length, then returned array will have length different to original src.length.
  *
  * @example
@@ -3433,7 +4106,7 @@ function arrayBut( src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @throws { Error } If argument {-ins-} is not long / undefined.
+ * @throws { Error } If argument {-ins-} is not Long / undefined.
  * @memberof wTools
  */
 
@@ -3473,8 +4146,8 @@ function arrayButInplace( src, range, ins )
 //
 
 /**
- * The routine arraySelect() returns a copy of a portion of {-src-} into a new array object
- * selected by {-range-}. The original {-srcArray-} will not be modified.
+ * The routine arraySelect() returns a copy of a portion of provided array {-src-} into a new array object
+ * selected by {-range-}. The original {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -3495,7 +4168,7 @@ function arrayButInplace( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelect( src, 2, [ 'str' ] );
+ * var got = _.arraySelect( src, 2, 'str' );
  * console.log( got );
  * // log [ 3, 4, 5 ]
  * console.log( got === src );
@@ -3503,7 +4176,7 @@ function arrayButInplace( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelect( src, [ 1, 4 ], [ 'str' ] );
+ * var got = _.arraySelect( src, [ 1, 4 ], 'str' );
  * console.log( got );
  * // log [ 2, 3, 4 ]
  * console.log( got === src );
@@ -3511,7 +4184,7 @@ function arrayButInplace( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelect( src, [ -5, 10 ], [ 'str' ] );
+ * var got = _.arraySelect( src, [ -5, 10 ], 'str' );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
@@ -3519,7 +4192,7 @@ function arrayButInplace( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelect( src, [ 4, 1 ], [ 'str' ] );
+ * var got = _.arraySelect( src, [ 4, 1 ], 'str' );
  * console.log( got );
  * // log []
  * console.log( got === src );
@@ -3569,7 +4242,7 @@ function arraySelect( src, range, ins )
 //
 
 /**
- * The routine arraySelectInplace() returns a portion of original {-src-} selected by {-range-}.
+ * The routine arraySelectInplace() returns a portion of provided array {-src-} selected by {-range-}.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which selects elements.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -3590,7 +4263,7 @@ function arraySelect( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelectInplace( src, 2, [ 'str' ] );
+ * var got = _.arraySelectInplace( src, 2, 'str' );
  * console.log( got );
  * // log [ 3, 4, 5 ]
  * console.log( got === src );
@@ -3598,7 +4271,7 @@ function arraySelect( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelectInplace( src, [ 1, 4 ], [ 'str' ] );
+ * var got = _.arraySelectInplace( src, [ 1, 4 ], 'str' );
  * console.log( got );
  * // log [ 2, 3, 4 ]
  * console.log( got === src );
@@ -3606,7 +4279,7 @@ function arraySelect( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelectInplace( src, [ -5, 10 ], [ 'str' ] );
+ * var got = _.arraySelectInplace( src, [ -5, 10 ], 'str' );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
@@ -3614,13 +4287,13 @@ function arraySelect( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelectInplace( src, [ 4, 1 ], [ 'str' ] );
+ * var got = _.arraySelectInplace( src, [ 4, 1 ], 'str' );
  * console.log( got );
  * // log []
  * console.log( got === src );
  * // log true
  *
- * @returns { Array|Unroll } Returns a copy of Array / Unroll containing the extracted elements.
+ * @returns { Array|Unroll } Returns a Array / Unroll containing the selected elements.
  * @function arraySelectInplace
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
@@ -3664,7 +4337,9 @@ function arraySelectInplace( src, range, ins )
 //
 
 /**
- * The routine arrayGrow() returns a copy of {-src-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value. The original {-src-} will not be modified.
+ * Routine arrayGrow() changes length of provided array {-src-} by copying it elements to newly created array
+ * using range {-range-} positions of the original array and value to fill free space after copy {-ins-}.
+ * Routine can only grows size of array.The original {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -3673,7 +4348,7 @@ function arraySelectInplace( src, range, ins )
  * If range[ 0 ] > 0, then start index sets to 0.
  * If range[ 1 ] > src.length, end index sets to src.length.
  * If range[ 1 ] <= range[ 0 ], then routine returns copy of origin array.
- * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ * @param { * } ins -  object of any type. Used to fill the space left after copying elements of the original array.
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
@@ -3701,7 +4376,7 @@ function arraySelectInplace( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayGrow( src, [ -5, 6 ], [ 7 ] );
+ * var got = _.arrayGrow( src, [ -5, 6 ], 7 );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
  * console.log( got === src );
@@ -3709,13 +4384,13 @@ function arraySelectInplace( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayGrow( src, [ 4, 1 ], [ 'str' ] );
+ * var got = _.arrayGrow( src, [ 4, 1 ], 'str' );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
  * // log false
  *
- * @returns { Array|Unroll } Returns a copy of Array / Unroll with appended elements.
+ * @returns { Array|Unroll } Returns a copy of Array / Unroll with changed length.
  * @function arrayGrow
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
@@ -3783,16 +4458,17 @@ function arrayGrow( src, range, ins )
 //
 
 /**
- * The routine arrayGrow() returns a original {-src-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value.
+ * Routine arrayGrowInplace() changes length of provided array {-src-} using range {-range-} positions of the original
+ * array and value to fill free space after copy {-ins-}. Routine can only grows size of array.
  *
- * @param { Array|Unroll } src - The Array or Unroll to append elements.
+ * @param { Array|Unroll } src - The Array or Unroll to grow length.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
  * If {-range-} is number, then it defines the end index, and the start index is 0.
  * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
  * If range[ 0 ] > 0, then start index sets to 0.
  * If range[ 1 ] > src.length, end index sets to src.length.
  * If range[ 1 ] <= range[ 0 ], then routine returns copy of origin array.
- * @param { * } ins - The object of any type. Inserting begins from last index of {-src-} to end index.
+ * @param { * } ins - The object of any type. Used to fill the space left of the original array.
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
@@ -3820,7 +4496,7 @@ function arrayGrow( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayGrow( src, [ -5, 6 ], [ 7 ] );
+ * var got = _.arrayGrow( src, [ -5, 6 ], 7 );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5, 7, 7, 7, 7, 7, 7 ]
  * console.log( got === src );
@@ -3828,13 +4504,13 @@ function arrayGrow( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayGrow( src, [ 4, 1 ], [ 'str' ] );
+ * var got = _.arrayGrow( src, [ 4, 1 ], 'str' );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
  * // log true
  *
- * @returns { Array|Unroll } Returns a Array / Unroll with appended elements.
+ * @returns { Array|Unroll } Returns a provided Array / Unroll with changed length.
  * @function arrayGrowInplace
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
@@ -3899,7 +4575,9 @@ function arrayGrowInplace( src, range, ins )
 //
 
 /**
- * The routine arrayRelength() returns a copy of portion of {-src-} which defines by {-range-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value. The original {-src-} will not be modified.
+ * Routine arrayRelength() changes length of provided array {-src-} by copying it elements to newly created array object
+ * using range (range) positions of the original array and value to fill free space after copy (val).
+ * Routine can grows and reduses size of Long. The original {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -3934,7 +4612,7 @@ function arrayGrowInplace( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayRelength( src, [ -5, 6 ], [ 7 ] );
+ * var got = _.arrayRelength( src, [ -5, 6 ], 7 );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5, 7 ]
  * console.log( got === src );
@@ -3942,13 +4620,13 @@ function arrayGrowInplace( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayRelength( src, [ 4, 1 ], [ 'str' ] );
+ * var got = _.arrayRelength( src, [ 4, 1 ], 'str' );
  * console.log( got );
  * // log []
  * console.log( got === src );
  * // log false
  *
- * @returns { Array|Unroll } Returns a copy of portion of Array / Unroll with appended elements that is defined by range.
+ * @returns { Array|Unroll } Returns a copy provided Array / Unroll with changed length.
  * @function arrayRelength
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
@@ -4008,7 +4686,8 @@ function arrayRelength( src, range, ins )
 //
 
 /**
- * The routine arrayRelengthInplace() returns a portion of {-src-} which defines by {-range-}. If last index of new array is more then src.length, routine appends elements with {-ins-} value.
+ * Routine arrayRelengthInplace() changes length of provided array {-src-} using range {-range-} positions of the original
+ * array and value to fill free space after copy {-ins-}. Routine can grows and reduce size of Long.
  *
  * @param { Array|Unroll } src - The Array or Unroll to change length.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index of new array.
@@ -4043,7 +4722,7 @@ function arrayRelength( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayRelengthInplace( src, [ -5, 6 ], [ 7 ] );
+ * var got = _.arrayRelengthInplace( src, [ -5, 6 ], 7 );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5, 7 ]
  * console.log( got === src );
@@ -4051,13 +4730,13 @@ function arrayRelength( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arrayRelengthInplace( src, [ 4, 1 ], [ 'str' ] );
+ * var got = _.arrayRelengthInplace( src, [ 4, 1 ], 'str' );
  * console.log( got );
  * // log []
  * console.log( got === src );
  * // log false
  *
- * @returns { Array|Unroll } Returns a portion of original Array / Unroll with appended elements that is defined by range.
+ * @returns { Array|Unroll } Returns a provided Array / Unroll with changed length.
  * @function arrayRelengthInplace
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
@@ -4316,13 +4995,18 @@ function arrayRightDefined( arr )
 //
 
 /**
- * The arrayCountElement() routine returns the count of matched elements in the {-srcArray-} array with the input { element }.
- * Returns 0 if no { element } is provided. It can take equalizer or evaluators for the routine equalities.
+ * The routine arrayCountElement() returns the count of matched elements {-element-} in the {-srcArray-} array.
+ * Returns 0 if no {-element-} is matched. It can take equalizer or evaluators to check specific equalities.
  *
- * @param { Array } src - The source array.
- * @param { * } element - The value to search.
- * @param { * } [ onEvaluate1 ] - It's a routine. If the routine has two parameters, it is used as an equalizer, and if it has only one, then routine used as the first part of the evaluator.
- * @param { * } [ onEvaluate2 ] - The second part of evaluator. Change the value to search.
+ * @param { Long } srcArray - The source array.
+ * @param { * } element - The value to count matches.
+ * @param { Function } onEvaluate1 - It's a callback. If the routine has two parameters, it is used as an equalizer, and if it has only one, then routine used as the evaluator.
+ * @param { Function } onEvaluate2 - The second part of evaluator. Accepts the value to search.
+ *
+ * @example
+ * // simple exapmle, no matches
+ * _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 3 );
+ * // returns 0
  *
  * @example
  * // simple exapmle
@@ -4335,14 +5019,19 @@ function arrayRightDefined( arr )
  * // returns 4
  *
  * @example
- * // with evaluator
- * _.arrayCountElement( [ [ 10, 2 ], [ 10, 2 ], [ 'str', 10 ], [ 10, true ], [ false, 10 ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
+ * // with single evaluator
+ * _.arrayCountElement( [ [ 10 ], [ 10 ], [ 'str' ], [ 10 ], [ false ] ], [ 'str' ], ( e ) => e[ 0 ] );
+ * // returns 1
+ *
+ * @example
+ * // with two part of evaluator
+ * _.arrayCountElement( [ [ 10 ], [ 10 ], [ 'str' ], [ 10 ], [ false ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
  * // returns 4
  *
- * @returns { Number } - Returns the count of matched elements in the {-srcArray-} with the { element } element.
+ * @returns { Number } - Returns the count of matched elements {-element-} in the {-srcArray-}.
  * @function arrayCountElement
  * @throws { Error } If passed arguments is less than two or more than four.
- * @throws { Error } If the first argument is not an array-like object.
+ * @throws { Error } If the first argument is not a Long.
  * @throws { Error } If the third or fourth argument is not a routine.
  * @throws { Error } If the routine in third argument has less than one or more than two arguments.
  * @throws { Error } If the routine in third argument has two arguments and fourth argument is passed into routine arrayCountElement.
@@ -4373,7 +5062,7 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 //
 
 /**
- * The arrayCountTotal() adds all the elements in { -srcArray- }, elements can be numbers or booleans ( it considers them 0 or 1 ).
+ * The routine arrayCountTotal() adds all the elements in {-srcArray-}, elements can be numbers or booleans ( it considers them 0 or 1 ).
  *
  * @param { Array } srcArray - The source array.
  *
@@ -4385,11 +5074,11 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
  * _.arrayCountTotal( [ true, false, false ] );
  * // returns 1
  *
- * @returns { Number } - Returns the sum of the elements in { srcArray }.
+ * @returns { Number } - Returns the sum of the elements in {-srcArray-}.
  * @function arrayCountTotal
  * @throws { Error } If passed arguments is different than one.
- * @throws { Error } If the first argument is not an array-like object.
- * @throws { Error } If { srcArray} doesn´t contain number-like elements.
+ * @throws { Error } If the first argument is not a Long.
+ * @throws { Error } If {-srcArray-} doesn´t contain number-like elements.
  * @memberof wTools
  */
 
@@ -4402,7 +5091,7 @@ function arrayCountTotal( srcArray )
 
   for( let i = 0 ; i < srcArray.length ; i++ )
   {
-    _.assert( _.boolIs( srcArray[ i ] ) || _.numberIs( srcArray[ i ] )|| srcArray[ i ] === null );
+    _.assert( _.boolIs( srcArray[ i ] ) || _.numberIs( srcArray[ i ] ) || srcArray[ i ] === null );
     result += srcArray[ i ];
   }
 
@@ -8209,8 +8898,8 @@ let Routines =
 
   // scalar
 
-  scalarAppend, /* qqq : cover routine scalarAppend */
-  scalarAppendOnce, /* qqq : cover routine scalarAppendOnce */
+  scalarAppend, /* qqq : cover routine scalarAppend | Dmytro : covered */
+  scalarAppendOnce, /* qqq : cover routine scalarAppendOnce | Dmytro : covered*/
 
   scalarToVector,
   scalarFrom,
@@ -8292,9 +8981,9 @@ let Routines =
   arraysAreIdentical,
 
   arrayHas,
-  arrayHasAny, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer */
-  arrayHasAll, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer */
-  arrayHasNone, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer */
+  arrayHasAny, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
+  arrayHasAll, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
+  arrayHasNone, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
 
   arrayAll,
   arrayAny,
@@ -8332,8 +9021,8 @@ let Routines =
   arrayLeftDefined,
   arrayRightDefined,
 
-  arrayCountElement, /* qqq : cover by tests */
-  arrayCountTotal, /* qqq : cover by tests */
+  arrayCountElement, /* qqq : cover by tests | Dmytro : covered */
+  arrayCountTotal, /* qqq : cover by tests | Dmytro : covered */
   arrayCountUnique,
 
   // array prepend
@@ -8405,7 +9094,7 @@ let Routines =
   arrayRemovedOnce,
   arrayRemovedOnceStrictly,
 
-  arrayRemoveElement, /* qqq : should remove all, check test coverage */
+  arrayRemoveElement, /* qqq : should remove all, check test coverage | Dmytro : removes all possible elements, extended coverage */
   arrayRemoveElementOnce,
   arrayRemoveElementOnceStrictly,
   arrayRemovedElement,
