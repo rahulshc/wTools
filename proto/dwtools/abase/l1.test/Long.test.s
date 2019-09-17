@@ -3117,7 +3117,7 @@ function longIs( test )
 
 //
 
-/* qqq : implement bufferMake */
+/* qqq : implement  */
 
 /* qqq : longMake and longMakeUndefined are ugly, please rewrite them from scratch */
 
@@ -3279,9 +3279,9 @@ function longMake( test )
   test.shouldThrowErrorSync( () => _.longMake( 'wrong argument', 1 ) );
   test.shouldThrowErrorSync( () => _.longMake( 1, 1 ) );
   test.shouldThrowErrorSync( () => _.longMake( new BufferRaw( 3 ), 2 ) );
-  test.shouldThrowErrorSync( () => _.longMake( Array, Buffer.from( [ 3 ] ) ) );
+  test.shouldThrowErrorSync( () => _.longMake( Array, BufferNode.from( [ 3 ] ) ) );
   if( Config.interpreter === 'njs' )
-  test.shouldThrowErrorSync( () => _.longMake( Buffer.alloc( 3 ), 2 ) );
+  test.shouldThrowErrorSync( () => _.longMake( BufferNode.alloc( 3 ), 2 ) );
 
   test.case = 'wrong type of ins';
   test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
@@ -3446,7 +3446,7 @@ function _longMakeOfLength( test )
 
 //
 
-/* qqq : implement bufferMake */
+/* qqq : implement  */
 
 function longMakeUndefined( test )
 {
@@ -3602,9 +3602,9 @@ function longMakeUndefined( test )
   test.case = 'wrong type of ins';
   test.shouldThrowErrorSync( () => _.longMakeUndefined( 'wrong argument', 1 ) );
   test.shouldThrowErrorSync( () => _.longMakeUndefined( 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.longMakeUndefined( Buffer.alloc( 3 ), 2 ) );
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( BufferNode.alloc( 3 ), 2 ) );
   test.shouldThrowErrorSync( () => _.longMakeUndefined( new BufferRaw( 3 ), 2 ) );
-  test.shouldThrowErrorSync( () => _.longMakeUndefined( Array, Buffer.from( [ 3 ] ) ) );
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( Array, BufferNode.from( [ 3 ] ) ) );
 
   test.case = 'wrong type of len';
   test.shouldThrowErrorSync( () => _.longMakeUndefined( [ 1, 2, 3 ], 'wrong type of argument' ) );
@@ -3615,7 +3615,7 @@ function longMakeUndefined( test )
 
 /*
 
-qqq : implement bufferMakeZeroed routine and test routine
+qqq : implement Zeroed routine and test routine
 
 */
 
@@ -8468,6 +8468,171 @@ function bufferViewIs( test )
 
 //
 
+function bufferMake( test )
+{
+  /* constructors */
+
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => _.argumentsArrayMake( src );
+  var bufferTyped = function( buf )
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+  };
+  var bufferRaw = ( src ) => new U8x( src ).buffer;
+  var bufferNode = ( src ) => _.numberIs( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
+  var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
+
+  /* lists */
+
+  var typedList =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
+  var list =
+  [
+    array,
+    unroll,
+    argumentsArray,
+    bufferRaw,
+    bufferView,
+  ];
+  for( let i = 0; i < typedList.length; i++ )
+  list.push( bufferTyped( typedList[ i ] ) );
+  if( Config.interpreter === 'njs' )
+  list.push( bufferNode );
+
+  /* tests */
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  /* test subroutine */
+
+  function run( long )
+  {
+    var type = ( dst, got ) => _.argumentsArrayIs( dst ) ?
+    got.constructor.name === 'Array' : dst.constructor.name === got.constructor.name;
+    var result = ( dst, src ) => _.argumentsArrayIs( dst ) ?
+    array( src ) : long( src );
+
+    test.case = 'dst = empty, not src';
+    var dst = long( [] );
+    var got = _.bufferMake( dst );
+    var expected = result( dst, [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = empty, src = number';
+    var dst = long( [] );
+    var got = _.bufferMake( dst, 2 );
+    var expected = result( dst, 2 );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'src = number, src < dst.length';
+    var dst = long( [ 1, 2, 3 ] );
+    var got = _.bufferMake( dst, 2 );
+    var expected = result( dst, [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'src = number, src > dst.length';
+    var dst = long( [ 1, 2, 3 ] );
+    var got = _.bufferMake( dst, 4 );
+    var expected = _.bufferTypedIs( dst ) ? result( dst, [ 1, 2, 3, 0 ] ) : result( dst, [ 1, 2, 3, undefined ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'src = long, src.length > dst.length';
+    var dst = long( [ 0, 1 ] );
+    var src = [ 1, 2, 3 ];
+    var got = _.bufferMake( dst, src );
+    var expected = result( dst, [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = long, not src';
+    var dst = long( [ 1, 2, 3 ] );
+    var got = _.bufferMake( dst );
+    var expected = result( dst, [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = new long, src = array'
+    var dst = long( 2 );
+    var src = [ 1, 2, 3, 4, 5 ];
+    var got = _.bufferMake( dst, src );
+    var expected = result( dst, [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( type( dst, got ) );
+
+    test.case = 'dst = Array constructor, src = long';
+    var src = long( [ 1, 2, 3 ] );
+    var got = _.bufferMake( Array, src );
+    var expected = [ 1, 2, 3 ];
+    test.identical( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( got !== src );
+
+    test.case = 'dst = BufferTyped constructor, src = long';
+    var src = long( [ 1, 1, 1, 1, 1 ] );
+    var got = _.bufferMake( U32x, src );
+    var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs(  got ) );
+    test.is( got !== src );
+  }
+
+  test.case = 'dst = BufferTyped constructor, src = number';
+  var got = _.bufferMake( U32x, 2 );
+  var expected = new U32x( [ 0, 0 ] );
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferMake() );
+
+  test.case = 'extra argument';
+  test.shouldThrowErrorSync( () => _.bufferMake( [ 1, 2, 3 ], 4, 'extra argument' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.bufferMake( 'wrong argument', 1 ) );
+  test.shouldThrowErrorSync( () => _.bufferMake( 1, 1 ) );
+
+  test.case = 'wrong type of ins';
+  test.shouldThrowErrorSync( () => _.bufferMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
+  test.shouldThrowErrorSync( () => _.bufferMake( [ 1, 2, 3 ], Infinity  ) );
+
+}
+
+//
+
 function bufferMakeUndefined( test )
 {
   /* constructors */
@@ -8480,8 +8645,8 @@ function bufferMakeUndefined( test )
     let name = buf.name;
     return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
   };
-  var bufferRaw = ( src ) => _.numberIs( src ) ? new BufferRaw( src ) : new BufferRaw( src.length );
-  var bufferNode = ( src ) => _.numberIs( src ) ? Buffer.alloc( src ) : Buffer.from( src );
+  var bufferRaw = ( src ) => new U8x( src ).buffer;
+  var bufferNode = ( src ) => _.numberIs( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
   var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
 
   /* lists */
@@ -8712,9 +8877,9 @@ function bufferBut( test )
   var bufferNode = function( src )
   {
     if( _.numberIs( src ) )
-    return Buffer.alloc( src );
+    return BufferNode.alloc( src );
     else
-    return Buffer.from( src );
+    return BufferNode.from( src );
   };
 
   /* - */
@@ -9178,9 +9343,9 @@ function bufferButInplace( test )
   var bufferNode = function( src )
   {
     if( _.numberIs( src ) )
-    return Buffer.alloc( src );
+    return BufferNode.alloc( src );
     else
-    return Buffer.from( src );
+    return BufferNode.from( src );
   };
 
   /* - */
@@ -9620,9 +9785,9 @@ function bufferSelect( test )
   var bufferNode = function( src )
   {
     if( _.numberIs( src ) )
-    return Buffer.alloc( src );
+    return BufferNode.alloc( src );
     else
-    return Buffer.from( src );
+    return BufferNode.from( src );
   };
 
   /* - */
@@ -10076,9 +10241,9 @@ function bufferSelectInplace( test )
   var bufferNode = function( src )
   {
     if( _.numberIs( src ) )
-    return Buffer.alloc( src );
+    return BufferNode.alloc( src );
     else
-    return Buffer.from( src );
+    return BufferNode.from( src );
   };
 
   /* - */
@@ -10530,9 +10695,9 @@ function bufferGrow( test )
   var bufferNode = function( src )
   {
     if( _.numberIs( src ) )
-    return Buffer.alloc( src );
+    return BufferNode.alloc( src );
     else
-    return Buffer.from( src );
+    return BufferNode.from( src );
   };
 
   /* - */
@@ -10980,9 +11145,9 @@ function bufferGrowInplace( test )
   var bufferNode = function( src )
   {
     if( _.numberIs( src ) )
-    return Buffer.alloc( src );
+    return BufferNode.alloc( src );
     else
-    return Buffer.from( src );
+    return BufferNode.from( src );
   };
 
   /* - */
@@ -11430,9 +11595,9 @@ function bufferRelength( test )
   var bufferNode = function( src )
   {
     if( _.numberIs( src ) )
-    return Buffer.alloc( src );
+    return BufferNode.alloc( src );
     else
-    return Buffer.from( src );
+    return BufferNode.from( src );
   };
 
   /* - */
@@ -11882,9 +12047,9 @@ function bufferRelengthInplace( test )
   var bufferNode = function( src )
   {
     if( _.numberIs( src ) )
-    return Buffer.alloc( src );
+    return BufferNode.alloc( src );
     else
-    return Buffer.from( src );
+    return BufferNode.from( src );
   };
 
   /* - */
@@ -33862,6 +34027,7 @@ var Self =
 
     // buffer, layer1
 
+    bufferMake,
     bufferMakeUndefined,
 
     bufferBut,
