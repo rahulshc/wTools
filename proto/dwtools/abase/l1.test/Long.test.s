@@ -17089,162 +17089,167 @@ function arrayCountElement( test )
 
 function arrayCountTotal( test )
 {
-  // Zero
+  /* constructors */
 
-  test.case = 'Empty array';
-  var got = _.arrayCountTotal( [] );
-  var expected = 0;
-  test.identical( got, expected );
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
+  var bufferTyped = function( buf )
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+  };
 
-  test.case = 'null';
-  var got = _.arrayCountTotal( [ null ] );
-  var expected = 0;
-  test.identical( got, expected );
+  /* lists */
 
-  test.case = 'several nulls';
-  var got = _.arrayCountTotal( [ null, null, null ] );
-  var expected = 0;
-  test.identical( got, expected );
+  var listTyped =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
+  var list =
+  [
+    array,
+    unroll,
+    argumentsArray,
+  ];
+  for( let i = 0; i < listTyped.length; i++ )
+  list.push( bufferTyped( listTyped[ i ] ) );
 
-  test.case = 'Zero';
-  var got = _.arrayCountTotal( [ 0 ] );
-  var expected = 0;
-  test.identical( got, expected );
+  /* tests */
 
-  test.case = 'Several zeros';
-  var got = _.arrayCountTotal( [ 0, 0, 0, 0 ] );
-  var expected = 0;
-  test.identical( got, expected );
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( list[ i ] );
+    test.close( list[ i ].name );
+  }
 
-  test.case = 'Mix of nulls and zeros';
-  var got = _.arrayCountTotal( [ 0, null, null, 0, 0, 0, null ] );
-  var expected = 0;
-  test.identical( got, expected );
+  /* - */
 
-  // Array elements are numbers
+  function run( makeLong )
+  {
+    /* zero */
 
-  test.case = 'Sum of no repeated elements';
-  var got = _.arrayCountTotal( [ 1, 3, 5, 7, 9 ] );
-  var expected = 25;
-  test.identical( got, expected );
+    test.case = 'empty array';
+    var src = makeLong( [] );
+    var got = _.arrayCountTotal( src );
+    var expected = 0;
+    test.identical( got, expected );
 
-  test.case = 'Sum of repeated elements';
-  var got = _.arrayCountTotal( [ 2, 2, 4, 4, 6, 6 ] );
-  var expected = 24;
-  test.identical( got, expected );
+    test.case = 'several nulls';
+    var src = makeLong( [ null, null, null ] );
+    var got = _.arrayCountTotal( src );
+    var expected = 0;
+    test.identical( got, expected );
 
-  test.case = 'Sum with negative numbers';
-  var got = _.arrayCountTotal( [ 2, -3, 4, -4, 6, -7, 8 ] );
-  var expected = 6;
-  test.identical( got, expected );
+    test.case = 'several zeros';
+    var src = makeLong( [ 0, 0, 0, 0 ] );
+    var got = _.arrayCountTotal( src );
+    var expected = 0;
+    test.identical( got, expected );
 
-  test.case = 'Negative result';
-  var got = _.arrayCountTotal( [ 2, -3, 4, -4, 6, -7 ] );
-  var expected = -2;
-  test.identical( got, expected );
+    test.case = 'mix of nulls and zeros';
+    var src = makeLong( [ 0, null, null, 0, 0, 0, null ] );
+    var got = _.arrayCountTotal( src );
+    var expected = 0;
+    test.identical( got, expected );
 
-  test.case = 'Zero';
-  var got = _.arrayCountTotal( [ 2, -2, 4, -4, 6, -6 ] );
-  var expected = 0;
-  test.identical( got, expected );
+    /* array elements are numbers */
 
-  // Array elements are booleans
+    test.case = 'sum of no repeated elements';
+    var src = makeLong( [ 1, 3, 5, 7, 9, 1, 3 ] );
+    var got = _.arrayCountTotal( src );
+    var expected = 29;
+    test.identical( got, expected );
 
-  test.case = 'All true';
-  var got = _.arrayCountTotal( [ true, true, true, true ] );
-  var expected = 4;
-  test.identical( got, expected );
+    /* array elements are booleans */
 
-  test.case = 'All false';
-  var got = _.arrayCountTotal( [ false, false, false, false, false ] );
-  var expected = 0;
-  test.identical( got, expected );
+    test.case = 'all true';
+    var src = makeLong( [ true, true, true, true ] );
+    var got = _.arrayCountTotal( src );
+    var expected = 4;
+    test.identical( got, expected );
 
-  test.case = 'Mix of true and false';
-  var got = _.arrayCountTotal( [ false, false, true, false, true, false, false, true ] );
-  var expected = 3;
-  test.identical( got, expected );
+    test.case = 'all false';
+    var src = makeLong( [ false, false, false, false, false ] );
+    var got = _.arrayCountTotal( src );
+    var expected = 0;
+    test.identical( got, expected );
 
-  // Array elements are numbers and booleans
+    test.case = 'mix of true and false';
+    var src = makeLong( [ false, false, true, false, true, false, false, true ] );
+    var got = _.arrayCountTotal( src );
+    var expected = 3;
+    test.identical( got, expected );
 
-  test.case = 'All true and numbers';
-  var got = _.arrayCountTotal( [ true, 2, 1, true, true, 0, true ] );
-  var expected = 7;
-  test.identical( got, expected );
+    /* array elements are numbers and booleans */
 
-  test.case = 'All false and numbers';
-  var got = _.arrayCountTotal( [ 1, false, 0, false, false, 4, 3, false, false ] );
-  var expected = 8;
-  test.identical( got, expected );
+    test.case = 'all true and numbers';
+    var src = makeLong( [ true, 2, 1, true, true, 0, true ] );
+    var got = _.arrayCountTotal( src );
+    var expected = 7;
+    test.identical( got, expected );
 
-  test.case = 'Mix of true, false and numbers';
-  var got = _.arrayCountTotal( [ false, false, 0, true, false, 10, true, false, false, true, 2 ] );
-  var expected = 15;
-  test.identical( got, expected );
+    test.case = 'all false and numbers';
+    var src = makeLong( [ 1, false, 0, false, false, 4, 3, false, false ] );
+    var got = _.arrayCountTotal( src );
+    var expected = 8;
+    test.identical( got, expected );
 
-  test.case = 'Mix of true, false, numbers and null';
-  var got = _.arrayCountTotal( [ null, false, false, 0, true, null, false, 10, true, false, false, true, 2, null ] );
-  var expected = 15;
-  test.identical( got, expected );
+    test.case = 'mix of true, false, numbers and null';
+    var src = makeLong( [ null, false, false, 0, true, null, false, 10, true, false, false, true, 2, null ] );
+    var got = _.arrayCountTotal( src );
+    var expected = 15;
+    test.identical( got, expected );
 
-  test.case = 'Mix of true, false, numbers and null - negative result';
-  var got = _.arrayCountTotal( [ null, false, false, 0, true, null, -8, false, 10, true, false, -9, false, true, 2, null ] );
-  var expected = -2;
-  test.identical( got, expected );
+    /* array has negative numbers */
 
-  /**/
+    if( !_.bufferTypedIs( makeLong( 0 ) ) )
+    {
+      test.case = 'numbers, negative result';
+      var src = makeLong( [ 2, -3, 4, -4, 6, -7 ] );
+      var got = _.arrayCountTotal( src );
+      var expected = -2;
+      test.identical( got, expected );
+
+      test.case = 'mix of true, false, numbers and null - negative result';
+      var src = makeLong( [ null, false, false, 0, true, null, -8, false, 10, true, false, -9, false, true, 2, null ] );
+      var got = _.arrayCountTotal( src );
+      var expected = -2;
+      test.identical( got, expected );
+    }
+  }
+
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountTotal();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayCountTotal() );
 
-  test.case = 'Too many arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountTotal( [ 1, 2, 3, 'abc', 13 ], [] );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayCountTotal( [ 1, 2, -3, 13 ], [] ) );
 
-  test.case = 'srcArray is undefined';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountTotal( undefined );
-  });
-
-  test.case = 'srcArray is null';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountTotal( null  );
-  });
-
-  test.case = 'srcArray is string';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountTotal( 'wrong argument' );
-  });
-
-  test.case = 'srcArray is number';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountTotal( 3 );
-  });
+  test.case = 'wrong type of srcArray';
+  test.shouldThrowErrorSync( () => _.arrayCountTotal( undefined ) );
+  test.shouldThrowErrorSync( () => _.arrayCountTotal( null ) );
+  test.shouldThrowErrorSync( () => _.arrayCountTotal( 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.arrayCountTotal( 3 ) );
 
   test.case = 'srcArray contains strings';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountTotal( [ 1, '2', 3, 'a' ] );
-  });
+  test.shouldThrowErrorSync( () => _.arrayCountTotal( [ 1, '2', 3, 'a' ] ) );
 
   test.case = 'srcArray contains arrays';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayCountTotal( [ 1, [ 2 ], 3, [ null ] ] );
-  });
-
+  test.shouldThrowErrorSync( () => _.arrayCountTotal( [ 1, [ 2 ], 3, [ null ] ] ) );
 };
 
 //

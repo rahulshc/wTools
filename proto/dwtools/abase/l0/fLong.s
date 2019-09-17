@@ -5062,7 +5062,7 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 //
 
 /**
- * The arrayCountTotal() adds all the elements in { -srcArray- }, elements can be numbers or booleans ( it considers them 0 or 1 ).
+ * The arrayCountTotal() adds all the elements in {-srcArray-}, elements can be numbers or booleans ( it considers them 0 or 1 ).
  *
  * @param { Array } srcArray - The source array.
  *
@@ -5074,11 +5074,11 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
  * _.arrayCountTotal( [ true, false, false ] );
  * // returns 1
  *
- * @returns { Number } - Returns the sum of the elements in { srcArray }.
+ * @returns { Number } - Returns the sum of the elements in {-srcArray-}.
  * @function arrayCountTotal
  * @throws { Error } If passed arguments is different than one.
- * @throws { Error } If the first argument is not an array-like object.
- * @throws { Error } If { srcArray} doesn´t contain number-like elements.
+ * @throws { Error } If the first argument is not a long object.
+ * @throws { Error } If {-srcArray-} doesn´t contain number-like elements.
  * @memberof wTools
  */
 
@@ -5091,7 +5091,7 @@ function arrayCountTotal( srcArray )
 
   for( let i = 0 ; i < srcArray.length ; i++ )
   {
-    _.assert( _.boolIs( srcArray[ i ] ) || _.numberIs( srcArray[ i ] )|| srcArray[ i ] === null );
+    _.assert( _.boolIs( srcArray[ i ] ) || _.numberIs( srcArray[ i ] ) || srcArray[ i ] === null );
     result += srcArray[ i ];
   }
 
