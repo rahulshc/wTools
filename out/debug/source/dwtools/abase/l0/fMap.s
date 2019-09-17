@@ -4542,7 +4542,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
       throw _._err
       ({
         args : [ arr.join( ' ' ), _.strQuote( but ).join( ', ' ) ],
-        level : 2,
+        level : 3,
       });
     }
 

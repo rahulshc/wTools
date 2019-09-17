@@ -3594,6 +3594,8 @@ function strConcat( srcs, o )
     }
     if( src.length )
     nl = src[ src.length-1 ] === o.lineDelimter;
+    // if( _.errIs( src ) )
+    // debugger;
     result += src;
   }
 
