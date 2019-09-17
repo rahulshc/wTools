@@ -23624,147 +23624,150 @@ function arrayRemovedOnceStrictly( test )
 
 function arrayRemoveElement( test )
 {
+  test.open( 'array' );
+  run( ( src ) => _.arrayMake( src ) );
+  test.close( 'array' );
 
-  test.case = 'simple';
+  /* - */
 
-  var dst = [];
-  var got = _.arrayRemoveElement( dst, 1 );
-  test.identical( dst, [ ] );
+  test.open( 'unroll' );
+  run( ( src ) => _.unrollMake( src ) );
+  test.close( 'unroll' );
 
-  var dst = [ 1 ];
-  var got = _.arrayRemoveElement( dst, 1 );
-  test.identical( dst, [  ] );
+  /* - */
 
-  var dst = [ 2, 2, 1 ];
-  var got = _.arrayRemoveElement( dst, 2 );
-  test.identical( dst, [ 1 ] );
-
-  var dst = [ 2, 2, 1 ];
-  var got = _.arrayRemoveElement( dst, 1 );
-  test.identical( dst, [ 2, 2 ] );
-
-  var dst = [ 1, 1, 1 ];
-  var got = _.arrayRemoveElement( dst, 1 );
-  test.identical( dst, [ ] );
-
-  var dst = [ 1, 1, 1 ];
-  var got = _.arrayRemoveElement( dst, [ 1 ] );
-  test.identical( dst, [ 1, 1, 1 ] );
-
-  var dst = [ 1 ];
-  var got = _.arrayRemoveElement( dst, '1' );
-  test.identical( dst, [ 1 ] );
-
-  var dst = [ 1 ];
-  var got = _.arrayRemoveElement( dst, -1 );
-  test.identical( dst, [ 1 ] );
-
-  var dst = [ 1 ];
-  var got = _.arrayRemoveElement( dst, [ 1 ] );
-  test.identical( dst, [ 1 ] );
-
-  var dst = [ { x : 1 } ];
-  var got = _.arrayRemoveElement( dst, { x : 1 } );
-  test.identical( dst, [ { x : 1 } ] );
-
-  var got = _.arrayRemoveElement( [ 1 ], '1' );
-  test.identical( got, [ 1 ] );
-
-  var got = _.arrayRemoveElement( [ 1 ], -1 );
-  test.identical( got, [ 1 ] );
-
-  var got = _.arrayRemoveElement( [ 1 ], [ 1 ] );
-  test.identical( got, [ 1 ] );
-
-  function onEqualize( a, b )
+  function run( makeLong )
   {
-    return a.value === b;
+    test.case = 'dst = empty array, ins = number';
+    var dst = makeLong( [] );
+    var got = _.arrayRemoveElement( dst, 1 );
+    test.identical( dst, [] );
+    test.is( got === dst );
+
+    test.case = 'dst = array, ins = number, full removing';
+    var dst = makeLong( [ 1 ] );
+    var got = _.arrayRemoveElement( dst, 1 );
+    test.identical( dst, [] );
+    test.is( got === dst );
+
+    var dst = makeLong( [ 2, 2, 2, 2, 2 ] );
+    var got = _.arrayRemoveElement( dst, 2 );
+    test.identical( dst, [] );
+    test.is( got === dst );
+
+    test.case = 'dst = array, ins = number, not a full removing';
+    var dst = makeLong( [ 2, 2, 1 ] );
+    var got = _.arrayRemoveElement( dst, 2 );
+    test.identical( dst, [ 1 ] );
+    test.is( got === dst );
+
+    test.case = 'dst = array, ins = array, not a evaluator, no removing';
+    var dst = makeLong( [ 1, 1, 1 ] );
+    var got = _.arrayRemoveElement( dst, [ 1 ] );
+    test.identical( dst, [ 1, 1, 1 ] );
+    test.is( got === dst );
+
+    test.case = 'dst = array, ins = string, no removing';
+    var dst = makeLong( [ 1, 1, 1 ] );
+    var got = _.arrayRemoveElement( dst, '1' );
+    test.identical( dst, [ 1, 1, 1 ] );
+    test.is( got === dst );
+
+    test.case = 'dst = array, ins = negative number, no removing';
+    var dst = makeLong( [ 1, 1, 1 ] );
+    var got = _.arrayRemoveElement( dst, -1 );
+    test.identical( dst, [ 1, 1, 1 ] );
+    test.is( got === dst );
+
+    test.case = 'dst = array with map, ins = same map, not a evaluator, not removing';
+    var dst = makeLong( [ { x : 1 }, { x : 1 } ] );
+    var got = _.arrayRemoveElement( dst, { x : 1 } );
+    test.identical( dst, [ { x : 1 }, { x : 1 } ] );
+    test.is( got === dst );
+
+    test.case = 'dst = array with map, ins = number, equalizer, removing';
+    var dst = makeLong( [ { value : 1 }, { value : 1 }, { value : 2 } ] );
+    var onEqualize = ( a, b ) => a.value === b;
+    var got = _.arrayRemoveElement( dst, 1, onEqualize );
+    test.identical( got, [ { value : 2 } ] );
+    test.is( got === dst );
+
+    test.case = 'dst = array, ins = number, offset for removing';
+    var dst = makeLong( [ 1, 2, 3, 1, 2, 3 ] );
+    var got = _.arrayRemoveElement( dst, 1, 2 );
+    test.identical( got, [ 1, 2, 3, 2, 3 ] );
+    test.is( dst === got )
+
+    test.case = 'dst = array with maps, ins = map, equalizer, no removing';
+    var dst = makeLong( [ { num : 1 }, { num : 2 }, { num : 3 } ] );
+    var onEqualize = ( a, b ) => a.num === b.num;
+    var got = _.arrayRemoveElement( dst, { num : 4 }, onEqualize );
+    test.identical( dst, [ { num : 1 }, { num : 2 }, { num : 3 } ] );
+    test.is( got === dst );
+
+    test.case = 'dst = array with maps, ins = map, equalizer, removing';
+    var dst = makeLong( [ { num : 1 }, { num : 2 }, { num : 3 } ] );
+    var onEqualize = ( a, b ) => a.num === b.num;
+    var got = _.arrayRemoveElement( dst, { num : 1 }, onEqualize );
+    test.identical( dst, [ { num : 2 }, { num : 3 } ] );
+    test.is( got === dst );
+
+    test.case = 'dst = array with maps, ins = map, one evaluator, no removing';
+    var dst = makeLong( [ { num : 1 }, { num : 2 }, { num : 3 } ] );
+    var onEvaluate = ( a ) => a.num;
+    var got = _.arrayRemoveElement( dst, { num : 4}, onEvaluate );
+    test.identical( dst, [ { num : 1 }, { num : 2 }, { num : 3 } ] );
+    test.is( got === dst );
+
+    test.case = 'dst = array with maps, ins = map, two evaluators, removing';
+    var dst = makeLong( [ { num : 1 }, { num : 2 }, { num : 3 } ] );
+    var got = _.arrayRemoveElement( dst, 1, ( e ) => e.num, ( e ) => e );
+    test.identical( dst, [ { num : 2 }, { num : 3 } ] );
+    test.is( got === dst );
+
+    test.case = 'dst = complex array, ins = array, one evaluator, full removing';
+    var dst = makeLong( [ [ 1 ], [ 1 ], [ 1 ] ] );
+    var onEvaluate = ( a ) => a[ 0 ];
+    var got = _.arrayRemoveElement( dst, [ 1 ], onEvaluate );
+    test.identical( dst, [] );
+    test.is( got === dst );
+
+    test.case = 'dst = complex array, ins = number, two evaluators, full removing';
+    var dst = makeLong( [ [ 1 ], [ 1 ], [ 1 ] ] );
+    var onEvaluate1 = ( a ) => a[ 0 ];
+    var onEvaluate2 = ( a ) => a;
+    var got = _.arrayRemoveElement( dst, 1, onEvaluate1, onEvaluate2 );
+    test.identical( dst, [] );
+    test.is( got === dst );
   }
-  var got = _.arrayRemoveElement( [ { value : 1 }, { value : 1 }, { value : 2 } ], 1, onEqualize );
-  test.identical( got, [ { value : 2 } ] );
 
-  var src = [ 1, 2, 3, 1, 2, 3 ];
-  var got = _.arrayRemoveElement( src, 1, 1 );
-  test.identical( got, [ 1, 2, 3, 2, 3 ] );
-  test.is( src == got )
-
-  test.case = 'equalizer 2 args';
-
-  var dst = [ { num : 1 }, { num : 2 }, { num : 3 } ];
-  var onEqualize = function( a, b )
-  {
-    return a.num === b.num;
-  }
-  var got = _.arrayRemoveElement( dst, { num : 4 }, onEqualize );
-  test.identical( dst, [ { num : 1 }, { num : 2 }, { num : 3 } ] );
-
-  var dst = [ { num : 1 }, { num : 2 }, { num : 3 } ];
-  var onEqualize = function( a, b )
-  {
-    return a.num === b.num;
-  }
-  var got = _.arrayRemoveElement( dst, { num : 1 }, onEqualize );
-  test.identical( dst, [ { num : 2 }, { num : 3 } ] );
-
-  test.case = 'equalizer 1 arg';
-
-  var dst = [ { num : 1 }, { num : 2 }, { num : 3 } ];
-  var onEqualize = function( a )
-  {
-    return a.num;
-  }
-  var got = _.arrayRemoveElement( dst, 4, onEqualize );
-  test.identical( dst, [ { num : 1 }, { num : 2 }, { num : 3 } ] );
-
-  var dst = [ { num : 1 }, { num : 2 }, { num : 3 } ];
-  var got = _.arrayRemoveElement( dst, 1, ( e ) => e.num, ( e ) => e );
-  test.identical( dst, [ { num : 2 }, { num : 3 } ] );
-
-  test.case = 'equalizer 1 arg';
-
-  var dst = [ [ 1 ], [ 1 ], [ 1 ] ];
-  var onEqualize = function( a )
-  {
-    return a[ 0 ];
-  }
-  var got = _.arrayRemoveElement( dst, [ 1 ], onEqualize );
-  test.identical( dst, [ ] );
-
-  test.case = 'equalizer 2 args';
-
-  var dst = [ [ 1 ], [ 1 ], [ 1 ] ];
-  var onEqualize = function( a )
-  {
-    return a[ 0 ];
-  }
-  var onEqualize2 = function( a )
-  {
-    return a;
-  }
-  var got = _.arrayRemoveElement( dst, 1, onEqualize, onEqualize2 );
-  test.identical( dst, [ ] );
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'no args';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayRemoveElement();
-  })
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement() );
 
-  test.case = 'dst is not an array';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayRemoveElement( 1, 1 );
-  })
+  test.case = 'one argument';
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ] ) );
 
-  test.case = 'fourth argument is not a routine';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayRemoveElement( [ 1 ], 1, 1, 1 );
-  })
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1, 1 ], 0, 1, ( e ) => e, ( e ) => e, 'extra' ) );
 
+  test.case = 'wrong type of dstArray';
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( _.argumentsArrayMake( [ 1 ] ), 1 ) );
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( new U8x( [ 1 ] ), 1 ) );
+
+  test.case = 'evaluator is not a routine';
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, 1, 1 ) );
+
+  test.case = 'evaluator ( equalizer ) has wrong length';
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, () => 1 ) );
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a, b, c ) => a == b && b == c ) );
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a ) => a, () => 1 ) );
+  test.shouldThrowErrorSync( () => _.arrayRemoveElement( [ 1 ], 1, ( a ) => a, ( a, b ) => a == b ) );
 }
 
 //

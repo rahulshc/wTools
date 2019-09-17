@@ -5062,7 +5062,7 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 //
 
 /**
- * The arrayCountTotal() adds all the elements in {-srcArray-}, elements can be numbers or booleans ( it considers them 0 or 1 ).
+ * The routine arrayCountTotal() adds all the elements in {-srcArray-}, elements can be numbers or booleans ( it considers them 0 or 1 ).
  *
  * @param { Array } srcArray - The source array.
  *
@@ -9023,7 +9023,7 @@ let Routines =
   arrayRightDefined,
 
   arrayCountElement, /* qqq : cover by tests | Dmytro : covered */
-  arrayCountTotal, /* qqq : cover by tests */
+  arrayCountTotal, /* qqq : cover by tests | Dmytro : covered */
   arrayCountUnique,
 
   // array prepend
@@ -9095,7 +9095,7 @@ let Routines =
   arrayRemovedOnce,
   arrayRemovedOnceStrictly,
 
-  arrayRemoveElement, /* qqq : should remove all, check test coverage */
+  arrayRemoveElement, /* qqq : should remove all, check test coverage | Dmytro : removes all possible elements, extended coverage */
   arrayRemoveElementOnce,
   arrayRemoveElementOnceStrictly,
   arrayRemovedElement,
