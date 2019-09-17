@@ -205,6 +205,79 @@ function buffersAreIdentical( src1, src2 )
 
 /* qqq : implement, cover, document */
 
+// function bufferMake( ins, src )
+// {
+//   let result, length;
+//
+//   if( _.routineIs( ins ) )
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   if( _.argumentsArrayIs( ins ) )
+//   ins = [];
+//
+//   if( src === undefined )
+//   {
+//     length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+//   }
+//   else
+//   {
+//     if( _.longIs( src ) || _.bufferNodeIs( src ) )
+//     length = src.length;
+//     else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
+//     {
+//       length = src.byteLength;
+//       src = new U8x( src );
+//     }
+//     else if( _.numberIs( src ) )
+//     length = src;
+//     else _.assert( 0 );
+//   }
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+//
+//   if( _.longIs( src ) || _.bufferAnyIs( src ) )
+//   {
+//
+//     if( ins.constructor === Array )
+//     {
+//       result = new( _.constructorJoin( ins.constructor, src ) );
+//     }
+//     else if( _.routineIs( ins ) )
+//     {
+//       if( ins.prototype.constructor.name === 'Array' )
+//       result = _ArraySlice.call( src );
+//       else
+//       result = new ins( src );
+//     }
+//     else if( _.bufferRawIs( ins ) )
+//     result = new U8x( src ).buffer;
+//     else if( _.bufferRawIs( ins ) )
+//     result = new BufferView( new U8x( src ).buffer );
+//     else if ( _.bufferNodeIs( ins ) )
+//     result = BufferNode.from( src );
+//     else
+//     result = new ins.constructor( src );
+//
+//   }
+//   else
+//   {
+//     if( _.routineIs( ins ) )
+//     result = new ins( length );
+//     else if( _.bufferNodeIs( ins ) )
+//     result = BufferNode.alloc( length );
+//     else if( _.bufferViewIs( ins ) )
+//     result = new BufferView( new BufferRaw( length ) );
+//     else if( _.unrollIs( ins ) )
+//     result = _.unrollMake( length );
+//     else
+//     result = new ins.constructor( length );
+//   }
+//
+//   return result;
+// }
+
 function bufferMake( ins, src )
 {
   let result, length;
@@ -322,7 +395,7 @@ function bufferMake( ins, src )
  */
 
 /* qqq : implement, cover, document */
-/* qqq :  */
+/* Dmytro : implemented, covered, documented */
 
 function bufferMakeUndefined( ins, src )
 {
