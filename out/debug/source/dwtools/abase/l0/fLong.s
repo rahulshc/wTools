@@ -5814,7 +5814,7 @@ function arrayPrependedArrays( dstArray, insArray )
     return result;
   }
 
-  for( let a = insArray.length - 1 ; a >= 0 ; a-- )
+  for( let a = 0, len = insArray.length ; a < len ; a++ )
   {
     if( _.longIs( insArray[ a ] ) )
     {
@@ -5880,8 +5880,8 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
     let index = _.arrayLeftIndex( dstArray, element, evaluator1, evaluator2 );
     if( index === -1 )
     {
-      // dstArray.unshift( argument );
-      dstArray.splice( result, 0, element );
+      dstArray.unshift( element );
+      // dstArray.splice( result, 0, element );
       result += 1;
     }
   }
@@ -5895,7 +5895,7 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
       if( array === dstArray )
       array = array.slice();
       // for( let a = array.length - 1; a >= 0; a-- )
-      for( let a = 0, len2 = array.length ; a < len2 ; a++ )
+      for( let a = array.length - 1; a >= 0 ; a-- )
       _prependOnce( array[ a ] );
     }
     else

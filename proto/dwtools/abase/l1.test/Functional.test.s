@@ -4490,11 +4490,11 @@ function indexPrepending( test )
   {
     'ak' : 'a',
     'ak2' : 'a',
-    'x' : 'c',
+    'x' : [ 'c', 'b', 'a' ],
     'bk' : 'b',
     'bk2' : 'b',
     'ck' : 'c',
-    'ck2' : [ 'c', 'b', 'a' ],
+    'ck2' : 'c',
   }
   var src = { ak : 'a', bk : 'b', ck : 'c' };
   var got = _.indexPrepending( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
