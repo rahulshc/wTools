@@ -209,9 +209,6 @@ function bufferMake( ins, src )
 {
   let result, length;
 
-  if( _.argumentsArrayIs( ins ) )
-  ins = _.arrayMake( ins );
-
   if( _.routineIs( ins ) )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
@@ -237,6 +234,8 @@ function bufferMake( ins, src )
   _.assert( _.numberIsFinite( length ) );
   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
 
+
+
   if( _.longIs( src ) || _.bufferAnyIs( src ) )
   {
     if( _.routineIs( ins ) )
@@ -245,10 +244,8 @@ function bufferMake( ins, src )
       for( let i = 0 ; i < length ; i++ )
       result[ i ] = src[ i ];
     }
-    else if( ins.constructor === Array )
-    {
-      result = _.unrollIs( ins ) ? _.unrollMake( src ) : new( _.constructorJoin( ins.constructor, src ) );
-    }
+    else if( !_.bufferAnyIs( ins ) && src !== undefined )
+    result = this.array.ArrayType.from( src );
     else if( _.bufferRawIs( ins ) )
     result = new U8x( src ).buffer;
     else if( _.bufferViewIs( ins ) )
@@ -267,6 +264,8 @@ function bufferMake( ins, src )
     else
     insert = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
 
+    if( !_.bufferAnyIs( ins ) && src === undefined )
+    result = new this.array.ArrayType( length );
     if( _.routineIs( ins ) )
     result = new ins( length );
     else if( _.bufferNodeIs( ins ) )

@@ -1,6 +1,6 @@
 ( function _Buffer_test_s_( ) {
 
-'use strict'; 
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
@@ -304,7 +304,7 @@ function bufferMake( test )
   [
     array,
     unroll,
-    argumentsArray,
+    // argumentsArray,
     bufferRaw,
     bufferView,
   ];
