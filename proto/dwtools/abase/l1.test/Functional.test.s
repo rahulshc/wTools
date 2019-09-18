@@ -6,6 +6,7 @@ if( typeof module !== 'undefined' )
 {
   let _ = require( '../Layer2.s' );
   _.include( 'wTesting' );
+  _.include( 'wSelector' );
 }
 
 var _ = wTools;
@@ -2634,6 +2635,798 @@ function entityFilterDeep( test )
   test.shouldThrowErrorSync( () => _.entityFilterDeep( undefined, callback1 ) );
 }
 
+//
+
+function index( test )
+{
+
+  /* */
+
+  test.open( 'no onEach' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.index( src );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.index( src );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : undefined, b : undefined, c : undefined } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.index( src );
+  var exp = {};
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'no onEach' );
+
+  /* */
+
+  test.open( 'onEach - routine returning element' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.index( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { 1 : 1, 2 : 2, 3 : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.index( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.index( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { 'src' : 'src' } );
+
+  test.close( 'onEach - routine returning element' );
+
+  /* */
+
+  test.open( 'onEach - routine returning key' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.index( src, ( e, k ) => k );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.index( src, ( e, k ) => k );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : undefined, b : undefined, c : undefined } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.index( src, ( e, k ) => k );
+  var exp = {}
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning key' );
+
+  /* */
+
+  test.open( 'onEach - routine returning map' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.index( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp = { '[object Object]' : 3 };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.index( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp = { '[object Object]' : 'c' };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.index( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp = { '[object Object]' : 'src' };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning map' );
+
+  /* */
+
+  test.open( 'onEach - selector' );
+
+  test.case = 'src - map';
+  var src = { a : { f1 : 'a.f1', f2 : 'a.f2' }, b : { f1 : 'b.f1', f2 : 'b.f2' }, c : { f1 : 'c.f1', f2 : 'c.f2' } };
+  var got = _.index( src, '*/f1' );
+  var exp = { 'a.f1' : { f1 : 'a.f1', f2 : 'a.f2' }, 'b.f1' : { f1 : 'b.f1', f2 : 'b.f2' }, 'c.f1' : { f1 : 'c.f1', f2 : 'c.f2' } };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - array';
+  var src = [ { f1 : 'a.f1', f2 : 'a.f2' }, { f1 : 'b.f1', f2 : 'b.f2' }, { f1 : 'c.f1', f2 : 'c.f2' } ];
+  var got = _.index( src, '*/f1' );
+  var exp = { 'a.f1' : { f1 : 'a.f1', f2 : 'a.f2' }, 'b.f1' : { f1 : 'b.f1', f2 : 'b.f2' }, 'c.f1' : { f1 : 'c.f1', f2 : 'c.f2' } };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.index( src, '*/length' );
+  var exp = { '3' : src };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - selector' );
+
+  /* */
+
+} /* end of function index */
+
+//
+
+function indexExtending( test )
+{
+
+  /* */
+
+  test.open( 'no onEach' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexExtending( src );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexExtending( src );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : undefined, b : undefined, c : undefined } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexExtending( src );
+  var exp = { 'src' : undefined };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'no onEach' );
+
+  /* */
+
+  test.open( 'onEach - routine returning element' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexExtending( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { 1 : 1, 2 : 2, 3 : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexExtending( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexExtending( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { 'src' : 'src' } );
+
+  test.close( 'onEach - routine returning element' );
+
+  /* */
+
+  test.open( 'onEach - routine returning key' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexExtending( src, ( e, k ) => k );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexExtending( src, ( e, k ) => k );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : undefined, b : undefined, c : undefined } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexExtending( src, ( e, k ) => k );
+  var exp = {}
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning key' );
+
+  /* */
+
+  test.open( 'onEach - routine returning map' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexExtending( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp =
+  {
+    'a' : 1,
+    'a2' : 1,
+    'b' : 2,
+    'b2' : 2,
+    'c' : 3,
+    'c2' : 3,
+    'x' : 3,
+  }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexExtending( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp =
+  {
+    '0' : 'a',
+    '1' : 'b',
+    '2' : 'c',
+    '12' : 'b',
+    '22' : 'c',
+    '02' : 'a',
+    'x' : 'c',
+  }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexExtending( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp = { 'undefined' : 'src', 'undefined2' : 'src', 'x' : 'src' }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning map' );
+
+  /* */
+
+  test.open( 'onEach - selector' );
+
+  test.case = 'src - map';
+  var src = { a : { f1 : 'a.f1', f2 : 'a.f2' }, b : { f1 : 'b.f1', f2 : 'b.f2' }, c : { f1 : 'c.f1', f2 : 'c.f2' } };
+  var got = _.indexExtending( src, '*/f1' );
+  var exp = { 'a.f1' : { f1 : 'a.f1', f2 : 'a.f2' }, 'b.f1' : { f1 : 'b.f1', f2 : 'b.f2' }, 'c.f1' : { f1 : 'c.f1', f2 : 'c.f2' } };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - array';
+  var src = [ { f1 : 'a.f1', f2 : 'a.f2' }, { f1 : 'b.f1', f2 : 'b.f2' }, { f1 : 'c.f1', f2 : 'c.f2' } ];
+  var got = _.indexExtending( src, '*/f1' );
+  var exp = { 'a.f1' : { f1 : 'a.f1', f2 : 'a.f2' }, 'b.f1' : { f1 : 'b.f1', f2 : 'b.f2' }, 'c.f1' : { f1 : 'c.f1', f2 : 'c.f2' } };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexExtending( src, '*/length' );
+  var exp = { '3' : src };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - selector' );
+
+  /* */
+
+} /* end of function indexExtending */
+
+//
+
+function indexSupplementing( test )
+{
+
+  /* */
+
+  test.open( 'no onEach' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexSupplementing( src );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexSupplementing( src );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : undefined, b : undefined, c : undefined } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexSupplementing( src );
+  var exp = { 'src' : undefined };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'no onEach' );
+
+  /* */
+
+  test.open( 'onEach - routine returning element' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexSupplementing( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { 1 : 1, 2 : 2, 3 : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexSupplementing( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexSupplementing( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { 'src' : 'src' } );
+
+  test.close( 'onEach - routine returning element' );
+
+  /* */
+
+  test.open( 'onEach - routine returning key' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexSupplementing( src, ( e, k ) => k );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexSupplementing( src, ( e, k ) => k );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : undefined, b : undefined, c : undefined } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexSupplementing( src, ( e, k ) => k );
+  var exp = {}
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning key' );
+
+  /* */
+
+  test.open( 'onEach - routine returning map' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexSupplementing( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp =
+  {
+    'a' : 1,
+    'a2' : 1,
+    'b' : 2,
+    'b2' : 2,
+    'c' : 3,
+    'c2' : 3,
+    'x' : 1,
+  }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexSupplementing( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp =
+  {
+    '0' : 'a',
+    '1' : 'b',
+    '2' : 'c',
+    '12' : 'b',
+    '22' : 'c',
+    '02' : 'a',
+    'x' : 'a',
+  }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexSupplementing( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp = { 'undefined' : 'src', 'undefined2' : 'src', 'x' : 'src' }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning map' );
+
+  /* */
+
+  test.open( 'onEach - selector' );
+
+  test.case = 'src - map';
+  var src = { a : { f1 : 'a.f1', f2 : 'a.f2' }, b : { f1 : 'b.f1', f2 : 'b.f2' }, c : { f1 : 'c.f1', f2 : 'c.f2' } };
+  var got = _.indexSupplementing( src, '*/f1' );
+  var exp = { 'a.f1' : { f1 : 'a.f1', f2 : 'a.f2' }, 'b.f1' : { f1 : 'b.f1', f2 : 'b.f2' }, 'c.f1' : { f1 : 'c.f1', f2 : 'c.f2' } };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - array';
+  var src = [ { f1 : 'a.f1', f2 : 'a.f2' }, { f1 : 'b.f1', f2 : 'b.f2' }, { f1 : 'c.f1', f2 : 'c.f2' } ];
+  var got = _.indexSupplementing( src, '*/f1' );
+  var exp = { 'a.f1' : { f1 : 'a.f1', f2 : 'a.f2' }, 'b.f1' : { f1 : 'b.f1', f2 : 'b.f2' }, 'c.f1' : { f1 : 'c.f1', f2 : 'c.f2' } };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexSupplementing( src, '*/length' );
+  var exp = { '3' : src };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - selector' );
+
+  /* */
+
+} /* end of function indexSupplementing */
+
+//
+
+function indexAppending( test )
+{
+
+  /* */
+
+  test.open( 'no onEach' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexAppending( src );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexAppending( src );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : undefined, b : undefined, c : undefined } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexAppending( src );
+  var exp = { 'src' : undefined };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'no onEach' );
+
+  /* */
+
+  test.open( 'onEach - routine returning element' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexAppending( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { 1 : 1, 2 : 2, 3 : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexAppending( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexAppending( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { 'src' : 'src' } );
+
+  test.close( 'onEach - routine returning element' );
+
+  /* */
+
+  test.open( 'onEach - routine returning key' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexAppending( src, ( e, k ) => k );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexAppending( src, ( e, k ) => k );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : undefined, b : undefined, c : undefined } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexAppending( src, ( e, k ) => k );
+  var exp = {}
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning key' );
+
+  /* */
+
+  test.open( 'onEach - routine returning map' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexAppending( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp =
+  {
+    'a' : 1,
+    'a2' : 1,
+    'b' : 2,
+    'b2' : 2,
+    'c' : 3,
+    'c2' : 3,
+    'x' : [ 1, 2, 3 ],
+  }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexAppending( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp =
+  {
+    '0' : 'a',
+    '1' : 'b',
+    '2' : 'c',
+    '12' : 'b',
+    '22' : 'c',
+    '02' : 'a',
+    'x' : [ 'a', 'b', 'c' ],
+  }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexAppending( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp = { 'undefined' : 'src', 'undefined2' : 'src', 'x' : 'src' }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning map' );
+
+  /* */
+
+  test.open( 'onEach - selector' );
+
+  test.case = 'src - map';
+  var src = { a : { f1 : 'a.f1', f2 : 'a.f2' }, b : { f1 : 'b.f1', f2 : 'b.f2' }, c : { f1 : 'c.f1', f2 : 'c.f2' } };
+  var got = _.indexAppending( src, '*/f1' );
+  var exp = { 'a.f1' : { f1 : 'a.f1', f2 : 'a.f2' }, 'b.f1' : { f1 : 'b.f1', f2 : 'b.f2' }, 'c.f1' : { f1 : 'c.f1', f2 : 'c.f2' } };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - array';
+  var src = [ { f1 : 'a.f1', f2 : 'a.f2' }, { f1 : 'b.f1', f2 : 'b.f2' }, { f1 : 'c.f1', f2 : 'c.f2' } ];
+  var got = _.indexAppending( src, '*/f1' );
+  var exp = { 'a.f1' : { f1 : 'a.f1', f2 : 'a.f2' }, 'b.f1' : { f1 : 'b.f1', f2 : 'b.f2' }, 'c.f1' : { f1 : 'c.f1', f2 : 'c.f2' } };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexAppending( src, '*/length' );
+  var exp = { '3' : src };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - selector' );
+
+  /* */
+
+} /* end of function indexAppending */
+
+//
+
+function indexPrepending( test )
+{
+
+  /* */
+
+  test.open( 'no onEach' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexPrepending( src );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexPrepending( src );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : undefined, b : undefined, c : undefined } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexPrepending( src );
+  var exp = { 'src' : undefined };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'no onEach' );
+
+  /* */
+
+  test.open( 'onEach - routine returning element' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexPrepending( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { 1 : 1, 2 : 2, 3 : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexPrepending( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexPrepending( src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { 'src' : 'src' } );
+
+  test.close( 'onEach - routine returning element' );
+
+  /* */
+
+  test.open( 'onEach - routine returning key' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexPrepending( src, ( e, k ) => k );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : 1, b : 2, c : 3 } );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexPrepending( src, ( e, k ) => k );
+  test.is( src !== got );
+  test.identical( _.entityLength( got ), _.entityLength( src ) );
+  test.identical( got, { a : undefined, b : undefined, c : undefined } );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexPrepending( src, ( e, k ) => k );
+  var exp = {}
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning key' );
+
+  /* */
+
+  test.open( 'onEach - routine returning map' );
+
+  test.case = 'src - map';
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.indexPrepending( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp =
+  {
+    'a' : 1,
+    'a2' : 1,
+    'b' : 2,
+    'b2' : 2,
+    'c' : 3,
+    'c2' : 3,
+    'x' : [ 1, 2, 3 ],
+  }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - array';
+  var src = [ 'a', 'b', 'c' ];
+  var got = _.indexPrepending( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp =
+  {
+    '0' : 'a',
+    '1' : 'b',
+    '2' : 'c',
+    '12' : 'b',
+    '22' : 'c',
+    '02' : 'a',
+    'x' : [ 'a', 'b', 'c' ],
+  }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexPrepending( src, ( e, k ) => { return { [ k ] : e, [ k+'2' ] : e, [ 'x' ] : e } } );
+  var exp = { 'undefined' : 'src', 'undefined2' : 'src', 'x' : 'src' }
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning map' );
+
+  /* */
+
+  test.open( 'onEach - selector' );
+
+  test.case = 'src - map';
+  var src = { a : { f1 : 'a.f1', f2 : 'a.f2' }, b : { f1 : 'b.f1', f2 : 'b.f2' }, c : { f1 : 'c.f1', f2 : 'c.f2' } };
+  var got = _.indexPrepending( src, '*/f1' );
+  var exp = { 'a.f1' : { f1 : 'a.f1', f2 : 'a.f2' }, 'b.f1' : { f1 : 'b.f1', f2 : 'b.f2' }, 'c.f1' : { f1 : 'c.f1', f2 : 'c.f2' } };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - array';
+  var src = [ { f1 : 'a.f1', f2 : 'a.f2' }, { f1 : 'b.f1', f2 : 'b.f2' }, { f1 : 'c.f1', f2 : 'c.f2' } ];
+  var got = _.indexPrepending( src, '*/f1' );
+  var exp = { 'a.f1' : { f1 : 'a.f1', f2 : 'a.f2' }, 'b.f1' : { f1 : 'b.f1', f2 : 'b.f2' }, 'c.f1' : { f1 : 'c.f1', f2 : 'c.f2' } };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - str';
+  var src = 'src';
+  var got = _.indexPrepending( src, '*/length' );
+  var exp = { '3' : src };
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - selector' );
+
+  /* */
+
+} /* end of function indexPrepending */
+
 // --
 //
 // --
@@ -3447,6 +4240,12 @@ var Self =
     entityMap,
     entityFilter,
     entityFilterDeep,
+
+    index,
+    indexExtending,
+    indexSupplementing,
+    indexAppending,
+    indexPrepending,
 
     //
 

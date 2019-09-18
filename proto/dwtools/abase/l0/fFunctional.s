@@ -275,7 +275,6 @@ function entityEach( src, onEach )
 
   _.assert( arguments.length === 2 );
   _.assert( onEach.length <= 3 );
-  // _.assert( onEach.length <= 2 );
   _.assert( _.routineIs( onEach ) );
 
   /* */
@@ -307,87 +306,6 @@ function entityEach( src, onEach )
 
   return src;
 }
-
-//
-
-function entityEachKey( src, onEach )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( onEach.length <= 3 );
-  // _.assert( onEach.length <= 2 );
-  _.assert( _.routineIs( onEach ) );
-
-  /* */
-
-  if( _.longIs( src ) )
-  {
-
-    for( let index = 0 ; index < src.length ; index++ )
-    {
-      onEach( src[ index ], undefined, index, src );
-    }
-
-  }
-  else if( _.objectLike( src ) )
-  {
-
-    let index = 0;
-    for( let k in src )
-    {
-      onEach( k, src[ k ], index, src );
-      index += 1;
-    }
-
-  }
-  else
-  {
-    onEach( src, undefined, undefined, undefined );
-  }
-
-  /* */
-
-  return src;
-
-  // if( arguments.length === 2 )
-  // o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
-  //
-  // _.routineOptions( eachKey, o );
-  // _.assert( arguments.length === 1 || arguments.length === 2 );
-  // _.assert( o.onUp && o.onUp.length <= 3 );
-  //
-  // /* */
-  //
-  // if( _.longIs( o.src ) )
-  // {
-  //
-  //   for( let index = 0 ; index < o.src.length ; index++ )
-  //   {
-  //     o.onUp.call( o, o.src[ index ], undefined, index );
-  //   }
-  //
-  // }
-  // else if( _.objectLike( o.src ) )
-  // {
-  //
-  //   let index = 0;
-  //   for( let k in o.src )
-  //   {
-  //     o.onUp.call( o, k, o.src[ k ], index );
-  //     index += 1;
-  //   }
-  //
-  // }
-  // else _.assert( 0, 'not container' );
-  //
-  // /* */
-  //
-  // return src;
-}
-
-var defaults = entityEachKey.defaults = Object.create( null );
-
-defaults.src = null;
-defaults.onUp = function( e, k ){};
 
 //
 
@@ -429,6 +347,259 @@ function entityEachOwn( src, onEach )
   /* */
 
   return src;
+}
+
+// //
+//
+// function entityEachKey( src, onEach )
+// {
+//   _.assert( arguments.length === 2 );
+//   _.assert( onEach.length <= 3 );
+//   // _.assert( onEach.length <= 2 );
+//   _.assert( _.routineIs( onEach ) );
+//
+//   /* */
+//
+//   if( _.longIs( src ) )
+//   {
+//
+//     for( let index = 0 ; index < src.length ; index++ )
+//     {
+//       onEach( src[ index ], undefined, index, src );
+//     }
+//
+//   }
+//   else if( _.objectLike( src ) )
+//   {
+//
+//     let index = 0;
+//     for( let k in src )
+//     {
+//       onEach( k, src[ k ], index, src );
+//       index += 1;
+//     }
+//
+//   }
+//   else
+//   {
+//     onEach( src, undefined, undefined, undefined );
+//   }
+//
+//   /* */
+//
+//   return src;
+//
+//   // if( arguments.length === 2 )
+//   // o = { src : arguments[ 0 ], onUp : arguments[ 1 ] }
+//   //
+//   // _.routineOptions( eachKey, o );
+//   // _.assert( arguments.length === 1 || arguments.length === 2 );
+//   // _.assert( o.onUp && o.onUp.length <= 3 );
+//   //
+//   // /* */
+//   //
+//   // if( _.longIs( o.src ) )
+//   // {
+//   //
+//   //   for( let index = 0 ; index < o.src.length ; index++ )
+//   //   {
+//   //     o.onUp.call( o, o.src[ index ], undefined, index );
+//   //   }
+//   //
+//   // }
+//   // else if( _.objectLike( o.src ) )
+//   // {
+//   //
+//   //   let index = 0;
+//   //   for( let k in o.src )
+//   //   {
+//   //     o.onUp.call( o, k, o.src[ k ], index );
+//   //     index += 1;
+//   //   }
+//   //
+//   // }
+//   // else _.assert( 0, 'not container' );
+//   //
+//   // /* */
+//   //
+//   // return src;
+// }
+//
+// var defaults = entityEachKey.defaults = Object.create( null );
+//
+// defaults.src = null;
+// defaults.onUp = function( e, k ){};
+
+//
+
+function entityOnly( src, onEach )
+{
+  let result = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
+
+  /* */
+
+  if( _.routineIs( onEach ) )
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = onEach( src[ k ], k, src );
+        if( result )
+        return result.push( src[ k ] );
+      }
+
+    }
+    else if( _.objectLike( src ) )
+    {
+
+      for( let k in src )
+      {
+        result = onEach( src[ k ], k, src );
+        if( result )
+        return result.push( src[ k ] );
+      }
+
+    }
+    else
+    {
+      result = onEach( src, undefined, undefined );
+      if( result )
+      return result;
+      else
+      return undefined
+    }
+
+  }
+  else
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = src[ k ];
+        if( result )
+        return result.push( src[ k ] );
+      }
+
+    }
+    else if( _.objectLike( src ) )
+    {
+
+      for( let k in src )
+      {
+        result = src[ k ];
+        if( result )
+        return result.push( src[ k ] );
+      }
+
+    }
+    else
+    {
+      result = src;
+      if( result )
+      return result;
+      else
+      return undefined;
+    }
+
+  }
+
+  /* */
+
+  return result;
+}
+
+//
+
+function entityBut( src, onEach )
+{
+  let result = [];
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
+  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
+
+  /* */
+
+  if( _.routineIs( onEach ) )
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        let val = onEach( src[ k ], k, src );
+        if( !val )
+        return result.push( src[ k ] );
+      }
+
+    }
+    else if( _.objectLike( src ) )
+    {
+
+      for( let k in src )
+      {
+        let val = onEach( src[ k ], k, src );
+        if( !val )
+        return result.push( src[ k ] );
+      }
+
+    }
+    else
+    {
+      let val = onEach( src, undefined, undefined );
+      if( !val )
+      return result.push( src );
+    }
+
+  }
+  else
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        let val = src[ k ];
+        if( !val )
+        return result.push( src[ k ] );
+      }
+
+    }
+    else if( _.objectLike( src ) )
+    {
+
+      for( let k in src )
+      {
+        let val = src[ k ];
+        if( !val )
+        return result.push( src[ k ] );
+      }
+
+    }
+    else
+    {
+      let val = src;
+      if( !val )
+      return result.push( src );
+    }
+
+  }
+
+  /* */
+
+  return result;
 }
 
 //
@@ -805,7 +976,7 @@ function entityMap( src, onEach )
 
   if( _.longIs( src ) )
   {
-    result = _.entityMakeTivial( src );
+    result = _.entityMakeTrivial( src );
     for( let s = 0 ; s < src.length ; s++ )
     {
       result[ s ] = onEach( src[ s ], s, src );
@@ -814,7 +985,7 @@ function entityMap( src, onEach )
   }
   else if( _.objectLike( src ) )
   {
-    result = _.entityMakeTivial( src );
+    result = _.entityMakeTrivial( src );
     for( let s in src )
     {
       result[ s ] = onEach( src[ s ], s, src );
@@ -878,7 +1049,7 @@ function entityFilter( src, onEach )
   else if( _.mapLike( src ) )
   {
 
-    result = _.entityMakeTivial( src );
+    result = _.entityMakeTrivial( src );
     for( let s in src )
     {
       let r = onEach.call( src, src[ s ], s, src );
@@ -993,7 +1164,7 @@ function _entityMost( src, onEvaluate, returnMax )
     result.index = result.key;
 
   }
-  else
+  else if( _.mapLike( src ) )
   {
 
     debugger;
@@ -1021,6 +1192,7 @@ function _entityMost( src, onEvaluate, returnMax )
     }
 
   }
+  else _.assert( 0 );
 
   return result;
 }
@@ -1117,19 +1289,27 @@ let Routines =
 
   entityEach,
   each : entityEach,
-  entityEachKey,
-  eachKey : entityEachKey,
   entityEachOwn,
   eachOwn : entityEachOwn,
 
-  entityAll,
+  // entityEachKey,
+  // eachKey : entityEachKey,
+
+  /* qqq : take _.nothing case in routines only, but, all, any, none */
+
+  entityOnly, /* qqq : optimize, implement good coverage and jsdoc, please */
+  only : entityOnly,
+  entityBut, /* qqq : optimize, implement good coverage and jsdoc, please */
+  but : entityBut,
+  entityAll, /* qqq : optimize entityAll */
   all : entityAll,
-  entityAny,
+  entityAny, /* qqq : optimize entityAny */
   any : entityAny,
-  entityNone,
+  entityNone, /* qqq : optimize entityNone */
   none : entityNone,
 
-  _filter_functor,
+  _filter_functor, /* qqq : cover please */
+
   entityMap,
   map : entityMap,
   // entityMapInplace, /* qqq : implement routine entityMapInplace */
@@ -1138,6 +1318,8 @@ let Routines =
   filter : entityFilter,
   // entityFilterInplace, /* qqq : implement routine entityFilterInplace */
   // mapInplace : entityFilterInplace,
+
+  /* qqq : take into account Unroll case in routines filter, filterInplace */
 
   //
 

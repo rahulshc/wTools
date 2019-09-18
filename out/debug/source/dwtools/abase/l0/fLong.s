@@ -2863,10 +2863,6 @@ function arrayLikeResizable( src )
 
 function arrayLike( src )
 {
-  /* yyy : experimental */
-
-  // return _.longIs( src );
-
   if( _.arrayIs( src ) )
   return true;
   if( _.argumentsArrayIs( src ) )
