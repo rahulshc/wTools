@@ -288,7 +288,8 @@ function entityEach( src, onEach )
     }
 
   }
-  else if( _.objectLike( src ) )
+  // else if( _.objectLike( src ) )
+  else if( _.mapLike( src ) )
   {
 
     for( let k in src )
@@ -328,7 +329,8 @@ function entityEachOwn( src, onEach )
     }
 
   }
-  else if( _.objectLike( src ) )
+  // else if( _.objectLike( src ) )
+  else if( _.mapLike( src ) )
   {
 
     for( let k in src )
@@ -456,7 +458,8 @@ function entityOnly( src, onEach )
       }
 
     }
-    else if( _.objectLike( src ) )
+    // else if( _.objectLike( src ) )
+    else if( _.mapLike( src ) )
     {
 
       for( let k in src )
@@ -491,7 +494,8 @@ function entityOnly( src, onEach )
       }
 
     }
-    else if( _.objectLike( src ) )
+    // else if( _.objectLike( src ) )
+    else if( _.mapLike( src ) )
     {
 
       for( let k in src )
@@ -544,7 +548,8 @@ function entityBut( src, onEach )
       }
 
     }
-    else if( _.objectLike( src ) )
+    // else if( _.objectLike( src ) )
+    else if( _.mapLike( src ) )
     {
 
       for( let k in src )
@@ -577,7 +582,8 @@ function entityBut( src, onEach )
       }
 
     }
-    else if( _.objectLike( src ) )
+    // else if( _.objectLike( src ) )
+    else if( _.mapLike( src ) )
     {
 
       for( let k in src )
@@ -628,7 +634,8 @@ function entityAll( src, onEach )
       }
 
     }
-    else if( _.objectLike( src ) )
+    // else if( _.objectLike( src ) )
+    else if( _.mapLike( src ) )
     {
 
       for( let k in src )
@@ -661,7 +668,8 @@ function entityAll( src, onEach )
       }
 
     }
-    else if( _.objectLike( src ) )
+    // else if( _.objectLike( src ) )
+    else if( _.mapLike( src ) )
     {
 
       for( let k in src )
@@ -712,7 +720,8 @@ function entityAny( src, onEach )
       }
 
     }
-    else if( _.objectLike( src ) )
+    // else if( _.objectLike( src ) )
+    else if( _.mapLike( src ) )
     {
 
       for( let k in src )
@@ -745,7 +754,8 @@ function entityAny( src, onEach )
       }
 
     }
-    else if( _.objectLike( src ) )
+    // else if( _.objectLike( src ) )
+    else if( _.mapLike( src ) )
     {
 
       for( let k in src )
@@ -796,7 +806,8 @@ function entityNone( src, onEach )
       }
 
     }
-    else if( _.objectLike( src ) )
+    // else if( _.objectLike( src ) )
+    else if( _.mapLike( src ) )
     {
 
       for( let k in src )
@@ -829,7 +840,8 @@ function entityNone( src, onEach )
       }
 
     }
-    else if( _.objectLike( src ) )
+    // else if( _.objectLike( src ) )
+    else if( _.mapLike( src ) )
     {
 
       for( let k in src )
@@ -983,7 +995,8 @@ function entityMap( src, onEach )
       _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
     }
   }
-  else if( _.objectLike( src ) )
+  // else if( _.objectLike( src ) )
+  else if( _.mapLike( src ) )
   {
     result = _.entityMakeTrivial( src );
     for( let s in src )
