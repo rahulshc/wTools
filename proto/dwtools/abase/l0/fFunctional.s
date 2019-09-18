@@ -436,11 +436,22 @@ function entityEachOwn( src, onEach )
 
 function entityOnly( src, onEach )
 {
-  let result = [];
+  let result;
+
+  if( _.strIs( onEach ) )
+  {
+    let selector = onEach;
+    _.assert( _.routineIs( _.select ) );
+    _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
+    selector = _.strRemoveBegin( selector, '*/' );
+    onEach = function( e, k )
+    {
+      return _.select( e, selector );
+    }
+  }
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
-  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
@@ -450,33 +461,32 @@ function entityOnly( src, onEach )
     if( _.longIs( src ) )
     {
 
+      result = [];
       for( let k = 0 ; k < src.length ; k++ )
       {
-        result = onEach( src[ k ], k, src );
-        if( result )
-        return result.push( src[ k ] );
+        let res = onEach( src[ k ], k, src );
+        if( res )
+        result.push( src[ k ] );
       }
 
     }
-    // else if( _.objectLike( src ) )
     else if( _.mapLike( src ) )
     {
 
+      result = Object.create( null );
       for( let k in src )
       {
-        result = onEach( src[ k ], k, src );
-        if( result )
-        return result.push( src[ k ] );
+        let res = onEach( src[ k ], k, src );
+        if( res )
+        result[ k ] = src[ k ];
       }
 
     }
     else
     {
-      result = onEach( src, undefined, undefined );
-      if( result )
-      return result;
-      else
-      return undefined
+      let res = onEach( src, undefined, undefined );
+      if( res )
+      result = src;
     }
 
   }
@@ -486,33 +496,32 @@ function entityOnly( src, onEach )
     if( _.longIs( src ) )
     {
 
+      result = [];
       for( let k = 0 ; k < src.length ; k++ )
       {
-        result = src[ k ];
-        if( result )
-        return result.push( src[ k ] );
+        let res = src[ k ];
+        if( res )
+        result.push( src[ k ] );
       }
 
     }
-    // else if( _.objectLike( src ) )
     else if( _.mapLike( src ) )
     {
 
+      result = Object.create( null );
       for( let k in src )
       {
-        result = src[ k ];
-        if( result )
-        return result.push( src[ k ] );
+        let res = src[ k ];
+        if( res )
+        result[ k ] = src[ k ];
       }
 
     }
     else
     {
-      result = src;
-      if( result )
-      return result;
-      else
-      return undefined;
+      let res = src;
+      if( res )
+      result = res;
     }
 
   }
@@ -522,15 +531,27 @@ function entityOnly( src, onEach )
   return result;
 }
 
+
 //
 
 function entityBut( src, onEach )
 {
-  let result = [];
+  let result;
+
+  if( _.strIs( onEach ) )
+  {
+    let selector = onEach;
+    _.assert( _.routineIs( _.select ) );
+    _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
+    selector = _.strRemoveBegin( selector, '*/' );
+    onEach = function( e, k )
+    {
+      return _.select( e, selector );
+    }
+  }
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
-  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
   /* */
 
@@ -540,31 +561,32 @@ function entityBut( src, onEach )
     if( _.longIs( src ) )
     {
 
+      result = [];
       for( let k = 0 ; k < src.length ; k++ )
       {
-        let val = onEach( src[ k ], k, src );
-        if( !val )
-        return result.push( src[ k ] );
+        let res = onEach( src[ k ], k, src );
+        if( !res )
+        result.push( src[ k ] );
       }
 
     }
-    // else if( _.objectLike( src ) )
     else if( _.mapLike( src ) )
     {
 
+      result = Object.create( null );
       for( let k in src )
       {
-        let val = onEach( src[ k ], k, src );
-        if( !val )
-        return result.push( src[ k ] );
+        let res = onEach( src[ k ], k, src );
+        if( !res )
+        result[ k ] = src[ k ];
       }
 
     }
     else
     {
-      let val = onEach( src, undefined, undefined );
-      if( !val )
-      return result.push( src );
+      let res = onEach( src, undefined, undefined );
+      if( !res )
+      result = src;
     }
 
   }
@@ -574,31 +596,32 @@ function entityBut( src, onEach )
     if( _.longIs( src ) )
     {
 
+      result = [];
       for( let k = 0 ; k < src.length ; k++ )
       {
-        let val = src[ k ];
-        if( !val )
-        return result.push( src[ k ] );
+        let res = src[ k ];
+        if( !res )
+        result.push( src[ k ] );
       }
 
     }
-    // else if( _.objectLike( src ) )
     else if( _.mapLike( src ) )
     {
 
+      result = Object.create( null );
       for( let k in src )
       {
-        let val = src[ k ];
-        if( !val )
-        return result.push( src[ k ] );
+        let res = src[ k ];
+        if( !res )
+        result[ k ] = src[ k ];
       }
 
     }
     else
     {
-      let val = src;
-      if( !val )
-      return result.push( src );
+      let res = src;
+      if( !res )
+      result = res;
     }
 
   }

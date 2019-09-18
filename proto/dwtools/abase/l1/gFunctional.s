@@ -614,7 +614,7 @@ function _entityIndex_functor( fop )
 
   fop = _.routineOptions( _entityIndex_functor, fop );
 
-  let extendRoutine = fop.extendRoutine; debugger;
+  let extendRoutine = fop.extendRoutine;
 
   return function entityIndex( src, onEach )
   {
@@ -727,7 +727,7 @@ function _entityRemap_functor( fop )
 
   fop = _.routineOptions( _entityRemap_functor, fop );
 
-  let extendRoutine = fop.extendRoutine; debugger;
+  let extendRoutine = fop.extendRoutine;
 
   return function entityRemap( src, onEach )
   {
