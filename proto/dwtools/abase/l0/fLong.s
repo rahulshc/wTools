@@ -2947,6 +2947,8 @@ function hasLength( src )
 function arrayHasArray( arr )
 {
 
+  _.assert( arguments.length === 1 );
+
   if( !_.arrayLike( arr ) )
   return false;
 
@@ -4764,6 +4766,10 @@ function arrayRightDefined( arr )
  * @throws { Error } If the routine in fourth argument has less than one or more than one arguments.
  * @memberof wTools
  */
+
+/*
+qqq : are all combinations of call of routine arrayCountElement covered?
+*/
 
 function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 {
