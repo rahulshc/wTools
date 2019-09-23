@@ -1817,9 +1817,7 @@ function entityOnlyOnlySrc( test )
   test.case = 'src - map';
   var exp = {};
   var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
-  debugger;
   var got = _.entityOnly( null, src, ( e, k ) => undefined );
-  debugger;
   test.is( src !== got );
   test.identical( got, exp );
 
@@ -7106,26 +7104,38 @@ var Self =
 
     entityOnlyOnlyDst,
     entityOnlyOnlySrc,
+    // entityOnlyBothSame, /* qqq : implement */
     // entityOnlyBoth, /* qqq : implement */
 
     // entityButOnlyDst, /* qqq : implement */
     // entityButOnlySrc, /* qqq : implement */
+    // entityButBothSame, /* qqq : implement */
     // entityButBoth, /* qqq : implement */
+
+/*
+                        only / but            and                      or                         xor                          xand
+value for evaluator       src              dst, src                 dst, src                    dst, src                    dst, src
+value for dst             dst                dst                    first +                     first +                   dst if positive
+*/
 
     // entityAndOnlyDst, /* qqq : implement */
     // entityAndOnlySrc, /* qqq : implement */
+    // entityANdBothSame, /* qqq : implement */
     // entityAndBoth, /* qqq : implement */
 
     // entityOrOnlyDst, /* qqq : implement */
     // entityOrOnlySrc, /* qqq : implement */
+    // entityOrBothSame, /* qqq : implement */
     // entityOrBoth, /* qqq : implement */
 
     // entityXorOnlyDst, /* qqq : implement */
     // entityXorOnlySrc, /* qqq : implement */
+    // entityXorBothSame, /* qqq : implement */
     // entityXorBoth, /* qqq : implement */
 
     // entityXandOnlyDst, /* qqq : implement */
     // entityXandOnlySrc, /* qqq : implement */
+    // entityXandBothSame, /* qqq : implement */
     // entityXandBoth, /* qqq : implement */
 
     entityAll,

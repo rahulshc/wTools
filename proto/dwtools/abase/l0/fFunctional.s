@@ -1741,6 +1741,7 @@ let Routines =
   only : entityOnly,
   entityBut, /* qqq : optimize, implement good coverage and jsdoc, please */
   but : entityBut,
+
   entityAll, /* qqq : optimize entityAll */
   all : entityAll,
   entityAny, /* qqq : optimize entityAny */
