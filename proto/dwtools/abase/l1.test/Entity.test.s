@@ -246,6 +246,10 @@ function entityAssignFieldFromContainer( test )
 
 //
 
+/*
+qqq : improve test entityLength, normalize it, please
+*/
+
 function entityLength( test )
 {
 
@@ -348,6 +352,24 @@ function entityLength( test )
   test.case = 'some properties are non enumerable';
   var got = _.entityLength( x10 );
   test.identical( got, expected10 );
+
+  /* */
+
+  test.case = 'string';
+  var got = _.entityLength( 'string' )
+  test.identical( got, 1 );
+
+  test.case = 'null';
+  var got = _.entityLength( null );
+  test.identical( got, 1 );
+
+  test.case = 'udefined';
+  var got = _.entityLength( undefined );
+  test.identical( got, 0 );
+
+  test.case = 'symbol';
+  var got = _.entityLength( Symbol.for( 'x' ) );
+  test.identical( got, 1 );
 
 };
 

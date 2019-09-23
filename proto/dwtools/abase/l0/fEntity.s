@@ -105,7 +105,7 @@ function entityMake( src, length )
 
 //
 
-function entityMakeTivial( src, length )
+function entityMakeTrivial( src, length )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -384,7 +384,7 @@ let Routines =
   enityExtendAppending,
 
   entityMake,
-  entityMakeTivial,
+  entityMakeTrivial,
   entityShallowClone,
 
   entityAssign, /* refactor!!! */

@@ -36,16 +36,6 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 function objectIs( src )
 {
-  // if( !src )
-  // return false;
-  // if( _ObjectHasOwnProperty.call( src, 'callee' ) )
-  // return false;
-  // if( src instanceof Array )
-  // return true;
-  // if( src instanceof Object )
-  // return true;
-  // let prototype = Object.getPrototypeOf( src );
-  // return prototype === null;
   return Object.prototype.toString.call( src ) === '[object Object]';
 }
 
@@ -1286,7 +1276,7 @@ function mapsExtendHiding( dstMap, srcMaps )
 
 //
 
-function mapExtendAppendingAnything( dstMap )
+function mapExtendAppending( dstMap )
 {
   if( dstMap === null && arguments.length === 2 )
   return Object.assign( Object.create( null ), srcMap );
@@ -1297,7 +1287,7 @@ function mapExtendAppendingAnything( dstMap )
 
 //
 
-function mapsExtendAppendingAnything( dstMap, srcMaps )
+function mapsExtendAppending( dstMap, srcMaps )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   if( dstMap === null )
@@ -1307,23 +1297,44 @@ function mapsExtendAppendingAnything( dstMap, srcMaps )
 
 //
 
-function mapExtendAppendingArrays( dstMap )
+function mapExtendPrepending( dstMap )
 {
   if( dstMap === null && arguments.length === 2 )
   return Object.assign( Object.create( null ), srcMap );
   let args = _.longSlice( arguments );
-  args.unshift( _.field.mapper.appendingArrays );
+  args.unshift( _.field.mapper.prependingAnything );
   return _.mapExtendConditional.apply( this, args );
 }
 
 //
 
-function mapsExtendAppendingArrays( dstMap, srcMaps )
+function mapsExtendPrepending( dstMap, srcMaps )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   if( dstMap === null )
   return _.mapExtend( null, srcMaps[ 0 ] );
-  return _.mapsExtendConditional( _.field.mapper.appendingArrays, dstMap, srcMaps );
+  return _.mapsExtendConditional( _.field.mapper.prependingAnything, dstMap, srcMaps );
+}
+
+//
+
+function mapExtendAppendingOnlyArrays( dstMap )
+{
+  if( dstMap === null && arguments.length === 2 )
+  return Object.assign( Object.create( null ), srcMap );
+  let args = _.longSlice( arguments );
+  args.unshift( _.field.mapper.appendingOnlyArrays );
+  return _.mapExtendConditional.apply( this, args );
+}
+
+//
+
+function mapsExtendAppendingOnlyArrays( dstMap, srcMaps )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  if( dstMap === null )
+  return _.mapExtend( null, srcMaps[ 0 ] );
+  return _.mapsExtendConditional( _.field.mapper.appendingOnlyArrays, dstMap, srcMaps );
 }
 
 //
@@ -1838,7 +1849,7 @@ function mapExtendAppendingArraysRecursive( dstMap, srcMap )
 {
   _.assert( this === Self );
   _.assert( arguments.length >= 2, 'Expects at least two arguments' );
-  let filters = { onField : _.field.mapper.appendingArrays, onUpFilter : true };
+  let filters = { onField : _.field.mapper.appendingOnlyArrays, onUpFilter : true };
   let args = _.longSlice( arguments );
   args.unshift( filters );
   return _.mapExtendRecursiveConditional.apply( _, args );
@@ -1850,7 +1861,7 @@ function mapsExtendAppendingArraysRecursive( dstMap, srcMaps )
 {
   _.assert( this === Self );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  let filters = { onField : _.field.mapper.appendingArrays, onUpFilter : true };
+  let filters = { onField : _.field.mapper.appendingOnlyArrays, onUpFilter : true };
   return _.mapsExtendRecursiveConditional.call( _, filters, dstMap, srcMaps );
 }
 
@@ -3779,7 +3790,7 @@ function mapButNulls( srcMap )
   return result;
 }
 // --
-// map logic operator
+// map logical operator
 // --
 
 /**
@@ -5536,10 +5547,12 @@ let Routines =
 
   mapExtendHiding,
   mapsExtendHiding,
-  mapExtendAppendingAnything,
-  mapsExtendAppendingAnything,
-  mapExtendAppendingArrays,
-  mapsExtendAppendingArrays,
+  mapExtendAppending,
+  mapsExtendAppending,
+  mapExtendPrepending,
+  mapsExtendPrepending,
+  mapExtendAppendingOnlyArrays,
+  mapsExtendAppendingOnlyArrays,
   mapExtendByDefined,
   mapsExtendByDefined,
   mapExtendNulls,
@@ -5656,7 +5669,7 @@ let Routines =
   mapNulls,
   mapButNulls,
 
-  // map logic operator
+  // map logical operator
 
   mapButConditional,
   mapBut,

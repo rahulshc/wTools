@@ -1,4 +1,4 @@
-( function _fChecker_s_() {
+( function _bChecker_s_() {
 
 'use strict';
 

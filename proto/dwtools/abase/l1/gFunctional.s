@@ -375,8 +375,8 @@ function eachSample( o )
 
   if( !o.sample )
   // Dmytro:
-  // qqq: I think entityMakeTivial should be entityMakeTrivial. 7 missprints founded in wTools. Maybe, willbe contains this also.
-  o.sample = _.entityMakeTivial( o.sets );
+  // qqq: I think entityMakeTrivial should be entityMakeTrivial. 7 missprints founded in wTools. Maybe, willbe contains this also.
+  o.sample = _.entityMakeTrivial( o.sets );
 
   /* */
 
@@ -572,7 +572,7 @@ function _entityFilterDeep( o )
   }
   else
   {
-    result = _.entityMakeTivial( o.src );
+    result = _.entityMakeTrivial( o.src );
     for( let s in o.src )
     {
       let r = onEach.call( o.src, o.src[ s ], s, o.src );
@@ -607,6 +607,230 @@ function entityFilterDeep( src, onEach )
   });
 }
 
+//
+
+function _entityIndex_functor( fop )
+{
+
+  fop = _.routineOptions( _entityIndex_functor, fop );
+
+  let extendRoutine = fop.extendRoutine;
+
+  return function entityIndex( src, onEach )
+  {
+    let result = Object.create( null );
+
+    if( onEach === undefined )
+    onEach = function( e, k )
+    {
+      if( k === undefined && extendRoutine )
+      return { [ e ] : undefined };
+      return k;
+    }
+    else if( _.strIs( onEach ) )
+    {
+      let selector = onEach;
+      _.assert( _.routineIs( _.select ) );
+      _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
+      selector = _.strRemoveBegin( selector, '*/' );
+      onEach = function( e, k )
+      {
+        return _.select( e, selector );
+      }
+    }
+
+    _.assert( arguments.length === 1 || arguments.length === 2 );
+    _.assert( _.routineIs( onEach ) );
+    _.assert( src !== undefined, 'Expects src' );
+
+    /* */
+
+    if( _.mapLike( src ) )
+    {
+
+      for( let k in src )
+      {
+        let val = src[ k ];
+        let r = onEach( val, k, src );
+        extend( r, val );
+      }
+
+    }
+    else if( _.longIs( src ) )
+    {
+
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        let val = src[ k ];
+        let r = onEach( val, k, src );
+        extend( r, val );
+      }
+
+    }
+    else
+    {
+
+      let val = src;
+      let r = onEach( val, undefined, undefined );
+      extend( r, val );
+
+    }
+
+    return result;
+
+    /* */
+
+    function extend( res, val )
+    {
+      if( res === undefined )
+      return;
+
+      if( _.unrollIs( res ) )
+      debugger;
+      if( _.unrollIs( res ) )
+      return res.forEach( ( res ) => extend( res, val ) );
+
+      if( extendRoutine === null )
+      {
+        if( res !== undefined )
+        result[ res ] = val;
+      }
+      else
+      {
+        if( _.mapLike( res ) )
+        extendRoutine( result, res );
+        else if( res !== undefined )
+        result[ res ] = val;
+      }
+
+    }
+
+  }
+
+}
+
+_entityIndex_functor.defaults =
+{
+  extendRoutine : null,
+}
+
+let entityIndex = _entityIndex_functor({ extendRoutine : null });
+let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.mapExtend });
+let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.mapSupplement });
+let entityIndexPrepending = _entityIndex_functor({ extendRoutine : _.mapExtendPrepending });
+let entityIndexAppending = _entityIndex_functor({ extendRoutine : _.mapExtendAppending });
+
+//
+
+function _entityRemap_functor( fop )
+{
+
+  fop = _.routineOptions( _entityRemap_functor, fop );
+
+  let extendRoutine = fop.extendRoutine;
+
+  return function entityRemap( src, onEach )
+  {
+    let result = Object.create( null );
+
+    if( onEach === undefined )
+    onEach = function( e, k )
+    {
+      if( e === undefined && extendRoutine )
+      return { [ k ] : e };
+      return e;
+    }
+    else if( _.strIs( onEach ) )
+    {
+      let selector = onEach;
+      _.assert( _.routineIs( _.select ) );
+      _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
+      selector = _.strRemoveBegin( selector, '*/' );
+      onEach = function( e, k )
+      {
+        return _.select( e, selector );
+      }
+    }
+
+    _.assert( arguments.length === 1 || arguments.length === 2 );
+    _.assert( _.routineIs( onEach ) );
+    _.assert( src !== undefined, 'Expects src' );
+
+    /* */
+
+    if( _.mapLike( src ) )
+    {
+
+      for( let k in src )
+      {
+        let val = src[ k ];
+        let r = onEach( val, k, src );
+        extend( r, k );
+      }
+
+    }
+    else if( _.longIs( src ) )
+    {
+
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        let val = src[ k ];
+        let r = onEach( val, k, src );
+        extend( r, k );
+      }
+
+    }
+    else
+    {
+
+      let val = src;
+      let r = onEach( val, undefined, undefined );
+      extend( r, undefined );
+
+    }
+
+    return result;
+
+    /* */
+
+    function extend( res, key )
+    {
+      if( res === undefined )
+      return;
+
+      if( _.unrollIs( res ) )
+      return res.forEach( ( res ) => extend( res, key ) );
+
+      if( extendRoutine === null )
+      {
+        if( key !== undefined )
+        result[ key ] = res;
+      }
+      else
+      {
+        if( _.mapLike( res ) )
+        extendRoutine( result, res );
+        else if( key !== undefined )
+        result[ key ] = res;
+      }
+
+    }
+
+  }
+
+}
+
+_entityRemap_functor.defaults =
+{
+  extendRoutine : null,
+}
+
+let entityRemap = _entityRemap_functor({ extendRoutine : null });
+let entityRemapExtending = _entityRemap_functor({ extendRoutine : _.mapExtend });
+let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.mapSupplement });
+let entityRemapPrepending = _entityRemap_functor({ extendRoutine : _.mapExtendPrepending });
+let entityRemapAppending = _entityRemap_functor({ extendRoutine : _.mapExtendAppending });
+
 // --
 // fields
 // --
@@ -622,13 +846,59 @@ let Fields =
 let Routines =
 {
 
-  // entity iterator
-
   eachSample,
 
   _entityFilterDeep,
   entityFilterDeep,
   filterDeep : entityFilterDeep,
+
+  _entityIndex_functor,
+  entityIndex, /* qqq : add jsdoc, please */
+  index : entityIndex,
+  entityIndexSupplementing, /* qqq : add jsdoc, please */
+  indexSupplementing : entityIndexSupplementing,
+  entityIndexExtending, /* qqq : add jsdoc, please */
+  indexExtending : entityIndexExtending,
+  entityIndexPrepending, /* qqq : add jsdoc, please */
+  indexPrepending : entityIndexPrepending,
+  entityIndexAppending, /* qqq : add jsdoc, please */
+  indexAppending : entityIndexAppending,
+
+  _entityRemap_functor,
+  entityRemap, /* qqq : add jsdoc, please */
+  remap : entityRemap,
+  entityRemapSupplementing, /* qqq : add jsdoc, please */
+  remapSupplementing : entityRemapSupplementing,
+  entityRemapExtending, /* qqq : add jsdoc, please */
+  remapExtending : entityRemapExtending,
+  entityRemapPrepending, /* qqq : add jsdoc, please */
+  remapPrepending : entityRemapPrepending,
+  entityRemapAppending, /* qqq : add jsdoc, please */
+  remapAppending : entityRemapAppending,
+
+  // _entityIndexInplace_functor,
+  // entityIndexInplace, /* qqq : implement, cover, add jsdoc, please */
+  // indexInplace : entityIndexInplace,
+  // entityIndexInplaceSupplementing, /* qqq : implement, cover, add jsdoc, please */
+  // indexInplaceSupplementing : entityIndexInplaceSupplementing,
+  // entityIndexInplaceExtending, /* qqq : implement, cover, add jsdoc, please */
+  // indexInplaceExtending : entityIndexInplaceExtending,
+  // entityIndexInplacePrepending, /* qqq : implement, cover, add jsdoc, please */
+  // indexInplacePrepending : entityIndexInplacePrepending,
+  // entityIndexInplaceAppending, /* qqq : implement, cover, add jsdoc, please */
+  // indexInplaceAppending : entityIndexInplaceAppending,
+  //
+  // _entityRemapInplace_functor,
+  // entityRemapInplace, /* qqq : implement, cover, add jsdoc, please */
+  // remapInplace : entityRemapInplace,
+  // entityRemapInplaceSupplementing, /* qqq : implement, cover, add jsdoc, please */
+  // remapInplaceSupplementing : entityRemapInplaceSupplementing,
+  // entityRemapInplaceExtending, /* qqq : implement, cover, add jsdoc, please */
+  // remapInplaceExtending : entityRemapInplaceExtending,
+  // entityRemapInplacePrepending, /* qqq : implement, cover, add jsdoc, please */
+  // remapInplacePrepending : entityRemapInplacePrepending,
+  // entityRemapInplaceAppending, /* qqq : implement, cover, add jsdoc, please */
+  // remapInplaceAppending : entityRemapInplaceAppending,
 
 }
 
