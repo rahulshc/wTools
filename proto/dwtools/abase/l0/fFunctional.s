@@ -443,7 +443,14 @@ function entityOnly( dst, src, onEach )
   if( src === undefined )
   src = dst;
   if( dst === null )
-  dst = src
+  {
+    if( _.longIs( src ) )
+    dst = _.arrayMake( src );
+    else if( _.mapLike( src ) )
+    dst = Object.assign({}, src );
+    else
+    dst = src;
+  }
 
   if( _.strIs( onEach ) )
   {
