@@ -812,7 +812,7 @@ function bufferBut( test )
     test.identical( got, expected );
     test.is( got !== dst );
 
-    test.case = 'range[ 0 ] === range[ 1 ], src = array'; /* qqq : poor descriptions of cases */
+    test.case = 'range[ 0 ] === range[ 1 ], src = array'; /* qqq : poor descriptions of cases | Dmytro : corrected */
     var dst = buf( [ 0, 1, 2, 3 ] ); /* xxx qqq : replace name */
     var got = _.bufferBut( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [ 0, 1, 5, 2, 3 ] );
@@ -1020,26 +1020,6 @@ function bufferBut( test )
     test.identical( got, expected );
     test.is( got !== dst );
   }
-
-  /* - */
-
-  // /* qqq : should work */
-  // test.case = '';
-  // var src = new BufferRaw( 10 );
-  // var got = _.bufferBut( buffer, [ 1, 3 ], [ 1 ] );
-  // test.identical( got, new U32x( [ 2 ] ) );
-  //
-  // /* qqq : should work */
-  // test.case = '';
-  // var src = BufferNode.alloc( 10 );
-  // var got = _.bufferBut( BufferNode.alloc( 10 ), [ 1, 3 ], [ 1 ] );
-  // test.identical( got, new U32x( [ 2 ] ) );
-  //
-  // /* qqq : should work */
-  // test.case = '';
-  // var src = new BufferRaw( 10 );
-  // var got = _.bufferBut( [ buffer ], [ 1, 3 ], [ 1 ] );
-  // test.identical( got, new U32x( [ 2 ] ) );
 
   /* - */
 

@@ -227,7 +227,10 @@ function buffersAreIdentical( src1, src2 )
  * @memberof wTools
  */
 
-/* qqq : implement, cover, document */
+/*
+qqq : implement, cover, document
+Dmytro : implemented, covered, documented. If ins is not a buffer, routine returns default ArrayType.
+*/
 
 function bufferMake( ins, src )
 {

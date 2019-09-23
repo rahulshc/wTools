@@ -1400,6 +1400,7 @@ function longMakeUndefined( ins, len )
 
 /*
 qqq : forbid non-long buffers as ins or src
+Dmytro : asserts is improved
 */
 
 function longMakeZeroed( ins, src )
@@ -1426,19 +1427,19 @@ function longMakeZeroed( ins, src )
   ins = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ), () => 'Expects long, but got ' + _.strType( ins ) );
+  // _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
 
   if( _.routineIs( ins ) )
-  {
-    result = new ins( length );
-  }
+  result = new ins( length );
+  else if( _.unrollIs( ins ) )
+  result = _.unrollMake( length );
   else
-  {
-    result = new ins.constructor( length );
-  }
+  result = new ins.constructor( length );
 
-  if( !_.bufferTypedIs( result ) && !_.bufferRawIs( result )  )
+  if( !_.bufferTypedIs( result ) )
+  // if( !_.bufferTypedIs( result ) && !_.bufferRawIs( result )  )
   for( let i = 0 ; i < length ; i++ )
   result[ i ] = 0;
 
