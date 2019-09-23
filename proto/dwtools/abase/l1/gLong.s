@@ -180,26 +180,50 @@ function buffersAreIdentical( src1, src2 )
 //
 
 /**
- * The bufferMake() routine returns a new array or a new TypedArray with length equal (length)
- * or new TypedArray with the same length of the initial array if second argument is not provided.
+ * The routine bufferMake() returns a new buffer with the same type as source buffer {-ins-}. New buffer makes from inserted buffer {-src-}
+ * or if {-src-} is number, the buffer makes from {-ins-} with length equal to {-src-}. If {-src-} is not provided, routine returns copy of {-ins-}.
  *
- * @param { longIs } ins - The instance of an array.
- * @param { Number } [ length = ins.length ] - The length of the new array.
- *
- * @example
- * _.bufferMake( [ 1, 2, 3 ] );
- * // returns [ , ,  ]
+ * @param { BufferAny|Long|Function } ins - Instance of any buffer, Long or constructor, defines type of returned buffer. If not a buffer is provided, routine returns instance of default ArrayType.
+ * @param { Number|Long|Buffer } src - Defines length of new buffer. If buffer of Long is provided, routine makes new buffer from {-src-} with {-ins-} type.
  *
  * @example
- * _.bufferMake( [ 1, 2, 3 ], 4 );
- * // returns [ , , ,  ]
+ * let ins = BufferNode.from( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferMake( ins );
+ * console.log( got );
+ * // log Buffer[ 1, 2, 3 ];
+ * console.log( _.bufferNodeIs( got ) );
+ * // log true
  *
- * @returns { longIs }  Returns an array with a certain (length).
+ * @example
+ * let ins = _.unrollMake( [] )
+ * let got = _.bufferMake( ins, [ 1, 2, 3 ] );
+ * console.log( got );
+ * // log [ 1, 2, 3 ];
+ * console.log( _.unrollIs( got ) );
+ * // log false
+ *
+ * @example
+ * let ins = new BufferRaw( 0 );
+ * let got = _.bufferMake( ins, new U32x( [ 1, 2, 3 ] ) );
+ * console.log( got );
+ * // log ArrayBuffer[ 0x1, 0x2, 0x3 ];
+ * console.log( _.bufferRawIs( got ) );
+ * // log true
+ *
+ * @example
+ * let ins = new F32x( [ 1, 2, 3, 4, 5 ] );
+ * let got = _.bufferMake( ins, 2 );
+ * console.log( got );
+ * // log Float32Array[ 1, 2 ];
+ * console.log( _.bufferTypedIs( got ) );
+ * // log true
+ *
+ * @returns { BufferAny|Array }  Returns a buffer ( array ) from {-src-} with {-ins-} type.
  * @function bufferMake
- * @throws { Error } If the passed arguments is less than two.
- * @throws { Error } If the (length) is not a number.
- * @throws { Error } If the first argument in not an array like object.
- * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @throws { Error } If arguments.length is less then one or more than two.
+ * @throws { Error } If {-src-} is not a number, not a Long, not a buffer.
+ * @throws { Error } If {-ins-} is not a Long, not a buffer or not a constructor.
+ * @throws { Error } If {-src-} or src.length has a not finite value.
  * @memberof wTools
  */
 

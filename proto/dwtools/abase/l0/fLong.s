@@ -1068,11 +1068,11 @@ function longIsPopulated( src )
 //
 
 /**
- * The routine longMake() returns a new Long with the same type as source Long (src). New Long makes from inserted Long (ins)
- * or if (ins) is number, the Long makes from (src) with length equal to (ins). If (ins) is not provided, routine returns copy of (src).
+ * The routine longMake() returns a new Long with the same type as source Long {-src-}. New Long makes from inserted Long {-ins-}
+ * or if {-ins-} is number, the Long makes from {-src-} with length equal to {-ins-}. If {-ins-} is not provided, routine returns copy of {-src-}.
  *
  * @param { Long } src - Instance of Long or constructor, defines type of returned Long. If null is provided, routine returns empty array.
- * @param { Number|Long } ins - Defines length of new Long. If Long is provided, routine makes new Long from (ins) with (src) type.
+ * @param { Number|Long } ins - Defines length of new Long. If Long is provided, routine makes new Long from {-ins-} with {-src-} type.
  *
  * @example
  * _.longMake( null );
@@ -1083,7 +1083,7 @@ function longIsPopulated( src )
  * // returns [ 1, 2, 3, 4 ];
  *
  * @example
- * let src = _.unrollMake( [] )
+ * let src = _.unrollMake( [] );
  * let got = _.longMake( src, [ 1, 2, 3 ] );
  * console.log( got );
  * // log [ 1, 2, 3 ];
@@ -1091,7 +1091,7 @@ function longIsPopulated( src )
  * // log true
  *
  * @example
- * let src = new F32x( [ 1, 2, 3, 4, 5] )
+ * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
  * let got = _.longMake( src, 2 );
  * console.log( got );
  * // log Float32Array[ 1, 2 ];
@@ -1100,11 +1100,10 @@ function longIsPopulated( src )
  *
  * @returns { Long }  Returns a Long with type of source Long which makes from ins.
  * @function longMake
- * @throws { Error } If the passed arguments is less than two or more then two.
- * @throws { Error } If the (ins) is not a number and not a Long.
- * @throws { Error } If the (src) is not Long or not a constructor.
- * @throws { Error } If the (ins) or ins.length has a not finite value.
- * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @throws { Error } If arguments.length is less than two or more then two.
+ * @throws { Error } If {-ins-} is not a number and not a Long.
+ * @throws { Error } If {-src-} is not a Long or not a constructor.
+ * @throws { Error } If {-ins-} or ins.length has a not finite value.
  * @memberof wTools
  */
 
