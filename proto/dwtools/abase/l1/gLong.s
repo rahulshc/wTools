@@ -213,22 +213,17 @@ function bufferMake( ins, src )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( src === undefined )
+  length = ins.length !== undefined ? ins.length : ins.byteLength;
+  else if( _.longIs( src ) || _.bufferNodeIs( src ) )
+  length = src.length;
+  else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
   {
-    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+    length = src.byteLength;
+    src = _.bufferViewIs( src ) ? new U8x( src.buffer ) : new U8x( src );
   }
-  else
-  {
-    if( _.longIs( src ) || _.bufferNodeIs( src ) )
-    length = src.length;
-    else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
-    {
-      length = src.byteLength;
-      src = _.bufferViewIs( src ) ? new U8x( src.buffer ) : new U8x( src );
-    }
-    else if( _.numberIs( src ) )
-    length = src;
-    else _.assert( 0 );
-  }
+  else if( _.numberIs( src ) )
+  length = src;
+  else _.assert( 0 );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
@@ -245,7 +240,7 @@ function bufferMake( ins, src )
       result[ i ] = src[ i ];
     }
     else if( !_.bufferAnyIs( ins ) && src !== undefined )
-    result = this.array.ArrayType.from( src );
+    result = this.array.ArrayType.apply( this.array.ArrayType, src );
     else if( _.bufferRawIs( ins ) )
     result = new U8x( src ).buffer;
     else if( _.bufferViewIs( ins ) )
@@ -264,16 +259,14 @@ function bufferMake( ins, src )
     else
     insert = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
 
-    if( !_.bufferAnyIs( ins ) && src === undefined )
-    result = new this.array.ArrayType( length );
     if( _.routineIs( ins ) )
     result = new ins( length );
     else if( _.bufferNodeIs( ins ) )
     result = BufferNode.alloc( length );
     else if( _.bufferViewIs( ins ) || _.bufferRawIs( ins ) )
     result = new U8x( length );
-    else if( _.unrollIs( ins ) )
-    result = _.unrollMake( length );
+    else if( !_.bufferAnyIs( ins ) )
+    result = this.array.ArrayType( length );
     else
     result = new ins.constructor( length );
 
