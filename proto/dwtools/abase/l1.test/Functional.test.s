@@ -2616,47 +2616,110 @@ function entityOnlyBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - array, src - array';
-  var exp = [ true, 1, 'str', [ 1 ], { a : 0 } ];
+  var exp = [ true, 1, 'str', [ 1 ] ];
   var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
-  var src = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+  var src = [ false, 0, true, 1, 'str', [ 1 ] ];
   var got = _.entityOnly( dst, src, ( e, k ) => e );
   test.is( dst === got );
   test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - obj';
-  var exp = new Constructor1();
-  var dst = exp;
-  var got = _.entityOnly( dst, undefined, ( e, k ) => e );
+  test.case = 'dst - array, src - map';
+  var exp = [ false, 1 ];
+  var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+  var src = { a : 2, b : 3, 0 : 'str', 2 : false, 3 : true };
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
   test.is( dst === got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - str';
+  test.case = 'dst - obj, src - false';
+  var exp = undefined;
+  var dst = new Constructor1();
+  var src = false;
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
+  test.is( dst !== got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - obj, src - map';
+  var exp = new Constructor1();
+  var dst = new Constructor1();
+  var src = { a : 0 };
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - str, src - str';
   var exp = 'dst';
   var dst = 'dst';
-  var got = _.entityOnly( dst, undefined, ( e, k ) => e );
+  var src = 'src';
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
   test.is( dst === got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - empty str';
+  test.case = 'dst - str, src - null';
+  var exp = undefined;
+  var dst = 'dst';
+  var src = null;
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - empty str, src - null';
   var exp = undefined;
   var dst = '';
-  var got = _.entityOnly( dst, undefined, ( e, k ) => e );
+  var src = null;
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
   test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - false';
+  test.case = 'dst - empty str, src - true';
+  var exp = '';
+  var dst = '';
+  var src = true;
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - false, src - 0';
   var exp = undefined;
   var dst = false;
-  var got = _.entityOnly( dst, undefined, ( e, k ) => e );
+  var src = 0;
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
   test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - 0';
+  test.case = 'dst - false, src - 1';
+  var exp = false;
+  var dst = false;
+  var src = 1;
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - 0, src = array';
+  var exp = 0;
+  var dst = 0;
+  var src = [ 1 ];
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - 0, src = empty string';
   var exp = undefined;
   var dst = 0;
-  var got = _.entityOnly( dst, undefined, ( e, k ) => e );
+  var src = '';
+  var got = _.entityOnly( dst, src, ( e, k ) => e );
   test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
   test.close( 'onEach - routine returning element' );
@@ -2665,53 +2728,129 @@ function entityOnlyBoth( test )
 
   test.open( 'onEach - routine returning key' );
 
-  test.case = 'dst - map';
-  var exp = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 } };
-  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
-  var got = _.entityOnly( dst, undefined, ( e, k ) => k );
+  test.case = 'dst - map, src - map';
+  var exp = { 0 : 'zero', false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 } };
+  var dst = { 0 : 'zero', false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var src = { 0 : null, false : 0, zero : false, true : 1, one : true, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
   test.is( dst === got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - array';
-  var exp = [ 0, true, 1, 'str', [ 1 ], { a : 0 } ];
-  var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
-  var got = _.entityOnly( dst, undefined, ( e, k ) => k );
+  test.case = 'dst - map, src - array';
+  var exp = { 0 : 'zero', false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 } };
+  var dst = { 0 : 'zero', false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var src = [ 1, 2, 3, 4 ];
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
   test.is( dst === got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - obj';
+  test.case = 'dst - array, src - array';
+  var exp = [ 0, false, 1, 'str', [ 1 ], { a : 0 } ];
+  var dst = [ false, 0, false, 1, 'str', [ 1 ], { a : 0 } ];
+  var src = [ true, 0, false, 1, 'str', [ 1 ] ];
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, src - map';
+  var exp = [ 0, false, 1, 'str', [ 1 ], { a : 0 } ];
+  var dst = [ true, 0, false, 1, 'str', [ 1 ], { a : 0 } ];
+  var src = { a : 2, b : 3, 0 : 'str', 2 : false, 3 : true };
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - obj, src - false';
   var exp = undefined;
   var dst = new Constructor1();
-  var got = _.entityOnly( dst, undefined, ( e, k ) => k );
+  var src = false;
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
   test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - str';
+  test.case = 'dst - obj, src - map';
+  var exp = undefined;
+  var dst = new Constructor1();
+  var src = { a : 0 };
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
+  test.is( dst !== got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - str, src - str';
   var exp = undefined;
   var dst = 'dst';
-  var got = _.entityOnly( dst, undefined, ( e, k ) => k );
+  var src = 'src';
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
+  test.is( dst !== got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - str, src - null';
+  var exp = undefined;
+  var dst = 'dst';
+  var src = null;
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
   test.is( dst !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - empty str';
+  test.case = 'dst - empty str, src - null';
   var exp = undefined;
   var dst = '';
-  var got = _.entityOnly( dst, undefined, ( e, k ) => k );
+  var src = null;
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
   test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - false';
+  test.case = 'dst - empty str, src - true';
+  var exp = undefined;
+  var dst = '';
+  var src = true;
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
+  test.is( dst !== got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - false, src - 0';
   var exp = undefined;
   var dst = false;
-  var got = _.entityOnly( dst, undefined, ( e, k ) => k );
+  var src = 0;
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
   test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - 0';
+  test.case = 'dst - false, src - 1';
+  var exp = undefined;
+  var dst = false;
+  var src = 1;
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
+  test.is( dst !== got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - 0, src = array';
   var exp = undefined;
   var dst = 0;
-  var got = _.entityOnly( dst, undefined, ( e, k ) => k );
+  var src = [ 1 ];
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
   test.is( dst !== got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - 0, src = empty string';
+  var exp = undefined;
+  var dst = 0;
+  var src = '';
+  var got = _.entityOnly( dst, src, ( e, k ) => k );
+  test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
   test.close( 'onEach - routine returning key' );
@@ -2720,66 +2859,119 @@ function entityOnlyBoth( test )
 
   test.open( 'onEach - selector' );
 
-  test.case = 'dst - map, */f1';
+  test.case = 'dst - map, src - map, */f1';
+  var exp = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 } };
+  var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var src = { a : { f1 : 3, f2 : 0 }, b : { f1 : 1, f2 : 3 }, c : { f1 : 0, f2 : 'str' } };
+  var got = _.entityOnly( dst, src, '*/f1' );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - map, src - array with maps, */f1';
+  var exp = { 1 : { f1 : false, f2 : 3 } };
+  var dst = { a : { f1 : 1, f2 : 0 }, 1 : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var src = [ { f1 : 3, f2 : 0 }, { f1 : 1, f2 : 3 }, { f1 : 0, f2 : 'str' } ];
+  var got = _.entityOnly( dst, src, '*/f1' );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - map, src - map, */f2';
   var exp = { a : { f1 : 1, f2 : 0 }, c : { f1 : [], f2 : 'str' } };
   var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
-  var got = _.entityOnly( dst, undefined, '*/f1' );
+  var src = { a : { f1 : 1, f2 : 1 }, b : { f1 : false, f2 : 0 }, c : { f1 : [], f2 : 'str' } };
+  var got = _.entityOnly( dst, src, '*/f2' );
   test.is( dst === got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - map, */f2';
-  var exp = { b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
-  var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
-  var got = _.entityOnly( dst, undefined, '*/f2' );
+  test.case = 'dst - map, src - array with map, */f2';
+  var exp = { 1 : { f1 : false, f2 : 3 } };
+  var dst = { 0 : { f1 : 1, f2 : 0 }, 1 : { f1 : false, f2 : 3 }, 2 : { f1 : [], f2 : 'str' } };
+  var src = [ 0, { f1 : 1, f2 : 1 }, 2, 3 ];
+  var got = _.entityOnly( dst, src, '*/f2' );
   test.is( dst === got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - array, */f1';
+  test.case = 'dst - array, src - array, */f1';
+  var exp = [ { f1 : [], f2 : 'str' } ];
+  var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var src = [ { f1 : 0, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var got = _.entityOnly( dst, src, '*/f1' );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, src - map, */f1';
+  var exp = [ { f1 : 1, f2 : 0 } ];
+  var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var src = { 0 : { f1 : 1, f2 : 0 }, 1 : { f1 : false, f2 : 3 }, a : { f1 : [], f2 : 'str' } };
+  var got = _.entityOnly( dst, src, '*/f1' );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, src - array, */f2';
   var exp = [ { f1 : 1, f2 : 0 }, { f1 : [], f2 : 'str' } ];
   var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
-  var got = _.entityOnly( dst, undefined, '*/f1' );
+  var src = [ { f1 : 1, f2 : true }, { f1 : false, f2 : false }, { f1 : [], f2 : 'str' } ];
+  var got = _.entityOnly( dst, src, '*/f2' );
   test.is( dst === got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - array, */f2';
-  var exp = [ { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  test.case = 'dst - array, src - map, */f2';
+  var exp = [ { f1 : false, f2 : 3 } ];
   var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
-  var got = _.entityOnly( dst, undefined, '*/f2' );
+  var src = { 0 : { f1 : 1, f2 : 0 }, 1 : { f1 : false, f2 : 3 }, a : { f1 : [], f2 : 'str' } };
+  var got = _.entityOnly( dst, src, '*/f2' );
   test.is( dst === got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - obj';
-  var exp = new Constructor1();
-  var dst = exp;
-  var got = _.entityOnly( dst, undefined, '*/x' );
-  test.is( dst === got );
+  test.case = 'dst - obj, src - str';
+  var exp = undefined;
+  var dst = new Constructor1();
+  var src = 'src';
+  var got = _.entityOnly( dst, src, '*/x' );
+  test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - str';
-  var exp = 'dst';
+  test.case = 'dst - str, src - 0';
+  var exp = undefined;
   var dst = 'dst';
-  var got = _.entityOnly( dst, undefined, '*/length' );
-  test.is( dst === got );
+  var src = 0;
+  var got = _.entityOnly( dst, src, '*/length' );
+  test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - empty str';
+  test.case = 'dst - empty str, src - 1';
   var exp = undefined;
   var dst = '';
-  var got = _.entityOnly( dst, undefined, '*/length' );
+  var src = 1;
+  var got = _.entityOnly( dst, src, '*/length' );
   test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - false';
+  test.case = 'dst - false, src = true';
   var exp = undefined;
   var dst = false;
-  var got = _.entityOnly( dst, undefined, '*/length' );
+  var src = true;
+  var got = _.entityOnly( dst, src, '*/length' );
   test.is( dst !== got );
+  test.is( src !== got );
   test.identical( got, exp );
 
-  test.case = 'dst - 0';
+  test.case = 'dst - 0, src - null';
   var exp = undefined;
   var dst = 0;
-  var got = _.entityOnly( dst, undefined, '*/length' );
+  var src = null;
+  var got = _.entityOnly( dst, src, '*/length' );
   test.is( dst !== got );
   test.identical( got, exp );
 
