@@ -1739,6 +1739,24 @@ function entityOnlyOnlyDst( test )
   test.identical( got, exp );
 
   test.close( 'onEach - selector' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityOnly() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.entityOnly( [ 1, 2 ], [ 0, 1 ], ( e ) => e, 'extra' ) );
+
+  test.case = 'wrong onEach type';
+  test.shouldThrowErrorSync( () => _.entityOnly( [ 1, 2 ], [ 0, 1 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.entityOnly( [ 1, 2 ], [ 0, 1 ], [] ) );
+
+  test.case = 'onEach.length > 3';
+  test.shouldThrowErrorSync( () => _.entityOnly( [ 1, 2 ], [ 0, 1 ], ( a, b, c, d ) => a - b + c - d ) );
 }
 
 //
