@@ -221,6 +221,7 @@ function buffersAreIdentical( src1, src2 )
  * @returns { BufferAny|Array }  Returns a buffer ( array ) from {-src-} with {-ins-} type.
  * @function bufferMake
  * @throws { Error } If arguments.length is less then one or more than two.
+ * @throws { Error } If {-ins-} is constructor and second argument {-src-} is not provided.
  * @throws { Error } If {-src-} is not a number, not a Long, not a buffer.
  * @throws { Error } If {-ins-} is not a Long, not a buffer or not a constructor.
  * @throws { Error } If {-src-} or src.length has a not finite value.
@@ -372,7 +373,7 @@ function bufferMake( ins, src )
 
 /**
  * The routine bufferMakeUndefined() returns a new buffer with the same type as buffer in argument {-ins-}.
- * New buffer has length equal to the length of second argument {-src-} or it has length of initial array {-ins-}
+ * New buffer has length equal to the length of second argument {-src-} or it has length of initial buffer {-ins-}
  * if second argument is not provided.
  *
  * @param { Buffer|Long|Routine } ins - Buffer, Long or constructor, defines type of returned buffer.
