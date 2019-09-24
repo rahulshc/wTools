@@ -68,7 +68,7 @@ function argumentsArrayFrom( src )
  * or if (ins) is number, the Long makes from (src) with length equal to (ins). If (ins) is not provided, routine returns copy of (src).
  *
  * @param { Long } src - Instance of Long or constructor, defines type of returned Long. If null is provided, routine returns empty array.
- * @param { Number|Long } ins - Defines length of new Long. If Long is provided, routine makes new Long from (ins) with (src) type.
+ * @param { Number|Long } ins - Defines length of new Long. If Long is provided, routine makes new Long from {-ins-} with {-src-} type.
  *
  * @example
  * _.longMake( null );
@@ -79,7 +79,7 @@ function argumentsArrayFrom( src )
  * // returns [ 1, 2, 3, 4 ];
  *
  * @example
- * let src = _.unrollMake( [] )
+ * let src = _.unrollMake( [] );
  * let got = _.longMake( src, [ 1, 2, 3 ] );
  * console.log( got );
  * // log [ 1, 2, 3 ];
@@ -87,7 +87,7 @@ function argumentsArrayFrom( src )
  * // log true
  *
  * @example
- * let src = new F32x( [ 1, 2, 3, 4, 5] )
+ * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
  * let got = _.longMake( src, 2 );
  * console.log( got );
  * // log Float32Array[ 1, 2 ];
@@ -96,11 +96,10 @@ function argumentsArrayFrom( src )
  *
  * @returns { Long }  Returns a Long with type of source Long which makes from ins.
  * @function longMake
- * @throws { Error } If the passed arguments is less than two or more then two.
- * @throws { Error } If the (ins) is not a number and not a Long.
- * @throws { Error } If the (src) is not Long or not a constructor.
- * @throws { Error } If the (ins) or ins.length has a not finite value.
- * @throws { Error } If the (length === undefined) and (_.numberIs(ins.length)) is not a number.
+ * @throws { Error } If arguments.length is less than two or more then two.
+ * @throws { Error } If {-ins-} is not a number and not a Long.
+ * @throws { Error } If {-src-} is not a Long or not a constructor.
+ * @throws { Error } If {-ins-} or ins.length has a not finite value.
  * @memberof wTools
  */
 
@@ -422,6 +421,7 @@ function longMakeUndefined( ins, len )
 
 /*
 qqq : forbid non-long buffers as ins or src
+Dmytro : asserts is improved
 */
 
 function longMakeZeroed( ins, src )
@@ -448,19 +448,19 @@ function longMakeZeroed( ins, src )
   ins = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ), () => 'Expects long, but got ' + _.strType( ins ) );
+  // _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
 
   if( _.routineIs( ins ) )
-  {
-    result = new ins( length );
-  }
+  result = new ins( length );
+  else if( _.unrollIs( ins ) )
+  result = _.unrollMake( length );
   else
-  {
-    result = new ins.constructor( length );
-  }
+  result = new ins.constructor( length );
 
-  if( !_.bufferTypedIs( result ) && !_.bufferRawIs( result )  )
+  if( !_.bufferTypedIs( result ) )
+  // if( !_.bufferTypedIs( result ) && !_.bufferRawIs( result )  )
   for( let i = 0 ; i < length ; i++ )
   result[ i ] = 0;
 
