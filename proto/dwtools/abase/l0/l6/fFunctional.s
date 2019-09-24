@@ -434,6 +434,16 @@ function entityEachOwn( src, onEach )
 
 //
 
+/*
+
+LongLike / MapLike / HashMapLike / SetLike
+
+
+_.only( Array::dst, Map::src );
+_.only( Array::dst, Set::src );
+
+*/
+
 function entityOnly( dst, src, onEach )
 {
 
@@ -460,6 +470,18 @@ function entityOnly( dst, src, onEach )
 
   /* */
 
+/*
+
+  let srcHas = null;
+  if ...
+  srcHas = srcHasMap;
+  else ...
+  srcHas = srcHasSet;
+
+*/
+
+  /* */
+
   if( dst !== null )
   // if( dst === src )
   {
@@ -467,7 +489,7 @@ function entityOnly( dst, src, onEach )
     if( _.routineIs( onEach ) )
     withRoutineDeleting();
     else
-    withoutRoutineDeleting();
+    withoutRoutineDeleting(); /* don't change the subroutine */
 
   }
   else
@@ -476,13 +498,25 @@ function entityOnly( dst, src, onEach )
     if( _.routineIs( onEach ) )
     withRoutine();
     else
-    withoutRoutine();
+    withoutRoutine(); /* don't change the subroutine */
 
   }
 
   /* */
 
   return dst;
+
+  /* */
+
+  function srcHasMap( e )
+  {
+  }
+
+  /* */
+
+  function srcHasSet( e )
+  {
+  }
 
   /* */
 
