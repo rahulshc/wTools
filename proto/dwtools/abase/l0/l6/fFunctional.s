@@ -1450,7 +1450,7 @@ function entityOr( dst, src, onEach )
   function withRoutine()
   {
 
-    if( _.longIs( dst ) )
+    if( _.longIs( src ) )
     {
 
       dst = [];
@@ -1462,7 +1462,7 @@ function entityOr( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.mapLike( src ) )
     {
 
       dst = Object.create( null );
@@ -1490,7 +1490,7 @@ function entityOr( dst, src, onEach )
   function withoutRoutine()
   {
 
-    if( _.longIs( dst ) )
+    if( _.longIs( src ) )
     {
 
       dst = [];
@@ -1502,7 +1502,7 @@ function entityOr( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.mapLike( src ) )
     {
 
       dst = Object.create( null );
