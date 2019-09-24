@@ -75,7 +75,7 @@ function enityExtendAppending( dst, src )
 
 //
 
-function entityMake( src, length )
+function containerMakeConstructing( src, length )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -86,10 +86,12 @@ function entityMake( src, length )
   }
   else if( _.longIs( src ) )
   {
-    if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
-    return new src.constructor( length !== undefined ? length : src.length );
-    else
-    return new Array( length !== undefined ? length : src.length );
+    debugger;
+    return _.longMake( src, length );
+    // if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
+    // return new src.constructor( length !== undefined ? length : src.length );
+    // else
+    // return new Array( length !== undefined ? length : src.length );
   }
   else if( _.mapIs( src ) )
   {
@@ -105,7 +107,7 @@ function entityMake( src, length )
 
 //
 
-function entityMakeTrivial( src, length )
+function containerMakeTrivial( src, length )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -116,12 +118,14 @@ function entityMakeTrivial( src, length )
   }
   else if( _.longIs( src ) )
   {
-    if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
-    return new src.constructor( length !== undefined ? length : src.length );
-    else
-    return new Array( length !== undefined ? length : src.length );
+    debugger;
+    return _.longMake( src, length );
+    // if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
+    // return new src.constructor( length !== undefined ? length : src.length );
+    // else
+    // return new Array( length !== undefined ? length : src.length );
   }
-  else if( _.objectIs( src ) )
+  else if( _.mapLike( src ) )
   {
     return Object.create( null );
   }
@@ -383,8 +387,9 @@ let Routines =
   enityExtend,
   enityExtendAppending,
 
-  entityMake,
-  entityMakeTrivial,
+  containerMakeConstructing,
+  containerMakeTrivial,
+  make : containerMakeTrivial,
   entityShallowClone,
 
   entityAssign, /* refactor!!! */

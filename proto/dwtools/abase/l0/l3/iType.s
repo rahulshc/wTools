@@ -42,28 +42,6 @@ function primitiveIs( src )
 
 //
 
-function containerIs( src )
-{
-  if( _.arrayLike( src ) )
-  return true;
-  if( _.objectIs( src ) )
-  return true;
-  return false;
-}
-
-//
-
-function containerLike( src )
-{
-  if( _.longIs( src ) )
-  return true;
-  if( _.objectLike( src ) )
-  return true;
-  return false;
-}
-
-//
-
 function symbolIs( src )
 {
   let result = Object.prototype.toString.call( src ) === '[object Symbol]';
@@ -78,7 +56,103 @@ function bigIntIs( src )
   return result;
 }
 
+// --
+// container
+// --
+
+function containerIs( src )
+{
+  if( _.longIs( src ) )
+  return true;
+  if( _.mapLike( src ) )
+  return true;
+  if( _.hashMapLike( src ) )
+  return true;
+  if( _.setLike( src ) )
+  return true;
+  return false;
+}
+
 //
+
+function containerLike( src )
+{
+  if( _.longIs( src ) )
+  return true;
+  if( _.objectLike( src ) )
+  return true;
+  if( _.hashMapLike( src ) )
+  return true;
+  if( _.setLike( src ) )
+  return true;
+  return false;
+}
+
+//
+
+function hashMapIs( src )
+{
+  if( !src )
+  return false;
+  debugger;
+  return src instanceof HashMap || src instanceof HashMapWeak;
+}
+
+//
+
+function hashMapLike( src )
+{
+  return _.hashMapIs( src );
+}
+
+//
+
+function hashMapIsEmpty()
+{
+  return !src.size;
+}
+
+//
+
+function hashMapIsPopulated()
+{
+  return !!src.size;
+}
+
+//
+
+function setIs( src )
+{
+  if( !src )
+  return false;
+  debugger;
+  return src instanceof Set || src instanceof WeakSet;
+}
+
+//
+
+function setLike( src )
+{
+  return _.setIs( src );
+}
+
+//
+
+function setIsEmpty()
+{
+  return !src.size;
+}
+
+//
+
+function setIsPopulated()
+{
+  return !!src.size;
+}
+
+// --
+// math
+// --
 
 function vectorIs( src )
 {
@@ -484,14 +558,30 @@ let Routines =
 
   /* qqq : requires good tests */
 
+  // primitive
+
   nothingIs,
   definedIs,
   primitiveIs,
+  symbolIs,
+  bigIntIs,
+
+  // container
+
   containerIs,
   containerLike,
 
-  symbolIs,
-  bigIntIs,
+  hashMapIs,
+  hashMapLike,
+  hashMapIsEmpty,
+  hashMapIsPopulated,
+
+  setIs,
+  setLike,
+  setIsEmpty,
+  setIsPopulated,
+
+  //
 
   vectorIs,
   constructorIsVector,

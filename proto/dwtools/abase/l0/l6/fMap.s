@@ -1688,6 +1688,22 @@ function mapDelete( dstMap, ins )
   return dstMap;
 }
 
+//
+
+function mapEmpty( dstMap )
+{
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectLike( dstMap ) );
+
+  for( let i in dstMap )
+  {
+    delete dstMap[ i ];
+  }
+
+  return dstMap;
+}
+
 // --
 // map recursive
 // --
@@ -5628,7 +5644,8 @@ let Routines =
   mapSetWithKeys,
   mapSet : mapSetWithKeys,
   mapSetStrictly,
-  mapDelete,
+  mapDelete, /* qqq : implement good coverage */
+  mapEmpty, /* qqq : implement good coverage */
 
   // map transformer
 

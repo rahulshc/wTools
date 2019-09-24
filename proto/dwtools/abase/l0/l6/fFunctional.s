@@ -1415,7 +1415,7 @@ function entityMap( src, onEach )
 
   if( _.longIs( src ) )
   {
-    result = _.entityMakeTrivial( src );
+    result = _.containerMakeTrivial( src );
     for( let s = 0 ; s < src.length ; s++ )
     {
       result[ s ] = onEach( src[ s ], s, src );
@@ -1425,7 +1425,7 @@ function entityMap( src, onEach )
   // else if( _.objectLike( src ) )
   else if( _.mapLike( src ) )
   {
-    result = _.entityMakeTrivial( src );
+    result = _.containerMakeTrivial( src );
     for( let s in src )
     {
       result[ s ] = onEach( src[ s ], s, src );
@@ -1489,7 +1489,7 @@ function entityFilter( src, onEach )
   else if( _.mapLike( src ) )
   {
 
-    result = _.entityMakeTrivial( src );
+    result = _.containerMakeTrivial( src );
     for( let s in src )
     {
       let r = onEach.call( src, src[ s ], s, src );

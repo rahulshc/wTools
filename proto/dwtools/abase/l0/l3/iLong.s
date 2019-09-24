@@ -70,6 +70,22 @@ function longIs( src )
 
 //
 
+function longLike( src )
+{
+  return _.longIs( src );
+}
+
+//
+
+function longIsEmpty( src )
+{
+  if( !_.longIs( src ) )
+  return false;
+  return src.length === 0;
+}
+
+//
+
 function longIsPopulated( src )
 {
   if( !_.longIs( src ) )
@@ -106,7 +122,9 @@ let Routines =
   // long
 
   longIs,
+  longLike,
   longIsPopulated,
+  longIsEmpty
 
 }
 

@@ -119,26 +119,6 @@ function mapIs( src )
 
 //
 
-function hashMapIs( src )
-{
-  if( !src )
-  return false;
-  debugger;
-  return src instanceof HashMap;
-}
-
-//
-
-function setIs( src )
-{
-  if( !src )
-  return false;
-  debugger;
-  return src instanceof Set;
-}
-
-//
-
 function mapIsEmpty( src )
 {
   if( !_.mapIs( src ) )
@@ -1787,8 +1767,7 @@ let Routines =
   mapIsPure,
   mapIsPopulated,
   mapIsHeritated,
-  hashMapIs,
-  setIs,
+
   mapLike,
 
   // map selector

@@ -625,7 +625,7 @@ function longRepresent( src, begin, end )
  * @memberof wTools
 */
 
-function longSlice( array, f, l )
+function longSlice( array, f, l ) /* qqq : optimize */
 {
   let result;
 
@@ -679,6 +679,18 @@ function longSlice( array, f, l )
   result[ r-f ] = array[ r ];
 
   return result;
+}
+
+//
+
+function longEmpty( dstLong )
+{
+  if( _.arrayIs( dstLong ) )
+  {
+    dstLong.slice( 0, dstLong.length );
+    return dstLong;
+  }
+  _.assert( 0, `Cant change length of fixed-length container ${_.strType( dstLong )}` );
 }
 
 //
@@ -7616,6 +7628,7 @@ let Routines =
 
   longRepresent,
   longSlice,
+  longEmpty,
 
   longBut,
   longButInplace,
