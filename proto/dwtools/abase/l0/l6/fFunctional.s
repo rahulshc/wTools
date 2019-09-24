@@ -501,7 +501,7 @@ function entityOnly( dst, src, onEach )
     {
 
       dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
-      for( let k = dst.length; k >= 0 ; k-- )
+      for( let k = dst.length - 1; k >= 0 ; k-- )
       {
         let res = onEach( src[ k ], k, src );
         if( !res )
@@ -576,7 +576,7 @@ function entityOnly( dst, src, onEach )
     {
 
       dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
-      for( let k = dst.length; k >= 0; k-- )
+      for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res = src[ k ];
         if( !res )
@@ -650,7 +650,7 @@ function entityOnly( dst, src, onEach )
     if( _.longIs( dst ) )
     {
 
-      for( let k = dst.length; k >= 0; k-- )
+      for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res = onEach( src[ k ], k, src );
         if( !res )
@@ -743,7 +743,7 @@ function entityOnly( dst, src, onEach )
     if( _.longIs( dst ) )
     {
 
-      for( let k = dst.length; k >= 0; k-- )
+      for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res = src[ k ];
         if( !res )
@@ -898,7 +898,7 @@ function entityBut( dst, src, onEach )
     {
 
       dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
-      for( let k = dst.length; k >= 0; k-- )
+      for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res = onEach( src[ k ], k, src );
         if( res )
@@ -973,7 +973,7 @@ function entityBut( dst, src, onEach )
     {
 
       dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
-      for( let k = dst.length; k >= 0; k-- )
+      for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res = src[ k ];
         if( res )
@@ -1047,7 +1047,7 @@ function entityBut( dst, src, onEach )
     if( _.longIs( dst ) )
     {
 
-      for( let k = dst.length; k >= 0; k-- )
+      for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res = onEach( src[ k ], k, src );
         if( res )
@@ -1140,7 +1140,7 @@ function entityBut( dst, src, onEach )
     if( _.longIs( src ) )
     {
 
-      for( let k = dst.length; k >= 0; k-- )
+      for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res = src[ k ];
         if( res )
@@ -1336,6 +1336,7 @@ function entityAnd( dst, src, onEach )
 
   if( src === undefined )
   src = dst;
+
   if( dst === null )
   {
     if( _.longIs( src ) )
@@ -1379,7 +1380,7 @@ function entityAnd( dst, src, onEach )
     {
 
       dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
-      for( let k = dst.length; k >= 0 ; k-- )
+      for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res1, res2;
         res1 = onEach( dst[ k ], k, dst );
@@ -1395,8 +1396,10 @@ function entityAnd( dst, src, onEach )
 
       for( let k in dst )
       {
-        let res1 = onEach( dst[ k ], k, dst );
-        let res2 = onEach( src[ k ], k, src );
+        let res1, res2;
+        res1 = onEach( dst[ k ], k, dst );
+        if( res1 )
+        res2 = onEach( src[ k ], k, src );
         if( !res1 || !res2 )
         delete dst[ k ];
       }
@@ -1404,8 +1407,10 @@ function entityAnd( dst, src, onEach )
     }
     else
     {
-      let res1 = onEach( dst, undefined, undefined );
-      let res2 = onEach( src, undefined, undefined );
+      let res1, res2;
+      res1 = onEach( dst, undefined, undefined );
+      if( res1 )
+      res2 = onEach( src, undefined, undefined );
       if( !res1 || !res2 )
       dst = undefined;
     }
@@ -1421,7 +1426,7 @@ function entityAnd( dst, src, onEach )
     {
 
       dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
-      for( let k = dst.length; k >= 0; k-- )
+      for( let k = dst.length - 1; k >= 0; k-- )
       {
         let res1 = dst[ k ];
         let res2 = src[ k ];
@@ -1447,6 +1452,169 @@ function entityAnd( dst, src, onEach )
       let res1 = dst;
       let res2 = src;
       if( !res1 || !res2 )
+      dst = undefined;
+    }
+
+  }
+
+}
+
+//
+
+function entityOr( dst, src, onEach )
+{
+
+  if( arguments.length > 2 )
+  onEach = arguments[ arguments.length-1 ];
+
+  if( src === undefined )
+  src = dst;
+
+  if( dst === null )
+  {
+    if( _.longIs( src ) )
+    dst = _.arrayMake( src );
+    else if( _.mapLike( src ) )
+    dst = Object.assign( {}, src );
+    else
+    dst = src;
+  }
+
+  if( _.strIs( onEach ) )
+  {
+    let selector = onEach;
+    _.assert( _.routineIs( _.select ) );
+    _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
+    selector = _.strRemoveBegin( selector, '*/' );
+    onEach = function( e, k )
+    {
+      return _.select( e, selector );
+    }
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+
+  /* */
+
+  if( _.routineIs( onEach ) )
+  withRoutine();
+  else
+  withoutRoutine();
+
+  return dst;
+
+  /* */
+
+  function withRoutine()
+  {
+
+    if( _.longIs( dst ) )
+    {
+
+      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      for( let k = dst.length - 1; k >= 0; k-- )
+      {
+        let res1, res2;
+        res1 = onEach( dst[ k ], k, dst );
+        if( !res1 )
+        res2 = onEach( src[ k ], k, src );
+
+        if( res1 )
+        dst[ k ] = dst[ k ];
+        else if( res2 )
+        dst[ k ] = src[ k ];
+        else
+        dst.splice( k, 1 );
+      }
+
+    }
+    else if( _.mapLike( dst ) )
+    {
+
+      for( let k in dst )
+      {
+        let res1, res2;
+        res1 = onEach( dst[ k ], k, dst );
+        if( !res1 )
+        res2 = onEach( src[ k ], k, src );
+
+        if( res1 )
+        dst[ k ] = dst[ k ];
+        else if( res2 )
+        dst[ k ] = src[ k ];
+        else
+        delete dst[ k ];
+      }
+
+    }
+    else
+    {
+      let res1, res2;
+      res1 = onEach( dst, undefined, undefined );
+      if( !res1 )
+      res2 = onEach( src, undefined, undefined );
+
+      if( res1 )
+      dst = dst;
+      else if( res2 )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withoutRoutine()
+  {
+
+    if( _.longIs( dst ) )
+    {
+
+      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      for( let k = dst.length - 1; k >= 0; k-- )
+      {
+        let res1 = dst[ k ];
+        let res2 = src[ k ];
+
+        if( res1 )
+        dst[ k ] = dst[ k ];
+        else if( res2 )
+        dst[ k ] = src[ k ];
+        else
+        dst.splice( k, 1 );
+      }
+
+    }
+    else if( _.mapLike( dst ) )
+    {
+
+      for( let k in dst )
+      {
+        let res1 = dst[ k ];
+        let res2 = src[ k ];
+
+        if( res1 )
+        dst[ k ] = dst[ k ];
+        else if( res2 )
+        dst[ k ] = src[ k ];
+        else
+        delete dst[ k ];
+      }
+
+    }
+    else
+    {
+      let res1 = dst;
+      let res2 = src;
+
+      if( res1 )
+      dst = dst;
+      else if( res2 )
+      dst = src;
+      else
       dst = undefined;
     }
 
@@ -2161,6 +2329,7 @@ let Routines =
   entityBut, /* qqq : optimize, implement good coverage and jsdoc, please */
   but : entityBut,
   entityAnd,
+  entityOr,
 
   entityAll, /* qqq : optimize entityAll */
   all : entityAll,
