@@ -1190,16 +1190,6 @@ function entityAnd( dst, src, onEach )
   if( src === undefined )
   src = dst;
 
-  if( dst === null )
-  {
-    if( _.longIs( src ) )
-    dst = _.arrayMake( src );
-    else if( _.mapLike( src ) )
-    dst = Object.assign( {}, src );
-    else
-    dst = src;
-  }
-
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
@@ -1217,16 +1207,110 @@ function entityAnd( dst, src, onEach )
 
   /* */
 
-  if( _.routineIs( onEach ) )
-  withRoutine();
+  if( dst !== null )
+  {
+
+    if( _.routineIs( onEach ) )
+    withRoutineDeleting();
+    else
+    withoutRoutineDeleting();
+
+  }
   else
-  withoutRoutine();
+  {
+
+    if( _.routineIs( onEach ) )
+    withRoutine();
+    else
+    withoutRoutine();
+
+  }
 
   return dst;
 
   /* */
 
   function withRoutine()
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      dst = [];
+      for( let k = 0; k < src.length; k++ )
+      {
+        let res = onEach( src[ k ], k, src );
+        if( res )
+        dst.push( src[ k ] );
+      }
+
+    }
+    else if( _.mapLike( src ) )
+    {
+
+      dst = Object.create( null );
+      for( let k in src )
+      {
+        let res = onEach( src[ k ], k, src );
+        if( res )
+        dst[ k ] = src[ k ];
+      }
+
+    }
+    else
+    {
+      let res = onEach( src, undefined, undefined );
+      if( res )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withoutRoutine()
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      dst = [];
+      for( let k = 0; k < src.length; k++ )
+      {
+        let res = src[ k ];
+        if( res )
+        dst.push( src[ k ] );
+      }
+
+    }
+    else if( _.mapLike( src ) )
+    {
+
+      dst = Object.create( null );
+      for( let k in src )
+      {
+        let res = src[ k ];
+        if( res )
+        dst[ k ] = src[ k ];
+      }
+
+    }
+    else
+    {
+      let res = src;
+      if( res )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withRoutineDeleting()
   {
 
     if( _.longIs( dst ) )
@@ -1272,7 +1356,7 @@ function entityAnd( dst, src, onEach )
 
   /* */
 
-  function withoutRoutine()
+  function withoutRoutineDeleting()
   {
 
     if( _.longIs( dst ) )
@@ -1323,16 +1407,6 @@ function entityOr( dst, src, onEach )
   if( src === undefined )
   src = dst;
 
-  if( dst === null )
-  {
-    if( _.longIs( src ) )
-    dst = _.arrayMake( src );
-    else if( _.mapLike( src ) )
-    dst = Object.assign( {}, src );
-    else
-    dst = src;
-  }
-
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
@@ -1350,16 +1424,110 @@ function entityOr( dst, src, onEach )
 
   /* */
 
-  if( _.routineIs( onEach ) )
-  withRoutine();
+  if( dst !== null )
+  {
+
+    if( _.routineIs( onEach ) )
+    withRoutineDeleting();
+    else
+    withoutRoutineDeleting();
+
+  }
   else
-  withoutRoutine();
+  {
+
+    if( _.routineIs( onEach ) )
+    withRoutine();
+    else
+    withoutRoutine();
+
+  }
 
   return dst;
 
   /* */
 
   function withRoutine()
+  {
+
+    if( _.longIs( dst ) )
+    {
+
+      dst = [];
+      for( let k = 0; k < src.length; k++ )
+      {
+        let res = onEach( src[ k ], k, src );
+        if( res )
+        dst.push( src[ k ] );
+      }
+
+    }
+    else if( _.mapLike( dst ) )
+    {
+
+      dst = Object.create( null );
+      for( let k in src )
+      {
+        let res = onEach( src[ k ], k, src );
+        if( res )
+        dst[ k ] = src[ k ];
+      }
+
+    }
+    else
+    {
+      let res = onEach( src, undefined, undefined );
+      if( res )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withoutRoutine()
+  {
+
+    if( _.longIs( dst ) )
+    {
+
+      dst = [];
+      for( let k = 0; k < src.length; k++ )
+      {
+        let res = src[ k ];
+        if( res )
+        dst.push( src[ k ] );
+      }
+
+    }
+    else if( _.mapLike( dst ) )
+    {
+
+      dst = Object.create( null );
+      for( let k in src )
+      {
+        let res = src[ k ];
+        if( res )
+        dst[ k ] = src[ k ];
+      }
+
+    }
+    else
+    {
+      let res = src;
+      if( res )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withRoutineDeleting()
   {
 
     if( _.longIs( dst ) )
@@ -1420,7 +1588,7 @@ function entityOr( dst, src, onEach )
 
   /* */
 
-  function withoutRoutine()
+  function withoutRoutineDeleting()
   {
 
     if( _.longIs( dst ) )
