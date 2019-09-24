@@ -1381,8 +1381,10 @@ function entityAnd( dst, src, onEach )
       dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
       for( let k = dst.length; k >= 0 ; k-- )
       {
-        let res1 = onEach( dst[ k ], k, dst );
-        let res2 = onEach( src[ k ], k, src );
+        let res1, res2;
+        res1 = onEach( dst[ k ], k, dst );
+        if( res1 )
+        res2 = onEach( src[ k ], k, src );
         if( !res1 || !res2 )
         dst.splice( k, 1 );
       }
