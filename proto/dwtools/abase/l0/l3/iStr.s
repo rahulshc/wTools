@@ -124,9 +124,7 @@ function strEquivalent( src1, src2 )
   }
   else if( strIs1 )
   {
-    debugger;
     let matched = src2.exec( src1 );
-    debugger;
     if( !matched )
     return false;
     if( matched[ 0 ].length !== src1.length )
@@ -155,31 +153,31 @@ function strsEquivalent( src1, src2 )
 
   if( isLong1 && isLong2 )
   {
+    let result = [];
     _.assert( src1.length === src2.length );
     for( let i = 0, len = src1.length ; i < len; i++ )
     {
-      let result = [];
       result[ i ] = _.strEquivalent( src1[ i ], src2[ i ] );
-      return result;
     }
+    return result;
   }
   else if( !isLong1 && isLong2 )
   {
+    let result = [];
     for( let i = 0, len = src2.length ; i < len; i++ )
     {
-      let result = [];
       result[ i ] = _.strEquivalent( src1, src2[ i ] );
-      return result;
     }
+    return result;
   }
   else if( isLong1 && !isLong2 )
   {
+    let result = [];
     for( let i = 0, len = src1.length ; i < len; i++ )
     {
-      let result = [];
       result[ i ] = _.strEquivalent( src1[ i ], src2 );
-      return result;
     }
+    return result;
   }
   else
   {

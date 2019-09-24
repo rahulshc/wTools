@@ -1,4 +1,4 @@
-(function _StringTools_s_() {
+(function _StrBasic_s_() {
 
 'use strict';
 
@@ -2554,7 +2554,7 @@ function strSplit_body( o )
   fastOptions.preservingDelimeters = 1;
 
   if( o.quoting )
-  fastOptions.delimeter = _.arrayPrependArraysOnce( [], [ o.quotingPrefixes, o.quotingPostfixes, fastOptions.delimeter ] );
+  fastOptions.delimeter = _.arrayAppendArraysOnce( [], [ o.quotingPrefixes, o.quotingPostfixes, fastOptions.delimeter ] );
 
   o.splits = _.strSplitFast.body( fastOptions );
 

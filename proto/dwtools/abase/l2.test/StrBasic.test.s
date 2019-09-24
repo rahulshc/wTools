@@ -1,4 +1,4 @@
-( function _StringTools_test_s_() {
+( function _StringBasic_test_s_() {
 
 'use strict';
 
@@ -5997,7 +5997,9 @@ function strSplit( test )
   var o = _.mapExtend( null, op );
   o.src = '"a b" "" c';
   o.delimeter = [ '', 'a b', ' ', '', ' c' ];
+  debugger;
   var got = _.strSplit( o );
+  debugger;
   var expected = [ '"a b"', '""', 'c' ];
   test.identical( got, expected );
 
