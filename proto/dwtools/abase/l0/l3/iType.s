@@ -1,4 +1,4 @@
-( function _bChecker_s_() {
+( function _iType_s_() {
 
 'use strict';
 
@@ -6,9 +6,6 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
-let _ArraySlice = Array.prototype.slice;
-let _FunctionBind = Function.prototype.bind;
-// let Object.prototype.toString = Object.prototype.toString;
 let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // --

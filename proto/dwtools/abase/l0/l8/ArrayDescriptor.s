@@ -1,4 +1,4 @@
-(function _kArrayDescriptor_s_() {
+(function _ArrayDescriptor_s_() {
 
 'use strict';
 

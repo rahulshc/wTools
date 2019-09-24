@@ -6,9 +6,6 @@ let Self = _global_.wTools.field = _global_.wTools.field || Object.create( null 
 let _global = _global_;
 let _ = _global_.wTools;
 
-let _ArraySlice = Array.prototype.slice;
-let _FunctionBind = Function.prototype.bind;
-// let Object.prototype.toString = Object.prototype.toString;
 let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // --
