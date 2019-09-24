@@ -447,7 +447,7 @@ function entityOnly( dst, src, onEach )
     if( _.longIs( src ) )
     dst = _.arrayMake( src );
     else if( _.mapLike( src ) )
-    dst = Object.assign({}, src );
+    dst = Object.assign( {}, src );
     else
     dst = src;
   }
@@ -650,7 +650,6 @@ function entityOnly( dst, src, onEach )
     if( _.longIs( dst ) )
     {
 
-      let k2 = 0;
       for( let k = dst.length; k >= 0; k-- )
       {
         let res = onEach( src[ k ], k, src );
@@ -845,7 +844,7 @@ function entityBut( dst, src, onEach )
     if( _.longIs( src ) )
     dst = _.arrayMake( src );
     else if( _.mapLike( src ) )
-    dst = Object.assign({}, src );
+    dst = Object.assign( {}, src );
     else
     dst = src;
   }
@@ -1326,6 +1325,132 @@ function entityBut( dst, src, onEach )
 //
 //   return result;
 // }
+
+//
+
+function entityAnd( dst, src, onEach )
+{
+
+  if( arguments.length > 2 )
+  onEach = arguments[ arguments.length-1 ];
+
+  if( src === undefined )
+  src = dst;
+  if( dst === null )
+  {
+    if( _.longIs( src ) )
+    dst = _.arrayMake( src );
+    else if( _.mapLike( src ) )
+    dst = Object.assign( {}, src );
+    else
+    dst = src;
+  }
+
+  if( _.strIs( onEach ) )
+  {
+    let selector = onEach;
+    _.assert( _.routineIs( _.select ) );
+    _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
+    selector = _.strRemoveBegin( selector, '*/' );
+    onEach = function( e, k )
+    {
+      return _.select( e, selector );
+    }
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+
+  /* */
+
+  if( _.routineIs( onEach ) )
+  withRoutine();
+  else
+  withoutRoutine();
+
+  return dst;
+
+  /* */
+
+  function withRoutine()
+  {
+
+    if( _.longIs( dst ) )
+    {
+
+      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      for( let k = dst.length; k >= 0 ; k-- )
+      {
+        let res1 = onEach( dst[ k ], k, dst );
+        let res2 = onEach( src[ k ], k, src );
+        if( !res1 || !res2 )
+        dst.splice( k, 1 );
+      }
+
+    }
+    else if( _.mapLike( dst ) )
+    {
+
+      for( let k in dst )
+      {
+        let res1 = onEach( dst[ k ], k, dst );
+        let res2 = onEach( src[ k ], k, src );
+        if( !res1 || !res2 )
+        delete dst[ k ];
+      }
+
+    }
+    else
+    {
+      let res1 = onEach( dst, undefined, undefined );
+      let res2 = onEach( src, undefined, undefined );
+      if( !res1 || !res2 )
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withoutRoutine()
+  {
+
+    if( _.longIs( dst ) )
+    {
+
+      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      for( let k = dst.length; k >= 0; k-- )
+      {
+        let res1 = dst[ k ];
+        let res2 = src[ k ];
+        if( !res1 || !res2 )
+        dst.splice( k, 1 );
+      }
+
+    }
+    else if( _.mapLike( dst ) )
+    {
+
+      for( let k in dst )
+      {
+        let res1 = dst[ k ];
+        let res2 = src[ k ];
+        if( !res1 || !res2 )
+        delete dst[ k ];
+      }
+
+    }
+    else
+    {
+      let res1 = dst;
+      let res2 = src;
+      if( !res1 || !res2 )
+      dst = undefined;
+    }
+
+  }
+
+}
 
 //
 
@@ -2033,6 +2158,7 @@ let Routines =
   only : entityOnly,
   entityBut, /* qqq : optimize, implement good coverage and jsdoc, please */
   but : entityBut,
+  entityAnd,
 
   entityAll, /* qqq : optimize entityAll */
   all : entityAll,
