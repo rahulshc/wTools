@@ -3059,6 +3059,40 @@ function entityOnlyDiffTypes( test )
 
 }
 
+function entityOnlyOnlySet( test )
+{
+  test.case = 'only src, has unnecessary elements';
+  var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var got = _.entityOnly( null, src );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'only src, without unnecessary elements';
+  var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = new Set( [ 0, 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityOnly( null, src );
+  test.is( got !== src );
+  test.identical( got, exp );
+}
+
+function entityOnlyOnlyHashMap( test )
+{
+  test.case = 'only src, has unnecessary elements';
+  var exp = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var src = new Map( [ [ 0, 0 ], [ 1, 1 ], [ null, null ], [ undefined, undefined ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var got = _.entityOnly( null, src );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'only src, without unnecessary elements';
+  var exp = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var src = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var got = _.entityOnly( null, src );
+  test.is( got !== src );
+  test.identical( got, exp );
+}
+
 /* end of entityOnly* routines */
 
 //
@@ -12799,6 +12833,8 @@ var Self =
     entityOnlyBothSame, /* qqq : implement | Dmytro : implemented */
     entityOnlyBoth, /* qqq : implement | Dmytro : implemented, cases with different types of src and dst added */
     entityOnlyDiffTypes, /* qqq : implement | Dmytro : cases with different types of src and dst added */
+    entityOnlyOnlySet,
+    entityOnlyOnlyHashMap,
 
     entityButOnlyDst, /* qqq : implement | Dmytro : implemented */
     entityButOnlySrc, /* qqq : implement | Dmytro : implemented */
