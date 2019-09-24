@@ -10484,7 +10484,7 @@ ghij`
 var Self =
 {
 
-  name : 'Tools.base.String',
+  name : 'Tools.base.StrBasic',
   silencing : 1,
   enabled : 1,
 
