@@ -465,6 +465,10 @@ function entityOnly( dst, src, onEach )
     }
   }
 
+  let dstTypeNumber = typeNumber( dst );
+  let srcTypeNumber = typeNumber( src );
+
+  _.assert( dst === null || dstTypeNumber === srcTypeNumber );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
@@ -782,6 +786,23 @@ function entityOnly( dst, src, onEach )
   //   }
   //
   // }
+
+  function typeNumber( e )
+  {
+    let type;
+    if( _.longIs( e ) )
+    type = 2;
+    else if( _.mapLike( e ) )
+    type = 3;
+    else if( _.setIs( e ) )
+    type = 4;
+    else if( _.hashMapIs( e ) )
+    type = 5;
+    else
+    type = 1;
+
+    return type;
+  }
 
 }
 
