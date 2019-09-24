@@ -434,6 +434,16 @@ function entityEachOwn( src, onEach )
 
 //
 
+/*
+
+LongLike / MapLike / HashMapLike / SetLike
+
+
+_.only( Array::dst, Map::src );
+_.only( Array::dst, Set::src );
+
+*/
+
 function entityOnly( dst, src, onEach )
 {
 
@@ -460,6 +470,18 @@ function entityOnly( dst, src, onEach )
 
   /* */
 
+/*
+
+  let srcHas = null;
+  if ...
+  srcHas = srcHasMap;
+  else ...
+  srcHas = srcHasSet;
+
+*/
+
+  /* */
+
   if( dst !== null )
   // if( dst === src )
   {
@@ -467,7 +489,7 @@ function entityOnly( dst, src, onEach )
     if( _.routineIs( onEach ) )
     withRoutineDeleting();
     else
-    withoutRoutineDeleting();
+    withoutRoutineDeleting(); /* don't change the subroutine */
 
   }
   else
@@ -476,13 +498,25 @@ function entityOnly( dst, src, onEach )
     if( _.routineIs( onEach ) )
     withRoutine();
     else
-    withoutRoutine();
+    withoutRoutine(); /* don't change the subroutine */
 
   }
 
   /* */
 
   return dst;
+
+  /* */
+
+  function srcHasMap( e )
+  {
+  }
+
+  /* */
+
+  function srcHasSet( e )
+  {
+  }
 
   /* */
 
@@ -2349,8 +2383,10 @@ let Routines =
   only : entityOnly,
   entityBut, /* qqq : optimize, implement good coverage and jsdoc, please */
   but : entityBut,
-  entityAnd,
-  entityOr,
+  entityAnd, /* qqq : optimize, implement good coverage and jsdoc, please */
+  and : entityAnd,
+  entityOr, /* qqq : optimize, implement good coverage and jsdoc, please */
+  or : entityOr,
 
   entityAll, /* qqq : optimize entityAll */
   all : entityAll,
@@ -2363,12 +2399,8 @@ let Routines =
 
   entityMap,
   map : entityMap,
-  // entityMapInplace, /* qqq : implement routine entityMapInplace */
-  // mapInplace : entityMapInplace,
   entityFilter,
   filter : entityFilter,
-  // entityFilterInplace, /* qqq : implement routine entityFilterInplace */
-  // mapInplace : entityFilterInplace,
 
   /* qqq : take into account Unroll case in routines filter, filterInplace */
 
