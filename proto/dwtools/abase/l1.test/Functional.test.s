@@ -12711,7 +12711,7 @@ eachSampleExperiment.experimental = 1;
 var Self =
 {
 
-  name : 'Tools.base.l1.Functional',
+  name : 'Tools.base.Functional',
   silencing : 1,
   enabled : 1,
 

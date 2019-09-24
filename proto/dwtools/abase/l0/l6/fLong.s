@@ -233,6 +233,31 @@ function longMake( src, ins )
 
 //
 
+/* qqq : optimize */
+
+function longMakeEmpty( src )
+{
+  let result;
+  let length = 0;
+
+  if( src === null )
+  src = [];
+
+  if( _.argumentsArrayIs( src ) )
+  src = [];
+
+  _.assert( arguments.length === 1 );
+
+  result = new src.constructor();
+
+  _.assert( _.longIs( result ) );
+  _.assert( result.length === 0 );
+
+  return result;
+}
+
+//
+
 function _longMakeOfLength( src, len )
 {
   // let result, length;
@@ -623,9 +648,9 @@ function longRepresent( src, begin, end )
  * @throws { Error } Will throw an Error if ( l ) is not a Number.
  * @throws { Error } Will throw an Error if no arguments provided.
  * @memberof wTools
-*/
+ */
 
-function longSlice( array, f, l )
+function longSlice( array, f, l ) /* qqq : optimize */
 {
   let result;
 
@@ -679,6 +704,18 @@ function longSlice( array, f, l )
   result[ r-f ] = array[ r ];
 
   return result;
+}
+
+//
+
+function longEmpty( dstLong )
+{
+  if( _.arrayIs( dstLong ) )
+  {
+    dstLong.slice( 0, dstLong.length );
+    return dstLong;
+  }
+  _.assert( 0, `Cant change length of fixed-length container ${_.strType( dstLong )}` );
 }
 
 //
@@ -7608,6 +7645,7 @@ let Routines =
   // longIsPopulated,
 
   longMake,
+  longMakeEmpty,
   _longMakeOfLength,
   longMakeUndefined,
   longMakeZeroed,
@@ -7616,6 +7654,7 @@ let Routines =
 
   longRepresent,
   longSlice,
+  longEmpty,
 
   longBut,
   longButInplace,
