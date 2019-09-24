@@ -442,15 +442,6 @@ function entityOnly( dst, src, onEach )
 
   if( src === undefined )
   src = dst;
-  if( dst === null )
-  {
-    if( _.longIs( src ) )
-    dst = _.arrayMake( src );
-    else if( _.mapLike( src ) )
-    dst = Object.assign( {}, src );
-    else
-    dst = src;
-  }
 
   if( _.strIs( onEach ) )
   {
@@ -469,7 +460,8 @@ function entityOnly( dst, src, onEach )
 
   /* */
 
-  if( dst === src )
+  if( dst !== null )
+  // if( dst === src )
   {
 
     if( _.routineIs( onEach ) )
@@ -497,150 +489,80 @@ function entityOnly( dst, src, onEach )
   function withRoutine()
   {
 
-    if( _.longIs( dst ) )
+    if( _.longIs( src ) )
     {
 
-      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
-      for( let k = dst.length - 1; k >= 0 ; k-- )
+      dst = [];
+      for( let k = 0 ; k < src.length ; k++ )
       {
         let res = onEach( src[ k ], k, src );
-        if( !res )
-        dst.splice( k, 1 );
+        if( res )
+        dst.push( src[ k ] );
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.mapLike( src ) )
     {
 
-      for( let k in dst )
+      dst = Object.create( null );
+      for( let k in src )
       {
         let res = onEach( src[ k ], k, src );
-        if( !res )
-        delete dst[ k ];
+        if( res )
+        dst[ k ] = src[ k ];
       }
 
     }
     else
     {
       let res = onEach( src, undefined, undefined );
-      if( !res )
+      if( res )
+      dst = src;
+      else
       dst = undefined;
     }
 
   }
-
-  // function withRoutine()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     dst = [];
-  //     for( let k = 0 ; k < src.length ; k++ )
-  //     {
-  //       let res = onEach( src[ k ], k, src );
-  //       if( res )
-  //       dst.push( src[ k ] );
-  //     }
-  //
-  //   }
-  //   else if( _.mapLike( src ) )
-  //   {
-  //
-  //     dst = Object.create( null );
-  //     for( let k in src )
-  //     {
-  //       let res = onEach( src[ k ], k, src );
-  //       if( res )
-  //       dst[ k ] = src[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = onEach( src, undefined, undefined );
-  //     if( res )
-  //     dst = src;
-  //     else
-  //     dst = undefined;
-  //   }
-  //
-  // }
 
   /* */
 
   function withoutRoutine()
   {
 
-    if( _.longIs( dst ) )
+    if( _.longIs( src ) )
     {
 
-      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
-      for( let k = dst.length - 1; k >= 0; k-- )
+      dst = [];
+      for( let k = 0 ; k < src.length ; k++ )
       {
         let res = src[ k ];
-        if( !res )
-        dst.splice( k, 1 );
+        if( res )
+        dst.push( src[ k ] );
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.mapLike( src ) )
     {
 
-      for( let k in dst )
+      dst = Object.create( null );
+      for( let k in src )
       {
         let res = src[ k ];
-        if( !res )
-        delete dst[ k ];
+        if( res )
+        dst[ k ] = src[ k ];
       }
 
     }
     else
     {
       let res = src;
-      if( !res )
+      if( res )
+      dst = res;
+      else
       dst = undefined;
     }
 
   }
-
-  // function withoutRoutine()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     dst = [];
-  //     for( let k = 0 ; k < src.length ; k++ )
-  //     {
-  //       let res = src[ k ];
-  //       if( res )
-  //       dst.push( src[ k ] );
-  //     }
-  //
-  //   }
-  //   else if( _.mapLike( src ) )
-  //   {
-  //
-  //     dst = Object.create( null );
-  //     for( let k in src )
-  //     {
-  //       let res = src[ k ];
-  //       if( res )
-  //       dst[ k ] = src[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = src;
-  //     if( res )
-  //     dst = res;
-  //     else
-  //     dst = undefined;
-  //   }
-  //
-  // }
 
   /* */
 
@@ -866,7 +788,8 @@ function entityBut( dst, src, onEach )
 
   /* */
 
-  if( dst === src )
+  if( dst !== null )
+  // if( dst === src )
   {
 
     if( _.routineIs( onEach ) )
@@ -894,150 +817,80 @@ function entityBut( dst, src, onEach )
   function withRoutine()
   {
 
-    if( _.longIs( dst ) )
+    if( _.longIs( src ) )
     {
 
-      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
-      for( let k = dst.length - 1; k >= 0; k-- )
+      dst = [];
+      for( let k = 0 ; k < src.length ; k++ )
       {
         let res = onEach( src[ k ], k, src );
-        if( res )
-        dst.splice( k, 1 );
+        if( !res )
+        dst.push( src[ k ] );
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.mapLike( src ) )
     {
 
-      for( let k in dst )
+      dst = Object.create( null );
+      for( let k in src )
       {
         let res = onEach( src[ k ], k, src );
-        if( res )
-        delete dst[ k ];
+        if( !res )
+        dst[ k ] = src[ k ];
       }
 
     }
     else
     {
       let res = onEach( src, undefined, undefined );
-      if( res )
+      if( !res )
+      dst = src;
+      else
       dst = undefined;
     }
 
   }
-
-  // function withRoutine()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     dst = [];
-  //     for( let k = 0 ; k < src.length ; k++ )
-  //     {
-  //       let res = onEach( src[ k ], k, src );
-  //       if( !res )
-  //       dst.push( src[ k ] );
-  //     }
-  //
-  //   }
-  //   else if( _.mapLike( src ) )
-  //   {
-  //
-  //     dst = Object.create( null );
-  //     for( let k in src )
-  //     {
-  //       let res = onEach( src[ k ], k, src );
-  //       if( !res )
-  //       dst[ k ] = src[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = onEach( src, undefined, undefined );
-  //     if( !res )
-  //     dst = src;
-  //     else
-  //     dst = undefined;
-  //   }
-  //
-  // }
 
   /* */
 
   function withoutRoutine()
   {
 
-    if( _.longIs( dst ) )
+    if( _.longIs( src ) )
     {
 
-      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
-      for( let k = dst.length - 1; k >= 0; k-- )
+      dst = [];
+      for( let k = 0 ; k < src.length ; k++ )
       {
         let res = src[ k ];
-        if( res )
-        dst.splice( k, 1 );
+        if( !res )
+        dst.push( src[ k ] );
       }
 
     }
-    else if( _.mapLike( dst ) )
+    else if( _.mapLike( src ) )
     {
 
-      for( let k in dst )
+      dst = Object.create( null );
+      for( let k in src )
       {
         let res = src[ k ];
-        if( res )
-        delete dst[ k ];
+        if( !res )
+        dst[ k ] = src[ k ];
       }
 
     }
     else
     {
       let res = src;
-      if( res )
+      if( !res )
+      dst = res;
+      else
       dst = undefined;
     }
 
   }
-
-  // function withoutRoutine()
-  // {
-  //
-  //   if( _.longIs( src ) )
-  //   {
-  //
-  //     dst = [];
-  //     for( let k = 0 ; k < src.length ; k++ )
-  //     {
-  //       let res = src[ k ];
-  //       if( !res )
-  //       dst.push( src[ k ] );
-  //     }
-  //
-  //   }
-  //   else if( _.mapLike( src ) )
-  //   {
-  //
-  //     dst = Object.create( null );
-  //     for( let k in src )
-  //     {
-  //       let res = src[ k ];
-  //       if( !res )
-  //       dst[ k ] = src[ k ];
-  //     }
-  //
-  //   }
-  //   else
-  //   {
-  //     let res = src;
-  //     if( !res )
-  //     dst = res;
-  //     else
-  //     dst = undefined;
-  //   }
-  //
-  // }
 
   /* */
 
@@ -1137,7 +990,7 @@ function entityBut( dst, src, onEach )
   function withoutRoutineDeleting()
   {
 
-    if( _.longIs( src ) )
+    if( _.longIs( dst ) )
     {
 
       for( let k = dst.length - 1; k >= 0; k-- )
@@ -1148,7 +1001,7 @@ function entityBut( dst, src, onEach )
       }
 
     }
-    else if( _.mapLike( src ) )
+    else if( _.mapLike( dst ) )
     {
 
       for( let k in dst )
