@@ -1,15 +1,10 @@
-( function _iCompose_s_() {
+( function _Compose_s_() {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools.compose = _global_.wTools.compose || Object.create( null );
-
-let _ArraySlice = Array.prototype.slice;
-let _FunctionBind = Function.prototype.bind;
-// let Object.prototype.toString = Object.prototype.toString;
-let _ObjectHasOwnProperty = Object.hasOwnProperty;
 
 // --
 // chainer
@@ -26,10 +21,8 @@ function originaChainer( args, result, op, k )
 function originalWithDontChainer( args, result, op, k )
 {
   _.assert( result !== false );
-  // _.assert( result !== false && result !== undefined );
   if( result === _.dont )
   return _.dont;
-  // return undefined;
   return args;
 }
 
@@ -38,12 +31,8 @@ function originalWithDontChainer( args, result, op, k )
 function composeAllChainer( args, result, op, k )
 {
   _.assert( result !== false );
-  // if( result === undefined )
-  // return args;
   if( result === _.dont )
   return _.dont;
-  // return undefined;
-  // return _.unrollFrom( result );
   return args;
 }
 
@@ -56,9 +45,7 @@ function chainingChainer( args, result, op, k )
   return args;
   if( result === _.dont )
   return _.dont;
-  // return undefined;
   return _.unrollFrom( result );
-  // return args;
 }
 
 // --

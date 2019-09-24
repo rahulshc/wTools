@@ -1,10 +1,11 @@
-( function _fErr_s_() {
+( function _iErr_s_() {
 
 'use strict';
 
 /*
 
-!!! implemen error's collectors
+!!! implement error's collectors
+!!! marry with procedures
 
 */
 

@@ -6,60 +6,9 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
-let _ArraySlice = Array.prototype.slice;
-let _FunctionBind = Function.prototype.bind;
-// let Object.prototype.toString = Object.prototype.toString;
-let _ObjectHasOwnProperty = Object.hasOwnProperty;
-
 // --
 // bool
 // --
-
-/**
- * Returns true if entity ( src ) is a Boolean.
- * @function boolIs
- * @param {} src - entity to check
- * @memberof wTools
- */
-
-function boolIs( src )
-{
-  return src === true || src === false;
-}
-
-//
-
-/**
- * Returns true if entity ( src ) is a Boolean or Number.
- * @function boolLike
- * @param {} src - entity to check
- * @memberof wTools
- */
-
-function boolLike( src )
-{
-  let type = Object.prototype.toString.call( src );
-  return type === '[object Boolean]' || type === '[object Number]';
-}
-
-//
-
-// function boolFrom( src )
-// {
-//   if( _.strIs( src ) )
-//   {
-//     src = src.toLowerCase();
-//     if( src == '0' ) return false;
-//     if( src == 'false' ) return false;
-//     if( src == 'null' ) return false;
-//     if( src == 'undefined' ) return false;
-//     if( src == '' ) return false;
-//     return true;
-//   }
-//   return Boolean( src );
-// }
-
-//
 
 /**
  * @summary Returns copy of array( src ) with only boolean elements.
@@ -153,10 +102,6 @@ let Fields =
 
 let Routines =
 {
-
-  boolIs,
-  boolLike,
-  // boolFrom,
 
   boolsAre,
   boolsAllAre,

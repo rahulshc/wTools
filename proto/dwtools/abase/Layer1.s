@@ -8,11 +8,10 @@ if( typeof module !== 'undefined' && module !== null )
 
   require( './Layer0.s' );
 
-  require( './l1/cErr.s' );
-
   require( './l1/gBool.s' );
   require( './l1/gBuffer.s' );
   require( './l1/gEntity.s' );
+  require( './l1/gErr.s' );
   require( './l1/gFunctional.s' );
   require( './l1/gLong.s' );
   require( './l1/gMap.s' );
@@ -20,7 +19,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './l1/gRange.s' );
   require( './l1/gRegexp.s' );
   require( './l1/gRoutine.s' );
-  require( './l1/gString.s' );
+  require( './l1/gStr.s' );
   require( './l1/gTime.s' );
 
   require( './l1/zSetup.s' );

@@ -96,7 +96,7 @@ function strDefined( src )
 
 //
 
-function strsAreNotEmpty( src )
+function strsDefined( src )
 {
   if( _.arrayLike( src ) )
   {
@@ -1195,7 +1195,7 @@ let Routines =
   strLike,
   strsLikeAll,
   strDefined,
-  strsAreNotEmpty,
+  strsDefined,
 
   // converter
 
