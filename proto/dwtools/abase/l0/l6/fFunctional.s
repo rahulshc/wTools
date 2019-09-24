@@ -2181,8 +2181,10 @@ let Routines =
   only : entityOnly,
   entityBut, /* qqq : optimize, implement good coverage and jsdoc, please */
   but : entityBut,
-  entityAnd,
-  entityOr,
+  entityAnd, /* qqq : optimize, implement good coverage and jsdoc, please */
+  and : entityAnd,
+  entityOr, /* qqq : optimize, implement good coverage and jsdoc, please */
+  or : entityOr,
 
   entityAll, /* qqq : optimize entityAll */
   all : entityAll,
@@ -2195,12 +2197,8 @@ let Routines =
 
   entityMap,
   map : entityMap,
-  // entityMapInplace, /* qqq : implement routine entityMapInplace */
-  // mapInplace : entityMapInplace,
   entityFilter,
   filter : entityFilter,
-  // entityFilterInplace, /* qqq : implement routine entityFilterInplace */
-  // mapInplace : entityFilterInplace,
 
   /* qqq : take into account Unroll case in routines filter, filterInplace */
 
