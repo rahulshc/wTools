@@ -234,6 +234,31 @@ function longMake( src, ins )
 
 //
 
+/* qqq : optimize */
+
+function longMakeEmpty( src )
+{
+  let result;
+  let length = 0;
+
+  if( src === null )
+  src = [];
+
+  if( _.argumentsArrayIs( src ) )
+  src = [];
+
+  _.assert( arguments.length === 1 );
+
+  result = new src.constructor();
+
+  _.assert( _.longIs( result ) );
+  _.assert( result.length === 0 );
+
+  return result;
+}
+
+//
+
 function _longMakeOfLength( src, len )
 {
   // let result, length;
@@ -623,7 +648,7 @@ function longRepresent( src, begin, end )
  * @throws { Error } Will throw an Error if ( l ) is not a Number.
  * @throws { Error } Will throw an Error if no arguments provided.
  * @memberof wTools
-*/
+ */
 
 function longSlice( array, f, l ) /* qqq : optimize */
 {
@@ -7620,6 +7645,7 @@ let Routines =
   // longIsPopulated,
 
   longMake,
+  longMakeEmpty,
   _longMakeOfLength,
   longMakeUndefined,
   longMakeZeroed,

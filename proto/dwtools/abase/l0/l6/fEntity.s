@@ -75,7 +75,7 @@ function enityExtendAppending( dst, src )
 
 //
 
-function containerMakeConstructing( src, length )
+function entityMakeConstructing( src, length )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -101,50 +101,107 @@ function containerMakeConstructing( src, length )
   {
     return new src.constructor();
   }
-  else _.assert( 0, 'unexpected' );
+  else if( _.primitiveIs( src ) )
+  {
+    return src;
+  }
+  else _.assert( 0, 'Not clear how to make a new element of ', _.strType( src ) );
 
 }
 
 //
 
-function containerMakeTrivial( src, length )
+function entityMakeEmpty( srcContainer )
+{
+
+  _.assert( arguments.length === 1 );
+
+  if( _.arrayIs( srcContainer ) )
+  {
+    return new Array();
+  }
+  else if( _.longIs( srcContainer ) )
+  {
+    return _.longMakeEmpty( srcContainer );
+  }
+  else if( _.setIs( srcContainer ) )
+  {
+    debugger;
+    return new srcContainer.constructor();
+  }
+  else if( _.hashMapIs( srcContainer ) )
+  {
+    debugger;
+    return new srcContainer.constructor();
+  }
+  else if( _.mapLike( srcContainer ) )
+  {
+    return Object.create( null );
+  }
+  else if( _.primitiveIs( src ) )
+  {
+    return src;
+  }
+  else _.assert( 0, 'Not clear how to make a new element of ', _.strType( src ) );
+
+}
+
+//
+
+function entityMakeUndefined( srcContainer, length )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayIs( srcContainer ) )
   {
-    return new Array( length !== undefined ? length : src.length );
+    return new Array( length !== undefined ? length : srcContainer.length );
   }
-  else if( _.longIs( src ) )
+  else if( _.longIs( srcContainer ) )
   {
     debugger;
-    return _.longMake( src, length );
-    // if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
-    // return new src.constructor( length !== undefined ? length : src.length );
+    return _.longMake( srcContainer, length );
+    // if( _.bufferTypedIs( srcContainer ) || _.bufferNodeIs( srcContainer ) )
+    // return new srcContainer.constructor( length !== undefined ? length : srcContainer.length );
     // else
-    // return new Array( length !== undefined ? length : src.length );
+    // return new Array( length !== undefined ? length : srcContainer.length );
   }
-  else if( _.mapLike( src ) )
+  else if( _.setIs( srcContainer ) )
+  {
+    debugger;
+    return new srcContainer.constructor();
+  }
+  else if( _.hashMapIs( srcContainer ) )
+  {
+    debugger;
+    return new srcContainer.constructor();
+  }
+  else if( _.mapLike( srcContainer ) )
   {
     return Object.create( null );
   }
-  else _.assert( 0, 'unexpected' );
+  else if( _.primitiveIs( src ) )
+  {
+    return src;
+  }
+  else _.assert( 0, 'Not clear how to make a new element of ', _.strType( src ) );
 
 }
 
 //
 
-function entityShallowClone( src )
+function entityMake( src )
 {
 
-  if( _.primitiveIs( src ) )
-  return src;
-  else if( _.mapIs( src ) )
-  return _.mapShallowClone( src )
-  else if( _.longIs( src ) )
+  if( _.longLike( src ) )
   return _.longShallowClone( src );
-  else _.assert( 0, 'Not clear how to shallow clone', _.strType( src ) );
+  else if( _.hashMapLike( src ) || _.hashMapLike( src ) )
+  return src.constructor( src );
+  else if( _.mapLike( src ) )
+  return _.mapShallowClone( src )
+  else if( _.primitiveIs( src ) )
+  return src;
+  else _.assert( 0, 'Not clear how to make a new element of ', _.strType( src ) );
 
 }
 
@@ -387,10 +444,13 @@ let Routines =
   enityExtend,
   enityExtendAppending,
 
-  containerMakeConstructing,
-  containerMakeTrivial,
-  make : containerMakeTrivial,
-  entityShallowClone,
+  entityMakeConstructing,
+  entityMakeEmpty,
+  makeEmpty : entityMakeEmpty,
+  entityMakeUndefined,
+  makeUndefined : entityMakeUndefined,
+  entityMake,
+  make : entityMake,
 
   entityAssign, /* refactor!!! */
   entityAssignFieldFromContainer, /* dubious */

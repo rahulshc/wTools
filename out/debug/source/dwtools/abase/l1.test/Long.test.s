@@ -25770,7 +25770,7 @@ function loggerProblemExperiment( test )
 var Self =
 {
 
-  name : 'Tools.base.l1.Long',
+  name : 'Tools.base.Long',
   silencing : 1,
   enabled : 1,
 

@@ -12,7 +12,7 @@ let Self = _global_.wTools;
 
 function containerIs( src )
 {
-  if( _.longIs( src ) )
+  if( _.longLike( src ) )
   return true;
   if( _.mapLike( src ) )
   return true;
@@ -27,7 +27,7 @@ function containerIs( src )
 
 function containerLike( src )
 {
-  if( _.longIs( src ) )
+  if( _.longLike( src ) )
   return true;
   if( _.objectLike( src ) )
   return true;
@@ -44,7 +44,6 @@ function hashMapIs( src )
 {
   if( !src )
   return false;
-  debugger;
   return src instanceof HashMap || src instanceof HashMapWeak;
 }
 
@@ -75,7 +74,6 @@ function setIs( src )
 {
   if( !src )
   return false;
-  debugger;
   return src instanceof Set || src instanceof WeakSet;
 }
 

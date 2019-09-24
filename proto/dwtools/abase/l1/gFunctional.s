@@ -375,8 +375,8 @@ function eachSample( o )
 
   if( !o.sample )
   // Dmytro:
-  // qqq: I think containerMakeTrivial should be containerMakeTrivial. 7 missprints founded in wTools. Maybe, willbe contains this also.
-  o.sample = _.containerMakeTrivial( o.sets );
+  // qqq: I think entityMakeUndefined should be entityMakeUndefined. 7 missprints founded in wTools. Maybe, willbe contains this also.
+  o.sample = _.entityMakeUndefined( o.sets );
 
   /* */
 
@@ -572,7 +572,7 @@ function _entityFilterDeep( o )
   }
   else
   {
-    result = _.containerMakeTrivial( o.src );
+    result = _.entityMakeUndefined( o.src );
     for( let s in o.src )
     {
       let r = onEach.call( o.src, o.src[ s ], s, o.src );

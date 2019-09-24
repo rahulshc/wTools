@@ -183,7 +183,7 @@ function strsEquivalent( src1, src2 )
   }
   else
   {
-    return _.strEquivalent( src1[ i ], src2 );
+    return _.strEquivalent( src1, src2 );
   }
 
 }

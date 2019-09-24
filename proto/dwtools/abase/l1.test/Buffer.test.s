@@ -1,6 +1,6 @@
 ( function _Buffer_test_s_( ) {
 
-'use strict'; 
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
@@ -5412,7 +5412,7 @@ function bufferNodeFrom( test )
 var Self =
 {
 
-  name : 'Tools.base.l1.Long',
+  name : 'Tools.base.Buffer',
   silencing : 1,
   enabled : 1,
 
