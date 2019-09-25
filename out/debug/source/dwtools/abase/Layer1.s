@@ -16,6 +16,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './l1/gLong.s' );
   require( './l1/gMap.s' );
   require( './l1/gNumber.s' );
+  require( './l1/gPair.s' );
   require( './l1/gRange.s' );
   require( './l1/gRegexp.s' );
   require( './l1/gRoutine.s' );

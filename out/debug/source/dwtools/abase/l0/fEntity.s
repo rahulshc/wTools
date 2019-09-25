@@ -105,7 +105,7 @@ function entityMakeConstructing( src, length )
   {
     return src;
   }
-  else _.assert( 0, 'Not clear how to make a new element of ', _.strType( src ) );
+  else _.assert( 0, 'Not clear how to make a object of ', _.strType( src ) );
 
 }
 
@@ -142,7 +142,7 @@ function entityMakeEmpty( srcContainer )
   {
     return src;
   }
-  else _.assert( 0, 'Not clear how to make a new element of ', _.strType( src ) );
+  else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
 
 }
 
@@ -184,7 +184,7 @@ function entityMakeUndefined( srcContainer, length )
   {
     return src;
   }
-  else _.assert( 0, 'Not clear how to make a new element of ', _.strType( src ) );
+  else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
 
 }
 
@@ -195,8 +195,8 @@ function entityMake( src )
 
   if( _.longLike( src ) )
   return _.longShallowClone( src );
-  else if( _.hashMapLike( src ) || _.hashMapLike( src ) )
-  return src.constructor( src );
+  else if( _.hashMapLike( src ) || _.setLike( src ) )
+  return new src.constructor( src );
   else if( _.mapLike( src ) )
   return _.mapShallowClone( src )
   else if( _.primitiveIs( src ) )

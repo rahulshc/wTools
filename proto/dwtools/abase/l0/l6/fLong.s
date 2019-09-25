@@ -2,6 +2,9 @@
 
 'use strict';
 
+let _ArrayIncludes = Array.prototype.includes;
+if( !_ArrayIncludes )
+_ArrayIncludes = function( e ){ _ArrayIndexOf.call( this, e ) }
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 let _ArraySlice = Array.prototype.slice;
@@ -1871,7 +1874,8 @@ function longRelengthInplace( array, range, val )
 
 function arrayIs( src )
 {
-  return Object.prototype.toString.call( src ) === '[object Array]';
+  return Array.isArray( src );
+  // return Object.prototype.toString.call( src ) === '[object Array]';
 }
 
 //
@@ -2076,18 +2080,19 @@ function arraysAreIdentical( src1, src2 )
 
 //
 
-function arrayHas( array, value, evaluator1, evaluator2 )
+function arrayHas( array, element, evaluator1, evaluator2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayLike( array ) );
 
-  if( evaluator1 === undefined )
+  if( evaluator1 === undefined && evaluator2 === undefined )
   {
-    return _ArrayIndexOf.call( array, value ) !== -1;
+    // return _ArrayIndexOf.call( array, element ) !== -1;
+    return _ArrayIncludes.call( array, element );
   }
   else
   {
-    if( _.arrayLeftIndex( array, value, evaluator1, evaluator2 ) >= 0 )
+    if( _.arrayLeftIndex( array, element, evaluator1, evaluator2 ) >= 0 )
     return true;
     return false;
   }
