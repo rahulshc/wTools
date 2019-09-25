@@ -60,7 +60,7 @@ function bigIntIs( src )
 // math
 // --
 
-function vectorIs( src )
+function vectorAdapterIs( src )
 {
   if( !_.objectIs( src ) )
   return false;
@@ -474,7 +474,7 @@ let Routines =
 
   //
 
-  vectorIs,
+  vectorAdapterIs,
   constructorIsVector,
   spaceIs,
   constructorIsSpace,

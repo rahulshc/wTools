@@ -2462,23 +2462,23 @@ function arrayNone( src )
  * @memberof wTools
  */
 
-/* qqq
-add good coverage for arrayMake
-take into account unroll cases
-Dmytro : coverage is extended
-test routine has unroll, arguments array, typed buffers cases
+/* qqq : extend coverage, take into account Set case
 */
 
 function arrayMake( src )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.numberIs( src ) || _.longIs( src ) || src === null );
 
   if( src === null )
   return Array();
 
   if( _.numberIs( src ) )
   return Array( src );
+
+  if( _.setIs( src ) )
+  return [ ... src ];
+
+  _.assert( _.longIs( src ) );
 
   if( src.length === 1 )
   return [ src[ 0 ] ];
