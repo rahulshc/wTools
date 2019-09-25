@@ -692,6 +692,7 @@ function entityOnly( dst, src, onEach )
       dst.delete( value );
     }
   }
+
   /* */
 
   function setWithoutRoutineDeleting()
