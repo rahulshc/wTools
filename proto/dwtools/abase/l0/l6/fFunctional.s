@@ -465,6 +465,10 @@ function entityOnly( dst, src, onEach )
     }
   }
 
+  let dstTypeStr = typeStr( dst );
+  let srcTypeStr = typeStr( src );
+
+  _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
@@ -487,18 +491,46 @@ function entityOnly( dst, src, onEach )
   {
 
     if( _.routineIs( onEach ) )
-    withRoutineDeleting();
+    {
+      // if( srcTypeStr === 'set' ) // Dmytro : implement
+      // setWithRoutineDeleting();
+      // else if( srcTypeStr === 'hashMap' ) // Dmytro : implement
+      // hashMapWithRoutineDeleting();
+      // else
+      withRoutineDeleting();
+    }
     else
-    withoutRoutineDeleting(); /* don't change the subroutine */
+    {
+      // if( srcTypeStr === 'set' ) // Dmytro : implement
+      // setWithoutRoutineDeleting();
+      // else if( srcTypeStr === 'hashMap' ) // Dmytro : implement
+      // hashMapWithoutRoutineDeleting();
+      // else
+      withoutRoutineDeleting(); /* don't change the subroutine */
+    }
 
   }
   else
   {
 
     if( _.routineIs( onEach ) )
-    withRoutine();
+    {
+      // if( srcTypeStr === 'set' ) // Dmytro : implement
+      // setWithRoutine();
+      // else if( srcTypeStr === 'hashMap' ) // Dmytro : implement
+      // hashMapWithRoutine();
+      // else
+      withRoutine();
+    }
     else
-    withoutRoutine(); /* don't change the subroutine */
+    {
+      if( srcTypeStr === 'set' ) // Dmytro : implement
+      setWithoutRoutine();
+      else if( srcTypeStr === 'hashMap' ) // Dmytro : implement
+      hashMapWithoutRoutine();
+      else
+      withoutRoutine(); /* don't change the subroutine */
+    }
 
   }
 
@@ -508,14 +540,37 @@ function entityOnly( dst, src, onEach )
 
   /* */
 
-  function srcHasMap( e )
+  // function srcHasMap( e )
+  // {
+  // }
+  //
+  // /* */
+  //
+  // function srcHasSet( e )
+  // {
+  // }
+
+  /* */
+
+  function setWithoutRoutine()
   {
+    dst = new Set( src );
+
+    let unnecessaries = [ null, 0, undefined, false, '' ];
+    for( let key of unnecessaries )
+    if( dst.has( key ) )
+    dst.delete( key );
   }
 
   /* */
 
-  function srcHasSet( e )
+  function hashMapWithoutRoutine()
   {
+    dst = new Map( src );
+
+    for ( let [ key, value ] of dst.entries() )
+    if( !value )
+    dst.delete( key );
   }
 
   /* */
@@ -782,6 +837,23 @@ function entityOnly( dst, src, onEach )
   //   }
   //
   // }
+
+  function typeStr( e )
+  {
+    let type;
+    if( _.longIs( e ) )
+    type = 'long';
+    else if( _.mapLike( e ) )
+    type = 'map';
+    else if( _.setIs( e ) )
+    type = 'set';
+    else if( _.hashMapIs( e ) )
+    type = 'hashMap';
+    else
+    type = 'primitive';
+
+    return type;
+  }
 
 }
 
@@ -1224,16 +1296,6 @@ function entityAnd( dst, src, onEach )
   if( src === undefined )
   src = dst;
 
-  if( dst === null )
-  {
-    if( _.longIs( src ) )
-    dst = _.arrayMake( src );
-    else if( _.mapLike( src ) )
-    dst = Object.assign( {}, src );
-    else
-    dst = src;
-  }
-
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
@@ -1251,16 +1313,110 @@ function entityAnd( dst, src, onEach )
 
   /* */
 
-  if( _.routineIs( onEach ) )
-  withRoutine();
+  if( dst !== null )
+  {
+
+    if( _.routineIs( onEach ) )
+    withRoutineDeleting();
+    else
+    withoutRoutineDeleting();
+
+  }
   else
-  withoutRoutine();
+  {
+
+    if( _.routineIs( onEach ) )
+    withRoutine();
+    else
+    withoutRoutine();
+
+  }
 
   return dst;
 
   /* */
 
   function withRoutine()
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      dst = [];
+      for( let k = 0; k < src.length; k++ )
+      {
+        let res = onEach( src[ k ], k, src );
+        if( res )
+        dst.push( src[ k ] );
+      }
+
+    }
+    else if( _.mapLike( src ) )
+    {
+
+      dst = Object.create( null );
+      for( let k in src )
+      {
+        let res = onEach( src[ k ], k, src );
+        if( res )
+        dst[ k ] = src[ k ];
+      }
+
+    }
+    else
+    {
+      let res = onEach( src, undefined, undefined );
+      if( res )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withoutRoutine()
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      dst = [];
+      for( let k = 0; k < src.length; k++ )
+      {
+        let res = src[ k ];
+        if( res )
+        dst.push( src[ k ] );
+      }
+
+    }
+    else if( _.mapLike( src ) )
+    {
+
+      dst = Object.create( null );
+      for( let k in src )
+      {
+        let res = src[ k ];
+        if( res )
+        dst[ k ] = src[ k ];
+      }
+
+    }
+    else
+    {
+      let res = src;
+      if( res )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withRoutineDeleting()
   {
 
     if( _.longIs( dst ) )
@@ -1306,7 +1462,7 @@ function entityAnd( dst, src, onEach )
 
   /* */
 
-  function withoutRoutine()
+  function withoutRoutineDeleting()
   {
 
     if( _.longIs( dst ) )
@@ -1357,16 +1513,6 @@ function entityOr( dst, src, onEach )
   if( src === undefined )
   src = dst;
 
-  if( dst === null )
-  {
-    if( _.longIs( src ) )
-    dst = _.arrayMake( src );
-    else if( _.mapLike( src ) )
-    dst = Object.assign( {}, src );
-    else
-    dst = src;
-  }
-
   if( _.strIs( onEach ) )
   {
     let selector = onEach;
@@ -1384,16 +1530,110 @@ function entityOr( dst, src, onEach )
 
   /* */
 
-  if( _.routineIs( onEach ) )
-  withRoutine();
+  if( dst !== null )
+  {
+
+    if( _.routineIs( onEach ) )
+    withRoutineDeleting();
+    else
+    withoutRoutineDeleting();
+
+  }
   else
-  withoutRoutine();
+  {
+
+    if( _.routineIs( onEach ) )
+    withRoutine();
+    else
+    withoutRoutine();
+
+  }
 
   return dst;
 
   /* */
 
   function withRoutine()
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      dst = [];
+      for( let k = 0; k < src.length; k++ )
+      {
+        let res = onEach( src[ k ], k, src );
+        if( res )
+        dst.push( src[ k ] );
+      }
+
+    }
+    else if( _.mapLike( src ) )
+    {
+
+      dst = Object.create( null );
+      for( let k in src )
+      {
+        let res = onEach( src[ k ], k, src );
+        if( res )
+        dst[ k ] = src[ k ];
+      }
+
+    }
+    else
+    {
+      let res = onEach( src, undefined, undefined );
+      if( res )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withoutRoutine()
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      dst = [];
+      for( let k = 0; k < src.length; k++ )
+      {
+        let res = src[ k ];
+        if( res )
+        dst.push( src[ k ] );
+      }
+
+    }
+    else if( _.mapLike( src ) )
+    {
+
+      dst = Object.create( null );
+      for( let k in src )
+      {
+        let res = src[ k ];
+        if( res )
+        dst[ k ] = src[ k ];
+      }
+
+    }
+    else
+    {
+      let res = src;
+      if( res )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withRoutineDeleting()
   {
 
     if( _.longIs( dst ) )
@@ -1454,7 +1694,7 @@ function entityOr( dst, src, onEach )
 
   /* */
 
-  function withoutRoutine()
+  function withoutRoutineDeleting()
   {
 
     if( _.longIs( dst ) )
