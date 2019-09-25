@@ -3338,7 +3338,7 @@ function entityOnlyOnlySets( test )
   test.case = 'has unnecessary elements, onEach returns value';
   var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
   var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
-  var src = dst;
+  var dst = new Set( [ 0, 3, null, undefined, [ 0 ], '', { a : 0 }, false, 'str' ] );
   var got = _.entityOnly( dst, src, ( e ) => e );
   test.is( got === dst );
   test.is( got !== src );
@@ -3348,7 +3348,7 @@ function entityOnlyOnlySets( test )
   test.case = 'without unnecessary elements, onEach returns value';
   var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
   var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
-  var src = dst;
+  var src = new Set( [ 2, [ 0 ], { a : 0 }, 'str' ] );
   var got = _.entityOnly( dst, src, ( e ) => e );
   test.is( got === dst );
   test.identical( got.size, 4 );
@@ -3357,7 +3357,7 @@ function entityOnlyOnlySets( test )
   test.case = 'has unnecessary elements, onEach returns key';
   var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
   var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
-  var src = dst;
+  var src = new Set( [ 0, 1, null, undefined, [ 2 ], '', false, { a : 3 }, 'str' ] );
   var got = _.entityOnly( dst, src, ( e, k ) => k );
   test.is( got === dst );
   test.is( got !== src );
@@ -3367,36 +3367,40 @@ function entityOnlyOnlySets( test )
   test.case = 'without unnecessary elements, onEach returns key';
   var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
   var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
-  var src = dst;
+  var src = new Set( [ 2, [ 0 ], { a : 0 }, 'str' ] );
   var got = _.entityOnly( dst, src, ( e, k ) => k );
   test.is( got === dst );
+  test.is( got !== src );
   test.identical( got.size, 4 );
   test.equivalent( got, exp );
 
   test.case = 'has unnecessary elements, onEach returns undefined';
   var exp = new Set( [] );
   var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
-  var src = dst;
+  var src = new Set( [ { a : 3 }, 0, 1, null, undefined, [ 2 ], '', false, 'str' ] );
   var got = _.entityOnly( dst, src, ( e ) => undefined );
   test.is( got === dst );
+  test.is( got !== src );
   test.identical( got.size, 0 );
   test.equivalent( got, exp );
 
   test.case = 'without unnecessary elements, onEach returns undefined';
   var exp = new Set( [] );
   var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
-  var src = dst;
+  var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
   var got = _.entityOnly( dst, src, ( e ) => undefined );
   test.is( got === dst );
+  test.is( got !== src );
   test.identical( got.size, 0 );
   test.equivalent( got, exp );
 
   test.case = 'onEach is selector';
-  var exp = new Set( [ { f1 : [], f2 : 'str' } ] );
+  var exp = new Set( [ { f1 : 1, f2 : 0 }, { f1 : [], f2 : 'str' } ] );
   var dst = new Set( [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ] );
-  var src = new Set( [ { f1 : 0 }, { f1 : true }, { f1 : undefined } ] );
+  var src = new Set( [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ] );
   var got = _.entityOnly( dst, src, '*/f1' );
   test.is( got === dst );
+  test.is( got !== src );
   test.identical( got, exp );
 
   test.close( 'both' );
@@ -5141,6 +5145,8 @@ function entityButBoth( test )
   test.close( 'onEach - selector' );
 }
 
+//
+
 function entityButDiffTypes( test )
 {
   test.shouldThrowErrorSync
@@ -5327,6 +5333,353 @@ function entityButDiffTypes( test )
     test.is( src !== got );
     test.identical( got, exp );
   });
+}
+
+//
+
+function entityButOnlySets( test )
+{
+  test.open( 'only dst' );
+
+  test.case = 'has unnecessary elements';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var got = _.entityBut( dst, undefined );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements';
+  var exp = new Set( [] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityBut( dst, undefined );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns value';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var got = _.entityBut( dst, undefined, ( e ) => e );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns value';
+  var exp = new Set( [] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityBut( dst, undefined, ( e ) => e );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns key';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var got = _.entityBut( dst, undefined, ( e, k ) => k );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns key';
+  var exp = new Set( [] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityBut( dst, undefined, ( e, k ) => k );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns undefined';
+  var exp = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var got = _.entityBut( dst, undefined, ( e ) => undefined );
+  test.is( got === dst );
+  test.identical( got.size, 0 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns undefined';
+  var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityBut( dst, undefined, ( e ) => undefined );
+  test.is( got === dst );
+  test.identical( got.size, 0 );
+  test.equivalent( got, exp );
+
+  test.case = 'onEach is selector';
+  var exp = new Set( [ { f1 : false, f2 : 3 } ] );
+  var dst = new Set( [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ] );
+  var got = _.entityBut( dst, undefined, '*/f1' );
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  test.close( 'only dst' );
+
+  /* - */
+
+  test.open( 'only src' );
+
+  test.case = 'has unnecessary elements';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var src = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var got = _.entityBut( null, src );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements';
+  var exp = new Set( [] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityBut( null, src );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns value';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var src = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var got = _.entityBut( null, src, ( e ) => e );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns value';
+  var exp = new Set( [] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityBut( null, src, ( e ) => e );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns key';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var src = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var got = _.entityBut( null, src, ( e, k ) => k );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns key';
+  var exp = new Set( [] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityBut( null, src, ( e, k ) => k );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns undefined';
+  var exp = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var src = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var got = _.entityBut( null, src, ( e ) => undefined );
+  test.is( got !== src );
+  test.identical( got.size, 0 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns undefined';
+  var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityBut( null, src, ( e ) => undefined );
+  test.is( got !== src );
+  test.identical( got.size, 0 );
+  test.equivalent( got, exp );
+
+  test.case = 'onEach is selector';
+  var exp = new Set( [ { f1 : false, f2 : 3 } ] );
+  var src = new Set( [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ] );
+  var got = _.entityBut( null, src, '*/f1' );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.close( 'only src' );
+
+  /* - */
+
+  test.open( 'both same' );
+
+  test.case = 'has unnecessary elements';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var src = dst;
+  var got = _.entityBut( dst, src );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements';
+  var exp = new Set( [] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = dst;
+  var got = _.entityBut( dst, src );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns value';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var src = dst;
+  var got = _.entityBut( dst, src, ( e ) => e );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns value';
+  var exp = new Set( [] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = dst;
+  var got = _.entityBut( dst, src, ( e ) => e );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns key';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var src = dst;
+  var got = _.entityBut( dst, src, ( e, k ) => k );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns key';
+  var exp = new Set( [] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = dst;
+  var got = _.entityBut( dst, src, ( e, k ) => k );
+  test.is( got === dst );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns undefined';
+  var exp = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var src = dst;
+  var got = _.entityBut( dst, src, ( e ) => undefined );
+  test.is( got === dst );
+  test.identical( got.size, 0 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns undefined';
+  var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = dst;
+  var got = _.entityBut( dst, src, ( e ) => undefined );
+  test.is( got === dst );
+  test.identical( got.size, 0 );
+  test.equivalent( got, exp );
+
+  test.case = 'onEach is selector';
+  var exp = new Set( [ { f1 : false, f2 : 3 } ] );
+  var dst = new Set( [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ] );
+  var src = dst;
+  var got = _.entityBut( dst, src, '*/f1' );
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  test.close( 'both same' );
+
+  /* - */
+
+  test.open( 'both' );
+
+  test.case = 'has same unnecessary elements';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var src = new Set( [ 1, 0, [ 2 ], null, 'str', undefined, '', { a : 3 }, false, 'some', 7 ] );
+  var got = _.entityBut( dst, src );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has different unnecessary elements';
+  var exp = new Set( [ 0, undefined, '' ] );
+  var dst = new Set( [ 0, 1, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var src = new Set( [ 1, 0, [ 2 ], null, 'str', undefined, '', { a : 3 }, 'some', 7 ] );
+  var got = _.entityBut( dst, src );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements';
+  var exp = new Set( [] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = new Set( [ 2, [ 3, 4 ], { b : 3 }, 'src' ], 8 );
+  var got = _.entityBut( dst, src );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns value';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var src = new Set( [ 0, 4, null, undefined, [ 2 ], { a : 3 }, '', false, 'str' ] );
+  var got = _.entityBut( dst, src, ( e ) => e );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns value';
+  var exp = new Set( [] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = new Set( [ 1, [ 0 ], { a : 0 }, 'str' ] );
+  var got = _.entityBut( dst, src, ( e ) => e );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns key';
+  var exp = new Set( [ 0, null, undefined, '', false ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var src = new Set( [ 0, 4, null, undefined, [ 2 ], { a : 3 }, '', false, 'str' ] );
+  var got = _.entityBut( dst, src, ( e, k ) => k );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns key';
+  var exp = new Set( [] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityBut( dst, src, ( e, k ) => k );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.size, 4 );
+  test.equivalent( got, exp );
+
+  test.case = 'has unnecessary elements, onEach returns undefined';
+  var exp = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var src = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str' ] );
+  var got = _.entityBut( dst, src, ( e ) => undefined );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.size, 0 );
+  test.equivalent( got, exp );
+
+  test.case = 'without unnecessary elements, onEach returns undefined';
+  var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityBut( dst, src, ( e ) => undefined );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.size, 0 );
+  test.equivalent( got, exp );
+
+  test.case = 'onEach is selector';
+  var exp = new Set( [ { f1 : undefined, f2 : 0 }, { f1 : false, f2 : 3 } ] );
+  var dst = new Set( [ { f1 : undefined, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ] );
+  var src = new Set( [ { f1 : undefined, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ] );
+  var got = _.entityBut( dst, src, '*/f1' );
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  test.close( 'both' );
 }
 
 /* end of entityBut* routines */
@@ -13515,6 +13868,7 @@ var Self =
     entityButBothSame, /* qqq : implement | Dmytro : implemented */
     entityButBoth, /* qqq : implement | Dmytro : implemented */
     entityButDiffTypes,
+    entityButOnlySets,
 
 /*
                         only / but            and                      or                         xor                          xand
