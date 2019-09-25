@@ -492,21 +492,21 @@ function entityOnly( dst, src, onEach )
 
     if( _.routineIs( onEach ) )
     {
-      // if( srcTypeStr === 'set' ) // Dmytro : implement
-      // setWithRoutineDeleting();
-      // else if( srcTypeStr === 'hashMap' ) // Dmytro : implement
-      // hashMapWithRoutineDeleting();
-      // else
+      if( srcTypeStr === 'set' )
+      setWithRoutineDeleting();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithRoutineDeleting();
+      else
       withRoutineDeleting();
     }
     else
     {
-      // if( srcTypeStr === 'set' ) // Dmytro : implement
-      // setWithoutRoutineDeleting();
-      // else if( srcTypeStr === 'hashMap' ) // Dmytro : implement
-      // hashMapWithoutRoutineDeleting();
-      // else
-      withoutRoutineDeleting(); /* don't change the subroutine */
+      if( srcTypeStr === 'set' )
+      setWithoutRoutineDeleting();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithoutRoutineDeleting();
+      else
+      withoutRoutineDeleting();
     }
 
   }
@@ -515,18 +515,18 @@ function entityOnly( dst, src, onEach )
 
     if( _.routineIs( onEach ) )
     {
-      // if( srcTypeStr === 'set' ) // Dmytro : implement
-      // setWithRoutine();
-      // else if( srcTypeStr === 'hashMap' ) // Dmytro : implement
-      // hashMapWithRoutine();
-      // else
+      if( srcTypeStr === 'set' )
+      setWithRoutine();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithRoutine();
+      else
       withRoutine();
     }
     else
     {
-      if( srcTypeStr === 'set' ) // Dmytro : implement
+      if( srcTypeStr === 'set' )
       setWithoutRoutine();
-      else if( srcTypeStr === 'hashMap' ) // Dmytro : implement
+      else if( srcTypeStr === 'hashMap' )
       hashMapWithoutRoutine();
       else
       withoutRoutine(); /* don't change the subroutine */
@@ -552,6 +552,20 @@ function entityOnly( dst, src, onEach )
 
   /* */
 
+  function setWithRoutine()
+  {
+    dst = new Set( src );
+
+    for( let value of src )
+    {
+      let res = onEach( value, value, src );
+      if( !res )
+      dst.delete( value );
+    }
+  }
+
+  /* */
+
   function setWithoutRoutine()
   {
     dst = new Set( src );
@@ -560,6 +574,20 @@ function entityOnly( dst, src, onEach )
     for( let key of unnecessaries )
     if( dst.has( key ) )
     dst.delete( key );
+  }
+
+  /* */
+
+  function hashMapWithRoutine()
+  {
+    dst = new Map( src );
+
+    for ( let [ key, value ] of src.entries() )
+    {
+      let res = onEach( value, key, src );
+      if( !res )
+      dst.delete( key );
+    }
   }
 
   /* */
@@ -651,6 +679,50 @@ function entityOnly( dst, src, onEach )
       dst = undefined;
     }
 
+  }
+
+  /* */
+
+  function setWithRoutineDeleting()
+  {
+    for( let value of src )
+    {
+      let res = onEach( value, value, src );
+      if( !res )
+      dst.delete( value );
+    }
+  }
+  /* */
+
+  function setWithoutRoutineDeleting()
+  {
+    let unnecessaries = [ null, 0, undefined, false, '' ];
+    for( let key of unnecessaries )
+    {
+      if( src.has( key ) )
+      dst.delete( key );
+    }
+  }
+
+  /* */
+
+  function hashMapWithRoutineDeleting()
+  {
+    for ( let [ key, value ] of src.entries() )
+    {
+      let res = onEach( value, key, src )
+      if( !res )
+      dst.delete( key );
+    }
+  }
+
+  /* */
+
+  function hashMapWithoutRoutineDeleting()
+  {
+    for ( let [ key, value ] of src.entries() )
+    if( !value )
+    dst.delete( key );
   }
 
   /* */
