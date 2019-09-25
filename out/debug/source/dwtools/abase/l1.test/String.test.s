@@ -3848,7 +3848,7 @@ function strEnds( test )
 var Self =
 {
 
-  name : 'Tools.base.String',
+  name : 'Tools.base.Str',
   silencing : 1,
 
   tests :
