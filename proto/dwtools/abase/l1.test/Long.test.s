@@ -795,7 +795,7 @@ function longMakeUndefined( test )
 
 /*
 qqq : implement Zeroed routine and test routine
-Dmytro : routine longMakeZeroed and its test routine is implemented 
+Dmytro : routine longMakeZeroed and its test routine is implemented
 */
 
 function longMakeZeroed( test )
@@ -5310,6 +5310,80 @@ function longExtendScreening( test )
   });
 
 };
+
+//
+
+function pairIs( test )
+{
+
+  test.case = 'an empty array';
+  var got = _.pair.is( [] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a pair';
+  var got = _.pair.is( [ 1, [] ] );
+  var expected  = true;
+  test.identical( got, expected );
+
+  test.case = 'a pair, but not array';
+  var got = _.pair.is( new F32x([ 1, 3 ]) );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'object';
+  var got = _.pair.is( {} );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'number';
+  var got = _.pair.is( 6 );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var got = _.pair.is( 'abc' );
+  var expected  = false;
+  test.identical( got, expected );
+
+}
+
+//
+
+function pairOfIs( test )
+{
+
+  test.case = 'an empty array';
+  var got = _.pair.is( [] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a pair';
+  var got = _.pair.is( [ 1, [] ] );
+  var expected  = true;
+  test.identical( got, expected );
+
+  test.case = 'a pair, but not array';
+  var got = _.pair.is( new F32x([ 1, 3 ]) );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'object';
+  var got = _.pair.is( {} );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'number';
+  var got = _.pair.is( 6 );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var got = _.pair.is( 'abc' );
+  var expected  = false;
+  test.identical( got, expected );
+
+}
 
 //
 
