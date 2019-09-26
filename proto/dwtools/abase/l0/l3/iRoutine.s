@@ -21,7 +21,7 @@ function routinesAre( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.longIs( src ) )
+  if( _.arrayLike( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
     if( !_.routineIs( src[ s ] ) )
@@ -71,7 +71,7 @@ function _routineJoin( o )
   _.assert( _.boolIs( o.sealing ) );
   _.assert( _.boolIs( o.extending ) );
   _.assert( _.routineIs( o.routine ), 'Expects routine' );
-  _.assert( _.longIs( o.args ) || o.args === undefined );
+  _.assert( _.arrayLike( o.args ) || o.args === undefined );
 
   let routine = o.routine;
   let args = o.args;
@@ -213,7 +213,7 @@ function constructorJoin( routine, args )
 {
 
   _.assert( _.routineIs( routine ), 'Expects routine in the first argument' );
-  _.assert( _.longIs( args ), 'Expects array-like in the second argument' );
+  _.assert( _.arrayLike( args ), 'Expects array-like in the second argument' );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   return _routineJoin
@@ -708,11 +708,12 @@ qqq implement and cover _.routineExtend( null, routine );
  * @memberof wTools
  */
 
-function routineExtend( dst )
+function routineExtend( dst, src )
 {
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.routineIs( dst ) || dst === null );
+  _.assert( src === null || src === undefined || _.mapLike( src ) || _.routineIs( src ) );
 
   /* generate dst routine */
 
@@ -724,7 +725,7 @@ function routineExtend( dst )
     {
       let src = arguments[ a ];
       if( src === null )
-      continue
+      continue;
       _.mapExtend( dstMap, src )
     }
 
@@ -753,7 +754,7 @@ function routineExtend( dst )
     let src = arguments[ a ];
     if( src === null )
     continue;
-    _.assert( !_.primitiveIs( src ) );
+    _.assert( _.mapLike( src ) || _.routineIs( src ) );
     for( let s in src )
     {
       let property = src[ s ];
@@ -772,6 +773,24 @@ function routineExtend( dst )
   }
 
   return dst;
+}
+
+//
+
+function routineDefaults( dst, src, defaults )
+{
+
+  if( arguments.length === 2 )
+  {
+    defaults = arguments[ 1 ];
+    src = null;
+  }
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( dst === null || src === null );
+  _.assert( _.mapLike( defaults ) );
+
+  return _.routineExtend( dst, src, { defaults } );
 }
 
 //
@@ -919,6 +938,8 @@ function vectorize_body( o )
   let vectorizingArray = o.vectorizingArray;
   let vectorizingMapVals = o.vectorizingMapVals;
   let vectorizingMapKeys = o.vectorizingMapKeys;
+  let vectorizingContainerAdapter = o.vectorizingContainerAdapter;
+  let unwrapingContainerAdapter = o.unwrapingContainerAdapter;
   let pre = null;
   let select = o.select === null ? 1 : o.select;
   let selectAll = o.select === Infinity;
@@ -934,6 +955,7 @@ function vectorize_body( o )
 
   if( _.numberIs( select ) )
   {
+
     if( !vectorizingArray && !vectorizingMapVals && !vectorizingMapKeys )
     resultRoutine = routine;
     else if( fieldFilter )
@@ -951,6 +973,7 @@ function vectorize_body( o )
       {
         resultRoutine = vectorizeKeysOrArray;
       }
+
     }
     else if( !vectorizingArray || vectorizingMapVals )
     resultRoutine = vectorizeMapOrArray;
@@ -959,24 +982,19 @@ function vectorize_body( o )
     else
     resultRoutine = vectorizeArrayMultiplying;
 
-    /*
-      vectorizeWithFilters : multiply + array/map vectorizing + filter
-      vectorizeArray : array vectorizing
-      vectorizeArrayMultiplying :  multiply + array vectorizing
-      vectorizeMapOrArray :  multiply +  array/map vectorizing
-    */
-
   }
   else
   {
-    _.assert( multiply === multiplyNo, 'not implemented' );
+    _.assert( multiply === multiplyNo );
     if( routine.pre )
     {
       pre = routine.pre;
       routine = routine.body;
     }
     if( fieldFilter )
-    _.assert( 0, 'not implemented' );
+    {
+      _.assert( 0, 'not implemented' );
+    }
     else if( vectorizingArray || !vectorizingMapVals )
     {
       if( _.strIs( select ) )
@@ -984,17 +1002,31 @@ function vectorize_body( o )
       else
       resultRoutine = vectorizeForOptionsMapForKeys;
     }
-    else
-    _.assert( 0, 'not implemented' );
+    else _.assert( 0, 'not implemented' );
   }
 
   /* */
 
-  _.routineExtend( resultRoutine, routine );
+  // if( vectorizingContainerAdapter )
+  // {
+  //   let vectorizeRoutine = resultRoutine;
+  //   resultRoutine = function vectorizeContainerAdapters()
+  //   {
+  //     let args = originalsFromAdaptersInplace( arguments );
+  //   }
+  // }
 
   /* */
 
+  _.routineExtend( resultRoutine, routine );
   return resultRoutine;
+
+/*
+  vectorizeWithFilters : multiply + array/map vectorizing + filter
+  vectorizeArray : array vectorizing
+  vectorizeArrayMultiplying :  multiply + array vectorizing
+  vectorizeMapOrArray :  multiply +  array/map vectorizing
+*/
 
   /* - */
 
@@ -1037,7 +1069,7 @@ function vectorize_body( o )
     let length;
     let keys;
 
-    args = _.longSlice( args );
+    args = [ ... args ];
 
     if( selectAll )
     select = args.length;
@@ -1051,7 +1083,17 @@ function vectorize_body( o )
         length = args[ d ].length;
         break;
       }
-      if( vectorizingMapVals && _.mapIs( args[ d ] ) )
+      else if( vectorizingArray && _.setLike( args[ d ] ) )
+      {
+        length = args[ d ].size;
+        break;
+      }
+      else if( vectorizingContainerAdapter && _.containerAdapter.is( args[ d ] ) )
+      {
+        length = args[ d ].length;
+        break;
+      }
+      else if( vectorizingMapVals && _.mapLike( args[ d ] ) )
       {
         keys = _.mapOwnKeys( args[ d ] );
         break;
@@ -1066,7 +1108,6 @@ function vectorize_body( o )
         _.assert( !_.mapIs( args[ d ] ), () => 'Arguments should have only arrays or only maps, but not both. Incorrect argument : ' + args[ d ] );
         else if( vectorizingMapKeys && _.mapIs( args[ d ] ) )
         continue;
-
         args[ d ] = _.multiple( args[ d ], length );
       }
 
@@ -1075,12 +1116,13 @@ function vectorize_body( o )
     {
       for( let d = 0 ; d < select ; d++ )
       if( _.mapIs( args[ d ] ) )
-      _.assert( _.arraySetIdentical( _.mapOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
+      {
+        _.assert( _.arraySetIdentical( _.mapOwnKeys( args[ d ] ), keys ), () => 'Maps should have same keys : ' + keys );
+      }
       else
       {
         if( vectorizingArray )
-        _.assert( !_.longIs( args[ d ] ), () => 'Arguments should have only arrays or only maps, but not both. Incorrect argument : ' + args[ d ] );
-
+        _.assert( !_.arrayLike( args[ d ] ), () => 'Arguments should have only arrays or only maps, but not both. Incorrect argument : ' + args[ d ] );
         let arg = Object.create( null );
         _.mapSetWithKeys( arg, keys, args[ d ] );
         args[ d ] = arg;
@@ -1098,11 +1140,12 @@ function vectorize_body( o )
     return [];
 
     let args = arguments;
+    // args = _.originalsFromAdaptersInplace( args );
     let src = args[ 0 ];
 
-    if( _.longIs( src ) )
+    if( _.arrayLike( src ) )
     {
-      let args2 = _.longSlice( args );
+      let args2 = [ ... args ];
       let result = [];
       for( let r = 0 ; r < src.length ; r++ )
       {
@@ -1113,13 +1156,26 @@ function vectorize_body( o )
     }
     else if( _.setLike( src ) ) /* qqq : cover please */
     {
-      let args2 = _.longSlice( args );
+      let args2 = [ ... args ];
       let result = new Set;
       for( let e of src )
       {
         args2[ 0 ] = e;
         result.add( routine.apply( this, args2 ) );
       }
+      return result;
+    }
+    else if( vectorizingContainerAdapter && _.containerAdapter.is( src ) )
+    {
+      let args2 = [ ... args ];
+      let result = src.filter( ( e ) =>
+      {
+        args2[ 0 ] = e;
+        return routine.apply( this, args2 );
+      });
+      if( unwrapingContainerAdapter )
+      return result.original;
+      else
       return result;
     }
 
@@ -1133,12 +1189,14 @@ function vectorize_body( o )
     if( bypassingEmpty && !arguments.length )
     return [];
 
+    // let args = multiply( _.originalsFromAdaptersInplace( arguments ) );
     let args = multiply( arguments );
     let src = args[ 0 ];
+    // src = _.originalOfAdapter( src );
 
-    if( _.longIs( src ) )
+    if( _.arrayLike( src ) )
     {
-      let args2 = _.longSlice( args );
+      let args2 = [ ... args ];
       let result = [];
       for( let r = 0 ; r < src.length ; r++ )
       {
@@ -1160,12 +1218,12 @@ function vectorize_body( o )
     return [];
 
     let src = srcMap[ select ];
-
+    // let args = _.originalsFromAdaptersInplace( [ ... arguments ] );
+    let args = [ ... arguments ];
     _.assert( arguments.length === 1, 'Expects single argument' );
 
-    if( _.longIs( src ) )
+    if( _.arrayLike( src ) )
     {
-      let args = _.longSlice( arguments );
       if( pre )
       {
         args = pre( routine, args );
@@ -1182,7 +1240,7 @@ function vectorize_body( o )
     }
     else if( _.setLike( src ) ) /* qqq : cover */
     {
-      let args = _.longSlice( arguments );
+      debugger;
       if( pre )
       {
         args = pre( routine, args );
@@ -1195,6 +1253,25 @@ function vectorize_body( o )
         args[ 0 ][ select ] = e;
         result.add( routine.apply( this, args ) );
       }
+      return result;
+    }
+    else if( vectorizingContainerAdapter && _._.containerAdapter.is( src ) ) /* qqq : cover */
+    {
+      debugger;
+      if( pre )
+      {
+        args = pre( routine, args );
+        _.assert( _.arrayLikeResizable( args ) );
+      }
+      result = src.filter( ( e ) =>
+      {
+        args[ 0 ] = _.mapExtend( null, srcMap );
+        args[ 0 ][ select ] = e;
+        return routine.apply( this, args );
+      });
+      if( unwrapingContainerAdapter )
+      return result.original;
+      else
       return result;
     }
 
@@ -1225,12 +1302,13 @@ function vectorize_body( o )
     if( bypassingEmpty && !arguments.length )
     return [];
 
+    // let args = multiply( _.originalsFromAdaptersInplace( arguments ) );
     let args = multiply( arguments );
     let src = args[ 0 ];
 
-    if( vectorizingArray && _.longIs( src ) )
+    if( vectorizingArray && _.arrayLike( src ) )
     {
-      let args2 = _.longSlice( args );
+      let args2 = [ ... args ];
       let result = [];
       for( let r = 0 ; r < src.length ; r++ )
       {
@@ -1242,7 +1320,7 @@ function vectorize_body( o )
     }
     else if( vectorizingMapVals && _.mapIs( src ) )
     {
-      let args2 = _.longSlice( args );
+      let args2 = [ ... args ];
       let result = Object.create( null );
       for( let r in src )
       {
@@ -1264,6 +1342,7 @@ function vectorize_body( o )
     if( bypassingEmpty && !arguments.length )
     return [];
 
+    // let args = multiply( _.originalsFromAdaptersInplace( arguments ) );
     let args = multiply( arguments );
     let srcs = args[ 0 ];
 
@@ -1299,11 +1378,12 @@ function vectorize_body( o )
     _.assert( 0, 'not tested' ); /* qqq : cover please */
     _.assert( arguments.length === 1, 'Expects single argument' );
 
+    // let args = multiply( _.originalsFromAdaptersInplace( arguments ) );
     let args = multiply( arguments );
 
-    if( vectorizingArray && _.longIs( src ) )
+    if( vectorizingArray && _.arrayLike( src ) )
     {
-      args = _.longSlice( args );
+      args = [ ... args ];
       let result = [];
       throw _.err( 'not tested' ); /* cover please */
       for( let r = 0 ; r < src.length ; r++ )
@@ -1322,7 +1402,7 @@ function vectorize_body( o )
     }
     else if( vectorizingMapVals && _.mapIs( src ) )
     {
-      args = _.longSlice( args );
+      args = [ ... args ];
       let result = Object.create( null );
       throw _.err( 'not tested' ); /* qqq : cover please */
       for( let r in src )
@@ -1347,11 +1427,10 @@ function vectorize_body( o )
 
   function vectorizeKeysOrArray()
   {
-    // yyy
     if( bypassingEmpty && !arguments.length )
     return [];
-    // yyy
 
+    // let args = multiply( _.originalsFromAdaptersInplace( arguments ) );
     let args = multiply( arguments );
     let src = args[ 0 ];
     let args2;
@@ -1380,7 +1459,7 @@ function vectorize_body( o )
     if( map )
     {
       result = Object.create( null );
-      args2 = _.longSlice( args );
+      args2 = [ ... args ];
 
       if( vectorizingArray && _.arrayLike( arr ) )
       {
@@ -1409,9 +1488,9 @@ function vectorize_body( o )
 
       return result;
     }
-    else if( vectorizingArray && _.longIs( src ) )
+    else if( vectorizingArray && _.arrayLike( src ) )
     {
-      args2 = _.longSlice( args );
+      args2 = [ ... args ];
       result = [];
       for( let r = 0 ; r < src.length ; r++ )
       {
@@ -1442,6 +1521,8 @@ vectorize_body.defaults =
   vectorizingArray : 1,
   vectorizingMapVals : 0,
   vectorizingMapKeys : 0,
+  vectorizingContainerAdapter : 0,
+  unwrapingContainerAdapter : 0,
   select : 1,
 }
 
@@ -1590,6 +1671,7 @@ let Routines =
 
   routinesCompose,
   routineExtend,
+  routineDefaults,
   routineFromPreAndBody,
 
   routineVectorize_functor : vectorize,
