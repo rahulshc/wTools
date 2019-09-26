@@ -199,14 +199,14 @@ function arrayAdapterFilter( test )
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.filter( ( e ) => e );
-  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ] );
   test.is( got !== src );
   test.identical( got, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.filter( ( e ) => undefined );
-  var exp = _.containerAdapter.make( [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
+  var exp = _.containerAdapter.make( [] );
   test.is( got !== src );
   test.identical( got, exp );
 
@@ -220,7 +220,7 @@ function arrayAdapterFilter( test )
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.filter( ( e ) => e[ 0 ] );
-  var exp = _.containerAdapter.make( [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2, undefined ] );
+  var exp = _.containerAdapter.make( [ 2 ] );
   test.is( got !== src );
   test.identical( got, exp );
 
@@ -240,14 +240,14 @@ function arrayAdapterFilter( test )
   test.case = 'from empty array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.filter( null, ( e ) => e );
-  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ] );
   test.is( got !== src );
   test.identical( got, exp );
 
   test.case = 'from empty array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.filter( null, ( e ) => undefined );
-  var exp = _.containerAdapter.make( [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
+  var exp = _.containerAdapter.make( [] );
   test.is( got !== src );
   test.identical( got, exp );
 
@@ -261,7 +261,7 @@ function arrayAdapterFilter( test )
   test.case = 'from empty array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.filter( null, ( e ) => e[ 0 ] );
-  var exp = _.containerAdapter.make( [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2, undefined ] );
+  var exp = _.containerAdapter.make( [ 2 ] );
   test.is( got !== src );
   test.identical( got, exp );
 
@@ -281,14 +281,14 @@ function arrayAdapterFilter( test )
   test.case = 'from empty array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.filter( src, ( e ) => e );
-  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ] );
   test.is( got === src );
   test.identical( got, exp );
 
   test.case = 'from empty array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var got = src.filter( src, ( e ) => undefined );
-  var exp = _.containerAdapter.make( [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
+  var exp = _.containerAdapter.make( [] );
   test.is( got === src );
   test.identical( got, exp );
 
@@ -302,7 +302,7 @@ function arrayAdapterFilter( test )
   test.case = 'from empty array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   var got = src.filter( src, ( e ) => e[ 0 ] );
-  var exp = _.containerAdapter.make( [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2, undefined ] );
+  var exp = _.containerAdapter.make( [ 2 ] );
   test.is( got === src );
   test.identical( got, exp );
 
@@ -323,7 +323,7 @@ var Self =
   {
     trivial,
     arrayAdapterMap,
-    // arrayAdapterFilter,
+    arrayAdapterFilter,
   }
 
 }

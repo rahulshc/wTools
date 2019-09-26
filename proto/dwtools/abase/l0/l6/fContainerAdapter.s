@@ -533,12 +533,12 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       //     container[ k ] = e2;
       //   }
       // }
-      for( let i in container )
+      for( let k in container )
       {
-        let e2 = onEach( container[ i ], undefined, container );
-        if( container[ i ] !== e2 || e2 !== undefined )
+        let e2 = onEach( container[ k ], undefined, container );
+        if( container[ k ] !== e2 || e2 !== undefined )
         {
-          container[ i ] = e2;
+          container[ k ] = e2;
         }
       }
     }
@@ -564,10 +564,10 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     if( this._same( dst ) )
     {
       debugger; // xxx
-      for( let [ k, e ] of container )
+      for( let k in container )
       {
-        let e2 = onEach( e, undefined, container );
-        if( e !== e2 || e2 === undefined )
+        let e2 = onEach( container[ k ], undefined, container );
+        if( container[ k ] !== e2 || e2 === undefined )
         {
           if( e2 !== undefined )
           container[ k ] = e2;
