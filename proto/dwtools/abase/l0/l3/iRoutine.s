@@ -900,6 +900,10 @@ function vectorize_pre( routine, args )
 
 //
 
+/*
+qqq : add support and coverage of Set and HashMap
+*/
+
 function vectorize_body( o )
 {
 
@@ -1107,6 +1111,17 @@ function vectorize_body( o )
       }
       return result;
     }
+    else if( _.setLike( src ) ) /* qqq : cover please */
+    {
+      let args2 = _.longSlice( args );
+      let result = new Set;
+      for( let e of src )
+      {
+        args2[ 0 ] = e;
+        result.add( routine.apply( this, args2 ) );
+      }
+      return result;
+    }
 
     return routine.apply( this, args );
   }
@@ -1162,6 +1177,23 @@ function vectorize_body( o )
         args[ 0 ] = _.mapExtend( null, srcMap );
         args[ 0 ][ select ] = src[ r ];
         result[ r ] = routine.apply( this, args );
+      }
+      return result;
+    }
+    else if( _.setLike( src ) ) /* qqq : cover */
+    {
+      let args = _.longSlice( arguments );
+      if( pre )
+      {
+        args = pre( routine, args );
+        _.assert( _.arrayLikeResizable( args ) );
+      }
+      let result = new Set;
+      for( let e of src )
+      {
+        args[ 0 ] = _.mapExtend( null, srcMap );
+        args[ 0 ][ select ] = e;
+        result.add( routine.apply( this, args ) );
       }
       return result;
     }
@@ -1264,7 +1296,7 @@ function vectorize_body( o )
   function vectorizeWithFilters( src )
   {
 
-    _.assert( 0, 'not tested' );
+    _.assert( 0, 'not tested' ); /* qqq : cover please */
     _.assert( arguments.length === 1, 'Expects single argument' );
 
     let args = multiply( arguments );
@@ -1273,7 +1305,7 @@ function vectorize_body( o )
     {
       args = _.longSlice( args );
       let result = [];
-      throw _.err( 'not tested' );
+      throw _.err( 'not tested' ); /* cover please */
       for( let r = 0 ; r < src.length ; r++ )
       {
         if( fieldFilter( src[ r ], r, src ) )
@@ -1292,7 +1324,7 @@ function vectorize_body( o )
     {
       args = _.longSlice( args );
       let result = Object.create( null );
-      throw _.err( 'not tested' );
+      throw _.err( 'not tested' ); /* qqq : cover please */
       for( let r in src )
       {
         if( fieldFilter( src[ r ], r, src ) )

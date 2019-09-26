@@ -179,7 +179,7 @@ let Self = _global_.wTools;
 //     {
 //       return String( src );
 //     }
-//     else if( _.vectorIs( src ) )
+//     else if( _.vectorAdapterIs( src ) )
 //     {
 //       result += '[ Vector with ' + src.length + ' elements' + ' ]';
 //     }
