@@ -1515,6 +1515,10 @@ function entityAnd( dst, src, onEach )
     }
   }
 
+  let dstTypeStr = typeStr( dst );
+  let srcTypeStr = typeStr( src );
+
+  _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
@@ -1524,22 +1528,101 @@ function entityAnd( dst, src, onEach )
   {
 
     if( _.routineIs( onEach ) )
-    withRoutineDeleting();
+    {
+      if( srcTypeStr === 'set' )
+      setWithRoutineDeleting();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithRoutineDeleting();
+      else
+      withRoutineDeleting();
+    }
     else
-    withoutRoutineDeleting();
+    {
+      if( srcTypeStr === 'set' )
+      setWithoutRoutineDeleting();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithoutRoutineDeleting();
+      else
+      withoutRoutineDeleting();
+    }
 
   }
   else
   {
 
     if( _.routineIs( onEach ) )
-    withRoutine();
+    {
+      if( srcTypeStr === 'set' )
+      setWithRoutine();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithRoutine();
+      else
+      withRoutine();
+    }
     else
-    withoutRoutine();
+    {
+      if( srcTypeStr === 'set' )
+      setWithoutRoutine();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithoutRoutine();
+      else
+      withoutRoutine(); /* don't change the subroutine */
+    }
 
   }
 
   return dst;
+
+  /* */
+
+  function setWithRoutine()
+  {
+    dst = new Set( null );
+
+    for( let value of src )
+    {
+      let res = onEach( value, value, src );
+      if( !res )
+      dst.add( value );
+    }
+  }
+
+  /* */
+
+  function setWithoutRoutine()
+  {
+    dst = new Set( null );
+
+    let unnecessaries = [ null, 0, undefined, false, '' ];
+    for( let key of unnecessaries )
+    if( src.has( key ) )
+    dst.add( key );
+  }
+
+  /* */
+
+  function hashMapWithRoutine()
+  {
+    dst = new Map( src );
+
+    for ( let [ key, value ] of src.entries() )
+    {
+      let res = onEach( value, key, src );
+      if( res )
+      dst.delete( key );
+    }
+  }
+
+  /* */
+
+  function hashMapWithoutRoutine()
+  {
+    dst = new Map( null );
+
+    for ( let [ key, value ] of dst.entries() )
+    if( !value )
+    dst.set( key, value );
+  }
 
   /* */
 
@@ -1619,6 +1702,50 @@ function entityAnd( dst, src, onEach )
       dst = undefined;
     }
 
+  }
+
+  /* */
+
+  function setWithRoutineDeleting()
+  {
+    for( let value of src )
+    {
+      let res = onEach( value, value, src );
+      if( res )
+      dst.delete( value );
+    }
+  }
+
+  /* */
+
+  function setWithoutRoutineDeleting()
+  {
+    for( let value of src )
+    {
+      if( value )
+      dst.delete( value );
+    }
+  }
+
+  /* */
+
+  function hashMapWithRoutineDeleting()
+  {
+    for ( let [ key, value ] of src.entries() )
+    {
+      let res = onEach( value, key, src )
+      if( res )
+      dst.delete( key );
+    }
+  }
+
+  /* */
+
+  function hashMapWithoutRoutineDeleting()
+  {
+    for ( let [ key, value ] of src.entries() )
+    if( value )
+    dst.delete( key );
   }
 
   /* */
@@ -1705,6 +1832,23 @@ function entityAnd( dst, src, onEach )
       dst = undefined;
     }
 
+  }
+
+  function typeStr( e )
+  {
+    let type;
+    if( _.longIs( e ) )
+    type = 'long';
+    else if( _.mapLike( e ) )
+    type = 'map';
+    else if( _.setIs( e ) )
+    type = 'set';
+    else if( _.hashMapIs( e ) )
+    type = 'hashMap';
+    else
+    type = 'primitive';
+
+    return type;
   }
 
 }
