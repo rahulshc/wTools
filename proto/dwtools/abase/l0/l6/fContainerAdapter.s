@@ -16,10 +16,14 @@ function is( src )
 
 //
 
-function make( dst )
+// function make( dst )
+// {
+//   if( dst )
+//   dst = this.toOriginal( toOriginal );
+function make( container )
 {
-  if( dst )
-  dst = this.toOriginal( toOriginal );
+  // if( container )
+  // container = this.toOriginal( toOriginal ); // routine returns value as routine, need improvment
   _.assert( arguments.length === 1 );
   if( _.setIs( container ) )
   {
@@ -173,7 +177,7 @@ class ContainerAdapterAbstract
     return this._same( src );
     return this.original === src.original;
   }
-  original = null;
+  // original = null; // Dmytro : need clarification
 }
 
 // --
@@ -515,25 +519,34 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   map( dst, onEach )
   {
-    debugger; xxx
+    debugger; // xxx
     let container = this.original;
     [ dst, onEach ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
       debugger;
-      for( let [ k, e ] of container )
+      // for( let e of container )
+      // {
+      //   let e2 = onEach( e, undefined, container );
+      //   if( e !== e2 || e2 !== undefined )
+      //   {
+      //     container[ k ] = e2;
+      //   }
+      // }
+      for( let i in container )
       {
-        let e2 = onEach( e, undefined, container );
-        if( e !== e2 || e2 !== undefined )
+        let e2 = onEach( container[ i ], undefined, container );
+        if( container[ i ] !== e2 || e2 !== undefined )
         {
-          container[ k ] = e2;
+          container[ i ] = e2;
         }
       }
     }
     else
     {
       debugger;
-      for( let [ k, e ] of container )
+      for( let e of container )
+      // for( let [ k, e ] of container )
       {
         let e2 = onEach( e, undefined, container );
         if( e2 !== undefined )
@@ -550,7 +563,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      debugger; xxx
+      debugger; // xxx
       for( let [ k, e ] of container )
       {
         let e2 = onEach( e, undefined, container );
