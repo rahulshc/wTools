@@ -3603,10 +3603,18 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
     else
     ins = evaluator1( ins );
 
-    for( let a = fromIndex; a < arr.length ; a++ )
+    if( arr.findIndex )
     {
-      if( evaluator1( arr[ a ] ) === ins )
-      return a;
+      // debugger;
+      return arr.findIndex( ( e ) => evaluator1( e ) === ins );
+    }
+    else
+    {
+      for( let a = fromIndex; a < arr.length ; a++ )
+      {
+        if( evaluator1( arr[ a ] ) === ins )
+        return a;
+      }
     }
 
   }

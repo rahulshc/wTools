@@ -27,6 +27,7 @@ if( typeof module !== 'undefined' && module !== null )
 
   require( './l0/l6/fBool.s' );
   require( './l0/l6/fBuffer.s' );
+  require( './l0/l6/fContainerAdapter.s' );
   require( './l0/l6/fEntity.s' );
   require( './l0/l6/fErr.s' );
   require( './l0/l6/fFunctional.s' );

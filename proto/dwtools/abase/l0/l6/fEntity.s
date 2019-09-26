@@ -6,9 +6,34 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
-let _ArraySlice = Array.prototype.slice;
-let _FunctionBind = Function.prototype.bind;
 let _ObjectHasOwnProperty = Object.hasOwnProperty;
+
+// --
+// set
+// --
+
+function setFrom( src )
+{
+  _.assert( arguments.length === 1 );
+  if( _.setIs( src ) )
+  return src;
+  if( src === null )
+  return new Set();
+  _.assert( _.longIs( src ) )
+  return new Set([ ... src ]);
+}
+
+//
+
+function setsFrom( srcs )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.longIs( srcs ) );
+  let result = [];
+  for( let s = 0, l = srcs.length ; s < l ; s++ )
+  result[ s ] = _.setFrom( srcs[ s ] );
+  return result;
+}
 
 // --
 // entity modifier
@@ -138,11 +163,11 @@ function entityMakeEmpty( srcContainer )
   {
     return Object.create( null );
   }
-  else if( _.primitiveIs( src ) )
+  else if( _.primitiveIs( srcContainer ) )
   {
-    return src;
+    return srcContainer;
   }
-  else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
+  else _.assert( 0, 'Not clear how to make a new object of ', _.strType( srcContainer ) );
 
 }
 
@@ -438,6 +463,11 @@ let Fields =
 
 let Routines =
 {
+
+  // set
+
+  setFrom,
+  setsFrom,
 
   // entity modifier
 
