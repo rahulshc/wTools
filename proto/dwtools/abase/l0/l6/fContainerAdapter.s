@@ -282,15 +282,21 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( this._same( dst ) )
     {
       debugger;
-      let temp = [ ... container ];
-      container.clear();
+      let length = container.size;
 
-      for( let e of temp )
+      for( let e of container )
       {
+        if( length === 0 )
+        break;
+        length--;
+
         let e2 = onEach( e, undefined, container );
 
         if( e2 !== undefined && e !== e2 )
-        container.add( e2 );
+        {
+          container.delete( e );
+          container.add( e2 );
+        }
         else
         container.add( e );
       }
@@ -327,17 +333,40 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      debugger; xxx
+      debugger; // xxx
+      let length = container.size;
+
       for( let e of container )
       {
+        if( length === 0 )
+        break;
+        length--;
+
         let e2 = onEach( e, undefined, container );
-        if( e !== e2 )
+
+        if( e2 === undefined || e !== e2 )
         {
-          container.remove( e );
           if( e2 !== undefined )
           container.add( e2 );
+
+          container.delete( e );
         }
+        else
+        container.add( e );
       }
+
+      // Dmytro : this code makes cycled loop
+      // for( let e of container )
+      // {
+      //   let e2 = onEach( e, undefined, container );
+      //   if( e !== e2 )
+      //   {
+      //     container.delete( e );
+      //     // container.remove( e );
+      //     if( e2 !== undefined )
+      //     container.add( e2 );
+      //   }
+      // }
     }
     else
     {
