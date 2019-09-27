@@ -578,11 +578,12 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      debugger; // xxx
-      for( let k in container )
+      // debugger; // xxx
+      for( let k = container.length - 1 ; k >= 0 ; k-- )
       {
-        let e2 = onEach( container[ k ], undefined, container );
-        if( container[ k ] !== e2 || e2 === undefined )
+        let e = container[ k ];
+        let e2 = onEach( e, undefined, container );
+        if( e !== e2 || e2 === undefined )
         {
           if( e2 !== undefined )
           container[ k ] = e2;
