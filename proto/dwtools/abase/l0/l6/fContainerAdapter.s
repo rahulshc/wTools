@@ -282,15 +282,30 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( this._same( dst ) )
     {
       debugger;
-      for( let e of container )
+      let temp = container.entries();
+      container.clear();
+
+      for( let e of temp )
       {
         let e2 = onEach( e, undefined, container );
+
         if( e2 !== undefined && e !== e2 )
-        {
-          container.remove( e );
-          container.add( e2 );
-        }
+        container.add( e2 );
+        else
+        container.add( e );
       }
+      // Dmytro : this code makes cycled loop because add method append elements
+      // for( let e of container )
+      // {
+      //   let e2 = onEach( e, undefined, container );
+      //
+      //   if( e2 !== undefined && e !== e2 )
+      //   {
+      //     container.delete( e );
+      //     // container.remove( e ); // Set constructor has not this method
+      //     container.add( e2 );
+      //   }
+      // }
     }
     else
     {
