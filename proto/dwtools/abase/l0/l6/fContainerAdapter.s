@@ -594,12 +594,14 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEval ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      _.longOnce( container );
+      _.longOnce( container, onEval );
+      // _.longOnce( container );
     }
     else
     {
-      debugger; xxx
-      dst.appendContainerOnce( container );
+      debugger; // xxx
+      _.arrayAppendArrayOnce( dst.original, container, onEval );
+      // dst.appendContainerOnce( container );
     }
     return dst;
   }

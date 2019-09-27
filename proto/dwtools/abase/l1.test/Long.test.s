@@ -13342,16 +13342,26 @@ function arrayAppendArrayOnce( test )
   test.identical( got, [ 1 ] );
 
   test.case = 'nothing';
-
   var got = _.arrayAppendArrayOnce( [], [] );
   var expected = [];
   test.identical( got, expected );
 
   test.case = 'simple';
-
   var dst = [];
   var got = _.arrayAppendArrayOnce( dst, [ 1, 2, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
+  test.is( got === dst );
+
+  test.case = 'src array has duplicates';
+  var dst = [ 1, 2, 3, 'str', 5 ];
+  var got = _.arrayAppendArrayOnce( dst, [ 1, 1, 2, 2, 3, 3, 'str', 'str', 5 ] );
+  test.identical( got, [ 1, 2, 3, 'str', 5 ] );
+  test.is( got === dst );
+
+  test.case = 'dst and src array has duplicates';
+  var dst = [ 1, 1, 2, 2, 3, 3, 'str', 'str', 5, 5 ];
+  var got = _.arrayAppendArrayOnce( dst, [ 1, 1, 2, 2, 3, 3, 'str', 'str', 5 ] );
+  test.identical( got, [ 1, 1, 2, 2, 3, 3, 'str', 'str', 5, 5 ] );
   test.is( got === dst );
 
   test.case = 'appends only unique elements';
