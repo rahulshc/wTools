@@ -282,7 +282,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( this._same( dst ) )
     {
       debugger;
-      let temp = container.entries();
+      let temp = [ ... container ];
       container.clear();
 
       for( let e of temp )
@@ -551,7 +551,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       for( let k in container )
       {
         let e2 = onEach( container[ k ], undefined, container );
-        if( container[ k ] !== e2 || e2 !== undefined )
+        if( e2 !== undefined )
         {
           container[ k ] = e2;
         }
