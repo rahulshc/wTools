@@ -386,10 +386,33 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( this._same( dst ) )
     {
       /* already once */
+      if( onEval )
+      {
+        let temp = [ ... container ];
+        _.arrayRemoveDuplicates( temp, onEval );
+
+        if( temp.length !== container.size )
+        {
+          container.clear();
+
+          for( let e of temp )
+          container.add( e );
+        }
+      }
     }
     else
     {
-      debugger; xxx
+      debugger; // xxx
+      if( onEval )
+      {
+        let temp = [ ... container ];
+        _.arrayRemoveDuplicates( temp, onEval );
+
+        container.clear();
+        for( let e of temp )
+        dst.original.add( e );
+      }
+      else
       dst.appendContainer( container );
     }
     return dst;
@@ -607,7 +630,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      // debugger; // xxx
+      debugger; // xxx
       for( let k = container.length - 1 ; k >= 0 ; k-- )
       {
         let e = container[ k ];
