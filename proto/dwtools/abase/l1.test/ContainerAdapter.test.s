@@ -315,6 +315,239 @@ function setAdapterFilter( test )
   test.close( 'dst === dst' );
 }
 
+//
+
+function setAdapterOnce( test )
+{
+  // test.case = 'without arguments';
+  // var src = _.containerAdapter.make( new Set( [] ) );
+  // var got = src.once();
+  // var exp = _.containerAdapter.make( new Set( [] ) );
+  // test.is( got !== src );
+  // test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  /* - */
+
+  test.open( 'only onEval' );
+
+  test.case = 'onEval returns element';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  debugger;
+  var got = src.once( ( e ) => e );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'onEval is simple equalizer';
+  var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, null, true, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var got = src.once( ( e, e2 ) => e === e2 );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  // test.case = 'onEval remove undefined';
+  // var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  // var got = src.once( ( e ) => undefined );
+  // var exp = _.containerAdapter.make( new Set( [] ) );
+  // test.is( got !== src );
+  // test.identical( [ ... got.original ], [ ... exp.original ] );
+  //
+  // test.case = 'onEval check element of array';
+  // var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
+  // var got = src.once( ( e ) => e[ 0 ] );
+  // var exp = _.containerAdapter.make( new Set( [ [ null ], [ true ], [ 2 ] ] ) );
+  // test.is( got !== src );
+  // test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.close( 'only onEval' );
+
+  /* - */
+
+  test.open( 'only dst' );
+
+  test.case = 'src - from empty array, dst - empty ArrayContainerAdapter, no onEval';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var dst = _.containerAdapter.make( new Set( [] ) );
+  var got = src.once( dst );
+  var exp = _.containerAdapter.make( new Set( [] ) );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'the same containers, onEval returns element';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var got = src.once( dst, ( e ) => e );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, [ 2 ], { a : 0 } ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'the same containers, onEval is simple equalizer';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ) ] ) );
+  var got = src.once( dst, ( e, e2 ) => e === e2 );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, new U8x( 2 ), [ 2 ], { a : 0 } ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'different containers, onEval remove undefined';
+  var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var got = src.once( dst, ( e ) => undefined );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'onEval check element of array, no duplicates in src';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
+  var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
+  var got = src.once( dst, ( e ) => e[ 0 ] );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 }, [ null ], [ true ], [ 2 ] ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'onEval check element of array, duplicates in src';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], [ true ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
+  var dst = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
+  var got = src.once( dst, ( e ) => e[ 0 ] );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 }, [ null ], [ true ], [ 2 ] ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.close( 'only dst' );
+
+  /* - */
+
+  test.open( 'dst === null' );
+
+  test.case = 'src - from empty array, dst - empty array, no onEval';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var got = src.once( null );
+  var exp = _.containerAdapter.make( new Set( [] ) );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'src - from empty array, dst - empty ArrayContainerAdapter, no onEval';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var dst = _.containerAdapter.make( new Set( [] ) );
+  var got = src.once( null );
+  var exp = _.containerAdapter.make( new Set( [] ) );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'src - from array, dst - empty array, no onEval';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] ) );
+  var got = src.once( null );
+  var exp = _.containerAdapter.make( new Set( [ 1, 2, null, undefined, false ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'src - from array, append array, no onEval';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] ) );
+  var got = src.once( null );
+  var exp = _.containerAdapter.make( new Set( [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'onEval returns element';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var got = src.once( null, ( e ) => e );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'onEval is simple equalizer';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var got = src.once( null, ( e, e2 ) => e === e2 );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  // test.case = 'onEval remove undefined';
+  // var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  // var got = src.once( null, ( e ) => undefined );
+  // var exp = _.containerAdapter.make( new Set( [] ) );
+  // test.is( got !== src );
+  // test.identical( [ ... got.original ], [ ... exp.original ] );
+  //
+  // test.case = 'onEval check element of array, no duplicates in src';
+  // var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
+  // var got = src.once( null, ( e ) => e[ 0 ] );
+  // var exp = _.containerAdapter.make( new Set( [ [ null ], [ true ], [ 2 ] ] ) );
+  // test.is( got !== src );
+  // test.identical( [ ... got.original ], [ ... exp.original ] );
+  //
+  // test.case = 'onEval check element of array, duplicates in src';
+  // var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], [ true ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
+  // var got = src.once( null, ( e ) => e[ 0 ] );
+  // var exp = _.containerAdapter.make( new Set( [ [ null ], [ true ], [ 2 ] ] ) );
+  // test.is( got !== src );
+  // test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.close( 'dst === null' );
+
+  /* - */
+
+  test.open( 'dst === dst' );
+
+  test.case = 'src - from empty array, no onEval';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var got = src.once( src );
+  var exp = _.containerAdapter.make( new Set( [] ) );
+  test.is( got === src );
+  test.identical( got, exp );
+
+  test.case = 'src - from empty array, no onEval';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var got = src.once( src );
+  var exp = _.containerAdapter.make( new Set( [] ) );
+  test.is( got === src );
+  test.identical( got, exp );
+
+  test.case = 'src - from array, no onEval';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false ] ) );
+  var got = src.once( src );
+  var exp = _.containerAdapter.make( new Set( [ 1, 2, null, undefined, false ] ) );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'src - from array, no onEval';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 1, 2, null, null, undefined, false, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] ) );
+  var got = src.once( src );
+  var exp = _.containerAdapter.make( new Set( [ 1, 2, null, undefined, false, [ 2 ], [ 2 ], [ 2 ] ] ) );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'onEval returns element';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var got = src.once( src, ( e ) => e );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.case = 'onEval is simple equalizer';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var got = src.once( src, ( e, e2 ) => e === e2 );
+  var exp = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  // test.case = 'different containers, onEval remove undefined';
+  // var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, undefined, undefined, undefined, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  // var got = src.once( src, ( e ) => undefined );
+  // var exp = _.containerAdapter.make( new Set( [] ) );
+  // test.is( got === src );
+  // test.identical( [ ... got.original ], [ ... exp.original ] );
+  //
+  // test.case = 'onEval check element of array, no duplicates in src';
+  // var src = _.containerAdapter.make( new Set( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
+  // var got = src.once( src, ( e ) => e[ 0 ] );
+  // var exp = _.containerAdapter.make( new Set( [ [ null ], [ true ], [ 2 ] ] ) );
+  // test.is( got === src );
+  // test.identical( [ ... got.original ], [ ... exp.original ] );
+
+  test.close( 'dst === dst' );
+}
+
 //--
 // ArrayContainerAdapter
 //--
@@ -915,6 +1148,7 @@ var Self =
 
     setAdapterMap,
     setAdapterFilter,
+    setAdapterOnce,
   }
 
 }
