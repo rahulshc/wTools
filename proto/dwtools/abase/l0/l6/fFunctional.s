@@ -1986,7 +1986,7 @@ function entityOr( dst, src, onEach )
     for ( let [ key, value ] of src.entries() )
     {
       let res = onEach( value, key, src );
-      if( !res )
+      if( res )
       dst.set( key, value );
     }
   }
@@ -1997,8 +1997,8 @@ function entityOr( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of dst.entries() )
-    if( !value )
+    for ( let [ key, value ] of src.entries() )
+    if( value )
     dst.set( key, value );
   }
 
@@ -2115,10 +2115,20 @@ function entityOr( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of dst.entries() )
     {
-      let res = onEach( value, key, src )
-      if( res )
+      let res1, res2
+      res1 = onEach( value, key, dst )
+      if( !res1 && src.has( key ) )
+      res2 = onEach( src.get( key ), key, src );
+      else
+      res2 = onEach( undefined, undefined, src );
+
+      if( res1 )
+      dst.set( key, value );
+      else if( res2 )
+      dst.set( key, src.get( key ) );
+      else
       dst.delete( key );
     }
   }
@@ -2127,9 +2137,18 @@ function entityOr( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for ( let [ key, value ] of src.entries() )
-    if( value )
-    dst.delete( key );
+    for ( let [ key, value ] of dst.entries() )
+    {
+      if( !value )
+      {
+        let res = src.get( key );
+
+        if( res )
+        dst.set( key, res );
+        else
+        dst.delete( key );
+      }
+    }
   }
 
   /* */
