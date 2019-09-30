@@ -10433,6 +10433,350 @@ function entityOrOnlyHashMaps( test )
 
 //
 
+function entityXorOnlyDst( test )
+{
+
+  function Constructor1()
+  {
+    this.x = 1;
+    return this;
+  }
+
+  /* - */
+
+  test.open( 'no onEach' );
+
+  test.case = 'dst - map';
+  var exp = {};
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var got = _.entityXor( dst );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array';
+  var exp = [];
+  var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+  var got = _.entityXor( dst );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - obj';
+  var exp = undefined;
+  var dst = new Constructor1();
+  var got = _.entityXor( dst );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - str';
+  var exp = undefined;
+  var dst = 'dst';
+  var got = _.entityXor( dst );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - empty str';
+  var exp = undefined;
+  var dst = '';
+  var got = _.entityXor( dst );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - false';
+  var exp = undefined;
+  var dst = false;
+  var got = _.entityXor( dst );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - 0';
+  var exp = undefined;
+  var dst = 0;
+  var got = _.entityXor( dst );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.close( 'no onEach' );
+
+  /* - */
+
+  test.open( 'onEach - routine returning undefined' );
+
+  test.case = 'dst - map';
+  var exp = {};
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var got = _.entityXor( dst, undefined, ( e, k ) => undefined );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array';
+  var exp = [];
+  var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+  var got = _.entityXor( dst, undefined, ( e, k ) => undefined );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - obj';
+  var exp = undefined;
+  var dst = new Constructor1();
+  var got = _.entityXor( dst, undefined, ( e, k ) => undefined );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - str';
+  var exp = undefined;
+  var dst = 'dst';
+  var got = _.entityXor( dst, undefined, ( e, k ) => undefined );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - empty str';
+  var exp = undefined;
+  var dst = '';
+  var got = _.entityXor( dst, undefined, ( e, k ) => undefined );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - false';
+  var exp = undefined;
+  var dst = false;
+  var got = _.entityXor( dst, undefined, ( e, k ) => undefined );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - 0';
+  var exp = undefined;
+  var dst = 0;
+  var got = _.entityXor( dst, undefined, ( e, k ) => undefined );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning undefined' );
+
+  /* - */
+
+  test.open( 'onEach - routine returning element' );
+
+  test.case = 'dst - map';
+  var exp = {};
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var got = _.entityXor( dst, undefined, ( e, k ) => e );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array';
+  var exp = [];
+  var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+  var got = _.entityXor( dst, undefined, ( e, k ) => e );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - obj';
+  var exp = undefined;
+  var dst = new Constructor1();
+  var got = _.entityXor( dst, undefined, ( e, k ) => e );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - str';
+  var exp = undefined;
+  var dst = 'dst';
+  var got = _.entityXor( dst, undefined, ( e, k ) => e );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - false';
+  var exp = undefined;
+  var dst = false;
+  var got = _.entityXor( dst, undefined, ( e, k ) => e );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - 0';
+  var exp = undefined;
+  var dst = 0;
+  var got = _.entityXor( dst, undefined, ( e, k ) => e );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning element' );
+
+  /* - */
+
+  test.open( 'onEach - routine returning key' );
+
+  test.case = 'dst - map';
+  var exp = {};
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var got = _.entityXor( dst, undefined, ( e, k ) => k );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array';
+  var exp = [];
+  var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+  var got = _.entityXor( dst, undefined, ( e, k ) => k );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - obj';
+  var exp = undefined;
+  var dst = new Constructor1();
+  var got = _.entityXor( dst, undefined, ( e, k ) => k );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - str';
+  var exp = undefined;
+  var dst = 'dst';
+  var got = _.entityXor( dst, undefined, ( e, k ) => k );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - empty str';
+  var exp = undefined;
+  var dst = '';
+  var got = _.entityXor( dst, undefined, ( e, k ) => k );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - false';
+  var exp = undefined;
+  var dst = false;
+  var got = _.entityXor( dst, undefined, ( e, k ) => k );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - 0';
+  var exp = undefined;
+  var dst = 0;
+  var got = _.entityXor( dst, undefined, ( e, k ) => k );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - routine returning key' );
+
+  /* - */
+
+  test.open( 'onEach - selector' );
+
+  test.case = 'dst - map, */f1';
+  var exp = {};
+  var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var got = _.entityXor( dst, undefined, '*/f1' );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - map, */f2';
+  var exp = {};
+  var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var got = _.entityXor( dst, undefined, '*/f2' );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, */f1';
+  var exp = [];
+  var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var got = _.entityXor( dst, undefined, '*/f1' );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, */f2';
+  var exp = [];
+  var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var got = _.entityXor( dst, undefined, '*/f2' );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - obj';
+  var exp = undefined;
+  var dst = new Constructor1();
+  var got = _.entityXor( dst, undefined, '*/x' );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - str';
+  var exp = undefined;
+  var dst = 'dst';
+  var got = _.entityXor( dst, undefined, '*/length' );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - empty str';
+  var exp = undefined;
+  var dst = '';
+  var got = _.entityXor( dst, undefined, '*/length' );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - false';
+  var exp = undefined;
+  var dst = false;
+  var got = _.entityXor( dst, undefined, '*/length' );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - 0';
+  var exp = undefined;
+  var dst = 0;
+  var got = _.entityXor( dst, undefined, '*/length' );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.close( 'onEach - selector' );
+
+  test.case = 'dst - map, onEach uses external variable';
+  var exp = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty'};
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var count = 1;
+  var onEach = function( e )
+  {
+    if( count === 1 )
+    count--;
+    else
+    count++;
+    return count;
+  }
+  var got = _.entityXor( dst, undefined, onEach );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - empty str, onEach uses external variable';
+  var exp = '';
+  var dst = '';
+  var count = 1;
+  var onEach = function( e )
+  {
+    if( count === 1 )
+    count--;
+    else
+    count++;
+    return count;
+  }
+  var got = _.entityXor( dst, undefined, onEach );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityXor() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.entityXor( [ 1, 2 ], [ 0, 1 ], ( e ) => e, 'extra' ) );
+
+  test.case = 'wrong onEach type';
+  test.shouldThrowErrorSync( () => _.entityXor( [ 1, 2 ], [ 0, 1 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.entityXor( [ 1, 2 ], [ 0, 1 ], [] ) );
+
+  test.case = 'onEach.length > 3';
+  test.shouldThrowErrorSync( () => _.entityXor( [ 1, 2 ], [ 0, 1 ], ( a, b, c, d ) => a - b + c - d ) );
+}
+
+//
+
 // function entityBut( test )
 // {
 //
@@ -15517,15 +15861,15 @@ value for dst             dst                dst                    first +     
     entityAndOnlySetsExperiment,
     entityAndOnlyHashMaps,
 
-    entityOrOnlyDst, /* qqq : implement */
-    entityOrOnlySrc, /* qqq : implement */
-    entityOrBothSame, /* qqq : implement */
-    entityOrBoth, /* qqq : implement */
+    entityOrOnlyDst, /* qqq : implement | Dmytro : implemented */
+    entityOrOnlySrc, /* qqq : implement | Dmytro : implemented */
+    entityOrBothSame, /* qqq : implement | Dmytro : implemented */
+    entityOrBoth, /* qqq : implement | Dmytro : implemented */
     entityOrDiffTypes,
     entityOrOnlySets,
     entityOrOnlyHashMaps,
 
-    // entityXorOnlyDst, /* qqq : implement */
+    entityXorOnlyDst, /* qqq : implement */
     // entityXorOnlySrc, /* qqq : implement */
     // entityXorBothSame, /* qqq : implement */
     // entityXorBoth, /* qqq : implement */

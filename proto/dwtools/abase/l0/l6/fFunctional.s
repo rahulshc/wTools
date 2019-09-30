@@ -2666,7 +2666,7 @@ function entityXor( dst, src, onEach )
         let res2 = src[ k ];
 
         if( res1 && !res2 )
-        {};
+        {}
         else if( !res1 && res2 )
         dst[ k ] = src[ k ];
         else
@@ -2680,7 +2680,7 @@ function entityXor( dst, src, onEach )
       let res2 = src;
 
       if( res1 && !res2 )
-      {};
+      {}
       else if( !res1 && res2 )
       dst = src;
       else
