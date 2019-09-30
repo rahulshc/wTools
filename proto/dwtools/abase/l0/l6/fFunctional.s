@@ -1033,10 +1033,14 @@ function entityBut( dst, src, onEach )
   {
     dst = new Set( null );
 
-    let unnecessaries = [ null, 0, undefined, false, '' ];
-    for( let key of unnecessaries )
-    if( src.has( key ) )
-    dst.add( key );
+    // Dmytro : it'll be faster, but can't keep order of elements
+    // let unnecessaries = [ undefined, 0, null, false, '' ];
+    // for( let key of unnecessaries )
+    // if( src.has( key ) )
+    // dst.add( key );
+    for( let e of src )
+    if( !e )
+    dst.add( e );
   }
 
   /* */
@@ -1889,6 +1893,10 @@ function entityOr( dst, src, onEach )
     }
   }
 
+  let dstTypeStr = typeStr( dst );
+  let srcTypeStr = typeStr( src );
+
+  _.assert( dst === null || dstTypeStr === srcTypeStr );
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
 
@@ -1898,22 +1906,101 @@ function entityOr( dst, src, onEach )
   {
 
     if( _.routineIs( onEach ) )
-    withRoutineDeleting();
+    {
+      if( srcTypeStr === 'set' )
+      setWithRoutineDeleting();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithRoutineDeleting();
+      else
+      withRoutineDeleting();
+    }
     else
-    withoutRoutineDeleting();
+    {
+      if( srcTypeStr === 'set' )
+      setWithoutRoutineDeleting();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithoutRoutineDeleting();
+      else
+      withoutRoutineDeleting();
+    }
 
   }
   else
   {
 
     if( _.routineIs( onEach ) )
-    withRoutine();
+    {
+      if( srcTypeStr === 'set' )
+      setWithRoutine();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithRoutine();
+      else
+      withRoutine();
+    }
     else
-    withoutRoutine();
+    {
+      if( srcTypeStr === 'set' )
+      setWithoutRoutine();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithoutRoutine();
+      else
+      withoutRoutine(); /* don't change the subroutine */
+    }
 
   }
 
   return dst;
+
+  /* */
+
+  function setWithRoutine()
+  {
+    dst = new Set( null );
+
+    for( let value of src )
+    {
+      let res = onEach( value, value, src );
+      if( res )
+      dst.add( value );
+    }
+  }
+
+  /* */
+
+  function setWithoutRoutine()
+  {
+    dst = new Set( src );
+
+    let unnecessaries = [ null, 0, undefined, false, '' ];
+    for( let key of unnecessaries )
+    if( src.has( key ) )
+    dst.delete( key );
+  }
+
+  /* */
+
+  function hashMapWithRoutine()
+  {
+    dst = new Map( null );
+
+    for ( let [ key, value ] of src.entries() )
+    {
+      let res = onEach( value, key, src );
+      if( !res )
+      dst.set( key, value );
+    }
+  }
+
+  /* */
+
+  function hashMapWithoutRoutine()
+  {
+    dst = new Map( null );
+
+    for ( let [ key, value ] of dst.entries() )
+    if( !value )
+    dst.set( key, value );
+  }
 
   /* */
 
@@ -1993,6 +2080,56 @@ function entityOr( dst, src, onEach )
       dst = undefined;
     }
 
+  }
+
+  /* */
+
+  function setWithRoutineDeleting()
+  {
+    for( let key of dst )
+    {
+      let res1, res2;
+      res1 = onEach( key, key, dst );
+      if( !res1 && src.has( key ) )
+      res2 = onEach( key, key, src );
+      else
+      res2 = onEach( undefined, undefined, src );
+
+      if( !res1 && !res2 )
+      dst.delete( key );
+    }
+  }
+
+  /* */
+
+  function setWithoutRoutineDeleting()
+  {
+    for( let value of dst )
+    {
+      if( !value )
+      dst.delete( value );
+    }
+  }
+
+  /* */
+
+  function hashMapWithRoutineDeleting()
+  {
+    for ( let [ key, value ] of src.entries() )
+    {
+      let res = onEach( value, key, src )
+      if( res )
+      dst.delete( key );
+    }
+  }
+
+  /* */
+
+  function hashMapWithoutRoutineDeleting()
+  {
+    for ( let [ key, value ] of src.entries() )
+    if( value )
+    dst.delete( key );
   }
 
   /* */
@@ -2109,6 +2246,25 @@ function entityOr( dst, src, onEach )
       dst = undefined;
     }
 
+  }
+
+  /* */
+
+  function typeStr( e )
+  {
+    let type;
+    if( _.longIs( e ) )
+    type = 'long';
+    else if( _.mapLike( e ) )
+    type = 'map';
+    else if( _.setIs( e ) )
+    type = 'set';
+    else if( _.hashMapIs( e ) )
+    type = 'hashMap';
+    else
+    type = 'primitive';
+
+    return type;
   }
 
 }
