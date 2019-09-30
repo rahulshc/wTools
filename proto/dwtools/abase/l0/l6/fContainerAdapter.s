@@ -299,13 +299,11 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
         let e2 = onEach( e, undefined, container );
 
+        container.delete( e );
         if( e2 !== undefined && e !== e2 )
-        {
-          container.delete( e );
-          container.add( e2 );
-        }
+        container.add( e2 );
         else
-        container.add( e );
+        container.add( e );          
       }
       // Dmytro : this code makes cycled loop because add method append elements
       // for( let e of container )
