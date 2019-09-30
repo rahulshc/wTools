@@ -2290,6 +2290,428 @@ function entityOr( dst, src, onEach )
 
 //
 
+function entityXor( dst, src, onEach )
+{
+
+  if( arguments.length > 2 )
+  onEach = arguments[ arguments.length-1 ];
+
+  if( src === undefined )
+  src = dst;
+
+  if( _.strIs( onEach ) )
+  {
+    let selector = onEach;
+    _.assert( _.routineIs( _.select ) );
+    _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
+    selector = _.strRemoveBegin( selector, '*/' );
+    onEach = function( e, k )
+    {
+      return _.select( e, selector );
+    }
+  }
+
+  let dstTypeStr = typeStr( dst );
+  let srcTypeStr = typeStr( src );
+
+  _.assert( dst === null || dstTypeStr === srcTypeStr );
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ), 'Expects optional routine or selector {- onEach -}' );
+
+  /* */
+
+  if( dst !== null )
+  {
+
+    if( _.routineIs( onEach ) )
+    {
+      if( srcTypeStr === 'set' )
+      setWithRoutineDeleting();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithRoutineDeleting();
+      else
+      withRoutineDeleting();
+    }
+    else
+    {
+      if( srcTypeStr === 'set' )
+      setWithoutRoutineDeleting();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithoutRoutineDeleting();
+      else
+      withoutRoutineDeleting();
+    }
+
+  }
+  else
+  {
+
+    if( _.routineIs( onEach ) )
+    {
+      if( srcTypeStr === 'set' )
+      setWithRoutine();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithRoutine();
+      else
+      withRoutine();
+    }
+    else
+    {
+      if( srcTypeStr === 'set' )
+      setWithoutRoutine();
+      else if( srcTypeStr === 'hashMap' )
+      hashMapWithoutRoutine();
+      else
+      withoutRoutine(); /* don't change the subroutine */
+    }
+
+  }
+
+  return dst;
+
+  /* */
+
+  let unnecessaries = [ null, 0, undefined, false, '' ];
+
+  function setWithRoutine()
+  {
+    dst = new Set( null );
+
+    for( let value of src )
+    {
+      let res1 = onEach( undefined, undefined, dst );
+      let res2 = onEach( value, value, src );
+
+      if( ( res1 && !res2 ) || ( !res1 && res2 ) )
+      dst.add( value );
+    }
+  }
+
+  /* */
+
+  function setWithoutRoutine()
+  {
+    dst = new Set( src );
+
+    for( let e of unnecessaries )
+    dst.delete( undefined );
+  }
+
+  /* */
+
+  function hashMapWithRoutine()
+  {
+    dst = new Map( null );
+
+    for ( let [ key, value ] of src.entries() )
+    {
+      let res1 = onEach( undefined, undefined, dst );
+      let res2 = onEach( value, key, src );
+
+      if( ( res1 && !res2 ) || ( !res1 && res2 ) )
+      dst.set( key, value );
+    }
+  }
+
+  /* */
+
+  function hashMapWithoutRoutine()
+  {
+    dst = new Map( src );
+
+    let unnecessaries = [ null, 0, undefined, false, '' ];
+    for( let k of unnecessaries )
+    {
+      if( !dst.get( k ) )
+      dst.delete( k );
+    }
+  }
+
+  /* */
+
+  function withRoutine()
+  {
+
+    if( _.longIs( src ) )
+    {
+
+      dst = [];
+      for( let k = 0; k < src.length; k++ )
+      {
+        let res1 = onEach( undefined, undefined, dst );
+        let res2 = onEach( src[ k ], k, src );
+
+        if( ( res1 && !res2 ) || ( !res1 && res2 ) )
+        dst.push( src[ k ] );
+      }
+
+    }
+    else if( _.mapLike( src ) )
+    {
+
+      dst = Object.create( null );
+      for( let k in src )
+      {
+        let res1 = onEach( undefined, undefined, dst );
+        let res2 = onEach( src[ k ], k, src );
+
+        if( ( res1 && !res2 ) || ( !res1 && res2 ) )
+        dst[ k ] = src[ k ];
+      }
+
+    }
+    else
+    {
+      let res1 = onEach( null );
+      let res2 = onEach( src, undefined, undefined );
+      if( ( res1 && !res2 ) || ( !res1 && res2 ) )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withoutRoutine()
+  {
+
+    if( _.longIs( src ) )
+    {
+      dst = [];
+      for( let e of src )
+      if( e )
+      dst.push( e );
+    }
+    else if( _.mapLike( src ) )
+    {
+      Object.assign( {}, src );
+
+      for( let k of unnecessaries )
+      {
+        if( !dst[ k ] )
+        delete dst[ k ];
+      }
+    }
+    else
+    {
+      if( src !== undefined )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function setWithRoutineDeleting()
+  {
+    for( let key of src )
+    {
+      let res1, res2;
+      if( dst.has( key ) )
+      res1 = onEach( key, key, dst );
+      else
+      res1 = onEach( undefined, undefined, dst );
+      res2 = onEach( key, key, src );
+
+      if( res1 && !res2 )
+      {}
+      else if( !res1 && res2 )
+      dst.add( key );
+      else
+      dst.delete( key );
+    }
+  }
+
+  /* */
+
+  function setWithoutRoutineDeleting()
+  {
+    for( let key of src )
+    {
+      if( dst.has( key ) )
+      dst.delete( key );
+      else
+      dst.add( key );
+    }
+  }
+
+  /* */
+
+  function hashMapWithRoutineDeleting()
+  {
+    for ( let [ key, value ] of src.entries() )
+    {
+      let res1, res2
+      if( dst.has( key ) )
+      res1 = onEach( dst.get( key ), key, dst );
+      else
+      res1 = onEach( undefined, undefined, dst );
+      res2 = onEach( value, key, src )
+
+      if( res1 && !res2 )
+      {}
+      else if( !res1 && res2 )
+      dst.set( key, value );
+      else
+      dst.delete( key );
+    }
+  }
+
+  /* */
+
+  function hashMapWithoutRoutineDeleting()
+  {
+    for ( let [ key, value ] of src.entries() )
+    {
+      let res1 = dst.get( key );
+      let res2 = value;
+
+      if( res1 && !res2 )
+      {}
+      else if( !res1 && res2 )
+      dst.set( key, value );
+      else
+      dst.delete( key );
+    }
+  }
+
+  /* */
+
+  function withRoutineDeleting()
+  {
+
+    if( _.longIs( dst ) )
+    {
+
+      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      for( let k = src.length - 1; k >= 0; k-- )
+      {
+        let res1 = onEach( dst[ k ], k, dst );
+        let res2 = onEach( src[ k ], k, src );
+
+        if( res1 && !res2 )
+        {}
+        else if( !res1 && res2 )
+        dst[ k ] = src[ k ];
+        else
+        dst.splice( k, 1 );
+      }
+
+    }
+    else if( _.mapLike( dst ) )
+    {
+
+      for( let k in src )
+      {
+        let res1 = onEach( dst[ k ], k, dst );
+        let res2 = onEach( src[ k ], k, src );
+
+        if( res1 && !res2 )
+        {}
+        else if( !res1 && res2 )
+        dst[ k ] = src[ k ];
+        else
+        delete dst[ k ];
+      }
+
+    }
+    else
+    {
+      let res1 = onEach( dst, undefined, undefined );
+      let res2 = onEach( src, undefined, undefined );
+
+      if( res1 && !res2 )
+      {}
+      else if( !res1 && res2 )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function withoutRoutineDeleting()
+  {
+
+    if( _.longIs( dst ) )
+    {
+
+      dst = _.arrayIs( dst ) ? dst : _.arrayMake( dst );
+      for( let k = src.length - 1; k >= 0; k-- )
+      {
+        let res1 = dst[ k ];
+        let res2 = src[ k ];
+
+        if( res1 && !res2 )
+        {}
+        else if( !res1 && res2 )
+        dst[ k ] = src[ k ];
+        else
+        dst.splice( k, 1 );
+      }
+
+    }
+    else if( _.mapLike( dst ) )
+    {
+
+      for( let k in src )
+      {
+        let res1 = dst[ k ];
+        let res2 = src[ k ];
+
+        if( res1 && !res2 )
+        {};
+        else if( !res1 && res2 )
+        dst[ k ] = src[ k ];
+        else
+        delete dst[ k ];
+      }
+
+    }
+    else
+    {
+      let res1 = dst;
+      let res2 = src;
+
+      if( res1 && !res2 )
+      {};
+      else if( !res1 && res2 )
+      dst = src;
+      else
+      dst = undefined;
+    }
+
+  }
+
+  /* */
+
+  function typeStr( e )
+  {
+    let type;
+    if( _.longIs( e ) )
+    type = 'long';
+    else if( _.mapLike( e ) )
+    type = 'map';
+    else if( _.setIs( e ) )
+    type = 'set';
+    else if( _.hashMapIs( e ) )
+    type = 'hashMap';
+    else
+    type = 'primitive';
+
+    return type;
+  }
+
+}
+
+//
+
 function entityAll( src, onEach )
 {
   let result = true;
@@ -2998,6 +3420,8 @@ let Routines =
   and : entityAnd,
   entityOr, /* qqq : optimize, implement good coverage and jsdoc, please */
   or : entityOr,
+  entityXor,
+  xor : entityXor,
 
   entityAll, /* qqq : optimize entityAll */
   all : entityAll,
