@@ -2371,8 +2371,6 @@ function entityXor( dst, src, onEach )
 
   /* */
 
-  let unnecessaries = [ null, 0, undefined, false, '' ];
-
   function setWithRoutine()
   {
     dst = new Set( null );
@@ -2393,6 +2391,7 @@ function entityXor( dst, src, onEach )
   {
     dst = new Set( src );
 
+    let unnecessaries = [ null, 0, undefined, false, '' ];
     for( let e of unnecessaries )
     dst.delete( undefined );
   }
@@ -2486,8 +2485,8 @@ function entityXor( dst, src, onEach )
     }
     else if( _.mapLike( src ) )
     {
-      Object.assign( {}, src );
-
+      dst = Object.assign( {}, src );
+      let  unnecessaries = [ null, 0, undefined, false, '' ];
       for( let k of unnecessaries )
       {
         if( !dst[ k ] )
