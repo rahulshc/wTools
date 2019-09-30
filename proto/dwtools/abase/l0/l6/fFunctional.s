@@ -1063,7 +1063,7 @@ function entityBut( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of dst.entries() )
+    for ( let [ key, value ] of src.entries() )
     if( !value )
     dst.set( key, value );
   }
