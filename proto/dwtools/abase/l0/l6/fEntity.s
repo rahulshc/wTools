@@ -35,6 +35,27 @@ function setsFrom( srcs )
   return result;
 }
 
+//
+
+function setToArray( src )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.setLike( src ) );
+  return [ ... src ];
+}
+
+//
+
+function setsToArrays( srcs )
+{
+  _.assert( arguments.length === 1 );
+  _.assert( _.longIs( srcs ) );
+  let result = [];
+  for( let s = 0, l = srcs.length ; s < l ; s++ )
+  result[ s ] = _.setToArray( srcs[ s ] );
+  return result;
+}
+
 // --
 // entity modifier
 // --
@@ -468,6 +489,8 @@ let Routines =
 
   setFrom,
   setsFrom,
+  setToArray,
+  setsToArrays,
 
   // entity modifier
 

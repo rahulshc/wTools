@@ -254,8 +254,15 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   pop( e )
   {
+    _.assert( arguments.length === 1 );
+    let r = this.original.delete( e );
+    return e;
+  }
+  popStrictly( e )
+  {
     debugger;
     _.assert( arguments.length === 1 );
+    _.assert( this.original.has( e ), 'Container does not have such element' );
     let r = this.original.delete( e );
     return e;
   }
@@ -315,7 +322,6 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
-      debugger;
       for( let e of container )
       {
         let e2 = onEach( e, undefined, container );
@@ -527,8 +533,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   appendOnce( e )
   {
-    debugger;
-    _.arrayAppendOnce( this.original, e )
+    _.arrayAppendOnce( this.original, e );
     return this;
   }
   appendOnceStrictly( e )
@@ -569,6 +574,14 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.assert( e === undefined || poped === e );
     return poped;
   }
+  popStrictly( e )
+  {
+    debugger;
+    _.assert( arguments.length === 1 );
+    _.assert( this.original[ this.original.length - 1 ] === e, 'Container does not have such element' );
+    var poped = this.original.pop();
+    return poped;
+  }
   removedOnce( e )
   {
     debugger;
@@ -576,7 +589,6 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   removedOnceStrictly( e )
   {
-    // debugger;
     return _.arrayRemovedOnce( this.original, e );
   }
   empty()
@@ -786,5 +798,25 @@ _.containerAdapter = Self;
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
+
+// var array = _.containerAdapter.make( [ 1, 2, 3 ] );
+// var set = _.containerAdapter.make( new Set([ 1, 2, 3 ]) );
+//
+// array.append( 'x' );
+// set.append( 'x' );
+//
+// var got = array.map( ( e ) => e+3 );
+// var is = got === array; /* false */
+//
+// var got = array.map( null, ( e ) => e+3 );
+// var is = got === array; /* false */
+//
+// var dst = [ 'x' ];
+// var got = array.map( dst, ( e ) => e+3 );
+// var is = got === array; /* false */
+// var is = got === dst; /* true */
+//
+// var got = array.map( got, ( e ) => e+3 );
+// var is = got === array; /* true */
 
 })();
