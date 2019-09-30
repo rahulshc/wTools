@@ -1582,7 +1582,7 @@ function entityAnd( dst, src, onEach )
     for( let value of src )
     {
       let res = onEach( value, value, src );
-      if( !res )
+      if( res )
       dst.add( value );
     }
   }
@@ -1591,12 +1591,12 @@ function entityAnd( dst, src, onEach )
 
   function setWithoutRoutine()
   {
-    dst = new Set( null );
+    dst = new Set( src );
 
     let unnecessaries = [ null, 0, undefined, false, '' ];
     for( let key of unnecessaries )
     if( src.has( key ) )
-    dst.add( key );
+    dst.delete( key );
   }
 
   /* */
@@ -1708,10 +1708,19 @@ function entityAnd( dst, src, onEach )
 
   function setWithRoutineDeleting()
   {
-    for( let value of src )
+
+    for( let value of dst )
     {
-      let res = onEach( value, value, src );
-      if( res )
+      let res1, res2;
+      let from = [ ... src ]
+
+      res1 = onEach( value, value, dst );
+      if( res1 && from.lastIndexOf( value ) !== -1 )
+      res2 = onEach( value, value, from );
+      else if( res1 )
+      res2 = onEach( undefined, undefined, src );
+
+      if( !res1 || !res2 )
       dst.delete( value );
     }
   }
@@ -1720,9 +1729,9 @@ function entityAnd( dst, src, onEach )
 
   function setWithoutRoutineDeleting()
   {
-    for( let value of src )
+    for( let value of dst )
     {
-      if( value )
+      if( !value || !src.has( value ) )
       dst.delete( value );
     }
   }
