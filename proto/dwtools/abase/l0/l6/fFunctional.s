@@ -1043,13 +1043,13 @@ function entityBut( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( src );
+    dst = new Map( null );
 
     for ( let [ key, value ] of src.entries() )
     {
       let res = onEach( value, key, src );
-      if( res )
-      dst.delete( key );
+      if( !res )
+      dst.set( key, value );
     }
   }
 
@@ -1603,13 +1603,13 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithRoutine()
   {
-    dst = new Map( src );
+    dst = new Map( null );
 
     for ( let [ key, value ] of src.entries() )
     {
       let res = onEach( value, key, src );
       if( res )
-      dst.delete( key );
+      dst.set( key, value );
     }
   }
 
@@ -1619,8 +1619,8 @@ function entityAnd( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of dst.entries() )
-    if( !value )
+    for ( let [ key, value ] of src.entries() )
+    if( value )
     dst.set( key, value );
   }
 
@@ -1740,10 +1740,14 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of dst.entries() )
     {
-      let res = onEach( value, key, src )
-      if( res )
+      let res1, res2;
+      res1 = onEach( value, key, dst )
+      if( res1 !== undefined && src.has( key ) )
+      res2 = onEach( src.get( key ), key, src );
+
+      if( !res1 || !res2 )
       dst.delete( key );
     }
   }
@@ -1752,8 +1756,8 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for ( let [ key, value ] of src.entries() )
-    if( value )
+    for ( let [ key, value ] of dst.entries() )
+    if( !value || !src.get( key ) )
     dst.delete( key );
   }
 
