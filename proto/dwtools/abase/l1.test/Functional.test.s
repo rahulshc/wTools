@@ -11887,6 +11887,193 @@ function entityXorBoth( test )
 
 //
 
+function entityXorDiffTypes( test )
+{
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - map, src - array';
+    var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], '' : 'str::empty' };
+    var dst = { false : false, zero : 0, null : null, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+    var src = [ false, 0, 'null', true, 1, 'str', [ 1 ], { a : 0 }, '' ];
+    var got = _.entityXor( dst, src );
+    test.is( dst === got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - array, src - map';
+    var exp = [ 1, 1, true, 1, 'str', [ 1 ], { a : 0 } ];
+    var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+    var src = { 1 : 1, false : false, zero : 0, null : 'null', true : true, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+    var got = _.entityXor( dst, src );
+    test.is( dst === got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - map, src - array';
+    var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], '' : 'str::empty' };
+    var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], maps : { a : 0 }, '' : 'str::empty' };
+    var src = [ true, false, 1, 0, 'str', [], {} ];
+    var got = _.entityXor( dst, src, ( e, k ) => e );
+    test.is( dst === got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - array, src - map';
+    var exp = [ 'str', true, 1, 'str', [ 1 ], { a : 0 } ];
+    var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+    var src = { a : 2, b : 3, 0 : 'str', 2 : false, 3 : true };
+    var got = _.entityXor( dst, src, ( e, k ) => e );
+    test.is( dst === got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - obj, src - map';
+    var exp = undefined;
+    var dst = new Constructor1();
+    var src = { a : 0 };
+    var got = _.entityXor( dst, src, ( e, k ) => e );
+    test.is( dst !== got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - 0, src = array';
+    var exp = [ 1 ];
+    var dst = 0;
+    var src = [ 1 ];
+    var got = _.entityXor( dst, src, ( e, k ) => e );
+    test.is( dst !== got );
+    test.is( src === got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - map, src - array';
+    var exp = { zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 } };
+    var dst = { 0 : 'zero', false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+    var src = [ 1, 2, 3, 4 ];
+    var got = _.entityXor( dst, src, ( e, k ) => k );
+    test.is( dst === got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - array, src - map';
+    var exp = [ 0, false, 1, 'str', [ 1 ], { a : 0 } ];
+    var dst = [ true, 0, false, 1, 'str', [ 1 ], { a : 0 } ];
+    var src = { a : 2, b : 3, 0 : 'str', 2 : false, 3 : true };
+    var got = _.entityXor( dst, src, ( e, k ) => k );
+    test.is( dst === got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - obj, src - map';
+    var exp = undefined;
+    var dst = new Constructor1();
+    var src = { a : 0 };
+    var got = _.entityXor( dst, src, ( e, k ) => k );
+    test.is( dst !== got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - 0, src = array';
+    var exp = [ 1 ];
+    var dst = 0;
+    var src = [ 1 ];
+    var got = _.entityXor( dst, src, ( e, k ) => k );
+    test.is( dst !== got );
+    test.is( src === got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - map, src - array with maps, */f1';
+    var exp = { a : { f1 : 1, f2 : 0 }, 1 : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+    var dst = { a : { f1 : 1, f2 : 0 }, 1 : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+    var src = [ { f1 : 3, f2 : 0 }, { f1 : 1, f2 : 3 }, { f1 : 0, f2 : 'str' } ];
+    var got = _.entityXor( dst, src, '*/f1' );
+    test.is( dst === got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - map, src - array with map, */f2';
+    var exp = {};
+    var dst = { 0 : { f1 : 1, f2 : 0 }, 1 : { f1 : false, f2 : 3 }, 2 : { f1 : [], f2 : 'str' } };
+    var src = [ 0, { f1 : 1, f2 : 1 }, 2, 3 ];
+    var got = _.entityXor( dst, src, '*/f2' );
+    test.is( dst === got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - array, src - map, */f1';
+    var exp = [ { f1 : [], f2 : 'str' } ];
+    var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+    var src = { 0 : { f1 : 1, f2 : 0 }, 1 : { f1 : false, f2 : 3 }, a : { f1 : [], f2 : 'str' } };
+    var got = _.entityXor( dst, src, '*/f1' );
+    test.is( dst === got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+
+  test.shouldThrowErrorSync
+  ( () =>
+  {
+    test.case = 'dst - array, src - map, */f2';
+    var exp = [ { f1 : [], f2 : 'str' } ];
+    var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+    var src = { 0 : { f1 : 1, f2 : 0 }, 1 : { f1 : false, f2 : 3 }, a : { f1 : [], f2 : 'str' } };
+    var got = _.entityXor( dst, src, '*/f2' );
+    test.is( dst === got );
+    test.is( src !== got );
+    test.identical( got, exp );
+  });
+}
+
+//
+
 function entityAll( test )
 {
   test.open( 'onEach is routine' );
@@ -16679,6 +16866,7 @@ value for dst             dst                dst                    first +     
     entityXorOnlySrc, /* qqq : implement */
     entityXorBothSame, /* qqq : implement */
     entityXorBoth, /* qqq : implement */
+    entityXorDiffTypes,
 
     // entityXandOnlyDst, /* qqq : implement */
     // entityXandOnlySrc, /* qqq : implement */
