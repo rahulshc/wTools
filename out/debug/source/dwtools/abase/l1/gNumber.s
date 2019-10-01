@@ -221,7 +221,7 @@ function numbersFromInt( dst,length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.numberIsInt( dst ) || _.arrayIs( dst ),'Expects array of number as argument' );
+  _.assert( _.intIs( dst ) || _.arrayIs( dst ),'Expects array of number as argument' );
   _.assert( length >= 0 );
 
   if( _.numberIs( dst ) )
@@ -233,7 +233,7 @@ function numbersFromInt( dst,length )
   else
   {
     for( let i = 0 ; i < dst.length ; i++ )
-    _.assert( _.numberIsInt( dst[ i ] ),'Expects integer, but got',dst[ i ] );
+    _.assert( _.intIs( dst[ i ] ),'Expects integer, but got',dst[ i ] );
     _.assert( dst.length === length,'Expects array of length',length,'but got',dst );
   }
 

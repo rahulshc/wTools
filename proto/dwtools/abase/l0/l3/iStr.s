@@ -105,6 +105,21 @@ function strsDefined( src )
 
 //
 
+function strHas( src, ins )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.strIs( src ) );
+  _.assert( _.strLike( ins ) );
+
+  if( _.strIs( ins ) )
+  return src.indexOf( ins ) !== -1;
+  else
+  return ins.test( src );
+
+}
+
+//
+
 function strEquivalent( src1, src2 )
 {
   let strIs1 = _.strIs( src1 );
@@ -844,6 +859,8 @@ let Routines =
   strsLikeAll,
   strDefined,
   strsDefined,
+
+  strHas,
 
   strEquivalent,
   strsEquivalent,

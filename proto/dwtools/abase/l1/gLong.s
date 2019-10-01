@@ -2284,7 +2284,7 @@ function longDuplicate( o )
   _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
   _.routineOptions( longDuplicate, o );
   _.assert( _.longIs( o.src ), 'Уxpects o.src as longIs entity' );
-  _.assert( _.numberIsInt( o.src.length / o.numberOfAtomsPerElement ) );
+  _.assert( _.intIs( o.src.length / o.numberOfAtomsPerElement ) );
 
   if( o.numberOfDuplicatesPerElement === 1 )
   {
@@ -2984,7 +2984,7 @@ function longMask( srcArray, mask )
   _.assert( _.longIs( mask ), 'longMask :', 'Expects array-like as mask' );
   _.assert
   (
-    _.numberIsInt( length ),
+    _.intIs( length ),
     'longMask :', 'Expects mask that has component for each atom of srcArray',
     _.toStr
     ({
@@ -3116,7 +3116,7 @@ function arrayRandom( o )
   _.assert( arguments.length === 1 || arguments.length === 3 );
   _.routineOptions( arrayRandom, o );
   if( o.onEach === null )
-  o.onEach = _.numberRandom;
+  o.onEach = ( range ) => _.numberRandom( range );
   if( o.range === null )
   o.range = [ 0, 1 ];
   if( _.numberIs( o.range ) )
@@ -3124,14 +3124,19 @@ function arrayRandom( o )
 
   if( _.rangeIs( o.length ) )
   o.length = _.intRandom( o.length );
+  if( o.length === null && o.dst )
+  o.length = o.dst.length;
+  if( o.length === null )
+  o.length = 1;
 
-  _.assert( _.numberIsInt( o.length ) );
+  _.assert( _.intIs( o.length ) );
 
-  o.dst = o.dst || _.arrayMakeOfLength( o.length );
+  if( o.dst === null || o.dst.length < o.length )
+  o.dst = _.longMake( o.dst, o.length );
 
   for( let i = 0 ; i < o.length ; i++ )
   {
-    o.dst[ i ] = o.onEach( o.range );
+    o.dst[ i ] = o.onEach( o.range, i, o );
     // o.dst[ i ] = o.range[ 0 ] + Math.random()*( o.range[ 1 ] - o.range[ 0 ] );
     // if( o.int )
     // o.dst[ i ] = Math.floor( o.dst[ i ] );
@@ -3146,7 +3151,7 @@ arrayRandom.defaults =
   dst : null,
   onEach : null,
   range : null,
-  length : 1,
+  length : null,
 }
 
 //

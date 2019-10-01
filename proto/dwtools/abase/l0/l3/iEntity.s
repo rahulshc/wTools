@@ -86,6 +86,19 @@ function setLike( src )
 
 //
 
+function setAkin( src )
+{
+  if( !src )
+  return false;
+  if( _.setLike( src ) )
+  return true;
+  if( src instanceof _.containerAdapter.Set )
+  return true;
+  return false;
+}
+
+//
+
 function setIsEmpty()
 {
   return !src.size;
@@ -125,6 +138,7 @@ let Routines =
 
   setIs,
   setLike,
+  setAkin,
   setIsEmpty,
   setIsPopulated,
 

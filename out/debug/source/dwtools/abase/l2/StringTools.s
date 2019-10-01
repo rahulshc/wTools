@@ -52,21 +52,6 @@ function strIsMultilined( src )
 
 //
 
-function strHas( src, ins )
-{
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.strIs( src ) );
-  _.assert( _.strLike( ins ) );
-
-  if( _.strIs( ins ) )
-  return src.indexOf( ins ) !== -1;
-  else
-  return ins.test( src );
-
-}
-
-//
-
 function strHasAny( src, ins )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -74,12 +59,12 @@ function strHasAny( src, ins )
   if( _.arrayIs( ins ) )
   {
     for( let i = 0 ; i < ins.length ; i++ )
-    if( strHas( src, ins[ i ] ) )
+    if( _.strHas( src, ins[ i ] ) )
     return true;
     return false;
   }
 
-  return strHas( src, ins );
+  return _.strHas( src, ins );
 }
 
 //
@@ -91,12 +76,12 @@ function strHasAll( src, ins )
   if( _.arrayIs( ins ) )
   {
     for( let i = 0 ; i < ins.length ; i++ )
-    if( !strHas( src, ins[ i ] ) )
+    if( !_.strHas( src, ins[ i ] ) )
     return false;
     return true;
   }
 
-  return strHas( src, ins );
+  return _.strHas( src, ins );
 }
 
 //
@@ -108,12 +93,12 @@ function strHasNone( src, ins )
   if( _.arrayIs( ins ) )
   {
     for( let i = 0 ; i < ins.length ; i++ )
-    if( strHas( src, ins[ i ] ) )
+    if( _.strHas( src, ins[ i ] ) )
     return false;
     return true;
   }
 
-  return !strHas( src, ins );
+  return !_.strHas( src, ins );
 }
 
 //
@@ -127,12 +112,12 @@ function strHasSeveral( src, ins )
   if( _.arrayIs( ins ) )
   {
     for( let i = 0 ; i < ins.length ; i++ )
-    if( strHas( src, ins[ i ] ) )
+    if( _.strHas( src, ins[ i ] ) )
     result += 1;
     return result;
   }
 
-  return strHas( src, ins ) ? 1 : 0;
+  return _.strHas( src, ins ) ? 1 : 0;
 }
 
 //
@@ -4485,7 +4470,7 @@ let Proto =
 
   strIsHex,
   strIsMultilined,
-  strHas,
+
   strHasAny,
   strHasAll,
   strHasNone,

@@ -15,11 +15,13 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 function setFrom( src )
 {
   _.assert( arguments.length === 1 );
-  if( _.setIs( src ) )
+  if( _.setAkin( src ) )
   return src;
   if( src === null )
   return new Set();
-  _.assert( _.longIs( src ) )
+  if( _.containerAdapter.is( src ) )
+  src = src.toArray().original;
+  _.assert( _.longIs( src ) );
   return new Set([ ... src ]);
 }
 
