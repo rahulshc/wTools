@@ -12976,11 +12976,11 @@ function entityAllTimeExperiment( test )
 
   // testTime( entityAllLongs, srcArray );
 
-  testTime( entityAllLongsCustom, 30, srcArray, onEach );
+  testTime( entityAllLongsFor, 30, srcArray, onEach );
   testTime( entityAllLongsEvery, 30, srcArray, onEach );
 
   /* NodeJS  |                 Running time
-             | using custom iterator  |  using method Array.every()
+             | using for              |  using method Array.every()
      --------|------------------------|----------------------------
       v8     |  33.7 s                | 205,5 s
      --------|------------------------|----------------------------
@@ -12991,8 +12991,8 @@ function entityAllTimeExperiment( test )
       v10    |  26,9 s                | 208,6 s
              |  26,6 s                | 210,1 s
      --------|------------------------|----------------------------
-      v12    |  26,1 s                | over 270 s, failed
-             |  26,8 s                | over 270 s, failed
+      v12    |  26,9 s                | 369, 7
+             |  26,7 s                | 329,1
   */
 
   /* testing subroutine */
@@ -13012,7 +13012,7 @@ function entityAllTimeExperiment( test )
 
   /* */
 
-  function entityAllLongsCustom( src, onEach )
+  function entityAllLongsFor( src, onEach )
   {
     let result;
     if( _.routineIs( onEach ) )
@@ -13052,7 +13052,7 @@ function entityAllTimeExperiment( test )
 
 }
 entityAllTimeExperiment.experimental = 1;
-entityAllTimeExperiment.timeOut = 300000;
+entityAllTimeExperiment.timeOut = 600000;
 
 //
 
