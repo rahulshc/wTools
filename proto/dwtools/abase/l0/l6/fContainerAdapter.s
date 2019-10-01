@@ -780,13 +780,12 @@ var Routines =
 
   /* qqq : requires good tests */
 
-  is,
-  make,
-  from,
+  is, /* qqq : cover please */
+  make, /* qqq : cover please */
+  from, /* qqq : cover please */
 
-  toOriginal,
-  toOriginals,
-  // originalsFromAdapters,
+  toOriginal, /* qqq : cover please */
+  toOriginals, /* qqq : cover please */
 
 }
 
