@@ -2744,6 +2744,7 @@ function entityAll( src, onEach )
   {
 
     if( _.longIs( src ) )
+    // result = src.every( onEach );
     {
 
       for( let k = 0 ; k < src.length ; k++ )
@@ -2778,6 +2779,7 @@ function entityAll( src, onEach )
   {
 
     if( _.longIs( src ) )
+    // result = src.every()
     {
 
       for( let k = 0 ; k < src.length ; k++ )
@@ -2811,7 +2813,9 @@ function entityAll( src, onEach )
 
   /* */
 
-  return true;
+  return result;
+
+  // return true;
 }
 
 //

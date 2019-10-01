@@ -12964,6 +12964,80 @@ function entityAll( test )
 
 //
 
+function entityAllTime( test )
+{
+  /* data generation */
+
+  var srcArray = new U8x( 500000000 );
+  for( let i = srcArray.length; i >= 0; i-- )
+  srcArray[ i ] = ( Math.random() + 0.01 ) * 250;
+
+  var onEach = ( e, k, src ) => e;
+
+  /* old entity subroutines */
+
+  function entityAllLongs( src, onEach )
+  {
+    let result;
+    if( _.routineIs( onEach ) )
+    {
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = onEach( src[ k ], k, src );
+        if( !result )
+        return result;
+      }
+    }
+    else
+    {
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = src[ k ];
+        if( !result )
+        return result;
+      }
+    }
+
+    return true;
+  }
+
+  function entityAllLongsNew( src, onEach )
+  {
+    let result;
+    if( _.routineIs( onEach ) )
+    {
+      debugger;
+      result = src.every( onEach );      
+    }
+    else
+    result = src.every();
+
+    return result;
+  }
+
+  /* time testing */
+
+  function testTime( func, times, arg1, arg2 )
+  {
+    var timeStart = _.timeNow();
+    for( let i = times; i > 0; i-- )
+    var result = func( arg1, arg2 );
+    var timeEnd = _.timeNow();
+    test.is( timeEnd - timeStart > 60000 )
+    console.log( result, timeEnd - timeStart );
+  }
+
+  // testTime( entityAllLongs, srcArray );
+  testTime( entityAllLongsNew, 30, srcArray, onEach );
+  testTime( entityAllLongs, 30, srcArray, onEach );
+
+
+}
+entityAllTime.experimental = 1;
+entityAllTime.timeOut = 300000
+
+//
+
 function entityAny( test )
 {
   test.open( 'onEach is routine' );
@@ -17484,10 +17558,10 @@ value for dst             dst                dst                    first +     
     entityOrOnlySets,
     entityOrOnlyHashMaps,
 
-    entityXorOnlyDst, /* qqq : implement */
-    entityXorOnlySrc, /* qqq : implement */
-    entityXorBothSame, /* qqq : implement */
-    entityXorBoth, /* qqq : implement */
+    entityXorOnlyDst, /* qqq : implement | Dmytro : implemented */
+    entityXorOnlySrc, /* qqq : implement | Dmytro : implemented */
+    entityXorBothSame, /* qqq : implement | Dmytro : implemented */
+    entityXorBoth, /* qqq : implement | Dmytro : implemented */
     entityXorDiffTypes,
     entityXorOnlySets,
     entityXorOnlyHashMaps,
@@ -17498,6 +17572,7 @@ value for dst             dst                dst                    first +     
     // entityXandBoth, /* qqq : implement */
 
     entityAll,
+    entityAllTime,
     entityAny,
     entityNone,
 
