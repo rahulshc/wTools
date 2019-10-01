@@ -12972,11 +12972,35 @@ function entityAllTimeExperiment( test )
   for( let i = srcArray.length; i >= 0; i-- )
   srcArray[ i ] = ( Math.random() + 0.01 ) * 250;
 
-  var onEach = ( e, k, src ) => e;
+  /* tests */
+  
+  // testTime( entityAllLongs, srcArray );
 
-  /* old entity subroutines */
+  testTime( entityAllLongsOld, 30, srcArray, onEach );
+  testTime( entityAllLongsNew, 30, srcArray, onEach );
+  /* node v9   old   |  new
+              32,8 c | 203,2 c
+              35.7 c | 204,5 c
+  */
 
-  function entityAllLongs( src, onEach )
+  /* testing subroutine */
+
+  function testTime( func, times, arg1, arg2 )
+  {
+    var timeStart = _.timeNow();
+
+    for( let i = times; i > 0; i-- )
+    var result = func( arg1, arg2 );
+
+    var timeEnd = _.timeNow();
+
+    test.is( timeEnd - timeStart > 60000 )
+    console.log( result, timeEnd - timeStart );
+  }
+
+  /* old entity subroutine */
+
+  function entityAllLongsOld( src, onEach )
   {
     let result;
     if( _.routineIs( onEach ) )
@@ -13001,39 +13025,18 @@ function entityAllTimeExperiment( test )
     return true;
   }
 
+  /* new subroutine */
+
   function entityAllLongsNew( src, onEach )
   {
     let result;
     if( _.routineIs( onEach ) )
-    {
-      debugger;
-      result = src.every( onEach );
-    }
+    result = src.every( onEach );
     else
     result = src.every();
 
     return result;
   }
-
-  /* time testing */
-
-  function testTime( func, times, arg1, arg2 )
-  {
-    var timeStart = _.timeNow();
-    for( let i = times; i > 0; i-- )
-    var result = func( arg1, arg2 );
-    var timeEnd = _.timeNow();
-    test.is( timeEnd - timeStart > 60000 )
-    console.log( result, timeEnd - timeStart );
-  }
-
-  // testTime( entityAllLongs, srcArray );
-
-
-  testTime( entityAllLongsNew, 30, srcArray, onEach );
-  testTime( entityAllLongs, 30, srcArray, onEach );
-  // node v9 32,8 c | 203,2
-
 
 }
 entityAllTimeExperiment.experimental = 1;
