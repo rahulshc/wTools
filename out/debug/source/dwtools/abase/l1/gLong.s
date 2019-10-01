@@ -2374,7 +2374,7 @@ longDuplicate.defaults =
 function longOnce( dstLong, onEvaluate )
 {
   _.assert( 1 <= arguments.length || arguments.length <= 2 );
-  _.assert( arguments.length === 1, 'not tested' );
+  // _.assert( arguments.length === 1, 'not tested' );
   _.assert( _.longIs( dstLong ), 'Expects Long' );
 
   if( _.arrayIs( dstLong ) )
