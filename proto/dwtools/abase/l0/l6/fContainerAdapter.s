@@ -26,10 +26,14 @@ function is( src )
 
 //
 
-function make( dst )
+// function make( dst )
+// {
+//   if( dst )
+//   dst = this.toOriginal( toOriginal );
+function make( container )
 {
-  if( dst )
-  dst = this.toOriginal( toOriginal );
+  // if( container )
+  // container = this.toOriginal( toOriginal ); // routine returns value as routine, need improvment
   _.assert( arguments.length === 1 );
   if( _.setIs( container ) )
   {
@@ -183,7 +187,7 @@ class ContainerAdapterAbstract
     return this._same( src );
     return this.original === src.original;
   }
-  original = null;
+  // original = null; // Dmytro : need clarification
 }
 
 // --
@@ -295,15 +299,34 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( this._same( dst ) )
     {
       debugger;
+      let length = container.size;
+
       for( let e of container )
       {
+        if( length === 0 )
+        break;
+        length--;
+
         let e2 = onEach( e, undefined, container );
+
+        container.delete( e );
         if( e2 !== undefined && e !== e2 )
-        {
-          container.remove( e );
-          container.add( e2 );
-        }
+        container.add( e2 );
+        else
+        container.add( e );          
       }
+      // Dmytro : this code makes cycled loop because add method append elements
+      // for( let e of container )
+      // {
+      //   let e2 = onEach( e, undefined, container );
+      //
+      //   if( e2 !== undefined && e !== e2 )
+      //   {
+      //     container.delete( e );
+      //     // container.remove( e ); // Set constructor has not this method
+      //     container.add( e2 );
+      //   }
+      // }
     }
     else
     {
@@ -324,17 +347,40 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      debugger; xxx
+      debugger; // xxx
+      let length = container.size;
+
       for( let e of container )
       {
+        if( length === 0 )
+        break;
+        length--;
+
         let e2 = onEach( e, undefined, container );
-        if( e !== e2 )
+
+        if( e2 === undefined || e !== e2 )
         {
-          container.remove( e );
           if( e2 !== undefined )
           container.add( e2 );
+
+          container.delete( e );
         }
+        else
+        container.add( e );
       }
+
+      // Dmytro : this code makes cycled loop
+      // for( let e of container )
+      // {
+      //   let e2 = onEach( e, undefined, container );
+      //   if( e !== e2 )
+      //   {
+      //     container.delete( e );
+      //     // container.remove( e );
+      //     if( e2 !== undefined )
+      //     container.add( e2 );
+      //   }
+      // }
     }
     else
     {
@@ -354,10 +400,33 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( this._same( dst ) )
     {
       /* already once */
+      if( onEval )
+      {
+        let temp = [ ... container ];
+        _.arrayRemoveDuplicates( temp, onEval );
+
+        if( temp.length !== container.size )
+        {
+          container.clear();
+
+          for( let e of temp )
+          container.add( e );
+        }
+      }
     }
     else
     {
-      debugger; xxx
+      debugger; // xxx
+      if( onEval )
+      {
+        let temp = [ ... container ];
+        _.arrayRemoveDuplicates( temp, onEval );
+
+        container.clear();
+        for( let e of temp )
+        dst.original.add( e );
+      }
+      else
       dst.appendContainer( container );
     }
     return dst;
@@ -537,16 +606,24 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   map( dst, onEach )
   {
+    debugger; // xxx
     let container = this.original;
     [ dst, onEach ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
       debugger;
-      for( let k = 0, l = container.length ; k < l ; k++ )
+      // for( let e of container )
+      // {
+      //   let e2 = onEach( e, undefined, container );
+      //   if( e !== e2 || e2 !== undefined )
+      //   {
+      //     container[ k ] = e2;
+      //   }
+      // }
+      for( let k in container )
       {
-        let e = container[ k ];
-        let e2 = onEach( e, undefined, container );
-        if( e !== e2 || e2 !== undefined )
+        let e2 = onEach( container[ k ], undefined, container );
+        if( e2 !== undefined )
         {
           container[ k ] = e2;
         }
@@ -554,9 +631,10 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
-      for( let k = 0, l = container.length ; k < l ; k++ )
+      debugger;
+      for( let e of container )
+      // for( let [ k, e ] of container )
       {
-        let e = container[ k ];
         let e2 = onEach( e, undefined, container );
         if( e2 !== undefined )
         dst.push( e2 );
@@ -572,8 +650,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      debugger; xxx
-      for( let k = 0, l = container.length ; k < l ; k++ )
+      debugger; // xxx
+      for( let k = container.length - 1 ; k >= 0 ; k-- )
       {
         let e = container[ k ];
         let e2 = onEach( e, undefined, container );
@@ -604,12 +682,14 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEval ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      _.longOnce( container );
+      _.longOnce( container, onEval );
+      // _.longOnce( container );
     }
     else
     {
-      debugger; xxx
-      dst.appendContainerOnce( container );
+      debugger; // xxx
+      _.arrayAppendArrayOnce( dst.original, container, onEval );
+      // dst.appendContainerOnce( container );
     }
     return dst;
   }
