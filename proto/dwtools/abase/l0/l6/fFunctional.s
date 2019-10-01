@@ -2552,7 +2552,13 @@ function entityXor( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of src.entries() )
+    for( let [ key, value ] of dst.entries() )
+    {
+      let res = onEach( value, key, dst )
+      if( !res )
+      dst.delete( key );
+    }
+    for( let [ key, value ] of src.entries() )
     {
       let res1, res2
       if( dst.has( key ) )
@@ -2574,6 +2580,9 @@ function entityXor( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
+    for( let [ key, value ] of dst.entries() )
+    if( !value )
+    dst.delete( key );
     for ( let [ key, value ] of src.entries() )
     {
       let res1 = dst.get( key );
