@@ -18109,6 +18109,58 @@ function arrayRemoveDuplicates( test )
 
 //
 
+function arrayFlattenCritical( test )
+{
+
+  test.case = 'array of the passed arguments';
+  var got = _.arrayFlatten( [], [ 'str', {}, [ 1, 2 ], 5, true ] );
+  var expected = [ 'str', {}, 1, 2, 5, true ];
+  test.identical( got, expected );
+
+  test.case = 'without undefined';
+  var got = _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', null ] );
+  var expected = [ 1, 2, 3, 13, 'abc', null ];
+  test.identical( got, expected );
+
+  // test.case = 'Args are not long';
+  // var got = _.arrayFlatten( [ 1, 2 ], 13, 'abc', {} );
+  // var expected = [ 1, 2, 13, 'abc', {} ];
+  // test.identical( got, expected );
+
+  test.case = 'undefined';
+  var got = _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] );
+  var expected = [ 1, 2, 3, 13, 'abc', undefined, null ];
+  test.identical( got, expected );
+
+  test.case = 'second argument is number';
+  var got = _.arrayFlatten( [ 1, 2, 3 ], 13 );
+  var expected = [ 1, 2, 3, 13 ];
+  test.identical( got, expected );
+
+  test.case = 'second argument is map';
+  var got = _.arrayFlatten( [ 1, 2, 3 ], { k : 'e' } );
+  var expected = [ 1, 2, 3, { k : 'e' } ];
+  test.identical( got, expected );
+
+  test.case = 'bad arguments'; /* */
+
+  if( !Config.debug )
+  return;
+
+  test.shouldThrowErrorSync( () => _.arrayFlatten( undefined, [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayFlatten( new U32x([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayFlatten( [], [], [] ) );
+  test.shouldThrowErrorSync( () => _.arrayFlatten( [], 0, 1 ) );
+
+  // test.shouldThrowErrorSync( () => _.arrayFlatten( [], 13 ) );
+  // test.shouldThrowErrorSync( () => _.arrayFlatten( [], '13' ) );
+  // test.shouldThrowErrorSync( () => _.arrayFlatten( [], { k : 'e' } ) );
+  // test.shouldThrowErrorSync( () => _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] ) );
+
+}
+
+//
+
 function arrayFlatten( test )
 {
   test.case = 'make array flat, dst is empty';
@@ -19154,56 +19206,6 @@ function arrayFlattenedOnceStrictly( test )
 }
 
 //
-
-function arrayFlatten2( test )
-{
-
-  test.case = 'array of the passed arguments';
-  var got = _.arrayFlatten( [], [ 'str', {}, [ 1, 2 ], 5, true ] );
-  var expected = [ 'str', {}, 1, 2, 5, true ];
-  test.identical( got, expected );
-
-  test.case = 'without undefined';
-  var got = _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', null ] );
-  var expected = [ 1, 2, 3, 13, 'abc', null ];
-  test.identical( got, expected );
-
-  // test.case = 'Args are not long';
-  // var got = _.arrayFlatten( [ 1, 2 ], 13, 'abc', {} );
-  // var expected = [ 1, 2, 13, 'abc', {} ];
-  // test.identical( got, expected );
-
-  test.case = 'undefined';
-  var got = _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] );
-  var expected = [ 1, 2, 3, 13, 'abc', undefined, null ];
-  test.identical( got, expected );
-
-  test.case = 'second argument is number';
-  var got = _.arrayFlatten( [ 1, 2, 3 ], 13 );
-  var expected = [ 1, 2, 3, 13 ];
-  test.identical( got, expected );
-
-  test.case = 'second argument is map';
-  var got = _.arrayFlatten( [ 1, 2, 3 ], { k : 'e' } );
-  var expected = [ 1, 2, 3, { k : 'e' } ];
-  test.identical( got, expected );
-
-  test.case = 'bad arguments'; /* */
-
-  if( !Config.debug )
-  return;
-
-  test.shouldThrowErrorSync( () => _.arrayFlatten( undefined, [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.arrayFlatten( new U32x([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.arrayFlatten( [], [], [] ) );
-  test.shouldThrowErrorSync( () => _.arrayFlatten( [], 0, 1 ) );
-
-  // test.shouldThrowErrorSync( () => _.arrayFlatten( [], 13 ) );
-  // test.shouldThrowErrorSync( () => _.arrayFlatten( [], '13' ) );
-  // test.shouldThrowErrorSync( () => _.arrayFlatten( [], { k : 'e' } ) );
-  // test.shouldThrowErrorSync( () => _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] ) );
-
-}
 
 function arrayFlattenDefined( test )
 {
@@ -25917,14 +25919,28 @@ var Self =
 
     // array flatten
 
+    /* qqq : extend test coverage */
+    /* qqq : extend implementation for sets */
+
+    arrayFlattenCritical,
     arrayFlatten,
     arrayFlattenOnce,
     arrayFlattenOnceStrictly,
     arrayFlattened,
     arrayFlattenedOnce,
     arrayFlattenedOnceStrictly,
-
-    arrayFlatten2,
+    // arrayFlattenSame,
+    // arrayFlattenOnceSame,
+    // arrayFlattenOnceStrictlySame,
+    // arrayFlattenedSame,
+    // arrayFlattenedOnceSame,
+    // arrayFlattenedOnceStrictlySame,
+    // arrayFlattenSets,
+    // arrayFlattenOnceSets,
+    // arrayFlattenOnceStrictlySets,
+    // arrayFlattenedSets,
+    // arrayFlattenedOnceSets,
+    // arrayFlattenedOnceStrictlySets,
 
     arrayFlattenDefined,
     arrayFlattenDefinedOnce,
@@ -25932,6 +25948,18 @@ var Self =
     arrayFlattenedDefined,
     arrayFlattenedDefinedOnce,
     arrayFlattenedDefinedOnceStrictly,
+    // arrayFlattenDefinedSame,
+    // arrayFlattenDefinedOnceSame,
+    // arrayFlattenDefinedOnceStrictlySame,
+    // arrayFlattenedDefinedSame,
+    // arrayFlattenedDefinedOnceSame,
+    // arrayFlattenedDefinedOnceStrictlySame,
+    // arrayFlattenDefinedSets,
+    // arrayFlattenDefinedOnceSets,
+    // arrayFlattenDefinedOnceStrictlySets,
+    // arrayFlattenedDefinedSets,
+    // arrayFlattenedDefinedOnceSets,
+    // arrayFlattenedDefinedOnceStrictlySets,
 
     // array replace
 
