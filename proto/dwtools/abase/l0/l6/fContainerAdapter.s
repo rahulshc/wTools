@@ -295,15 +295,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this.constructor._FilterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      debugger;
-      let length = container.size;
+      let temp = new Set( container );
 
-      for( let e of container )
+      for( let e of temp )
       {
-        if( length === 0 )
-        break;
-        length--;
-
         let e2 = onEach( e, undefined, container );
 
         container.delete( e );
@@ -345,14 +340,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( this._same( dst ) )
     {
       debugger; // xxx
-      let length = container.size;
+      let temp = new Set( container );
 
-      for( let e of container )
+      for( let e of temp )
       {
-        if( length === 0 )
-        break;
-        length--;
-
         let e2 = onEach( e, undefined, container );
 
         if( e2 === undefined || e !== e2 )
