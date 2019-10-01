@@ -6438,25 +6438,25 @@ function arrayFromCoercing( test )
 
 //
 
-function arrayMakeRandom( test )
+function arrayRandom( test )
 {
 
   test.case = 'an empty object';
-  var got = _.arrayMakeRandom( {  } );
+  var got = _.arrayRandom( {  } );
   test.identical( got.length, 1 );
   test.is( got[ 0 ] >= 0 && got[ 0 ]<= 1 );
 
   test.case = 'a number';
-  var got = _.arrayMakeRandom( 5 );
+  var got = _.arrayRandom( 5 );
   var expected = got;
   test.identical( got.length, 5 );
 
-  var got = _.arrayMakeRandom( -1 );
+  var got = _.arrayRandom( -1 );
   var expected = [];
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.arrayMakeRandom( {
+  var got = _.arrayRandom( {
     length : 5,
     range : [ 1, 9 ],
     int : true
@@ -6472,13 +6472,13 @@ function arrayMakeRandom( test )
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayMakeRandom();
+    _.arrayRandom();
   });
 
   test.case = 'wrong argument';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayMakeRandom( 'wrong argument' );
+    _.arrayRandom( 'wrong argument' );
   });
 
 };
@@ -25841,7 +25841,7 @@ var Self =
     arrayFrom,
     arrayFromCoercing,
 
-    arrayMakeRandom,
+    arrayRandom,
     arrayFromRange,
     arrayAs,
 

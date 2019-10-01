@@ -1180,7 +1180,8 @@ function _err( o )
     let symbol = Symbol.for( fieldName );
     try
     {
-      result[ symbol ] = value;
+      // result[ symbol ] = value;
+      nonenurable( symbol, value );
       Object.defineProperty( result, fieldName,
       {
         enumerable : false,

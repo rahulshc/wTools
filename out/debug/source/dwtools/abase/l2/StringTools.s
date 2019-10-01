@@ -910,6 +910,58 @@ function strCommonRight( ins )
   return ins.substring( ins.length-i );
 }
 
+//
+
+function strRandom( o )
+{
+  if( !_.mapIs( o ) )
+  o = { length : o }
+
+  o = _.routineOptions( strRandom, o );
+
+  if( _.numberIs( o.length ) )
+  o.length = [ o.length, o.length+1 ];
+  if( o.alphabet === null )
+  o.alphabet = _.strAlphabetFromRange([ 'a', 'z' ]);
+
+  _.assert( _.rangeIs( o.length ) );
+  _.assert( arguments.length === 1 );
+
+  let length = o.length[ 0 ];
+  if( o.length[ 0 ]+1 !== o.length[ 1 ] )
+  {
+    length = _.intRandom( o.length );
+  }
+
+  let result = '';
+  for( let i = 0 ; i < length ; i++ )
+  {
+    result += o.alphabet[ _.intRandom( o.alphabet.length ) ];
+  }
+  return result;
+}
+
+strRandom.defaults =
+{
+  length : null,
+  alphabet : null,
+}
+
+//
+
+function strAlphabetFromRange( range )
+{
+  _.assert( _.arrayIs( range ) && range.length === 2 )
+  _.assert( _.strIs( range[ 0 ] ) || _.numberIs( range[ 0 ] ) );
+  _.assert( _.strIs( range[ 1 ] ) || _.numberIs( range[ 1 ] ) );
+  if( _.strIs( range[ 0 ] ) )
+  range[ 0 ] = range[ 0 ].charCodeAt( 0 );
+  if( _.strIs( range[ 1 ] ) )
+  range[ 1 ] = range[ 1 ].charCodeAt( 0 );
+  let result = String.fromCharCode( ... _.arrayFromRange([ range[ 0 ], range[ 1 ] ]) );
+  return result;
+}
+
 // --
 // formatter
 // --
@@ -4472,8 +4524,10 @@ let Proto =
 
   // etc
 
-  strCommonLeft, /* document me */
-  strCommonRight, /* document me */
+  strCommonLeft, /* qqq : document me */
+  strCommonRight, /* qqq : document me */
+  strRandom, /* qqq : document and extend test coverage */
+  strAlphabetFromRange, /* qqq : cover and document please */
 
   // formatter
 
@@ -4488,7 +4542,7 @@ let Proto =
   strDecapitalize,
   strEscape,
   strCodeUnicodeEscape,
-  strUnicodeEscape, /* document me */
+  strUnicodeEscape, /* qqq : document me */
   strReverse,
 
   // stripper
@@ -4527,11 +4581,11 @@ let Proto =
   strSub : _.routineVectorize_functor( _strSub ),
   strExtractInlined,
   strExtractInlinedStereo,
-  strUnjoin, /* document me */
+  strUnjoin, /* qqq : document me */
 
   // joiner
 
-  strDup : _.routineVectorize_functor( _strDup ), /* document me */
+  strDup : _.routineVectorize_functor( _strDup ), /* qqq : document me */
   strJoin,
   strJoinPath, /* qqq : cover and document me // Dmytro : covered and documented */
   strConcat,

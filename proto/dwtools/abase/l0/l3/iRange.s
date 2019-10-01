@@ -22,6 +22,26 @@ function rangeIs( range )
 
 //
 
+function rangeIsEmpty( range )
+{
+  _.assert( arguments.length === 1 );
+  if( !_.rangeIs( range ) )
+  return false;
+  return range[ 0 ] === range[ 1 ];
+}
+
+//
+
+function rangeIsPopulated( range )
+{
+  _.assert( arguments.length === 1 );
+  if( !_.rangeIs( range ) )
+  return false;
+  return range[ 0 ] !== range[ 1 ];
+}
+
+//
+
 function rangeInInclusive( range, srcNumber )
 {
 
@@ -141,6 +161,8 @@ let Routines =
   /* qqq : good coverage of each routine is required */
 
   rangeIs,
+  rangeIsEmpty,
+  rangeIsPopulated,
 
   rangeInInclusive,
   rangeInExclusive,
