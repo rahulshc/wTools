@@ -12978,9 +12978,11 @@ function entityAllTimeExperiment( test )
 
   testTime( entityAllLongsOld, 30, srcArray, onEach );
   testTime( entityAllLongsNew, 30, srcArray, onEach );
-  /* node v9   old   |  new
-              32,8 c | 203,2 c
-              35.7 c | 204,5 c
+  /* node v9 |   old   |  new
+     --------|---------|-------
+             |  32,8 c | 203,2 c
+             |  35.7 c | 204,5 c
+             |  35.3 c | 205,3 c
   */
 
   /* testing subroutine */
