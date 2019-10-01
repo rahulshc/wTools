@@ -2751,7 +2751,7 @@ function entityAll( src, onEach )
       {
         result = onEach( src[ k ], k, src );
         if( !result )
-        return result;
+        return false;
       }
 
     }
