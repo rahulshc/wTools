@@ -41,9 +41,26 @@ if( typeof module !== 'undefined' && module !== null )
   require( './l0/l6/fTime.s' );
   require( './l0/l6/fUnroll.s' );
 
-  require( './l0/l8/ArrayDescriptor.s' );
-  require( './l0/l8/Compose.s' );
-  require( './l0/l8/Field.s' );
+  require( './l0/l7/ArrayDescriptor.s' );
+  require( './l0/l7/Compose.s' );
+  require( './l0/l7/Field.s' );
+
+  require( './l0/l8/gBool.s' );
+  require( './l0/l8/gBuffer.s' );
+  require( './l0/l8/gEntity.s' );
+  require( './l0/l8/gErr.s' );
+  require( './l0/l8/gFunctional.s' );
+  require( './l0/l8/gLong.s' );
+  require( './l0/l8/gMap.s' );
+  require( './l0/l8/gNumber.s' );
+  require( './l0/l8/gPair.s' );
+  require( './l0/l8/gRange.s' );
+  require( './l0/l8/gRegexp.s' );
+  require( './l0/l8/gRoutine.s' );
+  require( './l0/l8/gStr.s' );
+  require( './l0/l8/gTime.s' );
+
+  require( './l0/l9/Setup.s' );
 
 }
 
