@@ -296,6 +296,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( this._same( dst ) )
     {
       let temp = new Set( container );
+      container.clear();
 
       for( let e of temp )
       {
@@ -341,6 +342,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     {
       debugger; // xxx
       let temp = new Set( container );
+      container.clear();
 
       for( let e of temp )
       {
