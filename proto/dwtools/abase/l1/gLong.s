@@ -4591,7 +4591,7 @@ let Routines =
   // long repeater
 
   longDuplicate,
-  longOnce,
+  longOnce, /* xxx : review */
 
   longHasUniques,
   longAreRepeatedProbe,
