@@ -49,12 +49,23 @@ function objectLike( src )
   return false;
   if( _.routineIsPure( src ) )
   return false;
-  if( _.strIs( src ) )
-  return false;
 
   for( let k in src )
   return true;
 
+  return false;
+}
+
+//
+
+function countableIs( src )
+{
+  if( !src )
+  return false;
+  if( _.mapLike( src ) )
+  return true;
+  if( src[ Symbol.iterator ] )
+  return true;
   return false;
 }
 
@@ -1761,6 +1772,7 @@ let Routines =
   objectIs,
   objectLike,
   objectLikeOrRoutine,
+  countableIs, /* qqq : cover and document please */
 
   mapIs,
   mapIsEmpty,

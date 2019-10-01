@@ -2284,7 +2284,7 @@ function longDuplicate( o )
   _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
   _.routineOptions( longDuplicate, o );
   _.assert( _.longIs( o.src ), 'Уxpects o.src as longIs entity' );
-  _.assert( _.numberIsInt( o.src.length / o.numberOfAtomsPerElement ) );
+  _.assert( _.intIs( o.src.length / o.numberOfAtomsPerElement ) );
 
   if( o.numberOfDuplicatesPerElement === 1 )
   {
@@ -2984,7 +2984,7 @@ function longMask( srcArray, mask )
   _.assert( _.longIs( mask ), 'longMask :', 'Expects array-like as mask' );
   _.assert
   (
-    _.numberIsInt( length ),
+    _.intIs( length ),
     'longMask :', 'Expects mask that has component for each atom of srcArray',
     _.toStr
     ({
@@ -3085,7 +3085,7 @@ longUnmask.defaults =
 // --
 
 /**
- * The arrayMakeRandom() routine returns an array which contains random numbers.
+ * The arrayRandom() routine returns an array which contains random numbers.
  *
  * @param { Object } o - The options for getting random numbers.
  * @param { Number } o.length - The length of an array.
@@ -3093,7 +3093,7 @@ longUnmask.defaults =
  * @param { Boolean } [ o.int = false ] - Floating point numbers or not.
  *
  * @example
- * _.arrayMakeRandom
+ * _.arrayRandom
  * ({
  *   length : 5,
  *   range : [ 1, 9 ],
@@ -3102,40 +3102,56 @@ longUnmask.defaults =
  * // returns [ 6, 2, 4, 7, 8 ]
  *
  * @returns { Array } - Returns an array of random numbers.
- * @function arrayMakeRandom
+ * @function arrayRandom
  * @memberof wTools
  */
 
-function arrayMakeRandom( o )
+function arrayRandom( o )
 {
-  let result = [];
 
-  if( _.numberIs( o ) )
+  if( arguments[ 2 ] !== undefined )
+  o = { dst : arguments[ 0 ], range : arguments[ 1 ], length : arguments[ 2 ] }
+  else if( _.numberIs( o ) || _.rangeIs( o ) )
   o = { length : o }
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( arrayMakeRandom, o );
-
+  _.assert( arguments.length === 1 || arguments.length === 3 );
+  _.routineOptions( arrayRandom, o );
+  if( o.onEach === null )
+  o.onEach = ( range ) => _.numberRandom( range );
   if( o.range === null )
-  o.range = [ 0, 1 ]
+  o.range = [ 0, 1 ];
+  if( _.numberIs( o.range ) )
+  o.range = [ o.range, o.range ]
 
-  debugger;
+  if( _.rangeIs( o.length ) )
+  o.length = _.intRandom( o.length );
+  if( o.length === null && o.dst )
+  o.length = o.dst.length;
+  if( o.length === null )
+  o.length = 1;
+
+  _.assert( _.intIs( o.length ) );
+
+  if( o.dst === null || o.dst.length < o.length )
+  o.dst = _.longMake( o.dst, o.length );
 
   for( let i = 0 ; i < o.length ; i++ )
   {
-    result[ i ] = o.range[ 0 ] + Math.random()*( o.range[ 1 ] - o.range[ 0 ] );
-    if( o.int )
-    result[ i ] = Math.floor( result[ i ] );
+    o.dst[ i ] = o.onEach( o.range, i, o );
+    // o.dst[ i ] = o.range[ 0 ] + Math.random()*( o.range[ 1 ] - o.range[ 0 ] );
+    // if( o.int )
+    // o.dst[ i ] = Math.floor( o.dst[ i ] );
   }
 
-  return result;
+  return o.dst;
 }
 
-arrayMakeRandom.defaults =
+arrayRandom.defaults =
 {
-  int : 0,
+  // int : 0,
+  dst : null,
+  onEach : null,
   range : null,
-  length : 1,
+  length : null,
 }
 
 //
@@ -4575,7 +4591,7 @@ let Routines =
   // long repeater
 
   longDuplicate,
-  longOnce,
+  longOnce, /* xxx : review */
 
   longHasUniques,
   longAreRepeatedProbe,
@@ -4588,7 +4604,7 @@ let Routines =
 
   // array maker
 
-  arrayMakeRandom, /* xxx : split */
+  arrayRandom, /* qqq : cover and document please */
   arrayFromCoercing,
 
   arrayFromRange,

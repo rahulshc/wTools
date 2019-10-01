@@ -6310,33 +6310,54 @@ function arrayFromCoercing( test )
 
 //
 
-function arrayMakeRandom( test )
+function arrayRandom( test )
 {
 
   test.case = 'an empty object';
-  var got = _.arrayMakeRandom( {  } );
+  var got = _.arrayRandom( {  } );
   test.identical( got.length, 1 );
   test.is( got[ 0 ] >= 0 && got[ 0 ]<= 1 );
 
   test.case = 'a number';
-  var got = _.arrayMakeRandom( 5 );
+  var got = _.arrayRandom( 5 );
   var expected = got;
   test.identical( got.length, 5 );
 
-  var got = _.arrayMakeRandom( -1 );
-  var expected = [];
-  test.identical( got, expected );
-
-  test.case = 'an object';
-  var got = _.arrayMakeRandom( {
-    length : 5,
+  test.case = 'onEach';
+  var got = _.arrayRandom
+  ({
+    length : 3,
     range : [ 1, 9 ],
-    int : true
-  } );
+    onEach : ( range ) => _.intRandom( range ),
+  });
   var expected = got;
-  test.identical( got, expected );
+  test.identical( got.length, 3 );
+  test.is( _.intIs( got[ 0 ] ) );
+  test.is( _.intIs( got[ 1 ] ) );
+  test.is( _.intIs( got[ 2 ] ) );
+  test.is( _.rangeIn( [ 1, 9 ], got[ 0 ] ) );
+  test.is( _.rangeIn( [ 1, 9 ], got[ 1 ] ) );
+  test.is( _.rangeIn( [ 1, 9 ], got[ 2 ] ) );
 
-  /**/
+  test.case = 'without length';
+  var dst = [ 0, 0, 0 ];
+  debugger;
+  var got = _.arrayRandom
+  ({
+    dst : dst,
+    range : [ 1, 9 ],
+    onEach : ( range ) => _.intRandom( range ),
+  });
+  test.is( got === dst );
+  test.identical( got.length, 3 );
+  test.is( _.intIs( got[ 0 ] ) );
+  test.is( _.intIs( got[ 1 ] ) );
+  test.is( _.intIs( got[ 2 ] ) );
+  test.is( _.rangeIn( [ 1, 9 ], got[ 0 ] ) );
+  test.is( _.rangeIn( [ 1, 9 ], got[ 1 ] ) );
+  test.is( _.rangeIn( [ 1, 9 ], got[ 2 ] ) );
+
+  /* */
 
   if( !Config.debug )
   return;
@@ -6344,13 +6365,21 @@ function arrayMakeRandom( test )
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayMakeRandom();
+    _.arrayRandom();
   });
 
   test.case = 'wrong argument';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayMakeRandom( 'wrong argument' );
+    _.arrayRandom( 'wrong argument' );
+  });
+
+  test.case = 'negative length';
+  test.shouldThrowErrorSync( function()
+  {
+    var got = _.arrayRandom( -1 );
+    var expected = [];
+    test.identical( got, expected );
   });
 
 };
@@ -18105,8 +18134,8 @@ function arrayFlatten( test )
   var got  = _.arrayFlatten( [], [ [ [ [ [ 1 ] ] ] ] ]  );
   test.identical( got, [ 1 ] );
 
-  var got  = _.arrayFlatten( [], 1, 2, '3'  );
-  test.identical( got, [ 1, 2, '3' ] );
+  // var got  = _.arrayFlatten( [], 1, 2, '3'  );
+  // test.identical( got, [ 1, 2, '3' ] );
 
   test.case = 'make array flat, dst is not empty';
 
@@ -18147,8 +18176,8 @@ function arrayFlatten( test )
 
   test.case = 'make array flat from different inputs -  null dstArray';
 
-  var got  =  _.arrayFlatten( null, 'str', {}, [ 1, 2 ], 5, true );
-  test.identical( got, [ 'str', {}, 1, 2, 5, true ] );
+  // var got  =  _.arrayFlatten( null, 'str', {}, [ 1, 2 ], 5, true );
+  // test.identical( got, [ 'str', {}, 1, 2, 5, true ] );
 
   var got = _.arrayFlatten( [ 1, 1, 3, 3, [ 5, 5 ] ], 5 );
   var expected = [ 1, 1, 3, 3, [ 5, 5 ], 5 ];
@@ -18574,6 +18603,7 @@ function arrayFlattenOnceStrictly( test )
 
 function arrayFlattened( test )
 {
+
   test.case = 'make array flat, dst is empty';
 
   var dst = [];
@@ -18655,10 +18685,10 @@ function arrayFlattened( test )
   test.identical( dst, [ 1 ] );
   test.identical( got, 1 );
 
-  var dst = [];
-  var got  = _.arrayFlattened( dst, 1, 2, '3' );
-  test.identical( dst, [ 1, 2, '3' ] );
-  test.identical( got, 3 );
+  // var dst = [];
+  // var got  = _.arrayFlattened( dst, 1, 2, '3' );
+  // test.identical( dst, [ 1, 2, '3' ] );
+  // test.identical( got, 3 );
 
   var dst = [ 1, 1, 3, 3, [ 5, 5 ] ];
   var got = _.arrayFlattened( dst, 5 );
@@ -18666,7 +18696,7 @@ function arrayFlattened( test )
   test.identical( dst, expected );
   test.identical( got, 1 );
 
-  //
+  /* */
 
   test.open( 'single argument' );
 
@@ -19138,18 +19168,40 @@ function arrayFlatten2( test )
   var expected = [ 1, 2, 3, 13, 'abc', null ];
   test.identical( got, expected );
 
-  test.case = 'Args are not long';
-  var got = _.arrayFlatten( [ 1, 2 ], 13, 'abc', {} );
-  var expected = [ 1, 2, 13, 'abc', {} ];
+  // test.case = 'Args are not long';
+  // var got = _.arrayFlatten( [ 1, 2 ], 13, 'abc', {} );
+  // var expected = [ 1, 2, 13, 'abc', {} ];
+  // test.identical( got, expected );
+
+  test.case = 'undefined';
+  var got = _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] );
+  var expected = [ 1, 2, 3, 13, 'abc', undefined, null ];
   test.identical( got, expected );
 
+  test.case = 'second argument is number';
+  var got = _.arrayFlatten( [ 1, 2, 3 ], 13 );
+  var expected = [ 1, 2, 3, 13 ];
+  test.identical( got, expected );
+
+  test.case = 'second argument is map';
+  var got = _.arrayFlatten( [ 1, 2, 3 ], { k : 'e' } );
+  var expected = [ 1, 2, 3, { k : 'e' } ];
+  test.identical( got, expected );
 
   test.case = 'bad arguments'; /* */
 
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( () => _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] ) );
+  test.shouldThrowErrorSync( () => _.arrayFlatten( undefined, [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayFlatten( new U32x([ 1, 2, 3 ]), [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayFlatten( [], [], [] ) );
+  test.shouldThrowErrorSync( () => _.arrayFlatten( [], 0, 1 ) );
+
+  // test.shouldThrowErrorSync( () => _.arrayFlatten( [], 13 ) );
+  // test.shouldThrowErrorSync( () => _.arrayFlatten( [], '13' ) );
+  // test.shouldThrowErrorSync( () => _.arrayFlatten( [], { k : 'e' } ) );
+  // test.shouldThrowErrorSync( () => _.arrayFlatten( [ 1, 2, 3 ], [ 13, 'abc', undefined, null ] ) );
 
 }
 
@@ -25723,7 +25775,7 @@ var Self =
     arrayFrom,
     arrayFromCoercing,
 
-    arrayMakeRandom,
+    arrayRandom,
     arrayFromRange,
     arrayAs,
 

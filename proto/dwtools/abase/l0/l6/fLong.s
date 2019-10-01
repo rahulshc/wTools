@@ -207,6 +207,7 @@ function longMake( src, ins )
     }
     else
     {
+      _.assert( length >= 0 );
       result = _.unrollIs( src ) ? _.unrollMake( length ) : new src.constructor( length );
       // result = new src.constructor( length );
       let minLen = Math.min( length, ins.length );
@@ -3603,9 +3604,8 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
     else
     ins = evaluator1( ins );
 
-    if( arr.findIndex )
+    if( arr.findIndex && fromIndex === 0 )
     {
-      // debugger;
       return arr.findIndex( ( e ) => evaluator1( e ) === ins );
     }
     else
@@ -6421,70 +6421,86 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayFlattened( dstArray, insArray )
+function arrayFlattened( dstArray, src )
 {
+  let result = 0;
 
-  _.assert( arguments.length >= 1 );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   if( arguments.length === 1 )
   {
-    for( let i = dstArray.length-1; i >= 0; --i )
-    if( _.longIs( dstArray[ i ] ) )
+    // for( let i = dstArray.length-1; i >= 0; --i )
+    for( let i = 0 ; i < dstArray.length ; i++ )
     {
-      let insArray = dstArray[ i ];
-      dstArray.splice( i, 1 );
-      onLong( insArray, i );
+      let e = dstArray[ i ];
+      if( _.longLike( e ) || _.setLike( e ) )
+      {
+        // let e = dstArray[ i ];
+        // dstArray.splice( i, 1 );
+        i = containerReplace( e, i );
+        i -= 1;
+      }
+      else
+      {
+        result += 1;
+      }
     }
     return dstArray;
   }
 
-  let result = 0;
 
-  for( let a = 1 ; a < arguments.length ; a++ )
+  if( _.longLike( src ) || _.setLike( src ) )
   {
-    let insArray = arguments[ a ];
-
-    if( _.longIs( insArray ) )
-    {
-      for( let i = 0, len = insArray.length; i < len; i++ )
-      {
-        if( _.longIs( insArray[ i ] ) )
-        {
-          let c = _.arrayFlattened( dstArray, insArray[ i ] );
-          result += c;
-        }
-        else
-        {
-          _.assert( insArray[ i ] !== undefined, 'The Array should have no undefined' );
-          dstArray.push( insArray[ i ] );
-          result += 1;
-        }
-      }
-    }
-    else
-    {
-      _.assert( insArray !== undefined, 'The Array should have no undefined' );
-      dstArray.push( insArray );
-      result += 1;
-    }
-
+    containerAppend( src );
+  }
+  else
+  {
+    dstArray.push( src );
+    result += 1;
   }
 
   return result;
 
   /* */
 
-  function onLong( insArray, insIndex )
+  function containerAppend( src )
   {
-    for( let i = 0, len = insArray.length; i < len; i++ )
+    for( let e of src )
     {
-      if( _.longIs( insArray[ i ] ) )
-      onLong( insArray[ i ], insIndex )
+      if( _.longLike( e ) || _.setLike( e ) )
+      {
+        containerAppend( e );
+      }
       else
-      dstArray.splice( insIndex++, 0, insArray[ i ] );
+      {
+        dstArray.push( e );
+        result += 1;
+      }
     }
+  }
+
+  /* */
+
+  function containerReplace( src, index )
+  {
+    dstArray.splice( index, 1 );
+    result -= 1;
+    for( let e of src )
+    {
+      if( _.longLike( e ) || _.setLike( e ) )
+      {
+        index = containerReplace( e, index );
+      }
+      else
+      {
+        dstArray.splice( index, 0, e );
+        result += 1;
+        index += 1;
+      }
+    }
+    return index;
   }
 
 }
@@ -7830,6 +7846,8 @@ let Routines =
   arrayRemoveDuplicates,
 
   // array flatten
+
+  /* qqq : extend routine arrayFlatten and its coverage to support Sets as input */
 
   arrayFlatten,
   arrayFlattenOnce,

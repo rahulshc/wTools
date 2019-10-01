@@ -105,6 +105,21 @@ function strsDefined( src )
 
 //
 
+function strHas( src, ins )
+{
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.strIs( src ) );
+  _.assert( _.strLike( ins ) );
+
+  if( _.strIs( ins ) )
+  return src.indexOf( ins ) !== -1;
+  else
+  return ins.test( src );
+
+}
+
+//
+
 function strEquivalent( src1, src2 )
 {
   let strIs1 = _.strIs( src1 );
@@ -264,17 +279,28 @@ function strShort( src )
     }
     else if( _.vectorAdapterIs( src ) )
     {
-      result += '[ Vector with ' + src.length + ' elements' + ' ]';
+      result += '{- VectorAdapter with ' + src.length + ' elements' + ' -}';
     }
-    else if( src && !_.objectIs( src ) && _.numberIs( src.length ) )
+    else if( _.setLike( src ) || _.hashMapLike( src ) )
     {
-      result += '[ ' + _.strType( src ) + ' with ' + src.length + ' elements ]';
+
+      result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements -}';
+
     }
-    else if( _.objectIs( src ) || _.objectLike( src ) )
+    else if( _.longLike( src ) )
     {
-      result += '[ ' + _.strType( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' ]';
+      result += '{- ' + _.strType( src ) + ' with ' + src.length + ' elements -}';
     }
-    else if( src instanceof Date )
+    else if( _.objectLike( src ) )
+    {
+
+      if( _.routineIs( src.infoExport ) )
+      result += src.infoExport({ verbosity : 1 });
+      else
+      result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' -}';
+
+    }
+    else if( _.dateIs( src ) )
     {
       result += src.toISOString();
     }
@@ -286,11 +312,90 @@ function strShort( src )
   }
   catch( err )
   {
+    debugger;
     throw err;
   }
 
   return result;
 }
+
+// function _toStrShort( src,o )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( _.objectIs( o ),'Expects map {-o-}' );
+//
+//   var result = '';
+//
+//   try
+//   {
+//
+//     if( _.vectorAdapterIs( src ) )
+//     {
+//       result += '{- VectorAdapter with ' + src.length + ' elements' + ' -}';
+//     }
+//     else if( _.errIs( src ) )
+//     {
+//       result += _ObjectToString.call( src );
+//     }
+//     else if( _.routineIs( src ) )
+//     {
+//       result += _toStrFromRoutine( src,o );
+//     }
+//     else if( _.numberIs( src ) )
+//     {
+//       result += _toStrFromNumber( src,o );
+//     }
+//     else if( _.strIs( src ) )
+//     {
+//
+//       var optionsStr =
+//       {
+//         limitStringLength : o.limitStringLength ? Math.min( o.limitStringLength, 40 ) : 40,
+//         stringWrapper : o.stringWrapper,
+//         escaping : 1,
+//       }
+//
+//       result = _toStrFromStr( src,optionsStr );
+//
+//     }
+//     else if( _.setLike( src ) || _.hashMapLike( src ) )
+//     {
+//
+//       result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements -}';
+//
+//     }
+//     else if( src && !_.objectIs( src ) && _.numberIs( src.length ) )
+//     {
+//
+//       result += '{- ' + strType( src ) + ' with ' + src.length + ' elements -}';
+//
+//     }
+//     else if( src instanceof Date )
+//     {
+//       result += src.toISOString();
+//     }
+//     else if( _.objectLike( src ) )
+//     {
+//
+//       if( _.routineIs( src.infoExport ) )
+//       result += src.infoExport({ verbosity : 1 });
+//       else
+//       result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' -}';
+//
+//     }
+//     else
+//     {
+//       result += String( src );
+//     }
+//
+//   }
+//   catch( err )
+//   {
+//     result = String( err );
+//   }
+//
+//   return result;
+// }
 
 //
 
@@ -339,9 +444,9 @@ function strType( src )
   if( result === 'Object' )
   {
     if( Object.getPrototypeOf( src ) === null )
-    result = 'Map:Pure';
+    result = 'Map';
     else if( src.__proto__ !== Object.__proto__ )
-    result = 'Object:Special';
+    result = 'Object:>Sub';
   }
 
   return result;
@@ -754,6 +859,8 @@ let Routines =
   strsLikeAll,
   strDefined,
   strsDefined,
+
+  strHas,
 
   strEquivalent,
   strsEquivalent,

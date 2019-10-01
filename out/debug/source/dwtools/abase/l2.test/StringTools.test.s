@@ -1633,6 +1633,39 @@ function strCommonRight( test )
 
 }
 
+//
+
+function strRandom( test )
+{
+
+  test.case = 'trivial';
+  var got = _.strRandom( 5 );
+  test.identical( got.length, 5 );
+  test.is( _.strIs( got ) );
+
+  test.case = 'empty';
+  var got = _.strRandom( 0 );
+  test.identical( got, '' );
+
+  test.case = 'range';
+  for( let i = 0 ; i < 10 ; i++ )
+  {
+    var got = _.strRandom([ 0, 2 ]);
+    test.ge( got.length, 0 );
+    test.lt( got.length, 2 );
+  }
+
+  test.case = 'options';
+  for( let i = 0 ; i < 5 ; i++ )
+  {
+    var got = _.strRandom({ length : [ 0, 5 ], alphabet : _.strAlphabetFromRange([ 33, 130 ]) });
+    test.ge( got.length, 0 );
+    test.lt( got.length, 5 );
+    console.log( got );
+  }
+
+}
+
 //--
 // formatter
 //--
@@ -10513,6 +10546,7 @@ var Self =
 
     strCommonLeft,
     strCommonRight,
+    strRandom,
 
     // formatter
 

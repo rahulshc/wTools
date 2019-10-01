@@ -2,8 +2,18 @@
 
 'use strict';
 
-let _global = _global_;
+let _global = _realGlobal_;
 let _ = _global_.wTools;
+
+if( _global_ !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
+{
+  let _ = _global_.wTools;
+  _.assert( _.containerAdapter === undefined );
+  _.containerAdapter = _realGlobal_.wTools.containerAdapter;
+  if( typeof module !== 'undefined' && module !== null )
+  module[ 'exports' ] = _.containerAdapter;
+  return;
+}
 
 // --
 // type test
@@ -796,6 +806,16 @@ _.containerAdapter = Self;
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
+
+if( _global_ !== _realGlobal_ )
+{
+  debugger; xxx
+  let _ = _global_.wTools;
+  _.assert( _.containerAdapter === undefined );
+  _.containerAdapter = _realGlobal_.wTools.containerAdapter;
+  if( typeof module !== 'undefined' && module !== null )
+  module[ 'exports' ] = _.containerAdapter;
+}
 
 // var array = _.containerAdapter.make( [ 1, 2, 3 ] );
 // var set = _.containerAdapter.make( new Set([ 1, 2, 3 ]) );
