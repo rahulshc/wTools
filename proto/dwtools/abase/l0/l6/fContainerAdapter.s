@@ -26,14 +26,11 @@ function is( src )
 
 //
 
-// function make( dst )
-// {
-//   if( dst )
-//   dst = this.toOriginal( toOriginal );
 function make( container )
 {
-  // if( container )
-  // container = this.toOriginal( toOriginal ); // routine returns value as routine, need improvment
+  if( container )
+  container = this.toOriginal( container );
+
   _.assert( arguments.length === 1 );
   if( _.setIs( container ) )
   {
@@ -313,7 +310,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         if( e2 !== undefined && e !== e2 )
         container.add( e2 );
         else
-        container.add( e );          
+        container.add( e );
       }
       // Dmytro : this code makes cycled loop because add method append elements
       // for( let e of container )
@@ -809,7 +806,7 @@ module[ 'exports' ] = Self;
 
 if( _global_ !== _realGlobal_ )
 {
-  debugger; xxx
+  _.assert( 0, 'not tested' );
   let _ = _global_.wTools;
   _.assert( _.containerAdapter === undefined );
   _.containerAdapter = _realGlobal_.wTools.containerAdapter;
