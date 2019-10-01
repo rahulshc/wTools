@@ -12966,14 +12966,14 @@ function entityAll( test )
 
 function entityAllTimeExperiment( test )
 {
-  /* data generation */
-
   var srcArray = new U8x( 500000000 );
   for( let i = srcArray.length; i >= 0; i-- )
   srcArray[ i ] = ( Math.random() + 0.01 ) * 250;
 
-  /* tests */
-  
+  var onEach = ( e, k, src ) => e;
+
+  /* */
+
   // testTime( entityAllLongs, srcArray );
 
   testTime( entityAllLongsOld, 30, srcArray, onEach );
@@ -12998,7 +12998,7 @@ function entityAllTimeExperiment( test )
     console.log( result, timeEnd - timeStart );
   }
 
-  /* old entity subroutine */
+  /* */
 
   function entityAllLongsOld( src, onEach )
   {
@@ -13025,7 +13025,7 @@ function entityAllTimeExperiment( test )
     return true;
   }
 
-  /* new subroutine */
+  /* */
 
   function entityAllLongsNew( src, onEach )
   {
