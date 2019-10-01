@@ -2393,7 +2393,7 @@ function entityXor( dst, src, onEach )
 
     let unnecessaries = [ null, 0, undefined, false, '' ];
     for( let e of unnecessaries )
-    dst.delete( undefined );
+    dst.delete( e );
   }
 
   /* */
@@ -2507,6 +2507,13 @@ function entityXor( dst, src, onEach )
 
   function setWithRoutineDeleting()
   {
+    for( let key of dst )
+    {
+      let res = onEach( key, key, dst );
+      if( !res )
+      dst.delete( key );
+    }
+
     for( let key of src )
     {
       let res1, res2;
@@ -2529,11 +2536,14 @@ function entityXor( dst, src, onEach )
 
   function setWithoutRoutineDeleting()
   {
+    for( let key of dst )
+    if( !key )
+    dst.delete( key );
     for( let key of src )
     {
       if( dst.has( key ) )
       dst.delete( key );
-      else
+      else if( key )
       dst.add( key );
     }
   }
