@@ -12976,8 +12976,8 @@ function entityAllTimeExperiment( test )
 
   // testTime( entityAllLongs, srcArray );
 
-  testTime( entityAllLongsOld, 30, srcArray, onEach );
-  testTime( entityAllLongsNew, 30, srcArray, onEach );
+  testTime( entityAllLongsCustom, 30, srcArray, onEach );
+  testTime( entityAllLongsEvery, 30, srcArray, onEach );
 
   /* NodeJS  |                 Running time
              | using custom iterator  |  using method Array.every()
@@ -12992,7 +12992,7 @@ function entityAllTimeExperiment( test )
              |  26,6 s                | 210,1 s
      --------|------------------------|----------------------------
       v12    |  26,1 s                | over 270 s, failed
-             |  26,8 s                |
+             |  26,8 s                | over 270 s, failed
   */
 
   /* testing subroutine */
@@ -13012,7 +13012,7 @@ function entityAllTimeExperiment( test )
 
   /* */
 
-  function entityAllLongsOld( src, onEach )
+  function entityAllLongsCustom( src, onEach )
   {
     let result;
     if( _.routineIs( onEach ) )
@@ -13039,7 +13039,7 @@ function entityAllTimeExperiment( test )
 
   /* */
 
-  function entityAllLongsNew( src, onEach )
+  function entityAllLongsEvery( src, onEach )
   {
     let result;
     if( _.routineIs( onEach ) )
