@@ -12964,7 +12964,7 @@ function entityAll( test )
 
 //
 
-function entityAllTime( test )
+function entityAllTimeExperiment( test )
 {
   /* data generation */
 
@@ -13007,7 +13007,7 @@ function entityAllTime( test )
     if( _.routineIs( onEach ) )
     {
       debugger;
-      result = src.every( onEach );      
+      result = src.every( onEach );
     }
     else
     result = src.every();
@@ -13028,13 +13028,16 @@ function entityAllTime( test )
   }
 
   // testTime( entityAllLongs, srcArray );
+
+
   testTime( entityAllLongsNew, 30, srcArray, onEach );
   testTime( entityAllLongs, 30, srcArray, onEach );
+  // node v9 32,8 c | 203,2
 
 
 }
-entityAllTime.experimental = 1;
-entityAllTime.timeOut = 300000
+entityAllTimeExperiment.experimental = 1;
+entityAllTimeExperiment.timeOut = 300000;
 
 //
 
@@ -17572,7 +17575,7 @@ value for dst             dst                dst                    first +     
     // entityXandBoth, /* qqq : implement */
 
     entityAll,
-    entityAllTime,
+    entityAllTimeExperiment,
     entityAny,
     entityNone,
 
