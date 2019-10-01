@@ -12976,20 +12976,23 @@ function entityAllTimeExperiment( test )
 
   // testTime( entityAllLongs, srcArray );
 
-  testTime( entityAllLongsNew, 30, srcArray, onEach );
   testTime( entityAllLongsOld, 30, srcArray, onEach );
+  testTime( entityAllLongsNew, 30, srcArray, onEach );
 
   /* NodeJS  |                 Running time
-             |   old implementation   |  new implementation
-     --------|------------------------|--------------------
+             | using custom iterator  |  using method Array.every()
+     --------|------------------------|----------------------------
       v8     |  33.7 s                | 205,5 s
-     --------|------------------------|--------------------
+     --------|------------------------|----------------------------
              |  32,8 s                | 203,2 s
       v9     |  35.7 s                | 204,5 s
              |  35.3 s                | 205,3 s
-     --------|------------------------|--------------------
+     --------|------------------------|----------------------------
       v10    |  26,9 s                | 208,6 s
              |  26,6 s                | 210,1 s
+     --------|------------------------|----------------------------
+      v12    |  26,1 s                | over 270 s, failed
+             |  26,8 s                |
   */
 
   /* testing subroutine */
