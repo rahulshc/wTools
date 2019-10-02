@@ -6450,6 +6450,9 @@ function arrayFlattened( dstArray, src )
     return dstArray;
   }
 
+  if( dstArray === src )
+  return arrayFlattened.call( this, dstArray, dstArray.slice() );
+  let dstCopy = [];
 
   if( _.longLike( src ) || _.setLike( src ) )
   {
@@ -6471,6 +6474,14 @@ function arrayFlattened( dstArray, src )
     {
       if( _.longLike( e ) || _.setLike( e ) )
       {
+        if( e === dstArray && dstCopy.length === 0 )
+        {
+          dstCopy = e.slice();
+          containerAppend( dstCopy );
+        }
+        else if( e === dstArray )
+        containerAppend( dstCopy )
+        else
         containerAppend( e );
       }
       else
