@@ -161,10 +161,11 @@ function longMake( src, ins )
       {
         if( _.longIs( ins ) )
         {
-          if( ins.length === 1 )
-          result = [ ins[ 0 ] ];
-          else
-          result = new( _.constructorJoin( src, ins ) );
+          result = Array.from( ins );
+          // if( ins.length === 1 )
+          // result = [ ins[ 0 ] ];
+          // else
+          // result = new( _.constructorJoin( src, ins ) );
         }
         else
         {
@@ -6424,9 +6425,7 @@ function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 function arrayFlattened( dstArray, src )
 {
   let result = 0;
-
-  if( dstArray === src )
-  return arrayFlattened.call( this, dstArray, dstArray.slice() );
+  let length = dstArray.length;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectIs( this ) );
@@ -6453,7 +6452,6 @@ function arrayFlattened( dstArray, src )
     return dstArray;
   }
 
-  let dstCopy = [];
 
   if( _.longLike( src ) || _.setLike( src ) )
   {
@@ -6471,19 +6469,21 @@ function arrayFlattened( dstArray, src )
 
   function containerAppend( src )
   {
+    let count;
+    if( src === dstArray )
+    count = length;
+    else
+    count = src.length;
+
     for( let e of src )
     {
+      if( count < 1 )
+      break;
+      count--;
+
       if( _.longLike( e ) || _.setLike( e ) )
       {
-        if( e !== dstArray )
-        containerAppend( e );
-        else if( e === dstArray && dstCopy.length === 0 )
-        {
-          dstCopy = e.slice();
-          containerAppend( dstCopy );
-        }
-        else
-        containerAppend( dstCopy )
+        containerAppend( e )
       }
       else
       {
