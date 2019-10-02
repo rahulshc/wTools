@@ -866,7 +866,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   pop( e )
   {
-    debugger;
+    // debugger;
     var poped = this.original.pop();
     _.assert( e === undefined || poped === e );
     return poped;
