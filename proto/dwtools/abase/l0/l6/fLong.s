@@ -6425,6 +6425,9 @@ function arrayFlattened( dstArray, src )
 {
   let result = 0;
 
+  if( dstArray === src )
+  return arrayFlattened.call( this, dstArray, dstArray.slice() );
+  
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
@@ -6450,8 +6453,7 @@ function arrayFlattened( dstArray, src )
     return dstArray;
   }
 
-  if( dstArray === src )
-  return arrayFlattened.call( this, dstArray, dstArray.slice() );
+
   let dstCopy = [];
 
   if( _.longLike( src ) || _.setLike( src ) )
@@ -6474,15 +6476,15 @@ function arrayFlattened( dstArray, src )
     {
       if( _.longLike( e ) || _.setLike( e ) )
       {
-        if( e === dstArray && dstCopy.length === 0 )
+        if( e !== dstArray )
+        containerAppend( e );
+        else if( e === dstArray && dstCopy.length === 0 )
         {
           dstCopy = e.slice();
           containerAppend( dstCopy );
         }
-        else if( e === dstArray )
-        containerAppend( dstCopy )
         else
-        containerAppend( e );
+        containerAppend( dstCopy )
       }
       else
       {
