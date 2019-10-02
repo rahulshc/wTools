@@ -18677,6 +18677,12 @@ function arrayFlattened( test )
   var expected = [ 0 ];
   test.identical( got, expected );
 
+  test.case = 'array from other arrays, level 5';
+  var src = [ [ [ [ [ 0 ] ] ] ] ];
+  var got = _.arrayFlattened( [ src, src, src, src ] );
+  var expected = [ 0, 0, 0, 0 ];
+  test.identical( got, expected );
+
   test.close( 'single argument' );
 
   /* - */
@@ -18710,6 +18716,14 @@ function arrayFlattened( test )
   var got  = _.arrayFlattened( dst, [ [ [ [ [ 1 ] ] ] ] ]  );
   test.identical( dst, [ 1 ] );
   test.identical( got, 1 );
+
+  test.case = 'dst - empty array, src - array from arrays level 5';
+  var src = [ [ [ [ [ 0 ] ] ] ] ];
+  var dst =[];
+  var got = _.arrayFlattened( dst, [ src, src, src, src ] );
+  var expected = [ 0, 0, 0, 0 ];
+  test.identical( dst, expected );
+  test.identical( got, 4 );
 
   test.case = 'dst - flat array, src - flat array';
   var dst = [ 1, 2, 3 ];
@@ -25942,13 +25956,13 @@ var Self =
 
     arrayFlattenCritical,
     arrayFlatten,
+    // arrayFlattenSame,
     arrayFlattenOnce,
     arrayFlattenOnceStrictly,
     arrayFlattened,
     arrayFlattenedSame,
     arrayFlattenedOnce,
     arrayFlattenedOnceStrictly,
-    // arrayFlattenSame,
     // arrayFlattenOnceSame,
     // arrayFlattenOnceStrictlySame,
     // arrayFlattenedOnceSame,
