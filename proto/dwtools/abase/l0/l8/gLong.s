@@ -3994,24 +3994,35 @@ function longExtendScreening( screenArray, dstArray )
 
 //
 
-function longSort( srcLong, onEvaluate )
+function longSort( dstLong, srcLong, onEvaluate )
 {
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( _.routineIs( arguments[ 1 ] ) )
+  {
+    onEvaluate = arguments[ 1 ];
+    srcLong = dstLong;
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( onEvaluate === undefined || _.routineIs( onEvaluate ) );
-  _.assert( _.longIs( srcLong ) )
+  _.assert( _.longIs( srcLong ) );
+  _.assert( dstLong === null || _.longIs( dstLong ) );
+
+  if( dstLong === null )
+  dstLong = _.arrayMake( srcLong )
 
   if( onEvaluate === undefined )
   {
     debugger;
-    srcLong.sort();
+    dstLong.sort();
   }
   else if( onEvaluate.length === 2 )
   {
-    srcLong.sort( onEvaluate );
+    dstLong.sort( onEvaluate );
   }
   else if( onEvaluate.length === 1 )
   {
-    srcLong.sort( function( a, b )
+    dstLong.sort( function( a, b )
     {
       a = onEvaluate( a );
       b = onEvaluate( b );
@@ -4020,9 +4031,9 @@ function longSort( srcLong, onEvaluate )
       else return 0;
     });
   }
-  else _.assert( 0, 'Expects signle-arguments evaluator or two-argument comparator' );
+  else _.assert( 0, 'Expects signle-argument evaluator or two-argument comparator' );
 
-  return srcLong;
+  return dstLong;
 }
 
 // --
@@ -4636,7 +4647,7 @@ let Routines =
   longSupplement, /* experimental */
   longExtendScreening, /* experimental */
 
-  longSort,
+  longSort, /* qqq : implement good coverage, document routine longSort */
 
   // // array etc
   //

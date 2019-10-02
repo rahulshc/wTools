@@ -174,7 +174,6 @@ function entityMakeEmpty( srcContainer )
   }
   else if( _.setIs( srcContainer ) )
   {
-    debugger;
     return new srcContainer.constructor();
   }
   else if( _.hashMapIs( srcContainer ) )

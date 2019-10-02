@@ -25830,6 +25830,7 @@ function loggerProblemExperiment( test )
 // unused, routine is not defined
 //--
 
+// qqq : this is bufferJoin
 //function arrayJoin( test )
 //{
 //  test.case = 'empty call';
