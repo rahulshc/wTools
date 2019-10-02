@@ -8654,7 +8654,7 @@ function arrayLeftIndex( test )
   test.identical( got, expected );
 
   test.case = 'zero index';
-  var got = _.arrayLeftIndex( [ 1, 2, 3 ], 3, function( el, ins ) { return el < ins } );
+  var got = _.arrayLeftIndex( [ 1, 2, 3 ], 3, ( el, ins ) => el < ins );
   var expected = 0;
   test.identical( got, expected );
 
@@ -8664,7 +8664,7 @@ function arrayLeftIndex( test )
   test.identical( got, expected );
 
   test.case = 'nothing';
-  var got = _.arrayLeftIndex( [ 1, 2, 3 ], 3, function( el, ins ) { return el > ins } );
+  var got = _.arrayLeftIndex( [ 1, 2, 3 ], 3, ( el, ins ) => el > ins );
   var expected = -1;
   test.identical( got, expected );
 
@@ -8694,7 +8694,7 @@ function arrayLeftIndex( test )
   test.identical( got, expected );
 
   test.case = 'fromIndex + evaluator';
-  var got = _.arrayLeftIndex( [ 1, 1, 2, 2, 3, 3 ], 3, 2, function( el, ins ) { return el < ins } );
+  var got = _.arrayLeftIndex( [ 1, 1, 2, 2, 3, 3 ], 3, 2, ( el, ins ) => el < ins );
   var expected = 2;
   test.identical( got, expected );
 
@@ -8705,7 +8705,13 @@ function arrayLeftIndex( test )
   var expected = 2;
   test.identical( got, expected );
 
-  /**/
+  test.case = 'evaluator search first element of array';
+  var evaluator = ( e ) => e[ 0 ];
+  var got = _.arrayLeftIndex( [ 1, 2, 3, [ 2 ], 3, [ 4 ] ], [ 2 ], evaluator );
+  var expected = 3;
+  test.identical( got, expected );
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -13366,6 +13372,8 @@ function arrayAppendArray( test )
 
 function arrayAppendArrayOnce( test )
 {
+  test.case = 'dst - empty array, ins - number, evaluator returns first el of array'
+
   test.case = 'dstArray is null';
   var got = _.arrayAppendArrayOnce( null, [ 1 ] );
   test.identical( got, [ 1 ] );
@@ -13443,6 +13451,13 @@ function arrayAppendArrayOnce( test )
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayAppendArrayOnce( dst, dst, ( e ) => e );
   test.identical( dst, [ 1,1,2,2,3,3 ] );
+  test.identical( got, dst );
+
+  test.case = 'dst - empty array, ins - number, evaluator returns first el of array';
+  var dst = [];
+  debugger;
+  var got = _.arrayAppendArrayOnce( dst, [ 0, [ 2 ], 5, { a : 0 } ], ( e ) => e[ 0 ] );
+  test.identical( dst, [ [ 2 ] ] );
   test.identical( got, dst );
 
   test.case = 'dst === src single evaluator';
@@ -18914,10 +18929,28 @@ function arrayFlattenedSame( test )
 
   test.case = 'dst - array, level 5, src contains a few dst';
   var dst = [ [ [ [ [ 1 ] ] ] ] ];
-  var src = [ dst, dst, dst, dst ]
+  var src = [ dst, dst, dst, dst ];
   var got  = _.arrayFlattened( dst, src );
   test.identical( dst, [ [ [ [ [ 1 ] ] ] ], 1, 1, 1, 1 ] );
   test.identical( got, 4 );
+
+  // test.case = 'src push self';
+  // var dst = [];
+  // var src = [ 1, 2 ];
+  // src.push( src );
+  // debugger;
+  // var got  = _.arrayFlattened( dst, src );
+  // test.identical( dst, [ 1, [ 1 ], 1, 1 ] );
+  // test.identical( got, 2 );
+  //
+  // test.case = 'dst push self';
+  // var dst = [ 1 ];
+  // dst.push( dst );
+  // var src = dst;
+  // debugger;
+  // var got  = _.arrayFlattened( dst, src );
+  // test.identical( dst, [ 1, [ 1 ], 1, 1 ] );
+  // test.identical( got, 2 );
 }
 
 //

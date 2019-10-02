@@ -5388,6 +5388,13 @@ function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
   if( arguments.length === 2 )
   return result;
 
+  let empty;
+  if( dstArray.length === 0 )
+  {
+    empty = 1;
+    dstArray.push( NaN );
+  }
+
   for( let i = 0, len = insArray.length; i < len ; i++ )
   {
     if( _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
@@ -5396,6 +5403,9 @@ function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
       result += 1;
     }
   }
+
+  if( empty )
+  dstArray.shift();
 
   return result;
 }
