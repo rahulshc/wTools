@@ -642,7 +642,7 @@ function scalarToVector( test )
 function entityTimeExperiment( test )
 {
   var srcArray = new U8x( 500000000 );
-  var onEach = ( e, k, src ) => 0;
+  var onEach = ( e, k, src ) => e;
 
   /* */
 
