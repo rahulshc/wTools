@@ -3575,7 +3575,7 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
   }
 
   _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
-  _.assert( _.longIs( arr ) );
+  _.assert( _.longIs( arr ), 'Expect a Long' );
   _.assert( _.numberIs( fromIndex ) );
   _.assert( evaluator1 === undefined || evaluator1.length === 1 || evaluator1.length === 2 );
   _.assert( evaluator1 === undefined || _.routineIs( evaluator1 ) );
@@ -6450,7 +6450,6 @@ function arrayFlattened( dstArray, src )
     return dstArray;
   }
 
-
   if( _.longLike( src ) || _.setLike( src ) )
   {
     containerAppend( src );
@@ -7729,6 +7728,7 @@ let Routines =
 
   arraySlice,
   // arrayButInplace, // Dmytro : maybe it should be arraySliceInplace
+
   arrayBut,
   arrayButInplace,
   arraySelect,
