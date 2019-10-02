@@ -391,6 +391,13 @@ class ContainerAdapterAbstract
     return dst;
   }
 
+  select( selector )
+  {
+    let self = this;
+    let container = self.original;
+    return _.select( container, selector );
+  }
+
   original = null; // Dmytro : need clarification // qqq : ?
 }
 
