@@ -903,32 +903,32 @@ function entityEach( test )
 function entityEachTimeExperiment( test )
 {
   var srcArray = new U8x( 500000000 );
-  for( let i = srcArray.length; i >= 0; i-- )
-  srcArray[ i ] = ( Math.random() + 0.01 ) * 250;
+  // for( let i = srcArray.length; i >= 0; i-- )
+  // srcArray[ i ] = ( Math.random() + 0.01 ) * 250;
 
-  var onEach = ( e, k, src ) => e + 1;
+  var onEach = ( e, k, src ) => 0;
 
   /* */
 
   // testTime( entityAllLongs, srcArray );
 
-  testTime( entityAllLongsFor, 20, srcArray, onEach );
-  testTime( entityAllLongsForEach, 20, srcArray, onEach );
+  testTime( entityEachLongsFor, 20, srcArray, onEach );
+  testTime( entityEachLongsForEach, 20, srcArray, onEach );
 
   /* NodeJS  |                 Running time
              | using for              |  using method Array.some()
      --------|------------------------|----------------------------
-      v8     |  21,9 s                | 134,8 s
-             |  21,8 s                | 143,3 s
+      v8     |  17,3 s                | 128,8 s
+             |  17,3 s                | 128,9 s
      --------|------------------------|----------------------------
-      v9     |  21,9 s                | 134,0 s
-             |  21,8 s                | 133,7 s
+      v9     |  17,2 s                | 129,2 s
+             |  17,4 s                | 129,3 s
      --------|------------------------|----------------------------
-      v10    |  17,2 s                | 142,6 s
-             |  17,1 s                | 143.2 s
+      v10    |  12,8 s                | 137,1 s
+             |  13,0 s                | 138,8 s
      --------|------------------------|----------------------------
-      v12    |  13,0 s                | 216,5 s
-             |  26,7 s                | 329,1 s
+      v12    |  8,5 s                 | 184.5 s
+             |  8,4 s                 | 184,4 s
   */
 
   /* testing subroutine */
@@ -942,23 +942,23 @@ function entityEachTimeExperiment( test )
 
     var timeEnd = _.timeNow();
 
-    test.is( timeEnd - timeStart > 60000 )
-    console.log( result, timeEnd - timeStart );
+    test.is( timeEnd - timeStart > 30000 )
+    console.log( timeEnd - timeStart );
   }
 
   /* */
 
-  function entityAllLongsFor( src, onEach )
+  function entityEachLongsFor( src, onEach )
   {
     for( let k = 0 ; k < src.length ; k++ )
-    result = onEach( src[ k ], k, src );
+    onEach( src[ k ], k, src );
 
     return src
   }
 
   /* */
 
-  function entityAllLongsForEach( src, onEach )
+  function entityEachLongsForEach( src, onEach )
   {
     src.forEach( onEach );
 
@@ -966,8 +966,8 @@ function entityEachTimeExperiment( test )
   }
 
 }
-entityAnyTimeExperiment.experimental = 1;
-entityAnyTimeExperiment.timeOut = 600000;
+entityEachTimeExperiment.experimental = 1;
+entityEachTimeExperiment.timeOut = 600000;
 
 //
 //
@@ -17694,6 +17694,7 @@ var Self =
     //
 
     entityEach,
+    entityEachTimeExperiment,
     // entityEachKey,
     entityEachOwn,
 
