@@ -4,7 +4,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer2.s' );
+  let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
   _.include( 'wSelector' );
 }
@@ -899,6 +899,75 @@ function entityEach( test )
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityEach( { a : 2 }, [] ) );
 }
+
+function entityEachTimeExperiment( test )
+{
+  var srcArray = new U8x( 500000000 );
+  for( let i = srcArray.length; i >= 0; i-- )
+  srcArray[ i ] = ( Math.random() + 0.01 ) * 250;
+
+  var onEach = ( e, k, src ) => e + 1;
+
+  /* */
+
+  // testTime( entityAllLongs, srcArray );
+
+  testTime( entityAllLongsFor, 20, srcArray, onEach );
+  testTime( entityAllLongsForEach, 20, srcArray, onEach );
+
+  /* NodeJS  |                 Running time
+             | using for              |  using method Array.some()
+     --------|------------------------|----------------------------
+      v8     |  21,9 s                | 134,8 s
+             |  21,8 s                | 143,3 s
+     --------|------------------------|----------------------------
+      v9     |  21,9 s                | 134,0 s
+             |  21,8 s                | 133,7 s
+     --------|------------------------|----------------------------
+      v10    |  17,2 s                | 142,6 s
+             |  17,1 s                | 143.2 s
+     --------|------------------------|----------------------------
+      v12    |  13,0 s                | 216,5 s
+             |  26,7 s                | 329,1 s
+  */
+
+  /* testing subroutine */
+
+  function testTime( func, times, arg1, arg2 )
+  {
+    var timeStart = _.timeNow();
+
+    for( let i = times; i > 0; i-- )
+    var result = func( arg1, arg2 );
+
+    var timeEnd = _.timeNow();
+
+    test.is( timeEnd - timeStart > 60000 )
+    console.log( result, timeEnd - timeStart );
+  }
+
+  /* */
+
+  function entityAllLongsFor( src, onEach )
+  {
+    for( let k = 0 ; k < src.length ; k++ )
+    result = onEach( src[ k ], k, src );
+
+    return src
+  }
+
+  /* */
+
+  function entityAllLongsForEach( src, onEach )
+  {
+    src.forEach( onEach );
+
+    return src;
+  }
+
+}
+entityAnyTimeExperiment.experimental = 1;
+entityAnyTimeExperiment.timeOut = 600000;
 
 //
 //
@@ -12991,8 +13060,8 @@ function entityAllTimeExperiment( test )
       v10    |  26,9 s                | 208,6 s
              |  26,6 s                | 210,1 s
      --------|------------------------|----------------------------
-      v12    |  26,9 s                | 369, 7
-             |  26,7 s                | 329,1
+      v12    |  26,9 s                | 369,7 s
+             |  26,7 s                | 329,1 s
   */
 
   /* testing subroutine */
@@ -13318,6 +13387,98 @@ function entityAny( test )
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityAny( { a : 2 }, [] ) );
 }
+
+//
+
+function entityAnyTimeExperiment( test )
+{
+  var srcArray = new U8x( 500000000 );
+  // for( let i = srcArray.length; i >= 0; i-- )
+  // srcArray[ i ] = ( Math.random() + 0.01 ) * 250;
+
+  var onEach = ( e, k, src ) => e;
+
+  /* */
+
+  // testTime( entityAllLongs, srcArray );
+
+  testTime( entityAllLongsFor, 20, srcArray, onEach );
+  testTime( entityAllLongsSome, 20, srcArray, onEach );
+
+  /* NodeJS  |                 Running time
+             | using for              |  using method Array.some()
+     --------|------------------------|----------------------------
+      v8     |  21,9 s                | 134,8 s
+             |  21,8 s                | 143,3 s
+     --------|------------------------|----------------------------
+      v9     |  21,9 s                | 134,0 s
+             |  21,8 s                | 133,7 s
+     --------|------------------------|----------------------------
+      v10    |  17,2 s                | 142,6 s
+             |  17,1 s                | 143.2 s
+     --------|------------------------|----------------------------
+      v12    |  13,0 s                | 216,5 s
+             |  26,7 s                | 223,4 s
+  */
+
+  /* testing subroutine */
+
+  function testTime( func, times, arg1, arg2 )
+  {
+    var timeStart = _.timeNow();
+
+    for( let i = times; i > 0; i-- )
+    var result = func( arg1, arg2 );
+
+    var timeEnd = _.timeNow();
+
+    test.is( timeEnd - timeStart > 60000 )
+    console.log( result, timeEnd - timeStart );
+  }
+
+  /* */
+
+  function entityAllLongsFor( src, onEach )
+  {
+    let result;
+    if( _.routineIs( onEach ) )
+    {
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = onEach( src[ k ], k, src );
+        if( result )
+        return result;
+      }
+    }
+    else
+    {
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = src[ k ];
+        if( result )
+        return result;
+      }
+    }
+
+    return true;
+  }
+
+  /* */
+
+  function entityAllLongsSome( src, onEach )
+  {
+    let result;
+    if( _.routineIs( onEach ) )
+    result = src.some( onEach );
+    else
+    result = src.some();
+
+    return result;
+  }
+
+}
+entityAnyTimeExperiment.experimental = 1;
+entityAnyTimeExperiment.timeOut = 600000;
 
 //
 
@@ -17592,6 +17753,7 @@ value for dst             dst                dst                    first +     
     entityAll,
     entityAllTimeExperiment,
     entityAny,
+    entityAnyTimeExperiment,
     entityNone,
 
     entityMap,
