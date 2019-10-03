@@ -52,7 +52,7 @@ function setAdapterMap( test )
   test.case = 'without arguments';
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = _.containerAdapter.make( new Set( [] ) );
-  var got = src.map();
+  var got = src.map( null );
   test.is( got !== src );
   test.identical( got, exp );
 
@@ -187,7 +187,7 @@ function setAdapterFilter( test )
   test.case = 'without arguments';
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = _.containerAdapter.make( new Set( [] ) );
-  var got = src.filter();
+  var got = src.filter( null );
   test.is( got !== src );
   test.identical( [ ... got.original ], [ ... exp.original ] );
 
@@ -238,7 +238,7 @@ function setAdapterFilter( test )
 
   test.case = 'from array, onEach returns container';
   var src = _.containerAdapter.make( new Set( [ 1 ] ) );
-  var exp = [ src.original ];
+  var exp = [ src ];
   var got = src.filter( null, ( e, k, src ) => src );
   test.is( got !== src );
   test.identical( [ ... got.original ], exp );
@@ -322,7 +322,7 @@ function setAdapterOnce( test )
   test.case = 'without arguments';
   var src = _.containerAdapter.make( new Set( [] ) );
   var exp = _.containerAdapter.make( new Set( [] ) );
-  var got = src.once();
+  var got = src.once( null );
   test.is( got !== src );
   test.identical( [ ... got.original ], [ ... exp.original ] );
 
@@ -609,7 +609,7 @@ function arrayAdapterMap( test )
   test.case = 'without arguments';
   var src = _.containerAdapter.make( [] );
   var exp = _.containerAdapter.make( [] );
-  var got = src.map();
+  var got = src.map( null );
   test.is( got !== src );
   test.identical( got.original, exp.original );
 
@@ -660,7 +660,7 @@ function arrayAdapterMap( test )
 
   test.case = 'from array, onEach returns container';
   var src = _.containerAdapter.make( [ 1 ] );
-  var exp = _.containerAdapter.make( [ [ 1 ] ] );
+  var exp = _.containerAdapter.make( [ src ] );
   var got = src.map( null, ( e, k, src ) => src );
   test.is( got !== src );
   test.identical( got.original, exp.original );
@@ -744,7 +744,7 @@ function arrayAdapterFilter( test )
   test.case = 'without arguments';
   var src = _.containerAdapter.make( [] );
   var exp = _.containerAdapter.make( [] );
-  var got = src.filter();
+  var got = src.filter( null );
   test.is( got !== src );
   test.identical( got.original, exp.original );
 
@@ -795,7 +795,7 @@ function arrayAdapterFilter( test )
 
   test.case = 'from array, onEach returns container';
   var src = _.containerAdapter.make( [ 1 ] );
-  var exp = _.containerAdapter.make( [ [ 1 ] ] );
+  var exp = _.containerAdapter.make( [ src ] );
   var got = src.filter( null, ( e, k, src ) => src );
   test.is( got !== src );
   test.identical( got.original, exp.original );
@@ -879,7 +879,7 @@ function arrayAdapterOnce( test )
   test.case = 'without arguments';
   var src = _.containerAdapter.make( [] );
   var exp = _.containerAdapter.make( [] );
-  var got = src.once();
+  var got = src.once( null );
   test.is( got !== src );
   test.identical( got.original, exp.original );
 
@@ -1148,30 +1148,6 @@ function arrayAdapterOnce( test )
 
 //
 
-function arrayAdapterOnceExperiment( test )
-{
-  test.case = 'onEval check element of array, no duplicates in src';
-  var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ [ null ], [ true ], [ 2 ] ] );
-  var got = src.once( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
-  test.identical( got.original, exp.original );
-}
-arrayAdapterOnceExperiment.experimental = 1;
-
-function arrayAdapterOnceExperiment2( test )
-{
-  test.case = 'onEval check element of array, no duplicates in src';
-  var src = _.containerAdapter.make( [ 0, 1, [ null ], [ true ], false, [ undefined ], '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ [ null ], [ true ], [ 2 ], 'some unnecessary element' ] );
-  var got = src.once( src, ( e ) => e[ 0 ] );
-  test.is( got === src );
-  test.identical( got, exp );
-}
-arrayAdapterOnceExperiment2.experimental = 1;
-
-//
-
 function arrayAdapterEach( test )
 {
   test.case = 'without arguments';
@@ -1240,8 +1216,6 @@ var Self =
     arrayAdapterMap,
     arrayAdapterFilter,
     arrayAdapterOnce,
-    arrayAdapterOnceExperiment,
-    arrayAdapterOnceExperiment2,
     arrayAdapterEach,
 
     setAdapterMap,
