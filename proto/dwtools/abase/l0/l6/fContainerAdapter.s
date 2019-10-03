@@ -1176,7 +1176,7 @@ var Routines =
   from, /* qqq : cover please | Dmytro : covered */
 
   toOriginal, /* qqq : cover please | Dmytro : covered */
-  toOriginals, /* qqq : cover please */
+  toOriginals, /* qqq : cover please | Dmytro : covered, routine has not implemented branch */
 
 }
 
