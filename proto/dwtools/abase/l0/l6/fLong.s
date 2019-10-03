@@ -6465,7 +6465,7 @@ function arrayFlattened( dstArray, src )
         result += 1;
       }
     }
-    
+
     return result;
   }
 
