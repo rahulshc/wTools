@@ -194,7 +194,7 @@ function make( test )
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.containerAdapter( [ 1, 2 ], [ 1, 2 ] ) );
 
-  test.case = 'container is not an array of a set';
+  test.case = 'container is not an array or a set';
   test.shouldThrowErrorSync( () => _.containerAdapter( _.argumentsArrayMake( 10 ) ) );
   test.shouldThrowErrorSync( () => _.containerAdapter( new U8x( 10 ) ) );
   test.shouldThrowErrorSync( () => _.containerAdapter( { a : 0 } ) );
