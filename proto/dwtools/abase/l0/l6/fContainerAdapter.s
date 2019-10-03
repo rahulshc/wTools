@@ -1169,9 +1169,9 @@ var Routines =
 
   /* qqq : requires good tests */
 
-  is, /* qqq : cover please */
-  make, /* qqq : cover please */
-  from, /* qqq : cover please */
+  is, /* qqq : cover please | Dmytro : covered */
+  make, /* qqq : cover please | Dmytro : covered */
+  from, /* qqq : cover please | Dmytro : covered */
 
   toOriginal, /* qqq : cover please */
   toOriginals, /* qqq : cover please */
