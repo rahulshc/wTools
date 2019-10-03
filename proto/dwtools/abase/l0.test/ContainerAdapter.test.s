@@ -16,15 +16,6 @@ var _ = wTools;
 
 function trivial( test )
 {
-  test.case = 'check array';
-  var got = _.containerAdapter.is( [ 1, 2 ] );
-  test.identical( got, false );
-
-  test.case = 'check instance of ContainerAdapter';
-  var src = _.containerAdapter.make( [ 1, 2 ] );
-  var got = _.containerAdapter.is( src );
-  test.identical( got, true );
-
   test.case = 'make ArrayContainerAdapter';
   var exp = _.containerAdapter.make( [ 1, 2 ] );
   var got = _.containerAdapter.make( [ 1, 2 ] );
@@ -41,6 +32,95 @@ function trivial( test )
   // var exp = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
   // var got = _.containerAdapter.make( src );
   // test.identical( got, exp );
+}
+
+
+function is( test )
+{
+  test.case = 'empty';
+  var got = _.containerAdapter.is();
+  test.identical( got, false );
+
+  test.case = 'src - null';
+  var got = _.containerAdapter.is( null );
+  test.identical( got, false );
+
+  test.case = 'src - undefined';
+  var got = _.containerAdapter.is( undefined );
+  test.identical( got, false );
+
+  test.case = 'src - number';
+  var got = _.containerAdapter.is( 1 );
+  test.identical( got, false );
+
+  test.case = 'src - string';
+  var got = _.containerAdapter.is( 'str' );
+  test.identical( got, false );
+
+  test.case = 'src - boolean, true';
+  var got = _.containerAdapter.is( true );
+  test.identical( got, false );
+
+  test.case = 'src - boolean, false';
+  var got = _.containerAdapter.is( false );
+  test.identical( got, false );
+
+  test.case = 'src - array';
+  var got = _.containerAdapter.is( [ 1, 2 ] );
+  test.identical( got, false );
+
+  test.case = 'src - unroll';
+  var got = _.containerAdapter.is( _.unrollMake( [ 1, 2 ] ) );
+  test.identical( got, false );
+
+  test.case = 'src - argumentsArray';
+  var got = _.containerAdapter.is( _.argumentsArrayMake( [ 1, 2 ] ) );
+  test.identical( got, false );
+
+  test.case = 'src - BufferRaw';
+  var got = _.containerAdapter.is( new BufferRaw( 5 ) );
+  test.identical( got, false );
+
+  test.case = 'src - BufferTyped';
+  var got = _.containerAdapter.is( new U8x( [ 1, 2 ] ) );
+  test.identical( got, false );
+
+  test.case = 'src - map';
+  var got = _.containerAdapter.is( { a : 0 } );
+  test.identical( got, false );
+
+  test.case = 'src - Map';
+  var got = _.containerAdapter.is( new Map() );
+  test.identical( got, false );
+
+  test.case = 'src - set';
+  var got = _.containerAdapter.is( new Set() );
+  test.identical( got, false );
+
+  test.case = 'src - Symbol';
+  var got = _.containerAdapter.is( Symbol( 'a' ) );
+  test.identical( got, false );
+
+  test.case = 'src - instance of constructor';
+  function Constr()
+  {
+    this.x = 1;
+    return this;
+  }
+  var got = _.containerAdapter.is( new Constr() );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'check instance of ContainerAdapter';
+  var src = _.containerAdapter.make( [ 1, 2 ] );
+  var got = _.containerAdapter.is( src );
+  test.identical( got, true );
+
+  test.case = 'check instance of ContainerAdapter';
+  var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+  var got = _.containerAdapter.is( src );
+  test.identical( got, true );
 }
 
 //--
@@ -1211,6 +1291,7 @@ var Self =
   tests :
   {
     trivial,
+    is,
 
     setAdapterMap,
     setAdapterFilter,
