@@ -14,27 +14,6 @@ var _ = wTools;
 // base tests
 // --
 
-function trivial( test )
-{
-  test.case = 'make ArrayContainerAdapter';
-  var exp = _.containerAdapter.make( [ 1, 2 ] );
-  var got = _.containerAdapter.make( [ 1, 2 ] );
-  test.identical( got, exp );
-
-  test.case = 'make SetContainerAdapter';
-  var exp = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
-  var got = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
-  test.is( _.containerAdapter.is( got ) );
-  test.identical( got, exp );
-
-  // test.case = 'make SetContainerAdapter from SetContainerAdapter';
-  // var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
-  // var exp = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
-  // var got = _.containerAdapter.make( src );
-  // test.identical( got, exp );
-}
-
-
 function is( test )
 {
   test.case = 'empty';
@@ -121,6 +100,108 @@ function is( test )
   var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
   var got = _.containerAdapter.is( src );
   test.identical( got, true );
+}
+
+//
+
+function make( test )
+{
+  test.case = 'from empty array';
+  var src = [];
+  var exp = _.containerAdapter.make( [] );
+  var got = _.containerAdapter.make( src );
+  test.is( got !== src );
+  test.is( _.arrayIs( got.original ) );
+  test.identical( got, exp );
+
+  test.case = 'from array';
+  var src = [ 1, 2, '', {}, [], null, undefined ];
+  var exp = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
+  var got = _.containerAdapter.make( src );
+  test.is( got !== src );
+  test.is( _.arrayIs( got.original ) );
+  test.identical( got, exp );
+
+  test.case = 'from empty unroll';
+  var src = _.unrollMake( [] );
+  var exp = _.containerAdapter.make( [] );
+  var got = _.containerAdapter.make( src );
+  test.is( got !== src );
+  test.is( _.arrayIs( got.original ) );
+  test.identical( got, exp );
+
+  test.case = 'from unroll';
+  var src = _.unrollMake( [ 1, 2, '', {}, [], null, undefined ] );
+  var exp = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
+  var got = _.containerAdapter.make( src );
+  test.is( got !== src );
+  test.is( _.arrayIs( got.original ) );
+  test.identical( got, exp );
+
+  test.case = 'from empty Set';
+  var src = new Set();
+  var exp = _.containerAdapter.make( new Set() );
+  var got = _.containerAdapter.make( src );
+  test.is( got !== src );
+  test.is( _.setIs( got.original ) );
+  test.identical( got, exp );
+
+  test.case = 'from Set';
+  var src = new Set( [ 1, 2, '', {}, [], null, undefined ] );
+  var exp = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
+  var got = _.containerAdapter.make( src );
+  test.is( got !== src );
+  test.is( _.setIs( got.original ) );
+  test.identical( got, exp );
+
+  test.case = 'from empty arrayAdapterContainer';
+  var src = _.containerAdapter.make( [] );
+  var exp = _.containerAdapter.make( [] );
+  var got = _.containerAdapter.make( src );
+  test.is( got !== src );
+  test.is( _.arrayIs( got.original ) );
+  test.identical( got, exp );
+
+  test.case = 'from arrayAdapterContainer';
+  var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
+  var exp = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
+  var got = _.containerAdapter.make( src );
+  test.is( got !== src );
+  test.is( _.arrayIs( got.original ) );
+  test.identical( got, exp );
+
+  test.case = 'from empty setAdapterContainer';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var exp = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
+  var got = _.containerAdapter.make( src );
+  test.is( got !== src );
+  test.is( _.setIs( got.original ) );
+  test.identical( got, exp );
+
+  test.case = 'from setAdapterContainer';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
+  var exp = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
+  var got = _.containerAdapter.make( src );
+  test.is( got !== src );
+  test.is( _.setIs( got.original ) );
+  test.identical( got, exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.containerAdapter( [ 1, 2 ], [ 1, 2 ] ) );
+
+  test.case = 'container is not an array of a set';
+  test.shouldThrowErrorSync( () => _.containerAdapter( _.argumentsArrayMake( 10 ) ) );
+  test.shouldThrowErrorSync( () => _.containerAdapter( new U8x( 10 ) ) );
+  test.shouldThrowErrorSync( () => _.containerAdapter( { a : 0 } ) );
+  test.shouldThrowErrorSync( () => _.containerAdapter( 'str' ) );
+  test.shouldThrowErrorSync( () => _.containerAdapter( 0 ) );
+  test.shouldThrowErrorSync( () => _.containerAdapter( null ) );
+  test.shouldThrowErrorSync( () => _.containerAdapter( undefined ) );
 }
 
 //--
@@ -1290,8 +1371,8 @@ var Self =
 
   tests :
   {
-    trivial,
     is,
+    make,
 
     setAdapterMap,
     setAdapterFilter,
