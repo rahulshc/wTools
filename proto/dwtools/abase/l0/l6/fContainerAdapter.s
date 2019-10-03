@@ -80,6 +80,7 @@ function toOriginals( dsts, srcs )
 {
   if( srcs === undefined )
   srcs = dsts;
+
   if( srcs === dsts )
   {
     if( _.arrayLike( dsts ) )
@@ -94,7 +95,26 @@ function toOriginals( dsts, srcs )
   }
   else
   {
-    _.assert( 0, 'not implemented' );
+    if( dsts === null )
+    dsts = [];
+
+    if( _.arrayLike( dsts ) )
+    {
+      if( _.arrayLike( srcs ) )
+      {
+        for( let e of srcs )
+        dsts.push( this.toOriginal( e ) );
+        return dsts;
+      }
+      else
+      dsts.push( this.toOriginal( srcs ) );
+      return dsts;
+    }
+    else
+    {
+      return this.toOriginals( [], arguments );
+    }
+    // _.assert( 0, 'not implemented' );
   }
 }
 
