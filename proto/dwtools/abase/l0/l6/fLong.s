@@ -161,11 +161,14 @@ function longMake( src, ins )
       {
         if( _.longIs( ins ) )
         {
+          /* Dmytro : simple and effective solution is
           result = Array.from( ins );
-          // if( ins.length === 1 )
-          // result = [ ins[ 0 ] ];
-          // else
-          // result = new( _.constructorJoin( src, ins ) );
+          Anyway, new container makes from ins
+          */
+          if( ins.length === 1 )
+          result = [ ins[ 0 ] ];
+          else
+          result = new( _.constructorJoin( src, ins ) );
         }
         else
         {
@@ -6431,6 +6434,19 @@ function arrayFlattened( dstArray, src )
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
+  let visited = [];
+
+  if( _.arrayHas( dstArray, dstArray ) )
+  {
+    let i = _.arrayLeftIndex( dstArray, dstArray );
+
+    while( i !== -1 )
+    {
+      dstArray.splice( i, 1 );
+      i = _.arrayLeftIndex( dstArray, dstArray );
+    }
+  }
+
   if( arguments.length === 1 )
   {
     // for( let i = dstArray.length-1; i >= 0; --i )
@@ -6449,7 +6465,8 @@ function arrayFlattened( dstArray, src )
         result += 1;
       }
     }
-    return dstArray;
+    
+    return result;
   }
 
   if( _.longLike( src ) || _.setLike( src ) )
@@ -6468,11 +6485,16 @@ function arrayFlattened( dstArray, src )
 
   function containerAppend( src )
   {
+    if( _.arrayHas( visited, src ) )
+    return;
+    visited.push( src );
+
     let count;
     if( src === dstArray )
     count = length;
     else
     count = src.length;
+
 
     for( let e of src )
     {
@@ -6490,6 +6512,8 @@ function arrayFlattened( dstArray, src )
         result += 1;
       }
     }
+
+    visited.pop();
   }
 
   /* */

@@ -18940,23 +18940,71 @@ function arrayFlattenedSame( test )
   test.identical( dst, [ [ [ [ [ 1 ] ] ] ], 1, 1, 1, 1 ] );
   test.identical( got, 4 );
 
-  // test.case = 'src push self';
-  // var dst = [];
-  // var src = [ 1, 2 ];
-  // src.push( src );
-  // debugger;
-  // var got  = _.arrayFlattened( dst, src );
-  // test.identical( dst, [ 1, [ 1 ], 1, 1 ] );
-  // test.identical( got, 2 );
-  //
-  // test.case = 'dst push self';
-  // var dst = [ 1 ];
-  // dst.push( dst );
-  // var src = dst;
-  // debugger;
-  // var got  = _.arrayFlattened( dst, src );
-  // test.identical( dst, [ 1, [ 1 ], 1, 1 ] );
-  // test.identical( got, 2 );
+  test.case = 'src push self';
+  var dst = [];
+  var src = [ 1, 2 ];
+  src.push( src );
+  var got  = _.arrayFlattened( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 2 );
+
+  test.case = 'src push self twice';
+  var dst = [];
+  var src = [ 1, 2 ];
+  src.push( src );
+  src.push( src );
+  var got  = _.arrayFlattened( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst push self';
+  var dst = [ 1 ];
+  dst.push( dst );
+  var src = [ 2 ];
+  var got  = _.arrayFlattened( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst push self twice';
+  var dst = [ 1 ];
+  dst.push( dst );
+  dst.push( dst );
+  var src = [ 2 ];
+  var got  = _.arrayFlattened( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst push self, dst === src';
+  var dst = [ 1 ];
+  dst.push( dst );
+  var src = src;
+  var got  = _.arrayFlattened( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst push self twice, dst === src';
+  var dst = [ 1 ];
+  dst.push( dst );
+  dst.push( dst );
+  var src = src;
+  var got  = _.arrayFlattened( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst push self';
+  var dst = [ 1 ];
+  dst.push( dst );
+  var got  = _.arrayFlattened( dst );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst push self twice';
+  var dst = [ 1 ];
+  dst.push( dst );
+  dst.push( dst );
+  var got  = _.arrayFlattened( dst );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, 1 );
 }
 
 //
