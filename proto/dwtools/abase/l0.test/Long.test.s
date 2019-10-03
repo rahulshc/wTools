@@ -13419,21 +13419,11 @@ function arrayAppendArrayOnce( test )
   test.identical( dst, [ 1, 'a', [ { a : 1 } ], { b : 2 } ] );
   test.is( got === dst );
 
-  test.case = 'argument is undefined';
-  var dst = [ 1 ];
-  test.shouldThrowErrorSync( function ()
-  {
-    _.arrayAppendArrayOnce( dst, undefined );
-  });
-  test.identical( dst, [ 1 ] );
-
   test.case = 'array has undefined';
   var dst = [ 1 ];
-  test.mustNotThrowError( function ()
-  {
-    _.arrayAppendArrayOnce( dst, [ undefined, 2 ] );
-  });
+  var got = _.arrayAppendArrayOnce( dst, [ undefined, 2 ] );
   test.identical( dst, [ 1, undefined, 2 ] );
+  test.is( got === dst );
 
   test.case = 'dst === src';
   var dst = [ 1,2,3 ];
@@ -13451,13 +13441,6 @@ function arrayAppendArrayOnce( test )
   var dst = [ 1,1,2,2,3,3 ];
   var got = _.arrayAppendArrayOnce( dst, dst, ( e ) => e );
   test.identical( dst, [ 1,1,2,2,3,3 ] );
-  test.identical( got, dst );
-
-  test.case = 'dst - empty array, ins - number, evaluator returns first el of array';
-  var dst = [];
-  debugger;
-  var got = _.arrayAppendArrayOnce( dst, [ 0, [ 2 ], 5, { a : 0 } ], ( e ) => e[ 0 ] );
-  test.identical( dst, [ [ 2 ] ] );
   test.identical( got, dst );
 
   test.case = 'dst === src single evaluator';
@@ -13478,7 +13461,20 @@ function arrayAppendArrayOnce( test )
   test.identical( dst, [ 1,1,2,2,3,3,1,1,2,2,3,3 ] );
   test.identical( got, dst );
 
-  /**/
+  test.case = 'dst - empty array, ins - number, evaluator returns first el of array';
+  var dst = [];
+  var got = _.arrayAppendArrayOnce( dst, [ 0, [ 2 ], 5, { a : 0 } ], ( e ) => e[ 0 ] );
+  test.identical( dst, [ [ 2 ] ] );
+  test.identical( got, dst );
+
+  test.case = 'dst - empty array, ins - number, evaluator returns first el of array';
+  var dst = [ [ 1 ], [ 3 ] ];
+  debugger;
+  var got = _.arrayAppendArrayOnce( dst, [ 0, [ 2 ], 5, { a : 0 } ], ( e ) => e[ 0 ] );
+  test.identical( dst, [ [ 1 ], [ 3 ], [ 2 ] ] );
+  test.identical( got, dst );
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -13501,11 +13497,16 @@ function arrayAppendArrayOnce( test )
     _.arrayAppendArrayOnce( [ 1, 2 ], 2 );
   });
 
-  // test.case = 'onEqualize is not a routine';
-  // test.shouldThrowErrorSync( function()
-  // {
-  //   _.arrayAppendArrayOnce( [ 1, 2 ], [ 2 ], 3 );
-  // });
+  test.shouldThrowErrorSync( function ()
+  {
+    _.arrayAppendArrayOnce( [ 1 ], undefined );
+  });
+
+  test.case = 'onEqualize is not a routine';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arrayAppendArrayOnce( [ 1, 2 ], [ 2 ], 2, 'wrong' );
+  });
 
 }
 
