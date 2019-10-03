@@ -5388,8 +5388,6 @@ function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
   if( arguments.length === 2 )
   return result;
 
-  let dstLenght = dstArray.length;
-
   for( let i = 0, len = insArray.length; i < len ; i++ )
   {
     if( _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
@@ -5397,13 +5395,6 @@ function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
       dstArray.push( insArray[ i ] );
       result += 1;
     }
-  }
-
-  if( _.routineIs( evaluator1 ) );
-  {
-    let index = _.arrayLeftIndex( dstArray, NaN, dstLenght, evaluator1, evaluator2 );
-    if( index !== -1 )
-    dstArray.splice( index, 1 );
   }
 
   return result;

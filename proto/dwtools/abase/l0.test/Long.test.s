@@ -13464,26 +13464,20 @@ function arrayAppendArrayOnce( test )
   test.case = 'dst - empty array, ins - number, evaluator returns first el of array';
   var dst = [];
   var got = _.arrayAppendArrayOnce( dst, [ 0, [ 2 ], 5, { a : 0 } ], ( e ) => e[ 0 ] );
-  test.identical( dst, [ [ 2 ] ] );
+  test.identical( dst, [ 0, [ 2 ] ] );
   test.identical( got, dst );
 
   test.case = 'dst - empty array, ins - number, evaluator returns first el of array';
   var dst = [];
   var got = _.arrayAppendArrayOnce( dst, [ 0, [ 2 ], 5, { a : 0 } ], ( e ) => e[ 0 ] !== undefined );
-  test.identical( dst, [ [ 2 ] ] );
+  test.identical( dst, [ 0, [ 2 ] ] );
   test.identical( got, dst );
 
   test.case = 'dst - empty array, ins - number, evaluator returns first el of array';
   var dst = [ [ 1 ], [ 3 ] ];
   var got = _.arrayAppendArrayOnce( dst, [ 0, [ 2 ], 5, { a : 0 } ], ( e ) => e[ 0 ] );
-  test.identical( dst, [ [ 1 ], [ 3 ], [ 2 ] ] );
+  test.identical( dst, [ [ 1 ], [ 3 ], 0, [ 2 ] ] );
   test.identical( got, dst );
-
-  // test.case = 'dst - empty array, ins - number, evaluator returns first el of array';
-  // var dst = [ [ 1 ], [ 3 ] ];
-  // var got = _.arrayAppendArrayOnce( dst, [ 0, 5, { a : 0 }, [ 2 ] ], ( e, k ) => k );
-  // test.identical( dst, [ [ 1 ], [ 3 ], [ 2 ] ] );
-  // test.identical( got, dst );
 
   /* - */
 

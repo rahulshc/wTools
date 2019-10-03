@@ -398,7 +398,7 @@ class ContainerAdapterAbstract
     return _.select( container, selector );
   }
 
-  original = null; // Dmytro : need clarification // qqq : ?
+  // original = null; // not works if njs < v12
 }
 
 // --
