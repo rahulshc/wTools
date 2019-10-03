@@ -85,10 +85,12 @@ function toOriginals( dsts, srcs )
     if( _.arrayLike( dsts ) )
     {
       for( let s = 0 ; s < dsts.length ; s++ )
-      dsts[ s ] = _.toOriginal( dsts[ s ] );
+      dsts[ s ] = this.toOriginal( dsts[ s ] );
+      // dsts[ s ] = _.toOriginal( dsts[ s ] );
       return dsts;
     }
-    return _.toOriginal( dsts );
+    return this.toOriginal( dsts );
+    // return _.toOriginal( dsts );
   }
   else
   {
@@ -1173,7 +1175,7 @@ var Routines =
   make, /* qqq : cover please | Dmytro : covered */
   from, /* qqq : cover please | Dmytro : covered */
 
-  toOriginal, /* qqq : cover please */
+  toOriginal, /* qqq : cover please | Dmytro : covered */
   toOriginals, /* qqq : cover please */
 
 }
