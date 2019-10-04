@@ -444,7 +444,7 @@ function toOriginal( test )
 
 function toOriginals( test )
 {
-  test.open( 'dsts not arrayLike' );
+  test.open( 'dsts' );
 
   test.case = 'empty';
   var exp = undefined;
@@ -618,13 +618,13 @@ function toOriginals( test )
   var got = _.containerAdapter.toOriginals( src );
   test.is( got === src );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
-  //
-  // test.case = 'dsts - null, from Map';
-  // var src = new Map( [ [ 1, 2 ] ] );
-  // var exp = new Map( [ [ 1, 2 ] ] );
-  // var got = _.containerAdapter.toOriginals( null, src );
-  // test.is( got === src );
-  // test.identical( [ got[ 0 ].entries() ], [ ... exp.entries() ] );
+
+  test.case = 'dsts - null, from Map';
+  var src = new Map( [ [ 1, 2 ] ] );
+  var exp = new Map( [ [ 1, 2 ] ] );
+  var got = _.containerAdapter.toOriginals( null, src );
+  test.is( got !== src );
+  test.identical( [ ... got[ 0 ].entries() ], [ ... exp.entries() ] );
 
   test.case = 'from Set';
   var src = new Set();
@@ -633,12 +633,12 @@ function toOriginals( test )
   test.is( got === src );
   test.identical( [ ... got ], [ ... exp ] );
 
-  // test.case = 'dsts - null, from Set';
-  // var src = new Set();
-  // var exp = new Set();
-  // var got = _.containerAdapter.toOriginals( null, src );
-  // test.is( got === src );
-  // test.identical( [ ... got ], [ ... exp ] );
+  test.case = 'dsts - null, from Set';
+  var src = new Set();
+  var exp = new Set();
+  var got = _.containerAdapter.toOriginals( null, src );
+  test.is( got !== src );
+  test.identical( [ ... got[ 0 ] ], [ ... exp ] );
 
   test.case = 'from Symbol';
   var src = Symbol( 'a' );
@@ -659,8 +659,6 @@ function toOriginals( test )
   test.is( got === src );
   test.identical( got, exp );
 
-  test.close( 'dsts not arrayLike' );
-
   /* */
 
   test.case = 'from ArrayContainerAdapter';
@@ -669,11 +667,23 @@ function toOriginals( test )
   test.is( got !== src );
   test.identical( got, src.original );
 
+  test.case = 'dsts - null, from ArrayContainerAdapter';
+  var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
+  var got = _.containerAdapter.toOriginals( null, src );
+  test.is( got !== src );
+  test.identical( got[ 0 ], src.original );
+
   test.case = 'from SetContainerAdapter';
   var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var got = _.containerAdapter.toOriginals( src );
   test.is( got !== src );
   test.identical( got, src.original );
+
+  test.case = 'dsts - null, from SetContainerAdapter';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
+  var got = _.containerAdapter.toOriginals( null, src );
+  test.is( got !== src );
+  test.identical( got[ 0 ], src.original );
 
   /* */
 
@@ -682,6 +692,15 @@ function toOriginals( test )
   var srcs = [ src, 1, src, 'str', src, undefined, null, false ];
   var got = _.containerAdapter.toOriginals( srcs );
   test.is( got === srcs );
+  test.identical( got.length, 8 );
+  test.identical( got[ 0 ], src.original );
+  test.identical( got[ 2 ], src.original );
+
+  test.case = 'dsts - null, array contains ArrayContainerAdapter';
+  var src = _.containerAdapter.make( [ 1, 2, 'str' ] );
+  var srcs = [ src, 1, src, 'str', src, undefined, null, false ];
+  var got = _.containerAdapter.toOriginals( null, srcs );
+  test.is( got !== srcs );
   test.identical( got.length, 8 );
   test.identical( got[ 0 ], src.original );
   test.identical( got[ 2 ], src.original );
@@ -704,6 +723,91 @@ function toOriginals( test )
   test.identical( got.length, 8 );
   test.identical( got[ 0 ], src1.original );
   test.identical( [ ... got[ 2 ] ], [ ... src2.original ] );
+
+  test.case = 'array contains ArrayContainerAdapter and SetContainerAdapter';
+  var src1 = _.containerAdapter.make( [ 1, 2, 'str' ] );
+  var src2 = _.containerAdapter.make( new Set( [ 1, 2, 'str' ] ) );
+  var srcs = [ src1, 1, src2, 'str', src1, undefined, null, false ];
+  var got = _.containerAdapter.toOriginals( null, srcs );
+  test.is( got !== srcs );
+  test.identical( got.length, 8 );
+  test.identical( got[ 0 ], src1.original );
+  test.identical( [ ... got[ 2 ] ], [ ... src2.original ] );
+
+  test.close( 'dsts' );
+
+  /* - */
+
+  test.case = 'from two primitive';
+  var dst = 1;
+  var src = 'str';
+  var exp = [ 1, 'str' ];
+  var got = _.containerAdapter.toOriginals( dst, src );
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  var dst = new Constr();
+  var src = true;
+  var exp = [ new Constr(), true ];
+  var got = _.containerAdapter.toOriginals( dst, src );
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'dsts - primitive, src - array';
+  var dst = 1;
+  var src = [ [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var exp = [ 1, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var got = _.containerAdapter.toOriginals( dst, src );
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'dsts - primitive, src - unroll';
+  var dst = 1;
+  var src = _.unrollMake( [ [ 2, 'str'], ... new Set( [ new Constr ] ) ] );
+  var exp = [ 1, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var got = _.containerAdapter.toOriginals( dst, src );
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'dsts - primitive, src - argumentsArray';
+  var dst = 1;
+  var src = _.argumentsArrayMake( [ [ 2, 'str'], ... new Set( [ new Constr ] ) ] );
+  var exp = [ 1, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var got = _.containerAdapter.toOriginals( dst, src );
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'dsts - array, src - array';
+  var dst = [ 1, { a : 0 } ];
+  var src = [ [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var exp = [ 1, { a : 0 }, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var got = _.containerAdapter.toOriginals( dst, src );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'dsts - unroll, src - array';
+  var dst = _.unrollMake( [ 1, { a : 0 } ] );
+  var src = [ [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var exp = [ 1, { a : 0 }, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var got = _.containerAdapter.toOriginals( dst, src );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got, exp );
+
+  test.case = 'dsts - argumentsArray, src - array';
+  var dst = _.argumentsArrayMake( [ 1, { a : 0 } ] );
+  var src = [ [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var exp = [ dst, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var got = _.containerAdapter.toOriginals( dst, src );
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( got, exp );
 }
 
 //--

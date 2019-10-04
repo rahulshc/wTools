@@ -98,7 +98,7 @@ function toOriginals( dsts, srcs )
     if( dsts === null )
     dsts = [];
 
-    if( _.arrayLike( dsts ) )
+    if( _.arrayIs( dsts ) )
     {
       if( _.arrayLike( srcs ) )
       {
@@ -112,6 +112,14 @@ function toOriginals( dsts, srcs )
     }
     else
     {
+      if( _.arrayLike( srcs ) )
+      {
+        let result = [];
+        result.push( this.toOriginal( dsts ) );
+        for( let e of srcs )
+        result.push( this.toOriginal( e ) );
+        return result;
+      }
       return this.toOriginals( [], arguments );
     }
     // _.assert( 0, 'not implemented' );
