@@ -19372,172 +19372,162 @@ function arrayFlattenedSets( test )
 
 function arrayFlattenedOnce( test )
 {
-  test.case = 'make array flat, dst is empty';
+  test.open( 'single argument' );
 
+  test.case = 'flat array, without duplicates';
+  var dst = [ 0, 1, 2, 3 ];
+  var got = _.arrayFlattenedOnce( dst );
+  test.identical( dst, [ 0, 1, 2, 3 ] );
+  test.identical( got, [ 0, 1, 2, 3 ] );
+
+  test.case = 'flat array, duplicates';
+  var dst = [ 0, 1, 0, 1 ];
+  var got = _.arrayFlattenedOnce( dst );
+  test.identical( dst, [ 0, 1 ] );
+  test.identical( got, [ 0, 1 ] );
+
+  test.case = 'array, level 2, duplicates';
+  var dst = [ [ 0, 0 ], [ 1, 1 ] ];
+  var got = _.arrayFlattenedOnce( dst );
+  test.identical( dst, [ 0, 1 ] );
+  test.identical( got, [ 0, 1 ] );
+
+  test.case = 'array with diff levels, duplicates';
+  var dst = [ 1, [ [ 0 ], 1 ], 1, 0 ];
+  var got = _.arrayFlattenedOnce( dst );
+  test.identical( dst, [ 1, 0 ] );
+  test.identical( got, [ 1, 0 ] );
+
+  test.close( 'single argument' );
+
+  /* - */
+
+  test.case = 'dst - empty array, src - number';
+  var dst = [];
+  var got = _.arrayFlattenedOnce( dst, 2 );
+  test.identical( dst, [ 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - empty array, src - empty array';
   var dst = [];
   var got = _.arrayFlattenedOnce( dst, [] );
   test.identical( dst, [] );
   test.identical( got, 0 );
 
+  test.case = 'dst - empty array, src - flat array, duplicates';
   var dst = [];
-  var got = _.arrayFlattenedOnce( dst, [ 1, 1, 2, 2, 3 , 3 ] );
+  var got = _.arrayFlattenedOnce( dst, [ 1, 1, 2, 2, 3, 3 ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
+  test.case = 'dst - empty array, src - array, level 2, duplicates';
   var dst = [];
   var got = _.arrayFlattenedOnce( dst, [ [ 1 ], [ 1 ], [ 2 ], [ 2 ], [ 3 ], [ 3 ]  ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
+  test.case = 'dst - empty array, src - array, level 3, duplicates';
   var dst = [];
   var got = _.arrayFlattenedOnce( dst, [ [ 1, 1, [ 2, 2, [ 3, 3 ] ] ]  ] );
   test.identical( dst, [ 1, 2, 3 ] );
   test.identical( got, 3 );
 
+  test.case = 'dst - empty array, src - array, level 5, duplicates';
   var dst = [];
   var got = _.arrayFlattenedOnce( dst, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
   test.identical( dst, [ 1 ] );
   test.identical( got, 1 );
 
-  test.case = 'make array flat, dst is not empty';
+  /* */
 
+  test.case = 'dst - flat array, src - string';
+  var dst = [ 1, 2, 3 ];
+  var got = _.arrayFlattenedOnce( dst, 'str' );
+  test.identical( dst, [ 1, 2, 3, 'str' ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - flat array, src - flat array, duplicates';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.arrayFlattenedOnce( dst, [ 4 ] );
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 0 );
 
-  var dst = [ 1, 2, 3 ];
-  var got = _.arrayFlattenedOnce( dst, [ 1, 2, 3, [ [ 4 ] ] ] );
-  test.identical( dst, [ 1, 2, 3, 4 ] );
-  test.identical( got, 1 );
-
+  test.case = 'dst - flat array, src - array, level 2, duplicates';
   var dst = [ 1, 2, 3 ];
   var got = _.arrayFlattenedOnce( dst, [ [ 1 ], [ 2 ], [ 3 ], [ 4 ] ] );
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 1 );
 
+  test.case = 'dst - flat array, src - array, level 3, duplicates';
   var dst = [ 1, 2, 3 ];
-  var got = _.arrayFlattenedOnce( dst, [ [ 1, [ 2, [ 3 ] ] ], 4 ] );
+  var got = _.arrayFlattenedOnce( dst, [ 1, 2, 3, [ [ 4 ] ] ] );
   test.identical( dst, [ 1, 2, 3, 4 ] );
   test.identical( got, 1 );
 
+  test.case = 'dst - flat array, src - array, level 5, duplicates';
   var dst = [ 1 ];
   var got = _.arrayFlattenedOnce( dst, [ [ [ [ [ 1, 1, 1 ] ] ] ] ]  );
   test.identical( dst, [ 1 ] );
   test.identical( got, 0 );
 
-  test.case = 'dst contains some inner arrays';
-
+  test.case = 'dst - array, level 2, src - flat array';
   var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
   var got = _.arrayFlattenedOnce( dst, [ 1, 2, 3 ]  );
   test.identical( dst, [ [ 1 ], [ 2 ], [ 3 ], 1, 2, 3 ] );
   test.identical( got, 3 );
 
-  var dst = [ [ 1 ], [ 2 ], [ 3 ] ];
-  var got = _.arrayFlattenedOnce( dst, [ 4, 5, 6 ]  );
-  test.identical( dst, [ [ 1 ], [ 2 ], [ 3 ], 4, 5, 6 ] );
-  test.identical( got, 3 );
-
-  test.case = 'make array flat from multiple arrays as one arg';
-
+  test.case = 'dst - flat array, src - array with diff level arrays, duplicates';
   var dst = [ 1, 4 ];
-  var got  = _.arrayFlattenedOnce
-  (
-    dst,
-    [
-      [ 1 ],
-      [ [ 2 ] ],
-      [ 3, [ [ [ 4 ] ] ] ]
-    ]
-  );
+  var got  = _.arrayFlattenedOnce( dst, [ [ 1 ], [ [ 2 ] ], [ 3, [ [ [ 4 ] ] ] ] ] );
   test.identical( dst, [ 1, 4, 2, 3 ] );
   test.identical( got, 2 );
 
-  test.case = 'onEqualize';
+  /* */
+
+  test.case = 'evaluator1';
   var dst = [ 1, 2, 3, 4 ];
-  var got = _.arrayFlattenedOnce( dst, [ 1, 4, 2, 5 ], function( a, b )
-  {
-    return  a === b;
-  });
+  var got = _.arrayFlattenedOnce( dst, [ 1, 4, 2, 5 ], ( e ) => e );
   test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, 1 );
 
-  //
-
-  test.open( 'single argument' );
-
-  var got = _.arrayFlattenedOnce( [ 0, 1, 2, 3 ] );
-  var expected = [ 0, 1, 2, 3 ];
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenedOnce( [ 0, 1, 0, 1 ] );
-  var expected = [ 0, 1 ];
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenedOnce( [ [ 0, 0 ], [ 1, 1 ] ] );
-  var expected = [ 0, 1 ];
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenedOnce( [ [ 0 ], 0, 1, [ 0, 1 ] ] );
-  var expected = [ 0, 1 ];
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenedOnce( [ 1, [ [ 0 ], 1 ], 1, 0 ] );
-  var expected = [ 1, 0 ];
-  test.identical( got, expected );
-
-  var got = _.arrayFlattenedOnce( [ 1, 1, 3, 3, [ 5, 5 ] ] );
-  var expected = [ 1, 3, 5 ];
-  test.identical( got, expected );
-
-  test.close( 'single argument' );
-
-  /*
-  test.case = 'Second arg is not long';
-
-  var dst = [];
-  var got = _.arrayFlattenedOnce( dst, 2 );
-  test.identical( dst, [ undefined ] );
-  */
-  var dst = [];
-  var got = _.arrayFlattenedOnce( dst, 1 );
-  test.identical( dst, [ 1 ] );
+  test.case = 'evaluator1 and evaluator2';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.arrayFlattenedOnce( dst, [ 1, 4, 2, 5 ], ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [ 1, 2, 3, 4, 5 ] );
   test.identical( got, 1 );
 
-  var dst = [ 1, 1, 3, 3, [ 5, 5 ] ];
-  var got = _.arrayFlattenedOnce( dst, 6 );
-  var expected = 1;
-  test.identical( dst, [ 1, 1, 3, 3, [ 5, 5 ], 6 ] );
-  test.identical( got, expected );
+  test.case = 'evaluator1 - fromIndex, evaluator2';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.arrayFlattenedOnce( dst, [ 1, 4, 2, 5 ], 1, ( e ) => e );
+  test.identical( dst, [ 1, 2, 3, 4, 1, 5 ] );
+  test.identical( got, 2 );
+
+  test.case = 'equilizer';
+  var dst = [ 1, 2, 3, 4 ];
+  var got = _.arrayFlattenedOnce( dst, [ 1, 4, 2, 5 ], ( a, b ) => a === b );
+  test.identical( dst, [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, 1 );
+
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayFlattenedOnce();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayFlattenedOnce() );
 
-  test.case = 'first is not longIs';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayFlattenedOnce( 1, [ 1 ] );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayFlattenedOnce( [], [ 1 ], ( e ) => e, ( ins ) => ins, 'extra' ) );
 
-/*
-test.case = 'Too many args';
-test.shouldThrowErrorSync( function()
-{
-  _.arrayFlattenedOnce( [ 1 ], 2, 3  );
-});
-*/
+  test.case = 'dstArray is not array';
+  test.shouldThrowErrorSync( () => _.arrayFlattenedOnce( 1, [ 1 ] ) );
 
-  test.case = 'onEqualize is not a routine';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayFlattenedOnce( [], [ 1 ], [] );
-  });
+  test.case = 'evaluator1 is not a routine or a number';
+  test.shouldThrowErrorSync( () => _.arrayFlattenedOnce( [], [ 1 ], [] ) );
+
+  test.case = 'evaluator2 is not a routine or a number';
+  test.shouldThrowErrorSync( () => _.arrayFlattenedOnce( [], [ 1 ], ( e ) => e, [] ) );
+  test.shouldThrowErrorSync( () => _.arrayFlattenedOnce( [], [ 1 ], 0, {} ) );
 }
 
 //
