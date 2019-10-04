@@ -18277,6 +18277,163 @@ function arrayFlattenSame( test )
   var got  = _.arrayFlatten( dst, src );
   test.identical( dst, [ [ [ [ [ 1 ] ] ] ], 1, 1, 1, 1 ] );
   test.identical( got, [ [ [ [ [ 1 ] ] ] ], 1, 1, 1, 1 ] );
+
+  /* - */
+
+  test.open( 'dst or src contains self' );
+
+  test.case = 'src push self';
+  var dst = [];
+  var src = [ 1, 2 ];
+  src.push( src );
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'src push self twice';
+  var dst = [];
+  var src = [ 1, 2 ];
+  src.push( src );
+  src.push( src );
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'dst push self';
+  var dst = [ 1 ];
+  dst.push( dst );
+  var src = [ 2 ];
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'dst push self twice';
+  var dst = [ 1 ];
+  dst.push( dst );
+  dst.push( dst );
+  var src = [ 2 ];
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'dst push self, src - Set';
+  var dst = [ 1 ];
+  dst.push( dst );
+  var src = new Set( [ 'str', { a : 2 } ] );
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 'str', { a : 2 } ] );
+  test.identical( got, [ 1, 'str', { a : 2 } ] );
+
+  test.case = 'dst push self twice, src - Set';
+  var dst = [ 1 ];
+  dst.push( dst );
+  dst.push( dst );
+  var src = new Set( [ 'str', { a : 2 } ] );
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 'str', { a : 2 } ] );
+  test.identical( got, [ 1, 'str', { a : 2 } ] );
+
+  test.case = 'dst push self, dst === src';
+  var dst = [ 1 ];
+  dst.push( dst );
+  var src = dst;
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 1, 1 ] );
+  test.identical( got, [ 1, 1, 1 ] );
+
+  test.case = 'dst push self twice, dst === src';
+  var dst = [ 1 ];
+  dst.push( dst );
+  dst.push( dst );
+  var src = dst;
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, [ 1, 1, 1, 1 ] );
+
+  test.case = 'dst push self';
+  var dst = [ 1 ];
+  dst.push( dst );
+  var got  = _.arrayFlatten( dst );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dst push self twice';
+  var dst = [ 1 ];
+  dst.push( dst );
+  dst.push( dst );
+  var got  = _.arrayFlatten( dst );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
+  /* */
+
+  test.case = 'src insert self';
+  var dst = [];
+  var src = [ 1, 2 ];
+  src.splice( 1, 0, dst );
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'src insert self twice';
+  var dst = [];
+  var src = [ 1, 2 ];
+  src.splice( 0, 0, dst );
+  src.splice( 2, 0, dst );
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 2 ] );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'dst insert self';
+  var dst = [ 1, 2 ];
+  dst.splice( 0, 0, dst );
+  var src = [ 2 ];
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 2, 2 ] );
+  test.identical( got, [ 1, 2, 2 ] );
+
+  test.case = 'dst insert self twice';
+  var dst = [ 1, 2 ];
+  dst.splice( 0, 0, dst );
+  dst.splice( 2, 0, dst );
+  var src = [ 3 ];
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'dst insert self, dst === src';
+  var dst = [ 1 ];
+  dst.splice( 0, 0, dst );
+  var src = dst;
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 1, 1 ] );
+  test.identical( got, [ 1, 1, 1 ] );
+
+  test.case = 'dst insert self twice, dst === src';
+  var dst = [ 1, 2 ];
+  dst.splice( 3, 0, dst );
+  dst.splice( 0, 0, dst );
+  var src = dst;
+  var got  = _.arrayFlatten( dst, src );
+  test.identical( dst, [ 1, 2, 1, 2, 1, 2 ] );
+  test.identical( got, [ 1, 2, 1, 2, 1, 2 ] );
+
+  test.case = 'dst insert self';
+  var dst = [ 1 ];
+  dst.splice( 0, 0, dst );
+  var got  = _.arrayFlatten( dst );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dst insert self twice';
+  var dst = [ 1 ];
+  dst.splice( 0, 0, dst );
+  dst.splice( 2, 0, dst );
+  var got  = _.arrayFlatten( dst );
+  test.identical( dst, [ 1 ] );
+  test.identical( got, [ 1 ] );
+
+  test.close( 'dst or src contains self' );
 }
 
 //
@@ -18940,6 +19097,8 @@ function arrayFlattenedSame( test )
   test.identical( dst, [ [ [ [ [ 1 ] ] ] ], 1, 1, 1, 1 ] );
   test.identical( got, 4 );
 
+  /* - */
+
   test.open( 'dst or src contains self' );
 
   test.case = 'src push self';
@@ -18976,6 +19135,23 @@ function arrayFlattenedSame( test )
   test.identical( dst, [ 1, 2 ] );
   test.identical( got, 1 );
 
+  test.case = 'dst push self, src - Set';
+  var dst = [ 1 ];
+  dst.push( dst );
+  var src = new Set( [ 'str', { a : 2 } ] );
+  var got  = _.arrayFlattened( dst, src );
+  test.identical( dst, [ 1, 'str', { a : 2 } ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst push self twice, src - Set';
+  var dst = [ 1 ];
+  dst.push( dst );
+  dst.push( dst );
+  var src = new Set( [ 'str', { a : 2 } ] );
+  var got  = _.arrayFlattened( dst, src );
+  test.identical( dst, [ 1, 'str', { a : 2 } ] );
+  test.identical( got, 2 );
+
   test.case = 'dst push self, dst === src';
   var dst = [ 1 ];
   dst.push( dst );
@@ -18998,7 +19174,7 @@ function arrayFlattenedSame( test )
   dst.push( dst );
   var got  = _.arrayFlattened( dst );
   test.identical( dst, [ 1 ] );
-  test.identical( got, 1 );
+  test.identical( got, [ 1 ] );
 
   test.case = 'dst push self twice';
   var dst = [ 1 ];
@@ -19006,7 +19182,7 @@ function arrayFlattenedSame( test )
   dst.push( dst );
   var got  = _.arrayFlattened( dst );
   test.identical( dst, [ 1 ] );
-  test.identical( got, 1 );
+  test.identical( got, [ 1 ] );
 
   /* */
 
@@ -19066,7 +19242,7 @@ function arrayFlattenedSame( test )
   dst.splice( 0, 0, dst );
   var got  = _.arrayFlattened( dst );
   test.identical( dst, [ 1 ] );
-  test.identical( got, 1 );
+  test.identical( got, [ 1 ] );
 
   test.case = 'dst insert self twice';
   var dst = [ 1 ];
@@ -19074,7 +19250,7 @@ function arrayFlattenedSame( test )
   dst.splice( 2, 0, dst );
   var got  = _.arrayFlattened( dst );
   test.identical( dst, [ 1 ] );
-  test.identical( got, 1 );
+  test.identical( got, [ 1 ] );
 
   test.close( 'dst or src contains self' );
 }
