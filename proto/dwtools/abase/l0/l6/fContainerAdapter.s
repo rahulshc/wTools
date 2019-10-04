@@ -419,8 +419,6 @@ class ContainerAdapterAbstract
     let container = self.original;
     return _.select( container, selector );
   }
-
-  // original = null; // not works if njs < v12
 }
 
 // --
