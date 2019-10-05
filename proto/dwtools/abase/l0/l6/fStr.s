@@ -138,16 +138,16 @@ function strLeft( src, ins, first, last )
 /*
 
 (bb)(?!(?=.).*(?:bb))
-aaa_bbb_|bb|b_ccc_ccc
+aa_bb_|bb|b_cc_cc
 
 .*(bb)
-aaa_bbb_b|bb|_ccc_ccc
+aa_bb_b|bb|_cc_cc
 
 (b+)(?!(?=.).*(?:b+))
-aaa_bbb_|bbb|_ccc_ccc
+aa_bb_|bb|_cc_cc
 
 .*(b+)
-aaa_bbb_bb|b|_ccc_ccc
+aa_bb_bb|b|_cc_cc
 
 */
 

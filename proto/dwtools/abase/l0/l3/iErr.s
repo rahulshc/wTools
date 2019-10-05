@@ -581,7 +581,7 @@ function errIs( src )
 
 function errIsRefined( src )
 {
-  if( _.errIs( src ) === false )
+  if( !_.errIs( src ) )
   return false;
   return src.originalMessage !== undefined;
 }
@@ -590,7 +590,7 @@ function errIsRefined( src )
 
 function errIsAttended( src )
 {
-  if( _.errIs( src ) === false )
+  if( !_.errIs( src ) )
   return false;
   return !!src.attended;
 }
@@ -602,6 +602,15 @@ function errIsLogged( src )
   if( _.errIs( src ) === false )
   return false;
   return !!src.logged;
+}
+
+//
+
+function errIsBrief( src )
+{
+  if( !_.errIs( src ) )
+  return false;
+  return !!src.brief;
 }
 
 // //
@@ -909,9 +918,9 @@ function _err( o )
       location : o.location,
     });
 
-    if( o.briefly === null || o.briefly === undefined )
-    o.briefly = result.briefly;
-    o.briefly = !!o.briefly;
+    if( o.brief === null || o.brief === undefined )
+    o.brief = result.brief;
+    o.brief = !!o.brief;
 
     if( o.debugging === null || o.debugging === undefined )
     o.debugging = result.debugging;
@@ -1055,7 +1064,7 @@ function _err( o )
   {
     let result = '';
 
-    if( o.briefly )
+    if( o.brief )
     {
       result += originalMessage;
     }
@@ -1096,7 +1105,7 @@ function _err( o )
     nonenurable( 'catchCounter', result.catchCounter ? result.catchCounter+1 : 1 );
     nonenurable( 'attended', attended );
     nonenurable( 'logged', logged );
-    nonenurable( 'briefly', o.briefly );
+    nonenurable( 'brief', o.brief );
 
     if( o.location.line !== undefined )
     nonenurable( 'lineNumber', o.location.line );
@@ -1228,7 +1237,7 @@ _err.defaults =
   debugging : null,
   location : null,
   sourceCode : null,
-  briefly : null,
+  brief : null,
   args : null,
   stack : null,
   fallBackStack : null,
@@ -1284,7 +1293,7 @@ function errBrief()
   ({
     args : arguments,
     level : 2,
-    briefly : 1,
+    brief : 1,
   });
 }
 
@@ -1296,7 +1305,7 @@ function errUnbrief()
   ({
     args : arguments,
     level : 2,
-    briefly : 0,
+    brief : 0,
   });
 }
 
@@ -1701,14 +1710,14 @@ function sureBriefly( condition )
     ({
       args : [ 'Assertion fails' ],
       level : 2,
-      briefly : 1,
+      brief : 1,
     });
     else if( arguments.length === 2 )
     throw _err
     ({
       args : [ arguments[ 1 ] ],
       level : 2,
-      briefly : 1,
+      brief : 1,
     });
     else
     throw _err
@@ -1716,7 +1725,7 @@ function sureBriefly( condition )
       // args : _.longSlice( arguments,1 ),
       args : _.longSlice( arguments, 1 ),
       level : 2,
-      briefly : 1,
+      brief : 1,
     });
   }
 
@@ -2078,6 +2087,7 @@ let Routines =
   errIs,
   errIsRefined,
   errIsAttended,
+  errIsBrief,
   errIsLogged,
   errOriginalMessage,
   errOriginalStack,
