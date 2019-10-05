@@ -419,7 +419,7 @@ let wGraphTools =
 
 let wGitTools =
 {
-  includeAny : includeAny( 'amid/l2/git/IncludeMid.s', 'wgittools' ),
+  includeAny : includeAny( 'amid/l3/git/IncludeMid.s', 'wgittools' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.git },
 }
 
