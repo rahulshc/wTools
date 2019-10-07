@@ -6977,7 +6977,6 @@ function arrayFlattenedDefined( dstArray, src )
   let visited = [];
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  // _.assert( arguments.length >= 1 );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
@@ -7008,7 +7007,7 @@ function arrayFlattenedDefined( dstArray, src )
     return dstArray;
   }
 
-  if( _.arrayHas( dstArray, dstArray ) ) // Dmytro : stack is unstable if dstArray.push( dstArray )
+  if( _.arrayHas( dstArray, dstArray ) )
   {
     let i = _.arrayLeftIndex( dstArray, dstArray );
 
@@ -7019,9 +7018,6 @@ function arrayFlattenedDefined( dstArray, src )
     }
   }
 
-  // for( let a = 1; a < arguments.length; a++ )
-  // {
-  //   src = arguments[ a ];
   if( _.longLike( src ) || _.setLike( src ) )
   {
     containerAppend( src );
@@ -7036,7 +7032,6 @@ function arrayFlattenedDefined( dstArray, src )
       result += 1;
     }
   }
-  // }
 
   return result;
 
