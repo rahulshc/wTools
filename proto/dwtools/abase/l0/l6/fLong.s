@@ -6456,7 +6456,7 @@ function arrayFlattened( dstArray, src )
     return dstArray;  // Dmytro : it has no sence to count result and return dstArray
   }
 
-  if( _.arrayHas( dstArray, dstArray ) ) // Dmytro : stack is unstable if dstArray.push( dstArray ) more then one time
+  if( _.arrayHas( dstArray, dstArray ) ) // Dmytro : stack is unstable if dstArray.push( dstArray )
   {
     let i = _.arrayLeftIndex( dstArray, dstArray );
 
@@ -6970,79 +6970,211 @@ function arrayFlattenDefinedOnceStrictly( dstArray, insArray, evaluator1, evalua
 
 //
 
-function arrayFlattenedDefined( dstArray, insArray )
+function arrayFlattenedDefined( dstArray, src )
 {
+  let result = 0;
+  let length = dstArray.length;
+  let visited = [];
 
-  _.assert( arguments.length >= 1 );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  // _.assert( arguments.length >= 1 );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
   if( arguments.length === 1 )
   {
-    for( let i = dstArray.length-1; i >= 0; --i )
-    if( _.longIs( dstArray[ i ] ) )
+    for( let i = 0 ; i < dstArray.length ; i++ )
     {
-      let insArray = dstArray[ i ];
-      dstArray.splice( i, 1 );
-      onLong( insArray, i );
+      let e = dstArray[ i ];
+
+      if( e === undefined )
+      {
+        dstArray.splice( i, 1 );
+        i -= 1;
+      }
+      else if( _.longLike( e ) || _.setLike( e ) )
+      {
+        dstArray.splice( i, 1 );
+        if( e !== dstArray )
+        i = containerReplace( e, i );
+        i -= 1;
+      }
+      // else
+      // {
+      //   result += 1;
+      // }
     }
+
     return dstArray;
   }
 
-  let result = 0;
-
-  for( let a = 1 ; a < arguments.length ; a++ )
+  if( _.arrayHas( dstArray, dstArray ) ) // Dmytro : stack is unstable if dstArray.push( dstArray )
   {
-    let insArray = arguments[ a ];
+    let i = _.arrayLeftIndex( dstArray, dstArray );
 
-    if( _.longIs( insArray ) )
+    while( i !== -1 )
     {
-      for( let i = 0, len = insArray.length; i < len; i++ )
-      {
-        if( _.longIs( insArray[ i ] ) )
-        {
-          let c = _.arrayFlattenedDefined( dstArray, insArray[ i ] );
-          result += c;
-        }
-        else
-        {
-          // _.assert( insArray[ i ] !== undefined, 'The Array should have no undefined' );
-          if( insArray[ i ] !== undefined )
-          {
-            dstArray.push( insArray[ i ] );
-            result += 1;
-          }
-        }
-      }
+      dstArray.splice( i, 1 );
+      i = _.arrayLeftIndex( dstArray, dstArray );
     }
-    else
-    {
-      _.assert( insArray !== undefined, 'The Array should have no undefined' );
-      if( insArray !== undefined )
-      {
-        dstArray.push( insArray );
-        result += 1;
-      }
-    }
-
   }
+
+  // for( let a = 1; a < arguments.length; a++ )
+  // {
+  //   src = arguments[ a ];
+  if( _.longLike( src ) || _.setLike( src ) )
+  {
+    containerAppend( src );
+  }
+  else
+  {
+    _.assert( src !== undefined, 'The Array should have no undefined' );
+
+    if( src !== undefined )
+    {
+      dstArray.push( src );
+      result += 1;
+    }
+  }
+  // }
 
   return result;
 
   /* */
 
-  function onLong( insArray, insIndex )
+  function containerAppend( src )
   {
-    for( let i = 0, len = insArray.length; i < len; i++ )
+    if( _.arrayHas( visited, src ) )
+    return;
+    visited.push( src );
+
+    let count;
+    if( src === dstArray )
+    count = length;
+    else
+    count = src.length;
+
+    for( let e of src )
     {
-      if( _.longIs( insArray[ i ] ) )
-      onLong( insArray[ i ], insIndex )
+      if( count < 1 )
+      break;
+      count--;
+
+      if( _.longLike( e ) || _.setLike( e ) )
+      {
+        containerAppend( e )
+      }
       else
-      dstArray.splice( insIndex++, 0, insArray[ i ] );
+      {
+        if( e !== undefined )
+        {
+          dstArray.push( e );
+          result += 1;
+        }
+      }
     }
+
+    visited.pop();
+  }
+
+  /* */
+
+  function containerReplace( src, index )
+  {
+    for( let e of src )
+    {
+      if( _.longLike( e ) || _.setLike( e ) )
+      {
+        index = containerReplace( e, index );
+      }
+      else
+      {
+        if( e !== undefined )
+        {
+          dstArray.splice( index, 0, e );
+          // result += 1;
+          index += 1;
+        }
+      }
+    }
+    return index;
   }
 
 }
+
+// function arrayFlattenedDefined( dstArray, insArray )
+// {
+//
+//   _.assert( arguments.length >= 1 );
+//   _.assert( _.objectIs( this ) );
+//   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+//
+//   if( arguments.length === 1 )
+//   {
+//     for( let i = dstArray.length-1; i >= 0; --i )
+//     if( _.longIs( dstArray[ i ] ) )
+//     {
+//       let insArray = dstArray[ i ];
+//       dstArray.splice( i, 1 );
+//       onLong( insArray, i );
+//     }
+//     return dstArray;
+//   }
+//
+//   let result = 0;
+//
+//   for( let a = 1 ; a < arguments.length ; a++ )
+//   {
+//     let insArray = arguments[ a ];
+//
+//     if( _.longIs( insArray ) )
+//     {
+//       for( let i = 0, len = insArray.length; i < len; i++ )
+//       {
+//         if( _.longIs( insArray[ i ] ) )
+//         {
+//           let c = _.arrayFlattenedDefined( dstArray, insArray[ i ] );
+//           result += c;
+//         }
+//         else
+//         {
+//           // _.assert( insArray[ i ] !== undefined, 'The Array should have no undefined' );
+//           if( insArray[ i ] !== undefined )
+//           {
+//             dstArray.push( insArray[ i ] );
+//             result += 1;
+//           }
+//         }
+//       }
+//     }
+//     else
+//     {
+//       _.assert( insArray !== undefined, 'The Array should have no undefined' );
+//       if( insArray !== undefined )
+//       {
+//         dstArray.push( insArray );
+//         result += 1;
+//       }
+//     }
+//
+//   }
+//
+//   return result;
+//
+//   /* */
+//
+//   function onLong( insArray, insIndex )
+//   {
+//     for( let i = 0, len = insArray.length; i < len; i++ )
+//     {
+//       if( _.longIs( insArray[ i ] ) )
+//       onLong( insArray[ i ], insIndex )
+//       else
+//       dstArray.splice( insIndex++, 0, insArray[ i ] );
+//     }
+//   }
+//
+// }
 
 //
 
