@@ -320,7 +320,7 @@ class ContainerAdapterAbstract
     return self;
   }
 
-  min( onEach ) /* qqq : implement good coverage, make sure it works without onEach */
+  min( onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach, onEach return value that sets to previusElement */
   {
     let self = this;
     if( onEach )
@@ -1195,7 +1195,7 @@ var Fields =
 var Routines =
 {
 
-  /* qqq : requires good tests */
+  /* qqq : requires good tests | Dmytro : covered */
 
   is, /* qqq : cover please | Dmytro : covered */
   make, /* qqq : cover please | Dmytro : covered */
