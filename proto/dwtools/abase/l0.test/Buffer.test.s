@@ -4706,6 +4706,144 @@ function bufferRetype( test )
 
 //
 
+// function bufferJoin( test )
+// {
+//  test.case = 'empty call';
+//  test.identical( _.bufferJoin(), null );
+//
+//  test.case = 'empty arrays';
+//  test.identical( _.bufferJoin( [], [] ), null );
+//
+//  test.case = 'simple';
+//
+//  var src = [ 1 ];
+//  var got = _.bufferJoin( src );
+//  var expected = src;
+//  test.identical( got, expected );
+//
+//  var src = [ 1 ];
+//  var got = _.bufferJoin( src, src );
+//  var expected = [ 1, 1 ];
+//  test.identical( got, expected );
+//
+//  test.case = 'array + typedArray';
+//  var got = _.bufferJoin( [ 1 ], new U8x( [ 1, 2 ] ) );
+//  var expected = [ 1, 1, 2 ];
+//  test.identical( got, expected );
+//
+//  var got = _.bufferJoin( new U8x( [ 1, 2 ] ), [ 1 ] );
+//  var expected = new U8x( [ 1, 2, 1 ] );
+//  test.identical( got, expected );
+//
+//  test.case = 'typedArray + typedArray';
+//  var got = _.bufferJoin( new U8x( [ 1, 2 ] ), new U8x( [ 1, 2 ] ) );
+//  var expected = new U8x( [ 1, 2, 1, 2 ] );
+//  test.identical( got, expected );
+//
+//  var got = _.bufferJoin( new U8x( [ 1, 2 ] ), new U16x( [ 1, 2 ] ) );
+//  var expected = new U8x( [ 1, 2, 1, 0, 2, 0 ] );
+//  test.identical( got, expected );
+//
+//  test.case = 'arrayBuffer + arrayBuffer';
+//  var src = new U8x( [ 1, 2 ] );
+//  var got = _.bufferJoin( src.buffer, src.buffer );
+//  test.is( _.bufferRawIs( got ) );
+//  var expected = new U8x( [ 1, 2, 1, 2 ] );
+//  test.identical( new U8x( got ), expected );
+//
+//  test.case = 'arrayBuffer + array';
+//  var src = new U8x( [ 1, 2 ] );
+//  var got = _.bufferJoin( src.buffer, [ 1, 2 ] );
+//  test.is( _.bufferRawIs( got ) );
+//  var expected = new U8x( [ 1, 2, 1, 2 ] );
+//  test.identical( new U8x( got ), expected );
+//
+//  test.case = 'arrayBuffer + typedArray';
+//  var src = new U8x( [ 1, 2 ] );
+//  var got = _.bufferJoin( src.buffer, src );
+//  test.is( _.bufferRawIs( got ) );
+//  var expected = new U8x( [ 1, 2, 1, 2 ] );
+//  test.identical( new U8x( got ), expected );
+//
+//  test.case = 'typedArray + arrayBuffer';
+//  var src = new U8x( [ 1, 2 ] );
+//  var got = _.bufferJoin( src, src.buffer );
+//  var expected = new U8x( [ 1, 2, 1, 2 ] );
+//  test.identical( got, expected );
+//
+//  test.case = 'typedArray + arrayBuffer + array';
+//  var src = new U8x( [ 1 ] );
+//  var got = _.bufferJoin( src, src.buffer, [ 1 ] );
+//  var expected = new U8x( [ 1, 1, 1 ] );
+//  test.identical( got, expected );
+//
+//  test.case = 'array + typedArray + arrayBuffer';
+//  var src = new U8x( [ 1 ] );
+//  var got = _.bufferJoin( [ 1 ], src, src.buffer );
+//  var expected = [ 1, 1, 1 ];
+//  test.identical( got, expected );
+//
+//  test.case = 'arrayBuffer + array + typedArray';
+//  var src = new U8x( [ 1 ] );
+//  var got = _.bufferJoin( src.buffer, [ 1 ], src  );
+//  test.is( _.bufferRawIs( got ) );
+//  var expected = new U8x( [ 1, 1, 1 ] );
+//  test.identical( new U8x( got ), expected );
+//
+//  if( Config.interpreter === 'njs' )
+//  {
+//    test.case = 'buffer';
+//    var got = _.bufferJoin( BufferNode.from( '1' ), [ 1 ] );
+//    var expected = BufferNode.from( [ 49, 1 ] );
+//    test.identical( got, expected );
+//
+//    test.case = 'buffer + arrayBuffer';
+//    var raw = new U8x( [ 1 ] ).buffer;
+//    var got = _.bufferJoin( BufferNode.from( '1' ), raw );
+//    var expected = BufferNode.from( [ 49, 1 ] );
+//    test.identical( got, expected );
+//
+//    test.case = 'buffer + typedArray';
+//    var typed = new U8x( [ 1 ] );
+//    var got = _.bufferJoin( BufferNode.from( '1' ), typed );
+//    var expected = BufferNode.from( [ 49, 1 ] );
+//    test.identical( got, expected );
+//
+//    test.case = 'buffer + typedArray + raw + array';
+//    var typed = new U8x( [ 1 ] );
+//    var got = _.bufferJoin( BufferNode.from( '1' ), typed, typed.buffer, [ 1 ] );
+//    var expected = BufferNode.from( [ 49, 1, 1, 1 ] );
+//    test.identical( got, expected );
+//
+//    test.case = 'typedArray + buffer + raw + array';
+//    var typed = new U8x( [ 1 ] );
+//    var got = _.bufferJoin( typed, BufferNode.from( '1' ), typed.buffer, [ 1 ] );
+//    var expected = new U8x( [ 1, 49, 1, 1 ] );
+//    test.identical( got, expected );
+//
+//    test.case = 'raw + typedArray + buffer + array';
+//    var typed = new U8x( [ 1 ] );
+//    var got = _.bufferJoin( typed.buffer, typed, BufferNode.from( '1' ), [ 1 ] );
+//    var expected = new U8x( [ 1, 1, 49, 1 ] );
+//    test.identical( new U8x( got ), expected );
+//
+//    test.case = 'array + raw + typedArray + buffer ';
+//    var typed = new U8x( [ 1 ] );
+//    var got = _.bufferJoin( [ 1 ], typed.buffer, typed, BufferNode.from( '1' )  );
+//    var expected = new U8x( [ 1, 1, 1, 49 ] );
+//    test.identical( new U8x( got ), expected );
+//  }
+//
+//  if( !Config.debug )
+//  return;
+//
+//  test.shouldThrowErrorSync( () => _.bufferJoin( [ 1 ], '1' ) );
+//  test.shouldThrowErrorSync( () => _.bufferJoin( [ 1 ], { byteLength : 5 } ) );
+//
+// }
+
+//
+
 function bufferFrom( test )
 {
   /*src: number, str, array, raw, typed, node */
@@ -5423,6 +5561,7 @@ var Self =
     bufferResize,
     bufferResizeInplace,
     bufferRetype,
+    // bufferJoin, /* Dmytro : extend test routine, extend routine */
     bufferFrom,
     bufferRawFromTyped,
     bufferRawFrom,
