@@ -30619,9 +30619,11 @@ var Self =
     argumentsArrayMake,
     argumentsArrayFrom,
 
-    // long l0
+    // long l0/l3
 
     longIs,
+
+    // long, lo/l6
 
     longMake,
     _longMakeOfLength,
@@ -30642,7 +30644,7 @@ var Self =
     // longResize, // Dmytro : uncomment when it will be reimplemented
     longDuplicate,
 
-    // long l1
+    // long l0/l8
 
     longAreRepeatedProbe,
     longAllAreRepeated,
