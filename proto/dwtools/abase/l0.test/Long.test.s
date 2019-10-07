@@ -21702,9 +21702,6 @@ function arrayFlattenDefined( test )
   test.case = 'dstArray is not arrayLike';
   test.shouldThrowErrorSync( () => _.arrayFlattenDefined( 1, [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.arrayFlattenDefined( new U8x( 2 ), [ 1 ] ) );
-
-  test.case = 'src is undefined';
-  test.shouldThrowErrorSync( () => _.arrayFlattenDefined( [], undefined ) );
 }
 
 //
@@ -22506,9 +22503,6 @@ function arrayFlattenedDefined( test )
   test.shouldThrowErrorSync( () => _.arrayFlattenedDefined( 1, [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.arrayFlattenedDefined( null, [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.arrayFlattenedDefined( new U8x( 2 ), [ 1 ] ) );
-
-  test.case = 'src is undefined';
-  test.shouldThrowErrorSync( () => _.arrayFlattenedDefined( [], undefined ) );
 }
 
 //
