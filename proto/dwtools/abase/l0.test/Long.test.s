@@ -23193,6 +23193,152 @@ function arrayFlattenDefinedOnceStrictlySame( test )
 
 //
 
+function arrayFlattenDefinedOnceStrictlySets( test )
+{
+  test.open( 'dst - empty array' );
+
+  test.case = 'src - empty Set';
+  var dst = [];
+  var src = new Set();
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [] );
+  test.identical( got, [] );
+
+  test.case = 'src - flat Set';
+  var dst = [];
+  var src = new Set( [ 1, [ 'str' ], 2, undefined, { a : 0 }, { a : 0 } ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, 'str', 2, { a : 0 }, { a : 0 } ] );
+  test.identical( got, [ 1, 'str', 2, { a : 0 }, { a : 0 } ] );
+
+  test.case = 'src - Set, level 2';
+  var dst = [];
+  var src = new Set( [ 1, [ [ 'str', undefined ] ], 3 ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, 'str', 3 ] );
+  test.identical( got, [ 1, 'str', 3 ] );
+
+  test.case = 'src - Set, level 3';
+  var dst = [];
+  var src = new Set( [ 1, [ [ [ 'str', undefined ], 3 ] ] ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, 'str', 3 ] );
+  test.identical( got, [ 1, 'str', 3 ] );
+
+  test.case = 'src - Set, level 5';
+  var dst = [];
+  var src = new Set( [ [ [ [ 1, [ [ 'str', undefined ] ], 3 ] ] ], 2, 4, 6 ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, 'str', 3, 2, 4, 6 ] );
+  test.identical( got, [ 1, 'str', 3, 2, 4, 6 ] );
+
+  test.case = 'src - Set from two array level 5, duplicates';
+  var dst = [];
+  var src = new Set( [ [ [ [ 1, [ 'str', undefined ], { a : 3 } ] ] ], [ [ [ 2, [ undefined ], 4 ] ] ] ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, 'str', { a : 3 }, 2, 4 ] );
+  test.identical( got, [ 1, 'str', { a : 3 }, 2, 4 ] );
+
+  test.close( 'dst - empty array' );
+
+  /* - */
+
+  test.open( 'dst - array' );
+
+  test.case = 'src - empty Set';
+  var dst = [ 1, undefined, [ 2 ], { a : 0 } ];
+  var src = new Set();
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, undefined, [ 2 ], { a : 0 } ] );
+  test.identical( got, [ 1, undefined, [ 2 ], { a : 0 } ] );
+
+  test.case = 'src - flat Set';
+  var dst = [ 1, undefined, [ 2 ], { a : 0 } ];
+  var src = new Set( [ 2, 3, undefined ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, undefined, [ 2 ], { a : 0 }, 2, 3 ] );
+  test.identical( got, [ 1, undefined, [ 2 ], { a : 0 }, 2, 3 ] );
+
+  test.case = 'src - Set, level 2';
+  var dst = [ 1, undefined, [ 2 ], { a : 0 } ];
+  var src = new Set( [ 2, [ [ 'str', undefined ], 3 ] ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, undefined, [ 2 ], { a : 0 }, 2, 'str', 3 ] );
+  test.identical( got, [ 1, undefined, [ 2 ], { a : 0 }, 2, 'str', 3 ] );
+
+  test.case = 'src - Set, level 3';
+  var dst = [ 1, undefined, [ 2 ], { a : 0 } ];
+  var src = new Set( [ 2, [ [ [ 'str', undefined ] ], 3 ] ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, undefined, [ 2 ], { a : 0 }, 2, 'str', 3 ] );
+  test.identical( got, [ 1, undefined, [ 2 ], { a : 0 }, 2, 'str', 3 ] );
+
+  test.case = 'src - Set, level 5';
+  var dst = [ 1, undefined, [ 2 ], { a : 0 } ];
+  var src = new Set( [ [ [ 2, [ 'str', undefined ], 3 ] ] ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, undefined, [ 2 ], { a : 0 }, 2, 'str', 3 ] );
+  test.identical( got, [ 1, undefined, [ 2 ], { a : 0 }, 2, 'str', 3 ] );
+
+  test.case = 'src - Set from two array level 5';
+  var dst = [ 1, undefined, [ 2 ], { a : 0 } ];
+  var src = new Set( [ [ [ [ 2, undefined ] ] ], [ [ [ [ 'str', undefined ] ] ] ] ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  test.identical( dst, [ 1, undefined, [ 2 ], { a : 0 }, 2, 'str' ] );
+  test.identical( got, [ 1, undefined, [ 2 ], { a : 0 }, 2, 'str' ] );
+
+  test.close( 'dst - array' );
+
+  /* - */
+
+  test.open( 'dst - array, evaluators' );
+
+  test.case = 'src - Set, evaluator';
+  var dst = [ 1, undefined, [ 2 ], { a : 0 } ];
+  var src = new Set( [ 2, 3, undefined ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src, ( e ) => e );
+  test.identical( dst, [ 1, undefined, [ 2 ], { a : 0 }, 2, 3 ] );
+  test.identical( got, [ 1, undefined, [ 2 ], { a : 0 }, 2, 3 ] );
+
+  test.case = 'src - Set from dst, evaluator1 and evaluator2';
+  var dst = [ 1, [ undefined ], { a : 0 } ];
+  var src = new Set( [ dst ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src, ( e ) => e, ( ins ) => ins + 1 );
+  test.identical( dst, [ 1, [ undefined ], { a : 0 }, 1, { a : 0 } ] );
+  test.identical( got, [ 1, [ undefined ], { a : 0 }, 1, { a : 0 } ] );
+
+  test.case = 'src - Set from dst, evaluator1 - fromIndex, evaluator2';
+  var dst = [ 1, [ undefined ], { a : 0 } ];
+  var src = new Set( [ dst ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src, 3, ( ins ) => ins );
+  test.identical( dst, [ 1, [ undefined ], { a : 0 }, 1, { a : 0 } ] );
+  test.identical( got, [ 1, [ undefined ], { a : 0 }, 1, { a : 0 } ] );
+
+  test.case = 'src - Set from dst, equalizer';
+  var dst = [ 1, [ undefined ], { a : 0 } ];
+  var src = new Set( [ dst ] );
+  var got = _.arrayFlattenDefinedOnceStrictly( dst, src, ( e, ins ) => e === ins + 1 );
+  test.identical( dst, [ 1, [ undefined ], { a : 0 }, 1, { a : 0 } ] );
+  test.identical( got, [ 1, [ undefined ], { a : 0 }, 1, { a : 0 } ] );
+
+  test.close( 'dst - array, evaluators' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'src - Set from dst';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = [ 1, [ [ undefined ], { a : 0 } ] ];
+    var src = new Set( dst );
+    var got = _.arrayFlattenDefinedOnceStrictly( dst, src );
+  });
+}
+
+//
+
 function arrayFlattenedDefined( test )
 {
   test.open( 'single argument' );
@@ -30848,7 +30994,7 @@ var Self =
     arrayFlattenDefinedOnceSets,
     arrayFlattenDefinedOnceStrictly,
     arrayFlattenDefinedOnceStrictlySame,
-    // arrayFlattenDefinedOnceStrictlySets,
+    arrayFlattenDefinedOnceStrictlySets,
     arrayFlattenedDefined,
     arrayFlattenedDefinedSame,
     arrayFlattenedDefinedSets,
