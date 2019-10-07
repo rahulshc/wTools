@@ -22841,7 +22841,7 @@ function arrayFlattenDefinedOnceStrictly( test )
   test.identical( got, [ 0, 1, 2, 3, 4 ] );
 
   var got = _.arrayFlattenDefinedOnceStrictly( [ 0, [ [ 2 ], 1 ], 3, 4 ] );
-  test.identical( got, [ 0, 1, 2, 3, 4 ] );
+  test.identical( got, [ 0, 2, 1, 3, 4 ] );
 
   var got = _.arrayFlattenDefinedOnceStrictly( [ 1, 3, [ 7, 5 ] ] );
   test.identical( got, [ 1, 3, 7, 5 ] );
@@ -24125,7 +24125,7 @@ function arrayFlattenedDefinedOnceStrictly( test )
   test.identical( got, [ 0, 1, 2, 3, 4 ] );
 
   var got = _.arrayFlattenedDefinedOnceStrictly( [ 0, [ [ 2 ], 1 ], 3, 4 ] );
-  test.identical( got, [ 0, 1, 2, 3, 4 ] );
+  test.identical( got, [ 0, 2, 1, 3, 4 ] );
 
   var got = _.arrayFlattenedDefinedOnceStrictly( [ 1, 3, [ 7, 5 ] ] );
   test.identical( got, [ 1, 3, 7, 5 ] );
