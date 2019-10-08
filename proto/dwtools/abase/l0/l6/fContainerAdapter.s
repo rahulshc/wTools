@@ -320,7 +320,7 @@ class ContainerAdapterAbstract
     return self;
   }
 
-  min( onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach, onEach return value that sets to previusElement */
+  min( onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach, onEach returns value that sets to previusElement */
   {
     let self = this;
     if( onEach )
@@ -329,7 +329,7 @@ class ContainerAdapterAbstract
     return self.reduce( +Infinity, ( a, e ) => Math.min( a, e ) );
   }
 
-  max( onEach ) /* qqq : implement good coverage, make sure it works without onEach */
+  max( onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach */
   {
     let self = this;
     if( onEach )

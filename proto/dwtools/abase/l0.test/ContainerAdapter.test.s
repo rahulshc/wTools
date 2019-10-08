@@ -868,49 +868,49 @@ function min( test )
 
   /* */
 
-  test.case = 'without onEach, has minimum';
+  test.case = 'onEach, has minimum';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = 1;
   test.identical( got, exp );
 
-  test.case = 'without onEach, has minimum - -Infinity';
+  test.case = 'onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = 2;
   test.identical( got, exp );
 
-  test.case = 'without onEach, has minimum, small difference';
+  test.case = 'onEach, has minimum, small difference';
   var src = _.containerAdapter.make( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = 1;
   test.identical( got, exp );
 
-  test.case = 'without onEach, all equal';
+  test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = 1;
   test.identical( got, exp );
 
-  test.case = 'without onEach, all -Infinity';
+  test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = Infinity;
   test.identical( got, exp );
 
-  test.case = 'without onEach, all Infinity';
+  test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = Infinity;
   test.identical( got, exp );
 
-  test.case = 'without onEach, all NaN';
+  test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
   var got = src.min( ( e ) => isNaN( e ) ? 0 : e );
   var exp = 0;
   test.identical( got, exp );
 
-  test.case = 'without onEach, has minimum and NaN';
+  test.case = 'onEach, has minimum and NaN';
   var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
   var got = src.min( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = -15;
@@ -972,52 +972,263 @@ function min( test )
 
   /* */
 
-  test.case = 'without onEach, has minimum';
+  test.case = 'onEach, has minimum';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = 1;
   test.identical( got, exp );
 
-  test.case = 'without onEach, has minimum - -Infinity';
+  test.case = 'onEach, has minimum - -Infinity';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = 2;
   test.identical( got, exp );
 
-  test.case = 'without onEach, has minimum, small difference';
+  test.case = 'onEach, has minimum, small difference';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -20.0001, 4, 1, 2, 15, 21, -20 ] ) );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = 1;
   test.identical( got, exp );
 
-  test.case = 'without onEach, all equal';
+  test.case = 'onEach, all equal';
   var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = 1;
   test.identical( got, exp );
 
-  test.case = 'without onEach, all -Infinity';
+  test.case = 'onEach, all -Infinity';
   var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = Infinity;
   test.identical( got, exp );
 
-  test.case = 'without onEach, all Infinity';
+  test.case = 'onEach, all Infinity';
   var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
   var got = src.min( ( e ) => e < 0 ? -e : e );
   var exp = Infinity;
   test.identical( got, exp );
 
-  test.case = 'without onEach, all NaN';
+  test.case = 'onEach, all NaN';
   var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
   var got = src.min( ( e ) => isNaN( e ) ? 0 : e );
   var exp = 0;
   test.identical( got, exp );
 
-  test.case = 'without onEach, has minimum and NaN';
+  test.case = 'onEach, has minimum and NaN';
   var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
   var got = src.min( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
   var exp = -15;
+  test.identical( got, exp );
+
+  test.close( 'setContainerAdapter' );
+}
+
+//
+
+function max( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'without onEach, has maximum';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.max();
+  var exp = 21;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, has maximum - Infinity';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] );
+  var got = src.max();
+  var exp = Infinity;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, has maximum, small difference';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.max();
+  var exp = 21.0001;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, all equal';
+  var src = _.containerAdapter.make( [ 1, 1, 1, 1 ] );
+  var got = src.max();
+  var exp = 1;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, all -Infinity';
+  var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
+  var got = src.max();
+  var exp = -Infinity;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, all Infinity';
+  var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
+  var got = src.max();
+  var exp = Infinity;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, all NaN';
+  var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
+  var got = src.max();
+  var exp = NaN;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, has maximum and NaN';
+  var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
+  var got = src.max();
+  var exp = NaN;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'onEach, has maximum';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = 21;
+  test.identical( got, exp );
+
+  test.case = 'onEach, has maximum - -Infinity';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = Infinity;
+  test.identical( got, exp );
+
+  test.case = 'onEach, has maximum, small difference';
+  var src = _.containerAdapter.make( [ -10, 5, -15, -21.0001, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = 21.0001;
+  test.identical( got, exp );
+
+  test.case = 'onEach, all equal';
+  var src = _.containerAdapter.make( [ -1, -1, -1, -1 ] );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = 1;
+  test.identical( got, exp );
+
+  test.case = 'onEach, all -Infinity';
+  var src = _.containerAdapter.make( [ -Infinity, -Infinity, -Infinity, -Infinity ] );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = Infinity;
+  test.identical( got, exp );
+
+  test.case = 'onEach, all Infinity';
+  var src = _.containerAdapter.make( [ Infinity, Infinity, Infinity, Infinity ] );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = Infinity;
+  test.identical( got, exp );
+
+  test.case = 'onEach, all NaN';
+  var src = _.containerAdapter.make( [ NaN, NaN, NaN, NaN ] );
+  var got = src.max( ( e ) => isNaN( e ) ? 0 : e );
+  var exp = 0;
+  test.identical( got, exp );
+
+  test.case = 'onEach, has maximum and NaN';
+  var src = _.containerAdapter.make( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] );
+  var got = src.max( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
+  var exp = 21;
+  test.identical( got, exp );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'without onEach, has maximum';
+  var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
+  var got = src.max();
+  var exp = 21;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, has maximum - Infinity';
+  var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, Infinity, 2, 15, 21, -20 ] ) );
+  var got = src.max();
+  var exp = Infinity;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, has maximum, small difference';
+  var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 21.0001, 4, 1, 2, 15, 21, -20 ] ) );
+  var got = src.max();
+  var exp = 21.0001;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, all equal';
+  var src = _.containerAdapter.make( new Set( [ 1, 1, 1, 1 ] ) );
+  var got = src.max();
+  var exp = 1;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, all -Infinity';
+  var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
+  var got = src.max();
+  var exp = -Infinity;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, all Infinity';
+  var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
+  var got = src.max();
+  var exp = Infinity;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, all NaN';
+  var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
+  var got = src.max();
+  var exp = NaN;
+  test.identical( got, exp );
+
+  test.case = 'without onEach, has maximum and NaN';
+  var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
+  var got = src.max();
+  var exp = NaN;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'onEach, has maximum';
+  var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = 21;
+  test.identical( got, exp );
+
+  test.case = 'onEach, has maximum - Infinity';
+  var src = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, -Infinity, 2, 15, 21, -20 ] ) );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = Infinity;
+  test.identical( got, exp );
+
+  test.case = 'onEach, has maximum, small difference';
+  var src = _.containerAdapter.make( new Set( [ -10, 5, -15, -21.0001, 4, 1, 2, 15, 21, -20 ] ) );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = 21.0001;
+  test.identical( got, exp );
+
+  test.case = 'onEach, all equal';
+  var src = _.containerAdapter.make( new Set( [ -1, -1, -1, -1 ] ) );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = 1;
+  test.identical( got, exp );
+
+  test.case = 'onEach, all -Infinity';
+  var src = _.containerAdapter.make( new Set( [ -Infinity, -Infinity, -Infinity, -Infinity ] ) );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = Infinity;
+  test.identical( got, exp );
+
+  test.case = 'onEach, all Infinity';
+  var src = _.containerAdapter.make( new Set( [ Infinity, Infinity, Infinity, Infinity ] ) );
+  var got = src.max( ( e ) => e < 0 ? -e : e );
+  var exp = Infinity;
+  test.identical( got, exp );
+
+  test.case = 'onEach, all NaN';
+  var src = _.containerAdapter.make( new Set( [ NaN, NaN, NaN, NaN ] ) );
+  var got = src.max( ( e ) => isNaN( e ) ? 0 : e );
+  var exp = 0;
+  test.identical( got, exp );
+
+  test.case = 'onEach, has maximum and NaN';
+  var src = _.containerAdapter.make( new Set( [ -10, 5, -15, '4', 1, NaN, 15, -1, 21, '-20' ] ) );
+  var got = src.max( ( e ) => isNaN( e ) || _.strIs( e ) ? 0 : e );
+  var exp = 21;
   test.identical( got, exp );
 
   test.close( 'setContainerAdapter' );
@@ -2201,6 +2412,7 @@ var Self =
     // ContainerAdapterAbstract
 
     min,
+    max,
 
     // SetContainerAdapter
 
