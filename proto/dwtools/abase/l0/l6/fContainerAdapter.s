@@ -213,7 +213,7 @@ class ContainerAdapterAbstract
       onEach = dst;
       dst = null;
     }
-    if( dst === null )
+    if( dst === null || ( !dst && !onEach ) )
     dst = this.MakeEmpty();
     else if( dst === _.self )
     dst = this;
@@ -338,11 +338,14 @@ class ContainerAdapterAbstract
     return self.reduce( -Infinity, ( a, e ) => Math.max( a, e ) );
   }
 
-  least( dst, onEach ) /* qqq : implement good coverage, make sure it works without onEach */
+  least( dst, onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach */
   {
     let self = this;
     [ dst, onEach ] = this._filterArguments( ... arguments );
     let min = self.min( onEach );
+    if( onEach )
+    return self.filter( dst, ( e ) => onEach( e ) === min ? e : undefined );
+    else
     return self.filter( dst, ( e ) => e === min ? e : undefined );
   }
 
@@ -398,7 +401,7 @@ class ContainerAdapterAbstract
 
     if( self._same( src2 ) )
     {
-      debugger; xxx
+      debugger; // xxx
       self.empty();
       return self;
     }
