@@ -2419,8 +2419,6 @@ function least( test )
 
 //
 
-//
-
 function most( test )
 {
   test.open( 'arrayContainerAdapter' );
@@ -3600,6 +3598,185 @@ function most( test )
   test.close( 'dst - src' );
 
   test.close( 'setContainerAdapter' );
+}
+
+//
+
+function onlyWithoutCallbacks( test )
+{
+  test.open( 'without src2' );
+
+  test.case = 'without arguments';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - null';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( null );
+  var exp = [];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty array';
+  var dst = [];
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( dst );
+  var exp = [];
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty arrayAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( dst );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty Set';
+  var dst = new Set();
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( dst );
+  var exp = [];
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - empty setAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( dst );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - src';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  debugger;
+  var got = src.only( src );
+  var exp = [];
+  test.is( got === src );
+  test.identical( got.original, exp );
+
+  test.close( 'without src2' );
+
+  /* - */
+
+  test.open( 'src2 is empty' );
+
+  test.case = 'dst - null';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( null, [] );
+  var exp = [];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty array';
+  var dst = [];
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( dst, new Set() );
+  var exp = [];
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty arrayAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var src2 = _.containerAdapter.make( [] );
+  var got = src.only( dst, src2 );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty Set';
+  var dst = new Set();
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( dst, new Set() );
+  var exp = [];
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( [ ...got.original ], exp );
+
+  test.case = 'dst - empty setAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( dst, [] );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ...got.original ], exp );
+
+  test.case = 'dst - src';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( src, [] );
+  var exp = _.containerAdapter.make( [] );
+  test.is( got === src );
+  test.identical( [ ...got.original ], exp.original );
+
+  test.close( 'src2 is empty' );
+
+  /* */
+
+  test.open( 'src2 == dst' );
+
+  test.case = 'dst - empty array';
+  var dst = [];
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var src2 = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
+  var got = src.only( dst, src2 );
+  var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty arrayAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var src2 = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( dst, src2 );
+  var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty Set';
+  var dst = new Set();
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var src2 = new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var got = src.only( dst, src2 );
+  var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+  test.is( got !== dst );
+  test.is( got !== src );
+  test.identical( [ ...got.original ], exp );
+
+  test.case = 'dst - empty setAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+  var got = src.only( dst, src2 );
+  var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ...got.original ], exp );
+
+  test.case = 'dst - src';
+  var src = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+  var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+  debugger;
+  var got = src.only( src, src2 );
+  var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+  test.is( got === src );
+  test.identical( [ ...got.original ], exp );
+
+  test.close( 'src2 == dst' );
 }
 
 //--
@@ -4783,6 +4960,8 @@ var Self =
     max,
     least,
     most,
+
+    onlyWithoutCallbacks,
 
     // SetContainerAdapter
 

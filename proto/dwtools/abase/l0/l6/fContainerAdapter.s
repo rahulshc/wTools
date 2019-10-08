@@ -227,24 +227,27 @@ class ContainerAdapterAbstract
     {
       if( dst === undefined )
       dst = null;
+
       onEvaluate2 = onEvaluate1;
       onEvaluate1 = src2;
+      src2 = dst;
+      dst = null;
     }
 
     if( dst === _.self )
     dst = this;
-    else if( dst !== undefined )
+    else if( dst )
     dst = this.From( dst );
     else
     dst = this.MakeEmpty();
 
     if( src2 === _.self )
     src2 = this;
-    else if( src2 !== undefined )
+    else if( src2 )
     src2 = this.From( src2 );
     else
     src2 = this.MakeEmpty();
-    
+
     return [ dst, src2, onEvaluate1, onEvaluate2 ];
   }
   // _onlyArguments( dst, src2, onEach )
@@ -391,7 +394,7 @@ class ContainerAdapterAbstract
   {
     let self = this;
     let container = self.original;
-    [ dst, src2, onEvaluate1 ] = self._onlyArguments( ... arguments );
+    [ dst, src2, onEvaluate1, onEvaluate2 ] = self._onlyArguments( ... arguments );
     // [ dst, src2, onEach ] = self._onlyArguments( ... arguments );
 
     if( self._same( src2 ) )
@@ -403,10 +406,11 @@ class ContainerAdapterAbstract
     if( self._same( dst ) )
     {
       // _.assert( 0, 'not tested' );
-      self.filter( self, ( e ) =>
+      // self.filter( self, ( e ) =>
+      self.each( ( e ) =>
       {
         if( !src2.has( e ) )
-        dst.remove( e, onEvaluate1 );
+        dst.remove( e, onEvaluate1, onEvaluate2 );
         // dst.remove( e, onEach );
       });
     }
@@ -415,7 +419,7 @@ class ContainerAdapterAbstract
       src2.each( ( e ) =>
       {
         if( self.has( e ) )
-        dst.append( e, onEvaluate1 );
+        dst.append( e, onEvaluate1, onEvaluate2 );
         // dst.append( e, onEach );
       });
     }
