@@ -221,26 +221,57 @@ class ContainerAdapterAbstract
     dst = this.From( dst );
     return [ dst, onEach ];
   }
-  _onlyArguments( dst, src2, onEach )
+  _onlyArguments( dst, src2, onEvaluate1, onEvaluate2 )
   {
-    if( _.routineIs( arguments[ 2 ] ) )
+    if( _.routineIs( dst ) )
     {
+      _.assert( src2 === undefined && onEvaluate1 === undefined );
+      onEvaluate1 = dst;
+      onEvaluate2 = src2;
+      dst = this.MakeEmpty();
+      return [ dst, onEvaluate1, onEvaluate2, undefined ];
     }
-    else if( _.routineIs( arguments[ 1 ] ) )
+    else if( _.routineIs( src2 ) )
     {
-      onEach = arguments[ 1 ];
-      src2 = dst;
-      dst = null;
+      if( !dst )
+      dst = this.MakeEmpty();
+      else
+      dst = this.From( dst );
+      onEvaluate2 = onEvaluate1;
+      onEvaluate1 = src2;
+      return [ dst, onEvaluate1, onEvaluate2, undefined ];
     }
-    if( dst === null )
+
+    if( dst === null || arguments.length === 0 )
     dst = this.MakeEmpty();
     else if( dst === _.self )
     dst = this;
     else
     dst = this.From( dst );
+    if( src2 !== undefined )
     src2 = this.From( src2 );
-    return [ dst, src2, onEach ];
+    return [ dst, src2, onEvaluate1, onEvaluate2 ];
   }
+  // _onlyArguments( dst, src2, onEach )
+  // {
+  //   if( _.routineIs( arguments[ 2 ] ) )
+  //   {
+  //   }
+  //   else if( _.routineIs( arguments[ 1 ] ) )
+  //   {
+  //     onEach = arguments[ 1 ];
+  //     src2 = dst;
+  //     dst = null;
+  //   }
+  //   if( dst === null )
+  //   dst = this.MakeEmpty();
+  //   else if( dst === _.self )
+  //   dst = this;
+  //   else
+  //   dst = this.From( dst );
+  //   src2 = this.From( src2 );
+  //   return [ dst, src2, onEach ];
+  // }
   _same( src )
   {
     return src.original === this.original;
@@ -349,7 +380,7 @@ class ContainerAdapterAbstract
     return self.filter( dst, ( e ) => e === min ? e : undefined );
   }
 
-  most( dst, onEach ) /* qqq : implement good coverage, make sure it works without onEach, comparator */
+  most( dst, onEach ) /* qqq : implement good coverage, make sure it works without onEach, comparator | Dmytro : covered, works without onEach */
   {
     let self = this;
     [ dst, onEach ] = this._filterArguments( ... arguments );
@@ -360,7 +391,7 @@ class ContainerAdapterAbstract
     return self.filter( dst, ( e ) => e === max ? e : undefined );
   }
 
-  only( dst, src2, onEach ) /* qqq : teach to accept comparator, 1 evluator, 2 avaluators, comparator */
+  only( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators, comparator */
   {
     let self = this;
     let container = self.original;
@@ -368,13 +399,13 @@ class ContainerAdapterAbstract
 
     if( self._same( src2 ) )
     {
-      debugger; xxx
+      debugger; // xxx
       return self;
     }
 
     if( self._same( dst ) )
     {
-      _.assert( 0, 'not tested' );
+      // _.assert( 0, 'not tested' );
       self.filter( self, ( e ) =>
       {
         if( !src2.has( e ) )
