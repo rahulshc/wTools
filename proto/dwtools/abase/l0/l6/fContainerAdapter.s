@@ -405,23 +405,32 @@ class ContainerAdapterAbstract
 
     if( self._same( dst ) )
     {
+      let temp = [ ... dst.original ];
+      for( let i = temp.length - 1; i >= 0; i-- )
+      {
+        if( !src2.has( temp[ i ] ) )
+        dst.removeOnce( temp[ i ], onEvaluate1, onEvaluate2 );
+      }
       // _.assert( 0, 'not tested' );
       // self.filter( self, ( e ) =>
-      self.each( ( e ) =>
-      {
-        if( !src2.has( e ) )
-        dst.remove( e, onEvaluate1, onEvaluate2 );
-        // dst.remove( e, onEach );
-      });
+      // {
+      //   if( !src2.has( e ) )
+      //   dst.remove( e, onEvaluate1, onEvaluate2 );
+      //   // dst.remove( e, onEach );
+      // });
     }
     else
     {
       src2.each( ( e ) =>
       {
-        if( self.has( e ) )
-        dst.append( e, onEvaluate1, onEvaluate2 );
-        // dst.append( e, onEach );
+        dst.appendOnce( e, onEvaluate1, onEvaluate2 );
       });
+
+      // src2.each( ( e ) =>
+      // {
+      //   if( self.has( e ) )
+      //   dst.append( e, onEach );
+      // });
     }
 
     return dst;
@@ -896,9 +905,9 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     this.original.push( e );
     return this;
   }
-  appendOnce( e )
+  appendOnce( e, onEvaluate1, onEvaluate2 )
   {
-    _.arrayAppendOnce( this.original, e );
+    _.arrayAppendOnce( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
   appendOnceStrictly( e )
@@ -966,9 +975,9 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.arrayRemove( this.original, e );
     return this;
   }
-  removeOnce( e )
+  removeOnce( e, onEvaluate1, onEvaluate2 )
   {
-    _.arrayRemoveOnce( this.original, e );
+    _.arrayRemoveOnce( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
   removeOnceStrictly( e )
