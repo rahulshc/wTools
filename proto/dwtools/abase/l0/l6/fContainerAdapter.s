@@ -423,6 +423,7 @@ class ContainerAdapterAbstract
     {
       src2.each( ( e ) =>
       {
+        if( self.has( e ) )
         dst.appendOnce( e, onEvaluate1, onEvaluate2 );
       });
 
