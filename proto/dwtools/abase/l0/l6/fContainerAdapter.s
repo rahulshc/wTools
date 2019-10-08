@@ -223,33 +223,28 @@ class ContainerAdapterAbstract
   }
   _onlyArguments( dst, src2, onEvaluate1, onEvaluate2 )
   {
-    if( _.routineIs( dst ) )
+    if( _.routineIs( src2 ) )
     {
-      _.assert( src2 === undefined && onEvaluate1 === undefined );
-      onEvaluate1 = dst;
-      onEvaluate2 = src2;
-      dst = this.MakeEmpty();
-      return [ dst, onEvaluate1, onEvaluate2, undefined ];
-    }
-    else if( _.routineIs( src2 ) )
-    {
-      if( !dst )
-      dst = this.MakeEmpty();
-      else
-      dst = this.From( dst );
+      if( dst === undefined )
+      dst = null;
       onEvaluate2 = onEvaluate1;
       onEvaluate1 = src2;
-      return [ dst, onEvaluate1, onEvaluate2, undefined ];
     }
 
-    if( dst === null || arguments.length === 0 )
-    dst = this.MakeEmpty();
-    else if( dst === _.self )
+    if( dst === _.self )
     dst = this;
-    else
+    else if( dst !== undefined )
     dst = this.From( dst );
-    if( src2 !== undefined )
+    else
+    dst = this.MakeEmpty();
+
+    if( src2 === _.self )
+    src2 = this;
+    else if( src2 !== undefined )
     src2 = this.From( src2 );
+    else
+    src2 = this.MakeEmpty();
+    
     return [ dst, src2, onEvaluate1, onEvaluate2 ];
   }
   // _onlyArguments( dst, src2, onEach )
@@ -392,10 +387,12 @@ class ContainerAdapterAbstract
   }
 
   only( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators, comparator */
+  // only( dst, src2, onEach )
   {
     let self = this;
     let container = self.original;
-    [ dst, src2, onEach ] = self._onlyArguments( ... arguments );
+    [ dst, src2, onEvaluate1 ] = self._onlyArguments( ... arguments );
+    // [ dst, src2, onEach ] = self._onlyArguments( ... arguments );
 
     if( self._same( src2 ) )
     {
@@ -409,7 +406,8 @@ class ContainerAdapterAbstract
       self.filter( self, ( e ) =>
       {
         if( !src2.has( e ) )
-        dst.remove( e, onEach );
+        dst.remove( e, onEvaluate1 );
+        // dst.remove( e, onEach );
       });
     }
     else
@@ -417,7 +415,8 @@ class ContainerAdapterAbstract
       src2.each( ( e ) =>
       {
         if( self.has( e ) )
-        dst.append( e, onEach );
+        dst.append( e, onEvaluate1 );
+        // dst.append( e, onEach );
       });
     }
 
