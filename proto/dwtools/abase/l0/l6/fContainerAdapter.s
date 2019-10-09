@@ -1271,8 +1271,15 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   none( onEach )
   {
-    debugger;
-    return !this.original.some( onEach );
+    // return !this.original.some( onEach );
+    let container = this.original;
+    for( let i = 0; i < container.length; i++ )
+    {
+      let e = onEach( container[ i ], i, container );
+      if( e )
+      return false;
+    }
+    return true;
   }
   join( delimeter )
   {
