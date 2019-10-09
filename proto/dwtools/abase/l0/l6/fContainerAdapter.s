@@ -1095,7 +1095,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       for( let k = container.length - 1 ; k >= 0 ; k-- )
       {
         let e = container[ k ];
-        let e2 = onEach( e, undefined, self );
+        let e2 = onEach( e, undefined, container );
         if( e !== e2 || e2 === undefined )
         {
           if( e2 !== undefined )
@@ -1110,7 +1110,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       for( let k = 0, l = container.length ; k < l ; k++ )
       {
         let e = container[ k ];
-        let e2 = onEach( e, undefined, self );
+        let e2 = onEach( e, undefined, container );
         if( e2 !== undefined )
         dst.append( e2 );
       }
