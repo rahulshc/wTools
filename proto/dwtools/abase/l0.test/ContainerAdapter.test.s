@@ -4917,7 +4917,7 @@ function butOneEvaluator( test )
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, ( e ) => e );
-    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+    var exp = [];
     test.is( got === src );
     test.identical( result( src, got ), exp );
 
@@ -4974,7 +4974,7 @@ function butOneEvaluator( test )
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, [], ( e ) => e );
-    var exp = [];
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === src );
     test.identical( result( src, got ), exp );
 
@@ -4989,7 +4989,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = _.containerAdapter.make( new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] ) );
     var got = src.but( dst, src2, ( e ) => e );
-    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+    var exp = [];
     test.is( got !== dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
@@ -4999,7 +4999,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, src2, ( e ) => e );
-    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+    var exp = [];
     test.is( got === dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
@@ -5009,7 +5009,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = new Set( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( dst, src2, ( e ) => e );
-    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+    var exp = [];
     test.is( got !== dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
@@ -5019,7 +5019,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20, [ 22 ], [ 20 ] ] );
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, [ 21 ], [ -20 ], [ 22 ], [ 20 ] ];
     var got = src.but( dst, src2, ( e ) => e[ 0 ] );
-    var exp = [ -20, 5, [ 22 ], [ 20 ] ];
+    var exp = [ -20, 5, [ 21 ], [ -20 ], ];
     test.is( got === dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
@@ -5028,7 +5028,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     var got = src.but( src, src2, ( e ) => e );
-    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
+    var exp = [];
     test.is( got === src );
     test.identical( result( src, got ), exp );
 
@@ -5043,7 +5043,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = _.containerAdapter.make( new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] ) );
     var got = src.but( dst, src2, ( e ) => e );
-    var exp = [ -10, 4, 1, 15, 21 ];
+    var exp = [ 6, -14, -1 ];
     test.is( got !== dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
@@ -5053,7 +5053,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = _.containerAdapter.make( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2, ( e ) => e );
-    var exp = [ 1, -10, 4, 15, 21 ];
+    var exp = [ 1, 6, -14, -1 ];
     test.is( got === dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
@@ -5063,7 +5063,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20, [ 22 ] ] );
     var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1, [ 22 ] ] );
     var got = src.but( dst, src2, ( e ) => e[ 0 ] );
-    var exp = [ -10, 6, -14, 4, 1, 15, 21, -1, [ 22 ] ];
+    var exp = [];
     test.is( got !== dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
@@ -5073,7 +5073,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -15, 4, 1, 2, 15, 21, -20, [ 22 ] ] );
     var src2 = new Set( [ [ 22 ], -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2, ( e ) => e[ 0 ] );
-    var exp = [ [ 22 ], -10, 6, -14, 4, 1, 15, 21, -1 ];
+    var exp = [ [ 22 ] ];
     test.is( got !== dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
@@ -5083,7 +5083,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.but( dst, src2, ( e ) => e );
-    var exp = [ -10, 4, 1, 15, 21 ];
+    var exp = [ 6, -14, -1 ];
     test.is( got === dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
@@ -5092,7 +5092,7 @@ function butOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ];
     var got = src.but( src, src2, ( e ) => e );
-    var exp = [ -10, 4, 1, 15, 21 ];
+    var exp = [ 5, -15, 2, -20 ];
     test.is( got === src );
     test.identical( result( src, got ), exp );
 
@@ -7013,6 +7013,7 @@ var Self =
     onlyEqualizer,
 
     butWithoutCallbacks,
+    butOneEvaluator,
     butTwoEvaluators,
 
     // SetContainerAdapter
