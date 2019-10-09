@@ -6419,12 +6419,12 @@ function setAdapterReduce( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var got = src.reduce( accumulator, ( a, e ) => a[ a.length - 1 ] > e ? a[ a.length - 1 ] : a.push( e ) );
   test.identical( [ ... src.original ], [] );
+  test.is( got === accumulator );
   test.identical( got, [ 0 ] );
 
   test.case = 'with accumulator, not empty src';
   var accumulator = [ 0 ];
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 0, -2 ] ) );
-  debugger;
   var got = src.reduce( accumulator, ( a, e ) =>
   {
     if( a[ a.length - 1 ] < e )
@@ -6432,6 +6432,7 @@ function setAdapterReduce( test )
     return a;
   } );
   test.identical( [ ... src.original ], [ 1, 2, 3, 0, -2 ] );
+  test.is( got === accumulator );
   test.identical( got, [ 0, 1, 2, 3 ] );
 
   /* - */
@@ -7288,6 +7289,64 @@ function arrayAdapterEach( test )
   test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2, undefined ] );
 }
 
+//
+
+function arrayAdapterReduce( test )
+{
+  test.case = 'without accumulator, empty src';
+  var src = _.containerAdapter.make( [] );
+  var got = src.reduce( ( a, e ) => Math.max( a, e ) );
+  test.identical( [ ... src.original ], [] );
+  test.identical( got, undefined );
+
+  test.case = 'without accumulator, not empty src';
+  var src = _.containerAdapter.make( [ 1, 2, 3, 0, -2 ] );
+  var got = src.reduce( ( a, e ) => a === undefined ? Math.max( 0, e ) : Math.max( a, e ) );
+  test.identical( [ ... src.original ], [ 1, 2, 3, 0, -2 ] );
+  test.identical( got, 3 );
+
+  /* */
+
+  test.case = 'with accumulator, empty src';
+  var accumulator = [ 0 ];
+  var src = _.containerAdapter.make( [] );
+  var got = src.reduce( accumulator, ( a, e ) => a[ a.length - 1 ] > e ? a[ a.length - 1 ] : a.push( e ) );
+  test.identical( [ ... src.original ], [] );
+  test.is( got === accumulator );
+  test.identical( got, [ 0 ] );
+
+  test.case = 'with accumulator, not empty src';
+  var accumulator = [ 0 ];
+  var src = _.containerAdapter.make( [ 1, 2, 3, 0, -2 ] );
+  var got = src.reduce( accumulator, ( a, e ) =>
+  {
+    if( a[ a.length - 1 ] < e )
+    a.push( e );
+    return a;
+  } );
+  test.identical( [ ... src.original ], [ 1, 2, 3, 0, -2 ] );
+  test.is( got === accumulator );
+  test.identical( got, [ 0, 1, 2, 3 ] );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'onEach has wrong type';
+  test.shouldThrowErrorSync( () =>
+  {
+    let src = _.containerAdapter.make( [ 1, 2, 3 ] );
+    src.reduce( 'wrong' );
+  });
+  test.shouldThrowErrorSync( () =>
+  {
+    let accumulator = 0;
+    let src = _.containerAdapter.make( [ 1, 2, 3 ] );
+    src.reduce( accumulator, 'wrong' );
+  });
+}
+
 // --
 // declaration
 // --
@@ -7341,6 +7400,8 @@ var Self =
     arrayAdapterFlatFilter,
     arrayAdapterOnce,
     arrayAdapterEach,
+    arrayAdapterReduce,
+    
   }
 
 }
