@@ -327,8 +327,8 @@ class ContainerAdapterAbstract
   }
   removeContainerOnce( src )
   {
-    // debugger;
-    // _.assert( 0, 'not tested' );
+    debugger;
+    _.assert( 0, 'not tested' );
     let result = 0;
     let self = this;
     src = this.From( src )
@@ -389,7 +389,7 @@ class ContainerAdapterAbstract
     return self.filter( dst, ( e ) => e === max ? e : undefined );
   }
 
-  only( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators, comparator */
+  only( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators, comparator | Dmytro : implemented, covered */
   // only( dst, src2, onEach )
   {
     let self = this;
@@ -458,7 +458,7 @@ class ContainerAdapterAbstract
     return dst;
   }
 
-  but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evluator, 2 avaluators */
+  but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evluator, 2 avaluators | Dmytro : implemented, covered */
   {
     let self = this;
     let container = self.original;
