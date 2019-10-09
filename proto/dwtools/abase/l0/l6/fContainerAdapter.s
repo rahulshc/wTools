@@ -1089,6 +1089,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     let self = this;
     let container = this.original;
     [ dst, onEach ] = this._filterArguments( ... arguments );
+
     if( this._same( dst ) )
     {
       debugger; // xxx
@@ -1115,6 +1116,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
         dst.append( e2 );
       }
     }
+
     return dst;
   }
   flatFilter( dst, onEach )
@@ -1122,9 +1124,10 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     let self = this;
     let container = self.original;
     [ dst, onEach ] = self._filterArguments( ... arguments );
+
     if( self._same( dst ) )
     {
-      _.assert( 0, 'not implemented' );
+      // _.assert( 0, 'not implemented' );
       for( let k = container.length - 1 ; k >= 0 ; k-- )
       {
         let e = container[ k ];
@@ -1132,7 +1135,12 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
         if( e !== e2 || e2 === undefined )
         {
           if( e2 !== undefined )
-          container[ k ] = e2;
+          {
+            if( self.IsContainer( e2 ) || self.Is( e2 ) )
+            container.splice( k, 1, ... e2 );
+            else
+            container[ k ] = e2;
+          }
           else
           container.splice( k, 1 );
         }
@@ -1143,15 +1151,17 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       for( let k = 0, l = container.length ; k < l ; k++ )
       {
         let e = container[ k ];
-        let e2 = onEach( e, undefined, self );
-        if( e2 === undefined )
-        {}
-        if( self.IsContainer( e2 ) || self.Is( e2 ) )
-        dst.appendContainer( e2 )
-        else
-        dst.append( e2 );
+        let e2 = onEach( e, undefined, container );
+        if( e2 !== undefined )
+        {
+          if( self.IsContainer( e2 ) || self.Is( e2 ) )
+          dst.appendContainer( e2 )
+          else
+          dst.append( e2 );
+        }
       }
     }
+
     return dst;
   }
   once( dst, onEval )
