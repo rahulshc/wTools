@@ -1222,7 +1222,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     let self = this;
     let container = this.original;
     for( let k = container.length - 1 ; k >= 0 ; k-- )
-    onEach( container[ k ], k, self );
+    onEach( container[ k ], k, container );
     return this;
   }
   reduce( accumulator, onEach )
@@ -1243,7 +1243,15 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   all( onEach )
   {
-    return this.original.every( onEach );
+    // return this.original.every( onEach );
+    let container = this.original;
+    for( let i = 0; i < container.length; i++ )
+    {
+      let e = onEach( container[ i ], i, container );
+      if( !e )
+      return false;
+    }
+    return true;
   }
   any( onEach )
   {

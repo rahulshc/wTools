@@ -7347,6 +7347,41 @@ function arrayAdapterReduce( test )
   });
 }
 
+//
+
+function arrayAdapterAll( test )
+{
+  test.case = 'src - empty container, onEach return element';
+  var src = _.containerAdapter.make( [] );
+  var got = src.all( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( [] );
+  var got = src.all( ( e ) => true );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach return element';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.all( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.all( ( e, i, c ) => c.length > 5  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach return element';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.all( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements defined, onEach';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.all( ( e, i, c ) => c.length > 2  );
+  test.identical( got, true );
+}
+
 // --
 // declaration
 // --
@@ -7401,7 +7436,8 @@ var Self =
     arrayAdapterOnce,
     arrayAdapterEach,
     arrayAdapterReduce,
-    
+    arrayAdapterAll,
+
   }
 
 }
