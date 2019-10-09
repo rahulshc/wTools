@@ -507,7 +507,7 @@ class ContainerAdapterAbstract
           dst.append( e );
         });
       }
-      debugger;
+      else
       self.each( ( e ) =>
       {
         debugger;
