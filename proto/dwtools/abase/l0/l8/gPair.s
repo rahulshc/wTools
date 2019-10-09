@@ -73,7 +73,7 @@ function make( src )
 
 class Pair
 {
-  static experiment(){};
+  // static experiment(){};
   static [ Symbol.hasInstance ]( instance )
   {
     return is( instance );

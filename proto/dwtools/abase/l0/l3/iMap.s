@@ -117,8 +117,14 @@ function mapIs( src )
   if( proto === null )
   return true;
 
-  if( proto.constructor && proto.constructor.name !== 'Object' )
+  if( !proto.constructor )
   return false;
+
+  if( proto.constructor.name !== 'Object' )
+  return false;
+
+  // if( proto.constructor && proto.constructor.name !== 'Object' )
+  // return false;
 
   if( Object.getPrototypeOf( proto ) === null )
   return true;
@@ -195,14 +201,18 @@ function mapIsHeritated( src )
 function mapLike( src )
 {
 
+  // if( _.complex )
+  // if( _.complex.is( src ) )
+  // return false;
+
   if( mapIs( src ) )
   return true;
 
   if( !src )
   return false;
 
-  if( src.constructor === Object || src.constructor === null )
-  return true;
+  // if( src.constructor === Object || src.constructor === null )
+  // return true;
 
   if( !_.objectLike( src ) )
   return false;
@@ -214,9 +224,8 @@ function mapLike( src )
 }
 
 // --
-//
+// map selector
 // --
-
 
 function _mapEnumerableKeys( srcMap, own )
 {

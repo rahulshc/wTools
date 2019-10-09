@@ -1135,7 +1135,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
 class ContainerAdapterNamespace
 {
-  static experiment(){};
+  // static experiment(){};
   static [ Symbol.hasInstance ]( instance )
   {
     return is( instance );

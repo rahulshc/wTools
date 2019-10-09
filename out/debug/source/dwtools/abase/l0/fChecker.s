@@ -116,6 +116,7 @@ function consequenceIs( src )
   return false;
 
   let prototype = Object.getPrototypeOf( src );
+
   if( !prototype )
   return false;
 
@@ -218,6 +219,8 @@ function prototypeIs( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( _.primitiveIs( src ) )
   return false;
+  if( _.routineIs( src ) )
+  return false;
   return _ObjectHasOwnProperty.call( src, 'constructor' );
 }
 
@@ -268,15 +271,32 @@ function instanceIs( src )
 
   if( _ObjectHasOwnProperty.call( src, 'constructor' ) )
   return false;
-  else if( _ObjectHasOwnProperty.call( src, 'prototype' ) && src.prototype )
+
+  // if( _ObjectHasOwnProperty.call( src, 'prototype' ) && src.prototype )
+  // return false;
+
+  let prototype = Object.getPrototypeOf( src );
+
+  if( prototype === null || prototype === undefined )
   return false;
 
-  if( Object.getPrototypeOf( src ) === Object.prototype )
+  if( prototype === Object.prototype )
   return false;
-  if( Object.getPrototypeOf( src ) === null )
+  if( prototype === null )
+  return false;
+  if( _.routineIs( prototype ) )
   return false;
 
-  return true;
+  return _ObjectHasOwnProperty.call( prototype, 'constructor' );
+
+  // return _.prototypeIs( prototype );
+//
+//   if( prototype === Object.prototype )
+//   return false;
+//   if( prototype === null )
+//   return false;
+//
+//   return true;
 }
 
 //
@@ -441,10 +461,10 @@ function definitionIs( src )
   if( !src )
   return false;
 
-  if( !_.define )
+  if( !_.Definition )
   return false;
 
-  return src instanceof _.define.Definition;
+  return src instanceof _.Definition;
 }
 
 // --
