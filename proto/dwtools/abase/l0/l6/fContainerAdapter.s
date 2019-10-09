@@ -1214,7 +1214,11 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   eachLeft( onEach )
   {
-    this.original.forEach( onEach );
+    // this.original.forEach( onEach );
+    let container = this.original;
+    for( let i = 0; i < container.length; i++ )
+    onEach( container[ i ], i, container );
+    
     return this;
   }
   eachRight( onEach )
