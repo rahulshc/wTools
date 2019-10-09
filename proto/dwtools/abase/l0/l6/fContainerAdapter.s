@@ -433,12 +433,11 @@ class ContainerAdapterAbstract
       if( onEvaluate1 )
       {
         let temp = _.setIs( container ) ? [ ... container ] : container;
-        let tempDst =  _.setIs( dst.original ) ? [ ... dst.original ] : dst.original;
 
         src2.each( ( e ) =>
         {
-          if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) !== -1 && _.arrayLeftIndex( tempDst, e, onEvaluate1, onEvaluate2 ) === -1 )
-          dst.append( e );
+          if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) !== -1 )
+          dst.appendOnce( e );
         });
       }
       else
@@ -499,11 +498,10 @@ class ContainerAdapterAbstract
       if( onEvaluate1 )
       {
         let temp = _.setIs( container ) ? [ ... container ] : container;
-        let tempDst =  _.setIs( dst.original ) ? [ ... dst.original ] : dst.original;
 
         src2.each( ( e ) =>
         {
-          if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) === -1 && _.arrayLeftIndex( tempDst, e, onEvaluate1, onEvaluate2 ) === -1 )
+          if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) === -1 )
           dst.append( e );
         });
       }
