@@ -724,7 +724,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = self._filterArguments( ... arguments );
     if( self._same( dst ) )
     {
-      _.assert( 0, 'not implemented' );
+      // _.assert( 0, 'not implemented' );
       let length = container.size;
       for( let e of container )
       {
@@ -733,14 +733,23 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         length--;
 
         let e2 = onEach( e, undefined, self );
+        self.remove( e );
+
         if( e2 === undefined || e !== e2 )
         {
           if( e2 !== undefined )
-          container.add( e2 );
-          container.delete( e );
+          {
+            if( self.IsContainer( e2 ) || self.Is( e2 ) )
+            self.appendContainer( e2 );
+            else
+            self.append( e2 )
+          }
+          // if( e2 !== undefined )
+          // container.add( e2 );
+          // container.delete( e );
         }
         else
-        container.add( e );
+        self.append( e );
       }
     }
     else
@@ -749,10 +758,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       {
         let e2 = onEach( e, undefined, self );
         if( e2 !== undefined )
-        if( self.IsContainer( e2 ) || self.Is( e2 ) )
-        dst.appendContainer( e2 );
-        else
-        dst.append( e2 );
+        {
+          if( self.IsContainer( e2 ) || self.Is( e2 ) )
+          dst.appendContainer( e2 );
+          else
+          dst.append( e2 );
+        }
       }
     }
     return dst;
