@@ -405,7 +405,7 @@ class ContainerAdapterAbstract
 
     if( self._same( dst ) )
     {
-      let temp = [ ... dst.original ];
+      let temp = [ ... container ];
 
       if( onEvaluate1 )
       {
@@ -418,12 +418,11 @@ class ContainerAdapterAbstract
         }
       }
       else
-      // _.assert( 0, 'not tested' );
       // self.filter( self, ( e ) =>
       temp.forEach( ( e ) =>
       {
         if( !src2.has( e ) )
-        dst.remove( e );
+        dst.removeOnce( e );
         // dst.remove( e, onEach );
       });
 
@@ -433,7 +432,7 @@ class ContainerAdapterAbstract
 
       if( onEvaluate1 )
       {
-        let temp = _.setIs( self.original ) ? [ ... self.original ] : self.original;
+        let temp = _.setIs( container ) ? [ ... container ] : container;
         let tempDst =  _.setIs( dst.original ) ? [ ... dst.original ] : dst.original;
 
         src2.each( ( e ) =>
@@ -446,19 +445,25 @@ class ContainerAdapterAbstract
       src2.each( ( e ) =>
       {
         if( self.has( e ) )
-        dst.append( e, onEach );
+        dst.appendOnce( e );
       });
+
+      // src2.each( ( e ) =>
+      // {
+      //   if( self.has( e ) )
+      //   dst.append( e, onEach );
+      // });
 
     }
 
     return dst;
   }
 
-  but( dst, src2, onEach ) /* qqq : teach to accept comparator, 1 evluator, 2 avaluators */
+  but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evluator, 2 avaluators */
   {
     let self = this;
     let container = self.original;
-    [ dst, src2, onEach ] = self._onlyArguments( ... arguments );
+    [ dst, src2, onEvaluate1, onEvaluate2 ] = self._onlyArguments( ... arguments );
 
     if( self._same( src2 ) )
     {
@@ -469,16 +474,46 @@ class ContainerAdapterAbstract
 
     if( self._same( dst ) )
     {
-      src2.each( ( e ) => dst.remove( e, onEach ) );
+      let temp = [ ... container ];
+
+      if( onEvaluate1 )
+      {
+        let tempSrc2 = _.setIs( src2.original ) ? [ ... src2.original ] : src2.original;
+
+        for( let i = temp.length - 1; i >= 0; i-- )
+        {
+          if( _.arrayLeftIndex( tempSrc2, temp[ i ], onEvaluate1, onEvaluate2 ) !== -1 )
+          dst.remove( temp[ i ] );
+        }
+      }
+      else
+      temp.forEach( ( e ) =>
+      {
+        if( src2.has( e ) )
+        dst.removeOnce( e );
+      });
+      // src2.each( ( e ) => dst.remove( e, onEach ) );
     }
     else
     {
+      if( onEvaluate1 )
+      {
+        let temp = _.setIs( container ) ? [ ... container ] : container;
+        let tempDst =  _.setIs( dst.original ) ? [ ... dst.original ] : dst.original;
+
+        src2.each( ( e ) =>
+        {
+          if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) === -1 && _.arrayLeftIndex( tempDst, e, onEvaluate1, onEvaluate2 ) === -1 )
+          dst.append( e );
+        });
+      }
       debugger;
       self.each( ( e ) =>
       {
         debugger;
         if( !src2.has( e ) )
-        dst.append( e, onEach )
+        dst.append( e )
+        // dst.append( e, onEach )
       });
     }
 
