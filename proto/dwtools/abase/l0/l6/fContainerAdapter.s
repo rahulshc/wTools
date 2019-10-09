@@ -1251,8 +1251,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     let container = this.original;
     for( let i = 0; i < container.length; i++ )
     {
-      let e = onEach( container[ i ], i, container );
-      if( !e )
+      let r = onEach( container[ i ], i, container );
+      if( !r )
       return false;
     }
     return true;
@@ -1263,8 +1263,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     let container = this.original;
     for( let i = 0; i < container.length; i++ )
     {
-      let e = onEach( container[ i ], i, container );
-      if( e )
+      let r = onEach( container[ i ], i, container );
+      if( r )
       return true;
     }
     return false;
@@ -1275,8 +1275,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     let container = this.original;
     for( let i = 0; i < container.length; i++ )
     {
-      let e = onEach( container[ i ], i, container );
-      if( e )
+      let r = onEach( container[ i ], i, container );
+      if( r )
       return false;
     }
     return true;
