@@ -768,6 +768,9 @@ function dstNotOwnFromDefinitionStrictlyPrimitive()
   let routine = function dstNotOwnFromDefinitionStrictlyPrimitive( dstContainer, srcContainer, key )
   {
 
+    // if( key === 'downloadPath' )
+    // debugger;
+
     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
     return;
 
