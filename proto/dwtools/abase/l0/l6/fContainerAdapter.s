@@ -399,17 +399,19 @@ class ContainerAdapterAbstract
 
     if( self._same( src2 ) )
     {
-      debugger; // xxx
+      // debugger; // xxx
       return self;
     }
 
     if( self._same( dst ) )
     {
       let temp = [ ... dst.original ];
+      let tempSrc2 = _.setIs( src2.original ) ? [ ... src2.original ] : src2.original;
+
       for( let i = temp.length - 1; i >= 0; i-- )
       {
-        if( !src2.has( temp[ i ] ) )
-        dst.removeOnce( temp[ i ], onEvaluate1, onEvaluate2 );
+        if( _.arrayLeftIndex( tempSrc2, temp[ i ], onEvaluate1, onEvaluate2 ) === -1 )
+        dst.remove( temp[ i ] );
       }
       // _.assert( 0, 'not tested' );
       // self.filter( self, ( e ) =>
@@ -421,10 +423,13 @@ class ContainerAdapterAbstract
     }
     else
     {
+      let temp = _.setIs( self.original ) ? [ ... self.original ] : self.original;
+      let tempDst =  _.setIs( dst.original ) ? [ ... dst.original ] : dst.original;
+
       src2.each( ( e ) =>
       {
-        if( self.has( e ) )
-        dst.appendOnce( e, onEvaluate1, onEvaluate2 );
+        if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) !== -1 && _.arrayLeftIndex( tempDst, e, onEvaluate1, onEvaluate2 ) === -1 )
+        dst.append( e );
       });
 
       // src2.each( ( e ) =>

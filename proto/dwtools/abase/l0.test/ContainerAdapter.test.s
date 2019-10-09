@@ -4015,10 +4015,10 @@ function onlyOneEvaluator( test )
 
     test.case = 'dst - setAdapter';
     var dst = _.containerAdapter.make( new Set( [ -20, 5 ] ) );
-    var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20, [ 22 ] ] );
-    var src2 = [ -10, 5, -15, 4, 1, 2, 15, [ 21 ], [ -20 ], [ 22 ] ];
+    var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20, [ 22 ], [ 20 ] ] );
+    var src2 = [ -10, 5, -15, 4, 1, 2, 15, [ 21 ], [ -20 ], [ 22 ], [ 20 ] ];
     var got = src.only( dst, src2, ( e ) => e[ 0 ] );
-    var exp = [ -20, 5, -10, -15, 4, 1, 2, 15 ];
+    var exp = [ -20, 5, [ 22 ], [ 20 ] ];
     test.is( got === dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
@@ -4062,17 +4062,17 @@ function onlyOneEvaluator( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20, [ 22 ] ] );
     var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1, [ 22 ] ] );
     var got = src.only( dst, src2, ( e ) => e[ 0 ] );
-    var exp = [ -10, 4, 1, 15, 21 ];
+    var exp = [ -10, 6, -14, 4, 1, 15, 21, -1, [ 22 ] ];
     test.is( got !== dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
 
     test.case = 'dst - Set';
-    var dst = new Set( [ -10, 5, ] );
-    var src = makeSrc( [ -15, 4, 1, 2, 15, 21, -20, 22 ] );
-    var src2 = new Set( [ -10, 6, -14, 4, 1, 1, 15, 21, -1, [ 22 ] ] );
-    var got = src.only( dst, src2, ( e ) => e );
-    var exp = [ -10, 5, 4, 1, 15, 21, [ 22 ] ];
+    var dst = new Set( [ [ 22 ] ] );
+    var src = makeSrc( [ -15, 4, 1, 2, 15, 21, -20, [ 22 ] ] );
+    var src2 = new Set( [ [ 22 ], -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
+    var got = src.only( dst, src2, ( e ) => e[ 0 ] );
+    var exp = [ [ 22 ], -10, 6, -14, 4, 1, 15, 21, -1 ];
     test.is( got !== dst );
     test.is( got !== src );
     test.identical( result( dst, got ), exp );
