@@ -406,37 +406,49 @@ class ContainerAdapterAbstract
     if( self._same( dst ) )
     {
       let temp = [ ... dst.original ];
-      let tempSrc2 = _.setIs( src2.original ) ? [ ... src2.original ] : src2.original;
 
-      for( let i = temp.length - 1; i >= 0; i-- )
+      if( onEvaluate1 )
       {
-        if( _.arrayLeftIndex( tempSrc2, temp[ i ], onEvaluate1, onEvaluate2 ) === -1 )
-        dst.remove( temp[ i ] );
+        let tempSrc2 = _.setIs( src2.original ) ? [ ... src2.original ] : src2.original;
+
+        for( let i = temp.length - 1; i >= 0; i-- )
+        {
+          if( _.arrayLeftIndex( tempSrc2, temp[ i ], onEvaluate1, onEvaluate2 ) === -1 )
+          dst.remove( temp[ i ] );
+        }
       }
+      else
       // _.assert( 0, 'not tested' );
       // self.filter( self, ( e ) =>
-      // {
-      //   if( !src2.has( e ) )
-      //   dst.remove( e, onEvaluate1, onEvaluate2 );
-      //   // dst.remove( e, onEach );
-      // });
+      temp.forEach( ( e ) =>
+      {
+        if( !src2.has( e ) )
+        dst.remove( e );
+        // dst.remove( e, onEach );
+      });
+
     }
     else
     {
-      let temp = _.setIs( self.original ) ? [ ... self.original ] : self.original;
-      let tempDst =  _.setIs( dst.original ) ? [ ... dst.original ] : dst.original;
 
+      if( onEvaluate1 )
+      {
+        let temp = _.setIs( self.original ) ? [ ... self.original ] : self.original;
+        let tempDst =  _.setIs( dst.original ) ? [ ... dst.original ] : dst.original;
+
+        src2.each( ( e ) =>
+        {
+          if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) !== -1 && _.arrayLeftIndex( tempDst, e, onEvaluate1, onEvaluate2 ) === -1 )
+          dst.append( e );
+        });
+      }
+      else
       src2.each( ( e ) =>
       {
-        if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) !== -1 && _.arrayLeftIndex( tempDst, e, onEvaluate1, onEvaluate2 ) === -1 )
-        dst.append( e );
+        if( self.has( e ) )
+        dst.append( e, onEach );
       });
 
-      // src2.each( ( e ) =>
-      // {
-      //   if( self.has( e ) )
-      //   dst.append( e, onEach );
-      // });
     }
 
     return dst;
