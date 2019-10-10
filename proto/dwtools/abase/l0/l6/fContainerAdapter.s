@@ -569,9 +569,19 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     this.original.add( e );
     return this;
   }
-  appendOnce( e )
+  appendOnce( e, onEvaluate1, onEvaluate2 )
   {
-    this.original.add( e );
+    let container = this.original;
+
+    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    {
+      let temp = [ ... container ];
+      if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) === -1 )
+      container.add( e );
+    }
+    else
+    container.add( e );
+
     return this;
   }
   appendOnceStrictly( e )

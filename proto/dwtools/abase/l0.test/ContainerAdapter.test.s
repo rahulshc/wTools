@@ -5874,6 +5874,318 @@ function setAdapterAppend( test )
 
 //
 
+function setAdapterAppendOnceWithoutCallbacks( test )
+{
+  test.case = 'empty container, append primitive';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.appendOnce( 1 );
+  var exp = [ 1 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'empty container, append Long';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'empty container, append map';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.appendOnce( { a : 0 } );
+  var exp = [ { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'container, append primitive';
+  var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
+  var got = dst.appendOnce( 1 );
+  var exp = [ undefined, 1 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long';
+  var dst = _.containerAdapter.make( new Set( [ null ] ) );
+  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ null, [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map';
+  var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
+  var got = dst.appendOnce( { a : 0 } );
+  var exp = [ 0, { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'container, append primitive, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var got = dst.appendOnce( 1 ).appendOnce( 2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ] ] ) );
+  var got = dst.appendOnce( [ 1, 2 ] ).appendOnce( [ 1, 2 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { a : 0 } ] ) );
+  var got = dst.appendOnce( { a : 0 } ).appendOnce( { a : 0 } );
+  var exp = [ { a : 0 }, { a : 0 }, { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+}
+
+//
+
+function setAdapterAppendOnceOneEvaluator( test )
+{
+  test.case = 'empty container, append primitive';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.appendOnce( 1, ( e ) => e );
+  var exp = [ 1 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'empty container, append Long';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e );
+  var exp = [ [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'empty container, append map';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.appendOnce( { a : 0 }, ( e ) => e );
+  var exp = [ { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'container, append primitive';
+  var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
+  var got = dst.appendOnce( 1, ( e ) => e );
+  var exp = [ undefined, 1 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long';
+  var dst = _.containerAdapter.make( new Set( [ null ] ) );
+  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e );
+  var exp = [ null, [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map';
+  var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
+  var got = dst.appendOnce( { a : 0 }, ( e ) => e );
+  var exp = [ 0, { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'container, append primitive, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var got = dst.appendOnce( 4, ( e ) => e === 4 ? 1 : e );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 3 ] ] ) );
+  var got = dst.appendOnce( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 3 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long, append duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 3 ], [ 1, 3 ] ] ) );
+  var got = dst.appendOnce( [ 1, 2 ], ( e ) => e[ 1 ] );
+  var exp = [ [ 1, 3 ], [ 1, 3 ], [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 1 } ] ) );
+  var got = dst.appendOnce( { a : 0 }, ( e ) => e.a );
+  var exp = [ { a : 0 }, { a : 1 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map, append duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { b : 0 }, { b : 1 } ] ) );
+  var got = dst.appendOnce( { a : 0 }, ( e ) => e.b );
+  var exp = [ { b : 0 }, { b : 1 }, { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+}
+
+//
+
+function setAdapterAppendOnceTwoEvaluators( test )
+{
+  test.open( 'two evaluators' );
+
+  test.case = 'empty container, append primitive';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.appendOnce( 1, ( e ) => e, ( ins ) => ins );
+  var exp = [ 1 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'empty container, append Long';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e, ( ins ) => ins );
+  var exp = [ [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'empty container, append map';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.appendOnce( { a : 0 }, ( e ) => e, ( ins ) => ins );
+  var exp = [ { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'container, append primitive';
+  var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
+  var got = dst.appendOnce( 1, ( e ) => e, ( ins ) => ins );
+  var exp = [ undefined, 1 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long';
+  var dst = _.containerAdapter.make( new Set( [ null ] ) );
+  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), ( e ) => e, ( ins ) => ins );
+  var exp = [ null, [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map';
+  var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
+  var got = dst.appendOnce( { a : 0 }, ( e ) => e, ( ins ) => ins );
+  var exp = [ 0, { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'container, append primitive, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var got = dst.appendOnce( 4, ( e ) => e, ( ins ) => 0 );
+  var exp = [ 1, 2, 3, 4 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 3 ] ] ) );
+  var got = dst.appendOnce( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 3 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long, append duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 3 ], [ 1, 3 ] ] ) );
+  var got = dst.appendOnce( [ 1, 2 ], ( e ) => e[ 1 ], ( ins ) => ins[ 1 ] );
+  var exp = [ [ 1, 3 ], [ 1, 3 ], [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 1 } ] ) );
+  var got = dst.appendOnce( { a : 0 }, ( e ) => e.a, ( ins ) => ins.a );
+  var exp = [ { a : 0 }, { a : 1 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map, append duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { b : 0 }, { b : 1 } ] ) );
+  var got = dst.appendOnce( { a : 0 }, ( e ) => e.b, ( ins ) => ins.a );
+  var exp = [ { b : 0 }, { b : 1 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.close( 'two evaluators' );
+
+  /* - */
+
+  test.open( 'fromIndex' );
+
+  test.case = 'container, append primitive';
+  var dst = _.containerAdapter.make( new Set( [ 1, undefined, 2 ] ) );
+  var got = dst.appendOnce( 1, 1, ( e ) => e );
+  var exp = [ 1, undefined, 2 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ null ] ] ) );
+  var got = dst.appendOnce( _.unrollMake( [ 1, 2 ] ), 1, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ null ], [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map';
+  var dst = _.containerAdapter.make( new Set( [ { a : 0 }, 0 ] ) );
+  var got = dst.appendOnce( { a : 0 }, 1, ( e ) => e.a );
+  var exp = [ { a : 0 }, 0, { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'container, append primitive, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var got = dst.appendOnce( 2, 2, ( e ) => e );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 3 ] ] ) );
+  var got = dst.appendOnce( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 3 ], [ 1, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append Long, append duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 3 ], [ 1, 3 ] ] ) );
+  var got = dst.appendOnce( [ 1, 3 ], 2, ( e ) => e[ 1 ] );
+  var exp = [ [ 1, 3 ], [ 1, 3 ], [ 1, 3 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 1 } ] ) );
+  var got = dst.appendOnce( { a : 0 }, 1, ( e ) => e.a );
+  var exp = [ { a : 0 }, { a : 1 }, { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, append map, append duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { b : 1 }, { a : 0 } ] ) );
+  var got = dst.appendOnce( { a : 0 }, 1, ( ins ) => ins.a );
+  var exp = [ { b : 1 }, { a : 0 } ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.close( 'fromIndex' );
+}
+
+//
+
 function setAdapterAppendContainer( test )
 {
   test.case = 'src - empty container, append empty array';
@@ -8153,6 +8465,11 @@ var Self =
     // SetContainerAdapter
 
     setAdapterAppend,
+
+    setAdapterAppendOnceWithoutCallbacks,
+    setAdapterAppendOnceOneEvaluator,
+    setAdapterAppendOnceTwoEvaluators,
+
     setAdapterAppendContainer,
     setAdapterMap,
     setAdapterFilter,
