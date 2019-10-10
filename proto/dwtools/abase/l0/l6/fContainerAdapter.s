@@ -565,11 +565,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let container = this.original;
 
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
-    {
-      let temp = [ ... container ];
-      let result = _.arrayCountElement( temp, e, onEvaluate1, onEvaluate2 );
-      return result;
-    }
+    return _.arrayCountElement( [ ... container ], e, onEvaluate1, onEvaluate2 ); 
     else
     return container.has( e ) ? 1 : 0;
   }
@@ -992,9 +988,9 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return this.original.includes( e );
   }
-  count( e )
+  count( e, onEvaluate1, onEvaluate2 )
   {
-    return _.arrayCountElement( this.original, e );
+    return _.arrayCountElement( this.original, e, onEvaluate1, onEvaluate2 );
   }
   append( e )
   {
