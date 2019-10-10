@@ -1,5 +1,9 @@
 ( function _iType_s_() {
 
+/* Dmytro : maybe
+( function _fContainerAdapter_s_() {
+*/
+
 'use strict';
 
 let _global = _realGlobal_;

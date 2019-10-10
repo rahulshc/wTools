@@ -5773,6 +5773,30 @@ function butEqualizer( test )
   }
 }
 
+//
+
+function select( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  debugger;
+  var got = src.select( 'a' );
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'no selections';
+  var src = _.containerAdapter.make( [ { b : 1 }, { b : 2 } ] );
+  var got = src.select( 'a' );
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'a few selections';
+  var src = _.containerAdapter.make( [ { a : 1 }, { a : 2 }, { b : 0 } ] );
+  var got = src.select( 'a' );
+  var exp = [ { a : 1 }, { a : 2 } ];
+  test.identical( got, exp );
+}
+
 //--
 // SetContainerAdapter
 //--
@@ -6687,6 +6711,35 @@ function setAdapterOnce( test )
   test.identical( [ ... got.original ], [ ... exp.original ] );
 
   test.close( 'dst === src' );
+}
+
+//
+
+function setAdapterFirst( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.first();
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'empty container, onEach';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.first( ( e ) => e );
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'container, without onEach';
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ]) );
+  var got = src.first();
+  var exp = 'first';
+  test.identical( got, exp );
+
+  test.case = 'container, onEach';
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ]) );
+  var got = src.first( ( e ) => e ? 1 : 0 );
+  var exp = 1;
+  test.identical( got, exp );
 }
 
 //
@@ -8022,6 +8075,8 @@ var Self =
     butTwoEvaluators,
     butEqualizer,
 
+    // select,
+
     // SetContainerAdapter
 
     setAdapterAppendContainer,
@@ -8029,6 +8084,7 @@ var Self =
     setAdapterFilter,
     setAdapterFlatFilter,
     setAdapterOnce,
+    setAdapterFirst,
     setAdapterEach,
     setAdapterReduce,
 
