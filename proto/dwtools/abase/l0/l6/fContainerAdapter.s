@@ -560,9 +560,18 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     return this.original.has( e );
   }
-  count( e )
+  count( e, onEvaluate1, onEvaluate2 )
   {
-    return this.original.has( e ) ? 1 : 0;
+    let container = this.original;
+
+    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    {
+      let temp = [ ... container ];
+      let result = _.arrayCountElement( temp, e, onEvaluate1, onEvaluate2 );
+      return result;
+    }
+    else
+    return container.has( e ) ? 1 : 0;
   }
   append( e )
   {
@@ -597,7 +606,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     else
     {
       _.assert( !this.original.has( e ), 'Set already has such element' );
-      this.original.add( e );
+      container.add( e );
     }
     return this;
   }
