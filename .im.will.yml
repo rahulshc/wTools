@@ -21,6 +21,11 @@ submodule :
     enabled : 0 # submodule
     criterion :
       development : 1
+  wSelector :
+    path : npm:///wselector
+    enabled : 0 # submodule
+    criterion :
+      development : 1
   wTools :
     path : hd://.
     enabled : 0
