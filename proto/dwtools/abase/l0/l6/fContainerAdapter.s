@@ -575,8 +575,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
-      let temp = [ ... container ];
-      if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) === -1 )
+      if( _.arrayLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
       container.add( e );
     }
     else
@@ -584,10 +583,22 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
     return this;
   }
-  appendOnceStrictly( e )
+  appendOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
-    _.assert( !this.original.has( e ), 'Set already has such element' );
-    this.original.add( e );
+    let container = this.original;
+
+    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    {
+      if( _.arrayLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
+      container.add( e );
+      else
+      _.assert( 0, 'Set already has such element' );
+    }
+    else
+    {
+      _.assert( !this.original.has( e ), 'Set already has such element' );
+      this.original.add( e );
+    }
     return this;
   }
   push( e )
