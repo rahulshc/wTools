@@ -986,10 +986,10 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.arrayAppendOnce( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  appendOnceStrictly( e )
+  appendOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
     debugger;
-    _.arrayAppendOnceStrictly( this.original, e )
+    _.arrayAppendOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 )
     return this;
   }
   push( e )
