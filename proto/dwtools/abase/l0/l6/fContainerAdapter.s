@@ -670,9 +670,31 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     _.assert( this.original.has( e ), 'Set does not have such an element' );
     return this.original.delete( e );
   }
-  remove( e )
+  remove( e, onEvaluate1, onEvaluate2 )
   {
+    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    {
+      let count = 0;
+      if( _.numberIs( onEvaluate1 ) )
+      {
+        count = onEvaluate1;
+        onEvaluate1 = onEvaluate2;
+      }
+
+      for( let v of this.original )
+      {
+        if( count === 0 )
+        {
+          if( _.arrayLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+          this.original.delete( v );
+        }
+        else
+        count--;
+      }
+    }
+    else
     this.original.delete( e );
+
     return this;
   }
   removeOnce( e )
