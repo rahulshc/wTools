@@ -727,10 +727,42 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
     return this;
   }
-  removeOnceStrictly( e )
+  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
-    _.assert( this.original.has( e ), 'Set does not have such an element' );
-    this.original.delete( e );
+    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    {
+      let count = 0;
+      let length = this.length;
+
+      if( _.numberIs( onEvaluate1 ) )
+      {
+        count = onEvaluate1;
+        onEvaluate1 = onEvaluate2;
+      }
+
+      for( let v of this.original )
+      {
+        if( count === 0 )
+        {
+          if( _.arrayLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+          {
+            this.original.delete( v );
+            if( this.length < length - 1 )
+            _.assert( 0, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' );
+          }
+        }
+        else
+        count--;
+      }
+      _.assert( this.length !== length, 'Set does not have such an element' );
+      this.original.delete( e );
+
+    }
+    else
+    {
+      _.assert( this.original.has( e ), 'Set does not have such an element' );
+      this.original.delete( e );
+    }
     return this;
   }
   empty()
@@ -1134,9 +1166,9 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.arrayRemoveOnce( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnceStrictly( e )
+  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
-    _.arrayRemovedOnceStrictly( this.original, e );
+    _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
   empty()
