@@ -335,7 +335,7 @@ class ContainerAdapterAbstract
   removeContainerOnce( src, onEvaluate1, onEvaluate2 )
   {
     let self = this;
-    
+
     if( self._same( src ) )
     src = self.From( [ ... src.original ] );
     else
@@ -344,17 +344,22 @@ class ContainerAdapterAbstract
     src.each( ( e ) => self.removeOnce( e, onEvaluate1, onEvaluate2 ) );
     return self;
   }
-  removeContainerOnceStrictly( src )
+  removeContainerOnceStrictly( src, onEvaluate1, onEvaluate2 )
   {
-    debugger;
-    _.assert( 0, 'not tested' );
     let self = this;
-    src = this.From( src )
-    src.each( ( e ) =>
-    {
-      let removed = self.removed( e );
-      _.assert( removed === 1 );
-    })
+
+    if( self._same( src ) )
+    src = self.From( [ ... src.original ] );
+    else
+    src = self.From( src );
+
+    src.each( ( e ) => self.removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) );
+    // src.each( ( e ) =>
+    // {
+    //   let removed = self.removed( e );
+    //   _.assert( removed === 1 );
+    // })
+
     return self;
   }
 

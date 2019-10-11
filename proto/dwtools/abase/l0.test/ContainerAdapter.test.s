@@ -1494,7 +1494,222 @@ function removeContainerOnce( test )
   test.shouldThrowErrorSync( () =>
   {
     var dst = _.containerAdapter.make( [] );
-    dst.removeContainer( 'wrong' );
+    dst.removeContainerOnce( 'wrong' );
+  });
+}
+
+//
+
+function removeContainerOnceStrictly( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( [ 1, 2, 'str' ] );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ [ 2 ] ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( new Set( [ 1, 2, ] ) );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], { a : 3 } ] );
+  var src = dst;
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got === src );
+  test.identical( got.original, exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1 ] );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  /* */
+
+  test.case = 'dst and src has arrays, one evaluator';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
+  var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
+  var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst and src has arrays, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 3 ] ] );
+  var got = dst.removeContainerOnceStrictly( src, 4, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 2 ], 'str', { a : 3 }  ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
+  var got = dst.removeContainerOnceStrictly( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( [ 1 ] );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( new Set( [ 1 ] ) );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = dst;
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got === src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], { a : 3 } ] ) );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, ] );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'dst and src has arrays, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
+  var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
+  var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst and src has arrays, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 3 ] ] ) );
+  var got = dst.removeContainerOnceStrictly( src, 4, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 2 ], { a : 3 }  ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
+  var got = dst.removeContainerOnceStrictly( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.close( 'setContainerAdapter' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnceStrictly();
+  });
+
+  test.case = 'empty container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnceStrictly( [ 1 ] );
+  });
+
+  test.case = 'a few entries';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [ 1, 1 ] );
+    dst.removeContainerOnceStrictly( [ 1 ] );
+  });
+
+  test.case = 'no entries';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [ 2, 2 ] );
+    dst.removeContainerOnceStrictly( [ 1 ] );
+  });
+
+  test.case = 'wrong type of container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnceStrictly( 0 );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnceStrictly( new BufferRaw() );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnceStrictly( 'wrong' );
   });
 }
 
@@ -10781,6 +10996,7 @@ var Self =
 
     removeContainer,
     removeContainerOnce,
+    removeContainerOnceStrictly,
 
     min,
     max,
