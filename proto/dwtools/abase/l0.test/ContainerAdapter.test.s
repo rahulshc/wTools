@@ -815,7 +815,7 @@ function toOriginals( test )
 // ContainerAdapterAbstract
 //--
 
-function containerAdapterAbstractFrom( test )
+function fromContainer( test )
 {
   test.case = 'from empty array';
   var container = _.containerAdapter.from( [] );
@@ -7261,6 +7261,32 @@ function select( test )
 // SetContainerAdapter
 //--
 
+function setAdapterMake( test )
+{
+  test.case = 'from empty Set';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var got = src.make();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'from Set';
+  var src = _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.make();
+  var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'from setContainerAdapter';
+  var src = _.containerAdapter.make( _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) ) );
+  var got = src.make();
+  var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+}
+
+//
+
 function setAdapterCount( test )
 {
   test.case = 'empty container';
@@ -9823,6 +9849,32 @@ function setAdapterReduce( test )
 // ArrayContainerAdapter
 //--
 
+function arrayAdapterMake( test )
+{
+  test.case = 'from array';
+  var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] );
+  var got = src.make();
+  var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'from unroll';
+  var src = _.containerAdapter.make(  _.unrollMake( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.make();
+  var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'from arrayContainerAdapter';
+  var src = _.containerAdapter.make( _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.make();
+  var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+}
+
+//
+
 function arrayAdapterCount( test )
 {
   test.case = 'empty container';
@@ -12266,7 +12318,7 @@ var Self =
 
     // ContainerAdapterAbstract
 
-    containerAdapterAbstractFrom,
+    fromContainer,
 
     removedContainer,
     removedContainerOnce,
@@ -12294,6 +12346,7 @@ var Self =
 
     // SetContainerAdapter
 
+    setAdapterMake,
     setAdapterCount,
     setAdapterAppend,
 
@@ -12321,6 +12374,7 @@ var Self =
 
     // ArrayContainerAdapter
 
+    arrayAdapterMake,
     arrayAdapterCount,
     arrayAdapterAppend,
     arrayAdapterAppendOnce,
