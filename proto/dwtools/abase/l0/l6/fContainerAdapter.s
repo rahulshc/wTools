@@ -322,10 +322,13 @@ class ContainerAdapterAbstract
   }
   removeContainer( src )
   {
-    debugger;
-    _.assert( 0, 'not tested' );
     let self = this;
-    src = this.From( src )
+
+    if( self._same( src ) )
+    src = self.From( [ ... src.original ] );
+    else
+    src = self.From( src )
+
     src.each( ( e ) => self.remove( e ) );
     return self;
   }
@@ -754,9 +757,9 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         else
         count--;
       }
+
       _.assert( this.length !== length, 'Set does not have such an element' );
       this.original.delete( e );
-
     }
     else
     {

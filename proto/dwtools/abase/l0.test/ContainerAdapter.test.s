@@ -988,6 +988,118 @@ function containerAdapterAbstractFrom( test )
 
 //
 
+function removeContainer( test )
+{
+  // test.case = 'dst - empty container, src - empty array';
+  // var dst = _.containerAdapter.make( [] );
+  // var src = [];
+  // var got = dst.removeContainer( src );
+  // var exp = [];
+  // test.is( got === dst );
+  // test.identical( got.original, exp );
+  //
+  // test.case = 'dst - empty container, src - empty Set';
+  // var dst = _.containerAdapter.make( [] );
+  // var src = new Set();
+  // var got = dst.removeContainer( src );
+  // var exp = [];
+  // test.is( got === dst );
+  // test.identical( got.original, exp );
+  //
+  // test.case = 'dst - empty container, src - arrayContainerAdapter';
+  // var dst = _.containerAdapter.make( [] );
+  // var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  // var got = dst.removeContainer( src );
+  // var exp = [];
+  // test.is( got === dst );
+  // test.identical( got.original, exp );
+  //
+  // test.case = 'dst - empty container, src - setContainerAdapter';
+  // var dst = _.containerAdapter.make( [] );
+  // var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  // var got = dst.removeContainer( src );
+  // var exp = [];
+  // test.is( got === dst );
+  // test.identical( got.original, exp );
+  //
+  // /* */
+  //
+  // test.case = 'dst - container, src - empty array, no entries';
+  // var dst = _.containerAdapter.make( [ 'str', null, 0 ] );
+  // var src = [ 1, [ 2 ], 'str', { a : 3 } ];
+  // var got = dst.removeContainer( src );
+  // var exp = [ null, 0 ];
+  // test.is( got === dst );
+  // test.identical( got.original, exp );
+  //
+  // test.case = 'dst - container, src - Set, no entries';
+  // var dst = _.containerAdapter.make( [ 'str', null, 0 ] );
+  // var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
+  // var got = dst.removeContainer( src );
+  // var exp = [ 'str', null, 0 ];
+  // test.is( got === dst );
+  // test.identical( got.original, exp );
+  //
+  // test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  // var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  // var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  // var got = dst.removeContainer( src );
+  // var exp = [ 2, 'str', [ 2 ] ];
+  // test.is( got === dst );
+  // test.identical( got.original, exp );
+  //
+  // test.case = 'dst - container, src - setContainerAdapter';
+  // var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  // var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  // var got = dst.removeContainer( src );
+  // var exp = [ 2, 'str', [ 2 ] ];
+  // test.is( got === dst );
+  // test.identical( got.original, exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( [ [ 2 ], { a : 3 } ] );
+  var src = dst;
+  debugger;
+  var got = dst.removeContainer( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got === src );
+  test.identical( got.original, exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainer();
+  });
+
+  test.case = 'wrong type of container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainer( 0 );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainer( new BufferRaw() );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainer( 'wrong' );
+  });
+}
+
+//
+
 function min( test )
 {
   test.open( 'arrayContainerAdapter' );
@@ -10269,6 +10381,8 @@ var Self =
     // ContainerAdapterAbstract
 
     containerAdapterAbstractFrom,
+
+    removeContainer,
 
     min,
     max,
