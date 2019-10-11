@@ -555,7 +555,16 @@ class ContainerAdapterAbstract
   {
     let self = this;
     let container = self.original;
-    return _.select( container, selector );
+
+    let result = [];
+    for( let e of container )
+    {
+      if( _.select( e, selector ) )
+      result.push( e )
+    }
+
+    return result;
+    // return _.select( container, selector );
   }
 }
 

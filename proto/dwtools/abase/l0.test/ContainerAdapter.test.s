@@ -7206,23 +7206,54 @@ function butEqualizer( test )
 
 function select( test )
 {
-  test.case = 'empty container';
+  test.case = 'arrayContainerAdapter, empty container';
   var src = _.containerAdapter.make( [] );
-  debugger;
   var got = src.select( 'a' );
-  var exp = undefined;
+  var exp = [];
   test.identical( got, exp );
 
-  test.case = 'no selections';
-  var src = _.containerAdapter.make( [ { b : 1 }, { b : 2 } ] );
+  test.case = 'arrayContainerAdapter, no selections';
+  var src = _.containerAdapter.make( [ 'abc', 'bac', 'cad' ] );
   var got = src.select( 'a' );
-  var exp = undefined;
+  var exp = [];
   test.identical( got, exp );
 
-  test.case = 'a few selections';
-  var src = _.containerAdapter.make( [ { a : 1 }, { a : 2 }, { b : 0 } ] );
+  test.case = 'arrayContainerAdapter, no selections';
+  var src = _.containerAdapter.make( [ { b : 1, d : 0 }, { c : 'c' }, { k : [ 1 ] } ] );
   var got = src.select( 'a' );
-  var exp = [ { a : 1 }, { a : 2 } ];
+  var exp = [];
+  test.identical( got, exp );
+
+  test.case = 'arrayContainerAdapter, a few selections';
+  var src = _.containerAdapter.make( [ { c : 3, a : 1 }, { d : 2, a : [ 2 ] }, { b : { a : [] } } ] );
+  var got = src.select( 'a' );
+  var exp = [ { c : 3, a : 1 }, { a : [ 2 ], d : 2 } ];
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'arrayContainerAdapter, empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.select( 'a' );
+  var exp = [];
+  test.identical( got, exp );
+
+  test.case = 'arrayContainerAdapter, no selections';
+  var src = _.containerAdapter.make( new Set( [ 'abc', 'bac', 'cad' ] ) );
+  var got = src.select( 'a' );
+  var exp = [];
+  test.identical( got, exp );
+
+  test.case = 'arrayContainerAdapter, no selections';
+  var src = _.containerAdapter.make( new Set( [ { b : 1, d : 0 }, [ 'a' ], { c : 'c' }, { k : [ 1 ] } ] ) );
+  var got = src.select( 'a' );
+  var exp = [];
+  test.identical( got, exp );
+
+  test.case = 'arrayContainerAdapter, a few selections';
+  var src = _.containerAdapter.make( new Set( [ { c : 3, a : 1 }, { d : 2, a : [ 2 ] }, { b : { a : [] } } ] ) );
+  var got = src.select( 'a' );
+  var exp = [ { c : 3, a : 1 }, { a : [ 2 ], d : 2 } ];
   test.identical( got, exp );
 }
 
@@ -12259,7 +12290,7 @@ var Self =
     butTwoEvaluators,
     butEqualizer,
 
-    // select,
+    select,
 
     // SetContainerAdapter
 
