@@ -815,6 +815,48 @@ function toOriginals( test )
 // ContainerAdapterAbstract
 //--
 
+function originalOf( test )
+{
+  test.case = 'number';
+  var src = _.containerAdapter.make( [] );
+  var got = src.OriginalOf( 1 );
+  test.identical( got, 1 );
+
+  test.case = 'string';
+  var src = _.containerAdapter.make( [] );
+  var got = src.OriginalOf( 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'array';
+  var src = _.containerAdapter.make( [] );
+  var got = src.OriginalOf( [ 1, 2 ] );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'map';
+  var src = _.containerAdapter.make( [] );
+  var got = src.OriginalOf( { a : 0 } );
+  test.identical( got, { a : 0 } );
+
+  test.case = 'BufferTyped';
+  var src = _.containerAdapter.make( [] );
+  var got = src.OriginalOf( new U8x( 2 ) );
+  test.identical( got, new U8x( 2 ) );
+
+  test.case = 'arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ 1, 2 ] );
+  var src = _.containerAdapter.make( [] );
+  var got = src.OriginalOf( container );
+  test.identical( got, container.original );
+
+  test.case = 'setContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+  var src = _.containerAdapter.make( [] );
+  var got = src.OriginalOf( container );
+  test.identical( [ ... got ], [ ... container.original ] );
+}
+
+//
+
 function fromContainer( test )
 {
   test.case = 'from empty array';
@@ -12318,6 +12360,7 @@ var Self =
 
     // ContainerAdapterAbstract
 
+    originalOf,
     fromContainer,
 
     removedContainer,
