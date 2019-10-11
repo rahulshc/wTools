@@ -7855,6 +7855,52 @@ function setAdapterMake( test )
   var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
   test.is( got !== src );
   test.identical( [ ... got.original ], exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'argument is provided';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set() );
+    src.make( [ 1 ] );
+  });
+}
+
+//
+
+function setAdapterMakeEmpty( test )
+{
+  test.case = 'from empty Set';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'from Set';
+  var src = _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'from setContainerAdapter';
+  var src = _.containerAdapter.make( _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) ) );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'argument is provided';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.MakeEmpty( new Set() );
+    src.make( [ 1 ] );
+  });
 }
 
 //
@@ -10443,6 +10489,52 @@ function arrayAdapterMake( test )
   var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
   test.is( got !== src );
   test.identical( got.original, exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'argument is provided';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [] );
+    src.make( [ 1 ] );
+  });
+}
+
+//
+
+function arrayAdapterMakeEmpty( test )
+{
+  test.case = 'from array';
+  var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'from unroll';
+  var src = _.containerAdapter.make(  _.unrollMake( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'from arrayContainerAdapter';
+  var src = _.containerAdapter.make( _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'argument is provided';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.MakeEmpty( [] );
+    src.make( [ 1 ] );
+  });
 }
 
 //
@@ -12923,6 +13015,7 @@ var Self =
     // SetContainerAdapter
 
     setAdapterMake,
+    setAdapterMakeEmpty,
     setAdapterCount,
     setAdapterAppend,
 
@@ -12951,6 +13044,7 @@ var Self =
     // ArrayContainerAdapter
 
     arrayAdapterMake,
+    arrayAdapterMakeEmpty,
     arrayAdapterCount,
     arrayAdapterAppend,
     arrayAdapterAppendOnce,
