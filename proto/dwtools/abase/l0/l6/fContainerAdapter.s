@@ -1199,10 +1199,11 @@ if( _global_ !== _realGlobal_ )
   // _.assert( 0, 'not tested' );
   debugger;
   let _ = _global_.wTools;
-  _.assert( _.containerAdapter === undefined );
-  _.containerAdapter = _realGlobal_.wTools.containerAdapter;
+  _.assert( _realGlobal_.wTools.containerAdapter === undefined );
+  _realGlobal_.wTools.containerAdapter = _.containerAdapter;
   if( typeof module !== 'undefined' && module !== null )
   module[ 'exports' ] = _.containerAdapter;
+  return;
 }
 
 // var array = _.containerAdapter.make( [ 1, 2, 3 ] );
