@@ -1,4 +1,4 @@
-( function _iType_s_() {
+( function _fContainerAdapter_s_() {
 
 'use strict';
 
@@ -1196,7 +1196,8 @@ module[ 'exports' ] = Self;
 
 if( _global_ !== _realGlobal_ )
 {
-  _.assert( 0, 'not tested' );
+  // _.assert( 0, 'not tested' );
+  debugger;
   let _ = _global_.wTools;
   _.assert( _.containerAdapter === undefined );
   _.containerAdapter = _realGlobal_.wTools.containerAdapter;
