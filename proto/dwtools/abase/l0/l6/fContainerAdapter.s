@@ -288,11 +288,14 @@ class ContainerAdapterAbstract
   }
   removedContainer( src )
   {
-    debugger;
-    _.assert( 0, 'not tested' );
     let result = 0;
     let self = this;
-    src = this.From( src )
+
+    if( self._same( src ) )
+    src = self.From( [ ... src.original ] );
+    else
+    src = self.From( src );
+
     src.each( ( e ) => result += self.removed( e ) );
     return result;
   }
