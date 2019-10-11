@@ -1077,9 +1077,9 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return _.arrayRemovedOnceStrictly( this.original, e );
   }
-  remove( e )
+  remove( e, onEvaluate1, onEvaluate2 )
   {
-    _.arrayRemove( this.original, e );
+    _.arrayRemove( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
   removeOnce( e, onEvaluate1, onEvaluate2 )
