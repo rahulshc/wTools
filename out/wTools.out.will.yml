@@ -6,8 +6,8 @@ consistency:
     hash: e8115abbb02ec04af6fdb366955c5521
     size: 2013
   ../.im.will.yml: &ref_1
-    hash: bc612b839555420e984d984b2d8a2039
-    size: 5087
+    hash: 080c8f06e6f29dfc75f4078b0b921fcd
+    size: 5195
 module:
   wTools.out:
     about:
@@ -266,6 +266,12 @@ module:
           development: 1
       wTesting:
         path: 'npm:///wTesting'
+        autoExporting: 0
+        enabled: 0
+        criterion:
+          development: 1
+      wSelector:
+        path: 'npm:///wselector'
         autoExporting: 0
         enabled: 0
         criterion:
@@ -1122,6 +1128,12 @@ module:
         enabled: 0
         criterion:
           development: 1
+      wSelector:
+        path: 'npm:///wselector'
+        autoExporting: 0
+        enabled: 0
+        criterion:
+          development: 1
       wTools:
         path: 'hd://.'
         autoExporting: 0
@@ -1706,5 +1718,5 @@ module:
         hash: e8115abbb02ec04af6fdb366955c5521
         size: 2013
       ../.im.will.yml:
-        hash: bc612b839555420e984d984b2d8a2039
-        size: 5087
+        hash: 080c8f06e6f29dfc75f4078b0b921fcd
+        size: 5195
