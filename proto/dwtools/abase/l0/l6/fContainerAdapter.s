@@ -594,8 +594,14 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     return this.constructor.MakeEmpty();
   }
-  has( e )
+  has( e, onEvaluate1, onEvaluate2 )
   {
+    if( _.routineIs( onEvaluate1 ) )
+    {
+      if( _.arrayLeftIndex( [ ... this.original ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+      return true;
+      return false;
+    }
     return this.original.has( e );
   }
   count( e, onEvaluate1, onEvaluate2 )
@@ -1118,8 +1124,14 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return this.constructor.MakeEmpty();
   }
-  has( e )
+  has( e, onEvaluate1, onEvaluate2 )
   {
+    if( _.routineIs( onEvaluate1 ) )
+    {
+      if( _.arrayLeftIndex( this.original, e, onEvaluate1, onEvaluate2 ) !== -1 )
+      return true;
+      return false;
+    }
     return this.original.includes( e );
   }
   count( e, onEvaluate1, onEvaluate2 )
