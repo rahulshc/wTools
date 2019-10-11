@@ -725,74 +725,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     else
     return this.original.delete( e ) ? 1 : 0;
   }
-  removedOnceStrictly( e )
-  {
-    _.assert( this.original.has( e ), 'Set does not have such an element' );
-    return this.original.delete( e );
-  }
-  remove( e, onEvaluate1, onEvaluate2 )
+  removedOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
       let count = 0;
-      if( _.numberIs( onEvaluate1 ) )
-      {
-        count = onEvaluate1;
-        onEvaluate1 = onEvaluate2;
-      }
-
-      for( let v of this.original )
-      {
-        if( count === 0 )
-        {
-          if( _.arrayLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
-          this.original.delete( v );
-        }
-        else
-        count--;
-      }
-    }
-    else
-    this.original.delete( e );
-
-    return this;
-  }
-  removeOnce( e, onEvaluate1, onEvaluate2 )
-  {
-    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
-    {
-      let count = 0;
-      if( _.numberIs( onEvaluate1 ) )
-      {
-        count = onEvaluate1;
-        onEvaluate1 = onEvaluate2;
-      }
-
-      for( let v of this.original )
-      {
-        if( count === 0 )
-        {
-          if( _.arrayLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
-          {
-            this.original.delete( v );
-            break;
-          }
-        }
-        else
-        count--;
-      }
-    }
-    else
-    this.original.delete( e );
-
-    return this;
-  }
-  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )
-  {
-    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
-    {
-      let count = 0;
-      let length = this.length;
+      let result = 0;
 
       if( _.numberIs( onEvaluate1 ) )
       {
@@ -807,22 +745,36 @@ class SetContainerAdapter extends ContainerAdapterAbstract
           if( _.arrayLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
           {
             this.original.delete( v );
-            if( this.length < length - 1 )
-            _.assert( 0, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' );
+            result++;
+            _.assert( result <= 1, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' );
           }
         }
         else
         count--;
       }
 
-      _.assert( this.length !== length, 'Set does not have such an element' );
-      this.original.delete( e );
+      _.assert( result !== 0, 'Set does not have such an element' );
+      return result;
     }
     else
     {
       _.assert( this.original.has( e ), 'Set does not have such an element' );
-      this.original.delete( e );
+      return this.original.delete( e ) ? 1 : 0;
     }
+  }
+  remove( e, onEvaluate1, onEvaluate2 )
+  {
+    this.removed.apply( this, arguments );
+    return this;
+  }
+  removeOnce( e, onEvaluate1, onEvaluate2 )
+  {
+    this.removedOnce.apply( this, arguments );
+    return this;
+  }
+  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )
+  {
+    this.removedOnceStrictly.apply( this, arguments );
     return this;
   }
   empty()
