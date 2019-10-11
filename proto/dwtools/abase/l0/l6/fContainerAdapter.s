@@ -1154,19 +1154,17 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     var poped = this.original.pop();
     return poped;
   }
-  removed( e )
+  removed( e, onEvaluate1, onEvaluate2 )
   {
-    debugger;
-    return _.arrayRemoved( this.original, e );
+    return _.arrayRemoved( this.original, e, onEvaluate1, onEvaluate2 );
   }
-  removedOnce( e )
+  removedOnce( e, onEvaluate1, onEvaluate2 )
   {
-    debugger;
-    return _.arrayRemovedOnce( this.original, e );
+    return _.arrayRemovedOnce( this.original, e, onEvaluate1, onEvaluate2 );
   }
   removedOnceStrictly( e )
   {
-    return _.arrayRemovedOnceStrictly( this.original, e );
+    return _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
   }
   remove( e, onEvaluate1, onEvaluate2 )
   {
