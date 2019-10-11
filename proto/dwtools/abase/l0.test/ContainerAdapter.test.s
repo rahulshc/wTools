@@ -7872,6 +7872,74 @@ function setAdapterRemovedOnce( test )
 
 //
 
+function setAdapterRemovedOnceStrictly( test )
+{
+  test.case = 'container, remove primitive';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 2, '1' ] ) );
+  var got = dst.removedOnceStrictly( 1 );
+  var exp = [ 2, '1' ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove Long, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 2, 2 ], [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, equalizer';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'empty container'
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( new Set() );
+    var got = dst.removedOnceStrictly( 1 );
+  });
+
+  test.case = 'container does not have element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+    var got = dst.removedOnceStrictly( [ 1, 2 ] );
+  });
+
+  test.case = 'container has a few elements';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( new Set( [ [ 1 ], [ 1 ], 2, 2, '1' ] ) );
+    var got = dst.removedOnceStrictly( [ 1 ], ( e ) => e[ 0 ] );
+  });
+}
+
+//
+
 function setAdapterRemove( test )
 {
   test.case = 'empty container, remove primitive';
@@ -11234,6 +11302,7 @@ var Self =
     setAdapterAppendContainerOnce,
     setAdapterRemoved,
     setAdapterRemovedOnce,
+    setAdapterRemovedOnceStrictly,
     setAdapterRemove,
     setAdapterRemoveOnce,
     setAdapterRemoveOnceStrictly,
