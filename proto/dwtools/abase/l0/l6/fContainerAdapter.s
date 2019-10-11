@@ -666,9 +666,34 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let r = this.original.delete( e );
     return e;
   }
-  removed( e )
+  removed( e, onEvaluate1, onEvaluate2 )
   {
-    debugger;
+    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    {
+      let count = 0, result = 0;
+      if( _.numberIs( onEvaluate1 ) )
+      {
+        count = onEvaluate1;
+        onEvaluate1 = onEvaluate2;
+      }
+
+      for( let v of this.original )
+      {
+        if( count === 0 )
+        {
+          if( _.arrayLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+          {
+            this.original.delete( v );
+            result++;
+          }
+        }
+        else
+        count--;
+      }
+
+      return result;
+    }
+    else
     return this.original.delete( e ) ? 1 : 0;
   }
   removedOnce( e )
