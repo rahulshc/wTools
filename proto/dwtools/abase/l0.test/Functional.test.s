@@ -4,7 +4,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer2.s' );
+  let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
   _.include( 'wSelector' );
 }
@@ -638,6 +638,162 @@ function scalarToVector( test )
 // --
 // tests
 // --
+
+function entityTimeExperiment( test )
+{
+  var srcArray = new U8x( 500000000 );
+  var onEach = ( e, k, src ) => e;
+
+  /* */
+
+  testTime( entityEachLongsFor, 20, srcArray, onEach );
+  testTime( entityEachLongsForEach, 20, srcArray, onEach );
+
+  testTime( entityAnyLongsFor, 20, srcArray, onEach );
+  testTime( entityAnyLongsSome, 20, srcArray, onEach );
+
+  for( let i = srcArray.length; i >= 0; i-- )
+  srcArray[ i ] = ( Math.random() + 0.01 ) * 250;
+  testTime( entityAllLongsFor, 30, srcArray, onEach );
+  testTime( entityAllLongsEvery, 30, srcArray, onEach );
+
+  /*|         |                                Running time                                 |
+    |         |---------------------------|------------------------|------------------------|
+    |  NodeJS | for     | Array.forEach() | for    | Array.every() | for    | Array.some()  |
+    |---------|---------|-----------------|--------|---------------|--------|---------------|
+    |  v8     | 17,3 s  | 128,8 s         | 33.7 s | 205,5 s       | 21,9 s | 134,8 s       |
+    |         | 17,3 s  | 128,9 s         | 33.5 s | 204,8 s       | 21,8 s | 143,3 s       |
+    |---------|---------|-----------------|--------|---------------|--------|---------------|
+    |  v9     | 17,2 s  | 129,2 s         | 32,8 s | 203,2 s       | 21,9 s | 134,0 s       |
+    |         | 17,4 s  | 129,3 s         | 35.7 s | 204,5 s       | 21,8 s | 133,7 s       |
+    |---------|---------|-----------------|--------|---------------|--------|---------------|
+    |  v10    | 12,8 s  | 137,1 s         | 26,9 s | 208,6 s       | 17,2 s | 142,6 s       |
+    |         | 13,0 s  | 138,8 s         | 26,6 s | 210,1 s       | 17,1 s | 143.2 s       |
+    |---------|---------|-----------------|--------|---------------|--------|---------------|
+    |  v12    | 8,5 s   | 184.5 s         | 26,9 s | 369,7 s       | 13,0 s | 216,5 s       |
+    |         | 8,4 s   | 184,4 s         | 26,7 s | 329,1 s       | 26,7 s | 223,4 s       |
+  */
+
+
+  /* testing subroutine */
+
+  function testTime( func, times, arg1, arg2 )
+  {
+    var timeStart = _.timeNow();
+
+    for( let i = times; i > 0; i-- )
+    var result = func( arg1, arg2 );
+
+    var timeEnd = _.timeNow();
+
+    test.is( timeEnd - timeStart > 30000 )
+    console.log( timeEnd - timeStart );
+  }
+
+  /* */
+
+  function entityEachLongsFor( src, onEach )
+  {
+    for( let k = 0 ; k < src.length ; k++ )
+    onEach( src[ k ], k, src );
+
+    return src
+  }
+
+  /* */
+
+  function entityEachLongsForEach( src, onEach )
+  {
+    src.forEach( onEach );
+
+    return src;
+  }
+
+  /* */
+
+  function entityAllLongsFor( src, onEach )
+  {
+    let result;
+    if( _.routineIs( onEach ) )
+    {
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = onEach( src[ k ], k, src );
+        if( !result )
+        return result;
+      }
+    }
+    else
+    {
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = src[ k ];
+        if( !result )
+        return result;
+      }
+    }
+
+    return true;
+  }
+
+  /* */
+
+  function entityAllLongsEvery( src, onEach )
+  {
+    let result;
+    if( _.routineIs( onEach ) )
+    result = src.every( onEach );
+    else
+    result = src.every();
+
+    return result;
+  }
+
+  /* */
+
+  function entityAnyLongsFor( src, onEach )
+  {
+    let result;
+    if( _.routineIs( onEach ) )
+    {
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = onEach( src[ k ], k, src );
+        if( result )
+        return result;
+      }
+    }
+    else
+    {
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = src[ k ];
+        if( result )
+        return result;
+      }
+    }
+
+    return true;
+  }
+
+  /* */
+
+  function entityAnyLongsSome( src, onEach )
+  {
+    let result;
+    if( _.routineIs( onEach ) )
+    result = src.some( onEach );
+    else
+    result = src.some();
+
+    return result;
+  }
+
+}
+entityTimeExperiment.experimental = 1;
+entityTimeExperiment.timeOut = 1800000;
+
+//
 
 function entityEach( test )
 {
@@ -12964,98 +13120,6 @@ function entityAll( test )
 
 //
 
-function entityAllTimeExperiment( test )
-{
-  var srcArray = new U8x( 500000000 );
-  for( let i = srcArray.length; i >= 0; i-- )
-  srcArray[ i ] = ( Math.random() + 0.01 ) * 250;
-
-  var onEach = ( e, k, src ) => e;
-
-  /* */
-
-  // testTime( entityAllLongs, srcArray );
-
-  testTime( entityAllLongsCustom, 30, srcArray, onEach );
-  testTime( entityAllLongsEvery, 30, srcArray, onEach );
-
-  /* NodeJS  |                 Running time
-             | using custom iterator  |  using method Array.every()
-     --------|------------------------|----------------------------
-      v8     |  33.7 s                | 205,5 s
-     --------|------------------------|----------------------------
-             |  32,8 s                | 203,2 s
-      v9     |  35.7 s                | 204,5 s
-             |  35.3 s                | 205,3 s
-     --------|------------------------|----------------------------
-      v10    |  26,9 s                | 208,6 s
-             |  26,6 s                | 210,1 s
-     --------|------------------------|----------------------------
-      v12    |  26,1 s                | over 270 s, failed
-             |  26,8 s                | over 270 s, failed
-  */
-
-  /* testing subroutine */
-
-  function testTime( func, times, arg1, arg2 )
-  {
-    var timeStart = _.timeNow();
-
-    for( let i = times; i > 0; i-- )
-    var result = func( arg1, arg2 );
-
-    var timeEnd = _.timeNow();
-
-    test.is( timeEnd - timeStart > 60000 )
-    console.log( result, timeEnd - timeStart );
-  }
-
-  /* */
-
-  function entityAllLongsCustom( src, onEach )
-  {
-    let result;
-    if( _.routineIs( onEach ) )
-    {
-      for( let k = 0 ; k < src.length ; k++ )
-      {
-        result = onEach( src[ k ], k, src );
-        if( !result )
-        return result;
-      }
-    }
-    else
-    {
-      for( let k = 0 ; k < src.length ; k++ )
-      {
-        result = src[ k ];
-        if( !result )
-        return result;
-      }
-    }
-
-    return true;
-  }
-
-  /* */
-
-  function entityAllLongsEvery( src, onEach )
-  {
-    let result;
-    if( _.routineIs( onEach ) )
-    result = src.every( onEach );
-    else
-    result = src.every();
-
-    return result;
-  }
-
-}
-entityAllTimeExperiment.experimental = 1;
-entityAllTimeExperiment.timeOut = 300000;
-
-//
-
 function entityAny( test )
 {
   test.open( 'onEach is routine' );
@@ -13318,6 +13382,77 @@ function entityAny( test )
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.entityAny( { a : 2 }, [] ) );
 }
+
+//
+
+function entityAnyTimeExperiment( test )
+{
+  var srcArray = new U8x( 500000000 );
+  // for( let i = srcArray.length; i >= 0; i-- )
+  // srcArray[ i ] = ( Math.random() + 0.01 ) * 250;
+
+  var onEach = ( e, k, src ) => e;
+
+  /* */
+
+
+
+  function testTime( func, times, arg1, arg2 )
+  {
+    var timeStart = _.timeNow();
+
+    for( let i = times; i > 0; i-- )
+    var result = func( arg1, arg2 );
+
+    var timeEnd = _.timeNow();
+
+    test.is( timeEnd - timeStart > 60000 )
+    console.log( result, timeEnd - timeStart );
+  }
+
+  /* */
+
+  function entityAllLongsFor( src, onEach )
+  {
+    let result;
+    if( _.routineIs( onEach ) )
+    {
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = onEach( src[ k ], k, src );
+        if( result )
+        return result;
+      }
+    }
+    else
+    {
+      for( let k = 0 ; k < src.length ; k++ )
+      {
+        result = src[ k ];
+        if( result )
+        return result;
+      }
+    }
+
+    return true;
+  }
+
+  /* */
+
+  function entityAllLongsSome( src, onEach )
+  {
+    let result;
+    if( _.routineIs( onEach ) )
+    result = src.some( onEach );
+    else
+    result = src.some();
+
+    return result;
+  }
+
+}
+entityAnyTimeExperiment.experimental = 1;
+entityAnyTimeExperiment.timeOut = 600000;
 
 //
 
@@ -17532,6 +17667,8 @@ var Self =
 
     //
 
+    entityTimeExperiment,
+
     entityEach,
     // entityEachKey,
     entityEachOwn,
@@ -17590,7 +17727,6 @@ value for dst             dst                dst                    first +     
     // entityXandBoth, /* qqq : implement */
 
     entityAll,
-    entityAllTimeExperiment,
     entityAny,
     entityNone,
 

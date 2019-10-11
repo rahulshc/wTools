@@ -38,6 +38,7 @@
   "devDependencies": {
     "wFiles": "",
     "wcloner": "",
+    "wselector": "",
     "wstringer": "",
     "wTesting": ""
   },

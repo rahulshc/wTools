@@ -2813,9 +2813,8 @@ function entityAll( src, onEach )
 
   /* */
 
-  return result;
+  return true;
 
-  // return true;
 }
 
 //
