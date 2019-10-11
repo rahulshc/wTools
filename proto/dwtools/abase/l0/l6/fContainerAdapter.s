@@ -317,52 +317,16 @@ class ContainerAdapterAbstract
     });
     return result;
   }
-  removedContainerOnceStrictly( src )
+  removedContainerOnceStrictly( src, onEvaluate1, onEvaluate2 )
   {
-    debugger;
-    _.assert( 0, 'not tested' );
     let self = this;
-    src = this.From( src )
+
+    if( self._same( src ) )
+    src = self.From( [ ... src.original ] );
+    else
+    src = self.From( src );
+
     let result = src.length;
-    src.each( ( e ) =>
-    {
-      let removed = self.removed( e );
-      _.assert( removed === 1 );
-    })
-    return result;
-  }
-  removeContainer( src )
-  {
-    let self = this;
-
-    if( self._same( src ) )
-    src = self.From( [ ... src.original ] );
-    else
-    src = self.From( src );
-
-    src.each( ( e ) => self.remove( e ) );
-    return self;
-  }
-  removeContainerOnce( src, onEvaluate1, onEvaluate2 )
-  {
-    let self = this;
-
-    if( self._same( src ) )
-    src = self.From( [ ... src.original ] );
-    else
-    src = self.From( src );
-
-    src.each( ( e ) => self.removeOnce( e, onEvaluate1, onEvaluate2 ) );
-    return self;
-  }
-  removeContainerOnceStrictly( src, onEvaluate1, onEvaluate2 )
-  {
-    let self = this;
-
-    if( self._same( src ) )
-    src = self.From( [ ... src.original ] );
-    else
-    src = self.From( src );
 
     src.each( ( e ) => self.removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) );
     // src.each( ( e ) =>
@@ -370,7 +334,51 @@ class ContainerAdapterAbstract
     //   let removed = self.removed( e );
     //   _.assert( removed === 1 );
     // })
+    return result;
+  }
+  removeContainer( src )
+  {
+    let self = this;
+    //
+    // if( self._same( src ) )
+    // src = self.From( [ ... src.original ] );
+    // else
+    // src = self.From( src );
+    //
+    // src.each( ( e ) => self.remove( e ) );
+    self.removedContainer.apply( self, arguments );
+    return self;
+  }
+  removeContainerOnce( src, onEvaluate1, onEvaluate2 )
+  {
+    let self = this;
 
+    // if( self._same( src ) )
+    // src = self.From( [ ... src.original ] );
+    // else
+    // src = self.From( src );
+    //
+    // src.each( ( e ) => self.removeOnce( e, onEvaluate1, onEvaluate2 ) );
+    self.removedContainerOnce.apply( self, arguments );
+    return self;
+  }
+  removeContainerOnceStrictly( src, onEvaluate1, onEvaluate2 )
+  {
+    let self = this;
+
+    // if( self._same( src ) )
+    // src = self.From( [ ... src.original ] );
+    // else
+    // src = self.From( src );
+    //
+    // src.each( ( e ) => self.removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) );
+    // // src.each( ( e ) =>
+    // // {
+    // //   let removed = self.removed( e );
+    // //   _.assert( removed === 1 );
+    // // })
+
+    self.removedContainerOnceStrictly.apply( self, arguments );
     return self;
   }
 
