@@ -565,7 +565,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let container = this.original;
 
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
-    return _.arrayCountElement( [ ... container ], e, onEvaluate1, onEvaluate2 ); 
+    return _.arrayCountElement( [ ... container ], e, onEvaluate1, onEvaluate2 );
     else
     return container.has( e ) ? 1 : 0;
   }
@@ -1023,11 +1023,11 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     else _.assert( 0, 'Unexpected data type' );
     return this;
   }
-  appendContainerOnce( container )
+  appendContainerOnce( container, onEvaluate1, onEvaluate2 )
   {
     container = this.OriginalOf( container );
     if( _.longIs( container ) )
-    _.arrayAppendArrayOnce( this.original, container );
+    _.arrayAppendArrayOnce( this.original, container, onEvaluate1, onEvaluate2 );
     else if( _.setIs( container ) )
     _.arrayAppendArrayOnce( this.original, [ ... container ] );
     else _.assert( 0, 'Unexpected data type' );
