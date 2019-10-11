@@ -10170,6 +10170,74 @@ function arrayAdapterRemovedOnce( test )
 
 //
 
+function arrayAdapterRemovedOnceStrictly( test )
+{
+  test.case = 'container, remove primitive';
+  var dst = _.containerAdapter.make( [ 1, 2, 2, '1' ] );
+  var got = dst.removedOnceStrictly( 1 );
+  var exp = [ 2, 2, '1' ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'container, remove Long, one evaluator';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, two evaluators';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 2, 2 ], [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, equalizer';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'empty container'
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    var got = dst.removedOnceStrictly( 1 );
+  });
+
+  test.case = 'container does not have element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
+    var got = dst.removedOnceStrictly( [ 1, 2 ] );
+  });
+
+  test.case = 'container has a few elements';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
+    var got = dst.removedOnceStrictly( 1 );
+  });
+}
+
+//
+
 function arrayAdapterRemove( test )
 {
   test.case = 'empty container, remove primitive';
@@ -11528,6 +11596,7 @@ var Self =
     arrayAdapterAppendContainerOnce,
     arrayAdapterRemoved,
     arrayAdapterRemovedOnce,
+    arrayAdapterRemovedOnceStrictly,
     arrayAdapterRemove,
     arrayAdapterRemoveOnce,
     arrayAdapterRemoveOnceStrictly,
