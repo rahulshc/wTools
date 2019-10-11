@@ -327,19 +327,21 @@ class ContainerAdapterAbstract
     if( self._same( src ) )
     src = self.From( [ ... src.original ] );
     else
-    src = self.From( src )
+    src = self.From( src );
 
     src.each( ( e ) => self.remove( e ) );
     return self;
   }
-  removeContainerOnce( src )
+  removeContainerOnce( src, onEvaluate1, onEvaluate2 )
   {
-    debugger;
-    _.assert( 0, 'not tested' );
-    let result = 0;
     let self = this;
-    src = this.From( src )
-    src.each( ( e ) => self.removeOnce( e ) );
+    
+    if( self._same( src ) )
+    src = self.From( [ ... src.original ] );
+    else
+    src = self.From( src );
+
+    src.each( ( e ) => self.removeOnce( e, onEvaluate1, onEvaluate2 ) );
     return self;
   }
   removeContainerOnceStrictly( src )
