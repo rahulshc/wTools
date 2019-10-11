@@ -299,14 +299,22 @@ class ContainerAdapterAbstract
     src.each( ( e ) => result += self.removed( e ) );
     return result;
   }
-  removedContainerOnce( src )
+  removedContainerOnce( src, onEvaluate1, onEvaluate2 )
   {
-    debugger;
-    _.assert( 0, 'not tested' );
     let result = 0;
     let self = this;
-    src = this.From( src )
-    src.each( ( e ) => result += self.removedOnce( e ) );
+
+    if( self._same( src ) )
+    src = self.From( [ ... src.original ] );
+    else
+    src = self.From( src );
+
+    src.each( ( e ) =>
+    {
+      let r = self.removedOnce( e, onEvaluate1, onEvaluate2 );
+      if( r !== -1 )
+      result++;
+    });
     return result;
   }
   removedContainerOnceStrictly( src )
@@ -723,10 +731,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         else
         count--;
       }
-      return 0;
+      return -1;
     }
     else
-    return this.original.delete( e ) ? 1 : 0;
+    return this.original.delete( e ) ? 1 : -1;
   }
   removedOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
