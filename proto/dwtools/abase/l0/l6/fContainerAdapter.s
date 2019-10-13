@@ -1,9 +1,5 @@
 ( function _fContainerAdapter_s_() {
 
-/* Dmytro : maybe
-( function _fContainerAdapter_s_() {
-*/
-
 'use strict';
 
 let _global = _realGlobal_;
@@ -25,17 +21,35 @@ if( _global_ !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 
 function is( src )
 {
-  return ContainerAdapterAbstract.Is( src );
+  if( !src )
+  return false;
+  return src instanceof ContainerAdapterAbstract;
+  // return ContainerAdapterAbstract.Is( src );
+}
+
+//
+
+function isContainer( src )
+{
+  if( _.setLike( src ) )
+  return true;
+  if( _.longLike( src ) )
+  return true;
+  return false;
+  // return ContainerAdapterAbstract.IsContainer( src );
 }
 
 //
 
 function make( container )
 {
-  if( container )
-  container = this.toOriginal( container );
+
+  // xxx : this is not wanted behavior
+  // if( container )
+  // container = this.toOriginal( container );
 
   _.assert( arguments.length === 1 );
+
   if( _.setIs( container ) )
   {
     return new SetContainerAdapter( container );
@@ -44,7 +58,12 @@ function make( container )
   {
     return new ArrayContainerAdapter( container );
   }
+  else if( this.is( container ) )
+  {
+    return container.make();
+  }
   else _.assert( 0, 'Unknown type of container' );
+
 }
 
 //
@@ -91,11 +110,9 @@ function toOriginals( dsts, srcs )
     {
       for( let s = 0 ; s < dsts.length ; s++ )
       dsts[ s ] = this.toOriginal( dsts[ s ] );
-      // dsts[ s ] = _.toOriginal( dsts[ s ] );
       return dsts;
     }
     return this.toOriginal( dsts );
-    // return _.toOriginal( dsts );
   }
   else
   {
@@ -126,7 +143,6 @@ function toOriginals( dsts, srcs )
       }
       return this.toOriginals( [], arguments );
     }
-    // _.assert( 0, 'not implemented' );
   }
 }
 
@@ -163,21 +179,22 @@ class ContainerAdapterAbstract
     _.assert( arguments.length === 1 );
     this.original = container;
   }
-  static OriginalOf( container )
+  static ToOriginal( container )
   {
     if( container instanceof ContainerAdapterAbstract )
     return container.original;
     return container;
   }
-  OriginalOf( container )
+  ToOriginal( container )
   {
-    return this.constructor.OriginalOf( container );
+    return this.constructor.ToOriginal( container );
   }
   static Is( src )
   {
-    if( !src )
-    return false;
-    return src instanceof ContainerAdapterAbstract;
+    return _.containerAdapter.is( src );
+    // if( !src )
+    // return false;
+    // return src instanceof ContainerAdapterAbstract;
   }
   Is( src )
   {
@@ -185,25 +202,35 @@ class ContainerAdapterAbstract
   }
   static IsContainer( src )
   {
-    if( _.setLike( src ) )
-    return true;
-    if( _.longLike( src ) )
-    return true;
-    return false;
+    return _.containerAdapter.isContainer( src );
+    // if( _.setLike( src ) )
+    // return true;
+    // if( _.longLike( src ) )
+    // return true;
+    // return false;
   }
   IsContainer( src )
   {
     return this.constructor.IsContainer( src );
   }
+  static Make( src )
+  {
+    return _.containerAdapter.make( ... arguments );
+  }
+  Make( src )
+  {
+    return this.constructor.Make( ... arguments );
+  }
   static From( src )
   {
-    if( src instanceof ContainerAdapterAbstract )
-    return src;
-    if( _.setLike( src ) )
-    return new SetContainerAdapter( src );
-    if( _.longLike( src ) )
-    return new ArrayContainerAdapter( src );
-    _.assert( 0, 'Cant get adapter' );
+    return _.containerAdapter.from( src );
+    // if( src instanceof ContainerAdapterAbstract )
+    // return src;
+    // if( _.setLike( src ) )
+    // return new SetContainerAdapter( src );
+    // if( _.longLike( src ) )
+    // return new ArrayContainerAdapter( src );
+    // _.assert( 0, 'Cant get adapter' );
   }
   From( src )
   {
@@ -403,7 +430,6 @@ class ContainerAdapterAbstract
 
     if( self._same( src2 ) )
     {
-      // debugger; // xxx
       return self;
     }
 
@@ -470,7 +496,6 @@ class ContainerAdapterAbstract
 
     if( self._same( src2 ) )
     {
-      debugger; // xxx
       self.empty();
       return self;
     }
@@ -556,6 +581,24 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     return this.constructor.MakeEmpty();
   }
+  static Make( src )
+  {
+    if( src === undefined )
+    return this.MakeEmpty();
+    else if( _.numberIs( src ) )
+    return new SetContainerAdapter( new Set );
+    else if( this.IsContainer( src ) )
+    return new SetContainerAdapter( new Set( src ) );
+    else if( this.Is( src ) )
+    return new SetContainerAdapter( new Set( src.original ) );
+    /* qqq : cover please
+            take into account cases
+            src is adapter with array
+            src is adapter with set
+            src is array
+            src is set
+    */
+  }
   has( e )
   {
     return this.original.has( e );
@@ -613,7 +656,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   appendContainer( container )
   {
-    container = this.OriginalOf( container );
+    container = this.ToOriginal( container );
     if( _.longIs( container ) )
     for( let k = 0, l = container.length ; k < l ; k++ )
     this.original.add( container[ k ] );
@@ -627,7 +670,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
-      container = this.OriginalOf( container );
+      container = this.ToOriginal( container );
       container = _.longIs( container ) ? container : [ ... container ];
 
       let temp = _.arrayAppendArrayOnce( [ ... this.original ], container, onEvaluate1, onEvaluate2 )
@@ -810,7 +853,6 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this._filterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      debugger; // xxx
       let temp = new Set( container );
       container.clear();
 
@@ -994,7 +1036,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     accumulator = onEach( accumulator, e, undefined, self );
     return accumulator;
   }
-  all( onEach )
+  allLeft( onEach )
   {
     let self = this;
     let container = this.original;
@@ -1005,6 +1047,14 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       return r;
     }
     return true;
+  }
+  allRight( onEach )
+  {
+    return this.allLeft( onEach );
+  }
+  all( onEach )
+  {
+    return this.allLeft( onEach );
   }
   any( onEach )
   {
@@ -1030,6 +1080,21 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       return false;
     }
     return true;
+  }
+  reverse( dst )
+  {
+    if( !dst )
+    {
+      debugger;
+      dst = this.make( this );
+    }
+    else
+    {
+      debugger;
+      dst = this.From( dst );
+      dst.copyFrom( this ); /* qqq : implement and cover copyFrom */
+    }
+    return dst;
   }
   join( delimeter )
   {
@@ -1078,6 +1143,24 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return this.constructor.MakeEmpty();
   }
+  static Make( src )
+  {
+    if( src === undefined )
+    return this.MakeEmpty();
+    else if( _.numberIs( src ) )
+    return new ArrayContainerAdapter( new Array( src ) );
+    else if( this.IsContainer( src ) )
+    return new ArrayContainerAdapter( [ ... src ] );
+    else if( this.Is( src ) )
+    return new ArrayContainerAdapter( [ ... src.original ] );
+    /* qqq : cover please
+            take into account cases
+            src is adapter with array
+            src is adapter with set
+            src is array
+            src is set
+    */
+  }
   has( e )
   {
     return this.original.includes( e );
@@ -1108,7 +1191,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   appendContainer( container )
   {
-    container = this.OriginalOf( container );
+    container = this.ToOriginal( container );
     if( _.longIs( container ) )
     _.arrayAppendArray( this.original, container );
     else if( _.setIs( container ) )
@@ -1119,7 +1202,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   appendContainerOnce( container, onEvaluate1, onEvaluate2 )
   {
-    container = this.OriginalOf( container );
+    container = this.ToOriginal( container );
     if( _.longIs( container ) )
     _.arrayAppendArrayOnce( this.original, container, onEvaluate1, onEvaluate2 );
     else if( _.setIs( container ) )
@@ -1129,7 +1212,6 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   pop( e )
   {
-    // debugger;
     var poped = this.original.pop();
     _.assert( e === undefined || poped === e );
     return poped;
@@ -1249,7 +1331,6 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
     if( self._same( dst ) )
     {
-      // _.assert( 0, 'not implemented' );
       for( let k = container.length - 1 ; k >= 0 ; k-- )
       {
         let e = container[ k ];
@@ -1338,11 +1419,9 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   eachLeft( onEach )
   {
-    // this.original.forEach( onEach );
     let container = this.original;
     for( let i = 0; i < container.length; i++ )
     onEach( container[ i ], i, container );
-
     return this;
   }
   eachRight( onEach )
@@ -1369,9 +1448,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     return accumulator;
   }
-  all( onEach )
+  allLeft( onEach )
   {
-    // return this.original.every( onEach );
     let container = this.original;
     for( let i = 0; i < container.length; i++ )
     {
@@ -1381,9 +1459,23 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     return true;
   }
-  any( onEach )
+  allRight( onEach )
   {
-    // return this.original.some( onEach );
+    let container = this.original;
+    for( let i = container.length-1; i >= 0; i-- )
+    {
+      let r = onEach( container[ i ], i, container );
+      if( !r )
+      return false;
+    }
+    return true;
+  }
+  all( onEach )
+  {
+    return this.allLeft( onEach );
+  }
+  anyLeft( onEach )
+  {
     let container = this.original;
     for( let i = 0; i < container.length; i++ )
     {
@@ -1393,9 +1485,23 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     return false;
   }
-  none( onEach )
+  anyRight( onEach )
   {
-    // return !this.original.some( onEach );
+    let container = this.original;
+    for( let i = container.length-1; i >= 0; i-- )
+    {
+      let r = onEach( container[ i ], i, container );
+      if( r )
+      return true;
+    }
+    return false;
+  }
+  any( onEach )
+  {
+    return this.anyLeft( onEach );
+  }
+  noneLeft( onEach )
+  {
     let container = this.original;
     for( let i = 0; i < container.length; i++ )
     {
@@ -1404,6 +1510,53 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       return false;
     }
     return true;
+  }
+  noneRight( onEach )
+  {
+    let container = this.original;
+    for( let i = container.length-1; i >= 0; i-- )
+    {
+      let r = onEach( container[ i ], i, container );
+      if( r )
+      return false;
+    }
+    return true;
+  }
+  none( onEach )
+  {
+    return this.noneLeft( onEach );
+  }
+  reverse( dst )
+  {
+    if( !dst )
+    debugger;
+    if( !dst )
+    dst = this.Make( this.length ); /* adjust routine Make to accept length */
+    else
+    dst = this.From( dst );
+    let dstContainer = dst.original;
+    let srcContainer = this.original;
+    if( srcContainer === dstContainer )
+    {
+      debugger;
+      let last2 = ( srcContainer.length - srcContainer.length % 2 ) / 2;
+      let last1 = ( srcContainer.length % 2 ? last2 : last2-1 );
+      for( let i1 = last1, i2 = last2; i1 >= 0; i1--, i2++ )
+      {
+        let e = srcContainer[ i1 ];
+        srcContainer[ i1 ] = srcContainer[ i2 ];
+        srcContainer[ i2 ] = e;
+      }
+    }
+    else
+    {
+      debugger;
+      for( let i1 = srcContainer.length-1, i2 = 0; i1 >= 0; i1--, i2++ )
+      {
+        dstContainer[ i1 ] = srcContainer[ i2 ];
+      }
+    }
+    return dst;
   }
   join( delimeter )
   {
@@ -1429,7 +1582,6 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
 class ContainerAdapterNamespace
 {
-  // static experiment(){};
   static [ Symbol.hasInstance ]( instance )
   {
     return is( instance );
@@ -1463,14 +1615,19 @@ var Fields =
 var Routines =
 {
 
-  /* qqq : requires good tests | Dmytro : covered */
+  is,
+  isContainer, /* qqq : cover please */
+  make,
+  from,
 
-  is, /* qqq : cover please | Dmytro : covered */
-  make, /* qqq : cover please | Dmytro : covered */
-  from, /* qqq : cover please | Dmytro : covered */
+  toOriginal,
+  toOriginals,
 
-  toOriginal, /* qqq : cover please | Dmytro : covered */
-  toOriginals, /* qqq : cover please | Dmytro : covered, routine has not implemented branch */
+  /*
+    qqq : cover please
+    Dmytro : covered, routine has not implemented branch
+    qqq : implement please :)
+  */
 
 }
 
@@ -1490,8 +1647,6 @@ module[ 'exports' ] = Self;
 
 if( _global_ !== _realGlobal_ )
 {
-  // _.assert( 0, 'not tested' );
-  debugger;
   let _ = _global_.wTools;
   _.assert( _realGlobal_.wTools.containerAdapter === undefined );
   _realGlobal_.wTools.containerAdapter = _.containerAdapter;
