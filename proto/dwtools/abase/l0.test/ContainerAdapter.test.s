@@ -11192,6 +11192,26 @@ function setAdapterReverse( test )
   test.identical( [ ... got.original ], [ true, { a : false }, 'str', [ 0 ], null, undefined ] );
 }
 
+//
+
+function setAdapterJoin( test )
+{
+  test.case = 'empty container, without delimeter';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.join();
+  test.identical( got, '' );
+
+  test.case = 'empty container, delimeter';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.join( '/' );
+  test.identical( got, '' );
+
+  test.case = 'not empty container, delimeter';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, [ 3, 4 ] ] ) );
+  var got = src.join( '/' );
+  test.identical( got, '1/2/3,4' );
+}
+
 //--
 // ArrayContainerAdapter
 //--
@@ -14440,6 +14460,26 @@ function arrayAdapterReverse( test )
   test.identical( [ ... got.original ], [ true, { a : false }, 'str', [ 0 ], null, undefined ] );
 }
 
+//
+
+function arrayAdapterJoin( test )
+{
+  test.case = 'empty container, without delimeter';
+  var src = _.containerAdapter.make( [] );
+  var got = src.join();
+  test.identical( got, '' );
+
+  test.case = 'empty container, delimeter';
+  var src = _.containerAdapter.make( [] );
+  var got = src.join( '/' );
+  test.identical( got, '' );
+
+  test.case = 'not empty container, delimeter';
+  var src = _.containerAdapter.make( [ 1, 2, [ 3, 4 ] ] );
+  var got = src.join( '/' );
+  test.identical( got, '1/2/3,4' );
+}
+
 // --
 // declaration
 // --
@@ -14533,6 +14573,7 @@ var Self =
     setAdapterAny,
     setAdapterNone,
     setAdapterReverse,
+    setAdapterJoin,
 
     // ArrayContainerAdapter
 
@@ -14572,6 +14613,7 @@ var Self =
     arrayAdapterNoneRight,
     arrayAdapterNone,
     arrayAdapterReverse,
+    arrayAdapterJoin,
 
   }
 

@@ -1197,8 +1197,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   join( delimeter )
   {
-    let container = this.original;
-    return [ ... container ].join( delimeter );
+    return [ ... this.original ].join( delimeter );
   }
   toArray()
   {
