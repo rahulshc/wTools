@@ -1320,7 +1320,6 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   empty()
   {
-    debugger;
     this.original.splice( 0, this.original.length );
   }
   map( dst, onEach )

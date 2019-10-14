@@ -9960,6 +9960,21 @@ function setAdapterRemoveOnceStrictly( test )
 
 //
 
+function setAdapterEmpty( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.empty();
+  test.identical( [ ... src.original ], [] );
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 3, [ 1 ], null, undefined, { a : 0 } ] ) );
+  var got = src.empty();
+  test.identical( [ ... src.original ], [] );
+}
+
+//
+
 function setAdapterMap( test )
 {
   test.case = 'without arguments';
@@ -12824,6 +12839,21 @@ function arrayAdapterRemoveOnceStrictly( test )
 
 //
 
+function arrayAdapterEmpty( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.empty();
+  test.identical( src.original, [] );
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( [ 1, 2, 3, [ 1 ], null, undefined, { a : 0 } ] );
+  var got = src.empty();
+  test.identical( src.original, [] );
+}
+
+//
+
 function arrayAdapterMap( test )
 {
   test.case = 'without arguments';
@@ -13940,6 +13970,7 @@ var Self =
     setAdapterRemove,
     setAdapterRemoveOnce,
     setAdapterRemoveOnceStrictly,
+    setAdapterEmpty,
     setAdapterMap,
     setAdapterFilter,
     setAdapterFlatFilter,
@@ -13972,6 +14003,7 @@ var Self =
     arrayAdapterRemove,
     arrayAdapterRemoveOnce,
     arrayAdapterRemoveOnceStrictly,
+    arrayAdapterEmpty,
     arrayAdapterMap,
     arrayAdapterFilter,
     arrayAdapterFlatFilter,
