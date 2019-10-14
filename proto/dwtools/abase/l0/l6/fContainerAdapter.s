@@ -746,10 +746,13 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     // _.assert( arguments.length === 1 );
     // _.assert( this.original.has( e ), 'Set does not have such an element' );
+    // let r = this.original.delete( e );
+    // return e;
     let last = this.last();
+    _.assert( arguments.length >= 1 );
     _.assert( _.arrayLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Set does not have such an element' );
     let r = this.original.delete( last );
-    return e;
+    return last;
   }
   removed( e, onEvaluate1, onEvaluate2 )
   {

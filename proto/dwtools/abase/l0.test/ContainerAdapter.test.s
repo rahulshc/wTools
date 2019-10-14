@@ -9356,6 +9356,66 @@ function setAdapterPop( test )
 
 //
 
+function setAdapterPopStrictly( test )
+{
+  test.case = 'container, last element === searched element';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str' ] ) );
+  var got = src.popStrictly( 'str' );
+  test.identical( [ ... src.original ], [ null, 1 ] );
+  test.identical( got, 'str' );
+
+  test.case = 'container, last element - complex data, one evaluator';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
+  var got = src.popStrictly( [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, two evaluators';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
+  var got = src.popStrictly( 1, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, equalizer';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
+  var got = src.popStrictly( 1, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set() );
+    src.popStrictly();
+  });
+
+  test.case = 'empty container, pop element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set() );
+    src.popStrictly( 2 );
+  });
+
+  test.case = 'popped element !== searched element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set( [ null, 1, 'str', undefined ] ) );
+    src.popStrictly( 'str' );
+  });
+
+  test.case = 'complex data';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set( [ [ 1 ], [ 0 ], [ 1 ] ] ) );
+    src.popStrictly( [ 1 ] );
+  });
+}
+
+//
+
 function setAdapterRemoved( test )
 {
   test.case = 'empty container, remove primitive';
@@ -13873,6 +13933,7 @@ var Self =
     setAdapterAppendContainer,
     setAdapterAppendContainerOnce,
     setAdapterPop,
+    setAdapterPopStrictly,
     setAdapterRemoved,
     setAdapterRemovedOnce,
     setAdapterRemovedOnceStrictly,
