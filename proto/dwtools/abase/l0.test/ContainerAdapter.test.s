@@ -10972,6 +10972,17 @@ function setAdapterAllRight( test )
   var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
   var got = src.allRight( ( e ) => undefined  );
   test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach makes reversed copy';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var exp = [];
+  var got = src.allRight( ( e ) =>
+  {
+    exp.push( e );
+    return true;
+  });
+  test.identical( exp, [ undefined, '', 0, null, false ] );
+  test.identical( got, true );
 }
 
 //
@@ -14163,6 +14174,60 @@ function arrayAdapterAny( test )
 
 //
 
+function arrayAdapterNoneRight( test )
+{
+  test.case = 'src - empty container, onEach return element';
+  var src = _.containerAdapter.make( [] );
+  var got = src.noneRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( [] );
+  var got = src.noneRight( ( e ) => false );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach return element';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.noneRight( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'one elements is defined, onEach return element';
+  var src = _.containerAdapter.make( [ null, 0, '', false, undefined, true ] );
+  var got = src.noneRight( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements is defined, onEach';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.noneRight( ( e, i, c ) => c.length > 5  );
+  test.identical( got, true );
+
+  test.case = 'all elements is undefines, onEach return element';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.noneRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements is undefines, onEach';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.noneRight( ( e ) => e === undefined  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach makes copy';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var exp = [];
+  var got = src.noneRight( ( e ) =>
+  {
+    if( e === null )
+    return true;
+    else
+    exp.push( e );
+    return false;
+  });
+  test.identical( exp, [ undefined, '', 0 ] );
+  test.identical( got, false );
+}
+
+//
+
 function arrayAdapterNone( test )
 {
   test.case = 'src - empty container, onEach return element';
@@ -14329,6 +14394,7 @@ var Self =
     arrayAdapterAll,
     arrayAdapterAnyRight,
     arrayAdapterAny,
+    arrayAdapterNoneRight,
     arrayAdapterNone,
 
   }

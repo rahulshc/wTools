@@ -1115,13 +1115,21 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   allRight( onEach )
   {
-    return this.allLeft( onEach );
+    let temp = [ ... this.original ];
+    for( let i = temp.length - 1; i >= 0; i-- )
+    {
+      let r = onEach( temp[ i ], undefined, this );
+      if( !r )
+      return false
+    }
+    return true;
+    // return this.allLeft( onEach );
   }
   all( onEach )
   {
     return this.allLeft( onEach );
   }
-  any( onEach )
+  anyLeft( onEach )
   {
     let self = this;
     let container = this.original;
@@ -1133,7 +1141,11 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return false;
   }
-  none( onEach )
+  any( onEach )
+  {
+    return this.anyLeft( onEach );
+  }
+  noneLeft( onEach )
   {
     let self = this;
     let container = this.original;
@@ -1144,6 +1156,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       return false;
     }
     return true;
+  }
+  none( onEach )
+  {
+    return this.noneLeft( onEach );
   }
   reverse( dst )
   {
