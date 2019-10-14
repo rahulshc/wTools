@@ -13774,6 +13774,59 @@ function arrayAdapterEach( test )
 
 //
 
+function arrayAdapterEachRight( test )
+{
+  test.case = 'without arguments';
+  var src = _.containerAdapter.make( [] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( e ) );
+  test.is( got === src );
+  test.identical( got.original, exp );
+  test.identical( exp, [] );
+
+  test.case = 'from empty array, onEach returns number';
+  var src = _.containerAdapter.make( [] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( 123 ) );
+  test.is( got === src );
+  test.identical( got.original, exp );
+  test.identical( exp, [] );
+
+  test.case = 'from array, onEach returns original';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( e ) );
+  test.is( got === src );
+  test.identical( got.original, src.original );
+  test.identical( exp, [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ] );
+
+  test.case = 'from array, onEach returns undefined';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( undefined ) );
+  test.is( got === src );
+  test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
+
+  test.case = 'from array, onEach returns array';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( [ e ] ) );
+  test.is( got === src );
+  test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  test.identical( exp, [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ] );
+
+  test.case = 'from array, onEach returns element of array';
+  var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( e[ 0 ] ) );
+  test.is( got === src );
+  test.identical( got.original, [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
+  test.identical( exp, [ undefined, 2, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
+}
+
+//
+
 function arrayAdapterReduce( test )
 {
   test.case = 'without accumulator, empty src';
@@ -14070,6 +14123,7 @@ var Self =
     arrayAdapterFirst,
     arrayAdapterLast,
     arrayAdapterEach,
+    arrayAdapterEachRight,
     arrayAdapterReduce,
     arrayAdapterAll,
     arrayAdapterAny,
