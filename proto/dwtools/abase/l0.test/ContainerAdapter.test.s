@@ -7911,19 +7911,31 @@ function setAdapterMake( test )
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make();
   test.is( got !== src );
-  test.identical( [ ... got ], [] );
+  test.identical( [ ... got.original ], [] );
+
+  test.case = 'from undefined';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( undefined );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+
+  test.case = 'from null';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( null );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
 
   test.case = 'from zero';
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( 0 );
   test.is( got !== src );
-  test.identical( [ ... got ], [] );
+  test.identical( [ ... got.original ], [] );
 
   test.case = 'from number';
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( 100 );
   test.is( got !== src );
-  test.identical( [ ... got ], [] );
+  test.identical( [ ... got.original ], [] );
 
   test.case = 'from array';
   var container = [ 1, 2, 3 ];
@@ -7931,7 +7943,7 @@ function setAdapterMake( test )
   var got = src.Make( container );
   test.is( got !== container );
   test.is( got !== src );
-  test.identical( [ ... got ], [ 1, 2, 3 ] );
+  test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from argumentsArray';
   var container = _.argumentsArrayMake( [ 1, 2, 3 ] );
@@ -7939,7 +7951,7 @@ function setAdapterMake( test )
   var got = src.Make( container );
   test.is( got !== container );
   test.is( got !== src );
-  test.identical( [ ... got ], [ 1, 2, 3 ] );
+  test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from BufferTyped';
   var container = new F32x( [ 1, 2, 3 ] );
@@ -7947,7 +7959,7 @@ function setAdapterMake( test )
   var got = src.Make( container );
   test.is( got !== container );
   test.is( got !== src );
-  test.identical( [ ... got ], [ 1, 2, 3 ] );
+  test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from arrayContainerAdapter';
   var container = _.containerAdapter.make( [ 1, 2, 3 ] );
@@ -7955,7 +7967,7 @@ function setAdapterMake( test )
   var got = src.Make( container );
   test.is( got !== container );
   test.is( got !== src );
-  test.identical( [ ... got ], [ 1, 2, 3 ] );
+  test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from setContainerAdapter';
   var container = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
@@ -7963,14 +7975,27 @@ function setAdapterMake( test )
   var got = src.Make( container );
   test.is( got !== container );
   test.is( got !== src );
-  test.identical( [ ... got ], [ 1, 2, 3 ] );
+  test.identical( [ ... got.original ], [ 1, 2, 3 ] );
 
   test.case = 'from self';
   var src = _.containerAdapter.make( new Set() );
   var got = src.Make( src );
   test.is( got !== container );
   test.is( got !== src );
-  test.identical( [ ... got ], [] );
+  test.identical( [ ... got.original ], [] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'from string';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( 'str' );
+  test.identical( got, undefined );
+
+  test.case = 'from BufferRaw';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( new BufferRaw( 10 ) );
+  test.identical( got, undefined );
 }
 
 //
@@ -10619,7 +10644,7 @@ function setAdapterReduce( test )
 // ArrayContainerAdapter
 //--
 
-function arrayAdapterMake( test )
+function arrayAdapterMake_( test )
 {
   test.case = 'from array';
   var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] );
@@ -10687,6 +10712,101 @@ function arrayAdapterMakeEmpty( test )
     var src = _.containerAdapter.MakeEmpty( [] );
     src.make( [ 1 ] );
   });
+}
+
+//
+
+function arrayAdapterMake( test )
+{
+  test.case = 'without arguments';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make();
+  test.is( got !== src );
+  test.identical( got.original, [] );
+
+  test.case = 'from undefined';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( undefined );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+
+  test.case = 'from null';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( null );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+
+  test.case = 'from zero';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( 0 );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+
+  test.case = 'from number';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( 100 );
+  test.is( got !== src );
+  test.identical( got.original, new Array( 100 ) );
+
+  test.case = 'from array';
+  var container = [ 1, 2, 3 ];
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [ 1, 2, 3 ] );
+
+  test.case = 'from argumentsArray';
+  var container = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [ 1, 2, 3 ] );
+
+  test.case = 'from BufferTyped';
+  var container = new F32x( [ 1, 2, 3 ] );
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [ 1, 2, 3 ] );
+
+  test.case = 'from arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ 1, 2, 3 ] );
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [ 1, 2, 3 ] );
+
+  test.case = 'from setContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [ 1, 2, 3 ] );
+
+  test.case = 'from self';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( src );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'from string';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( 'str' );
+  test.identical( got, undefined );
+
+  test.case = 'from BufferRaw';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( new BufferRaw( 10 ) );
+  test.identical( got, undefined );
 }
 
 //
@@ -13197,8 +13317,9 @@ var Self =
 
     // ArrayContainerAdapter
 
-    arrayAdapterMake,
+    arrayAdapterMake_,
     arrayAdapterMakeEmpty,
+    arrayAdapterMake,
     arrayAdapterCount,
     arrayAdapterAppend,
     arrayAdapterAppendOnce,

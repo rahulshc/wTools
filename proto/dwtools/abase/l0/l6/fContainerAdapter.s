@@ -621,7 +621,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   static Make( src )
   {
-    if( src === undefined )
+    if( src === undefined || src === null )
     return this.MakeEmpty();
     else if( _.numberIs( src ) )
     return new SetContainerAdapter( new Set );
@@ -635,6 +635,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
             src is adapter with set
             src is array
             src is set
+      Dmytro : covered, all test cases are taken into account
     */
   }
   has( e, onEvaluate1, onEvaluate2 )
@@ -1190,9 +1191,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     return this.constructor.MakeEmpty();
   }
   static Make( src )
-
   {
-    if( src === undefined )
+    if( src === undefined || src === null )
     return this.MakeEmpty();
     else if( _.numberIs( src ) )
     return new ArrayContainerAdapter( new Array( src ) );
@@ -1206,6 +1206,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
             src is adapter with set
             src is array
             src is set
+      Dmytro : covered, all test cases are taken into account
     */
   }
   has( e, onEvaluate1, onEvaluate2 )
