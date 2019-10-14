@@ -13978,6 +13978,46 @@ function arrayAdapterReduce( test )
 
 //
 
+function arrayAdapterAllRight( test )
+{
+  test.case = 'src - empty container, onEach return element';
+  var src = _.containerAdapter.make( [] );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( [] );
+  var got = src.allRight( ( e ) => true );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach return element';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.allRight( ( e, i, c ) => c.length > 5  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach return element';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements defined, onEach';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.allRight( ( e, i, c ) => c.length > 2  );
+  test.identical( got, true );
+
+  test.case = 'all elements defined, onEach returns undefined';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.allRight( ( e ) => undefined  );
+  test.identical( got, false );
+}
+
+//
+
 function arrayAdapterAll( test )
 {
   test.case = 'src - empty container, onEach return element';
@@ -14220,6 +14260,7 @@ var Self =
     arrayAdapterEach,
     arrayAdapterEachRight,
     arrayAdapterReduce,
+    arrayAdapterAllRight,
     arrayAdapterAll,
     arrayAdapterAny,
     arrayAdapterNone,
