@@ -730,10 +730,16 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     else
     return this.appendContainer( container );
   }
-  pop( e )
+  pop( e, onEvaluate1, onEvaluate2 )
   {
-    _.assert( arguments.length === 1 );
-    let r = this.original.delete( e );
+    // _.assert( arguments.length === 1 );
+    let last = this.last();
+    let r = this.original.delete( last );
+
+    if( _.routineIs( onEvaluate1 ) && _.arrayLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+    return last;
+
+    _.assert( e === undefined || e === last );
     return e;
   }
   popStrictly( e )
