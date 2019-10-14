@@ -1110,7 +1110,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     {
       let r = onEach( e, undefined, self );
       if( r )
-      return r;
+      return true;
     }
     return false;
   }
