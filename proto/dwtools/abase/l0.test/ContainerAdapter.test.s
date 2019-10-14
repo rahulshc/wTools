@@ -11236,20 +11236,35 @@ function setAdapterToArray( test )
 function setAdapterSymbolIterator( test )
 {
   test.case = 'empty container';
-  var src = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
   for( let e of src )
   exp.push( e + 1 );
-  test.identical( [ ... src.original ], [] )
+  test.identical( [ ... src.original ], [] );
   test.identical( exp, [] );
 
   test.case = 'not empty container';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var exp = [];
   for( let e of src )
-  exp.push( e + 1 )
-  test.identical( [ ... src.original ], [ 1, 2, 3 ] )
+  exp.push( e + 1 );
+  test.identical( [ ... src.original ], [ 1, 2, 3 ] );
   test.identical( exp, [ 2, 3, 4 ] );
+}
+
+//
+
+function setAdapterLength( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.length;
+  test.identical( got, 0 )
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 3, undefined ] ) );
+  var got = src.length;
+  test.identical( got, 4 )
 }
 
 //--
@@ -14548,16 +14563,31 @@ function arrayAdapterSymbolIterator( test )
   var exp = [];
   for( let e of src )
   exp.push( e + 1 );
-  test.identical( src.original, [] )
-  test.identical( [ ... src.original ], [] )
+  test.identical( src.original, [] );
+  test.identical( src.original, [] );
 
   test.case = 'not empty container';
   var src = _.containerAdapter.make( [ 1, 2, 3 ] );
   var exp = [];
   for( let e of src )
   exp.push( e + 1 );
-  test.identical( src.original, [ 1, 2, 3 ] )
+  test.identical( src.original, [ 1, 2, 3 ] );
   test.identical( exp, [ 2, 3, 4 ] );
+}
+
+//
+
+function arrayAdapterLength( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.length;
+  test.identical( got, 0 )
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( [ 1, 2, 3, undefined ] );
+  var got = src.length;
+  test.identical( got, 4 )
 }
 
 // --
@@ -14656,6 +14686,7 @@ var Self =
     setAdapterJoin,
     setAdapterToArray,
     setAdapterSymbolIterator,
+    setAdapterLength,
 
     // ArrayContainerAdapter
 
@@ -14698,6 +14729,7 @@ var Self =
     arrayAdapterJoin,
     arrayAdapterToArray,
     arrayAdapterSymbolIterator,
+    arrayAdapterLength,
 
   }
 
