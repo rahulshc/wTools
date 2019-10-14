@@ -10673,6 +10673,11 @@ function setAdapterAll( test )
   var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
   var got = src.all( ( e, i, c ) => c.length > 2  );
   test.identical( got, true );
+
+  test.case = 'all elements defined, onEach returns undefined';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.all( ( e ) => undefined  );
+  test.identical( got, false );
 }
 
 //
@@ -13376,6 +13381,11 @@ function arrayAdapterAll( test )
   var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
   var got = src.all( ( e, i, c ) => c.length > 2  );
   test.identical( got, true );
+
+  test.case = 'all elements defined, onEach returns undefined';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.all( ( e ) => undefined  );
+  test.identical( got, false );
 }
 
 //
