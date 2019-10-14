@@ -1617,17 +1617,15 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   reverse( dst )
   {
-    // if( !dst )
-    // debugger;
     if( !dst )
-    dst = this.Make( this.length ); /* adjust routine Make to accept length */
+    dst = this.MakeEmpty();
+    // dst = this.Make( this.length ); /* adjust routine Make to accept length */
     else
     dst = this.From( dst );
     let dstContainer = dst.original;
     let srcContainer = this.original;
     if( srcContainer === dstContainer )
     {
-      debugger;
       let last2 = ( srcContainer.length - srcContainer.length % 2 ) / 2;
       let last1 = ( srcContainer.length % 2 ? last2 : last2-1 );
       for( let i1 = last1, i2 = last2; i1 >= 0; i1--, i2++ )
@@ -1639,11 +1637,13 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
-      debugger;
-      for( let i1 = srcContainer.length-1, i2 = 0; i1 >= 0; i1--, i2++ )
-      {
-        dstContainer[ i1 ] = srcContainer[ i2 ];
-      }
+      // debugger;
+      // for( let i1 = srcContainer.length-1, i2 = 0; i1 >= 0; i1--, i2++ )
+      // {
+      //   dstContainer[ i1 ] = srcContainer[ i2 ];
+      // }
+      for( let i = srcContainer.length - 1; i >= 0; i-- )
+      dst.append( srcContainer[ i ] );
     }
     return dst;
   }
