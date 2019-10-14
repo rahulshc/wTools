@@ -1078,13 +1078,15 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   eachRight( onEach )
   {
-    debugger;
     let self = this;
     let container = this.original;
-    let reversedContainer = new Set( [ ... container ].reverse() );
-    for( let e of reversedContainer )
-    onEach( e, undefined, self );
-    return this;
+    // let reversedContainer = new Set( [ ... container ].reverse() ); /* Dmytro : double transformation has no sense */
+    // for( let e of reversedContainer )
+    // onEach( e, undefined, self );
+    let temp = [ ... container ];
+    for( let i = temp.length - 1; i >= 0; i-- )
+    onEach( temp[ i ], undefined, self );
+    return self;
   }
   reduce( accumulator, onEach )
   {
@@ -1599,8 +1601,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   reverse( dst )
   {
-    if( !dst )
-    debugger;
+    // if( !dst )
+    // debugger;
     if( !dst )
     dst = this.Make( this.length ); /* adjust routine Make to accept length */
     else
