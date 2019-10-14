@@ -10811,6 +10811,88 @@ function arrayAdapterMake( test )
 
 //
 
+function arrayAdapterHas( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.has( 1 );
+  test.identical( got, false );
+
+  test.case = 'container, no entries';
+  var src = _.containerAdapter.make( [ 1, 2, 3, 4 ] );
+  var got = src.has( 0 );
+  test.identical( got, false );
+
+  test.case = 'container, entry';
+  var src = _.containerAdapter.make( [ 1, 2, 3, 4 ] );
+  var got = src.has( 3 );
+  test.identical( got, true );
+
+  test.case = 'container with arrays, no entries';
+  var src = _.containerAdapter.make( [ [ 1 ], [ 2 ], [ 1 ] ] );
+  var got = src.has( [ 1 ] );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, false );
+
+  test.case = 'container with maps, no entries';
+  var src = _.containerAdapter.make( [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  var got = src.has( { a : 1 } );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'container with arrays, one evaluator';
+  var src = _.containerAdapter.make( [ [ 1 ], [ 2 ], [ 1 ] ] );
+  var got = src.has( [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, true );
+
+  test.case = 'container with maps, one evaluator';
+  var src = _.containerAdapter.make( [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  var got = src.has( { a : 1 }, ( e ) => e.a );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, true );
+
+  test.case = 'container with arrays, two evaluators';
+  var src = _.containerAdapter.make( [ [ 1 ], [ 2 ], [ 1 ] ] );
+  var got = src.has( 1, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, true );
+
+  test.case = 'container with maps, two evaluators';
+  var src = _.containerAdapter.make( [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  var got = src.has( 1, ( e ) => e.a, ( ins ) => ins );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, true );
+
+  test.case = 'container with arrays, fromIndex and evaluator2';
+  var src = _.containerAdapter.make( [ [ 1 ], [ 2 ], [ 1 ] ] );
+  var got = src.has( 1, 3, ( e ) => e[ 0 ] )
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, false );
+
+  test.case = 'container with maps, fromIndex and evaluator2';
+  var src = _.containerAdapter.make( [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  var got = src.has( 1, 3, ( e ) => e.a );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, false );
+
+  test.case = 'container with arrays, equalizer';
+  var src = _.containerAdapter.make( [ [ 1 ], [ 2 ], [ 1 ] ] );
+  var got = src.has( 1, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, true );
+
+  test.case = 'container with maps, equalizer';
+  var src = _.containerAdapter.make( [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  var got = src.has( 1, ( e, ins ) => e.a === ins );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, true );
+}
+
+//
+
 function arrayAdapterCount( test )
 {
   test.case = 'empty container';
@@ -13320,6 +13402,7 @@ var Self =
     arrayAdapterMake_,
     arrayAdapterMakeEmpty,
     arrayAdapterMake,
+    arrayAdapterHas,
     arrayAdapterCount,
     arrayAdapterAppend,
     arrayAdapterAppendOnce,
