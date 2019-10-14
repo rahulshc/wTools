@@ -1048,20 +1048,21 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let container = this.original;
     if( !container.size )
     return undefined;
-    // if( onEach )
-    // {
-    //   return onEach( [ ... container ][ container.size-1 ], undefined, self );
-    // }
-    // else
-    // {
-    //   return [ ... container ][ container.size-1 ];
-    // }
-
-    let last = this.reduce( ( a, e ) => e );
     if( onEach )
-    return onEach( last, undefined, self );
+    {
+      return onEach( [ ... container ][ container.size-1 ], undefined, self );
+    }
     else
-    return last;
+    {
+      return [ ... container ][ container.size-1 ];
+    }
+
+    /* Dmytro : alternative variant which use the minimum of memory */
+    // let last = this.reduce( ( a, e ) => e );
+    // if( onEach )
+    // return onEach( last, undefined, self );
+    // else
+    // return last;
   }
   each( onEach )
   {
