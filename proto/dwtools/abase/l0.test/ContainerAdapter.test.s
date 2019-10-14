@@ -815,50 +815,50 @@ function toOriginals( test )
 // ContainerAdapterAbstract
 //--
 
-function originalOf( test )
+function ToOriginal( test )
 {
   test.open( 'arrayContainerAdapter' );
 
   test.case = 'number';
   var src = _.containerAdapter.make( [] );
-  var got = src.OriginalOf( 1 );
+  var got = src.ToOriginal( 1 );
   test.identical( got, 1 );
 
   test.case = 'string';
   var src = _.containerAdapter.make( [] );
-  var got = src.OriginalOf( 'str' );
+  var got = src.ToOriginal( 'str' );
   test.identical( got, 'str' );
 
   test.case = 'array';
   var src = _.containerAdapter.make( [] );
-  var got = src.OriginalOf( [ 1, 2 ] );
+  var got = src.ToOriginal( [ 1, 2 ] );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'map';
   var src = _.containerAdapter.make( [] );
-  var got = src.OriginalOf( { a : 0 } );
+  var got = src.ToOriginal( { a : 0 } );
   test.identical( got, { a : 0 } );
 
   test.case = 'BufferTyped';
   var src = _.containerAdapter.make( [] );
-  var got = src.OriginalOf( new U8x( 2 ) );
+  var got = src.ToOriginal( new U8x( 2 ) );
   test.identical( got, new U8x( 2 ) );
 
   test.case = 'BufferTyped';
   var src = _.containerAdapter.make( [] );
-  var got = src.OriginalOf( new Set( [ 1, 2 ] ) );
+  var got = src.ToOriginal( new Set( [ 1, 2 ] ) );
   test.identical( [ ... got ], [ ... (  new Set( [ 1, 2 ] ) ) ] );
 
   test.case = 'arrayContainerAdapter';
   var container = _.containerAdapter.make( [ 1, 2 ] );
   var src = _.containerAdapter.make( [] );
-  var got = src.OriginalOf( container );
+  var got = src.ToOriginal( container );
   test.identical( got, container.original );
 
   test.case = 'setContainerAdapter';
   var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
   var src = _.containerAdapter.make( [] );
-  var got = src.OriginalOf( container );
+  var got = src.ToOriginal( container );
   test.identical( [ ... got ], [ ... container.original ] );
 
   test.close( 'arrayContainerAdapter' );
@@ -869,44 +869,44 @@ function originalOf( test )
 
   test.case = 'number';
   var src = _.containerAdapter.make( new Set() );
-  var got = src.OriginalOf( 1 );
+  var got = src.ToOriginal( 1 );
   test.identical( got, 1 );
 
   test.case = 'string';
   var src = _.containerAdapter.make( new Set() );
-  var got = src.OriginalOf( 'str' );
+  var got = src.ToOriginal( 'str' );
   test.identical( got, 'str' );
 
   test.case = 'array';
   var src = _.containerAdapter.make( new Set() );
-  var got = src.OriginalOf( [ 1, 2 ] );
+  var got = src.ToOriginal( [ 1, 2 ] );
   test.identical( got, [ 1, 2 ] );
 
   test.case = 'map';
   var src = _.containerAdapter.make( new Set() );
-  var got = src.OriginalOf( { a : 0 } );
+  var got = src.ToOriginal( { a : 0 } );
   test.identical( got, { a : 0 } );
 
   test.case = 'BufferTyped';
   var src = _.containerAdapter.make( new Set() );
-  var got = src.OriginalOf( new U8x( 2 ) );
+  var got = src.ToOriginal( new U8x( 2 ) );
   test.identical( got, new U8x( 2 ) );
 
   test.case = 'BufferTyped';
   var src = _.containerAdapter.make( new Set() );
-  var got = src.OriginalOf( new Set( [ 1, 2 ] ) );
+  var got = src.ToOriginal( new Set( [ 1, 2 ] ) );
   test.identical( [ ... got ], [ ... (  new Set( [ 1, 2 ] ) ) ] );
 
   test.case = 'arrayContainerAdapter';
   var container = _.containerAdapter.make( [ 1, 2 ] );
   var src = _.containerAdapter.make( new Set() );
-  var got = src.OriginalOf( container );
+  var got = src.ToOriginal( container );
   test.identical( got, container.original );
 
   test.case = 'setContainerAdapter';
   var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
   var src = _.containerAdapter.make( new Set() );
-  var got = src.OriginalOf( container );
+  var got = src.ToOriginal( container );
   test.identical( [ ... got ], [ ... container.original ] );
 
   test.close( 'setContainerAdapter' );
@@ -12982,7 +12982,7 @@ var Self =
 
     // ContainerAdapterAbstract
 
-    originalOf,
+    ToOriginal,
     is_,
     isContainer,
     from_,

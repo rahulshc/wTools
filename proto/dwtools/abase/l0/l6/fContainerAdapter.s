@@ -637,7 +637,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
             src is set
     */
   }
-  has( e )
+  has( e, onEvaluate1, onEvaluate2 )
   {
     if( _.routineIs( onEvaluate1 ) )
     {
@@ -1208,7 +1208,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
             src is set
     */
   }
-  has( e )
+  has( e, onEvaluate1, onEvaluate2 )
   {
     if( _.routineIs( onEvaluate1 ) )
     {
