@@ -11105,6 +11105,93 @@ function setAdapterNone( test )
   test.identical( got, false );
 }
 
+//
+
+function setAdapterReverse( test )
+{
+  test.case = 'without arguments';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var got = src.reverse();
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty array';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = [];
+  var got = src.reverse( [] );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty array';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = [ true, '' ];
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( got.original, [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty Set';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = new Set();
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty Set';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = new Set( [ true, '' ] );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( [ ... got.original ], [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty arrayContainerAdapter';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = _.containerAdapter.make( [] );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty arrayContainerAdapter';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = _.containerAdapter.make( [ true, '' ] );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( got.original, [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty setContainerAdapter';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = _.containerAdapter.make( new Set() );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty setContainerAdapter';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = _.containerAdapter.make( new Set( [ true, '' ] ) );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( [ ... got.original ], [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst === src, odd number of elements';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var got = src.reverse( src );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst === src, even number of elements';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false }, true ] ) );
+  var got = src.reverse( src );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ true, { a : false }, 'str', [ 0 ], null, undefined ] );
+}
+
 //--
 // ArrayContainerAdapter
 //--
@@ -14445,6 +14532,7 @@ var Self =
     setAdapterAll,
     setAdapterAny,
     setAdapterNone,
+    setAdapterReverse,
 
     // ArrayContainerAdapter
 

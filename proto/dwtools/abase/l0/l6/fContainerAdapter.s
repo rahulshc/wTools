@@ -1163,17 +1163,36 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   reverse( dst )
   {
+    // if( !dst )
+    // {
+    //   debugger;
+    //   dst = this.make( this );
+    // }
+    // else
+    // {
+    //   debugger;
+    //   dst = this.From( dst );
+    //   dst.copyFrom( this ); /* qqq : implement and cover copyFrom */
+    // }
     if( !dst )
+    dst = this.MakeEmpty();
+    else
+    dst = this.From( dst );
+
+    let container = this.original;
+    let temp = [ ... this.original ];
+    if( this.same( dst ) )
     {
-      debugger;
-      dst = this.make( this );
+      this.empty();
+      for( let i = temp.length - 1; i >= 0; i-- )
+      this.append( temp[ i ] );
     }
     else
     {
-      debugger;
-      dst = this.From( dst );
-      dst.copyFrom( this ); /* qqq : implement and cover copyFrom */
+      for( let i = temp.length - 1; i >= 0; i-- )
+      dst.append( temp[ i ] );
     }
+
     return dst;
   }
   join( delimeter )
