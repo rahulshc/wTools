@@ -10743,6 +10743,35 @@ function setAdapterFirst( test )
 
 //
 
+function setAdapterLast( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.last();
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'empty container, onEach';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.last( ( e ) => e );
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'container, without onEach';
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
+  var got = src.last();
+  var exp = 3;
+  test.identical( got, exp );
+
+  test.case = 'container, onEach';
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
+  var got = src.last( ( e ) => e ? 1 : 0 );
+  var exp = 1;
+  test.identical( got, exp );
+}
+
+//
+
 function setAdapterEach( test )
 {
   test.case = 'without arguments';
@@ -14005,6 +14034,7 @@ var Self =
     setAdapterFlatFilter,
     setAdapterOnce,
     setAdapterFirst,
+    setAdapterLast,
     setAdapterEach,
     setAdapterReduce,
     setAdapterAll,
