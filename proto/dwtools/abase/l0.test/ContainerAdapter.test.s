@@ -13663,6 +13663,35 @@ function arrayAdapterFirst( test )
 
 //
 
+function arrayAdapterLast( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.last();
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'empty container, onEach';
+  var src = _.containerAdapter.make( [] );
+  var got = src.last( ( e ) => e );
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'container, without onEach';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.last();
+  var exp = 3;
+  test.identical( got, exp );
+
+  test.case = 'container, onEach';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.last( ( e ) => e ? 1 : 0 );
+  var exp = 1;
+  test.identical( got, exp );
+}
+
+//
+
 function arrayAdapterEach( test )
 {
   test.case = 'without arguments';
@@ -14009,6 +14038,7 @@ var Self =
     arrayAdapterFlatFilter,
     arrayAdapterOnce,
     arrayAdapterFirst,
+    arrayAdapterLast,
     arrayAdapterEach,
     arrayAdapterReduce,
     arrayAdapterAll,
