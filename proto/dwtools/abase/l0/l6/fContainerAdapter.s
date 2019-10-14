@@ -1202,7 +1202,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   toArray()
   {
     let container = this.original;
-    return new ArrayContainerAdapter([ ... container ]);
+    return new ArrayContainerAdapter( [ ... container ] );
   }
   [ Symbol.iterator ]()
   {

@@ -11212,6 +11212,25 @@ function setAdapterJoin( test )
   test.identical( got, '1/2/3,4' );
 }
 
+//
+
+function setAdapterToArray( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.toArray();
+  test.is( got !== src );
+  test.is( got.original !== src.original );
+  test.identical( got.original, [ ... src.original ] );
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var got = src.toArray();
+  test.is( got !== src );
+  test.is( got.original !== src.original );
+  test.identical( got.original, [ ... src.original ] );
+}
+
 //--
 // ArrayContainerAdapter
 //--
@@ -14480,6 +14499,25 @@ function arrayAdapterJoin( test )
   test.identical( got, '1/2/3,4' );
 }
 
+//
+
+function arrayAdapterToArray( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.toArray();
+  test.is( got === src );
+  test.is( got.original === src.original );
+  test.identical( got.original, src.original );
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( [ 1, 2, 3 ] );
+  var got = src.toArray();
+  test.is( got === src );
+  test.is( got.original === src.original );
+  test.identical( got.original, src.original );
+}
+
 // --
 // declaration
 // --
@@ -14574,6 +14612,7 @@ var Self =
     setAdapterNone,
     setAdapterReverse,
     setAdapterJoin,
+    setAdapterToArray,
 
     // ArrayContainerAdapter
 
@@ -14614,6 +14653,7 @@ var Self =
     arrayAdapterNone,
     arrayAdapterReverse,
     arrayAdapterJoin,
+    arrayAdapterToArray,
 
   }
 
