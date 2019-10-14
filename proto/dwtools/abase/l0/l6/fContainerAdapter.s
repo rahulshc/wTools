@@ -1262,9 +1262,13 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     else _.assert( 0, 'Unexpected data type' );
     return this;
   }
-  pop( e )
+  pop( e, onEvaluate1, onEvaluate2 )
   {
     var poped = this.original.pop();
+
+    if( _.routineIs( onEvaluate1 ) && _.arrayLeftIndex( [ poped ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+    return poped;
+
     _.assert( e === undefined || poped === e );
     return poped;
   }

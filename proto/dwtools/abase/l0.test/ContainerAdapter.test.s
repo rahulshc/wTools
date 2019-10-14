@@ -8830,6 +8830,78 @@ function setAdapterAppendOnceStrictly( test )
 
 //
 
+function setAdapterPush( test )
+{
+  test.case = 'empty container, push primitive';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.push( 1 );
+  var exp = [ 1 ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 1 );
+
+  test.case = 'empty container, push Long';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ [ 1, 2 ] ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 1 );
+
+  test.case = 'empty container, push map';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.push( { a : 0 } );
+  var exp = [ { a : 0 } ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 1 );
+
+  /* */
+
+  test.case = 'container, push primitive';
+  var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
+  var got = dst.push( 1 );
+  var exp = [ undefined, 1 ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push Long';
+  var dst = _.containerAdapter.make( new Set( [ null ] ) );
+  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ null, [ 1, 2 ] ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push map';
+  var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
+  var got = dst.push( { a : 0 } );
+  var exp = [ 0, { a : 0 } ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 2 );
+
+  /* */
+
+  test.case = 'container, push primitive, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var got = dst.push( 1 );
+  var exp = [ 1, 2, 3 ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 3 );
+
+  test.case = 'container, push Long, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ] ] ) );
+  var got = dst.push( [ 1, 2 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ] ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push map, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { a : 0 } ] ) );
+  var got = dst.push( { a : 0 } );
+  var exp = [ { a : 0 }, { a : 0 } ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 2 );
+}
+
+//
+
 function setAdapterAppendContainer( test )
 {
   test.case = 'src - empty container, append empty array';
@@ -11958,6 +12030,65 @@ function arrayAdapterAppendContainerOnce( test )
 
 //
 
+function arrayAdapterPop( test )
+{
+  test.case = 'empty container, without argument';
+  var src = _.containerAdapter.make( [] );
+  var got = src.pop();
+  test.identical( got, undefined );
+
+  test.case = 'container, last element is undefined, without arguments';
+  var src = _.containerAdapter.make( [ null, 1, 'str', undefined ] );
+  var got = src.pop();
+  test.identical( got, undefined );
+
+  test.case = 'container, last element === searched element';
+  var src = _.containerAdapter.make( [ null, 1, 'str' ] );
+  var got = src.pop( 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'container, last element - complex data, one evaluator';
+  var src = _.containerAdapter.make( [ null, 1, 'str', [ 1 ] ] );
+  var got = src.pop( [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, two evaluators';
+  var src = _.containerAdapter.make( [ null, 1, 'str', [ 1 ] ] );
+  var got = src.pop( 1, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, equalizer';
+  var src = _.containerAdapter.make( [ null, 1, 'str', [ 1 ] ] );
+  var got = src.pop( 1, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( got, [ 1 ] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'empty container, pop element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [] );
+    src.pop( 2 );
+  });
+
+  test.case = 'popped element !== searched element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [ null, 1, 'str', undefined ] );
+    src.pop( 'str' );
+  });
+
+  test.case = 'complex data';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [ [ 1 ], [ 0 ], [ 1 ] ] );
+    src.pop( [ 1 ] );
+  });
+}
+
+//
+
 function arrayAdapterRemoved( test )
 {
   test.case = 'empty container, remove primitive';
@@ -13607,6 +13738,7 @@ var Self =
     setAdapterAppendOnceEqualizer,
 
     setAdapterAppendOnceStrictly,
+    setAdapterPush,
     setAdapterAppendContainer,
     setAdapterAppendContainerOnce,
     setAdapterRemoved,
@@ -13639,6 +13771,7 @@ var Self =
     arrayAdapterPush,
     arrayAdapterAppendContainer,
     arrayAdapterAppendContainerOnce,
+    arrayAdapterPop,
     arrayAdapterRemoved,
     arrayAdapterRemovedOnce,
     arrayAdapterRemovedOnceStrictly,
