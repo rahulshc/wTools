@@ -742,12 +742,13 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     _.assert( e === undefined || e === last );
     return e;
   }
-  popStrictly( e )
+  popStrictly( e, onEvaluate1, onEvaluate2 )
   {
-    debugger;
-    _.assert( arguments.length === 1 );
-    _.assert( this.original.has( e ), 'Set does not have such an element' );
-    let r = this.original.delete( e );
+    // _.assert( arguments.length === 1 );
+    // _.assert( this.original.has( e ), 'Set does not have such an element' );
+    let last = this.last();
+    _.assert( _.arrayLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Set does not have such an element' );
+    let r = this.original.delete( last );
     return e;
   }
   removed( e, onEvaluate1, onEvaluate2 )
@@ -1278,11 +1279,12 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.assert( e === undefined || poped === e );
     return poped;
   }
-  popStrictly( e )
+  popStrictly( e, onEvaluate1, onEvaluate2 )
   {
-    debugger;
-    _.assert( arguments.length === 1 );
-    _.assert( this.original[ this.original.length - 1 ] === e, 'Container does not have such element' );
+    // _.assert( arguments.length === 1 );
+    // _.assert( this.original[ this.original.length - 1 ] === e, 'Container does not have such element' );
+    _.assert( arguments.length >= 1 );
+    _.assert( _.arrayLeftIndex( [ this.last() ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Container does not have such element' );
     var poped = this.original.pop();
     return poped;
   }
