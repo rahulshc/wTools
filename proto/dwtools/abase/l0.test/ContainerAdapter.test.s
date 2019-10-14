@@ -11497,6 +11497,78 @@ function arrayAdapterAppendOnceStrictly( test )
 
 //
 
+function arrayAdapterPush( test )
+{
+  test.case = 'empty container, push primitive';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.push( 1 );
+  var exp = [ 1 ];
+  test.identical( dst.original, exp );
+  test.identical( got, 1 );
+
+  test.case = 'empty container, push Long';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ [ 1, 2 ] ];
+  test.identical( dst.original, exp );
+  test.identical( got, 1 );
+
+  test.case = 'empty container, push map';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.push( { a : 0 } );
+  var exp = [ { a : 0 } ];
+  test.identical( dst.original, exp );
+  test.identical( got, 1 );
+
+  /* */
+
+  test.case = 'container, push primitive';
+  var dst = _.containerAdapter.make( [ undefined ] );
+  var got = dst.push( 1 );
+  var exp = [ undefined, 1 ];
+  test.identical( dst.original, exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push Long';
+  var dst = _.containerAdapter.make( [ null ] );
+  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ null, [ 1, 2 ] ];
+  test.identical( dst.original, exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push map';
+  var dst = _.containerAdapter.make( [ 0 ] );
+  var got = dst.push( { a : 0 } );
+  var exp = [ 0, { a : 0 } ];
+  test.identical( dst.original, exp );
+  test.identical( got, 2 );
+
+  /* */
+
+  test.case = 'container, push primitive, duplicates';
+  var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
+  var got = dst.push( 1 );
+  var exp = [ 1, 2, 3, 1 ];
+  test.identical( dst.original, exp );
+  test.identical( got, 4 );
+
+  test.case = 'container, push Long, duplicates';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ] ] );
+  var got = dst.push( [ 1, 2 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ] ];
+  test.identical( dst.original, exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push map, duplicates';
+  var dst = _.containerAdapter.make( [ { a : 0 } ] );
+  var got = dst.push( { a : 0 } );
+  var exp = [ { a : 0 }, { a : 0 } ];
+  test.identical( dst.original, exp );
+  test.identical( got, 2 );
+}
+
+//
+
 function arrayAdapterAppendContainer( test )
 {
   test.case = 'dst - empty container, append empty array';
@@ -13564,6 +13636,7 @@ var Self =
     arrayAdapterAppend,
     arrayAdapterAppendOnce,
     arrayAdapterAppendOnceStrictly,
+    arrayAdapterPush,
     arrayAdapterAppendContainer,
     arrayAdapterAppendContainerOnce,
     arrayAdapterRemoved,
