@@ -10517,13 +10517,13 @@ function setAdapterFirst( test )
   test.identical( got, exp );
 
   test.case = 'container, without onEach';
-  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ]) );
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
   var got = src.first();
   var exp = 'first';
   test.identical( got, exp );
 
   test.case = 'container, onEach';
-  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ]) );
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
   var got = src.first( ( e ) => e ? 1 : 0 );
   var exp = 1;
   test.identical( got, exp );
@@ -13090,6 +13090,35 @@ function arrayAdapterOnce( test )
 
 //
 
+function arrayAdapterFirst( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.first();
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'empty container, onEach';
+  var src = _.containerAdapter.make( [] );
+  var got = src.first( ( e ) => e );
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'container, without onEach';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.first();
+  var exp = 'first';
+  test.identical( got, exp );
+
+  test.case = 'container, onEach';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.first( ( e ) => e ? 1 : 0 );
+  var exp = 1;
+  test.identical( got, exp );
+}
+
+//
+
 function arrayAdapterEach( test )
 {
   test.case = 'without arguments';
@@ -13419,6 +13448,7 @@ var Self =
     arrayAdapterFilter,
     arrayAdapterFlatFilter,
     arrayAdapterOnce,
+    arrayAdapterFirst,
     arrayAdapterEach,
     arrayAdapterReduce,
     arrayAdapterAll,

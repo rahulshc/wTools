@@ -1031,7 +1031,6 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       for( let e of container )
       return e;
     }
-    return e;
   }
   last( onEach )
   {
