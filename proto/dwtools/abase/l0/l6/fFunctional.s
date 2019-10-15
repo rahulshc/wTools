@@ -582,7 +582,7 @@ function entityOnly( dst, src, onEach )
   {
     dst = new Map( src );
 
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     {
       let res = onEach( value, key, src );
       if( !res )
@@ -596,7 +596,7 @@ function entityOnly( dst, src, onEach )
   {
     dst = new Map( src );
 
-    for ( let [ key, value ] of dst.entries() )
+    for ( let [ key, value ] of dst )
     if( !value )
     dst.delete( key );
   }
@@ -709,7 +709,7 @@ function entityOnly( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     {
       let res = onEach( value, key, src )
       if( !res )
@@ -721,7 +721,7 @@ function entityOnly( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     if( !value )
     dst.delete( key );
   }
@@ -1049,7 +1049,7 @@ function entityBut( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     {
       let res = onEach( value, key, src );
       if( !res )
@@ -1063,7 +1063,7 @@ function entityBut( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     if( !value )
     dst.set( key, value );
   }
@@ -1175,7 +1175,7 @@ function entityBut( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     {
       let res = onEach( value, key, src )
       if( res )
@@ -1187,7 +1187,7 @@ function entityBut( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     if( value )
     dst.delete( key );
   }
@@ -1609,7 +1609,7 @@ function entityAnd( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     {
       let res = onEach( value, key, src );
       if( res )
@@ -1623,7 +1623,7 @@ function entityAnd( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     if( value )
     dst.set( key, value );
   }
@@ -1744,7 +1744,7 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of dst.entries() )
+    for ( let [ key, value ] of dst )
     {
       let res1, res2;
       res1 = onEach( value, key, dst )
@@ -1760,7 +1760,7 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for ( let [ key, value ] of dst.entries() )
+    for ( let [ key, value ] of dst )
     if( !value || !src.get( key ) )
     dst.delete( key );
   }
@@ -1983,7 +1983,7 @@ function entityOr( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     {
       let res = onEach( value, key, src );
       if( res )
@@ -1997,7 +1997,7 @@ function entityOr( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     if( value )
     dst.set( key, value );
   }
@@ -2115,7 +2115,7 @@ function entityOr( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of dst.entries() )
+    for ( let [ key, value ] of dst )
     {
       let res1, res2
       res1 = onEach( value, key, dst )
@@ -2137,7 +2137,7 @@ function entityOr( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for ( let [ key, value ] of dst.entries() )
+    for ( let [ key, value ] of dst )
     {
       if( !value )
       {
@@ -2402,7 +2402,7 @@ function entityXor( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     {
       let res1 = onEach( undefined, undefined, dst );
       let res2 = onEach( value, key, src );
@@ -2552,13 +2552,13 @@ function entityXor( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for( let [ key, value ] of dst.entries() )
+    for( let [ key, value ] of dst )
     {
       let res = onEach( value, key, dst )
       if( !res )
       dst.delete( key );
     }
-    for( let [ key, value ] of src.entries() )
+    for( let [ key, value ] of src )
     {
       let res1, res2
       if( dst.has( key ) )
@@ -2580,10 +2580,10 @@ function entityXor( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for( let [ key, value ] of dst.entries() )
+    for( let [ key, value ] of dst )
     if( !value )
     dst.delete( key );
-    for ( let [ key, value ] of src.entries() )
+    for ( let [ key, value ] of src )
     {
       let res1 = dst.get( key );
       let res2 = value;
@@ -2736,22 +2736,42 @@ function entityAll( src, onEach )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
-  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
 
   /* */
 
   if( _.routineIs( onEach ) )
   {
 
-    if( _.longIs( src ) )
-    // result = src.every( onEach );
+    if( _.setLike( src ) )
+    {
+
+      for( let e of src )
+      {
+        result = onEach( e, undefined, src );
+        if( !result )
+        return result;
+      }
+
+    }
+    else if( _.hashMapIs( src ) )
+    {
+
+      for( let [ key, value ] of src )
+      {
+        result = onEach( value, key, src );
+        if( !result )
+        return result
+      }
+
+    }
+    else if( _.longIs( src ) )
     {
 
       for( let k = 0 ; k < src.length ; k++ )
       {
         result = onEach( src[ k ], k, src );
         if( !result )
-        return false;
+        return result;
       }
 
     }
@@ -2778,19 +2798,35 @@ function entityAll( src, onEach )
   else
   {
 
-    if( _.longIs( src ) )
-    // result = src.every()
+    if( _.longIs( src ) || _.setLike( src ) )
     {
 
-      for( let k = 0 ; k < src.length ; k++ )
+      for( let e of src )
       {
-        result = src[ k ];
+        result = e;
+        if( !result )
+        return result;
+      }
+      // for( let k = 0 ; k < src.length ; k++ )
+      // {
+      //   result = src[ k ];
+      //   if( !result )
+      //   return result;
+      // }
+
+    }
+    // else if( _.objectLike( src ) )
+    else if( _.hashMapIs( src ) )
+    {
+
+      for( let [ key, value ] of src )
+      {
+        result = value;
         if( !result )
         return result;
       }
 
     }
-    // else if( _.objectLike( src ) )
     else if( _.mapLike( src ) )
     {
 
