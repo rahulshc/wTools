@@ -1,4 +1,4 @@
-( function _ContainerAdapter_test_s_( ) {
+( function _ContainerAdapter_test_s_() {
 
 'use strict';
 
@@ -815,7 +815,404 @@ function toOriginals( test )
 // ContainerAdapterAbstract
 //--
 
-function containerAdapterAbstractFrom( test )
+function ToOriginal( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'number';
+  var src = _.containerAdapter.make( [] );
+  var got = src.ToOriginal( 1 );
+  test.identical( got, 1 );
+
+  test.case = 'string';
+  var src = _.containerAdapter.make( [] );
+  var got = src.ToOriginal( 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'array';
+  var src = _.containerAdapter.make( [] );
+  var got = src.ToOriginal( [ 1, 2 ] );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'map';
+  var src = _.containerAdapter.make( [] );
+  var got = src.ToOriginal( { a : 0 } );
+  test.identical( got, { a : 0 } );
+
+  test.case = 'BufferTyped';
+  var src = _.containerAdapter.make( [] );
+  var got = src.ToOriginal( new U8x( 2 ) );
+  test.identical( got, new U8x( 2 ) );
+
+  test.case = 'BufferTyped';
+  var src = _.containerAdapter.make( [] );
+  var got = src.ToOriginal( new Set( [ 1, 2 ] ) );
+  test.identical( [ ... got ], [ ... (  new Set( [ 1, 2 ] ) ) ] );
+
+  test.case = 'arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ 1, 2 ] );
+  var src = _.containerAdapter.make( [] );
+  var got = src.ToOriginal( container );
+  test.identical( got, container.original );
+
+  test.case = 'setContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+  var src = _.containerAdapter.make( [] );
+  var got = src.ToOriginal( container );
+  test.identical( [ ... got ], [ ... container.original ] );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'number';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.ToOriginal( 1 );
+  test.identical( got, 1 );
+
+  test.case = 'string';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.ToOriginal( 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'array';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.ToOriginal( [ 1, 2 ] );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'map';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.ToOriginal( { a : 0 } );
+  test.identical( got, { a : 0 } );
+
+  test.case = 'BufferTyped';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.ToOriginal( new U8x( 2 ) );
+  test.identical( got, new U8x( 2 ) );
+
+  test.case = 'BufferTyped';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.ToOriginal( new Set( [ 1, 2 ] ) );
+  test.identical( [ ... got ], [ ... (  new Set( [ 1, 2 ] ) ) ] );
+
+  test.case = 'arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ 1, 2 ] );
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.ToOriginal( container );
+  test.identical( got, container.original );
+
+  test.case = 'setContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.ToOriginal( container );
+  test.identical( [ ... got ], [ ... container.original ] );
+
+  test.close( 'setContainerAdapter' );
+}
+
+//
+
+function is_( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'undefined';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( undefined );
+  test.identical( got, false );
+
+  test.case = 'null';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( null );
+  test.identical( got, false );
+
+  test.case = 'number';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( 1 );
+  test.identical( got, false );
+
+  test.case = 'zero';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( 0 );
+  test.identical( got, false );
+
+  test.case = 'string';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( 'str' );
+  test.identical( got, false );
+
+  test.case = 'empty string';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( '' );
+  test.identical( got, false );
+
+  test.case = 'array';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( [ 1, 2 ] );
+  test.identical( got, false );
+
+  test.case = 'map';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( { a : 0 } );
+  test.identical( got, false );
+
+  test.case = 'BufferTyped';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( new U8x( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'Set';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( new Set( [ 1, 2 ] ) );
+  test.identical( got, false );
+
+  test.case = 'arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ 1, 2 ] );
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( container );
+  test.identical( got, true );
+
+  test.case = 'setContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+  var src = _.containerAdapter.make( [] );
+  var got = src.Is( container );
+  test.identical( got, true );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'undefined';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( undefined );
+  test.identical( got, false );
+
+  test.case = 'null';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( null );
+  test.identical( got, false );
+
+  test.case = 'number';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( 1 );
+  test.identical( got, false );
+
+  test.case = 'zero';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( 0 );
+  test.identical( got, false );
+
+  test.case = 'string';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( 'str' );
+  test.identical( got, false );
+
+  test.case = 'empty string';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( '' );
+  test.identical( got, false );
+
+  test.case = 'array';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( [ 1, 2 ] );
+  test.identical( got, false );
+
+  test.case = 'map';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( { a : 0 } );
+  test.identical( got, false );
+
+  test.case = 'BufferTyped';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( new U8x( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'Set';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( new Set( [ 1, 2 ] ) );
+  test.identical( got, false );
+
+  test.case = 'arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ 1, 2 ] );
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( container );
+  test.identical( got, true );
+
+  test.case = 'setContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Is( container );
+  test.identical( got, true );
+
+  test.close( 'setContainerAdapter' );
+}
+
+//
+
+function isContainer( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'undefined';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( undefined );
+  test.identical( got, false );
+
+  test.case = 'null';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( null );
+  test.identical( got, false );
+
+  test.case = 'number';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( 1 );
+  test.identical( got, false );
+
+  test.case = 'zero';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( 0 );
+  test.identical( got, false );
+
+  test.case = 'string';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( 'str' );
+  test.identical( got, false );
+
+  test.case = 'empty string';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( '' );
+  test.identical( got, false );
+
+  test.case = 'array';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( [ 1, 2 ] );
+  test.identical( got, true );
+
+  test.case = 'unroll';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( _.unrollMake( [ 1, 2 ] ) );
+  test.identical( got, true );
+
+  test.case = 'argumentsArray';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( _.argumentsArrayMake( [ 1, 2 ] ) );
+  test.identical( got, true );
+
+  test.case = 'map';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( { a : 0 } );
+  test.identical( got, false );
+
+  test.case = 'BufferTyped';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( new U8x( 2 ) );
+  test.identical( got, true );
+
+  test.case = 'Set';
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( new Set( [ 1, 2 ] ) );
+  test.identical( got, true );
+
+  test.case = 'arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ 1, 2 ] );
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( container );
+  test.identical( got, false );
+
+  test.case = 'setContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+  var src = _.containerAdapter.make( [] );
+  var got = src.IsContainer( container );
+  test.identical( got, false );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'undefined';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( undefined );
+  test.identical( got, false );
+
+  test.case = 'null';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( null );
+  test.identical( got, false );
+
+  test.case = 'number';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( 1 );
+  test.identical( got, false );
+
+  test.case = 'zero';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( 0 );
+  test.identical( got, false );
+
+  test.case = 'string';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( 'str' );
+  test.identical( got, false );
+
+  test.case = 'empty string';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( '' );
+  test.identical( got, false );
+
+  test.case = 'array';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( [ 1, 2 ] );
+  test.identical( got, true );
+
+  test.case = 'unroll';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( _.unrollMake( [ 1, 2 ] ) );
+  test.identical( got, true );
+
+  test.case = 'argumentsArray';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( _.argumentsArrayMake( [ 1, 2 ] ) );
+  test.identical( got, true );
+
+  test.case = 'map';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( { a : 0 } );
+  test.identical( got, false );
+
+  test.case = 'BufferTyped';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( new U8x( 2 ) );
+  test.identical( got, true );
+
+  test.case = 'Set';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( new Set( [ 1, 2 ] ) );
+  test.identical( got, true );
+
+  test.case = 'arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ 1, 2 ] );
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( container );
+  test.identical( got, false );
+
+  test.case = 'setContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.IsContainer( container );
+  test.identical( got, false );
+
+  test.close( 'setContainerAdapter' );
+}
+
+//
+
+function from_( test )
 {
   test.case = 'from empty array';
   var container = _.containerAdapter.from( [] );
@@ -983,6 +1380,1607 @@ function containerAdapterAbstractFrom( test )
   {
     var container = _.containerAdapter.from( [] );
     container.From( _.argumentsArrayMake( undefined ) );
+  });
+}
+
+//
+
+function same( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'src - undefined';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( undefined );
+  test.identical( got, false );
+
+  test.case = 'src - null';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( null );
+  test.identical( got, false );
+
+  test.case = 'src - empty string';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( '' );
+  test.identical( got, false );
+
+  test.case = 'src - false';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( false );
+  test.identical( got, false );
+
+  test.case = 'src - zero';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( 0 );
+  test.identical( got, false );
+
+  test.case = 'src - number';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( 2 );
+  test.identical( got, false );
+
+  test.case = 'src - string';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( 'str' );
+  test.identical( got, false );
+
+  test.case = 'src - array';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( [ 1, 2 ] );
+  test.identical( got, false );
+
+  test.case = 'src - unroll';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( _.unrollMake( [ 1, 2 ] ) );
+  test.identical( got, false );
+
+  test.case = 'src - Set';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( new Set( [ 1, 2 ] ) );
+  test.identical( got, false );
+
+  test.case = 'src - Map';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( new Map( [ [ 1, 2 ] ] ) );
+  test.identical( got, false );
+
+  test.case = 'src - map';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( { a : 0 } );
+  test.identical( got, false );
+
+  test.case = 'src - BufferTyped';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( new U8x( 5 ) );
+  test.identical( got, false );
+
+  test.case = 'src - arrayContainerAdapter';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( _.containerAdapter.make( [] ) );
+  test.identical( got, false );
+
+  test.case = 'src - setContainerAdapter';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( _.containerAdapter.make( new Set() ) );
+  test.identical( got, false );
+
+  test.case = 'src - src';
+  var src = _.containerAdapter.make( [] );
+  var got = src.same( src );
+  test.identical( got, true );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'src - undefined';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( undefined );
+  test.identical( got, false );
+
+  test.case = 'src - null';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( null );
+  test.identical( got, false );
+
+  test.case = 'src - empty string';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( '' );
+  test.identical( got, false );
+
+  test.case = 'src - false';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( false );
+  test.identical( got, false );
+
+  test.case = 'src - zero';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( 0 );
+  test.identical( got, false );
+
+  test.case = 'src - number';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( 2 );
+  test.identical( got, false );
+
+  test.case = 'src - string';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( 'str' );
+  test.identical( got, false );
+
+  test.case = 'src - array';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( [ 1, 2 ] );
+  test.identical( got, false );
+
+  test.case = 'src - unroll';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( _.unrollMake( [ 1, 2 ] ) );
+  test.identical( got, false );
+
+  test.case = 'src - Set';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( new Set( [ 1, 2 ] ) );
+  test.identical( got, false );
+
+  test.case = 'src - Map';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( new Map( [ [ 1, 2 ] ] ) );
+  test.identical( got, false );
+
+  test.case = 'src - map';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( { a : 0 } );
+  test.identical( got, false );
+
+  test.case = 'src - BufferTyped';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( new U8x( 5 ) );
+  test.identical( got, false );
+
+  test.case = 'src - arrayContainerAdapter';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( _.containerAdapter.make( [] ) );
+  test.identical( got, false );
+
+  test.case = 'src - setContainerAdapter';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( _.containerAdapter.make( new Set() ) );
+  test.identical( got, false );
+
+  test.case = 'src - src';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.same( src );
+  test.identical( got, true );
+
+  test.close( 'setContainerAdapter' );
+}
+
+//
+
+function removedContainer( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'dst - empty container, src - empty array';
+  var dst = _.containerAdapter.make( [] );
+  var src = [];
+  var got = dst.removedContainer( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - empty container, src - empty Set';
+  var dst = _.containerAdapter.make( [] );
+  var src = new Set();
+  var got = dst.removedContainer( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - empty container, src - arrayContainerAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removedContainer( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - empty container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removedContainer( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'dst - container, src - empty array, no entries';
+  var dst = _.containerAdapter.make( [ 'str', null, 0 ] );
+  var src = [ 1, [ 2 ], { a : 3 } ];
+  var got = dst.removedContainer( src );
+  var exp = [ 'str', null, 0 ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - container, src - Set, no entries';
+  var dst = _.containerAdapter.make( [ 'str', null, 0 ] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removedContainer( src );
+  var exp = [ 'str', null, 0 ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], 2, 2, { a : 3 } ] );
+  var got = dst.removedContainer( src );
+  var exp = [ 'str', [ 2 ] ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 'str', [ 2 ], 1 ] );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removedContainer( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.identical( got, 3 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var src = dst;
+  var got = dst.removedContainer( src );
+  var exp = [];
+  test.identical( got, 7 );
+  test.identical( dst.original, exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removedContainer( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.identical( got, 5 );
+  test.identical( dst.original, exp );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'dst - empty container, src - empty array';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = [];
+  var got = dst.removedContainer( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - empty container, src - empty Set';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = new Set();
+  var got = dst.removedContainer( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - empty container, src - arrayContainerAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removedContainer( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - empty container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removedContainer( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'dst - container, src - empty array, no entries';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0 ] ) );
+  var src = [ 1, [ 2 ], { a : 3 } ];
+  var got = dst.removedContainer( src );
+  var exp = [ 'str', null, 0 ];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - container, src - Set, no entries';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0 ] ) );
+  var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removedContainer( src );
+  var exp = [ 'str', null, 0 ];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = dst.removedContainer( src );
+  var exp = [ 2, [ 2 ] ];
+  test.identical( got, 2 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removedContainer( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = dst;
+  var got = dst.removedContainer( src );
+  var exp = [];
+  test.identical( got, 6 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removedContainer( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.identical( got, 4 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.close( 'setContainerAdapter' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainer();
+  });
+
+  test.case = 'wrong type of container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainer( 0 );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainer( new BufferRaw() );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainer( 'wrong' );
+  });
+}
+
+//
+
+function removedContainerOnce( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'dst - empty container, src - empty array';
+  var dst = _.containerAdapter.make( [] );
+  var src = [];
+  var got = dst.removedContainerOnce( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - empty container, src - empty Set';
+  var dst = _.containerAdapter.make( [] );
+  var src = new Set();
+  var got = dst.removedContainerOnce( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - empty container, src - arrayContainerAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removedContainerOnce( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - empty container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removedContainerOnce( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'dst - container, src - empty array, no entries';
+  var dst = _.containerAdapter.make( [ 'str', null, 0 ] );
+  var src = [ 1, [ 2 ], { a : 3 } ];
+  var got = dst.removedContainerOnce( src );
+  var exp = [ 'str', null, 0 ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - container, src - Set, no entries';
+  var dst = _.containerAdapter.make( [ 'str', null, 0 ] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removedContainerOnce( src );
+  var exp = [ 'str', null, 0 ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removedContainerOnce( src );
+  var exp = [ 1, 2, 'str', [ 2 ] ];
+  test.identical( got, 1 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], 2, { a : 3 } ] ) );
+  var got = dst.removedContainerOnce( src );
+  var exp = [ 1, 'str', [ 2 ] ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var src = dst;
+  var got = dst.removedContainerOnce( src );
+  var exp = [];
+  test.identical( got, 7 );
+  test.identical( dst.original, exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removedContainerOnce( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.identical( got, 5 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'dst and src has arrays, one evaluator';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removedContainerOnce( src, ( e ) => e[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.identical( got, 6 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removedContainerOnce( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.identical( got, 6 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst and src has arrays, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removedContainerOnce( src, 3, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], [ 2 ] ];
+  test.identical( got, 3 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removedContainerOnce( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.identical( got, 6 );
+  test.identical( dst.original, exp );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'dst - empty container, src - empty array';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = [];
+  var got = dst.removedContainerOnce( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - empty container, src - empty Set';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = new Set();
+  var got = dst.removedContainerOnce( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - empty container, src - arrayContainerAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removedContainerOnce( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - empty container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removedContainerOnce( src );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'dst - container, src - empty array, no entries';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0 ] ) );
+  var src = [ 1, [ 2 ], { a : 3 } ];
+  var got = dst.removedContainerOnce( src );
+  var exp = [ 'str', null, 0 ];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - container, src - Set, no entries';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0 ] ) );
+  var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removedContainerOnce( src );
+  var exp = [ 'str', null, 0 ];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removedContainerOnce( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var got = dst.removedContainerOnce( src );
+  var exp = [ 2, [ 2 ] ];
+  test.identical( got, 2 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = dst;
+  var got = dst.removedContainerOnce( src );
+  var exp = [];
+  test.identical( got, 6 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removedContainerOnce( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.identical( got, 4 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'dst and src has arrays, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var got = dst.removedContainerOnce( src, ( e ) => e[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.identical( got, 5 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var got = dst.removedContainerOnce( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.identical( got, 5 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst and src has arrays, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var got = dst.removedContainerOnce( src, 3, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], [ 2 ] ];
+  test.identical( got, 2 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var got = dst.removedContainerOnce( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.identical( got, 5 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.close( 'setContainerAdapter' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainerOnce();
+  });
+
+  test.case = 'wrong type of container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainerOnce( 0 );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainerOnce( new BufferRaw() );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainerOnce( 'wrong' );
+  });
+}
+
+//
+
+function removedContainerOnceStrictly( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( [ 1, 2, 'str' ] );
+  var got = dst.removedContainerOnceStrictly( src );
+  var exp = [ [ 2 ] ];
+  test.identical( got, 3 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+  var got = dst.removedContainerOnceStrictly( src );
+  var exp = [ 'str', [ 2 ] ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], { a : 3 } ] );
+  var src = dst;
+  var got = dst.removedContainerOnceStrictly( src );
+  var exp = [];
+  test.identical( got, 6 );
+  test.identical( dst.original, exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1 ] );
+  var got = dst.removedContainerOnceStrictly( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.identical( got, 4 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'dst and src has arrays, one evaluator';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
+  var got = dst.removedContainerOnceStrictly( src, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
+  var got = dst.removedContainerOnceStrictly( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst and src has arrays, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 3 ] ] );
+  var got = dst.removedContainerOnceStrictly( src, 4, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 2 ], 'str', { a : 3 }  ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
+  var got = dst.removedContainerOnceStrictly( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( [ 1 ] );
+  var got = dst.removedContainerOnceStrictly( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( new Set( [ 1 ] ) );
+  var got = dst.removedContainerOnceStrictly( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = dst;
+  var got = dst.removedContainerOnceStrictly( src );
+  var exp = [];
+  test.identical( got, 6 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], { a : 3 } ] ) );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, ] );
+  var got = dst.removedContainerOnceStrictly( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.identical( got, 4 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'dst and src has arrays, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
+  var got = dst.removedContainerOnceStrictly( src, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
+  test.identical( got, 2 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
+  var got = dst.removedContainerOnceStrictly( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
+  test.identical( got, 2 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst and src has arrays, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 3 ] ] ) );
+  var got = dst.removedContainerOnceStrictly( src, 4, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 2 ], { a : 3 }  ];
+  test.identical( got, 2 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
+  var got = dst.removedContainerOnceStrictly( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
+  test.identical( got, 2 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.close( 'setContainerAdapter' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainerOnceStrictly();
+  });
+
+  test.case = 'empty container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainerOnceStrictly( [ 1 ] );
+  });
+
+  test.case = 'a few entries';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [ 1, 1 ] );
+    dst.removedContainerOnceStrictly( [ 1 ] );
+  });
+
+  test.case = 'no entries';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [ 2, 2 ] );
+    dst.removedContainerOnceStrictly( [ 1 ] );
+  });
+
+  test.case = 'wrong type of container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainerOnceStrictly( 0 );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainerOnceStrictly( new BufferRaw() );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removedContainerOnceStrictly( 'wrong' );
+  });
+}
+
+//
+
+function removeContainer( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'dst - empty container, src - empty array';
+  var dst = _.containerAdapter.make( [] );
+  var src = [];
+  var got = dst.removeContainer( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty container, src - empty Set';
+  var dst = _.containerAdapter.make( [] );
+  var src = new Set();
+  var got = dst.removeContainer( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty container, src - arrayContainerAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainer( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removeContainer( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  /* */
+
+  test.case = 'dst - container, src - empty array, no entries';
+  var dst = _.containerAdapter.make( [ 'str', null, 0 ] );
+  var src = [ 1, [ 2 ], { a : 3 } ];
+  var got = dst.removeContainer( src );
+  var exp = [ 'str', null, 0 ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - container, src - Set, no entries';
+  var dst = _.containerAdapter.make( [ 'str', null, 0 ] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainer( src );
+  var exp = [ 'str', null, 0 ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainer( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removeContainer( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var src = dst;
+  var got = dst.removeContainer( src );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got === src );
+  test.identical( got.original, exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removeContainer( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'dst - empty container, src - empty array';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = [];
+  var got = dst.removeContainer( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - empty container, src - empty Set';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = new Set();
+  var got = dst.removeContainer( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - empty container, src - arrayContainerAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainer( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - empty container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removeContainer( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'dst - container, src - empty array, no entries';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0 ] ) );
+  var src = [ 1, [ 2 ], { a : 3 } ];
+  var got = dst.removeContainer( src );
+  var exp = [ 'str', null, 0 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - container, src - Set, no entries';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0 ] ) );
+  var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainer( src );
+  var exp = [ 'str', null, 0 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainer( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removeContainer( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = dst;
+  var got = dst.removeContainer( src );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got === src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removeContainer( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.close( 'setContainerAdapter' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainer();
+  });
+
+  test.case = 'wrong type of container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainer( 0 );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainer( new BufferRaw() );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainer( 'wrong' );
+  });
+}
+
+//
+
+function removeContainerOnce( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'dst - empty container, src - empty array';
+  var dst = _.containerAdapter.make( [] );
+  var src = [];
+  var got = dst.removeContainerOnce( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty container, src - empty Set';
+  var dst = _.containerAdapter.make( [] );
+  var src = new Set();
+  var got = dst.removeContainerOnce( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty container, src - arrayContainerAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainerOnce( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - empty container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removeContainerOnce( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  /* */
+
+  test.case = 'dst - container, src - empty array, no entries';
+  var dst = _.containerAdapter.make( [ 'str', null, 0 ] );
+  var src = [ 1, [ 2 ], { a : 3 } ];
+  var got = dst.removeContainerOnce( src );
+  var exp = [ 'str', null, 0 ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - container, src - Set, no entries';
+  var dst = _.containerAdapter.make( [ 'str', null, 0 ] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainerOnce( src );
+  var exp = [ 'str', null, 0 ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainerOnce( src );
+  var exp = [ 1, 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removeContainerOnce( src );
+  var exp = [ 1, 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var src = dst;
+  var got = dst.removeContainerOnce( src );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got === src );
+  test.identical( got.original, exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removeContainerOnce( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  /* */
+
+  test.case = 'dst and src has arrays, one evaluator';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removeContainerOnce( src, ( e ) => e[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removeContainerOnce( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst and src has arrays, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removeContainerOnce( src, 3, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], [ 2 ] ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removeContainerOnce( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'dst - empty container, src - empty array';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = [];
+  var got = dst.removeContainerOnce( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - empty container, src - empty Set';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = new Set();
+  var got = dst.removeContainerOnce( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - empty container, src - arrayContainerAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainerOnce( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - empty container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removeContainerOnce( src );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'dst - container, src - empty array, no entries';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0 ] ) );
+  var src = [ 1, [ 2 ], { a : 3 } ];
+  var got = dst.removeContainerOnce( src );
+  var exp = [ 'str', null, 0 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - container, src - Set, no entries';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0 ] ) );
+  var src = new Set( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainerOnce( src );
+  var exp = [ 'str', null, 0 ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( [ 1, [ 2 ], { a : 3 } ] );
+  var got = dst.removeContainerOnce( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( new Set( [ 1, [ 2 ], { a : 3 } ] ) );
+  var got = dst.removeContainerOnce( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = dst;
+  var got = dst.removeContainerOnce( src );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got === src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] );
+  var got = dst.removeContainerOnce( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'dst and src has arrays, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var got = dst.removeContainerOnce( src, ( e ) => e[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var got = dst.removeContainerOnce( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst and src has arrays, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var got = dst.removeContainerOnce( src, 3, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], [ 2 ] ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var got = dst.removeContainerOnce( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ [ 3 ], [ 2 ] ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.close( 'setContainerAdapter' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnce();
+  });
+
+  test.case = 'wrong type of container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnce( 0 );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnce( new BufferRaw() );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnce( 'wrong' );
+  });
+}
+
+//
+
+function removeContainerOnceStrictly( test )
+{
+  test.open( 'arrayContainerAdapter' );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( [ 1, 2, 'str' ] );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ [ 2 ] ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( [ 1, 2, 'str', [ 2 ] ] );
+  var src = _.containerAdapter.make( new Set( [ 1, 2, ] ) );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( got.original, exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], { a : 3 } ] );
+  var src = dst;
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got === src );
+  test.identical( got.original, exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( [ 'str', null, 0, 1, [ 2 ], { a : 3 } ] );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1 ] );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  /* */
+
+  test.case = 'dst and src has arrays, one evaluator';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
+  var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
+  var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst and src has arrays, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 3 ] ] );
+  var got = dst.removeContainerOnceStrictly( src, 4, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 2 ], 'str', { a : 3 }  ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] );
+  var src = _.containerAdapter.make( [ [ 2 ], [ 4 ] ] );
+  var got = dst.removeContainerOnceStrictly( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], 'str', { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.close( 'arrayContainerAdapter' );
+
+  /* - */
+
+  test.open( 'setContainerAdapter' );
+
+  test.case = 'dst - container, src - arrayContainerAdapter, entries';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( [ 1 ] );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst - container, src - setContainerAdapter';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 2 ] ] ) );
+  var src = _.containerAdapter.make( new Set( [ 1 ] ) );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ 2, 'str', [ 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'dst === src';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], 'str', { a : 3 } ] ) );
+  var src = dst;
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [];
+  test.is( got === dst );
+  test.is( got === src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'src identical to dst';
+  var dst = _.containerAdapter.make( new Set( [ 'str', null, 0, 1, [ 2 ], { a : 3 } ] ) );
+  var src = _.containerAdapter.make( [ 'str', null, 0, 1, ] );
+  var got = dst.removeContainerOnceStrictly( src );
+  var exp = [ [ 2 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'dst and src has arrays, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
+  var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
+  var got = dst.removeContainerOnceStrictly( src, ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst and src has arrays, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 2 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 3 ] ] ) );
+  var got = dst.removeContainerOnceStrictly( src, 4, ( e ) => e[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 2 ], { a : 3 }  ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'dst and src has arrays, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ 'str', 0, 1, [ 2 ], [ 3 ], [ 4 ], 'str', { a : 3 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ [ 2 ], [ 4 ] ] ) );
+  var got = dst.removeContainerOnceStrictly( src, ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ 'str', 0, 1, [ 3 ], { a : 3 } ];
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.close( 'setContainerAdapter' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnceStrictly();
+  });
+
+  test.case = 'empty container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnceStrictly( [ 1 ] );
+  });
+
+  test.case = 'a few entries';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [ 1, 1 ] );
+    dst.removeContainerOnceStrictly( [ 1 ] );
+  });
+
+  test.case = 'no entries';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [ 2, 2 ] );
+    dst.removeContainerOnceStrictly( [ 1 ] );
+  });
+
+  test.case = 'wrong type of container';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnceStrictly( 0 );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnceStrictly( new BufferRaw() );
+  });
+
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    dst.removeContainerOnceStrictly( 'wrong' );
   });
 }
 
@@ -5780,29 +7778,309 @@ function butEqualizer( test )
 
 function select( test )
 {
-  test.case = 'empty container';
+  test.case = 'arrayContainerAdapter, empty container';
   var src = _.containerAdapter.make( [] );
-  debugger;
   var got = src.select( 'a' );
-  var exp = undefined;
+  var exp = [];
   test.identical( got, exp );
 
-  test.case = 'no selections';
-  var src = _.containerAdapter.make( [ { b : 1 }, { b : 2 } ] );
+  test.case = 'arrayContainerAdapter, no selections';
+  var src = _.containerAdapter.make( [ 'abc', 'bac', 'cad' ] );
   var got = src.select( 'a' );
-  var exp = undefined;
+  var exp = [];
   test.identical( got, exp );
 
-  test.case = 'a few selections';
-  var src = _.containerAdapter.make( [ { a : 1 }, { a : 2 }, { b : 0 } ] );
+  test.case = 'arrayContainerAdapter, no selections';
+  var src = _.containerAdapter.make( [ { b : 1, d : 0 }, { c : 'c' }, { k : [ 1 ] } ] );
   var got = src.select( 'a' );
-  var exp = [ { a : 1 }, { a : 2 } ];
+  var exp = [];
+  test.identical( got, exp );
+
+  test.case = 'arrayContainerAdapter, a few selections';
+  var src = _.containerAdapter.make( [ { c : 3, a : 1 }, { d : 2, a : [ 2 ] }, { b : { a : [] } } ] );
+  var got = src.select( 'a' );
+  var exp = [ { c : 3, a : 1 }, { a : [ 2 ], d : 2 } ];
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'arrayContainerAdapter, empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.select( 'a' );
+  var exp = [];
+  test.identical( got, exp );
+
+  test.case = 'arrayContainerAdapter, no selections';
+  var src = _.containerAdapter.make( new Set( [ 'abc', 'bac', 'cad' ] ) );
+  var got = src.select( 'a' );
+  var exp = [];
+  test.identical( got, exp );
+
+  test.case = 'arrayContainerAdapter, no selections';
+  var src = _.containerAdapter.make( new Set( [ { b : 1, d : 0 }, [ 'a' ], { c : 'c' }, { k : [ 1 ] } ] ) );
+  var got = src.select( 'a' );
+  var exp = [];
+  test.identical( got, exp );
+
+  test.case = 'arrayContainerAdapter, a few selections';
+  var src = _.containerAdapter.make( new Set( [ { c : 3, a : 1 }, { d : 2, a : [ 2 ] }, { b : { a : [] } } ] ) );
+  var got = src.select( 'a' );
+  var exp = [ { c : 3, a : 1 }, { a : [ 2 ], d : 2 } ];
   test.identical( got, exp );
 }
 
 //--
 // SetContainerAdapter
 //--
+
+function setAdapterMake_( test )
+{
+  test.case = 'from empty Set';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var got = src.make();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'from Set';
+  var src = _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.make();
+  var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'from setContainerAdapter';
+  var src = _.containerAdapter.make( _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) ) );
+  var got = src.make();
+  var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'argument is provided';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set() );
+    src.make( [ 1 ] );
+  });
+}
+
+//
+
+function setAdapterMakeEmpty( test )
+{
+  test.case = 'from empty Set';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'from Set';
+  var src = _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'from setContainerAdapter';
+  var src = _.containerAdapter.make( _.containerAdapter.make( new Set( [ 1, { a : 2 }, [ 0 ], undefined ] ) ) );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'argument is provided';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.MakeEmpty( new Set() );
+    src.make( [ 1 ] );
+  });
+}
+
+//
+
+function setAdapterMake( test )
+{
+  test.case = 'without arguments';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make();
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+
+  test.case = 'from undefined';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( undefined );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+
+  test.case = 'from null';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( null );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+
+  test.case = 'from zero';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( 0 );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+
+  test.case = 'from number';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( 100 );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+
+  test.case = 'from array';
+  var container = [ 1, 2, 3 ];
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ 1, 2, 3 ] );
+
+  test.case = 'from argumentsArray';
+  var container = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ 1, 2, 3 ] );
+
+  test.case = 'from BufferTyped';
+  var container = new F32x( [ 1, 2, 3 ] );
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ 1, 2, 3 ] );
+
+  test.case = 'from arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ 1, 2, 3 ] );
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ 1, 2, 3 ] );
+
+  test.case = 'from setContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ 1, 2, 3 ] );
+
+  test.case = 'from self';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( src );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'from string';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( 'str' );
+  test.identical( got, undefined );
+
+  test.case = 'from BufferRaw';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.Make( new BufferRaw( 10 ) );
+  test.identical( got, undefined );
+}
+
+//
+
+function setAdapterHas( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.has( 1 );
+  test.identical( got, false );
+
+  test.case = 'container, no entries';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 4 ] ) );
+  var got = src.has( 0 );
+  test.identical( got, false );
+
+  test.case = 'container, entry';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 4 ] ) );
+  var got = src.has( 3 );
+  test.identical( got, true );
+
+  test.case = 'container with arrays, no entries';
+  var src = _.containerAdapter.make( new Set( [ [ 1 ], [ 2 ], [ 1 ] ] ) );
+  var got = src.has( [ 1 ] );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, false );
+
+  test.case = 'container with maps, no entries';
+  var src = _.containerAdapter.make( new Set( [ { a : 1 }, { b : 1 }, { a : 1 } ] ) );
+  var got = src.has( { a : 1 } );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'container with arrays, one evaluator';
+  var src = _.containerAdapter.make( new Set( [ [ 1 ], [ 2 ], [ 1 ] ] ) );
+  var got = src.has( [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, true );
+
+  test.case = 'container with maps, one evaluator';
+  var src = _.containerAdapter.make( new Set( [ { a : 1 }, { b : 1 }, { a : 1 } ] ) );
+  var got = src.has( { a : 1 }, ( e ) => e.a );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, true );
+
+  test.case = 'container with arrays, two evaluators';
+  var src = _.containerAdapter.make( new Set( [ [ 1 ], [ 2 ], [ 1 ] ] ) );
+  var got = src.has( 1, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, true );
+
+  test.case = 'container with maps, two evaluators';
+  var src = _.containerAdapter.make( new Set( [ { a : 1 }, { b : 1 }, { a : 1 } ] ) );
+  var got = src.has( 1, ( e ) => e.a, ( ins ) => ins );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, true );
+
+  test.case = 'container with arrays, fromIndex and evaluator2';
+  var src = _.containerAdapter.make( new Set( [ [ 1 ], [ 2 ], [ 1 ] ] ) );
+  var got = src.has( 1, 3, ( e ) => e[ 0 ] )
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, false );
+
+  test.case = 'container with maps, fromIndex and evaluator2';
+  var src = _.containerAdapter.make( new Set( [ { a : 1 }, { b : 1 }, { a : 1 } ] ) );
+  var got = src.has( 1, 3, ( e ) => e.a );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, false );
+
+  test.case = 'container with arrays, equalizer';
+  var src = _.containerAdapter.make( new Set( [ [ 1 ], [ 2 ], [ 1 ] ] ) );
+  var got = src.has( 1, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, true );
+
+  test.case = 'container with maps, equalizer';
+  var src = _.containerAdapter.make( new Set( [ { a : 1 }, { b : 1 }, { a : 1 } ] ) );
+  var got = src.has( 1, ( e, ins ) => e.a === ins );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, true );
+}
+
+//
 
 function setAdapterCount( test )
 {
@@ -5918,6 +8196,211 @@ function setAdapterCount( test )
   var exp = [ [ 1 ], [ 1 ], [ 1 ], [ 1 ], [ 1 ] ];
   test.identical( [ ... src.original ], exp );
   test.identical( got, 5 );
+}
+
+//
+
+function setAdapterCopyFrom( test )
+{
+  test.case = 'empty container, src - empty array';
+  var container = _.containerAdapter.make( new Set() );
+  var src = [];
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+  test.identical( src, [] );
+
+  test.case = 'empty container, src - not empty array';
+  var container = _.containerAdapter.make( new Set() );
+  var src = [ undefined, null, [ 1 ], 2, 'str' ];
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( src, [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'not empty container, src - empty array';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = [];
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ true, false ] );
+  test.identical( src, [] );
+
+  test.case = 'container.length < src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = [ undefined, null, [ 1 ], 2, 'str' ];
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( src, [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'container.length > src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
+  var src = [ undefined, null, [ 1 ] ];
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 'str' ] );
+  test.identical( src, [ undefined, null, [ 1 ] ] );
+
+  /* */
+
+  test.case = 'empty container, src - empty Set';
+  var container = _.containerAdapter.make( new Set() );
+  var src = new Set();
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+  test.identical( [ ... src ], [] );
+
+  test.case = 'empty container, src - not empty Set';
+  var container = _.containerAdapter.make( new Set() );
+  var src = new Set( [ undefined, null, [ 1 ], 2, 'str' ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'not empty container, src - empty Set';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = new Set();
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ true, false ] );
+  test.identical( [ ... src ], [] );
+
+  test.case = 'container.length < src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = new Set( [ undefined, null, [ 1 ], 2, 'str' ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'container.length > src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
+  var src = new Set( [ undefined, null, [ 1 ] ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ] ] );
+
+  /* */
+
+  test.case = 'empty container, src - empty arrayContainerAdapter';
+  var container = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( [] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+  test.identical( src.original, [] );
+
+  test.case = 'empty container, src - not empty arrayContainerAdapter';
+  var container = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( [ undefined, null, [ 1 ], 2, 'str' ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( src.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'not empty container, src - empty arrayContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = _.containerAdapter.make( [] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical([ ... got.original ], [ true, false ] );
+  test.identical( src.original, [] );
+
+  test.case = 'container.length < src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = _.containerAdapter.make( [ undefined, null, [ 1 ], 2, 'str' ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( src.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'container.length > src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
+  var src = _.containerAdapter.make( [ undefined, null, [ 1 ] ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 'str' ] );
+  test.identical( src.original, [ undefined, null, [ 1 ] ] );
+
+  /* */
+
+  test.case = 'empty container, src - empty setContainerAdapter';
+  var container = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( new Set() );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [] );
+  test.identical( [ ... src ], [] );
+
+  test.case = 'empty container, src - not empty Set';
+  var container = _.containerAdapter.make( new Set() );
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'not empty container, src - empty Set';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = _.containerAdapter.make( new Set() );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ true, false ] );
+  test.identical( [ ... src ], [] );
+
+  test.case = 'container.length < src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'container.length > src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ] ] ) );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ] ] );
+
+  /* */
+
+  test.case = 'empty container';
+  var container = _.containerAdapter.make( new Set() );
+  var got = container.copyFrom( container );
+  test.is( got === container );
+  test.identical( [ ... got.original ], [] );
+
+  test.case = 'not empty container';
+  var container = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
 }
 
 //
@@ -6552,6 +9035,78 @@ function setAdapterAppendOnceStrictly( test )
 
 //
 
+function setAdapterPush( test )
+{
+  test.case = 'empty container, push primitive';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.push( 1 );
+  var exp = [ 1 ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 1 );
+
+  test.case = 'empty container, push Long';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ [ 1, 2 ] ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 1 );
+
+  test.case = 'empty container, push map';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.push( { a : 0 } );
+  var exp = [ { a : 0 } ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 1 );
+
+  /* */
+
+  test.case = 'container, push primitive';
+  var dst = _.containerAdapter.make( new Set( [ undefined ] ) );
+  var got = dst.push( 1 );
+  var exp = [ undefined, 1 ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push Long';
+  var dst = _.containerAdapter.make( new Set( [ null ] ) );
+  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ null, [ 1, 2 ] ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push map';
+  var dst = _.containerAdapter.make( new Set( [ 0 ] ) );
+  var got = dst.push( { a : 0 } );
+  var exp = [ 0, { a : 0 } ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 2 );
+
+  /* */
+
+  test.case = 'container, push primitive, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var got = dst.push( 1 );
+  var exp = [ 1, 2, 3 ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 3 );
+
+  test.case = 'container, push Long, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ] ] ) );
+  var got = dst.push( [ 1, 2 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ] ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push map, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { a : 0 } ] ) );
+  var got = dst.push( { a : 0 } );
+  var exp = [ { a : 0 }, { a : 0 } ];
+  test.identical( [ ... dst.original ], exp );
+  test.identical( got, 2 );
+}
+
+//
+
 function setAdapterAppendContainer( test )
 {
   test.case = 'src - empty container, append empty array';
@@ -6941,6 +9496,403 @@ function setAdapterAppendContainerOnce( test )
 
 //
 
+function setAdapterPop( test )
+{
+  test.case = 'empty container, without argument';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.pop();
+  test.identical( [ ... src.original ], [] );
+  test.identical( got, undefined );
+
+  test.case = 'container, last element is undefined, without arguments';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', undefined ] ) );
+  var got = src.pop();
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, undefined );
+
+  test.case = 'container, last element === searched element';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str' ] ) );
+  var got = src.pop( 'str' );
+  test.identical( [ ... src.original ], [ null, 1 ] );
+  test.identical( got, 'str' );
+
+  test.case = 'container, last element - complex data, one evaluator';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
+  var got = src.pop( [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, two evaluators';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
+  var got = src.pop( 1, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, equalizer';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
+  var got = src.pop( 1, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'empty container, pop element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set() );
+    src.pop( 2 );
+  });
+
+  test.case = 'popped element !== searched element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set( [ null, 1, 'str', undefined ] ) );
+    src.pop( 'str' );
+  });
+
+  test.case = 'complex data';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set( [ [ 1 ], [ 0 ], [ 1 ] ] ) );
+    src.pop( [ 1 ] );
+  });
+}
+
+//
+
+function setAdapterPopStrictly( test )
+{
+  test.case = 'container, last element === searched element';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str' ] ) );
+  var got = src.popStrictly( 'str' );
+  test.identical( [ ... src.original ], [ null, 1 ] );
+  test.identical( got, 'str' );
+
+  test.case = 'container, last element - complex data, one evaluator';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
+  var got = src.popStrictly( [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, two evaluators';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
+  var got = src.popStrictly( 1, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, equalizer';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
+  var got = src.popStrictly( 1, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set() );
+    src.popStrictly();
+  });
+
+  test.case = 'empty container, pop element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set() );
+    src.popStrictly( 2 );
+  });
+
+  test.case = 'popped element !== searched element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set( [ null, 1, 'str', undefined ] ) );
+    src.popStrictly( 'str' );
+  });
+
+  test.case = 'complex data';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set( [ [ 1 ], [ 0 ], [ 1 ] ] ) );
+    src.popStrictly( [ 1 ] );
+  });
+}
+
+//
+
+function setAdapterRemoved( test )
+{
+  test.case = 'empty container, remove primitive';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.removed( 1 );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'empty container, remove Long';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.removed( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'empty container, remove map';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.removed( { a : 0 } );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove primitive';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+  var got = dst.removed( 1 );
+  var exp = [ 2, '1' ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+  var got = dst.removed( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ 1, 2, '1' ];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove map';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+  var got = dst.removed( { a : 1 } );
+  var exp = [ 1, 2, '1' ];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove primitive, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var got = dst.removed( 1 );
+  var exp = [ 2, 3 ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removed( [ 1, 2 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove map, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] ) );
+  var got = dst.removed( { a : 0 } );
+  var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove Long, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removed( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 3 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removed( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 3 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removed( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, equalizer';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removed( [ 1, 2 ], ( e, ins ) => e === ins[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+}
+
+//
+
+function setAdapterRemovedOnce( test )
+{
+  test.case = 'empty container, remove primitive';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.removedOnce( 1 );
+  var exp = [];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'empty container, remove Long';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.removedOnce( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'empty container, remove map';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.removedOnce( { a : 0 } );
+  var exp = [];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove primitive';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+  var got = dst.removedOnce( 1 );
+  var exp = [ 2, '1' ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+  var got = dst.removedOnce( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ 1, 2, '1' ];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove map';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+  var got = dst.removedOnce( { a : 1 } );
+  var exp = [ 1, 2, '1' ];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove primitive, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, 3, 3 ] ) );
+  var got = dst.removedOnce( 1 );
+  var exp = [ 2, 3 ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnce( [ 1, 2 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove map, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] ) );
+  var got = dst.removedOnce( { a : 0 } );
+  var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove Long, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnce( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnce( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnce( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, equalizer';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnce( [ 1, 2 ], ( e, ins ) => e === ins[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+}
+
+//
+
+function setAdapterRemovedOnceStrictly( test )
+{
+  test.case = 'container, remove primitive';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 2, '1' ] ) );
+  var got = dst.removedOnceStrictly( 1 );
+  var exp = [ 2, '1' ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove Long, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 2, 2 ], [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, equalizer';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'empty container'
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( new Set() );
+    var got = dst.removedOnceStrictly( 1 );
+  });
+
+  test.case = 'container does not have element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+    var got = dst.removedOnceStrictly( [ 1, 2 ] );
+  });
+
+  test.case = 'container has a few elements';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( new Set( [ [ 1 ], [ 1 ], 2, 2, '1' ] ) );
+    var got = dst.removedOnceStrictly( [ 1 ], ( e ) => e[ 0 ] );
+  });
+}
+
+//
+
 function setAdapterRemove( test )
 {
   test.case = 'empty container, remove primitive';
@@ -7014,7 +9966,6 @@ function setAdapterRemove( test )
 
   test.case = 'container, remove Long, one evaluator';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
-  debugger;
   var got = dst.remove( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 2, 2 ] ];
   test.is( got === dst );
@@ -7117,7 +10068,6 @@ function setAdapterRemoveOnce( test )
 
   test.case = 'container, remove Long, one evaluator';
   var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
-  debugger;
   var got = dst.removeOnce( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
   test.is( got === dst );
@@ -7211,6 +10161,21 @@ function setAdapterRemoveOnceStrictly( test )
     var dst = _.containerAdapter.make( new Set( [ [ 1 ], [ 1 ], 2, 2, '1' ] ) );
     var got = dst.removeOnceStrictly( [ 1 ], ( e ) => e[ 0 ] );
   });
+}
+
+//
+
+function setAdapterEmpty( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.empty();
+  test.identical( [ ... src.original ], [] );
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 3, [ 1 ], null, undefined, { a : 0 } ] ) );
+  var got = src.empty();
+  test.identical( [ ... src.original ], [] );
 }
 
 //
@@ -7969,14 +10934,43 @@ function setAdapterFirst( test )
   test.identical( got, exp );
 
   test.case = 'container, without onEach';
-  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ]) );
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
   var got = src.first();
   var exp = 'first';
   test.identical( got, exp );
 
   test.case = 'container, onEach';
-  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ]) );
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
   var got = src.first( ( e ) => e ? 1 : 0 );
+  var exp = 1;
+  test.identical( got, exp );
+}
+
+//
+
+function setAdapterLast( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.last();
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'empty container, onEach';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.last( ( e ) => e );
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'container, without onEach';
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
+  var got = src.last();
+  var exp = 3;
+  test.identical( got, exp );
+
+  test.case = 'container, onEach';
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
+  var got = src.last( ( e ) => e ? 1 : 0 );
   var exp = 1;
   test.identical( got, exp );
 }
@@ -8032,6 +11026,59 @@ function setAdapterEach( test )
   test.is( got === src );
   test.identical( [ ... got.original ], [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2, undefined ] );
+}
+
+//
+
+function setAdapterEachRight( test )
+{
+  test.case = 'without arguments';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( e ) );
+  test.is( got === src );
+  test.identical( [ ... got.original ], exp );
+  test.identical( exp, [] );
+
+  test.case = 'from empty array, onEach returns number';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( 123 ) );
+  test.is( got === src );
+  test.identical( [ ... got.original ], exp );
+  test.identical( exp, [] );
+
+  test.case = 'from array, onEach returns original';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( e ) );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ ... src.original ] );
+  test.identical( exp, [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ] );
+
+  test.case = 'from array, onEach returns undefined';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( undefined ) );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
+
+  test.case = 'from array, onEach returns array';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( [ e ] ) );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  test.identical( exp, [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ] );
+
+  test.case = 'from array, onEach returns element of array';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] ) );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( e[ 0 ] ) );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
+  test.identical( exp, [ undefined, 2, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
 }
 
 //
@@ -8092,9 +11139,797 @@ function setAdapterReduce( test )
   });
 }
 
+//
+
+function setAdapterAllRight( test )
+{
+  test.case = 'src - empty container, onEach return element';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.allRight( ( e ) => true );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach return element';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.allRight( ( e, i, c ) => c.length > 5  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach return element';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.allRight( ( e, i, c ) => c.length > 2  );
+  test.identical( got, true );
+
+  test.case = 'all elements is undefines, onEach returns undefined';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.allRight( ( e ) => undefined  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach makes reversed copy';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var exp = [];
+  var got = src.allRight( ( e ) =>
+  {
+    exp.push( e );
+    return true;
+  });
+  test.identical( exp, [ undefined, '', 0, null, false ] );
+  test.identical( got, true );
+}
+
+//
+
+function setAdapterAll( test )
+{
+  test.case = 'src - empty container, onEach return element';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.all( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.all( ( e ) => true );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach return element';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.all( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.all( ( e, i, c ) => c.length > 5  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach return element';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.all( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.all( ( e, i, c ) => c.length > 2  );
+  test.identical( got, true );
+
+  test.case = 'all elements is undefines, onEach returns undefined';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.all( ( e ) => undefined  );
+  test.identical( got, false );
+}
+
+//
+
+function setAdapterAny( test )
+{
+  test.case = 'src - empty container, onEach return element';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.any( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.any( ( e ) => true );
+  test.identical( got, false );
+
+  test.case = 'all elements is defined, onEach return element';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.any( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'one elements is defined, onEach return element';
+  var src = _.containerAdapter.make( new Set( [ null, 0, '', false, undefined, true ] ) );
+  var got = src.any( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.any( ( e, i, c ) => c.length > 5  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach return element';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.any( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements defined, onEach';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.any( ( e, i, c ) => e === undefined  );
+  test.identical( got, true );
+}
+
+//
+
+function setAdapterNone( test )
+{
+  test.case = 'src - empty container, onEach return element';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.none( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.none( ( e ) => false );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach return element';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.none( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'one elements is defined, onEach return element';
+  var src = _.containerAdapter.make( new Set( [ null, 0, '', false, undefined, true ] ) );
+  var got = src.none( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements is defined, onEach';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.none( ( e, i, c ) => c.length > 5  );
+  test.identical( got, true );
+
+  test.case = 'all elements is undefines, onEach return element';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.none( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements defined, onEach';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.none( ( e, i, c ) => e === undefined  );
+  test.identical( got, false );
+}
+
+//
+
+function setAdapterReverse( test )
+{
+  test.case = 'without arguments';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var got = src.reverse();
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty array';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = [];
+  var got = src.reverse( [] );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty array';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = [ true, '' ];
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( got.original, [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty Set';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = new Set();
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty Set';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = new Set( [ true, '' ] );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( [ ... got.original ], [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty arrayContainerAdapter';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = _.containerAdapter.make( [] );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty arrayContainerAdapter';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = _.containerAdapter.make( [ true, '' ] );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( got.original, [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty setContainerAdapter';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = _.containerAdapter.make( new Set() );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty setContainerAdapter';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var dst = _.containerAdapter.make( new Set( [ true, '' ] ) );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( [ ... got.original ], [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst === src, odd number of elements';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false } ] ) );
+  var got = src.reverse( src );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst === src, even number of elements';
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 0 ], 'str', { a : false }, true ] ) );
+  var got = src.reverse( src );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ true, { a : false }, 'str', [ 0 ], null, undefined ] );
+}
+
+//
+
+function setAdapterJoin( test )
+{
+  test.case = 'empty container, without delimeter';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.join();
+  test.identical( got, '' );
+
+  test.case = 'empty container, delimeter';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.join( '/' );
+  test.identical( got, '' );
+
+  test.case = 'not empty container, delimeter';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, [ 3, 4 ] ] ) );
+  var got = src.join( '/' );
+  test.identical( got, '1/2/3,4' );
+}
+
+//
+
+function setAdapterToArray( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.toArray();
+  test.is( got !== src );
+  test.is( got.original !== src.original );
+  test.identical( got.original, [ ... src.original ] );
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var got = src.toArray();
+  test.is( got !== src );
+  test.is( got.original !== src.original );
+  test.identical( got.original, [ ... src.original ] );
+}
+
+//
+
+function setAdapterSymbolIterator( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set( [] ) );
+  var exp = [];
+  for( let e of src )
+  exp.push( e + 1 );
+  test.identical( [ ... src.original ], [] );
+  test.identical( exp, [] );
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var exp = [];
+  for( let e of src )
+  exp.push( e + 1 );
+  test.identical( [ ... src.original ], [ 1, 2, 3 ] );
+  test.identical( exp, [ 2, 3, 4 ] );
+}
+
+//
+
+function setAdapterLength( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.length;
+  test.identical( got, 0 )
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( new Set( [ 1, 2, 3, undefined ] ) );
+  var got = src.length;
+  test.identical( got, 4 )
+}
+
 //--
 // ArrayContainerAdapter
 //--
+
+function arrayAdapterMake_( test )
+{
+  test.case = 'from array';
+  var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] );
+  var got = src.make();
+  var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'from unroll';
+  var src = _.containerAdapter.make(  _.unrollMake( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.make();
+  var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'from arrayContainerAdapter';
+  var src = _.containerAdapter.make( _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.make();
+  var exp = [ 1, { a : 2 }, [ 0 ], undefined ];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'argument is provided';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [] );
+    src.make( [ 1 ] );
+  });
+}
+
+//
+
+function arrayAdapterMakeEmpty( test )
+{
+  test.case = 'from array';
+  var src = _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'from unroll';
+  var src = _.containerAdapter.make(  _.unrollMake( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'from arrayContainerAdapter';
+  var src = _.containerAdapter.make( _.containerAdapter.make( [ 1, { a : 2 }, [ 0 ], undefined ] ) );
+  var got = src.MakeEmpty();
+  var exp = [];
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'argument is provided';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.MakeEmpty( [] );
+    src.make( [ 1 ] );
+  });
+}
+
+//
+
+function arrayAdapterMake( test )
+{
+  test.case = 'without arguments';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make();
+  test.is( got !== src );
+  test.identical( got.original, [] );
+
+  test.case = 'from undefined';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( undefined );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+
+  test.case = 'from null';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( null );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+
+  test.case = 'from zero';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( 0 );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+
+  test.case = 'from number';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( 100 );
+  test.is( got !== src );
+  test.identical( got.original, new Array( 100 ) );
+
+  test.case = 'from array';
+  var container = [ 1, 2, 3 ];
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [ 1, 2, 3 ] );
+
+  test.case = 'from argumentsArray';
+  var container = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [ 1, 2, 3 ] );
+
+  test.case = 'from BufferTyped';
+  var container = new F32x( [ 1, 2, 3 ] );
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [ 1, 2, 3 ] );
+
+  test.case = 'from arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ 1, 2, 3 ] );
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [ 1, 2, 3 ] );
+
+  test.case = 'from setContainerAdapter';
+  var container = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( container );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [ 1, 2, 3 ] );
+
+  test.case = 'from self';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( src );
+  test.is( got !== container );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'from string';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( 'str' );
+  test.identical( got, undefined );
+
+  test.case = 'from BufferRaw';
+  var src = _.containerAdapter.make( [] );
+  var got = src.Make( new BufferRaw( 10 ) );
+  test.identical( got, undefined );
+}
+
+//
+
+function arrayAdapterHas( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.has( 1 );
+  test.identical( got, false );
+
+  test.case = 'container, no entries';
+  var src = _.containerAdapter.make( [ 1, 2, 3, 4 ] );
+  var got = src.has( 0 );
+  test.identical( got, false );
+
+  test.case = 'container, entry';
+  var src = _.containerAdapter.make( [ 1, 2, 3, 4 ] );
+  var got = src.has( 3 );
+  test.identical( got, true );
+
+  test.case = 'container with arrays, no entries';
+  var src = _.containerAdapter.make( [ [ 1 ], [ 2 ], [ 1 ] ] );
+  var got = src.has( [ 1 ] );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, false );
+
+  test.case = 'container with maps, no entries';
+  var src = _.containerAdapter.make( [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  var got = src.has( { a : 1 } );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'container with arrays, one evaluator';
+  var src = _.containerAdapter.make( [ [ 1 ], [ 2 ], [ 1 ] ] );
+  var got = src.has( [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, true );
+
+  test.case = 'container with maps, one evaluator';
+  var src = _.containerAdapter.make( [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  var got = src.has( { a : 1 }, ( e ) => e.a );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, true );
+
+  test.case = 'container with arrays, two evaluators';
+  var src = _.containerAdapter.make( [ [ 1 ], [ 2 ], [ 1 ] ] );
+  var got = src.has( 1, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, true );
+
+  test.case = 'container with maps, two evaluators';
+  var src = _.containerAdapter.make( [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  var got = src.has( 1, ( e ) => e.a, ( ins ) => ins );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, true );
+
+  test.case = 'container with arrays, fromIndex and evaluator2';
+  var src = _.containerAdapter.make( [ [ 1 ], [ 2 ], [ 1 ] ] );
+  var got = src.has( 1, 3, ( e ) => e[ 0 ] )
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, false );
+
+  test.case = 'container with maps, fromIndex and evaluator2';
+  var src = _.containerAdapter.make( [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  var got = src.has( 1, 3, ( e ) => e.a );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, false );
+
+  test.case = 'container with arrays, equalizer';
+  var src = _.containerAdapter.make( [ [ 1 ], [ 2 ], [ 1 ] ] );
+  var got = src.has( 1, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( [ ... src.original ], [ [ 1 ], [ 2 ], [ 1 ] ] );
+  test.identical( got, true );
+
+  test.case = 'container with maps, equalizer';
+  var src = _.containerAdapter.make( [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  var got = src.has( 1, ( e, ins ) => e.a === ins );
+  test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, true );
+}
+
+//
+
+function arrayAdapterCopyFrom( test )
+{
+  test.case = 'empty container, src - empty array';
+  var container = _.containerAdapter.make( [] );
+  var src = [];
+  debugger;
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+  test.identical( src, [] );
+
+  test.case = 'empty container, src - not empty array';
+  var container = _.containerAdapter.make( [] );
+  var src = [ undefined, null, [ 1 ], 2, 'str' ];
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( src, [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'not empty container, src - empty array';
+  var container = _.containerAdapter.make( [ true, false ] );
+  var src = [];
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ true, false ] );
+  test.identical( src, [] );
+
+  test.case = 'container.length < src.length';
+  var container = _.containerAdapter.make( [ true, false ] );
+  var src = [ undefined, null, [ 1 ], 2, 'str' ];
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( src, [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'container.length > src.length';
+  var container = _.containerAdapter.make( [ true, false, 2, 'str' ] );
+  var src = [ undefined, null, [ 1 ] ];
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 'str' ] );
+  test.identical( src, [ undefined, null, [ 1 ] ] );
+
+  /* */
+
+  test.case = 'empty container, src - empty Set';
+  var container = _.containerAdapter.make( [] );
+  var src = new Set();
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+  test.identical( [ ... src ], [] );
+
+  test.case = 'empty container, src - not empty Set';
+  var container = _.containerAdapter.make( [] );
+  var src = new Set( [ undefined, null, [ 1 ], 2, 'str' ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'not empty container, src - empty Set';
+  var container = _.containerAdapter.make( [ true, false ] );
+  var src = new Set();
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ true, false ] );
+  test.identical( [ ... src ], [] );
+
+  test.case = 'container.length < src.length';
+  var container = _.containerAdapter.make( [ true, false ] );
+  var src = new Set( [ undefined, null, [ 1 ], 2, 'str' ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'container.length > src.length';
+  var container = _.containerAdapter.make( [ true, false, 2, 'str' ] );
+  var src = new Set( [ undefined, null, [ 1 ] ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ] ] );
+
+  /* */
+
+  test.case = 'empty container, src - empty arrayContainerAdapter';
+  var container = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( [] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+  test.identical( src.original, [] );
+
+  test.case = 'empty container, src - not empty arrayContainerAdapter';
+  var container = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( [ undefined, null, [ 1 ], 2, 'str' ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( src.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'not empty container, src - empty arrayContainerAdapter';
+  var container = _.containerAdapter.make( [ true, false ] );
+  var src = _.containerAdapter.make( [] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ true, false ] );
+  test.identical( src.original, [] );
+
+  test.case = 'container.length < src.length';
+  var container = _.containerAdapter.make( [ true, false ] );
+  var src = _.containerAdapter.make( [ undefined, null, [ 1 ], 2, 'str' ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( src.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'container.length > src.length';
+  var container = _.containerAdapter.make( [ true, false, 2, 'str' ] );
+  var src = _.containerAdapter.make( [ undefined, null, [ 1 ] ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 'str' ] );
+  test.identical( src.original, [ undefined, null, [ 1 ] ] );
+
+  /* */
+
+  test.case = 'empty container, src - empty setContainerAdapter';
+  var container = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( new Set() );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [] );
+  test.identical( [ ... src ], [] );
+
+  test.case = 'empty container, src - not empty Set';
+  var container = _.containerAdapter.make( [] );
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'not empty container, src - empty Set';
+  var container = _.containerAdapter.make( [ true, false ] );
+  var src = _.containerAdapter.make( new Set() );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ true, false ] );
+  test.identical( [ ... src ], [] );
+
+  test.case = 'container.length < src.length';
+  var container = _.containerAdapter.make( [ true, false ] );
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'container.length > src.length';
+  var container = _.containerAdapter.make( [ true, false, 2, 'str' ] );
+  var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ] ] ) );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( got.original, [ undefined, null, [ 1 ], 'str' ] );
+  test.identical( [ ... src ], [ undefined, null, [ 1 ] ] );
+
+  /* */
+
+  test.case = 'empty container';
+  var container = _.containerAdapter.make( [] );
+  var got = container.copyFrom( container );
+  test.is( got === container );
+  test.identical( got.original, [] );
+
+  test.case = 'not empty container';
+  var container = _.containerAdapter.make( [ undefined, null, [ 1 ], 2, 'str' ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.identical( got.original, [ undefined, null, [ 1 ], 2, 'str' ] );
+}
+
+//
 
 function arrayAdapterCount( test )
 {
@@ -8580,6 +12415,78 @@ function arrayAdapterAppendOnceStrictly( test )
 
 //
 
+function arrayAdapterPush( test )
+{
+  test.case = 'empty container, push primitive';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.push( 1 );
+  var exp = [ 1 ];
+  test.identical( dst.original, exp );
+  test.identical( got, 1 );
+
+  test.case = 'empty container, push Long';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ [ 1, 2 ] ];
+  test.identical( dst.original, exp );
+  test.identical( got, 1 );
+
+  test.case = 'empty container, push map';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.push( { a : 0 } );
+  var exp = [ { a : 0 } ];
+  test.identical( dst.original, exp );
+  test.identical( got, 1 );
+
+  /* */
+
+  test.case = 'container, push primitive';
+  var dst = _.containerAdapter.make( [ undefined ] );
+  var got = dst.push( 1 );
+  var exp = [ undefined, 1 ];
+  test.identical( dst.original, exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push Long';
+  var dst = _.containerAdapter.make( [ null ] );
+  var got = dst.push( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ null, [ 1, 2 ] ];
+  test.identical( dst.original, exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push map';
+  var dst = _.containerAdapter.make( [ 0 ] );
+  var got = dst.push( { a : 0 } );
+  var exp = [ 0, { a : 0 } ];
+  test.identical( dst.original, exp );
+  test.identical( got, 2 );
+
+  /* */
+
+  test.case = 'container, push primitive, duplicates';
+  var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
+  var got = dst.push( 1 );
+  var exp = [ 1, 2, 3, 1 ];
+  test.identical( dst.original, exp );
+  test.identical( got, 4 );
+
+  test.case = 'container, push Long, duplicates';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ] ] );
+  var got = dst.push( [ 1, 2 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ] ];
+  test.identical( dst.original, exp );
+  test.identical( got, 2 );
+
+  test.case = 'container, push map, duplicates';
+  var dst = _.containerAdapter.make( [ { a : 0 } ] );
+  var got = dst.push( { a : 0 } );
+  var exp = [ { a : 0 }, { a : 0 } ];
+  test.identical( dst.original, exp );
+  test.identical( got, 2 );
+}
+
+//
+
 function arrayAdapterAppendContainer( test )
 {
   test.case = 'dst - empty container, append empty array';
@@ -8969,6 +12876,403 @@ function arrayAdapterAppendContainerOnce( test )
 
 //
 
+function arrayAdapterPop( test )
+{
+  test.case = 'empty container, without argument';
+  var src = _.containerAdapter.make( [] );
+  var got = src.pop();
+  test.identical( src.original, [] );
+  test.identical( got, undefined );
+
+  test.case = 'container, last element is undefined, without arguments';
+  var src = _.containerAdapter.make( [ null, 1, 'str', undefined ] );
+  var got = src.pop();
+  test.identical( src.original, [ null, 1, 'str' ] );
+  test.identical( got, undefined );
+
+  test.case = 'container, last element === searched element';
+  var src = _.containerAdapter.make( [ null, 1, 'str' ] );
+  var got = src.pop( 'str' );
+  test.identical( src.original, [ null, 1 ] );
+  test.identical( got, 'str' );
+
+  test.case = 'container, last element - complex data, one evaluator';
+  var src = _.containerAdapter.make( [ null, 1, 'str', [ 1 ] ] );
+  var got = src.pop( [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( src.original, [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, two evaluators';
+  var src = _.containerAdapter.make( [ null, 1, 'str', [ 1 ] ] );
+  var got = src.pop( 1, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( src.original, [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, equalizer';
+  var src = _.containerAdapter.make( [ null, 1, 'str', [ 1 ] ] );
+  var got = src.pop( 1, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( src.original, [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'empty container, pop element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [] );
+    src.pop( 2 );
+  });
+
+  test.case = 'popped element !== searched element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [ null, 1, 'str', undefined ] );
+    src.pop( 'str' );
+  });
+
+  test.case = 'complex data';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [ [ 1 ], [ 0 ], [ 1 ] ] );
+    src.pop( [ 1 ] );
+  });
+}
+
+//
+
+function arrayAdapterPopStrictly( test )
+{
+  test.case = 'container, last element === searched element';
+  var src = _.containerAdapter.make( [ null, 1, 'str' ] );
+  var got = src.popStrictly( 'str' );
+  test.identical( src.original, [ null, 1 ] );
+  test.identical( got, 'str' );
+
+  test.case = 'container, last element - complex data, one evaluator';
+  var src = _.containerAdapter.make( [ null, 1, 'str', [ 1 ] ] );
+  var got = src.popStrictly( [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( src.original, [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, two evaluators';
+  var src = _.containerAdapter.make( [ null, 1, 'str', [ 1 ] ] );
+  var got = src.popStrictly( 1, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( src.original, [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'container, last element - complex data, equalizer';
+  var src = _.containerAdapter.make( [ null, 1, 'str', [ 1 ] ] );
+  var got = src.popStrictly( 1, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( src.original, [ null, 1, 'str' ] );
+  test.identical( got, [ 1 ] );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [] );
+    src.popStrictly();
+  });
+
+  test.case = 'empty container, pop element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [] );
+    src.popStrictly( 2 );
+  });
+
+  test.case = 'popped element !== searched element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [ null, 1, 'str', undefined ] );
+    src.popStrictly( 'str' );
+  });
+
+  test.case = 'complex data';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [ [ 1 ], [ 0 ], [ 1 ] ] );
+    src.popStrictly( [ 1 ] );
+  });
+}
+
+//
+
+function arrayAdapterRemoved( test )
+{
+  test.case = 'empty container, remove primitive';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.removed( 1 );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'empty container, remove Long';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.removed( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'empty container, remove map';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.removed( { a : 0 } );
+  var exp = [];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'container, remove primitive';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
+  var got = dst.removed( 1 );
+  var exp = [ 2, 2, '1' ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
+  var got = dst.removed( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ 1, 1, 2, 2, '1' ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove map';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
+  var got = dst.removed( { a : 1 } );
+  var exp = [ 1, 1, 2, 2, '1' ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'container, remove primitive, duplicates';
+  var dst = _.containerAdapter.make( [ 1, 2, 3 ] );
+  var got = dst.removed( 1 );
+  var exp = [ 2, 3 ];
+  test.identical( got, 1 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, duplicates';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removed( [ 1, 2 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove map, duplicates';
+  var dst = _.containerAdapter.make( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] );
+  var got = dst.removed( { a : 0 } );
+  var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'container, remove Long, one evaluator';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removed( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 3 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, two evaluators';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removed( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 3 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removed( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, equalizer';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removed( [ 1, 2 ], ( e, ins ) => e === ins[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+}
+
+//
+
+function arrayAdapterRemovedOnce( test )
+{
+  test.case = 'empty container, remove primitive';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.removedOnce( 1 );
+  var exp = [];
+  test.identical( got, -1 );
+  test.identical( dst.original, exp );
+
+  test.case = 'empty container, remove Long';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.removedOnce( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [];
+  test.identical( got, -1 );
+  test.identical( dst.original, exp );
+
+  test.case = 'empty container, remove map';
+  var dst = _.containerAdapter.make( [] );
+  var got = dst.removedOnce( { a : 0 } );
+  var exp = [];
+  test.identical( got, -1 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'container, remove primitive';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
+  var got = dst.removedOnce( 1 );
+  var exp = [ 1, 2, 2, '1' ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
+  var got = dst.removedOnce( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ 1, 1, 2, 2, '1' ];
+  test.identical( got, -1 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove map';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
+  var got = dst.removedOnce( { a : 1 } );
+  var exp = [ 1, 1, 2, 2, '1' ];
+  test.identical( got, -1 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'container, remove primitive, duplicates';
+  var dst = _.containerAdapter.make( [ 1, 1, 2, 2, 3, 3 ] );
+  var got = dst.removedOnce( 1 );
+  var exp = [ 1, 2, 2, 3, 3 ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, duplicates';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnce( [ 1, 2 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, -1 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove map, duplicates';
+  var dst = _.containerAdapter.make( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] );
+  var got = dst.removedOnce( { a : 0 } );
+  var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
+  test.identical( got, -1 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'container, remove Long, one evaluator';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnce( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, two evaluators';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnce( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnce( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, equalizer';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnce( [ 1, 2 ], ( e, ins ) => e === ins[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, -1 );
+  test.identical( dst.original, exp );
+}
+
+//
+
+function arrayAdapterRemovedOnceStrictly( test )
+{
+  test.case = 'container, remove primitive';
+  var dst = _.containerAdapter.make( [ 1, 2, 2, '1' ] );
+  var got = dst.removedOnceStrictly( 1 );
+  var exp = [ 2, 2, '1' ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  /* */
+
+  test.case = 'container, remove Long, one evaluator';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, two evaluators';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 2, 2 ], [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 2 );
+  test.identical( dst.original, exp );
+
+  test.case = 'container, remove Long, equalizer';
+  var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ] ] );
+  var got = dst.removedOnceStrictly( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.identical( got, 0 );
+  test.identical( dst.original, exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'empty container'
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [] );
+    var got = dst.removedOnceStrictly( 1 );
+  });
+
+  test.case = 'container does not have element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
+    var got = dst.removedOnceStrictly( [ 1, 2 ] );
+  });
+
+  test.case = 'container has a few elements';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
+    var got = dst.removedOnceStrictly( 1 );
+  });
+}
+
+//
+
 function arrayAdapterRemove( test )
 {
   test.case = 'empty container, remove primitive';
@@ -9186,7 +13490,6 @@ function arrayAdapterRemoveOnceStrictly( test )
 
   test.case = 'container, remove Long, one evaluator';
   var dst = _.containerAdapter.make( [ [ 1, 2 ], [ 2, 2 ] ] );
-  debugger;
   var got = dst.removeOnceStrictly( [ 1, 2 ], ( e ) => e[ 0 ] );
   var exp = [ [ 2, 2 ] ];
   test.is( got === dst );
@@ -9238,6 +13541,21 @@ function arrayAdapterRemoveOnceStrictly( test )
     var dst = _.containerAdapter.make( [ 1, 1, 2, 2, '1' ] );
     var got = dst.removeOnceStrictly( 1 );
   });
+}
+
+//
+
+function arrayAdapterEmpty( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.empty();
+  test.identical( src.original, [] );
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( [ 1, 2, 3, [ 1 ], null, undefined, { a : 0 } ] );
+  var got = src.empty();
+  test.identical( src.original, [] );
 }
 
 //
@@ -10022,6 +14340,64 @@ function arrayAdapterOnce( test )
 
 //
 
+function arrayAdapterFirst( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.first();
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'empty container, onEach';
+  var src = _.containerAdapter.make( [] );
+  var got = src.first( ( e ) => e );
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'container, without onEach';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.first();
+  var exp = 'first';
+  test.identical( got, exp );
+
+  test.case = 'container, onEach';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.first( ( e ) => e ? 1 : 0 );
+  var exp = 1;
+  test.identical( got, exp );
+}
+
+//
+
+function arrayAdapterLast( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.last();
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'empty container, onEach';
+  var src = _.containerAdapter.make( [] );
+  var got = src.last( ( e ) => e );
+  var exp = undefined;
+  test.identical( got, exp );
+
+  test.case = 'container, without onEach';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.last();
+  var exp = 3;
+  test.identical( got, exp );
+
+  test.case = 'container, onEach';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.last( ( e ) => e ? 1 : 0 );
+  var exp = 1;
+  test.identical( got, exp );
+}
+
+//
+
 function arrayAdapterEach( test )
 {
   test.case = 'without arguments';
@@ -10071,6 +14447,59 @@ function arrayAdapterEach( test )
   test.is( got === src );
   test.identical( got.original, [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
   test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, 2, undefined ] );
+}
+
+//
+
+function arrayAdapterEachRight( test )
+{
+  test.case = 'without arguments';
+  var src = _.containerAdapter.make( [] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( e ) );
+  test.is( got === src );
+  test.identical( got.original, exp );
+  test.identical( exp, [] );
+
+  test.case = 'from empty array, onEach returns number';
+  var src = _.containerAdapter.make( [] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( 123 ) );
+  test.is( got === src );
+  test.identical( got.original, exp );
+  test.identical( exp, [] );
+
+  test.case = 'from array, onEach returns original';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( e ) );
+  test.is( got === src );
+  test.identical( got.original, src.original );
+  test.identical( exp, [ { a : 0 }, [ 2 ], '', undefined, false, true, null, 1, 0 ] );
+
+  test.case = 'from array, onEach returns undefined';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( undefined ) );
+  test.is( got === src );
+  test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  test.identical( exp, [ undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
+
+  test.case = 'from array, onEach returns array';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( [ e ] ) );
+  test.is( got === src );
+  test.identical( got.original, [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  test.identical( exp, [ [ { a : 0 } ], [ [ 2 ] ], [ '' ], [ undefined ], [ false ], [ true ], [ null ], [ 1 ], [ 0 ] ] );
+
+  test.case = 'from array, onEach returns element of array';
+  var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
+  var exp = [];
+  var got = src.eachRight( ( e ) => exp.push( e[ 0 ] ) );
+  test.is( got === src );
+  test.identical( got.original, [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
+  test.identical( exp, [ undefined, 2, undefined, undefined, undefined, undefined, undefined, undefined, undefined ] );
 }
 
 //
@@ -10133,6 +14562,57 @@ function arrayAdapterReduce( test )
 
 //
 
+function arrayAdapterAllRight( test )
+{
+  test.case = 'src - empty container, onEach return element';
+  var src = _.containerAdapter.make( [] );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( [] );
+  var got = src.allRight( ( e ) => true );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach return element';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.allRight( ( e, i, c ) => c.length > 5  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach return element';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.allRight( ( e, i, c ) => c.length > 2  );
+  test.identical( got, true );
+
+  test.case = 'all elements is undefines, onEach returns undefined';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.allRight( ( e ) => undefined  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach makes reversed copy';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var exp = [];
+  var got = src.allRight( ( e ) =>
+  {
+    exp.push( e );
+    return true;
+  });
+  test.identical( exp, [ undefined, '', 0, null, false ] );
+  test.identical( got, true );
+}
+
+//
+
 function arrayAdapterAll( test )
 {
   test.case = 'src - empty container, onEach return element';
@@ -10160,9 +14640,68 @@ function arrayAdapterAll( test )
   var got = src.all( ( e ) => e );
   test.identical( got, false );
 
-  test.case = 'all elements defined, onEach';
+  test.case = 'all elements is undefines, onEach';
   var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
   var got = src.all( ( e, i, c ) => c.length > 2  );
+  test.identical( got, true );
+
+  test.case = 'all elements is undefines, onEach returns undefined';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.all( ( e ) => undefined  );
+  test.identical( got, false );
+}
+
+//
+
+function arrayAdapterAnyRight( test )
+{
+  test.case = 'src - empty container, onEach return element';
+  var src = _.containerAdapter.make( [] );
+  var got = src.anyRight( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( [] );
+  var got = src.anyRight( ( e ) => true );
+  test.identical( got, false );
+
+  test.case = 'all elements is defined, onEach return element';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.anyRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'one elements is defined, onEach return element';
+  var src = _.containerAdapter.make( [ null, 0, '', false, undefined, true ] );
+  var got = src.anyRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.anyRight( ( e, i, c ) => c.length > 5  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach return element';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.anyRight( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements defined, onEach';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.anyRight( ( e, i, c ) => e === undefined  );
+  test.identical( got, true );
+
+  test.case = 'all elements defined, onEach return false if e === 0';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var exp = [];
+  var got = src.anyRight( ( e ) =>
+  {
+    if( e === 0 )
+    return true;
+    else
+    exp.push( e );
+    return false;
+  } );
+  test.identical( exp, [ undefined, '' ] );
   test.identical( got, true );
 }
 
@@ -10208,6 +14747,60 @@ function arrayAdapterAny( test )
 
 //
 
+function arrayAdapterNoneRight( test )
+{
+  test.case = 'src - empty container, onEach return element';
+  var src = _.containerAdapter.make( [] );
+  var got = src.noneRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( [] );
+  var got = src.noneRight( ( e ) => false );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach return element';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.noneRight( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'one elements is defined, onEach return element';
+  var src = _.containerAdapter.make( [ null, 0, '', false, undefined, true ] );
+  var got = src.noneRight( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements is defined, onEach';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.noneRight( ( e, i, c ) => c.length > 5  );
+  test.identical( got, true );
+
+  test.case = 'all elements is undefines, onEach return element';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.noneRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements is undefines, onEach';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var got = src.noneRight( ( e ) => e === undefined  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach makes copy';
+  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
+  var exp = [];
+  var got = src.noneRight( ( e ) =>
+  {
+    if( e === null )
+    return true;
+    else
+    exp.push( e );
+    return false;
+  });
+  test.identical( exp, [ undefined, '', 0 ] );
+  test.identical( got, false );
+}
+
+//
+
 function arrayAdapterNone( test )
 {
   test.case = 'src - empty container, onEach return element';
@@ -10246,6 +14839,168 @@ function arrayAdapterNone( test )
   test.identical( got, false );
 }
 
+//
+
+function arrayAdapterReverse( test )
+{
+  test.case = 'without arguments';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
+  var got = src.reverse();
+  test.is( got !== src );
+  test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty array';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
+  var dst = [];
+  var got = src.reverse( [] );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty array';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
+  var dst = [ true, '' ];
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( got.original, [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty Set';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
+  var dst = new Set();
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty Set';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
+  var dst = new Set( [ true, '' ] );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got !== dst );
+  test.identical( [ ... got.original ], [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty arrayContainerAdapter';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
+  var dst = _.containerAdapter.make( [] );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( got.original, [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty arrayContainerAdapter';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
+  var dst = _.containerAdapter.make( [ true, '' ] );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( got.original, [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - empty setContainerAdapter';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
+  var dst = _.containerAdapter.make( new Set() );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst - not empty setContainerAdapter';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
+  var dst = _.containerAdapter.make( new Set( [ true, '' ] ) );
+  var got = src.reverse( dst );
+  test.is( got !== src );
+  test.is( got === dst );
+  test.identical( [ ... got.original ], [ true, '', { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst === src, odd number of elements';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false } ] );
+  var got = src.reverse( src );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ { a : false }, 'str', [ 0 ], null, undefined ] );
+
+  test.case = 'dst === src, even number of elements';
+  var src = _.containerAdapter.make( [ undefined, null, [ 0 ], 'str', { a : false }, true ] );
+  var got = src.reverse( src );
+  test.is( got === src );
+  test.identical( [ ... got.original ], [ true, { a : false }, 'str', [ 0 ], null, undefined ] );
+}
+
+//
+
+function arrayAdapterJoin( test )
+{
+  test.case = 'empty container, without delimeter';
+  var src = _.containerAdapter.make( [] );
+  var got = src.join();
+  test.identical( got, '' );
+
+  test.case = 'empty container, delimeter';
+  var src = _.containerAdapter.make( [] );
+  var got = src.join( '/' );
+  test.identical( got, '' );
+
+  test.case = 'not empty container, delimeter';
+  var src = _.containerAdapter.make( [ 1, 2, [ 3, 4 ] ] );
+  var got = src.join( '/' );
+  test.identical( got, '1/2/3,4' );
+}
+
+//
+
+function arrayAdapterToArray( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.toArray();
+  test.is( got === src );
+  test.is( got.original === src.original );
+  test.identical( got.original, src.original );
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( [ 1, 2, 3 ] );
+  var got = src.toArray();
+  test.is( got === src );
+  test.is( got.original === src.original );
+  test.identical( got.original, src.original );
+}
+
+//
+
+function arrayAdapterSymbolIterator( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var exp = [];
+  for( let e of src )
+  exp.push( e + 1 );
+  test.identical( src.original, [] );
+  test.identical( src.original, [] );
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( [ 1, 2, 3 ] );
+  var exp = [];
+  for( let e of src )
+  exp.push( e + 1 );
+  test.identical( src.original, [ 1, 2, 3 ] );
+  test.identical( exp, [ 2, 3, 4 ] );
+}
+
+//
+
+function arrayAdapterLength( test )
+{
+  test.case = 'empty container';
+  var src = _.containerAdapter.make( [] );
+  var got = src.length;
+  test.identical( got, 0 )
+
+  test.case = 'not empty container';
+  var src = _.containerAdapter.make( [ 1, 2, 3, undefined ] );
+  var got = src.length;
+  test.identical( got, 4 )
+}
+
 // --
 // declaration
 // --
@@ -10268,7 +15023,18 @@ var Self =
 
     // ContainerAdapterAbstract
 
-    containerAdapterAbstractFrom,
+    ToOriginal,
+    is_,
+    isContainer,
+    from_,
+    same,
+
+    removedContainer,
+    removedContainerOnce,
+    removedContainerOnceStrictly,
+    removeContainer,
+    removeContainerOnce,
+    removeContainerOnceStrictly,
 
     min,
     max,
@@ -10285,11 +15051,16 @@ var Self =
     butTwoEvaluators,
     butEqualizer,
 
-    // select,
+    select,
 
     // SetContainerAdapter
 
+    setAdapterMake_,
+    setAdapterMakeEmpty,
+    setAdapterMake,
+    setAdapterHas,
     setAdapterCount,
+    setAdapterCopyFrom,
     setAdapterAppend,
 
     setAdapterAppendOnceWithoutCallbacks,
@@ -10298,39 +15069,80 @@ var Self =
     setAdapterAppendOnceEqualizer,
 
     setAdapterAppendOnceStrictly,
+    setAdapterPush,
     setAdapterAppendContainer,
     setAdapterAppendContainerOnce,
+    setAdapterPop,
+    setAdapterPopStrictly,
+    setAdapterRemoved,
+    setAdapterRemovedOnce,
+    setAdapterRemovedOnceStrictly,
     setAdapterRemove,
     setAdapterRemoveOnce,
     setAdapterRemoveOnceStrictly,
+    setAdapterEmpty,
     setAdapterMap,
     setAdapterFilter,
     setAdapterFlatFilter,
     setAdapterOnce,
     setAdapterFirst,
+    setAdapterLast,
     setAdapterEach,
+    setAdapterEachRight,
     setAdapterReduce,
+    setAdapterAllRight,
+    setAdapterAll,
+    setAdapterAny,
+    setAdapterNone,
+    setAdapterReverse,
+    setAdapterJoin,
+    setAdapterToArray,
+    setAdapterSymbolIterator,
+    setAdapterLength,
 
     // ArrayContainerAdapter
 
+    arrayAdapterMake_,
+    arrayAdapterMakeEmpty,
+    arrayAdapterMake,
+    arrayAdapterHas,
     arrayAdapterCount,
+    arrayAdapterCopyFrom,
     arrayAdapterAppend,
     arrayAdapterAppendOnce,
     arrayAdapterAppendOnceStrictly,
+    arrayAdapterPush,
     arrayAdapterAppendContainer,
     arrayAdapterAppendContainerOnce,
+    arrayAdapterPop,
+    arrayAdapterPopStrictly,
+    arrayAdapterRemoved,
+    arrayAdapterRemovedOnce,
+    arrayAdapterRemovedOnceStrictly,
     arrayAdapterRemove,
     arrayAdapterRemoveOnce,
     arrayAdapterRemoveOnceStrictly,
+    arrayAdapterEmpty,
     arrayAdapterMap,
     arrayAdapterFilter,
     arrayAdapterFlatFilter,
     arrayAdapterOnce,
+    arrayAdapterFirst,
+    arrayAdapterLast,
     arrayAdapterEach,
+    arrayAdapterEachRight,
     arrayAdapterReduce,
+    arrayAdapterAllRight,
     arrayAdapterAll,
+    arrayAdapterAnyRight,
     arrayAdapterAny,
+    arrayAdapterNoneRight,
     arrayAdapterNone,
+    arrayAdapterReverse,
+    arrayAdapterJoin,
+    arrayAdapterToArray,
+    arrayAdapterSymbolIterator,
+    arrayAdapterLength,
 
   }
 
