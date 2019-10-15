@@ -15090,7 +15090,7 @@ var Self =
     setAdapterEach,
     setAdapterEachRight,
     setAdapterReduce,
-    setAdapterAllRight,
+    // setAdapterAllRight,
     setAdapterAll,
     setAdapterAny,
     setAdapterNone,
