@@ -668,7 +668,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( !self.IsContainer( src ) && !self.Is( src ) )
     _.assert( 0, '{-src-} should be container' );
 
-    if( self.length <= src.length )
+    if( self.length <= ( src.length || src.size ) )
     {
       self.empty();
       for( let e of src )
