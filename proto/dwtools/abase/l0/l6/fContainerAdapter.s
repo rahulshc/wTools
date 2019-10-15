@@ -657,6 +657,36 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     else
     return container.has( e ) ? 1 : 0;
   }
+  copyFrom( src )
+  {
+    let self = this;
+    let container = self.original;
+
+    if( self.same( src ) )
+    return self;
+
+    if( !self.IsContainer( src ) && !self.Is( src ) )
+    _.assert( 0, '{-src-} should be container' );
+
+    if( self.length <= src.length )
+    {
+      self.empty();
+      for( let e of src )
+      self.append( e )
+    }
+    else
+    {
+      let temp = [ ... container ];
+
+      self.empty();
+      for( let e of src )
+      self.append( e );
+      for( let i = self.length; i < temp.length; i++ )
+      self.append( temp[ i ] );
+    }
+
+    return self;
+  }
   append( e )
   {
     this.original.add( e );
