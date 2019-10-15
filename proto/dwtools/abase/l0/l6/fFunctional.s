@@ -2987,14 +2987,35 @@ function entityNone( src, onEach )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 3 ) );
-  // _.assert( onEach === undefined || ( _.routineIs( onEach ) && onEach.length <= 2 ) );
 
   /* */
 
   if( _.routineIs( onEach ) )
   {
 
-    if( _.longIs( src ) )
+    if( _.setLike( src ) )
+    {
+
+      for( let e of src )
+      {
+        result = onEach( e, undefined, src );
+        if( result )
+        return !result;
+      }
+
+    }
+    else if( _.hashMapIs( src ) )
+    {
+
+      for( let [ key, value ] of src )
+      {
+        result = onEach( value, key, src );
+        if( result )
+        return !result;
+      }
+
+    }
+    else if( _.longIs( src ) )
     {
 
       for( let k = 0 ; k < src.length ; k++ )
@@ -3028,18 +3049,29 @@ function entityNone( src, onEach )
   else
   {
 
-    if( _.longIs( src ) )
+    if( _.longIs( src ) || _.setLike( src ) )
     {
 
-      for( let k = 0 ; k < src.length ; k++ )
+      for( let e of src )
       {
-        result = src[ k ];
+        result = e;
         if( result )
         return !result;
       }
 
     }
     // else if( _.objectLike( src ) )
+    else if( _.hashMapIs( src ) )
+    {
+
+      for( let [ key, value ] of src )
+      {
+        result = value;
+        if( result )
+        return !result;
+      }
+
+    }
     else if( _.mapLike( src ) )
     {
 
