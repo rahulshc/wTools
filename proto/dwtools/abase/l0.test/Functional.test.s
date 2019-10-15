@@ -12856,6 +12856,58 @@ function entityAll( test )
 {
   test.open( 'onEach is routine' );
 
+  test.case = 'Set';
+
+  var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 4 );
+  test.identical( got, false );
+
+  var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAll( src, ( v, i, c ) => v && c.size > 3 );
+  test.identical( got, true );
+
+  var src = new Set( [ 1, 2, [ 'str' ], false, 4 ] );
+  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
+  test.identical( got, false );
+
+  var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAll( src, () => undefined );
+  test.identical( got, undefined );
+
+  /* */
+
+  test.case = 'Map';
+
+  var src = new Map( [ [ 1, 2 ], [ 'c', 4 ], [ 'a', undefined ] ] );
+  var got = _.entityAll( src, ( v, k ) => v === k );
+  test.identical( got, false );
+
+  var src = new Map( [ [ 'a', 'a' ], [ '4', '4' ], [ 'true', 'true' ] ] );
+  var got = _.entityAll( src, ( v, k ) => v === k );
+  test.identical( got, true );
+
+  var src = new Map( [ [ 1, 2 ], [ 2, 3 ], [ 'a', null ] ] );
+  var got = _.entityAll( src, ( v, k ) => v !== k );
+  test.identical( got, true );
+
+  var src = new Map( [ [ 'a', 1 ], [ 'b', 4 ], [ 'c', true ] ] );
+  var got = _.entityAll( src, ( v, k ) => v !== k );
+  test.identical( got, true );
+
+  var src = new Map( [ [ 'a', 'a' ], [ 'c', 'str' ], [ 'd', 'd' ] ] );
+  var got = _.entityAll( src, ( v, k ) => typeof v === typeof k );
+  test.identical( got, true );
+
+  var src = new Map( [ [ 'a', 2 ], [ 2, undefined ] ] );
+  var got = _.entityAll( src, ( v, k ) => v === k );
+  test.identical( got, false );
+
+  var src = new Map( [ [ 1, 2 ], [ 'c', 4 ], [ 'a', undefined ] ] );
+  var got = _.entityAll( src, ( v, k, src ) => src.size !== v );
+  test.identical( got, true );
+
+  /* */
+
   test.case = 'array';
 
   var got = _.entityAll( [ 1, 'str', undefined ], ( v, i ) => !!v && i + 2 < 4 );
@@ -12869,6 +12921,8 @@ function entityAll( test )
 
   var got = _.entityAll( [ 1, 'str', 3, null ], () => undefined );
   test.identical( got, undefined );
+
+  /* */
 
   test.case = 'unroll';
 
@@ -12888,6 +12942,8 @@ function entityAll( test )
   var got = _.entityAll( src, () => undefined );
   test.identical( got, undefined );
 
+  /* */
+
   test.case = 'argument array';
 
   var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
@@ -12906,23 +12962,7 @@ function entityAll( test )
   var got = _.entityAll( src, () => undefined );
   test.identical( got, undefined );
 
-  test.case = 'Array';
-
-  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
-  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 4 );
-  test.identical( got, false );
-
-  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
-  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
-  test.identical( got, true );
-
-  var src = new Array( 1, 2, [ 'str' ], false, 4 );
-  var got = _.entityAll( src, ( v, i ) => !!v && i + 2 < 7 );
-  test.identical( got, false );
-
-  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
-  var got = _.entityAll( src, () => undefined );
-  test.identical( got, undefined );
+  /* */
 
   test.case = 'F32x';
 
@@ -12941,6 +12981,8 @@ function entityAll( test )
   var src = new F32x( [ 1, 2, [ 8 ], 3, 4 ] );
   var got = _.entityAll( src, () => undefined );
   test.identical( got, undefined );
+
+  /* */
 
   test.case = 'ObjectLike';
 
@@ -12962,8 +13004,10 @@ function entityAll( test )
   var got = _.entityAll( { a : 1, b : false }, ( v, k ) => v === k );
   test.identical( got, false );
 
-  var got = _.entityAll( { a : 1, b : false }, ( v, k, src ) => src.length !== k );
+  var got = _.entityAll( { a : 1, b : false }, ( v, k, src ) => src.length !== v );
   test.identical( got, true );
+
+  /* */
 
   test.case = 'no ArrayLike, no ObjectLike'
 
@@ -12992,7 +13036,39 @@ function entityAll( test )
 
   /* - */
 
-  test.open( 'onEach is null' );
+  test.open( 'onEach is undefined' );
+
+  test.case = 'Set';
+
+  var src = new Set( [ 1, 'str', undefined ] );
+  var got = _.entityAll( src );
+  test.identical( got, undefined );
+
+  var src = new Set( [ 1, 2, [ false ], 3, 4 ] );
+  var got = _.entityAll( src );
+  test.identical( got, true );
+
+  var src = new Set( [ 1, 2, [ 'str' ], false, 4 ] );
+  var got = _.entityAll( src );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'Map';
+
+  var src = new Map( [ [ 1, 2 ], [ 'c', 4 ], [ 'a', undefined ] ] );
+  var got = _.entityAll( src );
+  test.identical( got, undefined );
+
+  var src = new Map( [ [ 'a', 1 ], [ '4', [ false ] ], [ 'true', 'true' ] ] );
+  var got = _.entityAll( src );
+  test.identical( got, true );
+
+  var src = new Map( [ [ 1, 2 ], [ 2, 3 ], [ 'a', '' ] ] );
+  var got = _.entityAll( src );
+  test.identical( got, '' );
+
+  /* */
 
   test.case = 'array';
 
@@ -13004,6 +13080,8 @@ function entityAll( test )
 
   var got = _.entityAll( [ 1, 'str', { a : 2 }, false ] );
   test.identical( got, false );
+
+  /* */
 
   test.case = 'unroll';
 
@@ -13019,6 +13097,8 @@ function entityAll( test )
   var got = _.entityAll( src );
   test.identical( got, false );
 
+  /* */
+
   test.case = 'argument array';
 
   var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], undefined, 4 ] );
@@ -13033,19 +13113,7 @@ function entityAll( test )
   var got = _.entityAll( src );
   test.identical( got, false );
 
-  test.case = 'Array';
-
-  var src = new Array( 1, 2, [ 'str' ], null, 4 );
-  var got = _.entityAll( src );
-  test.identical( got, null );
-
-  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
-  var got = _.entityAll( src );
-  test.identical( got, true );
-
-  var src = new Array( 1, 2, [ 'str' ], false, 4 );
-  var got = _.entityAll( src );
-  test.identical( got, false );
+  /* */
 
   test.case = 'F32x';
 
@@ -13060,6 +13128,8 @@ function entityAll( test )
   var src = new F32x( [ 1, 2, [ 8 ], 'str', 4 ] );
   var got = _.entityAll( src );
   test.identical( got, NaN );
+
+  /* */
 
   test.case = 'ObjectLike';
 
@@ -13077,6 +13147,8 @@ function entityAll( test )
 
   var got = _.entityAll( { a : 1, b : false } );
   test.identical( got, false );
+
+  /* */
 
   test.case = 'no ArrayLike, no ObjectLike'
 
@@ -13098,7 +13170,7 @@ function entityAll( test )
   var got = _.entityAll( true );
   test.identical( got, true );
 
-  test.close( 'onEach is null' );
+  test.close( 'onEach is undefined' );
 
   /* - */
 

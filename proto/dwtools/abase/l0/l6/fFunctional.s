@@ -2760,7 +2760,7 @@ function entityAll( src, onEach )
       {
         result = onEach( value, key, src );
         if( !result )
-        return result
+        return result;
       }
 
     }
