@@ -12890,10 +12890,6 @@ function entityAll( test )
   var got = _.entityAll( src, ( v, k ) => v !== k );
   test.identical( got, true );
 
-  var src = new Map( [ [ 'a', 1 ], [ 'b', 4 ], [ 'c', true ] ] );
-  var got = _.entityAll( src, ( v, k ) => v !== k );
-  test.identical( got, true );
-
   var src = new Map( [ [ 'a', 'a' ], [ 'c', 'str' ], [ 'd', 'd' ] ] );
   var got = _.entityAll( src, ( v, k ) => typeof v === typeof k );
   test.identical( got, true );
@@ -12984,7 +12980,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'ObjectLike';
+  test.case = 'MapLike';
 
   var got = _.entityAll( { 1 : 2, c : 4, a : undefined }, ( v, k ) => v === k );
   test.identical( got, false );
@@ -13009,7 +13005,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'no ArrayLike, no ObjectLike'
+  test.case = 'no ArrayLike, no MapLike'
 
   var got = _.entityAll( undefined, ( src, u ) => src !== u );
   test.identical( got, false );
@@ -13131,7 +13127,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'ObjectLike';
+  test.case = 'MapLike';
 
   var got = _.entityAll( { 1 : 2, c : 4, a : undefined } );
   test.identical( got, undefined );
@@ -13150,7 +13146,7 @@ function entityAll( test )
 
   /* */
 
-  test.case = 'no ArrayLike, no ObjectLike'
+  test.case = 'no ArrayLike, no MapLike'
 
   var got = _.entityAll( undefined );
   test.identical( got, undefined );
@@ -13196,6 +13192,54 @@ function entityAny( test )
 {
   test.open( 'onEach is routine' );
 
+  test.case = 'Set';
+
+  var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAny( src, ( v, i ) => v >= 5 );
+  test.identical( got, false );
+
+  var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAny( src, ( v, i, c ) => v > 3 && c.size > 3 );
+  test.identical( got, true );
+
+  var src = new Set( [ 1, 2, [ 'str' ], false, 4 ] );
+  var got = _.entityAny( src, ( v, i ) =>  !v && !i );
+  test.identical( got, true );
+
+  var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAny( src, ( e ) => undefined );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'Map';
+
+  var src = new Map( [ [ 1, 2 ], [ 'c', 4 ], [ 'a', undefined ] ] );
+  var got = _.entityAny( src, ( v, k ) => v === k );
+  test.identical( got, false );
+
+  var src = new Map( [ [ 'a', 'a' ], [ '4', '4' ], [ 'true', 'true' ] ] );
+  var got = _.entityAny( src, ( v, k ) => v === k );
+  test.identical( got, true );
+
+  var src = new Map( [ [ 1, 2 ], [ 2, 3 ], [ 'a', null ] ] );
+  var got = _.entityAny( src, ( v, k ) => v !== k );
+  test.identical( got, true );
+
+  var src = new Map( [ [ 'a', 1 ], [ 'c', true ], [ 'd', 'd' ] ] );
+  var got = _.entityAny( src, ( v, k ) => typeof v === typeof k );
+  test.identical( got, true );
+
+  var src = new Map( [ [ 'a', 2 ], [ 2, undefined ] ] );
+  var got = _.entityAny( src, ( v, k ) => v === k );
+  test.identical( got, false );
+
+  var src = new Map( [ [ 1, 2 ], [ 'c', 4 ], [ 'a', undefined ] ] );
+  var got = _.entityAny( src, ( v, k, src ) => src.size === v );
+  test.identical( got, false );
+
+  /* */
+
   test.case = 'array';
 
   var got = _.entityAny( [ 1, 'str', undefined ], ( v, i ) => !!v && i + 2 < 4 );
@@ -13209,6 +13253,8 @@ function entityAny( test )
 
   var got = _.entityAny( [ 1, 'str', 3, null ], () => undefined );
   test.identical( got, false );
+
+  /* */
 
   test.case = 'unroll';
 
@@ -13228,6 +13274,8 @@ function entityAny( test )
   var got = _.entityAny( src, () => undefined );
   test.identical( got, false );
 
+  /* */
+
   test.case = 'argument array';
 
   var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
@@ -13246,23 +13294,7 @@ function entityAny( test )
   var got = _.entityAny( src, () => undefined );
   test.identical( got, false );
 
-  test.case = 'Array';
-
-  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
-  var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 4 );
-  test.identical( got, true );
-
-  var src = new Array( false, undefined, null );
-  var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 7 );
-  test.identical( got, false );
-
-  var src = new Array( 1, 2, [ 'str' ], false, 4 );
-  var got = _.entityAny( src, ( v, i ) => !!v && i + 2 < 7 );
-  test.identical( got, true );
-
-  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
-  var got = _.entityAny( src, () => undefined );
-  test.identical( got, false );
+  /* */
 
   test.case = 'F32x';
 
@@ -13282,7 +13314,9 @@ function entityAny( test )
   var got = _.entityAny( src, () => undefined );
   test.identical( got, false );
 
-  test.case = 'ObjectLike';
+  /* */
+
+  test.case = 'MapLike';
 
   var got = _.entityAny( { 1 : 2, c : 4, a : undefined }, ( v, k ) => v === k );
   test.identical( got, false );
@@ -13301,6 +13335,8 @@ function entityAny( test )
 
   var got = _.entityAny( { a : 1, b : false }, ( v, k, u ) => v !== u );
   test.identical( got, true );
+
+  /* */
 
   test.case = 'no ArrayLike, no ObjectLike'
 
@@ -13329,7 +13365,37 @@ function entityAny( test )
 
   /* - */
 
-  test.open( 'onEach is null' );
+  test.open( 'onEach is undefined' );
+
+  test.case = 'Set';
+
+  var src = new Set( [ false, undefined, '' ] );
+  var got = _.entityAny( src );
+  test.identical( got, false );
+
+  var src = new Set( [ 1, 2, [ false ], 3, 4 ] );
+  var got = _.entityAny( src );
+  test.identical( got, 1 );
+
+  var src = new Set( [ '', null, undefined, false, 4 ] );
+  var got = _.entityAny( src );
+  test.identical( got, 4 );
+
+  /* */
+
+  test.case = 'Map';
+
+  var src = new Map( [ [ 1, '' ], [ 'c', null ], [ 'a', undefined ] ] );
+  var got = _.entityAny( src );
+  test.identical( got, false );
+
+  var src = new Map( [ [ 'a', 1 ], [ '4', [ false ] ], [ 'true', 'true' ] ] );
+  var got = _.entityAny( src );
+  test.identical( got, 1 );
+
+  var src = new Map( [ [ 1, false ], [ 2, 0 ], [ 'a', '' ] ] );
+  var got = _.entityAny( src );
+  test.identical( got, false );
 
   test.case = 'array';
 
@@ -13435,7 +13501,7 @@ function entityAny( test )
   var got = _.entityAny( true );
   test.identical( got, true );
 
-  test.close( 'onEach is null' );
+  test.close( 'onEach is undefined' );
 
   /* - */
 
