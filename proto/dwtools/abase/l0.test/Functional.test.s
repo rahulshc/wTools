@@ -11298,9 +11298,23 @@ function entityXorOnlyDst( test )
   test.is( dst === got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, _.nothing';
+  var exp = {};
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var got = _.entityXor( dst );
+  test.is( dst === got );
+  test.identical( got, exp );
+
   test.case = 'dst - array';
   var exp = [];
   var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+  var got = _.entityXor( dst );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, _.nothing';
+  var exp = [];
+  var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 }, _.nothing ];
   var got = _.entityXor( dst );
   test.is( dst === got );
   test.identical( got, exp );
@@ -11408,6 +11422,13 @@ function entityXorOnlyDst( test )
   test.is( dst === got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, _.nothing';
+  var exp = {};
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var got = _.entityXor( dst, undefined, ( e, k ) => e );
+  test.is( dst === got );
+  test.identical( got, exp );
+
   test.case = 'dst - array';
   var exp = [];
   var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
@@ -11511,6 +11532,13 @@ function entityXorOnlyDst( test )
   test.is( dst === got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, */f1, _.nothing';
+  var exp = {};
+  var dst = { a : { f1 : _.nothing, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var got = _.entityXor( dst, undefined, '*/f1' );
+  test.is( dst === got );
+  test.identical( got, exp );
+
   test.case = 'dst - map, */f2';
   var exp = {};
   var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
@@ -11521,6 +11549,13 @@ function entityXorOnlyDst( test )
   test.case = 'dst - array, */f1';
   var exp = [];
   var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var got = _.entityXor( dst, undefined, '*/f1' );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, */f1, _.nothing';
+  var exp = [];
+  var dst = [ { f1 : _.nothing, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
   var got = _.entityXor( dst, undefined, '*/f1' );
   test.is( dst === got );
   test.identical( got, exp );
@@ -11642,6 +11677,13 @@ function entityXorOnlySrc( test )
   test.is( src !== got );
   test.identical( got, exp );
 
+  test.case = 'src - map, _.nothing';
+  var exp = { false : true, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var src = { false : true, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var got = _.entityXor( null, src );
+  test.is( src !== got );
+  test.identical( got, exp );
+
   test.case = 'src - array';
   var exp = [ true, 1, 'str', [ 1 ], { a : 0 } ];
   var src = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
@@ -11748,6 +11790,13 @@ function entityXorOnlySrc( test )
   test.case = 'src - map';
   var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
   var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var got = _.entityXor( null, src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - map, _.nothing';
+  var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
   var got = _.entityXor( null, src, ( e, k ) => e );
   test.is( src !== got );
   test.identical( got, exp );
@@ -11862,6 +11911,13 @@ function entityXorOnlySrc( test )
   test.is( src !== got );
   test.identical( got, exp );
 
+  test.case = 'src - map, */f1, _.nothing';
+  var exp = { a : { f1 : _.nothing, f2 : 0 }, c : { f1 : [], f2 : 'str' } };
+  var src = { a : { f1 : _.nothing, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var got = _.entityXor( null, src, '*/f1' );
+  test.is( src !== got );
+  test.identical( got, exp );
+
   test.case = 'src - map, */f2';
   var exp = { b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
   var src = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
@@ -11944,6 +12000,14 @@ function entityXorBothSame( test )
   test.is( src === got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, _.nothing';
+  var exp = {};
+  var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var dst = src;
+  var got = _.entityXor( dst, src );
+  test.is( src === got );
+  test.identical( got, exp );
+
   test.case = 'dst - array';
   var exp = [];
   var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
@@ -11955,6 +12019,14 @@ function entityXorBothSame( test )
   test.case = 'dst - obj';
   var exp = undefined;
   var dst = new Constructor1();
+  var src = dst;
+  var got = _.entityXor( dst, src );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - _.nothing';
+  var exp = undefined;
+  var dst = _.nothing;
   var src = dst;
   var got = _.entityXor( dst, src );
   test.is( src !== got );
@@ -12063,6 +12135,14 @@ function entityXorBothSame( test )
   test.case = 'dst - map';
   var exp = {};
   var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var src = dst;
+  var got = _.entityXor( dst, src, ( e, k ) => e );
+  test.is( src === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - map, _.nothing';
+  var exp = {};
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
   var src = dst;
   var got = _.entityXor( dst, src, ( e, k ) => e );
   test.is( src === got );
@@ -12192,6 +12272,14 @@ function entityXorBothSame( test )
   test.is( src === got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, */f1, _.nothing';
+  var exp = {};
+  var dst = { a : { f1 : _.nothing, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var src = dst;
+  var got = _.entityXor( dst, src, '*/f1' );
+  test.is( src === got );
+  test.identical( got, exp );
+
   test.case = 'dst - map, */f2';
   var exp = {};
   var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
@@ -12283,9 +12371,27 @@ function entityXorBoth( test )
   test.is( src !== got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, src - map, _.nothing';
+  var exp = { false : _.nothing, null : 'null' };
+  var dst = { false : _.nothing, zero : 0, null : null, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var src = { false : false, zero : 0, null : 'null', true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var got = _.entityXor( dst, src );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
   test.case = 'dst - array, src - array';
   var exp = [ true, 1, true, 1, { a : 0 } ];
   var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+  var src = [ true, 1, false, 0, 'str', [ 1 ] ];
+  var got = _.entityXor( dst, src );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, src - array';
+  var exp = [ true, 1, true, 1, { a : 0 }, _.nothing ];
+  var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 }, _.nothing ];
   var src = [ true, 1, false, 0, 'str', [ 1 ] ];
   var got = _.entityXor( dst, src );
   test.is( dst === got );
@@ -12459,6 +12565,15 @@ function entityXorBoth( test )
   var exp = {};
   var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
   var src = { false : 0, zero : false, true : 1, one : true, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'src::empty' };
+  var got = _.entityXor( dst, src, ( e, k ) => e );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - map, src - map, _.nothing';
+  var exp = {};
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var src = { false : 0, zero : false, true : 1, one : true, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'src::empty', nothing : _.nothing };
   var got = _.entityXor( dst, src, ( e, k ) => e );
   test.is( dst === got );
   test.is( src !== got );
@@ -12654,6 +12769,15 @@ function entityXorBoth( test )
   test.is( src !== got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, src - map, */f1, _.nothing';
+  var exp = { b : { f1 : _.nothing, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var dst = { a : { f1 : _.nothing, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var src = { a : { f1 : 3, f2 : 0 }, b : { f1 : _.nothing, f2 : 3 }, c : { f1 : 0, f2 : 'str' } };
+  var got = _.entityXor( dst, src, '*/f1' );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
   test.case = 'dst - map, src - map, */f2';
   var exp = {  a : { f1 : 1, f2 : 1 }, b : { f1 : false, f2 : 3 } };
   var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
@@ -12672,12 +12796,30 @@ function entityXorBoth( test )
   test.is( src !== got );
   test.identical( got, exp );
 
+  test.case = 'dst - array, src - array, */f1, _.nothing';
+  var exp = [ { f1 : _.nothing, f2 : 0 } ];
+  var dst = [ { f1 : _.nothing, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var src = [ { f1 : 0, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var got = _.entityXor( dst, src, '*/f1' );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
   test.case = 'dst - array, src - array, */f2';
   var exp = [ { f1 : 1, f2 : true }, { f1 : false, f2 : 3 } ];
   var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
   var src = [ { f1 : 1, f2 : true }, { f1 : false, f2 : false }, { f1 : [], f2 : 'str' } ];
   var got = _.entityXor( dst, src, '*/f2' );
   test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - _.nothing, src - str';
+  var exp = undefined;
+  var dst = _.nothing;
+  var src = 'src';
+  var got = _.entityXor( dst, src, '*/x' );
+  test.is( dst !== got );
   test.is( src !== got );
   test.identical( got, exp );
 
@@ -12930,6 +13072,13 @@ function entityXorOnlySets( test )
   test.is( got === dst );
   test.equivalent( [ ... got ], [ ... exp ] );
 
+  test.case = 'has unnecessary elements, _.nothing';
+  var exp = new Set( [] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str', _.nothing ] );
+  var got = _.entityXor( dst, undefined );
+  test.is( got === dst );
+  test.equivalent( [ ... got ], [ ... exp ] );
+
   test.case = 'without unnecessary elements';
   var exp = new Set( [] );
   var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
@@ -13002,6 +13151,13 @@ function entityXorOnlySets( test )
   test.case = 'without unnecessary elements';
   var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
   var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityXor( null, src );
+  test.is( got !== src );
+  test.equivalent( [ ... got ], [ ... exp ] );
+
+  test.case = 'without unnecessary elements, _.nothing';
+  var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str', _.nothing ] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str', _.nothing ] );
   var got = _.entityXor( null, src );
   test.is( got !== src );
   test.equivalent( [ ... got ], [ ... exp ] );
@@ -13088,6 +13244,14 @@ function entityXorOnlySets( test )
   test.case = 'without unnecessary elements, onEach returns value';
   var exp = new Set( [] );
   var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = dst;
+  var got = _.entityXor( dst, src, ( e ) => e );
+  test.is( got === dst );
+  test.equivalent( [ ... got ], [ ... exp ] );
+
+  test.case = 'without unnecessary elements, onEach returns value, _.nothing';
+  var exp = new Set( [] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str', _.nothing ] );
   var src = dst;
   var got = _.entityXor( dst, src, ( e ) => e );
   test.is( got === dst );
@@ -13228,6 +13392,14 @@ function entityXorOnlySets( test )
   test.is( got === dst );
   test.identical( [ ... got ], [ ... exp ] );
 
+  test.case = 'onEach is selector, _.nothing';
+  var exp = new Set( [ { f1 : _.nothing, f2 : 'str' }, { f1 : 1, f2 : 'str' } ] );
+  var dst = new Set( [ { f1 : undefined, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : _.nothing, f2 : 'str' } ] );
+  var src = new Set( [ { f1 : undefined, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : 1, f2 : 'str' } ] );
+  var got = _.entityXor( dst, src, '*/f1' );
+  test.is( got === dst );
+  test.identical( [ ... got ], [ ... exp ] );
+
   test.close( 'both' );
 }
 
@@ -13240,6 +13412,13 @@ function entityXorOnlyHashMaps( test )
   test.case = 'has unnecessary elements';
   var exp = new Map( [] );
   var dst = new Map( [ [ 0, 0 ], [ 1, 1 ], [ null, null ], [ undefined, undefined ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var got = _.entityXor( dst, undefined );
+  test.is( got === dst );
+  test.equivalent( [ ... got.entries() ], [ ... exp.entries() ] );
+
+  test.case = 'has unnecessary elements, _.nothing';
+  var exp = new Map( [] );
+  var dst = new Map( [ [ 0, 0 ], [ 1, _.nothing ], [ null, null ], [ undefined, undefined ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
   var got = _.entityXor( dst, undefined );
   test.is( got === dst );
   test.equivalent( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -13316,6 +13495,13 @@ function entityXorOnlyHashMaps( test )
   test.case = 'without unnecessary elements';
   var exp = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
   var src = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var got = _.entityXor( null, src );
+  test.is( got !== src );
+  test.equivalent( [ ... got.entries() ], [ ... exp.entries() ] );
+
+  test.case = 'without unnecessary elements, _.nothing';
+  var exp = new Map( [ [ 1, 1 ], [ [ 2 ], , _.nothing ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var src = new Map( [ [ 1, 1 ], [ [ 2 ], , _.nothing ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
   var got = _.entityXor( null, src );
   test.is( got !== src );
   test.equivalent( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -13402,6 +13588,14 @@ function entityXorOnlyHashMaps( test )
   test.case = 'without unnecessary elements, onEach returns value';
   var exp = new Map( [] );
   var dst = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var src = dst;
+  var got = _.entityXor( dst, src, ( e ) => e );
+  test.is( got === dst );
+  test.equivalent( [ ... got.entries() ], [ ... exp.entries() ] );
+
+  test.case = 'without unnecessary elements, onEach returns value, _.nothing';
+  var exp = new Map( [] );
+  var dst = new Map( [ [ 1, _.nothing ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
   var src = dst;
   var got = _.entityXor( dst, src, ( e ) => e );
   test.is( got === dst );
@@ -13528,6 +13722,15 @@ function entityXorOnlyHashMaps( test )
   test.case = 'onEach is selector';
   var exp = new Map( [ [ 'c', { f1 : [], f2 : 'str' } ], [ 'b', { f1 : 1, f2 : 3 } ] ] );
   var dst = new Map( [ [ 'a', { f1 : 1, f2 : 0 } ], [ 'b', { f1 : false, f2 : 3 } ], [ 'c', { f1 : [], f2 : 'str' } ] ] );
+  var src = new Map( [ [ 'a', { f1 : 1, f2 : 0 } ], [ 'b', { f1 : 1, f2 : 3 } ], [ 'c', { f1 : undefined, f2 : 'str' } ] ] );
+  var got = _.entityXor( dst, src, '*/f1' );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
+
+  test.case = 'onEach is selector, _.nothing';
+  var exp = new Map( [ [ 'c', { f1 : _.nothing, f2 : 'str' } ], [ 'b', { f1 : 1, f2 : 3 } ] ] );
+  var dst = new Map( [ [ 'a', { f1 : 1, f2 : 0 } ], [ 'b', { f1 : false, f2 : 3 } ], [ 'c', { f1 : _.nothing, f2 : 'str' } ] ] );
   var src = new Map( [ [ 'a', { f1 : 1, f2 : 0 } ], [ 'b', { f1 : 1, f2 : 3 } ], [ 'c', { f1 : undefined, f2 : 'str' } ] ] );
   var got = _.entityXor( dst, src, '*/f1' );
   test.is( got === dst );
