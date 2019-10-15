@@ -1202,7 +1202,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     // {
     //   debugger;
     //   dst = this.From( dst );
-    //   dst.copyFrom( this ); /* qqq : implement and cover copyFrom */
+    //   dst.copyFrom( this ); /* qqq : implement and cover copyFrom | Dmytro : implemented and covered */
     // }
     if( !dst )
     dst = this.MakeEmpty();
