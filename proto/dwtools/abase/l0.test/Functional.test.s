@@ -8855,9 +8855,23 @@ function entityOrOnlyDst( test )
   test.is( dst === got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, _.nothing';
+  var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var got = _.entityOr( dst );
+  test.is( dst === got );
+  test.identical( got, exp );
+
   test.case = 'dst - array';
   var exp = [ true, 1, 'str', [ 1 ], { a : 0 } ];
   var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
+  var got = _.entityOr( dst );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, _.nothing';
+  var exp = [ true, 1, 'str', [ 1 ], { a : 0 }, _.nothing ];
+  var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 }, _.nothing ];
   var got = _.entityOr( dst );
   test.is( dst === got );
   test.identical( got, exp );
@@ -8961,6 +8975,13 @@ function entityOrOnlyDst( test )
   test.case = 'dst - map';
   var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
   var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var got = _.entityOr( dst, undefined, ( e, k ) => e );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - map, _.nothing';
+  var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
   var got = _.entityOr( dst, undefined, ( e, k ) => e );
   test.is( dst === got );
   test.identical( got, exp );
@@ -9075,6 +9096,13 @@ function entityOrOnlyDst( test )
   test.is( dst === got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, */f1, _.nothing';
+  var exp = { a : { f1 : _.nothing, f2 : 0 }, c : { f1 : [], f2 : 'str' } };
+  var dst = { a : { f1 : _.nothing, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var got = _.entityOr( dst, undefined, '*/f1' );
+  test.is( dst === got );
+  test.identical( got, exp );
+
   test.case = 'dst - map, */f2';
   var exp = { b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
   var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
@@ -9085,6 +9113,13 @@ function entityOrOnlyDst( test )
   test.case = 'dst - array, */f1';
   var exp = [ { f1 : 1, f2 : 0 }, { f1 : [], f2 : 'str' } ];
   var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var got = _.entityOr( dst, undefined, '*/f1' );
+  test.is( dst === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, */f1, _.nothing';
+  var exp = [ { f1 : _.nothing, f2 : 0 }, { f1 : [], f2 : 'str' } ];
+  var dst = [ { f1 : _.nothing, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
   var got = _.entityOr( dst, undefined, '*/f1' );
   test.is( dst === got );
   test.identical( got, exp );
@@ -9170,6 +9205,13 @@ function entityOrOnlySrc( test )
   test.case = 'src - map';
   var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
   var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var got = _.entityOr( null, src );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'src - map, _.nothing';
+  var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
   var got = _.entityOr( null, src );
   test.is( src !== got );
   test.identical( got, exp );
@@ -9284,6 +9326,13 @@ function entityOrOnlySrc( test )
   test.is( src !== got );
   test.identical( got, exp );
 
+  test.case = 'src - map, _.nothing';
+  var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var got = _.entityOr( null, src, ( e, k ) => e );
+  test.is( src !== got );
+  test.identical( got, exp );
+
   test.case = 'src - array';
   var exp = [ true, 1, 'str', [ 1 ], { a : 0 } ];
   var src = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
@@ -9394,6 +9443,13 @@ function entityOrOnlySrc( test )
   test.is( src !== got );
   test.identical( got, exp );
 
+  test.case = 'src - map, */f1, _.nothing';
+  var exp = { a : { f1 : _.nothing, f2 : 0 }, c : { f1 : [], f2 : 'str' } };
+  var src = { a : { f1 : _.nothing, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var got = _.entityOr( null, src, '*/f1' );
+  test.is( src !== got );
+  test.identical( got, exp );
+
   test.case = 'src - map, */f2';
   var exp = { b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
   var src = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
@@ -9471,6 +9527,14 @@ function entityOrBothSame( test )
   test.case = 'dst - map';
   var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
   var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
+  var dst = src;
+  var got = _.entityOr( dst, src );
+  test.is( src === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - map, _.nothing';
+  var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
   var dst = src;
   var got = _.entityOr( dst, src );
   test.is( src === got );
@@ -9600,6 +9664,14 @@ function entityOrBothSame( test )
   test.is( src === got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, _.nothing';
+  var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var src = dst;
+  var got = _.entityOr( dst, src, ( e, k ) => e );
+  test.is( src === got );
+  test.identical( got, exp );
+
   test.case = 'dst - array';
   var exp = [ true, 1, 'str', [ 1 ], { a : 0 } ];
   var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
@@ -9619,6 +9691,14 @@ function entityOrBothSame( test )
   test.case = 'dst - str';
   var exp = 'dst';
   var dst = 'dst';
+  var src = dst;
+  var got = _.entityOr( dst, src, ( e, k ) => e );
+  test.is( src === got );
+  test.identical( got, exp );
+
+  test.case = 'dst - _.nothing';
+  var exp = _.nothing;
+  var dst = _.nothing;
   var src = dst;
   var got = _.entityOr( dst, src, ( e, k ) => e );
   test.is( src === got );
@@ -9724,6 +9804,14 @@ function entityOrBothSame( test )
   test.is( src === got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, */f1, _.nothing';
+  var exp = { a : { f1 : _.nothing, f2 : 0 }, c : { f1 : [], f2 : 'str' } };
+  var dst = { a : { f1 : _.nothing, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var src = dst;
+  var got = _.entityOr( dst, src, '*/f1' );
+  test.is( src === got );
+  test.identical( got, exp );
+
   test.case = 'dst - map, */f2';
   var exp = { b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
   var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
@@ -9815,10 +9903,28 @@ function entityOrBoth( test )
   test.is( src !== got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, src - map, _.nothing';
+  var exp = { null : 'null', true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var dst = { false : false, zero : 0, null : null, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var src = { false : false, zero : 0, null : 'null', true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var got = _.entityOr( dst, src );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
   test.case = 'dst - array, src - array';
   var exp = [ true, 1, true, 1, 'str', [ 1 ], { a : 0 } ];
   var dst = [ false, 0, true, 1, 'str', [ 1 ], { a : 0 } ];
   var src = [ true, 1, false, 0, 'str', [ 1 ] ];
+  var got = _.entityOr( dst, src );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, src - array, _.nothing';
+  var exp = [ true, 1, true, 1, 'str', [ 1 ], _.nothing, { a : 0 } ];
+  var dst = [ false, 0, true, 1, 'str', [ 1 ], _.nothing, { a : 0 } ];
+  var src = [ true, 1, false, 0, 'str', [ 1 ], _.nothing ];
   var got = _.entityOr( dst, src );
   test.is( dst === got );
   test.is( src !== got );
@@ -9882,6 +9988,14 @@ function entityOrBoth( test )
   var exp = undefined;
   var dst = false;
   var src = undefined;
+  var got = _.entityOr( dst, src );
+  test.is( dst !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - false, src - _.nothing';
+  var exp = _.nothing;
+  var dst = false;
+  var src = _.nothing;
   var got = _.entityOr( dst, src );
   test.is( dst !== got );
   test.identical( got, exp );
@@ -9991,6 +10105,15 @@ function entityOrBoth( test )
   var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
   var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
   var src = { false : 0, zero : false, true : 1, one : true, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'src::empty' };
+  var got = _.entityOr( dst, src, ( e, k ) => e );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - map, src - map, _.nothing';
+  var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var dst = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
+  var src = { false : 0, zero : false, true : 1, one : true, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'src::empty', nothing : _.nothing };
   var got = _.entityOr( dst, src, ( e, k ) => e );
   test.is( dst === got );
   test.is( src !== got );
@@ -10186,6 +10309,15 @@ function entityOrBoth( test )
   test.is( src !== got );
   test.identical( got, exp );
 
+  test.case = 'dst - map, src - map, */f1, _.nothing';
+  var exp = { a : { f1 : _.nothing, f2 : 0 }, b : { f1 : 1, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var dst = { a : { f1 : _.nothing, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
+  var src = { a : { f1 : 3, f2 : 0 }, b : { f1 : 1, f2 : 3 }, c : { f1 : 0, f2 : 'str' } };
+  var got = _.entityOr( dst, src, '*/f1' );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
   test.case = 'dst - map, src - map, */f2';
   var exp = {  a : { f1 : 1, f2 : 1 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
   var dst = { a : { f1 : 1, f2 : 0 }, b : { f1 : false, f2 : 3 }, c : { f1 : [], f2 : 'str' } };
@@ -10198,6 +10330,15 @@ function entityOrBoth( test )
   test.case = 'dst - array, src - array, */f1';
   var exp = [ { f1 : 1, f2 : 0 }, { f1 : [], f2 : 'str' } ];
   var dst = [ { f1 : 1, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var src = [ { f1 : 0, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
+  var got = _.entityOr( dst, src, '*/f1' );
+  test.is( dst === got );
+  test.is( src !== got );
+  test.identical( got, exp );
+
+  test.case = 'dst - array, src - array, */f1, _.nothing';
+  var exp = [ { f1 : _.nothing, f2 : 0 }, { f1 : [], f2 : 'str' } ];
+  var dst = [ { f1 : _.nothing, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
   var src = [ { f1 : 0, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : [], f2 : 'str' } ];
   var got = _.entityOr( dst, src, '*/f1' );
   test.is( dst === got );
@@ -10465,6 +10606,13 @@ function entityOrOnlySets( test )
   test.is( got === dst );
   test.equivalent( [ ... got ], [ ... exp ] );
 
+  test.case = 'has unnecessary elements, _.nothing';
+  var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str', _.nothing ] );
+  var dst = new Set( [ 0, 1, null, undefined, [ 2 ], '', { a : 3 }, false, 'str', _.nothing ] );
+  var got = _.entityOr( dst, undefined );
+  test.is( got === dst );
+  test.equivalent( [ ... got ], [ ... exp ] );
+
   test.case = 'without unnecessary elements';
   var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
   var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
@@ -10537,6 +10685,13 @@ function entityOrOnlySets( test )
   test.case = 'without unnecessary elements';
   var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
   var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var got = _.entityOr( null, src );
+  test.is( got !== src );
+  test.equivalent( [ ... got ], [ ... exp ] );
+
+  test.case = 'without unnecessary elements, _.nothing';
+  var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str', _.nothing ] );
+  var src = new Set( [ 1, [ 2 ], { a : 3 }, 'str', _.nothing ] );
   var got = _.entityOr( null, src );
   test.is( got !== src );
   test.equivalent( [ ... got ], [ ... exp ] );
@@ -10623,6 +10778,14 @@ function entityOrOnlySets( test )
   test.case = 'without unnecessary elements, onEach returns value';
   var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
   var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str' ] );
+  var src = dst;
+  var got = _.entityOr( dst, src, ( e ) => e );
+  test.is( got === dst );
+  test.equivalent( [ ... got ], [ ... exp ] );
+
+  test.case = 'without unnecessary elements, onEach returns value';
+  var exp = new Set( [ 1, [ 2 ], { a : 3 }, 'str', _.nothing ] );
+  var dst = new Set( [ 1, [ 2 ], { a : 3 }, 'str', _.nothing ] );
   var src = dst;
   var got = _.entityOr( dst, src, ( e ) => e );
   test.is( got === dst );
@@ -10763,6 +10926,14 @@ function entityOrOnlySets( test )
   test.is( got === dst );
   test.identical( [ ... got ], [ ... exp ] );
 
+  test.case = 'onEach is selector, _.nothing';
+  var exp = new Set( [ { f1 : _.nothing, f2 : 'str' } ] );
+  var dst = new Set( [ { f1 : undefined, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : _.nothing, f2 : 'str' } ] );
+  var src = new Set( [ { f1 : undefined, f2 : 0 }, { f1 : false, f2 : 3 }, { f1 : _.nothing, f2 : 'str' } ] );
+  var got = _.entityOr( dst, src, '*/f1' );
+  test.is( got === dst );
+  test.identical( [ ... got ], [ ... exp ] );
+
   test.close( 'both' );
 }
 
@@ -10775,6 +10946,13 @@ function entityOrOnlyHashMaps( test )
   test.case = 'has unnecessary elements';
   var exp = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
   var dst = new Map( [ [ 0, 0 ], [ 1, 1 ], [ null, null ], [ undefined, undefined ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var got = _.entityOr( dst, undefined );
+  test.is( got === dst );
+  test.equivalent( [ ... got.entries() ], [ ... exp.entries() ] );
+
+  test.case = 'has unnecessary elements, _.nothing';
+  var exp = new Map( [ [ 1, _.nothing ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var dst = new Map( [ [ 0, 0 ], [ 1, _.nothing ], [ null, null ], [ undefined, undefined ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
   var got = _.entityOr( dst, undefined );
   test.is( got === dst );
   test.equivalent( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -10851,6 +11029,13 @@ function entityOrOnlyHashMaps( test )
   test.case = 'without unnecessary elements';
   var exp = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
   var src = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var got = _.entityOr( null, src );
+  test.is( got !== src );
+  test.equivalent( [ ... got.entries() ], [ ... exp.entries() ] );
+
+  test.case = 'without unnecessary elements, _.nothing';
+  var exp = new Map( [ [ 1, _.nothing ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var src = new Map( [ [ 1, _.nothing ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
   var got = _.entityOr( null, src );
   test.is( got !== src );
   test.equivalent( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -10937,6 +11122,14 @@ function entityOrOnlyHashMaps( test )
   test.case = 'without unnecessary elements, onEach returns value';
   var exp = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
   var dst = new Map( [ [ 1, 1 ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var src = dst;
+  var got = _.entityOr( dst, src, ( e ) => e );
+  test.is( got === dst );
+  test.equivalent( [ ... got.entries() ], [ ... exp.entries() ] );
+
+  test.case = 'without unnecessary elements, onEach returns value, _.nothing';
+  var exp = new Map( [ [ 1, _.nothing ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
+  var dst = new Map( [ [ 1, _.nothing ], [ [ 2 ], [ 2 ] ], [ { a : 3 }, { a : 3 } ], [ 'str', 'str' ] ] );
   var src = dst;
   var got = _.entityOr( dst, src, ( e ) => e );
   test.is( got === dst );
@@ -11063,6 +11256,15 @@ function entityOrOnlyHashMaps( test )
   test.case = 'onEach is selector';
   var exp = new Map( [ [ 'a', { f1 : 1, f2 : 0 } ], [ 'b', { f1 : 1, f2 : 3 } ], [ 'c', { f1 : [], f2 : 'str' } ] ] );
   var dst = new Map( [ [ 'a', { f1 : 1, f2 : 0 } ], [ 'b', { f1 : false, f2 : 3 } ], [ 'c', { f1 : [], f2 : 'str' } ] ] );
+  var src = new Map( [ [ 'a', { f1 : 1, f2 : 0 } ], [ 'b', { f1 : 1, f2 : 3 } ], [ 'c', { f1 : undefined, f2 : 'str' } ] ] );
+  var got = _.entityOr( dst, src, '*/f1' );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
+
+  test.case = 'onEach is selector, _.nothing';
+  var exp = new Map( [ [ 'a', { f1 : _.nothing, f2 : 0 } ], [ 'b', { f1 : _.nothing, f2 : 3 } ], [ 'c', { f1 : [], f2 : 'str' } ] ] );
+  var dst = new Map( [ [ 'a', { f1 : _.nothing, f2 : 0 } ], [ 'b', { f1 : _.nothing, f2 : 3 } ], [ 'c', { f1 : [], f2 : 'str' } ] ] );
   var src = new Map( [ [ 'a', { f1 : 1, f2 : 0 } ], [ 'b', { f1 : 1, f2 : 3 } ], [ 'c', { f1 : undefined, f2 : 'str' } ] ] );
   var got = _.entityOr( dst, src, '*/f1' );
   test.is( got === dst );
