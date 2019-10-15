@@ -1274,6 +1274,26 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return _.arrayCountElement( this.original, e, onEvaluate1, onEvaluate2 );
   }
+  copyFrom( src )
+  {
+    let self = this;
+    let container = self.original;
+
+    if( self.same( src ) )
+    return self;
+
+    if( !self.IsContainer( src ) && !self.Is( src ) )
+    _.assert( 0, '{-src-} should be container' );
+
+    let i = 0;
+    for( let e of src )
+    {
+      container[ i ] = e;
+      i++;
+    }
+
+    return self;
+  }
   append( e )
   {
     this.original.push( e );
