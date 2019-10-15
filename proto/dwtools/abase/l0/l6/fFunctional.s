@@ -558,7 +558,7 @@ function entityOnly( dst, src, onEach )
 
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( !res )
       dst.delete( value );
     }
@@ -687,7 +687,7 @@ function entityOnly( dst, src, onEach )
   {
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( !res )
       dst.delete( value );
     }
@@ -1021,7 +1021,7 @@ function entityBut( dst, src, onEach )
 
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( !res )
       dst.add( value );
     }
@@ -1154,7 +1154,7 @@ function entityBut( dst, src, onEach )
   {
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( res )
       dst.delete( value );
     }
@@ -1585,7 +1585,7 @@ function entityAnd( dst, src, onEach )
 
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( res )
       dst.add( value );
     }
@@ -1718,9 +1718,9 @@ function entityAnd( dst, src, onEach )
       let res1, res2;
       let from = [ ... src ]
 
-      res1 = onEach( value, value, dst );
+      res1 = onEach( value, undefined, dst );
       if( res1 && from.lastIndexOf( value ) !== -1 )
-      res2 = onEach( value, value, from );
+      res2 = onEach( value, undefined, from );
       else if( res1 )
       res2 = onEach( undefined, undefined, src );
 
@@ -1959,7 +1959,7 @@ function entityOr( dst, src, onEach )
 
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( res )
       dst.add( value );
     }
@@ -2089,9 +2089,9 @@ function entityOr( dst, src, onEach )
     for( let key of dst )
     {
       let res1, res2;
-      res1 = onEach( key, key, dst );
+      res1 = onEach( key, undefined, dst );
       if( !res1 && src.has( key ) )
-      res2 = onEach( key, key, src );
+      res2 = onEach( key, undefined, src );
       else
       res2 = onEach( undefined, undefined, src );
 
@@ -2378,7 +2378,7 @@ function entityXor( dst, src, onEach )
     for( let value of src )
     {
       let res1 = onEach( undefined, undefined, dst );
-      let res2 = onEach( value, value, src );
+      let res2 = onEach( value, undefined, src );
 
       if( ( res1 && !res2 ) || ( !res1 && res2 ) )
       dst.add( value );
@@ -2509,7 +2509,7 @@ function entityXor( dst, src, onEach )
   {
     for( let key of dst )
     {
-      let res = onEach( key, key, dst );
+      let res = onEach( key, undefined, dst );
       if( !res )
       dst.delete( key );
     }
