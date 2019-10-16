@@ -154,7 +154,7 @@ function scalarPrepend( dst, src )
     else if( _.longIs( src ) )
     _.arrayPrependArray( dst, src );
     else
-    dst.shift( src );
+    dst.splice( 0, 0, src );
 
   }
   else
@@ -3972,7 +3972,7 @@ let Routines =
   // scalar
 
   scalarAppend,
-  scalarPrepend, /* qqq : implement and cover routine scalarPrepend, pelase */
+  scalarPrepend, /* qqq : implement and cover routine scalarPrepend, pelase | Dmytro : implemented and covered */
   scalarAppendOnce,
   scalarPrependOnce, /* qqq : implement and cover routine scalarPrependOnce, pelase | Dmytro : implemented and covered */
 
