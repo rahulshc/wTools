@@ -3584,7 +3584,10 @@ function strJoinPath( srcs, joiner )
 
 //
 
-/* qqq : cover routine strConcat and extend it. ask how to */
+/*
+qqq : cover routine strConcat and extend it. ask how to
+Dmytro : routine covered, not extended
+*/
 
 /*
   qqq : does not work properly, remove indentation, but should not
@@ -3596,6 +3599,8 @@ function strJoinPath( srcs, joiner )
   module::module-a
 `
 ]
+
+Dmytro : fixed, all comments below
 */
 
 function strConcat( srcs, o )
