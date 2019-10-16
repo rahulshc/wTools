@@ -3636,19 +3636,25 @@ function strConcat( srcs, o )
 
     src = o.onToStr( src, o );
 
-    result = result.replace( /\s*$/m, '' );
+    result = result.replace( /[^\S\n]\s*$/, '' ); /* Dmytro : this regExp remove not \n symbol in the end of string, only spaces */
+    // result = result.replace( /\s*$/m, '' );
 
     if( !result )
     {
       result = src;
     }
+    // else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
+    // {
+    //   result = result + o.lineDelimter + src;
+    // }
     else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
     {
-      result = result + o.lineDelimter + src;
+      result = result + src;
     }
     else
     {
-      result = result + ' ' + src.replace( /^\s+/m, '' );
+      result = result + ' ' + src.replace( /^\s+/, '' );
+      // result = result + ' ' + src.replace( /^\s+/m, '' ); /* Dmytro : flag 'm' - multiline, but no global, so routine replace first inclusion */
     }
 
   }
