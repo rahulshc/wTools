@@ -123,6 +123,57 @@ function scalarAppendOnce( dst, src )
 
 //
 
+function scalarPrepend( dst, src )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( dst === undefined )
+  {
+    if( _.longIs( src ) )
+    {
+      dst = [];
+    }
+    else
+    {
+      if( src === undefined )
+      return [];
+      else
+      return src;
+    }
+  }
+
+  if( _.longIs( dst ) )
+  {
+
+    if( !_.arrayIs( dst ) )
+    dst = _.arrayFrom( dst );
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    _.arrayPrependArray( dst, src );
+    else
+    dst.shift( src );
+
+  }
+  else
+  {
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    dst = _.arrayPrependArray( [ dst ], src );
+    else
+    dst = [ src, dst ];
+
+  }
+
+  return dst;
+}
+
+//
+
 function scalarPrependOnce( dst, src )
 {
 
@@ -3921,9 +3972,9 @@ let Routines =
   // scalar
 
   scalarAppend,
-  // scalarPrepend, /* qqq : implement and cover routine scalarPrepend, pelase */
+  scalarPrepend, /* qqq : implement and cover routine scalarPrepend, pelase */
   scalarAppendOnce,
-  scalarPrependOnce, /* qqq : implement and cover routine scalarPrependOnce, pelase */
+  scalarPrependOnce, /* qqq : implement and cover routine scalarPrependOnce, pelase | Dmytro : implemented and covered */
 
   scalarToVector,
   scalarFrom,
