@@ -8698,6 +8698,53 @@ function strJoinPath( test )
   test.shouldThrowErrorSync( () => _.strJoinPath( src, '/' ) );
 }
 
+//
+
+function strConcat( test )
+{
+  test.case = 'srcs - empty array';
+  var srcs = [];
+  var got = _.strConcat( srcs );
+  test.identical( got, '' );
+
+  test.case = 'srcs - empty string';
+  var srcs = '';
+  var got = _.strConcat( srcs );
+  test.identical( got, ' ' );
+
+  test.case = 'srcs - not empty string';
+  var srcs = 'str';
+  var got = _.strConcat( srcs );
+  test.identical( got, 'str ' );
+
+  test.case = 'srcs - number';
+  var srcs = 1;
+  var got = _.strConcat( srcs );
+  test.identical( got, '1 ' );
+
+  test.case = 'srcs - function';
+  var srcs = ( e ) => 'str';
+  var got = _.strConcat( srcs );
+  test.identical( got, 'str ' );
+
+  test.case = 'srcs - array of strings';
+  var srcs =
+  [
+    'b',
+    `variant:: : #83
+    path::local
+    module::module-a`
+  ];
+  var got = _.strConcat( srcs );
+  test.identical( got, 'b variant:: : #83\n    path::local\n    module::module-a ' );
+
+  test.case = 'srcs - array of strings, strings begins with spaces';
+  var srcs = [ '  b', '\nvariant:: : #83\n', 'path::local' ];
+  debugger;
+  var got = _.strConcat( srcs );
+  test.identical( got, '  b\nvariant:: : #83\npath::local ' );
+}
+
 //--
 // liner
 //--
@@ -10593,6 +10640,7 @@ var Self =
     strDup,
     strJoin,
     strJoinPath,
+    strConcat,
 
     // liner
 
