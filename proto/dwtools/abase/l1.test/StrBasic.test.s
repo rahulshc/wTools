@@ -8727,6 +8727,21 @@ function strConcat( test )
   var got = _.strConcat( srcs );
   test.identical( got, 'str ' );
 
+  test.case = 'srcs - object';
+  var srcs = { a : 2 };
+  var got = _.strConcat( srcs );
+  test.identical( got, '[object Object] ' );
+
+  test.case = 'srcs - BufferRaw';
+  var srcs = new BufferRaw( 3 );
+  var got = _.strConcat( srcs );
+  test.identical( got, '[object ArrayBuffer] ' );
+
+  test.case = 'srcs - BufferTyped';
+  var srcs = new U8x( [ 1, 2, 3 ] );
+  var got = _.strConcat( srcs );
+  test.identical( got, '1,2,3 ' );
+
   test.case = 'srcs - array of strings, new line symbol in the string';
   var srcs =
   [
@@ -8737,6 +8752,16 @@ function strConcat( test )
   ];
   var got = _.strConcat( srcs );
   test.identical( got, 'b variant:: : #83\n    path::local\n    module::module-a ' );
+
+  test.case = 'srcs - array';
+  var srcs = [ 1, 2, 'str', 3, [ 2 ] ];
+  var got = _.strConcat( srcs );
+  test.identical( got, '1 2 str 3 2 ' );
+
+  test.case = 'srcs - unroll';
+  var srcs = _.unrollMake( [ 1, 2, 'str', 3, [ 2 ] ] );
+  var got = _.strConcat( srcs );
+  test.identical( got, '1 2 str 3 2 ' );
 
   test.case = 'srcs - array of strings, strings begin with spaces';
   var srcs = [ '  b', '    a:: : c', '    d::e' ];
