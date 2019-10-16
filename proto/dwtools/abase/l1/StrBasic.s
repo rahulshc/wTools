@@ -3591,8 +3591,8 @@ function strJoinPath( srcs, joiner )
  * @param { ArrayLike|* } srcs - ArrayLike container with elements or single element to make string.
  * If {-srcs-} is not ArrayLike, routine converts to string provided value.
  * @param { Object } o - Options map.
- * @param { String } o.lineDelimter - The line delimeter. Default value is new line symbol.
- * If string element of array has not delimeter in the end or next element has not delimeter in the begin, routine append one space between this elements.
+ * @param { String } o.lineDelimter - The line delimeter. Default value is new line symbol '\n'.
+ * If string element of array has not delimeter in the end or next element has not delimeter in the begin, routine insert one space between this elements.
  * @param { String } o.linePrefix - The prefix that adds to every line. Default value is empty string.
  * @param { String } o.linePostfix - The postfix that adds to every line. Default value is empty string.
  * @param { Object } o.optionsForToStr - The options for routine _.toStr that uses for convertion to string. Default value is null.
@@ -3645,13 +3645,12 @@ function strJoinPath( srcs, joiner )
  * @function strConcat
  * @throws { Error } If arguments.length is less then one or more than two arguments.
  * @throws { Error } If routine strConcat does not belong module Tools.
- *
  * @memberof wTools
  */
 
 /*
 qqq : cover routine strConcat and extend it. ask how to
-Dmytro : routine covered, not extended
+Dmytro : routine covered and documented, not extended
 */
 
 /*

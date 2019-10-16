@@ -579,8 +579,8 @@ function scalarToVector( test )
 {
 
   test.case = 'nothing';
-  var got = _.scalarToVector( [  ], 0 );
-  var expected = [  ];
+  var got = _.scalarToVector( [], 0 );
+  var expected = [];
   test.identical( got, expected );
 
   test.case = 'static array';
