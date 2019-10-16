@@ -464,11 +464,11 @@ _.only( Array::dst, Set::src );
  * callback accepts three parameters - element, key, source container.
  *
  * @example
- * _.entityOnly( 'str', 1 )
+ * _.entityOnly( 'str', 1 );
  * // returns 'str'
  *
  * @example
- * _.entityOnly( 'str', 1, ( e, k, src ) => e - 1 )
+ * _.entityOnly( 'str', 1, ( e, k, src ) => e - 1 );
  * // returns undefined
  *
  * @example
@@ -493,13 +493,13 @@ _.only( Array::dst, Set::src );
  *
  * @example
  * let dst = [ '', 0, null, undefined, true ];
- * let src = [ 1, 2, false, undefined, 0 ]
+ * let src = [ 1, 2, false, undefined, 0 ];
  * _.entityOnly( dst, src );
  * // returns [ '', 0, true ]
  *
  * @example
  * let dst = [ '', 0, null, undefined, true ];
- * let src = [ 1, 2, false, undefined, 0 ]
+ * let src = [ 1, 2, false, undefined, 0 ];
  * _.entityOnly( dst, undefined, ( e, k ) => k );
  * // returns [ 0, null, undefined, true ]
  *

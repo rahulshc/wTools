@@ -3584,6 +3584,71 @@ function strJoinPath( srcs, joiner )
 
 //
 
+/**
+ * The routine strConcat() provides the concatenation of array elements
+ * into a string. Returned string can be formatted by using options in options map.
+ *
+ * @param { ArrayLike|* } srcs - ArrayLike container with elements or single element to make string.
+ * If {-srcs-} is not ArrayLike, routine converts to string provided value.
+ * @param { Object } o - Options map.
+ * @param { String } o.lineDelimter - The line delimeter. Default value is new line symbol.
+ * If string element of array has not delimeter in the end or next element has not delimeter in the begin, routine append one space between this elements.
+ * @param { String } o.linePrefix - The prefix that adds to every line. Default value is empty string.
+ * @param { String } o.linePostfix - The postfix that adds to every line. Default value is empty string.
+ * @param { Object } o.optionsForToStr - The options for routine _.toStr that uses for convertion to string. Default value is null.
+ * @param { Routine } o.onToStr - The callback, which uses for convertion to string. Default value is null.
+ *
+ * @example
+ * _.strConcat( 'str' );
+ * // returns 'str '
+ *
+ * @example
+ * _.strConcat( 11 );
+ * // returns '11 '
+ *
+ * @example
+ * _.strConcat( { a : 'a' } );
+ * // returns '[object Object] '
+ *
+ * @example
+ * _.strConcat( [ 1, 2, 'str', [ 3, 4 ] ] );
+ * // returns '1 2 str 3,4 '
+ *
+ * @example
+ * let options =
+ * {
+ *   linePrefix : '** ',
+ *   linePostfix : ' **'
+ * };
+ * _.strConcat( [ 1, 2, 'str', [ 3, 4 ] ], options );
+ * // returns '** 1 2 str 3,4 **'
+ *
+ * @example
+ * let options =
+ * {
+ *   linePrefix : '** ',
+ *   linePostfix : ' **'
+ * };
+ * _.strConcat( [ 'a\n', 'b\n', 'c\n', 'd\n' ], options );
+ * // returns '** a **
+ *             ** b **
+ *             ** c **
+ *             ** d **'
+ *
+ * @example
+ * let onToStr = ( src ) => String( src ) + '*';
+ * let options = { onToStr : onToStr };
+ * _.strConcat( [ 'a', 'b', 'c', 'd' ], options );
+ * // returns 'a* b* c* d* '
+ *
+ * @returns { String } - Returns string, which is concatenated from {-srcs-}.
+ * @function strConcat
+ * @throws { Error } If arguments.length is less then one or more than two arguments.
+ * @throws { Error } If routine strConcat does not belong module Tools.
+ *
+ * @memberof wTools
+ */
+
 /*
 qqq : cover routine strConcat and extend it. ask how to
 Dmytro : routine covered, not extended
