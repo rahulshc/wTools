@@ -3645,7 +3645,7 @@ function strConcat( srcs, o )
     }
     // else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
     // {
-    //   result = result + o.lineDelimter + src;
+    //   result = result + o.lineDelimter + src; /* Dmytro : if delimeter exists, it's not need  */
     // }
     else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
     {

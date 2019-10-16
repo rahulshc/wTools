@@ -8727,7 +8727,7 @@ function strConcat( test )
   var got = _.strConcat( srcs );
   test.identical( got, 'str ' );
 
-  test.case = 'srcs - array of strings';
+  test.case = 'srcs - array of strings, new line symbol in the string';
   var srcs =
   [
     'b',
@@ -8738,11 +8738,60 @@ function strConcat( test )
   var got = _.strConcat( srcs );
   test.identical( got, 'b variant:: : #83\n    path::local\n    module::module-a ' );
 
-  test.case = 'srcs - array of strings, strings begins with spaces';
-  var srcs = [ '  b', '\nvariant:: : #83\n', 'path::local' ];
-  debugger;
+  test.case = 'srcs - array of strings, strings begin with spaces';
+  var srcs = [ '  b', '    a:: : c', '    d::e' ];
   var got = _.strConcat( srcs );
-  test.identical( got, '  b\nvariant:: : #83\npath::local ' );
+  test.identical( got, '  b a:: : c d::e ' );
+
+  test.case = 'srcs - array of strings, strings end with spaces';
+  var srcs = [ 'b    ', 'variant:: : #83    ', 'path::local    ' ];
+  var got = _.strConcat( srcs );
+  test.identical( got, 'b variant:: : #83 path::local     ' );
+
+  test.case = 'srcs - array of strings, strings begin and end with spaces';
+  var srcs = [ '    b    ', '    variant:: : #83    ', '    path::local    ' ];
+  var got = _.strConcat( srcs );
+  test.identical( got, '    b variant:: : #83 path::local     ' );
+
+  test.case = 'srcs - array of strings, strings begin with spaces, end with new line symbol';
+  var srcs = [ '  b\n', '  variant:: : #83\n', '  path::local' ];
+  var got = _.strConcat( srcs );
+  test.identical( got, '  b\n  variant:: : #83\n  path::local ' );
+
+  test.case = 'srcs - array of strings, strings begin with new line symbol, end with spaces';
+  var srcs = [ '\nb    ', '\nvariant:: : #83    ', '\npath::local    ' ];
+  var got = _.strConcat( srcs );
+  test.identical( got, '\nb\nvariant:: : #83\npath::local     ' );
+
+  test.case = 'srcs - array of strings, strings begin and end with new line symbol';
+  var srcs = [ '\nb\n', '\nvariant:: : #83\n', '\npath::local\n' ];
+  var got = _.strConcat( srcs );
+  test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n ' );
+
+  test.case = 'srcs - array of strings, strings begin and end with new line symbol';
+  var srcs = [ '\nb\n', '\nvariant:: : #83\n', '\npath::local\n' ];
+  var got = _.strConcat( srcs );
+  test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n ' );
+
+  test.case = 'srcs - array of strings, strings begin with new line symbol, end with new line symbol and spaces';
+  var srcs = [ '\nb\n    ', '\nvariant:: : #83\n    ', '\npath::local\n    ' ];
+  var got = _.strConcat( srcs );
+  test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n     ' );
+
+  test.case = 'srcs - array of strings, strings begin with new line symbol and spaces, end with new line symbol';
+  var srcs = [ '    \nb\n', '    \nvariant:: : #83\n', '    \npath::local\n' ];
+  var got = _.strConcat( srcs );
+  test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n ' );
+
+  test.case = 'srcs - array of strings, strings begin with new line symbol and spaces, end with new line symbol';
+  var srcs = [ '    \nb\n', '    \nvariant:: : #83\n', '    \npath::local\n' ];
+  var got = _.strConcat( srcs );
+  test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n ' );
+
+  test.case = 'srcs - array of strings, strings begin with new line symbol and spaces, end with new line symbol and spaces';
+  var srcs = [ '    \nb\n    ', '    \nvariant:: : #83\n    ', '    \npath::local\n    ' ];
+  var got = _.strConcat( srcs );
+  test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n     ' );
 }
 
 //--
