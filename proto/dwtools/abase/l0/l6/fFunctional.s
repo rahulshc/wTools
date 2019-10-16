@@ -473,34 +473,34 @@ _.only( Array::dst, Set::src );
  *
  * @example
  * let src = [ 1, 0, null, undefined, true ];
- * _.scalarToVector( null, src );
+ * _.entityOnly( null, src );
  * // returns [ 1, true ]
  *
  * @example
  * let src = [ 1, 0, null, undefined, true ];
- * _.scalarToVector( null, src, ( e, k ) => k );
+ * _.entityOnly( null, src, ( e, k ) => k );
  * // returns [ 0, null, undefined, true ]
  *
  * @example
  * let dst = [ '', 0, null, undefined, true ];
- * _.scalarToVector( dst );
+ * _.entityOnly( dst );
  * // returns [ true ]
  *
  * @example
  * let dst = [ '', 0, null, undefined, true ];
- * _.scalarToVector( dst, undefined, ( e, k ) => k );
+ * _.entityOnly( dst, undefined, ( e, k ) => k );
  * // returns [ 0, null, undefined, true ]
  *
  * @example
  * let dst = [ '', 0, null, undefined, true ];
  * let src = [ 1, 2, false, undefined, 0 ]
- * _.scalarToVector( dst, src );
- * // returns [ '', 0, null, undefined, true ]
+ * _.entityOnly( dst, src );
+ * // returns [ '', 0, true ]
  *
  * @example
  * let dst = [ '', 0, null, undefined, true ];
  * let src = [ 1, 2, false, undefined, 0 ]
- * _.scalarToVector( dst, undefined, ( e, k ) => k );
+ * _.entityOnly( dst, undefined, ( e, k ) => k );
  * // returns [ 0, null, undefined, true ]
  *
  * @returns { * } - Returns filtered container or primitive value.
@@ -1000,6 +1000,75 @@ function entityOnly( dst, src, onEach )
 }
 
 //
+
+/**
+ * The routine entityBut() provides the filtering of elements of destination container
+ * {-dst-} by checking values ​​in the source container {-src-}. The routine checks values
+ * with the same keys in both containers. If a received {-src-} element has not falsy value, then
+ * element with the same key deletes from the {-dst-} container.
+ * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
+ * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
+ * Note: containers should have same type.
+ *
+ * Also, {-dst-} and {-src-} might be a primitives. If {-dst-} is primitive, then routine
+ * check value of {-src-}.
+ *
+ * @param { * } dst - Container or primitive for filtering.
+ * If {-dst-} is null, then makes new container of {-src-} type.
+ * @param { * } src - Container or primitive for filtering.
+ * If {-src-} is undefined, then {-dst-} filters by its own values.
+ * @param { Routine } onEach - The callback that obtain value for every {-src-} element. The
+ * callback accepts three parameters - element, key, source container.
+ *
+ * @example
+ * _.entityBut( 'str', 1 )
+ * // returns undefined
+ *
+ * @example
+ * _.entityBut( 'str', 1, ( e, k, src ) => e - 1 )
+ * // returns 'str'
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityBut( null, src );
+ * // returns [ 0, null, undefined ]
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityBut( null, src, ( e, k ) => k );
+ * // returns [ 1 ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityBut( dst );
+ * // returns [ '', 0, null, undefined ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityBut( dst, undefined, ( e, k ) => k );
+ * // returns [ '' ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ]
+ * _.entityBut( dst, src );
+ * // returns [ null, undefined ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ]
+ * _.entityBut( dst, undefined, ( e, k ) => k );
+ * // returns [ '' ]
+ *
+ * @returns { * } - Returns filtered container or primitive value.
+ * @function entityBut
+ * @throws { Error } If arguments.length is less then one or more than three arguments.
+ * @throws { Error } If {-dst-} is not null or {-dst-} and {-src-} containers has different types.
+ * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
+ * @throws { Error } If onEach.length is more then three.
+ * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
+ * @memberof wTools
+ */
 
 function entityBut( dst, src, onEach )
 {
