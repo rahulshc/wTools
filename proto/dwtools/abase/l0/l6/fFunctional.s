@@ -3923,7 +3923,7 @@ let Routines =
   scalarAppend,
   // scalarPrepend, /* qqq : implement and cover routine scalarPrepend, pelase */
   scalarAppendOnce,
-  // scalarPrependOnce, /* qqq : implement and cover routine scalarPrependOnce, pelase */
+  scalarPrependOnce, /* qqq : implement and cover routine scalarPrependOnce, pelase */
 
   scalarToVector,
   scalarFrom,
