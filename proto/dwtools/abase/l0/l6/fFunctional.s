@@ -3904,13 +3904,13 @@ let Routines =
 
   entityOnly, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
   only : entityOnly,
-  entityBut, /* qqq : optimize, implement good coverage and jsdoc, please */
+  entityBut, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
   but : entityBut,
-  entityAnd, /* qqq : optimize, implement good coverage and jsdoc, please */
+  entityAnd, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
   and : entityAnd,
-  entityOr, /* qqq : optimize, implement good coverage and jsdoc, please */
+  entityOr, /* qqq : optimize, implement good coverage and jsdoc, please  | Dmytro : covered and added JSdoc*/
   or : entityOr,
-  entityXor,
+  entityXor, /* qqq : optimize, implement good coverage and jsdoc, please  | Dmytro : covered and added JSdoc*/
   xor : entityXor,
 
   entityAll, /* qqq : optimize entityAll */
