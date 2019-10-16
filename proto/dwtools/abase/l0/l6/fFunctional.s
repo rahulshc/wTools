@@ -1653,8 +1653,8 @@ function entityBut( dst, src, onEach )
  * If {-dst-} is null, then makes new container of {-src-} type.
  * @param { ArrayLike|Set|Map|Object|* } src - Container or another single element for filtering.
  * If {-src-} is undefined, then {-dst-} filters by its own values.
- * @param { Function } onEach - The callback that obtain value for every {-src-} element. The
- * callback accepts three parameters - element, key, source container.
+ * @param { Function } onEach - The callback that obtain value for every {-dst-} and {-src-} element
+ * with the same keys. The callback accepts three parameters - element, key, source container.
  *
  * @example
  * _.entityAnd( 'str', 1 );
@@ -1698,7 +1698,7 @@ function entityBut( dst, src, onEach )
  *
  * @returns { ArrayLike|Set|Map|Object|* } - Returns filtered container.
  * If {-dst-} is not iteratable value, routine returns original {-dst-} or undefined.
- * @function entityOnly
+ * @function entityAnd
  * @throws { Error } If arguments.length is less then one or more than three arguments.
  * @throws { Error } If {-dst-} is not null or {-dst-} and {-src-} containers has different types.
  * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
@@ -2080,6 +2080,79 @@ function entityAnd( dst, src, onEach )
 }
 
 //
+
+/**
+ * The routine entityOr() provides the filtering of elements of destination container
+ * {-dst-} by checking values ​​with the same keys in the {-dst-} and source {-src-} containers.
+ * If checking of {-dst-} element returs true, routine save {-dst-} element.
+ * If checking of {-dst-} element return false and checking of {-src-} element returns true,
+ * routine replace {-dst-} element by {-src-} element.
+ * Else, routine delete delete {-dst-} element.
+ *
+ * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
+ * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
+ * Note: containers should have same type.
+ *
+ * Also, {-dst-} and {-src-} might be not iteratable element, for example, primitive.
+ * If {-dst-} is not iteratable, then routine check value of {-src-}.
+ *
+ * @param { ArrayLike|Set|Map|Object|* } dst - Container or another single element for filtering.
+ * If {-dst-} is null, then makes new container of {-src-} type.
+ * @param { ArrayLike|Set|Map|Object|* } src - Container or another single element for filtering.
+ * If {-src-} is undefined, then {-dst-} filters by its own values.
+ * @param { Function } onEach - The callback that obtain value for every {-dst-} and {-src-} element
+ * with the same keys. The callback accepts three parameters - element, key, source container.
+ *
+ * @example
+ * _.entityOr( 'str', undefined );
+ * // returns 'str'
+ *
+ * @example
+ * _.entityOr( false, 1, ( e, k, src ) => e - 1 );
+ * // returns 1
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityOr( null, src );
+ * // returns [ 1, true ]
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityOr( null, src, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityOr( dst );
+ * // returns [ true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityOr( dst, undefined, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ];
+ * _.entityOr( dst, src );
+ * // returns [ 1, 2, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ];
+ * _.entityOr( dst, undefined, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @returns { ArrayLike|Set|Map|Object|* } - Returns filtered container.
+ * If {-dst-} is not iteratable value, routine returns original {-dst-} or undefined.
+ * @function entityOr
+ * @throws { Error } If arguments.length is less then one or more than three arguments.
+ * @throws { Error } If {-dst-} is not null or {-dst-} and {-src-} containers has different types.
+ * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
+ * @throws { Error } If onEach.length is more then three.
+ * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
+ * @memberof wTools
+ */
 
 function entityOr( dst, src, onEach )
 {
