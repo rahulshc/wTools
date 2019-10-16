@@ -3608,7 +3608,7 @@ function strConcat( srcs, o )
   if( o.onToStr === null )
   o.onToStr = function onToStr( src, op )
   {
-    return _.toStr( src, op.optionsForToStr );
+    return _.toStr( src, op.optionsForToStr ); /* Dmytro : now optionsForToStr is not used in routine toStr */
   }
 
   let defaultOptionsForToStr =

@@ -8792,6 +8792,63 @@ function strConcat( test )
   var srcs = [ '    \nb\n    ', '    \nvariant:: : #83\n    ', '    \npath::local\n    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n     ' );
+
+  /* */
+
+  test.case = 'users lineDelimter';
+  var srcs = [ 'a ||', 'b ||', 'c ||', 'd' ];
+  var o = { lineDelimter : '||' };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a ||b ||c ||d ' );
+
+  // test.case = 'optionsForToStr';
+  // var srcs = [ 'a ||', 'b ||', 'c ||', 'd' ];
+  // var o = { optionsForToStr : { stringWrapper : '/' } };
+  // var got = _.strConcat( srcs, o );
+  // test.identical( got, 'a || b || c || d ' );
+
+  test.case = 'onToStr';
+  let onToStr = ( src ) => String( src ) + 1;
+  var srcs = [ 1, 2, 3, 4 ];
+  var o = { onToStr : onToStr };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '11 21 31 41' );
+
+  test.case = 'linePrefix, not uses lineDelimter';
+  var srcs = [ 'a', 'b', 'c', 'd' ];
+  var o = { linePrefix : '|| ' };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '|| a b c d ' );
+
+  test.case = 'linePrefix, lineDelimter';
+  var srcs = [ 'a\n', 'b\n', 'c\n', 'd\n' ];
+  var o = { linePrefix : '|| ' };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '|| a\n|| b\n|| c\n|| d\n||  ' );
+
+  test.case = 'linePostfix, not uses lineDelimter';
+  var srcs = [ 'a', 'b', 'c', 'd' ];
+  var o = { linePostfix : ' ||' };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a b c d  ||' );
+
+  test.case = 'linePostfix, lineDelimter';
+  var srcs = [ 'a\n', 'b\n', 'c\n', 'd\n' ];
+  var o = { linePostfix : ' ||' };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a ||\nb ||\nc ||\nd ||\n  ||' );
+
+  test.case = 'linePrefix and linePostfix, not uses lineDelimter';
+  var srcs = [ 'a', 'b', 'c', 'd' ];
+  var o = { linePostfix : ' ||', linePrefix : '|| ' };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '|| a b c d  ||')
+
+  test.case = 'linePrefix and linePostfix, lineDelimter';
+  var srcs = [ 'a\n', 'b\n', 'c\n', 'd\n' ];
+  var o = { linePostfix : ' ||', linePrefix : '|| ' };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '|| a ||\n|| b ||\n|| c ||\n|| d ||\n||   ||' );
 }
 
 //--
