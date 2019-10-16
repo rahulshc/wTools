@@ -449,6 +449,7 @@ _.only( Array::dst, Set::src );
  * {-dst-} by checking values ​​in the source container {-src-}. The routine checks values
  * with the same keys in both containers. If a received {-src-} element has falsy value, then
  * element with the same key deletes from the {-dst-} container.
+ *
  * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
  * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
  * Note: containers should have same type.
@@ -1007,6 +1008,7 @@ function entityOnly( dst, src, onEach )
  * {-dst-} by checking values ​​in the source container {-src-}. The routine checks values
  * with the same keys in both containers. If a received {-src-} element has not falsy value, then
  * element with the same key deletes from the {-dst-} container.
+ *
  * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
  * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
  * Note: containers should have same type.
@@ -1640,8 +1642,9 @@ function entityBut( dst, src, onEach )
 
 /**
  * The routine entityAnd() provides the filtering of elements of destination container
- * {-dst-} by checking values ​​with the same keys in the {-dst-} and source {-src-} containers. If one of received values is falsy, then
- * element with deletes from the {-dst-} container.
+ * {-dst-} by checking values ​​with the same keys in the {-dst-} and source {-src-} containers.
+ * If one of received values is falsy, then element with deletes from the {-dst-} container.
+ *
  * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
  * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
  * Note: containers should have same type.
@@ -2087,7 +2090,7 @@ function entityAnd( dst, src, onEach )
  * If checking of {-dst-} element returs true, routine save {-dst-} element.
  * If checking of {-dst-} element return false and checking of {-src-} element returns true,
  * routine replace {-dst-} element by {-src-} element.
- * Else, routine delete delete {-dst-} element.
+ * Else, routine deletes {-dst-} element.
  *
  * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
  * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
@@ -2571,6 +2574,78 @@ function entityOr( dst, src, onEach )
 }
 
 //
+
+/**
+ * The routine entityXor() provides the filtering of elements of destination container
+ * {-dst-} by checking values ​​with the same keys in the {-dst-} and source {-src-} containers.
+ * If both received values from {-dst-} and {-src-} has the same boolean value, then routine
+ * deletes {-dst-} element.
+ * Else routine sets in {-dst-} element, which received boolean value is true.
+ *
+ * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
+ * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
+ * Note: containers should have same type.
+ *
+ * Also, {-dst-} and {-src-} might be not iteratable element, for example, primitive.
+ * If {-dst-} is not iteratable, then routine check value of {-src-}.
+ *
+ * @param { ArrayLike|Set|Map|Object|* } dst - Container or another single element for filtering.
+ * If {-dst-} is null, then makes new container of {-src-} type.
+ * @param { ArrayLike|Set|Map|Object|* } src - Container or another single element for filtering.
+ * If {-src-} is undefined, then {-dst-} filters by its own values.
+ * @param { Function } onEach - The callback that obtain value for every {-dst-} and {-src-} element
+ * with the same keys. The callback accepts three parameters - element, key, source container.
+ *
+ * @example
+ * _.entityXor( 'str', undefined );
+ * // returns 'str'
+ *
+ * @example
+ * _.entityXor( 'str', 1, ( e, k, src ) => e - 1 );
+ * // returns false
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityXor( null, src );
+ * // returns [ 1, 0, null, undefined, true ]
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityXor( null, src, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityXor( dst );
+ * // returns []
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityXor( dst, undefined, ( e, k ) => k );
+ * // returns []
+ *
+ * @example
+ * let dst = [ '', 0, null, 1, true ];
+ * let src = [ 1, 2, false, 1, 'str' ];
+ * _.entityXor( dst, src );
+ * // returns [ 1, 2 ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ];
+ * _.entityXor( dst, undefined, ( e, k ) => k );
+ * // returns []
+ *
+ * @returns { ArrayLike|Set|Map|Object|* } - Returns filtered container.
+ * If {-dst-} is not iteratable value, routine returns original {-dst-} or undefined.
+ * @function entityXor
+ * @throws { Error } If arguments.length is less then one or more than three arguments.
+ * @throws { Error } If {-dst-} is not null or {-dst-} and {-src-} containers has different types.
+ * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
+ * @throws { Error } If onEach.length is more then three.
+ * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
+ * @memberof wTools
+ */
 
 function entityXor( dst, src, onEach )
 {
