@@ -3708,6 +3708,7 @@ function entityMap( src, onEach )
 /* qqq :
 cover entityFilter and entityFilterDeep
 take into account unroll cases
+Dmytro : unroll cases uses in test routines, but routine entityFilter accepts BufferTyped and cannot handle it. So, routine need restrictions or extending.
 */
 
 function entityFilter( src, onEach )
