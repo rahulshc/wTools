@@ -3846,7 +3846,7 @@ function _entityMost( o )
 
     let s = 0;
     if( o.onEvaluate.length === 1 )
-    while( s < o.src.length )
+    for( ; s < o.src.length; s++ )
     {
       let value = o.onEach( o.src[ s ], s, o.src );
       if( o.onEvaluate( value ) )
@@ -3855,7 +3855,6 @@ function _entityMost( o )
         result.key = s;
         break;
       }
-      s++;
     }
     else
     {
@@ -3916,7 +3915,6 @@ function _entityMost( o )
     }
 
   }
-  else _.assert( 0 );
 
   return result;
 
@@ -4058,14 +4056,14 @@ _entityMost.defaults =
  * @memberof wTools
  */
 
-function entityMin( src, onEvaluate )
+function entityMin( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   // return _entityMost( src, onEvaluate, 0 );
   return _entityMost
   ({
     src : src,
-    onEach : onEvaluate,
+    onEach : onEach,
     returnMax : 0
   });
 }
@@ -4092,10 +4090,16 @@ function entityMin( src, onEvaluate )
  * @memberof wTools
  */
 
-function entityMax( src, onEvaluate )
+function entityMax( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return _entityMost( src, onEvaluate, 1 );
+  // return _entityMost( src, onEvaluate, 1 );
+  return _entityMost
+  ({
+    src : src,
+    onEach : onEach,
+    returnMax : 1
+  });
 }
 
 // --
