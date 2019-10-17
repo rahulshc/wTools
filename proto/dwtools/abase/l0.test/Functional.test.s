@@ -14680,8 +14680,12 @@ function entityAny( test )
   test.identical( got, true );
 
   var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
-  var got = _.entityAny( src, ( e ) => undefined );
+  var got = _.entityAny( src, ( v ) => undefined );
   test.identical( got, false );
+
+  var src = new Set( [ _.nothing, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAny( src, ( v ) => v );
+  test.identical( got, _.nothing );
 
   /* */
 
@@ -14707,6 +14711,10 @@ function entityAny( test )
   var got = _.entityAny( src, ( v, k, src ) => src.size === v );
   test.identical( got, false );
 
+  var src = new Map( [ [ 1, _.nothing ], [ 'c', 4 ], [ 'a', undefined ] ] );
+  var got = _.entityAny( src, ( v, k, src ) => v );
+  test.identical( got, _.nothing );
+
   /* */
 
   test.case = 'array';
@@ -14722,6 +14730,9 @@ function entityAny( test )
 
   var got = _.entityAny( [ 1, 'str', 3, null ], () => undefined );
   test.identical( got, false );
+
+  var got = _.entityAny( [ _.nothing, 1, 'str', 3, null ], ( v ) => v );
+  test.identical( got, _.nothing );
 
   /* */
 
@@ -14743,6 +14754,10 @@ function entityAny( test )
   var got = _.entityAny( src, () => undefined );
   test.identical( got, false );
 
+  var src = _.unrollMake( [ _.nothing, 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
+  var got = _.entityAny( src, ( v ) => v );
+  test.identical( got, _.nothing );
+
   /* */
 
   test.case = 'argument array';
@@ -14762,6 +14777,10 @@ function entityAny( test )
   var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAny( src, () => undefined );
   test.identical( got, false );
+
+  var src = _.argumentsArrayMake( [ _.nothing, 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityAny( src, ( v ) => v );
+  test.identical( got, _.nothing );
 
   /* */
 
@@ -14805,6 +14824,9 @@ function entityAny( test )
   var got = _.entityAny( { a : 1, b : false }, ( v, k, u ) => v !== u );
   test.identical( got, true );
 
+  var got = _.entityAny( { a : _.nothing, b : false }, ( v, k, u ) => v );
+  test.identical( got, _.nothing );
+
   /* */
 
   test.case = 'no ArrayLike, no ObjectLike'
@@ -14829,6 +14851,9 @@ function entityAny( test )
 
   var got = _.entityAny( true, ( src, u, u2 ) => src !== u2 );
   test.identical( got, true );
+
+  var got = _.entityAny( _.nothing, ( src, u, u2 ) => src );
+  test.identical( got, _.nothing );
 
   test.close( 'onEach is routine' );
 
