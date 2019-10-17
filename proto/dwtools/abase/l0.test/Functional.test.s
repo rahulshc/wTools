@@ -18590,71 +18590,99 @@ function remapPrepending( test )
 
 function _entityMost( test )
 {
+  test.open( 'returnMax - false' );
 
-  var args1 = [ 3, 1, 9, 0, 5 ],
-    args2 = [3, -4, 9, -16, 5, -2],
-    args3 = { a : 25, b : 16, c : 9 },
-    expected1 = { index : 2, key : 2, value : 9, element : 9 },
-    expected2 = { index : 3, key : 3, value : 0, element : 0 },
-    expected3 = { index : 3, key : 3, value : 256, element : -16 },
-    expected4 = args2.slice(),
-    expected5 = { index : 5, key : 5, value : 4, element : -2 },
-    expected6 = { index : 0, key : 'a', value : 25, element : 25  },
-    expected7 = { index : 2, key : 'c', value : 3, element : 9  };
-
-  function sqr( v )
+  test.case = 'src - array, without onEvaluate';
+  var o =
   {
-    return v * v;
-  };
+    src : [ 3, 1, 9, 0, 5 ],
+    returnMax : 0
+  }
+  var exp = { index : 3, key : 3, value : 0, element : 0 };
+  debugger;
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
 
-  test.case = 'test entityMost with array and default onElement and returnMax = true';
-  var got = _._entityMost( args1, undefined, true );
-  test.identical( got, expected1 );
+  test.case = 'src - array, onEach';
+  var o =
+  {
+    src : [ 3, -4, 9, -16, 5, -2 ],
+    returnMax : 0,
+    onEach : ( e ) => e * e
+  }
+  var exp = { index : 5, key : 5, value : 4, element : -2 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
 
-  test.case = 'test entityMost with array and default onElement and returnMax = false';
-  var got = _._entityMost( args1, undefined, false );
-  test.identical( got, expected2 );
+  test.case = 'src - array, onEach, onEvaluate';
+  var o =
+  {
+    src : [ 3, 5, 6, 8 ],
+    onEach : ( e ) => e - 1,
+    onEvaluate : ( v, prev ) => v > prev + 2
+  }
+  var exp = { index : 2, key : 2, value : 5, element : 6 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
 
-  test.case = 'test entityMost with array simple onElement function and returnMax = true';
-  var got = _._entityMost( args2, sqr, true );
-  test.identical( got, expected3 );
+  // test.case = 'unroll, without onEvaluate';
+  // var src = _.unrollMake( [ 3, 1, 9, 0, 5 ] );
+  // var exp = { index : 3, key : 3, value : 0, element : 0 };
+  // var got = _._entityMost( src );
+  // test.identical( got, exp );
+  //
+  // test.case = 'unroll, onEvaluate';
+  // var src = _.unrollMake( [ 3, -4, 9, -16, 5, -2 ] );
+  // var exp = { index : 5, key : 5, value : 4, element : -2 };
+  // var got = _._entityMost( src, ( e ) => e * e );
+  // test.identical( src, [ 3, -4, 9, -16, 5, -2 ] );
+  // test.identical( got, exp );
+  //
+  // test.case = 'argumentsArray, without onEvaluate';
+  // var src = _.argumentsArrayMake( [ 3, 1, 9, 0, 5 ] );
+  // var exp = { index : 3, key : 3, value : 0, element : 0 };
+  // var got = _._entityMost( src );
+  // test.identical( got, exp );
+  //
+  // test.case = 'argumentsArray, onEvaluate';
+  // var src = _.argumentsArrayMake( [ 3, -4, 9, -16, 5, -2 ] );
+  // var exp = { index : 5, key : 5, value : 4, element : -2 };
+  // var got = _._entityMost( src, ( e ) => e * e );
+  // test.equivalent( src, [ 3, -4, 9, -16, 5, -2 ] );
+  // test.identical( got, exp );
+  //
+  // test.case = 'BufferTyped, without onEvaluate';
+  // var src = new U8x( [ 3, 1, 9, 0, 5 ] );
+  // var exp = { index : 3, key : 3, value : 0, element : 0 };
+  // var got = _._entityMost( src );
+  // test.identical( got, exp );
+  //
+  // test.case = 'BufferTyped, onEvaluate';
+  // var src = new I32x( [ 3, -4, 9, -16, 5, -2 ] );
+  // var exp = { index : 5, key : 5, value : 4, element : -2 };
+  // var got = _._entityMost( src, ( e ) => e * e );
+  // test.equivalent( src, [ 3, -4, 9, -16, 5, -2 ] );
+  // test.identical( got, exp );
+  //
+  // test.case = 'map, without onEvaluate';
+  // var src = { a : 25, b : 16, c : 9 };
+  // var exp = { index : 2, key : 'c', value : 9, element : 9  };
+  // var got = _._entityMost( src );
+  // test.identical( got, exp );
+  //
+  // test.case = 'map, onEvaluate';
+  // var src = { a : 25, b : 16, c : 9 };
+  // var exp = { index : 2, key : 'c', value : 81, element : 9  };
+  // var got = _._entityMost( src, ( e ) => e * e );
+  // test.identical( got, exp );
 
-  test.case = 'test entityMost with array : passed array should be unmodified';
-  test.identical( args2, expected4 );
-
-  test.case = 'test entityMost with array simple onElement function and returnMax = false';
-  var got = _._entityMost( args2, sqr, false );
-  test.identical( got, expected5 );
-
-  test.case = 'test entityMost with map and default onElement and returnMax = true';
-  var got = _._entityMost( args3, undefined, true );
-  test.identical( got, expected6 );
-
-  test.case = 'test entityMost with map and returnMax = false';
-  var got = _._entityMost( args3, Math.sqrt, false );
-  test.identical( got, expected7 );
+  test.close( 'returnMax - false' );
 
   if( !Config.debug )
   return;
-
-  test.case = 'missed arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _._entityMost();
-  });
-
-  test.case = 'extra argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _._entityMost( [ 1,3 ], sqr, true, false );
-  });
-
-  test.case = 'second argument is not routine';
-  test.shouldThrowErrorSync( function()
-  {
-    _._entityMost( [ 1,3 ], 'callback', true );
-  });
-
 };
 
 //

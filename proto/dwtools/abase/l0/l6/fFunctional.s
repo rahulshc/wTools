@@ -3817,87 +3817,179 @@ qqq : refactor routine _entityMost
 - make it accept evaluator or comparator( not in the same call )
 */
 
-function _entityMost( src, onEvaluate, returnMax )
+function _entityMost( o )
+// function _entityMost( src, onEvaluate, returnMax )
 {
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
+  _.assert( _.longIs( o.src ) || _.mapLike( o.src ) );
+  _.routineOptions( _entityMost, o );
 
-  if( onEvaluate === undefined )
-  onEvaluate = function( element ){ return element; }
-
-  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( onEvaluate.length === 1, 'not implemented' );
-
-  let onCompare = null;
-
-  if( returnMax )
-  onCompare = function( a, b )
+  if( !o.onEvaluate )
   {
-    return a-b;
-  }
-  else
-  onCompare = function( a, b )
-  {
-    return b-a;
+    _.assert( o.returnMax !== null, 'o.returnMax should has value' );
+
+    if( o.returnMax )
+    o.onEvaluate = ( a, b ) => a - b > 0;
+    else
+    o.onEvaluate = ( a, b ) => b - a > 0;
   }
 
-  _.assert( onEvaluate.length === 1 );
-  _.assert( onCompare.length === 2 );
+  _.assert( o.onEach.length === 1 );
+  _.assert( o.onEvaluate.length === 1 || o.onEvaluate.length === 2 );
 
   let result = { index : -1, key : undefined, value : undefined, element : undefined };
 
-  if( _.longIs( src ) )
+  if( _.longIs( o.src ) )
   {
-
-    if( src.length === 0 )
+    if( o.src.length === 0 )
     return result;
-    result.key = 0;
-    result.value = onEvaluate( src[ 0 ] );
-    result.element = src[ 0 ];
 
-    for( let s = 0 ; s < src.length ; s++ )
-    {
-      let value = onEvaluate( src[ s ] );
-      if( onCompare( value, result.value ) > 0 )
-      {
-        result.key = s;
-        result.value = value;
-        result.element = src[ s ];
-      }
-    }
+    result.key = 0;
+    result.value = o.onEach( o.src[ 0 ] );
+
+    for( let s = 0; s < o.src.length; s++ )
+    resultValue( o.src[ s ], s );
     result.index = result.key;
+    result.element = o.src[ result.key ];
 
   }
-  else if( _.mapLike( src ) )
+  else if( _.mapLike( o.src ) )
   {
-
-    debugger;
-    for( let s in src )
+    for( let s in o.src )
     {
       result.index = 0;
       result.key = s;
-      result.value = onEvaluate( src[ s ] );
-      result.element = src[ s ]
+      result.value = o.onEach( o.src[ s ] );
+      result.element = o.src[ s ]
       break;
     }
 
     let index = 0;
-    for( let s in src )
+    for( let s in o.src )
     {
-      let value = onEvaluate( src[ s ] );
-      if( onCompare( value, result.value ) > 0 )
-      {
-        result.index = index;
-        result.key = s;
-        result.value = value;
-        result.element = src[ s ];
-      }
-      index += 1;
+      resultValue( o.src[ s ], s );
+      index++;
     }
+    result.index = index;
+    result.element = o.src[ result.key ];
 
   }
   else _.assert( 0 );
 
   return result;
+
+  /* */
+
+  function resultValue( e, k )
+  {
+    let value = o.onEach( e );
+    if( o.onEvaluate.length === 1 )
+    {
+      if( o.onEvaluate( value ) === o.onEvaluate( result.value ) )
+      {
+        result.key = k;
+        result.value = value;
+      }
+    }
+    else if( o.onEvaluate( value, result.value ) )
+    {
+      result.key = k;
+      result.value = value;
+    }
+  }
+
 }
+
+_entityMost.defaults =
+{
+  src : null,
+  onEach : ( e ) => e,
+  onEvaluate : null,
+  returnMax : null
+}
+
+// function _entityMost( src, onEvaluate, returnMax )
+// {
+//
+//   if( onEvaluate === undefined )
+//   onEvaluate = function( element ){ return element; }
+//
+//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
+//   _.assert( onEvaluate.length === 1, 'not implemented' );
+//
+//   let onCompare = null;
+//
+//   if( returnMax )
+//   onCompare = function( a, b )
+//   {
+//     return a-b;
+//   }
+//   else
+//   onCompare = function( a, b )
+//   {
+//     return b-a;
+//   }
+//
+//   _.assert( onEvaluate.length === 1 );
+//   _.assert( onCompare.length === 2 );
+//
+//   let result = { index : -1, key : undefined, value : undefined, element : undefined };
+//
+//   if( _.longIs( src ) )
+//   {
+//
+//     if( src.length === 0 )
+//     return result;
+//     result.key = 0;
+//     result.value = onEvaluate( src[ 0 ] );
+//     result.element = src[ 0 ];
+//
+//     for( let s = 0 ; s < src.length ; s++ )
+//     {
+//       let value = onEvaluate( src[ s ] );
+//       if( onCompare( value, result.value ) > 0 )
+//       {
+//         result.key = s;
+//         result.value = value;
+//         result.element = src[ s ];
+//       }
+//     }
+//     result.index = result.key;
+//
+//   }
+//   else if( _.mapLike( src ) )
+//   {
+//
+//     debugger;
+//     for( let s in src )
+//     {
+//       result.index = 0;
+//       result.key = s;
+//       result.value = onEvaluate( src[ s ] );
+//       result.element = src[ s ]
+//       break;
+//     }
+//
+//     let index = 0;
+//     for( let s in src )
+//     {
+//       let value = onEvaluate( src[ s ] );
+//       if( onCompare( value, result.value ) > 0 )
+//       {
+//         result.index = index;
+//         result.key = s;
+//         result.value = value;
+//         result.element = src[ s ];
+//       }
+//       index += 1;
+//     }
+//
+//   }
+//   else _.assert( 0 );
+//
+//   return result;
+// }
 
 //
 
