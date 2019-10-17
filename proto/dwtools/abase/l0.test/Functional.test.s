@@ -14326,6 +14326,10 @@ function entityAll( test )
   var got = _.entityAll( src, () => undefined );
   test.identical( got, undefined );
 
+  var src = new Set( [ 1, 2, [ 'str' ], 3, 4, _.nothing ] );
+  var got = _.entityAll( src, ( v ) => v );
+  test.identical( got, true );
+
   /* */
 
   test.case = 'Map';
@@ -14350,6 +14354,10 @@ function entityAll( test )
   var got = _.entityAll( src, ( v, k, src ) => src.size !== v );
   test.identical( got, true );
 
+  var src = new Map( [ [ 1, 2 ], [ 'c', 4 ], [ 'a', _.nothing ] ] );
+  var got = _.entityAll( src, ( v, k, src ) => v );
+  test.identical( got, true );
+
   /* */
 
   test.case = 'array';
@@ -14365,6 +14373,9 @@ function entityAll( test )
 
   var got = _.entityAll( [ 1, 'str', 3, null ], () => undefined );
   test.identical( got, undefined );
+
+  var got = _.entityAll( [ 1, 'str', 3, _.nothing ], ( v ) => v );
+  test.identical( got, true );
 
   /* */
 
@@ -14386,6 +14397,10 @@ function entityAll( test )
   var got = _.entityAll( src, () => undefined );
   test.identical( got, undefined );
 
+  var src = _.unrollMake( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4, _.nothing ] );
+  var got = _.entityAll( src, ( v ) => v );
+  test.identical( got, true );
+
   /* */
 
   test.case = 'argument array';
@@ -14405,6 +14420,10 @@ function entityAll( test )
   var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityAll( src, () => undefined );
   test.identical( got, undefined );
+
+  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4, _.nothing ] );
+  var got = _.entityAll( src, ( v ) => v );
+  test.identical( got, true );
 
   /* */
 
@@ -14451,6 +14470,9 @@ function entityAll( test )
   var got = _.entityAll( { a : 1, b : false }, ( v, k, src ) => src.length !== v );
   test.identical( got, true );
 
+  var got = _.entityAll( { a : 1, b : _.nothing }, ( v, k, src ) => v );
+  test.identical( got, true );
+
   /* */
 
   test.case = 'no ArrayLike, no MapLike'
@@ -14474,6 +14496,9 @@ function entityAll( test )
   test.identical( got, true );
 
   var got = _.entityAll( true, ( src, u, u2 ) => src !== u2 );
+  test.identical( got, true );
+
+  var got = _.entityAll( _.nothing, ( src, u, u2 ) => src !== u2 );
   test.identical( got, true );
 
   test.close( 'onEach is routine' );
