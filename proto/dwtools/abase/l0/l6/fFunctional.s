@@ -3818,7 +3818,6 @@ qqq : refactor routine _entityMost
 */
 
 function _entityMost( o )
-// function _entityMost( src, onEvaluate, returnMax )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
@@ -3835,7 +3834,7 @@ function _entityMost( o )
     o.onEvaluate = ( a, b ) => b - a > 0;
   }
 
-  _.assert( o.onEach.length === 1 );
+  _.assert( 1 <= o.onEach.length && o.onEach.length <= 3 );
   _.assert( o.onEvaluate.length === 1 || o.onEvaluate.length === 2 );
 
   let result = { index : -1, key : undefined, value : undefined, element : undefined };
@@ -3845,34 +3844,76 @@ function _entityMost( o )
     if( o.src.length === 0 )
     return result;
 
-    result.key = 0;
-    result.value = o.onEach( o.src[ 0 ] );
+    let s = 0;
+    if( o.onEvaluate.length === 1 )
+    while( s < o.src.length )
+    {
+      let value = o.onEach( o.src[ s ], s, o.src );
+      if( o.onEvaluate( value ) )
+      {
+        result.value = value;
+        result.key = s;
+        break;
+      }
+      s++;
+    }
+    else
+    {
+      result.key = s;
+      result.value = o.onEach( o.src[ s ], s, o.src );
+    }
 
-    for( let s = 0; s < o.src.length; s++ )
-    resultValue( o.src[ s ], s );
+    for( ; s < o.src.length; s++ )
+    resultValue( o.src[ s ], s, o.src );
     result.index = result.key;
     result.element = o.src[ result.key ];
-
   }
   else if( _.mapLike( o.src ) )
   {
-    for( let s in o.src )
-    {
-      result.index = 0;
-      result.key = s;
-      result.value = o.onEach( o.src[ s ] );
-      result.element = o.src[ s ]
-      break;
-    }
-
     let index = 0;
-    for( let s in o.src )
+    if( o.onEvaluate.length === 1 )
     {
-      resultValue( o.src[ s ], s );
-      index++;
+      for( let s in o.src )
+      {
+        if( result.value === undefined )
+        {
+          let value = o.onEach( o.src[ s ], s, o.src );
+          if( o.onEvaluate( value ) )
+          {
+            result.value = value;
+            result.index = index;
+          }
+        }
+        else
+        {
+          if( resultValue( o.src[ s ], s, o.src ) )
+          result.index = index;
+        }
+
+        index++;
+
+      }
+      result.element = o.src[ result.key ];
     }
-    result.index = index;
-    result.element = o.src[ result.key ];
+    else
+    {
+      for( let s in o.src )
+      {
+        result.index = 0;
+        result.key = s;
+        result.value = o.onEach( o.src[ s ], s, o.src );
+        break;
+      }
+
+      for( let s in o.src )
+      {
+        if( resultValue( o.src[ s ], s, o.src ) )
+        result.index = index;
+
+        index++;
+      }
+      result.element = o.src[ result.key ];
+    }
 
   }
   else _.assert( 0 );
@@ -3881,22 +3922,26 @@ function _entityMost( o )
 
   /* */
 
-  function resultValue( e, k )
+  function resultValue( e, k, s )
   {
-    let value = o.onEach( e );
+    let value = o.onEach( e, k, s );
     if( o.onEvaluate.length === 1 )
     {
       if( o.onEvaluate( value ) === o.onEvaluate( result.value ) )
       {
         result.key = k;
         result.value = value;
+        return true;
       }
     }
     else if( o.onEvaluate( value, result.value ) )
     {
       result.key = k;
       result.value = value;
+      return true;
     }
+
+    return false;
   }
 
 }
@@ -4016,7 +4061,13 @@ _entityMost.defaults =
 function entityMin( src, onEvaluate )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return _entityMost( src, onEvaluate, 0 );
+  // return _entityMost( src, onEvaluate, 0 );
+  return _entityMost
+  ({
+    src : src,
+    onEach : onEvaluate,
+    returnMax : 0
+  });
 }
 
 //
