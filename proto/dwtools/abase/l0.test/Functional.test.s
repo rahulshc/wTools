@@ -18661,60 +18661,84 @@ function _entityMost( test )
 
 function entityMin( test )
 {
-  var args1 = [ 3, 1, 9, 0, 5 ],
-    args2 = [ 3, -4, 9, -16, 5, -2 ],
-    args3 = { a : 25, b : 16, c : 9 },
-    expected1 = { index : 3, key : 3, value : 0, element : 0 },
-    expected2 = { index : 5, key : 5, value : 4, element : -2 },
-    expected3 = args2.slice(),
-    expected4 = { index : 2, key : 'c', value : 9, element : 9  };
+  test.case = 'array, without onEvaluate';
+  var src = [ 3, 1, 9, 0, 5 ];
+  var exp = { index : 3, key : 3, value : 0, element : 0 };
+  var got = _.entityMin( src );
+  test.identical( got, exp );
 
-  function sqr(v)
-  {
-    return v * v;
-  };
+  test.case = 'array, onEvaluate';
+  var src = [ 3, -4, 9, -16, 5, -2 ];
+  var exp = { index : 5, key : 5, value : 4, element : -2 };
+  var got = _.entityMin( src, ( e ) => e * e );
+  test.identical( src, [ 3, -4, 9, -16, 5, -2 ] );
+  test.identical( got, exp );
 
-  test.case = 'test entityMin with array and without onElement callback';
-  var got = _.entityMin( args1 );
-  test.identical( got, expected1 );
+  test.case = 'unroll, without onEvaluate';
+  var src = _.unrollMake( [ 3, 1, 9, 0, 5 ] );
+  var exp = { index : 3, key : 3, value : 0, element : 0 };
+  var got = _.entityMin( src );
+  test.identical( got, exp );
 
+  test.case = 'array, onEvaluate';
+  var src = _.unrollMake( [ 3, -4, 9, -16, 5, -2 ] );
+  var exp = { index : 5, key : 5, value : 4, element : -2 };
+  var got = _.entityMin( src, ( e ) => e * e );
+  test.identical( src, [ 3, -4, 9, -16, 5, -2 ] );
+  test.identical( got, exp );
 
+  test.case = 'argumentsArray, without onEvaluate';
+  var src = _.argumentsArrayMake( [ 3, 1, 9, 0, 5 ] );
+  var exp = { index : 3, key : 3, value : 0, element : 0 };
+  var got = _.entityMin( src );
+  test.identical( got, exp );
 
-  test.case = 'test entityMin with array simple onElement function';
-  var got = _.entityMin( args2, sqr );
-  test.identical( got, expected2 );
+  test.case = 'argumentsArray, onEvaluate';
+  var src = _.argumentsArrayMake( [ 3, -4, 9, -16, 5, -2 ] );
+  var exp = { index : 5, key : 5, value : 4, element : -2 };
+  var got = _.entityMin( src, ( e ) => e * e );
+  test.equivalent( src, [ 3, -4, 9, -16, 5, -2 ] );
+  test.identical( got, exp );
 
-  test.case = 'test entityMin with array : passed array should be unmodified';
-  test.identical( args2, expected3 );
+  test.case = 'BufferTyped, without onEvaluate';
+  var src = new U8x( [ 3, 1, 9, 0, 5 ] );
+  var exp = { index : 3, key : 3, value : 0, element : 0 };
+  var got = _.entityMin( src );
+  test.identical( got, exp );
 
+  test.case = 'BufferTyped, onEvaluate';
+  var src = new I32x( [ 3, -4, 9, -16, 5, -2 ] );
+  var exp = { index : 5, key : 5, value : 4, element : -2 };
+  var got = _.entityMin( src, ( e ) => e * e );
+  test.equivalent( src, [ 3, -4, 9, -16, 5, -2 ] );
+  test.identical( got, exp );
 
+  test.case = 'map, without onEvaluate';
+  var src = { a : 25, b : 16, c : 9 };
+  var exp = { index : 2, key : 'c', value : 9, element : 9  };
+  var got = _.entityMin( src );
+  test.identical( got, exp );
 
-  test.case = 'test entityMin with map';
-  var got = _.entityMin( args3 );
-  test.identical( got, expected4 );
+  test.case = 'map, onEvaluate';
+  var src = { a : 25, b : 16, c : 9 };
+  var exp = { index : 2, key : 'c', value : 81, element : 9  };
+  var got = _.entityMin( src, ( e ) => e * e );
+  test.identical( got, exp );
+
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'missed arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.entityMin();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityMin() );
 
   test.case = 'extra argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.entityMin( [ 1,3 ], sqr, true );
-  });
+  test.shouldThrowErrorSync( () => _.entityMin( [ 1,3 ], sqr, true ) );
 
-  test.case = 'second argument is not routine';
-  test.shouldThrowErrorSync( function()
-  {
-    _.entityMin( [ 1,3 ], 'callback' );
-  });
-
-};
+  test.case = 'onEvaluate is not routine';
+  test.shouldThrowErrorSync( () => _.entityMin( [ 1,3 ], 'wrong' ) );
+}
 
 //
 

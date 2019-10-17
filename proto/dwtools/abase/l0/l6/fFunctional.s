@@ -3824,7 +3824,7 @@ function _entityMost( src, onEvaluate, returnMax )
   onEvaluate = function( element ){ return element; }
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( onEvaluate.length === 1, 'not mplemented' );
+  _.assert( onEvaluate.length === 1, 'not implemented' );
 
   let onCompare = null;
 
