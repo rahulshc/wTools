@@ -3998,8 +3998,7 @@ let Routines =
 
   /*
   qqq : take _.nothing case in routines only, but, all, any, none
-  Dmytro : _.nothing cases implemented in test routines entityOnly*, entityBut*, entityAnd*,
-  entityOr*, entityXor*
+  Dmytro : _.nothing cases is implemented
    */
 
   entityOnly, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */

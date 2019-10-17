@@ -15034,8 +15034,12 @@ function entityNone( test )
   test.identical( got, false );
 
   var src = new Set( [ 1, 2, [ 'str' ], 3, 4 ] );
-  var got = _.entityNone( src, ( e ) => undefined );
+  var got = _.entityNone( src, ( v ) => undefined );
   test.identical( got, true );
+
+  var src = new Set( [ 1, 2, [ 'str' ], 3, 4, _.nothing ] );
+  var got = _.entityNone( src, ( v ) => v );
+  test.identical( got, false );
 
   /* */
 
@@ -15061,6 +15065,10 @@ function entityNone( test )
   var got = _.entityNone( src, ( v, k, src ) => src.size === v );
   test.identical( got, true );
 
+  var src = new Map( [ [ 1, 2 ], [ 'c', 4 ], [ 'a', _.nothing ] ] );
+  var got = _.entityNone( src, ( v, k, src ) => v );
+  test.identical( got, false );
+
   /* */
 
   test.case = 'array';
@@ -15076,6 +15084,9 @@ function entityNone( test )
 
   var got = _.entityNone( [ 1, 'str', 3, null ], () => undefined );
   test.identical( got, true );
+
+  var got = _.entityNone( [ 1, 'str', 3, _.nothing ], ( v ) => v );
+  test.identical( got, false );
 
   /* */
 
@@ -15097,6 +15108,10 @@ function entityNone( test )
   var got = _.entityNone( src, () => undefined );
   test.identical( got, true );
 
+  var src = _.unrollMake( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4, _.nothing ] );
+  var got = _.entityNone( src, ( v ) => v );
+  test.identical( got, false );
+
   /* */
 
   test.case = 'argument array';
@@ -15116,6 +15131,10 @@ function entityNone( test )
   var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
   var got = _.entityNone( src, () => undefined );
   test.identical( got, true );
+
+  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4, _.nothing ] );
+  var got = _.entityNone( src, ( v ) => v );
+  test.identical( got, false );
 
   /* */
 
@@ -15159,6 +15178,9 @@ function entityNone( test )
   var got = _.entityNone( { a : 1, b : false }, ( v, k, src ) => src.length === v );
   test.identical( got, true );
 
+  var got = _.entityNone( { a : 1, b : _.nothing }, ( v, k, src ) => v );
+  test.identical( got, false );
+
   /* */
 
   test.case = 'no ArrayLike, no ObjectLike'
@@ -15182,6 +15204,9 @@ function entityNone( test )
   test.identical( got, false );
 
   var got = _.entityNone( true, ( src, u, u2 ) => src !== u2 );
+  test.identical( got, false );
+
+  var got = _.entityNone( _.nothing, ( src, u, u2 ) => src );
   test.identical( got, false );
 
   test.close( 'onEach is routine' );
