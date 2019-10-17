@@ -15369,6 +15369,113 @@ function entityNone( test )
 
 //
 
+function _filter_functor( test )
+{
+  test.case = 'routine, levels - 1';
+  var src = ( e, k, s ) => e;
+  var condition = _._filter_functor( src, 1 );
+  var obj = { a : 1, b : 2 };
+  var got = condition( obj, 'a', 1 );
+  test.is( got === obj );
+  test.identical( got, obj );
+
+  test.case = 'passed element is original object, levels - 1';
+  var src = { a : 1, b : 2 };
+  var condition = _._filter_functor( src, 1 );
+  var got = condition( src, 'a', src );
+  test.is( got === src );
+  test.identical( got, { a : 1, b : 2 } );
+
+  test.case = 'passed element is original object, levels - -1';
+  var src = { a : 1, b : 2 };
+  var condition = _._filter_functor( src, -1 );
+  var got = condition( src, 'a', src );
+  test.is( got === src );
+  test.identical( got, { a : 1, b : 2 } );
+
+  test.case = 'passed element is not object, levels - 1';
+  var src = { a : 1, b : 2 };
+  var condition = _._filter_functor( src, 1 );
+  var got = condition( 1, 'a', src );
+  test.identical( got, undefined );
+
+  /* */
+
+  test.case = 'src - 1 level, obj - copy of src, levels - 0';
+  var src = { a : 1, b : 2 };
+  var condition = _._filter_functor( src, 0 );
+  var obj = { a : 1, b : 2 };
+  var got = condition( obj, 'a', src );
+  test.identical( got, undefined );
+
+  test.case = 'callback identicalWith returns true, levels - 0';
+  var identicalWith = ( e ) => true;
+  var src = { a : 1, b : 2, identicalWith : identicalWith };
+  var condition = _._filter_functor( src, 0 );
+  var obj = { c : 1, identicalWith : identicalWith };
+  var got = condition( obj, 'a', src );
+  test.is( got === obj );
+  test.identical( got, obj );
+
+  test.case = 'src - level 1, obj - copy of src, levels - 1';
+  var src = { a : 1, b : 2 };
+  var condition = _._filter_functor( src, 1 );
+  var obj = { a : 1, b : 2 };
+  var got = condition( obj, 'a', src );
+  test.is( got === obj );
+  test.identical( got, obj );
+
+  test.case = 'src - level 2, obj - copy of src, levels - 1';
+  var src = { a : { c : 2 }, b : 2 };
+  var condition = _._filter_functor( src, 1 );
+  var obj = { a : { c : 2 }, b : 2 };
+  var got = condition( obj, 'a', src );
+  test.identical( got, undefined );
+
+  test.case = 'src - level 2, obj - copy of src, levels - 2';
+  var src = { a : { c : 2 }, b : 2 };
+  var condition = _._filter_functor( src, 2 );
+  var obj = { a : { c : 2 }, b : 2 };
+  var got = condition( obj, 'a', src );
+  test.is( got === obj );
+  test.identical( got, obj );
+
+  test.case = 'src - level, obj - level 2, levels - 2';
+  var src = { a : { c : 2 }, b : 2 };
+  var condition = _._filter_functor( src, 2 );
+  var obj = { a : { d : 2 }, b : 2 };
+  var got = condition( obj, 'a', src );
+  test.identical( got, undefined );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _._filter_functor() );
+
+  test.case = 'one argument';
+  test.shouldThrowErrorSync( () => _._filter_functor( { a : 1 } ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _._filter_functor( { a : 1 }, 1, 1 ) );
+
+  test.case = 'wrong type of condition';
+  test.shouldThrowErrorSync( () => _._filter_functor( 'wrong', 1 ) );
+  test.shouldThrowErrorSync( () => _._filter_functor( [ 1, 2 ], 1 ) );
+
+  test.case = 'wrong quantity arguments in maked routine';
+  var condition = _._filter_functor( { a : 1 }, 1 );
+  test.shouldThrowErrorSync( () => condition() );
+  test.shouldThrowErrorSync( () => condition( { a : 1 } ) );
+  test.shouldThrowErrorSync( () => condition( { a : 1 }, 'a' ) );
+  test.description = 'check of routine';
+  test.mustNotThrowError( () => condition( { a : 1 }, 'a', { a : 1 } ) );
+}
+
+//
+
 function entityMap( test )
 {
   test.open( 'src is arrayLike' );
@@ -19376,6 +19483,8 @@ value for dst             dst                dst                    first +     
     entityAll,
     entityAny,
     entityNone,
+
+    _filter_functor,
 
     entityMap,
     entityFilter,

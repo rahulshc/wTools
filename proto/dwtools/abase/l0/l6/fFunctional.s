@@ -4012,14 +4012,14 @@ let Routines =
   entityXor, /* qqq : optimize, implement good coverage and jsdoc, please  | Dmytro : covered and added JSdoc*/
   xor : entityXor,
 
-  entityAll, /* qqq : optimize entityAll */
+  entityAll, /* qqq : optimize entityAll | Dmytro : for() loop is better than every() method, can inline variables if onEach === undefined */
   all : entityAll,
-  entityAny, /* qqq : optimize entityAny */
+  entityAny, /* qqq : optimize entityAny | Dmytro : for() loop is better than some() method, can inline variables if onEach === undefined */
   any : entityAny,
-  entityNone, /* qqq : optimize entityNone */
+  entityNone, /* qqq : optimize entityNone | Dmytro : for() loop is better than some() method, can inline variables if onEach === undefined*/
   none : entityNone,
 
-  _filter_functor, /* qqq : cover please */
+  _filter_functor, /* qqq : cover please | Dmytro : covered */
 
   entityMap,
   map : entityMap,
