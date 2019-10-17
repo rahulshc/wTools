@@ -18615,56 +18615,176 @@ function _entityMost( test )
   test.is( got !== o );
   test.identical( got, exp );
 
-  // test.case = 'unroll, without onEvaluate';
-  // var src = _.unrollMake( [ 3, 1, 9, 0, 5 ] );
-  // var exp = { index : 3, key : 3, value : 0, element : 0 };
-  // var got = _._entityMost( src );
-  // test.identical( got, exp );
-  //
-  // test.case = 'unroll, onEvaluate';
-  // var src = _.unrollMake( [ 3, -4, 9, -16, 5, -2 ] );
-  // var exp = { index : 5, key : 5, value : 4, element : -2 };
-  // var got = _._entityMost( src, ( e ) => e * e );
-  // test.identical( src, [ 3, -4, 9, -16, 5, -2 ] );
-  // test.identical( got, exp );
-  //
-  // test.case = 'argumentsArray, without onEvaluate';
-  // var src = _.argumentsArrayMake( [ 3, 1, 9, 0, 5 ] );
-  // var exp = { index : 3, key : 3, value : 0, element : 0 };
-  // var got = _._entityMost( src );
-  // test.identical( got, exp );
-  //
-  // test.case = 'argumentsArray, onEvaluate';
-  // var src = _.argumentsArrayMake( [ 3, -4, 9, -16, 5, -2 ] );
-  // var exp = { index : 5, key : 5, value : 4, element : -2 };
-  // var got = _._entityMost( src, ( e ) => e * e );
-  // test.equivalent( src, [ 3, -4, 9, -16, 5, -2 ] );
-  // test.identical( got, exp );
-  //
-  // test.case = 'BufferTyped, without onEvaluate';
-  // var src = new U8x( [ 3, 1, 9, 0, 5 ] );
-  // var exp = { index : 3, key : 3, value : 0, element : 0 };
-  // var got = _._entityMost( src );
-  // test.identical( got, exp );
-  //
-  // test.case = 'BufferTyped, onEvaluate';
-  // var src = new I32x( [ 3, -4, 9, -16, 5, -2 ] );
-  // var exp = { index : 5, key : 5, value : 4, element : -2 };
-  // var got = _._entityMost( src, ( e ) => e * e );
-  // test.equivalent( src, [ 3, -4, 9, -16, 5, -2 ] );
-  // test.identical( got, exp );
-  //
-  // test.case = 'map, without onEvaluate';
-  // var src = { a : 25, b : 16, c : 9 };
-  // var exp = { index : 2, key : 'c', value : 9, element : 9  };
-  // var got = _._entityMost( src );
-  // test.identical( got, exp );
-  //
-  // test.case = 'map, onEvaluate';
-  // var src = { a : 25, b : 16, c : 9 };
-  // var exp = { index : 2, key : 'c', value : 81, element : 9  };
-  // var got = _._entityMost( src, ( e ) => e * e );
-  // test.identical( got, exp );
+  test.case = 'src - unroll, without onEvaluate';
+  var o =
+  {
+    src : _.unrollMake( [ 3, 1, 9, 0, 5 ] ),
+    returnMax : 0
+  }
+  var exp = { index : 3, key : 3, value : 0, element : 0 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - unroll, onEach';
+  var o =
+  {
+    src : _.unrollMake( [ 3, -4, 9, -16, 5, -2 ] ),
+    returnMax : 0,
+    onEach : ( e ) => e * e
+  }
+  var exp = { index : 5, key : 5, value : 4, element : -2 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - BufferTyped, without onEvaluate';
+  var o =
+  {
+    src : new U16x( [ 3, 1, 9, 0, 5 ] ),
+    returnMax : 0
+  }
+  var exp = { index : 3, key : 3, value : 0, element : 0 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - BufferTyped, onEach';
+  var o =
+  {
+    src : new F64x( [ 3, -4, 9, -16, 5, -2 ] ),
+    returnMax : 0,
+    onEach : ( e ) => e * e
+  }
+  var exp = { index : 5, key : 5, value : 4, element : -2 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - mapLike, without onEvaluate';
+  var o =
+  {
+    src : { a : 1, b : 0, c : 3, d : 2 },
+    returnMax : 0
+  }
+  var exp = { index : 1, key : 'b', value : 0, element : 0 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - mapLike, onEach';
+  var o =
+  {
+    src : { a : 5, b : 1, c : 3, d : 2 },
+    returnMax : 0,
+    onEach : ( e ) => e * e
+  }
+  var exp = { index : 1, key : 'b', value : 1, element : 1 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.close( 'returnMax - false' );
+
+  /* - */
+
+  test.open( 'returnMax - true' );
+
+  test.case = 'src - array, without onEvaluate';
+  var o =
+  {
+    src : [ 3, 1, 9, 0, 5 ],
+    returnMax : 1
+  }
+  var exp = { index : 2, key : 2, value : 9, element : 9 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - array, onEach';
+  var o =
+  {
+    src : [ 3, -4, 9, -16, 5, -2 ],
+    returnMax : 1,
+    onEach : ( e ) => e * e
+  }
+  var exp = { index : 3, key : 3, value : 256, element : -16 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - unroll, without onEvaluate';
+  var o =
+  {
+    src : _.unrollMake( [ 3, 1, 9, 0, 5 ] ),
+    returnMax : 1
+  }
+  var exp = { index : 2, key : 2, value : 9, element : 9 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - unroll, onEach';
+  var o =
+  {
+    src : _.unrollMake( [ 3, -4, 9, -16, 5, -2 ] ),
+    returnMax : 1,
+    onEach : ( e ) => e * e
+  }
+  var exp = { index : 3, key : 3, value : 256, element : -16 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - BufferTyped, without onEvaluate';
+  var o =
+  {
+    src : new U16x( [ 3, 1, 9, 0, 5 ] ),
+    returnMax : 1
+  }
+  var exp = { index : 2, key : 2, value : 9, element : 9 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - BufferTyped, onEach';
+  var o =
+  {
+    src : new F64x( [ 3, -4, 9, -16, 5, -2 ] ),
+    returnMax : 1,
+    onEach : ( e ) => e * e
+  }
+  var exp = { index : 3, key : 3, value : 256, element : -16 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - mapLike, without onEvaluate';
+  var o =
+  {
+    src : { a : 1, b : 0, c : 3, d : 2 },
+    returnMax : 1
+  }
+  var exp = { index : 2, key : 'c', value : 3, element : 3 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - mapLike, onEach';
+  var o =
+  {
+    src : { a : 5, b : 1, c : 3, d : 2 },
+    returnMax : 1,
+    onEach : ( e ) => e * e
+  }
+  var exp = { index : 0, key : 'a', value : 25, element : 5 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.close( 'returnMax - true' );
+
+  /* - */
 
   test.case = 'src - array, onEach, onEvaluate1.length - 1';
   var o =
@@ -18681,9 +18801,21 @@ function _entityMost( test )
   var o =
   {
     src : [ 1, 5, 6, 1, 7 ],
+    onEach : ( e ) => e + 1,
     onEvaluate : ( e ) => e > 5
   }
-  var exp = { index : 4, key : 4, value : 7, element : 7 };
+  var exp = { index : 4, key : 4, value : 8, element : 7 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - array, onEvaluate.length - 2';
+  var o =
+  {
+    src : [ 3, 5, 6, 6 ],
+    onEvaluate : ( v, prev ) => v > prev + 1
+  }
+  var exp = { index : 1, key : 1, value : 5, element : 5 };
   var got = _._entityMost( o );
   test.is( got !== o );
   test.identical( got, exp );
@@ -18700,7 +18832,55 @@ function _entityMost( test )
   test.is( got !== o );
   test.identical( got, exp );
 
-  test.close( 'returnMax - false' );
+  /* */
+
+  test.case = 'src - mapLike, onEvaluate1.length - 1';
+  var o =
+  {
+    src : { a : 0, b : 2, c : 3, d : 4 },
+    onEvaluate : ( e ) => e > 5
+  }
+  var exp = { index : -1, key : undefined, value : undefined, element : undefined };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - mapLike, onEach, onEvaluate1.length - 1';
+  var o =
+  {
+    src : { a : 0, b : 6, c : 3, d : 4 },
+    onEach : ( e ) => e + 1,
+    onEvaluate : ( e ) => e > 5
+  }
+  var exp = { index : 1, key : 'b', value : 7, element : 6 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - array, onEvaluate.length - 2';
+  var o =
+  {
+    src : { a : 0, b : 1, c : 3, d : 4 },
+    onEvaluate : ( v, prev ) => v > prev + 1
+  }
+  var exp = { index : 2, key : 'c', value : 3, element : 3 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  test.case = 'src - array, onEach, onEvaluate.length - 2';
+  var o =
+  {
+    src : { a : 0, b : 2, c : 3, d : 4 },
+    onEach : ( e ) => e - 1,
+    onEvaluate : ( v, prev ) => v > prev + 1
+  }
+  var exp = { index : 3, key : 'd', value : 3, element : 4 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
+  /* - */
 
   if( !Config.debug )
   return;

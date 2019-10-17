@@ -3881,6 +3881,7 @@ function _entityMost( o )
           {
             result.value = value;
             result.index = index;
+            result.key = s;
           }
         }
         else
