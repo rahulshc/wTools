@@ -4062,9 +4062,9 @@ function longExtendScreening( screenArray, dstArray )
 //
 
 /**
- * The routine longSort() provides sorting of destination Long {-dstLong-}.
+ * The routine longSort() sorts destination Long {-dstLong-}.
  *
- * @param { Long|Null } dstLong - The destination Long. If {-dstLong-} is null, then routine makes copy of {-srcLong-}.
+ * @param { Long|Null } dstLong - The destination Long. If {-dstLong-} is null, then routine makes copy from {-srcLong-}.
  * @param { Long } srcArray - Source long. Uses if {-dstLong-} is null.
  * @param { Function } onEvaluate - Callback - evaluator or comparator for sorting elements.
  *
