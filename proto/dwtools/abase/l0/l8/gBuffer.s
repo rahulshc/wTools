@@ -1692,7 +1692,10 @@ function bufferJoin()
 {
 
   if( arguments.length < 2 )
-  return arguments[ 0 ] || null;
+  {
+    _.assert( _.bufferAnyIs( arguments[ 0 ] ) || !arguments[ 0 ] );
+    return arguments[ 0 ] || null;
+  }
 
   let srcs = [];
   let size = 0;

@@ -659,17 +659,20 @@ function bufferMakeUndefined( ins, src )
    return result;
  }
 
-/* qqq : routine bufferBut requires good test coverage and documentation */
-/* qqq : implement cover and document routine bufferButInplace */
-
-/* qqq : implement
-   Dmytro : implemented for typed buffers
-  qqq : no
-      src can be any long or any buffer
-      ins can be any long or any buffer
+/*
+qqq : routine bufferBut requires good test coverage and documentation
+Dmytro : covered
+*/
+/*
+qqq : implement cover and document routine bufferButInplace
+Dmytro : covered
 */
 
-// Dmytro : not a my template
+/* qqq : implement
+      src can be any long or any buffer
+      ins can be any long or any buffer
+   Dmytro : all requiremets is implemented
+*/
 
 // function bufferBut( dstArray, range, srcArray )
 // {
@@ -4666,6 +4669,7 @@ let Fields =
 let Routines =
 {
 
+  /* Dmytro : all routines now in gBuffer.s. This is duplicates so it should be deleted.
   // buffer
 
   buffersTypedAreEquivalent,
@@ -4711,8 +4715,9 @@ let Routines =
   bufferBytesFromNode,
   bufferNodeFrom,
 
-  buffersSerialize, /* deprecated */
-  buffersDeserialize, /* deprecated */
+  buffersSerialize, // deprecated
+  buffersDeserialize, // deprecated
+  */
 
   // long repeater
 
@@ -4762,7 +4767,7 @@ let Routines =
   longSupplement, /* experimental */
   longExtendScreening, /* experimental */
 
-  longSort, /* qqq : implement good coverage, document routine longSort */
+  longSort, /* qqq : implement good coverage, document routine longSort | Dmytro : covered and documented */
 
   // // array etc
   //
