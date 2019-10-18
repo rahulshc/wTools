@@ -1258,7 +1258,6 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   make()
   {
-    debugger;
     _.assert( arguments.length === 0 );
     return new ArrayContainerAdapter( this.original.slice() );
   }
@@ -1453,7 +1452,6 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
     if( this._same( dst ) )
     {
-      debugger; // xxx
       for( let k = container.length - 1 ; k >= 0 ; k-- )
       {
         let e = container[ k ];
