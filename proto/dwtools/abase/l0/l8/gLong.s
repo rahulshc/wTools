@@ -4061,6 +4061,55 @@ function longExtendScreening( screenArray, dstArray )
 
 //
 
+/**
+ * The routine longSort() provides sorting of destination Long {-dstLong-}.
+ *
+ * @param { Long|Null } dstLong - The destination Long. If {-dstLong-} is null, then routine makes copy of {-srcLong-}.
+ * @param { Long } srcArray - Source long. Uses if {-dstLong-} is null.
+ * @param { Function } onEvaluate - Callback - evaluator or comparator for sorting elements.
+ *
+ * @example
+ * let src = [ 1, 30, -2, 5, -43 ];
+ * _.longSort( null, src );
+ * // returns [ -43, -2, 1, 30, 5 ]
+ *
+ * @example
+ * let dst = [ 1, 30, -2, 5, -43 ];
+ * let src = [ 0 ];
+ * let got = _.longSort( dst, src );
+ * console.log( got );
+ * // log [ -43, -2, 1, 30, 5 ]
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = [ 1, 50, -2, 3, -43 ];
+ * let onEval = ( e ) => e;
+ * let got = _.longSort( dst, onEval );
+ * console.log( got );
+ * // log [ -43, -2, 1, 3, 50 ]
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = [ 1, 50, -2, 3, -43 ];
+ * let onEval = ( a, b ) => a < b;
+ * let got = _.longSort( dst, onEval );
+ * console.log( got );
+ * // log [ 50, 3, 1, -2, -43 ]
+ * console.log( got === dst );
+ * // log true
+ *
+ * @returns { Long } Returns sorted {-dstLong-}.
+ * @function longSort
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-onEvaluate-} is not a routine or not undefined.
+ * @throws { Error } If {-dstLong-} is not null or not a Long.
+ * @throws { Error } If arguments.length === 3 and {-srcLong-} is not a Long.
+ * @throws { Error } If onEvaluate.length is less then one or more then two.
+ * @memberof wTools
+ */
+
 function longSort( dstLong, srcLong, onEvaluate )
 {
 
