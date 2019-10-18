@@ -6310,34 +6310,184 @@ function arrayFromCoercing( test )
 
 function arrayRandom( test )
 {
+  test.case = 'length - number';
+  var got = _.arrayRandom( 5 );
+  test.identical( got.length, 5 );
+  test.is( got[ 0 ] >= 0 && got[ 0 ] <= 1 );
+  test.is( got[ 1 ] >= 0 && got[ 1 ] <= 1 );
 
-  test.case = 'an empty object';
-  var got = _.arrayRandom( {  } );
+  test.case = 'length - range';
+  var got = _.arrayRandom( [ 2, 5 ] );
+  test.is( got.length >= 2 && got.length <= 5 );
+  test.is( got[ 0 ] >= 0 && got[ 0 ] <= 1 );
+  test.is( got[ 1 ] >= 0 && got[ 1 ] <= 1 );
+
+  test.case = 'dst, range, length === dst.length';
+  var dst = [ 2, 2, 2 ];
+  var got = _.arrayRandom( dst, [ 0, 1 ], 3 );
+  test.is( got === dst );
+  test.is( got[ 0 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 1 );
+  test.is( got[ 1 ] !== 2 && got[ 1 ] >= 0 && got[ 1 ] <= 1 );
+  test.is( got[ 2 ] !== 2 && got[ 2 ] >= 0 && got[ 2 ] <= 1 );
+
+  test.case = 'dst, range - number, length === dst.length';
+  var dst = [ 2, 2, 2 ];
+  var got = _.arrayRandom( dst, 5, 3 );
+  test.is( got === dst );
+  test.identical( got[ 0 ], 5 );
+  test.identical( got[ 1 ], 5 );
+  test.identical( got[ 2 ], 5 );
+
+  test.case = 'dst, range, length === null';
+  var dst = [ 2, 2, 2 ];
+  var got = _.arrayRandom( dst, [ 0, 1 ], null );
+  test.is( got === dst );
+  test.is( got[ 0 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 1 );
+  test.is( got[ 1 ] !== 2 && got[ 1 ] >= 0 && got[ 1 ] <= 1 );
+  test.is( got[ 2 ] !== 2 && got[ 2 ] >= 0 && got[ 2 ] <= 1 );
+
+  test.case = 'dst - unroll, range, length === null';
+  var dst = _.unrollMake( [ 2, 2, 2 ] );
+  var got = _.arrayRandom( dst, [ 0, 1 ], null );
+  test.is( got === dst );
+  test.is( _.unrollIs( got ) );
+  test.is( got[ 0 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 1 );
+  test.is( got[ 1 ] !== 2 && got[ 1 ] >= 0 && got[ 1 ] <= 1 );
+  test.is( got[ 2 ] !== 2 && got[ 2 ] >= 0 && got[ 2 ] <= 1 );
+
+  test.case = 'dst, range, length !== dst.length';
+  var dst = [ 2, 2, 2 ];
+  var got = _.arrayRandom( dst, [ 0, 1 ], 4 );
+  test.identical( dst, [ 2, 2, 2 ] );
+  test.is( got !== dst );
+  test.is( got[ 0 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 1 );
+  test.is( got[ 1 ] !== 2 && got[ 1 ] >= 0 && got[ 1 ] <= 1 );
+  test.is( got[ 2 ] !== 2 && got[ 2 ] >= 0 && got[ 2 ] <= 1 );
+  test.is( got[ 3 ] !== 2 && got[ 3 ] >= 0 && got[ 3 ] <= 1 );
+
+  test.case = 'dst - unroll, range, length !== dst.length';
+  var dst = _.unrollMake( [ 2, 2, 2 ] );
+  var got = _.arrayRandom( dst, [ 0, 1 ], 4 );
+  test.identical( dst, [ 2, 2, 2 ] );
+  test.is( _.unrollIs( dst ) );
+  test.is( _.unrollIs( got ) );
+  test.is( got !== dst );
+  test.is( got[ 0 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 1 );
+  test.is( got[ 1 ] !== 2 && got[ 1 ] >= 0 && got[ 1 ] <= 1 );
+  test.is( got[ 2 ] !== 2 && got[ 2 ] >= 0 && got[ 2 ] <= 1 );
+  test.is( got[ 3 ] !== 2 && got[ 3 ] >= 0 && got[ 3 ] <= 1 );
+
+  /* */
+
+  test.case = 'an empty object is provides';
+  var got = _.arrayRandom( {} );
   test.identical( got.length, 1 );
   test.is( got[ 0 ] >= 0 && got[ 0 ]<= 1 );
 
-  test.case = 'a number';
-  var got = _.arrayRandom( 5 );
-  var expected = got;
-  test.identical( got.length, 5 );
+  test.case = 'only length - number';
+  var got = _.arrayRandom( { length : 3 } );
+  test.identical( got.length, 3 );
+  test.is( got[ 0 ] >= 0 && got[ 0 ] <= 1 );
+  test.is( got[ 1 ] >= 0 && got[ 1 ] <= 1 );
+  test.is( got[ 2 ] >= 0 && got[ 2 ] <= 1 );
 
-  test.case = 'onEach';
+  test.case = 'only length - range';
+  var got = _.arrayRandom( { length : [ 2, 5 ] } );
+  test.is( got.length >= 2 && got.length <= 5 );
+  test.is( got[ 0 ] >= 0 && got[ 0 ] <= 1 );
+  test.is( got[ 1 ] >= 0 && got[ 1 ] <= 1 );
+
+  test.case = 'without dst, length, range, onEach';
   var got = _.arrayRandom
   ({
     length : 3,
     range : [ 1, 9 ],
     onEach : ( range ) => _.intRandom( range ),
   });
-  var expected = got;
   test.identical( got.length, 3 );
-  test.is( _.intIs( got[ 0 ] ) );
-  test.is( _.intIs( got[ 1 ] ) );
-  test.is( _.intIs( got[ 2 ] ) );
-  test.is( _.rangeIn( [ 1, 9 ], got[ 0 ] ) );
-  test.is( _.rangeIn( [ 1, 9 ], got[ 1 ] ) );
-  test.is( _.rangeIn( [ 1, 9 ], got[ 2 ] ) );
+  test.is( _.intIs( got[ 0 ] ) && got[ 0 ] >= 1 && got[ 0 ] <= 9 );
+  test.is( _.intIs( got[ 1 ] ) && got[ 1 ] >= 1 && got[ 1 ] <= 9 );
+  test.is( _.intIs( got[ 2 ] ) && got[ 2 ] >= 1 && got[ 2 ] <= 9 );
 
-  test.case = 'without length';
+  test.case = 'without dst, length, range - number, onEach';
+  var got = _.arrayRandom
+  ({
+    length : 3,
+    range : 5,
+    onEach : ( range ) => _.intRandom( range ),
+  });
+  test.identical( got.length, 3 );
+  test.identical( got[ 0 ], 5 );
+  test.identical( got[ 1 ], 5 );
+  test.identical( got[ 2 ], 5 );
+
+  test.case = 'dst, range, onEach, length > dst.length';
+  var dst = [ 0, 0 ];
+  var got = _.arrayRandom
+  ({
+    dst : dst,
+    length : 4,
+    range : [ 1, 9 ],
+    onEach : ( range ) => _.intRandom( range ),
+  });
+  test.is( got !== dst );
+  test.identical( got.length, 4 );
+  test.is( _.intIs( got[ 0 ] ) && got[ 0 ] >= 1 && got[ 0 ] <= 9 );
+  test.is( _.intIs( got[ 1 ] ) && got[ 1 ] >= 1 && got[ 1 ] <= 9 );
+  test.is( _.intIs( got[ 2 ] ) && got[ 2 ] >= 1 && got[ 2 ] <= 9 );
+  test.is( _.intIs( got[ 3 ] ) && got[ 3 ] >= 1 && got[ 3 ] <= 9 );
+
+  test.case = 'dst - unroll, range, onEach, length < dst.length';
+  var dst = _.unrollMake( [ 0, 0 ] );
+  var got = _.arrayRandom
+  ({
+    dst : dst,
+    length : 4,
+    range : [ 1, 9 ],
+    onEach : ( range ) => _.intRandom( range ),
+  });
+  test.is( got !== dst );
+  test.is( _.unrollIs( got ) );
+  test.identical( got.length, 4 );
+  test.is( _.intIs( got[ 0 ] ) && got[ 0 ] >= 1 && got[ 0 ] <= 9 );
+  test.is( _.intIs( got[ 1 ] ) && got[ 1 ] >= 1 && got[ 1 ] <= 9 );
+  test.is( _.intIs( got[ 2 ] ) && got[ 2 ] >= 1 && got[ 2 ] <= 9 );
+  test.is( _.intIs( got[ 3 ] ) && got[ 3 ] >= 1 && got[ 3 ] <= 9 );
+
+  test.case = 'dst, range, onEach, length < dst.length';
+  var dst = [ 0, 0, 0, 0 ];
+  var got = _.arrayRandom
+  ({
+    dst : dst,
+    length : 2,
+    range : [ 1, 9 ],
+    onEach : ( range ) => _.intRandom( range ),
+  });
+  test.is( got === dst );
+  test.identical( got.length, 4 );
+  test.is( _.intIs( got[ 0 ] ) && got[ 0 ] >= 1 && got[ 0 ] <= 9 );
+  test.is( _.intIs( got[ 1 ] ) && got[ 1 ] >= 1 && got[ 1 ] <= 9 );
+  test.identical( got[ 2 ], 0 );
+  test.identical( got[ 3 ], 0 );
+
+  test.case = 'dst - unroll, range, onEach, length < dst.length';
+  var dst = _.unrollMake( [ 0, 0, 0, 0 ] );
+  var got = _.arrayRandom
+  ({
+    dst : dst,
+    length : 2,
+    range : [ 1, 9 ],
+    onEach : ( range ) => _.intRandom( range ),
+  });
+  test.is( got === dst );
+  test.is( _.unrollIs( got ) );
+  test.identical( got.length, 4 );
+  test.is( _.intIs( got[ 0 ] ) && got[ 0 ] >= 1 && got[ 0 ] <= 9 );
+  test.is( _.intIs( got[ 1 ] ) && got[ 1 ] >= 1 && got[ 1 ] <= 9 );
+  test.identical( got[ 2 ], 0 );
+  test.identical( got[ 3 ], 0 );
+
+  test.case = 'dst, range, onEach, without length';
   var dst = [ 0, 0, 0 ];
   var got = _.arrayRandom
   ({
@@ -6347,39 +6497,42 @@ function arrayRandom( test )
   });
   test.is( got === dst );
   test.identical( got.length, 3 );
-  test.is( _.intIs( got[ 0 ] ) );
-  test.is( _.intIs( got[ 1 ] ) );
-  test.is( _.intIs( got[ 2 ] ) );
-  test.is( _.rangeIn( [ 1, 9 ], got[ 0 ] ) );
-  test.is( _.rangeIn( [ 1, 9 ], got[ 1 ] ) );
-  test.is( _.rangeIn( [ 1, 9 ], got[ 2 ] ) );
+  test.is( _.intIs( got[ 0 ] ) && got[ 0 ] >= 1 && got[ 0 ] <= 9 );
+  test.is( _.intIs( got[ 1 ] ) && got[ 1 ] >= 1 && got[ 1 ] <= 9 );
+  test.is( _.intIs( got[ 2 ] ) && got[ 2 ] >= 1 && got[ 2 ] <= 9 );
 
-  /* */
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayRandom();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayRandom() );
 
-  test.case = 'wrong argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayRandom( 'wrong argument' );
-  });
+  test.case = 'two arguments';
+  test.shouldThrowErrorSync( () => _.arrayRandom( 3, 3 ) );
+
+  test.case = 'wrong type of length';
+  test.shouldThrowErrorSync( () => _.arrayRandom( 'wrong' ) );
 
   test.case = 'negative length';
-  test.shouldThrowErrorSync( function()
-  {
-    var got = _.arrayRandom( -1 );
-    var expected = [];
-    test.identical( got, expected );
-  });
+  test.shouldThrowErrorSync( () => _.arrayRandom( -1 ) );
 
-};
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.arrayRandom( 'wrong', [ 1, 2 ], 2 ) );
+  test.shouldThrowErrorSync( () => _.arrayRandom( { dst : 2 } ) );
+
+  test.case = 'wrong type of range';
+  test.shouldThrowErrorSync( () => _.arrayRandom( [], 'wrong', 2 ) );
+  test.shouldThrowErrorSync( () => _.arrayRandom( { length : 2, range : 'wrong' } ) );
+
+  test.case = 'wrong type of length';
+  test.shouldThrowErrorSync( () => _.arrayRandom( [], 2, 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.arrayRandom( { length : 'wrong' } ) );
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.arrayRandom( { onEach : 'wrong' } ) );
+}
 
 //
 
