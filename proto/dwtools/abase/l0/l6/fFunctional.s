@@ -3821,7 +3821,6 @@ function _entityMost( o )
 {
   _.assert( arguments.length === 1, 'Expects exactly one argument' );
   _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
-  _.assert( _.longIs( o.src ) || _.mapLike( o.src ) );
   _.routineOptions( _entityMost, o );
 
   if( !o.onEvaluate )
@@ -3916,6 +3915,8 @@ function _entityMost( o )
     }
 
   }
+  else
+  _.assert( 0 );
 
   return result;
 

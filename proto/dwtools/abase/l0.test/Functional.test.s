@@ -18868,6 +18868,17 @@ function _entityMost( test )
   test.is( got !== o );
   test.identical( got, exp );
 
+  test.case = 'src - array, onEvaluate.length - 2';
+  var o =
+  {
+    src : { a : 0, b : 1, c : 3, d : 4, e : 5 },
+    onEvaluate : ( v, prev ) => v > prev + 1
+  }
+  var exp = { index : 4, key : 'e', value : 5, element : 5 };
+  var got = _._entityMost( o );
+  test.is( got !== o );
+  test.identical( got, exp );
+
   test.case = 'src - array, onEach, onEvaluate.length - 2';
   var o =
   {
@@ -18884,6 +18895,33 @@ function _entityMost( test )
 
   if( !Config.debug )
   return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _._entityMost() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _._entityMost( { src : [ 1, 2 ], returnMax : 0 }, 'extra' ) );
+
+  test.case = 'wrong type of o';
+  test.shouldThrowErrorSync( () => _._entityMost( [ { src : [ 1, 2 ], returnMax : 1 } ] ) );
+
+  test.case = 'unnecessary fields in o';
+  test.shouldThrowErrorSync( () => _._entityMost( [ { srcs : [ 1, 2 ], returnMax : 1 } ] ) );
+
+  test.case = 'wrong type of o.src';
+  test.shouldThrowErrorSync( () => _._entityMost( [ { src : 'wrong', returnMax : 1 } ] ) );
+
+  test.case = 'wrong length of onEach';
+  test.shouldThrowErrorSync( () => _._entityMost( [ { src : [ 1, 2 ], returnMax : 1, onEach : () => 2 } ] ) );
+  test.shouldThrowErrorSync( () => _._entityMost( [ { src : [ 1, 2 ], returnMax : 1, onEach : ( a, b, c, d ) => a + b } ] ) );
+
+  test.case = 'wrong length of onEvaluate';
+  test.shouldThrowErrorSync( () => _._entityMost( [ { src : [ 1, 2 ], onEvaluate : () => 2 } ] ) );
+  test.shouldThrowErrorSync( () => _._entityMost( [ { src : [ 1, 2 ],  onEvaluate : ( a, b, c ) => a + b } ] ) );
+
+  test.case = 'without onEvaluate, without returnMax';
+  test.shouldThrowErrorSync( () => _._entityMost( [ { src : [ 1, 2 ] } ] ) );
+
 };
 
 //
