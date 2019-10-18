@@ -3815,6 +3815,7 @@ function entityFilter( src, onEach )
 qqq : refactor routine _entityMost
 - make o-fication
 - make it accept evaluator or comparator( not in the same call )
+Dmytro : routine accepts options map, and can use evaluator or comparator
 */
 
 function _entityMost( o )
@@ -4180,7 +4181,7 @@ let Routines =
 
   //
 
-  _entityMost, // qqq : refactor routine _entityMost
+  _entityMost, // qqq : refactor routine _entityMost | Dmytro : refactored
   entityMin,
   min : entityMin,
   entityMax,
