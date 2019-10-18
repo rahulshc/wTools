@@ -8497,7 +8497,7 @@ let Routines =
 
   // array flatten
 
-  /* qqq : extend routine arrayFlatten and its coverage to support Sets as input */
+  /* qqq : extend routine arrayFlatten and its coverage to support Sets as input | Dmytro : all routines accepts Sets, coverage extended */
 
   arrayFlatten,
   arrayFlattenOnce,

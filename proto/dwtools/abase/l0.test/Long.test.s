@@ -3337,19 +3337,14 @@ function longRelength( test )
   var list =
   [
     I8x,
-    U16x,
-    F32x,
-    F64x,
-
-    // I8x,
     // U8x,
     // U8ClampedX,
     // I16x,
-    // U16x,
+    U16x,
     // I32x,
     // U32x,
-    // F32x,
-    // F64x,
+    F32x,
+    F64x,
   ];
 
   for( var i = 0; i < list.length; i++ )
@@ -5181,6 +5176,108 @@ function longExtendScreening( test )
   });
 
 };
+
+//
+
+function longSort( test )
+{
+  /* constructors */
+
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
+  var bufferTyped = function( buf )
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+  };
+
+  /* lists */
+
+  var listTyped =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    I16x,
+    // U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
+  var listDst =
+  [
+    array,
+    unroll,
+    argumentsArray,
+  ];
+
+  for( let i in listTyped )
+  listDst.push( bufferTyped( listTyped[ i ] ) );
+
+  /* dstLong - null */
+
+  for( let d in listDst )
+  {
+    test.open( 'dstLong - null, src - ' + listDst[ d ].name );
+    dstLongNull( listDst[ d ] );
+    test.close( 'dstLong - null, src - ' + listDst[ d ].name );
+  }
+
+  /* test routines */
+
+  function dstLongNull( makeSrc )
+  {
+    test.case = 'srcLong - empty array';
+    var dst = null;
+    var src = makeSrc( [] );
+    var got = _.longSort( dst, src );
+    test.identical( got, [] );
+
+    test.case = 'srcLong - not empty array';
+    var dst = null;
+    var src = makeSrc( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
+    var got = _.longSort( dst, src );
+    test.identical( got, [ -12, -2, 0, 1, 10, 14, 3, 4, 5 ] );
+
+    test.case = 'srcLong - not empty array, onEvaluate - comparator';
+    var dst = null;
+    var src = makeSrc( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
+    var got = _.longSort( dst, src, ( a, b ) => a > b );
+    test.identical( got, [ -12, -2, 0, 1, 3, 4, 5, 10, 14 ] );
+
+    test.case = 'srcLong - not empty array, onEvaluate - evaluator';
+    var dst = null;
+    var src = makeSrc( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
+    var got = _.longSort( dst, src, ( a ) => a );
+    test.identical( got, [ -12, -2, 0, 1, 3, 4, 5, 10, 14 ] );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longSort() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longSort( [ 1, 2 ], [ null, 1 ], ( e ) => e, 'extra' ) );
+
+  test.case = 'wrong type of onEvaluate';
+  test.shouldThrowErrorSync( () => _.longSort( [ 1, 2 ], [ null, 1 ], 'wrong' ) );
+
+  test.case = 'wrong type of dstLong';
+  test.shouldThrowErrorSync( () => _.longSort( 'wrong', [ 1, 2 ] ) );
+
+  test.case = 'wrong type of srcLong';
+  test.shouldThrowErrorSync( () => _.longSort( [ 1, 2 ], 'wrong' ) );
+
+  test.case = 'wrong length of onEvaluate';
+  test.shouldThrowErrorSync( () => _.longSort( [ 1, 2 ], [ null, 1 ], () => 1 ) );
+  test.shouldThrowErrorSync( () => _.longSort( [ 1, 2 ], [ null, 1 ], ( a, b, c ) => a + b > c ) );
+}
 
 //
 
@@ -30819,6 +30916,8 @@ var Self =
 
     longSupplement,
     longExtendScreening,
+
+    longSort,
 
     // type test
 

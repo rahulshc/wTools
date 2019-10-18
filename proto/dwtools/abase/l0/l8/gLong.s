@@ -4080,7 +4080,6 @@ function longSort( dstLong, srcLong, onEvaluate )
 
   if( onEvaluate === undefined )
   {
-    debugger;
     dstLong.sort();
   }
   else if( onEvaluate.length === 2 )
