@@ -3088,24 +3088,86 @@ longUnmask.defaults =
 // --
 
 /**
- * The arrayRandom() routine returns an array which contains random numbers.
+ * The routine arrayRandom() returns an array which contains random numbers.
  *
- * @param { Object } o - The options for getting random numbers.
- * @param { Number } o.length - The length of an array.
- * @param { Array } [ o.range = [ 0, 1 ] ] - The range of numbers.
- * @param { Boolean } [ o.int = false ] - Floating point numbers or not.
+ * Routine accepts one or three arguments.
+ * Optionally, routine can accepts one of two sets of parameters. First of them
+ * is one or three arguments, the other is options map.
+ *
+ * Set 1:
+ * @param { ArrayLike } dst - The destination array.
+ * @param { Range|Number } range - The range for generating random numbers.
+ * If {-range-} is number, routine makes range [ range, range ].
+ * @param { Number|Range } length - The quantity of generated random numbers.
+ * If dst.length < {-length-}, then routine makes new container of {-dst-} type.
+ * If {-length-} is Range, then routine choose random lenght from provided range.
+ *
+ * Set 2:
+ * @param { Object } o - The options map. Options map includes next fields:
+ * @param { Function } o.onEach - The callback for generating random numbers.
+ * Accepts three parameters - range, index of element, source container.
+ * @param { ArrayLike } o.dst - The destination array.
+ * @param { Range|Number } o.range -  The range for generating random numbers.
+ * If {-range-} is number, routine makes range [ range, range ].
+ * @param { Number|Range } o.length - The length of an array.
+ * If dst.length < length, then routine makes new container of {-dst-} type.
+ * If {-length-} is Range, then routine choose random lenght from provided range.
+ *
+ * @example
+ * let got = _.arrayRandom( 3 );
+ * // returns array with three elements in range [ 0, 1 ]
+ * console.log( got );
+ * // log [ 0.2054268445, 0.8651654684, 0.5564687461 ]
+ *
+ * @example
+ * let dst = [ 0, 0, 0 ];
+ * let got _.arrayRandom( dst, [ 1, 5 ], 3 );
+ * // returns dst array with three elements in range [ 1, 5 ]
+ * console.log( got );
+ * // log [ 4.9883513548, 1.2313468546, 3.8973544247 ]
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = [ 0, 0, 0 ];
+ * let got _.arrayRandom( dst, [ 1, 5 ], 4 );
+ * // returns dst array with three elements in range [ 1, 5 ]
+ * console.log( got );
+ * // log [ 4.9883513548, 1.2313468546, 3.8973544247, 2.6782254287 ]
+ * console.log( got === dst );
+ * // log false
  *
  * @example
  * _.arrayRandom
  * ({
  *   length : 5,
- *   range : [ 1, 9 ],
- *   int : true,
+ *   range : [ 1, 10 ],
+ *   onEach : ( range ) => _.intRandom( range ),
  * });
  * // returns [ 6, 2, 4, 7, 8 ]
  *
- * @returns { Array } - Returns an array of random numbers.
+ * @example
+ * let dst = [ 0, 0, 0, 0, 0 ]
+ * var got = _.arrayRandom
+ * ({
+ *   length : 3,
+ *   range : [ 1, 10 ],
+ *   onEach : ( range ) => _.intRandom( range ),
+ * });
+ * console.log( got );
+ * // log [ 1, 10, 4, 0, 0 ]
+ * console.log( got === dst );
+ * // log true
+ *
+ * @returns { ArrayLike } - Returns an array of random numbers.
  * @function arrayRandom
+ * @throws { Error } If arguments.length === 0, arguments.length === 2, arguments.lenght > 3.
+ * @throws { Error } If arguments.length === 1, and passed argument is not options map {-o-} or {-length-}.
+ * @throws { Error } If options map {-o-} has unnacessary fields.
+ * @throws { Error } If {-dst-} or {-o.dst-} is not ArrayLike.
+ * @throws { Error } If {-range-} or {-o.range-} is not Range or not Number.
+ * @throws { Error } If {-length-} or {-o.length-} is not Number or not Range.
+ * @throws { Error } If {-o.onEach-} is not routine.
  * @memberof wTools
  */
 
@@ -3118,8 +3180,10 @@ function arrayRandom( o )
   o = { length : o }
   _.assert( arguments.length === 1 || arguments.length === 3 );
   _.routineOptions( arrayRandom, o );
+
   if( o.onEach === null )
   o.onEach = ( range ) => _.numberRandom( range );
+
   if( o.range === null )
   o.range = [ 0, 1 ];
   if( _.numberIs( o.range ) )
@@ -4618,7 +4682,7 @@ let Routines =
 
   // array maker
 
-  arrayRandom, /* qqq : cover and document please */
+  arrayRandom, /* qqq : cover and document please | Dmytro : extended coverage and documentation. Routine should be 'longRandom' or need to insert assertion */
   arrayFromCoercing,
 
   arrayFromRange,
