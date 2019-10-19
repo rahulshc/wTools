@@ -64,6 +64,10 @@ module:
         path:
           - ../.ex.will.yml
           - ../.im.will.yml
+      module.peer.in:
+        criterion:
+          predefined: 1
+        path: ..
       download:
         criterion:
           predefined: 1
@@ -146,14 +150,14 @@ module:
           raw: compiled
           content: prime
         path: '{path::out.*=}/source/Index.s'
-      exported.dir.export:
+      exported.dir.proto.export:
         criterion:
-          default: 1
+          content: proto
           export: 1
         path: ../proto
-      exported.files.export:
+      exported.files.proto.export:
         criterion:
-          default: 1
+          content: proto
           export: 1
         path:
           - ../proto
@@ -423,26 +427,26 @@ module:
           content: prime
         inherit:
           - predefined.*
-      exported.export:
+      exported.proto.export:
         src:
           filePath:
             '**': ''
           prefixPath: ../proto
         mandatory: 1
         criterion:
-          default: 1
+          content: proto
           export: 1
-      exported.files.export:
+      exported.files.proto.export:
         src:
           filePath:
-            'path::exported.files.export': ''
+            'path::exported.files.proto.export': ''
           basePath: .
-          prefixPath: 'path::exported.dir.export'
+          prefixPath: 'path::exported.dir.proto.export'
           recursive: 0
         recursive: 0
         mandatory: 1
         criterion:
-          default: 1
+          content: proto
           export: 1
     step:
       proto.export:
@@ -870,17 +874,17 @@ module:
           - 'build::release'
           - 'build::npm'
     exported:
-      export:
+      proto.export:
         version: 0.9.0
         recursive: 0
         withIntegrated: 2
         tar: 0
-        exportedReflector: 'reflector::exported.export'
-        exportedFilesReflector: 'reflector::exported.files.export'
-        exportedDirPath: 'path::exported.dir.export'
-        exportedFilesPath: 'path::exported.files.export'
+        exportedReflector: 'reflector::exported.proto.export'
+        exportedFilesReflector: 'reflector::exported.files.proto.export'
+        exportedDirPath: 'path::exported.dir.proto.export'
+        exportedFilesPath: 'path::exported.files.proto.export'
         criterion:
-          default: 1
+          content: proto
           export: 1
     consistency:
       ../.ex.will.yml: *ref_0
@@ -918,6 +922,10 @@ module:
         criterion:
           predefined: 1
         path: out/wTools.out.will.yml
+      module.peer.in:
+        criterion:
+          predefined: 1
+        path: out
       module.common:
         criterion:
           predefined: 1
@@ -1004,105 +1012,6 @@ module:
           raw: compiled
           content: prime
         path: '{path::out.*=}/source/Index.s'
-      exported.dir.export:
-        criterion:
-          default: 1
-          export: 1
-        path: ./proto
-      exported.files.export:
-        criterion:
-          default: 1
-          export: 1
-        path:
-          - proto
-          - proto/dwtools
-          - proto/dwtools/Tools.s
-          - proto/dwtools/abase
-          - proto/dwtools/abase/Layer0.s
-          - proto/dwtools/abase/Layer1.s
-          - proto/dwtools/abase/Layer2.s
-          - proto/dwtools/abase/l0
-          - proto/dwtools/abase/l0/l1
-          - proto/dwtools/abase/l0/l1/Predefined.s
-          - proto/dwtools/abase/l0/l1/Setup.s
-          - proto/dwtools/abase/l0/l3
-          - proto/dwtools/abase/l0/l3/iBool.s
-          - proto/dwtools/abase/l0/l3/iBuffer.s
-          - proto/dwtools/abase/l0/l3/iEntity.s
-          - proto/dwtools/abase/l0/l3/iErr.s
-          - proto/dwtools/abase/l0/l3/iFunctional.s
-          - proto/dwtools/abase/l0/l3/iLong.s
-          - proto/dwtools/abase/l0/l3/iMap.s
-          - proto/dwtools/abase/l0/l3/iNumber.s
-          - proto/dwtools/abase/l0/l3/iRange.s
-          - proto/dwtools/abase/l0/l3/iRegexp.s
-          - proto/dwtools/abase/l0/l3/iRoutine.s
-          - proto/dwtools/abase/l0/l3/iStr.s
-          - proto/dwtools/abase/l0/l3/iTime.s
-          - proto/dwtools/abase/l0/l3/iType.s
-          - proto/dwtools/abase/l0/l3/iUnroll.s
-          - proto/dwtools/abase/l0/l6
-          - proto/dwtools/abase/l0/l6/fBool.s
-          - proto/dwtools/abase/l0/l6/fBuffer.s
-          - proto/dwtools/abase/l0/l6/fContainerAdapter.s
-          - proto/dwtools/abase/l0/l6/fEntity.s
-          - proto/dwtools/abase/l0/l6/fErr.s
-          - proto/dwtools/abase/l0/l6/fFunctional.s
-          - proto/dwtools/abase/l0/l6/fLong.s
-          - proto/dwtools/abase/l0/l6/fMap.s
-          - proto/dwtools/abase/l0/l6/fNumber.s
-          - proto/dwtools/abase/l0/l6/fRange.s
-          - proto/dwtools/abase/l0/l6/fRegexp.s
-          - proto/dwtools/abase/l0/l6/fRoutine.s
-          - proto/dwtools/abase/l0/l6/fStr.s
-          - proto/dwtools/abase/l0/l6/fTime.s
-          - proto/dwtools/abase/l0/l6/fUnroll.s
-          - proto/dwtools/abase/l0/l7
-          - proto/dwtools/abase/l0/l7/ArrayDescriptor.s
-          - proto/dwtools/abase/l0/l7/Compose.s
-          - proto/dwtools/abase/l0/l7/Field.s
-          - proto/dwtools/abase/l0/l8
-          - proto/dwtools/abase/l0/l8/gBool.s
-          - proto/dwtools/abase/l0/l8/gBuffer.s
-          - proto/dwtools/abase/l0/l8/gEntity.s
-          - proto/dwtools/abase/l0/l8/gErr.s
-          - proto/dwtools/abase/l0/l8/gFunctional.s
-          - proto/dwtools/abase/l0/l8/gLong.s
-          - proto/dwtools/abase/l0/l8/gMap.s
-          - proto/dwtools/abase/l0/l8/gNumber.s
-          - proto/dwtools/abase/l0/l8/gPair.s
-          - proto/dwtools/abase/l0/l8/gRange.s
-          - proto/dwtools/abase/l0/l8/gRegexp.s
-          - proto/dwtools/abase/l0/l8/gRoutine.s
-          - proto/dwtools/abase/l0/l8/gStr.s
-          - proto/dwtools/abase/l0/l8/gTime.s
-          - proto/dwtools/abase/l0/l9
-          - proto/dwtools/abase/l0/l9/Setup.s
-          - proto/dwtools/abase/l0.test
-          - proto/dwtools/abase/l0.test/Buffer.test.s
-          - proto/dwtools/abase/l0.test/ContainerAdapter.test.s
-          - proto/dwtools/abase/l0.test/Diagnostics.test.s
-          - proto/dwtools/abase/l0.test/Entity.test.s
-          - proto/dwtools/abase/l0.test/Err.test.s
-          - proto/dwtools/abase/l0.test/Functional.test.s
-          - proto/dwtools/abase/l0.test/Long.test.s
-          - proto/dwtools/abase/l0.test/Map.test.s
-          - proto/dwtools/abase/l0.test/Pair.test.s
-          - proto/dwtools/abase/l0.test/Regexp.test.s
-          - proto/dwtools/abase/l0.test/Routine.test.s
-          - proto/dwtools/abase/l0.test/Str.test.s
-          - proto/dwtools/abase/l0.test/Time.test.s
-          - proto/dwtools/abase/l0.test/Typing.test.s
-          - proto/dwtools/abase/l0.test/Unroll.test.s
-          - proto/dwtools/abase/l1
-          - proto/dwtools/abase/l1/IncludeTools.s
-          - proto/dwtools/abase/l1/ModulesRegistry.s
-          - proto/dwtools/abase/l1/NameTools.s
-          - proto/dwtools/abase/l1/StrBasic.s
-          - proto/dwtools/abase/l1.test
-          - proto/dwtools/abase/l1.test/StrBasic.test.s
-          - proto/dwtools/amid
-          - proto/dwtools/atop
     submodule:
       wFiles:
         path: 'npm:///wFiles'
@@ -1254,27 +1163,6 @@ module:
           content: prime
         inherit:
           - predefined.*
-      exported.export:
-        src:
-          filePath:
-            '**': ''
-          prefixPath: proto
-        mandatory: 1
-        criterion:
-          default: 1
-          export: 1
-      exported.files.export:
-        src:
-          filePath:
-            'path::exported.files.export': ''
-          basePath: .
-          prefixPath: 'path::exported.dir.export'
-          recursive: 0
-        recursive: 0
-        mandatory: 1
-        criterion:
-          default: 1
-          export: 1
     step:
       proto.export:
         opts:
@@ -1700,19 +1588,6 @@ module:
           - 'build::raw.release'
           - 'build::release'
           - 'build::npm'
-    exported:
-      export:
-        version: 0.9.0
-        recursive: 0
-        withIntegrated: 2
-        tar: 0
-        exportedReflector: 'reflector::exported.export'
-        exportedFilesReflector: 'reflector::exported.files.export'
-        exportedDirPath: 'path::exported.dir.export'
-        exportedFilesPath: 'path::exported.files.export'
-        criterion:
-          default: 1
-          export: 1
     consistency:
       ../.ex.will.yml:
         hash: e8115abbb02ec04af6fdb366955c5521
