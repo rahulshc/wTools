@@ -2087,7 +2087,7 @@ function _argumentsOnly( dst, src1, src2, onEvaluate1, onEvaluate2 )
   _.assert( _.routineIs( onEvaluate2 ) || onEvaluate2 === undefined );
 
   if( dst === null )
-  dst = _.containerAdapter.make( new src1.original.constructor() );
+  dst = _.containerAdapter.make( new src1.constructor() );
 
   if( _.routineIs( src2 ) || src2 === undefined )
   {
@@ -2197,16 +2197,30 @@ function arraySetBut_( dst, src1, src2, onEvaluate1, onEvaluate2 )
 {
   if( arguments.length === 1 )
   {
-    _.assert( _.setIs( dst ) || _.longIs( dst ) || dst === null );
-    return dst;
+    if( _.longIs( dst ) )
+    return _.longSlice( dst );
+    else if( _.setIs( dst ) )
+    return new Set( dst );
+    else if( dst === null )
+    return [];
+    else
+    _.assert( 0 );
+  }
+  if( dst === null && _.routineIs( src2 ) || dst === null && src2 === undefined )
+  {
+    if( _.longIs( src1 ) )
+    return _.longSlice( src1 )
+    else if( _.setIs( src1 ) )
+    return new Set( src1 )
+    _.assert( 0 );
   }
 
-  if( _.routineIs( src2 ) || src2 === undefined )
-  [ src1, dst, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
-  else
   [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
 
-  dst.eachRight( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) || src2.has( e, onEvaluate1, onEvaluate2 ) ? dst.remove( e ) : null );
+  if( dst.original === src1.original )
+  src1.eachRight( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? src1.remove( e ) : null );
+  else
+  src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : dst.push( e ) );
 
   return dst.original;
 }
@@ -2594,6 +2608,7 @@ let Routines =
   arraySetDiff, /* qqq : ask how to improve, please */
   arraySetDiff_, /* Dmytro : routine accepts arrays and Sets, two or three parameters, covered */
   arraySetBut, /* qqq : ask how to improve, please */
+  arraySetBut_, /* */
   arraySetIntersection, /* qqq : ask how to improve, please */
   arraySetUnion, /* qqq : ask how to improve, please */
 
