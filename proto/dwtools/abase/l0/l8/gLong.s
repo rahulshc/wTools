@@ -2287,6 +2287,40 @@ function arraySetIntersection( dst )
 
 //
 
+function arraySetIntersection_( dst, src1, src2, onEvaluate1, onEvaluate2 )
+{
+  if( arguments.length === 1 )
+  {
+    if( _.longIs( dst ) )
+    return _.longSlice( dst );
+    else if( _.setIs( dst ) )
+    return new Set( dst );
+    else if( dst === null )
+    return [];
+    else
+    _.assert( 0 );
+  }
+  if( dst === null && _.routineIs( src2 ) || dst === null && src2 === undefined )
+  {
+    if( _.longIs( src1 ) )
+    return _.longSlice( src1 )
+    else if( _.setIs( src1 ) )
+    return new Set( src1 )
+    _.assert( 0 );
+  }
+
+  [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
+
+  if( dst.original === src1.original )
+  src1.eachRight( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : src1.remove( e ) );
+  else
+  src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? dst.push( e ) : null );
+
+  return dst.original;
+}
+
+//
+
 function arraySetUnion( dst )
 {
   let args = _.longSlice( arguments );
@@ -2606,10 +2640,11 @@ let Routines =
   // array set
 
   arraySetDiff, /* qqq : ask how to improve, please */
-  arraySetDiff_, /* Dmytro : routine accepts arrays and Sets, two or three parameters, covered */
+  arraySetDiff_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
   arraySetBut, /* qqq : ask how to improve, please */
-  arraySetBut_, /* */
+  arraySetBut_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
   arraySetIntersection, /* qqq : ask how to improve, please */
+  arraySetIntersection_,
   arraySetUnion, /* qqq : ask how to improve, please */
 
   arraySetContainAll,
