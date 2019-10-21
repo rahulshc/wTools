@@ -2080,18 +2080,21 @@ function arraySetDiff( src1, src2 )
 function _argumentsOnly( dst, src1, src2, onEvaluate1, onEvaluate2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
-  _.assert( _.longIs( dst ) || _.setIs( dst ) );
+  _.assert( _.longIs( dst ) || _.setIs( dst ) || dst === null );
   _.assert( _.longIs( src1 ) || _.setIs( src1 ) );
   _.assert( _.longIs( src2 ) || _.setIs( src2 ) || _.routineIs( src2 ) || src2 === undefined );
   _.assert( _.routineIs( onEvaluate1 ) || onEvaluate1 === undefined );
   _.assert( _.routineIs( onEvaluate2 ) || onEvaluate2 === undefined );
 
+  if( dst === null )
+  dst = _.containerAdapter.make( new src1.original.constructor() );
+
   if( _.routineIs( src2 ) || src2 === undefined )
   {
     onEvaluate2 = onEvaluate1;
     onEvaluate1 = src2;
-    src2 = _.containerAdapter.from( src1 );
-    src1 = _.containerAdapter.from( dst );
+    src2 = _.containerAdapter.make( src1 );
+    src1 = _.containerAdapter.make( dst );
     dst = _.containerAdapter.make( new src1.original.constructor() );
   }
   else
@@ -2197,17 +2200,10 @@ function arraySetBut_( dst, src1, src2, onEvaluate1, onEvaluate2 )
     _.assert( _.setIs( dst ) || _.longIs( dst ) || dst === null );
     return dst;
   }
-  if( dst === null )
-  {
-    if( _.longIs( src1 ) )
-    dst = _.longSlice( src1 );
-    else if( _.setIs( src1 ) )
-    dst = new Set( src1 );
 
-    src1 = [];
-    _.assert( dst !== null, '{-src1-} should be Long or Set')
-  }
-
+  if( _.routineIs( src2 ) || src2 === undefined )
+  [ src1, dst, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
+  else
   [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
 
   dst.eachRight( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) || src2.has( e, onEvaluate1, onEvaluate2 ) ? dst.remove( e ) : null );

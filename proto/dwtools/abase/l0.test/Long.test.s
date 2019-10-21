@@ -29521,6 +29521,33 @@ function arraySetDiff_( test )
   test.is( got !== src2 );
   test.identical( got, exp );
 
+  test.case = 'one evaluator';
+  var src1 = [ [ 1 ], 1, 2, [ 3 ], 3 ];
+  var src2 = [ [ 3 ], 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( src1, src2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1 ] ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'two evaluators';
+  var src1 = [ 1, 1, 2, [ 3 ], 3 ];
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( src1, src2, ( e ) => e[ 0 ], ( ins ) => ins );
+  var exp = [ 1, 1, 2, [ 3 ], 3, 4, 5, 5 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'equalizer';
+  var src1 = [ 1, 1, 2, [ 3 ], 3 ];
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( src1, src2, ( e, ins ) => e[ 0 ] === ins );
+  var exp = [ 1, 1, 2, [ 3 ], 3, 4, 5, 5 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
   /* */
 
   test.case = 'dst - not empty, src1 and src2 - empty arrays';
@@ -29589,6 +29616,39 @@ function arraySetDiff_( test )
   test.is( got !== src2 );
   test.identical( got, exp );
 
+  test.case = 'one evaluator';
+  var dst = [ 1 ];
+  var src1 = [ [ 1 ], 1, 2, [ 3 ], 3 ];
+  var src2 = [ [ 3 ], 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2, ( e ) => e[ 0 ] );
+  var exp = [ 1, [ 1 ] ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'two evaluators';
+  var dst = [];
+  var src1 = [ 1, 1, 2, [ 3 ], 3 ];
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2, ( e ) => e[ 0 ], ( ins ) => ins );
+  var exp = [ 1, 1, 2, [ 3 ], 3, 4, 5, 5 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'equalizer';
+  var dst = [];
+  var src1 = [ 1, 1, 2, [ 3 ], 3 ];
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2, ( e, ins ) => e[ 0 ] === ins );
+  var exp = [ 1, 1, 2, [ 3 ], 3, 4, 5, 5 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
   /* */
 
   test.case = 'dst - src1, src1 and src2 - empty arrays';
@@ -29651,6 +29711,36 @@ function arraySetDiff_( test )
   test.is( got === src2 );
   test.identical( got, exp );
 
+  test.case = 'one evaluator';
+  var dst = [ [ 1 ], 1, 2, [ 3 ], 3 ];
+  var src1 = dst;
+  var src2 = [ [ 3 ], 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1 ], 1, 2, [ 3 ], 3 ];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'two evaluators';
+  var dst = [ 1, 1, 2, [ 3 ], 3 ];
+  var src1 = dst;
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2, ( e ) => e[ 0 ], ( ins ) => ins );
+  var exp = [ 1, 1, 2, [ 3 ], 3, 4, 5, 5 ];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'equalizer';
+  var dst = [ 1, 1, 2, [ 3 ], 3 ];
+  var src1 = dst;
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2, ( e, ins ) => e[ 0 ] === ins );
+  var exp = [ 1, 1, 2, [ 3 ], 3, 4, 5, 5 ];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
   test.close( 'array' );
 
   /* - */
@@ -29708,6 +29798,33 @@ function arraySetDiff_( test )
   var src2 = new Set( [ 3, 3, 3, 3 ] );
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'one evaluator';
+  var src1 = new Set( [ [ 1 ], 1, 2, [ 3 ], 3 ] );
+  var src2 = new Set( [ [ 3 ], 3, 4, 5, 5 ] );
+  var got = _.arraySetDiff_( src1, src2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1 ] ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'two evaluators';
+  var src1 = new Set( [ 1, 1, 2, [ 3 ], 3 ] );
+  var src2 = new Set( [ 3, 3, 4, 5, 5 ] );
+  var got = _.arraySetDiff_( src1, src2, ( e ) => e[ 0 ], ( ins ) => ins );
+  var exp = [ 1, 2, [ 3 ], 3, 4, 5 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'equalizer';
+  var src1 = new Set( [ 1, 1, 2, [ 3 ], 3 ] );
+  var src2 = new Set( [ 3, 3, 4, 5, 5 ] );
+  var got = _.arraySetDiff_( src1, src2, ( e, ins ) => e[ 0 ] === ins );
+  var exp = [ 1, 2, [ 3 ], 3, 4, 5 ];
   test.is( got !== src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
@@ -29780,6 +29897,39 @@ function arraySetDiff_( test )
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
+  test.case = 'one evaluator';
+  var dst = new Set( [ 1 ] );
+  var src1 = new Set( [ [ 1 ], 1, 2, [ 3 ], 3 ] );
+  var src2 = new Set( [ [ 3 ], 3, 4, 5, 5 ] );
+  var got = _.arraySetDiff_( dst, src1, src2, ( e ) => e[ 0 ] );
+  var exp = [ 1, [ 1 ] ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'two evaluators';
+  var dst = new Set();
+  var src1 = new Set( [ 1, 1, 2, [ 3 ], 3 ] );
+  var src2 = new Set( [ 3, 3, 4, 5, 5 ] );
+  var got = _.arraySetDiff_( dst, src1, src2, ( e ) => e[ 0 ], ( ins ) => ins );
+  var exp = [ 1, 2, [ 3 ], 3, 4, 5 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'equalizer';
+  var dst = new Set();
+  var src1 = new Set( [ 1, 1, 2, [ 3 ], 3 ] );
+  var src2 = new Set( [ 3, 3, 4, 5, 5 ] );
+  var got = _.arraySetDiff_( dst, src1, src2, ( e, ins ) => e[ 0 ] === ins );
+  var exp = [ 1, 2, [ 3 ], 3, 4, 5 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
   /* */
 
   test.case = 'dst - src1, src1 and src2 - empty arrays';
@@ -29840,6 +29990,36 @@ function arraySetDiff_( test )
   var exp = [ 3 ];
   test.is( got !== src1 );
   test.is( got === src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'one evaluator';
+  var dst = new Set( [ [ 1 ], 1, 2, [ 3 ], 3 ] );
+  var src1 = dst;
+  var src2 = [ [ 3 ], 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1 ], 1, 2, [ 3 ], 3 ];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'two evaluators';
+  var dst = new Set( [ 1, 1, 2, [ 3 ], 3 ] );
+  var src1 = dst;
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2, ( e ) => e[ 0 ], ( ins ) => ins );
+  var exp = [ 1, 2, [ 3 ], 3, 4, 5 ];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'equalizer';
+  var dst = new Set( [ 1, 1, 2, [ 3 ], 3 ] );
+  var src1 = dst;
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2, ( e, ins ) => e[ 0 ] === ins );
+  var exp = [ 1, 2, [ 3 ], 3, 4, 5 ];
+  test.is( got === src1 );
+  test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
   test.close( 'Set' );
