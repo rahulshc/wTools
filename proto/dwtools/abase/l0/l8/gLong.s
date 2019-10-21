@@ -2357,6 +2357,35 @@ function arraySetUnion( dst )
 
 //
 
+function arraySetUnion_( dst, src1, src2, onEvaluate1, onEvaluate2 )
+{
+  if( arguments.length === 1 )
+  {
+    if( dst === null )
+    return [];
+    else if( _.longIs( dst ) )
+    return _.longSlice( dst );
+    else if( _.setIs( dst ) )
+    return new Set( dst );
+    else
+    _.assert( 0 );    
+  }
+
+  [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
+
+  if( dst.original === src1.original )
+  src1.appendContainerOnce( src2, onEvaluate1, onEvaluate2 );
+  else
+  {
+    dst.appendContainerOnce( src1, onEvaluate1, onEvaluate2 );
+    dst.appendContainerOnce( src2, onEvaluate1, onEvaluate2 );
+  }
+
+  return dst.original;
+}
+
+//
+
 /*
 function arraySetContainAll( src )
 {
@@ -2644,8 +2673,9 @@ let Routines =
   arraySetBut, /* qqq : ask how to improve, please */
   arraySetBut_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
   arraySetIntersection, /* qqq : ask how to improve, please */
-  arraySetIntersection_,
+  arraySetIntersection_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
   arraySetUnion, /* qqq : ask how to improve, please */
+  arraySetUnion_,
 
   arraySetContainAll,
   arraySetContainAny,
