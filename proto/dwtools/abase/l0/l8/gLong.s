@@ -2075,6 +2075,47 @@ function arraySetDiff( src1, src2 )
   return result;
 }
 
+function arraySetDiff_( dst, src1, src2 )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.longIs( dst ) || _.setIs( dst ) );
+  _.assert( _.longIs( src1 ) || _.setIs( src1 ) );
+  _.assert( _.longIs( src2 ) || _.setIs( src2 ) || src2 === undefined );
+
+  if( arguments.length === 2 )
+  {
+    src2 = _.containerAdapter.from( src1 );
+    src1 = _.containerAdapter.from( dst );
+    dst = _.containerAdapter.make( new src1.original.constructor() );
+  }
+  else
+  {
+    src2 = _.containerAdapter.from( src2 );
+    src1 = _.containerAdapter.from( src1 );
+    dst = _.containerAdapter.from( dst );
+  }
+
+  let temp = [];
+  if( dst.original === src1.original )
+  {
+    src2.each( ( e ) => src1.has( e ) ? null : temp.push( e ) );
+    temp.forEach( ( e ) => src1.push( e ) );
+  }
+  else if( dst.original === src2.original )
+  {
+    src1.each( ( e ) => src2.has( e ) ? null : temp.push( e ) );
+    temp.forEach( ( e ) => src2.push( e ) );
+  }
+  else
+  {
+    src1.each( ( e ) => src2.has( e ) ? null : dst.push( e ) );
+    src2.each( ( e ) => src1.has( e ) ? null : dst.push( e ) );
+  }
+
+  return dst.original;
+}
+
 //
 
 /**
@@ -2457,7 +2498,7 @@ let Fields =
 
 let Routines =
 {
-  
+
   // long repeater
 
   longDuplicate,
@@ -2516,6 +2557,7 @@ let Routines =
   // array set
 
   arraySetDiff, /* qqq : ask how to improve, please */
+  arraySetDiff_, /* Dmytro : routine accepts arrays and Sets, two or three parameters, covered */
   arraySetBut, /* qqq : ask how to improve, please */
   arraySetIntersection, /* qqq : ask how to improve, please */
   arraySetUnion, /* qqq : ask how to improve, please */
