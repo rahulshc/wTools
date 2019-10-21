@@ -31009,6 +31009,388 @@ function arraySetIntersection( test )
 
 //
 
+function arraySetIntersection_( test )
+{
+  test.case = 'one argument, null';
+  var got = _.arraySetIntersection_( null );
+  var exp = [];
+  test.identical( got, exp );
+
+  /* - */
+
+  test.open( 'array' );
+
+  test.case = 'one argument, empty array';
+  var src1 = [];
+  var got = _.arraySetIntersection_( src1 );
+  var exp = [];
+  test.is( got !== src1 );
+  test.identical( got, exp );
+
+  test.case = 'one argument, not empty array';
+  var src1 = [ 1, 2, 3 ];
+  var got = _.arraySetIntersection_( src1 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'dst - null, src1 - array, src2 - routine';
+  var dst = null;
+  var src1 = [ 1, 2, 'str' ];
+  var got = _.arraySetIntersection_( dst, src1, ( e ) => e );
+  var exp = [ 1, 2, 'str' ];
+  test.is( got !== src1 );
+  test.identical( got, exp );
+
+  test.case = 'dst - null, src1 - array, src2 - undefined';
+  var dst = null;
+  var src1 = [ 1, 2, 'str' ];
+  var got = _.arraySetIntersection_( dst, src1 );
+  var exp = [ 1, 2, 'str' ];
+  test.is( got !== src1 );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'src1, src2, without entries';
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = _.arraySetIntersection_( src1, src2 );
+  var exp = [];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst === src2, src1, entries';
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 2, 3, 6 ];
+  var got = _.arraySetIntersection_( src1, src2 );
+  var exp = [ 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'src1, src2, entries, one evaluator';
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetIntersection_( src1, src2, ( e ) => e );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst, src1, src2, entries, two evaluators';
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetIntersection_( src1, src2, ( e ) => e, ( ins ) => ins + 1 );
+  var exp = [ 1, 2 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst, src1, src2, entries, equalizer';
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetIntersection_( src1, src2, ( e, ins ) => e === ins + 1 );
+  var exp = [ 1, 2 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'dst === src1, src2, without entries';
+  var dst = [ 1, 2, 3 ];
+  var src1 = dst;
+  var src2 = [ 4, 5, 6 ];
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  test.case = 'dst === src1, src2, entries';
+  var dst = [ 1, 2, 3 ];
+  var src1 = dst;
+  var src2 = [ 2, 3, 6 ];
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [ 2, 3 ];
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'dst === src2, src1, without entries';
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 4, 5, 6 ];
+  var src2 = dst;
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  test.case = 'dst === src2, src1, entries';
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 2, 3, 6 ];
+  var src2 = dst;
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [ 1, 2, 3, 2, 3 ];
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'dst, src1, src2, without entries';
+  var dst = [ 1, 2, 3 ];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  test.case = 'dst, src1, src2, entries';
+  var dst = [];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 2, 3, 6 ];
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [ 2, 3 ];
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'dst, src1, src2, entries, one evaluator';
+  var dst = [];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = new Set( [ 1, 2, 3 ] );
+  var got = _.arraySetIntersection_( dst, src1, src2, ( e ) => e );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  test.case = 'dst, src1, src2, entries, two evaluators';
+  var dst = [];
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetIntersection_( dst, src1, src2, ( e ) => e, ( ins ) => ins + 1 );
+  var exp = [ 1, 2 ];
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  test.case = 'dst, src1, src2, entries, equalizer';
+  var dst = [];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetIntersection_( dst, src1, src2, ( e, ins ) => e === ins + 1 );
+  var exp = [ 1, 2 ];
+  test.is( got === dst );
+  test.identical( got, exp );
+
+  test.close( 'array' );
+
+  /* - */
+
+  test.open( 'Set' );
+
+  test.case = 'one argument, empty array';
+  var src1 = new Set();
+  var got = _.arraySetIntersection_( src1 );
+  var exp = [];
+  test.is( got !== src1 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'one argument, not empty array';
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var got = _.arraySetIntersection_( src1 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.identical( [ ... got ], exp );
+
+  /* */
+
+  test.case = 'dst - null, src1 - array, src2 - routine';
+  var dst = null;
+  var src1 = new Set( [ 1, 2, 'str' ] );
+  var got = _.arraySetIntersection_( dst, src1, ( e ) => e );
+  var exp = [ 1, 2, 'str' ];
+  test.is( _.setIs( got ) );
+  test.is( got !== src1 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst - null, src1 - array, src2 - undefined';
+  var dst = null;
+  var src1 = new Set( [ 1, 2, 'str' ] );
+  var got = _.arraySetIntersection_( dst, src1 );
+  var exp = [ 1, 2, 'str' ];
+  test.is( _.setIs( got ) );
+  test.is( got !== src1 );
+  test.identical( [ ... got ], exp );
+
+  /* */
+
+  test.case = 'src1, src2, without entries';
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = new Set( [ 4, 5, 6 ] );
+  var got = _.arraySetIntersection_( src1, src2 );
+  var exp = [];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst === src2, src1, entries';
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = new Set( [ 2, 3, 6 ] );
+  var got = _.arraySetIntersection_( src1, src2 );
+  var exp = [ 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  /* */
+
+  test.case = 'src1, src2, entries, one evaluator';
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetIntersection_( src1, src2, ( e ) => e );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst, src1, src2, entries, two evaluators';
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = new Set( [ 1, 2, 3 ] );
+  var got = _.arraySetIntersection_( src1, src2, ( e ) => e, ( ins ) => ins + 1 );
+  var exp = [ 1, 2 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst, src1, src2, entries, equalizer';
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = new Set( [ 1, 2, 3 ] );
+  var got = _.arraySetIntersection_( src1, src2, ( e, ins ) => e === ins + 1 );
+  var exp = [ 1, 2 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  /* */
+
+  test.case = 'dst === src1, src2, without entries';
+  var dst = new Set( [ 1, 2, 3 ] );
+  var src1 = dst;
+  var src2 = [ 4, 5, 6 ];
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [];
+  test.is( got === dst );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst === src1, src2, entries';
+  var dst = new Set( [ 1, 2, 3 ] );
+  var src1 = dst;
+  var src2 = new Set( [ 2, 3, 6 ] );
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [ 2, 3 ];
+  test.is( got === dst );
+  test.identical( [ ... got ], exp );
+
+  /* */
+
+  test.case = 'dst === src2, src1, without entries';
+  var dst = new Set( [ 1, 2, 3 ] );
+  var src1 = new Set( [ 4, 5, 6 ] );
+  var src2 = dst;
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst === src2, src1, entries';
+  var dst = new Set( [ 1, 2, 3 ] );
+  var src1 = new Set( [ 2, 3, 6 ] );
+  var src2 = dst;
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.identical( [ ... got ], exp );
+
+  /* */
+
+  test.case = 'dst, src1, src2, without entries';
+  var dst = new Set( [ 1, 2, 3 ] );
+  var src1 = [ 1, 2, 3, 7 ];
+  var src2 = new Set( [ 4, 5, 6 ] );
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst, src1, src2, entries';
+  var dst = new Set();
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = [ 2, 3, 6 ];
+  var got = _.arraySetIntersection_( dst, src1, src2 );
+  var exp = [ 2, 3 ];
+  test.is( got === dst );
+  test.identical( [ ... got ], exp );
+
+  /* */
+
+  test.case = 'dst, src1, src2, entries, one evaluator';
+  var dst = new Set();
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetIntersection_( dst, src1, src2, ( e ) => e );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst, src1, src2, entries, two evaluators';
+  var dst = new Set();
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = new Set( [ 1, 2, 3 ] );
+  var got = _.arraySetIntersection_( dst, src1, src2, ( e ) => e, ( ins ) => ins + 1 );
+  var exp = [ 1, 2 ];
+  test.is( got === dst );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst, src1, src2, entries, equalizer';
+  var dst = new Set();
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetIntersection_( dst, src1, src2, ( e, ins ) => e === ins + 1 );
+  var exp = [ 1, 2 ];
+  test.is( got === dst );
+  test.identical( [ ... got ], exp );
+
+  test.close( 'Set' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arraySetIntersection_() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arraySetIntersection_( [], [ 1, 2 ], [ 1 ], ( e ) => e, ( ins ) => ins, 'extra' ) );
+
+  test.case = 'one argument, wrong type of src1';
+  test.shouldThrowErrorSync( () => _.arraySetIntersection_( '3' ) );
+
+  test.case = 'two arguments, wrong type of src1 or src2';
+  test.shouldThrowErrorSync( () => _.arraySetIntersection_( 'wrong', [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.arraySetIntersection_( [ 1, 2 ], 'wrong' ) );
+}
+
+//
+
 function arraySetUnion( test )
 {
 
@@ -32177,6 +32559,7 @@ var Self =
     arraySetBut,
     arraySetBut_,
     arraySetIntersection,
+    arraySetIntersection_,
     arraySetUnion,
 
     arraySetContainAll,
