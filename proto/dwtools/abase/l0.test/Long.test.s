@@ -29855,8 +29855,8 @@ function arraySetDiff_( test )
   test.case = 'not enough arguments';
   test.shouldThrowErrorSync( () => _.arraySetDiff_( [ 1, 2, 3, 4 ] ) );
 
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.arraySetDiff_( [ 1, 2, 3, 4 ], [ 5, 7, 8, 9 ], [ 13, 15, 17 ], [ 1, 2 ] ) );
+  // test.case = 'extra arguments';
+  // test.shouldThrowErrorSync( () => _.arraySetDiff_( [ 1, 2, 3, 4 ], [ 5, 7, 8, 9 ], [ 13, 15, 17 ], [ 1, 2 ] ) );
 
   test.case = 'wrong type of arguments';
   test.shouldThrowErrorSync( () => _.arraySetDiff_( 10, 15 ) );
