@@ -213,6 +213,13 @@ function strCount( src, ins )
   return result;
 }
 
+//
+
+function strStripCount( src, ins )
+{
+  return _.strCount( _.strLinesStrip( src ) , _.strLinesStrip( ins ) );
+}
+
 // //
 //
 // function strCountLeft( src, ins )
@@ -4570,8 +4577,7 @@ let Proto =
   // evaluator
 
   strCount,
-  // strCountLeft,
-  // strCountRight,
+  strStripCount,
   strsShortest,
   strsLongest,
 
