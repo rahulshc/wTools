@@ -29252,13 +29252,10 @@ function arrayReplacedArraysOnceStrictly( test )
 //   });
 //
 //   test.case = 'first arg is not longIs';
-//   debugger;
 //   test.shouldThrowErrorSync( function()
 //   {
-//     debugger;
 //     _.arrayReplacedAll( 1, 1, 1 );
 //   });
-//   debugger;
 //
 //   test.case = 'fourth argument is not a routine';
 //   test.shouldThrowErrorSync( function()
@@ -29462,6 +29459,409 @@ function arraySetDiff( test )
     _.arraySetDiff( undefined, undefined );
   });
 
+}
+
+//
+
+function arraySetDiff_( test )
+{
+  test.open( 'array' );
+
+  test.case = 'empty arrays';
+  var src1 = [];
+  var src2 = [];
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'src2 - empty array';
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [];
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'src1 - empty array';
+  var src1 = [];
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'src1 and src2 is not empty array, without duplicates';
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [ 1, 2, 3, 4, 5, 6 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'src1 and src2 is not empty array, duplicates';
+  var src1 = [ 1, 1, 2, 3, 3 ];
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [ 1, 1, 2, 4, 5, 5 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'all of the elements is present in both arrays';
+  var src1 = [ 3, 3, 3 ];
+  var src2 = [ 3, 3, 3, 3 ];
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'dst - not empty, src1 and src2 - empty arrays';
+  var dst = [ 1, 2 ];
+  var src1 = [];
+  var src2 = [];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 2 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst, src2 - empty array';
+  var dst = [ 1 ];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 1, 2, 3 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst, src1 - empty array';
+  var dst = [ 2 ];
+  var src1 = [];
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 2, 1, 2, 3 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst, src1 and src2 is not empty array, without duplicates';
+  var dst = [];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = [ 4, 5, 6 ];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 2, 3, 4, 5, 6 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst, src1 and src2 is not empty array, duplicates';
+  var dst = new Set( [ 0 ] );
+  var src1 = [ 1, 1, 2, 3, 3 ];
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 0, 1, 2, 4, 5 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst, all of the elements is present in both arrays';
+  var dst = [ 1 ];
+  var src1 = [ 3, 3, 3 ];
+  var src2 = [ 3, 3, 3, 3 ];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'dst - src1, src1 and src2 - empty arrays';
+  var dst = [];
+  var src1 = dst;
+  var src2 = [];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst - src2, src2 - empty array';
+  var dst = [];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = dst;
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got === src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst - src1, src1 - empty array';
+  var dst = [];
+  var src1 = dst;
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst - src2, src1 and src2 is not empty array, without duplicates';
+  var dst = [ 4, 5, 6 ];
+  var src1 = [ 1, 2, 3 ];
+  var src2 = dst;
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 4, 5, 6, 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got === src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst - src1, src1 and src2 is not empty array, duplicates';
+  var dst = [ 1, 1, 2, 3, 3 ];
+  var src1 = dst;
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 1, 2, 3, 3, 4, 5, 5 ];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst - src2, all of the elements is present in both arrays';
+  var dst = [ 3, 3, 3, 3 ];
+  var src1 = [ 3, 3, 3 ];
+  var src2 = dst;
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 3, 3, 3, 3 ];
+  test.is( got !== src1 );
+  test.is( got === src2 );
+  test.identical( got, exp );
+
+  test.close( 'array' );
+
+  /* - */
+
+  test.open( 'Set' );
+
+  test.case = 'empty Sets';
+  var src1 = new Set();
+  var src2 = new Set();
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'src2 - empty Set';
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = new Set();
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'src1 - empty Set';
+  var src1 = new Set();
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( _.setIs( got ) );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'src1 and src2 is not empty containers, without duplicates';
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = [ 4, 5, 6 ];
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [ 1, 2, 3, 4, 5, 6 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'src1 and src2 is not empty Sets, duplicates';
+  var src1 = new Set( [ 1, 1, 2, 3, 3 ] );
+  var src2 = new Set( [ 3, 3, 4, 5, 5 ] );
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [ 1, 2, 4, 5 ];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'all of the elements is present in both arrays';
+  var src1 = new Set( [ 3, 3, 3 ] );
+  var src2 = new Set( [ 3, 3, 3, 3 ] );
+  var got = _.arraySetDiff_( src1, src2 );
+  var exp = [];
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  /* */
+
+  test.case = 'dst - not empty, src1 and src2 - empty arrays';
+  var dst = new Set( [ 1, 2 ] );
+  var src1 = [];
+  var src2 = [];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 2 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst, src2 - empty array';
+  var dst = new Set( [ 1 ] );
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = [];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst, src1 - empty array';
+  var dst = new Set( [ 2 ] );
+  var src1 = [];
+  var src2 = new Set( [ 1, 2, 3 ] );
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 2, 1, 3 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst, src1 and src2 is not empty Sets, without duplicates';
+  var dst = new Set();
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var src2 = new Set( [ 4, 5, 6 ] );
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 2, 3, 4, 5, 6 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst, src1 and src2 is not empty Sets, duplicates';
+  var dst = [ 0 ];
+  var src1 = new Set( [ 1, 1, 2, 3, 3 ] );
+  var src2 = new Set( [ 3, 3, 4, 5, 5 ] );
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 0, 1, 2, 4, 5 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( got, exp );
+
+  test.case = 'dst, all of the elements is present in both containers';
+  var dst = new Set( [ 1 ] );
+  var src1 = new Set( [ 3, 3, 3 ] );
+  var src2 = [ 3, 3, 3, 3 ];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1 ];
+  test.is( got === dst );
+  test.is( got !== src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  /* */
+
+  test.case = 'dst - src1, src1 and src2 - empty arrays';
+  var dst = new Set();
+  var src1 = dst;
+  var src2 = [];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst - src2, src2 - empty array';
+  var dst = new Set();
+  var src1 = [ 1, 2, 3 ];
+  var src2 = dst;
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got === src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst - src1, src1 - empty array';
+  var dst = new Set();
+  var src1 = dst;
+  var src2 = [ 1, 2, 3 ];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst - src2, src1 and src2 is not empty array, without duplicates';
+  var dst = new Set( [ 4, 5, 6 ] );
+  var src1 = [ 1, 2, 3 ];
+  var src2 = dst;
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 4, 5, 6, 1, 2, 3 ];
+  test.is( got !== src1 );
+  test.is( got === src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst - src1, src1 and src2 is not empty array, duplicates';
+  var dst = new Set( [ 1, 1, 2, 3, 3 ] );
+  var src1 = dst;
+  var src2 = [ 3, 3, 4, 5, 5 ];
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 1, 2, 3, 4, 5 ];
+  test.is( got === src1 );
+  test.is( got !== src2 );
+  test.identical( [ ... got ], exp );
+
+  test.case = 'dst - src2, all of the elements is present in both arrays';
+  var dst = new Set( [ 3, 3, 3, 3 ] );
+  var src1 = [ 3, 3, 3 ];
+  var src2 = dst;
+  var got = _.arraySetDiff_( dst, src1, src2 );
+  var exp = [ 3 ];
+  test.is( got !== src1 );
+  test.is( got === src2 );
+  test.identical( [ ... got ], exp );
+
+  test.close( 'Set' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arraySetDiff_() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.arraySetDiff_( [ 1, 2, 3, 4 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arraySetDiff_( [ 1, 2, 3, 4 ], [ 5, 7, 8, 9 ], [ 13, 15, 17 ], [ 1, 2 ] ) );
+
+  test.case = 'wrong type of arguments';
+  test.shouldThrowErrorSync( () => _.arraySetDiff_( 10, 15 ) );
+  test.shouldThrowErrorSync( () => _.arraySetDiff_( 'wrong', 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.arraySetDiff_( { a : 1 }, { b : 3, c : 8 } ) );
 }
 
 //
@@ -31209,6 +31609,7 @@ var Self =
     // array set
 
     arraySetDiff,
+    arraySetDiff_,
 
     arraySetBut,
     arraySetIntersection,
