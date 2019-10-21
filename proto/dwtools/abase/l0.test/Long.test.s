@@ -31591,6 +31591,162 @@ function arraySetUnion( test )
 
 //
 
+function arraySetUnion_( test )
+{
+
+  test.case = 'second argument has extra element, third argument has two extra elements';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var got = _.arraySetUnion_( a, b );
+  var expected = [ 1, 2, 3, 4, 15, 5 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'second argument has extra element, third argument has two extra elements';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var got = _.arraySetUnion_( null, a, b );
+  var expected = [ 1, 2, 3, 4, 15, 5 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'single array argument';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var got = _.arraySetUnion_( a );
+  var expected = [ 1, 2, 3, 4, 15 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'single array argument';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var got = _.arraySetUnion_( null, a );
+  var expected = [ 1, 2, 3, 4, 15 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'first argument is an empty array';
+  var a = [];
+  var b = [ 1, 2, 3, 4, 15 ];
+  var got = _.arraySetUnion_( a, b );
+  var expected = [ 1, 2, 3, 4, 15 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first argument is an empty array';
+  var a = [];
+  var b = [ 1, 2, 3, 4, 15 ];
+  var got = _.arraySetUnion_( null, a, b );
+  var expected = [ 1, 2, 3, 4, 15 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first and second argument are empty arrays';
+  var a = [];
+  var b = [];
+  var got = _.arraySetUnion_( a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first and second argument are empty arrays';
+  var a = [];
+  var b = [];
+  var got = _.arraySetUnion_( null, a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = '3 arguments, nothing in common';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var c = [ 15, 16, 17 ];
+  var got = _.arraySetUnion_( a, b, c );
+  var expected = [ 1, 2, 3, 4, 15, 5, 16, 17 ];
+  test.identical( got, expected );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
+
+  test.case = '1 argument, repeats';
+  var a = [ 1, 1, 1, 3, 4, 15 ];
+  var got = _.arraySetUnion_( null, a );
+  var expected = [ 1, 3, 4, 15 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
+
+  test.case = '1 argument, repeats';
+  var a = [ 1, 1, 1, 3, 4, 15 ];
+  var got = _.arraySetUnion_( a );
+  var expected = [ 1, 1, 1, 3, 4, 15 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
+
+  test.case = '1 null';
+  var got = _.arraySetUnion_( null );
+  var expected = [];
+  test.identical( got, expected );
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetUnion_();
+  });
+
+  test.case = 'one or several arguments are not longIs entities, numerical arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetUnion_( 10, 15, 25 );
+  });
+
+  test.case = 'one or both arguments are not longIs entities, string like arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetUnion_( 'a', 'c' );
+  });
+
+  test.case = 'one or both arguments are not longIs entities, map arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetUnion_( { a : 1 }, { b : 3, c : 8 } );
+  });
+
+  test.case = 'wrong argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetUnion_( [ 1, 2, 3 ], "wrong argument" );
+  });
+
+  test.case = 'one or more arguments are null';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetUnion_( null, null );
+  });
+
+  test.case = 'one or more arguments are undefined';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetUnion_( undefined, undefined );
+  });
+
+}
+
+//
+
 function arraySetContainAll( test )
 {
 
@@ -32561,6 +32717,7 @@ var Self =
     arraySetIntersection,
     arraySetIntersection_,
     arraySetUnion,
+    arraySetUnion_,
 
     arraySetContainAll,
     arraySetContainAny,
