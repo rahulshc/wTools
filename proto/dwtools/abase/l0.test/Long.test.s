@@ -30033,15 +30033,16 @@ function arraySetDiff_( test )
   test.shouldThrowErrorSync( () => _.arraySetDiff_() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.arraySetDiff_( [ 1, 2, 3, 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arraySetDiff_( [ 1, 2 ] ) );
 
-  // test.case = 'extra arguments';
-  // test.shouldThrowErrorSync( () => _.arraySetDiff_( [ 1, 2, 3, 4 ], [ 5, 7, 8, 9 ], [ 13, 15, 17 ], [ 1, 2 ] ) );
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arraySetDiff_( [ 1, 2 ], [ 5, 7 ], [ 13 ], ( e ) => e, ( ins ) => ins, 'extra' ) );
 
   test.case = 'wrong type of arguments';
-  test.shouldThrowErrorSync( () => _.arraySetDiff_( 10, 15 ) );
-  test.shouldThrowErrorSync( () => _.arraySetDiff_( 'wrong', 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.arraySetDiff_( 10, [ 15, 10 ] ) );
+  test.shouldThrowErrorSync( () => _.arraySetDiff_( [ 10, 12 ], 'wrong' ) );
   test.shouldThrowErrorSync( () => _.arraySetDiff_( { a : 1 }, { b : 3, c : 8 } ) );
+  test.shouldThrowErrorSync( () => _.arraySetDiff_( [], [ 1 ], [ 2 ], [] ) );
 }
 
 //
@@ -30396,6 +30397,313 @@ function arraySetBut( test )
   test.shouldThrowErrorSync( function()
   {
     _.arraySetBut( undefined, undefined );
+  });
+
+}
+
+//
+
+function arraySetBut_( test )
+{
+  test.case = 'first argument has single extra element, second argument has single extra element either';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var got = _.arraySetBut_( a, b );
+  var expected = [ 15 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first argument has single extra element, second argument has single extra element either';
+  var a = [ 1, 2, 3, 4, 15 ];
+  var b = [ 1, 2, 3, 4, 5 ];
+  var got = _.arraySetBut_( null, a, b );
+  var expected = [ 15 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first argument has several elements that are not present in second argument';
+  var a = [ 1, 4, 9 ];
+  var b = [ 2, 5 ];
+  var got = _.arraySetBut_( a, b );
+  var expected = [ 1, 4, 9 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first argument has several elements that are not present in second argument';
+  var a = [ 1, 4, 9 ];
+  var b = [ 2, 5 ];
+  var got = _.arraySetBut_( null, a, b );
+  var expected = [ 1, 4, 9 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first argument is the same as second';
+  var a = [ 1, 2, 3, 4 ];
+  var b = [ 1, 2, 3, 4 ];
+  var got = _.arraySetBut_( a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first argument is the same as second';
+  var a = [ 1, 2, 3, 4 ];
+  var b = [ 1, 2, 3, 4 ];
+  var got = _.arraySetBut_( null, a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first argument is an empty array';
+  var a = [];
+  var b = [ 1, 2, 3, 4 ];
+  var got = _.arraySetBut_( a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first argument is an empty array';
+  var a = [];
+  var b = [ 1, 2, 3, 4 ];
+  var got = _.arraySetBut_( null, a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'second argument is an empty array';
+  var a = [ 1, 2, 3, 4 ];
+  var b = [];
+  var got = _.arraySetBut_( a, b );
+  var expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'second argument is an empty array';
+  var a = [ 1, 2, 3, 4 ];
+  var b = [];
+  var got = _.arraySetBut_( null, a, b );
+  var expected = [ 1, 2, 3, 4 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first array has the same element as the second ';
+  var a = [ 1, 1, 1 ];
+  var b = [ 1 ];
+  var got = _.arraySetBut_( a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'first array has the same element as the second ';
+  var a = [ 1, 1, 1 ];
+  var b = [ 1 ];
+  var got = _.arraySetBut_( null, a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'both arguments are empty arrays';
+  var a = [];
+  var b = [];
+  var got = _.arraySetBut_( a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'both arguments are empty arrays';
+  var a = [];
+  var b = [];
+  var got = _.arraySetBut_( null, a, b );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+
+  test.case = 'single empty argument';
+  var a = [];
+  var got = _.arraySetBut_( a );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'single empty argument';
+  var a = [];
+  var got = _.arraySetBut_( null, a );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'single not empty argument';
+  var a = [ 3, 4, 5 ];
+  var got = _.arraySetBut_( a );
+  var expected = [ 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'single not empty argument';
+  var a = [ 3, 4, 5 ];
+  var got = _.arraySetBut_( null, a );
+  var expected = [ 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+
+  test.case = 'three arguments, same elements';
+  var a = [ 3, 4, 5 ];
+  var b = [ 3, 4, 5 ];
+  var c = [ 3, 4, 5 ];
+  var got = _.arraySetBut_( a, b, c );
+  var expected = [ 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
+
+  test.case = 'three arguments, differet elements';
+  var a = [ 3, 4, 5 ];
+  var b = [ 5 ];
+  var c = [ 3 ];
+  var got = _.arraySetBut_( a, b, c );
+  var expected = [ 3, 4, 5, 5 ];
+  test.identical( got, expected );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
+
+  test.case = 'three arguments, no elements in the second and third';
+  var a = [ 3, 4, 5 ];
+  var b = [];
+  var c = [];
+  var got = _.arraySetBut_( a, b, c );
+  var expected = [ 3, 4, 5 ];
+  test.identical( got, expected );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
+
+  test.case = 'three arguments, no elements in the first';
+  var a = [];
+  var b = [ 3, 4, 5 ];
+  var c = [ 3, 4, 5 ];
+  var got = _.arraySetBut_( a, b, c );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( got === a );
+  test.is( got !== b );
+  test.is( got !== c );
+
+  test.case = '1 argument, repeats';
+  var a = [ 1, 1, 1, 3, 4, 15 ];
+  var got = _.arraySetBut_( null, a );
+  var expected = [ 1, 1, 1, 3, 4, 15 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
+
+  test.case = '1 argument, repeats';
+  var a = [ 1, 1, 1, 3, 4, 15 ];
+  var got = _.arraySetBut_( a );
+  var expected = [ 1, 1, 1, 3, 4, 15 ];
+  test.identical( got, expected );
+  test.is( got !== a );
+  test.is( got !== b );
+  test.is( got !== c );
+
+  test.case = '1 null';
+  var got = _.arraySetBut_( null );
+  var expected = [];
+  test.identical( got, expected );
+
+  /* */
+
+  var cases =
+  [
+    { src : [], but : [], expected : [] },
+    { src : [ 1, 2, 3 ], but : [], expected : [ 1, 2, 3 ] },
+    { src : [], but : [ 1, 2, 3 ], expected : [] },
+    { src : [ 1, 1, 1 ], but : [ 1 ], expected : [] },
+    { src : [ 1, 2, 3 ], but : [ 3, 2, 1 ], expected : [] },
+    { src : [ 1, 2, 3 ], but : [ 3 ], expected : [ 1, 2 ] },
+    { src : [ 1, 2, 3 ], but : [ 4, 5, 6 ], expected : [ 1, 2, 3 ] },
+    { src : 1, but : 1, error : true },
+  ]
+
+  for( var i = 0; i < cases.length; i++ )
+  {
+    var c = cases[ i ];
+
+    if( c.error )
+    test.shouldThrowErrorSync( () => _.arraySetBut_( c.src, c.but ) );
+    else
+    test.identical( _.arraySetBut_( c.src, c.but ), c.expected );
+  }
+
+  /* */
+
+  if( !Config.debug )
+  return;
+
+  /* bad arguments */
+
+  test.case = 'not array';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetBut_( '3' );
+  });
+
+  test.case = 'no arguments, the count of arguments doesn\'t match 2';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetBut_();
+  });
+
+  test.case = 'one or both arguments are not longIs entities, numerical arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetBut_( 5, 8 );
+  });
+
+  test.case = 'one or both arguments are not longIs entities, string like arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetBut_( 'a', 'c' );
+  });
+
+  test.case = 'one or both arguments are not longIs entities, map like arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetBut_( { a : 1 }, { b : 3, c : 8 } );
+  });
+
+  test.case = 'wrong argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetBut_( [ 1, 2, 3 ], "wrong argument" );
+  });
+
+  test.case = 'both arguments are null';
+  test.shouldThrowErrorSync( function()
+  {
+    debugger;
+    _.arraySetBut_( null, null );
+  });
+
+  test.case = 'both arguments are undefined';
+  test.shouldThrowErrorSync( function()
+  {
+    _.arraySetBut_( undefined, undefined );
   });
 
 }
@@ -31792,6 +32100,7 @@ var Self =
     arraySetDiff_,
 
     arraySetBut,
+    arraySetBut_,
     arraySetIntersection,
     arraySetUnion,
 
