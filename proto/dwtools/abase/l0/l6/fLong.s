@@ -164,9 +164,13 @@ function longMake( src, ins )
           /* Dmytro : simple and effective solution is
           result = Array.from( ins );
           Anyway, new container makes from ins
+
+          Now, routine constructorJoin accepts only arrays
           */
           if( ins.length === 1 )
           result = [ ins[ 0 ] ];
+          else if( !_.arrayLike( ins ) )
+          result = new( _.constructorJoin( src, [ ... ins ] ) );
           else
           result = new( _.constructorJoin( src, ins ) );
         }
