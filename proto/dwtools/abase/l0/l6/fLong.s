@@ -2926,14 +2926,11 @@ function _argumentsOnlyArray( dst, src, range, ins )
   if( arguments.length === 4 )
   {
     if( dst === src )
-    dst = src ;
+    dst = src;
     else if( dst === null )
     dst = src.slice();
     else
-    {
-      dst = _.longEmpty( dst );
-      _.arrayAppendArray( dst, src );
-    }
+    dst.splice( 0, dst.length, ... src );
   }
   else if( dst === src )
   {
@@ -3716,12 +3713,12 @@ function arrayRelengthInplace( src, range, ins )
 
 //
 
-function arrayRelength_( inplace, src, range, ins )
+function arrayRelength_( dst, src, range, ins )
 {
-  [ inplace, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
 
   if( range === undefined )
-  return inplace ? src : src.slice();
+  return dst;
 
   if( _.numberIs( range ) )
   range = [ range, src.length ];
@@ -3738,12 +3735,12 @@ function arrayRelength_( inplace, src, range, ins )
   f = 0;
 
   if( f === 0 && l === src.length )
-  return inplace ? src : src.slice();
+  return dst;
 
   let f2 = Math.max( f, 0 );
   let l2 = Math.min( src.length, l );
 
-  let result = inplace ? src : src.slice();
+  let result = dst;
 
   result.splice.apply( result, [ 0, f ] );
   result.length = l - f;
