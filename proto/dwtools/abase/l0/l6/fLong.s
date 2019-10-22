@@ -724,7 +724,8 @@ function longEmpty( dstLong )
 {
   if( _.arrayIs( dstLong ) )
   {
-    dstLong.slice( 0, dstLong.length );
+    // dstLong.slice( 0, dstLong.length ); // Dmytro : slice() method make copy of array, splice() method removes elements
+    dstLong.splice( 0, dstLong.length );
     return dstLong;
   }
   _.assert( 0, `Cant change length of fixed-length container ${_.strType( dstLong )}` );
@@ -2920,41 +2921,46 @@ function arrayButInplace( src, range, ins )
 
 //
 
-function _argumentsOnlyArray( inplace, src, range, ins )
+function _argumentsOnlyArray( dst, src, range, ins )
 {
   if( arguments.length === 4 )
   {
-    if( inplace === src )
-    inplace = true;
+    if( dst === src )
+    dst = src ;
+    else if( dst === null )
+    dst = src.slice();
     else
-    inplace = false;
+    {
+      dst = _.longEmpty( dst );
+      _.arrayAppendArray( dst, src );
+    }
   }
-  else if( inplace === src )
+  else if( dst === src )
   {
-    inplace = true;
+    dst = src;
   }
   else
   {
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
     ins = range;
     range = src;
-    src = inplace;
-    inplace = false;
+    src = dst;
+    dst = src.slice();
   }
 
   _.assert( _.arrayLikeResizable( src ) );
 
-  return [ inplace, src, range, ins ];
+  return [ dst, src, range, ins ];
 }
 
 //
 
-function arrayBut_( inplace, src, range, ins )
+function arrayBut_( dst, src, range, ins )
 {
-  [ inplace, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
 
   if( range === undefined )
-  return inplace ? src : src.slice();
+  return dst;
 
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
@@ -2971,7 +2977,7 @@ function arrayBut_( inplace, src, range, ins )
   if( ins )
   _.arrayAppendArray( args, ins );
 
-  let result = inplace ? src : src.slice();
+  let result = dst;
 
   result.splice.apply( result, args );
 
