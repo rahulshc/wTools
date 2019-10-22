@@ -3345,6 +3345,78 @@ function arrayGrowInplace( src, range, ins )
 
 //
 
+function _argumentsOnly( inplace, src, range, ins )
+{
+  if( arguments.length === 4 )
+  {
+    if( inplace === src )
+    inplace = true;
+    else
+    inplace = false;
+  }
+  else
+  {
+    _.assert( 1 <= arguments.length && arguments.length <= 3 );
+    ins = range;
+    range = src;
+    src = inplace;
+    inplace = false;
+  }
+
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) || range === undefined );
+
+  return [ inplace, src, range, ins ];
+}
+
+function arrayGrow_( inplace, src, range, ins )
+{
+  [ inplace, src, range, ins ] = _argumentsOnly.apply( this, arguments );
+
+  if( range === undefined )
+  return inplace ? src : src.slice();
+
+  range[ 0 ] = range[ 0 ] === undefined ?  0 : range[ 0 ];
+  range[ 1 ] = range[ 1 ] === undefined ?  0 : range[ 1 ];
+
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] < 0 )
+  {
+    range[ 1 ] -= range[ 0 ];
+    range[ 0 ] -= range[ 0 ];
+  }
+
+  if( range[ 0 ] > 0 )
+  range[ 0 ] = 0;
+  if( range[ 1 ] < src.length )
+  range[ 1 ] = src.length;
+
+  if( range[ 1 ] === src.length )
+  return inplace ? src : src.slice();
+
+  let l2 = src.length;
+
+  let result = inplace ? src : src.slice();
+  result.length = range[ 1 ];
+
+  if( ins !== undefined )
+  {
+    for( let r = l2; r < result.length ; r++ )
+    {
+      result[ r ] = ins;
+    }
+  }
+
+  return result;
+}
+
+//
+
 /**
  * Routine arrayRelength() changes length of provided array {-src-} by copying it elements to newly created array object
  * using range (range) positions of the original array and value to fill free space after copy (val).
@@ -8384,6 +8456,7 @@ let Routines =
   arraySelect,
   arraySelectInplace,
   arrayGrow,
+  arrayGrow_,
   arrayGrowInplace,
   arrayRelength,
   arrayRelengthInplace,

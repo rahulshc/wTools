@@ -718,7 +718,8 @@ function bufferRawFrom( buffer )
 {
   let result;
 
-  /* qqq : should do not copying when possible! */
+  /* qqq : should do not copying when possible!
+     Dmytro : not copying if it possible */
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -735,12 +736,11 @@ function bufferRawFrom( buffer )
   else if( _.bufferTypedIs( buffer ) || _.bufferViewIs( buffer ) )
   {
 
-    // _.assert( 0, 'not implemented' );
     result = buffer.buffer;
     if( buffer.byteOffset || buffer.byteLength !== result.byteLength )
     // Dmytro : works not correctly, offset + length = right bound of new bufferRaw
-    result = result.slice( buffer.byteOffset, buffer.byteOffset + buffer.byteLength );
     // result = result.slice( buffer.byteOffset || 0, buffer.byteLength );
+    result = result.slice( buffer.byteOffset, buffer.byteOffset + buffer.byteLength );
 
   }
   else if( _.strIs( buffer ) )
