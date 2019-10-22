@@ -3167,6 +3167,40 @@ function arraySelectInplace( src, range, ins )
 
 //
 
+function arraySelect_( inplace, src, range, ins )
+{
+
+  [ inplace, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+
+  if( range === undefined )
+  return inplace ? src : src.slice();
+
+  if( _.numberIs( range ) )
+  range = [ range, src.length ];
+
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) );
+
+  _.rangeClamp( range, [ 0, src.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === 0 && range[ 1 ] === src.length )
+  return inplace ? src : src.slice();
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( src.length, range[ 1 ] );
+
+  let result = inplace ? src : src.slice();
+
+  result.splice.apply( result, [ 0, f2 ] );
+  result.length = range[ 1 ] - range[ 0 ];
+
+  return result;
+}
+
+//
+
 /**
  * Routine arrayGrow() changes length of provided array {-src-} by copying it elements to newly created array
  * using range {-range-} positions of the original array and value to fill free space after copy {-ins-}.
@@ -8490,6 +8524,7 @@ let Routines =
   arrayBut_,
   arraySelect,
   arraySelectInplace,
+  arraySelect_,
   arrayGrow,
   arrayGrowInplace,
   arrayGrow_,
