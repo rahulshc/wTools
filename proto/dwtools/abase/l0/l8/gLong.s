@@ -2368,13 +2368,15 @@ function arraySetUnion_( dst, src1, src2, onEvaluate1, onEvaluate2 )
     else if( _.setIs( dst ) )
     return new Set( dst );
     else
-    _.assert( 0 );    
+    _.assert( 0 );
   }
 
   [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
 
   if( dst.original === src1.original )
   src1.appendContainerOnce( src2, onEvaluate1, onEvaluate2 );
+  else if( dst.original === src2.original )
+  src2.appendContainerOnce( src1, onEvaluate1, onEvaluate2 );
   else
   {
     dst.appendContainerOnce( src1, onEvaluate1, onEvaluate2 );
@@ -2675,7 +2677,7 @@ let Routines =
   arraySetIntersection, /* qqq : ask how to improve, please */
   arraySetIntersection_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
   arraySetUnion, /* qqq : ask how to improve, please */
-  arraySetUnion_,
+  arraySetUnion_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
 
   arraySetContainAll,
   arraySetContainAny,
