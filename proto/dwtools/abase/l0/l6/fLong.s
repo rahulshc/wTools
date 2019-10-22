@@ -3704,6 +3704,49 @@ function arrayRelengthInplace( src, range, ins )
   return result;
 }
 
+//
+
+function arrayRelength_( inplace, src, range, ins )
+{
+  [ inplace, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+
+  if( range === undefined )
+  return inplace ? src : src.slice();
+
+  if( _.numberIs( range ) )
+  range = [ range, src.length ];
+
+  let f = range[ 0 ] === undefined ?  0 : range[ 0 ];
+  let l = range[ 1 ] === undefined ?  0 : range[ 1 ];
+
+  _.assert( _.rangeIs( range ) );
+
+  if( l < f )
+  l = f;
+
+  if( f < 0 )
+  f = 0;
+
+  if( f === 0 && l === src.length )
+  return inplace ? src : src.slice();
+
+  let f2 = Math.max( f, 0 );
+  let l2 = Math.min( src.length, l );
+
+  let result = inplace ? src : src.slice();
+
+  result.splice.apply( result, [ 0, f ] );
+  result.length = l - f;
+
+  if( ins !== undefined )
+  {
+    for( let r = l2 - f; r < result.length ; r++ )
+    result[ r ] = ins;
+  }
+
+  return result;
+}
+
 // --
 // array sequential search
 // --
@@ -8530,6 +8573,7 @@ let Routines =
   arrayGrow_,
   arrayRelength,
   arrayRelengthInplace,
+  arrayRelength_,
 
   // array sequential search
 
