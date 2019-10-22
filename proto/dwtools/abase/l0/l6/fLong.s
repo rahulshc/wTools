@@ -3177,13 +3177,13 @@ function arraySelectInplace( src, range, ins )
 
 //
 
-function arraySelect_( inplace, src, range, ins )
+function arraySelect_( dst, src, range, ins )
 {
 
-  [ inplace, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
 
   if( range === undefined )
-  return inplace ? src : src.slice();
+  return dst;
 
   if( _.numberIs( range ) )
   range = [ range, src.length ];
@@ -3196,12 +3196,12 @@ function arraySelect_( inplace, src, range, ins )
   range[ 1 ] = range[ 0 ];
 
   if( range[ 0 ] === 0 && range[ 1 ] === src.length )
-  return inplace ? src : src.slice();
+  return dst;
 
   let f2 = Math.max( range[ 0 ], 0 );
   let l2 = Math.min( src.length, range[ 1 ] );
 
-  let result = inplace ? src : src.slice();
+  let result = dst;
 
   result.splice.apply( result, [ 0, f2 ] );
   result.length = range[ 1 ] - range[ 0 ];
