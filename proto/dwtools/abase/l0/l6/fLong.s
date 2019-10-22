@@ -3449,12 +3449,12 @@ function arrayGrowInplace( src, range, ins )
 
 //
 
-function arrayGrow_( inplace, src, range, ins )
+function arrayGrow_( dst, src, range, ins )
 {
-  [ inplace, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
 
   if( range === undefined )
-  return inplace ? src : src.slice();
+  return dst;
 
   if( _.numberIs( range ) )
   range = [ 0, range ];
@@ -3478,11 +3478,11 @@ function arrayGrow_( inplace, src, range, ins )
   l = src.length;
 
   if( l === src.length )
-  return inplace ? src : src.slice();
+  return dst;
 
   let l2 = src.length;
 
-  let result = inplace ? src : src.slice();
+  let result = dst;
   result.length = l;
 
   if( ins !== undefined )
