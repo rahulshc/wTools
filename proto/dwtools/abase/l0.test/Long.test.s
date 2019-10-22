@@ -4854,203 +4854,138 @@ function longPut( test )
 
 function longFill( test )
 {
-  /* Array */
+  /* constructors */
 
-  test.case = 'dst = empty array';
-  var got = _.longFill( [] );
-  var expected = [];
-  test.identical( got, expected );
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
+  var bufferTyped = function( buf )
+  {
+    let name = buf.name;
+    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+  };
 
-  test.case = 'dst = empty array, value = number';
-  var got = _.longFill( [], 1 );
-  var expected = [];
-  test.identical( got, expected );
+  /* lists */
 
-  test.case = 'dst = empty array, value = number, range';
-  var got = _.longFill( [], 1, [ 0, 3 ] );
-  var expected = [ 1, 1, 1 ];
-  test.identical( got, expected );
+  var listTyped =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
+  var listDst =
+  [
+    array,
+    unroll,
+    argumentsArray,
+  ];
 
-  test.case = 'dst = empty array, value = number, left range < 0';
-  var got = _.longFill( [], 1, [ -2, 3 ] );
-  var expected = [ 1, 1, 1, 1, 1 ];
-  test.identical( got, expected );
+  for( let i in listTyped )
+  listDst.push( bufferTyped( listTyped[ i ] ) );
 
-  test.case = 'dst = array';
-  var got = _.longFill( [ 1, 1, 1 ] );
-  var expected = [ 0, 0, 0 ];
-  test.identical( got, expected );
+  /* dstLong - null */
 
-  test.case = 'dst = array, value = string';
-  var got = _.longFill( [ 1, 1, 1 ], '5' );
-  var expected = [ '5', '5', '5' ];
-  test.identical( got, expected );
+  for( let d in listDst )
+  {
+    test.open( '' + listDst[ d ].name );
+    run( listDst[ d ] );
+    test.close( '' + listDst[ d ].name );
+  }
 
-  test.case = 'dst = array, value = string, range';
-  var got = _.longFill( [ 1, 1, 1 ], '5', [ 0, 2 ] );
-  var expected = [ '5', '5', 1 ];
-  test.identical( got, expected );
+  /* - */
+  function run( makeDst )
+  {
+    var sameIs = ( got, dst ) => _.arrayIs( dst ) ? got === dst : got !== dst;
+    test.case = 'empty container, no value, no range';
+    var dst = makeDst( [] );
+    var got = _.longFill( dst );
+    var expected = makeDst( [] );
+    test.is( got === dst );
+    test.identical( got, expected );
 
-  test.case = 'dst = array, value = string, range';
-  var got = _.longFill( [ 1, 1, 1 ], '5', [ -2, 2 ] );
-  var expected = [ '5', '5', '5', '5' ];
-  test.identical( got, expected );
+    test.case = 'dst - empty container, value';
+    var dst = makeDst( [] );
+    var got = _.longFill( dst, 1 );
+    var expected = makeDst( [] );
+    test.is( got === dst );
+    test.identical( got, expected );
 
-  test.case = 'dst = array by constructor, value = map';
-  var dst = new Array( 3 );
-  var got = _.longFill( dst, { a : 1 } );
-  var expected = [ { a : 1 }, { a : 1 }, { a : 1 } ];
-  test.identical( got, expected );
+    test.case = 'dst = empty container, value, range[ 1 ] > dst.length';
+    var dst = makeDst( [] );
+    var got = _.longFill( dst, 1, [ 0, 3 ] );
+    var expected = _.argumentsArrayIs( dst ) ? [ 1, 1, 1 ] : makeDst( [ 1, 1, 1 ] );
+    test.is( sameIs( got, dst ) );
+    test.identical( got, expected );
 
-  /* Unroll */
+    test.case = 'dst = empty container, value, range[ 0 ] < 0, range[ 1 ] > dst.length';
+    var dst = makeDst( [] );
+    var got = _.longFill( dst, 1, [ -2, 3 ] );
+    var expected = _.argumentsArrayIs( dst ) ? [ 1, 1, 1, 1, 1 ] : makeDst( [ 1, 1, 1, 1, 1 ] );
+    test.is( sameIs( got, dst ) );
+    test.identical( got, expected );
 
-  test.case = 'dst = empty unroll';
-  var got = _.longFill( _.unrollMake( [] ) );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
+    test.case = 'dst = empty container, value, range[ 1 ] < range[ 0 ]';
+    var dst = makeDst( [] );
+    var got = _.longFill( dst, 1, [ 0, -2 ] );
+    var expected = makeDst( [] );
+    test.is( got === dst );
+    test.identical( got, expected );
 
-  test.case = 'dst = empty unroll, value = number';
-  var got = _.longFill( _.unrollMake( [] ), 1 );
-  var expected = [];
-  test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
+    test.case = 'dst = not empty container, no value, no range';
+    var dst = makeDst( [ 1, 1, 1 ] );
+    var got = _.longFill( dst );
+    var expected = makeDst( [ 0, 0, 0 ] );
+    test.is( got === dst );
+    test.identical( got, expected );
 
-  test.case = 'dst = empty unroll, value = number, range';
-  var got = _.longFill( _.unrollMake( [] ), 1, [ 0, 3 ] );
-  var expected = [ 1, 1, 1 ];
-  test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
+    test.case = 'dst = not empty container, value';
+    var dst = makeDst( [ 1, 1, 1 ] );
+    var got = _.longFill( dst, 3 );
+    var expected = makeDst( [ 3, 3, 3 ] );
+    test.is( got === dst );
+    test.identical( got, expected );
 
-  test.case = 'dst = empty unroll, value = number, left range < 0';
-  var got = _.longFill( _.unrollMake( [] ), 1, [ -2, 3 ] );
-  var expected = [ 1, 1, 1, 1, 1 ];
-  test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
+    test.case = 'dst - not empty container, value, range - number';
+    var dst = makeDst( [ 1, 1, 1 ] );
+    var got = _.longFill( dst, 2, 4 );
+    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : makeDst( [ 2, 2, 2, 2 ] );
+    test.is( sameIs( got, dst ) );
+    test.identical( got, expected );
 
-  test.case = 'dst = unroll';
-  var got = _.longFill( _.unrollMake( [ 1, 2, 'str' ] ) );
-  var expected = [ 0, 0, 0 ];
-  test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
+    test.case = 'dst = not empty container, value, range';
+    var dst = makeDst( [ 1, 1, 1 ] );
+    var got = _.longFill( dst, 4, [ 1, 2 ] );
+    var expected = makeDst( [ 1, 4, 1 ] );
+    test.is( got === dst );
+    test.identical( got, expected );
 
-  test.case = 'dst = unroll, value = string';
-  var got = _.longFill( _.unrollMake( [ 1, 1, 1 ] ), '5' );
-  var expected = [ '5', '5', '5' ];
-  test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
+    test.case = 'dst - not empty container, value, range[ 0 ] < 0';
+    var dst = makeDst( [ 1, 1, 1 ] );
+    var got = _.longFill( dst, 2, [ -2, 2 ] );
+    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : makeDst( [ 2, 2, 2, 2 ] );
+    test.is( sameIs( got, dst ) );
+    test.identical( got, expected );
 
-  test.case = 'dst = unroll, value = string, range';
-  var got = _.longFill( _.unrollMake( [ 1, 1, 1 ] ), '5', [ 0, 2 ] );
-  var expected = [ '5', '5', 1 ];
-  test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
+    test.case = 'dst - not empty container, value, range[ 1 ] > dst.length';
+    var dst = makeDst( [ 1, 1, 1 ] );
+    var got = _.longFill( dst, 2, [ 0, 4 ] );
+    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : makeDst( [ 2, 2, 2, 2 ] );
+    test.is( sameIs( got, dst ) );
+    test.identical( got, expected );
 
-  test.case = 'dst = unroll, value = string, range';
-  var got = _.longFill( _.unrollMake( [ 1, 1, 1 ] ), '5', [ -2, 2 ] );
-  var expected = [ '5', '5', '5', '5' ];
-  test.identical( got, expected );
-  test.is( _.unrollIs( got ) );
-
-  /* ArgumentsArray */
-
-  test.case = 'dst = empty argumentsArray';
-  var got = _.longFill( _.argumentsArrayMake( [] ) );
-  var expected = [];
-  test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-
-  test.case = 'dst = empty argumentsArray, value = number';
-  var got = _.longFill( _.argumentsArrayMake( [] ), 1 );
-  var expected = [];
-  test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-
-  test.case = 'dst = empty argumentsArray, value = number, range';
-  var got = _.longFill( _.argumentsArrayMake( [] ), 1, [ 0, 3 ] );
-  var expected = [ 1, 1, 1 ];
-  test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-
-  test.case = 'dst = empty argumentsArray, value = number, left range < 0';
-  var got = _.longFill( _.argumentsArrayMake( [] ), 1, [ -2, 3 ] );
-  var expected = [ 1, 1, 1, 1, 1 ];
-  test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-
-  test.case = 'dst = argumentsArray';
-  var got = _.longFill( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
-  var expected = [ 0, 0, 0 ];
-  test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-
-  test.case = 'dst = argumentsArray, value = string';
-  var got = _.longFill( _.argumentsArrayMake( [ 1, 1, 1 ] ), '5' );
-  var expected = [ '5', '5', '5' ];
-  test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-
-  test.case = 'dst = argumentsArray, value = string, range';
-  var got = _.longFill( _.argumentsArrayMake( [ 1, 1, 1 ] ), '5', [ 0, 2 ] );
-  var expected = [ '5', '5', 1 ];
-  test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-
-  test.case = 'dst = argumentsArray, value = string, range';
-  var got = _.longFill( _.argumentsArrayMake( [ 1, 1, 1 ] ), '5', [ -2, 2 ] );
-  var expected = [ '5', '5', '5', '5' ];
-  test.equivalent( got, expected );
-  test.is( !_.argumentsArrayIs( got ) );
-
-  /* BufferTyped */
-
-  test.case = 'dst = empty typedArray';
-  var got = _.longFill( new U8x( [] ) );
-  var expected = new U8x();
-  test.identical( got, expected );
-  test.is( _.bufferTypedIs( got ) );
-
-  test.case = 'dst = empty typedArray, value = number';
-  var got = _.longFill( new I16x( [] ), 1 );
-  var expected = new I16x();
-  test.identical( got, expected );
-  test.is( _.bufferTypedIs( got ) );
-
-  test.case = 'dst = empty typedArray, value = number, range';
-  var got = _.longFill( new F32x( [] ), 1, [ 0, 3 ] );
-  var expected = new F32x( [ 1, 1, 1 ] );
-  test.identical( got, expected );
-  test.is( _.bufferTypedIs( got ) );
-
-  test.case = 'dst = empty typedArray, value = number, left range < 0';
-  var got = _.longFill( new F64x( [] ), 1, [ -2, 3 ] );
-  var expected = new F64x( [ 1, 1, 1, 1, 1 ] );
-  test.identical( got, expected );
-  test.is( _.bufferTypedIs( got ) );
-
-  test.case = 'dst = typedArray';
-  var got = _.longFill( new I8x( [ 1, 2, 3 ] ) );
-  var expected = new I8x( 3 );
-  test.identical( got, expected );
-  test.is( _.bufferTypedIs( got ) );
-
-  test.case = 'dst = typedArray, value = string';
-  var got = _.longFill( new U16x( [ 1, 1, 1 ] ), 5 );
-  var expected = new U16x( [ 5, 5, 5 ] );
-  test.identical( got, expected );
-  test.is( _.bufferTypedIs( got ) );
-
-  test.case = 'dst = typedArray, value = string, range';
-  var got = _.longFill( new U32x( [ 1, 1, 1 ] ), 5, [ 0, 2 ] );
-  var expected = new U32x( [ 5, 5, 1 ] );
-  test.identical( got, expected );
-  test.is( _.bufferTypedIs( got ) );
-
-  test.case = 'dst = typedArray, value = string, range';
-  var got = _.longFill( new Fx( [ 1, 1, 1 ] ), 5, [ -2, 2 ] );
-  var expected = new Fx( [ 5, 5, 5, 5 ] );
-  test.identical( got, expected );
-  test.is( _.bufferTypedIs( got ) );
+    test.case = 'dst - not empty container, value, range[ 1 ] < range[ 0 ]';
+    var dst = makeDst( [ 1, 1, 1 ] );
+    var got = _.longFill( dst, 2, [ 2, 1 ] );
+    var expected = makeDst( [ 1, 1, 1 ] );
+    test.is( got === dst );
+    test.identical( got, expected );
+  }
 
   /* - */
 
@@ -5069,8 +5004,7 @@ function longFill( test )
   test.case = 'wrong argument type';
   test.shouldThrowErrorSync( () => _.longFill( new BufferRaw(), 1 ) );
   test.shouldThrowErrorSync( () => _.longFill( BufferNode.alloc( 10 ), 1 ) );
-
-};
+}
 
 //
 
@@ -5224,6 +5158,7 @@ function longSort( test )
     dstLongNull( listDst[ d ] );
     test.close( 'dstLong - null, srcLong - ' + listDst[ d ].name );
   }
+
   /* sort dstLong */
 
   for( let d in listDst )

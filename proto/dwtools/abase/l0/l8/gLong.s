@@ -1638,7 +1638,8 @@ function longFill( result, value, range )
     // for( let t = 0 ; t < times ; t++ )
     // result[ t ] = value;
 
-    for( let t = 0 ; t < range[ 1 ] ; t++ )
+    // for( let t = 0 ; t < range[ 1 ] ; t++ )
+    for( let t = range[ 0 ] ; t < range[ 1 ] ; t++ )
     result[ t ] = value;
 
   }
