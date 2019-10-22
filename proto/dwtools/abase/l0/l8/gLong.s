@@ -142,11 +142,11 @@ longDuplicate.defaults =
 //
 
 /**
- * The longOnce( dstLong, onEvaluator ) routine returns the dstLong with the duplicated elements removed.
- * The dstLong instance will be returned when possible, if not a new instance of the same type is created.
+ * The routine longOnce() returns the {-dstLong-} with the duplicated elements removed.
+ * The {-dstLong-} instance will be returned when possible, if not a new instance of the same type is created.
  *
- * @param { longIs } dstLong - The source and destination Long.
- * @param { Routine } [ onEvaluate = function( e ) { return e } ] - A callback function.
+ * @param { Long } dstLong - The source and destination Long.
+ * @param { Function } onEvaluate - A callback function.
  *
  * @example
  * _.longOnce( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
@@ -156,7 +156,16 @@ longDuplicate.defaults =
  * _.longOnce( [ 1, 2, 3, 4, 5 ] );
  * // returns [ 1, 2, 3, 4, 5 ]
  *
- * @returns { Number } - Returns the source long without the duplicated elements.
+ * @example
+ * _.longOnce( [ { v : 1 },{ v : 1 }, { v : 1 } ], ( e ) => e.v );
+ * // returns [ { v : 1 } ]
+ *
+ * @example
+ * _.longOnce( [ { v : 1 },{ v : 1 }, { v : 1 } ], ( e ) => e.k );
+ * // returns [ { v : 1 },{ v : 1 }, { v : 1 } ]
+ *
+ * @returns { Long } - If possible, returns the source Long without the duplicated elements.
+ * Otherwise, returns copy of the source Long without the duplicated elements.
  * @function longOnce
  * @throws { Error } If passed arguments is less than one or more than two.
  * @throws { Error } If the first argument is not an long.
@@ -164,12 +173,14 @@ longDuplicate.defaults =
  * @memberof wTools
  */
 
-/* qqq : routine longOnce requires good test coverage and documentation */
+/*
+qqq : routine longOnce requires good test coverage and documentation
+Dmytro : covered and extended documentation.
+*/
 
 function longOnce( dstLong, onEvaluate )
 {
   _.assert( 1 <= arguments.length || arguments.length <= 2 );
-  // _.assert( arguments.length === 1, 'not tested' );
   _.assert( _.longIs( dstLong ), 'Expects Long' );
 
   if( _.arrayIs( dstLong ) )
