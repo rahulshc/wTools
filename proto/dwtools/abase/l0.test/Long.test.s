@@ -8163,41 +8163,51 @@ function arrayBut_( test )
     test.open( 'inplace is not src' );
 
     test.case = 'range = number, ins';
+    var dst = [ 1 ];
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arrayBut_( [ 1 ], src, 0, [ { a : 1 }, 2, [ 10 ] ] );
+    var got = _.arrayBut_( dst, src, 0, [ { a : 1 }, 2, [ 10 ] ] );
     var expected = make( [ { a : 1 }, 2, [ 10 ], 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got === dst );
 
     test.case = 'range = negative number, ins';
+    var dst = [ 1, 2, 3, 'str' ];
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arrayBut_( [ 1 ], src, -5, [ { a : 1 }, 2, [ 10 ] ] );
+    var got = _.arrayBut_( dst, src, -5, [ { a : 1 }, 2, [ 10 ] ] );
     var expected = make( [ { a : 1 }, 2, [ 10 ], 1, 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got === dst );
 
     /* range = array range */
 
     test.case = 'range = array range, ins';
+    var dst = [];
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arrayBut_( [ 1 ], src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var got = _.arrayBut_( dst, src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
     var expected = make( [ { a : 1 }, 2, [ 10 ], 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got === dst );
 
     test.case = 'range = array range, range[ 0 ] < 0, ins';
+    var dst = [ { a : 2 }, 1, 2 ];
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arrayBut_( [ 1 ], src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var got = _.arrayBut_( dst, src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
     var expected = make( [ { a : 1 }, 2, [ 10 ], 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got === dst );
 
     test.case = 'range = array range, range[ 1 ] < 0, ins';
+    var dst = [ null, undefined, 1, 0 ];
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arrayBut_( [ 1 ], src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var got = _.arrayBut_( dst, src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
     var expected = make( [ { a : 1 }, 2, [ 10 ], 1, 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got === dst );
 
     test.close( 'inplace is not src' );
 
