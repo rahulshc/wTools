@@ -164,7 +164,7 @@ longDuplicate.defaults =
  * _.longOnce( [ { v : 1 },{ v : 1 }, { v : 1 } ], ( e ) => e.k );
  * // returns [ { v : 1 },{ v : 1 }, { v : 1 } ]
  *
- * @returns { Long } - If possible, returns the source Long without the duplicated elements.
+ * @returns { Long } - If it is possible, returns the source Long without the duplicated elements.
  * Otherwise, returns copy of the source Long without the duplicated elements.
  * @function longOnce
  * @throws { Error } If passed arguments is less than one or more than two.
@@ -1550,35 +1550,55 @@ function longPut( dstArray, dstOffset )
 //
 
 /**
- * The arrayFill() routine fills all the elements of the given or a new array from the 0 index to an (options.times) index
+ * The routine arrayFill() fills all the elements of the given Long in the provided range
  * with a static value.
  *
- * @param { ( Object | Number | Array ) } o - The options to fill the array.
- * @param { Number } [ o.times = result.length ] o.times - The count of repeats.
-   If in the function passed an Array, the times will be equal the length of the array. If Number than this value.
- * @param { Number } [ o.value = 0 ] - The value for the filling.
+ * @param { Long } result - The source Long.
+ * @param { * } value - Any value to fill the elements in the {-result-}.
+ * If {-value-} is not provided, the routine fills elements of source Long by 0.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the end index, and the start index is 0.
+ * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 1 ] <= range[ 0 ], then routine returns a copy of original Long.
+ * If {-range-} is not provided, routine fills all elements of the {-result-}.
  *
  * @example
- * _.arrayFill( { times : 5, value : 3 } );
- * // returns [ 3, 3, 3, 3, 3 ]
+ * _.longFill( [ 1, 2, 3, 4, 5 ] );
+ * // returns [ 0, 0, 0, 0, 0 ]
  *
  * @example
- * _.arrayFill( 4 );
- * // returns [ 0, 0, 0, 0 ]
+ * _.longFill( [ 1, 2, 3, 4, 5 ], 'a' );
+ * // returns [ 'a', 'a', 'a', 'a', 'a' ]
  *
  * @example
- * _.arrayFill( [ 1, 2, 3 ] );
- * // returns [ 0, 0, 0 ]
+ * _.longFill( [ 1, 2, 3, 4, 5 ], 'a', 2 );
+ * // returns [ 'a', 'a', 3, 4, 5 ]
  *
- * @returns { Array } - Returns an array filled with a static value.
- * @function arrayFill
- * @throws { Error } If missed argument, or got more than one argument.
- * @throws { Error } If passed argument is not an object.
- * @throws { Error } If the last element of the (o.result) is not equal to the (o.value).
+ * @example
+ * _.longFill( [ 1, 2, 3, 4, 5 ], 'a', [ 1, 3 ] );
+ * // returns [ 1, 'a', 'a', 4, 5 ]
+ *
+ * @example
+ * _.longFill( [ 1, 2, 3, 4, 5 ], 'a', [ -1, 3 ] );
+ * // returns [ 'a', 'a', 'a', 'a', 5 ]
+ *
+ * @example
+ * _.longFill( [ 1, 2, 3, 4, 5 ], 'a', [ 4, 3 ] );
+ * // returns [ 1, 2, 3, 4, 5 ]
+ *
+ * @returns { Long } - If it is possible, returns the source Long filled with a static value.
+ * Otherwise, returns copy of the source Long filled with a static value.
+ * @function longFill
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-result-} is not a Long.
+ * @throws { Error } If {-range-} is not a Range or not a Number.
  * @memberof wTools
  */
 
-/* qqq : routine longFill requires good test coverage and documentation */
+/*
+qqq : routine longFill requires good test coverage and documentation
+Dmytro : extended documentation
+*/
 
 function longFill( result, value, range )
 {
@@ -1588,11 +1608,7 @@ function longFill( result, value, range )
   if( _.numberIs( range ) )
   range = [ 0, range ];
 
-  // let l = range[ 0 ];
-  // let r = range[ 1 ];
-
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  // _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.longIs( result ) );
   _.assert( _.rangeIs( range ) );
 
@@ -1617,7 +1633,6 @@ function longFill( result, value, range )
   }
   else
   {
-    debugger;
     // if( times < 0 )
     // times = result.length + times;
     // for( let t = 0 ; t < times ; t++ )
