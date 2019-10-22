@@ -2815,8 +2815,6 @@ function arrayBut( src, range, ins )
   return result;
 }
 
-//
-
 /**
  * The routine arrayButInplace() returns a provided array {-src-} with removed existing elements in bounds
  * defined by {-range-} and inserted new elements from {-ins-}.
@@ -2912,6 +2910,39 @@ function arrayButInplace( src, range, ins )
   result.splice.apply( result, args );
 
   return result;
+}
+
+//
+
+function _argumentsOnlyArray( inplace, src, range, ins )
+{
+  if( arguments.length === 4 )
+  {
+    if( inplace === src )
+    inplace = true;
+    else
+    inplace = false;
+  }
+  else if( inplace === src )
+  {
+    inplace = true;
+  }
+  else
+  {
+    _.assert( 1 <= arguments.length && arguments.length <= 3 );
+    ins = range;
+    range = src;
+    src = inplace;
+    inplace = false;
+  }
+
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  _.assert( _.arrayIs( src ) );
+  _.assert( _.rangeIs( range ) || range === undefined );
+
+  return [ inplace, src, range, ins ];
 }
 
 //
@@ -3345,71 +3376,42 @@ function arrayGrowInplace( src, range, ins )
 
 //
 
-function _argumentsOnly( inplace, src, range, ins )
-{
-  if( arguments.length === 4 )
-  {
-    if( inplace === src )
-    inplace = true;
-    else
-    inplace = false;
-  }
-  else
-  {
-    _.assert( 1 <= arguments.length && arguments.length <= 3 );
-    ins = range;
-    range = src;
-    src = inplace;
-    inplace = false;
-  }
-
-  if( _.numberIs( range ) )
-  range = [ 0, range ];
-
-  _.assert( _.arrayIs( src ) );
-  _.assert( _.rangeIs( range ) || range === undefined );
-
-  return [ inplace, src, range, ins ];
-}
-
 function arrayGrow_( inplace, src, range, ins )
 {
-  [ inplace, src, range, ins ] = _argumentsOnly.apply( this, arguments );
+  [ inplace, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
 
   if( range === undefined )
   return inplace ? src : src.slice();
 
-  range[ 0 ] = range[ 0 ] === undefined ?  0 : range[ 0 ];
-  range[ 1 ] = range[ 1 ] === undefined ?  0 : range[ 1 ];
+  let f = range[ 0 ] === undefined ?  0 : range[ 0 ];
+  let l = range[ 1 ] === undefined ?  0 : range[ 1 ];
 
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
+  if( l < f )
+  l = f;
 
-  if( range[ 0 ] < 0 )
+  if( f < 0 )
   {
-    range[ 1 ] -= range[ 0 ];
-    range[ 0 ] -= range[ 0 ];
+    l -= f;
+    f -= f;
   }
 
-  if( range[ 0 ] > 0 )
-  range[ 0 ] = 0;
-  if( range[ 1 ] < src.length )
-  range[ 1 ] = src.length;
+  if( f > 0 )
+  f = 0;
+  if( l < src.length )
+  l = src.length;
 
-  if( range[ 1 ] === src.length )
+  if( l === src.length )
   return inplace ? src : src.slice();
 
   let l2 = src.length;
 
   let result = inplace ? src : src.slice();
-  result.length = range[ 1 ];
+  result.length = l;
 
   if( ins !== undefined )
   {
     for( let r = l2; r < result.length ; r++ )
-    {
-      result[ r ] = ins;
-    }
+    result[ r ] = ins;
   }
 
   return result;
@@ -8456,8 +8458,8 @@ let Routines =
   arraySelect,
   arraySelectInplace,
   arrayGrow,
-  arrayGrow_,
   arrayGrowInplace,
+  arrayGrow_,
   arrayRelength,
   arrayRelengthInplace,
 
