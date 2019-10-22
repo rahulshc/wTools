@@ -8708,41 +8708,51 @@ function arraySelect_( test )
     /* range = number */
 
     test.case = 'range = number, ins';
+    var dst = [ 1, 2 ];
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arraySelect_( [ 1 ], src, 0, [ { a : 1 }, 2, [ 10 ] ] );
+    var got = _.arraySelect_( dst, src, 0, [ { a : 1 }, 2, [ 10 ] ] );
     var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got === dst );
 
     test.case = 'range = negative number, ins';
+    var dst = [ undefined, [ 1 ] ];
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arraySelect_( [ 1 ], src, -5, [ { a : 1 }, 2, [ 10 ] ] );
+    var got = _.arraySelect_( dst, src, -5, [ { a : 1 }, 2, [ 10 ] ] );
     var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got === dst );
 
     /* range = array range */
 
     test.case = 'range = array range, ins';
+    var dst = [ [ 0 ], [ 1 ] ];
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arraySelect_( [ 1 ], src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var got = _.arraySelect_( dst, src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
     var expected = make( [ 1, 2 ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got === dst );
 
     test.case = 'range = array range, range[ 0 ] < 0, ins';
+    var dst = [ 1, 2, 3 ];
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arraySelect_( [ 1 ], src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var got = _.arraySelect_( dst, src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
     var expected = make( [ 1, 2 ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got === dst );
 
     test.case = 'range = array range, range[ 1 ] < 0, ins';
+    var dst = [ 1, 2, 3 ]
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
-    var got = _.arraySelect_( [ 1 ], src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var got = _.arraySelect_( dst, src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
     var expected = make( [] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got === dst );
 
     test.close( 'inplace is not src' );
 
