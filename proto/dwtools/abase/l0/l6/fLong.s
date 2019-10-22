@@ -2815,6 +2815,8 @@ function arrayBut( src, range, ins )
   return result;
 }
 
+//
+
 /**
  * The routine arrayButInplace() returns a provided array {-src-} with removed existing elements in bounds
  * defined by {-range-} and inserted new elements from {-ins-}.
@@ -2936,13 +2938,40 @@ function _argumentsOnlyArray( inplace, src, range, ins )
     inplace = false;
   }
 
-  if( _.numberIs( range ) )
-  range = [ 0, range ];
-
-  _.assert( _.arrayIs( src ) );
-  _.assert( _.rangeIs( range ) || range === undefined );
+  _.assert( _.arrayLikeResizable( src ) );
 
   return [ inplace, src, range, ins ];
+}
+
+//
+
+function arrayBut_( inplace, src, range, ins )
+{
+  [ inplace, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+
+  if( range === undefined )
+  return inplace ? src : src.slice();
+
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
+
+  _.assert( _.rangeIs( range ) );
+  _.assert( ins === undefined || _.longIs( ins ) );
+
+  _.rangeClamp( range, [ 0, src.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  let args = [ range[ 0 ], range[ 1 ] - range[ 0 ] ];
+
+  if( ins )
+  _.arrayAppendArray( args, ins );
+
+  let result = inplace ? src : src.slice();
+
+  result.splice.apply( result, args );
+
+  return result;
 }
 
 //
@@ -3382,6 +3411,10 @@ function arrayGrow_( inplace, src, range, ins )
 
   if( range === undefined )
   return inplace ? src : src.slice();
+
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+  _.assert( _.rangeIs( range ) || _.numberIs( range ) || range === undefined );
 
   let f = range[ 0 ] === undefined ?  0 : range[ 0 ];
   let l = range[ 1 ] === undefined ?  0 : range[ 1 ];
@@ -8451,10 +8484,10 @@ let Routines =
   // array transformer
 
   arraySlice,
-  // arrayButInplace, // Dmytro : maybe it should be arraySliceInplace
 
   arrayBut,
   arrayButInplace,
+  arrayBut_,
   arraySelect,
   arraySelectInplace,
   arrayGrow,
