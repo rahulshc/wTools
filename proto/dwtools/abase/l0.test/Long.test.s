@@ -9673,6 +9673,316 @@ function arrayRelengthInplace( test )
 
     test.case = 'range = number, not ins';
     var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, 1 );
+    var expected = make( [ 2, 3, 'str', [ 1 ] ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range = negative number, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, -5 );
+    var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range = number, range > src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, 6, 'abc' );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range = negative number, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, -5, 'abc' );
+    var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    /* range = array range */
+
+    test.case = 'range = array range, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, [ 0, 2 ] );
+    var expected = make( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range = array range, range[ 0 ] < 0, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, [ -5, 2 ] );
+    var expected = make( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range = array range, range[ 1 ] < 0, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, [ 0, -5 ] );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range[ 1 ] < src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] < 0, range[ 1 ] < src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] = 0, range[ 1 ] < 0, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] > range[ 1 ], range[ 0 ] > src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, [ 8, 0 ] );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] > range[ 1 ], range[ 0 ] < src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, [ 3, 1 ] );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] > 0, [ 1 ] > src.length, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, [ 3, 6 ] );
+    var expected = make( [ 'str', [ 1 ], undefined ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] > 0, [ 1 ] > src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelengthInplace( src, [ 3, 7 ], 7 );
+    var expected = make( [ 'str', [ 1 ], 7, 7 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayRelengthInplace() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( [ 1, 2 ], 0, [ 4 ], 4 ) );
+
+  test.case = 'src is not array';
+  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( 'str', 0, [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( { a : 1 }, 0, [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( new Fx(), 0, [ 4 ] ) );
+
+  test.case = 'not range';
+  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( [ 1, 2 ], 'str', [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( [ 1, 2 ], [], [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( [ 1, 2 ], [ 'str' ], [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( [ 1, 2 ], [ 1, 2, 3 ], [ 4 ] ) );
+
+}
+
+//
+
+function arrayRelength_( test )
+{
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+
+  /* - */
+
+  test.open( 'array' );
+  run( array );
+  test.close( 'array' );
+
+  /* - */
+
+  test.open( 'unroll' );
+  run( unroll );
+  test.close( 'unroll' );
+
+  /* - */
+
+  function run( make )
+  {
+    test.open( 'not inplace' );
+
+    /* range = number */
+
+    test.case = 'range = number, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, 1 );
+    var expected = [ 2, 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = negative number, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, -5 );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = number, range > src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, 6, 'abc' );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = negative number, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, -5, 'abc' );
+    var expected = [ 1, 2, 3, 'str', [ 1 ] ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* range = array range */
+
+    test.case = 'range = array range, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, [ 0, 2 ] );
+    var expected = [ 1, 2 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = array range, range[ 0 ] < 0, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, [ -5, 2 ] );
+    var expected = [ 1, 2 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = array range, range[ 1 ] < 0, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, [ 0, -5 ] );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 1 ] < src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = [ 1, 2 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] < 0, range[ 1 ] < src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = [ 1, 2 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] = 0, range[ 1 ] < 0, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] > range[ 1 ], range[ 0 ] > src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, [ 8, 0 ] );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] > range[ 1 ], range[ 0 ] < src.length';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, [ 3, 1 ] );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] > 0, [ 1 ] > src.length, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, [ 3, 6 ] );
+    var expected = [ 'str', [ 1 ], undefined ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] > 0, [ 1 ] > src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( src, [ 3, 7 ], 7 );
+    var expected = [ 'str', [ 1 ], 7, 7 ];
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* - */
+
+    test.open( 'inplace is not src' );
+
+    test.case = 'range = number, range > src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( [ 1 ], src, 6, 'abc' );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range = negative number, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( [ 1 ], src, -5, 'abc' );
+    var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* range = array range */
+
+    test.case = 'range[ 1 ] < src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( [ 1 ], src, [ 0, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] < 0, range[ 1 ] < src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( [ 1 ], src, [ -5, 2 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] = 0, range[ 1 ] < 0, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( [ 1 ], src, [ 0, -5 ], [ { a : 1 }, 2, [ 10 ] ] );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] > 0, [ 1 ] > src.length, ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
+    var got = _.arrayRelength_( [ 1 ], src, [ 3, 7 ], 7 );
+    var expected = make( [ 'str', [ 1 ], 7, 7 ] );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.close( 'inplace is not src' );
+
+    test.close( 'not inplace' );
+
+    /* - */
+
+    test.open( 'inplace' );
+
+    /* range = number */
+
+    test.case = 'range = number, not ins';
+    var src = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     var got = _.arrayRelength_( src, src, 1 );
     var expected = make( [ 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
@@ -9770,6 +10080,8 @@ function arrayRelengthInplace( test )
     var expected = make( [ 'str', [ 1 ], 7, 7 ] );
     test.identical( got, expected );
     test.is( got === src );
+
+    test.close( 'inplace' );
   }
 
   /* - */
@@ -9778,22 +10090,21 @@ function arrayRelengthInplace( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.arrayRelengthInplace() );
+  test.shouldThrowErrorSync( () => _.arrayRelength_() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( [ 1, 2 ], 0, [ 4 ], 4 ) );
+  test.shouldThrowErrorSync( () => _.arrayRelength_( [ 1, 2 ], 0, [ 4 ], 4 ) );
 
   test.case = 'src is not array';
-  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( 'str', 0, [ 4 ] ) );
-  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( { a : 1 }, 0, [ 4 ] ) );
-  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( new Fx(), 0, [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelength_( 'str', 0, [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelength_( { a : 1 }, 0, [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelength_( new Fx(), 0, [ 4 ] ) );
 
   test.case = 'not range';
-  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( [ 1, 2 ], 'str', [ 4 ] ) );
-  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( [ 1, 2 ], [], [ 4 ] ) );
-  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( [ 1, 2 ], [ 'str' ], [ 4 ] ) );
-  test.shouldThrowErrorSync( () => _.arrayRelengthInplace( [ 1, 2 ], [ 1, 2, 3 ], [ 4 ] ) );
-
+  test.shouldThrowErrorSync( () => _.arrayRelength_( [ 1, 2 ], 'str', [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelength_( [ 1, 2 ], [], [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelength_( [ 1, 2 ], [ 'str' ], [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arrayRelength_( [ 1, 2 ], [ 1, 2, 3 ], [ 4 ] ) );
 }
 
 //
@@ -33600,6 +33911,7 @@ var Self =
     arrayGrow_,
     arrayRelength,
     arrayRelengthInplace,
+    arrayRelength_,
 
     // array sequential search
 
