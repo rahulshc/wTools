@@ -2923,26 +2923,25 @@ function arrayButInplace( src, range, ins )
 
 function _argumentsOnlyArray( dst, src, range, ins )
 {
-  if( arguments.length === 4 )
-  {
-    if( dst === src )
-    dst = src;
-    else if( dst === null )
-    dst = src.slice();
-    else
-    dst.splice( 0, dst.length, ... src );
-  }
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
+
+  if( dst === null )
+  dst = true;
   else if( dst === src )
-  {
-    dst = src;
-  }
+  dst = false;
+  else if( arguments.length === 4 )
+  _.assert( _.arrayLikeResizable( dst ) );
   else
   {
-    _.assert( 1 <= arguments.length && arguments.length <= 3 );
-    ins = range;
-    range = src;
-    src = dst;
-    dst = src.slice();
+    if( arguments.length > 1 && _.arrayLikeResizable( dst ) && !_.rangeIs( src ) && !_.numberIs( src ) )
+    {}
+    else
+    {
+      ins = range;
+      range = src;
+      src = dst;
+      dst = true;
+    }
   }
 
   _.assert( _.arrayLikeResizable( src ) );
@@ -2954,10 +2953,18 @@ function _argumentsOnlyArray( dst, src, range, ins )
 
 function arrayBut_( dst, src, range, ins )
 {
+
   [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
 
   if( range === undefined )
-  return dst;
+  {
+    if( dst.length !== undefined )
+    dst.splice( 0, dst.length, ... src );
+    else
+    dst = dst === true ? src.slice() : src;
+
+    return dst;
+  }
 
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
@@ -2969,14 +2976,34 @@ function arrayBut_( dst, src, range, ins )
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
-  let args = [ range[ 0 ], range[ 1 ] - range[ 0 ] ];
+  let result;
+  if( dst !== false )
+  {
+    if( dst.length !== undefined )
+    {
+      result = dst;
+      _.longEmpty( result );
+    }
+    else
+    result = [];
 
-  if( ins )
-  _.arrayAppendArray( args, ins );
+    for( let i = 0; i < range[ 0 ]; i++ )
+    result[ i ] = src[ i ];
 
-  let result = dst;
+    if( ins )
+    result.push( ... ins );
 
-  result.splice.apply( result, args );
+    for( let j = range[ 1 ]; j < src.length; j++ )
+    result.push( src[ j ] );
+  }
+  else
+  {
+    result = src
+    if( ins )
+    result.splice.apply( result, [ range[ 0 ], range[ 1 ] - range[ 0 ], ... ins ] );
+    else
+    result.splice.apply( result, [ range[ 0 ], range[ 1 ] - range[ 0 ] ] );
+  }
 
   return result;
 }
@@ -3180,12 +3207,11 @@ function arraySelect_( dst, src, range, ins )
   [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
 
   if( range === undefined )
-  return dst;
+  return returnDst();
 
   if( _.numberIs( range ) )
   range = [ range, src.length ];
 
-  _.assert( _.arrayIs( src ) );
   _.assert( _.rangeIs( range ) );
 
   _.rangeClamp( range, [ 0, src.length ] );
@@ -3193,17 +3219,45 @@ function arraySelect_( dst, src, range, ins )
   range[ 1 ] = range[ 0 ];
 
   if( range[ 0 ] === 0 && range[ 1 ] === src.length )
-  return dst;
+  return returnDst();
 
   let f2 = Math.max( range[ 0 ], 0 );
   let l2 = Math.min( src.length, range[ 1 ] );
 
-  let result = dst;
+  let result
+  if( dst !== false )
+  {
+    if( dst.length !== undefined )
+    {
+      result = dst;
+      _.longEmpty( result );
+    }
+    else
+    result = [];
 
-  result.splice.apply( result, [ 0, f2 ] );
-  result.length = range[ 1 ] - range[ 0 ];
+    for( let i = f2; i < l2; i++ )
+    result.push( src[ i ] );
+  }
+  else
+  {
+    result = src;
+    result.splice.apply( result, [ 0, f2 ] );
+    result.length = range[ 1 ] - range[ 0 ];
+  }
 
   return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    dst.splice( 0, dst.length, ... src );
+    else
+    dst = dst === true ? src.slice() : src;
+
+    return dst;
+  }
 }
 
 //
@@ -3448,10 +3502,11 @@ function arrayGrowInplace( src, range, ins )
 
 function arrayGrow_( dst, src, range, ins )
 {
+
   [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
 
   if( range === undefined )
-  return dst;
+  return returnDst();
 
   if( _.numberIs( range ) )
   range = [ 0, range ];
@@ -3475,11 +3530,24 @@ function arrayGrow_( dst, src, range, ins )
   l = src.length;
 
   if( l === src.length )
-  return dst;
+  return returnDst();
 
   let l2 = src.length;
 
-  let result = dst;
+  let result;
+  if( dst !== false )
+  {
+    if( dst.length !== undefined )
+    {
+      result = dst;
+      result.splice( 0, result.length, ... src );
+    }
+    else
+    result = src.slice();
+  }
+  else
+  result = src;
+
   result.length = l;
 
   if( ins !== undefined )
@@ -3489,6 +3557,18 @@ function arrayGrow_( dst, src, range, ins )
   }
 
   return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    dst.splice( 0, dst.length, ... src );
+    else
+    dst = dst === true ? src.slice() : src;
+
+    return dst;
+  }
 }
 
 //
@@ -3715,10 +3795,11 @@ function arrayRelengthInplace( src, range, ins )
 
 function arrayRelength_( dst, src, range, ins )
 {
+
   [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
 
   if( range === undefined )
-  return dst;
+  return returnDst();
 
   if( _.numberIs( range ) )
   range = [ range, src.length ];
@@ -3735,14 +3816,31 @@ function arrayRelength_( dst, src, range, ins )
   f = 0;
 
   if( f === 0 && l === src.length )
-  return dst;
+  return returnDst();
 
   let f2 = Math.max( f, 0 );
   let l2 = Math.min( src.length, l );
 
-  let result = dst;
+  let result;
+  if( dst !== false )
+  {
+    if( dst.length !== undefined )
+    {
+      result = dst;
+      _.longEmpty( dst );
+    }
+    else
+    result = [];
 
-  result.splice.apply( result, [ 0, f ] );
+    for( let i = f; i < l2; i++ )
+    result.push( src[ i ] );
+  }
+  else
+  {
+    result = src;
+    result.splice( 0, f );
+  }
+
   result.length = l - f;
 
   if( ins !== undefined )
@@ -3752,6 +3850,18 @@ function arrayRelength_( dst, src, range, ins )
   }
 
   return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    dst.splice( 0, dst.length, ... src );
+    else
+    dst = dst === true ? src.slice() : src;
+
+    return dst;
+  }
 }
 
 // --
@@ -8527,6 +8637,7 @@ let Routines =
 
   longBut,
   longButInplace,
+  longBut_,
   longSelect,
   longSelectInplace,
   longGrow,
