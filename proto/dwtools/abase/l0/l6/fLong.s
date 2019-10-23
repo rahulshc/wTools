@@ -1000,6 +1000,108 @@ function longButInplace( array, range, val )
 
 //
 
+function _argumentsOnlyLong( dst, src, range, ins )
+{
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
+
+  if( dst === null )
+  dst = true;
+  else if( dst === src )
+  dst = false;
+  else if( arguments.length === 4 )
+  _.assert( _.longIs( dst ), '{-dst-} should be Long' );
+  else
+  {
+    if( arguments.length > 1 && dst !== src && !_.rangeIs( src ) && !_.numberIs( src ) )
+    _.assert( _.longIs( dst ) );
+    else
+    {
+      ins = range;
+      range = src;
+      src = dst;
+      dst = true;
+    }
+  }
+
+  _.assert( _.longIs( src ) );
+
+  return [ dst, src, range, ins ];
+}
+
+//
+
+function longBut_( dst, array, range, val )
+{
+
+  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+
+  if( _.arrayLikeResizable( array ) )
+  return _.arrayBut_.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
+
+  _.assert( _.rangeIs( range ) );
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === range[ 1 ] && val === undefined )
+  return returnDst();
+
+  let d = range[ 1 ] - range[ 0 ];
+  let len = val ? val.length : 0;
+  let d2 = d - len;
+  let l2 = array.length - d2;
+
+  let result;
+  if( dst === true || dst.length !== l2 )
+  result = _.longMakeUndefined( array, l2 );
+  else
+  result = dst;
+
+  for( let i = 0 ; i < range[ 0 ] ; i++ )
+  result[ i ] = array[ i ];
+
+  for( let i = range[ 1 ] ; i < array.length ; i++ )
+  result[ i-d2 ] = array[ i ];
+
+  if( val )
+  for( let i = 0 ; i < val.length ; i++ )
+  result[ range[ 0 ]+i ] = val[ i ];
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    {
+      if( _.arrayLikeResizable( dst ) )
+      return dst.splice( 0, dst.length, ... array );
+      else
+      {
+        if( dst.length !== array.length )
+        dst = _.longMakeUndefined( dst, array.length );
+
+        for( let i = 0; i < dst.length; i++ )
+        dst[ i ] = array[ i ];
+
+        return dst;
+      }
+    }
+    return dst === true ? _.longMake( array ) : array;
+  }
+
+}
+
+//
+
 /**
  * The routine longSelect() returns a copy of a portion of provided Long {-array-} into a new Long
  * selected by {-range-}. The original {-array-} will not be modified.
