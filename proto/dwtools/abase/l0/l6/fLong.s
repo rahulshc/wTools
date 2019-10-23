@@ -2111,6 +2111,83 @@ function longRelengthInplace( array, range, val )
 
 }
 
+//
+
+function longRelength_( dst, array, range, val )
+{
+
+  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+
+  if( _.arrayLikeResizable( array ) )
+  return _.arrayRelength_.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  _.assert( _.rangeIs( range ) );
+
+  range[ 0 ] = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  range[ 1 ] = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
+
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+  if( range[ 0 ] > array.length )
+  range[ 0 ] = array.length
+
+  if( range[ 0 ] < 0 )
+  range[ 0 ] = 0;
+
+  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+  return returnDst();
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
+
+  let result;
+  if( _.boolIs( dst ) )
+  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
+  else if( dst.length !== range[ 1 ] || _.arrayLikeResizable( dst ) )
+  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
+  else
+  result = dst;
+
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-f2 ] = array[ r ];
+
+  if( val !== undefined )
+  {
+    for( let r = l2 - range[ 0 ]; r < result.length; r++ )
+    result[ r ] = val;
+  }
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    {
+      if( _.arrayLikeResizable( dst ) )
+      return dst.splice( 0, dst.length, ... array );
+      else
+      {
+        if( dst.length !== array.length )
+        dst = _.longMakeUndefined( dst, array.length );
+
+        for( let i = 0; i < dst.length; i++ )
+        dst[ i ] = array[ i ];
+
+        return dst;
+      }
+    }
+    return dst === true ? _.longMake( array ) : array;
+  }
+}
+
 // --
 // array checker
 // --
@@ -8891,6 +8968,7 @@ let Routines =
   longGrow_,
   longRelength,
   longRelengthInplace,
+  longRelength_,
 
   // array checker
 
