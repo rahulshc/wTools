@@ -1059,7 +1059,7 @@ function longBut_( dst, array, range, val )
   let l2 = array.length - d2;
 
   let result;
-  if( dst === true || dst === false )
+  if( _.boolIs( dst ) )
   result = _.longMakeUndefined( array, l2 );
   else if( _.arrayLikeResizable( dst ) )
   result = _.longEmpty( dst );
@@ -1444,12 +1444,12 @@ function longSelect_( dst, array, range, val )
   let l2 = Math.min( array.length, range[ 1 ] );
 
   let result;
-  if( dst === true || dst === false )
-  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
+  if( _.boolIs( dst ) )
+  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
   else if( _.arrayLikeResizable( dst ) )
   result = _.longEmpty( dst );
   else if( dst.length !== l2 )
-  result = _.longMakeUndefined( dst, range[ 1 ]-range[ 0 ] );
+  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
   else
   result = dst;
 
@@ -1554,9 +1554,9 @@ function longSelect_( dst, array, range, val )
   qqq : extend documentation and test coverage of longGrowInplace
   Dmytro : extended documentation, covered routine longGrow, longGrowInplace
   qqq : implement arrayGrow
-  Dmitro : implemented
+  Dmytro : implemented
   qqq : implement arrayGrowInplace
-  Dmitro : implemented
+  Dmytro : implemented
 */
 
 function longGrow( array, range, val )
@@ -1804,6 +1804,89 @@ function longGrowInplace( array, range, val )
   // /* */
   //
   // return result;
+}
+
+//
+
+function longGrow_( dst, array, range, val )
+{
+
+  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+
+  if( _.arrayLikeResizable( array ) )
+  return arrayGrow_.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  _.assert( _.rangeIs( range ) );
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( f < 0 )
+  {
+    range[ 1 ] -= range[ 0 ];
+    range[ 0 ] -= range[ 0 ];
+  }
+
+  if( range[ 0 ] > 0 )
+  range[ 0 ] = 0;
+  if( range[ 1 ] < array.length )
+  range[ 1 ] = array.length;
+
+  if( range[ 1 ] === array.length )
+  return returnDst();
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
+
+  let result;
+  if( _.boolIs( dst ) )
+  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
+  else if( _.arrayLikeResizable( dst ) )
+  result = _.longEmpty( dst );
+  else if( dst.length !== l )
+  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
+  else
+  result = dst;
+
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-f2 ] = array[ r ];
+
+  if( val !== undefined )
+  {
+    for( let r = l2 - f; r < result.length ; r++ )
+    result[ r ] = val;
+  }
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    {
+      if( _.arrayLikeResizable( dst ) )
+      return dst.splice( 0, dst.length, ... array );
+      else
+      {
+        if( dst.length !== array.length )
+        dst = _.longMakeUndefined( dst, array.length );
+
+        for( let i = 0; i < dst.length; i++ )
+        dst[ i ] = array[ i ];
+
+        return dst;
+      }
+    }
+    return dst === true ? _.longMake( array ) : array;
+  }
 }
 
 //
