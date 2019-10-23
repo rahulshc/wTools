@@ -1448,7 +1448,7 @@ function longSelect_( dst, array, range, val )
   result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
   else if( _.arrayLikeResizable( dst ) )
   result = _.longEmpty( dst );
-  else if( dst.length !== l2 )
+  else if( dst.length !== range[ 1 ] - range[ 0 ] )
   result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
   else
   result = dst;
@@ -1850,7 +1850,12 @@ function longGrow_( dst, array, range, val )
   let result;
   if( _.boolIs( dst ) )
   result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
-  else if( dst.length !== range[ 1 ] || _.arrayLikeResizable( dst ) )
+  else if( _.arrayLikeResizable( dst ) )
+  {
+    result = dst;
+    result.length = range[ 1 ] - range[ 0 ];
+  }
+  else if( dst.length !== range[ 1 ] - range[ 0 ] )
   result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
   else
   result = dst;
@@ -2149,7 +2154,12 @@ function longRelength_( dst, array, range, val )
   let result;
   if( _.boolIs( dst ) )
   result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
-  else if( dst.length !== range[ 1 ] || _.arrayLikeResizable( dst ) )
+  else if( _.arrayLikeResizable( dst ) )
+  {
+    result = dst;
+    result.length = range[ 1 ] - range[ 0 ];
+  }
+  else if( dst.length !== range[ 1 ] - range[ 0 ] )
   result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
   else
   result = dst;
