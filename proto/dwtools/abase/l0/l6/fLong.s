@@ -1059,7 +1059,7 @@ function longBut_( dst, array, range, val )
   let l2 = array.length - d2;
 
   let result;
-  if( dst === true )
+  if( dst === true || dst === false )
   result = _.longMakeUndefined( array, l2 );
   else if( dst.length !== l2 )
   result = _.longMakeUndefined( dst, l2 );
@@ -1440,9 +1440,9 @@ function longSelect_( dst, array, range, val )
 
   let result;
   if( dst === true )
-  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0  );
+  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
   else if( dst.length !== l2 )
-  result = _.longMakeUndefined( dst, range[ 1 ]-range[ 0  );
+  result = _.longMakeUndefined( dst, range[ 1 ]-range[ 0 ] );
   else
   result = dst;
 
