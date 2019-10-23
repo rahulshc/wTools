@@ -1061,6 +1061,8 @@ function longBut_( dst, array, range, val )
   let result;
   if( dst === true || dst === false )
   result = _.longMakeUndefined( array, l2 );
+  else if( _.arrayLikeResizable( dst ) )
+  result = _.longEmpty( dst );
   else if( dst.length !== l2 )
   result = _.longMakeUndefined( dst, l2 );
   else
@@ -1438,16 +1440,19 @@ function longSelect_( dst, array, range, val )
   if( range[ 0 ] === 0 && range[ 1 ] === array.length )
   return returnDst();
 
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
+
   let result;
-  if( dst === true )
+  if( dst === true || dst === false )
   result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
+  else if( _.arrayLikeResizable( dst ) )
+  result = _.longEmpty( dst );
   else if( dst.length !== l2 )
   result = _.longMakeUndefined( dst, range[ 1 ]-range[ 0 ] );
   else
   result = dst;
 
-  let f2 = Math.max( range[ 0 ], 0 );
-  let l2 = Math.min( array.length, range[ 1 ] );
   for( let r = f2 ; r < l2 ; r++ )
   result[ r-f2 ] = array[ r ];
 
@@ -3146,10 +3151,7 @@ function arrayBut_( dst, src, range, ins )
   if( dst !== false )
   {
     if( dst.length !== undefined )
-    {
-      result = dst;
-      _.longEmpty( result );
-    }
+    result = _.longEmpty( dst );
     else
     result = [];
 
@@ -3394,10 +3396,7 @@ function arraySelect_( dst, src, range, ins )
   if( dst !== false )
   {
     if( dst.length !== undefined )
-    {
-      result = dst;
-      _.longEmpty( result );
-    }
+    result = _.longEmpty( dst );
     else
     result = [];
 
@@ -3991,10 +3990,7 @@ function arrayRelength_( dst, src, range, ins )
   if( dst !== false )
   {
     if( dst.length !== undefined )
-    {
-      result = dst;
-      _.longEmpty( dst );
-    }
+    result = _.longEmpty( dst );
     else
     result = [];
 
@@ -8806,6 +8802,7 @@ let Routines =
   longBut_,
   longSelect,
   longSelectInplace,
+  longSelect_,
   longGrow,
   longGrowInplace,
   longRelength,
