@@ -1059,8 +1059,10 @@ function longBut_( dst, array, range, val )
   let l2 = array.length - d2;
 
   let result;
-  if( dst === true || dst.length !== l2 )
+  if( dst === true )
   result = _.longMakeUndefined( array, l2 );
+  else if( dst.length !== l2 )
+  result = _.longMakeUndefined( dst, l2 );
   else
   result = dst;
 
@@ -1097,7 +1099,6 @@ function longBut_( dst, array, range, val )
     }
     return dst === true ? _.longMake( array ) : array;
   }
-
 }
 
 //
@@ -1410,6 +1411,69 @@ function longSelectInplace( array, range, val )
   // /* */
   //
   // return result;
+}
+
+//
+
+function longSelect_( dst, array, range, val )
+{
+
+  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+
+  if( _.arrayLikeResizable( array ) )
+  return _.arraySelect_.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  _.assert( _.rangeIs( range ) )
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+  return returnDst();
+
+  let result;
+  if( dst === true )
+  result = _.longMakeUndefined( array, range[ 1 ]-range[ 0  );
+  else if( dst.length !== l2 )
+  result = _.longMakeUndefined( dst, range[ 1 ]-range[ 0  );
+  else
+  result = dst;
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-f2 ] = array[ r ];
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    {
+      if( _.arrayLikeResizable( dst ) )
+      return dst.splice( 0, dst.length, ... array );
+      else
+      {
+        if( dst.length !== array.length )
+        dst = _.longMakeUndefined( dst, array.length );
+
+        for( let i = 0; i < dst.length; i++ )
+        dst[ i ] = array[ i ];
+
+        return dst;
+      }
+    }
+    return dst === true ? _.longMake( array ) : array;
+  }
 }
 
 //
