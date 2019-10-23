@@ -1012,7 +1012,7 @@ function _argumentsOnlyLong( dst, src, range, ins )
   _.assert( _.longIs( dst ), '{-dst-} should be Long' );
   else
   {
-    if( arguments.length > 1 && dst !== src && !_.rangeIs( src ) && !_.numberIs( src ) )
+    if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
     _.assert( _.longIs( dst ) );
     else
     {
@@ -3274,8 +3274,8 @@ function _argumentsOnlyArray( dst, src, range, ins )
   _.assert( _.arrayLikeResizable( dst ) );
   else
   {
-    if( arguments.length > 1 && _.arrayLikeResizable( dst ) && !_.rangeIs( src ) && !_.numberIs( src ) )
-    {}
+    if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
+    _.assert( _.arrayLikeResizable( dst ) );
     else
     {
       ins = range;
@@ -8969,6 +8969,7 @@ let Routines =
 
   longBut,
   longButInplace,
+  _argumentsOnlyLong,
   longBut_,
   longSelect,
   longSelectInplace,
@@ -9017,6 +9018,7 @@ let Routines =
 
   arrayBut,
   arrayButInplace,
+  _argumentsOnlyArray,
   arrayBut_,
   arraySelect,
   arraySelectInplace,
