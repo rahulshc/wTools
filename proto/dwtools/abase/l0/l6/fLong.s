@@ -1824,11 +1824,13 @@ function longGrow_( dst, array, range, val )
 
   _.assert( _.rangeIs( range ) );
 
-  _.rangeClamp( range, [ 0, array.length ] );
+  range[ 0 ] = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  range[ 1 ] = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
+
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
-  if( f < 0 )
+  if( range[ 0 ] < 0 )
   {
     range[ 1 ] -= range[ 0 ];
     range[ 0 ] -= range[ 0 ];
@@ -1848,9 +1850,7 @@ function longGrow_( dst, array, range, val )
   let result;
   if( _.boolIs( dst ) )
   result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
-  else if( _.arrayLikeResizable( dst ) )
-  result = _.longEmpty( dst );
-  else if( dst.length !== l )
+  else if( dst.length !== range[ 1 ] || _.arrayLikeResizable( dst ) )
   result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
   else
   result = dst;
@@ -1860,7 +1860,7 @@ function longGrow_( dst, array, range, val )
 
   if( val !== undefined )
   {
-    for( let r = l2 - f; r < result.length ; r++ )
+    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
     result[ r ] = val;
   }
 
@@ -8888,6 +8888,7 @@ let Routines =
   longSelect_,
   longGrow,
   longGrowInplace,
+  longGrow_,
   longRelength,
   longRelengthInplace,
 

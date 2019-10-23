@@ -3061,7 +3061,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, [ 0, dst.length + 2 ] );
     var expected = [ 1, 2, 3, 4, 5 ];
     test.identical( got, expected );
-    test.identical( got.length, 5 );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, val = number';
@@ -3216,7 +3215,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, not a val';
@@ -3224,7 +3222,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, [ 0, dst.length + 2 ] );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, val = number';
@@ -3232,7 +3229,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, [ 0, dst.length + 2 ], 0 );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, val = number';
@@ -3240,7 +3236,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, [ dst.length - 1, dst.length * 2 ], 0 );
     var expected = new list( [ 5 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got !== dst );
 
     test.case = 'range < dst.length';
@@ -3248,7 +3243,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, [ 0, 3 ] );
     var expected = new list( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got !== dst );
 
     test.case = 'range < dst.length, val = number';
@@ -3256,7 +3250,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, [ 0, 3 ], 0 );
     var expected = new list( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got !== dst );
 
     test.case = 'f < 0, not a val';
@@ -3264,7 +3257,6 @@ function longSelect_( test )
     got = _.longSelect_( dst, [ -1, 3 ] );
     expected = new list( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got !== dst );
 
     test.case = 'l < 0, not a val';
@@ -3272,7 +3264,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, [ 0, -1 ] );
     var expected = new list();
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got !== dst );
 
     test.case = 'f < 0, val = number';
@@ -3280,7 +3271,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, [ -1, 3 ], 0 );
     var expected = new list( [ 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got !== dst );
 
     /* */
@@ -3323,7 +3313,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, dst );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got === dst );
 
     test.case = 'range > dst.length, not a val';
@@ -3331,7 +3320,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, dst, [ 0, dst.length + 2 ] );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got === dst );
 
     test.case = 'range > dst.length, val = number';
@@ -3339,7 +3327,6 @@ function longSelect_( test )
     var got = _.longSelect_( dst, dst, [ 0, dst.length + 2 ], 0 );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
     test.is( got === dst );
 
     test.close( 'inplace' );
@@ -3940,6 +3927,363 @@ function longGrowInplace( test )
   test.case = 'not a range';
   test.shouldThrowErrorSync( () => _.longGrowInplace( [ 1 ], [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.longGrowInplace( [ 1 ], 'str' ) );
+
+}
+
+//
+
+function longGrow_( test )
+{
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var argumentsArray = ( src ) => _.argumentsArrayMake( src );
+
+  /* list */
+
+  var list =
+  [
+    array,
+    unroll,
+    argumentsArray
+  ];
+
+  /* - */
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  /* - */
+
+  function run( make )
+  {
+    test.open( 'not inplace' );
+
+    test.case = 'only dst';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst );
+    var expected = [ 1, 2, 3, 4, 5 ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, not a val';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 0, 7 ] );
+    var expected = [ 1, 2, 3, 4, 5, undefined, undefined ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 0, 7 ], 0 );
+    var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 4, 10 ], 0 );
+    var expected = [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'range < dst.length';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 0, 3 ] );
+    var expected = [ 1, 2, 3, 4, 5 ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'range < dst.length, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 0, 3 ], 0 );
+    var expected = [ 1, 2, 3, 4, 5 ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'f < 0, not a val';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    got = _.longGrow_( dst, [ -1, 3 ] );
+    expected = [ 1, 2, 3, 4, 5 ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'l < 0, not a val';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 0, -1 ] );
+    var expected = [ 1, 2, 3, 4, 5 ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'f < 0, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ -1, 3 ], 0 );
+    var expected = [ 1, 2, 3, 4, 5 ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.close( 'not inplace' );
+
+    /* - */
+
+    test.open( 'inplace' );
+
+    test.case = 'only dst';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst );
+    var expected = make( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'range > dst.length, not a val';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ 0, dst.length + 2 ] );
+    var expected = [ 1, 2, 3, 4, 5, undefined, undefined ];
+    test.identical( got, expected );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
+
+    test.case = 'range > dst.length, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ 0, dst.length + 2 ], 0 );
+    var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
+    test.identical( got, expected );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
+
+    test.case = 'range > dst.length, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ dst.length - 1, dst.length * 2 ], 0 );
+    var expected = [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ];
+    test.identical( got, expected );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
+
+    test.case = 'range < dst.length';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ 0, 3 ] );
+    var expected = make( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'range < dst.length, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ 0, 3 ], 0 );
+    var expected = make( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'f < 0, not a val';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    got = _.longGrow_( dst, dst, [ -1, 3 ] );
+    expected = make( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'l < 0, not a val';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ 0, -1 ] );
+    var expected = make( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'f < 0, val = number';
+    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ -1, 3 ], 0 );
+    var expected = make( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.close( 'inplace' );
+  }
+
+  /* - */
+
+  var list =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    F32x,
+    F64x,
+  ];
+
+  for( var i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run2( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  function run2( list )
+  {
+    test.open( 'not inplace' );
+
+    test.case = 'only dst';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, not a val';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 0, dst.length + 2 ] );
+    var expected = new list( [ 1, 2, 3, 4, 5, 0, 0 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, val = number';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 0, dst.length + 2 ], 0 );
+    var expected = new list( [ 1, 2, 3, 4, 5, 0, 0 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, val = number';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ dst.length - 1, dst.length * 2 ], 0 );
+    var expected = new list( [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'range < dst.length';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 0, 3 ] );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'range < dst.length, val = number';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 0, 3 ], 0 );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'f < 0, not a val';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ -1, 3 ] );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'l < 0, not a val';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ 0, -1 ] );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'f < 0, val = number';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, [ -1, 3 ], 0 );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'f < 0, not a val';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( null, dst, [ -1, 3 ] );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'l < 0, not a val';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( null, dst, [ 0, -1 ] );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'f < 0, val = number';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( null, dst, [ -1, 3 ], 0 );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.close( 'not inplace' );
+
+    /* - */
+
+    test.open( 'inplace' );
+
+    test.case = 'only dst';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'range[ 1 ] === dst.length, not a val';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ 0, dst.length ] );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'range < dst.length';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ 0, 3 ] );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'range < dst.length, val = number';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ 0, 3 ], 0 );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'range[ 0 ] < 0, not a val';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    got = _.longGrow_( dst, dst, [ -1, 3 ] );
+    expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'range[ 1 ] < 0, not a val';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ 0, -1 ] );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'range[ 0 ] < 0, val = number';
+    var dst = new list( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ -1, 3 ], 0 );
+    var expected = new list( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.close( 'inplace' );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longGrow_() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longGrow_( [ 1 ], [ 1, 4 ], '5', 1 ) );
+
+  test.case = 'array is not long';
+  test.shouldThrowErrorSync( () => _.longGrow_( 1, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.longGrow_( new ArrayBuffer( 4 ), [ 0, 5 ] ) );
+
+  test.case = 'not a range';
+  test.shouldThrowErrorSync( () => _.longGrow_( [ 1 ], 'str' ) );
 
 }
 
@@ -34636,6 +34980,7 @@ var Self =
     longSelect_,
     longGrow,
     longGrowInplace,
+    longGrow_,
     longRelength,
     longRelengthInplace,
 
