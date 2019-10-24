@@ -4178,7 +4178,7 @@ function bufferSelect_( test )
     var dst1 = _.argumentsArrayMake( [] );
     var dst = buf( 4 );
     var got = _.bufferSelect_( dst1, dst, [ 4, 1 ], [ 1 ] );
-    var expected = _.argumentsArrayMake( [] );
+    var expected = [];
     test.identical( got, expected );
     test.is( got !== dst );
 
