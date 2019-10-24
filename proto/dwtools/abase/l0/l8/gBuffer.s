@@ -1219,37 +1219,27 @@ function _returnDst( dst, src )
     let srcLength = src.length === undefined ? src.byteLength : src.length;
 
     if( _.arrayLikeResizable( dst ) )
-    {
-      if( _.bufferRawIs( src ) )
-      dst.splice( 0, dstLength, ... new U8x( src ) );
-      else if( _.bufferViewIs( src ) )
-      dst.splice( 0, dstLength, ... new U8x( src.buffer ) );
-      else
-      dst.splice( 0, dstLength, ... src );
+    dst.length = srcLength;
+    else if( _.argumentsArrayIs( dst ) )
+    dst = new Array( srcLength );
+    else if( dstLength !== srcLength )
+    dst = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( srcLength ) ) : new dst.constructor( srcLength );
 
-      return dst;
-    }
-    else
-    {
-      if( dstLength !== srcLength )
-      dst = new dst.constructor( srcLength );
+    let dstTyped = dst;
+    if( _.bufferRawIs( dstTyped ) )
+    dstTyped = new U8x( dstTyped );
+    else if( _.bufferViewIs( dstTyped ) )
+    dstTyped = new U8x( dstTyped.buffer );
 
-      let dstTyped = dst;
-      if( _.bufferRawIs( dstTyped ) )
-      dstTyped = new U8x( dstTyped );
-      else if( _.bufferViewIs( dstTyped ) )
-      dstTyped = new U8x( dstTyped.buffer );
+    if( _.bufferRawIs( src ) )
+    src = new U8x( src );
+    else if( _.bufferViewIs( src ) )
+    src = new U8x( src.buffer );
 
-      if( _.bufferRawIs( src ) )
-      src = new U8x( src );
-      else if( _.bufferViewIs( src ) )
-      src = new U8x( src.buffer );
+    for( let i = 0; i < srcLength; i++ )
+    dstTyped[ i ] = src[ i ];
 
-      for( let i = 0; i < srcLength; i++ )
-      dstTyped[ i ] = src[ i ];
-
-      return dst;
-    }
+    return dst;
   }
   return dst === true ? _.bufferMake( src ) : src;
 }
@@ -1306,6 +1296,8 @@ function bufferBut_( dst, dstArray, range, srcArray )
     result = dst;
     result.length = newLength;
   }
+  else if( _.argumentsArrayIs( dst ) )
+  result = new Array( newLength );
   else if( dstLength !== newLength )
   result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
   else
@@ -1479,6 +1471,8 @@ function bufferSelect_( dst, dstArray, range, srcArray )
     result = dst;
     result.length = newLength;
   }
+  else if( _.argumentsArrayIs( dst ) )
+  result = new Array( newLength );
   else if( dstLength !== newLength )
   result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
   else
@@ -1663,6 +1657,8 @@ function bufferGrow_( dst, dstArray, range, srcArray )
     result = dst;
     result.length = newLength;
   }
+  else if( _.argumentsArrayIs( dst ) )
+  result = new Array( newLength );
   else if( dstLength !== newLength )
   result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
   else
@@ -1805,6 +1801,8 @@ function bufferRelength_( dst, dstArray, range, srcArray )
     result = dst;
     result.length = newLength;
   }
+  else if( _.argumentsArrayIs( dst ) )
+  result = new Array( newLength );
   else if( dstLength !== newLength )
   result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
   else
