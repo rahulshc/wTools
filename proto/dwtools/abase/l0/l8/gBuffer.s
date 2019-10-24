@@ -1791,6 +1791,9 @@ function bufferRelength_( dst, dstArray, range, srcArray )
   if( last < first )
   last = first;
 
+  if( first === 0 && last === length )
+  return _returnDst( dst, dstArray );
+
   let newLength = last - first;
   let dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
 
@@ -2637,6 +2640,7 @@ let Routines =
   bufferGrow_,
   bufferRelength,
   bufferRelengthInplace,
+  bufferRelength_,
   bufferRelen,
   bufferResize,
   bufferResizeInplace,
