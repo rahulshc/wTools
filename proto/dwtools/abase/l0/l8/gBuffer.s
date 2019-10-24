@@ -1245,7 +1245,7 @@ function _returnDst( dst, src )
       else if( _.bufferViewIs( src ) )
       src = new U8x( src.buffer );
 
-      for( let i = 0; i < dst.length; i++ )
+      for( let i = 0; i < srcLength; i++ )
       dstTyped[ i ] = src[ i ];
 
       return dst;
@@ -1296,6 +1296,7 @@ function bufferBut_( dst, dstArray, range, srcArray )
     srcArrayLength = srcArray.length !== undefined ? srcArray.length : srcArray.byteLength;
     newLength += srcArrayLength;
   }
+  let dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
 
   let result;
   if( _.boolIs( dst ) )
@@ -1305,8 +1306,8 @@ function bufferBut_( dst, dstArray, range, srcArray )
     result = dst;
     result.length = newLength;
   }
-  else if( dst.length !== newLength && dst.byteLength !== newLength )
-  result = new dst.constructor( newLength );
+  else if( dstLength !== newLength )
+  result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
   else
   result = dst;
 
@@ -1468,6 +1469,7 @@ function bufferSelect_( dst, dstArray, range, srcArray )
   return _returnDst( dst, dstArray );
 
   let newLength = last - first;
+  let dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
 
   let result;
   if( _.boolIs( dst ) )
@@ -1477,8 +1479,8 @@ function bufferSelect_( dst, dstArray, range, srcArray )
     result = dst;
     result.length = newLength;
   }
-  else if( dst.length !== newLength && dst.byteLength !== newLength )
-  result = new dst.constructor( newLength );
+  else if( dstLength !== newLength )
+  result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
   else
   result = dst;
 
@@ -1633,8 +1635,6 @@ function bufferGrow_( dst, dstArray, range, srcArray )
   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
 
-  _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects two or three arguments' );
-  _.assert( _.arrayIs( dstArray ) || _.bufferAnyIs( dstArray ) );
   _.assert( _.rangeIs( range ) );
 
   if( first < 0 )
@@ -1653,6 +1653,7 @@ function bufferGrow_( dst, dstArray, range, srcArray )
   return _returnDst( dst, dstArray );
 
   let newLength = last - first;
+  let dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
 
   let result;
   if( _.boolIs( dst ) )
@@ -1662,8 +1663,8 @@ function bufferGrow_( dst, dstArray, range, srcArray )
     result = dst;
     result.length = newLength;
   }
-  else if( dst.length !== newLength && dst.byteLength !== newLength )
-  result = new dst.constructor( newLength );
+  else if( dstLength !== newLength )
+  result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
   else
   result = dst;
 
@@ -1686,7 +1687,7 @@ function bufferGrow_( dst, dstArray, range, srcArray )
   if( srcArray !== undefined )
   {
     for( let r = last2; r < newLength; r++ )
-    result[ r ] = srcArray;
+    resultTyped[ r ] = srcArray;
   }
 
   return result;
