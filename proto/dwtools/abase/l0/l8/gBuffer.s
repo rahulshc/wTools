@@ -1213,7 +1213,7 @@ function _returnDst( dst, src )
   let dstLength;
   if( !_.boolIs( dst ) )
   dstLength = dst.length === undefined ? dst.byteLength : dst.length;
-
+  
   if( dstLength !== undefined )
   {
     let srcLength = src.length === undefined ? src.byteLength : src.length;
@@ -1221,20 +1221,29 @@ function _returnDst( dst, src )
     if( _.arrayLikeResizable( dst ) )
     {
       if( _.bufferRawIs( src ) )
-      return dst.splice( 0, dstLength, ... new U8x( src ) );
-      return dst.splice( 0, dstLength, ... src );
+      dst.splice( 0, dstLength, ... new U8x( src ) );
+      else if( _.bufferViewIs( src ) )
+      dst.splice( 0, dstLength, ... new U8x( src.buffer ) );
+      else
+      dst.splice( 0, dstLength, ... src );
+
+      return dst;
     }
     else
     {
       if( dstLength !== srcLength )
-      {
-        dst = new dst.constructor( srcLength );
-        dstTyped = _.bufferRawIs( dst ) ? new U8x( dst ) : dst;
-      }
-      else
-      dstTyped = _.bufferRawIs( dst ) ? new U8x( dst ) : dst;
+      dst = new dst.constructor( srcLength );
 
-      src = _.bufferRawIs( src ) ? new U8x( src ) : src;
+      let dstTyped = dst;
+      if( _.bufferRawIs( dstTyped ) )
+      dstTyped = new U8x( dstTyped );
+      else if( _.bufferViewIs( dstTyped ) )
+      dstTyped = new U8x( dstTyped.buffer );
+
+      if( _.bufferRawIs( src ) )
+      src = new U8x( src );
+      else if( _.bufferViewIs( src ) )
+      src = new U8x( src.buffer );
 
       for( let i = 0; i < dst.length; i++ )
       dstTyped[ i ] = src[ i ];
@@ -1455,6 +1464,9 @@ function bufferSelect_( dst, dstArray, range, srcArray )
   if( last < first )
   last = first;
 
+  if( first === 0 && last === length )
+  return _returnDst( dst, dstArray );
+
   let newLength = last - first;
 
   let result;
@@ -1485,7 +1497,7 @@ function bufferSelect_( dst, dstArray, range, srcArray )
   let last2 = Math.min( length, last );
   for( let r = first2 ; r < last2 ; r++ )
   resultTyped[ r-first2 ] = dstArrayTyped[ r ];
-  
+
   return result;
 }
 
@@ -2467,6 +2479,7 @@ let Routines =
   bufferBut_,
   bufferSelect,
   bufferSelectInplace,
+  bufferSelect_,
   bufferGrow,
   bufferGrowInplace,
   bufferRelength,
