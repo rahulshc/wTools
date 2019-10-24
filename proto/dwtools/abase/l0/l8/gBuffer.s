@@ -1763,6 +1763,77 @@ function bufferRelength( dstArray, range, srcArray )
 
 //
 
+function bufferRelength_( dst, dstArray, range, srcArray )
+{
+
+  [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
+
+  if( !_.bufferAnyIs( dstArray ) )
+  return _.longRelength_.apply( this, arguments );
+
+  let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
+
+  if( range === undefined )
+  return _returnDst( dst, dstArray );
+
+  if( _.numberIs( range ) )
+  range = [ range, length ];
+
+  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+
+  _.assert( _.rangeIs( range ) );
+
+  if( first < 0 )
+  first = 0;
+  if( first > length )
+  first = length;
+  if( last < first )
+  last = first;
+
+  let newLength = last - first;
+  let dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
+
+  let result;
+  if( _.boolIs( dst ) )
+  result = _.bufferMakeUndefined( dstArray, newLength );
+  else if( _.arrayLikeResizable( dst ) )
+  {
+    result = dst;
+    result.length = newLength;
+  }
+  else if( dstLength !== newLength )
+  result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
+  else
+  result = dst;
+
+  let resultTyped = result;
+  if( _.bufferRawIs( result ) )
+  resultTyped = new U8x( result );
+  else if( _.bufferViewIs( result ) )
+  resultTyped = new U8x( result.buffer );
+  let dstArrayTyped = dstArray;
+  if( _.bufferRawIs( dstArray ) )
+  dstArrayTyped = new U8x( dstArray );
+  else if( _.bufferViewIs( dstArray ) )
+  dstArrayTyped = new U8x( dstArray.buffer );
+
+  let first2 = Math.max( first, 0 );
+  let last2 = Math.min( length, last );
+  for( let r = first2 ; r < last2 ; r++ )
+  resultTyped[ r-first2 ] = dstArrayTyped[ r ];
+
+  if( srcArray !== undefined )
+  {
+    for( let r = last2 -first2; r < newLength ; r++ )
+    resultTyped[ r ] = srcArray;
+  }
+
+  return result;
+}
+
+//
+
 function bufferRelengthInplace( dstArray, range, srcArray )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
