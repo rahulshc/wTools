@@ -1303,10 +1303,14 @@ function bufferBut_( dst, dstArray, range, srcArray )
 
   let resultTyped = result;
   if( _.bufferRawIs( result ) )
-  resultTyped = new U8x( result )
+  resultTyped = new U8x( result );
   else if( _.bufferViewIs( result ) )
   resultTyped = new U8x( result.buffer );
-  let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
+  let dstArrayTyped = dstArray;
+  if( _.bufferRawIs( dstArray ) )
+  dstArrayTyped = new U8x( dstArray );
+  else if( _.bufferViewIs( dstArray ) )
+  dstArrayTyped = new U8x( dstArray.buffer );
 
   if( first > 0 )
   for( let i = 0; i < first; i++ )
