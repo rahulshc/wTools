@@ -245,28 +245,51 @@ function longMake( src, ins )
 
 //
 
-/* qqq : optimize */
+/*
+qqq : optimize
+Dmytro : optimized
+*/
 
 function longMakeEmpty( src )
 {
-  let result;
-  let length = 0;
-
-  if( src === null )
-  src = [];
-
-  if( _.argumentsArrayIs( src ) )
-  src = [];
 
   _.assert( arguments.length === 1 );
 
-  result = new src.constructor();
-
-  _.assert( _.longIs( result ) );
-  _.assert( result.length === 0 );
-
-  return result;
+  if( _.unrollIs( src ) )
+  return _.unrollMake( 0 );
+  else if( src === null || _.argumentsArrayIs( src ) )
+  return [];
+  else if( _.arrayIs( src ) || _.bufferTypedIs( src ) )
+  return new src.constructor();
+  else if( _.routineIs( src ) )
+  {
+    let result = new src.constructor();
+    _.assert( _.longIs( result ) && result.length === 0 );
+    return result;
+  }
+  _.assert( 0 );
 }
+
+// function longMakeEmpty( src )
+// {
+//   let result;
+//   let length = 0;
+//
+//   if( src === null )
+//   src = [];
+//
+//   if( _.argumentsArrayIs( src ) )
+//   src = [];
+//
+//   _.assert( arguments.length === 1 );
+//
+//   result = new src.constructor();
+//
+//   _.assert( _.longIs( result ) );
+//   _.assert( result.length === 0 );
+//
+//   return result;
+// }
 
 //
 
@@ -2948,9 +2971,8 @@ function arrayMakeUndefined( src, length )
 
 //
 
-/* qqq
-add good coverage for arrayFrom
-take into account unroll cases
+/*
+qqq : add good coverage for arrayFrom, take into account unroll cases
 Dmytro : covered with unroll cases.
 */
 
@@ -4476,6 +4498,7 @@ function arrayRightDefined( arr )
 
 /*
 qqq : are all combinations of call of routine arrayCountElement covered?
+Dmytro : yes, all combinations of call is implemented
 */
 
 function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
@@ -4601,6 +4624,8 @@ function arrayCountUnique( src, onEvaluate )
 /*
 
 qqq : use for documentation
+Dmytro : Is this information out of date?
+This task was declined a time ago.
 
 alteration Routines :
 
