@@ -1781,7 +1781,7 @@ let Routines =
   objectIs,
   objectLike,
   objectLikeOrRoutine,
-  countableIs, /* qqq : cover and document please */
+  countableIs, /* qqq : cover and document please | Dmytro : covered */
 
   mapIs,
   mapIsEmpty,
