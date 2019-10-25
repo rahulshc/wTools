@@ -2029,6 +2029,90 @@ function bufferResizeInplace( srcBuffer, size )
 
 //
 
+function bufferResize_( dst, srcBuffer, size )
+{
+  if( dst === null )
+  dst = _.nothing;
+
+  if( arguments.length === 2 )
+  {
+    size = srcBuffer;
+    srcBuffer = dst;
+    dst = _.nothing;
+  }
+
+  let range = _.rangeIs( size ) ? size : [ 0, size ];
+  size = range[ 1 ] - range[ 0 ];
+
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  _.assert( _.bufferAnyIs( srcBuffer ) && srcBuffer.byteLength >= 0 );
+  _.assert( _.rangeIs( range ) );
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( dst === srcBuffer && range[ 0 ] === 0 && range[ 1 ] === srcBuffer.byteLength )
+  return srcBuffer;
+
+  let result;
+  let newOffset = srcBuffer.byteOffset ? srcBuffer.byteOffset + range[ 0 ] : range[ 0 ];
+
+  if( dst !== _.nothing )
+  {
+    _.assert( _.bufferAnyIs( dst ) );
+
+    let dstTyped;
+    if( size <= dstBuffer.byteLength )
+    {
+      result = dst;
+      dstTyped = _.bufferRawIs( dst ) ? new U8x( dst ) : new U8x( dst.buffer );
+    }
+    else
+    {
+      result = _.bufferMakeUndefined( dst, size / dst.BYTES_PER_ELEMENT || size );
+      dstTyped = _.bufferRawIs( result ) ? new U8x( result ) : new U8x( result.buffer );
+    }
+
+    let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
+
+    let first = Math.max( newOffset, 0 );
+    let last = Math.min( srcBufferToU8x.byteLength, newOffset + size );
+    for( let r = first ; r < last ; r++ )
+    dstTyped[ r - first ] = srcBufferToU8x[ r ];
+  }
+  else
+  {
+    _.assert( dst === _.nothing );
+
+    if( !_.bufferRawIs( srcBuffer ) && newOffset >= 0 && newOffset + size <= srcBuffer.buffer.byteLength )
+    {
+      if( srcBuffer.constructor.name === 'Buffer' )
+      result = BufferNode.from( srcBuffer.buffer, newOffset, size );
+      if( srcBuffer.constructor.name === 'DataView' )
+      result = new BufferView( srcBuffer.buffer, newOffset, size );
+      else
+      result = new srcBuffer.constructor( srcBuffer.buffer, newOffset, size / srcBuffer.BYTES_PER_ELEMENT );
+    }
+    else
+    {
+      result = _.bufferMakeUndefined( srcBuffer, size / srcBuffer.BYTES_PER_ELEMENT || size );
+      let resultTyped = _.bufferRawIs( result ) ? new U8x( result ) : new U8x( result.buffer );
+      let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
+
+      let first = Math.max( newOffset, 0 );
+      let last = Math.min( srcBufferToU8x.byteLength, newOffset + size );
+      newOffset = newOffset < 0 ? -newOffset : 0;
+      for( let r = first ; r < last ; r++ )
+      resultTyped[ r - first + newOffset ] = srcBufferToU8x[ r ];
+    }
+  }
+
+  return result;
+}
+
+
+//
+
 function bufferBytesGet( src )
 {
 
@@ -2676,6 +2760,7 @@ let Routines =
   bufferRelen,
   bufferResize,
   bufferResizeInplace,
+  bufferResize_,
 
   bufferBytesGet,
   bufferRetype,
