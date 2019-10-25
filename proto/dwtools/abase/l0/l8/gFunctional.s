@@ -374,8 +374,6 @@ function eachSample( o )
   /* sample */
 
   if( !o.sample )
-  // Dmytro:
-  // qqq: I think entityMakeUndefined should be entityMakeUndefined. 7 missprints founded in wTools. Maybe, willbe contains this also.
   o.sample = _.entityMakeUndefined( o.sets );
 
   /* */
