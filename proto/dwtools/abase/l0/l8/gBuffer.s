@@ -2062,7 +2062,7 @@ function bufferResize_( dst, srcBuffer, size )
     _.assert( _.bufferAnyIs( dst ) );
 
     let dstTyped;
-    if( size <= dstBuffer.byteLength )
+    if( size <= dst.byteLength )
     {
       result = dst;
       dstTyped = _.bufferRawIs( dst ) ? new U8x( dst ) : new U8x( dst.buffer );
@@ -2079,6 +2079,7 @@ function bufferResize_( dst, srcBuffer, size )
     let last = Math.min( srcBufferToU8x.byteLength, newOffset + size );
     for( let r = first ; r < last ; r++ )
     dstTyped[ r - first ] = srcBufferToU8x[ r ];
+    dstTyped.fill( 0, last - first, dstTyped.length );
   }
   else
   {
