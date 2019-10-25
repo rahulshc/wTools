@@ -511,7 +511,10 @@ function _longClone( src )
 //
 
 /* xxx : review */
-/* qqq : find and let me know what is _.buffer* analog of _.longShallowClone */
+/*
+qqq : find and let me know what is _.buffer* analog of _.longShallowClone
+Dmytro : the closest _.buffer* analog of _.longShallowClone is bufferJoin, which joins buffers to flat buffer
+*/
 
 function longShallowClone()
 {
@@ -663,61 +666,80 @@ function longRepresent( src, begin, end )
  * @memberof wTools
  */
 
-function longSlice( array, f, l ) /* qqq : optimize */
+/* qqq : optimize | Dmytro : optimized */
+
+function longSlice( array, f, l )
 {
-  let result;
-
-  if( _.argumentsArrayIs( array ) )
-  if( f === undefined && l === undefined )
-  {
-    if( array.length === 2 )
-    return [ array[ 0 ], array[ 1 ] ];
-    else if( array.length === 1 )
-    return [ array[ 0 ] ];
-    else if( array.length === 0 )
-    return [];
-  }
-
-  _.assert( _.longIs( array ) );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( f === undefined || _.numberIs( f ) );
+  _.assert( l === undefined || _.numberIs( l ) );
 
-  if( _.arrayLikeResizable( array ) )
-  {
-    _.assert( f === undefined || _.numberIs( f ) );
-    _.assert( l === undefined || _.numberIs( l ) );
-    result = array.slice( f, l );
-    return result;
-  }
+  if( _.bufferTypedIs( array ) )
+  return array.subarray( f, l );
+  else if( _.arrayLikeResizable( array ) )
+  return array.slice( f, l );
+  else if( _.argumentsArrayIs( array ) )
+  return [ ... array ].slice( f, l );
+  else
+  _.assert( 0 );
 
-  f = f !== undefined ? f : 0;
-  l = l !== undefined ? l : array.length;
-
-  _.assert( _.numberIs( f ) );
-  _.assert( _.numberIs( l ) );
-
-  if( f < 0 )
-  f = array.length + f;
-  if( l < 0 )
-  l = array.length + l;
-
-  if( f < 0 )
-  f = 0;
-  if( l > array.length )
-  l = array.length;
-  if( l < f )
-  l = f;
-
-  result = _.longMakeUndefined( array, l-f );
-  // if( _.bufferTypedIs( array ) )
-  // result = new array.constructor( l-f );
-  // else
-  // result = new Array( l-f );
-
-  for( let r = f ; r < l ; r++ )
-  result[ r-f ] = array[ r ];
-
-  return result;
 }
+
+// function longSlice( array, f, l )
+// {
+//   let result;
+//
+//   if( _.argumentsArrayIs( array ) )
+//   if( f === undefined && l === undefined )
+//   {
+//     if( array.length === 2 )
+//     return [ array[ 0 ], array[ 1 ] ];
+//     else if( array.length === 1 )
+//     return [ array[ 0 ] ];
+//     else if( array.length === 0 )
+//     return [];
+//   }
+//
+//   _.assert( _.longIs( array ) );
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( _.arrayLikeResizable( array ) )
+//   {
+//     _.assert( f === undefined || _.numberIs( f ) );
+//     _.assert( l === undefined || _.numberIs( l ) );
+//     result = array.slice( f, l );
+//     return result;
+//   }
+//
+//   f = f !== undefined ? f : 0;
+//   l = l !== undefined ? l : array.length;
+//
+//   _.assert( _.numberIs( f ) );
+//   _.assert( _.numberIs( l ) );
+//
+//   if( f < 0 )
+//   f = array.length + f;
+//   if( l < 0 )
+//   l = array.length + l;
+//
+//   if( f < 0 )
+//   f = 0;
+//   if( l > array.length )
+//   l = array.length;
+//   if( l < f )
+//   l = f;
+//
+//   result = _.longMakeUndefined( array, l-f );
+//   // if( _.bufferTypedIs( array ) )
+//   // result = new array.constructor( l-f );
+//   // else
+//   // result = new Array( l-f );
+//
+//   for( let r = f ; r < l ; r++ )
+//   result[ r-f ] = array[ r ];
+//
+//   return result;
+// }
 
 //
 
