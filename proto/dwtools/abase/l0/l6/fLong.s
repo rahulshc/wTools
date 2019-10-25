@@ -483,6 +483,7 @@ function longMakeZeroed( ins, src )
 
 /*
 qqq : find and let me know what is _.buffer* analog of _longClone
+Dmytro : module has not _.buffer* analog of routine _longClone. The closest functionality has routine bufferMake( ins, src )
 */
 
 function _longClone( src )

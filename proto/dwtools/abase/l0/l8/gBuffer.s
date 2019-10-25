@@ -279,30 +279,34 @@ function bufferMake( ins, src )
   else
   {
     let insert;
-    if( !_.bufferRawIs( ins ) && !_.bufferViewIs( ins ) )
+    if( _.bufferRawIs( ins ) )
+    insert = new U8x( ins );
+    else if( _.bufferViewIs( ins ) )
+    insert = new U8x( ins.buffer );
+    else
     insert = ins;
-    else
-    insert = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
 
+    let resultTyped;
     if( _.routineIs( ins ) )
-    result = new ins( length );
+    resultTyped = new ins( length );
     else if( _.bufferNodeIs( ins ) )
-    result = BufferNode.alloc( length );
-    else if( _.bufferViewIs( ins ) || _.bufferRawIs( ins ) )
-    result = new U8x( length );
+    resultTyped = BufferNode.alloc( length );
+    else if ( _.bufferViewIs( ins ) )
+    resultTyped = new BufferView( new BufferRaw( length ) );
     else if( _.unrollIs( ins ) )
-    result = _.unrollMake( length );
+    resultTyped = _.unrollMake( length );
     else
-    result = new ins.constructor( length );
+    resultTyped = new ins.constructor( length );
+
+    result = resultTyped;
+    if( _.bufferRawIs( result ) )
+    resultTyped = new U8x( result );
+    if( _.bufferViewIs( result ) )
+    resultTyped = new U8x( result.buffer );
 
     let minLen = Math.min( length, insert.length );
     for( let i = 0 ; i < minLen ; i++ )
-    result[ i ] = insert[ i ];
-
-    if( _.bufferRawIs( ins ) )
-    result = result.buffer;
-    if( _.bufferViewIs( ins ) )
-    result = new BufferView( result.buffer );
+    resultTyped[ i ] = insert[ i ];
   }
 
   return result;
@@ -985,8 +989,15 @@ function bufferBut( dstArray, range, srcArray )
   return result;
 }
 
-/* qqq : routine bufferBut requires good test coverage and documentation */
-/* qqq : implement cover and document routine bufferButInplace */
+/*
+qqq : routine bufferBut requires good test coverage and documentation
+Dmytro : covered
+*/
+/*
+qqq : implement cover and document routine bufferButInplace
+Dmytro : covered
+Dmytro : newly created routines bufferBut_, bufferSelect_, bufferGrow_, bufferRelength_ is documented
+*/
 
 /* qqq : implement
    qqq : no
