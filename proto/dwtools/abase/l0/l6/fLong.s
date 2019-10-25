@@ -735,7 +735,7 @@ function longEmpty( dstLong )
 
 /**
  * The routine longBut() returns a shallow copy of provided Long {-array-}. Routine removes existing
- * elements in bounds defined by {-range-} and insert new elements from {-val-}. The original
+ * elements in bounds defined by {-range-} and inserts new elements from {-val-}. The original
  * source Long {-array-} will not be modified.
  *
  * @param { Long } array - The Long from which makes a shallow copy.

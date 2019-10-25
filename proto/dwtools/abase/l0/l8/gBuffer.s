@@ -914,58 +914,6 @@ function bufferNodeFrom( buffer )
 
 //
 
-/**
- * Removes range( range ) of elements from provided array( dstArray ) and adds elements from array( srcArray )
- * at the start position of provided range( range ) if( srcArray ) was provided.
- * On success returns array with deleted element(s), otherwise returns empty array.
- * For TypedArray's and buffers returns modified copy of ( dstArray ) or original array if nothing changed.
- *
- * @param { Array|TypedArray|BufferNode } dstArray - The target array, TypedArray( I8x, I16x, U8x ... etc ) or BufferNode( BufferRaw, BufferNode ).
- * @param { Array|Number } range - The range of elements or index of single element to remove from ( dstArray ).
- * @param { Array } srcArray - The array of elements to add to( dstArray ) at the start position of provided range( range ).
- * If one of ( range ) indexies is not specified it will be setted to zero.
- * If ( range ) start index is greater than the length of the array ( dstArray ), actual starting index will be set to the length of the array ( dstArray ).
- * If ( range ) start index is negative, will be setted to zero.
- * If ( range ) start index is greater than end index, the last will be setted to value of start index.
- *
- * @example
- * _.bufferBut( [ 1, 2, 3, 4 ], 2 );
- * // returns [ 3 ]
- *
- * @example
- * _.bufferBut( [ 1, 2, 3, 4 ], [ 1, 2 ] );
- * // returns [ 2 ]
- *
- * @example
- * _.bufferBut( [ 1, 2, 3, 4 ], [ 0, 5 ] );
- * // returns [ 1, 2, 3, 4 ]
- *
- * @example
- * _.bufferBut( [ 1, 2, 3, 4 ], [ -1, 5 ] );
- * // returns [ 1, 2, 3, 4 ]
- *
- * @example
- * let dst = [ 1, 2, 3, 4 ];
- * _.bufferBut( dst, [ 0, 3 ], [ 0, 0, 0 ] );
- * console.log( dst );
- * // log [ 0, 0, 0, 4 ]
- *
- * @example
- * let dst = new I32x( 4 );
- * dst.set( [ 1, 2, 3, 4 ] )
- * _.bufferBut( dst, 0 );
- * // returns [ 2, 3, 4 ]
- *
- * @returns { Array|TypedArray|BufferNode } For array returns array with deleted element(s), otherwise returns empty array.
- * For other types returns modified copy or origin( dstArray ).
- * @function bufferBut
- * @throws { Error } If ( arguments.length ) is not equal to two or three.
- * @throws { Error } If ( dstArray ) is not an Array.
- * @throws { Error } If ( srcArray ) is not an Array.
- * @throws { Error } If ( range ) is not an Array.
- * @memberof wTools
- */
-
 function bufferBut( dstArray, range, srcArray )
 {
   if( !_.bufferAnyIs( dstArray ) )
@@ -1041,10 +989,10 @@ function bufferBut( dstArray, range, srcArray )
 /* qqq : implement cover and document routine bufferButInplace */
 
 /* qqq : implement
-   Dmytro : implemented for typed buffers
-  qqq : no
+   qqq : no
       src can be any long or any buffer
       ins can be any long or any buffer
+   Dmytro : all requirements applied
 */
 
 // Dmytro : not a my template
@@ -1246,13 +1194,113 @@ function _returnDst( dst, src )
 
 //
 
+/**
+ * Routine bufferBut_() returns a shallow copy of provided container {-dstArray-}.
+ * Routine removes range {-range-} of elements from {-dstArray-} and inserts elements from
+ * {-srcArray-} at the start position of provided {-range-}.
+ *
+ * If first and second provided arguments is containers, then fisrs argument is destination
+ * container {-dst-} and second argument is source container {-dstArray-}. All data in {-dst-}
+ * will be cleared. If {-dst-} container is not resizable and resulted container length
+ * is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If first argument and second argument is the same container, routine will try change container inplace.
+ *
+ * If {-dst-} is not provided routine makes new container of {-dstArray-} type.
+ *
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } dstArray - The container from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
+ * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
+ * If {-range-} is undefined, routine returns copy of {-dstArray-} or original {-dstArray-} if {-dst-} and {-dstArray-} is the same container.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > dstArray.length, end index sets to dstArray.length.
+ * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
+ * @param { BufferAny|Long } srcArray - The container with elements for insertion. Inserting begins at start index.
+ * If quantity of removed elements is not equal to srcArray.length, then returned container will have length different to dstArray.length.
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferBut_( buffer );
+ * console.lot( got );
+ * // log Uint8Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * log false
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferBut_( null, buffer );
+ * console.lot( got );
+ * // log Uint8Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * log false
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferBut_( buffer, buffer );
+ * console.lot( got );
+ * // log Uint8Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * log true
+ *
+ * @example
+ * let dst = [ 0, 0 ]
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferBut_( dst, buffer );
+ * console.lot( got );
+ * // log [ 1, 2, 3, 4 ]
+ * console.log( got === dst );
+ * log true
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let src = new I32x( [ 0, 0, 0 ] );
+ * let got = _.bufferBut_( buffer, [ 1, 3 ], src );
+ * console.lot( got );
+ * // log Uint8Array[ 1, 0, 0, 0, 4 ]
+ * console.log( got === buffer );
+ * log false
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferBut_( null, buffer, 1, [ 0, 0, 0 ] );
+ * console.lot( got );
+ * // log Uint8Array[ 1, 0, 0, 0, 3, 4 ]
+ * console.log( got === buffer );
+ * log false
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferBut_( buffer, buffer, [ 1, 3 ], [ 0, 0, 0 ] );
+ * console.lot( got );
+ * // log Uint8Array[ 1, 0, 0, 0, 4 ]
+ * console.log( got === buffer );
+ * log false
+ *
+ * @example
+ * let dst = [ 0, 0 ]
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferBut_( dst, buffer, [ 1, 3 ], [ 0, 0, 0 ] );
+ * console.lot( got );
+ * // log [ 1, 0, 0, 0, 4 ]
+ * console.log( got === dst );
+ * log true
+ *
+ * @returns { BufferAny|Long } If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-dstArray-} type.
+ * If {-dst-} and {-dstArray-} is the same container, routine tries to return original container.
+ * @function bufferBut_
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} is not an any buffer, not a Long, not null.
+ * @throws { Error } If {-dstArray-} is not an any buffer, not a Long.
+ * @throws { Error } If ( range ) is not a Range or not a Number.
+ * @memberof wTools
+ */
+
 function bufferBut_( dst, dstArray, range, srcArray )
 {
 
   [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
-
-  if( !_.bufferAnyIs( dstArray ) )
-  return _.longBut_.apply( this, arguments );
 
   if( range === undefined )
   return _returnDst( dst, dstArray );
@@ -1430,9 +1478,6 @@ function bufferSelect_( dst, dstArray, range, srcArray )
 {
 
   [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
-
-  if( !_.bufferAnyIs( dstArray ) )
-  return _.longSelect_.apply( this, arguments );
 
   let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
 
@@ -1615,9 +1660,6 @@ function bufferGrow_( dst, dstArray, range, srcArray )
 
   [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
 
-  if( !_.bufferAnyIs( dstArray ) )
-  return _.longGrow_.apply( this, arguments );
-
   let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
 
   if( range === undefined )
@@ -1759,13 +1801,45 @@ function bufferRelength( dstArray, range, srcArray )
 
 //
 
+function bufferRelengthInplace( dstArray, range, srcArray )
+{
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+
+  if( !_.bufferAnyIs( dstArray ) )
+  return _.longRelengthInplace( dstArray, range, srcArray );
+
+  let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
+
+  if( range === undefined )
+  range = [ 0, length ];
+  if( _.numberIs( range ) )
+  range = [ range, length ];
+
+  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+
+  _.assert( _.rangeIs( range ) );
+
+  if( first < 0 )
+  first = 0;
+  if( first > length )
+  first = length;
+  if( last < first )
+  last = first;
+
+  if( first === 0 && last === length )
+  return dstArray;
+  else
+  return _.bufferRelength( dstArray, range, srcArray );
+
+}
+
+//
+
 function bufferRelength_( dst, dstArray, range, srcArray )
 {
 
   [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
-
-  if( !_.bufferAnyIs( dstArray ) )
-  return _.longRelength_.apply( this, arguments );
 
   let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
 
@@ -1835,41 +1909,6 @@ function bufferRelength_( dst, dstArray, range, srcArray )
 
 //
 
-function bufferRelengthInplace( dstArray, range, srcArray )
-{
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-
-  if( !_.bufferAnyIs( dstArray ) )
-  return _.longRelengthInplace( dstArray, range, srcArray );
-
-  let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
-
-  if( range === undefined )
-  range = [ 0, length ];
-  if( _.numberIs( range ) )
-  range = [ range, length ];
-
-  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-
-  _.assert( _.rangeIs( range ) );
-
-  if( first < 0 )
-  first = 0;
-  if( first > length )
-  first = length;
-  if( last < first )
-  last = first;
-
-  if( first === 0 && last === length )
-  return dstArray;
-  else
-  return _.bufferRelength( dstArray, range, srcArray );
-
-}
-
-//
-
 /**
  * The bufferRelen() routine returns a new or the same typed array {-srcMap-} with a new or the same length (len).
  *
@@ -1930,12 +1969,12 @@ function bufferRelen( src, len )
 
 /*
 qqq : implement for 2 other types of buffer and do code test coverage
-Dmytro : implemented for all buffer types
+Dmytro : implemented for all buffer types, covered
 */
 
 /*
   qqq : wrong! Size and length are different concepts.
-  Dmytro : use concept size in routine
+  Dmytro : concept size is used in routine
 */
 
 function bufferResize( srcBuffer, size )
