@@ -7183,6 +7183,33 @@ function arrayMake( test )
   test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
+  /* */
+
+  test.case = 'src = empty Set';
+  var src = new Set( [] );
+  var got = _.arrayMake( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = Set, src.length = 1';
+  var src = new Set( [ 'str' ] );
+  var got = _.arrayMake( src );
+  var expected = [ 'str' ];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = Set, src.length > 1';
+  var src = new Set( [ 1, 2, 3 ] );
+  var got = _.arrayMake( src );
+  var expected = [ 1, 2, 3 ];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
   /* - */
 
   if( !Config.debug )

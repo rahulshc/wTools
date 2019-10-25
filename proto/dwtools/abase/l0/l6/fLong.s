@@ -1197,7 +1197,6 @@ function longBut_( dst, array, range, val )
 /*
   qqq : extend documentation and test coverage of longSelect
   Dmytro : documented, covered.
-  Now, routine temporary uses routine longMake to make copy of provided long. Routine longShallowClone throws errors in argumentsArray cases.
 */
 
 function longSelect( array, range, val )
@@ -2836,7 +2835,9 @@ function arrayNone( src )
  * @memberof wTools
  */
 
-/* qqq : extend coverage, take into account Set case
+/*
+qqq : extend coverage, take into account Set case
+Dmytro : coverage is extended
 */
 
 function arrayMake( src )
