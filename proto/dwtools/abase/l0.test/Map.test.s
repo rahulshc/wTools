@@ -87,6 +87,16 @@ function countableIs( test )
   var expected = true;
   test.identical( got, expected );
 
+  test.case = 'an unroll';
+  var got = _.countableIs( _.unrollMake( [ 1 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an argumentsArray';
+  var got = _.countableIs( _.argumentsArrayMake( [ 1 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
   test.case = 'BufferRaw';
   var got = _.countableIs( new BufferRaw( 5 ) );
   var expected = false;
