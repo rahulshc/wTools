@@ -8128,6 +8128,78 @@ function bufferLeft( test )
   test.shouldThrowErrorSync( () => _.bufferLeft( new U8x( [ 1 ] ), new U8x( [ 2, 1 ] ).buffer ) );
 }
 
+//
+
+function bufferRight( test )
+{
+  /* constructors */
+
+  var list =
+  [
+    I8x,
+    // U8x,
+    // U8ClampedX,
+    // I16x,
+    U16x,
+    // I32x,
+    // U32x,
+    // F32x,
+    F64x
+  ];
+  if( Config.interpreter === 'njs' )
+  list.push( BufferNode );
+
+  /* - */
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    for( let j = 0; j < list.length; j++ )
+    {
+      test.open( 'src - ' + list[ i ].name + ', ins - ' + list[ j ].name );
+      run( list[ i ], list[ j ] );
+      test.close( 'src - ' + list[ i ].name + ', ins - ' + list[ j ].name );
+    }
+  }
+
+  /* - */
+
+  function run( makeSrc, makeIns )
+  {
+    var srcBuffer1 = new U8x( [ 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 4, 3, 2, 1 ] ).buffer;
+    var srcBuffer2 = new U8x( [ 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 4, 3, 2, 1, 1, 2, 3, 4, 4, 3, 2, 1 ] ).buffer;
+    var srcBuffer3 = new U8x( [ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 ] ).buffer;
+    var insBuffer = new U8x( [ 1, 2, 3, 4, 4, 3, 2, 1 ] ).buffer
+
+    test.case = 'one entry';
+    var src = new makeSrc( srcBuffer1 );
+    var ins = new makeIns( insBuffer );
+    var got = _.bufferRight( src, ins );
+    test.identical( got, 8 );
+
+    test.case = 'few entries';
+    var src = new makeSrc( srcBuffer2 );
+    var ins = new makeIns( insBuffer );
+    debugger;
+    var got = _.bufferRight( src, ins );
+    test.identical( got, 16 );
+
+    test.case = 'no entry';
+    var src = new makeSrc( srcBuffer3 );
+    var ins = new makeIns( insBuffer );
+    var got = _.bufferRight( src, ins );
+    test.identical( got, -1 );
+  }
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'src is BufferRaw';
+  test.shouldThrowErrorSync( () => _.bufferRight( new U8x( [ 1 ] ).buffer, new U8x( [ 2, 1 ] ) ) );
+
+  test.case = 'ins is BufferRaw';
+  test.shouldThrowErrorSync( () => _.bufferRight( new U8x( [ 1 ] ), new U8x( [ 2, 1 ] ).buffer ) );
+}
+
 
 
 // --
@@ -8182,6 +8254,7 @@ var Self =
     bufferJoin,
 
     bufferLeft,
+    bufferRight,
 
   }
 

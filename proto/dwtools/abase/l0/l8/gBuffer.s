@@ -2340,7 +2340,7 @@ function bufferRight( src, ins )
   {
 
     let i = 0;
-    for( let i = ins.length - 1 ; i >= 0 ; i-- )
+    for( ; i < ins.length; i++ )
     if( src[ index + i ] !== ins[ i ] )
     break;
 
@@ -2687,7 +2687,7 @@ let Routines =
   bufferToDom,
 
   bufferLeft,
-  bufferRight, /* qqq : please, implement and cover routine bufferRight */
+  bufferRight, /* qqq : please, implement and cover routine bufferRight | Dmytro : implemented and covered */
   bufferSplit,
   bufferCutOffLeft,
 
