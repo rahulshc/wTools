@@ -1222,69 +1222,69 @@ function _returnDst( dst, src )
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
  * let got = _.bufferBut_( buffer );
- * console.lot( got );
+ * console.log( got );
  * // log Uint8Array[ 1, 2, 3, 4 ]
  * console.log( got === buffer );
- * log false
+ * // log false
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
  * let got = _.bufferBut_( null, buffer );
- * console.lot( got );
+ * console.log( got );
  * // log Uint8Array[ 1, 2, 3, 4 ]
  * console.log( got === buffer );
- * log false
+ * // log false
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
  * let got = _.bufferBut_( buffer, buffer );
- * console.lot( got );
+ * console.log( got );
  * // log Uint8Array[ 1, 2, 3, 4 ]
  * console.log( got === buffer );
- * log true
+ * // log true
  *
  * @example
  * let dst = [ 0, 0 ]
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
  * let got = _.bufferBut_( dst, buffer );
- * console.lot( got );
+ * console.log( got );
  * // log [ 1, 2, 3, 4 ]
  * console.log( got === dst );
- * log true
+ * // log true
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
  * let src = new I32x( [ 0, 0, 0 ] );
  * let got = _.bufferBut_( buffer, [ 1, 3 ], src );
- * console.lot( got );
+ * console.log( got );
  * // log Uint8Array[ 1, 0, 0, 0, 4 ]
  * console.log( got === buffer );
- * log false
+ * // log false
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
  * let got = _.bufferBut_( null, buffer, 1, [ 0, 0, 0 ] );
- * console.lot( got );
+ * console.log( got );
  * // log Uint8Array[ 1, 0, 0, 0, 3, 4 ]
  * console.log( got === buffer );
- * log false
+ * // log false
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
  * let got = _.bufferBut_( buffer, buffer, [ 1, 3 ], [ 0, 0, 0 ] );
- * console.lot( got );
+ * console.log( got );
  * // log Uint8Array[ 1, 0, 0, 0, 4 ]
  * console.log( got === buffer );
- * log false
+ * // log false
  *
  * @example
  * let dst = [ 0, 0 ]
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
  * let got = _.bufferBut_( dst, buffer, [ 1, 3 ], [ 0, 0, 0 ] );
- * console.lot( got );
+ * console.log( got );
  * // log [ 1, 0, 0, 0, 4 ]
  * console.log( got === dst );
- * log true
+ * // log true
  *
  * @returns { BufferAny|Long } If {-dst-} is provided, routine returns container of {-dst-} type.
  * Otherwise, routine returns container of {-dstArray-} type.
@@ -1473,6 +1473,107 @@ function bufferSelectInplace( dstArray, range, srcArray )
 }
 
 //
+
+/**
+ * Routine bufferSelect_() returns a shallow copy of a portion of provided container {-dstArray-}
+ * into a new container selected by range {-range-}.
+ *
+ * If first and second provided arguments is containers, then fisrs argument is destination
+ * container {-dst-} and second argument is source container {-dstArray-}. All data in {-dst-}
+ * will be cleared. If {-dst-} container is not resizable and resulted container length
+ * is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ *
+ * If first argument and second argument is the same container, routine will try change container inplace.
+ *
+ * If {-dst-} is not provided routine makes new container of {-dstArray-} type.
+ *
+ * @param { BufferAny|Long|Null } dst - The destination container.
+ * @param { BufferAny|Long } dstArray - The container from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to dstArray.length.
+ * If {-range-} is undefined, routine returns copy of {-dstArray-}.
+ * If range[ 0 ] < 0, then start index sets to 0.
+ * If range[ 1 ] > dstArray.length, end index sets to dstArray.length.
+ * If range[ 1 ] <= range[ 0 ], then routine returns empty container.
+ * @param { BufferAny|Long } srcArray - The object of any type for insertion.
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferSelect_( buffer );
+ * console.log( got );
+ * // log Uint8Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferSelect_( null, buffer );
+ * console.log( got );
+ * // log Uint8Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferSelect_( buffer, buffer );
+ * console.log( got );
+ * // log Uint8Array[ 1, 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log true
+ *
+ * @example
+ * let dst = [ 0, 0 ]
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferSelect_( dst, buffer );
+ * console.log( got );
+ * // log [ 1, 2, 3, 4 ]
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let src = new I32x( [ 0, 0, 0 ] );
+ * let got = _.bufferSelect_( buffer, [ 1, 3 ], src );
+ * console.log( got );
+ * // log Uint8Array[ 2, 3 ]
+ * console.log( got === buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferSelect_( null, buffer, 1, [ 0, 0, 0 ] );
+ * console.log( got );
+ * // log Uint8Array[ 2, 3, 4 ]
+ * console.log( got === buffer );
+ * // log false
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferSelect_( buffer, buffer, [ 1, 3 ], [ 0, 0, 0 ] );
+ * console.log( got );
+ * // log Uint8Array[ 2, 3 ]
+ * console.log( got === buffer );
+ * // log false
+ *
+ * @example
+ * let dst = [ 0, 0 ];
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferSelect_( dst, buffer, [ 1, 3 ], [ 0, 0, 0 ] );
+ * console.log( got );
+ * // log [ 2, 3 ]
+ * console.log( got === dst );
+ * // log true
+ *
+ * @returns { BufferAny|Long } If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-dstArray-} type.
+ * If {-dst-} and {-dstArray-} is the same container, routine tries to return original container.
+ * @function bufferSelect_
+ * @throws { Error } If arguments.length is less then one or more then four.
+ * @throws { Error } If {-dst-} is not an any buffer, not a Long, not null.
+ * @throws { Error } If {-dstArray-} is not an any buffer, not a Long.
+ * @throws { Error } If ( range ) is not a Range or not a Number.
+ * @memberof wTools
+ */
 
 function bufferSelect_( dst, dstArray, range, srcArray )
 {
