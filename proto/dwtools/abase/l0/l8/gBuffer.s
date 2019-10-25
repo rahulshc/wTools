@@ -2305,9 +2305,9 @@ function bufferLeft( src, ins )
   let index = src.indexOf( ins[ 0 ] );
   while( index !== -1 )
   {
-
-    for( let i = 0 ; i < ins.length ; i++ )
-    if( src[ index+i ] !== ins[ i ] )
+    let i = 0;
+    for( ; i < ins.length ; i++ )
+    if( src[ index + i ] !== ins[ i ] )
     break;
 
     if( i === ins.length )
@@ -2318,7 +2318,41 @@ function bufferLeft( src, ins )
 
   }
 
-  return -1;
+  return index;
+}
+
+//
+
+function bufferRight( src, ins )
+{
+
+  if( !_.bufferRawIs( src ) )
+  src = _.bufferBytesGet( src );
+
+  if( !_.bufferRawIs( ins ) )
+  ins = _.bufferBytesGet( ins );
+
+  _.assert( src.indexOf );
+  _.assert( ins.indexOf );
+
+  let index = src.lastIndexOf( ins[ 0 ] );
+  while( index !== -1 )
+  {
+
+    let i = 0;
+    for( let i = ins.length - 1 ; i >= 0 ; i-- )
+    if( src[ index + i ] !== ins[ i ] )
+    break;
+
+    if( i === ins.length )
+    return index;
+
+    index -= 1;
+    index = src.lastIndexOf( ins[ 0 ], index );
+
+  }
+
+  return index;
 }
 
 //
@@ -2653,7 +2687,7 @@ let Routines =
   bufferToDom,
 
   bufferLeft,
-  // bufferRight, /* qqq : please, implement and cover routine bufferRight */
+  bufferRight, /* qqq : please, implement and cover routine bufferRight */
   bufferSplit,
   bufferCutOffLeft,
 
