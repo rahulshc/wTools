@@ -123,6 +123,106 @@ function scalarAppendOnce( dst, src )
 
 //
 
+function scalarPrepend( dst, src )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( dst === undefined )
+  {
+    if( _.longIs( src ) )
+    {
+      dst = [];
+    }
+    else
+    {
+      if( src === undefined )
+      return [];
+      else
+      return src;
+    }
+  }
+
+  if( _.longIs( dst ) )
+  {
+
+    if( !_.arrayIs( dst ) )
+    dst = _.arrayFrom( dst );
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    _.arrayPrependArray( dst, src );
+    else
+    dst.splice( 0, 0, src );
+
+  }
+  else
+  {
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    dst = _.arrayPrependArray( [ dst ], src );
+    else
+    dst = [ src, dst ];
+
+  }
+
+  return dst;
+}
+
+//
+
+function scalarPrependOnce( dst, src )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( dst === undefined )
+  {
+    if( _.longIs( src ) )
+    {
+      dst = [];
+    }
+    else
+    {
+      if( src === undefined )
+      return [];
+      else
+      return src;
+    }
+  }
+
+  if( _.longIs( dst ) )
+  {
+
+    if( !_.arrayIs( dst ) )
+    dst = _.arrayFrom( dst );
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    _.arrayPrependArrayOnce( dst, src );
+    else
+    _.arrayPrependElementOnce( dst, src );
+
+  }
+  else
+  {
+
+    if( src === undefined )
+    {}
+    else if( _.longIs( src ) )
+    dst = _.arrayPrependArrayOnce( [ dst ], src );
+    else
+    dst = _.arrayPrependElementOnce( [ dst ], src );
+
+  }
+
+  return dst;
+}
+
 /**
  * The scalarToVector() routine returns a new array
  * which containing the static elements only type of Number.
@@ -444,6 +544,77 @@ _.only( Array::dst, Set::src );
 
 */
 
+/**
+ * The routine entityOnly() provides the filtering of elements of destination container
+ * {-dst-} by checking values ​​in the source container {-src-}. The routine checks values
+ * with the same keys in both containers. If a received {-src-} element has falsy value, then
+ * element with the same key deletes from the {-dst-} container.
+ *
+ * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
+ * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
+ * Note: containers should have same type.
+ *
+ * Also, {-dst-} and {-src-} might be not iteratable element, for example, primitive.
+ * If {-dst-} is not iteratable, then routine check value of {-src-}.
+ *
+ * @param { ArrayLike|Set|Map|Object|* } dst - Container or another single element for filtering.
+ * If {-dst-} is null, then makes new container of {-src-} type.
+ * @param { ArrayLike|Set|Map|Object|* } src - Container or another single element for filtering.
+ * If {-src-} is undefined, then {-dst-} filters by its own values.
+ * @param { Function } onEach - The callback that obtain value for every {-src-} element. The
+ * callback accepts three parameters - element, key, source container.
+ *
+ * @example
+ * _.entityOnly( 'str', 1 );
+ * // returns 'str'
+ *
+ * @example
+ * _.entityOnly( 'str', 1, ( e, k, src ) => e - 1 );
+ * // returns undefined
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityOnly( null, src );
+ * // returns [ 1, true ]
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityOnly( null, src, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityOnly( dst );
+ * // returns [ true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityOnly( dst, undefined, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ];
+ * _.entityOnly( dst, src );
+ * // returns [ '', 0, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ];
+ * _.entityOnly( dst, undefined, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @returns { ArrayLike|Set|Map|Object|* } - Returns filtered container.
+ * If {-dst-} is not iteratable value, routine returns original {-dst-} or undefined.
+ * @function entityOnly
+ * @throws { Error } If arguments.length is less then one or more than three arguments.
+ * @throws { Error } If {-dst-} is not null or {-dst-} and {-src-} containers has different types.
+ * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
+ * @throws { Error } If onEach.length is more then three.
+ * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
+ * @memberof wTools
+ */
+
 function entityOnly( dst, src, onEach )
 {
 
@@ -558,7 +729,7 @@ function entityOnly( dst, src, onEach )
 
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( !res )
       dst.delete( value );
     }
@@ -687,7 +858,7 @@ function entityOnly( dst, src, onEach )
   {
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( !res )
       dst.delete( value );
     }
@@ -932,6 +1103,77 @@ function entityOnly( dst, src, onEach )
 
 //
 
+/**
+ * The routine entityBut() provides the filtering of elements of destination container
+ * {-dst-} by checking values ​​in the source container {-src-}. The routine checks values
+ * with the same keys in both containers. If a received {-src-} element has not falsy value, then
+ * element with the same key deletes from the {-dst-} container.
+ *
+ * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
+ * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
+ * Note: containers should have same type.
+ *
+ * Also, {-dst-} and {-src-} might be not iteratable element, for example, primitive.
+ * If {-dst-} is not iteratable, then routine check value of {-src-}.
+ *
+ * @param { ArrayLike|Set|Map|Object|* } dst - Container or another single element for filtering.
+ * If {-dst-} is null, then makes new container of {-src-} type.
+ * @param { ArrayLike|Set|Map|Object|* } src - Container or another single element for filtering.
+ * If {-src-} is undefined, then {-dst-} filters by its own values.
+ * @param { Function } onEach - The callback that obtain value for every {-src-} element. The
+ * callback accepts three parameters - element, key, source container.
+ *
+ * @example
+ * _.entityBut( 'str', 1 )
+ * // returns undefined
+ *
+ * @example
+ * _.entityBut( 'str', 1, ( e, k, src ) => e - 1 )
+ * // returns 'str'
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityBut( null, src );
+ * // returns [ 0, null, undefined ]
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityBut( null, src, ( e, k ) => k );
+ * // returns [ 1 ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityBut( dst );
+ * // returns [ '', 0, null, undefined ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityBut( dst, undefined, ( e, k ) => k );
+ * // returns [ '' ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ]
+ * _.entityBut( dst, src );
+ * // returns [ null, undefined ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ]
+ * _.entityBut( dst, undefined, ( e, k ) => k );
+ * // returns [ '' ]
+ *
+ * @returns { ArrayLike|Set|Map|Object|* } - Returns filtered container.
+ * If {-dst-} is not iteratable value, routine returns original {-dst-} or undefined.
+ * @function entityBut
+ * @throws { Error } If arguments.length is less then one or more than three arguments.
+ * @throws { Error } If {-dst-} is not null or {-dst-} and {-src-} containers has different types.
+ * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
+ * @throws { Error } If onEach.length is more then three.
+ * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
+ * @memberof wTools
+ */
+
 function entityBut( dst, src, onEach )
 {
 
@@ -1021,7 +1263,7 @@ function entityBut( dst, src, onEach )
 
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( !res )
       dst.add( value );
     }
@@ -1154,7 +1396,7 @@ function entityBut( dst, src, onEach )
   {
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( res )
       dst.delete( value );
     }
@@ -1498,6 +1740,76 @@ function entityBut( dst, src, onEach )
 
 //
 
+/**
+ * The routine entityAnd() provides the filtering of elements of destination container
+ * {-dst-} by checking values ​​with the same keys in the {-dst-} and source {-src-} containers.
+ * If one of received values is falsy, then element with deletes from the {-dst-} container.
+ *
+ * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
+ * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
+ * Note: containers should have same type.
+ *
+ * Also, {-dst-} and {-src-} might be not iteratable element, for example, primitive.
+ * If {-dst-} is not iteratable, then routine check value of {-src-}.
+ *
+ * @param { ArrayLike|Set|Map|Object|* } dst - Container or another single element for filtering.
+ * If {-dst-} is null, then makes new container of {-src-} type.
+ * @param { ArrayLike|Set|Map|Object|* } src - Container or another single element for filtering.
+ * If {-src-} is undefined, then {-dst-} filters by its own values.
+ * @param { Function } onEach - The callback that obtain value for every {-dst-} and {-src-} element
+ * with the same keys. The callback accepts three parameters - element, key, source container.
+ *
+ * @example
+ * _.entityAnd( 'str', 1 );
+ * // returns 'str'
+ *
+ * @example
+ * _.entityAnd( 'str', 1, ( e, k, src ) => e - 1 );
+ * // returns undefined
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityAnd( null, src );
+ * // returns [ 1, true ]
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityAnd( null, src, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityAnd( dst );
+ * // returns [ true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityAnd( dst, undefined, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ];
+ * _.entityAnd( dst, src );
+ * // returns []
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ];
+ * _.entityAnd( dst, undefined, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @returns { ArrayLike|Set|Map|Object|* } - Returns filtered container.
+ * If {-dst-} is not iteratable value, routine returns original {-dst-} or undefined.
+ * @function entityAnd
+ * @throws { Error } If arguments.length is less then one or more than three arguments.
+ * @throws { Error } If {-dst-} is not null or {-dst-} and {-src-} containers has different types.
+ * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
+ * @throws { Error } If onEach.length is more then three.
+ * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
+ * @memberof wTools
+ */
+
 function entityAnd( dst, src, onEach )
 {
 
@@ -1585,7 +1897,7 @@ function entityAnd( dst, src, onEach )
 
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( res )
       dst.add( value );
     }
@@ -1718,9 +2030,9 @@ function entityAnd( dst, src, onEach )
       let res1, res2;
       let from = [ ... src ]
 
-      res1 = onEach( value, value, dst );
+      res1 = onEach( value, undefined, dst );
       if( res1 && from.lastIndexOf( value ) !== -1 )
-      res2 = onEach( value, value, from );
+      res2 = onEach( value, undefined, from );
       else if( res1 )
       res2 = onEach( undefined, undefined, src );
 
@@ -1872,6 +2184,79 @@ function entityAnd( dst, src, onEach )
 
 //
 
+/**
+ * The routine entityOr() provides the filtering of elements of destination container
+ * {-dst-} by checking values ​​with the same keys in the {-dst-} and source {-src-} containers.
+ * If checking of {-dst-} element returs true, routine save {-dst-} element.
+ * If checking of {-dst-} element return false and checking of {-src-} element returns true,
+ * routine replace {-dst-} element by {-src-} element.
+ * Else, routine deletes {-dst-} element.
+ *
+ * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
+ * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
+ * Note: containers should have same type.
+ *
+ * Also, {-dst-} and {-src-} might be not iteratable element, for example, primitive.
+ * If {-dst-} is not iteratable, then routine check value of {-src-}.
+ *
+ * @param { ArrayLike|Set|Map|Object|* } dst - Container or another single element for filtering.
+ * If {-dst-} is null, then makes new container of {-src-} type.
+ * @param { ArrayLike|Set|Map|Object|* } src - Container or another single element for filtering.
+ * If {-src-} is undefined, then {-dst-} filters by its own values.
+ * @param { Function } onEach - The callback that obtain value for every {-dst-} and {-src-} element
+ * with the same keys. The callback accepts three parameters - element, key, source container.
+ *
+ * @example
+ * _.entityOr( 'str', undefined );
+ * // returns 'str'
+ *
+ * @example
+ * _.entityOr( false, 1, ( e, k, src ) => e - 1 );
+ * // returns 1
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityOr( null, src );
+ * // returns [ 1, true ]
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityOr( null, src, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityOr( dst );
+ * // returns [ true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityOr( dst, undefined, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ];
+ * _.entityOr( dst, src );
+ * // returns [ 1, 2, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ];
+ * _.entityOr( dst, undefined, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @returns { ArrayLike|Set|Map|Object|* } - Returns filtered container.
+ * If {-dst-} is not iteratable value, routine returns original {-dst-} or undefined.
+ * @function entityOr
+ * @throws { Error } If arguments.length is less then one or more than three arguments.
+ * @throws { Error } If {-dst-} is not null or {-dst-} and {-src-} containers has different types.
+ * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
+ * @throws { Error } If onEach.length is more then three.
+ * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
+ * @memberof wTools
+ */
+
 function entityOr( dst, src, onEach )
 {
 
@@ -1959,7 +2344,7 @@ function entityOr( dst, src, onEach )
 
     for( let value of src )
     {
-      let res = onEach( value, value, src );
+      let res = onEach( value, undefined, src );
       if( res )
       dst.add( value );
     }
@@ -2089,9 +2474,9 @@ function entityOr( dst, src, onEach )
     for( let key of dst )
     {
       let res1, res2;
-      res1 = onEach( key, key, dst );
+      res1 = onEach( key, undefined, dst );
       if( !res1 && src.has( key ) )
-      res2 = onEach( key, key, src );
+      res2 = onEach( key, undefined, src );
       else
       res2 = onEach( undefined, undefined, src );
 
@@ -2290,6 +2675,78 @@ function entityOr( dst, src, onEach )
 
 //
 
+/**
+ * The routine entityXor() provides the filtering of elements of destination container
+ * {-dst-} by checking values ​​with the same keys in the {-dst-} and source {-src-} containers.
+ * If both received values from {-dst-} and {-src-} has the same boolean value, then routine
+ * deletes {-dst-} element.
+ * Else routine sets in {-dst-} element, which received boolean value is true.
+ *
+ * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
+ * If {-src-} is undefined, routine filters {-dst-} container obtaining values from {-dst-}.
+ * Note: containers should have same type.
+ *
+ * Also, {-dst-} and {-src-} might be not iteratable element, for example, primitive.
+ * If {-dst-} is not iteratable, then routine check value of {-src-}.
+ *
+ * @param { ArrayLike|Set|Map|Object|* } dst - Container or another single element for filtering.
+ * If {-dst-} is null, then makes new container of {-src-} type.
+ * @param { ArrayLike|Set|Map|Object|* } src - Container or another single element for filtering.
+ * If {-src-} is undefined, then {-dst-} filters by its own values.
+ * @param { Function } onEach - The callback that obtain value for every {-dst-} and {-src-} element
+ * with the same keys. The callback accepts three parameters - element, key, source container.
+ *
+ * @example
+ * _.entityXor( 'str', undefined );
+ * // returns 'str'
+ *
+ * @example
+ * _.entityXor( 'str', 1, ( e, k, src ) => e - 1 );
+ * // returns false
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityXor( null, src );
+ * // returns [ 1, 0, null, undefined, true ]
+ *
+ * @example
+ * let src = [ 1, 0, null, undefined, true ];
+ * _.entityXor( null, src, ( e, k ) => k );
+ * // returns [ 0, null, undefined, true ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityXor( dst );
+ * // returns []
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * _.entityXor( dst, undefined, ( e, k ) => k );
+ * // returns []
+ *
+ * @example
+ * let dst = [ '', 0, null, 1, true ];
+ * let src = [ 1, 2, false, 1, 'str' ];
+ * _.entityXor( dst, src );
+ * // returns [ 1, 2 ]
+ *
+ * @example
+ * let dst = [ '', 0, null, undefined, true ];
+ * let src = [ 1, 2, false, undefined, 0 ];
+ * _.entityXor( dst, undefined, ( e, k ) => k );
+ * // returns []
+ *
+ * @returns { ArrayLike|Set|Map|Object|* } - Returns filtered container.
+ * If {-dst-} is not iteratable value, routine returns original {-dst-} or undefined.
+ * @function entityXor
+ * @throws { Error } If arguments.length is less then one or more than three arguments.
+ * @throws { Error } If {-dst-} is not null or {-dst-} and {-src-} containers has different types.
+ * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
+ * @throws { Error } If onEach.length is more then three.
+ * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
+ * @memberof wTools
+ */
+
 function entityXor( dst, src, onEach )
 {
 
@@ -2378,7 +2835,7 @@ function entityXor( dst, src, onEach )
     for( let value of src )
     {
       let res1 = onEach( undefined, undefined, dst );
-      let res2 = onEach( value, value, src );
+      let res2 = onEach( value, undefined, src );
 
       if( ( res1 && !res2 ) || ( !res1 && res2 ) )
       dst.add( value );
@@ -2509,7 +2966,7 @@ function entityXor( dst, src, onEach )
   {
     for( let key of dst )
     {
-      let res = onEach( key, key, dst );
+      let res = onEach( key, undefined, dst );
       if( !res )
       dst.delete( key );
     }
@@ -3251,6 +3708,7 @@ function entityMap( src, onEach )
 /* qqq :
 cover entityFilter and entityFilterDeep
 take into account unroll cases
+Dmytro : unroll cases uses in test routines, but routine entityFilter accepts BufferTyped and cannot handle it. So, routine need restrictions or extending.
 */
 
 function entityFilter( src, onEach )
@@ -3357,89 +3815,227 @@ function entityFilter( src, onEach )
 qqq : refactor routine _entityMost
 - make o-fication
 - make it accept evaluator or comparator( not in the same call )
+Dmytro : routine accepts options map, and can use evaluator or comparator
 */
 
-function _entityMost( src, onEvaluate, returnMax )
+function _entityMost( o )
 {
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
+  _.routineOptions( _entityMost, o );
 
-  if( onEvaluate === undefined )
-  onEvaluate = function( element ){ return element; }
-
-  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( onEvaluate.length === 1, 'not mplemented' );
-
-  let onCompare = null;
-
-  if( returnMax )
-  onCompare = function( a, b )
+  if( !o.onEvaluate )
   {
-    return a-b;
-  }
-  else
-  onCompare = function( a, b )
-  {
-    return b-a;
+    _.assert( o.returnMax !== null, 'o.returnMax should has value' );
+
+    if( o.returnMax )
+    o.onEvaluate = ( a, b ) => a - b > 0;
+    else
+    o.onEvaluate = ( a, b ) => b - a > 0;
   }
 
-  _.assert( onEvaluate.length === 1 );
-  _.assert( onCompare.length === 2 );
+  _.assert( 1 <= o.onEach.length && o.onEach.length <= 3 );
+  _.assert( o.onEvaluate.length === 1 || o.onEvaluate.length === 2 );
 
   let result = { index : -1, key : undefined, value : undefined, element : undefined };
 
-  if( _.longIs( src ) )
+  if( _.longIs( o.src ) )
   {
-
-    if( src.length === 0 )
+    if( o.src.length === 0 )
     return result;
-    result.key = 0;
-    result.value = onEvaluate( src[ 0 ] );
-    result.element = src[ 0 ];
 
-    for( let s = 0 ; s < src.length ; s++ )
+    let s = 0;
+    if( o.onEvaluate.length === 1 )
+    for( ; s < o.src.length; s++ )
     {
-      let value = onEvaluate( src[ s ] );
-      if( onCompare( value, result.value ) > 0 )
+      let value = o.onEach( o.src[ s ], s, o.src );
+      if( o.onEvaluate( value ) )
       {
-        result.key = s;
         result.value = value;
-        result.element = src[ s ];
+        result.key = s;
+        break;
       }
     }
-    result.index = result.key;
-
-  }
-  else if( _.mapLike( src ) )
-  {
-
-    debugger;
-    for( let s in src )
+    else
     {
-      result.index = 0;
       result.key = s;
-      result.value = onEvaluate( src[ s ] );
-      result.element = src[ s ]
-      break;
+      result.value = o.onEach( o.src[ s ], s, o.src );
     }
 
+    for( ; s < o.src.length; s++ )
+    resultValue( o.src[ s ], s, o.src );
+    result.index = result.key;
+    result.element = o.src[ result.key ];
+  }
+  else if( _.mapLike( o.src ) )
+  {
     let index = 0;
-    for( let s in src )
+    if( o.onEvaluate.length === 1 )
     {
-      let value = onEvaluate( src[ s ] );
-      if( onCompare( value, result.value ) > 0 )
+      for( let s in o.src )
       {
-        result.index = index;
-        result.key = s;
-        result.value = value;
-        result.element = src[ s ];
+        if( result.value === undefined )
+        {
+          let value = o.onEach( o.src[ s ], s, o.src );
+          if( o.onEvaluate( value ) )
+          {
+            result.value = value;
+            result.index = index;
+            result.key = s;
+          }
+        }
+        else
+        {
+          if( resultValue( o.src[ s ], s, o.src ) )
+          result.index = index;
+        }
+
+        index++;
+
       }
-      index += 1;
+      result.element = o.src[ result.key ];
+    }
+    else
+    {
+      for( let s in o.src )
+      {
+        result.index = 0;
+        result.key = s;
+        result.value = o.onEach( o.src[ s ], s, o.src );
+        break;
+      }
+
+      for( let s in o.src )
+      {
+        if( resultValue( o.src[ s ], s, o.src ) )
+        result.index = index;
+
+        index++;
+      }
+      result.element = o.src[ result.key ];
     }
 
   }
-  else _.assert( 0 );
+  else
+  _.assert( 0 );
 
   return result;
+
+  /* */
+
+  function resultValue( e, k, s )
+  {
+    let value = o.onEach( e, k, s );
+    if( o.onEvaluate.length === 1 )
+    {
+      if( o.onEvaluate( value ) === o.onEvaluate( result.value ) )
+      {
+        result.key = k;
+        result.value = value;
+        return true;
+      }
+    }
+    else if( o.onEvaluate( value, result.value ) )
+    {
+      result.key = k;
+      result.value = value;
+      return true;
+    }
+
+    return false;
+  }
+
 }
+
+_entityMost.defaults =
+{
+  src : null,
+  onEach : ( e ) => e,
+  onEvaluate : null,
+  returnMax : null
+}
+
+// function _entityMost( src, onEvaluate, returnMax )
+// {
+//
+//   if( onEvaluate === undefined )
+//   onEvaluate = function( element ){ return element; }
+//
+//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
+//   _.assert( onEvaluate.length === 1, 'not implemented' );
+//
+//   let onCompare = null;
+//
+//   if( returnMax )
+//   onCompare = function( a, b )
+//   {
+//     return a-b;
+//   }
+//   else
+//   onCompare = function( a, b )
+//   {
+//     return b-a;
+//   }
+//
+//   _.assert( onEvaluate.length === 1 );
+//   _.assert( onCompare.length === 2 );
+//
+//   let result = { index : -1, key : undefined, value : undefined, element : undefined };
+//
+//   if( _.longIs( src ) )
+//   {
+//
+//     if( src.length === 0 )
+//     return result;
+//     result.key = 0;
+//     result.value = onEvaluate( src[ 0 ] );
+//     result.element = src[ 0 ];
+//
+//     for( let s = 0 ; s < src.length ; s++ )
+//     {
+//       let value = onEvaluate( src[ s ] );
+//       if( onCompare( value, result.value ) > 0 )
+//       {
+//         result.key = s;
+//         result.value = value;
+//         result.element = src[ s ];
+//       }
+//     }
+//     result.index = result.key;
+//
+//   }
+//   else if( _.mapLike( src ) )
+//   {
+//
+//     debugger;
+//     for( let s in src )
+//     {
+//       result.index = 0;
+//       result.key = s;
+//       result.value = onEvaluate( src[ s ] );
+//       result.element = src[ s ]
+//       break;
+//     }
+//
+//     let index = 0;
+//     for( let s in src )
+//     {
+//       let value = onEvaluate( src[ s ] );
+//       if( onCompare( value, result.value ) > 0 )
+//       {
+//         result.index = index;
+//         result.key = s;
+//         result.value = value;
+//         result.element = src[ s ];
+//       }
+//       index += 1;
+//     }
+//
+//   }
+//   else _.assert( 0 );
+//
+//   return result;
+// }
 
 //
 
@@ -3463,10 +4059,16 @@ function _entityMost( src, onEvaluate, returnMax )
  * @memberof wTools
  */
 
-function entityMin( src, onEvaluate )
+function entityMin( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return _entityMost( src, onEvaluate, 0 );
+  // return _entityMost( src, onEvaluate, 0 );
+  return _entityMost
+  ({
+    src : src,
+    onEach : onEach,
+    returnMax : 0
+  });
 }
 
 //
@@ -3491,10 +4093,16 @@ function entityMin( src, onEvaluate )
  * @memberof wTools
  */
 
-function entityMax( src, onEvaluate )
+function entityMax( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  return _entityMost( src, onEvaluate, 1 );
+  // return _entityMost( src, onEvaluate, 1 );
+  return _entityMost
+  ({
+    src : src,
+    onEach : onEach,
+    returnMax : 1
+  });
 }
 
 // --
@@ -3515,9 +4123,9 @@ let Routines =
   // scalar
 
   scalarAppend,
-  // scalarPrepend, /* qqq : implement and cover routine scalarPrepend, pelase */
+  scalarPrepend, /* qqq : implement and cover routine scalarPrepend, pelase | Dmytro : implemented and covered */
   scalarAppendOnce,
-  // scalarPrependOnce, /* qqq : implement and cover routine scalarPrependOnce, pelase */
+  scalarPrependOnce, /* qqq : implement and cover routine scalarPrependOnce, pelase | Dmytro : implemented and covered */
 
   scalarToVector,
   scalarFrom,
@@ -3539,27 +4147,30 @@ let Routines =
   // entityEachKey,
   // eachKey : entityEachKey,
 
-  /* qqq : take _.nothing case in routines only, but, all, any, none */
+  /*
+  qqq : take _.nothing case in routines only, but, all, any, none
+  Dmytro : _.nothing cases is implemented
+   */
 
-  entityOnly, /* qqq : optimize, implement good coverage and jsdoc, please */
+  entityOnly, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
   only : entityOnly,
-  entityBut, /* qqq : optimize, implement good coverage and jsdoc, please */
+  entityBut, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
   but : entityBut,
-  entityAnd, /* qqq : optimize, implement good coverage and jsdoc, please */
+  entityAnd, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
   and : entityAnd,
-  entityOr, /* qqq : optimize, implement good coverage and jsdoc, please */
+  entityOr, /* qqq : optimize, implement good coverage and jsdoc, please  | Dmytro : covered and added JSdoc*/
   or : entityOr,
-  entityXor,
+  entityXor, /* qqq : optimize, implement good coverage and jsdoc, please  | Dmytro : covered and added JSdoc*/
   xor : entityXor,
 
-  entityAll, /* qqq : optimize entityAll */
+  entityAll, /* qqq : optimize entityAll | Dmytro : for() loop is better than every() method, can inline variables if onEach === undefined */
   all : entityAll,
-  entityAny, /* qqq : optimize entityAny */
+  entityAny, /* qqq : optimize entityAny | Dmytro : for() loop is better than some() method, can inline variables if onEach === undefined */
   any : entityAny,
-  entityNone, /* qqq : optimize entityNone */
+  entityNone, /* qqq : optimize entityNone | Dmytro : for() loop is better than some() method, can inline variables if onEach === undefined*/
   none : entityNone,
 
-  _filter_functor, /* qqq : cover please */
+  _filter_functor, /* qqq : cover please | Dmytro : covered */
 
   entityMap,
   map : entityMap,
@@ -3570,7 +4181,7 @@ let Routines =
 
   //
 
-  _entityMost, // qqq : refactor routine _entityMost
+  _entityMost, // qqq : refactor routine _entityMost | Dmytro : refactored
   entityMin,
   min : entityMin,
   entityMax,

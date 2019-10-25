@@ -164,9 +164,13 @@ function longMake( src, ins )
           /* Dmytro : simple and effective solution is
           result = Array.from( ins );
           Anyway, new container makes from ins
+
+          Now, routine constructorJoin accepts only arrays
           */
           if( ins.length === 1 )
           result = [ ins[ 0 ] ];
+          else if( !_.arrayLike( ins ) )
+          result = new( _.constructorJoin( src, [ ... ins ] ) );
           else
           result = new( _.constructorJoin( src, ins ) );
         }
@@ -720,7 +724,8 @@ function longEmpty( dstLong )
 {
   if( _.arrayIs( dstLong ) )
   {
-    dstLong.slice( 0, dstLong.length );
+    // dstLong.slice( 0, dstLong.length ); // Dmytro : slice() method make copy of array, splice() method removes elements
+    dstLong.splice( 0, dstLong.length );
     return dstLong;
   }
   _.assert( 0, `Cant change length of fixed-length container ${_.strType( dstLong )}` );
@@ -991,6 +996,111 @@ function longButInplace( array, range, val )
   // result[ i-d ] = src[ i ];
   //
   // return result;
+}
+
+//
+
+function _argumentsOnlyLong( dst, src, range, ins )
+{
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
+
+  if( dst === null )
+  dst = true;
+  else if( dst === src )
+  dst = false;
+  else if( arguments.length === 4 )
+  _.assert( _.longIs( dst ), '{-dst-} should be Long' );
+  else
+  {
+    if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
+    _.assert( _.longIs( dst ) );
+    else
+    {
+      ins = range;
+      range = src;
+      src = dst;
+      dst = true;
+    }
+  }
+
+  _.assert( _.longIs( src ) );
+
+  return [ dst, src, range, ins ];
+}
+
+//
+
+function longBut_( dst, array, range, val )
+{
+
+  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+
+  if( _.arrayLikeResizable( array ) )
+  return _.arrayBut_.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
+
+  _.assert( _.rangeIs( range ) );
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === range[ 1 ] && val === undefined )
+  return returnDst();
+
+  let d = range[ 1 ] - range[ 0 ];
+  let len = val ? val.length : 0;
+  let d2 = d - len;
+  let l2 = array.length - d2;
+
+  let result;
+  if( _.boolIs( dst ) )
+  result = _.longMakeUndefined( array, l2 );
+  else if( _.arrayLikeResizable( dst ) )
+  result = _.longEmpty( dst );
+  else if( dst.length !== l2 )
+  result = _.longMakeUndefined( dst, l2 );
+  else
+  result = dst;
+
+  for( let i = 0 ; i < range[ 0 ] ; i++ )
+  result[ i ] = array[ i ];
+
+  for( let i = range[ 1 ] ; i < array.length ; i++ )
+  result[ i-d2 ] = array[ i ];
+
+  if( val )
+  for( let i = 0 ; i < val.length ; i++ )
+  result[ range[ 0 ]+i ] = val[ i ];
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    {
+      if( _.arrayLikeResizable( dst ) )
+      return dst.splice( 0, dst.length, ... array );
+      else
+      {
+        if( dst.length !== array.length )
+        dst = _.longMakeUndefined( dst, array.length );
+
+        for( let i = 0; i < dst.length; i++ )
+        dst[ i ] = array[ i ];
+
+        return dst;
+      }
+    }
+    return dst === true ? _.longMake( array ) : array;
+  }
 }
 
 //
@@ -1307,6 +1417,72 @@ function longSelectInplace( array, range, val )
 
 //
 
+function longSelect_( dst, array, range, val )
+{
+
+  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+
+  if( _.arrayLikeResizable( array ) )
+  return _.arraySelect_.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  _.assert( _.rangeIs( range ) )
+
+  _.rangeClamp( range, [ 0, array.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+  return returnDst();
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
+
+  let result;
+  if( _.boolIs( dst ) )
+  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
+  else if( _.arrayLikeResizable( dst ) )
+  result = _.longEmpty( dst );
+  else if( dst.length !== range[ 1 ] - range[ 0 ] )
+  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
+  else
+  result = dst;
+
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-f2 ] = array[ r ];
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    {
+      if( _.arrayLikeResizable( dst ) )
+      return dst.splice( 0, dst.length, ... array );
+      else
+      {
+        if( dst.length !== array.length )
+        dst = _.longMakeUndefined( dst, array.length );
+
+        for( let i = 0; i < dst.length; i++ )
+        dst[ i ] = array[ i ];
+
+        return dst;
+      }
+    }
+    return dst === true ? _.longMake( array ) : array;
+  }
+}
+
+//
+
 /**
  * Routine longGrow() changes length of provided Long {-array-} by copying it elements to newly created Long of the same
  * type using range {-range-} positions of the original Long and value to fill free space after copy {-val-}.
@@ -1378,9 +1554,9 @@ function longSelectInplace( array, range, val )
   qqq : extend documentation and test coverage of longGrowInplace
   Dmytro : extended documentation, covered routine longGrow, longGrowInplace
   qqq : implement arrayGrow
-  Dmitro : implemented
+  Dmytro : implemented
   qqq : implement arrayGrowInplace
-  Dmitro : implemented
+  Dmytro : implemented
 */
 
 function longGrow( array, range, val )
@@ -1632,6 +1808,94 @@ function longGrowInplace( array, range, val )
 
 //
 
+function longGrow_( dst, array, range, val )
+{
+
+  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+
+  if( _.arrayLikeResizable( array ) )
+  return arrayGrow_.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  _.assert( _.rangeIs( range ) );
+
+  range[ 0 ] = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  range[ 1 ] = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
+
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] < 0 )
+  {
+    range[ 1 ] -= range[ 0 ];
+    range[ 0 ] -= range[ 0 ];
+  }
+
+  if( range[ 0 ] > 0 )
+  range[ 0 ] = 0;
+  if( range[ 1 ] < array.length )
+  range[ 1 ] = array.length;
+
+  if( range[ 1 ] === array.length )
+  return returnDst();
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
+
+  let result;
+  if( _.boolIs( dst ) )
+  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
+  else if( _.arrayLikeResizable( dst ) )
+  {
+    result = dst;
+    result.length = range[ 1 ] - range[ 0 ];
+  }
+  else if( dst.length !== range[ 1 ] - range[ 0 ] )
+  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
+  else
+  result = dst;
+
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-f2 ] = array[ r ];
+
+  if( val !== undefined )
+  {
+    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
+    result[ r ] = val;
+  }
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    {
+      if( _.arrayLikeResizable( dst ) )
+      return dst.splice( 0, dst.length, ... array );
+      else
+      {
+        if( dst.length !== array.length )
+        dst = _.longMakeUndefined( dst, array.length );
+
+        for( let i = 0; i < dst.length; i++ )
+        dst[ i ] = array[ i ];
+
+        return dst;
+      }
+    }
+    return dst === true ? _.longMake( array ) : array;
+  }
+}
+
+//
+
 /**
  * Routine longRelength() changes length of provided Long {-array-} by copying it elements to newly created Long of the same
  * type using range {-range-} positions of the original Long and value to fill free space after copy {-val-}.
@@ -1850,6 +2114,88 @@ function longRelengthInplace( array, range, val )
   else
   return _.longRelength( array, range, val );
 
+}
+
+//
+
+function longRelength_( dst, array, range, val )
+{
+
+  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+
+  if( _.arrayLikeResizable( array ) )
+  return _.arrayRelength_.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ range, array.length ];
+
+  _.assert( _.rangeIs( range ) );
+
+  range[ 0 ] = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+  range[ 1 ] = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
+
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+  if( range[ 0 ] > array.length )
+  range[ 0 ] = array.length
+
+  if( range[ 0 ] < 0 )
+  range[ 0 ] = 0;
+
+  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
+  return returnDst();
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( array.length, range[ 1 ] );
+
+  let result;
+  if( _.boolIs( dst ) )
+  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
+  else if( _.arrayLikeResizable( dst ) )
+  {
+    result = dst;
+    result.length = range[ 1 ] - range[ 0 ];
+  }
+  else if( dst.length !== range[ 1 ] - range[ 0 ] )
+  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
+  else
+  result = dst;
+
+  for( let r = f2 ; r < l2 ; r++ )
+  result[ r-f2 ] = array[ r ];
+
+  if( val !== undefined )
+  {
+    for( let r = l2 - range[ 0 ]; r < result.length; r++ )
+    result[ r ] = val;
+  }
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    {
+      if( _.arrayLikeResizable( dst ) )
+      return dst.splice( 0, dst.length, ... array );
+      else
+      {
+        if( dst.length !== array.length )
+        dst = _.longMakeUndefined( dst, array.length );
+
+        for( let i = 0; i < dst.length; i++ )
+        dst[ i ] = array[ i ];
+
+        return dst;
+      }
+    }
+    return dst === true ? _.longMake( array ) : array;
+  }
 }
 
 // --
@@ -2916,6 +3262,92 @@ function arrayButInplace( src, range, ins )
 
 //
 
+function _argumentsOnlyArray( dst, src, range, ins )
+{
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
+
+  if( dst === null )
+  dst = true;
+  else if( dst === src )
+  dst = false;
+  else if( arguments.length === 4 )
+  _.assert( _.arrayLikeResizable( dst ) );
+  else
+  {
+    if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
+    _.assert( _.arrayLikeResizable( dst ) );
+    else
+    {
+      ins = range;
+      range = src;
+      src = dst;
+      dst = true;
+    }
+  }
+
+  _.assert( _.arrayLikeResizable( src ) );
+
+  return [ dst, src, range, ins ];
+}
+
+//
+
+function arrayBut_( dst, src, range, ins )
+{
+
+  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+
+  if( range === undefined )
+  {
+    if( dst.length !== undefined )
+    dst.splice( 0, dst.length, ... src );
+    else
+    dst = dst === true ? src.slice() : src;
+
+    return dst;
+  }
+
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
+
+  _.assert( _.rangeIs( range ) );
+  _.assert( ins === undefined || _.longIs( ins ) );
+
+  _.rangeClamp( range, [ 0, src.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  let result;
+  if( dst !== false )
+  {
+    if( dst.length !== undefined )
+    result = _.longEmpty( dst );
+    else
+    result = [];
+
+    for( let i = 0; i < range[ 0 ]; i++ )
+    result[ i ] = src[ i ];
+
+    if( ins )
+    result.push( ... ins );
+
+    for( let j = range[ 1 ]; j < src.length; j++ )
+    result.push( src[ j ] );
+  }
+  else
+  {
+    result = src
+    if( ins )
+    result.splice.apply( result, [ range[ 0 ], range[ 1 ] - range[ 0 ], ... ins ] );
+    else
+    result.splice.apply( result, [ range[ 0 ], range[ 1 ] - range[ 0 ] ] );
+  }
+
+  return result;
+}
+
+//
+
 /**
  * The routine arraySelect() returns a copy of a portion of provided array {-src-} into a new array object
  * selected by {-range-}. The original {-src-} will not be modified.
@@ -3103,6 +3535,64 @@ function arraySelectInplace( src, range, ins )
   result.length = range[ 1 ] - range[ 0 ];
 
   return result;
+}
+
+//
+
+function arraySelect_( dst, src, range, ins )
+{
+
+  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ range, src.length ];
+
+  _.assert( _.rangeIs( range ) );
+
+  _.rangeClamp( range, [ 0, src.length ] );
+  if( range[ 1 ] < range[ 0 ] )
+  range[ 1 ] = range[ 0 ];
+
+  if( range[ 0 ] === 0 && range[ 1 ] === src.length )
+  return returnDst();
+
+  let f2 = Math.max( range[ 0 ], 0 );
+  let l2 = Math.min( src.length, range[ 1 ] );
+
+  let result
+  if( dst !== false )
+  {
+    if( dst.length !== undefined )
+    result = _.longEmpty( dst );
+    else
+    result = [];
+
+    for( let i = f2; i < l2; i++ )
+    result.push( src[ i ] );
+  }
+  else
+  {
+    result = src;
+    result.splice.apply( result, [ 0, f2 ] );
+    result.length = range[ 1 ] - range[ 0 ];
+  }
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    dst.splice( 0, dst.length, ... src );
+    else
+    dst = dst === true ? src.slice() : src;
+
+    return dst;
+  }
 }
 
 //
@@ -3345,6 +3835,79 @@ function arrayGrowInplace( src, range, ins )
 
 //
 
+function arrayGrow_( dst, src, range, ins )
+{
+
+  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+  _.assert( _.rangeIs( range ) || _.numberIs( range ) || range === undefined );
+
+  let f = range[ 0 ] === undefined ?  0 : range[ 0 ];
+  let l = range[ 1 ] === undefined ?  0 : range[ 1 ];
+
+  if( l < f )
+  l = f;
+
+  if( f < 0 )
+  {
+    l -= f;
+    f -= f;
+  }
+
+  if( f > 0 )
+  f = 0;
+  if( l < src.length )
+  l = src.length;
+
+  if( l === src.length )
+  return returnDst();
+
+  let l2 = src.length;
+
+  let result;
+  if( dst !== false )
+  {
+    if( dst.length !== undefined )
+    {
+      result = dst;
+      result.splice( 0, result.length, ... src );
+    }
+    else
+    result = src.slice();
+  }
+  else
+  result = src;
+
+  result.length = l;
+
+  if( ins !== undefined )
+  {
+    for( let r = l2; r < result.length ; r++ )
+    result[ r ] = ins;
+  }
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    dst.splice( 0, dst.length, ... src );
+    else
+    dst = dst === true ? src.slice() : src;
+
+    return dst;
+  }
+}
+
+//
+
 /**
  * Routine arrayRelength() changes length of provided array {-src-} by copying it elements to newly created array object
  * using range (range) positions of the original array and value to fill free space after copy (val).
@@ -3561,6 +4124,76 @@ function arrayRelengthInplace( src, range, ins )
   }
 
   return result;
+}
+
+//
+
+function arrayRelength_( dst, src, range, ins )
+{
+
+  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+
+  if( range === undefined )
+  return returnDst();
+
+  if( _.numberIs( range ) )
+  range = [ range, src.length ];
+
+  let f = range[ 0 ] === undefined ?  0 : range[ 0 ];
+  let l = range[ 1 ] === undefined ?  0 : range[ 1 ];
+
+  _.assert( _.rangeIs( range ) );
+
+  if( l < f )
+  l = f;
+
+  if( f < 0 )
+  f = 0;
+
+  if( f === 0 && l === src.length )
+  return returnDst();
+
+  let f2 = Math.max( f, 0 );
+  let l2 = Math.min( src.length, l );
+
+  let result;
+  if( dst !== false )
+  {
+    if( dst.length !== undefined )
+    result = _.longEmpty( dst );
+    else
+    result = [];
+
+    for( let i = f; i < l2; i++ )
+    result.push( src[ i ] );
+  }
+  else
+  {
+    result = src;
+    result.splice( 0, f );
+  }
+
+  result.length = l - f;
+
+  if( ins !== undefined )
+  {
+    for( let r = l2 - f; r < result.length ; r++ )
+    result[ r ] = ins;
+  }
+
+  return result;
+
+  /* */
+
+  function returnDst()
+  {
+    if( dst.length !== undefined )
+    dst.splice( 0, dst.length, ... src );
+    else
+    dst = dst === true ? src.slice() : src;
+
+    return dst;
+  }
 }
 
 // --
@@ -8336,12 +8969,17 @@ let Routines =
 
   longBut,
   longButInplace,
+  _argumentsOnlyLong,
+  longBut_,
   longSelect,
   longSelectInplace,
+  longSelect_,
   longGrow,
   longGrowInplace,
+  longGrow_,
   longRelength,
   longRelengthInplace,
+  longRelength_,
 
   // array checker
 
@@ -8377,16 +9015,20 @@ let Routines =
   // array transformer
 
   arraySlice,
-  // arrayButInplace, // Dmytro : maybe it should be arraySliceInplace
 
   arrayBut,
   arrayButInplace,
+  _argumentsOnlyArray,
+  arrayBut_,
   arraySelect,
   arraySelectInplace,
+  arraySelect_,
   arrayGrow,
   arrayGrowInplace,
+  arrayGrow_,
   arrayRelength,
   arrayRelengthInplace,
+  arrayRelength_,
 
   // array sequential search
 
@@ -8497,7 +9139,7 @@ let Routines =
 
   // array flatten
 
-  /* qqq : extend routine arrayFlatten and its coverage to support Sets as input */
+  /* qqq : extend routine arrayFlatten and its coverage to support Sets as input | Dmytro : all routines accepts Sets, coverage extended */
 
   arrayFlatten,
   arrayFlattenOnce,
