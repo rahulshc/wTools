@@ -739,8 +739,108 @@ function rangeIsPopulated( test )
   test.shouldThrowErrorSync( () => _.rangeIsPopulated( [ 1, 2 ], 'extra' ) );
 }
 
-// --
 //
+
+function rangeInInclusive( test )
+{
+  test.case = 'srcNumber - number, srcNumber < range[ 0 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - number, srcNumber > range[ 1 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], 7 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - number, range[ 0 ] < srcNumber < range[ 1 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], 4 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - array, srcNumber < range[ 0 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], [ 0 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - array, srcNumber > range[ 1 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], [ 0, 0, 0, 0, 0, 0, 0 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - array, range[ 0 ] < srcNumber < range[ 1 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], [ 0, 0, 0, 0 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - unroll, srcNumber < range[ 0 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], _.unrollMake( [ 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - unroll, srcNumber > range[ 1 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - unroll, range[ 0 ] < srcNumber < range[ 1 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - argumentsArray, srcNumber < range[ 0 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - argumentsArray, srcNumber > range[ 1 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - argumentsArray, range[ 0 ] < srcNumber < range[ 1 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, srcNumber < range[ 0 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], new I8x( [ 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, srcNumber > range[ 1 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], new U16x( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, range[ 0 ] < srcNumber < range[ 1 ]';
+  var got = _.rangeInInclusive( [ 2, 5 ], new F32x( [ 0, 0, 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.rangeInInclusive() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.rangeInInclusive( [ 1, 2 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.rangeInInclusive( [ 1, 2 ], 3, 'extra' ) );
+
+  test.case = 'range is not Range';
+  test.shouldThrowErrorSync( () => _.rangeInInclusive( 'wrong', 3 ) );
+
+  test.case = 'srcNumber is not Long, not Number';
+  test.shouldThrowErrorSync( () => _.rangeInInclusive( [ 1, 2 ], 'wrong' ) );
+}
+
+// --
+// declaration
 // --
 
 var Self =
@@ -758,6 +858,8 @@ var Self =
     rangeIs,
     rangeIsEmpty,
     rangeIsPopulated,
+
+    rangeInInclusive,
 
   }
 
