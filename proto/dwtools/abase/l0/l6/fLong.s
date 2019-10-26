@@ -2247,6 +2247,7 @@ function longRelength_( dst, array, range, val )
 // array checker
 // --
 
+
 /**
  * The arrayIs() routine determines whether the passed value is an Array.
  *
