@@ -158,7 +158,10 @@ let Routines =
 
   // range
 
-  /* qqq : good coverage of each routine is required */
+  /*
+  qqq : good coverage of each routine is required
+  Dmytro : all routines covered
+  */
 
   rangeIs,
   rangeIsEmpty,

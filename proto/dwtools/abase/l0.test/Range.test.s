@@ -1381,6 +1381,48 @@ function sureInRange( test )
   test.shouldThrowErrorSync( () => _.sureInRange( 7, [ 2, 5 ], undefined ) );
 }
 
+//
+
+function assertInRange( test )
+{
+  test.case = 'two arguments, src - number, in range';
+  var got = _.assertInRange( 3, [ 1, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'two arguments, src - array, in range';
+  var got = _.assertInRange( 3, [ 1, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'more then two arguments, src - number, in range';
+  var got = _.assertInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'more then two arguments, src - array, in range';
+  var got = _.assertInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.assertInRange() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.assertInRange( 2 ) );
+
+  test.case = 'src out of range';
+  test.shouldThrowErrorSync( () => _.assertInRange( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.assertInRange( 5, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.assertInRange( 7, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.assertInRange( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.assertInRange( 5, [ 2, 5 ], {} ) );
+  test.shouldThrowErrorSync( () => _.assertInRange( 7, [ 2, 5 ], undefined ) );
+}
+
 // --
 // declaration
 // --
@@ -1407,6 +1449,7 @@ var Self =
     rangeInInclusiveRight,
 
     sureInRange,
+    assertInRange,
 
   }
 
