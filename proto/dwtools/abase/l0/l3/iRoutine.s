@@ -657,6 +657,7 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 
 /*
 qqq implement and cover _.routineExtend( null, routine );
+Dmytro : implemented a time ago, covered
 */
 
 /**

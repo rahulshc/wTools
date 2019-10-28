@@ -1353,14 +1353,12 @@ function routineDefaults( test )
 
 //
 
-function vectorize( test )
+function vectorizeVectorizeArray( test )
 {
-  function srcRoutine( a,b )
+  var srcRoutine = function()
   {
     return _.longSlice( arguments );
-  }
-
-  test.open( 'defaults' );
+  };
 
   var o =
   {
@@ -1369,22 +1367,43 @@ function vectorize( test )
     select : 1
   }
   o.routine = srcRoutine;
+  debugger;
   var routine = _.vectorize( o );
 
   test.case = 'single argument';
 
-  test.identical( routine( 1 ), [ 1 ] );
-  test.identical( routine( [ 1 ] ), [ [ 1 ] ] );
-  test.identical( routine( [ 1,2,3 ] ), [ [ 1 ], [ 2 ], [ 3 ] ] );
+  var got = routine( 1 );
+  test.identical( got, [ 1 ] );
+
+  var got = routine( [ 1 ] );
+  test.identical( got, [ [ 1 ] ] );
+
+  var got = routine( [ 1, 2, 3 ] );
+  test.identical( got, [ [ 1 ], [ 2 ], [ 3 ] ] );
 
   test.case = 'multiple argument';
 
-  test.identical( routine( 1, 0 ), [ 1, 0 ] );
-  test.identical( routine( [ 1,2,3 ], 2 ), [ [ 1,2 ], [ 2,2 ], [ 3,2 ] ] );
-  test.identical( routine( 2, [ 1,2,3 ] ), [ 2, [ 1,2,3 ] ] );
-  test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1, [ 1,2 ] ], [ 2, [ 1,2 ] ] ] );
+  var got = routine( 1, 0 );
+  test.identical( got, [ 1, 0 ] );
 
-  test.close( 'defaults' );
+  var got = routine( [ 1, 2, 3 ], 2 );
+  test.identical( got, [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
+
+  var got = routine( 2, [ 1, 2, 3 ] );
+  test.identical( got, [ 2, [ 1, 2, 3 ] ] );
+
+  var got = routine( [ 1, 2 ], [ 3, 4 ] )
+  test.identical( got, [ [ 1, [ 3, 4 ] ], [ 2, [ 3, 4 ] ] ] );
+}
+
+function vectorize( test )
+{
+  function srcRoutine( a,b )
+  {
+    return _.longSlice( arguments );
+  }
+
+
 
   //
 
@@ -2452,6 +2471,7 @@ var Self =
     routineExtend,
     routineDefaults,
 
+    vectorizeVectorizeArray,
     vectorize,
     /* qqq : split test routine vectorize */
     /* qqq : add tests for vectorize* routines */
