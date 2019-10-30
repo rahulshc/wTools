@@ -36,7 +36,11 @@ path :
 
   in : '.'
   out : 'out'
-  temp : 'path::out'
+  temp :
+    - 'path::out'
+    - 'package-lock.json'
+    - 'package.json'
+    - 'node_modules'
   proto : './proto'
   export : '{path::proto}/**'
   doc : './doc'
@@ -66,25 +70,24 @@ path :
       raw : compiled
       content : prime
 
+  entry :
+    path : 'dwtools/abase/Layer2.s'
   entry.proto.no.tests :
-    path : proto/dwtools/abase/Layer2.s
+    path : 'proto/{path::entry}'
     criterion :
       tests : 'no.tests'
+      content : proto
   entry.proto.only.tests :
     path : proto/**/*.test.*
     criterion :
       tests : 'only.tests'
-
-  # npm.entry : proto/dwtools/abase/Layer2.s
-  # npm.files : proto
-
-  entry.out.raw.debug :
-    path : '{path::out.*=1}/source/dwtools/abase/Layer2.s'
+  entry.out.raw :
+    path : '{path::out.*=1}/source/{path::entry}'
     criterion :
       debug : [ debug, release ]
       raw : raw
       content : prime
-  entry.out.compiled.debug :
+  entry.out.compiled :
     path : '{path::out.*=}/source/Index.s'
     criterion :
       debug : [ debug, release ]
@@ -155,6 +158,15 @@ step :
     criterion :
       debug : [ debug, release ]
       raw : [ raw, compiled ]
+      content : [ 'prime' ]
+
+  npm.generate.proto :
+    inherit : npm.generate
+    entryPath : path::entry.proto.no.tests
+    packagePath : 'package.json'
+    filesPath : '{path::proto}/**'
+    criterion :
+      content : [ 'proto' ]
 
   clean.out :
     inherit : files.delete
@@ -234,12 +246,18 @@ build :
 
   npm :
     criterion :
-      debug : debug
-      raw : raw
-      content : npm
+      debug : [ debug, release ]
+      raw : [ raw, compiled ]
     steps :
       - npm.generate.*=1
       # - npm.generate
+
+  npm.proto :
+    criterion :
+      conent : proto
+    steps :
+      # - npm.generate.*=1
+      - npm.generate.proto
 
   all :
     steps :
@@ -247,4 +265,4 @@ build :
       - build::compiled.debug
       - build::raw.release
       - build::release
-      - build::npm
+      - build::npm.*=5

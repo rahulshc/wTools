@@ -3,19 +3,20 @@ root:
   - wTools.out
 consistency:
   ../.ex.will.yml: &ref_0
-    hash: 7c4ae4afeea4576d150a13a07f1c362c
-    size: 2104
+    hash: 742015b531952d05816c35ee9f9ff3ca
+    size: 2109
   ../.im.will.yml: &ref_1
-    hash: 080c8f06e6f29dfc75f4078b0b921fcd
-    size: 5195
+    hash: e0b9ac504d07fa8723c98f50459f4829
+    size: 5603
 module:
   wTools.out:
     about:
       name: wTools
+      org: noorg
       description: >-
         Collection of general purpose tools for solving problems. Fundamentally
-        extend JavaScript without corrupting it, so may be used solely or in
-        conjunction with another module of such kind.
+        extend JavaScript without spoiling namespace, so may be used solely or
+        in conjunction with another module of such kind.
       enabled: 1
       version: 0.9.0
       interpreters: &ref_2
@@ -71,9 +72,6 @@ module:
       download:
         criterion:
           predefined: 1
-      remote:
-        criterion:
-          predefined: 1
       repository:
         path: 'git+https:///github.com/Wandalen/wTools.git'
       origins:
@@ -83,15 +81,15 @@ module:
       bugtracker:
         path: 'https:///github.com/Wandalen/wTools/issues'
       in:
-        criterion:
-          predefined: 0
         path: .
       out:
-        criterion:
-          predefined: 0
         path: .
       temp:
-        path: 'path::out'
+        path:
+          - 'path::out'
+          - ../package-lock.json
+          - ../package.json
+          - ../node_modules
       proto:
         path: ../proto
       export:
@@ -122,33 +120,36 @@ module:
           raw: compiled
           content: prime
         path: '{path::out}/release'
+      entry:
+        path: ../dwtools/abase/Layer2.s
       entry.proto.no.tests:
         criterion:
           tests: no.tests
-        path: ../proto/dwtools/abase/Layer2.s
+          content: proto
+        path: '../proto/{path::entry}'
       entry.proto.only.tests:
         criterion:
           tests: only.tests
         path: ../proto/**/*.test.*
-      entry.out.raw.debug.debug:
+      entry.out.raw.debug:
         criterion:
           debug: debug
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/abase/Layer2.s'
-      entry.out.raw.debug.release:
+        path: '{path::out.*=1}/source/{path::entry}'
+      entry.out.raw.release:
         criterion:
           debug: release
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/abase/Layer2.s'
-      entry.out.compiled.debug.debug:
+        path: '{path::out.*=1}/source/{path::entry}'
+      entry.out.compiled.debug:
         criterion:
           debug: debug
           raw: compiled
           content: prime
         path: '{path::out.*=}/source/Index.s'
-      entry.out.compiled.debug.release:
+      entry.out.compiled.release:
         criterion:
           debug: release
           raw: compiled
@@ -156,11 +157,13 @@ module:
         path: '{path::out.*=}/source/Index.s'
       exported.dir.proto.export:
         criterion:
+          generated: 1
           content: proto
           export: 1
         path: ../proto
       exported.files.proto.export:
         criterion:
+          generated: 1
           content: proto
           export: 1
         path:
@@ -438,6 +441,7 @@ module:
           prefixPath: ../proto
         mandatory: 1
         criterion:
+          generated: 1
           content: proto
           export: 1
       exported.files.proto.export:
@@ -450,6 +454,7 @@ module:
         recursive: 0
         mandatory: 1
         criterion:
+          generated: 1
           content: proto
           export: 1
     step:
@@ -488,6 +493,7 @@ module:
         criterion:
           debug: debug
           raw: raw
+          content: prime
         inherit:
           - npm.generate
       npm.generate.release.raw:
@@ -498,6 +504,7 @@ module:
         criterion:
           debug: release
           raw: raw
+          content: prime
         inherit:
           - npm.generate
       npm.generate.debug.compiled:
@@ -508,6 +515,7 @@ module:
         criterion:
           debug: debug
           raw: compiled
+          content: prime
         inherit:
           - npm.generate
       npm.generate.release.compiled:
@@ -518,6 +526,16 @@ module:
         criterion:
           debug: release
           raw: compiled
+          content: prime
+        inherit:
+          - npm.generate
+      npm.generate.proto:
+        opts:
+          entryPath: 'path::entry.proto.no.tests'
+          packagePath: package.json
+          filesPath: '{path::proto}/**'
+        criterion:
+          content: proto
         inherit:
           - npm.generate
       clean.out.debug.raw.no.tests.prime:
@@ -863,20 +881,42 @@ module:
           debug: release
           raw: compiled
           content: prime
-      npm:
+      npm.debug.raw:
         steps:
           - npm.generate.*=1
         criterion:
           debug: debug
           raw: raw
-          content: npm
+      npm.release.raw:
+        steps:
+          - npm.generate.*=1
+        criterion:
+          debug: release
+          raw: raw
+      npm.debug.compiled:
+        steps:
+          - npm.generate.*=1
+        criterion:
+          debug: debug
+          raw: compiled
+      npm.release.compiled:
+        steps:
+          - npm.generate.*=1
+        criterion:
+          debug: release
+          raw: compiled
+      npm.proto:
+        steps:
+          - npm.generate.proto
+        criterion:
+          conent: proto
       all:
         steps:
           - 'build::debug'
           - 'build::compiled.debug'
           - 'build::raw.release'
           - 'build::release'
-          - 'build::npm'
+          - 'build::npm.*=5'
     exported:
       proto.export:
         version: 0.9.0
@@ -896,10 +936,11 @@ module:
   ../:
     about:
       name: wTools
+      org: noorg
       description: >-
         Collection of general purpose tools for solving problems. Fundamentally
-        extend JavaScript without corrupting it, so may be used solely or in
-        conjunction with another module of such kind.
+        extend JavaScript without spoiling namespace, so may be used solely or
+        in conjunction with another module of such kind.
       enabled: 1
       version: 0.9.0
       interpreters: *ref_2
@@ -937,9 +978,6 @@ module:
       download:
         criterion:
           predefined: 1
-      remote:
-        criterion:
-          predefined: 1
       repository:
         path: 'git+https:///github.com/Wandalen/wTools.git'
       origins:
@@ -949,21 +987,21 @@ module:
       bugtracker:
         path: 'https:///github.com/Wandalen/wTools/issues'
       in:
-        criterion:
-          predefined: 0
         path: .
       out:
-        criterion:
-          predefined: 0
         path: out
       temp:
-        path: 'path::out'
+        path:
+          - 'path::out'
+          - package-lock.json
+          - package.json
+          - node_modules
       proto:
-        path: ./proto
+        path: proto
       export:
         path: '{path::proto}/**'
       doc:
-        path: ./doc
+        path: doc
       out.raw.debug:
         criterion:
           debug: debug
@@ -988,33 +1026,36 @@ module:
           raw: compiled
           content: prime
         path: '{path::out}/release'
+      entry:
+        path: dwtools/abase/Layer2.s
       entry.proto.no.tests:
         criterion:
           tests: no.tests
-        path: proto/dwtools/abase/Layer2.s
+          content: proto
+        path: 'proto/{path::entry}'
       entry.proto.only.tests:
         criterion:
           tests: only.tests
         path: proto/**/*.test.*
-      entry.out.raw.debug.debug:
+      entry.out.raw.debug:
         criterion:
           debug: debug
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/abase/Layer2.s'
-      entry.out.raw.debug.release:
+        path: '{path::out.*=1}/source/{path::entry}'
+      entry.out.raw.release:
         criterion:
           debug: release
           raw: raw
           content: prime
-        path: '{path::out.*=1}/source/dwtools/abase/Layer2.s'
-      entry.out.compiled.debug.debug:
+        path: '{path::out.*=1}/source/{path::entry}'
+      entry.out.compiled.debug:
         criterion:
           debug: debug
           raw: compiled
           content: prime
         path: '{path::out.*=}/source/Index.s'
-      entry.out.compiled.debug.release:
+      entry.out.compiled.release:
         criterion:
           debug: release
           raw: compiled
@@ -1207,6 +1248,7 @@ module:
         criterion:
           debug: debug
           raw: raw
+          content: prime
         inherit:
           - npm.generate
       npm.generate.release.raw:
@@ -1217,6 +1259,7 @@ module:
         criterion:
           debug: release
           raw: raw
+          content: prime
         inherit:
           - npm.generate
       npm.generate.debug.compiled:
@@ -1227,6 +1270,7 @@ module:
         criterion:
           debug: debug
           raw: compiled
+          content: prime
         inherit:
           - npm.generate
       npm.generate.release.compiled:
@@ -1237,6 +1281,16 @@ module:
         criterion:
           debug: release
           raw: compiled
+          content: prime
+        inherit:
+          - npm.generate
+      npm.generate.proto:
+        opts:
+          entryPath: 'path::entry.proto.no.tests'
+          packagePath: package.json
+          filesPath: '{path::proto}/**'
+        criterion:
+          content: proto
         inherit:
           - npm.generate
       clean.out.debug.raw.no.tests.prime:
@@ -1582,24 +1636,46 @@ module:
           debug: release
           raw: compiled
           content: prime
-      npm:
+      npm.debug.raw:
         steps:
           - npm.generate.*=1
         criterion:
           debug: debug
           raw: raw
-          content: npm
+      npm.release.raw:
+        steps:
+          - npm.generate.*=1
+        criterion:
+          debug: release
+          raw: raw
+      npm.debug.compiled:
+        steps:
+          - npm.generate.*=1
+        criterion:
+          debug: debug
+          raw: compiled
+      npm.release.compiled:
+        steps:
+          - npm.generate.*=1
+        criterion:
+          debug: release
+          raw: compiled
+      npm.proto:
+        steps:
+          - npm.generate.proto
+        criterion:
+          conent: proto
       all:
         steps:
           - 'build::debug'
           - 'build::compiled.debug'
           - 'build::raw.release'
           - 'build::release'
-          - 'build::npm'
+          - 'build::npm.*=5'
     consistency:
       ../.ex.will.yml:
-        hash: 7c4ae4afeea4576d150a13a07f1c362c
-        size: 2104
+        hash: 742015b531952d05816c35ee9f9ff3ca
+        size: 2109
       ../.im.will.yml:
-        hash: 080c8f06e6f29dfc75f4078b0b921fcd
-        size: 5195
+        hash: e0b9ac504d07fa8723c98f50459f4829
+        size: 5603

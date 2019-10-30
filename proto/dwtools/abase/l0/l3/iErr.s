@@ -1449,9 +1449,10 @@ function _errLog( err )
   if( _.routineIs( err.toString ) )
   {
     let str = err.toString();
+    if( _.color && _.color.strFormat )
+    str = _.color.strFormat( str, 'negative' );
     if( _.loggerIs( c ) )
     c.error( str )
-    // c.error( '#inputRaw : 1#' + str + '#inputRaw : 0#' )
     else
     c.error( str );
   }
