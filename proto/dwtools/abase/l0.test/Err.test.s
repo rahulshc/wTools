@@ -9,7 +9,7 @@ if( typeof module !== 'undefined' )
   // _.include( 'wLooker' );
 }
 
-var _ = wTools;
+var _ = _global_.wTools;
 
 // --
 // tests
