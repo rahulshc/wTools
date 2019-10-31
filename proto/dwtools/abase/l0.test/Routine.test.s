@@ -1636,7 +1636,7 @@ function vectorizeVectorizeArray( test )
 
 //
 
-function vectorize( test )
+function vectorizeOriginalRoutine( test )
 {
   function srcRoutine( a,b )
   {
@@ -1644,8 +1644,6 @@ function vectorize( test )
   }
 
   //
-
-  test.open( 'vectorizingArray 0' );
 
   var o =
   {
@@ -1655,10 +1653,25 @@ function vectorize( test )
   }
   o.routine = srcRoutine;
   var routine = _.vectorize( o );
+  test.identical( routine, srcRoutine );
 
-  test.identical( routine, srcRoutine )
+  test.case = 'empty';
+  var got = routine();
+  test.identical( got, [] );
 
-  test.close( 'vectorizingArray 0' );
+  test.case = 'arguments';
+  var got = routine( [ 1, 2 ], [ 3, 4 ] );
+  test.identical( got, [ [ 1, 2 ], [ 3, 4 ] ] );
+}
+
+//
+
+function vectorize( test )
+{
+  function srcRoutine( a,b )
+  {
+    return _.longSlice( arguments );
+  }
 
   //
 
@@ -1671,7 +1684,6 @@ function vectorize( test )
     select : 1
   }
   o.routine = srcRoutine;
-  debugger
   var routine = _.vectorize( o );
 
   test.case = 'single argument';
@@ -2710,6 +2722,7 @@ var Self =
     routineDefaults,
 
     vectorizeVectorizeArray,
+    vectorizeOriginalRoutine,
     vectorize,
     /* qqq : split test routine vectorize */
     /* qqq : add tests for vectorize* routines */
