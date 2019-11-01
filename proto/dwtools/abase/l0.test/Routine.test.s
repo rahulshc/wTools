@@ -1666,16 +1666,16 @@ function vectorizeOriginalRoutine( test )
 
 //
 
-function vectorize( test )
+function verctorizeVectorizeMapOrArray( test )
 {
-  function srcRoutine( a,b )
+  function srcRoutine()
   {
+    if( arguments.length === 0 )
+    return null;
     return _.longSlice( arguments );
   }
 
   //
-
-  test.open( 'vectorizingMapVals : 1' );
 
   var o =
   {
@@ -1686,28 +1686,212 @@ function vectorize( test )
   o.routine = srcRoutine;
   var routine = _.vectorize( o );
 
+  test.case = 'without arguments';
+  var got = routine();
+  test.identical( got, null );
+
+  /* - */
+
+  test.open( 'select = 1' );
+
   test.case = 'single argument';
 
-  test.identical( routine( 1 ), [ 1 ] );
-  test.identical( routine( [ 1 ] ), [ [ 1 ] ] );
-  test.identical( routine( [ 1,2,3 ] ), [ [ 1,2,3 ] ] );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : [ 1 ] , 2 : [ 2 ], 3 : [ 3 ] } );
+  var src = 1;
+  var got = routine( src );
+  test.identical( got, [ 1 ] );
+  test.is( got !== src );
+
+  var src = [ 1 ];
+  var got = routine( src );
+  test.identical( got, [ [ 1 ] ] );
+  test.is( got !== src );
+
+  var src = [ 1, 2, 3 ];
+  var got = routine( src );
+  test.identical( got, [ [ 1, 2, 3 ] ] );
+  test.is( got !== src );
+
+  var src = { 1 : 1, 2 : 2, 3 : 3 };
+  var got = routine( src );
+  test.identical( got, { 1 : [ 1 ] , 2 : [ 2 ], 3 : [ 3 ] } );
+  test.is( got !== src );
 
   test.case = 'multiple argument';
 
-  test.identical( routine( 1, 0 ), [ 1,0 ] );
-  test.identical( routine( [ 1,2,3 ], 2 ), [ [ 1,2,3 ], 2 ] );
-  test.identical( routine( 2, [ 1,2,3 ] ), [ 2, [ 1,2,3 ] ] );
-  test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1,2 ], [ 1,2 ] ] );
+  var src = 1;
+  var got = routine( src, 0 );
+  test.identical( got, [ 1, 0 ] );
+  test.is( got !== src );
 
-  test.identical( routine( { a : 1 } , 0 ), { a : [ 1,0 ] } );
+  var src = [ 1, 2, 3 ];
+  var got = routine( src, 2 );
+  test.identical( got, [ [ 1, 2, 3 ], 2 ] );
+  test.is( got !== src );
+
+  var src = 2;
+  var got = routine( src, [ 1, 2, 3 ] );
+  test.identical( got, [ 2, [ 1, 2, 3 ] ] );
+  test.is( got !== src );
+
+  var src = [ 1, 2 ];
+  var got = routine( src, [ 1, 2 ] );
+  test.identical( got, [ [ 1,2 ], [ 1,2 ] ] );
+  test.is( got !== src );
+
+  var src = { a : 1 };
+  var got = routine( src, 0 );
+  test.identical( got, { a : [ 1, 0 ] } );
+  test.is( got !== src );
+
+  var src = 0;
+  var got = routine( src, { a : 1 } );
   test.identical( routine( 0, { a : 1 } ), [ 0, { a : 1 } ] );
-  test.identical( routine( { a : 1 }, { b : 2 } ), { a : [ 1, { b : 2 } ] } );
+  test.is( got !== src );
 
-  test.identical( routine( { a : 1 }, 2, 3 ), { a : [ 1, 2, 3 ] } );
-  test.identical( routine( { a : 1 }, { b : 2 }, { c : 3 } ), { a : [ 1, { b : 2 }, { c : 3 } ] } );
+  var src = { a : 1 };
+  var got = routine( src, { b : 2 } );
+  test.identical( got, { a : [ 1, { b : 2 } ] } );
+  test.is( got !== src );
 
-  test.close( 'vectorizingMapVals : 1' );
+  var src = { a : 1 };
+  var got = routine( src, 2, 3 );
+  test.identical( got, { a : [ 1, 2, 3 ] } );
+  test.is( got !== src );
+
+  var src = { a : 1 };
+  var got = routine( src, { b : 2 }, { c : 3 } );
+  test.identical( got, { a : [ 1, { b : 2 }, { c : 3 } ] } );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'not an array, not a map';
+  var src = _.containerAdapter.make( [ 1 ] );
+  var got = routine( src );
+  test.identical( got[ 0 ].original, [ 1 ] );
+  test.identical( got.length, 1 );
+  test.is( got !== src );
+
+  test.close( 'select = 1' );
+
+  /* - */
+
+  test.open( 'select = 2' );
+
+  var o =
+  {
+    vectorizingArray : 0,
+    vectorizingMapVals : 1,
+    select : 2
+  }
+  o.routine = srcRoutine;
+  var routine = _.vectorize( o );
+
+
+  test.case = 'multiple argument';
+
+  var src = 1;
+  var got = routine( src, 0 );
+  test.identical( got, [ 1, 0 ] );
+  test.is( got !== src );
+
+  var src = [ 1, 2, 3 ];
+  var got = routine( src, 2 );
+  test.identical( got, [ [ 1, 2, 3 ], 2 ] );
+  test.is( got !== src );
+
+  var src = 2;
+  var got = routine( src, [ 1, 2, 3 ] );
+  test.identical( got, [ 2, [ 1, 2, 3 ] ] );
+  test.is( got !== src );
+
+  var src = [ 1, 2 ];
+  var got = routine( src, [ 1, 2 ] );
+  test.identical( got, [ [ 1,2 ], [ 1,2 ] ] );
+  test.is( got !== src );
+
+  var src = { a : 1 };
+  var got = routine( src, 0 );
+  test.identical( got, { a : [ 1, 0 ] } );
+  test.is( got !== src );
+
+  var src = 0;
+  var got = routine( src, { a : 1 } );
+  test.identical( routine( 0, { a : 1 } ), { a : [ 0, 1 ] } );
+  test.is( got !== src );
+
+  var src = { a : 1 };
+  var got = routine( src, { a : 2 } );
+  test.identical( got, { a : [ 1, 2 ] } );
+  test.is( got !== src );
+
+  var src = { a : 1 };
+  var got = routine( src, 2 );
+  test.identical( got, { a : [ 1, 2 ] } );
+  test.is( got !== src );
+
+  var src = { a : 1 };
+  var got = routine( src, { a : [ 2 ] } );
+  test.identical( got, { a : [ 1, [ 2 ] ] } );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'not an array, not a map';
+  var src = _.containerAdapter.make( [ 1 ] );
+  var got = routine( src, 1 );
+  test.identical( got[ 0 ].original, [ 1 ] );
+  test.identical( got.length, 2 );
+  test.is( got !== src );
+
+  /* */
+
+  if( Config.debug )
+  {
+    test.case = 'without arguments';
+    test.shouldThrowErrorSync( () => routine() );
+
+    test.case = 'one argument';
+    test.shouldThrowErrorSync( () => routine( 1 ) );
+    test.shouldThrowErrorSync( () => routine( [ 1, 2, 3 ] ) );
+    test.shouldThrowErrorSync( () => routine( { a : 1, b : 2 } ) );
+
+    test.case = 'extra arguments';
+    test.shouldThrowErrorSync( () => routine( [ 1 ], 2, 3 ) );
+
+    test.case = 'different keys';
+    test.shouldThrowErrorSync( () => routine( { a : 1 }, { b : 2 } ) );
+  }
+
+  test.close( 'select = 2' );
+
+  /* - */
+
+  var o =
+  {
+    vectorizingArray : 0,
+    vectorizingMapVals : 1,
+    select : 1,
+    bypassingEmpty : 1,
+  }
+  o.routine = srcRoutine;
+  var routine = _.vectorize( o );
+
+  /* */
+
+  test.case = 'without arguments';
+  var got = routine();
+  test.identical( got, [] );
+}
+
+//
+
+function vectorize( test )
+{
+  function srcRoutine( a,b )
+  {
+    return _.longSlice( arguments );
+  }
 
   //
 
@@ -2723,6 +2907,7 @@ var Self =
 
     vectorizeVectorizeArray,
     vectorizeOriginalRoutine,
+    verctorizeVectorizeMapOrArray,
     vectorize,
     /* qqq : split test routine vectorize */
     /* qqq : add tests for vectorize* routines */
