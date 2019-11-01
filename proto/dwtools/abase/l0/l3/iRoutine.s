@@ -1256,7 +1256,7 @@ function vectorize_body( o )
       }
       return result;
     }
-    else if( vectorizingContainerAdapter && _._.containerAdapter.is( src ) ) /* qqq : cover */
+    else if( vectorizingContainerAdapter && _.containerAdapter.is( src ) ) /* qqq : cover */
     {
       debugger;
       if( pre )
