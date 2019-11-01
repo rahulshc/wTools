@@ -1675,12 +1675,6 @@ function vectorizeVectorizeMapOrArray( test )
     return _.longSlice( arguments );
   }
 
-  /* */
-
-  test.case = 'without arguments';
-  var got = routine();
-  test.identical( got, null );
-
   /* - */
 
   test.open( 'vectorizingArray : 0, vectorizingMapVals : 1, select : 1' );
@@ -1693,6 +1687,12 @@ function vectorizeVectorizeMapOrArray( test )
   }
   o.routine = srcRoutine;
   var routine = _.vectorize( o );
+
+  /* */
+
+  test.case = 'without arguments';
+  var got = routine();
+  test.identical( got, null );
 
   test.case = 'single argument';
 
