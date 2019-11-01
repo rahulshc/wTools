@@ -2122,201 +2122,27 @@ function vectorizeVectorizeForOptionsMap( test )
   test.identical( got.length, 1 );
   test.is( got !== src );
 
-  var src = { a : new Set( [ 0 ] ) };
+  var src = { b : new Set( [ 0 ] ) };
   var got = routine( src );
-  test.identical( [ ... got[ 0 ].a ], [ 0 ] );
-  test.identical( got.length, 1 );
+  test.identical( [ ... got ], [ [ { b : 0 } ] ] );
   test.is( got !== src );
 
-  var src = { a : new Set( [ 0 ] ), b : 1 };
+  var src = { b : new Set( [ 0 ] ), a : 1 };
   var got = routine( src );
-  test.identical( [ ... got[ 0 ].a ], [ 0 ] );
-  test.identical( got[ 0 ].b, 1 );
-  test.identical( got.length, 1 );
+  test.identical( [ ... got ], [ [ { b : 0, a : 1 } ] ] );
   test.is( got !== src );
 
-  var src = { a : new Set( [ 0 ] ), b : [ 1 ] };
+  var src = { b : new Set( [ [ 0 ] ] ), a : 1 };
   var got = routine( src );
-  test.identical( [ ... got[ 0 ][ 0 ].a ], [ 0 ] );
-  test.identical( got[ 0 ][ 0 ].b, 1 );
-  test.identical( got.length, 1 );
+  test.identical( [ ... got ], [ [ { b : [ 0 ], a : 1 } ] ] );
   test.is( got !== src );
 
-  var src = { a : new Set( [ 0 ] ),  b : [ 1, 2 ] };
+  var src = { b : new Set( [ 1, 2 ] ),  a : 0 };
   var got = routine( src );
-  test.identical( [ ... got[ 0 ][ 0 ].a ], [ 0 ] );
-  test.identical( got[ 0 ][ 0 ].b, 1 );
-  test.identical( [ ... got[ 1 ][ 0 ].a ], [ 0 ] );
-  test.identical( got[ 1 ][ 0 ].b, 2 );
-  test.identical( got.length, 2 );
+  test.identical( [ ... got ], [ [ { a : 0, b : 1 } ], [ { a : 0, b : 2 } ] ] );
   test.is( got !== src );
 
   test.close( 'Set' );
-
-  /* - */
-
-  test.open( 'containerAdapter' );
-
-  var o =
-  {
-    vectorizingArray : 1,
-    vectorizingMapVals : 0,
-    select : 'b',
-    vectorizingContainerAdapter : 1,
-  }
-  o.routine = srcRoutine;
-  var routine = _.vectorize( o );
-
-  test.case = 'without unwraping';
-
-  var src = _.containerAdapter.make( [ 1 ] );
-  var got = routine( src );
-  test.identical( got[ 0 ].original, [ 1 ] );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( [ 0 ] ) };
-  var got = routine( src );
-  test.identical( got[ 0 ].a.original, [ 0 ] );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( [ 0 ] ), b : 1 };
-  var got = routine( src );
-  test.identical( got[ 0 ].a.original, [ 0 ] );
-  test.identical( got[ 0 ].b, 1 );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( [ 0 ] ), b : [ 1 ] };
-  var got = routine( src );
-  test.identical( got[ 0 ][ 0 ].a.original, [ 0 ] );
-  test.identical( got[ 0 ][ 0 ].b, 1 );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( [ 0 ] ),  b : [ 1, 2 ] };
-  var got = routine( src );
-  test.identical( got[ 0 ][ 0 ].a.original, [ 0 ] );
-  test.identical( got[ 0 ][ 0 ].b, 1 );
-  test.identical( got[ 1 ][ 0 ].a.original, [ 0 ] );
-  test.identical( got[ 1 ][ 0 ].b, 2 );
-  test.identical( got.length, 2 );
-  test.is( got !== src );
-
-  /* */
-
-  var src = { a : _.containerAdapter.make( new Set( [ 0 ] ) ) };
-  var got = routine( src );
-  test.identical( [ ... got[ 0 ].a.original ], [ 0 ] );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( new Set( [ 0 ] ) ), b : 1 };
-  var got = routine( src );
-  test.identical( [ ... got[ 0 ].a.original ], [ 0 ] );
-  test.identical( got[ 0 ].b, 1 );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( new Set( [ 0 ] ) ), b : [ 1 ] };
-  var got = routine( src );
-  test.identical( [ ... got[ 0 ][ 0 ].a.original ], [ 0 ] );
-  test.identical( got[ 0 ][ 0 ].b, 1 );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( new Set( [ 0 ] ) ),  b : [ 1, 2 ] };
-  var got = routine( src );
-  test.identical( [ ... got[ 0 ][ 0 ].a.original ], [ 0 ] );
-  test.identical( got[ 0 ][ 0 ].b, 1 );
-  test.identical( [ ... got[ 1 ][ 0 ].a.original ], [ 0 ] );
-  test.identical( got[ 1 ][ 0 ].b, 2 );
-  test.identical( got.length, 2 );
-  test.is( got !== src );
-
-  /* */
-
-  var o =
-  {
-    vectorizingArray : 1,
-    vectorizingMapVals : 0,
-    select : 'b',
-    vectorizingContainerAdapter : 1,
-    unwrapingContainerAdapter : 1
-  }
-  o.routine = srcRoutine;
-  var routine = _.vectorize( o );
-
-  test.case = 'with unwraping';
-
-  var src = _.containerAdapter.make( [ 1 ] );
-  var got = routine( src );
-  test.identical( got[ 0 ], [ 1 ] );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( [ 0 ] ) };
-  var got = routine( src );
-  test.identical( got[ 0 ].a, [ 0 ] );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( [ 0 ] ), b : 1 };
-  var got = routine( src );
-  test.identical( got[ 0 ].a, [ 0 ] );
-  test.identical( got[ 0 ].b, 1 );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( [ 0 ] ), b : [ 1 ] };
-  var got = routine( src );
-  test.identical( got[ 0 ][ 0 ].a, [ 0 ] );
-  test.identical( got[ 0 ][ 0 ].b, 1 );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( [ 0 ] ),  b : [ 1, 2 ] };
-  var got = routine( src );
-  test.identical( got[ 0 ][ 0 ].a, [ 0 ] );
-  test.identical( got[ 0 ][ 0 ].b, 1 );
-  test.identical( got[ 1 ][ 0 ].a, [ 0 ] );
-  test.identical( got[ 1 ][ 0 ].b, 2 );
-  test.identical( got.length, 2 );
-  test.is( got !== src );
-
-  /* */
-
-  var src = { a : _.containerAdapter.make( new Set( [ 0 ] ) ) };
-  var got = routine( src );
-  test.identical( [ ... got[ 0 ].a ], [ 0 ] );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( new Set( [ 0 ] ) ), b : 1 };
-  var got = routine( src );
-  test.identical( [ ... got[ 0 ].a ], [ 0 ] );
-  test.identical( got[ 0 ].b, 1 );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( new Set( [ 0 ] ) ), b : [ 1 ] };
-  var got = routine( src );
-  test.identical( [ ... got[ 0 ][ 0 ].a ], [ 0 ] );
-  test.identical( got[ 0 ][ 0 ].b, 1 );
-  test.identical( got.length, 1 );
-  test.is( got !== src );
-
-  var src = { a : _.containerAdapter.make( new Set( [ 0 ] ) ),  b : [ 1, 2 ] };
-  var got = routine( src );
-  test.identical( [ ... got[ 0 ][ 0 ].a ], [ 0 ] );
-  test.identical( got[ 0 ][ 0 ].b, 1 );
-  test.identical( [ ... got[ 1 ][ 0 ].a ], [ 0 ] );
-  test.identical( got[ 1 ][ 0 ].b, 2 );
-  test.identical( got.length, 2 );
-  test.is( got !== src );
-
-  test.close( 'containerAdapter' );
 
   test.close( 'without pre' );
 
