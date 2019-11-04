@@ -766,10 +766,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let container = this.original;
 
-    /* qqq : ask */
+    /* qqq : ask | Dmytro : used iterative method has */
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
-      if( _.longLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
+      if( !this.has( e, onEvaluate1, onEvaluate2 ) )
       container.add( e );
     }
     else
