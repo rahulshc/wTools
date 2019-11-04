@@ -968,6 +968,7 @@ function longMakeZeroed( test )
 
 /*
 qqq : improve, add exception checking ceases
+Dmytro : improved, added exception checking casesS
 */
 
 function longSlice( test )
@@ -35543,8 +35544,8 @@ var Self =
 
     // array flatten
 
-    /* qqq : extend test coverage */
-    /* qqq : extend implementation for sets */
+    /* qqq : extend test coverage | Dmytro : extended */
+    /* qqq : extend implementation for sets | Dmytro : extended */
 
     arrayFlatten,
     arrayFlattenSame,

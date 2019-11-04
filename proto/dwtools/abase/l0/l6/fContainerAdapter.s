@@ -308,7 +308,10 @@ class ContainerAdapterAbstract
     if( src instanceof ContainerAdapterAbstract )
     return this._same( src );
     return this.original === src;
-    /* qqq : was not appropriate. add good coverage */
+    /*
+    qqq : was not appropriate. add good coverage
+    Dmytro : new coverage implemented
+    */
     // return this.original === src.original;
   }
   removedContainer( src )
@@ -702,6 +705,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       if( _.longLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
       container.add( e );
     }
+    else
     container.add( e );
 
     return this;
@@ -1517,6 +1521,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       // for( let k in container )
       for( let k = 0 ; k < container.length ; k++ )
       {
+        let e = container[ k ];
         let e2 = onEach( e, k, self );
         // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? */
         if( e2 !== undefined )
