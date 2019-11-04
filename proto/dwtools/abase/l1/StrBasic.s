@@ -2710,7 +2710,7 @@ defaults.preservingDelimeters = 0;
 qqq : cover it by test
 Dmytro : covered,
 maybe, routine needs assertion
-_.assert( arguments.lenght === 1, 'Expects one argument' );
+_.assert( arguments.length === 1, 'Expects one argument' );
 if assertion will be accepted, then test.case = 'a few arguments' will throw error
 */
 

@@ -641,13 +641,77 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   has( e, onEvaluate1, onEvaluate2 )
   {
+    _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
+
+    let fromIndex = 0;
+    if( _.numberIs( onEvaluate1 ) )
+    {
+      fromIndex = onEvaluate1;
+      onEvaluate1 = onEvaluate2;
+      onEvaluate2 = undefined;
+    }
+
     if( _.routineIs( onEvaluate1 ) )
     {
-      if( _.longLeftIndex( [ ... this.original ], e, onEvaluate1, onEvaluate2 ) !== -1 )
-      return true;
-      return false;
+      if( onEvaluate1.length === 2 )
+      {
+        _.assert( !onEvaluate2 );
+
+        for( let el of this.original )
+        {
+          if( fromIndex === 0 )
+          {
+            if( onEvaluate1( el, e ) )
+            return true;
+          }
+          else
+          {
+            fromIndex -= 1;
+          }
+        }
+
+        return false;
+      }
+      else if( onEvaluate1.length === 1 )
+      {
+        _.assert( !onEvaluate2 || onEvaluate2.length === 1 );
+
+        if( onEvaluate2 )
+        e = onEvaluate2( e );
+        else
+        e = onEvaluate1( e );
+
+        for( let el of this.original )
+        {
+          if( fromIndex === 0 )
+          {
+            if( onEvaluate1( el ) === e )
+            return true;
+          }
+          else
+          {
+            fromIndex -= 1;
+          }
+        }
+
+        return false;
+      }
     }
-    return this.original.has( e );
+    else if( onEvaluate1 === undefined )
+    {
+      return this.original.has( e );
+    }
+    else _.assert( 0 );
+
+
+
+    // if( _.routineIs( onEvaluate1 ) )
+    // {
+    //   if( _.longLeftIndex( [ ... this.original ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+    //   return true;
+    //   return false;
+    // }
+    // return this.original.has( e );
   }
   count( e, onEvaluate1, onEvaluate2 )
   {
@@ -663,7 +727,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let self = this;
     let container = self.original;
 
-    /* qqq : poor coverage! */
+    /*
+    qqq : poor coverage!
+    Dmytro : coverage extended
+    */
 
     if( self.same( src ) )
     return self;
@@ -1385,7 +1452,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   has( e, onEvaluate1, onEvaluate2 )
   {
-    if( _.routineIs( onEvaluate1 ) )
+    if( _.routineIs( onEvaluate1 ) || _.routineIs( onEvaluate2 ) )
     {
       if( _.longLeftIndex( this.original, e, onEvaluate1, onEvaluate2 ) !== -1 )
       return true;

@@ -11827,7 +11827,7 @@ function arrayAdapterCopyFrom( test )
   var got = container.copyFrom( src );
   test.is( got === container );
   test.is( got !== src );
-  test.identical( got.original, [ 'str' ] );
+  test.identical( got.original, [ 2, 'str' ] );
   test.identical( src, [ 2, 'str' ] );
 
   test.case = 'container.length > src.length';
