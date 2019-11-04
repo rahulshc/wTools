@@ -818,14 +818,27 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
       container = this.ToOriginal( container );
-      container = _.longIs( container ) ? container : [ ... container ];
 
-      let temp = _.arrayAppendArrayOnce( [ ... this.original ], container, onEvaluate1, onEvaluate2 )
-
-      this.empty();
-
-      for( let i = 0; i < temp.length; i++ )
-      this.append( temp[ i ] );
+      if( _.longIs( container ) )
+      {
+        for( let i = 0; i < container.length; i++ )
+        if( !this.has( container[ i ], onEvaluate1, onEvaluate2 ) )
+        this.append( container[ i ] );
+      }
+      else if( _.setIs( container ) )
+      {
+        for( let e of container )
+        if( !this.has( e, onEvaluate1, onEvaluate2 ) )
+        this.append( e );
+      }
+      // container = _.longIs( container ) ? container : [ ... container ];
+      //
+      // let temp = _.arrayAppendArrayOnce( [ ... this.original ], container, onEvaluate1, onEvaluate2 )
+      //
+      // this.empty();
+      //
+      // for( let i = 0; i < temp.length; i++ )
+      // this.append( temp[ i ] );
 
       return this;
     }

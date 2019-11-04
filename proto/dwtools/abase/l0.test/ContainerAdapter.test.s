@@ -9555,7 +9555,8 @@ function setAdapterAppendContainerOnce( test )
   test.case = 'dst - container, append array, fromIndex and evaluator2';
   var dst = _.containerAdapter.make( new Set( [ 1, 2, 3 ] ) );
   var src = _.containerAdapter.make( [ 1, 2, 3, { a : 2 }, { a : 2 }, [ 3 ], [ 3 ], [ undefined ], [ undefined ], [ undefined ] ] );
-  var got = dst.appendContainerOnce( src, 3, ( e ) => e.a );
+  debugger;
+  var got = dst.appendContainerOnce( src, 2, ( e ) => e.a );
   var exp = [ 1, 2, 3, { a : 2 } ];
   test.is( got === dst );
   test.is( got !== src );
