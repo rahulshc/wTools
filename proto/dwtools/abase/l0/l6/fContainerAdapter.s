@@ -696,6 +696,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
         return false;
       }
+      else _.assert( 0 );
     }
     else if( onEvaluate1 === undefined )
     {
@@ -783,7 +784,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
-      if( _.longLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
+      if( !this.has( e, onEvaluate1, onEvaluate2 ) )
       container.add( e );
       else
       _.assert( 0, 'Set already has such element' );
