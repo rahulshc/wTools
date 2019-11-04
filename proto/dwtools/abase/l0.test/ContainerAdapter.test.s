@@ -1494,6 +1494,13 @@ function same( test )
   var got = container.same( container );
   test.identical( got, true );
 
+  test.case = 'two containers with same src';
+  var src = [ 1, 2, 3 ];
+  var src2 = _.containerAdapter.make( src );
+  var container = _.containerAdapter.make( src );
+  var got = container.same( src2 );
+  test.identical( got, true );
+
   test.close( 'arrayContainerAdapter' );
 
   /* - */
@@ -1597,6 +1604,13 @@ function same( test )
   test.case = 'src - src';
   var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
   var got = container.same( container );
+  test.identical( got, true );
+
+  test.case = 'two containers with same src';
+  var src = new Set( [ 1, 2, 3 ] );
+  var src2 = _.containerAdapter.make( src );
+  var container = _.containerAdapter.make( src );
+  var got = container.same( src2 );
   test.identical( got, true );
 
   test.close( 'setContainerAdapter' );
@@ -8282,6 +8296,15 @@ function setAdapterCopyFrom( test )
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( src, [ undefined, null, [ 1 ], 2, 'str' ] );
 
+  test.case = 'container.length === src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = [ undefined, null ];
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ undefined, null ] );
+  test.identical( src, [ undefined, null ] );
+
   test.case = 'container.length > src.length';
   var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
   var src = [ undefined, null, [ 1 ] ];
@@ -8328,6 +8351,15 @@ function setAdapterCopyFrom( test )
   test.is( got !== src );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'container.length === src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = new Set( [ [ 1 ], 2 ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ [ 1 ], 2 ] );
+  test.identical( [ ... src ], [ [ 1 ], 2 ] );
 
   test.case = 'container.length > src.length';
   var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
@@ -8376,6 +8408,15 @@ function setAdapterCopyFrom( test )
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( src.original, [ undefined, null, [ 1 ], 2, 'str' ] );
 
+  test.case = 'container.length === src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = _.containerAdapter.make( [ 2, 'str' ] );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ 2, 'str' ] );
+  test.identical( src.original, [ 2, 'str' ] );
+
   test.case = 'container.length > src.length';
   var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
   var src = _.containerAdapter.make( [ undefined, null, [ 1 ] ] );
@@ -8423,6 +8464,15 @@ function setAdapterCopyFrom( test )
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
   test.identical( [ ... src ], [ undefined, null, [ 1 ], 2, 'str' ] );
 
+  test.case = 'container.length === src.length';
+  var container = _.containerAdapter.make( new Set( [ true, false ] ) );
+  var src = _.containerAdapter.make( new Set( [ 2, 'str' ] ) );
+  var got = container.copyFrom( src );
+  test.is( got === container );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], [ 2, 'str' ] );
+  test.identical( [ ... src ], [ 2, 'str' ] );
+
   test.case = 'container.length > src.length';
   var container = _.containerAdapter.make( new Set( [ true, false, 2, 'str' ] ) );
   var src = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ] ] ) );
@@ -8440,11 +8490,26 @@ function setAdapterCopyFrom( test )
   test.is( got === container );
   test.identical( [ ... got.original ], [] );
 
-  test.case = 'not empty container';
-  var container = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
+  test.case = 'container from src';
+  var src = new Set( [ 1, 2 ] );
+  var container = _.containerAdapter.make( src );
   var got = container.copyFrom( src );
   test.is( got === container );
+  test.identical( [ ... got.original ], [ 1, 2 ] );
+
+  test.case = 'not empty container';
+  var container = _.containerAdapter.make( new Set( [ undefined, null, [ 1 ], 2, 'str' ] ) );
+  var got = container.copyFrom( container );
+  test.is( got === container );
   test.identical( [ ... got.original ], [ undefined, null, [ 1 ], 2, 'str' ] );
+
+  test.case = 'not empty containers from src';
+  var src = new Set( [ 1, 2 ] );
+  var src2 = _.containerAdapter.make( src );
+  var container = _.containerAdapter.make( src );
+  var got = container.copyFrom( src2 );
+  test.is( got === container );
+  test.identical( [ ... got.original ], [ 1, 2 ] );
 }
 
 //
@@ -11723,7 +11788,6 @@ function arrayAdapterCopyFrom( test )
   test.case = 'empty container, src - empty array';
   var container = _.containerAdapter.make( [] );
   var src = [];
-  debugger;
   var got = container.copyFrom( src );
   test.is( got === container );
   test.is( got !== src );
