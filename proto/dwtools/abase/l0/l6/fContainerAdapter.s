@@ -44,10 +44,6 @@ function isContainer( src )
 function make( container )
 {
 
-  // xxx : this is not wanted behavior
-  // if( container )
-  // container = this.toOriginal( container );
-
   _.assert( arguments.length === 1 );
 
   if( _.setIs( container ) )
@@ -311,7 +307,9 @@ class ContainerAdapterAbstract
     return false;
     if( src instanceof ContainerAdapterAbstract )
     return this._same( src );
-    return this.original === src.original;
+    return this.original === src;
+    /* qqq : was not appropriate. add good coverage */
+    // return this.original === src.original;
   }
   removedContainer( src )
   {
@@ -472,7 +470,7 @@ class ContainerAdapterAbstract
 
         for( let i = temp.length - 1; i >= 0; i-- )
         {
-          if( _.arrayLeftIndex( tempSrc2, temp[ i ], onEvaluate1, onEvaluate2 ) === -1 )
+          if( _.longLeftIndex( tempSrc2, temp[ i ], onEvaluate1, onEvaluate2 ) === -1 )
           dst.remove( temp[ i ] );
         }
       }
@@ -495,7 +493,7 @@ class ContainerAdapterAbstract
 
         src2.each( ( e ) =>
         {
-          if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) !== -1 )
+          if( _.longLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) !== -1 )
           dst.appendOnce( e );
         });
       }
@@ -539,7 +537,7 @@ class ContainerAdapterAbstract
 
         for( let i = temp.length - 1; i >= 0; i-- )
         {
-          if( _.arrayLeftIndex( tempSrc2, temp[ i ], onEvaluate1, onEvaluate2 ) !== -1 )
+          if( _.longLeftIndex( tempSrc2, temp[ i ], onEvaluate1, onEvaluate2 ) !== -1 )
           dst.remove( temp[ i ] );
         }
       }
@@ -559,7 +557,7 @@ class ContainerAdapterAbstract
 
         src2.each( ( e ) =>
         {
-          if( _.arrayLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) === -1 )
+          if( _.longLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) === -1 )
           dst.append( e );
         });
       }
@@ -642,7 +640,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     if( _.routineIs( onEvaluate1 ) )
     {
-      if( _.arrayLeftIndex( [ ... this.original ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+      if( _.longLeftIndex( [ ... this.original ], e, onEvaluate1, onEvaluate2 ) !== -1 )
       return true;
       return false;
     }
@@ -653,7 +651,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let container = this.original;
 
     if( _.routineIs( onEvaluate1 ) )
-    return _.arrayCountElement( [ ... container ], e, onEvaluate1, onEvaluate2 );
+    return _.longCountElement( [ ... container ], e, onEvaluate1, onEvaluate2 );
     else
     return container.has( e ) ? 1 : 0;
   }
@@ -661,6 +659,8 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let self = this;
     let container = self.original;
+
+    /* qqq : poor coverage! */
 
     if( self.same( src ) )
     return self;
@@ -696,12 +696,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let container = this.original;
 
+    /* qqq : ask */
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
-      if( _.arrayLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
+      if( _.longLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
       container.add( e );
     }
-    else
     container.add( e );
 
     return this;
@@ -712,7 +712,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
-      if( _.arrayLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
+      if( _.longLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
       container.add( e );
       else
       _.assert( 0, 'Set already has such element' );
@@ -758,7 +758,9 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       return this;
     }
     else
-    return this.appendContainer( container );
+    {
+      return this.appendContainer( container );
+    }
   }
   pop( e, onEvaluate1, onEvaluate2 )
   {
@@ -766,7 +768,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let last = this.last();
     let r = this.original.delete( last );
 
-    if( _.routineIs( onEvaluate1 ) && _.arrayLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+    if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1 )
     return last;
 
     _.assert( e === undefined || e === last );
@@ -780,7 +782,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     // return e;
     let last = this.last();
     _.assert( arguments.length >= 1 );
-    _.assert( _.arrayLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Set does not have such an element' );
+    _.assert( _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Set does not have such an element' );
     let r = this.original.delete( last );
     return last;
   }
@@ -799,7 +801,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       {
         if( count === 0 )
         {
-          if( _.arrayLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+          if( _.longLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
           {
             this.original.delete( v );
             result++;
@@ -829,7 +831,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       {
         if( count === 0 )
         {
-          if( _.arrayLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+          if( _.longLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
           {
             this.original.delete( v );
             return 1;
@@ -860,7 +862,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       {
         if( count === 0 )
         {
-          if( _.arrayLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+          if( _.longLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
           {
             this.original.delete( v );
             result++;
@@ -902,17 +904,20 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   map( dst, onEach )
   {
     let self = this;
-    let container = this.original;
-    [ dst, onEach ] = this._filterArguments( ... arguments );
-    if( this._same( dst ) )
+    let container = self.original;
+    [ dst, onEach ] = self._filterArguments( ... arguments );
+    if( self._same( dst ) )
     {
+      /* qqq : not optimal. why copy??  */
       let temp = new Set( container );
       container.clear();
 
+      /* qqq : cover all cases and arguments ( including key! ) */
+      let index = -1;
       for( let e of temp )
       {
-        let e2 = onEach( e, undefined, container );
-
+        index += 1;
+        let e2 = onEach( e, index, container );
         container.delete( e );
         if( e2 !== undefined && e !== e2 )
         container.add( e2 );
@@ -922,9 +927,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
+      /* qqq : cover all cases and arguments ( including key! ) */
+      let index = -1;
       for( let e of container )
       {
-        let e2 = onEach( e, undefined, self );
+        index += 1;
+        let e2 = onEach( e, index, self );
         if( e2 !== undefined )
         dst.append( e2 );
         else
@@ -940,12 +948,16 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this._filterArguments( ... arguments );
     if( this._same( dst ) )
     {
+      /* qqq : not optimal. why copy??  */
       let temp = new Set( container );
       container.clear();
 
+      /* qqq : cover all cases and arguments ( including key! ) */
+      let index = -1;
       for( let e of temp )
       {
-        let e2 = onEach( e, undefined, container );
+        index += 1;
+        let e2 = onEach( e, index, container );
 
         if( e2 === undefined || e !== e2 )
         {
@@ -959,9 +971,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
+      let index = -1;
+      /* qqq : cover all cases and arguments ( including key! ) */
       for( let e of container )
       {
-        let e2 = onEach( e, undefined, self );
+        index += 1;
+        let e2 = onEach( e, index, self );
         if( e2 !== undefined )
         dst.append( e2 );
       }
@@ -977,13 +992,19 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     {
       // _.assert( 0, 'not implemented' );
       let length = container.size;
+      let index = -1;
+      /* qqq : should have index! cover please */
+      /* qqq : cover all cases and arguments ( including key! ) */
       for( let e of container )
       {
-        if( length === 0 )
+        index += 1;
+        if( index === length )
         break;
-        length--;
+        // if( length === 0 )
+        // break;
+        // length--;
 
-        let e2 = onEach( e, undefined, self );
+        let e2 = onEach( e, index, self );
         self.remove( e );
 
         if( e2 === undefined || e !== e2 )
@@ -1005,9 +1026,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
+      let index = 0;
+      /* qqq : cover all cases and arguments ( including key! ) */
       for( let e of container )
       {
-        let e2 = onEach( e, undefined, self );
+        index += 1;
+        let e2 = onEach( e, index, self );
         if( e2 !== undefined )
         {
           if( self.IsContainer( e2 ) || self.Is( e2 ) )
@@ -1046,12 +1070,15 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       {
         let temp = [ ... container ];
         _.arrayRemoveDuplicates( temp, onEval );
+        /* qqq : not optimal. ask. */
         container.clear();
         for( let e of temp )
         dst.original.add( e );
       }
       else
-      dst.appendContainer( container );
+      {
+        dst.appendContainer( container );
+      }
     }
     return dst;
   }
@@ -1064,7 +1091,8 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( onEach )
     for( let e of container )
     {
-      return onEach( e, undefined, self );
+      /* qqq : cover all cases and arguments ( including key! ) */
+      return onEach( e, 0, self );
     }
     else
     {
@@ -1080,7 +1108,8 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     return undefined;
     if( onEach )
     {
-      return onEach( [ ... container ][ container.size-1 ], undefined, self );
+      /* qqq : cover all cases and arguments ( including key! ) */
+      return onEach( [ ... container ][ container.size-1 ], container.size-1, self );
     }
     else
     {
@@ -1088,6 +1117,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
 
     /* Dmytro : alternative variant which use the minimum of memory */
+    /* qqq : ask */
     // let last = this.reduce( ( a, e ) => e );
     // if( onEach )
     // return onEach( last, undefined, self );
@@ -1102,8 +1132,13 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let self = this;
     let container = this.original;
+    let index = -1;
+    /* qqq : cover all cases and arguments ( including key! ) */
     for( let e of container )
-    onEach( e, undefined, self );
+    {
+      index += 1;
+      onEach( e, index, self );
+    }
     return this;
   }
   eachRight( onEach )
@@ -1115,7 +1150,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     // onEach( e, undefined, self );
     let temp = [ ... container ];
     for( let i = temp.length - 1; i >= 0; i-- )
-    onEach( temp[ i ], undefined, self );
+    onEach( temp[ i ], i, self );
     return self;
   }
   reduce( accumulator, onEach )
@@ -1127,17 +1162,25 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       onEach = arguments[ 0 ];
       accumulator = undefined;
     }
+    let index = -1;
+    /* qqq : cover all cases and arguments ( including key! ) */
     for( let e of container )
-    accumulator = onEach( accumulator, e, undefined, self );
+    {
+      index += 1;
+      accumulator = onEach( accumulator, e, index, self );
+    }
     return accumulator;
   }
   allLeft( onEach )
   {
     let self = this;
     let container = this.original;
+    let index = -1;
+    /* qqq : cover all cases and arguments ( including key! ) */
     for( let e of container )
     {
-      let r = onEach( e, undefined, self );
+      index += 1;
+      let r = onEach( e, index, self );
       if( !r )
       return false;
     }
@@ -1145,7 +1188,18 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   allRight( onEach )
   {
-    return this.allLeft( onEach );
+    let self = this;
+    let container = this.original;
+    let index = container.size;
+    /* qqq : cover all cases and arguments ( including key! ) */
+    for( let e of container )
+    {
+      index -= 1;
+      let r = onEach( e, index, self );
+      if( !r )
+      return false;
+    }
+    return true;
   }
   all( onEach )
   {
@@ -1155,9 +1209,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let self = this;
     let container = this.original;
+    let index = -1;
+    /* qqq : cover all cases and arguments ( including key! ) */
     for( let e of container )
     {
-      let r = onEach( e, undefined, self );
+      index += 1;
+      let r = onEach( e, index, self );
       if( r )
       return true;
     }
@@ -1165,7 +1222,18 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   anyRight( onEach )
   {
-    return this.anyLeft( onEach );
+    let self = this;
+    let container = this.original;
+    let index = container.size;
+    /* qqq : cover all cases and arguments ( including key! ) */
+    for( let e of container )
+    {
+      index -= 1;
+      let r = onEach( e, index, self );
+      if( r )
+      return true;
+    }
+    return false;
   }
   any( onEach )
   {
@@ -1175,9 +1243,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let self = this;
     let container = this.original;
+    let index = -1;
+    /* qqq : cover all cases and arguments ( including key! ) */
     for( let e of container )
     {
-      let r = onEach( e, undefined, self );
+      index += 1;
+      let r = onEach( e, index, self );
       if( r )
       return false;
     }
@@ -1185,7 +1256,18 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   noneRight( onEach )
   {
-    return this.noneLeft( onEach );
+    let self = this;
+    let container = this.original;
+    let index = container.size;
+    /* qqq : cover all cases and arguments ( including key! ) */
+    for( let e of container )
+    {
+      index -= 1;
+      let r = onEach( e, index, self );
+      if( r )
+      return false;
+    }
+    return true;
   }
   none( onEach )
   {
@@ -1193,6 +1275,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   reverse( dst )
   {
+
     // if( !dst )
     // {
     //   debugger;
@@ -1211,7 +1294,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
     let container = this.original;
     let temp = [ ... this.original ];
-    if( this.same( dst ) )
+
+    /* qqq : same and _same are 2 diffrent routines. don't confuse! */
+    // if( this.same( dst ) )
+    if( this._same( dst ) )
     {
       this.empty();
       for( let i = temp.length - 1; i >= 0; i-- )
@@ -1233,6 +1319,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let container = this.original;
     return new ArrayContainerAdapter( [ ... container ] );
+  }
+  toSet() /* qqq : cover please */
+  {
+    return this;
   }
   [ Symbol.iterator ]()
   {
@@ -1293,7 +1383,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     if( _.routineIs( onEvaluate1 ) )
     {
-      if( _.arrayLeftIndex( this.original, e, onEvaluate1, onEvaluate2 ) !== -1 )
+      if( _.longLeftIndex( this.original, e, onEvaluate1, onEvaluate2 ) !== -1 )
       return true;
       return false;
     }
@@ -1301,7 +1391,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   count( e, onEvaluate1, onEvaluate2 )
   {
-    return _.arrayCountElement( this.original, e, onEvaluate1, onEvaluate2 );
+    return _.longCountElement( this.original, e, onEvaluate1, onEvaluate2 );
   }
   copyFrom( src )
   {
@@ -1368,7 +1458,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     var poped = this.original.pop();
 
-    if( _.routineIs( onEvaluate1 ) && _.arrayLeftIndex( [ poped ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+    if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ poped ], e, onEvaluate1, onEvaluate2 ) !== -1 )
     return poped;
 
     _.assert( e === undefined || poped === e );
@@ -1379,7 +1469,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     // _.assert( arguments.length === 1 );
     // _.assert( this.original[ this.original.length - 1 ] === e, 'Container does not have such element' );
     _.assert( arguments.length >= 1 );
-    _.assert( _.arrayLeftIndex( [ this.last() ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Container does not have such element' );
+    _.assert( _.longLeftIndex( [ this.last() ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Container does not have such element' );
     var poped = this.original.pop();
     return poped;
   }
@@ -1422,9 +1512,13 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     if( this._same( dst ) )
     {
       debugger;
-      for( let k in container )
+      /* qqq : cover all cases and arguments */
+      /* qqq : not optimal! no in for arrays! */
+      // for( let k in container )
+      for( let k = 0 ; k < container.length ; k++ )
       {
-        let e2 = onEach( container[ k ], undefined, self );
+        let e2 = onEach( e, k, self );
+        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? */
         if( e2 !== undefined )
         {
           container[ k ] = e2;
@@ -1433,9 +1527,15 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
-      for( let e of container )
+      // debugger;
+      /* qqq : cover all cases and arguments */
+      /* qqq : not optimal! no in for arrays! */
+      // for( let k in container )
+      for( let k = 0 ; k < container.length ; k++ )
       {
-        let e2 = onEach( e, undefined, self );
+        let e = container[ k ];
+        let e2 = onEach( e, k, self );
+        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? */
         if( e2 !== undefined )
         dst.append( e2 );
         else
@@ -1452,10 +1552,12 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
     if( this._same( dst ) )
     {
-      for( let k = container.length - 1 ; k >= 0 ; k-- )
+      let l = container.length - 1;
+      for( let k = l ; k >= 0 ; k-- )
       {
         let e = container[ k ];
-        let e2 = onEach( e, undefined, container );
+        // let e2 = onEach( e, undefined, container ); /* qqq : where was key?? */
+        let e2 = onEach( e, k, container );
         if( e !== e2 || e2 === undefined )
         {
           if( e2 !== undefined )
@@ -1470,7 +1572,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       for( let k = 0, l = container.length ; k < l ; k++ )
       {
         let e = container[ k ];
-        let e2 = onEach( e, undefined, container );
+        // let e2 = onEach( e, undefined, container );  /* qqq : where was key?? */
+        let e2 = onEach( e, k, container );
         if( e2 !== undefined )
         dst.append( e2 );
       }
@@ -1489,7 +1592,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       for( let k = container.length - 1 ; k >= 0 ; k-- )
       {
         let e = container[ k ];
-        let e2 = onEach( e, undefined, self );
+        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? */
+        let e2 = onEach( e, k, self );
         if( e !== e2 || e2 === undefined )
         {
           if( e2 !== undefined )
@@ -1509,7 +1613,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       for( let k = 0, l = container.length ; k < l ; k++ )
       {
         let e = container[ k ];
-        let e2 = onEach( e, undefined, container );
+        // let e2 = onEach( e, undefined, container ); /* qqq : where was key?? */
+        let e2 = onEach( e, k, container );
         if( e2 !== undefined )
         {
           if( self.IsContainer( e2 ) || self.Is( e2 ) )
@@ -1684,7 +1789,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   reverse( dst )
   {
     if( !dst )
-    dst = this.MakeEmpty();
+    dst = this.MakeEmpty(); /* qqq : ask please */
     // dst = this.Make( this.length ); /* adjust routine Make to accept length */
     else
     dst = this.From( dst );
@@ -1720,6 +1825,10 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   toArray()
   {
     return this;
+  }
+  toSet() /* qqq : cover please */
+  {
+    return this.From( new Set([ ... this.original ]) );
   }
   [ Symbol.iterator ]()
   {

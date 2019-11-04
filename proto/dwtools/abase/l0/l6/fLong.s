@@ -28,17 +28,10 @@ but                 -                +         negative
 // arguments array
 // --
 
-// function argumentsArrayIs( src )
-// {
-//   return Object.prototype.toString.call( src ) === '[object Arguments]';
-// }
-
-//
-
 function argumentsArrayMake( src )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.numberIs( src ) || _.longIs( src ) );
+  _.assert( _.numberIs( src ) || _.longLike( src ) );
   if( _.numberIs( src ) )
   return _argumentsArrayMake.apply( _, Array( src ) );
   else
@@ -122,21 +115,21 @@ function longMake( src, ins )
   if( src === null )
   src = [];
 
-  if( _.longIs( length ) )
+  if( _.longLike( length ) )
   length = length.length;
 
   if( length === undefined )
   {
-    if( _.longIs( src ) )
+    if( _.longLike( src ) )
     length = src.length;
     else if( _.numberIs( src ) )
     length = src;
     else _.assert( 0 );
   }
 
-  if( !_.longIs( ins ) )
+  if( !_.longLike( ins ) )
   {
-    if( _.longIs( src ) )
+    if( _.longLike( src ) )
     ins = src;
     else
     ins = [];
@@ -150,7 +143,7 @@ function longMake( src, ins )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( src ) || _.longIs( src ), () => 'Expects long, but got ' + _.strType( src ) );
+  _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.strType( src ) );
 
   if( _.routineIs( src ) )
   {
@@ -159,7 +152,7 @@ function longMake( src, ins )
       debugger;
       if( src === Array )
       {
-        if( _.longIs( ins ) )
+        if( _.longLike( ins ) )
         {
           /* Dmytro : simple and effective solution is
           result = Array.from( ins );
@@ -238,7 +231,7 @@ function longMake( src, ins )
     }
   }
 
-  _.assert( _.longIs( result ) );
+  _.assert( _.longLike( result ) );
 
   return result;
 }
@@ -262,7 +255,7 @@ function longMakeEmpty( src )
 
   result = new src.constructor();
 
-  _.assert( _.longIs( result ) );
+  _.assert( _.longLike( result ) );
   _.assert( result.length === 0 );
 
   return result;
@@ -278,12 +271,12 @@ function _longMakeOfLength( src, len )
   if( src === null )
   src = [];
 
-  if( _.longIs( len ) )
+  if( _.longLike( len ) )
   len = len.length;
 
   if( len === undefined )
   {
-    if( _.longIs( src ) )
+    if( _.longLike( src ) )
     len = src.length;
     else if( _.numberIs( src ) )
     len = src;
@@ -298,7 +291,7 @@ function _longMakeOfLength( src, len )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( len ) );
-  _.assert( _.routineIs( src ) || _.longIs( src ), () => 'Expects long, but got ' + _.strType( src ) );
+  _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.strType( src ) );
 
   if( _.routineIs( src ) )
   {
@@ -403,7 +396,7 @@ function longMakeUndefined( ins, len )
   }
   else
   {
-    if( _.longIs( len ) )
+    if( _.longLike( len ) )
     length = len.length;
     else if( _.numberIs( len ) )
     length = len;
@@ -417,7 +410,7 @@ function longMakeUndefined( ins, len )
   // _.assert( !_.argumentsArrayIs( ins ), 'not tested' );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ), () => 'Expects long, but got ' + _.strType( ins ) );
+  _.assert( _.routineIs( ins ) || _.longLike( ins ), () => 'Expects long, but got ' + _.strType( ins ) );
 
   if( _.routineIs( ins ) )
   result = new ins( length );
@@ -449,7 +442,7 @@ function longMakeZeroed( ins, src )
   }
   else
   {
-    if( _.longIs( src ) )
+    if( _.longLike( src ) )
     length = src.length;
     else if( _.numberIs( src ) )
     length = src;
@@ -461,8 +454,8 @@ function longMakeZeroed( ins, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ), () => 'Expects long, but got ' + _.strType( ins ) );
-  // _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+  _.assert( _.routineIs( ins ) || _.longLike( ins ), () => 'Expects long, but got ' + _.strType( ins ) );
+  // _.assert( _.routineIs( ins ) || _.longLike( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
 
   if( _.routineIs( ins ) )
   result = new ins( length );
@@ -489,7 +482,7 @@ function _longClone( src )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.longIs( src ) || _.bufferAnyIs( src ) );
+  _.assert( _.longLike( src ) || _.bufferAnyIs( src ) );
   _.assert( !_.bufferNodeIs( src ), 'not tested' );
 
   if( _.bufferViewIs( src ) )
@@ -531,7 +524,7 @@ function longShallowClone()
     if( argument === undefined )
     throw _.err( 'argument is not defined' );
 
-    if( _.longIs( argument ) ) length += argument.length;
+    if( _.longLike( argument ) ) length += argument.length;
     else if( _.bufferRawIs( argument ) ) length += argument.byteLength;
     else length += 1;
   }
@@ -565,7 +558,7 @@ function longShallowClone()
       result.set( argument, offset );
       offset += argument.length;
     }
-    else if( _.longIs( argument ) )
+    else if( _.longLike( argument ) )
     for( let i = 0 ; i < argument.length ; i++ )
     {
       result[ c ] = argument[ i ];
@@ -616,7 +609,7 @@ function longRepresent( src, begin, end )
 {
 
   _.assert( arguments.length <= 3 );
-  _.assert( _.longIs( src ), 'Unknown type of (-src-) argument' );
+  _.assert( _.longLike( src ), 'Unknown type of (-src-) argument' );
   _.assert( _.routineIs( src.slice ) || _.routineIs( src.subarray ) );
 
   if( _.routineIs( src.subarray ) )
@@ -677,7 +670,7 @@ function longSlice( array, f, l ) /* qqq : optimize */
     return [];
   }
 
-  _.assert( _.longIs( array ) );
+  _.assert( _.longLike( array ) );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( _.arrayLikeResizable( array ) )
@@ -821,11 +814,11 @@ function longBut( array, range, val )
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
-  _.assert( _.longIs( array ) );
-  _.assert( val === undefined || _.longIs( val ) );
+  _.assert( _.longLike( array ) );
+  _.assert( val === undefined || _.longLike( val ) );
   _.assert( _.rangeIs( range ) );
-  // _.assert( _.longIs( range ), 'not tested' );
-  // _.assert( !_.longIs( range ), 'not tested' );
+  // _.assert( _.longLike( range ), 'not tested' );
+  // _.assert( !_.longLike( range ), 'not tested' );
 
   // if( _.numberIs( range ) )
   // range = [ range, range + 1 ];
@@ -952,7 +945,7 @@ function longButInplace( array, range, val )
   if( _.numberIs( range ) )
   range = [ range, range + 1 ];
 
-  _.assert( _.longIs( array ) );
+  _.assert( _.longLike( array ) );
   _.assert( _.rangeIs( range ) );
 
   _.rangeClamp( range, [ 0, array.length ] );
@@ -966,10 +959,10 @@ function longButInplace( array, range, val )
 
   // let result;
   //
-  // _.assert( _.longIs( src ) );
-  // _.assert( ins === undefined || _.longIs( ins ) );
-  // _.assert( _.longIs( range ), 'not tested' );
-  // _.assert( !_.longIs( range ), 'not tested' );
+  // _.assert( _.longLike( src ) );
+  // _.assert( ins === undefined || _.longLike( ins ) );
+  // _.assert( _.longLike( range ), 'not tested' );
+  // _.assert( !_.longLike( range ), 'not tested' );
   //
   // _.assert( 0, 'not implemented' )
 
@@ -1009,11 +1002,11 @@ function _argumentsOnlyLong( dst, src, range, ins )
   else if( dst === src )
   dst = false;
   else if( arguments.length === 4 )
-  _.assert( _.longIs( dst ), '{-dst-} should be Long' );
+  _.assert( _.longLike( dst ), '{-dst-} should be Long' );
   else
   {
     if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
-    _.assert( _.longIs( dst ) );
+    _.assert( _.longLike( dst ) );
     else
     {
       ins = range;
@@ -1023,7 +1016,7 @@ function _argumentsOnlyLong( dst, src, range, ins )
     }
   }
 
-  _.assert( _.longIs( src ) );
+  _.assert( _.longLike( src ) );
 
   return [ dst, src, range, ins ];
 }
@@ -1196,7 +1189,7 @@ function longSelect( array, range, val )
   // f = f !== undefined ? f : 0;
   // l = l !== undefined ? l : array.length;
 
-  _.assert( _.longIs( array ) );
+  _.assert( _.longLike( array ) );
   _.assert( _.rangeIs( range ) )
 
   // if( f < 0 )
@@ -1334,7 +1327,7 @@ function longSelectInplace( array, range, val )
   if( _.numberIs( range ) )
   range = [ range, array.length ];
 
-  _.assert( _.longIs( array ) );
+  _.assert( _.longLike( array ) );
   _.assert( _.rangeIs( range ) );
 
   _.rangeClamp( range, [ 0, array.length ] );
@@ -1359,7 +1352,7 @@ function longSelectInplace( array, range, val )
   // // f = f !== undefined ? f : 0;
   // // l = l !== undefined ? l : array.length;
   //
-  // _.assert( _.longIs( array ) );
+  // _.assert( _.longLike( array ) );
   // _.assert( _.rangeIs( range ) )
   // // _.assert( _.numberIs( f ) );
   // // _.assert( _.numberIs( l ) );
@@ -1574,7 +1567,7 @@ function longGrow( array, range, val )
   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
 
-  _.assert( _.longIs( array ) );
+  _.assert( _.longLike( array ) );
   _.assert( _.rangeIs( range ) )
   // _.assert( _.numberIs( f ) );
   // _.assert( _.numberIs( l ) );
@@ -1716,7 +1709,7 @@ function longGrowInplace( array, range, val )
   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
 
-  _.assert( _.longIs( array ) );
+  _.assert( _.longLike( array ) );
   _.assert( _.rangeIs( range ) )
 
   if( l < f )
@@ -1749,7 +1742,7 @@ function longGrowInplace( array, range, val )
   // f = f !== undefined ? f : 0;
   // l = l !== undefined ? l : array.length;
   //
-  // _.assert( _.longIs( array ) );
+  // _.assert( _.longLike( array ) );
   // _.assert( _.rangeIs( range ) )
   // // _.assert( _.numberIs( f ) );
   // // _.assert( _.numberIs( l ) );
@@ -1977,7 +1970,7 @@ function longRelength( array, range, val )
   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
 
-  _.assert( _.longIs( array ) );
+  _.assert( _.longLike( array ) );
   _.assert( _.rangeIs( range ) )
 
   if( l < f )
@@ -2099,7 +2092,7 @@ function longRelengthInplace( array, range, val )
   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
 
-  _.assert( _.longIs( array ) );
+  _.assert( _.longLike( array ) );
   _.assert( _.rangeIs( range ) )
 
   if( l < f )
@@ -2333,45 +2326,28 @@ function hasLength( src )
 
 //
 
-function arrayHasArray( arr )
-{
-
-  _.assert( arguments.length === 1 );
-
-  if( !_.arrayLike( arr ) )
-  return false;
-
-  for( let a = 0 ; a < arr.length ; a += 1 )
-  if( _.arrayLike( arr[ a ] ) )
-  return true;
-
-  return false;
-}
-
-//
-
 /**
- * The arrayCompare() routine returns the first difference between the values of the first array from the second.
+ * The longCompare() routine returns the first difference between the values of the first array from the second.
  *
- * @param { longIs } src1 - The first array.
- * @param { longIs } src2 - The second array.
+ * @param { longLike } src1 - The first array.
+ * @param { longLike } src2 - The second array.
  *
  * @example
- * _.arrayCompare( [ 1, 5 ], [ 1, 2 ] );
+ * _.longCompare( [ 1, 5 ], [ 1, 2 ] );
  * // returns 3
  *
  * @returns { Number } - Returns the first difference between the values of the two arrays.
- * @function arrayCompare
+ * @function longCompare
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
  * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
  * @memberof wTools
  */
 
-function arrayCompare( src1, src2 )
+function longCompare( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.longIs( src1 ) && _.longIs( src2 ) );
+  _.assert( _.longLike( src1 ) && _.longLike( src2 ) );
   _.assert( src2.length >= src1.length );
 
   let result = 0;
@@ -2391,26 +2367,26 @@ function arrayCompare( src1, src2 )
 //
 
 /**
- * The arraysAreIdentical() routine checks the equality of two arrays.
+ * The longIdentical() routine checks the equality of two arrays.
  *
- * @param { longIs } src1 - The first array.
- * @param { longIs } src2 - The second array.
+ * @param { longLike } src1 - The first array.
+ * @param { longLike } src2 - The second array.
  *
  * @example
- * _.arraysAreIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ * _.longIdentical( [ 1, 2, 3 ], [ 1, 2, 3 ] );
  * // returns true
  *
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
- * @function arraysAreIdentical
+ * @function longIdentical
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @memberof wTools
  */
 
-function arraysAreIdentical( src1, src2 )
+function longIdentical( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.longIs( src1 ) );
-  _.assert( _.longIs( src2 ) );
+  _.assert( _.longLike( src1 ) );
+  _.assert( _.longLike( src2 ) );
 
   let result = true;
 
@@ -2432,19 +2408,19 @@ function arraysAreIdentical( src1, src2 )
 
 //
 
-function arrayHas( array, element, evaluator1, evaluator2 )
+function longHas( array, element, evaluator1, evaluator2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayLike( array ) );
 
-  if( evaluator1 === undefined && evaluator2 === undefined )
+  if( !evaluator1 && !evaluator2 )
   {
     // return _ArrayIndexOf.call( array, element ) !== -1;
     return _ArrayIncludes.call( array, element );
   }
   else
   {
-    if( _.arrayLeftIndex( array, element, evaluator1, evaluator2 ) >= 0 )
+    if( _.longLeftIndex( array, element, evaluator1, evaluator2 ) >= 0 )
     return true;
     return false;
   }
@@ -2454,40 +2430,40 @@ function arrayHas( array, element, evaluator1, evaluator2 )
 //
 
 /**
- * The routine arrayHasAny() checks if the {-src-} array has at least one element of the argument {-ins-}.
+ * The routine longHasAny() checks if the {-src-} array has at least one element of the argument {-ins-}.
  * It can take equalizer or evaluators for the routine equalities.
  *
  * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
- * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
+ * [longLeftIndex()]{@link wTools.longLeftIndex}
  * Checks, if {-src-} array has at least one element of the {-ins-} array.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
- * @see {@link wTools.arrayLeftIndex} - See for more information.
+ * @see {@link wTools.longLeftIndex} - See for more information.
  *
  * @param { Long } src - The source array.
  * @param  { Long|Primitive } ins - The elements to check in the source array.
  * @param { Function } evaluator - A collback function.
  *
  * @example
- * _.arrayHasAny( [ 5, 'str', 42, false ], 7 );
+ * _.longHasAny( [ 5, 'str', 42, false ], 7 );
  * // returns false
  *
  * @example
- * _.arrayHasAny( [ 5, 'str', 42, false ], [ false, 7, 10 ] );
+ * _.longHasAny( [ 5, 'str', 42, false ], [ false, 7, 10 ] );
  * // returns true
  *
  * @example
- * _.arrayHasAny( [ { a : 2 }, 'str', 42, false ], [ { a : 2 }, { a : 3 } ] );
+ * _.longHasAny( [ { a : 2 }, 'str', 42, false ], [ { a : 2 }, { a : 3 } ] );
  * // returns false
  *
  * @example
  * var evaluator = ( e ) => e.a;
- * _.arrayHasAny( [ { a : 2 }, 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
+ * _.longHasAny( [ { a : 2 }, 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
  * // returns true
  *
  * @returns { Boolean } - Returns true, if {-src-} has at least one element of {-ins-}, otherwise false is returned.
- * @function arrayHasAny
+ * @function longHasAny
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
@@ -2495,12 +2471,12 @@ function arrayHas( array, element, evaluator1, evaluator2 )
  * @memberof wTools
  */
 
-function arrayHasAny( src, ins, evaluator )
+function longHasAny( src, ins, evaluator )
 {
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( _.longIs( src ), 'Expects array, but got ' + _.strType( src ) );
-  _.assert( _.longIs( ins ) || _.primitiveIs( ins ) );
+  _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
   ins = [ ins ];
@@ -2510,7 +2486,7 @@ function arrayHasAny( src, ins, evaluator )
 
   do
   {
-    result = _.arrayLeftIndex( src, ins[ i ], 0, evaluator );
+    result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
     i++;
   }
   while( result < 0 && i < ins.length )
@@ -2520,67 +2496,43 @@ function arrayHasAny( src, ins, evaluator )
   return false;
 }
 
-// function arrayHasAny( src )
-// {
-//   let empty = true;
-//   empty = false;
-//
-//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
-//   _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasAny :', 'array expected' );
-//
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   {
-//     empty = false;
-//
-//     let ins = _.arrayAs( arguments[ a ] );
-//     for( let i = 0 ; i < ins.length ; i++ )
-//     {
-//       if( src.indexOf( ins[ i ] ) !== -1 )
-//       return true;
-//     }
-//
-//   }
-//
-//   return empty;
-// }
-
 //
 
 /**
- * The routine arrayHasAll() checks if the {-src-} array has all elements of the argument {-ins-}.
+ * The routine longHasAll() checks if the {-src-} array has all elements of the argument {-ins-}.
  * It can take equalizer or evaluators for the routine equalities.
  *
  * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
- * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
+ * [longLeftIndex()]{@link wTools.longLeftIndex}
  * Checks, if {-src-} array has all elements of the {-ins-} array.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
- * @see {@link wTools.arrayLeftIndex} - See for more information.
+ * @see {@link wTools.longLeftIndex} - See for more information.
  *
  * @param { Long } src - The source array.
  * @param  { Long|Primitive } ins - The elements to check in the source array.
  * @param { Function } evaluator - A collback function.
  *
  * @example
- * _.arrayHasAll( [ 5, 'str', 42, false ], 7 );
+ * _.longHasAll( [ 5, 'str', 42, false ], 7 );
  * // returns false
  *
  * @example
- * _.arrayHasAny( [ 5, 'str', 42, false ], [ false, 5, 'str' ] );
+ * _.longHasAny( [ 5, 'str', 42, false ], [ false, 5, 'str' ] );
  * // returns true
  *
  * @example
- * _.arrayHasAny( [ { a : 2 }, { a : 3 } 'var', 42, false ], [ { a : 2 }, { a : 3 } ] );
+ * _.longHasAny( [ { a : 2 }, { a : 3 } 'var', 42, false ], [ { a : 2 }, { a : 3 } ] );
  * // returns false
  *
  * @example
  * var evaluator = ( e ) => e.a;
- * _.arrayHasAny( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
+ * _.longHasAny( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
  * // returns true
  *
  * @returns { Boolean } - Returns true, if {-src-} has all elements of {-ins-}, otherwise false is returned.
- * @function arrayHasAll
+ * @function longHasAll
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
@@ -2588,12 +2540,12 @@ function arrayHasAny( src, ins, evaluator )
  * @memberof wTools
  */
 
-function arrayHasAll( src, ins, evaluator )
+function longHasAll( src, ins, evaluator )
 {
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( _.longIs( src ), 'Expects array, but got ' + _.strType( src ) );
-  _.assert( _.longIs( ins ) || _.primitiveIs( ins ) );
+  _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
   ins = [ ins ];
@@ -2603,7 +2555,7 @@ function arrayHasAll( src, ins, evaluator )
 
   do
   {
-    result = _.arrayLeftIndex( src, ins[ i ], 0, evaluator );
+    result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
     i++;
   }
   while( result >= 0 && i < ins.length )
@@ -2613,61 +2565,43 @@ function arrayHasAll( src, ins, evaluator )
   return false;
 }
 
-// function arrayHasAll( src )
-// {
-//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
-//   _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasAll :', 'array expected' );
-//
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   {
-//
-//     let ins = _.arrayAs( arguments[ a ] );
-//     for( let i = 0 ; i < ins.length ; i++ )
-//     if( src.indexOf( ins[ i ] ) === -1 )
-//     return false;
-//
-//   }
-//
-//   return true;
-// }
-
 //
 
 /**
- * The routine arrayHasNone() checks if the {-src-} array has no one element of the argument {-ins-}.
+ * The routine longHasNone() checks if the {-src-} array has no one element of the argument {-ins-}.
  * It can take equalizer or evaluators for the routine equalities.
  *
  * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
- * [arrayLeftIndex()]{@link wTools.arrayLeftIndex}
+ * [longLeftIndex()]{@link wTools.longLeftIndex}
  * Checks, if {-src-} array has no one elements of the {-ins-} array.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
- * @see {@link wTools.arrayLeftIndex} - See for more information.
+ * @see {@link wTools.longLeftIndex} - See for more information.
  *
  * @param { Long } src - The source array.
  * @param  { Long|Primitive } ins - The elements to check in the source array.
  * @param { Function } evaluator - A collback function.
  *
  * @example
- * _.arrayHasNone( [ 5, 'str', 42, false ], 7 );
+ * _.longHasNone( [ 5, 'str', 42, false ], 7 );
  * // returns true
  *
  * @example
- * _.arrayHasNone( [ 5, 'str', 42, false ], [ false, 5, 'str' ] );
+ * _.longHasNone( [ 5, 'str', 42, false ], [ false, 5, 'str' ] );
  * // returns false
  *
  * @example
- * _.arrayHasNone( [ { a : 2 }, { a : 3 } 'var', 42, false ], [ { a : 2 }, { a : 3 } ] );
+ * _.longHasNone( [ { a : 2 }, { a : 3 } 'var', 42, false ], [ { a : 2 }, { a : 3 } ] );
  * // returns true
  *
  * @example
  * var evaluator = ( e ) => e.a;
- * _.arrayHasNone( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { a : 2 }, { a : 4 } ], evaluator );
+ * _.longHasNone( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { a : 2 }, { a : 4 } ], evaluator );
  * // returns false
  *
  * @returns { Boolean } - Returns true, if {-src-} has no one element of {-ins-}, otherwise false is returned.
- * @function arrayHasAll
+ * @function longHasAll
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
@@ -2675,12 +2609,12 @@ function arrayHasAll( src, ins, evaluator )
  * @memberof wTools
  */
 
-function arrayHasNone( src, ins, evaluator )
+function longHasNone( src, ins, evaluator )
 {
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( _.longIs( src ), 'Expects array, but got ' + _.strType( src ) );
-  _.assert( _.longIs( ins ) || _.primitiveIs( ins ) );
+  _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
   ins = [ ins ];
@@ -2690,7 +2624,7 @@ function arrayHasNone( src, ins, evaluator )
 
   do
   {
-    result = _.arrayLeftIndex( src, ins[ i ], 0, evaluator );
+    result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
     i++;
   }
   while( result < 0 && i < ins.length )
@@ -2700,31 +2634,38 @@ function arrayHasNone( src, ins, evaluator )
   return true;
 }
 
-// function arrayHasNone( src )
-// {
-//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
-//   _.assert( _.arrayLike( src ) || _.bufferTypedIs( src ), 'arrayHasNone :', 'array expected' );
 //
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   {
-//
-//     let ins = _.arrayAs( arguments[ a ] );
-//     for( let i = 0 ; i < ins.length ; i++ )
-//     if( src.indexOf( ins[ i ] ) !== -1 )
-//     return false;
-//
-//   }
-//
-//   return true;
-// }
+
+/* qqq : cover please */
+function longHasDepth( arr, level = 1 )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.intIs( level ) );
+
+  if( !_.longLike( arr ) )
+  return false;
+
+  if( level <= 0 )
+  return true;
+
+  for( let a = 0 ; a < arr.length ; a += 1 )
+  if( _.longLike( arr[ a ] ) )
+  {
+    if( _.longHasDepth( arr[ a ], level - 1 ) )
+    return true;
+  }
+
+  return false;
+}
 
 //
 
-function arrayAll( src )
+function longAll( src )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.longIs( src ) );
+  _.assert( _.longLike( src ) );
 
   for( let s = 0 ; s < src.length ; s += 1 )
   {
@@ -2737,10 +2678,10 @@ function arrayAll( src )
 
 //
 
-function arrayAny( src )
+function longAny( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.longIs( src ) );
+  _.assert( _.longLike( src ) );
 
   debugger;
   for( let s = 0 ; s < src.length ; s += 1 )
@@ -2753,10 +2694,10 @@ function arrayAny( src )
 
 //
 
-function arrayNone( src )
+function longNone( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.longIs( src ) );
+  _.assert( _.longLike( src ) );
 
   for( let s = 0 ; s < src.length ; s += 1 )
   if( src[ s ] )
@@ -2830,7 +2771,7 @@ function arrayMake( src )
   if( _.setIs( src ) )
   return [ ... src ];
 
-  _.assert( _.longIs( src ) );
+  _.assert( _.longLike( src ) );
 
   if( src.length === 1 )
   return [ src[ 0 ] ];
@@ -2906,7 +2847,7 @@ Dmytro : routine is covered and documented
 function arrayMakeUndefined( src, length )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( src ) || _.longIs( src ) || src === null );
+  _.assert( _.numberIs( src ) || _.longLike( src ) || src === null );
   _.assert( length === undefined || _.numberIs( length ) );
 
   if( src && src.length && length === undefined )
@@ -2967,7 +2908,7 @@ function arrayAs( src )
 
   if( src === null )
   return [];
-  else if( _.longIs( src ) )
+  else if( _.longLike( src ) )
   return src;
   else
   return [ src ];
@@ -2983,7 +2924,7 @@ function arrayAsShallowing( src )
 
   if( src === null )
   return [];
-  else if( _.longIs( src ) )
+  else if( _.longLike( src ) )
   return _.arraySlice( src );
   else
   return [ src ];
@@ -3127,7 +3068,7 @@ function arrayBut( src, range, ins )
 
   _.assert( _.arrayIs( src ) );
   _.assert( _.rangeIs( range ) );
-  _.assert( ins === undefined || _.longIs( ins ) );
+  _.assert( ins === undefined || _.longLike( ins ) );
 
   _.rangeClamp( range, [ 0, src.length ] );
   if( range[ 1 ] < range[ 0 ] )
@@ -3241,7 +3182,7 @@ function arrayButInplace( src, range, ins )
 
   _.assert( _.arrayLikeResizable( src ) );
   _.assert( _.rangeIs( range ) );
-  _.assert( ins === undefined || _.longIs( ins ) );
+  _.assert( ins === undefined || _.longLike( ins ) );
 
   // Dmytro : missed
   _.rangeClamp( range, [ 0, src.length ] );
@@ -3312,7 +3253,7 @@ function arrayBut_( dst, src, range, ins )
   range = [ range, range + 1 ];
 
   _.assert( _.rangeIs( range ) );
-  _.assert( ins === undefined || _.longIs( ins ) );
+  _.assert( ins === undefined || _.longLike( ins ) );
 
   _.rangeClamp( range, [ 0, src.length ] );
   if( range[ 1 ] < range[ 0 ] )
@@ -4201,7 +4142,7 @@ function arrayRelength_( dst, src, range, ins )
 // array sequential search
 // --
 
-function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
+function longLeftIndex( arr, ins, evaluator1, evaluator2 )
 {
   let fromIndex = 0;
 
@@ -4213,12 +4154,12 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
   }
 
   _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
-  _.assert( _.longIs( arr ), 'Expect a Long' );
+  _.assert( _.longLike( arr ), 'Expect a Long' );
   _.assert( _.numberIs( fromIndex ) );
-  _.assert( evaluator1 === undefined || evaluator1.length === 1 || evaluator1.length === 2 );
-  _.assert( evaluator1 === undefined || _.routineIs( evaluator1 ) );
-  _.assert( evaluator2 === undefined || evaluator2.length === 1 );
-  _.assert( evaluator2 === undefined || _.routineIs( evaluator2 ) );
+  _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
+  _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
+  _.assert( !evaluator2 || evaluator2.length === 1 );
+  _.assert( !evaluator2 || _.routineIs( evaluator2 ) );
 
   if( !evaluator1 )
   {
@@ -4262,7 +4203,7 @@ function arrayLeftIndex( arr, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
+function longRightIndex( arr, ins, evaluator1, evaluator2 )
 {
 
   let fromIndex = arr.length-1;
@@ -4276,10 +4217,10 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 
   _.assert( 2 <= arguments.length && arguments.length <= 5, 'Expects 2-5 arguments: source array, element, and optional evaluator / equalizer' );
   _.assert( _.numberIs( fromIndex ) );
-  _.assert( evaluator1 === undefined || evaluator1.length === 1 || evaluator1.length === 2 );
-  _.assert( evaluator1 === undefined || _.routineIs( evaluator1 ) );
-  _.assert( evaluator2 === undefined || evaluator2.length === 1 );
-  _.assert( evaluator2 === undefined || _.routineIs( evaluator2 ) );
+  _.assert( !evaluator1 || evaluator1.length === 1 || evaluator1.length === 2 );
+  _.assert( !evaluator1 || _.routineIs( evaluator1 ) );
+  _.assert( !evaluator2 || evaluator2.length === 1 );
+  _.assert( !evaluator2 || _.routineIs( evaluator2 ) );
 
   if( !evaluator1 )
   {
@@ -4319,41 +4260,41 @@ function arrayRightIndex( arr, ins, evaluator1, evaluator2 )
 //
 
 /**
- * The arrayLeft() routine returns a new object containing the properties, (index, element),
+ * The longLeft() routine returns a new object containing the properties, (index, element),
  * corresponding to a found value (ins) from an array (arr).
  *
- * It creates the variable (i), assigns and calls to it the function( _.arrayLeftIndex( arr, ins, evaluator1 ) ),
+ * It creates the variable (i), assigns and calls to it the function( _.longLeftIndex( arr, ins, evaluator1 ) ),
  * that returns the index of the value (ins) in the array (arr).
- * [wTools.arrayLeftIndex()]{@link wTools.arrayLeftIndex}
+ * [wTools.longLeftIndex()]{@link wTools.longLeftIndex}
  * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
  * Otherwise, it returns the empty object.
  *
- * @see {@link wTools.arrayLeftIndex} - See for more information.
+ * @see {@link wTools.longLeftIndex} - See for more information.
  *
- * @param { longIs } arr - Entity to check.
+ * @param { longLike } arr - Entity to check.
  * @param { * } ins - Element to locate in the array.
  * @param { wTools~compareCallback } evaluator1 - A callback function.
  *
  * @example
- * _.arrayLeft( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
+ * _.longLeft( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
  * // returns { index : 3, element : 'str' }
  *
  * @example
- * _.arrayLeft( [ 1, 2, 3, 4, 5 ], 6 );
+ * _.longLeft( [ 1, 2, 3, 4, 5 ], 6 );
  * // returns {}
  *
  * @returns { Object } Returns a new object containing the properties, (index, element),
  * corresponding to the found value (ins) from the array (arr).
  * Otherwise, it returns the empty object.
- * @function arrayLeft
+ * @function longLeft
  * @throws { Error } Will throw an Error if (evaluator1) is not a Function.
  * @memberof wTools
  */
 
-function arrayLeft( arr, ins, evaluator1, evaluator2 )
+function longLeft( arr, ins, evaluator1, evaluator2 )
 {
   let result = Object.create( null );
-  let i = _.arrayLeftIndex( arr, ins, evaluator1, evaluator2 );
+  let i = _.longLeftIndex( arr, ins, evaluator1, evaluator2 );
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
@@ -4368,10 +4309,10 @@ function arrayLeft( arr, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayRight( arr, ins, evaluator1, evaluator2 )
+function longRight( arr, ins, evaluator1, evaluator2 )
 {
   let result = Object.create( null );
-  let i = _.arrayRightIndex( arr, ins, evaluator1, evaluator2 );
+  let i = _.longRightIndex( arr, ins, evaluator1, evaluator2 );
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
@@ -4386,28 +4327,28 @@ function arrayRight( arr, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayLeftDefined( arr )
+function longLeftDefined( arr )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  return _.arrayLeft( arr, true, function( e ){ return e !== undefined; } );
+  return _.longLeft( arr, true, function( e ){ return e !== undefined; } );
 }
 
 //
 
-function arrayRightDefined( arr )
+function longRightDefined( arr )
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  return _.arrayRight( arr, true, function( e ){ return e !== undefined; } );
+  return _.longRight( arr, true, function( e ){ return e !== undefined; } );
 }
 
 //
 
 /**
- * The routine arrayCountElement() returns the count of matched elements {-element-} in the {-srcArray-} array.
+ * The routine longCountElement() returns the count of matched elements {-element-} in the {-srcArray-} array.
  * Returns 0 if no {-element-} is matched. It can take equalizer or evaluators to check specific equalities.
  *
  * @param { Long } srcArray - The source array.
@@ -4417,58 +4358,58 @@ function arrayRightDefined( arr )
  *
  * @example
  * // simple exapmle, no matches
- * _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 3 );
+ * _.longCountElement( [ 1, 2, 'str', 10, 10, true ], 3 );
  * // returns 0
  *
  * @example
  * // simple exapmle
- * _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
+ * _.longCountElement( [ 1, 2, 'str', 10, 10, true ], 10 );
  * // returns 2
  *
  * @example
  * // with equalizer
- * _.arrayCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+ * _.longCountElement( [ 1, 2, 'str', 10, 10, true ], 10, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
  * // returns 4
  *
  * @example
  * // with single evaluator
- * _.arrayCountElement( [ [ 10 ], [ 10 ], [ 'str' ], [ 10 ], [ false ] ], [ 'str' ], ( e ) => e[ 0 ] );
+ * _.longCountElement( [ [ 10 ], [ 10 ], [ 'str' ], [ 10 ], [ false ] ], [ 'str' ], ( e ) => e[ 0 ] );
  * // returns 1
  *
  * @example
  * // with two part of evaluator
- * _.arrayCountElement( [ [ 10 ], [ 10 ], [ 'str' ], [ 10 ], [ false ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
+ * _.longCountElement( [ [ 10 ], [ 10 ], [ 'str' ], [ 10 ], [ false ] ], 10, ( e ) => e[ 0 ], ( e ) => e );
  * // returns 4
  *
  * @returns { Number } - Returns the count of matched elements {-element-} in the {-srcArray-}.
- * @function arrayCountElement
+ * @function longCountElement
  * @throws { Error } If passed arguments is less than two or more than four.
  * @throws { Error } If the first argument is not a Long.
  * @throws { Error } If the third or fourth argument is not a routine.
  * @throws { Error } If the routine in third argument has less than one or more than two arguments.
- * @throws { Error } If the routine in third argument has two arguments and fourth argument is passed into routine arrayCountElement.
+ * @throws { Error } If the routine in third argument has two arguments and fourth argument is passed into routine longCountElement.
  * @throws { Error } If the routine in fourth argument has less than one or more than one arguments.
  * @memberof wTools
  */
 
 /*
-qqq : are all combinations of call of routine arrayCountElement covered?
+qqq : are all combinations of call of routine longCountElement covered?
 */
 
-function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
+function longCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 {
   let result = 0;
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.longIs( srcArray ), 'Expects long' );
+  _.assert( _.longLike( srcArray ), 'Expects long' );
 
-  let left = _.arrayLeftIndex( srcArray, element, onEvaluate1, onEvaluate2 );
+  let left = _.longLeftIndex( srcArray, element, onEvaluate1, onEvaluate2 );
   // let index = srcArray.indexOf( element );
 
   while( left >= 0 )
   {
     result += 1;
-    left = _.arrayLeftIndex( srcArray, element, left+1, onEvaluate1, onEvaluate2 );
+    left = _.longLeftIndex( srcArray, element, left+1, onEvaluate1, onEvaluate2 );
     // index = srcArray.indexOf( element, index+1 );
   }
 
@@ -4478,32 +4419,32 @@ function arrayCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
 //
 
 /**
- * The routine arrayCountTotal() adds all the elements in {-srcArray-}, elements can be numbers or booleans ( it considers them 0 or 1 ).
+ * The routine longCountTotal() adds all the elements in {-srcArray-}, elements can be numbers or booleans ( it considers them 0 or 1 ).
  *
  * @param { Array } srcArray - The source array.
  *
  * @example
- * _.arrayCountTotal( [ 1, 2, 10, 10 ] );
+ * _.longCountTotal( [ 1, 2, 10, 10 ] );
  * // returns 23
  *
  * @example
- * _.arrayCountTotal( [ true, false, false ] );
+ * _.longCountTotal( [ true, false, false ] );
  * // returns 1
  *
  * @returns { Number } - Returns the sum of the elements in {-srcArray-}.
- * @function arrayCountTotal
+ * @function longCountTotal
  * @throws { Error } If passed arguments is different than one.
  * @throws { Error } If the first argument is not a Long.
  * @throws { Error } If {-srcArray-} doesn´t contain number-like elements.
  * @memberof wTools
  */
 
-function arrayCountTotal( srcArray )
+function longCountTotal( srcArray )
 {
   let result = 0;
 
   _.assert( arguments.length === 1 );
-  _.assert( _.longIs( srcArray ), 'Expects long' );
+  _.assert( _.longLike( srcArray ), 'Expects long' );
 
   for( let i = 0 ; i < srcArray.length ; i++ )
   {
@@ -4517,34 +4458,34 @@ function arrayCountTotal( srcArray )
 //
 
 /**
- * The arrayCountUnique() routine returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array {-srcMap-}.
+ * The longCountUnique() routine returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array {-srcMap-}.
  *
- * @param { longIs } src - The source array.
+ * @param { longLike } src - The source array.
  * @param { Function } [ onEvaluate = function( e ) { return e } ] - A callback function.
  *
  * @example
- * _.arrayCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
+ * _.longCountUnique( [ 1, 1, 2, 'abc', 'abc', 4, true, true ] );
  * // returns 3
  *
  * @example
- * _.arrayCountUnique( [ 1, 2, 3, 4, 5 ] );
+ * _.longCountUnique( [ 1, 2, 3, 4, 5 ] );
  * // returns 0
  *
  * @returns { Number } - Returns the count of matched pairs ([ 1, 1, 2, 2, ., . ]) in the array {-srcMap-}.
- * @function arrayCountUnique
+ * @function longCountUnique
  * @throws { Error } If passed arguments is less than one or more than two.
  * @throws { Error } If the first argument is not an array-like object.
  * @throws { Error } If the second argument is not a Function.
  * @memberof wTools
  */
 
-function arrayCountUnique( src, onEvaluate )
+function longCountUnique( src, onEvaluate )
 {
   let found = [];
   onEvaluate = onEvaluate || function( e ){ return e };
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.longIs( src ), 'arrayCountUnique :', 'Expects ArrayLike' );
+  _.assert( _.longLike( src ), 'longCountUnique :', 'Expects ArrayLike' );
   _.assert( _.routineIs( onEvaluate ) );
   _.assert( onEvaluate.length === 1 );
 
@@ -4603,7 +4544,7 @@ alteration How : [ - , Once , OnceStrictly ]                  // how to treat re
 //
 //   for( let a = arguments.length - 1 ; a >= 1 ; a-- )
 //   {
-//     if( _.longIs( arguments[ a ] ) )
+//     if( _.longLike( arguments[ a ] ) )
 //     {
 //       dstArray.unshift.apply( dstArray, arguments[ a ] );
 //     }
@@ -4814,7 +4755,7 @@ function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
-  let i = _.arrayLeftIndex.apply( _, arguments );
+  let i = _.longLeftIndex.apply( _, arguments );
 
   if( i === -1 )
   {
@@ -4966,7 +4907,7 @@ function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
 
-  let i = _.arrayLeftIndex.apply( _, arguments );
+  let i = _.longLeftIndex.apply( _, arguments );
 
   if( i === -1 )
   {
@@ -5177,7 +5118,7 @@ function arrayPrependedArray( dstArray, insArray )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.arrayIs( dstArray ), 'arrayPrependedArray :', 'Expects array' );
-  _.assert( _.longIs( insArray ), 'arrayPrependedArray :', 'Expects longIs' );
+  _.assert( _.longLike( insArray ), 'arrayPrependedArray :', 'Expects longLike' );
 
   let result = insArray.length;
   dstArray.unshift.apply( dstArray, insArray );
@@ -5227,7 +5168,7 @@ function arrayPrependedArray( dstArray, insArray )
 function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
-  _.assert( _.longIs( insArray ) );
+  _.assert( _.longLike( insArray ) );
   // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
@@ -5243,7 +5184,7 @@ function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
     if( dstArray === insArray )
     index = i + result;
 
-    if( _.arrayLeftIndex( dstArray, insArray[ index ], evaluator1, evaluator2 ) === -1 )
+    if( _.longLeftIndex( dstArray, insArray[ index ], evaluator1, evaluator2 ) === -1 )
     {
       dstArray.unshift( insArray[ index ] );
       result += 1;
@@ -5283,7 +5224,7 @@ function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evalua
  * Throws an error if one of arguments is undefined. Even if error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
  *
  * @param { Array } dstArray - The destination array.
- * @param{ longIs | * } arguments[...] - Source arguments.
+ * @param{ longLike | * } arguments[...] - Source arguments.
  *
  * @example
  * _.arrayPrependArrays( [ 1, 2, 3, 4 ], [ 5 ], [ 6 ], 7 );
@@ -5324,7 +5265,7 @@ function arrayPrependArrays( dstArray, insArray )
  * Throws an error if one of arguments is undefined. Even if error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
 
  * @param { Array } dstArray - The destination array.
- * @param{ longIs | * } arguments[...] - Source arguments.
+ * @param{ longLike | * } arguments[...] - Source arguments.
  *
  * @example
  * _.arrayPrependArraysOnce( [ 1, 2, 3, 4 ], [ 5 ], 5, [ 6 ], 6, 7, [ 7 ] );
@@ -5367,7 +5308,7 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
  * Even if error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
 
  * @param { Array } dstArray - The destination array.
- * @param { longIs | * } arguments[...] - Source arguments.
+ * @param { longLike | * } arguments[...] - Source arguments.
  * @param { wTools~compareCallback } onEqualize - A callback function that can be provided through routine`s context. By default, it checks the equality of two arguments.
  *
  * @example
@@ -5411,7 +5352,7 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
     let insIsDst = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
-      if( _.longIs( insArray[ i ] ) )
+      if( _.longLike( insArray[ i ] ) )
       {
         expected += insArray[ i ].length
 
@@ -5447,7 +5388,7 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
 
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
-      if( _.longIs( insArray[ i ] ) )
+      if( _.longLike( insArray[ i ] ) )
       expected += insArray[ i ].length;
       else
       expected += 1;
@@ -5472,7 +5413,7 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
  * Throws an error if one of arguments is undefined. Even if error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
  *
  * @param { Array } dstArray - The destination array.
- * @param{ longIs | * } arguments[...] - Source arguments.
+ * @param{ longLike | * } arguments[...] - Source arguments.
  *
  * @example
  * _.arrayPrependedArrays( [ 1, 2, 3, 4 ], [ 5 ], [ 6 ], 7 );
@@ -5493,7 +5434,7 @@ function arrayPrependedArrays( dstArray, insArray )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.arrayIs( dstArray ), 'arrayPrependedArrays :', 'Expects array' );
-  _.assert( _.longIs( insArray ), 'arrayPrependedArrays :', 'Expects longIs entity' );
+  _.assert( _.longLike( insArray ), 'arrayPrependedArrays :', 'Expects longLike entity' );
 
   let result = 0;
 
@@ -5506,7 +5447,7 @@ function arrayPrependedArrays( dstArray, insArray )
 
   for( let a = 0, len = insArray.length ; a < len ; a++ )
   {
-    if( _.longIs( insArray[ a ] ) )
+    if( _.longLike( insArray[ a ] ) )
     {
       result += insArray[ a ].length;
       dstArray.unshift.apply( dstArray, insArray[ a ] );
@@ -5532,7 +5473,7 @@ function arrayPrependedArrays( dstArray, insArray )
  * Throws an error if one of arguments is undefined. Even if error was thrown, elements that was prepended to( dstArray ) stays in the destination array.
  *
  * @param { Array } dstArray - The destination array.
- * @param{ longIs | * } arguments[...] - Source arguments.
+ * @param{ longLike | * } arguments[...] - Source arguments.
  *
  * @example
  * _.arrayPrependedArraysOnce( [ 1, 2, 3, 4, 5, 6, 7 ], [ 5 ], [ 6 ], 7 );
@@ -5557,7 +5498,7 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ), 'arrayPrependedArraysOnce :', 'Expects array' );
-  _.assert( _.longIs( insArray ), 'arrayPrependedArraysOnce :', 'Expects longIs entity' );
+  _.assert( _.longLike( insArray ), 'arrayPrependedArraysOnce :', 'Expects longLike entity' );
 
   let result = 0;
 
@@ -5567,7 +5508,7 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   function _prependOnce( element )
   {
-    let index = _.arrayLeftIndex( dstArray, element, evaluator1, evaluator2 );
+    let index = _.longLeftIndex( dstArray, element, evaluator1, evaluator2 );
     if( index === -1 )
     {
       dstArray.unshift( element );
@@ -5579,7 +5520,7 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
   // for( let ii = insArray.length - 1; ii >= 0; ii-- )
   for( let ii = 0, len = insArray.length; ii < len ; ii++ )
   {
-    if( _.longIs( insArray[ ii ] ) )
+    if( _.longLike( insArray[ ii ] ) )
     {
       let array = insArray[ ii ];
       if( array === dstArray )
@@ -5611,7 +5552,7 @@ function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evalu
    let insIsDst = 0;
    for( let i = insArray.length - 1; i >= 0; i-- )
    {
-     if( _.longIs( insArray[ i ] ) )
+     if( _.longLike( insArray[ i ] ) )
      {
        expected += insArray[ i ].length
 
@@ -5651,7 +5592,7 @@ function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evalu
 //
 //   for( let a = 1, len = arguments.length ; a < len; a++ )
 //   {
-//     if( _.longIs( arguments[ a ] ) )
+//     if( _.longLike( arguments[ a ] ) )
 //     {
 //       dstArray.push.apply( dstArray, arguments[ a ] );
 //     }
@@ -5760,7 +5701,7 @@ function arrayAppended( dstArray, ins )
 
 function arrayAppendedOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  let i = _.arrayLeftIndex.apply( _, arguments );
+  let i = _.longLeftIndex.apply( _, arguments );
 
   if( i === -1 )
   {
@@ -5854,7 +5795,7 @@ function arrayAppendedElement( dstArray, ins )
 
 function arrayAppendedElementOnce( dstArray, ins )
 {
-  let i = _.arrayLeftIndex.apply( _, arguments );
+  let i = _.longLeftIndex.apply( _, arguments );
 
   if( i === -1 )
   {
@@ -6004,7 +5945,7 @@ function arrayAppendedArray( dstArray, insArray )
 {
   _.assert( arguments.length === 2 )
   _.assert( _.arrayIs( dstArray ), 'arrayPrependedArray :', 'Expects array' );
-  _.assert( _.longIs( insArray ), 'arrayPrependedArray :', 'Expects longIs' );
+  _.assert( _.longLike( insArray ), 'arrayPrependedArray :', 'Expects longLike' );
 
   let result = insArray.length;
   dstArray.push.apply( dstArray, insArray );
@@ -6015,7 +5956,7 @@ function arrayAppendedArray( dstArray, insArray )
 
 function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( _.longIs( insArray ) );
+  _.assert( _.longLike( insArray ) );
   // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
@@ -6027,7 +5968,7 @@ function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   for( let i = 0, len = insArray.length; i < len ; i++ )
   {
-    if( _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
+    if( _.longLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 ) === -1 )
     {
       dstArray.push( insArray[ i ] );
       result += 1;
@@ -6123,7 +6064,7 @@ function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
     let insIsDst = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
-      if( _.longIs( insArray[ i ] ) )
+      if( _.longLike( insArray[ i ] ) )
       {
         expected += insArray[ i ].length
 
@@ -6157,10 +6098,10 @@ function arrayAppendedArrays( dstArray, insArray )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  if( !_.longIs( insArray ) && insArray !== undefined )
+  if( !_.longLike( insArray ) && insArray !== undefined )
   insArray = [ insArray ];
 
-  // if( !_.longIs( insArray ) )
+  // if( !_.longLike( insArray ) )
   // {
   //   if( !_.arrayIs( dstArray ) )
   //   return [ dstArray, insArray ];
@@ -6175,13 +6116,13 @@ function arrayAppendedArrays( dstArray, insArray )
   // insArray = [ insArray ];
 
   _.assert( _.arrayIs( dstArray ), 'Expects array' );
-  _.assert( _.longIs( insArray ), 'Expects longIs entity' );
+  _.assert( _.longLike( insArray ), 'Expects longLike entity' );
 
   let result = 0;
 
   for( let a = 0, len = insArray.length; a < len; a++ )
   {
-    if( _.longIs( insArray[ a ] ) )
+    if( _.longLike( insArray[ a ] ) )
     {
       dstArray.push.apply( dstArray, insArray[ a ] );
       result += insArray[ a ].length;
@@ -6210,7 +6151,7 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
   insArray = [ insArray ];
 
   _.assert( _.arrayIs( dstArray ), 'Expects array' );
-  _.assert( _.longIs( insArray ), 'Expects longIs entity' );
+  _.assert( _.longLike( insArray ), 'Expects longLike entity' );
 
   let result = 0;
 
@@ -6220,7 +6161,7 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   for( let a = 0, len = insArray.length; a < len; a++ )
   {
-    if( _.longIs( insArray[ a ] ) )
+    if( _.longLike( insArray[ a ] ) )
     {
       let array = insArray[ a ];
       for( let i = 0, alen = array.length; i < alen; i++ )
@@ -6236,7 +6177,7 @@ function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   function _appendOnce( argument )
   {
-    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+    let index = _.longLeftIndex( dstArray, argument, evaluator1, evaluator2 );
     if( index === -1 )
     {
       dstArray.push( argument );
@@ -6257,7 +6198,7 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
     let insIsDst = 0;
     for( let i = ins.length - 1; i >= 0; i-- )
     {
-      if( _.longIs( ins[ i ] ) )
+      if( _.longLike( ins[ i ] ) )
       {
         expected += ins[ i ].length
 
@@ -6330,7 +6271,7 @@ function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  let index = _.arrayLeftIndex.apply( _, arguments );
+  let index = _.longLeftIndex.apply( _, arguments );
   if( index >= 0 )
   dstArray.splice( index, 1 );
 
@@ -6341,14 +6282,14 @@ function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
-  let index = _.arrayLeftIndex.apply( _, arguments );
+  let index = _.longLeftIndex.apply( _, arguments );
   if( index >= 0 )
   {
     dstArray.splice( index, 1 );
   }
   else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
 
-  let newIndex = _.arrayLeftIndex.apply( _, arguments );
+  let newIndex = _.longLeftIndex.apply( _, arguments );
   _.assert( newIndex < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
 
   return index;
@@ -6356,6 +6297,7 @@ function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
+/* qqq : wrong! ask. */
 function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 {
   arrayRemovedElement.apply( this, arguments );
@@ -6400,6 +6342,7 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
   arrayRemovedElementOnce.apply( this, arguments );
+  /* xxx : maybe element? */
   return dstArray;
 }
 
@@ -6411,7 +6354,7 @@ function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   if( Config.debug )
   {
     let result = arrayRemovedElementOnce.apply( this, arguments );
-    let index = _.arrayLeftIndex.apply( _, arguments );
+    let index = _.longLeftIndex.apply( _, arguments );
     _.assert( index < 0 );
     _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
   }
@@ -6435,7 +6378,7 @@ function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 {
-  let index = _.arrayLeftIndex.apply( this, arguments );
+  let index = _.longLeftIndex.apply( this, arguments );
   let removedElements = 0;
 
   for( let i = 0; i < dstArray.length; i++ )
@@ -6446,7 +6389,7 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
       removedElements = removedElements + 1;
       i = i - 1 ;
     }
-    index = _.arrayLeftIndex.apply( this, arguments );
+    index = _.longLeftIndex.apply( this, arguments );
   }
 
   return removedElements;
@@ -6471,9 +6414,9 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
  * that looking for the value of the (ins) in the (dstArray).
  * If true, it removes the value (ins) from (dstArray) array by corresponding index.
  * Otherwise, if passed three arguments, it calls the routine
- * [arrayLeftIndex( dstArray, ins, onEvaluate )]{@link wTools.arrayLeftIndex}
+ * [longLeftIndex( dstArray, ins, onEvaluate )]{@link wTools.longLeftIndex}
  * If callback function(onEvaluate) returns true, it returns the index that will be removed from (dstArray).
- * @see {@link wTools.arrayLeftIndex} - See for more information.
+ * @see {@link wTools.longLeftIndex} - See for more information.
  *
  * @param { Array } dstArray - The source array.
  * @param { * } ins - The value to remove.
@@ -6501,7 +6444,7 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
 
-  let index = _.arrayLeftIndex.apply( _, arguments );
+  let index = _.longLeftIndex.apply( _, arguments );
   if( index >= 0 )
   dstArray.splice( index, 1 );
 
@@ -6509,7 +6452,7 @@ function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
   /* "!!! : breaking" */
   /* // arrayRemovedElementOnce should return the removed element
   let result;
-  let index = _.arrayLeftIndex.apply( _, arguments );
+  let index = _.longLeftIndex.apply( _, arguments );
 
   if( index >= 0 )
   {
@@ -6527,7 +6470,7 @@ function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
 {
 
   let result;
-  let index = _.arrayLeftIndex.apply( _, arguments );
+  let index = _.longLeftIndex.apply( _, arguments );
   if( index >= 0 )
   {
     result = dstArray[ index ];
@@ -6535,7 +6478,7 @@ function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
   }
   else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
 
-  index = _.arrayLeftIndex.apply( _, arguments );
+  index = _.longLeftIndex.apply( _, arguments );
   _.assert( index < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
 
   return result;
@@ -6546,7 +6489,7 @@ function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
 {
 
   let result;
-  let index = _.arrayLeftIndex.apply( _, arguments );
+  let index = _.longLeftIndex.apply( _, arguments );
   if( index >= 0 )
   {
     result = dstArray[ index ];
@@ -6614,7 +6557,7 @@ function arrayRemovedArray( dstArray, insArray )
 {
   _.assert( arguments.length === 2 )
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
-  _.assert( _.longIs( insArray ) );
+  _.assert( _.longLike( insArray ) );
   // _.assert( dstArray !== insArray );
 
   if( dstArray === insArray )
@@ -6661,10 +6604,10 @@ function arrayRemovedArray( dstArray, insArray )
  * If callback function(onEqualize) returns true, it returns the index that will be removed from (dstArray),
  * and then incrementing the variable (result++).
  *
- * @see wTools.arrayLeftIndex
+ * @see wTools.longLeftIndex
  *
- * @param { longIs } dstArray - The target array.
- * @param { longIs } insArray - The source array.
+ * @param { longLike } dstArray - The target array.
+ * @param { longLike } insArray - The source array.
  * @param { function } onEqualize - The callback function. By default, it checks the equality of two arguments.
  *
  * @example
@@ -6692,7 +6635,7 @@ function arrayRemovedArray( dstArray, insArray )
 function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
-  _.assert( _.longIs( insArray ) );
+  _.assert( _.longLike( insArray ) );
   // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
@@ -6705,7 +6648,7 @@ function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   for( let i = insArray.length - 1; i >= 0 ; i-- )
   {
-    index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+    index = _.longLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
 
     if( index >= 0 )
     {
@@ -6768,7 +6711,7 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
     let expected = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
-      if( _.longIs( insArray[ i ] ) )
+      if( _.longLike( insArray[ i ] ) )
       expected += insArray[ i ].length;
       else
       expected += 1;
@@ -6795,7 +6738,7 @@ function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluato
   let expected = 0;
   for( let i = insArray.length - 1; i >= 0; i-- )
   {
-    if( _.longIs( insArray[ i ] ) )
+    if( _.longLike( insArray[ i ] ) )
     expected += insArray[ i ].length;
     else
     expected += 1;
@@ -6813,7 +6756,7 @@ function arrayRemovedArrays( dstArray, insArray )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.arrayIs( dstArray ), 'arrayRemovedArrays :', 'Expects array' );
-  _.assert( _.longIs( insArray ), 'arrayRemovedArrays :', 'Expects longIs entity' );
+  _.assert( _.longLike( insArray ), 'arrayRemovedArrays :', 'Expects longLike entity' );
 
   let result = 0;
 
@@ -6837,7 +6780,7 @@ function arrayRemovedArrays( dstArray, insArray )
 
   for( let a = insArray.length - 1; a >= 0; a-- )
   {
-    if( _.longIs( insArray[ a ] ) )
+    if( _.longLike( insArray[ a ] ) )
     {
       let array = insArray[ a ];
       for( let i = array.length - 1; i >= 0; i-- )
@@ -6858,7 +6801,7 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ), 'arrayRemovedArraysOnce :', 'Expects array' );
-  _.assert( _.longIs( insArray ), 'arrayRemovedArraysOnce :', 'Expects longIs entity' );
+  _.assert( _.longLike( insArray ), 'arrayRemovedArraysOnce :', 'Expects longLike entity' );
 
   let result = 0;
 
@@ -6872,7 +6815,7 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   function _removeOnce( argument )
   {
-    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+    let index = _.longLeftIndex( dstArray, argument, evaluator1, evaluator2 );
     if( index >= 0 )
     {
       dstArray.splice( index, 1 );
@@ -6882,7 +6825,7 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   for( let a = insArray.length - 1; a >= 0; a-- )
   {
-    if( _.longIs( insArray[ a ] ) )
+    if( _.longLike( insArray[ a ] ) )
     {
       let array = insArray[ a ];
       for( let i = array.length - 1; i >= 0; i-- )
@@ -6907,7 +6850,7 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
     let expected = 0;
     for( let i = insArray.length - 1; i >= 0; i-- )
     {
-      if( _.longIs( insArray[ i ] ) )
+      if( _.longLike( insArray[ i ] ) )
       expected += insArray[ i ].length;
       else
       expected += 1;
@@ -6960,7 +6903,7 @@ function arrayRemoveDuplicates( dstArray, evaluator )
     let index;
     do
     {
-      index = _.arrayRightIndex( dstArray, dstArray[ i ], evaluator );
+      index = _.longRightIndex( dstArray, dstArray[ i ], evaluator );
       if( index !== i )
       {
         dstArray.splice( index, 1 );
@@ -6982,12 +6925,12 @@ function arrayRemoveDuplicates( dstArray, evaluator )
   for( let i1 = 0 ; i1 < dstArray.length ; i1++ )
   {
     let element1 = dstArray[ i1 ];
-    let index = _.arrayRightIndex( dstArray, element1, evaluator );
+    let index = _.longRightIndex( dstArray, element1, evaluator );
 
     while ( index !== i1 )
     {
       dstArray.splice( index, 1 );
-      index = _.arrayRightIndex( dstArray, element1, evaluator );
+      index = _.longRightIndex( dstArray, element1, evaluator );
     }
   }
 
@@ -7030,7 +6973,7 @@ function arrayFlatten( dstArray, insArray )
     arguments[ 0 ] = dstArray;
   }
 
-  arrayFlattened.apply( this, arguments );
+  _.arrayFlattened.apply( this, arguments );
 
   return dstArray;
 }
@@ -7045,7 +6988,7 @@ function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
     arguments[ 0 ] = dstArray;
   }
 
-  arrayFlattenedOnce.apply( this, arguments );
+  _.arrayFlattenedOnce.apply( this, arguments );
   return dstArray;
 }
 
@@ -7053,7 +6996,7 @@ function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
-  arrayFlattenedOnceStrictly.apply( this, arguments );
+  _.arrayFlattenedOnceStrictly.apply( this, arguments );
   return dstArray;
 }
 
@@ -7068,6 +7011,8 @@ function arrayFlattened( dstArray, src )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+
+  /* qqq : poor code!! ask */
 
   if( arguments.length === 1 )
   {
@@ -7088,16 +7033,17 @@ function arrayFlattened( dstArray, src )
     }
 
     return dstArray;  // Dmytro : it has no sence to count result and return dstArray
+    // qqq : why container returned?? that wrong! ask
   }
 
-  if( _.arrayHas( dstArray, dstArray ) ) // Dmytro : stack is unstable if dstArray.push( dstArray )
+  if( _.longHas( dstArray, dstArray ) ) // Dmytro : stack is unstable if dstArray.push( dstArray )
   {
-    let i = _.arrayLeftIndex( dstArray, dstArray );
+    let i = _.longLeftIndex( dstArray, dstArray );
 
     while( i !== -1 )
     {
       dstArray.splice( i, 1 );
-      i = _.arrayLeftIndex( dstArray, dstArray );
+      i = _.longLeftIndex( dstArray, dstArray );
     }
   }
 
@@ -7117,7 +7063,7 @@ function arrayFlattened( dstArray, src )
 
   function containerAppend( src )
   {
-    if( _.arrayHas( visited, src ) )
+    if( _.longHas( visited, src ) )
     return;
     visited.push( src );
 
@@ -7205,14 +7151,14 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
     return dstArray;
   }
 
-  if( _.arrayHas( dstArray, dstArray ) )
+  if( _.longHas( dstArray, dstArray ) )
   {
-    let i = _.arrayLeftIndex( dstArray, dstArray );
+    let i = _.longLeftIndex( dstArray, dstArray );
 
     while( i !== -1 )
     {
       dstArray.splice( i, 1 );
-      i = _.arrayLeftIndex( dstArray, dstArray );
+      i = _.longLeftIndex( dstArray, dstArray );
     }
   }
 
@@ -7220,7 +7166,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   {
     containerAppend( insArray );
   }
-  else if( _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 ) === -1 )
+  else if( _.longLeftIndex( dstArray, insArray, evaluator1, evaluator2 ) === -1 )
   {
     dstArray.push( insArray );
     result += 1;
@@ -7232,7 +7178,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   function containerAppend( src )
   {
-    if( _.arrayHas( visited, src ) )
+    if( _.longHas( visited, src ) )
     return;
     visited.push( src );
 
@@ -7253,7 +7199,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
       {
         containerAppend( e )
       }
-      else if( _.arrayLeftIndex( dstArray, e, evaluator1, evaluator2 ) === -1 )
+      else if( _.longLeftIndex( dstArray, e, evaluator1, evaluator2 ) === -1 )
       {
         dstArray.push( e );
         result += 1;
@@ -7273,7 +7219,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
       {
         index = containerReplace( e, index );
       }
-      else if( _.arrayLeftIndex( dstArray, e ) === -1 )
+      else if( _.longLeftIndex( dstArray, e ) === -1 )
       {
         dstArray.splice( index, 0, e );
         // result += 1;
@@ -7295,7 +7241,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 //     _.arrayRemoveDuplicates( dstArray );
 //
 //     for( let i = dstArray.length-1; i >= 0; --i )
-//     if( _.longIs( dstArray[ i ] ) )
+//     if( _.longLike( dstArray[ i ] ) )
 //     {
 //       let insArray = dstArray[ i ];
 //       dstArray.splice( i, 1 );
@@ -7306,19 +7252,19 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 //
 //   let result = 0;
 //
-//   if( _.longIs( insArray ) )
+//   if( _.longLike( insArray ) )
 //   {
 //     for( let i = 0, len = insArray.length; i < len; i++ )
 //     {
 //       _.assert( insArray[ i ] !== undefined, 'The Array should have no undefined' );
-//       if( _.longIs( insArray[ i ] ) )
+//       if( _.longLike( insArray[ i ] ) )
 //       {
 //         let c = _.arrayFlattenedOnce( dstArray, insArray[ i ], evaluator1, evaluator2 );
 //         result += c;
 //       }
 //       else
 //       {
-//         let index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+//         let index = _.longLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
 //         if( index === -1 )
 //         {
 //           dstArray.push( insArray[ i ] );
@@ -7332,7 +7278,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 //
 //     _.assert( insArray !== undefined, 'The Array should have no undefined' );
 //
-//     let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
+//     let index = _.longLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
 //     if( index === -1 )
 //     {
 //       dstArray.push( insArray );
@@ -7348,9 +7294,9 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 //   {
 //     for( let i = 0, len = insArray.length; i < len; i++ )
 //     {
-//       if( _.longIs( insArray[ i ] ) )
+//       if( _.longLike( insArray[ i ] ) )
 //       onLongOnce( insArray[ i ], insIndex )
-//       else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
+//       else if( _.longLeftIndex( dstArray, insArray[ i ] ) === -1 )
 //       dstArray.splice( insIndex++, 0, insArray[ i ] );
 //     }
 //   }
@@ -7393,14 +7339,14 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
     return dstArray;
   }
 
-  if( _.arrayHas( dstArray, dstArray ) )
+  if( _.longHas( dstArray, dstArray ) )
   {
-    let i = _.arrayLeftIndex( dstArray, dstArray );
+    let i = _.longLeftIndex( dstArray, dstArray );
 
     while( i !== -1 )
     {
       dstArray.splice( i, 1 );
-      i = _.arrayLeftIndex( dstArray, dstArray );
+      i = _.longLeftIndex( dstArray, dstArray );
     }
   }
 
@@ -7408,7 +7354,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
   {
     containerAppend( insArray );
   }
-  else if( _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 ) === -1 )
+  else if( _.longLeftIndex( dstArray, insArray, evaluator1, evaluator2 ) === -1 )
   {
     _.assert( insArray !== undefined, 'The container should be no undefined' );
 
@@ -7424,7 +7370,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
 
   function containerAppend( src )
   {
-    if( _.arrayHas( visited, src ) )
+    if( _.longHas( visited, src ) )
     return;
     visited.push( src );
 
@@ -7447,7 +7393,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
       {
         containerAppend( e )
       }
-      else if( _.arrayLeftIndex( dstArray, e, evaluator1, evaluator2 ) === -1 )
+      else if( _.longLeftIndex( dstArray, e, evaluator1, evaluator2 ) === -1 )
       {
         dstArray.push( e );
         result += 1;
@@ -7470,7 +7416,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
       {
         index = containerReplace( e, index );
       }
-      else if( _.arrayLeftIndex( dstArray, e ) === -1 )
+      else if( _.longLeftIndex( dstArray, e ) === -1 )
       {
         dstArray.splice( index, 0, e );
         // result += 1;
@@ -7498,7 +7444,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
 //   if( arguments.length === 1 )
 //   {
 //     for( let i = dstArray.length-1; i >= 0; --i )
-//     if( _.longIs( dstArray[ i ] ) )
+//     if( _.longLike( dstArray[ i ] ) )
 //     {
 //       let insArray = dstArray[ i ];
 //       dstArray.splice( i, 1 );
@@ -7509,19 +7455,19 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
 //
 //   let result = 0;
 //
-//   if( _.longIs( insArray ) )
+//   if( _.longLike( insArray ) )
 //   {
 //     for( let i = 0, len = insArray.length; i < len; i++ )
 //     {
 //       _.assert( insArray[ i ] !== undefined, 'The Array should have no undefined' );
-//       if( _.longIs( insArray[ i ] ) )
+//       if( _.longLike( insArray[ i ] ) )
 //       {
 //         let c = _.arrayFlattenedOnceStrictly( dstArray, insArray[ i ], evaluator1, evaluator2 );
 //         result += c;
 //       }
 //       else
 //       {
-//         let index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+//         let index = _.longLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
 //         if( Config.debug )
 //         _.assert( index === -1, 'Elements must not be repeated' );
 //
@@ -7536,7 +7482,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
 //   else
 //   {
 //     _.assert( insArray !== undefined, 'The Array should have no undefined' );
-//     let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
+//     let index = _.longLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
 //     if( Config.debug )
 //     _.assert( index === -1, 'Elements must not be repeated' );
 //
@@ -7555,12 +7501,12 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
 //   {
 //     for( let i = 0, len = insArray.length; i < len; i++ )
 //     {
-//       if( _.longIs( insArray[ i ] ) )
+//       if( _.longLike( insArray[ i ] ) )
 //       onLongOnce( insArray[ i ], insIndex )
-//       else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
+//       else if( _.longLeftIndex( dstArray, insArray[ i ] ) === -1 )
 //       dstArray.splice( insIndex++, 0, insArray[ i ] );
 //       else if( Config.debug )
-//       _.assert( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1, 'Elements must not be repeated' );
+//       _.assert( _.longLeftIndex( dstArray, insArray[ i ] ) === -1, 'Elements must not be repeated' );
 //     }
 //   }
 // }
@@ -7641,14 +7587,14 @@ function arrayFlattenedDefined( dstArray, src )
     return dstArray;
   }
 
-  if( _.arrayHas( dstArray, dstArray ) )
+  if( _.longHas( dstArray, dstArray ) )
   {
-    let i = _.arrayLeftIndex( dstArray, dstArray );
+    let i = _.longLeftIndex( dstArray, dstArray );
 
     while( i !== -1 )
     {
       dstArray.splice( i, 1 );
-      i = _.arrayLeftIndex( dstArray, dstArray );
+      i = _.longLeftIndex( dstArray, dstArray );
     }
   }
 
@@ -7668,7 +7614,7 @@ function arrayFlattenedDefined( dstArray, src )
 
   function containerAppend( src )
   {
-    if( _.arrayHas( visited, src ) )
+    if( _.longHas( visited, src ) )
     return;
     visited.push( src );
 
@@ -7736,7 +7682,7 @@ function arrayFlattenedDefined( dstArray, src )
 //   if( arguments.length === 1 )
 //   {
 //     for( let i = dstArray.length-1; i >= 0; --i )
-//     if( _.longIs( dstArray[ i ] ) )
+//     if( _.longLike( dstArray[ i ] ) )
 //     {
 //       let insArray = dstArray[ i ];
 //       dstArray.splice( i, 1 );
@@ -7751,11 +7697,11 @@ function arrayFlattenedDefined( dstArray, src )
 //   {
 //     let insArray = arguments[ a ];
 //
-//     if( _.longIs( insArray ) )
+//     if( _.longLike( insArray ) )
 //     {
 //       for( let i = 0, len = insArray.length; i < len; i++ )
 //       {
-//         if( _.longIs( insArray[ i ] ) )
+//         if( _.longLike( insArray[ i ] ) )
 //         {
 //           let c = _.arrayFlattenedDefined( dstArray, insArray[ i ] );
 //           result += c;
@@ -7791,7 +7737,7 @@ function arrayFlattenedDefined( dstArray, src )
 //   {
 //     for( let i = 0, len = insArray.length; i < len; i++ )
 //     {
-//       if( _.longIs( insArray[ i ] ) )
+//       if( _.longLike( insArray[ i ] ) )
 //       onLong( insArray[ i ], insIndex )
 //       else
 //       dstArray.splice( insIndex++, 0, insArray[ i ] );
@@ -7839,14 +7785,14 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
     return dstArray;
   }
 
-  if( _.arrayHas( dstArray, dstArray ) )
+  if( _.longHas( dstArray, dstArray ) )
   {
-    let i = _.arrayLeftIndex( dstArray, dstArray );
+    let i = _.longLeftIndex( dstArray, dstArray );
 
     while( i !== -1 )
     {
       dstArray.splice( i, 1 );
-      i = _.arrayLeftIndex( dstArray, dstArray );
+      i = _.longLeftIndex( dstArray, dstArray );
     }
   }
 
@@ -7856,7 +7802,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
   }
   else if( insArray !== undefined )
   {
-    if( _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 ) === -1)
+    if( _.longLeftIndex( dstArray, insArray, evaluator1, evaluator2 ) === -1)
     {
       dstArray.push( insArray );
       result += 1;
@@ -7869,7 +7815,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
 
   function containerAppend( src )
   {
-    if( _.arrayHas( visited, src ) )
+    if( _.longHas( visited, src ) )
     return;
     visited.push( src );
 
@@ -7892,7 +7838,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
       }
       else if( e !== undefined )
       {
-        if( _.arrayLeftIndex( dstArray, e, evaluator1, evaluator2 ) === -1 )
+        if( _.longLeftIndex( dstArray, e, evaluator1, evaluator2 ) === -1 )
         {
           dstArray.push( e );
           result += 1;
@@ -7915,7 +7861,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
       }
       else if( e !== undefined )
       {
-        if( _.arrayLeftIndex( dstArray, e ) === -1 )
+        if( _.longLeftIndex( dstArray, e ) === -1 )
         {
           dstArray.splice( index, 0, e );
           // result += 1;
@@ -7938,7 +7884,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
 //     _.arrayRemoveDuplicates( dstArray );
 //
 //     for( let i = dstArray.length-1; i >= 0; --i )
-//     if( _.longIs( dstArray[ i ] ) )
+//     if( _.longLike( dstArray[ i ] ) )
 //     {
 //       let insArray = dstArray[ i ];
 //       dstArray.splice( i, 1 );
@@ -7949,19 +7895,19 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
 //
 //   let result = 0;
 //
-//   if( _.longIs( insArray ) )
+//   if( _.longLike( insArray ) )
 //   {
 //     for( let i = 0, len = insArray.length; i < len; i++ )
 //     {
 //       _.assert( insArray[ i ] !== undefined );
-//       if( _.longIs( insArray[ i ] ) )
+//       if( _.longLike( insArray[ i ] ) )
 //       {
 //         let c = _.arrayFlattenedDefinedOnce( dstArray, insArray[ i ], evaluator1, evaluator2 );
 //         result += c;
 //       }
 //       else
 //       {
-//         let index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+//         let index = _.longLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
 //         if( index === -1 )
 //         {
 //           dstArray.push( insArray[ i ] );
@@ -7973,7 +7919,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
 //   else if( insArray !== undefined )
 //   {
 //
-//     let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
+//     let index = _.longLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
 //     if( index === -1 )
 //     {
 //       dstArray.push( insArray );
@@ -7989,9 +7935,9 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
 //   {
 //     for( let i = 0, len = insArray.length; i < len; i++ )
 //     {
-//       if( _.longIs( insArray[ i ] ) )
+//       if( _.longLike( insArray[ i ] ) )
 //       onLongOnce( insArray[ i ], insIndex )
-//       else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
+//       else if( _.longLeftIndex( dstArray, insArray[ i ] ) === -1 )
 //       dstArray.splice( insIndex++, 0, insArray[ i ] );
 //     }
 //   }
@@ -8040,14 +7986,14 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
     return dstArray;
   }
 
-  if( _.arrayHas( dstArray, dstArray ) )
+  if( _.longHas( dstArray, dstArray ) )
   {
-    let i = _.arrayLeftIndex( dstArray, dstArray );
+    let i = _.longLeftIndex( dstArray, dstArray );
 
     while( i !== -1 )
     {
       dstArray.splice( i, 1 );
-      i = _.arrayLeftIndex( dstArray, dstArray );
+      i = _.longLeftIndex( dstArray, dstArray );
     }
   }
 
@@ -8057,7 +8003,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
   }
   else if( insArray !== undefined )
   {
-    if( _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 ) === -1 )
+    if( _.longLeftIndex( dstArray, insArray, evaluator1, evaluator2 ) === -1 )
     {
       dstArray.push( insArray );
       result += 1;
@@ -8072,7 +8018,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
 
   function containerAppend( src )
   {
-    if( _.arrayHas( visited, src ) )
+    if( _.longHas( visited, src ) )
     return;
     visited.push( src );
 
@@ -8095,7 +8041,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
       }
       else if( e !== undefined )
       {
-        if( _.arrayLeftIndex( dstArray, e, evaluator1, evaluator2 ) === -1 )
+        if( _.longLeftIndex( dstArray, e, evaluator1, evaluator2 ) === -1 )
         {
           dstArray.push( e );
           result += 1;
@@ -8120,7 +8066,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
       }
       else if( e !== undefined )
       {
-        if( _.arrayLeftIndex( dstArray, e ) === -1 )
+        if( _.longLeftIndex( dstArray, e ) === -1 )
         {
           dstArray.splice( index, 0, e );
           // result += 1;
@@ -8151,7 +8097,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
 //   if( arguments.length === 1 )
 //   {
 //     for( let i = dstArray.length-1; i >= 0; --i )
-//     if( _.longIs( dstArray[ i ] ) )
+//     if( _.longLike( dstArray[ i ] ) )
 //     {
 //       let insArray = dstArray[ i ];
 //       dstArray.splice( i, 1 );
@@ -8162,7 +8108,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
 //
 //   let result = 0;
 //
-//   if( _.longIs( insArray ) )
+//   if( _.longLike( insArray ) )
 //   {
 //     for( let i = 0, len = insArray.length; i < len; i++ )
 //     {
@@ -8170,14 +8116,14 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
 //       if( insArray[ i ] === undefined )
 //       {
 //       }
-//       else if( _.longIs( insArray[ i ] ) )
+//       else if( _.longLike( insArray[ i ] ) )
 //       {
 //         let c = _.arrayFlattenedDefinedOnceStrictly( dstArray, insArray[ i ], evaluator1, evaluator2 );
 //         result += c;
 //       }
 //       else
 //       {
-//         let index = _.arrayLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
+//         let index = _.longLeftIndex( dstArray, insArray[ i ], evaluator1, evaluator2 );
 //         if( Config.debug )
 //         _.assert( index === -1, 'Elements must not be repeated' );
 //         if( index === -1 )
@@ -8191,7 +8137,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
 //   else if( insArray !== undefined )
 //   {
 //
-//     let index = _.arrayLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
+//     let index = _.longLeftIndex( dstArray, insArray, evaluator1, evaluator2 );
 //     if( Config.debug )
 //     _.assert( index === -1, 'Elements must not be repeated' );
 //
@@ -8210,12 +8156,12 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
 //   {
 //     for( let i = 0, len = insArray.length; i < len; i++ )
 //     {
-//       if( _.longIs( insArray[ i ] ) )
+//       if( _.longLike( insArray[ i ] ) )
 //       onLongOnce( insArray[ i ], insIndex )
-//       else if( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1 )
+//       else if( _.longLeftIndex( dstArray, insArray[ i ] ) === -1 )
 //       dstArray.splice( insIndex++, 0, insArray[ i ] );
 //       else if( Config.debug )
-//       _.assert( _.arrayLeftIndex( dstArray, insArray[ i ] ) === -1, 'Elements must not be repeated' );
+//       _.assert( _.longLeftIndex( dstArray, insArray[ i ] ) === -1, 'Elements must not be repeated' );
 //     }
 //   }
 // }
@@ -8233,13 +8179,13 @@ function arrayReplace( dstArray, ins, sub, evaluator1, evaluator2 )
   let index = -1;
   let result = 0;
 
-  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+  index = _.longLeftIndex( dstArray, ins, evaluator1, evaluator2 );
 
   while( index !== -1 )
   {
     dstArray.splice( index, 1, sub );
     result += 1;
-    index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+    index = _.longLeftIndex( dstArray, ins, evaluator1, evaluator2 );
   }
 
   return dstArray;
@@ -8325,13 +8271,13 @@ function arrayReplaced( dstArray, ins, sub, evaluator1, evaluator2 )
   let index = -1;
   let result = 0;
 
-  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+  index = _.longLeftIndex( dstArray, ins, evaluator1, evaluator2 );
 
   while( index !== -1 )
   {
     dstArray.splice( index, 1, sub );
     result += 1;
-    index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+    index = _.longLeftIndex( dstArray, ins, evaluator1, evaluator2 );
   }
 
   return result;
@@ -8343,15 +8289,15 @@ function arrayReplacedOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
-  if( _.longIs( ins ) )
+  if( _.longLike( ins ) )
   {
-    _.assert( _.longIs( sub ) );
+    _.assert( _.longLike( sub ) );
     _.assert( ins.length === sub.length );
   }
 
   let index = -1;
 
-  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+  index = _.longLeftIndex( dstArray, ins, evaluator1, evaluator2 );
 
   if( index >= 0 )
   dstArray.splice( index, 1, sub );
@@ -8389,13 +8335,13 @@ function arrayReplaceElement( dstArray, ins, sub, evaluator1, evaluator2 )
   let index = -1;
   let result = 0;
 
-  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+  index = _.longLeftIndex( dstArray, ins, evaluator1, evaluator2 );
 
   while( index !== -1 )
   {
     dstArray.splice( index, 1, sub );
     result += 1;
-    index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+    index = _.longLeftIndex( dstArray, ins, evaluator1, evaluator2 );
   }
 
   return dstArray;
@@ -8437,13 +8383,13 @@ function arrayReplacedElement( dstArray, ins, sub, evaluator1, evaluator2 )
   let index = -1;
   let result = 0;
 
-  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+  index = _.longLeftIndex( dstArray, ins, evaluator1, evaluator2 );
 
   while( index !== -1 )
   {
     dstArray.splice( index, 1, sub );
     result += 1;
-    index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+    index = _.longLeftIndex( dstArray, ins, evaluator1, evaluator2 );
   }
 
   return result;
@@ -8455,15 +8401,15 @@ function arrayReplacedElementOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
-  if( _.longIs( ins ) )
+  if( _.longLike( ins ) )
   {
-    _.assert( _.longIs( sub ) );
+    _.assert( _.longLike( sub ) );
     _.assert( ins.length === sub.length );
   }
 
   let index = -1;
 
-  index = _.arrayLeftIndex( dstArray, ins, evaluator1, evaluator2 );
+  index = _.longLeftIndex( dstArray, ins, evaluator1, evaluator2 );
 
   if( index >= 0 )
   dstArray.splice( index, 1, sub );
@@ -8560,8 +8506,8 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
 function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
-  _.assert( _.longIs( ins ) );
-  _.assert( _.longIs( sub ) );
+  _.assert( _.longLike( ins ) );
+  _.assert( _.longLike( sub ) );
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
@@ -8573,7 +8519,7 @@ function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
   for( let i = 0, len = ins.length; i < len; i++ )
   {
     // let dstArray2 = oldDstArray.slice(); // Array modified for each ins element
-    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
+    index = _.longLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
     while( index !== -1 )
     {
       let subValue = sub[ i ];
@@ -8597,7 +8543,7 @@ function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
       if( subValue === insValue )
       break;
 
-      index = _.arrayLeftIndex( dstArray, insValue, evaluator1, evaluator2 );
+      index = _.longLeftIndex( dstArray, insValue, evaluator1, evaluator2 );
     }
   }
 
@@ -8608,8 +8554,8 @@ function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
 
 function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
-  _.assert( _.longIs( ins ) );
-  _.assert( _.longIs( sub ) );
+  _.assert( _.longLike( ins ) );
+  _.assert( _.longLike( sub ) );
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
@@ -8619,7 +8565,7 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
   //let oldDstArray = dstArray.slice();  // Array with src values stored
   for( let i = 0, len = ins.length; i < len; i++ )
   {
-    index = _.arrayLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
+    index = _.longLeftIndex( dstArray, ins[ i ], evaluator1, evaluator2 );
     if( index >= 0 )
     {
       let subValue = sub[ i ];
@@ -8686,7 +8632,7 @@ function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
     let expected = 0;
     for( let i = ins.length - 1; i >= 0; i-- )
     {
-      if( _.longIs( ins[ i ] ) )
+      if( _.longLike( ins[ i ] ) )
       expected += ins[ i ].length;
       else
       expected += 1;
@@ -8718,8 +8664,8 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
   _.assert( _.arrayIs( dstArray ), 'arrayReplacedArrays :', 'Expects array' );
-  _.assert( _.longIs( sub ), 'arrayReplacedArrays :', 'Expects longIs entity' );
-  _.assert( _.longIs( ins ), 'arrayReplacedArrays :', 'Expects longIs entity' );
+  _.assert( _.longLike( sub ), 'arrayReplacedArrays :', 'Expects longLike entity' );
+  _.assert( _.longLike( ins ), 'arrayReplacedArrays :', 'Expects longLike entity' );
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
@@ -8728,7 +8674,7 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
   {
     // let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
-    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+    let index = _.longLeftIndex( dstArray, argument, evaluator1, evaluator2 );
 
     while( index !== -1 )
     {
@@ -8737,7 +8683,7 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
       result += 1;
       if( subValue === argument )
       break;
-      index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+      index = _.longLeftIndex( dstArray, argument, evaluator1, evaluator2 );
     }
   }
 
@@ -8752,11 +8698,11 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
   {
     for( let i = ins.length - 1; i >= 0; i-- )
     {
-      if( _.longIs( ins[ i ] ) )
+      if( _.longLike( ins[ i ] ) )
       if( ins[ i ] === dstArray )
       insCopy[ i ] = ins[ i ].slice();
 
-      if( _.longIs( sub[ i ] ) )
+      if( _.longLike( sub[ i ] ) )
       if( sub[ i ] === dstArray )
       subCopy[ i ] = sub[ i ].slice();
     }
@@ -8764,7 +8710,7 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
 
   for( let a = 0, len = ins.length; a < len; a++ )
   {
-    if( _.longIs( ins[ a ] ) )
+    if( _.longLike( ins[ a ] ) )
     {
       let insArray = insCopy[ a ] || ins[ a ];
       let subArray = sub[ a ] || subCopy[ a ];
@@ -8787,8 +8733,8 @@ function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
   _.assert( _.arrayIs( dstArray ), 'arrayReplacedArrays :', 'Expects array' );
-  _.assert( _.longIs( sub ), 'arrayReplacedArrays :', 'Expects longIs entity' );
-  _.assert( _.longIs( ins ), 'arrayReplacedArrays :', 'Expects longIs entity' );
+  _.assert( _.longLike( sub ), 'arrayReplacedArrays :', 'Expects longLike entity' );
+  _.assert( _.longLike( ins ), 'arrayReplacedArrays :', 'Expects longLike entity' );
   _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
 
   let result = 0;
@@ -8798,8 +8744,8 @@ function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
   {
     // let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
-    // let index = _.arrayLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
-    let index = _.arrayLeftIndex( dstArray, argument, evaluator1, evaluator2 );
+    // let index = _.longLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
+    let index = _.longLeftIndex( dstArray, argument, evaluator1, evaluator2 );
 
     if( index !== -1 )
     {
@@ -8811,7 +8757,7 @@ function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
   for( let a = 0, len = ins.length; a < len ; a++ )
   {
-    if( _.longIs( ins[ a ] ) )
+    if( _.longLike( ins[ a ] ) )
     {
       let insArray = ins[ a ];
       let subArray = sub[ a ];
@@ -8840,7 +8786,7 @@ function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evalua
     let expected = 0;
     for( let i = ins.length - 1; i >= 0; i-- )
     {
-      if( _.longIs( ins[ i ] ) )
+      if( _.longLike( ins[ i ] ) )
       expected += ins[ i ].length;
       else
       expected += 1;
@@ -8946,15 +8892,11 @@ let Routines =
 
   // arguments array
 
-  // argumentsArrayIs,
   argumentsArrayMake,
   _argumentsArrayMake,
   argumentsArrayFrom,
 
   // long
-
-  // longIs,
-  // longIsPopulated,
 
   longMake,
   longMakeEmpty,
@@ -8991,19 +8933,19 @@ let Routines =
 
   constructorLikeArray,
   hasLength,
-  arrayHasArray,
 
-  arrayCompare,
-  arraysAreIdentical,
+  longCompare,
+  longIdentical,
 
-  arrayHas,
-  arrayHasAny, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
-  arrayHasAll, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
-  arrayHasNone, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
+  longHas,
+  longHasAny, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
+  longHasAll, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
+  longHasNone, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
+  longHasDepth,
 
-  arrayAll,
-  arrayAny,
-  arrayNone,
+  longAll,
+  longAny,
+  longNone,
 
   // array producer
 
@@ -9033,18 +8975,18 @@ let Routines =
 
   // array sequential search
 
-  arrayLeftIndex,
-  arrayRightIndex,
+  longLeftIndex,
+  longRightIndex,
 
-  arrayLeft,
-  arrayRight,
+  longLeft,
+  longRight,
 
-  arrayLeftDefined,
-  arrayRightDefined,
+  longLeftDefined,
+  longRightDefined,
 
-  arrayCountElement, /* qqq : cover by tests | Dmytro : covered */
-  arrayCountTotal, /* qqq : cover by tests | Dmytro : covered */
-  arrayCountUnique,
+  longCountElement, /* qqq : cover by tests | Dmytro : covered */
+  longCountTotal, /* qqq : cover by tests | Dmytro : covered */
+  longCountUnique,
 
   // array prepend
 
@@ -9185,9 +9127,6 @@ let Routines =
   arrayReplacedArrays,
   arrayReplacedArraysOnce,
   arrayReplacedArraysOnceStrictly,
-
-  // arrayReplaceAll, // use arrayReplaceElement instead
-  // arrayReplacedAll, // use arrayReplacedElement instead
 
   arrayUpdate,
 

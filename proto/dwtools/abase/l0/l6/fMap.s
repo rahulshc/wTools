@@ -3534,7 +3534,7 @@ mapToStr.defaults =
 //   if( _.routineIs( srcMap ) )
 //   o.selectFilter = function selectRoutine( srcMap, k )
 //   {
-//     if( _.arrayHas( [ 'arguments', 'caller' ], k ) )
+//     if( _.longHas( [ 'arguments', 'caller' ], k ) )
 //     return;
 //     if( !_.routineIs( srcMap[ k ] ) )
 //     return k;
