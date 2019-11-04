@@ -911,7 +911,7 @@ function routineExtend( test )
   var got = _.routineExtend( null, src );
   test.identical( got.pre, _.routineFromPreAndBody.pre );
   test.identical( got.body, _.routineFromPreAndBody.body );
-  test.equivalent( got.map, {} );
+  test.equivalent( got.map, { a : 2 } );
   test.identical( typeof got, 'function' );
 
   test.case = 'dst is null, src is map with pre and body properties';
@@ -924,7 +924,7 @@ function routineExtend( test )
   var got = _.routineExtend( null, src );
   test.identical( got.pre, _.routineFromPreAndBody.pre );
   test.identical( got.body, _.routineFromPreAndBody.body );
-  test.identical( got.map, {} );
+  test.equivalent( got.map, { a : 2 } );
   test.identical( typeof got, 'function' );
 
   test.case = 'dst is null, src is map with pre and body properties';
@@ -974,13 +974,16 @@ function routineExtend( test )
   var dst = function( o )
   {
   };
-  Object.defineProperties( dst, {
-    'a' : {
+  Object.defineProperties( dst,
+  {
+    'a' :
+    {
       value : 0,
       enumerable : true,
       writable : false,
     },
-    'b' : {
+    'b' :
+    {
       value : { a : 2 },
       enumerable : false,
       writable : false,
@@ -1028,12 +1031,14 @@ function routineExtend( test )
   };
   Object.defineProperties( dst,
   {
-    'a' : {
+    'a' :
+    {
       enumerable : true,
       writable : false,
       value : 0,
     },
-    'b' : {
+    'b' :
+    {
       enumerable : true,
       writable : false,
       value : 0,
@@ -1053,12 +1058,14 @@ function routineExtend( test )
   var src = {};
   Object.defineProperties( src,
   {
-    'a' : {
+    'a' :
+    {
       enumerable : true,
       writable : false,
       value : 3,
     },
-    'b' : {
+    'b' :
+    {
       enumerable : true,
       writable : false,
       value : 2,

@@ -71,7 +71,7 @@ function _routineJoin( o )
   _.assert( _.boolIs( o.sealing ) );
   _.assert( _.boolIs( o.extending ) );
   _.assert( _.routineIs( o.routine ), 'Expects routine' );
-  _.assert( _.arrayLike( o.args ) || o.args === undefined );
+  _.assert( _.longIs( o.args ) || o.args === undefined );
 
   let routine = o.routine;
   let args = o.args;
@@ -212,8 +212,6 @@ function _routineJoin( o )
 function constructorJoin( routine, args )
 {
 
-  _.assert( _.routineIs( routine ), 'Expects routine in the first argument' );
-  _.assert( _.arrayLike( args ), 'Expects array-like in the second argument' );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   return _routineJoin
@@ -270,8 +268,7 @@ function constructorJoin( routine, args )
 function routineJoin( context, routine, args )
 {
 
-  _.assert( _.routineIs( routine ), 'routineJoin :', 'Second argument must be a routine' );
-  _.assert( arguments.length <= 3, 'routineJoin :', 'Expects 3 or less arguments' );
+  _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
   return _routineJoin
   ({
@@ -327,8 +324,7 @@ function routineJoin( context, routine, args )
 function routineJoin( context, routine, args )
 {
 
-  _.assert( _.routineIs( routine ), 'routineJoin :', 'second argument must be a routine' );
-  _.assert( arguments.length <= 3, 'routineJoin :', 'Expects 3 or less arguments' );
+  _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
   return _routineJoin
   ({
@@ -367,8 +363,7 @@ function routineJoin( context, routine, args )
 function routineSeal( context, routine, args )
 {
 
-  _.assert( _.routineIs( routine ), 'routineSeal :', 'second argument must be a routine' );
-  _.assert( arguments.length <= 3, 'routineSeal :', 'Expects 3 or less arguments' );
+  _.assert( arguments.length <= 3, 'Expects 3 or less arguments' );
 
   return _routineJoin
   ({
