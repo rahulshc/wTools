@@ -859,7 +859,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     return last;
 
     _.assert( e === undefined || e === last );
-    return e;
+    return last;
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
@@ -1146,40 +1146,46 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   once( dst, onEval )
   {
-    let container = this.original;
-    [ dst, onEval ] = this._filterArguments( ... arguments );
-    if( this._same( dst ) )
+    let self = this;
+    let container = self.original;
+    [ dst, onEval ] = self._filterArguments( ... arguments );
+    if( self._same( dst ) )
     {
-      /* already once */
       if( onEval )
       {
-        let temp = [ ... container ];
-        _.arrayRemoveDuplicates( temp, onEval );
-        if( temp.length !== container.size )
-        {
-          container.clear();
+        let temp = [];
+        self.each( ( e ) => _.arrayAppendOnce( temp, e, onEval ) );
+        self.empty();
+        for( let i = 0; i < temp.length; i++ )
+        self.append( temp[ i ] );
 
-          for( let e of temp )
-          container.add( e );
-        }
+        // let temp = [ ... container ];
+        // _.arrayRemoveDuplicates( temp, onEval );
+        // if( temp.length !== container.size )
+        // {
+        //   container.clear();
+        //
+        //   for( let e of temp )
+        //   container.add( e );
+        // }
       }
     }
     else
     {
-      debugger; // xxx
-      if( onEval )
-      {
-        let temp = [ ... container ];
-        _.arrayRemoveDuplicates( temp, onEval );
-        /* qqq : not optimal. ask. */
-        container.clear();
-        for( let e of temp )
-        dst.original.add( e );
-      }
-      else
-      {
-        dst.appendContainer( container );
-      }
+      dst.appendContainerOnce( container, onEval );
+      // if( onEval )
+      // {
+        // let temp = [ ... container ];
+        // _.arrayRemoveDuplicates( temp, onEval );
+        /* qqq : not optimal. ask. | Dmytro : used optimal variant. This variant is same to arrayContainerAdapter */
+        // container.clear();
+        // for( let e of temp )
+        // dst.original.add( e );
+      // }
+      // else
+      // {
+      //   dst.appendContainer( container );
+      // }
     }
     return dst;
   }
