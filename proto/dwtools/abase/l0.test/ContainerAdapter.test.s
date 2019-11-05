@@ -14233,6 +14233,13 @@ function arrayAdapterFilter( test )
   test.is( got !== src );
   test.identical( got.original, exp );
 
+  test.case = 'from array, onEach returns key';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
+  var got = src.filter( ( e, k ) => k );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [];
@@ -14271,6 +14278,13 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( null, ( e ) => e );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
+  test.case = 'from array, onEach returns key';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
+  var got = src.filter( null, ( e, k ) => k );
   test.is( got !== src );
   test.identical( got.original, exp );
 
@@ -14319,6 +14333,15 @@ function arrayAdapterFilter( test )
   test.is( got !== src );
   test.identical( got.original, exp );
 
+  test.case = 'dst - arrayAdapter, from array, onEach returns key';
+  var dst = _.containerAdapter.make( [ 1, 2 ] );
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 1, 2, 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
+  var got = src.filter( dst, ( e, k ) => k );
+  test.is( got === dst );
+  test.is( got !== src );
+  test.identical( got.original, exp );
+
   test.case = 'dst - Set, from array, onEach returns undefined';
   var dst = new Set( [ 1, 2 ] );
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
@@ -14363,6 +14386,13 @@ function arrayAdapterFilter( test )
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( src, ( e ) => e );
+  test.is( got === src );
+  test.identical( got.original, exp );
+
+  test.case = 'from array, onEach returns key';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
+  var got = src.filter( src, ( e, k ) => k );
   test.is( got === src );
   test.identical( got.original, exp );
 
