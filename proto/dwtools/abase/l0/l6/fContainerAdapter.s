@@ -1895,33 +1895,40 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   reverse( dst )
   {
-    if( !dst )
-    dst = this.MakeEmpty(); /* qqq : ask please */
-    // dst = this.Make( this.length ); /* adjust routine Make to accept length */
-    else
-    dst = this.From( dst );
-    let dstContainer = dst.original;
     let srcContainer = this.original;
-    if( srcContainer === dstContainer )
+
+    if( !dst )
     {
-      let last2 = ( srcContainer.length - srcContainer.length % 2 ) / 2;
-      let last1 = ( srcContainer.length % 2 ? last2 : last2-1 );
-      for( let i1 = last1, i2 = last2; i1 >= 0; i1--, i2++ )
+      // dst = this.MakeEmpty(); /* qqq : ask please | Dmytro : I'v got it */
+      dst = this.Make( this.length ); /* adjust routine Make to accept length */
+      let dstContainer = dst.original;
+      for( let i1 = srcContainer.length - 1, i2 = 0; i1 >= 0; i1--, i2++ )
       {
-        let e = srcContainer[ i1 ];
-        srcContainer[ i1 ] = srcContainer[ i2 ];
-        srcContainer[ i2 ] = e;
+        dstContainer[ i1 ] = srcContainer[ i2 ];
       }
     }
     else
     {
-      // debugger;
-      // for( let i1 = srcContainer.length-1, i2 = 0; i1 >= 0; i1--, i2++ )
-      // {
-      //   dstContainer[ i1 ] = srcContainer[ i2 ];
-      // }
-      for( let i = srcContainer.length - 1; i >= 0; i-- )
-      dst.append( srcContainer[ i ] );
+      dst = this.From( dst );
+      let dstContainer = dst.original;
+      if( srcContainer === dstContainer )
+      {
+        let last2 = ( srcContainer.length - srcContainer.length % 2 ) / 2;
+        let last1 = ( srcContainer.length % 2 ? last2 : last2-1 );
+        for( let i1 = last1, i2 = last2; i1 >= 0; i1--, i2++ )
+        {
+          let e = srcContainer[ i1 ];
+          srcContainer[ i1 ] = srcContainer[ i2 ];
+          srcContainer[ i2 ] = e;
+        }
+      }
+      else
+      {
+        for( let i = srcContainer.length - 1; i >= 0; i-- )
+        {
+          dst.append( srcContainer[ i ] );
+        }
+      }
     }
     return dst;
   }
