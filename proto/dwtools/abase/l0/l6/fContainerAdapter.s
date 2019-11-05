@@ -1400,16 +1400,17 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     else
     dst = this.From( dst );
 
-    let container = this.original;
-    let temp = [ ... this.original ];
+    let self = this;
+    let container = self.original;
+    let temp = [ ... container ];
 
-    /* qqq : same and _same are 2 diffrent routines. don't confuse! */
+    /* qqq : same and _same are 2 diffrent routines. don't confuse! | Dmytro : thanks, I'v got it */
     // if( this.same( dst ) )
-    if( this._same( dst ) )
+    if( self._same( dst ) )
     {
-      this.empty();
+      self.empty();
       for( let i = temp.length - 1; i >= 0; i-- )
-      this.append( temp[ i ] );
+      self.append( temp[ i ] );
     }
     else
     {
