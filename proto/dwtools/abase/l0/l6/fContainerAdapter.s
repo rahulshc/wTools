@@ -1284,7 +1284,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let self = this;
     let container = this.original;
     let index = -1;
-    /* qqq : cover all cases and arguments ( including key! ) */
+    /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
     for( let e of container )
     {
       index += 1;
