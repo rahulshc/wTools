@@ -1721,7 +1721,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       for( let k = 0, l = container.length ; k < l ; k++ )
       {
         let e = container[ k ];
-        // let e2 = onEach( e, undefined, container ); /* qqq : where was key?? */
+        // let e2 = onEach( e, undefined, container ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
         let e2 = onEach( e, k, container );
         if( e2 !== undefined )
         {
