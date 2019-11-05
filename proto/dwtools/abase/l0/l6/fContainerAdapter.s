@@ -1271,7 +1271,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       accumulator = undefined;
     }
     let index = -1;
-    /* qqq : cover all cases and arguments ( including key! ) */
+    /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
     for( let e of container )
     {
       index += 1;
