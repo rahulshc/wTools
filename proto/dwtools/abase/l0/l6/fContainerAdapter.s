@@ -1034,24 +1034,32 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         dst.append( e );
       }
     }
+
     return dst;
   }
   filter( dst, onEach )
   {
     let self = this;
-    let container = this.original;
-    [ dst, onEach ] = this._filterArguments( ... arguments );
+    let container = self.original;
+    [ dst, onEach ] = self._filterArguments( ... arguments );
+    let length = self.length;
+    let index = -1;
+
     if( this._same( dst ) )
     {
-      /* qqq : not optimal. why copy??  */
-      let temp = new Set( container );
-      container.clear();
+      /*
+      qqq : not optimal. why copy??
+      Dmytro : it was previus recomendation. Now, counter is used */
+      // let temp = new Set( container );
+      // container.clear();
 
-      /* qqq : cover all cases and arguments ( including key! ) */
-      let index = -1;
-      for( let e of temp )
+      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : test routine extended */
+      for( let e of container )
       {
         index += 1;
+        if( index === length )
+        break;
+
         let e2 = onEach( e, index, container );
 
         if( e2 === undefined || e !== e2 )
@@ -1061,13 +1069,14 @@ class SetContainerAdapter extends ContainerAdapterAbstract
           container.delete( e );
         }
         else
-        container.add( e );
+        {
+          container.add( e );
+        }
       }
     }
     else
     {
-      let index = -1;
-      /* qqq : cover all cases and arguments ( including key! ) */
+      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : test routine extended */
       for( let e of container )
       {
         index += 1;
@@ -1076,6 +1085,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         dst.append( e2 );
       }
     }
+
     return dst;
   }
   flatFilter( dst, onEach )
