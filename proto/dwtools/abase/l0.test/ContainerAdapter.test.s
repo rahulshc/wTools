@@ -11172,7 +11172,7 @@ function setAdapterLast( test )
   var exp = undefined;
   test.identical( got, exp );
 
-  test.case = 'empty container, onEach';
+  test.case = 'empty container, onEach returns element';
   var src = _.containerAdapter.make( new Set() );
   var got = src.last( ( e ) => e );
   var exp = undefined;
@@ -11184,10 +11184,22 @@ function setAdapterLast( test )
   var exp = 3;
   test.identical( got, exp );
 
-  test.case = 'container, onEach';
+  test.case = 'container, onEach returns boolLike value of element';
   var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
   var got = src.last( ( e ) => e ? 1 : 0 );
   var exp = 1;
+  test.identical( got, exp );
+
+  test.case = 'container, onEach returns sum of element and key';
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
+  var got = src.last( ( e, k ) => e + k );
+  var exp = 5;
+  test.identical( got, exp );
+
+  test.case = 'container, onEach check container';
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
+  var got = src.last( ( e, k, c ) => c.length > 2 ? e + k : e );
+  var exp = 5;
   test.identical( got, exp );
 }
 
@@ -11236,7 +11248,7 @@ function setAdapterLastTimeExperiment( test )
     |         | 1.43 s  | 1.12 s   |
   */
   /*
-  Dmytro : better time has routine with reduce call ( iterations ). New version of node is slower then older. 
+  Dmytro : better time has routine with reduce call ( iterations ). New version of node is slower then older. */
 }
 setAdapterLastTimeExperiment.experimental = 1;
 setAdapterLastTimeExperiment.timeOut = 120000;
@@ -14672,6 +14684,18 @@ function arrayAdapterLast( test )
   var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
   var got = src.last( ( e ) => e ? 1 : 0 );
   var exp = 1;
+  test.identical( got, exp );
+
+  test.case = 'container, onEach returns sum of element and key';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.last( ( e, k ) => e + k );
+  var exp = 5;
+  test.identical( got, exp );
+
+  test.case = 'container, onEach check container';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.last( ( e, k, c ) => c.length > 2 ? e + k : e );
+  var exp = 5;
   test.identical( got, exp );
 }
 

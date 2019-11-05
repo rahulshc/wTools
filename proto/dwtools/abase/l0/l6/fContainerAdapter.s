@@ -1228,7 +1228,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     /* qqq : cover all cases and arguments ( including key! ) */
     let last = this.reduce( ( a, e ) => e );
     if( onEach )
-    return onEach( last, this.length - 1, self );
+    return onEach( last, this.length - 1, this );
     else
     return last;
   }
