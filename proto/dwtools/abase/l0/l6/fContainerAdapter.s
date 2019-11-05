@@ -1144,17 +1144,17 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return dst;
   }
-  once( dst, onEval )
+  once( dst, onEvaluate1, onEvaluate2 )
   {
     let self = this;
     let container = self.original;
-    [ dst, onEval ] = self._filterArguments( ... arguments );
+    [ dst, dst, onEvaluate1, onEvaluate2 ] = self._onlyArguments( null, dst, onEvaluate1, onEvaluate2 );
     if( self._same( dst ) )
     {
-      if( onEval )
+      if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
       {
         let temp = [];
-        self.each( ( e ) => _.arrayAppendOnce( temp, e, onEval ) );
+        self.each( ( e ) => _.arrayAppendOnce( temp, e, onEvaluate1, onEvaluate2 ) );
         self.empty();
         for( let i = 0; i < temp.length; i++ )
         self.append( temp[ i ] );
@@ -1172,7 +1172,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
-      dst.appendContainerOnce( container, onEval );
+      dst.appendContainerOnce( container, onEvaluate1, onEvaluate2 );
       // if( onEval )
       // {
         // let temp = [ ... container ];
@@ -1735,18 +1735,17 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
     return dst;
   }
-  once( dst, onEval )
+  once( dst, onEvaluate1, onEvaluate2 )
   {
     let container = this.original;
-    [ dst, onEval ] = this._filterArguments( ... arguments );
+    [ dst, dst, onEvaluate1, onEvaluate2 ] = this._onlyArguments( null, dst, onEvaluate1, onEvaluate2 );
     if( this._same( dst ) )
     {
-      _.longOnce( container, onEval );
+      _.longOnce( container, onEvaluate1, onEvaluate2 );
     }
     else
     {
-      debugger; // xxx
-      _.arrayAppendArrayOnce( dst.original, container, onEval );
+      _.arrayAppendArrayOnce( dst.original, container, onEvaluate1, onEvaluate2 );
     }
     return dst;
   }

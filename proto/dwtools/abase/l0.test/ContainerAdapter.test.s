@@ -10897,6 +10897,13 @@ function setAdapterOnce( test )
   test.is( got !== src );
   test.identical( [ ... got.original ], exp );
 
+  test.case = 'onEvaluate1, onEvaluate2';
+  var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, null, true, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
+  var got = src.once( ( e ) => e, ( ins ) => ins );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
   test.case = 'onEval is simple equalizer';
   var src = _.containerAdapter.make( new Set( [ 0, 0, 1, 1, null, true, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
@@ -10937,6 +10944,14 @@ function setAdapterOnce( test )
   var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, [ 2 ], { a : 0 } ];
   var got = src.once( dst, ( e ) => e );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'the same containers, onEvaluate1, onEvaluate2';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var dst = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 }, [ 2 ], { a : 0 } ];
+  var got = src.once( dst, ( e ) => e, ( ins ) => ins );
   test.is( got !== src );
   test.identical( [ ... got.original ], exp );
 
@@ -11006,6 +11021,13 @@ function setAdapterOnce( test )
   test.is( got !== src );
   test.identical( [ ... got.original ], exp );
 
+  test.case = 'onEvaluate1, onEvaluate2';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
+  var got = src.once( null, ( e ) => e, ( ins ) => ins );
+  test.is( got !== src );
+  test.identical( [ ... got.original ], exp );
+
   test.case = 'onEval is simple equalizer';
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
@@ -11065,6 +11087,13 @@ function setAdapterOnce( test )
   var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.once( src, ( e ) => e );
+  test.is( got === src );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'onEvaluate1, onEvaluate2';
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
+  var got = src.once( src, ( e ) => e, ( ins ) => ins );
   test.is( got === src );
   test.identical( [ ... got.original ], exp );
 
