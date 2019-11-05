@@ -11472,6 +11472,51 @@ function setAdapterReduce( test )
 
 //
 
+function setAdapterAllRight( test )
+{
+  test.case = 'src - empty container, onEach returns element';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'src - empty container, onEach';
+  var src = _.containerAdapter.make( new Set() );
+  var got = src.allRight( ( e ) => true );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach returns element';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach returns incremented key';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.allRight( ( e, i ) => ++i );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach checks container';
+  var src = _.containerAdapter.make( new Set( [ 1, 'str', [ 0 ], { a : 0 }, true ] ) );
+  var got = src.allRight( ( e, i, c ) => c.length > 5  );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach returns element';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.allRight( ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'all elements is undefines, onEach';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.allRight( ( e, i, c ) => c.length > 2  );
+  test.identical( got, true );
+
+  test.case = 'all elements is undefines, onEach returns undefined';
+  var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
+  var got = src.allRight( ( e ) => undefined  );
+  test.identical( got, false );
+}
+
+//
+
 function setAdapterAll( test )
 {
   test.case = 'src - empty container, onEach returns element';
@@ -14978,7 +15023,7 @@ function arrayAdapterReduce( test )
 
 function arrayAdapterAllRight( test )
 {
-  test.case = 'src - empty container, onEach return element';
+  test.case = 'src - empty container, onEach returns element';
   var src = _.containerAdapter.make( [] );
   var got = src.allRight( ( e ) => e );
   test.identical( got, true );
@@ -14988,17 +15033,22 @@ function arrayAdapterAllRight( test )
   var got = src.allRight( ( e ) => true );
   test.identical( got, true );
 
-  test.case = 'all elements is defined, onEach return element';
+  test.case = 'all elements is defined, onEach returns element';
   var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
   var got = src.allRight( ( e ) => e );
   test.identical( got, true );
 
-  test.case = 'all elements is defined, onEach';
+  test.case = 'all elements is defined, onEach returns incremented key';
+  var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
+  var got = src.allRight( ( e, i ) => ++i );
+  test.identical( got, true );
+
+  test.case = 'all elements is defined, onEach checks container';
   var src = _.containerAdapter.make( [ 1, 'str', [ 0 ], { a : 0 }, true ] );
   var got = src.allRight( ( e, i, c ) => c.length > 5  );
   test.identical( got, false );
 
-  test.case = 'all elements is undefines, onEach return element';
+  test.case = 'all elements is undefines, onEach returns element';
   var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
   var got = src.allRight( ( e ) => e );
   test.identical( got, false );
@@ -15012,17 +15062,6 @@ function arrayAdapterAllRight( test )
   var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
   var got = src.allRight( ( e ) => undefined  );
   test.identical( got, false );
-
-  test.case = 'all elements is undefines, onEach makes reversed copy';
-  var src = _.containerAdapter.make( [ false, null, 0, '', undefined ] );
-  var exp = [];
-  var got = src.allRight( ( e ) =>
-  {
-    exp.push( e );
-    return true;
-  });
-  test.identical( exp, [ undefined, '', 0, null, false ] );
-  test.identical( got, true );
 }
 
 //
@@ -15510,6 +15549,7 @@ var Self =
     setAdapterEach,
     setAdapterEachRight,
     setAdapterReduce,
+    setAdapterAllRight,
     setAdapterAll,
     setAdapterAny,
     setAdapterNone,
