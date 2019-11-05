@@ -1429,7 +1429,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let container = this.original;
     return new ArrayContainerAdapter( [ ... container ] );
   }
-  toSet() /* qqq : cover please */
+  toSet() /* qqq : cover please | Dmytro : covered */
   {
     return this;
   }
@@ -1534,7 +1534,6 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   appendOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
-    debugger;
     _.arrayAppendOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 )
     return this;
   }
@@ -1620,15 +1619,14 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this._filterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      debugger;
-      /* qqq : cover all cases and arguments */
-      /* qqq : not optimal! no in for arrays! */
+      /* qqq : cover all cases and arguments | Dmytro : covered */
+      /* qqq : not optimal! no in for arrays! | Dmytro : thanks, I'v got it */
       // for( let k in container )
       for( let k = 0 ; k < container.length ; k++ )
       {
         let e = container[ k ];
         let e2 = onEach( e, k, self );
-        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? */
+        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? | Dmytro : it's mistake */
         if( e2 !== undefined )
         {
           container[ k ] = e2;
@@ -1935,7 +1933,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return this;
   }
-  toSet() /* qqq : cover please */
+  toSet() /* qqq : cover please | Dmytro : covered */
   {
     return this.From( new Set([ ... this.original ]) );
   }

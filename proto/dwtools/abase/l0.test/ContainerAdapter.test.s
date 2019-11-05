@@ -14054,10 +14054,10 @@ function arrayAdapterMap( test )
 {
   test.case = 'without arguments';
   var src = _.containerAdapter.make( [] );
-  var exp = _.containerAdapter.make( [] );
+  var exp = [];
   var got = src.map( null );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   /* - */
 
@@ -14065,38 +14065,45 @@ function arrayAdapterMap( test )
 
   test.case = 'from empty array, onEach returns number';
   var src = _.containerAdapter.make( [] );
-  var exp = _.containerAdapter.make( [] );
+  var exp = [];
   var got = src.map( ( e ) => 123 );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( ( e ) => e );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
+
+  test.case = 'from array, onEach returns key';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
+  var got = src.map( ( e, k ) => k );
+  test.is( got !== src );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( ( e ) => undefined );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ] );
+  var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.map( ( e ) => [ e ] );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ] );
+  var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.map( ( e ) => e[ 0 ] );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.close( 'only onEach' );
 
@@ -14106,38 +14113,45 @@ function arrayAdapterMap( test )
 
   test.case = 'from array, onEach returns container';
   var src = _.containerAdapter.make( [ 1 ] );
-  var exp = _.containerAdapter.make( [ src ] );
+  var exp = [ src ];
   var got = src.map( null, ( e, k, src ) => src );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( null, ( e ) => e );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
+
+  test.case = 'from array, onEach returns key';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
+  var got = src.map( null, ( e, k ) => k );
+  test.is( got !== src );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( null, ( e ) => undefined );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ] );
+  var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.map( null, ( e ) => [ e ] );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ] );
+  var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.map( null, ( e ) => e[ 0 ] );
   test.is( got !== src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.close( 'dst === null' );
 
@@ -14147,38 +14161,45 @@ function arrayAdapterMap( test )
 
   test.case = 'from empty array, onEach returns container';
   var src = _.containerAdapter.make( [] );
-  var exp = _.containerAdapter.make( [] );
+  var exp = [];
   var got = src.map( src, ( e, k, src ) => src );
   test.is( got === src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns original';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( src, ( e ) => e );
   test.is( got === src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
+
+  test.case = 'from array, onEach returns key';
+  var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
+  var got = src.map( src, ( e, k ) => k );
+  test.is( got === src );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns undefined';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
+  var exp = [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ];
   var got = src.map( src, ( e ) => undefined );
   test.is( got === src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns array';
   var src = _.containerAdapter.make( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ] );
+  var exp = [ [ 0 ], [ 1 ], [ null ], [ true ], [ false ], [ undefined ], [ '' ], [ [ 2 ] ], [ { a : 0 } ] ];
   var got = src.map( src, ( e ) => [ e ] );
   test.is( got === src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.case = 'from array, onEach returns element of array';
   var src = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', [ 2 ], { a : 0 } ] );
-  var exp = _.containerAdapter.make( [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ] );
+  var exp = [ 0, 1, NaN, true, false, [ undefined ], '', 2, { a : 0 } ];
   var got = src.map( src, ( e ) => e[ 0 ] );
   test.is( got === src );
-  test.identical( got.original, exp.original );
+  test.identical( got.original, exp );
 
   test.close( 'dst === src' );
 }
