@@ -850,6 +850,8 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   pop( e, onEvaluate1, onEvaluate2 )
   {
     // _.assert( arguments.length === 1 );
+    _.assert( 0 <= arguments.length && arguments.length <= 3 );
+    _.assert( onEvaluate1 === undefined || _.routineIs( onEvaluate1 ) );
     let last = this.last();
     let r = this.original.delete( last );
 
@@ -866,7 +868,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     // let r = this.original.delete( e );
     // return e;
     let last = this.last();
-    _.assert( arguments.length >= 1 );
+    _.assert( 1 <= arguments.length && arguments.length <= 3 );
     _.assert( _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Set does not have such an element' );
     let r = this.original.delete( last );
     return last;
@@ -991,17 +993,25 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let self = this;
     let container = self.original;
     [ dst, onEach ] = self._filterArguments( ... arguments );
+    let length = self.length;
+    let index = -1;
+
     if( self._same( dst ) )
     {
-      /* qqq : not optimal. why copy??  */
-      let temp = new Set( container );
-      container.clear();
+      /*
+      qqq : not optimal. why copy??
+      Dmytro : it was previus recomendation. Now, the counter is used.
+      */
+      // let temp = new Set( container );
+      // container.clear();
 
-      /* qqq : cover all cases and arguments ( including key! ) */
-      let index = -1;
-      for( let e of temp )
+      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : test routine extended */
+      for( let e of container )
       {
         index += 1;
+        if( index === length )
+        break;
+
         let e2 = onEach( e, index, container );
         container.delete( e );
         if( e2 !== undefined && e !== e2 )
@@ -1012,8 +1022,8 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
-      /* qqq : cover all cases and arguments ( including key! ) */
-      let index = -1;
+      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : test routine extended */
+
       for( let e of container )
       {
         index += 1;
