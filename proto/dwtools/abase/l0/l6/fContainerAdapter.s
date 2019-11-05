@@ -1093,21 +1093,18 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let self = this;
     let container = self.original;
     [ dst, onEach ] = self._filterArguments( ... arguments );
+    let length = container.size;
+    let index = -1;
+
     if( self._same( dst ) )
     {
-      // _.assert( 0, 'not implemented' );
-      let length = container.size;
-      let index = -1;
-      /* qqq : should have index! cover please */
-      /* qqq : cover all cases and arguments ( including key! ) */
+      /* qqq : should have index! cover please | Dmytro : covered */
+      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : coveered */
       for( let e of container )
       {
         index += 1;
         if( index === length )
         break;
-        // if( length === 0 )
-        // break;
-        // length--;
 
         let e2 = onEach( e, index, self );
         self.remove( e );
@@ -1131,8 +1128,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
-      let index = 0;
-      /* qqq : cover all cases and arguments ( including key! ) */
+      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
       for( let e of container )
       {
         index += 1;
