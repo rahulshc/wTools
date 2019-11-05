@@ -1225,7 +1225,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     /* qqq : ask */
     /* Dmytro : alternative variant which use iterations has better performance. Please, see test routine setAdapterLastTimeExperiment */
 
-    /* qqq : cover all cases and arguments ( including key! ) */
+    /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
     let last = this.reduce( ( a, e ) => e );
     if( onEach )
     return onEach( last, this.length - 1, this );
@@ -1239,15 +1239,15 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   eachLeft( onEach )
   {
     let self = this;
-    let container = this.original;
+    let container = self.original;
     let index = -1;
-    /* qqq : cover all cases and arguments ( including key! ) */
+    /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
     for( let e of container )
     {
       index += 1;
       onEach( e, index, self );
     }
-    return this;
+    return self;
   }
   eachRight( onEach )
   {
@@ -1789,7 +1789,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     let container = this.original;
     for( let i = 0; i < container.length; i++ )
-    onEach( container[ i ], i, container );
+    onEach( container[ i ], i, this );
     return this;
   }
   eachRight( onEach )
