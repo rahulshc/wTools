@@ -1198,7 +1198,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( onEach )
     for( let e of container )
     {
-      /* qqq : cover all cases and arguments ( including key! ) */
+      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
       return onEach( e, 0, self );
     }
     else

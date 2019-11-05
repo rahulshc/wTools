@@ -11131,7 +11131,7 @@ function setAdapterFirst( test )
   var exp = undefined;
   test.identical( got, exp );
 
-  test.case = 'empty container, onEach';
+  test.case = 'empty container, onEach returns e';
   var src = _.containerAdapter.make( new Set() );
   var got = src.first( ( e ) => e );
   var exp = undefined;
@@ -11143,10 +11143,22 @@ function setAdapterFirst( test )
   var exp = 'first';
   test.identical( got, exp );
 
-  test.case = 'container, onEach';
+  test.case = 'container, onEach returns boolLike value of element';
   var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
   var got = src.first( ( e ) => e ? 1 : 0 );
   var exp = 1;
+  test.identical( got, exp );
+
+  test.case = 'container, onEach add key to element';
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
+  var got = src.first( ( e, k ) => e + k );
+  var exp = 'first0';
+  test.identical( got, exp );
+
+  test.case = 'container, onEach check length of container';
+  var src = _.containerAdapter.make( new Set( [ 'first', 2, 3 ] ) );
+  var got = src.first( ( e, k, c ) => c.length > 2 ? e + 1 : e );
+  var exp = 'first1';
   test.identical( got, exp );
 }
 
@@ -14569,6 +14581,18 @@ function arrayAdapterFirst( test )
   var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
   var got = src.first( ( e ) => e ? 1 : 0 );
   var exp = 1;
+  test.identical( got, exp );
+
+  test.case = 'container, onEach add key to element';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.first( ( e, k ) => e + k );
+  var exp = 'first0';
+  test.identical( got, exp );
+
+  test.case = 'container, onEach check length of container';
+  var src = _.containerAdapter.make( [ 'first', 2, 3 ] );
+  var got = src.first( ( e, k, c ) => c.length > 2 ? e + 1 : e );
+  var exp = 'first1';
   test.identical( got, exp );
 }
 
