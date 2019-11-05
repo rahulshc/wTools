@@ -1209,27 +1209,28 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   last( onEach )
   {
-    let self = this;
-    let container = this.original;
-    if( !container.size )
-    return undefined;
-    if( onEach )
-    {
-      /* qqq : cover all cases and arguments ( including key! ) */
-      return onEach( [ ... container ][ container.size-1 ], container.size-1, self );
-    }
-    else
-    {
-      return [ ... container ][ container.size-1 ];
-    }
-
-    /* Dmytro : alternative variant which use the minimum of memory */
-    /* qqq : ask */
-    // let last = this.reduce( ( a, e ) => e );
+    // let self = this;
+    // let container = this.original;
+    // if( !container.size )
+    // return undefined;
     // if( onEach )
-    // return onEach( last, undefined, self );
+    // {
+    //   return onEach( [ ... container ][ container.size-1 ], container.size-1, self );
+    // }
     // else
-    // return last;
+    // {
+    //   return [ ... container ][ container.size-1 ];
+    // }
+
+    /* qqq : ask */
+    /* Dmytro : alternative variant which use iterations has better performance. Please, see test routine setAdapterLastTimeExperiment */
+
+    /* qqq : cover all cases and arguments ( including key! ) */
+    let last = this.reduce( ( a, e ) => e );
+    if( onEach )
+    return onEach( last, this.length - 1, self );
+    else
+    return last;
   }
   each( onEach )
   {

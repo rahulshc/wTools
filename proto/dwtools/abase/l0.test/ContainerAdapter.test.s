@@ -11193,6 +11193,56 @@ function setAdapterLast( test )
 
 //
 
+function setAdapterLastTimeExperiment( test )
+{
+  var array = new Array( 100000000 );
+  array[ 0 ] = 0
+  for( let i = 0; i < array.length; i++ )
+  array[ i ] = array[ i - 1 ];
+
+  var container = _.containerAdapter.make( new Set( array ) );
+  let result1, result2;
+
+  var start = _.timeNow();
+  for( let i = 0; i < 100000; i++ )
+  result1 = container.last();
+  var end = _.timeNow();
+
+  console.log( end - start );
+
+  // var start = _.timeNow();
+  // for( let i = 0; i < 100000; i++ )
+  // result2 = container.reduce( ( a, e ) => e );
+  // var end = _.timeNow();
+  //
+  // console.log( end - start );
+
+  test.identical( result1, result2 );
+
+  /*|         |   Running time     |
+    |         |---------|----------|
+    |  NodeJS | copy    | reduce   |
+    |---------|---------|----------|
+    |  v8     | 0.03 s  | 0.02 s   |
+    |         | 0.03 s  | 0.02 s   |
+    |---------|---------|----------|
+    |  v9     | 0.03 s  | 0.02 s   |
+    |         | 0.03 s  | 0.02 s   |
+    |---------|---------|----------|
+    |  v10    | 0.08 s  | 0.42 s   |
+    |         | 0.26 s  | 0.06 s   |
+    |---------|---------|----------|
+    |  v12    | 2.19 s  | 1,42 s   |
+    |         | 1.43 s  | 1.12 s   |
+  */
+  /*
+  Dmytro : better time has routine with reduce call ( iterations ). New version of node is slower then older. 
+}
+setAdapterLastTimeExperiment.experimental = 1;
+setAdapterLastTimeExperiment.timeOut = 120000;
+
+//
+
 function setAdapterEach( test )
 {
   test.case = 'without arguments';
@@ -15316,6 +15366,7 @@ var Self =
     setAdapterOnce,
     setAdapterFirst,
     setAdapterLast,
+    setAdapterLastTimeExperiment,
     setAdapterEach,
     setAdapterEachRight,
     setAdapterReduce,
