@@ -3099,20 +3099,15 @@ let Routines =
 
   bufferBut,
   bufferButInplace,
-  bufferBut_,
   bufferSelect,
   bufferSelectInplace,
-  bufferSelect_,
   bufferGrow,
   bufferGrowInplace,
-  bufferGrow_,
   bufferRelength,
   bufferRelengthInplace,
-  bufferRelength_,
   bufferRelen,
   bufferResize,
   bufferResizeInplace,
-  bufferResize_,
 
   bufferBytesGet,
   bufferRetype,
@@ -3130,6 +3125,49 @@ let Routines =
 
   // buffersSerialize, /* deprecated */
   // buffersDeserialize, /* deprecated */
+
+  // to replace
+
+  bufferBut_, /* !!! : use instead of bufferBut, bufferButInplace */
+  bufferSelect_, /* !!! : use instead of bufferSelect, bufferSelectInplace */
+  bufferGrow_, /* !!! : use instead of bufferGrow, bufferGrowInplace */
+  bufferRelength_, /* !!! : use instead of bufferRelength, bufferRelengthInplace */
+  bufferResize_, /* !!! : use instead of bufferResize, bufferResizeInplace */
+
+  /*
+
+  routine         | makes new dst container                | saves dst container
+  ----------------|----------------------------------------|-------------------------------------------------------
+  bufferBut_      | _.bufferBut_( src )                    | _.bufferBut_( dst, dst )
+                  | _.bufferBut_( src, range )             | _.bufferBut_( dst, dst, range ) if dst is resizable
+                  | _.bufferBut_( null, src, range )       | or dst not change length
+                  | _.bufferBut_( dst, src, range )        | _.bufferBut_( dst, src, range ) if dst is resizable
+                  | if dst not resizable and change length | or dst not change length
+  ----------------|----------------------------------------|-------------------------------------------------------
+  bufferSelect_   | _.bufferSelect_( src )                 | _.bufferSelect_( dst, dst )
+                  | _.bufferSelect_( src, range )          | _.bufferSelect_( dst, dst, range ) if dst is resizable
+                  | _.bufferSelect_( null, src, range )    | or dst not change length
+                  | _.bufferSelect_( dst, src, range )     | _.bufferSelect_( dst, src, range ) if dst is resizable
+                  | if dst not resizable and change length | or dst not change length
+  ----------------|----------------------------------------|-------------------------------------------------------
+  bufferGrow_     | _.bufferGrow_( src )                   | _.bufferGrow_( dst, dst )
+                  | _.bufferGrow_( src, range )            | _.bufferGrow_( dst, dst, range ) if dst is resizable
+                  | _.bufferGrow_( null, src, range )      | or dst not change length
+                  | _.bufferGrow_( dst, src, range )       | _.bufferGrow_( dst, src, range ) if dst is resizable
+                  | if dst not resizable and change length |  or dst not change length
+  ----------------|----------------------------------------|-------------------------------------------------------
+  bufferRelength_ | _.bufferRelength_( src )               | _.bufferRelength_( dst, dst )
+                  | _.bufferRelength_( src, range )        | _.bufferRelength_( dst, dst, range ) if dst is resizable
+                  | _.bufferRelength_( null, src, range )  | or dst not change length
+                  | _.bufferRelength_( dst, src, range )   | _.bufferRelength_( dst, src, range ) if dst is resizable
+                  | if dst not resizable and change length | or dst not change length
+  ----------------|----------------------------------------|-------------------------------------------------------
+  bufferResize_   | _.bufferResize_( src, size )           | _.bufferResize_( dst, dst, size ) if buffer not changes
+                  | _.bufferResize_( null, src, size )     | _.bufferResize_( dst, src, size )
+                  | _.bufferResize_( dst, src, range )     | if dst.byteLength >= size
+                  | if dst.byteLength < size               |
+  ----------------|----------------------------------------|-------------------------------------------------------
+  */
 
 }
 
