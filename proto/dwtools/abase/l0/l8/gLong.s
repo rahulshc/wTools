@@ -2697,19 +2697,47 @@ let Routines =
 
   // array set
 
-  arraySetDiff, /* qqq : ask how to improve, please */
-  arraySetDiff_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
-  arraySetBut, /* qqq : ask how to improve, please */
-  arraySetBut_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
-  arraySetIntersection, /* qqq : ask how to improve, please */
-  arraySetIntersection_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
-  arraySetUnion, /* qqq : ask how to improve, please */
-  arraySetUnion_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
+  arraySetDiff, /* qqq : ask how to improve, please | Dmytro : improved, covered */
+  arraySetBut, /* qqq : ask how to improve, please | Dmytro : improved, covered */
+  arraySetIntersection, /* qqq : ask how to improve, please | Dmytro : improved, covered */
+  arraySetUnion, /* qqq : ask how to improve, please | Dmytro : improved, covered */
 
   arraySetContainAll,
   arraySetContainAny,
   arraySetContainNone,
   arraySetIdentical,
+
+  // to replace
+
+  arraySetDiff_, /* !!! : use instead of arraySetDiff */
+  arraySetBut_, /* !!! : use instead of arraySetBut */
+  arraySetIntersection_, /* !!! : use instead of arraySetIntersection */
+  arraySetUnion_, /* !!! : use instead of arraySetUnion */
+
+  /*
+
+  routine               | makes new dst container                     | saves dst container
+  ----------------------|---------------------------------------------|----------------------------------------------
+  arraySetDiff_         | _.arraySetDiff_( src1, src2 )               | _.arraySetDiff_( src1, src1, src2 )
+                        | _.arraySetDiff_( null, src1 )               | _.arraySetDiff_( src2, src1, src2 )
+                        | _.arraySetDiff_( null, src1, src2 )         | _.arraySetDiff_( dst, src1, src2 )
+  ----------------------|---------------------------------------------|----------------------------------------------
+  arraySetBut_          | _.arraySetBut_( src1 )                      | _.arraySetBut_( src1, src1, src2 )
+                        | _.arraySetBut_( src1, src2 )                | _.arraySetBut_( src2, src1, src2 )
+                        | _.arraySetBut_( null, src1 )                | _.arraySetBut_( dst, src1, src2 )
+                        | _.arraySetBut_( null, src1, src2 )          |
+  ----------------------|---------------------------------------------|----------------------------------------------
+  arraySetIntersection_ | _.arraySetIntersection_( src1 )             | _.arraySetIntersection_( src1, src1, src2 )
+                        | _.arraySetIntersection_( src1, src2 )       | _.arraySetIntersection_( src2, src1, src2 )
+                        | _.arraySetIntersection_( null, src1 )       | _.arraySetIntersection_( dst, src1, src2 )
+                        | _.arraySetIntersection_( null, src1, src2 ) |
+  ----------------------|---------------------------------------------|----------------------------------------------
+  arraySetUnion_        | _.arraySetUnion_( src1 )                    | _.arraySetUnion_( src1, src1, src2 )
+                        | _.arraySetUnion_( src1, src2 )              | _.arraySetUnion_( src2, src1, src2 )
+                        | _.arraySetUnion_( null, src1 )              | _.arraySetUnion_( dst, src1, src2 )
+                        | _.arraySetUnion_( null, src1, src2 )        |
+  ----------------------|---------------------------------------------|----------------------------------------------
+  */
 
 }
 
