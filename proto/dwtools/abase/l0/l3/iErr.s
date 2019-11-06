@@ -720,6 +720,7 @@ function errOriginalStack( err )
  * @memberof wTools
  */
 
+let ErrorCounter = 0;
 function _err( o )
 {
   let result;
@@ -754,6 +755,7 @@ function _err( o )
 
   /* let */
 
+  let id = null;
   let originalMessage = '';
   let fallBackMessage = '';
   let catches = '';
@@ -886,14 +888,10 @@ function _err( o )
       }
       else if( _.strDefined( result.stack ) )
       {
-        // debugger;
-        // o.stack = result.stack;
         o.stack = _.diagnosticStack( result.stack );
-        // o.stack = _.diagnosticStack( result.stack, [ o.level, Infinity ] );
       }
       else
       {
-        // debugger;
         o.stack = _.diagnosticStack([ o.level, Infinity ]);
       }
 
@@ -926,6 +924,15 @@ function _err( o )
     o.debugging = result.debugging;
     o.debugging = !!o.debugging;
 
+    id = result.id;
+    if( !id )
+    {
+      ErrorCounter += 1;
+      id = ErrorCounter;
+    }
+    // if( id === 3 || id === 5 )
+    // debugger;
+
   }
 
   /* */
@@ -934,7 +941,7 @@ function _err( o )
   {
     let floc = _.diagnosticLocation({ level : o.level });
     if( !floc.service || floc.service === 1 )
-    catches = '    caught at ' + floc.fullWithRoutine + '\n' + catches;
+    catches = `${catches}    caught at ${floc.fullWithRoutine}\n`;
   }
 
   /* */
@@ -1071,9 +1078,9 @@ function _err( o )
     else
     {
       if( _.strIndentation )
-      result += ' = Message\n    ' + _.strIndentation( originalMessage, '    ' )  + '\n';
+      result += ` = Message of error#${id}\n    ${_.strIndentation( originalMessage, '    ' )}\n`;
       else
-      result += ' = Message\n' + originalMessage + '\n';
+      result += ` = Message of error#${id}\n ${originalMessage}\n`;
       if( o.condensingStack )
       result += '\n = Condensed calls stack\n' + stackCondensed + '';
       else
@@ -1093,30 +1100,26 @@ function _err( o )
   function fieldsForm()
   {
 
-    // nonenurable( 'toString', function() { return '\n-\n' + this.message + '\n-\n' } );
-    // nonenurable( 'toString', function() { return this.message } );
-    nonenurable( 'toString', function() { return this.stack } );
-    nonenurable( 'message', message );
-    nonenurable( 'originalMessage', originalMessage );
+    nonenumerable( 'toString', function() { return this.stack } );
+    nonenumerable( 'message', message );
+    nonenumerable( 'originalMessage', originalMessage );
     logging( 'stack', message );
-    nonenurable( 'originalStack', o.stack );
-    nonenurable( 'stackCondensed', stackCondensed );
-    nonenurable( 'catches', catches );
-    nonenurable( 'catchCounter', result.catchCounter ? result.catchCounter+1 : 1 );
-    nonenurable( 'attended', attended );
-    nonenurable( 'logged', logged );
-    nonenurable( 'brief', o.brief );
+    nonenumerable( 'originalStack', o.stack );
+    nonenumerable( 'stackCondensed', stackCondensed );
+    nonenumerable( 'catches', catches );
+    nonenumerable( 'catchCounter', result.catchCounter ? result.catchCounter+1 : 1 );
+    nonenumerable( 'attended', attended );
+    nonenumerable( 'logged', logged );
+    nonenumerable( 'brief', o.brief );
 
     if( o.location.line !== undefined )
-    nonenurable( 'lineNumber', o.location.line );
+    nonenumerable( 'lineNumber', o.location.line );
     if( result.location === undefined )
-    nonenurable( 'location', o.location );
-    // nonenurable( 'level', o.level );
-    nonenurable( 'sourceCode', sourceCode || null );
-    nonenurable( 'debugging', o.debugging );
+    nonenumerable( 'location', o.location );
+    nonenumerable( 'sourceCode', sourceCode || null );
+    nonenumerable( 'debugging', o.debugging );
+    nonenumerable( 'id', id );
 
-    // if( !o. )
-    // debugger;
     if( o.debugging )
     debugger;
 
@@ -1124,7 +1127,7 @@ function _err( o )
 
   /* */
 
-  function nonenurable( fieldName, value )
+  function nonenumerable( fieldName, value )
   {
     // return rw( fieldName, value );
     try
@@ -1190,7 +1193,7 @@ function _err( o )
     try
     {
       // result[ symbol ] = value;
-      nonenurable( symbol, value );
+      nonenumerable( symbol, value );
       Object.defineProperty( result, fieldName,
       {
         enumerable : false,
@@ -1212,6 +1215,7 @@ function _err( o )
       // if( !this.logged )
       // debugger;
       // if( !this.logged )
+      // logger.log( 'Getting stack of an error' );
       // logger.log( this.originalMessage.split( '\n' )[ 0 ], '- logged\n' );
       _.errLogEnd( this );
       return this[ symbol ];
@@ -1327,6 +1331,10 @@ function errAttend( err )
 
   try
   {
+
+    // logger.log( `Attended error#${err.id}` );
+    // if( err.id === 5 || err.id === 6 )
+    // debugger;
 
     let value = Config.debug ? _.diagnosticStack([ 1, Infinity ]) : true;
     Object.defineProperty( err, 'attended',

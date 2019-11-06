@@ -15,6 +15,8 @@ if( _global_ !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
   return;
 }
 
+_.assert( _.routineIs( _.longLeft ) );
+
 // --
 // type test
 // --
@@ -702,7 +704,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       if( _.longLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
       container.add( e );
     }
-    container.add( e );
+    else
+    {
+      container.add( e );
+    }
 
     return this;
   }
@@ -948,7 +953,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this._filterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      /* qqq : not optimal. why copy??  */
+      /* qqq : not optimal. why copy?? */
       let temp = new Set( container );
       container.clear();
 
@@ -1272,6 +1277,16 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   none( onEach )
   {
     return this.noneLeft( onEach );
+  }
+  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq : cover please */
+  {
+    /* qqq : make optimal implementation, please */
+    return _.longLeft( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
+  }
+  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq : cover please */
+  {
+    /* qqq : make optimal implementation, please */
+    return _.longRight( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   reverse( dst )
   {
@@ -1785,6 +1800,14 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   none( onEach )
   {
     return this.noneLeft( onEach );
+  }
+  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq : cover please */
+  {
+    return _.longLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
+  }
+  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq : cover please */
+  {
+    return _.longRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   reverse( dst )
   {
