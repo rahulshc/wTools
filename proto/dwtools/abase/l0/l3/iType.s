@@ -33,7 +33,7 @@ function definedIs( src )
   let a = NaN;
   a == NaN // false
   a === NaN // false
-  Function isNaN is unstable. So, method Number.isNaN is better choise for check it. 
+  Function isNaN is unstable. So, method Number.isNaN is better choise for check it.
   */
 }
 
@@ -75,10 +75,7 @@ function vectorAdapterIs( src )
   return false;
 
   if( _ObjectHasOwnProperty.call( src, 'constructor' ) )
-  {
-    debugger;
-    return false;
-  }
+  return false;
 
   return true;
 }

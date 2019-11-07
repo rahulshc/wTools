@@ -112,6 +112,16 @@ function nothingIs( test )
   test.case = 'check not empty map';
   var got = _.nothingIs( { '' : null } );
   test.identical( got, false );
+
+  test.case = 'check instance of contsructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.nothingIs( src );
+  test.identical( got, false );
 }
 
 //
@@ -212,6 +222,16 @@ function definedIs( test )
 
   test.case = 'check not empty map';
   var got = _.definedIs( { '' : null } );
+  test.identical( got, true );
+
+  test.case = 'check instance of contsructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.definedIs( src );
   test.identical( got, true );
 }
 
@@ -314,6 +334,16 @@ function primitiveIs( test )
   test.case = 'check not empty map';
   var got = _.primitiveIs( { '' : null } );
   test.identical( got, false );
+
+  test.case = 'check instance of contsructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.primitiveIs( src );
+  test.identical( got, false );
 }
 
 //
@@ -415,6 +445,16 @@ function symbolIs( test )
   test.case = 'check not empty map';
   var got = _.symbolIs( { '' : null } );
   test.identical( got, false );
+
+  test.case = 'check instance of contsructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.symbolIs( src );
+  test.identical( got, false );
 }
 
 //
@@ -515,6 +555,183 @@ function bigIntIs( test )
 
   test.case = 'check not empty map';
   var got = _.bigIntIs( { '' : null } );
+  test.identical( got, false );
+
+  test.case = 'check instance of contsructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.bigIntIs( src );
+  test.identical( got, false );
+}
+
+// --
+//
+// --
+
+function vectorAdapterIs( test )
+{
+  test.case = 'without argument';
+  var got = _.vectorAdapterIs();
+  test.identical( got, false );
+
+  test.case = 'check null';
+  var got = _.vectorAdapterIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.vectorAdapterIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.vectorAdapterIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.vectorAdapterIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.vectorAdapterIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.vectorAdapterIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.vectorAdapterIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.vectorAdapterIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.vectorAdapterIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.vectorAdapterIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.vectorAdapterIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.vectorAdapterIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.vectorAdapterIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.vectorAdapterIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.vectorAdapterIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.vectorAdapterIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.vectorAdapterIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.vectorAdapterIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.vectorAdapterIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.vectorAdapterIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.vectorAdapterIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.vectorAdapterIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var got = _.vectorAdapterIs( { '' : null } );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  src._vectorBuffer = true;
+  var got = _.vectorAdapterIs( src );
+  test.identical( got, true );
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  src._vectorBuffer = false;
+  var got = _.vectorAdapterIs( src );
+  test.identical( got, true );
+
+  test.case = 'check instance of contsructor with not own property "constructor"';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  src._vectorBuffer = true;
+  var got = _.vectorAdapterIs( src );
+  test.identical( got, true );
+
+  test.case = 'check instance of contsructor with own property "constructor"';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  src.constructor = Constr;
+  src._vectorBuffer = true;
+  var got = _.vectorAdapterIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of contsructor prototyped by another instance with _vectorBuffer property';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var proto = new Constr();
+  proto._vectorBuffer = true;
+  var src = new Constr();
+  src.prototype = proto;
+  var got = _.vectorAdapterIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of contsructor prototyped by another instance with _vectorBuffer and own "constructor" properties';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var proto = new Constr();
+  proto._vectorBuffer = true;
+  proto.constructor = Constr;
+  var src = new Constr();
+  src.prototype = proto;
+  var got = _.vectorAdapterIs( src );
   test.identical( got, false );
 }
 
@@ -671,6 +888,10 @@ var Self =
     primitiveIs,
     symbolIs,
     bigIntIs,
+
+    //
+
+    vectorAdapterIs,
 
     objectLike,
     consequenceLike,
