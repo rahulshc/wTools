@@ -1300,14 +1300,14 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     return this.noneLeft( onEach );
   }
-  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq : cover please */
+  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
   {
-    /* qqq : make optimal implementation, please */
+    /* qqq2 : make optimal implementation, please */
     return _.longLeft( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
   }
-  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq : cover please */
+  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
   {
-    /* qqq : make optimal implementation, please */
+    /* qqq2 : make optimal implementation, please */
     return _.longRight( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   reverse( dst )
@@ -1824,11 +1824,11 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return this.noneLeft( onEach );
   }
-  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq : cover please */
+  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
   {
     return _.longLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
-  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq : cover please */
+  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
   {
     return _.longRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
