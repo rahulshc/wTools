@@ -419,6 +419,107 @@ function symbolIs( test )
 
 //
 
+function bigIntIs( test )
+{
+  test.case = 'without argument';
+  var got = _.bigIntIs();
+  test.identical( got, false );
+
+  test.case = 'check null';
+  var got = _.bigIntIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.bigIntIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.bigIntIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.bigIntIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.bigIntIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.bigIntIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.bigIntIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.bigIntIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.bigIntIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.bigIntIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.bigIntIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.bigIntIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.bigIntIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.bigIntIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.bigIntIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.bigIntIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.bigIntIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.bigIntIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.bigIntIs( 1n );
+  test.identical( got, true );
+
+  test.case = 'check object Number';
+  var got = _.bigIntIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.bigIntIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.bigIntIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var got = _.bigIntIs( { '' : null } );
+  test.identical( got, false );
+}
+
+//
+
 function objectLike( test )
 {
 
@@ -569,6 +670,7 @@ var Self =
     definedIs,
     primitiveIs,
     symbolIs,
+    bigIntIs,
 
     objectLike,
     consequenceLike,
