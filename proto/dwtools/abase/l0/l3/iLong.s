@@ -201,7 +201,7 @@ function longLeftIndex( arr, ins, evaluator1, evaluator2 )
       return a;
     }
   }
-  else
+  else /* evaluator */
   {
 
     if( evaluator2 )
@@ -264,7 +264,7 @@ function longRightIndex( arr, ins, evaluator1, evaluator2 )
       return a;
     }
   }
-  else
+  else /* evaluator */
   {
 
     if( evaluator2 )
