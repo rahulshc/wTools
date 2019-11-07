@@ -104,25 +104,118 @@ function nothingIs( test )
   test.identical( got, false );
 }
 
-function objectLike( t )
+//
+
+function definedIs( test )
+{
+  test.case = 'without argument';
+  var got = _.definedIs();
+  test.identical( got, false );
+
+  test.case = 'check null';
+  var got = _.definedIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.definedIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.definedIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.definedIs( NaN );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'check zero';
+  var got = _.definedIs( 0 );
+  test.identical( got, true );
+
+  test.case = 'check empty string';
+  var got = _.definedIs( '' );
+  test.identical( got, true );
+
+  test.case = 'check false';
+  var got = _.definedIs( false );
+  test.identical( got, true );
+
+  test.case = 'check empty array';
+  var got = _.definedIs( [] );
+  test.identical( got, true );
+
+  test.case = 'check empty arguments array';
+  var got = _.definedIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, true );
+
+  test.case = 'check empty unroll';
+  var got = _.definedIs( _.unrollMake( [] ) );
+  test.identical( got, true );
+
+  test.case = 'check empty map';
+  var got = _.definedIs( {} );
+  test.identical( got, true );
+
+  test.case = 'check empty pure map';
+  var got = _.definedIs( Object.create( null ) );
+  test.identical( got, true );
+
+  test.case = 'check empty Set';
+  var got = _.definedIs( new Set( [] ) );
+  test.identical( got, true );
+
+  test.case = 'check empty Map';
+  var got = _.definedIs( new Map( [] ) );
+  test.identical( got, true );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.definedIs( new BufferRaw() );
+  test.identical( got, true );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.definedIs( new U8x() );
+  test.identical( got, true );
+
+  test.case = 'check number';
+  var got = _.definedIs( 3 );
+  test.identical( got, true );
+
+  test.case = 'check string';
+  var got = _.definedIs( 'str' );
+  test.identical( got, true );
+
+  test.case = 'check not empty array';
+  var got = _.definedIs( [ null ] );
+  test.identical( got, true );
+
+  test.case = 'check not empty map';
+  var got = _.definedIs( { '' : null } );
+  test.identical( got, true );
+}
+
+//
+
+function objectLike( test )
 {
 
-  t.description = 'array-like entities should not overlap with array-like entities set';
+  test.description = 'array-like entities should not overlap with array-like entities set';
 
-  t.identical( _.objectLike( new ArrayBuffer( 10 ) ),false );
-  t.identical( _.objectLike( new Float32Array( 10 ) ),false );
-  t.identical( _.objectLike( new Int32Array( 10 ) ),false );
-  t.identical( _.objectLike( new DataView( new ArrayBuffer( 10 ) ) ),false );
-  t.identical( _.objectLike( new Array( 10 ) ),false );
-  t.identical( _.objectLike( [ 1,2,3 ] ),false );
-  t.identical( _.objectLike( new Map ),false );
+  test.identical( _.objectLike( new ArrayBuffer( 10 ) ),false );
+  test.identical( _.objectLike( new Float32Array( 10 ) ),false );
+  test.identical( _.objectLike( new Int32Array( 10 ) ),false );
+  test.identical( _.objectLike( new DataView( new ArrayBuffer( 10 ) ) ),false );
+  test.identical( _.objectLike( new Array( 10 ) ),false );
+  test.identical( _.objectLike( [ 1,2,3 ] ),false );
+  test.identical( _.objectLike( new Map ),false );
 
-  t.description = 'this entities are object-like';
+  test.description = 'this entities are object-like';
 
-  t.identical( _.objectLike( _global_ ),true );
-  t.identical( _.objectLike( new Object() ),true );
-  t.identical( _.objectLike( {} ),true );
-  t.identical( _.objectLike( Object.create( null ) ),true );
+  test.identical( _.objectLike( _global_ ),true );
+  test.identical( _.objectLike( new Object() ),true );
+  test.identical( _.objectLike( {} ),true );
+  test.identical( _.objectLike( Object.create( null ) ),true );
 
 }
 
@@ -251,6 +344,7 @@ var Self =
   {
 
     nothingIs,
+    definedIs,
 
     objectLike,
     consequenceLike,
