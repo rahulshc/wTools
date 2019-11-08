@@ -294,8 +294,8 @@ function strShort( src )
     else if( _.objectLike( src ) )
     {
 
-      if( _.routineIs( src.infoExport ) )
-      result += src.infoExport({ verbosity : 1 });
+      if( _.routineIs( src.exportInfo ) )
+      result += src.exportInfo({ verbosity : 1 });
       else
       result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' -}';
 
@@ -377,8 +377,8 @@ function strShort( src )
 //     else if( _.objectLike( src ) )
 //     {
 //
-//       if( _.routineIs( src.infoExport ) )
-//       result += src.infoExport({ verbosity : 1 });
+//       if( _.routineIs( src.exportInfo ) )
+//       result += src.exportInfo({ verbosity : 1 });
 //       else
 //       result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' -}';
 //
