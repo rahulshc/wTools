@@ -25,11 +25,11 @@
   "dependencies" : {}, 
   "devDependencies" : 
   {
-    "wFiles" : "", 
-    "wcloner" : "", 
-    "wselector" : "", 
-    "wstringer" : "", 
-    "wTesting" : ""
+    "wFiles" : "alpha", 
+    "wcloner" : "alpha", 
+    "wselector" : "alpha", 
+    "wstringer" : "alpha", 
+    "wTesting" : "alpha"
   }, 
   "keywords" : 
   [
