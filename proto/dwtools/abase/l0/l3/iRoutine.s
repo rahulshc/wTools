@@ -12,7 +12,8 @@ let Self = _global_.wTools;
 
 function routineIs( src )
 {
-  return Object.prototype.toString.call( src ) === '[object Function]';
+  let result = Object.prototype.toString.call( src );
+  return result === '[object Function]' || result === '[object AsyncFunction]';
 }
 
 //
