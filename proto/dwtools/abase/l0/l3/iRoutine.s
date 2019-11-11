@@ -18,6 +18,20 @@ function routineIs( src )
 
 //
 
+function routineIsSync( src )
+{
+  return Object.prototype.toString.call( src ) === '[object Function]'
+}
+
+//
+
+function routineIsAsync( src )
+{
+  return Object.prototype.toString.call( src ) === '[object AsyncFunction]'
+}
+
+//
+
 function routinesAre( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -1650,6 +1664,8 @@ let Routines =
 {
 
   routineIs,
+  routineIsSync,
+  routineIsAsync,
   routinesAre,
   routineIsPure,
   routineWithName,
