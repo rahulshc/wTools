@@ -15,6 +15,8 @@ if( _global_ !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
   return;
 }
 
+_.assert( _.routineIs( _.longLeft ) );
+
 // --
 // type test
 // --
@@ -702,7 +704,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       if( _.longLeftIndex( [ ... container ], e, onEvaluate1, onEvaluate2 ) === -1 )
       container.add( e );
     }
-    container.add( e );
+    else
+    {
+      container.add( e );
+    }
 
     return this;
   }
@@ -723,11 +728,6 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       container.add( e );
     }
     return this;
-  }
-  push( e )
-  {
-    this.original.add( e );
-    return this.original.size;
   }
   appendContainer( container )
   {
@@ -762,17 +762,44 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       return this.appendContainer( container );
     }
   }
+  push( e )
+  {
+    this.original.add( e );
+    // logger.log( 'push', e.name );
+    return this.original.size;
+  }
   pop( e, onEvaluate1, onEvaluate2 )
   {
+    let self = this;
+    // qqq2 : ??
     // _.assert( arguments.length === 1 );
-    let last = this.last();
-    let r = this.original.delete( last );
+    // let last = this.last();
 
-    if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1 )
-    return last;
+    if( !onEvaluate1 || e === undefined )
+    {
+      // debugger;
+      if( e === undefined )
+      e = self.last();
+      let r = self.original.delete( e );
+      // logger.log( 'pop', e.name );
+      _.assert( r === true );
+      return e;
+    }
+    else
+    {
+      // qqq2 : use _.arraySetLeft instead of the workaround
+      let e2 = _.arrayLeft( [ ... self.original ], e, onEvaluate1, onEvaluate2 ).element;
+      _.assert( e2 !== undefined );
+      self.original.delete( e );
+      return e2;
+    }
 
-    _.assert( e === undefined || e === last );
-    return e;
+    // qqq2 : ??
+    // if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+    // return last;
+
+    // _.assert( e === undefined || _.entityEntityEqualize( poped, e, onEvaluate1, onEvaluate2 ) );
+    // return e;
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
@@ -948,7 +975,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     [ dst, onEach ] = this._filterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      /* qqq : not optimal. why copy??  */
+      /* qqq : not optimal. why copy?? */
       let temp = new Set( container );
       container.clear();
 
@@ -1273,6 +1300,16 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     return this.noneLeft( onEach );
   }
+  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
+  {
+    /* qqq2 : make optimal implementation, please */
+    return _.longLeft( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
+  }
+  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
+  {
+    /* qqq2 : make optimal implementation, please */
+    return _.longRight( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
+  }
   reverse( dst )
   {
 
@@ -1458,10 +1495,11 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     var poped = this.original.pop();
 
-    if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ poped ], e, onEvaluate1, onEvaluate2 ) !== -1 )
-    return poped;
+    // qqq2 : ??
+    // if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ poped ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+    // return poped;
 
-    _.assert( e === undefined || poped === e );
+    _.assert( e === undefined || _.entityEntityEqualize( poped, e, onEvaluate1, onEvaluate2 ) );
     return poped;
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
@@ -1785,6 +1823,14 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   none( onEach )
   {
     return this.noneLeft( onEach );
+  }
+  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
+  {
+    return _.longLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
+  }
+  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
+  {
+    return _.longRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   reverse( dst )
   {

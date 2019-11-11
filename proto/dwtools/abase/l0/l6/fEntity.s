@@ -254,6 +254,33 @@ function entityMake( src )
 
 //
 
+/* qqq : cover and jsdoc please */
+function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
+{
+
+  if( !onEvaluate1 )
+  {
+    _.assert( !onEvaluate2 );
+    return src1 === src2;
+  }
+  else if( onEvaluate1.length === 2 ) /* equalizer */
+  {
+    _.assert( !onEvaluate2 );
+    return onEvaluate1( arr[ a ], ins );
+  }
+  else /* evaluator */
+  {
+    if( !onEvaluate2 )
+    onEvaluate2 = onEvaluate1;
+    _.assert( onEvaluate1.length === 1 );
+    _.assert( onEvaluate2.length === 1 );
+    return onEvaluate1( src1 ) === onEvaluate2( src1 );
+  }
+
+}
+
+//
+
 /**
  * Copies entity( src ) into( dst ) or returns own copy of( src ).Result depends on several moments:
  * -If( src ) is a Object - returns clone of( src ) using ( onRecursive ) callback function if its provided;
@@ -505,6 +532,8 @@ let Routines =
   makeUndefined : entityMakeUndefined,
   entityMake,
   make : entityMake,
+
+  entityEntityEqualize,
 
   entityAssign, /* refactor!!! */
   entityAssignFieldFromContainer, /* dubious */
