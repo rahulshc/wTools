@@ -258,6 +258,8 @@ function entityMake( src )
 function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
 {
 
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+
   if( !onEvaluate1 )
   {
     _.assert( !onEvaluate2 );
@@ -266,7 +268,7 @@ function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
   else if( onEvaluate1.length === 2 ) /* equalizer */
   {
     _.assert( !onEvaluate2 );
-    return onEvaluate1( arr[ a ], ins );
+    return onEvaluate1( src1, src2 );
   }
   else /* evaluator */
   {
@@ -274,7 +276,7 @@ function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
     onEvaluate2 = onEvaluate1;
     _.assert( onEvaluate1.length === 1 );
     _.assert( onEvaluate2.length === 1 );
-    return onEvaluate1( src1 ) === onEvaluate2( src1 );
+    return onEvaluate1( src1 ) === onEvaluate2( src2 );
   }
 
 }
