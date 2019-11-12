@@ -2,10 +2,13 @@ format: outwillfile-2.0
 root:
   - wTools.out
 consistency:
-  ../.ex.will.yml: &ref_0
+  wTools.out.will.yml: &ref_0
+    hash: 028ee71b8288f8b8457ae98e07c56463
+    size: 45195
+  ../.ex.will.yml: &ref_1
     hash: 742015b531952d05816c35ee9f9ff3ca
     size: 2109
-  ../.im.will.yml: &ref_1
+  ../.im.will.yml: &ref_2
     hash: e0b9ac504d07fa8723c98f50459f4829
     size: 5603
 module:
@@ -19,11 +22,11 @@ module:
         in conjunction with another module of such kind.
       enabled: 1
       version: 0.9.0
-      interpreters: &ref_2
+      interpreters:
         - njs >= 8.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
-      keywords: &ref_3
+      keywords:
         - base
         - basic
         - core
@@ -34,14 +37,14 @@ module:
         - generic
       license: MIT
       author: Kostiantyn Wandalen <wanalen@willbe.so>
-      contributors: &ref_4
+      contributors:
         - Kostiantyn Wandalen <wanalen@willbe.so>
         - Volodymyr M. <volodymyr.migdal@gmail.com>
         - Ihor O. <iostashvxi@gmail.com>
         - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
         - Dmytro Kryvoruchko <dm.vict.kr@gmail.com>
       npm.name: wtools.experiment
-      npm.scripts: &ref_5
+      npm.scripts:
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -821,6 +824,24 @@ module:
           content: prime
         inherit:
           - files.transpile
+      exported.proto.export:
+        opts:
+          reflector: 'reflector::exported.proto.export*'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
+      exported.files.proto.export:
+        opts:
+          reflector: 'reflector::exported.files.proto.export*'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
     build:
       proto.export:
         steps:
@@ -931,8 +952,9 @@ module:
           content: proto
           export: 1
     consistency:
-      ../.ex.will.yml: *ref_0
-      ../.im.will.yml: *ref_1
+      wTools.out.will.yml: *ref_0
+      ../.ex.will.yml: *ref_1
+      ../.im.will.yml: *ref_2
   ../:
     about:
       name: wTools
@@ -943,13 +965,31 @@ module:
         in conjunction with another module of such kind.
       enabled: 1
       version: 0.9.0
-      interpreters: *ref_2
-      keywords: *ref_3
+      interpreters:
+        - njs >= 8.0.0
+        - chrome >= 60.0.0
+        - firefox >= 60.0.0
+      keywords:
+        - base
+        - basic
+        - core
+        - platform
+        - tools
+        - wTools
+        - wBase
+        - generic
       license: MIT
       author: Kostiantyn Wandalen <wanalen@willbe.so>
-      contributors: *ref_4
+      contributors:
+        - Kostiantyn Wandalen <wanalen@willbe.so>
+        - Volodymyr M. <volodymyr.migdal@gmail.com>
+        - Ihor O. <iostashvxi@gmail.com>
+        - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
+        - Dmytro Kryvoruchko <dm.vict.kr@gmail.com>
       npm.name: wtools.experiment
-      npm.scripts: *ref_5
+      npm.scripts:
+        test: wtest .run proto/**
+        docgen: wdocgen .build proto
     path:
       module.willfiles:
         criterion:
@@ -1679,3 +1719,6 @@ module:
       ../.im.will.yml:
         hash: e0b9ac504d07fa8723c98f50459f4829
         size: 5603
+      wTools.out.will.yml:
+        hash: 028ee71b8288f8b8457ae98e07c56463
+        size: 45195

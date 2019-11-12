@@ -254,6 +254,7 @@ function entityMake( src )
 
 //
 
+/* qqq : cover and jsdoc please */
 function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
 {
 
