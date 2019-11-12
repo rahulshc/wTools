@@ -361,7 +361,6 @@ function entityEntityEqualize( test )
 
   test.case = 'using onEvaluate2 without onEvaluate1';
   test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, undefined, ( e ) => e ) );
-
 }
 
 //

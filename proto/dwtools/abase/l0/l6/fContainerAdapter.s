@@ -849,33 +849,39 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   push( e )
   {
     this.original.add( e );
-    // logger.log( 'push', e.name );
     return this.original.size;
   }
   pop( e, onEvaluate1, onEvaluate2 )
   {
     let self = this;
+		let container = this.original;
     // qqq2 : ??
     // _.assert( arguments.length === 1 );
     // let last = this.last();
 
     if( !onEvaluate1 || e === undefined )
     {
-      // debugger;
       if( e === undefined )
       e = self.last();
-      let r = self.original.delete( e );
-      // logger.log( 'pop', e.name );
+      let r = container.delete( e );
       _.assert( r === true );
       return e;
     }
     else
     {
       // qqq2 : use _.arraySetLeft instead of the workaround
-      let e2 = _.arrayLeft( [ ... self.original ], e, onEvaluate1, onEvaluate2 ).element;
-      _.assert( e2 !== undefined );
-      self.original.delete( e );
-      return e2;
+			// Dmytro : _.arraySetLeft returns index, it not usable for Sets or it need one more iteration
+      // let e2 = _.longLeft( [ ... container ], e, onEvaluate1, onEvaluate2 ).element;
+      // _.assert( e2 !== undefined );
+      // container.delete( e ); // Dmytro : unnecessary to delete unknown element
+      // return e2;
+
+			let last = _.nothing;
+			self.reduce( ( a, e2 ) => _.entityEntityEqualize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
+			_.assert( last !== _.nothing );
+			container.delete( last );
+			return last;
+
     }
 
     // qqq2 : ??

@@ -9607,17 +9607,17 @@ function setAdapterAppendContainerOnce( test )
 
 function setAdapterPop( test )
 {
-  test.case = 'empty container, without argument';
-  var src = _.containerAdapter.make( new Set() );
-  var got = src.pop();
-  test.identical( [ ... src.original ], [] );
-  test.identical( got, undefined );
-
   test.case = 'container, last element is undefined, without arguments';
   var src = _.containerAdapter.make( new Set( [ null, 1, 'str', undefined ] ) );
   var got = src.pop();
   test.identical( [ ... src.original ], [ null, 1, 'str' ] );
   test.identical( got, undefined );
+
+  test.case = 'container, last element is not undefined, without arguments';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [] ] ) );
+  var got = src.pop();
+  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
+  test.identical( got, [] );
 
   test.case = 'container, last element === searched element';
   var src = _.containerAdapter.make( new Set( [ null, 1, 'str' ] ) );
@@ -9625,39 +9625,65 @@ function setAdapterPop( test )
   test.identical( [ ... src.original ], [ null, 1 ] );
   test.identical( got, 'str' );
 
+  test.case = 'container contains searched element, not last';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', undefined, [] ] ) );
+  var got = src.pop( 'str' );
+  test.identical( [ ... src.original ], [ null, 1, undefined, [] ] );
+  test.identical( got, 'str' );
+
   test.case = 'container, last element - complex data, one evaluator';
   var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
-  var got = src.pop( [ 1 ], ( e ) => e[ 0 ] );
+  var got = src.pop( [ 1 ], ( e ) => !e ? e : e[ 0 ] );
   test.identical( [ ... src.original ], [ null, 1, 'str' ] );
   test.identical( got, [ 1 ] );
+
+  test.case = 'container, searched element is not last element, complex data, one evaluator';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ], undefined, [ 1, 2 ], { a : 2 } ] ) );
+  var got = src.pop( [ 1 ], ( e ) => !e ? e : e[ 0 ] );
+  test.identical( [ ... src.original ], [ null, 1, 'str', [ 1 ], undefined, { a : 2 } ] );
+  test.identical( got, [ 1, 2 ] );
 
   test.case = 'container, last element - complex data, two evaluators';
   var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
-  var got = src.pop( 1, ( e ) => e[ 0 ], ( ins ) => ins );
+  var got = src.pop( 1, ( e ) => !e ? e : e[ 0 ], ( ins ) => ins );
   test.identical( [ ... src.original ], [ null, 1, 'str' ] );
   test.identical( got, [ 1 ] );
+
+	test.case = 'container, searched element is not last element, complex data, two evaluators';
+	var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ], undefined, [ 1, 2 ], { a : 2 } ] ) );
+	var got = src.pop( [ 1 ], ( e ) => !e ? e : e[ 0 ], ( ins ) => ins[ 0 ] );
+	test.identical( [ ... src.original ], [ null, 1, 'str', [ 1 ], undefined, { a : 2 } ] );
+	test.identical( got, [ 1, 2 ] );
 
   test.case = 'container, last element - complex data, equalizer';
   var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
-  var got = src.pop( 1, ( e, ins ) => e[ 0 ] === ins );
-  test.identical( [ ... src.original ], [ null, 1, 'str' ] );
-  test.identical( got, [ 1 ] );
+  var got = src.pop( [ 1 ], ( e, ins ) => e === ins[ 0 ] );
+  test.identical( [ ... src.original ], [ null, 'str', [ 1 ] ] );
+  test.identical( got, 1 );
+
+	test.case = 'container, searched element is not last element, complex data, equalizer';
+	var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ], undefined, [ 1, 2 ], { a : 2 } ] ) );
+	var got = src.pop( [ 1 ], ( e, ins ) => e === ins[ 0 ] );
+	test.identical( [ ... src.original ], [ null, 'str', [ 1 ], undefined, [ 1, 2 ], { a : 2 } ] );
+	test.identical( got, 1 );
+
+	/* - */
 
   if( !Config.debug )
   return;
+    
+ 	test.case = 'empty container, pop without argument';
+	test.shouldThrowErrorSync( () =>
+	{
+		var src = _.containerAdapter.make( new Set() );
+		src.pop();
+  });
 
   test.case = 'empty container, pop element';
   test.shouldThrowErrorSync( () =>
   {
     var src = _.containerAdapter.make( new Set() );
     src.pop( 2 );
-  });
-
-  test.case = 'popped element !== searched element';
-  test.shouldThrowErrorSync( () =>
-  {
-    var src = _.containerAdapter.make( new Set( [ null, 1, 'str', undefined ] ) );
-    src.pop( 'str' );
   });
 
   test.case = 'complex data';
