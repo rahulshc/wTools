@@ -884,7 +884,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
     }
 
-    // qqq2 : ??
+    // qqq2 : ?? | Dmytro : I'v got it
     // if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1 )
     // return last;
 
@@ -899,8 +899,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     // return e;
     let last = this.last();
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
-    _.assert( _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Set does not have such an element' );
-    let r = this.original.delete( last );
+    _.assert( _.entityEntityEqualize( last, e, onEvaluate1, onEvaluate2 ), 'Set does not have such an element' );
+		// _.assert( _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Set does not have such an element' );
+
+    this.original.delete( last );
     return last;
   }
   removed( e, onEvaluate1, onEvaluate2 )
@@ -1606,7 +1608,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     var poped = this.original.pop();
 
-    // qqq2 : ??
+    // qqq2 : ?? | Dmytro : I'v got it
     // if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ poped ], e, onEvaluate1, onEvaluate2 ) !== -1 )
     // return poped;
 
@@ -1616,9 +1618,10 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
     // _.assert( arguments.length === 1 );
-    // _.assert( this.original[ this.original.length - 1 ] === e, 'Container does not have such element' );
-    _.assert( arguments.length >= 1 );
-    _.assert( _.longLeftIndex( [ this.last() ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Container does not have such element' );
+		// _.assert( this.original[ this.original.length - 1 ] === e, 'Container does not have such element' );
+    _.assert( 1 <= arguments.length && arguments.length <= 3 );
+    _.assert( _.entityEntityEqualize( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
+    // _.assert( _.longLeftIndex( [ this.last() ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Container does not have such element' );
     var poped = this.original.pop();
     return poped;
   }
@@ -1677,8 +1680,8 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     else
     {
       // debugger;
-      /* qqq : cover all cases and arguments */
-      /* qqq : not optimal! no in for arrays! */
+      /* qqq : cover all cases and arguments | Dmytro : covered */
+      /* qqq : not optimal! no in for arrays! | Dmytro : I'v got it */
       // for( let k in container )
       for( let k = 0 ; k < container.length ; k++ )
       {

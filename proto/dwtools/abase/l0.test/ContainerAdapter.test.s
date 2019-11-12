@@ -9722,6 +9722,8 @@ function setAdapterPopStrictly( test )
   test.identical( [ ... src.original ], [ null, 1, 'str' ] );
   test.identical( got, [ 1 ] );
 
+	/* - */
+
   if( !Config.debug )
   return;
 
@@ -9730,6 +9732,13 @@ function setAdapterPopStrictly( test )
   {
     var src = _.containerAdapter.make( new Set() );
     src.popStrictly();
+  });
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set([ 1, 2, 3, 4 ] ) );
+    src.popStrictly( 4, ( e ) => e, ( ins ) => ins, 'extra' );
   });
 
   test.case = 'empty container, pop element';
