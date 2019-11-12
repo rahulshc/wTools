@@ -1678,7 +1678,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       {
         let e = container[ k ];
         let e2 = onEach( e, k, self );
-        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? */
+        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
         if( e2 !== undefined )
         dst.append( e2 );
         else
@@ -1735,7 +1735,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       for( let k = container.length - 1 ; k >= 0 ; k-- )
       {
         let e = container[ k ];
-        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? */
+        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
         let e2 = onEach( e, k, self );
         if( e !== e2 || e2 === undefined )
         {
@@ -2037,7 +2037,7 @@ var Routines =
 {
 
   is,
-  isContainer, /* qqq : cover please */
+  isContainer, /* qqq : cover please | Dmytro : covered */
   make,
   from,
 
@@ -2048,6 +2048,7 @@ var Routines =
     qqq : cover please
     Dmytro : covered, routine has not implemented branch
     qqq : implement please :)
+    Dmytro : implemented and covered
   */
 
 }
