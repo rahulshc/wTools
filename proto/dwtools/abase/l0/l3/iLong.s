@@ -452,7 +452,35 @@ function longLeftDefined( arr )
 
 //
 
-/* qqq : rewrite jsdoc */
+/**
+ * The routine longRightDefined() returns a new object containing the properties, (index, element),
+ * of first right element in a Long {-arr-}, which value is not equal to undefined.
+ * If element is not founded, then routine return new object with property (index), which value is -1. 
+ *
+ * @param { Long } arr - A Long to check.
+ *
+ * @example
+ * _.longRightDefined( [ undefined, undefined, undefined, undefined, undefined ] );
+ * // returns { index : -1 }
+ *
+ * @example
+ * _.longRightDefined( [ 1, 2, false, 'str', 2, undefined, 5 ] );
+ * // returns { index : 6, element : 5 }
+ *
+ * @example
+ * _.longRightDefined( [ 1, 2, false, 'str', 2, undefined, undefined ] );
+ * // returns { index : 4, element : 2 }
+ *
+ * @returns { Object } Returns a new object containing the properties, (index, element),
+ * of first right element in a Long {-arr-}, which value is not equal to undefined.
+ * Otherwise, it returns the object with property (index) which value is -1.
+ * @function longRight
+ * @throws { Error } If arguments.length is less then or more then one.
+ * @memberof wTools
+ */
+
+/* qqq : rewrite jsdoc | Dmytro : documented */
+
 function longRightDefined( arr )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
