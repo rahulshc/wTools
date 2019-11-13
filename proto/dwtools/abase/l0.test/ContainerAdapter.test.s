@@ -12178,7 +12178,14 @@ function setAdapterLeft( test )
   test.shouldThrowErrorSync( () =>
   {
     var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
-    src.left( 1, 0, 'wrong' );
+    src.left( 1, 0, () => 1 );
+  });
+
+  test.case = 'onEvaluate2 has wrong length';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+    src.left( 1, 0, ( e ) => e, () => 1 );
   });
 }
 
@@ -12333,12 +12340,19 @@ function setAdapterRight( test )
     var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
     src.right( 1, 0, 'wrong' );
   });
-
+  
   test.case = 'onEvaluate1 has wrong length';
   test.shouldThrowErrorSync( () =>
   {
     var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
-    src.right( 1, 0, 'wrong' );
+    src.left( 1, 0, () => 1 );
+  });
+
+  test.case = 'onEvaluate2 has wrong length';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
+    src.left( 1, 0, ( e ) => e, () => 1 );
   });
 }
 
@@ -16535,7 +16549,14 @@ function arrayAdapterLeft( test )
   test.shouldThrowErrorSync( () =>
   {
     var src = _.containerAdapter.make( [ 1, 2 ] );
-    src.left( 1, 0, 'wrong' );
+    src.left( 1, 0, () => 1 );
+  });
+
+  test.case = 'onEvaluate2 has wrong length';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [ 1, 2 ] );
+    src.left( 1, 0, ( e ) => e, () => 1 );
   });
 }
 
@@ -16695,7 +16716,14 @@ function arrayAdapterRight( test )
   test.shouldThrowErrorSync( () =>
   {
     var src = _.containerAdapter.make( [ 1, 2 ] );
-    src.right( 1, 0, 'wrong' );
+    src.right( 1, 0, () => 1 );
+  });
+
+  test.case = 'onEvaluate2 has wrong length';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.containerAdapter.make( [ 1, 2 ] );
+    src.right( 1, 0, ( e ) => e, () => 1 );
   });
 }
 
