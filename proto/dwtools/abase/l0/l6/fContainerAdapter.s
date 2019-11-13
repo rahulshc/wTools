@@ -1413,13 +1413,13 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     return this.noneLeft( onEach );
   }
-  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
+  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
   {
     /* qqq2 : make optimal implementation, please */
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longLeft( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
   }
-  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
+  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
   {
     /* qqq2 : make optimal implementation, please */
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
