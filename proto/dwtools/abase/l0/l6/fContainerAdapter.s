@@ -1942,7 +1942,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
-  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
+  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
   {
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
