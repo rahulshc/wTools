@@ -286,38 +286,63 @@ function longRightIndex( arr, ins, evaluator1, evaluator2 )
 //
 
 /**
- * The longLeft() routine returns a new object containing the properties, (index, element),
- * corresponding to a found value (ins) from an array (arr).
+ * The routine longLeft() returns a new object containing the properties, (index, element),
+ * corresponding to a found value {-ins-} from a Long {-arr-}.
+ * If element is not founded, then routine return new object with property index, which value is -1. 
  *
- * It creates the variable (i), assigns and calls to it the function( _.longLeftIndex( arr, ins, evaluator1 ) ),
- * that returns the index of the value (ins) in the array (arr).
- * [wTools.longLeftIndex()]{@link wTools.longLeftIndex}
- * If (i) is more or equal to the zero, it returns the object containing the properties ({ index : i, element : arr[ i ] }).
- * Otherwise, it returns the empty object.
- *
- * @see {@link wTools.longLeftIndex} - See for more information.
- *
- * @param { longLike } arr - Entity to check.
- * @param { * } ins - Element to locate in the array.
- * @param { wTools~compareCallback } evaluator1 - A callback function.
+ * @param { Long } arr - A Long to check.
+ * @param { * } ins - An element to locate in the {-arr-}.
+ * @param { Number } fromIndex - An index from which routine starts search.
+ * If {-fromIndex-} not defined, then routine starts search from first index.
+ * @param { Function } evaluator1 - It's a callback. If the routine has two parameters,
+ * it is used as an equalizer, and if it has only one, then routine is used as the evaluator.
+ * @param { Function } onEvaluate2 - The second part of evaluator. Accepts the {-ins-} to search.
  *
  * @example
- * _.longLeft( [ 1, 2, false, 'str', 5 ], 'str', function( a, b ) { return a === b } );
- * // returns { index : 3, element : 'str' }
+ * _.longLeft( [ 1, 2, false, 'str', 5 ], 2 );
+ * // returns { index : 1, element : 2 }
  *
  * @example
- * _.longLeft( [ 1, 2, 3, 4, 5 ], 6 );
- * // returns {}
+ * _.longLeft( [ 1, 2, false, 'str', 5 ], [ 2 ] );
+ * // returns { index : -1 }
+ *
+ * @example
+ * _.longLeft( [ 1, 2, false, 'str', 5 ], 2, 3 );
+ * // returns { index : -1 }
+ *
+ * @example
+ * _.longLeft( [ 1, 2, false, 'str', 5 ], [ 2 ], ( e ) => e[ 0 ] );
+ * // returns { index : -1 }
+ *
+ * @example
+ * _.longLeft( [ 1, [ 2 ], false, 'str', 5 ], [ 2 ], ( e ) => e[ 0 ] );
+ * // returns { index : 1, element : [ 2 ] }
+ *
+ * @example
+ * _.longLeft( [ 1, [ 2 ], false, 'str', 5 ], [ 2 ], ( e ) => e - 3, ( ins ) => ins[ 0 ] );
+ * // returns { index : 4, element : 5 }
+ *
+ * @example
+ * _.longLeft( [ 1, 2, false, 'str', 5 ], 2, ( e, ins ) => e === ins );
+ * // returns { index : 1, element : 2 }
  *
  * @returns { Object } Returns a new object containing the properties, (index, element),
- * corresponding to the found value (ins) from the array (arr).
- * Otherwise, it returns the empty object.
+ * corresponding to the found value {-ins-} from the array {-arr-}.
+ * Otherwise, it returns the object with property index which value is -1.
  * @function longLeft
- * @throws { Error } Will throw an Error if (evaluator1) is not a Function.
+ * @throws { Error } If arguments.length is less then two or more then five.
+ * @throws { Error } If {-fromIndex-} is not a number.
+ * @throws { Error } If {-onEvaluate1-} is not a routine.
+ * @throws { Error } If {-onEvaluate1-} is undefines and onEvaluate2 provided.
+ * @throws { Error } If {-onEvaluate1-} is evaluator and accepts less or more then one parameter.
+ * @throws { Error } If {-onEvaluate1-} is equalizer and onEvaluate2 provided.
+ * @throws { Error } If {-onEvaluate2-} is not a routine.
+ * @throws { Error } If {-onEvaluate2-} accepts less or more then one parameter.
  * @memberof wTools
  */
 
-/* qqq : rewrite jsdoc */
+/* qqq : rewrite jsdoc | Dmytro : rewritten */
+
 function longLeft( arr, ins, fromIndex, evaluator1, evaluator2 )
 {
   let result = Object.create( null );

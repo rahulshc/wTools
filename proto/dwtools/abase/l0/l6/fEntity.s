@@ -255,52 +255,52 @@ function entityMake( src )
 //
 
 /**
-* The routine entityEntityEqualize() checks equality of two entities {-src1-} and {-src2-}.
-* Routine accepts callbacks {-onEvaluate1-} and {-onEvaluate2-}, which apply to 
-* entities {-src1-} and {-src2-}. The values returned by callbacks are compared with each other.
-* If callbacks is not passed, then routine compares {-src1-} and {-src2-} directly.
-*
-* @param { * } src1 - First entity to compare.
-* @param { * } src2 - Second entity to compare.
-* @param { Function } onEvaluate - It's a callback. If the routine has two parameters,
-* it is used as an equalizer, and if it has only one, then routine is used as the evaluator.
-* @param { Function } onEvaluate2 - The second part of evaluator. Accepts the {-src2-} to search.
-*
-* @example
-* _.entityEntityEqualize( 1, 1 );
-* // returns true
-*
-* @example
-* _.entityEntityEqualize( 1, 'str' );
-* // returns false
-*
-* @example
-* _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ] );
-* // returns false
-*
-* @example
-* _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e ) => e[ 0 ] );
-* // returns true
-*
-* @example
-* _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1, e2 ) => e1[ 0 ] > e2[ 2 ] );
-* // returns false
-*
-* @example
-* _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1 ) => e1[ 2 ], ( e2 ) => e2[ 2 ] );
-* // returns true
-*
-* @returns { Boolean } - Returns boolean value of equality of two entities.
-* @function entityEntityEqualize
-* @throws { Error } If arguments.length is less then two or more then four.
-* @throws { Error } If onEvaluate1 is not a routine.
-* @throws { Error } If onEvaluate1 is undefines and onEvaluate2 provided.
-* @throws { Error } If onEvaluate1 is evaluator and accepts less or more then one parameter.
-* @throws { Error } If onEvaluate1 is equalizer and onEvaluate2 provided.
-* @throws { Error } If onEvaluate2 is not a routine.
-* @throws { Error } If onEvaluate2 accepts less or more then one parameter.
-* @memberof wTools
-*/
+ * The routine entityEntityEqualize() checks equality of two entities {-src1-} and {-src2-}.
+ * Routine accepts callbacks {-onEvaluate1-} and {-onEvaluate2-}, which apply to 
+ * entities {-src1-} and {-src2-}. The values returned by callbacks are compared with each other.
+ * If callbacks is not passed, then routine compares {-src1-} and {-src2-} directly.
+ *
+ * @param { * } src1 - First entity to compare.
+ * @param { * } src2 - Second entity to compare.
+ * @param { Function } onEvaluate - It's a callback. If the routine has two parameters,
+ * it is used as an equalizer, and if it has only one, then routine is used as the evaluator.
+ * @param { Function } onEvaluate2 - The second part of evaluator. Accepts the {-src2-} to search.
+ *
+ * @example
+ * _.entityEntityEqualize( 1, 1 );
+ * // returns true
+ *
+ * @example
+ * _.entityEntityEqualize( 1, 'str' );
+ * // returns false
+ *
+ * @example
+ * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ * // returns false
+ *
+ * @example
+ * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e ) => e[ 0 ] );
+ * // returns true
+ *
+ * @example
+ * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1, e2 ) => e1[ 0 ] > e2[ 2 ] );
+ * // returns false
+ *
+ * @example
+ * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1 ) => e1[ 2 ], ( e2 ) => e2[ 2 ] );
+ * // returns true
+ *
+ * @returns { Boolean } - Returns boolean value of equality of two entities.
+ * @function entityEntityEqualize
+ * @throws { Error } If arguments.length is less then two or more then four.
+ * @throws { Error } If {-onEvaluate1-} is not a routine.
+ * @throws { Error } If {-onEvaluate1-} is undefines and onEvaluate2 provided.
+ * @throws { Error } If {-onEvaluate1-} is evaluator and accepts less or more then one parameter.
+ * @throws { Error } If {-onEvaluate1-} is equalizer and onEvaluate2 provided.
+ * @throws { Error } If {-onEvaluate2-} is not a routine.
+ * @throws { Error } If {-onEvaluate2-} accepts less or more then one parameter.
+ * @memberof wTools
+ */
 
 /* qqq : cover and jsdoc please | Dmytro : covered and documented */
 
