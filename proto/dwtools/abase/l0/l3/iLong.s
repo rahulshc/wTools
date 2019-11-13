@@ -470,8 +470,8 @@ function longRight( arr, ins, fromIndex, evaluator1, evaluator2 )
  * @memberof wTools
  */
 
+/* qqq : rewrite jsdoc | Dmytro : documented */
 
-/* qqq : rewrite jsdoc */
 function longLeftDefined( arr )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );

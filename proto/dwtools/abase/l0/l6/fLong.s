@@ -2593,6 +2593,9 @@ function longHasAll( src, ins, evaluator )
   if( _.primitiveIs( ins ) )
   ins = [ ins ];
 
+  if( ins.length === 0 )
+  return true;
+
   let i = 0;
   let result;
 

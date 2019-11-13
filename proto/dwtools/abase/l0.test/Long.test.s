@@ -8668,7 +8668,24 @@ function longHasAll( test )
   for( let i = 0; i < listTyped.length; i++ )
   list.push( bufferTyped( listTyped[ i ] ) );
 
-  /* tests */
+  /* tests
+
+  |                        | ins = primitive | ins = long | ins = empty long | equalizer | evaluator |
+  | ---------------------- | --------------- | ---------- | ---------------- | --------- | --------- |
+  | src === empty long     | +               |            |                  |           |           |
+  | src === empty long     |                 | +          |                  |           |           |
+  | src === empty long     | +               |            |                  | +         | +         |
+  | src === empty long     |                 | +          |                  | +         | +         |
+  | src === empty long     |                 |            | +                |           |           |
+  | src === empty long     |                 |            | +                | +         | +         |
+  | src === not empty long | +               |            |                  |           |           |
+  | src === not empty long |                 | +          |                  |           |           |
+  | src === not empty long | +               |            |                  | +         | +         |
+  | src === not empty long |                 | +          |                  | +         | +         |
+  | src === not empty long |                 |            | +                |           |           |
+  | src === not empty long |                 |            | +                | +         | +         |
+
+  */
 
   for( let i = 0; i < list.length; i++ )
   {
@@ -8699,6 +8716,12 @@ function longHasAll( test )
     var expected = false;
     test.identical( got, expected );
 
+    test.case = 'src = empty long, ins = empty array';
+    var src = makeLong( [] );
+    var got = _.longHasAll( src, [] );
+    var expected = true;
+    test.identical( got, expected );
+
     test.case = 'src = empty long, ins = array';
     var src = makeLong( [] );
     var got = _.longHasAll( src, [ false, 7 ] );
@@ -8715,6 +8738,12 @@ function longHasAll( test )
     var src = makeLong( [ 1, 2, 5, false ] );
     var got = _.longHasAll( src, 'str' );
     var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = long, ins = empty array';
+    var src = makeLong( [  5, null, 42, false, 2, undefined ] );
+    var got = _.longHasAll( src, [] );
+    var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = array, matches';
@@ -8740,9 +8769,111 @@ function longHasAll( test )
     var got = _.longHasAll( src, makeLong( [ 30, 42 ] ) );
     var expected = false;
     test.identical( got, expected );
+
+    test.case = 'src === ins';
+    var src = makeLong( [ 5, null, 42, false, 12 ] );
+    var got = _.longHasAll( src, src );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'src and ins is identical';
+    var src = makeLong( [ 5, null, 42, false, 12 ] );
+    var ins = makeLong( [ 5, null, 42, false, 12 ] );
+    var got = _.longHasAll( src, ins );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'ins has reverse elements of src';
+    var src = makeLong( [ 5, null, 42, false, 12 ] );
+    var ins = makeLong( [ 12, false, 42, null, 5 ] );
+    var got = _.longHasAll( src, ins );
+    var expected = true;
+    test.identical( got, expected );
+
+    if( !_.bufferTypedIs( src ) )
+    {
+      test.case = 'src has udefined, ins has null';
+      var src = makeLong( [ undefined, undefined, undefined, undefined, undefined ] );
+      var ins = makeLong( [ null, null, null, null, null ] );
+      var got = _.longHasAll( src, ins );
+      var expected = false;
+      test.identical( got, expected );
+    }
   }
 
   /* with evaluator, equalizer */
+
+  test.case = 'src = empty array, ins = number, with evaluator';
+  var evaluator = ( e ) => e;
+  var src = [];
+  var got = _.longHasAll( src, 42, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = empty array, ins = number, with equalizer';
+  var equalizer = ( e1, e2 ) => e1.a === e2;
+  var src = [];
+  var got = _.longHasAll( src, 4, equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = empty array, ins = empty array, with evaluator';
+  var evaluator = ( e ) => e;
+  var src = [];
+  var got = _.longHasAll( src, [], evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = empty array, ins = empty array, with equalizer';
+  var equalizer = ( e1, e2 ) => e1.a === e2;
+  var src = [];
+  var got = _.longHasAll( src, [], equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = empty array, ins = array, with evaluator';
+  var evaluator = ( e ) => e;
+  var src = [];
+  var got = _.longHasAll( src, [ 1, 2 ], evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = empty array, ins = array, with equalizer';
+  var equalizer = ( e1, e2 ) => e1.a === e2;
+  var src = [ { a : 4 }, { a : 2 }, 42, false ];
+  var got = _.longHasAll( src, [ 1, 2 ], equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'with evaluator, matches';
+  var evaluator = ( e ) => e;
+  var src = [ 42, 42, 42, 42, 42 ];
+  var got = _.longHasAll( src, 42, evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'with evaluator, no matches';
+  var evaluator = ( e ) => e;
+  var src = [ { a : 3 }, { a : 5 }, 'str', 42, false ];
+  var got = _.longHasAll( src, 4, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'with equalizer, matches';
+  var equalizer = ( e1, e2 ) => e1.a === e2;
+  var src = [ { a : 4 }, { a : 2 }, 42, false ];
+  var got = _.longHasAll( src, 4, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'with equalizer, no matches';
+  var equalizer = ( e1, e2 ) => e1.a === e2;
+  var src = [ { a : 4 }, { a : 3 }, 42, false ];
+  var got = _.longHasAll( src, 5, equalizer );
+  var expected = false;
+  test.identical( got, expected );
 
   test.case = 'with evaluator, matches';
   var evaluator = ( e ) => e.a;
@@ -8789,7 +8920,7 @@ function longHasAll( test )
 
   test.case = 'evaluator is not a routine';
   test.shouldThrowErrorSync( () => _.longHasAll( [ 1, 2, 3, false ], 2, 3 ) );
-};
+}
 
 //
 
@@ -11838,119 +11969,119 @@ function longLeft( test )
   var src = [];
   var got = _.longLeft( src, 1 );
   test.identical( got, { index : -1 } );
-  
+
   test.case = 'array has not searched element';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, 3 );
   test.identical( got, { index : -1 } );
-  
+
   test.case = 'array has duplicated searched element';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, { a : 2 } ];
   var got = _.longLeft( src, 3 );
   test.identical( got, { index : 2, element : 3 } );
-  
+
   test.case = 'searches complex data without evaluators';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, [ 3 ] );
   test.identical( got, { index : -1 } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, fromIndex';
   var src = [ 1, 2, 3, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, 3, 4 );
   test.identical( got, { index : -1 } );
-  
+
   test.case = 'array has duplicated searched element, fromIndex';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longLeft( src, 'str', 4 );
   test.identical( got, { index : 6, element : 'str' } );
-  
+
   test.case = 'searches complex data, fromIndex';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, [ 3 ], 2 );
   test.identical( got, { index : -1 } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, onEvaluate1';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, 3, ( e ) => typeof e );
   test.identical( got, { index : 0, element : 1 } );
-  
+
   test.case = 'array has duplicated searched element, onEvaluate1';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longLeft( src, 'str', ( e ) => e );
   test.identical( got, { index : 3, element : 'str' } );
-  
+
   test.case = 'searches complex data, onEvaluate1';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, [ 3 ], ( e ) => e[ 0 ] );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, fromIndex, onEvaluate1';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, 3, 2, ( e ) => typeof e );
   test.identical( got, { index : -1 } );
-  
+
   test.case = 'array has duplicated searched element, fromIndex, onEvaluate1';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longLeft( src, 'str', 4, ( e ) => typeof e );
   test.identical( got, { index : 6, element : 'str' } );
-  
+
   test.case = 'searches complex data, onEvaluate1';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, [ 3 ], 4, ( e ) => e[ 0 ] );
   test.identical( got, { index : -1 } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, onEvaluate1, onEvaluate2';
   var src =[ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, 3, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   test.case = 'array has duplicated searched element, onEvaluate1, onEvaluate2';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longLeft( src, 2, ( e ) => e.a, ( ins ) => ins );
   test.identical( got, { index : 7, element : { a : 2 } } );
-  
+
   test.case = 'searches complex data, onEvaluate, onEvaluate2';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, 3, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, fromIndex, onEvaluate1, onEvaluate2';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, 3, 2, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   test.case = 'array has duplicated searched element, fromIndex, onEvaluate1, onEvaluate2';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longLeft( src, 2, 7, ( e ) => e.a, ( ins ) => ins );
   test.identical( got, { index : 7, element : { a : 2 } } );
-  
+
   test.case = 'searches complex data, fromIndex, onEvaluate, onEvaluate2';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, 3, 4, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : -1 } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, equalizer';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, 3, ( e, ins ) => e[ 0 ] === ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   test.case = 'array has duplicated searched element, equalizer';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longLeft( src, 2, ( e, ins ) => e.a === ins );
   test.identical( got, { index : 7, element : { a : 2 } } );
-  
+
   test.case = 'searches complex data, equalizer';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longLeft( src, 3, ( e, ins ) => e[ 0 ] ===  ins );
@@ -11988,119 +12119,119 @@ function longRight( test )
   var src = [];
   var got = _.longRight( src, 1 );
   test.identical( got, { index : -1 } );
-  
+
   test.case = 'array has not searched element';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, 3 );
   test.identical( got, { index : -1 } );
-  
+
   test.case = 'array has duplicated searched element';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, { a : 2 } ];
   var got = _.longRight( src, 3 );
   test.identical( got, { index : 5, element : 3 } );
-  
+
   test.case = 'searches complex data without evaluators';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, [ 3 ] );
   test.identical( got, { index : -1 } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, fromIndex';
   var src = [ 1, 2, 3, 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, 3, 4 );
   test.identical( got, { index : 2, element : 3 } );
-  
+
   test.case = 'array has duplicated searched element, fromIndex';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longRight( src, 'str', 4 );
   test.identical( got, { index : 3, element : 'str' } );
-  
+
   test.case = 'searches complex data, fromIndex';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, [ 3 ], 2 );
   test.identical( got, { index : -1 } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, onEvaluate1';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, 3, ( e ) => typeof e );
   test.identical( got, { index : 1, element : 2 } );
-  
+
   test.case = 'array has duplicated searched element, onEvaluate1';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longRight( src, 'str', ( e ) => e );
   test.identical( got, { index : 6, element : 'str' } );
-  
+
   test.case = 'searches complex data, onEvaluate1';
   var src = [ 1, 2, [ 3 ], 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, [ 3 ], ( e ) => e[ 0 ] );
   test.identical( got, { index : 4, element : [ 3 ] } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, fromIndex, onEvaluate1';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, 3, 2, ( e ) => typeof e );
   test.identical( got, { index : 1, element : 2 } );
-  
+
   test.case = 'array has duplicated searched element, fromIndex, onEvaluate1';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longRight( src, 'str', 4, ( e ) => typeof e );
   test.identical( got, { index : 3, element : 'str' } );
-  
+
   test.case = 'searches complex data, onEvaluate1';
   var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, [ 3 ], 4, ( e ) => e[ 0 ] );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, onEvaluate1, onEvaluate2';
   var src =[ 1, 2, [ 3 ], 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, 3, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : 4, element : [ 3 ] } );
-  
+
   test.case = 'array has duplicated searched element, onEvaluate1, onEvaluate2';
   var src = [ 1, 2, 3, { a : 2 }, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longRight( src, 2, ( e ) => e.a, ( ins ) => ins );
   test.identical( got, { index : 8, element : { a : 2 } } );
-  
+
   test.case = 'searches complex data, onEvaluate, onEvaluate2';
   var src = [ 1, 2, [ 3 ], 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, 3, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : 4, element : [ 3 ] } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, fromIndex, onEvaluate1, onEvaluate2';
   var src = [ 1, 2, [ 3 ], 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, 3, 2, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : 2, element : [ 3 ] } );
-  
+
   test.case = 'array has duplicated searched element, fromIndex, onEvaluate1, onEvaluate2';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longRight( src, 2, 7, ( e ) => e.a, ( ins ) => ins );
   test.identical( got, { index : 7, element : { a : 2 } } );
-  
+
   test.case = 'searches complex data, fromIndex, onEvaluate, onEvaluate2';
   var src = [ 1, 2, [ 3, 4 ], 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, 3, 4, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : 4, element : [ 3 ] } );
-  
+
   /* */
-  
+
   test.case = 'array has not searched element, equalizer';
   var src = [ 1, 2, [ 3 ], 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, 3, ( e, ins ) => e[ 0 ] === ins );
   test.identical( got, { index : 4, element : [ 3 ] } );
-  
+
   test.case = 'array has duplicated searched element, equalizer';
   var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
   var got = _.longRight( src, 2, ( e, ins ) => e.a === ins );
   test.identical( got, { index : 7, element : { a : 2 } } );
-  
+
   test.case = 'searches complex data, equalizer';
   var src = [ 1, 2, [ 3 ], 'str', [ 3 ], { a : 2 } ];
   var got = _.longRight( src, 3, ( e, ins ) => e[ 0 ] ===  ins );
