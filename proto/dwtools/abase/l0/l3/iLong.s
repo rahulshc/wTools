@@ -505,8 +505,8 @@ let Routines =
   longLeftIndex,
   longRightIndex,
 
-  /* qqq : teach to accept fromIndex, make perfect coverage */
-  /* qqq : should be -1 in index if not found */
+  /* qqq : teach to accept fromIndex, make perfect coverage | Dmytro : already teached, covered */
+  /* qqq : should be -1 in index if not found | Dmytro : already implemented */
   longLeft,
   longRight,
 
