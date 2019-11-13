@@ -203,7 +203,7 @@ function longOnce( dstLong, onEvaluate )
 
   let j = 1;
   for( let i = 1; i < dstLong.length && j < length; i++ )
-  if( _.arrayRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
+  if( _.longRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
   result[ j++ ] = dstLong[ i ];
 
   _.assert( j === length );
