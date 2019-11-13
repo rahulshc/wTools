@@ -1697,7 +1697,17 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     if( _.longIs( container ) )
     _.arrayAppendArrayOnce( this.original, container, onEvaluate1, onEvaluate2 );
     else if( _.setIs( container ) )
-    _.arrayAppendArrayOnce( this.original, [ ... container ] );
+    _.arrayAppendArrayOnce( this.original, [ ... container ], onEvaluate1, onEvaluate2 );
+    else _.assert( 0, 'Unexpected data type' );
+    return this;
+  }
+  appendContainerOnceStrictly( container, onEvaluate1, onEvaluate2 )
+  {
+    container = this.ToOriginal( container );
+    if( _.longIs( container ) )
+    _.arrayAppendArrayOnceStrictly( this.original, container, onEvaluate1, onEvaluate2 );
+    else if( _.setIs( container ) )
+    _.arrayAppendArrayOnceStrictly( this.original, [ ... container ], onEvaluate1, onEvaluate2 );
     else _.assert( 0, 'Unexpected data type' );
     return this;
   }
