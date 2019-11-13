@@ -332,7 +332,7 @@ function longRightIndex( arr, ins, evaluator1, evaluator2 )
  *
  * @returns { Object } Returns a new object containing the properties, (index, element),
  * corresponding to the found value {-ins-} from the array {-arr-}.
- * Otherwise, it returns the object with property (index) which value is -1.
+ * Otherwise, it returns the object with property (index), which value is -1.
  * @function longLeft
  * @throws { Error } If arguments.length is less then two or more then five.
  * @throws { Error } If {-fromIndex-} is not a number.
@@ -411,7 +411,7 @@ function longLeft( arr, ins, fromIndex, evaluator1, evaluator2 )
  *
  * @returns { Object } Returns a new object containing the properties, (index, element),
  * corresponding to the found value {-ins-} from the array {-arr-}.
- * Otherwise, it returns the object with property (index) which value is -1.
+ * Otherwise, it returns the object with property (index), which value is -1.
  * @function longRight
  * @throws { Error } If arguments.length is less then two or more then five.
  * @throws { Error } If {-fromIndex-} is not a number.
@@ -443,6 +443,34 @@ function longRight( arr, ins, fromIndex, evaluator1, evaluator2 )
 
 //
 
+/**
+ * The routine longLeftDefined() returns a new object containing the properties, (index, element),
+ * of first left element in a Long {-arr-}, which value is not equal to undefined.
+ * If element is not founded, then routine return new object with property (index), which value is -1. 
+ *
+ * @param { Long } arr - A Long to check.
+ *
+ * @example
+ * _.longLeftDefined( [ undefined, undefined, undefined, undefined, undefined ] );
+ * // returns { index : -1 }
+ *
+ * @example
+ * _.longLeftDefined( [ 1, undefined, 2, false, 'str', 2, undefined, 5 ] );
+ * // returns { index : 0, element : 1 }
+ *
+ * @example
+ * _.longLeftDefined( [ undefined, undefined, 2, false, 'str', 2 ] );
+ * // returns { index : 2, element : 2 }
+ *
+ * @returns { Object } Returns a new object containing the properties, (index, element),
+ * of first left element in a Long {-arr-}, which value is not equal to undefined.
+ * Otherwise, it returns the object with property (index), which value is -1.
+ * @function longRight
+ * @throws { Error } If arguments.length is less then or more then one.
+ * @memberof wTools
+ */
+
+
 /* qqq : rewrite jsdoc */
 function longLeftDefined( arr )
 {
@@ -473,7 +501,7 @@ function longLeftDefined( arr )
  *
  * @returns { Object } Returns a new object containing the properties, (index, element),
  * of first right element in a Long {-arr-}, which value is not equal to undefined.
- * Otherwise, it returns the object with property (index) which value is -1.
+ * Otherwise, it returns the object with property (index) which, value is -1.
  * @function longRight
  * @throws { Error } If arguments.length is less then or more then one.
  * @memberof wTools
