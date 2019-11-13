@@ -9649,11 +9649,11 @@ function setAdapterPop( test )
   test.identical( [ ... src.original ], [ null, 1, 'str' ] );
   test.identical( got, [ 1 ] );
 
-	test.case = 'container, searched element is not last element, complex data, two evaluators';
-	var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ], undefined, [ 1, 2 ], { a : 2 } ] ) );
-	var got = src.pop( [ 1 ], ( e ) => !e ? e : e[ 0 ], ( ins ) => ins[ 0 ] );
-	test.identical( [ ... src.original ], [ null, 1, 'str', [ 1 ], undefined, { a : 2 } ] );
-	test.identical( got, [ 1, 2 ] );
+  test.case = 'container, searched element is not last element, complex data, two evaluators';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ], undefined, [ 1, 2 ], { a : 2 } ] ) );
+  var got = src.pop( [ 1 ], ( e ) => !e ? e : e[ 0 ], ( ins ) => ins[ 0 ] );
+  test.identical( [ ... src.original ], [ null, 1, 'str', [ 1 ], undefined, { a : 2 } ] );
+  test.identical( got, [ 1, 2 ] );
 
   test.case = 'container, last element - complex data, equalizer';
   var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ] ] ) );
@@ -9661,20 +9661,20 @@ function setAdapterPop( test )
   test.identical( [ ... src.original ], [ null, 'str', [ 1 ] ] );
   test.identical( got, 1 );
 
-	test.case = 'container, searched element is not last element, complex data, equalizer';
-	var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ], undefined, [ 1, 2 ], { a : 2 } ] ) );
-	var got = src.pop( [ 1 ], ( e, ins ) => e === ins[ 0 ] );
-	test.identical( [ ... src.original ], [ null, 'str', [ 1 ], undefined, [ 1, 2 ], { a : 2 } ] );
-	test.identical( got, 1 );
+  test.case = 'container, searched element is not last element, complex data, equalizer';
+  var src = _.containerAdapter.make( new Set( [ null, 1, 'str', [ 1 ], undefined, [ 1, 2 ], { a : 2 } ] ) );
+  var got = src.pop( [ 1 ], ( e, ins ) => e === ins[ 0 ] );
+  test.identical( [ ... src.original ], [ null, 'str', [ 1 ], undefined, [ 1, 2 ], { a : 2 } ] );
+  test.identical( got, 1 );
 
-	/* - */
+  /* - */
 
   if( !Config.debug )
   return;
 
- 	test.case = 'empty container, pop without argument';
-	test.shouldThrowErrorSync( () =>
-	{
+  test.case = 'empty container, pop without argument';
+  test.shouldThrowErrorSync( () =>
+  {
 		var src = _.containerAdapter.make( new Set() );
 		src.pop();
   });
@@ -9722,7 +9722,7 @@ function setAdapterPopStrictly( test )
   test.identical( [ ... src.original ], [ null, 1, 'str' ] );
   test.identical( got, [ 1 ] );
 
-	/* - */
+  /* - */
 
   if( !Config.debug )
   return;
@@ -11780,6 +11780,7 @@ function setAdapterLeft( test )
   
   test.case = 'container has duplicated searched element';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 'str', [ 3 ], 3, { a : 2 } ] ) );
+  debugger;
   var got = src.left( 3 );
   test.identical( got, { index : 2, element : 3 } );
   
@@ -11890,7 +11891,7 @@ function setAdapterLeft( test )
   var got = src.left( 3, ( e, ins ) => e[ 0 ] ===  ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
 
-	/* - */
+  /* - */
 
   if( !Config.debug )
   return;
@@ -12050,7 +12051,7 @@ function setAdapterRight( test )
   var got = src.right( 3, ( e, ins ) => e[ 0 ] ===  ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
 
-	/* - */
+  /* - */
 
   if( !Config.debug )
   return;
@@ -15988,7 +15989,7 @@ function arrayAdapterLeft( test )
   var got = src.left( 3, ( e, ins ) => e[ 0 ] ===  ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
 
-	/* - */
+  /* - */
 
   if( !Config.debug )
   return;
@@ -16148,7 +16149,7 @@ function arrayAdapterRight( test )
   var got = src.right( 3, ( e, ins ) => e[ 0 ] ===  ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
 
-	/* - */
+  /* - */
 
   if( !Config.debug )
   return;
