@@ -11780,7 +11780,6 @@ function setAdapterLeft( test )
   
   test.case = 'container has duplicated searched element';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 'str', [ 3 ], 3, { a : 2 } ] ) );
-  debugger;
   var got = src.left( 3 );
   test.identical( got, { index : 2, element : 3 } );
   
