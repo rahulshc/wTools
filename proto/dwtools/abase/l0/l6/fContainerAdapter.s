@@ -520,7 +520,7 @@ class ContainerAdapterAbstract
     return dst;
   }
 
-  but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evluator, 2 avaluators | Dmytro : implemented, covered */
+  but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators | Dmytro : implemented, covered */
   {
     let self = this;
     let container = self.original;
@@ -846,6 +846,30 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       return this.appendContainer( container );
     }
   }
+  appendContainerOnceStrictly( container, onEvaluate1, onEvaluate2 )
+  { 
+    container = this.ToOriginal( container );
+
+    if( _.longIs( container ) )
+    {
+      for( let i = 0; i < container.length; i++ )
+      {
+        _.assert( !this.has( container[ i ], onEvaluate1, onEvaluate2 ) );
+        this.append( container[ i ] );
+      }
+    }
+    else if( _.setIs( container ) )
+    {
+      for( let e of container )
+      {
+        _.assert( !this.has( e, onEvaluate1, onEvaluate2 ) );
+        this.append( e );
+      }
+    }
+    else _.assert( 0, 'Unexpected data type' );
+
+    return this;
+  }
   push( e )
   {
     this.original.add( e );
@@ -855,7 +879,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let self = this;
 		let container = this.original;
-    // qqq2 : ??
+    // qqq2 : ?? | Dmytro : I'v got it
     // _.assert( arguments.length === 1 );
     // let last = this.last();
 
