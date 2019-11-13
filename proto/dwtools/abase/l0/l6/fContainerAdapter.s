@@ -1416,11 +1416,13 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
   {
     /* qqq2 : make optimal implementation, please */
+    _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longLeft( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
   {
     /* qqq2 : make optimal implementation, please */
+    _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longRight( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   reverse( dst )
