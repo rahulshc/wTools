@@ -900,7 +900,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let last = this.last();
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
     _.assert( _.entityEntityEqualize( last, e, onEvaluate1, onEvaluate2 ), 'Set does not have such an element' );
-		// _.assert( _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Set does not have such an element' );
+    // _.assert( _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Set does not have such an element' );
 
     this.original.delete( last );
     return last;
@@ -1618,7 +1618,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
     // _.assert( arguments.length === 1 );
-		// _.assert( this.original[ this.original.length - 1 ] === e, 'Container does not have such element' );
+    // _.assert( this.original[ this.original.length - 1 ] === e, 'Container does not have such element' );
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
     _.assert( _.entityEntityEqualize( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
     // _.assert( _.longLeftIndex( [ this.last() ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Container does not have such element' );
@@ -1937,12 +1937,14 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return this.noneLeft( onEach );
   }
-  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
+  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
   {
+    _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please */
   {
+    _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   reverse( dst )
