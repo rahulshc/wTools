@@ -843,7 +843,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     else
     return this.original.delete( e ) ? 1 : 0;
   }
-  removedOnce( e, onEvaluate1, onEvaluate2 )
+  removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
   {
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
@@ -872,7 +872,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     else
     return this.original.delete( e ) ? 1 : -1;
   }
-  removedOnceStrictly( e, onEvaluate1, onEvaluate2 )
+  removedOnceStrictly( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
   {
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
@@ -914,12 +914,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     this.removed.apply( this, arguments );
     return this;
   }
-  removeOnce( e, onEvaluate1, onEvaluate2 )
+  removeOnce( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
   {
     this.removedOnce.apply( this, arguments );
     return this;
   }
-  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )
+  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
   {
     this.removedOnceStrictly.apply( this, arguments );
     return this;
@@ -968,7 +968,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return dst;
   }
-  filter( dst, onEach )
+  filter( dst, onEach ) /* qqq2 : implement and cover left, right versions */
   {
     let self = this;
     let container = this.original;
@@ -1010,7 +1010,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return dst;
   }
-  flatFilter( dst, onEach )
+  flatFilter( dst, onEach ) /* qqq2 : implement and cover left, right versions */
   {
     let self = this;
     let container = self.original;
@@ -1070,7 +1070,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return dst;
   }
-  once( dst, onEval )
+  once( dst, onEval ) /* qqq2 : implement and cover left, right versions */
   {
     let container = this.original;
     [ dst, onEval ] = this._filterArguments( ... arguments );
@@ -1175,6 +1175,8 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     // let reversedContainer = new Set( [ ... container ].reverse() ); /* Dmytro : double transformation has no sense */
     // for( let e of reversedContainer )
     // onEach( e, undefined, self );
+    /* qqq2 : add extra test routine for each *Right method checking ordering is correct, ask how to */
+    /* qqq2 : left and right iterating should be different */
     let temp = [ ... container ];
     for( let i = temp.length - 1; i >= 0; i-- )
     onEach( temp[ i ], i, self );
@@ -1217,12 +1219,16 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let self = this;
     let container = this.original;
-    let index = container.size;
+    // let index = container.size;
     /* qqq : cover all cases and arguments ( including key! ) */
-    for( let e of container )
+    /* qqq2 : left and right iterating should be different */
+    // for( let e of container )
+    let temp = [ ... container ];
+    for( let k = temp.length - 1; k >= 0; k-- )
     {
-      index -= 1;
-      let r = onEach( e, index, self );
+      let e = temp[ k ];
+      // index -= 1;
+      let r = onEach( e, k, self );
       if( !r )
       return false;
     }
@@ -1251,12 +1257,17 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let self = this;
     let container = this.original;
-    let index = container.size;
+    // let index = container.size;
     /* qqq : cover all cases and arguments ( including key! ) */
-    for( let e of container )
+    /* qqq2 : left and right iterating should be different */
+    // for( let e of container )
+    // {
+    //   index -= 1;
+    let temp = [ ... container ];
+    for( let k = temp.length - 1; k >= 0; k-- )
     {
-      index -= 1;
-      let r = onEach( e, index, self );
+      let e = temp[ k ];
+      let r = onEach( e, k, self );
       if( r )
       return true;
     }
@@ -1285,12 +1296,17 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     let self = this;
     let container = this.original;
-    let index = container.size;
+    // let index = container.size;
     /* qqq : cover all cases and arguments ( including key! ) */
-    for( let e of container )
+    /* qqq2 : left and right iterating should be different */
+    // for( let e of container )
+    // {
+    //   index -= 1;
+    let temp = [ ... container ];
+    for( let k = temp.length - 1; k >= 0; k-- )
     {
-      index -= 1;
-      let r = onEach( e, index, self );
+      let e = temp[ k ];
+      let r = onEach( e, k, self );
       if( r )
       return false;
     }
@@ -1462,8 +1478,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   appendOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
-    debugger;
-    _.arrayAppendOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 )
+    _.arrayAppendOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
   push( e )
@@ -1515,11 +1530,11 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return _.arrayRemoved( this.original, e, onEvaluate1, onEvaluate2 );
   }
-  removedOnce( e, onEvaluate1, onEvaluate2 )
+  removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
   {
     return _.arrayRemovedOnce( this.original, e, onEvaluate1, onEvaluate2 );
   }
-  removedOnceStrictly( e, onEvaluate1, onEvaluate2 )
+  removedOnceStrictly( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
   {
     return _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
   }
@@ -1528,12 +1543,12 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.arrayRemove( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnce( e, onEvaluate1, onEvaluate2 )
+  removeOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
   {
     _.arrayRemoveOnce( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )
+  removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
   {
     _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
@@ -1542,7 +1557,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     this.original.splice( 0, this.original.length );
   }
-  map( dst, onEach )
+  map( dst, onEach ) /* qqq2 : implement and cover left, right versions */
   {
     let self = this;
     let container = this.original;
@@ -1582,7 +1597,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     return dst;
   }
-  filter( dst, onEach )
+  filter( dst, onEach ) /* qqq2 : implement and cover left, right versions */
   {
     let self = this;
     let container = this.original;
@@ -1619,7 +1634,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
     return dst;
   }
-  flatFilter( dst, onEach )
+  flatFilter( dst, onEach ) /* qqq2 : implement and cover left, right versions */
   {
     let self = this;
     let container = self.original;
@@ -1665,7 +1680,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
     return dst;
   }
-  once( dst, onEval )
+  once( dst, onEval ) /* qqq2 : implement and cover left, right versions */
   {
     let container = this.original;
     [ dst, onEval ] = this._filterArguments( ... arguments );

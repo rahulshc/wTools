@@ -2549,14 +2549,12 @@ function longHasAll( src, ins, evaluator )
   ins = [ ins ];
 
   let i = 0;
-  let result;
-
-  do
+  let result = 0;
+  while( result >= 0 && i < ins.length )
   {
     result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
     i++;
   }
-  while( result >= 0 && i < ins.length )
 
   if( result !== -1 )
   return true;
