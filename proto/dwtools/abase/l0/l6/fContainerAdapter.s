@@ -1441,43 +1441,8 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     /* qqq2 : make optimal implementation, please | Dmytro : implemented with iterative search in original */
     // return _.longLeft( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
-    _.assert( 1 <= arguments.length && arguments.length <= 4 );
-
-    let self = this;
-    let container = self.original;
-    let from = 0;
-    let index = 0;
-    let result = Object.create( null );
-    result.index = - 1;
-    
-    if( _.routineIs( fromIndex ) )
-    {
-      onEvaluate2 = onEvaluate1;
-      onEvaluate1 = fromIndex;
-    }
-    else if( _.numberIs( fromIndex ) )
-    {
-      from = fromIndex;
-    }
-    
-    for( let e of container )		
-    {
-      if( from === 0 )
-      {
-        if( _.entityEntityEqualize( e, element, onEvaluate1, onEvaluate2 ) )
-        {
-          result.index = index;
-          result.element = e;
-          break;
-        }
-      }
-      else
-      {
-        from -= 1;
-      }
-      index += 1;
-    };
-    return result;
+   _.assert( 1 <= arguments.length && arguments.length <= 4 );
+   return _.arraySetLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
   {
