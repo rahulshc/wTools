@@ -35672,6 +35672,289 @@ function arraySetIdentical( test )
 
 //
 
+function arraySetLeft( test )
+{
+  test.open( 'Set' );
+
+  test.case = 'empty container';
+  var src = new Set( [] );
+  var got = _.arraySetLeft( src, 1 );
+  test.identical( got, { index : -1 } );
+  
+  test.case = 'container has not searched element';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3 );
+  test.identical( got, { index : -1 } );
+  
+  test.case = 'container has duplicated searched element';
+  var src = new Set( [ 1, 2, 3, 'str', [ 3 ], 3, { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3 );
+  test.identical( got, { index : 2, element : 3 } );
+  
+  test.case = 'searches complex data without evaluators';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, [ 3 ] );
+  test.identical( got, { index : -1 } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, fromIndex';
+  var src = new Set( [ 1, 2, 3, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3, 4 );
+  test.identical( got, { index : -1 } );
+  
+  test.case = 'container has duplicated searched element, fromIndex';
+  var src = new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] );
+  var got = _.arraySetLeft( src, 'str', 4 );
+  test.identical( got, { index : -1 } );
+  
+  test.case = 'searches complex data, fromIndex';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, [ 3 ], 2 );
+  test.identical( got, { index : -1 } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, onEvaluate1';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3, ( e ) => typeof e );
+  test.identical( got, { index : 0, element : 1 } );
+  
+  test.case = 'container has duplicated searched element, onEvaluate1';
+  var src = new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] );
+  var got = _.arraySetLeft( src, 'str', ( e ) => e );
+  test.identical( got, { index : 3, element : 'str' } );
+  
+  test.case = 'searches complex data, onEvaluate1';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, [ 3 ], ( e ) => e[ 0 ] );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, fromIndex, onEvaluate1';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3, 2, ( e ) => typeof e );
+  test.identical( got, { index : -1 } );
+  
+  test.case = 'container has duplicated searched element, fromIndex, onEvaluate1';
+  var src = new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] );
+  var got = _.arraySetLeft( src, 'str', 4, ( e ) => typeof e );
+  test.identical( got, { index : -1 } );
+  
+  test.case = 'searches complex data, onEvaluate1';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, [ 3 ], 4, ( e ) => e[ 0 ] );
+  test.identical( got, { index : -1 } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, onEvaluate1, onEvaluate2';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+  
+  test.case = 'container has duplicated searched element, onEvaluate1, onEvaluate2';
+  var src = new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] );
+  var got = _.arraySetLeft( src, 2, ( e ) => e.a, ( ins ) => ins );
+  test.identical( got, { index : 5, element : { a : 2 } } );
+  
+  test.case = 'searches complex data, onEvaluate, onEvaluate2';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, fromIndex, onEvaluate1, onEvaluate2';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3, 2, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+  
+  test.case = 'container has duplicated searched element, fromIndex, onEvaluate1, onEvaluate2';
+  var src = new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] );
+  var got = _.arraySetLeft( src, 2, 5, ( e ) => e.a, ( ins ) => ins );
+  test.identical( got, { index : 5, element : { a : 2 } } );
+  
+  test.case = 'searches complex data, fromIndex, onEvaluate, onEvaluate2';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3, 4, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( got, { index : -1 } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, equalizer';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+  
+  test.case = 'container has duplicated searched element, equalizer';
+  var src = new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] );
+  var got = _.arraySetLeft( src, 2, ( e, ins ) => e.a === ins );
+  test.identical( got, { index : 5, element : { a : 2 } } );
+  
+  test.case = 'searches complex data, equalizer';
+  var src = new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] );
+  var got = _.arraySetLeft( src, 3, ( e, ins ) => e[ 0 ] ===  ins );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+
+  test.close( 'Set' );
+
+  /* */
+
+  test.open( 'array' );
+
+  test.case = 'empty container';
+  var src = [];
+  var got = _.arraySetLeft( src, 1 );
+  test.identical( got, { index : -1 } );
+  
+  test.case = 'container has not searched element';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, 3 );
+  test.identical( got, { index : -1 } );
+  
+  test.case = 'container has duplicated searched element';
+  var src = [ 1, 2, 3, 'str', [ 3 ], 3, { a : 2 } ];
+  var got = _.arraySetLeft( src, 3 );
+  test.identical( got, { index : 2, element : 3 } );
+  
+  test.case = 'searches complex data without evaluators';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, [ 3 ] );
+  test.identical( got, { index : -1 } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, fromIndex';
+  var src = [ 1, 2, 3, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, 3, 4 );
+  test.identical( got, { index : -1 } );
+  
+  test.case = 'container has duplicated searched element, fromIndex';
+  var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
+  var got = _.arraySetLeft( src, 'str', 4 );
+  test.identical( got, { index : 6, element : 'str' } );
+  
+  test.case = 'searches complex data, fromIndex';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, [ 3 ], 2 );
+  test.identical( got, { index : -1 } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, onEvaluate1';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, 3, ( e ) => typeof e );
+  test.identical( got, { index : 0, element : 1 } );
+  
+  test.case = 'container has duplicated searched element, onEvaluate1';
+  var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
+  var got = _.arraySetLeft( src, 'str', ( e ) => e );
+  test.identical( got, { index : 3, element : 'str' } );
+  
+  test.case = 'searches complex data, onEvaluate1';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, [ 3 ], ( e ) => e[ 0 ] );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, fromIndex, onEvaluate1';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, 3, 2, ( e ) => typeof e );
+  test.identical( got, { index : -1 } );
+  
+  test.case = 'container has duplicated searched element, fromIndex, onEvaluate1';
+  var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
+  var got = _.arraySetLeft( src, 'str', 4, ( e ) => typeof e );
+  test.identical( got, { index : 6, element : 'str' } );
+  
+  test.case = 'searches complex data, onEvaluate1';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, [ 3 ], 4, ( e ) => e[ 0 ] );
+  test.identical( got, { index : -1 } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, onEvaluate1, onEvaluate2';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, 3, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+  
+  test.case = 'container has duplicated searched element, onEvaluate1, onEvaluate2';
+  var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
+  var got = _.arraySetLeft( src, 2, ( e ) => e.a, ( ins ) => ins );
+  test.identical( got, { index : 7, element : { a : 2 } } );
+  
+  test.case = 'searches complex data, onEvaluate, onEvaluate2';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, 3, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, fromIndex, onEvaluate1, onEvaluate2';
+  var src =[ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, 3, 2, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+  
+  test.case = 'container has duplicated searched element, fromIndex, onEvaluate1, onEvaluate2';
+  var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
+  var got = _.arraySetLeft( src, 2, 7, ( e ) => e.a, ( ins ) => ins );
+  test.identical( got, { index : 7, element : { a : 2 } } );
+  
+  test.case = 'searches complex data, fromIndex, onEvaluate, onEvaluate2';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, 3, 4, ( e ) => e[ 0 ], ( ins ) => ins );
+  test.identical( got, { index : -1 } );
+  
+  /* */
+  
+  test.case = 'container has not searched element, equalizer';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, 3, ( e, ins ) => e[ 0 ] === ins );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+  
+  test.case = 'container has duplicated searched element, equalizer';
+  var src = [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ];
+  var got = _.arraySetLeft( src, 2, ( e, ins ) => e.a === ins );
+  test.identical( got, { index : 7, element : { a : 2 } } );
+  
+  test.case = 'searches complex data, equalizer';
+  var src = [ 1, 2, 'str', [ 3 ], { a : 2 } ];
+  var got = _.arraySetLeft( src, 3, ( e, ins ) => e[ 0 ] ===  ins );
+  test.identical( got, { index : 3, element : [ 3 ] } );
+
+  test.close( 'array' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arraySetLeft() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arraySetLeft( [ 1, 2 ], 1, 0, ( e ) => e, ( ins ) => ins, 'extra' ) );
+  test.shouldThrowErrorSync( () => _.arraySetLeft( new Set(), 1, 0, ( e ) => e, ( ins ) => ins, 'extra' ) );
+
+  test.case = 'onEvaluate1 is not a routine, not a number';
+  test.shouldThrowErrorSync( () => _.arraySetLeft( [ 1, 2 ], 1, 0, 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.arraySetLeft( new Set( [ 1, 2 ] ), 1, 0, 'wrong' ) );
+
+  test.case = 'onEvaluate1 has wrong length';
+  test.shouldThrowErrorSync( () => _.arraySetLeft( [ 1, 2 ], 1, 0, () => 1 ) );
+  test.shouldThrowErrorSync( () => _.arraySetLeft( new Set( [ 1, 2 ] ), 1, 0, () => 1 ) );
+
+  test.case = 'onEvaluate2 has wrong length';
+  test.shouldThrowErrorSync( () => _.arraySetLeft( [ 1, 2 ], 1, 0, ( e ) => e, () => 1 ) );
+  test.shouldThrowErrorSync( () => _.arraySetLeft( new Set( [ 1, 2 ] ), 1, 0, ( e ) => e, () => 1 ) );
+}
+
+//
+
 function loggerProblemExperiment( test )
 {
 
@@ -36023,6 +36306,8 @@ var Self =
     arraySetContainAll,
     arraySetContainAny,
     arraySetIdentical,
+
+    arraySetLeft,
 
     loggerProblemExperiment,
 
