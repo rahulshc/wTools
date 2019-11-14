@@ -2616,6 +2616,58 @@ function arraySetIdentical( ins1, ins2 )
   return result.length === 0;
 }
 
+//
+
+function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
+{
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+  let result = Object.create( null );
+  result.index = -1;
+
+  if( _.setIs( arr ) )
+  {
+    let index = 0;
+    let from = 0;
+
+    if( _.routineIs( fromIndex ) )
+    {
+      onEvaluate2 = onEvaluate1;
+      onEvaluate1 = fromIndex;
+    }
+    else if( _.numberIs( fromIndex ) )
+    {
+      from = fromIndex;
+    }
+
+
+    for( let e of arr )
+    {
+      if( from === 0 )
+      {
+        if( _.entityEntityEqualize( e, ins, onEvaluate1, onEvaluate2 ) )
+        {
+          result.index = index;
+          result.element = e;
+          break;
+        }
+      }
+      else
+      {
+        from--;
+      }
+      index++;
+    }
+  }
+  else if( _.arrayIs( arr ) )
+  {
+    result = _.longLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 );
+  }
+  else 
+  _.assert( 0 );
+  
+  return result;
+}
+
 // --
 // fields
 // --
@@ -2706,6 +2758,8 @@ let Routines =
   arraySetContainAny,
   arraySetContainNone,
   arraySetIdentical,
+
+  arraySetLeft,
 
   // to replace
 
