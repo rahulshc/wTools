@@ -153,7 +153,7 @@ function promiseLike( src )
   return false;
   // if( !_.objectIs( src ) )
   // return false;
-  return _.routineIs( src.then ) && _.routineIs( src.catch ) && ( src.constructor ) && ( src.constructor.name === 'Promise' );
+  return _.routineIs( src.then ) && _.routineIs( src.catch ) && ( src.constructor ) && ( src.constructor.name !== 'wConsequence' );
 }
 
 //
