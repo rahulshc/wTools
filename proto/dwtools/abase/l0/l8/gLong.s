@@ -2621,11 +2621,11 @@ function arraySetIdentical( ins1, ins2 )
 function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
-  let result = Object.create( null );
-  result.index = -1;
 
   if( _.setIs( arr ) )
   {
+    let result = Object.create( null );
+    result.index = -1;
     let index = 0;
     let from = 0;
 
@@ -2657,15 +2657,63 @@ function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
       }
       index++;
     }
+
+    return result;
   }
   else if( _.arrayIs( arr ) )
   {
-    result = _.longLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 );
+    return _.longLeft.apply( this, arguments );
+  }
+  else
+  _.assert( 0 );
+  
+}
+
+//
+
+function arraySetRight( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
+{
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+
+  if( _.setIs( arr ) )
+  {
+    let result = Object.create( null );
+    result.index = -1;
+    let to = arr.size;
+    let index = 0;
+      
+    if( _.routineIs( fromIndex ) )
+    {
+      onEvaluate2 = onEvaluate1;
+      onEvaluate1 = fromIndex;
+    }
+    else if( _.numberIs( fromIndex ) )
+    {
+      to = fromIndex;
+    }
+
+    for( let e of arr )
+    {
+      if( index <= to )
+      {
+        if( _.entityEntityEqualize( e, ins, onEvaluate1, onEvaluate2 ) )
+        {
+          result.index = index;
+          result.element = e;
+        }
+      }
+      index += 1;
+    }
+
+    return result; 
+  }
+  else if( _.arrayIs( arr ) )
+  {
+    return _.longRight.apply( this, arguments );
   }
   else 
   _.assert( 0 );
   
-  return result;
 }
 
 // --
@@ -2760,6 +2808,7 @@ let Routines =
   arraySetIdentical,
 
   arraySetLeft,
+  arraySetRight,
 
   // to replace
 
