@@ -519,7 +519,6 @@ class ContainerAdapterAbstract
 
     return dst;
   }
-
   but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators | Dmytro : implemented, covered */
   {
     let self = this;
@@ -578,7 +577,6 @@ class ContainerAdapterAbstract
 
     return dst;
   }
-
   select( selector )
   {
     let self = this;
@@ -1465,41 +1463,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     /* qqq2 : make optimal implementation, please | Dmytro : copy of container is better if container has searched element in the end, then algorithm will find it faster */
     // return _.longRight( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
-
-    let self = this;
-    let container = self.original;
-    let to = self.length;
-    let index = 0;
-    let result = Object.create( null );
-    result.index = - 1;
-    
-    if( _.routineIs( fromIndex ) )
-    {
-      onEvaluate2 = onEvaluate1;
-      onEvaluate1 = fromIndex;
-    }
-    else if( _.numberIs( fromIndex ) )
-    {
-      to = fromIndex;
-    }
-    
-    for( let e of container )		
-    {
-      if( index <= to )
-      {
-        if( _.entityEntityEqualize( e, element, onEvaluate1, onEvaluate2 ) )
-        {
-          result.index = index;
-          result.element = e;
-        }
-      }
-      else
-      {
-        from -= 1;
-      }
-      index += 1;
-    };
-    return result;
+    return _.arraySetRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   reverse( dst )
   {
@@ -1524,7 +1488,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let container = self.original;
     let temp = [ ... container ];
 
-    /* qqq : same and _same are 2 diffrent routines. don't confuse! | Dmytro : thanks, I'v got it */
+    /* qqq : same and _same are 2 different routines. don't confuse! | Dmytro : thanks, I'v got it */
     // if( this.same( dst ) )
     if( self._same( dst ) )
     {
