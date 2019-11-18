@@ -53,9 +53,12 @@ function routineIsPure( src )
 {
   if( !src )
   return false;
-  if( !( Object.getPrototypeOf( src ) === Function.__proto__ ) )
-  return false;
+  let proto = Object.getPrototypeOf( src );
+  if( proto === Function.__proto__ )
   return true;
+  if( proto.constructor.name === 'AsyncFunction' )
+  return true;
+  return false;
 }
 
 //
