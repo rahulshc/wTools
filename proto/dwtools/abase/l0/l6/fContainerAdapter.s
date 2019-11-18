@@ -703,16 +703,6 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       return this.original.has( e );
     }
     else _.assert( 0 );
-
-
-
-    // if( _.routineIs( onEvaluate1 ) )
-    // {
-    //   if( _.longLeftIndex( [ ... this.original ], e, onEvaluate1, onEvaluate2 ) !== -1 )
-    //   return true;
-    //   return false;
-    // }
-    // return this.original.has( e );
   }
   count( e, onEvaluate1, onEvaluate2 )
   {
@@ -931,60 +921,66 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
-      let count = 0, result = 0;
+      let from = 0, result = 0;
       if( _.numberIs( onEvaluate1 ) )
       {
-        count = onEvaluate1;
+        from = onEvaluate1;
         onEvaluate1 = onEvaluate2;
+        onEvaluate2 = undefined;
       }
 
       for( let v of this.original )
       {
-        if( count === 0 )
+        if( from === 0 )
         {
-          if( _.longLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+          if( _.entityEntityEqualize( v, e, onEvaluate1, onEvaluate2 ) )
           {
             this.original.delete( v );
             result++;
           }
         }
         else
-        count--;
+        {
+          from--;
+        }
       }
 
       return result;
     }
     else
-    return this.original.delete( e ) ? 1 : 0;
+    {
+      return this.original.delete( e ) ? 1 : 0;
+    }
   }
   removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
   {
-    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
-    {
-      let count = 0;
-      if( _.numberIs( onEvaluate1 ) )
-      {
-        count = onEvaluate1;
-        onEvaluate1 = onEvaluate2;
-      }
+    let from = 0;
+    let index = -1;
 
-      for( let v of this.original )
-      {
-        if( count === 0 )
-        {
-          if( _.longLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
-          {
-            this.original.delete( v );
-            return 1;
-          }
-        }
-        else
-        count--;
-      }
-      return -1;
+    if( _.numberIs( onEvaluate1 ) )
+    {
+      from = onEvaluate1;
+      onEvaluate1 = onEvaluate2;
+      onEvaluate2 = undefined;
     }
-    else
-    return this.original.delete( e ) ? 1 : -1;
+
+    for( let v of this.original )
+    {
+      if( from === 0 )
+      {
+        if( _.entityEntityEqualize( v, e, onEvaluate1, onEvaluate2 ) )
+        {
+          this.original.delete( v );
+          return ++index;
+        }
+      }
+      else
+      {
+        from--;
+      }
+      index++;
+    }
+    return -1;
   }
   removedOnceStrictly( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
   {
@@ -1696,7 +1692,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     this.original.splice( index, 1 );
     return index;
   }
-  removedOnceStrictly( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
+  removedOnceStrictly( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered*/
   {
     return _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
   }
@@ -1735,7 +1731,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     this.removedOnceRight( e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
+  removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
   {
     _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
