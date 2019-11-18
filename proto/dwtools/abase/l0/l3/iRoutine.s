@@ -12,7 +12,22 @@ let Self = _global_.wTools;
 
 function routineIs( src )
 {
-  return Object.prototype.toString.call( src ) === '[object Function]';
+  let result = Object.prototype.toString.call( src );
+  return result === '[object Function]' || result === '[object AsyncFunction]';
+}
+
+//
+
+function routineIsSync( src )
+{
+  return Object.prototype.toString.call( src ) === '[object Function]'
+}
+
+//
+
+function routineIsAsync( src )
+{
+  return Object.prototype.toString.call( src ) === '[object AsyncFunction]'
 }
 
 //
@@ -726,9 +741,17 @@ function routineExtend( dst, src )
     }
 
     if( dstMap.pre && dstMap.body )
-    dst = _.routineFromPreAndBody( dstMap.pre, dstMap.body );
+    {
+      dst = _.routineFromPreAndBody( dstMap.pre, dstMap.body );
+    }
     else
-    _.assert( 0, 'Not clear how to construct the routine' );
+    {
+      _.assert( _.routineIs( src ) );
+      dst = function(){ return src.apply( this, arguments ); }
+    }
+    // _.assert( 0, 'Not clear how to construct the routine' );
+    // dst = dstMap;
+
   }
 
   /* shallow clone properties of dst routine */
@@ -1543,6 +1566,8 @@ function vectorizeAll_body( o )
 
   let routine1 = _.vectorize.body.call( this, o );
 
+  _.routineExtend( all, o.routine );
+
   return all;
 
   function all()
@@ -1575,6 +1600,7 @@ function vectorizeAny_body( o )
   _.assertRoutineOptions( vectorize, arguments );
 
   let routine1 = _.vectorize.body.call( this, o );
+  _.routineExtend( any, o.routine );
 
   return any;
 
@@ -1608,6 +1634,7 @@ function vectorizeNone_body( o )
   _.assertRoutineOptions( vectorize, arguments );
 
   let routine1 = _.vectorize.body.call( this, o );
+  _.routineExtend( none, o.routine );
 
   return none;
 
@@ -1650,6 +1677,8 @@ let Routines =
 {
 
   routineIs,
+  routineIsSync,
+  routineIsAsync,
   routinesAre,
   routineIsPure,
   routineWithName,

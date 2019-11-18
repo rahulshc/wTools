@@ -141,7 +141,7 @@ function entityMakeConstructing( src, length )
     // else
     // return new Array( length !== undefined ? length : src.length );
   }
-  else if( _.mapIs( src ) )
+  else if( _.mapLike( src ) )
   {
     return Object.create( null );
   }
