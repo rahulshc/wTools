@@ -1681,7 +1681,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return _.arrayRemoved( this.original, e, onEvaluate1, onEvaluate2 );
   }
-  removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented */
+  removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
   {
     return _.arrayRemovedOnce( this.original, e, onEvaluate1, onEvaluate2 );
   }
@@ -1700,12 +1700,27 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
   }
+  removedOnceStrictlyLeft( e, onEvaluate1, onEvaluate2 )
+  {
+    return _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
+  }
+  removedOnceStrictlyRight( e, onEvaluate1, onEvaluate2 )
+  {
+    let container = this.original;
+    let index = _.longRightIndex( container, e, onEvaluate1, onEvaluate2 );
+    _.assert( index !== -1, 'Container has not element ' + e );
+    container.splice( index, 1 );
+    if( _.numberIs( onEvaluate1 ) )
+    onEvaluate1--;
+    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, 'Container should has only one element ' + e );
+    return index;
+  }
   remove( e, onEvaluate1, onEvaluate2 )
   {
     _.arrayRemove( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented */
+  removeOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
   {
     _.arrayRemoveOnce( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
