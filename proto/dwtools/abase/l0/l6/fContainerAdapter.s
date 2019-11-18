@@ -1681,9 +1681,20 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     return _.arrayRemoved( this.original, e, onEvaluate1, onEvaluate2 );
   }
-  removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
+  removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented */
   {
     return _.arrayRemovedOnce( this.original, e, onEvaluate1, onEvaluate2 );
+  }
+  removedOnceLeft( e, onEvaluate1, onEvaluate2 )
+  {
+    return _.arrayRemovedOnce( this.original, e, onEvaluate1, onEvaluate2 );
+  }
+  removedOnceRight( e, onEvaluate1, onEvaluate2 )
+  {
+    let index = _.longRightIndex( this.original, e, onEvaluate1, onEvaluate2 );
+    if( index !== -1 )
+    this.original.splice( index, 1 );
+    return index;
   }
   removedOnceStrictly( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
   {
@@ -1694,9 +1705,19 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.arrayRemove( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
+  removeOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented */
   {
     _.arrayRemoveOnce( this.original, e, onEvaluate1, onEvaluate2 );
+    return this;
+  }
+  removeOnceLeft( e, onEvaluate1, onEvaluate2 )
+  {
+    _.arrayRemoveOnce( this.original, e, onEvaluate1, onEvaluate2 );
+    return this;
+  }
+  removeOnceRight( e, onEvaluate1, onEvaluate2 )
+  {
+    this.removedOnceRight( e, onEvaluate1, onEvaluate2 );
     return this;
   }
   removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
