@@ -1740,6 +1740,16 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
+  removeOnceStrictlyLeft( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
+  {
+    _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
+    return this;
+  }
+  removeOnceStrictlyRight( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
+  {
+    this.removedOnceStrictlyRight( e, onEvaluate1, onEvaluate2 );
+    return this;
+  }
   empty()
   {
     this.original.splice( 0, this.original.length );
