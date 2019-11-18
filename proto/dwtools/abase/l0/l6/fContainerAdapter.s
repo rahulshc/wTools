@@ -982,6 +982,31 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return -1;
   }
+  removedOnceLeft( e, onEvaluate1, onEvaluate2 ) 
+  {
+    return this.removedOnce.apply( this, arguments );
+  }
+  removedOnceRight( e, onEvaluate1, onEvaluate2 ) 
+  {
+    let temp = [ ... this.original ];
+    let to = this.length;
+    if( _.numberIs( onEvaluate1 ) )
+    {
+      to = onEvaluate1;
+      onEvaluate1 = onEvaluate2;
+      onEvaluate2 = undefined;
+    }
+
+    for( let i = to - 1; i >= 0; i-- )
+    {
+      if( _.entityEntityEqualize( temp[ i ], e, onEvaluate1, onEvaluate2 ) )
+      {
+        this.original.delete( temp[ i ] );
+        return i;
+      }
+    }
+    return -1;
+  }
   removedOnceStrictly( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
   {
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
