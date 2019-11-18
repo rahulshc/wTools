@@ -10234,6 +10234,115 @@ function setAdapterRemovedOnce( test )
 
 //
 
+function setAdapterRemovedOnceRight( test )
+{
+  test.case = 'empty container, remove primitive';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.removedOnceRight( 1 );
+  var exp = [];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'empty container, remove Long';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.removedOnceRight( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'empty container, remove empty Long';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.removedOnceRight( [] );
+  var exp = [];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'empty container, remove map';
+  var dst = _.containerAdapter.make( new Set() );
+  var got = dst.removedOnceRight( { a : 0 } );
+  var exp = [];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove primitive';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+  var got = dst.removedOnceRight( 1 );
+  var exp = [ 2, '1' ];
+  test.identical( got, 0 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+  var got = dst.removedOnceRight( _.unrollMake( [ 1, 2 ] ) );
+  var exp = [ 1, 2, '1' ];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove map';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+  var got = dst.removedOnceRight( { a : 1 } );
+  var exp = [ 1, 2, '1' ];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove primitive, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, 3, 3 ] ) );
+  var got = dst.removedOnceRight( 2 );
+  var exp = [ 1, 3 ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceRight( [ 1, 2 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove map, duplicates';
+  var dst = _.containerAdapter.make( new Set( [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ] ) );
+  var got = dst.removedOnceRight( { a : 0 } );
+  var exp = [ { a : 0 }, { a : 0 }, { a : 0 }, { a : 1 } ];
+  test.identical( got, -1 );
+  test.identical( [ ... dst.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove Long, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceRight( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 2 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceRight( [ 2, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ];
+  test.identical( got, 3 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceRight( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.identical( got, 1 );
+  test.identical( [ ... dst.original ], exp );
+
+  test.case = 'container, remove Long, equalizer';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removedOnceRight( [ 2, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ];
+  test.identical( got, 3 );
+  test.identical( [ ... dst.original ], exp );
+}
+
+//
+
 function setAdapterRemovedOnceStrictly( test )
 {
   test.case = 'container, remove primitive';
@@ -17344,6 +17453,7 @@ var Self =
     setAdapterPopStrictly,
     setAdapterRemoved,
     setAdapterRemovedOnce,
+    setAdapterRemovedOnceRight,
     setAdapterRemovedOnceStrictly,
     setAdapterRemove,
     setAdapterRemoveOnce,
