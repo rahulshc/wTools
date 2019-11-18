@@ -2691,10 +2691,12 @@ function arraySetRight( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
     {
       to = fromIndex;
     }
+    else if( fromIndex !== undefined )
+    _.assert( 0 );
 
     for( let e of arr )
     {
-      if( index <= to )
+      if( index < to )
       {
         if( _.entityEntityEqualize( e, ins, onEvaluate1, onEvaluate2 ) )
         {

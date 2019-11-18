@@ -12197,119 +12197,119 @@ function setAdapterRight( test )
   var src = _.containerAdapter.make( new Set( [] ) );
   var got = src.right( 1 );
   test.identical( got, { index : -1 } );
-  
+
   test.case = 'container has not searched element';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( 3 );
   test.identical( got, { index : -1 } );
-  
+
   test.case = 'container has duplicated searched element';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 'str', [ 3 ], 3, { a : 2 } ] ) );
   var got = src.right( 3 );
   test.identical( got, { index : 2, element : 3 } );
-  
+
   test.case = 'searches complex data without evaluators';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( [ 3 ] );
   test.identical( got, { index : -1 } );
-  
+
   /* */
-  
+
   test.case = 'container has not searched element, fromIndex';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( 3, 4 );
   test.identical( got, { index : 2, element : 3 } );
-  
+
   test.case = 'container has duplicated searched element, fromIndex';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] ) );
   var got = src.right( 'str', 4 );
   test.identical( got, { index : 3, element : 'str' } );
-  
+
   test.case = 'searches complex data, fromIndex';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( [ 3 ], 2 );
   test.identical( got, { index : -1 } );
-  
+
   /* */
-  
+
   test.case = 'container has not searched element, onEvaluate1';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( 3, ( e ) => typeof e );
   test.identical( got, { index : 1, element : 2 } );
-  
+
   test.case = 'container has duplicated searched element, onEvaluate1';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] ) );
   var got = src.right( 'str', ( e ) => e );
   test.identical( got, { index : 3, element : 'str' } );
-  
+
   test.case = 'searches complex data, onEvaluate1';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( [ 3 ], ( e ) => e[ 0 ] );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   /* */
-  
+
   test.case = 'container has not searched element, fromIndex, onEvaluate1';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( 3, 2, ( e ) => typeof e );
   test.identical( got, { index : 1, element : 2 } );
-  
+
   test.case = 'container has duplicated searched element, fromIndex, onEvaluate1';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] ) );
   var got = src.right( 'str', 4, ( e ) => typeof e );
   test.identical( got, { index : 3, element : 'str' } );
-  
+
   test.case = 'searches complex data, onEvaluate1';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( [ 3 ], 4, ( e ) => e[ 0 ] );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   /* */
-  
+
   test.case = 'container has not searched element, onEvaluate1, onEvaluate2';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( 3, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   test.case = 'container has duplicated searched element, onEvaluate1, onEvaluate2';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] ) );
   var got = src.right( 2, ( e ) => e.a, ( ins ) => ins );
   test.identical( got, { index : 5, element : { a : 2 } } );
-  
+
   test.case = 'searches complex data, onEvaluate, onEvaluate2';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( 3, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   /* */
-  
+
   test.case = 'container has not searched element, fromIndex, onEvaluate1, onEvaluate2';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( 3, 2, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : -1 } );
-  
+
   test.case = 'container has duplicated searched element, fromIndex, onEvaluate1, onEvaluate2';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] ) );
   var got = src.right( 2, 5, ( e ) => e.a, ( ins ) => ins );
-  test.identical( got, { index : 5, element : { a : 2 } } );
-  
+  test.identical( got, { index : -1 } );
+
   test.case = 'searches complex data, fromIndex, onEvaluate, onEvaluate2';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( 3, 4, ( e ) => e[ 0 ], ( ins ) => ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   /* */
-  
+
   test.case = 'container has not searched element, equalizer';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( 3, ( e, ins ) => e[ 0 ] === ins );
   test.identical( got, { index : 3, element : [ 3 ] } );
-  
+
   test.case = 'container has duplicated searched element, equalizer';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 3, 'str', [ 3 ], 3, 'str', { a : 2 } ] ) );
   var got = src.right( 2, ( e, ins ) => e.a === ins );
   test.identical( got, { index : 5, element : { a : 2 } } );
-  
+
   test.case = 'searches complex data, equalizer';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str', [ 3 ], { a : 2 } ] ) );
   var got = src.right( 3, ( e, ins ) => e[ 0 ] ===  ins );
@@ -12338,7 +12338,7 @@ function setAdapterRight( test )
   test.shouldThrowErrorSync( () =>
   {
     var src = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
-    src.right( 1, 0, 'wrong' );
+    src.right( 1, 2, 'wrong' );
   });
   
   test.case = 'onEvaluate1 has wrong length';
