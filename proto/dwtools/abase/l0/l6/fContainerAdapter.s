@@ -453,12 +453,16 @@ class ContainerAdapterAbstract
   }
 
   only( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators, comparator | Dmytro : implemented, covered */
-  // only( dst, src2, onEach )
   {
+    _.assert( 1 <= arguments.length && arguments.length <= 4 );
+
     let self = this;
     let container = self.original;
+    let dst2;
+    if( dst )
+    dst2 = dst;
+
     [ dst, src2, onEvaluate1, onEvaluate2 ] = self._onlyArguments( ... arguments );
-    // [ dst, src2, onEach ] = self._onlyArguments( ... arguments );
 
     if( self._same( src2 ) )
     {
@@ -469,54 +473,23 @@ class ContainerAdapterAbstract
     {
       let temp = [ ... container ];
 
-      if( onEvaluate1 )
+      for( let i = temp.length - 1; i >= 0; i-- )
       {
-        let tempSrc2 = _.setIs( src2.original ) ? [ ... src2.original ] : src2.original;
-
-        for( let i = temp.length - 1; i >= 0; i-- )
-        {
-          if( _.longLeftIndex( tempSrc2, temp[ i ], onEvaluate1, onEvaluate2 ) === -1 )
-          dst.remove( temp[ i ] );
-        }
+        if( !src2.has( temp[ i ], onEvaluate1, onEvaluate2 ) )
+        dst.removeOnce( temp[ i ] );
       }
-      else
-      // self.filter( self, ( e ) =>
-      temp.forEach( ( e ) =>
-      {
-        if( !src2.has( e ) )
-        dst.removeOnce( e );
-        // dst.remove( e, onEach );
-      });
-
     }
     else
     {
-
-      if( onEvaluate1 )
-      {
-        let temp = _.setIs( container ) ? [ ... container ] : container;
-
-        src2.each( ( e ) =>
-        {
-          if( _.longLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) !== -1 )
-          dst.appendOnce( e );
-        });
-      }
-      else
       src2.each( ( e ) =>
       {
-        if( self.has( e ) )
+        if( self.has( e, onEvaluate1, onEvaluate2 ) )
         dst.appendOnce( e );
       });
-
-      // src2.each( ( e ) =>
-      // {
-      //   if( self.has( e ) )
-      //   dst.append( e, onEach );
-      // });
-
     }
-
+    
+    if( dst2 !== undefined )
+    return dst2;
     return dst;
   }
   but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators | Dmytro : implemented, covered */
