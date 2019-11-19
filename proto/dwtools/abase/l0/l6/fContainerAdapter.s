@@ -1121,7 +1121,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     this.original.clear();
   }
-  map( dst, onEach )
+  map( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
   {
     let self = this;
     let container = self.original;
@@ -1165,6 +1165,42 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         dst.append( e2 );
         else
         dst.append( e );
+      }
+    }
+
+    return dst;
+  }
+  mapLeft( dst, onEach )
+  {
+    return this.map.apply( this, arguments );
+  }
+  mapRight( dst, onEach )
+  {
+    let self = this;
+    let container = self.original;
+    let temp = [ ... container ];
+    [ dst, onEach ] = self._filterArguments( ... arguments );
+
+    if( this._same( dst ) )
+    {
+      for( let i = temp.length - 1; i >= 0; i-- )
+      {
+        let e2 = onEach( temp[ i ], i, container );
+        if( e2 !== undefined && temp[ i ] !== e2 )
+        temp[ i ] = e2;
+      }
+      self.empty();
+      temp.forEach( ( e ) => self.push( e ) )
+    }
+    else
+    {
+      for( let i = temp.length - 1; i >= 0; i-- )
+      {
+        let e2 = onEach( temp[ i ], i, self );
+        if( e2 !== undefined )
+        dst.append( e2 );
+        else
+        dst.append( temp[ i ] );
       }
     }
 
@@ -1833,7 +1869,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     this.original.splice( 0, this.original.length );
   }
-  map( dst, onEach ) /* qqq2 : implement and cover left, right versions */
+  map( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
   {
     let self = this;
     let container = this.original;
