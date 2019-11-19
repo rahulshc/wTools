@@ -1102,9 +1102,19 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     this.removedOnceRight.apply( this, arguments );
     return this;
   }
-  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
+  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
   {
     this.removedOnceStrictly.apply( this, arguments );
+    return this;
+  }
+  removeOnceStrictlyLeft( e, onEvaluate1, onEvaluate2 )
+  {
+    this.removedOnceStrictlyLeft.apply( this, arguments );
+    return this;
+  }
+  removeOnceStrictlyRight( e, onEvaluate1, onEvaluate2 )
+  {
+    this.removedOnceStrictlyRight.apply( this, arguments );
     return this;
   }
   empty()
@@ -1222,7 +1232,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     if( self._same( dst ) )
     {
       /* qqq : should have index! cover please | Dmytro : covered */
-      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : coveered */
+      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
       for( let e of container )
       {
         index += 1;
