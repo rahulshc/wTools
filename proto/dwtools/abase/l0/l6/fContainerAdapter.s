@@ -1009,57 +1009,60 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   removedOnceStrictly( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
   {
-    if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+    let from = 0;
+    let index = -1;
+    let result;
+
+    if( _.numberIs( onEvaluate1 ) )
     {
-      let count = 0;
-      let result = 0;
+      from = onEvaluate1;
+      onEvaluate1 = onEvaluate2;
+      onEvaluate2 = undefined;
+    }
 
-      if( _.numberIs( onEvaluate1 ) )
+    for( let v of this.original )
+    {
+      if( from === 0 )
       {
-        count = onEvaluate1;
-        onEvaluate1 = onEvaluate2;
-      }
-
-      for( let v of this.original )
-      {
-        if( count === 0 )
+        if( _.entityEntityEqualize( v, e, onEvaluate1, onEvaluate2 ) )
         {
-          if( _.longLeftIndex( [ v ], e, onEvaluate1, onEvaluate2 ) !== -1 )
+          if( result === undefined )
           {
             this.original.delete( v );
-            result++;
-            _.assert( result <= 1, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' );
+            result = index + 1;
+          }
+          else
+          {
+            _.assert( 0, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' );
           }
         }
-        else
-        count--;
       }
+      else
+      {
+        from--;
+      }
+      index++;
+    }
 
-      _.assert( result !== 0, 'Set does not have such an element' );
-      return result;
-    }
-    else
-    {
-      _.assert( this.original.has( e ), 'Set does not have such an element' );
-      return this.original.delete( e ) ? 1 : 0;
-    }
+    _.assert( result !== undefined, 'Container does not have such an element' );
+    return result;
   }
   remove( e, onEvaluate1, onEvaluate2 )
   {
     this.removed.apply( this, arguments );
     return this;
   }
-  removeOnce( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
+  removeOnce( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method | Dmytro : implemented and coveered */
   {
     this.removedOnce.apply( this, arguments );
     return this;
   }
-  removeOnceLeft( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
+  removeOnceLeft( e, onEvaluate1, onEvaluate2 )  
   {
     this.removedOnceLeft.apply( this, arguments );
     return this;
   }
-  removeOnceRight( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
+  removeOnceRight( e, onEvaluate1, onEvaluate2 )  
   {
     this.removedOnceRight.apply( this, arguments );
     return this;
@@ -1739,11 +1742,11 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     let container = this.original;
     let index = _.longRightIndex( container, e, onEvaluate1, onEvaluate2 );
-    _.assert( index !== -1, 'Container has not element ' + e );
+    _.assert( index !== -1, () => 'Container has not element ' + _.toStrShort( e ) );
     container.splice( index, 1 );
     if( _.numberIs( onEvaluate1 ) )
     onEvaluate1--;
-    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, 'Container should has only one element ' + e );
+    _.assert( _.longRightIndex( container, e, onEvaluate1, onEvaluate2 ) === -1, () => 'The element ' + _.toStrShort( e ) + ' is several times in dstArray' );
     return index;
   }
   remove( e, onEvaluate1, onEvaluate2 )
