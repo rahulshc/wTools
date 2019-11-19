@@ -10860,6 +10860,74 @@ function setAdapterRemoveOnceStrictly( test )
 
 //
 
+function setAdapterRemoveOnceStrictlyRight( test )
+{
+  test.case = 'container, remove primitive';
+  var dst = _.containerAdapter.make( new Set( [ 1, 2, 2, '1' ] ) );
+  var got = dst.removeOnceStrictlyRight( 1 );
+  var exp = [ 2, '1' ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* */
+
+  test.case = 'container, remove Long, one evaluator';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removeOnceStrictlyRight( [ 1, 2 ], ( e ) => e[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, remove Long, two evaluators';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removeOnceStrictlyRight( [ 1, 2 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  var exp = [ [ 2, 2 ], [ 2, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, remove Long, fromIndex and evaluator2';
+  var dst = _.containerAdapter.make( new Set( [ [ 3, 2 ], [ 1, 2 ], [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removeOnceStrictlyRight( [ 1, 2 ], 2, ( e ) => e[ 0 ] );
+  var exp = [ [ 3, 2 ], [ 1, 2 ], [ 2, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  test.case = 'container, remove Long, equalizer';
+  var dst = _.containerAdapter.make( new Set( [ [ 1, 2 ], [ 2, 2 ] ] ) );
+  var got = dst.removeOnceStrictlyRight( [ 1, 2 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  var exp = [ [ 2, 2 ] ];
+  test.is( got === dst );
+  test.identical( [ ... got.original ], exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'empty container'
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( new Set() );
+    var got = dst.removeOnceStrictlyRight( 1 );
+  });
+
+  test.case = 'container does not have element';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( new Set( [ 1, 1, 2, 2, '1' ] ) );
+    var got = dst.removeOnceStrictlyRight( [ 1, 2 ] );
+  });
+
+  test.case = 'container has a few elements';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = _.containerAdapter.make( new Set( [ [ 1 ], [ 1 ], 2, 2, '1' ] ) );
+    var got = dst.removeOnceStrictlyRight( [ 1 ], ( e ) => e[ 0 ] );
+  });
+}
+
+//
+
 function setAdapterEmpty( test )
 {
   test.case = 'empty container';
@@ -17637,6 +17705,7 @@ var Self =
     setAdapterRemoveOnce,
     setAdapterRemoveOnceRight,
     setAdapterRemoveOnceStrictly,
+    setAdapterRemoveOnceStrictlyRight,
     setAdapterEmpty,
     setAdapterMap,
     setAdapterFilter,
