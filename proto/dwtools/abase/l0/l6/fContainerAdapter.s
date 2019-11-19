@@ -952,7 +952,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       return this.original.delete( e ) ? 1 : 0;
     }
   }
-  removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
+  removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
   {
     let from = 0;
     let index = -1;
@@ -1052,6 +1052,16 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   removeOnce( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
   {
     this.removedOnce.apply( this, arguments );
+    return this;
+  }
+  removeOnceLeft( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
+  {
+    this.removedOnceLeft.apply( this, arguments );
+    return this;
+  }
+  removeOnceRight( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
+  {
+    this.removedOnceRight.apply( this, arguments );
     return this;
   }
   removeOnceStrictly( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method */
