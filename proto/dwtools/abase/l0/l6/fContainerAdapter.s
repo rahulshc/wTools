@@ -1819,12 +1819,12 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnceStrictlyLeft( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
+  removeOnceStrictlyLeft( e, onEvaluate1, onEvaluate2 ) 
   {
     _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnceStrictlyRight( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method */
+  removeOnceStrictlyRight( e, onEvaluate1, onEvaluate2 )
   {
     this.removedOnceStrictlyRight( e, onEvaluate1, onEvaluate2 );
     return this;
@@ -1869,6 +1869,36 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
         dst.append( e2 );
         else
         dst.append( e );
+      }
+    }
+    return dst;
+  }
+  mapLeft( dst, onEach )
+  {
+    return this.map.apply( this, arguments );
+  }
+  mapRight( dst, onEach )
+  {
+    let container = this.original;
+    [ dst, onEach ] = this._filterArguments( ... arguments );
+    if( this._same( dst ) )
+    {
+      for( let k = container.length - 1; k >= 0; k-- )
+      {
+        let e2 = onEach( container[ k ], k, this );
+        if( e2 !== undefined )
+        container[ k ] = e2;
+      }
+    }
+    else
+    {
+      for( let k = container.length - 1; k >= 0; k-- )
+      {
+        let e2 = onEach( container[ k ], k, this );
+        if( e2 !== undefined )
+        dst.append( e2 );
+        else
+        dst.append( container[ k ] );
       }
     }
     return dst;
