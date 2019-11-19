@@ -252,7 +252,7 @@ class ContainerAdapterAbstract
   }
   _onlyArguments( dst, src2, onEvaluate1, onEvaluate2 )
   {
-    if( _.routineIs( src2 ) )
+    if( _.routineIs( src2 ) || src2 === undefined )
     {
       if( dst === undefined )
       dst = null;
@@ -459,7 +459,7 @@ class ContainerAdapterAbstract
     let self = this;
     let container = self.original;
     let dst2;
-    if( dst )
+    if( dst && src2 && !_.routineIs( src2 ) )
     dst2 = dst;
 
     [ dst, src2, onEvaluate1, onEvaluate2 ] = self._onlyArguments( ... arguments );
@@ -473,7 +473,7 @@ class ContainerAdapterAbstract
     {
       let temp = [ ... container ];
 
-      for( let i = temp.length - 1; i >= 0; i-- )
+      for( let i = 0; i < temp.length; i++ )
       {
         if( !src2.has( temp[ i ], onEvaluate1, onEvaluate2 ) )
         dst.removeOnce( temp[ i ] );
@@ -494,8 +494,14 @@ class ContainerAdapterAbstract
   }
   but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators | Dmytro : implemented, covered */
   {
+    _.assert( 1 <= arguments.length && arguments.length <= 4 );
+
     let self = this;
     let container = self.original;
+    let dst2;
+    if( dst && src2 && !_.routineIs( src2 ) )
+    dst2 = dst;
+
     [ dst, src2, onEvaluate1, onEvaluate2 ] = self._onlyArguments( ... arguments );
 
     if( self._same( src2 ) )
@@ -508,46 +514,23 @@ class ContainerAdapterAbstract
     {
       let temp = [ ... container ];
 
-      if( onEvaluate1 )
+      for( let i = 0; i < temp.length; i++ )
       {
-        let tempSrc2 = _.setIs( src2.original ) ? [ ... src2.original ] : src2.original;
-
-        for( let i = temp.length - 1; i >= 0; i-- )
-        {
-          if( _.longLeftIndex( tempSrc2, temp[ i ], onEvaluate1, onEvaluate2 ) !== -1 )
-          dst.remove( temp[ i ] );
-        }
+        if( src2.has( temp[ i ], onEvaluate1, onEvaluate2 ) )
+        dst.removeOnce( temp[ i ] );
       }
-      else
-      temp.forEach( ( e ) =>
-      {
-        if( src2.has( e ) )
-        dst.removeOnce( e );
-      });
-      // src2.each( ( e ) => dst.remove( e, onEach ) );
     }
     else
     {
-      if( onEvaluate1 )
-      {
-        let temp = _.setIs( container ) ? [ ... container ] : container;
-
-        src2.each( ( e ) =>
-        {
-          if( _.longLeftIndex( temp, e, onEvaluate1, onEvaluate2 ) === -1 )
-          dst.append( e );
-        });
-      }
-      else
       self.each( ( e ) =>
       {
-        debugger;
-        if( !src2.has( e ) )
-        dst.append( e )
-        // dst.append( e, onEach )
+        if( !src2.has( e, onEvaluate1, onEvaluate2 ) )
+        dst.appendOnce( e );
       });
     }
 
+    if( dst2 !== undefined )
+    return dst2;
     return dst;
   }
   select( selector )
