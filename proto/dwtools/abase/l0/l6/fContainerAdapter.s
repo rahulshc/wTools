@@ -1947,13 +1947,55 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
     if( this._same( dst ) )
     {
-      let l = container.length - 1;
-      for( let k = l ; k >= 0 ; k-- )
+      for( let k = 0; k < container.length; k++ )
       {
         let e = container[ k ];
         // let e2 = onEach( e, undefined, container ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
         let e2 = onEach( e, k, container );
         if( e !== e2 || e2 === undefined )
+        {
+          if( e2 !== undefined )
+          {
+            container[ k ] = e2;
+          }
+          else
+          {
+            container.splice( k, 1 );
+            k--;
+          }
+        }
+      }
+    }
+    else
+    {
+      for( let k = 0; k < container.length; k++ )
+      {
+        let e = container[ k ];
+        // let e2 = onEach( e, undefined, container );  /* qqq : where was key?? | Dmytro : it's mistake, covered */
+        let e2 = onEach( e, k, container );
+        if( e2 !== undefined )
+        dst.append( e2 );
+      }
+    }
+
+    return dst;
+  }
+  filterLeft( dst, onEach )
+  {
+    return this.filter.apply( this, arguments );
+  }
+  filterRight( dst, onEach )
+  {
+    let self = this;
+    let container = this.original;
+    [ dst, onEach ] = this._filterArguments( ... arguments );
+
+    if( this._same( dst ) )
+    {
+      for( let k = container.length - 1; k >= 0; k-- )
+      {
+        let e2 = onEach( container[ k ], k, container );
+        if( container[ k ] !== e2 || e2 === undefined )
         {
           if( e2 !== undefined )
           container[ k ] = e2;
@@ -1964,11 +2006,9 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     else
     {
-      for( let k = 0, l = container.length ; k < l ; k++ )
+      for( let k = container.length - 1; k >= 0; k-- )
       {
-        let e = container[ k ];
-        // let e2 = onEach( e, undefined, container );  /* qqq : where was key?? | Dmytro : it's mistake, covered */
-        let e2 = onEach( e, k, container );
+        let e2 = onEach( container[ k ], k, container );
         if( e2 !== undefined )
         dst.append( e2 );
       }
