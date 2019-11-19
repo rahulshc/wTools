@@ -766,7 +766,7 @@ function consequenceLike( test )
   test.case = 'check if entity is a consequenceLike';
 
   if( !_.consequenceLike )
-  return test.identical( true,true );
+  return test.identical( true, true );
 
   test.is( !_.consequenceLike() );
   test.is( !_.consequenceLike( {} ) );

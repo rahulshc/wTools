@@ -43,6 +43,7 @@ function objectLike( src )
 
   if( _.objectIs( src ) )
   return true;
+
   if( _.primitiveIs( src ) )
   return false;
   if( _.longIs( src ) )
