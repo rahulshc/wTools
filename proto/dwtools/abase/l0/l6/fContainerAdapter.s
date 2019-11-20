@@ -1934,7 +1934,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     return dst;
   }
-  filter( dst, onEach ) /* qqq2 : implement and cover left, right versions */
+  filter( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
   {
     let self = this;
     let container = this.original;
@@ -2019,39 +2019,80 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
     if( self._same( dst ) )
     {
-      for( let k = container.length - 1 ; k >= 0 ; k-- )
+      for( let k = 0; k < container.length; k++ )
       {
         let e = container[ k ];
         // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
         let e2 = onEach( e, k, self );
-        if( e !== e2 || e2 === undefined )
+        if( e2 === undefined )
         {
-          if( e2 !== undefined )
-          {
-            if( self.IsContainer( e2 ) || self.Is( e2 ) )
-            container.splice( k, 1, ... e2 );
-            else
-            container[ k ] = e2;
-          }
-          else
-          container.splice( k, 1 );
+          container.splice( k, 1 )
+          k--;
+        }
+        else if( self.IsContainer( e2 ) || self.Is( e2 ) )
+        {
+          k += e2.length - 1;
+          container.splice( k, 1, ... e2 );
+        }
+        else if( e2 !== e )
+        {
+          container[ k ] = e2;
         }
       }
     }
     else
     {
-      for( let k = 0, l = container.length ; k < l ; k++ )
+      for( let k = 0; k < container.length; k++ )
       {
         let e = container[ k ];
         // let e2 = onEach( e, undefined, container ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
         let e2 = onEach( e, k, container );
-        if( e2 !== undefined )
-        {
-          if( self.IsContainer( e2 ) || self.Is( e2 ) )
-          dst.appendContainer( e2 )
-          else
-          dst.append( e2 );
-        }
+
+        if( self.IsContainer( e2 ) || self.Is( e2 ) )
+        dst.appendContainer( e2 )
+        else if( e2 !== undefined )
+        dst.append( e2 );
+      }
+    }
+
+    return dst;
+  }
+  flatFilterLeft( dst, onEach )
+  {
+    return this.flatFilter.apply( this, arguments );
+  }
+  flatFilterRight( dst, onEach )
+  {
+    let self = this;
+    let container = self.original;
+    [ dst, onEach ] = self._filterArguments( ... arguments );
+
+    if( self._same( dst ) )
+    {
+      for( let k = container.length - 1; k >= 0; k-- )
+      {
+        let e = container[ k ];
+        let e2 = onEach( e, k, self );
+
+        if( e2 === undefined )
+        container.splice( k, 1 );
+        else if( self.IsContainer( e2 ) || self.Is( e2 ) )
+        container.splice( k, 1, ... e2 );
+        else if( e2 !== e )
+        container[ k ] = e2;
+      }
+    }
+    else
+    {
+      for( let k = container.length - 1; k >= 0; k-- )
+      {
+        let e = container[ k ];
+        let e2 = onEach( e, k, container );
+
+        if( self.IsContainer( e2 ) || self.Is( e2 ) )
+        dst.appendContainer( e2 )
+        else if( e2 !== undefined )
+        dst.append( e2 );
       }
     }
 
