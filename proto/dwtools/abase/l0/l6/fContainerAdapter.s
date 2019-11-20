@@ -546,7 +546,6 @@ class ContainerAdapterAbstract
     }
 
     return result;
-    // return _.select( container, selector );
   }
 }
 
@@ -1162,7 +1161,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
     return dst;
   }
-  filter( dst, onEach ) /* qqq2 : implement and cover left, right versions */
+  filter( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
   {
     let self = this;
     let container = self.original;
@@ -1170,7 +1169,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     let length = self.length;
     let index = -1;
 
-    if( this._same( dst ) )
+    if( self._same( dst ) )
     {
       /*
       qqq : not optimal. why copy??
@@ -1187,9 +1186,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
         let e2 = onEach( e, index, container );
 
-        if( e2 === undefined || e !== e2 )
+        if( e2 === undefined )
         {
-          if( e2 !== undefined )
+          container.delete( e );
+        }
+        else if( e !== e2 )
+        {
           container.add( e2 );
           container.delete( e );
         }
@@ -1206,6 +1208,43 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       {
         index += 1;
         let e2 = onEach( e, index, self );
+        if( e2 !== undefined )
+        dst.append( e2 );
+      }
+    }
+
+    return dst;
+  }
+  filterLeft( dst, onEach )
+  {
+    return this.filter.apply( this, arguments );
+  }
+  filterRight( dst, onEach )
+  {
+    let self = this;
+    let container = self.original;
+    let temp = [ ... container ];
+    [ dst, onEach ] = self._filterArguments( ... arguments );
+
+    if( self._same( dst ) )
+    {
+      for( let i = temp.length - 1; i >= 0; i-- )
+      {
+        let e2 = onEach( temp[ i ], i, container );
+        if( e2 === undefined )
+        temp.splice( i, 1 );
+        else if( temp[ i ] !== e2 )
+        temp[ i ] = e2;
+
+        self.empty();
+        temp.forEach( ( e ) => self.push( e ) );
+      }
+    }
+    else
+    {
+      for( let i = temp.length - 1; i >= 0; i-- )
+      {
+        let e2 = onEach( temp[ i ], i, self );
         if( e2 !== undefined )
         dst.append( e2 );
       }
