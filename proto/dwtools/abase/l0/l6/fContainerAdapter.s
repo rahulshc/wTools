@@ -1340,7 +1340,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return dst; 
   }
-  once( dst, onEvaluate1, onEvaluate2 ) /* qqq2 : implement and cover left, right versions */
+  once( dst, onEvaluate1, onEvaluate2 ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
   {
     let self = this;
     let container = self.original;
@@ -1349,40 +1349,46 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     {
       if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
       {
-        let temp = [];
+        let temp = []; // Dmytro : to prevent cycled loop uses copies
         self.each( ( e ) => _.arrayAppendOnce( temp, e, onEvaluate1, onEvaluate2 ) );
         self.empty();
         for( let i = 0; i < temp.length; i++ )
         self.append( temp[ i ] );
-
-        // let temp = [ ... container ];
-        // _.arrayRemoveDuplicates( temp, onEval );
-        // if( temp.length !== container.size )
-        // {
-        //   container.clear();
-        //
-        //   for( let e of temp )
-        //   container.add( e );
-        // }
       }
     }
     else
     {
       dst.appendContainerOnce( container, onEvaluate1, onEvaluate2 );
-      // if( onEval )
-      // {
-        // let temp = [ ... container ];
-        // _.arrayRemoveDuplicates( temp, onEval );
-        /* qqq : not optimal. ask. | Dmytro : used optimal variant. This variant is same to arrayContainerAdapter */
-        // container.clear();
-        // for( let e of temp )
-        // dst.original.add( e );
-      // }
-      // else
-      // {
-      //   dst.appendContainer( container );
-      // }
     }
+
+    return dst;
+  }
+  onceLeft( dst, onEvaluate1, onEvaluate2 )
+  {
+    return this.once.apply( this, arguments );
+  }
+  onceRight( dst, onEvaluate1, onEvaluate2 ) 
+  {
+    let self = this;
+    let container = self.original;
+    let temp = [ ... container ];
+    [ dst, dst, onEvaluate1, onEvaluate2 ] = self._onlyArguments( null, dst, onEvaluate1, onEvaluate2 );
+    if( self._same( dst ) )
+    {
+      if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
+      {
+        temp = _.longOnce( temp, onEvaluate1, onEvaluate2 );
+        self.empty();
+        for( let i = 0; i < temp.length; i++ )
+        self.append( temp[ i ] );
+      }
+    }
+    else
+    {
+      for( let i = temp.length - 1; i >= 0; i-- )
+      dst.appendOnce( temp[ i ], onEvaluate1, onEvaluate2 );
+    }
+
     return dst;
   }
   first( onEach )
@@ -2130,7 +2136,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
     return dst;
   }
-  once( dst, onEvaluate1, onEvaluate2 ) /* qqq2 : implement and cover left, right versions */
+  once( dst, onEvaluate1, onEvaluate2 ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
   {
     let container = this.original;
     [ dst, dst, onEvaluate1, onEvaluate2 ] = this._onlyArguments( null, dst, onEvaluate1, onEvaluate2 );
