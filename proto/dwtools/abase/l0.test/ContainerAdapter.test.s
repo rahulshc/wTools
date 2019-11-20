@@ -18995,6 +18995,85 @@ function arrayAdapterReduce( test )
 
 //
 
+function arrayAdapterReduceRight( test )
+{
+  test.case = 'without accumulator, empty src';
+  var src = _.containerAdapter.make( [] );
+  var got = src.reduceRight( ( a, e ) => Math.max( a, e ) );
+  test.identical( src.original, [] );
+  test.identical( got, undefined );
+
+  test.case = 'without accumulator, not empty src';
+  var src = _.containerAdapter.make( [ 1, 2, 3, 0, -2 ] );
+  var got = src.reduceRight( ( a, e ) => a === undefined ? Math.max( 0, e ) : Math.max( a, e ) );
+  test.identical( src.original, [ 1, 2, 3, 0, -2 ] );
+  test.identical( got, 3 );
+
+  test.case = 'without accumulator, not empty src, use key';
+  var src = _.containerAdapter.make( [ 1, 2, 3, undefined, -2 ] );
+  var got = src.reduceRight( ( a, e, k ) => e === undefined ? Math.max( 0, k ) : Math.max( a, e ) );
+  test.identical( src.original, [ 1, 2, 3, undefined, -2 ] );
+  test.identical( got, 3 );
+
+  test.case = 'without accumulator, not empty src, use container';
+  var src = _.containerAdapter.make( [ 1, 2, 3, undefined, -2 ] );
+  var got = src.reduceRight( ( a, e, k, c ) => c.length > 2 ? Math.max( 0, e ) : Math.max( a, e ) );
+  test.identical( src.original, [ 1, 2, 3, undefined, -2 ] );
+  test.identical( got, 1 );
+
+  /* */
+
+  test.case = 'with accumulator, empty src';
+  var accumulator = [ 0 ];
+  var src = _.containerAdapter.make( [] );
+  var got = src.reduceRight( accumulator, ( a, e ) => a[ a.length - 1 ] > e ? a[ a.length - 1 ] : a.push( e ) );
+  test.identical( src.original, [] );
+  test.is( got === accumulator );
+  test.identical( got, [ 0 ] );
+
+  test.case = 'with accumulator, not empty src';
+  var accumulator = [ 0 ];
+  var src = _.containerAdapter.make( [ 1, 2, 3, 0, -2 ] );
+  var got = src.reduceRight( accumulator, ( a, e ) => a[ a.length - 1 ] < e ? _.arrayAppend( a, e ) : a );
+  test.identical( src.original, [ 1, 2, 3, 0, -2 ] );
+  test.is( got === accumulator );
+  test.identical( got, [ 0, 3 ] );
+
+  test.case = 'with accumulator, not empty src, use key';
+  var accumulator = [ 0 ];
+  var src = _.containerAdapter.make( [ 1, 2, 3, undefined, -2 ] );
+  var got = src.reduceRight( accumulator, ( a, e, k ) => e === undefined ? _.arrayAppend( a, k ) : _.arrayAppend( a, Math.max( a[ a.length - 1 ], e ) ) );
+  test.identical( src.original, [ 1, 2, 3, undefined, -2 ] );
+  test.identical( got, [ 0, 0, 3, 3, 3, 3 ] );
+
+  test.case = 'with accumulator, not empty src, use container';
+  var accumulator = [];
+  var src = _.containerAdapter.make( [ 1, 2, 3, undefined, -2 ] );
+  var got = src.reduceRight( accumulator, ( a, e, k, c ) => c.length > 2 ? _.arrayAppend( a, k ) : _.arrayAppend( a, e ) );
+  test.identical( src.original, [ 1, 2, 3, undefined, -2 ] );
+  test.identical( got, [ 4, 3, 2, 1, 0 ] );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'onEach has wrong type';
+  test.shouldThrowErrorSync( () =>
+  {
+    let src = _.containerAdapter.make( [ 1, 2, 3 ] );
+    src.reduceRight( 'wrong' );
+  });
+  test.shouldThrowErrorSync( () =>
+  {
+    let accumulator = 0;
+    let src = _.containerAdapter.make( [ 1, 2, 3 ] );
+    src.reduceRight( accumulator, 'wrong' );
+  });
+}
+
+//
+
 function arrayAdapterAllRight( test )
 {
   test.case = 'src - empty container, onEach returns element';
@@ -19960,6 +20039,7 @@ var Self =
     arrayAdapterEach,
     arrayAdapterEachRight,
     arrayAdapterReduce,
+    arrayAdapterReduceRight,
     arrayAdapterAllRight,
     arrayAdapterAll,
     arrayAdapterAnyRight,
