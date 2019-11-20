@@ -2134,14 +2134,29 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   {
     let container = this.original;
     [ dst, dst, onEvaluate1, onEvaluate2 ] = this._onlyArguments( null, dst, onEvaluate1, onEvaluate2 );
+
     if( this._same( dst ) )
-    {
-      _.longOnce( container, onEvaluate1, onEvaluate2 );
-    }
+    _.longOnce( container, onEvaluate1, onEvaluate2 );
     else
-    {
-      _.arrayAppendArrayOnce( dst.original, container, onEvaluate1, onEvaluate2 );
-    }
+    dst.appendContainerOnce( container, onEvaluate1, onEvaluate2 );
+
+    return dst;
+  }
+  onceLeft( dst, onEvaluate1, onEvaluate2 )
+  {
+    return this.once.apply( this, arguments );
+  }
+  onceRight( dst, onEvaluate1, onEvaluate2 )
+  {
+    let container = this.original;
+    [ dst, dst, onEvaluate1, onEvaluate2 ] = this._onlyArguments( null, dst, onEvaluate1, onEvaluate2 );
+
+    if( this._same( dst ) )
+    _.longOnce( container, onEvaluate1, onEvaluate2 );
+    else
+    for( let i = container.length - 1; i >= 0; i-- )
+    dst.appendOnce( container[ i ], onEvaluate1, onEvaluate2 );
+
     return dst;
   }
   first( onEach )
