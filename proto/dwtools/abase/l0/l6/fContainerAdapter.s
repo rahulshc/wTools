@@ -2215,7 +2215,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     onEach( container[ k ], k, container );
     return this;
   }
-  reduce( accumulator, onEach )
+  reduce( accumulator, onEach ) // Dmytro : maybe it's losted "qqq2 : implement and cover left, right versions" | Dmytro : implemented and covered
   {
     let self = this;
     let container = this.original;
@@ -2225,6 +2225,26 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       accumulator = undefined;
     }
     for( let k = 0, l = container.length ; k < l ; k++ )
+    {
+      let e = container[ k ];
+      accumulator = onEach( accumulator, e, k, self );
+    }
+    return accumulator;
+  }
+  reduceLeft( accumulator, onEach )
+  {
+    return this.reduce.apply( this, arguments );
+  }
+  reduceRight( accumulator, onEach )
+  {
+    let self = this;
+    let container = this.original;
+    if( arguments[ 1 ] === undefined )
+    {
+      onEach = arguments[ 0 ];
+      accumulator = undefined;
+    }
+    for( let k = container.length - 1; k >= 0; k-- )
     {
       let e = container[ k ];
       accumulator = onEach( accumulator, e, k, self );
