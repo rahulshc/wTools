@@ -1252,7 +1252,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 
     return dst;
   }
-  flatFilter( dst, onEach ) /* qqq2 : implement and cover left, right versions */
+  flatFilter( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
   {
     let self = this;
     let container = self.original;
@@ -1273,21 +1273,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         let e2 = onEach( e, index, self );
         self.remove( e );
 
-        if( e2 === undefined || e !== e2 )
-        {
-          if( e2 !== undefined )
-          {
-            if( self.IsContainer( e2 ) || self.Is( e2 ) )
-            self.appendContainer( e2 );
-            else
-            self.append( e2 )
-          }
-          // if( e2 !== undefined )
-          // container.add( e2 );
-          // container.delete( e );
-        }
-        else
-        self.append( e );
+        if( self.IsContainer( e2 ) || self.Is( e2 ) )
+        self.appendContainer( e2 );
+        else if( e2 !== undefined )
+        self.append( e2 )
+        else if( e2 === e && e !== undefined )
+        self.append( e );          
       }
     }
     else
@@ -1297,16 +1288,57 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       {
         index += 1;
         let e2 = onEach( e, index, self );
-        if( e2 !== undefined )
-        {
-          if( self.IsContainer( e2 ) || self.Is( e2 ) )
-          dst.appendContainer( e2 );
-          else
-          dst.append( e2 );
-        }
+
+        if( self.IsContainer( e2 ) || self.Is( e2 ) )
+        dst.appendContainer( e2 );
+        else if( e2 !== undefined )
+        dst.append( e2 );
       }
     }
     return dst;
+  }
+  flatFilterLeft( dst, onEach )
+  {
+    return this.flatFilter.apply( this, arguments );
+  }
+  flatFilterRight( dst, onEach )
+  {
+    let self = this;
+    let container = self.original;
+    let temp = [ ... container ];
+    [ dst, onEach ] = self._filterArguments( ... arguments );
+    let length = container.size;
+    let index = -1;
+
+    if( self._same( dst ) )
+    {
+      for( let i = temp.length - 1; i >= 0; i-- )
+      {
+        let e2 = onEach( temp[ i ], i, self );
+        
+        if( self.IsContainer( e2 ) || self.Is( e2 ) )
+        temp.splice( i, 1, ... e2 );
+        else if( e2 !== undefined && e2 !== temp[ i ] )
+        temp[ i ] = e2;
+        else if( e2 === undefined )
+        temp.splice( i, 1 );
+        self.empty();
+        temp.forEach( ( e ) => self.push( e ) );          
+      }
+    }
+    else
+    {
+      for( let i = temp.length - 1; i >= 0; i-- )
+      {
+        let e2 = onEach( temp[ i ], i, self );
+
+        if( self.IsContainer( e2 ) || self.Is( e2 ) )
+        dst.appendContainer( e2 );
+        else if( e2 !== undefined )
+        dst.append( e2 );
+      }
+    }
+    return dst; 
   }
   once( dst, onEvaluate1, onEvaluate2 ) /* qqq2 : implement and cover left, right versions */
   {
@@ -2011,7 +2043,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 
     return dst;
   }
-  flatFilter( dst, onEach ) /* qqq2 : implement and cover left, right versions */
+  flatFilter( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
   {
     let self = this;
     let container = self.original;
