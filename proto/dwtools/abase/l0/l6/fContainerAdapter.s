@@ -1465,7 +1465,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     onEach( temp[ i ], i, self );
     return self;
   }
-  reduce( accumulator, onEach )
+  reduce( accumulator, onEach ) // Dmytro : maybe, it's lost "qqq2 : implement and cover left, right versions" | Dmytro : implemented and covered
   {
     let self = this;
     let container = this.original;
@@ -1480,6 +1480,26 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     {
       index += 1;
       accumulator = onEach( accumulator, e, index, self );
+    }
+    return accumulator;
+  }
+  reduceLeft( accumulator, onEach )
+  {
+    return this.reduce.apply( this, arguments );
+  }
+  reduceRight( accumulator, onEach )
+  {
+    let self = this;
+    let container = this.original;
+    let temp = [ ... container ];
+    if( arguments[ 1 ] === undefined )
+    {
+      onEach = arguments[ 0 ];
+      accumulator = undefined;
+    }
+    for( let i = temp.length - 1; i >= 0; i-- )
+    {
+      accumulator = onEach( accumulator, temp[ i ], i, self );
     }
     return accumulator;
   }
@@ -2215,7 +2235,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     onEach( container[ k ], k, container );
     return this;
   }
-  reduce( accumulator, onEach ) // Dmytro : maybe it's losted "qqq2 : implement and cover left, right versions" | Dmytro : implemented and covered
+  reduce( accumulator, onEach ) // Dmytro : maybe it's lost "qqq2 : implement and cover left, right versions" | Dmytro : implemented and covered
   {
     let self = this;
     let container = this.original;
@@ -2265,7 +2285,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   allRight( onEach )
   {
     let container = this.original;
-    for( let i = container.length-1; i >= 0; i-- )
+    for( let i = container.length - 1; i >= 0; i-- )
     {
       let r = onEach( container[ i ], i, container );
       if( !r )
