@@ -19244,6 +19244,18 @@ function arrayAdapterAllRight( test )
 
 //
 
+function arrayAdapterAllLeftRightCompare( test )
+{
+  test.case = 'compare by indexes';
+  var src = _.containerAdapter.make( [ 0, 1, 2, 3, 4, '', null, undefined ] );
+  var temp1 = [];
+  var got1 = src.allLeft( ( e, i ) => temp.push( [ e, i ] ) );
+  var temp2 = [];
+  var got2 = src.allRight( ( e, i ) => temp2.push( [ e, i ] ) );
+}
+
+//
+
 function arrayAdapterAny( test )
 {
   test.case = 'src - empty container, onEach returns element';

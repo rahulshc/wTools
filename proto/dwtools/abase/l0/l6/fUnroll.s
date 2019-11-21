@@ -357,11 +357,7 @@ function unrollNormalize( dstArray )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert
-  (
-      _.arrayIs( dstArray )
-    , () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray )
-  );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got ${ _.strQuote( dstArray ) }` );
 
   for( let a = 0 ; a < dstArray.length ; a++ )
   {

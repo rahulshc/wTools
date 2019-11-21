@@ -1453,7 +1453,7 @@ function mapSupplement( dstMap, srcMap )
 //       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
 //       {
 //         debugger;
-//         throw Error( 'Source map should have only primitive elements, but have ' + _.strType( srcMap ) + ' ' + _.strQuote( s ) );
+//         throw Error( Source map should have only primitive elements, but have ' + _.strType( srcMap ) + `${ _.strQuote( s ) }` );
 //       }
 //       dstMap[ s ] = srcMap[ s ];
 //     }
@@ -4466,7 +4466,8 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ _.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
+      // args : [ _.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -4572,7 +4573,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ _.strType( srcMap ) + ' should own no fields :', _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -4676,7 +4677,7 @@ function sureMapHasAll( srcMap, all, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ _.strType( srcMap ) + ' should have fields :', _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.strType( srcMap ) } should have fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -4779,7 +4780,7 @@ function sureMapOwnAll( srcMap, all, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ _.strType( srcMap ) + ' should own fields :', _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.strType( srcMap ) } should own fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -4834,7 +4835,7 @@ function sureMapOwnAll( srcMap, all, msg )
  * // Object should have no fields : a
  * //
  * // at _err (file:///.../wTools/staging/Base.s:3707)
- * // at sureMapHasAll (file:///.../wTools/staging/Base.s:4518)
+ * // at sureMapHasNone (file:///.../wTools/staging/Base.s:4518)
  * // at <anonymous>:4
  *
  * @example
@@ -4883,7 +4884,7 @@ function sureMapHasNone( srcMap, screenMaps, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ _.strType( srcMap ) + ' should have no fields :', _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.strType( srcMap ) } should have no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -4923,7 +4924,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
     if( arguments.length === 2 )
     throw _._err
     ({
-      args : [ _.strType( srcMap ) + ' should own no fields :', _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.strType( srcMap ) } should own no fields :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
@@ -5024,7 +5025,7 @@ function sureMapHasNoUndefine( srcMap, msg )
     if( arguments.length === 1 )
     throw _._err
     ({
-      args : [ _.strType( srcMap ) + ' should have no undefines, but has :', _.strQuote( but ).join( ', ' ) ],
+      args : [ `${ _.strType( srcMap ) } should have no undefines, but has :`, _.strQuote( but ).join( ', ' ) ],
       level : 2,
     });
     else
