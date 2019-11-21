@@ -31,6 +31,7 @@ function diagnosticStructureGenerate( test )
   test.is( _.setIs( got.structure.set ) );
 
 }
+diagnosticStructureGenerate.timeOut = 30000;
 
 // --
 // declare
