@@ -212,6 +212,8 @@ strQuoteAnalyze.defaults =
 //
 // --
 
+/* qqq : ask how to modify strLeft/strRight */
+
 function _strLeftSingle( src, ins, first, last )
 {
 
