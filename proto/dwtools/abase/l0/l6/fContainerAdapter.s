@@ -314,7 +314,6 @@ class ContainerAdapterAbstract
     qqq : was not appropriate. add good coverage
     Dmytro : new coverage implemented
     */
-    // return this.original === src.original;
   }
   removedContainer( src )
   {
@@ -357,61 +356,28 @@ class ContainerAdapterAbstract
     src = self.From( src );
 
     let result = src.length;
-
     src.each( ( e ) => self.removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) );
-    // src.each( ( e ) =>
-    // {
-    //   let removed = self.removed( e );
-    //   _.assert( removed === 1 );
-    // })
+    
     return result;
   }
   removeContainer( src )
   {
     let self = this;
-    //
-    // if( self._same( src ) )
-    // src = self.From( [ ... src.original ] );
-    // else
-    // src = self.From( src );
-    //
-    // src.each( ( e ) => self.remove( e ) );
     self.removedContainer.apply( self, arguments );
     return self;
   }
   removeContainerOnce( src, onEvaluate1, onEvaluate2 )
   {
     let self = this;
-
-    // if( self._same( src ) )
-    // src = self.From( [ ... src.original ] );
-    // else
-    // src = self.From( src );
-    //
-    // src.each( ( e ) => self.removeOnce( e, onEvaluate1, onEvaluate2 ) );
     self.removedContainerOnce.apply( self, arguments );
     return self;
   }
   removeContainerOnceStrictly( src, onEvaluate1, onEvaluate2 )
   {
     let self = this;
-
-    // if( self._same( src ) )
-    // src = self.From( [ ... src.original ] );
-    // else
-    // src = self.From( src );
-    //
-    // src.each( ( e ) => self.removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) );
-    // // src.each( ( e ) =>
-    // // {
-    // //   let removed = self.removed( e );
-    // //   _.assert( removed === 1 );
-    // // })
-
     self.removedContainerOnceStrictly.apply( self, arguments );
     return self;
   }
-
   min( onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach, onEach returns value that sets to previusElement */
   {
     let self = this;
@@ -420,7 +386,6 @@ class ContainerAdapterAbstract
     else
     return self.reduce( +Infinity, ( a, e ) => Math.min( a, e ) );
   }
-
   max( onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach */
   {
     let self = this;
@@ -429,7 +394,6 @@ class ContainerAdapterAbstract
     else
     return self.reduce( -Infinity, ( a, e ) => Math.max( a, e ) );
   }
-
   least( dst, onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach */
   {
     let self = this;
@@ -440,7 +404,6 @@ class ContainerAdapterAbstract
     else
     return self.filter( dst, ( e ) => e === min ? e : undefined );
   }
-
   most( dst, onEach ) /* qqq : implement good coverage, make sure it works without onEach, comparator | Dmytro : covered, works without onEach */
   {
     let self = this;
@@ -451,7 +414,6 @@ class ContainerAdapterAbstract
     else
     return self.filter( dst, ( e ) => e === max ? e : undefined );
   }
-
   only( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators, comparator | Dmytro : implemented, covered */
   {
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
@@ -773,15 +735,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         if( !this.has( e, onEvaluate1, onEvaluate2 ) )
         this.append( e );
       }
-      // container = _.longIs( container ) ? container : [ ... container ];
-      //
-      // let temp = _.arrayAppendArrayOnce( [ ... this.original ], container, onEvaluate1, onEvaluate2 )
-      //
-      // this.empty();
-      //
-      // for( let i = 0; i < temp.length; i++ )
-      // this.append( temp[ i ] );
-
+      
       return this;
     }
     else
@@ -840,10 +794,8 @@ class SetContainerAdapter extends ContainerAdapterAbstract
 			// Dmytro : _.arraySetLeft returns index, it not usable for Sets or it need one more iteration
       // let e2 = _.longLeft( [ ... container ], e, onEvaluate1, onEvaluate2 ).element;
       // _.assert( e2 !== undefined );
-      // container.delete( e ); // Dmytro : unnecessary to delete unknown element
-      // return e2;
 
-			let last = _.nothing;
+      let last = _.nothing;
 			self.reduce( ( a, e2 ) => _.entityEntityEqualize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
 			_.assert( last !== _.nothing );
 			container.delete( last );
@@ -854,20 +806,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     // qqq2 : ?? | Dmytro : I'v got it
     // if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1 )
     // return last;
-
-    // _.assert( e === undefined || _.entityEntityEqualize( poped, e, onEvaluate1, onEvaluate2 ) );
-    // return e;
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
-    // _.assert( arguments.length === 1 );
-    // _.assert( this.original.has( e ), 'Set does not have such an element' );
-    // let r = this.original.delete( e );
-    // return e;
     let last = this.last();
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
     _.assert( _.entityEntityEqualize( last, e, onEvaluate1, onEvaluate2 ), 'Set does not have such an element' );
-    // _.assert( _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Set does not have such an element' );
 
     this.original.delete( last );
     return last;
@@ -1503,6 +1447,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return accumulator;
   }
+  all( onEach )
+  {
+    return this.allLeft( onEach );
+  }
   allLeft( onEach )
   {
     let self = this;
@@ -1530,16 +1478,15 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     for( let k = temp.length - 1; k >= 0; k-- )
     {
       let e = temp[ k ];
-      // index -= 1;
       let r = onEach( e, k, self );
       if( !r )
       return false;
     }
     return true;
   }
-  all( onEach )
+  any( onEach )
   {
-    return this.allLeft( onEach );
+    return this.anyLeft( onEach );
   }
   anyLeft( onEach )
   {
@@ -1576,10 +1523,10 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return false;
   }
-  any( onEach )
+  none( onEach )
   {
-    return this.anyLeft( onEach );
-  }
+    return this.noneLeft( onEach );
+  }  
   noneLeft( onEach )
   {
     let self = this;
@@ -1615,10 +1562,6 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return true;
   }
-  none( onEach )
-  {
-    return this.noneLeft( onEach );
-  }
   left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
   {
     /* qqq2 : make optimal implementation, please | Dmytro : implemented with iterative search in original */
@@ -1635,7 +1578,6 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   }
   reverse( dst )
   {
-
     // if( !dst )
     // {
     //   debugger;
@@ -1647,14 +1589,15 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     //   dst = this.From( dst );
     //   dst.copyFrom( this ); /* qqq : implement and cover copyFrom | Dmytro : implemented and covered */
     // }
-    if( !dst )
-    dst = this.MakeEmpty();
-    else
-    dst = this.From( dst );
 
     let self = this;
     let container = self.original;
     let temp = [ ... container ];
+
+    if( !dst )
+    dst = this.MakeEmpty();
+    else
+    dst = this.From( dst );
 
     /* qqq : same and _same are 2 different routines. don't confuse! | Dmytro : thanks, I'v got it */
     // if( this.same( dst ) )
@@ -1837,11 +1780,9 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
-    // _.assert( arguments.length === 1 );
-    // _.assert( this.original[ this.original.length - 1 ] === e, 'Container does not have such element' );
     _.assert( 1 <= arguments.length && arguments.length <= 3 );
     _.assert( _.entityEntityEqualize( this.last(), e, onEvaluate1, onEvaluate2 ), 'Container does not have such element' );
-    // _.assert( _.longLeftIndex( [ this.last() ], e, onEvaluate1, onEvaluate2 ) !== -1, 'Container does not have such element' );
+
     var poped = this.original.pop();
     return poped;
   }
@@ -2271,6 +2212,10 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     return accumulator;
   }
+  all( onEach )
+  {
+    return this.allLeft( onEach );
+  }
   allLeft( onEach )
   {
     let container = this.original;
@@ -2293,9 +2238,9 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     return true;
   }
-  all( onEach )
+  any( onEach )
   {
-    return this.allLeft( onEach );
+    return this.anyLeft( onEach );
   }
   anyLeft( onEach )
   {
@@ -2319,9 +2264,9 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     }
     return false;
   }
-  any( onEach )
+  none( onEach )
   {
-    return this.anyLeft( onEach );
+    return this.noneLeft( onEach );
   }
   noneLeft( onEach )
   {
@@ -2337,17 +2282,13 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
   noneRight( onEach )
   {
     let container = this.original;
-    for( let i = container.length-1; i >= 0; i-- )
+    for( let i = container.length - 1; i >= 0; i-- )
     {
       let r = onEach( container[ i ], i, container );
       if( r )
       return false;
     }
     return true;
-  }
-  none( onEach )
-  {
-    return this.noneLeft( onEach );
   }
   left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
   {
