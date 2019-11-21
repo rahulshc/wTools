@@ -10,15 +10,24 @@ let Self = _global_.wTools;
 // decorator
 // --
 
+// class QuotePair
+// {
+//   constructor( elements )
+//   {
+//     this.elements = elements;
+//     return this;
+//   }
+// }
+
+//
+
 function strQuote( o )
 {
 
   if( !_.mapIs( o ) )
   o = { src : o };
-
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuote.defaults.quote;
-
   _.assertMapHasOnly( o, strQuote.defaults );
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -48,6 +57,136 @@ strQuote.defaults =
   quote : '"',
 }
 
+//
+
+function strQuotePairsNormalize( quote )
+{
+
+  if( ( _.boolLike( quote ) && quote ) )
+  quote = strQuoteAnalyze.defaults.quote;
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( quote ) || _.arrayIs( quote ) );
+
+  quote = _.arrayAs( quote );
+  for( let q = 0 ; q < quote.length ; q++ )
+  {
+    let quotingPair = quote[ q ];
+    _.assert( _.pair.is( quotingPair ) || _.strIs( quotingPair ) );
+    if( _.strIs( quotingPair ) )
+    quotingPair = quote[ q ] = [ quotingPair, quotingPair ];
+    _.assert( _.strIs( quotingPair[ 0 ] ) && _.strIs( quotingPair[ 1 ] ) );
+  }
+
+  return quote;
+}
+
+//
+
+function strQuoteAnalyze( o )
+{
+  let i = -1;
+  let result = Object.create( null );
+  result.ranges = [];
+  result.quotes = [];
+
+  if( !_.mapIs( o ) )
+  o = { src : o };
+  if( o.quote === undefined || o.quote === null )
+  o.quote = strQuoteAnalyze.defaults.quote;
+  _.assertMapHasOnly( o, strQuoteAnalyze.defaults );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( o.src ) );
+
+  o.quote = _.strQuotePairsNormalize( o.quote );
+  let maxQuoteLength = 0;
+  for( let q = 0 ; q < o.quote.length ; q++ )
+  {
+    let quotingPair = o.quote[ q ];
+    maxQuoteLength = Math.max( maxQuoteLength, quotingPair[ 0 ].length, quotingPair[ 1 ].length );
+  }
+
+  // o.quote = _.arrayAs( o.quote );
+  // let maxQuoteLength = 0;
+  // for( let q = 0 ; q < o.quote.length ; q++ )
+  // {
+  //   let quotingPair = o.quote[ q ];
+  //   _.assert( _.pair.is( quotingPair ) || _.strIs( quotingPair ) );
+  //   if( _.strIs( quotingPair ) )
+  //   quotingPair = o.quote[ q ] = [ quotingPair, quotingPair ];
+  //   _.assert( _.strIs( quotingPair[ 0 ] ) && _.strIs( quotingPair[ 1 ] ) );
+  //   maxQuoteLength = Math.max( maxQuoteLength, quotingPair[ 0 ].length, quotingPair[ 1 ].length );
+  // }
+
+  let isEqual = maxQuoteLength === 1 ? isEqualChar : isEqualString;
+  let inRange = false
+  do
+  {
+    while( i < o.src.length )
+    {
+      i += 1;
+
+      if( inRange )
+      {
+        if( isEqual( inRange ) )
+        {
+          result.ranges.push( i );
+          inRange = false;
+        }
+        continue;
+      }
+
+      for( let q = 0 ; q < o.quote.length ; q++ )
+      {
+        let quotingPair = o.quote[ q ];
+        if( isEqual( quotingPair[ 0 ] ) )
+        {
+          result.quotes.push( quotingPair[ 0 ] );
+          result.ranges.push( i );
+          inRange = quotingPair[ 1 ];
+          break;
+        }
+      }
+    }
+
+    if( inRange )
+    {
+      result.quotes.pop();
+      i = result.ranges.pop()+1;
+      inRange = false;
+    }
+
+  }
+  while( i < o.src.length );
+
+  return result;
+
+  function isEqualChar( quote )
+  {
+    _.assert( o.src.length >= i );
+    if( o.src[ i ] === quote )
+    return true;
+    return false;
+  }
+
+  function isEqualString( quote )
+  {
+    if( i+quote.length > o.src.length )
+    return false;
+    let subStr = o.src.substring( i, i+quote.length );
+    if( subStr === quote )
+    return true;
+    return false;
+  }
+
+}
+
+strQuoteAnalyze.defaults =
+{
+  src : null,
+  quote : [ '"', '`', '\'' ],
+}
+
 // --
 //
 // --
@@ -65,6 +204,7 @@ function _strLeftSingle( src, ins, first, last )
   let olength = src.length;
   let result = Object.create( null );
   result.index = olength;
+  result.instanceIndex = -1;
   result.entry = undefined;
 
   if( first !== undefined || last !== undefined )
@@ -77,6 +217,10 @@ function _strLeftSingle( src, ins, first, last )
     first = src.length + first;
     if( last < 0 )
     last = src.length + last;
+    // if( first >= src.length )
+    // return result;
+    // if( last <= -1 )
+    // return result;
     _.assert( 0 <= first && first <= src.length );
     _.assert( 0 <= last && last <= src.length );
     src = src.substring( first, last );
@@ -90,6 +234,7 @@ function _strLeftSingle( src, ins, first, last )
       let found = src.indexOf( entry );
       if( found >= 0 && ( found < result.index || result.entry === undefined ) )
       {
+        result.instanceIndex = k;
         result.index = found;
         result.entry = entry;
       }
@@ -99,6 +244,7 @@ function _strLeftSingle( src, ins, first, last )
       let found = src.match( entry );
       if( found && ( found.index < result.index || result.entry === undefined ) )
       {
+        result.instanceIndex = k;
         result.index = found.index;
         result.entry = found[ 0 ];
       }
@@ -164,6 +310,7 @@ function _strRightSingle( src, ins, first, last )
   let olength = src.length;
   let result = Object.create( null );
   result.index = -1;
+  result.instanceIndex = -1;
   result.entry = undefined;
 
   if( first !== undefined || last !== undefined )
@@ -176,6 +323,10 @@ function _strRightSingle( src, ins, first, last )
     first = src.length + first;
     if( last < 0 )
     last = src.length + last;
+    // if( first >= src.length )
+    // return result;
+    // if( last <= -1 )
+    // return result;
     _.assert( 0 <= first && first <= src.length );
     _.assert( 0 <= last && last <= src.length );
     src = src.substring( first, last );
@@ -189,6 +340,7 @@ function _strRightSingle( src, ins, first, last )
       let found = src.lastIndexOf( entry );
       if( found >= 0 && found > result.index )
       {
+        result.instanceIndex = k;
         result.index = found;
         result.entry = entry;
       }
@@ -196,10 +348,7 @@ function _strRightSingle( src, ins, first, last )
     else if( _.regexpIs( entry ) )
     {
 
-      // entry = _.regexpsJoin([ entry, '(?!(?=.).*(?:))' ]);
-      // debugger;
-
-      let regexp1 = _.regexpsJoin([ '.*', '(', entry, ')' ]); // xxx
+      let regexp1 = _.regexpsJoin([ '.*', '(', entry, ')' ]);
       let match1 = src.match( regexp1 );
       if( !match1 )
       continue;
@@ -219,7 +368,7 @@ function _strRightSingle( src, ins, first, last )
       {
         if( found1.length < found2.length )
         {
-          debugger;
+          // debugger;
           found = found2;
           index = index2 - found.length;
         }
@@ -242,6 +391,7 @@ function _strRightSingle( src, ins, first, last )
 
       if( index > result.index )
       {
+        result.instanceIndex = k;
         result.index = index;
         result.entry = found;
       }
@@ -448,6 +598,7 @@ function strReplace( srcStr, insStr, subStr )
 
 let Fields =
 {
+  // QuotePair,
 }
 
 // --
@@ -460,13 +611,15 @@ let Routines =
   // decorator
 
   strQuote,
+  strQuotePairsNormalize, /* qqq : cover please strQuotePairsNormalize */
+  strQuoteAnalyze,
 
   //
 
   _strLeftSingle,
-  strLeft,
+  strLeft, /* qqq : improve coverage */
   _strRightSingle,
-  strRight,
+  strRight, /* qqq : improve coverage */
 
   strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ),
   strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
