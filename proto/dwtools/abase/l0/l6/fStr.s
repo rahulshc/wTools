@@ -25,11 +25,11 @@ function strQuote( o )
 {
 
   if( !_.mapIs( o ) )
-  o = { src : o };
+  o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuote.defaults.quote;
   _.assertMapHasOnly( o, strQuote.defaults );
-  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( _.arrayIs( o.src ) )
   {
@@ -55,6 +55,32 @@ strQuote.defaults =
 {
   src : null,
   quote : '"',
+}
+
+//
+
+function strUnquote( o )
+{
+
+  if( !_.mapIs( o ) )
+  o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
+  if( o.quote === undefined || o.quote === null )
+  o.quote = strUnquote.defaults.quote;
+  _.assertMapHasOnly( o, strUnquote.defaults );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  let result = o.src;
+  let isolated = _.strIsolateInsideLeft( result, o.quote );
+  if( isolated[ 0 ] === '' && isolated[ 4 ] === '' )
+  result = isolated[ 2 ];
+
+  return result;
+}
+
+strUnquote.defaults =
+{
+  src : null,
+  quote : [ '"', '`', '\'' ],
 }
 
 //
@@ -90,13 +116,20 @@ function strQuoteAnalyze( o )
   result.ranges = [];
   result.quotes = [];
 
+  // if( !_.mapIs( o ) )
+  // o = { src : o };
+  // if( o.quote === undefined || o.quote === null )
+  // o.quote = strQuoteAnalyze.defaults.quote;
+  // _.assertMapHasOnly( o, strQuoteAnalyze.defaults );
+  // _.assert( arguments.length === 1, 'Expects single argument' );
+  // _.assert( _.strIs( o.src ) );
+
   if( !_.mapIs( o ) )
-  o = { src : o };
+  o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
   o.quote = strQuoteAnalyze.defaults.quote;
   _.assertMapHasOnly( o, strQuoteAnalyze.defaults );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( o.src ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   o.quote = _.strQuotePairsNormalize( o.quote );
   let maxQuoteLength = 0;
@@ -105,18 +138,6 @@ function strQuoteAnalyze( o )
     let quotingPair = o.quote[ q ];
     maxQuoteLength = Math.max( maxQuoteLength, quotingPair[ 0 ].length, quotingPair[ 1 ].length );
   }
-
-  // o.quote = _.arrayAs( o.quote );
-  // let maxQuoteLength = 0;
-  // for( let q = 0 ; q < o.quote.length ; q++ )
-  // {
-  //   let quotingPair = o.quote[ q ];
-  //   _.assert( _.pair.is( quotingPair ) || _.strIs( quotingPair ) );
-  //   if( _.strIs( quotingPair ) )
-  //   quotingPair = o.quote[ q ] = [ quotingPair, quotingPair ];
-  //   _.assert( _.strIs( quotingPair[ 0 ] ) && _.strIs( quotingPair[ 1 ] ) );
-  //   maxQuoteLength = Math.max( maxQuoteLength, quotingPair[ 0 ].length, quotingPair[ 1 ].length );
-  // }
 
   let isEqual = maxQuoteLength === 1 ? isEqualChar : isEqualString;
   let inRange = false
@@ -610,9 +631,10 @@ let Routines =
 
   // decorator
 
-  strQuote,
+  strQuote, /* xxx : move up */
+  strUnquote, /* xxx : move up */ /* qqq : cover please */
   strQuotePairsNormalize, /* qqq : cover please strQuotePairsNormalize */
-  strQuoteAnalyze,
+  strQuoteAnalyze, /* qqq : cover please */
 
   //
 
