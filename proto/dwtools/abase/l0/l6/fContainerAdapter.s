@@ -420,9 +420,6 @@ class ContainerAdapterAbstract
 
     let self = this;
     let container = self.original;
-    let dst2;
-    if( dst && src2 && !_.routineIs( src2 ) )
-    dst2 = dst;
 
     [ dst, src2, onEvaluate1, onEvaluate2 ] = self._onlyArguments( ... arguments );
 
@@ -450,8 +447,6 @@ class ContainerAdapterAbstract
       });
     }
     
-    if( dst2 !== undefined )
-    return dst2;
     return dst;
   }
   but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators | Dmytro : implemented, covered */
@@ -460,9 +455,6 @@ class ContainerAdapterAbstract
 
     let self = this;
     let container = self.original;
-    let dst2;
-    if( dst && src2 && !_.routineIs( src2 ) )
-    dst2 = dst;
 
     [ dst, src2, onEvaluate1, onEvaluate2 ] = self._onlyArguments( ... arguments );
 
@@ -491,8 +483,6 @@ class ContainerAdapterAbstract
       });
     }
 
-    if( dst2 !== undefined )
-    return dst2;
     return dst;
   }
   select( selector )
@@ -615,7 +605,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       }
       else _.assert( 0 );
     }
-    else if( onEvaluate1 === undefined )
+    else if( onEvaluate1 === undefined || onEvaluate1 === null )
     {
       return this.original.has( e );
     }
@@ -1945,18 +1935,15 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       {
         let e = container[ k ];
         // let e2 = onEach( e, undefined, container ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
-        let e2 = onEach( e, k, container );
-        if( e !== e2 || e2 === undefined )
+        let e2 = onEach( e, k, container );        
+        if( e2 === undefined )
         {
-          if( e2 !== undefined )
-          {
-            container[ k ] = e2;
-          }
-          else
-          {
-            container.splice( k, 1 );
-            k--;
-          }
+          container.splice( k, 1 );
+          k--;
+        }
+        else if( e2 !== e )
+        {
+          container[ k ] = e2;
         }
       }
     }
@@ -1989,13 +1976,10 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       for( let k = container.length - 1; k >= 0; k-- )
       {
         let e2 = onEach( container[ k ], k, container );
-        if( container[ k ] !== e2 || e2 === undefined )
-        {
-          if( e2 !== undefined )
-          container[ k ] = e2;
-          else
-          container.splice( k, 1 );
-        }
+        if( e2 === undefined )
+        container.splice( k, 1 );
+        else if( container[ k ] !== e2 )
+        container[ k ] = e2;
       }
     }
     else
