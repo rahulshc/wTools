@@ -2594,12 +2594,28 @@ function arraySetContainNone_( src1, src2, onEvaluate1, onEvaluate2 )
   }
   else if( _.setIs( src1 ) )
   {
+    let setFrom = 0;
+    if( _.numberIs( onEvaluate1 ) )
+    {
+      setFrom = onEvaluate1;
+      onEvaluate1 = onEvaluate2;
+      onEvaluate2 = undefined;
+    }
+
     for( let e of src2 )
     {
+      let from = setFrom;
       for( let el of src1 )
       {
-        if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
-        return false;
+        if( from === 0 )
+        {
+          if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
+            return false;          
+        }
+        else 
+        {
+          from--;
+        }
       }
     }
   }
