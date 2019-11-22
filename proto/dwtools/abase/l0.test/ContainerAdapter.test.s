@@ -6826,6 +6826,31 @@ function onlyEqualizer( test )
 
 //
 
+function onlyBug( test )
+{
+  test.case = 'dst is array';
+  var dst = [ 1, 2 ];
+  var src = _.containerAdapter.make( [ 2, 3, 4 ] );
+  var src2 = [ 2, 3 ];
+  var got = src.only( dst, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== dst );
+  test.is( got !== src2 );
+  test.identical( got.original, exp );
+
+  test.case = 'dst is Set';
+  var dst = new Set( [ 1, 2 ] );
+  var src = _.containerAdapter.make( [ 2, 3, 4 ] );
+  var src2 = [ 2, 3 ];
+  var got = src.only( dst, src2 );
+  var exp = [ 1, 2, 3 ];
+  test.is( got !== dst );
+  test.is( got !== src2 );
+  test.identical( [ ... got.original ], exp );
+}
+
+//
+
 function butWithoutCallbacks( test )
 {
   test.open( 'arrayContainerAdapter' );
@@ -7820,6 +7845,31 @@ function butEqualizer( test )
 
 //
 
+function butBug( test )
+{
+  test.case = 'dst is array';
+  var dst = [ 1, 2 ];
+  var src = _.containerAdapter.make( [ 2, 3, 4 ] );
+  var src2 = [ 2, 3 ];
+  var got = src.but( dst, src2 );
+  var exp = [ 1, 2, 4 ];
+  test.is( got !== dst );
+  test.is( got !== src2 );
+  test.identical( got.original, exp );
+
+  test.case = 'dst is Set';
+  var dst = new Set( [ 1, 2 ] );
+  var src = _.containerAdapter.make( [ 2, 3, 4 ] );
+  var src2 = [ 2, 3 ];
+  var got = src.but( dst, src2 );
+  var exp = [ 1, 2, 4 ];
+  test.is( got !== dst );
+  test.is( got !== src2 );
+  test.identical( [ ... got.original ], exp );
+}
+
+//
+
 function select( test )
 {
   test.case = 'arrayContainerAdapter, empty container';
@@ -8127,6 +8177,16 @@ function setAdapterHas( test )
   var src = _.containerAdapter.make( new Set( [ { a : 1 }, { b : 1 }, { a : 1 } ] ) );
   var got = src.has( 1, ( e, ins ) => e.a === ins );
   test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
+  test.identical( got, true );
+}
+
+//
+
+function setAdapterHasBug( test )
+{
+  test.case = 'null in onEvaluate1';
+  var src = _.containerAdapter.make( [ 1, 2, 3, 4 ] );
+  var got = src.has( 2, null );
   test.identical( got, true );
 }
 
@@ -20026,11 +20086,13 @@ var Self =
     onlyOneEvaluator,
     onlyTwoEvaluators,
     onlyEqualizer,
+    onlyBug,
 
     butWithoutCallbacks,
     butOneEvaluator,
     butTwoEvaluators,
     butEqualizer,
+    butBug,
 
     select,
 
@@ -20040,6 +20102,7 @@ var Self =
     setAdapterMakeEmpty,
     setAdapterMake,
     setAdapterHas,
+    setAdapterHasBug,
     setAdapterCount,
     setAdapterCopyFrom,
     setAdapterAppend,
