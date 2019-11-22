@@ -59,6 +59,33 @@ function objectLike( src )
 
 //
 
+/**
+ * Routine countableIs() checks provided argument {-src-} whether it is countable ( iteratable ).
+ * Returns "true" if provided argument is countable. Othervise "false" returned.
+ *
+ * @param { * } src - Argument of any type.
+ *
+ * @example
+ * _.countableIs( 10 );
+ * // returns false
+ *
+ * @example
+ * _.countableIs( [ 1, 2, 3 ] );
+ * // returns true
+ *
+ * @example
+ * _.countableIs( { a : 2, b : 'str' } );
+ * // returns true
+ *
+ * @example
+ * _.countableIs( new Set( [ 1, 2, 3 ] ) );
+ * // returns true
+ *
+ * @return { Boolean } - Returns the boolean value of whether the argument is countable.
+ * @function countableIs
+ * @memberof wTools
+ */
+
 function countableIs( src )
 {
   if( !src )
@@ -1782,7 +1809,7 @@ let Routines =
   objectIs,
   objectLike,
   objectLikeOrRoutine,
-  countableIs, /* qqq : cover and document please */
+  countableIs, /* qqq : cover and document please | Dmytro : covered and documented */
 
   mapIs,
   mapIsEmpty,

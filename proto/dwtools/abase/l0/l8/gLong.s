@@ -203,7 +203,7 @@ function longOnce( dstLong, onEvaluate )
 
   let j = 1;
   for( let i = 1; i < dstLong.length && j < length; i++ )
-  if( _.arrayRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
+  if( _.longRightIndex( result, dstLong[ i ], j-1, onEvaluate ) === -1 )
   result[ j++ ] = dstLong[ i ];
 
   _.assert( j === length );
@@ -2554,6 +2554,55 @@ function arraySetContainAny( src )
 
 //
 
+function arraySetContainAny_( src1, src2, onEvaluate1, onEvaluate2 )
+{
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
+
+  if( _.arrayIs( src1 ) )
+  {
+    for( let e of src2 )
+    if( _.longLeftIndex( src1, e, onEvaluate1, onEvaluate2 ) !== -1 )
+    return true;
+  }
+  else if( _.setIs( src1 ) )
+  {
+    let setFrom = 0;
+    if( _.numberIs( onEvaluate1 ) )
+    {
+      setFrom = onEvaluate1;
+      onEvaluate1 = onEvaluate2;
+      onEvaluate2 = undefined;
+    }
+
+    for( let e of src2 )
+    {
+      let from = setFrom;
+      for( let el of src1 )
+      {
+        if( from === 0 )
+        {
+          if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
+          return true;          
+        }
+        else 
+        {
+          from--;
+        }
+      }
+    }
+  }
+  else
+  {
+    _.assert( 0, '{-src1-} should be instance of Array or Set' );
+  }
+
+  return false;
+}
+
+//
+
 function arraySetContainNone( src )
 {
   _.assert( _.longIs( src ) );
@@ -2573,6 +2622,55 @@ function arraySetContainNone( src )
 
     }
 
+  }
+
+  return true;
+}
+
+//
+
+function arraySetContainNone_( src1, src2, onEvaluate1, onEvaluate2 )
+{
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
+
+  if( _.arrayIs( src1 ) )
+  {
+    for( let e of src2 )
+    if( _.longLeftIndex( src1, e, onEvaluate1, onEvaluate2 ) !== -1 )
+    return false;
+  }
+  else if( _.setIs( src1 ) )
+  {
+    let setFrom = 0;
+    if( _.numberIs( onEvaluate1 ) )
+    {
+      setFrom = onEvaluate1;
+      onEvaluate1 = onEvaluate2;
+      onEvaluate2 = undefined;
+    }
+
+    for( let e of src2 )
+    {
+      let from = setFrom;
+      for( let el of src1 )
+      {
+        if( from === 0 )
+        {
+          if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
+          return false;          
+        }
+        else 
+        {
+          from--;
+        }
+      }
+    }
+  }
+  else if( src1 !== null )
+  {
+    _.assert( 0, '{-src1-} should be instance of Array or Set' );
   }
 
   return true;
@@ -2614,6 +2712,108 @@ function arraySetIdentical( ins1, ins2 )
   let result = _.arraySetDiff( ins1, ins2 );
 
   return result.length === 0;
+}
+
+//
+
+function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
+{
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+
+  if( _.setIs( arr ) )
+  {
+    let result = Object.create( null );
+    result.index = -1;
+    let index = 0;
+    let from = 0;
+
+    if( _.routineIs( fromIndex ) )
+    {
+      onEvaluate2 = onEvaluate1;
+      onEvaluate1 = fromIndex;
+    }
+    else if( _.numberIs( fromIndex ) )
+    {
+      from = fromIndex;
+    }
+
+
+    for( let e of arr )
+    {
+      if( from === 0 )
+      {
+        if( _.entityEntityEqualize( e, ins, onEvaluate1, onEvaluate2 ) )
+        {
+          result.index = index;
+          result.element = e;
+          break;
+        }
+      }
+      else
+      {
+        from--;
+      }
+      index++;
+    }
+
+    return result;
+  }
+  else if( _.arrayIs( arr ) )
+  {
+    return _.longLeft.apply( this, arguments );
+  }
+  else
+  _.assert( 0 );
+  
+}
+
+//
+
+function arraySetRight( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
+{
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+
+  if( _.setIs( arr ) )
+  {
+    let result = Object.create( null );
+    result.index = -1;
+    let to = arr.size;
+    let index = 0;
+      
+    if( _.routineIs( fromIndex ) )
+    {
+      onEvaluate2 = onEvaluate1;
+      onEvaluate1 = fromIndex;
+    }
+    else if( _.numberIs( fromIndex ) )
+    {
+      to = fromIndex;
+    }
+    else if( fromIndex !== undefined )
+    _.assert( 0 );
+
+    for( let e of arr )
+    {
+      if( index < to )
+      {
+        if( _.entityEntityEqualize( e, ins, onEvaluate1, onEvaluate2 ) )
+        {
+          result.index = index;
+          result.element = e;
+        }
+      }
+      index += 1;
+    }
+
+    return result; 
+  }
+  else if( _.arrayIs( arr ) )
+  {
+    return _.longRight.apply( this, arguments );
+  }
+  else 
+  _.assert( 0 );
+  
 }
 
 // --
@@ -2697,19 +2897,52 @@ let Routines =
 
   // array set
 
-  arraySetDiff, /* qqq : ask how to improve, please */
-  arraySetDiff_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
-  arraySetBut, /* qqq : ask how to improve, please */
-  arraySetBut_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
-  arraySetIntersection, /* qqq : ask how to improve, please */
-  arraySetIntersection_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
-  arraySetUnion, /* qqq : ask how to improve, please */
-  arraySetUnion_, /* Dmytro : routine accepts arrays and Sets, two or three parameters without callbacks, covered */
+  arraySetDiff, /* qqq : ask how to improve, please | Dmytro : improved, covered */
+  arraySetBut, /* qqq : ask how to improve, please | Dmytro : improved, covered */
+  arraySetIntersection, /* qqq : ask how to improve, please | Dmytro : improved, covered */
+  arraySetUnion, /* qqq : ask how to improve, please | Dmytro : improved, covered */
 
   arraySetContainAll,
   arraySetContainAny,
+  arraySetContainAny_,
   arraySetContainNone,
+  arraySetContainNone_,
   arraySetIdentical,
+
+  arraySetLeft,
+  arraySetRight,
+
+  // to replace
+
+  arraySetDiff_, /* !!! : use instead of arraySetDiff */
+  arraySetBut_, /* !!! : use instead of arraySetBut */
+  arraySetIntersection_, /* !!! : use instead of arraySetIntersection */
+  arraySetUnion_, /* !!! : use instead of arraySetUnion */
+
+  /*
+
+  routine               | makes new dst container                     | saves dst container
+  ----------------------|---------------------------------------------|----------------------------------------------
+  arraySetDiff_         | _.arraySetDiff_( src1, src2 )               | _.arraySetDiff_( src1, src1, src2 )
+                        | _.arraySetDiff_( null, src1 )               | _.arraySetDiff_( src2, src1, src2 )
+                        | _.arraySetDiff_( null, src1, src2 )         | _.arraySetDiff_( dst, src1, src2 )
+  ----------------------|---------------------------------------------|----------------------------------------------
+  arraySetBut_          | _.arraySetBut_( src1 )                      | _.arraySetBut_( src1, src1, src2 )
+                        | _.arraySetBut_( src1, src2 )                | _.arraySetBut_( src2, src1, src2 )
+                        | _.arraySetBut_( null, src1 )                | _.arraySetBut_( dst, src1, src2 )
+                        | _.arraySetBut_( null, src1, src2 )          |
+  ----------------------|---------------------------------------------|----------------------------------------------
+  arraySetIntersection_ | _.arraySetIntersection_( src1 )             | _.arraySetIntersection_( src1, src1, src2 )
+                        | _.arraySetIntersection_( src1, src2 )       | _.arraySetIntersection_( src2, src1, src2 )
+                        | _.arraySetIntersection_( null, src1 )       | _.arraySetIntersection_( dst, src1, src2 )
+                        | _.arraySetIntersection_( null, src1, src2 ) |
+  ----------------------|---------------------------------------------|----------------------------------------------
+  arraySetUnion_        | _.arraySetUnion_( src1 )                    | _.arraySetUnion_( src1, src1, src2 )
+                        | _.arraySetUnion_( src1, src2 )              | _.arraySetUnion_( src2, src1, src2 )
+                        | _.arraySetUnion_( null, src1 )              | _.arraySetUnion_( dst, src1, src2 )
+                        | _.arraySetUnion_( null, src1, src2 )        |
+  ----------------------|---------------------------------------------|----------------------------------------------
+  */
 
 }
 

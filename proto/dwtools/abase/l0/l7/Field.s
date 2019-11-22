@@ -784,7 +784,11 @@ function dstNotOwnFromDefinitionStrictlyPrimitive()
     }
     else
     {
-      _.assert( !_.consequenceIs( srcElement ) && ( _.primitiveIs( srcElement ) || _.routineIs( srcElement ) ), () => _.toStrShort( dstContainer ) + ' has non-primitive element ' + _.strQuote( key ) + ' use _.define.own instead' );
+      _.assert
+      (
+        !_.consequenceIs( srcElement ) && ( _.primitiveIs( srcElement ) || _.routineIs( srcElement ) ),
+        () => `${ _.strShort( dstContainer ) } has non-primitive element ${ _.strQuote( key ) } use _.define.own instead`
+      );
       dstContainer[ key ] = srcElement;
     }
 

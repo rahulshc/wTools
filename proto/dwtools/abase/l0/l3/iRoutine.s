@@ -670,6 +670,7 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 
 /*
 qqq implement and cover _.routineExtend( null, routine );
+Dmytro : implemented a time ago, covered
 */
 
 /**
@@ -1276,7 +1277,7 @@ function vectorize_body( o )
       }
       return result;
     }
-    else if( vectorizingContainerAdapter && _._.containerAdapter.is( src ) ) /* qqq : cover */
+    else if( vectorizingContainerAdapter && _.containerAdapter.is( src ) ) /* qqq : cover */
     {
       debugger;
       if( pre )
