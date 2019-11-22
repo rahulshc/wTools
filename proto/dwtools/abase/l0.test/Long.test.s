@@ -36015,8 +36015,18 @@ function arraySetContainNone_( test )
   test.shouldThrowErrorSync( () => _.arraySetContainNone_() );
 
   test.case = 'one argument';
-  test.shouldThrowErrorSync( () => _.arraySetContainNone_( [ 1, 2, 3, 4 ] ) );
+  test.shouldThrowErrorSync( () => _.arraySetContainNone_( [ 1, 2 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arraySetContainNone_( [ 1, 2 ], new Set( [] ), ( e ) => e, ( ins ) => ins, 'extra' );
+
+  test.case = 'wrong type of src1';
+  test.shouldThrowErrorSync( () => _.arraySetContainNone_( 'wrong', new Set( [] ) );
+
+  test.case = 'wrong type of src2';
+  test.shouldThrowErrorSync( () => _.arraySetContainNone_( new Set( [] ), 'wrong' );
 }
+
 //
 
 function arraySetIdentical( test )

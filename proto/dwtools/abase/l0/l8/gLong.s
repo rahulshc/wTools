@@ -2610,7 +2610,7 @@ function arraySetContainNone_( src1, src2, onEvaluate1, onEvaluate2 )
         if( from === 0 )
         {
           if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
-            return false;          
+          return false;          
         }
         else 
         {
