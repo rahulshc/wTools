@@ -615,7 +615,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       }
       else _.assert( 0 );
     }
-    else if( onEvaluate1 === undefined )
+    else if( onEvaluate1 === undefined || onEvaluate1 === null )
     {
       return this.original.has( e );
     }
