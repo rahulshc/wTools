@@ -6826,6 +6826,35 @@ function onlyEqualizer( test )
 
 //
 
+function onlyBugWithReturnedContainer( test )
+{
+  test.case = 'dst is array';
+  var dst = _.self;
+  var src = _.containerAdapter.make( [ 2, 3, 4 ] );
+  var src2 = [ 2, 3, 5 ];
+  var got = src.only( dst, src2 );
+  var exp = [ 2, 3 ];
+  test.is( got !== dst );
+  test.is( got !== src2 );
+  test.identical( got.original, exp );
+
+  test.case = 'dst is Set';
+  var dst = _.self;
+  var src = _.containerAdapter.make( [ 2, 3, 4 ] );
+  var src2 = [ 2, 3, 5 ];
+  var got = src.only( dst, src2 );
+  var exp = [ 2, 3 ];
+  test.is( got !== dst );
+  test.is( got !== src2 );
+  test.identical( [ ... got.original ], exp );
+}
+onlyBugWithReturnedContainer.description = 
+`
+  Description :
+    - method returns Symbol _.self if it was provided, but should not
+`
+//
+
 function butWithoutCallbacks( test )
 {
   test.open( 'arrayContainerAdapter' );
@@ -7820,6 +7849,36 @@ function butEqualizer( test )
 
 //
 
+function butBugWithReturnedContainer( test )
+{
+  test.case = 'dst is array';
+  var dst = _.self;
+  var src = _.containerAdapter.make( [ 2, 3, 4 ] );
+  var src2 = [ 2, 3, 5 ];
+  var got = src.but( dst, src2 );
+  var exp = [ 4 ];
+  test.is( got !== dst );
+  test.is( got !== src2 );
+  test.identical( got.original, exp );
+
+  test.case = 'dst is Set';
+  var dst = _.self;
+  var src = _.containerAdapter.make( [ 2, 3, 4 ] );
+  var src2 = [ 2, 3, 5 ];
+  var got = src.but( dst, src2 );
+  var exp = [ 4 ];
+  test.is( got !== dst );
+  test.is( got !== src2 );
+  test.identical( [ ... got.original ], exp );
+}
+onlyBugWithReturnedContainer.description = 
+`
+  Description :
+    - method returns Symbol _.self if it was provided, but should not
+`
+
+//
+
 function select( test )
 {
   test.case = 'arrayContainerAdapter, empty container';
@@ -8129,6 +8188,21 @@ function setAdapterHas( test )
   test.identical( [ ... src.original ], [ { a : 1 }, { b : 1 }, { a : 1 } ] );
   test.identical( got, true );
 }
+
+//
+
+function setAdapterHasBugWithNullInEvaluator( test )
+{
+  test.case = 'null in onEvaluate1';
+  var src = _.containerAdapter.make( [ 1, 2, 3, 4 ] );
+  var got = src.has( 2, null );
+  test.identical( got, true );
+}
+setAdapterHasBugWithNullInEvaluator.description = 
+`
+ Description : 
+   - method has of setContainerAdapter was unable to accepts onEvaluate1 with null value.
+`
 
 //
 
@@ -20026,11 +20100,13 @@ var Self =
     onlyOneEvaluator,
     onlyTwoEvaluators,
     onlyEqualizer,
+    onlyBugWithReturnedContainer,
 
     butWithoutCallbacks,
     butOneEvaluator,
     butTwoEvaluators,
     butEqualizer,
+    butBugWithReturnedContainer,
 
     select,
 
@@ -20040,6 +20116,7 @@ var Self =
     setAdapterMakeEmpty,
     setAdapterMake,
     setAdapterHas,
+    setAdapterHasBugWithNullInEvaluator,
     setAdapterCount,
     setAdapterCopyFrom,
     setAdapterAppend,
