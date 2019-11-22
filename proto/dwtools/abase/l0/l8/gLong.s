@@ -2554,6 +2554,55 @@ function arraySetContainAny( src )
 
 //
 
+function arraySetContainAny_( src1, src2, onEvaluate1, onEvaluate2 )
+{
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
+
+  if( _.arrayIs( src1 ) )
+  {
+    for( let e of src2 )
+    if( _.longLeftIndex( src1, e, onEvaluate1, onEvaluate2 ) !== -1 )
+    return true;
+  }
+  else if( _.setIs( src1 ) )
+  {
+    let setFrom = 0;
+    if( _.numberIs( onEvaluate1 ) )
+    {
+      setFrom = onEvaluate1;
+      onEvaluate1 = onEvaluate2;
+      onEvaluate2 = undefined;
+    }
+
+    for( let e of src2 )
+    {
+      let from = setFrom;
+      for( let el of src1 )
+      {
+        if( from === 0 )
+        {
+          if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
+          return true;          
+        }
+        else 
+        {
+          from--;
+        }
+      }
+    }
+  }
+  else
+  {
+    _.assert( 0, '{-src1-} should be instance of Array or Set' );
+  }
+
+  return false;
+}
+
+//
+
 function arraySetContainNone( src )
 {
   _.assert( _.longIs( src ) );
@@ -2855,6 +2904,7 @@ let Routines =
 
   arraySetContainAll,
   arraySetContainAny,
+  arraySetContainAny_,
   arraySetContainNone,
   arraySetContainNone_,
   arraySetIdentical,
