@@ -2580,6 +2580,39 @@ function arraySetContainNone( src )
 
 //
 
+function arraySetContainNone_( src1, src2, onEvaluate1, onEvaluate2 )
+{
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
+
+  if( _.arrayIs( src1 ) )
+  {
+    for( let e of src2 )
+    if( _.longLeftIndex( src1, e, onEvaluate1, onEvaluate2 ) !== -1 )
+    return false;
+  }
+  else if( _.setIs( src1 ) )
+  {
+    for( let e of src2 )
+    {
+      for( let el of src1 )
+      {
+        if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
+        return false;
+      }
+    }
+  }
+  else if( src1 !== null )
+  {
+    _.assert( 0, '{-src1-} should be instance of Array or Set' );
+  }
+
+  return true;
+}
+
+//
+
 /**
  * Returns true if ( ins1 ) and ( ins2) arrays have same length and elements, elements order doesn't matter.
  * Inner arrays of arguments are not compared and result of such combination will be false.
@@ -2807,6 +2840,7 @@ let Routines =
   arraySetContainAll,
   arraySetContainAny,
   arraySetContainNone,
+  arraySetContainNone_,
   arraySetIdentical,
 
   arraySetLeft,
