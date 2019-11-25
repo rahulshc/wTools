@@ -2300,21 +2300,21 @@ function bufferBut_( test )
     var got = _.bufferBut_( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] === range[ 1 ]';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ 1, 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] < 0, range[ 1 ] < 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut_( dst, [ -1, -5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -2531,21 +2531,21 @@ function bufferBut_( test )
     var got = _.bufferBut_( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] === range[ 1 ]';
     var dst = buf( 4 );
     var got = _.bufferBut_( dst, [ 1, 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = undefined, range[ 0 ] < 0, range[ 1 ] < 0';
     var dst = buf( 4 );
     var got = _.bufferBut_( dst, [ -1, -5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = array';
     var dst = buf( 4 );
