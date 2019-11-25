@@ -26,7 +26,7 @@
 </details>
 
 <details><summary>
-  <a href="./tutorial/RoutineFromPreAndBody.md">
+  <a href="./tutorial/ErrorHandling.md">
     Errors handling done right: stateful exceptions
   </a></summary>
     This article shows the state of the art techniques of handling errors.
