@@ -5202,7 +5202,7 @@ function bufferGrow_( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferGrow_( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   /* */
 
@@ -5222,7 +5222,7 @@ function bufferGrow_( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferGrow_( dst, [ 1, 5 ], [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4, [ 2 ] ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   /* */
 
