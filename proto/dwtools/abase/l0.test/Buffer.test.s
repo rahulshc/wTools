@@ -2181,19 +2181,19 @@ function bufferBut_( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferBut_( dst, -5, [ 0 ] );
   test.identical( got, [ 0, 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = empty array, val = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferBut_( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [ 2 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = array, val = array';
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferBut_( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 1, 2, 4 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   /* */
 
@@ -2201,19 +2201,19 @@ function bufferBut_( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut_( dst, -5, [ 2 ] );
   test.identical( got, [ 2, 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = empty unroll, val = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferBut_( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [ 2 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = unroll, val = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferBut_( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 1, 2, 4 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   /* */
 

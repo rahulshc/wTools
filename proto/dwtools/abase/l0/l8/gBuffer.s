@@ -1313,6 +1313,9 @@ function bufferBut_( dst, dstArray, range, srcArray )
 
   [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
 
+  if( _.arrayLikeResizable( dstArray ) )
+  return _.arrayBut_.apply( this, arguments );
+
   if( range === undefined )
   return _returnDst( dst, dstArray );
 
