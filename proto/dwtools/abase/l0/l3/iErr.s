@@ -61,7 +61,7 @@ function diagnosticLocation( o )
   else if( _.errIs( o ) )
   o = { error : o, level : 0 }
   else if( o === undefined )
-  o = { stack : _.diagnosticStack([ 1, Infinity ]) };
+  o = { stack : _.diagnosticStack([ 0, Infinity ]) };
 
   /* */
 
@@ -107,8 +107,8 @@ function diagnosticLocation( o )
     o.location.line = _.longLeftDefined([ location2.line, o.location.line, o.error.line, o.error.linenumber, o.error.lineNumber, o.error.lineNo, o.error.lineno ]).element;
     o.location.col = _.longLeftDefined([ location2.col, o.location.col, o.error.col, o.error.colnumber, o.error.colNumber, o.error.colNo, o.error.colno ]).element;
 
-    if( o.location.path && _.numberIs( o.location.line ) )
-    return end();
+    // if( o.location.path && _.numberIs( o.location.line ) )
+    // return end();
   }
 
   /* */
@@ -126,11 +126,12 @@ function diagnosticLocation( o )
     }
   }
 
-  routineFromStack( o.stack );
-
-  let had = !!o.location.path;
-  if( !had )
-  o.location.path = fromStack( o.stack );
+  let stack = o.stack;
+  if( !o.location.routine || !_.numberIs( o.location.service ) )
+  routineFromStack();
+  let hadPath = !!o.location.path;
+  if( !o.location.path )
+  o.location.path = pathFromStack();
 
   if( !_.strIs( o.location.path ) )
   return end();
@@ -138,16 +139,17 @@ function diagnosticLocation( o )
   if( !_.numberIs( o.location.line ) )
   o.location.path = lineColFromPath( o.location.path );
 
-  if( !_.numberIs( o.location.line ) && had )
+  if( !_.numberIs( o.location.line ) && hadPath )
   {
-    let path = fromStack( o.stack );
+    debugger;
+    let path = pathFromStack();
     if( path )
     lineColFromPath( path );
   }
 
   return end();
 
-  /* end */
+  /* */
 
   function end()
   {
@@ -156,25 +158,15 @@ function diagnosticLocation( o )
 
     /* full */
 
-    // if( path )
-    {
-      o.location.full = path || '';
-      if( o.location.line !== undefined )
-      o.location.full += ':' + o.location.line;
-    }
+    o.location.full = path || '';
+    if( o.location.line !== undefined )
+    o.location.full += ':' + o.location.line;
 
     /* name long */
 
     if( o.location.full )
     {
-      try
-      {
-        o.location.fullWithRoutine = o.location.routine + ' @ ' + o.location.full;
-      }
-      catch( err )
-      {
-        o.location.fullWithRoutine = '';
-      }
+      o.location.fullWithRoutine = o.location.routine + ' @ ' + o.location.full;
     }
 
     /* name */
@@ -182,6 +174,7 @@ function diagnosticLocation( o )
     if( path )
     {
       let name = path;
+      _.assert( name.lastIndexOf );
       let i = name.lastIndexOf( '/' );
       if( i !== -1 )
       name = name.substr( i+1 );
@@ -205,29 +198,36 @@ function diagnosticLocation( o )
     return o.location;
   }
 
-  /* routine from stack */
+  /* */
 
-  function routineFromStack( stack )
+  function routineFromStack()
   {
     let path;
 
-    if( !stack )
-    return;
+    if( o.location.routine )
+    {
+      path = o.location.routine;
+    }
+    else
+    {
 
-    if( _.strIs( stack ) )
-    stack = stack.split( '\n' );
+      if( !stack )
+      return;
 
-    path = stack[ o.level ];
+      if( _.strIs( stack ) )
+      stack = stack.split( '\n' );
 
-    if( !_.strIs( path ) )
-    return '(-routine anonymous-)';
+      path = stack[ o.level ];
 
-    // debugger;
+      if( !_.strIs( path ) )
+      return '(-routine anonymous-)';
 
-    let t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
-    let executed = t.exec( path );
-    if( executed )
-    path = executed[ 2 ] || '';
+      let t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
+      let executed = t.exec( path );
+      if( executed )
+      path = executed[ 2 ] || '';
+
+    }
 
     if( _.strEnds( path, '.' ) )
     path += '?';
@@ -244,9 +244,9 @@ function diagnosticLocation( o )
     return path;
   }
 
-  /* path from stack */
+  /* */
 
-  function fromStack( stack )
+  function pathFromStack()
   {
     let path;
 
@@ -259,7 +259,7 @@ function diagnosticLocation( o )
     path = stack[ o.level ];
 
     if( !_.strIs( path ) )
-    return end();
+    return;
 
     path = path.replace( /^\s+/, '' );
     path = path.replace( /^\w+@/, '' );
@@ -271,9 +271,6 @@ function diagnosticLocation( o )
     var parsed = regexp.exec( path );
     if( parsed )
     path = parsed[ 1 ];
-
-    // if( _.strEnds( path, ')' ) )
-    // path = _.strIsolateInsideLeft( path, '(', ')' )[ 2 ];
 
     return path;
   }
@@ -382,11 +379,18 @@ function diagnosticStack( stack, range )
     }
   }
 
-  if( stack === undefined )
+  if( stack === undefined || stack === null )
   {
     stack = new Error();
     if( range === undefined )
-    range = [ 1, Infinity ];
+    {
+      range = [ 1, Infinity ];
+    }
+    else
+    {
+      range[ 0 ] += 1;
+      range[ 1 ] += 1;
+    }
   }
 
   if( range === undefined )
@@ -422,7 +426,8 @@ function diagnosticStack( stack, range )
   let errIs = 0;
   if( _.errIs( stack ) )
   {
-    stack = stack.originalStack || stack[ stackSymbol ] || stack.stack;
+    // stack = stack.callsStack || stack[ stackSymbol ] || stack.stack;
+    stack = _.errOriginalStack( stack );
     errIs = 1;
   }
 
@@ -579,7 +584,7 @@ function errIs( src )
 
 //
 
-function errIsRefined( src )
+function errIsStandard( src )
 {
   if( !_.errIs( src ) )
   return false;
@@ -698,10 +703,16 @@ function errOriginalStack( err )
   if( !_.errIs( err ) )
   throw Error( 'errOriginalStack : Expects error' );
 
-  if( err.originalMessage )
-  return err.originalMessage;
+  if( err.callsStack )
+  return err.callsStack;
 
-  return err.message;
+  if( err[ stackSymbol ] )
+  return err[ stackSymbol ];
+
+  if( err.stackCondensed )
+  return err.stackCondensed;
+
+  return err.stack;
 }
 
 //
@@ -746,8 +757,9 @@ function _err( o )
   }
 
   if( o.level === undefined || o.level === null )
-  o.level = 1;
-  o.level += 1;
+  o.level = null;
+  // o.level = 0;
+  // o.level += 1;
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   if( _.debuggerEnabled )
@@ -758,7 +770,7 @@ function _err( o )
   let id = null;
   let originalMessage = '';
   let fallBackMessage = '';
-  let catches = '';
+  let throwsStack = '';
   let sourceCode = '';
   let errors = [];
   let attended = false;
@@ -819,7 +831,7 @@ function _err( o )
         if( !result )
         {
           result = arg;
-          catches = result.catches || '';
+          throwsStack = result.throwsStack || '';
           sourceCode = result.sourceCode || '';
           attended = result.attended || false;
           logged = result.logged || false;
@@ -829,7 +841,7 @@ function _err( o )
         fallBackMessage = fallBackMessage || arg.constructor.name;
         errors.push( arg );
 
-        o.location = _.diagnosticLocation({ error : arg, location : o.location });
+        // o.location = _.diagnosticLocation({ error : arg, location : o.location });
         o.args[ a ] = _.errOriginalMessage( arg )
 
       }
@@ -848,10 +860,11 @@ function _err( o )
     {
       let arg = o.args[ a ];
       if( !_.primitiveIs( arg ) && _.objectLike( arg ) )
-      o.location = _.diagnosticLocation({ error : arg, location : o.location });
+      o.throwenLocation = _.diagnosticLocation({ error : arg, location : o.throwenLocation });
     }
 
-    o.location = o.location || Object.create( null );
+    o.throwenLocation = o.throwenLocation || Object.create( null );
+    o.caughtLocation = o.caughtLocation || Object.create( null );
 
   }
 
@@ -860,60 +873,119 @@ function _err( o )
   function stackAndErrorForm()
   {
 
-    if( !result )
+    // debugger;
+
+    // if( result && result.id === 1 )
+    // debugger;
+
+    // if( o.throwenCallStack )
+    // {
+    //
+    //   if( !_.strIs( o.throwenCallStack ) || ( o.level !== 0 && o.level !== null ) )
+    //   o.throwenCallStack = _.diagnosticStack( o.throwenCallStack, [ o.level || 0, Infinity ] );
+    //
+    //   if( !_.strIs( o.caughtCallsStack ) || ( o.level !== 0 && o.level !== null ) )
+    //   o.caughtCallsStack = _.diagnosticStack( o.caughtCallsStack, [ o.level || 0, Infinity ] );
+    //
+    //   o.level = 0;
+    // }
+
+    if( result )
     {
-      if( !o.stack )
-      o.stack = o.fallBackStack;
-      result = new Error( originalMessage + '\n' );
-      if( !o.stack )
+
+      if( !o.throwenCallStack )
+      o.throwenCallStack = _.errOriginalStack( result );
+      if( !o.caughtCallsStack )
       {
-        o.stack = _.diagnosticStack( result, [ o.level, Infinity ] );
-        if( !o.stack || o.stack.indexOf( '\n' ) === -1 )
-        if( o.location.full )
-        o.stack = o.location.full;
+        o.caughtCallsStack = _.diagnosticStack( o.caughtCallsStack, [ ( o.level || 0 ) + 1, Infinity ] );
       }
+      if( !o.throwenCallStack )
+      {
+        o.throwenCallStack = _.diagnosticStack( result, [ ( o.level || 0 ) + 1, Infinity ] );
+      }
+      o.level = 0;
+
+      // if( result.originalMessage !== undefined )
+      // {
+      //   if( result.callsStack )
+      //   o.throwenCallStack = result.callsStack;
+      //   else if( result[ stackSymbol ] )
+      //   o.throwenCallStack = result[ stackSymbol ];
+      //   else
+      //   o.throwenCallStack = result.stack;
+      //   stackCondensed = result.stackCondensed;
+      // }
+      // else if( _.strDefined( result.stack ) )
+      // {
+      //   o.throwenCallStack = _.diagnosticStack( result.stack );
+      // }
+      // else
+      // {
+      //   o.throwenCallStack = _.diagnosticStack([ o.level, Infinity ]);
+      // }
+
     }
     else
     {
 
-      if( result.originalMessage !== undefined )
+      result = new Error( originalMessage + '\n' );
+      if( o.throwenCallStack )
       {
-        if( result.originalStack )
-        o.stack = result.originalStack;
-        else if( result[ stackSymbol ] )
-        o.stack = result[ stackSymbol ];
-        else
-        o.stack = result.stack;
-        stackCondensed = result.stackCondensed;
-      }
-      else if( _.strDefined( result.stack ) )
-      {
-        o.stack = _.diagnosticStack( result.stack );
+        result.stack = o.throwenCallStack;
+        o.caughtCallsStack = _.diagnosticStack( o.caughtCallsStack, [ o.level + 1, Infinity ] );
+        o.level = 0;
       }
       else
       {
-        o.stack = _.diagnosticStack([ o.level, Infinity ]);
+        if( o.level === undefined || o.level === null )
+        o.level = 1;
+        o.level += 1;
+        o.caughtCallsStack = o.throwenCallStack = result.stack = _.diagnosticStack( result.stack, [ o.level, Infinity ] );
+        o.level = 0;
       }
+
+      // if( !o.throwenCallStack )
+      // o.throwenCallStack = o.fallBackStack;
+      // if( !o.throwenCallStack )
+      // {
+      //   o.throwenCallStack = _.diagnosticStack( result, [ o.level, Infinity ] );
+      //   if( !o.throwenCallStack || o.throwenCallStack.indexOf( '\n' ) === -1 )
+      //   if( o.location.full )
+      //   o.throwenCallStack = o.location.full;
+      // }
 
     }
 
-    if( ( o.stackRemobeBeginInclude || o.stackRemobeBeginExclude ) && o.stack )
-    o.stack = _.diagnosticStackRemoveBegin( o.stack, o.stackRemobeBeginInclude || null, o.stackRemobeBeginExclude || null );
+    _.assert( o.level === 0 );
 
-    if( !o.stack )
-    o.stack = o.fallBackStack;
+    // if( result && result.id === 4 )
+    // debugger;
 
-    if( _.strIs( o.stack ) && !_.strEnds( o.stack, '\n' ) )
-    o.stack = o.stack + '\n';
+    if( ( o.stackRemovingBeginIncluding || o.stackRemovingBeginExcluding ) && o.throwenCallStack )
+    o.throwenCallStack = _.diagnosticStackRemoveBegin( o.throwenCallStack, o.stackRemovingBeginIncluding || null, o.stackRemovingBeginExcluding || null );
 
-    if( o.stack && !stackCondensed )
-    stackCondensed = _.diagnosticStackCondense( o.stack );
+    if( !o.throwenCallStack )
+    o.throwenCallStack = result.stack = o.fallBackStack;
 
-    o.location = _.diagnosticLocation
+    if( _.strIs( o.throwenCallStack ) && !_.strEnds( o.throwenCallStack, '\n' ) )
+    o.throwenCallStack = o.throwenCallStack + '\n';
+
+    if( o.throwenCallStack && !stackCondensed )
+    stackCondensed = _.diagnosticStackCondense( o.throwenCallStack );
+
+    // debugger;
+    o.caughtLocation = _.diagnosticLocation
+    ({
+      // level : o.level || 0,
+      stack : o.caughtCallsStack,
+      location : o.caughtLocation,
+    });
+
+    o.throwenLocation = _.diagnosticLocation
     ({
       error : result,
-      stack : o.stack,
-      location : o.location,
+      stack : o.throwenCallStack,
+      location : o.throwenLocation,
     });
 
     if( o.brief === null || o.brief === undefined )
@@ -930,8 +1002,6 @@ function _err( o )
       ErrorCounter += 1;
       id = ErrorCounter;
     }
-    // if( id === 3 || id === 5 )
-    // debugger;
 
   }
 
@@ -939,9 +1009,25 @@ function _err( o )
 
   function catchesForm()
   {
-    let floc = _.diagnosticLocation({ level : o.level });
-    if( !floc.service || floc.service === 1 )
-    catches = `${catches}    caught at ${floc.fullWithRoutine}\n`;
+
+    // debugger;
+    if( o.throws )
+    {
+      // debugger;
+      _.assert( _.arrayIs( o.throws ) );
+      o.throws.forEach( ( c ) =>
+      {
+        c = _.diagnosticLocation( c ).fullWithRoutine;
+        throwsStack = `${throwsStack}    caught at ${c}\n`
+      });
+    }
+
+    // if( !o.caughtLocation )
+    // o.caughtLocation = _.diagnosticLocation({ stack : o.throwenCallStack, level : o.level });
+    _.assert( _.numberIs( o.caughtLocation.service ), result.id );
+    if( !o.caughtLocation.service || o.caughtLocation.service === 1 )
+    throwsStack = `${throwsStack}    caught at ${o.caughtLocation.fullWithRoutine}\n`;
+
   }
 
   /* */
@@ -953,15 +1039,9 @@ function _err( o )
     if( result.sourceCode === undefined )
     {
       let c = '';
-      // o.location = _.diagnosticLocation
-      // ({
-      //   error : result,
-      //   stack : o.stack,
-      //   location : o.location,
-      // });
       c = _.diagnosticCode
       ({
-        location : o.location,
+        location : o.throwenLocation,
         sourceCode : o.sourceCode,
       });
       if( c && c.length < 400 )
@@ -969,7 +1049,6 @@ function _err( o )
         sourceCode += c;
       }
     }
-
 
   }
 
@@ -1084,8 +1163,8 @@ function _err( o )
       if( o.condensingStack )
       result += '\n = Condensed calls stack\n' + stackCondensed + '';
       else
-      result += '\n = Functions stack\n' + o.stack + '';
-      result += '\n = Catches stack\n' + catches + '\n';
+      result += '\n = Calls stack\n' + o.throwenCallStack + '';
+      result += '\n = Throws stack\n' + throwsStack + '\n';
 
       if( sourceCode )
       result += ' = Source code from ' + sourceCode + '\n';
@@ -1104,18 +1183,18 @@ function _err( o )
     nonenumerable( 'message', message );
     nonenumerable( 'originalMessage', originalMessage );
     logging( 'stack', message );
-    nonenumerable( 'originalStack', o.stack );
+    nonenumerable( 'callsStack', o.throwenCallStack );
     nonenumerable( 'stackCondensed', stackCondensed );
-    nonenumerable( 'catches', catches );
+    nonenumerable( 'throwsStack', throwsStack );
     nonenumerable( 'catchCounter', result.catchCounter ? result.catchCounter+1 : 1 );
     nonenumerable( 'attended', attended );
     nonenumerable( 'logged', logged );
     nonenumerable( 'brief', o.brief );
 
-    if( o.location.line !== undefined )
-    nonenumerable( 'lineNumber', o.location.line );
-    if( result.location === undefined )
-    nonenumerable( 'location', o.location );
+    if( o.throwenLocation.line !== undefined )
+    nonenumerable( 'lineNumber', o.throwenLocation.line );
+    if( result.throwenLocation === undefined )
+    nonenumerable( 'throwenLocation', o.throwenLocation );
     nonenumerable( 'sourceCode', sourceCode || null );
     nonenumerable( 'debugging', o.debugging );
     nonenumerable( 'id', id );
@@ -1212,11 +1291,10 @@ function _err( o )
     }
     function get()
     {
-      // if( !this.logged )
-      // debugger;
-      // if( !this.logged )
-      // logger.log( 'Getting stack of an error' );
-      // logger.log( this.originalMessage.split( '\n' )[ 0 ], '- logged\n' );
+      // if( this.id === 3 && this.throwsStack.split( '\n' ).length > 4 )
+      // {
+      //   logger.log( this.throwsStack ); debugger;
+      // }
       _.errLogEnd( this );
       return this[ symbol ];
     }
@@ -1232,19 +1310,22 @@ function _err( o )
 
 _err.defaults =
 {
-  /* to make catch stack work properly it should be 1 */
+  /* to make catch stack work properly level should be 1 by default */
   level : 1,
-  stackRemobeBeginInclude : null,
-  stackRemobeBeginExclude : null,
+  stackRemovingBeginIncluding : null,
+  stackRemovingBeginExcluding : null,
   usingSourceCode : 1,
   condensingStack : 1,
   debugging : null,
-  location : null,
+  throwenLocation : null,
+  caughtLocation : null,
   sourceCode : null,
   brief : null,
   args : null,
-  stack : null,
+  throwenCallStack : null,
+  caughtCallsStack : null,
   fallBackStack : null,
+  throws : null,
 }
 
 //
@@ -1320,7 +1401,7 @@ function errAttend( err )
 
   _.assert( arguments.length === 1 );
 
-  if( !_.errIsRefined( err ) )
+  if( !_.errIsStandard( err ) )
   err = _._err
   ({
     args : arguments,
@@ -1336,7 +1417,7 @@ function errAttend( err )
     // if( err.id === 5 || err.id === 6 )
     // debugger;
 
-    let value = Config.debug ? _.diagnosticStack([ 1, Infinity ]) : true;
+    let value = Config.debug ? _.diagnosticStack([ 0, Infinity ]) : true;
     Object.defineProperty( err, 'attended',
     {
       enumerable : false,
@@ -1363,7 +1444,7 @@ function errLogEnd( err )
 
   _.assert( arguments.length === 1 );
 
-  if( !_.errIsRefined( err ) )
+  if( !_.errIsStandard( err ) )
   err = _._err
   ({
     args : arguments,
@@ -1375,7 +1456,7 @@ function errLogEnd( err )
   try
   {
 
-    let value = Config.debug ? _.diagnosticStack([ 1, Infinity ]) : true;
+    let value = Config.debug ? _.diagnosticStack([ 0, Infinity ]) : true;
     Object.defineProperty( err, 'logged',
     {
       enumerable : false,
@@ -2094,7 +2175,7 @@ let Routines =
   // error
 
   errIs,
-  errIsRefined,
+  errIsStandard,
   errIsAttended,
   errIsBrief,
   errIsLogged,

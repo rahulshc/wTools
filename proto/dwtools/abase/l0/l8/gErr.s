@@ -170,7 +170,7 @@ function diagnosticApplicationEntryPointInfo()
   {
     if( result )
     result += '\n';
-    result += left + ' : ' + right;
+    result += '    ' + left + ' : ' + right;
     return result;
   }
 }
