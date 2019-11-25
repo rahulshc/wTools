@@ -3215,21 +3215,21 @@ function longSelect_( test )
     var got = _.longSelect_( dst );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range > dst.length, not a val';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
     var got = _.longSelect_( dst, [ 0, dst.length + 2 ] );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
     var got = _.longSelect_( dst, [ 0, dst.length + 2 ], 0 );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
