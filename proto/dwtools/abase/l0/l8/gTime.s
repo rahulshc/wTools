@@ -57,7 +57,7 @@ function timeBegin( delay, onEnd )
 
 //
 
-function timeEnd( timer )
+function timeCancel( timer )
 {
   clearTimeout( timer );
   return timer;
@@ -302,8 +302,6 @@ function timeOut_pre( routine, args )
     else if( args[ 2 ] !== undefined || args[ 3 ] !== undefined )
     _.assert( _.routineIs( args[ 2 ] ) );
 
-    // if( args[ 2 ] !== undefined || args[ 3 ] !== undefined )
-    // debugger;
     if( args[ 2 ] !== undefined || args[ 3 ] !== undefined )
     onEnd = _.routineJoin.call( _, args[ 1 ], args[ 2 ], args[ 3 ] );
 
@@ -314,8 +312,6 @@ function timeOut_pre( routine, args )
   {
     o = args[ 0 ];
   }
-
-  // debugger;
 
   _.routineOptions( routine, o );
   _.assert( _.numberIs( o.delay ) );
@@ -341,7 +337,11 @@ function timeOut_body( o )
     con.procedure( 'timeOut' ).sourcePath( o.stackLevel + 2 );
     con.give( function timeGot( err, arg )
     {
-      if( err )
+      if( err ) /* xxx : remove, leave another if */
+      clearTimeout( timer );
+      // if( arg === _.dont )
+      // debugger;
+      if( arg === _.dont )
       clearTimeout( timer );
       con.take( err, arg );
     });
@@ -444,27 +444,20 @@ function timeOutError_body( o )
   o.stackLevel += 1;
   let con = _.timeOut.body.call( _, o );
 
+  if( Config.debug )
   con.tag = 'TimeOutError';
   let procedure = con.procedure( 'timeOutError' ).sourcePath( stackLevel + 2 );
-  con.finally( function( err, arg )
+  con.finally( function timeOutError( err, arg )
   {
     if( err )
-    return _.Consequence().error( err );
+    throw err;
+    if( arg === _.dont );
+    return arg;
 
-    err = _.err( 'Time out!' );
-
-    Object.defineProperty( err, 'timeOut',
-    {
-      enumerable : false,
-      configurable : false,
-      writable : false,
-      value : 1,
-    });
+    err = _.errTimeOut( 'Time out!', [ procedure._sourcePath ], con );
 
     return _.Consequence().error( err );
   });
-
-  // procedure.end();
 
   return con;
 }
@@ -472,6 +465,25 @@ function timeOutError_body( o )
 timeOutError_body.defaults = Object.create( timeOut_body.defaults );
 
 let timeOutError = _.routineFromPreAndBody( timeOut_pre, timeOutError_body );
+
+//
+
+function errTimeOut( message, catches, value )
+{
+  message = message || 'Time out!';
+  value = value || true;
+
+  let err = _._err({ args : [ message ], catches : catches });
+  Object.defineProperty( err, 'timeOut',
+  {
+    enumerable : false,
+    configurable : false,
+    writable : false,
+    value : value,
+  });
+
+  return err;
+}
 
 //
 
@@ -683,7 +695,7 @@ let Routines =
 {
 
   timeBegin,
-  timeEnd,
+  timeCancel,
 
   timeReady,
   timeReadyJoin,
@@ -691,6 +703,7 @@ let Routines =
   timeOut,
   timeSoon,
   timeOutError,
+  errTimeOut,
 
   timePeriodic, /* dubious */
 

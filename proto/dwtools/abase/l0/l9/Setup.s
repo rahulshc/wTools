@@ -76,6 +76,19 @@ function _setupUnhandledErrorHandler1()
 
     try
     {
+      if( _.Logger && _.Logger.ConsoleBar && _.Logger.ConsoleIsBarred( console ) )
+      _.Logger.ConsoleBar({ on : 0 });
+    }
+    catch( err2 )
+    {
+      debugger;
+      console.error( err2 );
+    }
+
+    /* */
+
+    try
+    {
       if( _.errIsAttended( err ) )
       return
     }
@@ -90,7 +103,7 @@ function _setupUnhandledErrorHandler1()
     if( _.process && _.process.exitCode )
     try
     {
-      _.process.exitCode( -1 )
+      _.process.exitCode( -1 );
     }
     catch( err2 )
     {
@@ -106,7 +119,7 @@ function _setupUnhandledErrorHandler1()
 
     try
     {
-      console.error( ' * Application' );
+      console.error( ' = Process' );
       console.error( _.diagnosticApplicationEntryPointInfo() + '\n' );
     }
     catch( err2 )
@@ -145,6 +158,18 @@ function _setupUnhandledErrorHandler1()
 
     console.error( postfix );
     debugger;
+
+    if( _.process && _.process.exit )
+    try
+    {
+      _.process.exitReason( err );
+      _.process.exit();
+    }
+    catch( err2 )
+    {
+      debugger;
+      console.log( err2 );
+    }
 
   }
 
@@ -257,7 +282,7 @@ function _setupTesterPlaceholder()
 function _setup1()
 {
 
-  Self._sourcePath = _.diagnosticStack([ 1, Infinity ]);
+  Self._sourcePath = _.diagnosticStack([ 0, Infinity ]);
 
   _.assert( _global._WTOOLS_SETUP_EXPECTED_ !== false );
 
