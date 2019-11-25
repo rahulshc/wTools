@@ -3656,13 +3656,13 @@ function bufferSelect_( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferSelect_( dst, -5, [ 0 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = empty array, val = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferSelect_( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = array, val = array';
   var dst = [ 1, 2, 3, 4 ];
@@ -3676,13 +3676,13 @@ function bufferSelect_( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect_( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = empty unroll, val = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferSelect_( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = unroll, val = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
@@ -3695,14 +3695,14 @@ function bufferSelect_( test )
   test.case = 'dst = argumentsArray, val = array, range = negative number';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect_( dst, -5, [ 2 ] );
-  test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3, 4 ] ) );
+  test.is( got === dst );
 
   test.case = 'dst = empty argumentsArray, val = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferSelect_( dst, [ 0, 0 ], [ 2 ] );
-  test.identical( got, [] );
-  test.is( got !== dst );
+  test.identical( got, _.argumentsArrayMake( [] ) );
+  test.is( got === dst );
 
   test.case = 'dst = argumentsArray, val = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
@@ -3777,28 +3777,28 @@ function bufferSelect_( test )
     var got = _.bufferSelect_( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = undefined, range = 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect_( dst, 0 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = undefined, rang = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect_( dst, -5 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range = undefined, val = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferSelect_( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -3855,7 +3855,7 @@ function bufferSelect_( test )
     var got = _.bufferSelect_( dst, -2, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], val = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -3869,7 +3869,7 @@ function bufferSelect_( test )
     var got = _.bufferSelect_( dst, [ 0, dst.length ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, val';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -3897,13 +3897,13 @@ function bufferSelect_( test )
     var got = _.bufferSelect_( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     var dst = buf( [] );
     var got = _.bufferSelect_( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     /* */
 
@@ -4041,28 +4041,28 @@ function bufferSelect_( test )
     var got = _.bufferSelect_( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = undefined, range = 0';
     var dst = buf( 4 );
     var got = _.bufferSelect_( dst, 0 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = undefined, rang = negative number';
     var dst = buf( 4 );
     var got = _.bufferSelect_( dst, -5 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range = undefined, val = undefined';
     var dst = buf( 4 );
     var got = _.bufferSelect_( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'val = array';
     var dst = buf( 4 );
@@ -4119,7 +4119,7 @@ function bufferSelect_( test )
     var got = _.bufferSelect_( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], val = array';
     var dst = buf( 4 );
@@ -4133,7 +4133,7 @@ function bufferSelect_( test )
     var got = _.bufferSelect_( dst, [ 0, 4 ], [ 1 ] );
     var expected = bufferExpected( dst, [ 0, 0, 0, 0 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, val';
     var dst = buf( 4 );
@@ -4161,7 +4161,7 @@ function bufferSelect_( test )
     var got = _.bufferSelect_( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     /* */
 
