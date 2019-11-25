@@ -3668,7 +3668,7 @@ function bufferSelect_( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferSelect_( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 2, 3 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   /* */
 
@@ -3688,7 +3688,7 @@ function bufferSelect_( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferSelect_( dst, [ 1, 3 ], [ 2 ] );
   test.identical( got, [ 2, 3 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   /* */
 
