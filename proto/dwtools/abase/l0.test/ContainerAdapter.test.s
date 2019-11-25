@@ -11342,7 +11342,7 @@ function setAdapterFilter( test )
   test.identical( [ ... got.original ], exp );
 
   test.case = 'from array, onEach returns original';
-  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, '', [ 2 ], { a : 0 } ] ) );
+  var src = _.containerAdapter.make( new Set( [ 0, 1, null, true, false, undefined, undefined, '', [ 2 ], { a : 0 } ] ) );
   var exp = [ 0, 1, null, true, false, '', [ 2 ], { a : 0 } ];
   var got = src.filter( ( e ) => e );
   test.is( got !== src );
