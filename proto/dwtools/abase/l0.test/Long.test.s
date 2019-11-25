@@ -4128,7 +4128,7 @@ function longGrow_( test )
     var got = _.longGrow_( dst );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range > dst.length, not a val';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
@@ -4156,35 +4156,35 @@ function longGrow_( test )
     var got = _.longGrow_( dst, [ 0, 3 ] );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range < dst.length, val = number';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, [ 0, 3 ], 0 );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'f < 0, not a val';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, [ -1, 3 ] );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'l < 0, not a val';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, [ 0, -1 ] );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'f < 0, val = number';
     var dst = new list( [ 1, 2, 3, 4, 5 ] );
     var got = _.longGrow_( dst, [ -1, 3 ], 0 );
     var expected = new list( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     /* */
 
