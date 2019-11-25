@@ -1882,7 +1882,6 @@ function bufferGrow_( dst, dstArray, range, srcArray )
   if( _.arrayLikeResizable( dstArray ) )
   return _.arrayGrow_.apply( this, arguments );
 
-
   let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
 
   if( range === undefined )
@@ -2162,6 +2161,9 @@ function bufferRelength_( dst, dstArray, range, srcArray )
 {
 
   [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
+
+  if( _.arrayLikeResizable( dstArray ) )
+  return _.arrayRelength_.apply( this, arguments );
 
   let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
 
