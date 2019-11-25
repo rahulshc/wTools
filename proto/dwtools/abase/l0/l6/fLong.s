@@ -1056,7 +1056,7 @@ function _argumentsOnlyLong( dst, src, range, ins )
       ins = range;
       range = src;
       src = dst;
-      dst = true;
+      dst = false;
     }
   }
 
