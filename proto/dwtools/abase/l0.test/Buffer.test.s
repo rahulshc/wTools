@@ -6815,13 +6815,13 @@ function bufferRelength_( test )
   var dst = [ 1, 2, 3, 4 ];
   var got = _.bufferRelength_( dst, -5, [ 0 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = empty array, src = array, range[ 0 ] === range[ 1 ]';
   var dst = [];
   var got = _.bufferRelength_( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = array, range[ 1 ] > dst.length, src = array';
   var dst = [ 1, 2, 3, 4 ];
@@ -6835,13 +6835,13 @@ function bufferRelength_( test )
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength_( dst, -5, [ 2 ] );
   test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = empty unroll, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.unrollFrom( [] );
   var got = _.bufferRelength_( dst, [ 0, 0 ], [ 2 ] );
   test.identical( got, [] );
-  test.is( got !== dst );
+  test.is( got === dst );
 
   test.case = 'dst = unroll, src = array';
   var dst = _.unrollFrom( [ 1, 2, 3, 4 ] );
@@ -6854,14 +6854,14 @@ function bufferRelength_( test )
   test.case = 'dst = argumentsArray, src = array, range = negative number';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
   var got = _.bufferRelength_( dst, -5, [ 2 ] );
-  test.identical( got, [ 1, 2, 3, 4 ] );
-  test.is( got !== dst );
+  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3, 4 ] ) );
+  test.is( got === dst );
 
   test.case = 'dst = empty argumentsArray, src = array, range[ 0 ] === range[ 1 ]';
   var dst = _.argumentsArrayFrom( [] );
   var got = _.bufferRelength_( dst, [ 0, 0 ], [ 2 ] );
-  test.identical( got, [] );
-  test.is( got !== dst );
+  test.identical( got, _.argumentsArrayMake( [] ) );
+  test.is( got === dst );
 
   test.case = 'dst = argumentsArray, src = array';
   var dst = _.argumentsArrayFrom( [ 1, 2, 3, 4 ] );
@@ -6934,28 +6934,28 @@ function bufferRelength_( test )
     var got = _.bufferRelength_( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( dst, 0 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( dst, -5 );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferRelength_( dst );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -7012,7 +7012,7 @@ function bufferRelength_( test )
     var got = _.bufferRelength_( dst, -2, [ 5 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -7026,7 +7026,7 @@ function bufferRelength_( test )
     var got = _.bufferRelength_( dst, [ 0, dst.length ], [ 1 ] );
     var expected = buf( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( [ 0, 1, 2, 3 ] );
@@ -7054,7 +7054,7 @@ function bufferRelength_( test )
     var got = _.bufferRelength_( dst, [ 0, 0 ], [ 2 ] );
     var expected = buf( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     /* */
 
@@ -7190,28 +7190,28 @@ function bufferRelength_( test )
     var got = _.bufferRelength_( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'src = undefined, range = 0';
     var dst = buf( 4 );
     var got = _.bufferRelength_( dst, 0 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'src = undefined, rang = negative number';
     var dst = buf( 4 );
     var got = _.bufferRelength_( dst, -5 );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range = undefined, src = undefined';
     var dst = buf( 4 );
     var got = _.bufferRelength_( dst );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'src = array';
     var dst = buf( 4 );
@@ -7268,7 +7268,7 @@ function bufferRelength_( test )
     var got = _.bufferRelength_( dst, -2, [ 5 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src = array';
     var dst = buf( 4 );
@@ -7282,7 +7282,7 @@ function bufferRelength_( test )
     var got = _.bufferRelength_( dst, [ 0, 4 ], [ 1 ] );
     var expected = bufferExpected( dst, 4 );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, src';
     var dst = buf( 4 );
@@ -7310,7 +7310,7 @@ function bufferRelength_( test )
     var got = _.bufferRelength_( dst, [ 0, 0 ], [ 2 ] );
     var expected = bufferExpected( dst, [] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     /* - */
 
