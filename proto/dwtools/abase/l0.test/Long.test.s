@@ -2330,13 +2330,13 @@ function longBut_( test )
     var got = _.longBut_( dst, [ 0, -1 ] );
     var expected = _.longMake( list, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, not src';
     var got = _.longBut_( dst, [ -1, -1 ] );
     var expected = _.longMake( list, [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.is( got !== dst );
+    test.is( got === dst );
 
     test.case = 'range[ 0 ] === range[ 1 ], src';
     var got = _.longBut_( dst, [ 0, 0 ], src );
@@ -2431,7 +2431,6 @@ function longBut_( test )
   test.shouldThrowErrorSync( () => _.longBut_( [ 1, 2, 3, 4 ], [ 1 ], [ 5 ] ) );
   test.shouldThrowErrorSync( () => _.longBut_( [ 1, 2, 3, 4 ], [ undefined, 1 ], [ 5 ] ) );
   test.shouldThrowErrorSync( () => _.longBut_( [ 1, 2, 3, 4 ], [], [] ) );
-
 }
 
 //
