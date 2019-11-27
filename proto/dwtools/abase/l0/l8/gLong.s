@@ -2120,9 +2120,10 @@ function _argumentsOnly( dst, src1, src2, onEvaluate1, onEvaluate2 )
   {
     onEvaluate2 = onEvaluate1;
     onEvaluate1 = src2;
-    src2 = _.containerAdapter.make( src1 );
-    src1 = _.containerAdapter.make( dst );
-    dst = _.containerAdapter.make( new src1.original.constructor() );
+    src2 = _.containerAdapter.from( src1 );
+    src1 = _.containerAdapter.from( dst );
+    dst = _.containerAdapter.from( dst );
+    // dst = _.containerAdapter.make( new src1.original.constructor() );
   }
   else
   {
@@ -2141,12 +2142,16 @@ function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
   let temp = [];
   if( dst.original === src1.original )
   {
+    src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
     src2.each( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
+    src1.empty();
     temp.forEach( ( e ) => src1.push( e ) );
   }
   else if( dst.original === src2.original )
   {
+    src2.each( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
     src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
+    src2.empty();
     temp.forEach( ( e ) => src2.push( e ) );
   }
   else
