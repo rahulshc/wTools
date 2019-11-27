@@ -37,6 +37,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './l0/l6/fRange.s' );
   require( './l0/l6/fRegexp.s' );
   require( './l0/l6/fRoutine.s' );
+  require( './l0/l6/fSorted.s' );
   require( './l0/l6/fStr.s' );
   require( './l0/l6/fTime.s' );
   require( './l0/l6/fUnroll.s' );

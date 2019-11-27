@@ -2750,10 +2750,10 @@ function strSplitCamel( src )
  * @returns {string} Returns the corresponding substring.
  *
  * @example
- * _.strSub( 'fi' );
+ * _.strOnly( 'fi' );
  * // returns [ 'first', [ 0, 2 ] ]
  *
- * @method strSub
+ * @method strOnly
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
  * @throws { Exception } Throw an exception if( srcStr ) is not a String.
  * @throws { Exception } Throw an exception if( range ) is not a range.
@@ -2761,13 +2761,68 @@ function strSplitCamel( src )
  *
  */
 
-function _strSub( srcStr, range )
+function strOnlySingle( srcStr, range )
 {
+
+/* qqq : reference point of negative is length. implement and cover please */
+
+  if( _.numberIs( range ) )
+  {
+    if( range < 0 )
+    range = srcStr.length + range;
+    range = [ range, range + 1 ];
+  }
+  else
+  {
+    if( range[ 1 ] < 0 )
+    range[ 1 ] = srcStr.length + range[ 1 ];
+    if( range[ 0 ] < 0 )
+    range[ 0 ] = srcStr.length + range[ 0 ];
+  }
+
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
-  _.assert( _.rangeIs( range ) );
+  _.assert( _.rangeDefined( range ) );
 
   return srcStr.substring( range[ 0 ], range[ 1 ] );
+}
+
+//
+
+function strButSingle( srcStr, range, ins )
+{
+
+/* qqq : reference point of negative is length. implement and cover please */
+
+  if( _.numberIs( range ) )
+  {
+    if( range < 0 )
+    range = srcStr.length + range;
+    range = [ range, range + 1 ];
+  }
+  else
+  {
+    if( range[ 1 ] < 0 )
+    range[ 1 ] = srcStr.length + range[ 1 ];
+    if( range[ 0 ] < 0 )
+    range[ 0 ] = srcStr.length + range[ 0 ];
+  }
+
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.strIs( srcStr ) );
+  _.assert( _.rangeDefined( range ) );
+  _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
+  _.assert( !_.longIs( ins ), 'not implemented' );
+
+  /* qqq : implement for case ins is long */
+
+  if( ins )
+  return srcStr.substring( 0, range[ 0 ] ) + ins + srcStr.substring( range[ 1 ], srcStr.length );
+  else
+  return srcStr.substring( 0, range[ 0 ] ) + srcStr.substring( range[ 1 ], srcStr.length );
 }
 
 //
@@ -3692,7 +3747,6 @@ function strConcat( srcs, o )
   if( o.onToStr === null )
   o.onToStr = function onToStr( src, op )
   {
-    debugger;
     return _.toStr( src, op.optionsForToStr );
     /* Dmytro : now optionsForToStr is not used in routine toStr */
     /* qqq : ask */
@@ -3913,6 +3967,50 @@ function strIndentation( src, tab )
 
 //
 
+function strLinesBut( src, range, ins )
+{
+
+  if( _.strIs( src ) )
+  src = src.split( '\n' );
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.longIs( src ) );
+  _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
+  _.assert( !_.longIs( ins ), 'not implemented' );
+
+  if( _.numberIs( range ) )
+  {
+    if( range < 0 )
+    range = src.length + range;
+    range = [ range, range + 1 ];
+  }
+
+  if( range[ 1 ] < 0 )
+  range[ 1 ] = src.length + range[ 1 ];
+
+  _.assert( _.rangeIs( range ) );
+
+  /* qqq : should work
+    _.strLinesBut( _.strLinesBut( got1, 0 ), -1 )
+  */
+
+  /* qqq : implement not implemented
+  */
+
+  if( ins )
+  {
+    _.assert( _.strIs( ins ) );
+    return _.longBut( src, range, [ ins ] ).join( '\n' );
+  }
+  else
+  {
+    return _.longBut( src, range ).join( '\n' );
+  }
+
+}
+
+//
+
 function strLinesSplit( src )
 {
   _.assert( _.strIs( src ) || _.arrayIs( src ) );
@@ -4028,7 +4126,7 @@ function strLinesStrip( src )
  * // 3: line3
  *
  * @example
- * _.strLinesNumber( { src:'line1\nline2\nline3', first : 2 } );
+ * _.strLinesNumber( { src:'line1\nline2\nline3', zeroLine : 2 } );
  * // returns
  * // 2: line1
  * // 3: line2
@@ -4044,7 +4142,7 @@ function strLinesNumber( o )
 {
 
   if( !_.objectIs( o ) )
-  o = { src : arguments[ 0 ], first : arguments[ 1 ] };
+  o = { src : arguments[ 0 ], zeroLine : arguments[ 1 ] };
 
   _.routineOptions( strLinesNumber, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -4052,15 +4150,17 @@ function strLinesNumber( o )
 
   /* */
 
-  if( o.first === null  )
+  if( o.zeroLine === null  )
   {
-    if( o.firstChar === null )
-    o.first = 1;
-    else if( _.numberIs( o.firstChar ) )
+    if( o.zeroChar === null )
+    {
+      o.zeroLine = 1;
+    }
+    else if( _.numberIs( o.zeroChar ) )
     {
       debugger;
       let src = _.arrayIs( o.src ) ? o.src.join( '\n' ) : o.src;
-      o.first = _.strLinesCount( src.substring( 0, o.firstChar+1 ) );
+      o.zeroLine = _.strLinesCount( src.substring( 0, o.zeroChar+1 ) );
     }
   }
 
@@ -4072,7 +4172,7 @@ function strLinesNumber( o )
 
   if( o.onLine ) for( let l = 0; l < lines.length; l += 1 )
   {
-    lines[ l ] = o.onLine( [ ( l + o.first ), ' : ', lines[ l ] ], o );
+    lines[ l ] = o.onLine( [ ( l + o.zeroLine ), ' : ', lines[ l ] ], o.zeroLine + l, o );
     if( lines[ l ] === undefined )
     {
       lines.splice( l, 1 );
@@ -4082,8 +4182,10 @@ function strLinesNumber( o )
   }
   else for( let l = 0; l < lines.length; l += 1 )
   {
-    lines[ l ] = ( l + o.first ) + ' : ' + lines[ l ];
+    lines[ l ] = ( l + o.zeroLine ) + ' : ' + lines[ l ];
   }
+
+  /* */
 
   return lines.join( '\n' );
 }
@@ -4091,10 +4193,16 @@ function strLinesNumber( o )
 strLinesNumber.defaults =
 {
   src : null,
-  first : null,
-  firstChar : null,
+  zeroLine : null,
+  zeroChar : null,
   onLine : null,
 }
+
+/*
+qqq : cover zeroLine
+qqq : cover zeroChar
+qqq : cover onLine
+*/
 
 //
 
@@ -4212,9 +4320,13 @@ function strLinesSelect( o )
     o = { src : arguments[ 0 ], range : [ arguments[ 1 ], arguments[ 2 ] ] };
   }
 
+  _.routineOptions( strLinesSelect, o );
   _.assert( arguments.length <= 3 );
   _.assert( _.strIs( o.src ) );
-  _.routineOptions( strLinesSelect, o );
+  _.assert( _.boolLike( o.highlighting ) || _.longHas( [ '*' ], o.highlighting ) );
+
+  if( _.boolLike( o.highlighting ) && o.highlighting )
+  o.highlighting = '*';
 
   /* range */
 
@@ -4235,12 +4347,23 @@ function strLinesSelect( o )
     }
   }
 
+  if( o.line === null )
+  {
+    if( o.selectMode === 'center' )
+    o.line = Math.floor( ( o.range[ 0 ] + o.range[ 1 ] ) / 2 );
+    else if( o.selectMode === 'begin' )
+    o.line = o.range[ 0 ];
+    else if( o.selectMode === 'end' )
+    o.line = o.range[ 1 ] - 1;
+  }
+
   _.assert( _.longIs( o.range ) );
+  _.assert( _.intIs( o.line ) );
 
   /* */
 
   let f = 0;
-  let counter = o.zero;
+  let counter = o.zeroLine;
   while( counter < o.range[ 0 ] )
   {
     f = o.src.indexOf( o.delimteter, f );
@@ -4269,27 +4392,55 @@ function strLinesSelect( o )
 
   let result = f < l ? o.src.substring( f, l ) : '';
 
-  /* number */
+  /* numbering */
 
-  if( o.number )
-  result = _.strLinesNumber( result, o.range[ 0 ] );
+  if( o.numbering )
+  result = _.strLinesNumber
+  ({
+    src : result,
+    zeroLine : o.range[ 0 ],
+    onLine : lineHighlight,
+  });
 
   return result;
+
+  /* */
+
+  function lineHighlight( line, l )
+  {
+    if( !o.highlighting )
+    return line.join( '' );
+    if( l === o.line )
+    line[ 0 ] = '*' + line[ 0 ];
+    else
+    line[ 0 ] = ' ' + line[ 0 ];
+    // line[ 1 ] = _.strBut( line[ 1 ], 0, '*' );
+    return line.join( '' );
+  }
+
 }
 
 strLinesSelect.defaults =
 {
+
   src : null,
   range : null,
 
   line : null,
   numberOfLines : 3,
   selectMode : 'center',
+  highlighting : '*',
 
-  number : 0,
-  zero : 1,
+  numbering : 0,
+  zeroLine : 1,
   delimteter : '\n',
+
 }
+
+/* qqq :
+- cover option highlighting
+- cover option zero
+*/
 
 //
 
@@ -4620,9 +4771,9 @@ let Proto =
 
   // formatter
 
-  strForRange, /* experimental */
-  strForCall, /* experimental */
-  strStrShort,
+  strForRange, /* xxx : investigate */
+  strForCall, /* xxx : investigate */
+  strStrShort, /* xxx : investigate */
   strDifference,
 
   // transformer
@@ -4637,13 +4788,13 @@ let Proto =
   // stripper
 
   strStrip,
-  strsStrip : _.routineVectorize_functor( strStrip ),
+  strsStrip : _.vectorize( strStrip ),
   strStripLeft,
-  strsStripLeft : _.routineVectorize_functor( strStripLeft ),
+  strsStripLeft : _.vectorize( strStripLeft ),
   strStripRight,
-  strsStripRight : _.routineVectorize_functor( strStripRight ),
-  strRemoveAllSpaces : _.routineVectorize_functor( _strRemoveAllSpaces ),
-  strStripEmptyLines : _.routineVectorize_functor( _strStripEmptyLines ),
+  strsStripRight : _.vectorize( strStripRight ),
+  strRemoveAllSpaces : _.vectorize( _strRemoveAllSpaces ),
+  strStripEmptyLines : _.vectorize( _strStripEmptyLines ),
 
   // splitter
 
@@ -4663,18 +4814,19 @@ let Proto =
 
   strSplitCamel,
 
-  // strSplitNaive,
-
   // extractor
 
-  strSub : _.routineVectorize_functor( _strSub ),
+  strOnlySingle,
+  strOnly : _.vectorize( strOnlySingle ), /* qqq : cover and document */
+  strButSingle,
+  strBut : _.vectorize( strButSingle ), /* qqq : cover and document */
   strExtractInlined,
   strExtractInlinedStereo,
   strUnjoin, /* qqq : document me */
 
   // joiner
 
-  strDup : _.routineVectorize_functor( _strDup ), /* qqq : document me */
+  strDup : _.vectorize( _strDup ), /* qqq : document me */
   strJoin,
   strJoinPath, /* qqq : cover and document me // Dmytro : covered and documented */
   strConcat,
@@ -4682,6 +4834,8 @@ let Proto =
   // liner
 
   strIndentation,
+  strLinesBut, /* qqq : implement, document and cover */
+  // strLinesOnly, /* qqq : implement, document and cover */
   strLinesSplit,
   strLinesJoin,
   strLinesStrip, /* qqq : test coverage */

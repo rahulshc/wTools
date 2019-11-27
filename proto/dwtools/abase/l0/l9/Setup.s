@@ -10,6 +10,157 @@ let Self = _global.wTools;
 // setup
 // --
 
+function _errUnhandledHandler2( err, reason )
+{
+  if( !reason )
+  reason = 'unhandled error';
+  let prefix = `--------------- ${reason} --------------->\n`;
+  let postfix = `--------------- ${reason} ---------------<\n`;
+  let logger = _global.logger || _global.console;
+
+  /* */
+
+  consoleUnbar();
+  attend( err );
+
+  console.error( prefix );
+
+  // processLog();
+  errLogFields();
+  errLog();
+
+  console.error( postfix );
+
+  processExit();
+
+  /* */
+
+  function consoleUnbar()
+  {
+    try
+    {
+      if( _.Logger && _.Logger.ConsoleBar && _.Logger.ConsoleIsBarred( console ) )
+      _.Logger.ConsoleBar({ on : 0 });
+    }
+    catch( err2 )
+    {
+      debugger;
+      console.error( err2 );
+    }
+  }
+
+  /* */
+
+  function errLog()
+  {
+    try
+    {
+      err = _.errProcess( err );
+      if( _.errLog )
+      _.errLog( err );
+      else
+      console.error( err );
+    }
+    catch( err2 )
+    {
+      debugger;
+      console.error( err2 );
+      console.error( err );
+    }
+  }
+
+  /* */
+
+  function errLogFields()
+  {
+    if( !err.originalMessage && _.objectLike && _.objectLike( err ) )
+    try
+    {
+      let serr = _.toStr && _.field ? _.toStr.fields( err, { errorAsMap : 1 } ) : err;
+      console.error( serr );
+    }
+    catch( err2 )
+    {
+      debugger;
+      console.error( err2 );
+    }
+  }
+
+  /* */
+
+  function attend( err )
+  {
+    try
+    {
+      _.errProcess( err );
+      if( _.errIsAttended( err ) )
+      return
+    }
+    catch( err2 )
+    {
+      debugger;
+      console.error( err2 );
+    }
+  }
+
+  /* */
+
+  // function processLog()
+  // {
+  //   try
+  //   {
+  //     if( _.color && _.color.strFormat )
+  //     {
+  //       logger.error( _.color.strFormat( ' = Process', 'negative' ) );
+  //       logger.error( _.color.strFormat( _.entryPointInfo() + '\n', 'negative' ) );
+  //     }
+  //     else
+  //     {
+  //       console.error( ' = Process' );
+  //       console.error( _.entryPointInfo() + '\n' );
+  //     }
+  //   }
+  //   catch( err2 )
+  //   {
+  //     debugger;
+  //     console.error( err2 );
+  //   }
+  // }
+
+  /* */
+
+  function processExit()
+  {
+    if( _.process && _.process.exit )
+    try
+    {
+      _.process.exitCode( -1 );
+      _.process.exitReason( err );
+      _.process.exit();
+    }
+    catch( err2 )
+    {
+      debugger;
+      console.log( err2 );
+    }
+    else
+    try
+    {
+      if( _global.process )
+      {
+        if( !process.exitCode )
+        process.exitCode = -1;
+      }
+    }
+    catch( err )
+    {
+    }
+  }
+
+}
+
+//
+
 function _setupUnhandledErrorHandler1()
 {
 
@@ -26,21 +177,31 @@ function _setupUnhandledErrorHandler1()
 
   /* */
 
+  // if( _global.process && _.routineIs( _global.process.on ) )
+  // {
+  //   Self._handleUnhandledError1 = _errPreNode;
+  // }
+  // else if( Object.hasOwnProperty.call( _global, 'onerror' ) )
+  // {
+  //   Self._handleUnhandledError1 = _errPreBrowser;
+  // }
+
   if( _global.process && _.routineIs( _global.process.on ) )
   {
-    Self._handleUnhandledError1 = handleNodeError;
+    _._errUnhandledPre = _errPreNode;
   }
-  else if( Object.hasOwnProperty.call( _global,'onerror' ) )
+  else if( Object.hasOwnProperty.call( _global, 'onerror' ) )
   {
-    Self._handleUnhandledError1 = handleBrowserError;
+    _._errUnhandledPre = _errPreBrowser;
   }
 
   /* */
 
-  function handleBrowserError( message, sourcePath, lineno, colno, error )
+  function _errPreBrowser( args )
   {
+    let message, sourcePath, lineno, colno, error = args;
+    let err = error || message;
 
-    let err = error;
     if( _._err )
     err = _._err
     ({
@@ -55,123 +216,19 @@ function _setupUnhandledErrorHandler1()
       },
     });
 
-    return handleError( err );
+    return [ err ];
+    // return _._errUnhandledHandler2( err );
   }
 
   /* */
 
-  function handleNodeError( err )
+  function _errPreNode( args )
   {
-    return handleError( err );
+    return [ args[ 0 ] ];
+    // return _._errUnhandledHandler2( err );
   }
 
   /* */
-
-  function handleError( err )
-  {
-    let prefix = '------------------------------- unhandled error ------------------------------->\n';
-    let postfix = '------------------------------- unhandled error -------------------------------<\n';
-
-    /* */
-
-    try
-    {
-      if( _.Logger && _.Logger.ConsoleBar && _.Logger.ConsoleIsBarred( console ) )
-      _.Logger.ConsoleBar({ on : 0 });
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.error( err2 );
-    }
-
-    /* */
-
-    try
-    {
-      if( _.errIsAttended( err ) )
-      return
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.error( err2 );
-    }
-
-    /* */
-
-    if( _.process && _.process.exitCode )
-    try
-    {
-      _.process.exitCode( -1 );
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.log( err2 );
-    }
-
-    /* */
-
-    console.error( prefix );
-
-    /* */
-
-    try
-    {
-      console.error( ' = Process' );
-      console.error( _.diagnosticApplicationEntryPointInfo() + '\n' );
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.error( err2 );
-    }
-
-    /* */
-
-    if( !err.originalMessage && _.objectLike && _.objectLike( err ) )
-    try
-    {
-      let serr = _.toStr && _.field ? _.toStr.fields( err,{ errorAsMap : 1 } ) : err;
-      console.error( err );
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.error( err2 );
-    }
-
-    try
-    {
-      if( _.errLog )
-      _.errLog( err );
-      else
-      console.error( err );
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.error( err2 );
-      console.error( err );
-    }
-
-    console.error( postfix );
-    debugger;
-
-    if( _.process && _.process.exit )
-    try
-    {
-      _.process.exitReason( err );
-      _.process.exit();
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.log( err2 );
-    }
-
-  }
 
 }
 
@@ -305,6 +362,7 @@ function _setup1()
 let Routines =
 {
 
+  _errUnhandledHandler2,
   _setupUnhandledErrorHandler1,
 
   _setupConfig,

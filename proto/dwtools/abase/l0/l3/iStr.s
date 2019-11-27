@@ -108,8 +108,8 @@ function strsDefined( src )
 function strHas( src, ins )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.strIs( src ) );
-  _.assert( _.strLike( ins ) );
+  _.assert( _.strIs( src ), () => `Expects string, got ${_.strType( src )}` );
+  _.assert( _.strLike( ins ), () => `Expects string-like, got ${_.strType( ins )}` );
 
   if( _.strIs( ins ) )
   return src.indexOf( ins ) !== -1;

@@ -22,13 +22,12 @@ let _floor = Math.floor;
 // --
 
 let _TimeInfinity = Math.pow( 2, 31 )-1;
-function timeBegin( delay, onEnd )
+function _timeBegin( delay, onEnd )
 {
   let timer = null;
 
   if( delay === undefined )
   delay = Infinity;
-
   if( delay >= _TimeInfinity )
   delay = _TimeInfinity;
 
@@ -41,7 +40,7 @@ function timeBegin( delay, onEnd )
   if( delay > 0 )
   timer = setTimeout( out, delay );
   else
-  timer = timeSoon( out );
+  timer = timeSoon( out ) || null;
 
   return timer;
 
@@ -57,10 +56,27 @@ function timeBegin( delay, onEnd )
 
 //
 
-function timeCancel( timer )
+function _timeCancel( timer )
 {
   clearTimeout( timer );
   return timer;
+}
+
+//
+
+function timeBegin( delay, stack, onEnd )
+{
+  debugger;
+  _.assert( arguments.length === 3 );
+  return _._timeBegin( delay, onEnd );
+}
+
+//
+
+function timeCancel( timer )
+{
+  debugger;
+  return _._timeCancel( ... arguments );
 }
 
 //
@@ -78,6 +94,10 @@ function timeReady( onReady )
     onReady = arguments[ 1 ];
   }
 
+  // debugger
+  // _.assert( 0, 'not tested' );
+  let procedure = _.Procedure({ _stack : 2, _name : 'timeReady' });
+
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
   {
     let con = _.Consequence ? new _.Consequence({ tag : 'timeReady' }) : null;
@@ -85,9 +105,9 @@ function timeReady( onReady )
     function handleReady()
     {
       if( _.Consequence )
-      return _.timeOut( time, onReady ).finally( con );
+      return _.timeOut( time, procedure, onReady ).finally( con );
       else if( onReady )
-      _.timeBegin( time, onReady );
+      _.timeBegin( time, procedure, onReady );
       else _.assert( 0 );
     }
 
@@ -97,9 +117,9 @@ function timeReady( onReady )
   else
   {
     if( _.Consequence )
-    return _.timeOut( time, onReady );
+    return _.timeOut( time, procedure, onReady );
     else if( onReady )
-    _.timeBegin( time, onReady );
+    _.timeBegin( time, procedure, onReady );
     else _.assert( 0 );
   }
 
@@ -147,6 +167,7 @@ function timeOnce( delay, onBegin, onEnd )
     _.assert( 2 <= arguments.length && arguments.length <= 3 );
   }
 
+  _.assert( 0, 'not tested' );
   _.assert( delay >= 0 );
   _.assert( _.primitiveIs( onBegin ) || _.routineIs( onBegin ) || _.objectIs( onBegin ) );
   _.assert( _.primitiveIs( onEnd ) || _.routineIs( onEnd ) || _.objectIs( onEnd ) );
@@ -265,11 +286,16 @@ function timeOnce( delay, onBegin, onEnd )
 function timeOut_pre( routine, args )
 {
   let o;
+  let procedure;
 
   _.assert( arguments.length === 2 );
-  _.assert( args );
+  _.assert( !!args );
 
-  // debugger;
+  if( _.procedureIs( args[ 1 ] ) )
+  {
+    procedure = args[ 1 ];
+    args = _.longBut( args, [ 1, 2 ] );
+  }
 
   if( !_.mapIs( args[ 0 ] ) || args.length !== 1 )
   {
@@ -313,6 +339,11 @@ function timeOut_pre( routine, args )
     o = args[ 0 ];
   }
 
+  _.assert( _.mapIs( o ) );
+
+  if( procedure )
+  o.procedure = procedure;
+
   _.routineOptions( routine, o );
   _.assert( _.numberIs( o.delay ) );
   _.assert( o.onEnd === null || _.routineIs( o.onEnd ) );
@@ -324,23 +355,31 @@ function timeOut_pre( routine, args )
 
 function timeOut_body( o )
 {
-  let con = _.Consequence ? new _.Consequence({ sourcePath : 3 }) : undefined;
+  // let con = _.Consequence ? new _.Consequence({ sourcePath : 3 }) : undefined;
+  let con = new _.Consequence();
   let timer = null;
   let handleCalled = false;
 
   _.assertRoutineOptions( timeOut_body, arguments );
 
+  if( o.procedure === null )
+  o.procedure = _.Procedure( 2 ).name( 'timeOut' );
+  // if( o.procedure.id === 152 )
+  // debugger;
+  _.assert( _.procedureIs( o.procedure ) );
+
   /* */
 
   if( con )
   {
-    con.procedure( 'timeOut' ).sourcePath( o.stackLevel + 2 );
+    // con.procedure( 'timeOut' ).sourcePath( o.stackLevel + 2 );
+    con.procedure( o.procedure );
     con.give( function timeGot( err, arg )
     {
-      if( err ) /* xxx : remove, leave another if */
-      clearTimeout( timer );
       // if( arg === _.dont )
       // debugger;
+      if( err ) /* xxx : remove, leave another if */
+      clearTimeout( timer );
       if( arg === _.dont )
       clearTimeout( timer );
       con.take( err, arg );
@@ -349,7 +388,7 @@ function timeOut_body( o )
 
   /* */
 
-  timer = _.timeBegin( o.delay, timeEnd );
+  timer = _.timeBegin( o.delay, o.procedure, timeEnd );
 
   return con;
 
@@ -381,7 +420,8 @@ timeOut_body.defaults =
 {
   delay : null,
   onEnd : null,
-  stackLevel : 1,
+  // stackLevel : 1,
+  procedure : null,
 }
 
 let timeOut = _.routineFromPreAndBody( timeOut_pre, timeOut_body );
@@ -439,22 +479,46 @@ function timeOutError_body( o )
   _.assert( _.routineIs( _.Consequence ) );
   _.assertRoutineOptions( timeOutError_body, arguments );
 
-  let stackLevel = o.stackLevel;
+  // let procedure = o.procedure;
+  if( _.numberIs( o.procedure ) )
+  o.procedure += 1;
+  else if( o.procedure === null )
+  o.procedure = 2;
 
-  o.stackLevel += 1;
+  // debugger;
+  if( !o.procedure || _.numberIs( o.procedure ) )
+  o.procedure = _.procedure.from( o.procedure ).nameElse( 'timeOutError' );
+
   let con = _.timeOut.body.call( _, o );
 
   if( Config.debug )
   con.tag = 'TimeOutError';
-  let procedure = con.procedure( 'timeOutError' ).sourcePath( stackLevel + 2 );
+
+  // let stack;
+  // debugger;
+  // if( Config.debug )
+  // stack = _.diagnosticStack( stackLevel+2 );
+
+  // debugger;
+  // let procedure = con.procedure( 'timeOutError' ).sourcePath( stackLevel + 2 );
+  // debugger;
+
   con.finally( function timeOutError( err, arg )
   {
+    // debugger;
     if( err )
     throw err;
-    if( arg === _.dont );
+    if( arg === _.dont )
     return arg;
 
-    err = _.errTimeOut( 'Time out!', [ procedure._sourcePath ], con );
+    err = _.errTimeOut
+    ({
+      message : 'Time out!',
+      // throws : [ o.procedure._sourcePath ],
+      value : con,
+      // asyncStacks : [ stack ],
+      procedure : o.procedure,
+    });
 
     return _.Consequence().error( err );
   });
@@ -468,21 +532,40 @@ let timeOutError = _.routineFromPreAndBody( timeOut_pre, timeOutError_body );
 
 //
 
-function errTimeOut( message, catches, value )
+// function errTimeOut( message, throws, value )
+function errTimeOut( o )
 {
-  message = message || 'Time out!';
-  value = value || true;
+  if( _.strIs( o ) )
+  o = { message : o }
+  o = _.routineOptions( errTimeOut, o );
+  _.assert( arguments.length === 0 || arguments.length === 1 );
 
-  let err = _._err({ args : [ message ], catches : catches });
+  o.message = o.message || 'Time out!';
+  o.value = o.value || true;
+
+  let err = _._err
+  ({
+    args : [ o.message ],
+    throws : o.procedure ? [ o.procedure._sourcePath ] : [],
+    asyncCallsStack : o.procedure.stack() ? [ o.procedure.stack() ] : [],
+  });
   Object.defineProperty( err, 'timeOut',
   {
     enumerable : false,
     configurable : false,
     writable : false,
-    value : value,
+    value : o.value,
   });
 
   return err;
+}
+
+errTimeOut.defaults =
+{
+  message : null,
+  // throws : null,
+  value : null,
+  procedure : null,
 }
 
 //
@@ -693,6 +776,9 @@ let Fields =
 
 let Routines =
 {
+
+  _timeBegin,
+  _timeCancel,
 
   timeBegin,
   timeCancel,
