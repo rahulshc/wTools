@@ -7879,7 +7879,7 @@ function bufferResize_( test )
   var got = _.bufferResize_( src, src.byteLength );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.is( got === src );
 
   test.case = 'size = number, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
@@ -7902,7 +7902,7 @@ function bufferResize_( test )
   var got = _.bufferResize_( src, [ 0, src.byteLength ] );
   var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   test.identical( got, expected );
-  test.is( got !== src );
+  test.is( got === src );
 
   test.case = 'size = range, new offset = 0, new size < buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
@@ -7914,7 +7914,7 @@ function bufferResize_( test )
   test.case = 'size = range, new offset < buffer offset, new size > buffer size';
   var src = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] ).buffer;
   var got = _.bufferResize_( src, [ -3, 11 ] );
-  var expected = new U8x( [ 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0 ] ).buffer;
+  var expected = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0, 0 ] ).buffer;
   test.identical( got, expected );
   test.is( got !== src );
 
@@ -8114,7 +8114,7 @@ function bufferResize_( test )
     var got = _.bufferResize_( src, src.byteLength );
     var expected = expect( src, 8, src.byteLength );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.is( got === src );
 
     test.case = 'size = number, new size < buffer size';
     var src = buf( filledBuf, 0, 3 );
@@ -8137,7 +8137,7 @@ function bufferResize_( test )
     var got = _.bufferResize_( src, [ 0, src.byteLength ] );
     var expected = expect( src, 8, src.byteLength );
     test.identical( got, expected );
-    test.is( got !== src );
+    test.is( got === src );
 
     test.case = 'size = range, new offset = 0, new size < buffer size';
     var src = buf( filledBuf, 8, 2 );
@@ -8156,7 +8156,7 @@ function bufferResize_( test )
     test.case = 'size = range, new offset > buffer offset, new size > buffer size';
     var src = buf( filledBuf, 8, 1 );
     var got = _.bufferResize_( src, [ -16, 0 ] );
-    var expectedBuf = new U8x( [ 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8 ] ).buffer;
+    var expectedBuf = new U8x( [ 1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0 ] ).buffer;
     var expected = buf( expectedBuf );
     test.identical( got, expected );
     test.is( got !== src );
@@ -8165,28 +8165,25 @@ function bufferResize_( test )
 
     test.case = 'dst, size = number, new size = buffer size';
     var src = buf( filledBuf, 8, 2 );
-    var dst = new BufferRaw( 0 );
-    var got = _.bufferResize_( dst, src, src.byteLength );
-    var expected = expect( src, 8, src.byteLength );
-    test.identical( got, expected.buffer );
+    var got = _.bufferResize_( null, src, src.byteLength );
+    var expected = buf( filledBuf, 8, 2 );
+    test.identical( got, expected );
     test.is( got !== src );
     test.is( got !== dst );
 
     test.case = 'dst, size = number, new size < buffer size';
     var src = buf( filledBuf, 0, 3 );
-    var dst = new BufferView( new BufferRaw( 0 ) );
-    var got = _.bufferResize_( dst, src, 16 );
+    var got = _.bufferResize_( null, src, 16 );
     var expected = expect( src, 0, 16 );
-    test.identical( got, new BufferView( expected.buffer ) );
+    test.identical( got, expected );
     test.is( got !== src );
     test.is( got !== dst );
 
     test.case = 'dst, size = number, new size > buffer size';
     var src = buf( filledBuf, 16, 1 );
-    var dst = new F64x( 0 );
-    var got = _.bufferResize_( dst, src, 32 );
+    var got = _.bufferResize_( null, src, 32 );
     var expected = expect( src, 16, 32 );
-    test.identical( got, new F64x( expected.buffer ) );
+    test.identical( got, expected );
     test.is( got !== src );
     test.is( got !== dst );
 
@@ -8209,13 +8206,13 @@ function bufferResize_( test )
     test.is( got === dst );
 
     test.case = 'dst, size = range, new offset < buffer offset, new size > buffer size';
-    var src = buf( filledBuf, 16, 1 );
-    var dst = new BufferRaw( 0 );
-    var got = _.bufferResize_( dst, src, [ -8, 24 ] );
-    var expected = expect( src, 8, 32 );
-    test.identical( got, expected.buffer );
-    test.is( got !== src );
-    test.is( got !== dst );
+    var src1 = buf( filledBuf, 16, 1 );
+    var dst1 = new BufferRaw( 0 );
+    var got1 = _.bufferResize_( dst1, src1, [ -8, 24 ] );
+    var expected1 = new U8x( [ 9, 10, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ); 
+    test.identical( got1, expected1.buffer );
+    test.is( got1 !== src1 );
+    test.is( got1 !== dst1 );
 
     test.case = 'dst, size = range, new offset > buffer offset, new size > buffer size';
     var src = buf( filledBuf, 8, 1 );
