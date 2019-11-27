@@ -2229,16 +2229,14 @@ function arraySetBut_( dst, src1, src2, onEvaluate1, onEvaluate2 )
 {
   if( arguments.length === 1 )
   {
-    if( _.longIs( dst ) )
-    return _.longSlice( dst );
-    else if( _.setIs( dst ) )
-    return new Set( dst );
-    else if( dst === null )
+    if( dst === null )
     return [];
+    else if( _.longIs( dst ) || _.setIs( dst ) )
+    return dst;
     else
     _.assert( 0 );
   }
-  if( dst === null && _.routineIs( src2 ) || dst === null && src2 === undefined )
+  if( ( dst === null && _.routineIs( src2 ) ) || ( dst === null && src2 === undefined ) )
   {
     if( _.longIs( src1 ) )
     return _.longSlice( src1 )
