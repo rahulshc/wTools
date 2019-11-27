@@ -33932,14 +33932,14 @@ function arraySetBut_( test )
   var src1 = [];
   var got = _.arraySetBut_( src1 );
   var exp = [];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.identical( got, exp );
 
   test.case = 'one argument, not empty array';
   var src1 = [ 1, 2, 3 ];
   var got = _.arraySetBut_( src1 );
   var exp = [ 1, 2, 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.identical( got, exp );
 
   /* */
@@ -33967,7 +33967,7 @@ function arraySetBut_( test )
   var src2 = [ 4, 5, 6 ];
   var got = _.arraySetBut_( src1, src2 );
   var exp = [ 1, 2, 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33976,7 +33976,7 @@ function arraySetBut_( test )
   var src2 = [ 2, 3, 6 ];
   var got = _.arraySetBut_( src1, src2 );
   var exp = [ 1 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33987,7 +33987,7 @@ function arraySetBut_( test )
   var src2 = [ 1, 2, 3 ];
   var got = _.arraySetBut_( src1, src2, ( e ) => e );
   var exp = [];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33996,7 +33996,7 @@ function arraySetBut_( test )
   var src2 = [ 1, 2, 3 ];
   var got = _.arraySetBut_( src1, src2, ( e ) => e, ( ins ) => ins + 1 );
   var exp = [ 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -34005,7 +34005,7 @@ function arraySetBut_( test )
   var src2 = [ 1, 2, 3 ];
   var got = _.arraySetBut_( src1, src2, ( e, ins ) => e === ins + 1 );
   var exp = [ 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -34108,14 +34108,14 @@ function arraySetBut_( test )
   var src1 = new Set();
   var got = _.arraySetBut_( src1 );
   var exp = [];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.identical( [ ... got ], exp );
 
   test.case = 'one argument, not empty array';
   var src1 = new Set( [ 1, 2, 3 ] );
   var got = _.arraySetBut_( src1 );
   var exp = [ 1, 2, 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.identical( [ ... got ], exp );
 
   /* */
@@ -34145,7 +34145,7 @@ function arraySetBut_( test )
   var src2 = new Set( [ 4, 5, 6 ] );
   var got = _.arraySetBut_( src1, src2 );
   var exp = [ 1, 2, 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -34154,7 +34154,7 @@ function arraySetBut_( test )
   var src2 = new Set( [ 2, 3, 6 ] );
   var got = _.arraySetBut_( src1, src2 );
   var exp = [ 1 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -34165,7 +34165,7 @@ function arraySetBut_( test )
   var src2 = [ 1, 2, 3 ];
   var got = _.arraySetBut_( src1, src2, ( e ) => e );
   var exp = [];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -34174,7 +34174,7 @@ function arraySetBut_( test )
   var src2 = new Set( [ 1, 2, 3 ] );
   var got = _.arraySetBut_( src1, src2, ( e ) => e, ( ins ) => ins + 1 );
   var exp = [ 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -34183,7 +34183,7 @@ function arraySetBut_( test )
   var src2 = new Set( [ 1, 2, 3 ] );
   var got = _.arraySetBut_( src1, src2, ( e, ins ) => e === ins + 1 );
   var exp = [ 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
