@@ -32986,7 +32986,7 @@ function arraySetDiff_( test )
   var src2 = [];
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -32995,7 +32995,7 @@ function arraySetDiff_( test )
   var src2 = [];
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [ 1, 2, 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33004,7 +33004,7 @@ function arraySetDiff_( test )
   var src2 = [ 1, 2, 3 ];
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [ 1, 2, 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33013,7 +33013,7 @@ function arraySetDiff_( test )
   var src2 = [ 4, 5, 6 ];
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [ 1, 2, 3, 4, 5, 6 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33022,7 +33022,7 @@ function arraySetDiff_( test )
   var src2 = [ 3, 3, 4, 5, 5 ];
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [ 1, 1, 2, 4, 5, 5 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33031,7 +33031,7 @@ function arraySetDiff_( test )
   var src2 = [ 3, 3, 3, 3 ];
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33040,7 +33040,7 @@ function arraySetDiff_( test )
   var src2 = [ [ 3 ], 3, 4, 5, 5 ];
   var got = _.arraySetDiff_( src1, src2, ( e ) => e[ 0 ] );
   var exp = [ [ 1 ] ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33049,7 +33049,7 @@ function arraySetDiff_( test )
   var src2 = [ 3, 3, 4, 5, 5 ];
   var got = _.arraySetDiff_( src1, src2, ( e ) => e[ 0 ], ( ins ) => ins );
   var exp = [ 1, 1, 2, [ 3 ], 3, 4, 5, 5 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33058,7 +33058,7 @@ function arraySetDiff_( test )
   var src2 = [ 3, 3, 4, 5, 5 ];
   var got = _.arraySetDiff_( src1, src2, ( e, ins ) => e[ 0 ] === ins );
   var exp = [ 1, 1, 2, [ 3 ], 3, 4, 5, 5 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
 
@@ -33210,7 +33210,7 @@ function arraySetDiff_( test )
   var src1 = dst;
   var src2 = [ 3, 3, 4, 5, 5 ];
   var got = _.arraySetDiff_( dst, src1, src2 );
-  var exp = [ 1, 1, 2, 3, 3, 4, 5, 5 ];
+  var exp = [ 1, 1, 2, 4, 5, 5 ];
   test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
@@ -33220,7 +33220,7 @@ function arraySetDiff_( test )
   var src1 = [ 3, 3, 3 ];
   var src2 = dst;
   var got = _.arraySetDiff_( dst, src1, src2 );
-  var exp = [ 3, 3, 3, 3 ];
+  var exp = [];
   test.is( got !== src1 );
   test.is( got === src2 );
   test.identical( got, exp );
@@ -33230,7 +33230,7 @@ function arraySetDiff_( test )
   var src1 = dst;
   var src2 = [ [ 3 ], 3, 4, 5, 5 ];
   var got = _.arraySetDiff_( dst, src1, src2, ( e ) => e[ 0 ] );
-  var exp = [ [ 1 ], 1, 2, [ 3 ], 3 ];
+  var exp = [ [ 1 ] ];
   test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( got, exp );
@@ -33266,7 +33266,7 @@ function arraySetDiff_( test )
   var src2 = new Set();
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -33275,7 +33275,7 @@ function arraySetDiff_( test )
   var src2 = new Set();
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [ 1, 2, 3 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -33285,7 +33285,7 @@ function arraySetDiff_( test )
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [ 1, 2, 3 ];
   test.is( _.setIs( got ) );
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -33294,7 +33294,7 @@ function arraySetDiff_( test )
   var src2 = [ 4, 5, 6 ];
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [ 1, 2, 3, 4, 5, 6 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -33303,7 +33303,7 @@ function arraySetDiff_( test )
   var src2 = new Set( [ 3, 3, 4, 5, 5 ] );
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [ 1, 2, 4, 5 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -33312,7 +33312,7 @@ function arraySetDiff_( test )
   var src2 = new Set( [ 3, 3, 3, 3 ] );
   var got = _.arraySetDiff_( src1, src2 );
   var exp = [];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -33321,7 +33321,7 @@ function arraySetDiff_( test )
   var src2 = new Set( [ [ 3 ], 3, 4, 5, 5 ] );
   var got = _.arraySetDiff_( src1, src2, ( e ) => e[ 0 ] );
   var exp = [ [ 1 ] ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -33330,7 +33330,7 @@ function arraySetDiff_( test )
   var src2 = new Set( [ 3, 3, 4, 5, 5 ] );
   var got = _.arraySetDiff_( src1, src2, ( e ) => e[ 0 ], ( ins ) => ins );
   var exp = [ 1, 2, [ 3 ], 3, 4, 5 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -33339,7 +33339,7 @@ function arraySetDiff_( test )
   var src2 = new Set( [ 3, 3, 4, 5, 5 ] );
   var got = _.arraySetDiff_( src1, src2, ( e, ins ) => e[ 0 ] === ins );
   var exp = [ 1, 2, [ 3 ], 3, 4, 5 ];
-  test.is( got !== src1 );
+  test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
 
@@ -33491,7 +33491,7 @@ function arraySetDiff_( test )
   var src1 = dst;
   var src2 = [ 3, 3, 4, 5, 5 ];
   var got = _.arraySetDiff_( dst, src1, src2 );
-  var exp = [ 1, 2, 3, 4, 5 ];
+  var exp = [ 1, 2, 4, 5 ];
   test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
@@ -33501,7 +33501,7 @@ function arraySetDiff_( test )
   var src1 = [ 3, 3, 3 ];
   var src2 = dst;
   var got = _.arraySetDiff_( dst, src1, src2 );
-  var exp = [ 3 ];
+  var exp = [];
   test.is( got !== src1 );
   test.is( got === src2 );
   test.identical( [ ... got ], exp );
@@ -33511,7 +33511,7 @@ function arraySetDiff_( test )
   var src1 = dst;
   var src2 = [ [ 3 ], 3, 4, 5, 5 ];
   var got = _.arraySetDiff_( dst, src1, src2, ( e ) => e[ 0 ] );
-  var exp = [ [ 1 ], 1, 2, [ 3 ], 3 ];
+  var exp = [ [ 1 ] ];
   test.is( got === src1 );
   test.is( got !== src2 );
   test.identical( [ ... got ], exp );
