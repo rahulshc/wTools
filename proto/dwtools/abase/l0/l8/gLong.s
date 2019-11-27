@@ -2391,12 +2391,10 @@ function arraySetUnion_( dst, src1, src2, onEvaluate1, onEvaluate2 )
   {
     if( dst === null )
     return [];
-    else if( _.longIs( dst ) )
-    return _.longSlice( dst );
-    else if( _.setIs( dst ) )
-    return new Set( dst );
+    else if( _.longIs( dst ) || _.setIs( dst ) )
+    return dst;
     else
-    _.assert( 0 );
+    _.assert( 0 ); 
   }
 
   [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
