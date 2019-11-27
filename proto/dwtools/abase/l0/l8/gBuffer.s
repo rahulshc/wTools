@@ -2401,7 +2401,6 @@ function bufferResize_( dst, srcBuffer, size )
   {
     size = srcBuffer;
     srcBuffer = dst;
-    dst = _.nothing;
   }
 
   let range = _.rangeIs( size ) ? size : [ 0, size ];
@@ -2423,19 +2422,33 @@ function bufferResize_( dst, srcBuffer, size )
   if( dst !== _.nothing )
   {
     _.assert( _.bufferAnyIs( dst ) );
-
-    let dstTyped;
-    if( size <= dst.byteLength )
+    
+    if( dst === srcBuffer && !_.bufferRawIs( srcBuffer ) && newOffset >= 0 && newOffset + size <= srcBuffer.buffer.byteLength )
+    {
+      if( _.bufferNodeIs( srcBuffer ) )
+      result = BufferNode.from( srcBuffer.buffer, newOffset, size );
+      else if( _.bufferViewIs( srcBuffer ) )
+      result = new BufferView( srcBuffer.buffer, newOffset, size );
+      else
+      result = new srcBuffer.constructor( srcBuffer.buffer, newOffset, size / srcBuffer.BYTES_PER_ELEMENT );
+    }
+    else if( _.bufferRawIs( dst ) )
+    {
+      if( size === dst.byteLength )
+      result = dst;
+      else 
+      result = _.bufferMakeUndefined( dst, size );
+    }
+    else if( size <= dst.byteLength )
     {
       result = dst;
-      dstTyped = _.bufferRawIs( dst ) ? new U8x( dst ) : new U8x( dst.buffer );
     }
     else
     {
       result = _.bufferMakeUndefined( dst, size / dst.BYTES_PER_ELEMENT || size );
-      dstTyped = _.bufferRawIs( result ) ? new U8x( result ) : new U8x( result.buffer );
     }
-
+    
+    let dstTyped = _.bufferRawIs( result ) ? new U8x( result ) : new U8x( result.buffer );
     let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
 
     let first = Math.max( newOffset, 0 );
@@ -2448,27 +2461,15 @@ function bufferResize_( dst, srcBuffer, size )
   {
     _.assert( dst === _.nothing );
 
-    if( !_.bufferRawIs( srcBuffer ) && newOffset >= 0 && newOffset + size <= srcBuffer.buffer.byteLength )
-    {
-      if( srcBuffer.constructor.name === 'Buffer' )
-      result = BufferNode.from( srcBuffer.buffer, newOffset, size );
-      if( srcBuffer.constructor.name === 'DataView' )
-      result = new BufferView( srcBuffer.buffer, newOffset, size );
-      else
-      result = new srcBuffer.constructor( srcBuffer.buffer, newOffset, size / srcBuffer.BYTES_PER_ELEMENT );
-    }
-    else
-    {
-      result = _.bufferMakeUndefined( srcBuffer, size / srcBuffer.BYTES_PER_ELEMENT || size );
-      let resultTyped = _.bufferRawIs( result ) ? new U8x( result ) : new U8x( result.buffer );
-      let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
+    result = _.bufferMakeUndefined( srcBuffer, size / srcBuffer.BYTES_PER_ELEMENT || size );
+    let resultTyped = _.bufferRawIs( result ) ? new U8x( result ) : new U8x( result.buffer );
+    let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
 
-      let first = Math.max( newOffset, 0 );
-      let last = Math.min( srcBufferToU8x.byteLength, newOffset + size );
-      newOffset = newOffset < 0 ? -newOffset : 0;
-      for( let r = first ; r < last ; r++ )
-      resultTyped[ r - first + newOffset ] = srcBufferToU8x[ r ];
-    }
+    let first = Math.max( newOffset, 0 );
+    let last = Math.min( srcBufferToU8x.byteLength, newOffset + size );
+    newOffset = newOffset < 0 ? -newOffset : 0;
+    for( let r = first ; r < last ; r++ )
+    resultTyped[ r - first + newOffset ] = srcBufferToU8x[ r ];
   }
 
   return result;
@@ -3147,38 +3148,43 @@ let Routines =
   bufferResize_, /* !!! : use instead of bufferResize, bufferResizeInplace */
 
   /*
-
-  routine         | makes new dst container                | saves dst container
-  ----------------|----------------------------------------|-------------------------------------------------------
-  bufferBut_      | _.bufferBut_( src )                    | _.bufferBut_( dst, dst )
-                  | _.bufferBut_( src, range )             | _.bufferBut_( dst, dst, range ) if dst is resizable
-                  | _.bufferBut_( null, src, range )       | or dst not change length
-                  | _.bufferBut_( dst, src, range )        | _.bufferBut_( dst, src, range ) if dst is resizable
-                  | if dst not resizable and change length | or dst not change length
-  ----------------|----------------------------------------|-------------------------------------------------------
-  bufferSelect_   | _.bufferSelect_( src )                 | _.bufferSelect_( dst, dst )
-                  | _.bufferSelect_( src, range )          | _.bufferSelect_( dst, dst, range ) if dst is resizable
-                  | _.bufferSelect_( null, src, range )    | or dst not change length
-                  | _.bufferSelect_( dst, src, range )     | _.bufferSelect_( dst, src, range ) if dst is resizable
-                  | if dst not resizable and change length | or dst not change length
-  ----------------|----------------------------------------|-------------------------------------------------------
-  bufferGrow_     | _.bufferGrow_( src )                   | _.bufferGrow_( dst, dst )
-                  | _.bufferGrow_( src, range )            | _.bufferGrow_( dst, dst, range ) if dst is resizable
-                  | _.bufferGrow_( null, src, range )      | or dst not change length
-                  | _.bufferGrow_( dst, src, range )       | _.bufferGrow_( dst, src, range ) if dst is resizable
-                  | if dst not resizable and change length |  or dst not change length
-  ----------------|----------------------------------------|-------------------------------------------------------
-  bufferRelength_ | _.bufferRelength_( src )               | _.bufferRelength_( dst, dst )
-                  | _.bufferRelength_( src, range )        | _.bufferRelength_( dst, dst, range ) if dst is resizable
-                  | _.bufferRelength_( null, src, range )  | or dst not change length
-                  | _.bufferRelength_( dst, src, range )   | _.bufferRelength_( dst, src, range ) if dst is resizable
-                  | if dst not resizable and change length | or dst not change length
-  ----------------|----------------------------------------|-------------------------------------------------------
-  bufferResize_   | _.bufferResize_( src, size )           | _.bufferResize_( dst, dst, size ) if buffer not changes
-                  | _.bufferResize_( null, src, size )     | _.bufferResize_( dst, src, size )
-                  | _.bufferResize_( dst, src, range )     | if dst.byteLength >= size
-                  | if dst.byteLength < size               |
-  ----------------|----------------------------------------|-------------------------------------------------------
+  | routine         | makes new dst container                      | saves dst container                                      |
+  |-----------------|----------------------------------------------|----------------------------------------------------------|
+  | bufferBut_      | _.bufferBut_( src, range )                   | _.bufferBut_( src )                                      |
+  |                 | if src is not resizable and  change length   | _.bufferBut_( dst, dst )                                 |
+  |                 | _.bufferBut_( null, src, range )             | _.bufferBut_( dst, dst, range ) if dst is resizable      |
+  |                 | _.bufferBut_( dst, src, range )              | or dst not change length                                 |
+  |                 | if dst not resizable and change length       | _.bufferBut_( dst, src, range ) if dst is resizable      |
+  |                 |                                              | or dst not change length                                 |
+  |-----------------|----------------------------------------------|----------------------------------------------------------|
+  | bufferSelect__  | _.bufferSelect__( src, range )               | _.bufferSelect__( src )                                  |
+  |                 | if src is not resizable and  change length   | _.bufferSelect__( dst, dst )                             |
+  |                 | _.bufferSelect__( null, src, range )         | _.bufferSelect__( dst, dst, range ) if dst is resizable  |
+  |                 | _.bufferSelect__( dst, src, range )          | or dst not change length                                 |
+  |                 | if dst not resizable and change length       | _.bufferSelect__( dst, src, range ) if dst is resizable  |
+  |                 |                                              | or dst not change length                                 |
+  |-----------------|----------------------------------------------|----------------------------------------------------------|
+  | bufferGrow_     | _.bufferGrow_( src, range )                  | _.bufferGrow_( src )                                     |
+  |                 | if src is not resizable and  change length   | _.bufferGrow_( dst, dst )                                |
+  |                 | _.bufferGrow_( null, src, range )            | _.bufferGrow_( dst, dst, range ) if dst is resizable     |
+  |                 | _.bufferGrow_( dst, src, range )             | or dst not change length                                 |
+  |                 | if dst not resizable and change length       | _.bufferGrow_( dst, src, range ) if dst is resizable     |
+  |                 |                                              | or dst not change length                                 |
+  |-----------------|----------------------------------------------|----------------------------------------------------------|
+  | bufferRelength_ | _.bufferRelength_( src, range )              | _.bufferRelength_( src )                                 |
+  |                 | if src is not resizable and  change length   | _.bufferRelength_( dst, dst )                            |
+  |                 | _.bufferRelength_( null, src, range )        | _.bufferRelength_( dst, dst, range ) if dst is resizable |
+  |                 | _.bufferRelength_( dst, src, range )         | or dst not change length                                 |
+  |                 | if dst not resizable and change length       | _.bufferRelength_( dst, src, range ) if dst is resizable |
+  |                 |                                              | or dst not change length                                 |
+  |-----------------|----------------------------------------------|----------------------------------------------------------|
+  | bufferResize_   | _.bufferResize_( null, src, size )           | _.bufferResize_( src, size )                             |
+  | bufferResize_   | every time                                   | if src is not BufferRaw or buffer not changes length     |
+  |                 | _.bufferResize_( src, size )                 | _.bufferResize_( dst, dst, size ) if buffer not changes  |
+  |                 | if src is BufferRaw or buffer changes length | _.bufferResize_( dst, src, size )                        |
+  |                 | _.bufferResize_( dst, src, range )           | if dst.byteLength >= size                                |
+  |                 | if dst.byteLength < size                     |                                                          |
+  |-----------------|----------------------------------------------|----------------------------------------------------------|
   */
 
 }
