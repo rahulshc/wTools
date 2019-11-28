@@ -2766,6 +2766,14 @@ function strOnlySingle( srcStr, range )
 
 /* qqq : reference point of negative is length. implement and cover please */
 
+// xxx
+// _.strOnly( 'abc', [ -2, -1 ] ) => ''
+// _.strOnly( 'abc', [ 1, 2 ] ) => 'b'
+// _.strOnly( 'abc', [ 1, 2 ] ) => 'b'
+//
+// 3-2 = 1
+// 3-1 = 2
+
   if( _.numberIs( range ) )
   {
     if( range < 0 )
@@ -2788,6 +2796,10 @@ function strOnlySingle( srcStr, range )
 }
 
 //
+
+// srcStr:str ins:str -> str
+// srcStr:str ins:[ * str ] -> [ * str ]
+// srcStr:[ * str ] ins:[ * str ] -> [ * str ]
 
 function strButSingle( srcStr, range, ins )
 {
@@ -3748,8 +3760,6 @@ function strConcat( srcs, o )
   o.onToStr = function onToStr( src, op )
   {
     return _.toStr( src, op.optionsForToStr );
-    /* Dmytro : now optionsForToStr is not used in routine toStr */
-    /* qqq : ask */
   }
 
   let defaultOptionsForToStr =
@@ -3900,12 +3910,6 @@ strConcat.defaults =
  * @memberof wTools
  *
  */
-
-/*
-qqq : extend coverage of strIndentation
-Dmytro : coverage NOT extended. Description and realisation of routine is not identical.
-So, test routine is corrected corresponds to actual state of routine.
-*/
 
 function strIndentation( src, tab )
 {
@@ -4411,9 +4415,9 @@ function strLinesSelect( o )
     if( !o.highlighting )
     return line.join( '' );
     if( l === o.line )
-    line[ 0 ] = '*' + line[ 0 ];
+    line[ 0 ] = '* ' + line[ 0 ];
     else
-    line[ 0 ] = ' ' + line[ 0 ];
+    line[ 0 ] = '  ' + line[ 0 ];
     // line[ 1 ] = _.strBut( line[ 1 ], 0, '*' );
     return line.join( '' );
   }
@@ -4439,7 +4443,7 @@ strLinesSelect.defaults =
 
 /* qqq :
 - cover option highlighting
-- cover option zero
+- cover option zeroLine
 */
 
 //
