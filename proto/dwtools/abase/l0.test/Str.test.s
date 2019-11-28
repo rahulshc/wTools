@@ -1734,6 +1734,10 @@ function strQuote( test )
   var got = _.strQuote( [ 0, '', undefined, null, true, 'str' ] );
   test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
 
+  test.case = 'src - array with elements, quote - null';
+  var got = _.strQuote( [ 0, '', undefined, null, true, 'str' ] );
+  test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
+
   //
 
   test.case = 'src - empty string';
@@ -1780,11 +1784,15 @@ function strQuote( test )
   var got = _.strQuote( { src : [ 0, '', undefined, null, true, 'str' ] } );
   test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
 
+  test.case = 'src - array with elements, quote - null';
+  var got = _.strQuote( { src : [ 0, '', undefined, null, true, 'str' ], quote : null } );
+  test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
+
   test.close( 'default quote' );
 
   /* - */
 
-  test.open( 'user quote' );
+  test.open( 'passed quote' );
 
   test.case = 'src - empty string';
   var got = _.strQuote( '', '`' );
@@ -1876,7 +1884,194 @@ function strQuote( test )
   var got = _.strQuote( { src : [ 0, '', undefined, null, true, 'str' ], quote : '"' } );
   test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
 
-  test.close( 'user quote' );
+  test.close( 'passed quote' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strQuote() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strQuote( 'a', '"', 'extra' ) );
+
+  test.case = 'unnacessary fields in options map';
+  test.shouldThrowErrorSync( () => _.strQuote( { src : 'a', quote : '"', dst : [] } ) );
+}
+
+//
+
+function strUnquote( test )
+{
+  test.open( 'default quote' );
+
+  test.case = 'src - empty string';
+  var got = _.strUnquote( '' );
+  test.identical( got, '' );
+
+  test.case = 'src - not quoted string';
+  var got = _.strUnquote( 'abc' );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - single quote';
+  var got = _.strUnquote( '"abc' );
+  test.identical( got, '"abc' );
+
+  test.case = 'src - string with quotes';
+  var got = _.strUnquote( '"", `abc` \'\'' );
+  test.identical( got, '"", `abc` \'\'' );
+
+  test.case = 'src - quoted string';
+  var got = _.strUnquote( '"abc"' );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - twice quoted string';
+  var got = _.strUnquote( '""abc""' );
+  test.identical( got, '"abc"' );
+
+  test.case = 'src - empty array';
+  var got = _.strUnquote( [] );
+  test.identical( got, [] );
+
+  test.case = 'src - array of strings';
+  var got = _.strUnquote( [ 'a', '"b"', '`c`', "'d'", '""abc""' ] );
+  test.identical( got, [ 'a', 'b', 'c', 'd', '"abc"' ] );
+
+  test.case = 'src - array of strings, quote - null';
+  var got = _.strUnquote( [ 'a', '"b"', '`c`', "'d'", '""abc""' ], null );
+  test.identical( got, [ 'a', 'b', 'c', 'd', '"abc"' ] );
+
+  /* */
+
+  test.case = 'src - empty string';
+  var got = _.strUnquote( { src : '' } );
+  test.identical( got, '' );
+
+  test.case = 'src - not quoted string';
+  var got = _.strUnquote( { src : 'abc' } );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - single quote';
+  var got = _.strUnquote( { src : '"abc' } );
+  test.identical( got, '"abc' );
+
+  test.case = 'src - string with quotes';
+  var got = _.strUnquote( { src : '"", `abc` \'\'' } );
+  test.identical( got, '"", `abc` \'\'' );
+
+  test.case = 'src - quoted string';
+  var got = _.strUnquote( { src : '"abc"' } );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - twice quoted string';
+  var got = _.strUnquote( { src : '""abc""' } );
+  test.identical( got, '"abc"' );
+
+  test.case = 'src - empty array';
+  var got = _.strUnquote( { src : [] } );
+  test.identical( got, [] );
+
+  test.case = 'src - array of strings';
+  var got = _.strUnquote( { src : [ 'a', '"b"', '`c`', "'d'", '""abc""' ] } );
+  test.identical( got, [ 'a', 'b', 'c', 'd', '"abc"' ] );
+
+  test.case = 'src - array of strings, quote - null';
+  var got = _.strUnquote( { src : [ 'a', '"b"', '`c`', "'d'", '""abc""' ], quote : null } );
+  test.identical( got, [ 'a', 'b', 'c', 'd', '"abc"' ] );
+
+  test.close( 'default quote' );
+
+  /* - */
+
+  test.open( 'passed quote' );
+
+  test.case = 'src - empty string';
+  var got = _.strUnquote( '', '*' );
+  test.identical( got, '' );
+
+  test.case = 'src - not quoted string';
+  var got = _.strUnquote( 'abc', '' );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - single quote';
+  var got = _.strUnquote( '"abc', '`' );
+  test.identical( got, '"abc' );
+
+  test.case = 'src - string with quotes';
+  var got = _.strUnquote( '**"", `abc` \'\'**', '**' );
+  test.identical( got, '"", `abc` \'\'' );
+
+  test.case = 'src - quoted string';
+  var got = _.strUnquote( '"abc"', '\'' );
+  test.identical( got, '"abc"' );
+
+  test.case = 'src - twice quoted string';
+  var got = _.strUnquote( '""abc""', '`' );
+  test.identical( got, '""abc""' );
+
+  test.case = 'src - empty array';
+  var got = _.strUnquote( [], '|' );
+  test.identical( got, [] );
+
+  test.case = 'src - array of strings';
+  var got = _.strUnquote( [ 'a', '"b"', '`c`', "'d'", '""abc""' ], '`' );
+  test.identical( got, [ 'a', '"b"', 'c', "'d'", '""abc""' ] );
+
+  /* */
+
+  test.case = 'src - empty string';
+  var got = _.strUnquote( { src : '', quote : '""' } );
+  test.identical( got, '' );
+
+  test.case = 'src - not quoted string';
+  var got = _.strUnquote( { src : 'abc', quote : '' } );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - single quote';
+  var got = _.strUnquote( { src : '"abc', quote : '"' } );
+  test.identical( got, '"abc' );
+
+  test.case = 'src - string with quotes';
+  var got = _.strUnquote( { src : '"", `abc` \'\'', quote : '\'' } );
+  test.identical( got, '"", `abc` \'\'' );
+
+  test.case = 'src - quoted string';
+  var got = _.strUnquote( { src : '"abc"', quote : '`' } );
+  test.identical( got, '"abc"' );
+
+  test.case = 'src - twice quoted string';
+  var got = _.strUnquote( { src : '""abc""', quote : '""' } );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - empty array';
+  var got = _.strUnquote( { src : [], quote : '""' } );
+  test.identical( got, [] );
+
+  test.case = 'src - array of strings';
+  var got = _.strUnquote( { src : [ 'a', '"b"', '`c`', "'d'", '""abc""' ], quote : '`' } );
+  test.identical( got, [ 'a', '"b"', 'c', "'d'", '""abc""' ] );
+
+  test.close( 'passed quote' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strUnquote() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strUnquote( '"str"', '"', 'extra' ) );
+
+  test.case = 'unnacessary fields in options map';
+  test.shouldThrowErrorSync( () => _.strUnquote( { src : '"abc"', quote : '"', dst : [] } ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.strUnquote( 1 ) );
+  test.shouldThrowErrorSync( () => _.strUnquote( { src : 1, quote : '"', dst : [] } ) );
 }
 
 //
@@ -4584,6 +4779,7 @@ var Self =
     strPrimitive,
 
     strQuote,
+    strUnquote,
     strQuotePairsNormalize,
     strQuoteAnalyze,
 
