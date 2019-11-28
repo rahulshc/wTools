@@ -24126,25 +24126,25 @@ function arrayFlattenedOnce( test )
   var dst = [ 0, 1, 2, 3 ];
   var got = _.arrayFlattenedOnce( dst );
   test.identical( dst, [ 0, 1, 2, 3 ] );
-  test.identical( got, [ 0, 1, 2, 3 ] );
+  test.identical( got, 4 );
 
   test.case = 'flat array, duplicates';
   var dst = [ 0, 1, 0, 1 ];
   var got = _.arrayFlattenedOnce( dst );
   test.identical( dst, [ 0, 1 ] );
-  test.identical( got, [ 0, 1 ] );
+  test.identical( got, 2 );
 
   test.case = 'array, level 2, duplicates';
   var dst = [ [ 0, 0 ], [ 1, 1 ] ];
   var got = _.arrayFlattenedOnce( dst );
   test.identical( dst, [ 0, 1 ] );
-  test.identical( got, [ 0, 1 ] );
+  test.identical( got, 2 );
 
   test.case = 'array with diff levels, duplicates';
   var dst = [ 1, [ [ 0 ], 1 ], 1, 0 ];
   var got = _.arrayFlattenedOnce( dst );
   test.identical( dst, [ 1, 0 ] );
-  test.identical( got, [ 1, 0 ] );
+  test.identical( got, 2 );
 
   test.close( 'single argument' );
 
@@ -24438,7 +24438,7 @@ function arrayFlattenedOnceSame( test )
   dst.push( dst );
   var got  = _.arrayFlattenedOnce( dst );
   test.identical( dst, [ 1, 3, 2 ] );
-  test.identical( got, [ 1, 3, 2 ] );
+  test.identical( got, 3 );
 
   test.case = 'dst - array, level 6, push self twice, duplicates';
   var dst = [ [ [ [ [ [ 1, 1, 2 ] ] ] ] ] ];
@@ -24446,7 +24446,7 @@ function arrayFlattenedOnceSame( test )
   dst.push( dst );
   var got  = _.arrayFlattenedOnce( dst );
   test.identical( dst, [ 1, 2 ] );
-  test.identical( got, [ 1, 2 ] );
+  test.identical( got, 2 );
 
   /* */
 
@@ -24523,7 +24523,7 @@ function arrayFlattenedOnceSame( test )
   dst.splice( 1, 0, dst );
   var got  = _.arrayFlattenedOnce( dst );
   test.identical( dst, [ 1, 3, 2 ] );
-  test.identical( got, [ 1, 3, 2 ] );
+  test.identical( got, 3 );
 
   test.case = 'dst - array, level 6, inserts self twice, duplicates';
   var dst = [ [ [ [ [ [ 1, 1, 2 ] ] ] ] ] ];
@@ -24531,7 +24531,7 @@ function arrayFlattenedOnceSame( test )
   dst.splice( 0, 0, dst );
   var got  = _.arrayFlattenedOnce( dst );
   test.identical( dst, [ 1, 2 ] );
-  test.identical( got, [ 1, 2 ] );
+  test.identical( got, 2 );
 
   test.close( 'dst or src contains self' );
 
