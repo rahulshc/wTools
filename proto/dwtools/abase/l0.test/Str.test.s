@@ -1686,6 +1686,201 @@ function strPrimitive( test )
 
 //
 
+function strQuote( test )
+{
+  test.open( 'default quote' );
+
+  test.case = 'src - empty string';
+  var got = _.strQuote( '' );
+  test.identical( got, '""' );
+
+  test.case = 'src - number';
+  var got = _.strQuote( 1 );
+  test.identical( got, '"1"' );
+
+  test.case = 'src - null';
+  var got = _.strQuote( null );
+  test.identical( got, '"null"' );
+
+  test.case = 'src - undefined';
+  var got = _.strQuote( undefined );
+  test.identical( got, '"undefined"' );
+
+  test.case = 'src - boolean';
+  var got = _.strQuote( false );
+  test.identical( got, '"false"' );
+
+  test.case = 'src - string';
+  var got = _.strQuote( 'str' );
+  test.identical( got, '"str"' );
+
+  test.case = 'src - map';
+  var got = _.strQuote( { src : {} } );
+  test.identical( got, '"[object Object] "' );
+
+  test.case = 'src - Set';
+  var got = _.strQuote( new Set() );
+  test.identical( got, '"[object Set] "' );
+
+  test.case = 'src - BufferRaw';
+  var got = _.strQuote( new BufferRaw( 10 ) );
+  test.identical( got, '"[object ArrayBuffer] "' );
+
+  test.case = 'src - empty array';
+  var got = _.strQuote( [] );
+  test.identical( got, [] );
+
+  test.case = 'src - array with elements';
+  var got = _.strQuote( [ 0, '', undefined, null, true, 'str' ] );
+  test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
+
+  //
+
+  test.case = 'src - empty string';
+  var got = _.strQuote( { src : '' } );
+  test.identical( got, '""' );
+
+  test.case = 'src - number';
+  var got = _.strQuote( { src : 1 } );
+  test.identical( got, '"1"' );
+
+  test.case = 'src - null';
+  var got = _.strQuote( { src : null } );
+  test.identical( got, '"null"' );
+
+  test.case = 'src - undefined';
+  var got = _.strQuote( { src : undefined } );
+  test.identical( got, '"undefined"' );
+
+  test.case = 'src - boolean';
+  var got = _.strQuote( { src : false } );
+  test.identical( got, '"false"' );
+
+  test.case = 'src - string';
+  var got = _.strQuote( { src : 'str' } );
+  test.identical( got, '"str"' );
+
+  test.case = 'src - map';
+  var got = _.strQuote( { src : {} } );
+  test.identical( got, '"[object Object] "' );
+
+  test.case = 'src - Set';
+  var got = _.strQuote( { src : new Set() } );
+  test.identical( got, '"[object Set] "' );
+
+  test.case = 'src - BufferRaw';
+  var got = _.strQuote( { src : new BufferView( new BufferRaw() ) } );
+  test.identical( got, '"[object DataView] "' );
+
+  test.case = 'src - empty array';
+  var got = _.strQuote( { src : [] } );
+  test.identical( got, [] );
+
+  test.case = 'src - array with elements';
+  var got = _.strQuote( { src : [ 0, '', undefined, null, true, 'str' ] } );
+  test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
+
+  test.close( 'default quote' );
+
+  /* - */
+
+  test.open( 'user quote' );
+
+  test.case = 'src - empty string';
+  var got = _.strQuote( '', '`' );
+  test.identical( got, '``' );
+
+  test.case = 'src - number';
+  var got = _.strQuote( 1, '--' );
+  test.identical( got, '--1--' );
+
+  test.case = 'src - null';
+  var got = _.strQuote( null, '**' );
+  test.identical( got, '**null**' );
+
+  test.case = 'src - undefined';
+  var got = _.strQuote( undefined, '||' );
+  test.identical( got, '||undefined||' );
+
+  test.case = 'src - boolean';
+  var got = _.strQuote( false, '' );
+  test.identical( got, 'false' );
+
+  test.case = 'src - string';
+  var got = _.strQuote( 'str', '_' );
+  test.identical( got, '_str_' );
+
+  test.case = 'src - map';
+  var got = _.strQuote( { src : {}, quote : '\'' } );
+  test.identical( got, '\'[object Object] \'' );
+
+  test.case = 'src - Set';
+  var got = _.strQuote( new Set(), '""' );
+  test.identical( got, '""[object Set] ""' );
+
+  test.case = 'src - BufferRaw';
+  var got = _.strQuote( new BufferRaw( 10 ), ' ' );
+  test.identical( got, ' [object ArrayBuffer]  ' );
+
+  test.case = 'src - empty array';
+  var got = _.strQuote( [], 'a' );
+  test.identical( got, [] );
+
+  test.case = 'src - array with elements';
+  var got = _.strQuote( [ 0, '', undefined, null, true, 'str' ], '"' );
+  test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
+
+  //
+
+  test.case = 'src - empty string';
+  var got = _.strQuote( { src : '', quote : '\'' } );
+  test.identical( got, "''" );
+
+  test.case = 'src - number';
+  var got = _.strQuote( { src : 1, quote : '``' } );
+  test.identical( got, '``1``' );
+
+  test.case = 'src - null';
+  var got = _.strQuote( { src : null, quote : '**' } );
+  test.identical( got, '**null**' );
+
+  test.case = 'src - undefined';
+  var got = _.strQuote( { src : undefined, quote : '|' } );
+  test.identical( got, '|undefined|' );
+
+  test.case = 'src - boolean';
+  var got = _.strQuote( { src : false, quote : '\'' } );
+  test.identical( got, "'false'" );
+
+  test.case = 'src - string';
+  var got = _.strQuote( { src : 'str', quote : '""' } );
+  test.identical( got, '""str""' );
+
+  test.case = 'src - map';
+  var got = _.strQuote( { src : {}, quote : '`' } );
+  test.identical( got, '`[object Object] `' );
+
+  test.case = 'src - Set';
+  var got = _.strQuote( { src : new Set(), quote : '' } );
+  test.identical( got, '[object Set] ' );
+
+  test.case = 'src - BufferRaw';
+  var got = _.strQuote( { src : new BufferView( new BufferRaw() ), quote : ' ' } );
+  test.identical( got, ' [object DataView]  ' );
+
+  test.case = 'src - empty array';
+  var got = _.strQuote( { src : [], quote : '"' } );
+  test.identical( got, [] );
+
+  test.case = 'src - array with elements';
+  var got = _.strQuote( { src : [ 0, '', undefined, null, true, 'str' ], quote : '"' } );
+  test.identical( got, [ '"0"', '""', '"undefined"', '"null"', '"true"', '"str"' ] );
+
+  test.close( 'user quote' );
+}
+
+//
+
 function strQuotePairsNormalize( test )
 {
   test.case = 'quote - true';
@@ -4369,8 +4564,8 @@ var Self =
   tests :
   {
 
-    strLeft, /* qqq : update */
-    strRight, /* qqq : update */
+    strLeft, /* qqq : update | Dmytro : updated, new option implemented */
+    strRight, /* qqq : update | Dmytro : updated, new option implemented */ 
 
     strEquivalent,
     strsEquivalent,
@@ -4388,6 +4583,7 @@ var Self =
     strShort,
     strPrimitive,
 
+    strQuote,
     strQuotePairsNormalize,
     strQuoteAnalyze,
 
