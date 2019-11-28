@@ -7184,7 +7184,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
       }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )

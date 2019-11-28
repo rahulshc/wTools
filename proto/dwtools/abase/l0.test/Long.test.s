@@ -24771,21 +24771,21 @@ function arrayFlattenedOnceStrictly( test )
 
   test.case = 'flat array';
   var got = _.arrayFlattenedOnceStrictly( [ 0, 1, 2, 3 ] );
-  var expected = [ 0, 1, 2, 3 ];
+  var expected = 4;
   test.identical( got, expected );
 
   test.case = 'level 2';
   var got = _.arrayFlattenedOnceStrictly( [ [ 0 ], [ 1 ] ] );
-  var expected = [ 0, 1 ];
+  var expected = 2;
   test.identical( got, expected );
 
   test.case = 'diff levels';
   var got = _.arrayFlattenedOnceStrictly( [ [ 0 ], 1, [ 2, [ 3, 4 ] ] ] );
-  var expected = [ 0, 1, 2, 3, 4 ];
+  var expected = 5;
   test.identical( got, expected );
 
   var got = _.arrayFlattenedOnceStrictly( [ 0, [ [ 1 ], 2 ], 3, 4 ] );
-  var expected = [ 0, 1, 2, 3, 4 ];
+  var expected = 5;
   test.identical( got, expected );
 
   test.close( 'single argument' );
@@ -25045,7 +25045,7 @@ function arrayFlattenedOnceStrictlySame( test )
   dst.push( dst );
   var got  = _.arrayFlattenedOnceStrictly( dst );
   test.identical( dst, [ 1, 3, 2 ] );
-  test.identical( got, [ 1, 3, 2 ] );
+  test.identical( got, 3 );
 
   /* */
 
@@ -25087,7 +25087,7 @@ function arrayFlattenedOnceStrictlySame( test )
   dst.splice( 1, 0, dst );
   var got  = _.arrayFlattenedOnceStrictly( dst );
   test.identical( dst, [ 1, 3, 2 ] );
-  test.identical( got, [ 1, 3, 2 ] );
+  test.identical( got, 3 );
 
   test.close( 'dst or src contains self' );
 
