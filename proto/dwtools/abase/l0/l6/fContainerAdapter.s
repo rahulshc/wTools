@@ -5,14 +5,15 @@
 let _global = _realGlobal_;
 let _ = _global_.wTools;
 
-if( _global_ !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
+if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 {
-  let _ = _global_.wTools;
-  _.assert( _.containerAdapter === undefined );
-  _.containerAdapter = _realGlobal_.wTools.containerAdapter;
-  if( typeof module !== 'undefined' && module !== null )
-  module[ 'exports' ] = _.containerAdapter;
-  return;
+  return ExportTo( _global, _realGlobal_ );
+  // let _ = _global_.wTools;
+  // _.assert( _.containerAdapter === undefined );
+  // _.containerAdapter = _realGlobal_.wTools.containerAdapter;
+  // if( typeof module !== 'undefined' && module !== null )
+  // module[ 'exports' ] = _.containerAdapter;
+  // return;
 }
 
 _.assert( _.routineIs( _.longLeft ) );
@@ -357,7 +358,7 @@ class ContainerAdapterAbstract
 
     let result = src.length;
     src.each( ( e ) => self.removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) );
-    
+
     return result;
   }
   removeContainer( src )
@@ -446,7 +447,7 @@ class ContainerAdapterAbstract
         dst.appendOnce( e );
       });
     }
-    
+
     return dst;
   }
   but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators | Dmytro : implemented, covered */
@@ -725,7 +726,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         if( !this.has( e, onEvaluate1, onEvaluate2 ) )
         this.append( e );
       }
-      
+
       return this;
     }
     else
@@ -734,7 +735,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
   }
   appendContainerOnceStrictly( container, onEvaluate1, onEvaluate2 )
-  { 
+  {
     container = this.ToOriginal( container );
 
     if( _.longIs( container ) )
@@ -871,11 +872,11 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     }
     return -1;
   }
-  removedOnceLeft( e, onEvaluate1, onEvaluate2 ) 
+  removedOnceLeft( e, onEvaluate1, onEvaluate2 )
   {
     return this.removedOnce.apply( this, arguments );
   }
-  removedOnceRight( e, onEvaluate1, onEvaluate2 ) 
+  removedOnceRight( e, onEvaluate1, onEvaluate2 )
   {
     let temp = [ ... this.original ];
     let to = this.length;
@@ -936,7 +937,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     _.assert( result !== undefined, 'Container does not have such an element' );
     return result;
   }
-  removedOnceStrictlyLeft( e, onEvaluate1, onEvaluate2 )  
+  removedOnceStrictlyLeft( e, onEvaluate1, onEvaluate2 )
   {
     return this.removedOnceStrictly.apply( this, arguments );
   }
@@ -981,12 +982,12 @@ class SetContainerAdapter extends ContainerAdapterAbstract
     this.removedOnce.apply( this, arguments );
     return this;
   }
-  removeOnceLeft( e, onEvaluate1, onEvaluate2 )  
+  removeOnceLeft( e, onEvaluate1, onEvaluate2 )
   {
     this.removedOnceLeft.apply( this, arguments );
     return this;
   }
-  removeOnceRight( e, onEvaluate1, onEvaluate2 )  
+  removeOnceRight( e, onEvaluate1, onEvaluate2 )
   {
     this.removedOnceRight.apply( this, arguments );
     return this;
@@ -1212,7 +1213,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         else if( e2 !== undefined )
         self.append( e2 )
         else if( e2 === e && e !== undefined )
-        self.append( e );          
+        self.append( e );
       }
     }
     else
@@ -1249,7 +1250,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
       for( let i = temp.length - 1; i >= 0; i-- )
       {
         let e2 = onEach( temp[ i ], i, self );
-        
+
         if( self.IsContainer( e2 ) || self.Is( e2 ) )
         temp.splice( i, 1, ... e2 );
         else if( e2 !== undefined && e2 !== temp[ i ] )
@@ -1257,7 +1258,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         else if( e2 === undefined )
         temp.splice( i, 1 );
         self.empty();
-        temp.forEach( ( e ) => self.push( e ) );          
+        temp.forEach( ( e ) => self.push( e ) );
       }
     }
     else
@@ -1272,7 +1273,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
         dst.append( e2 );
       }
     }
-    return dst; 
+    return dst;
   }
   once( dst, onEvaluate1, onEvaluate2 ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
   {
@@ -1301,7 +1302,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   {
     return this.once.apply( this, arguments );
   }
-  onceRight( dst, onEvaluate1, onEvaluate2 ) 
+  onceRight( dst, onEvaluate1, onEvaluate2 )
   {
     let self = this;
     let container = self.original;
@@ -1516,7 +1517,7 @@ class SetContainerAdapter extends ContainerAdapterAbstract
   none( onEach )
   {
     return this.noneLeft( onEach );
-  }  
+  }
   noneLeft( onEach )
   {
     let self = this;
@@ -1839,7 +1840,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
     _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnceStrictlyLeft( e, onEvaluate1, onEvaluate2 ) 
+  removeOnceStrictlyLeft( e, onEvaluate1, onEvaluate2 )
   {
     _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
@@ -1935,7 +1936,7 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
       {
         let e = container[ k ];
         // let e2 = onEach( e, undefined, container ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
-        let e2 = onEach( e, k, container );        
+        let e2 = onEach( e, k, container );
         if( e2 === undefined )
         {
           container.splice( k, 1 );
@@ -2346,6 +2347,20 @@ class ArrayContainerAdapter extends ContainerAdapterAbstract
 }
 
 // --
+// meta
+// --
+
+function ExportTo( dstGlobal, srcGlobal )
+{
+  let _ = dstGlobal.wTools;
+  _.assert( _.containerAdapter === undefined );
+  _.assert( _.mapIs( srcGlobal.wTools.containerAdapter ) );
+  _.containerAdapter = srcGlobal.wTools.containerAdapter;
+  if( typeof module !== 'undefined' && module !== null )
+  module[ 'exports' ] = _.containerAdapter;
+}
+
+// --
 // declare
 // --
 
@@ -2415,34 +2430,19 @@ _.containerAdapter = Self;
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
 
-if( _global_ !== _realGlobal_ )
+if( _global !== _realGlobal_ )
 {
-  let _ = _global_.wTools;
-  _.assert( _realGlobal_.wTools.containerAdapter === undefined );
-  _realGlobal_.wTools.containerAdapter = _.containerAdapter;
-  if( typeof module !== 'undefined' && module !== null )
-  module[ 'exports' ] = _.containerAdapter;
-  return;
+  return ExportTo( _realGlobal_, _global );
 }
 
-// var array = _.containerAdapter.make( [ 1, 2, 3 ] );
-// var set = _.containerAdapter.make( new Set([ 1, 2, 3 ]) );
-//
-// array.append( 'x' );
-// set.append( 'x' );
-//
-// var got = array.map( ( e ) => e+3 );
-// var is = got === array; /* false */
-//
-// var got = array.map( null, ( e ) => e+3 );
-// var is = got === array; /* false */
-//
-// var dst = [ 'x' ];
-// var got = array.map( dst, ( e ) => e+3 );
-// var is = got === array; /* false */
-// var is = got === dst; /* true */
-//
-// var got = array.map( got, ( e ) => e+3 );
-// var is = got === array; /* true */
+// if( _global_ !== _realGlobal_ )
+// {
+//   let _ = _global_.wTools;
+//   _.assert( _realGlobal_.wTools.containerAdapter === undefined );
+//   _realGlobal_.wTools.containerAdapter = _.containerAdapter;
+//   if( typeof module !== 'undefined' && module !== null )
+//   module[ 'exports' ] = _.containerAdapter;
+//   return;
+// }
 
 })();

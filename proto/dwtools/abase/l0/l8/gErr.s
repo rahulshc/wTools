@@ -6,7 +6,6 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 let _global = _global_;
 let _ = _global.wTools;
 let _err = _._err;
-let Self = _;
 
 // --
 // diagnostics
@@ -80,24 +79,29 @@ function diagnosticCode( o )
 
     /* */
 
-    let result = _.strLinesSelect
+    let code = _.strLinesSelect
     ({
       src : o.sourceCode,
       line : o.location.line,
       numberOfLines : o.numberOfLines,
       selectMode : o.selectMode,
-      zero : 1,
-      number : 1,
+      zeroLine : 1,
+      numbering : 1,
     });
 
-    if( result && _.strIndentation )
-    result = o.identation + _.strIndentation( result, o.identation );
+    if( code && _.strIndentation && o.identation )
+    code = o.identation + _.strIndentation( code, o.identation );
 
+    let result = code;
     if( o.withPath )
-    result = o.location.full + '\n' + result;
+    {
+      if( o.asMap )
+      result = { path : o.location.full, code : code };
+      else
+      result = o.location.full + '\n' + code;
+    }
 
     return end( result );
-
   }
   catch( err )
   {
@@ -120,8 +124,10 @@ diagnosticCode.defaults =
   level : 0,
   numberOfLines : 5,
   withPath : 1,
+  asMap : 0,
   selectMode : 'center',
-  identation : '    ',
+  // identation : '    ',
+  identation : null,
   stack : null,
   error : null,
   location : null,
@@ -133,46 +139,6 @@ diagnosticCode.defaults =
 function diagnosticBeep()
 {
   console.log( '\x07' );
-}
-
-//
-
-function diagnosticApplicationEntryPointData()
-{
-  let result = Object.create( null );
-  if( _global.process !== undefined )
-  {
-    if( _global.process.argv )
-    result.execPath = _global.process.argv.join( ' ' );
-    if( _.routineIs( _global.process.cwd ) )
-    result.currentPath = _global.process.cwd();
-  }
-  return result;
-}
-
-//
-
-function diagnosticApplicationEntryPointInfo()
-{
-  let data = _.diagnosticApplicationEntryPointData();
-  let result = '';
-
-  if( data.currentPath )
-  result = join( 'Current path', data.currentPath );
-  if( data.execPath )
-  result = join( 'Exec path', data.execPath );
-
-  return result;
-
-  /* */
-
-  function join( left, right )
-  {
-    if( result )
-    result += '\n';
-    result += '    ' + left + ' : ' + right;
-    return result;
-  }
 }
 
 //
@@ -939,14 +905,11 @@ let error =
   ErrorAbort,
 }
 
-let Extend =
+let ExtendTools =
 {
 
   diagnosticCode,
   diagnosticBeep,
-
-  diagnosticApplicationEntryPointData,
-  diagnosticApplicationEntryPointInfo,
 
   diagnosticWatchFields, /* experimental */
   diagnosticProxyFields, /* experimental */
@@ -972,14 +935,14 @@ let Extend =
 
 }
 
-Object.assign( Self, Extend );
-Object.assign( Self.error, error );
+Object.assign( _.error, error );
+Object.assign( _, ExtendTools );
 
 // --
 // export
 // --
 
 if( typeof module !== 'undefined' && module !== null )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

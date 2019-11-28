@@ -11,97 +11,60 @@ let Self = _global.wTools;;
 // setup
 // --
 
-function _setupUnhandledErrorHandler0()
+//
+
+// function _errUnhandledHandler1( message, sourcePath, lineno, colno, error )
+function _errUnhandledHandler1()
 {
+  // let result;
+  //
+  // if( Self._handleUnhandledError1 )
+  // result = Self._handleUnhandledError1.apply( this, arguments );
+  // else
+  // result = handleError( new Error( message ) );
+  //
+  // result = _._errUnhandledHandler2( new Error( message ) );
 
-  if( _global._setupUnhandledErrorHandlerDone )
-  return;
+  let args = _._errUnhandledPre( arguments );
+  let result = _._errUnhandledHandler2.apply( this, args );
 
-  _global._setupUnhandledErrorHandlerDone = 1;
+  if( _._errUnhandledHandler0 )
+  _._errUnhandledHandler0.apply( this, arguments );
 
-  let handlerWas = null;
-  if( _global.process && typeof _global.process.on === 'function' )
+  return result;
+}
+
+//
+
+function _errUnhandledHandler2( err, reason )
+{
+  if( !reason )
+  reason = 'unhandled error';
+  let prefix = `--------------- ${reason} --------------->\n`;
+  let postfix = `--------------- ${reason} ---------------<\n`;
+  let errStr = err.toString();
+
+  try
   {
-    handlerWas = _global.process.onUncaughtException;
-    _global.process.on( 'uncaughtException', handleNodeError );
-    Self._handleUnhandledError0 = handleNodeError;
-    if( handlerWas )
-    throw Error( 'not tested' );
+    errStr = err.toString();
   }
-  else if( Object.hasOwnProperty.call( _global, 'onerror' ) )
+  catch( err2 )
   {
-    handlerWas = _global.onerror;
-    _global.onerror = handleBrowserError;
-    Self._handleUnhandledError0 = handleBrowserError;
-  }
-
-  /* */
-
-  function handleBrowserError( message, sourcePath, lineno, colno, error )
-  {
-    let result;
-
-    if( Self._handleUnhandledError1 )
-    result = Self._handleUnhandledError1.apply( this, arguments );
-    else
-    result = handleError( new Error( message ) );
-
-    if( handlerWas )
-    handlerWas.apply( this, arguments );
-
-    return result;
-  }
-
-  /* */
-
-  function handleNodeError( err )
-  {
-    let result;
-
-    if( Self._handleUnhandledError1 )
-    result = Self._handleUnhandledError1.apply( this, arguments );
-    else
-    result = handleError( err );
-
-    if( handlerWas )
-    handlerWas.apply( this, arguments );
-
-    if( _appExitError )
-    _appExitError( -1 );
-
-    if( Self._handleUnhandledError1 )
-    return result;
-  }
-
-  /* */
-
-  function handleError( err )
-  {
-    let prefix = '------------------------------- unhandled error ------------------------------->\n';
-    let postfix = '------------------------------- unhandled error -------------------------------<\n';
-    let errStr = err.toString();
-
-    try
-    {
-      errStr = err.toString();
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.error( err2 );
-    }
-
-    console.error( prefix );
-    console.error( errStr );
-    console.error( err ? err.stack : '' );
-    console.error( postfix );
     debugger;
-
+    console.error( err2 );
   }
+
+  console.error( prefix );
+  console.error( errStr );
+  console.error( err ? err.stack : '' );
+  console.error( postfix );
+  debugger;
+
+  processExit();
 
   /* */
 
-  function _appExitError()
+  function processExit()
   {
     try
     {
@@ -115,6 +78,136 @@ function _setupUnhandledErrorHandler0()
     {
     }
   }
+
+}
+
+//
+
+function _setupUnhandledErrorHandler0()
+{
+
+  if( _global._setupUnhandledErrorHandlerDone )
+  return;
+
+  _global._setupUnhandledErrorHandlerDone = 1;
+
+  _._errUnhandledHandler1 = _errUnhandledHandler1;
+  // let handlerWas = null;
+  if( _global.process && typeof _global.process.on === 'function' )
+  {
+    // handlerWas = _global.process.onUncaughtException;
+    // _._errUnhandledHandler0 = _global.process.onUncaughtException;
+    // _._errUnhandledHandler1 = _errUnhandledHandler1;
+    _global.process.on( 'uncaughtException', _._errUnhandledHandler1 );
+    // Self._handleUnhandledError0 = _errHandleNode;
+    _._errUnhandledPre = _errPreNode;
+    // debugger;
+    // if( _global.process.onUncaughtException ) /* xxx qqq : cover that */
+    // throw Error( 'not tested' );
+  }
+  else if( Object.hasOwnProperty.call( _global, 'onerror' ) )
+  {
+    // handlerWas = _global.onerror;
+    _._errUnhandledHandler0 = _global.onerror;
+    _global.onerror = _._errUnhandledHandler1;
+    // Self._handleUnhandledError0 = _errHandleBrowser;
+    _._errUnhandledPre = _errPreBrowser;
+  }
+
+  /* */
+
+  // // function _errUnhandledHandler1( message, sourcePath, lineno, colno, error )
+  // function _errUnhandledHandler1()
+  // {
+  //   let result;
+  //
+  //   // if( Self._handleUnhandledError1 )
+  //   // result = Self._handleUnhandledError1.apply( this, arguments );
+  //   // else
+  //   // result = handleError( new Error( message ) );
+  //   //
+  //   // result = _._errUnhandledHandler2( new Error( message ) );
+  //
+  //   _._errUnhandledPre( arguments );
+  //
+  //   if( handlerWas )
+  //   handlerWas.apply( this, arguments );
+  //
+  //   return result;
+  // }
+
+  // /* */
+  //
+  // function _errHandleNode0( err )
+  // {
+  //   let result;
+  //
+  //   // if( Self._handleUnhandledError1 )
+  //   // result = Self._handleUnhandledError1.apply( this, arguments );
+  //   // else
+  //   // result = handleError( err );
+  //   //
+  //   // result = _._errUnhandledHandler2( err );
+  //   //
+  //   // if( handlerWas )
+  //   // handlerWas.apply( this, arguments );
+  //   //
+  //   // if( processExit )
+  //   // processExit( -1 );
+  //
+  //   _._errUnhandledHandler1.apply( this, arguments );
+  //
+  //   if( Self._handleUnhandledError1 )
+  //   return result;
+  // }
+
+  /* */
+
+  function _errPreBrowser( args )
+  {
+    return [ new Error( args[ 0 ] ) ];
+    // let result;
+    //
+    // // if( Self._handleUnhandledError1 )
+    // // result = Self._handleUnhandledError1.apply( this, arguments );
+    // // else
+    // // result = handleError( new Error( message ) );
+    //
+    // result = _._errUnhandledHandler2( new Error( message ) );
+    //
+    // // if( handlerWas )
+    // // handlerWas.apply( this, arguments );
+    //
+    // return result;
+  }
+
+  /* */
+
+  function _errPreNode( args )
+  {
+    return args;
+    // let result;
+    //
+    // // if( Self._handleUnhandledError1 )
+    // // result = Self._handleUnhandledError1.apply( this, arguments );
+    // // else
+    // // result = handleError( err );
+    //
+    // result = _._errUnhandledHandler2( err );
+    //
+    // // if( handlerWas )
+    // // handlerWas.apply( this, arguments );
+    //
+    // // if( processExit )
+    // // processExit( -1 );
+    //
+    // // if( Self._handleUnhandledError1 )
+    // // return result;
+    //
+    // return result;
+  }
+
+  /* */
 
 }
 
@@ -141,8 +234,12 @@ let Fields =
 let Routines =
 {
 
-  _handleUnhandledError0 : null,
-  _handleUnhandledError1 : null,
+  // _handleUnhandledError0 : null,
+  // _handleUnhandledError1 : null,
+  _errUnhandledPre : null,
+  _errUnhandledHandler0 : null,
+  _errUnhandledHandler1,
+  _errUnhandledHandler2,
   _setupUnhandledErrorHandler0,
   _setup0,
 

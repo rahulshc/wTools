@@ -459,6 +459,18 @@ function processIsDebugged()
 
 //
 
+function procedureIs( src )
+{
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  if( !src )
+  return false;
+  if( !_.Procedure )
+  return false;
+  return src instanceof _.Procedure;
+}
+
+//
+
 function definitionIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -526,6 +538,7 @@ let Routines =
   loggerIs,
   processIs,
   processIsDebugged,
+  procedureIs,
   definitionIs,
 
 }

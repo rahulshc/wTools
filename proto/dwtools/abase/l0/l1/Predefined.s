@@ -88,7 +88,7 @@ throw Error( 'wTools was already defined' );
 
 //
 
-_global.wTools = Object.create( null );
+_global.wTools = Object.hasOwnProperty.call( _global, 'wTools' ) ? _global.wTools : Object.create( null );
 _realGlobal_.wTools = _realGlobal_.wTools || Object.create( null );
 let Self = _global.wTools;
 let _ = Self;
