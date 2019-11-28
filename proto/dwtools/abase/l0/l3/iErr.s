@@ -911,10 +911,12 @@ function _err( o )
 
     if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
     o.asyncCallsStack = resultError.asyncCallsStack || null;
+    if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
+    if( _.procedure && _.procedure.activeProcedure )
+    o.asyncCallsStack = [ _.procedure.activeProcedure.stack() ];
     _.assert( o.asyncCallsStack === null || _.arrayIs( o.asyncCallsStack ) );
     if( o.asyncCallsStack && o.asyncCallsStack.length )
     {
-      // debugger;
       stackCondensed += '\n\n' + o.asyncCallsStack.join( '\n\n' );
     }
 
@@ -964,9 +966,6 @@ function _err( o )
       _errorCounter += 1;
       id = _errorCounter;
     }
-
-    if( id === 2 )
-    debugger;
 
   }
 

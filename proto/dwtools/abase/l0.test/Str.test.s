@@ -18,7 +18,7 @@ var _ = _global_.wTools;
 function strLeft( test )
 {
   test.open( 'string' );
- 
+
   test.case = 'begin';
   var expected = { index : 0, entry : 'aa', instanceIndex : 0 }
   var got = _.strLeft( 'aa_aa_bb_bb_cc_cc', 'aa' );
@@ -478,7 +478,7 @@ function strLeft( test )
   return;
 
   test.open( 'throwing' );
-  
+
   test.case = 'wrong first index';
   test.shouldThrowErrorSync( () => _.strLeft( 'abc', 'b', -100 ) );
   test.shouldThrowErrorSync( () => _.strLeft( 'abc', 'b', 100 ) );
@@ -975,7 +975,7 @@ function strRight( test )
   return;
 
  test.open( 'throwing' );
-  
+
   test.case = 'wrong first index';
   test.shouldThrowErrorSync( () => _.strRight( 'abc', 'b', -100 ) );
   test.shouldThrowErrorSync( () => _.strRight( 'abc', 'b', 100 ) );
@@ -1006,7 +1006,7 @@ function strRight( test )
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.strRight( 'abcd', 'a', 0, 2, 'extra' ) );
 
-  test.close( 'throwing' ); 
+  test.close( 'throwing' );
 }
 
 //

@@ -44,7 +44,11 @@ function diagnosticCode( o )
       if( !o.location.path )
       return end();
 
+      debugger;
+
       let codeProvider = _.codeProvider || _.fileProvider;
+      if( !codeProvider && _global_._testerGlobal_ && _global_._testerGlobal_.wTools )
+      codeProvider = _global_._testerGlobal_.wTools.codeProvider || _global_._testerGlobal_.wTools.fileProvider;
 
       if( !codeProvider )
       return end();
@@ -52,11 +56,6 @@ function diagnosticCode( o )
       try
       {
 
-        // if( _global._starter_ )
-        // debugger;
-        // if( _global._starter_ )
-        // _global._starter_.fileProvider.fileRead( _.weburi.parse( o.location.path ).downloadWebPath );
-        // o.location.path = codeProvider.path.normalize( o.location.path );
         let filePath = codeProvider.path.normalizeTolerant( o.location.path );
         if( codeProvider.path.isAbsolute( filePath ) )
         o.sourceCode = codeProvider.fileRead
