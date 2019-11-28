@@ -6876,14 +6876,14 @@ function arrayFlattened( dstArray, src )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;  // Dmytro : it has no sence to count result and return dstArray
-    // qqq : why container returned?? that wrong! ask
+    return result;  // Dmytro : it has no sence to count result and return dstArray
+    // qqq : why container returned?? that wrong! ask | Dmytro : fixed
   }
 
   if( _.longHas( dstArray, dstArray ) ) // Dmytro : stack is unstable if dstArray.push( dstArray )
@@ -6947,8 +6947,6 @@ function arrayFlattened( dstArray, src )
 
   function containerReplace( src, index )
   {
-    // dstArray.splice( index, 1 );
-    // result -= 1;
     for( let e of src )
     {
       if( _.longLike( e ) || _.setLike( e ) )
@@ -6958,7 +6956,7 @@ function arrayFlattened( dstArray, src )
       else
       {
         dstArray.splice( index, 0, e );
-        // result += 1;
+        result += 1;
         index += 1;
       }
     }
