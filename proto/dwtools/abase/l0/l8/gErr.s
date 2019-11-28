@@ -44,8 +44,6 @@ function diagnosticCode( o )
       if( !o.location.path )
       return end();
 
-      debugger;
-
       let codeProvider = _.codeProvider || _.fileProvider;
       if( !codeProvider && _global_._testerGlobal_ && _global_._testerGlobal_.wTools )
       codeProvider = _global_._testerGlobal_.wTools.codeProvider || _global_._testerGlobal_.wTools.fileProvider;

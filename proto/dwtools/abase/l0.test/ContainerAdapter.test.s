@@ -13047,17 +13047,17 @@ function setAdapterLastTimeExperiment( test )
   var container = _.containerAdapter.make( new Set( array ) );
   let result1, result2;
 
-  var start = _.timeNow();
+  var start = _.time.now();
   for( let i = 0; i < 100000; i++ )
   result1 = container.last();
-  var end = _.timeNow();
+  var end = _.time.now();
 
   console.log( end - start );
 
-  // var start = _.timeNow();
+  // var start = _.time.now();
   // for( let i = 0; i < 100000; i++ )
   // result2 = container.reduce( ( a, e ) => e );
-  // var end = _.timeNow();
+  // var end = _.time.now();
   //
   // console.log( end - start );
 

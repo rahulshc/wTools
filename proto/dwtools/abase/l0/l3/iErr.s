@@ -909,11 +909,19 @@ function _err( o )
 
     stackCondensed = o.throwenCallsStack;
 
-    if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
-    o.asyncCallsStack = resultError.asyncCallsStack || null;
+    // if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
+    // o.asyncCallsStack = resultError.asyncCallsStack || null;
+    _.assert( resultError.asyncCallsStack === undefined || resultError.asyncCallsStack === null || _.arrayIs( resultError.asyncCallsStack ) );
+    if( resultError.asyncCallsStack && resultError.asyncCallsStack.length )
+    {
+      o.asyncCallsStack = o.asyncCallsStack || [];
+      _.arrayAppendArray( o.asyncCallsStack, resultError.asyncCallsStack );
+    }
+
     if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
     if( _.procedure && _.procedure.activeProcedure )
     o.asyncCallsStack = [ _.procedure.activeProcedure.stack() ];
+
     _.assert( o.asyncCallsStack === null || _.arrayIs( o.asyncCallsStack ) );
     if( o.asyncCallsStack && o.asyncCallsStack.length )
     {
@@ -924,6 +932,7 @@ function _err( o )
     if( o.stackCondensing )
     stackCondensed = _.diagnosticStackCondense( stackCondensed );
 
+    debugger;
   }
 
   /* */
@@ -1175,24 +1184,6 @@ function _err( o )
         result += ` = ${head}\n${body}\n\n`;
       }
 
-      //
-      // // if( _.strIndentation )
-      // // result += ` = Message of error#${id}\n    ${_.strIndentation( originalMessage, '    ' )}\n`;
-      // // else
-      // // result += ` = Message of error#${id}\n ${originalMessage}\n`;
-      // result += ` = Message of error#${id}\n${strIndentation( originalMessage, '    ' )}\n`;
-      // if( o.stackCondensing )
-      // result += '\n = Condensed calls stack\n' + stackCondensed + '';
-      // else
-      // result += '\n = Calls stack\n' + o.throwenCallsStack + '';
-      // result += '\n = Throws stack\n' + throwsStack + '';
-      //
-      // if( o.isProcess && _.process && _.process.entryPointInfo )
-      // result += '\n = Process\n' + strIndentation( _.process.entryPointInfo(), '    ' ) + '\n';
-      //
-      // if( sourceCode )
-      // result += '\n = Source code from ' + sourceCode + '\n';
-
     }
 
     message = result;
@@ -1209,7 +1200,6 @@ function _err( o )
     logging( 'stack', message );
     nonenumerable( 'callsStack', stackCondensed );
     nonenumerable( 'throwenCallsStack', o.throwenCallsStack );
-    // nonenumerable( 'stackCondensed', stackCondensed );
     nonenumerable( 'throwsStack', throwsStack );
     nonenumerable( 'asyncCallsStack', o.asyncCallsStack );
     nonenumerable( 'catchCounter', resultError.catchCounter ? resultError.catchCounter+1 : 1 );

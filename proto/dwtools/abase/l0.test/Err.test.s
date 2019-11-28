@@ -222,7 +222,7 @@ program();
     test.notIdentical( op.exitCode, 0 );
     test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
     test.identical( _.strCount( op.output, '= Source code from' ), 1 );
-    test.identical( _.strCount( op.output, `*7 :     throw Error( 'Unhandled error' );` ), 1 );
+    test.identical( _.strCount( op.output, `* 7 :     throw Error( 'Unhandled error' );` ), 1 );
     return null;
   });
 
@@ -236,6 +236,131 @@ program();
   }
 
 }
+
+//
+
+function asyncStackInConsequenceTrivial( test )
+{
+  let context = this;
+  let visited = [];
+  let a = test.assetFor( false );
+  let toolsPath = _testerGlobal_.wTools.strEscape( a.path.nativize( a.path.join( __dirname, '../Layer2.s' ) ) );
+  let programSourceCode =
+`
+var toolsPath = '${toolsPath}';
+${program.toString()}
+program();
+`
+
+  /* */
+
+  a.fileProvider.fileWrite( a.abs( 'Program.js' ), programSourceCode );
+  a.jsNonThrowing({ execPath : a.abs( 'Program.js' ) })
+  .then( ( op ) =>
+  {
+    test.notIdentical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
+    test.identical( _.strCount( op.output, '= Source code from' ), 1 );
+    test.identical( _.strCount( op.output, `Program.js:11` ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program()
+  {
+    let delay = 250;
+    let _ = require( toolsPath );
+    _.include( 'wFiles' );
+    _.include( 'wConsequence' );
+
+    var timeBefore = _.time.now();
+    var t = _.time.outError( delay );
+    t.finally( function( err, got )
+    {
+      if( err )
+      _.errAttend( err );
+      return null;
+    })
+    _.time.out( delay / 2, () => { t.error( _.errAttend( 'stop' ) ); return null; } );
+
+    return t;
+  }
+
+}
+
+asyncStackInConsequenceTrivial.timeOut = 30000;
+asyncStackInConsequenceTrivial.description =
+`
+stack has async substack
+`
+
+//
+
+function asyncStackInConsequenceThen( test )
+{
+  let context = this;
+  let visited = [];
+  let a = test.assetFor( false );
+  let toolsPath = _testerGlobal_.wTools.strEscape( a.path.nativize( a.path.join( __dirname, '../Layer2.s' ) ) );
+  let programSourceCode =
+`
+var toolsPath = '${toolsPath}';
+${program.toString()}
+program();
+`
+
+  /* */
+
+  logger.log( _.strLinesNumber( programSourceCode ) );
+  a.fileProvider.fileWrite( a.abs( 'Program.js' ), programSourceCode );
+  a.jsNonThrowing({ execPath : a.abs( 'Program.js' ) })
+  .then( ( op ) =>
+  {
+    test.notIdentical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
+    test.identical( _.strCount( op.output, '= Source code from' ), 1 );
+    test.identical( _.strCount( op.output, `Program.js:11` ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program()
+  {
+    let _ = require( toolsPath );
+    _.include( 'wFiles' );
+    _.include( 'wConsequence' );
+
+    var con = _.Consequence()
+    con.then( function callback1( arg )
+    {
+      return 'callback1';
+    })
+    con.then( function callback2( arg )
+    {
+      throw 'callback2';
+      return 'callback2';
+    })
+
+    _.time.out( 100, function timeOut1()
+    {
+      con.take( 'timeout1' );
+    });
+
+  }
+
+}
+
+asyncStackInConsequenceThen.timeOut = 30000;
+asyncStackInConsequenceThen.description =
+`
+each callback has its own stack
+`
 
 // --
 // declare
@@ -266,6 +391,8 @@ var Self =
     errCatchStackAndMessage,
     unhandledError,
     sourceCode,
+    asyncStackInConsequenceTrivial,
+    asyncStackInConsequenceThen,
 
   }
 

@@ -6,15 +6,7 @@ let _global = _realGlobal_;
 let _ = _global_.wTools;
 
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
-{
-  return ExportTo( _global, _realGlobal_ );
-  // let _ = _global_.wTools;
-  // _.assert( _.containerAdapter === undefined );
-  // _.containerAdapter = _realGlobal_.wTools.containerAdapter;
-  // if( typeof module !== 'undefined' && module !== null )
-  // module[ 'exports' ] = _.containerAdapter;
-  // return;
-}
+return ExportTo( _global, _realGlobal_ );
 
 _.assert( _.routineIs( _.longLeft ) );
 
@@ -2431,9 +2423,7 @@ if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;
 
 if( _global !== _realGlobal_ )
-{
-  return ExportTo( _realGlobal_, _global );
-}
+return ExportTo( _realGlobal_, _global );
 
 // if( _global_ !== _realGlobal_ )
 // {

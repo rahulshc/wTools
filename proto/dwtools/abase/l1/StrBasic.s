@@ -4422,6 +4422,8 @@ function strLinesSelect( o )
     return line.join( '' );
   }
 
+  /* */
+
 }
 
 strLinesSelect.defaults =

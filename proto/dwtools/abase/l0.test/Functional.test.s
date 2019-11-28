@@ -1239,12 +1239,12 @@ function entityTimeExperiment( test )
 
   function testTime( func, times, arg1, arg2 )
   {
-    var timeStart = _.timeNow();
+    var timeStart = _.time.now();
 
     for( let i = times; i > 0; i-- )
     var result = func( arg1, arg2 );
 
-    var timeEnd = _.timeNow();
+    var timeEnd = _.time.now();
 
     test.is( timeEnd - timeStart > 30000 )
     console.log( timeEnd - timeStart );

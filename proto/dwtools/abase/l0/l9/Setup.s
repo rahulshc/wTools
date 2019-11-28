@@ -25,7 +25,6 @@ function _errUnhandledHandler2( err, reason )
 
   console.error( prefix );
 
-  // processLog();
   errLogFields();
   errLog();
 
@@ -105,30 +104,6 @@ function _errUnhandledHandler2( err, reason )
 
   /* */
 
-  // function processLog()
-  // {
-  //   try
-  //   {
-  //     if( _.color && _.color.strFormat )
-  //     {
-  //       logger.error( _.color.strFormat( ' = Process', 'negative' ) );
-  //       logger.error( _.color.strFormat( _.entryPointInfo() + '\n', 'negative' ) );
-  //     }
-  //     else
-  //     {
-  //       console.error( ' = Process' );
-  //       console.error( _.entryPointInfo() + '\n' );
-  //     }
-  //   }
-  //   catch( err2 )
-  //   {
-  //     debugger;
-  //     console.error( err2 );
-  //   }
-  // }
-
-  /* */
-
   function processExit()
   {
     if( _.process && _.process.exit )
@@ -177,15 +152,6 @@ function _setupUnhandledErrorHandler1()
 
   /* */
 
-  // if( _global.process && _.routineIs( _global.process.on ) )
-  // {
-  //   Self._handleUnhandledError1 = _errPreNode;
-  // }
-  // else if( Object.hasOwnProperty.call( _global, 'onerror' ) )
-  // {
-  //   Self._handleUnhandledError1 = _errPreBrowser;
-  // }
-
   if( _global.process && _.routineIs( _global.process.on ) )
   {
     _._errUnhandledPre = _errPreNode;
@@ -217,7 +183,6 @@ function _setupUnhandledErrorHandler1()
     });
 
     return [ err ];
-    // return _._errUnhandledHandler2( err );
   }
 
   /* */
@@ -225,7 +190,6 @@ function _setupUnhandledErrorHandler1()
   function _errPreNode( args )
   {
     return [ args[ 0 ] ];
-    // return _._errUnhandledHandler2( err );
   }
 
   /* */
@@ -236,9 +200,6 @@ function _setupUnhandledErrorHandler1()
 
 function _setupConfig()
 {
-
-  // if( _global.WTOOLS_PRIVATE )
-  // return;
 
   if( _global.__GLOBAL_WHICH__ !== 'real' )
   return;
@@ -322,7 +283,7 @@ function _setupTesterPlaceholder()
       _.assert( arguments.length === 0 || arguments.length === 1 );
       _.assert( _.strIs( testSuitName ) || testSuitName === undefined, 'test : expects string {-testSuitName-}' );
       debugger;
-      _.timeReady( function()
+      _.time.ready( function()
       {
         debugger;
         if( _realGlobal_.wTester.test === test )
@@ -351,7 +312,7 @@ function _setup1()
     _._setupTesterPlaceholder();
   }
 
-  _.assert( !!Self.timeNow );
+  _.assert( !!Self.time && !!Self.time.now );
 
 }
 
