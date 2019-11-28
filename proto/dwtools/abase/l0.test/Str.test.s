@@ -1802,6 +1802,9 @@ function strQuotePairsNormalize( test )
   test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( [ ',', 1 ] ) );
   test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( [ '""', [ ',', {} ] ] ) );
 
+  test.case = 'quote pair is not pair';
+  test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( [ [ '', '', 'str' ] ] ) );
+
   test.case = 'boolLike argument - false';
   test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( false ) );
   test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( 0 ) );
@@ -1875,6 +1878,60 @@ function strQuoteAnalyze( test )
   var got = _.strQuoteAnalyze( '""`a `"""b c"``""' );
   test.identical( got, expected );
 
+  test.case = 'src = string, quote - null ';
+  var expected = 
+  {
+    ranges : [ 1, 5, 6, 9 ],
+    quotes : [ "'", "`" ]
+  };
+  var got = _.strQuoteAnalyze( "a', b'`,c` \"", null );
+  test.identical( got, expected );
+
+  test.case = 'src = string, quote - "\'" ';
+  var expected = 
+  {
+    ranges : [ 1, 5 ],
+    quotes : [ "'" ]
+  };
+  var got = _.strQuoteAnalyze( "a', b'`,c` \"", "'" );
+  test.identical( got, expected );
+
+  test.case = 'src = string, quote - array with quotes';
+  var expected = 
+  {
+    ranges : [ 1, 5, 6, 9 ],
+    quotes : [ "'", "`" ]
+  };
+  var got = _.strQuoteAnalyze( "a', b'`,c` \"", [ '\'', '`' ] );
+  test.identical( got, expected );
+
+  test.case = 'src = string, quote - array with pairs of quotes';
+  var expected = 
+  {
+    ranges : [ 1, 5, 6, 9 ],
+    quotes : [ "'", "`" ]
+  };
+  var got = _.strQuoteAnalyze( "a', b'`,c` \"", [ [ '\'', '\'' ], '`' ] );
+  test.identical( got, expected );
+
+  test.case = 'src = string, quote - string';
+  var expected = 
+  {
+    ranges : [ 0, 4, 7, 11 ],
+    quotes : [ '--', '--' ]
+  };
+  var got = _.strQuoteAnalyze( "--aa-- --bb--``''\"\",,cc,,", '--' );
+  test.identical( got, expected );
+
+  test.case = 'src = string, quote - pairs of different strings';
+  var expected = 
+  {
+    ranges : [ 0, 4 ],
+    quotes : [ '**' ]
+  };
+  var got = _.strQuoteAnalyze( "**aa--- --bb--``''\"\",,cc,,", [ [ '**', '---' ] ] );
+  test.identical( got, expected );
+
   test.case = 'options map "';
   var expected =
   {
@@ -1920,6 +1977,19 @@ function strQuoteAnalyze( test )
   var got = _.strQuoteAnalyze({ src : 'a"" b ``c', quote : [ '"', [ '``', '""' ], '\'' ] });
   test.identical( got, expected );
 
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strQuoteAnalyze() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strQuoteAnalyze( '\'a\'"b"`c`', null, 'extra' ) );
+  
+  test.case = 'wrong types of quote';
+  test.shouldThrowErrorSync( () => _.strQuoteAnalyze( '\'a\'"b"`c`', {} ) );
 }
 
 //

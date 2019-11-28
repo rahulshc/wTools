@@ -635,8 +635,8 @@ let Routines =
 
   strQuote, /* xxx : move up */
   strUnquote, /* xxx : move up */ /* qqq : cover please */
-  strQuotePairsNormalize, /* qqq : cover please strQuotePairsNormalize */
-  strQuoteAnalyze, /* qqq : cover please */
+  strQuotePairsNormalize, /* qqq : cover please strQuotePairsNormalize | Dmytro : covered */
+  strQuoteAnalyze, /* qqq : cover please | Dmytro : extended coverage */
 
   //
 
