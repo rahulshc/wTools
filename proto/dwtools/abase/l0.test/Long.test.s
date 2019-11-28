@@ -23658,28 +23658,28 @@ function arrayFlattened( test )
 
   test.case = 'flat array';
   var got = _.arrayFlattened( [ 0, 1, 2, 3 ] );
-  var expected = [ 0, 1, 2, 3 ];
+  var expected = 4;
   test.identical( got, expected );
 
   test.case = 'array, level 2';
   var got = _.arrayFlattened( [ [ 0, 0 ], [ 1, 1 ] ] );
-  var expected = [ 0, 0, 1, 1 ];
+  var expected = 4;
   test.identical( got, expected );
 
   test.case = 'array, level 3';
   var got = _.arrayFlattened( [ [ 0 ], 0, 1, [ [ 0 ], 1 ] ] );
-  var expected = [ 0, 0, 1, 0, 1 ];
+  var expected = 5;
   test.identical( got, expected );
 
   test.case = 'array, level 5';
   var got = _.arrayFlattened( [ [ [ [ [ 0 ] ] ] ] ] );
-  var expected = [ 0 ];
+  var expected = 1;
   test.identical( got, expected );
 
   test.case = 'array from other arrays, level 5';
   var src = [ [ [ [ [ 0 ] ] ] ] ];
   var got = _.arrayFlattened( [ src, src, src, src ] );
-  var expected = [ 0, 0, 0, 0 ];
+  var expected = 4;
   test.identical( got, expected );
 
   test.close( 'single argument' );
@@ -23922,7 +23922,7 @@ function arrayFlattenedSame( test )
   dst.push( dst );
   var got  = _.arrayFlattened( dst );
   test.identical( dst, [ 1 ] );
-  test.identical( got, [ 1 ] );
+  test.identical( got, 1 );
 
   test.case = 'dst push self twice';
   var dst = [ 1 ];
@@ -23930,7 +23930,7 @@ function arrayFlattenedSame( test )
   dst.push( dst );
   var got  = _.arrayFlattened( dst );
   test.identical( dst, [ 1 ] );
-  test.identical( got, [ 1 ] );
+  test.identical( got, 1 );
 
   /* */
 
@@ -23990,7 +23990,7 @@ function arrayFlattenedSame( test )
   dst.splice( 0, 0, dst );
   var got  = _.arrayFlattened( dst );
   test.identical( dst, [ 1 ] );
-  test.identical( got, [ 1 ] );
+  test.identical( got, 1 );
 
   test.case = 'dst inserts self twice';
   var dst = [ 1 ];
@@ -23998,7 +23998,7 @@ function arrayFlattenedSame( test )
   dst.splice( 2, 0, dst );
   var got  = _.arrayFlattened( dst );
   test.identical( dst, [ 1 ] );
-  test.identical( got, [ 1 ] );
+  test.identical( got, 1 );
 
   test.close( 'dst or src contains self' );
 }
