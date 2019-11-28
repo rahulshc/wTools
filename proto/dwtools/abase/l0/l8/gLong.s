@@ -2120,9 +2120,10 @@ function _argumentsOnly( dst, src1, src2, onEvaluate1, onEvaluate2 )
   {
     onEvaluate2 = onEvaluate1;
     onEvaluate1 = src2;
-    src2 = _.containerAdapter.make( src1 );
-    src1 = _.containerAdapter.make( dst );
-    dst = _.containerAdapter.make( new src1.original.constructor() );
+    src2 = _.containerAdapter.from( src1 );
+    src1 = _.containerAdapter.from( dst );
+    dst = _.containerAdapter.from( dst );
+    // dst = _.containerAdapter.make( new src1.original.constructor() );
   }
   else
   {
@@ -2141,12 +2142,16 @@ function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
   let temp = [];
   if( dst.original === src1.original )
   {
+    src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
     src2.each( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
+    src1.empty();
     temp.forEach( ( e ) => src1.push( e ) );
   }
   else if( dst.original === src2.original )
   {
+    src2.each( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
     src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
+    src2.empty();
     temp.forEach( ( e ) => src2.push( e ) );
   }
   else
@@ -2224,16 +2229,14 @@ function arraySetBut_( dst, src1, src2, onEvaluate1, onEvaluate2 )
 {
   if( arguments.length === 1 )
   {
-    if( _.longIs( dst ) )
-    return _.longSlice( dst );
-    else if( _.setIs( dst ) )
-    return new Set( dst );
-    else if( dst === null )
+    if( dst === null )
     return [];
+    else if( _.longIs( dst ) || _.setIs( dst ) )
+    return dst;
     else
     _.assert( 0 );
   }
-  if( dst === null && _.routineIs( src2 ) || dst === null && src2 === undefined )
+  if( ( dst === null && _.routineIs( src2 ) ) || ( dst === null && src2 === undefined ) )
   {
     if( _.longIs( src1 ) )
     return _.longSlice( src1 )
@@ -2318,16 +2321,14 @@ function arraySetIntersection_( dst, src1, src2, onEvaluate1, onEvaluate2 )
 {
   if( arguments.length === 1 )
   {
-    if( _.longIs( dst ) )
-    return _.longSlice( dst );
-    else if( _.setIs( dst ) )
-    return new Set( dst );
-    else if( dst === null )
+    if( dst === null )
     return [];
+    else if( _.longIs( dst ) || _.setIs( dst ) )
+    return dst;
     else
-    _.assert( 0 );
+    _.assert( 0 ); 
   }
-  if( dst === null && _.routineIs( src2 ) || dst === null && src2 === undefined )
+  if( ( dst === null && _.routineIs( src2 ) ) || ( dst === null && src2 === undefined ) )
   {
     if( _.longIs( src1 ) )
     return _.longSlice( src1 )
@@ -2390,12 +2391,10 @@ function arraySetUnion_( dst, src1, src2, onEvaluate1, onEvaluate2 )
   {
     if( dst === null )
     return [];
-    else if( _.longIs( dst ) )
-    return _.longSlice( dst );
-    else if( _.setIs( dst ) )
-    return new Set( dst );
+    else if( _.longIs( dst ) || _.setIs( dst ) )
+    return dst;
     else
-    _.assert( 0 );
+    _.assert( 0 ); 
   }
 
   [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
@@ -2496,6 +2495,75 @@ function arraySetContainAll( src )
 
 //
 
+function arraySetContainAll_( src1, src2, onEvaluate1, onEvaluate2 )
+{
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
+
+  if( _.arrayIs( src1 ) )
+  {
+    for( let e of src2 )
+    if( _.longLeftIndex( src1, e, onEvaluate1, onEvaluate2 ) === -1 )
+    return false;
+  }
+  else if( _.setIs( src1 ) )
+  {
+    let startFrom = 0;
+    if( _.numberIs( onEvaluate1 ) )
+    {
+      startFrom = onEvaluate1;
+      onEvaluate1 = onEvaluate2;
+      onEvaluate2 = undefined;
+    }
+
+    if( !src1.size && ( src2.length || src2.size ) )
+    return false;
+
+    let result;
+    for( let e of src2 )
+    {
+      if( result === false )
+      {
+        break;
+      }
+      else
+      {
+        let from = startFrom;
+        result = undefined;
+        for( let el of src1 )
+        {
+          if( from === 0 )
+          {
+            if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
+            {
+              result = true;
+              break;
+            }
+            else
+            {
+              result = false
+            }
+          }
+          else 
+          {
+            from--;
+          }
+        }
+      }
+    }
+    return result === undefined ? true : result;
+  }
+  else
+  {
+    _.assert( 0, '{-src1-} should be instance of Array or Set' );
+  }
+
+return true;
+}
+
+//
+
 /**
  * The arraySetContainAny() routine returns true, if at least one of the following arrays (arguments[...]),
  * contains the first matching value from {-srcMap-}.
@@ -2568,17 +2636,17 @@ function arraySetContainAny_( src1, src2, onEvaluate1, onEvaluate2 )
   }
   else if( _.setIs( src1 ) )
   {
-    let setFrom = 0;
+    let startFrom = 0;
     if( _.numberIs( onEvaluate1 ) )
     {
-      setFrom = onEvaluate1;
+      startFrom = onEvaluate1;
       onEvaluate1 = onEvaluate2;
       onEvaluate2 = undefined;
     }
 
     for( let e of src2 )
     {
-      let from = setFrom;
+      let from = startFrom;
       for( let el of src1 )
       {
         if( from === 0 )
@@ -2643,17 +2711,17 @@ function arraySetContainNone_( src1, src2, onEvaluate1, onEvaluate2 )
   }
   else if( _.setIs( src1 ) )
   {
-    let setFrom = 0;
+    let startFrom = 0;
     if( _.numberIs( onEvaluate1 ) )
     {
-      setFrom = onEvaluate1;
+      startFrom = onEvaluate1;
       onEvaluate1 = onEvaluate2;
       onEvaluate2 = undefined;
     }
 
     for( let e of src2 )
     {
-      let from = setFrom;
+      let from = startFrom;
       for( let el of src1 )
       {
         if( from === 0 )
@@ -2668,7 +2736,7 @@ function arraySetContainNone_( src1, src2, onEvaluate1, onEvaluate2 )
       }
     }
   }
-  else if( src1 !== null )
+  else
   {
     _.assert( 0, '{-src1-} should be instance of Array or Set' );
   }
@@ -2903,6 +2971,7 @@ let Routines =
   arraySetUnion, /* qqq : ask how to improve, please | Dmytro : improved, covered */
 
   arraySetContainAll,
+  arraySetContainAll_,
   arraySetContainAny,
   arraySetContainAny_,
   arraySetContainNone,
@@ -2920,28 +2989,32 @@ let Routines =
   arraySetUnion_, /* !!! : use instead of arraySetUnion */
 
   /*
-
-  routine               | makes new dst container                     | saves dst container
-  ----------------------|---------------------------------------------|----------------------------------------------
-  arraySetDiff_         | _.arraySetDiff_( src1, src2 )               | _.arraySetDiff_( src1, src1, src2 )
-                        | _.arraySetDiff_( null, src1 )               | _.arraySetDiff_( src2, src1, src2 )
-                        | _.arraySetDiff_( null, src1, src2 )         | _.arraySetDiff_( dst, src1, src2 )
-  ----------------------|---------------------------------------------|----------------------------------------------
-  arraySetBut_          | _.arraySetBut_( src1 )                      | _.arraySetBut_( src1, src1, src2 )
-                        | _.arraySetBut_( src1, src2 )                | _.arraySetBut_( src2, src1, src2 )
-                        | _.arraySetBut_( null, src1 )                | _.arraySetBut_( dst, src1, src2 )
-                        | _.arraySetBut_( null, src1, src2 )          |
-  ----------------------|---------------------------------------------|----------------------------------------------
-  arraySetIntersection_ | _.arraySetIntersection_( src1 )             | _.arraySetIntersection_( src1, src1, src2 )
-                        | _.arraySetIntersection_( src1, src2 )       | _.arraySetIntersection_( src2, src1, src2 )
-                        | _.arraySetIntersection_( null, src1 )       | _.arraySetIntersection_( dst, src1, src2 )
-                        | _.arraySetIntersection_( null, src1, src2 ) |
-  ----------------------|---------------------------------------------|----------------------------------------------
-  arraySetUnion_        | _.arraySetUnion_( src1 )                    | _.arraySetUnion_( src1, src1, src2 )
-                        | _.arraySetUnion_( src1, src2 )              | _.arraySetUnion_( src2, src1, src2 )
-                        | _.arraySetUnion_( null, src1 )              | _.arraySetUnion_( dst, src1, src2 )
-                        | _.arraySetUnion_( null, src1, src2 )        |
-  ----------------------|---------------------------------------------|----------------------------------------------
+  | routine               | makes new dst container                     | saves dst container                         |
+  |-----------------------|---------------------------------------------|---------------------------------------------|
+  | arraySetDiff_         | _.arraySetDiff_( null )                     | _.arraySetDiff_( src1, src2 )               |
+  |                       | _.arraySetDiff_( null, src1 )               | _.arraySetDiff_( src1, src1, src2 )         |
+  |                       | _.arraySetDiff_( null, src1, src2 )         | _.arraySetDiff_( src2, src1, src2 )         |
+  |                       |                                             | _.arraySetDiff_( dst, src1, src2 )          |
+  |-----------------------|---------------------------------------------|---------------------------------------------|
+  | arraySetBut_          | _.arraySetBut_( null )                      | _.arraySetBut_( src1 )                      |
+  |                       | _.arraySetBut_( null, src1 )                | _.arraySetBut_( src1, src2 )                |
+  |                       | _.arraySetBut_( null, src1, src2 )          | _.arraySetBut_( src1, src1, src2 )          |
+  |                       |                                             | _.arraySetBut_( src2, src1, src2 )          |
+  |                       |                                             | _.arraySetBut_( dst, src1, src2 )           |
+  |-----------------------|---------------------------------------------|---------------------------------------------|
+  | arraySetIntersection_ | _.arraySetIntersection_( null )             | _.arraySetIntersection_( src1 )             |
+  |                       | _.arraySetIntersection_( null, src1 )       | _.arraySetIntersection_( src1, src2 )       |
+  |                       | _.arraySetIntersection_( null, src1, src2 ) | _.arraySetIntersection_( src1, src1, src2 ) |
+  |                       |                                             | _.arraySetIntersection_( src2, src1, src2 ) |
+  |                       |                                             | _.arraySetIntersection_( dst, src1, src2 )  |
+  |-----------------------|---------------------------------------------|---------------------------------------------|
+  | arraySetUnion_        | _.arraySetUnion_( null )                    | _.arraySetUnion_( src1 )                    |
+  |                       | _.arraySetUnion_( null, src1 )              | _.arraySetUnion_( src1, src2 )              |
+  |                       | _.arraySetUnion_( null, src1, src2 )        | _.arraySetUnion_( src1, src1, src2 )        |
+  |                       |                                             | _.arraySetUnion_( src2, src1, src2 )        |
+  |                       |                                             | _.arraySetUnion_( dst, src1, src2 )         |
+  |-----------------------|---------------------------------------------|---------------------------------------------|
+ 
   */
 
 }

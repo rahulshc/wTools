@@ -1056,7 +1056,7 @@ function _argumentsOnlyLong( dst, src, range, ins )
       ins = range;
       range = src;
       src = dst;
-      dst = true;
+      dst = false;
     }
   }
 
@@ -3279,7 +3279,7 @@ function _argumentsOnlyArray( dst, src, range, ins )
       ins = range;
       range = src;
       src = dst;
-      dst = true;
+      dst = false;
     }
   }
 
@@ -6876,14 +6876,14 @@ function arrayFlattened( dstArray, src )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;  // Dmytro : it has no sence to count result and return dstArray
-    // qqq : why container returned?? that wrong! ask
+    return result;  // Dmytro : it has no sence to count result and return dstArray
+    // qqq : why container returned?? that wrong! ask | Dmytro : fixed
   }
 
   if( _.longHas( dstArray, dstArray ) ) // Dmytro : stack is unstable if dstArray.push( dstArray )
@@ -6947,8 +6947,6 @@ function arrayFlattened( dstArray, src )
 
   function containerReplace( src, index )
   {
-    // dstArray.splice( index, 1 );
-    // result -= 1;
     for( let e of src )
     {
       if( _.longLike( e ) || _.setLike( e ) )
@@ -6958,7 +6956,7 @@ function arrayFlattened( dstArray, src )
       else
       {
         dstArray.splice( index, 0, e );
-        // result += 1;
+        result += 1;
         index += 1;
       }
     }
@@ -6992,13 +6990,13 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7072,7 +7070,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
       else if( _.longLeftIndex( dstArray, e ) === -1 )
       {
         dstArray.splice( index, 0, e );
-        // result += 1;
+        result += 1;
         index += 1;
       }
     }
@@ -7180,13 +7178,13 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7269,7 +7267,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
       else if( _.longLeftIndex( dstArray, e ) === -1 )
       {
         dstArray.splice( index, 0, e );
-        // result += 1;
+        result += 1;
         index += 1;
       }
     }
@@ -7428,13 +7426,13 @@ function arrayFlattenedDefined( dstArray, src )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7512,7 +7510,7 @@ function arrayFlattenedDefined( dstArray, src )
         if( e !== undefined )
         {
           dstArray.splice( index, 0, e );
-          // result += 1;
+          result += 1;
           index += 1;
         }
       }
@@ -7619,20 +7617,20 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
         dstArray.splice( i, 1 );
         i -= 1;
       }
-      if( _.longLike( e ) || _.setLike( e ) )
+      else if( _.longLike( e ) || _.setLike( e ) )
       {
         dstArray.splice( i, 1 );
         if( e !== dstArray )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7714,7 +7712,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
         if( _.longLeftIndex( dstArray, e ) === -1 )
         {
           dstArray.splice( index, 0, e );
-          // result += 1;
+          result += 1;
           index += 1;
         }
       }
@@ -7827,13 +7825,13 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7919,7 +7917,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
         if( _.longLeftIndex( dstArray, e ) === -1 )
         {
           dstArray.splice( index, 0, e );
-          // result += 1;
+          result += 1;
           index += 1;
         }
         else if( Config.debug )
@@ -8976,53 +8974,64 @@ let Routines =
   arrayRelength_, /* !!! : use instead of arrayRelength, arrayRelengthInplace */
 
   /*
-
-  routine        | makes new dst container                | saves dst container
-  ---------------|----------------------------------------|-------------------------------------------------------
-  longBut_       | _.longBut_( src )                      | _.longBut_( dst, dst )
-                 | _.longBut_( src, range )               | _.longBut_( dst, dst, range ) if dst is resizable
-                 | _.longBut_( null, src, range )         | or dst not change length
-                 | _.longBut_( dst, src, range )          | _.longBut_( dst, src, range ) if dst is resizable
-                 | if dst not resizable and change length | or dst not change length
-  ---------------|----------------------------------------|-------------------------------------------------------
-  longSelect_    | _.longSelect_( src )                   | _.longSelect_( dst, dst )
-                 | _.longSelect_( src, range )            | _.longSelect_( dst, dst, range ) if dst is resizable
-                 | _.longSelect_( null, src, range )      | or dst not change length
-                 | _.longSelect_( dst, src, range )       | _.longSelect_( dst, src, range ) if dst is resizable
-                 | if dst not resizable and change length | or dst not change length
-  ---------------|----------------------------------------|-------------------------------------------------------
-  longGrow_      | _.longGrow_( src )                     | _.longGrow_( dst, dst )
-                 | _.longGrow_( src, range )              | _.longGrow_( dst, dst, range ) if dst is resizable
-                 | _.longGrow_( null, src, range )        | or dst not change length
-                 | _.longGrow_( dst, src, range )         | _.longGrow_( dst, src, range ) if dst is resizable
-                 | if dst not resizable and change length |  or dst not change length
-  ---------------|----------------------------------------|-------------------------------------------------------
-  longRelength_  | _.longRelength_( src )                 | _.longRelength_( dst, dst )
-                 | _.longRelength_( src, range )          | _.longRelength_( dst, dst, range ) if dst is resizable
-                 | _.longRelength_( null, src, range )    | or dst not change length
-                 | _.longRelength_( dst, src, range )     | _.longRelength_( dst, src, range ) if dst is resizable
-                 | if dst not resizable and change length | or dst not change length
-  ---------------|----------------------------------------|-------------------------------------------------------
-  arrayBut_      | _.arrayBut_( src )                     | _.arrayBut_( dst, dst )
-                 | _.arrayBut_( src, range )              | _.arrayBut_( dst, dst, range )
-                 | _.arrayBut_( null, src, range )        | _.arrayBut_( dst, src )
-                 |                                        | _.arrayBut_( dst, src, range )
-  ---------------|----------------------------------------|-------------------------------------------------------
-  arraySelect_   | _.arraySelect_( src )                  | _.arraySelect_( dst, dst )
-                 | _.arraySelect_( src, range )           | _.arraySelect_( dst, dst, range )
-                 | _.arraySelect_( null, src, range )     | _.arraySelect_( dst, src )
-                 |                                        | _.arraySelect_( dst, src, range )
-  ---------------|----------------------------------------|-------------------------------------------------------
-  arrayGrow_     | _.arrayGrow_( src )                    | _.arrayGrow_( dst, dst )
-                 | _.arrayGrow_( src, range )             | _.arrayGrow_( dst, dst, range )
-                 | _.arrayGrow_( null, src, range )       | _.arrayGrow_( dst, src )
-                 |                                        | _.arrayGrow_( dst, src, range )
-  ---------------|----------------------------------------|-------------------------------------------------------
-  arrayRelength_ | _.arrayRelength_( src )                | _.arrayRelength_( dst, dst )
-                 | _.arrayRelength_( src, range )         | _.arrayRelength_( dst, dst, range )
-                 | _.arrayRelength_( null, src, range )   | _.arrayRelength_( dst, src )
-                 |                                        | _.arrayRelength_( dst, src, range )
-  ---------------|----------------------------------------|-------------------------------------------------------
+  | routine          | makes new dst container                  | saves dst container                                     |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
+  | longBut_         | _.longBut_( null, src, range )           | _.longBut_( src )                                       |
+  |                  | _.longBut_( dst, src, range )            | _.longBut_( src, range )                                |
+  |                  | if dst not resizable and change length   | _.longBut_( dst, dst )                                  |
+  |                  |                                          | _.longBut_( dst, dst, range ) if dst is resizable       |
+  |                  |                                          | or dst not change length                                |
+  |                  |                                          | _.longBut_( dst, src, range ) if dst is resizable       |
+  |                  |                                          | or dst not change length                                |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
+  | longSelect_      | _.longSelect_( null, src, range )        | _.longSelect_( src )                                    |
+  |                  | _.longSelect_( dst, src, range )         | _.longSelect_( src, range )                             |
+  |                  | if dst not resizable and change length   | _.longSelect_( dst, dst )                               |
+  |                  |                                          | _.longSelect_( dst, dst, range ) if dst is resizable    |
+  |                  |                                          | or dst not change length                                |
+  |                  |                                          | _.longSelect_( dst, src, range ) if dst is resizable    |
+  |                  |                                          | or dst not change length                                |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
+  | longGrow_        | _.longGrow_( null, src, range )          | _.longGrow_( src )                                      |
+  |                  | _.longGrow_( dst, src, range )           | _.longGrow_( src, range )                               |
+  |                  | if dst not resizable and change length   | _.longGrow_( dst, dst )                                 |
+  |                  |                                          | _.longGrow_( dst, dst, range ) if dst is resizable      |
+  |                  |                                          | or dst not change length                                |
+  |                  |                                          | _.longGrow_( dst, src, range ) if dst is resizable      |
+  |                  |                                          | or dst not change length                                |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
+  | longRelength_    | _.longRelength_( null, src, range )      | _.longRelength_( src )                                  |
+  |                  | _.longRelength_( dst, src, range )       | _.longRelength_( src, range )                           |
+  |                  | if dst not resizable and change length   | _.longRelength_( dst, dst )                             |
+  |                  |                                          | _.longRelength_( dst, dst, range ) if dst is resizable  |
+  |                  |                                          | or dst not change length                                |
+  |                  |                                          | _.longRelength_( dst, src, range ) if dst is resizable  |
+  |                  |                                          | or dst not change length                                |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
+  | arrayBut_        | _.arrayBut_( null, src, range )          | _.arrayBut_( src )                                      |
+  |                  |                                          | _.arrayBut_( src, range )                               |
+  |                  |                                          | _.arrayBut_( dst, dst, range )                          |
+  |                  |                                          | _.arrayBut_( dst, src )                                 |
+  |                  |                                          | _.arrayBut_( dst, src, range )                          |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
+  | arraySelect_     | _.arraySelect_( null, src, range )       | _.arraySelect_( src )                                   |
+  |                  |                                          | _.arraySelect_( src, range )                            |
+  |                  |                                          | _.arraySelect_( dst, dst, range )                       |
+  |                  |                                          | _.arraySelect_( dst, src )                              |
+  |                  |                                          | _.arraySelect_( dst, src, range )                       |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
+  | arrayGrow_       | _.arrayGrow_( null, src, range )         | _.arrayGrow_( src )                                     |
+  |                  |                                          | _.arrayGrow_( src, range )                              |
+  |                  |                                          | _.arrayGrow_( dst, dst, range )                         |
+  |                  |                                          | _.arrayGrow_( dst, src )                                |
+  |                  |                                          | _.arrayGrow_( dst, src, range )                         |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
+  | arrayRelength_   | _.arrayRelength_( null, src, range )     | _.arrayRelength_( src )                                 |
+  |                  |                                          | _.arrayRelength_( src, range )                          |
+  |                  |                                          | _.arrayRelength_( dst, dst, range )                     |
+  |                  |                                          | _.arrayRelength_( dst, src )                            |
+  |                  |                                          | _.arrayRelength_( dst, src, range )                     |
+  | ---------------- | ---------------------------------------- | ------------------------------------------------------- |
   */
 
 }

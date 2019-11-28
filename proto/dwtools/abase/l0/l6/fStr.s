@@ -69,6 +69,14 @@ function strUnquote( o )
   _.assertMapHasOnly( o, strUnquote.defaults );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
+  if( _.arrayIs( o.src ) )
+  {
+    let result = [];
+    for( let s = 0 ; s < o.src.length ; s++ )
+    result.push( _.strUnquote({ src : o.src[ s ], quote : o.quote }) );
+    return result;
+  }
+
   let result = o.src;
   let isolated = _.strIsolateInsideLeft( result, o.quote );
   if( isolated[ 0 ] === '' && isolated[ 4 ] === '' )
@@ -633,10 +641,10 @@ let Routines =
 
   // decorator
 
-  strQuote, /* xxx : move up */
-  strUnquote, /* xxx : move up */ /* qqq : cover please */
-  strQuotePairsNormalize, /* qqq : cover please strQuotePairsNormalize */
-  strQuoteAnalyze, /* qqq : cover please */
+  strQuote, /* xxx : move up */ /* Dmytro : covered */
+  strUnquote, /* xxx : move up */ /* qqq : cover please | Dmytro : covered */
+  strQuotePairsNormalize, /* qqq : cover please strQuotePairsNormalize | Dmytro : covered */
+  strQuoteAnalyze, /* qqq : cover please | Dmytro : extended coverage */
 
   //
 
