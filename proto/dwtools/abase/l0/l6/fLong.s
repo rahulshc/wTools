@@ -7426,13 +7426,13 @@ function arrayFlattenedDefined( dstArray, src )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7510,7 +7510,7 @@ function arrayFlattenedDefined( dstArray, src )
         if( e !== undefined )
         {
           dstArray.splice( index, 0, e );
-          // result += 1;
+          result += 1;
           index += 1;
         }
       }
