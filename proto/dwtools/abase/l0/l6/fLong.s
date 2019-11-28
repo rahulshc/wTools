@@ -7825,13 +7825,13 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7917,7 +7917,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
         if( _.longLeftIndex( dstArray, e ) === -1 )
         {
           dstArray.splice( index, 0, e );
-          // result += 1;
+          result += 1;
           index += 1;
         }
         else if( Config.debug )
