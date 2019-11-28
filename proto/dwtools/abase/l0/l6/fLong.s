@@ -6990,13 +6990,13 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7070,7 +7070,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
       else if( _.longLeftIndex( dstArray, e ) === -1 )
       {
         dstArray.splice( index, 0, e );
-        // result += 1;
+        result += 1;
         index += 1;
       }
     }
