@@ -1686,6 +1686,129 @@ function strPrimitive( test )
 
 //
 
+function strQuotePairsNormalize( test )
+{
+  test.case = 'quote - true';
+  var got = _.strQuotePairsNormalize( true );
+  var expected = 
+  [
+    [ '"', '"' ],
+    [ '`', '`' ],
+    [ '\'', '\'' ]
+  ];
+  test.identical( got, expected );
+
+  test.case = 'quote - boolLike';
+  var got = _.strQuotePairsNormalize( 2 );
+  var expected = 
+  [
+    [ '"', '"' ],
+    [ '`', '`' ],
+    [ '\'', '\'' ]
+  ];
+  test.identical( got, expected );
+
+  test.case = 'quote - empty string';
+  var got = _.strQuotePairsNormalize( '' );
+  var expected = [ [ '', '' ] ];
+  test.identical( got, expected );
+
+  test.case = 'quote - space';
+  var got = _.strQuotePairsNormalize( ' ' );
+  var expected = [ [ ' ', ' ' ] ];
+  test.identical( got, expected );
+
+  test.case = 'quote - new line symbol';
+  var got = _.strQuotePairsNormalize( '\n' );
+  var expected = [ [ '\n', '\n' ] ];
+  test.identical( got, expected );
+
+  test.case = 'quote - string';
+  var got = _.strQuotePairsNormalize( 'str' );
+  var expected = [ [ 'str', 'str' ] ];
+  test.identical( got, expected );
+
+  test.case = 'quote - array with strings';
+  var got = _.strQuotePairsNormalize( [ '', ' ', '\n', 'str' ] );
+  var expected =
+  [
+    [ '', '' ], 
+    [ ' ', ' ' ],
+    [ '\n', '\n' ], 
+    [ 'str', 'str' ] 
+  ];
+  test.identical( got, expected );
+
+  test.case = 'quote - array with duplicated strings';
+  var got = _.strQuotePairsNormalize( [ '', '', ' ',  ' ', '\n', '\n', 'str', 'str' ] );
+  var expected =
+  [
+    [ '', '' ], [ '', '' ],
+    [ ' ', ' ' ], [ ' ', ' ' ],
+    [ '\n', '\n' ], [ '\n', '\n' ], 
+    [ 'str', 'str' ], [ 'str', 'str' ]
+  ];
+  test.identical( got, expected );
+
+  test.case = 'quote - array with quete pairs';
+  var got = _.strQuotePairsNormalize( [ [ '', '' ], [ ' ',  ' ' ], [ '\n', '\n' ], [ 'str', 'str' ] ] );
+  var expected =
+  [
+    [ '', '' ],
+    [ ' ', ' ' ],
+    [ '\n', '\n' ], 
+    [ 'str', 'str' ]
+  ];
+  test.identical( got, expected );
+
+  test.case = 'quote - mixed array with quete pairs and strings';
+  var got = _.strQuotePairsNormalize( [ [ '', '' ], '', [ ' ',  ' ' ], '""', [ '\n', '\n' ], '\t', [ 'str', 'str' ], 'src' ] );
+  var expected =
+  [
+    [ '', '' ], [ '', '' ],
+    [ ' ', ' ' ], [ '""', '""' ],
+    [ '\n', '\n' ], [ '\t', '\t' ], 
+    [ 'str', 'str' ], [ 'src', 'src' ]
+  ];
+  test.identical( got, expected );
+
+  test.case = 'quote - array with mixed quete pairs';
+  var got = _.strQuotePairsNormalize( [ [ '', '""' ], [ ' ',  '\t' ], [ '\n', '\r' ], [ 'str', 'src' ] ] );
+  var expected =
+  [
+    [ '', '""' ],
+    [ ' ', '\t' ],
+    [ '\n', '\r' ], 
+    [ 'str', 'src' ]
+  ];
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strQuotePairsNormalize() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( '"', 'extra' ) );
+
+  test.case = 'wrong type of quete';
+  test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( { '' : '' } ) );
+  test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( null ) );
+
+  test.case = 'wrong type of quete in array';
+  test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( [ ',', 1 ] ) );
+  test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( [ '""', [ ',', {} ] ] ) );
+
+  test.case = 'boolLike argument - false';
+  test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( false ) );
+  test.shouldThrowErrorSync( () => _.strQuotePairsNormalize( 0 ) );
+}
+
+//
+
 function strQuoteAnalyze( test )
 {
 
@@ -4195,6 +4318,7 @@ var Self =
     strShort,
     strPrimitive,
 
+    strQuotePairsNormalize,
     strQuoteAnalyze,
 
     strIsolateLeftOrNone,
