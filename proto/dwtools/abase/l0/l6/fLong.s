@@ -7617,7 +7617,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
         dstArray.splice( i, 1 );
         i -= 1;
       }
-      if( _.longLike( e ) || _.setLike( e ) )
+      else if( _.longLike( e ) || _.setLike( e ) )
       {
         dstArray.splice( i, 1 );
         if( e !== dstArray )

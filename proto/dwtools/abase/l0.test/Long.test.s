@@ -27638,25 +27638,25 @@ function arrayFlattenedDefinedOnce( test )
   var dst = [ 0, 1, undefined, 3 ];
   var got = _.arrayFlattenedDefinedOnce( dst );
   test.identical( dst, [ 0, 1, 3 ] );
-  test.identical( got, [ 0, 1, 3 ] );
+  test.identical( got, 3 );
 
   test.case = 'flat array, duplicates';
   var dst = [ 0, 1, 0, undefined, 1 ];
   var got = _.arrayFlattenedDefinedOnce( dst );
   test.identical( dst, [ 0, 1 ] );
-  test.identical( got, [ 0, 1 ] );
+  test.identical( got, 2 );
 
   test.case = 'array, level 2, duplicates';
   var dst = [ [ 0, 0, undefined ], [ 1, 1, undefined ] ];
   var got = _.arrayFlattenedDefinedOnce( dst );
   test.identical( dst, [ 0, 1 ] );
-  test.identical( got, [ 0, 1 ] );
+  test.identical( got, 2 );
 
   test.case = 'array with diff levels, duplicates';
   var dst = [ 1, undefined, [ [ 0, undefined ], 1, undefined ], 1, 0 ];
   var got = _.arrayFlattenedDefinedOnce( dst );
   test.identical( dst, [ 1, 0 ] );
-  test.identical( got, [ 1, 0 ] );
+  test.identical( got, 2 );
 
   test.close( 'single argument' );
 
@@ -27950,7 +27950,7 @@ function arrayFlattenedDefinedOnceSame( test )
   dst.push( dst );
   var got  = _.arrayFlattenedDefinedOnce( dst );
   test.identical( dst, [ 1, 3 ] );
-  test.identical( got, [ 1, 3 ] );
+  test.identical( got, 2 );
 
   test.case = 'dst - array, level 6, push self twice, duplicates';
   var dst = [ undefined, [ [ [ [ [ 1, 1, 2, undefined, undefined ] ] ] ] ] ];
@@ -27958,7 +27958,7 @@ function arrayFlattenedDefinedOnceSame( test )
   dst.push( dst );
   var got  = _.arrayFlattenedDefinedOnce( dst );
   test.identical( dst, [ 1, 2 ] );
-  test.identical( got, [ 1, 2 ] );
+  test.identical( got, 2 );
 
   /* */
 
@@ -28035,7 +28035,7 @@ function arrayFlattenedDefinedOnceSame( test )
   dst.splice( 1, 0, dst );
   var got  = _.arrayFlattenedDefinedOnce( dst );
   test.identical( dst, [ 1, 3, 2 ] );
-  test.identical( got, [ 1, 3, 2 ] );
+  test.identical( got, 3 );
 
   test.case = 'dst - array, level 6, inserts self twice, duplicates';
   var dst = [ undefined, [ [ [ [ [ 1, 1, 2, undefined ] ] ] ] ] ];
@@ -28043,7 +28043,7 @@ function arrayFlattenedDefinedOnceSame( test )
   dst.splice( 0, 0, dst );
   var got  = _.arrayFlattenedDefinedOnce( dst );
   test.identical( dst, [ 1, 2 ] );
-  test.identical( got, [ 1, 2 ] );
+  test.identical( got, 2 );
 
   test.close( 'dst or src contains self' );
 
