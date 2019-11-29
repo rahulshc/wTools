@@ -262,6 +262,7 @@ program();
     test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
     test.identical( _.strCount( op.output, '= Source code from' ), 1 );
     test.identical( _.strCount( op.output, `Program.js:11` ), 1 );
+    test.identical( _.strCount( op.output, `at program` ), 1 );
     return null;
   });
 
@@ -320,9 +321,8 @@ program();
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
-    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
+    test.identical( _.strCount( op.output, '- unhandled asynchronous error -' ), 2 );
     test.identical( _.strCount( op.output, '= Source code from' ), 1 );
-    test.identical( _.strCount( op.output, `Program.js:11` ), 1 );
     return null;
   });
 
@@ -339,16 +339,20 @@ program();
     var con = _.Consequence()
     con.then( function callback1( arg )
     {
+      console.log( 'sourcePath::callback1 ' + _.procedure.activeProcedure._sourcePath );
       return 'callback1';
     })
     con.then( function callback2( arg )
     {
+      console.log( 'sourcePath::callback2 ' + _.procedure.activeProcedure._sourcePath );
       throw 'callback2';
       return 'callback2';
     })
 
+    console.log( 'sourcePath::program ' + _.procedure.activeProcedure._sourcePath );
     _.time.out( 100, function timeOut1()
     {
+      console.log( 'sourcePath::timeout ' + _.procedure.activeProcedure._sourcePath );
       con.take( 'timeout1' );
     });
 
@@ -360,6 +364,78 @@ asyncStackInConsequenceThen.timeOut = 30000;
 asyncStackInConsequenceThen.description =
 `
 each callback has its own stack
+`
+
+//
+
+function activeProcedureSourcePath( test )
+{
+  let context = this;
+  let visited = [];
+  let a = test.assetFor( false );
+  let toolsPath = _testerGlobal_.wTools.strEscape( a.path.nativize( a.path.join( __dirname, '../Layer2.s' ) ) );
+  let programSourceCode =
+`
+var toolsPath = '${toolsPath}';
+${program.toString()}
+program();
+`
+
+  /* */
+
+  logger.log( _.strLinesNumber( programSourceCode ) );
+  a.fileProvider.fileWrite( a.abs( 'Program.js' ), programSourceCode );
+  a.jsNonThrowing({ execPath : a.abs( 'Program.js' ) })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, /sourcePath::program.*Program.js:30/ ), 1 );
+    test.identical( _.strCount( op.output, /sourcePath::timeout.*Program.js:23/ ), 1 );
+    test.identical( _.strCount( op.output, /sourcePath::callback1.*Program.js:10/ ), 1 );
+    test.identical( _.strCount( op.output, /sourcePath::callback2.*Program.js:15/ ), 1 );
+
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program()
+  {
+    let _ = require( toolsPath );
+    _.include( 'wFiles' );
+    _.include( 'wConsequence' );
+
+    var con = _.Consequence()
+    con.then( function callback1( arg )
+    {
+      console.log( 'sourcePath::callback1 ' + _.procedure.activeProcedure._sourcePath );
+      return 'callback1';
+    })
+    con.then( function callback2( arg )
+    {
+      console.log( 'sourcePath::callback2 ' + _.procedure.activeProcedure._sourcePath );
+      // _.procedure.terminationBegin();
+      return 'callback2';
+    })
+
+    console.log( 'sourcePath::program ' + _.procedure.activeProcedure._sourcePath );
+    _.time.out( 100, function timeOut1()
+    {
+      console.log( 'sourcePath::timeout ' + _.procedure.activeProcedure._sourcePath );
+      con.take( 'timeout1' );
+    });
+
+  }
+
+}
+
+activeProcedureSourcePath.timeOut = 30000;
+activeProcedureSourcePath.description =
+`
+proper procedure is active
+active procedure has proper source path
 `
 
 // --
@@ -393,6 +469,7 @@ var Self =
     sourceCode,
     asyncStackInConsequenceTrivial,
     asyncStackInConsequenceThen,
+    activeProcedureSourcePath,
 
   }
 

@@ -30,3 +30,7 @@ function divide( i )
 }
 
 divide( 0 );
+
+/*
+  Routine _.err append throws stack of the error.
+*/

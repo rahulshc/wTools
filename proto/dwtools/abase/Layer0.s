@@ -7,7 +7,8 @@ if( typeof module !== 'undefined' && module !== null )
 {
 
   require( './l0/l1/Predefined.s' );
-  require( './l0/l1/Setup.s' );
+
+  require( './l0/l2/Setup.s' );
 
   require( './l0/l3/iBool.s' );
   require( './l0/l3/iBuffer.s' );

@@ -93,11 +93,253 @@ function diagnosticLocation( o )
   }
 
   let stack = o.stack;
-  if( !o.location.routine || !_.numberIs( o.location.service ) )
+  if( _.strIs( stack ) )
+  stack = stack.split( '\n' );
+  let stackCall = stack[ o.level ];
+
+  return _.diagnosticLocationFromCall({ stackCall : stackCall, location : o.location });
+
+  // let stack = o.stack;
+  // if( !o.location.routine || !_.numberIs( o.location.detailing ) )
+  // routineFromStack();
+  // let hadPath = !!o.location.path;
+  // if( !o.location.path )
+  // o.location.path = pathFromStack();
+  //
+  // if( !_.strIs( o.location.path ) )
+  // return end();
+  //
+  // if( !_.numberIs( o.location.line ) )
+  // o.location.path = lineColFromPath( o.location.path );
+  //
+  // if( !_.numberIs( o.location.line ) && hadPath )
+  // {
+  //   debugger;
+  //   let path = pathFromStack();
+  //   if( path )
+  //   lineColFromPath( path );
+  // }
+  //
+  // return end();
+
+  /* */
+
+  // function end()
+  // {
+  //
+  //   let path = o.location.path;
+  //
+  //   /* full */
+  //
+  //   o.location.full = path || '';
+  //   if( o.location.line !== undefined )
+  //   o.location.full += ':' + o.location.line;
+  //
+  //   /* name long */
+  //
+  //   if( o.location.full )
+  //   {
+  //     o.location.fullWithRoutine = o.location.routine + ' @ ' + o.location.full;
+  //     // o.location.fullWithRoutine = o.location.fullWithRoutine.trim();
+  //   }
+  //
+  //   /* name */
+  //
+  //   if( path )
+  //   {
+  //     let name = path;
+  //     _.assert( name.lastIndexOf );
+  //     let i = name.lastIndexOf( '/' );
+  //     if( i !== -1 )
+  //     name = name.substr( i+1 );
+  //     o.location.name = name;
+  //   }
+  //
+  //   /* name long */
+  //
+  //   if( path )
+  //   {
+  //     let nameLong = o.location.name;
+  //     if( o.location.line !== undefined )
+  //     {
+  //       nameLong += ':' + o.location.line;
+  //       if( o.location.col !== undefined )
+  //       nameLong += ':' + o.location.col;
+  //     }
+  //     o.location.nameLong = nameLong;
+  //   }
+  //
+  //   return o.location;
+  // }
+  //
+  // /* */
+  //
+  // function routineFromStack()
+  // {
+  //   let path;
+  //
+  //   if( o.location.routine )
+  //   {
+  //     path = o.location.routine;
+  //   }
+  //   else
+  //   {
+  //
+  //     if( !stack )
+  //     return;
+  //
+  //     if( _.strIs( stack ) )
+  //     stack = stack.split( '\n' );
+  //
+  //     path = stack[ o.level ];
+  //
+  //     if( !_.strIs( path ) )
+  //     return '(-routine anonymous-)';
+  //
+  //     let t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
+  //     let executed = t.exec( path );
+  //     if( executed )
+  //     path = executed[ 2 ] || '';
+  //
+  //   }
+  //
+  //   if( _.strEnds( path, '.' ) )
+  //   path += '?';
+  //
+  //   o.location.routine = path;
+  //   o.location.detailing = 0;
+  //   if( o.location.detailing === 0 )
+  //   if( _.strBegins( path , '__' ) || path.indexOf( '.__' ) !== -1 )
+  //   o.location.detailing = 2;
+  //   if( o.location.detailing === 0 )
+  //   if( _.strBegins( path , '_' ) || path.indexOf( '._' ) !== -1 )
+  //   o.location.detailing = 1;
+  //
+  //   return path;
+  // }
+  //
+  // /* */
+  //
+  // function pathFromStack()
+  // {
+  //   let path;
+  //
+  //   if( !stack )
+  //   return;
+  //
+  //   if( _.strIs( stack ) )
+  //   stack = stack.split( '\n' );
+  //
+  //   path = stack[ o.level ];
+  //
+  //   if( !_.strIs( path ) )
+  //   return;
+  //
+  //   path = path.replace( /^\s+/, '' );
+  //   path = path.replace( /^\w+@/, '' );
+  //   path = path.replace( /^at/, '' );
+  //   path = path.replace( /^\s+/, '' );
+  //   path = path.replace( /\s+$/, '' );
+  //
+  //   let regexp = /^.*\((.*)\)$/;
+  //   var parsed = regexp.exec( path );
+  //   if( parsed )
+  //   path = parsed[ 1 ];
+  //
+  //   return path;
+  // }
+  //
+  // /* line / col number from path */
+  //
+  // function lineColFromPath( path )
+  // {
+  //
+  //   let lineNumber, colNumber;
+  //   let postfix = /(.+?):(\d+)(?::(\d+))?[^:/]*$/;
+  //   let parsed = postfix.exec( path );
+  //
+  //   if( parsed )
+  //   {
+  //     path = parsed[ 1 ];
+  //     lineNumber = parsed[ 2 ];
+  //     colNumber = parsed[ 3 ];
+  //   }
+  //
+  //   lineNumber = parseInt( lineNumber );
+  //   colNumber = parseInt( colNumber );
+  //
+  //   if( isNaN( o.location.line ) && !isNaN( lineNumber ) )
+  //   o.location.line = lineNumber;
+  //
+  //   if( isNaN( o.location.col ) && !isNaN( colNumber ) )
+  //   o.location.col = colNumber;
+  //
+  //   return path;
+  // }
+
+}
+
+diagnosticLocation.defaults =
+{
+  level : 0,
+  stack : null,
+  error : null,
+  location : null,
+}
+
+//
+
+function diagnosticLocationFromCall( o )
+{
+
+  if( _.strIs( o ) )
+  o = { stackCall : o }
+
+  /* */
+
+  if( diagnosticLocationFromCall.defaults )
+  for( let e in o )
+  {
+    if( diagnosticLocationFromCall.defaults[ e ] === undefined )
+    throw Error( 'Unknown option ' + e );
+  }
+
+  if( diagnosticLocationFromCall.defaults )
+  for( let e in diagnosticLocationFromCall.defaults )
+  {
+    if( o[ e ] === undefined )
+    o[ e ] = diagnosticLocationFromCall.defaults[ e ];
+  }
+
+  if( !( arguments.length === 1 ) )
+  throw Error( 'Expects single argument' );
+
+  if( !( _.objectIs( o ) ) )
+  throw Error( 'Expects options map' );
+
+  if( !( _.strIs( o.stackCall ) ) )
+  throw Error( `Expects string {- stackCall -}, but fot ${_.strType( stackCall )}` );
+
+  /* */
+
+  if( !o.location )
+  o.location = Object.create( null );
+
+  if( !o.location.original )
+  o.location.original = o.stackCall;
+
+  if( !o.location.routine || !_.numberIs( o.location.detailing ) )
   routineFromStack();
   let hadPath = !!o.location.path;
   if( !o.location.path )
   o.location.path = pathFromStack();
+
+  if( o.location.isInternal === null || o.location.isInternal === undefined )
+  {
+    o.location.isInternal = null;
+    if( o.location.path )
+    o.location.isInternal = _.strBegins( o.location.path, 'internal/' );
+  }
 
   if( !_.strIs( o.location.path ) )
   return end();
@@ -133,7 +375,6 @@ function diagnosticLocation( o )
     if( o.location.full )
     {
       o.location.fullWithRoutine = o.location.routine + ' @ ' + o.location.full;
-      // o.location.fullWithRoutine = o.location.fullWithRoutine.trim();
     }
 
     /* name */
@@ -169,61 +410,47 @@ function diagnosticLocation( o )
 
   function routineFromStack()
   {
-    let path;
+    let routine;
 
     if( o.location.routine )
     {
-      path = o.location.routine;
+      routine = o.location.routine;
     }
     else
     {
 
-      if( !stack )
-      return;
+      routine = o.stackCall;
 
-      if( _.strIs( stack ) )
-      stack = stack.split( '\n' );
-
-      path = stack[ o.level ];
-
-      if( !_.strIs( path ) )
-      return '(-routine anonymous-)';
+      if( !_.strIs( routine ) )
+      return '{- routine anonymous -}';
 
       let t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
-      let executed = t.exec( path );
+      let executed = t.exec( routine );
       if( executed )
-      path = executed[ 2 ] || '';
+      routine = executed[ 2 ] || '';
 
     }
 
-    if( _.strEnds( path, '.' ) )
-    path += '?';
+    if( _.strEnds( routine, '.' ) )
+    routine += '?';
 
-    o.location.routine = path;
-    o.location.service = 0;
-    if( o.location.service === 0 )
-    if( _.strBegins( path , '__' ) || path.indexOf( '.__' ) !== -1 )
-    o.location.service = 2;
-    if( o.location.service === 0 )
-    if( _.strBegins( path , '_' ) || path.indexOf( '._' ) !== -1 )
-    o.location.service = 1;
+    o.location.routine = routine;
+    o.location.detailing = 0;
+    if( o.location.detailing === 0 )
+    if( _.strBegins( routine , '__' ) || routine.indexOf( '.__' ) !== -1 )
+    o.location.detailing = 2;
+    if( o.location.detailing === 0 )
+    if( _.strBegins( routine , '_' ) || routine.indexOf( '._' ) !== -1 )
+    o.location.detailing = 1;
 
-    return path;
+    return routine;
   }
 
   /* */
 
   function pathFromStack()
   {
-    let path;
-
-    if( !stack )
-    return;
-
-    if( _.strIs( stack ) )
-    stack = stack.split( '\n' );
-
-    path = stack[ o.level ];
+    let path = o.stackCall;
 
     if( !_.strIs( path ) )
     return;
@@ -272,11 +499,9 @@ function diagnosticLocation( o )
 
 }
 
-diagnosticLocation.defaults =
+diagnosticLocationFromCall.defaults =
 {
-  level : 0,
-  stack : null,
-  error : null,
+  stackCall : null,
   location : null,
 }
 
@@ -447,7 +672,7 @@ function diagnosticStack( stack, range )
 
 //
 
-function diagnosticStackRemoveBegin( stack, include, exclude )
+function diagnosticStackRemoveLeft( stack, include, exclude )
 {
   if( arguments.length !== 3 )
   throw Error( 'Expects two arguments' );
@@ -511,6 +736,60 @@ function diagnosticStackCondense( stack )
 
   return stack.join( '\n' );
 }
+
+//
+
+function diagnosticStackFilter( stack, onEach )
+{
+  let result = [];
+
+  if( _.routineIs( stack ) )
+  {
+    onEach = stack;
+    stack = undefined;
+  }
+
+  if( !_.strIs( stack ) )
+  stack = _.diagnosticStack( stack );
+
+  _.assert( _.strIs( stack ) );
+  _.assert( _.routineIs( onEach ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  stack = stack.split( '\n' );
+
+  stack.forEach( ( stackCall, k ) =>
+  {
+    let location = _.diagnosticLocationFromCall( stackCall );
+    let r = onEach( location, k );
+    if( r === undefined )
+    return;
+    if( _.strIs( r ) )
+    {
+      result.push( r );
+      return;
+    }
+    _.assert( _.objectIs( r ) );
+    _.assert( _.strIs( r.original ) );
+    result.push( r.original );
+  });
+
+  return result.join( '\n' );
+}
+
+//
+
+// function diagnosticStackFirstLeft( stack )
+// {
+//   if( !_.strIs( stack ) )
+//   stack = _.diagnosticStack( stack );
+//
+//   _.assert( _.strIs( stack ) );
+//   _.assert( arguments.length === 1 );
+//
+//   debugger; xxx
+//
+// }
 
 //
 
@@ -902,7 +1181,7 @@ function _err( o )
     _.assert( o.level === 0 );
 
     if( ( o.stackRemovingBeginIncluding || o.stackRemovingBeginExcluding ) && o.throwenCallsStack )
-    o.throwenCallsStack = _.diagnosticStackRemoveBegin( o.throwenCallsStack, o.stackRemovingBeginIncluding || null, o.stackRemovingBeginExcluding || null );
+    o.throwenCallsStack = _.diagnosticStackRemoveLeft( o.throwenCallsStack, o.stackRemovingBeginIncluding || null, o.stackRemovingBeginExcluding || null );
 
     if( !o.throwenCallsStack )
     o.throwenCallsStack = resultError.stack = o.fallBackStack;
@@ -996,8 +1275,8 @@ function _err( o )
       });
     }
 
-    _.assert( _.numberIs( o.caughtLocation.service ), resultError.id );
-    if( !o.caughtLocation.service || o.caughtLocation.service === 1 )
+    _.assert( _.numberIs( o.caughtLocation.detailing ), resultError.id );
+    if( !o.caughtLocation.detailing || o.caughtLocation.detailing === 1 )
     {
       if( throwsStack )
       throwsStack = `${throwsStack}\nthrown at ${o.caughtLocation.fullWithRoutine}`;
@@ -2237,9 +2516,11 @@ let Routines =
   // stack
 
   diagnosticLocation,
-  diagnosticStack,
-  diagnosticStackRemoveBegin,
+  diagnosticLocationFromCall,
+  diagnosticStack, /* qqq : cover */
+  diagnosticStackRemoveLeft,
   diagnosticStackCondense,
+  diagnosticStackFilter, /* qqq : cover */
   diagnosticCode,
 
   // error

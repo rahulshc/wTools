@@ -34,3 +34,8 @@ function divide( i )
 }
 
 divide( 0 );
+
+/*
+  Error logged once.
+  States of an error make possible to account it and avoid logging second time.
+*/

@@ -10,20 +10,45 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 // implementation
 // --
 
-function ready( onReady )
+function ready( timeOut, procedure, onReady )
 {
 
-  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( arguments[ 0 ] ) || _.routineIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined );
+  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
+  // _.assert( _.numberIs( arguments[ 0 ] ) || _.routineIs( arguments[ 0 ] ) || arguments[ 0 ] === undefined );
 
-  let time = 0;
+  // let time = 0;
   if( _.numberIs( arguments[ 0 ] ) )
   {
-    time = arguments[ 0 ];
+    timeOut = arguments[ 0 ];
+    // onReady = arguments[ 1 ];
+    if( !_.procedureIs( arguments[ 1 ] ) )
+    {
+      onReady = arguments[ 1 ];
+      procedure = undefined;
+    }
+  }
+  else if( _.procedureIs( arguments[ 0 ] ) )
+  {
+    procedure = arguments[ 0 ];
     onReady = arguments[ 1 ];
+    timeOut = undefined;
+  }
+  else
+  {
+    onReady = arguments[ 0 ];
+    procedure = undefined;
+    timeOut = undefined;
   }
 
-  let procedure = _.Procedure({ _stack : 2, _name : 'timeReady' });
+  if( !timeOut )
+  timeOut = 0;
+
+  if( !procedure )
+  procedure = _.Procedure({ _stack : 1, _name : 'timeReady' });
+
+  _.assert( _.procedureIs( procedure ) );
+  _.assert( _.intIs( timeOut ) );
+  _.assert( _.routineIs( onReady ) || onReady === undefined );
 
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
   {
@@ -32,9 +57,9 @@ function ready( onReady )
     function handleReady()
     {
       if( _.Consequence )
-      return _.time.out( time, procedure, onReady ).finally( con );
+      return _.time.out( timeOut, procedure, onReady ).finally( con );
       else if( onReady )
-      _.time.begin( time, procedure, onReady );
+      _.time.begin( timeOut, procedure, onReady );
       else _.assert( 0 );
     }
 
@@ -44,9 +69,9 @@ function ready( onReady )
   else
   {
     if( _.Consequence )
-    return _.time.out( time, procedure, onReady );
+    return _.time.out( timeOut, procedure, onReady );
     else if( onReady )
-    _.time.begin( time, procedure, onReady );
+    _.time.begin( timeOut, procedure, onReady );
     else _.assert( 0 );
   }
 
@@ -61,8 +86,9 @@ function readyJoin( context, routine, args )
   function _timeReady()
   {
     let args = arguments;
+    let procedure = _.Procedure({ _stack : 1, _name : 'timeReadyJoin' });
     let joinedRoutine2 = _.routineSeal( this, joinedRoutine, args );
-    return _.time.ready( joinedRoutine2 );
+    return _.time.ready( procedure, joinedRoutine2 );
   }
 }
 
@@ -171,7 +197,7 @@ function out_pre( routine, args )
     else if( _.routineIs( onEnd ) && !_.consequenceIs( onEnd ) )
     {
       let _onEnd = onEnd;
-      onEnd = function timeTutEnd()
+      onEnd = function timeOutEnd()
       {
         let result = _onEnd.apply( this, arguments );
         return result === undefined ? null : result;
@@ -350,7 +376,7 @@ function outError_body( o )
     if( arg === _.dont )
     return arg;
 
-    err = _._errTimeOut
+    err = _.time._errTimeOut
     ({
       message : 'Time out!',
       value : con,

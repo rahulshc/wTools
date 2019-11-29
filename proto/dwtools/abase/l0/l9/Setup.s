@@ -4,18 +4,18 @@
 
 let _global = _global_;
 let _ = _global.wTools;
-let Self = _global.wTools;
+let Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
 
 // --
 // setup
 // --
 
-function _errUnhandledHandler2( err, reason )
+function _errUnhandledHandler2( err, kind )
 {
-  if( !reason )
-  reason = 'unhandled error';
-  let prefix = `--------------- ${reason} --------------->\n`;
-  let postfix = `--------------- ${reason} ---------------<\n`;
+  if( !kind )
+  kind = 'unhandled error';
+  let prefix = `--------------- ${kind} --------------->\n`;
+  let postfix = `--------------- ${kind} ---------------<\n`;
   let logger = _global.logger || _global.console;
 
   /* */
@@ -154,11 +154,11 @@ function _setupUnhandledErrorHandler1()
 
   if( _global.process && _.routineIs( _global.process.on ) )
   {
-    _._errUnhandledPre = _errPreNode;
+    _.setup._errUnhandledPre = _errPreNode;
   }
   else if( Object.hasOwnProperty.call( _global, 'onerror' ) )
   {
-    _._errUnhandledPre = _errPreBrowser;
+    _.setup._errUnhandledPre = _errPreBrowser;
   }
 
   /* */
@@ -297,28 +297,61 @@ function _setupTesterPlaceholder()
 
 //
 
-function _setup1()
+function _setupProcedure()
 {
 
-  Self._sourcePath = _.diagnosticStack([ 0, Infinity ]);
+  if( _realGlobal_ !== _global && _realGlobal_.wTools && _realGlobal_.wTools.setup && _realGlobal_.wTools.setup._entryProcedureStack )
+  Self._entryProcedureStack =  _realGlobal_.wTools.setup._entryProcedureStack;
+
+  if( Self._entryProcedureStack )
+  return;
+
+  let stack = _.diagnosticStack().split( '\n' );
+  for( let s = stack.length-1 ; s >= 0 ; s-- )
+  {
+    let call = stack[ s ];
+    let location = _.diagnosticLocationFromCall( call );
+    if( !location.isInternal )
+    {
+      stack.splice( s+1, stack.length );
+      stack.splice( 0, s );
+      break;
+    }
+  }
+
+  Self._entryProcedureStack = stack.join( '\n' );
+}
+
+//
+
+function _setup9()
+{
 
   _.assert( _global._WTOOLS_SETUP_EXPECTED_ !== false );
 
   if( _global._WTOOLS_SETUP_EXPECTED_ !== false )
   {
-    _._setupConfig();
-    _._setupUnhandledErrorHandler1();
-    _._setupLoggerPlaceholder();
-    _._setupTesterPlaceholder();
+    _.setup._setupConfig();
+    _.setup._setupUnhandledErrorHandler1();
+    _.setup._setupLoggerPlaceholder();
+    _.setup._setupTesterPlaceholder();
+    _.setup._setupProcedure();
   }
 
-  _.assert( !!Self.time && !!Self.time.now );
+  _.assert( !!_.time && !!_.time.now );
 
 }
 
 // --
 // routines
 // --
+
+let Fields =
+{
+
+  _entryProcedureStack : null,
+
+}
 
 let Routines =
 {
@@ -329,14 +362,16 @@ let Routines =
   _setupConfig,
   _setupLoggerPlaceholder,
   _setupTesterPlaceholder,
+  _setupProcedure,
 
-  _setup1,
+  _setup9,
 
 }
 
-Object.assign( Self,Routines );
+Object.assign( Self, Fields );
+Object.assign( Self, Routines );
 
-Self._setup1();
+Self._setup9();
 
 // --
 // export
