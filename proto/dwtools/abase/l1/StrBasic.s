@@ -199,7 +199,7 @@ function strCount( src, ins )
   let i = 0;
   do
   {
-    let found = _.strLeft( src, ins, i );
+    let found = _.strLeft( src, ins, [ i, src.length ] );
     if( found.entry === undefined )
     break;
     i = found.index + found.entry.length;
