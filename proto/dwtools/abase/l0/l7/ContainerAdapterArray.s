@@ -736,10 +736,11 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
 
 function ExportTo( dstGlobal, srcGlobal )
 {
+  debugger;
   let _ = dstGlobal.wTools;
-  _.assert( _.containerAdapter === undefined );
+  _.assert( _.containerAdapter === srcGlobal.wTools.containerAdapter );
   _.assert( _.mapIs( srcGlobal.wTools.containerAdapter ) );
-  _.containerAdapter = srcGlobal.wTools.containerAdapter;
+  // _.containerAdapter = srcGlobal.wTools.containerAdapter;
   if( typeof module !== 'undefined' && module !== null )
   module[ 'exports' ] = _.containerAdapter;
 }

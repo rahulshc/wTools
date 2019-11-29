@@ -89,8 +89,6 @@ function buffersRawAreIdentical( src1, src2 )
 function buffersViewAreIdentical( src1, src2 )
 {
 
-  debugger;
-
   if( !_.bufferViewIs( src1 ) )
   return false;
   if( !_.bufferViewIs( src2 ) )
@@ -2422,7 +2420,7 @@ function bufferResize_( dst, srcBuffer, size )
   if( dst !== _.nothing )
   {
     _.assert( _.bufferAnyIs( dst ) );
-    
+
     if( dst === srcBuffer && !_.bufferRawIs( srcBuffer ) && newOffset >= 0 && newOffset + size <= srcBuffer.buffer.byteLength )
     {
       if( _.bufferNodeIs( srcBuffer ) )
@@ -2436,7 +2434,7 @@ function bufferResize_( dst, srcBuffer, size )
     {
       if( size === dst.byteLength )
       result = dst;
-      else 
+      else
       result = _.bufferMakeUndefined( dst, size );
     }
     else if( size <= dst.byteLength )
@@ -2447,7 +2445,7 @@ function bufferResize_( dst, srcBuffer, size )
     {
       result = _.bufferMakeUndefined( dst, size / dst.BYTES_PER_ELEMENT || size );
     }
-    
+
     let dstTyped = _.bufferRawIs( result ) ? new U8x( result ) : new U8x( result.buffer );
     let srcBufferToU8x = _.bufferRawIs( srcBuffer ) ? new U8x( srcBuffer ) : new U8x( srcBuffer.buffer );
 

@@ -8209,7 +8209,7 @@ function bufferResize_( test )
     var src1 = buf( filledBuf, 16, 1 );
     var dst1 = new BufferRaw( 0 );
     var got1 = _.bufferResize_( dst1, src1, [ -8, 24 ] );
-    var expected1 = new U8x( [ 9, 10, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] ); 
+    var expected1 = new U8x( [ 9, 10, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ] );
     test.identical( got1, expected1.buffer );
     test.is( got1 !== src1 );
     test.is( got1 !== dst1 );
@@ -8608,17 +8608,17 @@ var Self =
   tests :
   {
 
-    // buffer, l0/l6
-
-    bufferRawIs,
-    bufferTypedIs,
-    bufferNodeIs,
-    bufferViewIs,
-
-    // buffer, l0/l8
-
-    bufferMake,
-    bufferMakeUndefined,
+    // // buffer, l0/l6
+    //
+    // bufferRawIs,
+    // bufferTypedIs,
+    // bufferNodeIs,
+    // bufferViewIs,
+    //
+    // // buffer, l0/l8
+    //
+    // bufferMake,
+    // bufferMakeUndefined,
 
     bufferFrom,
     bufferRawFromTyped,
@@ -8626,28 +8626,29 @@ var Self =
     bufferBytesFrom,
     bufferNodeFrom,
 
-    bufferBut,
-    bufferButInplace,
-    bufferBut_,
-    bufferSelect,
-    bufferSelectInplace,
-    bufferSelect_,
-    bufferGrow,
-    bufferGrowInplace,
-    bufferGrow_,
-    bufferRelength,
-    bufferRelengthInplace,
-    bufferRelength_,
-    bufferRelen,
-    bufferResize,
-    bufferResizeInplace,
-    bufferResize_,
-    bufferRetype,
-
-    bufferJoin,
-
-    bufferLeft,
-    bufferRight,
+    // xxx
+    // bufferBut,
+    // bufferButInplace,
+    // bufferBut_,
+    // bufferSelect,
+    // bufferSelectInplace,
+    // bufferSelect_,
+    // bufferGrow,
+    // bufferGrowInplace,
+    // bufferGrow_,
+    // bufferRelength,
+    // bufferRelengthInplace,
+    // bufferRelength_,
+    // bufferRelen,
+    // bufferResize,
+    // bufferResizeInplace,
+    // bufferResize_,
+    // bufferRetype,
+    //
+    // bufferJoin,
+    //
+    // bufferLeft,
+    // bufferRight,
 
   }
 

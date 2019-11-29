@@ -1211,7 +1211,6 @@ function _err( o )
     if( o.stackCondensing )
     stackCondensed = _.diagnosticStackCondense( stackCondensed );
 
-    debugger;
   }
 
   /* */
