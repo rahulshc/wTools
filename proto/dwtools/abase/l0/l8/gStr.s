@@ -308,7 +308,7 @@ function strIsolate_body( o )
 
   function strRight( index )
   {
-    let r = _._strRightSingle( o.src, o.delimeter, undefined, index );
+    let r = _._strRightSingle( o.src, o.delimeter, [ undefined, index ] );
     if( quote )
     if( r.entry !== undefined )
     {
