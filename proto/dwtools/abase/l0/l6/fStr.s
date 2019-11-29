@@ -686,7 +686,7 @@ function strRight( src, ins, range )
  *
  * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
  * @throws { Exception } If all arguments are not strings;
- * @throws { Exception } If ( argumets.length ) is not equal 3.
+ * @throws { Exception } If ( arguments.length ) is not equal 3.
  * @function strInsideOf
  * @memberof wTools
  */
@@ -819,8 +819,8 @@ let Routines =
   strRight, /* qqq : improve coverage | Dmytro : covered */
 
   strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ), /* Dmytro : coverage is extended */
-  strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
-  strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ),
+  strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ), /* Dmytro : coverage is extended */
+  strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ), /* Dmytro : coverage is extended */
 
   strInsideOf,
   strOutsideOf,

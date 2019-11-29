@@ -4629,96 +4629,76 @@ function strIsolateInsideLeftPairs( test )
 
 function strBeginOf( test )
 {
-  var got, expected;
-
-  /**/
-
-  test.case = 'strBeginOf';
-
-  /**/
-
-  got = _.strBeginOf( 'abc', '' );
-  expected = '';
+  test.case = 'begin - empty string';
+  var got = _.strBeginOf( 'abc', '' );
+  var expected = '';
   test.identical( got, expected )
 
-  /**/
-
-  got = _.strBeginOf( 'abc', 'c' );
-  expected = false;
+  test.case = 'begin - char';
+  var got = _.strBeginOf( 'abc', 'c' );
+  var expected = false;
   test.identical( got, expected )
 
-  /**/
-
-  got = _.strBeginOf( 'abc', 'bc' );
-  expected = false;
+  test.case = 'begin - two chars';
+  var got = _.strBeginOf( 'abc', 'bc' );
+  var expected = false;
   test.identical( got, expected )
 
-  /**/
-
-  got = _.strBeginOf( 'abc', ' c' );
-  expected = false;
+  test.case = 'begin.length > src.length';
+  var got = _.strBeginOf( 'abc', 'abcd' );
+  var expected = false;
   test.identical( got, expected )
 
-  /* end.length > src.length */
-
-  got = _.strBeginOf( 'abc', 'abcd' );
-  expected = false;
+  test.case = 'begin.length === src.length, not equal';
+  var got = _.strBeginOf( 'abc', 'cba' );
+  var expected = false;
   test.identical( got, expected )
 
-  /* same length, not equal*/
-
-  got = _.strBeginOf( 'abc', 'cba' );
-  expected = false;
+  test.case = 'begin.length === src.length, equal';
+  var got = _.strBeginOf( 'abc', 'abc' );
+  var expected = 'abc';
   test.identical( got, expected )
 
-  /* equal */
-
-  got = _.strBeginOf( 'abc', 'abc' );
-  expected = 'abc';
+  test.case = 'begin - empty array';
+  var got = _.strBeginOf( 'abc', [] );
+  var expected = false;
   test.identical( got, expected )
 
-  /* array */
-
-  got = _.strBeginOf( 'abc', [] );
-  expected = false;
+  test.case = 'begin - array with empty string';
+  var got = _.strBeginOf( 'abc', [ '' ] );
+  var expected = '';
   test.identical( got, expected )
 
-  /**/
-
-  got = _.strBeginOf( 'abc', [ '' ] );
-  expected = '';
+  test.case = 'begin - array strings, not begins';
+  var got = _.strBeginOf( 'abccc', [ 'c', 'ccc' ] );
+  var expected = false;
   test.identical( got, expected )
 
-  /**/
-
-  got = _.strBeginOf( 'abccc', [ 'c', 'ccc' ] );
-  expected = false;
+  test.case = 'begin - array strings, begins';
+  var got = _.strBeginOf( 'abc', [ 'a', 'ab', 'abc' ] );
+  var expected = 'a';
   test.identical( got, expected )
 
-  /**/
-
-  got = _.strBeginOf( 'abc', [ 'a', 'ab', 'abc' ] );
-  expected = 'a';
+  test.case = 'begin - array strings, not begins';
+  var got = _.strBeginOf( 'abc', [ 'x', 'y', 'c' ] );
+  var expected = false;
   test.identical( got, expected )
 
-  /**/
-
-  got = _.strBeginOf( 'abc', [ 'x', 'y', 'c' ] );
-  expected = false;
-  test.identical( got, expected )
-
-  /**/
-
-  got = _.strBeginOf( 'abc', [ 'x', 'y', 'z' ] );
-  expected = false;
-  test.identical( got, expected )
+  /* - */
 
   if( !Config.debug )
   return;
-
-  test.shouldThrowErrorSync( () => _.strBeginOf( 1, '' ) );
-  test.shouldThrowErrorSync( () => _.strBeginOf( 'abc', 1 ) );
+  
+  test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.strBeginOf() );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.strBeginOf( 1, '' ) );
+
+  test.case = 'wrong type of begin';
+  test.shouldThrowErrorSync( () => _.strBeginOf( 'abc', 1 ) );
+
+  test.case = 'wrong type of arguments';
   test.shouldThrowErrorSync( () => _.strBeginOf( undefined, undefined ) );
   test.shouldThrowErrorSync( () => _.strBeginOf( null, null ) );
 }
