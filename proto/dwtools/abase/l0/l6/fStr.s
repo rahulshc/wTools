@@ -814,11 +814,11 @@ let Routines =
   //
 
   _strLeftSingle,
-  strLeft, /* qqq : improve coverage */
+  strLeft, /* qqq : improve coverage | Dmytro : covered */
   _strRightSingle,
-  strRight, /* qqq : improve coverage */
+  strRight, /* qqq : improve coverage | Dmytro : covered */
 
-  strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ),
+  strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ), /* Dmytro : coverage is extended */
   strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
   strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ),
 

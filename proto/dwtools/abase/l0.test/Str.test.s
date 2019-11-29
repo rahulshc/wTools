@@ -1013,9 +1013,6 @@ function strRight( test )
 
 function strEquivalent( test )
 {
-
-  /* - */
-
   test.open( 'true' );
 
   test.case = 'strings';
@@ -1073,18 +1070,12 @@ function strEquivalent( test )
   test.identical( got, false );
 
   test.close( 'false' );
-
-  /* - */
-
 }
 
 //
 
 function strsEquivalent( test )
 {
-
-  /* - */
-
   test.open( 'scalar, true' );
 
   test.case = 'strings';
@@ -1190,16 +1181,12 @@ function strsEquivalent( test )
   test.identical( got, [ false, false, false, true, true, true, true, true ] );
 
   test.close( 'vector, false' );
-
 }
 
 //
 
 function strsEquivalentAll( test )
 {
-
-  /* - */
-
   test.open( 'scalar, true' );
 
   test.case = 'strings';
@@ -1260,76 +1247,160 @@ function strsEquivalentAll( test )
 
   /* - */
 
-  test.open( 'vectors' );
+  test.open( 'vectors, true' );
 
-  test.case = 'vector, vector';
-  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
-  var src2 = [ 'abc', 'abc', /\w+/, /\w+/ ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, true );
-
-  test.case = 'vector, scalar';
+  test.case = 'mixed vector, scalar - string';
   var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
   var src2 = 'abc';
   var got = _.strsEquivalentAll( src1, src2 );
   test.identical( got, true );
 
-  test.case = 'scalar, vector';
+  test.case = 'mixed vector, scalar - regexp';
+  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+  var src2 = /\w+/;
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, true );
+
+  test.case = 'scalar - string, mixed vector';
   var src1 = 'abc';
   var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
   var got = _.strsEquivalentAll( src1, src2 );
   test.identical( got, true );
 
-  test.case = 'vector, vector';
-  var src1 = [ 'abd', /\s+/, /\w/, 'abc', 'abc', /\w*/, /\w+/g, /\w+/g ];
-  var src2 = [ 'abc', 'abc', 'abc', /\s+/, /\w/, /\w+/, /\w+/, /\w+/gi ];
+  test.case = 'scalar - regexp, mixed vector';
+  var src1 = /\w+/;
+  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
   var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
+  test.identical( got, true );
 
-  test.case = 'vector, vector';
-  var src1 = [ 'abd', /\s+/, /\w/, 'abc', 'abc', /\w*/, /\w+/g, /\w+/g ];
-  var src2 = [ 'abc', 'abc', 'abc', /\s+/, /\w/, /\w+/, /\w+/, /\w+/g ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector, scalar';
-  var src1 = [ 'abd', /\s+/, /\w/, 'abc', 'abc', /\w*/, /\w+/g, /\w+/gi ];
-  var src2 = 'abc';
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector, scalar';
-  var src1 = [ 'abd', /\s+/ ];
-  var src2 = 'abc';
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'vector, scalar';
+  test.case = 'vector of regexp, scalar - string';
   var src1 = [ /\w+/g, /\w+/gi ];
   var src2 = 'abc';
   var got = _.strsEquivalentAll( src1, src2 );
   test.identical( got, true );
 
-  test.case = 'scalar, vector';
-  var src1 = 'abc';
-  var src2 = [ 'abd', /\s+/, /\w/, 'abc', 'abc', /\w*/, /\w+/g, /\w+/gi ];
+  test.case = 'vector of regexp, scalar - regexp';
+  var src1 = [ /\w+/g, /\w+/g ];
+  var src2 = /\w+/g;
   var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
+  test.identical( got, true );
 
-  test.case = 'scalar, vector';
-  var src1 = 'abc';
-  var src2 = [ 'abd', /\s+/ ];
-  var got = _.strsEquivalentAll( src1, src2 );
-  test.identical( got, false );
-
-  test.case = 'scalar, vector';
+  test.case = 'scalar - string, vector of regexp';
   var src1 = 'abc';
   var src2 = [ /\w+/g, /\w+/gi ];
   var got = _.strsEquivalentAll( src1, src2 );
   test.identical( got, true );
 
-  test.close( 'vectors' );
+  test.case = 'scalar - regexp, vector of regexp';
+  var src1 = /\w+/g;
+  var src2 = [ /\w+/g, /\w+/g ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, true );
 
+  test.case = 'vector of strings, vector of strings';
+  var src1 = [ 'abc', 'abc', 'aaa', 'bbb' ];
+  var src2 = [ 'abc', 'abc', 'aaa', 'bbb' ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, true );
+
+  test.case = 'vector of regexp, vector of strings';
+  var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+  var src2 = [ 'abc', 'abc', 'aaa', 'bbb' ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, true );
+
+  test.case = 'vector of strings, vector of regexp';
+  var src1 = [ 'abc', 'abc', 'aaa', 'bbb' ];
+  var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, true );
+
+  test.case = 'mixed vector, mixed vector';
+  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+  var src2 = [ 'abc', 'abc', /\w+/, /\w+/ ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, true );
+
+  test.close( 'vectors, true' );
+
+  /* - */
+
+  test.open( 'vectors, false' );
+
+  test.case = 'mixed vector, scalar - string';
+  var src1 = [ 'abc', /\w+/, 'ab', /\w+/ ];
+  var src2 = 'abc';
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'mixed vector, scalar - regexp';
+  var src1 = [ 'abc', /\w+/, 'abc', /\w+/g ];
+  var src2 = /\w+/;
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'scalar - string, mixed vector';
+  var src1 = 'abc d';
+  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'scalar - regexp, mixed vector';
+  var src1 = /\w+/g;
+  var src2 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'vector of regexp, scalar - string';
+  var src1 = [ /\w+/g, /\w+/gi ];
+  var src2 = 'abc d';
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'vector of regexp, scalar - regexp';
+  var src1 = [ /\w+/g, /\w+/g ];
+  var src2 = /\w+/gi;
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'scalar - string, vector of regexp';
+  var src1 = 'abc d';
+  var src2 = [ /\w+/g, /\w+/gi ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'scalar - regexp, vector of regexp';
+  var src1 = /\w+/gi;
+  var src2 = [ /\w+/g, /\w+/g ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'vector of strings, vector of strings';
+  var src1 = [ 'abc', 'abc', 'bbb', 'aaa' ];
+  var src2 = [ 'abc', 'abc', 'aaa', 'bbb' ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'vector of regexp, vector of strings';
+  var src1 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+  var src2 = [ 'abc d', 'abc', 'aaa', 'bbb' ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'vector of strings, vector of regexp';
+  var src1 = [ 'abc d', 'abc', 'aaa', 'bbb' ];
+  var src2 = [ /\w+/, /\w+/gi, /\w+/g, /\w+/ ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+  test.case = 'mixed vector, mixed vector';
+  var src1 = [ 'abc', /\w+/, 'abc', /\w+/ ];
+  var src2 = [ 'abc', 'abc', /\w+/, /\w+/gi ];
+  var got = _.strsEquivalentAll( src1, src2 );
+  test.identical( got, false );
+
+
+  test.close( 'vectors, false' );
 }
 
 //
