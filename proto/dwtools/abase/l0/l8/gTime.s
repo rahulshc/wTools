@@ -582,8 +582,8 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( Self, Fields );
+_.mapSupplement( Self, Routines );
 
 // --
 // export

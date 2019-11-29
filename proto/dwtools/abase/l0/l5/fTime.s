@@ -63,8 +63,6 @@ function begin( delay, procedure, onEnd )
   return this._begin( delay, onEnd );
 }
 
-// begin.which = 'Basic';
-
 //
 
 let soon = typeof process === 'undefined' ? function( h ){ return setTimeout( h, 0 ) } : process.nextTick;
@@ -219,8 +217,11 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( Self, Fields );
+_.mapSupplement( Self, Routines );
+
+// Object.assign( Self, Routines );
+// Object.assign( Self, Fields );
 
 // --
 // export
