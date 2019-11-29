@@ -2620,6 +2620,104 @@ function strQuoteAnalyze( test )
 
 //
 
+function strInsideOf( test )
+{
+  test.case = 'src - empty string, begin - empty string, end - empty string';
+  var got = _.strInsideOf( '', '', '' );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, begin - empty string, end - !!!';
+  var got = _.strInsideOf( '', '', '!!!' );
+  test.identical( got, false );
+
+  test.case = 'src - empty string, begin - !!!, end - empty string';
+  var got = _.strInsideOf( '', '!!!', '' );
+  test.identical( got, false );
+
+  test.case = 'src - empty string, begin - !!!, end - !!!';
+  var got = _.strInsideOf( '', '!!!', '!!!' );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'src - string, begin - empty string, end - empty string';
+  var got = _.strInsideOf( 'str', '', '' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - string, begin - empty string, end - !!!, not equal';
+  var got = _.strInsideOf( 'str', '', '!!!' );
+  test.identical( got, false );
+
+  test.case = 'src - string, begin - !!!, not equal, end - empty string';
+  var got = _.strInsideOf( 'str', '!!!', '' );
+  test.identical( got, false );
+
+  test.case = 'src - string, begin - !!!, not equal, end - !!!, not equal';
+  var got = _.strInsideOf( 'str', '!!!', '!!!' );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'src - string, almost equal, begin - empty string, end - !!!';
+  var got = _.strInsideOf( '!!!str!!!', '', '!!!' );
+  test.identical( got, '!!!str' );
+
+  test.case = 'src - string, almost equal, begin - !!!, end - empty string';
+  var got = _.strInsideOf( '!!!str!!!', '!!!', '' );
+  test.identical( got, 'str!!!' );
+
+  test.case = 'src - string, almost equal, begin - !!!, end - !!!';
+  var got = _.strInsideOf( '!!!str!!!', '!!!', '!!!' );
+  test.identical( got, 'str' );
+
+  /* */
+
+  test.case = 'src - string, little difference, begin - empty string, end - !!!';
+  var got = _.strInsideOf( '!!str!!', '', '!!!' );
+  test.identical( got, false );
+
+  test.case = 'src - string, little difference, begin - !!!, end - empty string';
+  var got = _.strInsideOf( '!!str!!', '!!!', '' );
+  test.identical( got, false );
+
+  test.case = 'src - string, little difference, begin - !!!, end - !!!';
+  var got = _.strInsideOf( '!!str!!', '!!!', '!!!' );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'src - string, equals inside string, begin - empty string, end - !!!';
+  var got = _.strInsideOf( 'str!!!str!!!str', '', '!!!' );
+  test.identical( got, false );
+
+  test.case = 'src - string, equals inside string, begin - !!!, end - empty string';
+  var got = _.strInsideOf( 'str!!!str!!!str', '!!!', '' );
+  test.identical( got, false );
+
+  test.case = 'src - string, equals inside string, begin - !!!, end - !!!';
+  var got = _.strInsideOf( 'str!!!str!!!str', '!!!', '!!!' );
+  test.identical( got, false );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strInsideOf() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.strInsideOf( 'str' ) );
+  test.shouldThrowErrorSync( () => _.strInsideOf( 'str', 's' ) );
+
+  test.case = 'wrong type of arguments';
+  test.shouldThrowErrorSync( () => _.strInsideOf( 1, '', '' ) );
+  test.shouldThrowErrorSync( () => _.strInsideOf( 'str', 1, '' ) );
+  test.shouldThrowErrorSync( () => _.strInsideOf( 'str', '', 1 ) );
+}
+
+//
+
 function strIsolateLeftOrNone( test )
 {
   var got, expected;
@@ -4998,6 +5096,8 @@ var Self =
     strUnquote,
     strQuotePairsNormalize,
     strQuoteAnalyze,
+
+    strInsideOf,
 
     strIsolateLeftOrNone,
     strIsolateLeftOrAll,
