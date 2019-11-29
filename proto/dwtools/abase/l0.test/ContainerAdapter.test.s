@@ -428,13 +428,13 @@ function toOriginal( test )
 
   /* */
 
-  test.case = 'from ArrayContainerAdapter';
+  test.case = 'from ContainerAdapterArray';
   var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
   var got = _.containerAdapter.toOriginal( src );
   test.is( got !== src );
   test.identical( got, src.original );
 
-  test.case = 'from SetContainerAdapter';
+  test.case = 'from ContainerAdapterSet';
   var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var got = _.containerAdapter.toOriginal( src );
   test.is( got !== src );
@@ -662,25 +662,25 @@ function toOriginals( test )
 
   /* */
 
-  test.case = 'from ArrayContainerAdapter';
+  test.case = 'from ContainerAdapterArray';
   var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
   var got = _.containerAdapter.toOriginals( src );
   test.is( got !== src );
   test.identical( got, src.original );
 
-  test.case = 'dsts - null, from ArrayContainerAdapter';
+  test.case = 'dsts - null, from ContainerAdapterArray';
   var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
   var got = _.containerAdapter.toOriginals( null, src );
   test.is( got !== src );
   test.identical( got[ 0 ], src.original );
 
-  test.case = 'from SetContainerAdapter';
+  test.case = 'from ContainerAdapterSet';
   var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var got = _.containerAdapter.toOriginals( src );
   test.is( got !== src );
   test.identical( got, src.original );
 
-  test.case = 'dsts - null, from SetContainerAdapter';
+  test.case = 'dsts - null, from ContainerAdapterSet';
   var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
   var got = _.containerAdapter.toOriginals( null, src );
   test.is( got !== src );
@@ -688,7 +688,7 @@ function toOriginals( test )
 
   /* */
 
-  test.case = 'array contains ArrayContainerAdapter';
+  test.case = 'array contains ContainerAdapterArray';
   var src = _.containerAdapter.make( [ 1, 2, 'str' ] );
   var srcs = [ src, 1, src, 'str', src, undefined, null, false ];
   var got = _.containerAdapter.toOriginals( srcs );
@@ -697,7 +697,7 @@ function toOriginals( test )
   test.identical( got[ 0 ], src.original );
   test.identical( got[ 2 ], src.original );
 
-  test.case = 'dsts - null, array contains ArrayContainerAdapter';
+  test.case = 'dsts - null, array contains ContainerAdapterArray';
   var src = _.containerAdapter.make( [ 1, 2, 'str' ] );
   var srcs = [ src, 1, src, 'str', src, undefined, null, false ];
   var got = _.containerAdapter.toOriginals( null, srcs );
@@ -706,7 +706,7 @@ function toOriginals( test )
   test.identical( got[ 0 ], src.original );
   test.identical( got[ 2 ], src.original );
 
-  test.case = 'array contains SetContainerAdapter';
+  test.case = 'array contains ContainerAdapterSet';
   var src = _.containerAdapter.make( new Set( [ 1, 2, 'str' ] ) );
   var srcs = [ src, 1, src, 'str', src, undefined, null, false ];
   var got = _.containerAdapter.toOriginals( srcs );
@@ -715,7 +715,7 @@ function toOriginals( test )
   test.identical( [ ... got[ 0 ] ], [ ... src.original ] );
   test.identical( [ ... got[ 2 ] ], [ ... src.original ] );
 
-  test.case = 'array contains ArrayContainerAdapter and SetContainerAdapter';
+  test.case = 'array contains ContainerAdapterArray and ContainerAdapterSet';
   var src1 = _.containerAdapter.make( [ 1, 2, 'str' ] );
   var src2 = _.containerAdapter.make( new Set( [ 1, 2, 'str' ] ) );
   var srcs = [ src1, 1, src2, 'str', src1, undefined, null, false ];
@@ -725,7 +725,7 @@ function toOriginals( test )
   test.identical( got[ 0 ], src1.original );
   test.identical( [ ... got[ 2 ] ], [ ... src2.original ] );
 
-  test.case = 'array contains ArrayContainerAdapter and SetContainerAdapter';
+  test.case = 'array contains ContainerAdapterArray and ContainerAdapterSet';
   var src1 = _.containerAdapter.make( [ 1, 2, 'str' ] );
   var src2 = _.containerAdapter.make( new Set( [ 1, 2, 'str' ] ) );
   var srcs = [ src1, 1, src2, 'str', src1, undefined, null, false ];
@@ -7933,7 +7933,7 @@ function select( test )
 }
 
 //--
-// SetContainerAdapter
+// ContainerAdapterSet
 //--
 
 function setAdapterMake_( test )
@@ -12338,7 +12338,7 @@ function setAdapterOnce( test )
   test.is( got !== src );
   test.identical( [ ... got.original ], exp );
 
-  test.case = 'src - empty container, dst - empty SetContainerAdapter, no onEval';
+  test.case = 'src - empty container, dst - empty ContainerAdapterSet, no onEval';
   var src = _.containerAdapter.make( new Set( [] ) );
   var dst = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
@@ -12723,7 +12723,7 @@ function setAdapterOnceRight( test )
   test.is( got !== src );
   test.identical( [ ... got.original ], exp );
 
-  test.case = 'src - empty container, dst - empty SetContainerAdapter, no onEval';
+  test.case = 'src - empty container, dst - empty ContainerAdapterSet, no onEval';
   var src = _.containerAdapter.make( new Set( [] ) );
   var dst = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
@@ -14158,7 +14158,7 @@ function setAdapterLength( test )
 }
 
 //--
-// ArrayContainerAdapter
+// ContainerAdapterArray
 //--
 
 function arrayAdapterMake_( test )
@@ -18239,7 +18239,7 @@ function arrayAdapterOnce( test )
   test.is( got !== src );
   test.identical( [ ... got.original ], exp );
 
-  test.case = 'src - empty container, dst - empty SetContainerAdapter, no onEval';
+  test.case = 'src - empty container, dst - empty ContainerAdapterSet, no onEval';
   var src = _.containerAdapter.make( [] );
   var dst = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
@@ -18624,7 +18624,7 @@ function arrayAdapterOnceRight( test )
   test.is( got !== src );
   test.identical( [ ... got.original ], exp );
 
-  test.case = 'src - empty container, dst - empty SetContainerAdapter, no onEval';
+  test.case = 'src - empty container, dst - empty ContainerAdapterSet, no onEval';
   var src = _.containerAdapter.make( [] );
   var dst = _.containerAdapter.make( new Set( [] ) );
   var exp = [];
@@ -20110,7 +20110,7 @@ var Self =
 
     select,
 
-    // SetContainerAdapter
+    // ContainerAdapterSet
 
     setAdapterMake_,
     setAdapterMakeEmpty,
@@ -20174,7 +20174,7 @@ var Self =
     setAdapterSymbolIterator,
     setAdapterLength,
 
-    // ArrayContainerAdapter
+    // ContainerAdapterArray
 
     arrayAdapterMake_,
     arrayAdapterMakeEmpty,
