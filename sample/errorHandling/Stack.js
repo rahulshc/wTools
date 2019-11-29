@@ -1,18 +1,23 @@
-let _ = require( '../..' );
+let _ = require( 'wTools' );
 
-function decrement( i )
+function program()
 {
-  debugger;
-  return i-1;
+  function decrement( num, dec )
+  {
+    console.log( _.diagnosticStack() );
+    return num - dec;
+  }
+
+  function divideAndDecrement( n )
+  {
+    return decrement( n / 2, 2 );
+  }
+
+  divideAndDecrement( 0 );
 }
 
-function divideAndDecrement( i )
-{
-  return decrement( i / 2 );
-}
-
-divideAndDecrement( 6 );
+program();
 
 /*
-  Simplest sample to illustrate sync stack.
+Simplest sample to illustrate sync stack.
 */

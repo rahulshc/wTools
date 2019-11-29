@@ -18,7 +18,7 @@ function program()
   con.then( function callback2( arg )
   {
     console.log( 'sourcePath::callback2 ' + _.procedure.activeProcedure._sourcePath ); debugger;
-    throw 'callback2';
+    throw _.err( 'callback2' );
     return 'callback2';
   })
 
