@@ -254,9 +254,40 @@ function entityMake( src )
 
 //
 
+function containerEmpty( dstContainer )
+{
+  if( _.longIs( dstContainer ) )
+  _.longEmpty( dstContainer );
+  else if( _.setIs( dstContainer ) )
+  dstContainer.clear();
+  else if( _.hashMapIs( dstContainer ) )
+  dstContainer.clear();
+  else if( _.mapLike( dstContainer ) )
+  _.mapEmpty( dstContainer );
+  else
+  _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );
+  return dstContainer;
+}
+
+//
+
+function structureExtend( dst, src )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  xxx
+
+  // if( arguments.length === 1 )
+  // xxx
+
+}
+
+//
+
 /**
  * The routine entityEntityEqualize() checks equality of two entities {-src1-} and {-src2-}.
- * Routine accepts callbacks {-onEvaluate1-} and {-onEvaluate2-}, which apply to 
+ * Routine accepts callbacks {-onEvaluate1-} and {-onEvaluate2-}, which apply to
  * entities {-src1-} and {-src2-}. The values returned by callbacks are compared with each other.
  * If callbacks is not passed, then routine compares {-src1-} and {-src2-} directly.
  *
@@ -584,6 +615,10 @@ let Routines =
   entityMake,
   make : entityMake,
 
+  containerEmpty, /* qqq : implement coverage */
+  empty : containerEmpty,
+
+  structureExtend,
   entityEntityEqualize,
 
   entityAssign, /* refactor!!! */

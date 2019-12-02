@@ -1,4 +1,5 @@
 let _ = require( '../..' );
+
 function decrement( i )
 {
   try
@@ -26,14 +27,23 @@ function divide( i )
   }
   catch( err )
   {
-    err = _.err( err, '\nFailed to divide' );
+    err = _.err( err );
     if( _.errOnce( err ) )
     console.log( err );
     throw err;
   }
 }
 
-divide( 0 );
+try
+{
+  divide( 0 );
+}
+catch( err )
+{
+  err = _.err( err );
+  if( _.errOnce( err ) )
+  console.log( err );
+}
 
 /*
   Error logged once.

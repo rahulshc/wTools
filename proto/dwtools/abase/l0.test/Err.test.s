@@ -13,7 +13,7 @@ let fileProvider = _testerGlobal_.wTools.fileProvider;
 let path = fileProvider.path;
 
 // --
-// tester
+// context
 // --
 
 function onSuiteBegin()

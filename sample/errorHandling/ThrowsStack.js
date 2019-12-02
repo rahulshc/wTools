@@ -1,7 +1,4 @@
-
-let _ = require( '../..' );
-
-function decrement( i )
+let _ = require( '../..' ); function decrement( i )
 {
   try
   {

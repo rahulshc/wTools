@@ -10,6 +10,7 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 // implementation
 // --
 
+// let _Timers = Object.create( null );
 let _TimeInfinity = Math.pow( 2, 31 )-1;
 function _begin( delay, onEnd )
 {
@@ -32,12 +33,16 @@ function _begin( delay, onEnd )
   else
   timer = soon( out ) || null;
 
+  let stack = _.diagnosticStack([ 1, Infinity ]);
+  // _Timers[ stack ] = timer || null;
+
   return timer;
 
   /* */
 
   function out()
   {
+    // delete _Timers[ stack ];
     if( onEnd )
     onEnd( timer );
   }
@@ -48,6 +53,9 @@ function _begin( delay, onEnd )
 
 function _cancel( timer )
 {
+  // for( let t in _Timers )
+  // if( _Timers[ t ] === timer )
+  // delete _Timers[ t ];
   clearTimeout( timer );
   return timer;
 }
@@ -186,6 +194,7 @@ function dateToStr( date )
 
 let Fields =
 {
+  // _Timers,
 }
 
 // --
