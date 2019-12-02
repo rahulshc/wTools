@@ -100,20 +100,10 @@ It would be useful to have in the report of error thrown from `routine asyncCall
     at program (AsyncStack2.js:18:15)
     at Object.<anonymous> (AsyncStack2.js:6:1)
     at Module._compile (internal/modules/cjs/loader.js:777:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
-    at Module.load (internal/modules/cjs/loader.js:643:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
-    at Function.Module.runMain (internal/modules/cjs/loader.js:840:10)
-    at internal/main/run_main_module.js:17:11
 
     at program (AsyncStack2.js:11:15)
     at Object.<anonymous> (AsyncStack2.js:6:1)
     at Module._compile (internal/modules/cjs/loader.js:777:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
-    at Module.load (internal/modules/cjs/loader.js:643:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
-    at Function.Module.runMain (internal/modules/cjs/loader.js:840:10)
-    at internal/main/run_main_module.js:17:11
 
  = Throws stack
     thrown at wConsequence.asyncCallback @ AsyncStack2.js:16
@@ -179,21 +169,12 @@ divide( 0 );
 This example throws error at line `throw _.err( 'odd!' )`. Line `throw _.err( err, '\nFailed to decrement' )` rethrow the error. Information about that is added to error by routine `_.err`. Same thing happen at line `throw _.err( err, '\nFailed to divide' )`.
 
 ```
-= Message of error#1
-   negative!
-   Failed to decrement
-   Failed to divide
 
 = Beautified calls stack
    at decrement (ThrowsStack.js:6:13)
    at divide (ThrowsStack.js:21:12)
    at Object.<anonymous> (ThrowsStack.js:29:1)
    at Module._compile (internal/modules/cjs/loader.js:777:30)
-   at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
-   at Module.load (internal/modules/cjs/loader.js:643:32)
-   at Function.Module._load (internal/modules/cjs/loader.js:556:12)
-   at Function.Module.runMain (internal/modules/cjs/loader.js:840:10)
-   at internal/main/run_main_module.js:17:11
 
 = Throws stack
    thrown at decrement @ ThrowsStack.js:6
@@ -202,11 +183,12 @@ This example throws error at line `throw _.err( 'odd!' )`. Line `throw _.err( er
    thrown at attend @ abase\l0\l9\Setup.s:94
    thrown at errLog @ abase\l0\l9\Setup.s:57
    thrown at errLog @ abase\l0\l9\Setup.s:59
+
 ```
 
-Above, you may see throws stack of the sample.
+Above, you may see fragment of error report with throws stack of the example.
 
-Our implementation collects throws into a stack. In current implementation throws stacks has its own section. But in smarter implementation throws stack could be integrated in calls stack. It's possible to decrease length of error report merging information of two stack into one section.
+Our implementation collects throws into a stack. In current implementation throws stacks has its own section. But in smarter implementation throws stack could be integrated into calls stack. It's possible to decrease length of error report merging information of two stack into one section.
 
 ### Message
 
@@ -258,6 +240,8 @@ Line `throw _.err( 'negative!' )` throws an error. Line `throw _.err( err, '\nFa
    Failed to divide
 ```
 
+Above, you may see fragment of error report with logged message.
+
 ### Statefulness of an error
 
 Nobody wants to see duplicates of an error in a log. Right? If a program has chains of `try blocks` it can happen. How to avoid it? The handy technique is the statefulness of an error object. Changing a field of an error logging will make it possible to get a clear and confident answer on the question: "was the error logged?"
@@ -303,6 +287,23 @@ divide( 0 );
 ```
 
 In the sample above, you may see that both `catch blocks` tries to log error. But only the first executed `catch block` does it because the error has a state which is changed by routine `_.errOnce`. In the output, you will see only one error, no duplicates.
+
+```
+= Message of error#1
+   negative!
+   Failed to decrement
+
+= Beautified calls stack
+   at decrement (Once.js:6:13)
+   at divide (Once.js:24:12)
+   at Object.<anonymous> (Once.js:37:3)
+   at Module._compile (internal/modules/cjs/loader.js:777:30)
+
+= Throws stack
+   thrown at decrement @ Once.js:6
+   thrown at decrement @ Once.js:11
+   thrown at decrement @ Once.js:12
+```
 
 In practice, the field `logged` is not enough. In our implementation, we also have a field `attended`. Accessors of an error help to detect a moment of logging an error.
 

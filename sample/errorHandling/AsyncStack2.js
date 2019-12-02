@@ -19,6 +19,6 @@ function program()
 }
 
 /*
-  In case of consequences native async stack has is wrong.
+  In case of consequences native async stack is wrong.
   Synthetic async stack is has proper information for each callback of consequence.
 */
