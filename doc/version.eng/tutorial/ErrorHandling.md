@@ -4,8 +4,6 @@
 
 This article shows the state of the art techniques of handling errors. Poor error reporting technique slows down software development. Asynchronous errors complicate the problem of generating a readable and informative error report.
 
-### Error
-
 There are several things thrown error could possibly communicate to an engineer:
 
 - Calls stack

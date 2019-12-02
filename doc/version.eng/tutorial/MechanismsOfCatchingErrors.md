@@ -123,23 +123,4 @@ Don't confuse unattended errors and unhandled errors. One of the possible strate
 
 ### Summary
 
-Statefulness of error is preferable because that technique lets solve problems
-
-- Of removing duplicates
-- Of differentiation of user errors and developer errors
-- Of tracking error
-
-An error object can have such fields
-
-- Calls stack
-- Arguments
-- Asynchronous calls stack
-- Catches stack
-- Source code
-- Message
-- Is brief
-- Was logged
-- Was attended
-- ID
-
-Despite the fact, the article is about JS, these techniques are applicable to other languages.
+xxx.
