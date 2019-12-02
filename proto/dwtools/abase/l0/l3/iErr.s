@@ -1190,6 +1190,9 @@ function _err( o )
 
     // if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
     // o.asyncCallsStack = resultError.asyncCallsStack || null;
+    // debugger;
+    /* xxx : fix duplicate in async stack problem */
+
     _.assert( resultError.asyncCallsStack === undefined || resultError.asyncCallsStack === null || _.arrayIs( resultError.asyncCallsStack ) );
     if( resultError.asyncCallsStack && resultError.asyncCallsStack.length )
     {
@@ -1290,6 +1293,7 @@ function _err( o )
   function sourceCodeForm()
   {
 
+    debugger;
     if( o.usingSourceCode )
     if( resultError.sourceCode === undefined )
     {

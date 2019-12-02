@@ -2,11 +2,11 @@
 
 ### Abstract
 
-This article shows the state of the art techniques of handling errors. Poor error reporting technique slows down a software development. Asynchronous errors decrease the readability of error reports even more.
+This article shows the state of the art techniques of handling errors. Poor error reporting technique slows down a software development. Asynchronous errors complicates the problem of generating readable and informative error report.
 
 ### Error
 
-There are several things thrown error could communicate to an engineer:
+There are several things thrown error could possibly communicate to an engineer:
 
 - Calls stack
 - Arguments
@@ -15,13 +15,13 @@ There are several things thrown error could communicate to an engineer:
 - Source code
 - Message
 - Is brief
-- Was logged
-- Was attended
+- Was it logged
+- Was it attended
 - ID
 
-### Example
+### Constructing an error
 
-Source code of the most straightforward example you may see below.
+Use routine `_.err` to construct an error object. Source code of the most straightforward example you may see below.
 
 ``` js
 
@@ -54,7 +54,7 @@ Routine `_.err` constructs an error. This routine expects any number of argument
 
 ### Calls stack
 
-Hardly possible to find a programming language that ship that from the box. Stack of calls in the error report is useful to locate the location in source code where the error was thrown.
+Hardly possible to find a programming language which ships that from the box. Stack of calls in the error report is useful to locate the location in source code where the error was thrown.
 
 In our implementation, calls stack is stored in the `callsStack` field of an error.
 
@@ -68,7 +68,7 @@ Our implementation does not include arguments of calls in an error report.
 
 Most programs are asynchronous. That’s why knowing the current state of the call stack could be not quite useful. Gathering information about asynchronous calls decreases performance.
 
-```js
+``` js
 function a()
 {
   console.log( 'inside f' );
@@ -90,7 +90,7 @@ Our implementation has limited and experimental support of asynchronous calls st
 
 `Try block` catches thrown error from the code in the block. Catching an error `try block` puts a record about its location in the trows stack and throws it to the next `try block`. It makes it calling routine `_.err`. That's how we get a stack of throws. Its length is always shorter or equal than calls stack. The first element of the stack is the location where the error was thrown initially, and each other locations were rethrown. Throws stack gives information about order and locations in code where an error was caught.
 
-```js
+``` js
 
 function decrement( i )
 {
@@ -145,7 +145,7 @@ In our implementation routine `_.err` produces an error from arguments, and if a
 
 Here you may see example of proper message amending.
 
-```js
+``` js
 function decrement( i )
 {
   try
@@ -283,7 +283,7 @@ There are 4 mechanisms of catching an error in JS depending on the source of an 
 
 The first mechanism is straightforward, `try block` catches a synchronous error, and its corresponding `catch block` handle the error.
 
-```js
+``` js
 try
 {
   throw _.err( 'Error!' );
@@ -300,7 +300,7 @@ Nothing special about the code. Routine `_.err` constructs an error.
 
 Asynchronous catching takes place in asynchronous code.
 
-```js
+``` js
 consequence
 .then( function decrement( arg )
 {
@@ -326,7 +326,7 @@ In this example, errors are thrown by either `callback decrement` or `callback d
 
 Both browser and Nodejs, as well as most programming environments, provide a mechanism to handle the unattended error. If `try blocks` fail to process it and there is no `try block` left in the stack, then the error will become unhandled.
 
-```js
+``` js
 process.on( 'uncaughtException', function( err )
 {
 })
@@ -334,7 +334,7 @@ process.on( 'uncaughtException', function( err )
 
 Nodejs let developers catch such errors with code above.
 
-```js
+``` js
 window.onerror = function( err )
 {
 }

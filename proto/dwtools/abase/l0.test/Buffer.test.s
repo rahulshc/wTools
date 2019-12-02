@@ -8608,17 +8608,17 @@ var Self =
   tests :
   {
 
-    // // buffer, l0/l6
-    //
-    // bufferRawIs,
-    // bufferTypedIs,
-    // bufferNodeIs,
-    // bufferViewIs,
-    //
-    // // buffer, l0/l8
-    //
-    // bufferMake,
-    // bufferMakeUndefined,
+    // buffer, l0/l6
+
+    bufferRawIs,
+    bufferTypedIs,
+    bufferNodeIs,
+    bufferViewIs,
+
+    // buffer, l0/l8
+
+    bufferMake,
+    bufferMakeUndefined,
 
     bufferFrom,
     bufferRawFromTyped,
@@ -8626,29 +8626,28 @@ var Self =
     bufferBytesFrom,
     bufferNodeFrom,
 
-    // xxx
-    // bufferBut,
-    // bufferButInplace,
-    // bufferBut_,
-    // bufferSelect,
-    // bufferSelectInplace,
-    // bufferSelect_,
-    // bufferGrow,
-    // bufferGrowInplace,
-    // bufferGrow_,
-    // bufferRelength,
-    // bufferRelengthInplace,
-    // bufferRelength_,
-    // bufferRelen,
-    // bufferResize,
-    // bufferResizeInplace,
-    // bufferResize_,
-    // bufferRetype,
-    //
-    // bufferJoin,
-    //
-    // bufferLeft,
-    // bufferRight,
+    bufferBut,
+    bufferButInplace,
+    bufferBut_,
+    bufferSelect,
+    bufferSelectInplace,
+    bufferSelect_,
+    bufferGrow,
+    bufferGrowInplace,
+    bufferGrow_,
+    bufferRelength,
+    bufferRelengthInplace,
+    bufferRelength_,
+    bufferRelen,
+    bufferResize,
+    bufferResizeInplace,
+    bufferResize_,
+    bufferRetype,
+
+    bufferJoin,
+
+    bufferLeft,
+    bufferRight,
 
   }
 

@@ -3,13 +3,13 @@ program();
 function program()
 {
 
-  let _ = require( '../../Tools.s' );
+  let _ = require( '../..' );
   _.include( 'wFiles' );
 
   _.time.out( 100, function timeOut1()
   {
     console.log( 'sourcePath::timeout ' + _.procedure.activeProcedure._sourcePath ); debugger;
-    throw 'timeOut1';
+    throw _.err( 'timeOut1' );
   });
 
   console.log( 'sourcePath::program ' + _.procedure.activeProcedure._sourcePath );
