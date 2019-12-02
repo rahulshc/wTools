@@ -946,8 +946,8 @@ function errOriginalStack( err )
   if( err[ stackSymbol ] )
   return err[ stackSymbol ];
 
-  // if( err.stackCondensed )
-  // return err.stackCondensed;
+  // if( err.beautifiedStack )
+  // return err.beautifiedStack;
 
   return _.diagnosticStack( err.stack );
 }
@@ -1017,7 +1017,7 @@ function _err( o )
   let errors = [];
   let attended = false;
   let logged = false;
-  let stackCondensed = '';
+  let beautifiedStack = '';
   let message = null;
 
   /* algorithm */
@@ -1186,7 +1186,7 @@ function _err( o )
     if( !o.throwenCallsStack )
     o.throwenCallsStack = resultError.stack = o.fallBackStack;
 
-    stackCondensed = o.throwenCallsStack;
+    beautifiedStack = o.throwenCallsStack;
 
     // if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
     // o.asyncCallsStack = resultError.asyncCallsStack || null;
@@ -1207,12 +1207,12 @@ function _err( o )
     _.assert( o.asyncCallsStack === null || _.arrayIs( o.asyncCallsStack ) );
     if( o.asyncCallsStack && o.asyncCallsStack.length )
     {
-      stackCondensed += '\n\n' + o.asyncCallsStack.join( '\n\n' );
+      beautifiedStack += '\n\n' + o.asyncCallsStack.join( '\n\n' );
     }
 
-    _.assert( _.strIs( stackCondensed ) );
+    _.assert( _.strIs( beautifiedStack ) );
     if( o.stackCondensing )
-    stackCondensed = _.diagnosticStackCondense( stackCondensed );
+    beautifiedStack = _.diagnosticStackCondense( beautifiedStack );
 
   }
 
@@ -1405,7 +1405,7 @@ function _err( o )
     let result = '';
 
     sectionWrite( 'message', `Message of error#${id}`, originalMessage );
-    sectionWrite( 'callsStack', o.stackCondensing ? 'Condensed calls stack' : 'Calls stack', stackCondensed );
+    sectionWrite( 'callsStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', beautifiedStack );
     sectionWrite( 'throwsStack', `Throws stack`, throwsStack );
 
     if( o.isProcess && _.process && _.process.entryPointInfo )
@@ -1480,7 +1480,7 @@ function _err( o )
     nonenumerable( 'message', message );
     nonenumerable( 'originalMessage', originalMessage );
     logging( 'stack', message );
-    nonenumerable( 'callsStack', stackCondensed );
+    nonenumerable( 'callsStack', beautifiedStack );
     nonenumerable( 'throwenCallsStack', o.throwenCallsStack );
     nonenumerable( 'throwsStack', throwsStack );
     nonenumerable( 'asyncCallsStack', o.asyncCallsStack );

@@ -43,7 +43,7 @@ Such a source code outputs the log below.
 = Message of error#1
    Simplest error sample
 
-= Condensed calls stack
+= Beautified calls stack
    at Object.<anonymous> (/Simplest.js:4:11)
 
 = Throws stack
@@ -58,9 +58,13 @@ Hardly possible to find a programming language which ships that from the box. St
 
 In our implementation, calls stack is stored in the `callsStack` field of an error.
 
-### Arguments
+### Stack with arguments
 
-Just knowing which functions were called is good. Knowing what arguments were used gives much more information about an error. There are two obstacles to include such information in an error report. It’s challenging to implement the feature in JS without dramatical performance overhead. Another challenge is formatting text derived from the arguments which have arbitrary data structure.
+Just knowing which functions were called is good. Knowing what arguments were used gives much more information about the state. There are two obstacles to include such information in an error report. It’s challenging to implement the feature in JS without dramatical performance overhead. Another challenge is formatting text derived from the arguments which have arbitrary data structure.
+
+![Calls stack with arguments](../../img/callsStackArguments/CallsStackArguments.png)
+
+On the diagram above you may see how stack with embedded arguments could look like comparing to ordinary stack.
 
 Our implementation does not include arguments of calls in an error report.
 
@@ -69,26 +73,74 @@ Our implementation does not include arguments of calls in an error report.
 Most programs are asynchronous. That’s why knowing the current state of the call stack could be not quite useful. Gathering information about asynchronous calls decreases performance.
 
 ``` js
-function a()
+function program()
 {
-  console.log( 'inside f' );
-  consequence.then( function b()
+  let consequence = new _.Consequence();
+  consequence.then( function asyncCallback( arg )
   {
     if( arg >= 0 )
     return arg-1;
     else
     throw _.err( 'Example' );
   });
+  consequence.take( -1 );
 }
 ```
 
-It would be useful to have in the error report of error thrown from `routine b` calls stack of `routine a`.
+It would be useful to have in the report of error thrown from `routine asyncCallback` calls stack of `routine program`.
+
+```
+
+ = Message of error#1
+    Example
+
+ = Beautified calls stack
+    at wConsequence.asyncCallback (AsyncStack2.js:16:13)
+    at wConsequence.take (Consequence.s:2900:8)
+    at program (AsyncStack2.js:18:15)
+    at Object.<anonymous> (AsyncStack2.js:6:1)
+    at Module._compile (internal/modules/cjs/loader.js:777:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
+    at Module.load (internal/modules/cjs/loader.js:643:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:840:10)
+    at internal/main/run_main_module.js:17:11
+
+    at program (AsyncStack2.js:11:15)
+    at Object.<anonymous> (AsyncStack2.js:6:1)
+    at Module._compile (internal/modules/cjs/loader.js:777:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
+    at Module.load (internal/modules/cjs/loader.js:643:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:840:10)
+    at internal/main/run_main_module.js:17:11
+
+ = Throws stack
+    thrown at wConsequence.asyncCallback @ AsyncStack2.js:16
+    thrown at attend @ abase\l0\l9\Setup.s:94
+    thrown at errLog @ abase\l0\l9\Setup.s:57
+    thrown at errLog @ abase\l0\l9\Setup.s:59
+
+ = Process
+    Current path : C:\example
+    Exec path : C:\Program Files\nodejs\node.exe AsyncStack2.js
+
+ = Source code from AsyncStack2.js:16
+      14 :     return arg-1;
+      15 :     else
+    * 16 :     throw _.err( 'Example' );
+      17 :   });
+      18 :   consequence.take( -1 );
+
+```
+
+That code produces such error report. Asynchronous calls stack goes just after synchronous calls stack. Top of asynchronous stack is `at program (AsyncStack2.js:11:15)`.
 
 Our implementation has limited and experimental support of asynchronous calls stack in error reports.
 
 ### Throws stack
 
-`Try block` catches thrown error from the code in the block. Catching an error `try block` puts a record about its location in the trows stack and throws it to the next `try block`. It makes it calling routine `_.err`. That's how we get a stack of throws. Its length is always shorter or equal than calls stack. The first element of the stack is the location where the error was thrown initially, and each other locations were rethrown. Throws stack gives information about order and locations in code where an error was caught.
+Throws stack gives information about order and locations in code of throws of an error. `Try block` catches thrown error from the code in the block. Catching an error `try block` puts a record about its location in the throws stack and throws it. The next `try block` can catch it again. It can either rethrow it or log it. Routine `_.err` is helpful to either rethrow error or log it. The routine appends the stack of throws with the new location. That's how we get a stack of throws. It could be useful to track chain of `try blocks`. Its length is always shorter or equal than calls stack. The first element of the stack is the location where the error was thrown initially, and each other locations were rethrown.
 
 ``` js
 
@@ -127,15 +179,34 @@ divide( 0 );
 This example throws error at line `throw _.err( 'odd!' )`. Line `throw _.err( err, '\nFailed to decrement' )` rethrow the error. Information about that is added to error by routine `_.err`. Same thing happen at line `throw _.err( err, '\nFailed to divide' )`.
 
 ```
+= Message of error#1
+   negative!
+   Failed to decrement
+   Failed to divide
+
+= Beautified calls stack
+   at decrement (ThrowsStack.js:6:13)
+   at divide (ThrowsStack.js:21:12)
+   at Object.<anonymous> (ThrowsStack.js:29:1)
+   at Module._compile (internal/modules/cjs/loader.js:777:30)
+   at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
+   at Module.load (internal/modules/cjs/loader.js:643:32)
+   at Function.Module._load (internal/modules/cjs/loader.js:556:12)
+   at Function.Module.runMain (internal/modules/cjs/loader.js:840:10)
+   at internal/main/run_main_module.js:17:11
+
 = Throws stack
-   caught at decrement @ /CatchStack.js:6
-   caught at decrement @ /CatchStack.js:11
-   caught at divide @ /CatchStack.js:25
+   thrown at decrement @ ThrowsStack.js:6
+   thrown at decrement @ ThrowsStack.js:11
+   thrown at divide @ ThrowsStack.js:25
+   thrown at attend @ abase\l0\l9\Setup.s:94
+   thrown at errLog @ abase\l0\l9\Setup.s:57
+   thrown at errLog @ abase\l0\l9\Setup.s:59
 ```
 
 Above, you may see throws stack of the sample.
 
-Our implementation collects throws into a stack.
+Our implementation collects throws into a stack. In current implementation throws stacks has its own section. But in smarter implementation throws stack could be integrated in calls stack. It's possible to decrease length of error report merging information of two stack into one section.
 
 ### Message
 
@@ -354,7 +425,7 @@ Browser let developer catch such errors with code above.
     Failed to decrement
     Failed to divide
 
- = Condensed calls stack
+ = Beautified calls stack
     at decrement (/Once.js:7:13)
     at divide (/Once.js:25:12)
     at Object.<anonymous> (/Once.js:36:1)

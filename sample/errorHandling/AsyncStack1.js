@@ -1,10 +1,11 @@
+
+let _ = require( '../..' );
+_.include( 'wFiles' );
+
 program();
 
 function program()
 {
-
-  let _ = require( '../..' );
-  _.include( 'wFiles' );
 
   _.time.out( 100, function timeOut1()
   {
