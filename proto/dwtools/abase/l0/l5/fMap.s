@@ -1453,7 +1453,7 @@ function mapSupplement( dstMap, srcMap )
 //       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
 //       {
 //         debugger;
-//         throw Error( Source map should have only primitive elements, but have ' + _.strType( srcMap ) + `${ _.strQuote( s ) }` );
+//         throw Error( Source map should have only primitive elements, but have ' + _.strType( srcMap ) + `"${ s }"` );
 //       }
 //       dstMap[ s ] = srcMap[ s ];
 //     }

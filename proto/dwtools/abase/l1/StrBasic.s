@@ -1934,7 +1934,7 @@ function strSplitsCoupledGroup( o )
     else if( _.regexpsTestAny( o.postfix, element ) )
     {
       if( begins.length === 0 && !o.allowingUncoupledPostfix )
-      throw _.err( _.strQuote( element ), 'does not have complementing openning\n' );
+      throw _.err( `"${ element }" does not have complementing openning\n` );
 
       if( begins.length === 0 )
       continue;
@@ -1955,7 +1955,7 @@ function strSplitsCoupledGroup( o )
   if( begins.length && !o.allowingUncoupledPrefix )
   {
     debugger;
-    throw _.err( _.strQuote( begins[ begins.length-1 ] ), 'does not have complementing closing\n' );
+    throw _.err( `"${ begins[ begins.length-1 ] }" does not have complementing closing\n` );
   }
 
   return o.splits;
