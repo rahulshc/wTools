@@ -2622,6 +2622,8 @@ function strQuoteAnalyze( test )
 
 function strInsideOf( test )
 {
+  test.open( 'string' );
+
   test.case = 'src - empty string, begin - empty string, end - empty string';
   var got = _.strInsideOf( '', '', '' );
   test.identical( got, '' );
@@ -2697,6 +2699,168 @@ function strInsideOf( test )
   test.case = 'src - string, equals inside string, begin - !!!, end - !!!';
   var got = _.strInsideOf( 'str!!!str!!!str', '!!!', '!!!' );
   test.identical( got, false );
+
+  test.close( 'string' );
+
+  /* - */
+
+  test.open( 'array' );
+
+  test.case = 'src - empty string, begin - empty strings, end - empty strings';
+  var got = _.strInsideOf( '', [ '', '', '' ], [ '', '', '' ] );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, begin - empty strings, end - !!!';
+  var got = _.strInsideOf( '', [ '', '' ], [ '!!!', '!!!' ] );
+  test.identical( got, false );
+
+  test.case = 'src - empty string, begin - !!!, end - empty strings';
+  var got = _.strInsideOf( '', [ '!!!', '!!!' ], [ '', '' ] );
+  test.identical( got, false );
+
+  test.case = 'src - empty string, begin - !!!, end - !!!';
+  var got = _.strInsideOf( '', [ '!!!', '!!!' ], [ '!!!', '!!!' ] );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'src - string, begin - empty strings, end - empty strings';
+  var got = _.strInsideOf( 'str', [ '', '', '' ], [ '', '', '' ] );
+  test.identical( got, 'str' );
+
+  test.case = 'src - string, begin - empty string, end - mixed, not equal';
+  var got = _.strInsideOf( 'str', [ '' ], [ '!!!', 'q', 'b' ] );
+  test.identical( got, false );
+
+  test.case = 'src - string, begin - mixed, not equal, end - empty string';
+  var got = _.strInsideOf( 'str', [ '!!!', 'q', 'b' ], [ '' ] );
+  test.identical( got, false );
+
+  test.case = 'src - string, begin - mixed, not equal, end - mixed, not equal';
+  var got = _.strInsideOf( 'str', [ '!!!', 'q', 'b' ], [ '!!!', 'q', 'b' ] );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'src - string, almost equal, begin - empty string, end - mix';
+  var got = _.strInsideOf( '!!!str!!!', [ '' ], [ '!', '!!', '!!!' ] );
+  test.identical( got, '!!!str!!' );
+
+  test.case = 'src - string, almost equal, begin - mixed, end - empty string';
+  var got = _.strInsideOf( '!!!str!!!', [ '!', '!!', '!!!' ], [ '' ] );
+  test.identical( got, '!!str!!!' );
+
+  test.case = 'src - string, almost equal, begin - mixed, end - mixed';
+  var got = _.strInsideOf( '!!!str!!!', [ '!', '!!', '!!!' ], [ '!', '!!', '!!!' ] );
+  test.identical( got, '!!str!!' );
+
+  /* */
+
+  test.case = 'src - string, little difference, begin - empty string, end - mixed';
+  var got = _.strInsideOf( '!!str!!', [ '' ], [ '!!!', '!!' ] );
+  test.identical( got, '!!str' );
+
+  test.case = 'src - string, little difference, begin - mixed, end - empty string';
+  var got = _.strInsideOf( '!!str!!', [ '!!!', '!!' ], [ '' ] );
+  test.identical( got, 'str!!' );
+
+  test.case = 'src - string, little difference, begin - mixed, end - mixed';
+  var got = _.strInsideOf( '!!str!!', [ '!!!', '!!' ], [ '!!!', '!!' ] );
+  test.identical( got, 'str' );
+
+  /* */
+
+  test.case = 'src - string, equals inside string, begin - empty string, end - mixed';
+  var got = _.strInsideOf( 'str!!!str!!!str', [ '' ], [ '!!!', 'str' ] );
+  test.identical( got, 'str!!!str!!!' );
+
+  test.case = 'src - string, equals inside string, begin - mixed, end - empty string';
+  var got = _.strInsideOf( 'str!!!str!!!str', [ '!!!', 'str' ], [ '' ] );
+  test.identical( got, '!!!str!!!str' );
+
+  test.case = 'src - string, equals inside string, begin - mixed, end - mixed';
+  var got = _.strInsideOf( 'str!!!str!!!str', [ '!!!', 'str' ], [ '!!!', 'str' ] );
+  test.identical( got, '!!!str!!!' );
+
+  test.close( 'array' );
+
+  /* - */
+
+  test.open( 'mixed' );
+
+  test.case = 'src - empty string, begin - empty strings, end - empty strings';
+  var got = _.strInsideOf( '', [ '', '', '' ], '' );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, begin - empty string, end - !!!';
+  var got = _.strInsideOf( '', '', [ '!!!', '!!!' ] );
+  test.identical( got, false );
+
+  test.case = 'src - empty string, begin - !!!, end - empty string';
+  var got = _.strInsideOf( '', [ '!!!', '!!!' ], '' );
+  test.identical( got, false );
+
+  test.case = 'src - empty string, begin - !!!, end - !!!';
+  var got = _.strInsideOf( '', [ '!!!', '!!!' ], '!!!' );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'src - string, begin - empty string, end - mixed, not equal';
+  var got = _.strInsideOf( 'str', '', [ '!!!', 'q', 'b' ] );
+  test.identical( got, false );
+
+  test.case = 'src - string, begin - mixed, not equal, end - empty string';
+  var got = _.strInsideOf( 'str', [ '!!!', 'q', 'b' ], '' );
+  test.identical( got, false );
+
+  test.case = 'src - string, begin - mixed, not equal, end - string, not equal';
+  var got = _.strInsideOf( 'str', [ '!!!', 'q', 'b' ], 'q' );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'src - string, almost equal, begin - empty string, end - mix';
+  var got = _.strInsideOf( '!!!str!!!', '', [ '!', '!!', '!!!' ] );
+  test.identical( got, '!!!str!!' );
+
+  test.case = 'src - string, almost equal, begin - mixed, end - empty string';
+  var got = _.strInsideOf( '!!!str!!!', [ '!', '!!', '!!!' ], '' );
+  test.identical( got, '!!str!!!' );
+
+  test.case = 'src - string, almost equal, begin - string, end - mixed';
+  var got = _.strInsideOf( '!!!str!!!', '!!!', [ '!', '!!', '!!!' ] );
+  test.identical( got, 'str!!' );
+
+  /* */
+
+  test.case = 'src - string, little difference, begin - empty string, end - mixed';
+  var got = _.strInsideOf( '!!str!!', '', [ '!!!', '!!' ] );
+  test.identical( got, '!!str' );
+
+  test.case = 'src - string, little difference, begin - mixed, end - empty string';
+  var got = _.strInsideOf( '!!str!!', [ '!!!', '!!' ], '' );
+  test.identical( got, 'str!!' );
+
+  test.case = 'src - string, little difference, begin - mixed, end - string';
+  var got = _.strInsideOf( '!!str!!', [ '!!!', '!!' ], '!!' );
+  test.identical( got, 'str' );
+
+  /* */
+
+  test.case = 'src - string, equals inside string, begin - empty string, end - mixed';
+  var got = _.strInsideOf( 'str!!!str!!!str', '', [ '!!!', 'str' ] );
+  test.identical( got, 'str!!!str!!!' );
+
+  test.case = 'src - string, equals inside string, begin - mixed, end - empty string';
+  var got = _.strInsideOf( 'str!!!str!!!str', [ '!!!', 'str' ], '' );
+  test.identical( got, '!!!str!!!str' );
+
+  test.case = 'src - string, equals inside string, begin - mixed, end - string';
+  var got = _.strInsideOf( 'str!!!str!!!str', [ '!!!', 'str' ], '!!!' );
+  test.identical( got, false );
+
+  test.close( 'mixed' );
 
   /* - */
 
