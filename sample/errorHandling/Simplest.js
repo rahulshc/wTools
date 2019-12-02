@@ -1,4 +1,6 @@
 let _ = require( '../..' );
+// _.include( 'wFiles' );
+// uncomment to have source code in error report
 
 try
 {

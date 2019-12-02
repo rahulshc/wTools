@@ -1293,7 +1293,6 @@ function _err( o )
   function sourceCodeForm()
   {
 
-    debugger;
     if( o.usingSourceCode )
     if( resultError.sourceCode === undefined )
     {

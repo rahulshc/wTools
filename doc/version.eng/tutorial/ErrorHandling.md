@@ -2,7 +2,7 @@
 
 ### Abstract
 
-This article shows the state of the art techniques of handling errors. Poor error reporting technique slows down a software development. Asynchronous errors complicates the problem of generating readable and informative error report.
+This article shows the state of the art techniques of handling errors. Poor error reporting technique slows down software development. Asynchronous errors complicate the problem of generating a readable and informative error report.
 
 ### Error
 
@@ -27,7 +27,7 @@ Use routine `_.err` to construct an error object. Source code of the most straig
 
 try
 {
-  throw _.err( 'Simplest error sample' );
+  throw _.err( 'Simplest error example' );
 }
 catch( err )
 {
@@ -37,11 +37,11 @@ catch( err )
 
 ```
 
-Such a source code outputs the log below.
+Such a program outputs the log below.
 
 ```
 = Message of error#1
-   Simplest error sample
+   Simplest error example
 
 = Beautified calls stack
    at Object.<anonymous> (/Simplest.js:4:11)
@@ -54,7 +54,7 @@ Routine `_.err` constructs an error. This routine expects any number of argument
 
 ### Calls stack
 
-Hardly possible to find a programming language which ships that from the box. Stack of calls in the error report is useful to locate the location in source code where the error was thrown.
+Hardly possible to find a programming language that ships that from the box. Stack of calls in the error report is useful to locate the location in source code where the error was thrown.
 
 In our implementation, calls stack is stored in the `callsStack` field of an error.
 
@@ -64,7 +64,7 @@ Just knowing which functions were called is good. Knowing what arguments were us
 
 ![Calls stack with arguments](../../img/callsStackArguments/CallsStackArguments.png)
 
-On the diagram above you may see how stack with embedded arguments could look like comparing to ordinary stack.
+On the diagram above, you may see how stack with embedded arguments could look like compared to ordinary stack.
 
 Our implementation does not include arguments of calls in an error report.
 
@@ -124,13 +124,15 @@ It would be useful to have in the report of error thrown from `routine asyncCall
 
 ```
 
-That code produces such error report. Asynchronous calls stack goes just after synchronous calls stack. Top of asynchronous stack is `at program (AsyncStack2.js:11:15)`.
+That code produces such an error report. Asynchronous calls stack goes just after synchronous calls stack. Top of the asynchronous stack is `at program (AsyncStack2.js:11:15)`.
+
+Native built-in algorithm of gathering async stack does not work properly for consequences, and it produces stack for time out calls which difficult to read. In Nodes, such stack has many calls of irrelevant internal routines.
 
 Our implementation has limited and experimental support of asynchronous calls stack in error reports.
 
 ### Throws stack
 
-Throws stack gives information about order and locations in code of throws of an error. `Try block` catches thrown error from the code in the block. Catching an error `try block` puts a record about its location in the throws stack and throws it. The next `try block` can catch it again. It can either rethrow it or log it. Routine `_.err` is helpful to either rethrow error or log it. The routine appends the stack of throws with the new location. That's how we get a stack of throws. It could be useful to track chain of `try blocks`. Its length is always shorter or equal than calls stack. The first element of the stack is the location where the error was thrown initially, and each other locations were rethrown.
+Throws stack gives information about order and locations in the source code of throws of an error. `Try block` catches thrown error from the code in the block. Catching an error `try block` puts a record about its location in the throws stack and throws it. The next `try block` can catch it again. It can either rethrow it or log it. Routine `_.err` is helpful to either rethrow error or log it. The routine appends the stack of throws with the new location. That's how we get a stack of throws. It could be useful to track the propagation of an error in the chain of `try blocks`. Its length is always shorter or equal than calls stack. The first element of the stack is the location where the error was thrown initially, and each other locations were rethrown.
 
 ``` js
 
@@ -186,17 +188,17 @@ This example throws error at line `throw _.err( 'odd!' )`. Line `throw _.err( er
 
 ```
 
-Above, you may see fragment of error report with throws stack of the example.
+Above, you may see a fragment of error report with throws stack of the example.
 
-Our implementation collects throws into a stack. In current implementation throws stacks has its own section. But in smarter implementation throws stack could be integrated into calls stack. It's possible to decrease length of error report merging information of two stack into one section.
+Our implementation collects throws into a stack. In the current implementation, throws stack has its own section. But in smarter implementation, throws stack could be integrated into calls stack. It's possible to decrease the length of error report merging information of two stacks into one section.
 
 ### Message
 
-A developer can communicate information about the expected behavior of an algorithm writing explanation in the message of an error. A developer can add extra dynamic information, which is not included in the error report automatically. Most often, a chain of `try block` rethrow the same error multiple times, appending a message with extra information in the same manner as throws stack is appended by the location where the error is rethrown. It does not happen automatically, a developer should define a new message explicitly. However, a developer can get assistance in concatenating a message from substring or entities of different types.
+A developer can communicate information about the expected behavior of an algorithm writing explanation in the message of an error. A developer can add extra dynamic information, which is not included in the error report automatically. Most often, a chain of `try block` rethrow the same error multiple times, appending a message with extra information in the same manner as throws stack is appended by the location where the error is rethrown. It does not happen automatically, and a developer should define a new message explicitly. However, a developer can get assistance in concatenating a message from substrings or entities of different types.
 
 In our implementation routine `_.err` produces an error from arguments, and if any of the arguments were an error, then the routine reuse the error instead of creating new error, amending it.
 
-Here you may see example of proper message amending.
+Here you may see an example of proper message amending.
 
 ``` js
 function decrement( i )
@@ -240,14 +242,13 @@ Line `throw _.err( 'negative!' )` throws an error. Line `throw _.err( err, '\nFa
    Failed to divide
 ```
 
-Above, you may see fragment of error report with logged message.
+Above, you may see a fragment of error report with the logged message.
 
 ### Statefulness of an error
 
-Nobody wants to see duplicates of an error in a log. Right? If a program has chains of `try blocks` it can happen. How to avoid it? The handy technique is the statefulness of an error object. Changing a field of an error logging will make it possible to get a clear and confident answer on the question: "was the error logged?"
+Nobody wants to see duplicates of an error in a log. Right? If a program has chains of `try blocks` it can happen. How to avoid it? The handy technique is the statefulness of an error object. Changing a field of an error object will make it possible to answer confidently on the question: "was the error logged?"
 
 ``` js
-
 function decrement( i )
 {
   try
@@ -275,18 +276,27 @@ function divide( i )
   }
   catch( err )
   {
-    err = _.err( err, '\nFailed to divide' );
+    err = _.err( err );
     if( _.errOnce( err ) )
     console.log( err );
     throw err;
   }
 }
 
-divide( 0 );
+try
+{
+  divide( 0 );
+}
+catch( err )
+{
+  err = _.err( err );
+  if( _.errOnce( err ) )
+  console.log( err );
+}
 
 ```
 
-In the sample above, you may see that both `catch blocks` tries to log error. But only the first executed `catch block` does it because the error has a state which is changed by routine `_.errOnce`. In the output, you will see only one error, no duplicates.
+In the example above, you may see that both `catch blocks` tries to log error. But only the first executed `catch block` does it because the error has a state which is changed by routine `_.errOnce`. In the output, you will see only one error, no duplicates.
 
 ```
 = Message of error#1
@@ -305,9 +315,9 @@ In the sample above, you may see that both `catch blocks` tries to log error. Bu
    thrown at decrement @ Once.js:12
 ```
 
-In practice, the field `logged` is not enough. In our implementation, we also have a field `attended`. Accessors of an error help to detect a moment of logging an error.
+In practice, the field `logged` is not enough. In our implementation, we also have a field `attended`. Accessors help to detect a moment of logging an error.
 
-### Command-line user interface
+### Command-line user interface and brief errors
 
 Implementing a command-line user interface ( CLI ) developer often needs to solve the problem of reporting bad input data. A sound error reporting system helps a developer to differentiate errors caused by the mistake of a user and errors caused by the mistake of a developer. End-user doesn't want to see stacks and extra information which are appreciated by the developer.
 
@@ -318,13 +328,13 @@ function decrement( i )
   try
   {
     if( i <= 0 )
-    throw _.errBrief( 'Please, specify positive number.' );
+    throw _.errBrief( 'Please, specify a positive number.' );
     return i-1;
   }
   catch( err )
   {
+    debugger;
     console.log( err );
-    throw err;
   }
 }
 
@@ -332,127 +342,88 @@ decrement( 0 );
 
 ```
 
-Above, you may see a sample. It throws the error constructed with routine `_.errBrief`. The routine set field of the error indicating that the log of the error should have no stack or other extra information.
+Above, you may see an example. It throws the error constructed with routine `_.errBrief`. The routine set field of the error indicating that the log of the error should have no stack or other extra information. The expected output is a single line of text:
 
-Brief errors are other manifestations of the technique explained in section `Statefulness of an error`.
+```
+Please, specify a positive number.
+```
 
-### Tracking of errors
+Brief errors are other manifestations of the technique explained in section [statefulness of an error](#statefulness-of-an-error).
+
+### Tracking of errors and its IDs
 
 Tracking of an error is easy if code is synchronous. But if the program becomes complicated and asynchronous, it is often not easy to understand which error where goes. To make tracking of errors more comfortable, let's add a field ID to error object. Let's log the ID with other diagnostic information. If the ID of an error stays the same from a run to a run of a program, then the developer may use the id to track it.
 
-Brief errors are other manifestations of the technique explained in section `Statefulness of an error`.
+The ID of errors is another manifestation of the technique explained in section [statefulness of an error](#statefulness-of-an-error).
 
-### Mechanisms of catching an error
+### Source code of an error
 
-There are 4 mechanisms of catching an error in JS depending on the source of an error.
-
-- Synchronous catching
-- Asynchronous catching
-- Synchronous unattended catching
-- Asynchronous unattended catching
-
-### Synchronous error
-
-The first mechanism is straightforward, `try block` catches a synchronous error, and its corresponding `catch block` handle the error.
+It's helpful to have a fragment of source code, which is the initiator of throwing the error.
 
 ``` js
 try
 {
-  throw _.err( 'Error!' );
+  throw _.err( 'Simplest error example' );
 }
 catch( err )
 {
   console.log( err );
+  throw err;
 }
-```
-
-Nothing special about the code. Routine `_.err` constructs an error.
-
-### Asynchronous error
-
-Asynchronous catching takes place in asynchronous code.
-
-``` js
-consequence
-.then( function decrement( arg )
-{
-  if( arg <= 0 )
-  throw _.err( 'negative!' );
-  return arg-1;
-})
-.then( function divide( arg )
-{
-  if( arg % 2 === 1 )
-  throw _.err( 'odd!' );
-  return arg*2;
-})
-.catch( ( err ) =>
-{
-  console.log( err );
-})
-```
-
-In this example, errors are thrown by either `callback decrement` or `callback divide` of `Consequence`/`Promise`. This error is handled by `catch callback`.
-
-### Unhandled synchronous error
-
-Both browser and Nodejs, as well as most programming environments, provide a mechanism to handle the unattended error. If `try blocks` fail to process it and there is no `try block` left in the stack, then the error will become unhandled.
-
-``` js
-process.on( 'uncaughtException', function( err )
-{
-})
-```
-
-Nodejs let developers catch such errors with code above.
-
-``` js
-window.onerror = function( err )
-{
-}
-```
-
-Browser let developer catch such errors with code above.
 
 ```
-------------------------------- unhandled error ------------------------------->
 
- = Application
-    Current path : /
-    Exec path : /bin/node /Once.js
+The code above adds source code to the error report if module `Files` were included. Otherwise, the error report is not going to have the section `source code`. Such a program outputs the log below.
 
- = Message of error#1
-    negative!
-    Failed to decrement
-    Failed to divide
+```
+= Message of error#1
+   Simplest error example
 
- = Beautified calls stack
-    at decrement (/Once.js:7:13)
-    at divide (/Once.js:25:12)
-    at Object.<anonymous> (/Once.js:36:1)
+= Beautified calls stack
+   at Object.<anonymous> (/Simplest.js:4:11)
 
- = Throws stack
-    caught at decrement @ /Once.js:7
-    caught at decrement @ /Once.js:12
-    caught at divide @ /Once.js:29
-    caught at handleError @ /Setup.s:148
+= Throws stack
+   caught at Object.? @ /Simplest.js:4
 
-------------------------------- unhandled error -------------------------------<
+= Source code from /Simplest.js:6
+    1 : try
+    2 : {
+  * 3 :   throw _.err( 'Simplest error sample' );
+    4 : }
+    5 : catch( err )
 ```
 
-Above, you may see the log of unhandled error. Such a report may be complemented by extra information such as process arguments, current path, and other useful for debugging data.
+Our implementation adds a fragment of source code to error object and error report.
 
-Don't confuse unattended errors and unhandled errors. One of the possible strategies of handing of unhandled errors is halting an application. Another viable and recommended strategy of handling of unhandled errors is haling only if the error is also unattended.
+### Sections
 
-### Unhandled asynchronous error
+Non-brief error report usually has several sections: message, calls stack, throws stack, source code, and other. Error object has a map of sections with corresponding records. Report generating algorithm use these sections to produce error report you see below.
 
-Similar to unhandled synchronous errors, unhandled asynchronous errors are that which was not handled by `try block`. In the case of asynchronous error, `try block` can be asynchronous too. Mechanism of synchronous unhandled error handling is built in the language. Unlike synchronous variant asynchronous mechanism of synchronous unhandled error handling is done by implementation of `Promise`/`Consequence`.
+```
+= Message of error#1
+   Simplest error example
 
-Don't confuse unattended errors and unhandled errors. One of the possible strategies of handing of unhandled errors is halting an application. Another viable and recommended strategy of handling of unhandled errors is haling only if the error is also unattended.
+= Beautified calls stack
+   at Object.<anonymous> (/example/Simplest.js:4:11)
 
-### Unattended error
+= Throws stack
+   caught at Object.? @ /example/Simplest.js:4
 
-Unattended error is one that didn't get proper handling yet. An unhandled error is one that was caught in handler catching unhandled errors. Unattended error is not the same as an unhandled error.
+= Process
+  Current path : /example
+  Exec path : /bin/node /example/Simplest.js
+
+= Source code from /example/Simplest.js:6
+    1 : try
+    2 : {
+  * 3 :   throw _.err( 'Simplest error sample' );
+    4 : }
+    5 : catch( err )
+```
+
+Field `sections` of error object is the map. Each record of the map has a head and a body. For example, the head of the first section of the log above is `Message of error#1`, and its body is `Simplest error example`. Section `Process` is custom. It is present in error report only if the error was caught by the unhandled error handler. Section `Process` has useful information about the current process.
+
+A developer can add any custom section to the constructed error with the help of option `sections` of routine `_.err`. Such a section will become part of the error report. It is useful, for example, if the error should have a source code of shader or some custom information.
 
 ### Release mode
 
@@ -460,13 +431,13 @@ Performance overhead should be minimized in release mode. Collecting arguments, 
 
 ### Summary
 
-Statefulness of error is preferable because that technique lets solve problems
+Statefulness of error is preferable because that technique lets solve problems:
 
 - Of removing duplicates
 - Of differentiation of user errors and developer errors
 - Of tracking error
 
-An error object can have such fields
+An error object can have such fields:
 
 - Calls stack
 - Arguments
@@ -475,8 +446,8 @@ An error object can have such fields
 - Source code
 - Message
 - Is brief
-- Was logged
-- Was attended
+- Was it logged
+- Was it attended
 - ID
 
 Despite the fact, the article is about JS, these techniques are applicable to other languages.
