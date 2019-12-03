@@ -8724,76 +8724,36 @@ function strLinesStrip( test )
 
 function strLinesNumber( test )
 {
-  var got, expected;
+  test.open( 'arguments' );
 
-  test.case = 'trivial';
+  test.case = 'src - empty string';
+  var got = _.strLinesNumber( '' );
+  var expected = '1 : ';
+  test.identical( got, expected );
 
-  test.case = 'returns the object';
+  test.case = 'src - string without new line symbol';
+  var got = _.strLinesNumber( 'a' );
+  var expected = '1 : a';
+  test.identical( got, expected );
+
+  test.case = 'src - string with new line symbols';
   var got = _.strLinesNumber( 'abc\ndef\nghi' );
   var expected = '1 : abc\n2 : def\n3 : ghi';
   test.identical( got, expected );
 
-  test.case = 'returns the object';
+  test.case = 'src - string, number of strings has different rank';
+  var got = _.strLinesNumber( 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj' );
+  var expected = ' 1 : a\n 2 : b\n 3 : c\n 4 : d\n 5 : e\n 6 : f\n 7 : g\n 8 : h\n 9 : i\n10 : j';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src - empty array';
   var got = _.strLinesNumber( [] );
   var expected = '';
   test.identical( got, expected );
 
-  /* - */
-
-  test.case = 'string';
-
-  /**/
-
-  got = _.strLinesNumber( '' );
-  expected = '1 : ';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'a' );
-  expected = '1 : a';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'a\nb' );
-  expected = '1 : a\n2 : b';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'a\nb', 2 );
-  expected = '2 : a\n3 : b';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( 'line1\nline2\nline3' );
-  expected =
-  [
-    '1 : line1',
-    '2 : line2',
-    '3 : line3',
-  ].join( '\n' );
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strLinesNumber( '\n\n' );
-  var expected =
-  [
-    '1 : ',
-    '2 : ',
-    '3 : ',
-  ].join( '\n' );
-  test.identical( got, expected );
-
-  /* - */
-
-  test.case = 'array';
-
-  /**/
-
+  test.case = 'src - array of lines without new line symbols';
   got = _.strLinesNumber( [ 'line1', 'line2', 'line3' ] );
   expected =
   [
@@ -8801,19 +8761,9 @@ function strLinesNumber( test )
     '2 : line2',
     '3 : line3',
   ].join( '\n' );
+  test.identical( got, expected );
 
-  /**/
-
-  got = _.strLinesNumber( [ 'line', 'line', 'line' ], 2 );
-  expected =
-  [
-    '2 : line',
-    '3 : line',
-    '4 : line',
-  ].join( '\n' );
-
-  /**/
-
+  test.case = 'src - array of lines with new line symbols';
   got = _.strLinesNumber( [ 'line\n', 'line\n', 'line\n' ] );
   expected =
   [
@@ -8821,36 +8771,43 @@ function strLinesNumber( test )
     '2 : line\n',
     '3 : line\n',
   ].join( '\n' );
+  test.identical( got, expected ); 
+
+  test.case = 'src - string, number of strings has different rank';
+  got = _.strLinesNumber( [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ] );
+  expected =
+  [
+    ' 1 : a',
+    ' 2 : b',
+    ' 3 : c',
+    ' 4 : d',
+    ' 5 : e',
+    ' 6 : f',
+    ' 7 : g',
+    ' 8 : h',
+    ' 9 : i',
+    '10 : j',
+  ].join( '\n' );
+  test.identical( got, expected ); 
+
+  test.close( 'arguments' );
 
   /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function( )
-  {
-    _.strLinesNumber();
-  } );
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strLinesNumber() );
 
-  test.case = 'argument is wrong';
-  test.shouldThrowErrorSync( function( )
-  {
-    _.strLinesNumber( 13 );
-  } );
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strLinesNumber( 'str', 2, 'extra' ) );
+  
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.strLinesNumber( 13 ) );
 
-  test.case = 'invalid  argument type';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strLinesNumber( 123 );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strLinesNumber();
-  });
-
+  test.case = 'unnacessary options in map';
+  test.shouldThrowErrorSync( () => _.strLinesNumber( { src : 'a', unnacessary : 1 } ) );
 }
 
 //
