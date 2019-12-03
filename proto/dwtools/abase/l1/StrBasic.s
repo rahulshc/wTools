@@ -4229,8 +4229,8 @@ strLinesNumber.defaults =
 
 /*
 qqq : cover zeroLine | Dmytro : covered
-qqq : cover zeroChar
-qqq : cover onLine
+qqq : cover zeroChar | Dmytro : covered
+qqq : cover onLine | Dmytro : covered
 */
 
 //

@@ -9094,6 +9094,213 @@ function strLinesNumberZeroChar( test )
 
 //
 
+function strLinesNumberOnLine( test )
+{
+  test.open( 'only onLine' );
+
+  test.case = 'src - empty string, onLine appends number of string';
+  var got = _.strLinesNumber( { src : '', onLine : ( e, k ) => e.join( '' ) + ' ' + k } );
+  var expected = '1 :  1';
+  test.identical( got, expected );
+
+  test.case = 'src - string without new line symbol, onLine returns string';
+  var got = _.strLinesNumber( { src : 'a', onLine : ( e, k ) => e.join( '' ) } );
+  var expected = '1 : a';
+  test.identical( got, expected );
+
+  test.case = 'src - string with new line symbols, onLine returns undefined';
+  var got = _.strLinesNumber( { src : 'abc\ndef\nghi', onLine : ( e, k ) => k > 1 ? undefined : e.join( '' ) } );
+  var expected = '1 : abc';
+  test.identical( got, expected );
+
+  test.case = 'src - string, number of strings has different rank, onLine check container';
+  var got = _.strLinesNumber( { src : 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj', onLine : ( e, k, c ) => c.zeroChar ? e.join( '' ) : k + ' : ' + k } );
+  var expected = '1 : 1\n2 : 2\n3 : 3\n4 : 4\n5 : 5\n6 : 6\n7 : 7\n8 : 8\n9 : 9\n10 : 10';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src - empty array, onLine returns key';
+  var got = _.strLinesNumber( { src : [], onLine : ( e, k, c ) => String( k ) } );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - array of lines without new line symbols, onLine returns element';
+  got = _.strLinesNumber( { src : [ 'line1', 'line2', 'line3' ], onLine : ( e, k ) => e.join( '' ) } );
+  expected =
+  [
+    '1 : line1',
+    '2 : line2',
+    '3 : line3',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.case = 'src - array of lines with new line symbols, onLine returns undefined';
+  got = _.strLinesNumber( { src : [ 'line\n', 'line\n', 'line\n' ], onLine : ( e, k ) => k > 1 ? undefined : e.join( '' ) } );
+  expected =
+  [
+    '1 : line\n',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.case = 'src - string, number of strings has different rank, onLine checks container';
+  got = _.strLinesNumber( { src : [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ], onLine : ( e, k, c ) => c.zeroChar ? e.join( '' ) : k + ' : ' + k } );
+  expected =
+  [
+    '1 : 1',
+    '2 : 2',
+    '3 : 3',
+    '4 : 4',
+    '5 : 5',
+    '6 : 6',
+    '7 : 7',
+    '8 : 8',
+    '9 : 9',
+    '10 : 10',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.close( 'only onLine' );
+
+  /* - */
+
+  test.open( 'onLine and zeroLine' );
+
+  test.case = 'src - empty string, onLine appends number of string, zeroLine - 2';
+  var got = _.strLinesNumber( { src : '', zeroLine : 2, onLine : ( e, k ) => e.join( '' ) + ' ' + k } );
+  var expected = '2 :  2';
+  test.identical( got, expected );
+
+  test.case = 'src - string without new line symbol, onLine returns string, zeroLine - 2';
+  var got = _.strLinesNumber( { src : 'a', zeroLine : 2, onLine : ( e, k ) => e.join( '' ) } );
+  var expected = '2 : a';
+  test.identical( got, expected );
+
+  test.case = 'src - string with new line symbols, onLine returns undefined, zeroLine - 2 ';
+  var got = _.strLinesNumber( { src : 'abc\ndef\nghi', zeroLine : 2, onLine : ( e, k ) => k > 2 ? undefined : e.join( '' ) } );
+  var expected = '2 : abc';
+  test.identical( got, expected );
+
+  test.case = 'src - string, number of strings has different rank, onLine check container, zeroLine - 2';
+  var got = _.strLinesNumber( { src : 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj', zeroLine : 2, onLine : ( e, k, c ) => c.zeroChar ? e.join( '' ) : k + ' : ' + k } );
+  var expected = '2 : 2\n3 : 3\n4 : 4\n5 : 5\n6 : 6\n7 : 7\n8 : 8\n9 : 9\n10 : 10\n11 : 11';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src - empty array, onLine returns key, zeroLine - 2';
+  var got = _.strLinesNumber( { src : [], zeroLine : 2, onLine : ( e, k, c ) => String( k ) } );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - array of lines without new line symbols, onLine returns element, zeroLine - 2';
+  got = _.strLinesNumber( { src : [ 'line1', 'line2', 'line3' ], zeroLine : 2, onLine : ( e, k ) => e.join( '' ) } );
+  expected =
+  [
+    '2 : line1',
+    '3 : line2',
+    '4 : line3',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.case = 'src - array of lines with new line symbols, onLine returns undefined, zeroLine - 2';
+  got = _.strLinesNumber( { src : [ 'line\n', 'line\n', 'line\n' ], zeroLine : 2, onLine : ( e, k ) => k > 2 ? undefined : e.join( '' ) } );
+  expected =
+  [
+    '2 : line\n',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.case = 'src - string, number of strings has different rank, onLine checks container, zeroLine - 2';
+  got = _.strLinesNumber( { src : [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ], zeroLine : 2, onLine : ( e, k, c ) => c.zeroChar ? e.join( '' ) : k + ' : ' + k } );
+  expected =
+  [
+    '2 : 2',
+    '3 : 3',
+    '4 : 4',
+    '5 : 5',
+    '6 : 6',
+    '7 : 7',
+    '8 : 8',
+    '9 : 9',
+    '10 : 10',
+    '11 : 11'
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.close( 'onLine and zeroLine' );
+
+  /* - */
+
+  test.open( 'onLine and zeroChar' );
+
+  test.case = 'src - empty string, onLine appends number of string, zeroChar - 2';
+  var got = _.strLinesNumber( { src : '', zeroChar : 2, onLine : ( e, k ) => e.join( '' ) + ' ' + k } );
+  var expected = '1 :  1';
+  test.identical( got, expected );
+
+  test.case = 'src - string without new line symbol, onLine returns string, zeroChar - 2';
+  var got = _.strLinesNumber( { src : 'a', zeroChar : 2, onLine : ( e, k ) => e.join( '' ) } );
+  var expected = '1 : a';
+  test.identical( got, expected );
+
+  test.case = 'src - string with new line symbols, onLine returns undefined, zeroChar - 5';
+  var got = _.strLinesNumber( { src : 'abc\ndef\nghi', zeroChar : 5, onLine : ( e, k ) => k > 2 ? undefined : e.join( '' ) } );
+  var expected = '2 : abc';
+  test.identical( got, expected );
+
+  test.case = 'src - string, number of strings has different rank, onLine check container, zeroChar - 3';
+  var got = _.strLinesNumber( { src : 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj', zeroChar : 2, onLine : ( e, k, c ) => c.zeroChar ? e.join( '' ) : k + ' : ' + k } );
+  var expected = ' 2 : a\n 3 : b\n 4 : c\n 5 : d\n 6 : e\n 7 : f\n 8 : g\n 9 : h\n10 : i\n11 : j';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src - empty array, onLine returns key, zeroChar - 2';
+  var got = _.strLinesNumber( { src : [], zeroChar : 2, onLine : ( e, k, c ) => String( k ) } );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - array of lines without new line symbols, onLine returns element, zeroChar -5 ';
+  got = _.strLinesNumber( { src : [ 'line1', 'line2', 'line3' ], zeroChar : 5, onLine : ( e, k ) => e.join( '' ) } );
+  expected =
+  [
+    '2 : line1',
+    '3 : line2',
+    '4 : line3',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.case = 'src - array of lines with new line symbols, onLine returns undefined, zeroChar - 5';
+  got = _.strLinesNumber( { src : [ 'line\n', 'line\n', 'line\n' ], zeroChar : 5, onLine : ( e, k ) => k > 3 ? undefined : e.join( '' ) } );
+  expected =
+  [
+    '3 : line\n',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.case = 'src - string, number of strings has different rank, onLine checks container, zeroChar - 2';
+  got = _.strLinesNumber( { src : [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ], zeroChar : 2, onLine : ( e, k, c ) => c.zeroChar ? e.join( '' ) : k + ' : ' + k } );
+  expected =
+  [
+    ' 2 : a',
+    ' 3 : b',
+    ' 4 : c',
+    ' 5 : d',
+    ' 6 : e',
+    ' 7 : f',
+    ' 8 : g',
+    ' 9 : h',
+    '10 : i',
+    '11 : j'
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.close( 'onLine and zeroChar' );
+}
+
+//
+
 function strLinesSelect( test )
 {
   var got, expected;
@@ -10471,6 +10678,7 @@ var Self =
     strLinesNumber,
     strLinesNumberZeroLine,
     strLinesNumberZeroChar,
+    strLinesNumberOnLine,
     strLinesSelect,
     strLinesNearest,
     strLinesCount,
