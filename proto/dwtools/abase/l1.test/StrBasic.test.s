@@ -8794,6 +8794,76 @@ function strLinesNumber( test )
 
   /* - */
 
+  test.open( 'map' );
+
+  test.case = 'src - empty string';
+  var got = _.strLinesNumber( { src : '' } );
+  var expected = '1 : ';
+  test.identical( got, expected );
+
+  test.case = 'src - string without new line symbol';
+  var got = _.strLinesNumber( { src : 'a' } );
+  var expected = '1 : a';
+  test.identical( got, expected );
+
+  test.case = 'src - string with new line symbols';
+  var got = _.strLinesNumber( { src : 'abc\ndef\nghi' } );
+  var expected = '1 : abc\n2 : def\n3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'src - string, number of strings has different rank';
+  var got = _.strLinesNumber( { src : 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj' } );
+  var expected = ' 1 : a\n 2 : b\n 3 : c\n 4 : d\n 5 : e\n 6 : f\n 7 : g\n 8 : h\n 9 : i\n10 : j';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src - empty array';
+  var got = _.strLinesNumber( { src : [] } );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - array of lines without new line symbols';
+  got = _.strLinesNumber( { src : [ 'line1', 'line2', 'line3' ] } );
+  expected =
+  [
+    '1 : line1',
+    '2 : line2',
+    '3 : line3',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.case = 'src - array of lines with new line symbols';
+  got = _.strLinesNumber( { src : [ 'line\n', 'line\n', 'line\n' ] } );
+  expected =
+  [
+    '1 : line\n',
+    '2 : line\n',
+    '3 : line\n',
+  ].join( '\n' );
+  test.identical( got, expected ); 
+
+  test.case = 'src - string, number of strings has different rank';
+  got = _.strLinesNumber( { src : [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ] } );
+  expected =
+  [
+    ' 1 : a',
+    ' 2 : b',
+    ' 3 : c',
+    ' 4 : d',
+    ' 5 : e',
+    ' 6 : f',
+    ' 7 : g',
+    ' 8 : h',
+    ' 9 : i',
+    '10 : j',
+  ].join( '\n' );
+  test.identical( got, expected ); 
+
+  test.close( 'map' );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
