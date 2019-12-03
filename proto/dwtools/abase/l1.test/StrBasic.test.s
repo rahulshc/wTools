@@ -8957,7 +8957,7 @@ function strLinesNumberZeroLine( test )
   test.open( 'map' );
 
   test.case = 'src - empty string, zeroLine - 0';
-  var got = _.strLinesNumber( { src : '', zeroLine : 0  } );
+  var got = _.strLinesNumber( { src : '', zeroLine : 0 } );
   var expected = '0 : ';
   test.identical( got, expected );
 
@@ -9021,23 +9021,75 @@ function strLinesNumberZeroLine( test )
   test.identical( got, expected ); 
 
   test.close( 'map' );
+}
 
-  /* - */
+//
 
-  if( !Config.debug )
-  return;
+function strLinesNumberZeroChar( test )
+{
+  test.case = 'src - empty string, zeroChar - 1';
+  var got = _.strLinesNumber( { src : '', zeroChar : 1 } );
+  var expected = '1 : ';
+  test.identical( got, expected );
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.strLinesNumber() );
+  test.case = 'src - string without new line symbol, zeroChar - 2';
+  var got = _.strLinesNumber( { src : 'a', zeroChar : 2 } );
+  var expected = '1 : a';
+  test.identical( got, expected );
 
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strLinesNumber( 'str', 2, 'extra' ) );
-  
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.strLinesNumber( 13 ) );
+  test.case = 'src - string with new line symbols, zeroChar - 8';
+  var got = _.strLinesNumber( { src : 'abc\ndef\nghi', zeroChar : 8 } );
+  var expected = '3 : abc\n4 : def\n5 : ghi';
+  test.identical( got, expected );
 
-  test.case = 'unnacessary options in map';
-  test.shouldThrowErrorSync( () => _.strLinesNumber( { src : 'a', unnacessary : 1 } ) );
+  test.case = 'src - string, number of strings has different rank, zeroChar - 3';
+  var got = _.strLinesNumber( { src : 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj', zeroChar : 3 } );
+  var expected = ' 3 : a\n 4 : b\n 5 : c\n 6 : d\n 7 : e\n 8 : f\n 9 : g\n10 : h\n11 : i\n12 : j';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'src - empty array, zeroChar - 1';
+  var got = _.strLinesNumber( { src : [], zeroChar : 1 } );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src - array of lines without new line symbols, zeroChar - 10';
+  got = _.strLinesNumber( { src : [ 'line1', 'line2', 'line3' ], zeroChar : 10 } );
+  expected =
+  [
+    '2 : line1',
+    '3 : line2',
+    '4 : line3',
+  ].join( '\n' );
+  test.identical( got, expected );
+
+  test.case = 'src - array of lines with new line symbols, zeroChar - 11';
+  got = _.strLinesNumber( { src : [ 'line\n', 'line\n', 'line\n' ], zeroChar : 11 } );
+  expected =
+  [
+    '5 : line\n',
+    '6 : line\n',
+    '7 : line\n',
+  ].join( '\n' );
+  test.identical( got, expected ); 
+
+  test.case = 'src - string, number of strings has different rank, zeroChar - 6';
+  got = _.strLinesNumber( { src : [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ], zeroChar : 6 } );
+  expected =
+  [
+    ' 4 : a',
+    ' 5 : b',
+    ' 6 : c',
+    ' 7 : d',
+    ' 8 : e',
+    ' 9 : f',
+    '10 : g',
+    '11 : h',
+    '12 : i',
+    '13 : j',
+  ].join( '\n' );
+  test.identical( got, expected ); 
 }
 
 //
@@ -9430,7 +9482,7 @@ function strLinesSelect( test )
 
   /* */
 
-  var expected = ' 1 : a\n*2 : b';
+  var expected = '  1 : a\n* 2 : b';
   var got = _.strLinesSelect
   ({
     src,
@@ -10418,6 +10470,7 @@ var Self =
     strLinesStrip,
     strLinesNumber,
     strLinesNumberZeroLine,
+    strLinesNumberZeroChar,
     strLinesSelect,
     strLinesNearest,
     strLinesCount,
