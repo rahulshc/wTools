@@ -3545,210 +3545,397 @@ function strRemoveBegin( test )
 
 function strRemoveEnd( test )
 {
-  var got, expected;
+  test.open( 'src - string, end - string' );
 
-  test.case = 'returns string with removed occurrence from end';
-  var got = _.strRemoveEnd( 'example','mple' );
-  var expected = 'exa';
+  test.case = 'empty string : empty string';
+  var got = _.strRemoveEnd( '', '' );
+  var expected = '';
   test.identical( got, expected );
 
-  test.case = 'returns original if no occurrence found ';
-  var got = _.strRemoveEnd( 'example','' );
-  var expected = 'example';
+  test.case = 'empty string : x';
+  var got = _.strRemoveEnd( '', 'x' );
+  var expected = '';
   test.identical( got, expected );
 
-  test.case = 'returns original if occurrence is not at the end ';
-  var got = _.strRemoveEnd( 'example','exa' );
-  var expected = 'example';
+  test.case = 'string : empty string';
+  var got = _.strRemoveEnd( 'abc', '' );
+  var expected = 'abc';
   test.identical( got, expected );
+
+  test.case = 'include end';
+  var got = _.strRemoveEnd( 'abc', 'c' );
+  var expected = 'ab';
+  test.identical( got, expected );
+
+  test.case = 'include end, end.length < src.length';
+  var got = _.strRemoveEnd( 'abc', 'bc' );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'include end, end.length === src.length';
+  var got = _.strRemoveEnd( 'abc', 'abc' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'not include end';
+  var got = _.strRemoveEnd( 'abc', 'd' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'end equal to end, not include';
+  var got = _.strRemoveEnd( 'abc', 'ab' );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.close( 'src - string, end - string' );
 
   /* - */
 
-  test.case = 'other';
+  test.open( 'src - string, end - array of strings' );
 
-  /**/
-
-  got = _.strRemoveEnd( '', '' );
-  expected = '';
+  test.case = 'empty string : empty strings';
+  var got = _.strRemoveEnd( '', [ '', '', '' ] );
+  var expected = '';
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( '', 'x' );
-  expected = '';
+  test.case = 'empty string : strings';
+  var got = _.strRemoveEnd( '', [ 'x', 'a', 'abc' ] );
+  var expected = '';
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'abc', 'c' );
-  expected = 'ab';
+  test.case = 'string : empty strings';
+  var got = _.strRemoveEnd( 'abc', [ '', '', '' ] );
+  var expected = 'abc';
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'abc', 'bc' );
-  expected = 'a';
+  test.case = 'include one of ends';
+  var got = _.strRemoveEnd( 'abc', [ 'd', 'ab', 'c' ] );
+  var expected = 'ab';
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'abc', 'x' );
-  expected = 'abc';
+  test.case = 'include one of ends, end.length < src.length';
+  var got = _.strRemoveEnd( 'abc', [ 'bc', 'ab', 'da' ] );
+  var expected = 'a';
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'abc', 'abc' );
-  expected = '';
+  test.case = 'include one of ends, end.length === src.length';
+  var got = _.strRemoveEnd( 'abc', [ 'cba', 'dba', 'abc' ] );
+  var expected = '';
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'abc', '' );
-  expected = 'abc';
+  test.case = 'include none of ends';
+  var got = _.strRemoveEnd( 'abc', [ 'd', 'b', 'a' ] );
+  var expected = 'abc';
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'abc', [ 'a', 'b', 'c' ] );
-  expected = 'ab';
+  test.case = 'end equal to end, not include';
+  var got = _.strRemoveEnd( 'abc', [ 'a', 'ab' ] );
+  var expected = 'abc';
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'abc', [ '', 'a' ] );
-  expected = 'abc';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strRemoveEnd( 'abc', [ '', 'c' ] );
-  expected = 'abc';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strRemoveEnd( 'abc', [ 'abc', 'a' ] );
-  expected = '';
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'a', 'd' ] );
-  expected = [ 'abc', 'bc', 'cab' ];
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'a', 'b', 'c' ] );
-  expected = [ 'ab', 'bc', 'ca' ];
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strRemoveEnd( [ 'a', 'b', 'c' ], [ 'x' ] );
-  expected = [ 'a', 'b', 'c' ];
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strRemoveEnd( [ 'a', 'b', 'c' ], [ 'a', 'b', 'c' ] );
-  expected = [ '', '', '' ];
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.strRemoveEnd( [ 'a', 'b', 'c' ], [ ] );
-  expected = [ 'a', 'b', 'c' ];
-  test.identical( got, expected );
+  test.close( 'src - string, end - array of strings' );
 
   /* - */
 
-  test.case = 'RegExp';
+  test.open( 'src - array of strings, end - string' );
 
-  /**/
-
-  got = _.strRemoveEnd( 'example', /ple/ );
-  expected = 'exam';
+  test.case = 'empty strings : empty string';
+  var got = _.strRemoveEnd( [ '', '', '' ], '' );
+  var expected = [ '', '', '' ];
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'example', /le$/ );
-  expected = 'examp';
+  test.case = 'empty strings : string';
+  var got = _.strRemoveEnd( [ '', '', '' ], 'x' );
+  var expected = [ '', '', '' ];
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'example', /^le/ );
-  expected = 'example';
+  test.case = 'strings : empty string';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], '' );
+  var expected = [ 'abc', 'bca', 'cab' ];
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'example', /\d/ );
-  expected = 'example';
+  test.case = 'one of src includes end';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], 'bc' );
+  var expected = [ 'a', 'bca', 'cab' ];
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'example', /am/ );
-  expected = 'example';
+  test.case = 'one of src includes end, end.length < src.length';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], 'ab' );
+  var expected = [ 'abc', 'bca', 'c' ];
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'example', /[axe]/ );
-  expected = 'exampl';
+  test.case = 'src includes end, end.length === src.length';
+  var got = _.strRemoveEnd( [ 'abc', 'cab', 'bca', 'cab' ], 'cab' );
+  var expected = [ 'abc', '', 'bca', '' ];
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( 'example', /\w{4}/ );
-  expected = 'exa';
+  test.case = 'src include none of end';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], 'd' );
+  var expected = [ 'abc', 'bca', 'cab' ];
   test.identical( got, expected );
 
-  /**/
-
-  got = _.strRemoveEnd( [ 'example', '1example', 'example2', 'exam3ple' ], [ /\d/, /e/, /^3/ ] );
-  expected = [ 'exampl', '1exampl', 'example', 'exam3pl' ];
+  test.case = 'end equal to end, not include';
+  var got = _.strRemoveEnd( [ 'abc', 'bac', 'cab' ], 'ba' );
+  var expected = [ 'abc', 'bac', 'cab' ];
   test.identical( got, expected );
+
+  test.close( 'src - array of strings, end - string' );
+
+  /* - */
+
+  test.open( 'src - array of strings, end - array of strings' );
+
+  test.case = 'empty strings : empty strings';
+  var got = _.strRemoveEnd( [ '', '', '' ], [ '', '', '' ] );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'empty strings : strings';
+  var got = _.strRemoveEnd( [ '', '', '' ], [ 'x', 'a', 'b' ] );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'strings : empty strings';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ '', '', '' ] );
+  var expected = [ 'abc', 'bca', 'cab' ];
+  test.identical( got, expected );
+
+  test.case = 'one of src includes end';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'bc', 'ab', 'ca' ] );
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'one of src includes end, end.length < src.length';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'bc', 'a', 'ca' ] );
+  var expected = [ 'a', 'bc', 'cab' ];
+  test.identical( got, expected );
+
+  test.case = 'src includes end, end.length === src.length';
+  var got = _.strRemoveEnd( [ 'abc', 'cab', 'bca', 'cab' ], [ 'cab', 'abc', 'bca' ] );
+  var expected = [ '', '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'src include none of ends';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'd', 'j', 'h' ] );
+  var expected = [ 'abc', 'bca', 'cab' ];
+  test.identical( got, expected );
+
+  test.case = 'end equal to end, not include';
+  var got = _.strRemoveEnd( [ 'abc', 'bda', 'cab' ], [ 'cb', 'dc' ] );
+  var expected = [ 'abc', 'bda', 'cab' ];
+  test.identical( got, expected );
+
+  test.close( 'src - array of strings, end - array of strings' );
+
+  /* - */
+
+  test.open( 'src - string, end - RegExp' );
+
+  test.case = 'empty string : RegExp';
+  var got = _.strRemoveEnd( '', /\w/ );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'empty string : RegExp';
+  var got = _.strRemoveEnd( '', /\w/ );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'string : RegExp';
+  var got = _.strRemoveEnd( 'abc', /\w/ );
+  var expected = 'ab';
+  test.identical( got, expected );
+
+  test.case = 'include end';
+  var got = _.strRemoveEnd( 'abc', /\w{2}/ );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'include end, end.length < src.length';
+  var got = _.strRemoveEnd( 'abc', /\w/ );
+  var expected = 'ab';
+  test.identical( got, expected );
+
+  test.case = 'include end, end.length === src.length';
+  var got = _.strRemoveEnd( 'abc', /\w*/ );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'not include end';
+  var got = _.strRemoveEnd( 'abc', /\w\s/ );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'end equal to end, not include';
+  var got = _.strRemoveEnd( 'abc', /\sw/ );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.close( 'src - string, end - RegExp' );
+
+  /* - */
+
+  test.open( 'src - string, end - array of strings and RegExp' );
+
+  test.case = 'empty string : empty strings and RegExp';
+  var got = _.strRemoveEnd( '', [ '', /\w/, '' ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'empty string : RegExp';
+  var got = _.strRemoveEnd( '', [ /\w\s/, /\w+/, /\w*/ ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'string : empty strings and RegExp';
+  var got = _.strRemoveEnd( 'abc', [ '', '', /\w$/ ] );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'include one of ends';
+  var got = _.strRemoveEnd( 'abc', [ 'd', 'ba', /c/ ] );
+  var expected = 'ab';
+  test.identical( got, expected );
+
+  test.case = 'include one of ends, end.length < src.length';
+  var got = _.strRemoveEnd( 'abc', [ 'ba', /bc/, 'da' ] );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'include one of ends, end.length === src.length';
+  var got = _.strRemoveEnd( 'abc', [ 'cba', 'dba', /\w+/ ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'include none of ends';
+  var got = _.strRemoveEnd( 'abc', [ 'd', 'b', /a/ ] );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.case = 'end equal to end, not include';
+  var got = _.strRemoveEnd( 'abc', [ 'a', /\s+/ ] );
+  var expected = 'abc';
+  test.identical( got, expected );
+
+  test.close( 'src - string, end - array of strings and RegExp' );
+
+  /* - */
+
+  test.open( 'src - array of strings, end - RegExp' );
+
+  test.case = 'empty strings : RegExp';
+  var got = _.strRemoveEnd( [ '', '', '' ], /\s/ );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'empty strings : RegExp';
+  var got = _.strRemoveEnd( [ '', '', '' ], /\w/ );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'strings : RegExp';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], /\s*/ );
+  var expected = [ 'abc', 'bca', 'cab' ];
+  test.identical( got, expected );
+
+  test.case = 'one of src includes end';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], /bc/ );
+  var expected = [ 'a', 'bca', 'cab' ];
+  test.identical( got, expected );
+
+  test.case = 'one of src includes end, end.length < src.length';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], /a\w/ );
+  var expected = [ 'abc', 'bca', 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'src includes end, end.length === src.length';
+  var got = _.strRemoveEnd( [ 'abc', 'cab', 'bca', 'cab' ], /ca\w/ );
+  var expected = [ 'abc', '', 'bca', '' ];
+  test.identical( got, expected );
+
+  test.case = 'src include none of end';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], /\wd/ );
+  var expected = [ 'abc', 'bca', 'cab' ];
+  test.identical( got, expected );
+
+  test.case = 'end equal to end, not include';
+  var got = _.strRemoveEnd( [ 'abc', 'bac', 'cab' ], /[efk]/ );
+  var expected = [ 'abc', 'bac', 'cab' ];
+  test.identical( got, expected );
+
+  test.close( 'src - array of strings, end - RegExp' );
+
+  /* - */
+
+  test.open( 'src - array of strings, end - array of strings and RegExp' );
+
+  test.case = 'empty strings : empty strings and RegExp';
+  var got = _.strRemoveEnd( [ '', '', '' ], [ '', '', /\w\s/ ] );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'empty strings : strings and RegExp';
+  var got = _.strRemoveEnd( [ '', '', '' ], [ 'x', /\d\D/, 'b' ] );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'strings : empty strings and RegExp';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ '', /\D/, '' ] );
+  var expected = [ 'abc', 'bca', 'cab' ];
+  test.identical( got, expected );
+
+  test.case = 'one of src includes end';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'bc', /[abc]/, 'ca' ] );
+  var expected = [ 'a', 'bc', 'ca' ];
+  test.identical( got, expected );
+
+  test.case = 'one of src includes end, end.length < src.length';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'bc', /\w/, 'ca' ] );
+  var expected = [ 'a', 'bc', 'ca' ];
+  test.identical( got, expected );
+
+  test.case = 'src includes end, end.length === src.length';
+  var got = _.strRemoveEnd( [ 'abc', 'cab', 'bca', 'cab' ], [ 'cab', 'abc', /\w+$/ ] );
+  var expected = [ '', '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'src include none of ends';
+  var got = _.strRemoveEnd( [ 'abc', 'bca', 'cab' ], [ 'd', 'j', /\w\s/ ] );
+  var expected = [ 'abc', 'bca', 'cab' ];
+  test.identical( got, expected );
+
+  test.case = 'end equal to end, not include';
+  var got = _.strRemoveEnd( [ 'abc', 'bda', 'cab' ], [ 'ba', /\w\s/ ] );
+  var expected = [ 'abc', 'bda', 'cab' ];
+  test.identical( got, expected );
+
+  test.close( 'src - array of strings, end - array of strings and RegExp' );
 
   /* - */
 
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( () => _.strRemoveEnd( 1, '' ) );
-  test.shouldThrowErrorSync( () => _.strRemoveEnd( 'a', 1 ) );
+  test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.strRemoveEnd() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strRemoveEnd( 'abcd','a','a' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.strRemoveEnd( 1, '' ) );
+  test.shouldThrowErrorSync( () => _.strRemoveEnd( /\w*/,'2' ) );
+  test.shouldThrowErrorSync( () => _.strRemoveEnd( [ 'str', 1 ], '2' ) );
+  test.shouldThrowErrorSync( () => _.strRemoveEnd( [ 'str', /ex/ ], '2' ) );
+
+  test.case = 'wrong type of end';
+  test.shouldThrowErrorSync( () => _.strRemoveEnd( 'a', 1 ) );
+  test.shouldThrowErrorSync( () => _.strRemoveEnd( 'a', null ) );
+  test.shouldThrowErrorSync( () => _.strRemoveEnd( 'aa', [ ' a', 2 ] ) );
+
+  test.case = 'invalid type of arguments';
   test.shouldThrowErrorSync( () => _.strRemoveEnd( undefined, undefined ) );
   test.shouldThrowErrorSync( () => _.strRemoveEnd( null, null ) );
-
-  test.case = 'invalid arguments count';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strRemoveEnd( 'one','two','three' );
-  });
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strRemoveEnd( );
-  });
-
-  test.case = 'first argument is wrong';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strRemoveEnd( 1,'second' );
-  });
-
-  test.case = 'second argument is wrong';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strRemoveEnd( 'first',2 );
-  });
-
 }
 
 //
