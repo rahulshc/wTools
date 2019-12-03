@@ -406,7 +406,6 @@ function _errTimeOut( o )
   o.message = o.message || 'Time out!';
   o.reason = o.reason || 'time out';
 
-  debugger;
   let err = _._err
   ({
     args : [ o.message ],

@@ -1191,7 +1191,7 @@ function _err( o )
     // if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
     // o.asyncCallsStack = resultError.asyncCallsStack || null;
     // debugger;
-    /* xxx : fix duplicate in async stack problem */
+    /* xxx : fix and cover duplication in async stack problem */
 
     _.assert( resultError.asyncCallsStack === undefined || resultError.asyncCallsStack === null || _.arrayIs( resultError.asyncCallsStack ) );
     if( resultError.asyncCallsStack && resultError.asyncCallsStack.length )
@@ -1245,6 +1245,9 @@ function _err( o )
     if( o.debugging === null || o.debugging === undefined )
     o.debugging = resultError.debugging;
     o.debugging = !!o.debugging;
+
+    if( o.reason === null || o.reason === undefined )
+    o.reason = resultError.reason;
 
     sections = resultError.section || Object.create( null );
     if( o.sections )
@@ -1479,6 +1482,8 @@ function _err( o )
     nonenumerable( 'message', message );
     nonenumerable( 'originalMessage', originalMessage );
     logging( 'stack', message );
+    nonenumerable( 'reason', o.reason );
+
     nonenumerable( 'callsStack', beautifiedStack );
     nonenumerable( 'throwenCallsStack', o.throwenCallsStack );
     nonenumerable( 'throwsStack', throwsStack );
@@ -1509,7 +1514,6 @@ function _err( o )
 
   function nonenumerable( fieldName, value )
   {
-    // return rw( fieldName, value );
     try
     {
       Object.defineProperty( resultError, fieldName,
@@ -1520,11 +1524,9 @@ function _err( o )
         value : value,
       });
     }
-    catch( err )
+    catch( err2 )
     {
-      console.error( err );
-      debugger;
-      if( _.debuggerEnabled )
+      console.error( err2 );
       debugger;
     }
   }
@@ -1545,11 +1547,9 @@ function _err( o )
         set : set,
       });
     }
-    catch( err )
+    catch( err2 )
     {
-      console.error( err );
-      debugger;
-      if( _.debuggerEnabled )
+      console.error( err2 );
       debugger;
     }
     function get()
@@ -1572,7 +1572,6 @@ function _err( o )
     let symbol = Symbol.for( fieldName );
     try
     {
-      // resultError[ symbol ] = value;
       nonenumerable( symbol, value );
       Object.defineProperty( resultError, fieldName,
       {
@@ -1582,20 +1581,13 @@ function _err( o )
         set : set,
       });
     }
-    catch( err )
+    catch( err2 )
     {
-      debugger;
-      console.error( err );
-      debugger;
-      if( _.debuggerEnabled )
+      console.error( err2 );
       debugger;
     }
     function get()
     {
-      // if( this.id === 3 && this.throwsStack.split( '\n' ).length > 4 )
-      // {
-      //   logger.log( this.throwsStack ); debugger;
-      // }
       _.errLogEnd( this );
       return this[ symbol ];
     }
@@ -1611,8 +1603,10 @@ function _err( o )
 
 _err.defaults =
 {
-  /* to make catch stack work properly level should be 1 by default */
+  args : null,
+  reason : null,
   level : 1,
+  /* to make catch stack work properly level should be 1 by default */
   stackRemovingBeginIncluding : null,
   stackRemovingBeginExcluding : null,
   usingSourceCode : 1,
@@ -1623,7 +1617,6 @@ _err.defaults =
   sourceCode : null,
   brief : null,
   isProcess : null,
-  args : null,
   asyncCallsStack : null,
   throwenCallsStack : null,
   caughtCallsStack : null,
