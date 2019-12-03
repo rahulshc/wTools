@@ -9364,12 +9364,8 @@ ghij
 
   test.open( 'Range is a number' );
 
-  /*  */
-
-  test.open( 'numberOfLines : 0' );
-
+  test.case = 'numberOfLines : 0';
   var crange = 6;
-  var sub = _.strOnly( srcStr, [ crange, crange + 1 ] );
 
   var expectedSplits =
   [
@@ -9389,15 +9385,10 @@ ghij
   test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'd' );
 
-  test.close( 'numberOfLines : 0' );
+  /* */
 
-  /*  */
-
-  test.open( 'numberOfLines : 1' );
-
+  test.case = 'numberOfLines : 1';
   var crange = 6;
 
   var expectedSplits =
@@ -9415,16 +9406,12 @@ ghij
     numberOfLines : 1,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
 
-  test.close( 'numberOfLines : 1' );
+  /* */
 
-  /*  */
-
-  test.open( 'numberOfLines : 2' );
-
+  test.case = 'numberOfLines : 2';
   var crange = 6;
 
   var expectedSplits =
@@ -9442,16 +9429,12 @@ ghij
     numberOfLines : 2,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
 
-  test.close( 'numberOfLines : 2' );
+  /* */
 
-  /*  */
-
-  test.open( 'numberOfLines : 8 ( > all lines )' );
-
+  test.case = 'numberOfLines : 8 ( > all lines )';
   var crange = 6;
 
   var expectedSplits =
@@ -9469,16 +9452,12 @@ ghij
     numberOfLines : 8,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
 
-  test.close( 'numberOfLines : 8 ( > all lines )' );
+  /* */
 
-  /*  */
-
-  test.open( 'NaN range' );
-
+  test.case = 'NaN range';
   var crange = NaN;
 
   var expectedSplits =
@@ -9496,24 +9475,16 @@ ghij
     numberOfLines : 8,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-
-  test.close( 'NaN range' );
-
-  /*  */
 
   test.close( 'Range is a number' );
 
   /* - */
 
   test.open( 'aligned range, single line' );
-
-  /*  */
-
-  test.open( 'numberOfLines not defined ( = 3 )' );
-
+ 
+  test.case = 'numberOfLines not defined ( = 3 )';
   var crange = [ 3, 5 ];
 
   var expectedSplits =
@@ -9531,16 +9502,12 @@ ghij
     numberOfLines : undefined,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
 
-  test.close( 'numberOfLines not defined ( = 3 )' );
+  /* */
 
-  /*  */
-
-  test.open( 'numberOfLines : NaN' );
-
+  test.case = 'numberOfLines : NaN';
   var crange = [ 3, 5 ];
 
   var expectedSplits =
@@ -9558,16 +9525,12 @@ ghij
     numberOfLines : NaN,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
 
-  test.close( 'numberOfLines : NaN' );
+  /* */
 
-  /*  */
-
-  test.open( 'numberOfLines : null' );
-
+  test.case = 'numberOfLines : null';
   var crange = [ 3, 5 ];
 
   var expectedSplits =
@@ -9585,19 +9548,14 @@ ghij
     numberOfLines : null,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
 
-  test.close( 'numberOfLines : null' );
+  /* */
 
-  /*  */
-
-  test.open( 'numberOfLines : 0' );
-
-  var crange = [ 6,9 ];
-  var sub = _.strOnly( srcStr,crange );
-
+  test.case = 'numberOfLines : 0';
+  var crange = [ 6, 9 ];
+  
   var expectedSplits =
   [
     '',
@@ -9613,20 +9571,13 @@ ghij
     numberOfLines : 0,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'def' );
 
-  test.close( 'numberOfLines : 0' );
+  /* */
 
-  /*  */
-
-  test.open( 'numberOfLines : 1' );
-
-  var crange = [ 6,9 ];
-  var sub = _.strOnly( srcStr,crange );
+  test.case = 'numberOfLines : 1';
+  var crange = [ 6, 9 ];
 
   var expectedSplits =
   [
@@ -9643,21 +9594,14 @@ ghij
     numberOfLines : 1,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'def' );
-
-  test.close( 'numberOfLines : 1' );
 
   /* */
 
-  test.open( 'numberOfLines : 2' );
-
-  var crange = [ 6,9 ];
-  var sub = _.strOnly( srcStr,crange );
-
+  test.case = 'numberOfLines : 2';
+  var crange = [ 6, 9 ];
+ 
   var expectedSplits =
   [
     'bc\n',
@@ -9673,21 +9617,14 @@ ghij
     numberOfLines : 2,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'def' );
-
-  test.close( 'numberOfLines : 2' );
 
   /* */
 
-  test.open( 'numberOfLines : 3' );
-
-  var crange = [ 6,9 ];
-  var sub = _.strOnly( srcStr,crange );
-
+  test.case = 'numberOfLines : 3';
+  var crange = [ 6, 9 ];
+  
   var expectedSplits =
   [
     'bc\n',
@@ -9703,19 +9640,14 @@ ghij
     numberOfLines : 3,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'def' );
-
-  test.close( 'numberOfLines : 3' );
 
   /* */
 
-  test.open( 'numberOfLines : 4' );
+  test.case = 'numberOfLines : 4';
 
-  var crange = [ 6,9 ];
+  var crange = [ 6, 9 ];
   var sub = _.strOnly( srcStr,crange );
 
   var expectedSplits =
@@ -9733,15 +9665,8 @@ ghij
     numberOfLines : 4,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'def' );
-
-  test.close( 'numberOfLines : 4' );
-
-  /* - */
 
   test.close( 'aligned range, single line' );
 
@@ -9749,12 +9674,8 @@ ghij
 
   test.open( 'not aligned range, several lines' );
 
-  /*  */
-
-  test.open( 'numberOfLines : 0' );
-
-  var crange = [ 4,11 ];
-  var sub = _.strOnly( srcStr,crange );
+  test.case = 'numberOfLines : 0';
+  var crange = [ 4, 11 ];
 
   var expectedSplits =
   [
@@ -9771,20 +9692,13 @@ ghij
     numberOfLines : 0,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'c\ndef\ng' );
 
-  test.close( 'numberOfLines : 0' );
+  /* */
 
-  /*  */
-
-  test.open( 'numberOfLines : 1' );
-
-  var crange = [ 4,11 ];
-  var sub = _.strOnly( srcStr,crange );
+  test.case = 'numberOfLines : 1';
+  var crange = [ 4, 11 ];
 
   var expectedSplits =
   [
@@ -9801,20 +9715,13 @@ ghij
     numberOfLines : 1,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'c\ndef\ng' );
-
-  test.close( 'numberOfLines : 1' );
 
   /* */
 
-  test.open( 'numberOfLines : 2' );
-
-  var crange = [ 4,11 ];
-  var sub = _.strOnly( srcStr,crange );
+  test.case = 'numberOfLines : 2';
+  var crange = [ 4, 11 ];
 
   var expectedSplits =
   [
@@ -9831,20 +9738,13 @@ ghij
     numberOfLines : 2,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'c\ndef\ng' );
-
-  test.close( 'numberOfLines : 2' );
 
   /* */
 
-  test.open( 'numberOfLines : 3' );
-
-  var crange = [ 4,11 ];
-  var sub = _.strOnly( srcStr,crange );
+  test.case = 'numberOfLines : 3';
+  var crange = [ 4, 11 ];
 
   var expectedSplits =
   [
@@ -9861,20 +9761,13 @@ ghij
     numberOfLines : 3,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'c\ndef\ng' );
-
-  test.close( 'numberOfLines : 3' );
 
   /* */
 
-  test.open( 'numberOfLines : 4' );
-
+  test.case = 'numberOfLines : 4';
   var crange = [ 4,11 ];
-  var sub = _.strOnly( srcStr,crange );
 
   var expectedSplits =
   [
@@ -9891,24 +9784,12 @@ ghij
     numberOfLines : 4,
   });
 
-  test.will = 'check strLinesNearest';
   test.identical( got.splits, expectedSplits );
   test.identical( got.spans, expectedSpans );
-  test.will = 'check strOnly';
-  test.identical( sub, 'c\ndef\ng' );
-
-  test.close( 'numberOfLines : 4' );
-
-  /* - */
 
   test.close( 'not aligned range, several lines' );
 
-  debugger;
-
-  console.log( 'done1' );
-  logger.log( 'done2' );
-
-  /* */
+  /* - */
 
   if( !Config.debug )
   return;
@@ -9945,7 +9826,7 @@ ghij
 
   test.close( 'Wrong range' );
 
-  /*  */
+  /* -  */
 
   test.open( 'Wrong src' );
 
@@ -9993,7 +9874,7 @@ ghij
 
   test.close( 'Wrong src' );
 
-  /*  */
+  /* - */
 
   test.open( 'Wrong arg' );
 
@@ -10013,9 +9894,7 @@ ghij
   test.shouldThrowErrorSync( () =>  _.strLinesNearest(  ));
   test.shouldThrowErrorSync( () =>  _.strLinesNearest( o, o ));
 
-
   test.close( 'Wrong arg' );
-
 }
 
 //

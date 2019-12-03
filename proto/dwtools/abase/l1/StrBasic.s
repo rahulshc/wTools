@@ -4847,7 +4847,7 @@ let Proto =
   strLinesStrip, /* qqq : test coverage */
   strLinesNumber,
   strLinesSelect,
-  strLinesNearest, /* qqq : check coverage */
+  strLinesNearest, /* qqq : check coverage | Dmytro : checked, improved formatting */
   strLinesNearestReport,
   strLinesCount,
   strLinesRangeWithCharRange,
