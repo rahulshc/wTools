@@ -15,7 +15,7 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 function setFrom( src )
 {
   _.assert( arguments.length === 1 );
-  if( _.setAkin( src ) )
+  if( _.setAdapterLike( src ) )
   return src;
   if( src === null )
   return new Set();
@@ -269,19 +269,19 @@ function containerEmpty( dstContainer )
   return dstContainer;
 }
 
+// //
 //
-
-function structureExtend( dst, src )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  xxx
-
-  // if( arguments.length === 1 )
-  // xxx
-
-}
+// function structureExtend( dst, src )
+// {
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//
+//   xxx
+//
+//   // if( arguments.length === 1 )
+//   // xxx
+//
+// }
 
 //
 
@@ -618,7 +618,7 @@ let Routines =
   containerEmpty, /* qqq : implement coverage */
   empty : containerEmpty,
 
-  structureExtend,
+  // structureExtend,
   entityEntityEqualize,
 
   entityAssign, /* refactor!!! */
