@@ -1122,11 +1122,11 @@ let Routines =
   // replacers 
 
   _strRemovedBegin,
-  strRemoveBegin,
+  strRemoveBegin, /* Dmytro : covered */
   _strRemovedEnd,
-  strRemoveEnd,
+  strRemoveEnd, /* Dmytro : covered */
 
-  strReplaceBegin,
+  strReplaceBegin, /* Dmytro : covered */
   strReplaceEnd,
   _strReplaced,
   strReplace,
