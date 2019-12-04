@@ -182,7 +182,7 @@ program();
     test.identical( _.strCount( op.output, 'Current path :' ), 1 );
     test.identical( _.strCount( op.output, 'Exec path :' ), 1 );
     test.identical( _.strCount( op.output, '= Message of error#' ), 1 );
-    test.identical( _.strCount( op.output, '= Condensed calls stack' ), 1 );
+    test.identical( _.strCount( op.output, '= Beautified calls stack' ), 1 );
     test.identical( _.strCount( op.output, '= Throws stack' ), 1 );
     test.is( true );
     return null;

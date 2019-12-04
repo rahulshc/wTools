@@ -189,17 +189,13 @@ function dateToStr( date )
 }
 
 // --
-// fields
+// define
 // --
 
 let Fields =
 {
   // _Timers,
 }
-
-// --
-// routines
-// --
 
 let Routines =
 {
@@ -228,9 +224,6 @@ let Routines =
 
 _.mapSupplement( Self, Fields );
 _.mapSupplement( Self, Routines );
-
-// Object.assign( Self, Routines );
-// Object.assign( Self, Fields );
 
 // --
 // export

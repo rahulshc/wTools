@@ -62,64 +62,64 @@ function setsToArrays( srcs )
 // entity modifier
 // --
 
-function enityExtend( dst, src )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( _.objectIs( src ) || _.longIs( src ) )
-  {
-
-    _.each( src, function( e, k )
-    {
-      dst[ k ] = e;
-    });
-
-  }
-  else
-  {
-
-    dst = src;
-
-  }
-
-  return dst;
-}
-
+// function containerExtend( dst, src )
+// {
 //
-
-function enityExtendAppending( dst, src )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( _.objectIs( src ) )
-  {
-
-    _.each( src, function( e, k )
-    {
-      dst[ k ] = e;
-    });
-
-  }
-  else if( _.longIs( src ) )
-  {
-
-    if( dst === null || dst === undefined )
-    dst = _.longSlice( src );
-    else
-    _.arrayAppendArray( dst, src );
-
-  }
-  else
-  {
-
-    dst = src;
-
-  }
-
-  return dst;
-}
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   if( _.objectIs( src ) || _.longIs( src ) )
+//   {
+//
+//     _.each( src, function( e, k )
+//     {
+//       dst[ k ] = e;
+//     });
+//
+//   }
+//   else
+//   {
+//
+//     dst = src;
+//
+//   }
+//
+//   return dst;
+// }
+//
+// //
+//
+// function containerExtendAppending( dst, src )
+// {
+//
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   if( _.objectIs( src ) )
+//   {
+//
+//     _.each( src, function( e, k )
+//     {
+//       dst[ k ] = e;
+//     });
+//
+//   }
+//   else if( _.longIs( src ) )
+//   {
+//
+//     if( dst === null || dst === undefined )
+//     dst = _.longSlice( src );
+//     else
+//     _.arrayAppendArray( dst, src );
+//
+//   }
+//   else
+//   {
+//
+//     dst = src;
+//
+//   }
+//
+//   return dst;
+// }
 
 //
 
@@ -252,26 +252,26 @@ function entityMake( src )
 
 }
 
+// //
 //
-
-function containerEmpty( dstContainer )
-{
-  if( _.longIs( dstContainer ) )
-  _.longEmpty( dstContainer );
-  else if( _.setIs( dstContainer ) )
-  dstContainer.clear();
-  else if( _.hashMapIs( dstContainer ) )
-  dstContainer.clear();
-  else if( _.mapLike( dstContainer ) )
-  _.mapEmpty( dstContainer );
-  else
-  _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );
-  return dstContainer;
-}
+// function _.container.empty( dstContainer )
+// {
+//   if( _.longIs( dstContainer ) )
+//   _.longEmpty( dstContainer );
+//   else if( _.setIs( dstContainer ) )
+//   dstContainer.clear();
+//   else if( _.hashMapIs( dstContainer ) )
+//   dstContainer.clear();
+//   else if( _.mapLike( dstContainer ) )
+//   _.mapEmpty( dstContainer );
+//   else
+//   _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );
+//   return dstContainer;
+// }
 
 // //
 //
-// function structureExtend( dst, src )
+// function containerExtend( dst, src )
 // {
 //
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -604,8 +604,8 @@ let Routines =
 
   // entity modifier
 
-  enityExtend,
-  enityExtendAppending,
+  // containerExtend,
+  // containerExtendAppending,
 
   entityMakeConstructing,
   entityMakeEmpty,
@@ -615,10 +615,10 @@ let Routines =
   entityMake,
   make : entityMake,
 
-  containerEmpty, /* qqq : implement coverage */
-  empty : containerEmpty,
+  // _.container.empty, /* qqq : implement coverage */
+  // empty : _.container.empty,
 
-  // structureExtend,
+  // containerExtend,
   entityEntityEqualize,
 
   entityAssign, /* refactor!!! */
@@ -635,10 +635,6 @@ Object.assign( Self, Fields );
 // --
 // export
 // --
-
-// if( typeof module !== 'undefined' )
-// if( _global.WTOOLS_PRIVATE )
-// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

@@ -852,43 +852,45 @@ function errIsProcess( src )
   return !!src.isProcess;
 }
 
-// //
 //
-// function errIsAttentionRequested( src )
-// {
-//   if( _.errIs( src ) === false )
-//   return false;
-//   return src.attentionRequested;
-// }
-//
-// //
-//
-// function errAttentionRequest( err )
-// {
-//
-//   if( arguments.length !== 1 )
-//   throw Error( 'errAttentionRequest : Expects one argument' );
-//   if( !_.errIs( err ) )
-//   throw Error( 'errAttentionRequest : Expects error as the first argument' );
-//
-//   Object.defineProperty( err, 'attended',
-//   {
-//     enumerable : false,
-//     configurable : true,
-//     writable : true,
-//     value : 0,
-//   });
-//
-//   Object.defineProperty( err, 'attentionRequested',
-//   {
-//     enumerable : false,
-//     configurable : true,
-//     writable : true,
-//     value : 1,
-//   });
-//
-//   return err;
-// }
+
+function errReason( err, reason )
+{
+
+  if( arguments.length === 1 )
+  {
+    return err.reason;
+  }
+  else if( arguments.length === 2 )
+  {
+    nonenumerable( 'reason', reason );
+    return err.reason;
+  }
+
+  throw Error( 'Expects one or two argument' );
+
+  /* */
+
+  function nonenumerable( fieldName, value )
+  {
+    try
+    {
+      Object.defineProperty( err, fieldName,
+      {
+        enumerable : false,
+        configurable : true,
+        writable : true,
+        value : value,
+      });
+    }
+    catch( err2 )
+    {
+      console.error( err2 );
+      debugger;
+    }
+  }
+
+}
 
 //
 
@@ -913,8 +915,6 @@ function errOriginalMessage( err )
   message = err.msg;
   if( !message && message !== '' )
   message = err.name;
-
-  // fallBackMessage = fallBackMessage || err.constructor.name;
 
   if( _.mapFields )
   {
@@ -1497,7 +1497,7 @@ function _err( o )
     if( o.throwenLocation.line !== undefined )
     nonenumerable( 'lineNumber', o.throwenLocation.line );
     if( resultError.throwenLocation === undefined )
-    nonenumerable( 'throwenLocation', o.throwenLocation );
+    nonenumerable( 'location', o.throwenLocation );
     nonenumerable( 'sourceCode', sourceCode || null );
     nonenumerable( 'debugging', o.debugging );
     nonenumerable( 'id', id );
@@ -2526,6 +2526,7 @@ let Routines =
   errIsBrief,
   errIsProcess,
   errIsLogged,
+  errReason,
   errOriginalMessage,
   errOriginalStack,
 
