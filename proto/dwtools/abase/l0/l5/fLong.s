@@ -88,7 +88,7 @@ function argumentsArrayFrom( src )
  * console.log( _.bufferTypedIs( got ) );
  * // log true
  *
- * @returns { Long }  Returns a Long with type of source Long which makes from ins.
+ * @returns { Long } Returns a Long with type of source Long which makes from ins.
  * @function longMake
  * @throws { Error } If arguments.length is less than two or more then two.
  * @throws { Error } If {-ins-} is not a number and not a Long.
@@ -387,7 +387,7 @@ function _longMakeOfLength( src, len )
  * console.log( _.bufferTypedIs( got ) );
  * // log true
  *
- * @returns { Long }  Returns a Long with type of source Long with a certain length.
+ * @returns { Long } - Returns a Long with type of source Long with a certain length.
  * @function longMakeUndefined
  * @throws { Error } If arguments.length is less than one or more then two.
  * @throws { Error } If the {-ins-} is not a Long or not a constructor.
@@ -829,7 +829,7 @@ function longEmpty( dstLong )
  * console.log( got === src );
  * // log false
  *
- * @returns { Long } Returns a copy of source Long with removed or replaced existing elements and / or added new elements. The copy has same type as source Long.
+ * @returns { Long } - Returns a copy of source Long with removed or replaced existing elements and / or added new elements. The copy has same type as source Long.
  * @function longBut
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-array-} is not a Long.

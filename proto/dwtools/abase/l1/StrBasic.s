@@ -788,16 +788,17 @@ function strReplaceWords( src, ins, sub )
 // --
 
 /**
- * Find common symbols from the begining of all strings passed to arguments list. Uses first argument( ins ) as pattern.
- * If some string doesn`t have the same first symbols as the pattern ( ins ), the function returns an empty string.
+ * Routine strCommonLeft() finds common symbols from the begining of all strings passed to arguments list.
+ * Routine uses first argument {-ins-} as a pattern. If some string doesn`t have the same first symbols 
+ * as the pattern {-ins-}, the function returns an empty string.
  * Otherwise, it returns the symbol sequence that appears from the start of each string.
  *
- * @param {string} ins - Sequence of possible symbols.
- * @returns {string} Returns found common symbols.
+ * @param { String } ins - Sequence of possible symbols.
+ * @param { String } ... - Another strings to search common sequence of symbols.
  *
  * @example
- * _.strCommonLeft( 'abcd', 'ab', 'abc', 'a' );
- * // returns 'a'
+ * _.strCommonLeft( 'abcd', 'ab', 'abc', 'abd' );
+ * // returns 'ab'
  *
  * @example
  * _.strCommonLeft( 'abcd', 'abc', 'abcd' );
@@ -807,8 +808,9 @@ function strReplaceWords( src, ins, sub )
  * _.strCommonLeft( 'abcd', 'abc', 'd' )
  * // returns ''
  *
- * @method strCommonLeft
- * @throws {exception} If ( ins ) is not a String.
+ * @returns { String } - Returns found common symbols.
+ * @function strCommonLeft
+ * @throws { Error } If {-ins-} is not a String.
  * @memberof wTools
  *
  */
@@ -846,27 +848,29 @@ function strCommonLeft( ins )
 //
 
 /**
- * Finds common symbols from the end of all strings passed to arguments list. Uses first argument( ins ) as pattern.
- * If some string doesn`t have same last symbol with pattern( ins ), the function returns an empty string.
+ * Routine strCommonRight() finds common symbols from the end of all strings passed to arguments list.
+ * Routine uses first argument {-ins-} as a pattern. If some string doesn`t have the same end symbols 
+ * as the pattern {-ins-}, the function returns an empty string.
  * Otherwise, it returns the symbol sequence that appears from the end of each string.
  *
  * @param { String } ins - Sequence of possible symbols.
- * @returns { String } Returns found common symbols.
+ * @param { String } ... - Another strings to search common sequence of symbols.
  *
  * @example
- * _.strCommonRight( 'ame', 'same', 'name' );
- * // returns 'ame'
+ * _.strCommonRight( 'same', 'came', 'me', 'code' );
+ * // returns 'e'
  *
  * @example
- * _.strCommonRight( 'abc', 'dbc', 'ddc', 'aac' );
- * // returns 'c'
+ * _.strCommonRight( 'add', 'ddd', 'hdd' );
+ * // returns 'dd'
  *
  * @example
- * _.strCommonRight( 'abc', 'dba', 'abc' );
+ * _.strCommonRight( 'abcd', 'abc', 'd' )
  * // returns ''
  *
- * @method strCommonRight
- * @throws {exception} If( ins ) is not a String.
+ * @returns { String } - Returns found common symbols.
+ * @function strCommonRight
+ * @throws { Error } If {-ins-} is not a String.
  * @memberof wTools
  *
  */
@@ -4795,8 +4799,8 @@ let Proto =
 
   // etc
 
-  strCommonLeft, /* qqq : document me */
-  strCommonRight, /* qqq : document me */
+  strCommonLeft, /* qqq : document me | Dmytro : documented */
+  strCommonRight, /* qqq : document me | Dmytro : documented */
   strRandom, /* qqq : document and extend test coverage */
   strAlphabetFromRange, /* qqq : cover and document please */
 
