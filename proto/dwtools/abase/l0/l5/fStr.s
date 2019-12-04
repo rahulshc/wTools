@@ -936,6 +936,7 @@ function strReplaceEnd( src, end, ins )
     let postfix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( postfix ) );
     result[ k ] = _.strRemoveEnd( result[ k ] , end[ j ] ) + postfix;
+    break;
   }
 
   if( result.length === 1 && _.strIs( src ) )
