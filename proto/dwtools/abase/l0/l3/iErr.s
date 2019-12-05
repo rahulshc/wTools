@@ -1027,8 +1027,8 @@ function _err( o )
     }
 
     if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
-    if( _.procedure && _.procedure.activeProcedure )
-    o.asyncCallsStack = [ _.procedure.activeProcedure.stack() ];
+    if( _.Procedure && _.Procedure.ActiveProcedure )
+    o.asyncCallsStack = [ _.Procedure.ActiveProcedure.stack() ];
 
     _.assert( o.asyncCallsStack === null || _.arrayIs( o.asyncCallsStack ) );
     if( o.asyncCallsStack && o.asyncCallsStack.length )

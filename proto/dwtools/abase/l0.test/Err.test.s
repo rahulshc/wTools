@@ -409,20 +409,20 @@ program();
     var con = _.Consequence()
     con.then( function callback1( arg )
     {
-      console.log( 'sourcePath::callback1 ' + _.procedure.activeProcedure._sourcePath );
+      console.log( 'sourcePath::callback1 ' + _.Procedure.ActiveProcedure._sourcePath );
       return 'callback1';
     })
     con.then( function callback2( arg )
     {
-      console.log( 'sourcePath::callback2 ' + _.procedure.activeProcedure._sourcePath );
+      console.log( 'sourcePath::callback2 ' + _.Procedure.ActiveProcedure._sourcePath );
       throw 'callback2';
       return 'callback2';
     })
 
-    console.log( 'sourcePath::program ' + _.procedure.activeProcedure._sourcePath );
+    console.log( 'sourcePath::program ' + _.Procedure.ActiveProcedure._sourcePath );
     _.time.out( 100, function timeOut1()
     {
-      console.log( 'sourcePath::timeout ' + _.procedure.activeProcedure._sourcePath );
+      console.log( 'sourcePath::timeout ' + _.Procedure.ActiveProcedure._sourcePath );
       con.take( 'timeout1' );
     });
 
@@ -480,20 +480,20 @@ program();
     var con = _.Consequence()
     con.then( function callback1( arg )
     {
-      console.log( 'sourcePath::callback1 ' + _.procedure.activeProcedure._sourcePath );
+      console.log( 'sourcePath::callback1 ' + _.Procedure.ActiveProcedure._sourcePath );
       return 'callback1';
     })
     con.then( function callback2( arg )
     {
-      console.log( 'sourcePath::callback2 ' + _.procedure.activeProcedure._sourcePath );
+      console.log( 'sourcePath::callback2 ' + _.Procedure.ActiveProcedure._sourcePath );
       // _.procedure.terminationBegin();
       return 'callback2';
     })
 
-    console.log( 'sourcePath::program ' + _.procedure.activeProcedure._sourcePath );
+    console.log( 'sourcePath::program ' + _.Procedure.ActiveProcedure._sourcePath );
     _.time.out( 100, function timeOut1()
     {
-      console.log( 'sourcePath::timeout ' + _.procedure.activeProcedure._sourcePath );
+      console.log( 'sourcePath::timeout ' + _.Procedure.ActiveProcedure._sourcePath );
       con.take( 'timeout1' );
     });
 

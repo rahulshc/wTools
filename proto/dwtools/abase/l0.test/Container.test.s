@@ -346,7 +346,6 @@ function extendAppending( test )
   var exp = [ 0, 1 ];
   var dst = undefined;
   var src = [ 0, 1 ];
-  debugger;
   var got = _.container.extendAppending( dst, src );
   test.identical( got, exp );
   test.is( got !== src );

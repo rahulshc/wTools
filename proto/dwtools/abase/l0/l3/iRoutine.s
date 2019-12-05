@@ -18,6 +18,13 @@ function routineIs( src )
 
 //
 
+function routineLike( src )
+{
+  return _.routineIs( src );
+}
+
+//
+
 function routineIsSync( src )
 {
   return Object.prototype.toString.call( src ) === '[object Function]'
@@ -1679,7 +1686,8 @@ let Fields =
 let Routines =
 {
 
-  routineIs,
+  routineIs, /* qqq : cover pelase */
+  routineLike, /* qqq : cover pelase */
   routineIsSync,
   routineIsAsync,
   routinesAre,

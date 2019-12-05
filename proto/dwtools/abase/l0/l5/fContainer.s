@@ -208,53 +208,17 @@ function extendAppending( dst, src )
   return dst;
 }
 
+// xxx : find solution
+// //
 //
-
-function extendAppendingRecursive( dst, src )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( _.mapLike( src ) )
-  {
-
-    if( dst === null || _.mapLike( dst ) )
-    _.mapExtend( dst, src );
-    else if( _.hashMapLike( dst ) )
-    _.hashMapExtend( dst, src );
-    else _.assert( 0 );
-
-  }
-  else if( _.longLike( src ) )
-  {
-
-    _.arrayExtendAppending( dst, src );
-
-  }
-  else if( _.hashMapLike( src ) )
-  {
-
-    _.assert( 0, 'not tested' );
-    _.hashMapExtend( dst, src );
-
-  }
-  else if( _.setLike( src ) )
-  {
-
-    _.assert( 0, 'not tested' );
-    _.arraySetUnion_( dst, src );
-
-
-  }
-  else
-  {
-
-    dst = src;
-
-  }
-
-  return dst;
-}
+// function extendAppendingRecursive( dst, src )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//
+//
+//   return dst;
+// }
 
 //
 
@@ -290,7 +254,6 @@ let Routines =
   extendAppending,
 
   // extendAppendingRecursive,
-  // extendRecursive : extendAppendingRecursive,
 
   empty, /* qqq2 : implement, document, covere */
 
