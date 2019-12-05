@@ -76,24 +76,27 @@ function extendReplacing( dst, src )
     }
 
   }
-  else if( _.mapLike( dst ) )
+  else if( _.mapLike( src ) )
   {
 
-    if( _.mapLike( src ) )
+    if( _.mapLike( dst ) )
     dst = _.mapExtend( dst, src );
-    else if( _.hashMapLike( src ) )
+    else if( _.hashMapLike( dst ) )
     dst = _.hashMapExtend( dst, src );
     else
     dst = src;
 
   }
-  else if( _.longLike( dst ) )
+  else if( _.longLike( src ) )
   {
 
+    if( _.longIs( dst ) )
     dst = _.arrayExtendAppending( dst, src );
+    else
+    dst = src;
 
   }
-  else if( _.hasMapLike( dst ) )
+  else if( _.hasMapLike( src ) )
   {
 
     _.assert( 0, 'not tested' );
@@ -103,7 +106,7 @@ function extendReplacing( dst, src )
     dst = src;
 
   }
-  else if( _.setLike( dst ) )
+  else if( _.setLike( src ) )
   {
 
     _.assert( 0, 'not tested' );
@@ -283,8 +286,8 @@ let Fields =
 let Routines =
 {
 
+  extendReplacing,
   extendAppending,
-  extend : extendAppending,
 
   // extendAppendingRecursive,
   // extendRecursive : extendAppendingRecursive,

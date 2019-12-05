@@ -750,9 +750,7 @@ function mapMakeBugWithArray( test )
 {
   test.case = 'failed';
   var src = [ { a : 1 }, { b : 2 } ];
-  debugger;
   var got = _.mapMake.apply( undefined, src );
-  debugger;
   var exp = { 0 : { a : 1 }, 1 : { b : 2 } };
   test.identical( got, exp );
   test.is( got !== src );

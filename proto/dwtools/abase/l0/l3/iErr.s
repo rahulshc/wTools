@@ -81,7 +81,6 @@ function diagnosticLocation( o )
 
   if( !o.stack )
   {
-    debugger;
     if( o.error )
     {
       o.stack = _.diagnosticStack( o.error, undefined );
