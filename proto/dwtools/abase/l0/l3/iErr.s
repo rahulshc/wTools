@@ -81,6 +81,7 @@ function diagnosticLocation( o )
 
   if( !o.stack )
   {
+    debugger;
     if( o.error )
     {
       o.stack = _.diagnosticStack( o.error, undefined );
@@ -92,191 +93,14 @@ function diagnosticLocation( o )
     }
   }
 
+  _.assert( _.strIs( o.stack ) || _.arrayIs( o.stack ) );
+
   let stack = o.stack;
   if( _.strIs( stack ) )
   stack = stack.split( '\n' );
   let stackCall = stack[ o.level ];
 
   return _.diagnosticLocationFromCall({ stackCall : stackCall, location : o.location });
-
-  // let stack = o.stack;
-  // if( !o.location.routine || !_.numberIs( o.location.detailing ) )
-  // routineFromStack();
-  // let hadPath = !!o.location.path;
-  // if( !o.location.path )
-  // o.location.path = pathFromStack();
-  //
-  // if( !_.strIs( o.location.path ) )
-  // return end();
-  //
-  // if( !_.numberIs( o.location.line ) )
-  // o.location.path = lineColFromPath( o.location.path );
-  //
-  // if( !_.numberIs( o.location.line ) && hadPath )
-  // {
-  //   debugger;
-  //   let path = pathFromStack();
-  //   if( path )
-  //   lineColFromPath( path );
-  // }
-  //
-  // return end();
-
-  /* */
-
-  // function end()
-  // {
-  //
-  //   let path = o.location.path;
-  //
-  //   /* full */
-  //
-  //   o.location.full = path || '';
-  //   if( o.location.line !== undefined )
-  //   o.location.full += ':' + o.location.line;
-  //
-  //   /* name long */
-  //
-  //   if( o.location.full )
-  //   {
-  //     o.location.fullWithRoutine = o.location.routine + ' @ ' + o.location.full;
-  //     // o.location.fullWithRoutine = o.location.fullWithRoutine.trim();
-  //   }
-  //
-  //   /* name */
-  //
-  //   if( path )
-  //   {
-  //     let name = path;
-  //     _.assert( name.lastIndexOf );
-  //     let i = name.lastIndexOf( '/' );
-  //     if( i !== -1 )
-  //     name = name.substr( i+1 );
-  //     o.location.name = name;
-  //   }
-  //
-  //   /* name long */
-  //
-  //   if( path )
-  //   {
-  //     let nameLong = o.location.name;
-  //     if( o.location.line !== undefined )
-  //     {
-  //       nameLong += ':' + o.location.line;
-  //       if( o.location.col !== undefined )
-  //       nameLong += ':' + o.location.col;
-  //     }
-  //     o.location.nameLong = nameLong;
-  //   }
-  //
-  //   return o.location;
-  // }
-  //
-  // /* */
-  //
-  // function routineFromStack()
-  // {
-  //   let path;
-  //
-  //   if( o.location.routine )
-  //   {
-  //     path = o.location.routine;
-  //   }
-  //   else
-  //   {
-  //
-  //     if( !stack )
-  //     return;
-  //
-  //     if( _.strIs( stack ) )
-  //     stack = stack.split( '\n' );
-  //
-  //     path = stack[ o.level ];
-  //
-  //     if( !_.strIs( path ) )
-  //     return '(-routine anonymous-)';
-  //
-  //     let t = /^\s*(at\s+)?([\w\.]+)\s*.+/;
-  //     let executed = t.exec( path );
-  //     if( executed )
-  //     path = executed[ 2 ] || '';
-  //
-  //   }
-  //
-  //   if( _.strEnds( path, '.' ) )
-  //   path += '?';
-  //
-  //   o.location.routine = path;
-  //   o.location.detailing = 0;
-  //   if( o.location.detailing === 0 )
-  //   if( _.strBegins( path , '__' ) || path.indexOf( '.__' ) !== -1 )
-  //   o.location.detailing = 2;
-  //   if( o.location.detailing === 0 )
-  //   if( _.strBegins( path , '_' ) || path.indexOf( '._' ) !== -1 )
-  //   o.location.detailing = 1;
-  //
-  //   return path;
-  // }
-  //
-  // /* */
-  //
-  // function pathFromStack()
-  // {
-  //   let path;
-  //
-  //   if( !stack )
-  //   return;
-  //
-  //   if( _.strIs( stack ) )
-  //   stack = stack.split( '\n' );
-  //
-  //   path = stack[ o.level ];
-  //
-  //   if( !_.strIs( path ) )
-  //   return;
-  //
-  //   path = path.replace( /^\s+/, '' );
-  //   path = path.replace( /^\w+@/, '' );
-  //   path = path.replace( /^at/, '' );
-  //   path = path.replace( /^\s+/, '' );
-  //   path = path.replace( /\s+$/, '' );
-  //
-  //   let regexp = /^.*\((.*)\)$/;
-  //   var parsed = regexp.exec( path );
-  //   if( parsed )
-  //   path = parsed[ 1 ];
-  //
-  //   return path;
-  // }
-  //
-  // /* line / col number from path */
-  //
-  // function lineColFromPath( path )
-  // {
-  //
-  //   let lineNumber, colNumber;
-  //   let postfix = /(.+?):(\d+)(?::(\d+))?[^:/]*$/;
-  //   let parsed = postfix.exec( path );
-  //
-  //   if( parsed )
-  //   {
-  //     path = parsed[ 1 ];
-  //     lineNumber = parsed[ 2 ];
-  //     colNumber = parsed[ 3 ];
-  //   }
-  //
-  //   lineNumber = parseInt( lineNumber );
-  //   colNumber = parseInt( colNumber );
-  //
-  //   if( isNaN( o.location.line ) && !isNaN( lineNumber ) )
-  //   o.location.line = lineNumber;
-  //
-  //   if( isNaN( o.location.col ) && !isNaN( colNumber ) )
-  //   o.location.col = colNumber;
-  //
-  //   return path;
-  // }
-
 }
 
 diagnosticLocation.defaults =

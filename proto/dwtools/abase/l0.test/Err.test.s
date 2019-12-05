@@ -60,30 +60,17 @@ function diagnosticStackTrivial( test )
   /* - */
 
   test.case = 'trivial';
-  var expectedTrace = [ 'function3', 'function2', 'function1', 'Diagnostics.test.s' ];
+  var expectedTrace = [ 'function3', 'function2', 'function1', 'Err.test.s' ];
   var got = function1();
   got = got.split( '\n' );
-  debugger;
   expectedTrace.forEach( function( expectedStr, i )
   {
     var expectedRegexp = new RegExp( expectedStr );
     test.description = expectedStr;
     test.identical( expectedRegexp.test( got[ i ] ), true );
   });
-  debugger;
 
   /* - */
-
-  // test.case = 'second';
-  // var got = function1();
-  // debugger;
-  // got = got.split( '\n' ).slice( -5, -1 ).join( '\n' );
-  // debugger;
-  // expectedTrace.forEach( function( expectedStr, i )
-  // {
-  //   var expectedRegexp = new RegExp( expectedStr );
-  //   test.identical( expectedRegexp.test( got[ i ] ), true );
-  // });
 
 }
 
