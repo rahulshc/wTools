@@ -947,32 +947,32 @@ function strReplaceEnd( src, end, ins )
 
 //
 
-function _strReplaced( srcStr, insStr, subStr )
-{
-  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( _.strIs( srcStr ), 'Expects string {-src-}' );
-
-  let result = srcStr;
-
-  if( !_.longIs( insStr ) )
-  {
-    _.assert( _.strIs( subStr ), 'Expects string {-sub-}' );
-
-    result = result.replace( insStr, subStr );
-  }
-  else
-  {
-    _.assert( insStr.length === subStr.length, 'Search and replace strings must have same length' );
-    for( let i = 0; i < insStr.length; i++ )
-    {
-      _.assert( _.strIs( subStr[ i ] ), 'Expects string {-sub-}' );
-
-      result = result.replace( insStr[ i ], subStr[ i ] );
-    }
-  }
-
-  return result;
-}
+// function _strReplaced( srcStr, insStr, subStr )
+// {
+//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
+//   _.assert( _.strIs( srcStr ), 'Expects string {-src-}' );
+// 
+//   let result = srcStr;
+// 
+//   if( !_.longIs( insStr ) )
+//   {
+//     _.assert( _.strIs( subStr ), 'Expects string {-sub-}' );
+// 
+//     result = result.replace( insStr, subStr );
+//   }
+//   else
+//   {
+//     _.assert( insStr.length === subStr.length, 'Search and replace strings must have same length' );
+//     for( let i = 0; i < insStr.length; i++ )
+//     {
+//       _.assert( _.strIs( subStr[ i ] ), 'Expects string {-sub-}' );
+// 
+//       result = result.replace( insStr[ i ], subStr[ i ] );
+//     }
+//   }
+// 
+//   return result;
+// }
 
 //
 
@@ -1003,32 +1003,57 @@ function _strReplaced( srcStr, insStr, subStr )
 *
 */
 
-function strReplace( srcStr, insStr, subStr )
+function strReplace( src, ins, sub )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-  _.assert( _.longIs( srcStr ) || _.strIs( srcStr ), 'Expects string or array of strings {-src-}' );
-  _.assert( _.longIs( insStr ) || _.strIs( insStr ) || _.regexpIs( insStr ), 'Expects string/regexp or array of strings/regexps {-begin-}' );
-  _.assert( _.longIs( subStr ) || _.strIs( subStr ), 'Expects string or array of strings {-src-}' );
+  _.assert( _.strIs( sub ) || _.longIs( sub ), 'Expects {-sub-} as string/array of strings' );
+  if( _.longIs( ins ) && _.longIs( sub ) )
+  _.assert( ins.length === sub.length );
 
-  let result = [];
-  let srcIsArray = _.longIs( srcStr );
+  ins = _.arrayAs( ins );
+  let result = _.arrayAs( src ).slice();
 
-  if( _.strIs( srcStr ) && !_.longIs( srcStr ) )
-  return _._strReplaced( srcStr, insStr, subStr );
-
-  srcStr = _.arrayAs( srcStr );
-
-  for( let s = 0; s < srcStr.length; s++ )
+  for( let k = 0 ; k < result.length ; k++ )
+  for( let j = 0 ; j < ins.length ; j++ )
+  if( _.strHas( result[ k ], ins[ j ] ) )
   {
-    let src = srcStr[ s ];
-    result[ s ] = _._strReplaced( src, insStr, subStr );
+    let postfix = _.longIs( sub ) ? sub[ j ] : sub;
+    _.assert( _.strIs( postfix ) );
+    result[ k ] = result[ k ].replace( ins[ j ], postfix );
+    break;
   }
 
-  if( !srcIsArray )
+  if( result.length === 1 && _.strIs( src ) )
   return result[ 0 ];
 
   return result;
 }
+// function strReplace( srcStr, insStr, subStr )
+// {
+//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
+//   _.assert( _.longIs( srcStr ) || _.strIs( srcStr ), 'Expects string or array of strings {-src-}' );
+//   _.assert( _.longIs( insStr ) || _.strIs( insStr ) || _.regexpIs( insStr ), 'Expects string/regexp or array of strings/regexps {-begin-}' );
+//   _.assert( _.longIs( subStr ) || _.strIs( subStr ), 'Expects string or array of strings {-src-}' );
+// 
+//   let result = [];
+//   let srcIsArray = _.longIs( srcStr );
+// 
+//   if( _.strIs( srcStr ) && !_.longIs( srcStr ) )
+//   return _._strReplaced( srcStr, insStr, subStr );
+// 
+//   srcStr = _.arrayAs( srcStr );
+// 
+//   for( let s = 0; s < srcStr.length; s++ )
+//   {
+//     let src = srcStr[ s ];
+//     result[ s ] = _._strReplaced( src, insStr, subStr );
+//   }
+// 
+//   if( !srcIsArray )
+//   return result[ 0 ];
+// 
+//   return result;
+// }
 
 //
 
@@ -1123,13 +1148,13 @@ let Routines =
   // replacers 
 
   _strRemovedBegin,
-  strRemoveBegin, /* Dmytro : covered */
+  strRemoveBegin, /* Dmytro : coverage is extended */
   _strRemovedEnd,
-  strRemoveEnd, /* Dmytro : covered */
+  strRemoveEnd, /* Dmytro : coverage is extended */
 
-  strReplaceBegin, /* Dmytro : covered */
-  strReplaceEnd,
-  _strReplaced,
+  strReplaceBegin, /* Dmytro : coverage is extended */
+  strReplaceEnd, /* Dmytro : coverage is extended */
+  //_strReplaced,
   strReplace,
 
   /* qqq : check coverage of each routine of the file fString.s */
