@@ -185,6 +185,7 @@ module:
           - ../proto/dwtools/abase/l0/l3
           - ../proto/dwtools/abase/l0/l3/iBool.s
           - ../proto/dwtools/abase/l0/l3/iBuffer.s
+          - ../proto/dwtools/abase/l0/l3/iContainer.s
           - ../proto/dwtools/abase/l0/l3/iEntity.s
           - ../proto/dwtools/abase/l0/l3/iErr.s
           - ../proto/dwtools/abase/l0/l3/iFunctional.s
@@ -201,6 +202,7 @@ module:
           - ../proto/dwtools/abase/l0/l5
           - ../proto/dwtools/abase/l0/l5/fBool.s
           - ../proto/dwtools/abase/l0/l5/fBuffer.s
+          - ../proto/dwtools/abase/l0/l5/fContainer.s
           - ../proto/dwtools/abase/l0/l5/fEntity.s
           - ../proto/dwtools/abase/l0/l5/fErr.s
           - ../proto/dwtools/abase/l0/l5/fFunctional.s
@@ -225,6 +227,7 @@ module:
           - ../proto/dwtools/abase/l0/l8
           - ../proto/dwtools/abase/l0/l8/gBool.s
           - ../proto/dwtools/abase/l0/l8/gBuffer.s
+          - ../proto/dwtools/abase/l0/l8/gContainer.s
           - ../proto/dwtools/abase/l0/l8/gEntity.s
           - ../proto/dwtools/abase/l0/l8/gErr.s
           - ../proto/dwtools/abase/l0/l8/gFunctional.s
@@ -241,6 +244,7 @@ module:
           - ../proto/dwtools/abase/l0/l9/Setup.s
           - ../proto/dwtools/abase/l0.test
           - ../proto/dwtools/abase/l0.test/Buffer.test.s
+          - ../proto/dwtools/abase/l0.test/Container.test.s
           - ../proto/dwtools/abase/l0.test/ContainerAdapter.test.s
           - ../proto/dwtools/abase/l0.test/Diagnostics.test.s
           - ../proto/dwtools/abase/l0.test/Entity.test.s

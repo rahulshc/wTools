@@ -1745,6 +1745,59 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 }
 
 // --
+// hash map
+// --
+
+function hashMapExtend( dst, src ) /* qqq2 : cover */
+{
+
+  _.assert( dst === null || _.hashMapLike( dst ) || _.mapLike( dst ) );
+  _.assert( _.hashMapLike( src ) || _.mapLike( src ) );
+  _.assert( 0, 'not tested' );
+
+  if( dst === null )
+  dst = new HashMap;
+
+  if( _.hashMapLike( dst ) )
+  {
+    if( _.hashMapLike( src ) )
+    {
+      for( let [ e, k ] of src )
+      dst.set( k, e );
+    }
+    else
+    {
+      for( let k in src )
+      {
+        e = src[ k ];
+        dst.set( k, e );
+      }
+    }
+  }
+  else
+  {
+    if( _.hashMapLike( src ) )
+    {
+      for( let [ e, k ] of src )
+      {
+        _.assert( _.strIs( k ) );
+        dst[ k ] = e;
+      }
+    }
+    else
+    {
+      for( let k in src )
+      {
+        e = src[ k ];
+        _.assert( _.strIs( k ) );
+        dst[ k ] = e;
+      }
+    }
+  }
+
+}
+
+// --
 // map selector
 // --
 
@@ -3915,6 +3968,10 @@ let Routines =
   mapsSupplementOwnRecursive,
   mapSupplementRemovingRecursive,
   mapSupplementByMapsRemovingRecursive,
+
+  // hash map
+
+  hashMapExtend,
 
   // map selector
 
