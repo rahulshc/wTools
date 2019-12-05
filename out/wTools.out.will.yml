@@ -195,6 +195,7 @@ module:
           - ../proto/dwtools/abase/l0/l3/iRange.s
           - ../proto/dwtools/abase/l0/l3/iRegexp.s
           - ../proto/dwtools/abase/l0/l3/iRoutine.s
+          - ../proto/dwtools/abase/l0/l3/iSet.s
           - ../proto/dwtools/abase/l0/l3/iStr.s
           - ../proto/dwtools/abase/l0/l3/iTime.s
           - ../proto/dwtools/abase/l0/l3/iType.s
@@ -212,6 +213,7 @@ module:
           - ../proto/dwtools/abase/l0/l5/fRange.s
           - ../proto/dwtools/abase/l0/l5/fRegexp.s
           - ../proto/dwtools/abase/l0/l5/fRoutine.s
+          - ../proto/dwtools/abase/l0/l5/fSet.s
           - ../proto/dwtools/abase/l0/l5/fSorted.s
           - ../proto/dwtools/abase/l0/l5/fStr.s
           - ../proto/dwtools/abase/l0/l5/fTime.s
@@ -238,6 +240,7 @@ module:
           - ../proto/dwtools/abase/l0/l8/gRange.s
           - ../proto/dwtools/abase/l0/l8/gRegexp.s
           - ../proto/dwtools/abase/l0/l8/gRoutine.s
+          - ../proto/dwtools/abase/l0/l8/gSet.s
           - ../proto/dwtools/abase/l0/l8/gStr.s
           - ../proto/dwtools/abase/l0/l8/gTime.s
           - ../proto/dwtools/abase/l0/l9
