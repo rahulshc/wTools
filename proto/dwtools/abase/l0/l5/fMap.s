@@ -2654,7 +2654,8 @@ function _mapOnly( o )
   let srcMaps = o.srcMaps;
 
   if( _.arrayIs( screenMap ) )
-  screenMap = _.mapMake.apply( this, screenMap );
+  screenMap = _.mapExtend( null, screenMap );
+  // screenMap = _.mapMake.apply( this, screenMap );
 
   if( !_.arrayIs( srcMaps ) )
   srcMaps = [ srcMaps ];
