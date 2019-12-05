@@ -261,7 +261,6 @@ module:
           - ../proto/dwtools/abase/l0.test/Routine.test.s
           - ../proto/dwtools/abase/l0.test/Sorted.test.s
           - ../proto/dwtools/abase/l0.test/Str.test.s
-          - ../proto/dwtools/abase/l0.test/Time.test.s
           - ../proto/dwtools/abase/l0.test/Typing.test.s
           - ../proto/dwtools/abase/l0.test/Unroll.test.s
           - ../proto/dwtools/abase/l1
