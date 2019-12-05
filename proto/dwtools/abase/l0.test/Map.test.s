@@ -3262,12 +3262,12 @@ function mapOnly( test )
 
   test.case = 'several screens'; /* */
 
-  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var srcMapCopy = _.mapExtend( null, srcMap );
   var screenMapCopy = screenMap.slice();
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, srcMapCopy );
@@ -3288,12 +3288,12 @@ function mapOnly( test )
 
   test.case = 'several srcs and screens'; /* */
 
-  var srcMap = [ { a : 1 }, { b : 1 }, { c : 1 } ];
+  var srcMap = [ { 0 : 1 }, { 1 : 1 }, { d : 1 } ];
   var screenMap = [ { a : 2 }, { b : 2 }, { d : 2 } ];
   var srcMapCopy = srcMap.slice();
   var screenMapCopy = screenMap.slice();
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { a : 1, b : 1 };
+  var expected = { 0 : 1, 1 : 1 };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, srcMapCopy );
