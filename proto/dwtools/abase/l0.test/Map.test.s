@@ -779,6 +779,29 @@ mapMakeBugWithArray.description =
 // map manipulator
 //
 
+function mapMakeBugWithArray( test )
+{
+  test.case = 'failed';
+  var src = [ { a : 1 }, { b : 2 } ];
+  debugger;
+  var got = _.mapMake.apply( undefined, src );
+  debugger;
+  var exp = { 0 : { a : 1 }, 1 : { b : 2 } };
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'all ok';
+  var src = [ { a : 1 }, { b : 2 } ];
+  var got = _.mapMake( src );
+  var exp = { 0 : { a : 1 }, 1 : { b : 2 } };
+  test.identical( got, exp );
+  test.is( got !== src );
+}
+
+mapMakeBugWithArray.experimental = 1;
+
+//
+
 function objectSetWithKeys( test )
 {
   test.case = 'dstMap is null or empty';
@@ -5795,6 +5818,7 @@ var Self =
 
     // map manipulator
 
+    mapMakeBugWithArray,
     objectSetWithKeys,
 
     // map convert

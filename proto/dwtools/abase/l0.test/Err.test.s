@@ -105,6 +105,20 @@ function diagnosticStack( test )
   var got2 = _.diagnosticStack([ 0, Infinity ]);
   test.identical( _.strLinesBut( got1, 0 ), _.strLinesBut( got2, 0 ) );
 
+  test.case = 'not an error';
+  var exp = undefined;
+  var got = _.diagnosticStack( { notError : 1 }, undefined );
+  test.identical( got, exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'not a range';
+  test.shouldThrowErrorSync( () =>
+  {
+    var got = _.diagnosticStack( { notError : 1 } );
+  });
+
 }
 
 //
@@ -127,6 +141,24 @@ function diagnosticStructureGenerate( test )
 }
 
 diagnosticStructureGenerate.timeOut = 30000;
+
+//
+
+function errArgumentObject( test )
+{
+  let context = this;
+  let visited = [];
+
+  var args = [ 'str', { num : 1 } ];
+  var err = _._err({ args });
+  test.is( _.errIs( err ) );
+
+  var errStr = String( err );
+  console.log( errStr );
+  test.identical( _.strCount( errStr, 'at Object.errArgumentObject' ), 2 );
+  test.identical( _.strCount( errStr, '* 153 :   var err = _._err({ args });' ), 1 );
+
+}
 
 //
 
@@ -505,7 +537,10 @@ var Self =
     diagnosticStackTrivial,
     diagnosticStack, /* qqq : extend the routine */
     diagnosticStructureGenerate,
+
+    errArgumentObject,
     errCatchStackAndMessage,
+
     unhandledError,
     sourceCode,
     asyncStackInConsequenceTrivial,

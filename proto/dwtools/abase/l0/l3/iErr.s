@@ -93,6 +93,9 @@ function diagnosticLocation( o )
     }
   }
 
+  if( o.stack === null || o.stack === undefined )
+  return o.location;
+
   _.assert( _.strIs( o.stack ) || _.arrayIs( o.stack ) );
 
   let stack = o.stack;

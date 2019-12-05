@@ -4781,7 +4781,6 @@ function arrayPrependElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
   let result;
   if ( Config.debug )
   {
-    debugger;
     result = arrayPrependedElementOnce.apply( this, arguments );
     _.assert( result !== undefined, 'Array should have only unique elements, but has several', ins );
   }
