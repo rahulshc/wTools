@@ -747,13 +747,21 @@ function mapMake( test )
 
 function mapMakeBugWithArray( test ) 
 {
-  test.case = 'array in arguments';
+  test.case = 'failed';
   var src = [ { a : 1 }, { b : 2 } ];
-  var got = _.mapMake.apply( null, src );
+  var got = _.mapMake.apply( this, src );
+  var exp = { 0 : { a : 1 }, 1 : { b : 2 } };
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'all ok';
+  var src = [ { a : 1 }, { b : 2 } ];
+  var got = _.mapMake( src );
   var exp = { 0 : { a : 1 }, 1 : { b : 2 } };
   test.identical( got, exp );
   test.is( got !== src );
 }
+mapMakeBugWithArray.experimental = 1;
 
 //
 // map manipulator
