@@ -2278,7 +2278,8 @@ function mapBut( srcMap, butMap )
   let result = Object.create( null );
 
   if( _.arrayLike( srcMap ) )
-  srcMap = _.mapMake.apply( this, srcMap );
+  srcMap = _.mapExtend( null, srcMap );
+  // srcMap = _.mapMake.apply( this, srcMap );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
