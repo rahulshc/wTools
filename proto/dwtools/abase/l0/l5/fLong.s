@@ -510,12 +510,17 @@ function _longClone( src )
   if( _.bufferViewIs( src ) )
   debugger;
 
-  if( _.bufferRawIs( src ) )
+  if( _.arrayIs( src ) )
+  return src.slice();
+  else if( _.argumentsArrayIs( src ) )
+  {
+    debugger;
+    return Array.prototype.slice.call( src );
+  }
+  else if( _.bufferRawIs( src ) )
   return new U8x( new U8x( src ) ).buffer;
   else if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
   return new src.constructor( src );
-  else if( _.arrayIs( src ) )
-  return src.slice();
   else if( _.bufferViewIs( src ) )
   return new src.constructor( src.buffer, src.byteOffset, src.byteLength );
 
@@ -528,6 +533,8 @@ function _longClone( src )
 /*
 qqq : find and let me know what is _.buffer* analog of _.longShallowClone
 Dmytro : the closest _.buffer* analog of _.longShallowClone is bufferJoin, which joins buffers to flat buffer
+qqq2 : did not work!
+qqq2 : poor coverage!
 */
 
 function longShallowClone()
@@ -3042,6 +3049,80 @@ function arrayEmpty( dstArray, srcArray )
   _.assert( arguments.length === 1, 'not implemented' );
   dstArray.splice( 0, dstArray.length );
   return dstArray;
+}
+
+//
+
+function arrayExtendAppending( dst, src )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( _.longIs( src ) )
+  {
+
+    if( dst === null || dst === undefined )
+    dst = _.longSlice( src );
+    else if( _.arrayIs( dst ) )
+    dst = _.arrayAppendArray( dst, src );
+    else if( _.longLike( dst ) )
+    dst = _.arrayAppendArrays( null, [ dst, src ] );
+    else
+    dst = _.arrayAppendArray( [ dst ], src );
+
+  }
+  else
+  {
+
+    if( dst === null || dst === undefined )
+    dst = [ src ];
+    else if( _.arrayIs( dst ) )
+    dst = _.arrayAppend( dst, src );
+    else if( _.longLike( dst ) )
+    dst = _.arrayAppendArrays( null, [ dst, src ] );
+    else
+    dst = _.arrayAppend( [ dst ], src );
+
+  }
+
+  return dst;
+}
+
+//
+
+function arrayExtendPrepending( dst, src )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( _.longIs( src ) )
+  {
+
+    if( dst === null || dst === undefined )
+    dst = _.longSlice( src );
+    else if( _.arrayIs( dst ) )
+    dst = _.arrayPrependArray( dst, src );
+    else if( _.longLike( dst ) )
+    dst = _.arrayPrependArrays( null, [ dst, src ] );
+    else
+    dst = _.arrayPrependArray( [ dst ], src );
+
+  }
+  else
+  {
+
+    if( dst === null || dst === undefined )
+    dst = [ src ];
+    else if( _.arrayIs( dst ) )
+    dst = _.arrayPrepend( dst, src );
+    else if( _.longLike( dst ) )
+    dst = _.arrayPrependArrays( null, [ dst, src ] );
+    else
+    dst = _.arrayPrepend( [ dst ], src );
+
+  }
+
+  return dst;
 }
 
 //
@@ -8705,6 +8786,7 @@ function arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   let index = arrayReplacedOnce.apply( this, arguments );
 
+  /* xxx : ? */
   if( index === -1 )
   {
     dstArray.push( sub );
@@ -8803,6 +8885,8 @@ let Routines =
 
   arraySlice,
   arrayEmpty,
+  arrayExtendAppending,
+  arrayExtendPrepending,
 
   arrayBut,
   arrayButInplace,
@@ -8975,7 +9059,7 @@ let Routines =
 
   /*
   | routine          | makes new dst container                  | saves dst container                                     |
-  | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
+  | ---------------- | ---------------------------------------- | ------------------------------------------------------- |
   | longBut_         | _.longBut_( null, src, range )           | _.longBut_( src )                                       |
   |                  | _.longBut_( dst, src, range )            | _.longBut_( src, range )                                |
   |                  | if dst not resizable and change length   | _.longBut_( dst, dst )                                  |

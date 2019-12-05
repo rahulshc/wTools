@@ -37,6 +37,24 @@ function boolLike( src )
   return type === '[object Boolean]' || type === '[object Number]';
 }
 
+//
+
+function boolLikeFalse( src )
+{
+  if( !_.boolLike( src ) )
+  return false;
+  return !src;
+}
+
+//
+
+function boolLikeTrue( src )
+{
+  if( !_.boolLike( src ) )
+  return false;
+  return !!src;
+}
+
 // --
 // fields
 // --
@@ -54,6 +72,8 @@ let Routines =
 
   boolIs,
   boolLike,
+  boolLikeFalse,
+  boolLikeTrue,
 
 }
 
