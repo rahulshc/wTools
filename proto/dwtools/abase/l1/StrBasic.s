@@ -4177,7 +4177,7 @@ function strLinesNumber( o )
 
   /* */
 
-  let maxNumberLength = String( lines.length + o.zeroLine ).length;
+  let maxNumberLength = String( lines.length - 1 + o.zeroLine ).length;
   let zeroLineLength = String( o.zeroLine ).length;
   let maxNumLength = maxNumberLength > zeroLineLength ? maxNumberLength : zeroLineLength;
 

@@ -705,7 +705,8 @@ function mapMake( test )
   var src2Copy = _.mapExtend( null, src2 );
   var src3Copy = _.mapExtend( null, src3 );
   var got = _.mapMake( src1, src2, src3 );
-  var expected = { a : 'x', b : 13, c : 3, d : 33, e : 77 };
+  // var expected = { a : 'x', b : 13, c : 3, d : 33, e : 77 };
+  var expected = { a : 7, b : 13 };
   test.identical( got, expected );
   test.is( _.mapIsPure( got ) );
   test.identical( src1, src1Copy );
