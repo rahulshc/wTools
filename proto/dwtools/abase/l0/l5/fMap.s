@@ -1189,6 +1189,36 @@ function mapSupplement( dstMap, srcMap )
 
 //
 
+// function mapSupplementStructureless( dstMap, srcMap )
+// {
+//
+//   if( dstMap === null && arguments.length === 2 ) // xxx
+//   return Object.assign( Object.create( null ), srcMap );
+//
+//   if( dstMap === null )
+//   dstMap = Object.create( null );
+//
+//   for( let a = 1 ; a < arguments.length ; a++ )
+//   {
+//     srcMap = arguments[ a ];
+//     for( let s in srcMap )
+//     {
+//       if( dstMap[ s ] !== undefined )
+//       continue;
+//       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
+//       {
+//         debugger;
+//         throw Error( Source map should have only primitive elements, but have ' + _.strType( srcMap ) + `"${ s }"` );
+//       }
+//       dstMap[ s ] = srcMap[ s ];
+//     }
+//   }
+//
+//   return dstMap
+// }
+
+//
+
 function mapSupplementByMaps( dstMap, srcMaps )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -2249,7 +2279,8 @@ function mapBut( srcMap, butMap )
   let result = Object.create( null );
 
   if( _.arrayLike( srcMap ) )
-  srcMap = _.mapMake.apply( this, srcMap );
+  srcMap = _.mapExtend( null, srcMap );
+  // srcMap = _.mapMake.apply( this, srcMap );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
@@ -2624,7 +2655,8 @@ function _mapOnly( o )
   let srcMaps = o.srcMaps;
 
   if( _.arrayIs( screenMap ) )
-  screenMap = _.mapMake.apply( this, screenMap );
+  screenMap = _.mapExtend( null, screenMap );
+  // screenMap = _.mapMake.apply( this, screenMap );
 
   if( !_.arrayIs( srcMaps ) )
   srcMaps = [ srcMaps ];

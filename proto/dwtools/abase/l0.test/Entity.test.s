@@ -520,7 +520,7 @@ function entityLength( test )
   var got = _.entityLength( null );
   test.identical( got, 1 );
 
-  test.case = 'udefined';
+  test.case = 'undefined';
   var got = _.entityLength( undefined );
   test.identical( got, 0 );
 
