@@ -278,7 +278,6 @@ function mapExtendConditional( test )
 {
 
   test.case = 'an unique object';
-  debugger;
   var got = _.mapExtendConditional( _.field.mapper.dstNotHas, { a : 1, b : 2 }, { a : 1 , c : 3 } );
   var expected = { a : 1, b : 2, c : 3 };
   test.identical( got, expected );
@@ -656,94 +655,115 @@ function mapComplement( test )
 
 function mapMake( test )
 {
-
-  test.case = 'empty'; /**/
-
+  test.case = 'without arguments';
   var got = _.mapMake();
   var expected = {};
   test.identical( got, expected );
   test.is( _.mapIsPure( got ) );
 
+  test.case = 'src - null';
   var got = _.mapMake( null );
   var expected = {};
   test.identical( got, expected );
   test.is( _.mapIsPure( got ) );
 
+  test.case = 'src - undefined';
   var got = _.mapMake( undefined );
   var expected = {};
   test.identical( got, expected );
   test.is( _.mapIsPure( got ) );
 
-  test.case = 'empty map'; /**/
+  /* */
 
-  var src1 = {};
-  var src1Copy = _.mapExtend( null, src1 );
-  var got = _.mapMake( src1 );
+  test.case = 'src - empty map';
+  var src = {};
+  var got = _.mapMake( src );
   var expected = {};
   test.identical( got, expected );
   test.is( _.mapIsPure( got ) );
-  test.identical( src1, src1Copy );
-  test.is( got !== src1 );
+  test.is( got !== src );
 
-  test.case = 'single map'; /**/
-
-  var src1 = { a : 7, b : 13 };
-  var src1Copy = _.mapExtend( null, src1 );
-  var got = _.mapMake( src1 );
+  test.case = 'src - not pure map';
+  var src = { a : 7, b : 13 };
+  var got = _.mapMake( src );
   var expected = { a : 7, b : 13 };
   test.identical( got, expected );
   test.is( _.mapIsPure( got ) );
-  test.identical( src1, src1Copy );
-  test.is( got !== src1 );
+  test.is( got !== src );
 
-  test.case = 'trivial'; /**/
-
-  var src1 = { a : 7, b : 13 };
-  var src2 = { a : 77, c : 3, d : 33 };
-  var src3 = { a : 'x', e : 77 };
-  var src1Copy = _.mapExtend( null, src1 );
-  var src2Copy = _.mapExtend( null, src2 );
-  var src3Copy = _.mapExtend( null, src3 );
-  var got = _.mapMake( src1, src2, src3 );
-  var expected = { a : 'x', b : 13, c : 3, d : 33, e : 77 };
+  test.case = 'src - empty pure map';
+  var src = Object.create( null );
+  var got = _.mapMake( src );
+  var expected = {};
   test.identical( got, expected );
   test.is( _.mapIsPure( got ) );
-  test.identical( src1, src1Copy );
-  test.identical( src2, src2Copy );
-  test.identical( src3, src3Copy );
-  test.is( got !== src1 );
-  test.is( got !== src2 );
-  test.is( got !== src3 );
+  test.is( got !== src );
+
+  test.case = 'src - pure map';
+  var src = Object.create( { a : 7, b : 13 } );
+  var got = _.mapMake( src );
+  var expected = { a : 7, b : 13 };
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
+  test.is( got !== src );
+
+  test.case = 'src - empty Map';
+  var src = new Map([]);
+  var got = _.mapMake( src );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
+  test.is( got !== src );
+
+  test.case = 'src - pure map';
+  var src = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
+  var got = _.mapMake( src );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
+  test.is( got !== src );
 
   /* */
 
-  test.case = 'bad arguments'; /**/
+  test.case = 'src - empty array';
+  var src = [];
+  var got = _.mapMake( src );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
+  test.is( got !== src );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapMake( '' );
-  });
+  test.case = 'src - array with primitives';
+  var src = [ 0, 'str', null, undefined ];
+  var got = _.mapMake( src );
+  var expected = { 0 : 0, 1 : 'str', 2 : null, 3 : undefined };
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
+  test.is( got !== src );
 
-  test.case = 'bad arguments'; /**/
+  test.case = 'src - array with maps';
+  var src = [ { a : 7 }, { b : 13 } ];
+  var got = _.mapMake( src );
+  var expected = { 0 : { a : 7 }, 1 : { b : 13 } };
+  test.identical( got, expected );
+  test.is( _.mapIsPure( got ) );
+  test.is( got !== src );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapMake( 'x' );
-  });
+  /* - */
 
-  test.case = 'bad arguments'; /**/
+  if( !Config.debug )
+  return;
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.mapMake( null, 'x' );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.mapMake( { a : 1 }, { a : 'extra' } ) );
 
-  test.case = 'bad arguments'; /**/
+  test.case = 'wrong argument';
+  test.shouldThrowErrorSync( () => _.mapMake( '' ) );
+  test.shouldThrowErrorSync( () => _.mapMake( 1 ) );
+  test.shouldThrowErrorSync( () => _.mapMake( false ) );
 
 }
 
-//
-// map manipulator
 //
 
 function mapMakeBugWithArray( test )
@@ -762,9 +782,21 @@ function mapMakeBugWithArray( test )
   test.identical( got, exp );
   test.is( got !== src );
 }
-
 mapMakeBugWithArray.experimental = 1;
+mapMakeBugWithArray.description =
+`
+ routines mapBut and _mapOnly uncorrect use method apply()
+ Previus call was :
+   _.mapMake.apply( this, src ); // src = [ {...}, {...} ]
+   its equivalent to
+   _.mapMake( {...}, {...} );
 
+   After changing behavior of mapMake call should be
+   _.mapMake.apply( this. [ src ] );
+`
+
+//
+// map manipulator
 //
 
 function objectSetWithKeys( test )
@@ -1286,9 +1318,7 @@ function mapKeys( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    debugger;
     _.mapKeys.call( { x : 1 }, {} );
-    debugger;
   });
 
 }
@@ -3069,7 +3099,7 @@ function mapBut( test )
   var srcMapCopy = srcMap.slice();
   var screenMapCopy = _.mapExtend( null, screenMap );
   var got = _.mapBut( srcMap, screenMap );
-  var expected = { c :1 };
+  var expected = { 0 : { a : 1 }, 1 : { b : 1 }, 2 : { c : 1 } };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, srcMapCopy );
@@ -3078,11 +3108,11 @@ function mapBut( test )
   test.case = 'several srcs and screens'; /* */
 
   var srcMap = [ { a : 1 }, { b : 1 }, { c : 1 } ];
-  var screenMap = [ { a : 2 }, { b : 2 }, { d : 2 } ];
+  var screenMap = [ { 0 : 2 }, { 1 : 2 }, { d : 2 } ];
   var srcMapCopy = srcMap.slice();
   var screenMapCopy = screenMap.slice();
   var got = _.mapBut( srcMap, screenMap );
-  var expected = { c : 1 };
+  var expected = { 2 : { c : 1 } };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, srcMapCopy );
@@ -3262,12 +3292,12 @@ function mapOnly( test )
 
   test.case = 'several screens'; /* */
 
-  var srcMap = { d : 'name', c : 33, a : 'abc' };
+  var srcMap = { 0 : 'name', 1 : 33, 2 : 'abc' };
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var srcMapCopy = _.mapExtend( null, srcMap );
   var screenMapCopy = screenMap.slice();
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { a : 'abc', c : 33, d : 'name' };
+  var expected = { 2 : 'abc', 1 : 33, 0 : 'name' };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, srcMapCopy );
@@ -3288,12 +3318,12 @@ function mapOnly( test )
 
   test.case = 'several srcs and screens'; /* */
 
-  var srcMap = [ { a : 1 }, { b : 1 }, { c : 1 } ];
+  var srcMap = [ { 0 : 1 }, { 1 : 1 }, { d : 1 } ];
   var screenMap = [ { a : 2 }, { b : 2 }, { d : 2 } ];
   var srcMapCopy = srcMap.slice();
   var screenMapCopy = screenMap.slice();
   var got = _.mapOnly( srcMap, screenMap );
-  var expected = { a : 1, b : 1 };
+  var expected = { 0 : 1, 1 : 1 };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, srcMapCopy );
@@ -3829,9 +3859,7 @@ function mapHasNone( test )
   var a = {};
   Object.defineProperty( a, 'a',{ enumerable : 0 } );
 
-  debugger;
   var got = _.mapHasNone( a, { a : 1 } );
-  debugger;
   test.is( !got );
 
   var got = _.mapHasNone( a, a );
@@ -5779,10 +5807,10 @@ var Self =
     mapComplement,
 
     mapMake,
+    mapMakeBugWithArray,
 
     // map manipulator
 
-    mapMakeBugWithArray,
     objectSetWithKeys,
 
     // map convert
