@@ -753,6 +753,7 @@ function mapHasNoUndefine( srcMap )
 
 function mapMake( src )
 {
+  _.assert( arguments.length === 0 || arguments.length === 1 );
   if( arguments.length <= 1 )
   if( arguments[ 0 ] === undefined || arguments[ 0 ] === null )
   return Object.create( null );
