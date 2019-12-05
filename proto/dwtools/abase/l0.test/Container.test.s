@@ -96,6 +96,8 @@ function instanceOfContainer( test )
 
 //
 
+/* qqq : normalize the test, please */
+
 function extendReplacing( test )
 {
 
@@ -128,64 +130,47 @@ function extendReplacing( test )
   test.is( got !== dst );
   test.is( got !== src );
 
-  var exp =
-  [
-    { 'a' : 1 },
-    3,
-    5,
-    6
-  ]
+  var exp = [ 3, 5, 6 ];
   var got = _.container.extendReplacing( { a : 1 }, [ 3, 5, 6 ] );
   test.identical( got, exp );
-  // test.identical( got, { a : 1, 0 : 3, 1 : 5, 2 : 6 } );
 
   test.case = 'src is ObjectLike, dst is ArrayLike';
 
-  var exp = [ 9, -16, { a : 3, b : 5, c : 6 } ];
+  var exp = { 'a' : 3, 'b' : 5, 'c' : 6 }
   var got = _.container.extendReplacing( [ 9, -16 ], { a : 3, b : 5, c : 6 } );
   test.identical( got, exp );
-  // test.identical( got, [ 9, -16 ] );
 
-  var got = _.container.extendReplacing( [], { a : 3, b : 5, c : 6 } );
-  test.identical( got, [ { a : 3, b : 5, c : 6 } ] );
-  // test.identical( got, [] );
-
-  var exp =
-  [
-    1,
-    2,
-    -3,
-    { '0' : 3, '1' : 5, '2' : 6 }
-  ]
-  var got = _.container.extendReplacing( [ 1, 2, -3 ], { 0 : 3, 1 : 5, 2 : 6 } );
+  var exp = { 'a' : 3, 'b' : 5, 'c' : 6 };
+  var dst = [];
+  var src = { a : 3, b : 5, c : 6 };
+  var got = _.container.extendReplacing( dst, src );
   test.identical( got, exp );
-  // test.identical( got, [ 3, 5, 6 ] );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  var exp = { '0' : 3, '1' : 5, '2' : 6 }
+  var dst = [ 1, 2, -3 ];
+  var src = { 0 : 3, 1 : 5, 2 : 6 };
+  var got = _.container.extendReplacing( dst, src );
+  test.identical( got, exp );
 
   test.case = 'src is not ObjectLike or ArrayLike';
 
-  var exp = [ 9, -16, 1 ];
+  var exp = 1;
   var got = _.container.extendReplacing( [ 9, -16 ], 1 );
   test.identical( got, exp );
-  // test.identical( got, 1 );
 
-  var exp = [ 'str' ];
+  var exp = 'str';
   var got = _.container.extendReplacing( [], 'str' );
   test.identical( got, exp );
-  // test.identical( got, 'str' );
 
-  var exp =
-  [
-    { 'a' : 1 },
-    1,
-  ]
+  var exp = 1;
   var got = _.container.extendReplacing( { a : 1 }, 1 );
   test.identical( got, exp );
-  // test.identical( got, 1 );
 
-  var exp = [ {}, 'str' ];
+  var exp = 'str';
   var got = _.container.extendReplacing( {}, 'str' );
   test.identical( got, exp );
-  // test.identical( got, 'str' );
 
   var exp = [ 0, 1 ];
   var dst = null;
@@ -196,6 +181,20 @@ function extendReplacing( test )
 
   var exp = { 'a' : 1, 'b' : 2 };
   var dst = null;
+  var src = { a : 1, b : 2 };
+  var got = _.container.extendReplacing( dst, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  var exp = [ 0, 1 ];
+  var dst = undefined;
+  var src = [ 0, 1 ];
+  var got = _.container.extendReplacing( dst, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  var exp = { 'a' : 1, 'b' : 2 };
+  var dst = undefined;
   var src = { a : 1, b : 2 };
   var got = _.container.extendReplacing( dst, src );
   test.identical( got, exp );
@@ -218,16 +217,16 @@ function extendReplacing( test )
     _.container.extendReplacing( [ 1,3 ], [ 1,3 ], [ 1,3 ] );
   });
 
-  test.case = 'dst is undefined';
-  test.shouldThrowErrorSync( function()
-  {
-    _.container.extendReplacing( undefined, [ 0, 1 ] );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.container.extendReplacing( undefined, { a : 1, b : 2 } );
-  });
+  // test.case = 'dst is undefined';
+  // test.shouldThrowErrorSync( function()
+  // {
+  //   _.container.extendReplacing( undefined, [ 0, 1 ] );
+  // });
+  //
+  // test.shouldThrowErrorSync( function()
+  // {
+  //   _.container.extendReplacing( undefined, { a : 1, b : 2 } );
+  // });
 
   // test.shouldThrowErrorSync( function()
   // {
@@ -243,6 +242,7 @@ function extendReplacing( test )
 
 //
 
+/* qqq : normalize the test, please */
 function extendAppending( test )
 {
 
@@ -250,7 +250,6 @@ function extendAppending( test )
 
   var got = _.container.extendAppending( [ 9, -16 ], [ 3, 5, 6 ] );
   test.identical( got, [ 9, -16, 3, 5, 6 ] );
-  // test.identical( got, [ 3, 5, 6 ] );
 
   var got = _.container.extendAppending( [], [ 3, 5, 6 ] );
   test.identical( got, [ 3, 5, 6 ] );
@@ -274,7 +273,6 @@ function extendAppending( test )
   test.identical( got, [ {}, 3, 5, 6 ] );
   test.is( got !== dst );
   test.is( got[ 0 ] === dst );
-  // test.identical( got, { 0 : 3, 1 : 5, 2 : 6 } );
 
   var exp =
   [
@@ -285,18 +283,15 @@ function extendAppending( test )
   ]
   var got = _.container.extendAppending( { a : 1 }, [ 3, 5, 6 ] );
   test.identical( got, exp );
-  // test.identical( got, { a : 1, 0 : 3, 1 : 5, 2 : 6 } );
 
   test.case = 'src is ObjectLike, dst is ArrayLike';
 
   var exp = [ 9, -16, { a : 3, b : 5, c : 6 } ];
   var got = _.container.extendAppending( [ 9, -16 ], { a : 3, b : 5, c : 6 } );
   test.identical( got, exp );
-  // test.identical( got, [ 9, -16 ] );
 
   var got = _.container.extendAppending( [], { a : 3, b : 5, c : 6 } );
   test.identical( got, [ { a : 3, b : 5, c : 6 } ] );
-  // test.identical( got, [] );
 
   var exp =
   [
@@ -305,21 +300,22 @@ function extendAppending( test )
     -3,
     { '0' : 3, '1' : 5, '2' : 6 }
   ]
-  var got = _.container.extendAppending( [ 1, 2, -3 ], { 0 : 3, 1 : 5, 2 : 6 } );
+  var src = { 0 : 3, 1 : 5, 2 : 6 };
+  var dst = [ 1, 2, -3 ];
+  var got = _.container.extendAppending( dst, src );
   test.identical( got, exp );
-  // test.identical( got, [ 3, 5, 6 ] );
+  test.is( got !== src );
+  test.is( got === dst );
 
   test.case = 'src is not ObjectLike or ArrayLike';
 
   var exp = [ 9, -16, 1 ];
   var got = _.container.extendAppending( [ 9, -16 ], 1 );
   test.identical( got, exp );
-  // test.identical( got, 1 );
 
   var exp = [ 'str' ];
   var got = _.container.extendAppending( [], 'str' );
   test.identical( got, exp );
-  // test.identical( got, 'str' );
 
   var exp =
   [
@@ -328,12 +324,10 @@ function extendAppending( test )
   ]
   var got = _.container.extendAppending( { a : 1 }, 1 );
   test.identical( got, exp );
-  // test.identical( got, 1 );
 
   var exp = [ {}, 'str' ];
   var got = _.container.extendAppending( {}, 'str' );
   test.identical( got, exp );
-  // test.identical( got, 'str' );
 
   var exp = [ 0, 1 ];
   var dst = null;
@@ -344,6 +338,21 @@ function extendAppending( test )
 
   var exp = { 'a' : 1, 'b' : 2 };
   var dst = null;
+  var src = { a : 1, b : 2 };
+  var got = _.container.extendAppending( dst, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  var exp = [ 0, 1 ];
+  var dst = undefined;
+  var src = [ 0, 1 ];
+  debugger;
+  var got = _.container.extendAppending( dst, src );
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  var exp = { 'a' : 1, 'b' : 2 };
+  var dst = undefined;
   var src = { a : 1, b : 2 };
   var got = _.container.extendAppending( dst, src );
   test.identical( got, exp );
@@ -366,16 +375,16 @@ function extendAppending( test )
     _.container.extendAppending( [ 1,3 ], [ 1,3 ], [ 1,3 ] );
   });
 
-  test.case = 'dst is undefined';
-  test.shouldThrowErrorSync( function()
-  {
-    _.container.extendAppending( undefined, [ 0, 1 ] );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.container.extendAppending( undefined, { a : 1, b : 2 } );
-  });
+  // test.case = 'dst is undefined';
+  // test.shouldThrowErrorSync( function()
+  // {
+  //   _.container.extendAppending( undefined, [ 0, 1 ] );
+  // });
+  //
+  // test.shouldThrowErrorSync( function()
+  // {
+  //   _.container.extendAppending( undefined, { a : 1, b : 2 } );
+  // });
 
   // test.shouldThrowErrorSync( function()
   // {

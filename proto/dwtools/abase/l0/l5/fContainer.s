@@ -49,26 +49,26 @@ function extendReplacing( dst, src )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  if( dst === null )
+  if( dst === null || dst === undefined )
   {
 
     if( _.mapLike( src ) )
     {
-      dst = _.mapExtend( dst, src );
+      dst = _.mapExtend( null, src );
     }
     else if( _.longLike( src ) )
     {
-      dst = _.arrayExtendAppending( dst, src );
+      dst = _.arrayExtendAppending( null, src );
     }
-    else if( _.hasMapLike( src ) )
+    else if( _.hashMapLike( src ) )
     {
       _.assert( 0, 'not tested' );
-      dst = _.hashMapExtend( dst, src );
+      dst = _.hashMapExtend( null, src );
     }
     else if( _.setLike( src ) )
     {
       _.assert( 0, 'not tested' );
-      dst = _.arraySetUnion_( dst, src );
+      dst = _.arraySetUnion_( null, src );
     }
     else
     {
@@ -84,7 +84,7 @@ function extendReplacing( dst, src )
     else if( _.hashMapLike( dst ) )
     dst = _.hashMapExtend( dst, src );
     else
-    dst = src;
+    dst = _.container.extendReplacing( null, src );
 
   }
   else if( _.longLike( src ) )
@@ -93,17 +93,17 @@ function extendReplacing( dst, src )
     if( _.longIs( dst ) )
     dst = _.arrayExtendAppending( dst, src );
     else
-    dst = src;
+    dst = _.container.extendReplacing( null, src );
 
   }
-  else if( _.hasMapLike( src ) )
+  else if( _.hashMapLike( src ) )
   {
 
     _.assert( 0, 'not tested' );
     if( _.hashMapLike( src ) || _.mapLike( src ) )
     dst = _.hashMapExtend( dst, src );
     else
-    dst = src;
+    dst = _.container.extendReplacing( null, src );
 
   }
   else if( _.setLike( src ) )
@@ -113,7 +113,7 @@ function extendReplacing( dst, src )
     if( _.setLike( src ) || _.longLike( src ) )
     dst = _.arraySetUnion_( dst, src );
     else
-    dst = src;
+    dst = _.container.extendReplacing( null, src );
 
   }
   else
@@ -134,26 +134,26 @@ function extendAppending( dst, src )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  if( dst === null )
+  if( dst === null || dst === undefined )
   {
 
     if( _.mapLike( src ) )
     {
-      dst = _.mapExtend( dst, src );
+      dst = _.mapExtend( null, src );
     }
     else if( _.longLike( src ) )
     {
-      dst = _.arrayExtendAppending( dst, src );
+      dst = _.arrayExtendAppending( null, src );
     }
-    else if( _.hasMapLike( src ) )
+    else if( _.hashMapLike( src ) )
     {
       _.assert( 0, 'not tested' );
-      dst = _.hashMapExtend( dst, src );
+      dst = _.hashMapExtend( null, src );
     }
     else if( _.setLike( src ) )
     {
       _.assert( 0, 'not tested' );
-      dst = _.arraySetUnion_( dst, src );
+      dst = _.arraySetUnion_( null, src );
     }
     else
     {
@@ -178,7 +178,7 @@ function extendAppending( dst, src )
     dst = _.arrayExtendAppending( dst, src );
 
   }
-  else if( _.hasMapLike( dst ) )
+  else if( _.hashMapLike( dst ) )
   {
 
     _.assert( 0, 'not tested' );
@@ -231,7 +231,7 @@ function extendAppendingRecursive( dst, src )
     _.arrayExtendAppending( dst, src );
 
   }
-  else if( _.hasMapLike( src ) )
+  else if( _.hashMapLike( src ) )
   {
 
     _.assert( 0, 'not tested' );
