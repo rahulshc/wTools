@@ -749,7 +749,8 @@ function mapMakeBugWithArray( test )
 {
   test.case = 'failed';
   var src = [ { a : 1 }, { b : 2 } ];
-  var got = _.mapMake.apply( undefined, src );
+  debugger;
+  var got = _.mapMake.apply( null, [ src ] );
   var exp = { 0 : { a : 1 }, 1 : { b : 2 } };
   test.identical( got, exp );
   test.is( got !== src );
@@ -762,6 +763,17 @@ function mapMakeBugWithArray( test )
   test.is( got !== src );
 }
 mapMakeBugWithArray.experimental = 1;
+mapMakeBugWithArray.description = 
+`
+ routines mapBut and _mapOnly uncorrect use method apply() 
+ Previus call was :
+   _.mapMake.apply( this, src ); // src = [ {...}, {...} ]
+   its equivalent to 
+   _.mapMake( {...}, {...} );
+
+   After changing behavior of mapMake call should be 
+   _.mapMake.apply( this. [ src ] );
+`
 
 //
 // map manipulator
