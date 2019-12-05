@@ -749,7 +749,7 @@ function mapMakeBugWithArray( test )
 {
   test.case = 'failed';
   var src = [ { a : 1 }, { b : 2 } ];
-  var got = _.mapMake.apply( this, src );
+  var got = _.mapMake.apply( undefined, src );
   var exp = { 0 : { a : 1 }, 1 : { b : 2 } };
   test.identical( got, exp );
   test.is( got !== src );
@@ -3068,9 +3068,8 @@ function mapBut( test )
   var screenMap = { a : 2, b : 2, d : 2 };
   var srcMapCopy = srcMap.slice();
   var screenMapCopy = _.mapExtend( null, screenMap );
-  debugger;
   var got = _.mapBut( srcMap, screenMap );
-  var expected = { c :1 };
+  var expected = { 0 : { a : 1 }, 1 : { b : 1 }, 2 : { c : 1 } };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, srcMapCopy );
@@ -3079,11 +3078,11 @@ function mapBut( test )
   test.case = 'several srcs and screens'; /* */
 
   var srcMap = [ { a : 1 }, { b : 1 }, { c : 1 } ];
-  var screenMap = [ { a : 2 }, { b : 2 }, { d : 2 } ];
+  var screenMap = [ { 0 : 2 }, { 1 : 2 }, { d : 2 } ];
   var srcMapCopy = srcMap.slice();
   var screenMapCopy = screenMap.slice();
   var got = _.mapBut( srcMap, screenMap );
-  var expected = { c : 1 };
+  var expected = { 2 : { c : 1 } };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, srcMapCopy );
