@@ -1402,26 +1402,23 @@ strEscape.defaults =
 //
 
 /**
- * Converts source string( src ) into unicode representation by replacing each symbol with its escaped unicode equivalent.
- * Example: ( 't' -> '\u0074' ). Returns result of conversion as new string or empty string if source has zero length.
- * @param {string} str - Source string to parse.
- * @returns {string} Returns string with result of conversion.
+ * Converts number {-code-} into unicode representation.
+ * Returns result of conversion as new string.
+ *
+ * @param { Number } code - The code of a unicode symbol.
  *
  * @example
- * _.strUnicodeEscape( 'abc' );
- * // returns \u0061\u0062\u0063;
+ * _.strCodeUnicodeEscape( 70 );
+ * // returns '\\u0046'
  *
  * @example
- * _.strUnicodeEscape( 'world' );
- * // returns \u0077\u006f\u0072\u006c\u0064
+ * _.strCodeUnicodeEscape( 77 );
+ * // returns '\\u004d'
  *
- * @example
- * _.strUnicodeEscape( '//test//' );
- * // returns \u002f\u002f\u0074\u0065\u0073\u0074\u002f\u002f
- *
- * @method strUnicodeEscape
- * @throws { Exception } Throws a exception if no argument provided.
- * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @returns { String } - Returns string with result of conversion.
+ * @function strCodeUnicodeEscape 
+ * @throws { Exception } If arguments.length is less or more then one.
+ * @throws { Exception } If {-src-} is not a Number.
  * @memberof wTools
  *
  */
