@@ -1405,7 +1405,7 @@ strEscape.defaults =
  * Converts number {-code-} into unicode representation.
  * Returns result of conversion as new string.
  *
- * @param { Number } code - The code of a unicode symbol.
+ * @param { Number } code - The code to convert into unicode representation.
  *
  * @example
  * _.strCodeUnicodeEscape( 70 );
@@ -1441,10 +1441,10 @@ function strCodeUnicodeEscape( code )
 //
 
 /**
- * Converts source string( src ) into unicode representation by replacing each symbol with its escaped unicode equivalent.
- * Example: ( 't' -> '\u0074' ). Returns result of conversion as new string or empty string if source has zero length.
- * @param {string} str - Source string to parse.
- * @returns {string} Returns string with result of conversion.
+ * Converts source string {-str-} into unicode representation by replacing each symbol with its escaped unicode equivalent.
+ * Returns result of conversion as new string or empty string if source has zero length.
+ *
+ * @param { String } str - Source string to parse.
  *
  * @example
  * _.strUnicodeEscape( 'abc' );
@@ -1458,9 +1458,10 @@ function strCodeUnicodeEscape( code )
  * _.strUnicodeEscape( '//test//' );
  * // returns \u002f\u002f\u0074\u0065\u0073\u0074\u002f\u002f
  *
- * @method strUnicodeEscape
- * @throws { Exception } Throws a exception if no argument provided.
- * @throws { Exception } Throws a exception if( src ) is not a String.
+ * @returns { String } - Returns string with result of conversion.
+ * @function strUnicodeEscape
+ * @throws { Exception } If arguments.length is less or more then one.
+ * @throws { Exception } If {-src-} is not a String.
  * @memberof wTools
  *
  */
@@ -4866,8 +4867,8 @@ let Proto =
   strCapitalize,
   strDecapitalize,
   strEscape,
-  strCodeUnicodeEscape,
-  strUnicodeEscape, /* qqq : document me */
+  strCodeUnicodeEscape, /* Dmytro : extended documentation */
+  strUnicodeEscape, /* qqq : document me | Dmytro : documented */
   strReverse,
 
   // stripper
