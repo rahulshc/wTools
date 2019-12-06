@@ -3375,13 +3375,12 @@ _.assert( _.routineIs( strUnjoin.any ) );
 // --
 
 /**
- * Returns a string with the source string appended to itself n-times.
- * Expects two objects: source string( s ) ( or array of strings ) and number of concatenations( times ).
- * The string ( s ) and the number ( times ) remain unchanged.
+ * Routine _strDup() returns a string with the source string appended to itself n-times.
+ * Expects two parameter: source string {-s-} ( or array of strings ) and number of concatenations {-times-}.
+ * The string {-s-}  and the number {-times-} remain unchanged.
  *
- * @param { Array/String } s - Source array of strings / source string.
+ * @param { Array/String } s - Source array of strings or source string.
  * @param { Number } times - Number of concatenation cycles.
- * @returns { String } - Returns a string containing the src string concatenated n-times.
  *
  * @example
  * _.strDup( 'Word', 5 );
@@ -3395,10 +3394,11 @@ _.assert( _.routineIs( strUnjoin.any ) );
  * _.strDup( [ 'ab', 'd', '3 4'], 2 );
  * // returns [ 'abab', 'dd', '3 43 4']
  *
- * @method strDup
- * @throws { Exception } Throw an exception if( s ) is not a String or an array of strings.
- * @throws { Exception } Throw an exception if( times ) is not a Number.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
+ * @returns { String|Array } - Returns a string or an array of string containing the src string concatenated n-times.
+ * @function strDup
+ * @throws { Exception } If arguments.length is less or more then two.
+ * @throws { Exception } If {-s-} is not a String or an array of strings.
+ * @throws { Exception } If {-times-} is not a Number.
  * @memberof wTools
  *
  */
