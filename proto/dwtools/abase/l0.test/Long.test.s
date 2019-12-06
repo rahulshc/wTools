@@ -6657,8 +6657,17 @@ function longSort( test )
     test.case = 'not empty container, onEvaluate - comparator';
     var dst = null;
     var src = makeSrc( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
-    var got = _.longSort( dst, src, ( a, b ) => a > b );
-    test.identical( got, [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] ); /* qqq2 ! */
+    var comparator = ( a, b ) =>
+    {
+      if( a > b )
+      return 1;
+      else if( a === b )
+      return 0;
+      else 
+      return -1;
+    };
+    var got = _.longSort( dst, src, comparator );
+    test.identical( got, [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] ); /* qqq2 ! Dmitro : extended callback */
 
     test.case = 'not empty container, onEvaluate - evaluator';
     var dst = null;
@@ -6682,14 +6691,32 @@ function longSort( test )
 
     test.case = 'not empty container, onEvaluate - comparator';
     var dst = makeDst( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
-    var got = _.longSort( dst, ( a, b ) => a > b );
+     var comparator = ( a, b ) =>
+    {
+      if( a > b )
+      return 1;
+      else if( a === b )
+      return 0;
+      else 
+      return -1;
+    };
+    var got = _.longSort( dst, comparator );
     test.is( got === dst );
     test.identical( got, makeDst( [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] ) );
 
     test.case = 'not empty container, srcLong - array, onEvaluate - comparator';
     var dst = makeDst( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
     var src = [ 1, 5, 14 ];
-    var got = _.longSort( dst, src, ( a, b ) => a > b );
+    var comparator = ( a, b ) =>
+    {
+      if( a > b )
+      return 1;
+      else if( a === b )
+      return 0;
+      else 
+      return -1;
+    };
+    var got = _.longSort( dst, src, comparator );
     test.is( got === dst );
     test.identical( got, makeDst( [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] ) );
 
