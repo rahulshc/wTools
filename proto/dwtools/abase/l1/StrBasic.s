@@ -907,6 +907,59 @@ function strCommonRight( ins )
 
 //
 
+/**
+ * Routine strRandom() makes string with random length with random symbols defined
+ * by option {-o.alphabet-}.
+ * Routine accepts two types of parameter. First of them is options map {-o-}, the second 
+ * is Number (Range) {-length-}.
+ *
+ * First set of parameters
+ * @param { Map } o - Options map.
+ * @param { Number|Range } o.length - The length of random string.
+ * The generated string may has fixed length if {-o.length-} defined by a number. If {-o.length-} 
+ * defined by a Range, then length of generated string is variable.
+ * @param { String } o.alphabet - String with symbols for generated string.
+ * Default range of symbols is 'a' - 'z'.
+ *
+ * Second set of parameters
+ * @param { Number|Range } length - The length of random string.
+ * The generated string may has fixed length if {-o.length-} defined by a number. If {-o.length-} 
+ * defined by a Range, then length of generated string is variable.
+ * @param { String } o.alphabet - String with symbols for generated string.
+ *
+ * @example
+ * _.strRandom( 0 );
+ * // returns ''
+ *
+ * @example
+ * _.strRandom( 2 );
+ * // returns 'vb' 
+ * // string with 2 random symbols from 'a' to 'z'
+ *
+ * @example
+ * _.strRandom( [ 1, 5 ] )
+ * // returns 'soyx'
+ * // string with length from 1 to 5 and random symbols from 'a' to 'z'
+ *
+ * @example
+ * _.strRandom( { length : 3, alphabet : 'a' } )
+ * // returns 'aaa'
+ * // string with length 3 and symbol 'a'
+ *
+ * @example
+ * _.strRandom( { length : [ 1, 5 ], alphabet : 'ab' } )
+ * // returns 'aabab'
+ * // string with length from 1 to 5 and random symbols 'a' and 'b'
+ *
+ * @returns { String } - Returns string with random length and symbols.
+ * @function strRandom
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If options map {-o-} has unnacessary fields.
+ * @throws { Error } If parameter {-length-} or option {-o.length-} is not a Number and not a Range.
+ * @memberof wTools
+ *
+ */
+
 function strRandom( o )
 {
   if( !_.mapIs( o ) )

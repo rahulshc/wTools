@@ -1653,7 +1653,7 @@ function strRandom( test )
   test.case = 'range';
   for( let i = 0 ; i < 10 ; i++ )
   {
-    var got = _.strRandom([ 1, 3 ]);
+    var got = _.strRandom( [ 1, 3 ] );
     test.ge( got.length, 1 );
     test.lt( got.length, 3 );
     test.is( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 0 ] ) );
@@ -1668,6 +1668,10 @@ function strRandom( test )
     test.is( _.strHas( _.strAlphabetFromRange( [ 33, 130 ] ), got[ 0 ] ) );
   }
 
+  test.case = 'set with single symbol';
+  var got = _.strRandom( { length : 2, alphabet : 'aaa' } );
+  test.identical( got, 'aa' );
+
   if( !Config.debug )
   return;
 
@@ -1680,6 +1684,9 @@ function strRandom( test )
   test.case = 'length is not a range, not a number';
   test.shouldThrowErrorSync( () => _.strRandom( [ 1, 2, 3 ] ) );
   test.shouldThrowErrorSync( () => _.strRandom( { length : [ 1, 2, 3 ] } ) );
+
+  test.case = 'unnacessary fields in options map';
+  test.shouldThrowErrorSync( () => _.strRandom( { length : [ 1, 2, 3 ], unnacessary : 1 } ) );
 }
 
 //--
