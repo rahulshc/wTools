@@ -1662,11 +1662,24 @@ function strRandom( test )
   test.case = 'options';
   for( let i = 0 ; i < 5 ; i++ )
   {
-    var got = _.strRandom({ length : [ 1, 5 ], alphabet : _.strAlphabetFromRange([ 33, 130 ]) });
+    var got = _.strRandom({ length : [ 1, 5 ], alphabet : _.strAlphabetFromRange( [ 33, 130 ] ) });
     test.ge( got.length, 1 );
     test.lt( got.length, 5 );
     test.is( _.strHas( _.strAlphabetFromRange( [ 33, 130 ] ), got[ 0 ] ) );
   }
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strRandom() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strRandom( 1, 'extra' ) );
+
+  test.case = 'length is not a range, not a number';
+  test.shouldThrowErrorSync( () => _.strRandom( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.strRandom( { length : [ 1, 2, 3 ] } ) );
 }
 
 //--

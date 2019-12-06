@@ -2432,6 +2432,7 @@ function longBut_( test )
   test.shouldThrowErrorSync( () => _.longBut_( [ 1, 2, 3, 4 ], [ undefined, 1 ], [ 5 ] ) );
   test.shouldThrowErrorSync( () => _.longBut_( [ 1, 2, 3, 4 ], [], [] ) );
 }
+longBut_.timeOut = 10000;
 
 //
 
@@ -6667,7 +6668,7 @@ function longSort( test )
       return -1;
     };
     var got = _.longSort( dst, src, comparator );
-    test.identical( got, [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] ); /* qqq2 ! Dmitro : extended callback */
+    test.identical( got, [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] ); /* qqq2 ! Dmytro : extended callback */
 
     test.case = 'not empty container, onEvaluate - evaluator';
     var dst = null;
