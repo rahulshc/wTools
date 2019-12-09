@@ -368,7 +368,7 @@ function eachSample( o )
   _.routineOptions( eachSample, o );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.routineIs( o.onEach ) || o.onEach === null );
-  _.assert( _.arrayIs( o.sets ) || _.mapLike( o.sets ) );
+  _.assert( _.longLike( o.sets ) || _.mapLike( o.sets ) );
   _.assert( o.base === undefined && o.add === undefined );
 
   /* sample */
@@ -378,8 +378,8 @@ function eachSample( o )
 
   /* */
 
-  let keys = _.longIs( o.sets ) ? _.arrayFromRange([ 0, o.sets.length ]) : _.mapKeys( o.sets );
-  if( o.result && !_.arrayIs( o.result ) )
+  let keys = _.longLike( o.sets ) ? _.arrayFromRange([ 0, o.sets.length ]) : _.mapKeys( o.sets );
+  if( _.boolLikeTrue( o.result ) && !_.arrayIs( o.result ) )
   o.result = [];
   let len = [];
   let indexnd = [];

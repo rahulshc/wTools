@@ -10,6 +10,15 @@ let Self = _global_.wTools;
 // time
 // --
 
+function timerIs( src )
+{
+  if( !src )
+  return false;
+  return src.type === 'timer' && !!src.time && !!src.cancel && src.original !== undefined; 
+}
+
+//
+
 function dateIs( src )
 {
   return Object.prototype.toString.call( src ) === '[object Date]';
@@ -46,6 +55,8 @@ let Fields =
 
 let Routines =
 {
+
+  timerIs, /* qqq : cover please */
 
   dateIs,
   datesAreIdentical,

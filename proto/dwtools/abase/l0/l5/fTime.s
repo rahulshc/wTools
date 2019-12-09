@@ -10,42 +10,185 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 // implementation
 // --
 
-// let _Timers = Object.create( null );
 let _TimeInfinity = Math.pow( 2, 31 )-1;
-function _begin( delay, onEnd )
+function _begin( delay, onTime, onCancel )
 {
-  let timer = null;
+  let original;
 
   if( delay === undefined )
   delay = Infinity;
   if( delay >= _TimeInfinity )
   delay = _TimeInfinity;
 
-  _.assert( arguments.length <= 4 );
+  _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.numberIs( delay ) );
-  _.assert( onEnd === null || onEnd === undefined || _.routineIs( onEnd ) )
-
-  if( arguments[ 2 ] !== undefined || arguments[ 3 ] !== undefined )
-  onEnd = _.routineJoin.call( _, arguments[ 1 ], arguments[ 2 ], arguments[ 3 ] );
+  _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
 
   if( delay > 0 )
-  timer = setTimeout( out, delay );
+  original = setTimeout( time, delay );
   else
-  timer = soon( out ) || null;
+  original = soon( time ) || null;
 
-  let stack = _.diagnosticStack([ 1, Infinity ]);
-  // _Timers[ stack ] = timer || null;
-
+  let timer = Object.create( null );
+  timer.onTime = onTime;
+  timer.onCancel = onCancel;
+  timer._time = _time;
+  timer._cancel = _cancel;
+  timer.time = time;
+  timer.cancel = cancel;
+  timer.state = 0;
+  // timer.kind = 'cancelable';
+  timer.kind = _begin;
+  timer.type = 'timer';
+  timer.original = original;
   return timer;
 
   /* */
 
-  function out()
+  function _time()
   {
-    // delete _Timers[ stack ];
-    if( onEnd )
-    onEnd( timer );
+    timer.state = 1;
+    try
+    {
+      if( onTime )
+      timer.result = onTime( timer );
+    }
+    finally
+    {
+      timer.state = 2;
+    }
   }
+
+  /* */
+
+  function _cancel()
+  {
+    timer.state = -1;
+    clearTimeout( timer.original );
+    try
+    {
+      if( onCancel )
+      timer.result = onCancel( timer );
+    }
+    finally
+    {
+      timer.state = -2;
+    }
+  }
+
+  /* */
+
+  function time()
+  {
+    return timer._time();
+  }
+
+  /* */
+
+  function cancel()
+  {
+    return timer._cancel();
+  }
+
+}
+
+//
+
+function _finally( delay, onTime )
+{
+  _.assert( arguments.length === 2 );
+  let timer = _.time._begin( delay, onTime, onTime );
+  return timer;
+}
+
+//
+
+function _periodic( delay, onTime, onCancel )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two arguments' );
+  _.assert( _.numberIs( delay ) );
+  _.assert( _.routineIs( onTime ) );
+
+  let original = setInterval( time, delay );
+
+  let timer = Object.create( null );
+  timer.onTime = onTime;
+  timer.onCancel = onCancel;
+  timer.time = time;
+  timer.cancel = cancel;
+  timer.state = 0;
+  // timer.kind = 'periodic';
+  timer.type = 'timer';
+  timer.kind = _periodic;
+  timer.original = original;
+  return timer;
+
+  /* */
+
+  function _time()
+  {
+    timer.state = 1;
+  //   if( r === _.dont )
+  //   _.time.cancel( timer );
+    try
+    {
+      if( onTime )
+      timer.result = onTime( timer );
+    }
+    finally
+    {
+      timer.state = 2;
+    }
+  }
+
+  /* */
+
+  function _cancel()
+  {
+    timer.state = -1;
+    clearInterval( timer.original );
+    try
+    {
+      if( onCancel )
+      timer.result = onCancel( timer );
+    }
+    finally
+    {
+      timer.state = -2;
+    }
+  }
+
+  /* */
+
+  function time()
+  {
+    return timer._time();
+  }
+
+  /* */
+
+  function cancel()
+  {
+    return timer._cancel();
+  }
+
+  /* */
+
+  // function time()
+  // {
+  //   let r = onTime( r );
+  //   if( r === _.dont )
+  //   _.time.cancel( timer );
+  // }
+  //
+  // function cancel()
+  // {
+  //   timer.state = -1;
+  //   clearInterval( timer.original );
+  //   if( onCancel )
+  //   onCancel( r );
+  // }
 
 }
 
@@ -53,22 +196,29 @@ function _begin( delay, onEnd )
 
 function _cancel( timer )
 {
-  // for( let t in _Timers )
-  // if( _Timers[ t ] === timer )
-  // delete _Timers[ t ];
-  clearTimeout( timer );
+  _.assert( _.timerIs( timer ) );
+
+  // if( timer.kind === 'finallable' || timer.kind === 'cancelable' )
+  // clearTimeout( timer.original );
+  // else
+  // clearInterval( timer.original );
+
+  timer.cancel();
+
+  // if( timer && timer.state === 0 )
+  // {
+  //   if( timer.kind === 'finallable' )
+  //   {
+  //     timer.state = 2;
+  //     timer.result = timer.onTime();
+  //   }
+  //   else
+  //   {
+  //     timer.state = -1;
+  //   }
+  // }
+
   return timer;
-}
-
-//
-
-function begin( delay, procedure, onEnd )
-{
-  if( arguments.length === 2 )
-  if( !_.procedureIs( procedure ) )
-  onEnd = arguments[ 1 ];
-  _.assert( arguments.length === 2 || arguments.length === 3 );
-  return this._begin( delay, onEnd );
 }
 
 //
@@ -77,9 +227,45 @@ let soon = typeof process === 'undefined' ? function( h ){ return setTimeout( h,
 
 //
 
+function begin( delay, procedure, onTime, onCancel )
+{
+  if( !_.procedureIs( procedure ) )
+  {
+    onTime = arguments[ 1 ];
+    onCancel = arguments[ 2 ]
+  }
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
+  return this._begin( delay, onTime, onCancel );
+}
+
+//
+
+function finally_( delay, procedure, onTime )
+{
+  if( arguments.length === 2 )
+  if( !_.procedureIs( procedure ) )
+  onTime = arguments[ 1 ];
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+  return this._finally( delay, onTime );
+}
+
+//
+
+function periodic( timer )
+{
+  if( !_.procedureIs( procedure ) )
+  {
+    onTime = arguments[ 1 ];
+    onCancel = arguments[ 2 ]
+  }
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
+  return this._periodic( delay, onTime, onCancel );
+}
+
+//
+
 function cancel( timer )
 {
-  debugger;
   return _.time._cancel( ... arguments );
 }
 
@@ -97,28 +283,6 @@ function now_functor()
   now = function(){ return Date().getTime() };
 
   return now;
-}
-
-//
-
-function rarely_functor( perTime, routine )
-{
-  let lastTime = _.time.now() - perTime;
-
-  _.assert( arguments.length === 2 );
-  _.assert( _.numberIs( perTime ) );
-  _.assert( _.routineIs( routine ) );
-
-  return function fewer()
-  {
-    let now = _.time.now();
-    let elapsed = now - lastTime;
-    if( elapsed < perTime )
-    return;
-    lastTime = now;
-    return routine.apply( this, arguments );
-  }
-
 }
 
 //
@@ -194,23 +358,24 @@ function dateToStr( date )
 
 let Fields =
 {
-  // _Timers,
 }
 
 let Routines =
 {
 
   _begin, /* qqq : cover */
+  _finally, /* qqq : cover */
+  _periodic, /* qqq : cover */
   _cancel, /* qqq : cover */
 
-  begin,
-  cancel,
   soon,
+  begin,
+  finally : finally_,
+  periodic,
+  cancel,
 
   now_functor,
   now : now_functor(),
-
-  rarely_functor,
 
   from,
   spent,
@@ -222,8 +387,12 @@ let Routines =
 
 //
 
-_.mapSupplement( Self, Fields );
+// Object.assign( Self, Routines );
+// Object.assign( Self, Fields );
+// xxx : mapSupplement is not available on this level, but it is required here
+
 _.mapSupplement( Self, Routines );
+_.mapSupplement( Self, Fields );
 
 // --
 // export

@@ -423,9 +423,9 @@ Field `sections` of error object is the map. Each record of the map has a head a
 
 A developer can add any custom section to the constructed error with the help of option `sections` of routine `_.err`. Such a section will become part of the error report. It is useful, for example, if the error should have a source code of shader or some custom information.
 
-### Release mode
+### Release build
 
-Performance overhead should be minimized in release mode. Collecting arguments, asynchronous calls stack, and other information which can decrease performance should be off in release mode.
+Performance overhead should be minimized in release build. Collecting arguments, asynchronous calls stack, and other information which can decrease performance should be off in release build.
 
 ### Summary
 

@@ -19097,6 +19097,7 @@ function entityMax( test )
 
 function eachSample( test )
 {
+
   test.case = 'empty sets';
   var got = _.eachSample( [] );
   var expected = [ [] ];
@@ -19128,10 +19129,10 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
 
-  // var got = _.eachSample( _.argumentsArrayMake( 0 ), null );
-  // var expected = [ [] ];
-  // test.identical( got, expected );
-  // test.is( _.arrayIs( got ) );
+  var got = _.eachSample( _.argumentsArrayMake( 0 ), null );
+  var expected = [ [] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
 
   /* - */
 
@@ -19170,10 +19171,10 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
 
-  // var got = _.eachSample( _.argumentsArrayMake( [ 1 ] ), null );
-  // var expected = [ [ 1 ] ];
-  // test.identical( got, expected );
-  // test.is( _.arrayIs( got ) );
+  var got = _.eachSample( _.argumentsArrayMake( [ 1 ] ), null );
+  var expected = [ [ 1 ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
 
   /* - */
 
@@ -19220,10 +19221,10 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
 
-  // var got = _.eachSample( _.argumentsArrayMake( [ [], [] ] ) );
-  // var expected = [ [ undefined, undefined ] ];
-  // test.identical( got, expected );
-  // test.is( _.arrayIs( got ) );
+  var got = _.eachSample( _.argumentsArrayMake( [ [], [] ] ) );
+  var expected = [ [ undefined, undefined ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
 
   /* - */
 
@@ -19254,10 +19255,10 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.primitiveIs( got ) );
 
-  // var got = _.eachSample( { sets : _.argumentsArrayMake( [ 1, 2, 3 ] ), result : 0 } );
-  // var expected = 0;
-  // test.identical( got, expected );
-  // test.is( _.primitiveIs( got ) );
+  var got = _.eachSample( { sets : _.argumentsArrayMake( [ 1, 2, 3 ] ), result : 0 } );
+  var expected = 0;
+  test.identical( got, expected );
+  test.is( _.primitiveIs( got ) );
 
   /* - */
 
@@ -19283,10 +19284,10 @@ function eachSample( test )
   test.isNot( _.unrollIs( got ) );
   test.is( _.arrayIs( got ) );
 
-  // var got = _.eachSample( _.argumentsArrayMake( [ [ 1, 2, null, 'str' ] ] ) );
-  // var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
-  // test.identical( got, expected );
-  // test.is( _.arrayIs( got ) );
+  var got = _.eachSample( _.argumentsArrayMake( [ [ 1, 2, null, 'str' ] ] ) );
+  var expected = [ [ 1 ], [ 2 ], [ null ], [ 'str' ] ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
 
   var got = _.eachSample( new Array( [ [ 1, 2, null, 'str' ] ] ) );
   var expected = [ [ [ 1, 2, null, 'str' ] ] ];
@@ -19374,17 +19375,17 @@ function eachSample( test )
   ];
   test.identical( got, expected );
 
-  // var got = _.eachSample
-  // ({
-  //   sets : [ _.argumentsArrayMake( [ 0, 1 ] ), _.argumentsArrayMake( [ 2, 3 ] ) ]
-  // });
-  // var expected =
-  // [
-  //   [ 0, 2 ], [ 1, 2 ],
-  //   [ 0, 3 ], [ 1, 3 ],
-  // ];
-  // test.identical( got, expected );
-  // test.is( _.arrayIs( got ) );
+  var got = _.eachSample
+  ({
+    sets : [ _.argumentsArrayMake( [ 0, 1 ] ), _.argumentsArrayMake( [ 2, 3 ] ) ]
+  });
+  var expected =
+  [
+    [ 0, 2 ], [ 1, 2 ],
+    [ 0, 3 ], [ 1, 3 ],
+  ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
 
   var got = _.eachSample
   ({

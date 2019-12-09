@@ -2,25 +2,15 @@
 
 'use strict';
 
-/*
-
-!!! implement error's collectors
-!!! marry with procedures
-
-*/
-
-// let Object.prototype.toString = Object.prototype.toString;
-// let _ObjectHasOwnProperty = Object.hasOwnProperty;
-
 let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
 _.process = _.process || Object.create( null );
-_.err = _.err || Object.create( null );
+// _.err = _.err || Object.create( null );
 
 // --
-// stub
+// diagnostic
 // --
 
 function diagnosticLocation( o )
@@ -1014,11 +1004,6 @@ function _err( o )
 
     beautifiedStack = o.throwenCallsStack;
 
-    // if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
-    // o.asyncCallsStack = resultError.asyncCallsStack || null;
-    // debugger;
-    /* xxx : fix and cover duplication in async stack problem */
-
     _.assert( resultError.asyncCallsStack === undefined || resultError.asyncCallsStack === null || _.arrayIs( resultError.asyncCallsStack ) );
     if( resultError.asyncCallsStack && resultError.asyncCallsStack.length )
     {
@@ -1772,65 +1757,6 @@ function errLogOnce( err )
   return _._errLog( err );
 }
 
-//
-
-function error_functor( name, onMake )
-{
-
-  if( _.strIs( onMake ) || _.arrayIs( onMake ) )
-  {
-    let prepend = onMake;
-    onMake = function onErrorMake()
-    {
-      debugger;
-      let arg = _.arrayAppendArrays( [], [ prepend, arguments ] );
-      return args;
-    }
-  }
-  else if( !onMake )
-  onMake = function onErrorMake()
-  {
-    return arguments;
-  }
-
-  let Error =
-  {
-    [ name ] : function()
-    {
-      if( !( this instanceof ErrorConstructor ) )
-      {
-        let err1 = new ErrorConstructor();
-        let args1 = onMake.apply( err1, arguments );
-        _.assert( _.arrayLike( args1 ) );
-        let args2 = _.arrayAppendArrays( [], [ [ err1, ( arguments.length ? '\n' : '' ) ], args1 ] );
-        let err2 = _._err({ args : args2, level : 3 });
-
-        _.assert( err1 === err2 );
-        _.assert( err2 instanceof _global.Error );
-        _.assert( err2 instanceof ErrorConstructor );
-        // _.assert( !!err2.stack );
-
-        return err2;
-      }
-      else
-      {
-        _.assert( arguments.length === 0 );
-        return this;
-      }
-    }
-  }
-
-  let ErrorConstructor = Error[ name ];
-
-  _.assert( ErrorConstructor.name === name, 'Looks like your interpreter does not support dynamice naming of functions. Please use ES2015 or later interpreter.' );
-
-  ErrorConstructor.prototype = Object.create( _global.Error.prototype );
-  ErrorConstructor.prototype.constructor = ErrorConstructor;
-  ErrorConstructor.constructor = ErrorConstructor;
-
-  return ErrorConstructor;
-}
-
 // --
 // try
 // --
@@ -1918,8 +1844,7 @@ function sure( condition )
     else
     throw _err
     ({
-      // args : _.longSlice( arguments,1 ),
-      args : _.longSlice( arguments, 1 ),
+      args : Array.prototype.slice.call( arguments, 1 ),
       level : 2,
     });
   }
@@ -1959,8 +1884,7 @@ function sureBriefly( condition )
     else
     throw _err
     ({
-      // args : _.longSlice( arguments,1 ),
-      args : _.longSlice( arguments, 1 ),
+      args : Array.prototype.slice.call( arguments, 1 ),
       level : 2,
       brief : 1,
     });
@@ -1998,8 +1922,7 @@ function sureWithoutDebugger( condition )
     else
     throw _err
     ({
-      // args : _.longSlice( arguments,1 ),
-      args : _.longSlice( arguments, 1 ),
+      args : Array.prototype.slice.call( arguments, 1 ),
       level : 2,
     });
   }
@@ -2027,7 +1950,6 @@ function sureInstanceOrClass( _constructor, _this )
 function sureOwnNoConstructor( ins )
 {
   _.sure( _.objectLikeOrRoutine( ins ) );
-  // let args = _.longSlice( arguments );
   let args = Array.prototype.slice.call( arguments );
   args[ 0 ] = _.isOwnNoConstructor( ins );
   _.sure.apply( _, args );
@@ -2105,7 +2027,6 @@ function _assertDebugger( condition, args )
   return;
   let err = _._err
   ({
-    // args : _.longSlice( args, 1 ),
     args : Array.prototype.slice.call( args, 1 ),
     level : 3,
   });
@@ -2138,7 +2059,6 @@ function assert( condition )
     else
     throw _err
     ({
-      // args : _.longSlice( arguments, 1 ),
       args : Array.prototype.slice.call( arguments, 1 ),
       level : 2,
     });
@@ -2181,7 +2101,6 @@ function assertWithoutBreakpoint( condition )
     else
     throw _err
     ({
-      // args : _.longSlice( arguments,1 ),
       args : Array.prototype.slice.call( arguments, 1 ),
       level : 2,
     });
@@ -2246,7 +2165,6 @@ function assertInstanceOrClass( _constructor, _this )
 function assertOwnNoConstructor( ins )
 {
   _.assert( _.objectLikeOrRoutine( ins ) );
-  // let args = _.longSlice( arguments );
   let args = Array.prototype.slice.call( arguments );
   args[ 0 ] = _.isOwnNoConstructor( ins );
 
@@ -2338,7 +2256,7 @@ let Routines =
 
   diagnosticLocation,
   diagnosticLocationFromCall,
-  diagnosticStack, /* qqq : cover */
+  diagnosticStack, /* qqq : very good coverage required  */
   diagnosticStackRemoveLeft,
   diagnosticStackCondense,
   diagnosticStackFilter, /* qqq : cover */
@@ -2370,8 +2288,6 @@ let Routines =
   _errLog,
   errLog,
   errLogOnce,
-
-  error_functor,
 
   // try
 

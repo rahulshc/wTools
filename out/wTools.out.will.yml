@@ -206,10 +206,12 @@ module:
           - ../proto/dwtools/abase/l0/l5/fContainer.s
           - ../proto/dwtools/abase/l0/l5/fEntity.s
           - ../proto/dwtools/abase/l0/l5/fErr.s
+          - ../proto/dwtools/abase/l0/l5/fEvent.s
           - ../proto/dwtools/abase/l0/l5/fFunctional.s
           - ../proto/dwtools/abase/l0/l5/fLong.s
           - ../proto/dwtools/abase/l0/l5/fMap.s
           - ../proto/dwtools/abase/l0/l5/fNumber.s
+          - ../proto/dwtools/abase/l0/l5/fProcess.s
           - ../proto/dwtools/abase/l0/l5/fRange.s
           - ../proto/dwtools/abase/l0/l5/fRegexp.s
           - ../proto/dwtools/abase/l0/l5/fRoutine.s
@@ -261,6 +263,7 @@ module:
           - ../proto/dwtools/abase/l0.test/Routine.test.s
           - ../proto/dwtools/abase/l0.test/Sorted.test.s
           - ../proto/dwtools/abase/l0.test/Str.test.s
+          - ../proto/dwtools/abase/l0.test/Time.test.s
           - ../proto/dwtools/abase/l0.test/Typing.test.s
           - ../proto/dwtools/abase/l0.test/Unroll.test.s
           - ../proto/dwtools/abase/l1

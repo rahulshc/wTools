@@ -41,7 +41,7 @@ function searchFirstIndex( srcArr, ins )
 // declare
 // --
 
-let Proto =
+let Extension =
 {
 
   searchFirstIndex,
@@ -49,7 +49,7 @@ let Proto =
 
 }
 
-_.mapExtend( Self, Proto );
+Object.assign( Self, Extension );
 
 // --
 // export

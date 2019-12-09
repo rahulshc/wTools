@@ -2274,6 +2274,8 @@ function mapButConditional( fieldFilter, srcMap, butMap )
  * @memberof wTools
  */
 
+/* qqq : teach routines mapBut* to expect long in the second argument. ask */
+
 function mapBut( srcMap, butMap )
 {
   let result = Object.create( null );
