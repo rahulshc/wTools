@@ -27,17 +27,16 @@ function _begin( delay, onTime, onCancel )
   if( delay > 0 )
   original = setTimeout( time, delay );
   else
-  original = soon( time ) || null;
+  original = soon( timeNonCancelable ) || null;
 
   let timer = Object.create( null );
   timer.onTime = onTime;
   timer.onCancel = onCancel;
   timer._time = _time;
   timer._cancel = _cancel;
-  timer.time = time;
+  timer.time = original === null ? timeNonCancelable : time;
   timer.cancel = cancel;
   timer.state = 0;
-  // timer.kind = 'cancelable';
   timer.kind = _begin;
   timer.type = 'timer';
   timer.original = original;
@@ -74,6 +73,15 @@ function _begin( delay, onTime, onCancel )
     {
       timer.state = -2;
     }
+  }
+
+  /* */
+
+  function timeNonCancelable()
+  {
+    if( timer.state !== 0 )
+    return;
+    return time.call( this, arguments );
   }
 
   /* */

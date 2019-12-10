@@ -17,6 +17,7 @@ let _ = _global_.wTools;
 
 function timeOutCancelInsideOfCallback( test )
 {
+  let context = this;
   let visited = [];
 
   var timer = _.time.begin( 1, () =>
@@ -28,9 +29,77 @@ function timeOutCancelInsideOfCallback( test )
 
   visited.push( 'v0' );
 
-  return _testerGlobal_.wTools.time.out( 100 ).then( () =>
+  return _testerGlobal_.wTools.time.out( context.dt*5 ).then( () =>
   {
     test.identical( visited, [ 'v0', 'v1', 'v2' ] );
+    return null;
+  });
+}
+
+//
+
+function timeOutCancelOutsideOfCallback( test )
+{
+  let context = this;
+  let visited = [];
+
+  var timer = _.time.begin( context.dt*1, () =>
+  {
+    visited.push( 'v1' );
+  });
+
+  _.time.cancel( timer );
+  visited.push( 'v0' );
+
+  return _testerGlobal_.wTools.time.out( context.dt*5 ).then( () =>
+  {
+    test.identical( visited, [ 'v0' ] );
+    return null;
+  });
+}
+
+//
+
+function timeOutCancelZeroDelayInsideOfCallback( test )
+{
+  let context = this;
+  let visited = [];
+
+  var timer = _.time.begin( 0, () =>
+  {
+    visited.push( 'v1' );
+    _.time.cancel( timer );
+    visited.push( 'v2' );
+  });
+
+  visited.push( 'v0' );
+
+  return _testerGlobal_.wTools.time.out( context.dt*5 ).then( () =>
+  {
+    test.identical( visited, [ 'v0', 'v1', 'v2' ] );
+    return null;
+  });
+}
+
+//
+
+function timeOutCancelZeroDelayOutsideOfCallback( test )
+{
+  let context = this;
+  let visited = [];
+
+  debugger;
+  var timer = _.time.begin( 0, () =>
+  {
+    visited.push( 'v1' );
+  });
+
+  _.time.cancel( timer );
+  visited.push( 'v0' );
+
+  return _testerGlobal_.wTools.time.out( context.dt*5 ).then( () =>
+  {
+    test.identical( visited, [ 'v0' ] );
     return null;
   });
 }
@@ -45,10 +114,19 @@ var Self =
   name : 'Tools.base.Time',
   silencing : 1,
 
+  context :
+  {
+    dt : 25,
+  },
+
   tests :
   {
 
     timeOutCancelInsideOfCallback,
+    timeOutCancelOutsideOfCallback,
+
+    timeOutCancelZeroDelayInsideOfCallback,
+    timeOutCancelZeroDelayOutsideOfCallback,
 
   }
 
