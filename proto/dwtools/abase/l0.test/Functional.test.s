@@ -19294,6 +19294,7 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
 
+  /* qqq2 : strange? explain please */
   var src = _.arrayFrom( new F32x( [ [ 1, 2, 3 ] ] ) );
   var got = _.eachSample( src );
   test.notIdentical( got, [ [ [ 1, 2, 3 ] ] ] );
@@ -19672,6 +19673,7 @@ function eachSample( test )
   o.sets = [ [ 1, 0 ], [ 2, 3 ] ];
   o.add = [ 5 ];
   test.shouldThrowErrorSync( () => _.eachSample( o ) );
+
 }
 
 //

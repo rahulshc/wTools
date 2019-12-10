@@ -206,7 +206,7 @@ function entityMakeUndefined( srcContainer, length )
   }
   else if( _.longIs( srcContainer ) )
   {
-    debugger;
+    // debugger;
     return _.longMake( srcContainer, length );
     // if( _.bufferTypedIs( srcContainer ) || _.bufferNodeIs( srcContainer ) )
     // return new srcContainer.constructor( length !== undefined ? length : srcContainer.length );
@@ -343,7 +343,8 @@ function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
   if( !onEvaluate1 )
   {
     _.assert( !onEvaluate2 );
-    return src1 === src2;
+    return Object.is( src1, src2 );
+    // return src1 === src2;
   }
   else if( onEvaluate1.length === 2 ) /* equalizer */
   {

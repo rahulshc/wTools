@@ -273,7 +273,13 @@ function strShort( src )
   try
   {
 
-    if( _.primitiveIs( src ) )
+    if( _.symbolIs( src ) )
+    {
+      let text = src.toString().slice( 7, -1 );
+      let result = `{- Symbol${text ? ' ' + text + ' ' : ' '}-}`;
+      return result;
+    }
+    else if( _.primitiveIs( src ) )
     {
       return String( src );
     }
