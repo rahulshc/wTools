@@ -1703,6 +1703,16 @@ function strAlphabetFromRange( test )
   var exp = 'bcde';
   test.identical( got, exp );
 
+  test.case = 'single character';
+  var got = _.strAlphabetFromRange( [ 'abc', 'bcd' ] );
+  var exp = 'a';
+  test.identical( got, exp );
+
+  test.case = 'a few character';
+  var got = _.strAlphabetFromRange( [ 'bcd', 'fgh' ] );
+  var exp = 'bcde';
+  test.identical( got, exp );
+
   /* */
 
   test.case = 'single character';
@@ -1714,6 +1724,16 @@ function strAlphabetFromRange( test )
   var got = _.strAlphabetFromRange( [ 100, 104 ] );
   var exp = 'defg';
   test.identical( got, exp );
+
+  // test.case = 'single character';
+  // var got = _.strAlphabetFromRange( [ 100, 99 ] );
+  // var exp = 'd';
+  // test.identical( got, exp );
+  //
+  // test.case = 'a few character';
+  // var got = _.strAlphabetFromRange( [ 104, 100 ] );
+  // var exp = 'hgfe';
+  // test.identical( got, exp );
 
   /* */
 
