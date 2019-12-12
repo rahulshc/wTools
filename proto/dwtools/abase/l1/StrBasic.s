@@ -4524,8 +4524,8 @@ strLinesSelect.defaults =
 }
 
 /* qqq :
-- cover option highlighting
-- cover option zeroLine
+- cover option highlighting | Dmytro : covered
+- cover option zeroLine | Dmytro : covered
 */
 
 //
@@ -4852,7 +4852,7 @@ let Proto =
 
   strCommonLeft, /* qqq : document me | Dmytro : documented */
   strCommonRight, /* qqq : document me | Dmytro : documented */
-  strRandom, /* qqq : document and extend test coverage */
+  strRandom, /* qqq : document and extend test coverage | Dmytro : coverage is extended, routine is documented */
   strAlphabetFromRange, /* qqq : cover and document please */
 
   // formatter

@@ -1689,6 +1689,75 @@ function strRandom( test )
   test.shouldThrowErrorSync( () => _.strRandom( { length : [ 1, 2, 3 ], unnacessary : 1 } ) );
 }
 
+//
+
+function strAlphabetFromRange( test ) 
+{
+  test.case = 'single character';
+  var got = _.strAlphabetFromRange( [ 'a', 'b' ] );
+  var exp = 'a';
+  test.identical( got, exp );
+
+  test.case = 'a few character';
+  var got = _.strAlphabetFromRange( [ 'b', 'f' ] );
+  var exp = 'bcde';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'single character';
+  var got = _.strAlphabetFromRange( [ 99, 100 ] );
+  var exp = 'c';
+  test.identical( got, exp );
+
+  test.case = 'a few character';
+  var got = _.strAlphabetFromRange( [ 100, 104 ] );
+  var exp = 'defg';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'single character';
+  var got = _.strAlphabetFromRange( [ 'c', 100 ] );
+  var exp = 'c';
+  test.identical( got, exp );
+
+  test.case = 'a few character';
+  var got = _.strAlphabetFromRange( [ 'd', 104 ] );
+  var exp = 'defg';
+  test.identical( got, exp );
+
+  test.case = 'single character';
+  var got = _.strAlphabetFromRange( [ 99, 'd' ] );
+  var exp = 'c';
+  test.identical( got, exp );
+
+  test.case = 'a few character';
+  var got = _.strAlphabetFromRange( [ 100, 'h' ] );
+  var exp = 'defg';
+  test.identical( got, exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strAlphabetFromRange() );
+
+  test.case = 'wrong type of range';
+  test.shouldThrowErrorSync( () => _.strAlphabetFromRange( 'ab' ) );
+
+  test.case = 'wrong length of range';
+  test.shouldThrowErrorSync( () => _.strAlphabetFromRange( [] ) );
+  test.shouldThrowErrorSync( () => _.strAlphabetFromRange( [ 'a' ] ) );
+  test.shouldThrowErrorSync( () => _.strAlphabetFromRange( [ 'a', 'b', 'c' ] ) );
+
+  test.case = 'wrong type of range elements';
+  test.shouldThrowErrorSync( () => _.strAlphabetFromRange( [ { a : 'a' }, 67 ] ) );
+  test.shouldThrowErrorSync( () => _.strAlphabetFromRange( [ [ 'a' ], 67 ] ) );
+}
+
 //--
 // formatter
 //--
@@ -10919,6 +10988,7 @@ var Self =
     strCommonLeft,
     strCommonRight,
     strRandom,
+    strAlphabetFromRange,
 
     // formatter
 
