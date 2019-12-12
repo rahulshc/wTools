@@ -48,14 +48,6 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     return new ContainerAdapterArray( [ ... src ] );
     else if( this.Is( src ) )
     return new ContainerAdapterArray( [ ... src.original ] );
-    /* qqq : cover please
-            take into account cases
-            src is adapter with array
-            src is adapter with set
-            src is array
-            src is set
-      Dmytro : covered, all test cases are taken into account
-    */
   }
   has( e, onEvaluate1, onEvaluate2 )
   {
@@ -144,11 +136,6 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   pop( e, onEvaluate1, onEvaluate2 )
   {
     var poped = this.original.pop();
-
-    // qqq2 : ?? | Dmytro : I'v got it
-    // if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ poped ], e, onEvaluate1, onEvaluate2 ) !== -1 )
-    // return poped;
-
     _.assert( e === undefined || _.entityEntityEqualize( poped, e, onEvaluate1, onEvaluate2 ) );
     return poped;
   }
@@ -164,7 +151,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   {
     return _.arrayRemoved( this.original, e, onEvaluate1, onEvaluate2 );
   }
-  removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
+  removedOnce( e, onEvaluate1, onEvaluate2 )
   {
     return _.arrayRemovedOnce( this.original, e, onEvaluate1, onEvaluate2 );
   }
@@ -179,7 +166,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     this.original.splice( index, 1 );
     return index;
   }
-  removedOnceStrictly( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered*/
+  removedOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
     return _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
   }
@@ -203,7 +190,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     _.arrayRemove( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
+  removeOnce( e, onEvaluate1, onEvaluate2 )
   {
     _.arrayRemoveOnce( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
@@ -218,7 +205,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     this.removedOnceRight( e, onEvaluate1, onEvaluate2 );
     return this;
   }
-  removeOnceStrictly( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
+  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
     _.arrayRemovedOnceStrictly( this.original, e, onEvaluate1, onEvaluate2 );
     return this;
@@ -237,21 +224,17 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   {
     this.original.splice( 0, this.original.length );
   }
-  map( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
+  map( dst, onEach )
   {
     let self = this;
     let container = this.original;
     [ dst, onEach ] = this._filterArguments( ... arguments );
     if( this._same( dst ) )
     {
-      /* qqq : cover all cases and arguments | Dmytro : covered */
-      /* qqq : not optimal! no in for arrays! | Dmytro : thanks, I'v got it */
-      // for( let k in container )
       for( let k = 0 ; k < container.length ; k++ )
       {
         let e = container[ k ];
         let e2 = onEach( e, k, self );
-        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? | Dmytro : it's mistake */
         if( e2 !== undefined )
         {
           container[ k ] = e2;
@@ -260,15 +243,10 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     }
     else
     {
-      // debugger;
-      /* qqq : cover all cases and arguments | Dmytro : covered */
-      /* qqq : not optimal! no in for arrays! | Dmytro : I'v got it */
-      // for( let k in container )
       for( let k = 0 ; k < container.length ; k++ )
       {
         let e = container[ k ];
         let e2 = onEach( e, k, self );
-        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
         if( e2 !== undefined )
         dst.append( e2 );
         else
@@ -307,7 +285,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     }
     return dst;
   }
-  filter( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
+  filter( dst, onEach )
   {
     let self = this;
     let container = this.original;
@@ -318,7 +296,6 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
       for( let k = 0; k < container.length; k++ )
       {
         let e = container[ k ];
-        // let e2 = onEach( e, undefined, container ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
         let e2 = onEach( e, k, container );
         if( e2 === undefined )
         {
@@ -336,7 +313,6 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
       for( let k = 0; k < container.length; k++ )
       {
         let e = container[ k ];
-        // let e2 = onEach( e, undefined, container );  /* qqq : where was key?? | Dmytro : it's mistake, covered */
         let e2 = onEach( e, k, container );
         if( e2 !== undefined )
         dst.append( e2 );
@@ -378,7 +354,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
 
     return dst;
   }
-  flatFilter( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
+  flatFilter( dst, onEach )
   {
     let self = this;
     let container = self.original;
@@ -389,7 +365,6 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
       for( let k = 0; k < container.length; k++ )
       {
         let e = container[ k ];
-        // let e2 = onEach( e, undefined, self ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
         let e2 = onEach( e, k, self );
         if( e2 === undefined )
         {
@@ -412,9 +387,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
       for( let k = 0; k < container.length; k++ )
       {
         let e = container[ k ];
-        // let e2 = onEach( e, undefined, container ); /* qqq : where was key?? | Dmytro : it's mistake, covered */
         let e2 = onEach( e, k, container );
-
         if( self.IsContainer( e2 ) || self.Is( e2 ) )
         dst.appendContainer( e2 )
         else if( e2 !== undefined )
@@ -465,7 +438,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
 
     return dst;
   }
-  once( dst, onEvaluate1, onEvaluate2 ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
+  once( dst, onEvaluate1, onEvaluate2 )
   {
     let container = this.original;
     [ dst, dst, onEvaluate1, onEvaluate2 ] = this._onlyArguments( null, dst, onEvaluate1, onEvaluate2 );
@@ -544,7 +517,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     onEach( container[ k ], k, container );
     return this;
   }
-  reduce( accumulator, onEach ) // Dmytro : maybe it's lost "qqq2 : implement and cover left, right versions" | Dmytro : implemented and covered
+  reduce( accumulator, onEach )
   {
     let self = this;
     let container = this.original;
@@ -658,12 +631,12 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     }
     return true;
   }
-  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
+  left( element, fromIndex, onEvaluate1, onEvaluate2 )
   {
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
-  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
+  right( element, fromIndex, onEvaluate1, onEvaluate2 )
   {
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
@@ -674,8 +647,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
 
     if( !dst )
     {
-      // dst = this.MakeEmpty(); /* qqq : ask please | Dmytro : I'v got it */
-      dst = this.Make( this.length ); /* adjust routine Make to accept length */
+      dst = this.Make( this.length );
       let dstContainer = dst.original;
       for( let i1 = srcContainer.length - 1, i2 = 0; i1 >= 0; i1--, i2++ )
       {
@@ -715,10 +687,9 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   {
     return this;
   }
-  toSet() /* qqq : cover please | Dmytro : covered */
+  toSet()
   {
     return new _.containerAdapter.Set( new Set([ ... this.original ]) );
-    // return this.From( new Set([ ... this.original ]) );
   }
   [ Symbol.iterator ]()
   {

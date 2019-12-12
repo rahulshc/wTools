@@ -60,7 +60,7 @@ In our implementation, calls stack is stored in the `callsStack` field of an err
 
 Just knowing which functions were called is good. Knowing what arguments were used gives much more information about the state. There are two obstacles to include such information in an error report. It’s challenging to implement the feature in JS without dramatical performance overhead. Another challenge is formatting text derived from the arguments which have arbitrary data structure.
 
-![Calls stack with arguments](../../img/callsStackArguments/CallsStackArguments.png)
+![Calls stack with arguments](../../img/errorsHandling/CallsStackArguments.png)
 
 On the diagram above, you may see how stack with embedded arguments could look like compared to ordinary stack.
 

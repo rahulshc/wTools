@@ -231,16 +231,11 @@ function unhandledError( test )
   let context = this;
   let visited = [];
   let a = test.assetFor( false );
-  let toolsPath = _testerGlobal_.wTools.strEscape( a.path.nativize( a.path.join( __dirname, '../Layer2.s' ) ) );
-  let programSourceCode =
-`
-var toolsPath = '${toolsPath}';
-${program.toString()}
-program();
-`
+  let programPath = a.program( program );
 
-  a.fileProvider.fileWrite( a.abs( 'Program.js' ), programSourceCode );
-  a.jsNonThrowing({ execPath : a.abs( 'Program.js' ) })
+  /* */
+
+  a.jsNonThrowing({ execPath : programPath })
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
@@ -275,18 +270,11 @@ function sourceCode( test )
   let context = this;
   let visited = [];
   let a = test.assetFor( false );
-  let toolsPath = _testerGlobal_.wTools.strEscape( a.path.nativize( a.path.join( __dirname, '../Layer2.s' ) ) );
-  let programSourceCode =
-`
-var toolsPath = '${toolsPath}';
-${program.toString()}
-program();
-`
+  let programPath = a.program( program );
 
-/* xxx : implement helpers */
+  /* */
 
-  a.fileProvider.fileWrite( a.abs( 'Program.js' ), programSourceCode );
-  a.jsNonThrowing({ execPath : a.abs( 'Program.js' ) })
+  a.jsNonThrowing({ execPath : programPath })
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
@@ -314,18 +302,11 @@ function asyncStackInConsequenceTrivial( test )
   let context = this;
   let visited = [];
   let a = test.assetFor( false );
-  let toolsPath = _testerGlobal_.wTools.strEscape( a.path.nativize( a.path.join( __dirname, '../Layer2.s' ) ) );
-  let programSourceCode =
-`
-var toolsPath = '${toolsPath}';
-${program.toString()}
-program();
-`
+  let programPath = a.program( program );
 
   /* */
 
-  a.fileProvider.fileWrite( a.abs( 'Program.js' ), programSourceCode );
-  a.jsNonThrowing({ execPath : a.abs( 'Program.js' ) })
+  a.jsNonThrowing({ execPath : programPath })
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
@@ -375,19 +356,11 @@ function asyncStackInConsequenceThen( test )
   let context = this;
   let visited = [];
   let a = test.assetFor( false );
-  let toolsPath = _testerGlobal_.wTools.strEscape( a.path.nativize( a.path.join( __dirname, '../Layer2.s' ) ) );
-  let programSourceCode =
-`
-var toolsPath = '${toolsPath}';
-${program.toString()}
-program();
-`
+  let programPath = a.program( program );
 
   /* */
 
-  logger.log( _.strLinesNumber( programSourceCode ) );
-  a.fileProvider.fileWrite( a.abs( 'Program.js' ), programSourceCode );
-  a.jsNonThrowing({ execPath : a.abs( 'Program.js' ) })
+  a.jsNonThrowing({ execPath : programPath })
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
@@ -443,19 +416,11 @@ function activeProcedureSourcePath( test )
   let context = this;
   let visited = [];
   let a = test.assetFor( false );
-  let toolsPath = _testerGlobal_.wTools.strEscape( a.path.nativize( a.path.join( __dirname, '../Layer2.s' ) ) );
-  let programSourceCode =
-`
-var toolsPath = '${toolsPath}';
-${program.toString()}
-program();
-`
+  let programPath = a.program( program );
 
   /* */
 
-  logger.log( _.strLinesNumber( programSourceCode ) );
-  a.fileProvider.fileWrite( a.abs( 'Program.js' ), programSourceCode );
-  a.jsNonThrowing({ execPath : a.abs( 'Program.js' ) })
+  a.jsNonThrowing({ execPath : programPath })
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
@@ -486,7 +451,7 @@ program();
     con.then( function callback2( arg )
     {
       console.log( 'sourcePath::callback2 ' + _.Procedure.ActiveProcedure._sourcePath );
-      // _.procedure.terminationBegin();
+      /* _.procedure.terminationBegin();*/
       return 'callback2';
     })
 
