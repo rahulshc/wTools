@@ -4,7 +4,6 @@
 
 let _global = _realGlobal_;
 let _ = _global_.wTools;
-// let ContainerAdapterAbstract = _.containerAdapter.Abstract;
 
 if( _global !== _realGlobal_ && _realGlobal_.wTools.containerAdapter )
 return ExportTo( _global, _realGlobal_ );
@@ -48,14 +47,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     return new ContainerAdapterSet( new Set( src ) );
     else if( this.Is( src ) )
     return new ContainerAdapterSet( new Set( src.original ) );
-    /* qqq : cover please
-            take into account cases
-            src is adapter with array
-            src is adapter with set
-            src is array
-            src is set
-      Dmytro : covered, all test cases are taken into account
-    */
   }
   has( e, onEvaluate1, onEvaluate2 )
   {
@@ -136,11 +127,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let self = this;
     let container = self.original;
 
-    /*
-    qqq : poor coverage!
-    Dmytro : coverage extended
-    */
-
     if( self.same( src ) )
     return self;
 
@@ -175,7 +161,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let container = this.original;
 
-    /* qqq : ask | Dmytro : used iterative method has */
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
       if( !this.has( e, onEvaluate1, onEvaluate2 ) )
@@ -277,9 +262,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let self = this;
 		let container = this.original;
-    // qqq2 : ?? | Dmytro : I'v got it
-    // _.assert( arguments.length === 1 );
-    // let last = this.last();
 
     if( !onEvaluate1 || e === undefined )
     {
@@ -291,11 +273,8 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     else
     {
-      // qqq2 : use _.arraySetLeft instead of the workaround
-			// Dmytro : _.arraySetLeft returns index, it not usable for Sets or it need one more iteration
-      // let e2 = _.longLeft( [ ... container ], e, onEvaluate1, onEvaluate2 ).element;
-      // _.assert( e2 !== undefined );
 
+      // qqq2
       let last = _.nothing;
 			self.reduce( ( a, e2 ) => _.entityEntityEqualize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
 			_.assert( last !== _.nothing );
@@ -304,9 +283,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     }
 
-    // qqq2 : ?? | Dmytro : I'v got it
-    // if( _.routineIs( onEvaluate1 ) && _.longLeftIndex( [ last ], e, onEvaluate1, onEvaluate2 ) !== -1 )
-    // return last;
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
@@ -352,7 +328,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       return this.original.delete( e ) ? 1 : 0;
     }
   }
-  removedOnce( e, onEvaluate1, onEvaluate2 ) /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
+  removedOnce( e, onEvaluate1, onEvaluate2 )
   {
     let from = 0;
     let index = -1;
@@ -407,7 +383,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     return -1;
   }
-  removedOnceStrictly( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
+  removedOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
     let from = 0;
     let index = -1;
@@ -487,7 +463,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     this.removed.apply( this, arguments );
     return this;
   }
-  removeOnce( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
+  removeOnce( e, onEvaluate1, onEvaluate2 )
   {
     this.removedOnce.apply( this, arguments );
     return this;
@@ -502,7 +478,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     this.removedOnceRight.apply( this, arguments );
     return this;
   }
-  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )  /* qqq2 : implement left, right versions of the method | Dmytro : implemented and covered */
+  removeOnceStrictly( e, onEvaluate1, onEvaluate2 )
   {
     this.removedOnceStrictly.apply( this, arguments );
     return this;
@@ -521,7 +497,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     this.original.clear();
   }
-  map( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
+  map( dst, onEach )
   {
     let self = this;
     let container = self.original;
@@ -531,14 +507,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     if( self._same( dst ) )
     {
-      /*
-      qqq : not optimal. why copy??
-      Dmytro : it was previus recomendation. Now, the counter is used.
-      */
-      // let temp = new Set( container );
-      // container.clear();
-
-      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : test routine extended */
       for( let e of container )
       {
         index += 1;
@@ -555,8 +523,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     else
     {
-      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : test routine extended */
-
       for( let e of container )
       {
         index += 1;
@@ -606,7 +572,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     return dst;
   }
-  filter( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
+  filter( dst, onEach )
   {
     let self = this;
     let container = self.original;
@@ -616,13 +582,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     if( self._same( dst ) )
     {
-      /*
-      qqq : not optimal. why copy??
-      Dmytro : it was previus recomendation. Now, counter is used */
-      // let temp = new Set( container );
-      // container.clear();
 
-      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : test routine extended */
       for( let e of container )
       {
         index += 1;
@@ -648,7 +608,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     else
     {
-      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : test routine extended */
       for( let e of container )
       {
         index += 1;
@@ -697,7 +656,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     return dst;
   }
-  flatFilter( dst, onEach ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
+  flatFilter( dst, onEach )
   {
     let self = this;
     let container = self.original;
@@ -707,8 +666,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     if( self._same( dst ) )
     {
-      /* qqq : should have index! cover please | Dmytro : covered */
-      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
       for( let e of container )
       {
         index += 1;
@@ -728,7 +685,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     else
     {
-      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
       for( let e of container )
       {
         index += 1;
@@ -785,7 +741,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     return dst;
   }
-  once( dst, onEvaluate1, onEvaluate2 ) /* qqq2 : implement and cover left, right versions | Dmytro : implemented and covered */
+  once( dst, onEvaluate1, onEvaluate2 )
   {
     let self = this;
     let container = self.original;
@@ -794,6 +750,8 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
       {
+        // qqq2 : avoid making extra containers
+        // qqq2 : investigate all cases using creating extra container. try to find solution without extra copying
         let temp = []; // Dmytro : to prevent cycled loop uses copies
         self.each( ( e ) => _.arrayAppendOnce( temp, e, onEvaluate1, onEvaluate2 ) );
         self.empty();
@@ -845,7 +803,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     if( onEach )
     for( let e of container )
     {
-      /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
       return onEach( e, 0, self );
     }
     else
@@ -871,8 +828,8 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     /* qqq : ask */
     /* Dmytro : alternative variant which use iterations has better performance. Please, see test routine setAdapterLastTimeExperiment */
+    /* qqq2 : very good */
 
-    /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
     let last = this.reduce( ( a, e ) => e );
     if( onEach )
     return onEach( last, this.length - 1, this );
@@ -888,7 +845,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let self = this;
     let container = self.original;
     let index = -1;
-    /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
     for( let e of container )
     {
       index += 1;
@@ -900,17 +856,12 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let self = this;
     let container = this.original;
-    // let reversedContainer = new Set( [ ... container ].reverse() ); /* Dmytro : double transformation has no sense */
-    // for( let e of reversedContainer )
-    // onEach( e, undefined, self );
-    /* qqq2 : add extra test routine for each *Right method checking ordering is correct, ask how to */
-    /* qqq2 : left and right iterating should be different */
     let temp = [ ... container ];
     for( let i = temp.length - 1; i >= 0; i-- )
     onEach( temp[ i ], i, self );
     return self;
   }
-  reduce( accumulator, onEach ) // Dmytro : maybe, it's lost "qqq2 : implement and cover left, right versions" | Dmytro : implemented and covered
+  reduce( accumulator, onEach )
   {
     let self = this;
     let container = this.original;
@@ -920,7 +871,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       accumulator = undefined;
     }
     let index = -1;
-    /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
     for( let e of container )
     {
       index += 1;
@@ -957,7 +907,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let self = this;
     let container = this.original;
     let index = -1;
-    /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
     for( let e of container )
     {
       index += 1;
@@ -971,10 +920,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let self = this;
     let container = this.original;
-    // let index = container.size;
-    /* qqq : cover all cases and arguments ( including key! ) */
-    /* qqq2 : left and right iterating should be different */
-    // for( let e of container )
     let temp = [ ... container ];
     for( let k = temp.length - 1; k >= 0; k-- )
     {
@@ -994,7 +939,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let self = this;
     let container = this.original;
     let index = -1;
-    /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
     for( let e of container )
     {
       index += 1;
@@ -1008,12 +952,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let self = this;
     let container = this.original;
-    // let index = container.size;
-    /* qqq : cover all cases and arguments ( including key! ) */
-    /* qqq2 : left and right iterating should be different */
-    // for( let e of container )
-    // {
-    //   index -= 1;
     let temp = [ ... container ];
     for( let k = temp.length - 1; k >= 0; k-- )
     {
@@ -1033,7 +971,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let self = this;
     let container = this.original;
     let index = -1;
-    /* qqq : cover all cases and arguments ( including key! ) | Dmytro : covered */
     for( let e of container )
     {
       index += 1;
@@ -1047,12 +984,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let self = this;
     let container = this.original;
-    // let index = container.size;
-    /* qqq : cover all cases and arguments ( including key! ) */
-    /* qqq2 : left and right iterating should be different */
-    // for( let e of container )
-    // {
-    //   index -= 1;
     let temp = [ ... container ];
     for( let k = temp.length - 1; k >= 0; k-- )
     {
@@ -1063,33 +994,18 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     return true;
   }
-  left( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
+  left( element, fromIndex, onEvaluate1, onEvaluate2 )
   {
-    /* qqq2 : make optimal implementation, please | Dmytro : implemented with iterative search in original */
-    // return _.longLeft( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
    _.assert( 1 <= arguments.length && arguments.length <= 4 );
    return _.arraySetLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
-  right( element, fromIndex, onEvaluate1, onEvaluate2 ) /* qqq2 : cover please | Dmytro : covered */
+  right( element, fromIndex, onEvaluate1, onEvaluate2 )
   {
-    /* qqq2 : make optimal implementation, please | Dmytro : copy of container is better if container has searched element in the end, then algorithm will find it faster */
-    // return _.longRight( [ ... this.original ], element, fromIndex, onEvaluate1, onEvaluate2 );
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.arraySetRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
   reverse( dst )
   {
-    // if( !dst )
-    // {
-    //   debugger;
-    //   dst = this.make( this );
-    // }
-    // else
-    // {
-    //   debugger;
-    //   dst = this.From( dst );
-    //   dst.copyFrom( this ); /* qqq : implement and cover copyFrom | Dmytro : implemented and covered */
-    // }
 
     let self = this;
     let container = self.original;
@@ -1100,8 +1016,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     else
     dst = this.From( dst );
 
-    /* qqq : same and _same are 2 different routines. don't confuse! | Dmytro : thanks, I'v got it */
-    // if( this.same( dst ) )
     if( self._same( dst ) )
     {
       self.empty();
@@ -1124,7 +1038,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     return new _.containerAdapter.Array( [ ... this.original ] );
   }
-  toSet() /* qqq : cover please | Dmytro : covered */
+  toSet()
   {
     return this;
   }
@@ -1150,11 +1064,9 @@ function ExportTo( dstGlobal, srcGlobal )
   let _ = dstGlobal.wTools;
   _.assert( _.containerAdapter === srcGlobal.wTools.containerAdapter );
   _.assert( _.mapIs( srcGlobal.wTools.containerAdapter ) );
-  // _.containerAdapter = srcGlobal.wTools.containerAdapter;
   if( typeof module !== 'undefined' && module !== null )
   module[ 'exports' ] = _.containerAdapter;
 }
-
 
 // --
 // declare
@@ -1182,7 +1094,6 @@ var Routines =
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );
 _.assert( _.containerAdapter === Self );
-// _.containerAdapter = Self;
 
 // --
 // export

@@ -19,7 +19,6 @@ function is( src )
   if( !src )
   return false;
   return src instanceof ContainerAdapterAbstract;
-  // return ContainerAdapterAbstract.Is( src );
 }
 
 //
@@ -31,7 +30,6 @@ function isContainer( src )
   if( _.longLike( src ) )
   return true;
   return false;
-  // return ContainerAdapterAbstract.IsContainer( src );
 }
 
 //
@@ -137,28 +135,6 @@ function toOriginals( dsts, srcs )
   }
 }
 
-// function originalsFromAdapters( dsts )
-// {
-//   let dsts2;
-//   if( _.arrayLike( dsts ) )
-//   {
-//     for( let d = 0 ; d < dsts.length ; d++ )
-//     {
-//       let dst = dsts[ d ];
-//       let dst2 = _.toOriginal( dst );
-//       if( dst !== dst2 )
-//       {
-//         if( !dsts2 )
-//         dsts2 = [ ... dsts ];
-//         dsts2[ d ] = dst2;
-//       }
-//     }
-//     return dsts;
-//   }
-//   let result = _.toOriginal( dsts );
-//   if(  )
-// }
-
 // --
 //
 // --
@@ -183,9 +159,6 @@ class ContainerAdapterAbstract
   static Is( src )
   {
     return _.containerAdapter.is( src );
-    // if( !src )
-    // return false;
-    // return src instanceof ContainerAdapterAbstract;
   }
   Is( src )
   {
@@ -194,11 +167,6 @@ class ContainerAdapterAbstract
   static IsContainer( src )
   {
     return _.containerAdapter.isContainer( src );
-    // if( _.setLike( src ) )
-    // return true;
-    // if( _.longLike( src ) )
-    // return true;
-    // return false;
   }
   IsContainer( src )
   {
@@ -265,26 +233,6 @@ class ContainerAdapterAbstract
 
     return [ dst, src2, onEvaluate1, onEvaluate2 ];
   }
-  // _onlyArguments( dst, src2, onEach )
-  // {
-  //   if( _.routineIs( arguments[ 2 ] ) )
-  //   {
-  //   }
-  //   else if( _.routineIs( arguments[ 1 ] ) )
-  //   {
-  //     onEach = arguments[ 1 ];
-  //     src2 = dst;
-  //     dst = null;
-  //   }
-  //   if( dst === null )
-  //   dst = this.MakeEmpty();
-  //   else if( dst === _.self )
-  //   dst = this;
-  //   else
-  //   dst = this.From( dst );
-  //   src2 = this.From( src2 );
-  //   return [ dst, src2, onEach ];
-  // }
   _same( src )
   {
     return src.original === this.original;
@@ -296,10 +244,6 @@ class ContainerAdapterAbstract
     if( src instanceof ContainerAdapterAbstract )
     return this._same( src );
     return this.original === src;
-    /*
-    qqq : was not appropriate. add good coverage
-    Dmytro : new coverage implemented
-    */
   }
   removedContainer( src )
   {
@@ -364,7 +308,7 @@ class ContainerAdapterAbstract
     self.removedContainerOnceStrictly.apply( self, arguments );
     return self;
   }
-  min( onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach, onEach returns value that sets to previusElement */
+  min( onEach )
   {
     let self = this;
     if( onEach )
@@ -372,7 +316,7 @@ class ContainerAdapterAbstract
     else
     return self.reduce( +Infinity, ( a, e ) => Math.min( a, e ) );
   }
-  max( onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach */
+  max( onEach )
   {
     let self = this;
     if( onEach )
@@ -380,7 +324,7 @@ class ContainerAdapterAbstract
     else
     return self.reduce( -Infinity, ( a, e ) => Math.max( a, e ) );
   }
-  least( dst, onEach ) /* qqq : implement good coverage, make sure it works without onEach | Dmytro : covered, works without onEach */
+  least( dst, onEach )
   {
     let self = this;
     [ dst, onEach ] = this._filterArguments( ... arguments );
@@ -390,7 +334,7 @@ class ContainerAdapterAbstract
     else
     return self.filter( dst, ( e ) => e === min ? e : undefined );
   }
-  most( dst, onEach ) /* qqq : implement good coverage, make sure it works without onEach, comparator | Dmytro : covered, works without onEach */
+  most( dst, onEach )
   {
     let self = this;
     [ dst, onEach ] = this._filterArguments( ... arguments );
@@ -400,7 +344,7 @@ class ContainerAdapterAbstract
     else
     return self.filter( dst, ( e ) => e === max ? e : undefined );
   }
-  only( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators, comparator | Dmytro : implemented, covered */
+  only( dst, src2, onEvaluate1, onEvaluate2 )
   {
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
@@ -435,7 +379,7 @@ class ContainerAdapterAbstract
 
     return dst;
   }
-  but( dst, src2, onEvaluate1, onEvaluate2 ) /* qqq : teach to accept comparator, 1 evaluator, 2 avaluators | Dmytro : implemented, covered */
+  but( dst, src2, onEvaluate1, onEvaluate2 )
   {
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
@@ -541,19 +485,12 @@ var Routines =
 {
 
   is,
-  isContainer, /* qqq : cover please | Dmytro : covered */
+  isContainer,
   make,
   from,
 
   toOriginal,
   toOriginals,
-
-  /*
-    qqq : cover please
-    Dmytro : covered, routine has not implemented branch
-    qqq : implement please :)
-    Dmytro : implemented and covered
-  */
 
 }
 
