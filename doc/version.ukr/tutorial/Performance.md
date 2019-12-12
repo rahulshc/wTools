@@ -46,49 +46,36 @@ performance
 ```js
 let _ = require( 'wTools' );
 
-/* Data generation */
+/* */
 
 var srcArray = new U8x( 500000000 );
-
-/* Performance testing */
 
 testTime( entityEachLongsFor, 20, srcArray, onEach );
 // testTime( entityEachLongsForEach, 20, srcArray, onEach );
 
-/* Routines */
+/* */
 
 function testTime( func, times, data, callback )
 {
   var timeStart = _.time.now();
-
   for( let i = times; i > 0; i-- )
   var result = func( data, callback );
-
-  var timeEnd = _.time.now();
-
-  console.log( timeEnd - timeStart );
+  var spentTime = _.time.spent( timeStart );
+  console.log( spentTime );
 }
 
-/* */
-
 var onEach = ( e, k, src ) => e;
-
-/* */
 
 function entityEachLongsFor( src, onEach )
 {
   for( let k = 0 ; k < src.length ; k++ )
   onEach( src[ k ], k, src );
-
   return src
 }
-
-/* */
 
 function entityEachLongsForEach( src, onEach )
 {
   src.forEach( onEach );
-
   return src;
 }
 ```
@@ -110,21 +97,23 @@ var srcArray = new U8x( 500000000 );
 
 #### Тестування алгоритмів
 
-Для тестування окремих алгоритмів була створена окрема рутина `testTime`, що приймає 4 параметри.
+Для тестування окремих алгоритмів була створена рутина `testTime`, що приймає 4 параметри.
 
 - `func` - рутина котра реалізує певний алгоритм.
 - `times` - повторний запуск алгоритму `times` разів. Збільшує час виконання алгоритму для забезпечення достовірності даних, та дозволяє використовувати менший об'єм згенерованих даних.
 - `data` - дані для алгоритму.
 - `callback` - колбек для алгоритму.
 
-Рутина `testTime` перед початком і після завершення тестування заміряє поточний час з допомогою рутини `_.time.now()`
+Рутина `testTime` перед початком заміряє поточний час з допомогою рутини `_.time.now()`
 
 ```js
 var timeStart = _.time.now();
+```
 
-//
+а після виконання визначає використаний час
 
-var timeEnd = _.time.now();
+```js
+var spentTime = _.time.spent( timeStart );
 ```
 
 Після чого виводить дані в консоль.
@@ -140,15 +129,15 @@ testTime( entityEachLongsFor, 20, srcArray, onEach );
 
 ### Результати замірів для NodeJS v10
 
-| Версія NodeJS | Цикл for, час виконання | Метод forEach, час виконання |
-| ------------- | ----------------------- | ---------------------------- |
-| v10           | 12,8 s                  | 137,1 s                      |
-|               | 13,0 s                  | 137,8 s                      |
-|               | 12,9 s                  | 138,8 s                      |
-|               | 12,5 s                  | 137,9 s                      |
-|               | 13,1 s                  | 138,5 s                      |
+| Цикл for | Метод forEach |
+| -------- | ------------- |
+| 12,8 s   | 137,1 s       |
+| 13,0 s   | 137,8 s       |
+| 12,9 s   | 138,8 s       |
+| 12,5 s   | 137,9 s       |
+| 13,1 s   | 138,5 s       |
 
-Проведене тестування показує, що вбудований метод `forEach` працює до 10 разів довше від циклу `for`. На основі цього можна сказати, що для збільшення швидкодії програми краще використовувати цикл, а не вбудований метод.
+Проведене тестування показує, що вбудований метод `forEach` працює до 10 разів довше від циклу `for`. На основі цього можна сказати, що для збільшення швидкодії програми при переборі елементів масивів краще використовувати цикл `for`, а не вбудований метод `forEach`.
 
 ### Підсумок
 
