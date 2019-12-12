@@ -117,7 +117,7 @@
 </details>
 
 <details>
-  <summary><a href="./tutorial/Performance.md">
+  <summary><a href="./tutorial/TimeMeasurement.md">
     Як заміряти час
   </a></summary>
     Замір часу виконання алгоритмів для вибору оптимального рішення.
