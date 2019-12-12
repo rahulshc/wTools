@@ -124,6 +124,20 @@
 </details>
 
 <details>
+  <summary><a href="./tutorial/Timer.md">
+    Таймер
+  </a></summary>
+    Все про таймери.
+</details>
+
+<details>
+  <summary><a href="./tutorial/PostponedDependency.md">
+    Відстрочена залежність
+  </a></summary>
+    Відстрочування коду, що використовує модулі недоступні в даний момент за допомогою механізму подій.
+</details>
+
+<details>
   <summary><a href="./tutorial/RoutineFromPreAndBody.md">
     Рутина routineFromPreAndBody
   </a></summary>
