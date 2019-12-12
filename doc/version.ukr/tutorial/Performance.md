@@ -6,7 +6,7 @@
 
 ### Замір часу
 
-Перед початком виконання алгоритму замірте поточний час за допомогою рутини `_.time.now()` чи альтернативної.
+Перед початком виконання алгоритму замірте поточний час за допомогою рутини `_.time.now()` чи альтернативно `Date.now()`.
 
 ``` js
 var time = _.time.now();
@@ -18,7 +18,7 @@ var time = _.time.now();
 _.time.spent( time );
 ```
 
-Альтернативно можливо викликати `_.time.now()` і знайти різницю між двома замірами, але при цьому доведеться робити трансформування одиниць вимірювання часу вручну.
+Альтернативно можливо повторно викликати `_.time.now()` і знайти різницю між двома замірами, але при цьому доведеться робити трансформування одиниць вимірювання часу вручну.
 
 ### Приклад
 
@@ -48,15 +48,15 @@ console.log( `For each took ${_.time.spent( time )} on Njs ${process.version}` )
 
 function forLoop( src, onEach )
 {
-for( let k = 0 ; k < src.length ; k++ )
-onEach( src[ k ], k, src );
-return src
+  for( let k = 0 ; k < src.length ; k++ )
+  onEach( src[ k ], k, src );
+  return src
 }
 
 function forEach( src, onEach )
 {
-src.forEach( ( e, k, src ) => onEach( e, k, src ) );
-return src;
+  src.forEach( ( e, k, src ) => onEach( e, k, src ) );
+  return src;
 }
 
 ```
