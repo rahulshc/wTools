@@ -7206,118 +7206,261 @@ function strOnlySingle( test )
 
 function strOnly( test )
 {
-  test.case = 'Input array';
-  var got = _.strOnly( [ 'Hello', 'World'], [ 3, 4 ] );
-  var expected = [ 'l', 'l' ];
+  test.open( 'not vectorized' );
+
+  test.case = 'range - number, first symbol';
+  var src = 'a\nb\nc';
+  var got = _.strOnly( src, 0 );
+  var expected = 'a';
   test.identical( got, expected );
+
+  test.case = 'range - number';
+  var src = 'a\nb\nc';
+  var got = _.strOnly( src, 1 );
+  var expected = '\n';
+  test.identical( got, expected );
+
+  test.case = 'range - number, last symbol';
+  var src = 'a\nb\nc';
+  var got = _.strOnly( src, 4 );
+  var expected = 'c';
+  test.identical( got, expected );
+
+  test.case = 'range - number bigger then srcStr.length';
+  var src = 'a\nb\nc';
+  var got = _.strOnly( src, 6 );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'range - negative number, last symbol';
+  var src = 'a\nb\nc';
+  var got = _.strOnly( src, -1 );
+  var expected = 'c';
+  test.identical( got, expected );
+
+  test.case = 'range - negative number, first symbol';
+  var src = 'a\nb\nc';
+  var got = _.strOnly( src, -5 );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'range - negative number, absolute value bigger then srcStr.length';
+  var src = 'a\nb\nc';
+  var got = _.strOnly( src, -7 );
+  var expected = '';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'srcStr - empty string';
+  var got = _.strOnly( '', [ 2, 3 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
+  var got = _.strOnly( 'Hello', [ 1, 1 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get all';
+  var got = _.strOnly( 'Hello', [ 0, 5 ] );
+  var expected = 'Hello';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range bigger than length';
+  var got = _.strOnly( 'Hello', [ 0, 8 ] );
+  var expected = 'Hello';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get subString';
+  var got = _.strOnly( 'Hello', [ 2, 3 ] );
+  var expected = 'l';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get end of string';
+  var got = _.strOnly( 'Hello', [ 3, 5 ] );
+  var expected = 'lo';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range reversed';
+  var got = _.strOnly( 'Hello', [ 4, 0 ] );
+  var expected = 'Hell';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
+  var got = _.strOnly( 'Hello', [ -2, -2 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get all, range[ 0 ] < 0';
+  var got = _.strOnly( 'Hello', [ -5, 5 ] );
+  var expected = 'Hello';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
+  var got = _.strOnly( 'Hello', [ -7, 5 ] );
+  var expected = 'Hello';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnly( 'Hello', [ -3, -2 ] );
+  var expected = 'l';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnly( 'Hello', [ -5, -4 ] );
+  var expected = 'H';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnly( 'Hello', [ -2, -3 ] );
+  var expected = 'l';
+  test.identical( got, expected ); 
+
+  test.close( 'not vectorized' );
+
+  /* - */ 
+
+  test.open( 'vectorized' );
+
+  test.case = 'range - number, first symbol';
+  var src = [ 'a\nb\nc', '', 'abc' ];
+  var got = _.strOnly( src, 0 );
+  var expected = [ 'a', '', 'a' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number';
+  var src = [ 'a\nb\nc', '', 'abc' ];
+  var got = _.strOnly( src, 1 );
+  var expected = [ '\n', '', 'b' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number, last symbol of longest string';
+  var src = [ 'a\nb\nc', '', 'abc' ];
+  var got = _.strOnly( src, 4 );
+  var expected = [ 'c', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'range - number bigger then longest srcStr.length';
+  var src = [ 'a\nb\nc', '', 'abc' ];
+  var got = _.strOnly( src, 6 );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'range - negative number, last symbol';
+  var src = [ 'a\nb\nc', '', 'abc' ];
+  var got = _.strOnly( src, -1 );
+  var expected = [ 'c', '', 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'range - negative number, first symbol of longest string';
+  var src = [ 'a\nb\nc', '', 'abc' ];
+  var got = _.strOnly( src, -5 );
+  var expected = [ 'a', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'range - negative number, absolute value bigger then longest srcStr.length';
+  var src = [ 'a\nb\nc', '', 'abc' ];
+  var got = _.strOnly( src, -7 );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'srcStr - empty strings';
+  var got = _.strOnly( [ '', '', '' ], [ 2, 3 ] );
+  var expected = [ '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 1, 1 ] );
+  var expected = [ '', '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get all';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 0, 5 ] );
+  var expected = [ 'Hello', 'world', 'abc', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range bigger than length';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 0, 8 ] );
+  var expected = [ 'Hello', 'world', 'abc', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get subString';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 2, 3 ] );
+  var expected = [ 'l', 'r', 'c', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get end of string';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 3, 5 ] );
+  var expected = [ 'lo', 'ld', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range reversed';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 4, 0 ] );
+  var expected = [ 'Hell', 'worl', 'abc', '' ];
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -2, -2 ] );
+  var expected = [ '', '', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get all, range[ 0 ] < 0';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -5, 5 ] );
+  var expected = [ 'Hello', 'world', 'abc', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -7, 5 ] );
+  var expected = [ 'Hello', 'world', 'abc', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -3, -2 ] );
+  var expected = [ 'l', 'r', 'c', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -5, -4 ] );
+  var expected = [ 'H', 'w', '', '' ];
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ] );
+  var expected = [ 'l', 'r', 'c', '' ];
+  test.identical( got, expected ); 
+
+  test.close( 'vectorized' );
 
   /* - */
 
-  if( !Config.debug )
-  return;
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strOnly() );
 
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly();
-  });
+  test.case = 'one argument';
+  test.shouldThrowErrorSync( () => _.strOnly( 'abc' ) );
 
-  test.case = 'Too many arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( '1', '2', '3' );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strOnly( 'abc', [ 1, 2 ], 'extra' ) );
 
-  test.case = 'Too many ranges';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( 'Hello world', [ 0, 1 ], [ 2, 3 ] );
-  });
+  test.case = 'wrong type of srcStr';
+  test.shouldThrowErrorSync( () => _.strOnly( 123, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.strOnly( null, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.strOnly( /a?$/, [ 0, 1 ] ) );
 
-  test.case = 'Not enough arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( '1' );
-  });
+  test.case = 'wrong type of range';
+  test.shouldThrowErrorSync( () => _.strOnly( 'abc', null ) );
+  test.shouldThrowErrorSync( () => _.strOnly( 'abc', 'wrong' ) );
 
-  test.case = 'invalid argument type';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( 123, [ 0, 1 ] );
-  });
-
-  test.case = 'null argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( null, [ 0, 1 ] );
-  });
-
-  test.case = 'NaN argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( NaN, [ 0, 1 ] );
-  });
-
-  test.case = 'Regexp argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( /a?$/, [ 0, 1 ] );
-  });
-
-  // test.case = 'invalid argument range';
-  // test.shouldThrowErrorSync( function()
-  // {
-  //   _.strOnly( 'hi ', 123 );
-  // });
-
-  test.case = 'null range';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( 'good morning', null );
-  });
-
-  test.case = 'NaN range';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( 'good afternoon', NaN );
-  });
-
-  test.case = 'Regexp range';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( 'good night', /a?$/ );
-  });
-
-  test.case = 'Array with wrong arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( [ null, NaN, 3, /a?$/ ], [ 0, 1 ] );
-  });
-
-  test.case = 'Range array with wrong arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( [ 'Hello', 'world' ], [ null, NaN ] );
-  });
-
-  test.case = 'Range array empty';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( [ 'Hello', 'world' ], [ ] );
-  });
-
-  test.case = 'Range array with not enough arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( [ 'Hello', 'world' ], [ 2 ] );
-  });
-
-  test.case = 'Range array with too many arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.strOnly( [ 'Hello', 'world' ], [ 2, 3, 4 ] );
-  });
-
+  test.case = 'wrong range';
+  test.shouldThrowErrorSync( () => _.strOnly( 'abc', [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.strOnly( 'abc', [ 1, 2, 3 ] ) );
 }
 
 //
