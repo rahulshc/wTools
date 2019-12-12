@@ -117,6 +117,13 @@
 </details>
 
 <details>
+  <summary><a href="./tutorial/Performance.md">
+    Як заміряти продуктивність алгоритму ( performance )
+  </a></summary>
+    Замір показників продуктивності для вибору оптимального алгоритму.
+</details>
+
+<details>
   <summary><a href="./tutorial/RoutineFromPreAndBody.md">
     Рутина routineFromPreAndBody
   </a></summary>
