@@ -117,10 +117,10 @@
 </details>
 
 <details>
-  <summary><a href="./tutorial/Performance.md">
-    Як заміряти продуктивність алгоритму ( performance )
+  <summary><a href="./tutorial/TimeMeasurement.md">
+    Як заміряти час
   </a></summary>
-    Замір показників продуктивності для вибору оптимального алгоритму.
+    Замір часу виконання алгоритмів для вибору оптимального рішення.
 </details>
 
 <details>
