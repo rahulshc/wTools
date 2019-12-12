@@ -50,8 +50,8 @@ let _ = require( 'wTools' );
 
 var srcArray = new U8x( 500000000 );
 
-testTime( entityEachLongsFor, 20, srcArray, onEach );
-// testTime( entityEachLongsForEach, 20, srcArray, onEach );
+testTime( eachLongsFor, 20, srcArray, onEach );
+// testTime( eachLongsForEach, 20, srcArray, onEach );
 
 /* */
 
@@ -66,14 +66,14 @@ function testTime( func, times, data, callback )
 
 var onEach = ( e, k, src ) => e;
 
-function entityEachLongsFor( src, onEach )
+function eachLongsFor( src, onEach )
 {
   for( let k = 0 ; k < src.length ; k++ )
   onEach( src[ k ], k, src );
   return src
 }
 
-function entityEachLongsForEach( src, onEach )
+function eachLongsForEach( src, onEach )
 {
   src.forEach( onEach );
   return src;
