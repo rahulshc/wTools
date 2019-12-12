@@ -1,4 +1,4 @@
-# Як заміряти час виконання алгоритму
+# Як заміряти час
 
 Замір часу виконання алгоритмів для вибору оптимального рішення.
 
@@ -28,7 +28,6 @@ _.time.spent( time );
 <summary><u>Код файла <code>Performance.js</code></u></summary>
 
 ``` js
-let _ = require( `wTools` );
 
 let times = 100;
 let size = 500000;
@@ -39,12 +38,14 @@ var time = _.time.now();
 for( let i = times ; i > 0; i-- )
 var result = forLoop( array, () => counter += 1 );
 console.log( `For loop took ${_.time.spent( time )} on Njs ${process.version}` );
+console.info( `Output ${counter} to avoid unwanted optimization` );
 
 var counter = 0;
 var time = _.time.now();
 for( let i = times ; i > 0; i-- )
 var result = forEach( array, () => counter += 1 );
 console.log( `For each took ${_.time.spent( time )} on Njs ${process.version}` );
+console.info( `Output ${counter} to avoid unwanted optimization` );
 
 function forLoop( src, onEach )
 {
