@@ -280,7 +280,7 @@ function sourceCode( test )
     test.notIdentical( op.exitCode, 0 );
     test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
     test.identical( _.strCount( op.output, '= Source code from' ), 1 );
-    test.identical( _.strCount( op.output, `* 7 :     throw Error( 'Unhandled error' );` ), 1 );
+    test.identical( _.strCount( op.output, `* 5 :     throw Error( 'Unhandled error' );` ), 1 );
     return null;
   });
 
@@ -312,7 +312,7 @@ function asyncStackInConsequenceTrivial( test )
     test.notIdentical( op.exitCode, 0 );
     test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
     test.identical( _.strCount( op.output, '= Source code from' ), 1 );
-    test.identical( _.strCount( op.output, `Program.js:11` ), 1 );
+    test.identical( _.strCount( op.output, `Program.js:9` ), 1 );
     test.identical( _.strCount( op.output, `at program` ), 1 );
     return null;
   });
@@ -424,11 +424,11 @@ function activeProcedureSourcePath( test )
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
-    test.identical( _.strCount( op.output, /sourcePath::program.*Program.js:30/ ), 1 );
-    test.identical( _.strCount( op.output, /sourcePath::timeout.*Program.js:23/ ), 1 );
-    test.identical( _.strCount( op.output, /sourcePath::callback1.*Program.js:10/ ), 1 );
-    test.identical( _.strCount( op.output, /sourcePath::callback2.*Program.js:15/ ), 1 );
-
+    test.identical( _.strCount( op.output, /sourcePath::program.*Program.js:31/ ), 1 );
+    test.identical( _.strCount( op.output, /sourcePath::timeout.*Program.js:21/ ), 1 );
+    test.identical( _.strCount( op.output, /sourcePath::callback1.*Program.js:8/ ), 1 );
+    test.identical( _.strCount( op.output, /sourcePath::callback2.*Program.js:13/ ), 1 );
+    test.identical( _.strCount( op.output, 'sourcePath::' ), 4 );
     return null;
   });
 
