@@ -4893,7 +4893,7 @@ let Proto =
   strCommonLeft, /* qqq : document me | Dmytro : documented */
   strCommonRight, /* qqq : document me | Dmytro : documented */
   strRandom, /* qqq : document and extend test coverage | Dmytro : coverage is extended, routine is documented */
-  strAlphabetFromRange, /* qqq : cover and document please */
+  strAlphabetFromRange, /* qqq : cover and document please | Dmytro : covered and documented */
 
   // formatter
 

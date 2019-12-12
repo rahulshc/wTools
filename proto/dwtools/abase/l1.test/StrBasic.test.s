@@ -7066,68 +7066,152 @@ function strSplitCamel( test )
 // extractor
 //--
 
-function strOnly( test )
+function strOnlySingle( test ) 
 {
-
-  test.case = 'simple string - get all';
-  var got = _.strOnly( 'Hello', [ 0, 5 ] );
-  var expected = 'Hello';
+  test.case = 'range - number, first symbol';
+  var src = 'a\nb\nc';
+  var got = _.strOnlySingle( src, 0 );
+  var expected = 'a';
   test.identical( got, expected );
 
-  test.case = 'simple string - range bigger than length';
-  var got = _.strOnly( 'Hello', [ 0, 8 ] );
-  var expected = 'Hello';
+  test.case = 'range - number';
+  var src = 'a\nb\nc';
+  var got = _.strOnlySingle( src, 1 );
+  var expected = '\n';
   test.identical( got, expected );
 
-  test.case = 'simple string - get subString';
-  var got = _.strOnly( 'Hello', [ 0, 4 ] );
-  var expected = 'Hell';
+  test.case = 'range - number, last symbol';
+  var src = 'a\nb\nc';
+  var got = _.strOnlySingle( src, 4 );
+  var expected = 'c';
   test.identical( got, expected );
 
-  test.case = 'simple string - get end of string';
-  var got = _.strOnly( 'Hello', [ 3, 5 ] );
-  var expected = 'lo';
-  test.identical( got, expected );
-
-  test.case = 'simple string - range reversed';
-  var got = _.strOnly( 'Hello', [ 4, 0 ] );
-  var expected = 'Hell';
-  test.identical( got, expected );
-
-  test.case = 'simple string - range in the middle of the string';
-  var got = _.strOnly( 'Hello', [ 2, 3 ] );
-  var expected = 'l';
-  test.identical( got, expected );
-
-  test.case = 'empty string';
-  var got = _.strOnly( '', [ 2, 3 ] );
+  test.case = 'range - number bigger then srcStr.length';
+  var src = 'a\nb\nc';
+  var got = _.strOnlySingle( src, 6 );
   var expected = '';
   test.identical( got, expected );
 
+  test.case = 'range - negative number, last symbol';
+  var src = 'a\nb\nc';
+  var got = _.strOnlySingle( src, -1 );
+  var expected = 'c';
+  test.identical( got, expected );
+
+  test.case = 'range - negative number, first symbol';
+  var src = 'a\nb\nc';
+  var got = _.strOnlySingle( src, -5 );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'range - negative number, absolute value bigger then srcStr.length';
+  var src = 'a\nb\nc';
+  var got = _.strOnlySingle( src, -7 );
+  var expected = '';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'srcStr - empty string';
+  var got = _.strOnlySingle( '', [ 2, 3 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
+  var got = _.strOnlySingle( 'Hello', [ 1, 1 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get all';
+  var got = _.strOnlySingle( 'Hello', [ 0, 5 ] );
+  var expected = 'Hello';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range bigger than length';
+  var got = _.strOnlySingle( 'Hello', [ 0, 8 ] );
+  var expected = 'Hello';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get subString';
+  var got = _.strOnlySingle( 'Hello', [ 2, 3 ] );
+  var expected = 'l';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get end of string';
+  var got = _.strOnlySingle( 'Hello', [ 3, 5 ] );
+  var expected = 'lo';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range reversed';
+  var got = _.strOnlySingle( 'Hello', [ 4, 0 ] );
+  var expected = 'Hell';
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
+  var got = _.strOnlySingle( 'Hello', [ -2, -2 ] );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get all, range[ 0 ] < 0';
+  var got = _.strOnlySingle( 'Hello', [ -5, 5 ] );
+  var expected = 'Hello';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
+  var got = _.strOnlySingle( 'Hello', [ -7, 5 ] );
+  var expected = 'Hello';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnlySingle( 'Hello', [ -3, -2 ] );
+  var expected = 'l';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnlySingle( 'Hello', [ -5, -4 ] );
+  var expected = 'H';
+  test.identical( got, expected );
+
+  test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
+  var got = _.strOnlySingle( 'Hello', [ -2, -3 ] );
+  var expected = 'l';
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strOnlySingle() );
+
+  test.case = 'one argument';
+  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc' ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc', [ 1, 2 ], 'extra' ) );
+
+  test.case = 'wrong type of srcStr';
+  test.shouldThrowErrorSync( () => _.strOnlySingle( 123, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.strOnlySingle( null, [ 0, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.strOnlySingle( /a?$/, [ 0, 1 ] ) );
+
+  test.case = 'wrong type of range';
+  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc', null ) );
+  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc', 'wrong' ) );
+
+  test.case = 'wrong range';
+  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc', [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.strOnlySingle( 'abc', [ 1, 2, 3 ] ) );
+}
+
+function strOnly( test )
+{
   test.case = 'Input array';
   var got = _.strOnly( [ 'Hello', 'World'], [ 3, 4 ] );
   var expected = [ 'l', 'l' ];
   test.identical( got, expected );
 
-  test.case = 'second argument is number';
-  var src = 'a\nb\nc';
-  var got = _.strOnly( src, 0 );
-  var expected = 'a';
-  test.identical( got, expected );
-
-  test.case = 'second argument is number';
-  var src = 'a\nb\nc';
-  var got = _.strOnly( src, 1 );
-  var expected = '\n';
-  test.identical( got, expected );
-
-  test.case = 'second argument is number';
-  var src = 'a\nb\nc';
-  var got = _.strOnly( src, -1 );
-  var expected = 'c';
-  test.identical( got, expected );
-
-  /**/
+  /* - */
 
   if( !Config.debug )
   return;
@@ -11043,6 +11127,7 @@ var Self =
 
     // extractor
 
+    strOnlySingle,
     strOnly,
     strExtractInlined,
     strExtractInlinedStereo,
