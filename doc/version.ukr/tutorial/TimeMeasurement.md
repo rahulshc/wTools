@@ -28,7 +28,7 @@ _.time.spent( time );
 <summary><u>Код файла <code>Performance.js</code></u></summary>
 
 ``` js
-
+let _ = require( 'wTools' );
 let times = 100;
 let size = 500000;
 let array = new U8x( size );
