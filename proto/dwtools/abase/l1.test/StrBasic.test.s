@@ -9940,6 +9940,153 @@ function strLinesSelectHighlighting( test )
 
 //
 
+function strLinesSelectZeroLine( test ) 
+{
+  test.case = 'zeroLine - undefined, line - 2';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 2,
+  });
+  var expected = 'a\nb\nc';
+  test.identical( got, expected );
+
+  /* - */
+
+  test.open( 'without numbering' );
+
+  test.case = 'zeroLine - 1, line - 2';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 2,
+    zeroLine : 1
+  });
+  var expected = 'a\nb\nc';
+  test.identical( got, expected ); 
+
+  test.case = 'zeroLine - 4, line - 5';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 5,
+    zeroLine : 4
+  });
+  var expected = 'a\nb\nc';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 4, line - 3';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 3,
+    zeroLine : 4
+  });
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 4, line - 3, selectMode - begin';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 3,
+    zeroLine : 4, 
+    selectMode : 'begin'
+  });
+  var expected = 'a\nb';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 4, line - 3, selectMode - end';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 3,
+    zeroLine : 4, 
+    selectMode : 'end'
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.close( 'without numbering' );
+
+  /* - */
+
+  test.open( 'with numbering' );
+
+  test.case = 'zeroLine - 1, line - 2';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 2,
+    zeroLine : 1,
+    numbering : 1
+  });
+  var expected = '  1 : a\n* 2 : b\n  3 : c';
+  test.identical( got, expected ); 
+
+  test.case = 'zeroLine - 4, line - 5';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 5,
+    zeroLine : 4,
+    numbering : 1
+  });
+  var expected = '  4 : a\n* 5 : b\n  6 : c';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 4, line - 3';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 3,
+    zeroLine : 4,
+    numbering : 1
+  });
+  var expected = '  2 : a';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 4, line - 3, selectMode - begin';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 3,
+    zeroLine : 4, 
+    numbering : 1,
+    selectMode : 'begin'
+  });
+  var expected = '* 3 : a\n  4 : b';
+  test.identical( got, expected );
+
+  test.case = 'zeroLine - 4, line - 3, selectMode - end';
+  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var got = _.strLinesSelect
+  ({
+    src : src,
+    line : 3,
+    zeroLine : 4,
+    numbering : 1,
+    selectMode : 'end'
+  });
+  var expected = '  1 : ';
+  test.identical( got, expected );
+
+  test.close( 'with numbering' );
+
+}
+
+//
+
 function strLinesNearest( test )
 {
 
@@ -10828,6 +10975,7 @@ var Self =
     strLinesNumberOnLine,
     strLinesSelect,
     strLinesSelectHighlighting,
+    strLinesSelectZeroLine,
     strLinesNearest,
     strLinesCount,
     strLinesRangeWithCharRange,
