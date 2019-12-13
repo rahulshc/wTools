@@ -323,7 +323,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     else
     {
-      // qqq2f | Dmytro : tabs are removed
+      // qqq2 | Dmytro : tabs are removed
       let last = _.nothing;
       self.reduce( ( a, e2 ) => _.entityEntityEqualize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
       _.assert( last !== _.nothing );
@@ -687,10 +687,9 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
         temp.splice( i, 1 );
         else if( temp[ i ] !== e2 )
         temp[ i ] = e2;
-
-        self.empty();
-        temp.forEach( ( e ) => self.push( e ) );
       }
+      self.empty();
+      temp.forEach( ( e ) => self.push( e ) );
     }
     else
     {
@@ -905,7 +904,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   eachRight( onEach )
   {
     let self = this;
-    let container = this.original;
+    let container = self.original;
     let temp = [ ... container ];
     for( let i = temp.length - 1; i >= 0; i-- )
     onEach( temp[ i ], i, self );
@@ -914,7 +913,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   reduce( accumulator, onEach )
   {
     let self = this;
-    let container = this.original;
+    let container = self.original;
     if( arguments[ 1 ] === undefined )
     {
       onEach = arguments[ 0 ];
@@ -935,7 +934,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   reduceRight( accumulator, onEach )
   {
     let self = this;
-    let container = this.original;
+    let container = self.original;
     let temp = [ ... container ];
     if( arguments[ 1 ] === undefined )
     {
@@ -955,7 +954,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   allLeft( onEach )
   {
     let self = this;
-    let container = this.original;
+    let container = self.original;
     let index = -1;
     for( let e of container )
     {
@@ -973,8 +972,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     let temp = [ ... container ];
     for( let k = temp.length - 1; k >= 0; k-- )
     {
-      let e = temp[ k ];
-      let r = onEach( e, k, self );
+      let r = onEach( temp[ k ], k, self );
       if( !r )
       return false;
     }
@@ -987,7 +985,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   anyLeft( onEach )
   {
     let self = this;
-    let container = this.original;
+    let container = self.original;
     let index = -1;
     for( let e of container )
     {
@@ -1001,12 +999,11 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   anyRight( onEach )
   {
     let self = this;
-    let container = this.original;
+    let container = self.original;
     let temp = [ ... container ];
     for( let k = temp.length - 1; k >= 0; k-- )
     {
-      let e = temp[ k ];
-      let r = onEach( e, k, self );
+      let r = onEach( temp[ k ], k, self );
       if( r )
       return true;
     }
@@ -1019,7 +1016,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   noneLeft( onEach )
   {
     let self = this;
-    let container = this.original;
+    let container = self.original;
     let index = -1;
     for( let e of container )
     {
@@ -1033,12 +1030,11 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   noneRight( onEach )
   {
     let self = this;
-    let container = this.original;
+    let container = self.original;
     let temp = [ ... container ];
     for( let k = temp.length - 1; k >= 0; k-- )
     {
-      let e = temp[ k ];
-      let r = onEach( e, k, self );
+      let r = onEach( temp[ k ], k, self );
       if( r )
       return false;
     }
@@ -1094,7 +1090,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   }
   [ Symbol.iterator ]()
   {
-    debugger;
     let container = this.original;
     return container[ Symbol.iterator ]();
   }
