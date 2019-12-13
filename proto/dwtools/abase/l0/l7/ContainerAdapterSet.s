@@ -261,7 +261,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   pop( e, onEvaluate1, onEvaluate2 )
   {
     let self = this;
-		let container = this.original;
+    let container = this.original;
 
     if( !onEvaluate1 || e === undefined )
     {
@@ -273,14 +273,12 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     else
     {
-
-      // qqq2
+      // qqq2f | Dmytro : tabs are removed
       let last = _.nothing;
-			self.reduce( ( a, e2 ) => _.entityEntityEqualize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
-			_.assert( last !== _.nothing );
-			container.delete( last );
-			return last;
-
+      self.reduce( ( a, e2 ) => _.entityEntityEqualize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
+      _.assert( last !== _.nothing );
+      container.delete( last );
+      return last;
     }
 
   }
@@ -752,11 +750,31 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       {
         // qqq2 : avoid making extra containers
         // qqq2 : investigate all cases using creating extra container. try to find solution without extra copying
-        let temp = []; // Dmytro : to prevent cycled loop uses copies
-        self.each( ( e ) => _.arrayAppendOnce( temp, e, onEvaluate1, onEvaluate2 ) );
-        self.empty();
-        for( let i = 0; i < temp.length; i++ )
-        self.append( temp[ i ] );
+        // Dmytro : used iterative loop. First condition means that first element is always unique element.
+        // Otherwise, last element will be unique
+
+        // let temp = []; // Dmytro : to prevent cycled loop uses copies
+        // self.each( ( e ) => _.arrayAppendOnce( temp, e, onEvaluate1, onEvaluate2 ) );
+        // self.empty();
+        // for( let i = 0; i < temp.length; i++ )
+        // self.append( temp[ i ] );
+
+        let length = this.length;
+        let startLength = length;
+        for( let e of container )
+        {
+          if( length === startLength )
+          {
+            self.append( e );
+            length--;
+          }
+          else if( length !== 0 )
+          {
+            self.remove( e );
+            self.appendOnce( e, onEvaluate1, onEvaluate2 )
+            length--;
+          }
+        }
       }
     }
     else
