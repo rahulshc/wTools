@@ -64,7 +64,7 @@ function forEach( src, onEach )
 
 </details>
 
-The above code has 2 implementations of the iterating of array elements. It is `forLoop` and` forEach`. The program measures the time it takes to iterate for elements of the array with a length of 2,000,000 elements. To minimize the error introduced by the dynamic environment, the iterating is done 100 times in both ways.
+The above code has 2 implementations of the iterating of array elements. It is `forLoop` and` forEach`. The program measures the time it takes to iterate for elements of the array with a length of 50,000,000 elements. To minimize the error introduced by the dynamic environment, the iterating is done 10 times in both ways.
 
 The program outputs the variable `counter` to avoid unwanted optimization.
 
@@ -72,12 +72,12 @@ The program outputs the variable `counter` to avoid unwanted optimization.
 
 The test results should be compiled into a table indicating the interpreter and its version. The results can vary greatly from interpreter to interpreter, version to version.
 
-| Interpretor  | forLoop | forEach |
-|--------------|---------|---------|
-| Njs v10.16.0 | 4.240 s | 7.195 s |
-| Njs v11.3.0  | 4.359 s | 7.212 s |
-| Njs v12.7.0  | 4.982 s | 8.850 s |
-| Njs v13.3.0  | 4.978 s | 8.756 s |
+| Interpretor  | forLoop  | forEach  |
+|--------------|----------|----------|
+| Njs v10.16.0 | 9.940 s  | 17.410 s |
+| Njs v11.3.0  | 10.182 s | 17.403 s |
+| Njs v12.7.0  | 11.533 s | 21.673 s |
+| Njs v13.3.0  | 11.448 s | 21.324 s |
 
 The report shows that the `for` loop works twice as fast as the `forEach` loop. On this basis, it should be recommended to use the 1st variant of the algorithm implementation.
 
