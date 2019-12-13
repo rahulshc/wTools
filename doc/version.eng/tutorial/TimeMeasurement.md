@@ -29,8 +29,8 @@ To demonstrate the time measurement technique, create a file `Performance.js` wi
 
 ``` js
 let _ = require( 'wTools' );
-let times = 100;
-let size = 2000000;
+let times = 10;
+let size = 50000000;
 let array = new U8x( size );
 
 var counter = 0;
@@ -64,7 +64,7 @@ function forEach( src, onEach )
 
 </details>
 
-The above code has 2 implementations of algorithms iterating elements of an array. It is `forLoop` and` forEach`. The program measures the time it takes to iterate elements of an array of length 2,000,000. To minimize the inaccuracy introduced by the dynamic environment, run both algorithms 100 times.
+The above code has 2 implementations of algorithms iterating elements of an array. It is `forLoop` and` forEach`. The program measures the time it takes to iterate elements of an array of length 50,000,000. To minimize the inaccuracy introduced by the dynamic environment, run both algorithms 10 times.
 
 The program outputs the variable `counter` to avoid unwanted optimization.
 
@@ -72,12 +72,12 @@ The program outputs the variable `counter` to avoid unwanted optimization.
 
 The measurements results should be compiled into a table indicating the interpreter and its version. The results can vary greatly from interpreter to interpreter, version to version.
 
-| Interpretor  | forLoop | forEach |
-|--------------|---------|---------|
-| Njs v10.16.0 | 4.240 s | 7.195 s |
-| Njs v11.3.0  | 4.359 s | 7.212 s |
-| Njs v12.7.0  | 4.982 s | 8.850 s |
-| Njs v13.3.0  | 4.978 s | 8.756 s |
+| Interpretor  | forLoop  | forEach  |
+|--------------|----------|----------|
+| Njs v10.16.0 | 9.940 s  | 17.410 s |
+| Njs v11.3.0  | 10.182 s | 17.403 s |
+| Njs v12.7.0  | 11.533 s | 21.673 s |
+| Njs v13.3.0  | 11.448 s | 21.324 s |
 
 The report shows that the `for` loop works twice as fast as the` forEach` loop. On this basis, the researcher should recommend using the 1st implementation of the algorithm.
 
