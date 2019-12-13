@@ -92,9 +92,9 @@ The test results should be compiled into a table indicating the interpreter and 
 
 The report shows that the `for` loop works twice as fast as the` forEach` loop. On this basis, it should be recommended to use the 1st variant of the algorithm implementation.
 
-### Reliability and Error
+### Validity and Error
 
-It is difficult to guarantee the reliability of the test results, but it is possible to avoid some of the common mistakes. The received data of time measurement results are reliable if it is possible to make predictions about the performance of the algorithm.
+It is difficult to guarantee the validity of the test results, but it is possible to avoid some of the common mistakes. The received data of time measurement results are reliable if it is possible to make predictions about the performance of the algorithm.
 
 The impact of the environment must be minimized. Difficult tasks that are performing in the background on your machine can significantly distort the result. The results cannot be compared if they were obtained under different conditions. If the environment changes, then the result changes. The results measured on the different machines cannot be compared. And no matter how hard you try, there is still the impact of the case and the uncontrollable factors. So, you need to do the measurement several times and take the average or total value.
 
@@ -107,7 +107,7 @@ Interpreter optimization is another pitfall. The interpreter may throw away some
 ### Summary
 
 - Time can be measured with a couple of routines `_.time.now` and `_.time.spent`.
-- To ensure the reliability of the results, it is need to minimize the environment influence.
+- To ensure the validity of the results, it is need to minimize the environment influence.
 - To minimize the error, run the experiment multiple times and use the average or total time.
 - The duration of one experiment should be such as to eliminate the possibility of significant errors.
 - Data generation must be separate from algorithm performance testing.
