@@ -39,7 +39,14 @@
 
 <details>
   <summary><a href="./tutorial/ErrorHandling.md">
-    Errors handling done right: stateful exceptions
+    Errors handling
   </a></summary>
-    This article shows the state of the art techniques of handling errors.
+    The state of the art techniques of handling errors.
+</details>
+
+<details>
+  <summary><a href="./tutorial/ErrorHandling.md">
+    Mechanisms of catching errors
+  </a></summary>
+    Describe mechanisms of handling errors, depending on their synchronicity, build, and other circumstances.
 </details>

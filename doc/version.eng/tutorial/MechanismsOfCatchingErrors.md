@@ -1,6 +1,8 @@
 ## Mechanisms of catching errors
 
-There are several mechanisms of handling errors, depending on their synchronicity, build, and other circumstances. Uncaught errors are caught by a special hook, and there are many opinions which strategy application should use to handle such errors.
+Describe mechanisms of handling errors, depending on their synchronicity, build, and other circumstances.
+
+Uncaught errors are caught by a special hook, and there are many opinions which strategy application should use to handle such errors.
 
 There are 4 mechanisms of catching an error in JS depending on the source of an error.
 
