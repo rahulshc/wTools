@@ -31,6 +31,13 @@
 </details>
 
 <details>
+  <summary><a href="./tutorial/RoutineFromPreAndBody.md">
+    How to measure time
+  </a></summary>
+    Measurement of algorithms performance to choose the best solution.
+</details>
+
+<details>
   <summary><a href="./tutorial/ErrorHandling.md">
     Errors handling done right: stateful exceptions
   </a></summary>

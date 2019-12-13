@@ -1,150 +1,117 @@
-# How to measure the performance of the algorithm 
+# How to measure time 
 
-Measuring the performance of an algorithm to choose the optimal solution.
+Measurement of algorithms performance to choose the best solution.
 
-Any task can have more than one solution. Each of the solution algorithms has its advantages and disadvantages and therefore needs a reasonable choice. Among the indicators by which the solution is chosen is the reduced amount of RAM usage, and the reduced execution time by the algorithm. So, let's determine how to evaluate the execution time of an algorithm, in other words, the algorithm performance.
+A problem can have more than one solution and measurement of execution time is a tool for choosing the best solution.
 
-### Features of measurement of algorithm performance
+### Time measurement
 
-The main rule of the performance testing of an algorithm is: obtained data should have high accuracy. The following rules must be followed to ensure the accuracy of the data::
+Measure the current time with the routine `_.time.now ()` or alternatively `Date.now ()` before running the algorithm.
 
-- Separate algorithms should have separate implementations.
-- Access to individual algorithms should be the same.
-- The generation of data and measurement of algorithm performance are two different steps, so their execution should be separated.
-- Testing should be performed on one machine. If more than one machine is used, a complete test cycle should be performed on each machine. In this case, it analyzes the overall trend, relative values, not specific measurements.
-- It is necessary to limit the influence of random factors. For example, postpone operating system tasks scheduled on testing time, stop unnecessary processes and tasks.
-- To confirm the received data, at least 5 measurements of time on each algorithm are required. It is allowed to find the average time of passage and is allowed to trace the influence of random factors.
-- The amount of work that the algorithm performs must be sufficient to ensure that the time measurements are not random. For example, the execution time of testing for simple routines should be about 10s or more.
-
-### Stages of performance testing
-
-In general, the procedure is as follows
-
-- Preparation of data for testing.
-- Measuring of start time.
-- The execution of an algorithm.
-- Test completion time measurement.
-
-### Performance testing of iterative algorithms of NodeJS interpreter 
-
-<details>
-  <summary><u>File structure</u></summary>
-
-```
-performance
-    ├── PerformanceTesting.js
-    └── package.json
+``` js
+var time = _.time.now();
 ```
 
-</details>
-
-To determine the performance of NodeJS iterative algorithms, create the above file structure.
-
-<details>
-    <summary><u>Code of the file <code>PerformanceTesting.js</code></u></summary>
+Save the result to a variable or a constant. Get the time difference with the routine `_.time.spent` after running the algorithm.
 
 ```js
+_.time.spent( time );
+```
+
+Also, it is possible to call `_.time.now ()` again and find the difference between the two measurements, but then it needs the manual transformation of the units.
+
+### Example
+
+To demonstrate the time measurement technique, create a file `Performance.js` with the following content.
+
+<details>
+<summary><u>Code of the file <code>Performance.js</code></u></summary>
+
+``` js
 let _ = require( 'wTools' );
+let times = 400;
+let size = 500000;
+let array = new U8x( size );
 
-/* */
+var counter = 0;
+var time = _.time.now();
+for( let i = times ; i > 0; i-- )
+var result = forLoop( array, () => counter += 1 );
+console.log( `For loop took ${_.time.spent( time )} on Njs ${process.version}` );
+console.info( `Output ${counter} to avoid unwanted optimization` );
 
-var srcArray = new U8x( 500000000 );
+var counter = 0;
+var time = _.time.now();
+for( let i = times ; i > 0; i-- )
+var result = forEach( array, () => counter += 1 );
+console.log( `For each took ${_.time.spent( time )} on Njs ${process.version}` );
+console.info( `Output ${counter} to avoid unwanted optimization` );
 
-testTime( eachLongsFor, 20, srcArray, onEach );
-// testTime( eachLongsForEach, 20, srcArray, onEach );
-
-/* */
-
-function testTime( func, times, data, callback )
-{
-  var timeStart = _.time.now();
-  for( let i = times; i > 0; i-- )
-  var result = func( data, callback );
-  var spentTime = _.time.spent( timeStart );
-  console.log( spentTime );
-}
-
-var onEach = ( e, k, src ) => e;
-
-function eachLongsFor( src, onEach )
+function forLoop( src, onEach )
 {
   for( let k = 0 ; k < src.length ; k++ )
   onEach( src[ k ], k, src );
   return src
 }
 
-function eachLongsForEach( src, onEach )
+function forEach( src, onEach )
 {
-  src.forEach( onEach );
+  src.forEach( ( e, k, src ) => onEach( e, k, src ) );
   return src;
 }
+
 ```
 
 </details>
 
-Enter the code in the file `Performance.js`.
+The above code has 2 implementations of the iteration of array elements. It is `forLoop` and` forEach`. The program measures the time it takes to iterate for elements of the array with a length of 500,000 elements. To minimize the error introduced by the dynamic environment, the iteration is done 400 times in both ways.
 
-In the test file compares the execution time of the iteration of array or typed arrays by `for` loop and the` forEach` method.
+### Measurement results
 
-#### Preparation of the data
+The test results should be compiled into a table indicating the interpreter and its version. The results can vary greatly from interpreter to interpreter, version to version.
 
-In this case, an initialized typed array of single-byte integers is created
+| sda          | forLoop | forEach |
+|--------------|---------|---------|
+| Njs v10.16.0 | 4.240 s | 7.195 s |
+|              | 4.240 s | 7.086 s |
+|              | 4.229 s | 7.183 s |
+|              | 4.216 s | 7.130 s |
+|              | 4.221 s | 7.214 s |
+| Njs v11.3.0  | 4.359 s | 7.212 s |
+|              | 4.411 s | 7.286 s |
+|              | 4.425 s | 7.286 s |
+|              | 4.319 s | 7.249 s |
+|              | 4.344 s | 7.259 s |
+| Njs v12.7.0  | 4.982 s | 8.850 s |
+|              | 4.984 s | 8.950 s |
+|              | 5.997 s | 8.827 s |
+|              | 5.006 s | 8.665 s |
+|              | 4.995 s | 8.914 s |
 
-```js
-var srcArray = new U8x( 500000000 );
-```
+The report shows that the `for` loop works twice as fast as the` forEach` loop. On this basis, it should be recommended to use the 1st variant of the algorithm implementation.
 
-After generation, a typed array `srcArray` is available for iteration.
+### Reliability and Error
 
-#### Algorithm testing
+It is difficult to guarantee the reliability of the test results, but it is possible to avoid some of the common mistakes. The received data of time measurement results are reliable if it is possible to make predictions about the performance of the algorithm.
 
-- `func` - a routine that implements an algorithm.
-- `times` - restarting the algorithm `times` times. Increases the execution time of the algorithm to ensure the accuracy of the data, and allows the use of less amount of generated data.
-- `data` - data for the algorithm.
-- `callback` - algorithm callback.
+The impact of the environment must be minimized. Difficult tasks that are performing in the background on your machine can significantly distort the result. The results cannot be compared if they were obtained under different conditions. If the environment changes, then the result changes. The results measured on the different machines cannot be compared. And no matter how hard you try, there is still the impact of the case and the uncontrollable factors. So, you need to do the measurement several times and take the average or total value.
 
-The `testTime` routine measures the start time by using routine `_.time.now ()`
+The measurement cannot be accurate if the time interval is measured in just a millisecond. Finger rule: The interval should be at least one second.
 
-```js
-var timeStart = _.time.now();
-```
+Another mistake that can be made is when the total time includes  test data generation time. Test data generation takes time. The data should be prepared before the start of time measurement and used when needed.
 
-and after execution determines the execution time
-
-```js
-var spentTime = _.time.spent( timeStart );
-```
-
-Then outputs the data to the console.
-
-In the above code
-
-```js
-testTime( entityEachLongsFor, 20, srcArray, onEach );
-// testTime( entityEachLongsForEach, 20, srcArray, onEach );
-```
-
-one routine is commented on in order not to affect the runtime of another. After conducting experiments with one routine, it is necessary to comment on the first and uncomment on the second.
-
-### Measurement results for NodeJS v10
-
-| Loop for | Method forEach |
-| -------- | -------------  |
-| 12,8 s   | 137,1 s        |
-| 13,0 s   | 137,8 s        |
-| 12,9 s   | 138,8 s        |
-| 12,5 s   | 137,9 s        |
-| 13,1 s   | 138,5 s        |
-
-Testing shows that the built-in `forEach` method works up to 10 times longer than the `for` loop. Based on this, we can say that to increase the performance of the program in the iteration of arrays elements, it is better to use the loop `for`.
+Interpreter optimization is another pitfall. The interpreter may throw away some of the code if it notices that it is not being used. So the tested algorithm should have valid arguments and the result of the execution should be used somehow.
 
 ### Summary
 
-- The choice of a specific algorithm for solving the problem depends on the conditions. In general, they focus on the amount of RAM used and the execution time of an algorithm.
-- The most important factor of the performance testing is the accuracy of the data obtained.
-- Random factors should be eliminated to ensure the accuracy of the test data.
-- It takes at least 5 measurements of time to determine the characteristic of the algorithm.
+- Time can be measured with a couple of routines `_.time.now` and `_.time.spent`.
+- To ensure the reliability of the results, it is need to minimize the environment influence.
+- To minimize the error, run the experiment multiple times and use the average or total time.
 - The duration of one experiment should be such as to eliminate the possibility of significant errors.
 - Data generation must be separate from algorithm performance testing.
+- The runtime dynamic introduces an error into the measurement, so the algorithm should be executed several times to obtain an average value.
+- Dynamic environment impact should be minimized: equal load, same versions, one machine.
+- The performance of an algorithm in one interpreter may differ from the performance of the algorithm in another interpreter. The report should include information about the interpreter and its version.
+- Щоб уникнути небажаної оптимізації використайте результат виконання алгоритму що досліджується і передайте коректні вхідні аргументи.
 
 [Back to content](../README.md#Tutorials)
