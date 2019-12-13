@@ -92,32 +92,170 @@ function _argumentsOnly( dst, src1, src2, onEvaluate1, onEvaluate2 )
 
 //
 
+function _arraySetHas( src, e, onEvaluate1, onEvaluate2 ) 
+{
+  _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
+
+  let fromIndex = 0;
+  if( _.numberIs( onEvaluate1 ) )
+  {
+    fromIndex = onEvaluate1;
+    onEvaluate1 = onEvaluate2;
+    onEvaluate2 = undefined;
+  }
+
+  if( _.routineIs( onEvaluate1 ) )
+  {
+    if( onEvaluate1.length === 2 )
+    {
+      _.assert( !onEvaluate2 );
+
+      for( let el of src )
+      {
+        if( fromIndex === 0 )
+        {
+          if( onEvaluate1( el, e ) )
+          return true;
+        }
+        else
+        {
+          fromIndex -= 1;
+        }
+      }
+
+      return false;
+    }
+    else if( onEvaluate1.length === 1 )
+    {
+      _.assert( !onEvaluate2 || onEvaluate2.length === 1 );
+
+      if( onEvaluate2 )
+      e = onEvaluate2( e );
+      else
+      e = onEvaluate1( e );
+
+      for( let el of src )
+      {
+        if( fromIndex === 0 )
+        {
+          if( onEvaluate1( el ) === e )
+          return true;
+        }
+        else
+        {
+          fromIndex -= 1;
+        }
+      }
+
+      return false;
+    }
+    else _.assert( 0 );
+  }
+  else if( onEvaluate1 === undefined || onEvaluate1 === null )
+  {
+    if( _.longLike( src ) )
+    return src.includes( e );
+    else if( _.setLike( src ) )
+    return src.has( e );
+  }
+  else _.assert( 0 );
+}
+
+//
+
 function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
 {
-  [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.longIs( dst ) || _.setIs( dst ) || dst === null );
+  _.assert( _.longIs( src1 ) || _.setIs( src1 ) );
+  _.assert( _.longIs( src2 ) || _.setIs( src2 ) || _.routineIs( src2 ) || src2 === undefined );
 
+
+  if( dst === null )
+  dst = new src1.constructor();
+
+  if( _.routineIs( src2 ) || src2 === undefined )
+  {
+    onEvaluate2 = onEvaluate1;
+    onEvaluate1 = src2;
+    src2 = src1;
+    src1 = dst;
+  }
+  
   let temp = [];
-  if( dst.original === src1.original )
+  if( dst === src1 )
   {
-    src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
-    src2.each( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
-    src1.empty();
-    temp.forEach( ( e ) => src1.push( e ) );
+    if( _.longLike( dst ) )
+    {
+      for( let e of src2 )
+      if( _.longLeftIndex( dst, e, onEvaluate1, onEvaluate2 ) === -1 )
+      temp.push( e );
+      for( let i = dst.length - 1; i >= 0; i-- )
+      if( _arraySetHas( src2, dst[ i ], onEvaluate1, onEvaluate2 ) )
+      dst.splice( i, 1 )
+      for( let i = 0; i < temp.length; i++ ) 
+      dst.push( temp[ i ] );
+    }
+    else if( _.setLike( dst ) )
+    {
+      for( let e of src2 )
+      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      temp.push( e );
+      for( let e of dst )
+      if( _arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      dst.delete( e );
+      for( let i = 0; i < temp.length; i++ ) 
+      dst.add( temp[ i ] ); 
+    }
   }
-  else if( dst.original === src2.original )
+  else if( dst === src2 )
   {
-    src2.each( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
-    src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
-    src2.empty();
-    temp.forEach( ( e ) => src2.push( e ) );
+    if( _.longLike( dst ) )
+    {
+      for( let e of src1 )
+      if( _.longLeftIndex( dst, e, onEvaluate1, onEvaluate2 ) === -1 )
+      temp.push( e );
+      for( let i = dst.length - 1; i >= 0; i-- )
+      if( _arraySetHas( src1, dst[ i ], onEvaluate1, onEvaluate2 ) )
+      dst.splice( i, 1 )
+      for( let i = 0; i < temp.length; i++ ) 
+      dst.push( temp[ i ] ); 
+    }
+    else if( _.setLike( dst ) )
+    {
+      for( let e of src1 )
+      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      temp.push( e );
+      for( let e of dst )
+      if( _arraySetHas( src1, e, onEvaluate1, onEvaluate2 ) )
+      dst.delete( e );
+      for( let i = 0; i < temp.length; i++ ) 
+      dst.add( temp[ i ] ); 
+    }
   }
-  else
+  else 
   {
-    src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : dst.push( e ) );
-    src2.each( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) ? null : dst.push( e ) );
+    if( _.longLike( dst ) )
+    {
+      for( let e of src1 )
+      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      dst.push( e );
+      for( let e of src2 )
+      if( !_arraySetHas( src1, e, onEvaluate1, onEvaluate2 ) )
+      dst.push( e );
+    }
+    else if( _.setLike( dst ) )
+    {
+      for( let e of src1 )
+      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) ) 
+      dst.add( e );
+      for( let e of src2 )
+      if( !_arraySetHas( src1, e, onEvaluate1, onEvaluate2 ) ) 
+      dst.add( e );
+    }
   }
 
-  return dst.original;
+  return dst;
 }
 
 //

@@ -255,7 +255,7 @@ let Routines =
 
   // extendAppendingRecursive,
 
-  empty, /* qqq2 : implement, document, covere */
+  empty, /* qqq2 : implement, document, cover */
 
 }
 

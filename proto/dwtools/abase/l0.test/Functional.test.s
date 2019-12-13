@@ -19294,9 +19294,11 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
 
-  /* qqq2 : strange? explain please */
-  var src = _.arrayFrom( new F32x( [ [ 1, 2, 3 ] ] ) );
+  /* qqq2 : strange? explain please | Dmytro : it was strange because BufferTyped was not used properly */
+  var src = _.arrayFrom( new F32x( [ 1, 2, 3 ] ) );
   var got = _.eachSample( src );
+  var expected = [ [ 1, 2, 3 ] ];
+  test.identical( got, expected );
   test.notIdentical( got, [ [ [ 1, 2, 3 ] ] ] );
   test.is( _.arrayIs( got ) );
 
