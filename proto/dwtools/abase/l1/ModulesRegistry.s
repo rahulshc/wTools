@@ -147,6 +147,12 @@ let wStringsExtra =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.strSorterParse; },
 }
 
+let wProcessWatcher =
+{
+  includeAny : includeAny( 'abase/l5/ProcessWatcher.s', 'wprocesswatcher' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.process && !!_global.wTools.process.watchMaking; },
+}
+
 // base / l6
 
 let wEqualer =
