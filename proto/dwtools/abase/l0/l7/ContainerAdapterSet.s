@@ -311,7 +311,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   pop( e, onEvaluate1, onEvaluate2 )
   {
     let self = this;
-    let container = this.original;
+    let container = self.original;
 
     if( !onEvaluate1 || e === undefined )
     {
@@ -330,7 +330,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
       container.delete( last );
       return last;
     }
-
   }
   popStrictly( e, onEvaluate1, onEvaluate2 )
   {
