@@ -64,7 +64,7 @@ function forEach( src, onEach )
 
 </details>
 
-The above code has 2 implementations of the iteration of array elements. It is `forLoop` and` forEach`. The program measures the time it takes to iterate for elements of the array with a length of 2,000,000 elements. To minimize the error introduced by the dynamic environment, the iteration is done 100 times in both ways.
+The above code has 2 implementations of the iterating of array elements. It is `forLoop` and` forEach`. The program measures the time it takes to iterate for elements of the array with a length of 2,000,000 elements. To minimize the error introduced by the dynamic environment, the iterating is done 100 times in both ways.
 
 The program outputs the variable `counter` to avoid unwanted optimization.
 
