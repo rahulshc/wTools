@@ -31,7 +31,7 @@
 </details>
 
 <details>
-  <summary><a href="./tutorial/RoutineFromPreAndBody.md">
+  <summary><a href="./tutorial/TimeMesuarement.md">
     How to measure time
   </a></summary>
     Measurement of algorithms performance to choose the best solution.
