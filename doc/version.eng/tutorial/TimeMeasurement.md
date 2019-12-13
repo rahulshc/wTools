@@ -1,8 +1,8 @@
-# How to measure time 
+# How to measure time
 
 Measurement of algorithms performance to choose the best solution.
 
-A problem can have more than one solution and measurement of execution time is a tool for choosing the best solution.
+A problem can have more than one solution and measurement of running time is a tool for choosing the best solution.
 
 ### Time measurement
 
@@ -65,6 +65,8 @@ function forEach( src, onEach )
 </details>
 
 The above code has 2 implementations of the iteration of array elements. It is `forLoop` and` forEach`. The program measures the time it takes to iterate for elements of the array with a length of 500,000 elements. To minimize the error introduced by the dynamic environment, the iteration is done 400 times in both ways.
+
+The program outputs the variable `counter` to avoid unwanted optimization.
 
 ### Measurement results
 
