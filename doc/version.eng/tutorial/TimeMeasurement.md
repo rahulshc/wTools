@@ -18,11 +18,7 @@ Save the result to a variable or a constant. Get the time difference with the ro
 _.time.spent( time );
 ```
 
-<<<<<<< HEAD
-Also, it is possible to call `_.time.now()` again and find the difference between the two measurements, but then it needs the manual transformation of the units.
-=======
 Alternatively, it is possible to call `_.time.now()` again and get the difference between the two measurements, but then it requires the manual transformation of the units.
->>>>>>> 0a206911521debce6006d6dfbf8f34f0ce93e111
 
 ### Example
 
