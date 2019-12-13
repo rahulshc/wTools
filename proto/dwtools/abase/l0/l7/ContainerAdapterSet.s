@@ -165,13 +165,39 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     else
     {
-      let temp = [ ... container ];
+      // let temp = [ ... container ];
+      //
+      // self.empty();
+      // for( let e of src )
+      // self.append( e );
+      // for( let i = self.length; i < temp.length; i++ )
+      // self.append( temp[ i ] );
 
-      self.empty();
+      let length = this.length;
+      let srcLength = src.length !== undefined ? src.length : src.size;
+      let lengthDiff = length - srcLength;
       for( let e of src )
-      self.append( e );
-      for( let i = self.length; i < temp.length; i++ )
-      self.append( temp[ i ] );
+      {
+        for( let v of container )
+        {
+          self.remove( v );
+          break;
+        }
+        self.append( e );
+      }
+      for( let e of container )
+      {
+        if( lengthDiff !== 0 )
+        {
+          self.remove( e );
+          self.append( e );
+          lengthDiff--;
+        }
+        else 
+        {
+          break;
+        }
+      }
     }
 
     return self;
