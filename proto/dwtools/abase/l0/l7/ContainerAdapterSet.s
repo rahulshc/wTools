@@ -798,10 +798,9 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
       {
-        temp = _.longOnce( temp, onEvaluate1, onEvaluate2 );
         self.empty();
         for( let i = 0; i < temp.length; i++ )
-        self.append( temp[ i ] );
+        self.appendOnce( temp[ i ], onEvaluate1, onEvaluate2 );
       }
     }
     else
