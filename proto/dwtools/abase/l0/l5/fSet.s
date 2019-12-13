@@ -327,7 +327,7 @@ function arraySetBut_( dst, src1, src2, onEvaluate1, onEvaluate2 )
   {
     if( dst === null )
     return [];
-    else if( _.longIs( dst ) || _.setIs( dst ) )
+    else if( _.longLike( dst ) || _.setLike( dst ) )
     return dst;
     else
     _.assert( 0 );
@@ -335,21 +335,62 @@ function arraySetBut_( dst, src1, src2, onEvaluate1, onEvaluate2 )
 
   if( ( dst === null && _.routineIs( src2 ) ) || ( dst === null && src2 === undefined ) )
   {
-    if( _.longIs( src1 ) )
+    if( _.longLike( src1 ) )
     return _.longSlice( src1 )
-    else if( _.setIs( src1 ) )
+    else if( _.setLike( src1 ) )
     return new Set( src1 )
     _.assert( 0 );
   }
 
-  [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.longIs( dst ) || _.setIs( dst ) || dst === null );
+  _.assert( _.longIs( src1 ) || _.setIs( src1 ) );
+  _.assert( _.longIs( src2 ) || _.setIs( src2 ) || _.routineIs( src2 ) || src2 === undefined );
 
-  if( dst.original === src1.original )
-  src1.eachRight( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? src1.remove( e ) : null );
+
+  if( dst === null )
+  dst = new src1.constructor();
+
+  if( _.routineIs( src2 ) || src2 === undefined )
+  {
+    onEvaluate2 = onEvaluate1;
+    onEvaluate1 = src2;
+    src2 = src1;
+    src1 = dst;
+  }
+
+  if( dst === src1 )
+  {
+    if( _.longLike( dst ) )
+    {
+      for( let i = dst.length - 1; i >= 0; i-- )
+      if( _arraySetHas( src2, dst[ i ], onEvaluate1, onEvaluate2 ) )
+      dst.splice( i, 1 );
+    }
+    else if( _.setLike( dst ) )
+    {
+      for( let e of dst )
+      if( _arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      dst.delete( e );
+    }
+  }
   else
-  src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : dst.push( e ) );
+  {
+    if( _.longLike( dst ) )
+    {
+      for( let e of src1 )
+      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      dst.push( e );
+    }
+    else if( _.setLike( dst ) )
+    {
+      for( let e of src1 )
+      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
+      dst.add( e );
+    }
+  }
 
-  return dst.original;
+  return dst;
 }
 
 //
