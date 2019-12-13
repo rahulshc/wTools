@@ -2,7 +2,7 @@
 
 Measurement of algorithms performance to choose the best solution.
 
-A problem can have more than one solution and measurement of running time is a tool for choosing the best solution.
+A problem can have more than one solution, and measurement of the running time is a tool for choosing the best solution.
 
 ### Time measurement
 
@@ -12,13 +12,17 @@ Measure the current time with the routine `_.time.now()` or alternatively `Date.
 var time = _.time.now();
 ```
 
-Save the result to a variable or a constant. Get the time difference with the routine `_.time.spent` after running the algorithm.
+Save the result to a variable or a constant. Get the time difference with the routine `_.time.spent()` after running the algorithm.
 
 ```js
 _.time.spent( time );
 ```
 
+<<<<<<< HEAD
 Also, it is possible to call `_.time.now()` again and find the difference between the two measurements, but then it needs the manual transformation of the units.
+=======
+Alternatively, it is possible to call `_.time.now()` again and get the difference between the two measurements, but then it requires the manual transformation of the units.
+>>>>>>> 0a206911521debce6006d6dfbf8f34f0ce93e111
 
 ### Example
 
@@ -64,7 +68,7 @@ function forEach( src, onEach )
 
 </details>
 
-The above code has 2 implementations of the iterating of array elements. It is `forLoop` and` forEach`. The program measures the time it takes to iterate for elements of the array with a length of 50,000,000 elements. To minimize the error introduced by the dynamic environment, the iterating is done 10 times in both ways.
+The above code has 2 implementations of algorithms iterating elements of an array. It is `forLoop` and` forEach`. The program measures the time it takes to iterate elements of an array of length 2,000,000. To minimize the inaccuracy introduced by the dynamic environment, run both algorithms 100 times.
 
 The program outputs the variable `counter` to avoid unwanted optimization.
 
@@ -79,30 +83,30 @@ The test results should be compiled into a table indicating the interpreter and 
 | Njs v12.7.0  | 11.533 s | 21.673 s |
 | Njs v13.3.0  | 11.448 s | 21.324 s |
 
-The report shows that the `for` loop works twice as fast as the `forEach` loop. On this basis, it should be recommended to use the 1st variant of the algorithm implementation.
+The report shows that the `for` loop works twice as fast as the` forEach` loop. On this basis, the researcher should recommend using the 1st implementation of the algorithm.
 
-### Validity and Error
+### Validity and Mistakes
 
-It is difficult to guarantee the validity of the test results, but it is possible to avoid some of the common mistakes. The received data of time measurement results are reliable if it is possible to make predictions about the performance of the algorithm.
+It is difficult to guarantee the validity of the test results, but it is possible to avoid some of the common mistakes. The obtained data of time measurement results are reliable if it is possible to make predictions about the performance of the algorithm.
 
-The impact of the environment must be minimized. Difficult tasks that are performing in the background on your machine can significantly distort the result. The results cannot be compared if they were obtained under different conditions. If the environment changes, then the result changes. The results measured on the different machines cannot be compared. And no matter how hard you try, there is still the impact of the case and the uncontrollable factors. So, you need to do the measurement several times and take the average or total value.
+The impact of an environment must be minimized. Weighty tasks that are performing in the background on your machine can significantly distort the result. The results cannot be compared if they were obtained under different conditions. If the environment changes, then the result changes. The results measured on the different machines cannot be compared. And no matter how hard you try, there is still the impact of uncontrollable factors. So, you need to do the measurement several times and take the average or total value.
 
-The measurement cannot be accurate if the time interval is measured in just a millisecond. Finger rule: The interval should be at least one second.
+The measurement cannot be valid if the time interval is a millisecond. Finger rule: The interval should be at least one second.
 
-Another mistake that can be made is when the total time includes  test data generation time. Test data generation takes time. The data should be prepared before the start of time measurement and used when needed.
+Another mistake: including test data generation in the total time. Test data generation takes time. The data should be prepared before the start of time measurement and used when needed.
 
-Interpreter optimization is another pitfall. The interpreter may throw away some of the code if it notices that it is not being used. So the tested algorithm should have valid arguments and the result of the execution should be used somehow.
+Interpreter optimization is another pitfall. The interpreter may throw away some of the code if it notices that it is not being used. So the tested algorithm should have valid arguments, and the result of the execution should be used somehow.
 
 ### Summary
 
 - Time can be measured with a couple of routines `_.time.now` and `_.time.spent`.
-- To ensure the validity of the results, it is need to minimize the environment influence.
-- To minimize the error, run the experiment multiple times and use the average or total time.
-- The duration of one experiment should be such as to eliminate the possibility of significant errors.
-- Data generation must be separate from algorithm performance testing.
-- The runtime dynamic introduces an error into the measurement, so the algorithm should be executed several times to obtain an average value.
+- Minimize the influence of the environment to ensure the validity of the results.
+- To minimize the inaccuracy, run the experiment multiple times and use the average or total time.
+- The duration of an experiment should be long enough to eliminate the possibility of significant inaccuracy.
+- Data generation must be separated from the algorithm which you measure.
+- The runtime dynamic introduces an inaccuracy into the measurement, so the algorithm should be executed several times to obtain an average value.
 - Dynamic environment impact should be minimized: equal load, same versions, one machine.
-- The performance of an algorithm in one interpreter may differ from the performance of the algorithm in another interpreter. The report should include information about the interpreter and its version.
+- The performance of an algorithm by one interpreter may differ from the performance of the algorithm by another interpreter. The report should include information about the interpreter and its version.
 - To avoid unwanted optimization, use the result of the algorithm being tested, and pass the correct input arguments.
 
 [Back to content](../README.md#Tutorials)
