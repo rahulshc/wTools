@@ -993,7 +993,7 @@ function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
 
-  if( _.setIs( arr ) )
+  if( _.setLike( arr ) )
   {
     let result = Object.create( null );
     result.index = -1;
@@ -1009,7 +1009,6 @@ function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
     {
       from = fromIndex;
     }
-
 
     for( let e of arr )
     {
@@ -1031,7 +1030,7 @@ function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
 
     return result;
   }
-  else if( _.arrayIs( arr ) ) /* qqq2 : ask */
+  else if( _.longLike( arr ) ) /* qqq2 : ask | Dmytro : it's explained, and it's corrected */
   {
     return _.longLeft.apply( this, arguments );
   }
@@ -1046,7 +1045,7 @@ function arraySetRight( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
 {
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
 
-  if( _.setIs( arr ) )
+  if( _.setLike( arr ) )
   {
     let result = Object.create( null );
     result.index = -1;
@@ -1080,7 +1079,7 @@ function arraySetRight( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
 
     return result;
   }
-  else if( _.arrayIs( arr ) )
+  else if( _.longLike( arr ) )
   {
     return _.longRight.apply( this, arguments );
   }
