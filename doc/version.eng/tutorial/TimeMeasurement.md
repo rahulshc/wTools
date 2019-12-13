@@ -6,7 +6,7 @@ A problem can have more than one solution and measurement of running time is a t
 
 ### Time measurement
 
-Measure the current time with the routine `_.time.now ()` or alternatively `Date.now ()` before running the algorithm.
+Measure the current time with the routine `_.time.now()` or alternatively `Date.now()` before running the algorithm.
 
 ``` js
 var time = _.time.now();
@@ -18,7 +18,7 @@ Save the result to a variable or a constant. Get the time difference with the ro
 _.time.spent( time );
 ```
 
-Also, it is possible to call `_.time.now ()` again and find the difference between the two measurements, but then it needs the manual transformation of the units.
+Also, it is possible to call `_.time.now()` again and find the difference between the two measurements, but then it needs the manual transformation of the units.
 
 ### Example
 
@@ -79,7 +79,7 @@ The test results should be compiled into a table indicating the interpreter and 
 | Njs v12.7.0  | 4.982 s | 8.850 s |
 | Njs v13.3.0  | 4.978 s | 8.756 s |
 
-The report shows that the `for` loop works twice as fast as the` forEach` loop. On this basis, it should be recommended to use the 1st variant of the algorithm implementation.
+The report shows that the `for` loop works twice as fast as the `forEach` loop. On this basis, it should be recommended to use the 1st variant of the algorithm implementation.
 
 ### Validity and Error
 
@@ -103,6 +103,6 @@ Interpreter optimization is another pitfall. The interpreter may throw away some
 - The runtime dynamic introduces an error into the measurement, so the algorithm should be executed several times to obtain an average value.
 - Dynamic environment impact should be minimized: equal load, same versions, one machine.
 - The performance of an algorithm in one interpreter may differ from the performance of the algorithm in another interpreter. The report should include information about the interpreter and its version.
-- Щоб уникнути небажаної оптимізації використайте результат виконання алгоритму що досліджується і передайте коректні вхідні аргументи.
+- To avoid unwanted optimization, use the result of the algorithm being tested, and pass the correct input arguments.
 
 [Back to content](../README.md#Tutorials)
