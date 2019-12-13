@@ -117,10 +117,34 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let container = this.original;
 
-    if( _.routineIs( onEvaluate1 ) )
-    return _.longCountElement( [ ... container ], e, onEvaluate1, onEvaluate2 );
+    if( _.routineIs( onEvaluate1 ) || _.routineIs( onEvaluate2 ) )
+    {
+      let from = 0, result = 0;
+      if( _.numberIs( onEvaluate1 ) )
+      {
+        from = onEvaluate1;
+        onEvaluate1 = onEvaluate2;
+        onEvaluate2 = undefined;
+      }
+
+      for( let v of this.original )
+      {
+        if( from === 0 )
+        {
+          if( _.entityEntityEqualize( v, e, onEvaluate1, onEvaluate2 ) )
+          result++;
+        }
+        else
+        {
+          from--;
+        }
+      } 
+      return result;
+    }
     else
-    return container.has( e ) ? 1 : 0;
+    {
+      return container.has( e ) ? 1 : 0;
+    }
   }
   copyFrom( src )
   {
