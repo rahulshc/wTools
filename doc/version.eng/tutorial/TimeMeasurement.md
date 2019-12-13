@@ -29,8 +29,8 @@ To demonstrate the time measurement technique, create a file `Performance.js` wi
 
 ``` js
 let _ = require( 'wTools' );
-let times = 400;
-let size = 500000;
+let times = 100;
+let size = 2000000;
 let array = new U8x( size );
 
 var counter = 0;
@@ -64,7 +64,7 @@ function forEach( src, onEach )
 
 </details>
 
-The above code has 2 implementations of the iteration of array elements. It is `forLoop` and` forEach`. The program measures the time it takes to iterate for elements of the array with a length of 500,000 elements. To minimize the error introduced by the dynamic environment, the iteration is done 400 times in both ways.
+The above code has 2 implementations of the iteration of array elements. It is `forLoop` and` forEach`. The program measures the time it takes to iterate for elements of the array with a length of 2,000,000 elements. To minimize the error introduced by the dynamic environment, the iteration is done 100 times in both ways.
 
 The program outputs the variable `counter` to avoid unwanted optimization.
 
@@ -72,23 +72,12 @@ The program outputs the variable `counter` to avoid unwanted optimization.
 
 The test results should be compiled into a table indicating the interpreter and its version. The results can vary greatly from interpreter to interpreter, version to version.
 
-| sda          | forLoop | forEach |
+| Interpretor  | forLoop | forEach |
 |--------------|---------|---------|
 | Njs v10.16.0 | 4.240 s | 7.195 s |
-|              | 4.240 s | 7.086 s |
-|              | 4.229 s | 7.183 s |
-|              | 4.216 s | 7.130 s |
-|              | 4.221 s | 7.214 s |
 | Njs v11.3.0  | 4.359 s | 7.212 s |
-|              | 4.411 s | 7.286 s |
-|              | 4.425 s | 7.286 s |
-|              | 4.319 s | 7.249 s |
-|              | 4.344 s | 7.259 s |
 | Njs v12.7.0  | 4.982 s | 8.850 s |
-|              | 4.984 s | 8.950 s |
-|              | 5.997 s | 8.827 s |
-|              | 5.006 s | 8.665 s |
-|              | 4.995 s | 8.914 s |
+| Njs v13.3.0  | 4.978 s | 8.756 s |
 
 The report shows that the `for` loop works twice as fast as the` forEach` loop. On this basis, it should be recommended to use the 1st variant of the algorithm implementation.
 

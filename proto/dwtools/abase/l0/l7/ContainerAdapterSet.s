@@ -117,10 +117,34 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     let container = this.original;
 
-    if( _.routineIs( onEvaluate1 ) )
-    return _.longCountElement( [ ... container ], e, onEvaluate1, onEvaluate2 );
+    if( _.routineIs( onEvaluate1 ) || _.routineIs( onEvaluate2 ) )
+    {
+      let from = 0, result = 0;
+      if( _.numberIs( onEvaluate1 ) )
+      {
+        from = onEvaluate1;
+        onEvaluate1 = onEvaluate2;
+        onEvaluate2 = undefined;
+      }
+
+      for( let v of this.original )
+      {
+        if( from === 0 )
+        {
+          if( _.entityEntityEqualize( v, e, onEvaluate1, onEvaluate2 ) )
+          result++;
+        }
+        else
+        {
+          from--;
+        }
+      } 
+      return result;
+    }
     else
-    return container.has( e ) ? 1 : 0;
+    {
+      return container.has( e ) ? 1 : 0;
+    }
   }
   copyFrom( src )
   {
@@ -141,13 +165,39 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     else
     {
-      let temp = [ ... container ];
+      // let temp = [ ... container ];
+      //
+      // self.empty();
+      // for( let e of src )
+      // self.append( e );
+      // for( let i = self.length; i < temp.length; i++ )
+      // self.append( temp[ i ] );
 
-      self.empty();
+      let length = this.length;
+      let srcLength = src.length !== undefined ? src.length : src.size;
+      let lengthDiff = length - srcLength;
       for( let e of src )
-      self.append( e );
-      for( let i = self.length; i < temp.length; i++ )
-      self.append( temp[ i ] );
+      {
+        for( let v of container )
+        {
+          self.remove( v );
+          break;
+        }
+        self.append( e );
+      }
+      for( let e of container )
+      {
+        if( lengthDiff !== 0 )
+        {
+          self.remove( e );
+          self.append( e );
+          lengthDiff--;
+        }
+        else 
+        {
+          break;
+        }
+      }
     }
 
     return self;
@@ -798,10 +848,9 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
       {
-        temp = _.longOnce( temp, onEvaluate1, onEvaluate2 );
         self.empty();
         for( let i = 0; i < temp.length; i++ )
-        self.append( temp[ i ] );
+        self.appendOnce( temp[ i ], onEvaluate1, onEvaluate2 );
       }
     }
     else
