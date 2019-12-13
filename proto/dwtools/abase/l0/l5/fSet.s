@@ -57,38 +57,7 @@ function arraySetDiff( src1, src2 )
 
 //
 
-function _argumentsOnly( dst, src1, src2, onEvaluate1, onEvaluate2 )
-{
-  _.assert( 2 <= arguments.length && arguments.length <= 5 );
-  _.assert( _.longIs( dst ) || _.setIs( dst ) || dst === null );
-  _.assert( _.longIs( src1 ) || _.setIs( src1 ) );
-  _.assert( _.longIs( src2 ) || _.setIs( src2 ) || _.routineIs( src2 ) || src2 === undefined );
-  _.assert( _.routineIs( onEvaluate1 ) || onEvaluate1 === undefined );
-  _.assert( _.routineIs( onEvaluate2 ) || onEvaluate2 === undefined );
-
-  if( dst === null )
-  dst = _.containerAdapter.make( new src1.constructor() );
-
-  if( _.routineIs( src2 ) || src2 === undefined )
-  {
-    onEvaluate2 = onEvaluate1;
-    onEvaluate1 = src2;
-    src2 = _.containerAdapter.from( src1 );
-    src1 = _.containerAdapter.from( dst );
-    dst = _.containerAdapter.from( dst );
-    // dst = _.containerAdapter.make( new src1.original.constructor() );
-  }
-  else
-  {
-    src2 = _.containerAdapter.from( src2 );
-    src1 = _.containerAdapter.from( src1 );
-    dst = _.containerAdapter.from( dst );
-  }
-
-  return [ dst, src1, src2, onEvaluate1, onEvaluate2 ];
-}
-
-/* qqq2 : cant use container adapter! */
+/* qqq2 : cant use container adapter! | Dmytro : containerAdapter is not used */
 
 //
 
@@ -576,19 +545,76 @@ function arraySetUnion_( dst, src1, src2, onEvaluate1, onEvaluate2 )
     _.assert( 0 );
   }
 
-  [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
+  _.assert( 2 <= arguments.length && arguments.length <= 5 );
+  _.assert( _.longIs( dst ) || _.setIs( dst ) || dst === null );
+  _.assert( _.longIs( src1 ) || _.setIs( src1 ) );
+  _.assert( _.longIs( src2 ) || _.setIs( src2 ) || _.routineIs( src2 ) || src2 === undefined );
 
-  if( dst.original === src1.original )
-  src1.appendContainerOnce( src2, onEvaluate1, onEvaluate2 );
-  else if( dst.original === src2.original )
-  src2.appendContainerOnce( src1, onEvaluate1, onEvaluate2 );
-  else
+
+  if( dst === null )
+  dst = new src1.constructor();
+
+  if( _.routineIs( src2 ) || src2 === undefined )
   {
-    dst.appendContainerOnce( src1, onEvaluate1, onEvaluate2 );
-    dst.appendContainerOnce( src2, onEvaluate1, onEvaluate2 );
+    onEvaluate2 = onEvaluate1;
+    onEvaluate1 = src2;
+    src2 = src1;
+    src1 = dst;
   }
 
-  return dst.original;
+  if( dst === src1 )
+  {
+    if( _.longLike( dst ) )
+    {
+      for( let e of src2 )
+      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      dst.push( e );
+    }
+    else if( _.setLike( dst ) )
+    {
+      for( let e of src2 )
+      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      dst.add( e );
+    }
+  }
+  else if( dst === src2 )
+  {
+    if( _.longLike( dst ) )
+    {
+      for( let e of src1 )
+      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      dst.push( e );
+    }
+    else if( _.setLike( dst ) )
+    {
+      for( let e of src1 )
+      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      dst.add( e );
+    }
+  }
+  else
+  {
+    if( _.longLike( dst ) )
+    {
+      for( let e of src1 )
+      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      dst.push( e );
+      for( let e of src2 )
+      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      dst.push( e );
+    }
+    else if( _.setLike( dst ) )
+    {
+      for( let e of src1 )
+      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      dst.add( e );
+      for( let e of src2 )
+      if( !_arraySetHas( dst, e, onEvaluate1, onEvaluate2 ) )
+      dst.add( e );
+    }
+  }
+
+  return dst; 
 }
 
 //
@@ -1073,9 +1099,13 @@ let NamespaceExtension =
   // array set
 
   arraySetDiff,
+  arraySetDiff_, /* !!! : use instead of arraySetDiff */
   arraySetBut,
+  arraySetBut_, /* !!! : use instead of arraySetBut */
   arraySetIntersection,
+  arraySetIntersection_, /* !!! : use instead of arraySetIntersection */
   arraySetUnion,
+  arraySetUnion_, /* !!! : use instead of arraySetUnion */
 
   arraySetContainAll,
   arraySetContainAll_,
@@ -1090,10 +1120,6 @@ let NamespaceExtension =
 
   // to replace
 
-  arraySetDiff_, /* !!! : use instead of arraySetDiff */
-  arraySetBut_, /* !!! : use instead of arraySetBut */
-  arraySetIntersection_, /* !!! : use instead of arraySetIntersection */
-  arraySetUnion_, /* !!! : use instead of arraySetUnion */
 
   /*
   | routine                 | makes new dst container                       | saves dst container                           |
