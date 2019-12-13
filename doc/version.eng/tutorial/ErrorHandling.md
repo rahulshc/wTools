@@ -1,8 +1,10 @@
-## Errors handling done right: stateful exceptions
+# Errors handling done right: stateful exceptions
 
 ### Abstract
 
-This article shows the state of the art techniques of handling errors. Poor error reporting technique slows down software development. Asynchronous errors complicate the problem of generating a readable and informative error report.
+The state of the art techniques of handling errors.
+
+Poor error reporting technique slows down software development. Asynchronous errors complicate the problem of generating a readable and informative error report.
 
 There are several things thrown error could possibly communicate to an engineer:
 
