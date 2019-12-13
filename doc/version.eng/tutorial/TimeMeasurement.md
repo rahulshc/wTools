@@ -29,8 +29,8 @@ To demonstrate the time measurement technique, create a file `Performance.js` wi
 
 ``` js
 let _ = require( 'wTools' );
-let times = 100;
-let size = 2000000;
+let times = 10;
+let size = 50000000;
 let array = new U8x( size );
 
 var counter = 0;
@@ -64,7 +64,7 @@ function forEach( src, onEach )
 
 </details>
 
-The above code has 2 implementations of algorithms iterating elements of an array. It is `forLoop` and` forEach`. The program measures the time it takes to iterate elements of an array of length 2,000,000. To minimize the inaccuracy introduced by the dynamic environment, run both algorithms 100 times.
+The above code has 2 implementations of algorithms iterating elements of an array. It is `forLoop` and` forEach`. The program measures the time it takes to iterate elements of an array of length 50,000,000. To minimize the inaccuracy introduced by the dynamic environment, run both algorithms 10 times.
 
 The program outputs the variable `counter` to avoid unwanted optimization.
 

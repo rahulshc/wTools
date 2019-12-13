@@ -29,8 +29,8 @@ _.time.spent( time );
 
 ``` js
 let _ = require( 'wTools' );
-let times = 100;
-let size = 2000000;
+let times = 10;
+let size = 50000000;
 let array = new U8x( size );
 
 var counter = 0;
