@@ -1751,27 +1751,30 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 
 function hashMapExtend( dst, src ) /* qqq2 : cover */
 {
-
+  _.assert( arguments.length === 2 );
   _.assert( dst === null || _.hashMapLike( dst ) || _.mapLike( dst ) );
   _.assert( _.hashMapLike( src ) || _.mapLike( src ) );
-  _.assert( 0, 'not tested' );
+  // _.assert( 0, 'not tested' );
 
   if( dst === null )
   dst = new HashMap;
+
+  if( dst === src  )
+  return dst;
 
   if( _.hashMapLike( dst ) )
   {
     if( _.hashMapLike( src ) )
     {
-      for( let [ e, k ] of src )
+      // for( let [ e, k ] of src ) // Dmytro : wrong order of key-value
+      for( let [ k, e ] of src )
       dst.set( k, e );
     }
     else
     {
       for( let k in src )
       {
-        e = src[ k ];
-        dst.set( k, e );
+        dst.set( k, src[ k ] );
       }
     }
   }
@@ -1779,7 +1782,8 @@ function hashMapExtend( dst, src ) /* qqq2 : cover */
   {
     if( _.hashMapLike( src ) )
     {
-      for( let [ e, k ] of src )
+      // for( let [ e, k ] of src ) // Dmytro : wrong order of key-value
+      for( let [ k, e ] of src )
       {
         _.assert( _.strIs( k ) );
         dst[ k ] = e;
@@ -1789,13 +1793,12 @@ function hashMapExtend( dst, src ) /* qqq2 : cover */
     {
       for( let k in src )
       {
-        e = src[ k ];
-        _.assert( _.strIs( k ) );
-        dst[ k ] = e;
+        dst[ k ] = src[ k ];
       }
     }
   }
 
+  return dst;
 }
 
 // --
