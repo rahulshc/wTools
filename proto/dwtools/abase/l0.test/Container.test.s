@@ -397,6 +397,126 @@ function extendAppending( test )
 
 }
 
+function empty( test ) 
+{
+  test.case = 'empty array';
+  var dst = [];
+  var got = _.container.empty( dst );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'empty unroll';
+  var dst = _.unrollMake( [] );
+  var got = _.container.empty( dst );
+  var exp = _.unrollMake( [] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'filled array';
+  var dst = [ 1, null, undefined, 'str', '', false, {}, [], [ 1 ], { a : 1 } ];
+  var got = _.container.empty( dst );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'filled unroll';
+  var dst = _.unrollMake( [ 1, null, undefined, 'str', '', false, {}, [], [ 1 ], { a : 1 } ] );
+  var got = _.container.empty( dst );
+  var exp = _.unrollMake( [] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'empty Set';
+  var dst = new Set();
+  var got = _.container.empty( dst );
+  var exp = new Set();
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'filled Set';
+  var dst = new Set( [ 1, null, undefined, 'str', '', false, {}, [], [ 1 ], { a : 1 } ] );
+  var got = _.container.empty( dst );
+  var exp = new Set();
+  test.identical( got, exp );
+  test.is( got === dst ); 
+
+  /* */
+
+  test.case = 'empty Map';
+  var dst = new Map();
+  var got = _.container.empty( dst );
+  var exp = new Map();
+  test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
+  test.is( got === dst );
+
+  test.case = 'filled Map';
+  var dst = new Map( [ [ 1, 1 ], [ null, null ], [ undefined, undefined ], [ 'str', 'str' ], [ '', ''], [ false, false ], [ {}, {} ], [ [], [] ] ] );
+  var got = _.container.empty( dst );
+  var exp = new Map();
+  test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
+  test.is( got === dst ); 
+
+  /* */
+
+  test.case = 'empty simple map';
+  var dst = {};
+  var got = _.container.empty( dst );
+  var exp = {};
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'filled simple map';
+  var dst = { 1 : 1, null : null, undefined : undefined, 'str' : 'str', '' : '', false : false };
+  var got = _.container.empty( dst );
+  var exp = {};
+  test.identical( got, exp );
+  test.is( got === dst ); 
+
+  test.case = 'empty pure map';
+  var dst = Object.create( null );
+  var got = _.container.empty( dst );
+  var exp = Object.create( null );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'filled simple map';
+  var dst = Object.create( null );
+  dst[ '1' ] = 1;
+  dst[ 'null' ] = null;
+  dst[ 'undefined' ] = undefined;
+  var got = _.container.empty( dst );
+  var exp = Object.create( null );
+  test.identical( got, exp );
+  test.is( got === dst ); 
+
+  /* - */
+
+  if( !Config.debug ) 
+  return;
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.container.empty() );
+  test.shouldThrowErrorSync( () => _.container.empty( 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.container.empty( 1 ) );
+  var Constr = function()
+  { 
+    this.x = 1;
+    return this
+  };
+  test.shouldThrowErrorSync( () => _.container.empty( new Constr() ) );
+
+  test.case = 'not resizable longs';
+  test.shouldThrowErrorSync( () => _.container.empty( _.argumentsArrayMake( [] ) ) );
+  test.shouldThrowErrorSync( () => _.container.empty( new U8x() ) );
+  test.shouldThrowErrorSync( () => _.container.empty( new F64x() ) );
+
+  test.case = 'dst is WeakMap';
+  test.shouldThrowErrorSync( () => _.container.empty( new WeakMap() ) );
+}
+
 // --
 // define test suite
 // --
@@ -415,7 +535,7 @@ var Self =
     extendReplacing,
     extendAppending, /* qqq : extendAppending test routine */
 
-    /* qqq : implement test routine `empty` */
+    empty, /* qqq : implement test routine `empty` */
 
   }
 

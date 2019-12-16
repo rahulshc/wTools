@@ -1749,7 +1749,7 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 // hash map
 // --
 
-function hashMapExtend( dst, src ) /* qqq2 : cover */
+function hashMapExtend( dst, src ) /* qqq2 : cover | Dmytro : covered */
 {
   _.assert( arguments.length === 2 );
   _.assert( dst === null || _.hashMapLike( dst ) || _.mapLike( dst ) );
