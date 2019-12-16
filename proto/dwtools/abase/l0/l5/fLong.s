@@ -557,9 +557,9 @@ function longShallowClone()
     // if( argument === undefined )
     // throw _.err( 'argument is not defined' );
 
-    if( _.longLike( argument ) )
+    if( _.longLike( argument ) || _.bufferNodeIs( argument ) )
     length += argument.length;
-    else if( _.bufferRawIs( argument ) ) 
+    else if( _.bufferRawIs( argument ) || _.bufferViewIs( argument ) ) 
     length += argument.byteLength;
     else 
     length += 1;
@@ -578,7 +578,7 @@ function longShallowClone()
   }
   else if( _.bufferViewIs( arguments[ 0 ] ) )
   {
-    result = new bufferView( new BufferRaw( length ) );
+    result = new BufferView( new BufferRaw( length ) );
     bufferDst = new U8x( result.buffer );
   }
   else 
@@ -603,7 +603,7 @@ function longShallowClone()
     srcTyped = new U8x( argument );
     else if( _.bufferViewIs( argument ) )
     srcTyped = new U8x( argument.buffer );
-    else if( _.bufferTypedIs( arguments[ 0 ] ) )
+    else if( _.bufferTypedIs( argument ) )
     srcTyped = argument;
     else if( _.longLike( argument ) || _.bufferNodeIs( argument ) )
     srcTyped = argument;
