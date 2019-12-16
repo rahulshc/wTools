@@ -98,9 +98,264 @@ function instanceOfContainer( test )
 
 /* qqq : normalize the test, please */
 
-function extendReplacing( test )
+function extendReplacingDstNull( test )
 {
+  test.case = 'src - empty array';
+  var dst = null;
+  var src = [];
+  var got = _.container.extendReplacing( dst, src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
 
+  test.case = 'src - filled array';
+  var dst = null;
+  var src = [ 0, 1 ];
+  var got = _.container.extendReplacing( dst, src );
+  var exp = [ 0, 1 ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - empty array';
+  var dst = undefined;
+  var src = [];
+  var got = _.container.extendReplacing( dst, src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - filled array';
+  var dst = undefined;
+  var src = [ 0, 1 ];
+  var got = _.container.extendReplacing( dst, src );
+  var exp = [ 0, 1 ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty simple map';
+  var dst = null;
+  var src = {};
+  var got = _.container.extendReplacing( dst, src );
+  var exp = {};
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - filled simple map';
+  var dst = null;
+  var src = { a : 1, b : 2 };
+  var got = _.container.extendReplacing( dst, src );
+  var exp = { 'a' : 1, 'b' : 2 };
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - empty simple map';
+  var dst = undefined;
+  var src = {};
+  var got = _.container.extendReplacing( dst, src );
+  var exp = {};
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - filled simple map';
+  var dst = undefined;
+  var src = { a : 1, b : 2 };
+  var got = _.container.extendReplacing( dst, src );
+  var exp = { 'a' : 1, 'b' : 2 };
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty pure map';
+  var dst = null;
+  var src = Object.create( null );
+  var got = _.container.extendReplacing( dst, src );
+  var exp = {};
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - filled pure map';
+  var dst = null;
+  var src = Object.create( null );
+  src[ 'a' ] = 1;
+  src[ 'b' ] = 2;
+  var got = _.container.extendReplacing( dst, src );
+  var exp = { 'a' : 1, 'b' : 2 };
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - empty pure map';
+  var dst = undefined;
+  var src = Object.create( null );
+  var got = _.container.extendReplacing( dst, src );
+  var exp = {};
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - filled simple map';
+  var dst = undefined;
+  var src = Object.create( null );
+  src[ 'a' ] = 1;
+  src[ 'b' ] = 2;
+  var got = _.container.extendReplacing( dst, src );
+  var exp = { 'a' : 1, 'b' : 2 };
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty Set';
+  var dst = null;
+  var src = new Set();
+  var got = _.container.extendReplacing( dst, src );
+  var exp = new Set();
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - filled Set';
+  var dst = null;
+  var src = new Set( [ 0, 1 ] );
+  var got = _.container.extendReplacing( dst, src );
+  var exp = new Set( [ 0, 1 ] );
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - empty Set';
+  var dst = undefined;
+  var src = new Set();
+  var got = _.container.extendReplacing( dst, src );
+  var exp = new Set();
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - filled Set';
+  var dst = undefined;
+  var src = new Set( [ 0, 1 ] );
+  var got = _.container.extendReplacing( dst, src );
+  var exp = new Set( [ 0, 1 ] );
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - empty HashMap';
+  var dst = null;
+  var src = new Map();
+  var got = _.container.extendReplacing( dst, src );
+  var exp = new Map();
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - filled HashMap';
+  var dst = null;
+  var src = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
+  var got = _.container.extendReplacing( dst, src );
+  var exp = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - empty HashMap';
+  var dst = undefined;
+  var src = new Map();
+  var got = _.container.extendReplacing( dst, src );
+  var exp = new Map();
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'src - filled simple map';
+  var dst = undefined;
+  var src = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
+  var got = _.container.extendReplacing( dst, src );
+  var exp = new Map( [ [ 'a', 1 ], [ 2, 2 ] ] );
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'src - primitive';
+  var dst = null;
+  var src = 'str';
+  var got = _.container.extendReplacing( dst, src );
+  var exp = 'str';
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got === src );
+
+  test.case = 'src - BufferRaw';
+  var dst = undefined;
+  var src = new BufferRaw( 10 );
+  var got = _.container.extendReplacing( dst, src );
+  var exp = new BufferRaw( 10 );
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got === src );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'missed arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.container.extendReplacing();
+  });
+
+  test.case = 'extra argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.container.extendReplacing( [ 1,3 ], [ 1,3 ], [ 1,3 ] );
+  });
+
+  // test.case = 'dst is undefined';
+  // test.shouldThrowErrorSync( function()
+  // {
+  //   _.container.extendReplacing( undefined, [ 0, 1 ] );
+  // });
+  //
+  // test.shouldThrowErrorSync( function()
+  // {
+  //   _.container.extendReplacing( undefined, { a : 1, b : 2 } );
+  // });
+
+  // test.shouldThrowErrorSync( function()
+  // {
+  //   _.container.extendReplacing( null, [ 0, 1 ] );
+  // });
+
+  // test.shouldThrowErrorSync( function()
+  // {
+  //   _.container.extendReplacing( null, { a : 1, b : 2 } );
+  // });
+
+}
+
+//
+
+function extendReplacing( test ) 
+{
   test.case = 'src and dst is ArrayLike';
 
   var got = _.container.extendReplacing( [ 9, -16 ], [ 3, 5, 6 ] );
@@ -171,73 +426,6 @@ function extendReplacing( test )
   var exp = 'str';
   var got = _.container.extendReplacing( {}, 'str' );
   test.identical( got, exp );
-
-  var exp = [ 0, 1 ];
-  var dst = null;
-  var src = [ 0, 1 ];
-  var got = _.container.extendReplacing( dst, src );
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  var exp = { 'a' : 1, 'b' : 2 };
-  var dst = null;
-  var src = { a : 1, b : 2 };
-  var got = _.container.extendReplacing( dst, src );
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  var exp = [ 0, 1 ];
-  var dst = undefined;
-  var src = [ 0, 1 ];
-  var got = _.container.extendReplacing( dst, src );
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  var exp = { 'a' : 1, 'b' : 2 };
-  var dst = undefined;
-  var src = { a : 1, b : 2 };
-  var got = _.container.extendReplacing( dst, src );
-  test.identical( got, exp );
-  test.is( got !== src );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'missed arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.container.extendReplacing();
-  });
-
-  test.case = 'extra argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.container.extendReplacing( [ 1,3 ], [ 1,3 ], [ 1,3 ] );
-  });
-
-  // test.case = 'dst is undefined';
-  // test.shouldThrowErrorSync( function()
-  // {
-  //   _.container.extendReplacing( undefined, [ 0, 1 ] );
-  // });
-  //
-  // test.shouldThrowErrorSync( function()
-  // {
-  //   _.container.extendReplacing( undefined, { a : 1, b : 2 } );
-  // });
-
-  // test.shouldThrowErrorSync( function()
-  // {
-  //   _.container.extendReplacing( null, [ 0, 1 ] );
-  // });
-
-  // test.shouldThrowErrorSync( function()
-  // {
-  //   _.container.extendReplacing( null, { a : 1, b : 2 } );
-  // });
-
 }
 
 //
@@ -532,6 +720,7 @@ var Self =
 
     is,
     instanceOfContainer,
+    extendReplacingDstNull,
     extendReplacing,
     extendAppending, /* qqq : extendAppending test routine */
 
