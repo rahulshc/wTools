@@ -141,7 +141,7 @@ function errCatchStackAndMessage( test )
 
 //
 
-function unhandledError( test )
+function uncaughtError( test )
 {
   let context = this;
   let visited = [];
@@ -154,8 +154,8 @@ function unhandledError( test )
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
-    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
-    test.identical( _.strCount( op.output, 'Unhandled error' ), 1 );
+    test.identical( _.strCount( op.output, '- uncaught error -' ), 2 );
+    test.identical( _.strCount( op.output, 'Uncaught error' ), 1 );
     test.identical( _.strCount( op.output, '------>' ), 1 );
     test.identical( _.strCount( op.output, '------<' ), 1 );
     test.identical( _.strCount( op.output, '= Process' ), 1 );
@@ -174,7 +174,7 @@ function unhandledError( test )
   function program()
   {
     require( toolsPath );
-    throw 'Unhandled error'
+    throw 'Uncaught error'
   }
 
 }
@@ -194,9 +194,9 @@ function sourceCode( test )
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
-    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
+    test.identical( _.strCount( op.output, '- uncaught error -' ), 2 );
     test.identical( _.strCount( op.output, '= Source code from' ), 1 );
-    test.identical( _.strCount( op.output, `* 5 :     throw Error( 'Unhandled error' );` ), 1 );
+    test.identical( _.strCount( op.output, `* 5 :     throw Error( 'Uncaught error' );` ), 1 );
     return null;
   });
 
@@ -206,7 +206,7 @@ function sourceCode( test )
   {
     let _ = require( toolsPath );
     _.include( 'wFiles' );
-    throw Error( 'Unhandled error' );
+    throw Error( 'Uncaught error' );
   }
 
 }
@@ -276,7 +276,7 @@ var Self =
     errArgumentObject,
     errCatchStackAndMessage,
 
-    unhandledError,
+    uncaughtError,
     sourceCode,
     assert,
 
