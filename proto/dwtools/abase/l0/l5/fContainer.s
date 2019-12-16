@@ -222,6 +222,59 @@ function extendAppending( dst, src )
 
 //
 
+/**
+ * The routine empty() clears provided container {-dstContainer-}.
+ *
+ * @param { Long|Set|HashMap|MapLike } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
+ *
+ * @example
+ * let dst = [];
+ * let got = _.container.empty( dst );
+ * console.log( got );
+ * // log []
+ * console.log( got === dst );
+ * log true
+ *
+ * @example
+ * let dst = [ 1, 'str', { a : 2 } ];
+ * let got = _.container.empty( dst );
+ * console.log( got );
+ * // log []
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = _.unrollMake( [ 1, 'str', { a : 2 } ] );
+ * let got = _.container.empty( dst );
+ * console.log( got );
+ * // log []
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = new Set( [ 1, 'str', { a : 2 } ] );
+ * let got = _.container.empty( dst );
+ * console.log( got );
+ * // log Set {}
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = new Map( [ [ 1, 'str' ], [ 'a', null ] ] );
+ * let got = _.container.empty( dst );
+ * console.log( got );
+ * // log Map {}
+ * console.log( got === dst );
+ * // log true
+ *
+ * @returns { Long|Set|HashMap|MapLike } - Returns a empty {-dstContainer-}.
+ * @function empty 
+ * @throws { Error } If arguments.length is less than one.
+ * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a MapLike.
+ * @throws { Error } If {-dstContainer-} is not a resizable Long, or if it is a WeakSet or WeakMap.
+ * @memberof wTools
+ */
+
 function empty( dstContainer )
 {
   if( _.longLike( dstContainer ) )

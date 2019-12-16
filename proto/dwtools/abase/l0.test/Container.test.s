@@ -406,17 +406,17 @@ function empty( test )
   test.identical( got, exp );
   test.is( got === dst );
 
-  test.case = 'empty unroll';
-  var dst = _.unrollMake( [] );
-  var got = _.container.empty( dst );
-  var exp = _.unrollMake( [] );
-  test.identical( got, exp );
-  test.is( got === dst );
-
   test.case = 'filled array';
   var dst = [ 1, null, undefined, 'str', '', false, {}, [], [ 1 ], { a : 1 } ];
   var got = _.container.empty( dst );
   var exp = [];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'empty unroll';
+  var dst = _.unrollMake( [] );
+  var got = _.container.empty( dst );
+  var exp = _.unrollMake( [] );
   test.identical( got, exp );
   test.is( got === dst );
 
