@@ -528,12 +528,63 @@ function _longClone( src )
 
 //
 
+/**
+ * The routine longShallowClone() makes new container with type defined by first argument. Routine clones content of provided arguments
+ * into created container.
+ *
+ * @param { Long|Buffer } arguments[ 0 ] - Long or Buffer, defines type of returned container. If provided only {-arguments[ 0 ]-}, then 
+ * routine makes shallow copy of it.
+ * @param { * } ... - Arguments to make copy into new container. Can have any types exclude undefined.
+ *
+ * @example
+ * let src = [];
+ * let got = _.longShallowClone( src );
+ * console.log( got );
+ * // log []
+ * console.log( src === got );
+ * // log false
+ *
+ * @example
+ * var src = new U8x( [ 1, 2, 3, 4 ] );
+ * var got = _.longShallowClone( src );
+ * console.log( got );
+ * // log Uint8Array [ 1, 2, 3, 4 ];
+ * console.log( src === got );
+ * // log false
+ *
+ * @example
+ * let src = _.unrollMake( [] );
+ * let got = _.longShallowClone( src, 1, 'str', new F32x( [ 3 ] ) );
+ * console.log( got );
+ * // log [ 1, 'str', 3 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( src === got );
+ * // log false
+ *
+ * @example
+ * let src = new BufferRaw( 3 );
+ * let got = _.longShallowClone( src, 1, 2, _.argumentsArrayMake( [ 3, 4 ] ) );
+ * console.log( got );
+ * // log ArrayBuffer { [Uint8Contents]: <00 00 00 01 02 03 04>, byteLength: 7 } 
+ * console.log( src === got );
+ * // log false
+ *
+ * @returns { Long|Buffer } - Returns a Long or a Buffer with type of first argument. Returned container filled by content of provided arguments.
+ * @function longShallowClone
+ * @throws { Error } If arguments.length is less than one.
+ * @throws { Error } If the {-arguments[ 0 ]-} is not a Long or not a Buffer.
+ * @throws { Error } If the provided arguments has undefined value.
+ * @memberof wTools
+ */
+
+
 /* xxx : review */
 /*
 qqq : find and let me know what is _.buffer* analog of _.longShallowClone
 Dmytro : the closest _.buffer* analog of _.longShallowClone is bufferJoin, which joins buffers to flat buffer
-qqq2 : did not work!
-qqq2 : poor coverage!
+qqq2 : did not work! | Dmytro : extended
+qqq2 : poor coverage! | Dmytro : covered
 */
 
 function longShallowClone()
