@@ -38,91 +38,6 @@ function onSuiteEnd()
 // tests
 // --
 
-function diagnosticStackTrivial( test )
-{
-
-  function function1( )
-  {
-    return function2( );
-  }
-
-  function function2( )
-  {
-    return function3( );
-  }
-
-  function function3( )
-  {
-    debugger;
-    return _.diagnosticStack();
-  }
-
-  /* - */
-
-  test.case = 'trivial';
-  var expectedTrace = [ 'function3', 'function2', 'function1', 'Err.test.s' ];
-  var got = function1();
-  got = got.split( '\n' );
-  expectedTrace.forEach( function( expectedStr, i )
-  {
-    var expectedRegexp = new RegExp( expectedStr );
-    test.description = expectedStr;
-    test.identical( expectedRegexp.test( got[ i ] ), true );
-  });
-
-  /* - */
-
-}
-
-//
-
-function diagnosticStack( test )
-{
-  let context = this;
-
-  test.case = '[ 0, -1 ]';
-  var got = _.diagnosticStack([ 0, -1 ]);
-  test.gt( got.split( '\n' ).length, 10 );
-  test.identical( _.strCount( got, context.nameOfFile ), 1 );
-
-  test.case = '[ 0, Infinity ]';
-  var got = _.diagnosticStack([ 0, Infinity ]);
-  test.gt( got.split( '\n' ).length, 10 );
-  test.identical( _.strCount( got, context.nameOfFile ), 1 );
-
-  test.case = 'comparison of [ 0, -1 ] and [ 0, Infinity ]';
-  var got1 = _.diagnosticStack([ 0, -1 ]);
-  var got2 = _.diagnosticStack([ 0, Infinity ]);
-  test.identical( _.strLinesBut( got1, 0 ), _.strLinesBut( got2, 0 ) );
-
-  test.case = 'comparison of [ 0, -2 ] and [ 0, Infinity ]';
-  var got1 = _.diagnosticStack([ 0, -2 ]);
-  var got2 = _.diagnosticStack([ 0, Infinity ]);
-  test.identical( _.strLinesBut( got1, 0 ), _.strLinesBut( _.strLinesBut( got2, 0 ), -1 ) );
-
-  test.case = 'comparison of default call and [ 0, Infinity ]';
-  var got1 = _.diagnosticStack();
-  var got2 = _.diagnosticStack([ 0, Infinity ]);
-  test.identical( _.strLinesBut( got1, 0 ), _.strLinesBut( got2, 0 ) );
-
-  test.case = 'not an error';
-  var exp = undefined;
-  var got = _.diagnosticStack( { notError : 1 }, undefined );
-  test.identical( got, exp );
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'not a range';
-  test.shouldThrowErrorSync( () =>
-  {
-    var got = _.diagnosticStack( { notError : 1 } );
-  });
-
-}
-
-//
-
 function diagnosticStructureGenerate( test )
 {
 
@@ -156,7 +71,7 @@ function errArgumentObject( test )
   var errStr = String( err );
   console.log( errStr );
   test.identical( _.strCount( errStr, 'at Object.errArgumentObject' ), 2 );
-  test.identical( _.strCount( errStr, '* 153 :   var err = _._err({ args });' ), 1 );
+  test.identical( _.strCount( errStr, '* 68 :   var err = _._err({ args });' ), 1 );
 
 }
 
@@ -226,7 +141,7 @@ function errCatchStackAndMessage( test )
 
 //
 
-function unhandledError( test )
+function uncaughtError( test )
 {
   let context = this;
   let visited = [];
@@ -239,8 +154,8 @@ function unhandledError( test )
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
-    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
-    test.identical( _.strCount( op.output, 'Unhandled error' ), 1 );
+    test.identical( _.strCount( op.output, '- uncaught error -' ), 2 );
+    test.identical( _.strCount( op.output, 'Uncaught error' ), 1 );
     test.identical( _.strCount( op.output, '------>' ), 1 );
     test.identical( _.strCount( op.output, '------<' ), 1 );
     test.identical( _.strCount( op.output, '= Process' ), 1 );
@@ -249,16 +164,17 @@ function unhandledError( test )
     test.identical( _.strCount( op.output, '= Message of error#' ), 1 );
     test.identical( _.strCount( op.output, '= Beautified calls stack' ), 1 );
     test.identical( _.strCount( op.output, '= Throws stack' ), 1 );
-    test.is( true );
     return null;
   });
+
+  /* */
 
   return a.ready;
 
   function program()
   {
     require( toolsPath );
-    throw 'Unhandled error'
+    throw 'Uncaught error'
   }
 
 }
@@ -278,9 +194,9 @@ function sourceCode( test )
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
-    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
+    test.identical( _.strCount( op.output, '- uncaught error -' ), 2 );
     test.identical( _.strCount( op.output, '= Source code from' ), 1 );
-    test.identical( _.strCount( op.output, `* 5 :     throw Error( 'Unhandled error' );` ), 1 );
+    test.identical( _.strCount( op.output, `* 5 :     throw Error( 'Uncaught error' );` ), 1 );
     return null;
   });
 
@@ -290,188 +206,44 @@ function sourceCode( test )
   {
     let _ = require( toolsPath );
     _.include( 'wFiles' );
-    throw Error( 'Unhandled error' );
+    throw Error( 'Uncaught error' );
   }
 
 }
 
 //
 
-function asyncStackInConsequenceTrivial( test )
+function assert( test )
 {
-  let context = this;
-  let visited = [];
-  let a = test.assetFor( false );
-  let programPath = a.program( program );
+  var err;
 
-  /* */
+  test.case = 'assert pass condition';
+  var got = _.assert( 5 === 5 );
+  test.identical( got, true );
 
-  a.jsNonThrowing({ execPath : programPath })
-  .then( ( op ) =>
+  test.case = 'passed failure condition : should generates exception';
+  try
   {
-    test.notIdentical( op.exitCode, 0 );
-    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
-    test.identical( _.strCount( op.output, '= Source code from' ), 1 );
-    test.identical( _.strCount( op.output, `Program.js:9` ), 1 );
-    test.identical( _.strCount( op.output, `at program` ), 1 );
-    return null;
-  });
-
-  /* */
-
-  return a.ready;
-
-  function program()
-  {
-    let delay = 250;
-    let _ = require( toolsPath );
-    _.include( 'wFiles' );
-    _.include( 'wConsequence' );
-
-    var timeBefore = _.time.now();
-    var t = _.time.outError( delay );
-    t.finally( function( err, got )
-    {
-      if( err )
-      _.errAttend( err );
-      return null;
-    })
-    _.time.out( delay / 2, () => { t.error( _.errAttend( 'stop' ) ); return null; } );
-
-    return t;
+    _.assert( 5 != 5 )
   }
+  catch ( e )
+  {
+    err = e;
+  }
+  test.identical( err instanceof Error, true );
+
+  test.case = 'passed failure condition with passed message : should generates exception with message';
+  try
+  {
+    _.assert( false, 'short error description' )
+  }
+  catch ( e )
+  {
+    err = e;
+  }
+  test.identical( /short error description/.test( err.message ), true );
 
 }
-
-asyncStackInConsequenceTrivial.timeOut = 30000;
-asyncStackInConsequenceTrivial.description =
-`
-stack has async substack
-`
-
-//
-
-function asyncStackInConsequenceThen( test )
-{
-  let context = this;
-  let visited = [];
-  let a = test.assetFor( false );
-  let programPath = a.program( program );
-
-  /* */
-
-  a.jsNonThrowing({ execPath : programPath })
-  .then( ( op ) =>
-  {
-    test.notIdentical( op.exitCode, 0 );
-    test.identical( _.strCount( op.output, '- unhandled asynchronous error -' ), 2 );
-    test.identical( _.strCount( op.output, '= Source code from' ), 1 );
-    return null;
-  });
-
-  /* */
-
-  return a.ready;
-
-  function program()
-  {
-    let _ = require( toolsPath );
-    _.include( 'wFiles' );
-    _.include( 'wConsequence' );
-
-    var con = _.Consequence()
-    con.then( function callback1( arg )
-    {
-      console.log( 'sourcePath::callback1 ' + _.Procedure.ActiveProcedure._sourcePath );
-      return 'callback1';
-    })
-    con.then( function callback2( arg )
-    {
-      console.log( 'sourcePath::callback2 ' + _.Procedure.ActiveProcedure._sourcePath );
-      throw 'callback2';
-      return 'callback2';
-    })
-
-    console.log( 'sourcePath::program ' + _.Procedure.ActiveProcedure._sourcePath );
-    _.time.out( 100, function timeOut1()
-    {
-      console.log( 'sourcePath::timeout ' + _.Procedure.ActiveProcedure._sourcePath );
-      con.take( 'timeout1' );
-    });
-
-  }
-
-}
-
-asyncStackInConsequenceThen.timeOut = 30000;
-asyncStackInConsequenceThen.description =
-`
-each callback has its own stack
-`
-
-//
-
-function activeProcedureSourcePath( test )
-{
-  let context = this;
-  let visited = [];
-  let a = test.assetFor( false );
-  let programPath = a.program( program );
-
-  /* */
-
-  a.jsNonThrowing({ execPath : programPath })
-  .then( ( op ) =>
-  {
-    test.identical( op.exitCode, 0 );
-    test.identical( _.strCount( op.output, /sourcePath::program.*Program.js:31/ ), 1 );
-    test.identical( _.strCount( op.output, /sourcePath::timeout.*Program.js:21/ ), 1 );
-    test.identical( _.strCount( op.output, /sourcePath::callback1.*Program.js:8/ ), 1 );
-    test.identical( _.strCount( op.output, /sourcePath::callback2.*Program.js:13/ ), 1 );
-    test.identical( _.strCount( op.output, 'sourcePath::' ), 4 );
-    return null;
-  });
-
-  /* */
-
-  return a.ready;
-
-  function program()
-  {
-    let _ = require( toolsPath );
-    _.include( 'wFiles' );
-    _.include( 'wConsequence' );
-
-    var con = _.Consequence()
-    con.then( function callback1( arg )
-    {
-      console.log( 'sourcePath::callback1 ' + _.Procedure.ActiveProcedure._sourcePath );
-      return 'callback1';
-    })
-    con.then( function callback2( arg )
-    {
-      console.log( 'sourcePath::callback2 ' + _.Procedure.ActiveProcedure._sourcePath );
-      /* _.procedure.terminationBegin();*/
-      return 'callback2';
-    })
-
-    console.log( 'sourcePath::program ' + _.Procedure.ActiveProcedure._sourcePath );
-    _.time.out( 100, function timeOut1()
-    {
-      console.log( 'sourcePath::timeout ' + _.Procedure.ActiveProcedure._sourcePath );
-      con.take( 'timeout1' );
-    });
-
-  }
-
-}
-
-activeProcedureSourcePath.timeOut = 30000;
-activeProcedureSourcePath.description =
-`
-proper procedure is active
-active procedure has proper source path
-`
 
 // --
 // declare
@@ -488,10 +260,10 @@ var Self =
 
   context :
   {
-    nameOfFile : 'Err.test.s',
+    nameOfFile : _.introspector.location().fileName,
     suiteTempPath : null,
     assetsOriginalSuitePath : null,
-    defaultJsPath : null,
+    execJsPath : null,
   },
 
   tests :
@@ -499,18 +271,14 @@ var Self =
 
     /* qqq : implement test routine for _.err */
 
-    diagnosticStackTrivial,
-    diagnosticStack, /* qqq : extend the routine */
     diagnosticStructureGenerate,
 
     errArgumentObject,
     errCatchStackAndMessage,
 
-    unhandledError,
+    uncaughtError,
     sourceCode,
-    asyncStackInConsequenceTrivial,
-    asyncStackInConsequenceThen,
-    activeProcedureSourcePath,
+    assert,
 
   }
 

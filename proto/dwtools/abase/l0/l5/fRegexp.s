@@ -142,6 +142,8 @@ let Routines =
 
   // regexp
 
+  regexpsEscape : _.vectorize( _.regexpEscape ),
+
   _regexpTest,
   regexpTest,
 

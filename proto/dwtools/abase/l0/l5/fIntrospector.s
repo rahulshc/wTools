@@ -1,25 +1,24 @@
-( function _fProcess_s_() {
+(function _fIntrospector_s_() {
 
 'use strict';
 
 let _global = _global_;
-let _ = _global_.wTools;
-let Self = _.process = _.process || Object.create( null );
+let _ = _global.wTools;
+let Self = _.introspector = _.introspector || Object.create( null );
 
 // --
 // implementation
 // --
 
 // --
-// declaration
+// namespace definition
 // --
 
 let Extension =
 {
-
 }
 
-_.mapExtend( Self, Extension );
+Object.assign( _.introspector, Extension );
 
 // --
 // export
