@@ -44,6 +44,7 @@ function make()
 //
 
 /* qqq : cover */
+
 function extendReplacing( dst, src )
 {
 
@@ -53,27 +54,15 @@ function extendReplacing( dst, src )
   {
 
     if( _.mapLike( src ) )
-    {
-      dst = _.mapExtend( null, src );
-    }
+    dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
-    {
-      dst = _.arrayExtendAppending( null, src );
-    }
+    dst = _.arrayExtendAppending( null, src );
     else if( _.hashMapLike( src ) )
-    {
-      _.assert( 0, 'not tested' );
-      dst = _.hashMapExtend( null, src );
-    }
+    dst = _.hashMapExtend( null, src );
     else if( _.setLike( src ) )
-    {
-      _.assert( 0, 'not tested' );
-      dst = _.arraySetUnion_( null, src );
-    }
+    dst = _.arraySetUnion_( null, src );
     else
-    {
-      dst = src;
-    }
+    dst = src;
 
   }
   else if( _.mapLike( src ) )
