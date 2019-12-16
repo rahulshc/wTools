@@ -574,7 +574,7 @@ function _longClone( src )
  * @function longShallowClone
  * @throws { Error } If arguments.length is less than one.
  * @throws { Error } If the {-arguments[ 0 ]-} is not a Long or not a Buffer.
- * @throws { Error } If the provided arguments has undefined value.
+ * @throws { Error } If {-arguments-} has undefined value.
  * @memberof wTools
  */
 
