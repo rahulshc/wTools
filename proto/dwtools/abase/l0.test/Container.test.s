@@ -786,7 +786,7 @@ function extendReplacingDstLongAndSetLike( test )
 
   /* */
 
- test.case = 'dst - empty long, src - empty';
+  test.case = 'dst - empty long, src - empty';
   var dst = [];
   var src = [];
   var got = _.container.extendReplacing( dst, src );
@@ -1009,7 +1009,7 @@ function extendReplacingDstLongAndSetLike( test )
 
 //
 
-/* qqq : normalize the test, please */
+/* qqq : normalize the test, please | Dmytro : normalized, extended coverage */
 
 function extendAppendingDstNull( test )
 {
@@ -1690,6 +1690,309 @@ function extendAppendingDstMapAndHashMapLike( test )
 
 //
 
+function extendAppendingDstLongAndSetLike( test ) 
+{
+  test.open( 'src - longLike' );
+
+  test.case = 'dst - empty map, src - empty';
+  var dst = {};
+  var src = [];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ {} ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'dst - empty map';
+  var dst = {};
+  var src = [ 9, -16, 'str', null ];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ {}, 9, -16, 'str', null ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+  
+  test.case = 'dst - map, src - empty';
+  var dst = { 'a' : 1, 'b' : 2, 'c' : 3 };
+  var src = [ 9, -16, 'str', null ];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ { 'a' : 1, 'b' : 2, 'c' : 3 }, 9, -16, 'str', null ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'dst - map';
+  var dst = { 'a' : 1, 'b' : 2, 'c' : 3 };
+  var src = [ 9, -16, 'str', null ];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ { 'a' : 1, 'b' : 2, 'c' : 3 }, 9, -16, 'str', null ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  /* */ 
+
+  test.case = 'dst - empty HashMap, src - empty';
+  var dst = new Map();
+  var src = [];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ new Map() ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'dst - empty HashMap';
+  var dst = new Map();
+  var src = [ 9, -16, 'str', null ];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ new Map(), 9, -16, 'str', null ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+  
+  test.case = 'dst - HashMap, src - empty';
+  var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
+  var src = [];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] ) ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'dst - HashMap';
+  var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
+  var src = [ 9, -16, 'str', null ];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] ), 9, -16, 'str', null ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'dst - empty long, src - empty';
+  var dst = [];
+  var src = [];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - empty long';
+  var dst = [];
+  var src = [ 9, -16, 'str', null ];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ 9, -16, 'str', null ];
+  test.identical( got, exp );
+  test.is( got === dst );
+  
+  test.case = 'dst - long, different content';
+  var dst = [ 1, 2, 3 ];
+  var src = [ 9, -16, 'str', null ];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ 1, 2, 3, 9, -16, 'str', null ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - map, almost identical content';
+  var dst = [ 9, -16, 'str', null ];
+  var src = [ 9, -16, 'str', null ];
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ 9, -16, 'str', null, 9, -16, 'str', null ];
+  test.identical( got, exp );
+  test.is( got === dst ); 
+
+  /* */
+
+  test.case = 'dst - empty Set, src - empty';
+  var dst = new Set();
+  var src = [];
+  var got = _.container.extendAppending( dst, src );
+  var exp = new Set();
+  test.identical( got, exp );
+  test.is( got === dst );
+  test.is( got !== src );
+
+  test.case = 'dst - empty Set';
+  var dst = new Set();
+  var src = [ 9, -16, 'str', null ];
+  var got = _.container.extendAppending( dst, src );
+  var exp = new Set( [ 9, -16, 'str', null ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+  test.is( got !== src );
+
+  test.case = 'dst - Set, src - empty';
+  var dst = new Set( [ 9, -16 ] );
+  var src = [];
+  var got = _.container.extendAppending( dst, src );
+  var exp = new Set( [ 9, -16 ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+  test.is( got !== src );
+
+  test.case = 'dst - Set';
+  var dst = new Set( [ 9, -16 ] );
+  var src = [ 9, -16, 'str', null ];
+  var got = _.container.extendAppending( dst, src );
+  var exp = new Set( [ 9, -16, 'str', null ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+  test.is( got !== src );
+
+  test.close( 'src - longLike' );
+
+  /* - */
+
+  test.open( 'src - setLike' );
+
+  test.case = 'dst - empty map, src - empty';
+  var dst = {};
+  var src = new Set();
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ {}, new Set() ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'dst - empty map';
+  var dst = {};
+  var src = new Set( [ 9, -16, 'str', null ] );
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ {}, new Set( [ 9, -16, 'str', null ] ) ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+  
+  test.case = 'dst - map, src -empty';
+  var dst = { a : 1, b : 2, c : 3 };
+  var src = new Set();
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ { a : 1, b : 2, c : 3 }, new Set() ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src ); 
+
+  test.case = 'dst - map';
+  var dst = { a : 1, b : 2, c : 3 };
+  var src = new Set( [ 9, -16, 'str', null ] );
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ { a : 1, b : 2, c : 3 }, new Set( [ 9, -16, 'str', null ] ) ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src ); 
+
+  /* */
+
+  test.case = 'dst - empty HashMap, src - empty';
+  var dst = new Map();
+  var src = new Set();
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ new Map(), new Set() ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'dst - empty HashMap';
+  var dst = new Map();
+  var src = new Set( [ 9, -16, 'str', null ] );
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ new Map(), new Set( [ 9, -16, 'str', null ] ) ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+  
+  test.case = 'dst - HashMap, src - empty';
+  var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
+  var src = new Set();
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] ), new Set() ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  test.case = 'dst - HashMap, almost identical content';
+  var dst = new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] );
+  var src = new Set( [ 9, -16, 'str', null ] );
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ new Map( [ [ 'a', 1 ], [ 'b', 2 ], [ 'c', 3 ] ] ), new Set( [ 9, -16, 'str', null ] ) ];
+  test.identical( got, exp );
+  test.is( got !== dst );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'dst - empty long, src - empty';
+  var dst = [];
+  var src = new Set();
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ new Set() ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - empty long';
+  var dst = [];
+  var src = new Set( [ 9, -16, 'str', null ] );
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ new Set( [ 9, -16, 'str', null ] ) ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - long, different content';
+  var dst = [ 1, 2 ];
+  var src = new Set( [ 9, -16, 'str', null ] );
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ 1, 2, new Set( [ 9, -16, 'str', null ] ) ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - long, almost identical content';
+  var dst = [ 9, -16, 'str', null ];
+  var src = new Set( [ 9, -16, 'str', null ] );
+  var got = _.container.extendAppending( dst, src );
+  var exp = [ 9, -16, 'str', null, new Set( [ 9, -16, 'str', null ] ) ];
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - empty Set, src - empty';
+  var dst = new Set();
+  var src = new Set();
+  var got = _.container.extendAppending( dst, src );
+  var exp = new Set();
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - empty Set';
+  var dst = new Set();
+  var src = new Set( [ 9, -16, 'str', null ] );
+  var got = _.container.extendAppending( dst, src );
+  var exp = new Set( [ 9, -16, 'str', null ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - Set, different content';
+  var dst = new Set( [ 1, 2 ] );
+  var src = new Set( [ 9, -16, 'str', null ] );
+  var got = _.container.extendAppending( dst, src );
+  var exp = new Set( [ 1, 2, 9, -16, 'str', null ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.case = 'dst - Set, almost identical content';
+  var dst = new Set( [ 9, -16, 'str', null ] );
+  var src = new Set( [ 9, -16, 'str', null ] );
+  var got = _.container.extendAppending( dst, src );
+  var exp = new Set( [ 9, -16, 'str', null ] );
+  test.identical( got, exp );
+  test.is( got === dst );
+
+  test.close( 'src - setLike' );
+}
+
+//
+
 function empty( test ) 
 {
   test.case = 'empty array';
@@ -1830,8 +2133,9 @@ var Self =
     extendReplacingDstMapAndHashMapLike,
     extendReplacingDstLongAndSetLike,
 
-    extendAppendingDstNull, /* qqq : extendAppending test routine */
+    extendAppendingDstNull, /* qqq : extendAppending test routine | Dmytro : split and extended coverage of routine */
     extendAppendingDstMapAndHashMapLike, 
+    extendAppendingDstLongAndSetLike, 
 
     empty, /* qqq : implement test routine `empty` | Dmytro : implemented */
 

@@ -80,7 +80,7 @@ function extendReplacing( dst, src )
   {
 
     if( _.longIs( dst ) )
-    // dst = _.arrayExtendAppending( dst, src );
+    // dst = _.arrayExtendAppending( dst, src ); | Dmytro : it appends long, not replace
     dst = _.arrayAppendArrayOnce( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
@@ -118,7 +118,7 @@ function extendReplacing( dst, src )
 
 //
 
-/* qqq : cover */
+/* qqq : cover | Dmytro : covered */
 
 function extendAppending( dst, src )
 {
