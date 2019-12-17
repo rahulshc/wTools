@@ -5555,7 +5555,27 @@ function dirDepthOption( test )
   test.case = 'relative path, depth > levels of nesting';
   var src = './a/b/c/d';
   var got = _.path.dir( src, 6 );
-  var exp = './../..';
+  var exp = '../..';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = 'a/b/c/d';
+  var got = _.path.dir( src, 1 );
+  var exp = 'a/b/c';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = 'a/b/c/d';
+  var got = _.path.dir( src, 4 );
+  var exp = '.';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = 'a/b/c/d';
+  var got = _.path.dir( src, 6 );
+  var exp = '../..';
   test.identical( got, exp );
 
   /* */
@@ -5575,7 +5595,7 @@ function dirDepthOption( test )
   test.case = 'relative path, depth > levels of nesting';
   var src = './a/b/c/d/';
   var got = _.path.dir( src, 6 );
-  var exp = './../..';
+  var exp = '../..';
   test.identical( got, exp );
 
   /* */
@@ -5740,7 +5760,144 @@ function dirFirst( test )
   {
     _.path.dirFirst( {} );
   });
+}
 
+//
+
+function dirFirstDepthOption( test ) 
+{
+  test.case = 'root directory, depth - 1';
+  var src = '/';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = '/../';
+  test.identical( got, exp );
+
+  test.case = 'root directory, depth - 3';
+  var src = '/';
+  var got = _.path.dirFirst( src, 3 );
+  var exp = '/../../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'absolute path, depth - 1';
+  var src = '/a/b/c/d';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = '/a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth - 4';
+  var src = '/a/b/c/d';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = '/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth > levels of nesting';
+  var src = '/a/b/c/d';
+  var got = _.path.dirFirst( src, 6 );
+  var exp = '/../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'absolute path, depth - 1';
+  var src = '/a/b/c/d/';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = '/a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth - 4';
+  var src = '/a/b/c/d/';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = '/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth > levels of nesting';
+  var src = '/a/b/c/d/';
+  var got = _.path.dirFirst( src, 6 );
+  var exp = '/../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = './a/b/c/d';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = './a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = './a/b/c/d';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = './';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = './a/b/c/d';
+  var got = _.path.dirFirst( src, 6 );
+  var exp = './../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = 'a/b/c/d';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = 'a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = 'a/b/c/d';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = '.';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = 'a/b/c/d';
+  var got = _.path.dirFirst( src, 6 );
+  var exp = './../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = './a/b/c/d/';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = './a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = './a/b/c/d/';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = './';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = './a/b/c/d/';
+  var got = _.path.dirFirst( src, 6 );
+  var exp = './../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = '../a/b/c/d';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = '../a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = '../a/b/c/d';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = '../';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = '../a/b/c/d';
+  debugger;
+  var got = _.path.dirFirst( src, 6 );
+  var exp = '../../../';
+  test.identical( got, exp );
 }
 
 // --
@@ -5782,6 +5939,7 @@ var Self =
     dir,
     dirDepthOption,
     dirFirst,
+    dirFirstDepthOption,
 
   },
 
