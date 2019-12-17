@@ -166,10 +166,8 @@ function moduleExportsUndefined( test )
   {
     test.identical( op.exitCode, 0 );
     test.identical( _.strCount( op.output, 'program1.begin' ), 1 );
-    test.identical( _.strCount( op.output, 'module.begin' ), 1 );
-    test.identical( _.strCount( op.output, 'module.end' ), 1 );
+    test.identical( _.strCount( op.output, 'importedModule: undefined' ), 1 );
     test.identical( _.strCount( op.output, 'program1.end' ), 1 );
-    test.identical( _.strCount( op.output, 'importedModule:undefined' ), 1 );
     return null;
   });
 
