@@ -229,7 +229,7 @@ function isDotted( srcPath )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( this._isDotted( srcPath ) )
   return true;
-  /* qqq : cover all casess */
+  /* qqq : cover all cases | Dmytro : coverage is extended */
   if( _.strBegins( srcPath, this._hereStr + '\\' ) )
   return true;
   if( _.strBegins( srcPath, this._downStr + '\\' ) )
