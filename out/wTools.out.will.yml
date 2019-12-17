@@ -180,10 +180,12 @@ module:
           - ../proto/dwtools/abase/l0
           - ../proto/dwtools/abase/l0/l1
           - ../proto/dwtools/abase/l0/l1/Predefined.s
-          - ../proto/dwtools/abase/l0/l1/Setup.s
+          - ../proto/dwtools/abase/l0/l2
+          - ../proto/dwtools/abase/l0/l2/Setup.s
           - ../proto/dwtools/abase/l0/l3
           - ../proto/dwtools/abase/l0/l3/iBool.s
           - ../proto/dwtools/abase/l0/l3/iBuffer.s
+          - ../proto/dwtools/abase/l0/l3/iContainer.s
           - ../proto/dwtools/abase/l0/l3/iEntity.s
           - ../proto/dwtools/abase/l0/l3/iErr.s
           - ../proto/dwtools/abase/l0/l3/iFunctional.s
@@ -193,33 +195,43 @@ module:
           - ../proto/dwtools/abase/l0/l3/iRange.s
           - ../proto/dwtools/abase/l0/l3/iRegexp.s
           - ../proto/dwtools/abase/l0/l3/iRoutine.s
+          - ../proto/dwtools/abase/l0/l3/iSet.s
           - ../proto/dwtools/abase/l0/l3/iStr.s
           - ../proto/dwtools/abase/l0/l3/iTime.s
           - ../proto/dwtools/abase/l0/l3/iType.s
           - ../proto/dwtools/abase/l0/l3/iUnroll.s
+          - ../proto/dwtools/abase/l0/l5
+          - ../proto/dwtools/abase/l0/l5/fBool.s
+          - ../proto/dwtools/abase/l0/l5/fBuffer.s
+          - ../proto/dwtools/abase/l0/l5/fContainer.s
+          - ../proto/dwtools/abase/l0/l5/fEntity.s
+          - ../proto/dwtools/abase/l0/l5/fErr.s
+          - ../proto/dwtools/abase/l0/l5/fEvent.s
+          - ../proto/dwtools/abase/l0/l5/fFunctional.s
+          - ../proto/dwtools/abase/l0/l5/fLong.s
+          - ../proto/dwtools/abase/l0/l5/fMap.s
+          - ../proto/dwtools/abase/l0/l5/fNumber.s
+          - ../proto/dwtools/abase/l0/l5/fProcess.s
+          - ../proto/dwtools/abase/l0/l5/fRange.s
+          - ../proto/dwtools/abase/l0/l5/fRegexp.s
+          - ../proto/dwtools/abase/l0/l5/fRoutine.s
+          - ../proto/dwtools/abase/l0/l5/fSet.s
+          - ../proto/dwtools/abase/l0/l5/fSorted.s
+          - ../proto/dwtools/abase/l0/l5/fStr.s
+          - ../proto/dwtools/abase/l0/l5/fTime.s
+          - ../proto/dwtools/abase/l0/l5/fUnroll.s
           - ../proto/dwtools/abase/l0/l6
-          - ../proto/dwtools/abase/l0/l6/fBool.s
-          - ../proto/dwtools/abase/l0/l6/fBuffer.s
-          - ../proto/dwtools/abase/l0/l6/fContainerAdapter.s
-          - ../proto/dwtools/abase/l0/l6/fEntity.s
-          - ../proto/dwtools/abase/l0/l6/fErr.s
-          - ../proto/dwtools/abase/l0/l6/fFunctional.s
-          - ../proto/dwtools/abase/l0/l6/fLong.s
-          - ../proto/dwtools/abase/l0/l6/fMap.s
-          - ../proto/dwtools/abase/l0/l6/fNumber.s
-          - ../proto/dwtools/abase/l0/l6/fRange.s
-          - ../proto/dwtools/abase/l0/l6/fRegexp.s
-          - ../proto/dwtools/abase/l0/l6/fRoutine.s
-          - ../proto/dwtools/abase/l0/l6/fStr.s
-          - ../proto/dwtools/abase/l0/l6/fTime.s
-          - ../proto/dwtools/abase/l0/l6/fUnroll.s
+          - ../proto/dwtools/abase/l0/l6/ContainerAdapter.s
           - ../proto/dwtools/abase/l0/l7
           - ../proto/dwtools/abase/l0/l7/ArrayDescriptor.s
           - ../proto/dwtools/abase/l0/l7/Compose.s
+          - ../proto/dwtools/abase/l0/l7/ContainerAdapterArray.s
+          - ../proto/dwtools/abase/l0/l7/ContainerAdapterSet.s
           - ../proto/dwtools/abase/l0/l7/Field.s
           - ../proto/dwtools/abase/l0/l8
           - ../proto/dwtools/abase/l0/l8/gBool.s
           - ../proto/dwtools/abase/l0/l8/gBuffer.s
+          - ../proto/dwtools/abase/l0/l8/gContainer.s
           - ../proto/dwtools/abase/l0/l8/gEntity.s
           - ../proto/dwtools/abase/l0/l8/gErr.s
           - ../proto/dwtools/abase/l0/l8/gFunctional.s
@@ -230,12 +242,14 @@ module:
           - ../proto/dwtools/abase/l0/l8/gRange.s
           - ../proto/dwtools/abase/l0/l8/gRegexp.s
           - ../proto/dwtools/abase/l0/l8/gRoutine.s
+          - ../proto/dwtools/abase/l0/l8/gSet.s
           - ../proto/dwtools/abase/l0/l8/gStr.s
           - ../proto/dwtools/abase/l0/l8/gTime.s
           - ../proto/dwtools/abase/l0/l9
           - ../proto/dwtools/abase/l0/l9/Setup.s
           - ../proto/dwtools/abase/l0.test
           - ../proto/dwtools/abase/l0.test/Buffer.test.s
+          - ../proto/dwtools/abase/l0.test/Container.test.s
           - ../proto/dwtools/abase/l0.test/ContainerAdapter.test.s
           - ../proto/dwtools/abase/l0.test/Diagnostics.test.s
           - ../proto/dwtools/abase/l0.test/Entity.test.s
@@ -244,8 +258,10 @@ module:
           - ../proto/dwtools/abase/l0.test/Long.test.s
           - ../proto/dwtools/abase/l0.test/Map.test.s
           - ../proto/dwtools/abase/l0.test/Pair.test.s
+          - ../proto/dwtools/abase/l0.test/Range.test.s
           - ../proto/dwtools/abase/l0.test/Regexp.test.s
           - ../proto/dwtools/abase/l0.test/Routine.test.s
+          - ../proto/dwtools/abase/l0.test/Sorted.test.s
           - ../proto/dwtools/abase/l0.test/Str.test.s
           - ../proto/dwtools/abase/l0.test/Time.test.s
           - ../proto/dwtools/abase/l0.test/Typing.test.s
@@ -1719,6 +1735,4 @@ module:
       ../.im.will.yml:
         hash: e0b9ac504d07fa8723c98f50459f4829
         size: 5603
-      wTools.out.will.yml:
-        hash: 028ee71b8288f8b8457ae98e07c56463
-        size: 45195
+      wTools.out.will.yml: *ref_0

@@ -1,35 +1,27 @@
-( function _fErr_s_() {
+( function _gSet_s_() {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _;
+// let Self = _.set = _.set || Object.create( null );
 
 // --
-// implementation
+// array set
 // --
-
-// --
-// fields
-// --
-
-let Fields =
-{
-}
 
 // --
 // routines
 // --
 
-let Routines =
+let NamespaceExtension =
 {
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( Self, NamespaceExtension );
 
 // --
 // export

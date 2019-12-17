@@ -18,98 +18,259 @@ var Self = {};
 // tests
 // --
 
-function enityExtend( test )
+function entityEntityEqualize( test )
 {
-  test.case = 'src and dst is ArrayLike';
+  test.open( 'without callbacks' );
 
-  var got = _.enityExtend( [ 9, -16 ], [ 3, 5, 6 ] );
-  test.identical( got, [ 3, 5, 6 ] );
+  test.case = 'two undefined';
+  var got = _.entityEntityEqualize( undefined, undefined );
+  test.identical( got, true );
 
-  var got = _.enityExtend( [], [ 3, 5, 6 ] );
-  test.identical( got, [ 3, 5, 6 ] );
+  test.case = 'undefined and null';
+  var got = _.entityEntityEqualize( undefined, null );
+  test.identical( got, false );
 
-  test.case = 'src and dst is ObjectLike';
+  test.case = 'nan and nan';
+  var got = _.entityEntityEqualize( NaN, NaN );
+  test.identical( got, true );
 
-  var got = _.enityExtend( { a : 1 }, { a : 3, b : 5, c : 6 } );
-  test.identical( got, { a : 3, b : 5, c : 6 } );
+  test.case = 'equal numbers';
+  var got = _.entityEntityEqualize( 1, 1 );
+  test.identical( got, true );
 
-  var got = _.enityExtend( {}, { a : 3, b : 5, c : 6 } );
-  test.identical( got, { a : 3, b : 5, c : 6 } );
+  test.case = 'different numbers';
+  var got = _.entityEntityEqualize( 1, 2 );
+  test.identical( got, false );
 
-  var got = _.enityExtend( { d : 4 }, { a : 3, b : 5, c : 6 } );
-  test.identical( got, { d : 4, a : 3, b : 5, c : 6 } );
+  test.case = 'equal strings';
+  var got = _.entityEntityEqualize( 'str', 'str' );
+  test.identical( got, true );
 
-  test.case = 'dst is ObjectLike, src is ArrayLike';
+  test.case = 'different strings';
+  var got = _.entityEntityEqualize( 'str', 'src' );
+  test.identical( got, false );
 
-  var got = _.enityExtend( {}, [ 3, 5, 6 ] );
-  test.identical( got, { 0 : 3, 1 : 5, 2 : 6 } );
+  test.case = 'empty arrays';
+  var got = _.entityEntityEqualize( [], [] );
+  test.identical( got, false );
 
-  var got = _.enityExtend( { a : 1 }, [ 3, 5, 6 ] );
-  test.identical( got, { a : 1, 0 : 3, 1 : 5, 2 : 6 } );
+  test.case = 'equal arrays';
+  var got = _.entityEntityEqualize( [ 1, 2, 'str', null, undefined ], [ 1, 2, 'str', null, undefined ] );
+  test.identical( got, false );
 
-  test.case = 'src is ObjectLike, dst is ArrayLike';
+  test.case = 'not equal arrays';
+  var got = _.entityEntityEqualize( [ 1 ], [ 2, 'str', null, undefined ] );
+  test.identical( got, false );
 
-  var got = _.enityExtend( [ 9, -16 ], { a : 3, b : 5, c : 6 } );
-  test.identical( got, [ 9, -16 ] );
+  test.case = 'empty maps';
+  var got = _.entityEntityEqualize( {}, {} );
+  test.identical( got, false );
 
-  var got = _.enityExtend( [], { a : 3, b : 5, c : 6 } );
-  test.identical( got, [] );
+  test.case = 'equal maps';
+  var got = _.entityEntityEqualize( { a : 2, b : 'str' }, { a : 2, b : 'str' } );
+  test.identical( got, false );
 
-  var got = _.enityExtend( [ 1, 2, -3], { 0 : 3, 1 : 5, 2 : 6 } );
-  test.identical( got, [ 3, 5, 6 ] );
+  test.case = 'not equal maps';
+  var got = _.entityEntityEqualize( { a : 'str' }, { b : 'str' } );
+  test.identical( got, false );
 
-  test.case = 'src is not ObjectLike or ArrayLike';
+  test.close( 'without callbacks' );
 
-  var got = _.enityExtend( [ 9, -16 ], 1 );
-  test.identical( got, 1 );
+	/* - */
 
-  var got = _.enityExtend( [], 'str' );
-  test.identical( got, 'str' );
+  test.open( 'only onEvaluate1' );
 
-  var got = _.enityExtend( { a : 1 }, 1 );
-  test.identical( got, 1 );
+  test.case = 'two undefined';
+  var got = _.entityEntityEqualize( undefined, undefined, ( e ) => e );
+  test.identical( got, true );
 
-  var got = _.enityExtend( {}, 'str' );
-  test.identical( got, 'str' );
+  test.case = 'undefined and null';
+  var got = _.entityEntityEqualize( undefined, null, ( e ) => e );
+  test.identical( got, false );
+
+  test.case = 'equal numbers';
+  var got = _.entityEntityEqualize( 1, 1, ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'different numbers';
+  var got = _.entityEntityEqualize( 1, 2, ( e ) => e === 1 ? e : e - 1 );
+  test.identical( got, true );
+
+  test.case = 'equal strings';
+  var got = _.entityEntityEqualize( 'str', 'str', ( e ) => e );
+  test.identical( got, true );
+
+  test.case = 'different strings';
+  var got = _.entityEntityEqualize( 'str', 'src', ( e ) => typeof e );
+  test.identical( got, true );
+
+  test.case = 'empty arrays';
+  var got = _.entityEntityEqualize( [], [], ( e ) => e.length );
+  test.identical( got, true );
+
+  test.case = 'equal arrays';
+  var got = _.entityEntityEqualize( [ 1, 2, 'str', null, undefined ], [ 1, 2, 'str', null, undefined ], ( e ) => e[ 3 ] );
+  test.identical( got, true );
+
+  test.case = 'not equal arrays';
+  var got = _.entityEntityEqualize( [ 1 ], [ 2, 'str', null, undefined ], ( e ) => e[ 0 ] );
+  test.identical( got, false );
+
+  test.case = 'empty maps';
+  var got = _.entityEntityEqualize( {}, {}, ( e ) => _.mapIs( e ) );
+  test.identical( got, true );
+
+  test.case = 'equal maps';
+  var got = _.entityEntityEqualize( { a : 2, b : 'str' }, { a : 2, b : 'str' }, ( e ) => e.a );
+  test.identical( got, true );
+
+  test.case = 'not equal maps';
+  var got = _.entityEntityEqualize( { a : 'str' }, { b : 'str' }, ( e ) => typeof e.a );
+  test.identical( got, false );
+
+  test.close( 'only onEvaluate1' );
+
+	/* - */
+
+  test.open( 'onEvaluate1 is equalizer' );
+
+  test.case = 'two undefined';
+  var got = _.entityEntityEqualize( undefined, undefined, ( e, ins ) => e === ins );
+  test.identical( got, true );
+
+  test.case = 'undefined and null';
+  var got = _.entityEntityEqualize( undefined, null, ( e, ins ) => e === ins );
+  test.identical( got, false );
+
+  test.case = 'equal numbers';
+  var got = _.entityEntityEqualize( 1, 1, ( e, ins ) => e === ins );
+  test.identical( got, true );
+
+  test.case = 'different numbers';
+  var got = _.entityEntityEqualize( 1, 2, ( e, ins ) => e === ins - 1 );
+  test.identical( got, true );
+
+  test.case = 'equal strings';
+  var got = _.entityEntityEqualize( 'str', 'str', ( e, ins ) => e !== ins );
+  test.identical( got, false );
+
+  test.case = 'different strings';
+  var got = _.entityEntityEqualize( 'str', 'src', ( e, ins ) => typeof e === typeof ins );
+  test.identical( got, true );
+
+  test.case = 'empty arrays';
+  var got = _.entityEntityEqualize( [], [], ( e, ins ) => e.length === ins.length );
+  test.identical( got, true );
+
+  test.case = 'equal arrays';
+  var got = _.entityEntityEqualize( [ 1, 2, 'str', null, undefined ], [ 1, 2, 'str', null, undefined ], ( e, ins ) => e[ 0 ] === ins[ 1 ] );
+  test.identical( got, false );
+
+  test.case = 'not equal arrays';
+  var got = _.entityEntityEqualize( [ 1 ], [ 2, 'str', null, undefined ], ( e, ins ) => e[ 0 ] === ins[ 0 ] - 1 );
+  test.identical( got, true );
+
+  test.case = 'empty maps';
+  var got = _.entityEntityEqualize( {}, {}, ( e, ins ) => _.mapIs( e ) === _.mapIs( ins ) );
+  test.identical( got, true );
+
+  test.case = 'equal maps';
+  var got = _.entityEntityEqualize( { a : 2, b : 'str' }, { a : 2, b : 'str' }, ( e, ins ) => e.a === ins.b );
+  test.identical( got, false );
+
+  test.case = 'not equal maps';
+  var got = _.entityEntityEqualize( { a : 'str' }, { b : 'str' }, ( e, ins ) => e.a === ins.b );
+  test.identical( got, true );
+
+  test.close( 'onEvaluate1 is equalizer' );
+
+	/* - */
+
+  test.open( 'onEvaluate1 and onEvaluate2' );
+
+  test.case = 'two undefined';
+  var got = _.entityEntityEqualize( undefined, undefined, ( e ) => e, ( ins ) => ins );
+  test.identical( got, true );
+
+  test.case = 'undefined and null';
+  var got = _.entityEntityEqualize( undefined, null, ( e ) => e, ( ins ) => ins );
+  test.identical( got, false );
+
+  test.case = 'equal numbers';
+  var got = _.entityEntityEqualize( 1, 1, ( e ) => e, ( ins ) => ins );
+  test.identical( got, true );
+
+  test.case = 'different numbers';
+  var got = _.entityEntityEqualize( 1, 2, ( e ) => e, ( ins ) => ins - 1 );
+  test.identical( got, true );
+
+  test.case = 'equal strings';
+  var got = _.entityEntityEqualize( 'str', 'str', ( e ) => e, ( ins ) => !ins );
+  test.identical( got, false );
+
+  test.case = 'different strings';
+  var got = _.entityEntityEqualize( 'str', 'src', ( e ) => !!e, ( ins ) => !!ins );
+  test.identical( got, true );
+
+  test.case = 'empty arrays';
+  var got = _.entityEntityEqualize( [], [], ( e ) => e.length, ( ins ) => ins.length );
+  test.identical( got, true );
+
+  test.case = 'equal arrays';
+  var got = _.entityEntityEqualize( [ 1, 2, 'str', null, undefined ], [ 1, 2, 'str', null, undefined ], ( e ) => !!e[ 3 ], ( ins ) => !!ins[ 4 ] );
+  test.identical( got, true );
+
+  test.case = 'not equal arrays';
+  var got = _.entityEntityEqualize( [ 4 ], [ 2, 'str', null, undefined ], ( e ) => e[ 0 ], ( ins ) => ins.length );
+  test.identical( got, true );
+
+  test.case = 'empty maps';
+  var got = _.entityEntityEqualize( {}, {}, ( e ) => !!e, ( ins ) => !!ins );
+  test.identical( got, true );
+
+  test.case = 'equal maps';
+  var got = _.entityEntityEqualize( { a : 2, b : 'str' }, { a : 2, b : 'str' }, ( e ) => e.b, ( ins ) => ins.b );
+  test.identical( got, true );
+
+  test.case = 'not equal maps';
+  var got = _.entityEntityEqualize( { a : 'str' }, { b : 'str' }, ( e ) => e.a, ( ins ) => ins.b );
+  test.identical( got, true );
+
+  test.close( 'onEvaluate1 and onEvaluate2' );
 
   /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'missed arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.enityExtend();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize() );
 
-  test.case = 'extra argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.enityExtend( [ 1,3 ], [ 1,3 ], [ 1,3 ] );
-  });
+  test.case = 'one argument';
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1 ) );
 
-  test.case = 'dst is undefined';
-  test.shouldThrowErrorSync( function()
-  {
-    _.enityExtend( undefined, [ 0, 1 ] );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, ( e ) => e, ( ins ) => ins, 'extra' ) );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.enityExtend( undefined, { a : 1, b : 2 } );
-  });
+  test.case = 'wrong length of onEvaluate1';
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, () => true ) );
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, ( a, b, c ) => a === b - c ) );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.enityExtend( null, [ 0, 1 ] );
-  });
+  test.case = 'wrong type of onEvaluate1';
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, 3 ) );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.enityExtend( null, { a : 1, b : 2 } );
-  });
-};
+  test.case = 'wrong length of onEvaluate2';
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, ( e ) => e, () => true ) );
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, ( e ) => e, ( a, b, c ) => a + b + c ) );
+
+  test.case = 'wrong type of onEvaluate2';
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, ( e ) => e, [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, ( e ) => e, [ 2 ] ) );
+
+  test.case = 'using onEvaluate2 without onEvaluate1';
+  test.shouldThrowErrorSync( () => _.entityEntityEqualize( 1, 2, undefined, ( e ) => e ) );
+}
 
 //
 
@@ -363,7 +524,7 @@ function entityLength( test )
   var got = _.entityLength( null );
   test.identical( got, 1 );
 
-  test.case = 'udefined';
+  test.case = 'undefined';
   var got = _.entityLength( undefined );
   test.identical( got, 0 );
 
@@ -393,14 +554,16 @@ function entitySize( test )
   var expected = 10;
   test.identical( got, expected );
 
-  test.case = 'arraylike';
+  /* zzz : temp fix */
+
+  test.case = 'arraylike';  debugger;
   var got = _.entitySize( [ 1, 2, 3 ] );
-  var expected = 24;
+  var expected = _.look ? 24 : 0;
   test.identical( got, expected );
 
   test.case = 'object';
   var got = _.entitySize( { a : 1, b : 2 } );
-  var expected = 18;
+  var expected = _.look ? 18 : 0;
   test.identical( got, expected );
 
   test.case = 'empty call';
@@ -448,7 +611,7 @@ var Self =
   tests :
   {
 
-    enityExtend,
+    entityEntityEqualize,
 
     entityAssign,
     entityAssignFieldFromContainer,

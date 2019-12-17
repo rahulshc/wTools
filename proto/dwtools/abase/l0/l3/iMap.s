@@ -43,6 +43,7 @@ function objectLike( src )
 
   if( _.objectIs( src ) )
   return true;
+
   if( _.primitiveIs( src ) )
   return false;
   if( _.longIs( src ) )
@@ -53,19 +54,6 @@ function objectLike( src )
   for( let k in src )
   return true;
 
-  return false;
-}
-
-//
-
-function countableIs( src )
-{
-  if( !src )
-  return false;
-  if( _.mapLike( src ) )
-  return true;
-  if( src[ Symbol.iterator ] )
-  return true;
   return false;
 }
 
@@ -221,6 +209,36 @@ function mapLike( src )
   return false;
 
   return true;
+}
+
+//
+
+function hashMapIs( src )
+{
+  if( !src )
+  return false;
+  return src instanceof HashMap || src instanceof HashMapWeak;
+}
+
+//
+
+function hashMapLike( src )
+{
+  return _.hashMapIs( src );
+}
+
+//
+
+function hashMapIsEmpty()
+{
+  return !src.size;
+}
+
+//
+
+function hashMapIsPopulated()
+{
+  return !!src.size;
 }
 
 // --
@@ -1458,46 +1476,6 @@ mapAllFields.defaults =
 //
 
 /**
- * The mapOnlyPrimitives() gets all object`s {-srcMap-} enumerable atomic fields( null, undef, number, string, symbol ) and returns them as new map.
- *
- * It takes an object {-srcMap-} creates an empty map,
- * checks if {-srcMap-} is an object.
- * If true, it copies object`s {-srcMap-} enumerable atomic properties to the new map using
- * their original name/value and returns the result, otherwise it returns empty map.
- *
- * @param { objectLike } srcMap - Object to get a map of atomic properties.
- *
- * @example
- * let a = {};
- * Object.defineProperty( a, 'x', { enumerable : 0, value : 3 } )
- * _.mapOnlyPrimitives( a );
- * // returns {}
- *
- * @example
- * let a = { a : 1 };
- * let b = { b : 2, c : function(){} };
- * Object.setPrototypeOf( a, b );
- * _.mapOnlyPrimitives( a );
- * // returns { a : 1, b : 2 }
- *
- * @returns { object } A new map with all atomic fields from source {-srcMap-}.
- * @function mapOnlyPrimitives
- * @throws { Error } Will throw an Error if {-srcMap-} is not an Object.
- * @memberof wTools
- */
-
-function mapOnlyPrimitives( srcMap )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( !_.primitiveIs( srcMap ) );
-
-  let result = _.mapExtendConditional( _.field.mapper.primitive, Object.create( null ), srcMap );
-  return result;
-}
-
-//
-
-/**
  * The mapFirstPair() routine returns first pair [ key, value ] as array.
  *
  * @param { objectLike } srcMap - An object like entity of get first pair.
@@ -1781,15 +1759,18 @@ let Routines =
   objectIs,
   objectLike,
   objectLikeOrRoutine,
-  countableIs, /* qqq : cover and document please */
 
   mapIs,
   mapIsEmpty,
   mapIsPure,
   mapIsPopulated,
   mapIsHeritated,
-
   mapLike,
+
+  hashMapIs,
+  hashMapLike,
+  hashMapIsEmpty,
+  hashMapIsPopulated,
 
   // map selector
 
@@ -1827,7 +1808,6 @@ let Routines =
   mapOwnFields,
   mapAllFields,
 
-  mapOnlyPrimitives,
   mapFirstPair,
   mapValsSet,
   mapSelect,

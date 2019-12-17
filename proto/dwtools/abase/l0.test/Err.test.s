@@ -6,14 +6,122 @@ if( typeof module !== 'undefined' )
 {
   let _ = require( '../Layer2.s' );
   _.include( 'wTesting' );
-  // _.include( 'wLooker' );
 }
 
-var _ = _global_.wTools;
+let _ = _global_.wTools;
+let fileProvider = _testerGlobal_.wTools.fileProvider;
+let path = fileProvider.path;
+
+// --
+// context
+// --
+
+function onSuiteBegin()
+{
+  let self = this;
+
+  self.suiteTempPath = path.pathDirTempOpen( path.join( __dirname, '../..'  ), 'err' );
+  self.assetsOriginalSuitePath = path.join( __dirname, '_asset' );
+
+}
+
+//
+
+function onSuiteEnd()
+{
+  let self = this;
+  _.assert( _.strHas( self.suiteTempPath, '/err-' ) )
+  path.pathDirTempClose( self.suiteTempPath );
+}
 
 // --
 // tests
 // --
+
+function diagnosticStackTrivial( test )
+{
+
+  function function1( )
+  {
+    return function2( );
+  }
+
+  function function2( )
+  {
+    return function3( );
+  }
+
+  function function3( )
+  {
+    debugger;
+    return _.diagnosticStack();
+  }
+
+  /* - */
+
+  test.case = 'trivial';
+  var expectedTrace = [ 'function3', 'function2', 'function1', 'Err.test.s' ];
+  var got = function1();
+  got = got.split( '\n' );
+  expectedTrace.forEach( function( expectedStr, i )
+  {
+    var expectedRegexp = new RegExp( expectedStr );
+    test.description = expectedStr;
+    test.identical( expectedRegexp.test( got[ i ] ), true );
+  });
+
+  /* - */
+
+}
+
+//
+
+function diagnosticStack( test )
+{
+  let context = this;
+
+  test.case = '[ 0, -1 ]';
+  var got = _.diagnosticStack([ 0, -1 ]);
+  test.gt( got.split( '\n' ).length, 10 );
+  test.identical( _.strCount( got, context.nameOfFile ), 1 );
+
+  test.case = '[ 0, Infinity ]';
+  var got = _.diagnosticStack([ 0, Infinity ]);
+  test.gt( got.split( '\n' ).length, 10 );
+  test.identical( _.strCount( got, context.nameOfFile ), 1 );
+
+  test.case = 'comparison of [ 0, -1 ] and [ 0, Infinity ]';
+  var got1 = _.diagnosticStack([ 0, -1 ]);
+  var got2 = _.diagnosticStack([ 0, Infinity ]);
+  test.identical( _.strLinesBut( got1, 0 ), _.strLinesBut( got2, 0 ) );
+
+  test.case = 'comparison of [ 0, -2 ] and [ 0, Infinity ]';
+  var got1 = _.diagnosticStack([ 0, -2 ]);
+  var got2 = _.diagnosticStack([ 0, Infinity ]);
+  test.identical( _.strLinesBut( got1, 0 ), _.strLinesBut( _.strLinesBut( got2, 0 ), -1 ) );
+
+  test.case = 'comparison of default call and [ 0, Infinity ]';
+  var got1 = _.diagnosticStack();
+  var got2 = _.diagnosticStack([ 0, Infinity ]);
+  test.identical( _.strLinesBut( got1, 0 ), _.strLinesBut( got2, 0 ) );
+
+  test.case = 'not an error';
+  var exp = undefined;
+  var got = _.diagnosticStack( { notError : 1 }, undefined );
+  test.identical( got, exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'not a range';
+  test.shouldThrowErrorSync( () =>
+  {
+    var got = _.diagnosticStack( { notError : 1 } );
+  });
+
+}
+
+//
 
 function diagnosticStructureGenerate( test )
 {
@@ -32,6 +140,339 @@ function diagnosticStructureGenerate( test )
 
 }
 
+diagnosticStructureGenerate.timeOut = 30000;
+
+//
+
+function errArgumentObject( test )
+{
+  let context = this;
+  let visited = [];
+
+  var args = [ 'str', { num : 1 } ];
+  var err = _._err({ args });
+  test.is( _.errIs( err ) );
+
+  var errStr = String( err );
+  console.log( errStr );
+  test.identical( _.strCount( errStr, 'at Object.errArgumentObject' ), 2 );
+  test.identical( _.strCount( errStr, '* 153 :   var err = _._err({ args });' ), 1 );
+
+}
+
+//
+
+function errCatchStackAndMessage( test )
+{
+  let context = this;
+  let visited = [];
+
+  function decrement( i )
+  {
+    try
+    {
+      if( i <= 0 )
+      throw _.err( 'negative!' );
+      return i-1;
+    }
+    catch( err )
+    {
+      debugger;
+      throw _.err( err, '\nFailed to decrement' );
+    }
+  }
+
+  function divide( i )
+  {
+    try
+    {
+      if( i % 2 === 1 )
+      throw _.err( 'odd!' );
+      return decrement( i / 2 );
+    }
+    catch( err )
+    {
+      throw _.err( err, '\nFailed to divide' );
+    }
+  }
+
+  try
+  {
+    divide( 0 );
+  }
+  catch( err )
+  {
+
+    test.description = 'throwsStack';
+    let regexp = new RegExp( _.regexpEscape( `${context.nameOfFile}:` ) + '.+', 'g' );
+    let throwsStackLocations = _.longOnce( err.throwsStack.match( regexp ) );
+    test.is( _.errIs( err ) );
+    test.identical( throwsStackLocations.length, 3 );
+    test.identical( _.strCount( err.throwsStack, 'thrown at' ), 3 );
+    test.identical( _.strCount( err.throwsStack, 'thrown at decrement @' ), 2 );
+    test.identical( _.strCount( err.throwsStack, 'thrown at divide @' ), 1 );
+    test.identical( _.strCount( err.throwsStack, `${context.nameOfFile}:` ), 3 );
+
+    test.description = 'callsStack';
+    test.identical( _.strCount( err.callsStack, 'decrement' ), 1 );
+    test.identical( _.strCount( err.callsStack, 'divide' ), 1 );
+    test.identical( _.strCount( err.callsStack, `${context.nameOfFile}:` ), 3 );
+
+    visited.push( 'catch1' );
+  }
+
+  test.identical( visited, [ 'catch1' ] );
+}
+
+//
+
+function unhandledError( test )
+{
+  let context = this;
+  let visited = [];
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+
+  /* */
+
+  a.jsNonThrowing({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.notIdentical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
+    test.identical( _.strCount( op.output, 'Unhandled error' ), 1 );
+    test.identical( _.strCount( op.output, '------>' ), 1 );
+    test.identical( _.strCount( op.output, '------<' ), 1 );
+    test.identical( _.strCount( op.output, '= Process' ), 1 );
+    test.identical( _.strCount( op.output, 'Current path :' ), 1 );
+    test.identical( _.strCount( op.output, 'Exec path :' ), 1 );
+    test.identical( _.strCount( op.output, '= Message of error#' ), 1 );
+    test.identical( _.strCount( op.output, '= Beautified calls stack' ), 1 );
+    test.identical( _.strCount( op.output, '= Throws stack' ), 1 );
+    test.is( true );
+    return null;
+  });
+
+  return a.ready;
+
+  function program()
+  {
+    require( toolsPath );
+    throw 'Unhandled error'
+  }
+
+}
+
+//
+
+function sourceCode( test )
+{
+  let context = this;
+  let visited = [];
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+
+  /* */
+
+  a.jsNonThrowing({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.notIdentical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
+    test.identical( _.strCount( op.output, '= Source code from' ), 1 );
+    test.identical( _.strCount( op.output, `* 5 :     throw Error( 'Unhandled error' );` ), 1 );
+    return null;
+  });
+
+  return a.ready;
+
+  function program()
+  {
+    let _ = require( toolsPath );
+    _.include( 'wFiles' );
+    throw Error( 'Unhandled error' );
+  }
+
+}
+
+//
+
+function asyncStackInConsequenceTrivial( test )
+{
+  let context = this;
+  let visited = [];
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+
+  /* */
+
+  a.jsNonThrowing({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.notIdentical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, '- unhandled error -' ), 2 );
+    test.identical( _.strCount( op.output, '= Source code from' ), 1 );
+    test.identical( _.strCount( op.output, `Program.js:9` ), 1 );
+    test.identical( _.strCount( op.output, `at program` ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program()
+  {
+    let delay = 250;
+    let _ = require( toolsPath );
+    _.include( 'wFiles' );
+    _.include( 'wConsequence' );
+
+    var timeBefore = _.time.now();
+    var t = _.time.outError( delay );
+    t.finally( function( err, got )
+    {
+      if( err )
+      _.errAttend( err );
+      return null;
+    })
+    _.time.out( delay / 2, () => { t.error( _.errAttend( 'stop' ) ); return null; } );
+
+    return t;
+  }
+
+}
+
+asyncStackInConsequenceTrivial.timeOut = 30000;
+asyncStackInConsequenceTrivial.description =
+`
+stack has async substack
+`
+
+//
+
+function asyncStackInConsequenceThen( test )
+{
+  let context = this;
+  let visited = [];
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+
+  /* */
+
+  a.jsNonThrowing({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.notIdentical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, '- unhandled asynchronous error -' ), 2 );
+    test.identical( _.strCount( op.output, '= Source code from' ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program()
+  {
+    let _ = require( toolsPath );
+    _.include( 'wFiles' );
+    _.include( 'wConsequence' );
+
+    var con = _.Consequence()
+    con.then( function callback1( arg )
+    {
+      console.log( 'sourcePath::callback1 ' + _.Procedure.ActiveProcedure._sourcePath );
+      return 'callback1';
+    })
+    con.then( function callback2( arg )
+    {
+      console.log( 'sourcePath::callback2 ' + _.Procedure.ActiveProcedure._sourcePath );
+      throw 'callback2';
+      return 'callback2';
+    })
+
+    console.log( 'sourcePath::program ' + _.Procedure.ActiveProcedure._sourcePath );
+    _.time.out( 100, function timeOut1()
+    {
+      console.log( 'sourcePath::timeout ' + _.Procedure.ActiveProcedure._sourcePath );
+      con.take( 'timeout1' );
+    });
+
+  }
+
+}
+
+asyncStackInConsequenceThen.timeOut = 30000;
+asyncStackInConsequenceThen.description =
+`
+each callback has its own stack
+`
+
+//
+
+function activeProcedureSourcePath( test )
+{
+  let context = this;
+  let visited = [];
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+
+  /* */
+
+  a.jsNonThrowing({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, /sourcePath::program.*Program.js:31/ ), 1 );
+    test.identical( _.strCount( op.output, /sourcePath::timeout.*Program.js:21/ ), 1 );
+    test.identical( _.strCount( op.output, /sourcePath::callback1.*Program.js:8/ ), 1 );
+    test.identical( _.strCount( op.output, /sourcePath::callback2.*Program.js:13/ ), 1 );
+    test.identical( _.strCount( op.output, 'sourcePath::' ), 4 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program()
+  {
+    let _ = require( toolsPath );
+    _.include( 'wFiles' );
+    _.include( 'wConsequence' );
+
+    var con = _.Consequence()
+    con.then( function callback1( arg )
+    {
+      console.log( 'sourcePath::callback1 ' + _.Procedure.ActiveProcedure._sourcePath );
+      return 'callback1';
+    })
+    con.then( function callback2( arg )
+    {
+      console.log( 'sourcePath::callback2 ' + _.Procedure.ActiveProcedure._sourcePath );
+      /* _.procedure.terminationBegin();*/
+      return 'callback2';
+    })
+
+    console.log( 'sourcePath::program ' + _.Procedure.ActiveProcedure._sourcePath );
+    _.time.out( 100, function timeOut1()
+    {
+      console.log( 'sourcePath::timeout ' + _.Procedure.ActiveProcedure._sourcePath );
+      con.take( 'timeout1' );
+    });
+
+  }
+
+}
+
+activeProcedureSourcePath.timeOut = 30000;
+activeProcedureSourcePath.description =
+`
+proper procedure is active
+active procedure has proper source path
+`
+
 // --
 // declare
 // --
@@ -42,10 +483,34 @@ var Self =
   name : 'Tools.base.Err',
   silencing : 1,
 
+  onSuiteBegin,
+  onSuiteEnd,
+
+  context :
+  {
+    nameOfFile : 'Err.test.s',
+    suiteTempPath : null,
+    assetsOriginalSuitePath : null,
+    defaultJsPath : null,
+  },
+
   tests :
   {
 
+    /* qqq : implement test routine for _.err */
+
+    diagnosticStackTrivial,
+    diagnosticStack, /* qqq : extend the routine */
     diagnosticStructureGenerate,
+
+    errArgumentObject,
+    errCatchStackAndMessage,
+
+    unhandledError,
+    sourceCode,
+    asyncStackInConsequenceTrivial,
+    asyncStackInConsequenceThen,
+    activeProcedureSourcePath,
 
   }
 

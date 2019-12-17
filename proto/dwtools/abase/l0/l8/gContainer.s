@@ -1,32 +1,29 @@
-( function _fTime_s_() {
+( function _gContainer_s_() {
 
 'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
+let Self = _.container;
 
 // --
-// implementation
+// routines
 // --
 
 // --
-// fields
+// define namespace
 // --
 
 let Fields =
 {
 }
 
-// --
-// routines
-// --
+//
 
 let Routines =
 {
-}
 
-//
+}
 
 Object.assign( Self, Routines );
 Object.assign( Self, Fields );

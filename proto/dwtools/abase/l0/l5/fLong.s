@@ -88,7 +88,7 @@ function argumentsArrayFrom( src )
  * console.log( _.bufferTypedIs( got ) );
  * // log true
  *
- * @returns { Long }  Returns a Long with type of source Long which makes from ins.
+ * @returns { Long } Returns a Long with type of source Long which makes from ins.
  * @function longMake
  * @throws { Error } If arguments.length is less than two or more then two.
  * @throws { Error } If {-ins-} is not a number and not a Long.
@@ -236,28 +236,51 @@ function longMake( src, ins )
 
 //
 
-/* qqq : optimize */
+/*
+qqq : optimize
+Dmytro : optimized
+*/
 
 function longMakeEmpty( src )
 {
-  let result;
-  let length = 0;
-
-  if( src === null )
-  src = [];
-
-  if( _.argumentsArrayIs( src ) )
-  src = [];
 
   _.assert( arguments.length === 1 );
 
-  result = new src.constructor();
-
-  _.assert( _.longLike( result ) );
-  _.assert( result.length === 0 );
-
-  return result;
+  if( _.unrollIs( src ) )
+  return _.unrollMake( 0 );
+  else if( src === null || _.argumentsArrayIs( src ) )
+  return [];
+  else if( _.arrayIs( src ) || _.bufferTypedIs( src ) )
+  return new src.constructor();
+  else if( _.routineIs( src ) )
+  {
+    let result = new src.constructor();
+    _.assert( _.longIs( result ) && result.length === 0 );
+    return result;
+  }
+  _.assert( 0 );
 }
+
+// function longMakeEmpty( src )
+// {
+//   let result;
+//   let length = 0;
+//
+//   if( src === null )
+//   src = [];
+//
+//   if( _.argumentsArrayIs( src ) )
+//   src = [];
+//
+//   _.assert( arguments.length === 1 );
+//
+//   result = new src.constructor();
+//
+//   _.assert( _.longIs( result ) );
+//   _.assert( result.length === 0 );
+//
+//   return result;
+// }
 
 //
 
@@ -364,7 +387,7 @@ function _longMakeOfLength( src, len )
  * console.log( _.bufferTypedIs( got ) );
  * // log true
  *
- * @returns { Long }  Returns a Long with type of source Long with a certain length.
+ * @returns { Long } - Returns a Long with type of source Long with a certain length.
  * @function longMakeUndefined
  * @throws { Error } If arguments.length is less than one or more then two.
  * @throws { Error } If the {-ins-} is not a Long or not a constructor.
@@ -474,6 +497,7 @@ function longMakeZeroed( ins, src )
 
 /*
 qqq : find and let me know what is _.buffer* analog of _longClone
+Dmytro : module has not _.buffer* analog of routine _longClone. The closest functionality has routine bufferMake( ins, src )
 */
 
 function _longClone( src )
@@ -486,12 +510,17 @@ function _longClone( src )
   if( _.bufferViewIs( src ) )
   debugger;
 
-  if( _.bufferRawIs( src ) )
+  if( _.arrayIs( src ) )
+  return src.slice();
+  else if( _.argumentsArrayIs( src ) )
+  {
+    debugger;
+    return Array.prototype.slice.call( src );
+  }
+  else if( _.bufferRawIs( src ) )
   return new U8x( new U8x( src ) ).buffer;
   else if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
   return new src.constructor( src );
-  else if( _.arrayIs( src ) )
-  return src.slice();
   else if( _.bufferViewIs( src ) )
   return new src.constructor( src.buffer, src.byteOffset, src.byteLength );
 
@@ -501,7 +530,12 @@ function _longClone( src )
 //
 
 /* xxx : review */
-/* qqq : find and let me know what is _.buffer* analog of _.longShallowClone */
+/*
+qqq : find and let me know what is _.buffer* analog of _.longShallowClone
+Dmytro : the closest _.buffer* analog of _.longShallowClone is bufferJoin, which joins buffers to flat buffer
+qqq2 : did not work!
+qqq2 : poor coverage!
+*/
 
 function longShallowClone()
 {
@@ -653,61 +687,80 @@ function longRepresent( src, begin, end )
  * @memberof wTools
  */
 
-function longSlice( array, f, l ) /* qqq : optimize */
+/* qqq : optimize | Dmytro : optimized */
+
+function longSlice( array, f, l )
 {
-  let result;
-
-  if( _.argumentsArrayIs( array ) )
-  if( f === undefined && l === undefined )
-  {
-    if( array.length === 2 )
-    return [ array[ 0 ], array[ 1 ] ];
-    else if( array.length === 1 )
-    return [ array[ 0 ] ];
-    else if( array.length === 0 )
-    return [];
-  }
-
-  _.assert( _.longLike( array ) );
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( f === undefined || _.numberIs( f ) );
+  _.assert( l === undefined || _.numberIs( l ) );
 
-  if( _.arrayLikeResizable( array ) )
-  {
-    _.assert( f === undefined || _.numberIs( f ) );
-    _.assert( l === undefined || _.numberIs( l ) );
-    result = array.slice( f, l );
-    return result;
-  }
+  if( _.bufferTypedIs( array ) )
+  return array.subarray( f, l );
+  else if( _.arrayLikeResizable( array ) )
+  return array.slice( f, l );
+  else if( _.argumentsArrayIs( array ) )
+  return [ ... array ].slice( f, l );
+  else
+  _.assert( 0 );
 
-  f = f !== undefined ? f : 0;
-  l = l !== undefined ? l : array.length;
-
-  _.assert( _.numberIs( f ) );
-  _.assert( _.numberIs( l ) );
-
-  if( f < 0 )
-  f = array.length + f;
-  if( l < 0 )
-  l = array.length + l;
-
-  if( f < 0 )
-  f = 0;
-  if( l > array.length )
-  l = array.length;
-  if( l < f )
-  l = f;
-
-  result = _.longMakeUndefined( array, l-f );
-  // if( _.bufferTypedIs( array ) )
-  // result = new array.constructor( l-f );
-  // else
-  // result = new Array( l-f );
-
-  for( let r = f ; r < l ; r++ )
-  result[ r-f ] = array[ r ];
-
-  return result;
 }
+
+// function longSlice( array, f, l )
+// {
+//   let result;
+//
+//   if( _.argumentsArrayIs( array ) )
+//   if( f === undefined && l === undefined )
+//   {
+//     if( array.length === 2 )
+//     return [ array[ 0 ], array[ 1 ] ];
+//     else if( array.length === 1 )
+//     return [ array[ 0 ] ];
+//     else if( array.length === 0 )
+//     return [];
+//   }
+//
+//   _.assert( _.longIs( array ) );
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( _.arrayLikeResizable( array ) )
+//   {
+//     _.assert( f === undefined || _.numberIs( f ) );
+//     _.assert( l === undefined || _.numberIs( l ) );
+//     result = array.slice( f, l );
+//     return result;
+//   }
+//
+//   f = f !== undefined ? f : 0;
+//   l = l !== undefined ? l : array.length;
+//
+//   _.assert( _.numberIs( f ) );
+//   _.assert( _.numberIs( l ) );
+//
+//   if( f < 0 )
+//   f = array.length + f;
+//   if( l < 0 )
+//   l = array.length + l;
+//
+//   if( f < 0 )
+//   f = 0;
+//   if( l > array.length )
+//   l = array.length;
+//   if( l < f )
+//   l = f;
+//
+//   result = _.longMakeUndefined( array, l-f );
+//   // if( _.bufferTypedIs( array ) )
+//   // result = new array.constructor( l-f );
+//   // else
+//   // result = new Array( l-f );
+//
+//   for( let r = f ; r < l ; r++ )
+//   result[ r-f ] = array[ r ];
+//
+//   return result;
+// }
 
 //
 
@@ -719,14 +772,14 @@ function longEmpty( dstLong )
     dstLong.splice( 0, dstLong.length );
     return dstLong;
   }
-  _.assert( 0, `Cant change length of fixed-length container ${_.strType( dstLong )}` );
+  _.assert( 0, () => `Cant change length of fixed-length container ${_.strType( dstLong )}` );
 }
 
 //
 
 /**
  * The routine longBut() returns a shallow copy of provided Long {-array-}. Routine removes existing
- * elements in bounds defined by {-range-} and insert new elements from {-val-}. The original
+ * elements in bounds defined by {-range-} and inserts new elements from {-val-}. The original
  * source Long {-array-} will not be modified.
  *
  * @param { Long } array - The Long from which makes a shallow copy.
@@ -783,7 +836,7 @@ function longEmpty( dstLong )
  * console.log( got === src );
  * // log false
  *
- * @returns { Long } Returns a copy of source Long with removed or replaced existing elements and / or added new elements. The copy has same type as source Long.
+ * @returns { Long } - Returns a copy of source Long with removed or replaced existing elements and / or added new elements. The copy has same type as source Long.
  * @function longBut
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-array-} is not a Long.
@@ -1010,7 +1063,7 @@ function _argumentsOnlyLong( dst, src, range, ins )
       ins = range;
       range = src;
       src = dst;
-      dst = true;
+      dst = false;
     }
   }
 
@@ -1165,7 +1218,6 @@ function longBut_( dst, array, range, val )
 /*
   qqq : extend documentation and test coverage of longSelect
   Dmytro : documented, covered.
-  Now, routine temporary uses routine longMake to make copy of provided long. Routine longShallowClone throws errors in argumentsArray cases.
 */
 
 function longSelect( array, range, val )
@@ -2548,6 +2600,9 @@ function longHasAll( src, ins, evaluator )
   if( _.primitiveIs( ins ) )
   ins = [ ins ];
 
+  if( ins.length === 0 )
+  return true;
+
   let i = 0;
   let result = 0;
   while( result >= 0 && i < ins.length )
@@ -2751,7 +2806,9 @@ function longNone( src )
  * @memberof wTools
  */
 
-/* qqq : extend coverage, take into account Set case
+/*
+qqq : extend coverage, take into account Set case
+Dmytro : coverage is extended
 */
 
 function arrayMake( src )
@@ -2862,9 +2919,8 @@ function arrayMakeUndefined( src, length )
 
 //
 
-/* qqq
-add good coverage for arrayFrom
-take into account unroll cases
+/*
+qqq : add good coverage for arrayFrom, take into account unroll cases
 Dmytro : covered with unroll cases.
 */
 
@@ -2993,6 +3049,80 @@ function arrayEmpty( dstArray, srcArray )
   _.assert( arguments.length === 1, 'not implemented' );
   dstArray.splice( 0, dstArray.length );
   return dstArray;
+}
+
+//
+
+function arrayExtendAppending( dst, src )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( _.longIs( src ) )
+  {
+
+    if( dst === null || dst === undefined )
+    dst = _.longSlice( src );
+    else if( _.arrayIs( dst ) )
+    dst = _.arrayAppendArray( dst, src );
+    else if( _.longLike( dst ) )
+    dst = _.arrayAppendArrays( null, [ dst, src ] );
+    else
+    dst = _.arrayAppendArray( [ dst ], src );
+
+  }
+  else
+  {
+
+    if( dst === null || dst === undefined )
+    dst = [ src ];
+    else if( _.arrayIs( dst ) )
+    dst = _.arrayAppend( dst, src );
+    else if( _.longLike( dst ) )
+    dst = _.arrayAppendArrays( null, [ dst, src ] );
+    else
+    dst = _.arrayAppend( [ dst ], src );
+
+  }
+
+  return dst;
+}
+
+//
+
+function arrayExtendPrepending( dst, src )
+{
+
+  _.assert( arguments.length === 2 );
+
+  if( _.longIs( src ) )
+  {
+
+    if( dst === null || dst === undefined )
+    dst = _.longSlice( src );
+    else if( _.arrayIs( dst ) )
+    dst = _.arrayPrependArray( dst, src );
+    else if( _.longLike( dst ) )
+    dst = _.arrayPrependArrays( null, [ dst, src ] );
+    else
+    dst = _.arrayPrependArray( [ dst ], src );
+
+  }
+  else
+  {
+
+    if( dst === null || dst === undefined )
+    dst = [ src ];
+    else if( _.arrayIs( dst ) )
+    dst = _.arrayPrepend( dst, src );
+    else if( _.longLike( dst ) )
+    dst = _.arrayPrependArrays( null, [ dst, src ] );
+    else
+    dst = _.arrayPrepend( [ dst ], src );
+
+  }
+
+  return dst;
 }
 
 //
@@ -3230,7 +3360,7 @@ function _argumentsOnlyArray( dst, src, range, ins )
       ins = range;
       range = src;
       src = dst;
-      dst = true;
+      dst = false;
     }
   }
 
@@ -4195,7 +4325,8 @@ function arrayRelength_( dst, src, range, ins )
  */
 
 /*
-qqq : are all combinations of call of routine longCountElement covered?
+qqq : are all combinations of call of routine arrayCountElement covered?
+Dmytro : yes, all combinations of call is implemented
 */
 
 function longCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
@@ -4321,6 +4452,8 @@ function longCountUnique( src, onEvaluate )
 /*
 
 qqq : use for documentation
+Dmytro : Is this information out of date?
+This task was declined a time ago.
 
 alteration Routines :
 
@@ -4488,7 +4621,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   {
     debugger;
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => 'Array should have only unique elements, but has several ' + _.strShort( ins ) );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strShort( ins ) }` );
   }
   else
   {
@@ -4503,7 +4636,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 function arrayPrepended( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   dstArray.unshift( ins );
   return 0;
@@ -4514,7 +4647,7 @@ function arrayPrepended( dstArray, ins )
 /**
  * Method adds a value of argument( ins ) to the beginning of an array( dstArray )
  * if destination( dstArray ) doesn't have the value of ( ins ).
- * Additionaly takes callback( onEqualize ) that checks if element from( dstArray ) is equal to( ins ).
+ * Additionally takes callback( onEqualize ) that checks if element from( dstArray ) is equal to( ins ).
  *
  * @param { Array } dstArray - The destination array.
  * @param { * } ins - The value to add.
@@ -4555,7 +4688,7 @@ function arrayPrepended( dstArray, ins )
 
 function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   let i = _.longLeftIndex.apply( _, arguments );
 
@@ -4576,7 +4709,7 @@ function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   {
     debugger;
     result = arrayPrependedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => 'Array should have only unique elements, but has several ' + _.strShort( ins ) );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strShort( ins ) }` );
   }
   else
   {
@@ -4648,7 +4781,6 @@ function arrayPrependElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
   let result;
   if ( Config.debug )
   {
-    debugger;
     result = arrayPrependedElementOnce.apply( this, arguments );
     _.assert( result !== undefined, 'Array should have only unique elements, but has several', ins );
   }
@@ -4665,7 +4797,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
   let result = arrayPrependedOnce.apply( this, arguments );
-  _.assert( result >= 0, () => 'Array should have only unique elements, but has several ' + _.strShort( ins ) );
+  _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strShort( ins ) }` );
 
   return dstArray;
 }
@@ -4694,7 +4826,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 function arrayPrependedElement( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   dstArray.unshift( ins );
 
@@ -4707,7 +4839,7 @@ function arrayPrependedElement( dstArray, ins )
 
 function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   let i = _.longLeftIndex.apply( _, arguments );
 
@@ -4969,10 +5101,9 @@ function arrayPrependedArray( dstArray, insArray )
 
 function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
-  _.assert( _.longLike( insArray ) );
-  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
+  _.assert( _.longLike( insArray ) );
 
   let result = 0;
 
@@ -5480,7 +5611,7 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   if( Config.debug )
   {
     result = arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => 'Array should have only unique elements, but has several ' + _.strShort( ins ) );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strShort( ins ) }` );
   }
   else
   {
@@ -5494,7 +5625,7 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 function arrayAppended( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
   dstArray.push( ins );
   return dstArray.length - 1;
 }
@@ -5522,7 +5653,7 @@ function arrayAppendedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   if( Config.debug )
   {
     result = arrayAppendedOnce.apply( this, arguments );
-    _.assert( result >= 0, () => 'Array should have only unique elements, but has several ' + _.strShort( ins ) );
+    _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strShort( ins ) }` );
   }
   else
   {
@@ -5588,7 +5719,7 @@ function arrayAppendElementOnceStrictly( dstArray, ins )
 function arrayAppendedElement( dstArray, ins )
 {
   _.assert( arguments.length === 2  );
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
   dstArray.push( ins );
   return dstArray.length - 1;
 }
@@ -6357,9 +6488,8 @@ function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
 function arrayRemovedArray( dstArray, insArray )
 {
   _.assert( arguments.length === 2 )
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
   _.assert( _.longLike( insArray ) );
-  // _.assert( dstArray !== insArray );
 
   if( dstArray === insArray )
   return dstArray.splice( 0 ).length;
@@ -6435,10 +6565,9 @@ function arrayRemovedArray( dstArray, insArray )
 
 function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 {
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
-  _.assert( _.longLike( insArray ) );
-  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
+  _.assert( _.longLike( insArray ) );
 
   if( dstArray === insArray )
   if( arguments.length === 2 )
@@ -6811,7 +6940,7 @@ function arrayFlattened( dstArray, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectIs( this ) );
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${dstArray}"` );
 
   /* qqq : poor code!! ask */
 
@@ -6827,14 +6956,14 @@ function arrayFlattened( dstArray, src )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;  // Dmytro : it has no sence to count result and return dstArray
-    // qqq : why container returned?? that wrong! ask
+    return result;  // Dmytro : it has no sence to count result and return dstArray
+    // qqq : why container returned?? that wrong! ask | Dmytro : fixed
   }
 
   if( _.longHas( dstArray, dstArray ) ) // Dmytro : stack is unstable if dstArray.push( dstArray )
@@ -6898,8 +7027,6 @@ function arrayFlattened( dstArray, src )
 
   function containerReplace( src, index )
   {
-    // dstArray.splice( index, 1 );
-    // result -= 1;
     for( let e of src )
     {
       if( _.longLike( e ) || _.setLike( e ) )
@@ -6909,7 +7036,7 @@ function arrayFlattened( dstArray, src )
       else
       {
         dstArray.splice( index, 0, e );
-        // result += 1;
+        result += 1;
         index += 1;
       }
     }
@@ -6927,7 +7054,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
   let visited = [];
 
   _.assert( arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   if( arguments.length === 1 )
   {
@@ -6943,13 +7070,13 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7023,7 +7150,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
       else if( _.longLeftIndex( dstArray, e ) === -1 )
       {
         dstArray.splice( index, 0, e );
-        // result += 1;
+        result += 1;
         index += 1;
       }
     }
@@ -7035,7 +7162,7 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 // {
 //
 //   _.assert( arguments.length && arguments.length <= 4 );
-//   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+//   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 //
 //   if( arguments.length === 1 )
 //   {
@@ -7111,7 +7238,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
   let visited = [];
 
   _.assert( arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   let oldLength = dstArray.length;
   _.arrayRemoveDuplicates( dstArray );
@@ -7131,13 +7258,13 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7220,7 +7347,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
       else if( _.longLeftIndex( dstArray, e ) === -1 )
       {
         dstArray.splice( index, 0, e );
-        // result += 1;
+        result += 1;
         index += 1;
       }
     }
@@ -7233,7 +7360,7 @@ function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 
 // {
 //
 //   _.assert( arguments.length && arguments.length <= 4 );
-//   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+//   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 //
 //   let oldLength = dstArray.length;
 //   _.arrayRemoveDuplicates( dstArray );
@@ -7359,7 +7486,7 @@ function arrayFlattenedDefined( dstArray, src )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.objectIs( this ) );
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   if( arguments.length === 1 )
   {
@@ -7379,13 +7506,13 @@ function arrayFlattenedDefined( dstArray, src )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7463,7 +7590,7 @@ function arrayFlattenedDefined( dstArray, src )
         if( e !== undefined )
         {
           dstArray.splice( index, 0, e );
-          // result += 1;
+          result += 1;
           index += 1;
         }
       }
@@ -7478,7 +7605,7 @@ function arrayFlattenedDefined( dstArray, src )
 //
 //   _.assert( arguments.length >= 1 );
 //   _.assert( _.objectIs( this ) );
-//   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+//   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 //
 //   if( arguments.length === 1 )
 //   {
@@ -7556,7 +7683,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
   let visited = [];
 
   _.assert( arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   if( arguments.length === 1 )
   {
@@ -7570,20 +7697,20 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
         dstArray.splice( i, 1 );
         i -= 1;
       }
-      if( _.longLike( e ) || _.setLike( e ) )
+      else if( _.longLike( e ) || _.setLike( e ) )
       {
         dstArray.splice( i, 1 );
         if( e !== dstArray )
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7665,7 +7792,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
         if( _.longLeftIndex( dstArray, e ) === -1 )
         {
           dstArray.splice( index, 0, e );
-          // result += 1;
+          result += 1;
           index += 1;
         }
       }
@@ -7678,7 +7805,7 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
 // {
 //
 //   _.assert( arguments.length && arguments.length <= 4 );
-//   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+//   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 //
 //   if( arguments.length === 1 )
 //   {
@@ -7753,7 +7880,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
   let visited = [];
 
   _.assert( arguments.length && arguments.length <= 4 );
-  _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+  _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   let oldLength = dstArray.length;
   _.arrayRemoveDuplicates( dstArray );
@@ -7778,13 +7905,13 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
         i = containerReplace( e, i );
         i -= 1;
       }
-      // else
-      // {
-      //   result += 1;
-      // }
+      else
+      {
+        result += 1;
+      }
     }
 
-    return dstArray;
+    return result;
   }
 
   if( _.longHas( dstArray, dstArray ) )
@@ -7870,7 +7997,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
         if( _.longLeftIndex( dstArray, e ) === -1 )
         {
           dstArray.splice( index, 0, e );
-          // result += 1;
+          result += 1;
           index += 1;
         }
         else if( Config.debug )
@@ -7886,7 +8013,7 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
 // {
 //
 //   _.assert( arguments.length && arguments.length <= 4 );
-//   _.assert( _.arrayIs( dstArray ), () => 'Expects array as the first argument {-dstArray-} ' + 'but got ' + _.strQuote( dstArray ) );
+//   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 //
 //   let oldLength = dstArray.length;
 //   _.arrayRemoveDuplicates( dstArray );
@@ -8658,6 +8785,7 @@ function arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   let index = arrayReplacedOnce.apply( this, arguments );
 
+  /* xxx : ? */
   if( index === -1 )
   {
     dstArray.push( sub );
@@ -8714,16 +8842,12 @@ let Routines =
   longBut,
   longButInplace,
   _argumentsOnlyLong,
-  longBut_,
   longSelect,
   longSelectInplace,
-  longSelect_,
   longGrow,
   longGrowInplace,
-  longGrow_,
   longRelength,
   longRelengthInplace,
-  longRelength_,
 
   // array checker
 
@@ -8760,20 +8884,18 @@ let Routines =
 
   arraySlice,
   arrayEmpty,
+  arrayExtendAppending,
+  arrayExtendPrepending,
 
   arrayBut,
   arrayButInplace,
   _argumentsOnlyArray,
-  arrayBut_,
   arraySelect,
   arraySelectInplace,
-  arraySelect_,
   arrayGrow,
   arrayGrowInplace,
-  arrayGrow_,
   arrayRelength,
   arrayRelengthInplace,
-  arrayRelength_,
 
   // long sequential search
 
@@ -8922,6 +9044,78 @@ let Routines =
   arrayReplacedArraysOnceStrictly,
 
   arrayUpdate,
+
+  // to replace
+
+  longBut_, /* !!! : use instead of longBut, longButInplace */
+  longSelect_, /* !!! : use instead of longSelect, longSelectInplace */
+  longGrow_, /* !!! : use instead of longGrow, longGrowInplace */
+  longRelength_, /* !!! : use instead of longRelength, longRelengthInplace */
+  arrayBut_, /* !!! : use instead of arrayBut, arrayButInplace */
+  arraySelect_, /* !!! : use instead of arraySelect, arraySelectInplace */
+  arrayGrow_, /* !!! : use instead of arrayGrow, arrayGrowInplace */
+  arrayRelength_, /* !!! : use instead of arrayRelength, arrayRelengthInplace */
+
+  /*
+  | routine          | makes new dst container                  | saves dst container                                     |
+  | ---------------- | ---------------------------------------- | ------------------------------------------------------- |
+  | longBut_         | _.longBut_( null, src, range )           | _.longBut_( src )                                       |
+  |                  | _.longBut_( dst, src, range )            | _.longBut_( src, range )                                |
+  |                  | if dst not resizable and change length   | _.longBut_( dst, dst )                                  |
+  |                  |                                          | _.longBut_( dst, dst, range ) if dst is resizable       |
+  |                  |                                          | or dst not change length                                |
+  |                  |                                          | _.longBut_( dst, src, range ) if dst is resizable       |
+  |                  |                                          | or dst not change length                                |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
+  | longSelect_      | _.longSelect_( null, src, range )        | _.longSelect_( src )                                    |
+  |                  | _.longSelect_( dst, src, range )         | _.longSelect_( src, range )                             |
+  |                  | if dst not resizable and change length   | _.longSelect_( dst, dst )                               |
+  |                  |                                          | _.longSelect_( dst, dst, range ) if dst is resizable    |
+  |                  |                                          | or dst not change length                                |
+  |                  |                                          | _.longSelect_( dst, src, range ) if dst is resizable    |
+  |                  |                                          | or dst not change length                                |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
+  | longGrow_        | _.longGrow_( null, src, range )          | _.longGrow_( src )                                      |
+  |                  | _.longGrow_( dst, src, range )           | _.longGrow_( src, range )                               |
+  |                  | if dst not resizable and change length   | _.longGrow_( dst, dst )                                 |
+  |                  |                                          | _.longGrow_( dst, dst, range ) if dst is resizable      |
+  |                  |                                          | or dst not change length                                |
+  |                  |                                          | _.longGrow_( dst, src, range ) if dst is resizable      |
+  |                  |                                          | or dst not change length                                |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
+  | longRelength_    | _.longRelength_( null, src, range )      | _.longRelength_( src )                                  |
+  |                  | _.longRelength_( dst, src, range )       | _.longRelength_( src, range )                           |
+  |                  | if dst not resizable and change length   | _.longRelength_( dst, dst )                             |
+  |                  |                                          | _.longRelength_( dst, dst, range ) if dst is resizable  |
+  |                  |                                          | or dst not change length                                |
+  |                  |                                          | _.longRelength_( dst, src, range ) if dst is resizable  |
+  |                  |                                          | or dst not change length                                |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
+  | arrayBut_        | _.arrayBut_( null, src, range )          | _.arrayBut_( src )                                      |
+  |                  |                                          | _.arrayBut_( src, range )                               |
+  |                  |                                          | _.arrayBut_( dst, dst, range )                          |
+  |                  |                                          | _.arrayBut_( dst, src )                                 |
+  |                  |                                          | _.arrayBut_( dst, src, range )                          |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
+  | arraySelect_     | _.arraySelect_( null, src, range )       | _.arraySelect_( src )                                   |
+  |                  |                                          | _.arraySelect_( src, range )                            |
+  |                  |                                          | _.arraySelect_( dst, dst, range )                       |
+  |                  |                                          | _.arraySelect_( dst, src )                              |
+  |                  |                                          | _.arraySelect_( dst, src, range )                       |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
+  | arrayGrow_       | _.arrayGrow_( null, src, range )         | _.arrayGrow_( src )                                     |
+  |                  |                                          | _.arrayGrow_( src, range )                              |
+  |                  |                                          | _.arrayGrow_( dst, dst, range )                         |
+  |                  |                                          | _.arrayGrow_( dst, src )                                |
+  |                  |                                          | _.arrayGrow_( dst, src, range )                         |
+  | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
+  | arrayRelength_   | _.arrayRelength_( null, src, range )     | _.arrayRelength_( src )                                 |
+  |                  |                                          | _.arrayRelength_( src, range )                          |
+  |                  |                                          | _.arrayRelength_( dst, dst, range )                     |
+  |                  |                                          | _.arrayRelength_( dst, src )                            |
+  |                  |                                          | _.arrayRelength_( dst, src, range )                     |
+  | ---------------- | ---------------------------------------- | ------------------------------------------------------- |
+  */
 
 }
 

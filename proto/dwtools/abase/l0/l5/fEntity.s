@@ -7,119 +7,119 @@ let _ = _global_.wTools;
 let Self = _global_.wTools;
 
 let _ObjectHasOwnProperty = Object.hasOwnProperty;
-
-// --
-// set
-// --
-
-function setFrom( src )
-{
-  _.assert( arguments.length === 1 );
-  if( _.setAkin( src ) )
-  return src;
-  if( src === null )
-  return new Set();
-  if( _.containerAdapter.is( src ) )
-  src = src.toArray().original;
-  _.assert( _.longIs( src ) );
-  return new Set([ ... src ]);
-}
-
 //
-
-function setsFrom( srcs )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( _.longIs( srcs ) );
-  let result = [];
-  for( let s = 0, l = srcs.length ; s < l ; s++ )
-  result[ s ] = _.setFrom( srcs[ s ] );
-  return result;
-}
-
+// // --
+// // set
+// // --
 //
-
-function setToArray( src )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( _.setLike( src ) );
-  return [ ... src ];
-}
-
+// function setFrom( src )
+// {
+//   _.assert( arguments.length === 1 );
+//   if( _.setAdapterLike( src ) )
+//   return src;
+//   if( src === null )
+//   return new Set();
+//   if( _.containerAdapter.is( src ) )
+//   src = src.toArray().original;
+//   _.assert( _.longIs( src ) );
+//   return new Set([ ... src ]);
+// }
 //
-
-function setsToArrays( srcs )
-{
-  _.assert( arguments.length === 1 );
-  _.assert( _.longIs( srcs ) );
-  let result = [];
-  for( let s = 0, l = srcs.length ; s < l ; s++ )
-  result[ s ] = _.setToArray( srcs[ s ] );
-  return result;
-}
+// //
+//
+// function setsFrom( srcs )
+// {
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.longIs( srcs ) );
+//   let result = [];
+//   for( let s = 0, l = srcs.length ; s < l ; s++ )
+//   result[ s ] = _.setFrom( srcs[ s ] );
+//   return result;
+// }
+//
+// //
+//
+// function setToArray( src )
+// {
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.setLike( src ) );
+//   return [ ... src ];
+// }
+//
+// //
+//
+// function setsToArrays( srcs )
+// {
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.longIs( srcs ) );
+//   let result = [];
+//   for( let s = 0, l = srcs.length ; s < l ; s++ )
+//   result[ s ] = _.setToArray( srcs[ s ] );
+//   return result;
+// }
 
 // --
 // entity modifier
 // --
 
-function enityExtend( dst, src )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( _.objectIs( src ) || _.longIs( src ) )
-  {
-
-    _.each( src, function( e, k )
-    {
-      dst[ k ] = e;
-    });
-
-  }
-  else
-  {
-
-    dst = src;
-
-  }
-
-  return dst;
-}
-
+// function containerExtend( dst, src )
+// {
 //
-
-function enityExtendAppending( dst, src )
-{
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( _.objectIs( src ) )
-  {
-
-    _.each( src, function( e, k )
-    {
-      dst[ k ] = e;
-    });
-
-  }
-  else if( _.longIs( src ) )
-  {
-
-    if( dst === null || dst === undefined )
-    dst = _.longSlice( src );
-    else
-    _.arrayAppendArray( dst, src );
-
-  }
-  else
-  {
-
-    dst = src;
-
-  }
-
-  return dst;
-}
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   if( _.objectIs( src ) || _.longIs( src ) )
+//   {
+//
+//     _.each( src, function( e, k )
+//     {
+//       dst[ k ] = e;
+//     });
+//
+//   }
+//   else
+//   {
+//
+//     dst = src;
+//
+//   }
+//
+//   return dst;
+// }
+//
+// //
+//
+// function containerExtendAppending( dst, src )
+// {
+//
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//
+//   if( _.objectIs( src ) )
+//   {
+//
+//     _.each( src, function( e, k )
+//     {
+//       dst[ k ] = e;
+//     });
+//
+//   }
+//   else if( _.longIs( src ) )
+//   {
+//
+//     if( dst === null || dst === undefined )
+//     dst = _.longSlice( src );
+//     else
+//     _.arrayAppendArray( dst, src );
+//
+//   }
+//   else
+//   {
+//
+//     dst = src;
+//
+//   }
+//
+//   return dst;
+// }
 
 //
 
@@ -206,7 +206,7 @@ function entityMakeUndefined( srcContainer, length )
   }
   else if( _.longIs( srcContainer ) )
   {
-    debugger;
+    // debugger;
     return _.longMake( srcContainer, length );
     // if( _.bufferTypedIs( srcContainer ) || _.bufferNodeIs( srcContainer ) )
     // return new srcContainer.constructor( length !== undefined ? length : srcContainer.length );
@@ -252,21 +252,104 @@ function entityMake( src )
 
 }
 
+// //
+//
+// function _.container.empty( dstContainer )
+// {
+//   if( _.longIs( dstContainer ) )
+//   _.longEmpty( dstContainer );
+//   else if( _.setIs( dstContainer ) )
+//   dstContainer.clear();
+//   else if( _.hashMapIs( dstContainer ) )
+//   dstContainer.clear();
+//   else if( _.mapLike( dstContainer ) )
+//   _.mapEmpty( dstContainer );
+//   else
+//   _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );
+//   return dstContainer;
+// }
+
+// //
+//
+// function containerExtend( dst, src )
+// {
+//
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//
+//   xxx
+//
+//   // if( arguments.length === 1 )
+//   // xxx
+//
+// }
+
 //
 
-/* qqq : cover and jsdoc please */
+/**
+ * The routine entityEntityEqualize() checks equality of two entities {-src1-} and {-src2-}.
+ * Routine accepts callbacks {-onEvaluate1-} and {-onEvaluate2-}, which apply to
+ * entities {-src1-} and {-src2-}. The values returned by callbacks are compared with each other.
+ * If callbacks is not passed, then routine compares {-src1-} and {-src2-} directly.
+ *
+ * @param { * } src1 - First entity to compare.
+ * @param { * } src2 - Second entity to compare.
+ * @param { Function } onEvaluate - It's a callback. If the routine has two parameters,
+ * it is used as an equalizer, and if it has only one, then routine is used as the evaluator.
+ * @param { Function } onEvaluate2 - The second part of evaluator. Accepts the {-src2-} to search.
+ *
+ * @example
+ * _.entityEntityEqualize( 1, 1 );
+ * // returns true
+ *
+ * @example
+ * _.entityEntityEqualize( 1, 'str' );
+ * // returns false
+ *
+ * @example
+ * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ] );
+ * // returns false
+ *
+ * @example
+ * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e ) => e[ 0 ] );
+ * // returns true
+ *
+ * @example
+ * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1, e2 ) => e1[ 0 ] > e2[ 2 ] );
+ * // returns false
+ *
+ * @example
+ * _.entityEntityEqualize( [ 1, 2, 3 ], [ 1, 2, 3 ], ( e1 ) => e1[ 2 ], ( e2 ) => e2[ 2 ] );
+ * // returns true
+ *
+ * @returns { Boolean } - Returns boolean value of equality of two entities.
+ * @function entityEntityEqualize
+ * @throws { Error } If arguments.length is less then two or more then four.
+ * @throws { Error } If {-onEvaluate1-} is not a routine.
+ * @throws { Error } If {-onEvaluate1-} is undefines and onEvaluate2 provided.
+ * @throws { Error } If {-onEvaluate1-} is evaluator and accepts less or more then one parameter.
+ * @throws { Error } If {-onEvaluate1-} is equalizer and onEvaluate2 provided.
+ * @throws { Error } If {-onEvaluate2-} is not a routine.
+ * @throws { Error } If {-onEvaluate2-} accepts less or more then one parameter.
+ * @memberof wTools
+ */
+
+/* qqq : cover and jsdoc please | Dmytro : covered and documented */
+
 function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
 {
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   if( !onEvaluate1 )
   {
     _.assert( !onEvaluate2 );
-    return src1 === src2;
+    return Object.is( src1, src2 );
+    // return src1 === src2;
   }
   else if( onEvaluate1.length === 2 ) /* equalizer */
   {
     _.assert( !onEvaluate2 );
-    return onEvaluate1( arr[ a ], ins );
+    return onEvaluate1( src1, src2 );
   }
   else /* evaluator */
   {
@@ -274,7 +357,7 @@ function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
     onEvaluate2 = onEvaluate1;
     _.assert( onEvaluate1.length === 1 );
     _.assert( onEvaluate2.length === 1 );
-    return onEvaluate1( src1 ) === onEvaluate2( src1 );
+    return onEvaluate1( src1 ) === onEvaluate2( src2 );
   }
 
 }
@@ -513,17 +596,17 @@ let Fields =
 let Routines =
 {
 
-  // set
-
-  setFrom,
-  setsFrom,
-  setToArray,
-  setsToArrays,
+  // // set
+  //
+  // setFrom,
+  // setsFrom,
+  // setToArray,
+  // setsToArrays,
 
   // entity modifier
 
-  enityExtend,
-  enityExtendAppending,
+  // containerExtend,
+  // containerExtendAppending,
 
   entityMakeConstructing,
   entityMakeEmpty,
@@ -533,6 +616,10 @@ let Routines =
   entityMake,
   make : entityMake,
 
+  // _.container.empty, /* qqq : implement coverage */
+  // empty : _.container.empty,
+
+  // containerExtend,
   entityEntityEqualize,
 
   entityAssign, /* refactor!!! */
@@ -549,10 +636,6 @@ Object.assign( Self, Fields );
 // --
 // export
 // --
-
-// if( typeof module !== 'undefined' )
-// if( _global.WTOOLS_PRIVATE )
-// { /* delete require.cache[ module.id ]; */ }
 
 if( typeof module !== 'undefined' && module !== null )
 module[ 'exports' ] = Self;

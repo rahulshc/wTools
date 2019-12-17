@@ -22,6 +22,20 @@ function rangeIs( range )
 
 //
 
+function rangeDefined( range )
+{
+  _.assert( arguments.length === 1 );
+  if( range.length !== 2 )
+  return false;
+  if( !_.numberDefined( range[ 0 ] ) )
+  return false;
+  if( !_.numberDefined( range[ 1 ] ) )
+  return false;
+  return true;
+}
+
+//
+
 function rangeIsEmpty( range )
 {
   _.assert( arguments.length === 1 );
@@ -158,9 +172,13 @@ let Routines =
 
   // range
 
-  /* qqq : good coverage of each routine is required */
+  /*
+  qqq : good coverage of each routine is required
+  Dmytro : all routines covered
+  */
 
   rangeIs,
+  rangeDefined,
   rangeIsEmpty,
   rangeIsPopulated,
 

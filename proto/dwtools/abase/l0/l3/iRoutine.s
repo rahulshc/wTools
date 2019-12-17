@@ -18,6 +18,13 @@ function routineIs( src )
 
 //
 
+function routineLike( src )
+{
+  return _.routineIs( src );
+}
+
+//
+
 function routineIsSync( src )
 {
   return Object.prototype.toString.call( src ) === '[object Function]'
@@ -53,9 +60,12 @@ function routineIsPure( src )
 {
   if( !src )
   return false;
-  if( !( Object.getPrototypeOf( src ) === Function.__proto__ ) )
-  return false;
+  let proto = Object.getPrototypeOf( src );
+  if( proto === Function.__proto__ )
   return true;
+  if( proto.constructor.name === 'AsyncFunction' )
+  return true;
+  return false;
 }
 
 //
@@ -667,6 +677,7 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 
 /*
 qqq implement and cover _.routineExtend( null, routine );
+Dmytro : implemented a time ago, covered
 */
 
 /**
@@ -740,9 +751,17 @@ function routineExtend( dst, src )
     }
 
     if( dstMap.pre && dstMap.body )
-    dst = _.routineFromPreAndBody( dstMap.pre, dstMap.body );
+    {
+      dst = _.routineFromPreAndBody( dstMap.pre, dstMap.body );
+    }
     else
-    _.assert( 0, 'Not clear how to construct the routine' );
+    {
+      _.assert( _.routineIs( src ) );
+      dst = function(){ return src.apply( this, arguments ); }
+    }
+    // _.assert( 0, 'Not clear how to construct the routine' );
+    // dst = dstMap;
+
   }
 
   /* shallow clone properties of dst routine */
@@ -1134,7 +1153,7 @@ function vectorize_body( o )
         if( vectorizingArray )
         _.assert( !_.arrayLike( args[ d ] ), () => 'Arguments should have only arrays or only maps, but not both. Incorrect argument : ' + args[ d ] );
         let arg = Object.create( null );
-        _.mapSetWithKeys( arg, keys, args[ d ] );
+        _.objectSetWithKeys( arg, keys, args[ d ] );
         args[ d ] = arg;
       }
     }
@@ -1265,7 +1284,7 @@ function vectorize_body( o )
       }
       return result;
     }
-    else if( vectorizingContainerAdapter && _._.containerAdapter.is( src ) ) /* qqq : cover */
+    else if( vectorizingContainerAdapter && _.containerAdapter.is( src ) ) /* qqq : cover */
     {
       debugger;
       if( pre )
@@ -1557,6 +1576,8 @@ function vectorizeAll_body( o )
 
   let routine1 = _.vectorize.body.call( this, o );
 
+  _.routineExtend( all, o.routine );
+
   return all;
 
   function all()
@@ -1589,6 +1610,7 @@ function vectorizeAny_body( o )
   _.assertRoutineOptions( vectorize, arguments );
 
   let routine1 = _.vectorize.body.call( this, o );
+  _.routineExtend( any, o.routine );
 
   return any;
 
@@ -1622,6 +1644,7 @@ function vectorizeNone_body( o )
   _.assertRoutineOptions( vectorize, arguments );
 
   let routine1 = _.vectorize.body.call( this, o );
+  _.routineExtend( none, o.routine );
 
   return none;
 
@@ -1663,7 +1686,8 @@ let Fields =
 let Routines =
 {
 
-  routineIs,
+  routineIs, /* qqq : cover pelase */
+  routineLike, /* qqq : cover pelase */
   routineIsSync,
   routineIsAsync,
   routinesAre,

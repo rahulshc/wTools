@@ -40,32 +40,42 @@ function containerLike( src )
 
 //
 
-function hashMapIs( src )
+/**
+ * Routine iterableIs() checks provided argument {-src-} whether it is countable ( iteratable ).
+ * Returns "true" if provided argument is countable. Othervise "false" returned.
+ *
+ * @param { * } src - Argument of any type.
+ *
+ * @example
+ * _.iterableIs( 10 );
+ * // returns false
+ *
+ * @example
+ * _.iterableIs( [ 1, 2, 3 ] );
+ * // returns true
+ *
+ * @example
+ * _.iterableIs( { a : 2, b : 'str' } );
+ * // returns true
+ *
+ * @example
+ * _.iterableIs( new Set( [ 1, 2, 3 ] ) );
+ * // returns true
+ *
+ * @return { Boolean } - Returns the boolean value of whether the argument is countable.
+ * @function iterableIs
+ * @memberof wTools
+ */
+
+function iterableIs( src )
 {
   if( !src )
   return false;
-  return src instanceof HashMap || src instanceof HashMapWeak;
-}
-
-//
-
-function hashMapLike( src )
-{
-  return _.hashMapIs( src );
-}
-
-//
-
-function hashMapIsEmpty()
-{
-  return !src.size;
-}
-
-//
-
-function hashMapIsPopulated()
-{
-  return !!src.size;
+  if( _.mapLike( src ) )
+  return true;
+  if( src[ Symbol.iterator ] )
+  return true;
+  return false;
 }
 
 //
@@ -86,7 +96,7 @@ function setLike( src )
 
 //
 
-function setAkin( src )
+function setAdapterLike( src )
 {
   if( !src )
   return false;
@@ -130,17 +140,14 @@ let Routines =
 
   containerIs,
   containerLike,
-
-  hashMapIs,
-  hashMapLike,
-  hashMapIsEmpty,
-  hashMapIsPopulated,
+  iterableIs,
 
   setIs,
   setLike,
-  setAkin,
+  setAdapterLike,
   setIsEmpty,
   setIsPopulated,
+  // xxx : move
 
 }
 
