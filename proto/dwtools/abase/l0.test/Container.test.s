@@ -314,6 +314,68 @@ function extendReplacingDstNull( test )
 
   /* - */
 
+  test.open( 'src - not container' );
+
+  test.case = 'dst - long, src - primitive';
+  var dst = [ 1, 2 ];
+  var got = _.container.extendReplacing( dst, 1 );
+  var exp = 1;
+  test.identical( got, exp );
+
+  test.case = 'dst - map, src - primitive';
+  var dst = { a : 2 };
+  var got = _.container.extendReplacing( dst, 'str' );
+  var exp = 'str';
+  test.identical( got, exp );
+
+  test.case = 'dst - HashMap, src - primitive';
+  var dst = new Map( [ [ undefined, undefined ] ] );
+  var got = _.container.extendReplacing( dst, null );
+  var exp = null;
+  test.identical( got, exp );
+
+  test.case = 'dst - Set, src - primitive';
+  var dst = new Set( [ 1, 2 ] );
+  var got = _.container.extendReplacing( dst, undefined );
+  var exp = undefined;
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'dst - long, src - BufferRaw';
+  var dst = [ 1, 2 ];
+  var got = _.container.extendReplacing( dst, new BufferRaw() );
+  var exp = new BufferRaw();
+  test.identical( got, exp );
+
+  test.case = 'dst - map, src - function';
+  var dst = { a : 2 };
+  var func = function(){};
+  var got = _.container.extendReplacing( dst, func );
+  var exp = func;
+  test.identical( got, exp );
+
+  test.case = 'dst - HashMap, src - BufferView';
+  var dst = new Map( [ [ undefined, undefined ] ] );
+  var got = _.container.extendReplacing( dst, new BufferView( new BufferRaw() ) );
+  var exp = new BufferView( new BufferRaw() );
+  test.identical( got, exp );
+
+  test.case = 'dst - Set, src - object';
+  var dst = new Set( [ 1, 2 ] );
+  var Constr = function()
+  { 
+    this.x = 1;
+    return this;
+  };
+  var got = _.container.extendReplacing( dst, new Constr() );
+  var exp = new Constr();
+  test.identical( got, exp );
+
+  test.close( 'src - not container' );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
