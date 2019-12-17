@@ -10,10 +10,10 @@ let Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
 // setup
 // --
 
-function _errUnhandledHandler2( err, kind )
+function _errUncaughtHandler2( err, kind )
 {
   if( !kind )
-  kind = 'unhandled error';
+  kind = 'uncaught error';
   let prefix = `--------------- ${kind} --------------->\n`;
   let postfix = `--------------- ${kind} ---------------<\n`;
   let logger = _global.logger || _global.console;
@@ -136,29 +136,29 @@ function _errUnhandledHandler2( err, kind )
 
 //
 
-function _setupUnhandledErrorHandler1()
+function _setupUncaughtErrorHandler9()
 {
 
-  if( !_global._setupUnhandledErrorHandlerDone )
+  if( !_global._setupUncaughtErrorHandlerDone )
   {
     debugger;
     throw Error( 'setup0 should be called first' );
   }
 
-  if( _global._setupUnhandledErrorHandlerDone > 1 )
+  if( _global._setupUncaughtErrorHandlerDone > 1 )
   return;
 
-  _global._setupUnhandledErrorHandlerDone = 2;
+  _global._setupUncaughtErrorHandlerDone = 2;
 
   /* */
 
   if( _global.process && _.routineIs( _global.process.on ) )
   {
-    _.setup._errUnhandledPre = _errPreNode;
+    _.setup._errUncaughtPre = _errPreNode;
   }
   else if( Object.hasOwnProperty.call( _global, 'onerror' ) )
   {
-    _.setup._errUnhandledPre = _errPreBrowser;
+    _.setup._errUncaughtPre = _errPreBrowser;
   }
 
   /* */
@@ -251,10 +251,10 @@ function _setupTesterPlaceholder()
     _realGlobal_.wTests = Object.create( null );
 
     if( !testSuit.suiteFilePath )
-    testSuit.suiteFilePath = _.diagnosticLocation( 1 ).path;
+    testSuit.suiteFilePath = _.introspector.location( 1 ).filePath;
 
     if( !testSuit.suiteFileLocation )
-    testSuit.suiteFileLocation = _.diagnosticLocation( 1 ).full;
+    testSuit.suiteFileLocation = _.introspector.location( 1 ).full;
 
     _.assert( _.strDefined( testSuit.suiteFileLocation ),'Test suit expects a mandatory option ( suiteFileLocation )' );
     _.assert( _.objectIs( testSuit ) );
@@ -306,12 +306,12 @@ function _setupProcedure()
   if( Self._entryProcedureStack )
   return;
 
-  let stack = _.diagnosticStack().split( '\n' );
+  let stack = _.introspector.stack().split( '\n' );
   for( let s = stack.length-1 ; s >= 0 ; s-- )
   {
     let call = stack[ s ];
-    let location = _.diagnosticLocationFromCall( call );
-    if( !location.isInternal )
+    let location = _.introspector.locationFromStackFrame( call );
+    if( !location.internal )
     {
       stack.splice( s+1, stack.length );
       stack.splice( 0, s );
@@ -324,7 +324,7 @@ function _setupProcedure()
 
 //
 
-function _setup9()
+function _Setup9()
 {
 
   _.assert( _global._WTOOLS_SETUP_EXPECTED_ !== false );
@@ -332,7 +332,7 @@ function _setup9()
   if( _global._WTOOLS_SETUP_EXPECTED_ !== false )
   {
     _.setup._setupConfig();
-    _.setup._setupUnhandledErrorHandler1();
+    _.setup._setupUncaughtErrorHandler9();
     _.setup._setupLoggerPlaceholder();
     _.setup._setupTesterPlaceholder();
     _.setup._setupProcedure();
@@ -356,22 +356,22 @@ let Fields =
 let Routines =
 {
 
-  _errUnhandledHandler2,
-  _setupUnhandledErrorHandler1,
+  _errUncaughtHandler2,
+  _setupUncaughtErrorHandler9,
 
   _setupConfig,
   _setupLoggerPlaceholder,
   _setupTesterPlaceholder,
   _setupProcedure,
 
-  _setup9,
+  _Setup9,
 
 }
 
 Object.assign( Self, Fields );
 Object.assign( Self, Routines );
 
-Self._setup9();
+Self._Setup9();
 
 // --
 // export

@@ -6,8 +6,6 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _.event = _.event || Object.create( null );
 
-_.assert( !!_realGlobal_ );
-
 // --
 // implementation
 // --
