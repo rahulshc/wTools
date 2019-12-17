@@ -44,10 +44,8 @@ function stackBasic( test )
   /* - */
 
   test.case = 'trivial';
-  debugger;
-  var expectedTrace = [ 'function3', 'function2', 'function1', _.introspector.location().routineName, _.introspector.location().fileName ];
+  var expectedTrace = [ 'function3', 'function2', 'function1', _.introspector.location().routineName ];
   var got = function1();
-  debugger;
   got = got.split( '\n' );
   expectedTrace.forEach( function( expectedStr, i )
   {
@@ -145,6 +143,7 @@ function locationFromStackFrame( test )
     'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
     'routineFilePathLineCol' : 'Object.stackBasic @ /C/dir/Introspector.test.s:48:79',
     'fileName' : 'Introspector.test.s',
+    'fileNameLineCol' : 'Introspector.test.s:48:79',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -164,7 +163,8 @@ function locationFromStackFrame( test )
     'col' : 79,
     'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
     'routineFilePathLineCol' : 'Object.stackBasic @ /C/dir/Introspector.test.s:48:79',
-    'fileName' : 'Introspector.test.s'
+    'fileName' : 'Introspector.test.s',
+    'fileNameLineCol' : 'Introspector.test.s:48:79',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -184,7 +184,8 @@ function locationFromStackFrame( test )
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
     'routineFilePathLineCol' : 'iteration @ /C/dir/File.js:5:47',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:47'
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -204,7 +205,8 @@ function locationFromStackFrame( test )
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
     'routineFilePathLineCol' : 'iteration @ /C/dir/File.js:5:47',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:47'
   }
   /* xxx2 : problem in _.toStr( 'some\\path' )! */
   var got = _.introspector.locationFromStackFrame( stackCall );
@@ -225,7 +227,8 @@ function locationFromStackFrame( test )
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
     'routineFilePathLineCol' : '_iteration @ /C/dir/File.js:5:47',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:47',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -245,7 +248,8 @@ function locationFromStackFrame( test )
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
     'routineFilePathLineCol' : '__iteration @ /C/dir/File.js:5:47',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:47',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -265,7 +269,8 @@ function locationFromStackFrame( test )
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
     'routineFilePathLineCol' : 'wConsequence.handle_Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -285,7 +290,8 @@ function locationFromStackFrame( test )
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
     'routineFilePathLineCol' : 'wConsequence._handle_Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -305,7 +311,8 @@ function locationFromStackFrame( test )
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
     'routineFilePathLineCol' : 'wConsequence.__handle_Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -325,7 +332,8 @@ function locationFromStackFrame( test )
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
     'routineFilePathLineCol' : 'wConsequence.handle__Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -345,7 +353,8 @@ function locationFromStackFrame( test )
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
     'routineFilePathLineCol' : 'wConsequence._handle__Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -365,7 +374,8 @@ function locationFromStackFrame( test )
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
     'routineFilePathLineCol' : 'wConsequence.__handle__Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -385,7 +395,8 @@ function locationFromStackFrame( test )
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
     'routineFilePathLineCol' : 'wConsequence.{-anonymous-} @ /C/dir/File.js:9:15',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:9:15',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -405,7 +416,8 @@ function locationFromStackFrame( test )
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
     'routineFilePathLineCol' : 'wConsequence.{-anonymous-}.{-anonymous-} @ /C/dir/File.js:9:15',
-    'fileName' : 'File.js'
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:9:15',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -425,7 +437,8 @@ function locationFromStackFrame( test )
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
     'routineFilePathLineCol' : 'Object.time @ /C/dir/Procedure.s:1503:20',
-    'fileName' : 'Procedure.s'
+    'fileName' : 'Procedure.s',
+    'fileNameLineCol' : 'Procedure.s:1503:20',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -445,7 +458,8 @@ function locationFromStackFrame( test )
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
     'routineFilePathLineCol' : 'Object.time @ /C/dir/Procedure.s:1503:20',
-    'fileName' : 'Procedure.s'
+    'fileName' : 'Procedure.s',
+    'fileNameLineCol' : 'Procedure.s:1503:20',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -465,7 +479,8 @@ function locationFromStackFrame( test )
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
     'routineFilePathLineCol' : 'Object.__time @ /C/dir/Procedure.s:1503:20',
-    'fileName' : 'Procedure.s'
+    'fileName' : 'Procedure.s',
+    'fileNameLineCol' : 'Procedure.s:1503:20',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -485,7 +500,8 @@ function locationFromStackFrame( test )
     'col' : 17,
     'filePathLineCol' : 'internal/timers.js:531:17',
     'routineFilePathLineCol' : 'listOnTimeout @ internal/timers.js:531:17',
-    'fileName' : 'timers.js'
+    'fileName' : 'timers.js',
+    'fileNameLineCol' : 'timers.js:531:17',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -505,7 +521,8 @@ function locationFromStackFrame( test )
     'col' : 16,
     'filePathLineCol' : '<anonymous>:1:16',
     'routineFilePathLineCol' : 'eval @ <anonymous>:1:16',
-    'fileName' : '<anonymous>'
+    'fileName' : '<anonymous>',
+    'fileNameLineCol' : '<anonymous>:1:16',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -525,7 +542,8 @@ function locationFromStackFrame( test )
     'col' : 5,
     'filePathLineCol' : '/C/basic/program2.js:13:5',
     'routineFilePathLineCol' : 'program2 @ /C/basic/program2.js:13:5',
-    'fileName' : 'program2.js'
+    'fileName' : 'program2.js',
+    'fileNameLineCol' : 'program2.js:13:5',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
@@ -545,7 +563,8 @@ function locationFromStackFrame( test )
     'col' : 5,
     'filePathLineCol' : '/C/basic/program2.js:13:5',
     'routineFilePathLineCol' : 'program2 @ /C/basic/program2.js:13:5',
-    'fileName' : 'program2.js'
+    'fileName' : 'program2.js',
+    'fileNameLineCol' : 'program2.js:13:5',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
