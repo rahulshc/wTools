@@ -147,6 +147,51 @@ function withoutIsIncluded( test )
 
 }
 
+//
+
+function moduleExportsUndefined( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let toolsPath = a.path.nativize( a.path.join( __dirname, '../../Tools.s' ) )
+  let program1Path = a.program( program1 );
+  let modulePath = a.path.join( program1Path, '../module.js' )
+  
+  a.fileProvider.fileWrite({ filePath : modulePath, data : `module.exports = undefined;` })
+
+  /* */
+
+  a.jsNonThrowing({ execPath : program1Path })
+  .then( ( op ) =>
+  {
+    test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'program1.begin' ), 1 );
+    test.identical( _.strCount( op.output, 'module.begin' ), 1 );
+    test.identical( _.strCount( op.output, 'module.end' ), 1 );
+    test.identical( _.strCount( op.output, 'program1.end' ), 1 );
+    test.identical( _.strCount( op.output, 'importedModule:undefined' ), 1 );
+    return null;
+  });
+
+  /* */
+
+  return a.ready;
+
+  function program1()
+  {
+    console.log( 'program1.begin' );
+    let _ = require( toolsPath );
+    var importedModule = require( './module.js' );
+    console.log( 'importedModule:', importedModule)
+    console.log( 'program1.end' );
+  }
+}
+
+moduleExportsUndefined.description  = 
+`
+  Included module returns undefined
+`
+
 // --
 // test suite definition
 // --
@@ -172,7 +217,7 @@ var Self =
 
     withIsIncluded,
     withoutIsIncluded,
-
+    moduleExportsUndefined
   }
 
 }
