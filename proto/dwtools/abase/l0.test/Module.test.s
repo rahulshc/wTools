@@ -165,6 +165,8 @@ function moduleExportsUndefined( test )
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
+    test.identical( _.strCount( op.output, 'nhandled' ), 0 );
+    test.identical( _.strCount( op.output, 'error' ), 0 );
     test.identical( _.strCount( op.output, 'program1.begin' ), 1 );
     test.identical( _.strCount( op.output, 'importedModule: undefined' ), 1 );
     test.identical( _.strCount( op.output, 'program1.end' ), 1 );
