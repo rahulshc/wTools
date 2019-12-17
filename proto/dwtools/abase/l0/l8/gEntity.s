@@ -17,8 +17,7 @@ let Self = _global_.wTools;
  *  - For undefined returns 0;
  *  - In other cases returns 1.
  *
- * @param {*} src - Source entity.
- * @returns {number} Returns "length" of entity.
+ * @param { * } src - Source entity.
  *
  * @example
  * _.entityLength( [ 1, 2, 3 ] );
@@ -37,6 +36,7 @@ let Self = _global_.wTools;
  * _.entityLength( src );
  * // returns 0
  *
+ * @returns {number} Returns "length" of entity.
  * @function entityLength
  * @memberof wTools
 */
@@ -198,7 +198,7 @@ let Fields =
 let Routines =
 {
 
-  entityLength, /* qqq : implement coverage */
+  entityLength, /* qqq : implement coverage | Dmytro : coverage is extended */
   lengthOf : entityLength,
 
   uncountableSize, /* qqq : implement coverage */

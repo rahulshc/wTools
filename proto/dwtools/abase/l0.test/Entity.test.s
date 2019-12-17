@@ -413,34 +413,119 @@ qqq : improve test entityLength, normalize it, please
 
 function entityLength( test )
 {
+  test.case = 'undefined';
+  var got = _.entityLength( undefined );
+  test.identical( got, 0 );
 
-  var x1 = undefined,
-    x2 = 34,
-    x3 = 'hello',
-    x4 = [ 23, 17, , 34 ],
-    x5 = [ 0, 1, [ 2, 4 ] ],
-    x6 = { a : 1, b : 2, c : 3},
-    x7 = { a : 1, b : { e : 2, c : 3} },
-    x8 = ( function(){ return arguments } )( 0, 1, 2, 4 ); // array like entity
+  test.case = 'null';
+  var got = _.entityLength( null );
+  test.identical( got, 1 );
 
+  test.case = 'false';
+  var got = _.entityLength( false );
+  test.identical( got, 1 );
+
+  test.case = 'true';
+  var got = _.entityLength( true );
+  test.identical( got, 1 );
+
+  test.case = 'zero';
+  var got = _.entityLength( 0 );
+  test.identical( got, 1 );
+
+  test.case = 'number';
+  var got = _.entityLength( 34 );
+  test.identical( got, 1 );
+
+  test.case = 'NaN';
+  var got = _.entityLength( NaN );
+  test.identical( got, 1 );
+
+  test.case = 'Infinity';
+  var got = _.entityLength( Infinity );
+  test.identical( got, 1 );
+
+  test.case = 'empty string';
+  var got = _.entityLength( '' );
+  test.identical( got, 1 );
+
+  test.case = 'string';
+  var got = _.entityLength( 'str' );
+  test.identical( got, 1 );
+
+  test.case = 'symbol';
+  var got = _.entityLength( Symbol.for( 'x' ) );
+  test.identical( got, 1 );
+
+  test.case = 'empty array';
+  var got = _.entityLength( [] );
+  test.identical( got, 0 );
+
+  test.case = 'array';
+  var got = _.entityLength( [ [ 23, 17 ], undefined, 34 ] );
+  test.identical( got, 3 );
+
+  test.case = 'argumentsArray';
+  var got = _.entityLength( _.argumentsArrayMake( [ 1, [ 2, 3 ], 4 ] ) );
+  test.identical( got, 3 );
+
+  test.case = 'unroll';
+  var got = _.entityLength( _.argumentsArrayMake( [ 1, 2, [ 3, 4 ] ] ) );
+  test.identical( got, 3 );
+
+  test.case = 'BufferTyped';
+  var got = _.entityLength( new U8x( [ 1, 2, 3, 4 ] ) );
+  test.identical( got, 4 );
+
+  test.case = 'BufferRaw';
+  var got = _.entityLength( new BufferRaw( 10 ) );
+  test.identical( got, 1 );
+
+  test.case = 'BufferView';
+  var got = _.entityLength( new BufferView( new BufferRaw( 10 ) ) );
+  test.identical( got, 1 );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'BufferNode';
+    var got = _.entityLength( BufferNode.from( [ 1, 2, 3, 4 ] ) );
+    test.identical( got, 4 );
+  }
+
+  test.case = 'Set';
+  var got = _.entityLength( new Set( [ 1, 2, undefined, 4 ] ) );
+  test.identical( got, 4 );
+
+  test.case = 'map';
+  var got = _.entityLength( { a : 1, b : 2, c : { d : 3 } } );
+  test.identical( got, 3 );
+
+  test.case = 'HashMap';
+  var got = _.entityLength( new Map( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
+  test.identical( got, 3 );
+
+  test.case = 'function';
+  var got = _.entityLength( function(){} );
+  test.identical( got, 1 );
+
+  test.case = 'instance of class';
   function Constr1()
   {
     this.a = 34;
     this.b = 's';
     this[100] = 'sms';
   };
-
   Constr1.prototype.toString = function()
   {
     console.log('some message');
   }
-
   Constr1.prototype.c = 99;
+  var got = _.entityLength( new Constr1() );
+  test.identical( got, 3 );
 
-  var x9 = new Constr1(),
-    x10 = {};
-
-  Object.defineProperties( x10, // add properties, only one is enumerable
+  test.case = 'object, some properties are non enumerable';
+  var src = Object.create( null );
+  Object.defineProperties( src,
     {
       "property1" : {
         value : true,
@@ -456,83 +541,9 @@ function entityLength( test )
         writable : true
       }
   });
-
-  var expected1 = 0,
-    expected2 = 1,
-    expected3 = 1,
-    expected4 = 4,
-    expected5 = 3,
-    expected6 = 3,
-    expected7 = 2,
-    expected8 = 4,
-    expected9 = 3,
-    expected10 = 1;
-
-  test.case = 'entity is undefined';
-  var got = _.entityLength( x1 );
-  test.identical( got, expected1 );
-
-  test.case = 'entity is number';
-  var got = _.entityLength( x2 );
-  test.identical( got, expected2 );
-
-  test.case = 'entity is string';
-  var got = _.entityLength( x3 );
-  test.identical( got, expected3 );
-
-  test.case = 'entity is array';
-  var got = _.entityLength( x4 );
-  test.identical( got, expected4 );
-
-  test.case = 'entity is nested array';
-  var got = _.entityLength( x5 );
-  test.identical( got, expected5 );
-
-  test.case = 'entity is object';
-  var got = _.entityLength( x6 );
-  test.identical( got, expected6 );
-
-  test.case = 'entity is nested object';
-  var got = _.entityLength( x7 );
-  test.identical( got, expected7 );
-
-  test.case = 'entity is array like';
-  var got = _.entityLength( x8 );
-  test.identical( got, expected8 );
-
-  test.case = 'entity is array like';
-  var got = _.entityLength( x8 );
-  test.identical( got, expected8 );
-
-  console.log( _.toStr( x9 ) );
-
-  test.case = 'entity is created instance of class';
-  var got = _.entityLength( x9 );
-  test.identical( got, expected9 );
-
-  test.case = 'some properties are non enumerable';
-  var got = _.entityLength( x10 );
-  test.identical( got, expected10 );
-
-  /* */
-
-  test.case = 'string';
-  var got = _.entityLength( 'string' )
+  var got = _.entityLength( src );
   test.identical( got, 1 );
-
-  test.case = 'null';
-  var got = _.entityLength( null );
-  test.identical( got, 1 );
-
-  test.case = 'undefined';
-  var got = _.entityLength( undefined );
-  test.identical( got, 0 );
-
-  test.case = 'symbol';
-  var got = _.entityLength( Symbol.for( 'x' ) );
-  test.identical( got, 1 );
-
-};
+}
 
 //
 
