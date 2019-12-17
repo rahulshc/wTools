@@ -172,16 +172,6 @@ function locationFromStackFrame( o )
   {
     let path = o.location.filePath;
 
-    /* fileNameLineCol */
-
-    o.location.fileNameLineCol = o.location.fileName || '';
-    if( _.numberIs( o.location.line ) )
-    {
-      o.location.fileNameLineCol += ':' + o.location.line;
-      if( _.numberIs( o.location.col ) )
-      o.location.fileNameLineCol += ':' + o.location.col;
-    }
-
     /* filePathLineCol */
 
     o.location.filePathLineCol = path || '';
@@ -209,6 +199,16 @@ function locationFromStackFrame( o )
       if( i !== -1 )
       fileName = fileName.substr( i+1 );
       o.location.fileName = fileName;
+    }
+
+    /* fileNameLineCol */
+
+    o.location.fileNameLineCol = o.location.fileName || '';
+    if( _.numberIs( o.location.line ) )
+    {
+      o.location.fileNameLineCol += ':' + o.location.line;
+      if( _.numberIs( o.location.col ) )
+      o.location.fileNameLineCol += ':' + o.location.col;
     }
 
     return o.location;
