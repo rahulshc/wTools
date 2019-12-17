@@ -709,6 +709,48 @@ function dir_body( o )
   else
   o.filePath = this.canonize( o.filePath );
 
+  if( o.depth >= 0 )
+  {
+    for( let i = o.depth - 1; i >= 0; i-- )
+    {
+      if
+      ( 
+        o.filePath === this._rootStr || o.filePath === this._hereStr || o.filePath === this._downStr ||
+        o.filePath === this._hereStr + this._upStr || o.filePath === this._downStr + this._upStr ||
+        ( o.filePath.match( /\W{3}$/ ) && o.filePath.match( /\W{3}$/ )[ 0 ] === '/..' ) ||
+        ( o.filePath.match( /\W{4}$/ ) && o.filePath.match( /\W{4}$/ )[ 0 ] === '/../' )
+      )
+      {
+        if( o.filePath[ o.filePath.length - 1 ] === '/' )
+        o.filePath = o.filePath + this._downStr + ( o.first ? this._upStr : '' );
+        else 
+        o.filePath = o.filePath + this._upStr + this._downStr + ( o.first ? this._upStr : '' );
+      }
+      else
+      {
+        if( o.filePath[ o.filePath.length - 1 ] === '/' )
+        {
+          o.filePath = o.filePath.substring( 0, o.filePath.length - 1 );
+          o.filePath = o.filePath.substring( 0, o.filePath.lastIndexOf( '/' ) + ( o.first ? 1 : 0 ) );
+          if( o.filePath.length === 0 )
+          o.filePath = '.';
+        }
+        else
+        {
+          let indexOfSubstr = o.filePath.lastIndexOf( '/' ) === 0 && !o.first ? 1 : o.filePath.lastIndexOf( '/' );
+          o.filePath = o.filePath.substring( 0, indexOfSubstr + ( o.first ? 1 : 0 ) );
+          if( o.filePath.length === 0 )
+          o.filePath = '.';
+        }
+      }
+    }
+
+    if( !o.first )
+    o.filePath = _.path.canonize( o.filePath );
+
+    return o.filePath;
+  }
+
   if( o.first )
   if( isTrailed )
   return o.filePath;
@@ -777,7 +819,7 @@ dir.defaults.first = 0;
 let dirFirst = _.routineFromPreAndBody( dir_pre, dir_body );
 dirFirst.defaults.first = 1;
 
-/* qqq2 : implement and cover option depth. ask how */
+/* qqq2 : implement and cover option depth. ask how | Dmytro : implemented and covered, separate test routines is used */
 
 // --
 // fields
