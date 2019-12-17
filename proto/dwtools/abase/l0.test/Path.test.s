@@ -5644,7 +5644,7 @@ function dirDepthOption( test )
   test.case = 'absolute path, depth - 1';
   var src = '/a/b/c/d/';
   var got = _.path.dir( src, 1 );
-  var exp = '/a/b/c';
+  var exp = '/a/b/c/';
   test.identical( got, exp );
 
   test.case = 'absolute path, depth - 4';
@@ -5704,7 +5704,7 @@ function dirDepthOption( test )
   test.case = 'relative path, depth - 1';
   var src = './a/b/c/d/';
   var got = _.path.dir( src, 1 );
-  var exp = 'a/b/c';
+  var exp = 'a/b/c/';
   test.identical( got, exp );
 
   test.case = 'relative path, depth - 4';
@@ -5924,7 +5924,7 @@ function dirFirstDepthOption( test )
   test.case = 'absolute path, depth - 1';
   var src = '/a/b/c/d/';
   var got = _.path.dirFirst( src, 1 );
-  var exp = '/a/b/c/';
+  var exp = '/a/b/c/d/';
   test.identical( got, exp );
 
   test.case = 'absolute path, depth - 4';
@@ -5984,7 +5984,7 @@ function dirFirstDepthOption( test )
   test.case = 'relative path, depth - 1';
   var src = './a/b/c/d/';
   var got = _.path.dirFirst( src, 1 );
-  var exp = './a/b/c/';
+  var exp = './a/b/c/d/';
   test.identical( got, exp );
 
   test.case = 'relative path, depth - 4';
