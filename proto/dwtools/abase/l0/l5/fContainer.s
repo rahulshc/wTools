@@ -80,7 +80,8 @@ function extendReplacing( dst, src )
   {
 
     if( _.longIs( dst ) )
-    dst = _.arrayExtendAppending( dst, src );
+    // dst = _.arrayExtendAppending( dst, src );
+    dst = _.arrayAppendArrayOnce( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
 
@@ -99,7 +100,7 @@ function extendReplacing( dst, src )
   {
 
     // _.assert( 0, 'not tested' );
-    if( _.setLike( src ) || _.longLike( src ) )
+    if( _.setLike( dst ) || _.longLike( dst ) )
     dst = _.arraySetUnion_( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
