@@ -580,43 +580,54 @@ strIsolateRightOrAll_body.defaults =
 /* qqq : update doc of strIsolateInsideLeftSignle */
 
 /**
-  * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
-  * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
-  * Otherwise returns undefined.
+  * Routine strIsolateInsideLeftSignle() returns an array with parts of source string {-src-}.
+  * The array contains of five parts: 
+  * - substring from start of source string to begin of first delimeter {-begin-}.
+  * - delimeter {-begin-}.
+  * - substring between delimeters {-begin-} and {-end-}.
+  * - delimeter {-end-}.
+  * - substring from end of delimeter {-end-} to end of source line.
+  * If routine does not find part between {-begin-} and {-end-} delimeters, then routine transform unused parts to empty
+  * strings. So, finally routine returns the array with source string concluded between empty strings: [ '', '', {-src-}, '', '' ].
   *
   * @param { String } src - The source string.
-  * @param { String } begin - String to find from begin of source.
-  * @param { String } end - String to find from end source.
+  * @param { String|Array } begin - String or array of strings to find begin of split part in the source string.
+  * @param { String|Array } end - String or array of strings to find end of split part in the source source.
   *
   * @example
-  * _.strIsolateInsideLeftSignle( 'abcd', 'a', 'd' );
-  * // returns 'bc'
+  * _.strIsolateInsideLeftSignle( 'aabdcdd', 'a', 'd' );
+  * // returns [ '', 'a', 'aabdcdd', 'd', '' ]
   *
   * @example
-  * _.strIsolateInsideLeftSignle( 'aabcc', 'a', 'c' );
-  * // returns 'aabcc'
+  * _.strIsolateInsideLeftSignle( 'cabdcdc', 'a', 'd' );
+  * // returns [ 'c', 'a', 'abdcd', 'd', 'c' ]
   *
   * @example
-  * _.strIsolateInsideLeftSignle( 'aabcc', 'a', 'a' );
-  * // returns 'a'
+  * _.strIsolateInsideLeftSignle( 'cabdcdc', 'f', 'd' );
+  * // returns [ '', '', 'cabdcdc', '', '' ]
   *
   * @example
-  * _.strIsolateInsideLeftSignle( 'abc', 'a', 'a' );
-  * // returns undefined
+  * _.strIsolateInsideLeftSignle( 'cabdcdc', 'a', 'f' );
+  * // returns [ '', '', 'cabdcdc', '', '' ]
   *
   * @example
-  * _.strIsolateInsideLeftSignle( 'abcd', 'x', 'y' )
-  * // returns undefined
+  * _.strIsolateInsideLeftSignle( 'cabdcdc', [ 'f', 'b' ], 'd' );
+  * // returns [ 'ca', 'b', 'bdcd', 'd', 'c' ]
   *
   * @example
-  * //index of begin is bigger then index of end
-  * _.strIsolateInsideLeftSignle( 'abcd', 'c', 'a' )
-  * // returns undefined
+  * _.strIsolateInsideLeftSignle( 'cabdcdc', 'b', [ 'f', 'd' ] );
+  * // returns [ 'ca', 'b', 'bdcd', 'd', 'c' ]
   *
-  * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
-  * @throws { Exception } If all arguments are not strings;
-  * @throws { Exception } If ( argumets.length ) is not equal 3.
+  * @example
+  * _.strIsolateInsideLeftSignle( 'cabdcdc', [ 'b', 'c' ], [ 'c', 'd' ] );
+  * // returns [ 'ca', 'b', 'bdcdc', 'c', '' ]
+  *
+  * @returns { Array } - Returns array with parts of source string.
   * @function strIsolateInsideLeftSignle
+  * @throws { Exception } If arguments.length is less then one or more then three.
+  * @throws { Exception } If source string {-str-} is not a String.
+  * @throws { Exception } If delimeter {-begin-} is not a String or an Array of strings.
+  * @throws { Exception } If delimeter {-end-} is not a String or an Array of strings.
   * @memberof wTools
   */
 
@@ -634,7 +645,7 @@ function strIsolateInsideLeftSignle( src, begin, end )
     pairs = _.strQuotePairsNormalize( pairs );
 
     let l = 0;
-    let begin = []
+    let begin = [];
     for( let q = 0 ; q < pairs.length ; q++ )
     {
       let quotingPair = pairs[ q ];
