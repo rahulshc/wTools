@@ -690,14 +690,15 @@ function _entityIndex_functor( fop )
 
       if( extendRoutine === null )
       {
-        if( res !== undefined )
+        // if( res !== undefined ) // Dmytro : it's unnecessary condition, see 10 lines above
         result[ res ] = val;
       }
       else
       {
         if( _.mapLike( res ) )
         extendRoutine( result, res );
-        else if( res !== undefined )
+        // else if( res !== undefined ) // Dmytro : it's unnecessary condition, see 16 lines above
+        else
         result[ res ] = val;
       }
 
@@ -720,9 +721,9 @@ _entityIndex_functor.defaults =
  * If callback returns undefined, then element will not exist in resulted map.
  *
  * @param { * } src - Any entity to make map of indexes.
- * @param { String|function } onEach - The callback executed on elements of entity.
+ * @param { String|Function } onEach - The callback executed on elements of entity.
  * If {-onEach-} is not defined, then routine uses callback that returns index of element.
- * If {-onEach-} is string, then routine searches elements with equal key. String value should has 
+ * If {-onEach-} is a string, then routine searches elements with equal key. String value should has 
  * prefix "*\/" ( asterisk + slash ).
  * By default, {-onEach-} applies three parameters: element, key, container. If entity is primitive, then 
  * routine applies only element value, other parameters is undefined.
@@ -755,7 +756,8 @@ _entityIndex_functor.defaults =
  * _.entityIndex( { a : { f1 : 1, f2 : 3 }, b : { f1 : 2, f2 : 4 } }, '*\/f1' );
  * // returns { '1' : { f1 : 1, f2 : 3 }, '2' : { f1 : 2, f2 : 4 } }
  *
- * @returns { PureMap } - Returns the pure map, values of map defines by element of provided entity {-src-}.
+ * @returns { PureMap } - Returns the pure map. Values of the map defined by elements of provided entity {-src-} 
+ * and keys defined by results of callback execution on corresponding elements.
  * @function entityIndex
  * @throws { Error } If arguments.length is less then one or more then two.
  * @throws { Error } If {-src-} has value undefined.
@@ -765,8 +767,67 @@ _entityIndex_functor.defaults =
  */
 
 let entityIndex = _entityIndex_functor({ extendRoutine : null });
-let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.mapExtend });
+
+//
+
+/**
+ * The routine entityIndexSupplementing() returns a new pure map. The pairs key-value of the map formed by results 
+ * of callback execution on the entity elements .
+ * If callback returns undefined, then element will not exist in resulted map.
+ * If callback returns pair key-value and its key exists in resulted map, then routine replaces existed value to new.
+ *
+ * @param { * } src - Any entity to make map of indexes.
+ * @param { String|Function } onEach - The callback executed on elements of entity.
+ * If {-onEach-} is not defined, then routine uses callback that returns index of element.
+ * If {-onEach-} is a string, then routine searches elements with equal key. String value should has 
+ * prefix "*\/" ( asterisk + slash ).
+ * By default, {-onEach-} applies three parameters: element, key, container. If entity is primitive, then 
+ * routine applies only element value, other parameters is undefined.
+ *
+ * @example
+ * _.entityIndexSupplementing( null );
+ * // returns { 'null' : undefined }
+ *
+ * @example
+ * _.entityIndexSupplementing( null, ( el ) => el );
+ * // returns { 'null' : null }
+ *
+ * @example
+ * _.entityIndexSupplementing( [ 1, 2, 3, 4 ] );
+ * // returns { '0' : 1, '1' : 2, '2' : 3, '3' : 4 }
+ *
+ * @example
+ * _.entityIndexSupplementing( [ 1, 2, 3, 4 ], ( el, key ) => key > 2 ? k : 1 );
+ * // returns { '1' : 3, '3' : 4 }
+ *
+ * @example
+ * _.entityIndexSupplementing( { a : 1, b : 1, c : 1 } );
+ * // returns { a : 1, b : 1, c : 1 }
+ *
+ * @example
+ * _.entityIndexSupplementing( { a : 1, b : 1, c : 1 }, ( el, key, container ) => container.a > 0 ? key : el );
+ * // returns { '1' : 1 }
+ *
+ * @example
+ * _.entityIndexSupplementing( { a : { f1 : 1, f2 : 3 }, b : { f1 : 1, f2 : 4 } }, '*\/f1' );
+ * // returns { '1' : { f1 : 1, f2 : 4 } }
+ *
+ * @returns { PureMap } - Returns the pure map. Values of the map defined by elements of provided entity {-src-}
+ * and keys of defines by results of callback execution on corresponding elements. If the callback returns pair 
+ * with existed key, then routine replaces the previous value on the new.
+ * @function entityIndexSupplementing
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @throws { Error } If {-src-} has value undefined.
+ * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
+ * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
+ * @memberof wTools
+ */
+
 let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.mapSupplement });
+
+//
+
+let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.mapExtend });
 let entityIndexPrepending = _entityIndex_functor({ extendRoutine : _.mapExtendPrepending });
 let entityIndexAppending = _entityIndex_functor({ extendRoutine : _.mapExtendAppending });
 
