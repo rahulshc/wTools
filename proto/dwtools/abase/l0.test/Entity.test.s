@@ -408,7 +408,7 @@ function entityAssignFieldFromContainer( test )
 //
 
 /*
-qqq : improve test entityLength, normalize it, please
+qqq : improve test entityLength, normalize it, please | Dmytro : improved, normalized, extended 
 */
 
 function entityLength( test )
@@ -547,6 +547,130 @@ function entityLength( test )
 
 //
 
+function uncountableSize( test ) 
+{
+  test.case = 'undefined';
+  var got = _.uncountableSize( undefined );
+  test.identical( got, 8 );
+
+  test.case = 'null';
+  var got = _.uncountableSize( null );
+  test.identical( got, 8 );
+
+  test.case = 'false';
+  var got = _.uncountableSize( false );
+  test.identical( got,  8);
+
+  test.case = 'true';
+  var got = _.uncountableSize( true );
+  test.identical( got, 8 );
+
+  test.case = 'zero';
+  var got = _.uncountableSize( 0 );
+  test.identical( got, 8 );
+
+  test.case = 'number';
+  var got = _.uncountableSize( 34 );
+  test.identical( got, 8 );
+
+  test.case = 'NaN';
+  var got = _.uncountableSize( NaN );
+  test.identical( got, 8 );
+
+  test.case = 'Infinity';
+  var got = _.uncountableSize( Infinity );
+  test.identical( got, 8 );
+
+  test.case = 'empty string';
+  var got = _.uncountableSize( '' );
+  test.identical( got, 0 );
+
+  test.case = 'string';
+  var got = _.uncountableSize( 'str' );
+  test.identical( got, 3 );
+
+  test.case = 'symbol';
+  var got = _.uncountableSize( Symbol.for( 'x' ) );
+  test.identical( got, 8 );
+
+  test.case = 'empty array';
+  var got = _.uncountableSize( [] );
+  test.identical( got, NaN );
+
+  test.case = 'array';
+  var got = _.uncountableSize( [ [ 23, 17 ], undefined, 34 ] );
+  test.identical( got, NaN );
+
+  test.case = 'argumentsArray';
+  var got = _.uncountableSize( _.argumentsArrayMake( [ 1, [ 2, 3 ], 4 ] ) );
+  test.identical( got, NaN );
+
+  test.case = 'unroll';
+  var got = _.uncountableSize( _.argumentsArrayMake( [ 1, 2, [ 3, 4 ] ] ) );
+  test.identical( got, NaN );
+
+  test.case = 'BufferTyped';
+  var got = _.uncountableSize( new U8x( [ 1, 2, 3, 4 ] ) );
+  test.identical( got, 4 );
+
+  test.case = 'BufferRaw';
+  var got = _.uncountableSize( new BufferRaw( 10 ) );
+  test.identical( got, 10 );
+
+  test.case = 'BufferView';
+  var got = _.uncountableSize( new BufferView( new BufferRaw( 10 ) ) );
+  test.identical( got, 10 );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'BufferNode';
+    var got = _.uncountableSize( BufferNode.from( [ 1, 2, 3, 4 ] ) );
+    test.identical( got, 4 );
+  }
+
+  test.case = 'Set';
+  var got = _.uncountableSize( new Set( [ 1, 2, undefined, 4 ] ) );
+  test.identical( got, NaN );
+
+  test.case = 'map';
+  var got = _.uncountableSize( { a : 1, b : 2, c : { d : 3 } } );
+  test.identical( got, NaN );
+
+  test.case = 'HashMap';
+  var got = _.uncountableSize( new Map( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
+  test.identical( got, NaN );
+
+  test.case = 'function';
+  var got = _.uncountableSize( function(){} );
+  test.identical( got, 8 );
+
+  test.case = 'instance of class';
+  function Constr1()
+  {
+    this.a = 34;
+    this.b = 's';
+    this[100] = 'sms';
+  };
+  var got = _.uncountableSize( new Constr1() );
+  test.identical( got, 8 );
+
+  test.case = 'object, some properties are non enumerable';
+  var src = Object.create( null );
+  Object.defineProperties( src,
+    {
+      "property3" :
+      {
+        enumerable : true,
+        value : "World",
+        writable : true
+      }
+  });
+  var got = _.uncountableSize( src );
+  test.identical( got, NaN );
+}
+
+//
+
 function entitySize( test )
 {
 
@@ -608,8 +732,7 @@ function entitySize( test )
   {
     _.entitySize( [],undefined );
   });
-
-};
+}
 
 //
 
@@ -628,6 +751,7 @@ var Self =
     entityAssignFieldFromContainer,
 
     entityLength,
+    uncountableSize,
     entitySize,
 
   }
