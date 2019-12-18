@@ -396,21 +396,21 @@ function eachSample( o )
   //   _.assert( _.longIs( set ) || _.primitiveIs( set ) );
   //
   //   if( _.primitiveIs( set ) )
-  //   o.sets[ k ] = [ set ]; /* qqq : should not change input data */
+  //   o.sets[ k ] = [ set ]; /* qqq : should not change input data | Dmytro : changed early */
   //
   //   len[ sindex ] = _.entityLength( o.sets[ k ] );
   //   indexnd[ sindex ] = 0;
   //   sindex += 1;
   // });
 
-  /* qqq : add tests */
+  /* qqq : add tests | Dmytro : improved tests */
 
   o.sets = _.filter( o.sets, function( set, k )
   {
     _.assert( _.longIs( set ) || _.primitiveIs( set ) );
 
     if( _.primitiveIs( set ) )
-    set = [ set ]; /* qqq : should not change input data */
+    set = [ set ]; /* qqq : should not change input data | Dmytro : now, routine does not change input data, checked by tests */
 
     len[ sindex ] = _.entityLength( o.sets[ k ] );
     indexnd[ sindex ] = 0;

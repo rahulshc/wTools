@@ -577,7 +577,7 @@ strIsolateRightOrAll_body.defaults =
 
 //
 
-/* qqq : update doc of strIsolateInsideLeftSignle */
+/* qqq : update doc of strIsolateInsideLeftSignle | Dmytro : updated */
 
 /**
   * Routine strIsolateInsideLeftSignle() returns an array with parts of source string {-src-}.
