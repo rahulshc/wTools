@@ -580,7 +580,8 @@ strIsolateRightOrAll_body.defaults =
 /* qqq : update doc of strIsolateInsideLeftSignle | Dmytro : updated */
 
 /**
-  * Routine strIsolateInsideLeftSignle() returns an array with parts of source string {-src-}.
+  * Routine strIsolateInsideLeftSignle() split source strings {-src-} into parts separated by delimeters {-begin-} and {-end-}. Routine returns
+  * an array with parts of source string {-src-}.
   * The array contains of five parts: 
   * - substring from start of source string to begin of first delimeter {-begin-}.
   * - delimeter {-begin-}.
@@ -596,11 +597,11 @@ strIsolateRightOrAll_body.defaults =
   *
   * @example
   * _.strIsolateInsideLeftSignle( 'aabdcdd', 'a', 'd' );
-  * // returns [ '', 'a', 'aabdcdd', 'd', '' ]
+  * // returns [ '', 'a', 'abdcd', 'd', '' ]
   *
   * @example
   * _.strIsolateInsideLeftSignle( 'cabdcdc', 'a', 'd' );
-  * // returns [ 'c', 'a', 'abdcd', 'd', 'c' ]
+  * // returns [ 'c', 'a', 'bdc', 'd', 'c' ]
   *
   * @example
   * _.strIsolateInsideLeftSignle( 'cabdcdc', 'f', 'd' );
@@ -612,15 +613,15 @@ strIsolateRightOrAll_body.defaults =
   *
   * @example
   * _.strIsolateInsideLeftSignle( 'cabdcdc', [ 'f', 'b' ], 'd' );
-  * // returns [ 'ca', 'b', 'bdcd', 'd', 'c' ]
+  * // returns [ 'ca', 'b', 'dc', 'd', 'c' ]
   *
   * @example
   * _.strIsolateInsideLeftSignle( 'cabdcdc', 'b', [ 'f', 'd' ] );
-  * // returns [ 'ca', 'b', 'bdcd', 'd', 'c' ]
+  * // returns [ 'ca', 'b', 'dc', 'd', 'c' ]
   *
   * @example
   * _.strIsolateInsideLeftSignle( 'cabdcdc', [ 'b', 'c' ], [ 'c', 'd' ] );
-  * // returns [ 'ca', 'b', 'bdcdc', 'c', '' ]
+  * // returns [ 'ca', 'b', 'dcd', 'c', '' ]
   *
   * @returns { Array } - Returns array with parts of source string.
   * @function strIsolateInsideLeftSignle
@@ -715,6 +716,69 @@ function strIsolateInsideLeftSignle( src, begin, end )
 
 //
 
+/**
+  * Routine strIsolateInsideLeft() split source strings of vector {-src-} into parts separated by delimeters {-begin-} and {-end-}. Routine
+  * returns a vector with arrays. Each array of vector corresponds to element of vector {-src-}.
+  * Each array contains of five parts: 
+  * - substring from start of source string to begin of first delimeter {-begin-}.
+  * - delimeter {-begin-}.
+  * - substring between delimeters {-begin-} and {-end-}.
+  * - delimeter {-end-}.
+  * - substring from end of delimeter {-end-} to end of source line.
+  * If routine does not find part between {-begin-} and {-end-} delimeters, then routine transform unused parts to empty
+  * strings. So, finally routine returns the array with source string concluded between empty strings: [ '', '', {-src-}, '', '' ].
+  *
+  * @param { String|Array } src - The source string or vector of source strings. If {-src-} is a vector, then routine returns vector 
+  * with resulted arrays. Otherwise, routine returns only one resulted array for scalar source string.
+  * @param { String|Array } begin - String or array of strings to find begin of split part in the source string.
+  * @param { String|Array } end - String or array of strings to find end of split part in the source source.
+  *
+  * @example
+  * _.strIsolateInsideLeft( 'aabdcdd', 'a', 'd' );
+  * // returns [ '', 'a', 'abdcd', 'd', '' ]
+  *
+  * @example
+  * _.strIsolateInsideLeft( 'cabdcdc', 'a', 'd' );
+  * // returns [ 'c', 'a', 'bdc', 'd', 'c' ]
+  *
+  * @example
+  * _.strIsolateInsideLeft( 'cabdcdc', 'f', 'd' );
+  * // returns [ '', '', 'cabdcdc', '', '' ]
+  *
+  * @example
+  * _.strIsolateInsideLeftSignle( 'cabdcdc', 'a', 'f' );
+  * // returns [ '', '', 'cabdcdc', '', '' ]
+  *
+  * @example
+  * _.strIsolateInsideLeft( 'cabdcdc', [ 'f', 'b' ], 'd' );
+  * // returns [ 'ca', 'b', 'dc', 'd', 'c' ]
+  *
+  * @example
+  * _.strIsolateInsideLeft( 'cabdcdc', 'b', [ 'f', 'd' ] );
+  * // returns [ 'ca', 'b', 'dc', 'd', 'c' ]
+  *
+  * @example
+  * _.strIsolateInsideLeft( 'cabdcdc', [ 'b', 'c' ], [ 'c', 'd' ] );
+  * // returns [ 'ca', 'b', 'dcd', 'c', '' ]
+  *
+  * @example
+  * _.strIsolateInsideLeft( [ 'cabdcdc', 'ddccbbaa' ], 'b', 'd' );
+  * // returns [ [ 'ca', 'b', 'dc', 'd', 'c' ], [ '', '', 'ddccbbaa', '', '' ] ]
+  *
+  * @example
+  * _.strIsolateInsideLeft( [ 'cabdcdc', 'ddccbbaa' ], [ 'b', 'c' ], [ 'c', 'd' ] );
+  * // returns [ [ 'ca', 'b', 'dcd', 'c', '' ], [ 'dd', 'c', '', 'c', 'bbaa' ] ]
+  *
+  * @returns { Array|ArraysVector } - If source string is a scalar, then routine returns array with parts of source string.
+  * If source string is a vector, then routine returns vector of arrays.
+  * @function strIsolateInsideLeft
+  * @throws { Exception } If arguments.length is less then one or more then three.
+  * @throws { Exception } If source string {-str-} is not a String.
+  * @throws { Exception } If delimeter {-begin-} is not a String or an Array of strings.
+  * @throws { Exception } If delimeter {-end-} is not a String or an Array of strings.
+  * @memberof wTools
+  */
+
 function strIsolateInsideLeft( src, begin, end )
 {
 
@@ -761,7 +825,9 @@ let Routines =
   // strIsolateInsideOrNone,
   strIsolateInsideLeftSignle,
   strIsolateInsideLeft,
-  /* qqq : implement, cover and document routine strIsolateInsideRight* */
+  /* qqq : implement, cover and document routine strIsolateInsideRight* | Dmytro : if it really means routine 
+  strIsolateInsideLeft, then it implemented and covered early. Routine is documented.
+  Otherwise, it is need some explanations */
 
 }
 
