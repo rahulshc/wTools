@@ -290,96 +290,55 @@ function _finally( test )
 
 function _periodic( test ) 
 {
-  test.open( 'delay - 0, execute callbacks' );
+  _.include( 'wConsequence' );
 
   test.case = 'delay - 0, onTime';
-  var onTime = () => 0;  
+  var result = [];
+  var times = 5;
+  var onTime = function()
+  {
+    if( times !== 0 )
+    {
+      result.push( 1 );
+      times--;
+    }
+  };
   var got = _.time._periodic( 0, onTime );
-  got.time();
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, undefined );
-  test.identical( got.state, 2 );
-  test.identical( got.result, 0 );
 
-  test.case = 'delay - 0, onTime, onCancel';
-  var onTime = () => 0;
-  var onCancel = () => -1;  
-  var got = _.time._periodic( 0, onTime, onCancel );
-  got.time();
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, onCancel );
-  test.identical( got.state, 2 );
-  test.identical( got.result, 0 );
 
-  test.case = 'delay - 0, onTime, onCancel';
-  var onTime = () => 0;
-  var onCancel = () => -1;  
-  var got = _.time._periodic( 0, onTime, onCancel );
-  got.time();
-  got.cancel();
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, onCancel );
-  test.identical( got.state, -2 );
-  test.identical( got.result, -1 );
+  test.case = 'delay - 10, onTime, onCancel executed';
+  var result1 = [];
+  var times1 = 5;
+  var onTime1 = function()
+  {
+    if( times1 !== 0 )
+    {
+      result1.push( 1 );
+      times1--;
+    }
+  };
+  var onCancel = () => -1;
+  var got1 = _.time._periodic( 10, onTime1, onCancel );
+  got1.cancel();
 
-  test.close( 'delay - 0, execute callbacks' );
+  return _testerGlobal_.wTools.time.out( 100 ).then( () =>
+  { 
+    test.identical( got.onTime, onTime );
+    test.identical( got.onCancel, undefined );
+    test.identical( got.state, 2 );
+    test.identical( got.result, undefined );
+    test.identical( times, 0 );
+    test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
-  /* - */
-  
-  test.open( 'delay - 1, not execute callbacks' );
+    test.identical( got1.onTime, onTime1 );
+    test.identical( got1.onCancel, onCancel );
+    test.identical( got1.state, -2 );
+    test.identical( got1.result, -1 );
+    test.identical( times1, 5 );
+    test.identical( result1, [] );
 
-  test.case = 'delay - 1';
-  var got = _.time._periodic( 1 );
-  got.original;
-  test.identical( got.onTime, undefined );
-  test.identical( got.onCancel, undefined );
-  test.identical( got.state, 0 );
-  test.identical( got.result, undefined );
-
-  test.case = 'delay - 1, onTime';
-  var onTime = () => 0;  
-  var got = _.time._periodic( 0, onTime );
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, undefined );
-  test.identical( got.state, 0 );
-  test.identical( got.result, undefined );
-
-  test.case = 'delay - 1, onCancel';
-  var onCancel = () => -1;  
-  var got = _.time._periodic( 1, undefined, onCancel );
-  test.identical( got.onTime, undefined );
-  test.identical( got.onCancel, onCancel );
-  test.identical( got.state, 0 );
-  test.identical( got.result, undefined );
-
-  test.case = 'delay - 1, onCancel';
-  var onCancel = () => -1;  
-  var got = _.time._periodic( 1, undefined, onCancel );
-  test.identical( got.onTime, undefined );
-  test.identical( got.onCancel, onCancel );
-  test.identical( got.state, 0 );
-  test.identical( got.result, undefined );
-
-  test.case = 'delay - 1, onTime, onCancel';
-  var onTime = () => 0;
-  var onCancel = () => -1;  
-  var got = _.time._periodic( 1, onTime, onCancel );
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, onCancel );
-  test.identical( got.state, 0 );
-  test.identical( got.result, undefined );
-
-  test.case = 'delay - 1, onTime, onCancel';
-  var onTime = () => 0;
-  var onCancel = () => -1;  
-  var got = _.time._periodic( 1, onTime, onCancel );
-  got.cancel();
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, onCancel );
-  test.identical( got.state, -2 );
-  test.identical( got.result, -1 );
-
-  test.close( 'delay - 1, not execute callbacks' );
+    return null;
+  });
 }
 
 //
@@ -585,6 +544,7 @@ var Self =
   {
     _begin,
     _finally,
+    _periodic,
     _cancel,
 
     timeOutCancelInsideOfCallback,
