@@ -471,26 +471,6 @@ function _begin( test )
 
       return null;
     });
-  })
-
-
-  /* */
-
-  con.then( function()
-  {
-    test.case = 'delay - 1, onTime, onCancel';
-
-    var timer = _.time._begin( 1, onTime, onCancel );
-    return _.time.out( 100, () => timer )
-    .finally( function( err, got )
-    {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
-
-      return null;
-    });
   });
 
   con.finally( ( err, arg ) =>
@@ -511,90 +491,376 @@ function _begin( test )
 
 function _finally( test ) 
 {
-  test.open( 'delay - undefined, execute callbacks' );
-
-  test.case = 'delay - undefined';
-  var got = _.time._finally( undefined, undefined );
-  got.time();
-  test.identical( got.onTime, undefined );
-  test.identical( got.onCancel, undefined );
-  test.identical( got.state, 2 );
-  test.identical( got.result, undefined );
-
-  test.case = 'delay - undefined, onTime';
-  var onTime = () => 0; 
-  var got = _.time._finally( undefined, onTime );
-  got.time();
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, onTime );
-  test.identical( got.state, 2 );
-  test.identical( got.result, 0 );
-
-  test.case = 'delay - undefined, onTime';
-  var onTime = () => 0; 
-  var got = _.time._finally( undefined, onTime );
-  got.cancel();
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, onTime );
-  test.identical( got.state, -2 );
-  test.identical( got.result, 0 );
-
-  test.close( 'delay - undefined, execute callbacks' );
+  var onTime = () => 0;
+  var con = new _.Consequence().take( null );
 
   /* - */
 
-  test.open( 'delay - 0, execute callbacks' );
+  con.finally( () =>
+  {
+    test.open( 'delay - undefined' );
+    return null;
+  })
 
-  test.case = 'delay - 0';
-  var got = _.time._finally( 0, undefined );
-  got.time();
-  test.identical( got.onTime, undefined );
-  test.identical( got.onCancel, undefined );
-  test.identical( got.state, 2 );
-  test.identical( got.result, undefined );
+  .then( function()
+  {
+    test.case = 'without callbacks';
+    var timer = _.time._finally( undefined, undefined );
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, undefined );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 0 );
+      test.identical( got.result, undefined );
 
-  test.case = 'delay - 0, onTime';
-  var onTime = () => 0;  
-  var got = _.time._finally( 0, onTime );
-  got.time();
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, onTime );
-  test.identical( got.state, 2 );
-  test.identical( got.result, 0 );
+      return null;
+    });
+  })
 
-  test.case = 'delay - 0, onTime';
-  var onTime = () => 0;  
-  var got = _.time._finally( 0, onTime );
-  got.cancel();
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, onTime );
-  test.identical( got.state, -2 );
-  test.identical( got.result, 0 );
+  .then( function()
+  {
+    test.case = 'onTime';
+    var timer = _.time._finally( undefined, onTime );
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 0 );
+      test.identical( got.result, undefined );
 
-  test.close( 'delay - 0, execute callbacks' );
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, execute onTime';
+    var timer = _.time._finally( undefined, onTime );
+    timer.time()
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, execute onCancel';
+    var timer = _.time._finally( undefined, onTime );
+    timer.cancel()
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, -2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, execution of callbacks';
+    var timer = _.time._finally( undefined, onTime );
+    timer.time();
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 2 );
+      test.identical( got.result, 0 );
+
+      got.cancel();
+
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, -2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  })
+
+
+  con.finally( () =>
+  {
+    test.close( 'delay - undefined' );
+    return null;
+  });
+
+  /* - */
+
+  con.finally( () => 
+  {
+    test.open( 'delay - 0' );
+    return null;
+  })
+
+  .then( function()
+  {
+    test.case = 'without callbacks';
+    var timer = _.time._finally( 0, undefined );
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, undefined );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime';
+    var timer = _.time._finally( 0, onTime );
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, execute onTime';
+    var timer = _.time._finally( 0, onTime );
+    timer.time()
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, execute onCancel';
+    var timer = _.time._finally( 0, onTime );
+    timer.cancel()
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, -2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, onCancel, execution of callbacks';
+    var timer = _.time._finally( 0, onTime );
+    timer.time();
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 2 );
+      test.identical( got.result, 0 );
+
+      got.cancel();
+
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, -2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  })
+
+  .finally( () =>
+  {
+    test.close( 'delay - 0' );
+    return null;
+  });
 
   /* - */
   
-  test.open( 'delay - 1, not execute callbacks' );
+  con.finally( () =>
+  {
+    test.open( 'delay > 0' );
+    return null;
+  })
 
-  test.case = 'delay - 1';
-  var got = _.time._finally( 1, undefined );
-  got.original;
-  test.identical( got.onTime, undefined );
-  test.identical( got.onCancel, undefined );
-  test.identical( got.state, 0 );
-  test.identical( got.result, undefined );
+  .then( function()
+  {
+    test.case = 'without callbacks, timeout < check time';
+    var timer = _.time._finally( 5, undefined );
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, undefined );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
 
-  test.case = 'delay - 1, onTime';
-  var onTime = () => 0;  
-  var got = _.time._finally( 0, onTime );
-  test.identical( got.onTime, onTime );
-  test.identical( got.onCancel, onTime );
-  test.identical( got.state, 0 );
-  test.identical( got.result, undefined );
-  got.cancel();
+      return null;
+    });
+  })
 
-  test.close( 'delay - 1, not execute callbacks' );
+  .then( function()
+  {
+    test.case = 'without callbacks, timeout > check time';
+    var timer = _.time._finally( 100, undefined );
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, undefined );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 0 );
+      test.identical( got.result, undefined );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, timeout < check time';
+    var timer = _.time._finally( 5, onTime );
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, timeout > check time';
+    var timer = _.time._finally( 100, onTime );
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 0 );
+      test.identical( got.result, undefined );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, timeout > check time, execute onCancel';
+    var timer = _.time._finally( 100, onTime );
+    timer.cancel();
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, -2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, timeout > check time';
+    var timer = _.time._finally( 100, onTime );
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 0 );
+      test.identical( got.result, undefined );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, timeout > check time, execute onTime';
+    var timer = _.time._finally( 100, onTime );
+    timer.time()
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, onCancel, timeout > check time, execution of callbacks';
+    var timer = _.time._finally( 100, onTime );
+    timer.time();
+    return _.time.out( 10, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 2 );
+      test.identical( got.result, 0 );
+
+      got.cancel();
+
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, -2 );
+      test.identical( got.result, 0 );
+
+      return null;
+    });
+  });
+
+  con.finally( ( err, arg ) =>
+  {
+    test.close( 'delay > 0' );
+
+    if( err )
+    throw err;
+    return arg;
+  });
+
+  /* */
+
+  return con;
 }
 
 //
