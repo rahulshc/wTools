@@ -773,10 +773,10 @@ function entitySize( test )
   var exp = _.look ? 22 : 0;
   test.identical( got, exp );
 
-  test.case = 'HashMap';
-  var got = _.entitySize( new Map( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
-  var exp = _.look ? 39 : 0;
-  test.identical( got, exp );
+  // test.case = 'HashMap';
+  // var got = _.entitySize( new Map( [ [ undefined, undefined ], [ 1, 2 ], [ '', 'str' ] ] ) );
+  // var exp = _.look ? 39 : 0;
+  // test.identical( got, exp );
 
   test.case = 'function';
   var got = _.entitySize( function(){} );
