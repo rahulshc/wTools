@@ -10,6 +10,7 @@ let Self = _global_.wTools;
 // implementation
 // --
 
+/* xxx : cover it */
 function error_functor( name, onMake )
 {
 

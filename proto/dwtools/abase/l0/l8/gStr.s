@@ -825,9 +825,7 @@ let Routines =
   // strIsolateInsideOrNone,
   strIsolateInsideLeftSignle,
   strIsolateInsideLeft,
-  /* qqq : implement, cover and document routine strIsolateInsideRight* | Dmytro : if it really means routine 
-  strIsolateInsideLeft, then it implemented and covered early. Routine is documented.
-  Otherwise, it is need some explanations */
+  /* qqq : implement, cover and document routine strIsolateInsideLeft* | Dmytro : it implemented and covered a time ago. Routine is documented */
 
 }
 

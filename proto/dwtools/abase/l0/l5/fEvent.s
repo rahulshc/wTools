@@ -74,7 +74,7 @@ function on_pre( routine, args )
 function on( o )
 {
 
-  _.routineOptions( off, arguments );
+  _.routineOptions( on, arguments );
   _.assert( _.mapIs( o.callbackMap ) );
   _.assert( _.objectIs( o.registeredCallbackMap ) );
   _.assertMapHasOnly( o.callbackMap, o.registeredCallbackMap );
@@ -150,6 +150,53 @@ off.defaults =
   registeredCallbackMap : null,
 }
 
+//
+
+function hasEventHandler_pre( routine, args )
+{
+  let o;
+
+  _.assert( _.longIs( args ) );
+  _.assert( arguments.length === 2 );
+
+  if( args.length > 1 )
+  {
+    o = Object.create( null );
+    o.eventName = args[ 0 ];
+    o.eventHandler = args[ 1 ];
+  }
+  else
+  {
+    o = args[ 0 ]
+  }
+
+  _.assert( _.mapIs( o ) );
+
+  return o;
+}
+
+//
+
+function hasEventHandler( o )
+{
+
+  _.routineOptions( hasEventHandler, arguments );
+  _.assert( _.strIs( o.eventName ) );
+  _.assert( _.routineIs( o.eventHandler ) );
+  _.assert( _.mapIs( o.registeredCallbackMap ) );
+  _.assert( arguments.length === 1 );
+
+  return _.longHas( o.registeredCallbackMap[ o.eventName ], o.eventHandler );
+}
+
+hasEventHandler.pre = hasEventHandler_pre;
+hasEventHandler.defaults =
+{
+  eventName : null,
+  eventHandler : null,
+  registeredCallbackMap : null,
+}
+
 // --
 // declaration
 // --
@@ -159,6 +206,7 @@ let Extension =
 
   on,
   off,
+  hasEventHandler,
 
 }
 
