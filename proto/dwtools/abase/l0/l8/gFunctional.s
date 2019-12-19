@@ -1362,6 +1362,64 @@ let entityRemapPrepending = _entityRemap_functor({ extendRoutine : _.mapExtendPr
 
 //
 
+/**
+ * The routine entityRemapAppending() returns a new pure map. The keys of the map defined by keys of provided
+ * entity {-src-} and values defined by result of callback execution on the correspond elements.
+ * If callback returns undefined, then element will not exist in resulted map.
+ * If callback returns map with key existed in resulted map, then routine appends new values to the existed value.
+ *
+ * @param { * } src - Any entity to make map of indexes.
+ * @param { String|Function } onEach - The callback executed on elements of entity.
+ * If {-onEach-} is not defined, then routine uses callback that returns map with pair key-value for Longs 
+ * and maps or element for other types.
+ * If {-onEach-} is a string, then routine searches elements with equal key. String value should has 
+ * prefix "*\/" ( asterisk + slash ).
+ * By default, {-onEach-} applies three parameters: element, key, container. If entity is primitive, then 
+ * routine applies only element value, other parameters is undefined.
+ *
+ * @example
+ * _.entityRemapAppending( null );
+ * // returns {}
+ *
+ * @example
+ * _.entityRemapAppending( null, ( el ) => el );
+ * // returns {}
+ *
+ * @example
+ * _.entityRemapAppending( [ 1, 2, 3, 4 ] );
+ * // returns { '0' : 1, '1' : 2, '2' : 3, '3' : 4 }
+ *
+ * @example
+ * _.entityRemapAppending( [ 1, 2, 3, 4 ], ( el, key ) => el + key );
+ * // returns { '0' : 1, '1' : 3, '2' : 5, '3' : 7 }
+ *
+ * @example
+ * _.entityRemapAppending( { a : 1, b : 2, c : 3 } );
+ * // returns { a : 1, b : 2, c : 3 }
+ *
+ * @example
+ * _.entityRemapAppending( { a : 1, b : 2, c : 3 }, ( el, key, container ) => container.a > 0 ? key : el );
+ * // returns { a : 'a', b : 'b', c : 'c' }
+ *
+ * @example
+ * _.entityRemapAppending( { a : 1, b : 2, c : 3 }, ( el, key, container ) => { return { [ key ] : el, x : el } } );
+ * // returns { a : 1, x : [ 3, 2, 1 ], b : 2, c : 3 }
+ *
+ * @example
+ * _.entityRemapAppending( { a : { f1 : 1, f2 : 3 }, b : { f1 : 2, f2 : 4 } }, '*\/f1' );
+ * // returns { a : 1, b : 2 }
+ *
+ * @returns { PureMap } - Returns the pure map. Keys of the map defined by keys of provided entity {-src-} 
+ * and values defined by results of callback execution on corresponding elements. If the callback returns map 
+ * with existed key, then routine appends new values to the existed value.
+ * @function entityRemapAppending 
+ * @throws { Error } If arguments.length is less then one or more then two.
+ * @throws { Error } If {-src-} has value undefined.
+ * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
+ * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
+ * @memberof wTools
+ */
+
 let entityRemapAppending = _entityRemap_functor({ extendRoutine : _.mapExtendAppending });
 
 // --
@@ -1404,9 +1462,9 @@ let Routines =
   remapSupplementing : entityRemapSupplementing,
   entityRemapExtending, /* qqq : add jsdoc, please | Dmytro : documented */
   remapExtending : entityRemapExtending,
-  entityRemapPrepending, /* qqq : add jsdoc, please */
+  entityRemapPrepending, /* qqq : add jsdoc, please | Dmytro : documented */
   remapPrepending : entityRemapPrepending,
-  entityRemapAppending, /* qqq : add jsdoc, please */
+  entityRemapAppending, /* qqq : add jsdoc, please | Dmytro : documented */
   remapAppending : entityRemapAppending,
 
   // _entityIndexInplace_functor,
