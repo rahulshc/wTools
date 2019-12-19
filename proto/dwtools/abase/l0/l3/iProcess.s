@@ -44,6 +44,24 @@ off.defaults =
 
 //
 
+function hasEventHandler( o )
+{
+
+  o = _.event.hasEventHandler.pre( _.event.hasEventHandler, arguments );
+  o.registeredCallbackMap = _.process._eventCallbackMap;
+  _.event.hasEventHandler( o );
+
+  return o;
+}
+
+hasEventHandler.defaults =
+{
+  eventName : null,
+  eventHandler : null,
+}
+
+//
+
 function entryPointStructure()
 {
   let result = Object.create( null );
@@ -98,6 +116,7 @@ let Extension =
 
   on,
   off,
+  hasEventHandler,
 
   entryPointStructure,
   entryPointInfo,
