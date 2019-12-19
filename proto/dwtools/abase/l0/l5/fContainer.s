@@ -43,7 +43,8 @@ function make()
 
 //
 
-/* qqq : cover */
+/* qqq : cover | Dmytro : covered, improved routine by using correct condition => src replaced to dst */
+
 function extendReplacing( dst, src )
 {
 
@@ -53,27 +54,15 @@ function extendReplacing( dst, src )
   {
 
     if( _.mapLike( src ) )
-    {
-      dst = _.mapExtend( null, src );
-    }
+    dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
-    {
-      dst = _.arrayExtendAppending( null, src );
-    }
+    dst = _.arrayExtendAppending( null, src );
     else if( _.hashMapLike( src ) )
-    {
-      _.assert( 0, 'not tested' );
-      dst = _.hashMapExtend( null, src );
-    }
+    dst = _.hashMapExtend( null, src );
     else if( _.setLike( src ) )
-    {
-      _.assert( 0, 'not tested' );
-      dst = _.arraySetUnion_( null, src );
-    }
+    dst = _.arraySetUnion_( null, src );
     else
-    {
-      dst = src;
-    }
+    dst = src;
 
   }
   else if( _.mapLike( src ) )
@@ -91,7 +80,8 @@ function extendReplacing( dst, src )
   {
 
     if( _.longIs( dst ) )
-    dst = _.arrayExtendAppending( dst, src );
+    // dst = _.arrayExtendAppending( dst, src ); | Dmytro : it appends long, not replace
+    dst = _.arrayAppendArrayOnce( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
 
@@ -99,8 +89,8 @@ function extendReplacing( dst, src )
   else if( _.hashMapLike( src ) )
   {
 
-    _.assert( 0, 'not tested' );
-    if( _.hashMapLike( src ) || _.mapLike( src ) )
+    // _.assert( 0, 'not tested' );
+    if( _.hashMapLike( dst ) || _.mapLike( dst ) )
     dst = _.hashMapExtend( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
@@ -109,8 +99,8 @@ function extendReplacing( dst, src )
   else if( _.setLike( src ) )
   {
 
-    _.assert( 0, 'not tested' );
-    if( _.setLike( src ) || _.longLike( src ) )
+    // _.assert( 0, 'not tested' );
+    if( _.setLike( dst ) || _.longLike( dst ) )
     dst = _.arraySetUnion_( dst, src );
     else
     dst = _.container.extendReplacing( null, src );
@@ -128,7 +118,8 @@ function extendReplacing( dst, src )
 
 //
 
-/* qqq : cover */
+/* qqq : cover | Dmytro : covered */
+
 function extendAppending( dst, src )
 {
 
@@ -138,27 +129,15 @@ function extendAppending( dst, src )
   {
 
     if( _.mapLike( src ) )
-    {
-      dst = _.mapExtend( null, src );
-    }
+    dst = _.mapExtend( null, src );
     else if( _.longLike( src ) )
-    {
-      dst = _.arrayExtendAppending( null, src );
-    }
+    dst = _.arrayExtendAppending( null, src );
     else if( _.hashMapLike( src ) )
-    {
-      _.assert( 0, 'not tested' );
-      dst = _.hashMapExtend( null, src );
-    }
+    dst = _.hashMapExtend( null, src );
     else if( _.setLike( src ) )
-    {
-      _.assert( 0, 'not tested' );
-      dst = _.arraySetUnion_( null, src );
-    }
+    dst = _.arraySetUnion_( null, src );
     else
-    {
-      dst = src;
-    }
+    dst = src;
 
   }
   else if( _.mapLike( dst ) )
@@ -181,7 +160,6 @@ function extendAppending( dst, src )
   else if( _.hashMapLike( dst ) )
   {
 
-    _.assert( 0, 'not tested' );
     if( _.hashMapLike( src ) || _.mapLike( src ) )
     dst = _.hashMapExtend( dst, src );
     else
@@ -191,7 +169,6 @@ function extendAppending( dst, src )
   else if( _.setLike( dst ) )
   {
 
-    _.assert( 0, 'not tested' );
     if( _.setLike( src ) || _.longLike( src ) )
     dst = _.arraySetUnion_( dst, src );
     else
@@ -221,6 +198,59 @@ function extendAppending( dst, src )
 // }
 
 //
+
+/**
+ * The routine empty() clears provided container {-dstContainer-}.
+ *
+ * @param { Long|Set|HashMap|MapLike } dstContainer - Container to be cleared. {-dstContainer-} should be resizable.
+ *
+ * @example
+ * let dst = [];
+ * let got = _.container.empty( dst );
+ * console.log( got );
+ * // log []
+ * console.log( got === dst );
+ * log true
+ *
+ * @example
+ * let dst = [ 1, 'str', { a : 2 } ];
+ * let got = _.container.empty( dst );
+ * console.log( got );
+ * // log []
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = _.unrollMake( [ 1, 'str', { a : 2 } ] );
+ * let got = _.container.empty( dst );
+ * console.log( got );
+ * // log []
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = new Set( [ 1, 'str', { a : 2 } ] );
+ * let got = _.container.empty( dst );
+ * console.log( got );
+ * // log Set {}
+ * console.log( got === dst );
+ * // log true
+ *
+ * @example
+ * let dst = new Map( [ [ 1, 'str' ], [ 'a', null ] ] );
+ * let got = _.container.empty( dst );
+ * console.log( got );
+ * // log Map {}
+ * console.log( got === dst );
+ * // log true
+ *
+ * @returns { Long|Set|HashMap|MapLike } - Returns a empty {-dstContainer-}.
+ * @function empty 
+ * @throws { Error } If arguments.length is less than one.
+ * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a MapLike.
+ * @throws { Error } If {-dstContainer-} is not a resizable Long, or if it is a WeakSet or WeakMap.
+ * @memberof wTools
+ */
 
 function empty( dstContainer )
 {
@@ -255,7 +285,7 @@ let Routines =
 
   // extendAppendingRecursive,
 
-  empty, /* qqq2 : implement, document, covere */
+  empty, /* qqq2 : implement, document, cover | Dmytro : it is implemented before, covered */
 
 }
 
