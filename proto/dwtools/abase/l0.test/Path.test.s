@@ -2410,8 +2410,7 @@ function isRoot( test )
 
 function isDotted( test )
 {
-
-  test.case = 'is single dotted';
+  test.case = 'is single dotted, unix paths';
 
   var path = '.';
   var got = _.path.isDotted( path );
@@ -2453,7 +2452,47 @@ function isDotted( test )
   var got = _.path.isDotted( path );
   test.identical( got, true );
 
-  test.case = 'is double dotted';
+  test.case = 'is single dotted, Windows paths';
+
+  var path = '.\\';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '.\\..';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '.\\..\\';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '.\\.';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '.\\.\\';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '.\\x\\..';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '.\\c';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '.\\src\\a1';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '.\\C:\\\\src\\a1';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  /* */
+
+  test.case = 'is double dotted, unix paths';
 
   var path = '..';
   var got = _.path.isDotted( path );
@@ -2491,7 +2530,45 @@ function isDotted( test )
   var got = _.path.isDotted( path );
   test.identical( got, true );
 
-  test.case = 'is not dotted';
+  /* */
+
+  test.case = 'is double dotted, Windows paths';
+
+  var path = '..\\';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '..\\.';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '..\\..';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '..\\..\\';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '..\\x\\..';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '..\\c';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '..\\src\\a1';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  var path = '..\\C:\\\\src\\a1';
+  var got = _.path.isDotted( path );
+  test.identical( got, true );
+
+  /* */
+
+  test.case = 'is not dotted, unix paths';
 
   var path = '';
   var got = _.path.isDotted( path );
@@ -2555,38 +2632,82 @@ function isDotted( test )
 
   /* */
 
+  test.case = 'is not dotted, Windows paths';
+
+  var path = '\\';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '\\.\\.';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '\\..';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '\\c';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '\\src\\a1';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = 'c:\\src\\a1';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '\\C:\\\\src\\a1';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = 'foo\\bar\\\\baz\\asdf\\quux\\..\\\\.';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '.c:\\src\\a1';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '.foo\\bar';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '.foo\\bar\\\\baz\\asdf\\quux\\..\\\\.';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '..c:\\src\\a1';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '..foo\\bar';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  var path = '..foo\\bar\\\\baz\\asdf\\quux\\..\\\\.';
+  var got = _.path.isDotted( path );
+  test.identical( got, false );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
-  test.case = 'No arguments';
-  test.shouldThrowErrorOfAnyKind( () => _.path.isDotted( ) );
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.path.isDotted() );
 
-  test.case = 'Two arguments';
-  test.shouldThrowErrorOfAnyKind( () => _.path.isDotted( 'a', 'b' ) );
+  test.case = 'two arguments';
+  test.shouldThrowErrorSync( () => _.path.isDotted( 'a', 'b' ) );
 
-  // Input is not path
-
-  test.case = 'No path - regexp';
-  test.shouldThrowErrorOfAnyKind( () => _.path.isDotted( /foo/ ) );
-
-  test.case = 'No path - number';
-  test.shouldThrowErrorOfAnyKind( () => _.path.isDotted( 3 ) );
-
-  test.case = 'No path - array';
-  test.shouldThrowErrorOfAnyKind( () => _.path.isDotted( [ '/C/', 'work/f' ] ) );
-
-  test.case = 'No path - object';
-  test.shouldThrowErrorOfAnyKind( () => _.path.isDotted( { Path : 'C:/foo/baz/bar' } ) );
-
-  test.case = 'No path - undefined';
-  test.shouldThrowErrorOfAnyKind( () => _.path.isDotted( undefined ) );
-
-  test.case = 'No path - null';
-  test.shouldThrowErrorOfAnyKind( () => _.path.isDotted( null ) );
-
-  test.case = 'No path - NaN';
-  test.shouldThrowErrorOfAnyKind( () => _.path.isDotted( NaN ) );
-
+  test.case = 'wrong type of srcPath';
+  test.shouldThrowErrorSync( () => _.path.isDotted( /foo/ ) );
+  test.shouldThrowErrorSync( () => _.path.isDotted( 3 ) );
+  test.shouldThrowErrorSync( () => _.path.isDotted( { Path : 'C:/foo/baz/bar' } ) );
+  test.shouldThrowErrorSync( () => _.path.isDotted( undefined ) );
+  test.shouldThrowErrorSync( () => _.path.isDotted( null ) );
+  test.shouldThrowErrorSync( () => _.path.isDotted( NaN ) );
 }
 
 //
@@ -5480,7 +5601,143 @@ function dir( test )
   {
     _.path.dir( {} );
   });
+}
 
+//
+
+function dirDepthOption( test ) 
+{
+  test.case = 'root directory, depth - 1';
+  var src = '/';
+  var got = _.path.dir( src, 1 );
+  var exp = '/..';
+  test.identical( got, exp );
+
+  test.case = 'root directory, depth - 3';
+  var src = '/';
+  var got = _.path.dir( src, 3 );
+  var exp = '/../../..';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'absolute path, depth - 1';
+  var src = '/a/b/c/d';
+  var got = _.path.dir( src, 1 );
+  var exp = '/a/b/c';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth - 4';
+  var src = '/a/b/c/d';
+  var got = _.path.dir( src, 4 );
+  var exp = '/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth > levels of nesting';
+  var src = '/a/b/c/d';
+  var got = _.path.dir( src, 6 );
+  var exp = '/../..';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'absolute path, depth - 1';
+  var src = '/a/b/c/d/';
+  var got = _.path.dir( src, 1 );
+  var exp = '/a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth - 4';
+  var src = '/a/b/c/d/';
+  var got = _.path.dir( src, 4 );
+  var exp = '/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth > levels of nesting';
+  var src = '/a/b/c/d/';
+  var got = _.path.dir( src, 6 );
+  var exp = '/../..';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = './a/b/c/d';
+  var got = _.path.dir( src, 1 );
+  var exp = 'a/b/c';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = './a/b/c/d';
+  var got = _.path.dir( src, 4 );
+  var exp = '.';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = './a/b/c/d';
+  var got = _.path.dir( src, 6 );
+  var exp = '../..';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = 'a/b/c/d';
+  var got = _.path.dir( src, 1 );
+  var exp = 'a/b/c';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = 'a/b/c/d';
+  var got = _.path.dir( src, 4 );
+  var exp = '.';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = 'a/b/c/d';
+  var got = _.path.dir( src, 6 );
+  var exp = '../..';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = './a/b/c/d/';
+  var got = _.path.dir( src, 1 );
+  var exp = 'a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = './a/b/c/d/';
+  var got = _.path.dir( src, 4 );
+  var exp = '.';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = './a/b/c/d/';
+  var got = _.path.dir( src, 6 );
+  var exp = '../..';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = '../a/b/c/d';
+  var got = _.path.dir( src, 1 );
+  var exp = '../a/b/c';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = '../a/b/c/d';
+  var got = _.path.dir( src, 4 );
+  var exp = '..';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = '../a/b/c/d';
+  var got = _.path.dir( src, 6 );
+  var exp = '../../..';
+  test.identical( got, exp );
 }
 
 //
@@ -5563,7 +5820,6 @@ function dirFirst( test )
 
   var src = '..';
   var expected = '../../';
-  debugger;
   var got = _.path.dirFirst( src );
   test.identical( got, expected );
 
@@ -5625,7 +5881,144 @@ function dirFirst( test )
   {
     _.path.dirFirst( {} );
   });
+}
 
+//
+
+function dirFirstDepthOption( test ) 
+{
+  test.case = 'root directory, depth - 1';
+  var src = '/';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = '/../';
+  test.identical( got, exp );
+
+  test.case = 'root directory, depth - 3';
+  var src = '/';
+  var got = _.path.dirFirst( src, 3 );
+  var exp = '/../../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'absolute path, depth - 1';
+  var src = '/a/b/c/d';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = '/a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth - 4';
+  var src = '/a/b/c/d';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = '/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth > levels of nesting';
+  var src = '/a/b/c/d';
+  var got = _.path.dirFirst( src, 6 );
+  var exp = '/../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'absolute path, depth - 1';
+  var src = '/a/b/c/d/';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = '/a/b/c/d/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth - 4';
+  var src = '/a/b/c/d/';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = '/';
+  test.identical( got, exp );
+
+  test.case = 'absolute path, depth > levels of nesting';
+  var src = '/a/b/c/d/';
+  var got = _.path.dirFirst( src, 6 );
+  var exp = '/../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = './a/b/c/d';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = './a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = './a/b/c/d';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = './';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = './a/b/c/d';
+  var got = _.path.dirFirst( src, 6 );
+  var exp = './../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = 'a/b/c/d';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = 'a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = 'a/b/c/d';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = '.';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = 'a/b/c/d';
+  var got = _.path.dirFirst( src, 6 );
+  var exp = './../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = './a/b/c/d/';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = './a/b/c/d/';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = './a/b/c/d/';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = './';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = './a/b/c/d/';
+  var got = _.path.dirFirst( src, 6 );
+  var exp = './../../';
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'relative path, depth - 1';
+  var src = '../a/b/c/d';
+  var got = _.path.dirFirst( src, 1 );
+  var exp = '../a/b/c/';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth - 4';
+  var src = '../a/b/c/d';
+  var got = _.path.dirFirst( src, 4 );
+  var exp = '../';
+  test.identical( got, exp );
+
+  test.case = 'relative path, depth > levels of nesting';
+  var src = '../a/b/c/d';
+  debugger;
+  var got = _.path.dirFirst( src, 6 );
+  var exp = '../../../';
+  test.identical( got, exp );
 }
 
 // --
@@ -5665,7 +6058,9 @@ var Self =
     dot,
     undot,
     dir,
+    dirDepthOption,
     dirFirst,
+    dirFirstDepthOption,
 
   },
 

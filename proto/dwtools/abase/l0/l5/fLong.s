@@ -505,18 +505,17 @@ function _longClone( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.longLike( src ) || _.bufferAnyIs( src ) );
-  _.assert( !_.bufferNodeIs( src ), 'not tested' );
+  // _.assert( !_.bufferNodeIs( src ), 'not tested' );
 
   if( _.bufferViewIs( src ) )
   debugger;
-
-  if( _.arrayIs( src ) )
+  
+  if( _.unrollIs( src ) )
+  return _.unrollMake( src );
+  else if( _.arrayIs( src ) )
   return src.slice();
   else if( _.argumentsArrayIs( src ) )
-  {
-    debugger;
-    return Array.prototype.slice.call( src );
-  }
+  return Array.prototype.slice.call( src );
   else if( _.bufferRawIs( src ) )
   return new U8x( new U8x( src ) ).buffer;
   else if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
@@ -529,18 +528,68 @@ function _longClone( src )
 
 //
 
+/**
+ * The routine longShallowClone() makes new container with type defined by first argument. Routine clones content of provided arguments
+ * into created container.
+ *
+ * @param { Long|Buffer } arguments[ 0 ] - Long or Buffer, defines type of returned container. If provided only {-arguments[ 0 ]-}, then 
+ * routine makes shallow copy of it.
+ * @param { * } ... - Arguments to make copy into new container. Can have any types exclude undefined.
+ *
+ * @example
+ * let src = [];
+ * let got = _.longShallowClone( src );
+ * console.log( got );
+ * // log []
+ * console.log( src === got );
+ * // log false
+ *
+ * @example
+ * var src = new U8x( [ 1, 2, 3, 4 ] );
+ * var got = _.longShallowClone( src );
+ * console.log( got );
+ * // log Uint8Array [ 1, 2, 3, 4 ];
+ * console.log( src === got );
+ * // log false
+ *
+ * @example
+ * let src = _.unrollMake( [] );
+ * let got = _.longShallowClone( src, 1, 'str', new F32x( [ 3 ] ) );
+ * console.log( got );
+ * // log [ 1, 'str', 3 ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ * console.log( src === got );
+ * // log false
+ *
+ * @example
+ * let src = new BufferRaw( 3 );
+ * let got = _.longShallowClone( src, 1, 2, _.argumentsArrayMake( [ 3, 4 ] ) );
+ * console.log( got );
+ * // log ArrayBuffer { [Uint8Contents]: <00 00 00 01 02 03 04>, byteLength: 7 } 
+ * console.log( src === got );
+ * // log false
+ *
+ * @returns { Long|Buffer } - Returns a Long or a Buffer with type of first argument. Returned container filled by content of provided arguments.
+ * @function longShallowClone
+ * @throws { Error } If arguments.length is less than one.
+ * @throws { Error } If the {-arguments[ 0 ]-} is not a Long or not a Buffer.
+ * @throws { Error } If {-arguments-} has undefined value.
+ * @memberof wTools
+ */
+
+
 /* xxx : review */
 /*
 qqq : find and let me know what is _.buffer* analog of _.longShallowClone
 Dmytro : the closest _.buffer* analog of _.longShallowClone is bufferJoin, which joins buffers to flat buffer
-qqq2 : did not work!
-qqq2 : poor coverage!
+qqq2 : did not work! | Dmytro : extended
+qqq2 : poor coverage! | Dmytro : covered
 */
 
 function longShallowClone()
 {
-  let result;
-  let length = 0;
+  _.assert( arguments.length >= 1, 'Expects at least one argument' );
 
   if( arguments.length === 1 )
   {
@@ -549,59 +598,100 @@ function longShallowClone()
 
   /* eval length */
 
+  let length = 0;
+
   for( let a = 0 ; a < arguments.length ; a++ )
   {
     let argument = arguments[ a ];
 
-    if( argument === undefined )
-    throw _.err( 'argument is not defined' );
+    _.assert( argument !== undefined, 'argument is not defined' );
+    // if( argument === undefined )
+    // throw _.err( 'argument is not defined' );
 
-    if( _.longLike( argument ) ) length += argument.length;
-    else if( _.bufferRawIs( argument ) ) length += argument.byteLength;
-    else length += 1;
+    if( _.longLike( argument ) || _.bufferNodeIs( argument ) )
+    length += argument.length;
+    else if( _.bufferRawIs( argument ) || _.bufferViewIs( argument ) ) 
+    length += argument.byteLength;
+    else 
+    length += 1;
   }
 
   /* make result */
 
-  if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) )
-  result = _.longMakeUndefined( arguments[ 0 ], length );
-  else if( _.bufferRawIs( arguments[ 0 ] ) )
-  result = new BufferRaw( length );
-
+  let result;
   let bufferDst;
   let offset = 0;
+
   if( _.bufferRawIs( arguments[ 0 ] ) )
   {
+    result = new BufferRaw( length );
     bufferDst = new U8x( result );
+  }
+  else if( _.bufferViewIs( arguments[ 0 ] ) )
+  {
+    result = new BufferView( new BufferRaw( length ) );
+    bufferDst = new U8x( result.buffer );
+  }
+  else 
+  {
+    if( _.arrayIs( arguments[ 0 ] ) || _.bufferTypedIs( arguments[ 0 ] ) || _.argumentsArrayIs( arguments[ 0 ] ) )
+    result = _.longMakeUndefined( arguments[ 0 ], length );
+    else if( _.bufferNodeIs( arguments[ 0 ] ) )
+    result = BufferNode.alloc( length );
+    else 
+    _.assert( 0, 'Unexpected data type' );
+
+    bufferDst = result;
   }
 
   /* copy */
 
-  for( let a = 0, c = 0 ; a < arguments.length ; a++ )
+  for( let a = 0; a < arguments.length ; a++ )
   {
+    let srcTyped;
     let argument = arguments[ a ];
     if( _.bufferRawIs( argument ) )
-    {
-      bufferDst.set( new U8x( argument ), offset );
-      offset += argument.byteLength;
-    }
-    else if( _.bufferTypedIs( arguments[ 0 ] ) )
-    {
-      result.set( argument, offset );
-      offset += argument.length;
-    }
-    else if( _.longLike( argument ) )
-    for( let i = 0 ; i < argument.length ; i++ )
-    {
-      result[ c ] = argument[ i ];
-      c += 1;
-    }
-    else
-    {
-      result[ c ] = argument;
-      c += 1;
-    }
+    srcTyped = new U8x( argument );
+    else if( _.bufferViewIs( argument ) )
+    srcTyped = new U8x( argument.buffer );
+    else if( _.bufferTypedIs( argument ) )
+    srcTyped = argument;
+    else if( _.longLike( argument ) || _.bufferNodeIs( argument ) )
+    srcTyped = argument;
+    else 
+    srcTyped = [ argument ];
+
+    for( let i = 0; i < srcTyped.length; i++ )
+    bufferDst[ i + offset ] = srcTyped[ i ];
+
+    offset += srcTyped.length;
   }
+
+  // for( let a = 0, c = 0 ; a < arguments.length ; a++ )
+  // {
+  //   let argument = arguments[ a ];
+  //   if( _.bufferRawIs( argument ) )
+  //   {
+  //     bufferDst.set( new U8x( argument ), offset );
+  //     offset += argument.byteLength;
+  //   }
+  //   else if( _.bufferTypedIs( arguments[ 0 ] ) )
+  //   {
+  //     result.set( argument, offset );
+  //     offset += argument.length;
+  //   }
+  //   else if( _.longLike( argument ) )
+  //   for( let i = 0 ; i < argument.length ; i++ )
+  //   {
+  //     result[ c ] = argument[ i ];
+  //     c += 1;
+  //   }
+  //   else
+  //   {
+  //     result[ c ] = argument;
+  //     c += 1;
+  //   }
+  // }
 
   return result;
 }
