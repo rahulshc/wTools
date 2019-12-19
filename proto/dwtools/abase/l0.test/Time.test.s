@@ -41,6 +41,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -57,6 +58,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -74,6 +76,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -90,6 +93,7 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -107,6 +111,7 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, -2 );
       test.identical( got.result, -1 );
+      got.cancel();
 
       return null;
     });
@@ -123,6 +128,7 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -178,6 +184,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 2 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -194,6 +201,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -211,6 +219,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -227,6 +236,7 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, 2 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -244,6 +254,7 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, -2 );
       test.identical( got.result, -1 );
+      got.cancel();
 
       return null;
     });
@@ -260,6 +271,7 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -314,6 +326,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 2 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -330,6 +343,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -346,6 +360,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -362,6 +377,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -379,6 +395,7 @@ function _begin( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -395,6 +412,7 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, 2 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -412,6 +430,7 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, -2 );
       test.identical( got.result, -1 );
+      got.cancel();
 
       return null;
     });
@@ -428,6 +447,7 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -444,6 +464,7 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -513,6 +534,7 @@ function _finally( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -529,6 +551,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -546,6 +569,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -563,6 +587,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, -2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -618,6 +643,7 @@ function _finally( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 2 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -634,6 +660,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -651,6 +678,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -668,6 +696,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, -2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -722,6 +751,7 @@ function _finally( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 2 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -738,6 +768,7 @@ function _finally( test )
       test.identical( got.onCancel, undefined );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -754,6 +785,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -770,6 +802,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -787,6 +820,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, -2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -803,6 +837,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, 0 );
       test.identical( got.result, undefined );
+      got.cancel();
 
       return null;
     });
@@ -820,6 +855,7 @@ function _finally( test )
       test.identical( got.onCancel, onTime );
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
+      got.cancel();
 
       return null;
     });
@@ -867,54 +903,304 @@ function _finally( test )
 
 function _periodic( test ) 
 {
-  test.case = 'delay - 0, onTime';
-  var result = [];
-  var times = 5;
-  var onTime = function()
+  var onCancel = () => -1;  
+  var con = new _.Consequence().take( null );
+
+  /* - */
+
+  con.finally( () => 
   {
-    if( times !== 0 )
-    {
-      result.push( 1 );
-      times--;
-    }
-  };
-  var got = _.time._periodic( 0, onTime );
+    test.open( 'delay - 0' );
+    return null;
+  })
 
-
-  test.case = 'delay - 10, onTime, onCancel executed';
-  var result1 = [];
-  var times1 = 5;
-  var onTime1 = function()
+  .then( function()
   {
-    if( times1 !== 0 )
+    test.case = 'onTime';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
     {
-      result1.push( 1 );
-      times1--;
-    }
-  };
-  var onCancel = () => -1;
-  var got1 = _.time._periodic( 10, onTime1, onCancel );
-  got1.cancel();
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
 
-  return _testerGlobal_.wTools.time.out( 100 ).then( () =>
-  { 
-    test.identical( got.onTime, onTime );
-    test.identical( got.onCancel, undefined );
-    test.identical( got.state, 2 );
-    test.identical( got.result, undefined );
-    test.identical( times, 0 );
-    test.identical( result, [ 1, 1, 1, 1, 1 ] );
-    _.time.cancel( got );
+    var timer = _.time._periodic( 0, onTime );
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 0 );
+      test.identical( result, [ 1, 1, 1, 1, 1 ] );
+      got.cancel();
 
-    test.identical( got1.onTime, onTime1 );
-    test.identical( got1.onCancel, onCancel );
-    test.identical( got1.state, -2 );
-    test.identical( got1.result, -1 );
-    test.identical( times1, 5 );
-    test.identical( result1, [] );
+      return null;
+    });
+  })
 
+  .then( function()
+  {
+    test.case = 'onTime, execute onTime';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._periodic( 0, onTime );
+    timer.time()
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 0 );
+      test.identical( result, [ 1, 1, 1, 1, 1 ] );
+      got.cancel();
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, onCancel';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._periodic( 0, onTime, onCancel );
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onCancel );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 0 );
+      test.identical( result, [ 1, 1, 1, 1, 1 ] );
+      got.cancel();
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, onCancel, execution of callbacks';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._periodic( 0, onTime, onCancel );
+    timer.time();
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onCancel );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 0 );
+      test.identical( result, [ 1, 1, 1, 1, 1 ] );
+
+      got.cancel();
+
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onCancel );
+      test.identical( got.state, -2 );
+      test.identical( got.result, -1 );
+      test.identical( times, 0 );
+      test.identical( result, [ 1, 1, 1, 1, 1 ] );
+
+      return null;
+    });
+  })
+
+  .finally( () =>
+  {
+    test.close( 'delay - 0' );
     return null;
   });
+  /* - */
+
+  con.finally( () => 
+  {
+    test.open( 'delay > 0' );
+    return null;
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._periodic( 5, onTime );
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 0 );
+      test.identical( result, [ 1, 1, 1, 1, 1 ] );
+      got.cancel();
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, execute onTime';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._periodic( 5, onTime );
+    timer.time()
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 0 );
+      test.identical( result, [ 1, 1, 1, 1, 1 ] );
+      got.cancel();
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, onCancel';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._periodic( 5, onTime, onCancel );
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onCancel );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 0 );
+      test.identical( result, [ 1, 1, 1, 1, 1 ] );
+      got.cancel();
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'onTime, onCancel, execution of callbacks';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._periodic( 5, onTime, onCancel );
+    timer.time();
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onCancel );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 0 );
+      test.identical( result, [ 1, 1, 1, 1, 1 ] );
+
+      got.cancel();
+
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onCancel );
+      test.identical( got.state, -2 );
+      test.identical( got.result, -1 );
+      test.identical( times, 0 );
+      test.identical( result, [ 1, 1, 1, 1, 1 ] );
+
+      return null;
+    });
+  })
+
+  /* - */
+ 
+  con.finally( ( err, arg ) =>
+  {
+    test.close( 'delay > 0' );
+    
+    if( err )
+    throw err;
+    return arg;
+  });
+
+  /* */
+
+  return con;
 }
 
 //
