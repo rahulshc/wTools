@@ -158,7 +158,6 @@ function _begin( test )
     });
   })
 
-
   con.finally( () =>
   {
     test.close( 'delay - undefined' );
@@ -296,6 +295,36 @@ function _begin( test )
       test.identical( got.onCancel, onCancel );
       test.identical( got.state, -2 );
       test.identical( got.result, -1 );
+
+      return null;
+    });
+  })
+
+  .then( function()
+  {
+    test.case = 'only one execution';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._begin( 0, onTime );
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 4 );
+      test.identical( result, [ 1 ] );
+      got.cancel();
 
       return null;
     });
@@ -492,7 +521,38 @@ function _begin( test )
 
       return null;
     });
-  });
+  })
+
+  .then( function()
+  {
+    test.case = 'only one execution';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._begin( 5, onTime );
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 4 );
+      test.identical( result, [ 1 ] );
+      got.cancel();
+
+      return null;
+    });
+  })
+
 
   con.finally( ( err, arg ) =>
   {
@@ -726,6 +786,37 @@ function _finally( test )
     });
   })
 
+  .then( function()
+  {
+    test.case = 'only one execution';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._finally( 0, onTime );
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 4 );
+      test.identical( result, [ 1 ] );
+      got.cancel();
+
+      return null;
+    });
+  })
+
+
   .finally( () =>
   {
     test.close( 'delay - 0' );
@@ -883,7 +974,38 @@ function _finally( test )
 
       return null;
     });
+  })
+
+  .then( function()
+  {
+    test.case = 'only one execution';
+    var times = 5;
+    var result = [];
+    var onTime = function() 
+    {
+      if( times > 0 )
+      {
+        result.push( 1 );
+        times--;
+      }
+    };
+
+    var timer = _.time._finally( 0, onTime );
+    return _.time.out( 100, () => timer )
+    .finally( function( err, got )
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, onTime );
+      test.identical( got.state, 2 );
+      test.identical( got.result, undefined );
+      test.identical( times, 4 );
+      test.identical( result, [ 1 ] );
+      got.cancel();
+
+      return null;
+    });
   });
+
 
   con.finally( ( err, arg ) =>
   {
