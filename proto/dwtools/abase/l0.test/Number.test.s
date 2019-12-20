@@ -378,6 +378,142 @@ function numberRandom( test )
   test.shouldThrowErrorSync( () => _.numberRandom( [ 1, 2, 3 ] ) );
 }
 
+//
+
+function intRandom( test ) 
+{
+  test.case = 'range - 0';
+  var got = _.intRandom( 0 );
+  test.identical( got, 0 );
+
+  test.case = 'range === 1';
+  var got = _.intRandom( 1 );
+  test.is( got === 0 || got === 1 );
+
+  test.case = 'range > 0';
+  var got = _.intRandom( 10 );
+  test.ge( got, 0 );
+  test.le( got, 10 );
+  test.is( Math.floor( got ) === got );
+
+  test.case = 'range < 0';
+  var got = _.intRandom( -10 );
+  test.ge( got, -10 );
+  test.le( got, 0 );
+  test.is( Math.floor( got ) === got );
+
+  /* */
+
+  test.case = 'range[ 0 ] === range[ 1 ], range[ 0 ] === 0';
+  var got = _.intRandom( [ 0, 0 ] );
+  test.identical( got, 0 );
+
+  test.case = 'range[ 0 ] === range[ 1 ], range[ 0 ] > 0';
+  var got = _.intRandom( [ 10, 10 ] );
+  test.identical( got, 10 );
+
+  test.case = 'range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
+  var got = _.intRandom( [ -10, -10 ] );
+  test.identical( got, -10 );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === 1';
+  var got = _.intRandom( [ 0, 1 ] );
+  test.is( got === 0 || got === 1 );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] >  0';
+  var got = _.intRandom( [ 0, 10 ] );
+  test.ge( got, 0 );
+  test.le( got, 10 );
+  test.is( Math.floor( got ) === got );
+
+  test.case = 'range[ 0 ] > 0, range[ 1 ] ===  0';
+  var got = _.intRandom( [ 10, 0 ] );
+  test.ge( got, 0 );
+  test.le( got, 10 );
+  test.is( Math.floor( got ) === got );
+
+  test.case = 'range[ 1 ] - range[ 1 ] === 1';
+  var got = _.intRandom( [ 5, 6 ] );
+  test.is( got === 5 || got === 6 );
+
+  test.case = 'range[ 0 ] > 0, range[ 1 ] > 0, range[ 0 ] < range[ 1 ]';
+  var got = _.intRandom( [ 5, 10 ] );
+  test.ge( got, 5 );
+  test.le( got, 10 );
+  test.is( Math.floor( got ) === got );
+
+  test.case = 'range[ 0 ] > 0, range[ 1 ] > 0, range[ 0 ] > range[ 1 ]';
+  var got = _.intRandom( [ 10, 5 ] );
+  test.ge( got, 5 );
+  test.le( got, 10 );
+  test.is( Math.floor( got ) === got );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] === -1';
+  var got = _.intRandom( [ 0, -1 ] );
+  test.is( got === -1 || got === 0 );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] <  0';
+  var got = _.intRandom( [ 0, -10 ] );
+  test.ge( got, -10 );
+  test.le( got, 0 );
+  test.is( Math.floor( got ) === got );
+
+  test.case = 'range[ 0 ] < 0, range[ 1 ] ===  0';
+  var got = _.intRandom( [ -10, 0 ] );
+  test.ge( got, -10 );
+  test.le( got, 0 );
+  test.is( Math.floor( got ) === got );
+
+  test.case = 'range[ 0 ] - range[ 1 ] === 1';
+  var got = _.intRandom( [ -6, -5 ] );
+  test.is( got === -6 || got === -5 );
+
+  test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, range[ 0 ] > range[ 1 ]';
+  var got = _.intRandom( [ -5, -10 ] );
+  test.ge( got, -10 );
+  test.le( got, -5 );
+  test.is( Math.floor( got ) === got );
+
+  test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, range[ 0 ] < range[ 1 ]';
+  var got = _.intRandom( [ -10, -5 ] );
+  test.ge( got, -10 );
+  test.le( got, -5 );
+  test.is( Math.floor( got ) === got );
+
+  test.case = 'range[ 0 ] > 0, range[ 1 ] < 0';
+  var got = _.intRandom( [ 5, -10 ] );
+  test.ge( got, -10 );
+  test.le( got, 5 );
+  test.is( Math.floor( got ) === got );
+
+  test.case = 'range[ 0 ] < 0, range[ 1 ] > 0';
+  var got = _.intRandom( [ -10, 5 ] );
+  test.ge( got, -10 );
+  test.le( got, 5 );
+  test.is( Math.floor( got ) === got );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.intRandom() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.intRandom( [ 0, 2 ], 'extra' ) );
+
+  test.case = 'wrong type of range';
+  test.shouldThrowErrorSync( () => _.intRandom( 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.intRandom( { a : 1 } ) );
+
+  test.case = 'wrong range';
+  test.shouldThrowErrorSync( () => _.intRandom( [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.intRandom( [ 1, 2, 3 ] ) );
+}
+
 // --
 // declaration
 // --
@@ -397,6 +533,7 @@ var Self =
     numbersFrom,
 
     numberRandom,
+    intRandom,
      
   }
 
