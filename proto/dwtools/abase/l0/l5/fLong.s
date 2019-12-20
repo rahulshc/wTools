@@ -8932,12 +8932,16 @@ let Routines =
   longBut,
   longButInplace,
   _argumentsOnlyLong,
+  longBut_, /* !!! : use instead of longBut, longButInplace */
   longSelect,
+  longSelect_, /* !!! : use instead of longSelect, longSelectInplace */
   longSelectInplace,
   longGrow,
+  longGrow_, /* !!! : use instead of longGrow, longGrowInplace */
   longGrowInplace,
   longRelength,
   longRelengthInplace,
+  longRelength_, /* !!! : use instead of longRelength, longRelengthInplace */
 
   // array checker
 
@@ -8980,12 +8984,16 @@ let Routines =
   arrayBut,
   arrayButInplace,
   _argumentsOnlyArray,
+  arrayBut_, /* !!! : use instead of arrayBut, arrayButInplace */
   arraySelect,
   arraySelectInplace,
+  arraySelect_, /* !!! : use instead of arraySelect, arraySelectInplace */
   arrayGrow,
   arrayGrowInplace,
+  arrayGrow_, /* !!! : use instead of arrayGrow, arrayGrowInplace */
   arrayRelength,
   arrayRelengthInplace,
+  arrayRelength_, /* !!! : use instead of arrayRelength, arrayRelengthInplace */
 
   // long sequential search
 
@@ -9137,14 +9145,6 @@ let Routines =
 
   // to replace
 
-  longBut_, /* !!! : use instead of longBut, longButInplace */
-  longSelect_, /* !!! : use instead of longSelect, longSelectInplace */
-  longGrow_, /* !!! : use instead of longGrow, longGrowInplace */
-  longRelength_, /* !!! : use instead of longRelength, longRelengthInplace */
-  arrayBut_, /* !!! : use instead of arrayBut, arrayButInplace */
-  arraySelect_, /* !!! : use instead of arraySelect, arraySelectInplace */
-  arrayGrow_, /* !!! : use instead of arrayGrow, arrayGrowInplace */
-  arrayRelength_, /* !!! : use instead of arrayRelength, arrayRelengthInplace */
 
   /*
   | routine          | makes new dst container                  | saves dst container                                     |

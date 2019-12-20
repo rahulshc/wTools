@@ -102,6 +102,58 @@ function numbersSlice( src,f,l )
 
 //
 
+/**
+ * The routine numberRandom() returns a random number, the value of which is within a
+ * range {-range-} .
+ *
+ * @param { Range|Number } range - The range for generating random numbers.
+ * If {-range-} is number, routine generates random number from zero to provided value.
+ *
+ * @example
+ * let got = _.numberRandom( 0 );
+ * // returns random number in range [ 0, 0 ]
+ * console.log( got );
+ * // log 0.10161347203073712
+ *
+ * @example
+ * let got = _.numberRandom( 3 );
+ * // returns random number in range [ 0, 3 ]
+ * console.log( got );
+ * // log 0.10161347203073712
+ *
+ * @example
+ * let got = _.numberRandom( -3 );
+ * // returns random number in range [ -3, 0 ]
+ * console.log( got );
+ * // log -1.4184648844870276
+ *
+ * @example
+ * let got = _.numberRandom( [ 3, 3 ] );
+ * console.log( got );
+ * // log 3
+ *
+ * @example
+ * let got = _.numberRandom( [ -3, 0 ] );
+ * console.log( got );
+ * // log -1.5699334307486583
+ *
+ * @example
+ * let got = _.numberRandom( [ 0, 3 ] );
+ * console.log( got );
+ * // log 0.6154656826553855
+ *
+ * @example
+ * let got = _.numberRandom( [ -3, 3 ] );
+ * console.log( got );
+ * // log 1.9835540787557022
+ *
+ * @returns { Number } - Returns a random number.
+ * @function numberRandom
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If range {-range-} is not a Number or not a Range.
+ * @memberof wTools
+ */
+
 function numberRandom( range )
 {
 
@@ -306,7 +358,7 @@ let Routines =
 
   numbersSlice,
 
-  numberRandom, /* qqq : cover and document please | Dmytro : covered */
+  numberRandom, /* qqq : cover and document please | Dmytro : covered and documented */
   intRandom, /* qqq : cover and document please */
   intRandomBut, /* dubious */
 
