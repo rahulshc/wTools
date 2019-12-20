@@ -51,8 +51,13 @@ function numberFrom( src )
 
 function numbersFrom( src )
 {
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
   if( _.strIs( src ) )
   return _.numberFrom( src );
+
+  if( _.numberIs( src ) )
+  return src;
 
   let result;
 
@@ -67,6 +72,10 @@ function numbersFrom( src )
     result = Object.create( null );
     for( let s in src )
     result[ s ] = _.numberFrom( src[ s ] );
+  }
+  else
+  {
+    result = _.numberFrom( src );
   }
 
   return result;
