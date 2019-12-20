@@ -174,8 +174,7 @@ longDuplicate.defaults =
  */
 
 /*
-qqq : routine longOnce requires good test coverage and documentation
-Dmytro : covered and extended documentation.
+qqq : routine longOnce requires good test coverage and documentation | Dmytro : covered and extended documentation.
 */
 
 /*
@@ -1600,8 +1599,7 @@ function longPut( dstArray, dstOffset )
  */
 
 /*
-qqq : routine longFill requires good test coverage and documentation
-Dmytro : extended documentation, extended coverage
+qqq : routine longFill requires good test coverage and documentation | Dmytro : extended documentation, extended coverage
 */
 
 function longFill( result, value, range )

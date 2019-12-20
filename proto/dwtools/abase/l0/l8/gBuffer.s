@@ -216,8 +216,7 @@ function buffersAreIdentical( src1, src2 )
  */
 
 /*
-qqq : implement, cover, document
-Dmytro : implemented, covered, documented. If ins is not a buffer, routine returns default ArrayType.
+qqq : implement, cover, document | Dmytro : implemented, covered, documented. If ins is not a buffer, routine returns default ArrayType.
 */
 
 function bufferMake( ins, src )
@@ -426,8 +425,7 @@ function bufferMake( ins, src )
  * @memberof wTools
  */
 
-/* qqq : implement, cover, document */
-/* Dmytro : implemented, covered, documented */
+/* qqq : implement, cover, document | Dmytro : implemented, covered, documented */
 
 function bufferMakeUndefined( ins, src )
 {
@@ -720,8 +718,7 @@ function bufferRawFrom( buffer )
 {
   let result;
 
-  /* qqq : should do not copying when possible!
-     Dmytro : not copying if it possible */
+  /* qqq : should do not copying when possible! | Dmytro : not copying if it possible */
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -834,8 +831,7 @@ function bufferBytesFromNode( src )
 //
 
 /*
-qqq : cover it
-Dmytro : coverage is extended
+qqq : cover it | Dmytro : coverage is extended
 */
 
 function bufferNodeFrom( buffer )
@@ -976,7 +972,8 @@ function bufferBut( dstArray, range, srcArray )
   for( let j = last, i = first + srcArrayLength; j < length; )
   result[ i++ ] = dstArrayTyped[ j++ ];
 
-   //
+  //
+
   if( _.bufferRawIs( dstArray ) )
   return result.buffer;
   if( _.bufferNodeIs( dstArray ) )
@@ -988,20 +985,17 @@ function bufferBut( dstArray, range, srcArray )
 }
 
 /*
-qqq : routine bufferBut requires good test coverage and documentation
-Dmytro : covered
+qqq : routine bufferBut requires good test coverage and documentation | Dmytro : covered
 */
 /*
-qqq : implement cover and document routine bufferButInplace
-Dmytro : covered
+qqq : implement cover and document routine bufferButInplace | Dmytro : covered
 Dmytro : newly created routines bufferBut_, bufferSelect_, bufferGrow_, bufferRelength_ is documented
 */
 
-/* qqq : implement
+/* qqq : implement | Dmytro : all requirements applied
    qqq : no
       src can be any long or any buffer
       ins can be any long or any buffer
-   Dmytro : all requirements applied
 */
 
 // Dmytro : not a my template
@@ -2290,13 +2284,11 @@ function bufferRelen( src, len )
 //
 
 /*
-qqq : implement for 2 other types of buffer and do code test coverage
-Dmytro : implemented for all buffer types, covered
+qqq : implement for 2 other types of buffer and do code test coverage | Dmytro : implemented for all buffer types, covered
 */
 
 /*
-  qqq : wrong! Size and length are different concepts.
-  Dmytro : concept size is used in routine
+qqq : wrong! Size and length are different concepts. | Dmytro : concept size is used in routine
 */
 
 function bufferResize( srcBuffer, size )
@@ -3110,15 +3102,20 @@ let Routines =
 
   bufferBut,
   bufferButInplace,
+  bufferBut_, /* !!! : use instead of bufferBut, bufferButInplace */
   bufferSelect,
   bufferSelectInplace,
+  bufferSelect_, /* !!! : use instead of bufferSelect, bufferSelectInplace */
   bufferGrow,
   bufferGrowInplace,
+  bufferGrow_, /* !!! : use instead of bufferGrow, bufferGrowInplace */
   bufferRelength,
   bufferRelengthInplace,
+  bufferRelength_, /* !!! : use instead of bufferRelength, bufferRelengthInplace */
   bufferRelen,
   bufferResize,
   bufferResizeInplace,
+  bufferResize_, /* !!! : use instead of bufferResize, bufferResizeInplace */
 
   bufferBytesGet,
   bufferRetype,
@@ -3138,12 +3135,6 @@ let Routines =
   // buffersDeserialize, /* deprecated */
 
   // to replace
-
-  bufferBut_, /* !!! : use instead of bufferBut, bufferButInplace */
-  bufferSelect_, /* !!! : use instead of bufferSelect, bufferSelectInplace */
-  bufferGrow_, /* !!! : use instead of bufferGrow, bufferGrowInplace */
-  bufferRelength_, /* !!! : use instead of bufferRelength, bufferRelengthInplace */
-  bufferResize_, /* !!! : use instead of bufferResize, bufferResizeInplace */
 
   /*
   | routine         | makes new dst container                      | saves dst container                                      |
