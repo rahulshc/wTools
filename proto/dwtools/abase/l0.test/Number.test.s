@@ -274,6 +274,110 @@ function numbersFrom( test )
   test.shouldThrowErrorSync( () => _.numbersFrom( [ 1, Symbol.for( 'a' ) ] ) );
 }
 
+//
+
+function numberRandom( test ) 
+{
+  test.case = 'range - 0';
+  var got = _.numberRandom( 0 );
+  test.identical( got, 0 );
+
+  test.case = 'range > 0';
+  var got = _.numberRandom( 10 );
+  test.ge( got, 0 );
+  test.le( got, 10 );
+
+  test.case = 'range < 0';
+  var got = _.numberRandom( -10 );
+  test.ge( got, -10 );
+  test.le( got, 0 );
+
+  /* */
+
+  test.case = 'range[ 0 ] === range[ 1 ], range[ 0 ] === 0';
+  var got = _.numberRandom( [ 0, 0 ] );
+  test.identical( got, 0 );
+
+  test.case = 'range[ 0 ] === range[ 1 ], range[ 0 ] > 0';
+  var got = _.numberRandom( [ 10, 10 ] );
+  test.identical( got, 10 );
+
+  test.case = 'range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
+  var got = _.numberRandom( [ -10, -10 ] );
+  test.identical( got, -10 );
+
+  /* */
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] >  0';
+  var got = _.numberRandom( [ 0, 10 ] );
+  test.ge( got, 0 );
+  test.le( got, 10 );
+
+  test.case = 'range[ 0 ] > 0, range[ 1 ] ===  0';
+  var got = _.numberRandom( [ 10, 0 ] );
+  test.ge( got, 0 );
+  test.le( got, 10 );
+
+  test.case = 'range[ 0 ] > 0, range[ 1 ] > 0, range[ 0 ] < range[ 1 ]';
+  var got = _.numberRandom( [ 5, 10 ] );
+  test.ge( got, 5 );
+  test.le( got, 10 );
+
+  test.case = 'range[ 0 ] > 0, range[ 1 ] > 0, range[ 0 ] > range[ 1 ]';
+  var got = _.numberRandom( [ 10, 5 ] );
+  test.ge( got, 5 );
+  test.le( got, 10 );
+
+  test.case = 'range[ 0 ] === 0, range[ 1 ] <  0';
+  var got = _.numberRandom( [ 0, -10 ] );
+  test.ge( got, -10 );
+  test.le( got, 0 );
+
+  test.case = 'range[ 0 ] < 0, range[ 1 ] ===  0';
+  var got = _.numberRandom( [ -10, 0 ] );
+  test.ge( got, -10 );
+  test.le( got, 0 );
+
+  test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, range[ 0 ] > range[ 1 ]';
+  var got = _.numberRandom( [ -5, -10 ] );
+  test.ge( got, -10 );
+  test.le( got, -5 );
+
+  test.case = 'range[ 0 ] < 0, range[ 1 ] < 0, range[ 0 ] < range[ 1 ]';
+  var got = _.numberRandom( [ -10, -5 ] );
+  test.ge( got, -10 );
+  test.le( got, -5 );
+
+  test.case = 'range[ 0 ] > 0, range[ 1 ] < 0';
+  var got = _.numberRandom( [ 5, -10 ] );
+  test.ge( got, -10 );
+  test.le( got, 5 );
+
+  test.case = 'range[ 0 ] < 0, range[ 1 ] > 0';
+  var got = _.numberRandom( [ -10, 5 ] );
+  test.ge( got, -10 );
+  test.le( got, 5 );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numberRandom() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numberRandom( [ 0, 2 ], 'extra' ) );
+
+  test.case = 'wrong type of range';
+  test.shouldThrowErrorSync( () => _.numberRandom( 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.numberRandom( { a : 1 } ) );
+
+  test.case = 'wrong range';
+  test.shouldThrowErrorSync( () => _.numberRandom( [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.numberRandom( [ 1, 2, 3 ] ) );
+}
+
 // --
 // declaration
 // --
@@ -291,6 +395,8 @@ var Self =
     // l0/l8/gNumber.s
 
     numbersFrom,
+
+    numberRandom,
      
   }
 

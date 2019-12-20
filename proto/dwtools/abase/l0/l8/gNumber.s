@@ -301,12 +301,12 @@ let Routines =
   numbersTotal,
 
   numberFrom,
-  numbersFrom, /* qqq : add test coverage */
+  numbersFrom, /* qqq : add test coverage | Dmytro : covered */
   numberFromStr,
 
   numbersSlice,
 
-  numberRandom, /* qqq : cover and document please */
+  numberRandom, /* qqq : cover and document please | Dmytro : covered */
   intRandom, /* qqq : cover and document please */
   intRandomBut, /* dubious */
 
