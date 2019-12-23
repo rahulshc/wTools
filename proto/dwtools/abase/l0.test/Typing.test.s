@@ -1266,24 +1266,142 @@ function consequenceIs( test )
     var got = _.consequenceIs( src );
     test.identical( got, true );
   }
-
 }
 
 //
 
 function consequenceLike( test )
 {
-  test.case = 'check if entity is a consequenceLike';
+  test.case = 'without argument';
+  var got = _.consequenceLike();
+  test.identical( got, false );
 
-  if( !_.consequenceLike )
-  return test.identical( true, true );
+  test.case = 'check null';
+  var got = _.consequenceLike( null );
+  test.identical( got, false );
 
-  test.is( !_.consequenceLike() );
-  test.is( !_.consequenceLike( {} ) );
-  test.is( _.consequenceLike( Promise.resolve( 0 ) ) );
+  test.case = 'check undefined';
+  var got = _.consequenceLike( undefined );
+  test.identical( got, false );
 
-  var promise = new Promise( ( resolve, reject ) => { resolve( 0 ) } )
-  test.is( _.consequenceLike( promise ) );
+  test.case = 'check _.nothing';
+  var got = _.consequenceLike( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.consequenceLike( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.consequenceLike( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.consequenceLike( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.consequenceLike( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.consequenceLike( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.consequenceLike( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.consequenceLike( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.consequenceLike( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.consequenceLike( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.consequenceLike( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.consequenceLike( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.consequenceLike( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.consequenceLike( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.consequenceLike( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.consequenceLike( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.consequenceLike( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.consequenceLike( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.consequenceLike( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.consequenceLike( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var got = _.consequenceLike( { '' : null } );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  var got = _.consequenceLike( src );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  src.some = false;
+  var got = _.consequenceLike( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of contsructor with not own property "constructor"';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.consequenceLike( src );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.consequenceLike( src );
+  test.identical( got, true );
+  
+  if( _.Consequence )
+  {
+    console.log( 'Consequence' );
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.consequenceLike( src );
+    test.identical( got, true );
+  }
 }
 
 //
