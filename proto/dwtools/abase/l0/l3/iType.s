@@ -105,11 +105,12 @@ function spaceIs( src )
 
 function constructorIsSpace( src )
 {
-  if( !_.Space )
-  return false;
-  if( src === _.Space )
-  return true;
-  return false;
+  // if( !_.Space )
+  // return false;
+  // if( src === _.Space )
+  // return true;
+  // return false;
+  return _.Space ? src === _.Space : false;
 }
 
 //
