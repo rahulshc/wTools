@@ -737,6 +737,106 @@ function vectorAdapterIs( test )
 
 //
 
+function constructorIsVector( test ) 
+{
+  test.case = 'without argument';
+  var got = _.constructorIsVector();
+  test.identical( got, false );
+
+  test.case = 'check null';
+  var got = _.constructorIsVector( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.constructorIsVector( undefined );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.constructorIsVector( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.constructorIsVector( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.constructorIsVector( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.constructorIsVector( NaN );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'map has property prototype';
+  var proto = { a : 1 };
+  var src = {};
+  src.prototype = proto;
+  var got = _.constructorIsVector( src );
+  test.identical( got, false );
+
+  test.case = 'map has property prototype and prototype has property _vectorBuffer';
+  var proto = { a : 1 };
+  proto._vectorBuffer = true;
+  var src = {};
+  src.prototype = proto;
+  var got = _.constructorIsVector( src );
+  test.identical( got, true );
+
+  /* */
+
+  test.case = 'check instance of contsructor prototyped by another instance without _vectorBuffer property';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var proto = new Constr();
+  var src = new Constr();
+  src.prototype = proto;
+  var got = _.constructorIsVector( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of contsructor prototyped by another instance with _vectorBuffer property';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var proto = new Constr();
+  proto._vectorBuffer = true;
+  var src = new Constr();
+  src.prototype = proto;
+  var got = _.constructorIsVector( src );
+  test.identical( got, true );
+
+  test.case = 'check instance of contsructor prototyped by another instance with _vectorBuffer and own "constructor" properties';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var proto = new Constr();
+  proto._vectorBuffer = true;
+  proto.constructor = Constr;
+  var src = new Constr();
+  src.prototype = proto;
+  var got = _.constructorIsVector( src );
+  test.identical( got, true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'src.prototype is undefined';
+  test.shouldThrowErrorSync( () => _.constructorIsVector( [] ) );
+  test.shouldThrowErrorSync( () => _.constructorIsVector( {} ) );
+}
+
+//
+
 function objectLike( test )
 {
 
@@ -892,6 +992,7 @@ var Self =
     //
 
     vectorAdapterIs,
+    constructorIsVector,
 
     objectLike,
     consequenceLike,
