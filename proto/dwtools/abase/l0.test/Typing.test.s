@@ -1260,7 +1260,6 @@ function consequenceIs( test )
   
   if( _.Consequence )
   {
-    console.log( 'Consequence' );
     test.case = 'instance of Consequence';
     var src = new _.Consequence().take( 0 );
     var got = _.consequenceIs( src );
@@ -1396,7 +1395,6 @@ function consequenceLike( test )
   
   if( _.Consequence )
   {
-    console.log( 'Consequence' );
     test.case = 'instance of Consequence';
     var src = new _.Consequence().take( 0 );
     var got = _.consequenceLike( src );
@@ -1532,7 +1530,6 @@ function promiseIs( test )
   
   if( _.Consequence )
   {
-    console.log( 'Consequence' );
     test.case = 'instance of Consequence';
     var src = new _.Consequence().take( 0 );
     var got = _.promiseIs( src );
@@ -1543,6 +1540,148 @@ function promiseIs( test )
   var _Promise = function Promise(){};
   var src = new _Promise();
   var got = _.promiseIs( src );
+  test.identical( got, false );
+}
+
+//
+
+function promiseLike( test ) 
+{
+  test.case = 'without argument';
+  var got = _.promiseLike();
+  test.identical( got, false );
+
+  test.case = 'check null';
+  var got = _.promiseLike( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.promiseLike( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.promiseLike( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.promiseLike( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.promiseLike( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.promiseLike( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.promiseLike( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.promiseLike( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.promiseLike( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.promiseLike( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.promiseLike( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.promiseLike( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.promiseLike( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.promiseLike( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.promiseLike( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.promiseLike( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.promiseLike( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.promiseLike( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.promiseLike( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.promiseLike( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.promiseLike( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.promiseLike( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var got = _.promiseLike( { '' : null } );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  var got = _.promiseLike( src );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  src.some = false;
+  var got = _.promiseLike( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of contsructor with not own property "constructor"';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.promiseLike( src );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.promiseLike( src );
+  test.identical( got, true );
+  
+  _.include( 'wConsequence' )
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.promiseLike( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'function _Promise';
+  var _Promise = function Promise(){};
+  var src = new _Promise();
+  var got = _.promiseLike( src );
   test.identical( got, false );
 }
 
@@ -1672,9 +1811,9 @@ var Self =
     consequenceIs,
     consequenceLike,
     promiseIs,
+    promiseLike,
 
     objectLike,
-    promiseIs,
 
     isPrototypeOf,
 
