@@ -1101,9 +1101,9 @@ function constructorIsSpace( test )
   var got = _.constructorIsSpace( src );
   test.identical( got, false );
 
-  test.case = '';
   if( _.Space )
   {
+    test.case = 'instance of Space';
     var buffer = new U8x( [ 1, 2, 3, 4, 5 ] );
     var src = new _.Space
     ({
@@ -1134,25 +1134,138 @@ function constructorIsSpace( test )
 
 //
 
-function objectLike( test )
+function consequenceIs( test ) 
 {
+  test.case = 'without argument';
+  var got = _.consequenceIs();
+  test.identical( got, false );
 
-  test.description = 'array-like entities should not overlap with array-like entities set';
+  test.case = 'check null';
+  var got = _.consequenceIs( null );
+  test.identical( got, false );
 
-  test.identical( _.objectLike( new ArrayBuffer( 10 ) ),false );
-  test.identical( _.objectLike( new Float32Array( 10 ) ),false );
-  test.identical( _.objectLike( new Int32Array( 10 ) ),false );
-  test.identical( _.objectLike( new DataView( new ArrayBuffer( 10 ) ) ),false );
-  test.identical( _.objectLike( new Array( 10 ) ),false );
-  test.identical( _.objectLike( [ 1,2,3 ] ),false );
-  test.identical( _.objectLike( new Map ),false );
+  test.case = 'check undefined';
+  var got = _.consequenceIs( undefined );
+  test.identical( got, false );
 
-  test.description = 'this entities are object-like';
+  test.case = 'check _.nothing';
+  var got = _.consequenceIs( _.nothing );
+  test.identical( got, false );
 
-  test.identical( _.objectLike( _global_ ),true );
-  test.identical( _.objectLike( new Object() ),true );
-  test.identical( _.objectLike( {} ),true );
-  test.identical( _.objectLike( Object.create( null ) ),true );
+  test.case = 'check zero';
+  var got = _.consequenceIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.consequenceIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.consequenceIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.consequenceIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.consequenceIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.consequenceIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.consequenceIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.consequenceIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.consequenceIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.consequenceIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.consequenceIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.consequenceIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.consequenceIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.consequenceIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.consequenceIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.consequenceIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.consequenceIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.consequenceIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.consequenceIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var got = _.consequenceIs( { '' : null } );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  var got = _.consequenceIs( src );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  src.some = false;
+  var got = _.consequenceIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of contsructor with not own property "constructor"';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.consequenceIs( src );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.consequenceIs( src );
+  test.identical( got, false );
+  
+  if( _.Consequence )
+  {
+    console.log( 'Consequence' );
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.consequenceIs( src );
+    test.identical( got, true );
+  }
 
 }
 
@@ -1171,7 +1284,28 @@ function consequenceLike( test )
 
   var promise = new Promise( ( resolve, reject ) => { resolve( 0 ) } )
   test.is( _.consequenceLike( promise ) );
+}
 
+//
+
+function objectLike( test )
+{
+  test.description = 'array-like entities should not overlap with array-like entities set';
+
+  test.identical( _.objectLike( new ArrayBuffer( 10 ) ),false );
+  test.identical( _.objectLike( new Float32Array( 10 ) ),false );
+  test.identical( _.objectLike( new Int32Array( 10 ) ),false );
+  test.identical( _.objectLike( new DataView( new ArrayBuffer( 10 ) ) ),false );
+  test.identical( _.objectLike( new Array( 10 ) ),false );
+  test.identical( _.objectLike( [ 1,2,3 ] ),false );
+  test.identical( _.objectLike( new Map ),false );
+
+  test.description = 'this entities are object-like';
+
+  test.identical( _.objectLike( _global_ ),true );
+  test.identical( _.objectLike( new Object() ),true );
+  test.identical( _.objectLike( {} ),true );
+  test.identical( _.objectLike( Object.create( null ) ),true );
 }
 
 //
@@ -1292,9 +1426,11 @@ var Self =
     constructorIsVector,
     spaceIs,
     constructorIsSpace,
+    
+    consequenceIs,
+    consequenceLike,
 
     objectLike,
-    consequenceLike,
     promiseIs,
 
     isPrototypeOf,
