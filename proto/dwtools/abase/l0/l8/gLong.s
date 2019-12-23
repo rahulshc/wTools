@@ -293,9 +293,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
       result = _.longMakeUndefined( dstLong, length );
       
       for( let i = 0; i < dstLong.length; i++ )
-      {
-        result[ i ] = dstLong[ i ]
-      }
+      result[ i ] = dstLong[ i ]
 
       let offset = dstLong.length;
       for( let i = dstLong.length; i < result.length;  )
