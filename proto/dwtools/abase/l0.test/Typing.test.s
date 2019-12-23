@@ -1406,6 +1406,148 @@ function consequenceLike( test )
 
 //
 
+function promiseIs( test ) 
+{
+  test.case = 'without argument';
+  var got = _.promiseIs();
+  test.identical( got, false );
+
+  test.case = 'check null';
+  var got = _.promiseIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.promiseIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.promiseIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.promiseIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.promiseIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.promiseIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.promiseIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.promiseIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.promiseIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.promiseIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.promiseIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.promiseIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.promiseIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.promiseIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.promiseIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.promiseIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.promiseIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.promiseIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.promiseIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.promiseIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.promiseIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.promiseIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var got = _.promiseIs( { '' : null } );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  var got = _.promiseIs( src );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  src.some = false;
+  var got = _.promiseIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of contsructor with not own property "constructor"';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.promiseIs( src );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.promiseIs( src );
+  test.identical( got, true );
+  
+  if( _.Consequence )
+  {
+    console.log( 'Consequence' );
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.promiseIs( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'function _Promise';
+  var _Promise = function Promise(){};
+  var src = new _Promise();
+  var got = _.promiseIs( src );
+  test.identical( got, false );
+}
+
+//
+
 function objectLike( test )
 {
   test.description = 'array-like entities should not overlap with array-like entities set';
@@ -1424,24 +1566,6 @@ function objectLike( test )
   test.identical( _.objectLike( new Object() ),true );
   test.identical( _.objectLike( {} ),true );
   test.identical( _.objectLike( Object.create( null ) ),true );
-}
-
-//
-
-function promiseIs( test )
-{
-  test.case = 'check if entity is a Promise';
-
-  test.is( !_.promiseIs() );
-  test.is( !_.promiseIs( {} ) );
-
-  var _Promise = function Promise(){};
-  test.is( !_.promiseIs( new _Promise() ) );
-
-  test.is( _.promiseIs( Promise.resolve( 0 ) ) );
-
-  var promise = new Promise( ( resolve, reject ) => { resolve( 0 ) } )
-  test.is( _.promiseIs( promise ) );
 }
 
 //
@@ -1547,6 +1671,7 @@ var Self =
     
     consequenceIs,
     consequenceLike,
+    promiseIs,
 
     objectLike,
     promiseIs,
