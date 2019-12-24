@@ -1956,6 +1956,368 @@ function typeOf( test )
 
 //
 
+function isPrototypeOf( test ) 
+{
+  test.open( 'subPrototype === superPrototype' );
+
+  test.case = 'check null';
+  var src = null;
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check undefined';
+  var src = undefined;
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check zero';
+  var src = 0;
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check false';
+  var src = false;
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check NaN';
+  var src = NaN;
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, false );
+
+  test.case = 'check array';
+  var src = [ 1, 2 ];
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check empty arguments array';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check map';
+  var src = { a : 2 };
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check pure map';
+  var src = Object.create( null );
+  src.a = 2;
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check Set';
+  var src = new Set( [] );
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check HashMap';
+  var src = new Map( [ [ 1, 1 ] ] );
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check BufferRaw';
+  var src = new BufferRaw( 10 );
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check BufferTyped';
+  var src = new U8x( [ 1, 2 ] );
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check object Number';
+  var src = new Number( 2 );
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check BigIng';
+  var src = 1n;
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'check instance of contsructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.isPrototypeOf( src, src );
+    test.identical( got, true );
+  }
+
+  test.case = 'function _Promise';
+  var _Promise = function Promise(){};
+  var src = new _Promise();
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, true );
+
+  test.close( 'subPrototype === superPrototype' );
+
+  /* - */
+
+  test.open( 'one argument is undefines' );
+
+  test.case = 'check null';
+  var src = null;
+  var got = _.isPrototypeOf( src, undefined );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var src = undefined;
+  var got = _.isPrototypeOf( src, null );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var src = 0;
+  var got = _.isPrototypeOf( false, src );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var src = false;
+  var got = _.isPrototypeOf( undefined, src );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var src = NaN;
+  var got = _.isPrototypeOf( src, src );
+  test.identical( got, false );
+
+  test.case = 'check array';
+  var src = [ 1, 2 ];
+  var got = _.isPrototypeOf( false, src );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.isPrototypeOf( src, null );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.isPrototypeOf( 0, src );
+  test.identical( got, false );
+
+  test.case = 'check map';
+  var src = { a : 2 };
+  var got = _.isPrototypeOf( src, undefined );
+  test.identical( got, false );
+
+  test.case = 'check pure map';
+  var src = Object.create( null );
+  src.a = 2;
+  var got = _.isPrototypeOf( null, src );
+  test.identical( got, false );
+
+  test.case = 'check Set';
+  var src = new Set( [] );
+  var got = _.isPrototypeOf( src, false );
+  test.identical( got, false );
+
+  test.case = 'check HashMap';
+  var src = new Map( [ [ 1, 1 ] ] );
+  var got = _.isPrototypeOf( null, src );
+  test.identical( got, false );
+
+  test.case = 'check BufferRaw';
+  var src = new BufferRaw( 10 );
+  var got = _.isPrototypeOf( src, undefined );
+  test.identical( got, false );
+
+  test.case = 'check BufferTyped';
+  var src = new U8x( [ 1, 2 ] );
+  var got = _.isPrototypeOf( false, src );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var src = new Number( 2 );
+  var got = _.isPrototypeOf( src, false );
+  test.identical( got, false );
+
+  test.case = 'check BigIng';
+  var src = 1n;
+  var got = _.isPrototypeOf( null, src );
+  test.identical( got, false );
+
+  test.case = 'check instance of contsructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.isPrototypeOf( src, undefined );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.isPrototypeOf( false, src );
+  test.identical( got, false );
+
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.isPrototypeOf( src, null );
+    test.identical( got, false );
+  }
+
+  test.case = 'function _Promise';
+  var _Promise = function Promise(){};
+  var src = new _Promise();
+  var got = _.isPrototypeOf( undefined, src );
+  test.identical( got, false );
+
+
+  test.close( 'one argument is undefines' );
+
+  /* - */
+
+  test.open( 'two objects' );
+  
+  test.case = 'subPrototype - Object.prototype, superPrototype - simple map';
+  var src = {};
+  var got = _.isPrototypeOf( Object.prototype, src );
+  test.identical( got, true );
+
+  test.case = 'subPrototype - simple map, superPrototype - Object.prototype';
+  var src = {};
+  var got = _.isPrototypeOf( src, Object.prototype );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - simple map, superPrototype - simple map';
+  var src = {};
+  var got = _.isPrototypeOf( src, {} );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - simple map, superPrototype - pure map';
+  var src = {};
+  var got = _.isPrototypeOf( src, Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - pure map, superPrototype - simple map';
+  var src = {};
+  var got = _.isPrototypeOf( Object.create( null ), src );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - pure map, superPrototype - Object.prototype';
+  var src = Object.create( null );
+  var got = _.isPrototypeOf( src, Object.prototype );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - Object.prototype, superPrototype - pure map';
+  var src = Object.create( null );
+  var got = _.isPrototypeOf( Object.prototype, src );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - pure map, superPrototype - simple map';
+  var src = Object.create( null );
+  var got = _.isPrototypeOf( src, {} );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - pure map, superPrototype - simple map';
+  var src = Object.create( null );
+  var got = _.isPrototypeOf( {}, src );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - pure map, superPrototype - pure map';
+  var src = Object.create( null );
+  var got = _.isPrototypeOf( src, Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - pure map, superPrototype - pure map from subPrototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.isPrototypeOf( prototype, src );
+  test.identical( got, true );
+
+  test.case = 'subPrototype - pure map from superPrototype, superPrototype - pure map';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.isPrototypeOf( src, prototype );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - pure map from prototype, superPrototype - Object.prototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.isPrototypeOf( src, Object.prototype );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - Object.prototype, superPrototype - pure map from prototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.isPrototypeOf( Object.prototype, src );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - pure map from prototype, superPrototype - simple map';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.isPrototypeOf( src, {} );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - simple map, superPrototype - pure map from prototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.isPrototypeOf( {}, src );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - pure map from prototype, superPrototype - pure map';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.isPrototypeOf( src, Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'subPrototype - pure map, superPrototype - pure map from prototype';
+  var prototype = Object.create( null );
+  var src = Object.create( prototype );
+  var got = _.isPrototypeOf( Object.create( null ), src );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'one constructor prototyped by another, not prototype';
+  var proto1 = function(){ this.a = 0; return this };
+  var proto2 = function(){ this.x = 1; return this };
+  proto2.prototype = new proto1();
+  var prototyped = function(){ this.y = 1; return this };
+  prototyped.prototype = new proto2();
+  var src = new prototyped();
+  var got = _.isPrototypeOf( src, proto2.prototype );
+  test.identical( got, false );
+
+  test.case = 'one constructor prototyped by another, prototype';
+  var proto1 = function(){ this.a = 0; return this };
+  var proto2 = function(){ this.x = 1; return this };
+  proto2.prototype = new proto1();
+  var prototyped = function(){ this.y = 1; return this };
+  prototyped.prototype = new proto2();
+  var src = new prototyped();
+  var got = _.isPrototypeOf( proto2.prototype, src );
+  test.identical( got, true );
+
+  test.close( 'two objects' );
+}
+
+//
+
 function objectLike( test )
 {
   test.description = 'array-like entities should not overlap with array-like entities set';
@@ -1974,81 +2336,6 @@ function objectLike( test )
   test.identical( _.objectLike( new Object() ),true );
   test.identical( _.objectLike( {} ),true );
   test.identical( _.objectLike( Object.create( null ) ),true );
-}
-
-//
-
-function isPrototypeOf( test )
-{
-
-  test.case = 'map';
-  var src = {};
-  var got = _.isPrototypeOf( src, src );
-  test.identical( got, true );
-  var got = _.isPrototypeOf( Object.prototype, src );
-  test.identical( got, true );
-  var got = _.isPrototypeOf( src, Object.prototype );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( src, {} );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( {}, src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( src, Object.create( null ) );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( Object.create( null ), src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( null, src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( src, null );
-  test.identical( got, false );
-
-  test.case = 'pure map';
-  var src = Object.create( null );
-  var got = _.isPrototypeOf( src, src );
-  test.identical( got, true );
-  var got = _.isPrototypeOf( src, Object.prototype );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( Object.prototype, src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( src, {} );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( {}, src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( src, Object.create( null ) );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( Object.create( null ), src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( null, src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( src, null );
-  test.identical( got, false );
-
-  test.case = 'map chain';
-  var prototype = Object.create( null );
-  var src = Object.create( prototype );
-  var got = _.isPrototypeOf( src, src );
-  test.identical( got, true );
-  var got = _.isPrototypeOf( prototype, src );
-  test.identical( got, true );
-  var got = _.isPrototypeOf( src, prototype );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( src, Object.prototype );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( Object.prototype, src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( src, {} );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( {}, src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( src, Object.create( null ) );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( Object.create( null ), src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( null, src );
-  test.identical( got, false );
-  var got = _.isPrototypeOf( src, null );
-  test.identical( got, false );
-
 }
 
 // --
@@ -2083,10 +2370,9 @@ var Self =
     promiseLike,
 
     typeOf,
+    isPrototypeOf,
 
     objectLike,
-
-    isPrototypeOf,
 
   }
 
