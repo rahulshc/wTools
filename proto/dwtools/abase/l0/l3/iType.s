@@ -209,7 +209,7 @@ function isPrototypeOf( subPrototype, superPrototype )
 
 function prototypeHas( superPrototype, subPrototype )
 {
-  _.assert( arguments.length === 2, 'Expects single argument' );
+  _.assert( arguments.length === 2, 'Expects two arguments' );
   return _.isPrototypeOf( subPrototype, superPrototype );
 }
 
