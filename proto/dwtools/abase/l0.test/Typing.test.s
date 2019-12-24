@@ -2676,6 +2676,176 @@ function prototypeHas( test )
   test.identical( got, false  );
 
   test.close( 'two objects' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.prototypeHas() );
+
+  test.case = 'one argument';
+  test.shouldThrowErrorSync( () => _.prototypeHas( {} ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.prototypeHas( {}, {}, 'extra' ) );
+}
+
+//
+
+function prototypeIs( test ) 
+{
+  test.case = 'check null';
+  var got = _.prototypeIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.prototypeIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.prototypeIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.prototypeIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.prototypeIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.prototypeIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.prototypeIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.prototypeIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.prototypeIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.prototypeIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.prototypeIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.prototypeIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.prototypeIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.prototypeIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.prototypeIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.prototypeIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.prototypeIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.prototypeIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.prototypeIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.prototypeIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.prototypeIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.prototypeIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check map with property constructor';
+  var got = _.prototypeIs( { 'constructor' : 1 } );
+  test.identical( got, true );
+
+  test.case = 'check map with property constructor';
+  var src = Object.create( null );
+  src.constructor = false;
+  var got = _.prototypeIs( src );
+  test.identical( got, true );
+
+  test.case = 'check instance of contsructor with own property "constructor"';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  src.constructor = true;
+  var got = _.prototypeIs( src );
+  test.identical( got, true );
+
+  test.case = 'check instance of contsructor with not own property "constructor"';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var proto = { constructor : true };
+  Constr.prototype = proto;
+  var src = new Constr();
+  var got = _.prototypeIs( src );
+  test.identical( src.constructor, true );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.prototypeIs( src );
+  test.identical( got, false );
+
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.prototypeIs( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'function _Promise';
+  var src = function Promise(){};
+  var got = _.prototypeIs( src );
+  test.identical( got, false );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.prototypeIs() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.prototypeIs( {}, 'extra' ) );
 }
 
 //
@@ -2734,6 +2904,7 @@ var Self =
     typeOf,
     isPrototypeOf,
     prototypeHas,
+    prototypeIs,
 
     objectLike,
 
