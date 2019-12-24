@@ -1668,8 +1668,7 @@ function promiseLike( test )
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
   var got = _.promiseLike( src );
   test.identical( got, true );
-  
-  _.include( 'wConsequence' )
+
   if( _.Consequence )
   {
     test.case = 'instance of Consequence';
@@ -1683,6 +1682,276 @@ function promiseLike( test )
   var src = new _Promise();
   var got = _.promiseLike( src );
   test.identical( got, false );
+}
+
+//
+
+function typeOf( test ) 
+{
+  test.open( 'one argument' );
+
+  test.case = 'check null';
+  var src = null;
+  var got = _.typeOf( src );
+  test.identical( got, null );
+
+  test.case = 'check undefined';
+  var src = undefined;
+  var got = _.typeOf( src );
+  test.identical( got, null );
+
+  test.case = 'check zero';
+  var src = 0;
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Number' );
+
+  test.case = 'check false';
+  var src = false;
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Boolean' );
+
+  test.case = 'check NaN';
+  var src = NaN;
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Number' );
+
+  test.case = 'check array';
+  var src = [ 1, 2 ];
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Array' );
+
+  test.case = 'check empty arguments array';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Object' );
+
+  test.case = 'check empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Array' );
+
+  test.case = 'check map';
+  var src = { a : 2 };
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Object' );
+
+  test.case = 'check pure map';
+  var src = Object.create( null );
+  src.a = 2;
+  var got = _.typeOf( src );
+  test.identical( got, null );
+
+  test.case = 'check Set';
+  var src = new Set( [] );
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Set' );
+
+  test.case = 'check HashMap';
+  var src = new Map( [ [ 1, 1 ] ] );
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Map' );
+
+  test.case = 'check BufferRaw';
+  var src = new BufferRaw( 10 );
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'ArrayBuffer' );
+
+  test.case = 'check BufferTyped';
+  var src = new U8x( [ 1, 2 ] );
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Uint8Array' );
+
+  test.case = 'check object Number';
+  var src = new Number( 2 );
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Number' );
+
+  test.case = 'check instance of contsructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Constr' );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Promise' );
+
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.typeOf( src );
+    test.identical( got, src.constructor );
+    test.identical( got.name, 'wConsequence' );
+  }
+
+  test.case = 'function _Promise';
+  var _Promise = function Promise(){};
+  var src = new _Promise();
+  var got = _.typeOf( src );
+  test.identical( got, src.constructor );
+  test.identical( got.name, 'Promise' );
+
+  test.close( 'one argument' );
+
+  /* - */
+
+  test.open( 'two arguments' );
+
+  test.case = 'check null';
+  var src = null;
+  var got = _.typeOf( src, null );
+  test.identical( got, true );
+
+  test.case = 'check undefined';
+  var src = undefined;
+  var got = _.typeOf( src, null );
+  test.identical( got, true );
+
+  test.case = 'check zero';
+  var src = 0;
+  var src1 = 1;
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check false';
+  var src = false;
+  var src1 = true;
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check NaN';
+  var src = NaN;
+  var src1 = 2;
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check array';
+  var src = [ 1, 2 ];
+  var src1 = [];
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check empty arguments array';
+  var src = _.argumentsArrayMake( [] );
+  var src1 = _.argumentsArrayMake( [ 1, 2 ] );
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check empty unroll';
+  var src = _.unrollMake( [] );
+  var src1 = [ 1, 2 ];
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check map';
+  var src = { a : 2 };
+  var src1 = {};
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check pure map';
+  var src = Object.create( null );
+  src.a = 2;
+  var src1 = null;
+  var got = _.typeOf( src, src1 );
+  test.identical( got, true );
+
+  test.case = 'check Set';
+  var src = new Set( [] );
+  var src1 = new Set( [ 1, 2, 3 ] );
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check HashMap';
+  var src = new Map( [ [ 1, 1 ] ] );
+  var src1 = new Map();
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check BufferRaw';
+  var src = new BufferRaw( 10 );
+  var src1 = new U8x( 10 ).buffer;
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check BufferTyped';
+  var src = new U8x( [ 1, 2 ] );
+  var src1 = new U8x();
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check object Number';
+  var src = new Number( 2 );
+  var src1 = 2;
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.case = 'check instance of contsructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.typeOf( src, src.constructor );
+  test.identical( got, true );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var src1 = new Promise( ( resolve, reject ) => { return resolve( 1 ) } );
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.typeOf( src, src.constructor );
+    test.identical( got, true );
+  }
+
+  test.case = 'function _Promise';
+  var _Promise = function Promise(){};
+  var src = new _Promise();
+  var src1 = new _Promise();
+  var got = _.typeOf( src, src1.constructor );
+  test.identical( got, true );
+
+  test.close( 'two arguments' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.typeOf() );
+
+  test.case = 'src - Symbol';
+  test.shouldThrowErrorSync( () => _.typeOf( Symbol() ) );
+
+  test.case = 'src - BigInt';
+  test.shouldThrowErrorSync( () => _.typeOf( 1n ) );
 }
 
 //
@@ -1812,6 +2081,8 @@ var Self =
     consequenceLike,
     promiseIs,
     promiseLike,
+
+    typeOf,
 
     objectLike,
 
