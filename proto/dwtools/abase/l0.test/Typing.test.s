@@ -3160,6 +3160,159 @@ function constructorIs( test )
 
 //
 
+function instanceIs( test ) 
+{
+  test.case = 'check null';
+  var got = _.instanceIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.instanceIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.instanceIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.instanceIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.instanceIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.instanceIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.instanceIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.instanceIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.instanceIs( [] );
+  test.identical( got, true );
+
+  test.case = 'check empty arguments array';
+  var got = _.instanceIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.instanceIs( _.unrollMake( [] ) );
+  test.identical( got, true );
+
+  test.case = 'check empty map';
+  var got = _.instanceIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.instanceIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.instanceIs( new Set( [] ) );
+  test.identical( got, true );
+
+  test.case = 'check empty Map';
+  var got = _.instanceIs( new Map( [] ) );
+  test.identical( got, true );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.instanceIs( new BufferRaw() );
+  test.identical( got, true );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.instanceIs( new U8x() );
+  test.identical( got, true );
+
+  test.case = 'check number';
+  var got = _.instanceIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.instanceIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.instanceIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.instanceIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.instanceIs( [ null ] );
+  test.identical( got, true );
+
+  test.case = 'check map with property constructor';
+  var got = _.instanceIs( { 'constructor' : 1 } );
+  test.identical( got, false );
+
+  test.case = 'check map with properties constructor and Composes';
+  var got = _.instanceIs( { 'constructor' : 1, 'Composes' : 1 } );
+  test.identical( got, false );
+
+  test.case = 'check pure map with property constructor';
+  var src = Object.create( null );
+  src.constructor = false;
+  var got = _.instanceIs( src );
+  test.identical( got, false );
+
+  test.case = 'check pure map with properties constructor and Composes';
+  var src = Object.create( null );
+  src.constructor = false;
+  src.Composes = 1;
+  var got = _.instanceIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor with own properties constructor and Composes';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  src.constructor = true;
+  src.Composes = true;
+  var got = _.instanceIs( src );
+  test.identical( got, false );
+
+  test.case = 'check constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var got = _.instanceIs( Constr );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.instanceIs( src );
+  test.identical( got, true );
+
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.instanceIs( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'function _Promise';
+  var src = function Promise(){};
+  var got = _.instanceIs( src );
+  test.identical( got, false );
+}
+
+//
+
 function objectLike( test )
 {
   test.description = 'array-like entities should not overlap with array-like entities set';
@@ -3217,6 +3370,7 @@ var Self =
     prototypeIs,
     prototypeIsStandard,
     constructorIs,
+    instanceIs,
 
     objectLike,
 
