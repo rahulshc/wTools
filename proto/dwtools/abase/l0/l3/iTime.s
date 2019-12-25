@@ -14,7 +14,18 @@ function timerIs( src )
 {
   if( !src )
   return false;
-  return src.type === 'timer' && !!src.time && !!src.cancel && src.original !== undefined; 
+  return src.type === 'timer' && !!src.time && !!src.cancel && src.original !== undefined;
+}
+
+//
+
+function competitorIs( src )
+{
+  if( !src )
+  return false;
+  if( !_.mapIs( src ) )
+  return false;
+  return src.competitorRoutine !== undefined;
 }
 
 //
@@ -57,6 +68,7 @@ let Routines =
 {
 
   timerIs, /* qqq : cover please */
+  competitorIs,
 
   dateIs,
   datesAreIdentical,

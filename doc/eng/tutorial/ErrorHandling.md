@@ -11,13 +11,14 @@ There are several things thrown error could possibly communicate to an engineer:
 - Calls stack
 - Arguments
 - Asynchronous calls stack
-- Catches stack
+- Throws stack
 - Source code
 - Message
 - Is brief
 - Was it logged
 - Was it attended
 - ID
+
 
 ### Constructing an error
 
@@ -350,7 +351,7 @@ Please, specify a positive number.
 
 Brief errors are other manifestations of the technique explained in section [statefulness of an error](#statefulness-of-an-error).
 
-### Tracking of errors and its IDs
+### Tracking of an error and its IDs
 
 Tracking of an error is easy if code is synchronous. But if the program becomes complicated and asynchronous, it is often not easy to understand which error where goes. To make tracking of errors more comfortable, let's add a field ID to error object. Let's log the ID with other diagnostic information. If the ID of an error stays the same from a run to a run of a program, then the developer may use the id to track it.
 
@@ -427,7 +428,7 @@ A developer can add any custom section to the constructed error with the help of
 
 ### Release build
 
-Performance overhead should be minimized in release build. Collecting arguments, asynchronous calls stack, and other information which can decrease performance should be off in release build.
+Performance overhead should be minimized in release build. Collecting arguments, asynchronous calls stack, and other information which decreases performance should be off in release build.
 
 ### Summary
 
@@ -437,17 +438,4 @@ Statefulness of error is preferable because that technique lets solve problems:
 - Of differentiation of user errors and developer errors
 - Of tracking error
 
-An error object can have such fields:
-
-- Calls stack
-- Arguments
-- Asynchronous calls stack
-- Catches stack
-- Source code
-- Message
-- Is brief
-- Was it logged
-- Was it attended
-- ID
-
-Despite the fact, the article is about JS, these techniques are applicable to other languages.
+An error object should have fields and states. Despite the fact, the article is about JS, these techniques are applicable to other languages.
