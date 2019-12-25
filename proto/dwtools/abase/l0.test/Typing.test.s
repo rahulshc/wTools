@@ -3614,6 +3614,163 @@ function loggerIs( test )
     test.identical( got, true );
   }
 }
+
+//
+
+function processIs( test ) 
+{
+  test.case = 'check null';
+  var got = _.processIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.processIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.processIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.processIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.processIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.processIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.processIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.processIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.processIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.processIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.processIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.processIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.processIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.processIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.processIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.processIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.processIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.processIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.processIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.processIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.processIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.processIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check map with properties constructor and Composes';
+  var got = _.processIs( { 'constructor' : 1, 'Composes' : 1 } );
+  test.identical( got, false );
+
+  test.case = 'check pure map with properties constructor and Composes';
+  var src = Object.create( null );
+  src.constructor = false;
+  src.Composes = 1;
+  var got = _.processIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  src.constructor = true;
+  src.Composes = true;
+  var got = _.processIs( src );
+  test.identical( got, false );
+
+  test.case = 'check constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var got = _.processIs( Constr );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.processIs( src );
+  test.identical( got, false );
+
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.processIs( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'function _Promise';
+  var src = function Promise(){};
+  var got = _.processIs( src );
+  test.identical( got, false );
+
+  if( _.Logger )
+  {    
+    test.case = 'instance of Logger';
+    var src = new _.Logger();
+    var got = _.processIs( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'check process';
+  var src = process;
+  var got = _.processIs( src );
+  test.identical( got, true );
+}
+
 //
 
 function objectLike( test )
@@ -3677,6 +3834,7 @@ var Self =
     instanceLike,
 
     loggerIs,
+    processIs,
 
     objectLike,
 
