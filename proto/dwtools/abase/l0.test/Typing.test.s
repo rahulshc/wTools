@@ -1101,18 +1101,18 @@ function constructorIsSpace( test )
   var got = _.constructorIsSpace( src );
   test.identical( got, false );
 
-  if( _.Space )
-  {
-    test.case = 'instance of Space';
-    var buffer = new U8x( [ 1, 2, 3, 4, 5 ] );
-    var src = new _.Space
-    ({
-      buffer : buffer,
-      dims : [ 3,1 ],
-    });
-    var got = _.constructorIsSpace( src );
-    test.identical( got, true );
-  }
+  // if( _.Space )
+  // {
+  //   test.case = 'instance of Space';
+  //   var buffer = new U8x( [ 1, 2, 3, 4, 5 ] );
+  //   var src = new _.Space
+  //   ({
+  //     buffer : buffer,
+  //     dims : [ 3,1 ],
+  //   });
+  //   var got = _.constructorIsSpace( src );
+  //   test.identical( got, true );
+  // }
 
   /* - */
 
@@ -3302,7 +3302,7 @@ function instanceIs( test )
     test.case = 'instance of Consequence';
     var src = new _.Consequence().take( 0 );
     var got = _.instanceIs( src );
-    test.identical( got, false );
+    test.identical( got, true );
   }
 
   test.case = 'function _Promise';
@@ -3455,7 +3455,7 @@ function instanceLike( test )
     test.case = 'instance of Consequence';
     var src = new _.Consequence().take( 0 );
     var got = _.instanceLike( src );
-    test.identical( got, false );
+    test.identical( got, true );
   }
 
   test.case = 'function _Promise';
