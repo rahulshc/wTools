@@ -5605,7 +5605,7 @@ function dir( test )
 
 //
 
-function dirDepthOption( test ) 
+function dirDepthOption( test )
 {
   test.case = 'root directory, depth - 1';
   var src = '/';
@@ -5885,7 +5885,7 @@ function dirFirst( test )
 
 //
 
-function dirFirstDepthOption( test ) 
+function dirFirstDepthOption( test )
 {
   test.case = 'root directory, depth - 1';
   var src = '/';
@@ -6028,7 +6028,7 @@ function dirFirstDepthOption( test )
 var Self =
 {
 
-  name : 'Tools.base.l3.path.Basic',
+  name : 'Tools.base.l0.path.Fundamental',
   silencing : 1,
 
   tests :

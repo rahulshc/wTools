@@ -1428,6 +1428,7 @@ function timeOutCancelInsideOfCallback( test )
   var timer = _.time.begin( 1, () =>
   {
     visited.push( 'v1' );
+    debugger;
     _.time.cancel( timer );
     visited.push( 'v2' );
   });

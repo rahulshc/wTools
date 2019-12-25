@@ -211,7 +211,7 @@ function toStr( src, opts )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  result = _.str( src );
+  result = _.toStrSimple( src );
 
   return result;
 }
@@ -225,15 +225,15 @@ toStr.routines = toStr;
  * Return in one string value of all arguments.
  *
  * @example
- * let args = _.str( 'test2' );
+ * let args = _.toStrSimple( 'test2' );
  *
  * @return {string}
  * If no arguments return empty string
- * @function str
+ * @function toStrSimple
  * @memberof wTools
  */
 
-function str()
+function toStrSimple()
 {
   let result = '';
   let line;
@@ -256,7 +256,10 @@ function str()
       line = _.strType( src );
     }
 
-    result += line + ' ';
+    result += line;
+    if( a < arguments.length-1 )
+    result += ' ';
+
   }
 
   return result;
@@ -877,7 +880,7 @@ let Routines =
   toStrShort : toStr,
   strFrom : toStr,
 
-  str,
+  toStrSimple,
   strShort,
   strPrimitive,
   strType,

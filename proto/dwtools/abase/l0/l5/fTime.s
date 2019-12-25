@@ -54,6 +54,7 @@ function _begin( delay, onTime, onCancel )
     }
     finally
     {
+      _.assert( timer.state === 1 );
       timer.state = 2;
     }
   }
@@ -62,6 +63,8 @@ function _begin( delay, onTime, onCancel )
 
   function _cancel()
   {
+    if( timer.state !== 0 )
+    return;
     timer.state = -1;
     clearTimeout( timer.original );
     try
@@ -71,6 +74,7 @@ function _begin( delay, onTime, onCancel )
     }
     finally
     {
+      _.assert( timer.state === -1 );
       timer.state = -2;
     }
   }
