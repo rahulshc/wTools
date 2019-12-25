@@ -968,16 +968,6 @@ function spaceIs( test )
     var got = _.spaceIs( src );
     test.identical( got, true );
   }
-
-  /* - */
-
-  if( !_.Space )
-  {
-    test.case = 'property - not instance';
-    _.Space = true;
-    var src = _.Space;
-    test.shouldThrowErrorSync( () => wTools.spaceIs( src ) );
-  }
 }
 
 //
@@ -1101,34 +1091,17 @@ function constructorIsSpace( test )
   var got = _.constructorIsSpace( src );
   test.identical( got, false );
 
-  // if( _.Space )
-  // {
-  //   test.case = 'instance of Space';
-  //   var buffer = new U8x( [ 1, 2, 3, 4, 5 ] );
-  //   var src = new _.Space
-  //   ({
-  //     buffer : buffer,
-  //     dims : [ 3,1 ],
-  //   });
-  //   var got = _.constructorIsSpace( src );
-  //   test.identical( got, true );
-  // }
-
-  /* - */
-
-  if( !_.Space )
+  if( _.Space )
   {
-    test.case = 'property - not instance, true';
-    _.Space = true;
-    var src = _.Space;
+    test.case = 'instance of Space';
+    var buffer = new U8x( [ 1, 2, 3, 4, 5 ] );
+    var src = new _.Space
+    ({
+      buffer : buffer,
+      dims : [ 3,1 ],
+    });
     var got = _.constructorIsSpace( src );
     test.identical( got, true );
-
-    test.case = 'property - not instance, false';
-    _.Space = false;
-    var src = _.Space;
-    var got = _.constructorIsSpace( src );
-    test.identical( got, false );
   }
 }
 
