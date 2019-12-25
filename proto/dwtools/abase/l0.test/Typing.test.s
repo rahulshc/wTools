@@ -3466,6 +3466,156 @@ function instanceLike( test )
 
 //
 
+function loggerIs( test ) 
+{
+  test.case = 'check null';
+  var got = _.loggerIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.loggerIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.loggerIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.loggerIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.loggerIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.loggerIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.loggerIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.loggerIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.loggerIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.loggerIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.loggerIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.loggerIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.loggerIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.loggerIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.loggerIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.loggerIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.loggerIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.loggerIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.loggerIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.loggerIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.loggerIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.loggerIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check map with properties constructor and Composes';
+  var got = _.loggerIs( { 'constructor' : 1, 'Composes' : 1 } );
+  test.identical( got, false );
+
+  test.case = 'check pure map with properties constructor and Composes';
+  var src = Object.create( null );
+  src.constructor = false;
+  src.Composes = 1;
+  var got = _.loggerIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  src.constructor = true;
+  src.Composes = true;
+  var got = _.loggerIs( src );
+  test.identical( got, false );
+
+  test.case = 'check constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var got = _.loggerIs( Constr );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.loggerIs( src );
+  test.identical( got, false );
+
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.loggerIs( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'function _Promise';
+  var src = function Promise(){};
+  var got = _.loggerIs( src );
+  test.identical( got, false );
+
+  if( _.Logger )
+  {    
+    test.case = 'instance of Logger';
+    var src = new _.Logger();
+    var got = _.loggerIs( src );
+    test.identical( got, true );
+  }
+}
+//
+
 function objectLike( test )
 {
   test.description = 'array-like entities should not overlap with array-like entities set';
@@ -3525,6 +3675,8 @@ var Self =
     constructorIs,
     instanceIs,
     instanceLike,
+
+    loggerIs,
 
     objectLike,
 
