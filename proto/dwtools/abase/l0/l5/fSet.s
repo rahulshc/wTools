@@ -1107,18 +1107,17 @@ let NamespaceExtension =
   arraySetUnion_, /* !!! : use instead of arraySetUnion */
 
   arraySetContainAll,
-  arraySetContainAll_,
+  arraySetContainAll_, /* !!! : use instead of arraySetContainAll */
   arraySetContainAny,
-  arraySetContainAny_,
+  arraySetContainAny_, /* !!! : use instead of arraySetContainAny */
   arraySetContainNone,
-  arraySetContainNone_,
+  arraySetContainNone_, /* !!! : use instead of arraySetContainNone */
   arraySetIdentical,
 
   arraySetLeft,
   arraySetRight,
 
   // to replace
-
 
   /*
   | routine                 | makes new dst container                       | saves dst container                           |

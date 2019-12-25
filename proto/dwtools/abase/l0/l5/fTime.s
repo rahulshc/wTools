@@ -127,6 +127,8 @@ function _periodic( delay, onTime, onCancel )
   let timer = Object.create( null );
   timer.onTime = onTime;
   timer.onCancel = onCancel;
+  timer._time = _time;
+  timer._cancel = _cancel;
   timer.time = time;
   timer.cancel = cancel;
   timer.state = 0;
