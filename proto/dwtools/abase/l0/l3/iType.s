@@ -105,11 +105,12 @@ function spaceIs( src )
 
 function constructorIsSpace( src )
 {
-  if( !_.Space )
-  return false;
-  if( src === _.Space )
-  return true;
-  return false;
+  // if( !_.Space )
+  // return false;
+  // if( src === _.Space )
+  // return true;
+  // return false;
+  return _.Space ? src === _.Space : false;
 }
 
 //
@@ -164,7 +165,7 @@ function promiseLike( src )
 
 function typeOf( src, constructor )
 {
-  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects single argument' );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( arguments.length === 2 )
   {
@@ -172,7 +173,9 @@ function typeOf( src, constructor )
   }
 
   if( src === null || src === undefined )
-  return null
+  {
+    return null;
+  }
   else if( _.numberIs( src ) || _.boolIs( src ) || _.strIs( src ) )
   {
     return src.constructor;
@@ -206,7 +209,7 @@ function isPrototypeOf( subPrototype, superPrototype )
 
 function prototypeHas( superPrototype, subPrototype )
 {
-  _.assert( arguments.length === 2, 'Expects single argument' );
+  _.assert( arguments.length === 2, 'Expects two arguments' );
   return _.isPrototypeOf( subPrototype, superPrototype );
 }
 
