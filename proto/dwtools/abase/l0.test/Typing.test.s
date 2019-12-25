@@ -4084,12 +4084,177 @@ function procedureIs( test )
 
   if( _.Procedure )
   {
-    test.case = 'instance of Procedurae';
+    test.case = 'instance of Procedure';
     var src = new _.Procedure();
     src.begin();
     var got = _.procedureIs( src );
     test.identical( got, true );
     src.end();
+  }
+}
+
+//
+
+function definitionIs( test ) 
+{
+  test.case = 'check null';
+  var got = _.definitionIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.definitionIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.definitionIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.definitionIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.definitionIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.definitionIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.definitionIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.definitionIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.definitionIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.definitionIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.definitionIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.definitionIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.definitionIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.definitionIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.definitionIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.definitionIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.definitionIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.definitionIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.definitionIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.definitionIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.definitionIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.definitionIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check map with properties constructor and Composes';
+  var got = _.definitionIs( { 'constructor' : 1, 'Composes' : 1 } );
+  test.identical( got, false );
+
+  test.case = 'check pure map with properties constructor and Composes';
+  var src = Object.create( null );
+  src.constructor = false;
+  src.Composes = 1;
+  var got = _.definitionIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  src.constructor = true;
+  src.Composes = true;
+  var got = _.definitionIs( src );
+  test.identical( got, false );
+
+  test.case = 'check constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var got = _.definitionIs( Constr );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.definitionIs( src );
+  test.identical( got, false );
+
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.definitionIs( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'function _Promise';
+  var src = function Promise(){};
+  var got = _.definitionIs( src );
+  test.identical( got, false );
+
+  if( _.Logger )
+  {    
+    test.case = 'instance of Logger';
+    var src = new _.Logger();
+    var got = _.definitionIs( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'check process';
+  var src = process;
+  var got = _.definitionIs( src );
+  test.identical( got, false );
+  
+  _.include( 'wProto' )
+  if( _.Definition )
+  {
+    test.case = 'instance of Definition';
+    var src = new _.Definition( { ini : 1 } );
+    var got = _.definitionIs( src );
+    test.identical( got, true );
   }
 }
 
@@ -4159,6 +4324,7 @@ var Self =
     loggerIs,
     processIs,
     procedureIs,
+    definitionIs,
 
     objectLike,
 
