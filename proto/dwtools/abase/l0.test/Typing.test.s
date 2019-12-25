@@ -3466,6 +3466,162 @@ function instanceLike( test )
 
 //
 
+function consoleIs( test ) 
+{
+  test.case = 'check null';
+  var got = _.consoleIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.consoleIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.consoleIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.consoleIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.consoleIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.consoleIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.consoleIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.consoleIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.consoleIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.consoleIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.consoleIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.consoleIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.consoleIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.consoleIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.consoleIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.consoleIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.consoleIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.consoleIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.consoleIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.consoleIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.consoleIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.consoleIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check map with properties constructor and Composes';
+  var got = _.consoleIs( { 'constructor' : 1, 'Composes' : 1 } );
+  test.identical( got, false );
+
+  test.case = 'check pure map with properties constructor and Composes';
+  var src = Object.create( null );
+  src.constructor = false;
+  src.Composes = 1;
+  var got = _.consoleIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  src.constructor = true;
+  src.Composes = true;
+  var got = _.consoleIs( src );
+  test.identical( got, false );
+
+  test.case = 'check constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var got = _.consoleIs( Constr );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.consoleIs( src );
+  test.identical( got, false );
+
+  if( _.Consequence )
+  {
+    test.case = 'instance of Consequence';
+    var src = new _.Consequence().take( 0 );
+    var got = _.consoleIs( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'function _Promise';
+  var src = function Promise(){};
+  var got = _.consoleIs( src );
+  test.identical( got, false );
+
+  if( _.Logger )
+  {    
+    test.case = 'instance of Logger';
+    var src = new _.Logger();
+    var got = _.consoleIs( src );
+    test.identical( got, false );
+  }
+
+  test.case = 'check console';
+  var src = console;
+  var got = _.consoleIs( src );
+  test.identical( got, true );
+}
+
+//
+
 function loggerIs( test ) 
 {
   test.case = 'check null';
@@ -3833,6 +3989,7 @@ var Self =
     instanceIs,
     instanceLike,
 
+    consoleIs,
     loggerIs,
     processIs,
 
