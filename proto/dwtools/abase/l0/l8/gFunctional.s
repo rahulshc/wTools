@@ -1551,24 +1551,24 @@ _entityIndexInplace_functor.defaults =
  * routine applies only element value, other parameters is undefined.
  *
  * @example
- * _.entityIndex( null );
+ * _.entityIndexInplace( null );
  * // returns {}
  *
  * @example
- * _.entityIndex( null, ( el ) => el );
+ * _.entityIndexInplace( null, ( el ) => el );
  * // returns { 'null' : null }
  *
  * @example
- * _.entityIndex( [ 1, 2, 3, 4 ] );
+ * _.entityIndexInplace( [ 1, 2, 3, 4 ] );
  * // returns { '0' : 1, '1' : 2, '2' : 3, '3' : 4 }
  *
  * @example
- * _.entityIndex( [ 1, 2, 3, 4 ], ( el, key ) => el + key );
+ * _.entityIndexInplace( [ 1, 2, 3, 4 ], ( el, key ) => el + key );
  * // returns { '1' : 1, '3' : 2, '5' : 3, '7' : 4 }
  *
  * @example
  * var src = { a : 1, b : 2, c : 3 };
- * let got = _.entityIndex( src );
+ * let got = _.entityIndexInplace( src );
  * console.log( got );
  * // log { a : 1, b : 2, c : 3 }
  * console.log( got === src );
@@ -1576,7 +1576,7 @@ _entityIndexInplace_functor.defaults =
  *
  * @example
  * var src = { a : 1, b : 2, c : 3 };
- * let got = _.entityIndex( src, ( el, key, container ) => container.a > 0 ? key : el );
+ * let got = _.entityIndexInplace( src, ( el, key, container ) => container.a > 0 ? key : el );
  * console.log( got );
  * // log { a : 1, b : 2, c : 3 }
  * console.log( got === src );
@@ -1584,15 +1584,15 @@ _entityIndexInplace_functor.defaults =
  *
  * @example
  * var src = { a : { f1 : 1, f2 : 3 }, b : { f1 : 2, f2 : 4 } };
- * let got = _.entityIndex( src, '*\/f1' );
+ * let got = _.entityIndexInplace( src, '*\/f1' );
  * console.log( got );
  * // log { '1' : { f1 : 1, f2 : 3 }, '2' : { f1 : 2, f2 : 4 } }
  * console.log( got === src );
  * // log true
  *
- * @returns { PureMap|mapLike } - Returns the pure map. Values of the map defined by elements of provided entity {-src-} 
- * and keys defined by results of callback execution on corresponding elements.
- * @function entityIndex
+ * @returns { PureMap|mapLike } - Returns the original mapLike entity or new pure map for other entity types. Values of the map 
+ * defined by elements of provided entity {-src-}  and keys defined by results of callback execution on corresponding elements.
+ * @function entityIndexInplace
  * @throws { Error } If arguments.length is less then one or more then two.
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
