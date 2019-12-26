@@ -1602,6 +1602,10 @@ _entityIndexInplace_functor.defaults =
 
 let entityIndexInplace = _entityIndexInplace_functor({ extendRoutine : null });
 
+//
+
+let entityIndexInplaceSupplementing = _entityIndexInplace_functor({ extendRoutine : _.mapSupplement });
+
 // --
 // fields
 // --
@@ -1648,10 +1652,10 @@ let Routines =
   remapAppending : entityRemapAppending,
 
   _entityIndexInplace_functor,
-  entityIndexInplace, /* qqq : implement, cover, add jsdoc, please */
+  entityIndexInplace, /* qqq : implement, cover, add jsdoc, please | Dmytro : implemented, covered, documented */
   indexInplace : entityIndexInplace,
-  // entityIndexInplaceSupplementing, /* qqq : implement, cover, add jsdoc, please */
-  // indexInplaceSupplementing : entityIndexInplaceSupplementing,
+  entityIndexInplaceSupplementing, /* qqq : implement, cover, add jsdoc, please */
+  indexInplaceSupplementing : entityIndexInplaceSupplementing,
   // entityIndexInplaceExtending, /* qqq : implement, cover, add jsdoc, please */
   // indexInplaceExtending : entityIndexInplaceExtending,
   // entityIndexInplacePrepending, /* qqq : implement, cover, add jsdoc, please */
