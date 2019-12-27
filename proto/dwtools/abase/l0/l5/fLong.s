@@ -98,10 +98,8 @@ function argumentsArrayFrom( src )
  */
 
 /*
-qqq : extend coverage and documentation of longMake
-Dmytro : extended coverage and documentation of routine longMake
-qqq : longMake does not create unrolls, but should
-Dmytro : longMake creates unrolls. It is implemented two variants, one of them should be deleted.
+qqq : extend coverage and documentation of longMake | Dmytro : extended coverage and documentation of routine longMake
+qqq : longMake does not create unrolls, but should | Dmytro : longMake creates unrolls. Need to accept one from two variants.
 */
 
 function longMake( src, ins )
@@ -237,8 +235,7 @@ function longMake( src, ins )
 //
 
 /*
-qqq : optimize
-Dmytro : optimized
+qqq : optimize | Dmytro : optimized
 */
 
 function longMakeEmpty( src )
@@ -398,10 +395,8 @@ function _longMakeOfLength( src, len )
  */
 
 /*
-qqq : extend coverage and documentation of longMakeUndefined
-Dmytro : routine is covered and documented
-qqq : longMakeUndefined does not create unrolls, but should
-Dmytro : longMakeUndefined creates unrolls.
+qqq : extend coverage and documentation of longMakeUndefined | Dmytro : routine is covered and documented
+qqq : longMakeUndefined does not create unrolls, but should | Dmytro : longMakeUndefined creates unrolls.
 */
 
 function longMakeUndefined( ins, len )
@@ -446,8 +441,7 @@ function longMakeUndefined( ins, len )
 //
 
 /*
-qqq : forbid non-long buffers as ins or src
-Dmytro : asserts is improved
+qqq : forbid non-long buffers as ins or src | Dmytro : asserts is improved
 */
 
 function longMakeZeroed( ins, src )
@@ -496,8 +490,7 @@ function longMakeZeroed( ins, src )
 //
 
 /*
-qqq : find and let me know what is _.buffer* analog of _longClone
-Dmytro : module has not _.buffer* analog of routine _longClone. The closest functionality has routine bufferMake( ins, src )
+qqq : find and let me know what is _.buffer* analog of _longClone | Dmytro : module has not _.buffer* analog of routine _longClone. The closest functionality has routine bufferMake( ins, src )
 */
 
 function _longClone( src )
@@ -581,8 +574,7 @@ function _longClone( src )
 
 /* xxx : review */
 /*
-qqq : find and let me know what is _.buffer* analog of _.longShallowClone
-Dmytro : the closest _.buffer* analog of _.longShallowClone is bufferJoin, which joins buffers to flat buffer
+qqq : find and let me know what is _.buffer* analog of _.longShallowClone | Dmytro : the closest _.buffer* analog of _.longShallowClone is bufferJoin, which joins buffers to flat buffer
 qqq2 : did not work! | Dmytro : extended
 qqq2 : poor coverage! | Dmytro : covered
 */
@@ -937,8 +929,7 @@ function longEmpty( dstLong )
  */
 
 /*
-qqq : routine longBut requires good test coverage and documentation
-Dmytro : extended routine coverage by using given clarifications, documented
+qqq : routine longBut requires good test coverage and documentation | Dmytro : extended routine coverage by using given clarifications, documented
  */
 
 function longBut( array, range, val )
@@ -1068,8 +1059,7 @@ function longBut( array, range, val )
  */
 
 /*
-qqq : routine longButInplace requires good test coverage and documentation
-Dmytro : implemented and covered routine longButInplace, documented
+qqq : routine longButInplace requires good test coverage and documentation | Dmytro : implemented and covered routine longButInplace, documented
  */
 
 function longButInplace( array, range, val )
@@ -1306,8 +1296,7 @@ function longBut_( dst, array, range, val )
  */
 
 /*
-  qqq : extend documentation and test coverage of longSelect
-  Dmytro : documented, covered.
+  qqq : extend documentation and test coverage of longSelect | Dmytro : documented, covered.
 */
 
 function longSelect( array, range, val )
@@ -1446,12 +1435,9 @@ function longSelect( array, range, val )
  */
 
 /*
-  qqq : extend documentation and test coverage of longSelectInplace
-  Dmytro : documented, covered
-  qqq : implement arraySelect
-  Dmytro : implemented
-  qqq : implement arraySelectInplace
-  Dmytro : implemented
+  qqq : extend documentation and test coverage of longSelectInplace | Dmytro : documented, covered
+  qqq : implement arraySelect | Dmytro : implemented
+  qqq : implement arraySelectInplace | Dmytro : implemented
 */
 
 function longSelectInplace( array, range, val )
@@ -1684,12 +1670,9 @@ function longSelect_( dst, array, range, val )
  */
 
 /*
-  qqq : extend documentation and test coverage of longGrowInplace
-  Dmytro : extended documentation, covered routine longGrow, longGrowInplace
-  qqq : implement arrayGrow
-  Dmytro : implemented
-  qqq : implement arrayGrowInplace
-  Dmytro : implemented
+  qqq : extend documentation and test coverage of longGrowInplace | Dmytro : extended documentation, covered routine longGrow, longGrowInplace
+  qqq : implement arrayGrow | Dmytro : implemented
+  qqq : implement arrayGrowInplace | Dmytro : implemented
 */
 
 function longGrow( array, range, val )
@@ -2777,7 +2760,8 @@ function longHasNone( src, ins, evaluator )
 
 //
 
-/* qqq : cover please */
+/* qqq : cover please | Dmytro : covered*/
+
 function longHasDepth( arr, level = 1 )
 {
 

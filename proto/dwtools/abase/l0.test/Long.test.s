@@ -10555,6 +10555,245 @@ function longHasNone( test )
 
 //
 
+function longHasDepth( test ) 
+{
+  test.case = 'check null';
+  var got = _.longHasDepth( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.longHasDepth( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.longHasDepth( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.longHasDepth( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.longHasDepth( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.longHasDepth( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check map';
+  var got = _.longHasDepth( {} );
+  test.identical( got, false );
+
+  test.case = 'check pure map';
+  var got = _.longHasDepth( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check Set';
+  var got = _.longHasDepth( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check Map';
+  var got = _.longHasDepth( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check BufferRaw';
+  var got = _.longHasDepth( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.longHasDepth( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.longHasDepth( 1n );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.longHasDepth( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check array';
+  var got = _.longHasDepth( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check map';
+  var got = _.longHasDepth( { '' : null } );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  var got = _.longHasDepth( src );
+  test.identical( got, false );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'BufferNode';
+    var got = _.longHasDepth( BufferNode.alloc( 0 ) );
+    test.identical( got, false );
+  }
+
+  /* - */
+
+  test.open( 'empty long, level - default' );
+
+  test.case = 'array';
+  var got = _.longHasDepth( [] );
+  test.identical( got, false );
+
+  test.case = 'arguments array';
+  var got = _.longHasDepth( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'unroll';
+  var got = _.longHasDepth( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'BufferTyped';
+  var got = _.longHasDepth( new U8x() );
+  test.identical( got, false );
+
+  test.close( 'empty long, level - default' );
+
+  /* - */
+
+  test.open( 'empty long, level - 0' );
+
+  test.case = 'array';
+  var got = _.longHasDepth( [], 0 );
+  test.identical( got, true );
+
+  test.case = 'arguments array';
+  var got = _.longHasDepth( _.argumentsArrayMake( [] ), 0 );
+  test.identical( got, true );
+
+  test.case = 'unroll';
+  var got = _.longHasDepth( _.unrollMake( [] ), 0 );
+  test.identical( got, true );
+
+  test.case = 'BufferTyped';
+  var got = _.longHasDepth( new U16x(), 0 );
+  test.identical( got, true );
+
+  test.close( 'empty long, level - 0' );
+
+  /* - */
+
+  test.open( 'flat long, level - default' );
+
+  test.case = 'array';
+  var got = _.longHasDepth( [ 1, 2, 3 ] );
+  test.identical( got, false );
+
+  test.case = 'arguments array';
+  var got = _.longHasDepth( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  test.identical( got, false );
+
+  test.case = 'unroll';
+  var got = _.longHasDepth( _.unrollMake( [ 1, 2, 3 ] ) );
+  test.identical( got, false );
+
+  test.case = 'BufferTyped';
+  var got = _.longHasDepth( new U32x( [ 1, 2, 3 ] ) );
+  test.identical( got, false );
+
+  test.close( 'flat long, level - default' );
+
+  /* - */
+
+  test.open( 'flat long, level - -1' );
+
+  test.case = 'array';
+  var got = _.longHasDepth( [ 1, 2, 3 ], -1 );
+  test.identical( got, true );
+
+  test.case = 'arguments array';
+  var got = _.longHasDepth( _.argumentsArrayMake( [ 1, 2, 3 ] ), -1 );
+  test.identical( got, true );
+
+  test.case = 'unroll';
+  var got = _.longHasDepth( _.unrollMake( [ 1, 2, 3 ] ), -1 );
+  test.identical( got, true );
+
+  test.case = 'BufferTyped';
+  var got = _.longHasDepth( new I8x( [ 1, 2, 3 ] ), -1 );
+  test.identical( got, true );
+
+  test.close( 'flat long, level - -1' );
+
+  /* - */
+
+  test.open( 'long with nested levels, level - default' );
+
+  test.case = 'array';
+  var got = _.longHasDepth( [ [ 1, [ 2 ] ], [ 3 ] ] );
+  test.identical( got, true );
+
+  test.case = 'arguments array';
+  var got = _.longHasDepth( _.argumentsArrayMake( [ [ 1, [ 2 ] ], [ 3 ] ] ) );
+  test.identical( got, true );
+
+  test.case = 'unroll';
+  var got = _.longHasDepth( _.unrollMake( [ [ 1, [ 2 ] ], [ 3 ] ] ) );
+  test.identical( got, true );
+
+  test.close( 'long with nested levels, level - default' );
+
+  /* - */
+
+  test.open( 'long with nested levels, level - 2' );
+
+  test.case = 'array';
+  var got = _.longHasDepth( [ [ 1, [ 2 ] ], [ 3 ] ], 2 );
+  test.identical( got, true );
+
+  test.case = 'arguments array';
+  var got = _.longHasDepth( _.argumentsArrayMake( [ [ 1, [ 2 ] ], [ 3 ] ] ), 2 );
+  test.identical( got, true );
+
+  test.case = 'unroll';
+  var got = _.longHasDepth( _.unrollMake( [ [ 1, [ 2 ] ], [ 3 ] ] ), 2 );
+  test.identical( got, true );
+
+  test.close( 'long with nested levels, level - 2' );
+
+  /* - */
+
+  test.open( 'long with nested levels, level - 3' );
+
+  test.case = 'array';
+  var got = _.longHasDepth( [ [ 1, [ 2 ] ], [ 3 ] ], 3 );
+  test.identical( got, false );
+
+  test.case = 'arguments array';
+  var got = _.longHasDepth( _.argumentsArrayMake( [ [ 1, [ 2 ] ], [ 3 ] ] ), 3 );
+  test.identical( got, false );
+
+  test.case = 'unroll';
+  var got = _.longHasDepth( _.unrollMake( [ [ 1, [ 2 ] ], [ 3 ] ] ), 3 );
+  test.identical( got, false );
+
+  test.close( 'long with nested levels, level - 3' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.longHasDepth() );
+
+  test.case = 'level is not an integer';
+  test.shouldThrowErrorSync( () => _.longHasDepth( [ 1, [ 2 ] ], 1.001 ) );
+}
+
+//
+
 function arraySlice( test )
 {
   var array = ( src ) => _.arrayMake( src );
@@ -39851,6 +40090,7 @@ var Self =
     longHasAny,
     longHasAll,
     longHasNone,
+    longHasDepth,
 
     // array transformer
 

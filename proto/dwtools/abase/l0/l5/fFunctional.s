@@ -3813,7 +3813,7 @@ qqq : refactor routine _entityMost
 - make o-fication
 - make it accept evaluator or comparator( not in the same call )
 Dmytro : routine accepts options map, and can use evaluator or comparator
-Implementation with pre and body now is unavailable, because fMap.s connection is later then fFunctional.s. routineFromPreAndBody needs routines from fMap.s. 
+Implementation with pre and body now is unavailable, because fMap.s connecting is later then fFunctional.s. routineFromPreAndBody needs routines from fMap.s. 
 */
 
 // function _entityMost_pre( routine, args )
@@ -4308,8 +4308,7 @@ let Routines =
   // eachKey : entityEachKey,
 
   /*
-  qqq : take _.nothing case in routines only, but, all, any, none
-  Dmytro : _.nothing cases is implemented
+  qqq : take _.nothing case in routines only, but, all, any, none | Dmytro : _.nothing cases is implemented
    */
 
   entityOnly, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
@@ -4337,7 +4336,7 @@ let Routines =
   entityFilter,
   filter : entityFilter,
 
-  /* qqq : take into account Unroll case in routines filter, filterInplace */
+  /* qqq : take into account Unroll case in routines filter, filterInplace | Dmytro : implemented */
 
   //
 
