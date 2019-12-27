@@ -658,7 +658,7 @@ function stackFilter( stack, onEach )
   }
 
   if( !_.strIs( stack ) )
-  stack = _.introspector.stack( stack );
+  stack = _.introspector.stack( stack, undefined ); // Dmytro : missed second argument, which has influence on the result
 
   _.assert( _.strIs( stack ) );
   _.assert( _.routineIs( onEach ) );
@@ -703,10 +703,10 @@ let Extnesion =
 
   location,
   locationFromStackFrame,
-  stack, /* qqq : very good coverage required  */
+  stack, /* qqq : very good coverage required | Dmytro : test routine extended */
   stackRemoveLeft,
   stackCondense,
-  stackFilter, /* qqq : cover */
+  stackFilter, /* qqq : cover | Dmytro : covered */
   code,
 
 }
