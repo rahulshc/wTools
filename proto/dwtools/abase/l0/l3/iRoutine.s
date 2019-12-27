@@ -1686,8 +1686,8 @@ let Fields =
 let Routines =
 {
 
-  routineIs, /* qqq : cover pelase */
-  routineLike, /* qqq : cover pelase */
+  routineIs, /* qqq : cover pelase | Dmytro : extended coverage */
+  routineLike, /* qqq : cover pelase | Dmytro : covered */
   routineIsSync,
   routineIsAsync,
   routinesAre,

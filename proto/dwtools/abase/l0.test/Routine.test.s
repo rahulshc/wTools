@@ -171,6 +171,131 @@ function routineIs( test )
 
 //
 
+function routineLike( test )
+{
+  test.case = 'without argument';
+  var got = _.routineLike();
+  test.identical( got, false );
+
+  test.case = 'check null';
+  var got = _.routineLike( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.routineLike( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.routineLike( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'false';
+  var got = _.routineLike( false );
+  test.identical( got, false );
+
+  test.case = 'NaN';
+  var got = _.routineLike( NaN );
+  test.identical( got, false );
+
+  test.case = 'Symbol';
+  var got = _.routineLike( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'array';
+  var got = _.routineLike( [] );
+  test.identical( got, false );
+
+  test.case = 'arguments array';
+  var got = _.routineLike( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'unroll';
+  var got = _.routineLike( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'pure map';
+  var got = _.routineLike( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'Set';
+  var got = _.routineLike( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'Map';
+  var got = _.routineLike( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check BufferRaw';
+  var got = _.routineLike( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check BufferTyped';
+  var got = _.routineLike( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'number';
+  var got = _.routineLike( 3 );
+  test.identical( got, false );
+
+  test.case = 'bigInt';
+  var got = _.routineLike( 1n );
+  test.identical( got, false );
+
+  test.case = 'string';
+  var got = _.routineLike( 'str' );
+  test.identical( got, false );
+
+  test.case = 'array';
+  var got = _.routineLike( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'map';
+  var got = _.routineLike( { '' : null } );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor';
+  var Constr = function(){ this.x = 1; return this };
+  var src = new Constr();
+  var got = _.routineLike( src );
+  test.identical( got, false );
+
+  test.case = 'check instance constructor';
+  var Constr = function(){ this.x = 1; return this };
+  var src = new Constr();
+  var got = _.routineLike( src.constructor );
+  test.identical( got, true );
+ 
+  test.case = 'Object';
+  var got = _.routineLike( Object );
+  test.identical( got, true )
+
+  test.case = 'arrow routine';
+  var got = _.routineLike( () => {} );
+  test.identical( got, true )
+
+  test.case = 'unnamed routine';
+  var got = _.routineLike( function (){} );
+  test.identical( got, true )
+
+  test.case = 'named routine';
+  var got = _.routineLike( function a(){} );
+  test.identical( got, true )
+
+  test.case = 'async arrow routine';
+  var got = _.routineLike( async () => {} );
+  test.identical( got, true )
+  
+  test.case = 'async unnamed routine';
+  var got = _.routineLike( async function (){} );
+  test.identical( got, true )
+
+  test.case = 'async named routine';
+  var got = _.routineLike( async function a(){} );
+  test.identical( got, true )
+}
+
+//
+
 function routineIsPure( test )
 {
 
@@ -3500,6 +3625,7 @@ var Self =
   {
 
     routineIs,
+    routineLike,
     routineIsSync,
     routineIsAsync,
     routineIsPure,
