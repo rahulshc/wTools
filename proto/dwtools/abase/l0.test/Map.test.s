@@ -923,6 +923,10 @@ function objectSetWithKeys( test )
   test.case = 'without arguments'
   test.shouldThrowErrorSync( () => _.objectSetWithKeys() );
 
+  test.case = 'not enough arguments'
+  test.shouldThrowErrorSync( () => _.objectSetWithKeys( {} ) );
+  test.shouldThrowErrorSync( () => _.objectSetWithKeys( {}, 'a' ) );
+
   test.case = 'extra arguments'
   test.shouldThrowErrorSync( () => _.objectSetWithKeys( {}, 'a', 'a', 1 ) );
 
@@ -932,6 +936,150 @@ function objectSetWithKeys( test )
   test.case = 'src is not array of strings or string'
   test.shouldThrowErrorSync( () => _.objectSetWithKeys( { 'a' : 1 }, 1, 'a' ) );
   test.shouldThrowErrorSync( () => _.objectSetWithKeys( { 'a' : 1 }, { 'k' : 2 }, 'a' ) );
+}
+
+//
+
+function objectSetWithKeyStrictly( test )
+{
+  test.open( 'dst is null or empty map' );
+
+  test.case = 'dstMap - null, src - empty array, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, [], 2 );
+  test.identical( got, {} );
+  test.is( got !== dst );
+
+  test.case = 'dstMap - empty map, src - empty array, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, [], 2 );
+  test.identical( got, {} );
+  test.is( got === dst );
+
+  test.case = 'dstMap - null, src - string, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, 'a', 2 );
+  test.identical( got, { 'a' : 2 } );
+  test.is( got !== dst );
+
+  test.case = 'dstMap - empty map, src - string, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, 'a', 2 );
+  test.identical( got, { 'a' : 2 } );
+  test.is( got === dst );
+
+  test.case = 'dstMap - null, src - array of strings, val - 2';
+  var dst = null;
+  var got = _.objectSetWithKeyStrictly( dst, [ 'a', 'b' ], 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.is( got !== dst );
+
+  test.case = 'dstMap - empty map, src - array of strings, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, [ 'a', 'b' ], 2 );
+  test.identical( got, { 'a' : 2, 'b' : 2 } );
+  test.is( got === dst );
+
+  test.case = 'dstMap - empty map, src - array of numbers, val - 2';
+  var dst = {};
+  var got = _.objectSetWithKeyStrictly( dst, [ 1, 2 ], 2 );
+  test.identical( got, { 1 : 2, 2 : 2 } );
+  test.is( got === dst );
+
+  test.close( 'dst is null or empty map' );
+
+  /* - */
+
+  test.open( 'dst is filled  map' );
+
+  test.case = 'src - empty array, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, [], 2 );
+  test.identical( got, { a : 1, b : 2 } );
+  test.is( got === dst );
+
+  test.case = 'src - string, new key, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, 'd', 2 );
+  test.identical( got, { a : 1, b : 2, d : 2 } );
+  test.is( got === dst );
+
+  test.case = 'src - string, replace value, val - 2';
+  var dst = { a : 2, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, 'a', 2 );
+  test.identical( got, { a : 2, b : 2 } );
+  test.is( got === dst );
+
+  test.case = 'src - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, [ 'c', 'd' ], 2 );
+  test.identical( got, { 'a' : 1, 'b' : 2, 'c' : 2, 'd' : 2 } );
+  test.is( got === dst );
+
+  test.case = 'src - array of strings, replace values, val - 3';
+  var dst = { a : 3, b : 3 };
+  var got = _.objectSetWithKeyStrictly( dst, [ 'a', 'b' ], 3 );
+  test.identical( got, { 'a' : 3, 'b' : 3 } );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'src - empty array, val - undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, [], undefined );
+  test.identical( got, { a : 1, b : 2 } );
+  test.is( got === dst );
+
+  test.case = 'src - string, new key, val - undefined';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, 'd', undefined );
+  test.identical( got, { a : 1, b : 2 } );
+  test.is( got === dst );
+
+  test.case = 'src - string, replace value, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, 'a', undefined );
+  test.identical( got, { b : 2 } );
+  test.is( got === dst );
+
+  test.case = 'src - array of strings, new keys, val - 2';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, [ 'c', 'd' ], undefined );
+  test.identical( got, { 'a' : 1, 'b' : 2 } );
+  test.is( got === dst );
+
+  test.case = 'src - array of strings, replace values, val - 3';
+  var dst = { a : 1, b : 2 };
+  var got = _.objectSetWithKeyStrictly( dst, [ 'a', 'b' ], undefined );
+  test.identical( got, {} );
+  test.is( got === dst );
+
+  test.close( 'dst is filled  map' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments'
+  test.shouldThrowErrorSync( () => _.objectSetWithKeyStrictly() );
+
+  test.case = 'not enough arguments'
+  test.shouldThrowErrorSync( () => _.objectSetWithKeyStrictly( {} ) );
+  test.shouldThrowErrorSync( () => _.objectSetWithKeyStrictly( {}, 'a' ) );
+
+  test.case = 'extra arguments'
+  test.shouldThrowErrorSync( () => _.objectSetWithKeyStrictly( {}, 'a', 'a', 1 ) );
+
+  test.case = 'dstMap is not object or null'
+  test.shouldThrowErrorSync( () => _.objectSetWithKeyStrictly( [], 'a', 'a' ) );
+
+  test.case = 'src is not array of strings or string'
+  test.shouldThrowErrorSync( () => _.objectSetWithKeyStrictly( { 'a' : 1 }, 1, 'a' ) );
+  test.shouldThrowErrorSync( () => _.objectSetWithKeyStrictly( { 'a' : 1 }, { 'k' : 2 }, 'a' ) );
+
+  test.case = 'dstMap has value not identical to val'
+  test.shouldThrowErrorSync( () => _.objectSetWithKeyStrictly( { 'a' : 1 }, 1, 'a' ) );
 }
 
 // --
@@ -6844,6 +6992,7 @@ var Self =
     // map manipulator
 
     objectSetWithKeys,
+    objectSetWithKeyStrictly,
 
     // map convert
 

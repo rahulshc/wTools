@@ -1866,7 +1866,7 @@ function mapOnlyPrimitives( srcMap )
 // --
 
 /*
-  qqq : reflect changes in tests, please
+  qqq : reflect changes in tests, please | Dmytro : test routine is extended
 */
 
 function objectSetWithKeys( dstMap, key, val )
@@ -1905,7 +1905,7 @@ function objectSetWithKeys( dstMap, key, val )
 
 //
 
-/* qqq : add test */
+/* qqq : add test | Dmytro : covered */
 
 function objectSetWithKeyStrictly( dstMap, key, val )
 {
