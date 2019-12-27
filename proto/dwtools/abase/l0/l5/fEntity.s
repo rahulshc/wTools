@@ -616,7 +616,7 @@ let Routines =
   entityMake,
   make : entityMake,
 
-  // _.container.empty, /* qqq : implement coverage */
+  // _.container.empty, /* qqq : implement coverage | Dmytro : implemented in Container.test.s */
   // empty : _.container.empty,
 
   // containerExtend,
