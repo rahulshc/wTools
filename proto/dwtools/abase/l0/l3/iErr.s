@@ -1673,10 +1673,10 @@ let Routines =
   //
   // diagnosticLocation,
   // diagnosticLocationFromCall,
-  // diagnosticStack, /* qqq : very good coverage required  */
+  // diagnosticStack, /* qqq : very good coverage required | Dmytro | implemented in file Introspector.test.s */
   // diagnosticStackRemoveLeft,
   // diagnosticStackCondense,
-  // diagnosticStackFilter, /* qqq : cover */
+  // diagnosticStackFilter, /* qqq : cover | Dmytro | implemented in file Introspector.test.s */
   // diagnosticCode,
 
   // error
