@@ -38,6 +38,452 @@ function onSuiteEnd()
 // tests
 // --
 
+function locationFromStackFrame( test )
+{
+
+  var stackCall = 'at Object.stackBasic (C:\\dir\\Introspector.test.s:48:79)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at Object.stackBasic (C:\\dir\\Introspector.test.s:48:79)',
+    'filePath' : '/C/dir/Introspector.test.s',
+    'routineName' : 'Object.stackBasic',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 48,
+    'col' : 79,
+    'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
+    'routineFilePathLineCol' : 'Object.stackBasic @ /C/dir/Introspector.test.s:48:79',
+    'fileName' : 'Introspector.test.s',
+    'fileNameLineCol' : 'Introspector.test.s:48:79',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)',
+    'filePath' : '/C/dir/Introspector.test.s',
+    'routineName' : 'Object.stackBasic',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 48,
+    'col' : 79,
+    'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
+    'routineFilePathLineCol' : 'Object.stackBasic @ /C/dir/Introspector.test.s:48:79',
+    'fileName' : 'Introspector.test.s',
+    'fileNameLineCol' : 'Introspector.test.s:48:79',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at iteration (/C/dir/File.js:5:47)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at iteration (/C/dir/File.js:5:47)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'iteration',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 5,
+    'col' : 47,
+    'filePathLineCol' : '/C/dir/File.js:5:47',
+    'routineFilePathLineCol' : 'iteration @ /C/dir/File.js:5:47',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:47'
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at iteration (C:\\dir\\File.js:5:47)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at iteration (C:\\dir\\File.js:5:47)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'iteration',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 5,
+    'col' : 47,
+    'filePathLineCol' : '/C/dir/File.js:5:47',
+    'routineFilePathLineCol' : 'iteration @ /C/dir/File.js:5:47',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:47'
+  }
+  /* xxx2 : problem in _.toStr( 'some\\path' )! */
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at _iteration (C:\\dir\\File.js:5:47)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at _iteration (C:\\dir\\File.js:5:47)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : '_iteration',
+    'routineAlias' : null,
+    'internal' : 1,
+    'line' : 5,
+    'col' : 47,
+    'filePathLineCol' : '/C/dir/File.js:5:47',
+    'routineFilePathLineCol' : '_iteration @ /C/dir/File.js:5:47',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:47',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at __iteration (C:\\dir\\File.js:5:47)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at __iteration (C:\\dir\\File.js:5:47)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : '__iteration',
+    'routineAlias' : null,
+    'internal' : 2,
+    'line' : 5,
+    'col' : 47,
+    'filePathLineCol' : '/C/dir/File.js:5:47',
+    'routineFilePathLineCol' : '__iteration @ /C/dir/File.js:5:47',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:47',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence.handle_Now',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence.handle_Now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at wConsequence._handle_Now (C:\\dir\\File.js:5:15)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at wConsequence._handle_Now (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence._handle_Now',
+    'routineAlias' : null,
+    'internal' : 1,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence._handle_Now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at wConsequence.__handle_Now (C:\\dir\\File.js:5:15)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at wConsequence.__handle_Now (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence.__handle_Now',
+    'routineAlias' : null,
+    'internal' : 2,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence.__handle_Now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at wConsequence.handle__Now (C:\\dir\\File.js:5:15)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at wConsequence.handle__Now (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence.handle__Now',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence.handle__Now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence._handle__Now',
+    'routineAlias' : null,
+    'internal' : 1,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence._handle__Now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence.__handle__Now',
+    'routineAlias' : null,
+    'internal' : 2,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence.__handle__Now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence.{-anonymous-}',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 9,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:9:15',
+    'routineFilePathLineCol' : 'wConsequence.{-anonymous-} @ /C/dir/File.js:9:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:9:15',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at wConsequence.<anonymous>.<anonymous> (/C/dir/File.js:9:15)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at wConsequence.<anonymous>.<anonymous> (/C/dir/File.js:9:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence.{-anonymous-}.{-anonymous-}',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 9,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:9:15',
+    'routineFilePathLineCol' : 'wConsequence.{-anonymous-}.{-anonymous-} @ /C/dir/File.js:9:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:9:15',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at Object.time [as _time] (C:\\dir\\Procedure.s:1503:20)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at Object.time [as _time] (C:\\dir\\Procedure.s:1503:20)',
+    'filePath' : '/C/dir/Procedure.s',
+    'routineName' : 'Object.time',
+    'routineAlias' : '_time',
+    'internal' : 1,
+    'line' : 1503,
+    'col' : 20,
+    'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
+    'routineFilePathLineCol' : 'Object.time @ /C/dir/Procedure.s:1503:20',
+    'fileName' : 'Procedure.s',
+    'fileNameLineCol' : 'Procedure.s:1503:20',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at Object.time [as __time] (C:\\dir\\Procedure.s:1503:20)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at Object.time [as __time] (C:\\dir\\Procedure.s:1503:20)',
+    'filePath' : '/C/dir/Procedure.s',
+    'routineName' : 'Object.time',
+    'routineAlias' : '__time',
+    'internal' : 2,
+    'line' : 1503,
+    'col' : 20,
+    'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
+    'routineFilePathLineCol' : 'Object.time @ /C/dir/Procedure.s:1503:20',
+    'fileName' : 'Procedure.s',
+    'fileNameLineCol' : 'Procedure.s:1503:20',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at Object.__time [as _time] (C:\\dir\\Procedure.s:1503:20)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at Object.__time [as _time] (C:\\dir\\Procedure.s:1503:20)',
+    'filePath' : '/C/dir/Procedure.s',
+    'routineName' : 'Object.__time',
+    'routineAlias' : '_time',
+    'internal' : 2,
+    'line' : 1503,
+    'col' : 20,
+    'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
+    'routineFilePathLineCol' : 'Object.__time @ /C/dir/Procedure.s:1503:20',
+    'fileName' : 'Procedure.s',
+    'fileNameLineCol' : 'Procedure.s:1503:20',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at listOnTimeout (internal/timers.js:531:17)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at listOnTimeout (internal/timers.js:531:17)',
+    'filePath' : 'internal/timers.js',
+    'routineName' : 'listOnTimeout',
+    'routineAlias' : null,
+    'internal' : 2,
+    'line' : 531,
+    'col' : 17,
+    'filePathLineCol' : 'internal/timers.js:531:17',
+    'routineFilePathLineCol' : 'listOnTimeout @ internal/timers.js:531:17',
+    'fileName' : 'timers.js',
+    'fileNameLineCol' : 'timers.js:531:17',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at eval (<anonymous>:1:16)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at eval (<anonymous>:1:16)',
+    'filePath' : '<anonymous>',
+    'routineName' : 'eval',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 1,
+    'col' : 16,
+    'filePathLineCol' : '<anonymous>:1:16',
+    'routineFilePathLineCol' : 'eval @ <anonymous>:1:16',
+    'fileName' : '<anonymous>',
+    'fileNameLineCol' : '<anonymous>:1:16',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at eval (eval at program2 (C:\\basic\\program2.js:13:5), <anonymous>:1:16)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at eval (eval at program2 (C:\\basic\\program2.js:13:5), <anonymous>:1:16)',
+    'filePath' : '/C/basic/program2.js',
+    'routineName' : 'program2',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 13,
+    'col' : 5,
+    'filePathLineCol' : '/C/basic/program2.js:13:5',
+    'routineFilePathLineCol' : 'program2 @ /C/basic/program2.js:13:5',
+    'fileName' : 'program2.js',
+    'fileNameLineCol' : 'program2.js:13:5',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+
+  /**/
+
+  var stackCall = 'at eval (eval at program2 (/C/basic/program2.js:13:5), <anonymous>:1:16)';
+  test.case = stackCall;
+  var exp =
+  {
+    'original' : 'at eval (eval at program2 (/C/basic/program2.js:13:5), <anonymous>:1:16)',
+    'filePath' : '/C/basic/program2.js',
+    'routineName' : 'program2',
+    'routineAlias' : null,
+    'internal' : 0,
+    'line' : 13,
+    'col' : 5,
+    'filePathLineCol' : '/C/basic/program2.js:13:5',
+    'routineFilePathLineCol' : 'program2 @ /C/basic/program2.js:13:5',
+    'fileName' : 'program2.js',
+    'fileNameLineCol' : 'program2.js:13:5',
+  }
+  var got = _.introspector.locationFromStackFrame( stackCall );
+  test.identical( got, exp );
+}
+
+//
+
 function stackBasic( test )
 {
 
@@ -699,453 +1145,175 @@ function stack( test )
 
 //
 
-function locationFromStackFrame( test )
+function stackFilter( test ) 
 {
+  test.open( 'onEach returns element' );
 
-  /**/
+  test.case = 'only onEach';
+  var got = _.introspector.stackFilter( ( e ) => e );
+  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
-  var stackCall = 'at Object.stackBasic (C:\\dir\\Introspector.test.s:48:79)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at Object.stackBasic (C:\\dir\\Introspector.test.s:48:79)',
-    'filePath' : '/C/dir/Introspector.test.s',
-    'routineName' : 'Object.stackBasic',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 48,
-    'col' : 79,
-    'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
-    'routineFilePathLineCol' : 'Object.stackBasic @ /C/dir/Introspector.test.s:48:79',
-    'fileName' : 'Introspector.test.s',
-    'fileNameLineCol' : 'Introspector.test.s:48:79',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'stack is undefined';
+  var got = _.introspector.stackFilter( undefined, ( e ) => e );
+  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
-  /**/
+  test.case = 'stack is null';
+  var got = _.introspector.stackFilter( undefined, ( e ) => e );
+  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
-  var stackCall = 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)',
-    'filePath' : '/C/dir/Introspector.test.s',
-    'routineName' : 'Object.stackBasic',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 48,
-    'col' : 79,
-    'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
-    'routineFilePathLineCol' : 'Object.stackBasic @ /C/dir/Introspector.test.s:48:79',
-    'fileName' : 'Introspector.test.s',
-    'fileNameLineCol' : 'Introspector.test.s:48:79',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'stack is string';
+  var got = _.introspector.stackFilter( 'at routine\n stack', ( e ) => e );
+  test.is( got.indexOf( 'at routine' ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
-  /**/
+  test.case = 'stack is array';
+  var got = _.introspector.stackFilter( [ 'at routine', ' stack' ], ( e ) => e );
+  test.is( got.indexOf( 'at routine' ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
-  var stackCall = 'at iteration (/C/dir/File.js:5:47)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at iteration (/C/dir/File.js:5:47)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'iteration',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 5,
-    'col' : 47,
-    'filePathLineCol' : '/C/dir/File.js:5:47',
-    'routineFilePathLineCol' : 'iteration @ /C/dir/File.js:5:47',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:47'
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'stack is error';
+  var got = _.introspector.stackFilter( new Error(), ( e ) => e );
+  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
-  /**/
+  test.close( 'onEach returns element' );
 
-  var stackCall = 'at iteration (C:\\dir\\File.js:5:47)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at iteration (C:\\dir\\File.js:5:47)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'iteration',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 5,
-    'col' : 47,
-    'filePathLineCol' : '/C/dir/File.js:5:47',
-    'routineFilePathLineCol' : 'iteration @ /C/dir/File.js:5:47',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:47'
-  }
-  /* xxx2 : problem in _.toStr( 'some\\path' )! */
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  /* - */
 
-  /**/
+  test.open( 'onEach returns map with original field' );
 
-  var stackCall = 'at _iteration (C:\\dir\\File.js:5:47)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at _iteration (C:\\dir\\File.js:5:47)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : '_iteration',
-    'routineAlias' : null,
-    'internal' : 1,
-    'line' : 5,
-    'col' : 47,
-    'filePathLineCol' : '/C/dir/File.js:5:47',
-    'routineFilePathLineCol' : '_iteration @ /C/dir/File.js:5:47',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:47',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'only onEach';
+  var got = _.introspector.stackFilter( ( e, k ) => { return { original : e.original, key : k } } );
+  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
-  /**/
+  test.case = 'stack is undefined';
+  var got = _.introspector.stackFilter( undefined, ( e, k ) => { return { original : e.original, key : k } } );
+  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
-  var stackCall = 'at __iteration (C:\\dir\\File.js:5:47)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at __iteration (C:\\dir\\File.js:5:47)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : '__iteration',
-    'routineAlias' : null,
-    'internal' : 2,
-    'line' : 5,
-    'col' : 47,
-    'filePathLineCol' : '/C/dir/File.js:5:47',
-    'routineFilePathLineCol' : '__iteration @ /C/dir/File.js:5:47',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:47',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'stack is null';
+  var got = _.introspector.stackFilter( undefined, ( e, k ) => { return { original : e.original, key : k } } );
+  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
-  /**/
+  test.case = 'stack is string';
+  var got = _.introspector.stackFilter( 'at routine\n stack', ( e, k ) => { return { original : e.original, key : k } } );
+  test.is( got.indexOf( 'at routine' ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
-  var stackCall = 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'wConsequence.handle_Now',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 5,
-    'col' : 15,
-    'filePathLineCol' : '/C/dir/File.js:5:15',
-    'routineFilePathLineCol' : 'wConsequence.handle_Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:15',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'stack is array';
+  var got = _.introspector.stackFilter( [ 'at routine', ' stack' ], ( e, k ) => { return { original : e.original, key : k } } );
+  test.is( got.indexOf( 'at routine' ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
-  /**/
+  test.case = 'stack is error';
+  var got = _.introspector.stackFilter( new Error(), ( e, k ) => { return { original : e.original, key : k } } );
+  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
-  var stackCall = 'at wConsequence._handle_Now (C:\\dir\\File.js:5:15)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at wConsequence._handle_Now (C:\\dir\\File.js:5:15)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'wConsequence._handle_Now',
-    'routineAlias' : null,
-    'internal' : 1,
-    'line' : 5,
-    'col' : 15,
-    'filePathLineCol' : '/C/dir/File.js:5:15',
-    'routineFilePathLineCol' : 'wConsequence._handle_Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:15',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.close( 'onEach returns map with original field' );
 
-  /**/
+  /* - */
 
-  var stackCall = 'at wConsequence.__handle_Now (C:\\dir\\File.js:5:15)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at wConsequence.__handle_Now (C:\\dir\\File.js:5:15)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'wConsequence.__handle_Now',
-    'routineAlias' : null,
-    'internal' : 2,
-    'line' : 5,
-    'col' : 15,
-    'filePathLineCol' : '/C/dir/File.js:5:15',
-    'routineFilePathLineCol' : 'wConsequence.__handle_Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:15',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.open( 'onEach returns key as string' );
 
-  /**/
+  test.case = 'only onEach';
+  var got = _.introspector.stackFilter( ( e, k ) => String( k ) );
+  var arr = got.split( '\n' );
+  test.identical( arr[ 0 ], '0' );
+  test.identical( arr[ 1 ], '1' );
 
-  var stackCall = 'at wConsequence.handle__Now (C:\\dir\\File.js:5:15)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at wConsequence.handle__Now (C:\\dir\\File.js:5:15)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'wConsequence.handle__Now',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 5,
-    'col' : 15,
-    'filePathLineCol' : '/C/dir/File.js:5:15',
-    'routineFilePathLineCol' : 'wConsequence.handle__Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:15',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'stack is undefined';
+  var got = _.introspector.stackFilter( undefined, ( e, k ) => String( k ) );
+  var arr = got.split( '\n' );
+  test.identical( arr[ 0 ], '0' );
+  test.identical( arr[ 1 ], '1' );
 
-  /**/
+  test.case = 'stack is null';
+  var got = _.introspector.stackFilter( undefined, ( e, k ) => String( k ) );
+  var arr = got.split( '\n' );
+  test.identical( arr[ 0 ], '0' );
+  test.identical( arr[ 1 ], '1' );
 
-  var stackCall = 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'wConsequence._handle__Now',
-    'routineAlias' : null,
-    'internal' : 1,
-    'line' : 5,
-    'col' : 15,
-    'filePathLineCol' : '/C/dir/File.js:5:15',
-    'routineFilePathLineCol' : 'wConsequence._handle__Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:15',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'stack is string';
+  var got = _.introspector.stackFilter( 'at routine\n stack', ( e, k ) => String( k ) );
+  var arr = got.split( '\n' );
+  test.identical( arr[ 0 ], '0' );
+  test.identical( arr[ 1 ], '1' );
 
-  /**/
+  test.case = 'stack is array';
+  var got = _.introspector.stackFilter( [ 'at routine', ' stack' ], ( e, k ) => String( k ) );
+  var arr = got.split( '\n' );
+  test.identical( arr[ 0 ], '0' );
+  test.identical( arr[ 1 ], '1' );
 
-  var stackCall = 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'wConsequence.__handle__Now',
-    'routineAlias' : null,
-    'internal' : 2,
-    'line' : 5,
-    'col' : 15,
-    'filePathLineCol' : '/C/dir/File.js:5:15',
-    'routineFilePathLineCol' : 'wConsequence.__handle__Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:15',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'stack is error';
+  var got = _.introspector.stackFilter( new Error(), ( e, k ) => String( k ) );
+  var arr = got.split( '\n' );
+  test.identical( arr[ 0 ], '0' );
+  test.identical( arr[ 1 ], '1' );
 
-  /**/
+  test.close( 'onEach returns key as string' );
 
-  var stackCall = 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'wConsequence.{-anonymous-}',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 9,
-    'col' : 15,
-    'filePathLineCol' : '/C/dir/File.js:9:15',
-    'routineFilePathLineCol' : 'wConsequence.{-anonymous-} @ /C/dir/File.js:9:15',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:9:15',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  /* - */
 
-  /**/
+  test.open( 'onEach returns undefined' );
 
-  var stackCall = 'at wConsequence.<anonymous>.<anonymous> (/C/dir/File.js:9:15)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at wConsequence.<anonymous>.<anonymous> (/C/dir/File.js:9:15)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'wConsequence.{-anonymous-}.{-anonymous-}',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 9,
-    'col' : 15,
-    'filePathLineCol' : '/C/dir/File.js:9:15',
-    'routineFilePathLineCol' : 'wConsequence.{-anonymous-}.{-anonymous-} @ /C/dir/File.js:9:15',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:9:15',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'only onEach';
+  var got = _.introspector.stackFilter( ( e, k ) => undefined );
+  test.identical( got, '' );
 
-  /**/
+  test.case = 'stack is undefined';
+  var got = _.introspector.stackFilter( undefined, ( e, k ) => undefined );
+  test.identical( got, '' );
 
-  var stackCall = 'at Object.time [as _time] (C:\\dir\\Procedure.s:1503:20)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at Object.time [as _time] (C:\\dir\\Procedure.s:1503:20)',
-    'filePath' : '/C/dir/Procedure.s',
-    'routineName' : 'Object.time',
-    'routineAlias' : '_time',
-    'internal' : 1,
-    'line' : 1503,
-    'col' : 20,
-    'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
-    'routineFilePathLineCol' : 'Object.time @ /C/dir/Procedure.s:1503:20',
-    'fileName' : 'Procedure.s',
-    'fileNameLineCol' : 'Procedure.s:1503:20',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'stack is null';
+  var got = _.introspector.stackFilter( undefined, ( e, k ) => undefined );
+  test.identical( got, '' );
 
-  /**/
+  test.case = 'stack is string';
+  var got = _.introspector.stackFilter( 'at routine\n stack', ( e, k ) => undefined );
+  test.identical( got, '' );
 
-  var stackCall = 'at Object.time [as __time] (C:\\dir\\Procedure.s:1503:20)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at Object.time [as __time] (C:\\dir\\Procedure.s:1503:20)',
-    'filePath' : '/C/dir/Procedure.s',
-    'routineName' : 'Object.time',
-    'routineAlias' : '__time',
-    'internal' : 2,
-    'line' : 1503,
-    'col' : 20,
-    'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
-    'routineFilePathLineCol' : 'Object.time @ /C/dir/Procedure.s:1503:20',
-    'fileName' : 'Procedure.s',
-    'fileNameLineCol' : 'Procedure.s:1503:20',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'stack is array';
+  var got = _.introspector.stackFilter( [ 'at routine', ' stack' ], ( e, k ) => undefined );
+  test.identical( got, '' );
 
-  /**/
+  test.case = 'stack is error';
+  var got = _.introspector.stackFilter( new Error(), ( e, k ) => undefined );
+  test.identical( got, '' );
 
-  var stackCall = 'at Object.__time [as _time] (C:\\dir\\Procedure.s:1503:20)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at Object.__time [as _time] (C:\\dir\\Procedure.s:1503:20)',
-    'filePath' : '/C/dir/Procedure.s',
-    'routineName' : 'Object.__time',
-    'routineAlias' : '_time',
-    'internal' : 2,
-    'line' : 1503,
-    'col' : 20,
-    'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
-    'routineFilePathLineCol' : 'Object.__time @ /C/dir/Procedure.s:1503:20',
-    'fileName' : 'Procedure.s',
-    'fileNameLineCol' : 'Procedure.s:1503:20',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.close( 'onEach returns undefined' );
 
-  /**/
+  /* - */
 
-  var stackCall = 'at listOnTimeout (internal/timers.js:531:17)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at listOnTimeout (internal/timers.js:531:17)',
-    'filePath' : 'internal/timers.js',
-    'routineName' : 'listOnTimeout',
-    'routineAlias' : null,
-    'internal' : 2,
-    'line' : 531,
-    'col' : 17,
-    'filePathLineCol' : 'internal/timers.js:531:17',
-    'routineFilePathLineCol' : 'listOnTimeout @ internal/timers.js:531:17',
-    'fileName' : 'timers.js',
-    'fileNameLineCol' : 'timers.js:531:17',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  if( !Config.debug )
+  return;
 
-  /**/
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.introspector.stackFilter() );
 
-  var stackCall = 'at eval (<anonymous>:1:16)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at eval (<anonymous>:1:16)',
-    'filePath' : '<anonymous>',
-    'routineName' : 'eval',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 1,
-    'col' : 16,
-    'filePathLineCol' : '<anonymous>:1:16',
-    'routineFilePathLineCol' : 'eval @ <anonymous>:1:16',
-    'fileName' : '<anonymous>',
-    'fileNameLineCol' : '<anonymous>:1:16',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.introspector.stackFilter( undefined, ( e ) => e, 'extra' ) );
 
-  /**/
+  test.case = 'stack is not a stack';
+  test.shouldThrowErrorSync( () => _.introspector.stackFilter( { original : '/usr/bin/' }, ( e ) => e ) );
 
-  var stackCall = 'at eval (eval at program2 (C:\\basic\\program2.js:13:5), <anonymous>:1:16)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at eval (eval at program2 (C:\\basic\\program2.js:13:5), <anonymous>:1:16)',
-    'filePath' : '/C/basic/program2.js',
-    'routineName' : 'program2',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 13,
-    'col' : 5,
-    'filePathLineCol' : '/C/basic/program2.js:13:5',
-    'routineFilePathLineCol' : 'program2 @ /C/basic/program2.js:13:5',
-    'fileName' : 'program2.js',
-    'fileNameLineCol' : 'program2.js:13:5',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'onEach is not a routine';
+  test.shouldThrowErrorSync( () => _.introspector.stackFilter( 'at routine stackFilter\n at @233', 'wrong' ) );
 
-  /**/
+  test.case = 'onEach returns wrong value';
+  test.shouldThrowErrorSync( () => _.introspector.stackFilter( 'at routine stackFilter\n at @233', ( e, k ) => [ e, k ] ) );
 
-  var stackCall = 'at eval (eval at program2 (/C/basic/program2.js:13:5), <anonymous>:1:16)';
-  test.case = stackCall;
-  var exp =
-  {
-    'original' : 'at eval (eval at program2 (/C/basic/program2.js:13:5), <anonymous>:1:16)',
-    'filePath' : '/C/basic/program2.js',
-    'routineName' : 'program2',
-    'routineAlias' : null,
-    'internal' : 0,
-    'line' : 13,
-    'col' : 5,
-    'filePathLineCol' : '/C/basic/program2.js:13:5',
-    'routineFilePathLineCol' : 'program2 @ /C/basic/program2.js:13:5',
-    'fileName' : 'program2.js',
-    'fileNameLineCol' : 'program2.js:13:5',
-  }
-  var got = _.introspector.locationFromStackFrame( stackCall );
-  test.identical( got, exp );
+  test.case = 'onEach returns object without original field';
+  test.shouldThrowErrorSync( () => _.introspector.stackFilter( 'at routine stackFilter\n at @233', ( e, k ) => { return {  element : e.original, key : k } } ) );
 
-  /**/
-
+  test.case = 'onEach returns object, original field is not a string';
+  test.shouldThrowErrorSync( () => _.introspector.stackFilter( 'at routine stackFilter\n at @233', ( e, k ) => { return { original : e, key : k } } ) );
 }
 
 // --
@@ -1175,9 +1343,11 @@ var Self =
     /* qqq : implement test routine for _.err */
 
     stackBasic,
-    stack, /* qqq : extend the routine */
+    stack, /* qqq : extend the routine | Dmytro : extended */
 
     locationFromStackFrame,
+
+    stackFilter,
 
   }
 
