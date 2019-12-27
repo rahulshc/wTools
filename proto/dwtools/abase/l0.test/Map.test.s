@@ -3853,6 +3853,257 @@ function mapContain( test )
 
 //
 
+function objectSatisfy( test ) 
+{
+  test.open( 'default option' );
+
+  test.case = 'template === src';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = template;
+  var got = _.objectSatisfy( template, src );
+  test.identical( got, true );
+
+  test.case = 'src is not an object';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = 'wrong';
+  var got = _.objectSatisfy( template, src );
+  test.identical( got, false );
+
+  test.case = 'template is object, src identical to template';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.objectSatisfy( template, src );
+  test.identical( got, true );
+
+  test.case = 'template is object, src not identical to template';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = { a : 1, b : 2 };
+  var got = _.objectSatisfy( template, src );
+  test.identical( got, false );
+
+  test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
+  var template = { a : { val : 1 }, b : 2, c : 3 };
+  var src = { a : { val : 1 }, b : 2, c : 3 };
+  var got = _.objectSatisfy( template, src );
+  test.identical( got, false );
+
+  test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
+  var identicalWith = () => true;
+  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
+  var got = _.objectSatisfy( template, src );
+  test.identical( got, true );
+
+  /* */
+
+  test.case = 'template === src';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = template;
+  var got = _.objectSatisfy( { template : template, src : src } );
+  test.identical( got, true );
+
+  test.case = 'src is not an object';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = 'wrong';
+  var got = _.objectSatisfy( { template : template, src : src } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src identical to template';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src } );
+  test.identical( got, true );
+
+  test.case = 'template is object, src not identical to template';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = { a : 1, b : 2 };
+  var got = _.objectSatisfy( { template : template, src : src } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
+  var template = { a : { val : 1 }, b : 2, c : 3 };
+  var src = { a : { val : 1 }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
+  var identicalWith = () => true;
+  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src } );
+  test.identical( got, true );
+
+  test.close( 'default option' );
+
+  /* - */
+
+  test.open( 'levels - 0' );
+
+  test.case = 'template === src';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = template;
+  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  test.identical( got, true );
+
+  test.case = 'src is not an object';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = 'wrong';
+  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src identical to template, without identicalWith';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src not identical to template';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = { a : 1, b : 2 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src identical to template, without identicalWith';
+  var template = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
+  var src = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
+  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  test.identical( got, true );
+
+  test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
+  var template = { a : { val : 1 }, b : 2, c : 3 };
+  var src = { a : { val : 1 }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
+  var identicalWith = () => true;
+  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  test.identical( got, false );
+
+  test.close( 'levels - 0' );
+
+  /* - */
+
+  test.open( 'levels - -1' );
+
+  test.case = 'template === src';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = template;
+  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  test.identical( got, true );
+
+  test.case = 'src is not an object';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = 'wrong';
+  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src identical to template, without identicalWith';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src not identical to template';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = { a : 1, b : 2 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src identical to template, without identicalWith';
+  var template = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
+  var src = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
+  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
+  var template = { a : { val : 1 }, b : 2, c : 3 };
+  var src = { a : { val : 1 }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
+  var identicalWith = () => true;
+  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  test.identical( got, false );
+
+  test.close( 'levels - -1' );
+
+  /* - */
+
+  test.open( 'levels - 2' );
+
+  test.case = 'template === src';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = template;
+  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  test.identical( got, true );
+
+  test.case = 'src is not an object';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = 'wrong';
+  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src identical to template, without identicalWith';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = { a : 1, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  test.identical( got, true );
+
+  test.case = 'template is object, src not identical to template';
+  var template = { a : 1, b : 2, c : 3 };
+  var src = { a : 1, b : 2 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  test.identical( got, false );
+
+  test.case = 'template is object, src identical to template, without identicalWith';
+  var template = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
+  var src = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
+  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  test.identical( got, true );
+
+  test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
+  var template = { a : { val : 1 }, b : 2, c : 3 };
+  var src = { a : { val : 1 }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  test.identical( got, true );
+
+  test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
+  var identicalWith = () => true;
+  var template = { a : { val : { identicalWith : identicalWith } }, b : 2, c : 3 };
+  var src = { a : { val : { identicalWith : identicalWith } }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  test.identical( got, true );
+
+  test.close( 'levels - 2' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.objectSatisfy() );
+
+  test.case = 'o.template is not an object or a routine';
+  test.shouldThrowErrorSync( () => _.objectSatisfy( 'wrong', { a : 2 } ) );
+  test.shouldThrowErrorSync( () => _.objectSatisfy( { template : 'wrong', src : { a : 2 } } ) );
+
+  test.case = 'o.src is undefined';
+  test.shouldThrowErrorSync( () => _.objectSatisfy( { a : 2 }, undefined ) );
+  test.shouldThrowErrorSync( () => _.objectSatisfy( { template : { a : 2 }, src : undefined } ) );
+
+  test.case = 'map o has wrong fields';
+  test.shouldThrowErrorSync( () => _.objectSatisfy( { template : { a : 2 }, wrong : { a : 2 } } ) );
+}
+
+//
+
 function mapOwnKey( test )
 {
 
@@ -6356,6 +6607,8 @@ var Self =
 
     mapsAreIdentical,
     mapContain,
+    
+    objectSatisfy,
 
     mapOwnKey,
 

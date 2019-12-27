@@ -2881,8 +2881,7 @@ function longNone( src )
  */
 
 /*
-qqq : extend coverage, take into account Set case
-Dmytro : coverage is extended
+qqq : extend coverage, take into account Set case | Dmytro : coverage is extended
 */
 
 function arrayMake( src )
@@ -2967,8 +2966,7 @@ function arrayMake( src )
  */
 
 /*
-qqq : document and cover arrayMakeUndefined
-Dmytro : routine is covered and documented
+qqq : document and cover arrayMakeUndefined | Dmytro : routine is covered and documented
 */
 
 function arrayMakeUndefined( src, length )
@@ -2994,8 +2992,7 @@ function arrayMakeUndefined( src, length )
 //
 
 /*
-qqq : add good coverage for arrayFrom, take into account unroll cases
-Dmytro : covered with unroll cases.
+qqq : add good coverage for arrayFrom, take into account unroll cases | Dmytro : covered with unroll cases.
 */
 
 function arrayFrom( src )
@@ -3103,8 +3100,7 @@ function arrayAsShallowing( src )
  */
 
 /*
-qqq : routine arraySlice requires good test coverage and documentation
-Dmytro : good test coverage is added, routine is documented
+qqq : routine arraySlice requires good test coverage and documentation | Dmytro : good test coverage is added, routine is documented
 */
 
 function arraySlice( srcArray, f, l )
@@ -3117,6 +3113,7 @@ function arraySlice( srcArray, f, l )
 //
 
 /* qqq : implement and cover. ask */
+
 function arrayEmpty( dstArray, srcArray )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -3291,9 +3288,9 @@ function arrayBut( src, range, ins )
   _.arrayAppendArray( args, ins );
 
   /*
-  qqq : check is it optimal to make double copy
-  Dmytro : it is not double copy. Method slice() makes a copy and method splice replaces some elements in this copy.
+  qqq : check is it optimal to make double copy | Dmytro : it is not double copy. Method slice() makes a copy and method splice replaces some elements in this copy.
   or uncomment this code
+
   let result = [];
 
   for( let i = 0; i < range[ 0 ]; i++ )
@@ -4399,8 +4396,7 @@ function arrayRelength_( dst, src, range, ins )
  */
 
 /*
-qqq : are all combinations of call of routine arrayCountElement covered?
-Dmytro : yes, all combinations of call is implemented
+qqq : are all combinations of call of routine arrayCountElement covered? | Dmytro : yes, all combinations of call is implemented
 */
 
 function longCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
@@ -4525,9 +4521,7 @@ function longCountUnique( src, onEvaluate )
 
 /*
 
-qqq : use for documentation
-Dmytro : Is this information out of date?
-This task was declined a time ago.
+qqq : use for documentation | Dmytro : this task was declined a time ago.
 
 alteration Routines :
 
@@ -7016,7 +7010,7 @@ function arrayFlattened( dstArray, src )
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${dstArray}"` );
 
-  /* qqq : poor code!! ask */
+  /* qqq : poor code!! ask | Dmytro : explained and improved */
 
   if( arguments.length === 1 )
   {
@@ -7036,7 +7030,7 @@ function arrayFlattened( dstArray, src )
       }
     }
 
-    return result;  // Dmytro : it has no sence to count result and return dstArray
+    return result;
     // qqq : why container returned?? that wrong! ask | Dmytro : fixed
   }
 

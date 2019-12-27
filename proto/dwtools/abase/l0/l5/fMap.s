@@ -166,7 +166,7 @@ function objectSatisfy( o )
   function _objectSatisfy( template, src, root, levels, strict )
   {
 
-    if( !strict && src === undefined )
+    if( !strict && src === undefined ) 
     return true;
 
     if( template === src )
