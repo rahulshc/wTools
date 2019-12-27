@@ -78,48 +78,623 @@ function stackBasic( test )
 
 function stack( test )
 {
-  let context = this;
+  test.case = 'stack is map, range - undefined';
+  var got = _.introspector.stack( { notError : 1 }, undefined );
+  test.identical( got, undefined );
 
-  test.case = '[ 0, -1 ]';
-  var got = _.introspector.stack([ 0, -1 ]);
-  test.gt( got.split( '\n' ).length, 10 );
-  var routineName = _.introspector.location().routineName;
-  test.identical( _.strCount( got, routineName ), 1 );
+  test.case = 'stack is Set, range - undefined';
+  var got = _.introspector.stack( new Set( [ 1, 2, 3 ] ), undefined );
+  test.identical( got, undefined );
 
-  test.case = '[ 0, Infinity ]';
-  var got = _.introspector.stack([ 0, Infinity ]);
-  test.gt( got.split( '\n' ).length, 10 );
+  test.case = 'stack - empty string, range - undefined';
+  var got = _.introspector.stack( '', undefined );
+  test.identical( got, '' );
+
+  test.case = 'stack - empty array, range - undefined';
+  var got = _.introspector.stack( [], undefined );
+  test.identical( got, '' );
+
+  /* - */
+
+  test.open( 'stack - string, first line - has not "at" or "@"' );
+
+  test.case = 'only stack';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd' );
+  test.identical( got, 'at@\nb\nc\nd' );
+
+  test.case = 'range - undefined';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', undefined );
+  test.identical( got, 'at@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] > last index';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ 0, 5 ] );
+  test.identical( got, 'at@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] === last index';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ 0, 3 ] );
+  test.identical( got, 'at@\nb\nc' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] < last index';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ 0, 1 ] );
+  test.identical( got, 'at@' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] < 0';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ 0, -1 ] );
+  test.identical( got, 'at@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] > last index';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ -3, 4 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] === last index';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ -3, 3 ] );
+  test.identical( got, 'b\nc' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] < last index';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ -3, 1 ] );
+  test.identical( got, '' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] < 0';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ -3, -1 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] > last index';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ 2, 4 ] );
+  test.identical( got, 'c\nd' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] === last index';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ 2, 3 ] );
+  test.identical( got, 'c' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] < last index';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ 2, 1 ] );
+  test.identical( got, '' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] < 0';
+  var got = _.introspector.stack( 'some\nat@\nb\nc\nd', [ 2, -1 ] );
+  test.identical( got, 'c\nd' );
+
+  test.close( 'stack - string, first line - has not "at" or "@"' );
+
+  /* - */
+
+  test.open( 'stack - string, first line - has "at " or "@"' );
+
+  test.case = 'only stack';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t' );
+  test.identical( got, 'at\nb\nc\nd' );
+
+  test.case = 'range - undefined';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', undefined );
+  test.identical( got, 'at\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] > last index';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ 0, 5 ] );
+  test.identical( got, 'at\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] === last index';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ 0, 3 ] );
+  test.identical( got, 'at\nb\nc' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] < last index';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ 0, 1 ] );
+  test.identical( got, 'at' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] < 0';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ 0, -1 ] );
+  test.identical( got, 'at\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] > last index';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ -3, 4 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] === last index';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ -3, 3 ] );
+  test.identical( got, 'b\nc' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] < last index';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ -3, 1 ] );
+  test.identical( got, '' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] < 0';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ -3, -1 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] > last index';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ 2, 4 ] );
+  test.identical( got, 'c\nd' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] === last index';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ 2, 3 ] );
+  test.identical( got, 'c' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] < last index';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ 2, 1 ] );
+  test.identical( got, '' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] < 0';
+  var got = _.introspector.stack( 'at \nb\nc\nd\n \t', [ 2, -1 ] );
+  test.identical( got, 'c\nd' );
+
+  /* */
+
+  test.case = 'only stack';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t' );
+  test.identical( got, '@\nb\nc\nd' );
+
+  test.case = 'range - undefined';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', undefined );
+  test.identical( got, '@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] > last index';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ 0, 5 ] );
+  test.identical( got, '@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] === last index';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ 0, 3 ] );
+  test.identical( got, '@\nb\nc' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] < last index';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ 0, 1 ] );
+  test.identical( got, '@' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] < 0';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ 0, -1 ] );
+  test.identical( got, '@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] > last index';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ -3, 4 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] === last index';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ -3, 3 ] );
+  test.identical( got, 'b\nc' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] < last index';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ -3, 1 ] );
+  test.identical( got, '' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] < 0';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ -3, -1 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] > last index';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ 2, 4 ] );
+  test.identical( got, 'c\nd' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] === last index';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ 2, 3 ] );
+  test.identical( got, 'c' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] < last index';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ 2, 1 ] );
+  test.identical( got, '' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] < 0';
+  var got = _.introspector.stack( '@\nb\nc\nd\n \t', [ 2, -1 ] );
+  test.identical( got, 'c\nd' );
+
+  test.close( 'stack - string, first line - has "at " or "@"' );
+
+  /* - */
+
+  test.open( 'stack - array, first element - has not "at" or "@"' );
+
+  test.case = 'range - undefined';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], undefined );
+  test.identical( got, 'at\n@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] > last index';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ 0, 7 ] );
+  test.identical( got, 'at\n@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] === last index';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ 0, 4 ] );
+  test.identical( got, 'at\n@\nb\nc' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] < last index';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ 0, 1 ] );
+  test.identical( got, 'at' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] < 0';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ 0, -1 ] );
+  test.identical( got, 'at\n@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] > last index';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ -3, 7 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] === last index';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ -3, 4 ] );
+  test.identical( got, 'b\nc' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] < last index';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ -3, 1 ] );
+  test.identical( got, '' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] < 0';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ -3, -1 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] > last index';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ 2, 7 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] === last index';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ 2, 4 ] );
+  test.identical( got, 'b\nc' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] < last index';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ 2, 1 ] );
+  test.identical( got, '' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] < 0';
+  var got = _.introspector.stack( [ '(vm.js: 12', '(module.js:', '(internal/module.js:', 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ 2, -1 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.close( 'stack - array, first element - has not "at" or "@"' );
+
+  /* - */
+
+  test.open( 'stack - array, first element - has "at" or "@"' );
+
+  test.case = 'range - undefined';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], undefined );
+  test.identical( got, 'at\n@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] > last index';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ 0, 7 ] );
+  test.identical( got, 'at\n@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] === last index';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ 0, 4 ] );
+  test.identical( got, 'at\n@\nb\nc' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] < last index';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ 0, 1 ] );
+  test.identical( got, 'at' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] < 0';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ 0, -1 ] );
+  test.identical( got, 'at\n@\nb\nc\nd' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] > last index';
+  var got = _.introspector.stack( [ 'some', 'at ', '@', 'b', 'c', 'd', '\t' ], [ -3, 7 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] === last index';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ -3, 4 ] );
+  test.identical( got, 'b\nc' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] < last index';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ -3, 1 ] );
+  test.identical( got, '' );
+
+  test.case = 'range[ 0 ] - -3, range[ 1 ] < 0';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ -3, -1 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] > last index';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ 2, 7 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] === last index';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ 2, 4 ] );
+  test.identical( got, 'b\nc' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] < last index';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ 2, 1 ] );
+  test.identical( got, '' );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] < 0';
+  var got = _.introspector.stack( [ 'at ', '@', 'b', 'c', 'd', '\t' ], [ 2, -1 ] );
+  test.identical( got, 'b\nc\nd' );
+
+  test.close( 'stack - array, first element - has "at" or "@"' );
+
+  /* - */
+
+  test.open( 'only range' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - Infinity';
+  var got = _.introspector.stack( [ 0, Infinity ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
-  test.case = 'comparison of [ 0, -1 ] and [ 0, Infinity ]';
-  var got1 = _.introspector.stack([ 0, -1 ]);
-  var got2 = _.introspector.stack([ 0, Infinity ]);
-  test.identical( _.strLinesBut( got1, 0 ), _.strLinesBut( got2, 0 ) );
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - 100';
+  var got = _.introspector.stack( [ 0, 100 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
-  test.case = 'comparison of [ 0, -2 ] and [ 0, Infinity ]';
-  var got1 = _.introspector.stack([ 0, -2 ]);
-  var got2 = _.introspector.stack([ 0, Infinity ]);
-  test.identical( _.strLinesBut( got1, 0 ), _.strLinesBut( _.strLinesBut( got2, 0 ), -1 ) );
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - 10';
+  var got = _.introspector.stack( [ 0, 10 ] );
+  var arr = got.split( '\n' );
+  test.identical( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
-  test.case = 'comparison of default call and [ 0, Infinity ]';
-  var got1 = _.introspector.stack();
-  var got2 = _.introspector.stack([ 0, Infinity ]);
-  test.identical( _.strLinesBut( got1, 0 ), _.strLinesBut( got2, 0 ) );
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - -1';
+  var got = _.introspector.stack( [ 0, -1 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
-  test.case = 'not an error';
-  var exp = undefined;
-  var got = _.introspector.stack( { notError : 1 }, undefined );
-  test.identical( got, exp );
+  /* */
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - Infinity';
+  var got = _.introspector.stack( [ 2, Infinity ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - 100';
+  var got = _.introspector.stack( [ 2, 100 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - 10';
+  var got = _.introspector.stack( [ 2, 10 ] );
+  var arr = got.split( '\n' );
+  test.identical( arr.length, 8 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - -1';
+  var got = _.introspector.stack( [ 2, -1 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  /* */
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - Infinity';
+  var got = _.introspector.stack( [ -2, Infinity ] );
+  var arr = got.split( '\n' );
+  test.le( arr.length, 2 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - 100';
+  var got = _.introspector.stack( [ -2, 100 ] );
+  var arr = got.split( '\n' );
+  test.le( arr.length, 2 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - 10';
+  var got = _.introspector.stack( [ -2, 10 ] );
+  var arr = got.split( '\n' );
+  test.identical( arr.length, 1 );
+  test.is( arr[ 0 ].indexOf( 'at ') === -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - -1';
+  var got = _.introspector.stack( [ -2, -1 ] );
+  var arr = got.split( '\n' );
+  test.le( arr.length, 2 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.close( 'only range' );
+
+  /* - */
+
+  test.open( 'stack - null, range' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - Infinity';
+  var got = _.introspector.stack( null, [ 0, Infinity ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - 100';
+  var got = _.introspector.stack( null, [ 0, 100 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - 10';
+  var got = _.introspector.stack( null, [ 0, 10 ] );
+  var arr = got.split( '\n' );
+  test.identical( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - -1';
+  var got = _.introspector.stack( null, [ 0, -1 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
+
+  /* */
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - Infinity';
+  var got = _.introspector.stack( null, [ 2, Infinity ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - 100';
+  var got = _.introspector.stack( null, [ 2, 100 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - 10';
+  var got = _.introspector.stack( null, [ 2, 10 ] );
+  var arr = got.split( '\n' );
+  test.identical( arr.length, 8 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - -1';
+  var got = _.introspector.stack( null, [ 2, -1 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  /* */
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - Infinity';
+  var got = _.introspector.stack( null, [ -2, Infinity ] );
+  var arr = got.split( '\n' );
+  test.le( arr.length, 2 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - 100';
+  var got = _.introspector.stack( null, [ -2, 100 ] );
+  var arr = got.split( '\n' );
+  test.le( arr.length, 2 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - 10';
+  var got = _.introspector.stack( null, [ -2, 10 ] );
+  var arr = got.split( '\n' );
+  test.identical( arr.length, 1 );
+  test.is( arr[ 0 ].indexOf( 'at ') === -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - -1';
+  var got = _.introspector.stack( null, [ -2, -1 ] );
+  var arr = got.split( '\n' );
+  test.le( arr.length, 2 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.close( 'stack - null, range' );
+
+  /* - */
+
+  test.open( 'stack - error, range' );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - Infinity';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 0, Infinity ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - 100';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 0, 100 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - 10';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 0, 10 ] );
+  var arr = got.split( '\n' );
+  test.identical( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
+
+  test.case = 'range[ 0 ] - 0, range[ 1 ] - -1';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 0, -1 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
+
+  /* */
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - Infinity';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 2, Infinity ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - 100';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 2, 100 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - 10';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 2, 10 ] );
+  var arr = got.split( '\n' );
+  test.identical( arr.length, 8 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - 2, range[ 1 ] - -1';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 2, -1 ] );
+  var arr = got.split( '\n' );
+  test.gt( arr.length, 10 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  /* */
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - Infinity';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ -2, Infinity ] );
+  var arr = got.split( '\n' );
+  test.le( arr.length, 2 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - 100';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ -2, 100 ] );
+  var arr = got.split( '\n' );
+  test.le( arr.length, 2 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - 10';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ -2, 10 ] );
+  var arr = got.split( '\n' );
+  test.identical( arr.length, 1 );
+  test.is( arr[ 0 ].indexOf( 'at ') === -1 ); 
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.case = 'range[ 0 ] - -2, range[ 1 ] - -1';
+  var got = _.introspector.stack( new Error( 'Uncaught error' ), [ -2, -1 ] );
+  var arr = got.split( '\n' );
+  test.le( arr.length, 2 );
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
+  test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
+
+  test.close( 'stack - error, range' );
+
+  /* - */
 
   if( !Config.debug )
   return;
 
-  test.case = 'not a range';
-  test.shouldThrowErrorSync( () =>
-  {
-    var got = _.introspector.stack( { notError : 1 } );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.introspector.stack( null, [ 1, 2 ], 'extra' ) );
 
+  test.case = 'not a range';
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ 'at @' ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ undefined, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ '', 1 ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ false, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ true, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ null, 1 ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ 1, '' ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ 1, undefined ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ 1, false ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ 1, true ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( [ 1, null ] ) );
+  test.shouldThrowErrorSync( () => _.introspector.stack( { notError : 1 } ) );
 }
 
 //
