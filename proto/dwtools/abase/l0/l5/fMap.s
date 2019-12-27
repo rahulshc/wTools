@@ -146,7 +146,7 @@ function mapContain( src, ins )
  * @memberof wTools
 */
 
-/* qqq : cover option strict of routine objectSatisfy */
+/* qqq : cover option strict of routine objectSatisfy | Dmytro : covered routine and implemented separate test routine for option strict */
 
 function objectSatisfy( o )
 {
@@ -1326,20 +1326,38 @@ function mapSupplementOwnFromDefinitionStrictlyPrimitives( dstMap, srcMap )
 //
 
 /**
- * The mapComplement() complement ( dstMap ) by one or several ( srcMap ).
+ * The routine mapComplement() complements {-dstMap-} by one or several {-srcMap-}. Routine does not change 
+ * defined pairs key-value in {-dstMap-}. 
+ * If {-dstMap-} and {-srcMap-} has equal keys, and value of {-dstMap-} is undefined, then routine
+ * mapComplement() changes it to {-srcMap-} value.
+ * If pair key-value does not exists in {-dstMap-}, then routine appends this pair to {-dstMap-}.
  *
- * @param { ...objectLike } arguments[] - The source object(s).
+ * @param { objectLike } dstMap - ObjectLike entity to be complemented.
+ * @param { ...objectLike } srcMap - The source object(s).
  *
  * @example
- * _.mapComplement( { a : 1, b : 'ab' }, { a : 12 , c : 3 } );
- * // returns { a : 1, b : 'ab', c : 3 };
+ * _.mapComplement( { a : 1, b : 2, c : 3 }, { a : 4, b : 5, c : 6, d : 7 } );
+ * // returns { a : 1, b : 3, c : 3, d : 7 };
  *
- * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
+ * @example
+ * _.mapComplement( { a : 1, b : 2, c : 3 }, { a : 4, b : 5 }, { c : 6, d : 7 } );
+ * // returns { a : 1, b : 3, c : 3, d : 7 };
+ *
+ * @example
+ * _.mapComplement( { a : 1, b : 2, c : undefined }, { a : 4, b : 5, c : 6, d : 7 } );
+ * // returns { a : 1, b : 3, c : 6, d : 7 };
+ *
+ * @example
+ * _.mapComplement( { a : 1, b : 2, c : undefined }, { a : 4, b : 5 }, { c : 6, d : 7 } );
+ * // returns { a : 1, b : 3, c : 6, d : 7 };
+ *
+ * @returns { objectLike } - Returns the destination object filled by unique values from source object(s), and if it is possible, replaced undefined
+ * values in destination object.
  * @function mapComplement
  * @memberof wTools
  */
 
-/* qqq : need to explain how undefined handled and write good documentation */
+/* qqq : need to explain how undefined handled and write good documentation | Dmytro : documentation extended. Maybe, routine needs assertion: _.assert( arguments.length >= 1 ); */
 
 function mapComplement( dstMap, srcMap )
 {
