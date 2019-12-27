@@ -436,8 +436,9 @@ function stack( stack, range )
     }
     else
     {
+      if( _.numberIs( range[ 0 ] ) ) /* Dmytro : previous implementation affects range - not a number value + number => NaN, so assertion does not word properly */
       range[ 0 ] += 1;
-      if( range[ 1 ] >= 0 )
+      if( _.numberIs( range[ 1 ] ) && range[ 1 ] >= 0 )
       range[ 1 ] += 1;
     }
   }
@@ -460,17 +461,17 @@ function stack( stack, range )
   let first = range[ 0 ];
   let last = range[ 1 ];
 
-  if( !_.numberIs( first ) )
-  {
-    debugger;
-    throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( first ) );
-  }
-
-  if( !_.numberIs( last ) )
-  {
-    debugger;
-    throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( last ) );
-  }
+  // if( !_.numberIs( first ) ) // Dmytro : it's unnecessary assertions, _.rangeIs checks number value in passed array
+  // {
+  //   debugger;
+  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( first ) );
+  // }
+  //
+  // if( !_.numberIs( last ) )
+  // {
+  //   debugger;
+  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( last ) );
+  // }
 
   let errIs = 0;
   if( _.errIs( stack ) )
@@ -485,11 +486,11 @@ function stack( stack, range )
   if( !_.arrayIs( stack ) && !_.strIs( stack ) )
   return;
 
-  if( !_.arrayIs( stack ) && !_.strIs( stack ) )
-  {
-    debugger;
-    throw Error( 'stack expects array or string' );
-  }
+  // if( !_.arrayIs( stack ) && !_.strIs( stack ) ) // Dmytro : previous condition is almost identical
+  // {
+  //   debugger;
+  //   throw Error( 'stack expects array or string' );
+  // }
 
   if( !_.arrayIs( stack ) )
   stack = stack.split( '\n' );
@@ -509,7 +510,7 @@ function stack( stack, range )
   }
 
   if( stack[ 0 ] )
-  if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
+  if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 ) // Dmytro : it's dubious - while loop removes all strings if stack[ 0 ] has not 'at ' or '@'
   {
     console.error( 'stack : failed to parse stack' );
     debugger;
@@ -523,11 +524,11 @@ function stack( stack, range )
   first = first === undefined ? 0 : first;
   last = last === undefined ? stack.length : last;
 
-  if( _.numberIs( first ) )
+  // if( _.numberIs( first ) ) // Dmytro : first and last - is always some numbers, see above about assertions
   if( first < 0 )
   first = stack.length + first;
 
-  if( _.numberIs( last ) )
+  // if( _.numberIs( last ) )
   if( last < 0 )
   last = stack.length + last + 1;
 
