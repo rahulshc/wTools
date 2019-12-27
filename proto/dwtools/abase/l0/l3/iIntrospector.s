@@ -383,7 +383,15 @@ locationFromStackFrame.defaults =
 //
 
 /**
- * Return stack trace as string.
+ * Routine stack() returns stack trace from provided argument {-stack-} as a string. If {-stack-} is not provided,
+ * then routine returns stack trace at a current position of code.
+ *
+ * @param { String|Array|Unroll|Error } stack - A stack to trace. If {-stack-} is not provided, then routine generates
+ * stack trace at a current code position.
+ * @param { Range } range - A range of lines selected from stack trace. If {-range-} is undefined, then routine returns
+ * full stack trace. If range[ 0 ] < 0, then routine counts lines from the end of stack trace. If stack[ 1 ] < 0, then 
+ * routine counts end line from the end of stack trace.
+ *
  * @example
  * let stack;
  * function function1()
@@ -404,13 +412,37 @@ locationFromStackFrame.defaults =
  * function1();
  * console.log( stack );
  * // log
- * //"    at function3 (<anonymous>:10:17)
- * // at function2 (<anonymous>:6:2)
- * // at function1 (<anonymous>:2:2)
- * // at <anonymous>:1:1"
+ * //"  at function3 (<anonymous>:10:17)
+ * //   at function2 (<anonymous>:6:2)
+ * //   at function1 (<anonymous>:2:2)
+ * //   at <anonymous>:1:1"
  *
- * @returns {String} Return stack trace from call point.
+ * @example
+ * let stack;
+ * function function1()
+ * {
+ *   function2();
+ * }
+ *
+ * function function2()
+ * {
+ *   function3();
+ * }
+ *
+ * function function3()
+ * {
+ *   stack = _.introspector.stack( [ 0, 1 ] );
+ * }
+ *
+ * function1();
+ * console.log( stack );
+ * // log
+ * //"  at function3 (<anonymous>:10:17)
+ *
+ * @returns { String } - Return stack trace from call point.
  * @function stack
+ * @throws { Error } If arguments.length is more than two.
+ * @throws { Error } If {-range-} is not a Range.
  * @memberof wTools
  */
 
