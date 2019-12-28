@@ -1082,6 +1082,73 @@ function objectSetWithKeyStrictly( test )
   test.shouldThrowErrorSync( () => _.objectSetWithKeyStrictly( { 'a' : 1 }, 1, 'a' ) );
 }
 
+//
+
+function mapDelete( test ) 
+{
+  test.case = 'dstMap - empty map';
+  var dst = {};
+  var got = _.mapDelete( dst );
+  test.identical( got, {} );
+  test.is( got === dst );
+
+  test.case = 'dstMap - filled map';
+  var dst = { a : 1, 1 : 2, c : 3 };
+  var got = _.mapDelete( dst );
+  test.identical( got, {} );
+  test.is( got === dst );
+
+  test.case = 'dstMap - empty map, ins - empty map';
+  var dst = {};
+  var ins = {};
+  var got = _.mapDelete( dst, ins );
+  test.identical( got, {} );
+  test.is( got === dst );
+
+  test.case = 'dstMap - empty map, ins - filled map';
+  var dst = {};
+  var ins = { a : 1, b : 2 };
+  var got = _.mapDelete( dst, ins );
+  test.identical( got, {} );
+  test.is( got === dst );
+
+  test.case = 'dstMap - filled map, ins - empty map';
+  var dst = { a : 1, 1 : 2, c : 3 };
+  var ins = {};
+  var got = _.mapDelete( dst, ins );
+  test.identical( got, { a : 1, 1 : 2, c : 3 } );
+  test.is( got === dst );
+
+  test.case = 'dstMap - filled map, ins - filled map, not equal keys';
+  var dst = { a : 1, 1 : 2, c : 3 };
+  var ins = { 2 : 6, d : 'e' };
+  var got = _.mapDelete( dst, ins );
+  test.identical( got, { a : 1, 1 : 2, c : 3 } );
+  test.is( got === dst );
+
+  test.case = 'dstMap - filled map, ins - filled map, equal keys exists';
+  var dst = { a : 1, 1 : 2, c : 3 };
+  var ins = { a : 6, c : 'e', f : [] };
+  var got = _.mapDelete( dst, ins );
+  test.identical( got, { 1 : 2 } );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.mapDelete() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.mapDelete( { a : 1 }, { b : 2 }, { c : 'extra' } ) );
+
+  test.case = 'wrong type of dstMap';
+  test.shouldThrowErrorSync( () => _.mapDelete( 'wrong', { b : 2 } ) );
+  test.shouldThrowErrorSync( () => _.mapDelete( undefined, { b : 2 } ) );
+}
+
 // --
 // map convert
 // --
@@ -7026,6 +7093,7 @@ var Self =
 
     objectSetWithKeys,
     objectSetWithKeyStrictly,
+    mapDelete,
 
     // map convert
 
