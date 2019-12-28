@@ -1463,6 +1463,89 @@ function mapKeyWithIndex( test )
 
 //
 
+function mapToArray( test )
+{
+  test.case = 'src - empty map';
+  var got = _.mapToArray( {} );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.case = 'src - empty array';
+  var got = _.mapToArray( [] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.case = 'src - filled map';
+  var got = _.mapToArray( { a : 7, b : 13 } );
+  var expected = [ [ 'a', 7 ], [ 'b', 13 ] ];
+  test.identical( got, expected );
+
+  test.case = 'src - filled map'
+  var got = _.mapToArray( { a : 3, b : 13, 1 : 7 } );
+  var expected = [ [ '1', 7 ], [ 'a', 3 ], [ 'b', 13 ] ];
+  test.identical( got, expected );
+
+  test.case = 'src - array with literal key';
+  var arrObj = [];
+  arrObj[ 'k' ] = 1;
+  var got = _.mapToArray( arrObj );
+  var expected = [ [ 'k', 1 ] ];
+  test.identical( got, expected );
+
+  test.case = 'src - Date object';
+  var got = _.mapToArray( new Date );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.case = 'src - map prototyped by another map';
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+  var got = _.mapToArray( a );
+  var expected = [ [ 'a', 1 ], [ 'b', 2 ] ];
+  test.identical( got, expected );
+
+  test.case = 'src - map prototyped by another map, own pairs';
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+  var got = _.mapToArray.call( { own : 1 }, a );
+  var expected = [ [ 'a', 1 ], [ 'b', 2 ] ];
+  test.identical( got, expected );
+
+  test.case = 'src - map prototyped by another map, own pairs, not enumerable property';
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
+  var got = _.mapToArray.call( { enumerable : 0, own : 1 }, a );
+  var expected = [ [ 'a', 1 ], [ 'b', 2 ] ];
+  test.identical( got, expected );
+
+  test.case = 'src - map prototyped by another map, own pairs disable, not enumerable property';
+  var a = { a : 1 };
+  var b = { b : 2 };
+  Object.setPrototypeOf( a, b );
+  Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
+  var got = _.mapToArray.call( { enumerable : 0, own : 0 }, a );
+  var expected = [ [ 'a', 1 ], [ 'b', 2 ] ];
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.mapToArray() );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.mapToArray( 1 ) );
+  test.shouldThrowErrorSync( () => _.mapToArray( 'wrong' ) );
+}
+
+//
+
 function mapToStr( test )
 {
 
@@ -7135,6 +7218,7 @@ var Self =
     mapFirstPair,
     mapValWithIndex,
     mapKeyWithIndex,
+    mapToArray,
     mapToStr,
 
     // map properties
