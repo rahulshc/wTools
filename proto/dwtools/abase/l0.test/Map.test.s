@@ -1149,6 +1149,38 @@ function mapDelete( test )
   test.shouldThrowErrorSync( () => _.mapDelete( undefined, { b : 2 } ) );
 }
 
+//
+
+function mapEmpty( test ) 
+{
+  test.case = 'dstMap - empty map';
+  var dst = {};
+  var got = _.mapEmpty( dst );
+  test.identical( got, {} );
+  test.is( got === dst );
+
+  test.case = 'dstMap - filled map';
+  var dst = { a : 1, 1 : 2, c : 3 };
+  var got = _.mapEmpty( dst );
+  test.identical( got, {} );
+  test.is( got === dst );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.mapEmpty() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.mapEmpty( { a : 1 }, { c : 'extra' } ) );
+
+  test.case = 'wrong type of dstMap';
+  test.shouldThrowErrorSync( () => _.mapEmpty( 'wrong', { b : 2 } ) );
+  test.shouldThrowErrorSync( () => _.mapEmpty( undefined, { b : 2 } ) );
+}
+
 // --
 // map convert
 // --
@@ -7094,6 +7126,7 @@ var Self =
     objectSetWithKeys,
     objectSetWithKeyStrictly,
     mapDelete,
+    mapEmpty,
 
     // map convert
 

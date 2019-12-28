@@ -4040,8 +4040,8 @@ let Routines =
   objectSetWithKeys,
   mapSet : objectSetWithKeys,
   objectSetWithKeyStrictly,
-  mapDelete, /* qqq : implement good coverage */
-  mapEmpty, /* qqq : implement good coverage */
+  mapDelete, /* qqq : implement good coverage | Dmytro : implemented */
+  mapEmpty, /* qqq : implement good coverage | Dmytro : implemented */
 
   // map transformer
 
