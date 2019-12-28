@@ -2269,10 +2269,8 @@ function mapButConditional( fieldFilter, srcMap, butMap )
 //
 
 /**
- * Returns new object with unique keys.
+ * Returns new object with unique pairs key-value from {-srcMap-} screened by screen map {-butMap-}.
  *
- * Takes any number of objects.
- * Returns new object filled by unique keys
  * from the first {-srcMap-} original object.
  * Values for result object come from original object {-srcMap-}
  * not from second or other one.
@@ -2288,6 +2286,7 @@ function mapButConditional( fieldFilter, srcMap, butMap )
  * _.mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
  * // returns { c : 3 }
  *
+ * Returns new object filled by unique keys
  * @throws { Error }
  *  In debug mode it throws an error if any argument is not object like.
  * @returns { object } Returns new object made by unique keys.
@@ -2297,86 +2296,86 @@ function mapButConditional( fieldFilter, srcMap, butMap )
 
 /* qqq : teach routines mapBut* to expect long in the second argument. ask */
 
-function mapBut( srcMap, butMap )
-{
-  let result = Object.create( null );
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
-
-  if( _.arrayLike( butMap ) )
-  {
-    result = Object.assign( result, srcMap );
-
-    for( let m = 0 ; m < butMap.length ; m++ )
-    {
-      if( butMap[ m ] in srcMap )
-      delete result[ butMap[ m ] ]
-    }
-  }
-  else if( _.mapLike( butMap ) )
-  {
-    for( let s in srcMap )
-    {
-      if( !( s in butMap ) )
-      result[ s ] = srcMap[ s ];
-    }
-  }
-  else
-  {
-    _.assert( 0, 'Expects map or long {-butMap-}' );
-  }
-
-  return result;
-}
-
 // function mapBut( srcMap, butMap )
 // {
 //   let result = Object.create( null );
 // 
-//   if( _.arrayLike( srcMap ) )
-//   srcMap = _.mapExtend( null, srcMap );
-//   // srcMap = _.mapMake.apply( this, srcMap );
-// 
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
-//   _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'Expects map {-srcMap-}' );
+//   _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
 // 
-//   if( _.arrayLike( butMap ) )
+//   if( _.longIs( butMap ) )
 //   {
+//     result = Object.assign( result, srcMap );
 // 
+//     for( let m = 0 ; m < butMap.length ; m++ )
+//     {
+//       if( butMap[ m ] in srcMap )
+//       delete result[ butMap[ m ] ]
+//     }
+//   }
+//   else if( _.mapLike( butMap ) )
+//   {
 //     for( let s in srcMap )
 //     {
-//       let m;
-//       for( m = 0 ; m < butMap.length ; m++ )
-//       {
-//         if( ( s in butMap[ m ] ) )
-//         break;
-//       }
-// 
-//       if( m === butMap.length )
+//       if( !( s in butMap ) )
 //       result[ s ] = srcMap[ s ];
-// 
 //     }
-// 
 //   }
 //   else
 //   {
-// 
-//     for( let s in srcMap )
-//     {
-// 
-//       if( !( s in butMap ) )
-//       {
-//         result[ s ] = srcMap[ s ];
-//       }
-// 
-//     }
-// 
+//     _.assert( 0, 'Expects map or long {-butMap-}' );
 //   }
 // 
 //   return result;
 // }
+
+function mapBut( srcMap, butMap )
+{
+  let result = Object.create( null );
+
+  if( _.arrayLike( srcMap ) )
+  srcMap = _.mapExtend( null, srcMap );
+  // srcMap = _.mapMake.apply( this, srcMap );
+
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
+  _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'Expects map {-srcMap-}' );
+
+  if( _.arrayLike( butMap ) )
+  {
+
+    for( let s in srcMap )
+    {
+      let m;
+      for( m = 0 ; m < butMap.length ; m++ )
+      {
+        if( ( s in butMap[ m ] ) )
+        break;
+      }
+
+      if( m === butMap.length )
+      result[ s ] = srcMap[ s ];
+
+    }
+
+  }
+  else
+  {
+
+    for( let s in srcMap )
+    {
+
+      if( !( s in butMap ) )
+      {
+        result[ s ] = srcMap[ s ];
+      }
+
+    }
+
+  }
+
+  return result;
+}
 
 //
 
