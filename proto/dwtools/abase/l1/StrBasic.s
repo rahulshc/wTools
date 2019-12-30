@@ -2905,6 +2905,64 @@ function strOnlySingle( srcStr, range )
 
 //
 
+/**
+ * Routine strOnly() gets substring out of each string in vector of strings {-srcStr-} according to a given range {-range-}.
+ * The end value of the range is not included in the substring.
+ *
+ * @param { String|Long } srcStr - Source string or array of strings.
+ * @param { Range } range - Range to get substring.
+ * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
+ *
+ * @example
+ * _.strOnly( '', [ 0, 2 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strOnly( 'first', [ 0, 7 ] );
+ * // returns 'first'
+ *
+ * @example
+ * _.strOnly( 'first', [ 0, 2 ] );
+ * // returns 'fi'
+ *
+ * @example
+ * _.strOnly( 'first', [ -2, 5 ] );
+ * // returns 'st'
+ *
+ * @example
+ * _.strOnly( 'first', [ 2, 2 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 0, 2 ] );
+ * // returns [ '', 'a', 'ab', 'ab' ]
+ *
+ * @example
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 0, 7 ] );
+ * // returns [ '', 'a', 'ab', 'abcde' ]
+ *
+ * @example
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ -2, 5 ] );
+ * // returns [ '', 'a', 'ab', 'de' ]
+ *
+ * @example
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 2, 2 ] );
+ * // returns[ '', '', '', '' ] 
+ *
+ * @function strOnly
+ * @returns { String|Long } - Returns substrings from source string or array of strings.
+ * @throws { Error } If arguments.length is less or more then two.
+ * @throws { Error } If {-srcStr-} is not a String, not a Long.
+ * @throws { Error } If {-srcStr-} is a Long and includes not a String value.
+ * @throws { Error } If {-range-} is not a Range.
+ * @memberof wTools
+ */
+
+
+let strOnly = _.vectorize( strOnlySingle );
+
+//
+
 // srcStr:str ins:str -> str
 // srcStr:str ins:[ * str ] -> [ * str ]
 // srcStr:[ * str ] ins:[ * str ] -> [ * str ]
@@ -5021,7 +5079,7 @@ let Proto =
   // extractor
 
   strOnlySingle,
-  strOnly : _.vectorize( strOnlySingle ), /* qqq : cover and document | Dmytro : covered */
+  strOnly, //: _.vectorize( strOnlySingle ), /* qqq : cover and document | Dmytro : covered and documented */
   strButSingle,
   strBut : _.vectorize( strButSingle ), /* qqq : cover and document | Dmytro : covered */
   strExtractInlined,
