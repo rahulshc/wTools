@@ -2835,24 +2835,39 @@ function strSplitCamel( src )
 // --
 
 /**
- * Gets substring out of source string according to a given range.
+ * Routine strOnlySingle() gets substring out of source string {-srcStr-} according to a given range {-range-}.
  * The end value of the range is not included in the substring.
- * Returns result as string.
  *
- * @param {string} srcStr - Source string.
- * @param {range} range - Source range.
- * @returns {string} Returns the corresponding substring.
+ * @param { String } srcStr - Source string.
+ * @param { Range } range - Range to get substring.
+ * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
  *
  * @example
- * _.strOnly( 'fi' );
- * // returns [ 'first', [ 0, 2 ] ]
+ * _.strOnly( '', [ 0, 2 ] );
+ * // returns ''
  *
- * @method strOnly
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
- * @throws { Exception } Throw an exception if( srcStr ) is not a String.
- * @throws { Exception } Throw an exception if( range ) is not a range.
+ * @example
+ * _.strOnly( 'first', [ 0, 7 ] );
+ * // returns 'first'
+ *
+ * @example
+ * _.strOnly( 'first', [ 0, 2 ] );
+ * // returns 'fi'
+ *
+ * @example
+ * _.strOnly( 'first', [ -2, 5 ] );
+ * // returns 'st'
+ *
+ * @example
+ * _.strOnly( 'first', [ 2, 2 ] );
+ * // returns ''
+ *
+ * @function strOnly
+ * @returns { String } - Returns substring from source string.
+ * @throws { Error } If arguments.length is less of more then two.
+ * @throws { Error } If {-srcStr-} is not a String.
+ * @throws { Error } If {-range-} is not a Range.
  * @memberof wTools
- *
  */
 
 function strOnlySingle( srcStr, range )
