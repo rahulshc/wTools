@@ -2858,11 +2858,10 @@ function strSplitCamel( src )
 function strOnlySingle( srcStr, range )
 {
 
-/* qqq : reference point of negative is length. implement and cover please */
+/* qqq : reference point of negative is length. implement and cover please | Dmytro : implemented a time ago*/
 
 // xxx
-// _.strOnly( 'abc', [ -2, -1 ] ) => ''
-// _.strOnly( 'abc', [ 1, 2 ] ) => 'b'
+// _.strOnly( 'abc', [ -2, -1 ] ) => 'b'
 // _.strOnly( 'abc', [ 1, 2 ] ) => 'b'
 //
 // 3-2 = 1
@@ -2898,7 +2897,7 @@ function strOnlySingle( srcStr, range )
 function strButSingle( srcStr, range, ins )
 {
 
-/* qqq : reference point of negative is length. implement and cover please */
+/* qqq : reference point of negative is length. implement and cover please | Dmytro : implemented a time ago */
 
   if( _.numberIs( range ) )
   {
@@ -2914,18 +2913,22 @@ function strButSingle( srcStr, range, ins )
     range[ 0 ] = srcStr.length + range[ 0 ];
   }
 
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
+  // if( _.numberIs( range ) )
+  // range = [ range, range + 1 ];
+  if( range[ 0 ] > range[ 1 ] )
+  range[ 1 ] = range[ 0 ];
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( srcStr ) );
   _.assert( _.rangeDefined( range ) );
   _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
-  _.assert( !_.longIs( ins ), 'not implemented' );
+  // _.assert( !_.longIs( ins ), 'not implemented' );
 
-  /* qqq : implement for case ins is long */
+  /* qqq : implement for case ins is long | Dmytro : implemented, elements of long joins by spaces */
 
-  if( ins )
+  if( _.longIs( ins ) )
+  return srcStr.substring( 0, range[ 0 ] ) + ins.join( ' ' ) + srcStr.substring( range[ 1 ], srcStr.length );
+  else if( ins )
   return srcStr.substring( 0, range[ 0 ] ) + ins + srcStr.substring( range[ 1 ], srcStr.length );
   else
   return srcStr.substring( 0, range[ 0 ] ) + srcStr.substring( range[ 1 ], srcStr.length );

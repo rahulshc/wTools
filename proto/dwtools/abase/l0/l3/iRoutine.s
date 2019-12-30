@@ -1174,7 +1174,7 @@ function vectorize_body( o )
 
     if( _.arrayLike( src ) )
     {
-      let args2 = [ ... args ];
+      let args2 = [ ... args ]; // Dmytro : if args[ 1 ] and next elements is not primitive, then vectorized routine can affects on this elements and array args
       let result = [];
       for( let r = 0 ; r < src.length ; r++ )
       {
