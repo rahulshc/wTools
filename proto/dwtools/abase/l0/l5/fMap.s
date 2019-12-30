@@ -2294,7 +2294,7 @@ function mapButConditional( fieldFilter, srcMap, butMap )
  * @memberof wTools
  */
 
-/* qqq : teach routines mapBut* to expect long in the second argument. ask */
+/* qqq : teach routines mapBut* to expect long in the second argument. ask | Dmytro : need explanation */
 
 // function mapBut( srcMap, butMap )
 // {
@@ -4049,7 +4049,7 @@ let Routines =
   mapInvertDroppingDuplicates,
   mapsFlatten,
 
-  mapToArray, /* qqq : test required */
+  mapToArray, /* qqq : test required | Dmytro : implemented */
   mapToStr, /* experimental */
 
   // map logical operator

@@ -77,6 +77,51 @@ function errArgumentObject( test )
 
 //
 
+function _errTrowError( test )
+{
+  try
+  {
+    var err = _._err();
+  }
+  catch( err )
+  {
+    test.case = 'without arguments';
+    test.is( _.errIs( err ) );
+    var errStr = String( err );
+    test.identical( _.strCount( errStr, '_err : Expects single argument' ), 1 );
+  }
+
+  /* */
+
+  try
+  {
+    var err = _._err( { args : 'wrong' } );
+  }
+  catch( err )
+  {
+    test.case = 'o.args is not a long';
+    test.is( _.errIs( err ) );
+    var errStr = String( err );
+    test.identical( _.strCount( errStr, '_err : o.args should be array like' ), 1 );
+  }
+
+  /* */
+
+  try
+  {
+    var err = _._err( { args : [ 'arg' ], wrong : 1 } );
+  }
+  catch( err )
+  {
+    test.case = 'map option has unnecessaty fields';
+    test.is( _.errIs( err ) );
+    var errStr = String( err );
+    test.identical( _.strCount( errStr, 'Unknown option wrong' ), 1 );
+  }
+}
+
+//
+
 function errCatchStackAndMessage( test )
 {
   let context = this;
@@ -274,6 +319,7 @@ var Self =
     diagnosticStructureGenerate,
 
     errArgumentObject,
+    _errTrowError,
     errCatchStackAndMessage,
 
     uncaughtError,
