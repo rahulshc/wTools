@@ -2843,28 +2843,28 @@ function strSplitCamel( src )
  * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
  *
  * @example
- * _.strOnly( '', [ 0, 2 ] );
+ * _.strOnlySingle( '', [ 0, 2 ] );
  * // returns ''
  *
  * @example
- * _.strOnly( 'first', [ 0, 7 ] );
+ * _.strOnlySingle( 'first', [ 0, 7 ] );
  * // returns 'first'
  *
  * @example
- * _.strOnly( 'first', [ 0, 2 ] );
+ * _.strOnlySingle( 'first', [ 0, 2 ] );
  * // returns 'fi'
  *
  * @example
- * _.strOnly( 'first', [ -2, 5 ] );
+ * _.strOnlySingle( 'first', [ -2, 5 ] );
  * // returns 'st'
  *
  * @example
- * _.strOnly( 'first', [ 2, 2 ] );
+ * _.strOnlySingle( 'first', [ 2, 2 ] );
  * // returns ''
  *
- * @function strOnly
+ * @function strOnlySingle
  * @returns { String } - Returns substring from source string.
- * @throws { Error } If arguments.length is less of more then two.
+ * @throws { Error } If arguments.length is less or more then two.
  * @throws { Error } If {-srcStr-} is not a String.
  * @throws { Error } If {-range-} is not a Range.
  * @memberof wTools
@@ -2908,6 +2908,67 @@ function strOnlySingle( srcStr, range )
 // srcStr:str ins:str -> str
 // srcStr:str ins:[ * str ] -> [ * str ]
 // srcStr:[ * str ] ins:[ * str ] -> [ * str ]
+
+/**
+ * Routine strButSingle() gets substring out of source string {-srcStr-} according to a given range {-range-}
+ * and replaces it to new string {-ins-}.
+ * The end value of the range is not included in the substring.
+ *
+ * @param { String } srcStr - Source string.
+ * @param { Range } range - Range to get substring.
+ * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
+ * @param { String|Long } ins - Inserted string or array with inserted elements.
+ * If {-ins-} is a Long, then routine concatenates string from elements of Long. The delimeter is single space.
+ * If {-ins-} is not provided or if it is undefined, then routine removes substring from source string to a given range.
+ *
+ * @example
+ * _.strButSingle( '', [ 0, 2 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strButSingle( 'first', [ 0, 7 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strButSingle( 'first', [ 0, 2 ] );
+ * // returns 'rst'
+ *
+ * @example
+ * _.strButSingle( 'first', [ -2, 5 ] );
+ * // returns 'fir'
+ *
+ * @example
+ * _.strButSingle( 'first', [ 2, 2 ] );
+ * // returns 'first'
+ *
+ * @example
+ * _.strButSingle( '', [ 0, 2 ], 'abc' );
+ * // returns 'abc'
+ *
+ * @example
+ * _.strButSingle( 'first', [ 0, 7 ], [ 'a', 'b', 'c' ] );
+ * // returns 'a b c'
+ *
+ * @example
+ * _.strButSingle( 'first', [ 0, 2 ], 'abc' );
+ * // returns 'abcrst'
+ *
+ * @example
+ * _.strButSingle( 'first', [ -2, 5 ], [ 'a', 'b', 'c' ] );
+ * // returns 'fira b c'
+ *
+ * @example
+ * _.strButSingle( 'first', [ 2, 2 ], 'abc' );
+ * // returns 'fiabcrst'
+ *
+ * @function strButSingle
+ * @returns { String } - Returns substring from source string.
+ * @throws { Error } If arguments.length is less then two or more then three.
+ * @throws { Error } If {-srcStr-} is not a String.
+ * @throws { Error } If {-range-} is not a Range.
+ * @throws { Error } If {-ins-} is not a String, not a Long, not undefined.
+ * @memberof wTools
+ */
 
 function strButSingle( srcStr, range, ins )
 {
