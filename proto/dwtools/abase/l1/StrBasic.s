@@ -4945,16 +4945,16 @@ let Proto =
   // extractor
 
   strOnlySingle,
-  strOnly : _.vectorize( strOnlySingle ), /* qqq : cover and document */
+  strOnly : _.vectorize( strOnlySingle ), /* qqq : cover and document | Dmytro : covered */
   strButSingle,
-  strBut : _.vectorize( strButSingle ), /* qqq : cover and document */
+  strBut : _.vectorize( strButSingle ), /* qqq : cover and document | Dmytro : covered */
   strExtractInlined,
   strExtractInlinedStereo,
   strUnjoin, /* qqq : document me */
 
   // joiner
 
-  strDup : _.vectorize( _strDup ), /* qqq : document me */
+  strDup : _.vectorize( _strDup ), /* qqq : document me | Dmytro : documented */
   strJoin,
   strJoinPath, /* qqq : cover and document me // Dmytro : covered and documented */
   strConcat,
