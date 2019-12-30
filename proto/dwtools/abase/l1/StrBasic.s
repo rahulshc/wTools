@@ -2958,7 +2958,6 @@ function strOnlySingle( srcStr, range )
  * @memberof wTools
  */
 
-
 let strOnly = _.vectorize( strOnlySingle );
 
 //
@@ -3020,7 +3019,7 @@ let strOnly = _.vectorize( strOnlySingle );
  * // returns 'fiabcrst'
  *
  * @function strButSingle
- * @returns { String } - Returns substring from source string.
+ * @returns { String } - Returns source string, part of which replaced to the new value.
  * @throws { Error } If arguments.length is less then two or more then three.
  * @throws { Error } If {-srcStr-} is not a String.
  * @throws { Error } If {-range-} is not a Range.
@@ -3067,6 +3066,64 @@ function strButSingle( srcStr, range, ins )
   else
   return srcStr.substring( 0, range[ 0 ] ) + srcStr.substring( range[ 1 ], srcStr.length );
 }
+
+//
+
+/**
+ * Routine strBut() gets substring out of each string in vector of strings {-srcStr-} according to a given range {-range-}
+ * and replaces it to new string {-ins-}.
+ * The end value of the range is not included in the substring.
+ *
+ * @param { String|Long } srcStr - Source string or array of strings.
+ * @param { Range } range - Range to get substring.
+ * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
+ * @param { String|Long } ins - Inserted string or array with inserted elements.
+ * If {-ins-} is a Long, then routine concatenates string from elements of Long. The delimeter is single space.
+ * If {-ins-} is not provided or if it is undefined, then routine removes substring from source string to a given range.
+ *
+ * @example
+ * _.strBut( '', [ 0, 2 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strBut( 'first', [ 0, 7 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strBut( 'first', [ 0, 2 ], 'abc' );
+ * // returns 'abcrst'
+ *
+ * @example
+ * _.strBut( 'first', [ -2, 5 ], [ 'a', 'b', 'c' ] );
+ * // returns 'fira b c'
+ *
+ * @example
+ * _.strBut( [ '', 'a', 'ab', 'abcde' ], [ 0, 2 ], 'fg' );
+ * // returns [ 'fg', 'fg', 'fg', 'fgcde' ]
+ *
+ * @example
+ * _.strBut( [ '', 'a', 'ab', 'abcde' ], [ 0, 7 ], [ 'f', 'g' ] );
+ * // returns [ 'f g', 'f g', 'f g', 'f g' ]
+ *
+ * @example
+ * _.strBut( [ '', 'a', 'ab', 'abcde' ], [ -2, 5 ], 'fg' );
+ * // returns [ 'fg', 'fg', 'fg', 'abcfg' ]
+ *
+ * @example
+ * _.strBut( [ '', 'a', 'ab', 'abcde' ], [ 2, 2 ], [ 'f', 'g' ] );
+ * // returns [ 'f g', 'af g', 'abf g', 'abf gcde' ]
+ *
+ * @function strBut
+ * @returns { String|Long } - Returns source string or vector of strings, part of which replaced to the new value.
+ * @throws { Error } If arguments.length is less then two or more then three.
+ * @throws { Error } If {-srcStr-} is not a String or not a Long.
+ * @throws { Error } If {-srcStr-} is a Long and includes not a String value.
+ * @throws { Error } If {-range-} is not a Range.
+ * @throws { Error } If {-ins-} is not a String, not a Long, not undefined.
+ * @memberof wTools
+ */
+
+let strBut = _.vectorize( strButSingle );
 
 //
 
@@ -5081,7 +5138,7 @@ let Proto =
   strOnlySingle,
   strOnly, //: _.vectorize( strOnlySingle ), /* qqq : cover and document | Dmytro : covered and documented */
   strButSingle,
-  strBut : _.vectorize( strButSingle ), /* qqq : cover and document | Dmytro : covered */
+  strBut, // : _.vectorize( strButSingle ), /* qqq : cover and document | Dmytro : covered and documented */
   strExtractInlined,
   strExtractInlinedStereo,
   strUnjoin, /* qqq : document me */
