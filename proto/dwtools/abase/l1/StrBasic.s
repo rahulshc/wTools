@@ -3438,7 +3438,6 @@ _.assert( _.routineIs( strUnjoin.any ) );
  * @throws { Exception } If {-s-} is not a String or an array of strings.
  * @throws { Exception } If {-times-} is not a Number.
  * @memberof wTools
- *
  */
 
 function _strDup( s, times )
