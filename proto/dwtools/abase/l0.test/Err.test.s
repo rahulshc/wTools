@@ -77,7 +77,7 @@ function errArgumentObject( test )
 
 //
 
-function _errTrowError( test )
+function _errTrowsError( test )
 {
   try
   {
@@ -118,6 +118,131 @@ function _errTrowError( test )
     var errStr = String( err );
     test.identical( _.strCount( errStr, 'Unknown option wrong' ), 1 );
   }
+}
+
+//
+
+function _errEmptyArgs( test )
+{
+  test.case = 'empty args';
+  var err = _._err( { args : [] } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( errStr, 'Object._errEmptyArgs' ), 2 );
+
+  test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - undefined, level - 2';
+  var err = _._err( { args : [], level : 2 } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( errStr, 'Object._errEmptyArgs' ), 0 );
+
+  test.case = 'empty args, throwenCallsStack - string';
+  var err = _._err( { args : [], throwenCallsStack : 'at program\nat _errTrowsError' } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'at program' ), 1 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+
+  test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - string';
+  var err = _._err( { args : [], caughtCallsStack : 'at program\nat _errTrowsError' } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( errStr, 'at program' ), 1 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
+
+  test.case = 'empty args, throwenCallsStack - empty string';
+  var o = { args : [], caughtCallsStack : '' };
+  var err = _._err( o );
+  test.is( _.errIs( err ) );
+  test.identical( o.throwenCallsStack, o.caughtCallsStack );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( err.stack, 'Object._errEmptyArgs' ), 2 );
+
+  /* */
+
+  test.case = 'empty args, throwenCallsStack, stackRemovingBeginIncluding';
+  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginIncluding : /program1/ } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( errStr, 'at program1' ), 0 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
+
+  test.case = 'empty args, throwenCallsStack, stackRemovingBeginExcluding';
+  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginExcluding : /_errTrowsError/ } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( errStr, 'at program1' ), 1 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 0 );
+
+  test.case = 'empty args, throwenCallsStack, stackRemovingBeginIncluding and stackRemovingBeginExcluding';
+  var err = _._err
+  ({
+      args : [],
+      throwenCallsStack : 'at program1\nat _errTrowsError',
+      stackRemovingBeginIncluding : /program1/,
+      stackRemovingBeginExcluding : /_errTrowsError/
+  });
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at program1' ), 0 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 0 );
+
+  /* */
+
+  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and __';
+  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', 'at @2' ] } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
+  test.identical( _.strCount( errStr, 'at @2' ), 1 );
+
+  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and with __';
+  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '__dirname' ] } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
+  test.identical( _.strCount( errStr, '__dirname' ), 0 );
+
+  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and with *__';
+  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '*__dirname' ] } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
+  test.identical( _.strCount( errStr, '*__dirname' ), 0 );
+
+  test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test"';
+  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at Err.test.s', '*__dirname' ] } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( errStr, 'at Err.test.s *' ), 1 );
+  test.identical( _.strCount( errStr, '*__dirname' ), 0 );
+
+  test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test", stackCondensing - 0';
+  var err = _._err
+  ({ 
+    args : [], 
+    throwenCallsStack : 'at program1\nat _errTrowsError', 
+    asyncCallsStack : [ 'at Err.test.s', '*__dirname' ],
+    stackCondensing : 0
+  });
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  console.log( errStr );
+  test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
+  test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
+  test.identical( _.strCount( errStr, '*__dirname' ), 1 );
 }
 
 //
@@ -319,7 +444,8 @@ var Self =
     diagnosticStructureGenerate,
 
     errArgumentObject,
-    _errTrowError,
+    _errTrowsError,
+    _errEmptyArgs,
     errCatchStackAndMessage,
 
     uncaughtError,

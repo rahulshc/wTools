@@ -583,7 +583,7 @@ function stack( stack, range )
 function stackRemoveLeft( stack, include, exclude )
 {
   if( arguments.length !== 3 )
-  throw Error( 'Expects two arguments' );
+  throw Error( 'Expects three arguments' );
   if( !_.regexpIs( include ) && include !== null )
   throw Error( 'Expects regexp either null as the second argument' );
   if( !_.regexpIs( exclude ) && exclude !== null )
