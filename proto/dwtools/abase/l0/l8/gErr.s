@@ -476,7 +476,7 @@ function diagnosticStructureGenerate_body( o )
   // _.assert( arguments.length === 0 || arguments.length === 1 )
   // _.assert( _.numberIs( o.depth ) );
 
-  // /* qqq : implement pre */
+  // /* qqq : implement pre | Dmytro : implemented */
 
   /**/
 
