@@ -304,14 +304,26 @@ function now_functor()
 function from( time )
 {
 
-  /* qqq : implement from string */
+  /* qqq : implement from string | Dmytro : implemented */
 
   _.assert( arguments.length === 1 );
 
   if( _.numberIs( time ) )
-  return time;
+  {
+    return time;
+  }
   if( _.dateIs( time ) )
-  return time.getTime()
+  {
+    return time.getTime();
+  }
+  if( _.strIs( time ) )
+  {
+    let time = Date.parse( time );
+    if( !isNaN( time ) )
+    return time;
+    else
+    _.assert( 0, 'Wrong time format' );
+  }
   _.assert( 0, 'Not clear how to coerce to time', _.strType( time ) );
 }
 
@@ -377,10 +389,10 @@ let Fields =
 let Routines =
 {
 
-  _begin, /* qqq : cover */
-  _finally, /* qqq : cover */
-  _periodic, /* qqq : cover */
-  _cancel, /* qqq : cover */
+  _begin, /* qqq : cover | Dmytro : covered */
+  _finally, /* qqq : cover | Dmytro : covered */
+  _periodic, /* qqq : cover | Dmytro : covered */
+  _cancel, /* qqq : cover | Dmytro : covered */
 
   soon,
   begin,
