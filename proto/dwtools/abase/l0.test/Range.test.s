@@ -2774,6 +2774,35 @@ function rangeLastGet( test )
   test.shouldThrowErrorSync( () => _.rangeLastGet( new Map( [ [ 1, 2 ] ] ) ) );
 }
 
+//
+
+function rangeToStr( test ) 
+{
+  test.case = 'range';
+  var got = _.rangeToStr( [ 1, 2 ] );
+  test.identical( got, '1..2' );
+
+  test.case = 'range with negative numbers';
+  var got = _.rangeToStr( [ -1, -2 ] );
+  test.identical( got, '-1..-2' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.rangeToStr() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.rangeToStr( [ 1, 2 ], [ 1, 2 ] ) );
+
+  test.case = 'range is not a range';
+  test.shouldThrowErrorSync( () => _.rangeToStr( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.rangeToStr( [ 1, 'wrong' ] ) );
+  test.shouldThrowErrorSync( () => _.rangeToStr( [ undefined, 1 ] ) );
+}
+
 // --
 // declaration
 // --
@@ -2812,6 +2841,8 @@ var Self =
     rangeNumberElements,
     rangeFirstGet,
     rangeLastGet,
+
+    rangeToStr,
 
   }
 
