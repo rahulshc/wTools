@@ -28,7 +28,7 @@ function rangeFromLeft( range )
 
 //
 
-function rangeFromRight( range )
+function rangeFromRight( range ) // Dmytro : this routine is identical to rangeFromLeft. Is it correct?
 {
   _.assert( arguments.length === 1 );
   if( _.numberIs( range ) )
