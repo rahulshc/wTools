@@ -101,6 +101,8 @@ function rangeNumberElements( range, increment )
   if( increment === undefined )
   increment = 1;
 
+  _.assert( _.numberIs( increment ), 'Increment should has a number value' );
+
   return increment ? ( range[ 1 ]-range[ 0 ] ) / increment : 0;
 
 }
