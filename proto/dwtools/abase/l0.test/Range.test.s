@@ -1451,6 +1451,12 @@ function rangeFromLeft( test )
   test.identical( got, [ 1, Infinity ] );
   test.is( got !== src );
 
+  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  var src = [ undefined, undefined ];
+  var got = _.rangeFromLeft( src );
+  test.identical( got, [ 0, undefined ] );
+  test.is( got !== src );
+
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
   var src = [ 1, 5 ];
   var got = _.rangeFromLeft( src );
@@ -1477,6 +1483,12 @@ function rangeFromLeft( test )
   test.identical( got, [ 1, Infinity ] );
   test.is( got !== src );
 
+  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  var src = _.unrollMake( [ undefined, undefined ] );
+  var got = _.rangeFromLeft( src );
+  test.identical( got, [ 0, undefined ] );
+  test.is( got !== src );
+
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
   var src = _.unrollMake( [ 1, 5 ] );
   var got = _.rangeFromLeft( src );
@@ -1501,6 +1513,12 @@ function rangeFromLeft( test )
   var src = _.argumentsArrayMake( [ 1, undefined ] );
   var got = _.rangeFromLeft( src );
   test.identical( got, [ 1, Infinity ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  var src = _.argumentsArrayMake( [ undefined, undefined ] );
+  var got = _.rangeFromLeft( src );
+  test.identical( got, [ 0, undefined ] );
   test.is( got !== src );
 
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
@@ -1573,6 +1591,12 @@ function rangeFromRight( test )
   test.identical( got, [ 1, Infinity ] );
   test.is( got !== src );
 
+  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  var src = [ undefined, undefined ];
+  var got = _.rangeFromRight( src );
+  test.identical( got, [ 0, undefined ] );
+  test.is( got !== src );
+
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
   var src = [ 1, 5 ];
   var got = _.rangeFromRight( src );
@@ -1599,6 +1623,12 @@ function rangeFromRight( test )
   test.identical( got, [ 1, Infinity ] );
   test.is( got !== src );
 
+  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  var src = _.unrollMake( [ undefined, undefined ] );
+  var got = _.rangeFromRight( src );
+  test.identical( got, [ 0, undefined ] );
+  test.is( got !== src );
+
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
   var src = _.unrollMake( [ 1, 5 ] );
   var got = _.rangeFromRight( src );
@@ -1623,6 +1653,12 @@ function rangeFromRight( test )
   var src = _.argumentsArrayMake( [ 1, undefined ] );
   var got = _.rangeFromRight( src );
   test.identical( got, [ 1, Infinity ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  var src = _.argumentsArrayMake( [ undefined, undefined ] );
+  var got = _.rangeFromRight( src );
+  test.identical( got, [ 0, undefined ] );
   test.is( got !== src );
 
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
@@ -1667,6 +1703,146 @@ function rangeFromRight( test )
   test.shouldThrowErrorSync( () => _.rangeFromRight( [ 2, 'abc' ] ) );
 }
 
+//
+
+function rangeFromSingle( test ) 
+{
+  test.case = 'range - number';
+  var got = _.rangeFromSingle( 1 );
+  test.identical( got, [ 1, 2 ] );
+
+  /* */
+
+  test.case = 'range.length === 1';
+  var src = [ 1 ];
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - undefined';
+  var src = [ undefined, 2 ];
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 1 ] - undefined';
+  var src = [ 1, undefined ];
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  var src = [ undefined, undefined ];
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 0, 1 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+  var src = [ 1, 5 ];
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 5 ] );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'range.length === 1';
+  var src = _.unrollMake( [ 1 ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - undefined';
+  var src = _.unrollMake( [ undefined, 2 ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 1 ] - undefined';
+  var src = _.unrollMake( [ 1, undefined ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  var src = _.unrollMake( [ undefined, undefined ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 0, 1 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+  var src = _.unrollMake( [ 1, 5 ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, _.unrollMake( [ 1, 5 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'range.length === 1';
+  var src = _.argumentsArrayMake( [ 1 ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - undefined';
+  var src = _.argumentsArrayMake( [ undefined, 2 ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 1 ] - undefined';
+  var src = _.argumentsArrayMake( [ 1, undefined ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  var src = _.argumentsArrayMake( [ undefined, undefined ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 0, 1 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+  var src = _.argumentsArrayMake( [ 1, 5 ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, _.argumentsArrayMake( [ 1, 5 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'range.length === 1';
+  var src = new U8x( [ 1 ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+  var src = new I16x( [ 1, 5 ] );
+  var got = _.rangeFromSingle( src );
+  test.identical( got, new I16x( [ 1, 5 ] ) );
+  test.is( got === src );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.rangeFromSingle() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.rangeFromSingle( [ 1, 2 ], 1 ) );
+
+  test.case = 'wrong type of range';
+  test.shouldThrowErrorSync( () => _.rangeFromSingle( { 0 : 1, 1 : 2 } ) );
+
+  test.case = 'wrong range length';
+  test.shouldThrowErrorSync( () => _.rangeFromSingle( [ 0, 1, 2 ] ) );
+
+  test.case = 'wrong elements in range';
+  test.shouldThrowErrorSync( () => _.rangeFromSingle( [ null, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.rangeFromSingle( [ 2, 'abc' ] ) );
+}
+
 // --
 // declaration
 // --
@@ -1699,6 +1875,7 @@ var Self =
 
     rangeFromLeft,
     rangeFromRight,
+    rangeFromSingle,
 
   }
 
