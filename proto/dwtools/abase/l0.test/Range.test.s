@@ -2519,6 +2519,261 @@ function rangeFirstGet( test )
   test.shouldThrowErrorSync( () => _.rangeFirstGet( new Map( [ [ 1, 2 ] ] ) ) );
 }
 
+//
+
+function rangeLastGet( test ) 
+{
+  test.open( 'range - array' );
+
+  test.case = 'without options';
+  var got = _.rangeLastGet( [ 1, 2 ] );
+  test.identical( got, 2 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.rangeLastGet( [ 1, 2 ], options );
+  test.identical( got, 2 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.rangeLastGet( [ 1, 2 ], options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.rangeLastGet( [ 1, 2 ], options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.rangeLastGet( [ 1, 2 ], options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'range - array' );
+
+  /* - */
+
+  test.open( 'range - unroll' );
+
+  test.case = 'without options';
+  var got = _.rangeLastGet( _.unrollMake( [ 1, 2 ] ) );
+  test.identical( got, 2 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.rangeLastGet( _.unrollMake( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.rangeLastGet( _.unrollMake( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.rangeLastGet( _.unrollMake( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.rangeLastGet( _.unrollMake( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'range - unroll' );
+
+  /* - */
+
+  test.open( 'range - argumentsArray' );
+
+  test.case = 'without options';
+  var got = _.rangeLastGet( _.argumentsArrayMake( [ 1, 2 ] ) );
+  test.identical( got, 2 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.rangeLastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.rangeLastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.rangeLastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.rangeLastGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'range - argumentsArray' );
+
+  /* - */
+
+  test.open( 'range - BufferTyped' );
+
+  test.case = 'without options';
+  var got = _.rangeLastGet( new U8x( [ 1, 2 ] ) );
+  test.identical( got, 2 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.rangeLastGet( new I16x( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.rangeLastGet( new F32x( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.rangeLastGet( new F64x( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.rangeLastGet( new I8x( [ 1, 2 ] ), options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'range - BufferTyped' );
+
+  /* - */
+
+  test.open( 'range - map' );
+
+  test.case = 'without options, last - undefined';
+  var got = _.rangeLastGet( { first : undefined, last : undefined } );
+  test.identical( got, undefined );
+
+  test.case = 'without options, last - not exists';
+  var got = _.rangeLastGet( { first : undefined } );
+  test.identical( got, undefined );
+
+  test.case = 'without options, last - number';
+  var got = _.rangeLastGet( { first : 1, last : 2 } );
+  test.identical( got, 2 );
+
+  /* */
+
+  test.case = 'options - undefined, last - undefined';
+  var options = undefined;
+  var got = _.rangeLastGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, undefined );
+
+  test.case = 'options - undefined, last - not exists';
+  var options = undefined;
+  var got = _.rangeLastGet( { first : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, undefined );
+
+  test.case = 'options - undefined, last - number';
+  var options = undefined;
+  var got = _.rangeLastGet( { first : 1, last : 2 }, options );
+  test.identical( got, 2 );
+  test.identical( options, undefined );
+
+  /* */
+
+  test.case = 'options - empty map, last - undefined';
+  var options = {};
+  var got = _.rangeLastGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - empty map, last - not exists';
+  var options = {};
+  var got = _.rangeLastGet( { first : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - empty map, last - number';
+  var options = {};
+  var got = _.rangeLastGet( { first : 1, last : 2 }, options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  /* */
+
+  test.case = 'options - map with own field increment, last - undefined';
+  var options = { increment : 2 };
+  var got = _.rangeLastGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment, last - not exists';
+  var options = { increment : 2 };
+  var got = _.rangeLastGet( { first : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment, last - number';
+  var options = { increment : 2 };
+  var got = _.rangeLastGet( { first : 1, last : 2 }, options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 2 } );
+
+  /* */
+
+  test.case = 'options - map with own field increment - undefined, last - undefined';
+  var options = { increment : undefined };
+  var got = _.rangeLastGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment - undefined, last - not exists';
+  var options = { increment : undefined };
+  var got = _.rangeLastGet( { first : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment - undefined, last - number';
+  var options = { increment : undefined };
+  var got = _.rangeLastGet( { first : 1, last : 2 }, options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'range - map' );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.rangeLastGet() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.rangeLastGet( [ 1, 2 ], {}, 'extra' ) );
+
+  test.case = 'range is a long, but is not a range';
+  test.shouldThrowErrorSync( () => _.rangeLastGet( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.rangeLastGet( [ 1, 'wrong' ] ) );
+  test.shouldThrowErrorSync( () => _.rangeLastGet( [ undefined, 1 ] ) );
+
+  test.case = 'wrong type of range';
+  test.shouldThrowErrorSync( () => _.rangeLastGet( new Set( [ 1, 2 ] ) ) );
+  test.shouldThrowErrorSync( () => _.rangeLastGet( new Map( [ [ 1, 2 ] ] ) ) );
+}
+
 // --
 // declaration
 // --
@@ -2556,6 +2811,7 @@ var Self =
     rangeClamp,
     rangeNumberElements,
     rangeFirstGet,
+    rangeLastGet,
 
   }
 

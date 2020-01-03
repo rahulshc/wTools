@@ -144,6 +144,7 @@ function rangeLastGet( range, options )
 
   if( _.longIs( range ) )
   {
+    _.assert( _.rangeIs( range ) );
     return range[ 1 ];
   }
   else if( _.mapIs( range ) )
