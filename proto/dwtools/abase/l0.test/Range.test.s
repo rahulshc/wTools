@@ -1843,6 +1843,285 @@ function rangeFromSingle( test )
   test.shouldThrowErrorSync( () => _.rangeFromSingle( [ 2, 'abc' ] ) );
 }
 
+//
+
+function rangeClamp( test ) 
+{
+  test.open( 'array' );
+
+  test.case = 'identical ranges';
+  var dst = [ 2, 2 ];
+  var clamp = [ 2, 2 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, [ 2, 2 ] );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
+  var dst = [ 2, 2 ];
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, [ 3, 3 ] );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = [ 2, 4 ];
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, [ 3, 4 ] );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
+  var dst = [ 4, 2 ];
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, [ 4, 3 ] );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = [ 4, 5 ];
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, [ 4, 5 ] );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] > clamp[ 1 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = [ 7, 5 ];
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, [ 6, 5 ] );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = [ 4, 7 ];
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, [ 4, 6 ] );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] > clamp[ 1 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = [ 8, 7 ];
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, [ 6, 6 ] );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = [ 2, 7 ];
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, [ 3, 6 ] );
+  test.is( got === dst );
+
+  test.close( 'array' );
+
+  /* - */
+
+  test.open( 'unroll' );
+
+  test.case = 'identical ranges';
+  var dst = _.unrollMake( [ 2, 2 ] );
+  var clamp = [ 2, 2 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.unrollMake( [ 2, 2 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
+  var dst = _.unrollMake( [ 2, 2 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.unrollMake( [ 3, 3 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = _.unrollMake( [ 2, 4 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.unrollMake( [ 3, 4 ] ) );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
+  var dst = _.unrollMake( [ 4, 2 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.unrollMake( [ 4, 3 ] ) );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = _.unrollMake( [ 4, 5 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.unrollMake( [ 4, 5 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] > clamp[ 1 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = _.unrollMake( [ 7, 5 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.unrollMake( [ 6, 5 ] ) );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = _.unrollMake( [ 4, 7 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.unrollMake( [ 4, 6 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] > clamp[ 1 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = _.unrollMake( [ 8, 7 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.unrollMake( [ 6, 6 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = _.unrollMake( [ 2, 7 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.unrollMake( [ 3, 6 ] ) );
+  test.is( got === dst );
+
+  test.close( 'unroll' );
+
+  /* - */
+
+  test.open( 'argumentsArray' );
+
+  test.case = 'identical ranges';
+  var dst = _.argumentsArrayMake( [ 2, 2 ] );
+  var clamp = [ 2, 2 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.argumentsArrayMake( [ 2, 2 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
+  var dst = _.argumentsArrayMake( [ 2, 2 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.argumentsArrayMake( [ 3, 3 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = _.argumentsArrayMake( [ 2, 4 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.argumentsArrayMake( [ 3, 4 ] ) );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
+  var dst = _.argumentsArrayMake( [ 4, 2 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.argumentsArrayMake( [ 4, 3 ] ) );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = _.argumentsArrayMake( [ 4, 5 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.argumentsArrayMake( [ 4, 5 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] > clamp[ 1 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = _.argumentsArrayMake( [ 7, 5 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.argumentsArrayMake( [ 6, 5 ] ) );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = _.argumentsArrayMake( [ 4, 7 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.argumentsArrayMake( [ 4, 6 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] > clamp[ 1 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = _.argumentsArrayMake( [ 8, 7 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.argumentsArrayMake( [ 6, 6 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = _.argumentsArrayMake( [ 2, 7 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, _.argumentsArrayMake( [ 3, 6 ] ) );
+  test.is( got === dst );
+
+  test.close( 'argumentsArray' );
+
+  /* - */
+
+  test.open( 'bufferTyped' );
+
+  test.case = 'identical ranges';
+  var dst = new U8x( [ 2, 2 ] );
+  var clamp = [ 2, 2 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, new U8x( [ 2, 2 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
+  var dst = new I8x( [ 2, 2 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, new I8x( [ 3, 3 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = new U16x( [ 2, 4 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, new U16x( [ 3, 4 ] ) );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] < clamp[ 0 ]';
+  var dst = new I16x( [ 4, 2 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, new I16x( [ 4, 3 ] ) );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = new U32x( [ 4, 5 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, new U32x( [ 4, 5 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] > clamp[ 1 ], clamp[ 1 ] > dst[ 1 ] > clamp[ 0 ]';
+  var dst = new I32x( [ 7, 5 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, new I32x( [ 6, 5 ] ) );
+  test.is( got === dst );
+
+  test.case = 'clamp[ 1 ] > dst[ 0 ] > clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = new F32x( [ 4, 7 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, new F32x( [ 4, 6 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] > clamp[ 1 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = new F64x( [ 8, 7 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, new F64x( [ 6, 6 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst[ 0 ] < clamp[ 0 ], dst[ 1 ] > clamp[ 1 ]';
+  var dst = new U8x( [ 2, 7 ] );
+  var clamp = [ 3, 6 ];
+  var got = _.rangeClamp( dst, clamp );
+  test.identical( got, new U8x( [ 3, 6 ] ) );
+  test.is( got === dst );
+
+  test.close( 'bufferTyped' );
+}
+
 // --
 // declaration
 // --
@@ -1876,6 +2155,8 @@ var Self =
     rangeFromLeft,
     rangeFromRight,
     rangeFromSingle,
+
+    rangeClamp,
 
   }
 
