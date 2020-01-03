@@ -109,17 +109,18 @@ function rangeNumberElements( range, increment )
 
 //
 
-function rangeFirstGet( range,options )
+function rangeFirstGet( range, options )
 {
 
-  var options = options || Object.create( null );
+  var options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container. 
   if( options.increment === undefined )
   options.increment = 1;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( _.arrayIs( range ) )
+  if( _.longIs( range ) )
   {
+    _.assert( _.rangeIs( range ) );
     return range[ 0 ];
   }
   else if( _.mapIs( range ) )
@@ -132,16 +133,16 @@ function rangeFirstGet( range,options )
 
 //
 
-function rangeLastGet( range,options )
+function rangeLastGet( range, options )
 {
 
-  var options = options || Object.create( null );
+  var options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
   if( options.increment === undefined )
   options.increment = 1;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( _.arrayIs( range ) )
+  if( _.longIs( range ) )
   {
     return range[ 1 ];
   }

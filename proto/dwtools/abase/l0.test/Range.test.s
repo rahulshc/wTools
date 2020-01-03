@@ -2264,6 +2264,261 @@ function rangeNumberElements( test )
   test.shouldThrowErrorSync( () => _.rangeNumberElements( [ 1, 2 ], 'wrong' ) );
 }
 
+//
+
+function rangeFirstGet( test ) 
+{
+  test.open( 'range - array' );
+
+  test.case = 'without options';
+  var got = _.rangeFirstGet( [ 1, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.rangeFirstGet( [ 1, 2 ], options );
+  test.identical( got, 1 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.rangeFirstGet( [ 1, 2 ], options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.rangeFirstGet( [ 1, 2 ], options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.rangeFirstGet( [ 1, 2 ], options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'range - array' );
+
+  /* - */
+
+  test.open( 'range - unroll' );
+
+  test.case = 'without options';
+  var got = _.rangeFirstGet( _.unrollMake( [ 1, 2 ] ) );
+  test.identical( got, 1 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.rangeFirstGet( _.unrollMake( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.rangeFirstGet( _.unrollMake( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.rangeFirstGet( _.unrollMake( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.rangeFirstGet( _.unrollMake( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'range - unroll' );
+
+  /* - */
+
+  test.open( 'range - argumentsArray' );
+
+  test.case = 'without options';
+  var got = _.rangeFirstGet( _.argumentsArrayMake( [ 1, 2 ] ) );
+  test.identical( got, 1 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.rangeFirstGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.rangeFirstGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.rangeFirstGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.rangeFirstGet( _.argumentsArrayMake( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'range - argumentsArray' );
+
+  /* - */
+
+  test.open( 'range - BufferTyped' );
+
+  test.case = 'without options';
+  var got = _.rangeFirstGet( new U8x( [ 1, 2 ] ) );
+  test.identical( got, 1 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.rangeFirstGet( new I16x( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.rangeFirstGet( new F32x( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.rangeFirstGet( new F64x( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.rangeFirstGet( new I8x( [ 1, 2 ] ), options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'range - BufferTyped' );
+
+  /* - */
+
+  test.open( 'range - map' );
+
+  test.case = 'without options, first - undefined';
+  var got = _.rangeFirstGet( { first : undefined, last : undefined } );
+  test.identical( got, undefined );
+
+  test.case = 'without options, first - not exists';
+  var got = _.rangeFirstGet( { last : undefined } );
+  test.identical( got, undefined );
+
+  test.case = 'without options, first - number';
+  var got = _.rangeFirstGet( { first : 1, last : undefined } );
+  test.identical( got, 1 );
+
+  /* */
+
+  test.case = 'options - undefined, first - undefined';
+  var options = undefined;
+  var got = _.rangeFirstGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, undefined );
+
+  test.case = 'options - undefined, first - not exists';
+  var options = undefined;
+  var got = _.rangeFirstGet( { last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, undefined );
+
+  test.case = 'options - undefined, first - number';
+  var options = undefined;
+  var got = _.rangeFirstGet( { first : 1, last : undefined }, options );
+  test.identical( got, 1 );
+  test.identical( options, undefined );
+
+  /* */
+
+  test.case = 'options - empty map, first - undefined';
+  var options = {};
+  var got = _.rangeFirstGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - empty map, first - not exists';
+  var options = {};
+  var got = _.rangeFirstGet( { last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - empty map, first - number';
+  var options = {};
+  var got = _.rangeFirstGet( { first : 1, last : undefined }, options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 1 } );
+
+  /* */
+
+  test.case = 'options - map with own field increment, first - undefined';
+  var options = { increment : 2 };
+  var got = _.rangeFirstGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment, first - not exists';
+  var options = { increment : 2 };
+  var got = _.rangeFirstGet( { last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment, first - number';
+  var options = { increment : 2 };
+  var got = _.rangeFirstGet( { first : 1, last : undefined }, options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 2 } );
+
+  /* */
+
+  test.case = 'options - map with own field increment - undefined, first - undefined';
+  var options = { increment : undefined };
+  var got = _.rangeFirstGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment - undefined, first - not exists';
+  var options = { increment : undefined };
+  var got = _.rangeFirstGet( { last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment - undefined, first - number';
+  var options = { increment : undefined };
+  var got = _.rangeFirstGet( { first : 1, last : undefined }, options );
+  test.identical( got, 1 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'range - map' );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.rangeFirstGet() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.rangeFirstGet( [ 1, 2 ], {}, 'extra' ) );
+
+  test.case = 'range is a long, but is not a range';
+  test.shouldThrowErrorSync( () => _.rangeFirstGet( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.rangeFirstGet( [ 1, 'wrong' ] ) );
+  test.shouldThrowErrorSync( () => _.rangeFirstGet( [ undefined, 1 ] ) );
+
+  test.case = 'wrong type of range';
+  test.shouldThrowErrorSync( () => _.rangeFirstGet( new Set( [ 1, 2 ] ) ) );
+  test.shouldThrowErrorSync( () => _.rangeFirstGet( new Map( [ [ 1, 2 ] ] ) ) );
+}
+
 // --
 // declaration
 // --
@@ -2300,6 +2555,7 @@ var Self =
 
     rangeClamp,
     rangeNumberElements,
+    rangeFirstGet,
 
   }
 
