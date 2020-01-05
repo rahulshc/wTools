@@ -16,10 +16,10 @@ let _ = _global_.wTools;
 // tests
 // --
 
-function _begin( test ) 
+function _begin( test )
 {
   var onTime = () => 0;
-  var onCancel = () => -1;  
+  var onCancel = () => -1;
   var con = new _.Consequence().take( null );
 
   /* - */
@@ -138,7 +138,7 @@ function _begin( test )
   {
     test.case = 'onTime, onCancel, execution of callbacks';
     var timer = _.time._begin( undefined, onTime, onCancel );
-    timer.time();
+    timer.time(); /* qqq2 : user should not call methods of timer */
     return _.time.out( 10, () => timer )
     .finally( function( err, got )
     {
@@ -147,7 +147,7 @@ function _begin( test )
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
 
-      got.cancel();
+      got.cancel(); /* qqq2 : test should ensure that there is no transitions from final states -2 either +2 to any another state. ask */
 
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, onCancel );
@@ -166,7 +166,7 @@ function _begin( test )
 
   /* - */
 
-  con.finally( () => 
+  con.finally( () =>
   {
     test.open( 'delay - 0' );
     return null;
@@ -305,7 +305,7 @@ function _begin( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -337,7 +337,7 @@ function _begin( test )
   });
 
   /* - */
-  
+
   con.finally( () =>
   {
     test.open( 'delay > 0' );
@@ -528,7 +528,7 @@ function _begin( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -553,7 +553,6 @@ function _begin( test )
     });
   })
 
-
   con.finally( ( err, arg ) =>
   {
     test.close( 'delay > 0' );
@@ -570,7 +569,7 @@ function _begin( test )
 
 //
 
-function _finally( test ) 
+function _finally( test )
 {
   var onTime = () => 0;
   var con = new _.Consequence().take( null );
@@ -686,7 +685,7 @@ function _finally( test )
 
   /* - */
 
-  con.finally( () => 
+  con.finally( () =>
   {
     test.open( 'delay - 0' );
     return null;
@@ -791,7 +790,7 @@ function _finally( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -824,7 +823,7 @@ function _finally( test )
   });
 
   /* - */
-  
+
   con.finally( () =>
   {
     test.open( 'delay > 0' );
@@ -981,7 +980,7 @@ function _finally( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -1023,14 +1022,14 @@ function _finally( test )
 
 //
 
-function _periodic( test ) 
+function _periodic( test )
 {
-  var onCancel = () => -1;  
+  var onCancel = () => -1;
   var con = new _.Consequence().take( null );
 
   /* - */
 
-  con.finally( () => 
+  con.finally( () =>
   {
     test.open( 'delay - 0' );
     return null;
@@ -1041,7 +1040,7 @@ function _periodic( test )
     test.case = 'onTime';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -1071,7 +1070,7 @@ function _periodic( test )
     test.case = 'onTime, execute onTime';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -1102,7 +1101,7 @@ function _periodic( test )
     test.case = 'onTime, onCancel';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -1132,7 +1131,7 @@ function _periodic( test )
     test.case = 'onTime, onCancel, execution of callbacks';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -1173,7 +1172,7 @@ function _periodic( test )
   });
   /* - */
 
-  con.finally( () => 
+  con.finally( () =>
   {
     test.open( 'delay > 0' );
     return null;
@@ -1184,7 +1183,7 @@ function _periodic( test )
     test.case = 'onTime';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -1214,7 +1213,7 @@ function _periodic( test )
     test.case = 'onTime, execute onTime';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -1245,7 +1244,7 @@ function _periodic( test )
     test.case = 'onTime, onCancel';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -1275,7 +1274,7 @@ function _periodic( test )
     test.case = 'onTime, onCancel, execution of callbacks';
     var times = 5;
     var result = [];
-    var onTime = function() 
+    var onTime = function()
     {
       if( times > 0 )
       {
@@ -1310,11 +1309,11 @@ function _periodic( test )
   })
 
   /* - */
- 
+
   con.finally( ( err, arg ) =>
   {
     test.close( 'delay > 0' );
-    
+
     if( err )
     throw err;
     return arg;
@@ -1327,7 +1326,7 @@ function _periodic( test )
 
 //
 
-function _cancel( test ) 
+function _cancel( test )
 {
   test.open( 'timer - _begin' );
 
@@ -1340,7 +1339,7 @@ function _cancel( test )
   test.identical( got.result, undefined );
 
   test.case = 'delay - undefined, onTime';
-  var onTime = () => 0; 
+  var onTime = () => 0;
   var timer = _.time._begin( undefined, onTime );
   var got = _.time._cancel( timer );
   test.identical( got.onTime, onTime );
@@ -1349,7 +1348,7 @@ function _cancel( test )
   test.identical( got.result, undefined );
 
   test.case = 'delay - undefined, onCancel';
-  var onCancel = () => -1;  
+  var onCancel = () => -1;
   var timer = _.time._begin( undefined, undefined, onCancel );
   var got = _.time._cancel( timer );
   test.identical( got.onTime, undefined );
@@ -1359,7 +1358,7 @@ function _cancel( test )
 
   test.case = 'delay - undefined, onTime, onCancel';
   var onTime = () => 0;
-  var onCancel = () => -1;  
+  var onCancel = () => -1;
   var timer = _.time._begin( undefined, onTime, onCancel );
   var got = _.time._cancel( timer );
   test.identical( got.onTime, onTime );
@@ -1382,7 +1381,7 @@ function _cancel( test )
   test.identical( got.result, undefined );
 
   test.case = 'delay - undefined, onTime';
-  var onTime = () => 0; 
+  var onTime = () => 0;
   var timer = _.time._finally( undefined, onTime );
   var got = _.time._cancel( timer );
   test.identical( got.onTime, onTime );
@@ -1393,7 +1392,7 @@ function _cancel( test )
   test.close( 'timer - _finally' );
 
   /* - */
-  
+
   test.open( 'timer - _periodic' );
 
   test.case = 'delay - 0, onTime';

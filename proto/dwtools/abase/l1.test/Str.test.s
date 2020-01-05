@@ -7466,7 +7466,7 @@ function strOnly( test )
 
 //
 
-function strExtractInlined( test )
+function strSplitInlined( test )
 {
 
   function onInlined( part )
@@ -7483,7 +7483,7 @@ function strExtractInlined( test )
 
   test.case = 'empty';
   var srcStr = '';
-  var got = _.strExtractInlined( srcStr );
+  var got = _.strSplitInlined( srcStr );
   var expected = [ '' ];
   test.identical( got, expected );
 
@@ -7491,7 +7491,7 @@ function strExtractInlined( test )
 
   test.case = 'without inlined text';
   var srcStr = 'a';
-  var got = _.strExtractInlined( srcStr );
+  var got = _.strSplitInlined( srcStr );
   var expected = [ 'a' ];
   test.identical( got, expected );
 
@@ -7499,7 +7499,7 @@ function strExtractInlined( test )
 
   test.case = 'default options';
   var srcStr = 'ab#cd#ef';
-  var got = _.strExtractInlined( srcStr );
+  var got = _.strSplitInlined( srcStr );
   var expected = [ 'ab', [ 'cd' ], 'ef' ];
   test.identical( got, expected );
 
@@ -7507,7 +7507,7 @@ function strExtractInlined( test )
 
   test.case = 'trivial case';
   var srcStr = 'this #background:red#is#background:default# text and is not';
-  var got = _.strExtractInlined({ src : srcStr, onInlined,  });
+  var got = _.strSplitInlined({ src : srcStr, onInlined,  });
   var expected =
   [
     'this ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and is not'
@@ -7518,7 +7518,7 @@ function strExtractInlined( test )
 
   test.case = 'openning delimeter # does not have closing';
   var srcStr = 'this #background:red#is#background:default# text and # is not';
-  var got = _.strExtractInlined({ src : srcStr, onInlined,  });
+  var got = _.strSplitInlined({ src : srcStr, onInlined,  });
   var expected =
   [
     'this ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not'
@@ -7529,7 +7529,7 @@ function strExtractInlined( test )
 
   test.case = 'two inlined substrings is not in fact inlined';
   var srcStr = '#simple # text #background:red#is#background:default# text and # is not#';
-  var got = _.strExtractInlined({ src : srcStr, onInlined,  });
+  var got = _.strSplitInlined({ src : srcStr, onInlined,  });
   var expected =
   [
     '#simple # text ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and # is not#'
@@ -7540,7 +7540,7 @@ function strExtractInlined( test )
 
   test.case = 'inlined at the beginning and false inlined';
   var srcStr = '#background:red#i#s#background:default##text';
-  var got = _.strExtractInlined({ src : srcStr, onInlined,  });
+  var got = _.strSplitInlined({ src : srcStr, onInlined,  });
   var expected =
   [
     '', [ 'background', 'red' ], 'i#s', [ 'background', 'default' ], '#text'
@@ -7551,7 +7551,7 @@ function strExtractInlined( test )
 
   test.case = 'inlined at the beginning and the end';
   var srcStr = '#background:red#i#s#background:default#';
-  var got = _.strExtractInlined({ src : srcStr, onInlined,  });
+  var got = _.strSplitInlined({ src : srcStr, onInlined,  });
   var expected =
   [
     '', [ 'background', 'red' ], 'i#s', [ 'background', 'default' ], ''
@@ -7562,7 +7562,7 @@ function strExtractInlined( test )
 
   test.case = 'inlined at the beginning and the end with preservingEmpty:0';
   var srcStr = '#background:red#i#s#background:default#';
-  var got = _.strExtractInlined({ src : srcStr, onInlined, preservingEmpty : 0 });
+  var got = _.strSplitInlined({ src : srcStr, onInlined, preservingEmpty : 0 });
   var expected =
   [
     [ 'background', 'red' ], 'i#s', [ 'background', 'default' ],
@@ -7573,7 +7573,7 @@ function strExtractInlined( test )
 
   test.case = 'wrapped by inlined text';
   var srcStr = '#background:red#text#background:default#';
-  var got = _.strExtractInlined({ src : srcStr, onInlined,  } );
+  var got = _.strSplitInlined({ src : srcStr, onInlined,  } );
   var expected =
   [
     '', [ 'background', 'red' ], 'text', [ 'background', 'default' ], '',
@@ -7584,7 +7584,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, no empty';
   var srcStr = '#inline1#ordinary#inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0 });
   var expected =
   [
     [ 'inline1' ], 'ordinary', [ 'inline2' ],
@@ -7595,7 +7595,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, empty left';
   var srcStr = '##ordinary#inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0 });
   var expected =
   [
     [ '' ], 'ordinary', [ 'inline2' ],
@@ -7606,7 +7606,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, empty right';
   var srcStr = '#inline1#ordinary##';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0 });
   var expected =
   [
     [ 'inline1' ], 'ordinary', [ '' ],
@@ -7617,7 +7617,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, empty middle';
   var srcStr = '#inline1##inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0 });
   var expected =
   [
     [ 'inline1' ], [ 'inline2' ],
@@ -7628,7 +7628,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, empty all';
   var srcStr = '####';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0 });
   var expected = [ [ '' ],[ '' ] ];
   test.identical( got, expected );
 
@@ -7636,7 +7636,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, empty all';
   var srcStr = '';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0 });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0 });
   var expected = [];
   test.identical( got, expected );
 
@@ -7644,7 +7644,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, onInlined:null no empty';
   var srcStr = '#inline1#ordinary#inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected =
   [
     'inline1', 'ordinary', 'inline2',
@@ -7655,7 +7655,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, onInlined:null, empty left';
   var srcStr = '##ordinary#inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected =
   [
     'ordinary', 'inline2',
@@ -7666,7 +7666,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, onInlined:null, empty right';
   var srcStr = '#inline1#ordinary##';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected =
   [
     'inline1', 'ordinary',
@@ -7677,7 +7677,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, onInlined:null, empty middle';
   var srcStr = '#inline1##inline2#';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected =
   [
     'inline1', 'inline2',
@@ -7688,7 +7688,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, onInlined:null, empty all';
   var srcStr = '####';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected = [];
   test.identical( got, expected );
 
@@ -7696,7 +7696,7 @@ function strExtractInlined( test )
 
   test.case = 'preservingEmpty:0, onInlined:null, empty all';
   var srcStr = '';
-  var got = _.strExtractInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
+  var got = _.strSplitInlined({ src : srcStr, preservingEmpty : 0, onInlined:null });
   var expected = [];
   test.identical( got, expected );
 
@@ -7706,13 +7706,13 @@ function strExtractInlined( test )
   return;
 
   test.case = 'too many arguments';
-  test.shouldThrowErrorSync( () => { debugger; _.strExtractInlined( '',{},'' ) } );
+  test.shouldThrowErrorSync( () => { debugger; _.strSplitInlined( '',{},'' ) } );
 
 }
 
 //
 
-function strExtractInlinedStereo( test )
+function strSplitInlinedStereo( test )
 {
   var got, expected;
 
@@ -7720,14 +7720,14 @@ function strExtractInlinedStereo( test )
 
   /* nothing */
 
-  got = _.strExtractInlinedStereo( '' );
+  got = _.strSplitInlinedStereo( '' );
   expected = [ '' ];
   test.identical( got, expected );
 
   /* prefix/postfix # by default*/
 
   debugger;
-  got = _.strExtractInlinedStereo( '#abc#' );
+  got = _.strSplitInlinedStereo( '#abc#' );
   debugger;
   expected = [ '', 'abc', '' ];
   test.identical( got, expected );
@@ -7738,24 +7738,24 @@ function strExtractInlinedStereo( test )
 
   /* pre/post are same*/
 
-  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '/', src : '/abc/' } );
+  got = _.strSplitInlinedStereo( { prefix : '/', postfix : '/', src : '/abc/' } );
   expected = [ '', 'abc', '' ];
   test.identical( got, expected );
 
   /**/
 
-  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '/', src : '//abc//' } );
+  got = _.strSplitInlinedStereo( { prefix : '/', postfix : '/', src : '//abc//' } );
   expected = [ '', '', 'abc', '', '' ];
   test.identical( got, expected );
 
   /* different pre/post */
 
-  got = _.strExtractInlinedStereo( { prefix : '/#', postfix : '#', src : '/#abc#' } );
+  got = _.strSplitInlinedStereo( { prefix : '/#', postfix : '#', src : '/#abc#' } );
   expected = [ 'abc' ];
   test.identical( got, expected );
 
   /* postfix appears in source two times */
-  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '#', src : '/ab#c#' } );
+  got = _.strSplitInlinedStereo( { prefix : '/', postfix : '#', src : '/ab#c#' } );
   expected = [ 'ab', 'c#' ];
   test.identical( got, expected );
 
@@ -7765,7 +7765,7 @@ function strExtractInlinedStereo( test )
     if( strip.length )
     return strip;
   }
-  got = _.strExtractInlinedStereo( { onInlined : onInlined1, src : '#abc#' } );
+  got = _.strSplitInlinedStereo( { onInlined : onInlined1, src : '#abc#' } );
   expected = [ '#abc#' ];
   test.identical( got, expected );
 
@@ -7774,7 +7774,7 @@ function strExtractInlinedStereo( test )
   {
     return strip + strip;
   }
-  got = _.strExtractInlinedStereo( { prefix : '/', postfix : '#', onInlined : onInlined2, src : '/abc#' } );
+  got = _.strSplitInlinedStereo( { prefix : '/', postfix : '#', onInlined : onInlined2, src : '/abc#' } );
   expected = [ 'abcabc' ];
   test.identical( got, expected );
 
@@ -11285,8 +11285,8 @@ var Self =
 
     strOnlySingle,
     strOnly,
-    strExtractInlined,
-    strExtractInlinedStereo,
+    strSplitInlined,
+    strSplitInlinedStereo,
     strUnjoin,
 
     // joiner

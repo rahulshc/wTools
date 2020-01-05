@@ -242,7 +242,7 @@ function regexpMaybeFrom( o )
     //   postfix : '//',
     //   src : result,
     // }
-    // let strips = _.strExtractInlinedStereo( optionsExtract );
+    // let strips = _.strSplitInlinedStereo( optionsExtract );
 
     if( o.stringWithRegexp )
     {
@@ -252,7 +252,7 @@ function regexpMaybeFrom( o )
         delimeter : '//',
         src : result,
       }
-      let strips = _.strExtractInlined( optionsExtract );
+      let strips = _.strSplitInlined( optionsExtract );
 
       // if( strips.length > 1 )
       // debugger;

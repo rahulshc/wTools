@@ -2933,7 +2933,7 @@ function strButSingle( srcStr, range, ins )
 
 //
 
-function _strExtractInlined_body( o )
+function _strSplitInlined_body( o )
 {
 
   _.assert( arguments.length === 1, 'Expects single options map' );
@@ -2963,7 +2963,7 @@ function _strExtractInlined_body( o )
   first - for tracking index to insert ordinary text
   onInlined should be called first and
   if undefined returned escaped text shoud be treated as ordinary
-  so tracking index to insert ordinary text ( in case not undefined returned ) required
+  so tracking index to insert ordinary text ( in case non undefined returned ) required
   */
 
   let first = 0;
@@ -3048,7 +3048,7 @@ function _strExtractInlined_body( o )
 
 }
 
-_strExtractInlined_body.defaults =
+_strSplitInlined_body.defaults =
 {
 
   src : null,
@@ -3070,11 +3070,11 @@ _strExtractInlined_body.defaults =
 
 //
 
-let strExtractInlined = _.routineFromPreAndBody( strSplitFast_pre, _strExtractInlined_body );
+let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInlined_body );
 
 //
 
-function _strExtractInlinedStereo_body( o )
+function _strSplitInlinedStereo_body( o )
 {
 
   _.assert( arguments.length === 1, 'Expects single options map argument' );
@@ -3140,7 +3140,7 @@ function _strExtractInlinedStereo_body( o )
   return result;
 }
 
-_strExtractInlinedStereo_body.defaults =
+_strSplitInlinedStereo_body.defaults =
 {
   src : null,
 
@@ -3184,11 +3184,11 @@ _strExtractInlinedStereo_body.defaults =
  * @returns {object} Returns an array of strings separated by( o.delimeter ).
  *
  * @example
- * _.strExtractInlinedStereo( '#abc#' );
+ * _.strSplitInlinedStereo( '#abc#' );
  * // returns [ '', 'abc', '' ]
  *
  * @example
- * _.strExtractInlinedStereo.call( { prefix : '#', postfix : '$' }, '#abc$' );
+ * _.strSplitInlinedStereo.call( { prefix : '#', postfix : '$' }, '#abc$' );
  * // returns [ 'abc' ]
  *
  * @example
@@ -3197,10 +3197,10 @@ _strExtractInlinedStereo_body.defaults =
  *   if( strip.length )
  *   return strip.toUpperCase();
  * }
- * _.strExtractInlinedStereo.call( { postfix : '$', onInlined }, '#abc$' );
+ * _.strSplitInlinedStereo.call( { postfix : '$', onInlined }, '#abc$' );
  * // returns [ 'ABC' ]
  *
- * @method strExtractInlinedStereo
+ * @method strSplitInlinedStereo
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
@@ -3209,9 +3209,9 @@ _strExtractInlinedStereo_body.defaults =
  *
  */
 
-// let strExtractInlinedStereo = _.routineFromPreAndBody( strSplitFast_pre, _strExtractInlinedStereo_body );
+// let strSplitInlinedStereo = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInlinedStereo_body );
 
-function strExtractInlinedStereo( o )
+function strSplitInlinedStereo( o )
 {
 
   if( _.strIs( o ) )
@@ -3221,7 +3221,7 @@ function strExtractInlinedStereo( o )
   _.assert( _.strIs( o.src ) );
   _.assert( _.objectIs( o ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( strExtractInlinedStereo, o );
+  _.routineOptions( strSplitInlinedStereo, o );
 
   let result = [];
   let splitted = o.src.split( o.prefix );
@@ -3266,7 +3266,7 @@ function strExtractInlinedStereo( o )
   return result;
 }
 
-strExtractInlinedStereo.defaults =
+strSplitInlinedStereo.defaults =
 {
   src : null,
   prefix : '#',
@@ -4946,8 +4946,8 @@ let Proto =
   strOnly : _.vectorize( strOnlySingle ), /* qqq : cover and document */
   strButSingle,
   strBut : _.vectorize( strButSingle ), /* qqq : cover and document */
-  strExtractInlined,
-  strExtractInlinedStereo,
+  strSplitInlined,
+  strSplitInlinedStereo,
   strUnjoin, /* qqq : document me */
 
   // joiner

@@ -1364,7 +1364,7 @@ function mapComplement( dstMap, srcMap )
   args.unshift( dstNotOwnOrUndefinedAssigning );
   return _.mapExtendConditional.apply( this, args );
 
-  /*
+  /* xxx
     filter should be defined explicitly instead of using _.field.mapper.dstNotOwnOrUndefinedAssigning
     to have mapComplement available as soon as possible
   */
