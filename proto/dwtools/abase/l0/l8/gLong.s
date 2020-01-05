@@ -178,7 +178,7 @@ qqq : routine longOnce requires good test coverage and documentation | Dmytro : 
 */
 
 /*
-qqq2 : implement routine longOnce_. ask how
+qqq2 : implement routine longOnce_. ask how | Dmytro : implemented
 */
 
 function longOnce( dstLong, onEvaluate )

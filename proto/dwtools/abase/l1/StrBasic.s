@@ -2835,34 +2835,48 @@ function strSplitCamel( src )
 // --
 
 /**
- * Gets substring out of source string according to a given range.
+ * Routine strOnlySingle() gets substring out of source string {-srcStr-} according to a given range {-range-}.
  * The end value of the range is not included in the substring.
- * Returns result as string.
  *
- * @param {string} srcStr - Source string.
- * @param {range} range - Source range.
- * @returns {string} Returns the corresponding substring.
+ * @param { String } srcStr - Source string.
+ * @param { Range } range - Range to get substring.
+ * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
  *
  * @example
- * _.strOnly( 'fi' );
- * // returns [ 'first', [ 0, 2 ] ]
+ * _.strOnlySingle( '', [ 0, 2 ] );
+ * // returns ''
  *
- * @method strOnly
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 2.
- * @throws { Exception } Throw an exception if( srcStr ) is not a String.
- * @throws { Exception } Throw an exception if( range ) is not a range.
+ * @example
+ * _.strOnlySingle( 'first', [ 0, 7 ] );
+ * // returns 'first'
+ *
+ * @example
+ * _.strOnlySingle( 'first', [ 0, 2 ] );
+ * // returns 'fi'
+ *
+ * @example
+ * _.strOnlySingle( 'first', [ -2, 5 ] );
+ * // returns 'st'
+ *
+ * @example
+ * _.strOnlySingle( 'first', [ 2, 2 ] );
+ * // returns ''
+ *
+ * @function strOnlySingle
+ * @returns { String } - Returns substring from source string.
+ * @throws { Error } If arguments.length is less or more then two.
+ * @throws { Error } If {-srcStr-} is not a String.
+ * @throws { Error } If {-range-} is not a Range.
  * @memberof wTools
- *
  */
 
 function strOnlySingle( srcStr, range )
 {
 
-/* qqq : reference point of negative is length. implement and cover please */
+/* qqq : reference point of negative is length. implement and cover please | Dmytro : implemented a time ago*/
 
 // xxx
-// _.strOnly( 'abc', [ -2, -1 ] ) => ''
-// _.strOnly( 'abc', [ 1, 2 ] ) => 'b'
+// _.strOnly( 'abc', [ -2, -1 ] ) => 'b'
 // _.strOnly( 'abc', [ 1, 2 ] ) => 'b'
 //
 // 3-2 = 1
@@ -2891,14 +2905,132 @@ function strOnlySingle( srcStr, range )
 
 //
 
+/**
+ * Routine strOnly() gets substring out of each string in vector of strings {-srcStr-} according to a given range {-range-}.
+ * The end value of the range is not included in the substring.
+ *
+ * @param { String|Long } srcStr - Source string or array of strings.
+ * @param { Range } range - Range to get substring.
+ * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
+ *
+ * @example
+ * _.strOnly( '', [ 0, 2 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strOnly( 'first', [ 0, 7 ] );
+ * // returns 'first'
+ *
+ * @example
+ * _.strOnly( 'first', [ 0, 2 ] );
+ * // returns 'fi'
+ *
+ * @example
+ * _.strOnly( 'first', [ -2, 5 ] );
+ * // returns 'st'
+ *
+ * @example
+ * _.strOnly( 'first', [ 2, 2 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 0, 2 ] );
+ * // returns [ '', 'a', 'ab', 'ab' ]
+ *
+ * @example
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 0, 7 ] );
+ * // returns [ '', 'a', 'ab', 'abcde' ]
+ *
+ * @example
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ -2, 5 ] );
+ * // returns [ '', 'a', 'ab', 'de' ]
+ *
+ * @example
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 2, 2 ] );
+ * // returns[ '', '', '', '' ]
+ *
+ * @function strOnly
+ * @returns { String|Long } - Returns substrings from source string or array of strings.
+ * @throws { Error } If arguments.length is less or more then two.
+ * @throws { Error } If {-srcStr-} is not a String, not a Long.
+ * @throws { Error } If {-srcStr-} is a Long and includes not a String value.
+ * @throws { Error } If {-range-} is not a Range.
+ * @memberof wTools
+ */
+
+let strOnly = _.vectorize( strOnlySingle );
+
+//
+
 // srcStr:str ins:str -> str
 // srcStr:str ins:[ * str ] -> [ * str ]
 // srcStr:[ * str ] ins:[ * str ] -> [ * str ]
 
+/**
+ * Routine strButSingle() gets substring out of source string {-srcStr-} according to a given range {-range-}
+ * and replaces it to new string {-ins-}.
+ * The end value of the range is not included in the substring.
+ *
+ * @param { String } srcStr - Source string.
+ * @param { Range } range - Range to get substring.
+ * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
+ * @param { String|Long } ins - Inserted string or array with inserted elements.
+ * If {-ins-} is a Long, then routine concatenates string from elements of Long. The delimeter is single space.
+ * If {-ins-} is not provided or if it is undefined, then routine removes substring from source string to a given range.
+ *
+ * @example
+ * _.strButSingle( '', [ 0, 2 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strButSingle( 'first', [ 0, 7 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strButSingle( 'first', [ 0, 2 ] );
+ * // returns 'rst'
+ *
+ * @example
+ * _.strButSingle( 'first', [ -2, 5 ] );
+ * // returns 'fir'
+ *
+ * @example
+ * _.strButSingle( 'first', [ 2, 2 ] );
+ * // returns 'first'
+ *
+ * @example
+ * _.strButSingle( '', [ 0, 2 ], 'abc' );
+ * // returns 'abc'
+ *
+ * @example
+ * _.strButSingle( 'first', [ 0, 7 ], [ 'a', 'b', 'c' ] );
+ * // returns 'a b c'
+ *
+ * @example
+ * _.strButSingle( 'first', [ 0, 2 ], 'abc' );
+ * // returns 'abcrst'
+ *
+ * @example
+ * _.strButSingle( 'first', [ -2, 5 ], [ 'a', 'b', 'c' ] );
+ * // returns 'fira b c'
+ *
+ * @example
+ * _.strButSingle( 'first', [ 2, 2 ], 'abc' );
+ * // returns 'fiabcrst'
+ *
+ * @function strButSingle
+ * @returns { String } - Returns source string, part of which replaced to the new value.
+ * @throws { Error } If arguments.length is less then two or more then three.
+ * @throws { Error } If {-srcStr-} is not a String.
+ * @throws { Error } If {-range-} is not a Range.
+ * @throws { Error } If {-ins-} is not a String, not a Long, not undefined.
+ * @memberof wTools
+ */
+
 function strButSingle( srcStr, range, ins )
 {
 
-/* qqq : reference point of negative is length. implement and cover please */
+/* qqq : reference point of negative is length. implement and cover please | Dmytro : implemented a time ago */
 
   if( _.numberIs( range ) )
   {
@@ -2914,22 +3046,84 @@ function strButSingle( srcStr, range, ins )
     range[ 0 ] = srcStr.length + range[ 0 ];
   }
 
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
+  // if( _.numberIs( range ) )
+  // range = [ range, range + 1 ];
+  if( range[ 0 ] > range[ 1 ] )
+  range[ 1 ] = range[ 0 ];
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( srcStr ) );
   _.assert( _.rangeDefined( range ) );
   _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
-  _.assert( !_.longIs( ins ), 'not implemented' );
+  // _.assert( !_.longIs( ins ), 'not implemented' );
 
-  /* qqq : implement for case ins is long */
+  /* qqq : implement for case ins is long | Dmytro : implemented, elements of long joins by spaces */
 
-  if( ins )
+  if( _.longIs( ins ) )
+  return srcStr.substring( 0, range[ 0 ] ) + ins.join( ' ' ) + srcStr.substring( range[ 1 ], srcStr.length );
+  else if( ins )
   return srcStr.substring( 0, range[ 0 ] ) + ins + srcStr.substring( range[ 1 ], srcStr.length );
   else
   return srcStr.substring( 0, range[ 0 ] ) + srcStr.substring( range[ 1 ], srcStr.length );
 }
+
+//
+
+/**
+ * Routine strBut() gets substring out of each string in vector of strings {-srcStr-} according to a given range {-range-}
+ * and replaces it to new string {-ins-}.
+ * The end value of the range is not included in the substring.
+ *
+ * @param { String|Long } srcStr - Source string or array of strings.
+ * @param { Range } range - Range to get substring.
+ * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
+ * @param { String|Long } ins - Inserted string or array with inserted elements.
+ * If {-ins-} is a Long, then routine concatenates string from elements of Long. The delimeter is single space.
+ * If {-ins-} is not provided or if it is undefined, then routine removes substring from source string to a given range.
+ *
+ * @example
+ * _.strBut( '', [ 0, 2 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strBut( 'first', [ 0, 7 ] );
+ * // returns ''
+ *
+ * @example
+ * _.strBut( 'first', [ 0, 2 ], 'abc' );
+ * // returns 'abcrst'
+ *
+ * @example
+ * _.strBut( 'first', [ -2, 5 ], [ 'a', 'b', 'c' ] );
+ * // returns 'fira b c'
+ *
+ * @example
+ * _.strBut( [ '', 'a', 'ab', 'abcde' ], [ 0, 2 ], 'fg' );
+ * // returns [ 'fg', 'fg', 'fg', 'fgcde' ]
+ *
+ * @example
+ * _.strBut( [ '', 'a', 'ab', 'abcde' ], [ 0, 7 ], [ 'f', 'g' ] );
+ * // returns [ 'f g', 'f g', 'f g', 'f g' ]
+ *
+ * @example
+ * _.strBut( [ '', 'a', 'ab', 'abcde' ], [ -2, 5 ], 'fg' );
+ * // returns [ 'fg', 'fg', 'fg', 'abcfg' ]
+ *
+ * @example
+ * _.strBut( [ '', 'a', 'ab', 'abcde' ], [ 2, 2 ], [ 'f', 'g' ] );
+ * // returns [ 'f g', 'af g', 'abf g', 'abf gcde' ]
+ *
+ * @function strBut
+ * @returns { String|Long } - Returns source string or vector of strings, part of which replaced to the new value.
+ * @throws { Error } If arguments.length is less then two or more then three.
+ * @throws { Error } If {-srcStr-} is not a String or not a Long.
+ * @throws { Error } If {-srcStr-} is a Long and includes not a String value.
+ * @throws { Error } If {-range-} is not a Range.
+ * @throws { Error } If {-ins-} is not a String, not a Long, not undefined.
+ * @memberof wTools
+ */
+
+let strBut = _.vectorize( strButSingle );
 
 //
 
@@ -3438,7 +3632,6 @@ _.assert( _.routineIs( strUnjoin.any ) );
  * @throws { Exception } If {-s-} is not a String or an array of strings.
  * @throws { Exception } If {-times-} is not a Number.
  * @memberof wTools
- *
  */
 
 function _strDup( s, times )
@@ -4943,16 +5136,16 @@ let Proto =
   // extractor
 
   strOnlySingle,
-  strOnly : _.vectorize( strOnlySingle ), /* qqq : cover and document */
+  strOnly, //: _.vectorize( strOnlySingle ), /* qqq : cover and document | Dmytro : covered and documented */
   strButSingle,
-  strBut : _.vectorize( strButSingle ), /* qqq : cover and document */
+  strBut, // : _.vectorize( strButSingle ), /* qqq : cover and document | Dmytro : covered and documented */
   strSplitInlined,
   strSplitInlinedStereo,
   strUnjoin, /* qqq : document me */
 
   // joiner
 
-  strDup : _.vectorize( _strDup ), /* qqq : document me */
+  strDup : _.vectorize( _strDup ), /* qqq : document me | Dmytro : documented */
   strJoin,
   strJoinPath, /* qqq : cover and document me // Dmytro : covered and documented */
   strConcat,

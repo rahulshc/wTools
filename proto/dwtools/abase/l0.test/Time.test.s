@@ -16,6 +16,136 @@ let _ = _global_.wTools;
 // tests
 // --
 
+function timerIs( test ) 
+{
+  test.case = 'without argument';
+  var got = _.timerIs();
+  test.identical( got, false );
+
+  test.case = 'check null';
+  var got = _.timerIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.timerIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.timerIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.timerIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.timerIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.timerIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.timerIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.timerIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.timerIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.timerIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.timerIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.timerIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.timerIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.timerIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.timerIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.timerIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.timerIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.timerIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.timerIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.timerIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.timerIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.timerIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var got = _.timerIs( { '' : null } );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor';
+  var Constr = function(){ this.x = 1; return this };
+  var src = new Constr();
+  var got = _.timerIs( src );
+  test.identical( got, false );
+
+  test.case = 'check _begin timer';
+  var src = _.time._begin( undefined );
+  var got = _.timerIs( src );
+  test.identical( got, true );
+  _.time.cancel( src );
+
+  test.case = 'check _finally timer';
+  var src = _.time._finally( undefined, undefined );
+  var got = _.timerIs( src );
+  test.identical( got, true );
+  _.time.cancel( src );
+
+  test.case = 'check _periodic timer';
+  var src = _.time._periodic( 1000, ( t ) => t.original );
+  var got = _.timerIs( src );
+  test.identical( got, true );
+  _.time.cancel( src );
+
+  test.case = 'check imitation of timer';
+  var src = { type : 'timer', time : true, cancel : true, original : true  };
+  var got = _.timerIs( src );
+  test.identical( got, true );
+}
+
+//
+
 function _begin( test )
 {
   var onTime = () => 0;
@@ -1526,6 +1656,8 @@ var Self =
 
   tests :
   {
+    timerIs,
+
     _begin,
     _finally,
     _periodic,

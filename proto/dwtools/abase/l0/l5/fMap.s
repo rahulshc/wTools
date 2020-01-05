@@ -146,7 +146,7 @@ function mapContain( src, ins )
  * @memberof wTools
 */
 
-/* qqq : cover option strict of routine objectSatisfy */
+/* qqq : cover option strict of routine objectSatisfy | Dmytro : covered routine and implemented separate test routine for option strict */
 
 function objectSatisfy( o )
 {
@@ -166,7 +166,7 @@ function objectSatisfy( o )
   function _objectSatisfy( template, src, root, levels, strict )
   {
 
-    if( !strict && src === undefined )
+    if( !strict && src === undefined ) 
     return true;
 
     if( template === src )
@@ -1326,20 +1326,38 @@ function mapSupplementOwnFromDefinitionStrictlyPrimitives( dstMap, srcMap )
 //
 
 /**
- * The mapComplement() complement ( dstMap ) by one or several ( srcMap ).
+ * The routine mapComplement() complements {-dstMap-} by one or several {-srcMap-}. Routine does not change 
+ * defined pairs key-value in {-dstMap-}. 
+ * If {-dstMap-} and {-srcMap-} has equal keys, and value of {-dstMap-} is undefined, then routine
+ * mapComplement() changes it to {-srcMap-} value.
+ * If pair key-value does not exists in {-dstMap-}, then routine appends this pair to {-dstMap-}.
  *
- * @param { ...objectLike } arguments[] - The source object(s).
+ * @param { objectLike } dstMap - ObjectLike entity to be complemented.
+ * @param { ...objectLike } srcMap - The source object(s).
  *
  * @example
- * _.mapComplement( { a : 1, b : 'ab' }, { a : 12 , c : 3 } );
- * // returns { a : 1, b : 'ab', c : 3 };
+ * _.mapComplement( { a : 1, b : 2, c : 3 }, { a : 4, b : 5, c : 6, d : 7 } );
+ * // returns { a : 1, b : 3, c : 3, d : 7 };
  *
- * @returns { objectLike } Returns an object filled by all unique, clone [ key, value ].
+ * @example
+ * _.mapComplement( { a : 1, b : 2, c : 3 }, { a : 4, b : 5 }, { c : 6, d : 7 } );
+ * // returns { a : 1, b : 3, c : 3, d : 7 };
+ *
+ * @example
+ * _.mapComplement( { a : 1, b : 2, c : undefined }, { a : 4, b : 5, c : 6, d : 7 } );
+ * // returns { a : 1, b : 3, c : 6, d : 7 };
+ *
+ * @example
+ * _.mapComplement( { a : 1, b : 2, c : undefined }, { a : 4, b : 5 }, { c : 6, d : 7 } );
+ * // returns { a : 1, b : 3, c : 6, d : 7 };
+ *
+ * @returns { objectLike } - Returns the destination object filled by unique values from source object(s), and if it is possible, replaced undefined
+ * values in destination object.
  * @function mapComplement
  * @memberof wTools
  */
 
-/* qqq : need to explain how undefined handled and write good documentation */
+/* qqq : need to explain how undefined handled and write good documentation | Dmytro : documentation extended. Maybe, routine needs assertion: _.assert( arguments.length >= 1 ); */
 
 function mapComplement( dstMap, srcMap )
 {
@@ -1848,7 +1866,7 @@ function mapOnlyPrimitives( srcMap )
 // --
 
 /*
-  qqq : reflect changes in tests, please
+  qqq : reflect changes in tests, please | Dmytro : test routine is extended
 */
 
 function objectSetWithKeys( dstMap, key, val )
@@ -1887,7 +1905,7 @@ function objectSetWithKeys( dstMap, key, val )
 
 //
 
-/* qqq : add test */
+/* qqq : add test | Dmytro : covered */
 
 function objectSetWithKeyStrictly( dstMap, key, val )
 {
@@ -2251,10 +2269,8 @@ function mapButConditional( fieldFilter, srcMap, butMap )
 //
 
 /**
- * Returns new object with unique keys.
+ * Returns new object with unique pairs key-value from {-srcMap-} screened by screen map {-butMap-}.
  *
- * Takes any number of objects.
- * Returns new object filled by unique keys
  * from the first {-srcMap-} original object.
  * Values for result object come from original object {-srcMap-}
  * not from second or other one.
@@ -2270,6 +2286,7 @@ function mapButConditional( fieldFilter, srcMap, butMap )
  * _.mapBut( { a : 7, b : 13, c : 3 }, { a : 7, b : 13 } );
  * // returns { c : 3 }
  *
+ * Returns new object filled by unique keys
  * @throws { Error }
  *  In debug mode it throws an error if any argument is not object like.
  * @returns { object } Returns new object made by unique keys.
@@ -2277,7 +2294,40 @@ function mapButConditional( fieldFilter, srcMap, butMap )
  * @memberof wTools
  */
 
-/* qqq : teach routines mapBut* to expect long in the second argument. ask */
+/* qqq : teach routines mapBut* to expect long in the second argument. ask | Dmytro : need explanation */
+
+// function mapBut( srcMap, butMap )
+// {
+//   let result = Object.create( null );
+// 
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
+// 
+//   if( _.longIs( butMap ) )
+//   {
+//     result = Object.assign( result, srcMap );
+// 
+//     for( let m = 0 ; m < butMap.length ; m++ )
+//     {
+//       if( butMap[ m ] in srcMap )
+//       delete result[ butMap[ m ] ]
+//     }
+//   }
+//   else if( _.mapLike( butMap ) )
+//   {
+//     for( let s in srcMap )
+//     {
+//       if( !( s in butMap ) )
+//       result[ s ] = srcMap[ s ];
+//     }
+//   }
+//   else
+//   {
+//     _.assert( 0, 'Expects map or long {-butMap-}' );
+//   }
+// 
+//   return result;
+// }
 
 function mapBut( srcMap, butMap )
 {
@@ -3990,8 +4040,8 @@ let Routines =
   objectSetWithKeys,
   mapSet : objectSetWithKeys,
   objectSetWithKeyStrictly,
-  mapDelete, /* qqq : implement good coverage */
-  mapEmpty, /* qqq : implement good coverage */
+  mapDelete, /* qqq : implement good coverage | Dmytro : implemented */
+  mapEmpty, /* qqq : implement good coverage | Dmytro : implemented */
 
   // map transformer
 
@@ -3999,7 +4049,7 @@ let Routines =
   mapInvertDroppingDuplicates,
   mapsFlatten,
 
-  mapToArray, /* qqq : test required */
+  mapToArray, /* qqq : test required | Dmytro : implemented */
   mapToStr, /* experimental */
 
   // map logical operator

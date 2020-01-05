@@ -502,7 +502,7 @@ let Fields =
 let Routines =
 {
 
-  /* qqq : requires good tests */
+  /* qqq : requires good tests | Dmytro : covered not all routines */
 
   // primitive
 
@@ -533,14 +533,14 @@ let Routines =
   instanceIs,
   instanceLike,
 
-  workerIs,
-  streamIs,
+  workerIs, /* Dmytro : not covered now, I'm searching optimal way to write tests */
+  streamIs, /* Dmytro : not covered now, I'm searching optimal way to write tests */
   consoleIs,
-  printerLike,
-  printerIs,
+  printerLike, /* Dmytro : not covered now, I'm searching optimal way to write tests */
+  printerIs, /* Dmytro : not covered now, I'm searching optimal way to write tests */
   loggerIs,
   processIs,
-  processIsDebugged,
+  processIsDebugged, /* Dmytro : not covered now, I'm searching optimal way to write tests */
   procedureIs,
   definitionIs,
 

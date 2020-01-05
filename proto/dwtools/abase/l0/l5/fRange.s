@@ -28,7 +28,7 @@ function rangeFromLeft( range )
 
 //
 
-function rangeFromRight( range )
+function rangeFromRight( range ) // Dmytro : this routine is identical to rangeFromLeft. Is it correct?
 {
   _.assert( arguments.length === 1 );
   if( _.numberIs( range ) )
@@ -101,23 +101,26 @@ function rangeNumberElements( range, increment )
   if( increment === undefined )
   increment = 1;
 
+  _.assert( _.numberIs( increment ), 'Increment should has a number value' );
+
   return increment ? ( range[ 1 ]-range[ 0 ] ) / increment : 0;
 
 }
 
 //
 
-function rangeFirstGet( range,options )
+function rangeFirstGet( range, options )
 {
 
-  var options = options || Object.create( null );
+  var options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container. 
   if( options.increment === undefined )
   options.increment = 1;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( _.arrayIs( range ) )
+  if( _.longIs( range ) )
   {
+    _.assert( _.rangeIs( range ) );
     return range[ 0 ];
   }
   else if( _.mapIs( range ) )
@@ -130,17 +133,18 @@ function rangeFirstGet( range,options )
 
 //
 
-function rangeLastGet( range,options )
+function rangeLastGet( range, options )
 {
 
-  var options = options || Object.create( null );
+  var options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
   if( options.increment === undefined )
   options.increment = 1;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( _.arrayIs( range ) )
+  if( _.longIs( range ) )
   {
+    _.assert( _.rangeIs( range ) );
     return range[ 1 ];
   }
   else if( _.mapIs( range ) )
@@ -177,7 +181,7 @@ let Routines =
 
   // range
 
-  /* qqq : good coverage of each routine is required */
+  /* qqq : good coverage of each routine is required | Dmytro : covered */
 
   rangeFromLeft,
   rangeFromRight,

@@ -44,8 +44,7 @@ function unrollIs( src )
 //
 
 /*
-qqq : poor examples
-Dmytro : examples is improved
+qqq : poor examples | Dmytro : examples is improved
 */
 
 /**
