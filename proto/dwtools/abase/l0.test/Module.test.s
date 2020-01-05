@@ -44,7 +44,7 @@ function withIsIncluded( test )
   let a = test.assetFor( false );
   let toolsPath = a.path.nativize( a.path.join( __dirname, '../../Tools.s' ) )
   let program1Path = a.program( program1 );
-  let program2Path = a.program({ program : program2, globals : { toolsPath, program1Path } });
+  let program2Path = a.program({ routine : program2, globals : { toolsPath, program1Path } });
 
   /* */
 
@@ -100,7 +100,7 @@ function withoutIsIncluded( test )
   let a = test.assetFor( false );
   let toolsPath = a.path.nativize( a.path.join( __dirname, '../../Tools.s' ) )
   let program1Path = a.program( program1 );
-  let program2Path = a.program({ program : program2, globals : { toolsPath, program1Path } });
+  let program2Path = a.program({ routine : program2, globals : { toolsPath, program1Path } });
 
   /* */
 
@@ -156,7 +156,7 @@ function moduleExportsUndefined( test )
   let toolsPath = a.path.nativize( a.path.join( __dirname, '../../Tools.s' ) )
   let program1Path = a.program( program1 );
   let modulePath = a.path.join( program1Path, '../module.js' )
-  
+
   a.fileProvider.fileWrite({ filePath : modulePath, data : `module.exports = undefined;` })
 
   /* */
@@ -187,7 +187,7 @@ function moduleExportsUndefined( test )
   }
 }
 
-moduleExportsUndefined.description  = 
+moduleExportsUndefined.description  =
 `
   Included module returns undefined
 `

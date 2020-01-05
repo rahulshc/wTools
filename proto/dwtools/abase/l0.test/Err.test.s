@@ -231,9 +231,9 @@ function _errEmptyArgs( test )
 
   test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test", stackCondensing - 0';
   var err = _._err
-  ({ 
-    args : [], 
-    throwenCallsStack : 'at program1\nat _errTrowsError', 
+  ({
+    args : [],
+    throwenCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at Err.test.s', '*__dirname' ],
     stackCondensing : 0
   });

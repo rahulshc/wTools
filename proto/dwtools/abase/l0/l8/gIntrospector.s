@@ -129,6 +129,14 @@ code.defaults =
   sourceCode : null,
 }
 
+//
+
+function memoryUsageInfo()
+{
+  var usage = process.memoryUsage();
+  return ( usage.heapUsed >> 20 ) + ' / ' + ( usage.heapTotal >> 20 ) + ' / ' + ( usage.rss >> 20 ) + ' Mb';
+}
+
 // --
 // declare
 // --
@@ -137,6 +145,7 @@ let Extension =
 {
 
   code,
+  memoryUsageInfo,
 
 }
 

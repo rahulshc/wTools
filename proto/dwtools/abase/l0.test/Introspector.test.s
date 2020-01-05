@@ -1150,11 +1150,9 @@ function stackFilter( test )
   test.open( 'onEach returns element' );
 
   test.case = 'only onEach';
-  debugger;
   var got = _.introspector.stackFilter( ( e ) => e );
   test.identical( _.strCount( got, _.path.nativize( _.introspector.location().filePath ) ), 1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
-  debugger;
 
   test.case = 'stack is undefined';
   var got = _.introspector.stackFilter( undefined, ( e ) => e );
