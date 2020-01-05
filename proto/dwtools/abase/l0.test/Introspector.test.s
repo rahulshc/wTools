@@ -853,14 +853,14 @@ function stack( test )
   var got = _.introspector.stack( [ 0, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - 10';
   var got = _.introspector.stack( [ 0, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - -1';
@@ -883,14 +883,14 @@ function stack( test )
   var got = _.introspector.stack( [ 2, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - 10';
   var got = _.introspector.stack( [ 2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 8 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - -1';
@@ -913,14 +913,14 @@ function stack( test )
   var got = _.introspector.stack( [ -2, 100 ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - 10';
   var got = _.introspector.stack( [ -2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 1 );
-  test.is( arr[ 0 ].indexOf( 'at ') === -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') === -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - -1';
@@ -947,14 +947,14 @@ function stack( test )
   var got = _.introspector.stack( null, [ 0, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - 10';
   var got = _.introspector.stack( null, [ 0, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - -1';
@@ -977,14 +977,14 @@ function stack( test )
   var got = _.introspector.stack( null, [ 2, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - 10';
   var got = _.introspector.stack( null, [ 2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 8 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - -1';
@@ -1007,14 +1007,14 @@ function stack( test )
   var got = _.introspector.stack( null, [ -2, 100 ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - 10';
   var got = _.introspector.stack( null, [ -2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 1 );
-  test.is( arr[ 0 ].indexOf( 'at ') === -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') === -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - -1';
@@ -1041,14 +1041,14 @@ function stack( test )
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 0, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - 10';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 0, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.case = 'range[ 0 ] - 0, range[ 1 ] - -1';
@@ -1071,14 +1071,14 @@ function stack( test )
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 2, 100 ] );
   var arr = got.split( '\n' );
   test.gt( arr.length, 10 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - 10';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ 2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 8 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - 2, range[ 1 ] - -1';
@@ -1101,14 +1101,14 @@ function stack( test )
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ -2, 100 ] );
   var arr = got.split( '\n' );
   test.le( arr.length, 2 );
-  test.is( arr[ 0 ].indexOf( 'at ') !== -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') !== -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - 10';
   var got = _.introspector.stack( new Error( 'Uncaught error' ), [ -2, 10 ] );
   var arr = got.split( '\n' );
   test.identical( arr.length, 1 );
-  test.is( arr[ 0 ].indexOf( 'at ') === -1 ); 
+  test.is( arr[ 0 ].indexOf( 'at ') === -1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 0 );
 
   test.case = 'range[ 0 ] - -2, range[ 1 ] - -1';
@@ -1145,23 +1145,25 @@ function stack( test )
 
 //
 
-function stackFilter( test ) 
+function stackFilter( test )
 {
   test.open( 'onEach returns element' );
 
   test.case = 'only onEach';
+  debugger;
   var got = _.introspector.stackFilter( ( e ) => e );
-  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.path.nativize( _.introspector.location().filePath ) ), 1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
+  debugger;
 
   test.case = 'stack is undefined';
   var got = _.introspector.stackFilter( undefined, ( e ) => e );
-  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.path.nativize( _.introspector.location().filePath ) ), 1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
   test.case = 'stack is null';
   var got = _.introspector.stackFilter( undefined, ( e ) => e );
-  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.path.nativize( _.introspector.location().filePath ) ), 1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
   test.case = 'stack is string';
@@ -1176,7 +1178,7 @@ function stackFilter( test )
 
   test.case = 'stack is error';
   var got = _.introspector.stackFilter( new Error(), ( e ) => e );
-  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.path.nativize( _.introspector.location().filePath ) ), 1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.close( 'onEach returns element' );
@@ -1187,17 +1189,17 @@ function stackFilter( test )
 
   test.case = 'only onEach';
   var got = _.introspector.stackFilter( ( e, k ) => { return { original : e.original, key : k } } );
-  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.path.nativize( _.introspector.location().filePath ) ), 1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
   test.case = 'stack is undefined';
   var got = _.introspector.stackFilter( undefined, ( e, k ) => { return { original : e.original, key : k } } );
-  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.path.nativize( _.introspector.location().filePath ) ), 1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
   test.case = 'stack is null';
   var got = _.introspector.stackFilter( undefined, ( e, k ) => { return { original : e.original, key : k } } );
-  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.path.nativize( _.introspector.location().filePath ) ), 1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 2 );
 
   test.case = 'stack is string';
@@ -1212,7 +1214,7 @@ function stackFilter( test )
 
   test.case = 'stack is error';
   var got = _.introspector.stackFilter( new Error(), ( e, k ) => { return { original : e.original, key : k } } );
-  test.is( got.indexOf( _.introspector.location().filePath ) !== -1 );
+  test.identical( _.strCount( got, _.path.nativize( _.introspector.location().filePath ) ), 1 );
   test.identical( _.strCount( got, _.introspector.location().routineName ), 1 );
 
   test.close( 'onEach returns map with original field' );

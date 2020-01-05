@@ -236,14 +236,6 @@ function regexpMaybeFrom( o )
   if( _.strIs( result ) )
   {
 
-    // let optionsExtract =
-    // {
-    //   prefix : '//',
-    //   postfix : '//',
-    //   src : result,
-    // }
-    // let strips = _.strSplitInlinedStereo( optionsExtract );
-
     if( o.stringWithRegexp )
     {
 
@@ -253,9 +245,6 @@ function regexpMaybeFrom( o )
         src : result,
       }
       let strips = _.strSplitInlined( optionsExtract );
-
-      // if( strips.length > 1 )
-      // debugger;
 
     }
     else

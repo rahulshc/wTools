@@ -1,4 +1,4 @@
-( function _String_test_s_() {
+( function _Str_test_s_() {
 
 'use strict';
 
@@ -12762,7 +12762,7 @@ function strSplitInlinedStereo( test )
   expected = [ '' ];
   test.identical( got, expected );
 
-  /* prefix/postfix # by default*/
+  /* prefix/postfix # by default */
 
   debugger;
   got = _.strSplitInlinedStereo( '#abc#' );
@@ -12774,7 +12774,7 @@ function strSplitInlinedStereo( test )
 
   test.case = 'with options';
 
-  /* pre/post are same*/
+  /* pre/post are same */
 
   got = _.strSplitInlinedStereo( { prefix : '/', postfix : '/', src : '/abc/' } );
   expected = [ '', 'abc', '' ];

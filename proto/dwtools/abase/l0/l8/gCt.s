@@ -4,7 +4,7 @@
 
 /* = Glossary::
 
-CT -- color text.
+CT -- colorful text.
 
 */
 
