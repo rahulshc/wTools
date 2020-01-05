@@ -3705,10 +3705,7 @@ function entityMap( src, onEach )
 
 //
 
-/* qqq :
-cover entityFilter and entityFilterDeep
-take into account unroll cases
-Dmytro : unroll cases uses in test routines, but routine entityFilter accepts BufferTyped and cannot handle it. So, routine need restrictions or extending.
+/* qqq : cover entityFilter and entityFilterDeep, take into account unroll cases | Dmytro : unroll cases uses in test routines, but routine entityFilter accepts BufferTyped and cannot handle it. So, routine need restrictions or extending.
 */
 
 function entityFilter( src, onEach )
@@ -3816,7 +3813,164 @@ qqq : refactor routine _entityMost
 - make o-fication
 - make it accept evaluator or comparator( not in the same call )
 Dmytro : routine accepts options map, and can use evaluator or comparator
+Implementation with pre and body now is unavailable, because fMap.s connecting is later then fFunctional.s. routineFromPreAndBody needs routines from fMap.s. 
 */
+
+// function _entityMost_pre( routine, args )
+// {
+//   _.assert( args.length === 1 || args.length === 2 );
+//
+//   let o = args[ 0 ];
+//   if( !_.mapIs( o ) )
+//   o = { src : args[ 0 ], onEach : args[ 1 ] };
+// 
+//   _.routineOptions( _entityMost, o );
+// 
+//   return o;
+// }
+// 
+// function _entityMost_body( o )
+// {
+//   // _.assert( arguments.length === 1, 'Expects exactly one argument' );
+//   // _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
+//   // _.routineOptions( _entityMost, o );
+// 
+//   if( !o.onEvaluate )
+//   {
+//     _.assert( o.returnMax !== null, 'o.returnMax should has value' );
+// 
+//     if( o.returnMax )
+//     o.onEvaluate = ( a, b ) => a - b > 0;
+//     else
+//     o.onEvaluate = ( a, b ) => b - a > 0;
+//   }
+// 
+//   _.assert( 1 <= o.onEach.length && o.onEach.length <= 3 );
+//   _.assert( o.onEvaluate.length === 1 || o.onEvaluate.length === 2 );
+// 
+//   let result = { index : -1, key : undefined, value : undefined, element : undefined };
+// 
+//   if( _.longIs( o.src ) )
+//   {
+//     if( o.src.length === 0 )
+//     return result;
+// 
+//     let s = 0;
+//     if( o.onEvaluate.length === 1 )
+//     for( ; s < o.src.length; s++ )
+//     {
+//       let value = o.onEach( o.src[ s ], s, o.src );
+//       if( o.onEvaluate( value ) )
+//       {
+//         result.value = value;
+//         result.key = s;
+//         break;
+//       }
+//     }
+//     else
+//     {
+//       result.key = s;
+//       result.value = o.onEach( o.src[ s ], s, o.src );
+//     }
+// 
+//     for( ; s < o.src.length; s++ )
+//     resultValue( o.src[ s ], s, o.src );
+//     result.index = result.key;
+//     result.element = o.src[ result.key ];
+//   }
+//   else if( _.mapLike( o.src ) )
+//   {
+//     let index = 0;
+//     if( o.onEvaluate.length === 1 )
+//     {
+//       for( let s in o.src )
+//       {
+//         if( result.value === undefined )
+//         {
+//           let value = o.onEach( o.src[ s ], s, o.src );
+//           if( o.onEvaluate( value ) )
+//           {
+//             result.value = value;
+//             result.index = index;
+//             result.key = s;
+//           }
+//         }
+//         else
+//         {
+//           if( resultValue( o.src[ s ], s, o.src ) )
+//           result.index = index;
+//         }
+// 
+//         index++;
+// 
+//       }
+//       result.element = o.src[ result.key ];
+//     }
+//     else
+//     {
+//       for( let s in o.src )
+//       {
+//         result.index = 0;
+//         result.key = s;
+//         result.value = o.onEach( o.src[ s ], s, o.src );
+//         break;
+//       }
+// 
+//       for( let s in o.src )
+//       {
+//         if( resultValue( o.src[ s ], s, o.src ) )
+//         result.index = index;
+// 
+//         index++;
+//       }
+//       result.element = o.src[ result.key ];
+//     }
+// 
+//   }
+//   else
+//   _.assert( 0 );
+// 
+//   return result;
+// 
+//   /* */
+// 
+//   function resultValue( e, k, s )
+//   {
+//     let value = o.onEach( e, k, s );
+//     if( o.onEvaluate.length === 1 )
+//     {
+//       if( o.onEvaluate( value ) === o.onEvaluate( result.value ) )
+//       {
+//         result.key = k;
+//         result.value = value;
+//         return true;
+//       }
+//     }
+//     else if( o.onEvaluate( value, result.value ) )
+//     {
+//       result.key = k;
+//       result.value = value;
+//       return true;
+//     }
+// 
+//     return false;
+//   }
+// 
+// }
+// 
+// _entityMost_body.defaults =
+// {
+//   src : null,
+//   onEach : ( e ) => e,
+//   onEvaluate : null,
+//   returnMax : null
+// }
+// 
+// //
+// 
+// let _entityMost = _.routineFromPreAndBody( _entityMost_pre, _entityMost_body );
+
+//
 
 function _entityMost( o )
 {
@@ -4059,6 +4213,9 @@ _entityMost.defaults =
  * @memberof wTools
  */
 
+// let entityMin = _.routineFromPreAndBody( _entityMost_pre, _entityMost_body );
+// entityMin.defaults.returnMax = 0;
+
 function entityMin( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -4092,6 +4249,9 @@ function entityMin( src, onEach )
  * @throws {Exception} If passed extra arguments.
  * @memberof wTools
  */
+
+// let entityMin = _.routineFromPreAndBody( _entityMost_pre, _entityMost_body );
+// entityMin.defaults.returnMax = 1;
 
 function entityMax( src, onEach )
 {
@@ -4148,8 +4308,7 @@ let Routines =
   // eachKey : entityEachKey,
 
   /*
-  qqq : take _.nothing case in routines only, but, all, any, none
-  Dmytro : _.nothing cases is implemented
+  qqq : take _.nothing case in routines only, but, all, any, none | Dmytro : _.nothing cases is implemented
    */
 
   entityOnly, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
@@ -4177,7 +4336,7 @@ let Routines =
   entityFilter,
   filter : entityFilter,
 
-  /* qqq : take into account Unroll case in routines filter, filterInplace */
+  /* qqq : take into account Unroll case in routines filter, filterInplace | Dmytro : implemented */
 
   //
 

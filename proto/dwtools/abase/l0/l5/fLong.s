@@ -98,10 +98,8 @@ function argumentsArrayFrom( src )
  */
 
 /*
-qqq : extend coverage and documentation of longMake
-Dmytro : extended coverage and documentation of routine longMake
-qqq : longMake does not create unrolls, but should
-Dmytro : longMake creates unrolls. It is implemented two variants, one of them should be deleted.
+qqq : extend coverage and documentation of longMake | Dmytro : extended coverage and documentation of routine longMake
+qqq : longMake does not create unrolls, but should | Dmytro : longMake creates unrolls. Need to accept one from two variants.
 */
 
 function longMake( src, ins )
@@ -237,8 +235,7 @@ function longMake( src, ins )
 //
 
 /*
-qqq : optimize
-Dmytro : optimized
+qqq : optimize | Dmytro : optimized
 */
 
 function longMakeEmpty( src )
@@ -398,10 +395,8 @@ function _longMakeOfLength( src, len )
  */
 
 /*
-qqq : extend coverage and documentation of longMakeUndefined
-Dmytro : routine is covered and documented
-qqq : longMakeUndefined does not create unrolls, but should
-Dmytro : longMakeUndefined creates unrolls.
+qqq : extend coverage and documentation of longMakeUndefined | Dmytro : routine is covered and documented
+qqq : longMakeUndefined does not create unrolls, but should | Dmytro : longMakeUndefined creates unrolls.
 */
 
 function longMakeUndefined( ins, len )
@@ -446,8 +441,7 @@ function longMakeUndefined( ins, len )
 //
 
 /*
-qqq : forbid non-long buffers as ins or src
-Dmytro : asserts is improved
+qqq : forbid non-long buffers as ins or src | Dmytro : asserts is improved
 */
 
 function longMakeZeroed( ins, src )
@@ -496,8 +490,7 @@ function longMakeZeroed( ins, src )
 //
 
 /*
-qqq : find and let me know what is _.buffer* analog of _longClone
-Dmytro : module has not _.buffer* analog of routine _longClone. The closest functionality has routine bufferMake( ins, src )
+qqq : find and let me know what is _.buffer* analog of _longClone | Dmytro : module has not _.buffer* analog of routine _longClone. The closest functionality has routine bufferMake( ins, src )
 */
 
 function _longClone( src )
@@ -581,8 +574,7 @@ function _longClone( src )
 
 /* xxx : review */
 /*
-qqq : find and let me know what is _.buffer* analog of _.longShallowClone
-Dmytro : the closest _.buffer* analog of _.longShallowClone is bufferJoin, which joins buffers to flat buffer
+qqq : find and let me know what is _.buffer* analog of _.longShallowClone | Dmytro : the closest _.buffer* analog of _.longShallowClone is bufferJoin, which joins buffers to flat buffer
 qqq2 : did not work! | Dmytro : extended
 qqq2 : poor coverage! | Dmytro : covered
 */
@@ -937,8 +929,7 @@ function longEmpty( dstLong )
  */
 
 /*
-qqq : routine longBut requires good test coverage and documentation
-Dmytro : extended routine coverage by using given clarifications, documented
+qqq : routine longBut requires good test coverage and documentation | Dmytro : extended routine coverage by using given clarifications, documented
  */
 
 function longBut( array, range, val )
@@ -1068,8 +1059,7 @@ function longBut( array, range, val )
  */
 
 /*
-qqq : routine longButInplace requires good test coverage and documentation
-Dmytro : implemented and covered routine longButInplace, documented
+qqq : routine longButInplace requires good test coverage and documentation | Dmytro : implemented and covered routine longButInplace, documented
  */
 
 function longButInplace( array, range, val )
@@ -1306,8 +1296,7 @@ function longBut_( dst, array, range, val )
  */
 
 /*
-  qqq : extend documentation and test coverage of longSelect
-  Dmytro : documented, covered.
+  qqq : extend documentation and test coverage of longSelect | Dmytro : documented, covered.
 */
 
 function longSelect( array, range, val )
@@ -1446,12 +1435,9 @@ function longSelect( array, range, val )
  */
 
 /*
-  qqq : extend documentation and test coverage of longSelectInplace
-  Dmytro : documented, covered
-  qqq : implement arraySelect
-  Dmytro : implemented
-  qqq : implement arraySelectInplace
-  Dmytro : implemented
+  qqq : extend documentation and test coverage of longSelectInplace | Dmytro : documented, covered
+  qqq : implement arraySelect | Dmytro : implemented
+  qqq : implement arraySelectInplace | Dmytro : implemented
 */
 
 function longSelectInplace( array, range, val )
@@ -1684,12 +1670,9 @@ function longSelect_( dst, array, range, val )
  */
 
 /*
-  qqq : extend documentation and test coverage of longGrowInplace
-  Dmytro : extended documentation, covered routine longGrow, longGrowInplace
-  qqq : implement arrayGrow
-  Dmytro : implemented
-  qqq : implement arrayGrowInplace
-  Dmytro : implemented
+  qqq : extend documentation and test coverage of longGrowInplace | Dmytro : extended documentation, covered routine longGrow, longGrowInplace
+  qqq : implement arrayGrow | Dmytro : implemented
+  qqq : implement arrayGrowInplace | Dmytro : implemented
 */
 
 function longGrow( array, range, val )
@@ -2777,7 +2760,8 @@ function longHasNone( src, ins, evaluator )
 
 //
 
-/* qqq : cover please */
+/* qqq : cover please | Dmytro : covered*/
+
 function longHasDepth( arr, level = 1 )
 {
 
@@ -2897,8 +2881,7 @@ function longNone( src )
  */
 
 /*
-qqq : extend coverage, take into account Set case
-Dmytro : coverage is extended
+qqq : extend coverage, take into account Set case | Dmytro : coverage is extended
 */
 
 function arrayMake( src )
@@ -2983,8 +2966,7 @@ function arrayMake( src )
  */
 
 /*
-qqq : document and cover arrayMakeUndefined
-Dmytro : routine is covered and documented
+qqq : document and cover arrayMakeUndefined | Dmytro : routine is covered and documented
 */
 
 function arrayMakeUndefined( src, length )
@@ -3010,8 +2992,7 @@ function arrayMakeUndefined( src, length )
 //
 
 /*
-qqq : add good coverage for arrayFrom, take into account unroll cases
-Dmytro : covered with unroll cases.
+qqq : add good coverage for arrayFrom, take into account unroll cases | Dmytro : covered with unroll cases.
 */
 
 function arrayFrom( src )
@@ -3119,8 +3100,7 @@ function arrayAsShallowing( src )
  */
 
 /*
-qqq : routine arraySlice requires good test coverage and documentation
-Dmytro : good test coverage is added, routine is documented
+qqq : routine arraySlice requires good test coverage and documentation | Dmytro : good test coverage is added, routine is documented
 */
 
 function arraySlice( srcArray, f, l )
@@ -3133,6 +3113,7 @@ function arraySlice( srcArray, f, l )
 //
 
 /* qqq : implement and cover. ask */
+
 function arrayEmpty( dstArray, srcArray )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -3307,9 +3288,9 @@ function arrayBut( src, range, ins )
   _.arrayAppendArray( args, ins );
 
   /*
-  qqq : check is it optimal to make double copy
-  Dmytro : it is not double copy. Method slice() makes a copy and method splice replaces some elements in this copy.
+  qqq : check is it optimal to make double copy | Dmytro : it is not double copy. Method slice() makes a copy and method splice replaces some elements in this copy.
   or uncomment this code
+
   let result = [];
 
   for( let i = 0; i < range[ 0 ]; i++ )
@@ -4415,8 +4396,7 @@ function arrayRelength_( dst, src, range, ins )
  */
 
 /*
-qqq : are all combinations of call of routine arrayCountElement covered?
-Dmytro : yes, all combinations of call is implemented
+qqq : are all combinations of call of routine arrayCountElement covered? | Dmytro : yes, all combinations of call is implemented
 */
 
 function longCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
@@ -4541,9 +4521,7 @@ function longCountUnique( src, onEvaluate )
 
 /*
 
-qqq : use for documentation
-Dmytro : Is this information out of date?
-This task was declined a time ago.
+qqq : use for documentation | Dmytro : this task was declined a time ago.
 
 alteration Routines :
 
@@ -7032,7 +7010,7 @@ function arrayFlattened( dstArray, src )
   _.assert( _.objectIs( this ) );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${dstArray}"` );
 
-  /* qqq : poor code!! ask */
+  /* qqq : poor code!! ask | Dmytro : explained and improved */
 
   if( arguments.length === 1 )
   {
@@ -7052,7 +7030,7 @@ function arrayFlattened( dstArray, src )
       }
     }
 
-    return result;  // Dmytro : it has no sence to count result and return dstArray
+    return result;
     // qqq : why container returned?? that wrong! ask | Dmytro : fixed
   }
 

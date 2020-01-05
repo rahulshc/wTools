@@ -764,7 +764,7 @@ function arraySetContainAll_( src1, src2, onEvaluate1, onEvaluate2 )
     _.assert( 0, '{-src1-} should be instance of Array or Set' );
   }
 
-return true;
+  return true;
 }
 
 //
@@ -951,6 +951,54 @@ function arraySetContainNone_( src1, src2, onEvaluate1, onEvaluate2 )
 
 //
 
+function arraySetContainSetsAll( src1, src2, onEvaluate1, onEvaluate2 )
+{
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( src1 ) || _.setIs( src1 ) );
+  _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
+
+  for( let e of src2 )
+  if( arraySetContainAll_( src1, e, onEvaluate1, onEvaluate2 ) === false )
+  return false;
+
+  return true;
+}
+
+//
+
+function arraySetContainSetsAny( src1, src2, onEvaluate1, onEvaluate2 )
+{
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( src1 ) || _.setIs( src1 ) );
+  _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
+
+  for( let e of src2 )
+  if( arraySetContainAny_( src1, e, onEvaluate1, onEvaluate2 ) === true )
+  return true;
+
+  return false;
+}
+
+//
+
+function arraySetContainSetsNone( src1, src2, onEvaluate1, onEvaluate2 )
+{
+
+  _.assert( 2 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.arrayIs( src1 ) || _.setIs( src1 ) );
+  _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
+
+  for( let e of src2 )
+  if( arraySetContainNone_( src1, e, onEvaluate1, onEvaluate2 ) === false )
+  return false;
+
+  return true;
+}
+
+//
+
 /**
  * Returns true if ( ins1 ) and ( ins2) arrays have same length and elements, elements order doesn't matter.
  * Inner arrays of arguments are not compared and result of such combination will be false.
@@ -1112,7 +1160,11 @@ let NamespaceExtension =
   arraySetContainAny_, /* !!! : use instead of arraySetContainAny */
   arraySetContainNone,
   arraySetContainNone_, /* !!! : use instead of arraySetContainNone */
+  arraySetContainSetsAll,
+  arraySetContainSetsAny,
+  arraySetContainSetsNone,
   arraySetIdentical,
+
 
   arraySetLeft,
   arraySetRight,

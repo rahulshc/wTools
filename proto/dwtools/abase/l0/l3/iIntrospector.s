@@ -383,7 +383,15 @@ locationFromStackFrame.defaults =
 //
 
 /**
- * Return stack trace as string.
+ * Routine stack() returns stack trace from provided argument {-stack-} as a string. If {-stack-} is not provided,
+ * then routine returns stack trace at a current position of code.
+ *
+ * @param { String|Array|Unroll|Error } stack - A stack to trace. If {-stack-} is not provided, then routine generates
+ * stack trace at a current code position.
+ * @param { Range } range - A range of lines selected from stack trace. If {-range-} is undefined, then routine returns
+ * full stack trace. If range[ 0 ] < 0, then routine counts lines from the end of stack trace. If stack[ 1 ] < 0, then 
+ * routine counts end line from the end of stack trace.
+ *
  * @example
  * let stack;
  * function function1()
@@ -404,13 +412,37 @@ locationFromStackFrame.defaults =
  * function1();
  * console.log( stack );
  * // log
- * //"    at function3 (<anonymous>:10:17)
- * // at function2 (<anonymous>:6:2)
- * // at function1 (<anonymous>:2:2)
- * // at <anonymous>:1:1"
+ * //"  at function3 (<anonymous>:10:17)
+ * //   at function2 (<anonymous>:6:2)
+ * //   at function1 (<anonymous>:2:2)
+ * //   at <anonymous>:1:1"
  *
- * @returns {String} Return stack trace from call point.
+ * @example
+ * let stack;
+ * function function1()
+ * {
+ *   function2();
+ * }
+ *
+ * function function2()
+ * {
+ *   function3();
+ * }
+ *
+ * function function3()
+ * {
+ *   stack = _.introspector.stack( [ 0, 1 ] );
+ * }
+ *
+ * function1();
+ * console.log( stack );
+ * // log
+ * //"  at function3 (<anonymous>:10:17)
+ *
+ * @returns { String } - Return stack trace from call point.
  * @function stack
+ * @throws { Error } If arguments.length is more than two.
+ * @throws { Error } If {-range-} is not a Range.
  * @memberof wTools
  */
 
@@ -436,8 +468,9 @@ function stack( stack, range )
     }
     else
     {
+      if( _.numberIs( range[ 0 ] ) ) /* Dmytro : previous implementation affects range - not a number value + number => NaN, so assertion does not word properly */
       range[ 0 ] += 1;
-      if( range[ 1 ] >= 0 )
+      if( _.numberIs( range[ 1 ] ) && range[ 1 ] >= 0 )
       range[ 1 ] += 1;
     }
   }
@@ -460,17 +493,17 @@ function stack( stack, range )
   let first = range[ 0 ];
   let last = range[ 1 ];
 
-  if( !_.numberIs( first ) )
-  {
-    debugger;
-    throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( first ) );
-  }
-
-  if( !_.numberIs( last ) )
-  {
-    debugger;
-    throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( last ) );
-  }
+  // if( !_.numberIs( first ) ) // Dmytro : it's unnecessary assertions, _.rangeIs checks number value in passed array
+  // {
+  //   debugger;
+  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( first ) );
+  // }
+  //
+  // if( !_.numberIs( last ) )
+  // {
+  //   debugger;
+  //   throw Error( 'stack : expects number range[ 0 ], but got ' + _.strType( last ) );
+  // }
 
   let errIs = 0;
   if( _.errIs( stack ) )
@@ -485,11 +518,11 @@ function stack( stack, range )
   if( !_.arrayIs( stack ) && !_.strIs( stack ) )
   return;
 
-  if( !_.arrayIs( stack ) && !_.strIs( stack ) )
-  {
-    debugger;
-    throw Error( 'stack expects array or string' );
-  }
+  // if( !_.arrayIs( stack ) && !_.strIs( stack ) ) // Dmytro : previous condition is almost identical
+  // {
+  //   debugger;
+  //   throw Error( 'stack expects array or string' );
+  // }
 
   if( !_.arrayIs( stack ) )
   stack = stack.split( '\n' );
@@ -509,7 +542,7 @@ function stack( stack, range )
   }
 
   if( stack[ 0 ] )
-  if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 )
+  if( stack[ 0 ].indexOf( 'at ' ) === -1 && stack[ 0 ].indexOf( '@' ) === -1 ) // Dmytro : it's dubious - while loop removes all strings if stack[ 0 ] has not 'at ' or '@'
   {
     console.error( 'stack : failed to parse stack' );
     debugger;
@@ -523,11 +556,11 @@ function stack( stack, range )
   first = first === undefined ? 0 : first;
   last = last === undefined ? stack.length : last;
 
-  if( _.numberIs( first ) )
+  // if( _.numberIs( first ) ) // Dmytro : first and last - is always some numbers, see above about assertions
   if( first < 0 )
   first = stack.length + first;
 
-  if( _.numberIs( last ) )
+  // if( _.numberIs( last ) )
   if( last < 0 )
   last = stack.length + last + 1;
 
@@ -550,7 +583,7 @@ function stack( stack, range )
 function stackRemoveLeft( stack, include, exclude )
 {
   if( arguments.length !== 3 )
-  throw Error( 'Expects two arguments' );
+  throw Error( 'Expects three arguments' );
   if( !_.regexpIs( include ) && include !== null )
   throw Error( 'Expects regexp either null as the second argument' );
   if( !_.regexpIs( exclude ) && exclude !== null )
@@ -625,7 +658,7 @@ function stackFilter( stack, onEach )
   }
 
   if( !_.strIs( stack ) )
-  stack = _.introspector.stack( stack );
+  stack = _.introspector.stack( stack, undefined ); // Dmytro : missed second argument, which has influence on the result
 
   _.assert( _.strIs( stack ) );
   _.assert( _.routineIs( onEach ) );
@@ -670,10 +703,10 @@ let Extnesion =
 
   location,
   locationFromStackFrame,
-  stack, /* qqq : very good coverage required  */
+  stack, /* qqq : very good coverage required | Dmytro : test routine extended */
   stackRemoveLeft,
   stackCondense,
-  stackFilter, /* qqq : cover */
+  stackFilter, /* qqq : cover | Dmytro : covered */
   code,
 
 }
