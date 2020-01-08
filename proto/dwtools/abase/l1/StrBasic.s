@@ -501,18 +501,22 @@ function _strRemoved( srcStr, insStr )
 */
 
 /*
-qqq : extend coverage of routines strRemove, strReplace
-      make sure tests cover regexp cases
+qqq : extend coverage of routines strRemove, strReplace, make sure tests cover regexp cases | Dmytro : coverage is extended
 */
 
 function strRemove( srcStr, insStr )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( srcStr ) || _.strLike( srcStr ), () => 'Expects string or array of strings {-srcStr-}, but got ' + _.strType( srcStr ) );
-  _.assert( _.longIs( insStr ) || _.strLike( insStr ), () => 'Expects string/regexp or array of strings/regexps {-begin-}' );
+
+  if( _.longIs( insStr ) )
+  for( let i = 0 ; i < insStr.length ; i++ )
+  _.assert( _.strIs( insStr[ i ] ) || _.regexpIs( insStr[ i ] ), () => 'Expects string/regexp or array of strings/regexps' );
+  else
+  _.assert( _.strIs( insStr ) || _.regexpIs( insStr ), () => 'Expects string/regexp or array of strings/regexps' );
+  //_.assert( _.longIs( insStr ) || _.strLike( insStr ), () => 'Expects string/regexp or array of strings/regexps {-begin-}' );
 
   let result = [];
-  let srcIsArray = _.longIs( srcStr );
 
   if( _.strIs( srcStr ) && !_.longIs( srcStr ) )
   return _._strRemoved( srcStr, insStr );
@@ -525,7 +529,7 @@ function strRemove( srcStr, insStr )
     result[ s ] = _._strRemoved( src, insStr );
   }
 
-  if( !srcIsArray )
+  if( !_.longIs( srcStr ) )
   return result[ 0 ];
 
   return result;
@@ -5144,7 +5148,7 @@ let Proto =
   strOnly, //: _.vectorize( strOnlySingle ), /* qqq : cover and document | Dmytro : covered and documented */
   strButSingle,
   strBut, // : _.vectorize( strButSingle ), /* qqq : cover and document | Dmytro : covered and documented */
-  strUnjoin, /* qqq : document me */
+  strUnjoin, /* qqq : document me | Dmytro : documented */
 
   // joiner
 
@@ -5160,7 +5164,7 @@ let Proto =
   // strLinesOnly, /* qqq : implement, document and cover */
   strLinesSplit,
   strLinesJoin,
-  strLinesStrip, /* qqq : test coverage */
+  strLinesStrip, /* qqq : test coverage | Dmytro : covered a time ago */
   strLinesNumber,
   strLinesSelect,
   strLinesNearest, /* qqq : check coverage | Dmytro : checked, improved formatting */
