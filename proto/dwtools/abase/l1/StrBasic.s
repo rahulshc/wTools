@@ -3158,8 +3158,7 @@ strSplitChunks.defaults =
 //
 
 /*
-qqq : cover it by test
-Dmytro : covered,
+qqq : cover it by test | Dmytro : covered,
 maybe, routine needs assertion
 _.assert( arguments.length === 1, 'Expects one argument' );
 if assertion will be accepted, then test.case = 'a few arguments' will throw error
@@ -4024,12 +4023,11 @@ function strJoinPath( srcs, joiner )
  */
 
 /*
-qqq : cover routine strConcat and extend it. ask how to
-Dmytro : routine covered and documented, not extended
+qqq : cover routine strConcat and extend it. ask how to | Dmytro : routine covered and documented, not extended
 */
 
 /*
-  qqq : does not work properly, remove indentation, but should not
+  qqq : does not work properly, remove indentation, but should not | Dmytro : fixed, all comments below
   srcs :
 [
   'b',
@@ -4039,7 +4037,6 @@ Dmytro : routine covered and documented, not extended
 `
 ]
 
-Dmytro : fixed, all comments below
 */
 
 function strConcat( srcs, o )
@@ -4273,7 +4270,7 @@ function strLinesBut( src, range, ins )
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.longIs( src ) );
   _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
-  _.assert( !_.longIs( ins ), 'not implemented' );
+  // _.assert( !_.longIs( ins ), 'not implemented' );
 
   if( _.numberIs( range ) )
   {
@@ -4287,22 +4284,31 @@ function strLinesBut( src, range, ins )
 
   _.assert( _.rangeIs( range ) );
 
-  /* qqq : should work
+  /*
+    qqq : should work | Dmytro : works
     _.strLinesBut( _.strLinesBut( got1, 0 ), -1 )
   */
 
-  /* qqq : implement not implemented
+  /*
+    qqq : implement not implemented | Dmytro : implemented
   */
 
-  if( ins )
-  {
-    _.assert( _.strIs( ins ) );
-    return _.longBut( src, range, [ ins ] ).join( '\n' );
-  }
+  if( _.longIs( ins ) )
+  return _.longBut( src, range, ins ).join( '\n' );
+  else if( _.strIs( ins ) )
+  return _.longBut( src, range, [ ins ] ).join( '\n' );
   else
-  {
-    return _.longBut( src, range ).join( '\n' );
-  }
+  return _.longBut( src, range ).join( '\n' );
+
+  // if( ins )
+  // {
+  //   _.assert( _.strIs( ins ) );
+  //   return _.longBut( src, range, [ ins ] ).join( '\n' );
+  // }
+  // else
+  // {
+  //   return _.longBut( src, range ).join( '\n' );
+  // }
 
 }
 
