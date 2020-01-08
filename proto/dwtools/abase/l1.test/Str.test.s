@@ -1448,7 +1448,7 @@ function strReplaceWords( test )
   test.case = 'invalid arguments count';
   test.shouldThrowErrorSync( function()
   {
-    _.strReplaceWords( '1', '2');
+    _.strReplaceWords( '1', '2' );
   });
 
   test.case = 'invalid argument type';
@@ -4899,7 +4899,7 @@ function strJoin( test )
   test.identical( got, expected );
 
   test.case = 'join array + string + joiner';
-  var got = _.strJoin([ [ 1, 2 ], '3' ], '__');
+  var got = _.strJoin([ [ 1, 2 ], '3' ], '__' );
   var expected = [ '1__3', '2__3' ];
   test.identical( got, expected );
 
@@ -5051,12 +5051,12 @@ function strJoinPath( test )
   test.identical( got, expected );
 
   test.case = 'join array + string + joiner';
-  var got = _.strJoinPath([ [ '1', '2' ], '3' ], '__');
+  var got = _.strJoinPath([ [ '1', '2' ], '3' ], '__' );
   var expected = [ '1__3', '2__3' ];
   test.identical( got, expected );
 
   test.case = 'join array + string + joiner ( with numbers )';
-  var got = _.strJoinPath([ [ 1, 2 ], 3, 'string' ], '__');
+  var got = _.strJoinPath([ [ 1, 2 ], 3, 'string' ], '__' );
   var expected = [ '1__3__string', '2__3__string' ];
   test.identical( got, expected );
 
@@ -5378,7 +5378,7 @@ function strConcat( test )
   var srcs = [ 'a', 'b', 'c', 'd' ];
   var o = { linePostfix : ' ||', linePrefix : '|| ' };
   var got = _.strConcat( srcs, o );
-  test.identical( got, '|| a b c d ||')
+  test.identical( got, '|| a b c d ||' )
 
   test.case = 'linePrefix and linePostfix, lineDelimter';
   var srcs = [ 'a\n', 'b\n', 'c\n', 'd\n' ];
@@ -5452,6 +5452,903 @@ function strIndentation( test )
 
   test.case = 'second argument type is wrong';
   test.shouldThrowErrorSync( () => _.strIndentation( 'one', 12 ) );
+}
+
+//
+
+function strLinesBut( test ) 
+{
+  test.open( 'src - string, range' );
+
+  test.case = 'src - empty string, range - number';
+  var src = '';
+  var got = _.strLinesBut( src, 0 );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, range - range';
+  var src = '';
+  var got = _.strLinesBut( src, [ 0, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, range - negative number';
+  var src = '';
+  var got = _.strLinesBut( src, -2 );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, range - negative range[ 0 ]';
+  var src = '';
+  var got = _.strLinesBut( src, [ -2, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, range - negative range[ 1 ]';
+  var src = '';
+  var got = _.strLinesBut( src, [ 0, -5 ] );
+  test.identical( got, '' );
+
+  /* */
+
+  test.case = 'src - string without new lines, range - number';
+  var src = 'abc';
+  var got = _.strLinesBut( src, 0 );
+  test.identical( got, '' );
+
+  test.case = 'src - string without new lines, range - number > number of lines';
+  var src = 'abc';
+  var got = _.strLinesBut( src, 2 );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string without new lines, range - range';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 0, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - string without new lines, range - range[ 0 ] > number of lines';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 2, 5 ] );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string without new lines, range - negative number';
+  var src = 'abc';
+  var got = _.strLinesBut( src, -2 );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string without new lines, range - negative range[ 0 ]';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ -2, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - string without new lines, range - negative range[ 1 ]';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 0, -5 ] );
+  test.identical( got, 'abc' );
+
+  /* */
+
+  test.case = 'src - string with new lines, range - number';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, 0 );
+  test.identical( got, 'def\nghi' );
+
+  test.case = 'src - string with new lines, range - number > number of lines';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, 5 );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.case = 'src - string with new lines, range - range';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 0, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - string with new lines, range - range[ 0 ] > number of lines';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 4, 5 ] );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.case = 'src - string with new lines, range - negative number';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, -2 );
+  test.identical( got, 'abc\nghi' );
+
+  test.case = 'src - string with new lines, range - negative range[ 0 ]';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ -2, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - string with new lines, range - negative range[ 1 ]';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 0, -5 ] );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.close( 'src - string, range' );
+
+  /* - */
+
+  test.open( 'src - string, range, ins - undefined' );
+
+  test.case = 'src - empty string, range - number';
+  var src = '';
+  var got = _.strLinesBut( src, 0, undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, range - range';
+  var src = '';
+  var got = _.strLinesBut( src, [ 0, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, range - negative number';
+  var src = '';
+  var got = _.strLinesBut( src, -2, undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, range - negative range[ 0 ]';
+  var src = '';
+  var got = _.strLinesBut( src, [ -2, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - empty string, range - negative range[ 1 ]';
+  var src = '';
+  var got = _.strLinesBut( src, [ 0, -5 ], undefined );
+  test.identical( got, '' );
+
+  /* */
+
+  test.case = 'src - string without new lines, range - number';
+  var src = 'abc';
+  var got = _.strLinesBut( src, 0, undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - string without new lines, range - number > number of lines';
+  var src = 'abc';
+  var got = _.strLinesBut( src, 2, undefined );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string without new lines, range - range';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 0, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - string without new lines, range - range[ 0 ] > number of lines';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 2, 5 ], undefined );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string without new lines, range - negative number';
+  var src = 'abc';
+  var got = _.strLinesBut( src, -2, undefined );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - string without new lines, range - negative range[ 0 ]';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ -2, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - string without new lines, range - negative range[ 1 ]';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 0, -5 ], undefined );
+  test.identical( got, 'abc' );
+
+  /* */
+
+  test.case = 'src - string with new lines, range - number';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, 0, undefined );
+  test.identical( got, 'def\nghi' );
+
+  test.case = 'src - string with new lines, range - number > number of lines';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, 5, undefined );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.case = 'src - string with new lines, range - range';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 0, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - string with new lines, range - range[ 0 ] > number of lines';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 4, 5 ], undefined );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.case = 'src - string with new lines, range - negative number';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, -2 , undefined);
+  test.identical( got, 'abc\nghi' );
+
+  test.case = 'src - string with new lines, range - negative range[ 0 ]';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ -2, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - string with new lines, range - negative range[ 1 ]';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 0, -5 ], undefined );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.close( 'src - string, range, ins - undefined' );
+
+  /* - */
+
+  test.open( 'src - string, range, ins - string' );
+
+  test.case = 'src - empty string, range - number';
+  var src = '';
+  var got = _.strLinesBut( src, 0, 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - empty string, range - range';
+  var src = '';
+  var got = _.strLinesBut( src, [ 0, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - empty string, range - negative number';
+  var src = '';
+  var got = _.strLinesBut( src, -2, 'str' );
+  test.identical( got, 'str\n' );
+
+  test.case = 'src - empty string, range - negative range[ 0 ]';
+  var src = '';
+  var got = _.strLinesBut( src, [ -2, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - empty string, range - negative range[ 1 ]';
+  var src = '';
+  var got = _.strLinesBut( src, [ 0, -5 ], 'str' );
+  test.identical( got, 'str\n' );
+
+  /* */
+
+  test.case = 'src - string without new lines, range - number';
+  var src = 'abc';
+  var got = _.strLinesBut( src, 0, 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - string without new lines, range - number > number of lines';
+  var src = 'abc';
+  var got = _.strLinesBut( src, 2, 'str' );
+  test.identical( got, 'abc\nstr' );
+
+  test.case = 'src - string without new lines, range - range';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 0, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - string without new lines, range - range[ 0 ] > number of lines';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 2, 5 ], 'str' );
+  test.identical( got, 'abc\nstr' );
+
+  test.case = 'src - string without new lines, range - negative number';
+  var src = 'abc';
+  var got = _.strLinesBut( src, -2, 'str' );
+  test.identical( got, 'str\nabc' );
+
+  test.case = 'src - string without new lines, range - negative range[ 0 ]';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ -2, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - string without new lines, range - negative range[ 1 ]';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 0, -5 ], 'str' );
+  test.identical( got, 'str\nabc' );
+
+  /* */
+
+  test.case = 'src - string with new lines, range - number';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, 0, 'str' );
+  test.identical( got, 'str\ndef\nghi' );
+
+  test.case = 'src - string with new lines, range - number > number of lines';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, 5, 'str' );
+  test.identical( got, 'abc\ndef\nghi\nstr' );
+
+  test.case = 'src - string with new lines, range - range';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 0, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - string with new lines, range - range[ 0 ] > number of lines';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 4, 5 ], 'str' );
+  test.identical( got, 'abc\ndef\nghi\nstr' );
+
+  test.case = 'src - string without new lines, range - range[ 0 ] === 1, range[ 2 ] === 2';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 1, 2 ], 'str' );
+  test.identical( got, 'abc\nstr\nghi' );
+
+  test.case = 'src - string with new lines, range - negative number';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, -2 , 'str' );
+  test.identical( got, 'abc\nstr\nghi' );
+
+  test.case = 'src - string with new lines, range - negative range[ 0 ]';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ -2, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - string with new lines, range - negative range[ 1 ]';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 0, -5 ], 'str' );
+  test.identical( got, 'str\nabc\ndef\nghi' );
+
+  test.close( 'src - string, range, ins - string' );
+
+  /* - */
+
+  test.open( 'src - string, range, ins - array' );
+
+  test.case = 'src - empty string, range - number';
+  var src = '';
+  var got = _.strLinesBut( src, 0, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - empty string, range - range';
+  var src = '';
+  var got = _.strLinesBut( src, [ 0, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - empty string, range - negative number';
+  var src = '';
+  var got = _.strLinesBut( src, -2, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\n' );
+
+  test.case = 'src - empty string, range - negative range[ 0 ]';
+  var src = '';
+  var got = _.strLinesBut( src, [ -2, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - empty string, range - negative range[ 1 ]';
+  var src = '';
+  var got = _.strLinesBut( src, [ 0, -5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\n' );
+
+  /* */
+
+  test.case = 'src - string without new lines, range - number';
+  var src = 'abc';
+  var got = _.strLinesBut( src, 0, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - string without new lines, range - number > number of lines';
+  var src = 'abc';
+  var got = _.strLinesBut( src, 2, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\nstr\nnew\none' );
+
+  test.case = 'src - string without new lines, range - range';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 0, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - string without new lines, range - range[ 0 ] > number of lines';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 2, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\nstr\nnew\none' );
+
+  test.case = 'src - string without new lines, range - negative number';
+  var src = 'abc';
+  var got = _.strLinesBut( src, -2, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\nabc' );
+
+  test.case = 'src - string without new lines, range - negative range[ 0 ]';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ -2, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - string without new lines, range - negative range[ 1 ]';
+  var src = 'abc';
+  var got = _.strLinesBut( src, [ 0, -5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\nabc' );
+
+  /* */
+
+  test.case = 'src - string with new lines, range - number';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, 0, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\ndef\nghi' );
+
+  test.case = 'src - string with new lines, range - number > number of lines';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, 5, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\ndef\nghi\nstr\nnew\none' );
+
+  test.case = 'src - string with new lines, range - range';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 0, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - string with new lines, range - range[ 0 ] > number of lines';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 4, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\ndef\nghi\nstr\nnew\none' );
+
+  test.case = 'src - string without new lines, range - range[ 0 ] === 1, range[ 2 ] === 2';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 1, 2 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\nstr\nnew\none\nghi' );
+
+  test.case = 'src - string with new lines, range - negative number';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, -2 , [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\nstr\nnew\none\nghi' );
+
+  test.case = 'src - string with new lines, range - negative range[ 0 ]';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ -2, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - string with new lines, range - negative range[ 1 ]';
+  var src = 'abc\ndef\nghi';
+  var got = _.strLinesBut( src, [ 0, -5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\nabc\ndef\nghi' );
+
+  test.close( 'src - string, range, ins - array' );
+
+  /* - */
+
+  test.open( 'src - array, range' );
+
+  test.case = 'src - array with one empty string, range - number';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, 0 );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one empty string, range - range';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ 0, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one empty string, range - negative number';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, -2 );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one empty string, range - negative range[ 0 ]';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ -2, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one empty string, range - negative range[ 1 ]';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ 0, -5 ] );
+  test.identical( got, '' );
+
+  /* */
+
+  test.case = 'src - array with one string, range - number';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, 0 );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one string, range - number > number of lines';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, 2 );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - array with one string, range - range';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 0, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one string, range - range[ 0 ] > number of lines';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 2, 5 ] );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - array with one string, range - negative number';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, -2 );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - array with one string, range - negative range[ 0 ]';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ -2, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one string, range - negative range[ 1 ]';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 0, -5 ] );
+  test.identical( got, 'abc' );
+
+  /* */
+
+  test.case = 'src - array with a few string, range - number';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, 0 );
+  test.identical( got, 'def\nghi' );
+
+  test.case = 'src - array with a few string, range - number > number of lines';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, 5 );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.case = 'src - array with a few string, range - range';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 0, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - array with a few string, range - range[ 0 ] > number of lines';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 4, 5 ] );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.case = 'src - array with a few string, range - negative number';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, -2 );
+  test.identical( got, 'abc\nghi' );
+
+  test.case = 'src - array with a few string, range - negative range[ 0 ]';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ -2, 5 ] );
+  test.identical( got, '' );
+
+  test.case = 'src - array with a few string, range - negative range[ 1 ]';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 0, -5 ] );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.close( 'src - array, range' );
+
+  /* - */
+
+  test.open( 'src - array, range, ins - undefined' );
+
+  test.case = 'src - array with one empty string, range - number';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, 0, undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one empty string, range - range';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ 0, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one empty string, range - negative number';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, -2, undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one empty string, range - negative range[ 0 ]';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ -2, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one empty string, range - negative range[ 1 ]';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ 0, -5 ], undefined );
+  test.identical( got, '' );
+
+  /* */
+
+  test.case = 'src - array with one string, range - number';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, 0, undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one string, range - number > number of lines';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, 2, undefined );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - array with one string, range - range';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 0, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one string, range - range[ 0 ] > number of lines';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 2, 5 ], undefined );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - array with one string, range - negative number';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, -2, undefined );
+  test.identical( got, 'abc' );
+
+  test.case = 'src - array with one string, range - negative range[ 0 ]';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ -2, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - array with one string, range - negative range[ 1 ]';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 0, -5 ], undefined );
+  test.identical( got, 'abc' );
+
+  /* */
+
+  test.case = 'src - array with a few string, range - number';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, 0, undefined );
+  test.identical( got, 'def\nghi' );
+
+  test.case = 'src - array with a few string, range - number > number of lines';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, 5, undefined );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.case = 'src - array with a few string, range - range';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 0, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - array with a few string, range - range[ 0 ] > number of lines';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 4, 5 ], undefined );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.case = 'src - array with a few string, range - negative number';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, -2 , undefined);
+  test.identical( got, 'abc\nghi' );
+
+  test.case = 'src - array with a few string, range - negative range[ 0 ]';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ -2, 5 ], undefined );
+  test.identical( got, '' );
+
+  test.case = 'src - array with a few string, range - negative range[ 1 ]';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 0, -5 ], undefined );
+  test.identical( got, 'abc\ndef\nghi' );
+
+  test.close( 'src - array, range, ins - undefined' );
+
+  /* - */
+
+  test.open( 'src - array, range, ins - string' );
+
+  test.case = 'src - array with one empty string, range - number';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, 0, 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - array with one empty string, range - range';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ 0, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - array with one empty string, range - negative number';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, -2, 'str' );
+  test.identical( got, 'str\n' );
+
+  test.case = 'src - array with one empty string, range - negative range[ 0 ]';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ -2, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - array with one empty string, range - negative range[ 1 ]';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ 0, -5 ], 'str' );
+  test.identical( got, 'str\n' );
+
+  /* */
+
+  test.case = 'src - array with one string, range - number';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, 0, 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - array with one string, range - number > number of lines';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, 2, 'str' );
+  test.identical( got, 'abc\nstr' );
+
+  test.case = 'src - array with one string, range - range';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 0, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - array with one string, range - range[ 0 ] > number of lines';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 2, 5 ], 'str' );
+  test.identical( got, 'abc\nstr' );
+
+  test.case = 'src - array with one string, range - negative number';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, -2, 'str' );
+  test.identical( got, 'str\nabc' );
+
+  test.case = 'src - array with one string, range - negative range[ 0 ]';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ -2, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - array with one string, range - negative range[ 1 ]';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 0, -5 ], 'str' );
+  test.identical( got, 'str\nabc' );
+
+  /* */
+
+  test.case = 'src - array with a few string, range - number';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, 0, 'str' );
+  test.identical( got, 'str\ndef\nghi' );
+
+  test.case = 'src - array with a few string, range - number > number of lines';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, 5, 'str' );
+  test.identical( got, 'abc\ndef\nghi\nstr' );
+
+  test.case = 'src - array with a few string, range - range';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 0, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - array with a few string, range - range[ 0 ] > number of lines';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 4, 5 ], 'str' );
+  test.identical( got, 'abc\ndef\nghi\nstr' );
+
+  test.case = 'src - array with one string, range - range[ 0 ] === 1, range[ 2 ] === 2';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 1, 2 ], 'str' );
+  test.identical( got, 'abc\nstr\nghi' );
+
+  test.case = 'src - array with a few string, range - negative number';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, -2 , 'str' );
+  test.identical( got, 'abc\nstr\nghi' );
+
+  test.case = 'src - array with a few string, range - negative range[ 0 ]';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ -2, 5 ], 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'src - array with a few string, range - negative range[ 1 ]';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 0, -5 ], 'str' );
+  test.identical( got, 'str\nabc\ndef\nghi' );
+
+  test.close( 'src - array, range, ins - string' );
+
+  /* - */
+
+  test.open( 'src - array, range, ins - array' );
+
+  test.case = 'src - array with one empty string, range - number';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, 0, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - array with one empty string, range - range';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ 0, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - array with one empty string, range - negative number';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, -2, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\n' );
+
+  test.case = 'src - array with one empty string, range - negative range[ 0 ]';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ -2, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - array with one empty string, range - negative range[ 1 ]';
+  var src = [ '' ];
+  var got = _.strLinesBut( src, [ 0, -5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\n' );
+
+  /* */
+
+  test.case = 'src - array with one string, range - number';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, 0, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - array with one string, range - number > number of lines';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, 2, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\nstr\nnew\none' );
+
+  test.case = 'src - array with one string, range - range';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 0, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - array with one string, range - range[ 0 ] > number of lines';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 2, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\nstr\nnew\none' );
+
+  test.case = 'src - array with one string, range - negative number';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, -2, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\nabc' );
+
+  test.case = 'src - array with one string, range - negative range[ 0 ]';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ -2, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - array with one string, range - negative range[ 1 ]';
+  var src = [ 'abc' ];
+  var got = _.strLinesBut( src, [ 0, -5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\nabc' );
+
+  /* */
+
+  test.case = 'src - array with a few string, range - number';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, 0, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\ndef\nghi' );
+
+  test.case = 'src - array with a few string, range - number > number of lines';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, 5, [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\ndef\nghi\nstr\nnew\none' );
+
+  test.case = 'src - array with a few string, range - range';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 0, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - array with a few string, range - range[ 0 ] > number of lines';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 4, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\ndef\nghi\nstr\nnew\none' );
+
+  test.case = 'src - array with a few string, range - range[ 0 ] === 1, range[ 2 ] === 2';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 1, 2 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\nstr\nnew\none\nghi' );
+
+  test.case = 'src - array with a few string, range - negative number';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, -2 , [ 'str', 'new', 'one' ] );
+  test.identical( got, 'abc\nstr\nnew\none\nghi' );
+
+  test.case = 'src - array with a few string, range - negative range[ 0 ]';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ -2, 5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none' );
+
+  test.case = 'src - array with a few string, range - negative range[ 1 ]';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( src, [ 0, -5 ], [ 'str', 'new', 'one' ] );
+  test.identical( got, 'str\nnew\none\nabc\ndef\nghi' );
+
+  test.close( 'src - array, range, ins - array' );
+
+  /* - */
+
+  test.case = 'strLinesBut from returned result';
+  var src = [ 'abc', 'def', 'ghi' ];
+  var got = _.strLinesBut( _.strLinesBut( src, [ 0, -5 ], [ 'str', 'new', 'one' ] ), -1 );
+  test.identical( got, 'str\nnew\none\nabc\ndef' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strLinesBut() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.strLinesBut( 'str\nabc' ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strLinesBut( 'str\nabc', 1, 'cba', 'extra' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.strLinesBut( { 'str\nabc' : 'str\nabc' }, 1, 'cba' ) );
+  test.shouldThrowErrorSync( () => _.strLinesBut( new Set( [ 'abc' ] ), 1, 'cba' ) );
+
+  test.case = 'wrong range';
+  test.shouldThrowErrorSync( () => _.strLinesBut( 'str\nabc', [], 'cba' ) );
+  test.shouldThrowErrorSync( () => _.strLinesBut( 'str\nabc', [ 1, 2, 3 ], 'cba' ) );
+  test.shouldThrowErrorSync( () => _.strLinesBut( 'str\nabc', [ undefined, undefined ], 'cba' ) );
+
+  test.case = 'wrong type of ins';
+  test.shouldThrowErrorSync( () => _.strLinesBut( 'str\nabc', 1, { 'cba' : 'cba' } ) );
+  test.shouldThrowErrorSync( () => _.strLinesBut( 'str\nabc', 1, new BufferRaw( 10 ) ) );
 }
 
 //
@@ -7871,6 +8768,7 @@ var Self =
     // liner
 
     strIndentation,
+    strLinesBut,
     strLinesStrip,
     strLinesNumber,
     strLinesNumberZeroLine,
