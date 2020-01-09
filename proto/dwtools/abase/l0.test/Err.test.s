@@ -372,6 +372,226 @@ function _errArgsHasError( test )
 
 //
 
+function _errArgsHasRoutine( test )
+{
+  test.case = 'empty args';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ] } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 2 );
+  test.identical( _.strCount( errStr, 'Sample' ), 2 );
+  test.identical( _.strCount( errStr, 'next' ), 2 );
+  test.identical( _.strCount( errStr, 'Error' ), 2 );
+  test.identical( _.strCount( errStr, 'Object._errArgsHasRoutine' ), 2 );
+
+  test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - undefined, level - 2';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], level : 2 } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 2 );
+  test.identical( _.strCount( errStr, 'Sample' ), 2 );
+  test.identical( _.strCount( errStr, 'next' ), 2 );
+  test.identical( _.strCount( errStr, 'Error' ), 2 );
+  test.identical( _.strCount( errStr, 'Object._errArgsHasRoutine' ), 1 );
+
+  test.case = 'empty args, throwenCallsStack - string';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], throwenCallsStack : 'at program\nat _errTrowsError' } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'at program' ), 1 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'next' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+
+  test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - string';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], caughtCallsStack : 'at program\nat _errTrowsError' } );
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'next' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 0 );
+  test.identical( _.strCount( errStr, 'at program' ), 0 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 0 );
+
+  test.case = 'empty args, throwenCallsStack - empty string';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var o = { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], caughtCallsStack : '' };
+  var err = _._err( o );
+  test.is( _.errIs( err ) );
+  test.identical( o.caughtCallsStack, '' );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 2 );
+  test.identical( _.strCount( errStr, 'Sample' ), 2 );
+  test.identical( _.strCount( errStr, 'next' ), 2 );
+  test.identical( _.strCount( errStr, 'Error' ), 2 );
+  test.identical( _.strCount( err.stack, 'Object._errArgsHasRoutine' ), 1 );
+
+  /* */
+
+  test.case = 'empty args, throwenCallsStack, stackRemovingBeginIncluding';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err
+  ({ 
+    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], 
+    throwenCallsStack : 'at program1\nat _errTrowsError', 
+    stackRemovingBeginIncluding : /program1/ 
+  });
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'next' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at program1' ), 0 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
+
+  test.case = 'empty args, throwenCallsStack, stackRemovingBeginExcluding';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err 
+  ({ 
+    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], 
+    throwenCallsStack : 'at program1\nat _errTrowsError', 
+    stackRemovingBeginExcluding : /_errTrowsError/ 
+  });
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'next' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 0 );
+  test.identical( _.strCount( errStr, 'at program1' ), 1 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 0 );
+
+  test.case = 'empty args, throwenCallsStack, stackRemovingBeginIncluding and stackRemovingBeginExcluding';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err
+  ({
+      args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+      throwenCallsStack : 'at program1\nat _errTrowsError',
+      stackRemovingBeginIncluding : /program1/,
+      stackRemovingBeginExcluding : /_errTrowsError/
+  });
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 0 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 0 );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'next' ), 0 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at program1' ), 0 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 0 );
+
+  /* */
+
+  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and __';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err 
+  ({ 
+    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], 
+    throwenCallsStack : 'at program1\nat _errTrowsError', 
+    asyncCallsStack : [ 'at asyncCallsStack', 'at @2' ] 
+  });
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'next' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
+  test.identical( _.strCount( errStr, 'at @2' ), 1 );
+
+  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and with __';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err 
+  ({ 
+    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], 
+    throwenCallsStack : 'at program1\nat _errTrowsError', 
+    asyncCallsStack : [ 'at asyncCallsStack', '__dirname' ] 
+  });
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'next' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
+  test.identical( _.strCount( errStr, '__dirname' ), 0 );
+
+  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and with *__';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err 
+  ({ 
+    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], 
+    throwenCallsStack : 'at program1\nat _errTrowsError', 
+    asyncCallsStack : [ 'at asyncCallsStack', '*__dirname' ] 
+  });
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'next' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
+  test.identical( _.strCount( errStr, '*__dirname' ), 0 );
+
+  test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test"';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err 
+  ({ 
+    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], 
+    throwenCallsStack : 'at program1\nat _errTrowsError', 
+    asyncCallsStack : [ 'at Err.test.s', '*__dirname' ] 
+  });
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'next' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at Err.test.s *' ), 1 );
+  test.identical( _.strCount( errStr, '*__dirname' ), 0 );
+
+  test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test", stackCondensing - 0';
+  var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
+  var err = _._err
+  ({
+    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+    throwenCallsStack : 'at program1\nat _errTrowsError',
+    asyncCallsStack : [ 'at Err.test.s', '*__dirname' ],
+    stackCondensing : 0
+  });
+  test.is( _.errIs( err ) );
+  var errStr = String( err );
+  console.log( errStr );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'next' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
+  test.identical( _.strCount( errStr, '*__dirname' ), 1 );
+}
+
+//
+
 function errCatchStackAndMessage( test )
 {
   let context = this;
@@ -572,6 +792,7 @@ var Self =
     _errTrowsError,
     _errEmptyArgs,
     _errArgsHasError,
+    _errArgsHasRoutine,
     errCatchStackAndMessage,
 
     uncaughtError,
