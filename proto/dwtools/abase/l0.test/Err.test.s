@@ -821,7 +821,7 @@ function _errOptionSections( test )
 
   test.case = 'args - Error with sections option, has not head and body';
   var srcErr = new Error( 'Sample' );
-  srcErr.section = { 'location' : 'head and body' }
+  srcErr.section = { 'location' : 'head and body' };
   var err = _._err
   ({
     args : [ srcErr ],
@@ -832,7 +832,7 @@ function _errOptionSections( test )
 
   test.case = 'args - Error with sections option';
   var srcErr = new Error( 'Sample' );
-  srcErr.section = { 'location' : { head : 'location', body : 'at @123' } }
+  srcErr.section = { 'location' : { head : 'location', body : 'at @123' } };
   var err = _._err
   ({
     args : [ srcErr ],
@@ -851,6 +851,32 @@ function _errOptionSections( test )
   test.is( _.errIs( err ) );
   test.identical( err.sections, srcErr.sections );
   test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+}
+
+//
+
+function _errOptionId( test ) 
+{
+  test.case = 'args - Error, without id option';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.id, srcErr.id );
+  test.identical( err.id, 1 );
+
+  test.case = 'args - Error with id option';
+  var srcErr = new Error( 'Sample' );
+  srcErr.id = 123;
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.id, srcErr.id );
+  test.identical( err.id, 123 );
 }
 
 //
@@ -1063,6 +1089,7 @@ var Self =
     _errOptionDebugging,
     _errOptionReason,
     _errOptionSections,
+    _errOptionId,
     errCatchStackAndMessage,
 
     uncaughtError,
