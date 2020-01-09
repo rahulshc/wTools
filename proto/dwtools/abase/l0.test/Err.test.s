@@ -909,6 +909,44 @@ function _errCatchesForm( test )
 
 //
 
+function _errSourceCodeForm( test ) 
+{
+  test.case = 'args - Error, without option sourceCode';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strCount( err.sourceCode.code, 'args - Error, without option sourceCode' ), 1 );
+  test.identical( _.strCount( err.sourceCode.code, 'var err = _._err' ), 1 );
+  test.identical( _.strCount( err.sourceCode.code, 'args : [ srcErr ]' ), 0 );
+  test.identical( _.strCount( err.sourceCode.path, 'Err.test.s' ), 1 );
+
+  test.case = 'args - Error, with option sourceCode';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+    usingSourceCode : 0,
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.sourceCode, null );
+
+  test.case = 'args - Error, with sourceCode';
+  var srcErr = new Error( 'Sample' );
+  srcErr.sourceCode = 'test.case = "experiment"';
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strCount( err.sourceCode, 'test.case = "experiment"' ), 1 );
+  test.identical( _.strLinesCount( err.sourceCode ), 1 );
+}
+
+//
+
 function errCatchStackAndMessage( test )
 {
   let context = this;
@@ -1119,6 +1157,7 @@ var Self =
     _errOptionSections,
     _errOptionId,
     _errCatchesForm,
+    _errSourceCodeForm,
     errCatchStackAndMessage,
 
     uncaughtError,
