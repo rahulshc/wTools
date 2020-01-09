@@ -682,6 +682,17 @@ function _errOptionBrief( test )
   test.identical( err.brief, srcErr.brief );
   test.identical( err.brief, false );
 
+  test.case = 'args - Error with brief option';
+  var srcErr = new Error( 'Sample' );
+  srcErr.brief = true;
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.brief, srcErr.brief );
+  test.identical( err.brief, true );
+
   test.case = 'args - Error, with brief option';
   var srcErr = new Error( 'Sample' );
   var err = _._err
@@ -707,6 +718,17 @@ function _errOptionIsProcess( test )
   test.is( _.errIs( err ) );
   test.identical( err.isProcess, srcErr.isProcess );
   test.identical( err.isProcess, false );
+
+  test.case = 'args - Error with isProcess option';
+  var srcErr = new Error( 'Sample' );
+  srcErr.isProcess = true;
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.isProcess, srcErr.isProcess );
+  test.identical( err.isProcess, true );
 
   test.case = 'args - Error, with isProcess option';
   var srcErr = new Error( 'Sample' );
@@ -734,7 +756,18 @@ function _errOptionDebugging( test )
   test.identical( err.debugging, srcErr.debugging );
   test.identical( err.debugging, false );
 
-  test.case = 'args - Error, with isProcess option';
+  test.case = 'args - Error with debugging option';
+  var srcErr = new Error( 'Sample' );
+  srcErr.debugging = true;
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.debugging, srcErr.debugging );
+  test.identical( err.debugging, true );
+
+  test.case = 'args - Error, with debugging option';
   var srcErr = new Error( 'Sample' );
   var err = _._err
   ({
@@ -744,6 +777,43 @@ function _errOptionDebugging( test )
   test.is( _.errIs( err ) );
   test.identical( err.debugging, srcErr.debugging );
   test.identical( err.debugging, true );
+}
+
+//
+
+function _errOptionReason( test ) 
+{
+  test.case = 'args - Error, without reason option';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.reason, srcErr.reason );
+  test.identical( err.reason, undefined );
+
+  test.case = 'args - Error with reason option';
+  var srcErr = new Error( 'Sample' );
+  srcErr.reason = true;
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.reason, srcErr.reason );
+  test.identical( err.reason, true );
+
+  test.case = 'args - Error, with reason option';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+    reason : 1
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.reason, srcErr.reason );
+  test.identical( err.reason, 1 );
 }
 
 //
@@ -954,6 +1024,7 @@ var Self =
     _errOptionBrief,
     _errOptionIsProcess,
     _errOptionDebugging,
+    _errOptionReason,
     errCatchStackAndMessage,
 
     uncaughtError,
