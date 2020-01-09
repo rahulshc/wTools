@@ -803,17 +803,54 @@ function _errOptionReason( test )
   test.is( _.errIs( err ) );
   test.identical( err.reason, srcErr.reason );
   test.identical( err.reason, true );
+}
 
-  test.case = 'args - Error, with reason option';
+//
+
+function _errOptionSections( test ) 
+{
+  test.case = 'args - Error, without sections option';
   var srcErr = new Error( 'Sample' );
   var err = _._err
   ({
     args : [ srcErr ],
-    reason : 1
   });
   test.is( _.errIs( err ) );
-  test.identical( err.reason, srcErr.reason );
-  test.identical( err.reason, 1 );
+  test.identical( err.sections, srcErr.sections );
+  test.identical( _.mapKeys( err.sections ), [ 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+
+  test.case = 'args - Error with sections option, has not head and body';
+  var srcErr = new Error( 'Sample' );
+  srcErr.section = { 'location' : 'head and body' }
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.sections, srcErr.sections );
+  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+
+  test.case = 'args - Error with sections option';
+  var srcErr = new Error( 'Sample' );
+  srcErr.section = { 'location' : { head : 'location', body : 'at @123' } }
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.sections, srcErr.sections );
+  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+
+  test.case = 'args - Error, sections option';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+    sections : { 'location' : { head : 'location', body : 'at @123' } }
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.sections, srcErr.sections );
+  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
 }
 
 //
@@ -1025,6 +1062,7 @@ var Self =
     _errOptionIsProcess,
     _errOptionDebugging,
     _errOptionReason,
+    _errOptionSections,
     errCatchStackAndMessage,
 
     uncaughtError,
