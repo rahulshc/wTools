@@ -722,6 +722,32 @@ function _errOptionIsProcess( test )
 
 //
 
+function _errOptionDebugging( test ) 
+{
+  test.case = 'args - Error, without debugging option';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.debugging, srcErr.debugging );
+  test.identical( err.debugging, false );
+
+  test.case = 'args - Error, with isProcess option';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+    debugging : 1
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.debugging, srcErr.debugging );
+  test.identical( err.debugging, true );
+}
+
+//
+
 function errCatchStackAndMessage( test )
 {
   let context = this;
@@ -927,6 +953,7 @@ var Self =
     _errLocation,
     _errOptionBrief,
     _errOptionIsProcess,
+    _errOptionDebugging,
     errCatchStackAndMessage,
 
     uncaughtError,
