@@ -143,7 +143,6 @@ function _errArgsWithMap( test )
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Error' ), 4 );
   test.identical( _.strCount( errStr, 'Object._errArgsWithMap' ), 2 );
-
 }
 
 //
@@ -606,7 +605,6 @@ function _errArgsHasRoutine( test )
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  console.log( errStr );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
   test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
@@ -614,6 +612,60 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'Error' ), 1 );
   test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
   test.identical( _.strCount( errStr, '*__dirname' ), 1 );
+}
+
+//
+
+function _errLocation( test ) 
+{
+  test.case = 'args - Error, caughtCallsStack and caughtLocation';
+  var err = _._err
+  ({
+    args : [ new Error( 'Sample' ) ],
+    caughtCallsStack : 'at program1\nat _errTrowsError',
+    caughtLocation : { 'filePath' : 'at @605' }
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strCount( err.throwsStack, "at @605" ), 1 );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'Sample' ), 2 );
+  test.identical( _.strCount( errStr, 'Error' ), 2 );
+  test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
+
+  test.case = 'args - Error, throwenCallsStack and throwenLocation';
+  var err = _._err
+  ({
+    args : [ new Error( 'Sample' ) ],
+    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwenLocation : { 'filePath' : 'at @605' }
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.location.filePath, 'at @605' );
+  test.identical( err.location.col, undefined );
+  test.identical( err.location.line, undefined );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
+
+  test.case = 'args - Error, throwenCallsStack and throwenLocation';
+  var err = _._err
+  ({
+    args : [ new Error( 'Sample' ) ],
+    caughtCallsStack : 'at program1\nat _errTrowsError',
+    caughtLocation : { 'filePath' : 'at @605' },
+    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwenLocation : { 'filePath' : 'at @605' }
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strCount( err.throwsStack, "at @605" ), 1 );
+  test.identical( err.location.filePath, 'at @605' );
+  test.identical( err.location.col, undefined );
+  test.identical( err.location.line, undefined );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'Sample' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
 }
 
 //
@@ -820,6 +872,7 @@ var Self =
     _errArgsWithMap,
     _errArgsHasError,
     _errArgsHasRoutine,
+    _errLocation,
     errCatchStackAndMessage,
 
     uncaughtError,
