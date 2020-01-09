@@ -122,6 +122,32 @@ function _errTrowsError( test )
 
 //
 
+function _errArgsWithMap( test ) 
+{
+  test.case = 'map in args, without Error';
+  var err = _._err( { args : [ { 'location' : { 'filePath' : 'at program1' }, 'line' : 10, 'col' : 5 } ] } );
+  test.is( _.errIs( err ) );
+  test.identical( err.location.filePath, 'at program1' );
+  test.identical( err.location.line, 10 );
+  test.identical( err.location.col, 5 );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'Error' ), 0 );
+  test.identical( _.strCount( errStr, 'Object._errArgsWithMap' ), 2 );
+
+  test.case = 'map in args, with Error';
+  var err = _._err( { args : [ { 'location' : { 'filePath' : 'at program1' }, 'line' : 10, 'col' : 5 }, new Error( 'Error' ) ] } );
+  test.is( _.errIs( err ) );
+  test.notIdentical( err.location.filePath, 'at program1' );
+  test.notIdentical( err.location.line, 10 );
+  test.notIdentical( err.location.col, 5 );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'Error' ), 4 );
+  test.identical( _.strCount( errStr, 'Object._errArgsWithMap' ), 2 );
+
+}
+
+//
+
 function _errEmptyArgs( test )
 {
   test.case = 'empty args';
@@ -379,8 +405,8 @@ function _errArgsHasRoutine( test )
   var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ] } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 2 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
   test.identical( _.strCount( errStr, 'Sample' ), 2 );
   test.identical( _.strCount( errStr, 'next' ), 2 );
   test.identical( _.strCount( errStr, 'Error' ), 2 );
@@ -391,8 +417,8 @@ function _errArgsHasRoutine( test )
   var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], level : 2 } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 2 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
   test.identical( _.strCount( errStr, 'Sample' ), 2 );
   test.identical( _.strCount( errStr, 'next' ), 2 );
   test.identical( _.strCount( errStr, 'Error' ), 2 );
@@ -403,21 +429,21 @@ function _errArgsHasRoutine( test )
   var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], throwenCallsStack : 'at program\nat _errTrowsError' } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'at program' ), 1 );
-  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
+  test.identical( _.strCount( errStr, 'at program' ), 1 );
+  test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
 
   test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - string';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], caughtCallsStack : 'at program\nat _errTrowsError' } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 0 );
@@ -431,8 +457,8 @@ function _errArgsHasRoutine( test )
   test.is( _.errIs( err ) );
   test.identical( o.caughtCallsStack, '' );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 2 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
   test.identical( _.strCount( errStr, 'Sample' ), 2 );
   test.identical( _.strCount( errStr, 'next' ), 2 );
   test.identical( _.strCount( errStr, 'Error' ), 2 );
@@ -450,8 +476,8 @@ function _errArgsHasRoutine( test )
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
@@ -468,8 +494,8 @@ function _errArgsHasRoutine( test )
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 0 );
@@ -487,8 +513,8 @@ function _errArgsHasRoutine( test )
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 0 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 0 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 0 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 0 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
@@ -507,8 +533,8 @@ function _errArgsHasRoutine( test )
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
@@ -525,8 +551,8 @@ function _errArgsHasRoutine( test )
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
@@ -543,8 +569,8 @@ function _errArgsHasRoutine( test )
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
@@ -561,8 +587,8 @@ function _errArgsHasRoutine( test )
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
@@ -581,8 +607,8 @@ function _errArgsHasRoutine( test )
   test.is( _.errIs( err ) );
   var errStr = String( err );
   console.log( errStr );
-  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
+  test.identical( _.strCount( errStr, 'routine unroll' ), 1 );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'next' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
@@ -791,6 +817,7 @@ var Self =
     errArgumentObject,
     _errTrowsError,
     _errEmptyArgs,
+    _errArgsWithMap,
     _errArgsHasError,
     _errArgsHasRoutine,
     errCatchStackAndMessage,
