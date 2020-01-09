@@ -648,7 +648,7 @@ function _errLocation( test )
   test.identical( _.strCount( errStr, 'Error' ), 1 );
   test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
 
-  test.case = 'args - Error, throwenCallsStack and throwenLocation';
+  test.case = 'args - Error, caughtCallsStack, caughtLocation,throwenCallsStack, throwenLocation';
   var err = _._err
   ({
     args : [ new Error( 'Sample' ) ],
@@ -666,6 +666,32 @@ function _errLocation( test )
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
   test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
+}
+
+//
+
+function _errOptionBrief( test ) 
+{
+  test.case = 'args - Error, without brief option';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.brief, srcErr.brief );
+  test.identical( err.brief, false );
+
+  test.case = 'args - Error, with brief option';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+    brief : 1
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.brief, srcErr.brief );
+  test.identical( err.brief, true );
 }
 
 //
@@ -873,6 +899,7 @@ var Self =
     _errArgsHasError,
     _errArgsHasRoutine,
     _errLocation,
+    _errOptionBrief,
     errCatchStackAndMessage,
 
     uncaughtError,
