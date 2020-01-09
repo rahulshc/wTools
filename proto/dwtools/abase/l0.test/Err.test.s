@@ -881,6 +881,34 @@ function _errOptionId( test )
 
 //
 
+function _errCatchesForm( test ) 
+{
+  test.case = 'args - Error, without throws';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strLinesCount( err.throwsStack ), 1 );
+  test.identical( _.strCount( err.throwsStack, 'Err.test.s' ), 1 );
+
+  test.case = 'args - Error, throws';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+    throws : [ '@123', '@124' ]
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strLinesCount( err.throwsStack ), 3 );
+  test.identical( _.strCount( err.throwsStack, 'thrown at @123' ), 1 );
+  test.identical( _.strCount( err.throwsStack, 'thrown at @124' ), 1 );
+  test.identical( _.strCount( err.throwsStack, 'Err.test.s' ), 1 );
+}
+
+//
+
 function errCatchStackAndMessage( test )
 {
   let context = this;
@@ -1090,6 +1118,7 @@ var Self =
     _errOptionReason,
     _errOptionSections,
     _errOptionId,
+    _errCatchesForm,
     errCatchStackAndMessage,
 
     uncaughtError,
