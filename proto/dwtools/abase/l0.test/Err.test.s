@@ -828,7 +828,7 @@ function _errOptionSections( test )
   });
   test.is( _.errIs( err ) );
   test.identical( err.sections, srcErr.sections );
-  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+  test.identical( _.mapKeys( err.sections ), [ 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
 
   test.case = 'args - Error with sections option';
   var srcErr = new Error( 'Sample' );
@@ -865,7 +865,7 @@ function _errOptionId( test )
   });
   test.is( _.errIs( err ) );
   test.identical( err.id, srcErr.id );
-  test.identical( err.id, 1 );
+  test.ge( err.id, 1 );
 
   test.case = 'args - Error with id option';
   var srcErr = new Error( 'Sample' );

@@ -5209,7 +5209,7 @@ let Proto =
   // liner
 
   strIndentation,
-  strLinesBut, /* qqq : implement, document and cover */
+  strLinesBut, /* qqq : implement, document and cover | Dmytro : extended, documented, covered */
   // strLinesOnly, /* qqq : implement, document and cover */
   strLinesSplit,
   strLinesJoin,
