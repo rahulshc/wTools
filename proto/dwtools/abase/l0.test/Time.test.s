@@ -1323,12 +1323,12 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 5, onTime );
-    return _.time.out( 100, () => timer )
+    return _.time.out( 200, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
+      test.is( got.state === 2 || got.state === 1 );
       test.identical( got.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
@@ -1383,12 +1383,12 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 5, onTime, onCancel );
-    return _.time.out( 100, () => timer )
+    return _.time.out( 200, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
+      test.is( got.state === 2 || got.state === 1 );
       test.identical( got.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );

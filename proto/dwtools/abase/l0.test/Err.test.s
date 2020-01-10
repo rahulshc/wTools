@@ -55,7 +55,7 @@ function diagnosticStructureGenerate( test )
 
 }
 
-diagnosticStructureGenerate.timeOut = 30000;
+diagnosticStructureGenerate.timeOut = 50000;
 
 //
 
