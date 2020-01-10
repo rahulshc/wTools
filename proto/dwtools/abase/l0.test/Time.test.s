@@ -1353,7 +1353,7 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 5, onTime );
-    return _.time.out( 100, () => timer )
+    return _.time.out( 200, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
@@ -1413,7 +1413,7 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 5, onTime, onCancel );
-    return _.time.out( 100, () => timer )
+    return _.time.out( 200, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
