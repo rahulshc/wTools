@@ -4261,6 +4261,49 @@ function strIndentation( src, tab )
 
 //
 
+/**
+ * Routine strLinesBut() replaces a range {-range-} of lines in source string {-src-} to new
+ * values in {-ins-} parameter.
+ *
+ * @param { String|Long } src - Source string or array of strings.
+ * If {-src-} is a String, then it split to parts using delimeter '\n'.
+ * @param { Range|Number } range - Range of lines to be replaced.
+ * If {-range-} is a Number, then routine replace only one line defined by value of {-range-}.
+ * @param { String|Long } ins - String or array of strings to be inserted in source string.
+ * If {-ins-} is a Long, then elements of Long concatenates using delimeter '\n'.
+ *
+ * @example
+ * _.strLinesBut( 'a \n b \n c \n d', 1 );
+ * // returns 'a \n c \n d'
+ *
+ * @example
+ * _.strLinesBut( 'a \n b \n c \n d', [ 1, 4 ], '' );
+ * // returns 'a '
+ *
+ * @example
+ * _.strLinesBut( 'a \n b \n c \n d', 1, ' some \n string ' );
+ * // returns 'a \n some \n string \n c \n d'
+ *
+ * @example
+ * _.strLinesBut( 'a \n b \n c \n d', [ 1, 4 ], [ ' some ', ' string' ] );
+ * // returns 'a \n some \n string'
+ *
+ * @example
+ * _.strLinesBut( [ 'a ', ' b ', ' c ', ' d' ], 1, ' some \n string ' );
+ * // returns 'a \n some \n string \n c \n d'
+ *
+ * @example
+ * _.strLinesBut( [ 'a ', ' b ', ' c ', ' d' ], [ 1, 4 ], [ ' some ', ' string' ] );
+ * // returns 'a \n some \n string'
+ *
+ * @returns { String } - Returns string concatenated from original source string and inserted values.
+ * @function strLinesBut
+ * @throws { Exception } If arguments.length is less then two or more then three.
+ * @throws { Exception } If {-src-} is not a String or a Long.
+ * @throws { Exception } If {-ins-} is not a String, not a Long, not undefined.
+ * @memberof wTools
+ */
+
 function strLinesBut( src, range, ins )
 {
 
