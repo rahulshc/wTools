@@ -761,7 +761,7 @@ function _err( o )
 
   /* */
 
-  function rw( fieldName, value )
+  function rw( fieldName, value ) // Dmytro : this routine is not used anywhere, similar routine logging() below
   {
     let symbol = Symbol.for( fieldName );
     try

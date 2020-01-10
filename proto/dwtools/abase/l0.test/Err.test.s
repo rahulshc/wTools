@@ -1014,6 +1014,24 @@ function _errOriginalMessageForm( test )
   test.identical( _.strCount( err.originalMessage, '\n\n   Sample     \n\nstr   \n' ), 0 );
   test.identical( _.strCount( err.originalMessage, 'Sample\nstr' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'str\nundefined' ), 1 );
+
+  test.case = 'Error without description, without fallBackMessage';
+  var err = _._err
+  ({
+    args : [ new Error() ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strLinesCount( err.originalMessage ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'Error' ), 1 );
+
+  test.case = 'Unknown error, without fallBackMessage';
+  var err = _._err
+  ({
+    args : [],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strLinesCount( err.originalMessage ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'UnknownError' ), 1 );
 }
 
 //
