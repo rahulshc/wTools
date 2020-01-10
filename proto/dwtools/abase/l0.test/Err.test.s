@@ -947,6 +947,77 @@ function _errSourceCodeForm( test )
 
 //
 
+function _errOriginalMessageForm( test ) 
+{
+  test.case = 'args - different, simple routine';
+  var err = _._err
+  ({
+    args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, () => 1 ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strLinesCount( err.originalMessage ), 3 );
+  test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'null false 1' ), 1 );
+
+  test.case = 'args - different, routine returns routine';
+  var a = function()
+  {
+    return function b()
+    {
+      return 1;
+    }
+  }
+  var err = _._err
+  ({
+    args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, a ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strLinesCount( err.originalMessage ), 6 );
+  test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'return 1' ), 1 );
+
+  test.case = 'args - different, Error with originalMessage';
+  var srcErr = new Error( 'Sample' );
+  srcErr.originalMessage = 'New error';
+  var err = _._err
+  ({
+    args : [ srcErr, 'str', undefined, '', null, false, a ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strLinesCount( err.originalMessage ), 6 );
+  test.identical( _.strCount( err.originalMessage, 'New error str' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'return 1' ), 1 );
+
+  test.case = 'args - different, Error with message';
+  var srcErr = new Error( 'Sample' );
+  srcErr.message = 'New error';
+  var err = _._err
+  ({
+    args : [ srcErr, 'str', undefined, '', null, false, a ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strLinesCount( err.originalMessage ), 6 );
+  test.identical( _.strCount( err.originalMessage, 'New error str' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'return 1' ), 1 );
+
+  test.case = 'args - many spaces and new lines';
+  var err = _._err
+  ({
+    args : [ new Error( '\n\n   Sample     ' ), '\n\nstr   \n', undefined, '', null, false ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strCount( err.originalMessage, '\n\n   Sample     \n\nstr   \n' ), 0 );
+  test.identical( _.strCount( err.originalMessage, 'Sample\nstr' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'str\nundefined' ), 1 );
+}
+
+//
+
 function errCatchStackAndMessage( test )
 {
   let context = this;
@@ -1158,6 +1229,7 @@ var Self =
     _errOptionId,
     _errCatchesForm,
     _errSourceCodeForm,
+    _errOriginalMessageForm,
     errCatchStackAndMessage,
 
     uncaughtError,
