@@ -277,7 +277,7 @@ function _begin( test )
       test.identical( got.state, 2 );
       test.identical( got.result, 0 );
 
-      _.time.cancel( got ); /* qqq2 : test should ensure that there is no transitions from final states -2 either +2 to any another state. ask */
+      _.time.cancel( got ); /* qqq2 : test should ensure that there is no transitions from final states -2 either +2 to any another state. ask | Dmytro : timer not change state from state 2 to -2. State -2 changes to 2 if user call callback timer.time() */
 
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, onCancel );
