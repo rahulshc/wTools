@@ -1018,6 +1018,55 @@ function _errOriginalMessageForm( test )
 
 //
 
+function _errMessageForm( test ) 
+{
+  test.case = 'without option brief';
+  var err = _._err
+  ({
+    args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, () => 1 ],
+  });
+  test.is( _.errIs( err ) );
+  test.gt( _.strLinesCount( err.message ), 10 );
+  test.identical( _.strCount( err.message, 'Message of error#' ), 1 );
+  test.identical( _.strCount( err.message, 'Beautified calls stack' ), 1 );
+  test.identical( _.strCount( err.message, 'Throws stack' ), 1 );
+  test.identical( _.strCount( err.message, 'Sample str' ), 1 );
+  test.identical( _.strCount( err.message, 'undefined' ), 2 );
+  test.identical( _.strCount( err.message, 'null false 1' ), 1 );
+
+  test.case = 'without option brief, option stackCondensing - false';
+  var err = _._err
+  ({
+    args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, () => 1 ],
+    stackCondensing : false,
+  });
+  test.is( _.errIs( err ) );
+  test.gt( _.strLinesCount( err.message ), 10 );
+  test.identical( _.strCount( err.message, 'Message of error#' ), 1 );
+  test.identical( _.strCount( err.message, 'Calls stack' ), 1 );
+  test.identical( _.strCount( err.message, 'Throws stack' ), 1 );
+  test.identical( _.strCount( err.message, 'Sample str' ), 1 );
+  test.identical( _.strCount( err.message, 'undefined' ), 2 );
+  test.identical( _.strCount( err.message, 'null false 1' ), 1 );
+
+  test.case = 'with option brief';
+  var err = _._err
+  ({
+    args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, () => 1 ],
+    brief : 1
+  });
+  test.is( _.errIs( err ) );
+  test.identical( _.strLinesCount( err.message ), 3 );
+  test.identical( _.strCount( err.message, 'Message of error#' ), 0 );
+  test.identical( _.strCount( err.message, 'Beautified calls stack' ), 0 );
+  test.identical( _.strCount( err.message, 'Throws stack' ), 0 );
+  test.identical( _.strCount( err.message, 'Sample str' ), 1 );
+  test.identical( _.strCount( err.message, 'undefined' ), 1 );
+  test.identical( _.strCount( err.message, 'null false 1' ), 1 );
+}
+
+//
+
 function errCatchStackAndMessage( test )
 {
   let context = this;
@@ -1230,6 +1279,7 @@ var Self =
     _errCatchesForm,
     _errSourceCodeForm,
     _errOriginalMessageForm,
+    _errMessageForm,
     errCatchStackAndMessage,
 
     uncaughtError,
