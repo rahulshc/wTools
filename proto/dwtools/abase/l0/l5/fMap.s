@@ -2710,6 +2710,58 @@ function mapOnlyComplementing( srcMaps, screenMaps )
  * @memberof wTools
  */
 
+// function _mapOnly( o )
+// {
+// 
+//   let dstMap = o.dstMap || Object.create( null );
+//   let screenMap = o.screenMaps;
+//   let srcMaps = o.srcMaps;
+// 
+//   if( _.arrayIs( screenMap ) )
+//   screenMap = _.mapExtend( null, screenMap );
+//   // screenMap = _.mapMake.apply( this, screenMap );
+// 
+//   if( !_.arrayIs( srcMaps ) )
+//   srcMaps = [ srcMaps ];
+// 
+//   if( !o.filter )
+//   o.filter = _.field.mapper.bypass;
+// 
+//   if( Config.debug )
+//   {
+// 
+//     _.assert( o.filter.functionFamily === 'field-mapper' );
+//     _.assert( arguments.length === 1, 'Expects single argument' );
+//     _.assert( _.objectLike( dstMap ), 'Expects object-like {-dstMap-}' );
+//     _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
+//     _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
+//     _.assertMapHasOnly( o, _mapOnly.defaults );
+// 
+//     for( let s = srcMaps.length-1 ; s >= 0 ; s-- )
+//     _.assert( !_.primitiveIs( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
+// 
+//   }
+// 
+//   for( let k in screenMap )
+//   {
+// 
+//     if( screenMap[ k ] === undefined )
+//     continue;
+// 
+//     let s;
+//     for( s = srcMaps.length-1 ; s >= 0 ; s-- )
+//     if( k in srcMaps[ s ] )
+//     break;
+// 
+//     if( s === -1 )
+//     continue;
+// 
+//     o.filter.call( this, dstMap, srcMaps[ s ], k );
+// 
+//   }
+// 
+//   return dstMap;
+// }
 function _mapOnly( o )
 {
 
@@ -2717,8 +2769,8 @@ function _mapOnly( o )
   let screenMap = o.screenMaps;
   let srcMaps = o.srcMaps;
 
-  if( _.arrayIs( screenMap ) )
-  screenMap = _.mapExtend( null, screenMap );
+  // if( _.arrayIs( screenMap ) )
+  // screenMap = _.mapExtend( null, screenMap );
   // screenMap = _.mapMake.apply( this, screenMap );
 
   if( !_.arrayIs( srcMaps ) )
@@ -2742,22 +2794,41 @@ function _mapOnly( o )
 
   }
 
-  for( let k in screenMap )
+  if( _.longIs( screenMap ) )
   {
+    for( let k in screenMap )
+    {
 
-    if( screenMap[ k ] === undefined )
-    continue;
+      if( screenMap[ k ] === undefined )
+      continue;
 
-    let s;
-    for( s = srcMaps.length-1 ; s >= 0 ; s-- )
+      let s;
+      for( s = srcMaps.length-1 ; s >= 0 ; s-- )
+      {
+        if( !_.mapIs( screenMap[ k ] ) && screenMap[ k ] in srcMaps[ s ] )
+        {
+          k = screenMap[ k ];
+          break;
+        }
+        if( k in srcMaps[ s ] )
+        {
+          break;
+        }
+      }
+
+      if( s === -1 )
+      continue;
+
+      o.filter.call( this, dstMap, srcMaps[ s ], k );
+
+    }
+  }
+  else if( _.mapIs( screenMap ) )
+  {
+    for( let k in screenMap )
+    for( let s in srcMaps )
     if( k in srcMaps[ s ] )
-    break;
-
-    if( s === -1 )
-    continue;
-
     o.filter.call( this, dstMap, srcMaps[ s ], k );
-
   }
 
   return dstMap;
