@@ -13026,6 +13026,177 @@ function strSplitInlinedOptionDelimeter( test )
 
 //
 
+function strSplitInlinedOptionStripping( test )
+{
+  test.open( 'stripping - 0' );
+
+  test.case = 'full split, closing delimeter';
+  var srcStr = 'this  # \nbackground:red\t# is # background:default   #  text  and  is not \n';
+  var got = _.strSplitInlined( { src : srcStr } );
+  var expected =
+  [
+    'this  ', [ ' \nbackground:red\t' ], ' is ', [ ' background:default   ' ], '  text  and  is not \n'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'openning delimeter # does not have closing';
+  var srcStr = 'this  # \nbackground:red\t# is # background:default   #  text  and  #  is not\n';
+  var got = _.strSplitInlined( { src : srcStr } );
+  var expected =
+  [
+    'this  ', [ ' \nbackground:red\t' ], ' is ', [ ' background:default   ' ], '  text  and  #  is not\n'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'two inlined substrings is not in fact inlined';
+  var srcStr = '\n#\n\t simple  # \n\t\rtext #  background:red  #  is  #  background:default  # text and # is not   #';
+  var got = _.strSplitInlined( { src : srcStr } );
+  var expected =
+  [
+    '\n', [ '\n\t simple  ' ], ' \n\t\rtext ', [ '  background:red  ' ], '  is  ', [ '  background:default  ' ], ' text and ', [ ' is not   ' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and false inlined';
+  var srcStr = '   # \t\tbackground:red  # \n\ni  #  s  #background:default  #\n\r\t  #  text\n';
+  var got = _.strSplitInlined( { src : srcStr } );
+  var expected =
+  [
+    '   ', [ ' \t\tbackground:red  ' ], ' \n\ni  ', [ '  s  ' ], 'background:default  ', [ '\n\r\t  ' ], '  text\n'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and the end';
+  var srcStr = '  #  background:red  #  i  #  s  #   background:default  #  ';
+  var got = _.strSplitInlined( { src : srcStr } );
+  var expected =
+  [
+    '  ', [ '  background:red  ' ], '  i  ', [ '  s  ' ], '   background:default  #  ',
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string left';
+  var srcStr = '  #  #\n\nordinary\t\t#\ninline2 # ';
+  var got = _.strSplitInlined( { src : srcStr } );
+  var expected =
+  [
+    '  ', [ '  ' ], '\n\nordinary\t\t', [ '\ninline2 ' ], ' '
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string right';
+  var srcStr = '\t#\ninline1\r#\tordinary\n#\r#\t';
+  var got = _.strSplitInlined( { src : srcStr } );
+  var expected =
+  [
+    '\t', [ '\ninline1\r' ], '\tordinary\n', [ '\r' ], '\t'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string middle';
+  var srcStr = '  #  inline1  #  #  inline2  #';
+  var got = _.strSplitInlined( { src : srcStr } );
+  var expected =
+  [
+    '  ', [ '  inline1  ' ], '  ', [ '  inline2  ' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty all';
+  var srcStr = '\n#\n#\n#\n#\r';
+  var got = _.strSplitInlined( { src : srcStr } );
+  var expected = [ '\n', [ '\n' ], '\n', [ '\n' ], '\r' ];
+  test.identical( got, expected );
+
+  test.close( 'stripping - 0' );
+
+  /* - */
+  
+  test.open( 'stripping - 1' );
+
+  test.case = 'full split, closing delimeter';
+  var srcStr = 'this  # \nbackground:red\t# is # background:default   #  text  and  is not \n';
+  var got = _.strSplitInlined( { src : srcStr, stripping : 1 } );
+  var expected =
+  [
+    'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text  and  is not'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'openning delimeter # does not have closing';
+  var srcStr = 'this  # \nbackground:red\t# is # background:default   #  text  and  #  is not\n';
+  var got = _.strSplitInlined( { src : srcStr, stripping : 1 } );
+  var expected =
+  [
+    'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text  and#is not'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'two inlined substrings is not in fact inlined';
+  var srcStr = '\n#\n\t simple  # \n\t\rtext #  background:red  #  is  #  background:default  # text and # is not   #';
+  var got = _.strSplitInlined( { src : srcStr, stripping : 1 } );
+  var expected =
+  [
+    '', [ 'simple' ], 'text', [ 'background:red' ], 'is', [ 'background:default' ], 'text and', [ 'is not' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and false inlined';
+  var srcStr = '   # \t\tbackground:red  # \n\ni  #  s  #background:default  #\n\r\t  #  text\n';
+  var got = _.strSplitInlined( { src : srcStr, stripping : 1 } );
+  var expected =
+  [
+    '', [ 'background:red' ], 'i', [ 's' ], 'background:default', [ '' ], 'text'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and the end';
+  var srcStr = '  #  background:red  #  i  #  s  #   background:default  #  ';
+  var got = _.strSplitInlined( { src : srcStr, stripping : 1 } );
+  var expected =
+  [
+    '', [ 'background:red' ], 'i', [ 's' ], 'background:default#',
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string left';
+  var srcStr = '  #  #\n\nordinary\t\t#\ninline2 # ';
+  var got = _.strSplitInlined( { src : srcStr, stripping : 1 } );
+  var expected =
+  [
+    '', [ '' ], 'ordinary', [ 'inline2' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string right';
+  var srcStr = '\t#\ninline1\r#\tordinary\n#\r#\t';
+  var got = _.strSplitInlined( { src : srcStr, stripping : 1 } );
+  var expected =
+  [
+    '', [ 'inline1' ], 'ordinary', [ '' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string middle';
+  var srcStr = '  #  inline1  #  #  inline2  #';
+  var got = _.strSplitInlined( { src : srcStr, stripping : 1 } );
+  var expected =
+  [
+    '', [ 'inline1' ], '', [ 'inline2' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty all';
+  var srcStr = '\n#\n#\n#\n#\r';
+  var got = _.strSplitInlined( { src : srcStr, stripping : 1 } );
+  var expected = [ '', [ '' ], '', [ '' ], '' ];
+  test.identical( got, expected );
+
+  test.close( 'stripping - 1' );
+}
+
+//
+
 function strSplitInlinedStereo( test )
 {
   var got, expected;
@@ -13161,6 +13332,7 @@ var Self =
 
     strSplitInlined,
     strSplitInlinedOptionDelimeter,
+    strSplitInlinedOptionStripping,
     strSplitInlinedStereo,
 
   }
