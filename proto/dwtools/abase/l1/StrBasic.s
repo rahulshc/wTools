@@ -4271,30 +4271,55 @@ function strIndentation( src, tab )
  * If {-range-} is a Number, then routine replace only one line defined by value of {-range-}.
  * @param { String|Long } ins - String or array of strings to be inserted in source string.
  * If {-ins-} is a Long, then elements of Long concatenates using delimeter '\n'.
+ * If range[ 0 ] or range[ 1 ] is less than zero, then routine count lines from the end of {-src-}.
  *
  * @example
- * _.strLinesBut( 'a \n b \n c \n d', 1 );
- * // returns 'a \n c \n d'
+ * _.strLinesBut( 'ab \n bc \n cd \n de', 1 );
+ * // returns 'ab \n cd \n de'
  *
  * @example
- * _.strLinesBut( 'a \n b \n c \n d', [ 1, 4 ], '' );
- * // returns 'a '
+ * _.strLinesBut( 'ab \n bc \n cd \n de', -1 );
+ * // returns 'ab \n bc \n cd '
  *
  * @example
- * _.strLinesBut( 'a \n b \n c \n d', 1, ' some \n string ' );
- * // returns 'a \n some \n string \n c \n d'
+ * _.strLinesBut( 'ab \n bc \n cd \n de', [ 1, 4 ], '' );
+ * // returns 'ab '
  *
  * @example
- * _.strLinesBut( 'a \n b \n c \n d', [ 1, 4 ], [ ' some ', ' string' ] );
- * // returns 'a \n some \n string'
+ * _.strLinesBut( 'ab \n bc \n cd \n de', [ 1, -1 ], '' );
+ * // returns 'ab \n de'
  *
  * @example
- * _.strLinesBut( [ 'a ', ' b ', ' c ', ' d' ], 1, ' some \n string ' );
- * // returns 'a \n some \n string \n c \n d'
+ * _.strLinesBut( 'ab \n bc \n cd \n de', 1, ' some \n string ' );
+ * // returns 'ab \n some \n string \n cd \n de'
  *
  * @example
- * _.strLinesBut( [ 'a ', ' b ', ' c ', ' d' ], [ 1, 4 ], [ ' some ', ' string' ] );
- * // returns 'a \n some \n string'
+ * _.strLinesBut( 'ab \n bc \n cd \n de', -1, ' some \n string ' );
+ * // returns 'ab \n bc \n cd \n some \n string '
+ *
+ * @example
+ * _.strLinesBut( 'ab \n bc \n cd \n de', [ 1, 4 ], [ ' some ', ' string' ] );
+ * // returns 'ab \n some \n string'
+ *
+ * @example
+ * _.strLinesBut( 'ab \n bc \n cd \n de', [ 1, -1 ], [ ' some ', ' string' ] );
+ * // returns 'ab \n some \n string\n de'
+ *
+ * @example
+ * _.strLinesBut( [ 'ab ', ' bc ', ' cd ', ' de' ], 1, ' some \n string ' );
+ * // returns 'ab \n some \n string \n cd \n de'
+ *
+ * @example
+ * _.strLinesBut( [ 'ab ', ' bc ', ' cd ', ' de' ], -1, ' some \n string ' );
+ * // returns 'ab \n bc \n cd \n some \n string '
+ *
+ * @example
+ * _.strLinesBut( [ 'ab ', ' bc ', ' cd ', ' de' ], [ 1, 4 ], [ ' some ', ' string' ] );
+ * // returns 'ab \n some \n string'
+ *
+ * @example
+ * _.strLinesBut( [ 'ab ', ' bc ', ' cd ', ' de' ], [ 1, -1 ], [ ' some ', ' string' ] );
+ * // returns 'ab \n some \n string\n de'
  *
  * @returns { String } - Returns string concatenated from original source string and inserted values.
  * @function strLinesBut
@@ -4354,6 +4379,57 @@ function strLinesBut( src, range, ins )
   // }
 
 }
+
+//
+
+/**
+ * Routine strLinesOnly() selects a range {-range-} of lines in source string {-src-} and returns
+ * new string joined from it.
+ *
+ * @param { String|Long } src - Source string or array of strings.
+ * If {-src-} is a String, then it split to parts using delimeter '\n'.
+ * @param { Range|Number } range - Range of lines to be selected.
+ * If {-range-} is a Number, then routine selects only one line defined by value of {-range-}.
+ * If range[ 0 ] or range[ 1 ] is less than zero, then routine count lines from the end of {-src-}.
+ *
+ * @example
+ * _.strLinesOnly( 'ab \n bc \n cd \n de', 1 );
+ * // returns ' bc '
+ *
+ * @example
+ * _.strLinesOnly( 'ab \n bc \n cd \n de', -1 );
+ * // returns ' de'
+ *
+ * @example
+ * _.strLinesOnly( 'ab \n bc \n cd \n de', [ 1, 4 ] );
+ * // returns ' bc \n cd \n de'
+ *
+ * @example
+ * _.strLinesOnly( 'ab \n bc \n cd \n de', [ 1, -1 ] );
+ * // returns ' bc \n cd '
+ *
+ * @example
+ * _.strLinesOnly( [ 'ab ', ' bc ', ' cd ', ' de' ], 1 );
+ * // returns ' bc '
+ *
+ * @example
+ * _.strLinesOnly( [ 'ab ', ' bc ', ' cd ', ' de' ], -1 );
+ * // returns ' de'
+ *
+ * @example
+ * _.strLinesOnly( [ 'ab ', ' bc ', ' cd ', ' de' ], [ 1, 4 ] );
+ * // returns ' bc \n cd \n de'
+ *
+ * @example
+ * _.strLinesOnly( [ 'ab ', ' bc ', ' cd ', ' de' ], [ 1, -1 ] );
+ * // returns ' bc \n cd '
+ *
+ * @returns { String } - Returns a range of lines from source string concatenated by new line symbol.
+ * @function strLinesOnly
+ * @throws { Exception } If arguments.length is less then two or more then three.
+ * @throws { Exception } If {-src-} is not a String or a Long.
+ * @memberof wTools
+ */
 
 function strLinesOnly( src, range )
 {
@@ -5236,7 +5312,7 @@ let Proto =
 
   strIndentation,
   strLinesBut, /* qqq : implement, document and cover | Dmytro : extended, documented, covered */
-  strLinesOnly, /* qqq : implement, document and cover */
+  strLinesOnly, /* qqq : implement, document and cover | Dmytro : implemented, documented, covered */
   strLinesSplit,
   strLinesJoin,
   strLinesStrip, /* qqq : test coverage | Dmytro : covered a time ago */
