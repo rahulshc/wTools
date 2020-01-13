@@ -1289,7 +1289,7 @@ var Self =
   tests :
   {
 
-    /* qqq : implement test routine for _.err */
+    /* qqq : implement test routine for _.err | Dmytro : covered */
 
     diagnosticStructureGenerate,
 
