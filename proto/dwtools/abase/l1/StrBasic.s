@@ -4355,6 +4355,32 @@ function strLinesBut( src, range, ins )
 
 }
 
+function strLinesOnly( src, range )
+{
+
+  if( _.strIs( src ) )
+  src = src.split( '\n' );
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.longIs( src ) );
+
+  if( _.numberIs( range ) )
+  range = [ range, range + 1 ];
+  if( range[ 0 ] < 0 )
+  range[ 0 ] = src.length >= -range[ 0 ] ? src.length + range[ 0 ] : 0
+  if( range[ 1 ] < 0 )
+  range[ 1 ] = src.length + range[ 1 ];
+
+  _.assert( _.rangeIs( range ) );
+
+  let result = [];
+  for( let i = range[ 0 ]; i < range[ 1 ] && i < src.length; i++ ) 
+  result[ i - range[ 0 ] ] = src[ i ];
+
+  return result.join( '\n' );
+
+}
+
 //
 
 function strLinesSplit( src )
@@ -5210,7 +5236,7 @@ let Proto =
 
   strIndentation,
   strLinesBut, /* qqq : implement, document and cover | Dmytro : extended, documented, covered */
-  // strLinesOnly, /* qqq : implement, document and cover */
+  strLinesOnly, /* qqq : implement, document and cover */
   strLinesSplit,
   strLinesJoin,
   strLinesStrip, /* qqq : test coverage | Dmytro : covered a time ago */
