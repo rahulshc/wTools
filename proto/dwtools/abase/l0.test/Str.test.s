@@ -7883,7 +7883,7 @@ function strIsolateInsideLeft( test )
   test.identical( got, expected );
 
   test.case = 'nothing found';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', 'cc', 'dd' );
   test.identical( got, expected );
 
@@ -7948,22 +7948,22 @@ function strIsolateInsideLeft( test )
   /* */
 
   test.case = 'no entry';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', [], [] );
   test.identical( got, expected );
 
   test.case = 'not found';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', 'dd', 'dd' );
   test.identical( got, expected );
 
   test.case = 'not found begin';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', 'dd', '' );
   test.identical( got, expected );
 
   test.case = 'not found end';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', '', 'dd' );
   test.identical( got, expected );
 
@@ -7978,7 +7978,7 @@ function strIsolateInsideLeft( test )
   test.identical( got, expected );
 
   test.case = 'empty src';
-  var expected = [ '', '', '', '', '' ];
+  var expected = [ '', undefined, '', undefined, '' ];
   var got = _.strIsolateInsideLeft( '', 'aa', 'bb' );
   test.identical( got, expected );
 
@@ -7999,7 +7999,7 @@ function strIsolateInsideLeft( test )
   test.identical( got, expected );
 
   test.case = 'end smeared';
-  var expected = [ '', '', 'xaax_xaax_xbbx_xbbx_xccx_xccx', '', '' ];
+  var expected = [ '', undefined, 'xaax_xaax_xbbx_xbbx_xccx_xccx', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'xaax_xaax_xbbx_xbbx_xccx_xccx', /c\w/, /d\w/ );
   test.identical( got, expected );
   var expected = [ 'xaax_xaax_xbbx_xbbx_x', 'cc', 'x_xccx', '', '' ];
@@ -8017,7 +8017,7 @@ function strIsolateInsideLeft( test )
   test.identical( got, expected );
 
   test.case = 'end';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', /c+/, /d+/ );
   test.identical( got, expected );
   var expected = [ 'aa_aa_bb_bb_', 'cc', '_cc', '', '' ];
@@ -8085,22 +8085,22 @@ function strIsolateInsideLeft( test )
   /* */
 
   test.case = 'no entry';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', [], [] );
   test.identical( got, expected );
 
   test.case = 'not found';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', /d+/, /d+/ );
   test.identical( got, expected );
 
   test.case = 'not found begin';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', /d+/, new RegExp( '' ) );
   test.identical( got, expected );
 
   test.case = 'not found end';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', new RegExp( '' ), /d+/ );
   test.identical( got, expected );
 
@@ -8115,7 +8115,7 @@ function strIsolateInsideLeft( test )
   test.identical( got, expected );
 
   test.case = 'empty src';
-  var expected = [ '', '', '', '', '' ];
+  var expected = [ '', undefined, '', undefined, '' ];
   var got = _.strIsolateInsideLeft( '', /a+/, /b+/ );
   test.identical( got, expected );
 
@@ -8159,7 +8159,7 @@ function strIsolateInsideLeftPairs( test )
   test.identical( got, expected );
 
   test.case = 'string, nothing found';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', 'aaa' );
   test.identical( got, expected );
 
@@ -8174,7 +8174,7 @@ function strIsolateInsideLeftPairs( test )
   test.identical( got, expected );
 
   test.case = 'empty array delimeter';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', [] );
   test.identical( got, expected );
 
@@ -8194,7 +8194,7 @@ function strIsolateInsideLeftPairs( test )
   test.identical( got, expected );
 
   test.case = 'nothing found';
-  var expected = [ '', '', 'aa_aa_bb_bb_cc_cc', '', '' ];
+  var expected = [ '', undefined, 'aa_aa_bb_bb_cc_cc', undefined, '' ];
   var got = _.strIsolateInsideLeft( 'aa_aa_bb_bb_cc_cc', [ [ 'cc', 'dd' ], [ 'aa', 'dd' ] ] );
   test.identical( got, expected );
 
@@ -10721,6 +10721,7 @@ function strSplit( test )
 
   test.open( 'empty' );
 
+  debugger;
   var got = _.strSplit( '', '' );
   var expected = [];
   test.identical( got, expected );
