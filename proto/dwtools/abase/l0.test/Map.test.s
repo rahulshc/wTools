@@ -5391,6 +5391,182 @@ function mapButIgnoringUndefinesThreeArguments_( test )
 
 //
 
+function mapButIgnoringUndefinesDstMapNull_( test ) 
+{
+  test.open( 'srcMap - map' );
+
+  test.case = 'srcMap - empty map, butMap - empty map';
+  var srcMap = {};
+  var screenMap = {};
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty map, butMap - empty array';
+  var srcMap = {};
+  var screenMap = [];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, [] );
+
+  test.case = 'srcMap - empty map, butMap - filled map';
+  var srcMap = {};
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - empty map, butMap - filled array';
+  var srcMap = {};
+  var screenMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'srcMap - filled map has undefined, butMap - filled map, not identical keys';
+  var srcMap = { aa : 1, bb : 2, cc : undefined };
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = { aa : 1, bb : 2 };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
+  var srcMap = { aa : 1, bb : 2, cc : undefined };
+  var screenMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = { aa : 1, bb : 2 };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
+  var srcMap = { 0 : 1, 1 : 2, cc : undefined };
+  var screenMap = [ 'aa', 0, 'bb', '1' ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, [ 'aa', 0, 'bb', '1' ] );
+  
+  test.case = 'srcMap - filled map has not primitive, butMap - filled map, has identical keys';
+  var srcMap = { a : 1, b : 2, cc : undefined };
+  var screenMap = { a : undefined, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, { a : undefined, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled array, has identical keys';
+  var srcMap = { 0 : 1, b : 2, cc : undefined };
+  var screenMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = { b : 2 };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+
+  test.close( 'srcMap - map' );
+
+  /* - */
+
+  test.open( 'srcMap - array' );
+
+  test.case = 'srcMap - empty map, butMap - empty map';
+  var srcMap = [];
+  var screenMap = {};
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty map, butMap - empty array';
+  var srcMap = [];
+  var screenMap = [];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, [] );
+
+  test.case = 'srcMap - empty map, butMap - filled map';
+  var srcMap = [];
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - empty map, butMap - filled array';
+  var srcMap = [];
+  var screenMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled map, not identical keys';
+  var srcMap = [ undefined, 0, undefined, 1 ];
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = { 1 : 0, 3 : 1 };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled array, not identical keys';
+  var srcMap = [ undefined, 0, undefined, 1 ];
+  var screenMap = [ 'a', 'b', 'c', 'd' ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = { 1 : 0, 3 : 1 };
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
+  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+  
+  test.case = 'srcMap - filled map has not primitive, butMap - filled map, has identical keys';
+  var srcMap = [ undefined, 0, undefined, 1 ];
+  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
+  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - filled map has not primitive, butMap - filled array, has identical keys';
+  var srcMap = [ undefined, 0, undefined, 1 ];
+  var screenMap = [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ];
+  var got = _.mapButIgnoringUndefines_( null, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
+  test.identical( screenMap, [ { 1 : 'a' }, [ '3', 'b', '1', 'c' ] ] );
+  
+  test.close( 'srcMap - array' );
+}
+
+//
+
 function mapOwnBut( test )
 {
 
@@ -8907,6 +9083,7 @@ var Self =
     mapButDstMapMap_,
 
     mapButIgnoringUndefinesThreeArguments_,
+    mapButIgnoringUndefinesDstMapNull_,
 
     mapOwnBut,
 
