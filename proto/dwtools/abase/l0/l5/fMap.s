@@ -2294,7 +2294,7 @@ function mapButConditional( fieldFilter, srcMap, butMap )
  * @memberof wTools
  */
 
-/* qqq : teach routines mapBut* to expect long in the second argument. ask | Dmytro : need explanation */
+/* qqq : teach routines mapBut* to expect long in the second argument. ask | Dmytro : implemented */
 
 function mapBut( srcMap, butMap )
 {
@@ -2335,6 +2335,86 @@ function mapBut( srcMap, butMap )
   }
 
   return result;
+}
+
+//
+
+function mapBut_( dstMap, srcMap, butMap )
+{
+  if( dstMap === null )
+  {
+    dstMap = Object.create( null );
+  }
+  if( arguments.length === 2 )
+  {
+    if( _.longIs( dstMap ) )
+    dstMap = _.mapExtend( null, dstMap );
+
+    butMap = srcMap;
+    srcMap = dstMap;
+  }
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+  _.assert( _.mapLike( dstMap ), 'Expects map like destination map {-dstMap-}' );
+  _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
+  _.assert( _.mapLike( butMap ) || _.longIs( butMap ), 'Expects long or map {-srcMap-}' );
+
+  if( dstMap === srcMap )
+  {
+
+    if( _.arrayLike( butMap ) )
+    {
+      for( let s in srcMap )
+      {
+        for( let m = 0 ; m < butMap.length ; m++ )
+        {
+          if( s === butMap[ m ] )
+          delete dstMap[ s ];
+          else if( _.mapIs( butMap[ m ] ) )
+          if( s in butMap[ m ] )
+          delete dstMap[ s ];
+        }
+      }
+    } 
+    else
+    {
+      for( let s in srcMap )
+      if( s in butMap )
+      delete srcMap[ s ];
+    }
+
+  }
+  else
+  {
+
+    if( _.arrayLike( butMap ) )
+    {
+      for( let s in srcMap )
+      {
+        let m;
+        for( m = 0 ; m < butMap.length ; m++ )
+        {
+          if( s === butMap[ m ] )
+          break;
+          if( _.mapIs( butMap[ m ] ) )
+          if( s in butMap[ m ] )
+          break;
+        }
+
+        if( m === butMap.length )
+        dstMap[ s ] = srcMap[ s ];
+      }
+    } 
+    else
+    {
+      for( let s in srcMap )
+      if( !( s in butMap ) )
+      dstMap[ s ] = srcMap[ s ];
+    }
+
+  }
+
+  return dstMap;
 }
 
 // function mapBut( srcMap, butMap )
@@ -2762,6 +2842,7 @@ function mapOnlyComplementing( srcMaps, screenMaps )
 // 
 //   return dstMap;
 // }
+
 function _mapOnly( o )
 {
 
@@ -4135,6 +4216,7 @@ let Routines =
 
   mapButConditional,
   mapBut,
+  mapBut_, /* !!! : use instead of mapBut */
   mapButIgnoringUndefines,
   mapOwnBut,
 
