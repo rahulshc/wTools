@@ -2583,6 +2583,17 @@ function mapButIgnoringUndefines( srcMap, butMap )
   // return _.mapButConditional( _.field.filter.dstHasButUndefined, butMap, srcMap );
 }
 
+//
+
+function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+
+  return _.mapButConditional_.call( this, _.field.filter.dstUndefinedSrcNotUndefined, ... arguments );
+
+}
+
 // function mapButIgnoringUndefines( srcMap, butMap )
 // {
 //   let result = Object.create( null );
@@ -4294,10 +4305,11 @@ let Routines =
   // map logical operator
 
   mapButConditional,
-  mapButConditional_,
+  mapButConditional_, /* !!! : use instead of mapButConditional */
   mapBut,
   mapBut_, /* !!! : use instead of mapBut */
   mapButIgnoringUndefines,
+  mapButIgnoringUndefines_, /* !!! : use instead of mapButIgnoringUndefines */
   mapOwnBut,
 
   mapOnly,
