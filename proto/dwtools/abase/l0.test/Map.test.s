@@ -3884,6 +3884,15 @@ function mapButTwoArguments_( test )
 {
   test.open( 'srcMap - map' );
 
+  test.case = 'srcMap - null, butMap - empty map';
+  var srcMap = null;
+  var screenMap = {};
+  var got = _.mapBut_( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, {} );
+
   test.case = 'srcMap - empty map, butMap - empty map';
   var srcMap = {};
   var screenMap = {};
@@ -3892,6 +3901,15 @@ function mapButTwoArguments_( test )
   test.identical( got, expected );
   test.is( got === srcMap );
   test.identical( screenMap, {} );
+
+  test.case = 'srcMap - null, butMap - empty array';
+  var srcMap = null;
+  var screenMap = [];
+  var got = _.mapBut_( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, [] );
 
   test.case = 'srcMap - empty map, butMap - empty array';
   var srcMap = {};
@@ -3902,6 +3920,15 @@ function mapButTwoArguments_( test )
   test.is( got === srcMap );
   test.identical( screenMap, [] );
 
+  test.case = 'srcMap - null, butMap - filled map';
+  var srcMap = null;
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapBut_( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
   test.case = 'srcMap - empty map, butMap - filled map';
   var srcMap = {};
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
@@ -3910,6 +3937,15 @@ function mapButTwoArguments_( test )
   test.identical( got, expected );
   test.is( got === srcMap );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - null, butMap - filled array';
+  var srcMap = null;
+  var screenMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapBut_( srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got !== srcMap );
+  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
 
   test.case = 'srcMap - empty map, butMap - filled array';
   var srcMap = {};
@@ -4065,13 +4101,15 @@ function mapButTwoArguments_( test )
   test.shouldThrowErrorSync( () => _.mapBut_( { a : 1 } ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.mapBut_( [], [], {} ) );
+  test.shouldThrowErrorSync( () => _.mapBut_( {}, [], {}, [] ) );
 
-  test.case = 'first argument is not an object-like';
+  test.case = 'wrong type of dstMap';
   test.shouldThrowErrorSync( () => _.mapBut_( 3, [] ) );
+  test.shouldThrowErrorSync( () => _.mapBut_( [], {}, {} ) );
 
-  test.case = 'second argument is not an object-like';
+  test.case = 'wrong type of butMap';
   test.shouldThrowErrorSync( () => _.mapBut_( [], '' ) );
+  test.shouldThrowErrorSync( () => _.mapBut_( null, [], '' ) );
 }
 
 //
