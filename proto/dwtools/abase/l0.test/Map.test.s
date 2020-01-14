@@ -3677,7 +3677,7 @@ function mapButConditional( test )
 
 function mapButConditionalThreeArguments_( test )
 {
-  let filter = function ( dstContainer, srcContainer, key )
+  var filter = function ( dstContainer, srcContainer, key )
   {
     if( !_.primitiveIs( srcContainer[ key ] ) )
     return false;
@@ -3917,6 +3917,10 @@ function mapButConditionalThreeArguments_( test )
   test.shouldThrowErrorSync( () => _.mapButConditional_( 'wrong', {}, [] ) );
   test.shouldThrowErrorSync( () => _.mapButConditional_( [], null, {}, {} ) );
 
+  test.case = 'fieldFilter has not field field-filter';
+  var filter = ( a, b, c ) => a > ( b + c );
+  test.shouldThrowErrorSync( () => _.mapButConditional_( filter, null, {}, {} ) );
+
   test.case = 'wrong type of dstMap';
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, 3, [] ) );
   test.shouldThrowErrorSync( () => _.mapButConditional_( filter, [], {}, {} ) );
@@ -3930,7 +3934,7 @@ function mapButConditionalThreeArguments_( test )
 
 function mapButConditionalDstMapNull_( test )
 {
-  let filter = function ( dstContainer, srcContainer, key )
+  var filter = function ( dstContainer, srcContainer, key )
   {
     if( !_.primitiveIs( srcContainer[ key ] ) )
     return false;
@@ -4115,32 +4119,223 @@ function mapButConditionalDstMapNull_( test )
   test.identical( screenMap, [ 'a', '3', 'b', '1' ] );
   
   test.close( 'srcMap - array' );
+}
+
+//
+
+function mapButConditionalDstMapMap_( test ) 
+{
+  var filter = function ( dstContainer, srcContainer, key )
+  {
+    if( !_.primitiveIs( srcContainer[ key ] ) )
+    return false;
+    if( dstContainer === key )
+    return false;
+    if( _.mapIs( dstContainer ) && key in dstContainer )
+    return false;
+
+    return true;
+  }
+  filter.functionFamily = 'field-filter';
 
   /* - */
 
-  if( !Config.debug )
-  return;
+  test.open( 'srcMap - map' );
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.mapButConditional_() );
+  test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty map';
+  var dstMap = { a : 1 };
+  var srcMap = {};
+  var screenMap = {};
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, {} );
 
-  test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.mapButConditional_( { a : 1 } ) );
+  test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty array';
+  var dstMap = { a : 1 };
+  var srcMap = {};
+  var screenMap = [];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, [] );
 
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.mapButConditional_( filter, {}, [], {}, [] ) );
+  test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled map';
+  var dstMap = Object.create( null );
+  var srcMap = {};
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'wrong type of fieldFilter';
-  test.shouldThrowErrorSync( () => _.mapButConditional_( 'wrong', {}, [] ) );
-  test.shouldThrowErrorSync( () => _.mapButConditional_( [], null, {}, {} ) );
+  test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled array';
+  var dstMap = Object.create( null );
+  var srcMap = {};
+  var screenMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
 
-  test.case = 'wrong type of dstMap';
-  test.shouldThrowErrorSync( () => _.mapButConditional_( filter, 3, [] ) );
-  test.shouldThrowErrorSync( () => _.mapButConditional_( filter, [], {}, {} ) );
+  test.case = 'dstMap - has identical keys, srcMap - filled map has not primitive, butMap - filled map, not identical keys';
+  var dstMap = { aa : 'some', c : 'key' };
+  var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { aa : 1, bb : 2, c : 'key' };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { aa : 1, bb : 2, cc : [ 1, 2 ] } );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
-  test.case = 'wrong type of butMap';
-  test.shouldThrowErrorSync( () => _.mapButConditional_( filter, [], '' ) );
-  test.shouldThrowErrorSync( () => _.mapButConditional_( filter, null, [], '' ) );
+  test.case = 'dstMap - has identical keys, srcMap - filled map has not primitive, butMap - filled array, not identical keys';
+  var dstMap = { aa : 'some', c : 'key' };
+  var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
+  var screenMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { aa : 1, bb : 2, c : 'key' };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { aa : 1, bb : 2, cc : [ 1, 2 ] } );
+  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'dstMap - has not identical keys, srcMap - filled map has not primitive, butMap - filled array, not identical keys';
+  var dstMap = { a : 1, b : 2 };
+  var srcMap = { aa : 1, bb : 2, cc : [ 1, 2 ] };
+  var screenMap = [ 'aa', 0, 'bb', 1 ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { aa : 1, bb : 2, cc : [ 1, 2 ] } );
+  test.identical( screenMap, [ 'aa', 0, 'bb', 1 ] );
+  
+  test.case = 'dstMap - has not identical keys, srcMap - filled map has not primitive, butMap - filled map, has identical keys';
+  var dstMap = { a : 1, b : 2 };
+  var srcMap = { a : 1, b : 2, cc : [ 1, 2 ] };
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { a : 1, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2, cc : [ 1, 2 ] } );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'dstMap - has identical keys, srcMap - filled map has not primitive, butMap - filled array, has identical keys';
+  var dstMap = { a : 1, b : 4 };
+  var srcMap = { a : 1, b : 2, cc : [ 1, 2 ] };
+  var screenMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { a : 1, b : 4 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { a : 1, b : 2, cc : [ 1, 2 ] } );
+  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+
+  test.close( 'srcMap - map' );
+
+  /* - */
+
+  test.open( 'srcMap - array' );
+
+  test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty map';
+  var dstMap = { a : 1 };
+  var srcMap = [];
+  var screenMap = {};
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, {} );
+
+  test.case = 'dstMap - filled map, srcMap - empty map, butMap - empty array';
+  var dstMap = { a : 1 };
+  var srcMap = [];
+  var screenMap = [];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { a : 1 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, [] );
+
+  test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled map';
+  var dstMap = Object.create( null );
+  var srcMap = [];
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'dstMap - empty pure map, srcMap - empty map, butMap - filled array';
+  var dstMap = Object.create( null );
+  var srcMap = [];
+  var screenMap = [ 'a', 0, 'b', 1 ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = {};
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, [ 'a', 0, 'b', 1 ] );
+
+  test.case = 'dstMap - has not identical keys, srcMap - filled map has not primitive, butMap - filled map, not identical keys';
+  var dstMap = { a : 1, b : 2 };
+  var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { a : 1, b : 2, 1 : 0, 3 : 1 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'dstMap - has not identical keys, srcMap - filled map has not primitive, butMap - filled array, not identical keys';
+  var dstMap = { a : 1, b : 2 };
+  var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  var screenMap = [ 'a', 'b', 'c', 'd' ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { a : 1, b : 2, 1 : 0, 3 : 1 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  test.identical( screenMap, [ 'a', 'b', 'c', 'd' ] );
+  
+  test.case = 'dstMap - has identical keys, srcMap - filled map has not primitive, butMap - filled map, has identical keys';
+  var dstMap = { 0 : 'some', 2 : 'key', a : 1 };
+  var srcMap = [ { a : 'a' }, 0, [ 'b' ], 1 ];
+  var screenMap = { 1 : 13, 3 : 77, c : 3, d : 'name' };
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { 0 : 'some', 2 : 'key', a : 1 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ] );
+  test.identical( screenMap, { 1 : 13, 3 : 77, c : 3, d : 'name' } );
+
+  test.case = 'dstMap - has identical keys, srcMap - filled map has not primitive, butMap - filled array, has identical keys';
+  var dstMap = { 0 : 'some', 2 : 'key', a : 1 };
+  var srcMap =[ { a : 'a' }, 0, [ 'b' ], 1 ]; 
+  var screenMap = [ 'a', '3', 'b', '1' ];
+  var got = _.mapButConditional_( filter, dstMap, srcMap, screenMap );
+  var expected = { 0 : 'some', 2 : 'key', a : 1 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'a' }, 0, [ 'b' ], 1 ]);
+  test.identical( screenMap, [ 'a', '3', 'b', '1' ] );
+  
+  test.close( 'srcMap - array' ); 
 }
 
 //
@@ -8469,6 +8664,7 @@ var Self =
 
     mapButConditionalThreeArguments_,
     mapButConditionalDstMapNull_,
+    mapButConditionalDstMapMap_,
 
     mapBut,
 
