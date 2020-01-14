@@ -945,15 +945,19 @@ function errUnprocess()
 
 //
 
-function errAttend( err )
+function _errAttend( args, value )
 {
 
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 2 );
 
-  if( !_.errIsStandard( err ) )
+  if( !_.longIs( args ) )
+  args = [ args ];
+
+  let err = args[ 0 ];
+  if( args.length !== 1 || !_.errIsStandard( err ) )
   err = _._err
   ({
-    args : arguments,
+    args : args,
     level : 2,
   });
 
@@ -962,11 +966,6 @@ function errAttend( err )
   try
   {
 
-    // logger.log( `Attended error#${err.id}` );
-    // if( err.id === 5 || err.id === 6 )
-    // debugger;
-
-    let value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
     Object.defineProperty( err, 'attended',
     {
       enumerable : false,
@@ -984,6 +983,53 @@ function errAttend( err )
   /* */
 
   return err;
+}
+
+//
+
+function errAttend( err )
+{
+
+  _.assert( arguments.length === 1 );
+
+  let value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
+
+  return _._errAttend( arguments, value );
+
+  // if( !_.errIsStandard( err ) )
+  // err = _._err
+  // ({
+  //   args : arguments,
+  //   level : 2,
+  // });
+  //
+  // /* */
+  //
+  // try
+  // {
+  //
+  //   // logger.log( `Attended error#${err.id}` );
+  //   // if( err.id === 5 || err.id === 6 )
+  //   // debugger;
+  //
+  //   let value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
+  //   Object.defineProperty( err, 'attended',
+  //   {
+  //     enumerable : false,
+  //     configurable : true,
+  //     writable : true,
+  //     value : value,
+  //   });
+  //
+  // }
+  // catch( err )
+  // {
+  //   logger.warn( 'Cant assign attended property to error\n' + err.toString() );
+  // }
+  //
+  // /* */
+  //
+  // return err;
 }
 
 //
@@ -1697,6 +1743,7 @@ let Routines =
   errUnbrief,
   errProcess,
   errUnprocess,
+  _errAttend,
   errAttend,
   errLogEnd,
   errRestack,
