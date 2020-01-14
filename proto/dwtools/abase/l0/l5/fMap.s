@@ -2282,7 +2282,7 @@ function mapButConditional_( fieldFilter, dstMap, srcMap, butMap )
   }
 
   _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
-  _.assert( fieldFilter && fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'Expects field-filter {-fieldFilter-}' );
+  _.assert( _.routineIs( fieldFilter ) && fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'Expects field-filter {-fieldFilter-}' );
   _.assert( _.mapLike( dstMap ), 'Expects map like {-srcMap-}' );
   _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
   _.assert( _.mapLike( butMap ) || _.longIs( butMap ), 'Expects long or map {-butMap-}' );
