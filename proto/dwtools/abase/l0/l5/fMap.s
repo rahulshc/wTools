@@ -2590,7 +2590,7 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
-  return _.mapButConditional_.call( this, _.field.filter.dstUndefinedSrcNotUndefined, ... arguments );
+  return _.mapButConditional_( _.field.filter.dstUndefinedSrcNotUndefined, ... arguments );
 
 }
 
@@ -2743,6 +2743,16 @@ function mapOwnBut( srcMap, butMap )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   return _.mapButConditional( _.field.filter.dstNotHasSrcOwn, srcMap, butMap );
+}
+
+//
+
+function mapOwnBut_( dstMap, srcMap, butMap )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+
+  return _.mapButConditional_( _.field.filter.dstNotHasSrcOwn, ... arguments );
 }
 
 //
@@ -4311,6 +4321,7 @@ let Routines =
   mapButIgnoringUndefines,
   mapButIgnoringUndefines_, /* !!! : use instead of mapButIgnoringUndefines */
   mapOwnBut,
+  mapOwnBut_, /* !!! : use instead of mapOwnBut */
 
   mapOnly,
   mapOnlyOwn,
