@@ -46,6 +46,15 @@ function errIsLogged( src )
 
 //
 
+function errIsSuspended( src )
+{
+  if( _.errIs( src ) === false )
+  return false;
+  return !!src.suspended;
+}
+
+//
+
 function errIsBrief( src )
 {
   if( !_.errIs( src ) )
@@ -817,6 +826,7 @@ function _err( o )
     function get()
     {
       _.errLogEnd( this );
+      _.errAttend( this );
       return this[ symbol ];
     }
     function set( src )
@@ -945,10 +955,11 @@ function errUnprocess()
 
 //
 
-function _errAttend( args, value )
+function _errFields( args, fields )
 {
 
   _.assert( arguments.length === 2 );
+  _.assert( _.mapIs( fields ) )
 
   if( !_.longIs( args ) )
   args = [ args ];
@@ -966,18 +977,21 @@ function _errAttend( args, value )
   try
   {
 
-    Object.defineProperty( err, 'attended',
+    for( let f in fields )
     {
-      enumerable : false,
-      configurable : true,
-      writable : true,
-      value : value,
-    });
+      Object.defineProperty( err, f,
+      {
+        enumerable : false,
+        configurable : true,
+        writable : true,
+        value : fields[ f ],
+      });
+    }
 
   }
   catch( err )
   {
-    logger.warn( 'Cant assign attended property to error\n' + err.toString() );
+    logger.warn( `Cant assign "${f}" property to error\n` + err.toString() );
   }
 
   /* */
@@ -985,93 +999,84 @@ function _errAttend( args, value )
   return err;
 }
 
+// //
+//
+// function _errAttend( args, value )
+// {
+//   _.assert( arguments.length === 2 );
+//   return _._errFields( args, { attended : value } );
+// }
+
 //
 
-function errAttend( err )
+function errAttend( err, value )
 {
-
-  _.assert( arguments.length === 1 );
-
-  let value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
-
-  return _._errAttend( arguments, value );
-
-  // if( !_.errIsStandard( err ) )
-  // err = _._err
-  // ({
-  //   args : arguments,
-  //   level : 2,
-  // });
-  //
-  // /* */
-  //
-  // try
-  // {
-  //
-  //   // logger.log( `Attended error#${err.id}` );
-  //   // if( err.id === 5 || err.id === 6 )
-  //   // debugger;
-  //
-  //   let value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
-  //   Object.defineProperty( err, 'attended',
-  //   {
-  //     enumerable : false,
-  //     configurable : true,
-  //     writable : true,
-  //     value : value,
-  //   });
-  //
-  // }
-  // catch( err )
-  // {
-  //   logger.warn( 'Cant assign attended property to error\n' + err.toString() );
-  // }
-  //
-  // /* */
-  //
-  // return err;
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( value === undefined )
+  value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
+  debugger;
+  let result = _._errFields( err, { attended : value } );
+  debugger;
+  return result;
 }
 
 //
 
-function errLogEnd( err )
+function errLogEnd( err, value )
 {
-
-  _.assert( arguments.length === 1 );
-
-  if( !_.errIsStandard( err ) )
-  err = _._err
-  ({
-    args : arguments,
-    level : 2,
-  });
-
-  /* */
-
-  try
-  {
-
-    let value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
-    Object.defineProperty( err, 'logged',
-    {
-      enumerable : false,
-      configurable : true,
-      writable : true,
-      value : value,
-    });
-
-  }
-  catch( err )
-  {
-    logger.warn( 'Cant assign logged property to error\n' + err.toString() );
-  }
-
-  _.errAttend( err );
-
-  /* */
-
-  return err;
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( value === undefined )
+  value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
+  return _._errFields( err, { logged : value } );
 }
+
+//
+
+function errSuspend( err, value )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  if( value === undefined )
+  value = true;
+  return _._errFields( err, { suspended : value } );
+}
+
+// {
+//
+//   _.assert( arguments.length === 1 );
+//
+//   if( !_.errIsStandard( err ) )
+//   err = _._err
+//   ({
+//     args : arguments,
+//     level : 2,
+//   });
+//
+//   /* */
+//
+//   try
+//   {
+//
+//     let value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
+//     Object.defineProperty( err, 'logged',
+//     {
+//       enumerable : false,
+//       configurable : true,
+//       writable : true,
+//       value : value,
+//     });
+//
+//   }
+//   catch( err )
+//   {
+//     logger.warn( 'Cant assign logged property to error\n' + err.toString() );
+//   }
+//
+//   _.errAttend( err );
+//
+//   /* */
+//
+//   return err;
+// }
 
 //
 
@@ -1150,6 +1155,7 @@ function _errLog( err )
   /* */
 
   _.errLogEnd( err );
+  _.errAttend( err );
 
   /* */
 
@@ -1733,6 +1739,7 @@ let Routines =
   errIsBrief,
   errIsProcess,
   errIsLogged,
+  errIsSuspended,
   errReason,
   errOriginalMessage,
   errOriginalStack,
@@ -1743,9 +1750,11 @@ let Routines =
   errUnbrief,
   errProcess,
   errUnprocess,
-  _errAttend,
+  _errFields,
+  // _errAttend,
   errAttend,
   errLogEnd,
+  errSuspend,
   errRestack,
   errOnce,
 
