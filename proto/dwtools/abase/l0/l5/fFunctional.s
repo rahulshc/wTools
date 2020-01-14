@@ -3771,6 +3771,62 @@ function entityFilter( src, onEach )
 
 //
 
+/*
+qqq : cover routine entityFirst
+qqq : implement and cover routine entityLast
+*/
+
+function entityFirst( src, onEach )
+{
+  let result;
+
+  onEach = _._filter_functor( onEach, 1 );
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.routineIs( onEach ) );
+  _.assert( src !== undefined, 'Expects src' );
+
+  /* */
+
+  if( _.longIs( src ) )
+  {
+
+    let s;
+    for( s = 0 ; s < src.length ; s++ )
+    {
+      let r = onEach.call( src, src[ s ], s, src );
+      if( r !== undefined )
+      {
+        return r;
+      }
+    }
+
+  }
+  else if( _.mapLike( src ) )
+  {
+
+    for( let s in src )
+    {
+      let r = onEach.call( src, src[ s ], s, src );
+      if( r !== undefined )
+      return r;
+    }
+
+  }
+  else
+  {
+
+    result = onEach.call( null, src, null, null );
+
+  }
+
+  /* */
+
+  return result;
+}
+
+//
+
 /**
  * The result of _entityMost routine object.
  * @typedef {Object} wTools.entityMostResult
@@ -3813,7 +3869,7 @@ qqq : refactor routine _entityMost
 - make o-fication
 - make it accept evaluator or comparator( not in the same call )
 Dmytro : routine accepts options map, and can use evaluator or comparator
-Implementation with pre and body now is unavailable, because fMap.s connecting is later then fFunctional.s. routineFromPreAndBody needs routines from fMap.s. 
+Implementation with pre and body now is unavailable, because fMap.s connecting is later then fFunctional.s. routineFromPreAndBody needs routines from fMap.s.
 */
 
 // function _entityMost_pre( routine, args )
@@ -3823,38 +3879,38 @@ Implementation with pre and body now is unavailable, because fMap.s connecting i
 //   let o = args[ 0 ];
 //   if( !_.mapIs( o ) )
 //   o = { src : args[ 0 ], onEach : args[ 1 ] };
-// 
+//
 //   _.routineOptions( _entityMost, o );
-// 
+//
 //   return o;
 // }
-// 
+//
 // function _entityMost_body( o )
 // {
 //   // _.assert( arguments.length === 1, 'Expects exactly one argument' );
 //   // _.assert( _.mapIs( o ), 'Expect map, but got ' + _.strType( o ) );
 //   // _.routineOptions( _entityMost, o );
-// 
+//
 //   if( !o.onEvaluate )
 //   {
 //     _.assert( o.returnMax !== null, 'o.returnMax should has value' );
-// 
+//
 //     if( o.returnMax )
 //     o.onEvaluate = ( a, b ) => a - b > 0;
 //     else
 //     o.onEvaluate = ( a, b ) => b - a > 0;
 //   }
-// 
+//
 //   _.assert( 1 <= o.onEach.length && o.onEach.length <= 3 );
 //   _.assert( o.onEvaluate.length === 1 || o.onEvaluate.length === 2 );
-// 
+//
 //   let result = { index : -1, key : undefined, value : undefined, element : undefined };
-// 
+//
 //   if( _.longIs( o.src ) )
 //   {
 //     if( o.src.length === 0 )
 //     return result;
-// 
+//
 //     let s = 0;
 //     if( o.onEvaluate.length === 1 )
 //     for( ; s < o.src.length; s++ )
@@ -3872,7 +3928,7 @@ Implementation with pre and body now is unavailable, because fMap.s connecting i
 //       result.key = s;
 //       result.value = o.onEach( o.src[ s ], s, o.src );
 //     }
-// 
+//
 //     for( ; s < o.src.length; s++ )
 //     resultValue( o.src[ s ], s, o.src );
 //     result.index = result.key;
@@ -3900,9 +3956,9 @@ Implementation with pre and body now is unavailable, because fMap.s connecting i
 //           if( resultValue( o.src[ s ], s, o.src ) )
 //           result.index = index;
 //         }
-// 
+//
 //         index++;
-// 
+//
 //       }
 //       result.element = o.src[ result.key ];
 //     }
@@ -3915,25 +3971,25 @@ Implementation with pre and body now is unavailable, because fMap.s connecting i
 //         result.value = o.onEach( o.src[ s ], s, o.src );
 //         break;
 //       }
-// 
+//
 //       for( let s in o.src )
 //       {
 //         if( resultValue( o.src[ s ], s, o.src ) )
 //         result.index = index;
-// 
+//
 //         index++;
 //       }
 //       result.element = o.src[ result.key ];
 //     }
-// 
+//
 //   }
 //   else
 //   _.assert( 0 );
-// 
+//
 //   return result;
-// 
+//
 //   /* */
-// 
+//
 //   function resultValue( e, k, s )
 //   {
 //     let value = o.onEach( e, k, s );
@@ -3952,12 +4008,12 @@ Implementation with pre and body now is unavailable, because fMap.s connecting i
 //       result.value = value;
 //       return true;
 //     }
-// 
+//
 //     return false;
 //   }
-// 
+//
 // }
-// 
+//
 // _entityMost_body.defaults =
 // {
 //   src : null,
@@ -3965,9 +4021,9 @@ Implementation with pre and body now is unavailable, because fMap.s connecting i
 //   onEvaluate : null,
 //   returnMax : null
 // }
-// 
+//
 // //
-// 
+//
 // let _entityMost = _.routineFromPreAndBody( _entityMost_pre, _entityMost_body );
 
 //
@@ -4335,6 +4391,9 @@ let Routines =
   map : entityMap,
   entityFilter,
   filter : entityFilter,
+  entityFirst,
+  first : entityFirst,
+
 
   /* qqq : take into account Unroll case in routines filter, filterInplace | Dmytro : implemented */
 
