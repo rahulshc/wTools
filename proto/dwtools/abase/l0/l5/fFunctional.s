@@ -3772,7 +3772,7 @@ function entityFilter( src, onEach )
 //
 
 /*
-qqq : cover routine entityFirst
+qqq : cover routine entityFirst | Dmytro : covered
 qqq : implement and cover routine entityLast
 */
 
@@ -3791,14 +3791,11 @@ function entityFirst( src, onEach )
   if( _.longIs( src ) )
   {
 
-    let s;
-    for( s = 0 ; s < src.length ; s++ )
+    for( let s = 0 ; s < src.length ; s++ )
     {
       let r = onEach.call( src, src[ s ], s, src );
       if( r !== undefined )
-      {
-        return r;
-      }
+      return r;
     }
 
   }

@@ -15873,6 +15873,317 @@ function entityFilterDeep( test )
 
 //
 
+function first( test ) 
+{
+  test.open( 'onEach returns element' );
+
+  test.case = 'empty array';
+  var got = _.first( [], ( e ) => e );
+  test.identical( got, undefined );
+
+  test.case = 'argumentsArray with undefined';
+  var got = _.first( _.argumentsArrayMake( [ undefined, undefined, undefined ] ), ( e ) => e );
+  test.identical( got, undefined );
+
+  test.case = 'unroll has defined elements';
+  var got = _.first( _.unrollMake( [ undefined, 'str', undefined ] ), ( e ) => e );
+  test.identical( got, 'str' );
+
+  test.case = 'BufferTyped with zeros';
+  var got = _.first( new U8x( 10 ), ( e ) => e );
+  test.identical( got, 0 );
+
+  /* */
+
+  test.case = 'empty map';
+  var got = _.first( {}, ( e ) => e );
+  test.identical( got, undefined );
+
+  test.case = 'map with undefined';
+  var got = _.first( { a : undefined, b : undefined, c : undefined }, ( e ) => e );
+  test.identical( got, undefined );
+
+  test.case = 'map has defined elements';
+  var got = _.first( { a : undefined, b : 'str', c : 1 }, ( e ) => e );
+  test.identical( got, 'str' );
+
+  test.case = 'empty pure map';
+  var got = _.first( Object.create( null ), ( e ) => e );
+  test.identical( got, undefined );
+
+  test.case = 'pure map with undefined';
+  var src = Object.create( null );
+  src.a = undefined;
+  src.b = undefined;
+  var got = _.first( src, ( e ) => e );
+  test.identical( got, undefined );
+
+  test.case = 'map has defined elements';
+  var src = Object.create( null );
+  src.a = undefined;
+  src.b = 'str';
+  var got = _.first( src, ( e ) => e );
+  test.identical( got, 'str' );
+
+  /* */
+
+  test.case = 'null';
+  var got = _.first( null, ( e ) => e );
+  test.identical( got, null );
+
+  test.case = 'string';
+  var got = _.first( 'str', ( e ) => e );
+  test.identical( got, 'str' );
+
+  test.case = 'number';
+  var got = _.first( 1, ( e ) => e );
+  test.identical( got, 1 );
+
+  test.case = 'boolean - false';
+  var got = _.first( false, ( e ) => e );
+  test.identical( got, false );
+
+  test.close( 'onEach returns element' );
+
+  /* - */
+
+  test.open( 'onEach returns key' );
+
+  test.case = 'empty unroll';
+  var got = _.first( _.unrollMake( [] ), ( e, k ) => k );
+  test.identical( got, undefined );
+
+  test.case = 'array with undefined';
+  var got = _.first( [ undefined, undefined, undefined ], ( e, k ) => k );
+  test.identical( got, 0 );
+
+  test.case = 'argumentsArray has defined elements';
+  var got = _.first( _.argumentsArrayMake( [ undefined, 'str', undefined ] ), ( e, k ) => k );
+  test.identical( got, 0 );
+
+  test.case = 'BufferTyped with zeros';
+  var got = _.first( new I32x( 10 ), ( e, k ) => k );
+  test.identical( got, 0 );
+
+  /* */
+
+  test.case = 'empty map';
+  var got = _.first( {}, ( e, k ) => k );
+  test.identical( got, undefined );
+
+  test.case = 'map with undefined';
+  var got = _.first( { a : undefined, b : undefined, c : undefined }, ( e, k ) => k );
+  test.identical( got, 'a' );
+
+  test.case = 'map has defined elements';
+  var got = _.first( { a : undefined, b : 'str', c : 1 }, ( e, k ) => k );
+  test.identical( got, 'a' );
+
+  test.case = 'empty pure map';
+  var got = _.first( Object.create( null ), ( e, k ) => k );
+  test.identical( got, undefined );
+
+  test.case = 'pure map with undefined';
+  var src = Object.create( null );
+  src.a = undefined;
+  src.b = undefined;
+  var got = _.first( src, ( e, k ) => k );
+  test.identical( got, 'a' );
+
+  test.case = 'map has defined elements';
+  var src = Object.create( null );
+  src.a = undefined;
+  src.b = 'str';
+  var got = _.first( src, ( e, k ) => k );
+  test.identical( got, 'a' );
+
+  /* */
+
+  test.case = 'null';
+  var got = _.first( null, ( e, k ) => k );
+  test.identical( got, null );
+
+  test.case = 'string';
+  var got = _.first( 'str', ( e, k ) => k );
+  test.identical( got, null );
+
+  test.case = 'number';
+  var got = _.first( 1, ( e, k ) => k );
+  test.identical( got, null );
+
+  test.case = 'boolean - false';
+  var got = _.first( false, ( e, k ) => k );
+  test.identical( got, null );
+
+  test.close( 'onEach returns key' );
+
+  /* - */
+
+  test.open( 'onEach checks container' );
+
+  test.case = 'empty unroll';
+  var got = _.first( _.unrollMake( [] ), ( e, k, c ) => c ? k : e );
+  test.identical( got, undefined );
+
+  test.case = 'array with undefined';
+  var got = _.first( [ undefined, undefined, undefined ], ( e, k, c ) => c ? k : e );
+  test.identical( got, 0 );
+
+  test.case = 'argumentsArray has defined elements';
+  var got = _.first( _.argumentsArrayMake( [ undefined, 'str', undefined ] ), ( e, k, c ) => c ? k : e );
+  test.identical( got, 0 );
+
+  test.case = 'BufferTyped with zeros';
+  var got = _.first( new I32x( 10 ), ( e, k, c ) => c ? k : e );
+  test.identical( got, 0 );
+
+  /* */
+
+  test.case = 'empty map';
+  var got = _.first( {}, ( e, k, c ) => c ? k : e );
+  test.identical( got, undefined );
+
+  test.case = 'map with undefined';
+  var got = _.first( { a : undefined, b : undefined, c : undefined }, ( e, k, c ) => c ? k : e );
+  test.identical( got, 'a' );
+
+  test.case = 'map has defined elements';
+  var got = _.first( { a : undefined, b : 'str', c : 1 }, ( e, k, c ) => c ? k : e );
+  test.identical( got, 'a' );
+
+  test.case = 'empty pure map';
+  var got = _.first( Object.create( null ), ( e, k, c ) => c ? k : e );
+  test.identical( got, undefined );
+
+  test.case = 'pure map with undefined';
+  var src = Object.create( null );
+  src.a = undefined;
+  src.b = undefined;
+  var got = _.first( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, 'a' );
+
+  test.case = 'map has defined elements';
+  var src = Object.create( null );
+  src.a = undefined;
+  src.b = 'str';
+  var got = _.first( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, 'a' );
+
+  /* */
+
+  test.case = 'null';
+  var got = _.first( null, ( e, k, c ) => c ? k : e );
+  test.identical( got, null );
+
+  test.case = 'string';
+  var got = _.first( 'str', ( e, k, c ) => c ? k : e );
+  test.identical( got, 'str' );
+
+  test.case = 'number';
+  var got = _.first( 1, ( e, k, c ) => c ? k : e );
+  test.identical( got, 1 );
+
+  test.case = 'boolean - false';
+  var got = _.first( false, ( e, k, c ) => c ? k : e );
+  test.identical( got, false );
+
+  test.close( 'onEach checks container' );
+
+  /* - */
+
+  test.open( 'onEach returns undefined' );
+
+  test.case = 'empty unroll';
+  var got = _.first( _.unrollMake( [] ), ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'array with undefined';
+  var got = _.first( [ undefined, undefined, undefined ], ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'argumentsArray has defined elements';
+  var got = _.first( _.argumentsArrayMake( [ undefined, 'str', undefined ] ), ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'BufferTyped with zeros';
+  var got = _.first( new I32x( 10 ), ( e ) => undefined );
+  test.identical( got, undefined );
+
+  /* */
+
+  test.case = 'empty map';
+  var got = _.first( {}, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'map with undefined';
+  var got = _.first( { a : undefined, b : undefined, c : undefined }, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'map has defined elements';
+  var got = _.first( { a : undefined, b : 'str', c : 1 }, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'empty pure map';
+  var got = _.first( Object.create( null ), ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'pure map with undefined';
+  var src = Object.create( null );
+  src.a = undefined;
+  src.b = undefined;
+  var got = _.first( src, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'map has defined elements';
+  var src = Object.create( null );
+  src.a = undefined;
+  src.b = 'str';
+  var got = _.first( src, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  /* */
+
+  test.case = 'null';
+  var got = _.first( null, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'string';
+  var got = _.first( 'str', ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'number';
+  var got = _.first( 1, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'boolean - false';
+  var got = _.first( false, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.close( 'onEach returns undefined' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.first() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.first( 'str' ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.first( 'str', ( e ) => e, 'extra' ) );
+  
+  test.case = 'src is undefined';
+  test.shouldThrowErrorSync( () => _.first( undefined, ( e ) => e ) );
+  
+  test.case = 'onEach is not a routine';
+  test.shouldThrowErrorSync( () => _.first( [ 1, 2, 3 ], 1 ) );
+}
+
+//
+
 function index( test )
 {
 
@@ -20338,6 +20649,7 @@ value for dst             dst                dst                    first +     
     entityMap,
     entityFilter,
     entityFilterDeep,
+    first,
 
     index,
     indexExtending,
