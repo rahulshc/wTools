@@ -16163,6 +16163,79 @@ function first( test )
 
   /* - */
 
+  test.open( 'onEach is objectLike' );
+
+ test.case = 'empty unroll';
+  var got = _.first( _.unrollMake( [] ), { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'array with undefined';
+  var got = _.first( [ undefined, undefined, undefined ], { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'argumentsArray has defined elements';
+  var got = _.first( _.argumentsArrayMake( [ { b : 1 }, 'str', { a : 1 } ] ), { a : 1 } );
+  test.identical( got, { a : 1 } );
+
+  test.case = 'BufferTyped with zeros';
+  var got = _.first( new I32x( 10 ), { a : 1 } );
+  test.identical( got, undefined );
+
+  /* */
+
+  test.case = 'empty map';
+  var got = _.first( {}, { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'map with undefined';
+  var got = _.first( { a : undefined, b : undefined, c : undefined }, { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'map has defined elements';
+  var got = _.first( { a : undefined, b : 'str', c : { a : 1 } }, { a : 1 } );
+  test.identical( got, { a : 1 } );
+
+  test.case = 'empty pure map';
+  var got = _.first( Object.create( null ), { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'pure map with undefined';
+  var src = Object.create( null );
+  src.a = undefined;
+  src.b = undefined;
+  var got = _.first( src, { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'map has defined elements';
+  var src = Object.create( null );
+  src.a = undefined;
+  src.b = { a : 1 };
+  var got = _.first( src, { a : 1 } );
+  test.identical( got, { a : 1 } );
+
+  /* */
+
+  test.case = 'null';
+  var got = _.first( null, { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'string';
+  var got = _.first( 'str', { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'number';
+  var got = _.first( 1, { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'boolean - false';
+  var got = _.first( false, { a : 1 } );
+  test.identical( got, undefined ); 
+
+
+  test.close( 'onEach is objectLike' );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
