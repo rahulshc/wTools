@@ -2376,7 +2376,8 @@ function mapBut( srcMap, butMap )
   let result = Object.create( null );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( !_.primitiveIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( !_.primitiveIs( butMap ) );
 
   if( _.arrayLike( butMap ) )
   {
@@ -2396,17 +2397,13 @@ function mapBut( srcMap, butMap )
       result[ s ] = srcMap[ s ];
     }
   } 
-  else if( _.mapLike( butMap ) )
+  else
   {
     for( let s in srcMap )
     {
       if( !( s in butMap ) )
       result[ s ] = srcMap[ s ];
     }
-  }
-  else
-  {
-    _.assert( 0, 'Expects map or long {-butMap-}' );
   }
 
   return result;
@@ -2950,10 +2947,6 @@ function _mapOnly( o )
   let screenMap = o.screenMaps;
   let srcMaps = o.srcMaps;
 
-  // if( _.arrayIs( screenMap ) )
-  // screenMap = _.mapExtend( null, screenMap );
-  // screenMap = _.mapMake.apply( this, screenMap );
-
   if( !_.arrayIs( srcMaps ) )
   srcMaps = [ srcMaps ];
 
@@ -2970,7 +2963,7 @@ function _mapOnly( o )
     _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
     _.assertMapHasOnly( o, _mapOnly.defaults );
 
-    for( let s = srcMaps.length-1 ; s >= 0 ; s-- )
+    for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
     _.assert( !_.primitiveIs( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
 
   }
@@ -3007,9 +3000,14 @@ function _mapOnly( o )
   else
   {
     for( let k in screenMap )
-    for( let s in srcMaps )
-    if( k in srcMaps[ s ] )
-    o.filter.call( this, dstMap, srcMaps[ s ], k );
+    {
+      if( screenMap[ k ] === undefined )
+      continue;
+
+      for( let s in srcMaps )
+      if( k in srcMaps[ s ] )
+      o.filter.call( this, dstMap, srcMaps[ s ], k );
+    }
   }
 
   return dstMap;
