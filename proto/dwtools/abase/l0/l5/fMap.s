@@ -2804,6 +2804,39 @@ function mapOnly( srcMaps, screenMaps )
 
 //
 
+function mapOnly_( dstMap, srcMaps, screenMaps )
+{
+
+  if( arguments.length === 1 )
+  {
+    return _.mapsExtend( null, dstMap );
+  }
+  else if( arguments.length === 2 )
+  {
+    if( dstMap === null )
+    return Object.create( null );
+
+    screenMaps = srcMaps;
+    srcMaps = dstMap;
+    if( _.longIs( dstMap ) )
+    dstMap = Object.create( null );
+  }
+  else if( arguments.length !== 3 )
+  {
+    _.assert( 0, 'Expects at least one argument and no more then three arguments' );
+  }
+
+  return _mapOnly_
+  ({
+    srcMaps,
+    screenMaps,
+    dstMap,
+  });
+
+}
+
+//
+
 function mapOnlyOwn( srcMaps, screenMaps )
 {
 
@@ -3014,6 +3047,129 @@ function _mapOnly( o )
 }
 
 _mapOnly.defaults =
+{
+  dstMap : null,
+  srcMaps : null,
+  screenMaps : null,
+  filter : null,
+}
+
+//
+
+function _mapOnly_( o )
+{
+
+  let dstMap = o.dstMap || Object.create( null );
+  let screenMap = o.screenMaps;
+  let srcMaps = o.srcMaps;
+
+  if( !_.arrayIs( srcMaps ) )
+  srcMaps = [ srcMaps ];
+
+  if( !o.filter )
+  o.filter = _.field.mapper.bypass;
+
+  if( Config.debug )
+  {
+
+    _.assert( o.filter.functionFamily === 'field-mapper' );
+    _.assert( arguments.length === 1, 'Expects single argument' );
+    _.assert( _.objectLike( dstMap ), 'Expects object-like {-dstMap-}' );
+    _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
+    _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
+    _.assertMapHasOnly( o, _mapOnly_.defaults );
+
+    for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
+    _.assert( !_.primitiveIs( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
+
+  }
+
+  if( o.dstMap === o.srcMaps || o.dstMap === o.srcMaps[ 0 ] )
+  {
+
+    if( _.longIs( screenMap ) )
+    {
+      for( let s in srcMaps )
+      {
+        let srcMap = srcMaps[ s ];
+
+        for( let k in srcMap )
+        {
+          let m;
+          for( m = 0 ; m < screenMap.length ; m++ )
+          {
+            if( k === String( m ) )
+            break;
+            if( k === screenMap[ m ] )
+            break;
+            if( _.mapLike( screenMap[ m ] ) && k in screenMap[ m ] )
+            break;
+          }
+
+          if( m === screenMap.length )
+          delete srcMap[ k ];
+        }
+      }
+    }
+    else
+    {
+      for( let s in srcMaps )
+      {
+        let srcMap = srcMaps[ s ];
+
+        for( let k in srcMap )
+        if( !( k in screenMap ) )
+        delete srcMap[ k ];
+      } 
+    }
+
+  }
+  else
+  {
+
+    if( _.longIs( screenMap ) )
+    {
+      for( let s in srcMaps )
+      {
+        let srcMap = srcMaps[ s ];
+
+        for( let k in srcMap )
+        {
+          let m;
+          for( m = 0 ; m < screenMap.length ; m++ )
+          {
+            if( k === String( m ) )
+            break;
+            if( k === screenMap[ m ] )
+            break;
+            if( _.mapLike( screenMap[ m ] ) && k in screenMap[ m ] )
+            break;
+          }
+
+          if( m !== screenMap.length )
+          o.filter.call( this, dstMap, srcMaps[ s ], k );
+        }
+      }
+    }
+    else
+    {
+      for( let k in screenMap )
+      {
+        if( screenMap[ k ] === undefined )
+        continue;
+
+        for( let s in srcMaps )
+        if( k in srcMaps[ s ] )
+        o.filter.call( this, dstMap, srcMaps[ s ], k );
+      }
+    }
+
+  }
+
+  return dstMap;
+}
+
+_mapOnly_.defaults =
 {
   dstMap : null,
   srcMaps : null,
@@ -4322,6 +4478,7 @@ let Routines =
   mapOwnBut_, /* !!! : use instead of mapOwnBut */
 
   mapOnly,
+  mapOnly_, /* !!! : use instead of mapOnly */
   mapOnlyOwn,
   mapOnlyComplementing,
   _mapOnly,
