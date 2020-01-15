@@ -2226,7 +2226,7 @@ function mapButConditional( fieldFilter, srcMap, butMap )
 
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
-  _.assert( !_.primitiveIs( srcMap ) && !_.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( !_.primitiveIs( srcMap ) /* && !_.longIs( srcMap ) */, 'Expects map {-srcMap-}' );
   _.assert( fieldFilter && fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'Expects field-filter {-fieldFilter-}' );
 
   if( _.arrayLike( butMap ) )
@@ -2266,6 +2266,81 @@ function mapButConditional( fieldFilter, srcMap, butMap )
   return result;
 }
 
+function mapButConditional_( fieldFilter, dstMap, srcMap, butMap )
+{
+  if( dstMap === null )
+  {
+    dstMap = Object.create( null );
+  }
+  if( arguments.length === 3 )
+  {
+    if( _.longIs( dstMap ) )
+    dstMap = _.mapExtend( null, dstMap );
+
+    butMap = srcMap;
+    srcMap = dstMap;
+  }
+
+  _.assert( arguments.length === 3 || arguments.length === 4, 'Expects three or four arguments' );
+  _.assert( _.routineIs( fieldFilter ) && fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'Expects field-filter {-fieldFilter-}' );
+  _.assert( _.mapLike( dstMap ), 'Expects map like {-srcMap-}' );
+  _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( _.mapLike( butMap ) || _.longIs( butMap ), 'Expects long or map {-butMap-}' );
+
+  if( dstMap === srcMap )
+  {
+
+    if( _.arrayLike( butMap ) )
+    {
+      for( let s in srcMap )
+      {
+        for( let m = 0 ; m < butMap.length ; m++ )
+        {
+          if( !fieldFilter( butMap[ m ], srcMap, s ) )
+          delete dstMap[ s ];
+        }
+      }
+    }
+    else
+    {
+      for( let s in srcMap )
+      {
+        if( !fieldFilter( butMap, srcMap, s ) )
+        delete dstMap[ s ];
+      }
+    }
+  
+  }
+  else 
+  {
+
+    if( _.arrayLike( butMap ) )
+    {
+      for( let s in srcMap )
+      {
+        let m;
+        for( m = 0 ; m < butMap.length ; m++ )
+        if( !fieldFilter( butMap[ m ], srcMap, s ) )
+        break;
+
+        if( m === butMap.length )
+        dstMap[ s ] = srcMap[ s ];
+      }
+    }
+    else
+    {
+      for( let s in srcMap )
+      {
+        if( fieldFilter( butMap, srcMap, s ) )
+        dstMap[ s ] = srcMap[ s ];
+      }
+    }
+
+  }
+
+  return dstMap;
+}
+
 //
 
 /**
@@ -2294,88 +2369,180 @@ function mapButConditional( fieldFilter, srcMap, butMap )
  * @memberof wTools
  */
 
-/* qqq : teach routines mapBut* to expect long in the second argument. ask | Dmytro : need explanation */
-
-// function mapBut( srcMap, butMap )
-// {
-//   let result = Object.create( null );
-// 
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
-// 
-//   if( _.longIs( butMap ) )
-//   {
-//     result = Object.assign( result, srcMap );
-// 
-//     for( let m = 0 ; m < butMap.length ; m++ )
-//     {
-//       if( butMap[ m ] in srcMap )
-//       delete result[ butMap[ m ] ]
-//     }
-//   }
-//   else if( _.mapLike( butMap ) )
-//   {
-//     for( let s in srcMap )
-//     {
-//       if( !( s in butMap ) )
-//       result[ s ] = srcMap[ s ];
-//     }
-//   }
-//   else
-//   {
-//     _.assert( 0, 'Expects map or long {-butMap-}' );
-//   }
-// 
-//   return result;
-// }
+/* qqq : teach routines mapBut* to expect long in the second argument. ask | Dmytro : implemented */
 
 function mapBut( srcMap, butMap )
 {
   let result = Object.create( null );
 
-  if( _.arrayLike( srcMap ) )
-  srcMap = _.mapExtend( null, srcMap );
-  // srcMap = _.mapMake.apply( this, srcMap );
-
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
-  _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
 
   if( _.arrayLike( butMap ) )
   {
-
     for( let s in srcMap )
     {
       let m;
       for( m = 0 ; m < butMap.length ; m++ )
       {
-        if( ( s in butMap[ m ] ) )
+        if( s === butMap[ m ] )
+        break;
+        if( _.mapIs( butMap[ m ] ) )
+        if( s in butMap[ m ] )
         break;
       }
 
       if( m === butMap.length )
       result[ s ] = srcMap[ s ];
+    }
+  } 
+  else if( _.mapLike( butMap ) )
+  {
+    for( let s in srcMap )
+    {
+      if( !( s in butMap ) )
+      result[ s ] = srcMap[ s ];
+    }
+  }
+  else
+  {
+    _.assert( 0, 'Expects map or long {-butMap-}' );
+  }
 
+  return result;
+}
+
+//
+
+function mapBut_( dstMap, srcMap, butMap )
+{
+  if( dstMap === null )
+  {
+    dstMap = Object.create( null );
+  }
+  if( arguments.length === 2 )
+  {
+    if( _.longIs( dstMap ) )
+    dstMap = _.mapExtend( null, dstMap );
+
+    butMap = srcMap;
+    srcMap = dstMap;
+  }
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+  _.assert( _.mapLike( dstMap ), 'Expects map like destination map {-dstMap-}' );
+  _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
+  _.assert( _.mapLike( butMap ) || _.longIs( butMap ), 'Expects long or map {-srcMap-}' );
+
+  if( dstMap === srcMap )
+  {
+
+    if( _.arrayLike( butMap ) )
+    {
+      for( let s in srcMap )
+      {
+        for( let m = 0 ; m < butMap.length ; m++ )
+        {
+          if( s === butMap[ m ] )
+          delete dstMap[ s ];
+          else if( _.mapIs( butMap[ m ] ) )
+          if( s in butMap[ m ] )
+          delete dstMap[ s ];
+        }
+      }
+    } 
+    else
+    {
+      for( let s in srcMap )
+      {
+        if( s in butMap )
+        delete dstMap[ s ];
+      }
     }
 
   }
   else
   {
 
-    for( let s in srcMap )
+    if( _.arrayLike( butMap ) )
     {
-
-      if( !( s in butMap ) )
+      for( let s in srcMap )
       {
-        result[ s ] = srcMap[ s ];
-      }
+        let m;
+        for( m = 0 ; m < butMap.length ; m++ )
+        {
+          if( s === butMap[ m ] )
+          break;
+          if( _.mapIs( butMap[ m ] ) )
+          if( s in butMap[ m ] )
+          break;
+        }
 
+        if( m === butMap.length )
+        dstMap[ s ] = srcMap[ s ];
+      }
+    } 
+    else
+    {
+      for( let s in srcMap )
+      {
+        if( !( s in butMap ) )
+        dstMap[ s ] = srcMap[ s ];
+      }
     }
 
   }
 
-  return result;
+  return dstMap;
 }
+
+// function mapBut( srcMap, butMap )
+// {
+//   let result = Object.create( null );
+// 
+//   if( _.arrayLike( srcMap ) )
+//   srcMap = _.mapExtend( null, srcMap );
+//   // srcMap = _.mapMake.apply( this, srcMap );
+// 
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
+//   _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'Expects map {-srcMap-}' );
+// 
+//   if( _.arrayLike( butMap ) )
+//   {
+// 
+//     for( let s in srcMap )
+//     {
+//       let m;
+//       for( m = 0 ; m < butMap.length ; m++ )
+//       {
+//         if( ( s in butMap[ m ] ) )
+//         break;
+//       }
+// 
+//       if( m === butMap.length )
+//       result[ s ] = srcMap[ s ];
+// 
+//     }
+// 
+//   }
+//   else
+//   {
+// 
+//     for( let s in srcMap )
+//     {
+// 
+//       if( !( s in butMap ) )
+//       {
+//         result[ s ] = srcMap[ s ];
+//       }
+// 
+//     }
+// 
+//   }
+// 
+//   return result;
+// }
 
 //
 
@@ -2414,6 +2581,17 @@ function mapButIgnoringUndefines( srcMap, butMap )
 
   return _.mapButConditional( _.field.filter.dstUndefinedSrcNotUndefined, srcMap, butMap );
   // return _.mapButConditional( _.field.filter.dstHasButUndefined, butMap, srcMap );
+}
+
+//
+
+function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+
+  return _.mapButConditional_( _.field.filter.dstUndefinedSrcNotUndefined, ... arguments );
+
 }
 
 // function mapButIgnoringUndefines( srcMap, butMap )
@@ -2569,6 +2747,16 @@ function mapOwnBut( srcMap, butMap )
 
 //
 
+function mapOwnBut_( dstMap, srcMap, butMap )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+
+  return _.mapButConditional_( _.field.filter.dstNotHasSrcOwn, ... arguments );
+}
+
+//
+
 /**
  * @namespace
  * @property { objectLike } screenMaps.screenMap - The first object.
@@ -2702,6 +2890,59 @@ function mapOnlyComplementing( srcMaps, screenMaps )
  * @memberof wTools
  */
 
+// function _mapOnly( o )
+// {
+// 
+//   let dstMap = o.dstMap || Object.create( null );
+//   let screenMap = o.screenMaps;
+//   let srcMaps = o.srcMaps;
+// 
+//   if( _.arrayIs( screenMap ) )
+//   screenMap = _.mapExtend( null, screenMap );
+//   // screenMap = _.mapMake.apply( this, screenMap );
+// 
+//   if( !_.arrayIs( srcMaps ) )
+//   srcMaps = [ srcMaps ];
+// 
+//   if( !o.filter )
+//   o.filter = _.field.mapper.bypass;
+// 
+//   if( Config.debug )
+//   {
+// 
+//     _.assert( o.filter.functionFamily === 'field-mapper' );
+//     _.assert( arguments.length === 1, 'Expects single argument' );
+//     _.assert( _.objectLike( dstMap ), 'Expects object-like {-dstMap-}' );
+//     _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
+//     _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
+//     _.assertMapHasOnly( o, _mapOnly.defaults );
+// 
+//     for( let s = srcMaps.length-1 ; s >= 0 ; s-- )
+//     _.assert( !_.primitiveIs( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
+// 
+//   }
+// 
+//   for( let k in screenMap )
+//   {
+// 
+//     if( screenMap[ k ] === undefined )
+//     continue;
+// 
+//     let s;
+//     for( s = srcMaps.length-1 ; s >= 0 ; s-- )
+//     if( k in srcMaps[ s ] )
+//     break;
+// 
+//     if( s === -1 )
+//     continue;
+// 
+//     o.filter.call( this, dstMap, srcMaps[ s ], k );
+// 
+//   }
+// 
+//   return dstMap;
+// }
+
 function _mapOnly( o )
 {
 
@@ -2709,8 +2950,8 @@ function _mapOnly( o )
   let screenMap = o.screenMaps;
   let srcMaps = o.srcMaps;
 
-  if( _.arrayIs( screenMap ) )
-  screenMap = _.mapExtend( null, screenMap );
+  // if( _.arrayIs( screenMap ) )
+  // screenMap = _.mapExtend( null, screenMap );
   // screenMap = _.mapMake.apply( this, screenMap );
 
   if( !_.arrayIs( srcMaps ) )
@@ -2734,22 +2975,41 @@ function _mapOnly( o )
 
   }
 
-  for( let k in screenMap )
+  if( _.longIs( screenMap ) )
   {
+    for( let k in screenMap )
+    {
 
-    if( screenMap[ k ] === undefined )
-    continue;
+      if( screenMap[ k ] === undefined )
+      continue;
 
-    let s;
-    for( s = srcMaps.length-1 ; s >= 0 ; s-- )
+      let s;
+      for( s = srcMaps.length-1 ; s >= 0 ; s-- )
+      {
+        if( !_.mapIs( screenMap[ k ] ) && screenMap[ k ] in srcMaps[ s ] )
+        {
+          k = screenMap[ k ];
+          break;
+        }
+        if( k in srcMaps[ s ] )
+        {
+          break;
+        }
+      }
+
+      if( s === -1 )
+      continue;
+
+      o.filter.call( this, dstMap, srcMaps[ s ], k );
+
+    }
+  }
+  else
+  {
+    for( let k in screenMap )
+    for( let s in srcMaps )
     if( k in srcMaps[ s ] )
-    break;
-
-    if( s === -1 )
-    continue;
-
     o.filter.call( this, dstMap, srcMaps[ s ], k );
-
   }
 
   return dstMap;
@@ -4055,9 +4315,13 @@ let Routines =
   // map logical operator
 
   mapButConditional,
+  mapButConditional_, /* !!! : use instead of mapButConditional */
   mapBut,
+  mapBut_, /* !!! : use instead of mapBut */
   mapButIgnoringUndefines,
+  mapButIgnoringUndefines_, /* !!! : use instead of mapButIgnoringUndefines */
   mapOwnBut,
+  mapOwnBut_, /* !!! : use instead of mapOwnBut */
 
   mapOnly,
   mapOnlyOwn,
