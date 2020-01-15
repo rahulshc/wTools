@@ -237,6 +237,52 @@ function _cancel( timer )
 
 //
 
+function timerIsBegun( timer )
+{
+  debugger;
+  _.assert( _.timerIs( timer ) );
+  return timer.state === 0;
+}
+
+//
+
+function timerIsCancelBegun( timer )
+{
+  if( timer.state === -1 )
+  debugger;
+  _.assert( _.timerIs( timer ) );
+  return timer.state === -1;
+}
+
+//
+
+function timerIsCancelEnded( timer )
+{
+  debugger;
+  _.assert( _.timerIs( timer ) );
+  return timer.state === -2;
+}
+
+//
+
+function timerIsUpBegun( timer )
+{
+  debugger;
+  _.assert( _.timerIs( timer ) );
+  return timer.state === 1;
+}
+
+//
+
+function timerIsUpEnded( timer )
+{
+  debugger;
+  _.assert( _.timerIs( timer ) );
+  return timer.state === 2;
+}
+
+//
+
 let soon = typeof process === 'undefined' ? function( h ){ return setTimeout( h, 0 ) } : process.nextTick;
 
 //
@@ -393,6 +439,12 @@ let Routines =
   _finally, /* qqq : cover | Dmytro : covered */
   _periodic, /* qqq : cover | Dmytro : covered */
   _cancel, /* qqq : cover | Dmytro : covered */
+
+  timerIsBegun,
+  timerIsCancelBegun,
+  timerIsCancelEnded,
+  timerIsUpBegun,
+  timerIsUpEnded,
 
   soon,
   begin,
