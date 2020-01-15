@@ -3772,8 +3772,8 @@ function entityFilter( src, onEach )
 //
 
 /*
-qqq : cover routine entityFirst
-qqq : implement and cover routine entityLast
+qqq : cover routine entityFirst | Dmytro : covered
+qqq : implement and cover routine entityLast | Dmytro : implemented and covered
 */
 
 function entityFirst( src, onEach )
@@ -3791,14 +3791,11 @@ function entityFirst( src, onEach )
   if( _.longIs( src ) )
   {
 
-    let s;
-    for( s = 0 ; s < src.length ; s++ )
+    for( let s = 0 ; s < src.length ; s++ )
     {
       let r = onEach.call( src, src[ s ], s, src );
       if( r !== undefined )
-      {
-        return r;
-      }
+      return r;
     }
 
   }
@@ -3810,6 +3807,54 @@ function entityFirst( src, onEach )
       let r = onEach.call( src, src[ s ], s, src );
       if( r !== undefined )
       return r;
+    }
+
+  }
+  else
+  {
+
+    result = onEach.call( null, src, null, null );
+
+  }
+
+  /* */
+
+  return result;
+}
+
+//
+
+function entityLast( src, onEach )
+{
+  let result;
+
+  onEach = _._filter_functor( onEach, 1 );
+
+  _.assert( arguments.length === 2 );
+  _.assert( _.routineIs( onEach ) );
+  _.assert( src !== undefined, 'Expects src' );
+
+  /* */
+
+  if( _.longIs( src ) )
+  {
+
+    for( let s = src.length - 1 ; s >= 0 ; s-- )
+    {
+      let r = onEach.call( src, src[ s ], s, src );
+      if( r !== undefined )
+      return r;
+    }
+
+  }
+  else if( _.mapLike( src ) )
+  {
+
+    for( let s in src )
+    {
+      let r = onEach.call( src, src[ s ], s, src );
+      if( r !== undefined )
+      result = r;
     }
 
   }
@@ -4393,6 +4438,8 @@ let Routines =
   filter : entityFilter,
   entityFirst,
   first : entityFirst,
+  entityLast,
+  last : entityLast,
 
 
   /* qqq : take into account Unroll case in routines filter, filterInplace | Dmytro : implemented */

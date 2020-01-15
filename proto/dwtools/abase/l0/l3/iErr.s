@@ -554,7 +554,7 @@ function _err( o )
 
   function originalMessageForm()
   {
-    let multiline = false;
+    let multiline = false; // Dmytro : this option is not used in code
     let result = [];
 
     for( let a = 0 ; a < o.args.length ; a++ )
@@ -565,7 +565,7 @@ function _err( o )
       if( arg && !_.primitiveIs( arg ) )
       {
 
-        if( _.primitiveIs( arg ) )
+        if( _.primitiveIs( arg ) ) // Dmytro : unnecessary condition, see above
         {
           str = String( arg );
         }
@@ -579,7 +579,7 @@ function _err( o )
         }
         else if( _.errIs( arg ) )
         {
-          if( _.strIs( arg.originalMessage ) )
+          if( _.strIs( arg.originalMessage ) ) // Dmytro : duplicates condition above
           str = arg.originalMessage;
           else if( _.strIs( arg.message ) )
           str = arg.message;
@@ -770,7 +770,7 @@ function _err( o )
 
   /* */
 
-  function rw( fieldName, value )
+  function rw( fieldName, value ) // Dmytro : this routine is not used anywhere, similar routine logging() below
   {
     let symbol = Symbol.for( fieldName );
     try
