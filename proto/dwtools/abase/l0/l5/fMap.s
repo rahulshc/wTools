@@ -2285,7 +2285,7 @@ function mapButConditional_( fieldFilter, dstMap, srcMap, butMap )
   _.assert( _.routineIs( fieldFilter ) && fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'Expects field-filter {-fieldFilter-}' );
   _.assert( _.mapLike( dstMap ), 'Expects map like {-srcMap-}' );
   _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
-  _.assert( _.mapLike( butMap ) || _.longIs( butMap ), 'Expects long or map {-butMap-}' );
+  _.assert( _.objectLike( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
   {
@@ -2377,7 +2377,6 @@ function mapBut( srcMap, butMap )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitiveIs( srcMap ), 'Expects map {-srcMap-}' );
-  _.assert( !_.primitiveIs( butMap ) );
 
   if( _.longLike( butMap ) )
   {
@@ -2433,7 +2432,7 @@ function mapBut_( dstMap, srcMap, butMap )
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( _.mapLike( dstMap ), 'Expects map like destination map {-dstMap-}' );
   _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
-  _.assert( _.mapLike( butMap ) || _.longIs( butMap ), 'Expects long or map {-srcMap-}' );
+  _.assert( _.objectLike( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
   {
