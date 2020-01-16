@@ -2911,6 +2911,36 @@ function mapOnlyComplementing( srcMaps, screenMaps )
 
 //
 
+function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
+{
+
+  if( arguments.length === 2 )
+  {
+    if( dstMap === null )
+    return Object.create( null );
+
+    screenMaps = srcMaps;
+    srcMaps = dstMap;
+    if( _.longIs( dstMap ) )
+    dstMap = Object.create( null );
+  }
+  else if( arguments.length !== 3 )
+  {
+    _.assert( 0, 'Expects two or three arguments' );
+  }
+
+  return _mapOnly_
+  ({
+    filter : _.field.mapper.dstNotOwnOrUndefinedAssigning,
+    srcMaps,
+    screenMaps,
+    dstMap,
+  });
+
+}
+
+//
+
 /**
  * @callback  options.filter
  * @param { objectLike } dstMap - An empty object.
@@ -3129,7 +3159,7 @@ function _mapOnly_( o )
       for( let s in srcMaps )
       {
         let srcMap = srcMaps[ s ];
-
+        
         for( let k in srcMap )
         {
           let m;
@@ -3145,6 +3175,8 @@ function _mapOnly_( o )
 
           if( m === screenMap.length )
           delete srcMap[ k ];
+          else
+          o.filter.call( this, dstMap, srcMap, k );
         }
       }
     }
@@ -3157,6 +3189,8 @@ function _mapOnly_( o )
         for( let k in srcMap )
         if( !( k in screenMap ) )
         delete srcMap[ k ];
+        else
+        o.filter.call( this, dstMap, srcMaps[ s ], k );
       }
     }
 
@@ -4519,7 +4553,9 @@ let Routines =
   mapOnlyOwn,
   mapOnlyOwn_, /* !!! : use instead of mapOnlyOwn */
   mapOnlyComplementing,
+  mapOnlyComplementing_, /* !!! : use instead of mapOnlyComplementing */
   _mapOnly,
+  _mapOnly_,
 
   // map surer
 
