@@ -2860,6 +2860,40 @@ function mapOnlyOwn( srcMaps, screenMaps )
 
 //
 
+function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
+{
+
+  if( arguments.length === 1 )
+  {
+    return _.mapsExtendConditional( _.field.mapper.srcOwn, null, _.arrayAs( dstMap ) );
+  }
+  else if( arguments.length === 2 )
+  {
+    if( dstMap === null )
+    return Object.create( null );
+
+    screenMaps = srcMaps;
+    srcMaps = dstMap;
+    if( _.longIs( dstMap ) )
+    dstMap = Object.create( null );
+  }
+  else if( arguments.length !== 3 )
+  {
+    _.assert( 0, 'Expects at least one argument and no more then three arguments' );
+  }
+
+  return _mapOnly_
+  ({
+    filter : _.field.mapper.srcOwn,
+    srcMaps,
+    screenMaps,
+    dstMap,
+  });
+
+}
+
+//
+
 function mapOnlyComplementing( srcMaps, screenMaps )
 {
 
@@ -4483,6 +4517,7 @@ let Routines =
   mapOnly,
   mapOnly_, /* !!! : use instead of mapOnly */
   mapOnlyOwn,
+  mapOnlyOwn_, /* !!! : use instead of mapOnlyOwn */
   mapOnlyComplementing,
   _mapOnly,
 
