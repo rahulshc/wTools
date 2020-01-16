@@ -166,7 +166,7 @@ function objectSatisfy( o )
   function _objectSatisfy( template, src, root, levels, strict )
   {
 
-    if( !strict && src === undefined ) 
+    if( !strict && src === undefined )
     return true;
 
     if( template === src )
@@ -1326,8 +1326,8 @@ function mapSupplementOwnFromDefinitionStrictlyPrimitives( dstMap, srcMap )
 //
 
 /**
- * The routine mapComplement() complements {-dstMap-} by one or several {-srcMap-}. Routine does not change 
- * defined pairs key-value in {-dstMap-}. 
+ * The routine mapComplement() complements {-dstMap-} by one or several {-srcMap-}. Routine does not change
+ * defined pairs key-value in {-dstMap-}.
  * If {-dstMap-} and {-srcMap-} has equal keys, and value of {-dstMap-} is undefined, then routine
  * mapComplement() changes it to {-srcMap-} value.
  * If pair key-value does not exists in {-dstMap-}, then routine appends this pair to {-dstMap-}.
@@ -2309,9 +2309,9 @@ function mapButConditional_( fieldFilter, dstMap, srcMap, butMap )
         delete dstMap[ s ];
       }
     }
-  
+
   }
-  else 
+  else
   {
 
     if( _.arrayLike( butMap ) )
@@ -2376,9 +2376,9 @@ function mapBut( srcMap, butMap )
   let result = Object.create( null );
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
+  _.assert( _.objectLike( srcMap ) || _.routineIs( srcMap ) || _.longLike( srcMap ), 'Expects map {-srcMap-}' );
 
-  if( _.arrayLike( butMap ) )
+  if( _.longLike( butMap ) )
   {
     for( let s in srcMap )
     {
@@ -2395,8 +2395,8 @@ function mapBut( srcMap, butMap )
       if( m === butMap.length )
       result[ s ] = srcMap[ s ];
     }
-  } 
-  else if( _.mapLike( butMap ) )
+  }
+  else if( _.objectLike( butMap ) || _.routineIs( butMap ) )
   {
     for( let s in srcMap )
     {
@@ -2406,7 +2406,7 @@ function mapBut( srcMap, butMap )
   }
   else
   {
-    _.assert( 0, 'Expects map or long {-butMap-}' );
+    _.assert( 0, 'Expects object-like or long-like {-butMap-}' );
   }
 
   return result;
@@ -2450,7 +2450,7 @@ function mapBut_( dstMap, srcMap, butMap )
           delete dstMap[ s ];
         }
       }
-    } 
+    }
     else
     {
       for( let s in srcMap )
@@ -2481,7 +2481,7 @@ function mapBut_( dstMap, srcMap, butMap )
         if( m === butMap.length )
         dstMap[ s ] = srcMap[ s ];
       }
-    } 
+    }
     else
     {
       for( let s in srcMap )
@@ -2499,18 +2499,18 @@ function mapBut_( dstMap, srcMap, butMap )
 // function mapBut( srcMap, butMap )
 // {
 //   let result = Object.create( null );
-// 
+//
 //   if( _.arrayLike( srcMap ) )
 //   srcMap = _.mapExtend( null, srcMap );
 //   // srcMap = _.mapMake.apply( this, srcMap );
-// 
+//
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //   _.assert( !_.primitiveIs( butMap ), 'Expects map {-butMap-}' );
 //   _.assert( !_.primitiveIs( srcMap ) && !_.arrayLike( srcMap ), 'Expects map {-srcMap-}' );
-// 
+//
 //   if( _.arrayLike( butMap ) )
 //   {
-// 
+//
 //     for( let s in srcMap )
 //     {
 //       let m;
@@ -2519,28 +2519,28 @@ function mapBut_( dstMap, srcMap, butMap )
 //         if( ( s in butMap[ m ] ) )
 //         break;
 //       }
-// 
+//
 //       if( m === butMap.length )
 //       result[ s ] = srcMap[ s ];
-// 
+//
 //     }
-// 
+//
 //   }
 //   else
 //   {
-// 
+//
 //     for( let s in srcMap )
 //     {
-// 
+//
 //       if( !( s in butMap ) )
 //       {
 //         result[ s ] = srcMap[ s ];
 //       }
-// 
+//
 //     }
-// 
+//
 //   }
-// 
+//
 //   return result;
 // }
 
@@ -2892,54 +2892,54 @@ function mapOnlyComplementing( srcMaps, screenMaps )
 
 // function _mapOnly( o )
 // {
-// 
+//
 //   let dstMap = o.dstMap || Object.create( null );
 //   let screenMap = o.screenMaps;
 //   let srcMaps = o.srcMaps;
-// 
+//
 //   if( _.arrayIs( screenMap ) )
 //   screenMap = _.mapExtend( null, screenMap );
 //   // screenMap = _.mapMake.apply( this, screenMap );
-// 
+//
 //   if( !_.arrayIs( srcMaps ) )
 //   srcMaps = [ srcMaps ];
-// 
+//
 //   if( !o.filter )
 //   o.filter = _.field.mapper.bypass;
-// 
+//
 //   if( Config.debug )
 //   {
-// 
+//
 //     _.assert( o.filter.functionFamily === 'field-mapper' );
 //     _.assert( arguments.length === 1, 'Expects single argument' );
 //     _.assert( _.objectLike( dstMap ), 'Expects object-like {-dstMap-}' );
 //     _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
 //     _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
 //     _.assertMapHasOnly( o, _mapOnly.defaults );
-// 
+//
 //     for( let s = srcMaps.length-1 ; s >= 0 ; s-- )
 //     _.assert( !_.primitiveIs( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
-// 
+//
 //   }
-// 
+//
 //   for( let k in screenMap )
 //   {
-// 
+//
 //     if( screenMap[ k ] === undefined )
 //     continue;
-// 
+//
 //     let s;
 //     for( s = srcMaps.length-1 ; s >= 0 ; s-- )
 //     if( k in srcMaps[ s ] )
 //     break;
-// 
+//
 //     if( s === -1 )
 //     continue;
-// 
+//
 //     o.filter.call( this, dstMap, srcMaps[ s ], k );
-// 
+//
 //   }
-// 
+//
 //   return dstMap;
 // }
 
