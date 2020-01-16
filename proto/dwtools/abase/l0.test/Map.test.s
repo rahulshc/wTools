@@ -8893,6 +8893,277 @@ function mapOnlyComplementingDstMapNull_( test )
 
 //
 
+function mapOnlyComplementingDstMapMap_( test )
+{
+  test.open( 'srcMap - map' );
+
+  test.case = 'srcMap - empty map, screenMap - empty map';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = {};
+  var screenMap = {};
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty map, screenMap - empty array';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = {};
+  var screenMap = [];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, [] );
+
+  test.case = 'srcMap - empty map, screenMap - map';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = {};
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - empty map, screenMap - array';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = {};
+  var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, {} );
+  test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
+
+  test.case = 'screenMap - empty map';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = Object.create( { d : 'name', c : 33 } );
+  srcMap.a = 'abc';
+  srcMap.b = undefined;
+  var screenMap = {};
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { a : 'abc', b : undefined } );
+  test.identical( screenMap, {} );
+
+  test.case = 'screenMap - empty array';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = Object.create( { d : 'name', c : 33 } );
+  srcMap.a = 'abc';
+  srcMap.b = undefined;
+  var screenMap = [];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { a : 'abc', b : undefined } );
+  test.identical( screenMap, [] );
+
+  test.case = 'all keys in srcMap exists in screenMap - map';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = Object.create( { d : 'name', c : 33 } );
+  srcMap.a = 'abc';
+  srcMap.b = undefined;
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { a : 'abc', b : undefined } );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'all keys in srcMap exists in screenMap - array';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = Object.create( { d : 'name', c : 33 } );
+  srcMap.a = 'abc';
+  srcMap.b = undefined;
+  var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { a : 'abc', b : undefined } );
+  test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
+
+  test.case = 'none keys in srcMap exists in screenMap - map';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = Object.create( { d : 'name', c : 33 } );
+  srcMap.a = 'abc';
+  srcMap.b = undefined;
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { a : 'abc', b : undefined } );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.case = 'none keys in srcMap exists in screenMap - array';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = Object.create( { d : 'name', c : 33 } );
+  srcMap.a = 'abc';
+  srcMap.b = undefined;
+  var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { a : 'abc', b : undefined } );
+  test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var dstMap = { 2 : undefined, b : 2 };
+  var srcMap = Object.create( { d : undefined, c : 33 } );
+  srcMap[ 2 ] = 'abc';
+  srcMap.b = undefined;
+  var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { 2 : 'abc', b : 2, c : 33 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, { 2 : 'abc', b : undefined } );
+  test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+
+  test.close( 'srcMap - map' );
+
+  /* - */
+
+  test.open( 'srcMap - long' );
+
+  test.case = 'srcMap - empty array, screenMap - empty map';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [];
+  var screenMap = {};
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, {} );
+
+  test.case = 'srcMap - empty array, screenMap - empty array';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [];
+  var screenMap = [];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, [] );
+
+  test.case = 'srcMap - empty array, screenMap - map';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [];
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'srcMap - empty array, screenMap - array';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [];
+  var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [] );
+  test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
+
+  test.case = 'screenMap - empty map';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  var screenMap = {};
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'abc', b : undefined }, {}, {} ] );
+  test.identical( screenMap, {} );
+
+  test.case = 'screenMap - empty array';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  var screenMap = [];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'abc', b : undefined }, {}, {} ] );
+  test.identical( screenMap, [] );
+
+  test.case = 'all keys in srcMap exists in screenMap - map';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'abc', b : undefined }, {}, {} ] );
+  test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
+
+  test.case = 'all keys in srcMap exists in screenMap - array';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : 'abc', b : 2, c : 33, d : 'name' };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'abc', b : undefined }, {}, {} ] );
+  test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
+
+  test.case = 'none keys in srcMap exists in screenMap - map';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'abc', b : undefined }, {}, {} ] );
+  test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
+
+  test.case = 'none keys in srcMap exists in screenMap - array';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
+  var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : undefined, b : 2 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'abc', b : undefined }, {}, {} ] );
+  test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
+
+  test.case = 'srcMap has numerical keys, screenMap has not primitives';
+  var dstMap = { a : undefined, b : 2 };
+  var srcMap = [ { a : 'abc', b : undefined }, Object.create( { c : 33 } ), Object.create( { d : undefined } ) ];
+  var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
+  var got = _.mapOnlyComplementing_( dstMap, srcMap, screenMap );
+  var expected = { a : 'abc', b : 2, c : 33 };
+  test.identical( got, expected );
+  test.is( got === dstMap );
+  test.identical( srcMap, [ { a : 'abc', b : undefined }, {}, {} ] );
+  test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
+
+  test.close( 'srcMap - long' );
+}
+
+//
+
 function _mapOnly( test )
 {
 
@@ -12109,6 +12380,7 @@ var Self =
 
     mapOnlyComplementingTwoArguments_,
     mapOnlyComplementingDstMapNull_,
+    mapOnlyComplementingDstMapMap_,
 
     _mapOnly,
 
