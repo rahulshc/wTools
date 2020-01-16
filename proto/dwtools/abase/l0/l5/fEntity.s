@@ -149,6 +149,14 @@ function entityMakeConstructing( src, length )
   {
     return new src.constructor();
   }
+  else if( src === _.null ) /* qqq : cover this case */
+  {
+    return null;
+  }
+  else if( src === _.undefined ) /* qqq : cover this case */
+  {
+    return undefined;
+  }
   else if( _.primitiveIs( src ) )
   {
     return src;
@@ -184,6 +192,14 @@ function entityMakeEmpty( srcContainer )
   else if( _.mapLike( srcContainer ) )
   {
     return Object.create( null );
+  }
+  else if( src === _.null ) /* qqq : cover this case */
+  {
+    return null;
+  }
+  else if( src === _.undefined ) /* qqq : cover this case */
+  {
+    return undefined;
   }
   else if( _.primitiveIs( srcContainer ) )
   {
@@ -227,6 +243,14 @@ function entityMakeUndefined( srcContainer, length )
   {
     return Object.create( null );
   }
+  else if( src === _.null ) /* qqq : cover this case */
+  {
+    return null;
+  }
+  else if( src === _.undefined ) /* qqq : cover this case */
+  {
+    return undefined;
+  }
   else if( _.primitiveIs( src ) )
   {
     return src;
@@ -241,13 +265,29 @@ function entityMake( src )
 {
 
   if( _.longLike( src ) )
-  return _.longShallowClone( src );
+  {
+    return _.longShallowClone( src );
+  }
   else if( _.hashMapLike( src ) || _.setLike( src ) )
-  return new src.constructor( src );
+  {
+    return new src.constructor( src );
+  }
   else if( _.mapLike( src ) )
-  return _.mapShallowClone( src )
+  {
+    return _.mapShallowClone( src )
+  }
+  else if( src === _.null ) /* qqq : cover this case */
+  {
+    return null;
+  }
+  else if( src === _.undefined ) /* qqq : cover this case */
+  {
+    return undefined;
+  }
   else if( _.primitiveIs( src ) )
-  return src;
+  {
+    return src;
+  }
   else _.assert( 0, 'Not clear how to make a new element of ', _.strType( src ) );
 
 }

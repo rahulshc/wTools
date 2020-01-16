@@ -1014,9 +1014,7 @@ function errAttend( err, value )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   if( value === undefined )
   value = Config.debug ? _.introspector.stack([ 0, Infinity ]) : true;
-  debugger;
   let result = _._errFields( err, { attended : value } );
-  debugger;
   return result;
 }
 
