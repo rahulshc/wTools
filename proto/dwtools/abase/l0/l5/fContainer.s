@@ -245,7 +245,7 @@ function extendAppending( dst, src )
  * // log true
  *
  * @returns { Long|Set|HashMap|MapLike } - Returns a empty {-dstContainer-}.
- * @function empty 
+ * @function empty
  * @throws { Error } If arguments.length is less than one.
  * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a MapLike.
  * @throws { Error } If {-dstContainer-} is not a resizable Long, or if it is a WeakSet or WeakMap.

@@ -1671,6 +1671,84 @@ vectorizeNone.pre = vectorize_pre;
 vectorizeNone.body = vectorizeNone_body;
 vectorizeNone.defaults = Object.create( vectorizeNone_body.defaults );
 
+//
+
+function vectorizeAccess( vector )
+{
+
+  _.assert( _.longIs( vector ) );
+  _.assert( arguments.length === 1 );
+
+  let handler =
+  {
+    get : function( back, key, context )
+    {
+      if( key === '$' )
+      {
+        debugger;
+        return vector;
+      }
+
+      let routineIs = vector.some( ( scalar ) => _.routineIs( scalar[ key ] ) );
+
+      vector.map( ( scalar ) =>
+      {
+        _.assert( scalar[ key ] !== undefined, `One or several element(s) of vector does not have ${key}` );
+      });
+
+      if( routineIs )
+      return function()
+      {
+        let self = this;
+        let args = arguments;
+        let revectorizing = false;
+        let result = vector.map( ( scalar ) =>
+        {
+          let r = scalar[ key ].apply( scalar, args );
+          if( r !== scalar )
+          revectorizing = true;
+        });
+        if( revectorizing )
+        {
+          debugger;
+          return vectorizeAccess( result );
+        }
+        else
+        {
+          return proxy;
+        }
+      }
+
+      debugger;
+      let result = vector.map( ( scalar ) =>
+      {
+        return scalar[ key ];
+      });
+      return vectorizeAccess( result );
+
+    },
+    set : function( back, key, val, context )
+    {
+
+      vector.map( ( scalar ) =>
+      {
+        _.assert( scalar[ key ] !== undefined, `One or several element(s) of vector does not have ${key}` );
+      });
+
+      vector.map( ( scalar ) =>
+      {
+        scalar[ key ] = val;
+      });
+
+      return true;
+    },
+  };
+
+  let proxy = new Proxy( vector, handler );
+
+  return proxy;
+}
+
 // --
 // fields
 // --
@@ -1715,6 +1793,8 @@ let Routines =
   vectorizeAll,
   vectorizeAny,
   vectorizeNone,
+
+  vectorizeAccess, /* qqq : cover */
 
 }
 
