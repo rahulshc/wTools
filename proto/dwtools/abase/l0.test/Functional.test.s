@@ -7330,7 +7330,6 @@ function entityAndOnlySrc( test )
   test.case = 'src - map';
   var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
   var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty' };
-  debugger;
   var got = _.entityAnd( null, src );
   test.is( src !== got );
   test.identical( got, exp );
@@ -7338,7 +7337,6 @@ function entityAndOnlySrc( test )
   test.case = 'src - map, _.nothing';
   var exp = { true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
   var src = { false : false, zero : 0, true : true, one : 1, str : 'str', arr : [ 1 ], map : { a : 0 }, '' : 'str::empty', nothing : _.nothing };
-  debugger;
   var got = _.entityAnd( null, src );
   test.is( src !== got );
   test.identical( got, exp );
@@ -20984,8 +20982,6 @@ function eachSample( test )
 
 function eachSampleExperiment( test )
 {
-  debugger;
-
   var got = _.eachSample
   ({
     sets : [ [ 0, 1 ], [ 2, 3 ] ]
