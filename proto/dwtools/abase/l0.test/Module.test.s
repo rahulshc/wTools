@@ -42,7 +42,7 @@ function withIsIncluded( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let toolsPath = a.path.nativize( a.path.join( __dirname, '../../Tools.s' ) )
+  let toolsPath = a.path.nativize( a.path.join( __dirname, '../../Tools.s' ) );
   let program1Path = a.program( program1 );
   let program2Path = a.program({ routine : program2, globals : { toolsPath, program1Path } });
 

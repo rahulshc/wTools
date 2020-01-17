@@ -714,7 +714,7 @@ function dir_body( o )
     for( let i = o.depth - 1; i >= 0; i-- )
     {
       if
-      ( 
+      (
         o.filePath === this._rootStr || o.filePath === this._hereStr || o.filePath === this._downStr ||
         o.filePath === this._hereStr + this._upStr || o.filePath === this._downStr + this._upStr ||
         ( o.filePath.match( /\W{3}$/ ) && o.filePath.match( /\W{3}$/ )[ 0 ] === '/..' ) ||
@@ -723,7 +723,7 @@ function dir_body( o )
       {
         if( o.filePath[ o.filePath.length - 1 ] === '/' )
         o.filePath = o.filePath + this._downStr + ( o.first ? this._upStr : '' );
-        else 
+        else
         o.filePath = o.filePath + this._upStr + this._downStr + ( o.first ? this._upStr : '' );
       }
       else
