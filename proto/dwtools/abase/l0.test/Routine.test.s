@@ -3611,6 +3611,159 @@ function vectorizeNone( test )
 
 }
 
+//
+
+function vectorizeAccess( test ) 
+{
+  test.open( 'get' );
+
+  test.case = 'get property, not a routine';
+  var vector = [ { a : 1, b : 2 }, { a : 3, b : 4, c : 5 } ];
+  var src = _.vectorizeAccess( vector );
+  var got = src.a;
+  test.identical( got[ '$' ], [ 1, 3 ] );
+
+  test.case = 'execute method on number';
+  var routine = ( e ) => e;
+  var vector = [ { a : routine, b : 2 }, { a : routine, b : 4, c : 5 } ];
+  var src = _.vectorizeAccess( vector );
+  var got = src.a( 1 );
+  test.identical( got[ '$' ], [ 1, 1 ] );
+
+  test.case = 'execute method on element of vector';
+  var routine = ( e ) => e;
+  var vector = [ { a : routine, b : 2 }, { a : routine, b : 4, c : 5 } ];
+  var src = _.vectorizeAccess( vector );
+  var got = src.a( vector[ 0 ] );
+  test.identical( got[ '$' ], [ { a : routine, b : 2 }, { a : routine, b : 2 } ] );
+  test.is( got !== src );
+
+  test.case = 'execute method on element of vector, execute new vector';
+  var routine = ( e ) => e;
+  var vector = [ { a : routine, b : 2 }, { a : routine, b : 4, c : 5 } ];
+  var src = _.vectorizeAccess( vector );
+  var got = src.a( vector[ 0 ] ).a( 1 );
+  test.identical( got[ '$' ], [ 1, 1 ] );
+
+  test.case = 'passed element of vector, return original proxy';
+  var routine = ( e ) => e;
+  var vector = [ { a : routine, b : 2 } ];
+  var src = _.vectorizeAccess( vector );
+  var got = src.a( vector[ 0 ] );
+  test.identical( got[ '$' ], [ { a : routine, b : 2 } ] );
+  test.is( got === src );
+
+  /* - */
+
+  test.case = 'vector has not nested vectors or objects, key is $';
+  var vector = [ 1, 2, 3, 4 ];
+  var src = _.vectorizeAccess( vector );
+  var got = src[ '$' ];
+  test.identical( got, [ 1, 2, 3, 4 ] );
+  test.is( got === vector );
+
+  test.case = 'get first element of vectors, not a routine';
+  var vector = [ [ 1, 2 ], [ 1, 2 ] ];
+  var src = _.vectorizeAccess( vector );
+  var got = src[ 0 ];
+  test.identical( got[ '$' ], [ 1, 1 ] );
+
+  test.case = 'execute routine in vectors on number';
+  var routine = ( e ) => e;
+  var vector = [ [ routine, 2 ], [ routine, 3 ] ];
+  var src = _.vectorizeAccess( vector );
+  var got = src[ 0 ]( 1 );
+  test.identical( got[ '$' ], [ 1, 1 ] );
+
+  test.case = 'execute routine in vectors on element of original vector';
+  var routine = ( e ) => e;
+  var vector = [ [ routine, 2 ], [ routine, 3 ] ];
+  var src = _.vectorizeAccess( vector );
+  var got = src[ 0 ]( vector[ 0 ] );
+  test.identical( got[ '$' ], [ [ routine, 2 ], [ routine, 2 ] ] );
+  test.is( got !== src );
+
+  test.case = 'execute routine in vectors on element of original vector, execute resulted vector on number';
+  var routine = ( e ) => e;
+  var vector = [ [ routine, 2 ], [ routine, 3 ] ];
+  var src = _.vectorizeAccess( vector );
+  var got = src[ 0 ]( vector[ 0 ] )[ 0 ]( 1 );
+  test.identical( got[ '$' ], [ 1, 1 ] );
+
+  test.case = 'passed element of vector ';
+  var routine = ( e ) => e;
+  var vector = [ [ routine, 2 ] ];
+  var src = _.vectorizeAccess( vector );
+  var got = src[ 0 ]( vector[ 0 ] );
+  test.identical( got[ '$' ], [ [ routine, 2 ] ] );
+  test.is( got === src );
+
+  test.close( 'get' );
+
+  /* - */
+
+  test.open( 'set' );
+
+  test.case = 'set property of objects';
+  var vector = [ { a : 1, b : 2 }, { a : 3, b : 4, c : 1 }, { a : 5, b : 6 } ];
+  var src = _.vectorizeAccess( vector );
+  test.identical( src[ '$' ], [ { a : 1, b : 2 }, { a : 3, b : 4, c : 1 }, { a : 5, b : 6 } ] );
+  src.a = 0;
+  test.identical( src[ '$' ], [ { a : 0, b : 2 }, { a : 0, b : 4, c : 1 }, { a : 0, b : 6 } ] );
+
+  test.case = 'set method in property of objects';
+  var routine = ( e ) => e;
+  var vector = [ { a : 1, b : 2 }, { a : 3, b : 4, c : 1 }, { a : 5, b : 6 } ];
+  var src = _.vectorizeAccess( vector );
+  test.identical( src[ '$' ], [ { a : 1, b : 2 }, { a : 3, b : 4, c : 1 }, { a : 5, b : 6 } ] );
+  src.b = routine;
+  test.identical( src[ '$' ], [ { a : 1, b : routine }, { a : 3, b : routine, c : 1 }, { a : 5, b : routine } ] );
+
+  /* */
+
+  test.case = 'set property of vectors';
+  var vector = [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ];
+  var src = _.vectorizeAccess( vector );
+  test.identical( src[ '$' ], [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ] );
+  src[ 0 ] = 0;
+  test.identical( src[ '$' ], [ [ 0, 2 ], [ 0, 4, 1 ], [ 0, 6 ] ] );
+
+  test.case = 'set method in property of objects';
+  var routine = ( e ) => e;
+  var vector = [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ];
+  var src = _.vectorizeAccess( vector );
+  test.identical( src[ '$' ], [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ] );
+  src[ 1 ] = routine;
+  test.identical( src[ '$' ], [ [ 1, routine ], [ 3, routine, 1 ], [ 5, routine ] ] );
+
+  test.close( 'set' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.vectorizeAccess() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.vectorizeAccess( [ { name : 'a', id : '20' } ], [ { date : '01.01.2020' } ] ) );
+
+  test.case = 'object has no property, get property';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.vectorizeAccess( [ { a : 1 }, { b : 1 } ] );
+    var got = src.a;
+  } );
+
+  test.case = 'object has no property, set property';
+  test.shouldThrowErrorSync( () =>
+  {
+    var src = _.vectorizeAccess( [ { a : 1 }, { b : 1 } ] );
+    src.a = 2;
+  } );
+}
+
 // --
 //
 // --
@@ -3657,6 +3810,8 @@ var Self =
     vectorizeAll, /* qqq : extend please */
     vectorizeAny, /* qqq : extend please */
     vectorizeNone, /* qqq : extend please */
+
+    vectorizeAccess,
 
   }
 
