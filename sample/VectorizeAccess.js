@@ -1,5 +1,5 @@
 if( typeof module !== undefined )
-require( '../' );
+require( 'wTools' );
 
 let _ = wTools;
 
