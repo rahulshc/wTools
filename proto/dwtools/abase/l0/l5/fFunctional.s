@@ -3865,6 +3865,126 @@ function entityFilter( src, onEach )
 
 //
 
+function entityFilter_( dst, src, onEach )
+{
+  
+  if( arguments.length === 2 )
+  {
+    onEach = src;
+    src = dst;
+  }
+  else
+  {
+    _.assert( arguments.length === 3, 'Expects two or three arguments' );    
+  }
+  onEach = _._filter_functor( onEach, 1 );
+
+  _.assert( _.routineIs( onEach ) );
+  _.assert( src !== undefined, 'Expects src' );
+
+  /* */
+
+  let result;
+
+  if( dst === src )
+  {
+
+    result = src;
+    if( _.longIs( src ) )
+    {
+      for( let s = src.length - 1 ; s >= 0 ; s-- )
+      {
+        let r = onEach.call( src, src[ s ], s, src );
+        if( _.unrollIs( r ) )
+        _.longBut_( result, s, r );
+        else if( r !== undefined )
+        result[ s ] = r;
+        else
+        result.splice( s, 1 );
+      }
+    }
+    else if( _.mapLike( src ) )
+    {
+      for( let s in src )
+      {
+        let r = onEach.call( src, src[ s ], s, src );
+        if( r === undefined )
+        delete src[ s ];
+        else 
+        src[ s ] = r;
+      }
+    }
+    else
+    {
+      result = onEach.call( null, src, null, null );
+    }
+
+  }
+  else 
+  {
+
+    result = dst;
+    if( _.longIs( src ) )
+    {
+      if( dst === null )
+      result = _.longMake( src, 0 );
+      else
+      _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
+
+      let s, d;
+      for( s = 0, d = 0 ; s < src.length ; s++ )
+      {
+        let r = onEach.call( src, src[ s ], s, src );
+        if( _.unrollIs( r ) )
+        {
+          _.longBut_( result, d, r );
+          d += r.length;
+        }
+        else if( r !== undefined )
+        {
+          result[ d ] = r;
+          d += 1;
+        }
+      }
+    }
+    else if( _.mapLike( src ) )
+    {
+      if( dst === null )
+      result = _.entityMakeUndefined( src );
+      else
+      _.assert( _.mapLike( dst ), '{-dst-} container should be map like' );
+
+      for( let s in src )
+      {
+        let r = onEach.call( src, src[ s ], s, src );
+        if( r !== undefined )
+        result[ s ] = r;
+      }
+    }
+    else
+    {
+      let r = onEach.call( null, src, null, null );
+
+      if( r !== undefined )
+      {
+        if( _.longIs( dst ) )
+        result = _.arrayAppendElement( dst, r );
+        else if( _.mapLike( dst ) )
+        result = _.mapExtend( dst, r );
+        else if( _.primitiveIs( dst ) )
+        result = r;
+        else 
+        _.assert( 0, 'Not clear how to add result in destination container {-dst-}' );
+      }
+    }
+
+  }
+
+  return result;
+}
+
+//
+
 /*
 qqq : cover routine entityFirst | Dmytro : covered
 qqq : implement and cover routine entityLast | Dmytro : implemented and covered
@@ -4532,6 +4652,8 @@ let Routines =
   map_ : entityMap_,
   entityFilter,
   filter : entityFilter,
+  entityFilter_, /* !!! : use instead of entityFilter */
+  filter_ : entityFilter_,
   entityFirst,
   first : entityFirst,
   entityLast,
