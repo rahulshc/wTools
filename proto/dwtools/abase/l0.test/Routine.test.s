@@ -3698,6 +3698,36 @@ function vectorizeAccess( test )
   test.identical( got[ '$' ], [ [ routine, 2 ] ] );
   test.is( got === src );
 
+  /* - */
+
+  test.case = 'get first element of vectors, not a routine';
+  var vector = [ { 0 : 1, 1 : 2 }, [ 1, 2 ] ];
+  var src = _.vectorizeAccess( vector );
+  var got = src[ 0 ];
+  test.identical( got[ '$' ], [ 1, 1 ] );
+
+  test.case = 'execute routine in vectors on number';
+  var routine = ( e ) => e;
+  var vector = [ { 0 : routine, 1 : 2 }, [ routine, 3 ] ];
+  var src = _.vectorizeAccess( vector );
+  var got = src[ 0 ]( 1 );
+  test.identical( got[ '$' ], [ 1, 1 ] );
+
+  test.case = 'execute routine in vectors on element of original vector';
+  var routine = ( e ) => e;
+  var vector = [ { 0 : routine, 1 : 2 }, [ routine, 3 ] ];
+  var src = _.vectorizeAccess( vector );
+  var got = src[ 0 ]( vector[ 0 ] );
+  test.identical( got[ '$' ], [ { 0 : routine, 1 : 2 }, { 0 : routine, 1 : 2 } ] );
+  test.is( got !== src );
+
+  test.case = 'execute routine on element of original vector, execute resulted vector on number';
+  var routine = ( e ) => e;
+  var vector = [ { 0 : routine, 1 : 2 }, [ routine, 3 ] ];
+  var src = _.vectorizeAccess( vector );
+  var got = src[ 0 ]( vector[ 0 ] )[ 0 ]( 1 );
+  test.identical( got[ '$' ], [ 1, 1 ] );
+
   test.close( 'get' );
 
   /* - */
@@ -3735,6 +3765,23 @@ function vectorizeAccess( test )
   test.identical( src[ '$' ], [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ] );
   src[ 1 ] = routine;
   test.identical( src[ '$' ], [ [ 1, routine ], [ 3, routine, 1 ], [ 5, routine ] ] );
+
+  /* */
+
+  test.case = 'set property of vectors';
+  var vector = [ { 0 : 1, 1 : 2 }, [ 3, 4, 1 ], [ 5, 6 ] ];
+  var src = _.vectorizeAccess( vector );
+  test.identical( src[ '$' ], [ { 0 : 1, 1 : 2 }, [ 3, 4, 1 ], [ 5, 6 ] ] );
+  src[ 0 ] = 0;
+  test.identical( src[ '$' ], [ { 0 : 0, 1 : 2 }, [ 0, 4, 1 ], [ 0, 6 ] ] );
+
+  test.case = 'set method in property of objects';
+  var routine = ( e ) => e;
+  var vector = [ { 0 : 1, 1 : 2 }, [ 3, 4, 1 ], [ 5, 6 ] ];
+  var src = _.vectorizeAccess( vector );
+  test.identical( src[ '$' ], [ { 0 : 1, 1 : 2 }, [ 3, 4, 1 ], [ 5, 6 ] ] );
+  src[ 1 ] = routine;
+  test.identical( src[ '$' ], [ { 0 : 1, 1 : routine }, [ 3, routine, 1 ], [ 5, routine ] ] );
 
   test.close( 'set' );
 
