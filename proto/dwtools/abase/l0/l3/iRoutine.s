@@ -1707,6 +1707,7 @@ function vectorizeAccess( vector )
           let r = scalar[ key ].apply( scalar, args );
           if( r !== scalar )
           revectorizing = true;
+          return r; // Dmytro : it returns result in vector, if it not exists, then result has only undefined => [ undefined, undefined, undefined ]
         });
         if( revectorizing )
         {

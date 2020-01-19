@@ -2285,7 +2285,7 @@ function mapButConditional_( fieldFilter, dstMap, srcMap, butMap )
   _.assert( _.routineIs( fieldFilter ) && fieldFilter.length === 3 && fieldFilter.functionFamily === 'field-filter', 'Expects field-filter {-fieldFilter-}' );
   _.assert( _.mapLike( dstMap ), 'Expects map like {-srcMap-}' );
   _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects map {-srcMap-}' );
-  _.assert( _.mapLike( butMap ) || _.longIs( butMap ), 'Expects long or map {-butMap-}' );
+  _.assert( _.objectLike( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
   {
@@ -2377,7 +2377,6 @@ function mapBut( srcMap, butMap )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitiveIs( srcMap ), 'Expects map {-srcMap-}' );
-  _.assert( !_.primitiveIs( butMap ) );
 
   if( _.longLike( butMap ) )
   {
@@ -2433,7 +2432,7 @@ function mapBut_( dstMap, srcMap, butMap )
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
   _.assert( _.mapLike( dstMap ), 'Expects map like destination map {-dstMap-}' );
   _.assert( _.mapLike( srcMap ) || _.longIs( srcMap ), 'Expects long or map {-srcMap-}' );
-  _.assert( _.mapLike( butMap ) || _.longIs( butMap ), 'Expects long or map {-srcMap-}' );
+  _.assert( _.objectLike( butMap ) || _.longIs( butMap ) || _.routineIs( butMap ), 'Expects object like {-butMap-}' );
 
   if( dstMap === srcMap )
   {
@@ -2861,6 +2860,40 @@ function mapOnlyOwn( srcMaps, screenMaps )
 
 //
 
+function mapOnlyOwn_( dstMap, srcMaps, screenMaps )
+{
+
+  if( arguments.length === 1 )
+  {
+    return _.mapsExtendConditional( _.field.mapper.srcOwn, null, _.arrayAs( dstMap ) );
+  }
+  else if( arguments.length === 2 )
+  {
+    if( dstMap === null )
+    return Object.create( null );
+
+    screenMaps = srcMaps;
+    srcMaps = dstMap;
+    if( _.longIs( dstMap ) )
+    dstMap = Object.create( null );
+  }
+  else if( arguments.length !== 3 )
+  {
+    _.assert( 0, 'Expects at least one argument and no more then three arguments' );
+  }
+
+  return _mapOnly_
+  ({
+    filter : _.field.mapper.srcOwn,
+    srcMaps,
+    screenMaps,
+    dstMap,
+  });
+
+}
+
+//
+
 function mapOnlyComplementing( srcMaps, screenMaps )
 {
 
@@ -2872,6 +2905,36 @@ function mapOnlyComplementing( srcMaps, screenMaps )
     srcMaps,
     screenMaps,
     dstMap : Object.create( null ),
+  });
+
+}
+
+//
+
+function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
+{
+
+  if( arguments.length === 2 )
+  {
+    if( dstMap === null )
+    return Object.create( null );
+
+    screenMaps = srcMaps;
+    srcMaps = dstMap;
+    if( _.longIs( dstMap ) )
+    dstMap = Object.create( null );
+  }
+  else if( arguments.length !== 3 )
+  {
+    _.assert( 0, 'Expects two or three arguments' );
+  }
+
+  return _mapOnly_
+  ({
+    filter : _.field.mapper.dstNotOwnOrUndefinedAssigning,
+    srcMaps,
+    screenMaps,
+    dstMap,
   });
 
 }
@@ -3096,7 +3159,7 @@ function _mapOnly_( o )
       for( let s in srcMaps )
       {
         let srcMap = srcMaps[ s ];
-
+        
         for( let k in srcMap )
         {
           let m;
@@ -3112,6 +3175,8 @@ function _mapOnly_( o )
 
           if( m === screenMap.length )
           delete srcMap[ k ];
+          else
+          o.filter.call( this, dstMap, srcMap, k );
         }
       }
     }
@@ -3124,6 +3189,8 @@ function _mapOnly_( o )
         for( let k in srcMap )
         if( !( k in screenMap ) )
         delete srcMap[ k ];
+        else
+        o.filter.call( this, dstMap, srcMaps[ s ], k );
       }
     }
 
@@ -4484,8 +4551,11 @@ let Routines =
   mapOnly,
   mapOnly_, /* !!! : use instead of mapOnly */
   mapOnlyOwn,
+  mapOnlyOwn_, /* !!! : use instead of mapOnlyOwn */
   mapOnlyComplementing,
+  mapOnlyComplementing_, /* !!! : use instead of mapOnlyComplementing */
   _mapOnly,
+  _mapOnly_,
 
   // map surer
 
