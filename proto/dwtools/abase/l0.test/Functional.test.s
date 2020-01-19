@@ -15597,9 +15597,881 @@ function entityMap( test )
 
 //
 
+function entityMapWithoutDst_( test )
+{
+  test.open( 'onEach returns element' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, _.unrollMake( [ 1, 2, 3, 4, 'str' ] ) );
+  test.is( got === src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3, 4, 'str' ] ) );
+  test.is( got === src );
+
+  test.case = 'BufferTyped';
+  var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, new U8x( [ 1, 2, 3, 4, 5 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = { a : 1, b : 2, c : 'str' };
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, { a : 1, b : 2, c : 'str' } );
+  test.is( got === src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, { a : 1, b : 2 } );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, null );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var got = _.entityMap_( src, ( e ) => String( e ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, 'str' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityMap_( src, ( e ) => e );
+  test.identical( got, new BufferRaw() );
+  
+  test.close( 'onEach returns element' );
+
+  /* - */
+
+  test.open( 'onEach returns key' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityMap_( src, ( e, k ) => k );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( src, ( e, k ) => k );
+  test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var got = _.entityMap_( src, ( e, k ) => k );
+  test.identical( got, _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+
+  test.case = 'BufferTyped';
+  var src = new I16x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityMap_( src, ( e, k ) => k );
+  test.identical( got, new I16x( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityMap_( src, ( e, k ) => k );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = { a : 1, b : 2, c : 'str' };
+  var got = _.entityMap_( src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+  test.is( got === src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityMap_( src, ( e, k ) => k );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var got = _.entityMap_( src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b' } );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityMap_( src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var got = _.entityMap_( src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityMap_( src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityMap_( src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityMap_( src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+  
+  test.close( 'onEach returns key' );
+
+  /* - */
+
+  test.open( 'onEach checks container' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+
+  test.case = 'BufferTyped';
+  var src = new F64x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new F64x( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = { a : 1, b : 2, c : 'str' };
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+  test.is( got === src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b' } );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, null );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : String( e ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, 'str' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new BufferRaw() );
+  
+  test.close( 'onEach checks container' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityMap_() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.entityMap_( 'str' ) );
+  test.shouldThrowErrorSync( () => _.entityMap_( [ 1, 2 ] ) );
+
+  test.case = 'extra argument';
+  test.shouldThrowErrorSync( () => _.entityMap_( [ 1, 3 ], [ 1, 2 ], ( e ) => e, 'extra' ) );
+  test.shouldThrowErrorSync( () => _.entityMap_( { a : 1 }, { b : 2 }, ( e ) => e, 'extra' ) );
+
+  test.case = 'onEach returns undefined';
+  test.shouldThrowErrorSync( () => _.entityMap_( [ 1, undefined ], ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.entityMap_( { a : 2, b : undefined }, ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.entityMap_( 1, ( e ) => undefined ) );
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.entityMap_( [ 1, 2 ], {} ) );
+  test.shouldThrowErrorSync( () => _.entityMap_( null, [ 1, 2 ], {} ) );
+
+  test.case = 'wrong dst container';
+  test.shouldThrowErrorSync( () => _.entityMap_( {}, [ 1, 2 ], ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.entityMap_( [], { a : 1, b : 2 }, ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.entityMap_( new BufferRaw(), { a : 1, b : 2 }, ( e ) => e ) );
+
+  test.case = 'dst is not resizable long';
+  test.shouldThrowErrorSync( () => _.entityMap_( new F32x(), { a : 1, b : 2 }, ( e ) => e ) );
+
+  test.case = 'not map like, not long like, cannot extend map';
+  test.shouldThrowErrorSync( () => _.entityMap_( {}, 1, ( e ) => e ) );
+}
+
+//
+
+function entityMapDstNull_( test )
+{
+  test.open( 'onEach returns element' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, _.unrollMake( [ 1, 2, 3, 4, 'str' ] ) );
+  test.is( got !== src );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, [ 1, 2, 3, 4, 'str' ] );
+  test.is( got !== src );
+
+  test.case = 'BufferTyped';
+  var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, new U8x( [ 1, 2, 3, 4, 5 ] ) );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = { a : 1, b : 2, c : 'str' };
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, { a : 1, b : 2, c : 'str' } );
+  test.is( got !== src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, { a : 1, b : 2 } );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, null );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var got = _.entityMap_( null, src, ( e ) => String( e ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, 'str' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityMap_( null, src, ( e ) => e );
+  test.identical( got, new BufferRaw() );
+  
+  test.close( 'onEach returns element' );
+
+  /* - */
+
+  test.open( 'onEach returns key' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityMap_( null, src, ( e, k ) => k );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( null, src, ( e, k ) => k );
+  test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got !== src );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var got = _.entityMap_( null, src, ( e, k ) => k );
+  test.identical( got, [ 0, 1, 2, 3, 4 ] );
+  test.is( got !== src );
+
+  test.case = 'BufferTyped';
+  var src = new I16x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityMap_( null, src, ( e, k ) => k );
+  test.identical( got, new I16x( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityMap_( null, src, ( e, k ) => k );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = { a : 1, b : 2, c : 'str' };
+  var got = _.entityMap_( null, src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+  test.is( got !== src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityMap_( null, src, ( e, k ) => k );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var got = _.entityMap_( null, src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b' } );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityMap_( null, src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var got = _.entityMap_( null, src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityMap_( null, src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityMap_( null, src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityMap_( null, src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+  
+  test.close( 'onEach returns key' );
+
+  /* - */
+
+  test.open( 'onEach checks container' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got !== src );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ 0, 1, 2, 3, 4 ] );
+  test.is( got !== src );
+
+  test.case = 'BufferTyped';
+  var src = new F64x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new F64x( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = { a : 1, b : 2, c : 'str' };
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+  test.is( got !== src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b' } );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, null );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : String( e ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, 'str' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new BufferRaw() );
+  
+  test.close( 'onEach checks container' );
+}
+
+//
+
+function entityMapDstNotNull_( test )
+{
+  test.open( 'onEach returns element' );
+  
+  test.case = 'dst - argumentsArray, empty array';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = [];
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst - array, unroll';
+  var dst = [ 'a', 'b', 'c', 'd', 'e', 'f' ];
+  var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, _.unrollMake( [ 1, 2, 3, 4, 'str', 'f' ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst - unroll, argumentsArray';
+  var dst = _.unrollMake( [ 'a', 'b', 'c', 'd', 'e', 'f' ] );
+  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, [ 0, 1, 2, 3, 4, 'f' ] );
+  test.is( got === dst );
+
+  test.case = 'dst - BufferTyped, BufferTyped';
+  var dst = new U16x( 10 );
+  var src = new F64x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, new U16x( [ 1, 2, 3, 4, 5, 0, 0, 0, 0, 0 ] ) );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - map, empty map';
+  var dst = { a : 2, d : 2 };
+  var src = {};
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, { a : 2, d : 2 } );
+  test.is( got === dst );
+
+  test.case = 'dst - pure map, map';
+  var dst = Object.create( null );
+  dst.a = 2;
+  dst.d = 2;
+  var src = { a : 1, b : 2, c : 'str' };
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, { a : 1, b : 2, c : 'str', d : 2 } );
+  test.is( got === dst );
+
+  test.case = 'dst - map, empty pure map';
+  var dst = { a : 2, d : 2 };
+  var src = Object.create( null );
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, { a : 2, d : 2 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : 2, d : 2 };
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, { a : 1, b : 2, d : 2 } );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - array, null';
+  var dst = [ 1, 2 ];
+  var src = null;
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, [ 1, 2, null ] );
+  test.is( got === dst );
+
+  test.case = 'dst - map, undefined';
+  var dst = { a : 1 };
+  var src = undefined;
+  var got = _.entityMap_( dst, src, ( e ) => { return { e : e } } );
+  test.identical( got, { a : 1, 'undefined' : undefined } );
+  test.is( got === dst );
+
+  test.case = 'dst - undefined, string';
+  var dst = undefined;
+  var src = 'str';
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, 'str' );
+
+  test.case = 'dst - emty unroll, Set';
+  var dst = _.unrollMake( [] );
+  var src = new Set();
+  var got = _.entityMap_( dst, src, ( e ) => e );
+  test.identical( got, [ new Set() ] );
+  test.is( got === dst );
+
+  test.case = 'dst - empty pure map, BufferRaw';
+  var dst = Object.create( null );
+  var src = new BufferRaw();
+  var got = _.entityMap_( dst, src, ( e ) => [ e ] );
+  test.identical( got, { 0 : new BufferRaw() } );
+  test.is( got === dst );
+  
+  test.close( 'onEach returns element' );
+
+  /* - */
+
+  test.open( 'onEach returns key' );
+  
+  test.case = 'dst - argumentsArray, empty array';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = [];
+  var got = _.entityMap_( dst, src, ( e, k ) => k );
+  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst - array, unroll';
+  var dst = [ 'a', 'b', 'c', 'd', 'e', 'f' ];
+  var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( dst, src, ( e, k ) => k );
+  test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4, 'f' ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst - unroll, argumentsArray';
+  var dst = _.unrollMake( [ 'a', 'b', 'c', 'd', 'e', 'f' ] );
+  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var got = _.entityMap_( dst, src, ( e, k ) => k );
+  test.identical( got, [ 0, 1, 2, 3, 4, 'f' ] );
+  test.is( got === dst );
+
+  test.case = 'dst - BufferTyped, BufferTyped';
+  var dst = new U16x( 10 );
+  var src = new F64x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityMap_( dst, src, ( e, k ) => k );
+  test.identical( got, new U16x( [ 0, 1, 2, 3, 4, 0, 0, 0, 0, 0 ] ) );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - map, empty map';
+  var dst = { a : 2, d : 2 };
+  var src = {};
+  var got = _.entityMap_( dst, src, ( e, k ) => k );
+  test.identical( got, { a : 2, d : 2 } );
+  test.is( got === dst );
+
+  test.case = 'dst - pure map, map';
+  var dst = Object.create( null );
+  dst.a = 2;
+  dst.d = 2;
+  var src = { a : 1, b : 2, c : 'str' };
+  var got = _.entityMap_( dst, src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b', c : 'c', d : 2 } );
+  test.is( got === dst );
+
+  test.case = 'dst - map, empty pure map';
+  var dst = { a : 2, d : 2 };
+  var src = Object.create( null );
+  var got = _.entityMap_( dst, src, ( e, k ) => k );
+  test.identical( got, { a : 2, d : 2 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : 2, d : 2 };
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var got = _.entityMap_( dst, src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b', d : 2 } );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - array, null';
+  var dst = [ 1, 2 ];
+  var src = null;
+  var got = _.entityMap_( dst, src, ( e, k ) => String( k ) );
+  test.identical( got, [ 1, 2, 'undefined' ] );
+  test.is( got === dst );
+
+  test.case = 'dst - map, undefined';
+  var dst = { a : 1 };
+  var src = undefined;
+  var got = _.entityMap_( dst, src, ( e, k ) => { return { k : k } } );
+  test.identical( got, { a : 1, 'undefined' : undefined } );
+  test.is( got === dst );
+
+  test.case = 'dst - undefined, string';
+  var dst = undefined;
+  var src = 'str';
+  var got = _.entityMap_( dst, src, ( e, k ) => String( k ) );
+  test.identical( got, 'undefined' );
+
+  test.case = 'dst - emty unroll, Set';
+  var dst = _.unrollMake( [] );
+  var src = new Set();
+  var got = _.entityMap_( dst, src, ( e, k ) => String( k ) );
+  test.identical( got, [ 'undefined' ] );
+  test.is( got === dst );
+
+  test.case = 'dst - empty pure map, BufferRaw';
+  var dst = Object.create( null );
+  var src = new BufferRaw();
+  var got = _.entityMap_( dst, src, ( e, k ) => [ k ] );
+  test.identical( got, { 0 : undefined } );
+  test.is( got === dst );
+  
+  test.close( 'onEach returns key' );
+
+  /* - */
+
+  test.open( 'onEach checks container' );
+  
+  test.case = 'dst - argumentsArray, empty array';
+  var dst = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = [];
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst - array, unroll';
+  var dst = [ 'a', 'b', 'c', 'd', 'e', 'f' ];
+  var src = _.unrollMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4, 'f' ] ) );
+  test.is( got === dst );
+
+  test.case = 'dst - unroll, argumentsArray';
+  var dst = _.unrollMake( [ 'a', 'b', 'c', 'd', 'e', 'f' ] );
+  var src = _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] );
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ 0, 1, 2, 3, 4, 'f' ] );
+  test.is( got === dst );
+
+  test.case = 'dst - BufferTyped, BufferTyped';
+  var dst = new U16x( 10 );
+  var src = new F64x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new U16x( [ 0, 1, 2, 3, 4, 0, 0, 0, 0, 0 ] ) );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - map, empty map';
+  var dst = { a : 2, d : 2 };
+  var src = {};
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 2, d : 2 } );
+  test.is( got === dst );
+
+  test.case = 'dst - pure map, map';
+  var dst = Object.create( null );
+  dst.a = 2;
+  dst.d = 2;
+  var src = { a : 1, b : 2, c : 'str' };
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b', c : 'c', d : 2 } );
+  test.is( got === dst );
+
+  test.case = 'dst - map, empty pure map';
+  var dst = { a : 2, d : 2 };
+  var src = Object.create( null );
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 2, d : 2 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : 2, d : 2 };
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b', d : 2 } );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'dst - array, null';
+  var dst = [ 1, 2 ];
+  var src = null;
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ 1, 2, null ] );
+  test.is( got === dst );
+
+  test.case = 'dst - map, undefined';
+  var dst = { a : 1 };
+  var src = undefined;
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : { e : e } );
+  test.identical( got, { a : 1, 'undefined' : undefined } );
+  test.is( got === dst );
+
+  test.case = 'dst - undefined, string';
+  var dst = undefined;
+  var src = 'str';
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, 'str' );
+
+  test.case = 'dst - emty unroll, Set';
+  var dst = _.unrollMake( [] );
+  var src = new Set();
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ new Set() ] );
+  test.is( got === dst );
+
+  test.case = 'dst - empty pure map, BufferRaw';
+  var dst = Object.create( null );
+  var src = new BufferRaw();
+  var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : [ e ] );
+  test.identical( got, { 0 : new BufferRaw() } );
+  test.is( got === dst );
+  
+  test.close( 'onEach checks container' );
+}
+
+//
+
 /*
-TODO : need to check actuality of this test
-Dmytro : it works correctly
+TODO : need to check actuality of this test | Dmytro : it works correctly
 */
 
 function entityFilter( test )
@@ -15729,7 +16601,1584 @@ function entityFilter( test )
 
   test.case = 'src is undefined';
   test.shouldThrowErrorSync( () => _.entityFilter( undefined, ( e ) => e ) );
-};
+}
+
+//
+
+function entityFilterWithoutDst_( test )
+{
+  test.open( 'onEach returns element' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, _.unrollMake( [ 1, 3, 'str' ] ) );
+  test.is( got === src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 'str' ] );
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, _.argumentsArrayMake( [ 1, 2, 3, 4, 'str' ] ) );
+  test.is( got === src );
+
+  test.case = 'BufferTyped';
+  var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, new U8x( [ 1, 2, 3, 4, 5 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, { a : 1, c : 'str' } );
+  test.is( got === src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, { a : 1 } );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, null );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, 'str' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( src, ( e ) => e );
+  test.identical( got, new BufferRaw() );
+  
+  test.close( 'onEach returns element' );
+
+  /* - */
+
+  test.open( 'onEach returns key' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+
+  test.case = 'BufferTyped';
+  var src = new I16x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, new I16x( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b', c : 'c', d : 'd' } );
+  test.is( got === src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, null );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, null );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, null );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( src, ( e, k ) => k );
+  test.identical( got, null );
+  
+  test.close( 'onEach returns key' );
+
+  /* - */
+
+  test.open( 'onEach checks container' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, _.argumentsArrayMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+
+  test.case = 'BufferTyped';
+  var src = new F64x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new F64x( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b', c : 'c', d : 'd' } );
+  test.is( got === src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, null );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, 'str' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new BufferRaw() );
+  
+  test.close( 'onEach checks container' );
+
+  /* - */
+
+  test.open( 'onEach returns undefined' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( src, ( e ) => undefined );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( src, ( e ) => undefined );
+  test.identical( got, _.unrollMake( [] ) );
+  test.is( got === src );
+  test.is( _.unrollIs( got ) );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( src, ( e ) => undefined );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( src, ( e ) => undefined );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( src, ( e ) => undefined );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( src, ( e ) => undefined );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( src, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( src, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( src, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( src, ( e ) => undefined );
+  test.identical( got, undefined );
+  
+  test.close( 'onEach returns undefined' );
+
+  /* - */
+
+  test.open( 'onEach is map like' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ { a : { a : 1 } }, { a : 1 }, 3, undefined, { a : { a : { a : 1 } } } ] );
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, _.unrollMake( [ { a : 1 } ] ) );
+  test.is( got === src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ { a : 1 }, { a : 1 }, { a : 1 }, { a : 1 }, { a : 1 } ] );
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, _.argumentsArrayMake( [ { a : 1 }, { a : 1 }, { a : 1 }, { a : 1 }, { a : 1 } ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = { a : { a : 1 }, b : { a : { a : 1 } }, c : 'str', d : undefined };
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, { a : { a : 1 } } );
+  test.is( got === src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = { a : 1 };
+  src.b = { a : { a : 1 } };
+  src.c = undefined;
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, { a : { a : 1 } } );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( src, { a : 1 } );
+  test.identical( got, undefined );
+  
+  test.close( 'onEach is map like' );
+
+  /* - */
+
+  test.open( 'onEach returns unroll' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, _.unrollMake( [ 1, 1, undefined, undefined, 3, 3, undefined, undefined, 'str', 'str' ] ) );
+  test.is( got === src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] ) );
+  test.is( got === src );
+
+  test.case = 'BufferTyped';
+  var src = new I16x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, new I16x( [ 1, 2, 3, 4, 5 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, { a : [ 1, 1 ], b : [ undefined, undefined ], c : [ 'str', 'str' ], d : [ undefined, undefined ] } );
+  test.is( got === src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, { a : [ 1, 1 ], b : [ undefined, undefined ], c : [ undefined, undefined ] } );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ null, null ] );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ 'str', 'str' ] );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ new Set(), new Set() ] );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ new BufferRaw(), new BufferRaw() ] );
+  
+  test.close( 'onEach returns unroll' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityFilter_() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.entityFilter_( 'str' ) );
+  test.shouldThrowErrorSync( () => _.entityFilter_( [ 1, 2 ] ) );
+
+  test.case = 'extra argument';
+  test.shouldThrowErrorSync( () => _.entityFilter_( [ 1, 3 ], [ 1, 2 ], ( e ) => e, 'extra' ) );
+  test.shouldThrowErrorSync( () => _.entityFilter_( { a : 1 }, { b : 2 }, ( e ) => e, 'extra' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.entityFilter_( undefined, ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.entityFilter_( null, undefined, ( e ) => e ) );
+
+  test.case = 'src is not resizable long, cannot delete element';
+  test.shouldThrowErrorSync( () => _.entityFilter_( _.argumentsArrayMake( [ undefined, undefined ], ( e ) => e ) ) );
+
+  test.case = 'wrong type of onEach';
+  test.shouldThrowErrorSync( () => _.entityFilter_( [ 1, 2 ], [] ) );
+  test.shouldThrowErrorSync( () => _.entityFilter_( null, [ 1, 2 ], [] ) );
+
+  test.case = 'wrong dst container';
+  test.shouldThrowErrorSync( () => _.entityFilter_( {}, [ 1, 2 ], ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.entityFilter_( [], { a : 1, b : 2 }, ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.entityFilter_( new BufferRaw(), { a : 1, b : 2 }, ( e ) => e ) );
+
+  test.case = 'dst is not resizable long';
+  test.shouldThrowErrorSync( () => _.entityFilter_( new F32x(), { a : 1, b : 2 }, ( e ) => e ) );
+
+  test.case = 'not map like, not long like, cannot extend map';
+  test.shouldThrowErrorSync( () => _.entityFilter_( {}, 1, ( e ) => e ) );
+}
+
+//
+
+function entityFilterDstNull_( test )
+{
+  test.open( 'onEach returns element' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, _.unrollMake( [ 1, 3, 'str' ] ) );
+  test.is( got !== src );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, [ 1, 3, 'str' ] );
+  test.is( got !== src );
+
+  test.case = 'BufferTyped';
+  var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, new U8x( [] ) );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, { a : 1, c : 'str' } );
+  test.is( got !== src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, { a : 1 } );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, null );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, 'str' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( null, src, ( e ) => e );
+  test.identical( got, new BufferRaw() );
+  
+  test.close( 'onEach returns element' );
+
+  /* - */
+
+  test.open( 'onEach returns key' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got !== src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, [ 0, 1, 2, 3, 4 ] );
+  test.is( got !== src );
+
+  test.case = 'BufferTyped';
+  var src = new I16x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, new I16x( [] ) );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b', c : 'c', d : 'd' } );
+  test.is( got !== src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, null );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, null );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, null );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( null, src, ( e, k ) => k );
+  test.identical( got, null );
+  
+  test.close( 'onEach returns key' );
+
+  /* - */
+
+  test.open( 'onEach checks container' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, _.unrollMake( [ 0, 1, 2, 3, 4 ] ) );
+  test.is( got !== src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ 0, 1, 2, 3, 4 ] );
+  test.is( got !== src );
+
+  test.case = 'BufferTyped';
+  var src = new F64x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new F64x( [] ) );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b', c : 'c', d : 'd' } );
+  test.is( got !== src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, null );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, 'str' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new BufferRaw() );
+  
+  test.close( 'onEach checks container' );
+
+  /* - */
+
+  test.open( 'onEach returns undefined' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, _.unrollMake( [] ) );
+  test.is( got !== src );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, null );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, null );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( null, src, ( e ) => undefined );
+  test.identical( got, null );
+  
+  test.close( 'onEach returns undefined' );
+
+  /* - */
+
+  test.open( 'onEach is map like' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ { a : { a : 1 } }, { a : 1 }, 3, undefined, { a : { a : { a : 1 } } } ] );
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, _.unrollMake( [ { a : 1 } ] ) );
+  test.is( got !== src );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = { a : { a : 1 }, b : { a : { a : 1 } }, c : 'str', d : undefined };
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, { a : { a : 1 } } );
+  test.is( got !== src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = { a : 1 };
+  src.b = { a : { a : 1 } };
+  src.c = undefined;
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, { a : { a : 1 } } );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, undefined );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, null );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, null );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( null, src, { a : 1 } );
+  test.identical( got, null );
+  
+  test.close( 'onEach is map like' );
+
+  /* - */
+
+  test.open( 'onEach returns unroll' );
+  
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, _.unrollMake( [ 1, 1, undefined, undefined, 3, 3, undefined, undefined, 'str', 'str' ] ) );
+  test.is( got !== src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ 1, 1, undefined, undefined, 3, 3, undefined, undefined, 'str', 'str' ] );
+  test.is( got !== src );
+
+  test.case = 'BufferTyped';
+  var src = new I16x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, new I16x( [] ) );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, { a : [ 1, 1 ], b : [ undefined, undefined ], c : [ 'str', 'str' ], d : [ undefined, undefined ] } );
+  test.is( got !== src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, {} );
+  test.is( got !== src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, { a : [ 1, 1 ], b : [ undefined, undefined ], c : [ undefined, undefined ] } );
+  test.is( got !== src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ null, null ] );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ 'str', 'str' ] );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ new Set(), new Set() ] );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ new BufferRaw(), new BufferRaw() ] );
+  
+  test.close( 'onEach returns unroll' );
+}
+
+//
+
+function entityFilterDstNotNull_( test )
+{
+  test.open( 'onEach returns element' );
+  
+  test.case = 'empty array';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = [];
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'unroll';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, [ 1, 3, 'str', 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'argumentsArray';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, [ 1, 3, 'str', 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'BufferTyped';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = new U8x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, [ 1, 2, 3, 4, 5, 7 ] );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'empty map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = {};
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, { a : 1, b : undefined, c : 'str', e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'empty pure map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, { a : 1, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'null';
+  var dst = [ 1, 2 ];
+  var src = null;
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, [ 1, 2, null ] );
+  test.is( got === dst );
+
+  test.case = 'string';
+  var dst = { a : 1 };
+  var src = 'str';
+  var got = _.entityFilter_( dst, src, ( e ) => [ e ] );
+  test.identical( got, { a : 1, 0 : 'str' } );
+  test.is( got === dst );
+
+  test.case = 'Set';
+  var dst = false;
+  var src = new Set();
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var dst = _.unrollMake( [] );
+  var src = new BufferRaw();
+  var got = _.entityFilter_( dst, src, ( e ) => e );
+  test.identical( got, [ new BufferRaw() ] );
+  test.is( got === dst );
+  
+  test.close( 'onEach returns element' );
+
+  /* - */
+
+  test.open( 'onEach returns key' );
+  
+  test.case = 'empty array';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = [];
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'unroll';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, [ 0, 1, 2, 3, 4, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'argumentsArray';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, [ 0, 1, 2, 3, 4, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'BufferTyped';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = new F64x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, [ 0, 1, 2, 3, 4, 7 ] );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'empty map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = {};
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b', c : 'c', d : 'd', e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'empty pure map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, { a : 'a', b : 'b', c : 'c', e : 1 } );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'null';
+  var dst = [ 1, 2 ];
+  var src = null;
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, [ 1, 2, null ] );
+  test.is( got === dst );
+
+  test.case = 'string';
+  var dst = { a : 1 };
+  var src = 'str';
+  var got = _.entityFilter_( dst, src, ( e, k ) => [ k ] );
+  test.identical( got, { a : 1, 0 : null } );
+  test.is( got === dst );
+
+  test.case = 'Set';
+  var dst = false;
+  var src = new Set();
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, null );
+
+  test.case = 'BufferRaw';
+  var dst = _.unrollMake( [] );
+  var src = new BufferRaw();
+  var got = _.entityFilter_( dst, src, ( e, k ) => k );
+  test.identical( got, [ null ] );
+  test.is( got === dst );
+  
+  test.close( 'onEach returns key' );
+
+  /* - */
+
+  test.open( 'onEach checks container' );
+  
+  test.case = 'empty array';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = [];
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'unroll';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ 0, 1, 2, 3, 4, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'argumentsArray';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ 0, 1, 2, 3, 4, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'BufferTyped';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = new F64x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ 0, 1, 2, 3, 4, 7 ] );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'empty map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = {};
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b', c : 'c', d : 'd', e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'empty pure map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, { a : 'a', b : 'b', c : 'c', e : 1 } );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'null';
+  var dst = [ 1, 2 ];
+  var src = null;
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ 1, 2, null ] );
+  test.is( got === dst );
+
+  test.case = 'string';
+  var dst = { a : 1 };
+  var src = 'str';
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? [ k ] : [ e ] );
+  test.identical( got, { a : 1, 0 : 'str' } );
+  test.is( got === dst );
+
+  test.case = 'Set';
+  var dst = false;
+  var src = new Set();
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var dst = _.unrollMake( [] );
+  var src = new BufferRaw();
+  var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
+  test.identical( got, [ new BufferRaw() ] );
+  test.is( got === dst );
+  
+  test.close( 'onEach checks container' );
+
+  /* - */
+
+  test.open( 'onEach returns undefined' );
+  
+  test.case = 'empty array';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = [];
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'unroll';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'argumentsArray';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'BufferTyped';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = new F64x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'empty map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = {};
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'empty pure map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'null';
+  var dst = [ 1, 2 ];
+  var src = null;
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got === dst );
+
+  test.case = 'string';
+  var dst = { a : 1 };
+  var src = 'str';
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, { a : 1 } );
+  test.is( got === dst );
+
+  test.case = 'Set';
+  var dst = false;
+  var src = new Set();
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, false );
+
+  test.case = 'BufferRaw';
+  var dst = _.unrollMake( [] );
+  var src = new BufferRaw();
+  var got = _.entityFilter_( dst, src, ( e ) => undefined );
+  test.identical( got, [] );
+  test.is( got === dst );
+  
+  test.close( 'onEach returns undefined' );
+
+  /* - */
+
+  test.open( 'onEach is map like' );
+  
+  test.case = 'empty array';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = [];
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'unroll';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.unrollMake( [ { a : { a : 1 } }, { a : 1 }, 3, undefined, { a : { a : { a : 1 } } } ] );
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, _.unrollMake( [ { a : 1 }, 7, 7, 7, 7, 7 ] ) );
+  test.is( got === dst );
+
+  test.case = 'argumentsArray';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.argumentsArrayMake( [ 1, { a : 1 }, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, [ { a : 1 }, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'BufferTyped';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = new I32x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+
+  /* */
+
+  test.case = 'empty map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = {};
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = { a : { a : 1 }, b : { a : { a : 1 } }, c : 'str', d : undefined };
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, { a : { a : 1 }, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'empty pure map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  src.a = { a : 1 };
+  src.b = { a : { a : 1 } };
+  src.c = undefined;
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, { a : { a : 1 }, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'null';
+  var dst = [ 1, 2 ];
+  var src = null;
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, [ 1, 2 ] );
+  test.is( got === dst );
+
+  test.case = 'string';
+  var dst = { a : 1 };
+  var src = 'str';
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, { a : 1 } );
+  test.is( got === dst );
+
+  test.case = 'Set';
+  var dst = false;
+  var src = new Set();
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, false );
+
+  test.case = 'BufferRaw';
+  var dst = _.unrollMake( [] );
+  var src = new BufferRaw();
+  var got = _.entityFilter_( dst, src, { a : 1 } );
+  test.identical( got, [] );
+  test.is( got === dst );
+
+  
+  test.close( 'onEach is map like' );
+
+  /* - */
+
+  test.open( 'onEach returns unroll' );
+  
+  test.case = 'empty array';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = [];
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ 7, 7, 7, 7, 7, 7 ] );
+  test.is( got === dst );
+
+  test.case = 'unroll';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.unrollMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, _.unrollMake( [ 1, 1, undefined, undefined, 3, 3, undefined, undefined, 'str', 'str', 7 ] ) );
+  test.is( got === dst );
+
+  test.case = 'argumentsArray';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = _.argumentsArrayMake( [ 1, undefined, 3, undefined, 'str' ] );
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ 1, 1, undefined, undefined, 3, 3, undefined, undefined, 'str', 'str', 7 ] );
+  test.is( got === dst );
+
+  test.case = 'BufferTyped';
+  var dst = [ 7, 7, 7, 7, 7, 7 ];
+  var src = new I16x( [ 1, 2, 3, 4, 5 ] );
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 7 ] );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'empty map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = {};
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = { a : 1, b : undefined, c : 'str', d : undefined };
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, { a : [ 1, 1 ], b : [ undefined, undefined ], c : [ 'str', 'str' ], d : [ undefined, undefined ], e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'empty pure map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, { a : undefined, b : undefined, e : 1 } );
+  test.is( got === dst );
+
+  test.case = 'map';
+  var dst = { a : undefined, b : undefined, e : 1 };
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = undefined;
+  src.c = undefined;
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, { a : [ 1, 1 ], b : [ undefined, undefined ], c : [ undefined, undefined ], e : 1 } );
+  test.is( got === dst );
+
+  /* */
+
+  test.case = 'null';
+  var dst = [ 1, 2 ];
+  var src = null;
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ 1, 2, [ null, null ] ] );
+  test.is( got === dst );
+
+  test.case = 'string';
+  var dst = { a : 1 };
+  var src = 'str';
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, { a : 1, 0 : 'str', 1 : 'str' } );
+  test.is( got === dst );
+
+  test.case = 'Set';
+  var dst = false;
+  var src = new Set();
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ new Set(), new Set() ] );
+
+  test.case = 'BufferRaw';
+  var dst = _.unrollMake( [] );
+  var src = new BufferRaw();
+  var got = _.entityFilter_( dst, src, ( e ) => _.unrollMake( [ e, e ] ) );
+  test.identical( got, [ [ new BufferRaw(), new BufferRaw() ] ] );
+  test.is( got === dst );
+
+  
+  test.close( 'onEach returns unroll' );
+}
 
 //
 
@@ -21097,11 +23546,26 @@ value for dst             dst                dst                    first +     
     entityAny,
     entityNone,
 
+    //
+
     _filter_functor,
 
     entityMap,
+
+    entityMapWithoutDst_,
+    entityMapDstNull_,
+    entityMapDstNotNull_,
+
     entityFilter,
+
+    entityFilterWithoutDst_,
+    entityFilterDstNull_,
+    entityFilterDstNotNull_,
+
     entityFilterDeep,
+
+    //
+
     first,
     last,
 

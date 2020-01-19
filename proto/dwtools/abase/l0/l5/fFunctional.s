@@ -3705,6 +3705,100 @@ function entityMap( src, onEach )
 
 //
 
+function entityMap_( dst, src, onEach )
+{
+  if( arguments.length === 2 )
+  {
+    onEach = src;
+    src = dst;
+  }
+  else
+  {
+    _.assert( arguments.length === 3 , 'Expects two or three arguments' );
+  }
+  _.assert( _.routineIs( onEach ) );
+
+  /* */
+
+  let result;
+
+  if( dst === src )
+  {
+
+    result = src;
+    if( _.longIs( src ) )
+    {
+      for( let s = 0 ; s < src.length ; s++ )
+      {
+        result[ s ] = onEach( src[ s ], s, src );
+        _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
+      }
+    }
+    else if( _.mapLike( src ) )
+    {
+      for( let s in src )
+      {
+        result[ s ] = onEach( src[ s ], s, src );
+        _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
+      }
+    }
+    else
+    {
+      result = onEach( src, undefined, undefined );
+      _.assert( result !== undefined, '{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
+    }
+
+  }
+  else 
+  {
+    
+    result = dst;
+    if( _.longIs( src ) )
+    {
+      if( dst === null )
+      result = _.entityMakeUndefined( src );
+      else 
+      _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
+
+      for( let s = 0 ; s < src.length ; s++ )
+      {
+        result[ s ] = onEach( src[ s ], s, src );
+        _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
+      }
+    }
+    else if( _.mapLike( src ) )
+    {
+      if( dst === null )
+      result = _.entityMakeUndefined( src );
+      else
+      _.assert( _.mapLike( dst ), '{-dst-} container should be map like' );
+
+      for( let s in src )
+      {
+        result[ s ] = onEach( src[ s ], s, src );
+        _.assert( result[ s ] !== undefined, '{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
+      }
+    }
+    else
+    {
+      result = onEach( src, undefined, undefined );
+      _.assert( result !== undefined, '{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
+      
+      if( _.longIs( dst ) )
+      result = _.arrayAppendElement( dst, result );
+      else if( _.mapLike( dst ) )
+      result = _.mapExtend( dst, result );
+      else if( !_.primitiveIs( dst ) )
+      _.assert( 0, 'Not clear how to add result in destination container {-dst-}' );
+    }
+
+  }
+
+  return result;
+}
+
+//
+
 /* qqq : cover entityFilter and entityFilterDeep, take into account unroll cases | Dmytro : unroll cases uses in test routines, but routine entityFilter accepts BufferTyped and cannot handle it. So, routine need restrictions or extending.
 */
 
@@ -3765,6 +3859,126 @@ function entityFilter( src, onEach )
   }
 
   /* */
+
+  return result;
+}
+
+//
+
+function entityFilter_( dst, src, onEach )
+{
+  
+  if( arguments.length === 2 )
+  {
+    onEach = src;
+    src = dst;
+  }
+  else
+  {
+    _.assert( arguments.length === 3, 'Expects two or three arguments' );    
+  }
+  onEach = _._filter_functor( onEach, 1 );
+
+  _.assert( _.routineIs( onEach ) );
+  _.assert( src !== undefined, 'Expects src' );
+
+  /* */
+
+  let result;
+
+  if( dst === src )
+  {
+
+    result = src;
+    if( _.longIs( src ) )
+    {
+      for( let s = src.length - 1 ; s >= 0 ; s-- )
+      {
+        let r = onEach.call( src, src[ s ], s, src );
+        if( _.unrollIs( r ) )
+        _.longBut_( result, s, r );
+        else if( r !== undefined )
+        result[ s ] = r;
+        else
+        result.splice( s, 1 );
+      }
+    }
+    else if( _.mapLike( src ) )
+    {
+      for( let s in src )
+      {
+        let r = onEach.call( src, src[ s ], s, src );
+        if( r === undefined )
+        delete src[ s ];
+        else 
+        src[ s ] = r;
+      }
+    }
+    else
+    {
+      result = onEach.call( null, src, null, null );
+    }
+
+  }
+  else 
+  {
+
+    result = dst;
+    if( _.longIs( src ) )
+    {
+      if( dst === null )
+      result = _.longMake( src, 0 );
+      else
+      _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
+
+      let s, d;
+      for( s = 0, d = 0 ; s < src.length ; s++ )
+      {
+        let r = onEach.call( src, src[ s ], s, src );
+        if( _.unrollIs( r ) )
+        {
+          _.longBut_( result, d, r );
+          d += r.length;
+        }
+        else if( r !== undefined )
+        {
+          result[ d ] = r;
+          d += 1;
+        }
+      }
+    }
+    else if( _.mapLike( src ) )
+    {
+      if( dst === null )
+      result = _.entityMakeUndefined( src );
+      else
+      _.assert( _.mapLike( dst ), '{-dst-} container should be map like' );
+
+      for( let s in src )
+      {
+        let r = onEach.call( src, src[ s ], s, src );
+        if( r !== undefined )
+        result[ s ] = r;
+      }
+    }
+    else
+    {
+      let r = onEach.call( null, src, null, null );
+
+      if( r !== undefined )
+      {
+        if( _.longIs( dst ) )
+        result = _.arrayAppendElement( dst, r );
+        else if( _.mapLike( dst ) )
+        result = _.mapExtend( dst, r );
+        else if( _.primitiveIs( dst ) )
+        result = r;
+        else 
+        _.assert( 0, 'Not clear how to add result in destination container {-dst-}' );
+      }
+    }
+
+  }
 
   return result;
 }
@@ -4434,8 +4648,12 @@ let Routines =
 
   entityMap,
   map : entityMap,
+  entityMap_, /* !!! : use instead of entityMap */
+  map_ : entityMap_,
   entityFilter,
   filter : entityFilter,
+  entityFilter_, /* !!! : use instead of entityFilter */
+  filter_ : entityFilter_,
   entityFirst,
   first : entityFirst,
   entityLast,

@@ -2139,8 +2139,7 @@ function strUnicodeEscape( test )
 // stripper
 //--
 
-/* qqq : uncover it please
-Dmytro : test routines strStrip() and strStripLeft(), strStripRight uncovered */
+/* qqq : uncover it please | Dmytro : test routines strStrip() and strStripLeft(), strStripRight uncovered */
 
 function strStrip( test )
 {
