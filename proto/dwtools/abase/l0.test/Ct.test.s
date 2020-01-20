@@ -115,6 +115,15 @@ function strip( test )
   test.identical( got, expected );
 
   test.close( 'with space symbols' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of srcStr';
+  test.shouldThrowErrorSync( () => _.ct.strip( [] ) );
+  test.shouldThrowErrorSync( () => _.ct.strip( {} ) );
 }
 
 // --
