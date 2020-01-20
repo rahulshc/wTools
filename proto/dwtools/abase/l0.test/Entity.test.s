@@ -543,6 +543,179 @@ function entityMakeUndefined( test )
 
 //
 
+function entityMake( test ) 
+{
+  test.case = 'null';
+  var got = _.entityMake( null );
+  test.identical( got, null );
+
+  test.case = 'undefined';
+  var got = _.entityMake( undefined );
+  test.identical( got, undefined );
+
+  test.case = 'zero';
+  var got = _.entityMake( 0 );
+  test.identical( got, 0 );
+
+  test.case = 'number';
+  var got = _.entityMake( 3 );
+  test.identical( got, 3 );
+
+  test.case = 'bigInt';
+  var got = _.entityMake( 1n );
+  test.identical( got, 1n );
+
+  test.case = 'empty string';
+  var got = _.entityMake( '' );
+  test.identical( got, '' );
+
+  test.case = 'string';
+  var got = _.entityMake( 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'false';
+  var got = _.entityMake( false );
+  test.identical( got, false );
+
+  test.case = 'NaN';
+  var got = _.entityMake( NaN );
+  test.identical( got, NaN );
+
+  test.case = 'Symbol';
+  var src = Symbol();
+  var got = _.entityMake( src );
+  test.identical( got, src );
+
+  test.case = '_.null';
+  var got = _.entityMake( _.null );
+  test.identical( got, null );
+
+  test.case = '_.undefined';
+  var got = _.entityMake( _.undefined );
+  test.identical( got, undefined );
+
+  test.case = '_.nothing';
+  var got = _.entityMake( _.nothing );
+  test.identical( got, _.nothing );
+
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityMake( src );
+  test.identical( got, [] );
+  test.is( got !== src );
+
+  test.case = 'not empty array';
+  var src = [ null, undefined, 1, 2 ];
+  var got = _.entityMake( src );
+  test.identical( got, [ null, undefined, 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'empty argumentArray';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.entityMake( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'not empty argumentsArray';
+  var src = _.argumentsArrayMake( [ null, undefined, 1, 2 ] );
+  var got = _.entityMake( src );
+  test.identical( got, [ null, undefined, 1, 2 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.entityMake( src );
+  test.identical( got, [] );
+  test.is( _.unrollIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'not empty unroll';
+  var src = _.unrollMake( [ null, undefined, 1, 2 ] );
+  var got = _.entityMake( src );
+  test.identical( got, [ null, undefined, 1, 2 ] );
+  test.is( _.unrollIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'BufferTyped';
+  var src = new U8x( 10 );
+  var got = _.entityMake( src );
+  test.identical( got, new U8x( 10 ) );
+  test.is( got !== src );
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityMake( src );
+  test.identical( got, {} );
+  test.is( _.mapIsPure( got ) );
+  test.is( got !== src );
+
+  test.case = 'not empty map';
+  var src = { '' : null };
+  var got = _.entityMake( src );
+  test.identical( got, { '' : null } );
+  test.is( _.mapIsPure( got ) );
+  test.is( got !== src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityMake( src );
+  test.identical( got, {} );
+  test.is( _.mapIsPure( got ) );
+  test.is( got !== src );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.a = 2;
+  var got = _.entityMake( src );
+  test.identical( got, { a : 2 } );
+  test.is( _.mapIsPure( got ) );
+  test.is( got !== src );
+
+  test.case = 'empty Set';
+  var src = new Set( [] );
+  var got = _.entityMake( src );
+  test.identical( got, new Set( [] ) );
+  test.is( got !== src );
+
+  test.case = 'Set';
+  var src = new Set( [ 1, 'str', false ] );
+  var got = _.entityMake( src );
+  test.identical( got, new Set( [ 1, 'str', false ] ) );
+  test.is( got !== src );
+
+  test.case = 'empty HashMap';
+  var src = new Map( [] );
+  var got = _.entityMake( src );
+  test.identical( got, new Map( [] ) );
+  test.is( got !== src );
+
+  test.case = 'HashMap';
+  var src = new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] );
+  var got = _.entityMake( src );
+  test.identical( got, new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
+  test.is( got !== src );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityMake() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.entityMake( [], 1 ) );
+
+  test.case = 'unknown type of entity';
+  test.shouldThrowErrorSync( () => _.entityMake( new BufferRaw() ) );  
+  var Constr = function(){ this.x = 1; return this };
+  test.shouldThrowErrorSync( () => _.entityMake( new Constr() ) );
+}
+
+//
+
 function entityEntityEqualize( test )
 {
   test.open( 'without callbacks' );
@@ -1359,6 +1532,7 @@ var Self =
     entityMakeConstructing,
     entityMakeEmpty,
     entityMakeUndefined,
+    entityMake,
 
     entityEntityEqualize,
 

@@ -243,11 +243,11 @@ function entityMakeUndefined( srcContainer, length )
   {
     return Object.create( null );
   }
-  else if( srcContainer === _.null ) /* qqq : cover this case */
+  else if( srcContainer === _.null ) /* qqq : cover this case | Dmytro : covered */
   {
     return null;
   }
-  else if( srcContainer === _.undefined ) /* qqq : cover this case */
+  else if( srcContainer === _.undefined ) /* qqq : cover this case | Dmytro : covered */
   {
     return undefined;
   }
@@ -263,6 +263,7 @@ function entityMakeUndefined( srcContainer, length )
 
 function entityMake( src )
 {
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.longLike( src ) )
   {
