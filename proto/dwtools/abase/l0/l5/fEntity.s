@@ -243,17 +243,17 @@ function entityMakeUndefined( srcContainer, length )
   {
     return Object.create( null );
   }
-  else if( src === _.null ) /* qqq : cover this case */
+  else if( srcContainer === _.null ) /* qqq : cover this case */
   {
     return null;
   }
-  else if( src === _.undefined ) /* qqq : cover this case */
+  else if( srcContainer === _.undefined ) /* qqq : cover this case */
   {
     return undefined;
   }
-  else if( _.primitiveIs( src ) )
+  else if( _.primitiveIs( srcContainer ) )
   {
-    return src;
+    return srcContainer;
   }
   else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
 
