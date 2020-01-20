@@ -680,21 +680,43 @@ function constructorJoin( test )
     }
     return result;
   }
-
   srcRoutine.prop = true;
 
-  var args = [];
-  var got = _.constructorJoin( srcRoutine,args );
+  /* */
+
+  test.case = 'without args';
+  var got = _.constructorJoin( srcRoutine );
   test.is( _.routineIs( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
-  test.identical( result.args, args );
+  test.identical( result.args, [] );
   test.identical( result.context, srcRoutine );
   test.isNot( result.context instanceof srcRoutine );
 
+  test.case = 'args - undefined';
+  var got = _.constructorJoin( srcRoutine, undefined );
+  test.is( _.routineIs( got ) );
+  var result = got();
+  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  test.identical( _.mapKeys( got ), [] );
+  test.identical( result.args, [] );
+  test.identical( result.context, srcRoutine );
+  test.isNot( result.context instanceof srcRoutine );
+
+  test.case = 'args - null';
+  var got = _.constructorJoin( srcRoutine, null );
+  test.is( _.routineIs( got ) );
+  var result = got();
+  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  test.identical( _.mapKeys( got ), [] );
+  test.identical( result.args, [] );
+  test.identical( result.context, srcRoutine );
+  test.isNot( result.context instanceof srcRoutine );
+
+  test.case = 'args - empty array';
   var args = [];
-  var got = _.constructorJoin( srcRoutine,args );
+  var got = _.constructorJoin( srcRoutine, args );
   test.is( _.routineIs( got ) );
   var result = new got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
@@ -703,8 +725,9 @@ function constructorJoin( test )
   test.notIdentical( result.context, srcRoutine );
   test.is( result.context instanceof srcRoutine );
 
+  test.case = 'args - array with map, returned routine exexute without arguments';
   var args = [ { a : 1 } ];
-  var got = _.constructorJoin( srcRoutine,args );
+  var got = _.constructorJoin( srcRoutine, args );
   test.is( _.routineIs( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
@@ -713,8 +736,9 @@ function constructorJoin( test )
   test.identical( result.context, srcRoutine );
   test.isNot( result.context instanceof srcRoutine );
 
+  test.case = 'args - array with map, returned routine exexute with arguments';
   var args = [ { a : 1 } ];
-  var got = _.constructorJoin( srcRoutine,args );
+  var got = _.constructorJoin( srcRoutine, args );
   test.is( _.routineIs( got ) );
   var result = got({ b : 1 });
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
@@ -723,39 +747,38 @@ function constructorJoin( test )
   test.identical( result.context, srcRoutine );
   test.isNot( result.context instanceof srcRoutine );
 
-  var args = [ { a : 1 } ];
-  var got = _.constructorJoin( srcRoutine,args );
+  test.case = 'Array contructor, args = U8x buffer, execute without arguments';
+  var args = new U8x( [ 1, 2, 3, 4 ] );
+  var got = _.constructorJoin( Array, args );
   test.is( _.routineIs( got ) );
   var result = new got();
-  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
-  test.identical( result.args, args );
-  test.notIdentical( result.context, srcRoutine );
-  test.is( result.context instanceof srcRoutine );
+  test.identical( result, [ 1, 2, 3, 4 ] );
 
-  var args = [ { a : 1 } ];
-  var got = _.constructorJoin( srcRoutine,args );
+  test.case = 'Array contructor, args = U8x buffer, exexute with number';
+  var args = new U8x( [ 1, 2, 3, 4 ] );
+  var got = _.constructorJoin( Array, args );
   test.is( _.routineIs( got ) );
-  var result = new got({ b : 1 });
-  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  var result = new got( 1 );
   test.identical( _.mapKeys( got ), [] );
-  test.identical( result.args, [ { a : 1 }, { b : 1 } ] );
-  test.notIdentical( result.context, srcRoutine );
-  test.is( result.context instanceof srcRoutine );
+  test.identical( result, [ 1, 2, 3, 4, 1 ] );
 
-  test.case = 'Array contructor, args = U8x buffer';
-  var got = _.constructorJoin( Array, new U8x( [ 1, 2, 3, 4 ] ) );
-  var expected = new got();
-  test.is( _.routineIs( got ) );
-  test.identical( expected, [ 1, 2, 3, 4 ] );
-  test.is( _.arrayIs( expected ) );
+  /* - */
 
   if( !Config.debug )
   return;
+  
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.constructorJoin() );
 
-  test.shouldThrowErrorSync( () => _.constructorJoin() )
-  test.shouldThrowErrorSync( () => _.constructorJoin( [], [] ) )
-  test.shouldThrowErrorSync( () => _.constructorJoin( srcRoutine, srcRoutine ) )
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.constructorJoin( Array, [ 1, 2 ], [ 1, 2 ] ) );
+
+  test.case = 'wrong type of routine';
+  test.shouldThrowErrorSync( () => _.constructorJoin( [], [] ) );
+
+  test.case = 'wrong type of args';
+  test.shouldThrowErrorSync( () => _.constructorJoin( srcRoutine, srcRoutine ) );
 }
 
 //
