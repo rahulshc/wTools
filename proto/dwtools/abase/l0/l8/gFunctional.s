@@ -1426,254 +1426,254 @@ let entityRemapAppending = _entityRemap_functor({ extendRoutine : _.mapExtendApp
 //
 //--
 
-function _entityIndexInplace_functor( fop )
-{
-
-  fop = _.routineOptions( _entityIndex_functor, fop );
-
-  let extendRoutine = fop.extendRoutine;
-
-  return function entityIndex( src, onEach )
-  {
-
-    let result = src;
-
-    if( onEach === undefined )
-    onEach = function( e, k )
-    {
-      if( k === undefined && extendRoutine )
-      return { [ e ] : undefined };
-      return k;
-    }
-    else if( _.strIs( onEach ) )
-    {
-      let selector = onEach;
-      _.assert( _.routineIs( _.select ) );
-      _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
-      selector = _.strRemoveBegin( selector, '*/' );
-      onEach = function( e, k )
-      {
-        return _.select( e, selector );
-      }
-    }
-
-    _.assert( arguments.length === 1 || arguments.length === 2 );
-    _.assert( _.routineIs( onEach ) );
-    _.assert( src !== undefined, 'Expects src' );
-
-    /* */
-
-    if( _.mapLike( src ) )
-    {
-
-      for( let k in src )
-      {
-        let val = src[ k ];
-        let r = onEach( val, k, src );
-        
-        delete src[ k ];
-        if( r !== undefined )
-        extend( r, val );
-      }
-
-      return src;
-    }
-    
-    result = Object.create( null );
-
-    if( _.longIs( src ) )
-    {
-
-      for( let k = 0 ; k < src.length ; k++ )
-      {
-        let val = src[ k ];
-        let r = onEach( val, k, src );
-        extend( r, val );
-      }
-
-    }
-    else
-    {
-      let val = src;
-      let r = onEach( val, undefined, undefined );
-      extend( r, val );
-    }
-
-    return result;
-
-    /* */
-
-    function extend( res, val )
-    {
-      if( res === undefined )
-      return;
-
-      if( _.unrollIs( res ) )
-      return res.forEach( ( res ) => extend( res, val ) );
-
-      if( extendRoutine === null )
-      {
-        result[ res ] = val;
-      }
-      else
-      {
-        if( _.mapLike( res ) )
-        extendRoutine( result, res );
-        else
-        result[ res ] = val;
-      }
-
-    }
-
-  }
-
-}
-
-_entityIndexInplace_functor.defaults =
-{
-  extendRoutine : null,
-}
-
-//
-
-/**
- * The routine entityIndexInplace() modify original mapLike entity or creates new pure map for other entity types. 
- * The values of the map defined by elements of provided entity {-src-} and keys defined by result of callback 
- * execution on the correspond elements.
- * If callback returns undefined, then element will not exist in resulted map.
- *
- * @param { * } src - Any entity to make map of indexes.
- * @param { String|Function } onEach - The callback executed on elements of entity.
- * If {-onEach-} is not defined, then routine uses callback that returns index of element.
- * If {-onEach-} is a string, then routine searches elements with equal key. String value should has 
- * prefix "*\/" ( asterisk + slash ).
- * By default, {-onEach-} applies three parameters: element, key, container. If entity is primitive, then 
- * routine applies only element value, other parameters is undefined.
- *
- * @example
- * _.entityIndexInplace( null );
- * // returns {}
- *
- * @example
- * _.entityIndexInplace( null, ( el ) => el );
- * // returns { 'null' : null }
- *
- * @example
- * _.entityIndexInplace( [ 1, 2, 3, 4 ] );
- * // returns { '0' : 1, '1' : 2, '2' : 3, '3' : 4 }
- *
- * @example
- * _.entityIndexInplace( [ 1, 2, 3, 4 ], ( el, key ) => el + key );
- * // returns { '1' : 1, '3' : 2, '5' : 3, '7' : 4 }
- *
- * @example
- * var src = { a : 1, b : 2, c : 3 };
- * let got = _.entityIndexInplace( src );
- * console.log( got );
- * // log { a : 1, b : 2, c : 3 }
- * console.log( got === src );
- * // log true
- *
- * @example
- * var src = { a : 1, b : 2, c : 3 };
- * let got = _.entityIndexInplace( src, ( el, key, container ) => container.a > 0 ? key : el );
- * console.log( got );
- * // log { a : 1, b : 2, c : 3 }
- * console.log( got === src );
- * // log true
- *
- * @example
- * var src = { a : { f1 : 1, f2 : 3 }, b : { f1 : 2, f2 : 4 } };
- * let got = _.entityIndexInplace( src, '*\/f1' );
- * console.log( got );
- * // log { '1' : { f1 : 1, f2 : 3 }, '2' : { f1 : 2, f2 : 4 } }
- * console.log( got === src );
- * // log true
- *
- * @returns { PureMap|mapLike } - Returns the original mapLike entity or new pure map for other entity types. Values of the map 
- * defined by elements of provided entity {-src-}  and keys defined by results of callback execution on corresponding elements.
- * @function entityIndexInplace
- * @throws { Error } If arguments.length is less then one or more then two.
- * @throws { Error } If {-src-} has value undefined.
- * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
- * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof wTools
- */
-
-let entityIndexInplace = _entityIndexInplace_functor({ extendRoutine : null });
-
-//
-
-/**
- * The routine entityIndexInplaceSupplementing() modify original mapLike entity or creates new pure map for other entity types.
- * The pairs key-value of the map formed by results of callback execution on the entity elements.
- * If callback returns undefined, then element will not exist in resulted map.
- * If callback returns map with key existed in resulted map, then routine does not change existed value.
- *
- * @param { * } src - Any entity to make map of indexes.
- * @param { String|Function } onEach - The callback executed on elements of entity.
- * If {-onEach-} is not defined, then routine uses callback that returns index of element.
- * If {-onEach-} is a string, then routine searches elements with equal key. String value should has 
- * prefix "*\/" ( asterisk + slash ).
- * By default, {-onEach-} applies three parameters: element, key, container. If entity is primitive, then 
- * routine applies only element value, other parameters is undefined.
- *
- * @example
- * _.entityIndexInplaceSupplementing( null );
- * // returns { 'null' : undefined }
- *
- * @example
- * _.entityIndexInplaceSupplementing( null, ( el ) => el );
- * // returns { 'null' : null }
- *
- * @example
- * _.entityIndexInplaceSupplementing( [ 1, 2, 3, 4 ] );
- * // returns { '0' : 1, '1' : 2, '2' : 3, '3' : 4 }
- *
- * @example
- * _.entityIndexInplaceSupplementing( [ 1, 2, 3, 4 ], ( el, key ) => key > 2 ? key : 1 );
- * // returns { '1' : 3, '3' : 4 }
- *
- * @example
- * let got = _.entityIndexInplaceSupplementing( { a : 1, b : 1, c : 1 } );
- * console.log( got );
- * // log { a : 1, b : 1, c : 1 } 
- * console.log( got === src );
- * // log true
- *
- * @example
- * let got = _.entityIndexInplaceSupplementing( { a : 1, b : 2, c : 3 }, ( el, key, container ) => container.a > 0 ? key : el );
- * console.log( got );
- * // log { a : 1, b : 2, c : 3 } 
- * console.log( got === src );
- * // log true
- *
- * @example
- * let got = _.entityIndexInplaceSupplementing( { a : 1, b : 2, c : 3 }, ( el, key, container ) => { return { [ key ] : key, 'x' : el } } );
- * console.log( got );
- * // log { a : 'a', x : 1, b : 'b', c : 'c' } 
- * console.log( got === src );
- * // log true
- *
- * @example
- * _.entityIndexInplaceSupplementing( { a : { f1 : 1, f2 : 3 }, b : { f1 : 1, f2 : 4 } }, '*\/f1' );
- * console.log( got );
- * // log { '1' : { f1 : 1, f2 : 4 } }
- * console.log( got === src );
- * // log true
- *
- * @returns { PureMap|mapLike } - Returns the original mapLike entity or new pure map for other entity types. Values of the map 
- * defined by elements of provided entity {-src-} and keys of defines by results of callback execution on corresponding elements.
- * If the callback returns map with existed key, then routine does not replaces the previous value with the new one.
- * @function entityIndexInplaceSupplementing
- * @throws { Error } If arguments.length is less then one or more then two.
- * @throws { Error } If {-src-} has value undefined.
- * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
- * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof wTools
- */
-
-let entityIndexInplaceSupplementing = _entityIndexInplace_functor({ extendRoutine : _.mapSupplement });
+// function _entityIndexInplace_functor( fop )
+// {
+// 
+//   fop = _.routineOptions( _entityIndex_functor, fop );
+// 
+//   let extendRoutine = fop.extendRoutine;
+// 
+//   return function entityIndex( src, onEach )
+//   {
+// 
+//     let result = src;
+// 
+//     if( onEach === undefined )
+//     onEach = function( e, k )
+//     {
+//       if( k === undefined && extendRoutine )
+//       return { [ e ] : undefined };
+//       return k;
+//     }
+//     else if( _.strIs( onEach ) )
+//     {
+//       let selector = onEach;
+//       _.assert( _.routineIs( _.select ) );
+//       _.assert( _.strBegins( selector, '*/' ), () => `Selector should begins with "*/", but "${selector}" does not` );
+//       selector = _.strRemoveBegin( selector, '*/' );
+//       onEach = function( e, k )
+//       {
+//         return _.select( e, selector );
+//       }
+//     }
+// 
+//     _.assert( arguments.length === 1 || arguments.length === 2 );
+//     _.assert( _.routineIs( onEach ) );
+//     _.assert( src !== undefined, 'Expects src' );
+// 
+//     /* */
+// 
+//     if( _.mapLike( src ) )
+//     {
+// 
+//       for( let k in src )
+//       {
+//         let val = src[ k ];
+//         let r = onEach( val, k, src );
+//         
+//         delete src[ k ];
+//         if( r !== undefined )
+//         extend( r, val );
+//       }
+// 
+//       return src;
+//     }
+//     
+//     result = Object.create( null );
+// 
+//     if( _.longIs( src ) )
+//     {
+// 
+//       for( let k = 0 ; k < src.length ; k++ )
+//       {
+//         let val = src[ k ];
+//         let r = onEach( val, k, src );
+//         extend( r, val );
+//       }
+// 
+//     }
+//     else
+//     {
+//       let val = src;
+//       let r = onEach( val, undefined, undefined );
+//       extend( r, val );
+//     }
+// 
+//     return result;
+// 
+//     /* */
+// 
+//     function extend( res, val )
+//     {
+//       if( res === undefined )
+//       return;
+// 
+//       if( _.unrollIs( res ) )
+//       return res.forEach( ( res ) => extend( res, val ) );
+// 
+//       if( extendRoutine === null )
+//       {
+//         result[ res ] = val;
+//       }
+//       else
+//       {
+//         if( _.mapLike( res ) )
+//         extendRoutine( result, res );
+//         else
+//         result[ res ] = val;
+//       }
+// 
+//     }
+// 
+//   }
+// 
+// }
+// 
+// _entityIndexInplace_functor.defaults =
+// {
+//   extendRoutine : null,
+// }
+// 
+// //
+// 
+// /**
+//  * The routine entityIndexInplace() modify original mapLike entity or creates new pure map for other entity types. 
+//  * The values of the map defined by elements of provided entity {-src-} and keys defined by result of callback 
+//  * execution on the correspond elements.
+//  * If callback returns undefined, then element will not exist in resulted map.
+//  *
+//  * @param { * } src - Any entity to make map of indexes.
+//  * @param { String|Function } onEach - The callback executed on elements of entity.
+//  * If {-onEach-} is not defined, then routine uses callback that returns index of element.
+//  * If {-onEach-} is a string, then routine searches elements with equal key. String value should has 
+//  * prefix "*\/" ( asterisk + slash ).
+//  * By default, {-onEach-} applies three parameters: element, key, container. If entity is primitive, then 
+//  * routine applies only element value, other parameters is undefined.
+//  *
+//  * @example
+//  * _.entityIndexInplace( null );
+//  * // returns {}
+//  *
+//  * @example
+//  * _.entityIndexInplace( null, ( el ) => el );
+//  * // returns { 'null' : null }
+//  *
+//  * @example
+//  * _.entityIndexInplace( [ 1, 2, 3, 4 ] );
+//  * // returns { '0' : 1, '1' : 2, '2' : 3, '3' : 4 }
+//  *
+//  * @example
+//  * _.entityIndexInplace( [ 1, 2, 3, 4 ], ( el, key ) => el + key );
+//  * // returns { '1' : 1, '3' : 2, '5' : 3, '7' : 4 }
+//  *
+//  * @example
+//  * var src = { a : 1, b : 2, c : 3 };
+//  * let got = _.entityIndexInplace( src );
+//  * console.log( got );
+//  * // log { a : 1, b : 2, c : 3 }
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * var src = { a : 1, b : 2, c : 3 };
+//  * let got = _.entityIndexInplace( src, ( el, key, container ) => container.a > 0 ? key : el );
+//  * console.log( got );
+//  * // log { a : 1, b : 2, c : 3 }
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * var src = { a : { f1 : 1, f2 : 3 }, b : { f1 : 2, f2 : 4 } };
+//  * let got = _.entityIndexInplace( src, '*\/f1' );
+//  * console.log( got );
+//  * // log { '1' : { f1 : 1, f2 : 3 }, '2' : { f1 : 2, f2 : 4 } }
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @returns { PureMap|mapLike } - Returns the original mapLike entity or new pure map for other entity types. Values of the map 
+//  * defined by elements of provided entity {-src-}  and keys defined by results of callback execution on corresponding elements.
+//  * @function entityIndexInplace
+//  * @throws { Error } If arguments.length is less then one or more then two.
+//  * @throws { Error } If {-src-} has value undefined.
+//  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
+//  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
+//  * @memberof wTools
+//  */
+// 
+// let entityIndexInplace = _entityIndexInplace_functor({ extendRoutine : null });
+// 
+// //
+// 
+// /**
+//  * The routine entityIndexInplaceSupplementing() modify original mapLike entity or creates new pure map for other entity types.
+//  * The pairs key-value of the map formed by results of callback execution on the entity elements.
+//  * If callback returns undefined, then element will not exist in resulted map.
+//  * If callback returns map with key existed in resulted map, then routine does not change existed value.
+//  *
+//  * @param { * } src - Any entity to make map of indexes.
+//  * @param { String|Function } onEach - The callback executed on elements of entity.
+//  * If {-onEach-} is not defined, then routine uses callback that returns index of element.
+//  * If {-onEach-} is a string, then routine searches elements with equal key. String value should has 
+//  * prefix "*\/" ( asterisk + slash ).
+//  * By default, {-onEach-} applies three parameters: element, key, container. If entity is primitive, then 
+//  * routine applies only element value, other parameters is undefined.
+//  *
+//  * @example
+//  * _.entityIndexInplaceSupplementing( null );
+//  * // returns { 'null' : undefined }
+//  *
+//  * @example
+//  * _.entityIndexInplaceSupplementing( null, ( el ) => el );
+//  * // returns { 'null' : null }
+//  *
+//  * @example
+//  * _.entityIndexInplaceSupplementing( [ 1, 2, 3, 4 ] );
+//  * // returns { '0' : 1, '1' : 2, '2' : 3, '3' : 4 }
+//  *
+//  * @example
+//  * _.entityIndexInplaceSupplementing( [ 1, 2, 3, 4 ], ( el, key ) => key > 2 ? key : 1 );
+//  * // returns { '1' : 3, '3' : 4 }
+//  *
+//  * @example
+//  * let got = _.entityIndexInplaceSupplementing( { a : 1, b : 1, c : 1 } );
+//  * console.log( got );
+//  * // log { a : 1, b : 1, c : 1 } 
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * let got = _.entityIndexInplaceSupplementing( { a : 1, b : 2, c : 3 }, ( el, key, container ) => container.a > 0 ? key : el );
+//  * console.log( got );
+//  * // log { a : 1, b : 2, c : 3 } 
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * let got = _.entityIndexInplaceSupplementing( { a : 1, b : 2, c : 3 }, ( el, key, container ) => { return { [ key ] : key, 'x' : el } } );
+//  * console.log( got );
+//  * // log { a : 'a', x : 1, b : 'b', c : 'c' } 
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @example
+//  * _.entityIndexInplaceSupplementing( { a : { f1 : 1, f2 : 3 }, b : { f1 : 1, f2 : 4 } }, '*\/f1' );
+//  * console.log( got );
+//  * // log { '1' : { f1 : 1, f2 : 4 } }
+//  * console.log( got === src );
+//  * // log true
+//  *
+//  * @returns { PureMap|mapLike } - Returns the original mapLike entity or new pure map for other entity types. Values of the map 
+//  * defined by elements of provided entity {-src-} and keys of defines by results of callback execution on corresponding elements.
+//  * If the callback returns map with existed key, then routine does not replaces the previous value with the new one.
+//  * @function entityIndexInplaceSupplementing
+//  * @throws { Error } If arguments.length is less then one or more then two.
+//  * @throws { Error } If {-src-} has value undefined.
+//  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
+//  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
+//  * @memberof wTools
+//  */
+// 
+// let entityIndexInplaceSupplementing = _entityIndexInplace_functor({ extendRoutine : _.mapSupplement });
 
 // --
 // fields
@@ -1720,28 +1720,28 @@ let Routines =
   entityRemapAppending, /* qqq : add jsdoc, please | Dmytro : documented */
   remapAppending : entityRemapAppending,
 
-  _entityIndexInplace_functor,
-  entityIndexInplace, /* qqq : implement, cover, add jsdoc, please | Dmytro : implemented, covered, documented */
-  indexInplace : entityIndexInplace,
-  entityIndexInplaceSupplementing, /* qqq : implement, cover, add jsdoc, please */
-  indexInplaceSupplementing : entityIndexInplaceSupplementing,
-  // entityIndexInplaceExtending, /* qqq : implement, cover, add jsdoc, please */
+  // _entityIndexInplace_functor,
+  // entityIndexInplace, /* xxx qqq : implement, cover, add jsdoc, please 
+  // indexInplace : entityIndexInplace,
+  // entityIndexInplaceSupplementing, /* xxx qqq : implement, cover, add jsdoc, please */
+  // indexInplaceSupplementing : entityIndexInplaceSupplementing,
+  // entityIndexInplaceExtending, /* xxx qqq : implement, cover, add jsdoc, please */
   // indexInplaceExtending : entityIndexInplaceExtending,
-  // entityIndexInplacePrepending, /* qqq : implement, cover, add jsdoc, please */
+  // entityIndexInplacePrepending, /* xxx qqq : implement, cover, add jsdoc, please */
   // indexInplacePrepending : entityIndexInplacePrepending,
-  // entityIndexInplaceAppending, /* qqq : implement, cover, add jsdoc, please */
+  // entityIndexInplaceAppending, /* xxx qqq : implement, cover, add jsdoc, please */
   // indexInplaceAppending : entityIndexInplaceAppending,
   //
   // _entityRemapInplace_functor,
-  // entityRemapInplace, /* qqq : implement, cover, add jsdoc, please */
+  // entityRemapInplace, /* xxx qqq : implement, cover, add jsdoc, please */
   // remapInplace : entityRemapInplace,
-  // entityRemapInplaceSupplementing, /* qqq : implement, cover, add jsdoc, please */
+  // entityRemapInplaceSupplementing, /* xxx qqq : implement, cover, add jsdoc, please */
   // remapInplaceSupplementing : entityRemapInplaceSupplementing,
-  // entityRemapInplaceExtending, /* qqq : implement, cover, add jsdoc, please */
+  // entityRemapInplaceExtending, /* xxx qqq : implement, cover, add jsdoc, please */
   // remapInplaceExtending : entityRemapInplaceExtending,
-  // entityRemapInplacePrepending, /* qqq : implement, cover, add jsdoc, please */
+  // entityRemapInplacePrepending, /* xxx qqq : implement, cover, add jsdoc, please */
   // remapInplacePrepending : entityRemapInplacePrepending,
-  // entityRemapInplaceAppending, /* qqq : implement, cover, add jsdoc, please */
+  // entityRemapInplaceAppending, /* xxx qqq : implement, cover, add jsdoc, please */
   // remapInplaceAppending : entityRemapInplaceAppending,
 
 }
