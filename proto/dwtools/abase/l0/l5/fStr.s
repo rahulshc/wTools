@@ -2308,9 +2308,9 @@ let Routines =
   strReplaceBegin, /* Dmytro : coverage is extended */
   strReplaceEnd, /* Dmytro : coverage is extended */
   //_strReplaced,
-  strReplace,
+  strReplace, /* Dmytro : coverage is extended */
 
-  /* qqq : check coverage of each routine of the file fString.s */
+  /* qqq : check coverage of each routine of the file fString.s | Dmytro : checked */
 
   // split
 
@@ -2327,7 +2327,7 @@ let Routines =
   strSplitFast, // Dmytro : covered, test routine is large, it can be split
   strSplit, // Dmytro : covered, test routine is large, it can be split
   strSplitNonPreserving, // Dmytro : not covered
-y
+
   strSplitInlined, // Dmytro : covered
   strSplitInlinedStereo, // Dmytro : trivial coverage
 
