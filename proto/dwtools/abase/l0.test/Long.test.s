@@ -294,12 +294,11 @@ function longIs( test )
 
 //
 
-/* qqq : implement  */
+/* qqq : implement | Dmytro : implemented */
 
-/* qqq : longMake and longMakeUndefined are ugly, please rewrite them from scratch */
+/* qqq : longMake and longMakeUndefined are ugly, please rewrite them from scratch | Dmytro : implemented */
 
-/* qqq : tell me how to improve test routine longMake */
-/* Dmytro : test routines longMake and longMakeUndefined improved by using test subroutine and automatically created test groups */
+/* qqq : tell me how to improve test routine longMake | Dmytro : test routines longMake and longMakeUndefined improved by using test subroutine and automatically created test groups */
 
 function longMake( test )
 {
@@ -624,8 +623,7 @@ function _longMakeOfLength( test )
 //
 
 /*
-qqq : implement
-Dmytro : implemented
+qqq : implement | Dmytro : implemented
 */
 
 function longMakeUndefined( test )
@@ -794,8 +792,7 @@ function longMakeUndefined( test )
 //
 
 /*
-qqq : implement Zeroed routine and test routine
-Dmytro : routine longMakeZeroed and its test routine is implemented
+qqq : implement Zeroed routine and test routine | Dmytro : routine longMakeZeroed and its test routine is implemented
 */
 
 function longMakeZeroed( test )
@@ -967,8 +964,7 @@ function longMakeZeroed( test )
 }
 
 /*
-qqq : improve, add exception checking ceases
-Dmytro : improved, added exception checking casesS
+qqq : improve, add exception checking ceases | Dmytro : improved, added exception checking casesS
 */
 
 function longSlice( test )
@@ -1244,8 +1240,7 @@ longSlice.timeOut = 20000;
 //
 
 /*
-qqq : please ask how to improve test routine longBut.
-Dmytro : improved by using given clarifications
+qqq : please ask how to improve test routine longBut | Dmytro : improved by using given clarifications
 */
 
 function longBut( test )

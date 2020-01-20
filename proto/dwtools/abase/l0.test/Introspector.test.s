@@ -1340,7 +1340,7 @@ var Self =
   tests :
   {
 
-    /* qqq : implement test routine for _.err */
+    /* qqq : implement test routine for _.err | Dmytro : implemented */
 
     stackBasic,
     stack, /* qqq : extend the routine | Dmytro : extended */

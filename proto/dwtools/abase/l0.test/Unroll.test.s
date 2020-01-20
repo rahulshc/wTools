@@ -630,12 +630,11 @@ function unrollMakeUndefined( test )
 //
 
 /*
-qqq : split all groups of test cases by / * - * / for all test routines
-Dmytro : splitted. If some routines has poor formatting I'll correct it during the work.
+qqq : split all groups of test cases by / * - * / for all test routines | Dmytro : splitted. If some routines has poor formatting I'll correct it during the work.
 */
 
 /*
-qqq : test routine unrollFrom is poor
+qqq : test routine unrollFrom is poor | Dmytro : test routine is extended
 */
 
 function unrollFrom( test )
@@ -652,20 +651,21 @@ function unrollFrom( test )
   test.identical( got, [] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
-  test.is( got !== [] );
+  test.is( got === src );
 
   var src = _.unrollMake( 2 );
   var got = _.unrollFrom( src );
   test.identical( got, [ undefined, undefined ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
+  test.is( got === src );
 
   var src = _.unrollMake( [ 1, 'str', 3 ] );
   var got = _.unrollFrom( src );
   test.identical( got, [ 1, 'str', 3 ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
-  test.is( got !== [ 1, 'str', 3 ] );
+  test.is( got === src );
 
   test.case = 'from empty';
   var src = [];

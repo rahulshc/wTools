@@ -23581,8 +23581,8 @@ value for dst             dst                dst                    first +     
     remapAppending,
     remapPrepending,
 
-    indexInplace,
-    indexInplaceSupplementing,
+    // indexInplace,
+    // indexInplaceSupplementing,
 
     //
 

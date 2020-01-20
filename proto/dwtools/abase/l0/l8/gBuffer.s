@@ -993,7 +993,7 @@ Dmytro : newly created routines bufferBut_, bufferSelect_, bufferGrow_, bufferRe
 */
 
 /* qqq : implement | Dmytro : all requirements applied
-   qqq : no
+   qqq : no | Dmytro : all requirements applied
       src can be any long or any buffer
       ins can be any long or any buffer
 */
@@ -1015,7 +1015,7 @@ Dmytro : newly created routines bufferBut_, bufferSelect_, bufferGrow_, bufferRe
 //   // _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
 //   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
 //
-//   /* qqq : jeed separate if fo BufferRaw, bufferNode and bufferView */
+//   /* qqq : jeed separate if fo BufferRaw, bufferNode and bufferView | Dmytro : old, implemented */
 //   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
 //   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
 //   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;

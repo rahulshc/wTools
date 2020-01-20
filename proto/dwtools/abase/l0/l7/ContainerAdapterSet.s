@@ -796,8 +796,8 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
       {
-        // qqq2 : avoid making extra containers
-        // qqq2 : investigate all cases using creating extra container. try to find solution without extra copying 
+        // qqq2 : avoid making extra containers | Dmytro : implemented
+        // qqq2 : investigate all cases using creating extra container. try to find solution without extra copying | Dmytro : implemented
         // Dmytro : only *Right methods has copy, its need copy because: when copy is used O( n ) = 2n -> O( n ) = n, if only iteration O( n ) = n * log( n )
         // Dmytro : used iterative loop. First condition means that first element is always unique element.
         // Otherwise, last element will be unique
