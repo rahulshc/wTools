@@ -206,6 +206,143 @@ function entityMakeConstructing( test )
 
 //
 
+function entityMakeEmpty( test ) 
+{
+  test.case = 'null';
+  var got = _.entityMakeEmpty( null );
+  test.identical( got, null );
+
+  test.case = 'undefined';
+  var got = _.entityMakeEmpty( undefined );
+  test.identical( got, undefined );
+
+  test.case = 'zero';
+  var got = _.entityMakeEmpty( 0 );
+  test.identical( got, 0 );
+
+  test.case = 'number';
+  var got = _.entityMakeEmpty( 3 );
+  test.identical( got, 3 );
+
+  test.case = 'bigInt';
+  var got = _.entityMakeEmpty( 1n );
+  test.identical( got, 1n );
+
+  test.case = 'empty string';
+  var got = _.entityMakeEmpty( '' );
+  test.identical( got, '' );
+
+  test.case = 'string';
+  var got = _.entityMakeEmpty( 'str' );
+  test.identical( got, 'str' );
+
+  test.case = 'false';
+  var got = _.entityMakeEmpty( false );
+  test.identical( got, false );
+
+  test.case = 'NaN';
+  var got = _.entityMakeEmpty( NaN );
+  test.identical( got, NaN );
+
+  test.case = 'Symbol';
+  var src = Symbol();
+  var got = _.entityMakeEmpty( src );
+  test.identical( got, src );
+
+  test.case = '_.null';
+  var got = _.entityMakeEmpty( _.null );
+  test.identical( got, null );
+
+  test.case = '_.undefined';
+  var got = _.entityMakeEmpty( _.undefined );
+  test.identical( got, undefined );
+
+  test.case = '_.nothing';
+  var got = _.entityMakeEmpty( _.nothing );
+  test.identical( got, _.nothing );
+
+  test.case = 'empty array';
+  var got = _.entityMakeEmpty( [] );
+  test.identical( got, [] );
+
+  test.case = 'not empty array';
+  var got = _.entityMakeEmpty( [ null, undefined, 1, 2 ] );
+  test.identical( got, [] );
+
+  test.case = 'empty argumentArray';
+  var got = _.entityMakeEmpty( _.argumentsArrayMake( [] ) );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'not empty argumentsArray';
+  var got = _.entityMakeEmpty( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'empty unroll';
+  var got = _.entityMakeEmpty( _.unrollMake( [] ) );
+  test.identical( got, [] );
+  test.is( !_.unrollIs( got ) && _.arrayIs( got ) );
+
+  test.case = 'not empty unroll';
+  var got = _.entityMakeEmpty( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+  test.identical( got, [] );
+  test.is( !_.unrollIs( got ) && _.arrayIs( got ) );
+
+  test.case = 'BufferTyped';
+  var got = _.entityMakeEmpty( new U8x( 10 ) );
+  test.identical( got, new U8x() );
+
+  test.case = 'empty map';
+  var got = _.entityMakeEmpty( {} );
+  test.identical( got, {} );
+  test.is( _.mapIsPure( got ) );
+
+  test.case = 'not empty map';
+  var got = _.entityMakeEmpty( { '' : null } );
+  test.identical( got, {} );
+  test.is( _.mapIsPure( got ) );
+
+  test.case = 'empty pure map';
+  var got = _.entityMakeEmpty( Object.create( null ) );
+  test.identical( got, {} );
+  test.is( _.mapIsPure( got ) );
+
+  test.case = 'empty Set';
+  var got = _.entityMakeEmpty( new Set( [] ) );
+  test.identical( got, new Set( [] ) );
+
+  test.case = 'Set';
+  var got = _.entityMakeEmpty( new Set( [ 1, 'str', false ] ) );
+  test.identical( got, new Set( [] ) );
+
+  test.case = 'empty HashMap';
+  var got = _.entityMakeEmpty( new Map( [] ) );
+  test.identical( got, new Map( [] ) );
+
+  test.case = 'HashMap';
+  var got = _.entityMakeEmpty( new Map( [ [ 'a', 1 ], [ 'b', 2 ] ] ) );
+  test.identical( got, new Map( [] ) );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.entityMakeEmpty() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.entityMakeEmpty( [], 1 ) );
+
+  test.case = 'unknown type of entity';
+  test.shouldThrowErrorSync( () => _.entityMakeEmpty( new BufferRaw() ) );  
+  var Constr = function(){ this.x = 1; return this };
+  test.shouldThrowErrorSync( () => _.entityMakeEmpty( new Constr() ) );
+}
+
+//
+
 function entityEntityEqualize( test )
 {
   test.open( 'without callbacks' );
@@ -1020,6 +1157,7 @@ var Self =
   {
 
     entityMakeConstructing,
+    entityMakeEmpty,
 
     entityEntityEqualize,
 

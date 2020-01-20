@@ -193,11 +193,11 @@ function entityMakeEmpty( srcContainer )
   {
     return Object.create( null );
   }
-  else if( src === _.null ) /* qqq : cover this case */
+  else if( srcContainer === _.null ) /* qqq : cover this case | Dmytro : covered */
   {
     return null;
   }
-  else if( src === _.undefined ) /* qqq : cover this case */
+  else if( srcContainer === _.undefined ) /* qqq : cover this case | Dmytro : covered */
   {
     return undefined;
   }
