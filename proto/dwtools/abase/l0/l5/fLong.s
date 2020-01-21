@@ -3112,12 +3112,19 @@ function arraySlice( srcArray, f, l )
 
 //
 
-/* qqq : implement and cover. ask */
+/* qqq : implement and cover. ask | Dmytro : remove unnecessary code, covered */
 
-function arrayEmpty( dstArray, srcArray )
+// function arrayEmpty( dstArray, srcArray )
+// {
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( arguments.length === 1, 'not implemented' );
+//   dstArray.splice( 0, dstArray.length );
+//   return dstArray;
+// }
+
+function arrayEmpty( dstArray )
 {
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( arguments.length === 1, 'not implemented' );
+  _.assert( arguments.length === 1, 'Expects single argument' );
   dstArray.splice( 0, dstArray.length );
   return dstArray;
 }
