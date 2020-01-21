@@ -15,39 +15,55 @@ _.assert( _.routineIs( _.longLeft ) );
 // implementation
 // --
 
+function make()
+{
+  _.assert( arguments.length === 0 );
+  return new ContainerAdapterSet( new Set( this.original ) );
+}
+
+//
+
+function MakeEmpty()
+{
+  _.assert( arguments.length === 0 );
+  return new ContainerAdapterSet( new Set );
+}
+
+//
+
+function Make( src )
+{
+  if( src === undefined || src === null )
+  return this.MakeEmpty();
+  else if( _.numberIs( src ) )
+  return new ContainerAdapterSet( new Set );
+  else if( this.IsContainer( src ) )
+  return new ContainerAdapterSet( new Set( src ) );
+  else if( this.Is( src ) )
+  return new ContainerAdapterSet( new Set( src.original ) );
+}
+
+//
+
+function makeEmpty()
+{
+  return this.constructor.MakeEmpty();
+}
+
+//
+
 class ContainerAdapterSet extends _.containerAdapter.Abstract
 {
-  constructor( container )
-  {
-    super( container );
-    _.assert( arguments.length === 1 );
-    _.assert( _.setIs( container ) );
-  }
-  make()
-  {
-    _.assert( arguments.length === 0 );
-    return new ContainerAdapterSet( new Set( this.original ) );
-  }
-  static MakeEmpty()
-  {
-    _.assert( arguments.length === 0 );
-    return new ContainerAdapterSet( new Set );
-  }
-  MakeEmpty()
-  {
-    return this.constructor.MakeEmpty();
-  }
-  static Make( src )
-  {
-    if( src === undefined || src === null )
-    return this.MakeEmpty();
-    else if( _.numberIs( src ) )
-    return new ContainerAdapterSet( new Set );
-    else if( this.IsContainer( src ) )
-    return new ContainerAdapterSet( new Set( src ) );
-    else if( this.Is( src ) )
-    return new ContainerAdapterSet( new Set( src.original ) );
-  }
+  // constructor( container ) // Dmytro : using constructor and super() method is old syntax, it can be deleted 
+  // {
+  //   super( container );
+  //   _.assert( arguments.length === 1 );
+  //   _.assert( _.setIs( container ) );
+  // }
+  // make = make; // Dmytro : simple assigning methods as a property is able in NodeJs v12 and later. So, I assign this properties after class declaration.
+  // static MakeEmpty = MakeEmpty;
+  // MakeEmpty = makeEmpty;  
+  // static Make = Make;
   has( e, onEvaluate1, onEvaluate2 )
   {
     _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
@@ -1103,6 +1119,10 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     return this.original.size;
   }
 }
+ContainerAdapterSet.Make = Make;
+ContainerAdapterSet.MakeEmpty = MakeEmpty;
+ContainerAdapterSet.prototype.make = make;
+ContainerAdapterSet.prototype.MakeEmpty = makeEmpty;
 
 // --
 // meta
