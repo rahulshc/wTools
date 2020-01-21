@@ -16,39 +16,55 @@ _.assert( _.routineIs( _.longLeft ) );
 // implementation
 // --
 
+function make()
+{
+  _.assert( arguments.length === 0 );
+  return new ContainerAdapterArray( this.original.slice() );
+}
+
+//
+
+function MakeEmpty()
+{
+  _.assert( arguments.length === 0 );
+  return new ContainerAdapterArray( new Array );
+}
+
+//
+
+function makeEmpty()
+{
+  return this.constructor.MakeEmpty();
+}
+
+//
+
+function Make( src )
+{
+  if( src === undefined || src === null )
+  return this.MakeEmpty();
+  else if( _.numberIs( src ) )
+  return new ContainerAdapterArray( new Array( src ) );
+  else if( this.IsContainer( src ) )
+  return new ContainerAdapterArray( [ ... src ] );
+  else if( this.Is( src ) )
+  return new ContainerAdapterArray( [ ... src.original ] );
+}
+
+//
+
 class ContainerAdapterArray extends _.containerAdapter.Abstract
 {
-  constructor( container )
-  {
-    super( container );
-    _.assert( arguments.length === 1 );
-    _.assert( _.arrayIs( container ) );
-  }
-  make()
-  {
-    _.assert( arguments.length === 0 );
-    return new ContainerAdapterArray( this.original.slice() );
-  }
-  static MakeEmpty()
-  {
-    _.assert( arguments.length === 0 );
-    return new ContainerAdapterArray( new Array );
-  }
-  MakeEmpty()
-  {
-    return this.constructor.MakeEmpty();
-  }
-  static Make( src )
-  {
-    if( src === undefined || src === null )
-    return this.MakeEmpty();
-    else if( _.numberIs( src ) )
-    return new ContainerAdapterArray( new Array( src ) );
-    else if( this.IsContainer( src ) )
-    return new ContainerAdapterArray( [ ... src ] );
-    else if( this.Is( src ) )
-    return new ContainerAdapterArray( [ ... src.original ] );
-  }
+  // constructor( container )
+  // {
+  //   super( container );
+  //   _.assert( arguments.length === 1 );
+  //   _.assert( _.arrayIs( container ) );
+  // }
+  // make = make; // Dmytro : simple assigning methods as a property is able in NodeJs v12 and later. So, I assign this properties after class declaration.
+  // static MakeEmpty = MakeEmpty;
+  // MakeEmpty = makeEmpty;  
+  // static Make = Make;
   has( e, onEvaluate1, onEvaluate2 )
   {
     if( _.routineIs( onEvaluate1 ) || _.routineIs( onEvaluate2 ) )
@@ -705,6 +721,10 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     return this.original.length;
   }
 }
+ContainerAdapterArray.Make = Make;
+ContainerAdapterArray.MakeEmpty = MakeEmpty;
+ContainerAdapterArray.prototype.make = make;
+ContainerAdapterArray.prototype.MakeEmpty = makeEmpty;
 
 // --
 // meta
