@@ -11020,6 +11020,51 @@ function arraySlice( test )
 
 //
 
+function arrayEmpty( test ) 
+{
+  test.case = 'empty array';
+  var src = [];
+  var got = _.arrayEmpty( src );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'filled array';
+  var src = [ 1, undefined, null, false, [], {}, new Set(), '', 'str' ];
+  var got = _.arrayEmpty( src );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.arrayEmpty( src );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'filled unroll';
+  var src = _.unrollMake( [ 1, undefined, null, false, [], {}, new Set(), '', 'str' ] );
+  var got = _.arrayEmpty( src );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayEmpty() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayEmpty( [], [] ) );
+
+  test.case = 'wrong type of dstArray';
+  test.shouldThrowErrorSync( () => _.arrayEmpty( _.argumentsArrayMake( [] ) ) );
+  test.shouldThrowErrorSync( () => _.arrayEmpty( new U8x( 10 ) ) );
+  test.shouldThrowErrorSync( () => _.arrayEmpty( 'str' ) );
+}
+
+//
+
 function arrayBut( test )
 {
   var array = ( src ) => _.arrayMake( src );
@@ -41756,6 +41801,8 @@ var Self =
     // array transformer
 
     arraySlice,
+    arrayEmpty,
+
     arrayBut,
     arrayButInplace,
     arrayBut_,
