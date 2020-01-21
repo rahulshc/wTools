@@ -6845,7 +6845,7 @@ function strIsolateLeftOrAll( test )
 
   /* - */
 
-  test.open( 'quoting' ); /* qqq : extend the group */
+  test.open( 'quoting' ); /* qqq : extend the group | Dmytro : extended */
 
   test.case = 'quote - 0';
   var got = _.strIsolateLeftOrAll( { src : '"a b" c "d e"', delimeter : ' ', quote : 0 } );
@@ -7347,16 +7347,39 @@ function strIsolateRightOrNone( test )
 
   test.open( 'quoting' ); /* qqq : extend the group */
 
-  got = _.strIsolateRightOrNone( 'a b c d', ' ' );
-  expected = [ 'a b c', ' ', 'd' ];
+  test.case = 'quote - 0';
+  var got = _.strIsolateRightOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 0 } );
+  var expected = [ '"a b" c "d', ' ', 'e"' ];
   test.identical( got, expected );
 
-  got = _.strIsolateRightOrNone({ src : '"a" b "c d"', delimeter : ' ', quote : 0 });
-  expected = [ '"a" b "c', ' ', 'd"' ];
+  test.case = 'quote - 0, times - 3';
+  var got = _.strIsolateRightOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 0, times : 4 } );
+  var expected = [ '"a', ' ', 'b" c "d e"' ];
   test.identical( got, expected );
 
-  got = _.strIsolateRightOrNone({ src : '"a" b "c d"', delimeter : ' ', quote : 1 });
-  expected = [ '"a" b', ' ', '"c d"' ];
+  test.case = 'quote - 1, times - 0';
+  var got = _.strIsolateRightOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 1, times : 0 } );
+  var expected = [ '"a b" c "d e"', undefined, '' ];
+  test.identical( got, expected );
+
+  test.case = 'quote - 1, times - 1';
+  var got = _.strIsolateRightOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 1, times : 1 } );
+  var expected = [ '"a b" c', ' ', '"d e"' ];
+  test.identical( got, expected );
+
+  test.case = 'quote - 1, times - 2';
+  var got = _.strIsolateRightOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 1, times : 2 } );
+  var expected = [ '"a b"', ' ', 'c "d e"' ];
+  test.identical( got, expected );
+
+  test.case = 'quote - 1, times - 3';
+  var got = _.strIsolateRightOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 1, times : 3 } );
+  var expected = [ '', undefined, '"a b" c "d e"' ];
+  test.identical( got, expected );
+
+  test.case = 'quote - 1, times - 4';
+  var got = _.strIsolateRightOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 1, times : 4 } );
+  var expected = [ '', undefined, '"a b" c "d e"' ];
   test.identical( got, expected );
 
   test.close( 'quoting' );
