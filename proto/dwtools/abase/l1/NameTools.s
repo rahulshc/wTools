@@ -158,7 +158,7 @@ function idWithTime( prefix, postfix )
 
 //
 
-/* qqq : reimplement it more properly | Dmytro : new implementation is written below, it use futures of random RFC4122 GUIDs v4 */
+/* qqq : reimplement it more properly | Dmytro : new implementation is written below, it use futures of random RFC4122 GUIDs v4. Guids can be more complex for example https://www.npmjs.com/package/uuid */
 
 function idWithGuid()
 {
@@ -199,6 +199,20 @@ function idWithGuid()
 // }
 
 //
+
+/**
+ * Routine idWithTimeGuid() returns random GUID of RFC4122 standard.
+ * GUID v4 is used.
+ * Routine does not accepts parameters.
+ *
+ * @example
+ * _.idWithTimeGuid()
+ * // returns '0d796bf0-dc89-4ccd-b751-01430f6ec71f'
+ *
+ * @return { String } - Returns GUID v4.
+ * @function idWithTimeGuid
+ * @memberof wTools
+ */
 
 function idWithTimeGuid() 
 {
