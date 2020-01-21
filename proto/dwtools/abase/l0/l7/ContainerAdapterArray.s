@@ -467,6 +467,11 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
 
     return dst;
   }
+  withIndex( index )
+  {
+    let self = this;
+    return self.original[ index ];
+  }
   first( onEach )
   {
     let self = this;
