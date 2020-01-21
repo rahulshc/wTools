@@ -2202,7 +2202,7 @@ function strSplitInlinedStereo( o )
 {
 
   if( _.strIs( o ) )
-  o = { src : o }
+  o = { src : o };
 
   _.assert( this === _ );
   _.assert( _.strIs( o.src ) );
@@ -2308,28 +2308,28 @@ let Routines =
   strReplaceBegin, /* Dmytro : coverage is extended */
   strReplaceEnd, /* Dmytro : coverage is extended */
   //_strReplaced,
-  strReplace,
+  strReplace, /* Dmytro : coverage is extended */
 
-  /* qqq : check coverage of each routine of the file fString.s */
+  /* qqq : check coverage of each routine of the file fString.s | Dmytro : checked */
 
   // split
 
-  /* qqq : move coverage of routines below from l1.test/Str.test.s to l0.test/Str.test.s */
-  /* qqq : check coverage of routines below */
+  /* qqq : move coverage of routines below from l1.test/Str.test.s to l0.test/Str.test.s | Dmytro : moved a time ago */
+  /* qqq : check coverage of routines below | Dmytro : checked, comments is given below */
 
-  strSplitsCoupledGroup,
-  strSplitsUngroupedJoin,
-  strSplitsQuotedRejoin,
-  strSplitsDropDelimeters,
-  strSplitsStrip,
-  strSplitsDropEmpty,
+  strSplitsCoupledGroup, // Dmytro : covered
+  strSplitsUngroupedJoin, // Dmytro : not covered
+  strSplitsQuotedRejoin, // Dmytro : not covered, routine has many options
+  strSplitsDropDelimeters, //Dmytro : not covered
+  strSplitsStrip, // Dmytro : not covered
+  strSplitsDropEmpty, // Dmytro : covered
 
-  strSplitFast,
-  strSplit,
-  strSplitNonPreserving,
+  strSplitFast, // Dmytro : covered, test routine is large, it can be split
+  strSplit, // Dmytro : covered, test routine is large, it can be split
+  strSplitNonPreserving, // Dmytro : not covered
 
-  strSplitInlined,
-  strSplitInlinedStereo,
+  strSplitInlined, // Dmytro : covered
+  strSplitInlinedStereo, // Dmytro : trivial coverage
 
 }
 

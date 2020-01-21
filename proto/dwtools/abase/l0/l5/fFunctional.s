@@ -4124,11 +4124,11 @@ function entityLast( src, onEach )
  */
 
 /*
-qqq : refactor routine _entityMost
+qqq : refactor routine _entityMost | Dmytro : routine accepts options map, and can use evaluator or comparator
 - make o-fication
 - make it accept evaluator or comparator( not in the same call )
-Dmytro : routine accepts options map, and can use evaluator or comparator
-Implementation with pre and body now is unavailable, because fMap.s connecting is later then fFunctional.s. routineFromPreAndBody needs routines from fMap.s.
+
+Dmytro : Implementation with pre and body now is unavailable, because fMap.s connecting is later then fFunctional.s. routineFromPreAndBody needs routines from fMap.s.
 */
 
 // function _entityMost_pre( routine, args )

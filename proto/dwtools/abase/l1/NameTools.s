@@ -158,7 +158,7 @@ function idWithTime( prefix, postfix )
 
 //
 
-/* qqq : reimplement it more properly */
+/* qqq : reimplement it more properly | Dmytro : new implementation is written below, it use futures of random RFC4122 GUIDs v4. Guids can be more complex for example https://www.npmjs.com/package/uuid */
 
 function idWithGuid()
 {
@@ -179,6 +179,56 @@ function idWithGuid()
     return Math.floor( ( 1 + Math.random() ) * 0x10000 ).toString( 16 ).substring( 1 );
   }
 
+}
+
+//
+
+// function idWithGuid() 
+// {
+//   let guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+//     
+//   return guid.replace( /[xy]/g, replaceSymbol );
+//   
+//   /* */
+//   
+//   function replaceSymbol( sym )
+//   {
+//     let r = Math.random() * 16 | 0;
+//     return ( sym === 'x' ? r : ( r & 0x3 | 0x8 ) ).toString( 16 );
+//   }  
+// }
+
+//
+
+/**
+ * Routine idWithTimeGuid() returns random GUID of RFC4122 standard.
+ * GUID v4 is used.
+ * Routine does not accepts parameters.
+ *
+ * @example
+ * _.idWithTimeGuid()
+ * // returns '0d796bf0-dc89-4ccd-b751-01430f6ec71f'
+ *
+ * @return { String } - Returns GUID v4.
+ * @function idWithTimeGuid
+ * @memberof wTools
+ */
+
+function idWithTimeGuid() 
+{
+  let guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+  let date = _.time.now();
+    
+  return guid.replace( /[xy]/g, replaceSymbol );
+  
+  /* */
+  
+  function replaceSymbol( sym )
+  {
+    let r = ( date + Math.random() * 16 ) % 16 | 0;
+    date = Math.floor( date / 16 );
+    return ( sym === 'x' ? r : ( r & 0x3 | 0x8 ) ).toString( 16 );
+  }  
 }
 
 //
@@ -215,6 +265,7 @@ var Proto =
   idWithDate,
   idWithTime,
   idWithGuid,
+  idWithTimeGuid,
   idWithInt,
 
 }

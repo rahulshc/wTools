@@ -1396,8 +1396,7 @@ function bufferBut( test )
 
   if( Config.interpreter === 'njs' )
   {
-    /* qqq : should work */
-    /* Dmytro : works. Previus 'qqq' implemented */
+    /* qqq : should work | Dmytro : works. Previus 'qqq' implemented */
 
     test.open( 'bufferNode' );
     run( bufferNode );
@@ -1544,8 +1543,7 @@ function bufferBut( test )
 
   /* BufferRaw and BufferView */
 
-  /* qqq : should work */
-  /* Dmytro : works. Previus 'qqq' implemented */
+  /* qqq : should work | Dmytro : works. Previus 'qqq' implemented */
 
   var bufferRaw = ( src ) => new BufferRaw( src );
   var bufferView = ( src ) => new BufferView( new BufferRaw( src ) );

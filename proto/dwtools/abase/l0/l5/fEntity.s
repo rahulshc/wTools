@@ -149,11 +149,11 @@ function entityMakeConstructing( src, length )
   {
     return new src.constructor();
   }
-  else if( src === _.null ) /* qqq : cover this case */
+  else if( src === _.null ) /* qqq : cover this case | Dmytro : covered */
   {
     return null;
   }
-  else if( src === _.undefined ) /* qqq : cover this case */
+  else if( src === _.undefined ) /* qqq : cover this case | Dmytro : covered */
   {
     return undefined;
   }
@@ -193,11 +193,11 @@ function entityMakeEmpty( srcContainer )
   {
     return Object.create( null );
   }
-  else if( src === _.null ) /* qqq : cover this case */
+  else if( srcContainer === _.null ) /* qqq : cover this case | Dmytro : covered */
   {
     return null;
   }
-  else if( src === _.undefined ) /* qqq : cover this case */
+  else if( srcContainer === _.undefined ) /* qqq : cover this case | Dmytro : covered */
   {
     return undefined;
   }
@@ -243,17 +243,17 @@ function entityMakeUndefined( srcContainer, length )
   {
     return Object.create( null );
   }
-  else if( src === _.null ) /* qqq : cover this case */
+  else if( srcContainer === _.null ) /* qqq : cover this case | Dmytro : covered */
   {
     return null;
   }
-  else if( src === _.undefined ) /* qqq : cover this case */
+  else if( srcContainer === _.undefined ) /* qqq : cover this case | Dmytro : covered */
   {
     return undefined;
   }
-  else if( _.primitiveIs( src ) )
+  else if( _.primitiveIs( srcContainer ) )
   {
-    return src;
+    return srcContainer;
   }
   else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
 
@@ -263,6 +263,7 @@ function entityMakeUndefined( srcContainer, length )
 
 function entityMake( src )
 {
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.longLike( src ) )
   {

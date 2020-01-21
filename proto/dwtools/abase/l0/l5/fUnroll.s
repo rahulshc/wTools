@@ -108,8 +108,7 @@ function unrollMake( src )
  */
 
 /*
-qqq : implement unrollMakeUndefined similar to longMakeUndefined, cover and document
-Dmytro : implemented similar to longMakeUndefined, covered, documented.
+qqq : implement unrollMakeUndefined similar to longMakeUndefined, cover and document | Dmytro : implemented similar to longMakeUndefined, covered, documented.
 */
 
 function unrollMakeUndefined( src, length )
@@ -259,11 +258,10 @@ function unrollsFrom( srcs )
 }
 
 /*
-qqq : in separate line after each console.log such comment should follow
+qqq : in separate line after each console.log such comment should follow | Dmytro : implemented in all module
       1. its lazy
       2. not returns, but output or log
       3. should be for each console.log
-Dmytro : implemented in all module
 */
 
 /**
@@ -444,8 +442,7 @@ function unrollNormalize( dstArray )
  */
 
 /*
-  qqq : extend documentation and test coverage of unrollSelect
-  Dmytro : documented and covered. The behavior of routine is like *Relength.
+  qqq : extend documentation and test coverage of unrollSelect | Dmytro : documented and covered. The behavior of routine is like *Relength.
 */
 
 function unrollSelect( array, range, val )
@@ -514,13 +511,12 @@ function unrollSelect( array, range, val )
 //
 
 /*
-qqq : в unrollPrepend, unrollAppend бракує прикладів
+qqq : в unrollPrepend, unrollAppend бракує прикладів | Dmytro: corrected JSdoc in unrollFrom, unrollNormalize. Improved examples in unrollPrepend, unrollAppend.
 коли src unroll і dst не null
 із виводом результату
 і більше ніж одним елементом
 
-Dmytro: correct JSdoc in unrollFrom, unrollNormalize.
-Improve examples in unrollPrepend, unrollAppend.
+
 */
 
 /**

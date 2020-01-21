@@ -252,7 +252,7 @@ let format = _.routineVectorize_functor( _format );
 //
 
 /*
-qqq : cover routine strip
+qqq : cover routine strip | Dmytro : covered
 */
 
 function strip( srcStr )

@@ -709,7 +709,11 @@ function dir_body( o )
   else
   o.filePath = this.canonize( o.filePath );
 
-  if( o.depth > 1 )
+  if( o.depth === 0 )
+  {
+    return o.filePath;
+  }
+  else if( o.depth > 1 )
   {
     for( let i = o.depth - 1; i >= 0; i-- )
     {
@@ -749,6 +753,10 @@ function dir_body( o )
     o.filePath = _.path.canonize( o.filePath );
 
     return o.filePath;
+  }
+  else
+  {
+    _.assert( o.depth > 0 );
   }
 
   if( o.first )

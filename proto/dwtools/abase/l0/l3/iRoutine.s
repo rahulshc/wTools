@@ -676,8 +676,7 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 //
 
 /*
-qqq implement and cover _.routineExtend( null, routine );
-Dmytro : implemented a time ago, covered
+qqq implement and cover _.routineExtend( null, routine ); | Dmytro : implemented a time ago, covered
 */
 
 /**
@@ -1673,6 +1672,58 @@ vectorizeNone.defaults = Object.create( vectorizeNone_body.defaults );
 
 //
 
+/**
+ * The routine vectorizeAccess() creates proxy object for each element of passed vector {-vector-}.
+ * Proxy object provides access to existed properties of {-vector-} elements uses only get() 
+ * and set() handlers.
+ * If get() handler is used, then routine returns new proxy object with vector of property values.
+ * If a property is a routine, then its routines can be applied to a set of arguments. The result is 
+ * a new proxy with vector of returned values.
+ * To get original vector uses property `$`.
+ * If set() handler is used, then property of each proxy element is assigned to one value. 
+ *
+ * @param { Long } vector - The vector of objects and vectors to get proxy access to properties.
+ *
+ * @example
+ * let obj1 = { a : 1, b : 2, c : 3 };
+ * let obj2 = { a : 5, b : 6 };
+ * let vector = _.vectorizeAccess( [ obj1, obj2 ] );
+ * console.log( vector );
+ * // log Proxy [
+ *          [ { a : 1, b : 2, c : 3 }, { a : 5, b : 6 } ],
+ *          { get: [Function: get], set: [Function: set] }
+ *        ]
+ * console.log( vector[ '$' ] );
+ * // log [ { a : 1, b : 2, c : 3 }, { a : 5, b : 6 } ]
+ * let vectorA = vector.a; // or vector[ 'a' ]
+ * console.log( vectorA );
+ * // log Proxy [ [ 1, 5 ], { get: [Function: get], set: [Function: set] } ]
+ *
+ * @example
+ * let cb1 = ( e ) => Math.pow( e, 2 );
+ * let cb2 = ( e ) => Math.sqrt( e, 2 );
+ * let obj1 = { callback : cb1, name : 'obj1' };
+ * let obj2 = { callback : cb2, name : 'obj2' };
+ * let vector = _.vectorizeAccess( [ obj1, obj2 ] );
+ * let result = vector.callback( 4 );
+ * console.log( result );
+ * // log Proxy [ [ 16, 2 ], { get: [Function: get], set: [Function: set] } ]
+ *
+ * @example
+ * let v1 = [ 1, 2, 3 ];
+ * let v2 = [ 5, 6 ];
+ * let vector = _.vectorizeAccess( [ v1, v2 ] );
+ * vector[ 1 ] = 10;
+ * console.log( vector[ '$' ] );
+ * // log [ [ 1, 10, 3 ], [ 5, 10 ] ]
+ * 
+ * @returns { Proxy } - Proxy object, which provides access to existed properties in elements of vector.
+ * @function vectorizeAccess
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-vector-} is not a Long.
+ * @memberof wTools
+ */
+
 function vectorizeAccess( vector )
 {
 
@@ -1795,7 +1846,7 @@ let Routines =
   vectorizeAny,
   vectorizeNone,
 
-  vectorizeAccess, /* qqq : cover */
+  vectorizeAccess, /* qqq : cover | Dmytro : covered */
 
 }
 

@@ -680,21 +680,43 @@ function constructorJoin( test )
     }
     return result;
   }
-
   srcRoutine.prop = true;
 
-  var args = [];
-  var got = _.constructorJoin( srcRoutine,args );
+  /* */
+
+  test.case = 'without args';
+  var got = _.constructorJoin( srcRoutine );
   test.is( _.routineIs( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
-  test.identical( result.args, args );
+  test.identical( result.args, [] );
   test.identical( result.context, srcRoutine );
   test.isNot( result.context instanceof srcRoutine );
 
+  test.case = 'args - undefined';
+  var got = _.constructorJoin( srcRoutine, undefined );
+  test.is( _.routineIs( got ) );
+  var result = got();
+  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  test.identical( _.mapKeys( got ), [] );
+  test.identical( result.args, [] );
+  test.identical( result.context, srcRoutine );
+  test.isNot( result.context instanceof srcRoutine );
+
+  test.case = 'args - null';
+  var got = _.constructorJoin( srcRoutine, null );
+  test.is( _.routineIs( got ) );
+  var result = got();
+  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  test.identical( _.mapKeys( got ), [] );
+  test.identical( result.args, [] );
+  test.identical( result.context, srcRoutine );
+  test.isNot( result.context instanceof srcRoutine );
+
+  test.case = 'args - empty array';
   var args = [];
-  var got = _.constructorJoin( srcRoutine,args );
+  var got = _.constructorJoin( srcRoutine, args );
   test.is( _.routineIs( got ) );
   var result = new got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
@@ -703,8 +725,9 @@ function constructorJoin( test )
   test.notIdentical( result.context, srcRoutine );
   test.is( result.context instanceof srcRoutine );
 
+  test.case = 'args - array with map, returned routine exexute without arguments';
   var args = [ { a : 1 } ];
-  var got = _.constructorJoin( srcRoutine,args );
+  var got = _.constructorJoin( srcRoutine, args );
   test.is( _.routineIs( got ) );
   var result = got();
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
@@ -713,8 +736,9 @@ function constructorJoin( test )
   test.identical( result.context, srcRoutine );
   test.isNot( result.context instanceof srcRoutine );
 
+  test.case = 'args - array with map, returned routine exexute with arguments';
   var args = [ { a : 1 } ];
-  var got = _.constructorJoin( srcRoutine,args );
+  var got = _.constructorJoin( srcRoutine, args );
   test.is( _.routineIs( got ) );
   var result = got({ b : 1 });
   test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
@@ -723,105 +747,270 @@ function constructorJoin( test )
   test.identical( result.context, srcRoutine );
   test.isNot( result.context instanceof srcRoutine );
 
-  var args = [ { a : 1 } ];
-  var got = _.constructorJoin( srcRoutine,args );
+  test.case = 'Array contructor, args = U8x buffer, execute without arguments';
+  var args = new U8x( [ 1, 2, 3, 4 ] );
+  var got = _.constructorJoin( Array, args );
   test.is( _.routineIs( got ) );
   var result = new got();
-  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
   test.identical( _.mapKeys( got ), [] );
-  test.identical( result.args, args );
-  test.notIdentical( result.context, srcRoutine );
-  test.is( result.context instanceof srcRoutine );
+  test.identical( result, [ 1, 2, 3, 4 ] );
 
-  var args = [ { a : 1 } ];
-  var got = _.constructorJoin( srcRoutine,args );
+  test.case = 'Array contructor, args = U8x buffer, exexute with number';
+  var args = new U8x( [ 1, 2, 3, 4 ] );
+  var got = _.constructorJoin( Array, args );
   test.is( _.routineIs( got ) );
-  var result = new got({ b : 1 });
-  test.identical( _.mapKeys( srcRoutine ), [ 'prop' ] )
+  var result = new got( 1 );
   test.identical( _.mapKeys( got ), [] );
-  test.identical( result.args, [ { a : 1 }, { b : 1 } ] );
-  test.notIdentical( result.context, srcRoutine );
-  test.is( result.context instanceof srcRoutine );
+  test.identical( result, [ 1, 2, 3, 4, 1 ] );
 
-  test.case = 'Array contructor, args = U8x buffer';
-  var got = _.constructorJoin( Array, new U8x( [ 1, 2, 3, 4 ] ) );
-  var expected = new got();
-  test.is( _.routineIs( got ) );
-  test.identical( expected, [ 1, 2, 3, 4 ] );
-  test.is( _.arrayIs( expected ) );
+  /* - */
 
   if( !Config.debug )
   return;
+  
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.constructorJoin() );
 
-  test.shouldThrowErrorSync( () => _.constructorJoin() )
-  test.shouldThrowErrorSync( () => _.constructorJoin( [], [] ) )
-  test.shouldThrowErrorSync( () => _.constructorJoin( srcRoutine, srcRoutine ) )
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.constructorJoin( Array, [ 1, 2 ], [ 1, 2 ] ) );
+
+  test.case = 'wrong type of routine';
+  test.shouldThrowErrorSync( () => _.constructorJoin( [], [] ) );
+
+  test.case = 'wrong type of args';
+  test.shouldThrowErrorSync( () => _.constructorJoin( srcRoutine, srcRoutine ) );
 }
 
 //
 
 function routineJoin( test )
 {
+  function testFunction1( x, y ){ return this }
+  function testFunction2( x, y ){ return x + y }
+  function testFunction3( x, y ){ return x + y + ( this !== undefined ? this.k : 1 ) }
+  function Constr(){ this.k = 15; return this }
+  var context = new Constr();
 
-  var testParam1 = 2,
-    testParam2 = 4,
-    expected1 = 6,
-    expected2 = undefined,
-    expected3 = 21;
+  /* - */
 
-  test.case = 'simple function without context with arguments bind : result check';
-  var gotfn = _.routineJoin( undefined, testFunction1, [ testParam2 ]);
-  var got = gotfn( testParam1 );
-  test.identical( got,expected1 );
+  test.open( 'context - undefined, args - undefined' );
 
-  test.case = 'simple function without /*ttt*/context test';
-  var gotfn = _.routineJoin(undefined, testFunction2, [ testParam2 ]);
-  var got = gotfn( testParam1 );
-  test.identical( got, expected2 );
+  test.case = 'named function without context, check context';
+  var gotfn = _.routineJoin( undefined, testFunction1, undefined );
+  test.identical( gotfn.name, 'testFunction1' );
+  test.identical( gotfn.originalRoutine, testFunction1 );
+  test.identical( gotfn.boundArguments, undefined );
+  var got = gotfn( 2, 3 );
+  test.identical( got, undefined );
 
-  test.case = 'simple function with context and arguments : result check';
-  var gotfn = _.routineJoin(context3, testFunction3, [ testParam2 ]);
-  var got = gotfn( testParam1 );
-  test.identical( got, expected3 );
+  test.case = 'named function with arguments bind : result check';
+  var gotfn = _.routineJoin( undefined, testFunction2, undefined );
+  test.identical( gotfn.name, 'testFunction2' );
+  test.identical( gotfn.originalRoutine, testFunction2 );
+  test.identical( gotfn.boundArguments, undefined );
+  var got = gotfn( 2, 3 );
+  test.identical( got, 5 );  
 
-  test.case = 'simple function with context and arguments : context check';
-  var gotfn = _.routineJoin(context3, testFunction4, [ testParam2 ]);
-  var got = gotfn( testParam1 );
-  test.identical( got instanceof contextConstructor3, true );
+  test.case = 'unnamed function with arguments bind : result check';
+  var gotfn = _.routineJoin( undefined, testFunction3, undefined );
+  test.identical( gotfn.name, 'testFunction3' );
+  test.identical( gotfn.originalRoutine, testFunction3 );
+  test.identical( gotfn.boundArguments, undefined );
+  var got = gotfn( 2, 3 );
+  test.identical( got, 6 );  
+
+  test.case = 'unnamed function without context, check context';
+  var gotfn = _.routineJoin( undefined, ( x, y ) => x + y, undefined );
+  test.identical( gotfn.name, '' );
+  test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => x + y )( 2, 3 ) );
+  test.identical( gotfn.boundArguments, undefined );
+  var got = gotfn( 2, 3 );
+  test.identical( got, 5 );
+
+  test.case = 'unnamed function with arguments bind : result check';
+  var gotfn = _.routineJoin( undefined, ( x, y ) => Math.pow( x, y ), undefined );
+  test.identical( gotfn.name, '' );
+  test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => Math.pow( x, y ) )( 2, 3 ) );
+  test.identical( gotfn.boundArguments, undefined );
+  var got = gotfn( 2, 3 );
+  test.identical( got, 8 );  
+
+  test.close( 'context - undefined, args - undefined' );
+
+  /* - */
+
+  test.open( 'context - undefined, args - long' );
+
+  test.case = 'named function without context, check context';
+  var gotfn = _.routineJoin( undefined, testFunction1, [ 4 ] );
+  test.identical( gotfn.name, 'testFunction1' );
+  test.identical( gotfn.originalRoutine, testFunction1 );
+  test.identical( gotfn.boundArguments, [ 4 ] );
+  var got = gotfn( 2 );
+  test.identical( got, undefined );
+
+  test.case = 'named function with arguments bind : result check';
+  var gotfn = _.routineJoin( undefined, testFunction2, [ 4 ] );
+  test.identical( gotfn.name, 'testFunction2' );
+  test.identical( gotfn.originalRoutine, testFunction2 );
+  test.identical( gotfn.boundArguments, [ 4 ] );
+  var got = gotfn( 2 );
+  test.identical( got, 6 );  
+
+  test.case = 'unnamed function with arguments bind : result check';
+  var gotfn = _.routineJoin( undefined, testFunction3, [ 4 ] );
+  test.identical( gotfn.name, 'testFunction3' );
+  test.identical( gotfn.originalRoutine, testFunction3 );
+  test.identical( gotfn.boundArguments, [ 4 ] );
+  var got = gotfn( 5 );
+  test.identical( got, 10 );  
+
+  test.case = 'unnamed function without context, check context';
+  var gotfn = _.routineJoin( undefined, ( x, y ) => x + y, [ 4 ] );
+  test.identical( gotfn.name, '__joinedArguments' );
+  test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => x + y )( 2, 3 ) );
+  test.identical( gotfn.boundArguments, [ 4 ] );
+  var got = gotfn( 2 );
+  test.identical( got, 6 );
+
+  test.case = 'unnamed function with arguments bind : result check';
+  var gotfn = _.routineJoin( undefined, ( x, y ) => Math.pow( x, y ), [ 4 ] );
+  test.identical( gotfn.name, '__joinedArguments' );
+  test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => Math.pow( x, y ) )( 2, 3 ) );
+  test.identical( gotfn.boundArguments, [ 4 ] );
+  var got = gotfn( 2 );
+  test.identical( got, 16 );  
+
+  test.close( 'context - undefined, args - long' );
+
+  /* - */
+
+  test.open( 'context - exists, args - undefined' );
+
+  test.case = 'named function without context, check context';
+  var gotfn = _.routineJoin( context, testFunction1, undefined );
+  test.identical( gotfn.name, 'bound testFunction1' );
+  test.identical( gotfn.originalRoutine, testFunction1 );
+  test.identical( gotfn.boundContext, context );
+  test.identical( gotfn.boundArguments, undefined );
+  var got = gotfn( 2, 3 );
+  test.identical( got instanceof Constr, true );
+
+  test.case = 'named function with arguments bind : result check';
+  var gotfn = _.routineJoin( context, testFunction2, undefined );
+  test.identical( gotfn.name, 'bound testFunction2' );
+  test.identical( gotfn.originalRoutine, testFunction2 );
+  test.identical( gotfn.boundContext, context );
+  test.identical( gotfn.boundArguments, undefined );
+  var got = gotfn( 2, 3 );
+  test.identical( got, 5 );  
+
+  test.case = 'unnamed function with arguments bind : result check';
+  var gotfn = _.routineJoin( context, testFunction3, undefined );
+  test.identical( gotfn.name, 'bound testFunction3' );
+  test.identical( gotfn.originalRoutine, testFunction3 );
+  test.identical( gotfn.boundContext, context );
+  test.identical( gotfn.boundArguments, undefined );
+  var got = gotfn( 2, 3 );
+  test.identical( got, 20 );  
+
+  test.case = 'unnamed function without context, check context';
+  var gotfn = _.routineJoin( context, ( x, y ) => x + y, undefined );
+  test.identical( gotfn.name, 'bound ' );
+  test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => x + y )( 2, 3 ) );
+  test.identical( gotfn.boundContext, context );
+  test.identical( gotfn.boundArguments, undefined );
+  var got = gotfn( 2, 3 );
+  test.identical( got, 5 );
+
+  test.case = 'unnamed function with arguments bind : result check';
+  var gotfn = _.routineJoin( context, ( x, y ) => Math.pow( x, y ), undefined );
+  test.identical( gotfn.name, 'bound ' );
+  test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => Math.pow( x, y ) )( 2, 3 ) );
+  test.identical( gotfn.boundContext, context );
+  test.identical( gotfn.boundArguments, undefined );
+  var got = gotfn( 2, 3 );
+  test.identical( got, 8 );  
+
+  test.close( 'context - exists, args - undefined' );
+
+  /* - */
+
+  test.open( 'context - exists, args - long' );
+
+  test.case = 'named function without context, check context';
+  var gotfn = _.routineJoin( context, testFunction1, [ 4 ] );
+  test.identical( gotfn.name, 'bound testFunction1' );
+  test.identical( gotfn.originalRoutine, testFunction1 );
+  test.identical( gotfn.boundContext, context );
+  test.identical( gotfn.boundArguments, [ 4 ] );
+  var got = gotfn( 2 );
+  test.identical( got instanceof Constr, true );
+
+  test.case = 'named function with arguments bind : result check';
+  var gotfn = _.routineJoin( context, testFunction2, [ 4 ] );
+  test.identical( gotfn.name, 'bound testFunction2' );
+  test.identical( gotfn.originalRoutine, testFunction2 );
+  test.identical( gotfn.boundContext, context );
+  test.identical( gotfn.boundArguments, [ 4 ] );
+  var got = gotfn( 2 );
+  test.identical( got, 6 );  
+
+  test.case = 'unnamed function with arguments bind : result check';
+  var gotfn = _.routineJoin( context, testFunction3, [ 4 ] );
+  test.identical( gotfn.name, 'bound testFunction3' );
+  test.identical( gotfn.originalRoutine, testFunction3 );
+  test.identical( gotfn.boundContext, context );
+  test.identical( gotfn.boundArguments, [ 4 ] );
+  var got = gotfn( 5 );
+  test.identical( got, 24 );  
+
+  test.case = 'unnamed function without context, check context';
+  var gotfn = _.routineJoin( context, ( x, y ) => x + y, [ 4 ] );
+  test.identical( gotfn.name, 'bound ' );
+  test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => x + y )( 2, 3 ) );
+  test.identical( gotfn.boundContext, context );
+  test.identical( gotfn.boundArguments, [ 4 ] );
+  var got = gotfn( 2 );
+  test.identical( got, 6 );
+
+  test.case = 'unnamed function with arguments bind : result check';
+  var gotfn = _.routineJoin( context, ( x, y ) => Math.pow( x, y ), [ 4 ] );
+  test.identical( gotfn.name, 'bound ' );
+  test.identical( gotfn.originalRoutine( 2, 3 ), ( ( x, y ) => Math.pow( x, y ) )( 2, 3 ) );
+  test.identical( gotfn.boundContext, context );
+  test.identical( gotfn.boundArguments, [ 4 ] );
+  var got = gotfn( 2 );
+  test.identical( got, 16 );  
+
+  test.close( 'context - exists, args - long' );
+
+  /* - */
 
   test.case = 'extending'
-  function srcRoutine(){}
+  var srcRoutine = function(){};
   srcRoutine.defaults = { a : 10 };
   var gotfn = _.routineJoin( undefined, srcRoutine, [] );
   test.identical( gotfn.defaults, srcRoutine.defaults );
 
+  /* - */
+
   if( !Config.debug )
   return;
 
-  test.case = 'missed argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineJoin();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.routineJoin() );
 
   test.case = 'extra argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineJoin( context3, testFunction4, [ testParam2 ], [ testParam1 ] );
-  });
+  test.shouldThrowErrorSync( () => _.routineJoin( undefined, testFunction4, [ 4 ], [ 2 ] ) );
 
-  test.case = 'passed non callable object';
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineJoin( context3, {}, [ testParam2 ] );
-  });
+  test.case = 'wrong type of routine';
+  test.shouldThrowErrorSync( () => _.routineJoin( undefined, 1, [ 4 ] ) );
+  test.shouldThrowErrorSync( () => _.routineJoin( undefined, {}, [ 4 ] ) );
 
-  test.case = 'passed arguments as primitive value';
-  test.shouldThrowErrorSync( function()
-  {
-    _.routineJoin( context3, testFunction4, testParam2 );
-  });
-
+  test.case = 'wrong type of args';
+  test.shouldThrowErrorSync( () => _.routineJoin( undefined, testFunction4, 4 ) );
+  test.shouldThrowErrorSync( () => _.routineJoin( undefined, testFunction4, null ) );
 }
 
 //
@@ -3830,7 +4019,7 @@ var Self =
     routineIsAsync,
     routineIsPure,
 
-    /* qqq : tests for constructorJoin, extend tests for routineJoin */
+    /* qqq : tests for constructorJoin, extend tests for routineJoin | Dmytro : coverage is extended */
 
     _routineJoin,
     constructorJoin,

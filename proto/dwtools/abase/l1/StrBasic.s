@@ -4913,7 +4913,7 @@ strLinesSelect.defaults =
 
 }
 
-/* qqq :
+/* qqq : | Dmytro : covered
 - cover option highlighting | Dmytro : covered
 - cover option zeroLine | Dmytro : covered
 */
