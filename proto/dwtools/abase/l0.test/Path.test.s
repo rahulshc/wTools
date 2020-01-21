@@ -5607,6 +5607,12 @@ function dir( test )
 
 function dirDepthOption( test )
 {
+  test.case = 'root directory, depth - 0';
+  var src = '/';
+  var got = _.path.dir( src, 0 );
+  var exp = '/';
+  test.identical( got, exp );
+
   test.case = 'root directory, depth - 1';
   var src = '/';
   var got = _.path.dir( src, 1 );
@@ -5620,6 +5626,12 @@ function dirDepthOption( test )
   test.identical( got, exp );
 
   /* */
+
+  test.case = 'absolute path, depth - 0';
+  var src = '/a/b/c/d';
+  var got = _.path.dir( src, 0 );
+  var exp = '/a/b/c/d';
+  test.identical( got, exp );
 
   test.case = 'absolute path, depth - 1';
   var src = '/a/b/c/d';
@@ -5641,6 +5653,12 @@ function dirDepthOption( test )
 
   /* */
 
+  test.case = 'absolute path, depth - 0';
+  var src = '/a/b/c/d/';
+  var got = _.path.dir( src, 0 );
+  var exp = '/a/b/c/d';
+  test.identical( got, exp );
+
   test.case = 'absolute path, depth - 1';
   var src = '/a/b/c/d/';
   var got = _.path.dir( src, 1 );
@@ -5661,6 +5679,12 @@ function dirDepthOption( test )
 
   /* */
 
+  test.case = 'relative path, depth - 0';
+  var src = './a/b/c/d';
+  var got = _.path.dir( src, 0 );
+  var exp = 'a/b/c/d';
+  test.identical( got, exp );
+
   test.case = 'relative path, depth - 1';
   var src = './a/b/c/d';
   var got = _.path.dir( src, 1 );
@@ -5681,6 +5705,12 @@ function dirDepthOption( test )
 
   /* */
 
+  test.case = 'relative path, depth - 0';
+  var src = 'a/b/c/d';
+  var got = _.path.dir( src, 0 );
+  var exp = 'a/b/c/d';
+  test.identical( got, exp );
+
   test.case = 'relative path, depth - 1';
   var src = 'a/b/c/d';
   var got = _.path.dir( src, 1 );
@@ -5700,6 +5730,12 @@ function dirDepthOption( test )
   test.identical( got, exp );
 
   /* */
+
+  test.case = 'relative path, depth - 0';
+  var src = './a/b/c/d/';
+  var got = _.path.dir( src, 0 );
+  var exp = 'a/b/c/d';
+  test.identical( got, exp );
 
   test.case = 'relative path, depth - 1';
   var src = './a/b/c/d/';
@@ -5721,6 +5757,12 @@ function dirDepthOption( test )
 
   /* */
 
+  test.case = 'relative path, depth - 0';
+  var src = '../a/b/c/d';
+  var got = _.path.dir( src, 0 );
+  var exp = '../a/b/c/d';
+  test.identical( got, exp );
+
   test.case = 'relative path, depth - 1';
   var src = '../a/b/c/d';
   var got = _.path.dir( src, 1 );
@@ -5738,6 +5780,14 @@ function dirDepthOption( test )
   var got = _.path.dir( src, 6 );
   var exp = '../../..';
   test.identical( got, exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'depth < 0';
+  test.shouldThrowErrorSync( () => _.path.dir( '/a/b/c', -1 ) );
 }
 
 //
