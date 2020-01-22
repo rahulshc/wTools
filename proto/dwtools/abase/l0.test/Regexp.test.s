@@ -92,6 +92,11 @@ function regexpMaybeFrom( test )
 {
   test.open( 'default options, without options map' );
 
+  test.case = 'srcStr - empty string';
+  var src = '';
+  var got = _.regexpMaybeFrom( src );
+  test.identical( got, /(?:)/g );
+
   test.case = 'srcStr - simple string';
   var src = 'abc';
   var got = _.regexpMaybeFrom( src );
@@ -134,6 +139,11 @@ function regexpMaybeFrom( test )
   /* - */
 
   test.open( 'default options, options map' );
+
+  test.case = 'srcStr - empty string';
+  var src = '';
+  var got = _.regexpMaybeFrom( { srcStr : src } );
+  test.identical( got, /(?:)/g );
 
   test.case = 'srcStr - simple string';
   var src = 'abc';
@@ -178,6 +188,11 @@ function regexpMaybeFrom( test )
 
   test.open( 'not default flags' );
 
+  test.case = 'srcStr - empty string';
+  var src = '';
+  var got = _.regexpMaybeFrom( { srcStr : src, flags : '' } );
+  test.identical( got, /(?:)/ );
+
   test.case = 'srcStr - simple string';
   var src = 'abc';
   var got = _.regexpMaybeFrom( { srcStr : src, flags : '' } );
@@ -221,6 +236,11 @@ function regexpMaybeFrom( test )
 
   test.open( 'toleratingSpaces - 0' );
 
+  test.case = 'srcStr - empty string';
+  var src = '';
+  var got = _.regexpMaybeFrom( { srcStr : src, toleratingSpaces : 0 } );
+  test.identical( got, /(?:)/g );
+
   test.case = 'srcStr - simple string';
   var src = 'a b c';
   var got = _.regexpMaybeFrom( { srcStr : src, toleratingSpaces : 0 } );
@@ -258,6 +278,11 @@ function regexpMaybeFrom( test )
   /* - */
 
   test.open( 'stringWithRegexp - 0' );
+
+  test.case = 'srcStr - empty string';
+  var src = '';
+  var got = _.regexpMaybeFrom( { srcStr : src, stringWithRegexp : 0 } );
+  test.identical( got, /(?:)/g );
 
   test.case = 'srcStr - simple string';
   var src = 'abc';
