@@ -158,7 +158,6 @@ function locationFromStackFrame( o )
 
   if( !_.numberIs( o.location.line ) && hadPath )
   {
-    debugger;
     let path = pathFromStack();
     if( path )
     lineColFromPath( path );
@@ -389,7 +388,7 @@ locationFromStackFrame.defaults =
  * @param { String|Array|Unroll|Error } stack - A stack to trace. If {-stack-} is not provided, then routine generates
  * stack trace at a current code position.
  * @param { Range } range - A range of lines selected from stack trace. If {-range-} is undefined, then routine returns
- * full stack trace. If range[ 0 ] < 0, then routine counts lines from the end of stack trace. If stack[ 1 ] < 0, then 
+ * full stack trace. If range[ 0 ] < 0, then routine counts lines from the end of stack trace. If stack[ 1 ] < 0, then
  * routine counts end line from the end of stack trace.
  *
  * @example
@@ -702,11 +701,11 @@ let Extnesion =
   // stack
 
   location,
-  locationFromStackFrame,
-  stack, /* qqq : very good coverage required | Dmytro : test routine extended */
+  locationFromStackFrame, /* qqq2 : good coverage required, could be problems */
+  stack,
   stackRemoveLeft,
   stackCondense,
-  stackFilter, /* qqq : cover | Dmytro : covered */
+  stackFilter,
   code,
 
 }

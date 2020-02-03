@@ -240,7 +240,7 @@ var idWithInt = (function()
 
   return function()
   {
-    _.assert( arguments.length === 0 );
+    _.assert( arguments.length === 0, 'Expects no arguments' );
     counter += 1;
     return counter;
   }
