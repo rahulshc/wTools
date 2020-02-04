@@ -85,8 +85,8 @@ function code( o )
       numbering : 1,
     });
 
-    if( code && _.strIndentation && o.identation )
-    code = o.identation + _.strIndentation( code, o.identation );
+    if( code && _.strLinesIndentation && o.identation )
+    code = o.identation + _.strLinesIndentation( code, o.identation );
 
     let result = code;
     if( o.withPath )

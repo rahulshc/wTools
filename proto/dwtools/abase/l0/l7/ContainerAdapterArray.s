@@ -18,7 +18,7 @@ _.assert( _.routineIs( _.longLeft ) );
 
 function make()
 {
-  _.assert( arguments.length === 0 );
+  _.assert( arguments.length === 0, 'Expects no arguments' );
   return new ContainerAdapterArray( this.original.slice() );
 }
 
@@ -26,7 +26,7 @@ function make()
 
 function MakeEmpty()
 {
-  _.assert( arguments.length === 0 );
+  _.assert( arguments.length === 0, 'Expects no arguments' );
   return new ContainerAdapterArray( new Array );
 }
 

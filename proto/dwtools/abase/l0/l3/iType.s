@@ -435,7 +435,7 @@ let Inspector = null;
 
 function processIsDebugged()
 {
-  _.assert( arguments.length === 0 );
+  _.assert( arguments.length === 0, 'Expects no arguments' );
 
   if( typeof process === 'undefined' )
   return false;
@@ -485,6 +485,15 @@ function definitionIs( src )
   return false;
 
   return src instanceof _.Definition;
+}
+
+//
+
+function traitIs( trait ) /* qqq : cover please */
+{
+  if( !_.definitionIs( trait ) )
+  return false;
+  return trait.definitionGroup === 'trait';
 }
 
 // --
@@ -543,6 +552,7 @@ let Routines =
   processIsDebugged, /* Dmytro : not covered now, I'm searching optimal way to write tests */
   procedureIs,
   definitionIs,
+  traitIs,
 
 }
 

@@ -263,6 +263,7 @@ module:
           - ../proto/dwtools/abase/l0.test/Buffer.test.s
           - ../proto/dwtools/abase/l0.test/Container.test.s
           - ../proto/dwtools/abase/l0.test/ContainerAdapter.test.s
+          - ../proto/dwtools/abase/l0.test/Ct.test.s
           - ../proto/dwtools/abase/l0.test/Entity.test.s
           - ../proto/dwtools/abase/l0.test/Err.test.s
           - ../proto/dwtools/abase/l0.test/Functional.test.s

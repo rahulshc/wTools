@@ -270,10 +270,10 @@ function _err( o )
 
   /* */
 
-  function strIndentation( str, indentation )
+  function strLinesIndentation( str, indentation )
   {
-    if( _.strIndentation )
-    return indentation + _.strIndentation( str, indentation );
+    if( _.strLinesIndentation )
+    return indentation + _.strLinesIndentation( str, indentation );
     else
     return str;
   }
@@ -290,7 +290,16 @@ function _err( o )
       if( !_.errIs( arg ) && _.routineIs( arg ) )
       {
         if( arg.length === 0 )
-        arg = o.args[ a ] = arg();
+        {
+          try
+          {
+            arg = o.args[ a ] = arg();
+          }
+          catch( err )
+          {
+            arg = o.args[ a ] = '!ERROR!'
+          }
+        }
         if( _.unrollIs( arg ) )
         {
           o.args = _.longBut( o.args, [ a, a+1 ], arg );
@@ -699,7 +708,7 @@ function _err( o )
       {
         let section = sections[ s ];
         let head = section.head || '';
-        let body = strIndentation( section.body, '    ' );
+        let body = strLinesIndentation( section.body, '    ' );
         if( !body.trim().length )
         continue;
         result += ` = ${head}\n${body}\n\n`;
@@ -1426,6 +1435,29 @@ function sureOwnNoConstructor( ins )
 // assert
 // --
 
+function breakpoint( condition )
+{
+
+  if( Config.debug === false )
+  return true;
+
+  if( !condition )
+  {
+    let err = _err
+    ({
+      args : Array.prototype.slice.call( arguments, 1 ),
+      level : 2,
+    });
+    logger.log( err );
+    debugger;
+    return false;
+  }
+
+  return true;
+}
+
+//
+
 /**
  * Checks condition passed by argument( condition ). Works only in debug mode. Uses StackTrace level 2.
  *
@@ -1774,6 +1806,7 @@ let Routines =
 
   // assert
 
+  breakpoint,
   assert,
   assertWithoutBreakpoint,
   assertNotTested,
