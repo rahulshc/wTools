@@ -31,7 +31,7 @@ function sourcePath( filePath, name )
 
 let wBlueprint =
 {
-  sourcePath : sourcePath( 'abase/l2_blueprint/Include.s', 'wBlueprint' ),
+  sourcePath : sourcePath( 'abase/l2_blueprint/Include.s', 'wblueprint' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.blueprint },
 }
 
