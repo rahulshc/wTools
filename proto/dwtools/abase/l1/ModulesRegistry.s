@@ -114,7 +114,7 @@ let wUriBasic =
 let wTraverser =
 {
   sourcePath : sourcePath( 'abase/l4/Traverser.s', 'wtraverser' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools._traverse },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.traverse },
 }
 
 // base / l5
