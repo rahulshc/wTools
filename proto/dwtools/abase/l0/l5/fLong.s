@@ -5868,7 +5868,7 @@ function arrayAppendArray( dstArray, insArray )
     arguments[ 0 ] = dstArray;
   }
 
-  arrayAppendedArray.apply( this, arguments );
+  _.arrayAppendedArray.apply( this, arguments );
   return dstArray;
 }
 
