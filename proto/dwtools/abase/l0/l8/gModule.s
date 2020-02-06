@@ -501,6 +501,9 @@ function _Setup()
 
   if( typeof require === 'undefined' )
   return;
+  
+  if( _global_.Config.interpreter === 'browser' )
+  return;
 
   let Module = require( 'module' );
   let NjsResolveFilename = Module._resolveFilename;
