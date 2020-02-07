@@ -193,7 +193,15 @@ function declareAll( knowns )
     if( !known.basePath )
     {
       if( !basePath )
-      basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
+      { 
+        basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
+        if( _global_.Config.interpreter === 'browser' )
+        if( typeof _starter_ !== 'undefined' )
+        { 
+          basePath = _starter_.uri.parseConsecutive( basePath ).localWebPath;
+          basePath = _.path.normalizeTolerant( basePath );
+        }
+      }
       known.basePath = basePath;
     }
     _.module.declare( known );
