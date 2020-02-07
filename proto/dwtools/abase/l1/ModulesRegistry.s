@@ -284,7 +284,7 @@ let wRegexpObject =
 let wColor =
 {
   sourcePath : sourcePath( 'amid/color/Color.s', 'wColor' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.color.ColorMap },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.color && !!_global.wTools.color.ColorMap },
 }
 
 let wColor256 =
