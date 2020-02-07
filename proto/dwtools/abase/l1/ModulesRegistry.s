@@ -290,7 +290,7 @@ let wColor =
 let wColor256 =
 {
   sourcePath : sourcePath( 'amid/color/Color256.s', 'wColor256' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.color.ColorMap && Object.keys( _global.wTools.color.ColorMap ).length > 100 },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.color && !!_global.wTools.color.ColorMap && Object.keys( _global.wTools.color.ColorMap ).length > 100 },
 }
 
 let wChangeTransactor =
