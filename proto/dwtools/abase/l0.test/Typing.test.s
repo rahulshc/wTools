@@ -1338,13 +1338,7 @@ function consequenceLike( test )
   var got = _.consequenceLike( src );
   test.identical( got, true );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.consequenceLike( src );
-    test.identical( got, true );
-  }
+  // instance of _.Consequence tested in module wConsequence
 }
 
 //
@@ -1472,14 +1466,6 @@ function promiseIs( test )
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
   var got = _.promiseIs( src );
   test.identical( got, true );
-
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.promiseIs( src );
-    test.identical( got, false );
-  }
 
   test.case = 'function _Promise';
   var _Promise = function Promise(){};
@@ -1614,14 +1600,6 @@ function promiseLike( test )
   var got = _.promiseLike( src );
   test.identical( got, true );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.promiseLike( src );
-    test.identical( got, false );
-  }
-
   test.case = 'function _Promise';
   var _Promise = function Promise(){};
   var src = new _Promise();
@@ -1740,15 +1718,6 @@ function typeOf( test )
   test.identical( got, src.constructor );
   test.identical( got.name, 'Promise' );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.typeOf( src );
-    test.identical( got, src.constructor );
-    test.identical( got.name, 'wConsequence' );
-  }
-
   test.case = 'function _Promise';
   var _Promise = function Promise(){};
   var src = new _Promise();
@@ -1866,14 +1835,6 @@ function typeOf( test )
   var src1 = new Promise( ( resolve, reject ) => { return resolve( 1 ) } );
   var got = _.typeOf( src, src1.constructor );
   test.identical( got, true );
-
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.typeOf( src, src.constructor );
-    test.identical( got, true );
-  }
 
   test.case = 'function _Promise';
   var _Promise = function Promise(){};
@@ -2001,14 +1962,6 @@ function isPrototypeOf( test )
   var got = _.isPrototypeOf( src, src );
   test.identical( got, true );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.isPrototypeOf( src, src );
-    test.identical( got, true );
-  }
-
   test.case = 'function _Promise';
   var _Promise = function Promise(){};
   var src = new _Promise();
@@ -2116,14 +2069,6 @@ function isPrototypeOf( test )
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
   var got = _.isPrototypeOf( false, src );
   test.identical( got, false );
-
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.isPrototypeOf( src, null );
-    test.identical( got, false );
-  }
 
   test.case = 'function _Promise';
   var _Promise = function Promise(){};
@@ -2363,14 +2308,6 @@ function prototypeHas( test )
   var got = _.prototypeHas( src, src );
   test.identical( got, true );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.prototypeHas( src, src );
-    test.identical( got, true );
-  }
-
   test.case = 'function _Promise';
   var _Promise = function Promise(){};
   var src = new _Promise();
@@ -2478,14 +2415,6 @@ function prototypeHas( test )
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
   var got = _.prototypeHas( false, src );
   test.identical( got, false );
-
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.prototypeHas( src, null );
-    test.identical( got, false );
-  }
 
   test.case = 'function _Promise';
   var _Promise = function Promise(){};
@@ -2826,14 +2755,6 @@ function prototypeIs( test ) /* qqq : merge test wProto/prototypeIs in this one 
   var got = _.prototypeIs( src );
   test.identical( got, false );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.prototypeIs( src );
-    test.identical( got, false );
-  }
-
   test.case = 'function _Promise';
   var src = function Promise(){};
   var got = _.prototypeIs( src );
@@ -3052,14 +2973,6 @@ function prototypeIsStandard( test )  /* qqq : merge test wProto/prototypeIsStan
   var got = _.prototypeIsStandard( src );
   test.identical( got, false );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.prototypeIsStandard( src );
-    test.identical( got, false );
-  }
-
   test.case = 'function _Promise';
   var src = function Promise(){};
   var got = _.prototypeIsStandard( src );
@@ -3204,14 +3117,6 @@ function constructorIs( test )
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
   var got = _.constructorIs( src );
   test.identical( got, false );
-
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.constructorIs( src );
-    test.identical( got, false );
-  }
 
   test.case = 'function _Promise';
   var src = function Promise(){};
@@ -3358,14 +3263,6 @@ function instanceIs( test )
   var got = _.instanceIs( src );
   test.identical( got, true );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.instanceIs( src );
-    test.identical( got, true );
-  }
-
   test.case = 'function _Promise';
   var src = function Promise(){};
   var got = _.instanceIs( src );
@@ -3511,14 +3408,6 @@ function instanceLike( test )
   var got = _.instanceLike( src );
   test.identical( got, false );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.instanceLike( src );
-    test.identical( got, true );
-  }
-
   test.case = 'function _Promise';
   var src = function Promise(){};
   var got = _.instanceLike( src );
@@ -3654,31 +3543,28 @@ function consoleIs( test )
   var got = _.consoleIs( src );
   test.identical( got, false );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.consoleIs( src );
-    test.identical( got, false );
-  }
-
   test.case = 'function _Promise';
   var src = function Promise(){};
   var got = _.consoleIs( src );
   test.identical( got, false );
 
-  if( _.Logger )
-  {
-    test.case = 'instance of Logger';
-    var src = new _.Logger();
-    var got = _.consoleIs( src );
-    test.identical( got, false );
-  }
-
   test.case = 'check console';
   var src = console;
   var got = _.consoleIs( src );
   test.identical( got, true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.consoleIs() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.consoleIs( console, console ) );
+
+  // instance of _.Logger tested in module wLogger
 }
 
 //
