@@ -1209,13 +1209,7 @@ function consequenceIs( test )
   var got = _.consequenceIs( src );
   test.identical( got, false );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.consequenceIs( src );
-    test.identical( got, true );
-  }
+  // instance of _.Consequence tested in module wConsequence
 }
 
 //
