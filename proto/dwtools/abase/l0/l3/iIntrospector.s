@@ -138,6 +138,9 @@ function locationFromStackFrame( o )
   if( !o.location )
   o.location = Object.create( null );
 
+  // Dmytro : maybe it needs assertion :
+  // _.assert( _.mapLike( o.location ) ); // Dmytro : now o.location may be any extensional object, for example arrays 
+
   if( !o.location.original )
   o.location.original = o.stackFrame;
 
@@ -146,7 +149,7 @@ function locationFromStackFrame( o )
   o.location.filePath = pathFromStack();
 
   pathCanonize();
-  routineFromStack();
+  routineFromStack(); 
   routineAliasFromStack();
   internalForm();
 
@@ -222,7 +225,6 @@ function locationFromStackFrame( o )
 
     if( _.path && _.path.canonize )
     o.location.filePath = _.path.canonize( o.location.filePath );
-
   }
 
   /* */
@@ -236,7 +238,7 @@ function locationFromStackFrame( o )
 
     routineName = o.stackFrame;
 
-    if( !_.strIs( routineName ) )
+    if( !_.strIs( routineName ) ) // Dmytro : it is duplicated condition. The first is if( !_.strIs( o.stackFrame ) ) throw ...
     return '{-anonymous-}';
 
     routineName = routineName.replace( /at eval \(eval at/, '' );
@@ -284,6 +286,7 @@ function locationFromStackFrame( o )
 
     if( _.numberIs( o.location.internal ) )
     return;
+    // Dmytro : maybe, it need assertion o.location.internal <= 2
 
     o.location.internal = 0;
 
@@ -701,7 +704,7 @@ let Extnesion =
   // stack
 
   location,
-  locationFromStackFrame, /* qqq2 : good coverage required, could be problems */
+  locationFromStackFrame, /* qqq2 : good coverage required, could be problems | Dmytro : covered, comments are given in routine */
   stack,
   stackRemoveLeft,
   stackCondense,
