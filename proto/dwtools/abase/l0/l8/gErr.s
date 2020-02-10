@@ -557,13 +557,9 @@ function diagnosticStructureGenerate_body( o )
       struct[ 'bigInt.big' ] = BigInt( 1 ) << BigInt( 100 );
     }
 
-    if( o.regexpComplexity )
-    {
-      struct[ 'regexp.defined' ] = new RegExp( _.strRandom( o.regexpSize ) );
-    }
-
     if( o.regexpComplexity >= 2 )
     {
+      struct[ 'regexp.defined' ] = new RegExp( _.strRandom( o.regexpSize ) );
       struct[ 'regexp.simple1'] = /ab|cd/,
       struct[ 'regexp.simple2'] = /a[bc]d/,
       struct[ 'regexp.simple3'] = /ab{1, }bc/,
