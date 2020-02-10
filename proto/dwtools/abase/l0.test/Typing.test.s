@@ -2667,7 +2667,7 @@ function prototypeHas( test )
 
 //
 
-function prototypeIs( test ) /* qqq : merge test wProto/prototypeIs in this one */
+function prototypeIs( test ) /* qqq : merge test wProto/prototypeIs in this one | Dmytro : routine extended by cases from wProto */
 {
   test.case = 'check null';
   var got = _.prototypeIs( null );
@@ -2760,6 +2760,64 @@ function prototypeIs( test ) /* qqq : merge test wProto/prototypeIs in this one 
   test.case = 'check map with property constructor';
   var got = _.prototypeIs( { 'constructor' : 1 } );
   test.identical( got, true );
+
+  /* */
+
+  test.case = 'check regexp';
+  var got = _.prototypeIs( /x/ );
+  test.identical( got, false );
+
+  test.case = 'check Date constructor';
+  var got = _.prototypeIs( Date );
+  test.identical( got, false );
+
+  test.case = 'check instance of Date constructor';
+  var got = _.prototypeIs( new Date() );
+  test.identical( got, false );
+
+  test.case = 'check function';
+  var got = _.prototypeIs( function(){} );
+  test.identical( got, false );
+
+  test.case = 'check instance of function';
+  var got = _.prototypeIs( new ( function(){} )() );
+  test.identical( got, false );
+
+  test.case = 'check this.constructor';
+  var got = _.prototypeIs( Self.constructor );
+  test.identical( got, false );
+
+  test.case = 'check Self';
+  var got = _.prototypeIs( Self );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'check prototype of array';
+  var got = _.prototypeIs( Object.getPrototypeOf( [] ) );
+  test.identical( got, true );
+
+  test.case = 'check prototype of regexp';
+  var got = _.prototypeIs( Object.getPrototypeOf( /x/ ) );
+  test.identical( got, true );
+
+  test.case = 'check prototype of Date instance';
+  var got = _.prototypeIs( Object.getPrototypeOf( new Date() ) );
+  test.identical( got, true );
+
+  test.case = 'check prototype of BufferTyped instance';
+  var got = _.prototypeIs( Object.getPrototypeOf( new F32x() ) );
+  test.identical( got, true );
+
+  test.case = 'check prototype of function instance';
+  var got = _.prototypeIs( Object.getPrototypeOf( new (function(){})() ) );
+  test.identical( got, true );
+
+  test.case = 'check prototype of Self';
+  var got = _.prototypeIs( Object.getPrototypeOf( Self ) );
+  test.identical( got, true );
+
+  /* */
 
   test.case = 'check map with property constructor';
   var src = Object.create( null );
