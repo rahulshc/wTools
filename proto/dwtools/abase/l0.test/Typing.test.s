@@ -2881,7 +2881,7 @@ function prototypeIs( test ) /* qqq : merge test wProto/prototypeIs in this one 
 
 //
 
-function prototypeIsStandard( test )  /* qqq : merge test wProto/prototypeIsStandard in this one */
+function prototypeIsStandard( test )  /* qqq : merge test wProto/prototypeIsStandard in this one | Dmytro : routine extended by cases from wProto */
 {
   test.case = 'check null';
   var got = _.prototypeIsStandard( null );
@@ -2978,6 +2978,64 @@ function prototypeIsStandard( test )  /* qqq : merge test wProto/prototypeIsStan
   test.case = 'check map with properties constructor and Composes';
   var got = _.prototypeIsStandard( { 'constructor' : 1, 'Composes' : 1 } );
   test.identical( got, true );
+
+  /* */
+
+  test.case = 'check regexp';
+  var got = _.prototypeIsStandard( /x/ );
+  test.identical( got, false );
+
+  test.case = 'check Date constructor';
+  var got = _.prototypeIsStandard( Date );
+  test.identical( got, false );
+
+  test.case = 'check instance of Date constructor';
+  var got = _.prototypeIsStandard( new Date() );
+  test.identical( got, false );
+
+  test.case = 'check function';
+  var got = _.prototypeIsStandard( function(){} );
+  test.identical( got, false );
+
+  test.case = 'check instance of function';
+  var got = _.prototypeIsStandard( new ( function(){} )() );
+  test.identical( got, false );
+
+  test.case = 'check this.constructor';
+  var got = _.prototypeIsStandard( Self.constructor );
+  test.identical( got, false );
+
+  test.case = 'check Self';
+  var got = _.prototypeIsStandard( Self );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'check prototype of array';
+  var got = _.prototypeIsStandard( Object.getPrototypeOf( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check prototype of regexp';
+  var got = _.prototypeIsStandard( Object.getPrototypeOf( /x/ ) );
+  test.identical( got, false );
+
+  test.case = 'check prototype of Date instance';
+  var got = _.prototypeIsStandard( Object.getPrototypeOf( new Date() ) );
+  test.identical( got, false );
+
+  test.case = 'check prototype of BufferTyped instance';
+  var got = _.prototypeIsStandard( Object.getPrototypeOf( new F32x() ) );
+  test.identical( got, false );
+
+  test.case = 'check prototype of function instance';
+  var got = _.prototypeIsStandard( Object.getPrototypeOf( new (function(){})() ) );
+  test.identical( got, false );
+
+  test.case = 'check prototype of Self';
+  var got = _.prototypeIsStandard( Object.getPrototypeOf( Self ) );
+  test.identical( got, true );
+
+  /* */
 
   test.case = 'check pure map with property constructor';
   var src = Object.create( null );
@@ -4280,7 +4338,6 @@ function definitionIs( test )
   test.identical( got, false );
 
   /* qqq2 : ask */
-  _.include( 'wProto' )
   if( _.Definition )
   {
     test.case = 'instance of Definition';
