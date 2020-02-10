@@ -1080,18 +1080,7 @@ function constructorIsSpace( test )
   var got = _.constructorIsSpace( src );
   test.identical( got, false );
 
-  if( _.Space )
-  {
-    test.case = 'instance of Space';
-    var buffer = new U8x( [ 1, 2, 3, 4, 5 ] );
-    var src = new _.Space
-    ({
-      buffer : buffer,
-      dims : [ 3,1 ],
-    });
-    var got = _.constructorIsSpace( src );
-    test.identical( got, true );
-  }
+  // instance of _.Space tested in wMathSpace
 }
 
 //

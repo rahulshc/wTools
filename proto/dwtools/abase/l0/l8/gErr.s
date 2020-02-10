@@ -799,7 +799,8 @@ diagnosticStructureGenerate_body.defaults =
  * property {-o.defaultComplexity-} of options map {-o-} and other separate options.
  * If routine calls without arguments, then routine returns new map with structure that generates from default parameters.
  *
- * @param { Map } o - The options map.
+ * @param { Map } o - The options map. Options map includes next options:
+ *
  * @param { Number } o.defaultComplexity - The complexity of data types, options of which is not defined directly. Default value - 2.
  *
  * @param { Number } o.primitiveComplexity - The default complexity for primitives. If option is not defined, then it inherits {-o.defaultComplexity-}. 
