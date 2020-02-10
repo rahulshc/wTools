@@ -956,18 +956,7 @@ function spaceIs( test )
   var got = _.spaceIs( src );
   test.identical( got, false );
 
-  test.case = '';
-  if( _.Space )
-  {
-    var buffer = new U8x( [ 1, 2, 3, 4, 5 ] );
-    var src = new _.Space
-    ({
-      buffer : buffer,
-      dims : [ 3,1 ],
-    });
-    var got = _.spaceIs( src );
-    test.identical( got, true );
-  }
+  // instance of _.Space tested in wMathSpace
 }
 
 //
