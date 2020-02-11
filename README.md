@@ -7,7 +7,7 @@ Collection of general purpose tools for solving problems. Fundamentally extend J
 ### Try out
 ```
 npm install
-node sample/Sample.s
+node sample/Sample.js
 ```
 
 ### Contributors

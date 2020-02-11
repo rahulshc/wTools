@@ -193,11 +193,11 @@ function declareAll( knowns )
     if( !known.basePath )
     {
       if( !basePath )
-      { 
+      {
         basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
         if( _global_.Config.interpreter === 'browser' )
         if( typeof _starter_ !== 'undefined' )
-        { 
+        {
           basePath = _starter_.uri.parseConsecutive( basePath ).localWebPath;
           basePath = _.path.normalizeTolerant( basePath );
         }
@@ -509,7 +509,7 @@ function _Setup()
 
   if( typeof require === 'undefined' )
   return;
-  
+
   if( _global_.Config.interpreter === 'browser' )
   return;
 
