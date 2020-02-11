@@ -1,6 +1,9 @@
+'use strict'
+
 if( typeof module !== 'undefined' )
 require( 'wTools' );
 var _ = wTools;
+
 
 /* array, imperative form */
 
@@ -9,9 +12,15 @@ var src = [ 4, 5, 6, 7 ];
 
 Object.preventExtensions( dst );
 
-for( let i = 0; i < src.length; i++ )
-dst[ i ] = src[ i ];
-
+try
+{
+  for( let i = 0; i < src.length; i++ )
+  dst[ i ] = src[ i ];
+}
+catch( e )
+{
+  console.log( e ); // log error
+}
 console.log( dst ); // log [ 4, 5, 6 ]
 
 /* array, object assigning */
