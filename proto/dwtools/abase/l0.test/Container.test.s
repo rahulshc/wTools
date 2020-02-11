@@ -817,6 +817,33 @@ function extendReplacingDstLongAndSetLike( test )
   var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
   test.is( got === dst ); 
+  
+  /* */
+  
+  test.case = 'dst - long, src - long';
+  var dst = [ 1, 2, 3 ];
+  var src = [ 4, 5, 6, 7 ];
+  var got = _.container.extendReplacing( dst, src );
+  var exp = [ 4, 5, 6, 7 ];
+  test.identical( got, exp );
+  test.is( got === dst ); 
+  
+  test.case = 'dst - long not extensible, src - long';
+  var dst = [ 1, 2, 3 ];
+  var src = [ 4, 5, 6 ];
+  Object.preventExtensions( dst );
+  var got = _.container.extendReplacing( dst, src );
+  var exp = [ 4, 5, 6 ];
+  test.identical( got, exp );
+  test.is( got === dst );
+  
+  test.case = 'dst - long not extensible, src - long';
+  var dst = [ 1, 2, 3 ];
+  var src = [ 4, 5, 6, 7 ];
+  Object.preventExtensions( dst );
+  test.shouldThrowErrorSync( () => _.container.extendReplacing( dst, src ) );
+  test.identical( dst, [ 1, 2, 3 ] );
+  test.identical( src, [ 4, 5, 6, 7 ] );
 
   /* */
 
