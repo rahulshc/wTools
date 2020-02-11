@@ -4132,6 +4132,148 @@ function definitionIs( test )
 
 //
 
+function traitIs( test )
+{
+  test.case = 'check null';
+  var got = _.traitIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.traitIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.traitIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.traitIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.traitIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.traitIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.traitIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.traitIs( Symbol() );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.traitIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.traitIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.traitIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.traitIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.traitIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.traitIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.traitIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.traitIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.traitIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.traitIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.traitIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check object Number';
+  var got = _.traitIs( new Number( 2 ) );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.traitIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.traitIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check map with properties constructor and Composes';
+  var got = _.traitIs( { 'constructor' : 1, 'Composes' : 1 } );
+  test.identical( got, false );
+
+  test.case = 'check pure map with properties constructor and Composes';
+  var src = Object.create( null );
+  src.constructor = false;
+  src.Composes = 1;
+  var got = _.traitIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var src = new Constr();
+  src.constructor = true;
+  src.Composes = true;
+  var got = _.traitIs( src );
+  test.identical( got, false );
+
+  test.case = 'check constructor';
+  var Constr = function()
+  {
+    this.x = 1;
+    return this;
+  };
+  var got = _.traitIs( Constr );
+  test.identical( got, false );
+
+  test.case = 'instance of Promise';
+  var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
+  var got = _.traitIs( src );
+  test.identical( got, false );
+
+  test.case = 'function _Promise';
+  var src = function Promise(){};
+  var got = _.traitIs( src );
+  test.identical( got, false );
+
+  test.case = 'check process';
+  var src = process;
+  var got = _.traitIs( src );
+  test.identical( got, false );
+
+  // instance of _.trait tested in module wBlueprint
+}
+
+//
+
 function objectLike( test )
 {
   test.description = 'array-like entities should not overlap with array-like entities set';
@@ -4197,6 +4339,7 @@ var Self =
     processIs,
     procedureIs,
     definitionIs,
+    traitIs,
 
     objectLike,
 
