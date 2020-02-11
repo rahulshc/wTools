@@ -80,8 +80,13 @@ function extendReplacing( dst, src )
   {
 
     if( _.longIs( dst ) )
-    // dst = _.arrayExtendAppending( dst, src ); | Dmytro : it appends long, not replace
-    dst = _.arrayAppendArrayOnce( dst, src );
+    {
+      if( dst.length >= src.length || ( dst.length < src.length && Object.isExtensible( dst ) ) )
+      // dst = _.arrayExtendAppending( dst, src ); | Dmytro : it appends long, not replace
+      dst = _.longBut_( dst, [ 0, src.length ], src );
+      else
+      _.assert( 0, '{-dst-} container cannot be extended by {-src-}' )
+    }
     else
     dst = _.container.extendReplacing( null, src );
 

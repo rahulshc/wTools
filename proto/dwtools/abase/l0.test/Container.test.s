@@ -806,7 +806,7 @@ function extendReplacingDstLongAndSetLike( test )
   var dst = [ 1, 2, 3 ];
   var src = [ 9, -16, 'str', null ];
   var got = _.container.extendReplacing( dst, src );
-  var exp = [ 1, 2, 3, 9, -16, 'str', null ];
+  var exp = [ 9, -16, 'str', null ];
   test.identical( got, exp );
   test.is( got === dst );
 
