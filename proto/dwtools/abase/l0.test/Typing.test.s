@@ -3696,26 +3696,12 @@ function loggerIs( test )
   var got = _.loggerIs( src );
   test.identical( got, false );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.loggerIs( src );
-    test.identical( got, false );
-  }
-
   test.case = 'function _Promise';
   var src = function Promise(){};
   var got = _.loggerIs( src );
   test.identical( got, false );
 
-  if( _.Logger )
-  {
-    test.case = 'instance of Logger';
-    var src = new _.Logger();
-    var got = _.loggerIs( src );
-    test.identical( got, true );
-  }
+  // instance of _.logger tested in module wLogger
 }
 
 //
@@ -3847,26 +3833,10 @@ function processIs( test )
   var got = _.processIs( src );
   test.identical( got, false );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.processIs( src );
-    test.identical( got, false );
-  }
-
   test.case = 'function _Promise';
   var src = function Promise(){};
   var got = _.processIs( src );
   test.identical( got, false );
-
-  if( _.Logger )
-  {
-    test.case = 'instance of Logger';
-    var src = new _.Logger();
-    var got = _.processIs( src );
-    test.identical( got, false );
-  }
 
   test.case = 'check process';
   var src = process;
@@ -4003,26 +3973,10 @@ function procedureIs( test )
   var got = _.procedureIs( src );
   test.identical( got, false );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.procedureIs( src );
-    test.identical( got, false );
-  }
-
   test.case = 'function _Promise';
   var src = function Promise(){};
   var got = _.procedureIs( src );
   test.identical( got, false );
-
-  if( _.Logger )
-  {
-    test.case = 'instance of Logger';
-    var src = new _.Logger();
-    var got = _.procedureIs( src );
-    test.identical( got, false );
-  }
 
   test.case = 'check process';
   var src = process;
