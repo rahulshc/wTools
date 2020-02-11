@@ -4115,40 +4115,19 @@ function definitionIs( test )
   var got = _.definitionIs( src );
   test.identical( got, false );
 
-  if( _.Consequence )
-  {
-    test.case = 'instance of Consequence';
-    var src = new _.Consequence().take( 0 );
-    var got = _.definitionIs( src );
-    test.identical( got, false );
-  }
-
   test.case = 'function _Promise';
   var src = function Promise(){};
   var got = _.definitionIs( src );
   test.identical( got, false );
-
-  if( _.Logger )
-  {
-    test.case = 'instance of Logger';
-    var src = new _.Logger();
-    var got = _.definitionIs( src );
-    test.identical( got, false );
-  }
 
   test.case = 'check process';
   var src = process;
   var got = _.definitionIs( src );
   test.identical( got, false );
 
-  /* qqq2 : ask */
-  if( _.Definition )
-  {
-    test.case = 'instance of Definition';
-    var src = new _.Definition( { ini : 1 } );
-    var got = _.definitionIs( src );
-    test.identical( got, true );
-  }
+  /* qqq2 : ask | Dmytro : instances of another modules tested outside of module wTools */
+
+  // instance of _.Definition tested in module wBlueprint
 }
 
 //
