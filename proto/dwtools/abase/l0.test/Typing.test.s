@@ -3701,7 +3701,7 @@ function loggerIs( test )
   var got = _.loggerIs( src );
   test.identical( got, false );
 
-  // instance of _.logger tested in module wLogger
+  // instance of _.Logger tested in module wLogger
 }
 
 //
@@ -3983,15 +3983,7 @@ function procedureIs( test )
   var got = _.procedureIs( src );
   test.identical( got, false );
 
-  if( _.Procedure )
-  {
-    test.case = 'instance of Procedure';
-    var src = new _.Procedure();
-    src.begin();
-    var got = _.procedureIs( src );
-    test.identical( got, true );
-    src.end();
-  }
+  // instance of _.Procedure tested in module wProcedure
 }
 
 //
