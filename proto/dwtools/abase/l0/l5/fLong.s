@@ -3404,11 +3404,17 @@ function arrayButInplace( src, range, ins )
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
   //
-
+  
   let args = [ range[ 0 ], range[ 1 ] - range[ 0 ] ];
 
   if( ins )
-  _.arrayAppendArray( args, ins );
+  {
+    if( !Object.isExtensible( src ) && ins.length > range[ 1 ] - range[ 0 ] )
+    _.assert( 0, 'Array is not resizable, cannot change length of array' );
+    else 
+    _.arrayAppendArray( args, ins );
+  }
+  
 
   let result = src;
 
