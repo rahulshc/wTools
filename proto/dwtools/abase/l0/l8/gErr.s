@@ -308,15 +308,15 @@ diagnosticEachElementComparator.defaults =
 
 //
 
-function diagnosticStructureGenerate_pre( routine, args ) 
+function diagnosticStructureGenerate_pre( routine, args )
 {
   _.assert( args.length === 0 || args.length === 1 );
-  
+
   let o;
-  if( args.length === 1 ) 
+  if( args.length === 1 )
   o = args[ 0 ];
   else
-  o = Object.create( null );  
+  o = Object.create( null );
 
   o = _.routineOptions( diagnosticStructureGenerate, o );
 
@@ -520,7 +520,10 @@ function diagnosticStructureGenerate_body( o )
 
     if( o.stringComplexity )
     {
+      if( o.random )
       struct[ 'string.defined' ] = _.strRandom( o.stringSize );
+      else
+      struct[ 'string.defined' ] = new RegExp( _.strDup( 'a', o.stringSize ) );
       struct[ 'string.empty' ] = '';
     }
 
@@ -562,7 +565,10 @@ function diagnosticStructureGenerate_body( o )
 
     if( o.regexpComplexity >= 2 )
     {
+      if( o.random )
       struct[ 'regexp.defined' ] = new RegExp( _.strRandom( o.regexpSize ) );
+      else
+      struct[ 'regexp.defined' ] = new RegExp( _.strDup( 'a', o.regexpSize ) );
       struct[ 'regexp.simple1'] = /ab|cd/,
       struct[ 'regexp.simple2'] = /a[bc]d/,
       struct[ 'regexp.simple3'] = /ab{1, }bc/,
@@ -748,7 +754,7 @@ diagnosticStructureGenerate_body.defaults =
   /*  */
 
   depth : 1,
-  // breadth : 4,
+  random : 1,
   stringSize : null,
   bufferSize : null,
   regexpSize : null, /* qqq : not used! | Dmytro : used in struct[ 'regexp.defined' ] similar to 'string.defined' */
