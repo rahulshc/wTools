@@ -368,22 +368,6 @@ function consoleIs( src )
 
 //
 
-function printerLike( src )
-{
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( printerIs( src ) )
-  return true;
-
-  if( consoleIs( src ) )
-  return true;
-
-  return false;
-}
-
-
-//
-
 function printerIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -396,6 +380,21 @@ function printerIs( src )
   return false;
 
   if( src.MetaType === 'Printer' )
+  return true;
+
+  return false;
+}
+
+//
+
+function printerLike( src )
+{
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  if( printerIs( src ) )
+  return true;
+
+  if( consoleIs( src ) )
   return true;
 
   return false;
@@ -545,8 +544,8 @@ let Routines =
   workerIs, /* Dmytro : not covered now, I'm searching optimal way to write tests */
   streamIs, /* Dmytro : not covered now, I'm searching optimal way to write tests */
   consoleIs,
-  printerLike, /* Dmytro : not covered now, I'm searching optimal way to write tests */
   printerIs, 
+  printerLike,
   loggerIs,
   processIs,
   processIsDebugged, /* Dmytro : not covered now, I'm searching optimal way to write tests */
