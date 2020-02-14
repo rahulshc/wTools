@@ -489,7 +489,7 @@ function definitionIs( src )
 
 //
 
-function traitIs( trait ) /* qqq : cover please */
+function traitIs( trait ) /* qqq : cover please | Dmytro : covered, two parts of routine in modules wTools and wBlueprint */
 {
   if( !_.definitionIs( trait ) )
   return false;
@@ -546,7 +546,7 @@ let Routines =
   streamIs, /* Dmytro : not covered now, I'm searching optimal way to write tests */
   consoleIs,
   printerLike, /* Dmytro : not covered now, I'm searching optimal way to write tests */
-  printerIs, /* Dmytro : not covered now, I'm searching optimal way to write tests */
+  printerIs, 
   loggerIs,
   processIs,
   processIsDebugged, /* Dmytro : not covered now, I'm searching optimal way to write tests */
