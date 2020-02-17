@@ -3987,6 +3987,9 @@ function arrayGrowInplace( src, range, ins )
   if( l === src.length )
   return src;
 
+  if( !Object.isExtensible( src ) && src.length < l )
+  _.assert( 0, 'Array is not extensible, cannot change length of array' );
+
   let l2 = Math.min( src.length, l );
 
   let result = src;
@@ -3995,9 +3998,7 @@ function arrayGrowInplace( src, range, ins )
   if( ins !== undefined )
   {
     for( let r = l2; r < result.length ; r++ )
-    {
-      result[ r ] = ins;
-    }
+    result[ r ] = ins;
   }
 
   return result;
