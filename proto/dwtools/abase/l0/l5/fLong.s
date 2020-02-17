@@ -4054,6 +4054,9 @@ function arrayGrow_( dst, src, range, ins )
   else
   result = src;
 
+  if( !Object.isExtensible( result ) && result.length < l )
+  _.assert( 0, 'Array is not extensible, cannot change length of array' );
+
   result.length = l;
 
   if( ins !== undefined )
