@@ -11375,6 +11375,8 @@ function arrayButInplace( test )
     test.identical( got, expected );
     test.is( got === src );
 
+    /* */
+
     test.case = 'container is not extensible, range = number, not src';
     var dst = make( [ 1, 2, 3, 4 ] );
     Object.preventExtensions( dst );
@@ -11712,6 +11714,32 @@ function arrayBut_( test )
     test.identical( got, expected );
     test.is( got === src );
 
+    /* */
+
+    test.case = 'container is not extensible, range = number, not src';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var got = _.arrayBut_( dst, 2 );
+    var expected = make( [ 1, 2, 4 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range = number, src.length = 1';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var got = _.arrayBut_( dst, 0, [ 0 ] );
+    var expected = make( [ 0, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range, src.length > range[ 1 ] - range[ 0 ]';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var src = [ 1, 2, 3 ];
+    test.shouldThrowErrorSync( () => _.arrayBut_( dst, [ 1, 3 ], src ) );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( dst, expected );
+
     test.close( 'without dst' );
 
     /* - */
@@ -11764,6 +11792,26 @@ function arrayBut_( test )
     test.identical( got, expected );
     test.is( got !== src );
     test.is( got === dst );
+
+    /* */
+
+    test.case = 'container is not extensible, range = number, not src';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var src = make( [] );
+    var got = _.arrayBut_( dst, src, 2, [] );
+    var expected = make( [] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range, src.length > range[ 1 ] - range[ 0 ]';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var src = make( [ 1, 2, 3, 4 ] );
+    test.shouldThrowErrorSync( () => _.arrayBut_( dst, src, [ 1, 3 ], [ 1, 2, 3 ] ) );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( dst, expected );
+    test.identical( src, expected );
 
     test.close( 'dst !== src' );
 
@@ -11858,6 +11906,31 @@ function arrayBut_( test )
     var expected = make( [ 1, 2, 3, 'str', [ 1 ] ] );
     test.identical( got, expected );
     test.is( got === src );
+
+    /* */
+
+    test.case = 'container is not extensible, range = number, not src';
+    var src = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( src );
+    var got = _.arrayBut_( src, src, 2 );
+    var expected = make( [ 1, 2, 4 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'container is not extensible, range = number, src.length = 1';
+    var src = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( src );
+    var got = _.arrayBut_( src, src, 0, [ 0 ] );
+    var expected = make( [ 0, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'container is not extensible, range, src.length > range[ 1 ] - range[ 0 ]';
+    var src = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( src );
+    test.shouldThrowErrorSync( () => _.arrayBut_( src, src, [ 1, 3 ], [ 1, 2, 3 ] ) );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( src, expected );
 
     test.close( 'dst === src' )
 
