@@ -13727,6 +13727,32 @@ function arrayRelengthInplace( test )
     var expected = make( [ 'str', [ 1 ], 7, 7 ] );
     test.identical( got, expected );
     test.is( got === src );
+
+    /* */
+
+    test.case = 'container is not extensible, range = number, not src';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var got = _.arrayRelengthInplace( dst, 2 );
+    var expected = make( [ 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range = number, src.length = 1';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var got = _.arrayRelengthInplace( dst, 0, [ 0 ] );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range, src.length > range[ 1 ] - range[ 0 ]';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var src = [ 1, 2, 3 ];
+    test.shouldThrowErrorSync( () => _.arrayRelengthInplace( dst, [ 1, 8 ], src ) );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( dst, expected );
   }
 
   /* - */
