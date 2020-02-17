@@ -4183,9 +4183,7 @@ function arrayRelength( src, range, ins )
   if( ins !== undefined )
   {
     for( let r = l2 - f; r < result.length ; r++ )
-    {
-      result[ r ] = ins;
-    }
+    result[ r ] = ins;
   }
 
   return result;
@@ -4281,6 +4279,9 @@ function arrayRelengthInplace( src, range, ins )
   if( f === 0 && l === src.length )
   return src;
 
+  if( !Object.isExtensible( src ) && src.length < l - f )
+  _.assert( 0, 'Array is not extensible, cannot change length of array' );
+
   let f2 = Math.max( f, 0 );
   let l2 = Math.min( src.length, l );
 
@@ -4292,9 +4293,7 @@ function arrayRelengthInplace( src, range, ins )
   if( ins !== undefined )
   {
     for( let r = l2 - f; r < result.length ; r++ )
-    {
-      result[ r ] = ins;
-    }
+    result[ r ] = ins;
   }
 
   return result;
