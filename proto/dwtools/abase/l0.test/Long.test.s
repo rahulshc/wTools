@@ -13170,6 +13170,32 @@ function arrayGrow_( test )
     test.identical( got, expected );
     test.is( got === src );
 
+    /* */
+
+    test.case = 'container is not extensible, range = number < dst.length';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var got = _.arrayGrow_( dst, 3 );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range = number < dst.length, src.length = 1';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var got = _.arrayGrow_( dst, 3, [ 0 ] );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range[ 1 ] > dst.length, src.length ';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var src = [ 1, 2, 3 ];
+    test.shouldThrowErrorSync( () => _.arrayGrow_( dst, [ 1, 6 ], src ) );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( dst, expected );
+
     test.close( 'without dst' );
 
     /* - */
@@ -13233,6 +13259,35 @@ function arrayGrow_( test )
     var expected = make( [ 1, 2, 3, 4, 5, 0 ] );
     test.identical( got, expected );
     test.is( got !== src );
+
+    /* */
+
+    test.case = 'container is not extensible, dst.length === src.length';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var src = make( [ 1, 2, 3, 4 ] );
+    var got = _.arrayGrow_( dst, src, 3 );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range = number < dst.length, src.length = 1';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var src = make( [ 1, 2, 3, 4 ] );
+    var got = _.arrayGrow_( dst, src, 3, [ 0 ] );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range[ 1 ] > dst.length, src.length ';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var src = make( [ 1, 2, 3, 4 ] );
+    test.shouldThrowErrorSync( () => _.arrayGrow_( dst, src, [ 1, 6 ], [ 1, 2, 3 ] ) );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( dst, expected );
+
 
     test.close( 'dst !== src' );
 
@@ -13347,6 +13402,31 @@ function arrayGrow_( test )
     var expected = make( [ 1, 2, 3, 4, 5, 0 ] );
     test.identical( got, expected );
     test.is( got === src );
+
+    /* */
+
+    test.case = 'container is not extensible, range - number < src.length';
+    var src = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( src );
+    var got = _.arrayGrow_( src, src, 3 );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'container is not extensible, range = number < src.length, ins.length = 1';
+    var src = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( src );
+    var got = _.arrayGrow_( src, src, 3, [ 0 ] );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === src );
+
+    test.case = 'container is not extensible, range[ 1 ] > src.length, ins.length ';
+    var src = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( src );
+    test.shouldThrowErrorSync( () => _.arrayGrow_( src, src, [ 1, 6 ], [ 1, 2, 3 ] ) );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( src, expected );
 
     test.close( 'dst === src' );
 
