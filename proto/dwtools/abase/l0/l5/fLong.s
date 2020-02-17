@@ -3484,9 +3484,16 @@ function arrayBut_( dst, src, range, ins )
   if( dst !== false )
   {
     if( dst.length !== undefined )
-    result = _.longEmpty( dst );
+    {
+      if( !Object.isExtensible( dst ) && dst.length < src.length - range[ 1 ] + range[ 0 ] + ins.length ? ins.length : 0 )
+      _.assert( 0, '{-dst-} array is not extensible, cannot change {-dst-} array' );
+
+      result = _.longEmpty( dst );
+    }
     else
-    result = [];
+    {
+      result = [];
+    }
 
     for( let i = 0; i < range[ 0 ]; i++ )
     result[ i ] = src[ i ];
