@@ -80,8 +80,8 @@ function extendReplacing( dst, src )
   {
 
     if( _.longIs( dst ) )
-    // dst = _.arrayExtendAppending( dst, src ); | Dmytro : it appends long, not replace
-    dst = _.arrayAppendArrayOnce( dst, src );
+    for( let i = src.length - 1 ; i >= 0 ; i-- )
+    dst[ i ] = src[ i ]; 
     else
     dst = _.container.extendReplacing( null, src );
 
