@@ -12872,6 +12872,32 @@ function arrayGrowInplace( test )
     var expected = make( [ 1, 2, 3, 4, 5, 0 ] );
     test.identical( got, expected );
     test.is( got === src );
+
+    /* */
+
+    test.case = 'container is not extensible, range = number < dst.length';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var got = _.arrayGrowInplace( dst, 3 );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range = number < dst.length, src.length = 1';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var got = _.arrayGrowInplace( dst, 3, [ 0 ] );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'container is not extensible, range[ 1 ] > dst.length, src.length ';
+    var dst = make( [ 1, 2, 3, 4 ] );
+    Object.preventExtensions( dst );
+    var src = [ 1, 2, 3 ];
+    test.shouldThrowErrorSync( () => _.arrayGrowInplace( dst, [ 1, 6 ], src ) );
+    var expected = make( [ 1, 2, 3, 4 ] );
+    test.identical( dst, expected );
   }
 
   /* - */
