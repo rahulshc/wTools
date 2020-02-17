@@ -4044,18 +4044,23 @@ function arrayGrow_( dst, src, range, ins )
   if( dst !== false )
   {
     if( dst.length !== undefined )
-    {
-      result = dst;
-      result.splice( 0, result.length, ... src );
-    }
+    result = dst;
     else
     result = src.slice();
+
+    if( !Object.isExtensible( dst ) && dst.length < l - f )
+    _.assert( 0, 'Array is not extensible, cannot change array' );
+
+    for( let i = 0; i < l2; i++ )
+    result[ i ] = src[ i ]; 
   }
   else
-  result = src;
+  {
+    if( !Object.isExtensible( src ) && src.length < l - f )
+    _.assert( 0, 'Array is not extensible, cannot change array' );
 
-  if( !Object.isExtensible( result ) && result.length < l )
-  _.assert( 0, 'Array is not extensible, cannot change length of array' );
+    result = src;
+  }
 
   result.length = l;
 
@@ -4332,13 +4337,13 @@ function arrayRelength_( dst, src, range, ins )
   let result;
   if( dst !== false )
   {
-    if( !Object.isExtensible( dst ) && ( dst.length ? dst.length : Infinity ) < l - f )
-    _.assert( 0, 'Array is not extensible, cannot change array' );
-
     if( dst.length !== undefined )
     result = dst;
     else
     result = [];
+
+    if( !Object.isExtensible( dst ) && dst.length < l - f )
+    _.assert( 0, 'Array is not extensible, cannot change array' );
 
     for( let i = f; i < l2; i++ )
     result[ i - f ] = src[ i ];
