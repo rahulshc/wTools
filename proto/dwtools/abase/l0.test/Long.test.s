@@ -362,6 +362,11 @@ function longMake( test )
     var expected = [];
     test.identical( got, expected );
 
+    test.case = 'dst = number, not src';
+    var got = _.longMake( 5 );
+    var expected = _.longDescriptor.make( 5 );
+    test.identical( got, expected );
+
     test.case = 'dst = empty, not src';
     var dst = long( [] );
     var got = _.longMake( dst );
@@ -458,9 +463,12 @@ function longMake( test )
   test.shouldThrowErrorSync( () => _.longMake( 'wrong argument', 1 ) );
   test.shouldThrowErrorSync( () => _.longMake( 1, 1 ) );
   test.shouldThrowErrorSync( () => _.longMake( new BufferRaw( 3 ), 2 ) );
-  test.shouldThrowErrorSync( () => _.longMake( Array, BufferNode.from( [ 3 ] ) ) );
+  test.shouldThrowErrorSync( () => _.longMake( ( e ) => { return { [ e ] : e } }, 5 ) );
   if( Config.interpreter === 'njs' )
-  test.shouldThrowErrorSync( () => _.longMake( BufferNode.alloc( 3 ), 2 ) );
+  {
+    test.shouldThrowErrorSync( () => _.longMake( Array, BufferNode.from( [ 3 ] ) ) );
+    test.shouldThrowErrorSync( () => _.longMake( BufferNode.alloc( 3 ), 2 ) );
+  }
 
   test.case = 'wrong type of ins';
   test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
