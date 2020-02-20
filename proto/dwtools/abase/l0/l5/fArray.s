@@ -242,7 +242,8 @@ function arrayMake( src )
  */
 
 /*
-qqq : can accept zero arguments just like arrayMake
+aaa : can accept zero arguments just like arrayMake
+Dmytro : arrayMakeUndefined accepts zero arguments and works like arrayMake
 */
 
 function arrayMakeUndefined( src, length )
@@ -315,6 +316,9 @@ function arrayFrom( src )
 
 function arrayFromCoercing( src )
 {
+
+  if( arguments.length === 0 )
+  return Array( 0 );
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
