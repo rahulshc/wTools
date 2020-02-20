@@ -107,9 +107,7 @@ function unrollMake( src )
  * @memberof wTools
  */
 
-/*
-qqq : implement unrollMakeUndefined similar to longMakeUndefined, cover and document | Dmytro : implemented similar to longMakeUndefined, covered, documented.
-*/
+/* qqq : review */
 
 function unrollMakeUndefined( src, length )
 {
@@ -256,13 +254,6 @@ function unrollsFrom( srcs )
 
   return dst;
 }
-
-/*
-qqq : in separate line after each console.log such comment should follow | Dmytro : implemented in all module
-      1. its lazy
-      2. not returns, but output or log
-      3. should be for each console.log
-*/
 
 /**
  * The routine unrollFromMaybe() performs conversion of {-src-} to unroll-array.
@@ -441,10 +432,6 @@ function unrollNormalize( dstArray )
  * @memberof wTools
  */
 
-/*
-  qqq : extend documentation and test coverage of unrollSelect | Dmytro : documented and covered. The behavior of routine is like *Relength.
-*/
-
 function unrollSelect( array, range, val )
 {
   let result;
@@ -457,12 +444,6 @@ function unrollSelect( array, range, val )
 
   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
   let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
-
-  // let f = range ? range[ 0 ] : undefined;
-  // let l = range ? range[ 1 ] : undefined;
-  //
-  // f = f !== undefined ? f : 0;
-  // l = l !== undefined ? l : array.length;
 
   _.assert( _.longIs( array ) );
   _.assert( _.rangeIs( range ) )
@@ -509,15 +490,6 @@ function unrollSelect( array, range, val )
 }
 
 //
-
-/*
-qqq : в unrollPrepend, unrollAppend бракує прикладів | Dmytro: corrected JSdoc in unrollFrom, unrollNormalize. Improved examples in unrollPrepend, unrollAppend.
-коли src unroll і dst не null
-із виводом результату
-і більше ніж одним елементом
-
-
-*/
 
 /**
  * The routine unrollPrepend() returns an array with elements added to the begin of destination array {-dstArray-}.

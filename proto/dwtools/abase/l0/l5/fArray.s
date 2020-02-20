@@ -242,7 +242,7 @@ function arrayMake( src )
  */
 
 /*
-qqq : can accept zero arguments just like arrayMake
+qqq : can accept zero arguments as well as arrayMake
 */
 
 function arrayMakeUndefined( src, length )

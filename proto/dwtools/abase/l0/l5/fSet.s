@@ -57,10 +57,6 @@ function arraySetDiff( src1, src2 )
 
 //
 
-/* qqq2 : cant use container adapter! | Dmytro : containerAdapter is not used */
-
-//
-
 function _arraySetHas( src, e, onEvaluate1, onEvaluate2 )
 {
   _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
@@ -1078,7 +1074,7 @@ function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
 
     return result;
   }
-  else if( _.longLike( arr ) ) /* qqq2 : ask | Dmytro : it's explained, and it's corrected */
+  else if( _.longLike( arr ) )
   {
     return _.longLeft.apply( this, arguments );
   }

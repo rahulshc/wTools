@@ -267,8 +267,6 @@ function longRightIndex( arr, ins, evaluator1, evaluator2 )
  * @memberof wTools
  */
 
-/* qqq : rewrite jsdoc | Dmytro : rewritten */
-
 function longLeft( arr, ins, fromIndex, evaluator1, evaluator2 )
 {
   let result = Object.create( null );
@@ -346,8 +344,6 @@ function longLeft( arr, ins, fromIndex, evaluator1, evaluator2 )
  * @memberof wTools
  */
 
-/* qqq : rewrite jsdoc | Dmytro : documented */
-
 function longRight( arr, ins, fromIndex, evaluator1, evaluator2 )
 {
   let result = Object.create( null );
@@ -392,8 +388,6 @@ function longRight( arr, ins, fromIndex, evaluator1, evaluator2 )
  * @memberof wTools
  */
 
-/* qqq : rewrite jsdoc | Dmytro : documented */
-
 function longLeftDefined( arr )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -428,8 +422,6 @@ function longLeftDefined( arr )
  * @throws { Error } If arguments.length is less then or more then one.
  * @memberof wTools
  */
-
-/* qqq : rewrite jsdoc | Dmytro : documented */
 
 function longRightDefined( arr )
 {
@@ -471,8 +463,6 @@ let Routines =
   longLeftIndex,
   longRightIndex,
 
-  /* qqq : teach to accept fromIndex, make perfect coverage | Dmytro : already teached, covered */
-  /* qqq : should be -1 in index if not found | Dmytro : already implemented */
   longLeft,
   longRight,
 

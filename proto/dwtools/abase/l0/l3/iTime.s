@@ -67,7 +67,7 @@ let Fields =
 let Routines =
 {
 
-  timerIs, /* qqq : cover please | Dmytro : covered */
+  timerIs,
   competitorIs,
 
   dateIs,

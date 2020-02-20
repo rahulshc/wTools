@@ -656,10 +656,6 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
 
 //
 
-/*
-qqq implement and cover _.routineExtend( null, routine ); | Dmytro : implemented a time ago, covered
-*/
-
 /**
  * The routineExtend() is used to copy the values of all properties
  * from source routine to a target routine.
@@ -773,7 +769,8 @@ function routineExtend( dst, src )
       if( _.objectIs( property ) )
       {
         _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
-        property = Object.create( property );
+        // property = Object.create( property ); /* qqq : update jsdoc and test please */
+        property = _.mapExtend( null, property ); /* yyy */
         if( dst[ s ] )
         _.mapSupplement( property, dst[ s ] );
       }
@@ -1797,8 +1794,8 @@ let Fields =
 let Routines =
 {
 
-  routineIs, /* qqq : cover pelase | Dmytro : extended coverage */
-  routineLike, /* qqq : cover pelase | Dmytro : covered */
+  routineIs,
+  routineLike,
   routineIsSync,
   routineIsAsync,
   routinesAre,

@@ -142,7 +142,9 @@ function uncountableSize( src )
  * @memberof wTools
 */
 
-function entitySize( src ) /* qqq : review jsdoc and tests */
+/* qqq : review */
+
+function entitySize( src )
 {
   let result = 0;
 
@@ -201,11 +203,11 @@ let Fields =
 let Routines =
 {
 
-  entityLength, /* qqq : implement coverage | Dmytro : coverage is extended */
+  entityLength,
   lengthOf : entityLength,
 
-  uncountableSize, /* qqq : implement coverage | Dmytro : covered */
-  entitySize, /* qqq : implement coverage | Dmytro : coverage is extended */
+  uncountableSize,
+  entitySize, 
   sizeOf : entitySize,
 
 }

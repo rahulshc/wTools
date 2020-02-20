@@ -170,11 +170,9 @@ let Fields =
 let Routines =
 {
 
-  // range
+  /* zzz : review and rearrange */
 
-  /*
-  qqq : good coverage of each routine is required | Dmytro : all routines covered
-  */
+  // range
 
   rangeIs,
   rangeDefined,

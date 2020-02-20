@@ -3799,7 +3799,10 @@ function entityMap_( dst, src, onEach )
 
 //
 
-/* qqq : cover entityFilter and entityFilterDeep, take into account unroll cases | Dmytro : unroll cases uses in test routines, but routine entityFilter accepts BufferTyped and cannot handle it. So, routine need restrictions or extending.
+/*
+qqq : cover entityFilter and entityFilterDeep, take into account unroll cases
+aaa Dmytro : unroll cases uses in test routines, but routine entityFilter accepts BufferTyped and cannot handle it. So, routine need restrictions or extending.
+qqq : find good explanation and explain during call. make simple example if needed
 */
 
 function entityFilter( src, onEach )
@@ -3985,11 +3988,6 @@ function entityFilter_( dst, src, onEach )
 
 //
 
-/*
-qqq : cover routine entityFirst | Dmytro : covered
-qqq : implement and cover routine entityLast | Dmytro : implemented and covered
-*/
-
 function entityFirst( src, onEach )
 {
   let result;
@@ -4127,8 +4125,6 @@ function entityLast( src, onEach )
 qqq : refactor routine _entityMost | Dmytro : routine accepts options map, and can use evaluator or comparator
 - make o-fication
 - make it accept evaluator or comparator( not in the same call )
-
-Dmytro : Implementation with pre and body now is unavailable, because fMap.s connecting is later then fFunctional.s. routineFromPreAndBody needs routines from fMap.s.
 */
 
 // function _entityMost_pre( routine, args )
@@ -4586,9 +4582,9 @@ let Extension =
   // scalar
 
   scalarAppend,
-  scalarPrepend, /* qqq : implement and cover routine scalarPrepend, pelase | Dmytro : implemented and covered */
+  scalarPrepend,
   scalarAppendOnce,
-  scalarPrependOnce, /* qqq : implement and cover routine scalarPrependOnce, pelase | Dmytro : implemented and covered */
+  scalarPrependOnce,
 
   scalarToVector,
   scalarFrom,
@@ -4610,29 +4606,25 @@ let Extension =
   // entityEachKey,
   // eachKey : entityEachKey,
 
-  /*
-  qqq : take _.nothing case in routines only, but, all, any, none | Dmytro : _.nothing cases is implemented
-   */
-
-  entityOnly, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
+  entityOnly,
   only : entityOnly,
-  entityBut, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
+  entityBut,
   but : entityBut,
-  entityAnd, /* qqq : optimize, implement good coverage and jsdoc, please | Dmytro : covered and added JSdoc */
+  entityAnd,
   and : entityAnd,
-  entityOr, /* qqq : optimize, implement good coverage and jsdoc, please  | Dmytro : covered and added JSdoc*/
+  entityOr,
   or : entityOr,
-  entityXor, /* qqq : optimize, implement good coverage and jsdoc, please  | Dmytro : covered and added JSdoc*/
+  entityXor,
   xor : entityXor,
 
-  entityAll, /* qqq : optimize entityAll | Dmytro : for() loop is better than every() method, can inline variables if onEach === undefined */
+  entityAll,
   all : entityAll,
-  entityAny, /* qqq : optimize entityAny | Dmytro : for() loop is better than some() method, can inline variables if onEach === undefined */
+  entityAny,
   any : entityAny,
-  entityNone, /* qqq : optimize entityNone | Dmytro : for() loop is better than some() method, can inline variables if onEach === undefined*/
+  entityNone,
   none : entityNone,
 
-  _filter_functor, /* qqq : cover please | Dmytro : covered */
+  _filter_functor,
 
   entityMap,
   map : entityMap,
@@ -4648,11 +4640,9 @@ let Extension =
   last : entityLast,
 
 
-  /* qqq : take into account Unroll case in routines filter, filterInplace | Dmytro : implemented */
-
   //
 
-  _entityMost, // qqq : refactor routine _entityMost | Dmytro : refactored
+  _entityMost,
   entityMin,
   min : entityMin,
   entityMax,

@@ -412,13 +412,13 @@ let Routines =
   numbersTotal,
 
   numberFrom,
-  numbersFrom, /* qqq : add test coverage | Dmytro : covered */
+  numbersFrom,
   numberFromStr,
 
   numbersSlice,
 
-  numberRandom, /* qqq : cover and document please | Dmytro : covered and documented */
-  intRandom, /* qqq : cover and document please | Dmytro : covered and documented */
+  numberRandom,
+  intRandom,
   intRandomBut, /* dubious */
 
   numbersMake,
