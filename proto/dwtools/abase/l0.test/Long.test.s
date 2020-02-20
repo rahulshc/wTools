@@ -623,7 +623,8 @@ function _longMakeOfLength( test )
 //
 
 /*
-qqq : implement | Dmytro : implemented
+aaa : implement
+Dmytro : implemented
 */
 
 function longMakeUndefined( test )
@@ -683,6 +684,21 @@ function longMakeUndefined( test )
     test.case = 'dst = null, not src';
     var got = _.longMakeUndefined( null );
     var expected = [];
+    test.identical( got, expected );
+
+    test.case = 'dst = number, not src';
+    var got = _.longMakeUndefined( 5 );
+    var expected = _.longDescriptor.make( 5 );
+    test.identical( got, expected );
+
+    test.case = 'dst = null, src - number';
+    var got = _.longMakeUndefined( null, 5 );
+    var expected = _.longDescriptor.make( 5 );
+    test.identical( got, expected );
+
+    test.case = 'dst = null, src - long';
+    var got = _.longMakeUndefined( null, long( [ 1, 2, 3, 4, 5 ] ) );
+    var expected = _.longDescriptor.make( 5 );
     test.identical( got, expected );
 
     test.case = 'dst = empty, not src';
