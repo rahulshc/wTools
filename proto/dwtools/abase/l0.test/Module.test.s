@@ -42,7 +42,9 @@ function withIsIncluded( test )
 {
   let context = this;
   let a = test.assetFor( false );
+  debugger;
   let toolsPath = a.path.nativize( a.path.join( __dirname, '../../Tools.s' ) );
+  debugger;
   let program1Path = a.program( program1 );
   let program2Path = a.program({ routine : program2, globals : { toolsPath, program1Path } });
 
@@ -68,7 +70,7 @@ function withIsIncluded( test )
 
   function program1()
   {
-    console.log( 'program1.begin' );
+    console.log( 'program1.begin' ); debugger;
     let _ = require( toolsPath );
     _global_.program2 = true;
     console.log( 'program1.end' );
