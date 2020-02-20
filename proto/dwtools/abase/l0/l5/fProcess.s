@@ -19,7 +19,7 @@ let Extension =
 
 }
 
-_.mapExtend( Self, Extension );
+_.mapSupplement( _.process, Extension );
 
 // --
 // export

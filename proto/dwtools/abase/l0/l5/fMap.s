@@ -146,8 +146,6 @@ function mapContain( src, ins )
  * @memberof wTools
 */
 
-/* qqq : cover option strict of routine objectSatisfy | Dmytro : covered routine and implemented separate test routine for option strict */
-
 function objectSatisfy( o )
 {
 
@@ -1087,78 +1085,6 @@ function mapsExtendNulls( dstMap, srcMaps )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   return _.mapsExtendConditional( _.field.mapper.srcNull, dstMap, srcMaps );
 }
-//
-// //
-//
-// /**
-//  * The mapSupplement() supplement destination map by source maps.
-//  * Pairs of destination map are not overwritten by pairs of source maps if any overlap.
-//  * Routine rewrite pairs of destination map which has key === undefined.
-//  *
-//  * @param { ...objectLike } arguments[] - The source object(s).
-//  *
-//  * @example
-//  * _.mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
-//  * // returns { a : 1, b : 2, c : 3 }
-//  *
-//  * @returns { objectLike } Returns an object with unique [ key, value ].
-//  * @function mapSupplement
-//  * @memberof wTools
-//  */
-//
-// function mapSupplement( dstMap, srcMap )
-// {
-//   if( dstMap === null && arguments.length === 2 )
-//   return Object.assign( Object.create( null ), srcMap );
-//
-//   if( dstMap === null )
-//   dstMap = Object.create( null );
-//
-//   _.assert( !_.primitiveIs( dstMap ) );
-//
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   {
-//     srcMap = arguments[ a ];
-//     for( let s in srcMap )
-//     {
-//       if( s in dstMap )
-//       continue;
-//       dstMap[ s ] = srcMap[ s ];
-//     }
-//   }
-//
-//   return dstMap
-// }
-
-//
-
-// function mapSupplementStructureless( dstMap, srcMap )
-// {
-//
-//   if( dstMap === null && arguments.length === 2 ) // xxx
-//   return Object.assign( Object.create( null ), srcMap );
-//
-//   if( dstMap === null )
-//   dstMap = Object.create( null );
-//
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   {
-//     srcMap = arguments[ a ];
-//     for( let s in srcMap )
-//     {
-//       if( dstMap[ s ] !== undefined )
-//       continue;
-//       if( _.objectLike( srcMap[ s ] ) || _.arrayLike( srcMap[ s ] ) )
-//       {
-//         debugger;
-//         throw Error( Source map should have only primitive elements, but have ' + _.strType( srcMap ) + `"${ s }"` );
-//       }
-//       dstMap[ s ] = srcMap[ s ];
-//     }
-//   }
-//
-//   return dstMap
-// }
 
 //
 
@@ -1300,8 +1226,6 @@ function mapSupplementOwnFromDefinitionStrictlyPrimitives( dstMap, srcMap )
  * @memberof wTools
  */
 
-/* qqq : need to explain how undefined handled and write good documentation | Dmytro : documentation extended. Maybe, routine needs assertion: _.assert( arguments.length >= 1 ); */
-
 function mapComplement( dstMap, srcMap )
 {
 
@@ -1317,7 +1241,6 @@ function mapComplement( dstMap, srcMap )
 
   dstNotOwnOrUndefinedAssigning.functionFamily = 'field-mapper';
 
-  // _.assert( !!_.field.mapper );
   if( arguments.length === 2 )
   return _.mapExtendConditional( dstNotOwnOrUndefinedAssigning, dstMap, srcMap );
 
@@ -1325,7 +1248,7 @@ function mapComplement( dstMap, srcMap )
   args.unshift( dstNotOwnOrUndefinedAssigning );
   return _.mapExtendConditional.apply( this, args );
 
-  /* xxx
+  /* zzz
     filter should be defined explicitly instead of using _.field.mapper.dstNotOwnOrUndefinedAssigning
     to have mapComplement available as soon as possible
   */
@@ -1710,12 +1633,11 @@ function mapSupplementByMapsRemovingRecursive( dstMap, srcMaps )
 // hash map
 // --
 
-function hashMapExtend( dst, src ) /* qqq2 : cover | Dmytro : covered */
+function hashMapExtend( dst, src )
 {
   _.assert( arguments.length === 2 );
   _.assert( dst === null || _.hashMapLike( dst ) || _.mapLike( dst ) );
   _.assert( _.hashMapLike( src ) || _.mapLike( src ) );
-  // _.assert( 0, 'not tested' );
 
   if( dst === null )
   dst = new HashMap;
@@ -1727,7 +1649,6 @@ function hashMapExtend( dst, src ) /* qqq2 : cover | Dmytro : covered */
   {
     if( _.hashMapLike( src ) )
     {
-      // for( let [ e, k ] of src ) // Dmytro : wrong order of key-value
       for( let [ k, e ] of src )
       dst.set( k, e );
     }
@@ -1743,7 +1664,6 @@ function hashMapExtend( dst, src ) /* qqq2 : cover | Dmytro : covered */
   {
     if( _.hashMapLike( src ) )
     {
-      // for( let [ e, k ] of src ) // Dmytro : wrong order of key-value
       for( let [ k, e ] of src )
       {
         _.assert( _.strIs( k ) );
@@ -1808,10 +1728,6 @@ function mapOnlyPrimitives( srcMap )
 // map manipulator
 // --
 
-/*
-  qqq : reflect changes in tests, please | Dmytro : test routine is extended
-*/
-
 function objectSetWithKeys( dstMap, key, val )
 {
 
@@ -1847,8 +1763,6 @@ function objectSetWithKeys( dstMap, key, val )
 }
 
 //
-
-/* qqq : add test | Dmytro : covered */
 
 function objectSetWithKeyStrictly( dstMap, key, val )
 {
@@ -2311,8 +2225,6 @@ function mapButConditional_( fieldFilter, dstMap, srcMap, butMap )
  * @function mapBut
  * @memberof wTools
  */
-
-/* qqq : teach routines mapBut* to expect long in the second argument. ask | Dmytro : implemented */
 
 function mapBut( srcMap, butMap )
 {
@@ -4344,18 +4256,10 @@ function assertMapHasNoUndefine( srcMap, msg )
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let Extension =
 {
 
   // map checker
@@ -4468,8 +4372,8 @@ let Routines =
   objectSetWithKeys,
   mapSet : objectSetWithKeys,
   objectSetWithKeyStrictly,
-  mapDelete, /* qqq : implement good coverage | Dmytro : implemented */
-  mapEmpty, /* qqq : implement good coverage | Dmytro : implemented */
+  mapDelete,
+  mapEmpty,
 
   // map transformer
 
@@ -4477,7 +4381,7 @@ let Routines =
   mapInvertDroppingDuplicates,
   mapsFlatten,
 
-  mapToArray, /* qqq : test required | Dmytro : implemented */
+  mapToArray,
   mapToStr, /* experimental */
 
   // map logical operator
@@ -4536,8 +4440,7 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( _, Extension );
 
 // --
 // export

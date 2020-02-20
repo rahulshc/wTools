@@ -61,7 +61,7 @@ function arraySetDiff( src1, src2 )
 
 //
 
-function _arraySetHas( src, e, onEvaluate1, onEvaluate2 ) 
+function _arraySetHas( src, e, onEvaluate1, onEvaluate2 )
 {
   _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
 
@@ -150,7 +150,7 @@ function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
     src2 = src1;
     src1 = dst;
   }
-  
+
   let temp = [];
   if( dst === src1 )
   {
@@ -162,7 +162,7 @@ function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
       for( let i = dst.length - 1; i >= 0; i-- )
       if( _arraySetHas( src2, dst[ i ], onEvaluate1, onEvaluate2 ) )
       dst.splice( i, 1 )
-      for( let i = 0; i < temp.length; i++ ) 
+      for( let i = 0; i < temp.length; i++ )
       dst.push( temp[ i ] );
     }
     else if( _.setLike( dst ) )
@@ -173,8 +173,8 @@ function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
       for( let e of dst )
       if( _arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.delete( e );
-      for( let i = 0; i < temp.length; i++ ) 
-      dst.add( temp[ i ] ); 
+      for( let i = 0; i < temp.length; i++ )
+      dst.add( temp[ i ] );
     }
   }
   else if( dst === src2 )
@@ -187,8 +187,8 @@ function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
       for( let i = dst.length - 1; i >= 0; i-- )
       if( _arraySetHas( src1, dst[ i ], onEvaluate1, onEvaluate2 ) )
       dst.splice( i, 1 )
-      for( let i = 0; i < temp.length; i++ ) 
-      dst.push( temp[ i ] ); 
+      for( let i = 0; i < temp.length; i++ )
+      dst.push( temp[ i ] );
     }
     else if( _.setLike( dst ) )
     {
@@ -198,11 +198,11 @@ function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
       for( let e of dst )
       if( _arraySetHas( src1, e, onEvaluate1, onEvaluate2 ) )
       dst.delete( e );
-      for( let i = 0; i < temp.length; i++ ) 
-      dst.add( temp[ i ] ); 
+      for( let i = 0; i < temp.length; i++ )
+      dst.add( temp[ i ] );
     }
   }
-  else 
+  else
   {
     if( _.longLike( dst ) )
     {
@@ -216,10 +216,10 @@ function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
     else if( _.setLike( dst ) )
     {
       for( let e of src1 )
-      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) ) 
+      if( !_arraySetHas( src2, e, onEvaluate1, onEvaluate2 ) )
       dst.add( e );
       for( let e of src2 )
-      if( !_arraySetHas( src1, e, onEvaluate1, onEvaluate2 ) ) 
+      if( !_arraySetHas( src1, e, onEvaluate1, onEvaluate2 ) )
       dst.add( e );
     }
   }
@@ -614,7 +614,7 @@ function arraySetUnion_( dst, src1, src2, onEvaluate1, onEvaluate2 )
     }
   }
 
-  return dst; 
+  return dst;
 }
 
 //
@@ -1140,7 +1140,7 @@ function arraySetRight( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
 // routines
 // --
 
-let NamespaceExtension =
+let Extension =
 {
 
   // array set
@@ -1204,7 +1204,7 @@ let NamespaceExtension =
 
 //
 
-Object.assign( Self, NamespaceExtension );
+_.mapSupplement( _, Extension );
 
 // --
 // export

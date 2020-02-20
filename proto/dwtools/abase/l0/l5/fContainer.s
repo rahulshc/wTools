@@ -17,34 +17,6 @@ function make()
 
 //
 
-// function extend( dst, src )
-// {
-//
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   if( _.mapLike( src ) || _.longLike( src ) )
-//   {
-//
-//     _.each( src, function( e, k )
-//     {
-//       dst[ k ] = e;
-//     });
-//
-//   }
-//   else
-//   {
-//
-//     dst = src;
-//
-//   }
-//
-//   return dst;
-// }
-
-//
-
-/* qqq : cover | Dmytro : covered, improved routine by using correct condition => src replaced to dst */
-
 function extendReplacing( dst, src )
 {
 
@@ -118,8 +90,6 @@ function extendReplacing( dst, src )
 
 //
 
-/* qqq : cover | Dmytro : covered */
-
 function extendAppending( dst, src )
 {
 
@@ -184,18 +154,6 @@ function extendAppending( dst, src )
 
   return dst;
 }
-
-// xxx : find solution
-// //
-//
-// function extendAppendingRecursive( dst, src )
-// {
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//
-//
-//   return dst;
-// }
 
 //
 

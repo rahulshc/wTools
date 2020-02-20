@@ -13,15 +13,15 @@ let Self = _.module = _.module || Object.create( null );
 // --
 
 // --
-// declare
+// extension
 // --
 
-var ModuleExtension =
+var Extension =
 {
 
 }
 
-Object.assign( _.module, ModuleExtension );
+_.mapSupplement( _, Extension );
 
 // --
 // export

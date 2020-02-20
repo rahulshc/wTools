@@ -3749,15 +3749,15 @@ function entityMap_( dst, src, onEach )
     }
 
   }
-  else 
+  else
   {
-    
+
     result = dst;
     if( _.longIs( src ) )
     {
       if( dst === null )
       result = _.entityMakeUndefined( src );
-      else 
+      else
       _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
 
       for( let s = 0 ; s < src.length ; s++ )
@@ -3783,7 +3783,7 @@ function entityMap_( dst, src, onEach )
     {
       result = onEach( src, undefined, undefined );
       _.assert( result !== undefined, '{-entityMap-} onEach should return defined values, to been able return undefined to delete element use ( entityFilter )' )
-      
+
       if( _.longIs( dst ) )
       result = _.arrayAppendElement( dst, result );
       else if( _.mapLike( dst ) )
@@ -3867,7 +3867,7 @@ function entityFilter( src, onEach )
 
 function entityFilter_( dst, src, onEach )
 {
-  
+
   if( arguments.length === 2 )
   {
     onEach = src;
@@ -3875,7 +3875,7 @@ function entityFilter_( dst, src, onEach )
   }
   else
   {
-    _.assert( arguments.length === 3, 'Expects two or three arguments' );    
+    _.assert( arguments.length === 3, 'Expects two or three arguments' );
   }
   onEach = _._filter_functor( onEach, 1 );
 
@@ -3910,7 +3910,7 @@ function entityFilter_( dst, src, onEach )
         let r = onEach.call( src, src[ s ], s, src );
         if( r === undefined )
         delete src[ s ];
-        else 
+        else
         src[ s ] = r;
       }
     }
@@ -3920,7 +3920,7 @@ function entityFilter_( dst, src, onEach )
     }
 
   }
-  else 
+  else
   {
 
     result = dst;
@@ -3973,7 +3973,7 @@ function entityFilter_( dst, src, onEach )
         result = _.mapExtend( dst, r );
         else if( _.primitiveIs( dst ) )
         result = r;
-        else 
+        else
         _.assert( 0, 'Not clear how to add result in destination container {-dst-}' );
       }
     }
@@ -4565,13 +4565,9 @@ function entityMin( src, onEach )
  * @memberof wTools
  */
 
-// let entityMin = _.routineFromPreAndBody( _entityMost_pre, _entityMost_body );
-// entityMin.defaults.returnMax = 1;
-
 function entityMax( src, onEach )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  // return _entityMost( src, onEvaluate, 1 );
   return _entityMost
   ({
     src : src,
@@ -4581,18 +4577,10 @@ function entityMax( src, onEach )
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let Extension =
 {
 
   // scalar
@@ -4672,10 +4660,7 @@ let Routines =
 
 }
 
-//
-
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( _, Extension );
 
 // --
 // export

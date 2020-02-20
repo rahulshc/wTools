@@ -52,18 +52,10 @@ function numberMix( ins1, ins2, progress )
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let Extension =
 {
 
   numberInRange,
@@ -74,8 +66,7 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( _, Extension );
 
 // --
 // export

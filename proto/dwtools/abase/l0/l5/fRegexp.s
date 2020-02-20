@@ -126,18 +126,10 @@ function regexpsTestNone( regexps, strs )
 }
 
 // --
-// fields
-// --
-
-let Fields =
-{
-}
-
-// --
 // routines
 // --
 
-let Routines =
+let Extension =
 {
 
   // regexp
@@ -159,8 +151,7 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( _, Extension );
 
 // --
 // export
