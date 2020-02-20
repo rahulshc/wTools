@@ -9,84 +9,6 @@ let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 
 // --
-// arguments array
-// --
-
-function argumentsArrayIs( src )
-{
-  return Object.prototype.toString.call( src ) === '[object Arguments]';
-}
-
-// --
-// array
-// --
-
-/**
- * The arrayIs() routine determines whether the passed value is an Array.
- *
- * If the {-srcMap-} is an Array, true is returned,
- * otherwise false is.
- *
- * @param { * } src - The object to be checked.
- *
- * @example
- * _.arrayIs( [ 1, 2 ] );
- * // returns true
- *
- * @example
- * _.arrayIs( 10 );
- * // returns false
- *
- * @returns { boolean } Returns true if {-srcMap-} is an Array.
- * @function arrayIs
- * @memberof wTools
- */
-
-function arrayIs( src )
-{
-  return Array.isArray( src );
-  // return Object.prototype.toString.call( src ) === '[object Array]';
-}
-
-//
-
-function arrayIsEmpty( src )
-{
-  if( !_.arrayIs( src ) )
-  return false;
-  return src.length === 0;
-}
-
-//
-
-function arrayIsPopulated( src )
-{
-  if( !_.arrayIs( src ) )
-  return false;
-  return src.length > 0;
-}
-
-//
-
-function arrayLikeResizable( src )
-{
-  if( Object.prototype.toString.call( src ) === '[object Array]' )
-  return true;
-  return false;
-}
-
-//
-
-function arrayLike( src )
-{
-  if( _.arrayIs( src ) )
-  return true;
-  if( _.argumentsArrayIs( src ) )
-  return true;
-  return false;
-}
-
-// --
 // long
 // --
 
@@ -288,7 +210,7 @@ function longRightIndex( arr, ins, evaluator1, evaluator2 )
 /**
  * The routine longLeft() returns a new object containing the properties, (index, element),
  * corresponding to a found value {-ins-} from a Long {-arr-}.
- * If element is not founded, then routine return new object with property (index), which value is -1. 
+ * If element is not founded, then routine return new object with property (index), which value is -1.
  *
  * @param { Long } arr - A Long to check.
  * @param { * } ins - An element to locate in the {-arr-}.
@@ -367,7 +289,7 @@ function longLeft( arr, ins, fromIndex, evaluator1, evaluator2 )
 /**
  * The routine longRight() returns a new object containing the properties, (index, element),
  * corresponding to a found value {-ins-} from a Long {-arr-}.
- * If element is not founded, then routine return new object with property (index), which value is -1. 
+ * If element is not founded, then routine return new object with property (index), which value is -1.
  *
  * @param { Long } arr - A Long to check.
  * @param { * } ins - An element to locate in the {-arr-}.
@@ -446,7 +368,7 @@ function longRight( arr, ins, fromIndex, evaluator1, evaluator2 )
 /**
  * The routine longLeftDefined() returns a new object containing the properties, (index, element),
  * of first left element in a Long {-arr-}, which value is not equal to undefined.
- * If element is not founded, then routine return new object with property (index), which value is -1. 
+ * If element is not founded, then routine return new object with property (index), which value is -1.
  *
  * @param { Long } arr - A Long to check.
  *
@@ -483,7 +405,7 @@ function longLeftDefined( arr )
 /**
  * The routine longRightDefined() returns a new object containing the properties, (index, element),
  * of first right element in a Long {-arr-}, which value is not equal to undefined.
- * If element is not founded, then routine return new object with property (index), which value is -1. 
+ * If element is not founded, then routine return new object with property (index), which value is -1.
  *
  * @param { Long } arr - A Long to check.
  *
@@ -522,7 +444,7 @@ function longRightDefined( arr )
 let Fields =
 {
 
-  ArrayType : Array,
+  // ArrayType : Array,
 
   accuracy : 1e-7,
   accuracySqrt : 1e-4,
@@ -536,18 +458,6 @@ let Fields =
 
 let Routines =
 {
-
-  // arguments array
-
-  argumentsArrayIs,
-
-  //
-
-  arrayIs,
-  arrayIsEmpty,
-  arrayIsPopulated,
-  arrayLikeResizable,
-  arrayLike,
 
   // long
 
