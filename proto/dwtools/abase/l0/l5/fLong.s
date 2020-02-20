@@ -235,27 +235,30 @@ function longMake( src, ins )
 //
 
 /*
-qqq : optimize | Dmytro : optimized
+aaa : optimize 
+Dmytro : optimized, covered, extended for using longDescriptor
 */
 
 function longMakeEmpty( src )
 {
+  if( arguments.length === 0 )
+  return this.longDescriptor.make( 0 );
 
   _.assert( arguments.length === 1 );
 
   if( _.unrollIs( src ) )
   return _.unrollMake( 0 );
   else if( src === null || _.argumentsArrayIs( src ) )
-  return [];
+  return this.longDescriptor.make( 0 );
   else if( _.arrayIs( src ) || _.bufferTypedIs( src ) )
   return new src.constructor();
   else if( _.routineIs( src ) )
   {
     let result = new src.constructor();
-    _.assert( _.longIs( result ) && result.length === 0 );
+    _.assert( _.longIs( result ) && result.length === 0, 'Constructor should return empty long' );
     return result;
   }
-  _.assert( 0 );
+  _.assert( 0, 'Unknown how to construct long' );
 }
 
 // function longMakeEmpty( src )
