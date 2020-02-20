@@ -1214,6 +1214,11 @@ function unrollSelect( test )
 
   function run( make )
   {
+    test.case = 'without arguments';
+    var got = _.unrollSelect();
+    var expected = _.unrollMake( [] );
+    test.identical( got, expected );
+
     test.case = 'only dst';
     var dst = make( [ 1, 2, 3, 4, 5 ] );
     var got = _.unrollSelect( dst );
@@ -1291,9 +1296,6 @@ function unrollSelect( test )
 
   if( !Config.debug )
   return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.unrollSelect() );
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.unrollSelect( [ 1 ], [ 1, 4 ], '5', 1 ) );
