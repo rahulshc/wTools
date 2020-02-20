@@ -204,6 +204,12 @@ function hasLength( test )
 
 function arrayMake( test )
 {
+  test.case = 'without arguments';
+  var got = _.arrayMake();
+  var expected = [];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
   test.case = 'src = null';
   var src = null;
   var got = _.arrayMake( src );
@@ -419,9 +425,6 @@ function arrayMake( test )
 
   if( !Config.debug )
   return;
-
-  // test.case = 'without arguments';
-  // test.shouldThrowErrorSync( () => _.arrayMake() );
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.arrayMake( 1, 3 ) );
