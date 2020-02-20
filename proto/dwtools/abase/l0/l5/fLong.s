@@ -104,22 +104,27 @@ qqq : longMake does not create unrolls, but should | Dmytro : longMake creates u
 
 function longMake( src, ins )
 {
-  // let result, length;
   let result;
   let length = ins;
-
-  if( src === null )
-  src = [];
 
   if( _.longLike( length ) )
   length = length.length;
 
   if( length === undefined )
   {
-    if( _.longLike( src ) )
-    length = src.length;
+    if( src === null )
+    {
+      length = 0;
+    }
+    else if( _.longLike( src ) )
+    {
+      length = src.length;
+    }
     else if( _.numberIs( src ) )
-    length = src;
+    {
+      length = src;
+      src = null; 
+    }
     else _.assert( 0 );
   }
 
@@ -135,7 +140,10 @@ function longMake( src, ins )
   length = 0;
 
   if( _.argumentsArrayIs( src ) )
-  src = [];
+  src = null;
+
+  if( src === null )
+  src = this.longDescriptor.make;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
@@ -145,17 +153,10 @@ function longMake( src, ins )
   {
     if( ins.length === length )
     {
-      debugger;
       if( src === Array )
       {
         if( _.longLike( ins ) )
         {
-          /* Dmytro : simple and effective solution is
-          result = Array.from( ins );
-          Anyway, new container makes from ins
-
-          Now, routine constructorJoin accepts only arrays
-          */
           if( ins.length === 1 )
           result = [ ins[ 0 ] ];
           else if( !_.arrayLike( ins ) )
@@ -181,32 +182,16 @@ function longMake( src, ins )
       result[ i ] = ins[ i ];
     }
   }
-  // else if( _.unrollIs( src ) )  // Dmytro : alternative section for unrolls, but it is copy of section for arrayIs( src )
-  // {
-  //   if( length === ins.length )
-  //   {
-  //     result = _.unrollMake( ins );
-  //   }
-  //   else
-  //   {
-  //     result = _.unrollMake( length );
-  //     let minLen = Math.min( length, ins.length );
-  //     for( let i = 0 ; i < minLen ; i++ )
-  //     result[ i ] = ins[ i ];
-  //   }
-  // }
   else if( _.arrayIs( src ) )
   {
     if( length === ins.length )
     {
       result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
-      // result = new( _.constructorJoin( src.constructor, ins ) );
     }
     else
     {
       _.assert( length >= 0 );
       result = _.unrollIs( src ) ? _.unrollMake( length ) : new src.constructor( length );
-      // result = new src.constructor( length );
       let minLen = Math.min( length, ins.length );
       for( let i = 0 ; i < minLen ; i++ )
       result[ i ] = ins[ i ];
