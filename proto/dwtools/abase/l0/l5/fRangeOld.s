@@ -28,8 +28,10 @@ function rangeFromLeft( range )
 
 //
 
-// aaa Dmytro : this routine is identical to rangeFromLeft. Is it correct?
-// qqq : not really
+/* aaa Dmytro : this routine is identical to rangeFromLeft. Is it correct? */
+/* aaa : not really */
+/* Dmytro : new feature is tested */
+
 function rangeFromRight( range )
 {
   _.assert( arguments.length === 1 );
