@@ -334,9 +334,6 @@ function arrayFromCoercing( src )
   if( _.strIs( src ) )
   return this.arrayFromStr( src );
 
-  if( _.argumentsArrayIs( src ) )
-  return Array.prototype.slice.call( src );
-
   _.assert( 0, 'Unknown data type : ' + _.strType( src ) );
 }
 

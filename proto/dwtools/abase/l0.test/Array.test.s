@@ -1109,6 +1109,10 @@ function arrayFrom( test )
 
 function arrayFromCoercing( test )
 {
+  test.case = 'without arguments';
+  var got = _.arrayFromCoercing();
+  var expected = [];
+  test.identical( got, expected );
 
   test.case = 'an array';
   var got = _.arrayFromCoercing( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
@@ -1126,10 +1130,8 @@ function arrayFromCoercing( test )
   test.identical( got, expected );
 
   test.case = 'arguments[...]';
-  var args = ( function() {
-    return arguments;
-  } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
-  var got = _.arrayFromCoercing( args );
+  var src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ] );
+  var got = _.arrayFromCoercing( src );
   var expected = [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ];
   test.identical( got, expected );
 
@@ -1138,23 +1140,11 @@ function arrayFromCoercing( test )
   if( !Config.debug )
   return;
 
-  test.case = 'no argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayFromCoercing();
-  });
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( () => _.arrayFromCoercing( 6 ) );
 
   test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayFromCoercing( 6 );
-  });
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.arrayFromCoercing( true );
-  });
+  test.shouldThrowErrorSync( () =>_.arrayFromCoercing( true ) );
 
 }
 
