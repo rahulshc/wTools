@@ -91,10 +91,10 @@ function constructorIsBuffer( src )
 }
 
 // --
-// routines
+// extension
 // --
 
-let Routines =
+let Extension =
 {
 
   bufferRawIs,
@@ -107,9 +107,7 @@ let Routines =
 
 }
 
-//
-
-Object.assign( Self, Routines );
+_.mapSupplement( Self, Extension );
 
 // --
 // export

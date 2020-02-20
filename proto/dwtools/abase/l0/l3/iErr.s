@@ -1673,50 +1673,8 @@ function assertOwnNoConstructor( ins )
   _.assert.apply( _, args );
 }
 
-// // --
-// // process
-// // --
-//
-// function entryPointStructure()
-// {
-//   let result = Object.create( null );
-//   if( _global.process !== undefined )
-//   {
-//     if( _global.process.argv )
-//     result.execPath = _global.process.argv.join( ' ' );
-//     if( _.routineIs( _global.process.cwd ) )
-//     result.currentPath = _global.process.cwd();
-//   }
-//   return result;
-// }
-//
-// //
-//
-// function entryPointInfo()
-// {
-//   let data = _.process.entryPointStructure();
-//   let result = '';
-//
-//   if( data.currentPath )
-//   result = join( 'Current path', data.currentPath );
-//   if( data.execPath )
-//   result = join( 'Exec path', data.execPath );
-//
-//   return result;
-//
-//   /* */
-//
-//   function join( left, right )
-//   {
-//     if( result )
-//     result += '\n';
-//     result += left + ' : ' + right;
-//     return result;
-//   }
-// }
-
 // --
-// fields
+// namespace
 // --
 
 let stackSymbol = Symbol.for( 'stack' );
@@ -1730,36 +1688,8 @@ let stackSymbol = Symbol.for( 'stack' );
  * @memberof wTools
  */
 
-let Fields =
+let Extension =
 {
-  error : Object.create( null ),
-  debuggerEnabled : !!Config.debug,
-}
-
-// --
-// routines
-// --
-
-// let ExtendProcess =
-// {
-//
-//   entryPointStructure,
-//   entryPointInfo,
-//
-// }
-
-let Routines =
-{
-
-  // // stack
-  //
-  // diagnosticLocation,
-  // diagnosticLocationFromCall,
-  // diagnosticStack, /* qqq : very good coverage required | Dmytro | implemented in file Introspector.test.s */
-  // diagnosticStackRemoveLeft,
-  // diagnosticStackCondense,
-  // diagnosticStackFilter, /* qqq : cover | Dmytro | implemented in file Introspector.test.s */
-  // diagnosticCode,
 
   // error
 
@@ -1812,16 +1742,18 @@ let Routines =
   assertNotTested,
   assertWarn,
 
+  // fields
+
+  error : Object.create( null ),
+  debuggerEnabled : !!Config.debug,
+
 }
 
 //
 
-// Object.assign( _.process, ExtendProcess );
-Object.assign( _, Routines );
-Object.assign( _, Fields );
+Object.assign( _, Extension );
 
-/* xxx : put in _.err namespace */
-/* xxx : improve formatting of stack with table */
+/* zzz : improve formatting of stack with table */
 
 Error.stackTraceLimit = Infinity;
 

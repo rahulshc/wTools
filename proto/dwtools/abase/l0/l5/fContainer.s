@@ -81,7 +81,7 @@ function extendReplacing( dst, src )
 
     if( _.longIs( dst ) )
     for( let i = src.length - 1 ; i >= 0 ; i-- )
-    dst[ i ] = src[ i ]; 
+    dst[ i ] = src[ i ];
     else
     dst = _.container.extendReplacing( null, src );
 
@@ -268,16 +268,10 @@ function empty( dstContainer )
 }
 
 // --
-// define
+// extension
 // --
 
-let Fields =
-{
-}
-
-//
-
-let Routines =
+let Extension =
 {
 
   extendReplacing,
@@ -289,8 +283,7 @@ let Routines =
 
 }
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( Self, Extension );
 
 // --
 // export

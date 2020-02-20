@@ -3469,7 +3469,7 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
   arrayRemovedElementOnce.apply( this, arguments );
-  /* xxx : maybe element? */
+  /* qqq : implement and cover routines arrayRemoveElement*_ returning element, not container? */
   return dstArray;
 }
 
@@ -5980,7 +5980,6 @@ function arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   let index = arrayReplacedOnce.apply( this, arguments );
 
-  /* xxx : ? */
   if( index === -1 )
   {
     dstArray.push( sub );
@@ -5991,27 +5990,10 @@ function arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )
 }
 
 // --
-// fields
+// extension
 // --
 
-// let unrollSymbol = Symbol.for( 'unroll' );
-
-let Fields =
-{
-
-  // // ArrayType : Array,
-  //
-  // accuracy : 1e-7,
-  // accuracySqrt : 1e-4,
-  // accuracySqr : 1e-14,
-
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let Extension =
 {
 
   // array checker
@@ -6225,10 +6207,7 @@ let Routines =
 
 }
 
-//
-
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( Self, Extension );
 
 // --
 // export
