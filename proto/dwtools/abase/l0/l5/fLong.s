@@ -403,12 +403,20 @@ function longMakeUndefined( ins, len )
 {
   let result, length;
 
-  if( ins === null ) /* qqq3 : ask */
-  ins = [];
+  /* 
+     aaa3 : ask
+     Dmytro : explained, used this.longDescriptor
+  */
+  // if( ins === null ) 
+  // result = [];
 
   if( len === undefined )
   {
-    if( _.numberIs( ins ) )
+    if( ins === null )
+    {
+      length = 0;
+    }
+    else if( _.numberIs( ins ) )
     {
       length = ins;
       ins = null;
@@ -428,10 +436,8 @@ function longMakeUndefined( ins, len )
   }
 
   if( _.argumentsArrayIs( ins ) )
-  ins = [];
+  ins = null;
 
-  // /* Dmytro : it is unnacessary code, see three lines above */
-  // _.assert( !_.argumentsArrayIs( ins ), 'not tested' );
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
   _.assert( _.routineIs( ins ) || _.longLike( ins ) || ins === null, () => 'Expects long, but got ' + _.strType( ins ) );
@@ -440,7 +446,7 @@ function longMakeUndefined( ins, len )
   result = new ins( length );
   else if( _.unrollIs( ins ) )
   result = _.unrollMake( length );
-  else if( ins === null )
+  else if( ins === null ) /* aaa3 : ask */
   result = this.longDescriptor.make( length );
   else
   result = new ins.constructor( length );
@@ -485,7 +491,6 @@ function longMakeZeroed( ins, src )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
   _.assert( _.routineIs( ins ) || _.longLike( ins ), () => 'Expects long, but got ' + _.strType( ins ) );
-  // _.assert( _.routineIs( ins ) || _.longLike( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
 
   if( _.routineIs( ins ) )
   result = new ins( length );
@@ -495,7 +500,6 @@ function longMakeZeroed( ins, src )
   result = new ins.constructor( length );
 
   if( !_.bufferTypedIs( result ) )
-  // if( !_.bufferTypedIs( result ) && !_.bufferRawIs( result )  )
   for( let i = 0 ; i < length ; i++ )
   result[ i ] = 0;
 

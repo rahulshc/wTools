@@ -6012,7 +6012,8 @@ let Extension =
 
   // array producer
 
-  arrayMake, /* qqq : test coverage is outdated */
+  arrayMake, /* aaa : test coverage is outdated */
+  /* Dmytro : coverage is updated */
   arrayMakeUndefined,
 
   arrayFrom,
