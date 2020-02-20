@@ -1269,10 +1269,8 @@ function longBut_( dst, array, range, val )
   let l2 = array.length - d2;
 
   let result;
-  if( dst === true )
+  if( _.boolIs( dst ) )
   result = _.longMakeUndefined( array, l2 );
-  if( dst === false )
-  result = src;
   else if( _.arrayLikeResizable( dst ) )
   result = _.longEmpty( dst );
   else if( dst.length !== l2 )
