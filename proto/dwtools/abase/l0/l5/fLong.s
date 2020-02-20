@@ -97,10 +97,10 @@ function argumentsArrayFrom( src )
  * @memberof wTools
  */
 
-/*
-qqq : extend coverage and documentation of longMake | Dmytro : extended coverage and documentation of routine longMake
-qqq : longMake does not create unrolls, but should | Dmytro : longMake creates unrolls. Need to accept one from two variants.
-*/
+/* aaa : extend coverage and documentation of longMake */
+/* Dmytro : extended coverage and documentation of routine longMake */
+/* aaa : longMake does not create unrolls, but should */
+/* Dmytro : longMake creates unrolls */
 
 function longMake( src, ins )
 {
