@@ -172,7 +172,7 @@ function rangeToStr( range )
 // --
 
 /*
-xxx : review and merge with similar routines _.number.*
+zzz : review and merge with similar routines _.number.*
 */
 
 let Extension =

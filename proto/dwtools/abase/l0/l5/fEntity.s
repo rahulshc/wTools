@@ -82,11 +82,11 @@ function entityMakeEmpty( srcContainer )
   {
     return Object.create( null );
   }
-  else if( srcContainer === _.null ) /* qqq : cover this case | Dmytro : covered */
+  else if( srcContainer === _.null )
   {
     return null;
   }
-  else if( srcContainer === _.undefined ) /* qqq : cover this case | Dmytro : covered */
+  else if( srcContainer === _.undefined )
   {
     return undefined;
   }
@@ -111,12 +111,7 @@ function entityMakeUndefined( srcContainer, length )
   }
   else if( _.longIs( srcContainer ) )
   {
-    // debugger;
     return _.longMake( srcContainer, length );
-    // if( _.bufferTypedIs( srcContainer ) || _.bufferNodeIs( srcContainer ) )
-    // return new srcContainer.constructor( length !== undefined ? length : srcContainer.length );
-    // else
-    // return new Array( length !== undefined ? length : srcContainer.length );
   }
   else if( _.setIs( srcContainer ) )
   {
@@ -132,11 +127,11 @@ function entityMakeUndefined( srcContainer, length )
   {
     return Object.create( null );
   }
-  else if( srcContainer === _.null ) /* qqq : cover this case | Dmytro : covered */
+  else if( srcContainer === _.null )
   {
     return null;
   }
-  else if( srcContainer === _.undefined ) /* qqq : cover this case | Dmytro : covered */
+  else if( srcContainer === _.undefined )
   {
     return undefined;
   }
@@ -166,11 +161,11 @@ function entityMake( src )
   {
     return _.mapShallowClone( src )
   }
-  else if( src === _.null ) /* qqq : cover this case */
+  else if( src === _.null )
   {
     return null;
   }
-  else if( src === _.undefined ) /* qqq : cover this case */
+  else if( src === _.undefined )
   {
     return undefined;
   }
@@ -232,8 +227,6 @@ function entityMake( src )
  * @memberof wTools
  */
 
-/* qqq : cover and jsdoc please | Dmytro : covered and documented */
-
 function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
 {
 
@@ -243,7 +236,6 @@ function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
   {
     _.assert( !onEvaluate2 );
     return Object.is( src1, src2 );
-    // return src1 === src2;
   }
   else if( onEvaluate1.length === 2 ) /* equalizer */
   {

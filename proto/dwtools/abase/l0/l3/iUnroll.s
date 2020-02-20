@@ -43,10 +43,6 @@ function unrollIs( src )
 
 //
 
-/*
-qqq : poor examples | Dmytro : examples is improved
-*/
-
 /**
  * The routine unrollIsPopulated() determines whether the unroll-array has elements (length).
  *

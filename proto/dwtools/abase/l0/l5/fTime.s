@@ -350,8 +350,6 @@ function now_functor()
 function from( time )
 {
 
-  /* qqq : implement from string | Dmytro : implemented */
-
   _.assert( arguments.length === 1 );
 
   if( _.numberIs( time ) )
@@ -431,10 +429,10 @@ function dateToStr( date )
 let Extension =
 {
 
-  _begin, /* qqq : cover | Dmytro : covered */
-  _finally, /* qqq : cover | Dmytro : covered */
-  _periodic, /* qqq : cover | Dmytro : covered */
-  _cancel, /* qqq : cover | Dmytro : covered */
+  _begin,
+  _finally,
+  _periodic,
+  _cancel,
 
   timerIsBegun,
   timerIsCancelBegun,

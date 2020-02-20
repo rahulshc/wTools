@@ -54,7 +54,7 @@ function makeEmpty()
 
 class ContainerAdapterSet extends _.containerAdapter.Abstract
 {
-  // constructor( container ) // Dmytro : using constructor and super() method is old syntax, it can be deleted 
+  // constructor( container ) // Dmytro : using constructor and super() method is old syntax, it can be deleted
   // {
   //   super( container );
   //   _.assert( arguments.length === 1 );
@@ -62,7 +62,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   // }
   // make = make; // Dmytro : simple assigning methods as a property is able in NodeJs v12 and later. So, I assign this properties after class declaration.
   // static MakeEmpty = MakeEmpty;
-  // MakeEmpty = makeEmpty;  
+  // MakeEmpty = makeEmpty;
   // static Make = Make;
   has( e, onEvaluate1, onEvaluate2 )
   {
@@ -339,7 +339,8 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     else
     {
-      // qqq2 | Dmytro : tabs are removed
+      // aaa | Dmytro : tabs are removed
+      // qqq : not clear. explain during call
       let last = _.nothing;
       self.reduce( ( a, e2 ) => _.entityEntityEqualize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
       _.assert( last !== _.nothing );
@@ -812,18 +813,6 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
       {
-        // qqq2 : avoid making extra containers | Dmytro : implemented
-        // qqq2 : investigate all cases using creating extra container. try to find solution without extra copying | Dmytro : implemented
-        // Dmytro : only *Right methods has copy, its need copy because: when copy is used O( n ) = 2n -> O( n ) = n, if only iteration O( n ) = n * log( n )
-        // Dmytro : used iterative loop. First condition means that first element is always unique element.
-        // Otherwise, last element will be unique
-
-        // let temp = []; // Dmytro : to prevent cycled loop uses copies
-        // self.each( ( e ) => _.arrayAppendOnce( temp, e, onEvaluate1, onEvaluate2 ) );
-        // self.empty();
-        // for( let i = 0; i < temp.length; i++ )
-        // self.append( temp[ i ] );
-
         let length = this.length;
         let startLength = length;
         for( let e of container )

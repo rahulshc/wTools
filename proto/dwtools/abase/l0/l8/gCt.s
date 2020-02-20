@@ -251,10 +251,6 @@ let format = _.routineVectorize_functor( _format );
 
 //
 
-/*
-qqq : cover routine strip | Dmytro : covered
-*/
-
 function strip( srcStr )
 {
   let result = '';
@@ -289,7 +285,7 @@ let Style =
 
   'path' : { fg : 'dark cyan' },
   'code' : { fg : 'dark green' },
-  'entity' : { fg : 'bright blue' }, /* xxx qqq : why cant i specify [ 0,0,0 ] ? */
+  'entity' : { fg : 'bright blue' }, /* zzz : why cant i specify [ 0,0,0 ] ? */
 
   'topic.up' : { fg : 'white', bg : 'dark blue' },
   'topic.down' : { fg : 'dark black', bg : 'dark blue' },

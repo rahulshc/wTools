@@ -237,7 +237,7 @@ let Extension =
 
   // extendAppendingRecursive,
 
-  empty, /* qqq2 : implement, document, cover | Dmytro : it is implemented before, covered */
+  empty,
 
 }
 

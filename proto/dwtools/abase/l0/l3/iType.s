@@ -488,7 +488,7 @@ function definitionIs( src )
 
 //
 
-function traitIs( trait ) /* qqq : cover please | Dmytro : covered, two parts of routine in modules wTools and wBlueprint */
+function traitIs( trait )
 {
   if( !_.definitionIs( trait ) )
   return false;
@@ -509,8 +509,6 @@ let Fields =
 
 let Routines =
 {
-
-  /* qqq : requires good tests | Dmytro : covered not all routines */
 
   // primitive
 
@@ -541,14 +539,14 @@ let Routines =
   instanceIs,
   instanceLike,
 
-  workerIs, /* Dmytro : not covered now, I'm searching optimal way to write tests */
-  streamIs, /* Dmytro : not covered now, I'm searching optimal way to write tests */
+  workerIs,
+  streamIs, /* qqq : cover */
   consoleIs,
-  printerIs, 
+  printerIs,
   printerLike,
   loggerIs,
   processIs,
-  processIsDebugged, /* Dmytro : not covered now, I'm searching optimal way to write tests */
+  processIsDebugged,
   procedureIs,
   definitionIs,
   traitIs,

@@ -241,10 +241,8 @@ function arrayMake( src )
  * @memberof wTools
  */
 
-/*
-aaa : can accept zero arguments just like arrayMake
-Dmytro : arrayMakeUndefined accepts zero arguments and works like arrayMake
-*/
+/* aaa : can accept zero arguments just like arrayMake */
+/* Dmytro : arrayMakeUndefined accepts zero arguments and works like arrayMake */
 
 function arrayMakeUndefined( src, length )
 {

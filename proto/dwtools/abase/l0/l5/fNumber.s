@@ -18,7 +18,7 @@ let Self = _global_.wTools;
 //   _.assert( _.numberIs( range[ 1 ] ) );
 //   if( !_.numberIs( n ) )
 //   return false;
-//   return range[ 0 ] <= n && n <= range[ 1 ]; // xxx : review
+//   return range[ 0 ] <= n && n <= range[ 1 ]; // zzz : review
 // }
 
 //
@@ -56,7 +56,7 @@ function numberMix( ins1, ins2, progress )
 // --
 
 /*
-xxx : review and merge with similar routines _.range.*
+zzz : review and merge with similar routines _.range.*
 */
 
 let Extension =

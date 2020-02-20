@@ -229,7 +229,6 @@ function isDotted( srcPath )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( this._isDotted( srcPath ) )
   return true;
-  /* qqq : cover all cases | Dmytro : coverage is extended */
   if( _.strBegins( srcPath, this._hereStr + '\\' ) )
   return true;
   if( _.strBegins( srcPath, this._downStr + '\\' ) )
@@ -639,6 +638,8 @@ function dot( filePath )
 
 function undot( filePath )
 {
+  if( filePath === this._hereUpStr )
+  return filePath
   return _.strRemoveBegin( filePath, this._hereUpStr );
 }
 
@@ -826,8 +827,6 @@ dir.defaults.first = 0;
 
 let dirFirst = _.routineFromPreAndBody( dir_pre, dir_body );
 dirFirst.defaults.first = 1;
-
-/* qqq2 : implement and cover option depth. ask how | Dmytro : implemented and covered, separate test routines is used */
 
 // --
 // extension

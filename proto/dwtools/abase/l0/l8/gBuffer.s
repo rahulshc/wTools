@@ -216,7 +216,7 @@ function buffersAreIdentical( src1, src2 )
  */
 
 /*
-qqq : implement, cover, document | Dmytro : implemented, covered, documented. If ins is not a buffer, routine returns default long.
+qqq : review
 */
 
 function bufferMake( ins, src )
@@ -425,7 +425,9 @@ function bufferMake( ins, src )
  * @memberof wTools
  */
 
-/* qqq : implement, cover, document | Dmytro : implemented, covered, documented */
+/*
+qqq : review
+*/
 
 function bufferMakeUndefined( ins, src )
 {
@@ -718,7 +720,11 @@ function bufferRawFrom( buffer )
 {
   let result;
 
-  /* qqq : should do not copying when possible! | Dmytro : not copying if it possible */
+/*
+aaa : should do not copying when possible! |
+aaa Dmytro : not copying if it possible
+zzz
+*/
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -829,10 +835,6 @@ function bufferBytesFromNode( src )
 }
 
 //
-
-/*
-qqq : cover it | Dmytro : coverage is extended
-*/
 
 function bufferNodeFrom( buffer )
 {
@@ -984,22 +986,6 @@ function bufferBut( dstArray, range, srcArray )
   return result;
 }
 
-/*
-qqq : routine bufferBut requires good test coverage and documentation | Dmytro : covered
-*/
-/*
-qqq : implement cover and document routine bufferButInplace | Dmytro : covered
-Dmytro : newly created routines bufferBut_, bufferSelect_, bufferGrow_, bufferRelength_ is documented
-*/
-
-/* qqq : implement | Dmytro : all requirements applied
-   qqq : no | Dmytro : all requirements applied
-      src can be any long or any buffer
-      ins can be any long or any buffer
-*/
-
-// Dmytro : not a my template
-
 // function bufferBut( dstArray, range, srcArray )
 // {
 //
@@ -1015,7 +1001,6 @@ Dmytro : newly created routines bufferBut_, bufferSelect_, bufferGrow_, bufferRe
 //   // _.assert( srcArray === undefined || _.arrayIs( srcArray ) );
 //   _.assert( srcArray === undefined || _.longIs( srcArray ) || _.bufferAnyIs( srcArray ) );
 //
-//   /* qqq : jeed separate if fo BufferRaw, bufferNode and bufferView | Dmytro : old, implemented */
 //   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
 //   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
 //   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
@@ -2283,14 +2268,6 @@ function bufferRelen( src, len )
 
 //
 
-/*
-qqq : implement for 2 other types of buffer and do code test coverage | Dmytro : implemented for all buffer types, covered
-*/
-
-/*
-qqq : wrong! Size and length are different concepts. | Dmytro : concept size is used in routine
-*/
-
 function bufferResize( srcBuffer, size )
 {
   let result = srcBuffer;
@@ -3127,7 +3104,7 @@ let Routines =
   bufferToDom,
 
   bufferLeft,
-  bufferRight, /* qqq : please, implement and cover routine bufferRight | Dmytro : implemented and covered */
+  bufferRight,
   bufferSplit,
   bufferCutOffLeft,
 

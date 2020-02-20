@@ -390,10 +390,8 @@ function longMakeUndefined( ins, len )
 {
   let result, length;
 
-  /* 
-     aaa3 : ask
-     Dmytro : explained, used this.longDescriptor
-  */
+  /* aaa3 : ask. use default long container */
+  /* Dmytro : explained, used this.longDescriptor */
   // if( ins === null ) 
   // result = [];
 
@@ -442,10 +440,6 @@ function longMakeUndefined( ins, len )
 }
 
 //
-
-/*
-qqq : forbid non-long buffers as ins or src | Dmytro : asserts is improved
-*/
 
 /* qqq3 : teach to accept only length */
 /* qqq3 : use default long type if type is not clear */
@@ -496,7 +490,9 @@ function longMakeZeroed( ins, src )
 //
 
 /*
-qqq : find and let me know what is _.buffer* analog of _longClone | Dmytro : module has not _.buffer* analog of routine _longClone. The closest functionality has routine bufferMake( ins, src )
+aaa : find and let me know what is _.buffer* analog of _longClone |
+aaa Dmytro : module has not _.buffer* analog of routine _longClone. The closest functionality has routine bufferMake( ins, src )
+zzz
 */
 
 function _longClone( src )
@@ -749,7 +745,7 @@ function longFromCoercing( src )
   if( _.objectIs( src ) )
   return this.longFromCoercing( _.mapToArray( src ) );
 
-  debugger; qqq
+  debugger; qqq // qqq : cover
   if( _.strIs( src ) )
   return this.longFromCoercing( this.arrayFromStr( src ) );
 

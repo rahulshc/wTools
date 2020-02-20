@@ -5432,19 +5432,20 @@ function dot( test )
 
 function undot( test )
 {
+  /* qqq : unwrap array and normalize all tests in this test suite */
   var cases =
   [
-    { src : './', expected : '' },
+    { src : './', expected : './' },
+    { src : '.', expected : '.' },
+    { src : '..', expected : '..' },
     { src : './a', expected : 'a' },
     { src : 'a', expected : 'a' },
-    { src : '.', expected : '.' },
     { src : './.a', expected : '.a' },
-    { src : '..', expected : '..' },
     { src : './..a', expected : '..a' },
     { src : '/./a', expected : '/./a' },
   ]
 
-  for( var i = 0; i < cases.length; i++ )
+  for( var i = 0 ; i < cases.length ; i++ )
   {
     var c = cases[ i ];
     if( c.error )
@@ -5456,6 +5457,7 @@ function undot( test )
     else
     test.identical( _.path.undot( c.src ), c.expected );
   }
+
 }
 
 //

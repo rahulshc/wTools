@@ -704,7 +704,7 @@ let Extnesion =
   // stack
 
   location,
-  locationFromStackFrame, /* qqq2 : good coverage required, could be problems | Dmytro : covered, comments are given in routine */
+  locationFromStackFrame,
   stack,
   stackRemoveLeft,
   stackCondense,

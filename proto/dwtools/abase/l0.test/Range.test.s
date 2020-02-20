@@ -2146,102 +2146,102 @@ function rangeClamp( test )
 
 //
 
-function rangeNumberElements( test )
+function rangeCountElements( test )
 {
   test.case = 'increment - zero, positive substruction result';
-  var got = _.rangeNumberElements( [ 1, 6 ], 0 );
+  var got = _.rangeCountElements( [ 1, 6 ], 0 );
   test.identical( got, 0 );
 
   test.case = 'increment - zero, negative substruction result';
-  var got = _.rangeNumberElements( [ 6, 1 ], 0 );
+  var got = _.rangeCountElements( [ 6, 1 ], 0 );
   test.identical( got, 0 );
 
   test.case = 'increment - zero, zero substruction result';
-  var got = _.rangeNumberElements( [ 5, 5 ], 0 );
+  var got = _.rangeCountElements( [ 5, 5 ], 0 );
   test.identical( got, 0 );
 
   /* */
 
   test.case = 'increment - 1, positive substruction result';
-  var got = _.rangeNumberElements( [ 1, 6 ], 1 );
+  var got = _.rangeCountElements( [ 1, 6 ], 1 );
   test.identical( got, 5 );
 
   test.case = 'increment - 1, negative substruction result';
-  var got = _.rangeNumberElements( [ 6, 1 ], 1 );
+  var got = _.rangeCountElements( [ 6, 1 ], 1 );
   test.identical( got, -5 );
 
   test.case = 'increment - 1, zero substruction result';
-  var got = _.rangeNumberElements( [ 5, 5 ], 1 );
+  var got = _.rangeCountElements( [ 5, 5 ], 1 );
   test.identical( got, 0 );
 
   /* */
 
   test.case = 'increment - undefined, positive substruction result';
-  var got = _.rangeNumberElements( [ 1, 6 ], undefined );
+  var got = _.rangeCountElements( [ 1, 6 ], undefined );
   test.identical( got, 5 );
 
   test.case = 'increment - undefined, negative substruction result';
-  var got = _.rangeNumberElements( [ 6, 1 ], undefined );
+  var got = _.rangeCountElements( [ 6, 1 ], undefined );
   test.identical( got, -5 );
 
   test.case = 'increment - undefined, zero substruction result';
-  var got = _.rangeNumberElements( [ 5, 5 ], undefined );
+  var got = _.rangeCountElements( [ 5, 5 ], undefined );
   test.identical( got, 0 );
 
   /* */
 
   test.case = 'increment - not passed, positive substruction result';
-  var got = _.rangeNumberElements( [ 1, 6 ] );
+  var got = _.rangeCountElements( [ 1, 6 ] );
   test.identical( got, 5 );
 
   test.case = 'increment - not passed, negative substruction result';
-  var got = _.rangeNumberElements( [ 6, 1 ] );
+  var got = _.rangeCountElements( [ 6, 1 ] );
   test.identical( got, -5 );
 
   test.case = 'increment - not passed, zero substruction result';
-  var got = _.rangeNumberElements( [ 5, 5 ] );
+  var got = _.rangeCountElements( [ 5, 5 ] );
   test.identical( got, 0 );
 
   /* */
 
   test.case = 'increment - -1, positive substruction result';
-  var got = _.rangeNumberElements( [ 1, 6 ], -1 );
+  var got = _.rangeCountElements( [ 1, 6 ], -1 );
   test.identical( got, -5 );
 
   test.case = 'increment - -1, negative substruction result';
-  var got = _.rangeNumberElements( [ 6, 1 ], -1 );
+  var got = _.rangeCountElements( [ 6, 1 ], -1 );
   test.identical( got, 5 );
 
   test.case = 'increment - -1, zero substruction result';
-  var got = _.rangeNumberElements( [ 5, 5 ], -1 );
+  var got = _.rangeCountElements( [ 5, 5 ], -1 );
   test.identical( got, -0 );
 
   /* */
 
   test.case = 'increment - 5, positive substruction result';
-  var got = _.rangeNumberElements( [ 1, 6 ], 5 );
+  var got = _.rangeCountElements( [ 1, 6 ], 5 );
   test.identical( got, 1 );
 
   test.case = 'increment - 5, negative substruction result';
-  var got = _.rangeNumberElements( [ 6, 1 ], 5 );
+  var got = _.rangeCountElements( [ 6, 1 ], 5 );
   test.identical( got, -1 );
 
   test.case = 'increment - 5, zero substruction result';
-  var got = _.rangeNumberElements( [ 5, 5 ], 5 );
+  var got = _.rangeCountElements( [ 5, 5 ], 5 );
   test.identical( got, 0 );
 
   /* */
 
   test.case = 'increment - -5, positive substruction result';
-  var got = _.rangeNumberElements( [ 1, 6 ], -5 );
+  var got = _.rangeCountElements( [ 1, 6 ], -5 );
   test.identical( got, -1 );
 
   test.case = 'increment - -5, negative substruction result';
-  var got = _.rangeNumberElements( [ 6, 1 ], -5 );
+  var got = _.rangeCountElements( [ 6, 1 ], -5 );
   test.identical( got, 1 );
 
   test.case = 'increment - 5, zero substruction result';
-  var got = _.rangeNumberElements( [ 5, 5 ], -5 );
+  var got = _.rangeCountElements( [ 5, 5 ], -5 );
   test.identical( got, -0 );
 
   /* - */
@@ -2250,18 +2250,18 @@ function rangeNumberElements( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.rangeNumberElements() );
+  test.shouldThrowErrorSync( () => _.rangeCountElements() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.rangeNumberElements( [ 1, 2 ], 1, 'extra' ) );
+  test.shouldThrowErrorSync( () => _.rangeCountElements( [ 1, 2 ], 1, 'extra' ) );
 
   test.case = 'range is not a range';
-  test.shouldThrowErrorSync( () => _.rangeNumberElements( [ 1, 2, 3 ], [ 3, 4 ] ) );
-  test.shouldThrowErrorSync( () => _.rangeNumberElements( [ 1, 'wrong' ], [ 3, 4 ] ) );
-  test.shouldThrowErrorSync( () => _.rangeNumberElements( [ undefined, 1 ], [ 3, 4 ] ) );
+  test.shouldThrowErrorSync( () => _.rangeCountElements( [ 1, 2, 3 ], [ 3, 4 ] ) );
+  test.shouldThrowErrorSync( () => _.rangeCountElements( [ 1, 'wrong' ], [ 3, 4 ] ) );
+  test.shouldThrowErrorSync( () => _.rangeCountElements( [ undefined, 1 ], [ 3, 4 ] ) );
 
   test.case = 'increment is not a number and not undefined';
-  test.shouldThrowErrorSync( () => _.rangeNumberElements( [ 1, 2 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.rangeCountElements( [ 1, 2 ], 'wrong' ) );
 }
 
 //
@@ -2838,7 +2838,7 @@ var Self =
     rangeFromSingle,
 
     rangeClamp,
-    rangeNumberElements,
+    rangeCountElements,
     rangeFirstGet,
     rangeLastGet,
 
