@@ -1425,7 +1425,7 @@ function assertInRange( test )
 
 //
 
-function rangeFromLeft( test ) 
+function rangeFromLeft( test )
 {
   test.case = 'range - number';
   var got = _.rangeFromLeft( 1 );
@@ -1565,7 +1565,7 @@ function rangeFromLeft( test )
 
 //
 
-function rangeFromRight( test ) 
+function rangeFromRight( test )
 {
   test.case = 'range - number';
   var got = _.rangeFromRight( 1 );
@@ -1705,7 +1705,7 @@ function rangeFromRight( test )
 
 //
 
-function rangeFromSingle( test ) 
+function rangeFromSingle( test )
 {
   test.case = 'range - number';
   var got = _.rangeFromSingle( 1 );
@@ -1845,7 +1845,7 @@ function rangeFromSingle( test )
 
 //
 
-function rangeClamp( test ) 
+function rangeClamp( test )
 {
   test.open( 'array' );
 
@@ -2146,7 +2146,7 @@ function rangeClamp( test )
 
 //
 
-function rangeNumberElements( test ) 
+function rangeNumberElements( test )
 {
   test.case = 'increment - zero, positive substruction result';
   var got = _.rangeNumberElements( [ 1, 6 ], 0 );
@@ -2266,7 +2266,7 @@ function rangeNumberElements( test )
 
 //
 
-function rangeFirstGet( test ) 
+function rangeFirstGet( test )
 {
   test.open( 'range - array' );
 
@@ -2521,7 +2521,7 @@ function rangeFirstGet( test )
 
 //
 
-function rangeLastGet( test ) 
+function rangeLastGet( test )
 {
   test.open( 'range - array' );
 
@@ -2776,7 +2776,7 @@ function rangeLastGet( test )
 
 //
 
-function rangeToStr( test ) 
+function rangeToStr( test )
 {
   test.case = 'range';
   var got = _.rangeToStr( [ 1, 2 ] );
@@ -2834,7 +2834,7 @@ var Self =
     // range, l0/l5/fRange.s
 
     rangeFromLeft,
-    rangeFromRight,
+    rangeFromRight, /* qqq : fix */
     rangeFromSingle,
 
     rangeClamp,
