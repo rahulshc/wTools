@@ -426,6 +426,9 @@ function arrayMake( test )
   if( !Config.debug )
   return;
 
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayMake() );
+
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.arrayMake( 1, 3 ) );
   test.shouldThrowErrorSync( () => _.arrayMake( [], 3 ) );
