@@ -219,10 +219,9 @@ function longMake( src, ins )
 
 //
 
-/*
-aaa : optimize 
-Dmytro : optimized, covered, extended for using longDescriptor
-*/
+/* qqq : implement test */
+/* Dmytro : implemented without descriptor changes */
+
 
 function longMakeEmpty( src )
 {
@@ -578,13 +577,7 @@ function _longClone( src )
  * @memberof wTools
  */
 
-
-/* xxx : review */
-/*
-qqq : find and let me know what is _.buffer* analog of _.longShallowClone | Dmytro : the closest _.buffer* analog of _.longShallowClone is bufferJoin, which joins buffers to flat buffer
-qqq2 : did not work! | Dmytro : extended
-qqq2 : poor coverage! | Dmytro : covered
-*/
+/* zzz : review longShallowClone */
 
 function longShallowClone()
 {
@@ -2959,7 +2952,7 @@ function longCountUnique( src, onEvaluate )
 //  * @memberof wTools."wTools.defaultLong"
 //  */
 //
-// function makeSimilar( src, length ) /* xxx */
+// function makeSimilar( src, length )
 // {
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //
@@ -3083,27 +3076,10 @@ function makeArrayOfLengthZeroed( length )
 // }
 
 // --
-// fields
+// extension
 // --
 
-// let unrollSymbol = Symbol.for( 'unroll' );
-
-let Fields =
-{
-
-  // // ArrayType : Array,
-  //
-  // accuracy : 1e-7,
-  // accuracySqrt : 1e-4,
-  // accuracySqr : 1e-14,
-
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let Extension =
 {
 
   // arguments array
@@ -3215,10 +3191,7 @@ let Routines =
 
 }
 
-//
-
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( _, Extension );
 
 // --
 // export

@@ -830,7 +830,7 @@ dirFirst.defaults.first = 1;
 /* qqq2 : implement and cover option depth. ask how | Dmytro : implemented and covered, separate test routines is used */
 
 // --
-// fields
+// extension
 // --
 
 let Parameters =
@@ -868,10 +868,6 @@ let Fields =
   s : null,
 
 }
-
-// --
-// routines
-// --
 
 let Routines =
 {

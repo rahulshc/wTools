@@ -165,10 +165,11 @@ function errOriginalStack( err )
   if( err[ stackSymbol ] )
   return err[ stackSymbol ];
 
-  // if( err.beautifiedStack )
-  // return err.beautifiedStack;
-
+  if( err.stack )
   return _.introspector.stack( err.stack );
+
+  /* should return null if nothing found */
+  return null;
 }
 
 //
@@ -344,7 +345,9 @@ function _err( o )
       if( !_.primitiveIs( arg ) && _.objectLike( arg ) )
       try
       {
+        debugger;
         o.throwenLocation = _.introspector.location({ error : arg, location : o.throwenLocation });
+        debugger;
       }
       catch( err2 )
       {
@@ -368,6 +371,9 @@ function _err( o )
 
       if( !o.throwenCallsStack )
       o.throwenCallsStack = _.errOriginalStack( resultError );
+      if( !o.throwenCallsStack )
+      o.throwenCallsStack = _.introspector.stack([ ( o.level || 0 ) + 1, Infinity ]);
+
       if( !o.caughtCallsStack )
       {
         o.caughtCallsStack = _.introspector.stack( o.caughtCallsStack, [ ( o.level || 0 ) + 1, Infinity ] );

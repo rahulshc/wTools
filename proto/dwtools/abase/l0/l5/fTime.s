@@ -425,14 +425,10 @@ function dateToStr( date )
 }
 
 // --
-// define
+// extension
 // --
 
-let Fields =
-{
-}
-
-let Routines =
+let Extension =
 {
 
   _begin, /* qqq : cover | Dmytro : covered */
@@ -465,12 +461,7 @@ let Routines =
 
 //
 
-// Object.assign( Self, Routines );
-// Object.assign( Self, Fields );
-// xxx : mapSupplement is not available on this level, but it is required here
-
-_.mapSupplement( Self, Routines );
-_.mapSupplement( Self, Fields );
+_.mapSupplement( Self, Extension );
 
 // --
 // export

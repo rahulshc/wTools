@@ -40,6 +40,7 @@ function onSuiteEnd()
 
 function locationFromStackFrameWithoutLocationField( test )
 {
+
   test.open( 'o - string' );
 
   test.case = 'empty string';
@@ -1019,6 +1020,10 @@ function locationFromStackFrameWithoutLocationField( test )
 
   test.case = 'wrong type of o.location.routineName';
   test.shouldThrowErrorSync( () => _.introspector.locationFromStackFrame( { stackFrame : 'at abc (/a/b/c)', location : { routineName : [] } } ) );
+
+  test.case = 'stackFrame is null';
+  test.shouldThrowErrorSync( () => _.introspector.locationFromStackFrame( { stackFrame : null } ) );
+
 }
 
 //
@@ -1036,7 +1041,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'o.location has original field different to stackFrame';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/Introspector.test.s)',
   }
@@ -1061,7 +1066,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'o.location has original field different to stackFrame, filePath - empty string';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/Introspector.test.s)',
     filePath : '',
@@ -1087,7 +1092,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'o.location has original field different to stackFrame, filePath - string with parentheses';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
     filePath : '/C/dir/(Introspector.test.s)',
@@ -1113,7 +1118,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'routineName - empty string';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
     filePath : '/C/dir/(Introspector.test.s)',
@@ -1140,7 +1145,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'routineName - string with underscore';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
     filePath : '/C/dir/(Introspector.test.s)',
@@ -1167,7 +1172,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'routineName - string, which ends by one dot';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
     filePath : '/C/dir/(Introspector.test.s)',
@@ -1194,7 +1199,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'routineName - string, which ends by two dots';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
     filePath : '/C/dir/(Introspector.test.s)',
@@ -1221,7 +1226,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'routineName has underscore at the start and in the middle, o.location.internal - 0';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
     internal : 0
@@ -1247,7 +1252,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'routineName has double underscore at the start and underscore in the middle, o.location.internal - 0';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
     internal : 0
@@ -1273,7 +1278,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'routineName has double underscore in name, o.location.internal - 3';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
     internal : 3
@@ -1299,7 +1304,7 @@ function locationFromStackFrameWithLocationField( test )
   /* */
 
   test.case = 'routineName has underscore at the start and double underscore in the middle, filePath starts from internal';
-  var location = 
+  var location =
   {
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
     filePath : 'internal/index.js'
@@ -1392,7 +1397,7 @@ function locationFromStackFrameWithLocationField( test )
 
   test.case = 'o.location.routineAlias - empty string, o.location.internal - 2';
   var location =
-  { 
+  {
     routineAlias : '',
     internal : 2
   };
@@ -1418,7 +1423,7 @@ function locationFromStackFrameWithLocationField( test )
 
   test.case = 'o.location.routineAlias with double underscore, o.location.internal - 0';
   var location =
-  { 
+  {
     routineAlias : '__routine',
     internal : 0
   };
@@ -1444,7 +1449,7 @@ function locationFromStackFrameWithLocationField( test )
 
   test.case = 'number of o.location.line is different to stack';
   var location =
-  { 
+  {
     filePath : 'internal/timers.js',
     line : 1,
   };

@@ -874,18 +874,10 @@ function unrollRemove( dstArray )
 }
 
 // --
-// fields
-// --
-
-let Fields =
-{
-}
-
-// --
 // routines
 // --
 
-let Routines =
+let Extension =
 {
 
   unrollMake,
@@ -905,8 +897,7 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( Self, Extension );
 
 // --
 // export

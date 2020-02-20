@@ -7,121 +7,10 @@ let _ = _global_.wTools;
 let Self = _global_.wTools;
 
 let _ObjectHasOwnProperty = Object.hasOwnProperty;
-//
-// // --
-// // set
-// // --
-//
-// function setFrom( src )
-// {
-//   _.assert( arguments.length === 1 );
-//   if( _.setAdapterLike( src ) )
-//   return src;
-//   if( src === null )
-//   return new Set();
-//   if( _.containerAdapter.is( src ) )
-//   src = src.toArray().original;
-//   _.assert( _.longIs( src ) );
-//   return new Set([ ... src ]);
-// }
-//
-// //
-//
-// function setsFrom( srcs )
-// {
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.longIs( srcs ) );
-//   let result = [];
-//   for( let s = 0, l = srcs.length ; s < l ; s++ )
-//   result[ s ] = _.setFrom( srcs[ s ] );
-//   return result;
-// }
-//
-// //
-//
-// function setToArray( src )
-// {
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.setLike( src ) );
-//   return [ ... src ];
-// }
-//
-// //
-//
-// function setsToArrays( srcs )
-// {
-//   _.assert( arguments.length === 1 );
-//   _.assert( _.longIs( srcs ) );
-//   let result = [];
-//   for( let s = 0, l = srcs.length ; s < l ; s++ )
-//   result[ s ] = _.setToArray( srcs[ s ] );
-//   return result;
-// }
 
 // --
-// entity modifier
+//
 // --
-
-// function containerExtend( dst, src )
-// {
-//
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   if( _.objectIs( src ) || _.longIs( src ) )
-//   {
-//
-//     _.each( src, function( e, k )
-//     {
-//       dst[ k ] = e;
-//     });
-//
-//   }
-//   else
-//   {
-//
-//     dst = src;
-//
-//   }
-//
-//   return dst;
-// }
-//
-// //
-//
-// function containerExtendAppending( dst, src )
-// {
-//
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   if( _.objectIs( src ) )
-//   {
-//
-//     _.each( src, function( e, k )
-//     {
-//       dst[ k ] = e;
-//     });
-//
-//   }
-//   else if( _.longIs( src ) )
-//   {
-//
-//     if( dst === null || dst === undefined )
-//     dst = _.longSlice( src );
-//     else
-//     _.arrayAppendArray( dst, src );
-//
-//   }
-//   else
-//   {
-//
-//     dst = src;
-//
-//   }
-//
-//   return dst;
-// }
-
-//
 
 function entityMakeConstructing( src, length )
 {
@@ -149,11 +38,11 @@ function entityMakeConstructing( src, length )
   {
     return new src.constructor();
   }
-  else if( src === _.null ) /* qqq : cover this case | Dmytro : covered */
+  else if( src === _.null )
   {
     return null;
   }
-  else if( src === _.undefined ) /* qqq : cover this case | Dmytro : covered */
+  else if( src === _.undefined )
   {
     return undefined;
   }
@@ -592,31 +481,11 @@ function entityAssignField( dstContainer, srcValue, name, onRecursive )
 }
 
 // --
-// fields
-// --
-
-let Fields =
-{
-}
-
-// --
 // routines
 // --
 
-let Routines =
+let Extension =
 {
-
-  // // set
-  //
-  // setFrom,
-  // setsFrom,
-  // setToArray,
-  // setsToArrays,
-
-  // entity modifier
-
-  // containerExtend,
-  // containerExtendAppending,
 
   entityMakeConstructing,
   entityMakeEmpty,
@@ -626,10 +495,6 @@ let Routines =
   entityMake,
   make : entityMake,
 
-  // _.container.empty, /* qqq : implement coverage | Dmytro : implemented in Container.test.s */
-  // empty : _.container.empty,
-
-  // containerExtend,
   entityEntityEqualize,
 
   entityAssign, /* refactor!!! */
@@ -640,8 +505,7 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( Self, Extension );
 
 // --
 // export

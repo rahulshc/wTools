@@ -11,14 +11,14 @@ let Self = _.introspector = _.introspector || Object.create( null );
 // --
 
 // --
-// namespace definition
+// extension
 // --
 
 let Extension =
 {
 }
 
-Object.assign( _.introspector, Extension );
+_.mapSupplement( _.introspector, Extension );
 
 // --
 // export

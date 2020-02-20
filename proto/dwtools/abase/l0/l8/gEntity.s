@@ -142,7 +142,7 @@ function uncountableSize( src )
  * @memberof wTools
 */
 
-function entitySize( src )
+function entitySize( src ) /* qqq : review jsdoc and tests */
 {
   let result = 0;
 
@@ -157,7 +157,10 @@ function entitySize( src )
     _.look( src, onEach );
   }
 
+  if( _.look )
   return result;
+
+  return NaN;
 
   function onEach( e, k, it )
   {

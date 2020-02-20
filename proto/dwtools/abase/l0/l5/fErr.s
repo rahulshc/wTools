@@ -10,7 +10,6 @@ let Self = _global_.wTools;
 // implementation
 // --
 
-/* xxx : cover it */
 function error_functor( name, onMake )
 {
 
@@ -39,13 +38,12 @@ function error_functor( name, onMake )
         let err1 = new ErrorConstructor();
         let args1 = onMake.apply( err1, arguments );
         _.assert( _.arrayLike( args1 ) );
-        let args2 = _.arrayAppendArrays( [], [ [ err1, ( arguments.length ? '\n' : '' ) ], args1 ] );
-        let err2 = _._err({ args : args2, level : 3 });
+        let args2 = _.arrayAppendArrays( [], [ [ err1, ( args1.length ? '\n' : '' ) ], args1 ] );
+        let err2 = _._err({ args : args2, level : 2 });
 
         _.assert( err1 === err2 );
         _.assert( err2 instanceof _global.Error );
         _.assert( err2 instanceof ErrorConstructor );
-        // _.assert( !!err2.stack );
 
         return err2;
       }
@@ -63,23 +61,23 @@ function error_functor( name, onMake )
 
   ErrorConstructor.prototype = Object.create( _global.Error.prototype );
   ErrorConstructor.prototype.constructor = ErrorConstructor;
-  ErrorConstructor.constructor = ErrorConstructor;
+  // ErrorConstructor.constructor = ErrorConstructor;
 
   return ErrorConstructor;
 }
 
 // --
-// routines
+// extension
 // --
 
-let NamespaceExtension =
+let Extension =
 {
   error_functor,
 }
 
 //
 
-Object.assign( Self, NamespaceExtension );
+_.mapSupplement( Self, Extension );
 
 // --
 // export

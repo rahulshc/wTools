@@ -28,7 +28,7 @@ function rangeFromLeft( range )
 
 //
 
-function rangeFromRight( range ) // Dmytro : this routine is identical to rangeFromLeft. Is it correct?
+function rangeFromRight( range ) // aaa Dmytro : this routine is identical to rangeFromLeft. Is it correct?
 {
   _.assert( arguments.length === 1 );
   if( _.numberIs( range ) )
@@ -112,7 +112,7 @@ function rangeNumberElements( range, increment )
 function rangeFirstGet( range, options )
 {
 
-  var options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container. 
+  var options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
   if( options.increment === undefined )
   options.increment = 1;
 
@@ -165,23 +165,16 @@ function rangeToStr( range )
 }
 
 // --
-// fields
-// --
-
-let Fields =
-{
-}
-
-// --
 // routines
 // --
 
-let Routines =
+let Extension =
 {
 
   // range
 
   /* qqq : good coverage of each routine is required | Dmytro : covered */
+  /* xxx qqq2 */
 
   rangeFromLeft,
   rangeFromRight,
@@ -198,8 +191,7 @@ let Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( _, Extension );
 
 // --
 // export

@@ -38,7 +38,7 @@ function searchFirstIndex( srcArr, ins )
 }
 
 // --
-// declare
+// extension
 // --
 
 let Extension =
@@ -49,7 +49,7 @@ let Extension =
 
 }
 
-Object.assign( Self, Extension );
+_.mapSupplement( Self, Extension );
 
 // --
 // export

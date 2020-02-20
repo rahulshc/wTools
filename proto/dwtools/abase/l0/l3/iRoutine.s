@@ -174,7 +174,7 @@ function _routineJoin( o )
         return Function.prototype.bind.call( routine, context );
       }
     }
-    else if( context === undefined && args !== undefined ) // xxx
+    else if( context === undefined && args !== undefined ) // zzz
     {
       if( o.sealing === true )
       {
@@ -203,29 +203,9 @@ function _routineJoin( o )
         return __joinedArguments[ name ];
       }
     }
-    else if( context === undefined && args === undefined ) // xxx
+    else if( context === undefined && args === undefined ) // zzz
     {
       return routine;
-      // if( !o.sealing )
-      // {
-      //   return routine;
-      // }
-      // else
-      // {
-      //   if( !args )
-      //   args = [];
-      //
-      //   let name = routine.name || '__sealedArguments';
-      //   let __sealedArguments =
-      //   {
-      //     [ name ] : function()
-      //     {
-      //       return routine.apply( undefined, args );
-      //     }
-      //   }
-      //   return __sealedArguments[ name ];
-      //
-      // }
     }
     else _.assert( 0 );
   }
@@ -568,7 +548,8 @@ function _routinesCompose_body( o )
   if( o.chainer === null )
   o.chainer = _.compose.chainer.original;
 
-  o.elements = _.arrayFlatten( null, o.elements ); /* qqq xxx : single argument call should be ( no-copy call ) */
+  o.elements = _.arrayFlatten( o.elements );
+
   let elements = [];
   for( let s = 0 ; s < o.elements.length ; s++ )
   {
@@ -606,7 +587,7 @@ function _routinesCompose_body( o )
   {
     return [];
   }
-  // else if( elements.length === 1 ) /* xxx : optimize the case */
+  // else if( elements.length === 1 ) /* zzz : optimize the case */
   // {
   //   act = elements[ 0 ];
   // }

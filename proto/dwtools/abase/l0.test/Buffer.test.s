@@ -917,8 +917,8 @@ function bufferRawFrom( test )
   test.identical( got, expected );
 
   /*
-  Dmytro: making buffer from file need tests, now condition has _.assert( 0, 'not tested' )
-   */
+  zzz aaa Dmytro: making buffer from file need tests, now condition has _.assert( 0, 'not tested' )
+  */
 
   /* - */
 
@@ -1086,8 +1086,8 @@ function bufferBytesFrom( test )
   test.identical( got, expected );
 
   /*
-  Dmytro: making buffer from file need tests, now condition has _.assert( 0, 'not tested' )
-   */
+  zzz aaa Dmytro: making buffer from file need tests, now condition has _.assert( 0, 'not tested' )
+  */
 
   /* - */
 
@@ -1373,16 +1373,6 @@ function bufferBut( test )
     U16x,
     F32x,
     F64x,
-
-    // I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
-    // U16x,
-    // I32x,
-    // U32x,
-    // F32x,
-    // F64x,
   ];
 
   for( let i = 0; i < list.length; i++ )
@@ -1396,8 +1386,6 @@ function bufferBut( test )
 
   if( Config.interpreter === 'njs' )
   {
-    /* qqq : should work | Dmytro : works. Previus 'qqq' implemented */
-
     test.open( 'bufferNode' );
     run( bufferNode );
     test.close( 'bufferNode' );
@@ -1479,21 +1467,21 @@ function bufferBut( test )
     test.is( got !== dst );
 
     test.case = 'range = number';
-    var dst = buf( [ 0, 1, 2, 3 ] ); /* xxx qqq : replace name */
+    var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, 2, [ 5 ] );
     var expected = buf( [ 0, 1, 5, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range = negative number';
-    var dst = buf( [ 0, 1, 2, 3 ] ); /* xxx qqq : replace name */
+    var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, -2, [ 5 ] );
     var expected = buf( [ 5, 0, 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
-    test.case = 'range[ 0 ] === range[ 1 ], src = array'; /* qqq : poor descriptions of cases | Dmytro : corrected */
-    var dst = buf( [ 0, 1, 2, 3 ] ); /* xxx qqq : replace name */
+    test.case = 'range[ 0 ] === range[ 1 ], src = array';
+    var dst = buf( [ 0, 1, 2, 3 ] );
     var got = _.bufferBut( dst, [ 2, 2 ], [ 5 ] );
     var expected = buf( [ 0, 1, 5, 2, 3 ] );
     test.identical( got, expected );
@@ -1542,8 +1530,6 @@ function bufferBut( test )
   }
 
   /* BufferRaw and BufferView */
-
-  /* qqq : should work | Dmytro : works. Previus 'qqq' implemented */
 
   var bufferRaw = ( src ) => new BufferRaw( src );
   var bufferView = ( src ) => new BufferView( new BufferRaw( src ) );

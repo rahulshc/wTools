@@ -131,7 +131,7 @@ function locationFromStackFrame( o )
   throw Error( 'Expects options map' );
 
   if( !( _.strIs( o.stackFrame ) ) )
-  throw Error( `Expects string {- stackFrame -}, but fot ${_.strType( stackFrame )}` );
+  throw Error( `Expects string {- stackFrame -}, but fot ${_.strType( o.stackFrame )}` );
 
   /* */
 
@@ -139,7 +139,7 @@ function locationFromStackFrame( o )
   o.location = Object.create( null );
 
   // Dmytro : maybe it needs assertion :
-  // _.assert( _.mapLike( o.location ) ); // Dmytro : now o.location may be any extensional object, for example arrays 
+  // _.assert( _.mapLike( o.location ) ); // Dmytro : now o.location may be any extensional object, for example arrays
 
   if( !o.location.original )
   o.location.original = o.stackFrame;
@@ -149,7 +149,7 @@ function locationFromStackFrame( o )
   o.location.filePath = pathFromStack();
 
   pathCanonize();
-  routineFromStack(); 
+  routineFromStack();
   routineAliasFromStack();
   internalForm();
 

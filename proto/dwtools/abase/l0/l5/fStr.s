@@ -124,14 +124,6 @@ function strQuoteAnalyze( o )
   result.ranges = [];
   result.quotes = [];
 
-  // if( !_.mapIs( o ) )
-  // o = { src : o };
-  // if( o.quote === undefined || o.quote === null )
-  // o.quote = strQuoteAnalyze.defaults.quote;
-  // _.assertMapHasOnly( o, strQuoteAnalyze.defaults );
-  // _.assert( arguments.length === 1, 'Expects single argument' );
-  // _.assert( _.strIs( o.src ) );
-
   if( !_.mapIs( o ) )
   o = { src : arguments[ 0 ], quote : arguments[ 1 ] };
   if( o.quote === undefined || o.quote === null )
@@ -219,8 +211,6 @@ strQuoteAnalyze.defaults =
 // --
 //
 // --
-
-/* qqq : ask how to modify strLeft/strRight | Dmytro : routines used range */
 
 // function _strLeftSingle( src, ins, first, last )
 // {
@@ -947,35 +937,6 @@ function strReplaceEnd( src, end, ins )
 
 //
 
-// function _strReplaced( srcStr, insStr, subStr )
-// {
-//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-//   _.assert( _.strIs( srcStr ), 'Expects string {-src-}' );
-//
-//   let result = srcStr;
-//
-//   if( !_.longIs( insStr ) )
-//   {
-//     _.assert( _.strIs( subStr ), 'Expects string {-sub-}' );
-//
-//     result = result.replace( insStr, subStr );
-//   }
-//   else
-//   {
-//     _.assert( insStr.length === subStr.length, 'Search and replace strings must have same length' );
-//     for( let i = 0; i < insStr.length; i++ )
-//     {
-//       _.assert( _.strIs( subStr[ i ] ), 'Expects string {-sub-}' );
-//
-//       result = result.replace( insStr[ i ], subStr[ i ] );
-//     }
-//   }
-//
-//   return result;
-// }
-
-//
-
 /**
 * Finds substring or regexp ( insStr ) occurrence from the source string ( srcStr ) and replaces them
 * with the subStr values.
@@ -1028,84 +989,6 @@ function strReplace( src, ins, sub )
 
   return result;
 }
-// function strReplace( srcStr, insStr, subStr )
-// {
-//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-//   _.assert( _.longIs( srcStr ) || _.strIs( srcStr ), 'Expects string or array of strings {-src-}' );
-//   _.assert( _.longIs( insStr ) || _.strIs( insStr ) || _.regexpIs( insStr ), 'Expects string/regexp or array of strings/regexps {-begin-}' );
-//   _.assert( _.longIs( subStr ) || _.strIs( subStr ), 'Expects string or array of strings {-src-}' );
-//
-//   let result = [];
-//   let srcIsArray = _.longIs( srcStr );
-//
-//   if( _.strIs( srcStr ) && !_.longIs( srcStr ) )
-//   return _._strReplaced( srcStr, insStr, subStr );
-//
-//   srcStr = _.arrayAs( srcStr );
-//
-//   for( let s = 0; s < srcStr.length; s++ )
-//   {
-//     let src = srcStr[ s ];
-//     result[ s ] = _._strReplaced( src, insStr, subStr );
-//   }
-//
-//   if( !srcIsArray )
-//   return result[ 0 ];
-//
-//   return result;
-// }
-
-//
-
-// function strReplaceBegin( src, begin, ins )
-// {
-//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-//   _.assert( _.strIs( ins ), 'Expects {-ins-} as string' );
-//   _.assert( _.strIs( src ) );
-//
-//   let result = src;
-//   if( _.strBegins( result , begin ) )
-//   {
-//     let prefix = ins;
-//     result = prefix + _.strRemoveBegin( result, begin );
-//   }
-//
-//   return result;
-// }
-//
-// //
-//
-// function strReplaceEnd( src, end, ins )
-// {
-//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-//   _.assert( _.strIs( ins ), 'Expects {-ins-} as string' );
-//   _.assert( _.strIs( src ) );
-//
-//   let result = src;
-//   if( _.strEnds( result, end ) )
-//   {
-//     let postfix = ins;
-//     result = _.strRemoveEnd( result , end ) + postfix;
-//   }
-//
-//   return result;
-// }
-//
-// //
-//
-// function strReplace( srcStr, insStr, subStr )
-// {
-//   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
-//   _.assert( _.strIs( srcStr ), 'Expects string {-src-}' );
-//   _.assert( _.strIs( subStr ), 'Expects string {-sub-}' );
-//
-//   let result = srcStr;
-//   debugger;
-//
-//   result = result.replace( insStr, subStr );
-//
-//   return result;
-// }
 
 // --
 // split
@@ -2262,81 +2145,69 @@ strSplitInlinedStereo.defaults =
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
+let Extension =
 {
+
+  // relation
+
   // QuotePair,
-}
-
-// --
-// routines
-// --
-
-let Routines =
-{
 
   // decorator
 
-  strQuote, /* xxx : move up */ /* Dmytro : covered */
-  strUnquote, /* xxx : move up */ /* qqq : cover please | Dmytro : covered */
-  strQuotePairsNormalize, /* qqq : cover please strQuotePairsNormalize | Dmytro : covered */
-  strQuoteAnalyze, /* qqq : cover please | Dmytro : extended coverage */
+  strQuote,
+  strUnquote,
+  strQuotePairsNormalize, /* qqq : analyze and write good jsdoc */
+  strQuoteAnalyze, /* qqq : analyze and write good jsdoc */
 
   //
 
   _strLeftSingle,
-  strLeft, /* qqq : improve coverage | Dmytro : covered */
+  strLeft,
   _strRightSingle,
-  strRight, /* qqq : improve coverage | Dmytro : covered */
+  strRight,
 
-  strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ), /* Dmytro : coverage is extended */
-  strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ), /* Dmytro : coverage is extended */
-  strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ), /* Dmytro : coverage is extended */
+  strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ),
+  strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
+  strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ),
 
-  strInsideOf, /* Dmytro : covered */
-  strOutsideOf, /* Dmytro : covered */
+  strInsideOf,
+  strOutsideOf,
 
   // replacers
 
   _strRemovedBegin,
-  strRemoveBegin, /* Dmytro : coverage is extended */
+  strRemoveBegin,
   _strRemovedEnd,
-  strRemoveEnd, /* Dmytro : coverage is extended */
+  strRemoveEnd,
 
-  strReplaceBegin, /* Dmytro : coverage is extended */
-  strReplaceEnd, /* Dmytro : coverage is extended */
-  //_strReplaced,
-  strReplace, /* Dmytro : coverage is extended */
-
-  /* qqq : check coverage of each routine of the file fString.s | Dmytro : checked */
+  strReplaceBegin,
+  strReplaceEnd,
+  strReplace,
 
   // split
 
-  /* qqq : move coverage of routines below from l1.test/Str.test.s to l0.test/Str.test.s | Dmytro : moved a time ago */
-  /* qqq : check coverage of routines below | Dmytro : checked, comments is given below */
+  strSplitsCoupledGroup,
+  strSplitsUngroupedJoin, /* qqq : light coverage required */
+  strSplitsQuotedRejoin, /* qqq : light coverage required */
+  strSplitsDropDelimeters, /* qqq : light coverage required */
+  strSplitsStrip,
+  strSplitsDropEmpty,
 
-  strSplitsCoupledGroup, // Dmytro : covered
-  strSplitsUngroupedJoin, // Dmytro : not covered
-  strSplitsQuotedRejoin, // Dmytro : not covered, routine has many options
-  strSplitsDropDelimeters, //Dmytro : not covered
-  strSplitsStrip, // Dmytro : not covered
-  strSplitsDropEmpty, // Dmytro : covered
+  strSplitFast,
+  strSplit,
+  strSplitNonPreserving,
 
-  strSplitFast, // Dmytro : covered, test routine is large, it can be split
-  strSplit, // Dmytro : covered, test routine is large, it can be split
-  strSplitNonPreserving, // Dmytro : not covered
-
-  strSplitInlined, // Dmytro : covered
-  strSplitInlinedStereo, // Dmytro : trivial coverage
+  strSplitInlined,
+  strSplitInlinedStereo,
 
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapExtend( Self, Extension );
 
 // --
 // export
