@@ -447,6 +447,12 @@ function arrayMake( test )
 
 function arrayMakeUndefined( test )
 {
+  test.case = 'without arguments';
+  var got = _.arrayMakeUndefined();
+  var expected = new Array();
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+
   test.case = 'src = null';
   var src = null;
   var got = _.arrayMakeUndefined( src );
@@ -805,13 +811,66 @@ function arrayMakeUndefined( test )
   test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
+  /* */
+
+  test.case = 'src = empty Set';
+  var src = new Set( [] );
+  var got = _.arrayMakeUndefined( src );
+  var expected = new Array();
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.setIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = empty Set, length = 2';
+  var src = new Set( [] );
+  var got = _.arrayMakeUndefined( src, 2 );
+  var expected = new Array( 2 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.setIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = Set, src.size = 1';
+  var src = new Set( [ 'str' ] );
+  var got = _.arrayMakeUndefined( src );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.setIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = Set, src.length = 1, length > src.length';
+  var src = new Set( [ 'str' ] );
+  var got = _.arrayMakeUndefined( src, 2 );
+  var expected = new Array( 2 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.setIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = unroll, src.length > 1';
+  var src = new Set( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.setIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = unroll, src.length > 1, length < src.length';
+  var src = new Set( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, 1 );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.setIs( got ) );
+  test.is( src !== got );
+
   /* - */
 
   if( !Config.debug )
   return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.arrayMakeUndefined() );
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.arrayMakeUndefined( 1, 3, 'extra' ) );
