@@ -638,6 +638,8 @@ function dot( filePath )
 
 function undot( filePath )
 {
+  if( filePath === this._hereUpStr )
+  return filePath
   return _.strRemoveBegin( filePath, this._hereUpStr );
 }
 

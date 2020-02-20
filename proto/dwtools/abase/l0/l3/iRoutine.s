@@ -769,8 +769,8 @@ function routineExtend( dst, src )
       if( _.objectIs( property ) )
       {
         _.assert( !_.mapHas( dst, s ) || _.mapIs( dst[ s ] ) );
-        // property = Object.create( property ); /* qqq : update jsdoc and test please */
-        property = _.mapExtend( null, property ); /* yyy */
+        property = Object.create( property );
+        // property = _.mapExtend( null, property ); /* zzz : it breaks files. investigate */
         if( dst[ s ] )
         _.mapSupplement( property, dst[ s ] );
       }
