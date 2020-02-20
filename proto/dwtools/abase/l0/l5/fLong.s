@@ -1245,7 +1245,7 @@ function longBut_( dst, array, range, val )
 
   [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
 
-  if( _.arrayLikeResizable( array ) )
+  if( _.arrayLikeResizable( array ) && !_.bufferAnyIs( dst ) )
   return _.arrayBut_.apply( this, arguments );
 
   if( range === undefined )
