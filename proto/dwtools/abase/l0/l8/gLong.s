@@ -173,14 +173,6 @@ longDuplicate.defaults =
  * @memberof wTools
  */
 
-/*
-qqq : routine longOnce requires good test coverage and documentation | Dmytro : covered and extended documentation.
-*/
-
-/*
-qqq2 : implement routine longOnce_. ask how | Dmytro : implemented
-*/
-
 function longOnce( dstLong, onEvaluate )
 {
   _.assert( 1 <= arguments.length || arguments.length <= 2 );
@@ -224,7 +216,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
   {
     if( _.longIs( srcLong ) )
     dstLong = _.longMakeUndefined( srcLong, 0 );
-    else 
+    else
     return [];
   }
   if( arguments.length === 1 )
@@ -271,15 +263,15 @@ function longOnce_( dstLong, srcLong, onEvaluate )
     if( _.longRightIndex( result, dstLong[ i ], j - 1, onEvaluate ) === -1 )
     result[ j++ ] = dstLong[ i ];
 
-    _.assert( j === length );    
+    _.assert( j === length );
   }
-  else 
+  else
   {
     if( _.arrayIs( dstLong ) )
     {
       result = _.arrayAppendArrayOnce( dstLong, srcLong, onEvaluate );
     }
-    else 
+    else
     {
       let length = srcLong.length + dstLong.length;
 
@@ -291,7 +283,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
       return dstLong;
 
       result = _.longMakeUndefined( dstLong, length );
-      
+
       for( let i = 0; i < dstLong.length; i++ )
       result[ i ] = dstLong[ i ]
 
@@ -301,11 +293,11 @@ function longOnce_( dstLong, srcLong, onEvaluate )
         if( _.longLeftIndex( result, srcLong[ i - offset ], onEvaluate ) === -1 )
         {
           result[ i ] = srcLong[ i - offset ];
-          i++; 
+          i++;
         }
-        else 
+        else
         {
-          offset--;          
+          offset--;
         }
       }
     }
@@ -449,7 +441,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
 //   return dstLong;
 // }
 
-// /* qqq : not optimal, no redundant copy | Dmytro : commented out, implemented in new routine */
+// /* zzz : not optimal, no redundant copy | Dmytro : commented out, implemented in new routine */
 // /*
 // function longOnce( dstLong, onEvaluate )
 // {
@@ -995,7 +987,7 @@ longUnmask.defaults =
 // --
 
 /**
- * The routine arrayRandom() returns an array which contains random numbers.
+ * The routine longRandom() returns an array which contains random numbers.
  *
  * Routine accepts one or three arguments.
  * Optionally, routine can accepts one of two sets of parameters. First of them
@@ -1021,14 +1013,14 @@ longUnmask.defaults =
  * If {-length-} is Range, then routine choose random lenght from provided range.
  *
  * @example
- * let got = _.arrayRandom( 3 );
+ * let got = _.longRandom( 3 );
  * // returns array with three elements in range [ 0, 1 ]
  * console.log( got );
  * // log [ 0.2054268445, 0.8651654684, 0.5564687461 ]
  *
  * @example
  * let dst = [ 0, 0, 0 ];
- * let got _.arrayRandom( dst, [ 1, 5 ], 3 );
+ * let got _.longRandom( dst, [ 1, 5 ], 3 );
  * // returns dst array with three elements in range [ 1, 5 ]
  * console.log( got );
  * // log [ 4.9883513548, 1.2313468546, 3.8973544247 ]
@@ -1037,7 +1029,7 @@ longUnmask.defaults =
  *
  * @example
  * let dst = [ 0, 0, 0 ];
- * let got _.arrayRandom( dst, [ 1, 5 ], 4 );
+ * let got _.longRandom( dst, [ 1, 5 ], 4 );
  * // returns dst array with three elements in range [ 1, 5 ]
  * console.log( got );
  * // log [ 4.9883513548, 1.2313468546, 3.8973544247, 2.6782254287 ]
@@ -1045,7 +1037,7 @@ longUnmask.defaults =
  * // log false
  *
  * @example
- * _.arrayRandom
+ * _.longRandom
  * ({
  *   length : 5,
  *   range : [ 1, 10 ],
@@ -1055,7 +1047,7 @@ longUnmask.defaults =
  *
  * @example
  * let dst = [ 0, 0, 0, 0, 0 ]
- * var got = _.arrayRandom
+ * var got = _.longRandom
  * ({
  *   length : 3,
  *   range : [ 1, 10 ],
@@ -1067,7 +1059,7 @@ longUnmask.defaults =
  * // log true
  *
  * @returns { ArrayLike } - Returns an array of random numbers.
- * @function arrayRandom
+ * @function longRandom
  * @throws { Error } If arguments.length === 0, arguments.length === 2, arguments.lenght > 3.
  * @throws { Error } If arguments.length === 1, and passed argument is not options map {-o-} or {-length-}.
  * @throws { Error } If options map {-o-} has unnacessary fields.
@@ -1078,23 +1070,23 @@ longUnmask.defaults =
  * @memberof wTools
  */
 
-function arrayRandom( o )
+function longRandom( o )
 {
 
   if( arguments[ 2 ] !== undefined )
-  o = { dst : arguments[ 0 ], range : arguments[ 1 ], length : arguments[ 2 ] }
+  o = { dst : arguments[ 0 ], value : arguments[ 1 ], length : arguments[ 2 ] }
   else if( _.numberIs( o ) || _.rangeIs( o ) )
   o = { length : o }
   _.assert( arguments.length === 1 || arguments.length === 3 );
-  _.routineOptions( arrayRandom, o );
+  _.routineOptions( longRandom, o );
 
   if( o.onEach === null )
-  o.onEach = ( range ) => _.numberRandom( range );
+  o.onEach = ( value ) => _.numberRandom( value );
 
-  if( o.range === null )
-  o.range = [ 0, 1 ];
-  if( _.numberIs( o.range ) )
-  o.range = [ o.range, o.range ]
+  if( o.value === null )
+  o.value = [ 0, 1 ];
+  if( _.numberIs( o.value ) )
+  o.value = [ o.value, o.value ]
 
   if( _.rangeIs( o.length ) )
   o.length = _.intRandom( o.length );
@@ -1110,83 +1102,24 @@ function arrayRandom( o )
 
   for( let i = 0 ; i < o.length ; i++ )
   {
-    o.dst[ i ] = o.onEach( o.range, i, o );
-    // o.dst[ i ] = o.range[ 0 ] + Math.random()*( o.range[ 1 ] - o.range[ 0 ] );
-    // if( o.int )
-    // o.dst[ i ] = Math.floor( o.dst[ i ] );
+    o.dst[ i ] = o.onEach( o.value, i, o );
   }
 
   return o.dst;
 }
 
-arrayRandom.defaults =
+longRandom.defaults =
 {
-  // int : 0,
   dst : null,
   onEach : null,
-  range : null,
+  value : null,
   length : null,
 }
 
 //
 
 /**
- * The arrayFromCoercing() routine converts an object-like {-srcMap-} into Array.
- *
- * @param { * } src - To convert into Array.
- *
- * @example
- * _.arrayFromCoercing( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
- * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
- *
- * @example
- * _.arrayFromCoercing( { a : 3, b : 7, c : 13 } );
- * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
- *
- * @example
- * _.arrayFromCoercing( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
- * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
- *
- * @example
- * let args = ( function() {
- *   return arguments;
- * } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
- * _.arrayFromCoercing( args );
- * // returns [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ]
- *
- * @returns { Array } Returns an Array.
- * @function arrayFromCoercing
- * @throws { Error } Will throw an Error if {-srcMap-} is not an object-like.
- * @memberof wTools
- */
-
-function arrayFromCoercing( src )
-{
-
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( _.arrayIs( src ) )
-  return src;
-
-  if( _.objectIs( src ) )
-  return _.mapToArray( src );
-
-  if( _.longIs( src ) )
-  return _ArraySlice.call( src );
-
-  if( _.strIs( src ) )
-  return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
-
-  if( _.argumentsArrayIs( src ) )
-  return _ArraySlice.call( src );
-
-  _.assert( 0, 'Unknown data type : ' + _.strType( src ) );
-}
-
-//
-
-/**
- * The arrayFromRange() routine generate array of arithmetic progression series,
+ * The longFromRange() routine generate array of arithmetic progression series,
  * from the range[ 0 ] to the range[ 1 ] with increment 1.
  *
  * It iterates over loop from (range[0]) to the (range[ 1 ] - range[ 0 ]),
@@ -1195,23 +1128,23 @@ function arrayFromCoercing( src )
  * @param { longIs } range - The first (range[ 0 ]) and the last (range[ 1 ] - range[ 0 ]) elements of the progression.
  *
  * @example
- * _.arrayFromRange( [ 1, 5 ] );
+ * _.longFromRange( [ 1, 5 ] );
  * // returns [ 1, 2, 3, 4 ]
  *
  * @example
- * _.arrayFromRange( 5 );
+ * _.longFromRange( 5 );
  * // returns [ 0, 1, 2, 3, 4 ]
  *
  * @returns { array } Returns an array of numbers for the requested range with increment 1.
  * May be an empty array if adding the step would not converge toward the end value.
- * @function arrayFromRange
+ * @function longFromRange
  * @throws { Error } If passed arguments is less than one or more than one.
  * @throws { Error } If the first argument is not an array-like object.
  * @throws { Error } If the length of the (range) is not equal to the two.
  * @memberof wTools
  */
 
-function arrayFromRange( range )
+function longFromRange( range )
 {
 
   if( _.numberIs( range ) )
@@ -1223,14 +1156,14 @@ function arrayFromRange( range )
 
   let step = range[ 0 ] <= range[ 1 ] ? +1 : -1;
 
-  return this.arrayFromRangeWithStep( range, step );
+  return this.longFromRangeWithStep( range, step );
 }
 
 //
 
-function arrayFromProgressionArithmetic( progression, numberOfSteps )
+function longFromProgressionArithmetic( progression, numberOfSteps )
 {
-  let result;
+  let result; /* xxx : test */
 
   debugger;
 
@@ -1239,25 +1172,25 @@ function arrayFromProgressionArithmetic( progression, numberOfSteps )
   _.assert( isFinite( progression[ 0 ] ) );
   _.assert( isFinite( progression[ 1 ] ) );
   _.assert( isFinite( numberOfSteps ) );
-  _.assert( _.routineIs( this.ArrayType ) );
+  _.assert( _.routineIs( this.longDescriptor.from ) );
 
   debugger;
 
   if( numberOfSteps === 0 )
-  return new this.ArrayType();
+  return new this.longDescriptor.from();
 
   if( numberOfSteps === 1 )
-  return new this.ArrayType([ progression[ 0 ] ]);
+  return new this.longDescriptor.from([ progression[ 0 ] ]);
 
   let range = [ progression[ 0 ], progression[ 0 ]+progression[ 1 ]*(numberOfSteps+1) ];
   let step = ( range[ 1 ]-range[ 0 ] ) / ( numberOfSteps-1 );
 
-  return this.arrayFromRangeWithStep( range, step );
+  return this.longFromRangeWithStep( range, step );
 }
 
 //
 
-function arrayFromRangeWithStep( range, step )
+function longFromRangeWithStep( range, step )
 {
   let result;
 
@@ -1265,10 +1198,10 @@ function arrayFromRangeWithStep( range, step )
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( step === undefined || step < 0 || step > 0 );
-  _.assert( _.routineIs( this.ArrayType ) );
+  _.assert( _.routineIs( this.longDescriptor.from ) );
 
   if( range[ 0 ] === range[ 1 ] )
-  return new this.ArrayType();
+  return new this.longDescriptor.from();
 
   if( range[ 0 ] < range[ 1 ] )
   {
@@ -1278,7 +1211,7 @@ function arrayFromRangeWithStep( range, step )
 
     _.assert( step > 0 );
 
-    result = new this.ArrayType( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) );
+    result = new this.longDescriptor.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) );
 
     let i = 0;
     while( range[ 0 ] < range[ 1 ] )
@@ -1299,7 +1232,7 @@ function arrayFromRangeWithStep( range, step )
 
     _.assert( step < 0 );
 
-    result = new this.ArrayType( Math.round( range[ 0 ]-range[ 1 ] / step ) );
+    result = new this.longDescriptor.from( Math.round( range[ 0 ]-range[ 1 ] / step ) );
 
     let i = 0;
     while( range[ 0 ] > range[ 1 ] )
@@ -1316,20 +1249,20 @@ function arrayFromRangeWithStep( range, step )
 
 //
 
-function arrayFromRangeWithNumberOfSteps( range , numberOfSteps )
+function longFromRangeWithNumberOfSteps( range , numberOfSteps )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( isFinite( range[ 0 ] ) );
   _.assert( isFinite( range[ 1 ] ) );
   _.assert( numberOfSteps >= 0 );
-  _.assert( _.routineIs( this.ArrayType ) );
+  _.assert( _.routineIs( this.longDescriptor.from ) );
 
   if( numberOfSteps === 0 )
-  return new this.ArrayType();
+  return new this.longDescriptor.from();
 
   if( numberOfSteps === 1 )
-  return new this.ArrayType( range[ 0 ] );
+  return new this.longDescriptor.from( range[ 0 ] );
 
   let step;
 
@@ -1338,7 +1271,7 @@ function arrayFromRangeWithNumberOfSteps( range , numberOfSteps )
   else
   step = ( range[ 0 ]-range[ 1 ] ) / (numberOfSteps-1);
 
-  return this.arrayFromRangeWithStep( range , step );
+  return this.longFromRangeWithStep( range , step );
 }
 
 // --
@@ -1346,32 +1279,32 @@ function arrayFromRangeWithNumberOfSteps( range , numberOfSteps )
 // --
 
 // /**
-//  * The arrayToMap() converts an (array) into Object.
+//  * The longToMap() converts an (array) into Object.
 //  *
 //  * @param { longIs } array - To convert into Object.
 //  *
 //  * @example
-//  * _.arrayToMap( [] );
+//  * _.longToMap( [] );
 //  * // returns {}
 //  *
 //  * @example
-//  * _.arrayToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
+//  * _.longToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
 //  * // returns { '0' : 3, '1' : [ 1, 2, 3 ], '2' : 'abc', '3' : false, '4' : undefined, '5' : null, '6' : {} }
 //  *
 //  * @example
 //  * let args = ( function() {
 //  *   return arguments;
 //  * } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
-//  * _.arrayToMap( args );
+//  * _.longToMap( args );
 //  * // returns { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } }
 //  *
 //  * @returns { Object } Returns an Object.
-//  * @function arrayToMap
+//  * @function longToMap
 //  * @throws { Error } Will throw an Error if (array) is not an array-like.
 //  * @memberof wTools
 //  */
 //
-// function arrayToMap( array )
+// function longToMap( array )
 // {
 //   let result = Object.create( null );
 //
@@ -1386,7 +1319,7 @@ function arrayFromRangeWithNumberOfSteps( range , numberOfSteps )
 // //
 //
 // /**
-//  * The arrayToStr() routine joins an array {-srcMap-} and returns one string containing each array element separated by space,
+//  * The longToStr() routine joins an array {-srcMap-} and returns one string containing each array element separated by space,
 //  * only types of integer or floating point.
 //  *
 //  * @param { longIs } src - The source array.
@@ -1395,22 +1328,22 @@ function arrayFromRangeWithNumberOfSteps( range , numberOfSteps )
 //  * @param { String } [ options.type = 'mixed' ] - The type of elements.
 //  *
 //  * @example
-//  * _.arrayToStr( [ 1, 2, 3 ], { type : 'int' } );
+//  * _.longToStr( [ 1, 2, 3 ], { type : 'int' } );
 //  * // returns "1 2 3 "
 //  *
 //  * @example
-//  * _.arrayToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
+//  * _.longToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
 //  * // returns "3.500 13.77 7.330"
 //  *
 //  * @returns { String } Returns one string containing each array element separated by space,
 //  * only types of integer or floating point.
 //  * If (src.length) is empty, it returns the empty string.
-//  * @function arrayToStr
+//  * @function longToStr
 //  * @throws { Error } Will throw an Error If (options.type) is not the number or float.
 //  * @memberof wTools
 //  */
 //
-// function arrayToStr( src, options )
+// function longToStr( src, options )
 // {
 //
 //   let result = '';
@@ -1698,10 +1631,6 @@ function longPut( dstArray, dstOffset )
  * @throws { Error } If {-range-} is not a Range or not a Number.
  * @memberof wTools
  */
-
-/*
-qqq : routine longFill requires good test coverage and documentation | Dmytro : extended documentation, extended coverage
-*/
 
 function longFill( result, value, range )
 {
@@ -2077,7 +2006,7 @@ function longSort( dstLong, srcLong, onEvaluate )
 // array etc
 // --
 
-// function arrayIndicesOfGreatest( srcArray, numberOfElements, comparator )
+// function longIndicesOfGreatest( srcArray, numberOfElements, comparator )
 // {
 //   let result = [];
 //   let l = srcArray.length;
@@ -2112,32 +2041,32 @@ function longSort( dstLong, srcLong, onEvaluate )
 // //
 //
 // /**
-//  * The arraySum() routine returns the sum of an array {-srcMap-}.
+//  * The longSum() routine returns the sum of an array {-srcMap-}.
 //  *
 //  * @param { longIs } src - The source array.
 //  * @param { Routine } [ onEvaluate = function( e ) { return e } ] - A callback function.
 //  *
 //  * @example
-//  * _.arraySum( [ 1, 2, 3, 4, 5 ] );
+//  * _.longSum( [ 1, 2, 3, 4, 5 ] );
 //  * // returns 15
 //  *
 //  * @example
-//  * _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
+//  * _.longSum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
 //  * // returns 29
 //  *
 //  * @example
-//  * _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
+//  * _.longSum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
 //  * // returns 94
 //  *
 //  * @returns { Number } - Returns the sum of an array {-srcMap-}.
-//  * @function arraySum
+//  * @function longSum
 //  * @throws { Error } If passed arguments is less than one or more than two.
 //  * @throws { Error } If the first argument is not an array-like object.
 //  * @throws { Error } If the second argument is not a Routine.
 //  * @memberof wTools
 //  */
 //
-// function arraySum( src, onEvaluate )
+// function longSum( src, onEvaluate )
 // {
 //   let result = 0;
 //
@@ -2155,836 +2084,6 @@ function longSort( dstLong, srcLong, onEvaluate )
 //   }
 //
 //   return result;
-// }
-//
-// // --
-// // array set
-// // --
-//
-// /**
-//  * Returns new array that contains difference between two arrays: ( src1 ) and ( src2 ).
-//  * If some element is present in both arrays, this element and all copies of it are ignored.
-//  * @param { longIs } src1 - source array;
-//  * @param { longIs} src2 - array to compare with ( src1 ).
-//  *
-//  * @example
-//  * _.arraySetDiff( [ 1, 2, 3 ], [ 4, 5, 6 ] );
-//  * // returns [ 1, 2, 3, 4, 5, 6 ]
-//  *
-//  * @example
-//  * _.arraySetDiff( [ 1, 2, 4 ], [ 1, 3, 5 ] );
-//  * // returns [ 2, 4, 3, 5 ]
-//  *
-//  * @returns { Array } Array with unique elements from both arrays.
-//  * @function arraySetDiff
-//  * @throws { Error } If arguments count is not 2.
-//  * @throws { Error } If one or both argument(s) are not longIs entities.
-//  * @memberof wTools
-//  */
-//
-// function arraySetDiff( src1, src2 )
-// {
-//   let result = [];
-//
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.longIs( src1 ) );
-//   _.assert( _.longIs( src2 ) );
-//
-//   for( let i = 0 ; i < src1.length ; i++ )
-//   {
-//     if( src2.indexOf( src1[ i ] ) === -1 )
-//     result.push( src1[ i ] );
-//   }
-//
-//   for( let i = 0 ; i < src2.length ; i++ )
-//   {
-//     if( src1.indexOf( src2[ i ] ) === -1 )
-//     result.push( src2[ i ] );
-//   }
-//
-//   return result;
-// }
-//
-// //
-//
-// function _argumentsOnly( dst, src1, src2, onEvaluate1, onEvaluate2 )
-// {
-//   _.assert( 2 <= arguments.length && arguments.length <= 5 );
-//   _.assert( _.longIs( dst ) || _.setIs( dst ) || dst === null );
-//   _.assert( _.longIs( src1 ) || _.setIs( src1 ) );
-//   _.assert( _.longIs( src2 ) || _.setIs( src2 ) || _.routineIs( src2 ) || src2 === undefined );
-//   _.assert( _.routineIs( onEvaluate1 ) || onEvaluate1 === undefined );
-//   _.assert( _.routineIs( onEvaluate2 ) || onEvaluate2 === undefined );
-//
-//   if( dst === null )
-//   dst = _.containerAdapter.make( new src1.constructor() );
-//
-//   if( _.routineIs( src2 ) || src2 === undefined )
-//   {
-//     onEvaluate2 = onEvaluate1;
-//     onEvaluate1 = src2;
-//     src2 = _.containerAdapter.from( src1 );
-//     src1 = _.containerAdapter.from( dst );
-//     dst = _.containerAdapter.from( dst );
-//     // dst = _.containerAdapter.make( new src1.original.constructor() );
-//   }
-//   else
-//   {
-//     src2 = _.containerAdapter.from( src2 );
-//     src1 = _.containerAdapter.from( src1 );
-//     dst = _.containerAdapter.from( dst );
-//   }
-//
-//   return [ dst, src1, src2, onEvaluate1, onEvaluate2 ];
-// }
-//
-// function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
-// {
-//   [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
-//
-//   let temp = [];
-//   if( dst.original === src1.original )
-//   {
-//     src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
-//     src2.each( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
-//     src1.empty();
-//     temp.forEach( ( e ) => src1.push( e ) );
-//   }
-//   else if( dst.original === src2.original )
-//   {
-//     src2.each( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
-//     src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : temp.push( e ) );
-//     src2.empty();
-//     temp.forEach( ( e ) => src2.push( e ) );
-//   }
-//   else
-//   {
-//     src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : dst.push( e ) );
-//     src2.each( ( e ) => src1.has( e, onEvaluate1, onEvaluate2 ) ? null : dst.push( e ) );
-//   }
-//
-//   return dst.original;
-// }
-//
-// //
-//
-// /**
-//  * Returns new array that contains elements from ( src ) that are not present in ( but ).
-//  * All copies of ignored element are ignored too.
-//  * @param { longIs } src - source array;
-//  * @param { longIs} but - array of elements to ignore.
-//  *
-//  * @example
-//  * _.arraySetBut( [ 1, 1, 1 ], [ 1 ] );
-//  * // returns []
-//  *
-//  * @example
-//  * _.arraySetBut( [ 1, 1, 2, 2, 3, 3 ], [ 1, 3 ] );
-//  * // returns [ 2, 2 ]
-//  *
-//  * @returns { Array } Source array without elements from ( but ).
-//  * @function arraySetBut
-//  * @throws { Error } If arguments count is not 2.
-//  * @throws { Error } If one or both argument(s) are not longIs entities.
-//  * @memberof wTools
-//  */
-//
-// function arraySetBut( dst )
-// {
-//   let args = _.longSlice( arguments );
-//
-//   if( dst === null )
-//   if( args.length > 1 )
-//   {
-//     dst = _.longSlice( args[ 1 ] );
-//     args.splice( 1, 1 );
-//   }
-//   else
-//   {
-//     return [];
-//   }
-//
-//   args[ 0 ] = dst;
-//
-//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
-//   for( let a = 0 ; a < args.length ; a++ )
-//   _.assert( _.longIs( args[ a ] ) );
-//
-//   for( let i = dst.length-1 ; i >= 0 ; i-- )
-//   {
-//     for( let a = 1 ; a < args.length ; a++ )
-//     {
-//       let but = args[ a ];
-//       if( but.indexOf( dst[ i ] ) !== -1 )
-//       {
-//         dst.splice( i, 1 );
-//         break;
-//       }
-//     }
-//   }
-//
-//   return dst;
-// }
-//
-// //
-//
-// function arraySetBut_( dst, src1, src2, onEvaluate1, onEvaluate2 )
-// {
-//   if( arguments.length === 1 )
-//   {
-//     if( dst === null )
-//     return [];
-//     else if( _.longIs( dst ) || _.setIs( dst ) )
-//     return dst;
-//     else
-//     _.assert( 0 );
-//   }
-//   if( ( dst === null && _.routineIs( src2 ) ) || ( dst === null && src2 === undefined ) )
-//   {
-//     if( _.longIs( src1 ) )
-//     return _.longSlice( src1 )
-//     else if( _.setIs( src1 ) )
-//     return new Set( src1 )
-//     _.assert( 0 );
-//   }
-//
-//   [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
-//
-//   if( dst.original === src1.original )
-//   src1.eachRight( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? src1.remove( e ) : null );
-//   else
-//   src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : dst.push( e ) );
-//
-//   return dst.original;
-// }
-//
-// //
-//
-// /**
-//  * Returns array that contains elements from ( src ) that exists at least in one of arrays provided after first argument.
-//  * If element exists and it has copies, all copies of that element will be included into result array.
-//  * @param { longIs } src - source array;
-//  * @param { ...longIs } - sequence of arrays to compare with ( src ).
-//  *
-//  * @example
-//  * _.arraySetIntersection( [ 1, 2, 3 ], [ 1 ], [ 3 ] );
-//  * // returns [ 1, 3 ]
-//  *
-//  * @example
-//  * _.arraySetIntersection( [ 1, 1, 2, 2, 3, 3 ], [ 1 ], [ 2 ], [ 3 ], [ 4 ] );
-//  * // returns [ 1, 1, 2, 2, 3, 3 ]
-//  *
-//  * @returns { Array } Array with elements that are a part of at least one of the provided arrays.
-//  * @function arraySetIntersection
-//  * @throws { Error } If one of arguments is not an longIs entity.
-//  * @memberof wTools
-//  */
-//
-// function arraySetIntersection( dst )
-// {
-//
-//   let first = 1;
-//   if( dst === null )
-//   if( arguments.length > 1 )
-//   {
-//     dst = _.longSlice( arguments[ 1 ] );
-//     first = 2;
-//   }
-//   else
-//   {
-//     return [];
-//   }
-//
-//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
-//   _.assert( _.longIs( dst ) );
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   _.assert( _.longIs( arguments[ a ] ) );
-//
-//   for( let i = dst.length-1 ; i >= 0 ; i-- )
-//   {
-//
-//     for( let a = first ; a < arguments.length ; a++ )
-//     {
-//       let ins = arguments[ a ];
-//       if( ins.indexOf( dst[ i ] ) === -1 )
-//       {
-//         dst.splice( i, 1 );
-//         break;
-//       }
-//     }
-//
-//   }
-//
-//   return dst;
-// }
-//
-// //
-//
-// function arraySetIntersection_( dst, src1, src2, onEvaluate1, onEvaluate2 )
-// {
-//   if( arguments.length === 1 )
-//   {
-//     if( dst === null )
-//     return [];
-//     else if( _.longIs( dst ) || _.setIs( dst ) )
-//     return dst;
-//     else
-//     _.assert( 0 );
-//   }
-//   if( ( dst === null && _.routineIs( src2 ) ) || ( dst === null && src2 === undefined ) )
-//   {
-//     if( _.longIs( src1 ) )
-//     return _.longSlice( src1 )
-//     else if( _.setIs( src1 ) )
-//     return new Set( src1 )
-//     _.assert( 0 );
-//   }
-//
-//   [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
-//
-//   if( dst.original === src1.original )
-//   src1.eachRight( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? null : src1.remove( e ) );
-//   else
-//   src1.each( ( e ) => src2.has( e, onEvaluate1, onEvaluate2 ) ? dst.push( e ) : null );
-//
-//   return dst.original;
-// }
-//
-// //
-//
-// function arraySetUnion( dst )
-// {
-//   let args = _.longSlice( arguments );
-//
-//   if( dst === null )
-//   if( arguments.length > 1 )
-//   {
-//     dst = [];
-//     // dst = _.longSlice( args[ 1 ] );
-//     // args.splice( 1, 1 );
-//   }
-//   else
-//   {
-//     return [];
-//   }
-//
-//   _.assert( arguments.length >= 1, 'Expects at least one argument' );
-//   _.assert( _.longIs( dst ) );
-//   for( let a = 1 ; a < args.length ; a++ )
-//   _.assert( _.longIs( args[ a ] ) );
-//
-//   for( let a = 1 ; a < args.length ; a++ )
-//   {
-//     let ins = args[ a ];
-//     for( let i = 0 ; i < ins.length ; i++ )
-//     {
-//       if( dst.indexOf( ins[ i ] ) === -1 )
-//       dst.push( ins[ i ] )
-//     }
-//   }
-//
-//   return dst;
-// }
-//
-// //
-//
-// function arraySetUnion_( dst, src1, src2, onEvaluate1, onEvaluate2 )
-// {
-//   if( arguments.length === 1 )
-//   {
-//     if( dst === null )
-//     return [];
-//     else if( _.longIs( dst ) || _.setIs( dst ) )
-//     return dst;
-//     else
-//     _.assert( 0 );
-//   }
-//
-//   [ dst, src1, src2, onEvaluate1, onEvaluate2 ] = _argumentsOnly.apply( this, arguments );
-//
-//   if( dst.original === src1.original )
-//   src1.appendContainerOnce( src2, onEvaluate1, onEvaluate2 );
-//   else if( dst.original === src2.original )
-//   src2.appendContainerOnce( src1, onEvaluate1, onEvaluate2 );
-//   else
-//   {
-//     dst.appendContainerOnce( src1, onEvaluate1, onEvaluate2 );
-//     dst.appendContainerOnce( src2, onEvaluate1, onEvaluate2 );
-//   }
-//
-//   return dst.original;
-// }
-//
-// //
-//
-// /*
-// function arraySetContainAll( src )
-// {
-//   let result = [];
-//
-//   _.assert( _.longIs( src ) );
-//
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   {
-//
-//     _.assert( _.longIs( arguments[ a ] ) );
-//
-//     if( src.length > arguments[ a ].length )
-//     return false;
-//
-//     for( let i = 0 ; i < src.length ; i++ )
-//     {
-//
-//       throw _.err( 'Not tested' );
-//       if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
-//       {
-//         throw _.err( 'Not tested' );
-//         return false;
-//       }
-//
-//     }
-//
-//   }
-//
-//   return true;
-// }
-// */
-// //
-//   /**
-//    * The arraySetContainAll() routine returns true, if at least one of the following arrays (arguments[...]),
-//    * contains all the same values as in the {-srcMap-} array.
-//    *
-//    * @param { longIs } src - The source array.
-//    * @param { ...longIs } arguments[...] - The target array.
-//    *
-//    * @example
-//    * _.arraySetContainAll( [ 1, 'b', 'c', 4 ], [ 1, 2, 3, 4, 5, 'b', 'c' ] );
-//    * // returns true
-//    *
-//    * @example
-//    * _.arraySetContainAll( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
-//    * // returns false
-//    *
-//    * @returns { boolean } Returns true, if at least one of the following arrays (arguments[...]),
-//    * contains all the same values as in the {-srcMap-} array.
-//    * If length of the {-srcMap-} is more than the next argument, it returns false.
-//    * Otherwise, it returns false.
-//    * @function arraySetContainAll
-//    * @throws { Error } Will throw an Error if {-srcMap-} is not an array-like.
-//    * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
-//    * @memberof wTools
-//    */
-//
-// function arraySetContainAll( src )
-// {
-//   _.assert( _.longIs( src ) );
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   _.assert( _.longIs( arguments[ a ] ) );
-//
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   {
-//     let ins = arguments[ a ];
-//
-//     for( let i = 0 ; i < ins.length ; i++ )
-//     {
-//       if( src.indexOf( ins[ i ] ) === -1 )
-//       return false;
-//     }
-//
-//   }
-//
-//   return true;
-// }
-//
-// //
-//
-// function arraySetContainAll_( src1, src2, onEvaluate1, onEvaluate2 )
-// {
-//
-//   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-//   _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
-//
-//   if( _.arrayIs( src1 ) )
-//   {
-//     for( let e of src2 )
-//     if( _.longLeftIndex( src1, e, onEvaluate1, onEvaluate2 ) === -1 )
-//     return false;
-//   }
-//   else if( _.setIs( src1 ) )
-//   {
-//     let startFrom = 0;
-//     if( _.numberIs( onEvaluate1 ) )
-//     {
-//       startFrom = onEvaluate1;
-//       onEvaluate1 = onEvaluate2;
-//       onEvaluate2 = undefined;
-//     }
-//
-//     if( !src1.size && ( src2.length || src2.size ) )
-//     return false;
-//
-//     let result;
-//     for( let e of src2 )
-//     {
-//       if( result === false )
-//       {
-//         break;
-//       }
-//       else
-//       {
-//         let from = startFrom;
-//         result = undefined;
-//         for( let el of src1 )
-//         {
-//           if( from === 0 )
-//           {
-//             if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
-//             {
-//               result = true;
-//               break;
-//             }
-//             else
-//             {
-//               result = false
-//             }
-//           }
-//           else
-//           {
-//             from--;
-//           }
-//         }
-//       }
-//     }
-//     return result === undefined ? true : result;
-//   }
-//   else
-//   {
-//     _.assert( 0, '{-src1-} should be instance of Array or Set' );
-//   }
-//
-// return true;
-// }
-//
-// //
-//
-// /**
-//  * The arraySetContainAny() routine returns true, if at least one of the following arrays (arguments[...]),
-//  * contains the first matching value from {-srcMap-}.
-//  *
-//  * @param { longIs } src - The source array.
-//  * @param { ...longIs } arguments[...] - The target array.
-//  *
-//  * @example
-//  * _.arraySetContainAny( [ 33, 4, 5, 'b', 'c' ], [ 1, 'b', 'c', 4 ], [ 33, 13, 3 ] );
-//  * // returns true
-//  *
-//  * @example
-//  * _.arraySetContainAny( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
-//  * // returns true
-//  *
-//  * @example
-//  * _.arraySetContainAny( [ 1, 'b', 'c', 4 ], [ 3, 5, 'd', 'e' ], [ 'abc', 33, 7 ] );
-//  * // returns false
-//  *
-//  * @returns { Boolean } Returns true, if at least one of the following arrays (arguments[...]),
-//  * contains the first matching value from {-srcMap-}.
-//  * Otherwise, it returns false.
-//  * @function arraySetContainAny
-//  * @throws { Error } Will throw an Error if {-srcMap-} is not an array-like.
-//  * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
-//  * @memberof wTools
-//  */
-//
-// function arraySetContainAny( src )
-// {
-//   _.assert( _.longIs( src ) );
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   _.assert( _.longIs( arguments[ a ] ) );
-//
-//   if( src.length === 0 )
-//   return true;
-//
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   {
-//     let ins = arguments[ a ];
-//
-//     let i;
-//     for( i = 0 ; i < ins.length ; i++ )
-//     {
-//       if( src.indexOf( ins[ i ] ) !== -1 )
-//       break;
-//     }
-//
-//     if( i === ins.length )
-//     return false;
-//
-//   }
-//
-//   return true;
-// }
-//
-// //
-//
-// function arraySetContainAny_( src1, src2, onEvaluate1, onEvaluate2 )
-// {
-//
-//   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-//   _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
-//
-//   if( _.arrayIs( src1 ) )
-//   {
-//     for( let e of src2 )
-//     if( _.longLeftIndex( src1, e, onEvaluate1, onEvaluate2 ) !== -1 )
-//     return true;
-//   }
-//   else if( _.setIs( src1 ) )
-//   {
-//     let startFrom = 0;
-//     if( _.numberIs( onEvaluate1 ) )
-//     {
-//       startFrom = onEvaluate1;
-//       onEvaluate1 = onEvaluate2;
-//       onEvaluate2 = undefined;
-//     }
-//
-//     for( let e of src2 )
-//     {
-//       let from = startFrom;
-//       for( let el of src1 )
-//       {
-//         if( from === 0 )
-//         {
-//           if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
-//           return true;
-//         }
-//         else
-//         {
-//           from--;
-//         }
-//       }
-//     }
-//   }
-//   else
-//   {
-//     _.assert( 0, '{-src1-} should be instance of Array or Set' );
-//   }
-//
-//   return false;
-// }
-//
-// //
-//
-// function arraySetContainNone( src )
-// {
-//   _.assert( _.longIs( src ) );
-//
-//   for( let a = 1 ; a < arguments.length ; a++ )
-//   {
-//
-//     _.assert( _.longIs( arguments[ a ] ) );
-//
-//     for( let i = 0 ; i < src.length ; i++ )
-//     {
-//
-//       if( arguments[ a ].indexOf( src[ i ] ) !== -1 )
-//       {
-//         return false;
-//       }
-//
-//     }
-//
-//   }
-//
-//   return true;
-// }
-//
-// //
-//
-// function arraySetContainNone_( src1, src2, onEvaluate1, onEvaluate2 )
-// {
-//
-//   _.assert( 2 <= arguments.length && arguments.length <= 4 );
-//   _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
-//
-//   if( _.arrayIs( src1 ) )
-//   {
-//     for( let e of src2 )
-//     if( _.longLeftIndex( src1, e, onEvaluate1, onEvaluate2 ) !== -1 )
-//     return false;
-//   }
-//   else if( _.setIs( src1 ) )
-//   {
-//     let startFrom = 0;
-//     if( _.numberIs( onEvaluate1 ) )
-//     {
-//       startFrom = onEvaluate1;
-//       onEvaluate1 = onEvaluate2;
-//       onEvaluate2 = undefined;
-//     }
-//
-//     for( let e of src2 )
-//     {
-//       let from = startFrom;
-//       for( let el of src1 )
-//       {
-//         if( from === 0 )
-//         {
-//           if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
-//           return false;
-//         }
-//         else
-//         {
-//           from--;
-//         }
-//       }
-//     }
-//   }
-//   else
-//   {
-//     _.assert( 0, '{-src1-} should be instance of Array or Set' );
-//   }
-//
-//   return true;
-// }
-//
-// //
-//
-// /**
-//  * Returns true if ( ins1 ) and ( ins2) arrays have same length and elements, elements order doesn't matter.
-//  * Inner arrays of arguments are not compared and result of such combination will be false.
-//  * @param { longIs } ins1 - source array;
-//  * @param { longIs} ins2 - array to compare with.
-//  *
-//  * @example
-//  * _.arraySetIdentical( [ 1, 2, 3 ], [ 4, 5, 6 ] );
-//  * // returns false
-//  *
-//  * @example
-//  * _.arraySetIdentical( [ 1, 2, 4 ], [ 4, 2, 1 ] );
-//  * // returns true
-//  *
-//  * @returns { Boolean } Result of comparison as boolean.
-//  * @function arraySetIdentical
-//  * @throws { Error } If one of arguments is not an ArrayLike entity.
-//  * @throws { Error } If arguments length is not 2.
-//  * @memberof wTools
-//  */
-//
-// function arraySetIdentical( ins1, ins2 )
-// {
-//
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   _.assert( _.longIs( ins1 ) );
-//   _.assert( _.longIs( ins2 ) );
-//
-//   if( ins1.length !== ins2.length )
-//   return false;
-//
-//   let result = _.arraySetDiff( ins1, ins2 );
-//
-//   return result.length === 0;
-// }
-//
-// //
-//
-// function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
-// {
-//   _.assert( 2 <= arguments.length && arguments.length <= 5 );
-//
-//   if( _.setIs( arr ) )
-//   {
-//     let result = Object.create( null );
-//     result.index = -1;
-//     let index = 0;
-//     let from = 0;
-//
-//     if( _.routineIs( fromIndex ) )
-//     {
-//       onEvaluate2 = onEvaluate1;
-//       onEvaluate1 = fromIndex;
-//     }
-//     else if( _.numberIs( fromIndex ) )
-//     {
-//       from = fromIndex;
-//     }
-//
-//
-//     for( let e of arr )
-//     {
-//       if( from === 0 )
-//       {
-//         if( _.entityEntityEqualize( e, ins, onEvaluate1, onEvaluate2 ) )
-//         {
-//           result.index = index;
-//           result.element = e;
-//           break;
-//         }
-//       }
-//       else
-//       {
-//         from--;
-//       }
-//       index++;
-//     }
-//
-//     return result;
-//   }
-//   else if( _.arrayIs( arr ) )
-//   {
-//     return _.longLeft.apply( this, arguments );
-//   }
-//   else
-//   _.assert( 0 );
-//
-// }
-//
-// //
-//
-// function arraySetRight( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
-// {
-//   _.assert( 2 <= arguments.length && arguments.length <= 5 );
-//
-//   if( _.setIs( arr ) )
-//   {
-//     let result = Object.create( null );
-//     result.index = -1;
-//     let to = arr.size;
-//     let index = 0;
-//
-//     if( _.routineIs( fromIndex ) )
-//     {
-//       onEvaluate2 = onEvaluate1;
-//       onEvaluate1 = fromIndex;
-//     }
-//     else if( _.numberIs( fromIndex ) )
-//     {
-//       to = fromIndex;
-//     }
-//     else if( fromIndex !== undefined )
-//     _.assert( 0 );
-//
-//     for( let e of arr )
-//     {
-//       if( index < to )
-//       {
-//         if( _.entityEntityEqualize( e, ins, onEvaluate1, onEvaluate2 ) )
-//         {
-//           result.index = index;
-//           result.element = e;
-//         }
-//       }
-//       index += 1;
-//     }
-//
-//     return result;
-//   }
-//   else if( _.arrayIs( arr ) )
-//   {
-//     return _.longRight.apply( this, arguments );
-//   }
-//   else
-//   _.assert( 0 );
-//
 // }
 
 // --
@@ -3028,18 +2127,17 @@ let Routines =
 
   // array maker
 
-  arrayRandom, /* qqq : cover and document please | Dmytro : extended coverage and documentation. Routine should be 'longRandom' or need to insert assertion */
-  arrayFromCoercing,
+  longRandom,
 
-  arrayFromRange,
-  arrayFromProgressionArithmetic,
-  arrayFromRangeWithStep,
-  arrayFromRangeWithNumberOfSteps,
+  longFromRange,
+  longFromProgressionArithmetic,
+  longFromRangeWithStep, /* qqq2 : cover please */
+  longFromRangeWithNumberOfSteps,
 
   // // array converter
   //
-  // arrayToMap, /* dubious */
-  // arrayToStr, /* dubious */
+  // longToMap, /* dubious */
+  // longToStr, /* dubious */
 
   // long transformer
 
@@ -3060,37 +2158,12 @@ let Routines =
   longSupplement, /* experimental */
   longExtendScreening, /* experimental */
 
-  longSort, /* qqq : implement good coverage, document routine longSort | Dmytro : covered and documented */
+  longSort,
 
   // // array etc
   //
-  // arrayIndicesOfGreatest, /* dubious */
-  // arraySum, /* dubious */
-
-  // // array set
-  //
-  // arraySetDiff, /* qqq : ask how to improve, please | Dmytro : improved, covered */
-  // arraySetBut, /* qqq : ask how to improve, please | Dmytro : improved, covered */
-  // arraySetIntersection, /* qqq : ask how to improve, please | Dmytro : improved, covered */
-  // arraySetUnion, /* qqq : ask how to improve, please | Dmytro : improved, covered */
-  //
-  // arraySetContainAll,
-  // arraySetContainAll_,
-  // arraySetContainAny,
-  // arraySetContainAny_,
-  // arraySetContainNone,
-  // arraySetContainNone_,
-  // arraySetIdentical,
-  //
-  // arraySetLeft,
-  // arraySetRight,
-  //
-  // // to replace
-  //
-  // arraySetDiff_, /* !!! : use instead of arraySetDiff */
-  // arraySetBut_, /* !!! : use instead of arraySetBut */
-  // arraySetIntersection_, /* !!! : use instead of arraySetIntersection */
-  // arraySetUnion_, /* !!! : use instead of arraySetUnion */
+  // longIndicesOfGreatest, /* dubious */
+  // longSum, /* dubious */
 
 }
 

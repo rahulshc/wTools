@@ -170,7 +170,7 @@ function buffersAreIdentical( src1, src2 )
  * The routine bufferMake() returns a new buffer with the same type as source buffer {-ins-}. New buffer makes from inserted buffer {-src-}
  * or if {-src-} is number, the buffer makes from {-ins-} with length equal to {-src-}. If {-src-} is not provided, routine returns copy of {-ins-}.
  *
- * @param { BufferAny|Long|Function } ins - Instance of any buffer, Long or constructor, defines type of returned buffer. If not a buffer is provided, routine returns instance of default ArrayType.
+ * @param { BufferAny|Long|Function } ins - Instance of any buffer, Long or constructor, defines type of returned buffer. If not a buffer is provided, routine returns instance of default long.
  * @param { Number|Long|Buffer } src - Defines length of new buffer. If buffer of Long is provided, routine makes new buffer from {-src-} with {-ins-} type.
  *
  * @example
@@ -216,7 +216,7 @@ function buffersAreIdentical( src1, src2 )
  */
 
 /*
-qqq : implement, cover, document | Dmytro : implemented, covered, documented. If ins is not a buffer, routine returns default ArrayType.
+qqq : implement, cover, document | Dmytro : implemented, covered, documented. If ins is not a buffer, routine returns default long.
 */
 
 function bufferMake( ins, src )

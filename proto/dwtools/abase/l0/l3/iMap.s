@@ -1711,6 +1711,105 @@ function mapButNulls( srcMap )
 // amender
 // --
 
+/**
+ * The mapExtend() is used to copy the values of all properties
+ * from one or more source objects to a target object.
+ *
+ * It takes first object (dstMap)
+ * creates variable (result) and assign first object.
+ * Checks if arguments equal two or more and if (result) is an object.
+ * If true,
+ * it extends (result) from the next objects.
+ *
+ * @param{ objectLike } dstMap - The target object.
+ * @param{ ...objectLike } arguments[] - The source object(s).
+ *
+ * @example
+ * _.mapExtend( { a : 7, b : 13 }, { c : 3, d : 33 }, { e : 77 } );
+ * // returns { a : 7, b : 13, c : 3, d : 33, e : 77 }
+ *
+ * @returns { objectLike } It will return the target object.
+ * @function mapExtend
+ * @throws { Error } Will throw an error if ( arguments.length < 2 ),
+ * if the (dstMap) is not an Object.
+ * @memberof wTools
+ */
+
+function mapExtend( dstMap, srcMap )
+{
+
+  if( dstMap === null )
+  dstMap = Object.create( null );
+
+  if( arguments.length === 2 && Object.getPrototypeOf( srcMap ) === null )
+  return Object.assign( dstMap, srcMap );
+
+  _.assert( arguments.length >= 2, 'Expects at least two arguments' );
+  _.assert( !_.primitiveIs( dstMap ), 'Expects non primitive as the first argument' );
+
+  for( let a = 1 ; a < arguments.length ; a++ )
+  {
+    let srcMap = arguments[ a ];
+
+    _.assert( !_.primitiveIs( srcMap ), 'Expects non primitive' );
+
+    if( Object.getPrototypeOf( srcMap ) === null )
+    Object.assign( dstMap, srcMap );
+    else
+    for( let k in srcMap )
+    {
+      dstMap[ k ] = srcMap[ k ];
+    }
+
+  }
+
+  return dstMap;
+}
+
+//
+
+/**
+ * The mapSupplement() supplement destination map by source maps.
+ * Pairs of destination map are not overwritten by pairs of source maps if any overlap.
+ * Routine rewrite pairs of destination map which has key === undefined.
+ *
+ * @param { ...objectLike } arguments[] - The source object(s).
+ *
+ * @example
+ * _.mapSupplement( { a : 1, b : 2 }, { a : 1, c : 3 } );
+ * // returns { a : 1, b : 2, c : 3 }
+ *
+ * @returns { objectLike } Returns an object with unique [ key, value ].
+ * @function mapSupplement
+ * @memberof wTools
+ */
+
+function mapSupplement( dstMap, srcMap )
+{
+  if( dstMap === null && arguments.length === 2 )
+  return Object.assign( Object.create( null ), srcMap );
+
+  if( dstMap === null )
+  dstMap = Object.create( null );
+
+  _.assert( !_.primitiveIs( dstMap ) );
+
+  for( let a = 1 ; a < arguments.length ; a++ )
+  {
+    srcMap = arguments[ a ];
+    for( let s in srcMap )
+    {
+      if( s in dstMap )
+      continue;
+      dstMap[ s ] = srcMap[ s ];
+    }
+  }
+
+  return dstMap
+}
+
+//
+
 function mapSupplementStructureless( dstMap, srcMap )
 {
   if( dstMap === null && arguments.length === 2 )
@@ -1822,6 +1921,8 @@ let Routines =
 
   // amender
 
+  mapExtend,
+  mapSupplement,
   mapSupplementStructureless,
 
 }

@@ -595,7 +595,7 @@ function diagnosticStructureGenerate_body( o )
     }
 
     // let bufferSrc = _.longFillTimes( [], o.bufferSize || o.defaultSize, 0 );
-    let bufferSrc = _.arrayRandom( [], [ 0, 1 ], [ 0, o.bufferSize ] );
+    let bufferSrc = _.longRandom( [], [ 0, 1 ], [ 0, o.bufferSize ] );
 
     if( o.bufferNodeComplexity >= 4 )
     if( typeof BufferNode !== 'undefined' )

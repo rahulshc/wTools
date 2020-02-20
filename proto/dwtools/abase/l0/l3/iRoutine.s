@@ -1674,13 +1674,13 @@ vectorizeNone.defaults = Object.create( vectorizeNone_body.defaults );
 
 /**
  * The routine vectorizeAccess() creates proxy object for each element of passed vector {-vector-}.
- * Proxy object provides access to existed properties of {-vector-} elements uses only get() 
+ * Proxy object provides access to existed properties of {-vector-} elements uses only get()
  * and set() handlers.
  * If get() handler is used, then routine returns new proxy object with vector of property values.
- * If a property is a routine, then its routines can be applied to a set of arguments. The result is 
+ * If a property is a routine, then its routines can be applied to a set of arguments. The result is
  * a new proxy with vector of returned values.
  * To get original vector uses property `$`.
- * If set() handler is used, then property of each proxy element is assigned to one value. 
+ * If set() handler is used, then property of each proxy element is assigned to one value.
  *
  * @param { Long } vector - The vector of objects and vectors to get proxy access to properties.
  *
@@ -1716,7 +1716,7 @@ vectorizeNone.defaults = Object.create( vectorizeNone_body.defaults );
  * vector[ 1 ] = 10;
  * console.log( vector[ '$' ] );
  * // log [ [ 1, 10, 3 ], [ 5, 10 ] ]
- * 
+ *
  * @returns { Proxy } - Proxy object, which provides access to existed properties in elements of vector.
  * @function vectorizeAccess
  * @throws { Error } If arguments.length is less or more then one.

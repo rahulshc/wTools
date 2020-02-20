@@ -5227,7 +5227,7 @@ function longRelength_( test )
 
 //
 
-function longShallowCloneOneArgument( test ) 
+function longShallowCloneOneArgument( test )
 {
   test.open( 'single argument' );
 
@@ -5521,8 +5521,8 @@ function longShallowCloneFirstArrayLike( test )
   test.is( got !== src1 );
   test.is( got !== src2 );
   test.is( got !== src3 );
-  
-  if( Config.interpreter === 'njs' ) 
+
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'other - BufferNode';
     var src1 = [ [ 1 ], null ];
@@ -5534,7 +5534,7 @@ function longShallowCloneFirstArrayLike( test )
     test.is( _.arrayIs( got ) );
     test.is( got !== src1 );
     test.is( got !== src2 );
-    test.is( got !== src3 );    
+    test.is( got !== src3 );
   }
 
   test.close( 'first argument - array' );
@@ -5650,8 +5650,8 @@ function longShallowCloneFirstArrayLike( test )
   test.is( got !== src1 );
   test.is( got !== src2 );
   test.is( got !== src3 );
-  
-  if( Config.interpreter === 'njs' ) 
+
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'other - BufferNode';
     var src1 = _.argumentsArrayMake( [ [ 1 ], null ] );
@@ -5663,7 +5663,7 @@ function longShallowCloneFirstArrayLike( test )
     test.is( _.arrayIs( got ) );
     test.is( got !== src1 );
     test.is( got !== src2 );
-    test.is( got !== src3 );    
+    test.is( got !== src3 );
   }
 
   test.close( 'first argument - argumentsArray' );
@@ -5779,8 +5779,8 @@ function longShallowCloneFirstArrayLike( test )
   test.is( got !== src1 );
   test.is( got !== src2 );
   test.is( got !== src3 );
-  
-  if( Config.interpreter === 'njs' ) 
+
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'other - BufferNode';
     var src1 = _.unrollMake( [ [ 1 ], null ] );
@@ -5792,7 +5792,7 @@ function longShallowCloneFirstArrayLike( test )
     test.is( _.unrollIs( got ) );
     test.is( got !== src1 );
     test.is( got !== src2 );
-    test.is( got !== src3 );    
+    test.is( got !== src3 );
   }
 
   test.close( 'first argument - unroll' );
@@ -5800,7 +5800,7 @@ function longShallowCloneFirstArrayLike( test )
 
 //
 
-function longShallowCloneFirstBuffer( test ) 
+function longShallowCloneFirstBuffer( test )
 {
   test.open( 'first argument - BufferRaw' );
 
@@ -5911,8 +5911,8 @@ function longShallowCloneFirstBuffer( test )
   test.is( got !== src1 );
   test.is( got !== src2 );
   test.is( got !== src3 );
-  
-  if( Config.interpreter === 'njs' ) 
+
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'other - BufferNode';
     var src1 = new U8x( [ 1, 2 ] ).buffer;
@@ -5924,7 +5924,7 @@ function longShallowCloneFirstBuffer( test )
     test.is( _.bufferRawIs( got ) );
     test.is( got !== src1 );
     test.is( got !== src2 );
-    test.is( got !== src3 );    
+    test.is( got !== src3 );
   }
 
   test.close( 'first argument - BufferRaw' );
@@ -6040,8 +6040,8 @@ function longShallowCloneFirstBuffer( test )
   test.is( got !== src1 );
   test.is( got !== src2 );
   test.is( got !== src3 );
-  
-  if( Config.interpreter === 'njs' ) 
+
+  if( Config.interpreter === 'njs' )
   {
     test.case = 'other - BufferNode';
     var src1 = new BufferView( new U8x( [ 1, 2 ] ).buffer );
@@ -6053,7 +6053,7 @@ function longShallowCloneFirstBuffer( test )
     test.is( _.bufferViewIs( got ) );
     test.is( got !== src1 );
     test.is( got !== src2 );
-    test.is( got !== src3 );    
+    test.is( got !== src3 );
   }
 
   test.close( 'first argument - BufferView' );
@@ -6184,8 +6184,8 @@ function longShallowCloneFirstBuffer( test )
     test.is( got !== src1 );
     test.is( got !== src2 );
     test.is( got !== src3 );
-    
-    if( Config.interpreter === 'njs' ) 
+
+    if( Config.interpreter === 'njs' )
     {
       test.case = 'other - BufferNode';
       var src1 = new bufferTyped[ i ]( [ 1, 2 ] );
@@ -6197,7 +6197,7 @@ function longShallowCloneFirstBuffer( test )
       test.is( _.bufferTypedIs( got ) );
       test.is( got !== src1 );
       test.is( got !== src2 );
-      test.is( got !== src3 );    
+      test.is( got !== src3 );
     }
 
     test.close( 'first argument - ' + bufferTyped[ i ].name );
@@ -6205,7 +6205,7 @@ function longShallowCloneFirstBuffer( test )
 
   /* - */
 
-  if( Config.interpreter === 'njs' ) 
+  if( Config.interpreter === 'njs' )
   {
     test.open( 'first argument - BufferNode' );
 
@@ -6316,7 +6316,7 @@ function longShallowCloneFirstBuffer( test )
     test.is( got !== src1 );
     test.is( got !== src2 );
     test.is( got !== src3 );
-    
+
     test.case = 'other - BufferRaw';
     var src1 = BufferNode.from( [ 1, 2 ] );
     var src2 = new U8x( [ 1, 2 ] ).buffer;
@@ -6327,10 +6327,10 @@ function longShallowCloneFirstBuffer( test )
     test.is( _.bufferNodeIs( got ) );
     test.is( got !== src1 );
     test.is( got !== src2 );
-    test.is( got !== src3 );    
-    
+    test.is( got !== src3 );
+
     test.close( 'first argument - BufferNode' );
-  } 
+  }
 }
 longShallowCloneFirstBuffer.timeOut = 10000;
 
@@ -6864,9 +6864,12 @@ function longAreRepeatedProbe( test )
   {
 
     test.case = 'empty';
+    debugger;
     var l1 = onMake( [] );
     var expected = { uniques : 0, condensed : 0, array : [] };
+    debugger;
     var got = _.longAreRepeatedProbe( l1, onEvaluate );
+    debugger;
     test.identical( got, expected );
 
     test.case = 'single';
@@ -9375,23 +9378,23 @@ function arrayFromCoercing( test )
 
 //
 
-function arrayRandom( test )
+function longRandom( test )
 {
   test.case = 'length - number';
-  var got = _.arrayRandom( 5 );
+  var got = _.longRandom( 5 );
   test.identical( got.length, 5 );
   test.is( got[ 0 ] >= 0 && got[ 0 ] <= 1 );
   test.is( got[ 1 ] >= 0 && got[ 1 ] <= 1 );
 
   test.case = 'length - range';
-  var got = _.arrayRandom( [ 2, 5 ] );
+  var got = _.longRandom( [ 2, 5 ] );
   test.is( got.length >= 2 && got.length <= 5 );
   test.is( got[ 0 ] >= 0 && got[ 0 ] <= 1 );
   test.is( got[ 1 ] >= 0 && got[ 1 ] <= 1 );
 
   test.case = 'dst, range, length === dst.length';
   var dst = [ 2, 2, 2 ];
-  var got = _.arrayRandom( dst, [ 0, 1 ], 3 );
+  var got = _.longRandom( dst, [ 0, 1 ], 3 );
   test.is( got === dst );
   test.is( got[ 0 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 1 );
   test.is( got[ 1 ] !== 2 && got[ 1 ] >= 0 && got[ 1 ] <= 1 );
@@ -9399,7 +9402,7 @@ function arrayRandom( test )
 
   test.case = 'dst, range - number, length === dst.length';
   var dst = [ 2, 2, 2 ];
-  var got = _.arrayRandom( dst, 5, 3 );
+  var got = _.longRandom( dst, 5, 3 );
   test.is( got === dst );
   test.identical( got[ 0 ], 5 );
   test.identical( got[ 1 ], 5 );
@@ -9407,7 +9410,7 @@ function arrayRandom( test )
 
   test.case = 'dst, range, length === null';
   var dst = [ 2, 2, 2 ];
-  var got = _.arrayRandom( dst, [ 0, 1 ], null );
+  var got = _.longRandom( dst, [ 0, 1 ], null );
   test.is( got === dst );
   test.is( got[ 0 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 1 );
   test.is( got[ 1 ] !== 2 && got[ 1 ] >= 0 && got[ 1 ] <= 1 );
@@ -9415,7 +9418,7 @@ function arrayRandom( test )
 
   test.case = 'dst - unroll, range, length === null';
   var dst = _.unrollMake( [ 2, 2, 2 ] );
-  var got = _.arrayRandom( dst, [ 0, 1 ], null );
+  var got = _.longRandom( dst, [ 0, 1 ], null );
   test.is( got === dst );
   test.is( _.unrollIs( got ) );
   test.is( got[ 0 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 1 );
@@ -9424,7 +9427,7 @@ function arrayRandom( test )
 
   test.case = 'dst, range, length !== dst.length';
   var dst = [ 2, 2, 2 ];
-  var got = _.arrayRandom( dst, [ 0, 1 ], 4 );
+  var got = _.longRandom( dst, [ 0, 1 ], 4 );
   test.identical( dst, [ 2, 2, 2 ] );
   test.is( got !== dst );
   test.is( got[ 0 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 1 );
@@ -9434,7 +9437,7 @@ function arrayRandom( test )
 
   test.case = 'dst - unroll, range, length !== dst.length';
   var dst = _.unrollMake( [ 2, 2, 2 ] );
-  var got = _.arrayRandom( dst, [ 0, 1 ], 4 );
+  var got = _.longRandom( dst, [ 0, 1 ], 4 );
   test.identical( dst, [ 2, 2, 2 ] );
   test.is( _.unrollIs( dst ) );
   test.is( _.unrollIs( got ) );
@@ -9447,29 +9450,29 @@ function arrayRandom( test )
   /* */
 
   test.case = 'an empty object is provides';
-  var got = _.arrayRandom( {} );
+  var got = _.longRandom( {} );
   test.identical( got.length, 1 );
   test.is( got[ 0 ] >= 0 && got[ 0 ]<= 1 );
 
   test.case = 'only length - number';
-  var got = _.arrayRandom( { length : 3 } );
+  var got = _.longRandom( { length : 3 } );
   test.identical( got.length, 3 );
   test.is( got[ 0 ] >= 0 && got[ 0 ] <= 1 );
   test.is( got[ 1 ] >= 0 && got[ 1 ] <= 1 );
   test.is( got[ 2 ] >= 0 && got[ 2 ] <= 1 );
 
   test.case = 'only length - range';
-  var got = _.arrayRandom( { length : [ 2, 5 ] } );
+  var got = _.longRandom( { length : [ 2, 5 ] } );
   test.is( got.length >= 2 && got.length <= 5 );
   test.is( got[ 0 ] >= 0 && got[ 0 ] <= 1 );
   test.is( got[ 1 ] >= 0 && got[ 1 ] <= 1 );
 
   test.case = 'without dst, length, range, onEach';
-  var got = _.arrayRandom
+  var got = _.longRandom
   ({
     length : 3,
-    range : [ 1, 9 ],
-    onEach : ( range ) => _.intRandom( range ),
+    value : [ 1, 9 ],
+    onEach : ( value ) => _.intRandom( value ),
   });
   test.identical( got.length, 3 );
   test.is( _.intIs( got[ 0 ] ) && got[ 0 ] >= 1 && got[ 0 ] <= 9 );
@@ -9477,11 +9480,11 @@ function arrayRandom( test )
   test.is( _.intIs( got[ 2 ] ) && got[ 2 ] >= 1 && got[ 2 ] <= 9 );
 
   test.case = 'without dst, length, range - number, onEach';
-  var got = _.arrayRandom
+  var got = _.longRandom
   ({
     length : 3,
-    range : 5,
-    onEach : ( range ) => _.intRandom( range ),
+    value : 5,
+    onEach : ( value ) => _.intRandom( value ),
   });
   test.identical( got.length, 3 );
   test.identical( got[ 0 ], 5 );
@@ -9490,12 +9493,12 @@ function arrayRandom( test )
 
   test.case = 'dst, range, onEach, length > dst.length';
   var dst = [ 0, 0 ];
-  var got = _.arrayRandom
+  var got = _.longRandom
   ({
     dst : dst,
     length : 4,
-    range : [ 1, 9 ],
-    onEach : ( range ) => _.intRandom( range ),
+    value : [ 1, 9 ],
+    onEach : ( value ) => _.intRandom( value ),
   });
   test.is( got !== dst );
   test.identical( got.length, 4 );
@@ -9506,12 +9509,12 @@ function arrayRandom( test )
 
   test.case = 'dst - unroll, range, onEach, length < dst.length';
   var dst = _.unrollMake( [ 0, 0 ] );
-  var got = _.arrayRandom
+  var got = _.longRandom
   ({
     dst : dst,
     length : 4,
-    range : [ 1, 9 ],
-    onEach : ( range ) => _.intRandom( range ),
+    value : [ 1, 9 ],
+    onEach : ( value ) => _.intRandom( value ),
   });
   test.is( got !== dst );
   test.is( _.unrollIs( got ) );
@@ -9523,12 +9526,12 @@ function arrayRandom( test )
 
   test.case = 'dst, range, onEach, length < dst.length';
   var dst = [ 0, 0, 0, 0 ];
-  var got = _.arrayRandom
+  var got = _.longRandom
   ({
     dst : dst,
     length : 2,
-    range : [ 1, 9 ],
-    onEach : ( range ) => _.intRandom( range ),
+    value : [ 1, 9 ],
+    onEach : ( value ) => _.intRandom( value ),
   });
   test.is( got === dst );
   test.identical( got.length, 4 );
@@ -9539,12 +9542,12 @@ function arrayRandom( test )
 
   test.case = 'dst - unroll, range, onEach, length < dst.length';
   var dst = _.unrollMake( [ 0, 0, 0, 0 ] );
-  var got = _.arrayRandom
+  var got = _.longRandom
   ({
     dst : dst,
     length : 2,
-    range : [ 1, 9 ],
-    onEach : ( range ) => _.intRandom( range ),
+    value : [ 1, 9 ],
+    onEach : ( value ) => _.intRandom( value ),
   });
   test.is( got === dst );
   test.is( _.unrollIs( got ) );
@@ -9556,11 +9559,11 @@ function arrayRandom( test )
 
   test.case = 'dst, range, onEach, without length';
   var dst = [ 0, 0, 0 ];
-  var got = _.arrayRandom
+  var got = _.longRandom
   ({
     dst : dst,
-    range : [ 1, 9 ],
-    onEach : ( range ) => _.intRandom( range ),
+    value : [ 1, 9 ],
+    onEach : ( value ) => _.intRandom( value ),
   });
   test.is( got === dst );
   test.identical( got.length, 3 );
@@ -9574,65 +9577,65 @@ function arrayRandom( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.arrayRandom() );
+  test.shouldThrowErrorSync( () => _.longRandom() );
 
   test.case = 'two arguments';
-  test.shouldThrowErrorSync( () => _.arrayRandom( 3, 3 ) );
+  test.shouldThrowErrorSync( () => _.longRandom( 3, 3 ) );
 
   test.case = 'wrong type of length';
-  test.shouldThrowErrorSync( () => _.arrayRandom( 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.longRandom( 'wrong' ) );
 
   test.case = 'negative length';
-  test.shouldThrowErrorSync( () => _.arrayRandom( -1 ) );
+  test.shouldThrowErrorSync( () => _.longRandom( -1 ) );
 
   test.case = 'wrong type of dst';
-  test.shouldThrowErrorSync( () => _.arrayRandom( 'wrong', [ 1, 2 ], 2 ) );
-  test.shouldThrowErrorSync( () => _.arrayRandom( { dst : 2 } ) );
+  test.shouldThrowErrorSync( () => _.longRandom( 'wrong', [ 1, 2 ], 2 ) );
+  test.shouldThrowErrorSync( () => _.longRandom( { dst : 2 } ) );
 
   test.case = 'wrong type of range';
-  test.shouldThrowErrorSync( () => _.arrayRandom( [], 'wrong', 2 ) );
-  test.shouldThrowErrorSync( () => _.arrayRandom( { length : 2, range : 'wrong' } ) );
+  test.shouldThrowErrorSync( () => _.longRandom( [], 'wrong', 2 ) );
+  test.shouldThrowErrorSync( () => _.longRandom( { length : 2, value : 'wrong' } ) );
 
   test.case = 'wrong type of length';
-  test.shouldThrowErrorSync( () => _.arrayRandom( [], 2, 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.arrayRandom( { length : 'wrong' } ) );
+  test.shouldThrowErrorSync( () => _.longRandom( [], 2, 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.longRandom( { length : 'wrong' } ) );
 
   test.case = 'wrong type of onEach';
-  test.shouldThrowErrorSync( () => _.arrayRandom( { onEach : 'wrong' } ) );
+  test.shouldThrowErrorSync( () => _.longRandom( { onEach : 'wrong' } ) );
 }
 
 //
 
-function arrayFromRange( test )
+function longFromRange( test )
 {
 
   test.case = 'single zero';
-  var got = _.arrayFromRange( [ 0, 1 ] );
+  var got = _.longFromRange( [ 0, 1 ] );
   var expected = [ 0 ];
   test.identical( got, expected );
 
   test.case = 'nothing';
-  var got = _.arrayFromRange( [ 1, 1 ] );
+  var got = _.longFromRange( [ 1, 1 ] );
   var expected = [];
   test.identical( got, expected );
 
   test.case = 'single not zero';
-  var got = _.arrayFromRange( [ 1, 2 ] );
+  var got = _.longFromRange( [ 1, 2 ] );
   var expected = [ 1 ];
   test.identical( got, expected );
 
   test.case = 'couple of elements';
-  var got = _.arrayFromRange( [ 1, 3 ] );
+  var got = _.longFromRange( [ 1, 3 ] );
   var expected = [ 1, 2 ];
   test.identical( got, expected );
 
   test.case = 'single number as argument';
-  var got = _.arrayFromRange( 3 );
+  var got = _.longFromRange( 3 );
   var expected = [ 0, 1, 2 ];
   test.identical( got, expected );
 
   test.case = 'complex case';
-  var got = _.arrayFromRange( [ 3, 9 ] );
+  var got = _.longFromRange( [ 3, 9 ] );
   var expected = [ 3, 4, 5, 6, 7, 8 ];
   test.identical( got, expected );
 
@@ -9644,25 +9647,25 @@ function arrayFromRange( test )
   test.case = 'extra argument';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayFromRange( [ 1, 3 ], 'wrong arguments' );
+    _.longFromRange( [ 1, 3 ], 'wrong arguments' );
   });
 
   test.case = 'argument not wrapped into array';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayFromRange( 1, 3 );
+    _.longFromRange( 1, 3 );
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayFromRange( 'wrong arguments' );
+    _.longFromRange( 'wrong arguments' );
   });
 
   test.case = 'no arguments'
   test.shouldThrowErrorSync( function()
   {
-    _.arrayFromRange();
+    _.longFromRange();
   });
 
 };
@@ -9705,16 +9708,16 @@ function arrayAs( test )
 
 //
 
-function arrayToMap( test )
+function longToMap( test )
 {
 
   test.case = 'an empty object';
-  var got = _.arrayToMap( [] );
+  var got = _.longToMap( [] );
   var expected = {  };
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.arrayToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
+  var got = _.longToMap( [ 3, [ 1, 2, 3 ], 'abc', false, undefined, null, {} ] );
   var expected = { '0' : 3, '1' : [ 1, 2, 3 ], '2' : 'abc', '3' : false, '4' : undefined, '5' : null, '6' : {} };
   test.identical( got, expected );
 
@@ -9722,14 +9725,14 @@ function arrayToMap( test )
   var args = ( function() {
     return arguments;
   } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
-  var got = _.arrayToMap( args );
+  var got = _.longToMap( args );
   var expected = { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } };
   test.identical( got, expected );
 
   test.case = 'longIs';
   var arr = [];
   arr[ 'a' ] = 1;
-  var got = _.arrayToMap( arr );
+  var got = _.longToMap( arr );
   var expected = {};
   test.identical( got, expected );
 
@@ -9741,13 +9744,13 @@ function arrayToMap( test )
   test.case = 'no argument';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayToMap();
+    _.longToMap();
   });
 
   test.case = 'wrong type of argument';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayToMap( 'wrong argument' );
+    _.longToMap( 'wrong argument' );
   });
 
 };
@@ -9755,26 +9758,26 @@ function arrayToMap( test )
 
 //
 
-function arrayToStr( test )
+function longToStr( test )
 {
 
   test.case = 'nothing';
-  var got = _.arrayToStr( [] );
+  var got = _.longToStr( [] );
   var expected = "";
   test.identical( got, expected );
 
   test.case = 'returns the string';
-  var got = _.arrayToStr( 'abcdefghijklmnopqrstuvwxyz', { type : 'int' } );
+  var got = _.longToStr( 'abcdefghijklmnopqrstuvwxyz', { type : 'int' } );
   var expected = "a b c d e f g h i j k l m n o p q r s t u v w x y z ";
   test.identical( got, expected );
 
   test.case = 'returns a single string representing the integer values';
-  var got = _.arrayToStr( [ 1, 2, 3 ], { type : 'int' } );
+  var got = _.longToStr( [ 1, 2, 3 ], { type : 'int' } );
   var expected = "1 2 3 ";
   test.identical( got, expected );
 
   test.case = 'returns a single string representing the float values';
-  var got = _.arrayToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
+  var got = _.longToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
   var expected = "3.500 13.77 7.330";
   test.identical( got, expected );
 
@@ -9786,25 +9789,25 @@ function arrayToStr( test )
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayToStr();
+    _.longToStr();
   });
 
   test.case = 'in second argument property (type) is wrong';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayToStr( [ 1, 2, 3 ], { type : 'wrong type' } );
+    _.longToStr( [ 1, 2, 3 ], { type : 'wrong type' } );
   });
 
   test.case = 'in second argument property (type) is not provided';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayToStr( [ 1, 2, 3 ], { precission : 4 } );
+    _.longToStr( [ 1, 2, 3 ], { precission : 4 } );
   });
 
   test.case = 'first argument is string';
   test.shouldThrowErrorSync( function()
   {
-    _.arrayToStr( 'wrong argument', {  type : 'float' } );
+    _.longToStr( 'wrong argument', {  type : 'float' } );
   });
 
 }
@@ -10574,7 +10577,7 @@ function longHasNone( test )
 
 //
 
-function longHasDepth( test ) 
+function longHasDepth( test )
 {
   test.case = 'check null';
   var got = _.longHasDepth( null );
@@ -11043,7 +11046,7 @@ function arraySlice( test )
 
 //
 
-function arrayEmpty( test ) 
+function arrayEmpty( test )
 {
   test.case = 'empty array';
   var src = [];
@@ -15179,26 +15182,26 @@ function longCountUnique( test )
 
 // //
 //
-// function arraySum( test )
+// function longSum( test )
 // {
 //
 //   test.case = 'nothing';
-//   var got = _.arraySum( [] );
+//   var got = _.longSum( [] );
 //   var expected = 0;
 //   test.identical( got, expected );
 //
 //   test.case = 'returns sum';
-//   var got = _.arraySum( [ 1, 2, 3, 4, 5 ] );
+//   var got = _.longSum( [ 1, 2, 3, 4, 5 ] );
 //   var expected = 15;
 //   test.identical( got, expected );
 //
 //   test.case = 'returns sum';
-//   var got = _.arraySum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
+//   var got = _.longSum( [ true, false, 13, '33' ], function( e ) { return e * 2 } );
 //   var expected = 94;
 //   test.identical( got, expected );
 //
 //   test.case = 'converts and returns sum';
-//   var got = _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
+//   var got = _.longSum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 } );
 //   var expected = 30;
 //   test.identical( got, expected );
 //
@@ -15210,25 +15213,25 @@ function longCountUnique( test )
 //   test.case = 'no arguments';
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.arraySum();
+//     _.longSum();
 //   });
 //
 //   test.case = 'extra argument';
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.arraySum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 }, 'redundant argument' );
+//     _.longSum( [ 1, 2, 3, 4, 5 ], function( e ) { return e * 2 }, 'redundant argument' );
 //   });
 //
 //   test.case = 'first argument is wrong';
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.arraySum( 'wrong argument', function( e ) { return e / 2 } );
+//     _.longSum( 'wrong argument', function( e ) { return e / 2 } );
 //   });
 //
 //   test.case = 'second argument is wrong';
 //   test.shouldThrowErrorSync( function()
 //   {
-//     _.arraySum( [ 1, 2, 3, 4, 5 ], 'wrong argument' );
+//     _.longSum( [ 1, 2, 3, 4, 5 ], 'wrong argument' );
 //   });
 //
 // };
@@ -42112,12 +42115,12 @@ var Self =
     arrayFrom,
     arrayFromCoercing,
 
-    arrayRandom,
-    arrayFromRange,
+    longRandom,
+    longFromRange,
     arrayAs,
 
-    // arrayToMap, // Dmytro : routine arrayToMap commented in gLong.s
-    // arrayToStr, // Dmytro : routine arrayToStr commented in gLong.s
+    // longToMap, // Dmytro : routine longToMap commented in gLong.s
+    // longToStr, // Dmytro : routine longToStr commented in gLong.s
 
     // array checker
 
@@ -42161,7 +42164,7 @@ var Self =
 
     // array etc
 
-    // arraySum,
+    // longSum,
 
     // array prepend
 
