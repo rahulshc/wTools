@@ -72,6 +72,8 @@ function rangeFromSingle( range )
 
 //
 
+/* qqq : teach to accept number in second argument */
+
 function rangeClamp( dstRange, clampRange )
 {
 
@@ -177,9 +179,6 @@ let Extension =
 {
 
   // range
-
-  /* qqq : good coverage of each routine is required | Dmytro : covered */
-  /* xxx qqq2 */
 
   rangeFromLeft,
   rangeFromRight,
