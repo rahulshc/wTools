@@ -4,8 +4,52 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-// let Self = _.set = _.set || Object.create( null );
 let Self = _;
+
+// --
+// checker
+// --
+
+function setIs( src )
+{
+  if( !src )
+  return false;
+  return src instanceof Set || src instanceof WeakSet;
+}
+
+//
+
+function setLike( src )
+{
+  return _.setIs( src );
+}
+
+//
+
+function setAdapterLike( src )
+{
+  if( !src )
+  return false;
+  if( _.setLike( src ) )
+  return true;
+  if( src instanceof _.containerAdapter.Set )
+  return true;
+  return false;
+}
+
+//
+
+function setIsEmpty()
+{
+  return !src.size;
+}
+
+//
+
+function setIsPopulated()
+{
+  return !!src.size;
+}
 
 // --
 // set
@@ -61,8 +105,16 @@ function setsToArrays( srcs )
 // routines
 // --
 
-let NamespaceExtension =
+let ToolsExtension =
 {
+
+  // checker
+
+  setIs,
+  setLike,
+  setAdapterLike,
+  setIsEmpty,
+  setIsPopulated,
 
   // set
 
@@ -75,7 +127,7 @@ let NamespaceExtension =
 
 //
 
-Object.assign( Self, NamespaceExtension );
+Object.assign( Self, ToolsExtension );
 
 // --
 // export

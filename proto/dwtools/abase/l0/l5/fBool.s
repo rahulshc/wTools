@@ -1,6 +1,6 @@
 ( function _fBool_s_() {
 
-'use strict'; 
+'use strict';
 
 let _global = _global_;
 let _ = _global_.wTools;
@@ -89,18 +89,10 @@ function boolsNoneAre( src )
 }
 
 // --
-// fields
+// extension
 // --
 
-let Fields =
-{
-}
-
-// --
-// routines
-// --
-
-let Routines =
+let Extension =
 {
 
   boolsAre,
@@ -110,10 +102,7 @@ let Routines =
 
 }
 
-//
-
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( Self, Extension );
 
 // --
 // export

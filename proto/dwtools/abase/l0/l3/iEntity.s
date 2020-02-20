@@ -78,49 +78,6 @@ function iterableIs( src )
   return false;
 }
 
-//
-
-function setIs( src )
-{
-  if( !src )
-  return false;
-  return src instanceof Set || src instanceof WeakSet;
-}
-
-//
-
-function setLike( src )
-{
-  return _.setIs( src );
-}
-
-//
-
-function setAdapterLike( src )
-{
-  if( !src )
-  return false;
-  if( _.setLike( src ) )
-  return true;
-  if( src instanceof _.containerAdapter.Set )
-  return true;
-  return false;
-}
-
-//
-
-function setIsEmpty()
-{
-  return !src.size;
-}
-
-//
-
-function setIsPopulated()
-{
-  return !!src.size;
-}
-
 // --
 // fields
 // --
@@ -141,13 +98,6 @@ let Routines =
   containerIs,
   containerLike,
   iterableIs,
-
-  setIs,
-  setLike,
-  setAdapterLike,
-  setIsEmpty,
-  setIsPopulated,
-  // xxx : move
 
 }
 

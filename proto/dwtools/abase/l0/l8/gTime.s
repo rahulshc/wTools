@@ -415,14 +415,6 @@ function _errTimeOut( o )
     reason : o.reason,
   });
 
-  // Object.defineProperty( err, 'reason',
-  // {
-  //   enumerable : false,
-  //   configurable : false,
-  //   writable : false,
-  //   value : o.reason,
-  // });
-
   if( o.consequnce )
   Object.defineProperty( err, 'consequnce',
   {

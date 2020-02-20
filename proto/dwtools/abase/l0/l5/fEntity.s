@@ -293,37 +293,6 @@ function entityMake( src )
 
 }
 
-// //
-//
-// function _.container.empty( dstContainer )
-// {
-//   if( _.longIs( dstContainer ) )
-//   _.longEmpty( dstContainer );
-//   else if( _.setIs( dstContainer ) )
-//   dstContainer.clear();
-//   else if( _.hashMapIs( dstContainer ) )
-//   dstContainer.clear();
-//   else if( _.mapLike( dstContainer ) )
-//   _.mapEmpty( dstContainer );
-//   else
-//   _.assert( 0, `Not clear how to empty non-container ${_.strType( dstContainer )}` );
-//   return dstContainer;
-// }
-
-// //
-//
-// function containerExtend( dst, src )
-// {
-//
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//
-//   xxx
-//
-//   // if( arguments.length === 1 )
-//   // xxx
-//
-// }
-
 //
 
 /**

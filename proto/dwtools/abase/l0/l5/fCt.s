@@ -13,18 +13,14 @@ let Self = _.ct = _.ct || Object.create( null );
 // --
 
 // --
-// relation
-// --
-
-// --
-// declare
+// extension
 // --
 
 let Extension =
 {
 }
 
-Object.assign( Self, Extension );
+_.mapSupplement( Self, Extension );
 
 // --
 // export
