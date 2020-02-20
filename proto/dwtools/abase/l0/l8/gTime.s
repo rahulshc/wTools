@@ -352,7 +352,7 @@ let out = _.routineFromPreAndBody( out_pre, out_body );
  * @memberof wTools
  */
 
-/* xxx : remove the body, use out_body */
+/* zzz : remove the body, use out_body */
 function outError_body( o )
 {
   _.assert( _.routineIs( _.Consequence ) );
@@ -370,7 +370,6 @@ function outError_body( o )
   if( Config.debug )
   con.tag = 'TimeOutError';
 
-  // debugger;
   con.finally( function outError( err, arg )
   {
     if( err )
@@ -387,7 +386,6 @@ function outError_body( o )
     });
 
     throw err;
-    // return _.Consequence().error( err );
   });
 
   return con;
@@ -517,7 +515,7 @@ function rarely_functor( perTime, routine )
 //     clearInterval( id );
 //     // if( err )
 //     // clearInterval( id );
-//     /* xxx */
+//     /* zzz */
 //   }
 //
 // }
