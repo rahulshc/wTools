@@ -50,6 +50,7 @@ if( typeof module !== 'undefined' && module !== null )
   require( './l0/l5/fPath.s' );
   require( './l0/l5/fProcess.s' );
   require( './l0/l5/fRange.s' );
+  require( './l0/l5/fRangeOld.s' );
   require( './l0/l5/fRegexp.s' );
   require( './l0/l5/fRoutine.s' );
   require( './l0/l5/fSorted.s' );

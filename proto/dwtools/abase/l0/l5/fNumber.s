@@ -10,16 +10,16 @@ let Self = _global_.wTools;
 // number
 // --
 
-function numberInRange( n, range )
-{
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( range.length === 2 );
-  _.assert( _.numberIs( range[ 0 ] ) );
-  _.assert( _.numberIs( range[ 1 ] ) );
-  if( !_.numberIs( n ) )
-  return false;
-  return range[ 0 ] <= n && n <= range[ 1 ]; // xxx : review
-}
+// function numberInRange( n, range )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( range.length === 2 );
+//   _.assert( _.numberIs( range[ 0 ] ) );
+//   _.assert( _.numberIs( range[ 1 ] ) );
+//   if( !_.numberIs( n ) )
+//   return false;
+//   return range[ 0 ] <= n && n <= range[ 1 ]; // xxx : review
+// }
 
 //
 
@@ -55,10 +55,14 @@ function numberMix( ins1, ins2, progress )
 // extension
 // --
 
+/*
+xxx : review and merge with similar routines _.range.*
+*/
+
 let Extension =
 {
 
-  numberInRange,
+  // numberInRange,
   numberClamp,
   numberMix,
 

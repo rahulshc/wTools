@@ -17,8 +17,8 @@ function _arrayNameSpaceApplyTo( dst, def )
   // debugger;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  // _.assert( !_.mapOwnKey( dst,'withDefaultLong' ) ); // xxx
-  // _.assert( !_.mapOwnKey( dst,'defaultLong' ) ); // xxx
+  // _.assert( !_.mapOwnKey( dst,'withDefaultLong' ) ); // yyy
+  // _.assert( !_.mapOwnKey( dst,'defaultLong' ) ); // yyy
   _.assert( !!LongExtension[ def ] );
   _.assert( !!LongDescriptor[ def ] );
 
@@ -62,7 +62,7 @@ function extensionDeclare( descriptor )
   //  * @memberof wTools."wTools.defaultLong"
   //  */
   //
-  // function makeSimilar( src, length ) /* xxx */
+  // function makeSimilar( src, length ) /* yyy */
   // {
   //   _.assert( arguments.length === 1 || arguments.length === 2 );
   //
@@ -215,7 +215,7 @@ function extensionDeclare( descriptor )
 //
 // --
 
-function makeFor_functor( cls )
+function make_functor( cls )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( cls ) );
@@ -234,7 +234,7 @@ function makeFor_functor( cls )
 
 //
 
-function fromFor_functor( cls )
+function from_functor( cls )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( cls ) );
@@ -257,7 +257,7 @@ function fromFor_functor( cls )
 
 //
 
-function isFor_functor( cls )
+function is_functor( cls )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( cls ) );
@@ -266,7 +266,8 @@ function isFor_functor( cls )
   {
     [ cls.name ] : function( src )
     {
-      debugger; xxx
+      debugger; yyy
+      /* qqq : cover please */
       _.assert( arguments.length === 1 );
       return src instanceof cls;
     }
@@ -295,13 +296,13 @@ function longDeclare( o )
   _.assert( LongDescriptor[ o.name ] === undefined );
 
   if( !o.make )
-  o.make = makeFor_functor( o.type );
+  o.make = make_functor( o.type );
 
   if( !o.from )
-  o.from = fromFor_functor( o.type );
+  o.from = from_functor( o.type );
 
   if( !o.is )
-  o.is = isFor_functor( o.type );
+  o.is = is_functor( o.type );
 
   Object.freeze( o );
   LongDescriptor[ o.name ] = o;
@@ -358,9 +359,9 @@ longDeclare({ name : 'Fx', secondName : 'Float32', aliasName : 'F32x', type : _g
 
 let Extend =
 {
-  makeFor_functor,
-  fromFor_functor,
-  isFor_functor,
+  make_functor,
+  from_functor,
+  is_functor,
   longDeclare,
   LongDescriptor,
 }
@@ -400,10 +401,10 @@ _arrayNameSpaceApplyTo( _, 'Array' );
 
 _.assert( !_.Array );
 
-// _.assert( _.mapOwnKey( _, 'withDefaultLong' ) ); // xxx
+// _.assert( _.mapOwnKey( _, 'withDefaultLong' ) ); // yyy
 // _.assert( _.mapOwnKey( _, 'defaultLong' ) );
 // _.assert( _.mapOwnKey( _.defaultLong, 'defaultLong' ) );
-// _.assert( _.mapOwnKey( _, 'longDescriptor' ) ); // xxx
+// _.assert( _.mapOwnKey( _, 'longDescriptor' ) ); // yyy
 // _.assert( !_.mapOwnKey( _.defaultLong, 'withDefaultLong' ) );
 // _.assert( !!_.defaultLong.withDefaultLong );
 

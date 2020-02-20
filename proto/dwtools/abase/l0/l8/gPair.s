@@ -92,13 +92,7 @@ Self.original = Pair;
 
 //
 
-var Fields =
-{
-}
-
-//
-
-var Routines =
+var Extension =
 {
   is,
   isOf,
@@ -107,8 +101,7 @@ var Routines =
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+_.mapSupplement( Self, Extension );
 _.assert( _.pair === undefined );
 _.pair = Self;
 
