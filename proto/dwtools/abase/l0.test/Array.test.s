@@ -889,6 +889,12 @@ function arrayMakeUndefined( test )
 
 function arrayFrom( test )
 {
+  test.case = 'without arguments';
+  var got = _.arrayFrom();
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+
   test.case = 'src = null';
   var src = null;
   var got = _.arrayFrom( src );
@@ -1091,9 +1097,6 @@ function arrayFrom( test )
 
   if( !Config.debug )
   return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.arrayFrom() );
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.arrayFrom( 1, 3 ) );
