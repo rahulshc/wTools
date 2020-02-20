@@ -247,14 +247,20 @@ qqq : can accept zero arguments just like arrayMake
 
 function arrayMakeUndefined( src, length )
 {
+  if( arguments.length === 0 )
+  return Array( 0 );
+
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( src ) || _.longLike( src ) || src === null );
+  _.assert( _.numberIs( src ) || _.longLike( src ) || _.setLike( src ) || src === null );
   _.assert( length === undefined || _.numberIs( length ) );
 
   if( src && src.length && length === undefined )
   length = src.length;
+  
+  /* Dmytro : missed for Set src */
+  if( src && src.size && length === undefined )
+  length = src.size;
 
-  // Dmytro : missed condition
   if( _.numberIs( src ) && length === undefined )
   length = src;
 
