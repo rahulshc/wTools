@@ -241,20 +241,25 @@ function arrayMake( src )
  * @memberof wTools
  */
 
-/*
-qqq : can accept zero arguments as well as arrayMake
-*/
+/* aaa : can accept zero arguments just like arrayMake */
+/* Dmytro : arrayMakeUndefined accepts zero arguments and works like arrayMake */
 
 function arrayMakeUndefined( src, length )
 {
+  if( arguments.length === 0 )
+  return Array( 0 );
+
   _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( src ) || _.longLike( src ) || src === null );
+  _.assert( _.numberIs( src ) || _.longLike( src ) || _.setLike( src ) || src === null );
   _.assert( length === undefined || _.numberIs( length ) );
 
   if( src && src.length && length === undefined )
   length = src.length;
+  
+  /* Dmytro : missed for Set src */
+  if( src && src.size && length === undefined )
+  length = src.size;
 
-  // Dmytro : missed condition
   if( _.numberIs( src ) && length === undefined )
   length = src;
 
@@ -309,7 +314,6 @@ function arrayFrom( src )
 
 function arrayFromCoercing( src )
 {
-
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.arrayIs( src ) )
@@ -323,9 +327,6 @@ function arrayFromCoercing( src )
 
   if( _.strIs( src ) )
   return this.arrayFromStr( src );
-
-  if( _.argumentsArrayIs( src ) )
-  return Array.prototype.slice.call( src );
 
   _.assert( 0, 'Unknown data type : ' + _.strType( src ) );
 }
@@ -6003,7 +6004,8 @@ let Extension =
 
   // array producer
 
-  arrayMake, /* qqq : test coverage is outdated */
+  arrayMake, /* aaa : test coverage is outdated */
+  /* Dmytro : coverage is updated */
   arrayMakeUndefined,
 
   arrayFrom,
