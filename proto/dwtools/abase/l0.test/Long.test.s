@@ -505,9 +505,9 @@ function longMakeNotDefaultLongDescriptor( test )
   ];
   var list =
   [
-    // array,
-    // unroll,
-    // argumentsArray,
+    array,
+    unroll,
+    argumentsArray,
   ];
   for( let i = 0; i < typedList.length; i++ )
   list.push( bufferTyped( typedList[ i ] ) );
@@ -557,7 +557,6 @@ function longMakeNotDefaultLongDescriptor( test )
 
     test.case = 'dst = empty, src = number';
     var dst = long( [] );
-    debugger;
     var got = descriptor.longMake( dst, 2 );
     var expected = _.argumentsArrayIs( got ) ? descriptor.longDescriptor.make( 2 ) : result( dst, 2 );
     test.identical( got, expected );
