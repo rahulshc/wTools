@@ -96,7 +96,20 @@ function _longMake_functor( onMake )
     //   ins = [];
     // }
 
-    if( !_.longLike( ins ) )
+    // if( !_.longLike( ins ) )
+    // {
+    //   if( _.longLike( src ) )
+    //   {
+    //     ins = src;
+    //     src = null;
+    //   }
+    //   else
+    //   {
+    //     // ins = [];
+    //     ins = null;
+    //   }
+    // }
+    if( !ins )
     {
       if( _.longLike( src ) )
       {
@@ -108,6 +121,10 @@ function _longMake_functor( onMake )
         // ins = [];
         ins = null;
       }
+    }
+    else if( !_.longLike( ins ) )
+    {
+      ins = src;
     }
 
     if( !length )
