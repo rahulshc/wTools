@@ -111,8 +111,8 @@ function _longMake_functor( onMake )
     //   }
     // }
 
-    if( !_.longLike( ins ) )
-    // if( !ins )
+    // if( !_.longLike( ins ) )
+    if( !ins )
     {
       if( _.longLike( src ) )
       {

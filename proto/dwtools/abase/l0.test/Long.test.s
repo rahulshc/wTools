@@ -505,9 +505,9 @@ function longMakeNotDefaultLongDescriptor( test )
   ];
   var list =
   [
-    array,
-    unroll,
-    argumentsArray,
+    // array,
+    // unroll,
+    // argumentsArray,
   ];
   for( let i = 0; i < typedList.length; i++ )
   list.push( bufferTyped( typedList[ i ] ) );
@@ -552,27 +552,28 @@ function longMakeNotDefaultLongDescriptor( test )
     test.case = 'dst = empty, not src';
     var dst = long( [] );
     var got = descriptor.longMake( dst );
-    var expected = result( dst, dst );
+    var expected = descriptor.longDescriptor.make( [] );
     test.identical( got, expected );
 
     test.case = 'dst = empty, src = number';
     var dst = long( [] );
+    debugger;
     var got = descriptor.longMake( dst, 2 );
-    var expected = result( dst, 2 );
+    var expected = _.argumentsArrayIs( got ) ? descriptor.longDescriptor.make( 2 ) : result( dst, 2 );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'src = number, src < dst.length';
     var dst = long( [ 1, 2, 3 ] );
     var got = descriptor.longMake( dst, 2 );
-    var expected = result( dst, [ 1, 2 ] );
+    var expected = _.argumentsArrayIs( got ) ? descriptor.longDescriptor.make( [ 1, 2 ] ) : result( dst, [ 1, 2 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'src = number, src > dst.length';
     var dst = long( [ 1, 2, 3 ] );
     var got = descriptor.longMake( dst, 4 );
-    var expected = _.bufferTypedIs( dst ) ? result( dst, [ 1, 2, 3, 0 ] ) : ( _.bufferTypedIs( got ) ? result( dst, [ 1, 2, 3, 0 ] ) : result( dst, [ 1, 2, 3, undefined ] ) );
+    var expected = _.argumentsArrayIs( got ) ? descriptor.longDescriptor.make( [ 1, 2, 3, undefined ] ) : ( _.bufferTypedIs( dst ) ? result( dst, [ 1, 2, 3, 0 ] ) : result( dst, [ 1, 2, 3, undefined ] ) );
     test.identical( got, expected );
     test.is( got !== dst );
 
@@ -589,7 +590,7 @@ function longMakeNotDefaultLongDescriptor( test )
     test.case = 'dst = long, not src';
     var dst = long( [ 1, 2, 3 ] );
     var got = descriptor.longMake( dst );
-    var expected = result( dst, [ 1, 2, 3 ] );
+    var expected = descriptor.longDescriptor.make( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.identical( got.length, 3 );
 
@@ -619,33 +620,33 @@ function longMakeNotDefaultLongDescriptor( test )
     test.identical( got.length, 5 );
     test.is( _.bufferTypedIs(  got ) );
     test.is( got !== src );
+
+    /* - */
+
+    if( !Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => _.longMake() );
+
+      test.case = 'extra argument';
+      test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 4, 'extra argument' ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => _.longMake( 'wrong argument', 1 ) );
+      test.shouldThrowErrorSync( () => _.longMake( 1, 1 ) );
+      test.shouldThrowErrorSync( () => _.longMake( new BufferRaw( 3 ), 2 ) );
+      test.shouldThrowErrorSync( () => _.longMake( ( e ) => { return { [ e ] : e } }, 5 ) );
+      if( Config.interpreter === 'njs' )
+      {
+        test.shouldThrowErrorSync( () => _.longMake( Array, BufferNode.from( [ 3 ] ) ) );
+        test.shouldThrowErrorSync( () => _.longMake( BufferNode.alloc( 3 ), 2 ) );
+      }
+
+      test.case = 'wrong type of ins';
+      test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
+      test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], Infinity  ) );
+    }
   }
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.longMake() );
-
-  test.case = 'extra argument';
-  test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 4, 'extra argument' ) );
-
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.longMake( 'wrong argument', 1 ) );
-  test.shouldThrowErrorSync( () => _.longMake( 1, 1 ) );
-  test.shouldThrowErrorSync( () => _.longMake( new BufferRaw( 3 ), 2 ) );
-  test.shouldThrowErrorSync( () => _.longMake( ( e ) => { return { [ e ] : e } }, 5 ) );
-  if( Config.interpreter === 'njs' )
-  {
-    test.shouldThrowErrorSync( () => _.longMake( Array, BufferNode.from( [ 3 ] ) ) );
-    test.shouldThrowErrorSync( () => _.longMake( BufferNode.alloc( 3 ), 2 ) );
-  }
-
-  test.case = 'wrong type of ins';
-  test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
-  test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], Infinity  ) );
 }
 longMakeNotDefaultLongDescriptor.timeOut = 30000;
 
