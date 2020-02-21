@@ -316,17 +316,13 @@ function longMake( test )
   var typedList =
   [
     I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
     U16x,
-    // I32x,
-    // U32x,
     F32x,
     F64x,
   ];
   var list =
   [
+    // xxx
     array,
     unroll,
     argumentsArray,
@@ -371,7 +367,6 @@ function longMake( test )
 
     test.case = 'dst = empty, src = number';
     var dst = long( [] );
-    debugger;
     var got = _.longMake( dst, 2 );
     var expected = result( dst, 2 );
     test.identical( got, expected );
@@ -440,6 +435,16 @@ function longMake( test )
     test.identical( got.length, 5 );
     test.is( _.bufferTypedIs(  got ) );
     test.is( got !== src );
+
+    /* qqq : make sure each _.longMake, _.longForm, _.arrayMake, _.arrayFrom test routien has such test case */
+    test.case = 'src = long constructor, ins = null';
+    var src = F32x;
+    var got = _.longMake( src, 4 );
+    var expected = new F32x( 4 );
+    test.identical( got, expected );
+    test.identical( got.length, 4 );
+    test.is( got !== src );
+
   }
 
   /* - */
@@ -1235,6 +1240,7 @@ function longMakeUndefined( test )
   [
     I8x,
     U16x,
+    U16x,
     F32x,
   ];
   var list =
@@ -1242,6 +1248,7 @@ function longMakeUndefined( test )
     array,
     unroll,
     argumentsArray,
+    // xxx
   ];
   for( let i = 0; i < typedList.length; i++ )
   list.push( bufferTyped( typedList[ i ] ) );
@@ -1293,7 +1300,7 @@ function longMakeUndefined( test )
     var expected = [];
     test.identical( got, expected );
     test.is( got !== dst );
-    test.isNot( type( dst, got ) ); /* qqq : analyze and fix that */
+    // test.isNot( type( dst, got ) ); /* qqq : analyze and fix that */
 
     test.case = 'dst = empty, src = number';
     var dst = long( [] );
@@ -1377,6 +1384,15 @@ function longMakeUndefined( test )
     var expected = new F64x( 3 );
     test.identical( got, expected );
     test.identical( got.length, 3 );
+    test.is( got !== src );
+
+    /* qqq : make sure each _.longMake, _.longForm, _.arrayMake, _.arrayFrom test routien has such test case */
+    test.case = 'src = long constructor, ins = null';
+    var src = F32x;
+    var got = _.longMakeUndefined( src, 4 ); debugger;
+    var expected = new F32x( 4 );
+    test.identical( got, expected );
+    test.identical( got.length, 4 );
     test.is( got !== src );
 
   }

@@ -96,31 +96,6 @@ function _longMake_functor( onMake )
 
     /* */
 
-    // if( !_.longLike( ins ) )
-    // {
-    //   if( _.longLike( src ) )
-    //   ins = src;
-    //   else
-    //   ins = [];
-    // }
-
-    // if( ins === undefined || _.numberIs( ins ) )
-    // if( !_.longLike( ins ) )
-    // {
-    //   if( _.longLike( src ) )
-    //   {
-    //     ins = src;
-    //     src = null;
-    //   }
-    //   else
-    //   {
-    //     // ins = [];
-    //     ins = null;
-    //   }
-    // }
-
-    // if( !_.longLike( ins ) )
-    // if( ins === undefined )
     if( !ins )
     {
       if( _.longLike( src ) )
@@ -137,42 +112,16 @@ function _longMake_functor( onMake )
       }
       else
       {
-        // ins = [];
         ins = null;
       }
     }
     else if( !_.longLike( ins ) )
     {
+      if( _.longIs( src ) )
       ins = src;
+      else
+      ins = null;
     }
-
-    /**/
-
-    // let length = ins;
-    //
-    // if( _.longLike( length ) )
-    // length = length.length;
-    //
-    // if( length === undefined || length === null )
-    // {
-    //   if( src === null )
-    //   {
-    //     length = 0;
-    //   }
-    //   else if( _.longLike( src ) )
-    //   {
-    //     length = src.length;
-    //   }
-    //   else if( _.numberIs( src ) )
-    //   {
-    //     length = src;
-    //     src = null;
-    //   }
-    //   else _.assert( 0 );
-    // }
-    //
-    // if( !length )
-    // length = 0;
 
     /**/
 
@@ -196,70 +145,6 @@ function _longMake_functor( onMake )
 
     result = onMake.call( this, src, ins, length, minLength );
 
-    // if( _.routineIs( src ) )
-    // {
-    //   if( ins && ins.length === length )
-    //   {
-    //     if( src === Array )
-    //     {
-    //       if( _.longLike( ins ) )
-    //       {
-    //         if( ins.length === 1 )
-    //         result = [ ins[ 0 ] ];
-    //         else if( !_.arrayLike( ins ) )
-    //         result = new( _.constructorJoin( src, [ ... ins ] ) );
-    //         else
-    //         result = new( _.constructorJoin( src, ins ) );
-    //       }
-    //       else
-    //       {
-    //         result = new src( ins );
-    //       }
-    //     }
-    //     else
-    //     {
-    //       result = new src( ins );
-    //     }
-    //   }
-    //   else
-    //   {
-    //     result = new src( length );
-    //     let minLen = Math.min( length, ins.length );
-    //     for( let i = 0 ; i < minLen ; i++ )
-    //     result[ i ] = ins[ i ];
-    //   }
-    // }
-    // else if( _.arrayIs( src ) )
-    // {
-    //   if( length === ins.length )
-    //   {
-    //     result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
-    //   }
-    //   else
-    //   {
-    //     _.assert( length >= 0 );
-    //     result = _.unrollIs( src ) ? _.unrollMake( length ) : new src.constructor( length );
-    //     let minLen = Math.min( length, ins.length );
-    //     for( let i = 0 ; i < minLen ; i++ )
-    //     result[ i ] = ins[ i ];
-    //   }
-    // }
-    // else
-    // {
-    //   if( length === ins.length )
-    //   {
-    //     result = new src.constructor( ins );
-    //   }
-    //   else
-    //   {
-    //     result = new src.constructor( length );
-    //     let minLen = Math.min( length, ins.length );
-    //     for( let i = 0 ; i < minLen ; i++ )
-    //     result[ i ] = ins[ i ];
-    //   }
-    // }
-
-    // _.assert( result instanceof this.longDescriptor.type );
     _.assert( _.longLike( result ) );
 
     return result;
