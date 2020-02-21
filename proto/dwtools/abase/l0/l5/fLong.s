@@ -219,8 +219,8 @@ function longMake( src, ins )
 
 //
 
-/* qqq : implement test */
-/* Dmytro : implemented without descriptor changes */
+/* aaa : implement test */
+/* Dmytro : implemented */
 
 
 function longMakeEmpty( src )
@@ -270,7 +270,6 @@ function longMakeEmpty( src )
 
 function _longMakeOfLength( src, len )
 {
-  // let result, length;
   let result;
 
   if( src === null )
