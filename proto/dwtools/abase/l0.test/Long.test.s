@@ -370,13 +370,13 @@ function longMake( test )
     test.case = 'dst = empty, not src';
     var dst = long( [] );
     var got = _.longMake( dst );
-    var expected = result( dst, [] );
+    var expected = _.longDescriptor.make( [] );
     test.identical( got, expected );
     test.is( got !== dst );
-    test.is( type( dst, got ) );
 
     test.case = 'dst = empty, src = number';
     var dst = long( [] );
+    debugger;
     var got = _.longMake( dst, 2 );
     var expected = result( dst, 2 );
     test.identical( got, expected );
@@ -413,11 +413,10 @@ function longMake( test )
     test.case = 'dst = long, not src';
     var dst = long( [ 1, 2, 3 ] );
     var got = _.longMake( dst );
-    var expected = result( dst, [ 1, 2, 3 ] );
+    var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.identical( got.length, 3 );
     test.is( got !== dst );
-    test.is( type( dst, got ) );
 
     test.case = 'dst = new long, src = array'
     var dst = long( 2 );
