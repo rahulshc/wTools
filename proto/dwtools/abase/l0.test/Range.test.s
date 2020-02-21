@@ -1569,7 +1569,7 @@ function rangeFromRight( test )
 {
   test.case = 'range - number';
   var got = _.rangeFromRight( 1 );
-  test.identical( got, [ 1, Infinity ] );
+  test.identical( got, [ 0, 1 ] );
 
   /* */
 
