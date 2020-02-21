@@ -300,7 +300,7 @@ function _longMakeOfLength( src, len )
   len = 0;
 
   if( _.argumentsArrayIs( src ) )
-  src = this.longDescriptor.make( src );
+  src = this.longDescriptor.name === 'ArgumentsArray' ? this.longDescriptor.make : this.longDescriptor.make( src );
 
   if( src === null )
   src = this.longDescriptor.make;
