@@ -96,8 +96,23 @@ function _longMake_functor( onMake )
     //   ins = [];
     // }
 
-    if( !_.longLike( ins ) )
     // if( ins === undefined || _.numberIs( ins ) )
+    // if( !_.longLike( ins ) )
+    // {
+    //   if( _.longLike( src ) )
+    //   {
+    //     ins = src;
+    //     src = null;
+    //   }
+    //   else
+    //   {
+    //     // ins = [];
+    //     ins = null;
+    //   }
+    // }
+
+    if( !_.longLike( ins ) )
+    // if( !ins )
     {
       if( _.longLike( src ) )
       {
@@ -109,6 +124,10 @@ function _longMake_functor( onMake )
         // ins = [];
         ins = null;
       }
+    }
+    else if( !_.longLike( ins ) )
+    {
+      ins = src;
     }
 
     if( !length )
@@ -533,7 +552,7 @@ function _longMakeOfLength( src, len )
   len = 0;
 
   if( _.argumentsArrayIs( src ) )
-  src = this.longDescriptor.make( src );
+  src = this.longDescriptor.name === 'ArgumentsArray' ? this.longDescriptor.make : this.longDescriptor.make( src );
 
   if( src === null )
   src = this.longDescriptor.make;
