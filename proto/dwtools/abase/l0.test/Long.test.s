@@ -1234,16 +1234,14 @@ function longMakeUndefined( test )
   var typedList =
   [
     I8x,
-    // xxx
-    // U16x,
-    // F32x,
+    U16x,
+    F32x,
   ];
   var list =
   [
-    // xxx
-    // array,
-    // unroll,
-    // argumentsArray,
+    array,
+    unroll,
+    argumentsArray,
   ];
   for( let i = 0; i < typedList.length; i++ )
   list.push( bufferTyped( typedList[ i ] ) );
