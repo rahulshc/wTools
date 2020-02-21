@@ -272,18 +272,27 @@ function _longMakeOfLength( src, len )
 {
   let result;
 
-  if( src === null )
-  src = [];
+  // if( src === null )
+  // src = [];
 
   if( _.longLike( len ) )
   len = len.length;
 
   if( len === undefined )
   {
-    if( _.longLike( src ) )
-    len = src.length;
+    if( src === null )
+    {
+      len = 0;
+    }
+    else if( _.longLike( src ) )
+    {
+      len = src.length;
+    }
     else if( _.numberIs( src ) )
-    len = src;
+    {
+      len = src;
+      src = null;
+    }
     else _.assert( 0 );
   }
 
@@ -291,7 +300,10 @@ function _longMakeOfLength( src, len )
   len = 0;
 
   if( _.argumentsArrayIs( src ) )
-  src = [];
+  src = this.longDescriptor.make( src );
+
+  if( src === null )
+  src = this.longDescriptor.make;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( len ) );
@@ -333,6 +345,8 @@ function _longMakeOfLength( src, len )
       result[ i ] = src[ i ];
     }
   }
+
+  _.assert( _.longLike( result ), 'Instance should be a long' );
 
   return result;
 }
