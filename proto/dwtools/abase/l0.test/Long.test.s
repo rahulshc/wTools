@@ -625,25 +625,25 @@ function longMakeNotDefaultLongDescriptor( test )
     if( !Config.debug )
     {
       test.case = 'without arguments';
-      test.shouldThrowErrorSync( () => _.longMake() );
+      test.shouldThrowErrorSync( () => descriptor.longMake() );
 
       test.case = 'extra argument';
-      test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 4, 'extra argument' ) );
+      test.shouldThrowErrorSync( () => descriptor.longMake( [ 1, 2, 3 ], 4, 'extra argument' ) );
 
       test.case = 'wrong type of src';
-      test.shouldThrowErrorSync( () => _.longMake( 'wrong argument', 1 ) );
-      test.shouldThrowErrorSync( () => _.longMake( 1, 1 ) );
-      test.shouldThrowErrorSync( () => _.longMake( new BufferRaw( 3 ), 2 ) );
-      test.shouldThrowErrorSync( () => _.longMake( ( e ) => { return { [ e ] : e } }, 5 ) );
+      test.shouldThrowErrorSync( () => descriptor.longMake( 'wrong argument', 1 ) );
+      test.shouldThrowErrorSync( () => descriptor.longMake( 1, 1 ) );
+      test.shouldThrowErrorSync( () => descriptor.longMake( new BufferRaw( 3 ), 2 ) );
+      test.shouldThrowErrorSync( () => descriptor.longMake( ( e ) => { return { [ e ] : e } }, 5 ) );
       if( Config.interpreter === 'njs' )
       {
-        test.shouldThrowErrorSync( () => _.longMake( Array, BufferNode.from( [ 3 ] ) ) );
-        test.shouldThrowErrorSync( () => _.longMake( BufferNode.alloc( 3 ), 2 ) );
+        test.shouldThrowErrorSync( () => descriptor.longMake( Array, BufferNode.from( [ 3 ] ) ) );
+        test.shouldThrowErrorSync( () => descriptor.longMake( BufferNode.alloc( 3 ), 2 ) );
       }
 
       test.case = 'wrong type of ins';
-      test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
-      test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], Infinity  ) );
+      test.shouldThrowErrorSync( () => descriptor.longMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
+      test.shouldThrowErrorSync( () => descriptor.longMake( [ 1, 2, 3 ], Infinity  ) );
     }
   }
 }
