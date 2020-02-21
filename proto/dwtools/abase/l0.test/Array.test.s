@@ -1139,7 +1139,7 @@ function arrayMakeUndefined( test )
 
 function arrayMakeUndefinedNotDefaultDescriptor( test )
 {
-  let times = 20; // quantity of elements in LongDescriptors map
+  let times = 2; // quantity of elements in LongDescriptors map
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
