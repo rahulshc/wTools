@@ -1293,7 +1293,7 @@ function longMakeUndefined( test )
     var expected = [];
     test.identical( got, expected );
     test.is( got !== dst );
-    test.isNot( type( dst, got ) );
+    test.isNot( type( dst, got ) ); /* qqq : analyze and fix that */
 
     test.case = 'dst = empty, src = number';
     var dst = long( [] );
