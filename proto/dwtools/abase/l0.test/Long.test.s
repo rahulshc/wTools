@@ -515,9 +515,9 @@ function longMakeNotDefaultLongDescriptor( test )
 
   /* tests */
   let times = 2;
-  for( let e in _.LongDescriptor )
+  for( let e in _.LongDescriptors )
   {
-    let name = _.LongDescriptor[ e ].name;
+    let name = _.LongDescriptors[ e ].name;
     let descriptor = _.withDefaultLong[ name ];
 
     for( let i = 0; i < list.length; i++ )

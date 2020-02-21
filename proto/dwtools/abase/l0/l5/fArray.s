@@ -274,8 +274,6 @@ function arrayMakeUndefined( src, length )
 
 function arrayFrom( src )
 {
-  if( arguments.length === 0 )
-  return Array( 0 );
   _.assert( arguments.length === 1 );
   if( _.arrayIs( src ) && !_.unrollIs( src ) )
   return src;
@@ -316,10 +314,6 @@ function arrayFrom( src )
 
 function arrayFromCoercing( src )
 {
-
-  if( arguments.length === 0 )
-  return Array( 0 );
-
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( _.arrayIs( src ) )
