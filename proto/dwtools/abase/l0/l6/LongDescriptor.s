@@ -215,33 +215,33 @@ _.assert( !_.withDefaultLong );
 //
 // --
 
-function make_functor( cls )
+function make_functor( name, cls )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 2 );
   _.assert( _.routineIs( cls ) );
   _.assert( _.strDefined( cls.name ) );
   let r =
   {
-    [ cls.name ] : function( src )
+    [ name ] : function()
     {
       // debugger;
-      _.assert( arguments.length === 1 );
-      return new cls( src );
+      // _.assert( arguments.length === 1 );
+      return new cls( ... arguments );
     }
   }
-  return r[ cls.name ];
+  return r[ name ];
 }
 
 //
 
-function from_functor( cls )
+function from_functor( name, cls )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 2 );
   _.assert( _.routineIs( cls ) );
   _.assert( _.strDefined( cls.name ) );
   let r =
   {
-    [ cls.name ] : function( src )
+    [ name ] : function( src )
     {
       // debugger;
       _.assert( arguments.length === 0 || arguments.length === 1 );
@@ -252,19 +252,19 @@ function from_functor( cls )
       return new cls( src );
     }
   }
-  return r[ cls.name ];
+  return r[ name ];
 }
 
 //
 
-function is_functor( cls )
+function is_functor( name, cls )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 2 );
   _.assert( _.routineIs( cls ) );
   _.assert( _.strDefined( cls.name ) );
   let r =
   {
-    [ cls.name ] : function( src )
+    [ name ] : function( src )
     {
       debugger; yyy
       /* qqq : cover please */
@@ -272,7 +272,7 @@ function is_functor( cls )
       return src instanceof cls;
     }
   }
-  return r[ cls.name ];
+  return r[ name ];
 }
 
 //
@@ -297,16 +297,20 @@ function _longDeclare( o )
   _.assert( LongDescriptors[ o.name ] === undefined );
 
   if( !o.make )
-  o.make = make_functor( o.type );
+  o.make = make_functor( o.name, o.type );
+  /* qqq : cover please _.longDescriptor.make */
 
   if( !o.from )
-  o.from = from_functor( o.type );
+  o.from = from_functor( o.name, o.type );
+  /* qqq : cover please _.longDescriptor.from */
 
   if( !o.is )
-  o.is = is_functor( o.type );
+  o.is = is_functor( o.name, o.type );
+  /* qqq : cover please _.longDescriptor.is */
 
   Object.freeze( o );
   LongDescriptors[ o.name ] = o;
+  if( !LongTypeToDescriptorsHash.get( o.type ) )
   LongTypeToDescriptorsHash.set( o.type, o );
 
   // extensionDeclare( o );
