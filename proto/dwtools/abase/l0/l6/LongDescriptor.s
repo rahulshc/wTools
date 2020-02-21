@@ -307,7 +307,7 @@ function _longDeclare( o )
 
   Object.freeze( o );
   LongDescriptors[ o.name ] = o;
-  LongTypeToDescriptorHash.set( o.type, o );
+  LongTypeToDescriptorsHash.set( o.type, o );
 
   // extensionDeclare( o );
 
@@ -333,7 +333,7 @@ function _argumentsArrayMake()
 
 //
 
-let LongTypeToDescriptorHash = new HashMap();
+let LongTypeToDescriptorsHash = new HashMap();
 let LongDescriptors = Object.create( null );
 // let LongContext = Object.create( null );
 
@@ -368,7 +368,7 @@ let LongDescriptorProducer =
   _longDeclare,
   // _longDescriptorApplyTo,
   LongDescriptors,
-  LongTypeToDescriptorHash,
+  LongTypeToDescriptorsHash,
 }
 
 _.LongDescriptorProducer = _.LongDescriptorProducer || Object.create( null );
@@ -383,7 +383,7 @@ let ToolsExtension =
   // _longDescriptorApplyTo,
   // LongDescriptorProducer,
   LongDescriptors,
-  LongTypeToDescriptorHash,
+  LongTypeToDescriptorsHash,
 }
 
 _.mapExtend( _, ToolsExtension );

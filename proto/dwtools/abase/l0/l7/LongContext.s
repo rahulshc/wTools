@@ -309,7 +309,7 @@ function applyTo( dst, def )
 //
 //   Object.freeze( o );
 //   LongDescriptors[ o.name ] = o;
-//   LongTypeToDescriptorHash.set( o.type, o );
+//   LongTypeToDescriptorsHash.set( o.type, o );
 //
 //   extensionDeclare( o );
 //
@@ -335,7 +335,7 @@ function applyTo( dst, def )
 //
 // //
 //
-// // let LongTypeToDescriptorHash = new HashMap();
+// // let LongTypeToDescriptorsHash = new HashMap();
 // // let LongDescriptors = Object.create( null );
 // // let LongContext = Object.create( null );
 //
@@ -370,7 +370,7 @@ let LongDescriptorProducer =
   // _longDeclare,
   // _longDescriptorApplyTo,
   // LongDescriptors,
-  // LongTypeToDescriptorHash,
+  // LongTypeToDescriptorsHash,
   applyTo,
 }
 
@@ -387,7 +387,7 @@ let ToolsExtension =
   // _longDescriptorApplyTo,
   // LongDescriptorProducer,
   // LongDescriptors,
-  // LongTypeToDescriptorHash,
+  // LongTypeToDescriptorsHash,
   LongContext,
 }
 
