@@ -2994,42 +2994,38 @@ function longCountUnique( src, onEvaluate )
 //
 //   return result;
 // }
-
 //
-
-/**
- * @summary Creates new array of length( length ) filled with zeroes.
- * @description Type of array depends on `type`( see examples ).
- * @param {Number} length Lengthof new array.
- *
- * @example
- * _.defaultLong.makeArrayOfLengthZeroed( 2 );
- * // returns Array [ 0,0 ]
- *
- * @example
- * _.withDefaultLong.Fx.makeArrayOfLength( 2 );
- * // returns F32x [ 0,0 ]
- *
- * @function makeArrayOfLengthZeroed
- * @memberof wTools."wTools.defaultLong"
- */
-
-function makeArrayOfLengthZeroed( length )
-{
-  if( length === undefined )
-  length = 0;
-
-  _.assert( length === undefined || length >= 0 );
-  _.assert( arguments.length === 0 || arguments.length === 1 );
-
-  let result = new this.longDescriptor.type( length );
-
-  if( this.longDescriptor.type === Array )
-  for( let i = 0 ; i < length ; i++ )
-  result[ i ] = 0;
-
-  return result;
-}
+// //
+//
+// /**
+//  * @summary Creates new array of length( length ) filled with zeroes.
+//  * @description Type of array depends on `type`( see examples ).
+//  * @param {Number} length Lengthof new array.
+//  *
+//  * @example
+//  * _.defaultLong.makeArrayOfLengthZeroed( 2 );
+//  * // returns Array [ 0,0 ]
+//  *
+//  * @function makeArrayOfLengthZeroed
+//  * @memberof wTools."wTools.defaultLong"
+//  */
+//
+// function makeArrayOfLengthZeroed( length )
+// {
+//   if( length === undefined )
+//   length = 0;
+//
+//   _.assert( length === undefined || length >= 0 );
+//   _.assert( arguments.length === 0 || arguments.length === 1 );
+//
+//   let result = new this.longDescriptor.type( length );
+//
+//   if( this.longDescriptor.type === Array )
+//   for( let i = 0 ; i < length ; i++ )
+//   result[ i ] = 0;
+//
+//   return result;
+// }
 
 // //
 //
@@ -3147,7 +3143,7 @@ let Extension =
 
   // makeSimilar,
   // makeArrayOfLength,
-  makeArrayOfLengthZeroed,
+  // makeArrayOfLengthZeroed,
   // arrayFrom : arrayFromCoercing,
   // arrayFromCoercing,
 
