@@ -65,12 +65,15 @@ function _longMake_functor( onMake )
   return function _longMake( src, ins )
   {
     let result;
+
+    /* */
+
     let length = ins;
 
     if( _.longLike( length ) )
     length = length.length;
 
-    if( length === undefined )
+    if( length === undefined || length === null )
     {
       if( src === null )
       {
@@ -87,6 +90,11 @@ function _longMake_functor( onMake )
       }
       else _.assert( 0 );
     }
+
+    if( !length )
+    length = 0;
+
+    /* */
 
     // if( !_.longLike( ins ) )
     // {
@@ -111,13 +119,21 @@ function _longMake_functor( onMake )
     //   }
     // }
 
-    if( !_.longLike( ins ) )
-    // if( !ins )
+    // if( !_.longLike( ins ) )
+    // if( ins === undefined )
+    if( !ins )
     {
       if( _.longLike( src ) )
       {
-        ins = src;
-        src = null;
+        if( ins === null )
+        {
+          ins = src;
+        }
+        else
+        {
+          ins = src;
+          src = null;
+        }
       }
       else
       {
@@ -130,14 +146,43 @@ function _longMake_functor( onMake )
       ins = src;
     }
 
-    if( !length )
-    length = 0;
+    /**/
+
+    // let length = ins;
+    //
+    // if( _.longLike( length ) )
+    // length = length.length;
+    //
+    // if( length === undefined || length === null )
+    // {
+    //   if( src === null )
+    //   {
+    //     length = 0;
+    //   }
+    //   else if( _.longLike( src ) )
+    //   {
+    //     length = src.length;
+    //   }
+    //   else if( _.numberIs( src ) )
+    //   {
+    //     length = src;
+    //     src = null;
+    //   }
+    //   else _.assert( 0 );
+    // }
+    //
+    // if( !length )
+    // length = 0;
+
+    /**/
 
     let minLength;
     if( ins )
     minLength = Math.min( ins.length, length );
     else
     minLength = 0;
+
+    /**/
 
     if( _.argumentsArrayIs( src ) )
     src = null;
