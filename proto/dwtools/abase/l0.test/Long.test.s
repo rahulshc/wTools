@@ -1652,10 +1652,9 @@ function longMakeZeroed( test )
     test.case = 'dst = empty, not src';
     var dst = long( [] );
     var got = _.longMakeZeroed( dst );
-    var expected = result( dst, [] );
+    var expected = _.longDescriptor.make( [] );
     test.identical( got, expected );
     test.is( got !== dst );
-    test.is( type( dst, got ) );
 
     test.case = 'dst = empty, src = number';
     var dst = long( [] );
@@ -1695,11 +1694,10 @@ function longMakeZeroed( test )
     test.case = 'dst = long, not src';
     var dst = long( [ 1, 2, 3 ] );
     var got = _.longMakeZeroed( dst );
-    var expected = result( dst, 3 );
+    var expected = _.longDescriptor.make( [ 0, 0, 0 ] );
     test.identical( got, expected );
     test.identical( got.length, 3 );
     test.is( got !== dst );
-    test.is( type( dst, got ) );
 
     test.case = 'dst = new long, src = array'
     var dst = long( 5 );
