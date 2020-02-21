@@ -97,6 +97,7 @@ function _longMake_functor( onMake )
     // }
 
     if( !_.longLike( ins ) )
+    // if( ins === undefined || _.numberIs( ins ) )
     {
       if( _.longLike( src ) )
       {
