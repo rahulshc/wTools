@@ -296,12 +296,7 @@ function longIs( test )
 
 /* aaa : implement */
 /* Dmytro : implemented */
-
-/* aaa : longMake and longMakeUndefined are ugly, please rewrite them from scratch */
-/* Dmytro : implemented */
-
-/* aaa : tell me how to improve test routine longMake */
-/* Dmytro : test routines longMake and longMakeUndefined improved by using test subroutine and automatically created test groups */
+/* qqq : no! */
 
 function longMake( test )
 {
@@ -1218,6 +1213,7 @@ _longMakeOfLengthNotDefaultDescriptor.timeOut = 30000;
 /*
 aaa : implement
 Dmytro : implemented
+qqq : no!
 */
 
 function longMakeUndefined( test )
@@ -1596,6 +1592,7 @@ longMakeUndefinedNotDefaultLongDescriptor.timeOut = 30000;
 
 /* aaa : implement Zeroed routine and test routine */
 /* Dmytro : routine longMakeZeroed and its test routine is implemented */
+/* qqq : no! */
 
 function longMakeZeroed( test )
 {
