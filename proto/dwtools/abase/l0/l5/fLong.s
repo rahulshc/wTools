@@ -96,7 +96,7 @@ function _longMake_functor( onMake )
 
     /* */
 
-    if( !ins )
+    if( ins === undefined || ins === null )
     {
       if( _.longLike( src ) )
       {
@@ -1528,7 +1528,7 @@ function longBut_( dst, array, range, val )
 //
 
 /**
- * The routine longSelect() returns a copy of a portion of provided Long {-array-} into a new Long
+ * The routine longShrink() returns a copy of a portion of provided Long {-array-} into a new Long
  * selected by {-range-}. The original {-array-} will not be modified.
  *
  * @param { Long } array - The Long from which makes a shallow copy.
@@ -1542,7 +1542,7 @@ function longBut_( dst, array, range, val )
  *
  * @example
  * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longSelect( src );
+ * var got = _.longShrink( src );
  * console.log( got );
  * // log Float32Array[ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
@@ -1550,7 +1550,7 @@ function longBut_( dst, array, range, val )
  *
  * @example
  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longSelect( src, 2, [ 'str' ] );
+ * var got = _.longShrink( src, 2, [ 'str' ] );
  * console.log( got );
  * // log [ 3, 4, 5 ]
  * console.log( _.unrollIs( got ) );
@@ -1560,7 +1560,7 @@ function longBut_( dst, array, range, val )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longSelect( src, [ 1, 4 ], [ 'str' ] );
+ * var got = _.longShrink( src, [ 1, 4 ], [ 'str' ] );
  * console.log( got );
  * // log [ 2, 3, 4 ]
  * console.log( got === src );
@@ -1568,7 +1568,7 @@ function longBut_( dst, array, range, val )
  *
  * @example
  * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longSelect( src, [ -5, 10 ], [ 'str' ] );
+ * var got = _.longShrink( src, [ -5, 10 ], [ 'str' ] );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( _.argumentsArrayIs( got ) );
@@ -1578,14 +1578,14 @@ function longBut_( dst, array, range, val )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longSelect( src, [ 4, 1 ], [ 'str' ] );
+ * var got = _.longShrink( src, [ 4, 1 ], [ 'str' ] );
  * console.log( got );
  * // log []
  * console.log( got === src );
  * // log false
  *
  * @returns { Long } Returns a copy of source Long containing the extracted elements. The copy has same type as source Long.
- * @function longSelect
+ * @function longShrink
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-array-} is not a Long.
  * @throws { Error } If range.length is less or more then two.
@@ -1594,10 +1594,10 @@ function longBut_( dst, array, range, val )
  */
 
 /*
-  qqq : extend documentation and test coverage of longSelect | Dmytro : documented, covered.
+  qqq : extend documentation and test coverage of longShrink | Dmytro : documented, covered.
 */
 
-function longSelect( array, range, val )
+function longShrink( array, range, val )
 {
   let result;
 
@@ -1666,7 +1666,7 @@ function longSelect( array, range, val )
 //
 
 /**
- * The routine longSelectInplace() returns a portion of provided Long {-array-} selected by {-range-}.
+ * The routine longShrinkInplace() returns a portion of provided Long {-array-} selected by {-range-}.
  * If provided Long is resizable, routine modifies this Long in place, otherwise, return copy.
  *
  * @param { Long } array - The Long from which selects elements.
@@ -1680,7 +1680,7 @@ function longSelect( array, range, val )
  *
  * @example
  * var src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longSelectInplace( src );
+ * var got = _.longShrinkInplace( src );
  * console.log( got );
  * // log Float32Array[ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
@@ -1688,7 +1688,7 @@ function longSelect( array, range, val )
  *
  * @example
  * var src = _.unrollMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longSelectInplace( src, 2, [ 'str' ] );
+ * var got = _.longShrinkInplace( src, 2, [ 'str' ] );
  * console.log( got );
  * // log [ 3, 4, 5 ]
  * console.log( _.unrollIs( got ) );
@@ -1698,7 +1698,7 @@ function longSelect( array, range, val )
  *
  * @example
  * var src = new U8x( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longSelectInplace( src, [ 1, 4 ], [ 1 ] );
+ * var got = _.longShrinkInplace( src, [ 1, 4 ], [ 1 ] );
  * console.log( got );
  * // log Uint8Array[ 2, 3, 4 ]
  * console.log( got === src );
@@ -1706,7 +1706,7 @@ function longSelect( array, range, val )
  *
  * @example
  * var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
- * var got = _.longSelectInplace( src, [ -5, 10 ], [ 'str' ] );
+ * var got = _.longShrinkInplace( src, [ -5, 10 ], [ 'str' ] );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( _.argumentsArrayIs( got ) );
@@ -1716,7 +1716,7 @@ function longSelect( array, range, val )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.longSelectInplace( src, [ 4, 1 ], [ 'str' ] );
+ * var got = _.longShrinkInplace( src, [ 4, 1 ], [ 'str' ] );
  * console.log( got );
  * // log []
  * console.log( got === src );
@@ -1724,7 +1724,7 @@ function longSelect( array, range, val )
  *
  * @returns { Long } Returns a Long containing the selected elements. If Long is resizable,
  * routine returns modified source Long, otherwise, returns a copy.
- * @function longSelectInplace
+ * @function longShrinkInplace
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-array-} is not a Long.
  * @throws { Error } If range.length is less or more then two.
@@ -1733,18 +1733,18 @@ function longSelect( array, range, val )
  */
 
 /*
-  qqq : extend documentation and test coverage of longSelectInplace | Dmytro : documented, covered
-  qqq : implement arraySelect | Dmytro : implemented
-  qqq : implement arraySelectInplace | Dmytro : implemented
+  qqq : extend documentation and test coverage of longShrinkInplace | Dmytro : documented, covered
+  qqq : implement arrayShrink | Dmytro : implemented
+  qqq : implement arrayShrinkInplace | Dmytro : implemented
 */
 
-function longSelectInplace( array, range, val )
+function longShrinkInplace( array, range, val )
 {
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( _.arrayLikeResizable( array ) )
-  return _.arraySelectInplace( array, range, val );
+  return _.arrayShrinkInplace( array, range, val );
 
   if( range === undefined )
   return array;
@@ -1761,7 +1761,7 @@ function longSelectInplace( array, range, val )
   if( range[ 0 ] === 0 && range[ 1 ] === array.length )
   return array;
   else
-  return _.longSelect( array, range, val );
+  return _.longShrink( array, range, val );
   // let result;
   //
   // if( range === undefined )
@@ -1834,13 +1834,13 @@ function longSelectInplace( array, range, val )
 
 //
 
-function longSelect_( dst, array, range, val )
+function longShrink_( dst, array, range, val )
 {
 
   [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
 
   if( _.arrayLikeResizable( array ) )
-  return _.arraySelect_.apply( this, arguments );
+  return _.arrayShrink_.apply( this, arguments );
 
   if( range === undefined )
   return returnDst();
@@ -3168,137 +3168,6 @@ function longCountUnique( src, onEvaluate )
 }
 
 // --
-// xxx
-// --
-
-// /**
-//  * @summary Creates new array based on type of `src` array. Takes length of new array from second argument `length`.
-//  * @param {} src Source array
-//  * @param {Number} [ length ] Lengthof target array.
-//  * @function makeSimilar
-//  * @memberof wTools."wTools.defaultLong"
-//  */
-//
-// function makeSimilar( src, length )
-// {
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//
-//   let result = _.longMakeUndefined( src, length );
-//
-//   return result;
-// }
-
-// //
-//
-// /**
-//  * @summary Creates new array of length( length ).
-//  * @description Type of array depends on `type`( see examples ).
-//  * @param {Number} length Lengthof new array.
-//  *
-//  * @example
-//  * _.defaultLong.makeArrayOfLength(1);
-//  * // returns instance of Array
-//  *
-//  * @example
-//  * _.withDefaultLong.Fx.makeArrayOfLength(1);
-//  * // returns instance of F32x
-//  *
-//  * @function makeArrayOfLength
-//  * @memberof wTools."wTools.defaultLong"
-//  */
-//
-// function makeArrayOfLength( length )
-// {
-//
-//   if( length === undefined )
-//   length = 0;
-//
-//   _.assert( length === undefined || length >= 0 );
-//   _.assert( arguments.length === 0 || arguments.length === 1 );
-//
-//   let result = new this.longDescriptor.type( length );
-//
-//   return result;
-// }
-//
-// //
-//
-// /**
-//  * @summary Creates new array of length( length ) filled with zeroes.
-//  * @description Type of array depends on `type`( see examples ).
-//  * @param {Number} length Lengthof new array.
-//  *
-//  * @example
-//  * _.defaultLong.makeArrayOfLengthZeroed( 2 );
-//  * // returns Array [ 0,0 ]
-//  *
-//  * @function makeArrayOfLengthZeroed
-//  * @memberof wTools."wTools.defaultLong"
-//  */
-//
-// function makeArrayOfLengthZeroed( length )
-// {
-//   if( length === undefined )
-//   length = 0;
-//
-//   _.assert( length === undefined || length >= 0 );
-//   _.assert( arguments.length === 0 || arguments.length === 1 );
-//
-//   let result = new this.longDescriptor.type( length );
-//
-//   if( this.longDescriptor.type === Array )
-//   for( let i = 0 ; i < length ; i++ )
-//   result[ i ] = 0;
-//
-//   return result;
-// }
-
-// //
-//
-// /**
-//  * @summary Creates new array taking elements from source array `src`.
-//  * @description Type of new array depends on `type`( see examples ).
-//  * Returns new array of type `type` or src if types are same.
-//  * @param {} src Source array.
-//  *
-//  * @example
-//  * let src =  _.withDefaultLong.Fx.makeArrayOfLength( 2 );
-//  * _.defaultLong.arrayFromCoercing( src );
-//  * // returns Array [ 0,0 ]
-//  *
-//  * @example
-//  * let src =  _.defaultLong.makeArrayOfLength( 2 );
-//  * _.withDefaultLong.Fx.arrayFromCoercing( src );
-//  * // returns F32x [ 0,0 ]
-//  *
-//  * @example
-//  * let src =  _.defaultLong.makeArrayOfLength( 2 );
-//  * _.defaultLong.arrayFromCoercing( src );
-//  * // returns src
-//  *
-//  * @function arrayFromCoercing
-//  * @memberof wTools."wTools.defaultLong"
-//  */
-//
-// function arrayFromCoercing( src )
-// {
-//   _.assert( _.longIs( src ) );
-//   _.assert( arguments.length === 1, 'Expects single argument' );
-//
-//   if( src.constructor === this.longDescriptor.type )
-//   return src;
-//
-//   let result;
-//
-//   if( this.longDescriptor.type === Array )
-//   result = new( _.constructorJoin( this.longDescriptor.type, src ) );
-//   else
-//   result = new this.longDescriptor.type( src );
-//
-//   return result;
-// }
-
-// --
 // extension
 // --
 
@@ -3334,9 +3203,9 @@ let Extension =
   longButInplace,
   _argumentsOnlyLong,
   longBut_, /* !!! : use instead of longBut, longButInplace */
-  longSelect,
-  longSelect_, /* !!! : use instead of longSelect, longSelectInplace */
-  longSelectInplace,
+  longShrink,
+  longShrink_, /* !!! : use instead of longShrink, longShrinkInplace */
+  longShrinkInplace,
   longGrow,
   longGrow_, /* !!! : use instead of longGrow, longGrowInplace */
   longGrowInplace,
@@ -3350,9 +3219,9 @@ let Extension =
   longIdentical,
 
   longHas,
-  longHasAny, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
-  longHasAll, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
-  longHasNone, /* qqq : remake, make it expect only 2 mandatory arguments and optional evaluator / equalizer | Dmytro : reimplemented, documented, covered */
+  longHasAny,
+  longHasAll,
+  longHasNone,
   longHasDepth,
 
   longAll,
@@ -3361,19 +3230,9 @@ let Extension =
 
   // long sequential search
 
-  longCountElement, /* qqq : cover by tests | Dmytro : covered */
-  longCountTotal, /* qqq : cover by tests | Dmytro : covered */
+  longCountElement,
+  longCountTotal,
   longCountUnique,
-
-  //
-
-  /* qqq2 : adjust jsdoc of each routine below */
-
-  // makeSimilar,
-  // makeArrayOfLength,
-  // makeArrayOfLengthZeroed,
-  // arrayFrom : arrayFromCoercing,
-  // arrayFromCoercing,
 
   // to replace
 
@@ -3388,12 +3247,12 @@ let Extension =
   |                  |                                          | _.longBut_( dst, src, range ) if dst is resizable       |
   |                  |                                          | or dst not change length                                |
   | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
-  | longSelect_      | _.longSelect_( null, src, range )        | _.longSelect_( src )                                    |
-  |                  | _.longSelect_( dst, src, range )         | _.longSelect_( src, range )                             |
-  |                  | if dst not resizable and change length   | _.longSelect_( dst, dst )                               |
-  |                  |                                          | _.longSelect_( dst, dst, range ) if dst is resizable    |
+  | longShrink_      | _.longShrink_( null, src, range )        | _.longShrink_( src )                                    |
+  |                  | _.longShrink_( dst, src, range )         | _.longShrink_( src, range )                             |
+  |                  | if dst not resizable and change length   | _.longShrink_( dst, dst )                               |
+  |                  |                                          | _.longShrink_( dst, dst, range ) if dst is resizable    |
   |                  |                                          | or dst not change length                                |
-  |                  |                                          | _.longSelect_( dst, src, range ) if dst is resizable    |
+  |                  |                                          | _.longShrink_( dst, src, range ) if dst is resizable    |
   |                  |                                          | or dst not change length                                |
   | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
   | longGrow_        | _.longGrow_( null, src, range )          | _.longGrow_( src )                                      |

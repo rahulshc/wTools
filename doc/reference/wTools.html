@@ -11394,16 +11394,16 @@ var arr = _.arraySame( [ 1, 2, 3 ], [ 1, 2, 3 ] );</code></pre>
 
     
 
-    <h4 class="name" id=".arraySelect"><span class="type-signature">(static) </span>arraySelect<span class="signature">(srcArray, indicesArray<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {arrayLike}</span></h4>
+    <h4 class="name" id=".arrayShrink"><span class="type-signature">(static) </span>arrayShrink<span class="signature">(srcArray, indicesArray<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {arrayLike}</span></h4>
 
     
-    <p class="summary">The arraySelect() method selects elements from (srcArray) by indexes of (indicesArray).</p>
+    <p class="summary">The arrayShrink() method selects elements from (srcArray) by indexes of (indicesArray).</p>
     
 
 
 
 <div class="description">
-    <p>The arraySelect() method selects elements from (srcArray) by indexes of (indicesArray).</p>
+    <p>The arrayShrink() method selects elements from (srcArray) by indexes of (indicesArray).</p>
 </div>
 
 
@@ -11663,10 +11663,10 @@ var arr = _.arraySame( [ 1, 2, 3 ], [ 1, 2, 3 ] );</code></pre>
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>// returns [ 3, 4, 5 ]
-var arr = _.arraySelect( [ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ] );</code></pre>
+var arr = _.arrayShrink( [ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ] );</code></pre>
 
     <pre class="prettyprint"><code>// returns [ undefined, undefined ]
-var arr = _.arraySelect( [ 1, 2, 3 ], [ 4, 5 ] );</code></pre>
+var arr = _.arrayShrink( [ 1, 2, 3 ], [ 4, 5 ] );</code></pre>
 
 
 

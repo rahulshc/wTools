@@ -24,7 +24,7 @@ function entityMakeConstructing( src, length )
   else if( _.longIs( src ) )
   {
     debugger;
-    return _.longMake( src, length );
+    return this.longMake( src, length );
     // if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
     // return new src.constructor( length !== undefined ? length : src.length );
     // else
@@ -67,7 +67,7 @@ function entityMakeEmpty( srcContainer )
   }
   else if( _.longIs( srcContainer ) )
   {
-    return _.longMakeEmpty( srcContainer );
+    return this.longMakeEmpty( srcContainer );
   }
   else if( _.setIs( srcContainer ) )
   {
@@ -111,7 +111,7 @@ function entityMakeUndefined( srcContainer, length )
   }
   else if( _.longIs( srcContainer ) )
   {
-    return _.longMake( srcContainer, length );
+    return this.longMake( srcContainer, length );
   }
   else if( _.setIs( srcContainer ) )
   {
@@ -479,12 +479,12 @@ function entityAssignField( dstContainer, srcValue, name, onRecursive )
 let Extension =
 {
 
-  entityMakeConstructing,
-  entityMakeEmpty,
+  entityMakeConstructing, /* qqq2 : should take into account long descriptor */
+  entityMakeEmpty, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
   makeEmpty : entityMakeEmpty,
-  entityMakeUndefined,
+  entityMakeUndefined, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
   makeUndefined : entityMakeUndefined,
-  entityMake,
+  entityMake, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
   make : entityMake,
 
   entityEntityEqualize,

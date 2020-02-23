@@ -10,207 +10,6 @@ _.assert( !_.Array );
 _.assert( !_.defaultLong );
 _.assert( !_.withDefaultLong );
 
-// //
-//
-// function _longDescriptorApplyTo( dst, def )
-// {
-//   // debugger;
-//
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//   // _.assert( !_.mapOwnKey( dst,'withDefaultLong' ) ); // yyy
-//   // _.assert( !_.mapOwnKey( dst,'defaultLong' ) ); // yyy
-//   _.assert( !!LongContext[ def ] );
-//   _.assert( !!LongDescriptors[ def ] );
-//
-//   dst.withDefaultLong = Object.create( null );
-//
-//   for( let d in LongContext )
-//   {
-//     dst.withDefaultLong[ d ] = Object.create( dst );
-//     _.mapExtend( dst.withDefaultLong[ d ], LongContext[ d ] );
-//   }
-//
-//   // dst.defaultLong = dst.withDefaultLong[ def ];
-//   // dst.longDescriptor = LongContext[ def ];
-//   // dst.LongContext = LongContext;
-//   dst.longDescriptor = LongDescriptors[ def ];
-//   _.assert( _.mapIs( dst.longDescriptor ) );
-//
-// }
-//
-// // --
-// // delcare
-// // --
-//
-// function extensionDeclare( descriptor )
-// {
-//
-//   // let type = descriptor.type;
-//   // let ArrayName = descriptor.ArrayName;
-//
-//   // let defaultLong = _.mapExtend( null, descriptor );
-//   let extension = Object.create( null );
-//   extension.longDescriptor = descriptor;
-//
-//   // //
-//   //
-//   // /**
-//   //  * @summary Creates new array based on type of `src` array. Takes length of new array from second argument `length`.
-//   //  * @param {} src Source array
-//   //  * @param {Number} [ length ] Lengthof target array.
-//   //  * @function makeSimilar
-//   //  * @memberof wTools."wTools.defaultLong"
-//   //  */
-//   //
-//   // function makeSimilar( src, length ) /* yyy */
-//   // {
-//   //   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   //
-//   //   let result = _.longMakeUndefined( src, length );
-//   //
-//   //   return result;
-//   // }
-//   //
-//   // //
-//   //
-//   // /**
-//   //  * @summary Creates new array of length( length ).
-//   //  * @description Type of array depends on `type`( see examples ).
-//   //  * @param {Number} length Lengthof new array.
-//   //  *
-//   //  * @example
-//   //  * _.defaultLong.makeArrayOfLength(1);
-//   //  * // returns instance of Array
-//   //  *
-//   //  * @example
-//   //  * _.withDefaultLong.Fx.makeArrayOfLength(1);
-//   //  * // returns instance of F32x
-//   //  *
-//   //  * @function makeArrayOfLength
-//   //  * @memberof wTools."wTools.defaultLong"
-//   //  */
-//   //
-//   // function makeArrayOfLength( length )
-//   // {
-//   //
-//   //   if( length === undefined )
-//   //   length = 0;
-//   //
-//   //   _.assert( length === undefined || length >= 0 );
-//   //   _.assert( arguments.length === 0 || arguments.length === 1 );
-//   //
-//   //   let result = new this.longDescriptor.type( length );
-//   //
-//   //   return result;
-//   // }
-//   //
-//   // //
-//   //
-//   // /**
-//   //  * @summary Creates new array of length( length ) filled with zeroes.
-//   //  * @description Type of array depends on `type`( see examples ).
-//   //  * @param {Number} length Lengthof new array.
-//   //  *
-//   //  * @example
-//   //  * _.defaultLong.makeArrayOfLengthZeroed( 2 );
-//   //  * // returns Array [ 0,0 ]
-//   //  *
-//   //  * @example
-//   //  * _.withDefaultLong.Fx.makeArrayOfLength( 2 );
-//   //  * // returns F32x [ 0,0 ]
-//   //  *
-//   //  * @function makeArrayOfLengthZeroed
-//   //  * @memberof wTools."wTools.defaultLong"
-//   //  */
-//   //
-//   // function makeArrayOfLengthZeroed( length )
-//   // {
-//   //   if( length === undefined )
-//   //   length = 0;
-//   //
-//   //   _.assert( length === undefined || length >= 0 );
-//   //   _.assert( arguments.length === 0 || arguments.length === 1 );
-//   //
-//   //   let result = new this.longDescriptor.type( length );
-//   //
-//   //   if( this.longDescriptor.type === Array )
-//   //   for( let i = 0 ; i < length ; i++ )
-//   //   result[ i ] = 0;
-//   //
-//   //   return result;
-//   // }
-//   //
-//   // //
-//   //
-//   // /**
-//   //  * @summary Creates new array taking elements from source array `src`.
-//   //  * @description Type of new array depends on `type`( see examples ).
-//   //  * Returns new array of type `type` or src if types are same.
-//   //  * @param {} src Source array.
-//   //  *
-//   //  * @example
-//   //  * let src =  _.withDefaultLong.Fx.makeArrayOfLength( 2 );
-//   //  * _.defaultLong.arrayFromCoercing( src );
-//   //  * // returns Array [ 0,0 ]
-//   //  *
-//   //  * @example
-//   //  * let src =  _.defaultLong.makeArrayOfLength( 2 );
-//   //  * _.withDefaultLong.Fx.arrayFromCoercing( src );
-//   //  * // returns F32x [ 0,0 ]
-//   //  *
-//   //  * @example
-//   //  * let src =  _.defaultLong.makeArrayOfLength( 2 );
-//   //  * _.defaultLong.arrayFromCoercing( src );
-//   //  * // returns src
-//   //  *
-//   //  * @function arrayFromCoercing
-//   //  * @memberof wTools."wTools.defaultLong"
-//   //  */
-//   //
-//   // function arrayFromCoercing( src )
-//   // {
-//   //   _.assert( _.longIs( src ) );
-//   //   _.assert( arguments.length === 1, 'Expects single argument' );
-//   //
-//   //   if( src.constructor === this.longDescriptor.type )
-//   //   return src;
-//   //
-//   //   let result;
-//   //
-//   //   if( this.longDescriptor.type === Array )
-//   //   result = new( _.constructorJoin( this.longDescriptor.type, src ) );
-//   //   else
-//   //   result = new this.longDescriptor.type( src );
-//   //
-//   //   return result;
-//   // }
-//
-//   // --
-//   //
-//   // --
-//
-//   let Extend =
-//   {
-//
-//     // makeSimilar,
-//     // makeArrayOfLength,
-//     // makeArrayOfLengthZeroed,
-//     //
-//     // arrayFrom : arrayFromCoercing,
-//     // arrayFromCoercing,
-//
-//     longDescriptor : descriptor,
-//
-//   }
-//
-//   _.mapExtend( extension, Extend );
-//   _.assert( !LongContext[ descriptor.name ] );
-//
-//   LongContext[ descriptor.name ] = extension;
-//
-//   return extension;
-// }
-
 // --
 //
 // --
@@ -224,8 +23,6 @@ function make_functor( name, cls )
   {
     [ name ] : function()
     {
-      // debugger;
-      // _.assert( arguments.length === 1 );
       return new cls( ... arguments );
     }
   }
@@ -243,7 +40,6 @@ function from_functor( name, cls )
   {
     [ name ] : function( src )
     {
-      // debugger;
       _.assert( arguments.length === 0 || arguments.length === 1 );
       if( src === undefined )
       return new cls()
@@ -279,7 +75,6 @@ function is_functor( name, cls )
 
 function _longDeclare( o )
 {
-  // _.routineOptions( _longDeclare, o );
 
   o = Object.assign( Object.create( null ), o );
   for( let k in _longDeclare.defaults )
@@ -313,8 +108,6 @@ function _longDeclare( o )
   if( !LongTypeToDescriptorsHash.get( o.type ) )
   LongTypeToDescriptorsHash.set( o.type, o );
 
-  // extensionDeclare( o );
-
   return o;
 }
 
@@ -339,7 +132,6 @@ function _argumentsArrayMake()
 
 let LongTypeToDescriptorsHash = new HashMap();
 let LongDescriptors = Object.create( null );
-// let LongContext = Object.create( null );
 
 _.assert( _.routineIs( _.arrayMake ) );
 _.assert( _.routineIs( _.unrollMake ) );
@@ -364,28 +156,18 @@ _longDeclare({ name : 'Fx', secondName : 'Float32', aliasName : 'F32x', type : _
 
 //
 
-let LongDescriptorProducer =
+let longDescriptorProducer =
 {
-  // make_functor,
-  // from_functor,
-  // is_functor,
   _longDeclare,
-  // _longDescriptorApplyTo,
   LongDescriptors,
   LongTypeToDescriptorsHash,
 }
 
-_.LongDescriptorProducer = _.LongDescriptorProducer || Object.create( null );
-_.mapExtend( _.LongDescriptorProducer, LongDescriptorProducer );
+_.longDescriptorProducer = _.longDescriptorProducer || Object.create( null );
+_.mapExtend( _.longDescriptorProducer, longDescriptorProducer );
 
 let ToolsExtension =
 {
-  // make_functor,
-  // from_functor,
-  // is_functor,
-  // _longDeclare,
-  // _longDescriptorApplyTo,
-  // LongDescriptorProducer,
   LongDescriptors,
   LongTypeToDescriptorsHash,
 }
@@ -396,46 +178,11 @@ _.mapExtend( _, ToolsExtension );
 //
 // --
 
-// let _ArrayNameSpaces =
-// [
-//   { type : F32x, ArrayName : 'Float32' },
-//   { type : U32x, ArrayName : 'Wrd32' },
-//   { type : I32x, ArrayName : 'Int32' },
-//   { type : Array, ArrayName : 'Array' },
-// ]
-
 _.assert( !_.Array );
 _.assert( !_.defaultLong );
 _.assert( !_.withDefaultLong );
-
-//
-//
-// /**
-//  * @summary Array namespace
-//  * @namespace "wTools.defaultLong"
-//  * @memberof wTools
-//  */
-//
-// // _._longDescriptorApplyTo = _longDescriptorApplyTo;
-//
-// // for( let d = 0 ; d < _ArrayNameSpaces.length ; d++ )
-// // extensionDeclare( _ArrayNameSpaces[ d ] );
-//
-// _longDescriptorApplyTo( _, 'Array' );
-
 _.assert( !_.Array );
-
-// _.assert( _.mapOwnKey( _, 'withDefaultLong' ) ); // yyy
-// _.assert( _.mapOwnKey( _, 'defaultLong' ) );
-// _.assert( _.mapOwnKey( _.defaultLong, 'defaultLong' ) );
-// _.assert( _.mapOwnKey( _, 'longDescriptor' ) ); // yyy
-// _.assert( !_.mapOwnKey( _.defaultLong, 'withDefaultLong' ) );
-// _.assert( !!_.defaultLong.withDefaultLong );
-
-// _.assert( _.objectIs( _.withDefaultLong ) );
-// _.assert( _.objectIs( _.defaultLong ) );
 _.assert( !_.defaultLong );
-// _.assert( _.routineIs( _.makeArrayOfLength ) );
 
 // --
 // export

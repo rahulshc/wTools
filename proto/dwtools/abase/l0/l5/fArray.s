@@ -827,7 +827,7 @@ function arrayBut_( dst, src, range, ins )
 //
 
 /**
- * The routine arraySelect() returns a copy of a portion of provided array {-src-} into a new array object
+ * The routine arrayShrink() returns a copy of a portion of provided array {-src-} into a new array object
  * selected by {-range-}. The original {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
@@ -841,7 +841,7 @@ function arrayBut_( dst, src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelect( src );
+ * var got = _.arrayShrink( src );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
@@ -849,7 +849,7 @@ function arrayBut_( dst, src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelect( src, 2, 'str' );
+ * var got = _.arrayShrink( src, 2, 'str' );
  * console.log( got );
  * // log [ 3, 4, 5 ]
  * console.log( got === src );
@@ -857,7 +857,7 @@ function arrayBut_( dst, src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelect( src, [ 1, 4 ], 'str' );
+ * var got = _.arrayShrink( src, [ 1, 4 ], 'str' );
  * console.log( got );
  * // log [ 2, 3, 4 ]
  * console.log( got === src );
@@ -865,7 +865,7 @@ function arrayBut_( dst, src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelect( src, [ -5, 10 ], 'str' );
+ * var got = _.arrayShrink( src, [ -5, 10 ], 'str' );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
@@ -873,14 +873,14 @@ function arrayBut_( dst, src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelect( src, [ 4, 1 ], 'str' );
+ * var got = _.arrayShrink( src, [ 4, 1 ], 'str' );
  * console.log( got );
  * // log []
  * console.log( got === src );
  * // log false
  *
  * @returns { Array|Unroll } Returns a copy of Array / Unroll containing the extracted elements.
- * @function arraySelect
+ * @function arrayShrink
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
@@ -888,7 +888,7 @@ function arrayBut_( dst, src, range, ins )
  * @memberof wTools
  */
 
-function arraySelect( src, range, ins )
+function arrayShrink( src, range, ins )
 {
   let result;
 
@@ -923,7 +923,7 @@ function arraySelect( src, range, ins )
 //
 
 /**
- * The routine arraySelectInplace() returns a portion of provided array {-src-} selected by {-range-}.
+ * The routine arrayShrinkInplace() returns a portion of provided array {-src-} selected by {-range-}.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which selects elements.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -936,7 +936,7 @@ function arraySelect( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelectInplace( src );
+ * var got = _.arrayShrinkInplace( src );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
@@ -944,7 +944,7 @@ function arraySelect( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelectInplace( src, 2, 'str' );
+ * var got = _.arrayShrinkInplace( src, 2, 'str' );
  * console.log( got );
  * // log [ 3, 4, 5 ]
  * console.log( got === src );
@@ -952,7 +952,7 @@ function arraySelect( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelectInplace( src, [ 1, 4 ], 'str' );
+ * var got = _.arrayShrinkInplace( src, [ 1, 4 ], 'str' );
  * console.log( got );
  * // log [ 2, 3, 4 ]
  * console.log( got === src );
@@ -960,7 +960,7 @@ function arraySelect( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelectInplace( src, [ -5, 10 ], 'str' );
+ * var got = _.arrayShrinkInplace( src, [ -5, 10 ], 'str' );
  * console.log( got );
  * // log [ 1, 2, 3, 4, 5 ]
  * console.log( got === src );
@@ -968,14 +968,14 @@ function arraySelect( src, range, ins )
  *
  * @example
  * var src = [ 1, 2, 3, 4, 5 ];
- * var got = _.arraySelectInplace( src, [ 4, 1 ], 'str' );
+ * var got = _.arrayShrinkInplace( src, [ 4, 1 ], 'str' );
  * console.log( got );
  * // log []
  * console.log( got === src );
  * // log true
  *
  * @returns { Array|Unroll } Returns a Array / Unroll containing the selected elements.
- * @function arraySelectInplace
+ * @function arrayShrinkInplace
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
@@ -983,7 +983,7 @@ function arraySelect( src, range, ins )
  * @memberof wTools
  */
 
-function arraySelectInplace( src, range, ins )
+function arrayShrinkInplace( src, range, ins )
 {
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
@@ -1017,7 +1017,7 @@ function arraySelectInplace( src, range, ins )
 
 //
 
-function arraySelect_( dst, src, range, ins )
+function arrayShrink_( dst, src, range, ins )
 {
 
   [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
@@ -6026,9 +6026,9 @@ let Extension =
   arrayButInplace,
   _argumentsOnlyArray,
   arrayBut_, /* !!! : use instead of arrayBut, arrayButInplace */
-  arraySelect,
-  arraySelectInplace,
-  arraySelect_, /* !!! : use instead of arraySelect, arraySelectInplace */
+  arrayShrink,
+  arrayShrinkInplace,
+  arrayShrink_, /* !!! : use instead of arrayShrink, arrayShrinkInplace */
   arrayGrow,
   arrayGrowInplace,
   arrayGrow_, /* !!! : use instead of arrayGrow, arrayGrowInplace */
@@ -6187,11 +6187,11 @@ let Extension =
   |                  |                                          | _.arrayBut_( dst, src )                                 |
   |                  |                                          | _.arrayBut_( dst, src, range )                          |
   | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
-  | arraySelect_     | _.arraySelect_( null, src, range )       | _.arraySelect_( src )                                   |
-  |                  |                                          | _.arraySelect_( src, range )                            |
-  |                  |                                          | _.arraySelect_( dst, dst, range )                       |
-  |                  |                                          | _.arraySelect_( dst, src )                              |
-  |                  |                                          | _.arraySelect_( dst, src, range )                       |
+  | arrayShrink_     | _.arrayShrink_( null, src, range )       | _.arrayShrink_( src )                                   |
+  |                  |                                          | _.arrayShrink_( src, range )                            |
+  |                  |                                          | _.arrayShrink_( dst, dst, range )                       |
+  |                  |                                          | _.arrayShrink_( dst, src )                              |
+  |                  |                                          | _.arrayShrink_( dst, src, range )                       |
   | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
   | arrayGrow_       | _.arrayGrow_( null, src, range )         | _.arrayGrow_( src )                                     |
   |                  |                                          | _.arrayGrow_( src, range )                              |
