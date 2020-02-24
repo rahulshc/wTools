@@ -1086,6 +1086,85 @@ longMakeWithBufferTypedLongDescriptor.timeOut = 20000;
 
 //
 
+function longMakeEmptyWithArrayAndUnroll( test )
+{
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var longConstr = function( a )
+  {
+    if( a )
+    return _.longDescriptor.make( a );
+    return _.longDescriptor.make( 0 );
+  }
+  var list =
+  [
+    array,
+    unroll,
+    longConstr,
+    Array,
+  ];
+
+  /* tests */
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  /* test subroutine */
+
+  function run( long )
+  {
+    test.case = 'without arguments';
+    var got = _.longMakeEmpty();
+    var expected = _.longDescriptor.make( 0 );
+    test.identical( got, expected );
+
+    test.case = 'src - null';
+    var got = _.longMakeEmpty( null );
+    var expected = _.longDescriptor.make( 0 );
+    test.identical( got, expected );
+
+    test.case = 'src - undefined';
+    var got = _.longMakeEmpty( undefined );
+    var expected = _.longDescriptor.make( 0 );
+    test.identical( got, expected );
+
+    test.case = 'src - empty long';
+    var src = long( [] );
+    var got = _.longMakeEmpty( src );
+    var expected = long( 0 );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'src - filled long';
+    var src = long( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longMakeEmpty( src );
+    var expected = long( 0 );
+    test.identical( got, expected );
+    test.is( got !== src );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'extra argument';
+  test.shouldThrowErrorSync( () => _.longMakeEmpty( [ 1, 2, 3 ], 'extra argument' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.longMakeEmpty( 1 ) );
+  test.shouldThrowErrorSync( () => _.longMakeEmpty( 'wrong argument' ) );
+  test.shouldThrowErrorSync( () => _.longMakeEmpty( new BufferRaw( 3 ) ) );
+  if( Config.interpreter === 'njs' )
+  test.shouldThrowErrorSync( () => _.longMakeEmpty( BufferNode.alloc( 3 ) ) );
+}
+
+//
+
 function longMakeEmpty( test )
 {
   /* constructors */
@@ -11908,7 +11987,9 @@ var Self =
     longMakeWithArgumentsArrayLongDescriptor,
     longMakeWithBufferTypedLongDescriptor,
 
+    longMakeEmptyWithArrayAndUnroll,
     longMakeEmpty,
+
     longMakeEmptyNotDefaultLongDescriptor,
     _longMakeOfLength,
     _longMakeOfLengthNotDefaultDescriptor,

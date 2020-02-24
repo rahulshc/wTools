@@ -418,7 +418,7 @@ function longMakeEmpty( src )
 
   if( _.unrollIs( src ) )
   return _.unrollMake( 0 );
-  else if( src === null || _.argumentsArrayIs( src ) )
+  else if( src === null || src === undefined || _.argumentsArrayIs( src ) )
   return this.longDescriptor.make( 0 );
   else if( _.arrayIs( src ) || _.bufferTypedIs( src ) )
   return new src.constructor();
