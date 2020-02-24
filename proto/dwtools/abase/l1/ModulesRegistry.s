@@ -547,6 +547,12 @@ let wMathSpace =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Space },
 }
 
+let wMathGeometric =
+{
+  sourcePath : sourcePath( 'amath/l6/Geometric.s', 'wmathgeometric' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.math.d2TriPointInside },
+}
+
 let wMathConcepts =
 {
   sourcePath : sourcePath( 'amath/l8/Concepts.ss', 'wmathconcepts' ),
@@ -739,6 +745,7 @@ let Modules =
   wMathScalar,
   wMathVector,
   wMathSpace,
+  wMathGeometric,
   wMathConcepts,
 
   // top
