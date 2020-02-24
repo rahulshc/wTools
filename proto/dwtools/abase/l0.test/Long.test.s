@@ -3123,6 +3123,126 @@ function longMakeZeroedWithArrayAndUnroll( test )
 
 //
 
+function longMakeZeroedWithArgumentsArray( test )
+{
+  test.case = 'src = null, not ins';
+  var got = _.longMakeZeroed( null );
+  var expected = _.longDescriptor.make( 0 );
+  test.identical( got, expected );
+
+  test.case = 'src = number, not ins';
+  var got = _.longMakeZeroed( 5 );
+  var expected = _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'src = number, ins = null';
+  var got = _.longMakeZeroed( 5, null );
+  var expected = _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'src = number, ins = undefined';
+  var got = _.longMakeZeroed( 5, undefined );
+  var expected = _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'src = null, ins - number';
+  var got = _.longMakeZeroed( null, 5 );
+  var expected = _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'src = null, ins - long';
+  var got = _.longMakeZeroed( null, _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] ) );
+  var expected = _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+
+  test.case = 'src = empty long, not ins';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.longMakeZeroed( src );
+  var expected = _.longDescriptor.make( [] );
+  test.identical( got, expected );
+
+  test.case = 'src = long, not ins';
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.longMakeZeroed( src );
+  var expected = _.longDescriptor.make( [ 0, 0, 0 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'src = empty long, ins = null';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.longMakeZeroed( src, null );
+  var expected = _.longDescriptor.make( 0 );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'src = empty long, ins = number';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.longMakeZeroed( src, 2 );
+  var expected = _.longDescriptor.make( [ 0, 0 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'src = long, ins = number, ins < src.length';
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.longMakeZeroed( src, 2 );
+  var expected = _.longDescriptor.make( [ 0, 0 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'src = long with an element, ins = empty array';
+  var src = new F64x( 10 );
+  var got = _.longMakeZeroed( src, [] );
+  var expected = new F64x( 0 );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'src = long, ins = number, ins > src.length';
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.longMakeZeroed( src, 4 );
+  var expected = _.longDescriptor.make( [ 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'src = long, ins = array, ins.length > src.length';
+  var src = _.argumentsArrayMake( [ 0, 1 ] );
+  var ins = [ 1, 2, 3 ];
+  var got = _.longMakeZeroed( src, ins );
+  var expected = _.longDescriptor.make( [ 0, 0, 0 ] );
+  test.identical( got, expected );
+  test.is( got !== ins );
+  test.is( got !== src );
+
+  test.case = 'src = long, ins = array, ins.length === src.length'
+  var src = _.argumentsArrayMake( 5 );
+  var ins = [ 1, 2, 3, 4, 5 ];
+  var got = _.longMakeZeroed( src, ins );
+  var expected = _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'src = Array constructor, ins = null';
+  var got = _.longMakeZeroed( Array, null );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'src = BufferTyped constructor, ins = number';
+  var got = _.longMakeZeroed( U32x, 5 );
+  var expected = new U32x( [ 0, 0, 0, 0, 0 ] );
+  test.identical( got, expected );
+  test.is( _.bufferTypedIs(  got ) );
+
+  test.case = 'src = Array constructor, ins = long';
+  var ins = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.longMakeZeroed( Array, ins );
+  var expected = [ 0, 0, 0 ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== ins );
+}
+
+//
+
 function longMakeZeroed( test )
 {
   /* constructors */
@@ -12984,6 +13104,7 @@ var Self =
     longMakeUndefinedWithBufferTypedLongDescriptor,
 
     longMakeZeroedWithArrayAndUnroll,
+    longMakeZeroedWithArgumentsArray,
     longMakeZeroed,
 
     //
