@@ -16,7 +16,6 @@ var _ = _global_.wTools;
 
 function argumentsArrayMake( test )
 {
-
   test.case = 'empty';
   var src = [];
   var got = _.argumentsArrayMake( src );
@@ -95,14 +94,12 @@ function argumentsArrayMake( test )
   {
     _.argumentsArrayMake( '1' );
   });
-
 }
 
 //
 
 function argumentsArrayFrom( test )
 {
-
   test.case = 'empty';
   var src = [];
   var got = _.argumentsArrayFrom( src );
@@ -215,7 +212,6 @@ function argumentsArrayFrom( test )
   {
     _.argumentsArrayFrom( '1' );
   });
-
 }
 
 //--
@@ -224,7 +220,6 @@ function argumentsArrayFrom( test )
 
 function longIs( test )
 {
-
   test.case = 'an empty array';
   var got = _.longIs( [] );
   var expected = true;
@@ -289,7 +284,6 @@ function longIs( test )
 
   if( !Config.debug )
   return;
-
 }
 
 //
@@ -302,7 +296,18 @@ function longMakeWithArrayAndUnroll( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var list = [ array, unroll ];
+  var longConstr = function( a )
+  {
+    if( a )
+    return _.longDescriptor.make( a );
+    return _.longDescriptor.make( 0 );
+  }
+  var list =
+  [
+    array,
+    unroll,
+    longConstr,
+  ]; 
 
   /* tests */
 
@@ -676,7 +681,18 @@ function longMakeWithArrayAndUnrollLongDescriptor( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var list = [ array, unroll ];
+  var longConstr = function( a )
+  {
+    if( a )
+    return _.longDescriptor.make( a );
+    return _.longDescriptor.make( 0 );
+  }
+  var list =
+  [
+    array,
+    unroll,
+    longConstr,
+  ];
 
   /* tests */
 
@@ -1127,11 +1143,6 @@ function longMakeEmptyWithArrayAndUnroll( test )
     var expected = _.longDescriptor.make( 0 );
     test.identical( got, expected );
 
-    test.case = 'src - undefined';
-    var got = _.longMakeEmpty( undefined );
-    var expected = _.longDescriptor.make( 0 );
-    test.identical( got, expected );
-
     test.case = 'src - empty long';
     var src = long( [] );
     var got = _.longMakeEmpty( src );
@@ -1157,6 +1168,7 @@ function longMakeEmptyWithArrayAndUnroll( test )
 
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.longMakeEmpty( 1 ) );
+  test.shouldThrowErrorSync( () => _.longMakeEmpty( undefined ) );
   test.shouldThrowErrorSync( () => _.longMakeEmpty( 'wrong argument' ) );
   test.shouldThrowErrorSync( () => _.longMakeEmpty( new BufferRaw( 3 ) ) );
   if( Config.interpreter === 'njs' )
@@ -1174,11 +1186,6 @@ function longMakeEmptyWithArgumentsArray( test )
 
   test.case = 'src - null';
   var got = _.longMakeEmpty( null );
-  var expected = _.longDescriptor.make( 0 );
-  test.identical( got, expected );
-
-  test.case = 'src - undefined';
-  var got = _.longMakeEmpty( undefined );
   var expected = _.longDescriptor.make( 0 );
   test.identical( got, expected );
 
@@ -1229,11 +1236,6 @@ function longMakeEmptyWithBufferTyped( test )
 
     test.case = 'src - null';
     var got = _.longMakeEmpty( null );
-    var expected = _.longDescriptor.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - undefined';
-    var got = _.longMakeEmpty( undefined );
     var expected = _.longDescriptor.make( 0 );
     test.identical( got, expected );
 
@@ -1307,11 +1309,6 @@ function longMakeEmptyWithArrayAndUnrollLongDescriptor( test )
     var expected = descriptor.longDescriptor.make( 0 );
     test.identical( got, expected );
 
-    test.case = 'src - undefined';
-    var got = descriptor.longMakeEmpty( undefined );
-    var expected = descriptor.longDescriptor.make( 0 );
-    test.identical( got, expected );
-
     test.case = 'src - empty long';
     var src = long( [] );
     var got = descriptor.longMakeEmpty( src );
@@ -1336,6 +1333,7 @@ function longMakeEmptyWithArrayAndUnrollLongDescriptor( test )
 
     test.case = 'wrong type of src';
     test.shouldThrowErrorSync( () => descriptor.longMakeEmpty( 1 ) );
+    test.shouldThrowErrorSync( () => descriptor.longMakeEmpty( undefined ) );
     test.shouldThrowErrorSync( () => descriptor.longMakeEmpty( 'wrong argument' ) );
     test.shouldThrowErrorSync( () => descriptor.longMakeEmpty( new BufferRaw( 3 ) ) );
     if( Config.interpreter === 'njs' )
@@ -1375,11 +1373,6 @@ function longMakeEmptyWithArgumentsArrayLongDescriptor( test )
 
     test.case = 'src - null';
     var got = descriptor.longMakeEmpty( null );
-    var expected = descriptor.longDescriptor.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - undefined';
-    var got = descriptor.longMakeEmpty( undefined );
     var expected = descriptor.longDescriptor.make( 0 );
     test.identical( got, expected );
 
@@ -1442,11 +1435,6 @@ function longMakeEmptyWithBufferTypedLongDescriptor( test )
 
     test.case = 'src - null';
     var got = descriptor.longMakeEmpty( null );
-    var expected = descriptor.longDescriptor.make( 0 );
-    test.identical( got, expected );
-
-    test.case = 'src - undefined';
-    var got = descriptor.longMakeEmpty( undefined );
     var expected = descriptor.longDescriptor.make( 0 );
     test.identical( got, expected );
 
@@ -1826,6 +1814,195 @@ aaa : implement
 Dmytro : implemented
 qqq : no!
 */
+
+function longMakeUndefinedWithArrayAndUnroll( test )
+{
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var list = [ array, unroll ];
+
+  /* tests */
+
+  for( let t = 0; t < list.length; t++ )
+  {
+    test.open( list[ t ].name );
+    run( list[ t ] );
+    test.close( list[ t ].name );
+  }
+
+  /* test subroutine */
+
+  function run( long )
+  {
+    /* qqq : thouse routines are too long code to be such routine. use function nameOfRoutine(){} an move it out of run */
+    /* qqq : bad names of routines. not clear what it does */
+    /* qqq : bad names of routines. don't use nouns for routines */
+
+    test.case = 'src = null, not ins';
+    var got = _.longMakeUndefined( null );
+    var expected = [];
+    test.identical( got, expected );
+
+    test.case = 'src = number, not ins';
+    var got = _.longMakeUndefined( 5 );
+    var expected = _.longDescriptor.make( 5 );
+    test.identical( got, expected );
+
+    test.case = 'src = number, ins = null';
+    var got = _.longMakeUndefined( 5, null );
+    var expected = _.longDescriptor.make( 5 );
+    test.identical( got, expected );
+
+    test.case = 'src = number, ins = undefined';
+    var got = _.longMakeUndefined( 5, undefined );
+    var expected = _.longDescriptor.make( 5 );
+    test.identical( got, expected );
+
+    test.case = 'src = null, ins - number';
+    var got = _.longMakeUndefined( null, 5 );
+    var expected = _.longDescriptor.make( 5 );
+    test.identical( got, expected );
+
+    test.case = 'src = null, ins - long';
+    var got = _.longMakeUndefined( null, long( [ 1, 2, 3, 4, 5 ] ) );
+    var expected = _.longDescriptor.make( 5 );
+    test.identical( got, expected );
+
+    test.case = 'src = empty long, not ins';
+    var src = long( [] );
+    var got = _.longMakeUndefined( src );
+    var expected = _.longDescriptor.make( [] );
+    test.identical( got, expected );
+    /* aaa : analyze and fix that */
+    /* Dmytro : this test case is the same as above. That is src defines only length, but longDescriptor defines type */
+    // test.isNot( src.constructor.name === got.constructor.name );
+
+    test.case = 'src = long, not ins';
+    var src = long( [ 1, 2, 3 ] );
+    var got = _.longMakeUndefined( src );
+    var expected = long( 3 );
+    test.identical( got, expected );
+    test.is( got !== src );
+    /* aaa : improve this line. make it proepr + redable */
+    /* Dmytro : line below not use strange subroutine */
+    test.is( src.constructor.name === got.constructor.name ); 
+
+    /* qqq : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    test.case = 'src = empty long, ins = null';
+    var src = long( [] );
+    var got = _.longMakeUndefined( src, null );
+    var expected = long( 0 );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    /* qqq : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    test.case = 'src = long, ins = number';
+    var src = long( 10 );
+    var got = _.longMakeUndefined( src.constructor, 4 );
+    var expected = long( 4 );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'src = empty long, ins = number';
+    var src = long( [] );
+    var got = _.longMakeUndefined( src, 2 );
+    var expected = long( 2 );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    test.case = 'src = long, ins = number, ins < src.length';
+    var src = long( [ 1, 2, 3 ] );
+    var got = _.longMakeUndefined( src, 2 );
+    var expected = long( 2 );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    /* qqq : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    test.case = 'src = long with an element, ins = empty array';
+    var src = new F64x( 10 );
+    var got = _.longMakeUndefined( src, [] );
+    var expected = new F64x( 0 );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    /* qqq : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    test.case = 'src = long, ins = number, ins > src.length';
+    var src = long( [ 1, 2, 3 ] );
+    var got = _.longMakeUndefined( src, 4 );
+    var expected = long( 4 );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    test.case = 'src = long, ins = array, ins.length > src.length';
+    var src = long( [ 0, 1 ] );
+    var ins = [ 1, 2, 3 ];
+    var got = _.longMakeUndefined( src, ins );
+    var expected = long( 3 );
+    test.identical( got, expected );
+    test.is( got !== ins );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    test.case = 'src = long, ins = array, ins.length === src.length'
+    var src = long( 5 );
+    var ins = [ 1, 2, 3, 4, 5 ];
+    var got = _.longMakeUndefined( src, ins );
+    var expected = long( 5 );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    test.case = 'src = Array constructor, ins = null';
+    var got = _.longMakeUndefined( Array, null );
+    var expected = [];
+    test.identical( got, expected );
+    test.is( _.arrayIs( got ) );
+
+    /* qqq : there are no such arguments */
+    /* qqq : make sure all similar test routines has good naming of variables */
+    test.case = 'src = BufferTyped constructor, ins = number';
+    var got = _.longMakeUndefined( U32x, 5 );
+    var expected = new U32x( 5 );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs(  got ) );
+
+    test.case = 'src = Array constructor, ins = long';
+    var ins = long( [ 1, 2, 3 ] );
+    var got = _.longMakeUndefined( Array, ins );
+    var expected = [ undefined, undefined, undefined ];
+    test.identical( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( got !== ins );
+  }
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longMakeUndefined() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( [ 1, 2, 3 ], 4, 'extra argument' ) );
+
+  test.case = 'wrong type of ins';
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( 'wrong argument', 1 ) );
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( BufferNode.alloc( 3 ), 2 ) );
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( new BufferRaw( 3 ), 2 ) );
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( Array, BufferNode.from( [ 3 ] ) ) );
+
+  test.case = 'wrong type of len';
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( [ 1, 2, 3 ], 'wrong type of argument' ) );
+  test.shouldThrowErrorSync( () => _.longMakeUndefined( [ 1, 2, 3 ], Infinity ) );
+}
+
+//
 
 function longMakeUndefined( test )
 {
@@ -12088,9 +12265,14 @@ var Self =
 
     _longMakeOfLength,
     _longMakeOfLengthNotDefaultDescriptor,
+
+    longMakeUndefinedWithArrayAndUnroll,
     longMakeUndefined,
     longMakeUndefinedNotDefaultLongDescriptor,
+
     longMakeZeroed,
+
+    //
 
     longSlice,
     longBut,
