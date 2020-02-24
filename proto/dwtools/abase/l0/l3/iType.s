@@ -91,7 +91,7 @@ function constructorIsVector( src )
 
 //
 
-function spaceIs( src )
+function matrixIs( src )
 {
   if( !src )
   return false;
@@ -522,7 +522,7 @@ let Routines =
 
   vectorAdapterIs,
   constructorIsVector,
-  spaceIs,
+  matrixIs,
   constructorIsMatrix,
 
   consequenceIs,
