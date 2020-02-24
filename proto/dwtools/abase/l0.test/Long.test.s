@@ -404,8 +404,8 @@ function longMakeWithArrayAndUnroll( test )
     /* qqq : make sure each _.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
     test.case = 'src = long constructor, ins = null';
     var src = F32x;
-    var got = _.longMake( src, 4 );
-    var expected = new F32x( 4 );
+    var got = _.longMake( src, null );
+    var expected = new F32x();
     test.identical( got, expected );
     test.is( got !== ins );
   }
@@ -435,6 +435,101 @@ function longMakeWithArrayAndUnroll( test )
   test.case = 'wrong type of ins';
   test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], 'wrong type of argument' ) );
   test.shouldThrowErrorSync( () => _.longMake( [ 1, 2, 3 ], Infinity  ) );
+}
+
+//
+
+function longMakeWithArgumentsArray( test )
+{
+  test.case = 'src = null, not ins';
+  var got = _.longMake( null );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.case = 'src = number, not ins';
+  var got = _.longMake( 5 );
+  var expected = _.longDescriptor.make( 5 );
+  test.identical( got, expected );
+
+  test.case = 'src = empty, not ins';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.longMake( src );
+  var expected = _.longDescriptor.make( [] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'src = empty, ins = number';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.longMake( src, 2 );
+  var expected = _.longDescriptor.make( 2 );
+  test.identical( got, expected );
+  test.is( got !== src );
+  test.is( got.constructor.name === _.longDescriptor.name );
+
+  test.case = 'ins = number, ins < src.length';
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.longMake( src, 2 );
+  var expected = _.longDescriptor.make( [ 1, 2 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+  test.is( got.constructor.name === _.longDescriptor.name );
+
+  test.case = 'ins = number, ins > src.length';
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.longMake( src, 4 );
+  var expected = _.longDescriptor.make( [ 1, 2, 3, undefined ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+  test.is( got.constructor.name === _.longDescriptor.name );
+
+  test.case = 'ins = long, ins.length > src.length';
+  var src = _.argumentsArrayMake( [ 0, 1 ] );
+  var ins = [ 1, 2, 3 ];
+  var got = _.longMake( src, ins );
+  var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+  test.is( got !== ins );
+  test.is( got !== src );
+  test.is( got.constructor.name === _.longDescriptor.name );
+
+  test.case = 'src = long, not ins';
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.longMake( src );
+  var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'src = new long, ins = array'
+  var src = _.argumentsArrayMake( 2 );
+  var ins = [ 1, 2, 3, 4, 5 ];
+  var got = _.longMake( src, ins );
+  var expected = _.longDescriptor.make( [ 1, 2, 3, 4, 5 ] );
+  test.identical( got, expected );
+  test.is( got !== src );
+  test.is( got.constructor.name === _.longDescriptor.name );
+
+  test.case = 'src = Array constructor, ins = long';
+  var ins = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.longMake( Array, ins );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== ins );
+
+  test.case = 'src = BufferTyped constructor, ins = long';
+  var ins = _.argumentsArrayMake( [ 1, 1, 1, 1, 1 ] );
+  var got = _.longMake( U32x, ins );
+  var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
+  test.identical( got, expected );
+  test.is( _.bufferTypedIs(  got ) );
+  test.is( got !== ins );
+
+  test.case = 'src = long constructor, ins = null';
+  var src = F32x;
+  var got = _.longMake( src, null );
+  var expected = new F32x();
+  test.identical( got, expected );
+  test.is( got !== ins );
 }
 
 //
@@ -11430,6 +11525,7 @@ var Self =
     // long, l0/l5
 
     longMakeWithArrayAndUnroll,
+    longMakeWithArgumentsArray,
 
     longMakeNotDefaultLongDescriptor,
     longMakeEmpty,

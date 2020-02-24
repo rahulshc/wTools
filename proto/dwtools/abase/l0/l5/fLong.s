@@ -88,6 +88,10 @@ function _longMake_functor( onMake )
         length = src;
         src = null;
       }
+      else if( _.routineIs( src ) )
+      {
+        length = 0;
+      }
       else _.assert( 0 );
     }
 
