@@ -245,28 +245,27 @@ function hashMapIsPopulated()
 // map selector
 // --
 
-function _mapEnumerableKeys( srcMap, own )
-{
-  let result = [];
-
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( !_.primitiveIs( srcMap ) );
-
-  if( own )
-  {
-    for( let k in srcMap )
-    if( _ObjectHasOwnProperty.call( srcMap, k ) )
-    result.push( k );
-  }
-  else
-  {
-    for( let k in srcMap )
-    result.push( k );
-  }
-
-  return result;
-}
-
+// function _mapEnumerableKeys( srcMap, own )
+// {
+//   let result = [];
+//
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   _.assert( !_.primitiveIs( srcMap ) );
+//
+//   if( own )
+//   {
+//     for( let k in srcMap )
+//     if( _ObjectHasOwnProperty.call( srcMap, k ) )
+//     result.push( k );
+//   }
+//   else
+//   {
+//     for( let k in srcMap )
+//     result.push( k );
+//   }
+//
+//   return result;
+// }
 
 //
 
@@ -275,46 +274,49 @@ function _mapKeys( o )
   let result = [];
 
   _.routineOptions( _mapKeys, o );
+
+  let srcMap = o.srcMap;
+  let selectFilter = o.selectFilter;
+
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.objectLike( o ) );
-  _.assert( !( o.srcMap instanceof Map ), 'not implemented' );
-  _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
-
-  /* */
-
-  function filter( srcMap, keys )
-  {
-
-    if( !o.selectFilter )
-    {
-      _.arrayAppendArrayOnce( result, keys );
-    }
-    else for( let k = 0 ; k < keys.length ; k++ )
-    {
-      let e = o.selectFilter( srcMap, keys[ k ] );
-      if( e !== undefined )
-      _.arrayAppendOnce( result, e );
-    }
-  }
+  _.assert( !( srcMap instanceof Map ), 'not implemented' );
+  _.assert( selectFilter === null || _.routineIs( selectFilter ) );
 
   /* */
 
   if( o.enumerable )
   {
+    let result1 = [];
 
-    filter( o.srcMap, _._mapEnumerableKeys( o.srcMap, o.own ) );
+    _.assert( !_.primitiveIs( srcMap ) );
+
+    if( o.own )
+    {
+      for( let k in srcMap )
+      if( _ObjectHasOwnProperty.call( srcMap, k ) )
+      result1.push( k );
+    }
+    else
+    {
+      for( let k in srcMap )
+      result1.push( k );
+    }
+
+    filter( srcMap, result1 );
 
   }
   else
   {
+    _.assert( !( srcMap instanceof Map ), 'not implemented' );
 
     if( o.own  )
     {
-      filter( o.srcMap, Object.getOwnPropertyNames( o.srcMap ) );
+      filter( srcMap, Object.getOwnPropertyNames( srcMap ) );
     }
     else
     {
-      let proto = o.srcMap;
+      let proto = srcMap;
       result = [];
       do
       {
@@ -326,9 +328,26 @@ function _mapKeys( o )
 
   }
 
+  return result;
+
   /* */
 
-  return result;
+  function filter( srcMap, keys )
+  {
+
+    if( !selectFilter )
+    {
+      _.arrayAppendArrayOnce( result, keys );
+    }
+    else for( let k = 0 ; k < keys.length ; k++ )
+    {
+      let e = selectFilter( srcMap, keys[ k ] );
+      if( e !== undefined )
+      _.arrayAppendOnce( result, e );
+    }
+
+  }
+
 }
 
 _mapKeys.defaults =
@@ -373,20 +392,21 @@ _mapKeys.defaults =
  * @memberof wTools
  */
 
-function mapKeys( srcMap )
+function mapKeys( srcMap, o )
 {
   let result;
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
+/* qqq : review test routine for this and all routines which had been acception option in context. look in this file map* routines of such kind */
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapKeys, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapKeys, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
 
-  if( o.enumerable )
-  result = _._mapEnumerableKeys( o.srcMap, o.own );
-  else
+  // if( o.enumerable )
+  // result = _._mapEnumerableKeys( o.srcMap, o.own );
+  // else
   result = _._mapKeys( o );
 
   return result;
@@ -427,21 +447,21 @@ mapKeys.defaults =
  * @memberof wTools
 */
 
-function mapOwnKeys( srcMap )
+function mapOwnKeys( srcMap, o )
 {
   let result;
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o, mapOwnKeys.defaults );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapOwnKeys, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
   o.own = 1;
 
-  if( o.enumerable )
-  result = _._mapEnumerableKeys( o.srcMap, o.own );
-  else
+  // if( o.enumerable )
+  // result = _._mapEnumerableKeys( o.srcMap, o.own );
+  // else
   result = _._mapKeys( o );
 
   if( !o.enumerable )
@@ -477,12 +497,12 @@ mapOwnKeys.defaults =
  * @memberof wTools
 */
 
-function mapAllKeys( srcMap )
+function mapAllKeys( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o, mapAllKeys.defaults );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapAllKeys, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
@@ -573,12 +593,12 @@ _mapVals.defaults =
  * @memberof wTools
  */
 
-function mapVals( srcMap )
+function mapVals( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapVals, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapVals, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
@@ -629,12 +649,12 @@ mapVals.defaults =
  * @memberof wTools
  */
 
-function mapOwnVals( srcMap )
+function mapOwnVals( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o, mapVals.defaults );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapOwnVals, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
@@ -675,12 +695,12 @@ mapOwnVals.defaults =
  * @memberof wTools
  */
 
-function mapAllVals( srcMap )
+function mapAllVals( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o, mapAllVals.defaults );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapAllVals, o );
   _.assert( !_.primitiveIs( srcMap ) );
 
   o.srcMap = srcMap;
@@ -764,12 +784,12 @@ _mapPairs.defaults =
  * @memberof wTools
  */
 
-function mapPairs( srcMap )
+function mapPairs( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o, mapPairs.defaults );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapPairs, o );
 
   o.srcMap = srcMap;
 
@@ -821,12 +841,12 @@ mapPairs.defaults =
  * @memberof wTools
  */
 
-function mapOwnPairs( srcMap )
+function mapOwnPairs( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o, mapPairs.defaults );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapOwnPairs, o );
 
   o.srcMap = srcMap;
   o.own = 1;
@@ -871,12 +891,12 @@ mapOwnPairs.defaults =
  * @memberof wTools
  */
 
-function mapAllPairs( srcMap )
+function mapAllPairs( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assertMapHasOnly( o, mapAllPairs.defaults );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapAllPairs, o );
 
   o.srcMap = srcMap;
   o.own = 0;
@@ -961,12 +981,12 @@ _mapProperties.defaults =
  * @memberof wTools
  */
 
-function mapProperties( srcMap )
+function mapProperties( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapProperties, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapProperties, o );
 
   o.srcMap = srcMap;
 
@@ -1019,12 +1039,12 @@ mapProperties.defaults =
  * @memberof wTools
  */
 
-function mapOwnProperties( srcMap )
+function mapOwnProperties( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapOwnProperties, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapOwnProperties, o );
 
   o.srcMap = srcMap;
   o.own = 1;
@@ -1069,12 +1089,12 @@ mapOwnProperties.defaults =
  * @memberof wTools
  */
 
-function mapAllProperties( srcMap )
+function mapAllProperties( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapAllProperties, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapAllProperties, o );
 
   o.srcMap = srcMap;
   o.own = 0;
@@ -1129,12 +1149,12 @@ mapAllProperties.defaults =
  */
 
 
-function mapRoutines( srcMap )
+function mapRoutines( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapRoutines, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapRoutines, o );
 
   o.srcMap = srcMap;
   o.selectFilter = function selectRoutine( srcMap, k )
@@ -1194,12 +1214,12 @@ mapRoutines.defaults =
  * @memberof wTools
  */
 
-function mapOwnRoutines( srcMap )
+function mapOwnRoutines( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapOwnRoutines, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapOwnRoutines, o );
 
   o.srcMap = srcMap;
   o.own = 1;
@@ -1251,12 +1271,12 @@ mapOwnRoutines.defaults =
  * @memberof wTools
  */
 
-function mapAllRoutines( srcMap )
+function mapAllRoutines( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapAllRoutines, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapAllRoutines, o );
 
   o.srcMap = srcMap;
   o.own = 0;
@@ -1317,12 +1337,12 @@ mapAllRoutines.defaults =
  * @memberof wTools
  */
 
-function mapFields( srcMap )
+function mapFields( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapFields, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapFields, o );
 
   o.srcMap = srcMap;
   o.selectFilter = function selectRoutine( srcMap, k )
@@ -1379,12 +1399,12 @@ mapFields.defaults =
  * @memberof wTools
  */
 
-function mapOwnFields( srcMap )
+function mapOwnFields( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapOwnFields, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapOwnFields, o );
 
   o.srcMap = srcMap;
   o.own = 1;
@@ -1439,12 +1459,12 @@ mapOwnFields.defaults =
  * @memberof wTools
  */
 
-function mapAllFields( srcMap )
+function mapAllFields( srcMap, o )
 {
-  let o = this === Self ? Object.create( null ) : this;
+  // let o = this === Self ? Object.create( null ) : this;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.routineOptions( mapAllFields, o );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  o = _.routineOptions( mapAllFields, o );
 
   o.srcMap = srcMap;
   o.own = 0;
@@ -1872,7 +1892,7 @@ let Routines =
 
   // map selector
 
-  _mapEnumerableKeys,
+  // _mapEnumerableKeys,
 
   _mapKeys,
   mapKeys,
