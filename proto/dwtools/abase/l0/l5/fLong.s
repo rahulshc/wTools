@@ -454,88 +454,130 @@ function longMakeEmpty( src )
 
 //
 
-function _longMakeOfLength( src, len )
+let _longMakeOfLength = _longMake_functor( function( src, ins, length, minLength )
 {
   let result;
 
-  // if( src === null )
-  // src = [];
-
-  if( _.longLike( len ) )
-  len = len.length;
-
-  if( len === undefined )
-  {
-    if( src === null )
-    {
-      len = 0;
-    }
-    else if( _.longLike( src ) )
-    {
-      len = src.length;
-    }
-    else if( _.numberIs( src ) )
-    {
-      len = src;
-      src = null;
-    }
-    else _.assert( 0 );
-  }
-
-  if( !len )
-  len = 0;
-
-  if( _.argumentsArrayIs( src ) )
-  src = this.longDescriptor.name === 'ArgumentsArray' ? this.longDescriptor.make : this.longDescriptor.make( src );
-
-  if( src === null )
-  src = this.longDescriptor.make;
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIsFinite( len ) );
-  _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.strType( src ) );
-
   if( _.routineIs( src ) )
   {
-    result = new src( len );
+    result = new src( length );
   }
   else if( _.arrayIs( src ) )
   {
-    if( len === src.length )
+    if( length === src.length )
     {
       result = new( _.constructorJoin( src.constructor, src ) );
     }
-    else if( len < src.length )
+    else if( length < src.length )
     {
-      result = src.slice( 0, len );
+      result = src.slice( 0, length );
     }
     else
     {
-      result = new src.constructor( len );
-      let minLen = Math.min( len, src.length );
-      for( let i = 0 ; i < minLen ; i++ )
+      result = new src.constructor( length );
+      for( let i = 0 ; i < minLength ; i++ )
       result[ i ] = src[ i ];
     }
   }
   else
   {
-    if( len === src.length )
+    if( length === src.length )
     {
-      result = new src.constructor( len );
+      result = new src.constructor( length );
     }
     else
     {
-      result = new src.constructor( len );
-      let minLen = Math.min( len, src.length );
-      for( let i = 0 ; i < minLen ; i++ )
+      result = new src.constructor( length );
+      for( let i = 0 ; i < minLength ; i++ )
       result[ i ] = src[ i ];
     }
   }
 
-  _.assert( _.longLike( result ), 'Instance should be a long' );
-
   return result;
-}
+});
+
+// function _longMakeOfLength( src, len )
+// {
+//   let result;
+// 
+//   // if( src === null )
+//   // src = [];
+// 
+//   if( _.longLike( len ) )
+//   len = len.length;
+// 
+//   if( len === undefined )
+//   {
+//     if( src === null )
+//     {
+//       len = 0;
+//     }
+//     else if( _.longLike( src ) )
+//     {
+//       len = src.length;
+//     }
+//     else if( _.numberIs( src ) )
+//     {
+//       len = src;
+//       src = null;
+//     }
+//     else _.assert( 0 );
+//   }
+// 
+//   if( !len )
+//   len = 0;
+// 
+//   if( _.argumentsArrayIs( src ) )
+//   src = this.longDescriptor.name === 'ArgumentsArray' ? this.longDescriptor.make : this.longDescriptor.make( src );
+// 
+//   if( src === null )
+//   src = this.longDescriptor.make;
+// 
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.numberIsFinite( len ) );
+//   _.assert( _.routineIs( src ) || _.longLike( src ), () => 'Expects long, but got ' + _.strType( src ) );
+// 
+//   if( _.routineIs( src ) )
+//   {
+//     result = new src( len );
+//   }
+//   else if( _.arrayIs( src ) )
+//   {
+//     if( len === src.length )
+//     {
+//       result = new( _.constructorJoin( src.constructor, src ) );
+//     }
+//     else if( len < src.length )
+//     {
+//       result = src.slice( 0, len );
+//     }
+//     else
+//     {
+//       result = new src.constructor( len );
+//       let minLen = Math.min( len, src.length );
+//       for( let i = 0 ; i < minLen ; i++ )
+//       result[ i ] = src[ i ];
+//     }
+//   }
+//   else
+//   {
+//     if( len === src.length )
+//     {
+//       result = new src.constructor( len );
+//     }
+//     else
+//     {
+//       result = new src.constructor( len );
+//       let minLen = Math.min( len, src.length );
+//       for( let i = 0 ; i < minLen ; i++ )
+//       result[ i ] = src[ i ];
+//     }
+//   }
+// 
+//   _.assert( _.longLike( result ), 'Instance should be a long' );
+// 
+//   return result;
+// }
 
 //
 
