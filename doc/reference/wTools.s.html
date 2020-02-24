@@ -5965,28 +5965,28 @@ var arrayOrNumber = function( dst,length )
 //
 
 /**
- * The arraySelect() method selects elements from (srcArray) by indexes of (indicesArray).
+ * The arrayShrink() method selects elements from (srcArray) by indexes of (indicesArray).
  *
  * @param { arrayLike } srcArray - Values for the new array.
  * @param { ( arrayLike | object ) } [ indicesArray = indicesArray.indices ] - Indexes of elements from the (srcArray) or options object.
  *
  * @example
  * // returns [ 3, 4, 5 ]
- * var arr = _.arraySelect( [ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ] );
+ * var arr = _.arrayShrink( [ 1, 2, 3, 4, 5 ], [ 2, 3, 4 ] );
  *
  * @example
  * // returns [ undefined, undefined ]
- * var arr = _.arraySelect( [ 1, 2, 3 ], [ 4, 5 ] );
+ * var arr = _.arrayShrink( [ 1, 2, 3 ], [ 4, 5 ] );
  *
  * @returns { arrayLike } - Returns a new array with the length equal (indicesArray.length) and elements from (srcArray).
    If there is no element with necessary index than the value will be undefined.
- * @method arraySelect
+ * @method arrayShrink
  * @throws { Error } If passed arguments is not array like object.
  * @throws { Error } If the atomsPerElement property is not equal to 1.
  * @memberof wTools
  */
 
-var arraySelect = function( srcArray,indicesArray )
+var arrayShrink = function( srcArray,indicesArray )
 {
   var atomsPerElement = 1;
 
@@ -11128,7 +11128,7 @@ var Proto =
   arrayNewOfSameLength : arrayNewOfSameLength,
   arrayOrNumber : arrayOrNumber,
 
-  arraySelect : arraySelect,
+  arrayShrink : arrayShrink,
   arrayIndicesOfGreatest : arrayIndicesOfGreatest, /* experimental */
 
   arrayFlatten : arrayFlatten,

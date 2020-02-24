@@ -23,7 +23,6 @@ function buffersTypedAreEquivalent( src1, src2, accuracy )
   if( src1.length !== src2.length )
   return false;
 
-  debugger;
   if( accuracy === null || accuracy === undefined )
   accuracy = _.accuracy;
 
@@ -1375,7 +1374,7 @@ function bufferSelect( dstArray, range, srcArray )
   let result;
 
   if( !_.bufferAnyIs( dstArray ) )
-  return _.longSelect( dstArray, range, srcArray );
+  return _.longShrink( dstArray, range, srcArray );
 
   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
 
@@ -1437,7 +1436,7 @@ function bufferSelectInplace( dstArray, range, srcArray )
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( !_.bufferAnyIs( dstArray ) )
-  return _.longSelectInplace( dstArray, range, srcArray );
+  return _.longShrinkInplace( dstArray, range, srcArray );
 
   let length = _.definedIs( dstArray.length ) ? dstArray.length : dstArray.byteLength;
 
@@ -1572,7 +1571,7 @@ function bufferSelect_( dst, dstArray, range, srcArray )
   [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
 
   if( _.arrayLikeResizable( dstArray ) )
-  return _.arraySelect_.apply( this, arguments );
+  return _.arrayShrink_.apply( this, arguments );
 
   let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
 
