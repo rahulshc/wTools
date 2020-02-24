@@ -298,37 +298,11 @@ function longIs( test )
 /* Dmytro : implemented */
 /* qqq : no! */
 
-function longMake( test )
+function longMakeWithArrayAndUnroll( test )
 {
-  /* constructors */
-
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var argumentsArray = ( src ) => _.argumentsArrayMake( src );
-  var bufferTyped = function( buf )
-  {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
-  };
-
-  /* lists */
-
-  var typedList =
-  [
-    I8x,
-    U16x,
-    F32x,
-    F64x,
-  ];
-  var list =
-  [
-    // xxx
-    array,
-    unroll,
-    argumentsArray,
-  ];
-  for( let i = 0; i < typedList.length; i++ )
-  list.push( bufferTyped( typedList[ i ] ) );
+  var list = [ array, unroll ];
 
   /* tests */
 
@@ -343,98 +317,89 @@ function longMake( test )
 
   function run( long )
   {
-    var type = ( dst, got ) => _.argumentsArrayIs( dst ) ?
-    got.constructor.name === 'Array' : dst.constructor.name === got.constructor.name;
-    var result = ( dst, length ) => _.argumentsArrayIs( dst ) ?
-    array( length ) : long( length );
-
-    test.case = 'dst = null, not src';
+    test.case = 'src = null, not ins';
     var got = _.longMake( null );
     var expected = [];
     test.identical( got, expected );
 
-    test.case = 'dst = number, not src';
+    test.case = 'src = number, not ins';
     var got = _.longMake( 5 );
     var expected = _.longDescriptor.make( 5 );
     test.identical( got, expected );
 
-    test.case = 'dst = empty, not src';
-    var dst = long( [] );
-    var got = _.longMake( dst );
+    test.case = 'src = empty long, not ins';
+    var src = long( [] );
+    var got = _.longMake( src );
     var expected = _.longDescriptor.make( [] );
     test.identical( got, expected );
-    test.is( got !== dst );
-
-    test.case = 'dst = empty, src = number';
-    var dst = long( [] );
-    var got = _.longMake( dst, 2 );
-    var expected = result( dst, 2 );
-    test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( type( dst, got ) );
-
-    test.case = 'src = number, src < dst.length';
-    var dst = long( [ 1, 2, 3 ] );
-    var got = _.longMake( dst, 2 );
-    var expected = result( dst, [ 1, 2 ] );
-    test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( type( dst, got ) );
-
-    test.case = 'src = number, src > dst.length';
-    var dst = long( [ 1, 2, 3 ] );
-    var got = _.longMake( dst, 4 );
-    var expected = _.bufferTypedIs( dst ) ? result( dst, [ 1, 2, 3, 0 ] ) : result( dst, [ 1, 2, 3, undefined ] );
-    test.identical( got, expected );
-    test.is( got !== dst );
-    test.is( type( dst, got ) );
-
-    test.case = 'src = long, src.length > dst.length';
-    var dst = long( [ 0, 1 ] );
-    var src = [ 1, 2, 3 ];
-    var got = _.longMake( dst, src );
-    var expected = result( dst, [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.identical( got.length, 3 );
     test.is( got !== src );
-    test.is( got !== dst );
-    test.is( type( dst, got ) );
 
-    test.case = 'dst = long, not src';
-    var dst = long( [ 1, 2, 3 ] );
-    var got = _.longMake( dst );
+    test.case = 'src = empty long, ins = number';
+    var src = long( [] );
+    var got = _.longMake( src, 2 );
+    var expected = long( 2 );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( _.arrayIs( got ) );
+
+    test.case = 'ins = number, ins < src.length';
+    var src = long( [ 1, 2, 3 ] );
+    var got = _.longMake( src, 2 );
+    var expected = long( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( _.arrayIs( got ) );
+
+    test.case = 'ins = number, ins > src.length';
+    var src = long( [ 1, 2, 3 ] );
+    var got = _.longMake( src, 4 );
+    var expected = long( [ 1, 2, 3, undefined ] ) 
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( _.arrayIs( got ) );
+
+    test.case = 'ins = long, ins.length > src.length';
+    var src = long( [ 0, 1 ] );
+    var ins = [ 1, 2, 3 ];
+    var got = _.longMake( src, ins );
+    var expected = long( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== ins );
+    test.is( got !== src );
+    test.is( _.arrayIs( got ) );
+
+    test.case = 'src = long, not ins';
+    var src = long( [ 1, 2, 3 ] );
+    var got = _.longMake( src );
     var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.identical( got.length, 3 );
-    test.is( got !== dst );
+    test.is( got !== src );
 
-    test.case = 'dst = new long, src = array'
-    var dst = long( 2 );
-    var src = [ 1, 2, 3, 4, 5 ];
-    var got = _.longMake( dst, src );
-    var expected = result( dst, [ 1, 2, 3, 4, 5 ] );
+    test.case = 'src = new long, ins = array'
+    var src = long( 2 );
+    var ins = [ 1, 2, 3, 4, 5 ];
+    var got = _.longMake( src, ins );
+    var expected = long( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
-    test.identical( got.length, 5 );
-    test.is( got !== dst );
-    test.is( type( dst, got ) );
+    test.is( got !== src );
+    test.is( _.arrayIs( got ) );
 
-    test.case = 'dst = Array constructor, src = long';
-    var src = long( [ 1, 2, 3 ] );
-    var got = _.longMake( Array, src );
+    test.case = 'src = Array constructor, ins = long';
+    var ins = long( [ 1, 2, 3 ] );
+    var got = _.longMake( Array, ins );
     var expected = [ 1, 2, 3 ];
     test.identical( got, expected );
-    test.identical( got.length, 3 );
     test.is( _.arrayIs( got ) );
-    test.is( got !== src );
+    test.is( got !== ins );
 
-    test.case = 'dst = BufferTyped constructor, src = long';
-    var src = long( [ 1, 1, 1, 1, 1 ] );
-    var got = _.longMake( U32x, src );
+    test.case = 'src = BufferTyped constructor, ins = long';
+    var ins = long( [ 1, 1, 1, 1, 1 ] );
+    var got = _.longMake( U32x, ins );
     var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
     test.identical( got, expected );
-    test.identical( got.length, 5 );
     test.is( _.bufferTypedIs(  got ) );
-    test.is( got !== src );
+    test.is( got !== ins );
 
     /* qqq : make sure each _.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
     test.case = 'src = long constructor, ins = null';
@@ -442,9 +407,7 @@ function longMake( test )
     var got = _.longMake( src, 4 );
     var expected = new F32x( 4 );
     test.identical( got, expected );
-    test.identical( got.length, 4 );
-    test.is( got !== src );
-
+    test.is( got !== ins );
   }
 
   /* - */
@@ -11466,7 +11429,8 @@ var Self =
 
     // long, l0/l5
 
-    longMake,
+    longMakeWithArrayAndUnroll,
+
     longMakeNotDefaultLongDescriptor,
     longMakeEmpty,
     longMakeEmptyNotDefaultLongDescriptor,
