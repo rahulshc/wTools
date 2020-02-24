@@ -403,9 +403,9 @@ function longMakeWithArrayAndUnroll( test )
 
     /* qqq : make sure each _.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
     test.case = 'src = long constructor, ins = null';
-    var src = F32x;
-    var got = _.longMake( src, null );
-    var expected = new F32x();
+    var src = long( 5 );
+    var got = _.longMake( src.constructor, null );
+    var expected = long();
     test.identical( got, expected );
     test.is( got !== ins );
   }
@@ -530,6 +530,123 @@ function longMakeWithArgumentsArray( test )
   var expected = new F32x();
   test.identical( got, expected );
   test.is( got !== ins );
+}
+
+//
+
+function longMakeWithBufferTyped( test )
+{
+  var list =
+  [
+    I8x,
+    U16x,
+    F32x,
+    F64x,
+  ];
+
+  /* tests */
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    run( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  /* test subroutine */
+
+  function run( long )
+  {
+    test.case = 'src = null, not ins';
+    var got = _.longMake( null );
+    var expected = [];
+    test.identical( got, expected );
+
+    test.case = 'src = number, not ins';
+    var got = _.longMake( 5 );
+    var expected = _.longDescriptor.make( 5 );
+    test.identical( got, expected );
+
+    test.case = 'src = empty, not ins';
+    var src = new long( [] );
+    var got = _.longMake( src );
+    var expected = _.longDescriptor.make( [] );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'src = empty, ins = number';
+    var src = new long( [] );
+    var got = _.longMake( src, 2 );
+    var expected = new long( 2 );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    test.case = 'ins = number, ins < src.length';
+    var src = new long( [ 1, 2, 3 ] );
+    var got = _.longMake( src, 2 );
+    var expected = new long( [ 1, 2 ] );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    test.case = 'ins = number, ins > src.length';
+    var src = new long( [ 1, 2, 3 ] );
+    var got = _.longMake( src, 4 );
+    var expected = new long( [ 1, 2, 3, 0 ] );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    test.case = 'ins = long, ins.length > src.length';
+    var src = new long( [ 0, 1 ] );
+    var ins = [ 1, 2, 3 ];
+    var got = _.longMake( src, ins );
+    var expected = new long( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== ins );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    test.case = 'src = long, not ins';
+    var src = new long( [ 1, 2, 3 ] );
+    var got = _.longMake( src );
+    var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'src = new long, ins = array'
+    var src = new long( 2 );
+    var ins = [ 1, 2, 3, 4, 5 ];
+    var got = _.longMake( src, ins );
+    var expected = new long( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== src );
+    test.is( src.constructor.name === got.constructor.name );
+
+    test.case = 'src = Array constructor, ins = long';
+    var ins = new long( [ 1, 2, 3 ] );
+    var got = _.longMake( Array, ins );
+    var expected = [ 1, 2, 3 ];
+    test.identical( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( got !== ins );
+
+    test.case = 'src = BufferTyped constructor, ins = long';
+    var ins = new long( [ 1, 1, 1, 1, 1 ] );
+    var got = _.longMake( U32x, ins );
+    var expected = new U32x( [ 1, 1, 1, 1, 1 ] );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs(  got ) );
+    test.is( got !== ins );
+
+    test.case = 'src = long constructor, ins = null';
+    var src = long;
+    var got = _.longMake( src, null );
+    var expected = new long();
+    test.identical( got, expected );
+    test.is( got !== ins );
+  }
 }
 
 //
@@ -11526,6 +11643,7 @@ var Self =
 
     longMakeWithArrayAndUnroll,
     longMakeWithArgumentsArray,
+    longMakeWithBufferTyped,
 
     longMakeNotDefaultLongDescriptor,
     longMakeEmpty,
