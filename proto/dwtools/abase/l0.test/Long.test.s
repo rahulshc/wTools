@@ -1165,6 +1165,40 @@ function longMakeEmptyWithArrayAndUnroll( test )
 
 //
 
+function longMakeEmptyWithArgumentsArray( test )
+{
+  test.case = 'without arguments';
+  var got = _.longMakeEmpty();
+  var expected = _.longDescriptor.make( 0 );
+  test.identical( got, expected );
+
+  test.case = 'src - null';
+  var got = _.longMakeEmpty( null );
+  var expected = _.longDescriptor.make( 0 );
+  test.identical( got, expected );
+
+  test.case = 'src - undefined';
+  var got = _.longMakeEmpty( undefined );
+  var expected = _.longDescriptor.make( 0 );
+  test.identical( got, expected );
+
+  test.case = 'src - empty long';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.longMakeEmpty( src );
+  var expected = _.longDescriptor.make( 0 );
+  test.identical( got, expected );
+  test.is( got !== src );
+
+  test.case = 'src - filled long';
+  var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 5 ] );
+  var got = _.longMakeEmpty( src );
+  var expected = _.longDescriptor.make( 0 );
+  test.identical( got, expected );
+  test.is( got !== src );
+}
+
+//
+
 function longMakeEmpty( test )
 {
   /* constructors */
@@ -11988,6 +12022,7 @@ var Self =
     longMakeWithBufferTypedLongDescriptor,
 
     longMakeEmptyWithArrayAndUnroll,
+    longMakeEmptyWithArgumentsArray,
     longMakeEmpty,
 
     longMakeEmptyNotDefaultLongDescriptor,
