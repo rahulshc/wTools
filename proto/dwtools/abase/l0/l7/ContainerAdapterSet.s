@@ -340,7 +340,7 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     else
     {
       // aaa | Dmytro : tabs are removed
-      // qqq : not clear. explain during call
+      // aaa : not clear. explain during call
       let last = _.nothing;
       self.reduce( ( a, e2 ) => _.entityEntityEqualize( e2, e, onEvaluate1, onEvaluate2 ) ? last = e2 : undefined );
       _.assert( last !== _.nothing );
