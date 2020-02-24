@@ -1401,53 +1401,19 @@ function longMakeEmptyWithArgumentsArrayLongDescriptor( test )
 
 //
 
-function longMakeEmptyNotDefaultLongDescriptor( test )
+function longMakeEmptyWithBufferTypedLongDescriptor( test )
 {
-  /* constructors */
-
-  var array = ( src ) => _.arrayMake( src );
-  var unroll = ( src ) => _.unrollMake( src );
-  var argumentsArray = ( src ) => _.argumentsArrayMake( src );
-  var bufferTyped = function( buf )
-  {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
-  };
-  var longConstr = function( a )
-  {
-    if( a )
-    return _.longDescriptor.make( a );
-    return _.longDescriptor.make( 0 );
-  }
-
-  /* lists */
-
-  var typedList =
+  var list =
   [
     I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
     U16x,
-    // I32x,
-    // U32x,
     F32x,
     F64x,
   ];
-  var list =
-  [
-    array,
-    unroll,
-    argumentsArray,
-    longConstr,
-    Array,
-  ];
-  for( let i = 0; i < typedList.length; i++ )
-  list.push( bufferTyped( typedList[ i ] ) );
 
   /* tests */
 
-  let times = 2;
+  let times = 4;
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
@@ -1474,43 +1440,33 @@ function longMakeEmptyNotDefaultLongDescriptor( test )
     var expected = descriptor.longDescriptor.make( 0 );
     test.identical( got, expected );
 
-    test.case = 'dst - null, not src';
+    test.case = 'src - null';
     var got = descriptor.longMakeEmpty( null );
     var expected = descriptor.longDescriptor.make( 0 );
     test.identical( got, expected );
 
+    test.case = 'src - undefined';
+    var got = descriptor.longMakeEmpty( undefined );
+    var expected = descriptor.longDescriptor.make( 0 );
+    test.identical( got, expected );
+
     test.case = 'src - empty long';
-    var src = long( [] );
+    var src = new long( [] );
     var got = descriptor.longMakeEmpty( src );
-    var expected = _.argumentsArrayIs( src ) ? descriptor.longDescriptor.make( 0 ) : long( 0 );
+    var expected = new long( 0 );
     test.identical( got, expected );
     test.is( got !== src );
 
     test.case = 'src - filled long';
-    var src = long( [ 1, 2, 3, 4, 5 ] );
-
+    var src = new long( [ 1, 2, 3, 4, 5 ] );
     var got = descriptor.longMakeEmpty( src );
-    var expected = _.argumentsArrayIs( src ) ? descriptor.longDescriptor.make( 0 ) : long( 0 );
+    var expected = new long( 0 );
     test.identical( got, expected );
     test.is( got !== src );
-
-    /* - */
-
-    if( Config.debug )
-    {
-      test.case = 'extra argument';
-      test.shouldThrowErrorSync( () => descriptor.longMakeEmpty( [ 1, 2, 3 ], 'extra argument' ) );
-
-      test.case = 'wrong type of src';
-      test.shouldThrowErrorSync( () => descriptor.longMakeEmpty( 1 ) );
-      test.shouldThrowErrorSync( () => descriptor.longMakeEmpty( 'wrong argument' ) );
-      test.shouldThrowErrorSync( () => descriptor.longMakeEmpty( new BufferRaw( 3 ) ) );
-      if( Config.interpreter === 'njs' )
-      test.shouldThrowErrorSync( () => descriptor.longMakeEmpty( BufferNode.alloc( 3 ) ) );
-    }
   }
 }
-longMakeEmptyNotDefaultLongDescriptor.timeOut = 15000;
+
+longMakeEmptyWithBufferTypedLongDescriptor.timeOut = 20000;
 
 //
 
@@ -12128,8 +12084,8 @@ var Self =
     longMakeEmptyWithBufferTyped,
     longMakeEmptyWithArrayAndUnrollLongDescriptor,
     longMakeEmptyWithArgumentsArrayLongDescriptor,
+    longMakeEmptyWithBufferTypedLongDescriptor,
 
-    longMakeEmptyNotDefaultLongDescriptor,
     _longMakeOfLength,
     _longMakeOfLengthNotDefaultDescriptor,
     longMakeUndefined,
