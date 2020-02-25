@@ -1282,7 +1282,8 @@ function longBut( array, range, val )
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( range === undefined )
-  return _.longMake( array );
+  return _.longShallowClone( array );
+  // return _.longMake( array );
 
   if( _.arrayIs( array ) )
   return _.arrayBut( array, range, val );
@@ -1650,8 +1651,8 @@ function longShrink( array, range, val )
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( range === undefined )
-  return _.longMake( array );
-  // return _.longShallowClone( array );
+  // return _.longMake( array, array.length ? array.length : 0 );
+  return _.longShallowClone( array );
 
   if( _.numberIs( range ) )
   range = [ range, array.length ];
@@ -1684,8 +1685,8 @@ function longShrink( array, range, val )
   // l = array.length;
 
   if( range[ 0 ] === 0 && range[ 1 ] === array.length )
-  return _.longMake( array );
-  // return _.longShallowClone( array );
+  // return _.longMake( array, array.length );
+  return _.longShallowClone( array );
 
   result = _.longMakeUndefined( array, range[ 1 ]-range[ 0 ] );
 
@@ -2026,7 +2027,8 @@ function longGrow( array, range, val )
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( range === undefined )
-  return _.longMake( array );
+  return _.longShallowClone( array );
+  // return _.longMake( array );
 
   if( _.numberIs( range ) )
   range = [ 0, range ];
@@ -2060,7 +2062,8 @@ function longGrow( array, range, val )
   l = array.length;
 
   if( l === array.length )
-  return _.longMake( array );
+  return _.longShallowClone( array );
+  // return _.longMake( array );
 
   result = _.longMakeUndefined( array, l-f );
 
@@ -2350,7 +2353,8 @@ function longGrow_( dst, array, range, val )
         return dst;
       }
     }
-    return dst === true ? _.longMake( array ) : array;
+    return dst === true ? _.longShallowClone( array ) : array;
+    // return dst === true ? _.longMake( array ) : array;
   }
 }
 
@@ -2429,7 +2433,8 @@ function longRelength( array, range, val )
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( range === undefined )
-  return _.longMake( array );
+  return _.longShallowClone( array );
+  // return _.longMake( array );
 
   if( _.numberIs( range ) )
   range = [ range, array.length ];
