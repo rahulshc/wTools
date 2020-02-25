@@ -711,7 +711,15 @@ function arrayMakeUndefined( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'src = null, length = 2';
+  test.case = 'src = null, length = null';
+  var src = null;
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array();
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = null, length = number';
   var src = null;
   var got = _.arrayMakeUndefined( src, 2 );
   var expected = new Array( 2 );
@@ -719,52 +727,10 @@ function arrayMakeUndefined( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
-  /* */
-
-  test.case = 'src = empty array';
-  var src = [];
-  var got = _.arrayMakeUndefined( src );
-  var expected = [];
-  test.equivalent( got, expected );
-  test.is( _.arrayIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'src = empty array, length = 2';
-  var src = [];
-  var got = _.arrayMakeUndefined( src, 2 );
-  var expected = new Array( 2 );
-  test.equivalent( got, expected );
-  test.is( _.arrayIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'src = array, src.length = 1';
-  var src = [ 0 ];
-  var got = _.arrayMakeUndefined( src );
-  var expected = new Array( 1 );
-  test.equivalent( got, expected );
-  test.is( _.arrayIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'src = array, src.length = 1, length = 2';
-  var src = [ 0 ];
-  var got = _.arrayMakeUndefined( src, 2 );
-  var expected = new Array( 2 );
-  test.equivalent( got, expected );
-  test.is( _.arrayIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'src = array, src.length > 1';
-  var src = [ 1, 2, 3 ];
-  var got = _.arrayMakeUndefined( src );
-  var expected = new Array( 3 );
-  test.equivalent( got, expected );
-  test.is( _.arrayIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'src = array, src.length > 1, length < src.length';
-  var src = [ 1, 2, 3 ];
-  var got = _.arrayMakeUndefined( src, 2 );
-  var expected = new Array( 2 );
+  test.case = 'src = null, length = long';
+  var src = null;
+  var got = _.arrayMakeUndefined( src, [ 1, 2, 3, 4 ] );
+  var expected = new Array( 4 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
@@ -785,6 +751,13 @@ function arrayMakeUndefined( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = number, src = 0, length - long';
+  var got = _.arrayMakeUndefined( 0, [ 1, 2, 3 ] );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = number, src > 0';
   var got = _.arrayMakeUndefined( 3 );
   var expected = new Array( 3 );
@@ -792,8 +765,122 @@ function arrayMakeUndefined( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = number, length = null';
+  var src = 2;
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 2 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = number, src > 0, length < src';
   var got = _.arrayMakeUndefined( 3, 1 );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = number, src > 0, length - empty long';
+  var got = _.arrayMakeUndefined( 3, [] );
+  var expected = new Array( 0 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+
+  /* */
+
+  test.case = 'src = empty array';
+  var src = [];
+  var got = _.arrayMakeUndefined( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = empty array, length = null';
+  var src = [];
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 0 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = empty array, length = 2';
+  var src = [];
+  var got = _.arrayMakeUndefined( src, 2 );
+  var expected = new Array( 2 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = empty array, length = long';
+  var src = [];
+  var got = _.arrayMakeUndefined( src, _.unrollMake( [ 0, 1, 2, 3 ] ) );
+  var expected = new Array( 4 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = array, src.length = 1';
+  var src = [ 0 ];
+  var got = _.arrayMakeUndefined( src );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = array, src.length = 1, length = null';
+  var src = [ 0 ];
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = array, src.length = 1, length = 2';
+  var src = [ 0 ];
+  var got = _.arrayMakeUndefined( src, 2 );
+  var expected = new Array( 2 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = array, src.length = 1, length = long';
+  var src = [ 0 ];
+  var got = _.arrayMakeUndefined( src, [ 1, 2, 3 ] );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = array, src.length > 1';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayMakeUndefined( src );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = array, src.length > 1, length - null';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = array, src.length > 1, length < src.length';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayMakeUndefined( src, 2 );
+  var expected = new Array( 2 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = array, src.length > 1, length - long';
+  var src = [ 1, 2, 3 ];
+  var got = _.arrayMakeUndefined( src, [ 5 ] );
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
@@ -809,10 +896,18 @@ function arrayMakeUndefined( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = empty U8x, length = null';
+  var src = new U8x();
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 0 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = empty U8x, length = 2';
   var src = new U8x();
-  var got = _.arrayMakeUndefined( src );
-  var expected = new Array();
+  var got = _.arrayMakeUndefined( src, 2 );
+  var expected = new Array( 2 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
@@ -820,6 +915,14 @@ function arrayMakeUndefined( test )
   test.case = 'src = U8x, src.length = 1';
   var src = new U8x( 1 );
   var got = _.arrayMakeUndefined( src );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = U8x, src.length = 1, length = null';
+  var src = new U8x( 1 );
+  var got = _.arrayMakeUndefined( src, null );
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
@@ -843,8 +946,24 @@ function arrayMakeUndefined( test )
 
   test.case = 'src = U8x, src.length > 1, length < src.length';
   var src = new U8x( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = U8x, src.length > 1, length < src.length';
+  var src = new U8x( [ 1, 2, 3 ] );
   var got = _.arrayMakeUndefined( src, 0 );
   var expected = new Array();
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = U8x, src.length > 1, length - long';
+  var src = new U8x( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, [ 0 ] );
+  var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
@@ -859,10 +978,18 @@ function arrayMakeUndefined( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = empty I16x, length = null';
+  var src = new I16x();
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 0 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = empty I16x, length = 2';
   var src = new I16x();
-  var got = _.arrayMakeUndefined( src );
-  var expected = new Array();
+  var got = _.arrayMakeUndefined( src, 2 );
+  var expected = new Array( 2 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
@@ -870,6 +997,14 @@ function arrayMakeUndefined( test )
   test.case = 'src = I16x, src.length = 1';
   var src = new I16x( 1 );
   var got = _.arrayMakeUndefined( src );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = I16x, src.length = 1, length = null';
+  var src = new I16x( 1 );
+  var got = _.arrayMakeUndefined( src, null );
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
@@ -891,9 +1026,25 @@ function arrayMakeUndefined( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = I16x, src.length > 1, length = null';
+  var src = new I16x( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = I16x, src.length > 1, length < src.length';
   var src = new I16x( [ 1, 2, 3 ] );
   var got = _.arrayMakeUndefined( src, 0 );
+  var expected = new Array();
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = I16x, src.length > 1, length - empty long';
+  var src = new I16x( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, [] );
   var expected = new Array();
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
@@ -909,10 +1060,18 @@ function arrayMakeUndefined( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = empty F32x, length = null';
+  var src = new F32x();
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 0 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = empty F32x, length = 2';
   var src = new F32x();
-  var got = _.arrayMakeUndefined( src );
-  var expected = new Array();
+  var got = _.arrayMakeUndefined( src, 2 );
+  var expected = new Array( 2 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
@@ -920,6 +1079,14 @@ function arrayMakeUndefined( test )
   test.case = 'src = F32x, src.length = 1';
   var src = new F32x( 1 );
   var got = _.arrayMakeUndefined( src );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = F32x, src.length = 1, length = null';
+  var src = new F32x( 1 );
+  var got = _.arrayMakeUndefined( src, null );
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
@@ -941,10 +1108,26 @@ function arrayMakeUndefined( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = F32x, src.length > 1, length = null';
+  var src = new F32x( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = F32x, src.length > 1, length < src.length';
   var src = new F32x( [ 1, 2, 3 ] );
   var got = _.arrayMakeUndefined( src, 0 );
   var expected = new Array();
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = F32x, src.length > 1, length - long';
+  var src = new F32x( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, [ 1, 2, 3, 4, 5 ] );
+  var expected = new Array( 5 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
@@ -955,6 +1138,15 @@ function arrayMakeUndefined( test )
   var src = _.argumentsArrayMake( [] );
   var got = _.arrayMakeUndefined( src );
   var expected = new Array();
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = empty arguments array, length = null';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 0 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( !_.argumentsArrayIs( got ) );
@@ -972,6 +1164,15 @@ function arrayMakeUndefined( test )
   test.case = 'src = arguments array, src.length = 1';
   var src = _.argumentsArrayMake( [ {} ] );
   var got = _.arrayMakeUndefined( src );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = arguments array, src.length = 1, length = null';
+  var src = _.argumentsArrayMake( [ {} ] );
+  var got = _.arrayMakeUndefined( src, null );
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
@@ -996,10 +1197,28 @@ function arrayMakeUndefined( test )
   test.is( !_.argumentsArrayIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = arguments array, src.length > 1, length = null';
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = arguments array, src.length > 1, length < src.length';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.arrayMakeUndefined( src, 1 );
   var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = arguments array, src.length > 1, length - long';
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, [ 0, 0, 0 ] );
+  var expected = new Array( 3 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( !_.argumentsArrayIs( got ) );
@@ -1016,10 +1235,19 @@ function arrayMakeUndefined( test )
   test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = empty unroll, length = null';
+  var src = _.unrollMake( [] );
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 0 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = empty unroll, length = 2';
   var src = _.unrollMake( [] );
-  var got = _.arrayMakeUndefined( src );
-  var expected = new Array();
+  var got = _.arrayMakeUndefined( src, 2 );
+  var expected = new Array( 2 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( !_.unrollIs( got ) );
@@ -1028,6 +1256,15 @@ function arrayMakeUndefined( test )
   test.case = 'src = unroll, src.length = 1';
   var src = _.unrollMake( [ 'str' ] );
   var got = _.arrayMakeUndefined( src );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = unroll, src.length = 1, length = null';
+  var src = _.unrollMake( [ 'str' ] );
+  var got = _.arrayMakeUndefined( src, null );
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
@@ -1052,10 +1289,28 @@ function arrayMakeUndefined( test )
   test.is( !_.unrollIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = unroll, src.length > 1, length = null';
+  var src = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = unroll, src.length > 1, length < src.length';
   var src = _.unrollMake( [ 1, 2, 3 ] );
   var got = _.arrayMakeUndefined( src, 1 );
   var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.unrollIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = unroll, src.length > 1, length - long';
+  var src = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, [] );
+  var expected = new Array( 0 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( !_.unrollIs( got ) );
@@ -1067,6 +1322,15 @@ function arrayMakeUndefined( test )
   var src = new Set( [] );
   var got = _.arrayMakeUndefined( src );
   var expected = new Array();
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.setIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = empty Set, length = null';
+  var src = new Set( [] );
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 0 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( !_.setIs( got ) );
@@ -1084,6 +1348,15 @@ function arrayMakeUndefined( test )
   test.case = 'src = Set, src.size = 1';
   var src = new Set( [ 'str' ] );
   var got = _.arrayMakeUndefined( src );
+  var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.setIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = Set, src.length = 1, length = null';
+  var src = new Set( [ 'str' ] );
+  var got = _.arrayMakeUndefined( src, null );
   var expected = new Array( 1 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
@@ -1108,10 +1381,28 @@ function arrayMakeUndefined( test )
   test.is( !_.setIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = unroll, src.length > 1, length = null';
+  var src = new Set( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, null );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.setIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = unroll, src.length > 1, length < src.length';
   var src = new Set( [ 1, 2, 3 ] );
   var got = _.arrayMakeUndefined( src, 1 );
   var expected = new Array( 1 );
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( !_.setIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src = unroll, src.length > 1, length - long';
+  var src = new Set( [ 1, 2, 3 ] );
+  var got = _.arrayMakeUndefined( src, [ 1, 2, 3, 4, 5, 6 ] );
+  var expected = new Array( 6 );
   test.equivalent( got, expected );
   test.is( _.arrayIs( got ) );
   test.is( !_.setIs( got ) );
@@ -1132,7 +1423,7 @@ function arrayMakeUndefined( test )
 
   test.case = 'wrong type of length';
   test.shouldThrowErrorSync( () => _.arrayMakeUndefined( [], 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.arrayMakeUndefined( [], [] ) );
+  test.shouldThrowErrorSync( () => _.arrayMakeUndefined( [], {} ) );
 }
 
 //

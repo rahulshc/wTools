@@ -623,8 +623,9 @@ let _longMakeOfLength = _longMake_functor( function( src, ins, length, minLength
  */
 
 /*
-qqq : extend coverage and documentation of longMakeUndefined | Dmytro : routine is covered and documented
-qqq : longMakeUndefined does not create unrolls, but should | Dmytro : longMakeUndefined creates unrolls.
+qqq : extend coverage and documentation of longMakeUndefined 
+aaa : longMakeUndefined does not create unrolls, but should 
+Dmytro : longMakeUndefined creates unrolls.
 */
 
 let longMakeUndefined = _longMake_functor( function( src, ins, length, minLength )
@@ -698,10 +699,11 @@ let longMakeUndefined = _longMake_functor( function( src, ins, length, minLength
 
 //
 
-/* qqq3 : teach to accept only length */
-/* qqq3 : use default long type if type is not clear */
-/* qqq3 : allow buffers which are long */
-/* qqq3 : relevant to all routines longMake* of such kind */
+/* aaa3 : teach to accept only length */
+/* aaa3 : use default long type if type is not clear */
+/* aaa3 : allow buffers which are long */
+/* aaa3 : relevant to all routines longMake* of such kind */
+/* Dmytro : all requirements implemented and covered */
 
 let longMakeZeroed = _longMake_functor( function( src, ins, length, minLength )
 {
@@ -1115,7 +1117,8 @@ function longRepresent( src, begin, end )
  * @memberof wTools
  */
 
-/* qqq : optimize | Dmytro : optimized */
+/* aaa : optimize */
+/* Dmytro : optimized */
 
 function longSlice( array, f, l )
 {
@@ -1128,7 +1131,7 @@ function longSlice( array, f, l )
   else if( _.arrayLikeResizable( array ) )
   return array.slice( f, l );
   else if( _.argumentsArrayIs( array ) )
-  return [ ... array ].slice( f, l );
+  return Array.prototype.slice.call( array, f, l );
   else
   _.assert( 0 );
 
@@ -3245,8 +3248,8 @@ let Extension =
   _longClone,
   longShallowClone,
 
-  longFrom, /* qqq2 : cover please */
-  longFromCoercing, /* qqq2 : cover please */
+  longFrom, /* aaa2 : cover please | Dmytro : covered*/
+  longFromCoercing, /* aaa2 : cover please | Dmytro : covered */
 
   longRepresent,
   longSlice,
