@@ -963,9 +963,8 @@ function longShallowClone()
 
 //
 
-/*
-qqq : add good coverage for longFrom.
-*/
+/* aaa : add good coverage for longFrom. */
+/* Dmytro : covered, two test routines implemented */
 
 function longFrom( src )
 {
@@ -1013,8 +1012,12 @@ function longFromCoercing( src )
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( src instanceof this.longDescriptor.type )
+  if( src instanceof this.longDescriptor.type && _.longIs( src ) )
   return src;
+
+  /* Dmytro : this condition make recursive call with array, it's like next condition but without recursive call */
+  // if( _.argumentsArrayIs( src ) )
+  // return this.longFromCoercing( Array.prototype.slice.call( src ) );
 
   if( _.longIs( src ) )
   return this.longDescriptor.from( src );
@@ -1022,14 +1025,12 @@ function longFromCoercing( src )
   if( _.objectIs( src ) )
   return this.longFromCoercing( _.mapToArray( src ) );
 
-  debugger; qqq // qqq : cover
+  /* aaa : cover */
+  /* Dmytro : covered */
   if( _.strIs( src ) )
   return this.longFromCoercing( this.arrayFromStr( src ) );
 
-  if( _.argumentsArrayIs( src ) )
-  return this.longFromCoercing( Array.prototype.slice.call( src ) );
-
-  _.assert( 0, 'Unknown data type : ' + _.strType( src ) );
+  _.assert( 0, `Unknown data type : ${ _.strType( src ) }` );
 }
 
 //
