@@ -5073,6 +5073,178 @@ function longFromCoercingLongDescriptor( test )
 
 //
 
+function longFromCoercingArgumentsArrayLongDescriptor( test ) 
+{
+  let descriptor = _.withDefaultLong.ArgumentsArray;
+
+  /* */
+
+  test.case = 'string without number literals';
+  var src = 'a b c';
+  var got = descriptor.longFromCoercing( src );
+  var exp = [ NaN, NaN, NaN ];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+
+  test.case = 'string with number literals';
+  var src = '0 12 345 5678';
+  var got = descriptor.longFromCoercing( src );
+  var exp = [ 0, 12, 345, 5678 ];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+
+  test.case = 'string with number literals, has not number literals';
+  var src = '0 12, 345 a5678';
+  var got = descriptor.longFromCoercing( src );
+  var exp = [ 0, 12, 345, NaN ];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+
+  test.case = 'empty map';
+  var src = {};
+  var got = descriptor.longFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+
+  test.case = 'filled map';
+  var src = { a : 1, b : 2, 3 : 'd' };
+  var got = descriptor.longFromCoercing( src );
+  var exp = [ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = descriptor.longFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+
+  test.case = 'filled map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  src[ 3 ] = 'd';
+  var got = descriptor.longFromCoercing( src );
+  var exp = [ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+
+  test.case = 'empty object from constructor';
+  var Constr = function(){ return this };
+  var src = new Constr();
+  var got = descriptor.longFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+
+  test.case = 'object with properties, from constructor';
+  var Constr = function(){ this.a = 2; this.b = 3; return this };
+  var src = new Constr();
+  var got = descriptor.longFromCoercing( src );
+  var exp = [ [ 'a', 2 ], [ 'b', 3 ] ];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+
+  test.case = 'empty array';
+  var src = [];
+  var got = descriptor.longFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+  test.is( src === got );
+
+  test.case = 'filled array';
+  var src = [ 1, 2, 3, 4, 0 ];
+  var got = descriptor.longFromCoercing( src );
+  var exp = [ 1, 2, 3, 4, 0 ];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+  test.is( src === got );
+
+  test.case = 'empty unroll';
+  var src = _.unrollMake( [] );
+  var got = descriptor.longFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+  test.is( src === got );
+
+  test.case = 'filled unroll';
+  var src = _.unrollMake( [ 1, 2, 3, 4, 0 ] );
+  var got = descriptor.longFromCoercing( src );
+  var exp = [ 1, 2, 3, 4, 0 ];
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+  test.is( src === got );
+
+  test.case = 'empty argumentsArray';
+  var src = _.argumentsArrayMake( [] );
+  var got = descriptor.longFromCoercing( src );
+  var exp = _.argumentsArrayMake( [] );
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+  test.is( src === got );
+
+  test.case = 'filled argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 0 ] );
+  var got = descriptor.longFromCoercing( src );
+  var exp = _.argumentsArrayMake( [ 1, 2, 3, 4, 0 ] );
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+  test.is( src === got );
+
+  test.case = 'empty BufferTyped';
+  var src = new U8x( [] );
+  var got = descriptor.longFromCoercing( src );
+  var exp = new U8x( [] );
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+  test.is( src === got );
+
+  var src = new I16x( [] );
+  var got = descriptor.longFromCoercing( src );
+  var exp = new I16x( [] );
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+  test.is( src === got );
+
+  test.case = 'filled BufferTyped';
+  var src = new F32x( [ 1, 2, 3, 4, 0 ] );
+  var got = descriptor.longFromCoercing( src );
+  var exp = new F32x( [ 1, 2, 3, 4, 0 ] );
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+  test.is( src === got );
+
+  var src = new F64x( [ 1, 2, 3, 4, 0 ] );
+  var got = descriptor.longFromCoercing( src );
+  var exp = new F64x( [ 1, 2, 3, 4, 0 ] );
+  test.identical( got, exp );
+  test.is( got instanceof descriptor.longDescriptor.type );
+  test.is( src === got );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => descriptor.longFromCoercing() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => descriptor.longFromCoercing( 1, [] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => descriptor.longFromCoercing( null ) );
+  test.shouldThrowErrorSync( () => descriptor.longFromCoercing( undefined ) );
+  test.shouldThrowErrorSync( () => descriptor.longFromCoercing( 2 ) );
+  test.shouldThrowErrorSync( () => descriptor.longFromCoercing( new Set() ) );
+}
+
+//
+
 /*
 qqq : improve, add exception checking ceases | Dmytro : improved, added exception checking cases
 */
@@ -14784,6 +14956,7 @@ var Self =
     longFromLongDescriptor,
     longFromCoercing,
     longFromCoercingLongDescriptor,
+    longFromCoercingArgumentsArrayLongDescriptor,
 
     //
 
