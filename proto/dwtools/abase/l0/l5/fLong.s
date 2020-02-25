@@ -970,7 +970,7 @@ function longFrom( src )
 {
   _.assert( arguments.length === 1 );
   if( src instanceof this.longDescriptor.type )
-  if( !_.unrollIs( src ) )
+  if( !_.unrollIs( src ) && _.longIs( src ) )
   return src;
   return this.longMake.call( this, src );
 }
@@ -1015,7 +1015,8 @@ function longFromCoercing( src )
   if( src instanceof this.longDescriptor.type && _.longIs( src ) )
   return src;
 
-  /* Dmytro : this condition make recursive call with array, it's like next condition but without recursive call */
+  /* Dmytro : this condition make recursive call with array from argumentsArray. But first condition return any long object
+     ( ArgumentsArray.type is  Object ), and next make other long types without recursive call */
   // if( _.argumentsArrayIs( src ) )
   // return this.longFromCoercing( Array.prototype.slice.call( src ) );
 
