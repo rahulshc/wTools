@@ -4500,8 +4500,109 @@ longMakeZeroedWithBufferTypedLongDescriptor.timeOut = 20000;
 
 //
 
+function longFrom( test ) 
+{
+  test.case = 'null';
+  var src = null;
+  var got = _.longFrom( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'number';
+  var src = 2;
+  var got = _.longFrom( src );
+  test.identical( got, [ undefined, undefined ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'empty array';
+  var src = [];
+  var got = _.longFrom( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got === src );
+
+  test.case = 'filled array';
+  var src = [ 1, '', 'abc', undefined, null, false, true, 0 ];
+  var got = _.longFrom( src );
+  test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got === src );
+
+  test.case = 'empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.longFrom( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'filled unroll';
+  var src = _.unrollMake( [ 1, '', 'abc', undefined, null, false, true, 0 ] );
+  var got = _.longFrom( src );
+  test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'empty argumentsArray';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.longFrom( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'filled argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, '', 'abc', undefined, null, false, true, 0 ] );
+  var got = _.longFrom( src );
+  test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'empty BufferTyped';
+  var src = new U8x( [] );
+  var got = _.longFrom( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  var src = new I16x( [] );
+  var got = _.longFrom( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'filled BufferTyped';
+  var src = new F32x( [ 1, 2, 3, 4, 0 ] );
+  var got = _.longFrom( src );
+  test.identical( got, [ 1, 2, 3, 4, 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  var src = new F64x( [ 1, 2, 3, 4, 0 ] );
+  var got = _.longFrom( src );
+  test.identical( got, [ 1, 2, 3, 4, 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longFrom() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longFrom( 1, [] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.longFrom( undefined ) );
+  test.shouldThrowErrorSync( () => _.longFrom( 'str' ) );
+  test.shouldThrowErrorSync( () => _.longFrom( { 1 : 2 } ) );
+}
+
+//
+
 /*
-qqq : improve, add exception checking ceases | Dmytro : improved, added exception checking casesS
+qqq : improve, add exception checking ceases | Dmytro : improved, added exception checking cases
 */
 
 function longSlice( test )
@@ -14204,6 +14305,10 @@ var Self =
     longMakeZeroedWithArrayAndUnrollLongDescriptor,
     longMakeZeroedWithArgumentsArrayLongDescriptor,
     longMakeZeroedWithBufferTypedLongDescriptor,
+
+    //
+
+    longFrom,
 
     //
 
