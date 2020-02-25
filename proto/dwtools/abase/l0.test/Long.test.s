@@ -4734,6 +4734,155 @@ function longFromLongDescriptor( test )
 
 //
 
+function longFromCoercing( test ) 
+{
+  test.case = 'string without number literals';
+  var src = 'a b c';
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ NaN, NaN, NaN ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'string with number literals';
+  var src = '0 12 345 5678';
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ 0, 12, 345, 5678 ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'string with number literals, has not number literals';
+  var src = '0 12, 345 a5678';
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ 0, 12, 345, NaN ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.longFromCoercing( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'filled map';
+  var src = { a : 1, b : 2, 3 : 'd' };
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.longFromCoercing( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'filled map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  src[ 3 ] = 'd';
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'empty object from constructor';
+  var Constr = function(){ return this };
+  var src = new Constr();
+  var got = _.longFromCoercing( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'object with properties, from constructor';
+  var Constr = function(){ this.a = 2; this.b = 3; return this };
+  var src = new Constr();
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ [ 'a', 2 ], [ 'b', 3 ] ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'empty array';
+  var src = [];
+  var got = _.longFromCoercing( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got === src );
+
+  test.case = 'filled array';
+  var src = [ 1, '', 'abc', undefined, null, false, true, 0 ];
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got === src );
+
+  test.case = 'empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.longFromCoercing( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got === src );
+
+  test.case = 'filled unroll';
+  var src = _.unrollMake( [ 1, '', 'abc', undefined, null, false, true, 0 ] );
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got === src );
+
+  test.case = 'empty argumentsArray';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.longFromCoercing( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'filled argumentsArray';
+  var src = _.argumentsArrayMake( [ 1, '', 'abc', undefined, null, false, true, 0 ] );
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ 1, '', 'abc', undefined, null, false, true, 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'empty BufferTyped';
+  var src = new U8x( [] );
+  var got = _.longFromCoercing( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  var src = new I16x( [] );
+  var got = _.longFromCoercing( src );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'filled BufferTyped';
+  var src = new F32x( [ 1, 2, 3, 4, 0 ] );
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ 1, 2, 3, 4, 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  var src = new F64x( [ 1, 2, 3, 4, 0 ] );
+  var got = _.longFromCoercing( src );
+  test.identical( got, [ 1, 2, 3, 4, 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( got !== src );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longFromCoercing() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longFromCoercing( 1, [] ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.longFromCoercing( null ) );
+  test.shouldThrowErrorSync( () => _.longFromCoercing( undefined ) );
+  test.shouldThrowErrorSync( () => _.longFromCoercing( 2 ) );
+  test.shouldThrowErrorSync( () => _.longFromCoercing( new Set() ) );
+}
+
+//
+
 /*
 qqq : improve, add exception checking ceases | Dmytro : improved, added exception checking cases
 */
@@ -14443,6 +14592,7 @@ var Self =
 
     longFrom,
     longFromLongDescriptor,
+    longFromCoercing,
 
     //
 
