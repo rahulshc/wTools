@@ -314,13 +314,13 @@ function longMakeWithArrayAndUnroll( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* test subroutine */
 
-  function run( long )
+  function testRun( long )
   {
     test.case = 'src = null, not ins';
     var got = _.longMake( null );
@@ -609,13 +609,13 @@ function longMakeWithBufferTyped( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* test subroutine */
 
-  function run( long )
+  function testRun( long )
   {
     test.case = 'src = null, not ins';
     var got = _.longMake( null );
@@ -775,7 +775,7 @@ function longMakeWithArrayAndUnrollLongDescriptor( test )
     for( let i = 0; i < list.length; i++ )
     {
       test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
-      run( descriptor, list[ i ] );
+      testRun( descriptor, list[ i ] );
       test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
     }
 
@@ -786,7 +786,7 @@ function longMakeWithArrayAndUnrollLongDescriptor( test )
 
   /* test subroutine */
 
-  function run( descriptor, long )
+  function testRun( descriptor, long )
   {
     test.case = 'src = null, not ins';
     var got = descriptor.longMake( null );
@@ -954,7 +954,7 @@ function longMakeWithArgumentsArrayLongDescriptor( test )
     let name = _.LongDescriptors[ e ].name;
     let descriptor = _.withDefaultLong[ name ];
     test.open( `descriptor - ${ name }` );
-    run( descriptor );
+    testRun( descriptor );
     test.close( `descriptor - ${ name }` );
 
     if( times < 1 )
@@ -964,7 +964,7 @@ function longMakeWithArgumentsArrayLongDescriptor( test )
 
   /* - */
 
-  function run( descriptor )
+  function testRun( descriptor )
   { 
     test.case = 'src = null, not ins';
     var got = descriptor.longMake( null );
@@ -1094,7 +1094,7 @@ function longMakeWithBufferTypedLongDescriptor( test )
     for( let i = 0; i < list.length; i++ )
     {
       test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
-      run( descriptor, list[ i ] );
+      testRun( descriptor, list[ i ] );
       test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
     }
 
@@ -1105,7 +1105,7 @@ function longMakeWithBufferTypedLongDescriptor( test )
 
   /* test subroutine */
 
-  function run( descriptor, long )
+  function testRun( descriptor, long )
   {
     test.case = 'src = null, not ins';
     var got = descriptor.longMake( null );
@@ -1262,13 +1262,13 @@ function longMakeEmptyWithArrayAndUnroll( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* test subroutine */
 
-  function run( long )
+  function testRun( long )
   {
     test.case = 'without arguments';
     var got = _.longMakeEmpty();
@@ -1358,13 +1358,13 @@ function longMakeEmptyWithBufferTyped( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* test subroutine */
 
-  function run( long )
+  function testRun( long )
   {
     test.case = 'without arguments';
     var got = _.longMakeEmpty();
@@ -1423,7 +1423,7 @@ function longMakeEmptyWithArrayAndUnrollLongDescriptor( test )
     for( let i = 0; i < list.length; i++ )
     {
       test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
-      run( descriptor, list[ i ] );
+      testRun( descriptor, list[ i ] );
       test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
     }
 
@@ -1434,7 +1434,7 @@ function longMakeEmptyWithArrayAndUnrollLongDescriptor( test )
 
   /* test subroutine */
 
-  function run( descriptor, long )
+  function testRun( descriptor, long )
   {
     test.case = 'without arguments';
     var got = descriptor.longMakeEmpty();
@@ -1491,7 +1491,7 @@ function longMakeEmptyWithArgumentsArrayLongDescriptor( test )
     let descriptor = _.withDefaultLong[ name ];
 
     test.open( `descriptor - ${ name }` );
-    run( descriptor );
+    testRun( descriptor );
     test.close( `descriptor - ${ name }` );
 
     if( times < 1 )
@@ -1501,7 +1501,7 @@ function longMakeEmptyWithArgumentsArrayLongDescriptor( test )
 
   /* - */
 
-  function run( descriptor )
+  function testRun( descriptor )
   {
     test.case = 'without arguments';
     var got = descriptor.longMakeEmpty();
@@ -1552,7 +1552,7 @@ function longMakeEmptyWithBufferTypedLongDescriptor( test )
     for( let i = 0; i < list.length; i++ )
     {
       test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
-      run( descriptor, list[ i ] );
+      testRun( descriptor, list[ i ] );
       test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
     }
 
@@ -1563,7 +1563,7 @@ function longMakeEmptyWithBufferTypedLongDescriptor( test )
 
   /* test subroutine */
 
-  function run( descriptor, long )
+  function testRun( descriptor, long )
   {
     test.case = 'without arguments';
     var got = descriptor.longMakeEmpty();
@@ -1617,13 +1617,13 @@ function _longMakeOfLengthWithArrayAndUnroll( test )
   for( let t = 0; t < list.length; t++ )
   {
     test.open( list[ t ].name );
-    run( list[ t ] );
+    testRun( list[ t ] );
     test.close( list[ t ].name );
   }
 
   /* test subroutine */
 
-  function run( long )
+  function testRun( long )
   {
     test.case = 'src = null, not ins';
     var got = _._longMakeOfLength( null );
@@ -1915,13 +1915,13 @@ function _longMakeOfLengthWithBufferTyped( test )
   for( let t = 0; t < list.length; t++ )
   {
     test.open( list[ t ].name );
-    run( list[ t ] );
+    testRun( list[ t ] );
     test.close( list[ t ].name );
   }
 
   /* test subroutine */
 
-  function run( long )
+  function testRun( long )
   {
     test.case = 'src = null, not ins';
     var got = _._longMakeOfLength( null );
@@ -2074,7 +2074,7 @@ function _longMakeOfLengthWithArrayAndUnrollLongDescriptor( test )
     for( let i = 0; i < list.length; i++ )
     {
       test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
-      run( descriptor, list[ i ] );
+      testRun( descriptor, list[ i ] );
       test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
     }
 
@@ -2085,7 +2085,7 @@ function _longMakeOfLengthWithArrayAndUnrollLongDescriptor( test )
 
   /* test subroutine */
 
-  function run( descriptor, long )
+  function testRun( descriptor, long )
   {
     test.case = 'src = null, not ins';
     var got = descriptor._longMakeOfLength( null );
@@ -2252,7 +2252,7 @@ function _longMakeOfLengthWithArgumentsArrayLongDescriptor( test )
     let descriptor = _.withDefaultLong[ name ];
 
     test.open( `descriptor - ${ name }` );
-    run( descriptor );
+    testRun( descriptor );
     test.close( `descriptor - ${ name }` );
 
     if( times < 1 )
@@ -2262,7 +2262,7 @@ function _longMakeOfLengthWithArgumentsArrayLongDescriptor( test )
 
   /* - */
 
-  function run( descriptor )
+  function testRun( descriptor )
   {
     test.case = 'src = null, not ins';
     var got = descriptor._longMakeOfLength( null );
@@ -2404,7 +2404,7 @@ function _longMakeOfLengthWithBufferTypedLongDescriptor( test )
     for( let i = 0; i < list.length; i++ )
     {
       test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
-      run( descriptor, list[ i ] );
+      testRun( descriptor, list[ i ] );
       test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
     }
 
@@ -2415,7 +2415,7 @@ function _longMakeOfLengthWithBufferTypedLongDescriptor( test )
 
   /* test subroutine */
 
-  function run( descriptor, long )
+  function testRun( descriptor, long )
   {
     test.case = 'src = null, not ins';
     var got = descriptor._longMakeOfLength( null );
@@ -2569,13 +2569,13 @@ function longMakeUndefinedWithArrayAndUnroll( test )
   for( let t = 0; t < list.length; t++ )
   {
     test.open( list[ t ].name );
-    run( list[ t ] );
+    testRun( list[ t ] );
     test.close( list[ t ].name );
   }
 
   /* test subroutine */
 
-  function run( long )
+  function testRun( long )
   {
     /* qqq : thouse routines are too long code to be such routine. use function nameOfRoutine(){} an move it out of run */
     /* qqq : bad names of routines. not clear what it does */
@@ -2882,13 +2882,13 @@ function longMakeUndefinedWithBufferTyped( test )
   for( let t = 0; t < list.length; t++ )
   {
     test.open( list[ t ].name );
-    run( list[ t ] );
+    testRun( list[ t ] );
     test.close( list[ t ].name );
   }
 
   /* test subroutine */
 
-  function run( long )
+  function testRun( long )
   {
     test.case = 'src = null, not ins';
     var got = _.longMakeUndefined( null );
@@ -3051,7 +3051,7 @@ function longMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
     for( let i = 0; i < list.length; i++ )
     {
       test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
-      run( descriptor, list[ i ] );
+      testRun( descriptor, list[ i ] );
       test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
     }
 
@@ -3062,7 +3062,7 @@ function longMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
 
   /* test subroutine */
 
-  function run( descriptor, long )
+  function testRun( descriptor, long )
   {
     test.case = 'src = null, not ins';
     var got = descriptor.longMakeUndefined( null );
@@ -3229,7 +3229,7 @@ function longMakeUndefinedWithArgumentsArrayLongDescriptor( test )
     let descriptor = _.withDefaultLong[ name ];
 
     test.open( `descriptor - ${ name }` );
-    run( descriptor );
+    testRun( descriptor );
     test.close( `descriptor - ${ name }` );
 
     if( times < 1 )
@@ -3239,7 +3239,7 @@ function longMakeUndefinedWithArgumentsArrayLongDescriptor( test )
 
   /* - */
 
-  function run( descriptor )
+  function testRun( descriptor )
   {
     test.case = 'src = null, not ins';
     var got = descriptor.longMakeUndefined( null );
@@ -3381,7 +3381,7 @@ function longMakeUndefinedWithBufferTypedLongDescriptor( test )
     for( let i = 0; i < list.length; i++ )
     {
       test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
-      run( descriptor, list[ i ] );
+      testRun( descriptor, list[ i ] );
       test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
     }
 
@@ -3392,7 +3392,7 @@ function longMakeUndefinedWithBufferTypedLongDescriptor( test )
 
   /* test subroutine */
 
-  function run( descriptor, long )
+  function testRun( descriptor, long )
   {
     test.case = 'src = null, not ins';
     var got = descriptor.longMakeUndefined( null );
@@ -3556,13 +3556,13 @@ function longMakeZeroedWithArrayAndUnroll( test )
   for( let t = 0; t < list.length; t++ )
   {
     test.open( list[ t ].name );
-    run( list[ t ] );
+    testRun( list[ t ] );
     test.close( list[ t ].name );
   }
 
   /* test subroutine */
 
-  function run( long )
+  function testRun( long )
   {
     test.case = 'src = null, not ins';
     var got = _.longMakeZeroed( null );
@@ -3854,13 +3854,13 @@ function longMakeZeroedWithBufferTyped( test )
   for( let t = 0; t < list.length; t++ )
   {
     test.open( list[ t ].name );
-    run( list[ t ] );
+    testRun( list[ t ] );
     test.close( list[ t ].name );
   }
 
   /* test subroutine */
 
-  function run( long )
+  function testRun( long )
   {
     test.case = 'src = null, not ins';
     var got = _.longMakeZeroed( null );
@@ -4023,7 +4023,7 @@ function longMakeZeroedWithArrayAndUnrollLongDescriptor( test )
     for( let i = 0; i < list.length; i++ )
     {
       test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
-      run( descriptor, list[ i ] );
+      testRun( descriptor, list[ i ] );
       test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
     }
 
@@ -4034,7 +4034,7 @@ function longMakeZeroedWithArrayAndUnrollLongDescriptor( test )
 
   /* test subroutine */
 
-  function run( descriptor, long )
+  function testRun( descriptor, long )
   {
     test.case = 'src = null, not ins';
     var got = descriptor.longMakeZeroed( null );
@@ -4201,7 +4201,7 @@ function longMakeZeroedWithArgumentsArrayLongDescriptor( test )
     let descriptor = _.withDefaultLong[ name ];
 
     test.open( `descriptor - ${ name }` );
-    run( descriptor );
+    testRun( descriptor );
     test.close( `descriptor - ${ name }` );
 
     if( times < 1 )
@@ -4211,7 +4211,7 @@ function longMakeZeroedWithArgumentsArrayLongDescriptor( test )
 
   /* - */
 
-  function run( descriptor )
+  function testRun( descriptor )
   {
     test.case = 'src = null, not ins';
     var got = descriptor.longMakeZeroed( null );
@@ -4353,7 +4353,7 @@ function longMakeZeroedWithBufferTypedLongDescriptor( test )
     for( let i = 0; i < list.length; i++ )
     {
       test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
-      run( descriptor, list[ i ] );
+      testRun( descriptor, list[ i ] );
       test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
     }
 
@@ -4364,7 +4364,7 @@ function longMakeZeroedWithBufferTypedLongDescriptor( test )
 
   /* test subroutine */
 
-  function run( descriptor, long )
+  function testRun( descriptor, long )
   {
     test.case = 'src = null, not ins';
     var got = descriptor.longMakeZeroed( null );
@@ -4610,7 +4610,7 @@ function longFromLongDescriptor( test )
     let descriptor = _.withDefaultLong[ name ];
 
     test.open( `descriptor - ${ name }` );
-    run( descriptor );
+    testRun( descriptor );
     test.close( `descriptor - ${ name }` );
 
     if( times < 1 )
@@ -4620,7 +4620,7 @@ function longFromLongDescriptor( test )
 
   /* - */
 
-  function run( descriptor )
+  function testRun( descriptor )
   {
     test.case = 'null';
     var src = null;
@@ -4716,7 +4716,7 @@ function longFromLongDescriptor( test )
 
     /* - */
 
-    if( !Config.debug )
+    if( Config.debug )
     {
       test.case = 'without arguments';
       test.shouldThrowErrorSync( () => descriptor.longFrom() );
@@ -4879,6 +4879,196 @@ function longFromCoercing( test )
   test.shouldThrowErrorSync( () => _.longFromCoercing( undefined ) );
   test.shouldThrowErrorSync( () => _.longFromCoercing( 2 ) );
   test.shouldThrowErrorSync( () => _.longFromCoercing( new Set() ) );
+}
+
+//
+
+function longFromCoercingLongDescriptor( test ) 
+{
+  let times = 4;
+  for( let e in _.LongDescriptors )
+  {
+    let name = _.LongDescriptors[ e ].name;
+    if( name === 'ArgumentsArray' )
+    continue;
+    let descriptor = _.withDefaultLong[ name ];
+    
+    test.open( `descriptor - ${ name }` );
+    testRun( descriptor );
+    test.close( `descriptor - ${ name }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* - */
+
+  function testRun( descriptor )
+  {
+    test.case = 'string without number literals';
+    var src = 'a b c';
+    var got = descriptor.longFromCoercing( src );
+    var exp = _.bufferTypedIs( got ) ? descriptor.longDescriptor.make( [ 0, 0, 0 ] ) : descriptor.longDescriptor.make( [ NaN, NaN, NaN ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+
+    test.case = 'string with number literals';
+    var src = '0 12 345 5678';
+    var got = descriptor.longFromCoercing( src );
+    var exp = descriptor.longDescriptor.make( [ 0, 12, 345, 5678 ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+
+    test.case = 'string with number literals, has not number literals';
+    var src = '0 12, 345 a5678';
+    var got = descriptor.longFromCoercing( src );
+    var exp = _.bufferTypedIs( got ) ? descriptor.longDescriptor.make( [ 0, 12, 345, 0 ] ) : descriptor.longDescriptor.make( [ 0, 12, 345, NaN ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+
+    test.case = 'empty map';
+    var src = {};
+    var got = descriptor.longFromCoercing( src );
+    var exp = descriptor.longDescriptor.make( [] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+
+    test.case = 'filled map';
+    var src = { a : 1, b : 2, 3 : 'd' };
+    var got = descriptor.longFromCoercing( src );
+    var exp = _.bufferTypedIs( got ) ? descriptor.longDescriptor.make( [ 0, 0, 0 ] ) : descriptor.longDescriptor.make( [ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+
+    test.case = 'empty pure map';
+    var src = Object.create( null );
+    var got = descriptor.longFromCoercing( src );
+    var exp = descriptor.longDescriptor.make( [] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+ 
+    test.case = 'filled map';
+    var src = Object.create( null );
+    src.a = 1;
+    src.b = 2;
+    src[ 3 ] = 'd';
+    var got = descriptor.longFromCoercing( src );
+    var exp = _.bufferTypedIs( got ) ? descriptor.longDescriptor.make( [ 0, 0, 0 ] ) : descriptor.longDescriptor.make( [ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+
+    test.case = 'empty object from constructor';
+    var Constr = function(){ return this };
+    var src = new Constr();
+    var got = descriptor.longFromCoercing( src );
+    var exp = descriptor.longDescriptor.make( [] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+
+    test.case = 'object with properties, from constructor';
+    var Constr = function(){ this.a = 2; this.b = 3; return this };
+    var src = new Constr();
+    var got = descriptor.longFromCoercing( src );
+    var exp = _.bufferTypedIs( got ) ? descriptor.longDescriptor.make( [ 0, 0 ] ) : descriptor.longDescriptor.make( [ [ 'a', 2 ], [ 'b', 3 ] ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+
+    test.case = 'empty array';
+    var src = [];
+    var got = descriptor.longFromCoercing( src );
+    var exp = src instanceof descriptor.longDescriptor.type ? [] : descriptor.longDescriptor.make( [] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
+
+    test.case = 'filled array';
+    var src = [ 1, 2, 3, 4, 0 ];
+    var got = descriptor.longFromCoercing( src );
+    var exp = src instanceof descriptor.longDescriptor.type ? [ 1, 2, 3, 4, 0 ] : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
+
+    test.case = 'empty unroll';
+    var src = _.unrollMake( [] );
+    var got = descriptor.longFromCoercing( src );
+    var exp = descriptor.longDescriptor.make( [] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
+
+    test.case = 'filled unroll';
+    var src = _.unrollMake( [ 1, 2, 3, 4, 0 ] );
+    var got = descriptor.longFromCoercing( src );
+    var exp = descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
+
+    test.case = 'empty argumentsArray';
+    var src = _.argumentsArrayMake( [] );
+    var got = descriptor.longFromCoercing( src );
+    var exp = descriptor.longDescriptor.make( [] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
+
+    test.case = 'filled argumentsArray';
+    var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 0 ] );
+    var got = descriptor.longFromCoercing( src );
+    var exp = src instanceof descriptor.longDescriptor.type ? _.argumentsArrayMake( [ 1, 2, 3, 4, 0 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
+
+    test.case = 'empty BufferTyped';
+    var src = new U8x( [] );
+    var got = descriptor.longFromCoercing( src );
+    var exp = src instanceof descriptor.longDescriptor.type ? new U8x( [] ) : descriptor.longDescriptor.make( [] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
+
+    var src = new I16x( [] );
+    var got = descriptor.longFromCoercing( src );
+    var exp = src instanceof descriptor.longDescriptor.type ? new I16x( [] ) : descriptor.longDescriptor.make( [] );;
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
+
+    test.case = 'filled BufferTyped';
+    var src = new F32x( [ 1, 2, 3, 4, 0 ] );
+    var got = descriptor.longFromCoercing( src );
+    var exp = src instanceof descriptor.longDescriptor.type ? new F32x( [ 1, 2, 3, 4, 0 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
+
+    var src = new F64x( [ 1, 2, 3, 4, 0 ] );
+    var got = descriptor.longFromCoercing( src );
+    var exp = src instanceof descriptor.longDescriptor.type ? new F64x( [ 1, 2, 3, 4, 0 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    test.identical( got, exp );
+    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
+
+    /* - */
+
+    if( Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => descriptor.longFromCoercing() );
+
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => descriptor.longFromCoercing( 1, [] ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => descriptor.longFromCoercing( null ) );
+      test.shouldThrowErrorSync( () => descriptor.longFromCoercing( undefined ) );
+      test.shouldThrowErrorSync( () => descriptor.longFromCoercing( 2 ) );
+      test.shouldThrowErrorSync( () => descriptor.longFromCoercing( new Set() ) );
+    } 
+  }
 }
 
 //
@@ -5183,13 +5373,13 @@ function longBut( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.case = 'range = number, not src';
     var dst = make( [ 1, 2, 3, 4 ] );
@@ -5497,18 +5687,18 @@ function longButInplace( test )
   /* - */
 
   test.open( 'array' );
-  run( array );
+  testRun( array );
   test.close( 'array' );
 
   /* - */
 
   test.open( 'unroll' );
-  run( unroll );
+  testRun( unroll );
   test.close( 'unroll' );
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.case = 'range = number, not src';
     var dst = make( [ 1, 2, 3, 4 ] );
@@ -5965,13 +6155,13 @@ function longBut_( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.open( 'not inplace' );
 
@@ -6384,18 +6574,18 @@ function longShrink( test )
   /* - */
 
   test.open( 'array' );
-  run( array );
+  testRun( array );
   test.close( 'array' );
 
   /* - */
 
   test.open( 'unroll' );
-  run( unroll );
+  testRun( unroll );
   test.close( 'unroll' );
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.case = 'only dst';
     var dst = make( [ 1, 2, 3, 4, 5 ] );
@@ -6673,18 +6863,18 @@ function longShrinkInplace( test )
   /* - */
 
   test.open( 'array' );
-  run( array );
+  testRun( array );
   test.close( 'array' );
 
   /* - */
 
   test.open( 'unroll' );
-  run( unroll );
+  testRun( unroll );
   test.close( 'unroll' );
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.case = 'only dst';
     var dst = make( [ 1, 2, 3, 4, 5 ] );
@@ -6978,13 +7168,13 @@ function longShrink_( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.open( 'not inplace' );
 
@@ -7300,18 +7490,18 @@ function longGrow( test )
   /* - */
 
   test.open( 'array' );
-  run( array );
+  testRun( array );
   test.close( 'array' );
 
   /* - */
 
   test.open( 'unroll' );
-  run( unroll );
+  testRun( unroll );
   test.close( 'unroll' );
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.case = 'only dst';
     var dst = make( [ 1, 2, 3, 4, 5 ] );
@@ -7591,18 +7781,18 @@ function longGrowInplace( test )
   /* - */
 
   test.open( 'array' );
-  run( array );
+  testRun( array );
   test.close( 'array' );
 
   /* - */
 
   test.open( 'unroll' );
-  run( unroll );
+  testRun( unroll );
   test.close( 'unroll' );
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.case = 'only dst';
     var dst = make( [ 1, 2, 3, 4, 5 ] );
@@ -7891,13 +8081,13 @@ function longGrow_( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.open( 'not inplace' );
 
@@ -8236,18 +8426,18 @@ function longRelength( test )
   /* - */
 
   test.open( 'array' );
-  run( array );
+  testRun( array );
   test.close( 'array' );
 
   /* - */
 
   test.open( 'unroll' );
-  run( unroll );
+  testRun( unroll );
   test.close( 'unroll' );
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.case = 'only dst';
     var dst = make( [ 1, 2, 3, 4, 5 ] );
@@ -8522,18 +8712,18 @@ function longRelengthInplace( test )
   /* - */
 
   test.open( 'array' );
-  run( array );
+  testRun( array );
   test.close( 'array' );
 
   /* - */
 
   test.open( 'unroll' );
-  run( unroll );
+  testRun( unroll );
   test.close( 'unroll' );
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.case = 'only dst';
     var dst = make( [ 1, 2, 3, 4, 5 ] );
@@ -8825,13 +9015,13 @@ function longRelength_( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* - */
 
-  function run( make )
+  function testRun( make )
   {
     test.open( 'not inplace' );
 
@@ -11744,12 +11934,12 @@ function longFill( test )
   for( let d in listDst )
   {
     test.open( '' + listDst[ d ].name );
-    run( listDst[ d ] );
+    testRun( listDst[ d ] );
     test.close( '' + listDst[ d ].name );
   }
 
   /* - */
-  function run( makeDst )
+  function testRun( makeDst )
   {
     var sameIs = ( got, dst ) => _.arrayIs( dst ) ? got === dst : got !== dst;
     test.case = 'empty container, no value, no range';
@@ -12737,11 +12927,11 @@ function longHasAny( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
-  function run( makeLong )
+  function testRun( makeLong )
   {
     /* without evaluator */
 
@@ -12915,11 +13105,11 @@ function longHasAll( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
-  function run( makeLong )
+  function testRun( makeLong )
   {
     /* without evaluator */
 
@@ -13190,11 +13380,11 @@ function longHasNone( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
-  function run( makeLong )
+  function testRun( makeLong )
   {
     /* without evaluator */
 
@@ -14100,13 +14290,13 @@ function longCountElement( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* - */
 
-  function run( makeLong )
+  function testRun( makeLong )
   {
     test.case = 'src = empty long, element = number';
     var src = makeLong( [] );
@@ -14269,13 +14459,13 @@ function longCountTotal( test )
   for( let i = 0; i < list.length; i++ )
   {
     test.open( list[ i ].name );
-    run( list[ i ] );
+    testRun( list[ i ] );
     test.close( list[ i ].name );
   }
 
   /* - */
 
-  function run( makeLong )
+  function testRun( makeLong )
   {
     /* zero */
 
@@ -14593,6 +14783,7 @@ var Self =
     longFrom,
     longFromLongDescriptor,
     longFromCoercing,
+    longFromCoercingLongDescriptor,
 
     //
 
