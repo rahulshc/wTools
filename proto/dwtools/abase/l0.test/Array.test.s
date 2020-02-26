@@ -2496,10 +2496,184 @@ function arrayFromCoercing( test )
 
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.arrayFromCoercing( 6 ) );
-  test.shouldThrowErrorSync( () =>_.arrayFromCoercing( true ) );
-  test.shouldThrowErrorSync( () =>_.arrayFromCoercing( new Map() ) );
-
+  test.shouldThrowErrorSync( () => _.arrayFromCoercing( true ) );
+  test.shouldThrowErrorSync( () => _.arrayFromCoercing( new Map() ) );
 }
+
+//
+
+function arrayFromCoercingLongDescriptor( test )
+{
+  let times = 4;
+  for( let e in _.LongDescriptors )
+  {
+    let name = _.LongDescriptors[ e ].name;
+    let descriptor = _.withDefaultLong[ name ];
+
+    test.open( `descriptor - ${ name }` );
+    testRun( descriptor );
+    test.close( `descriptor - ${ name }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* - */
+
+  function testRun( descriptor ) 
+  {
+    test.case = 'src - empty array';
+    var src = [];
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [];
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - filled array';
+    var src = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+    test.identical( got, exp );
+    test.is( got === src );
+
+    test.case = 'src - empty argumentsArray';
+    var src = _.argumentsArrayMake( [] );
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - filled argumentsArray';
+    var src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - empty unroll';
+    var src = _.unrollMake( [] );
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [];
+    test.identical( got, exp );
+    test.is( !_.unrollIs( got ) );
+    test.is( got !== src );
+
+    test.case = 'src - filled unroll';
+    var src = _.unrollMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+    test.identical( got, exp );
+    test.is( !_.unrollIs( got ) );
+    test.is( got !== src );
+
+    test.case = 'src - empty BufferTyped - U8x';
+    var src = new U8x( [] );
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - filled BufferTyped - F64x';
+    var src = new F64x( [ 3, 7, 13, 0, 2 ] );
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ 3, 7, 13, 0, 2 ];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - empty string';
+    var src = '';
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ undefined ];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - string with not number literals';
+    var src = 'a bc def';
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ NaN, NaN, NaN ];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - string with number literals';
+    var src = '0 1.2 345';
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ 0, 1.2, 345 ];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - string with mixed literals';
+    var src = '0 1.2 34,5 a6';
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ 0, 1.2, 34, 5, NaN ];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - empty map';
+    var src = {};
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - filled map';
+    var src = { a : 3, b : 7, c : '13' };
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', '13' ] ];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - empty pure map';
+    var src = Object.create( null );
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - filled pure map';
+    var src = Object.create( null );
+    src.a = 3;
+    src.b = '13';
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ [ 'a', 3 ], [ 'b', '13' ] ];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - empty constructor instance';
+    var Constr = function(){ return this };
+    var src = new Constr();
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src - filled pure map';
+    var Constr = function(){ this.x = 1; this.y = 'a'; return this };
+    var src = new Constr();
+    var got = descriptor.arrayFromCoercing( src );
+    var exp = [ [ 'x', 1 ], [ 'y', 'a' ] ];
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    /* - */
+
+    if( Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => descriptor.arrayFromCoercing() );
+
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => descriptor.arrayFromCoercing( [ 1, 2 ], 'extra' ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => descriptor.arrayFromCoercing( 6 ) );
+      test.shouldThrowErrorSync( () => descriptor.arrayFromCoercing( true ) );
+      test.shouldThrowErrorSync( () => descriptor.arrayFromCoercing( new Map() ) );
+    }
+  }
+}
+
+arrayFromCoercingLongDescriptor.timeOut = 15000;
 
 //
 
@@ -32790,14 +32964,12 @@ var Self =
 
     arrayMake,
     arrayMakeNotDefaultDescriptor,
-
     arrayMakeUndefined,
     arrayMakeUndefinedNotDefaultDescriptor,
-
     arrayFrom,
     arrayFromLongDescriptor,
-
     arrayFromCoercing,
+    arrayFromCoercingLongDescriptor,
 
     arrayAs,
 
