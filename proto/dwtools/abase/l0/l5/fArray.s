@@ -6017,11 +6017,11 @@ let Extension =
 
   // array producer
 
-  arrayMake, /* qqq : test coverage is outdated */ /* Dmytro : coverage is updated */
+  arrayMake, /* aaa : test coverage is outdated */ /* Dmytro : coverage is updated */
   arrayMakeUndefined,
 
   arrayFrom,
-  arrayFromCoercing, /* aaa : check coverage */
+  arrayFromCoercing, /* aaa : check coverage */ /* Dmytro : coverage extended */ 
   arrayFromStr,
 
   arrayAs,

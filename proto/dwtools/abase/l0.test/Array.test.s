@@ -1883,6 +1883,14 @@ function arrayFrom( test )
   test.is( _.arrayIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src = undefined';
+  var src = undefined;
+  var got = _.arrayFrom( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.is( src !== got );
+
   test.case = 'src = number';
   var src = 5;
   var got = _.arrayFrom( src );
@@ -2086,10 +2094,258 @@ function arrayFrom( test )
   test.shouldThrowErrorSync( () => _.arrayFrom( [], 3 ) );
 
   test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.arrayMake( {} ) );
-  test.shouldThrowErrorSync( () => _.arrayMake( 'wrong' ) );
-
+  test.shouldThrowErrorSync( () => _.arrayFrom( {} ) );
+  test.shouldThrowErrorSync( () => _.arrayFrom( 'wrong' ) );
 }
+
+//
+
+function arrayFromLongDescriptor( test )
+{
+  let times = 4;
+  for( let e in _.LongDescriptors )
+  {
+    let name = _.LongDescriptors[ e ].name;
+    let descriptor = _.withDefaultLong[ name ];
+
+    test.open( `descriptor - ${ name }` );
+    testRun( descriptor );
+    test.close( `descriptor - ${ name }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* - */
+
+  function testRun( descriptor )
+  {
+    test.case = 'src = null';
+    var src = null;
+    var got = descriptor.arrayFrom( src );
+    var expected = [];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = undefined';
+    var src = undefined;
+    var got = descriptor.arrayFrom( src );
+    var expected = [];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = number';
+    var src = 5;
+    var got = descriptor.arrayFrom( src );
+    var expected = new Array( 5 );
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    /* */
+
+    test.case = 'src = empty array';
+    var src = [];
+    var got = descriptor.arrayFrom( src );
+    var expected = [];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src === got );
+
+    test.case = 'src = empty unroll';
+    var src = _.unrollMake( [] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( !_.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = empty argumentsArray';
+    var src = _.argumentsArrayMake( [] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( !_.argumentsArrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = empty I8x';
+    var src = new I8x();
+    var got = descriptor.arrayFrom( src );
+    var expected = [];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = empty U16x';
+    var src = new U16x();
+    var got = descriptor.arrayFrom( src );
+    var expected = [];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = empty F32x';
+    var src = new F32x();
+    var got = descriptor.arrayFrom( src );
+    var expected = [];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    /* */
+
+    test.case = 'src = array, src.length = 1';
+    var src = [ 1 ];
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1 ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src === got );
+
+    test.case = 'src = unroll, src.length = 1';
+    var src = _.unrollMake( [ 1 ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1 ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( !_.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = argumentsArray, src.length = 1';
+    var src = _.argumentsArrayMake( [ 'str' ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 'str' ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( !_.argumentsArrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = I8x, src.length = 1';
+    var src = new I8x( [ 1 ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1 ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = U16x, src.length = 1';
+    var src = new U16x( [ 1 ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1 ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = F32x, src.length = 1';
+    var src = new F32x( [ 2 ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 2 ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    /* */
+
+    test.case = 'src = array, src.length > 1';
+    var src = [ 1, 2, 'str' ];
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1, 2, 'str' ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src === got );
+
+    test.case = 'src = unroll, src.length = 1';
+    var src = _.unrollMake( [ 1, 2, 'str' ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1, 2, 'str' ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( !_.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = argumentsArray, src.length = 1';
+    var src = _.argumentsArrayMake( [ 1, 2, 'str' ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1, 2, 'str' ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( !_.argumentsArrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = I8x, src.length = 1';
+    var src = new I8x( [ 1, 2, 3 ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1, 2, 3 ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = U16x, src.length = 1';
+    var src = new U16x( [ 1, 2, 3 ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1, 2, 3 ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src = F32x, src.length = 1';
+    var src = new F32x( [ 1, 2, 3 ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1, 2, 3 ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src !== got );
+
+    /* */
+
+    test.case = 'src = array from _.arrayMake, src = empty array';
+    var src = _.arrayMake( [] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src === got );
+
+    test.case = 'src = array from _.arrayMake, src.length = 1';
+    var src = _.arrayMake( [ 'a' ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 'a' ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src === got );
+
+    test.case = 'src = array from _.arrayMake, src.length > 1';
+    var src = _.arrayMake( [ 1, 2, 3 ] );
+    var got = descriptor.arrayFrom( src );
+    var expected = [ 1, 2, 3 ];
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( src === got );
+
+    /* - */
+
+    if( Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => descriptor.arrayFrom() );
+
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => descriptor.arrayFrom( 1, 3 ) );
+      test.shouldThrowErrorSync( () => descriptor.arrayFrom( [], 3 ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => descriptor.arrayFrom( {} ) );
+      test.shouldThrowErrorSync( () => descriptor.arrayFrom( 'wrong' ) );
+    }
+  }
+}
+
+arrayFromLongDescriptor.timeOut = 15000;
 
 //
 
@@ -32539,6 +32795,8 @@ var Self =
     arrayMakeUndefinedNotDefaultDescriptor,
 
     arrayFrom,
+    arrayFromLongDescriptor,
+
     arrayFromCoercing,
 
     arrayAs,
