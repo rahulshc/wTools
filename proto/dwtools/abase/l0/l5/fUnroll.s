@@ -111,21 +111,43 @@ function unrollMake( src )
 
 function unrollMakeUndefined( src, length )
 {
-  if( src === null )
-  src = [];
+  // if( src === null )
+  // src = [];
 
-  if( length === undefined )
-  length = src.length;
-  else if ( _.longIs( length ) )
+  if( _.longIs( length ) )
   length = length.length;
-  else if( _.numberIs( length ) )
+
+  if( length === undefined || length === null )
   {
+    if( src === null )
+    {
+      length = 0;
+    }
+    else if( _.longLike( src ) )
+    {
+      length = src.length;
+    }
+    else if( _.numberIs( src ) )
+    {
+      length = src;
+      src = null;
+    }
+    else _.assert( 0 );
   }
-  else _.assert( 0 );
+
+  if( !length )
+  length = 0;
+
+  // if( length === undefined || length === null )
+  // length = src.length;
+  // else if ( _.longIs( length ) )
+  // length = length.length;
+  // else if( !_.numberIs( length ) )
+  // _.assert( 0 );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
-  _.assert( _.longIs( src ) );
+  _.assert( _.longIs( src ) || src === null );
 
   return _.unrollMake( length );
 }
