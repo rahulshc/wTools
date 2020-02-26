@@ -265,17 +265,17 @@ function unrollsFrom( srcs )
 {
   _.assert( arguments.length >= 1 );
 
-  let dst = _.unrollMake( null );
+  let result = _.unrollMake( null );
 
-  for( let i = 0; i < arguments.length; i ++ )
+  for( let i = 0; i < arguments.length; i++ )
   {
     if( _.unrollIs( arguments[ i ] ) )
-    dst.push( arguments[ i ] );
+    result.push( arguments[ i ] );
     else
-    dst.push( _.unrollMake( arguments[ i ] ) );
+    result.push( _.unrollMake( arguments[ i ] ) );
   }
 
-  return dst;
+  return result;
 }
 
 /**
