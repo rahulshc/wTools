@@ -107,7 +107,8 @@ function unrollMake( src )
  * @memberof wTools
  */
 
-/* qqq : review */
+/* aaa : review */
+/* Dmytro : reviewed. Added condition to handle single argument call. Also, improved handling length argument - null and undefined value */
 
 function unrollMakeUndefined( src, length )
 {

@@ -249,6 +249,146 @@ function unrollMake( test )
 
 //
 
+function unrollMakeLongDescriptor( test )
+{
+  let times = 4;
+  for( let e in _.LongDescriptors )
+  {
+    let name = _.LongDescriptors[ e ].name;
+    let descriptor = _.withDefaultLong[ name ];
+
+    test.open( `descriptor - ${ name }` );
+    testRun( descriptor );
+    test.close( `descriptor - ${ name }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* - */
+
+  function testRun( descriptor )
+  {
+    test.case = 'src - null';
+    var got = descriptor.unrollMake( null );
+    test.equivalent( got, [] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+
+    test.case = 'src - undefined';
+    var got = descriptor.unrollMake( undefined );
+    test.equivalent( got, [] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+
+    test.case = 'src - zero';
+    var got = descriptor.unrollMake( 0 );
+    var expected = new Array( 0 );
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( expected !== got );
+
+    test.case = 'src - number > 0';
+    var got = descriptor.unrollMake( 3 );
+    var expected = new Array( 3 );
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( expected !== got );
+
+    test.case = 'empty array';
+    var src = [];
+    var got = descriptor.unrollMake( src );
+    test.equivalent( got, [] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src - array, array.length - 1';
+    var src = [ 0 ];
+    var got = descriptor.unrollMake( src );
+    test.equivalent( got, [ 0 ] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src - array, array.length > 1';
+    var src = [ 1, 2, 3, 'str' ];
+    var got = descriptor.unrollMake( src );
+    test.equivalent( got, [ 1, 2, 3, 'str' ] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'from empty BufferTyped - F32x';
+    var src = new F32x();
+    var got = descriptor.unrollMake( src );
+    test.equivalent( got, [] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'from Float32 - U8x';
+    var src = new U8x( [ 1, 2, 3 ] );
+    var got = descriptor.unrollMake( src );
+    test.equivalent( got, [ 1, 2, 3 ] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'from empty arguments array';
+    var src = _.argumentsArrayMake( [] );
+    var got = descriptor.unrollMake( src );
+    test.equivalent( got, [] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'from arguments array';
+    var src = _.argumentsArrayMake( 3 );
+    var got = descriptor.unrollMake( src );
+    test.equivalent( got, [ undefined, undefined, undefined ] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'from empty unroll';
+    var src = descriptor.unrollMake( [] );
+    var got = descriptor.unrollMake( src );
+    test.equivalent( got, [] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'from unroll';
+    var src = descriptor.unrollMake( [ 1, 2, 3, 'str' ] );
+    var got = descriptor.unrollMake( src );
+    test.equivalent( got, [ 1, 2, 3, 'str' ] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    /* - */
+
+    if( Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => descriptor.unrollMake() );
+
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => descriptor.unrollMake( 1, 'extra' ) );
+
+      test.case = 'wrong type of src';
+      test.shouldThrowErrorSync( () => descriptor.unrollMake( {} ) );
+      test.shouldThrowErrorSync( () => descriptor.unrollMake( 'wrong' ) );
+    }
+  }
+}
+
+//
+
 function unrollMakeUndefined( test )
 {
   test.case = 'src - null';
@@ -2762,6 +2902,7 @@ var Self =
     unrollIsPopulated,
 
     unrollMake,
+    unrollMakeLongDescriptor,
     unrollMakeUndefined,
     unrollMakeUndefinedLongDescriptor,
     unrollFrom,
