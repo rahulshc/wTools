@@ -131,45 +131,19 @@ function unrollIsPopulated( test )
 
 function unrollMake( test )
 {
-  test.case = 'null';
+  test.case = 'src - null';
   var got = _.unrollMake( null );
   test.equivalent( got, [] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
-  test.case = 'empty';
-  var src = [];
-  var got = _.unrollMake( src );
+  test.case = 'src - undefined';
+  var got = _.unrollMake( undefined );
   test.equivalent( got, [] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
-  test.is( src !== got );
 
-  test.case = 'single number';
-  var src = [ 0 ];
-  var got = _.unrollMake( src );
-  test.equivalent( got, [ 0 ] );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'single string';
-  var src = [ 'a' ];
-  var got = _.unrollMake( src );
-  test.equivalent( got, [ 'a' ] );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'several';
-  var src = [ 1, 2, 3 ];
-  var got = _.unrollMake( src );
-  test.equivalent( got, [ 1, 2, 3 ] );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'zero length';
+  test.case = 'src - zero';
   var got = _.unrollMake( 0 );
   var expected = new Array( 0 );
   test.equivalent( got, expected );
@@ -177,7 +151,7 @@ function unrollMake( test )
   test.is( _.unrollIs( got ) );
   test.is( expected !== got );
 
-  test.case = 'length';
+  test.case = 'src - number > 0';
   var got = _.unrollMake( 3 );
   var expected = new Array( 3 );
   test.equivalent( got, expected );
@@ -185,7 +159,31 @@ function unrollMake( test )
   test.is( _.unrollIs( got ) );
   test.is( expected !== got );
 
-  test.case = 'from empty Float32';
+  test.case = 'empty array';
+  var src = [];
+  var got = _.unrollMake( src );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - array, array.length - 1';
+  var src = [ 0 ];
+  var got = _.unrollMake( src );
+  test.equivalent( got, [ 0 ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - array, array.length > 1';
+  var src = [ 1, 2, 3, 'str' ];
+  var got = _.unrollMake( src );
+  test.equivalent( got, [ 1, 2, 3, 'str' ] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'from empty BufferTyped - F32x';
   var src = new F32x();
   var got = _.unrollMake( src );
   test.equivalent( got, [] );
@@ -193,8 +191,8 @@ function unrollMake( test )
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from Float32';
-  var src = new F32x( [ 1, 2, 3 ] );
+  test.case = 'from Float32 - U8x';
+  var src = new U8x( [ 1, 2, 3 ] );
   var got = _.unrollMake( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
@@ -210,25 +208,25 @@ function unrollMake( test )
   test.is( src !== got );
 
   test.case = 'from arguments array';
-  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArrayMake( 3 );
   var got = _.unrollMake( src );
-  test.equivalent( got, [ 1, 2, 3 ] );
+  test.equivalent( got, [ undefined, undefined, undefined ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from empty array';
-  var src = _.arrayMake( [] );
+  test.case = 'from empty unroll';
+  var src = _.unrollMake( [] );
   var got = _.unrollMake( src );
   test.equivalent( got, [] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from array';
-  var src = _.arrayMake( [ 1, 2, 3 ] );
+  test.case = 'from unroll';
+  var src = _.unrollMake( [ 1, 2, 3, 'str' ] );
   var got = _.unrollMake( src );
-  test.equivalent( got, [ 1, 2, 3 ] );
+  test.equivalent( got, [ 1, 2, 3, 'str' ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
@@ -239,37 +237,14 @@ function unrollMake( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.unrollMake();
-  });
+  test.shouldThrowErrorSync( () => _.unrollMake() );
 
-  test.case = 'two arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.unrollMake( 1, 3 );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.unrollMake( 1, 'extra' ) );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.unrollMake( [], 3 );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.unrollMake( [], [] );
-  });
-
-  test.case = 'wrong arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.unrollMake( {} );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.unrollMake( '1' );
-  });
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.unrollMake( {} ) );
+  test.shouldThrowErrorSync( () => _.unrollMake( 'wrong' ) );
 }
 
 //
@@ -707,11 +682,13 @@ function unrollMakeUndefined( test )
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.unrollMakeUndefined( 1, 3, 'extra' ) );
-  test.shouldThrowErrorSync( () => _.unrollMakeUndefined( [], 3, 'extra' ) );
 
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.unrollMakeUndefined( {} ) );
   test.shouldThrowErrorSync( () => _.unrollMakeUndefined( 'wrong' ) );
+
+  test.case = 'wrong length';
+  test.shouldThrowErrorSync( () => _.unrollMakeUndefined( [], Infinity ) );
 
   test.case = 'wrong type of length';
   test.shouldThrowErrorSync( () => _.unrollMakeUndefined( [], 'wrong' ) );
@@ -1171,7 +1148,9 @@ function unrollMakeUndefinedLongDescriptor( test )
 
       test.case = 'extra arguments';
       test.shouldThrowErrorSync( () => descriptor.unrollMakeUndefined( 1, 3, 'extra' ) );
-      test.shouldThrowErrorSync( () => descriptor.unrollMakeUndefined( [], 3, 'extra' ) );
+
+      test.case = 'wrong length';
+      test.shouldThrowErrorSync( () => descriptor.unrollMakeUndefined( [], Infinity ) );
 
       test.case = 'wrong type of src';
       test.shouldThrowErrorSync( () => descriptor.unrollMakeUndefined( {} ) );
