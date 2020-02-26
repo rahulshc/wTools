@@ -19,7 +19,11 @@ function entityMakeConstructing( src, length )
 
   if( _.arrayIs( src ) )
   {
-    /* Dmytro : arrays and other longs return different result */
+    /* 
+      Dmytro : arrays and other longs return different result
+      _.entityMakeConstructing( [ 0, 0, 0 ] ); // returns [ undefined, undefined, undefined ]
+      _.entityMakeConstructing( new U8x( [ 0, 0, 0 ] ) ); // returns [ 0, 0, 0 ]
+    */
     return new Array( length !== undefined ? length : src.length );
   }
   else if( _.longIs( src ) )
@@ -148,9 +152,15 @@ function entityMake( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
+  // if( _.arrayIs( src ) ) // Dmytro : maybe, it's lost. Other routines has condition for arrays.
+  // {
+  //   return new Array( src );
+  // }
   if( _.longLike( src ) )
   {
-    return _.longShallowClone( src );
+    return this.longMake( src, null );
+    /* Dmytro : null argument saves type of src as longShallowClone, if src is argumentsArray, then routine construct longDescriptor type*/
+    // return _.longShallowClone( src ); /* Dmytro : longShallowClone not use longDescriptor for constructing of long 
   }
   else if( _.hashMapLike( src ) || _.setLike( src ) )
   {
@@ -479,11 +489,12 @@ let Extension =
 {
 
   entityMakeConstructing, /* aaa2 : should take into account long descriptor */ /* Dmytro : takes into account longDescriptor if src is long, but not an array. Covered */
-  entityMakeEmpty, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : tekes into account longDescriptor, covered */
+  entityMakeEmpty, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : takes into account longDescriptor, covered */
   makeEmpty : entityMakeEmpty,
-  entityMakeUndefined, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
+  entityMakeUndefined, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : takes into account longDescriptor, covered */
   makeUndefined : entityMakeUndefined,
-  entityMake, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
+  entityMake, /* qqq2 : should take into account long descriptor, make perfect coverage, please */ 
+  /* Dmytro : have some question for new feature. Routine takes into account longDescriptor, covered */
   make : entityMake,
 
   entityEntityEqualize,
