@@ -1593,13 +1593,21 @@ function unrollFromLongDescriptor( test )
 
 function unrollsFrom( test )
 {
-  test.case = 'src has null';
+  test.case = 'srcs - null';
   var got = _.unrollsFrom( null );
   test.equivalent( got, [[]] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( _.unrollIs( got[ 0 ] ) );
 
+  test.case = 'srcs - undefined';
+  var got = _.unrollsFrom( undefined );
+  test.equivalent( got, [[]] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( _.unrollIs( got[ 0 ] ) );
+
+  test.case = 'srcs - several arguments';
   var got = _.unrollsFrom( 1, [], null, [ 1, { a : 2 } ] );
   var expected = [ [ undefined ], [], [], [ 1, { a : 2 } ] ];
   test.equivalent( got, expected );
@@ -1609,7 +1617,7 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 3 ] ) );
   test.is( got !== expected );
 
-  test.case = 'src has unroll';
+  test.case = 'srcs - empty unroll';
   var src = _.unrollMake( 0 );
   var got = _.unrollsFrom( src );
   test.identical( got, [[]] );
@@ -1618,13 +1626,7 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 0 ] ) );
   test.is( got !== [[]] );
 
-  var src = _.unrollMake( 2 );
-  var got = _.unrollsFrom( src );
-  test.identical( got, [[ undefined, undefined ]] );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( _.unrollIs( got[ 0 ] ) );
-
+  test.case = 'srcs - filled unroll';
   var src = _.unrollMake( [ 1, 'str', 3 ] );
   var got = _.unrollsFrom( src );
   test.identical( got, [[ 1, 'str', 3 ]] );
@@ -1633,6 +1635,7 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 0 ] ) );
   test.is( got !== [[ 1, 'str', 3 ]] );
 
+  test.case = 'srcs - several arguments with unroll';
   var src = _.unrollMake( [ 1, 'str', 3 ] );
   var got = _.unrollsFrom( 1, [], src );
   var expected = [ [ undefined ], [], [ 1, 'str', 3 ] ];
@@ -1643,33 +1646,7 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 2 ] ) );
   test.is( got !== expected );
 
-  test.case = 'src has unrolls from Array';
-  var src = new Array( 0 );
-  var got = _.unrollsFrom( src );
-  test.equivalent( got, [ src ] );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( _.unrollIs( got[ 0 ] ) );
-  test.is( [ src ] !== got );
-
-  var src = new Array( 3 );
-  var got = _.unrollsFrom( src );
-  test.equivalent( got, [ src ] );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( _.unrollIs( got[ 0 ] ) );
-  test.is( [ src ] !== got );
-
-  var src = new Array( 3 );
-  var got = _.unrollsFrom( 1, [], [ 'str', {} ], src );
-  test.equivalent( got, [ [ undefined ], [], [ 'str', {} ], src ] );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( _.unrollIs( got[ 0 ] ) );
-  test.is( _.unrollIs( got[ 3 ] ) );
-  test.is( [ src ] !== got );
-
-  test.case = 'src has unroll from Float32';
+  test.case = 'srcs - empty F32x buffer';
   var src = new F32x();
   var got = _.unrollsFrom( src );
   test.equivalent( got, [[]] );
@@ -1678,7 +1655,8 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 0 ] ) );
   test.is( [ src ] !== got );
 
-  var src = new F32x( [ 1, 2, 3 ] );
+  test.case = 'srcs - filled U8x buffer';
+  var src = new U8x( [ 1, 2, 3 ] );
   var got = _.unrollsFrom( src );
   test.equivalent( got, [ [ 1, 2, 3 ] ] );
   test.is( _.arrayIs( got ) );
@@ -1686,7 +1664,8 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 0 ] ) );
   test.is( [ src ] !== got );
 
-  var src = new F32x( [ 1, 2, 3 ] );
+  test.case = 'srcs - several arguments with I16x buffer';
+  var src = new I16x( [ 1, 2, 3 ] );
   var got = _.unrollsFrom( [], 1, src );
   test.equivalent( got, [ [], [ undefined ], [ 1, 2, 3 ] ] );
   test.is( _.arrayIs( got ) );
@@ -1696,7 +1675,7 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 2 ] ) );
   test.is( [ src ] !== got );
 
-  test.case = 'from arguments array';
+  test.case = 'srcs - empty arguments array';
   var src = _.argumentsArrayMake( [] );
   var got = _.unrollsFrom( src );
   test.equivalent( got, [[]] );
@@ -1705,6 +1684,7 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 0 ] ) );
   test.is( [ src ] !== got );
 
+  test.case = 'srcs - filled arguments array';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.unrollsFrom( src );
   test.equivalent( got, [ [ 1, 2, 3 ] ] );
@@ -1713,6 +1693,7 @@ function unrollsFrom( test )
   test.is( _.unrollIs( got[ 0 ] ) );
   test.is( [ src ] !== got );
 
+  test.case = 'srcs - several arguments with arguments array';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.unrollsFrom( [], 1, src );
   test.equivalent( got, [ [], [ undefined ], [ 1, 2, 3 ] ] );
