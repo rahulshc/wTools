@@ -1873,7 +1873,92 @@ function unrollsFromLongDescriptor( test )
 
 function unrollFromMaybe( test )
 {
-  test.case = 'src = unroll';
+  test.case = 'src - undefined';
+  var got = _.unrollFromMaybe( undefined );
+  test.identical( got, undefined );
+
+  test.case = 'src - empty string';
+  var got = _.unrollFromMaybe( '' );
+  test.identical( got, '' );
+  test.is( _.primitiveIs( got ) );
+
+  test.case = 'src - string';
+  var got = _.unrollFromMaybe( 'str' );
+  test.identical( got, 'str' );
+  test.is( _.primitiveIs( got ) );
+
+  test.case = 'src - booleant - true';
+  var got = _.unrollFromMaybe( true );
+  test.identical( got, true );
+  test.is( _.primitiveIs( got ) );
+
+  test.case = 'src - booleant - false';
+  var got = _.unrollFromMaybe( false );
+  test.identical( got, false );
+  test.is( _.primitiveIs( got ) );
+
+  test.case = 'src - empty map';
+  var got = _.unrollFromMaybe( {} );
+  test.identical( got, {} );
+  test.is( _.mapIs( got ) );
+
+  test.case = 'src - filled map';
+  var got = _.unrollFromMaybe( { a : 0, b : 'str' } );
+  test.identical( got, { a : 0, b : 'str' } );
+  test.is( _.mapIs( got ) );
+
+  test.case = 'src - empty pure map';
+  var got = _.unrollFromMaybe( Object.create( null ) );
+  test.identical( got, {} );
+  test.is( _.mapIs( got ) );
+
+  test.case = 'src - filled map';
+  var src = Object.create( null );
+  src.a = 0;
+  src.b = 'str'
+  var got = _.unrollFromMaybe( src );
+  test.identical( got, { a : 0, b : 'str' } );
+  test.is( _.mapIs( got ) );
+
+  test.case = 'src - empty HashMap';
+  var src = new Map();
+  var got = _.unrollFromMaybe( src );
+  test.identical( got, new Map() );
+  test.is( _.hashMapIs( got ) );
+
+  test.case = 'src - filled HashMap';
+  var src = new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] );
+  var got = _.unrollFromMaybe( src );
+  test.identical( got, new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
+  test.is( _.hashMapIs( got ) );
+
+  test.case = 'src - empty Set';
+  var src = new Set( [] );
+  var got = _.unrollFromMaybe( src );
+  test.identical( got, new Set() );
+  test.is( _.setIs( got ) );
+
+  test.case = 'src - filled Set';
+  var src = new Set( [ 1, 'abc' ] );
+  var got = _.unrollFromMaybe( src );
+  test.identical( got, new Set( [ 1, 'abc' ] ) );
+  test.is( _.setIs( got ) );
+
+  test.case = 'src - instance of constructor';
+  var Constr = function(){ this.x = 1; return this };
+  var src = new Constr();
+  var got = _.unrollFromMaybe( src );
+  test.identical( got, new Constr() );
+  test.is( _.objectIs( got ) );
+
+  test.case = 'src - null';
+  var got = _.unrollFromMaybe( null );
+  test.equivalent( got, [] );
+  test.is( _.arrayIs( got ) );
+  test.is( _.unrollIs( got ) );
+  test.is( [] !== got );
+
+  test.case = 'src - unroll';
   var src = _.unrollMake( 0 );
   var got = _.unrollFromMaybe( src );
   test.identical( got, [] );
@@ -1881,12 +1966,7 @@ function unrollFromMaybe( test )
   test.is( _.unrollIs( got ) );
   test.is( got !== [] );
 
-  var src = _.unrollMake( 2 );
-  var got = _.unrollFromMaybe( src );
-  test.identical( got, [ undefined, undefined ] );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-
+  test.case = 'src - filled unroll';
   var src = _.unrollMake( [ 1, 'str', 3 ] );
   var got = _.unrollFromMaybe( src );
   test.identical( got, [ 1, 'str', 3 ] );
@@ -1894,40 +1974,7 @@ function unrollFromMaybe( test )
   test.is( _.unrollIs( got ) );
   test.is( got !== [ 1, 'str', 3 ] );
 
-  test.case = 'src = undefined';
-  var got = _.unrollFromMaybe( undefined );
-  test.identical( got, undefined );
-
-  test.case = 'src is map';
-  var got = _.unrollFromMaybe( {} );
-  test.identical( got, {} );
-  test.is( _.mapIs(got) );
-
-  var got = _.unrollFromMaybe( { a : 0, b : 'str' } );
-  test.identical( got, { a : 0, b : 'str' } );
-  test.is( _.mapIs(got) );
-
-  test.case = 'src is incompatible primitive';
-  var got = _.unrollFromMaybe( 'str' );
-  test.identical( got, 'str' );
-  test.is( _.primitiveIs( got ) );
-
-  var got = _.unrollFromMaybe( true );
-  test.identical( got, true );
-  test.is( _.primitiveIs( got ) );
-
-  var got = _.unrollFromMaybe( false );
-  test.identical( got, false );
-  test.is( _.primitiveIs( got ) );
-
-  test.case = 'from null';
-  var got = _.unrollFromMaybe( null );
-  test.equivalent( got, [] );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( [] !== got );
-
-  test.case = 'from empty';
+  test.case = 'src - empty array';
   var src = [];
   var got = _.unrollFromMaybe( src );
   test.equivalent( got, src );
@@ -1935,15 +1982,7 @@ function unrollFromMaybe( test )
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from array with single element';
-  var src = [ 0 ];
-  var got = _.unrollFromMaybe( src );
-  test.equivalent( got, src );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'several';
+  test.case = 'src - filled array';
   var src = [ 1, 2, 'str' ];
   var got = _.unrollFromMaybe( src );
   test.equivalent( got, src );
@@ -1951,14 +1990,7 @@ function unrollFromMaybe( test )
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  test.case = 'unroll from number';
-  var got = _.unrollFromMaybe( 0 );
-  var expected = new Array( 0 );
-  test.equivalent( got, expected );
-  test.is( _.arrayIs( got ) );
-  test.is( _.unrollIs( got ) );
-  test.is( expected !== got );
-
+  test.case = 'src - instance of Array constructor';
   var got = _.unrollFromMaybe( 3 );
   var expected = new Array( 3 );
   test.equivalent( got, expected );
@@ -1966,7 +1998,7 @@ function unrollFromMaybe( test )
   test.is( _.unrollIs( got ) );
   test.is( expected !== got );
 
-  test.case = 'from Float32';
+  test.case = 'src - empty F32x buffer';
   var src = new F32x();
   var got = _.unrollFromMaybe( src );
   test.equivalent( got, [] );
@@ -1974,14 +2006,15 @@ function unrollFromMaybe( test )
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  var src = new F32x( [ 1, 2, 3 ] );
+  test.case = 'src - filled U8x buffer';
+  var src = new U8x( [ 1, 2, 3 ] );
   var got = _.unrollFromMaybe( src );
   test.equivalent( got, [ 1, 2, 3 ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
-  test.case = 'from arguments array';
+  test.case = 'src - empty arguments array';
   var src = _.argumentsArrayMake( [] );
   var got = _.unrollFromMaybe( src );
   test.equivalent( got, [] );
@@ -1989,6 +2022,7 @@ function unrollFromMaybe( test )
   test.is( _.unrollIs( got ) );
   test.is( src !== got );
 
+  test.case = 'src - filled arguments array';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.unrollFromMaybe( src );
   test.equivalent( got, [ 1, 2, 3 ] );
