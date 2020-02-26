@@ -111,16 +111,15 @@ function entityMakeUndefined( src, length )
   }
   else if( _.longIs( src ) )
   {
-    return this.longMake( src, length );
+    return this.longMakeUndefined( src, length );
+    // return this.longMake( src, length ); /* Dmytro : incorrect usage of routine */
   }
   else if( _.setIs( src ) )
   {
-    debugger;
     return new src.constructor();
   }
   else if( _.hashMapIs( src ) )
   {
-    debugger;
     return new src.constructor();
   }
   else if( _.mapLike( src ) )
@@ -479,8 +478,8 @@ function entityAssignField( dstContainer, srcValue, name, onRecursive )
 let Extension =
 {
 
-  entityMakeConstructing, /* qqq2 : should take into account long descriptor */
-  entityMakeEmpty, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
+  entityMakeConstructing, /* aaa2 : should take into account long descriptor */ /* Dmytro : takes into account longDescriptor if src is long, but not an array. Covered */
+  entityMakeEmpty, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : tekes into account longDescriptor, covered */
   makeEmpty : entityMakeEmpty,
   entityMakeUndefined, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
   makeUndefined : entityMakeUndefined,
