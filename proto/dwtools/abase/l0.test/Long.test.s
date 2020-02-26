@@ -10694,237 +10694,237 @@ function longRepresent( test )
 
 //
 
-function longResize( test )
-{
-  var got, expected;
-
-  test.case = 'defaults';
-  var array = [ 1, 2, 3, 4, 5, 6, 7 ];
-  array.src = true;
-
-  /* just pass array */
-
-  got = _.longResize( array );
-  test.identical( got.src, undefined );
-  test.identical( got, array );
-
-  //
-
-  test.case = 'make copy of source';
-
-  /* third argument is not provided */
-
-  got = _.longResize( array, 2 );
-  test.identical( got.src, undefined );
-  expected = [ 3, 4, 5, 6, 7 ];
-  test.identical( got, expected );
-
-  /* second argument is undefined */
-
-  got = _.longResize( array, undefined, 4  );
-  test.identical( got.src, undefined );
-  expected = [ 1, 2, 3, 4 ];
-  test.identical( got, expected );
-
-  /**/
-
-  got = _.longResize( array, 0, 3 );
-  test.identical( got.src, undefined );
-  expected = [ 1, 2, 3 ];
-  test.identical( got, expected );
-
-  /* from two to six */
-
-  test.case = 'from two to six';
-  got = _.longResize( array, 2, 6 );
-  test.identical( got.src, undefined );
-  expected = [ 3, 4, 5, 6 ];
-  test.identical( got, expected );
-
-  /* rigth bound is negative */
-
-  got = _.longResize( array, 0, -1 );
-  test.identical( got.src, undefined );
-  expected = [];
-  test.identical( got, expected );
-
-  /* both bounds are negative */
-
-  got = _.longResize( array, -1, -3 );
-  test.identical( got.src, undefined );
-  expected = [];
-  test.identical( got, expected );
-
-  /* TypedArray */
-
-  var arr = new U16x( array );
-  arr.src = true;
-  got = _.longResize( arr, 0, 3 );
-  test.identical( got.src, undefined );
-  expected = new U16x( [ 1, 2, 3 ] );
-  test.identical( got, expected );
-
-  /* BufferNode */
-
-  if( Config.interpreter === 'njs' )
-  {
-    test.case = 'buffer';
-    var got = _.longResize( BufferNode.from( '123' ), 0, 5, 0 );
-    var expected = [ 49, 50, 51, 0, 0 ];
-    test.identical( got, expected );
-  }
-
-  /**/
-
-  test.case = 'increase size of array';
-
-  /* rigth bound is out of range */
-
-  got = _.longResize( array, 0, array.length + 2 );
-  test.identical( got.src, undefined );
-  expected = array.slice();
-  expected.push( undefined, undefined );
-  test.identical( got, expected );
-
-  /* indexes are out of bound */
-
-  got = _.longResize( array, array.length + 1, array.length + 3 );
-  test.identical( got.src, undefined );
-  expected = [ undefined, undefined ];
-  test.identical( got, expected );
-
-  /* left bound is negative */
-
-  got = _.longResize( array, -1, array.length );
-  test.identical( got.src, undefined );
-  expected = array.slice();
-  expected.unshift( undefined );
-  test.identical( got, expected );
-
-  /* without setting value */
-
-  got = _.longResize( array, 0, array.length + 2 );
-  test.identical( got.src, undefined );
-  test.identical( got.length, array.length + 2 );
-
-  /* by setting value */
-
-  got = _.longResize( array, 0, array.length + 2, 0 );
-  test.identical( got.src, undefined );
-  expected = [ 1, 2, 3, 4, 5, 6, 7, 0, 0 ];
-  test.identical( got, expected );
-
-  /* by taking only last element of source array */
-
-  got = _.longResize( array, array.length - 1, array.length + 2, 0 );
-  test.identical( got.src, undefined );
-  expected = [ 7, 0, 0 ];
-  test.identical( got, expected );
-
-  test.case = 'decrease size of array';
-
-  /* setting value not affects on array */
-
-  got = _.longResize( array, 0, 3, 0 );
-  test.identical( got.src, undefined );
-  expected = [ 1, 2, 3 ];
-  test.identical( got, expected );
-
-  /* begin index is negative */
-
-  got = _.longResize( array, -1, 3, 0 );
-  test.identical( got.src, undefined );
-  expected = [ 0, 1, 2, 3 ];
-  test.identical( got, expected );
-
-  /* end index is negative */
-
-  got = _.longResize( array, 0, -1 );
-  test.identical( got.src, undefined );
-  expected = [];
-  test.identical( got, expected );
-
-  /* begin index negative, set value */
-
-  got = _.longResize( array, -1, 3, 0 );
-  test.identical( got.src, undefined );
-  expected = [ 0, 1, 2, 3 ];
-  test.identical( got, expected );
-
-  /* TypedArray */
-
-  var arr = new U16x( array );
-  arr.src = true;
-  got = _.longResize( arr, 0, 4, 4 );
-  test.identical( got.src, undefined );
-  expected = new U16x( [ 1, 2, 3, 4 ] );
-  test.identical( got, expected );
-
-  //
-
-  if( Config.interpreter === 'njs' )
-  {
-    test.case = 'buffer';
-    var got = _.longResize( BufferNode.from( '123' ), 0, 5, 0 );
-    var expected = [ 49, 50, 51, 0, 0 ];
-    test.identical( got, expected );
-  }
-
-  //
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longResize();
-  });
-
-  /**/
-
-  test.case = 'invalid arguments type';
-
-  /**/
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.longResize( 1 );
-  })
-
-  /**/
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.longResize( array, '1', array.length )
-  })
-
-  /**/
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.longResize( array, 0, '1' )
-  })
-
-  /**/
-
-  test.case = 'buffer';
-
-  /**/
-
-  got = _.longResize( BufferNode.from( '123' ), 0, 1 );
-  expected = [ 49 ];
-  test.identical( got, expected );
-
-  //
-
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( function()
-  {
-    _.longResize( 'wrong argument', 'wrong argument', 'wrong argument' );
-  });
-
-};
+// function longResize( test )
+// {
+//   var got, expected;
+//
+//   test.case = 'defaults';
+//   var array = [ 1, 2, 3, 4, 5, 6, 7 ];
+//   array.src = true;
+//
+//   /* just pass array */
+//
+//   got = _.longResize( array );
+//   test.identical( got.src, undefined );
+//   test.identical( got, array );
+//
+//   //
+//
+//   test.case = 'make copy of source';
+//
+//   /* third argument is not provided */
+//
+//   got = _.longResize( array, 2 );
+//   test.identical( got.src, undefined );
+//   expected = [ 3, 4, 5, 6, 7 ];
+//   test.identical( got, expected );
+//
+//   /* second argument is undefined */
+//
+//   got = _.longResize( array, undefined, 4  );
+//   test.identical( got.src, undefined );
+//   expected = [ 1, 2, 3, 4 ];
+//   test.identical( got, expected );
+//
+//   /**/
+//
+//   got = _.longResize( array, 0, 3 );
+//   test.identical( got.src, undefined );
+//   expected = [ 1, 2, 3 ];
+//   test.identical( got, expected );
+//
+//   /* from two to six */
+//
+//   test.case = 'from two to six';
+//   got = _.longResize( array, 2, 6 );
+//   test.identical( got.src, undefined );
+//   expected = [ 3, 4, 5, 6 ];
+//   test.identical( got, expected );
+//
+//   /* rigth bound is negative */
+//
+//   got = _.longResize( array, 0, -1 );
+//   test.identical( got.src, undefined );
+//   expected = [];
+//   test.identical( got, expected );
+//
+//   /* both bounds are negative */
+//
+//   got = _.longResize( array, -1, -3 );
+//   test.identical( got.src, undefined );
+//   expected = [];
+//   test.identical( got, expected );
+//
+//   /* TypedArray */
+//
+//   var arr = new U16x( array );
+//   arr.src = true;
+//   got = _.longResize( arr, 0, 3 );
+//   test.identical( got.src, undefined );
+//   expected = new U16x( [ 1, 2, 3 ] );
+//   test.identical( got, expected );
+//
+//   /* BufferNode */
+//
+//   if( Config.interpreter === 'njs' )
+//   {
+//     test.case = 'buffer';
+//     var got = _.longResize( BufferNode.from( '123' ), 0, 5, 0 );
+//     var expected = [ 49, 50, 51, 0, 0 ];
+//     test.identical( got, expected );
+//   }
+//
+//   /**/
+//
+//   test.case = 'increase size of array';
+//
+//   /* rigth bound is out of range */
+//
+//   got = _.longResize( array, 0, array.length + 2 );
+//   test.identical( got.src, undefined );
+//   expected = array.slice();
+//   expected.push( undefined, undefined );
+//   test.identical( got, expected );
+//
+//   /* indexes are out of bound */
+//
+//   got = _.longResize( array, array.length + 1, array.length + 3 );
+//   test.identical( got.src, undefined );
+//   expected = [ undefined, undefined ];
+//   test.identical( got, expected );
+//
+//   /* left bound is negative */
+//
+//   got = _.longResize( array, -1, array.length );
+//   test.identical( got.src, undefined );
+//   expected = array.slice();
+//   expected.unshift( undefined );
+//   test.identical( got, expected );
+//
+//   /* without setting value */
+//
+//   got = _.longResize( array, 0, array.length + 2 );
+//   test.identical( got.src, undefined );
+//   test.identical( got.length, array.length + 2 );
+//
+//   /* by setting value */
+//
+//   got = _.longResize( array, 0, array.length + 2, 0 );
+//   test.identical( got.src, undefined );
+//   expected = [ 1, 2, 3, 4, 5, 6, 7, 0, 0 ];
+//   test.identical( got, expected );
+//
+//   /* by taking only last element of source array */
+//
+//   got = _.longResize( array, array.length - 1, array.length + 2, 0 );
+//   test.identical( got.src, undefined );
+//   expected = [ 7, 0, 0 ];
+//   test.identical( got, expected );
+//
+//   test.case = 'decrease size of array';
+//
+//   /* setting value not affects on array */
+//
+//   got = _.longResize( array, 0, 3, 0 );
+//   test.identical( got.src, undefined );
+//   expected = [ 1, 2, 3 ];
+//   test.identical( got, expected );
+//
+//   /* begin index is negative */
+//
+//   got = _.longResize( array, -1, 3, 0 );
+//   test.identical( got.src, undefined );
+//   expected = [ 0, 1, 2, 3 ];
+//   test.identical( got, expected );
+//
+//   /* end index is negative */
+//
+//   got = _.longResize( array, 0, -1 );
+//   test.identical( got.src, undefined );
+//   expected = [];
+//   test.identical( got, expected );
+//
+//   /* begin index negative, set value */
+//
+//   got = _.longResize( array, -1, 3, 0 );
+//   test.identical( got.src, undefined );
+//   expected = [ 0, 1, 2, 3 ];
+//   test.identical( got, expected );
+//
+//   /* TypedArray */
+//
+//   var arr = new U16x( array );
+//   arr.src = true;
+//   got = _.longResize( arr, 0, 4, 4 );
+//   test.identical( got.src, undefined );
+//   expected = new U16x( [ 1, 2, 3, 4 ] );
+//   test.identical( got, expected );
+//
+//   //
+//
+//   if( Config.interpreter === 'njs' )
+//   {
+//     test.case = 'buffer';
+//     var got = _.longResize( BufferNode.from( '123' ), 0, 5, 0 );
+//     var expected = [ 49, 50, 51, 0, 0 ];
+//     test.identical( got, expected );
+//   }
+//
+//   //
+//
+//   if( !Config.debug )
+//   return;
+//
+//   test.case = 'no arguments';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longResize();
+//   });
+//
+//   /**/
+//
+//   test.case = 'invalid arguments type';
+//
+//   /**/
+//
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longResize( 1 );
+//   })
+//
+//   /**/
+//
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longResize( array, '1', array.length )
+//   })
+//
+//   /**/
+//
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longResize( array, 0, '1' )
+//   })
+//
+//   /**/
+//
+//   test.case = 'buffer';
+//
+//   /**/
+//
+//   got = _.longResize( BufferNode.from( '123' ), 0, 1 );
+//   expected = [ 49 ];
+//   test.identical( got, expected );
+//
+//   //
+//
+//   test.case = 'wrong type of argument';
+//   test.shouldThrowErrorSync( function()
+//   {
+//     _.longResize( 'wrong argument', 'wrong argument', 'wrong argument' );
+//   });
+//
+// };
 
 //
 

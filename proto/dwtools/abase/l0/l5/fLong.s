@@ -766,6 +766,240 @@ let longMakeZeroed = _longMake_functor( function( src, ins, length, minLength )
 //   return result;
 // }
 
+function longMakeFilling( type, value, length )
+{
+  let result;
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  if( arguments.length === 2 )
+  {
+    value = arguments[ 0 ];
+    length = arguments[ 1 ];
+    if( _.longIs( length ) )
+    type = length.constructor;
+    else
+    type = null;
+  }
+  else if( arguments.length === 3 )
+  {
+  }
+
+  _.assert( value !== undefined );
+  _.assert( _.numberIs( length ) );
+  _.assert( type === null || _.routineIs( type ) || _.longIs( type ) );
+
+  result = this.longMake( type, length );
+  for( let i = 0 ; i < length ; i++ )
+  result[ i ] = value;
+
+  return result;
+}
+
+//
+
+/**
+ * The routine arrayFill() fills all the elements of the given Long in the provided range
+ * with a static value.
+ *
+ * @param { Long } result - The source Long.
+ * @param { * } value - Any value to fill the elements in the {-result-}.
+ * If {-value-} is not provided, the routine fills elements of source Long by 0.
+ * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the end index, and the start index is 0.
+ * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 1 ] <= range[ 0 ], then routine returns a copy of original Long.
+ * If {-range-} is not provided, routine fills all elements of the {-result-}.
+ *
+ * @example
+ * _.longFill( [ 1, 2, 3, 4, 5 ] );
+ * // returns [ 0, 0, 0, 0, 0 ]
+ *
+ * @example
+ * _.longFill( [ 1, 2, 3, 4, 5 ], 'a' );
+ * // returns [ 'a', 'a', 'a', 'a', 'a' ]
+ *
+ * @example
+ * _.longFill( [ 1, 2, 3, 4, 5 ], 'a', 2 );
+ * // returns [ 'a', 'a', 3, 4, 5 ]
+ *
+ * @example
+ * _.longFill( [ 1, 2, 3, 4, 5 ], 'a', [ 1, 3 ] );
+ * // returns [ 1, 'a', 'a', 4, 5 ]
+ *
+ * @example
+ * _.longFill( [ 1, 2, 3, 4, 5 ], 'a', [ -1, 3 ] );
+ * // returns [ 'a', 'a', 'a', 'a', 5 ]
+ *
+ * @example
+ * _.longFill( [ 1, 2, 3, 4, 5 ], 'a', [ 4, 3 ] );
+ * // returns [ 1, 2, 3, 4, 5 ]
+ *
+ * @returns { Long } - If it is possible, returns the source Long filled with a static value.
+ * Otherwise, returns copy of the source Long filled with a static value.
+ * @function longFill
+ * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If {-result-} is not a Long.
+ * @throws { Error } If {-range-} is not a Range or not a Number.
+ * @memberof wTools
+ */
+
+function longFill( result, value, range )
+{
+
+  if( range === undefined )
+  range = [ 0, result.length ];
+  if( _.numberIs( range ) )
+  range = [ 0, range ];
+
+  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( _.longIs( result ) );
+  _.assert( _.rangeIs( range ) );
+
+  if( value === undefined )
+  value = 0;
+
+  result = _.longGrowInplace( result, range );
+
+  if( range[ 0 ] < 0 )
+  {
+    range[ 1 ] = range[ 1 ] - range[ 0 ];
+    range[ 0 ] = 0;
+  }
+
+  if( _.routineIs( result.fill ) )
+  {
+    result.fill( value, range[ 0 ], range[ 1 ] );
+  }
+  else
+  {
+    for( let t = range[ 0 ] ; t < range[ 1 ] ; t++ )
+    result[ t ] = value;
+  }
+
+  return result;
+}
+
+//
+
+/**
+ * The longDuplicate() routine returns an array with duplicate values of a certain number of times.
+ *
+ * @param { objectLike } [ o = {  } ] o - The set of arguments.
+ * @param { longIs } o.src - The given initial array.
+ * @param { longIs } o.result - To collect all data.
+ * @param { Number } [ o.numberOfAtomsPerElement = 1 ] o.numberOfAtomsPerElement - The certain number of times
+ * to append the next value from (srcArray or o.src) to the (o.result).
+ * If (o.numberOfAtomsPerElement) is greater that length of a (srcArray or o.src) it appends the 'undefined'.
+ * @param { Number } [ o.numberOfDuplicatesPerElement = 2 ] o.numberOfDuplicatesPerElement = 2 - The number of duplicates per element.
+ *
+ * @example
+ * _.longDuplicate( [ 'a', 'b', 'c' ] );
+ * // returns [ 'a', 'a', 'b', 'b', 'c', 'c' ]
+ *
+ * @example
+ * let options = {
+ *   src : [ 'abc', 'def' ],
+ *   result : [  ],
+ *   numberOfAtomsPerElement : 2,
+ *   numberOfDuplicatesPerElement : 3
+ * };
+ * _.longDuplicate( options, {} );
+ * // returns [ 'abc', 'def', 'abc', 'def', 'abc', 'def' ]
+ *
+ * @example
+ * let options = {
+ *   src : [ 'abc', 'def' ],
+ *   result : [  ],
+ *   numberOfAtomsPerElement : 3,
+ *   numberOfDuplicatesPerElement : 3
+ * };
+ * _.longDuplicate( options, { a : 7, b : 13 } );
+ * // returns [ 'abc', 'def', undefined, 'abc', 'def', undefined, 'abc', 'def', undefined ]
+ *
+ * @returns { Array } Returns an array with duplicate values of a certain number of times.
+ * @function longDuplicate
+ * @throws { Error } Will throw an Error if ( o ) is not an objectLike.
+ * @memberof wTools
+ */
+
+function longDuplicate( o )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if( arguments.length === 2 )
+  {
+    o = { src : arguments[ 0 ], numberOfDuplicatesPerElement : arguments[ 1 ] };
+  }
+  else
+  {
+    if( !_.objectIs( o ) )
+    o = { src : o };
+  }
+
+  _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
+  _.routineOptions( longDuplicate, o );
+  _.assert( _.longIs( o.src ), 'Уxpects o.src as longIs entity' );
+  _.assert( _.intIs( o.src.length / o.numberOfAtomsPerElement ) );
+
+  if( o.numberOfDuplicatesPerElement === 1 )
+  {
+    if( o.result )
+    {
+      _.assert( _.longIs( o.result ) || _.bufferTypedIs( o.result ), 'Expects o.result as longIs or TypedArray if numberOfDuplicatesPerElement equals 1' );
+
+      if( _.bufferTypedIs( o.result ) )
+      o.result = _.longShallowClone( o.result, o.src );
+      else if( _.longIs( o.result ) )
+      o.result.push.apply( o.result, o.src );
+    }
+    else
+    {
+      o.result = o.src;
+    }
+    return o.result;
+  }
+
+  let length = o.src.length * o.numberOfDuplicatesPerElement;
+  let numberOfElements = o.src.length / o.numberOfAtomsPerElement;
+
+  if( o.result )
+  _.assert( o.result.length >= length );
+
+  o.result = o.result || _.longMakeUndefined( o.src, length );
+
+  let rlength = o.result.length;
+
+  for( let c = 0, cl = numberOfElements ; c < cl ; c++ )
+  {
+
+    for( let d = 0, dl = o.numberOfDuplicatesPerElement ; d < dl ; d++ )
+    {
+
+      for( let e = 0, el = o.numberOfAtomsPerElement ; e < el ; e++ )
+      {
+        let indexDst = c*o.numberOfAtomsPerElement*o.numberOfDuplicatesPerElement + d*o.numberOfAtomsPerElement + e;
+        let indexSrc = c*o.numberOfAtomsPerElement+e;
+        o.result[ indexDst ] = o.src[ indexSrc ];
+      }
+
+    }
+
+  }
+
+  _.assert( o.result.length === rlength );
+
+  return o.result;
+}
+
+longDuplicate.defaults =
+{
+  src : null,
+  result : null,
+  numberOfAtomsPerElement : 1,
+  numberOfDuplicatesPerElement : 2,
+}
+
 //
 
 /*
@@ -1067,7 +1301,7 @@ function longFromCoercing( src )
  * @memberof wTools
  */
 
-function longRepresent( src, begin, end )
+function longRepresent( src, begin, end ) /* qqq2 : review. ask */
 {
 
   _.assert( arguments.length <= 3 );
@@ -1474,20 +1708,31 @@ function longButInplace( array, range, val )
 
 //
 
-function _argumentsOnlyLong( dst, src, range, ins )
+function _relength_pre( dst, src, range, ins )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
+  /* qqq : suspicious */
+
   if( dst === null )
-  dst = true;
+  {
+    dst = true;
+  }
   else if( dst === src )
-  dst = false;
+  {
+    dst = false;
+  }
   else if( arguments.length === 4 )
-  _.assert( _.longLike( dst ), '{-dst-} should be Long' );
+  {
+    _.assert( _.longLike( dst ), '{-dst-} should be Long' );
+  }
   else
   {
+    /* qqq2 : wrong. src could pass check rangeIs if length is 2 */
     if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
-    _.assert( _.longLike( dst ) );
+    {
+      _.assert( _.longLike( dst ) );
+    }
     else
     {
       ins = range;
@@ -1504,13 +1749,14 @@ function _argumentsOnlyLong( dst, src, range, ins )
 
 //
 
+/* qqq2 : rename arguments. ask */
 function longBut_( dst, array, range, val )
 {
 
-  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
 
   if( _.arrayLikeResizable( array ) && !_.bufferAnyIs( dst ) )
-  return _.arrayBut_.apply( this, arguments );
+  return _.arrayBut_.apply( this, arguments ); /* qqq2 : ? */
 
   if( range === undefined )
   return returnDst();
@@ -1524,7 +1770,7 @@ function longBut_( dst, array, range, val )
   if( range[ 1 ] < range[ 0 ] )
   range[ 1 ] = range[ 0 ];
 
-  if( range[ 0 ] === range[ 1 ] && val === undefined )
+  if( range[ 0 ] === range[ 1 ] && val === undefined ) /* qqq2 : ? */
   return returnDst();
 
   let d = range[ 1 ] - range[ 0 ];
@@ -1536,7 +1782,7 @@ function longBut_( dst, array, range, val )
   if( _.boolIs( dst ) )
   result = _.longMakeUndefined( array, l2 );
   else if( _.arrayLikeResizable( dst ) )
-  result = _.longEmpty( dst );
+  result = _.longEmpty( dst ); /* qqq2 : ? */
   else if( dst.length !== l2 )
   result = _.longMakeUndefined( dst, l2 );
   else
@@ -1556,12 +1802,14 @@ function longBut_( dst, array, range, val )
 
   /* */
 
-  function returnDst()
+  function returnDst() /* qqq2 : ? */
   {
     if( dst.length !== undefined )
     {
       if( _.arrayLikeResizable( dst ) )
-      return dst.splice( 0, dst.length, ... array );
+      {
+        return dst.splice( 0, dst.length, ... array );
+      }
       else
       {
         if( dst.length !== array.length )
@@ -1889,7 +2137,7 @@ function longShrinkInplace( array, range, val )
 function longShrink_( dst, array, range, val )
 {
 
-  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
 
   if( _.arrayLikeResizable( array ) )
   return _.arrayShrink_.apply( this, arguments );
@@ -2279,7 +2527,7 @@ function longGrowInplace( array, range, val )
 function longGrow_( dst, array, range, val )
 {
 
-  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
 
   if( _.arrayLikeResizable( array ) )
   return this.arrayGrow_.apply( this, arguments );
@@ -2591,7 +2839,7 @@ function longRelengthInplace( array, range, val )
 function longRelength_( dst, array, range, val )
 {
 
-  [ dst, array, range, val ] = _argumentsOnlyLong.apply( this, arguments );
+  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
 
   if( _.arrayLikeResizable( array ) )
   return _.arrayRelength_.apply( this, arguments );
@@ -3245,19 +3493,26 @@ let Extension =
   _longMakeOfLength,
   longMakeUndefined,
   longMakeZeroed,
+  longMakeFilling,
+  /* qqq : check routine longMakeFilling, and add perfect coverage */
+  /* qqq : implement routine arrayMakeFilling, and add perfect coverage */
+
+  longFill,
+  longDuplicate,
+
   _longClone,
   longShallowClone,
 
   longFrom, /* aaa2 : cover please | Dmytro : covered*/
   longFromCoercing, /* aaa2 : cover please | Dmytro : covered */
 
-  longRepresent,
+  longRepresent, /* qqq2 : review. ask */
   longSlice,
   longEmpty,
 
   longBut,
   longButInplace,
-  _argumentsOnlyLong,
+  _relength_pre,
   longBut_, /* !!! : use instead of longBut, longButInplace */
   longShrink,
   longShrink_, /* !!! : use instead of longShrink, longShrinkInplace */
