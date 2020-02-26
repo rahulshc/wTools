@@ -76,7 +76,6 @@ function entityMakeEmpty( src )
   }
   else if( _.hashMapIs( src ) )
   {
-    debugger;
     return new src.constructor();
   }
   else if( _.mapLike( src ) )
