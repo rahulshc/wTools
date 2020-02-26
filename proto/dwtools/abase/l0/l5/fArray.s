@@ -329,7 +329,7 @@ function arrayFromCoercing( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayIs( src ) && !_.unrollIs( src ) )
   return src;
 
   if( _.objectIs( src ) )
@@ -6021,7 +6021,7 @@ let Extension =
   arrayMakeUndefined,
 
   arrayFrom,
-  arrayFromCoercing, /* qqq : check coverage */
+  arrayFromCoercing, /* aaa : check coverage */
   arrayFromStr,
 
   arrayAs,

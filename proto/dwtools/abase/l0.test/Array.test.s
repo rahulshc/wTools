@@ -2095,28 +2095,139 @@ function arrayFrom( test )
 
 function arrayFromCoercing( test )
 {
-  test.case = 'an array';
-  var got = _.arrayFromCoercing( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
-  var expected = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
-  test.identical( got, expected );
-
-  test.case = 'an object';
-  var got = _.arrayFromCoercing( { a : 3, b : 7, c : 13 } );
-  var expected = [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ];
-  test.identical( got, expected );
-
-  test.case = 'a string';
-  var got = _.arrayFromCoercing( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
-  var expected = [ 3, 7, 13, 3.5, 5, 7.5, 13 ];
-  test.identical( got, expected );
-
-  test.case = 'arguments[...]';
-  var src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ] );
+  test.case = 'src - empty array';
+  var src = [];
   var got = _.arrayFromCoercing( src );
-  var expected = [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ];
-  test.identical( got, expected );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got === src );
 
-  /* */
+  test.case = 'src - filled array';
+  var src = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+  var got = _.arrayFromCoercing( src );
+  var exp = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+  test.identical( got, exp );
+  test.is( got === src );
+
+  test.case = 'src - empty argumentsArray';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.arrayFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - filled argumentsArray';
+  var src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+  var got = _.arrayFromCoercing( src );
+  var exp = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.arrayFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( !_.unrollIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'src - filled unroll';
+  var src = _.unrollMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+  var got = _.arrayFromCoercing( src );
+  var exp = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+  test.identical( got, exp );
+  test.is( !_.unrollIs( got ) );
+  test.is( got !== src );
+
+  test.case = 'src - empty BufferTyped - U8x';
+  var src = new U8x( [] );
+  var got = _.arrayFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - filled BufferTyped - F64x';
+  var src = new F64x( [ 3, 7, 13, 0, 2 ] );
+  var got = _.arrayFromCoercing( src );
+  var exp = [ 3, 7, 13, 0, 2 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - empty string';
+  var src = '';
+  var got = _.arrayFromCoercing( src );
+  var exp = [ undefined ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - string with not number literals';
+  var src = 'a bc def';
+  var got = _.arrayFromCoercing( src );
+  var exp = [ NaN, NaN, NaN ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - string with number literals';
+  var src = '0 1.2 345';
+  var got = _.arrayFromCoercing( src );
+  var exp = [ 0, 1.2, 345 ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - string with mixed literals';
+  var src = '0 1.2 34,5 a6';
+  var got = _.arrayFromCoercing( src );
+  var exp = [ 0, 1.2, 34, 5, NaN ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - empty map';
+  var src = {};
+  var got = _.arrayFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - filled map';
+  var src = { a : 3, b : 7, c : '13' };
+  var got = _.arrayFromCoercing( src );
+  var exp = [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', '13' ] ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - empty pure map';
+  var src = Object.create( null );
+  var got = _.arrayFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - filled pure map';
+  var src = Object.create( null );
+  src.a = 3;
+  src.b = '13';
+  var got = _.arrayFromCoercing( src );
+  var exp = [ [ 'a', 3 ], [ 'b', '13' ] ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - empty constructor instance';
+  var Constr = function(){ return this };
+  var src = new Constr();
+  var got = _.arrayFromCoercing( src );
+  var exp = [];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  test.case = 'src - filled pure map';
+  var Constr = function(){ this.x = 1; this.y = 'a'; return this };
+  var src = new Constr();
+  var got = _.arrayFromCoercing( src );
+  var exp = [ [ 'x', 1 ], [ 'y', 'a' ] ];
+  test.identical( got, exp );
+  test.is( got !== src );
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -2124,11 +2235,13 @@ function arrayFromCoercing( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.arrayFromCoercing() );
 
-  test.case = 'wrong type of argument';
-  test.shouldThrowErrorSync( () => _.arrayFromCoercing( 6 ) );
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayFromCoercing( [ 1, 2 ], 'extra' ) );
 
-  test.case = 'wrong type of argument';
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.arrayFromCoercing( 6 ) );
   test.shouldThrowErrorSync( () =>_.arrayFromCoercing( true ) );
+  test.shouldThrowErrorSync( () =>_.arrayFromCoercing( new Map() ) );
 
 }
 
