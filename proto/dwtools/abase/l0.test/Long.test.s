@@ -6675,6 +6675,14 @@ function longBut_( test )
     test.is( got !== dst );
     test.is( got !== src1 );
 
+    test.case = 'range - number, not src';
+    var src1 = new U8x( [ 1, 2 ] );
+    var got = _.longBut_( src1, dst, 0 );
+    var expected = new U8x( [ 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+    test.is( got !== src1 );
+
     test.case = 'range[ 0 ] > range[ 1 ], src';
     var src1 = new U8x( [ 1, 2 ] );
     var got = _.longBut_( src1, dst, [ 10, 0 ], src );

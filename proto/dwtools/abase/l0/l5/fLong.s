@@ -1729,6 +1729,7 @@ function _relength_pre( dst, src, range, ins )
   else
   {
     /* qqq2 : wrong. src could pass check rangeIs if length is 2 */
+    /* Dmytro : this check means: if length > 1 and second argument is not a range, then it is source container, and third argument is range */
     if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
     {
       _.assert( _.longLike( dst ) );
