@@ -19,6 +19,7 @@ function entityMakeConstructing( src, length )
 
   if( _.arrayIs( src ) )
   {
+    /* Dmytro : arrays and other longs return different result */
     return new Array( length !== undefined ? length : src.length );
   }
   else if( _.longIs( src ) )
@@ -56,88 +57,88 @@ function entityMakeConstructing( src, length )
 
 //
 
-function entityMakeEmpty( srcContainer )
+function entityMakeEmpty( src )
 {
 
   _.assert( arguments.length === 1 );
 
-  if( _.arrayIs( srcContainer ) )
+  if( _.arrayIs( src ) )
   {
     return new Array();
   }
-  else if( _.longIs( srcContainer ) )
+  else if( _.longIs( src ) )
   {
-    return this.longMakeEmpty( srcContainer );
+    return this.longMakeEmpty( src );
   }
-  else if( _.setIs( srcContainer ) )
+  else if( _.setIs( src ) )
   {
-    return new srcContainer.constructor();
+    return new src.constructor();
   }
-  else if( _.hashMapIs( srcContainer ) )
+  else if( _.hashMapIs( src ) )
   {
     debugger;
-    return new srcContainer.constructor();
+    return new src.constructor();
   }
-  else if( _.mapLike( srcContainer ) )
+  else if( _.mapLike( src ) )
   {
     return Object.create( null );
   }
-  else if( srcContainer === _.null )
+  else if( src === _.null )
   {
     return null;
   }
-  else if( srcContainer === _.undefined )
+  else if( src === _.undefined )
   {
     return undefined;
   }
-  else if( _.primitiveIs( srcContainer ) )
+  else if( _.primitiveIs( src ) )
   {
-    return srcContainer;
+    return src;
   }
-  else _.assert( 0, 'Not clear how to make a new object of ', _.strType( srcContainer ) );
+  else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
 
 }
 
 //
 
-function entityMakeUndefined( srcContainer, length )
+function entityMakeUndefined( src, length )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( _.arrayIs( srcContainer ) )
+  if( _.arrayIs( src ) )
   {
-    return new Array( length !== undefined ? length : srcContainer.length );
+    return new Array( length !== undefined ? length : src.length );
   }
-  else if( _.longIs( srcContainer ) )
+  else if( _.longIs( src ) )
   {
-    return this.longMake( srcContainer, length );
+    return this.longMake( src, length );
   }
-  else if( _.setIs( srcContainer ) )
-  {
-    debugger;
-    return new srcContainer.constructor();
-  }
-  else if( _.hashMapIs( srcContainer ) )
+  else if( _.setIs( src ) )
   {
     debugger;
-    return new srcContainer.constructor();
+    return new src.constructor();
   }
-  else if( _.mapLike( srcContainer ) )
+  else if( _.hashMapIs( src ) )
+  {
+    debugger;
+    return new src.constructor();
+  }
+  else if( _.mapLike( src ) )
   {
     return Object.create( null );
   }
-  else if( srcContainer === _.null )
+  else if( src === _.null )
   {
     return null;
   }
-  else if( srcContainer === _.undefined )
+  else if( src === _.undefined )
   {
     return undefined;
   }
-  else if( _.primitiveIs( srcContainer ) )
+  else if( _.primitiveIs( src ) )
   {
-    return srcContainer;
+    return src;
   }
   else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
 
