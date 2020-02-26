@@ -2046,6 +2046,201 @@ function unrollFromMaybe( test )
 
 //
 
+function unrollFromMaybeLongDescriptor( test )
+{
+  let times = 4;
+  for( let e in _.LongDescriptors )
+  {
+    let name = _.LongDescriptors[ e ].name;
+    let descriptor = _.withDefaultLong[ name ];
+
+    test.open( `descriptor - ${ name }` );
+    testRun( descriptor );
+    test.close( `descriptor - ${ name }` );
+
+    if( times < 1 )
+    break;
+    times--;
+  }
+
+  /* - */
+
+  function testRun( descriptor )
+  {
+    test.case = 'src - undefined';
+    var got = descriptor.unrollFromMaybe( undefined );
+    test.identical( got, undefined );
+
+    test.case = 'src - empty string';
+    var got = descriptor.unrollFromMaybe( '' );
+    test.identical( got, '' );
+    test.is( _.primitiveIs( got ) );
+
+    test.case = 'src - string';
+    var got = descriptor.unrollFromMaybe( 'str' );
+    test.identical( got, 'str' );
+    test.is( _.primitiveIs( got ) );
+
+    test.case = 'src - booleant - true';
+    var got = descriptor.unrollFromMaybe( true );
+    test.identical( got, true );
+    test.is( _.primitiveIs( got ) );
+
+    test.case = 'src - booleant - false';
+    var got = descriptor.unrollFromMaybe( false );
+    test.identical( got, false );
+    test.is( _.primitiveIs( got ) );
+
+    test.case = 'src - empty map';
+    var got = descriptor.unrollFromMaybe( {} );
+    test.identical( got, {} );
+    test.is( _.mapIs( got ) );
+
+    test.case = 'src - filled map';
+    var got = descriptor.unrollFromMaybe( { a : 0, b : 'str' } );
+    test.identical( got, { a : 0, b : 'str' } );
+    test.is( _.mapIs( got ) );
+
+    test.case = 'src - empty pure map';
+    var got = descriptor.unrollFromMaybe( Object.create( null ) );
+    test.identical( got, {} );
+    test.is( _.mapIs( got ) );
+
+    test.case = 'src - filled map';
+    var src = Object.create( null );
+    src.a = 0;
+    src.b = 'str'
+      var got = descriptor.unrollFromMaybe( src );
+    test.identical( got, { a : 0, b : 'str' } );
+    test.is( _.mapIs( got ) );
+
+    test.case = 'src - empty HashMap';
+    var src = new Map();
+    var got = descriptor.unrollFromMaybe( src );
+    test.identical( got, new Map() );
+    test.is( _.hashMapIs( got ) );
+
+    test.case = 'src - filled HashMap';
+    var src = new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] );
+    var got = descriptor.unrollFromMaybe( src );
+    test.identical( got, new Map( [ [ 1, 2 ], [ 'a', 'b' ] ] ) );
+    test.is( _.hashMapIs( got ) );
+
+    test.case = 'src - empty Set';
+    var src = new Set( [] );
+    var got = descriptor.unrollFromMaybe( src );
+    test.identical( got, new Set() );
+    test.is( _.setIs( got ) );
+
+    test.case = 'src - filled Set';
+    var src = new Set( [ 1, 'abc' ] );
+    var got = descriptor.unrollFromMaybe( src );
+    test.identical( got, new Set( [ 1, 'abc' ] ) );
+    test.is( _.setIs( got ) );
+
+    test.case = 'src - instance of constructor';
+    var Constr = function(){ this.x = 1; return this };
+    var src = new Constr();
+    var got = descriptor.unrollFromMaybe( src );
+    test.identical( got, new Constr() );
+    test.is( _.objectIs( got ) );
+
+    test.case = 'src - null';
+    var got = descriptor.unrollFromMaybe( null );
+    test.equivalent( got, [] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( [] !== got );
+
+    test.case = 'src - unroll';
+    var src = _.unrollMake( 0 );
+    var got = descriptor.unrollFromMaybe( src );
+    test.identical( got, [] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== [] );
+
+    test.case = 'src - filled unroll';
+    var src = _.unrollMake( [ 1, 'str', 3 ] );
+    var got = descriptor.unrollFromMaybe( src );
+    test.identical( got, [ 1, 'str', 3 ] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( got !== [ 1, 'str', 3 ] );
+
+    test.case = 'src - empty array';
+    var src = [];
+    var got = descriptor.unrollFromMaybe( src );
+    test.equivalent( got, src );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src - filled array';
+    var src = [ 1, 2, 'str' ];
+    var got = descriptor.unrollFromMaybe( src );
+    test.equivalent( got, src );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src - instance of Array constructor';
+    var got = descriptor.unrollFromMaybe( 3 );
+    var expected = new Array( 3 );
+    test.equivalent( got, expected );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( expected !== got );
+
+    test.case = 'src - empty F32x buffer';
+    var src = new F32x();
+    var got = descriptor.unrollFromMaybe( src );
+    test.equivalent( got, [] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src - filled U8x buffer';
+    var src = new U8x( [ 1, 2, 3 ] );
+    var got = descriptor.unrollFromMaybe( src );
+    test.equivalent( got, [ 1, 2, 3 ] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src - empty arguments array';
+    var src = _.argumentsArrayMake( [] );
+    var got = descriptor.unrollFromMaybe( src );
+    test.equivalent( got, [] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    test.case = 'src - filled arguments array';
+    var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+    var got = descriptor.unrollFromMaybe( src );
+    test.equivalent( got, [ 1, 2, 3 ] );
+    test.is( _.arrayIs( got ) );
+    test.is( _.unrollIs( got ) );
+    test.is( src !== got );
+
+    /* - */
+
+    if( !Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => descriptor.unrollFromMaybe() );
+
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => descriptor.unrollFromMaybe( 1, 3 ) );
+      test.shouldThrowErrorSync( () => descriptor.unrollFromMaybe( [], 3 ) );
+      test.shouldThrowErrorSync( () => descriptor.unrollFromMaybe( [], [] ) );
+    }
+  }
+}
+
+//
+
 function unrollNormalize( test )
 {
   test.case = 'dst is array';
@@ -3217,6 +3412,7 @@ var Self =
     unrollsFrom,
     unrollsFromLongDescriptor,
     unrollFromMaybe,
+    unrollFromMaybeLongDescriptor,
     unrollNormalize,
 
     unrollSelect,
