@@ -152,14 +152,13 @@ function entityMake( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  // if( _.arrayIs( src ) ) // Dmytro : maybe, it's lost. Other routines has condition for arrays.
-  // {
-  //   return new Array( src );
-  // }
-  if( _.longLike( src ) )
+  if( _.arrayIs( src ) && !_.unrollIs( src ) )
   {
-    return this.longMake( src, null );
-    /* Dmytro : null argument saves type of src as longShallowClone, if src is argumentsArray, then routine construct longDescriptor type*/
+    return Array.from( src );
+  }
+  else if( _.longLike( src ) )
+  {
+    return this.longMake( src );
     // return _.longShallowClone( src ); /* Dmytro : longShallowClone not use longDescriptor for constructing of long 
   }
   else if( _.hashMapLike( src ) || _.setLike( src ) )
