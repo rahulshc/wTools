@@ -1779,13 +1779,13 @@ function entityMakeLongDescriptor( test )
     test.case = 'empty unroll';
     var src = _.unrollMake( [] );
     var got = descriptor.entityMake( src );
-    test.identical( got, descriptor.longDescriptor.make( [] ) );
+    test.identical( got, [] );
      test.is( got !== src );
 
     test.case = 'not empty unroll';
     var src = _.unrollMake( [ null, undefined, 1, 2 ] );
     var got = descriptor.entityMake( src );
-    test.identical( got, descriptor.longDescriptor.make( [ null, undefined, 1, 2 ] ) );
+    test.identical( got, [ null, undefined, 1, 2 ] );
     test.is( got !== src );
 
     test.case = 'empty BufferTyped - U8x';

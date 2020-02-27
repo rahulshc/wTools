@@ -146,7 +146,7 @@ function entityMake( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.arrayIs( src ) && !_.unrollIs( src ) )
+  if( _.arrayIs( src ) )
   {
     return Array.from( src );
   }
