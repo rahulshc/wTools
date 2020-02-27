@@ -19,16 +19,10 @@ function entityMakeConstructing( src, length )
 
   if( _.arrayIs( src ) )
   {
-    /* 
-      Dmytro : arrays and other longs return different result
-      _.entityMakeConstructing( [ 0, 0, 0 ] ); // returns [ undefined, undefined, undefined ]
-      _.entityMakeConstructing( new U8x( [ 0, 0, 0 ] ) ); // returns [ 0, 0, 0 ]
-    */
     return new Array( length !== undefined ? length : src.length );
   }
   else if( _.longIs( src ) )
   {
-    debugger;
     return this.longMake( src, length );
     // if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
     // return new src.constructor( length !== undefined ? length : src.length );
