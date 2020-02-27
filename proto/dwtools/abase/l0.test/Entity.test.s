@@ -1580,32 +1580,32 @@ function entityMake( test )
   var src = _.unrollMake( [] );
   var got = _.entityMake( src );
   test.identical( got, [] );
-  test.is( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
   test.is( got !== src );
 
   test.case = 'not empty unroll';
   var src = _.unrollMake( [ null, undefined, 1, 2 ] );
   var got = _.entityMake( src );
   test.identical( got, [ null, undefined, 1, 2 ] );
-  test.is( _.unrollIs( got ) );
+  test.is( _.arrayIs( got ) );
   test.is( got !== src );
 
   test.case = 'empty BufferTyped - U8x';
   var src = new U8x();
   var got = _.entityMake( src );
-  test.identical( got, new U8x() );
+  test.identical( got, _.longDescriptor.make( [] ) );
   test.is( got !== src );
 
   test.case = 'not empty BufferTyped - I16x';
   var src = new I16x( 5 );
   var got = _.entityMake( src );
-  test.identical( got, new I16x( 5 ) );
+  test.identical( got, _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
   test.is( got !== src );
 
   test.case = 'not empty BufferTyped - F64x';
   var src = new F64x( 5 );
   var got = _.entityMake( src );
-  test.identical( got, new F64x( 5 ) );
+  test.identical( got, _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
   test.is( got !== src );
 
   test.case = 'empty map';
@@ -1779,33 +1779,31 @@ function entityMakeLongDescriptor( test )
     test.case = 'empty unroll';
     var src = _.unrollMake( [] );
     var got = descriptor.entityMake( src );
-    test.identical( got, [] );
-    test.is( _.unrollIs( got ) );
-    test.is( got !== src );
+    test.identical( got, descriptor.longDescriptor.make( [] ) );
+     test.is( got !== src );
 
     test.case = 'not empty unroll';
     var src = _.unrollMake( [ null, undefined, 1, 2 ] );
     var got = descriptor.entityMake( src );
-    test.identical( got, [ null, undefined, 1, 2 ] );
-    test.is( _.unrollIs( got ) );
+    test.identical( got, descriptor.longDescriptor.make( [ null, undefined, 1, 2 ] ) );
     test.is( got !== src );
 
     test.case = 'empty BufferTyped - U8x';
     var src = new U8x();
     var got = descriptor.entityMake( src );
-    test.identical( got, new U8x() );
+    test.identical( got, descriptor.longDescriptor.make( [] ) );
     test.is( got !== src );
 
     test.case = 'not empty BufferTyped - I16x';
     var src = new I16x( 5 );
     var got = descriptor.entityMake( src );
-    test.identical( got, new I16x( 5 ) );
+    test.identical( got, descriptor.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
     test.is( got !== src );
 
     test.case = 'not empty BufferTyped - F64x';
     var src = new F64x( 5 );
     var got = descriptor.entityMake( src );
-    test.identical( got, new F64x( 5 ) );
+    test.identical( got, descriptor.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
     test.is( got !== src );
 
     test.case = 'empty map';
