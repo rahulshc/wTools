@@ -1755,81 +1755,177 @@ function _relength_pre( dst, src, range, ins )
 
 //
 
-/* qqq2 : rename arguments. ask */
-function longBut_( dst, array, range, val )
+/* aaa2 : rename arguments. ask */
+
+function longBut_( dst, src, crange, ins )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
+  if( arguments.length < 4 && dst !== null && dst !== src ) 
+  {
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
+  }
 
-  if( _.arrayLikeResizable( array ) && !_.bufferAnyIs( dst ) )
-  return _.arrayBut_.apply( this, arguments ); /* qqq2 : ? */
+  if( crange === undefined )
+  return resultMake( dst, src )
+  else if( _.numberIs( crange ) )
+  crange = [ crange, crange + 1 ];
 
-  if( range === undefined )
-  return returnDst();
+  _.assert( _.longLike( src ) );
+  _.assert( _.rangeIs( crange ) );
+  _.assert( _.longLike( ins ) || ins === undefined || ins === null );
 
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
+  _.rangeClamp( crange, [ 0, src.length ] );
+  if( crange[ 1 ] < crange[ 0 ] )
+  crange[ 1 ] = crange[ 0 ];
 
-  _.assert( _.rangeIs( range ) );
-
-  _.rangeClamp( range, [ 0, array.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  if( range[ 0 ] === range[ 1 ] && val === undefined ) /* qqq2 : ? */
-  return returnDst();
-
-  let d = range[ 1 ] - range[ 0 ];
-  let len = val ? val.length : 0;
-  let d2 = d - len;
-  let l2 = array.length - d2;
+  let delta = crange[ 1 ] - crange[ 0 ];
+  let insLength = ins ? ins.length : 0;
+  let delta2 = delta - insLength;
+  let resultLength = src.length - delta2;
 
   let result;
-  if( _.boolIs( dst ) )
-  result = _.longMakeUndefined( array, l2 );
-  else if( _.arrayLikeResizable( dst ) )
-  result = _.longEmpty( dst ); /* qqq2 : ? */
-  else if( dst.length !== l2 )
-  result = _.longMakeUndefined( dst, l2 );
-  else
-  result = dst;
+  if( dst === null )
+  {
+    result = _.longMakeUndefined( src, resultLength );
+  }
+  else if( dst === src )
+  {
+    if( _.arrayLikeResizable( dst ) )
+    {
+      ins ? dst.splice( crange[ 0 ], delta, ... ins ) : dst.splice( crange[ 0 ], delta );
+      return dst; 
+    }
+    else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
+    {
+      result = _.longMakeUndefined( dst, resultLength );
+    }
+    else
+    {
+      result = dst;
+    }
+  }
+  else if( dst.length !== resultLength )
+  {
+    if( _.arrayLikeResizable( dst ) )
+    {
+      dst.length = resultLength;
+    }
+    else
+    {
+      dst = _.longMakeUndefined( dst, resultLength );
+    }
 
-  for( let i = 0 ; i < range[ 0 ] ; i++ )
-  result[ i ] = array[ i ];
+    result = dst;
+  }
 
-  for( let i = range[ 1 ] ; i < array.length ; i++ )
-  result[ i-d2 ] = array[ i ];
+  /* */
 
-  if( val )
-  for( let i = 0 ; i < val.length ; i++ )
-  result[ range[ 0 ]+i ] = val[ i ];
+  result = resultMake( result, src, ins );
 
   return result;
 
   /* */
 
-  function returnDst() /* qqq2 : ? */
+  function resultMake( dst, src, ins )
   {
-    if( dst.length !== undefined )
+    if( dst !== src )
     {
-      if( _.arrayLikeResizable( dst ) )
-      {
-        return dst.splice( 0, dst.length, ... array );
-      }
-      else
-      {
-        if( dst.length !== array.length )
-        dst = _.longMakeUndefined( dst, array.length );
-
-        for( let i = 0; i < dst.length; i++ )
-        dst[ i ] = array[ i ];
-
-        return dst;
-      }
+      for( let i = 0 ; i < crange[ 0 ] ; i++ )
+      dst[ i ] = src[ i ];
+      
+      for( let i = crange[ 1 ] ; i < src.length ; i++ )
+      dst[ i - delta2 ] = src[ i ];
     }
-    return dst === true ? _.longMake( array ) : array;
+
+    if( ins )
+    for( let i = 0 ; i < ins.length ; i++ )
+    dst[ crange[ 0 ] + i ] = ins[ i ];
+
+    return dst;
   }
 }
+
+//
+
+// /* qqq2 : rename arguments. ask */
+// function longBut_( dst, array, range, val )
+// {
+// 
+//   [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
+// 
+//   if( _.arrayLikeResizable( array ) && !_.bufferAnyIs( dst ) )
+//   return _.arrayBut_.apply( this, arguments ); /* qqq2 : ? */
+// 
+//   if( range === undefined )
+//   return returnDst();
+// 
+//   if( _.numberIs( range ) )
+//   range = [ range, range + 1 ];
+// 
+//   _.assert( _.rangeIs( range ) );
+// 
+//   _.rangeClamp( range, [ 0, array.length ] );
+//   if( range[ 1 ] < range[ 0 ] )
+//   range[ 1 ] = range[ 0 ];
+// 
+//   if( range[ 0 ] === range[ 1 ] && val === undefined ) /* qqq2 : ? */
+//   return returnDst();
+// 
+//   let d = range[ 1 ] - range[ 0 ];
+//   let len = val ? val.length : 0;
+//   let d2 = d - len;
+//   let l2 = array.length - d2;
+// 
+//   let result;
+//   if( _.boolIs( dst ) )
+//   result = _.longMakeUndefined( array, l2 );
+//   else if( _.arrayLikeResizable( dst ) )
+//   result = _.longEmpty( dst ); /* qqq2 : ? */
+//   else if( dst.length !== l2 )
+//   result = _.longMakeUndefined( dst, l2 );
+//   else
+//   result = dst;
+// 
+//   for( let i = 0 ; i < range[ 0 ] ; i++ )
+//   result[ i ] = array[ i ];
+// 
+//   for( let i = range[ 1 ] ; i < array.length ; i++ )
+//   result[ i-d2 ] = array[ i ];
+// 
+//   if( val )
+//   for( let i = 0 ; i < val.length ; i++ )
+//   result[ range[ 0 ]+i ] = val[ i ];
+// 
+//   return result;
+// 
+//   /* */
+// 
+//   function returnDst() /* qqq2 : ? */
+//   {
+//     if( dst.length !== undefined )
+//     {
+//       if( _.arrayLikeResizable( dst ) )
+//       {
+//         return dst.splice( 0, dst.length, ... array );
+//       }
+//       else
+//       {
+//         if( dst.length !== array.length )
+//         dst = _.longMakeUndefined( dst, array.length );
+// 
+//         for( let i = 0; i < dst.length; i++ )
+//         dst[ i ] = array[ i ];
+// 
+//         return dst;
+//       }
+//     }
+//     return dst === true ? _.longMake( array ) : array;
+//   }
+// }
 
 //
 

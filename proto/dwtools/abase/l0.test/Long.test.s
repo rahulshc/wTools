@@ -6462,9 +6462,9 @@ function longBut_( test )
     test.case = 'range = negative number, not src';
     var dst = make( [ 1, 2, 3, 4 ] );
     var got = _.longBut_( dst, dst, -1 );
-    var expected = make( [ 1, 2, 3, 4 ] );
+    var expected = [ 1, 2, 3, 4 ];
     test.identical( got, expected );
-    test.is( got === dst );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
     test.case = 'range = number, src';
     var dst = make( [ 1, 2, 3, 4 ] );
@@ -15020,7 +15020,7 @@ var Self =
     // array manipulator
 
     longSwapElements,
-    longPut,
+    // longPut, /* Dmytro : has not link in l8/gLong.s */
     // longFillTimes,
     longFill,
 
