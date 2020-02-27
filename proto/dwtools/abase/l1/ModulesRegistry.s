@@ -532,13 +532,13 @@ let wBitmask =
 let wMathScalar =
 {
   sourcePath : sourcePath( 'amath/l1/Scalar.s', 'wmathscalar' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.clamp },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.math && !!_global.wTools.math.clamp },
 }
 
 let wMathVector =
 {
   sourcePath : sourcePath( 'amath/l3_vector/Include.s', 'wmathvector' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.vector },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.avector && !!_global.wTools.avector.abs },
 }
 
 let wMathSpace =
