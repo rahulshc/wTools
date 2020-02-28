@@ -2642,7 +2642,7 @@ function mapAllProperties( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapAllProperties.call( { x : 1 }, {} );
+    _.mapAllProperties( { x : 1 }, { 'wrong' : null } );
   });
 
 }
