@@ -3147,7 +3147,7 @@ function mapOwnFields( test )
   /* enumerable : 0 */
 
   Object.defineProperty( a, 'y', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnFields.call( { enumerable : 0 }, a );
+  var got = _.mapOwnFields( a, { enumerable : 0 } );
   test.is( Object.keys( got ).length === 3 )
   test.identical( got.a, 1 );
   test.identical( got.y, 3 );
@@ -3184,7 +3184,7 @@ function mapOwnFields( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnFields.call( { x : 1 }, {} );
+    _.mapOwnFields( { x : 1 }, { 'wrong' : null } );
   });
 
 }
