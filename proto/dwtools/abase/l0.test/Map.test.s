@@ -1864,7 +1864,7 @@ function mapAllKeys( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapAllKeys.call( { own : 0 }, {} );
+    _.mapAllKeys.call( {}, { own : 0 }, { 'wrong' : null } );
   })
 
 }

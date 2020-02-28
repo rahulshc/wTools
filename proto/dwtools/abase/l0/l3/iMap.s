@@ -396,7 +396,7 @@ function mapKeys( srcMap, o )
 {
   let result;
   // let o = this === Self ? Object.create( null ) : this;
-/* qqq : review test routine for this and all routines which had been acception option in context. look in this file map* routines of such kind */
+  /* qqq : review test routine for this and all routines which had been acception option in context. look in this file map* routines of such kind */
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapKeys, o );
