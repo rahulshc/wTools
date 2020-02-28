@@ -16,7 +16,6 @@ var _ = _global_.wTools;
 
 function is( test )
 {
-
   test.case = 'an empty array';
   var got = _.pair.is( [] );
   var expected = false;
@@ -46,14 +45,12 @@ function is( test )
   var got = _.pair.is( 'abc' );
   var expected  = false;
   test.identical( got, expected );
-
 }
 
 //
 
 function instanceOf( test )
 {
-
   test.case = 'an empty array';
   var got = [] instanceof _.pair;
   var expected = false;
@@ -84,14 +81,12 @@ function instanceOf( test )
   var got = 'abc' instanceof _.pair;
   var expected  = false;
   test.identical( got, expected );
-
 }
 
 //
 
 function isOf( test )
 {
-
   test.case = 'an empty array';
   var got = _.pair.isOf( [] );
   var expected = false;
@@ -131,14 +126,12 @@ function isOf( test )
   var got = _.pair.isOf( 'abc', Array );
   var expected  = false;
   test.identical( got, expected );
-
 }
 
 //
 
 function make( test )
 {
-
   test.case = 'no arguments';
   var got = _.pair.make();
   var expected = [ undefined, undefined ];
@@ -156,7 +149,7 @@ function make( test )
   test.case = 'single argument - F32x';
   var src = new F32x([ 1, 3 ]);
   var got = _.pair.make( src );
-  var expected = new F32x([ 1, 3 ]);
+  var expected = _.longDescriptor.make([ 1, 3 ]);
   test.identical( got, expected );
   test.is( _.pair.is( got ) );
   test.is( src !== got );
@@ -212,7 +205,6 @@ function make( test )
     var src = new F32x([ 1 ]);
     var got = _.pair.make( src );
   });
-
 }
 
 //
