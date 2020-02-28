@@ -2967,7 +2967,7 @@ function mapAllRoutines( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapAllRoutines.call( { x : 1 }, {} );
+    _.mapAllRoutines( { x : 1 }, { 'wrong' : null } );
   });
 
 }
