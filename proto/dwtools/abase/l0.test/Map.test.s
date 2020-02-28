@@ -2092,7 +2092,7 @@ function mapAllVals( test )
   test.case = 'wrong option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapAllVals.call( { a : 1 }, {} );
+    _.mapAllVals( { a : 1 }, { 'wrong' : null } );
   });
 
 }
