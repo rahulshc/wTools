@@ -117,6 +117,13 @@
 </details>
 
 <details>
+  <summary><a href="./tutorial/ConventionDstNullNew.md">
+   Call conventions: dst - null
+  </a></summary>
+    Передача значення <code>null</code> в параметр <code>dst</code>. 
+</details>
+
+<details>
   <summary><a href="./tutorial/TimeMeasurement.md">
     Як заміряти час
   </a></summary>
