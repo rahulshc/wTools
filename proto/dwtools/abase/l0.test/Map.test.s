@@ -1653,7 +1653,7 @@ function mapKeys( test )
   /* own on */
 
   var o = { own : 1 };
-  var got = _.mapKeys.call( o, a );
+  var got = _.mapKeys.call( o, a, o );
   var expected = [ 'a' ];
   test.identical( got, expected );
 
@@ -1661,7 +1661,7 @@ function mapKeys( test )
 
   var o = { enumerable : 0, own : 0 };
   Object.defineProperty( b, 'k', { enumerable : 0 } );
-  var got = _.mapKeys.call( o, a );
+  var got = _.mapKeys.call( o, a, o );
   var expected = _.mapAllKeys( a );
   test.identical( got, expected );
 
@@ -1669,7 +1669,7 @@ function mapKeys( test )
 
   var o = { enumerable : 0, own : 1 };
   Object.defineProperty( a, 'k', { enumerable : 0 } );
-  var got = _.mapKeys.call( o, a );
+  var got = _.mapKeys.call( o, a, o );
   var expected = [ 'a', 'k' ]
   test.identical( got, expected );
 
@@ -1693,7 +1693,7 @@ function mapKeys( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapKeys.call( { x : 1 }, {} );
+    _.mapKeys( { x : 1 }, { 'wrong' : null } );
   });
 
 }
