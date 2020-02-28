@@ -3027,7 +3027,7 @@ function mapFields( test )
   /* enumerable : 0 */
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapFields.call( { enumerable : 0 }, a );
+  var got = _.mapFields( a, { enumerable : 0 } );
   test.is( Object.keys( got ).length === 4 )
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
@@ -3036,7 +3036,7 @@ function mapFields( test )
   /**/
 
   a.y = function(){}
-  var got = _.mapFields.call( { own : 1 }, a );
+  var got = _.mapFields( a, { own : 1 } );
   test.is( Object.keys( got ).length === 1 )
   test.identical( got.a, 1 );
 
@@ -3057,7 +3057,7 @@ function mapFields( test )
   Object.setPrototypeOf( a, b );
   Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
   Object.defineProperty( b, 'z', { enumerable : 0, value : 3 } );
-  var got = _.mapFields.call( { enumerable : 0 }, a );
+  var got = _.mapFields( a, { enumerable : 0 } );
   test.identical( Object.keys( got ).length, 4 );
   test.identical( got.a, 1 );
   test.identical( got.b, 2 );
@@ -3089,7 +3089,7 @@ function mapFields( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapFields.call( { x : 1 }, {} );
+    _.mapFields( { x : 1 }, { 'wrong' : null } );
   });
 
 }
