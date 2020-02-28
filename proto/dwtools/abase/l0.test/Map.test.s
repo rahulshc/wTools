@@ -2837,7 +2837,7 @@ function mapOwnRoutines( test )
   var a = {};
   var b = {};
   Object.defineProperty( a, 'k', { enumerable : 0, value : function(){} } );
-  var got = _.mapOwnRoutines.call( { enumerable : 0 }, a );
+  var got = _.mapOwnRoutines( a, { enumerable : 0 } );
   test.identical( got.k, a.k );
   test.is( _.routineIs( got.k ) );
 
@@ -2867,7 +2867,7 @@ function mapOwnRoutines( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnRoutines.call( { x : 1 }, {} );
+    _.mapOwnRoutines( { x : 1 }, { 'wrong' : null } );
   });
 
 }
