@@ -1454,6 +1454,7 @@ let Routines =
   // long mutator
 
   longSwapElements,
+  longPut,
 
   longSupplement, /* experimental */
   longExtendScreening, /* experimental */
