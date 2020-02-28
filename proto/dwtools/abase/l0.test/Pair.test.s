@@ -229,7 +229,7 @@ function construct( test )
   test.case = 'single argument - F32x';
   var src = new F32x([ 1, 3 ]);
   var got = new _.pair( src );
-  var expected = new F32x([ 1, 3 ]);
+  var expected = _.longDescriptor.make([ 1, 3 ]);
   test.identical( got, expected );
   test.is( _.pair.is( got ) );
   test.is( src !== got );
