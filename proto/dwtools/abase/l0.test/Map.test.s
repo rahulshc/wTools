@@ -2508,7 +2508,7 @@ function mapOwnProperties( test )
   /**/
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnProperties.call( { enumerable : 0 }, a );
+  var got = _.mapOwnProperties( a, { enumerable : 0 } );
   var expected = { a : 1, k : 3 };
   test.identical( got, expected );
 
@@ -2543,7 +2543,7 @@ function mapOwnProperties( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnProperties.call( { x : 1 }, {} );
+    _.mapOwnProperties( { x : 1 }, { 'wrong' : null } );
   });
 
 }
