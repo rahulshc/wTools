@@ -23036,7 +23036,8 @@ function eachSample( test )
   test.is( _.arrayIs( got ) );
   test.identical( src, _.argumentsArrayMake( [ [ 1, 2, null, 'str' ] ] ) );
 
-  /* qqq2 : strange? explain please | Dmytro : it was strange because BufferTyped was not used properly */
+  /* aaa2 : strange? explain please */
+  /* Dmytro : it was strange because BufferTyped was not used properly */
   // var src = _.arrayFrom( new F32x( [ 1, 2, 3 ] ) );
   // var got = _.eachSample( src );
   // var expected = [ [ 1, 2, 3 ] ];

@@ -23,7 +23,6 @@ function entityMakeConstructing( src, length )
   }
   else if( _.longIs( src ) )
   {
-    debugger;
     return this.longMake( src, length );
     // if( _.bufferTypedIs( src ) || _.bufferNodeIs( src ) )
     // return new src.constructor( length !== undefined ? length : src.length );
@@ -56,88 +55,86 @@ function entityMakeConstructing( src, length )
 
 //
 
-function entityMakeEmpty( srcContainer )
+function entityMakeEmpty( src )
 {
 
   _.assert( arguments.length === 1 );
 
-  if( _.arrayIs( srcContainer ) )
+  if( _.arrayIs( src ) )
   {
     return new Array();
   }
-  else if( _.longIs( srcContainer ) )
+  else if( _.longIs( src ) )
   {
-    return this.longMakeEmpty( srcContainer );
+    return this.longMakeEmpty( src );
   }
-  else if( _.setIs( srcContainer ) )
+  else if( _.setIs( src ) )
   {
-    return new srcContainer.constructor();
+    return new src.constructor();
   }
-  else if( _.hashMapIs( srcContainer ) )
+  else if( _.hashMapIs( src ) )
   {
-    debugger;
-    return new srcContainer.constructor();
+    return new src.constructor();
   }
-  else if( _.mapLike( srcContainer ) )
+  else if( _.mapLike( src ) )
   {
     return Object.create( null );
   }
-  else if( srcContainer === _.null )
+  else if( src === _.null )
   {
     return null;
   }
-  else if( srcContainer === _.undefined )
+  else if( src === _.undefined )
   {
     return undefined;
   }
-  else if( _.primitiveIs( srcContainer ) )
+  else if( _.primitiveIs( src ) )
   {
-    return srcContainer;
+    return src;
   }
-  else _.assert( 0, 'Not clear how to make a new object of ', _.strType( srcContainer ) );
+  else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
 
 }
 
 //
 
-function entityMakeUndefined( srcContainer, length )
+function entityMakeUndefined( src, length )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( _.arrayIs( srcContainer ) )
+  if( _.arrayIs( src ) )
   {
-    return new Array( length !== undefined ? length : srcContainer.length );
+    return new Array( length !== undefined ? length : src.length );
   }
-  else if( _.longIs( srcContainer ) )
+  else if( _.longIs( src ) )
   {
-    return this.longMake( srcContainer, length );
+    return this.longMakeUndefined( src, length );
+    // return this.longMake( src, length ); /* Dmytro : incorrect usage of routine */
   }
-  else if( _.setIs( srcContainer ) )
+  else if( _.setIs( src ) )
   {
-    debugger;
-    return new srcContainer.constructor();
+    return new src.constructor();
   }
-  else if( _.hashMapIs( srcContainer ) )
+  else if( _.hashMapIs( src ) )
   {
-    debugger;
-    return new srcContainer.constructor();
+    return new src.constructor();
   }
-  else if( _.mapLike( srcContainer ) )
+  else if( _.mapLike( src ) )
   {
     return Object.create( null );
   }
-  else if( srcContainer === _.null )
+  else if( src === _.null )
   {
     return null;
   }
-  else if( srcContainer === _.undefined )
+  else if( src === _.undefined )
   {
     return undefined;
   }
-  else if( _.primitiveIs( srcContainer ) )
+  else if( _.primitiveIs( src ) )
   {
-    return srcContainer;
+    return src;
   }
   else _.assert( 0, 'Not clear how to make a new object of ', _.strType( src ) );
 
@@ -149,9 +146,14 @@ function entityMake( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.longLike( src ) )
+  if( _.arrayIs( src ) )
   {
-    return _.longShallowClone( src );
+    return Array.from( src );
+  }
+  else if( _.longLike( src ) )
+  {
+    return this.longMake( src );
+    // return _.longShallowClone( src ); /* Dmytro : longShallowClone not use longDescriptor for constructing of long 
   }
   else if( _.hashMapLike( src ) || _.setLike( src ) )
   {
@@ -479,12 +481,13 @@ function entityAssignField( dstContainer, srcValue, name, onRecursive )
 let Extension =
 {
 
-  entityMakeConstructing, /* qqq2 : should take into account long descriptor */
-  entityMakeEmpty, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
+  entityMakeConstructing, /* aaa2 : should take into account long descriptor */ /* Dmytro : takes into account longDescriptor if src is long, but not an array. Covered */
+  entityMakeEmpty, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : takes into account longDescriptor, covered */
   makeEmpty : entityMakeEmpty,
-  entityMakeUndefined, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
+  entityMakeUndefined, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : takes into account longDescriptor, covered */
   makeUndefined : entityMakeUndefined,
-  entityMake, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
+  entityMake, /* qqq2 : should take into account long descriptor, make perfect coverage, please */ 
+  /* Dmytro : have some question for new feature. Routine takes into account longDescriptor, covered */
   make : entityMake,
 
   entityEntityEqualize,

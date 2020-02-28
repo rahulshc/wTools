@@ -107,25 +107,48 @@ function unrollMake( src )
  * @memberof wTools
  */
 
-/* qqq : review */
+/* aaa : review */
+/* Dmytro : reviewed. Added condition to handle single argument call. Also, improved handling length argument - null and undefined value */
 
 function unrollMakeUndefined( src, length )
 {
-  if( src === null )
-  src = [];
+  // if( src === null )
+  // src = [];
 
-  if( length === undefined )
-  length = src.length;
-  else if ( _.longIs( length ) )
+  if( _.longIs( length ) )
   length = length.length;
-  else if( _.numberIs( length ) )
+
+  if( length === undefined || length === null )
   {
+    if( src === null )
+    {
+      length = 0;
+    }
+    else if( _.longLike( src ) )
+    {
+      length = src.length;
+    }
+    else if( _.numberIs( src ) )
+    {
+      length = src;
+      src = null;
+    }
+    else _.assert( 0 );
   }
-  else _.assert( 0 );
+
+  if( !length )
+  length = 0;
+
+  // if( length === undefined || length === null )
+  // length = src.length;
+  // else if ( _.longIs( length ) )
+  // length = length.length;
+  // else if( !_.numberIs( length ) )
+  // _.assert( 0 );
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
-  _.assert( _.longIs( src ) );
+  _.assert( _.longIs( src ) || src === null );
 
   return _.unrollMake( length );
 }
@@ -242,17 +265,17 @@ function unrollsFrom( srcs )
 {
   _.assert( arguments.length >= 1 );
 
-  let dst = _.unrollMake( null );
+  let result = _.unrollMake( null );
 
-  for( let i = 0; i < arguments.length; i ++ )
+  for( let i = 0; i < arguments.length; i++ )
   {
     if( _.unrollIs( arguments[ i ] ) )
-    dst.push( arguments[ i ] );
+    result.push( arguments[ i ] );
     else
-    dst.push( _.unrollMake( arguments[ i ] ) );
+    result.push( _.unrollMake( arguments[ i ] ) );
   }
 
-  return dst;
+  return result;
 }
 
 /**
@@ -301,9 +324,15 @@ function unrollsFrom( srcs )
 function unrollFromMaybe( src )
 {
   _.assert( arguments.length === 1 );
-  if( _.unrollIs( src ) || _.strIs( src ) || _.boolIs( src ) || _.mapIs( src ) || src === undefined )
+  // if( _.unrollIs( src ) || _.strIs( src ) || _.boolIs( src ) || _.mapIs( src ) || src === undefined )
+  // return src;
+  // return _.unrollMake( src );
+  if( _.unrollIs( src ) ) /* previous implementation is wrong. Condition of routine can be combined by another order */
   return src;
+  else if( _.longIs( src ) || _.numberIs( src ) || src === null )
   return _.unrollMake( src );
+  else
+  return src;
 }
 
 //

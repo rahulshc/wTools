@@ -251,17 +251,30 @@ function arrayMakeUndefined( src, length )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( src ) || _.longLike( src ) || _.setLike( src ) || src === null );
-  _.assert( length === undefined || _.numberIs( length ) );
+  // _.assert( length === undefined || _.numberIs( length ) );
 
-  if( src && src.length && length === undefined )
-  length = src.length;
-  
-  /* Dmytro : missed for Set src */
-  if( src && src.size && length === undefined )
-  length = src.size;
+  if( _.longIs( length ) )
+  length = length.length;
 
-  if( _.numberIs( src ) && length === undefined )
-  length = src;
+  if( length === undefined || length === null )
+  {
+    if( src === null )
+    length = 0;
+    else if( _.numberIs( src ) )
+    length = src;
+    else if( _.setLike( src ) )
+    length = src.size;
+    else if( _.longIs( src ) )
+    length = src.length;
+    else
+    _.assert( 0 );
+  }
+
+  // if( src && src.length && length === undefined )
+  // length = src.length;
+  //
+  // if( _.numberIs( src ) && length === undefined )
+  // length = src;
 
   if( !length )
   length = 0;
@@ -316,7 +329,7 @@ function arrayFromCoercing( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( _.arrayIs( src ) )
+  if( _.arrayIs( src ) && !_.unrollIs( src ) )
   return src;
 
   if( _.objectIs( src ) )
@@ -6004,12 +6017,11 @@ let Extension =
 
   // array producer
 
-  arrayMake, /* aaa : test coverage is outdated */
-  /* Dmytro : coverage is updated */
+  arrayMake, /* aaa : test coverage is outdated */ /* Dmytro : coverage is updated */
   arrayMakeUndefined,
 
   arrayFrom,
-  arrayFromCoercing, /* qqq : check coverage */
+  arrayFromCoercing, /* aaa : check coverage */ /* Dmytro : coverage extended */ 
   arrayFromStr,
 
   arrayAs,
