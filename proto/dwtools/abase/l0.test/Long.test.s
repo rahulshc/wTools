@@ -11168,12 +11168,9 @@ function longAreRepeatedProbe( test )
   {
 
     test.case = 'empty';
-    debugger;
     var l1 = onMake( [] );
     var expected = { uniques : 0, condensed : 0, array : [] };
-    debugger;
     var got = _.longAreRepeatedProbe( l1, onEvaluate );
-    debugger;
     test.identical( got, expected );
 
     test.case = 'single';
