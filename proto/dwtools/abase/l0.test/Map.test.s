@@ -1905,13 +1905,15 @@ function mapVals( test )
 
   /**/
 
-  var got = _.mapVals.call( { own : 0, enumerable : 1 }, a );
+  var o = { own : 0, enumerable : 1 };
+  var got = _.mapVals.call( o, a, o );
   var expected = [ 1, 2 ]
   test.identical( got, expected );
 
   /**/
 
-  var got = _.mapVals.call( { own : 1, enumerable : 1 }, a );
+  var o = { own : 1, enumerable : 1 };
+  var got = _.mapVals.call( o, a, o );
   var expected = [ 1 ];
   test.identical( got, expected );
 
@@ -1959,7 +1961,7 @@ function mapVals( test )
   test.case = 'wrong option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapVals.call( { a : 1 }, {} );
+    _.mapVals( { a : 1 }, { 'wrong' : null } );
   });
 
 }
