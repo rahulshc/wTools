@@ -2152,21 +2152,23 @@ function mapPairs( test )
 
   /* using own */
 
-  var got = _.mapPairs.call( { own : 1 }, a );
+  var got = _.mapPairs( a, { own : 1 } );
   var expected = [ [ 'a', 1 ] ];
   test.identical( got, expected );
 
   /* using enumerable off, own on */
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapPairs.call( { enumerable : 0, own : 1 }, a );
+  var o = { enumerable : 0, own : 1 };
+  var got = _.mapPairs.call( o, a, o );
   var expected = [ [ 'a', 1 ], [ 'k', 3 ] ];
   test.identical( got, expected );
 
   /* using enumerable off, own off */
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapPairs.call( { enumerable : 0, own : 0 }, a );
+  var o = { enumerable : 0, own : 0 };
+  var got = _.mapPairs.call( o, a, o );
   test.is( got.length > 2 );
   test.identical( got[ 0 ], [ 'a', 1 ] );
   test.identical( got[ 1 ], [ 'k', 3 ] );
