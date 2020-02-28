@@ -1752,7 +1752,7 @@ function mapOwnKeys( test )
 
   Object.defineProperty( a, 'k', { enumerable : false } );
   var o = { enumerable : 0 };
-  var got = _.mapOwnKeys.call( o, a );
+  var got = _.mapOwnKeys.call( o, a, o );
   var expected = [ 'a', 'k' ]
   test.identical( got, expected );
 
@@ -1776,7 +1776,7 @@ function mapOwnKeys( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnKeys.call( { own : 0 }, {} );
+    _.mapOwnKeys.call( {}, { own : 0 }, { 'wrong' : null } );
   })
 
 }
