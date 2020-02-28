@@ -2699,7 +2699,8 @@ function mapRoutines( test )
   /* enumerable : 0 */
 
   Object.defineProperty( b, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapRoutines.call( { enumerable : 0 }, a );
+  var o = { enumerable : 0 };
+  var got = _.mapRoutines.call( o, a, o );
   test.is( Object.keys( got ).length > 1 )
   test.is( _.routineIs( got.c ) );
   test.is( _.routineIs( got.__defineGetter__ ) );
@@ -2709,7 +2710,7 @@ function mapRoutines( test )
   /**/
 
   a.y = function(){}
-  var got = _.mapRoutines.call( { own : 1 }, a );
+  var got = _.mapRoutines( a, { own : 1 } );
   test.is( Object.keys( got ).length === 1 )
   test.is( _.routineIs( got.y ) );
 
@@ -2729,7 +2730,8 @@ function mapRoutines( test )
   var b = { b : 2, c : function(){} };
   Object.setPrototypeOf( a, b );
   Object.defineProperty( b, 'k', { enumerable : 0, value : function(){} } );
-  var got = _.mapRoutines.call( { own : 0, enumerable : 0 }, a );
+  var o = { own : 0, enumerable : 0 };
+  var got = _.mapRoutines.call( o, a, o );
   test.is( Object.keys( got ).length > 3 )
   test.is( _.routineIs( got.y ) );
   test.is( _.routineIs( got.c ) );
@@ -2763,7 +2765,7 @@ function mapRoutines( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapRoutines.call( { x : 1 }, {} );
+    _.mapRoutines( { x : 1 }, { 'wrong' : null } );
   });
 
 }
