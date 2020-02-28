@@ -396,7 +396,8 @@ function mapKeys( srcMap, o )
 {
   let result;
   // let o = this === Self ? Object.create( null ) : this;
-  /* qqq : review test routine for this and all routines which had been acception option in context. look in this file map* routines of such kind */
+  /* aaa : review test routine for this and all routines which had been acception option in context. look in this file map* routines of such kind */
+  /* Dmytro : all routines does not use options in context, file l5/fMap.s has routine mapInvert that uses options in context */
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapKeys, o );
@@ -1653,7 +1654,7 @@ function mapKeyWithValue( srcMap, value )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !_.primitiveIs( srcMap ) );
 
-
+  // Dmytro : maybe it is missed code
 
 }
 
