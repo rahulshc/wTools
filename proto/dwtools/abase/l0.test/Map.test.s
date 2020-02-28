@@ -2255,7 +2255,7 @@ function mapOwnPairs( test )
   /* using enumerable off */
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapOwnPairs.call( { enumerable : 0 }, a );
+  var got = _.mapOwnPairs( a, { enumerable : 0 } );
   var expected = [ [ 'a', 1 ], [ 'k', 3 ] ];
   test.identical( got, expected );
 
