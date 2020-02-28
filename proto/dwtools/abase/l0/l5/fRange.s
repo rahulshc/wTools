@@ -177,13 +177,17 @@ function toStr( range )
 
 class Range 
 {
+  static [ Symbol.hasInstance ]( instance )
+  {
+    return is( instance );
+  }
 }
 
 let Handler =
 {
   construct( original, args )
   {
-    return Pair.make( ... args );
+    return Range.fromLeft( ... args );
   }
 };
 
@@ -196,6 +200,20 @@ Self.original = Range;
 
 let Extension =
 {
+
+  is : _.rangeIs,
+  isEmpty : _.rangeIsEmpty,
+  defined : _.rangeDefined,
+  isPopulated : _.rangeIsPopulated,
+
+  inInclusive : _.rangeInInclusive,
+  inExclusive : _.rangeInExclusive,
+  inInclusiveLeft : _.rangeInInclusiveLeft,
+  inInclusiveRight : _.rangeInInclusiveRight,
+  in : _.rangeInInclusiveLeft,
+
+  sureInRange : _.sureInRange,
+  assertInRange : _.assertInRange,
 
   fromLeft,
   fromRight,
