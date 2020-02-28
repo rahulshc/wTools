@@ -3278,7 +3278,7 @@ function mapAllFields( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapAllFields.call( { x : 1 }, {} );
+    _.mapAllFields( { x : 1 }, { 'wrong' : null } );
   });
 
 }
