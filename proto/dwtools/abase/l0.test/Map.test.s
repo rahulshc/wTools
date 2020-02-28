@@ -2401,21 +2401,23 @@ function mapProperties( test )
 
   /**/
 
-  var got = _.mapProperties.call( { own : 1, enumerable : 1 }, a );
+  var o = { own : 1, enumerable : 1 };
+  var got = _.mapProperties.call( o, a, o );
   var expected = { a : 1 };
   test.identical( got, expected );
 
   /**/
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapProperties.call( { enumerable : 0, own : 1 }, a );
+  var o = { enumerable : 0, own : 1 };
+  var got = _.mapProperties.call( o, a, o );
   var expected = { a : 1, k : 3 };
   test.identical( got, expected );
 
   /**/
 
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
-  var got = _.mapProperties.call( { enumerable : 0, own : 0 }, a );
+  var got = _.mapProperties( a, { enumerable : 0, own : 0 } );
   test.is( Object.keys( got ).length > 3 );
   test.is( got.a === 1 );
   test.is( got.b === 2 );
@@ -2423,7 +2425,7 @@ function mapProperties( test )
 
   /**/
 
-  var got = _.mapProperties.call( { enumerable : 0, own : 0 }, new Date() );
+  var got = _.mapProperties( new Date(), { enumerable : 0, own : 0 } );
   test.is( Object.keys( got ).length );
   test.is( got.constructor.name === 'Date' );
   test.is( _.routineIs( got.getDate ) );
@@ -2455,7 +2457,7 @@ function mapProperties( test )
   test.case = 'unknown option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapProperties.call( { x : 1 }, {} );
+    _.mapProperties.call( {}, { x : 1 }, { 'wrong' : null } );
   });
 
 }
