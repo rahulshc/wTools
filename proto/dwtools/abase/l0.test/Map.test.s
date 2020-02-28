@@ -2004,9 +2004,10 @@ function mapOwnVals( test )
 
   /* enumerable off */
 
+  test.case = 'enumerable - 0';
   Object.defineProperty( a, 'k', { enumerable : 0, value : 3 } );
   Object.defineProperty( b, 'y', { enumerable : 0, value : 4 } );
-  var got = _.mapOwnVals.call({ enumerable : 0 }, a );
+  var got = _.mapOwnVals( a, { enumerable : 0 } );
   var expected = [ 1, 3 ];
   test.identical( got, expected );
 
@@ -2030,7 +2031,7 @@ function mapOwnVals( test )
   test.case = 'wrong option';
   test.shouldThrowErrorSync( function()
   {
-    _.mapOwnVals.call( { a : 1 }, {} );
+    _.mapOwnVals( { a : 1 }, { 'wrong' : null } );
   });
 
 }
