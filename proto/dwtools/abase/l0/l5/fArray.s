@@ -1411,7 +1411,7 @@ function arrayGrow_( dst, src, range, ins )
 /**
  * Routine arrayRelength() changes length of provided array {-src-} by copying it elements to newly created array object
  * using range (range) positions of the original array and value to fill free space after copy (val).
- * Routine can grows and reduses size of Long. The original {-src-} will not be modified.
+ * Routine can grows and reduces size of Long. The original {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
