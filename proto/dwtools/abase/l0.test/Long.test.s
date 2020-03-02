@@ -5254,9 +5254,9 @@ function longFromCoercingArgumentsArrayLongDescriptor( test )
   test.shouldThrowErrorSync( () => descriptor.longFromCoercing( new Set() ) );
 }
 
+/*
 //
 
-/*
 qqq : improve, add exception checking ceases | Dmytro : improved, added exception checking cases
 */
 
