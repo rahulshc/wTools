@@ -138,7 +138,8 @@ _.assert( _.routineIs( _.unrollMake ) );
 
 _longDeclare({ name : 'Array', type : Array, make : _.arrayMake, from : _.arrayMake, is : _.arrayIs, isTyped : false });
 _longDeclare({ name : 'Unroll', type : Array, make : _.unrollMake, from : _.unrollFrom, is : _.unrollIs, isTyped : false });
-_longDeclare({ name : 'ArgumentsArray', secondName : 'Arguments', type : _argumentsArrayMake().constructor, make : _.argumentsArrayFrom, from : _.argumentsArrayFrom, is : _.argumentsArrayIs, isTyped : false });
+_longDeclare({ name : 'ArgumentsArray', secondName : 'Arguments', type : _argumentsArrayMake().constructor, make : _.argumentsArrayMake, from : _.argumentsArrayFrom, is : _.argumentsArrayIs, isTyped : false });
+// _longDeclare({ name : 'ArgumentsArray', secondName : 'Arguments', type : _argumentsArrayMake().constructor, make : _.argumentsArrayFrom, from : _.argumentsArrayFrom, is : _.argumentsArrayIs, isTyped : false }); /* Dmytro : wrong function make */
 
 _longDeclare({ name : 'U32x', secondName : 'Uint32', type : _global.U32x, isTyped : true });
 _longDeclare({ name : 'U16x', secondName : 'Uint16', type : _global.U16x, isTyped : true });
