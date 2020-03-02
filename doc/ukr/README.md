@@ -77,6 +77,13 @@
     <code>Range</code> - тип даних - двоелементний вектор, що задає початок і кінець відліку елементів в контейнері.
 </details>
 
+<details>
+  <summary><a href="./concept/LongDescriptor.md">
+    Дескриптор типу <code>longDescriptor</code> і дефолтний <code>long</code> тип
+  </a></summary>
+    <code>longDescriptor</code> - дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
+</details>
+
 ## Туторіали
 
 <!--
