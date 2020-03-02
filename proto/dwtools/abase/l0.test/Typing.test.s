@@ -4414,7 +4414,8 @@ function definitionIs( test )
   var got = _.definitionIs( src );
   test.identical( got, false );
 
-  /* qqq2 : ask | Dmytro : instances of another modules tested outside of module wTools */
+  /* aaa2 : ask */
+  /* Dmytro : instances of another modules tested outside of module wTools */
 
   // instance of _.Definition tested in module wBlueprint
 }
