@@ -19,6 +19,19 @@ function make_functor( name, cls )
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( cls ) );
   _.assert( _.strDefined( cls.name ) );
+  // let r = /* Dmytro : maybe, it's better Implementation, it takes into account quantity of arguments and its type */
+  // {
+  //   [ name ] : function( src )
+  //   {
+  //     _.assert( arguments.length === 0 || arguments.length === 1 );
+  //
+  //     if( src === undefined || src === null )
+  //     src = 0;
+  //
+  //     _.assert( _.numberIs( src ) || _.longIs( src ) );
+  //     return new cls( src );
+  //   }
+  // }
   let r =
   {
     [ name ] : function()
