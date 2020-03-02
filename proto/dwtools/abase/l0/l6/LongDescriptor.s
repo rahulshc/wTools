@@ -62,8 +62,8 @@ function is_functor( name, cls )
   {
     [ name ] : function( src )
     {
-      debugger; yyy
-      /* qqq : cover please */
+      /* aaa : cover please */
+      /* Dmytro : covered */
       _.assert( arguments.length === 1 );
       return src instanceof cls;
     }
@@ -101,7 +101,8 @@ function _longDeclare( o )
 
   if( !o.is )
   o.is = is_functor( o.name, o.type );
-  /* qqq : cover please _.longDescriptor.is */
+  /* aaa : cover please _.longDescriptor.is */
+  /* Dmytro : covered */
 
   Object.freeze( o );
   LongDescriptors[ o.name ] = o;
