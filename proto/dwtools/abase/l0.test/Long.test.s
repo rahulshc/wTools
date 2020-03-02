@@ -16,6 +16,24 @@ var _ = _global_.wTools;
 
 function argumentsArrayMake( test )
 {
+  test.case = 'without arguments';
+  var got = _.argumentsArrayMake();
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+
+  test.case = 'null';
+  var got = _.argumentsArrayMake( null );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+
+  test.case = 'undefined';
+  var got = _.argumentsArrayMake( undefined );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+
   test.case = 'empty';
   var src = [];
   var got = _.argumentsArrayMake( src );
@@ -62,38 +80,18 @@ function argumentsArrayMake( test )
   test.is( _.argumentsArrayIs( got ) );
   test.is( src !== got );
 
+  /* - */
+
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayMake();
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.argumentsArrayMake( 1, 3 ) );
+  test.shouldThrowErrorSync( () => _.argumentsArrayMake( [], 3 ) );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayMake( 1, 3 );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayMake( [], 3 );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayMake( [], [] );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayMake( {} );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayMake( '1' );
-  });
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.argumentsArrayMake( {} ) );
+  test.shouldThrowErrorSync( () => _.argumentsArrayMake( 'wrong' ) );
 }
 
 //
