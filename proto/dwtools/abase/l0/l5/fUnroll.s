@@ -45,7 +45,7 @@ let Self = _global_.wTools;
 function unrollMake( src )
 {
   let result = _.arrayMake( src );
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 0 || arguments.length === 1 );
   _.assert( _.arrayIs( result ) );
   result[ _.unroll ] = true;
   if( !_.unrollIs( src ) )
