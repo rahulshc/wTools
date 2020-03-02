@@ -9,7 +9,8 @@ let _ = _global_.wTools;
 // range
 // --
 
-/* qqq : use _.pair as example to make the same thing */
+/* aaa : use _.pair as example to make the same thing */
+/* Dmytro : new namespace and class is created. As _.pair, this module has Proxy. Routines from l3/iRange.s connected too */
 
 
 function fromLeft( range )
@@ -143,7 +144,7 @@ function firstGet( range, options )
 function lastGet( range, options )
 {
 
-  var options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
+  var options = options || Object.create( null ); 
   if( options.increment === undefined )
   options.increment = 1;
 

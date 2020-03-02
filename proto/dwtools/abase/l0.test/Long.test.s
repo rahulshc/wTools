@@ -290,7 +290,8 @@ function longIs( test )
 
 /* aaa : implement */
 /* Dmytro : implemented */
-/* qqq : no! */
+/* aaa : no! */
+/* Dmytro : improved test routines, split on separate types, tested with default longDescriptor and with no default */
 
 function longMakeWithArrayAndUnroll( test )
 {
@@ -433,7 +434,8 @@ function longMakeWithArrayAndUnroll( test )
     test.is( _.bufferTypedIs(  got ) );
     test.is( got !== ins );
 
-    /* qqq : make sure each _.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* aaa : make sure each _.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = long constructor, ins = null';
     var src = long( 5 );
     var got = _.longMake( src.constructor, null );
@@ -728,7 +730,8 @@ function longMakeWithBufferTyped( test )
     test.is( _.bufferTypedIs(  got ) );
     test.is( got !== ins );
 
-    /* qqq : make sure each _.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* aaa : make sure each _.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = long constructor, ins = null';
     var src = new long( 5 );
     var got = _.longMake( src.constructor, null );
@@ -899,7 +902,8 @@ function longMakeWithArrayAndUnrollLongDescriptor( test )
     test.is( _.bufferTypedIs(  got ) );
     test.is( got !== ins );
 
-    /* qqq : make sure each descriptor.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* aaa : make sure each descriptor.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = long constructor, ins = null';
     var src = long( 5 );
     var got = descriptor.longMake( src.constructor, null );
@@ -1218,7 +1222,8 @@ function longMakeWithBufferTypedLongDescriptor( test )
     test.is( _.bufferTypedIs(  got ) );
     test.is( got !== ins );
 
-    /* qqq : make sure each descriptor.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* aaa : make sure each descriptor.longMake, _.longForm, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = long constructor, ins = null';
     var src = new long( 5 );
     var got = descriptor.longMake( src.constructor, null );
@@ -2541,11 +2546,10 @@ _longMakeOfLengthWithBufferTypedLongDescriptor.timeOut = 20000;
 
 //
 
-/*
-aaa : implement
-Dmytro : implemented
-qqq : no!
-*/
+/* aaa : implement */
+/* Dmytro : implemented */
+/* aaa : no! */
+/* Dmytro : improved test routines, split on separate types, tested with default longDescriptor and with no default */
 
 function longMakeUndefinedWithArrayAndUnroll( test )
 {
@@ -2577,9 +2581,10 @@ function longMakeUndefinedWithArrayAndUnroll( test )
 
   function testRun( long )
   {
-    /* qqq : thouse routines are too long code to be such routine. use function nameOfRoutine(){} an move it out of run */
-    /* qqq : bad names of routines. not clear what it does */
-    /* qqq : bad names of routines. don't use nouns for routines */
+    /* aaa : thouse routines are too long code to be such routine. use function nameOfRoutine(){} an move it out of run */
+    /* aaa : bad names of routines. not clear what it does */
+    /* aaa : bad names of routines. don't use nouns for routines */
+    /* Dmytro : improved test routines, split on separate types, tested with default longDescriptor and with no default, removed unnacessary function and variables */
 
     test.case = 'src = null, not ins';
     var got = _.longMakeUndefined( null );
@@ -2630,7 +2635,8 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     /* Dmytro : line below not use strange subroutine */
     test.is( src.constructor.name === got.constructor.name ); 
 
-    /* qqq : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* aaa : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = empty long, ins = null';
     var src = long( [] );
     var got = _.longMakeUndefined( src, null );
@@ -2639,7 +2645,8 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     test.is( got !== src );
     test.is( src.constructor.name === got.constructor.name );
 
-    /* qqq : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* aaa : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = long, ins = number';
     var src = long( 10 );
     var got = _.longMakeUndefined( src.constructor, 4 );
@@ -2663,7 +2670,8 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     test.is( got !== src );
     test.is( src.constructor.name === got.constructor.name );
 
-    /* qqq : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* aaa : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = long with an element, ins = empty array';
     var src = new F64x( 10 );
     var got = _.longMakeUndefined( src, [] );
@@ -2671,7 +2679,8 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     test.identical( got, expected );
     test.is( got !== src );
 
-    /* qqq : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* aaa : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
+    /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = long, ins = number, ins > src.length';
     var src = long( [ 1, 2, 3 ] );
     var got = _.longMakeUndefined( src, 4 );
@@ -2705,8 +2714,9 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     test.identical( got, expected );
     test.is( _.arrayIs( got ) );
 
-    /* qqq : there are no such arguments */
-    /* qqq : make sure all similar test routines has good naming of variables */
+    /* aaa : there are no such arguments */
+    /* aaa : make sure all similar test routines has good naming of variables */
+    /* Dmytro : each test routine that accepts two arguments has this test case */
     test.case = 'src = BufferTyped constructor, ins = number';
     var got = _.longMakeUndefined( U32x, 5 );
     var expected = new U32x( 5 );
@@ -3530,7 +3540,8 @@ longMakeUndefinedWithBufferTypedLongDescriptor.timeOut = 20000;
 
 /* aaa : implement Zeroed routine and test routine */
 /* Dmytro : routine longMakeZeroed and its test routine is implemented */
-/* qqq : no! */
+/* aaa : no! */
+/* Dmytro : improved test routines, split on separate types, tested with default longDescriptor and with no default */
 
 //
 
@@ -11991,7 +12002,7 @@ function longPut( test )
 //
 
 /*
- qqq : Dmytro : not used
+ aaa : Dmytro : not used
 */
 // function longFillTimes( test )
 // {

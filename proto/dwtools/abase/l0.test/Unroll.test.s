@@ -2488,7 +2488,7 @@ function unrollSelect( test )
 
 //
 
-/* qqq
+/* aaa
 unrollAppend, unrollPrepend should have test groups :
 - dst is null / unroll / array
 - one argument / two arguments / three arguments
@@ -2496,7 +2496,7 @@ unrollAppend, unrollPrepend should have test groups :
 - non-first argument have array / unroll / complex unroll( unroll in unroll in unroll / F32x / ArgumentsArray
 
 Dmytro: all tests is added
-qqq: In unrollPrepend and unrollAppend test cases groups by number of arguments and it includes other test cases - array, unroll, complex unroll.
+aaa: In unrollPrepend and unrollAppend test cases groups by number of arguments and it includes other test cases - array, unroll, complex unroll.
 In previus routines improve unrollMake and unrollFrom tests.
 Notice that unrollIs, unrollIsPopulated have not asserts.
 */
