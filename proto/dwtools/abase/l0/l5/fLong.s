@@ -28,7 +28,9 @@ but                 -                +         negative
 
 function argumentsArrayMake( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  if( src === undefined || src === null )
+  src = 0;
   _.assert( _.numberIs( src ) || _.longLike( src ) );
   if( _.numberIs( src ) )
   return _argumentsArrayMake.apply( _, Array( src ) );
