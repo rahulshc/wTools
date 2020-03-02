@@ -11,6 +11,10 @@ let Self = _.introspector = _.introspector || Object.create( null );
 // --
 
 let _diagnosticCodeExecuting = 0;
+// let _codeCache = Object.create( null );
+// _codeCache.map = Object.create( null );
+// _codeCache.array = [];
+// _codeCache.limit = 3;
 function code( o )
 {
 
@@ -55,12 +59,7 @@ function code( o )
 
         let filePath = codeProvider.path.normalizeTolerant( o.location.filePath );
         if( codeProvider.path.isAbsolute( filePath ) )
-        o.sourceCode = codeProvider.fileRead
-        ({
-          filePath : filePath,
-          sync : 1,
-          throwing : 0,
-        })
+        o.sourceCode = read( codeProvider, filePath );
 
       }
       catch( err )
@@ -112,6 +111,31 @@ function code( o )
     _diagnosticCodeExecuting -= 1;
     return result;
   }
+
+  /* */
+
+  function read( codeProvider, filePath )
+  {
+    // if( _codeCache.map[ filePath ] )
+    // return _codeCache.map[ filePath ];
+    let result = codeProvider.fileRead
+    ({
+      filePath : filePath,
+      sync : 1,
+      throwing : 0,
+    });
+    // _codeCache.map[ filePath ] = result;
+    // _.arrayRemoveOnce( _codeCache.array, filePath );
+    // _codeCache.array.push( filePath );
+    // if( _codeCache.array.length > _codeCache.limit )
+    // {
+    //   delete _codeCache.map[ _codeCache.array[ 0 ] ];
+    //   _codeCache.array.splice( 0, 1 );
+    // }
+    return result;
+  }
+
+  /* */
 
 }
 

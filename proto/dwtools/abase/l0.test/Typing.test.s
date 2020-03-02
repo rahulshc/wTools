@@ -956,7 +956,7 @@ function matrixIs( test )
   var got = _.matrixIs( src );
   test.identical( got, false );
 
-  // instance of _.Matrix tested in wMathSpace
+  // instance of _.Matrix tested in wMathMatrix
 }
 
 //
@@ -1080,7 +1080,7 @@ function constructorIsMatrix( test )
   var got = _.constructorIsMatrix( src );
   test.identical( got, false );
 
-  // instance of _.Matrix tested in wMathSpace
+  // instance of _.Matrix tested in wMathMatrix
 }
 
 //
