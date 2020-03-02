@@ -125,9 +125,16 @@
 
 <details>
   <summary><a href="./tutorial/ConventionDstNullNew.md">
-   Call conventions: dst - null
+    Call conventions: dst - null
   </a></summary>
     Передача значення <code>null</code> в параметр <code>dst</code>. 
+</details>
+
+<details>
+  <summary><a href="./tutorial/ConventionNamingMakeAndFrom.md">
+    Суфікси <code>Make</code> i <code>From</code> в найменуванні рутин
+  </a></summary>
+    Для позначення рутин-конструкторів використовуються рутини в назві яких є суфікси <code>Make</code> i <code>From</code>. 
 </details>
 
 <details>
