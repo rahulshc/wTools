@@ -131,6 +131,11 @@ function unrollIsPopulated( test )
 
 function unrollMake( test )
 {
+  test.case = 'without arguments';
+  var got = _.unrollMake();
+  test.equivalent( got, [] );
+  test.is( _.unrollIs( got ) );
+
   test.case = 'src - null';
   var got = _.unrollMake( null );
   test.equivalent( got, [] );
@@ -236,9 +241,6 @@ function unrollMake( test )
   if( !Config.debug )
   return;
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.unrollMake() );
-
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.unrollMake( 1, 'extra' ) );
 
@@ -270,6 +272,11 @@ function unrollMakeLongDescriptor( test )
 
   function testRun( descriptor )
   {
+    test.case = 'without arguments';
+    var got = descriptor.unrollMake();
+    test.equivalent( got, [] );
+    test.is( _.unrollIs( got ) );
+
     test.case = 'src - null';
     var got = descriptor.unrollMake( null );
     test.equivalent( got, [] );
@@ -374,9 +381,6 @@ function unrollMakeLongDescriptor( test )
 
     if( Config.debug )
     {
-      test.case = 'without arguments';
-      test.shouldThrowErrorSync( () => descriptor.unrollMake() );
-
       test.case = 'extra arguments';
       test.shouldThrowErrorSync( () => descriptor.unrollMake( 1, 'extra' ) );
 
