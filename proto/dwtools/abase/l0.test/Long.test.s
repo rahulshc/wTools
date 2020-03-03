@@ -5006,6 +5006,108 @@ function longMakeFillingWithArgumentsArrayLongDescriptor( test )
 
 //
 
+function longMakeFillingWithBufferTypedLongDescriptor( test )
+{
+  var list =
+  [
+    I8x,
+    U16x,
+    U16x,
+    F32x,
+  ];
+
+  /* tests */
+
+  let times = 4;
+  for( let e in _.LongDescriptors )
+  {
+    let name = _.LongDescriptors[ e ].name;
+    let descriptor = _.withDefaultLong[ name ];
+
+    for( let i = 0; i < list.length; i++ )
+    {
+      test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
+      testRun( descriptor, list[ i ] );
+      test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
+    }
+
+    if( times < 1 )
+    break;
+    times--;
+  } 
+
+  /* test subroutine */
+
+  function testRun( descriptor, makeLong )
+  {
+    test.case = 'value - null, length - number';
+    var got = descriptor.longMakeFilling( null, 5 );
+    var expected = descriptor.longDescriptor.make( [ null, null, null, null, null ] );
+    test.identical( got, expected );
+
+    test.case = `value - zero, length - ${ makeLong.name }`;
+    var got = descriptor.longMakeFilling( 0, new makeLong( 5 ) );
+    var expected = new makeLong( [ 0, 0, 0, 0, 0 ] );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'type - null, value - string, length - number';
+    var got = descriptor.longMakeFilling( null, 'str', 5 );
+    var expected = descriptor.longDescriptor.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - string, length - BufferTyped';
+    var got = descriptor.longMakeFilling( null, 'str', new U8x( 5 ) );
+    var expected = descriptor.longDescriptor.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } constructor, value - array, length - number`;
+    var got = descriptor.longMakeFilling( new makeLong, [ 1 ], 3 );
+    var expected = new makeLong( [ [ 1 ], [ 1 ], [ 1 ] ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } constructor, value - array, length - empty ${ makeLong.name }`;
+    var got = descriptor.longMakeFilling( new makeLong, [ 1 ], new makeLong( 0 ) );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } instance, value - map, length - number`;
+    var got = descriptor.longMakeFilling( new makeLong( 0 ), { a : 1 }, 3 );
+    var expected = new makeLong( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } instance, value - map, length - ${ makeLong.name }`;
+    var got = descriptor.longMakeFilling( new makeLong( 0 ), { a : 1 }, new makeLong( 3 ) );
+    var expected = new makeLong( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+    test.identical( got, expected );
+
+    test.case = `type - Array, value - number, length - number`;
+    var got = descriptor.longMakeFilling( Array, 10, 3 );
+    var expected = new Array( 10, 10, 10 );
+    test.identical( got, expected );
+
+    test.case = `type - Array, value - number, length - ${ makeLong.name }`;
+    var got = descriptor.longMakeFilling( Array, 10, new makeLong( 3 ) );
+    var expected = new Array( 10, 10, 10 );
+    test.identical( got, expected );
+
+    test.case = `type - Array instance, value - number, length - number`;
+    var got = descriptor.longMakeFilling( new Array( 10 ), 10, 3 );
+    var expected = new Array( 10, 10, 10 );
+    test.identical( got, expected );
+
+    test.case = `type - Array instance, value - number, length - ${ makeLong.name }`;
+    var got = descriptor.longMakeFilling( new Array( 10 ), 10, new makeLong( 3 ) );
+    var expected = new Array( 10, 10, 10 );
+    test.identical( got, expected );
+  }
+}
+
+longMakeFillingWithBufferTypedLongDescriptor.timeOut = 15000;
+
+//
+
 function longFrom( test ) 
 {
   test.case = 'null';
@@ -15480,6 +15582,7 @@ var Self =
     longMakeFillingWithBufferTyped,
     longMakeFillingWithArrayAndUnrollLongDescriptor,
     longMakeFillingWithArgumentsArrayLongDescriptor,
+    longMakeFillingWithBufferTypedLongDescriptor,
 
     //
 
