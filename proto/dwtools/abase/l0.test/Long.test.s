@@ -4786,6 +4786,139 @@ function longMakeFillingWithBufferTyped( test )
 
 //
 
+function longMakeFillingWithArrayAndUnrollLongDescriptor( test )
+{
+  var array = ( src ) => _.arrayMake( src );
+  var unroll = ( src ) => _.unrollMake( src );
+  var longConstr = function( src )
+  {
+    if( src )
+    return _.longDescriptor.make( src );
+    return _.longDescriptor.make( 0 );
+  }
+  var list =
+  [
+    array,
+    unroll,
+    longConstr,
+  ];  
+
+  /* tests */
+
+  let times = 4;
+  for( let e in _.LongDescriptors )
+  {
+    let name = _.LongDescriptors[ e ].name;
+    let descriptor = _.withDefaultLong[ name ];
+
+    for( let i = 0; i < list.length; i++ )
+    {
+      test.open( `descriptor - ${ name }, long - ${ list[ i ].name }` );
+      testRun( descriptor, list[ i ] );
+      test.close( `descriptor - ${ name }, long - ${ list[ i ].name }` );
+    }
+
+    if( times < 1 )
+    break;
+    times--;
+  } 
+
+  /* test subroutine */
+
+  function testRun( descriptor, makeLong )
+  {
+    test.case = 'value - null, length - number';
+    var got = descriptor.longMakeFilling( null, 5 );
+    var expected = descriptor.longDescriptor.make( [ null, null, null, null, null ] );
+    test.identical( got, expected );
+
+    test.case = `value - zero, length - ${ makeLong.name }`;
+    var got = descriptor.longMakeFilling( 0, makeLong( 5 ) );
+    var expected = makeLong( [ 0, 0, 0, 0, 0 ] );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'type - null, value - string, length - number';
+    var got = descriptor.longMakeFilling( null, 'str', 5 );
+    var expected = descriptor.longDescriptor.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - string, length - BufferTyped';
+    var got = descriptor.longMakeFilling( null, 'str', new U8x( 5 ) );
+    var expected = descriptor.longDescriptor.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } constructor, value - array, length - number`;
+    var got = descriptor.longMakeFilling( makeLong( 0 ).constructor, [ 1 ], 3 );
+    var expected = makeLong( [ [ 1 ], [ 1 ], [ 1 ] ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } constructor, value - array, length - empty ${ makeLong.name }`;
+    var got = descriptor.longMakeFilling( makeLong( 0 ).constructor, [ 1 ], makeLong( 0 ) );
+    var expected = makeLong( [] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } instance, value - map, length - number`;
+    var got = descriptor.longMakeFilling( makeLong( 0 ), { a : 1 }, 3 );
+    var expected = makeLong( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } instance, value - map, length - ${ makeLong.name }`;
+    var got = descriptor.longMakeFilling( makeLong( 0 ), { a : 1 }, makeLong( 3 ) );
+    var expected = makeLong( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+    test.identical( got, expected );
+
+    test.case = `type - U8x, value - number, length - number`;
+    var got = descriptor.longMakeFilling( U8x, 10, 3 );
+    var expected = new U8x( [ 10, 10, 10 ] );
+    test.identical( got, expected );
+
+    test.case = `type - I16x, value - number, length - ${ makeLong.name }`;
+    var got = descriptor.longMakeFilling( I16x, 10, makeLong( 3 ) );
+    var expected = new I16x( [ 10, 10, 10 ] );
+    test.identical( got, expected );
+
+    test.case = `type - F32x instance, value - number, length - number`;
+    var got = descriptor.longMakeFilling( new F32x( 10 ), 10, 3 );
+    var expected = new F32x( [ 10, 10, 10 ] );
+    test.identical( got, expected );
+
+    test.case = `type - F32x instance, value - number, length - ${ makeLong.name }`;
+    var got = descriptor.longMakeFilling( new F32x( 10 ), 10, makeLong( 3 ) );
+    var expected = new F32x( [ 10, 10, 10 ] );
+    test.identical( got, expected );
+
+    /* - */
+
+    if( Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => descriptor.longMakeFilling() );
+
+      test.case = 'not enough arguments';
+      test.shouldThrowErrorSync( () => descriptor.longMakeFilling( null ) );
+
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => descriptor.longMakeFilling( [ 1, 2, 3 ], 4, 4, 'extra' ) );
+
+      test.case = 'wrong type of type argument';
+      test.shouldThrowErrorSync( () => descriptor.longMakeFilling( {}, 2, 2 ) );
+      test.shouldThrowErrorSync( () => descriptor.longMakeFilling( undefined, 2, 2 ) );
+
+      test.case = 'wrong type of value';
+      test.shouldThrowErrorSync( () => descriptor.longMakeFilling( undefined, 1 ) );
+      test.shouldThrowErrorSync( () => descriptor.longMakeFilling( [], undefined, 1 ) );
+
+      test.case = 'wrong type of length';
+      test.shouldThrowErrorSync( () => descriptor.longMakeFilling( [ 1, 2, 3 ], 'wrong' ) );
+      test.shouldThrowErrorSync( () => descriptor.longMakeFilling( [ 1, 2, 3 ], 2, undefined ) );
+    }
+  }
+}
+
+//
+
 function longFrom( test ) 
 {
   test.case = 'null';
@@ -15258,6 +15391,7 @@ var Self =
     longMakeFillingWithArrayAndUnroll,
     longMakeFillingWithArgumentsArray,
     longMakeFillingWithBufferTyped,
+    longMakeFillingWithArrayAndUnrollLongDescriptor,
 
     //
 
