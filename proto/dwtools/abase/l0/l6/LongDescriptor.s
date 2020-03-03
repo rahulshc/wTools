@@ -14,6 +14,26 @@ _.assert( !_.withDefaultLong );
 //
 // --
 
+function is_functor( name, cls )
+{
+  _.assert( arguments.length === 2 );
+  _.assert( _.routineIs( cls ) );
+  _.assert( _.strDefined( cls.name ) );
+  let r =
+  {
+    [ name ] : function( src )
+    {
+      /* aaa : cover please */
+      /* Dmytro : covered */
+      _.assert( arguments.length === 1 );
+      return src instanceof cls;
+    }
+  }
+  return r[ name ];
+}
+
+//
+
 function make_functor( name, cls )
 {
   _.assert( arguments.length === 2 );
@@ -53,32 +73,16 @@ function from_functor( name, cls )
   {
     [ name ] : function( src )
     {
+      // _.assert( arguments.length === 1 ); /* Dmytro : assertion for single argument is better for from routine */
+      // _.assert( _.longIs( src ) || _.numberIs( src ) || src === undefined || src === null ); /* Dmytro : maybe, it is missed, if src is any map, then returns empty buffer */
       _.assert( arguments.length === 0 || arguments.length === 1 );
       if( src === undefined )
       return new cls()
-      if( this instanceof cls )
-      return this;
+      // if( this instanceof cls )
+      // return this;
+      if( src instanceof cls )
+      return src;
       return new cls( src );
-    }
-  }
-  return r[ name ];
-}
-
-//
-
-function is_functor( name, cls )
-{
-  _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( cls ) );
-  _.assert( _.strDefined( cls.name ) );
-  let r =
-  {
-    [ name ] : function( src )
-    {
-      /* aaa : cover please */
-      /* Dmytro : covered */
-      _.assert( arguments.length === 1 );
-      return src instanceof cls;
     }
   }
   return r[ name ];
@@ -104,18 +108,20 @@ function _longDeclare( o )
   _.assert( _.boolIs( o.isTyped ) );
   _.assert( LongDescriptors[ o.name ] === undefined );
 
+  if( !o.is )
+    o.is = is_functor( o.name, o.type );
+  /* aaa : cover please _.longDescriptor.is */
+  /* Dmytro : covered */
+
   if( !o.make )
   o.make = make_functor( o.name, o.type );
-  /* qqq : cover please _.longDescriptor.make */
+  /* aaa : cover please _.longDescriptor.make */
+  /* Dmytro : covered */
 
   if( !o.from )
   o.from = from_functor( o.name, o.type );
   /* qqq : cover please _.longDescriptor.from */
-
-  if( !o.is )
-  o.is = is_functor( o.name, o.type );
-  /* aaa : cover please _.longDescriptor.is */
-  /* Dmytro : covered */
+  /* Dmytro : covered, needs clarification of a few features */
 
   Object.freeze( o );
   LongDescriptors[ o.name ] = o;
