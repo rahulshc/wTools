@@ -218,81 +218,81 @@ function buffersAreIdentical( src1, src2 )
 qqq : review
 */
 
-function bufferMake( ins, src )
+function bufferMake( src, ins )
 {
   let result, length;
 
-  if( _.argumentsArrayIs( ins ) )
-  ins = _.arrayMake( ins );
+  if( _.argumentsArrayIs( src ) )
+  src = _.arrayMake( src );
 
-  if( _.routineIs( ins ) )
+  if( _.routineIs( src ) )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-  if( src === undefined )
+  if( ins === undefined )
   {
-    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+    length = _.definedIs( src.length ) ? src.length : src.byteLength;
   }
   else
   {
-    if( _.longIs( src ) || _.bufferNodeIs( src ) )
-    length = src.length;
-    else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
+    if( _.longIs( ins ) || _.bufferNodeIs( ins ) )
+    length = ins.length;
+    else if( _.bufferRawIs( ins ) || _.bufferViewIs( ins ) )
     {
-      length = src.byteLength;
-      src = _.bufferViewIs( src ) ? new U8x( src.buffer ) : new U8x( src );
+      length = ins.byteLength;
+      ins = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
     }
-    else if( _.numberIs( src ) )
-    length = src;
+    else if( _.numberIs( ins ) )
+    length = ins;
     else _.assert( 0 );
   }
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
+  _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
 
-  if( _.longIs( src ) || _.bufferAnyIs( src ) )
+  if( _.longIs( ins ) || _.bufferAnyIs( ins ) )
   {
-    if( _.routineIs( ins ) )
+    if( _.routineIs( src ) )
     {
-      result = new ins( length );
+      result = new src( length );
       for( let i = 0 ; i < length ; i++ )
-      result[ i ] = src[ i ];
+      result[ i ] = ins[ i ];
     }
-    else if( ins.constructor === Array )
+    else if( src.constructor === Array )
     {
-      result = _.unrollIs( ins ) ? _.unrollMake( src ) : new( _.constructorJoin( ins.constructor, src ) );
+      result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
     }
-    else if( _.bufferRawIs( ins ) )
-    result = new U8x( src ).buffer;
-    else if( _.bufferViewIs( ins ) )
-    result = new BufferView( new U8x( src ).buffer );
-    else if ( _.bufferNodeIs( ins ) )
-    result = BufferNode.from( src );
+    else if( _.bufferRawIs( src ) )
+    result = new U8x( ins ).buffer;
+    else if( _.bufferViewIs( src ) )
+    result = new BufferView( new U8x( ins ).buffer );
+    else if ( _.bufferNodeIs( src ) )
+    result = BufferNode.from( ins );
     else
-    result = new ins.constructor( src );
+    result = new src.constructor( ins );
 
   }
   else
   {
     let insert;
-    if( _.bufferRawIs( ins ) )
-    insert = new U8x( ins );
-    else if( _.bufferViewIs( ins ) )
-    insert = new U8x( ins.buffer );
+    if( _.bufferRawIs( src ) )
+    insert = new U8x( src );
+    else if( _.bufferViewIs( src ) )
+    insert = new U8x( src.buffer );
     else
-    insert = ins;
+    insert = src;
 
     let resultTyped;
-    if( _.routineIs( ins ) )
-    resultTyped = new ins( length );
-    else if( _.bufferNodeIs( ins ) )
+    if( _.routineIs( src ) )
+    resultTyped = new src( length );
+    else if( _.bufferNodeIs( src ) )
     resultTyped = BufferNode.alloc( length );
-    else if ( _.bufferViewIs( ins ) )
+    else if ( _.bufferViewIs( src ) )
     resultTyped = new BufferView( new BufferRaw( length ) );
-    else if( _.unrollIs( ins ) )
+    else if( _.unrollIs( src ) )
     resultTyped = _.unrollMake( length );
     else
-    resultTyped = new ins.constructor( length );
+    resultTyped = new src.constructor( length );
 
     result = resultTyped;
     if( _.bufferRawIs( result ) )
