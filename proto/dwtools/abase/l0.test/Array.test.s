@@ -13101,15 +13101,15 @@ function arrayRemovedElement_( test )
   test.identical( got, undefined );
 
   test.case = 'dst - filled array, ins - array, identical, without entry';
-  var dst = [ [ 1 ], 1, [ 1 ], 1, [ 1 ] ];
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
   var got = _.arrayRemovedElement_( dst, [ 1 ] );
-  test.identical( dst, [ [ 1 ], 1, [ 1 ], 1, [ 1 ] ] );
+  test.identical( dst, [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ] );
   test.identical( got, undefined );
 
   test.case = 'dst - array with map, ins - map, identical, without entry';
-  var dst = [ { x : 1 }, { x : 1 }, { y : 2 } ];
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
   var got = _.arrayRemovedElement_( dst, { x : 1 } );
-  test.identical( dst, [ { x : 1 }, { x : 1 }, { y : 2 } ] );
+  test.identical( dst, [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ] );
   test.identical( got, undefined );
 
   test.close( 'without evaluators' );
@@ -13149,15 +13149,15 @@ function arrayRemovedElement_( test )
   test.identical( got, undefined );
 
   test.case = 'dst - filled array, ins - array, identical, without entry';
-  var dst = [ [ 1 ], 1, [ 1 ], 1, [ 1 ] ];
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
   var got = _.arrayRemovedElement_( dst, [ 1 ], 3 );
-  test.identical( dst, [ [ 1 ], 1, [ 1 ], 1, [ 1 ] ] );
+  test.identical( dst, [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ] );
   test.identical( got, undefined );
 
   test.case = 'dst - array with map, ins - map, identical, without entry';
-  var dst = [ { x : 1 }, { x : 1 }, { y : 2 } ];
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
   var got = _.arrayRemovedElement_( dst, { x : 1 }, 3 );
-  test.identical( dst, [ { x : 1 }, { x : 1 }, { y : 2 } ] );
+  test.identical( dst, [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ] );
   test.identical( got, undefined );
 
   test.close( 'evaluator1 - fromIndex' );
@@ -13197,13 +13197,13 @@ function arrayRemovedElement_( test )
   test.identical( got, 1 );
 
   test.case = 'dst - filled array, ins - array, identical, without entry';
-  var dst = [ [ 1 ], 1, [ 1 ], 1, [ 1 ] ];
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
   var got = _.arrayRemovedElement_( dst, [ 1 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, [ 1 ] );
 
   test.case = 'dst - array with map, ins - map, identical, without entry';
-  var dst = [ { x : 1 }, { x : 1 }, { y : 2 } ];
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
   var got = _.arrayRemovedElement_( dst, { x : 1 }, ( e, ins ) => e.x === ins.x );
   test.identical( dst, [ { y : 2 } ] );
   test.identical( got, { x : 1 } );
@@ -13245,13 +13245,13 @@ function arrayRemovedElement_( test )
   test.identical( got, 1 );
 
   test.case = 'dst - filled array, ins - array, identical, without entry';
-  var dst = [ [ 1 ], 1, [ 1 ], 1, [ 1 ] ];
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
   var got = _.arrayRemovedElement_( dst, [ 1 ], ( e ) => e[ 0 ] );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, [ 1 ] );
 
   test.case = 'dst - array with map, ins - map, identical, without entry';
-  var dst = [ { x : 1 }, { x : 1 }, { y : 2 } ];
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
   var got = _.arrayRemovedElement_( dst, { x : 1 }, ( e ) => e.x );
   test.identical( dst, [ { y : 2 } ] );
   test.identical( got, { x : 1 } );
@@ -13293,13 +13293,13 @@ function arrayRemovedElement_( test )
   test.identical( got, 1 );
 
   test.case = 'dst - filled array, ins - array, identical, without entry';
-  var dst = [ [ 1 ], 1, [ 1 ], 1, [ 1 ] ];
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
   var got = _.arrayRemovedElement_( dst, [ 1 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
   test.identical( dst, [ 1, 1 ] );
   test.identical( got, [ 1 ] );
 
   test.case = 'dst - array with map, ins - map, identical, without entry';
-  var dst = [ { x : 1 }, { x : 1 }, { y : 2 } ];
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
   var got = _.arrayRemovedElement_( dst, { x : 1 }, ( e ) => e.x, ( ins ) => ins.x );
   test.identical( dst, [ { y : 2 } ] );
   test.identical( got, { x : 1 } );
