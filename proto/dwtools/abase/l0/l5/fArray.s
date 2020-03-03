@@ -3551,6 +3551,27 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
+function arrayRemovedElement_( dstArray, ins, evaluator1, evaluator2 )
+{
+  let removedElement;
+
+  let index = _.longLeftIndex.apply( this, arguments );
+  evaluator1 = _.numberIs( evaluator1 ) ? undefined : evaluator1;
+
+  if( index !== -1 )
+  removedElement = dstArray[ index ];
+
+  while( index !== -1 ) 
+  {  
+    dstArray.splice( index, 1 );
+    index = _.longLeftIndex( dstArray, ins, index, evaluator1, evaluator2 );
+  }
+
+  return removedElement;
+}
+
+//
+
 /**
  * The callback function to compare two values.
  *
@@ -6134,6 +6155,7 @@ let Extension =
   arrayRemoveElementOnce,
   arrayRemoveElementOnceStrictly,
   arrayRemovedElement,
+  arrayRemovedElement_,
   arrayRemovedElementOnce,
   arrayRemovedElementOnceStrictly,
 
