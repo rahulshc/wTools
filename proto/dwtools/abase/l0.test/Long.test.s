@@ -4631,6 +4631,96 @@ function longMakeFillingWithArrayAndUnroll( test )
 
 //
 
+function longMakeFillingWithBufferTyped( test )
+{
+  var list =
+  [
+    I8x,
+    U16x,
+    U16x,
+    F32x,
+  ];
+
+  /* tests */
+
+  for( let t = 0; t < list.length; t++ )
+  {
+    test.open( list[ t ].name );
+    testRun( list[ t ] );
+    test.close( list[ t ].name );
+  }
+
+  /* test subroutine */
+
+
+  function testRun( makeLong )
+  {
+    test.case = 'value - null, length - number';
+    var got = _.longMakeFilling( null, 5 );
+    var expected = _.longDescriptor.make( [ null, null, null, null, null ] );
+    test.identical( got, expected );
+
+    test.case = `value - zero, length - ${ makeLong.name }`;
+    var got = _.longMakeFilling( 0, new makeLong( 5 ) );
+    var expected = new makeLong( [ 0, 0, 0, 0, 0 ] );
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'type - null, value - string, length - number';
+    var got = _.longMakeFilling( null, 'str', 5 );
+    var expected = _.longDescriptor.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+    test.identical( got, expected );
+
+    test.case = 'type - null, value - string, length - BufferTyped';
+    var got = _.longMakeFilling( null, 'str', new U8x( 5 ) );
+    var expected = _.longDescriptor.make( [ 'str', 'str', 'str', 'str', 'str' ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } constructor, value - array, length - number`;
+    var got = _.longMakeFilling( new makeLong, [ 1 ], 3 );
+    var expected = new makeLong( [ [ 1 ], [ 1 ], [ 1 ] ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } constructor, value - array, length - empty ${ makeLong.name }`;
+    var got = _.longMakeFilling( new makeLong, [ 1 ], new makeLong( 0 ) );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } instance, value - map, length - number`;
+    var got = _.longMakeFilling( new makeLong( 0 ), { a : 1 }, 3 );
+    var expected = new makeLong( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+    test.identical( got, expected );
+
+    test.case = `type - ${ makeLong.name } instance, value - map, length - ${ makeLong.name }`;
+    var got = _.longMakeFilling( new makeLong( 0 ), { a : 1 }, new makeLong( 3 ) );
+    var expected = new makeLong( [ { a : 1 }, { a : 1 }, { a : 1 } ] );
+    test.identical( got, expected );
+
+    test.case = `type - Array, value - number, length - number`;
+    var got = _.longMakeFilling( Array, 10, 3 );
+    var expected = new Array( 10, 10, 10 );
+    test.identical( got, expected );
+
+    test.case = `type - Array, value - number, length - ${ makeLong.name }`;
+    var got = _.longMakeFilling( Array, 10, new makeLong( 3 ) );
+    var expected = new Array( 10, 10, 10 );
+    test.identical( got, expected );
+
+    test.case = `type - Array instance, value - number, length - number`;
+    var got = _.longMakeFilling( new Array( 10 ), 10, 3 );
+    var expected = new Array( 10, 10, 10 );
+    test.identical( got, expected );
+
+    test.case = `type - Array instance, value - number, length - ${ makeLong.name }`;
+    var got = _.longMakeFilling( new Array( 10 ), 10, new makeLong( 3 ) );
+    var expected = new Array( 10, 10, 10 );
+    test.identical( got, expected );
+  }
+}
+
+//
+
 function longFrom( test ) 
 {
   test.case = 'null';
@@ -15101,6 +15191,7 @@ var Self =
     longMakeZeroedWithBufferTypedLongDescriptor,
 
     longMakeFillingWithArrayAndUnroll,
+    longMakeFillingWithBufferTyped,
 
     //
 
