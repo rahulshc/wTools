@@ -3521,8 +3521,8 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 {
   let index = _.longLeftIndex.apply( this, arguments );
   let removedElements = 0;
-
-  for( let i = 0; i < dstArray.length; i++ )
+  
+  for( let i = 0; i < dstArray.length; i++ ) /* Dmytro : bad implementation, this cycle run routine longLeftIndex even if it not needs, better implementation commented below */
   {
     if( index !== -1 )
     {
@@ -3530,10 +3530,23 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
       removedElements = removedElements + 1;
       i = i - 1 ;
     }
-    index = _.longLeftIndex.apply( this, arguments );
+    index = _.longLeftIndex.apply( this, arguments ); /* Dmytro : this call uses not offset, it makes routine slower */
   }
 
   return removedElements;
+
+  // let removedElements = 0;
+  // let index = _.longLeftIndex.apply( this, arguments );
+  // evaluator1 = _.numberIs( evaluator1 ) ? undefined : evaluator1;
+  //
+  // while( index !== -1 ) 
+  // {  
+  //   dstArray.splice( index, 1 );
+  //   removedElements = removedElements + 1;
+  //   index = _.longLeftIndex( dstArray, ins, index, evaluator1, evaluator2 );
+  // }
+  //
+  // return removedElements;
 }
 
 //
