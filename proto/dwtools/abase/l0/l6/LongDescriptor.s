@@ -150,7 +150,8 @@ let LongDescriptors = Object.create( null );
 _.assert( _.routineIs( _.arrayMake ) );
 _.assert( _.routineIs( _.unrollMake ) );
 
-_longDeclare({ name : 'Array', type : Array, make : _.arrayMake, from : _.arrayMake, is : _.arrayIs, isTyped : false });
+// _longDeclare({ name : 'Array', type : Array, make : _.arrayMake, from : _.arrayMake, is : _.arrayIs, isTyped : false });
+_longDeclare({ name : 'Array', type : Array, make : _.arrayMake, from : _.arrayFrom, is : _.arrayIs, isTyped : false });
 _longDeclare({ name : 'Unroll', type : Array, make : _.unrollMake, from : _.unrollFrom, is : _.unrollIs, isTyped : false });
 _longDeclare({ name : 'ArgumentsArray', secondName : 'Arguments', type : _argumentsArrayMake().constructor, make : _.argumentsArrayMake, from : _.argumentsArrayFrom, is : _.argumentsArrayIs, isTyped : false });
 // _longDeclare({ name : 'ArgumentsArray', secondName : 'Arguments', type : _argumentsArrayMake().constructor, make : _.argumentsArrayFrom, from : _.argumentsArrayFrom, is : _.argumentsArrayIs, isTyped : false }); /* Dmytro : wrong function make */
