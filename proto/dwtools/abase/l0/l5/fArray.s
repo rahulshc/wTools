@@ -3483,7 +3483,8 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
   arrayRemovedElementOnce.apply( this, arguments );
-  /* qqq : implement and cover routines arrayRemoveElement*_ returning element, not container? */
+  /* aaa : implement and cover routines arrayRemovedElement*_ returning element, not container? */
+  /* Dmytro : implemented and covered, proposed improvements of routine `arrayRemovedElement` */
   return dstArray;
 }
 
@@ -3653,6 +3654,7 @@ function arrayRemovedElementOnce_( dstArray, ins, evaluator1, evaluator2 )
 
   return removedElement;
 }
+
 //
 
 function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
@@ -3671,6 +3673,25 @@ function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
   _.assert( index < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
 
   return result;
+}
+
+//
+
+function arrayRemovedElementOnceStrictly_( dstArray, ins, evaluator1, evaluator2 )
+{
+  let removedElement;
+  let index = _.longLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  {
+    removedElement = dstArray[ index ];
+    dstArray.splice( index, 1 );
+  }
+  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+
+  index = _.longLeftIndex.apply( _, arguments );
+  _.assert( index < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
+
+  return removedElement;
 }
 
 /*
@@ -6169,10 +6190,11 @@ let Extension =
   arrayRemoveElementOnce,
   arrayRemoveElementOnceStrictly,
   arrayRemovedElement,
-  arrayRemovedElement_,
+  arrayRemovedElement_, /* !!! : use instead of arrayBut, arrayRemovedElement */
   arrayRemovedElementOnce,
-  arrayRemovedElementOnce_,
+  arrayRemovedElementOnce_, /* !!! : use instead of arrayBut, arrayRemovedElementOnce */
   arrayRemovedElementOnceStrictly,
+  arrayRemovedElementOnceStrictly_, /* !!! : use instead of arrayBut, arrayRemovedElementOnceStrictly */
 
   arrayRemoveArray,
   arrayRemoveArrayOnce,
