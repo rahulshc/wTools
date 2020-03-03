@@ -3641,6 +3641,20 @@ function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
+function arrayRemovedElementOnce_( dstArray, ins, evaluator1, evaluator2 )
+{
+  let removedElement;
+  let index = _.longLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  {
+    removedElement = dstArray[ index ];
+    dstArray.splice( index, 1 );
+  }
+
+  return removedElement;
+}
+//
+
 function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
@@ -6157,6 +6171,7 @@ let Extension =
   arrayRemovedElement,
   arrayRemovedElement_,
   arrayRemovedElementOnce,
+  arrayRemovedElementOnce_,
   arrayRemovedElementOnceStrictly,
 
   arrayRemoveArray,
