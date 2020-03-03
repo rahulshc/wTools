@@ -779,9 +779,16 @@ function longMakeFilling( type, value, length )
     value = arguments[ 0 ];
     length = arguments[ 1 ];
     if( _.longIs( length ) )
-    type = length.constructor;
+    {
+      if( _.argumentsArrayIs( length ) )
+      type = null;
+      else
+      type = length.constructor;
+    }
     else
-    type = null;
+    {
+      type = null;
+    }
   }
   else if( arguments.length !== 3 )
   {
