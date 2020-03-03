@@ -281,6 +281,7 @@ module:
           - ../proto/dwtools/abase/l0.test/Pair.test.s
           - ../proto/dwtools/abase/l0.test/Path.test.s
           - ../proto/dwtools/abase/l0.test/Range.test.s
+          - ../proto/dwtools/abase/l0.test/RangeOld.test.s
           - ../proto/dwtools/abase/l0.test/Regexp.test.s
           - ../proto/dwtools/abase/l0.test/Routine.test.s
           - ../proto/dwtools/abase/l0.test/Sorted.test.s

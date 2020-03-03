@@ -541,9 +541,9 @@ let wMathVector =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.avector && !!_global.wTools.avector.abs },
 }
 
-let wMathSpace =
+let wMathMatrix =
 {
-  sourcePath : sourcePath( 'amath/l5_matrix/Include.s', 'wmathspace' ),
+  sourcePath : sourcePath( 'amath/l5_matrix/Include.s', 'wmathmatrix' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Space },
 }
 
@@ -744,7 +744,7 @@ let Modules =
 
   wMathScalar,
   wMathVector,
-  wMathSpace,
+  wMathMatrix,
   wMathGeometric,
   wMathConcepts,
 

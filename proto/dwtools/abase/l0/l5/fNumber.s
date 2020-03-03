@@ -26,6 +26,7 @@ let Self = _global_.wTools;
 function numberClamp( src, low, high )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+  _.assert( _.numberIs( src ) );
 
   if( arguments.length === 2 )
   {
