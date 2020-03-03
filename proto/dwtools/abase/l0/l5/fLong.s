@@ -772,7 +772,7 @@ function longMakeFilling( type, value, length )
 {
   let result;
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  // _.assert( arguments.length === 2 || arguments.length === 3 ); /* Dmytro : double check */ 
 
   if( arguments.length === 2 )
   {
@@ -783,9 +783,14 @@ function longMakeFilling( type, value, length )
     else
     type = null;
   }
-  else if( arguments.length === 3 )
+  else if( arguments.length !== 3 )
   {
+    _.assert( 0, 'Expects two or three arguments' );
   }
+
+  /* Dmytro : missed */
+  if( _.longIs( length ) )
+  length = length.length;
 
   _.assert( value !== undefined );
   _.assert( _.numberIs( length ) );
