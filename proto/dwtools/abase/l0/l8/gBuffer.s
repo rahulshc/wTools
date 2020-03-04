@@ -163,6 +163,113 @@ function buffersAreIdentical( src1, src2 )
 
 }
 
+function _bufferMake_functor( onMake )
+{
+  _.assert( _.routineIs( onMake ) );
+
+  return function _bufferMake( src, ins )
+  {
+    let result;
+    
+    /* */
+    
+    let length = ins;
+
+    if( _.longIs( length ) || _.bufferNodeIs( length ) )
+    {
+      length = length.length
+    }
+    else if( _.bufferRawIs( length ) || _.bufferViewIs( length ) )
+    {
+      length = length.byteLength;
+      ins = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
+    }
+    else if( length === undefined || length === null )
+    {
+      if( src === null ) /* Dmytro : Do module has default buffer type? */
+      {
+        length = 0; 
+      }
+      if( _.longIs( src ) || _.bufferNodeIs( src ) )
+      {
+        length = src.length;
+        ins = src;
+        src = null;
+      }
+      else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
+      {
+        length = src.byteLength;
+        ins = _.bufferViewIs( src ) ? new U8x( src.buffer ) : new U8x( src );
+        src = null;
+      }
+      else if( _.routineIs( src ) )
+      {
+        _.assert( 0, 'Unknown length of buffer' );
+      }
+      else _.assert( 0 );
+    }
+    else if( !_.numberIs( length ) )
+    {
+      _.assert( 0, 'Unknown length of buffer' );
+    }
+
+    if( !length )
+    length = 0;
+
+    /* */
+
+    if( ins === undefined || ins === null )
+    {
+      if( _.bufferRawIs( src ) )
+      ins = new U8x( src );
+      else if( _.bufferViewIs( src ) )
+      ins = new U8x( src.buffer )
+      else if( _.longIs( src ) || _.bufferNodeIs( src ) )
+      ins = src;
+      else
+      ins = null;
+
+      src = null;
+    }
+    else if( _.numberIs( ins ) )
+    {
+      if( _.bufferRawIs( src ) )
+      ins = new U8x( src );
+      else if( _.bufferViewIs( src ) )
+      ins = new U8x( src.buffer )
+      else if( _.longIs( src ) || _.bufferNodeIs( src ) )
+      ins = src;
+      else
+      ins = null;
+    }
+    /* */
+
+    let minLength;
+    if( ins )
+    minLength = Math.min( ins.length, length );
+    else
+    minLength = 0;
+
+    /* */
+        
+    if( _.argumentsArrayIs( src ) )
+    src = this.longDescriptor.make;
+
+    if( src === null )
+    src = this.longDescriptor.make;
+
+    _.assert( arguments.length === 1 || arguments.length === 2 );
+    _.assert( _.numberIsFinite( length ) );
+    _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
+
+    result = onMake.call( this, src, ins, length, minLength );
+
+    _.assert( _.bufferAnyIs( result ) || _.longLike( result ) );
+
+    return result;
+  }
+}
+
 //
 
 /**
@@ -308,63 +415,63 @@ function bufferMake( src, ins )
   return result;
 }
 
-// function bufferMake( ins, src )
-// {
-//   let result, length;
-//
-//   if( _.routineIs( ins ) )
-//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
-//   if( _.argumentsArrayIs( ins ) )
-//   ins = [];
-//
-//   if( src === undefined )
-//   {
-//     length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
-//   }
-//   else
-//   {
-//     if( _.longIs( src ) || _.bufferNodeIs( src ) )
-//     length = src.length;
-//     else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
-//     length = src.byteLength;
-//     else if( _.numberIs( src ) )
-//     length = src;
-//     else _.assert( 0 );
-//   }
-//
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.numberIsFinite( length ) );
-//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
-//
-//   if( _.longIs( src ) || _.bufferAnyIs( src ) )
-//   {
-//
-//     if( ins.constructor === Array )
-//     {
-//       result = new( _.constructorJoin( ins.constructor, src ) );
-//     }
-//     else if( _.routineIs( ins ) )
-//     {
-//       if( ins.prototype.constructor.name === 'Array' )
-//       result = _ArraySlice.call( src );
-//       else
-//       result = new ins( src );
-//     }
-//     else
-//     result = new ins.constructor( src );
-//
-//   }
-//   else
-//   {
-//     if( _.routineIs( ins ) )
-//     result = new ins( length );
-//     else
-//     result = new ins.constructor( length );
-//   }
-//
-//   return result;
-// }
+function bufferMake( ins, src )
+{
+  let result, length;
+
+  if( _.routineIs( ins ) )
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( _.argumentsArrayIs( ins ) )
+  ins = [];
+
+  if( src === undefined )
+  {
+    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+  }
+  else
+  {
+    if( _.longIs( src ) || _.bufferNodeIs( src ) )
+    length = src.length;
+    else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
+    length = src.byteLength;
+    else if( _.numberIs( src ) )
+    length = src;
+    else _.assert( 0 );
+  }
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.numberIsFinite( length ) );
+  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+
+  if( _.longIs( src ) || _.bufferAnyIs( src ) )
+  {
+
+    if( ins.constructor === Array )
+    {
+      result = new( _.constructorJoin( ins.constructor, src ) );
+    }
+    else if( _.routineIs( ins ) )
+    {
+      if( ins.prototype.constructor.name === 'Array' )
+      result = _ArraySlice.call( src );
+      else
+      result = new ins( src );
+    }
+    else
+    result = new ins.constructor( src );
+
+  }
+  else
+  {
+    if( _.routineIs( ins ) )
+    result = new ins( length );
+    else
+    result = new ins.constructor( length );
+  }
+
+  return result;
+}
 
 //
 
@@ -3065,6 +3172,7 @@ let Routines =
   buffersAreEquivalent,
   buffersAreIdentical,
 
+  _bufferMake_functor,
   bufferMake,
   bufferMakeUndefined,
 
