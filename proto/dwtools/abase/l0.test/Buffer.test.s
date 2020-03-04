@@ -592,7 +592,7 @@ function bufferMakeWithArgumentsArray( test )
 
 //
 
-function bufferMakeWithBufferTypedAndNode( test )
+function bufferMakeWithBuffers( test )
 {
   var bufferTyped = function( buf )
   {
@@ -600,6 +600,8 @@ function bufferMakeWithBufferTypedAndNode( test )
     return { [ name ] : function( src ){ return new buf( src ) } }[ name ];
   };
   var bufferNode = ( src ) => _.numberIs( src ) ? BufferNode.alloc( src ) : BufferNode.from( src );
+  var bufferRaw = ( src ) => new U8x( src ).buffer;
+  var bufferView = ( src ) => new BufferView( bufferRaw( src ) );
 
   /* lists */
 
@@ -610,7 +612,8 @@ function bufferMakeWithBufferTypedAndNode( test )
     F32x,
     F64x,
   ];
-  var list = [];
+  var list = [ bufferRaw, bufferView ];
+
   for( let i = 0; i < typedList.length; i++ )
   list.push( bufferTyped( typedList[ i ] ) );
   if( Config.interpreter === 'njs' )
@@ -8935,7 +8938,7 @@ var Self =
 
     bufferMakeWithArrayAndUnroll,
     bufferMakeWithArgumentsArray,
-    bufferMakeWithBufferTypedAndNode,
+    bufferMakeWithBuffers,
     bufferMakeUndefined,
 
     bufferFrom,
