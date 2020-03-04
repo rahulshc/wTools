@@ -325,153 +325,185 @@ function _bufferMake_functor( onMake )
 qqq : review
 */
 
-function bufferMake( src, ins )
+let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 {
-  let result, length;
+  let result; 
+  
+  /* */
 
-  if( _.argumentsArrayIs( src ) )
-  src = _.arrayMake( src );
-
+  let resultTyped;
   if( _.routineIs( src ) )
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( ins === undefined )
-  {
-    length = _.definedIs( src.length ) ? src.length : src.byteLength;
-  }
+  resultTyped = new src( length );
+  else if( _.bufferNodeIs( src ) )
+  resultTyped = BufferNode.alloc( length );
+  else if ( _.bufferViewIs( src ) )
+  resultTyped = new BufferView( new BufferRaw( length ) );
+  else if( _.unrollIs( src ) )
+  resultTyped = _.unrollMake( length );
   else
-  {
-    if( _.longIs( ins ) || _.bufferNodeIs( ins ) )
-    length = ins.length;
-    else if( _.bufferRawIs( ins ) || _.bufferViewIs( ins ) )
-    {
-      length = ins.byteLength;
-      ins = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
-    }
-    else if( _.numberIs( ins ) )
-    length = ins;
-    else _.assert( 0 );
-  }
+  resultTyped = new src.constructor( length );
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
+  result = resultTyped;
+  if( _.bufferRawIs( result ) )
+  resultTyped = new U8x( result );
+  if( _.bufferViewIs( result ) )
+  resultTyped = new U8x( result.buffer );
 
-  if( _.longIs( ins ) || _.bufferAnyIs( ins ) )
-  {
-    if( _.routineIs( src ) )
-    {
-      result = new src( length );
-      for( let i = 0 ; i < length ; i++ )
-      result[ i ] = ins[ i ];
-    }
-    else if( src.constructor === Array )
-    {
-      result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
-    }
-    else if( _.bufferRawIs( src ) )
-    result = new U8x( ins ).buffer;
-    else if( _.bufferViewIs( src ) )
-    result = new BufferView( new U8x( ins ).buffer );
-    else if ( _.bufferNodeIs( src ) )
-    result = BufferNode.from( ins );
-    else
-    result = new src.constructor( ins );
-
-  }
-  else
-  {
-    let insert;
-    if( _.bufferRawIs( src ) )
-    insert = new U8x( src );
-    else if( _.bufferViewIs( src ) )
-    insert = new U8x( src.buffer );
-    else
-    insert = src;
-
-    let resultTyped;
-    if( _.routineIs( src ) )
-    resultTyped = new src( length );
-    else if( _.bufferNodeIs( src ) )
-    resultTyped = BufferNode.alloc( length );
-    else if ( _.bufferViewIs( src ) )
-    resultTyped = new BufferView( new BufferRaw( length ) );
-    else if( _.unrollIs( src ) )
-    resultTyped = _.unrollMake( length );
-    else
-    resultTyped = new src.constructor( length );
-
-    result = resultTyped;
-    if( _.bufferRawIs( result ) )
-    resultTyped = new U8x( result );
-    if( _.bufferViewIs( result ) )
-    resultTyped = new U8x( result.buffer );
-
-    let minLen = Math.min( length, insert.length );
-    for( let i = 0 ; i < minLen ; i++ )
-    resultTyped[ i ] = insert[ i ];
-  }
+  for( let i = 0 ; i < minLength ; i++ )
+  resultTyped[ i ] = ins[ i ];
 
   return result;
-}
+});
 
-function bufferMake( ins, src )
-{
-  let result, length;
+//
 
-  if( _.routineIs( ins ) )
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( _.argumentsArrayIs( ins ) )
-  ins = [];
-
-  if( src === undefined )
-  {
-    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
-  }
-  else
-  {
-    if( _.longIs( src ) || _.bufferNodeIs( src ) )
-    length = src.length;
-    else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
-    length = src.byteLength;
-    else if( _.numberIs( src ) )
-    length = src;
-    else _.assert( 0 );
-  }
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
-
-  if( _.longIs( src ) || _.bufferAnyIs( src ) )
-  {
-
-    if( ins.constructor === Array )
-    {
-      result = new( _.constructorJoin( ins.constructor, src ) );
-    }
-    else if( _.routineIs( ins ) )
-    {
-      if( ins.prototype.constructor.name === 'Array' )
-      result = _ArraySlice.call( src );
-      else
-      result = new ins( src );
-    }
-    else
-    result = new ins.constructor( src );
-
-  }
-  else
-  {
-    if( _.routineIs( ins ) )
-    result = new ins( length );
-    else
-    result = new ins.constructor( length );
-  }
-
-  return result;
-}
+// function bufferMake( src, ins )
+// {
+//   let result, length;
+// 
+//   if( _.argumentsArrayIs( src ) )
+//   src = _.arrayMake( src );
+// 
+//   if( _.routineIs( src ) )
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+// 
+//   if( ins === undefined )
+//   {
+//     length = _.definedIs( src.length ) ? src.length : src.byteLength;
+//   }
+//   else
+//   {
+//     if( _.longIs( ins ) || _.bufferNodeIs( ins ) )
+//     length = ins.length;
+//     else if( _.bufferRawIs( ins ) || _.bufferViewIs( ins ) )
+//     {
+//       length = ins.byteLength;
+//       ins = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
+//     }
+//     else if( _.numberIs( ins ) )
+//     length = ins;
+//     else _.assert( 0 );
+//   }
+// 
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
+// 
+//   if( _.longIs( ins ) || _.bufferAnyIs( ins ) )
+//   {
+//     if( _.routineIs( src ) )
+//     {
+//       result = new src( length );
+//       for( let i = 0 ; i < length ; i++ )
+//       result[ i ] = ins[ i ];
+//     }
+//     else if( src.constructor === Array )
+//     {
+//       result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
+//     }
+//     else if( _.bufferRawIs( src ) )
+//     result = new U8x( ins ).buffer;
+//     else if( _.bufferViewIs( src ) )
+//     result = new BufferView( new U8x( ins ).buffer );
+//     else if ( _.bufferNodeIs( src ) )
+//     result = BufferNode.from( ins );
+//     else
+//     result = new src.constructor( ins );
+// 
+//   }
+//   else
+//   {
+//     let insert;
+//     if( _.bufferRawIs( src ) )
+//     insert = new U8x( src );
+//     else if( _.bufferViewIs( src ) )
+//     insert = new U8x( src.buffer );
+//     else
+//     insert = src;
+// 
+//     let resultTyped;
+//     if( _.routineIs( src ) )
+//     resultTyped = new src( length );
+//     else if( _.bufferNodeIs( src ) )
+//     resultTyped = BufferNode.alloc( length );
+//     else if ( _.bufferViewIs( src ) )
+//     resultTyped = new BufferView( new BufferRaw( length ) );
+//     else if( _.unrollIs( src ) )
+//     resultTyped = _.unrollMake( length );
+//     else
+//     resultTyped = new src.constructor( length );
+// 
+//     result = resultTyped;
+//     if( _.bufferRawIs( result ) )
+//     resultTyped = new U8x( result );
+//     if( _.bufferViewIs( result ) )
+//     resultTyped = new U8x( result.buffer );
+// 
+//     let minLen = Math.min( length, insert.length );
+//     for( let i = 0 ; i < minLen ; i++ )
+//     resultTyped[ i ] = insert[ i ];
+//   }
+// 
+//   return result;
+// }
+// 
+// function bufferMake( ins, src )
+// {
+//   let result, length;
+// 
+//   if( _.routineIs( ins ) )
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+// 
+//   if( _.argumentsArrayIs( ins ) )
+//   ins = [];
+// 
+//   if( src === undefined )
+//   {
+//     length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+//   }
+//   else
+//   {
+//     if( _.longIs( src ) || _.bufferNodeIs( src ) )
+//     length = src.length;
+//     else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
+//     length = src.byteLength;
+//     else if( _.numberIs( src ) )
+//     length = src;
+//     else _.assert( 0 );
+//   }
+// 
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
+// 
+//   if( _.longIs( src ) || _.bufferAnyIs( src ) )
+//   {
+// 
+//     if( ins.constructor === Array )
+//     {
+//       result = new( _.constructorJoin( ins.constructor, src ) );
+//     }
+//     else if( _.routineIs( ins ) )
+//     {
+//       if( ins.prototype.constructor.name === 'Array' )
+//       result = _ArraySlice.call( src );
+//       else
+//       result = new ins( src );
+//     }
+//     else
+//     result = new ins.constructor( src );
+// 
+//   }
+//   else
+//   {
+//     if( _.routineIs( ins ) )
+//     result = new ins( length );
+//     else
+//     result = new ins.constructor( length );
+//   }
+// 
+//   return result;
+// }
 
 //
 
