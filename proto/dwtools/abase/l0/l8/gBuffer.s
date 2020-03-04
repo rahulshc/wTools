@@ -564,7 +564,8 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
  */
 
 /*
-qqq : review
+aaa : review
+Dmytro : reviewed, extended, covered 
 */
 
 let bufferMakeUndefined = _bufferMake_functor( function( src, ins, length, minLength )
@@ -722,17 +723,13 @@ function bufferFromArrayOfArray( array, options )
 
   for( let a = 0 ; a < array.length ; a++ )
   {
-
     let element = array[ a ];
 
     for( let e = 0 ; e < atomsPerElement ; e++ )
     {
-
       result[ i ] = element[ e ];
       i += 1;
-
     }
-
   }
 
   return result;
