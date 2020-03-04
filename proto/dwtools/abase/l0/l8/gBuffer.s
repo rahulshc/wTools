@@ -321,7 +321,8 @@ function _bufferMake_functor( onMake )
  */
 
 /*
-qqq : review
+aaa : review
+Dmytro : reviewed, improved, covered
 */
 
 let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
@@ -566,49 +567,69 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 qqq : review
 */
 
-function bufferMakeUndefined( ins, src )
+let bufferMakeUndefined = _bufferMake_functor( function( src, ins, length, minLength )
 {
-  let result, length;
-
-  if( _.routineIs( ins ) )
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( src === undefined )
-  {
-    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
-  }
-  else
-  {
-    if( _.longIs( src ) || _.bufferNodeIs( src ) )
-    length = src.length;
-    else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
-    length = src.byteLength;
-    else if( _.numberIs( src ) )
-    length = src;
-    else _.assert( 0 );
-  }
-
-  if( _.argumentsArrayIs( ins ) )
-  ins = [];
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
-
-  if( _.routineIs( ins ) )
-  result = new ins( length );
-  else if( _.bufferNodeIs( ins ) )
+  let result; 
+  
+  if( _.routineIs( src ) )
+  result = new src( length );
+  else if( _.bufferNodeIs( src ) )
   result = BufferNode.alloc( length );
-  else if( _.bufferViewIs( ins ) )
+  else if( _.bufferViewIs( src ) )
   result = new BufferView( new BufferRaw( length ) );
-  else if( _.unrollIs( ins ) )
+  else if( _.unrollIs( src ) )
   result = _.unrollMake( length );
   else
-  result = new ins.constructor( length );
+  result = new src.constructor( length );
 
   return result;
-}
+});
 
+// function bufferMakeUndefined( ins, src )
+// {
+//   let result, length;
+// 
+//   if( _.routineIs( ins ) )
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+// 
+//   if( src === undefined )
+//   {
+//     length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+//   }
+//   else
+//   {
+//     if( _.longIs( src ) || _.bufferNodeIs( src ) )
+//     length = src.length;
+//     else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
+//     length = src.byteLength;
+//     else if( _.numberIs( src ) )
+//     length = src;
+//     else _.assert( 0 );
+//   }
+// 
+//   if( _.argumentsArrayIs( ins ) )
+//   ins = [];
+// 
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
+// 
+//   if( _.routineIs( ins ) )
+//   result = new ins( length );
+//   else if( _.bufferNodeIs( ins ) )
+//   result = BufferNode.alloc( length );
+//   else if( _.bufferViewIs( ins ) )
+//   result = new BufferView( new BufferRaw( length ) );
+//   else if( _.unrollIs( ins ) )
+//   result = _.unrollMake( length );
+//   else
+//   result = new ins.constructor( length );
+// 
+//   return result;
+// }
+//
+// //
+//
 // function bufferMakeUndefined( ins, src )
 // {
 //   let result, length;
