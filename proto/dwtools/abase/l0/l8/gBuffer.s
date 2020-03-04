@@ -190,16 +190,27 @@ function _bufferMake_functor( onMake )
       {
         length = 0; 
       }
-      if( _.longIs( src ) || _.bufferNodeIs( src ) )
+      else if( _.longIs( src ) || _.bufferNodeIs( src ) )
       {
         length = src.length;
         ins = src;
         src = null;
       }
-      else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
+      else if( _.bufferRawIs( src ) )
       {
         length = src.byteLength;
-        ins = _.bufferViewIs( src ) ? new U8x( src.buffer ) : new U8x( src );
+        ins = new U8x( src );
+        src = null;
+      }
+      else if( _.bufferViewIs( src ) )
+      {
+        length = src.byteLength;
+        ins = new U8x( src.buffer );
+        src = null;
+      }
+      else if( _.numberIs( src ) )
+      {
+        length = src;
         src = null;
       }
       else if( _.routineIs( src ) )
@@ -218,7 +229,7 @@ function _bufferMake_functor( onMake )
 
     /* */
 
-    if( ins === undefined || ins === null )
+    if( _.numberIs( ins ) )
     {
       if( _.bufferRawIs( src ) )
       ins = new U8x( src );
@@ -228,20 +239,8 @@ function _bufferMake_functor( onMake )
       ins = src;
       else
       ins = null;
+    }
 
-      src = null;
-    }
-    else if( _.numberIs( ins ) )
-    {
-      if( _.bufferRawIs( src ) )
-      ins = new U8x( src );
-      else if( _.bufferViewIs( src ) )
-      ins = new U8x( src.buffer )
-      else if( _.longIs( src ) || _.bufferNodeIs( src ) )
-      ins = src;
-      else
-      ins = null;
-    }
     /* */
 
     let minLength;
