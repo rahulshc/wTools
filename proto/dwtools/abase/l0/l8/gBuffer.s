@@ -277,6 +277,8 @@ function _bufferMake_functor( onMake )
  * @param { Number|Long|Buffer|Null|Undefined } ins - Defines length and content of new buffer. If {-ins-} is null or undefined, then routine makes new container 
  * with default Long type and fills it by {-src-} content.
  *
+ * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
+ *
  * @example
  * let got = _.bufferMake();
  * // returns []
@@ -521,58 +523,69 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 //
 
 /**
- * The routine bufferMakeUndefined() returns a new buffer with the same type as buffer in argument {-ins-}.
- * New buffer has length equal to the length of second argument {-src-} or it has length of initial array {-ins-}
- * if second argument is not provided.
+ * The routine bufferMakeUndefined() returns a new buffer with the same type as source buffer {-src-}. The length of resulted buffer is equal to {-ins-}.
+ * If {-ins-} is not defined, then routine makes default Long type, length of returned container defines from {-src-}.  
  *
- * @param { Buffer|Long|Routine } ins - Buffer, Long or constructor, defines type of returned buffer.
- * @param { Buffer|Long|Number } src - Defines length of the new buffer.
+ * @param { BufferAny|Long|Function|Number|Null } src - Instance of any buffer, Long or constructor, defines type of returned buffer. If {-src-} is null,
+ * then routine returns instance of default Long.
+ * @param { Number|Long|Buffer|Null|Undefined } ins - Defines length of new buffer. If {-ins-} is null or undefined, then routine makes new container 
+ * with default Long type and length defined by {-src-}.
  *
- * @example
- * // from array, no src
- * let ins = [ 1, 2, 3, 4, 5 ];
- * let got = _.bufferMakeUndefined( ins );
- * console.log( got );
- * // log [ undefined, undefined, undefined, undefined, undefined ]
- * console.log( _.arrayIs( got ) );
- * // log true
+ * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
  *
  * @example
- * // from BufferTyped, no src
- * let ins = new U8x( [ 1, 2, 3, 4, 5 ] );
- * let got = _.bufferMakeUndefined( ins );
- * console.log( got );
- * // log Uint8Array[ 0, 0, 0, 0, 0 ]
+ * let got = _.bufferMakeUndefined();
+ * // returns []
  *
  * @example
- * // from array, src.length < array.length
- * let ins = new Array( [ 1, 2, 3, 4, 5 ] );
- * let got = _.bufferMakeUndefined( ins, 2 );
- * console.log( got );
- * // log [ undefined, undefined ]
- * console.log( _.arrayIs( got ) );
- * // log true
+ * let got = _.bufferMakeUndefined( null );
+ * // returns []
  *
  * @example
- * // from BufferRaw, buffer.byteLength < src.length
- * let ins = new BufferRaw( 2 );
- * let got = _.bufferMakeUndefined( ins, [ 1, 2, 3, 4, 5 ] );
- * console.log( got );
- * // log ArrayBuffer[ 0x0, 0x0, 0x0, 0x0, 0x0 ]
+ * let got = _.bufferMakeUndefined( null, null );
+ * // returns []
  *
  * @example
- * // from Array constructor
- * let got = _.bufferMakeUndefined( F32x, 4 );
- * console.log( got );
- * // log Float32Array[ 0, 0, 0, 0 ]
+ * let got = _.bufferMakeUndefined( 3 );
+ * // returns [ undefined, undefined, undefined ]
  *
- * @returns { Buffer }  Returns a new buffer with the same type as inserted buffer {-ins-} with a certain length.
+ * @example
+ * let got = _.bufferMakeUndefined( 3, null );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * let got = _.bufferMakeUndefined( new U8x( [ 1, 2, 3 ] ) );
+ * // returns [ undefined, undefined, undefined ];
+ * _.bufferTypedIs( got );
+ * // log false
+ *
+ * @example
+ * let got = _.bufferMakeUndefined( new I16x( [ 1, 2, 3 ] ), null );
+ * // returns [ undefined, undefined, undefined ];
+ * _.bufferTypedIs( got );
+ * // log false
+ *
+ * @example
+ * _.bufferMakeUndefined( new BufferRaw( 4 ), 6 );
+ * // returns ArrayBuffer { [Uint8Contents]: <00 00 00 00 00 00>, byteLength: 6 }
+ *
+ * @example
+ * _.bufferMakeUndefined( new BufferRaw( 4 ), [ 1, 2, 3 ] );
+ * // returns ArrayBuffer { [Uint8Contents]: <00 00 00>, byteLength: 3 }
+ *
+ * @example
+ * _.bufferMakeUndefined( F64x, [ 1, 2, 3 ] );
+ * // returns Float64Array [ 0, 0, 0 ]
+ *
+ * @returns { BufferAny|Long }  Returns a buffer with source buffer {-src-} type filled by insertion container {-ins-} content.
+ * If {-ins-} is not defined, then routine makes default Long type container and fills it by {-src-} content.
  * @function bufferMakeUndefined
- * @throws { Error } If arguments.length is less than one or more then two.
- * @throws { Error } If {-ins-} is constructor and second argument {-src-} is not provided.
- * @throws { Error } If {-ins-} is not a buffer, not a Long, not a constructor.
- * @throws { Error } If {-src-} is not a buffer, not a Long, not a Number.
- * @throws { Error } If {-src-} has not defined length.
+ * @throws { Error } If arguments.length is more than two.
+ * @throws { Error } If {-src-} is not a Long, not a buffer, not a Number, not a constructor, not null.
+ * @throws { Error } If {-src-} is constructor and second argument {-src-} is not provided.
+ * @throws { Error } If {-src-} is constructor that returns not a Long, not a buffer value.
+ * @throws { Error } If {-ins-} is not a number, not a Long, not a buffer, not null, not undefined.
+ * @throws { Error } If {-ins-} or src.length has a not finite value.
  * @memberof wTools
  */
 
