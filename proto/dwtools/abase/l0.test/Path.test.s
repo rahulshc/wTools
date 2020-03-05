@@ -102,7 +102,6 @@ function is( test )
 
   test.case = 'Two arguments';
   test.shouldThrowErrorOfAnyKind( () => _.path.is( 'a', 'b' ) );
-
 }
 
 //
@@ -3118,9 +3117,6 @@ function ends( test )
 
   test.case = 'No path - NaN';
   test.shouldThrowErrorOfAnyKind( () => _.path.ends( NaN, NaN ) );
-
-
-
 }
 
 //
@@ -3515,7 +3511,6 @@ function refine( test )
 
   test.case = 'No path - NaN';
   test.shouldThrowErrorOfAnyKind( () => _.path.refine( NaN ) );
-
 }
 
 //
@@ -4078,7 +4073,6 @@ function normalize( test )
 
   test.case = 'No path - NaN';
   test.shouldThrowErrorOfAnyKind( () => _.path.normalize( NaN ) );
-
 }
 
 //
@@ -4470,7 +4464,6 @@ function normalizeTolerant( test )
   var expected = '../';
   var got = _.path.normalizeTolerant( path );
   test.identical( got, expected );
-
 }
 
 //
@@ -4953,14 +4946,12 @@ function canonize( test )
 
   test.case = 'No path - NaN';
   test.shouldThrowErrorOfAnyKind( () => _.path.canonize( NaN ) );
-
 }
 
 //
 
 function canonizeTolerant( test )
 {
-
   test.case = 'posix path'; /* */
 
   var path = '/aa/bb/cc/./';
@@ -5345,7 +5336,6 @@ function canonizeTolerant( test )
   var expected = '..';
   var got = _.path.canonizeTolerant( path );
   test.identical( got, expected );
-
 }
 
 //
@@ -5398,86 +5388,114 @@ function nativize( test )
 
 function dot( test )
 {
+  test.case = 'src - empty path';
+  var src = '';
+  var got = _.path.dot( src );
+  var exp = './';
+  test.identical( got, exp );
 
-  var cases =
-  [
-    { src : '', expected : './' },
-    { src : 'a', expected : './a' },
-    { src : '.', expected : '.' },
-    { src : '.a', expected : './.a' },
-    { src : './a', expected : './a' },
-    { src : '..', expected : '..' },
-    { src : '..a', expected : './..a' },
-    { src : '../a', expected : '../a' },
-    { src : '/', error : true },
-    { src : '/a', error : true },
-  ]
+  test.case = 'src - filename';
+  var src = 'a';
+  var got = _.path.dot( src );
+  var exp = './a';
+  test.identical( got, exp );
 
-  for( var i = 0; i < cases.length; i++ )
-  {
-    var c = cases[ i ];
-    if( c.error )
-    {
-      if( !Config.debug )
-      continue;
-      test.shouldThrowErrorOfAnyKind( () => _.path.dot( c.src ) )
-    }
-    else
-    test.identical( _.path.dot( c.src ), c.expected );
-  }
+  test.case = 'src - current directory';
+  var src = '.';
+  var got = _.path.dot( src );
+  var exp = '.';
+  test.identical( got, exp );
 
+  test.case = 'src - filename begins with dot';
+  var src = '.a';
+  var got = _.path.dot( src );
+  var exp = './.a';
+  test.identical( got, exp );
+
+  test.case = 'src - file in current directory';
+  var src = './a';
+  var got = _.path.dot( src );
+  var exp = './a';
+  test.identical( got, exp );
+
+  test.case = 'src - up to current directory';
+  var src = '..';
+  var got = _.path.dot( src );
+  var exp = '..';
+  test.identical( got, exp );
+
+  test.case = 'src - filename begins by double dot';
+  var src = '..a';
+  var got = _.path.dot( src );
+  var exp = './..a';
+  test.identical( got, exp );
+
+  test.case = 'src - file in up to current directory';
+  var src = '../a';
+  var got = _.path.dot( src );
+  var exp = '../a';
+  test.identical( got, exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'root directory';
+  test.shouldThrowErrorSync( () => _.path.dot( '/' ) );
+
+  test.case = 'file in root directory';
+  test.shouldThrowErrorSync( () => _.path.dot( '/a' ) );
 }
 
 //
 
 function undot( test )
 {
-  /* qqq : unwrap array and normalize all tests in this test suite */
-  /* Dmytro : unwrapped and normalized this test routine */ 
+  /* aaa : unwrap array and normalize all tests in this test suite */
+  /* Dmytro : unwrapped and normalized this test routine and in all test suite */ 
 
-  test.case = 'next to current directory';
+  test.case = 'src - current directory with slash';
   var src = './';
   var got =  _.path.undot( src );
   var exp = './';
   test.identical( got, exp );
 
-  test.case = 'current directory';
+  test.case = 'src - current directory';
   var src = '.';
   var got =  _.path.undot( src );
   var exp = '.';
   test.identical( got, exp );
 
-  test.case = 'up from current directory';
+  test.case = 'src - up from current directory';
   var src = '..';
   var got =  _.path.undot( src );
   var exp = '..';
   test.identical( got, exp );
 
-  test.case = 'next to current directory is file';
+  test.case = 'src - current directory with filename';
   var src = './a';
   var got =  _.path.undot( src );
   var exp = 'a';
   test.identical( got, exp );
 
-  test.case = 'filename';
+  test.case = 'src - filename';
   var src = 'a';
   var got =  _.path.undot( src );
   var exp = 'a';
   test.identical( got, exp );
 
-  test.case = 'next to current directory is file, filename with dot at begin';
+  test.case = 'src - current directory, filename with dot at begin';
   var src = './.a';
   var got =  _.path.undot( src );
   var exp = '.a';
   test.identical( got, exp );
 
-  test.case = 'next to current directory is file, filename with double dot at begin';
+  test.case = 'src - current directory, filename with double dot at begin';
   var src = './..a';
   var got =  _.path.undot( src );
   var exp = '..a';
   test.identical( got, exp );
 
-  test.case = 'file in directory with name ".", after root';
+  test.case = 'src - file in directory with name ".", after root';
   var src = '/./a';
   var got =  _.path.undot( src );
   var exp = '/./a';
@@ -6091,7 +6109,6 @@ function dirFirstDepthOption( test )
 
   test.case = 'relative path, depth > levels of nesting';
   var src = '../a/b/c/d';
-  debugger;
   var got = _.path.dirFirst( src, 6 );
   var exp = '../../../';
   test.identical( got, exp );
