@@ -11,12 +11,11 @@ let Self = _global_.wTools;
 // --
 
 /**
- * The routine unrollMake() returns a new unroll-array maked from {-src-}.
+ * The routine unrollMake() returns a new unroll-array maiden from {-src-}.
  *
- * Unroll constructed by attaching symbol _.unroll Symbol to ordinary array.
- * Making an unroll normalizes its content.
+ * Unroll constructed by attaching symbol _.unroll Symbol to ordinary array. Making an unroll normalizes its content.
  *
- * @param { * } src - The number or array-like object to make unroll-array. Passing null returns an empty Unroll.
+ * @param { Number|Long|Set|Null|Undefined } src - The number or array-like object to make unroll-array. Passing null returns an empty Unroll.
  *
  * @example
  * let src = _.unrollMake( null );
