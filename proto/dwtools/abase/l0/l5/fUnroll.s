@@ -463,20 +463,20 @@ function unrollNormalize( dstArray )
  * @memberof wTools
  */
 
-function unrollSelect( array, range, val )
+function unrollSelect( src, range, val )
 {
   let result;
 
   if( range === undefined )
-  return _.unrollMake( array );
+  return _.unrollMake( src );
 
   if( _.numberIs( range ) )
-  range = [ range, array.length ];
+  range = [ range, src.length ];
 
   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
+  let l = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
 
-  _.assert( _.longIs( array ) );
+  _.assert( _.longIs( src ) );
   _.assert( _.rangeIs( range ) )
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
@@ -489,30 +489,26 @@ function unrollSelect( array, range, val )
     f -= f;
   }
 
-  if( f === 0 && l === array.length )
-  return _.unrollMake( array );
+  if( f === 0 && l === src.length )
+  return _.unrollMake( src );
 
-  result = _.unrollMakeUndefined( array, l-f );
+  result = _.unrollMakeUndefined( src, l-f );
 
   /* */
 
   let f2 = Math.max( f, 0 );
-  let l2 = Math.min( array.length, l );
+  let l2 = Math.min( src.length, l );
   for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f ] = array[ r ];
+  result[ r-f ] = src[ r ];
 
   /* */
 
   if( val !== undefined )
   {
     for( let r = 0 ; r < -f ; r++ )
-    {
-      result[ r ] = val;
-    }
+    result[ r ] = val;
     for( let r = l2 - f; r < result.length ; r++ )
-    {
-      result[ r ] = val;
-    }
+    result[ r ] = val;
   }
 
   /* */
