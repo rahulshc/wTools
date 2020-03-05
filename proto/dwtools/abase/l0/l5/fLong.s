@@ -165,7 +165,7 @@ function _longMake_functor( onMake )
  * or if {-ins-} is number, the Long makes from {-src-} with length equal to {-ins-}. If {-ins-} is not provided, routine  makes
  * container with default Long type. New Long contains {-src-} elements.
  *
- * @param { Long|Routine|Null } src - Instance of Long or constructor, defines type of returned Long. If null is provided, routine returns 
+ * @param { Long|Function|Null } src - Instance of Long or constructor, defines type of returned Long. If null is provided, routine returns 
  * container with default Long type.
  * @param { Number|Long|Null } ins - Defines length of new Long. If Long is provided, routine makes new Long from {-ins-} with {-src-} type.
  * If null is provided, then routine makes container with default Long type.
@@ -215,8 +215,6 @@ function _longMake_functor( onMake )
  * let got = _.longMake( new F32x( [ 1, 2, 3 ] ), 1 );
  * console.log( got );
  * // log Float32Array[ 1 ];
- * console.log( _.bufferTypedIs( got ) );
- * // log true
  *
  * @example
  * let got = _.longMake( Array, null );
@@ -622,48 +620,82 @@ let _longMakeOfLength = _longMake_functor( function( src, ins, length, minLength
 //
 
 /**
- * The routine longMakeUndefined() returns a new Long with the same type as source Long {-src-}. New Long has length equal to {-len-}
- * or it has length of source Long {-src-} if second argument is not provided.
+ * The routine longMakeUndefined() returns a new Long with the same type as source Long {-src-}. New Long has length equal to {-ins-} 
+ * argument. If {-ins-} is not provided, then new container has default Long type and length of source Long {-src-}.
  *
- * @param { Long } ins - Long or constructor, defines type of returned Long. If null is provided, routine returns empty array.
- * @param { Number|Long } len - Defines length of new Long. If Long is provided, routine makes new Long with length equal to ins.length.
+ * @param { Long|Function|Null } src - Long or constructor, defines type of returned Long. If null is provided, then routine returns 
+ * container with default Long type.
+ * @param { Number|Long } ins - Defines length of new Long. If {-ins-} is Long, then routine makes new Long with length equal to ins.length.
+ *
+ * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
+ *
+ * @example
+ * _.longMakeUndefined();
+ * // returns []
  *
  * @example
  * _.longMakeUndefined( null );
  * // returns []
  *
  * @example
+ * _.longMakeUndefined( null, null );
+ * // returns []
+ *
+ * @example
+ * _.longMakeUndefined( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.longMakeUndefined( 3, undefined );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
  * _.longMakeUndefined( [ 1, 2, 3, 4 ] );
  * // returns [ undefined, undefined, undefined, undefined ];
  *
  * @example
- * let src = _.unrollMake( [] )
- * let got = _.longMakeUndefined( src, [ 1, 2, 3 ] );
+ * _.longMakeUndefined( [ 1, 2, 3, 4 ], null );
+ * // returns [ undefined, undefined, undefined, undefined ];
+ *
+ * @example
+ * _.longMakeUndefined( [ 1, 2, 3, 4 ], 2 );
+ * // returns [ undefined, undefined ];
+ *
+ * @example
+ * let got = _.longMakeUndefined( _.unrollMake( [] ), [ 1, 2, 3 ] );
  * console.log( got );
  * // log [ undefined, undefined, undefined ];
  * console.log( _.unrollIs( got ) );
  * // log true
  *
  * @example
- * let src = new F32x( [ 1, 2, 3, 4, 5] )
- * let got = _.longMakeUndefined( src, 2 );
+ * let got = _.longMakeUndefined( new F32x( [ 1, 2, 3, 4 ] ), 2 );
  * console.log( got );
  * // log Float32Array[ undefined, undefined ];
- * console.log( _.bufferTypedIs( got ) );
- * // log true
  *
- * @returns { Long } - Returns a Long with type of source Long with a certain length.
+ * @example
+ * let got = _.longMakeUndefined( Array, null );
+ * console.log( got );
+ * // log [];
+ *
+ * @example
+ * let got = _.longMakeUndefined( Array, 3 );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined ];
+ *
+ * @returns { Long } - Returns a Long with type of source Long {-src-} with a certain length defined by {-ins-}.
+ * If {-ins-} is not defined, then routine returns container with default Long type. Length of the new container defines by {-src-}.
  * @function longMakeUndefined
- * @throws { Error } If arguments.length is less than one or more then two.
- * @throws { Error } If the {-ins-} is not a Long or not a constructor.
- * @throws { Error } If the {-len-} is not a number or not a Long.
- * @throws { Error } If the {-len-} or ins.length has a not finite value.
- * @throws { Error } If the {-len-} is undefined and ins.length is not a number.
+ * @throws { Error } If arguments.length is more then two.
+ * @throws { Error } If the {-src-} is not a Long, not a constructor, not null.
+ * @throws { Error } If the {-ins-} is not a number, not a Long, not null, not undefined.
+ * @throws { Error } If the {-ins-} or ins.length has a not finite value.
  * @memberof wTools
  */
 
 /*
-qqq : extend coverage and documentation of longMakeUndefined 
+aaa : extend coverage and documentation of longMakeUndefined 
+Dmytro : extended coverage and documentation
 aaa : longMakeUndefined does not create unrolls, but should 
 Dmytro : longMakeUndefined creates unrolls.
 */
