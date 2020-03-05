@@ -196,15 +196,28 @@ function arrayMake( src )
  * The routine arrayMakeUndefined() returns a new Array with length equal to {-length-}.
  * If {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
  *
- * @param { Number|Long|Null } src - The number or any Long. If {-length-} is not provided, defines length of new Array.
- * @param { Number } length - Defines length of new Array.
+ * @param { Number|Long|Set|Null } src - The number or any Long. If {-length-} parameter is not provided,
+ * then it defines length of new Array.
+ * @param { Number|Long|Null } length - Defines length of new Array. If null is provided, then length defines by {-src-}.
+ *
+ * @example
+ * _.arrayMakeUndefined();
+ * // returns []
  *
  * @example
  * _.arrayMakeUndefined( null );
  * // returns []
  *
  * @example
+ * _.arrayMakeUndefined( null, null );
+ * // returns []
+ *
+ * @example
  * _.arrayMakeUndefined( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.arrayMakeUndefined( 3, null );
  * // returns [ undefined, undefined, undefined ]
  *
  * @example
@@ -214,6 +227,14 @@ function arrayMake( src )
  * @example
  * let src = [ 1, 2, 3, 4, '5' ]
  * let got = _.arrayMakeUndefined( src );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined, undefined, undefined ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.arrayMakeUndefined( src, null );
  * console.log( got );
  * // log [ undefined, undefined, undefined, undefined, undefined ]
  * console.log( got === src );
@@ -241,12 +262,12 @@ function arrayMake( src )
  * console.log( _.arrayIs( got ) );
  * // log true
  *
- * @returns { Array } Returns a new Array with length equal to {-length-} or defined from {-src-}.
+ * @returns { Array } - Returns a new Array with length equal to {-length-} or defined from {-src-}.
  * If null passed, routine returns the empty Array.
  * @function arrayMakeUndefined
- * @throws { Error } If arguments.length is less then one or more then two.
- * @throws { Error } If argument {-src-} is not a number, not a Long, not null.
- * @throws { Error } If argument {-length-} is not a number.
+ * @throws { Error } If arguments.length is more then two.
+ * @throws { Error } If argument {-src-} is not a number, not a Long, not a Set, not null.
+ * @throws { Error } If argument {-length-} is not a number, not Long, not null.
  * @memberof wTools
  */
 
@@ -301,32 +322,40 @@ function arrayFrom( src )
 //
 
 /**
- * The arrayFromCoercing() routine converts an object-like {-srcMap-} into Array.
+ * The routine arrayFromCoercing() returns Array from provided argument {-src-}. The feature of routine is possibility of 
+ * converting an object-like {-src-} into Array. Also, routine longFromCoercing() converts string with number literals
+ * to an Array. 
  *
- * @param { * } src - To convert into Array.
+ * @param { Array|Long|ObjectLike|String } src - An instance to convert into Array.
+ * If {-src-} is instance of Array, then routine converts not {-src-}.
  *
  * @example
- * _.arrayFromCoercing( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * let src = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+ * let got = _.arrayFromCoercing( src );
  * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * console.log( got === src );
+ * // log true
  *
  * @example
- * _.arrayFromCoercing( { a : 3, b : 7, c : 13 } );
+ * let src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * let got = _.arrayFromCoercing( src );
+ * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = { a : 3, b : 7, c : 13 };
+ * let got = _.arrayFromCoercing( src );
  * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
  *
  * @example
- * _.arrayFromCoercing( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
+ * let src = "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl";
+ * let got = _.arrayFromCoercing( src );
  * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
  *
- * @example
- * let args = ( function() {
- *   return arguments;
- * } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
- * _.arrayFromCoercing( args );
- * // returns [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ]
- *
- * @returns { Array } Returns an Array.
+ * @returns { Array } - Returns an Array. If {-src-} is Array instance, then routine returns original {-src-}.
  * @function arrayFromCoercing
- * @throws { Error } Will throw an Error if {-srcMap-} is not an object-like.
+ * @throws { Error } If {-src-} is not an Array, not a Long, not object-like, not a String.
  * @memberof wTools
  */
 
