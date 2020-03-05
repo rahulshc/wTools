@@ -401,7 +401,8 @@ function unrollNormalize( dstArray )
 //
 
 /**
- * The routine unrollSelect() returns a copy of a portion of {-src-} into a new Unroll. The portion of {-src-} selected by {-range-}. If end index of new Unroll is more then src.length, then routine appends elements with {-val-} value.
+ * The routine unrollSelect() returns a copy of a portion of {-src-} into a new Unroll. The portion of {-src-} selected
+ * by {-range-}. If end index of new Unroll is more then src.length, then routine appends elements with {-val-} value.
  * The original {-src-} will not be modified.
  *
  * @param { Long } src - The Long from which makes a shallow copy.

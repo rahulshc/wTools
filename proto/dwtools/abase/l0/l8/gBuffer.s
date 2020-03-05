@@ -19,8 +19,6 @@ function buffersTypedAreEquivalent( src1, src2, accuracy )
   return false;
 
   if( src1.length !== src2.length )
-  debugger;
-  if( src1.length !== src2.length )
   return false;
 
   if( accuracy === null || accuracy === undefined )
@@ -132,8 +130,6 @@ function buffersAreEquivalent( src1, src2, accuracy )
   else if( _.bufferViewIs( src1 ) )
   return _.buffersViewAreIdentical( src1, src2 );
   else if( _.bufferNodeIs( src1 ) )
-  // Dmytro : correct misprint
-  // return _.buffersNodeAreIdentica( src1, src2 );
   return _.buffersNodeAreIdentical( src1, src2 );
   else return false;
 
@@ -272,51 +268,68 @@ function _bufferMake_functor( onMake )
 //
 
 /**
- * The routine bufferMake() returns a new buffer with the same type as source buffer {-ins-}. New buffer makes from inserted buffer {-src-}
- * or if {-src-} is number, the buffer makes from {-ins-} with length equal to {-src-}. If {-src-} is not provided, routine returns copy of {-ins-}.
+ * The routine bufferMake() returns a new buffer with the same type as source buffer {-src-}. New buffer fills by content of insertion buffer {-ins-}. If {-ins-} is
+ * a number, the buffer fills by {-src-} content. The length of resulted buffer is equal to {-ins-}. If {-ins-} is not defined, then routine makes default Long type, 
+ * length of returned container defines from {-src-}.  
  *
- * @param { BufferAny|Long|Function } ins - Instance of any buffer, Long or constructor, defines type of returned buffer. If not a buffer is provided, routine returns instance of default long.
- * @param { Number|Long|Buffer } src - Defines length of new buffer. If buffer of Long is provided, routine makes new buffer from {-src-} with {-ins-} type.
- *
- * @example
- * let ins = BufferNode.from( [ 1, 2, 3, 4 ] );
- * let got = _.bufferMake( ins );
- * console.log( got );
- * // log Buffer[ 1, 2, 3 ];
- * console.log( _.bufferNodeIs( got ) );
- * // log true
+ * @param { BufferAny|Long|Function|Number|Null } src - Instance of any buffer, Long or constructor, defines type of returned buffer. If {-src-} is null,
+ * then routine returns instance of default Long.
+ * @param { Number|Long|Buffer|Null|Undefined } ins - Defines length and content of new buffer. If {-ins-} is null or undefined, then routine makes new container 
+ * with default Long type and fills it by {-src-} content.
  *
  * @example
- * let ins = _.unrollMake( [] )
- * let got = _.bufferMake( ins, [ 1, 2, 3 ] );
- * console.log( got );
- * // log [ 1, 2, 3 ];
- * console.log( _.unrollIs( got ) );
+ * let got = _.bufferMake();
+ * // returns []
+ *
+ * @example
+ * let got = _.bufferMake( null );
+ * // returns []
+ *
+ * @example
+ * let got = _.bufferMake( null, null );
+ * // returns []
+ *
+ * @example
+ * let got = _.bufferMake( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * let got = _.bufferMake( 3, null );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * let got = _.bufferMake( new U8x( [ 1, 2, 3 ] ) );
+ * // returns [ 1, 2, 3 ];
+ * _.bufferTypedIs( got );
  * // log false
  *
  * @example
- * let ins = new BufferRaw( 0 );
- * let got = _.bufferMake( ins, new U32x( [ 1, 2, 3 ] ) );
- * console.log( got );
- * // log ArrayBuffer[ 0x1, 0x2, 0x3 ];
- * console.log( _.bufferRawIs( got ) );
- * // log true
+ * let got = _.bufferMake( new I16x( [ 1, 2, 3 ] ), null );
+ * // returns [ 1, 2, 3 ];
+ * _.bufferTypedIs( got );
+ * // log false
  *
  * @example
- * let ins = new F32x( [ 1, 2, 3, 4, 5 ] );
- * let got = _.bufferMake( ins, 2 );
- * console.log( got );
- * // log Float32Array[ 1, 2 ];
- * console.log( _.bufferTypedIs( got ) );
- * // log true
+ * _.bufferMake( new BufferRaw( 4 ), 6 );
+ * // returns ArrayBuffer { [Uint8Contents]: <00 00 00 00 00 00>, byteLength: 6 }
  *
- * @returns { BufferAny|Array }  Returns a buffer ( array ) from {-src-} with {-ins-} type.
+ * @example
+ * _.bufferMake( new BufferRaw( 4 ), [ 1, 2, 3 ] );
+ * // returns ArrayBuffer { [Uint8Contents]: <01 02 03>, byteLength: 3 }
+ *
+ * @example
+ * _.bufferMake( F64x, [ 1, 2, 3 ] );
+ * // returns Float64Array [ 1, 2, 3 ]
+ *
+ * @returns { BufferAny|Long }  Returns a buffer with source buffer {-src-} type filled by insertion container {-ins-} content.
+ * If {-ins-} is not defined, then routine makes default Long type container and fills it by {-src-} content.
  * @function bufferMake
- * @throws { Error } If arguments.length is less then one or more than two.
- * @throws { Error } If {-ins-} is constructor and second argument {-src-} is not provided.
- * @throws { Error } If {-src-} is not a number, not a Long, not a buffer.
- * @throws { Error } If {-ins-} is not a Long, not a buffer or not a constructor.
- * @throws { Error } If {-src-} or src.length has a not finite value.
+ * @throws { Error } If arguments.length is more than two.
+ * @throws { Error } If {-src-} is not a Long, not a buffer, not a Number, not a constructor, not null.
+ * @throws { Error } If {-src-} is constructor and second argument {-src-} is not provided.
+ * @throws { Error } If {-src-} is constructor that returns not a Long, not a buffer value.
+ * @throws { Error } If {-ins-} is not a number, not a Long, not a buffer, not null, not undefined.
+ * @throws { Error } If {-ins-} or src.length has a not finite value.
  * @memberof wTools
  */
 
