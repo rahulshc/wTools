@@ -290,38 +290,31 @@ function unrollsFrom( srcs )
 /**
  * The routine unrollFromMaybe() performs conversion of {-src-} to unroll-array.
  *
- * If {-src-} is not unroll-array, routine unrollFromMaybe() returns new unroll-array.
- * If {-src-} is unroll-array, then routine returns {-src-}.
- * If {-src-} has incompatible type, then routine returns {-src-}.
- *
  * @param { * } src - The object to make Unroll.
+ * If {-src-} has incompatible type, then routine returns original {-src-}.
+ * If {-src-} is unroll-array, then routine returns original {-src-}.
+ * If {-src-} is not unroll-array, and it converts into unroll-array, then routine
+ * unrollFromMaybe() returns new unroll-array.
  *
  * @example
- * var src = 'str';
+ * let got = _.unrollFromMaybe( 'str' );
+ * // returns 'str'
+ *
+ * @example
+ * let got = _.unrollFromMaybe( { a : 1 } );
+ * // returns { a : 1 }
+ *
+ * @example
+ * let got = _.unrollFromMaybe( null );
+ * // returns [] 
+ * console.log( _.unrollIs( unroll ) );
+ * // log true
+ *
+ * @example
+ * let src = _.unrollMake( [ 1, 2, 'str' ] );
  * let got = _.unrollFromMaybe( src );
- * console.log( _.unrollIs( got ) );
- * // log false
- * console.log( got === src );
+ * console.log ( src === got );
  * // log true
- *
- * @example
- * let unroll = _.unrollFromMaybe( null );
- * console.log( _.unrollIs( unroll ) );
- * // log false
- *
- * @example
- * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
- * let result = _.unrollFromMaybe( unroll );
- * console.log ( unroll === result );
- * // log true
- *
- * @example
- * let arr = new Array( 1, 2, 'str' );
- * let unroll = _.unrollFromMaybe( [ 1, 2, 'str' ] );
- * console.log( _.unrollIs( unroll ) );
- * // log true
- * console.log( arr === unroll );
- * // log false
  *
  * @returns { Unroll } Returns Unroll converted from {-src-}.
  * If {-src-} is Unroll or incompatible type, then routine returns {-src-}.
@@ -336,9 +329,9 @@ function unrollFromMaybe( src )
   // if( _.unrollIs( src ) || _.strIs( src ) || _.boolIs( src ) || _.mapIs( src ) || src === undefined )
   // return src;
   // return _.unrollMake( src );
-  if( _.unrollIs( src ) ) /* previous implementation is wrong. Condition of routine can be combined by another order */
+  if( _.unrollIs( src ) ) /* previous implementation is wrong */ /* Condition of routine can be combined by another order */
   return src;
-  else if( _.longIs( src ) || _.numberIs( src ) || src === null )
+  else if( _.longIs( src ) || _.numberIs( src ) || src === null || src === undefined )
   return _.unrollMake( src );
   else
   return src;
