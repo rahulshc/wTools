@@ -116,12 +116,21 @@ function hasLength( src )
 // --
 
 /**
- * The routine arrayMake() returns a new Array maked from {-src-}.
+ * The routine arrayMake() returns a new Array maiden from argument {-src-}.
  *
- * @param { Number|Long|Null } src - The number or any Long to make new Array. If null passed, routine returns an empty Array.
+ * @param { Number|Long|Set|Null|Undefined } src - The number or any Long to make new Array. If {-src-} is null
+ * or undefined, then routine returns an empty Array.
+ *
+ * @example
+ * _.arrayMake();
+ * // returns []
  *
  * @example
  * _.arrayMake( null );
+ * // returns []
+ *
+ * @example
+ * _.arrayMake( undefined );
  * // returns []
  *
  * @example
@@ -152,11 +161,11 @@ function hasLength( src )
  * console.log( _.arrayIs( got ) );
  * // log true
  *
- * @returns { Array } Returns a new Array maked from {-src-}.
- * Otherwise, it returns the empty Array.
+ * @returns { Array } - Returns a new Array maiden from {-src-}. If {-src-} is null or undefined, then routine returns
+ * empty array. Otherwise, it returns the Array filled by {-src-} elements.
  * @function arrayMake
- * @throws { Error } If arguments.length is less or more then one.
- * @throws { Error } If argument {-src-} is not a number, not a Long, not null.
+ * @throws { Error } If arguments.length is more then one.
+ * @throws { Error } If {-src-} is not a number, not a Long, not Set, not null, not undefined.
  * @memberof wTools
  */
 
