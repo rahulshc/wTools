@@ -401,13 +401,13 @@ function unrollNormalize( dstArray )
 //
 
 /**
- * The routine unrollSelect() returns a copy of a portion of {-array-} into a new Unroll. The portion of {-array-} selected by {-range-}. If end index of new Unroll is more then array.length, then routine appends elements with {-val-} value.
- * The original {-array-} will not be modified.
+ * The routine unrollSelect() returns a copy of a portion of {-src-} into a new Unroll. The portion of {-src-} selected by {-range-}. If end index of new Unroll is more then src.length, then routine appends elements with {-val-} value.
+ * The original {-src-} will not be modified.
  *
- * @param { Long } array - The Long from which makes a shallow copy.
- * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
- * If {-range-} is number, then it defines the start index, and the end index sets to array.length.
- * If {-range-} is undefined, routine returns Unroll with copy of {-array-}.
+ * @param { Long } src - The Long from which makes a shallow copy.
+ * @param { Range|Number } range - The two-element src that defines the start index and the end index for copying elements.
+ * If {-range-} is number, then it defines the start index, and the end index sets to src.length.
+ * If {-range-} is undefined, routine returns Unroll with copy of {-src-}.
  * If range[ 0 ] < 0, then start index sets to 0, the end index increments by absolute value of range[ 0 ].
  * If range[ 1 ] <= range[ 0 ], then routine returns empty Unroll.
  * @param { * } val - The object of any type for insertion.
