@@ -172,32 +172,50 @@ function unrollMakeUndefined( src, length )
  * If {-src-} is not unroll-array, routine unrollFrom() returns new unroll-array.
  * If {-src-} is unroll-array, then routine returns {-src-}.
  *
- * @param { * } src - The number, array-like object or Unroll. Passing null returns an empty Unroll.
+ * @param { Long|Set|Number|Null|Undefined } src - The number, array-like object or Unroll. If null is provided,
+ * then routine returns an empty Unroll.
  *
  * @example
- * let unroll = _.unrollFrom( null );
- * _.unrollIs( unroll );
+ * let got = _.unrollFrom( null );
+ * // returns []
+ * _.unrollIs( got );
  * // returns true
  *
  * @example
- * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
- * let result = _.unrollFrom( unroll );
- * console.log ( unroll === result );
+ * let got = _.unrollFrom( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ * _.unrollIs( got );
+ * // returns true
+ *
+ * @example
+ * let got = _.unrollFrom( [ 1, 2, 'str' ] );
+ * // returns [ 1, 2, 'str' ]
+ * console.log( _.unrollIs( got ) );
  * // log true
  *
  * @example
- * let arr = new Array( 1, 2, 'str' );
- * let unroll = _.unrollFrom( [ 1, 2, 'str' ] );
- * console.log( _.unrollIs( unroll ) );
+ * let got = _.unrollFrom( new F32x( [ 1, 2, 0 ] ) );
+ * // returns [ 1, 2, 0 ]
+ * console.log( _.unrollIs( got ) );
  * // log true
- * console.log( arr === unroll );
- * // log false
  *
- * @returns { Unroll } Returns Unroll converted from {-src-}.
- * If {-src-} is Unroll, then routine returns {-src-}.
+ * @example
+ * let got = _.unrollFrom( new Set( [ 1, 2, 'str' ] ) );
+ * // returns [ 1, 2, 'str' ]
+ * console.log( _.unrollIs( got ) );
+ * // log true
+ *
+ * @example
+ * let src = _.unrollMake( [ 1, 2, 'str' ] );
+ * let got = _.unrollFrom( src );
+ * // returns [ 1, 2, 'str' ]
+ * console.log ( src === got );
+ * // log true
+ *
+ * @returns { Unroll } Returns Unroll converted from {-src-}. If {-src-} is Unroll, then routine returns {-src-}.
  * @function unrollFrom
- * @throws { Error } If (arguments.length) is less or more then one.
- * @throws { Error } If argument {-src-} is not number, not Long, not null.
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If argument {-src-} is not Long, not number, not Set, not null, not undefined.
  * @memberof wTools
  */
 
