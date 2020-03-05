@@ -194,7 +194,7 @@ function arrayMake( src )
 
 /**
  * The routine arrayMakeUndefined() returns a new Array with length equal to {-length-}.
- * If the argument {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
+ * If {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
  *
  * @param { Number|Long|Null } src - The number or any Long. If {-length-} is not provided, defines length of new Array.
  * @param { Number } length - Defines length of new Array.
@@ -260,12 +260,12 @@ function arrayMakeUndefined( src, length )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( src ) || _.longLike( src ) || _.setLike( src ) || src === null );
-  // _.assert( length === undefined || _.numberIs( length ) );
 
   if( _.longIs( length ) )
-  length = length.length;
-
-  if( length === undefined || length === null )
+  {
+    length = length.length;
+  }
+  else if( length === undefined || length === null )
   {
     if( src === null )
     length = 0;
@@ -278,17 +278,13 @@ function arrayMakeUndefined( src, length )
     else
     _.assert( 0 );
   }
+  else if( !_.numberIs( length ) )
+  {
+    _.assert( 0, 'Unknown length' )
+  }
 
-  // if( src && src.length && length === undefined )
-  // length = src.length;
-  //
-  // if( _.numberIs( src ) && length === undefined )
-  // length = src;
+  _.assert( _.numberIsFinite( length ) );
 
-  if( !length )
-  length = 0;
-
-  _.assert( _.numberIsFinite( length ) )
   return Array( length );
 }
 
