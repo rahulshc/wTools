@@ -1298,32 +1298,45 @@ function longFrom( src )
 //
 
 /**
- * The longFromCoercing() routine converts an object-like {-srcMap-} into Array.
+ * The routine longFromCoercing() returns Long from provided argument {-src-}. The feature of routine is possibility of 
+ * converting an object-like {-src-} into Long. Also, routine longFromCoercing() converts string with number literals
+ * to a Long.
+ * If routine convert {-src-}, then result returns in container with default Long type. 
  *
- * @param { * } src - To convert into Array.
+ * @param { Long|ObjectLike|String } src - An instance to convert into Long.
+ * If {-src-} is a Long and it type is equal to current default Long type, then routine convert not {-src-}.
+ *
+ * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
  *
  * @example
- * _.longFromCoercing( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * let src = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+ * let got = _.longFromCoercing( src );
  * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * console.log( got === src );
+ * // log true
  *
  * @example
- * _.longFromCoercing( { a : 3, b : 7, c : 13 } );
+ * let src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * let got = _.longFromCoercing( src );
+ * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = { a : 3, b : 7, c : 13 };
+ * let got = _.longFromCoercing( src );
  * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
  *
  * @example
- * _.longFromCoercing( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
+ * let src = "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl";
+ * let got = _.longFromCoercing( src );
  * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
  *
- * @example
- * let args = ( function() {
- *   return arguments;
- * } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
- * _.longFromCoercing( args );
- * // returns [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ]
- *
- * @returns { Array } Returns an Array.
+ * @returns { Long } - Returns a Long. If {-src-} is Long with default Long type, then routine returns original {-src-}.
+ * Otherwise, it makes new container with default Long type.
  * @function longFromCoercing
- * @throws { Error } Will throw an Error if {-srcMap-} is not an object-like.
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-src-} is not a Long, not an object-like, not a string.
  * @memberof wTools
  */
 
