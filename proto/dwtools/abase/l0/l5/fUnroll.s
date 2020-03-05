@@ -233,51 +233,40 @@ function unrollFrom( src )
  * The routine unrollsFrom() performs conversion of each argument to unroll-array.
  * The routine returns unroll-array contained unroll-arrays converted from arguments.
  *
- * @param { * } srcs - The objects to be converted into Unrolls.
+ * @param { Long|Set|Number|Null|Undefined } srcs - The objects to be converted into Unrolls.
  *
  * @example
- * let unroll = _.unrollsFrom( null );
- * console.log( unroll );
- * // log [ [] ]
- * console.log( _.unrollIs( unroll ) );
- * // log true
+ * let got = _.unrollsFrom( null );
+ * // returns [ [] ]
+ * _.unrollIs( got );
+ * // true true
  *
  * @example
- * let unroll = _.unrollsFrom( [ 1, 2, 'str' ] );
- * console.log ( unroll );
- * // log [ [ 1, 2, 'str' ] ]
- * console.log( _.unrollIs( unroll ) );
- * // log true
- * console.log( _.unrollIs( unroll[ 0 ] ) );
- * // log true
+ * let got = _.unrollsFrom( [ 1, 2, 'str' ] );
+ * // returns [ [ 1, 2, 'str' ] ]
+ * _.unrollIs( got );
+ * // returns true
+ * _.unrollIs( got[ 0 ] );
+ * // returns true
  *
  * @example
- * let arr = new Array( 1, 2, 'str' );
- * let unroll = _.unrollsFrom( [ 1, 2, 'str' ] );
- * console.log( _.unrollIs( unroll ) );
- * // log true
- * console.log( arr === unroll );
- * // log false
+ * let got = _.unrollsFrom( [], 1, null, [ 1, 'str' ] );
+ * // returns [ [], [ undefined ], [], [ 1, 'str' ] ]
+ * _.unrollIs( got );
+ * // returns true
+ * _.unrollIs( got[ 0 ] );
+ * // returns true
+ * _.unrollIs( got[ 1 ] );
+ * // returns true
+ * _.unrollIs( got[ 2 ] );
+ * // returns true
+ * _.unrollIs( got[ 3 ] );
+ * // returns true
  *
- * @example
- * let unroll = _.unrollsFrom( [], 1, null, [ 1, [] ] );
- * console.log( unroll );
- * // log [ [], [ undefined ], [], [ 1, [] ] ]
- * console.log( _.unrollIs( unroll ) );
- * // log true
- * console.log( _.unrollIs( unroll[ 0 ] ) );
- * // log true
- * console.log( _.unrollIs( unroll[ 1 ] ) );
- * // log true
- * console.log( _.unrollIs( unroll[ 2 ] ) );
- * // log true
- * console.log( _.unrollIs( unroll[ 3 ] ) );
- * // log true
- *
- * @returns { Unroll } Returns Unroll contained Unrolls converted from arguments.
+ * @returns { Unroll } - Returns Unroll contained Unrolls converted from arguments.
  * @function unrollsFrom
- * @throws { Error } If (arguments.length) is less then one.
- * @throws { Error } If any of the arguments is not number, not Long, not null.
+ * @throws { Error } If arguments.length is less then one.
+ * @throws { Error } If any of the arguments is not a Long, not a Set, not a Number, not null, not undefined.
  * @memberof wTools
  */
 
