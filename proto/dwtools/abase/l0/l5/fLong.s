@@ -883,17 +883,17 @@ function longMakeFilling( type, value, length )
 //
 
 /**
- * The routine arrayFill() fills all the elements of the given Long in the provided range
- * with a static value.
+ * The routine longFill() fills elements the given Long {-src-} by static value. The range of replaced elements
+ * defines by a parameter {-range-}. If it possible, routine longFill() saves original container {-src-}.
  *
- * @param { Long } result - The source Long.
- * @param { * } value - Any value to fill the elements in the {-result-}.
+ * @param { Long } src - The source Long.
+ * @param { * } value - Any value to fill the elements in the {-src-}.
  * If {-value-} is not provided, the routine fills elements of source Long by 0.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
  * If {-range-} is number, then it defines the end index, and the start index is 0.
- * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 0 ] < 0, then start index sets to 0, end index increments by absolute value of range[ 0 ].
  * If range[ 1 ] <= range[ 0 ], then routine returns a copy of original Long.
- * If {-range-} is not provided, routine fills all elements of the {-result-}.
+ * If {-range-} is not provided, routine fills all elements of the {-src-}.
  *
  * @example
  * _.longFill( [ 1, 2, 3, 4, 5 ] );
@@ -923,27 +923,27 @@ function longMakeFilling( type, value, length )
  * Otherwise, returns copy of the source Long filled with a static value.
  * @function longFill
  * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If {-result-} is not a Long.
+ * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-range-} is not a Range or not a Number.
  * @memberof wTools
  */
 
-function longFill( result, value, range )
+function longFill( src, value, range )
 {
 
   if( range === undefined )
-  range = [ 0, result.length ];
+  range = [ 0, src.length ];
   if( _.numberIs( range ) )
   range = [ 0, range ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( _.longIs( result ) );
+  _.assert( _.longIs( src ) );
   _.assert( _.rangeIs( range ) );
 
   if( value === undefined )
   value = 0;
 
-  result = _.longGrowInplace( result, range );
+  src = _.longGrowInplace( src, range );
 
   if( range[ 0 ] < 0 )
   {
@@ -951,17 +951,17 @@ function longFill( result, value, range )
     range[ 0 ] = 0;
   }
 
-  if( _.routineIs( result.fill ) )
+  if( _.routineIs( src.fill ) )
   {
-    result.fill( value, range[ 0 ], range[ 1 ] );
+    src.fill( value, range[ 0 ], range[ 1 ] );
   }
   else
   {
     for( let t = range[ 0 ] ; t < range[ 1 ] ; t++ )
-    result[ t ] = value;
+    src[ t ] = value;
   }
 
-  return result;
+  return src;
 }
 
 //
