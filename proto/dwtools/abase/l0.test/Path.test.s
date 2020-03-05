@@ -5433,31 +5433,55 @@ function dot( test )
 function undot( test )
 {
   /* qqq : unwrap array and normalize all tests in this test suite */
-  var cases =
-  [
-    { src : './', expected : './' },
-    { src : '.', expected : '.' },
-    { src : '..', expected : '..' },
-    { src : './a', expected : 'a' },
-    { src : 'a', expected : 'a' },
-    { src : './.a', expected : '.a' },
-    { src : './..a', expected : '..a' },
-    { src : '/./a', expected : '/./a' },
-  ]
+  /* Dmytro : unwrapped and normalized this test routine */ 
 
-  for( var i = 0 ; i < cases.length ; i++ )
-  {
-    var c = cases[ i ];
-    if( c.error )
-    {
-      if( !Config.debug )
-      continue;
-      test.shouldThrowErrorOfAnyKind( () => _.path.undot( c.src ) )
-    }
-    else
-    test.identical( _.path.undot( c.src ), c.expected );
-  }
+  test.case = 'next to current directory';
+  var src = './';
+  var got =  _.path.undot( src );
+  var exp = './';
+  test.identical( got, exp );
 
+  test.case = 'current directory';
+  var src = '.';
+  var got =  _.path.undot( src );
+  var exp = '.';
+  test.identical( got, exp );
+
+  test.case = 'up from current directory';
+  var src = '..';
+  var got =  _.path.undot( src );
+  var exp = '..';
+  test.identical( got, exp );
+
+  test.case = 'next to current directory is file';
+  var src = './a';
+  var got =  _.path.undot( src );
+  var exp = 'a';
+  test.identical( got, exp );
+
+  test.case = 'filename';
+  var src = 'a';
+  var got =  _.path.undot( src );
+  var exp = 'a';
+  test.identical( got, exp );
+
+  test.case = 'next to current directory is file, filename with dot at begin';
+  var src = './.a';
+  var got =  _.path.undot( src );
+  var exp = '.a';
+  test.identical( got, exp );
+
+  test.case = 'next to current directory is file, filename with double dot at begin';
+  var src = './..a';
+  var got =  _.path.undot( src );
+  var exp = '..a';
+  test.identical( got, exp );
+
+  test.case = 'file in directory with name ".", after root';
+  var src = '/./a';
+  var got =  _.path.undot( src );
+  var exp = '/./a';
+  test.identical( got, exp );
 }
 
 //
