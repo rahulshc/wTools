@@ -153,7 +153,7 @@ function entityMake( src )
   else if( _.longLike( src ) )
   {
     return this.longMake( src );
-    // return _.longShallowClone( src ); /* Dmytro : longShallowClone not use longDescriptor for constructing of long 
+    // return _.longShallowClone( src ); /* Dmytro : longShallowClone not use longDescriptor for constructing of long
   }
   else if( _.hashMapLike( src ) || _.setLike( src ) )
   {
@@ -486,7 +486,7 @@ let Extension =
   makeEmpty : entityMakeEmpty,
   entityMakeUndefined, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : takes into account longDescriptor, covered */
   makeUndefined : entityMakeUndefined,
-  entityMake, /* qqq2 : should take into account long descriptor, make perfect coverage, please */ 
+  entityMake, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
   /* Dmytro : have some question for new feature. Routine takes into account longDescriptor, covered */
   make : entityMake,
 
@@ -501,6 +501,7 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
+
 
 // --
 // export

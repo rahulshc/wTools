@@ -225,9 +225,181 @@ function empty( dstContainer )
   return dstContainer;
 }
 
+//
+
+function typeOf( src )
+{
+  _.assert( arguments.length === 1 );
+  for( let t in this.types )
+  {
+    let type = this.types[ t ];
+    if( type._is( src ) )
+    {
+      return type;
+    }
+  }
+}
+
+//
+
+function typeDeclare( type )
+{
+
+  _.assertMapHasOnly( type, this.knownTypeFields );
+  _.assert( arguments.length === 1 );
+  _.assert( _.strDefined( type.name ) );
+  _.assert( _.routineIs( type._is ) );
+  _.assert( this.types[ type.name ] === undefined || this.types[ type.name ] === type );
+
+  this.types[ type.name ] = type;
+
+  return type;
+}
+
+//
+
+function typeUndeclare( type )
+{
+
+  if( !_.strIs( type ) )
+  {
+    _.assert( _.longHas( _.mapVals( this.types ), type ), () => `Container type::${type.name} is not registered` );
+    type = type.name;
+  }
+
+  let result = this.types[ type ];
+
+  _.assert( arguments.length === 1 );
+  _.assert( result !== undefined );
+
+  delete this.types[ type ];
+
+  return result;
+}
+
+//
+
+function elementGet( container, key, type )
+{
+
+  _.assert( arguments.length === 2 || arguments.length === 3 );
+
+  // container = _.entity.elementGet( container, key );
+
+  if( type !== false )
+  {
+    type = _.container.typeOf( container );
+    if( type && type._elementGet )
+    return type._elementGet( container, key );
+  }
+
+  // if( _.setIs( it.src ) )
+  // e = [ ... it.src ][ k ];
+  // else if( _.hashMapIs( it.src ) )
+  // e = it.src.get( k );
+  // else if( it.src )
+  // e = it.src[ k ];
+  // else
+  // e = undefined;
+
+  if( container )
+  {
+    if( _.hashMapLike( container ) )
+    {
+      debugger;
+      return container.get( key );
+    }
+    else if( _.setLike( container ) )
+    {
+      return [ ... container ][ key ];
+    }
+    // else if( _.setIs( container ) )
+    // {
+    //   debugger; xxx
+    //   if( container.has( it.src ) )
+    //   container = it.src;
+    //   else if( _.containerIs( it.src ) )
+    //   container = undefined;
+    //   else
+    //   container = undefined;
+    // }
+    else
+    {
+      // _.assert( !_.setLike( container ), 'not implemented' );
+      return container[ key ];
+    }
+  }
+  else
+  {
+    return undefined;
+  }
+
+}
+
+//
+
+function elementSet( container, key, value )
+{
+
+  _.assert( arguments.length === 3 ); debugger;
+
+  let type = _.container.typeOf( container );
+  if( type && type._elementSet )
+  return type._elementSet( container, key, value );
+
+  if( container )
+  {
+    if( _.hashMapLike( container ) )
+    {
+      container.set( key, value );
+      return value;
+    }
+    // else if( _.setIs( container ) )
+    // {
+    //   debugger; xxx
+    //   if( container.has( it.src ) )
+    //   container = it.src;
+    //   else if( _.containerIs( it.src ) )
+    //   container = undefined;
+    //   else
+    //   container = undefined;
+    // }
+    else
+    {
+      _.assert( !_.setLike( container ), 'not implemented' );
+      container[ key ] = value;
+      return container[ key ];
+    }
+  }
+  else
+  {
+    return undefined;
+  }
+
+}
+
+// --
+// structure
+// --
+
+let knownTypeFields =
+{
+  name : null,
+  _elementSet : null,
+  _elementGet : null,
+  _is : null,
+  _while : null,
+}
+
 // --
 // extension
 // --
+
+let types;
+if( _realGlobal_.wTools && _realGlobal_.wTools.container && _realGlobal_.wTools.container.types )
+types = _realGlobal_.wTools.container.types;
+else
+types = Object.create( null );
 
 let Extension =
 {
@@ -239,9 +411,27 @@ let Extension =
 
   empty,
 
+  typeOf,
+  typeDeclare, /* qqq : cover please. ask how */
+  typeUndeclare,
+  elementGet,
+  elementSet,
+
+  // fields
+
+  knownTypeFields,
+
 }
 
 _.mapSupplement( Self, Extension );
+_.container.types = types;
+
+if( !_realGlobal_.wTools )
+_realGlobal_.wTools = Object.create( null );
+if( !_realGlobal_.wTools.container )
+_realGlobal_.wTools.container = Object.create( null );
+_.assert( _realGlobal_.wTools.container.types === undefined || _realGlobal_.wTools.container.types === types );
+_realGlobal_.wTools.container.types = types;
 
 // --
 // export
