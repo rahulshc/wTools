@@ -395,6 +395,11 @@ function unrollMakeLongDescriptor( test )
 
 function unrollMakeUndefined( test )
 {
+  test.case = 'without arguments';
+  var got = _.unrollMakeUndefined();
+  var expected = _.unrollMake();
+  test.identical( got, expected );
+
   test.case = 'src - null';
   var src = null;
   var got = _.unrollMakeUndefined( src );
@@ -821,9 +826,6 @@ function unrollMakeUndefined( test )
   if( !Config.debug )
   return;
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.unrollMakeUndefined() );
-
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.unrollMakeUndefined( 1, 3, 'extra' ) );
 
@@ -862,6 +864,11 @@ function unrollMakeUndefinedLongDescriptor( test )
 
   function testRun( descriptor )
   {
+    test.case = 'without arguments';
+    var got = _.unrollMakeUndefined();
+    var expected = _.unrollMake();
+    test.identical( got, expected );
+
     test.case = 'src - null';
     var src = null;
     var got = descriptor.unrollMakeUndefined( src );
@@ -1287,9 +1294,6 @@ function unrollMakeUndefinedLongDescriptor( test )
 
     if( Config.debug )
     {
-      test.case = 'without arguments';
-      test.shouldThrowErrorSync( () => descriptor.unrollMakeUndefined() );
-
       test.case = 'extra arguments';
       test.shouldThrowErrorSync( () => descriptor.unrollMakeUndefined( 1, 3, 'extra' ) );
 
