@@ -316,10 +316,10 @@ function unrollsFrom( srcs )
  * console.log ( src === got );
  * // log true
  *
- * @returns { Unroll } Returns Unroll converted from {-src-}.
- * If {-src-} is Unroll or incompatible type, then routine returns {-src-}.
+ * @returns { Unroll|* } - If it possible, routine returns Unroll converted from {-src-}.
+ * If {-src-} is Unroll or incompatible type, it returns original {-src-}.
  * @function unrollFromMaybe
- * @throws { Error } If (arguments.length) is less or more then one.
+ * @throws { Error } If arguments.length is less or more then one.
  * @memberof wTools
  */
 
@@ -331,7 +331,7 @@ function unrollFromMaybe( src )
   // return _.unrollMake( src );
   if( _.unrollIs( src ) ) /* previous implementation is wrong */ /* Condition of routine can be combined by another order */
   return src;
-  else if( _.longIs( src ) || _.numberIs( src ) || src === null || src === undefined )
+  else if( _.longIs( src ) || _.numberIs( src ) || src === null )
   return _.unrollMake( src );
   else
   return src;
