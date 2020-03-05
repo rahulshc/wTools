@@ -15,29 +15,44 @@ let Self = _global_.wTools;
  *
  * Unroll constructed by attaching symbol _.unroll Symbol to ordinary array. Making an unroll normalizes its content.
  *
- * @param { Number|Long|Set|Null|Undefined } src - The number or array-like object to make unroll-array. Passing null returns an empty Unroll.
+ * @param { Number|Long|Set|Null|Undefined } src - The number or other instance to make unroll-array. If null is provided,
+ * then routine returns an empty Unroll.
+ *
+ * @example
+ * let src = _.unrollMake();
+ * // returns []
+ * _.unrollIs( src );
+ * // returns true
  *
  * @example
  * let src = _.unrollMake( null );
+ * // returns []
+ * _.unrollIs( src );
+ * // returns true
+ *
+ * @example
+ * let src = _.unrollMake( null, null );
+ * // returns []
+ * _.unrollIs( src );
+ * // returns true
+ *
+ * @example
+ * let src = _.unrollMake( 3 );
+ * // returns [ undefined, undefined, undefined ]
  * _.unrollIs( src );
  * // returns true
  *
  * @example
  * let src = _.unrollMake( [ 1, 2, 'str' ] );
+ * // returns [ 1, 2, 'str' ]
  * _.unrollIs( src );
  * // returns true
  *
- * @example
- * let arr = new Array( 1, 2, 'str' );
- * let unroll = _.unrollMake( [ 1, 2, 'str' ] );
- * console.log( arr === unroll );
- * // log false
- *
- * @returns { Unroll } Returns a new Unroll maked from {-src-}.
+ * @returns { Unroll } - Returns a new Unroll maiden from {-src-}.
  * Otherwise, it returns the empty Unroll.
  * @function unrollMake
- * @throws { Error } If ( arguments.length ) is less or more then one.
- * @throws { Error } If argument ( src ) is not number, not array, not null.
+ * @throws { Error } If arguments.length is more then one.
+ * @throws { Error } If {-src-} is not a number, not a Long, not Set, not null, not undefined.
  * @memberof wTools
  */
 
@@ -111,12 +126,13 @@ function unrollMake( src )
 
 function unrollMakeUndefined( src, length )
 {
-  // if( src === null )
-  // src = [];
+  if( arguments.length === 0 )
+  return _.unrollMake();
 
   if( _.longIs( length ) )
-  length = length.length;
-
+  {
+    length = length.length;
+  }
   if( length === undefined || length === null )
   {
     if( src === null )
@@ -135,31 +151,12 @@ function unrollMakeUndefined( src, length )
     else _.assert( 0 );
   }
 
-  if( !length )
-  length = 0;
-
-  // if( length === undefined || length === null )
-  // length = src.length;
-  // else if ( _.longIs( length ) )
-  // length = length.length;
-  // else if( !_.numberIs( length ) )
-  // _.assert( 0 );
-
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIsFinite( length ) );
   _.assert( _.longIs( src ) || src === null );
 
   return _.unrollMake( length );
 }
-
-// function unrollMakeUndefined( src, length )
-// {
-//   let result = _.arrayMakeUndefined( src, length );
-//   _.assert( arguments.length === 1 || arguments.length === 2 );
-//   _.assert( _.arrayIs( result ) );
-//   result[ _.unroll ] = true;
-//   return result;
-// }
 
 //
 
