@@ -395,11 +395,12 @@ let knownTypeFields =
 // extension
 // --
 
-let types;
-if( _realGlobal_.wTools && _realGlobal_.wTools.container && _realGlobal_.wTools.container.types )
-types = _realGlobal_.wTools.container.types;
-else
-types = Object.create( null );
+// let types;
+// if( _realGlobal_.wTools && _realGlobal_.wTools.container && _realGlobal_.wTools.container.types )
+// types = _realGlobal_.wTools.container.types;
+// else
+// types = Object.create( null );
+let types = _realGlobal_.wTools.container.types;
 
 let Extension =
 {
@@ -426,12 +427,12 @@ let Extension =
 _.mapSupplement( Self, Extension );
 _.container.types = types;
 
-if( !_realGlobal_.wTools )
-_realGlobal_.wTools = Object.create( null );
-if( !_realGlobal_.wTools.container )
-_realGlobal_.wTools.container = Object.create( null );
-_.assert( _realGlobal_.wTools.container.types === undefined || _realGlobal_.wTools.container.types === types );
-_realGlobal_.wTools.container.types = types;
+// if( !_realGlobal_.wTools )
+// _realGlobal_.wTools = Object.create( null );
+// if( !_realGlobal_.wTools.container )
+// _realGlobal_.wTools.container = Object.create( null );
+// _.assert( _realGlobal_.wTools.container.types === undefined || _realGlobal_.wTools.container.types === types );
+// _realGlobal_.wTools.container.types = types;
 
 // --
 // export

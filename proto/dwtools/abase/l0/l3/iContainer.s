@@ -25,6 +25,21 @@ function like( src )
 // define
 // --
 
+let types;
+if( _realGlobal_.wTools && _realGlobal_.wTools.container && _realGlobal_.wTools.container.types )
+types = _realGlobal_.wTools.container.types;
+else
+types = Object.create( null );
+
+if( !_realGlobal_.wTools )
+_realGlobal_.wTools = Object.create( null );
+if( !_realGlobal_.wTools.container )
+_realGlobal_.wTools.container = Object.create( null );
+// _.assert( _realGlobal_.wTools.container.types === undefined || _realGlobal_.wTools.container.types === types );
+_realGlobal_.wTools.container.types = types;
+
+// let types = _realGlobal_.wTools.container.types;
+
 class Container
 {
   static [ Symbol.hasInstance ]( instance )
@@ -54,6 +69,12 @@ let Extension =
   is,
   like,
 
+  //
+
+  types
+
+  //
+
 }
 
 //
@@ -61,7 +82,9 @@ let Extension =
 // if( _.container !== undefined )
 // throw Error( 'wTools.container is already defined!' );
 // _.container = Self;
-_.container = _.container || Object.create( null );
+// _.container = _.container || Object.create( null );
+// _.container = _.container || Self;
+_.container = Self;
 
 Object.assign( Self, Extension );
 
