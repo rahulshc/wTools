@@ -29,7 +29,6 @@ _global._global_ = _wasGlobal;
 
 // verification
 
-debugger;
 if( _global_.__GLOBAL_WHICH__ === 'real' )
 {
 

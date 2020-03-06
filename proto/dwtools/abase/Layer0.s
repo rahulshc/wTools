@@ -6,9 +6,7 @@
 if( typeof module !== 'undefined' && module !== null )
 {
 
-  debugger;
   require( './l0/l1/Predefined.s' );
-  debugger;
 
   require( './l0/l2/Setup.s' );
 
