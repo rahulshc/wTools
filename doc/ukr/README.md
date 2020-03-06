@@ -72,16 +72,16 @@
 
 <details>
   <summary><a href="./concept/TypeRange.md">
-    Тип <code>Range</code>
+    Типи <code>Range</code>
   </a></summary>
     <code>Range</code> - тип даних - двоелементний вектор, що задає початок і кінець відліку елементів в контейнері.
 </details>
 
 <details>
   <summary><a href="./concept/LongDescriptor.md">
-    Дескриптор типу <code>longDescriptor</code> і дефолтний <code>long</code> тип
+    Дескриптор типу <code>long</code>
   </a></summary>
-    <code>longDescriptor</code> - дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
+    Дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
 </details>
 
 ## Туторіали
@@ -134,14 +134,14 @@
   <summary><a href="./tutorial/ConventionDstNullNew.md">
     Call conventions: dst - null
   </a></summary>
-    Передача значення <code>null</code> в параметр <code>dst</code>. 
+    Передача значення <code>null</code> в параметр <code>dst</code>.
 </details>
 
 <details>
   <summary><a href="./tutorial/ConventionNamingMakeAndFrom.md">
     Суфікси <code>Make</code> i <code>From</code> в найменуванні рутин
   </a></summary>
-    Для позначення рутин-конструкторів використовуються рутини в назві яких є суфікси <code>Make</code> i <code>From</code>. 
+    Для позначення рутин-конструкторів використовуються рутини в назві яких є суфікси <code>Make</code> i <code>From</code>.
 </details>
 
 <details>
