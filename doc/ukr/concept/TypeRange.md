@@ -51,9 +51,9 @@ let range = [ 2, 5 ];
 | range[ 0 ] === range[ 1 ] | orange    | 3..3 | -                                    |
 |                           | crange    | 3..3 | 3                                    |
 |                           | lrange    | 3..3 | 3, 4, 5                              |
-| range[ 0 ] > range[ 1 ]   | orange    | 3..3 | -                                    |
-|                           | crange    | 3..3 | 3, 2                                 |
-|                           | lrange    | 3..3 | 3, 4                                 |
+| range[ 0 ] > range[ 1 ]   | orange    | 3..2 | -                                    |
+|                           | crange    | 3..2 | 3, 2                                 |
+|                           | lrange    | 3..2 | 3, 4                                 |
 
 ### Приклади викликів рутин
 
