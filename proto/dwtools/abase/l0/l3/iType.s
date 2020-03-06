@@ -71,6 +71,7 @@ function vectorAdapterIs( src )
 {
   if( !_.objectIs( src ) )
   return false;
+
   if( !( '_vectorBuffer' in src ) )
   return false;
 
@@ -78,6 +79,26 @@ function vectorAdapterIs( src )
   return false;
 
   return true;
+}
+
+//
+
+function vectorIs( src )
+{
+  if( _.vectorAdapterIs( src ) )
+  return true;
+
+  if( _.longIs( src ) )
+  return true;
+
+  return false;
+}
+
+//
+
+function vectorLike( src )
+{
+  return _.vectorIs( src );
 }
 
 //
@@ -189,6 +210,7 @@ function typeOf( src, constructor )
   {
     return null;
   }
+
 }
 
 //
@@ -521,6 +543,9 @@ let Routines =
   //
 
   vectorAdapterIs,
+  vectorIs, /* qqq : cover */
+  vectorLike,
+
   constructorIsVector,
   matrixIs,
   constructorIsMatrix,

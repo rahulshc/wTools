@@ -153,7 +153,7 @@ function entityMake( src )
   else if( _.longLike( src ) )
   {
     return this.longMake( src );
-    // return _.longShallowClone( src ); /* Dmytro : longShallowClone not use longDescriptor for constructing of long 
+    // return _.longShallowClone( src ); /* Dmytro : longShallowClone not use longDescriptor for constructing of long
   }
   else if( _.hashMapLike( src ) || _.setLike( src ) )
   {
@@ -500,6 +500,7 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
+
 
 // --
 // export

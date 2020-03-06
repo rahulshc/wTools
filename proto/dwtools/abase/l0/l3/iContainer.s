@@ -46,13 +46,7 @@ Self.original = Container;
 
 //
 
-let Fields =
-{
-}
-
-//
-
-let Routines =
+let Extension =
 {
 
   //
@@ -64,12 +58,12 @@ let Routines =
 
 //
 
-if( _.container !== undefined )
-throw Error( 'wTools.container is already defined!' );
-_.container = Self;
+// if( _.container !== undefined )
+// throw Error( 'wTools.container is already defined!' );
+// _.container = Self;
+_.container = _.container || Object.create( null );
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( Self, Extension );
 
 // --
 // export
