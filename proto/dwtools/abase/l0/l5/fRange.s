@@ -9,7 +9,8 @@ let _ = _global_.wTools;
 // range
 // --
 
-/* qqq : use _.pair as example to make the same thing */
+/* aaa : use _.pair as example to make the same thing */
+/* Dmytro : new namespace and class is created. As _.pair, this module has Proxy. Routines from l3/iRange.s connected too */
 
 
 function fromLeft( range )
@@ -143,7 +144,7 @@ function firstGet( range, options )
 function lastGet( range, options )
 {
 
-  var options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
+  var options = options || Object.create( null ); 
   if( options.increment === undefined )
   options.increment = 1;
 
@@ -177,13 +178,17 @@ function toStr( range )
 
 class Range 
 {
+  static [ Symbol.hasInstance ]( instance )
+  {
+    return is( instance );
+  }
 }
 
 let Handler =
 {
   construct( original, args )
   {
-    return Pair.make( ... args );
+    return Range.fromLeft( ... args );
   }
 };
 
@@ -196,6 +201,20 @@ Self.original = Range;
 
 let Extension =
 {
+
+  is : _.rangeIs,
+  isEmpty : _.rangeIsEmpty,
+  defined : _.rangeDefined,
+  isPopulated : _.rangeIsPopulated,
+
+  inInclusive : _.rangeInInclusive,
+  inExclusive : _.rangeInExclusive,
+  inInclusiveLeft : _.rangeInInclusiveLeft,
+  inInclusiveRight : _.rangeInInclusiveRight,
+  in : _.rangeInInclusiveLeft,
+
+  sureInRange : _.sureInRange,
+  assertInRange : _.assertInRange,
 
   fromLeft,
   fromRight,

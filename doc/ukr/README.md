@@ -70,6 +70,20 @@
     В <code>JavaScript</code>, це спеціальний об'єкт, що призначений для зберігання та обробки необроблених бінарних даних.
 </details>
 
+<details>
+  <summary><a href="./concept/TypeRange.md">
+    Тип <code>Range</code>
+  </a></summary>
+    <code>Range</code> - тип даних - двоелементний вектор, що задає початок і кінець відліку елементів в контейнері.
+</details>
+
+<details>
+  <summary><a href="./concept/LongDescriptor.md">
+    Дескриптор типу <code>longDescriptor</code> і дефолтний <code>long</code> тип
+  </a></summary>
+    <code>longDescriptor</code> - дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
+</details>
+
 ## Туторіали
 
 <!--
@@ -114,6 +128,20 @@
     Routines call convention: routine defaults map
   </a></summary>
     Як зберігаються та змінюються налаштування за замовчуванням в рутинах.
+</details>
+
+<details>
+  <summary><a href="./tutorial/ConventionDstNullNew.md">
+    Call conventions: dst - null
+  </a></summary>
+    Передача значення <code>null</code> в параметр <code>dst</code>. 
+</details>
+
+<details>
+  <summary><a href="./tutorial/ConventionNamingMakeAndFrom.md">
+    Суфікси <code>Make</code> i <code>From</code> в найменуванні рутин
+  </a></summary>
+    Для позначення рутин-конструкторів використовуються рутини в назві яких є суфікси <code>Make</code> i <code>From</code>. 
 </details>
 
 <details>

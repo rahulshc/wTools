@@ -13066,6 +13066,277 @@ function arrayRemovedElement( test )
 
 //
 
+function arrayRemovedElement_( test )
+{
+  test.open( 'without evaluators' );
+
+  test.case = 'dst - empty array, ins - number, without entry';
+  var dst = [];
+  var got = _.arrayRemovedElement_( dst, 1 );
+  test.identical( dst, [] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, full deletion, entry - first element';
+  var dst = [ 1, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, 1 );
+  test.identical( dst, [] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, 2 );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElement_( dst, 1 );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string, without entry';
+  var dst = [ 1, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, '1' );
+  test.identical( dst, [ 1, 1, 1, 1, 1 ] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - array, identical, without entry';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
+  var got = _.arrayRemovedElement_( dst, [ 1 ] );
+  test.identical( dst, [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - array with map, ins - map, identical, without entry';
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElement_( dst, { x : 1 } );
+  test.identical( dst, [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ] );
+  test.identical( got, undefined );
+
+  test.close( 'without evaluators' );
+
+  /* - */
+
+  test.open( 'evaluator1 - fromIndex' );
+
+  test.case = 'dst - empty array, ins - number, without entry';
+  var dst = [];
+  var got = _.arrayRemovedElement_( dst, 1, 1 );
+  test.identical( dst, [] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, full deletion, entry - first element';
+  var dst = [ 1, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, 1, 3 );
+  test.identical( dst, [ 1, 1, 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, 2, 3 );
+  test.identical( dst, [ 1, 2, 1, 1, 1 ] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElement_( dst, 1, 3 );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string, without entry';
+  var dst = [ 1, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, '1', 3 );
+  test.identical( dst, [ 1, 1, 1, 1, 1 ] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - array, identical, without entry';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
+  var got = _.arrayRemovedElement_( dst, [ 1 ], 3 );
+  test.identical( dst, [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - array with map, ins - map, identical, without entry';
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElement_( dst, { x : 1 }, 3 );
+  test.identical( dst, [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ] );
+  test.identical( got, undefined );
+
+  test.close( 'evaluator1 - fromIndex' );
+
+  /* - */
+
+  test.open( 'equalizer' );
+
+  test.case = 'dst - empty array, ins - number, without entry';
+  var dst = [];
+  var got = _.arrayRemovedElement_( dst, 1, ( e, ins ) => e === ins );
+  test.identical( dst, [] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, full deletion, entry - first element';
+  var dst = [ 1, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, 1, ( e, ins ) => e === ins );
+  test.identical( dst, [] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, 2, ( e, ins ) => e === ins );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElement_( dst, 1, ( e, ins ) => e === ins );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string, without entry';
+  var dst = [ 1, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, '1', ( e, ins ) => e === parseFloat( ins ) );
+  test.identical( dst, [] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - array, identical, without entry';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
+  var got = _.arrayRemovedElement_( dst, [ 1 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  test.identical( dst, [ 1, 1 ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dst - array with map, ins - map, identical, without entry';
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElement_( dst, { x : 1 }, ( e, ins ) => e.x === ins.x );
+  test.identical( dst, [ { y : 2 } ] );
+  test.identical( got, { x : 1 } );
+
+  test.close( 'equalizer' );
+
+  /* - */
+
+  test.open( 'single evaluator' );
+
+  test.case = 'dst - empty array, ins - number, without entry';
+  var dst = [];
+  var got = _.arrayRemovedElement_( dst, 1, ( e ) => e );
+  test.identical( dst, [] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, full deletion, entry - first element';
+  var dst = [ 1, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, 1, ( e ) => e );
+  test.identical( dst, [] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, 2, ( e ) => e );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElement_( dst, 1, ( e ) => e );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string, without entry';
+  var dst = [ 1, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, '1', ( e ) => parseFloat( e ) );
+  test.identical( dst, [] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - array, identical, without entry';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
+  var got = _.arrayRemovedElement_( dst, [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( dst, [ 1, 1 ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dst - array with map, ins - map, identical, without entry';
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElement_( dst, { x : 1 }, ( e ) => e.x );
+  test.identical( dst, [ { y : 2 } ] );
+  test.identical( got, { x : 1 } );
+
+  test.close( 'single evaluator' );
+
+  /* - */
+
+  test.open( 'two evaluators' );
+
+  test.case = 'dst - empty array, ins - number, without entry';
+  var dst = [];
+  var got = _.arrayRemovedElement_( dst, 1, ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, full deletion, entry - first element';
+  var dst = [ 1, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, 1, ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, 2, ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElement_( dst, 1, ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string, without entry';
+  var dst = [ 1, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElement_( dst, '1', ( e ) => e, ( ins ) => parseFloat( ins ) );
+  test.identical( dst, [] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - array, identical, without entry';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
+  var got = _.arrayRemovedElement_( dst, [ 1 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  test.identical( dst, [ 1, 1 ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dst - array with map, ins - map, identical, without entry';
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElement_( dst, { x : 1 }, ( e ) => e.x, ( ins ) => ins.x );
+  test.identical( dst, [ { y : 2 } ] );
+  test.identical( got, { x : 1 } );
+
+  test.close( 'two evaluators' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElement_() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [], 0, 2, ( e ) => e, ( el ) => el, 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElement_( 1, 1 ) );
+
+  test.case = 'wrong type of evaluator1';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [ 1 ], 1, 1, 'wrong' ) );
+
+  test.case = 'wrong length of evaluator1';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [ 1 ], 1, 1, () => 'str' ) );
+  test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [ 1 ], 1, 1, ( a, b, c ) => a === b - c ) );
+
+  test.case = 'wrong type of evaluator2';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [ 1 ], 1, 1, ( e ) => e, 'wrong' ) );
+
+  test.case = 'wrong length of evaluator1';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [ 1 ], 1, 1, ( e ) => e, () => 'str' ) );
+  test.shouldThrowErrorSync( () => _.arrayRemovedElement_( [ 1 ], 1, 1, ( e ) => e, ( a, b ) => a === b ) );
+}
+
+//
+
 function arrayRemovedElementOnce( test )
 {
   test.case = 'simple';
@@ -13163,6 +13434,277 @@ function arrayRemovedElementOnce( test )
   {
     _.arrayRemovedElementOnce( 1, 1 );
   })
+}
+
+//
+
+function arrayRemovedElementOnce_( test )
+{
+  test.open( 'without evaluators' );
+
+  test.case = 'dst - empty array, ins - number, without entry';
+  var dst = [];
+  var got = _.arrayRemovedElementOnce_( dst, 1 );
+  test.identical( dst, [] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, entry - first element';
+  var dst = [ 1, 1, 2, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 1 );
+  test.identical( dst, [ 1, 2, 1, 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 2 );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 1 );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string, without entry';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, '1' );
+  test.identical( dst, [ 1, 2, 1, 1, 1 ] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - array, identical, without entry';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
+  var got = _.arrayRemovedElementOnce_( dst, [ 1 ] );
+  test.identical( dst, [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - array with map, ins - map, identical, without entry';
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElementOnce_( dst, { x : 1 } );
+  test.identical( dst, [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ] );
+  test.identical( got, undefined );
+
+  test.close( 'without evaluators' );
+
+  /* - */
+
+  test.open( 'evaluator1 - fromIndex' );
+
+  test.case = 'dst - empty array, ins - number, without entry';
+  var dst = [];
+  var got = _.arrayRemovedElementOnce_( dst, 1, 1 );
+  test.identical( dst, [] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, entry - first element';
+  var dst = [ 1, 1, 2, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 1, 3 );
+  test.identical( dst, [ 1, 1, 2, 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 2, 3 );
+  test.identical( dst, [ 1, 2, 1, 1, 1 ] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 1, 3 );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string, without entry';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, '1', 3 );
+  test.identical( dst, [ 1, 2, 1, 1, 1 ] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - array, identical, without entry';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
+  var got = _.arrayRemovedElementOnce_( dst, [ 1 ], 3 );
+  test.identical( dst, [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - array with map, ins - map, identical, without entry';
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElementOnce_( dst, { x : 1 }, 3 );
+  test.identical( dst, [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ] );
+  test.identical( got, undefined );
+
+  test.close( 'evaluator1 - fromIndex' );
+
+  /* - */
+
+  test.open( 'equalizer' );
+
+  test.case = 'dst - empty array, ins - number, without entry';
+  var dst = [];
+  var got = _.arrayRemovedElementOnce_( dst, 1, ( e, ins ) => e === ins );
+  test.identical( dst, [] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, entry - first element';
+  var dst = [ 1, 1, 2, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 1, ( e, ins ) => e === ins );
+  test.identical( dst, [ 1, 2, 1, 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 2, ( e, ins ) => e === ins );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 1, ( e, ins ) => e === ins );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, '1', ( e, ins ) => e === parseFloat( ins ) );
+  test.identical( dst, [ 2, 1, 1, 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - array, identical';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
+  var got = _.arrayRemovedElementOnce_( dst, [ 1 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] );
+  test.identical( dst, [ 1, [ 1, 0 ], 1, [ 1, 0 ] ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dst - array with map, ins - map, identical';
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElementOnce_( dst, { x : 1 }, ( e, ins ) => e.x === ins.x );
+  test.identical( dst, [ { x : 1, y : 1 }, { y : 2 } ] );
+  test.identical( got, { x : 1 } );
+
+  test.close( 'equalizer' );
+
+  /* - */
+
+  test.open( 'single evaluator' );
+
+  test.case = 'dst - empty array, ins - number, without entry';
+  var dst = [];
+  var got = _.arrayRemovedElementOnce_( dst, 1, ( e ) => e );
+  test.identical( dst, [] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, entry - first element';
+  var dst = [ 1, 1, 2, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 1, ( e ) => e );
+  test.identical( dst, [ 1, 2, 1, 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 2, ( e ) => e );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 1, ( e ) => e );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, '1', ( e ) => parseFloat( e ) );
+  test.identical( dst, [ 2, 1, 1, 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - array, identical';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
+  var got = _.arrayRemovedElementOnce_( dst, [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( dst, [ 1, [ 1, 0 ], 1, [ 1, 0 ] ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dst - array with map, ins - map, identical';
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElementOnce_( dst, { x : 1 }, ( e ) => e.x );
+  test.identical( dst, [ { x : 1, y : 1 }, { y : 2 } ] );
+  test.identical( got, { x : 1 } );
+
+  test.close( 'single evaluator' );
+
+  /* - */
+
+  test.open( 'two evaluators' );
+
+  test.case = 'dst - empty array, ins - number, without entry';
+  var dst = [];
+  var got = _.arrayRemovedElementOnce_( dst, 1, ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [] );
+  test.identical( got, undefined );
+
+  test.case = 'dst - filled array, ins - number, entry - first element';
+  var dst = [ 1, 1, 2, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 1, ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [ 1, 2, 1, 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 2, ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, 1, ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnce_( dst, '1', ( e ) => e, ( ins ) => parseFloat( ins ) );
+  test.identical( dst, [ 2, 1, 1, 1 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - array, identical';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 1, 0 ] ];
+  var got = _.arrayRemovedElementOnce_( dst, [ 1 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] );
+  test.identical( dst, [ 1, [ 1, 0 ], 1, [ 1, 0 ] ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dst - array with map, ins - map, identical';
+  var dst = [ { x : 1 }, { x : 1, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElementOnce_( dst, { x : 1 }, ( e ) => e.x, ( ins ) => ins.x );
+  test.identical( dst, [ { x : 1, y : 1 }, { y : 2 } ] );
+  test.identical( got, { x : 1 } );
+
+  test.close( 'two evaluators' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [], 0, 2, ( e ) => e, ( el ) => el, 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( 1, 1 ) );
+
+  test.case = 'wrong type of evaluator1';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, 'wrong' ) );
+
+  test.case = 'wrong length of evaluator1';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, () => 'str' ) );
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, ( a, b, c ) => a === b - c ) );
+
+  test.case = 'wrong type of evaluator2';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, ( e ) => e, 'wrong' ) );
+
+  test.case = 'wrong length of evaluator1';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, ( e ) => e, () => 'str' ) );
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnce_( [ 1 ], 1, 1, ( e ) => e, ( a, b ) => a === b ) );
 }
 
 //
@@ -13266,6 +13808,218 @@ function arrayRemovedElementOnceStrictly( test )
     _.arrayRemovedElementOnceStrictly( dst, { num : 4 }, onEqualize );
   })
 
+}
+
+//
+
+function arrayRemovedElementOnceStrictly_( test )
+{
+  test.open( 'without evaluators' );
+
+  test.case = 'dst - filled array, ins - number, entry - first element';
+  var dst = [ 1, 2, 2, 2, 2 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1 );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 2, 2, 1, 2, 2 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1 );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1 );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.close( 'without evaluators' );
+
+  /* - */
+
+  test.open( 'evaluator1 - fromIndex' );
+
+  test.case = 'dst - filled array, ins - number, entry - first element';
+  var dst = [ 1, 2, 2, 2, 2 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1, 0 );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 2, 1, 2 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1, 3 );
+  test.identical( dst, [ 1, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1, 3 );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.close( 'evaluator1 - fromIndex' );
+
+  /* - */
+
+  test.open( 'equalizer' );
+
+  test.case = 'dst - filled array, ins - number, entry - first element';
+  var dst = [ 2, 1, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1, ( e, ins ) => e === ins + 1 );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1, ( e, ins ) => e === ins + 1 );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 2, ( e, ins ) => e === ins - 1 );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, '1', ( e, ins ) => e === parseFloat( ins ) + 1  );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - array, identical';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 2, 0 ] ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, [ 1 ], ( e, ins ) => e[ 0 ] === ins[ 0 ] + 1 );
+  test.identical( dst, [ [ 1 ], 1, [ 1, 0 ], 1 ] );
+  test.identical( got, [ 2, 0 ] );
+
+  test.case = 'dst - array with map, ins - map, identical';
+  var dst = [ { x : 1 }, { x : 2, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, { x : 1 }, ( e, ins ) => e.x === ins.x );
+  test.identical( dst, [ { x : 2, y : 1 }, { y : 2 } ] );
+  test.identical( got, { x : 1 } );
+
+  test.close( 'equalizer' );
+
+  /* - */
+
+  test.open( 'single evaluator' );
+
+  test.case = 'dst - filled array, ins - number, entry - first element';
+  var dst = [ 1, 2, 2, 2, 2 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1, ( e ) => e );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 2, ( e ) => e );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1, ( e ) => e );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, '2', ( e ) => parseFloat( e ) );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - array, identical';
+  var dst = [ [ 1 ], 1, [ 2, 0 ], 1, [ 2, 0 ] ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, [ 1 ], ( e ) => e[ 0 ] );
+  test.identical( dst, [ 1, [ 2, 0 ], 1, [ 2, 0 ] ] );
+  test.identical( got, [ 1 ] );
+
+  test.case = 'dst - array with map, ins - map, identical';
+  var dst = [ { x : 1 }, { x : 2, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, { x : 1 }, ( e ) => e.x );
+  test.identical( dst, [ { x : 2, y : 1 }, { y : 2 } ] );
+  test.identical( got, { x : 1 } );
+
+  test.close( 'single evaluator' );
+
+  /* - */
+
+  test.open( 'two evaluators' );
+
+  test.case = 'dst - filled array, ins - number, entry - first element';
+  var dst = [ 1, 2, 2, 2, 2 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1, ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - number, entry - at the middle';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1, ( e ) => e, ( ins ) => ins + 1 );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - number, entry - last element';
+  var dst = [ 2, 2, 2, 2, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, 1, ( e ) => e, ( ins ) => ins );
+  test.identical( dst, [ 2, 2, 2, 2 ] );
+  test.identical( got, 1 );
+
+  test.case = 'dst - filled array, ins - string';
+  var dst = [ 1, 2, 1, 1, 1 ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, '2', ( e ) => e, ( ins ) => parseFloat( ins ) );
+  test.identical( dst, [ 1, 1, 1, 1 ] );
+  test.identical( got, 2 );
+
+  test.case = 'dst - filled array, ins - array, identical';
+  var dst = [ [ 1 ], 1, [ 1, 0 ], 1, [ 2, 0 ] ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, [ 1 ], ( e ) => e[ 0 ], ( ins ) => ins[ 0 ] + 1 );
+  test.identical( dst, [ [ 1 ], 1, [ 1, 0 ], 1 ] );
+  test.identical( got, [ 2, 0 ] );
+
+  test.case = 'dst - array with map, ins - map, identical';
+  var dst = [ { x : 1 }, { x : 2, y : 1 }, { y : 2 } ];
+  var got = _.arrayRemovedElementOnceStrictly_( dst, { x : 1 }, ( e ) => e.x, ( ins ) => ins.x );
+  test.identical( dst, [ { x : 2, y : 1 }, { y : 2 } ] );
+  test.identical( got, { x : 1 } );
+
+  test.close( 'two evaluators' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( [ 2, 1, 0 ], 0, 2, ( e ) => e, ( el ) => el, 'extra' ) );
+
+  test.case = 'wrong type of dst';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( 1, 1 ) );
+
+  test.case = 'empty dst, without entry';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( [], 1 ) );
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( [], 1, ( e, ins ) => e === ins ) );
+
+  test.case = 'dst has a few entries';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( [ 1, 1 ], 1 ) );
+
+  test.case = 'wrong type of evaluator1';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( [ 1 ], 1, 0, 'wrong' ) );
+
+  test.case = 'wrong length of evaluator1';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( [ 1 ], 1, 0, () => 'str' ) );
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( [ 1 ], 1, 0, ( a, b, c ) => a === b - c ) );
+
+  test.case = 'wrong type of evaluator2';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( [ 1 ], 1, 0, ( e ) => e, 'wrong' ) );
+
+  test.case = 'wrong length of evaluator1';
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( [ 1 ], 1, 0, ( e ) => e, () => 'str' ) );
+  test.shouldThrowErrorSync( () => _.arrayRemovedElementOnceStrictly_( [ 1 ], 1, 0, ( e ) => e, ( a, b ) => a === b ) );
 }
 
 //
@@ -33065,8 +33819,11 @@ var Self =
     arrayRemoveElementOnce,
     arrayRemoveElementOnceStrictly,
     arrayRemovedElement,
+    arrayRemovedElement_,
     arrayRemovedElementOnce,
+    arrayRemovedElementOnce_,
     arrayRemovedElementOnceStrictly,
+    arrayRemovedElementOnceStrictly_,
 
     // arrayRemovedOnceStrictly,
     // arrayRemovedElementOnce2,
@@ -33090,8 +33847,10 @@ var Self =
 
     // array flatten
 
-    /* qqq : extend test coverage | Dmytro : extended */
-    /* qqq : extend implementation for sets | Dmytro : extended */
+    /* aaa : extend test coverage */
+    /* Dmytro : extended */
+    /* aaa : extend implementation for sets */
+    /* Dmytro : extended */
 
     arrayFlatten,
     arrayFlattenSame,

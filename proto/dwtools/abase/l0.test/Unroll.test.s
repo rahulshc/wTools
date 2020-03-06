@@ -131,6 +131,11 @@ function unrollIsPopulated( test )
 
 function unrollMake( test )
 {
+  test.case = 'without arguments';
+  var got = _.unrollMake();
+  test.equivalent( got, [] );
+  test.is( _.unrollIs( got ) );
+
   test.case = 'src - null';
   var got = _.unrollMake( null );
   test.equivalent( got, [] );
@@ -236,9 +241,6 @@ function unrollMake( test )
   if( !Config.debug )
   return;
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.unrollMake() );
-
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.unrollMake( 1, 'extra' ) );
 
@@ -270,6 +272,11 @@ function unrollMakeLongDescriptor( test )
 
   function testRun( descriptor )
   {
+    test.case = 'without arguments';
+    var got = descriptor.unrollMake();
+    test.equivalent( got, [] );
+    test.is( _.unrollIs( got ) );
+
     test.case = 'src - null';
     var got = descriptor.unrollMake( null );
     test.equivalent( got, [] );
@@ -374,9 +381,6 @@ function unrollMakeLongDescriptor( test )
 
     if( Config.debug )
     {
-      test.case = 'without arguments';
-      test.shouldThrowErrorSync( () => descriptor.unrollMake() );
-
       test.case = 'extra arguments';
       test.shouldThrowErrorSync( () => descriptor.unrollMake( 1, 'extra' ) );
 
@@ -391,6 +395,11 @@ function unrollMakeLongDescriptor( test )
 
 function unrollMakeUndefined( test )
 {
+  test.case = 'without arguments';
+  var got = _.unrollMakeUndefined();
+  var expected = _.unrollMake();
+  test.identical( got, expected );
+
   test.case = 'src - null';
   var src = null;
   var got = _.unrollMakeUndefined( src );
@@ -817,9 +826,6 @@ function unrollMakeUndefined( test )
   if( !Config.debug )
   return;
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.unrollMakeUndefined() );
-
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.unrollMakeUndefined( 1, 3, 'extra' ) );
 
@@ -858,6 +864,11 @@ function unrollMakeUndefinedLongDescriptor( test )
 
   function testRun( descriptor )
   {
+    test.case = 'without arguments';
+    var got = _.unrollMakeUndefined();
+    var expected = _.unrollMake();
+    test.identical( got, expected );
+
     test.case = 'src - null';
     var src = null;
     var got = descriptor.unrollMakeUndefined( src );
@@ -1283,9 +1294,6 @@ function unrollMakeUndefinedLongDescriptor( test )
 
     if( Config.debug )
     {
-      test.case = 'without arguments';
-      test.shouldThrowErrorSync( () => descriptor.unrollMakeUndefined() );
-
       test.case = 'extra arguments';
       test.shouldThrowErrorSync( () => descriptor.unrollMakeUndefined( 1, 3, 'extra' ) );
 
@@ -2488,7 +2496,7 @@ function unrollSelect( test )
 
 //
 
-/* qqq
+/* aaa
 unrollAppend, unrollPrepend should have test groups :
 - dst is null / unroll / array
 - one argument / two arguments / three arguments
@@ -2496,7 +2504,7 @@ unrollAppend, unrollPrepend should have test groups :
 - non-first argument have array / unroll / complex unroll( unroll in unroll in unroll / F32x / ArgumentsArray
 
 Dmytro: all tests is added
-qqq: In unrollPrepend and unrollAppend test cases groups by number of arguments and it includes other test cases - array, unroll, complex unroll.
+aaa: In unrollPrepend and unrollAppend test cases groups by number of arguments and it includes other test cases - array, unroll, complex unroll.
 In previus routines improve unrollMake and unrollFrom tests.
 Notice that unrollIs, unrollIsPopulated have not asserts.
 */
