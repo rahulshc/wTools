@@ -19,8 +19,6 @@ function buffersTypedAreEquivalent( src1, src2, accuracy )
   return false;
 
   if( src1.length !== src2.length )
-  debugger;
-  if( src1.length !== src2.length )
   return false;
 
   if( accuracy === null || accuracy === undefined )
@@ -132,8 +130,6 @@ function buffersAreEquivalent( src1, src2, accuracy )
   else if( _.bufferViewIs( src1 ) )
   return _.buffersViewAreIdentical( src1, src2 );
   else if( _.bufferNodeIs( src1 ) )
-  // Dmytro : correct misprint
-  // return _.buffersNodeAreIdentica( src1, src2 );
   return _.buffersNodeAreIdentical( src1, src2 );
   else return false;
 
@@ -163,161 +159,319 @@ function buffersAreIdentical( src1, src2 )
 
 }
 
+function _bufferMake_functor( onMake )
+{
+  _.assert( _.routineIs( onMake ) );
+
+  return function _bufferMake( src, ins )
+  {
+    let result;
+    
+    /* */
+    
+    let length = ins;
+
+    if( _.longIs( length ) || _.bufferNodeIs( length ) )
+    {
+      length = length.length
+    }
+    else if( _.bufferRawIs( length ) || _.bufferViewIs( length ) )
+    {
+      length = length.byteLength;
+      ins = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
+    }
+    else if( length === undefined || length === null )
+    {
+      if( src === null ) /* Dmytro : Do module has default buffer type? */
+      {
+        length = 0; 
+      }
+      else if( _.longIs( src ) || _.bufferNodeIs( src ) )
+      {
+        length = src.length;
+        ins = src;
+        src = null;
+      }
+      else if( _.bufferRawIs( src ) )
+      {
+        length = src.byteLength;
+        ins = new U8x( src );
+        src = null;
+      }
+      else if( _.bufferViewIs( src ) )
+      {
+        length = src.byteLength;
+        ins = new U8x( src.buffer );
+        src = null;
+      }
+      else if( _.numberIs( src ) )
+      {
+        length = src;
+        src = null;
+      }
+      else if( _.routineIs( src ) )
+      {
+        _.assert( 0, 'Unknown length of buffer' );
+      }
+      else _.assert( 0 );
+    }
+    else if( !_.numberIs( length ) )
+    {
+      _.assert( 0, 'Unknown length of buffer' );
+    }
+
+    if( !length )
+    length = 0;
+
+    /* */
+
+    if( _.numberIs( ins ) )
+    {
+      if( _.bufferRawIs( src ) )
+      ins = new U8x( src );
+      else if( _.bufferViewIs( src ) )
+      ins = new U8x( src.buffer )
+      else if( _.longIs( src ) || _.bufferNodeIs( src ) )
+      ins = src;
+      else
+      ins = null;
+    }
+
+    /* */
+
+    let minLength;
+    if( ins )
+    minLength = Math.min( ins.length, length );
+    else
+    minLength = 0;
+
+    /* */
+        
+    if( _.argumentsArrayIs( src ) )
+    src = this.longDescriptor.make;
+
+    if( src === null )
+    src = this.longDescriptor.make;
+
+    _.assert( arguments.length === 1 || arguments.length === 2 );
+    _.assert( _.numberIsFinite( length ) );
+    _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
+
+    result = onMake.call( this, src, ins, length, minLength );
+
+    _.assert( _.bufferAnyIs( result ) || _.longLike( result ) );
+
+    return result;
+  }
+}
+
 //
 
 /**
- * The routine bufferMake() returns a new buffer with the same type as source buffer {-ins-}. New buffer makes from inserted buffer {-src-}
- * or if {-src-} is number, the buffer makes from {-ins-} with length equal to {-src-}. If {-src-} is not provided, routine returns copy of {-ins-}.
+ * The routine bufferMake() returns a new buffer with the same type as source buffer {-src-}. New buffer fills by content of insertion buffer {-ins-}. If {-ins-} is
+ * a number, the buffer fills by {-src-} content. The length of resulted buffer is equal to {-ins-}. If {-ins-} is not defined, then routine makes default Long type, 
+ * length of returned container defines from {-src-}.  
  *
- * @param { BufferAny|Long|Function } ins - Instance of any buffer, Long or constructor, defines type of returned buffer. If not a buffer is provided, routine returns instance of default long.
- * @param { Number|Long|Buffer } src - Defines length of new buffer. If buffer of Long is provided, routine makes new buffer from {-src-} with {-ins-} type.
+ * @param { BufferAny|Long|Function|Number|Null } src - Instance of any buffer, Long or constructor, defines type of returned buffer. If {-src-} is null,
+ * then routine returns instance of default Long.
+ * @param { Number|Long|Buffer|Null|Undefined } ins - Defines length and content of new buffer. If {-ins-} is null or undefined, then routine makes new container 
+ * with default Long type and fills it by {-src-} content.
  *
- * @example
- * let ins = BufferNode.from( [ 1, 2, 3, 4 ] );
- * let got = _.bufferMake( ins );
- * console.log( got );
- * // log Buffer[ 1, 2, 3 ];
- * console.log( _.bufferNodeIs( got ) );
- * // log true
+ * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
  *
  * @example
- * let ins = _.unrollMake( [] )
- * let got = _.bufferMake( ins, [ 1, 2, 3 ] );
- * console.log( got );
- * // log [ 1, 2, 3 ];
- * console.log( _.unrollIs( got ) );
+ * let got = _.bufferMake();
+ * // returns []
+ *
+ * @example
+ * let got = _.bufferMake( null );
+ * // returns []
+ *
+ * @example
+ * let got = _.bufferMake( null, null );
+ * // returns []
+ *
+ * @example
+ * let got = _.bufferMake( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * let got = _.bufferMake( 3, null );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * let got = _.bufferMake( new U8x( [ 1, 2, 3 ] ) );
+ * // returns [ 1, 2, 3 ];
+ * _.bufferTypedIs( got );
  * // log false
  *
  * @example
- * let ins = new BufferRaw( 0 );
- * let got = _.bufferMake( ins, new U32x( [ 1, 2, 3 ] ) );
- * console.log( got );
- * // log ArrayBuffer[ 0x1, 0x2, 0x3 ];
- * console.log( _.bufferRawIs( got ) );
- * // log true
+ * let got = _.bufferMake( new I16x( [ 1, 2, 3 ] ), null );
+ * // returns [ 1, 2, 3 ];
+ * _.bufferTypedIs( got );
+ * // log false
  *
  * @example
- * let ins = new F32x( [ 1, 2, 3, 4, 5 ] );
- * let got = _.bufferMake( ins, 2 );
- * console.log( got );
- * // log Float32Array[ 1, 2 ];
- * console.log( _.bufferTypedIs( got ) );
- * // log true
+ * _.bufferMake( new BufferRaw( 4 ), 6 );
+ * // returns ArrayBuffer { [Uint8Contents]: <00 00 00 00 00 00>, byteLength: 6 }
  *
- * @returns { BufferAny|Array }  Returns a buffer ( array ) from {-src-} with {-ins-} type.
+ * @example
+ * _.bufferMake( new BufferRaw( 4 ), [ 1, 2, 3 ] );
+ * // returns ArrayBuffer { [Uint8Contents]: <01 02 03>, byteLength: 3 }
+ *
+ * @example
+ * _.bufferMake( F64x, [ 1, 2, 3 ] );
+ * // returns Float64Array [ 1, 2, 3 ]
+ *
+ * @returns { BufferAny|Long }  Returns a buffer with source buffer {-src-} type filled by insertion container {-ins-} content.
+ * If {-ins-} is not defined, then routine makes default Long type container and fills it by {-src-} content.
  * @function bufferMake
- * @throws { Error } If arguments.length is less then one or more than two.
- * @throws { Error } If {-ins-} is constructor and second argument {-src-} is not provided.
- * @throws { Error } If {-src-} is not a number, not a Long, not a buffer.
- * @throws { Error } If {-ins-} is not a Long, not a buffer or not a constructor.
- * @throws { Error } If {-src-} or src.length has a not finite value.
+ * @throws { Error } If arguments.length is more than two.
+ * @throws { Error } If {-src-} is not a Long, not a buffer, not a Number, not a constructor, not null.
+ * @throws { Error } If {-src-} is constructor and second argument {-src-} is not provided.
+ * @throws { Error } If {-src-} is constructor that returns not a Long, not a buffer value.
+ * @throws { Error } If {-ins-} is not a number, not a Long, not a buffer, not null, not undefined.
+ * @throws { Error } If {-ins-} or src.length has a not finite value.
  * @memberof wTools
  */
 
 /*
-qqq : review
+aaa : review
+Dmytro : reviewed, improved, covered
 */
 
-function bufferMake( ins, src )
+let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 {
-  let result, length;
+  let result; 
+  
+  /* */
 
-  if( _.argumentsArrayIs( ins ) )
-  ins = _.arrayMake( ins );
-
-  if( _.routineIs( ins ) )
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( src === undefined )
-  {
-    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
-  }
+  let resultTyped;
+  if( _.routineIs( src ) )
+  resultTyped = new src( length );
+  else if( _.bufferNodeIs( src ) )
+  resultTyped = BufferNode.alloc( length );
+  else if ( _.bufferViewIs( src ) )
+  resultTyped = new BufferView( new BufferRaw( length ) );
+  else if( _.unrollIs( src ) )
+  resultTyped = _.unrollMake( length );
   else
-  {
-    if( _.longIs( src ) || _.bufferNodeIs( src ) )
-    length = src.length;
-    else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
-    {
-      length = src.byteLength;
-      src = _.bufferViewIs( src ) ? new U8x( src.buffer ) : new U8x( src );
-    }
-    else if( _.numberIs( src ) )
-    length = src;
-    else _.assert( 0 );
-  }
+  resultTyped = new src.constructor( length );
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
+  result = resultTyped;
+  if( _.bufferRawIs( result ) )
+  resultTyped = new U8x( result );
+  if( _.bufferViewIs( result ) )
+  resultTyped = new U8x( result.buffer );
 
-  if( _.longIs( src ) || _.bufferAnyIs( src ) )
-  {
-    if( _.routineIs( ins ) )
-    {
-      result = new ins( length );
-      for( let i = 0 ; i < length ; i++ )
-      result[ i ] = src[ i ];
-    }
-    else if( ins.constructor === Array )
-    {
-      result = _.unrollIs( ins ) ? _.unrollMake( src ) : new( _.constructorJoin( ins.constructor, src ) );
-    }
-    else if( _.bufferRawIs( ins ) )
-    result = new U8x( src ).buffer;
-    else if( _.bufferViewIs( ins ) )
-    result = new BufferView( new U8x( src ).buffer );
-    else if ( _.bufferNodeIs( ins ) )
-    result = BufferNode.from( src );
-    else
-    result = new ins.constructor( src );
-
-  }
-  else
-  {
-    let insert;
-    if( _.bufferRawIs( ins ) )
-    insert = new U8x( ins );
-    else if( _.bufferViewIs( ins ) )
-    insert = new U8x( ins.buffer );
-    else
-    insert = ins;
-
-    let resultTyped;
-    if( _.routineIs( ins ) )
-    resultTyped = new ins( length );
-    else if( _.bufferNodeIs( ins ) )
-    resultTyped = BufferNode.alloc( length );
-    else if ( _.bufferViewIs( ins ) )
-    resultTyped = new BufferView( new BufferRaw( length ) );
-    else if( _.unrollIs( ins ) )
-    resultTyped = _.unrollMake( length );
-    else
-    resultTyped = new ins.constructor( length );
-
-    result = resultTyped;
-    if( _.bufferRawIs( result ) )
-    resultTyped = new U8x( result );
-    if( _.bufferViewIs( result ) )
-    resultTyped = new U8x( result.buffer );
-
-    let minLen = Math.min( length, insert.length );
-    for( let i = 0 ; i < minLen ; i++ )
-    resultTyped[ i ] = insert[ i ];
-  }
+  for( let i = 0 ; i < minLength ; i++ )
+  resultTyped[ i ] = ins[ i ];
 
   return result;
-}
+});
 
+//
+
+// function bufferMake( src, ins )
+// {
+//   let result, length;
+// 
+//   if( _.argumentsArrayIs( src ) )
+//   src = _.arrayMake( src );
+// 
+//   if( _.routineIs( src ) )
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+// 
+//   if( ins === undefined )
+//   {
+//     length = _.definedIs( src.length ) ? src.length : src.byteLength;
+//   }
+//   else
+//   {
+//     if( _.longIs( ins ) || _.bufferNodeIs( ins ) )
+//     length = ins.length;
+//     else if( _.bufferRawIs( ins ) || _.bufferViewIs( ins ) )
+//     {
+//       length = ins.byteLength;
+//       ins = _.bufferViewIs( ins ) ? new U8x( ins.buffer ) : new U8x( ins );
+//     }
+//     else if( _.numberIs( ins ) )
+//     length = ins;
+//     else _.assert( 0 );
+//   }
+// 
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
+// 
+//   if( _.longIs( ins ) || _.bufferAnyIs( ins ) )
+//   {
+//     if( _.routineIs( src ) )
+//     {
+//       result = new src( length );
+//       for( let i = 0 ; i < length ; i++ )
+//       result[ i ] = ins[ i ];
+//     }
+//     else if( src.constructor === Array )
+//     {
+//       result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
+//     }
+//     else if( _.bufferRawIs( src ) )
+//     result = new U8x( ins ).buffer;
+//     else if( _.bufferViewIs( src ) )
+//     result = new BufferView( new U8x( ins ).buffer );
+//     else if ( _.bufferNodeIs( src ) )
+//     result = BufferNode.from( ins );
+//     else
+//     result = new src.constructor( ins );
+// 
+//   }
+//   else
+//   {
+//     let insert;
+//     if( _.bufferRawIs( src ) )
+//     insert = new U8x( src );
+//     else if( _.bufferViewIs( src ) )
+//     insert = new U8x( src.buffer );
+//     else
+//     insert = src;
+// 
+//     let resultTyped;
+//     if( _.routineIs( src ) )
+//     resultTyped = new src( length );
+//     else if( _.bufferNodeIs( src ) )
+//     resultTyped = BufferNode.alloc( length );
+//     else if ( _.bufferViewIs( src ) )
+//     resultTyped = new BufferView( new BufferRaw( length ) );
+//     else if( _.unrollIs( src ) )
+//     resultTyped = _.unrollMake( length );
+//     else
+//     resultTyped = new src.constructor( length );
+// 
+//     result = resultTyped;
+//     if( _.bufferRawIs( result ) )
+//     resultTyped = new U8x( result );
+//     if( _.bufferViewIs( result ) )
+//     resultTyped = new U8x( result.buffer );
+// 
+//     let minLen = Math.min( length, insert.length );
+//     for( let i = 0 ; i < minLen ; i++ )
+//     resultTyped[ i ] = insert[ i ];
+//   }
+// 
+//   return result;
+// }
+// 
 // function bufferMake( ins, src )
 // {
 //   let result, length;
-//
+// 
 //   if( _.routineIs( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-//
+// 
 //   if( _.argumentsArrayIs( ins ) )
 //   ins = [];
-//
+// 
 //   if( src === undefined )
 //   {
 //     length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
@@ -332,14 +486,14 @@ function bufferMake( ins, src )
 //     length = src;
 //     else _.assert( 0 );
 //   }
-//
+// 
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
 //   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
-//
+// 
 //   if( _.longIs( src ) || _.bufferAnyIs( src ) )
 //   {
-//
+// 
 //     if( ins.constructor === Array )
 //     {
 //       result = new( _.constructorJoin( ins.constructor, src ) );
@@ -353,7 +507,7 @@ function bufferMake( ins, src )
 //     }
 //     else
 //     result = new ins.constructor( src );
-//
+// 
 //   }
 //   else
 //   {
@@ -362,115 +516,147 @@ function bufferMake( ins, src )
 //     else
 //     result = new ins.constructor( length );
 //   }
-//
+// 
 //   return result;
 // }
 
 //
 
 /**
- * The routine bufferMakeUndefined() returns a new buffer with the same type as buffer in argument {-ins-}.
- * New buffer has length equal to the length of second argument {-src-} or it has length of initial array {-ins-}
- * if second argument is not provided.
+ * The routine bufferMakeUndefined() returns a new buffer with the same type as source buffer {-src-}. The length of resulted buffer is equal to {-ins-}.
+ * If {-ins-} is not defined, then routine makes default Long type, length of returned container defines from {-src-}.  
  *
- * @param { Buffer|Long|Routine } ins - Buffer, Long or constructor, defines type of returned buffer.
- * @param { Buffer|Long|Number } src - Defines length of the new buffer.
+ * @param { BufferAny|Long|Function|Number|Null } src - Instance of any buffer, Long or constructor, defines type of returned buffer. If {-src-} is null,
+ * then routine returns instance of default Long.
+ * @param { Number|Long|Buffer|Null|Undefined } ins - Defines length of new buffer. If {-ins-} is null or undefined, then routine makes new container 
+ * with default Long type and length defined by {-src-}.
  *
- * @example
- * // from array, no src
- * let ins = [ 1, 2, 3, 4, 5 ];
- * let got = _.bufferMakeUndefined( ins );
- * console.log( got );
- * // log [ undefined, undefined, undefined, undefined, undefined ]
- * console.log( _.arrayIs( got ) );
- * // log true
+ * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
  *
  * @example
- * // from BufferTyped, no src
- * let ins = new U8x( [ 1, 2, 3, 4, 5 ] );
- * let got = _.bufferMakeUndefined( ins );
- * console.log( got );
- * // log Uint8Array[ 0, 0, 0, 0, 0 ]
+ * let got = _.bufferMakeUndefined();
+ * // returns []
  *
  * @example
- * // from array, src.length < array.length
- * let ins = new Array( [ 1, 2, 3, 4, 5 ] );
- * let got = _.bufferMakeUndefined( ins, 2 );
- * console.log( got );
- * // log [ undefined, undefined ]
- * console.log( _.arrayIs( got ) );
- * // log true
+ * let got = _.bufferMakeUndefined( null );
+ * // returns []
  *
  * @example
- * // from BufferRaw, buffer.byteLength < src.length
- * let ins = new BufferRaw( 2 );
- * let got = _.bufferMakeUndefined( ins, [ 1, 2, 3, 4, 5 ] );
- * console.log( got );
- * // log ArrayBuffer[ 0x0, 0x0, 0x0, 0x0, 0x0 ]
+ * let got = _.bufferMakeUndefined( null, null );
+ * // returns []
  *
  * @example
- * // from Array constructor
- * let got = _.bufferMakeUndefined( F32x, 4 );
- * console.log( got );
- * // log Float32Array[ 0, 0, 0, 0 ]
+ * let got = _.bufferMakeUndefined( 3 );
+ * // returns [ undefined, undefined, undefined ]
  *
- * @returns { Buffer }  Returns a new buffer with the same type as inserted buffer {-ins-} with a certain length.
+ * @example
+ * let got = _.bufferMakeUndefined( 3, null );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * let got = _.bufferMakeUndefined( new U8x( [ 1, 2, 3 ] ) );
+ * // returns [ undefined, undefined, undefined ];
+ * _.bufferTypedIs( got );
+ * // log false
+ *
+ * @example
+ * let got = _.bufferMakeUndefined( new I16x( [ 1, 2, 3 ] ), null );
+ * // returns [ undefined, undefined, undefined ];
+ * _.bufferTypedIs( got );
+ * // log false
+ *
+ * @example
+ * _.bufferMakeUndefined( new BufferRaw( 4 ), 6 );
+ * // returns ArrayBuffer { [Uint8Contents]: <00 00 00 00 00 00>, byteLength: 6 }
+ *
+ * @example
+ * _.bufferMakeUndefined( new BufferRaw( 4 ), [ 1, 2, 3 ] );
+ * // returns ArrayBuffer { [Uint8Contents]: <00 00 00>, byteLength: 3 }
+ *
+ * @example
+ * _.bufferMakeUndefined( F64x, [ 1, 2, 3 ] );
+ * // returns Float64Array [ 0, 0, 0 ]
+ *
+ * @returns { BufferAny|Long }  Returns a buffer with source buffer {-src-} type filled by insertion container {-ins-} content.
+ * If {-ins-} is not defined, then routine makes default Long type container and fills it by {-src-} content.
  * @function bufferMakeUndefined
- * @throws { Error } If arguments.length is less than one or more then two.
- * @throws { Error } If {-ins-} is constructor and second argument {-src-} is not provided.
- * @throws { Error } If {-ins-} is not a buffer, not a Long, not a constructor.
- * @throws { Error } If {-src-} is not a buffer, not a Long, not a Number.
- * @throws { Error } If {-src-} has not defined length.
+ * @throws { Error } If arguments.length is more than two.
+ * @throws { Error } If {-src-} is not a Long, not a buffer, not a Number, not a constructor, not null.
+ * @throws { Error } If {-src-} is constructor and second argument {-src-} is not provided.
+ * @throws { Error } If {-src-} is constructor that returns not a Long, not a buffer value.
+ * @throws { Error } If {-ins-} is not a number, not a Long, not a buffer, not null, not undefined.
+ * @throws { Error } If {-ins-} or src.length has a not finite value.
  * @memberof wTools
  */
 
 /*
-qqq : review
+aaa : review
+Dmytro : reviewed, extended, covered 
 */
 
-function bufferMakeUndefined( ins, src )
+let bufferMakeUndefined = _bufferMake_functor( function( src, ins, length, minLength )
 {
-  let result, length;
-
-  if( _.routineIs( ins ) )
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
-  if( src === undefined )
-  {
-    length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
-  }
-  else
-  {
-    if( _.longIs( src ) || _.bufferNodeIs( src ) )
-    length = src.length;
-    else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
-    length = src.byteLength;
-    else if( _.numberIs( src ) )
-    length = src;
-    else _.assert( 0 );
-  }
-
-  if( _.argumentsArrayIs( ins ) )
-  ins = [];
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIsFinite( length ) );
-  _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
-
-  if( _.routineIs( ins ) )
-  result = new ins( length );
-  else if( _.bufferNodeIs( ins ) )
+  let result; 
+  
+  if( _.routineIs( src ) )
+  result = new src( length );
+  else if( _.bufferNodeIs( src ) )
   result = BufferNode.alloc( length );
-  else if( _.bufferViewIs( ins ) )
+  else if( _.bufferViewIs( src ) )
   result = new BufferView( new BufferRaw( length ) );
-  else if( _.unrollIs( ins ) )
+  else if( _.unrollIs( src ) )
   result = _.unrollMake( length );
   else
-  result = new ins.constructor( length );
+  result = new src.constructor( length );
 
   return result;
-}
+});
 
+// function bufferMakeUndefined( ins, src )
+// {
+//   let result, length;
+// 
+//   if( _.routineIs( ins ) )
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+// 
+//   if( src === undefined )
+//   {
+//     length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
+//   }
+//   else
+//   {
+//     if( _.longIs( src ) || _.bufferNodeIs( src ) )
+//     length = src.length;
+//     else if( _.bufferRawIs( src ) || _.bufferViewIs( src ) )
+//     length = src.byteLength;
+//     else if( _.numberIs( src ) )
+//     length = src;
+//     else _.assert( 0 );
+//   }
+// 
+//   if( _.argumentsArrayIs( ins ) )
+//   ins = [];
+// 
+//   _.assert( arguments.length === 1 || arguments.length === 2 );
+//   _.assert( _.numberIsFinite( length ) );
+//   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
+// 
+//   if( _.routineIs( ins ) )
+//   result = new ins( length );
+//   else if( _.bufferNodeIs( ins ) )
+//   result = BufferNode.alloc( length );
+//   else if( _.bufferViewIs( ins ) )
+//   result = new BufferView( new BufferRaw( length ) );
+//   else if( _.unrollIs( ins ) )
+//   result = _.unrollMake( length );
+//   else
+//   result = new ins.constructor( length );
+// 
+//   return result;
+// }
+//
+// //
+//
 // function bufferMakeUndefined( ins, src )
 // {
 //   let result, length;
@@ -563,17 +749,13 @@ function bufferFromArrayOfArray( array, options )
 
   for( let a = 0 ; a < array.length ; a++ )
   {
-
     let element = array[ a ];
 
     for( let e = 0 ; e < atomsPerElement ; e++ )
     {
-
       result[ i ] = element[ e ];
       i += 1;
-
     }
-
   }
 
   return result;
@@ -3065,6 +3247,7 @@ let Routines =
   buffersAreEquivalent,
   buffersAreIdentical,
 
+  _bufferMake_functor,
   bufferMake,
   bufferMakeUndefined,
 

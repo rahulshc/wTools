@@ -116,12 +116,21 @@ function hasLength( src )
 // --
 
 /**
- * The routine arrayMake() returns a new Array maked from {-src-}.
+ * The routine arrayMake() returns a new Array maiden from argument {-src-}.
  *
- * @param { Number|Long|Null } src - The number or any Long to make new Array. If null passed, routine returns an empty Array.
+ * @param { Number|Long|Set|Null|Undefined } src - The number or any Long to make new Array. If {-src-} is null
+ * or undefined, then routine returns an empty Array.
+ *
+ * @example
+ * _.arrayMake();
+ * // returns []
  *
  * @example
  * _.arrayMake( null );
+ * // returns []
+ *
+ * @example
+ * _.arrayMake( undefined );
  * // returns []
  *
  * @example
@@ -152,11 +161,11 @@ function hasLength( src )
  * console.log( _.arrayIs( got ) );
  * // log true
  *
- * @returns { Array } Returns a new Array maked from {-src-}.
- * Otherwise, it returns the empty Array.
+ * @returns { Array } - Returns a new Array maiden from {-src-}. If {-src-} is null or undefined, then routine returns
+ * empty array. Otherwise, it returns the Array filled by {-src-} elements.
  * @function arrayMake
- * @throws { Error } If arguments.length is less or more then one.
- * @throws { Error } If argument {-src-} is not a number, not a Long, not null.
+ * @throws { Error } If arguments.length is more then one.
+ * @throws { Error } If {-src-} is not a number, not a Long, not Set, not null, not undefined.
  * @memberof wTools
  */
 
@@ -185,17 +194,30 @@ function arrayMake( src )
 
 /**
  * The routine arrayMakeUndefined() returns a new Array with length equal to {-length-}.
- * If the argument {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
+ * If {-length-} is not provided, routine returns new Array with the length defined from {-src-}.
  *
- * @param { Number|Long|Null } src - The number or any Long. If {-length-} is not provided, defines length of new Array.
- * @param { Number } length - Defines length of new Array.
+ * @param { Number|Long|Set|Null } src - The number or any Long. If {-length-} parameter is not provided,
+ * then it defines length of new Array.
+ * @param { Number|Long|Null } length - Defines length of new Array. If null is provided, then length defines by {-src-}.
+ *
+ * @example
+ * _.arrayMakeUndefined();
+ * // returns []
  *
  * @example
  * _.arrayMakeUndefined( null );
  * // returns []
  *
  * @example
+ * _.arrayMakeUndefined( null, null );
+ * // returns []
+ *
+ * @example
  * _.arrayMakeUndefined( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.arrayMakeUndefined( 3, null );
  * // returns [ undefined, undefined, undefined ]
  *
  * @example
@@ -205,6 +227,14 @@ function arrayMake( src )
  * @example
  * let src = [ 1, 2, 3, 4, '5' ]
  * let got = _.arrayMakeUndefined( src );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined, undefined, undefined ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = [ 1, 2, 3, 4, '5' ]
+ * let got = _.arrayMakeUndefined( src, null );
  * console.log( got );
  * // log [ undefined, undefined, undefined, undefined, undefined ]
  * console.log( got === src );
@@ -232,12 +262,12 @@ function arrayMake( src )
  * console.log( _.arrayIs( got ) );
  * // log true
  *
- * @returns { Array } Returns a new Array with length equal to {-length-} or defined from {-src-}.
+ * @returns { Array } - Returns a new Array with length equal to {-length-} or defined from {-src-}.
  * If null passed, routine returns the empty Array.
  * @function arrayMakeUndefined
- * @throws { Error } If arguments.length is less then one or more then two.
- * @throws { Error } If argument {-src-} is not a number, not a Long, not null.
- * @throws { Error } If argument {-length-} is not a number.
+ * @throws { Error } If arguments.length is more then two.
+ * @throws { Error } If argument {-src-} is not a number, not a Long, not a Set, not null.
+ * @throws { Error } If argument {-length-} is not a number, not Long, not null.
  * @memberof wTools
  */
 
@@ -251,12 +281,12 @@ function arrayMakeUndefined( src, length )
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.numberIs( src ) || _.longLike( src ) || _.setLike( src ) || src === null );
-  // _.assert( length === undefined || _.numberIs( length ) );
 
   if( _.longIs( length ) )
-  length = length.length;
-
-  if( length === undefined || length === null )
+  {
+    length = length.length;
+  }
+  else if( length === undefined || length === null )
   {
     if( src === null )
     length = 0;
@@ -269,17 +299,13 @@ function arrayMakeUndefined( src, length )
     else
     _.assert( 0 );
   }
+  else if( !_.numberIs( length ) )
+  {
+    _.assert( 0, 'Unknown length' )
+  }
 
-  // if( src && src.length && length === undefined )
-  // length = src.length;
-  //
-  // if( _.numberIs( src ) && length === undefined )
-  // length = src;
+  _.assert( _.numberIsFinite( length ) );
 
-  if( !length )
-  length = 0;
-
-  _.assert( _.numberIsFinite( length ) )
   return Array( length );
 }
 
@@ -296,32 +322,40 @@ function arrayFrom( src )
 //
 
 /**
- * The arrayFromCoercing() routine converts an object-like {-srcMap-} into Array.
+ * The routine arrayFromCoercing() returns Array from provided argument {-src-}. The feature of routine is possibility of 
+ * converting an object-like {-src-} into Array. Also, routine longFromCoercing() converts string with number literals
+ * to an Array. 
  *
- * @param { * } src - To convert into Array.
+ * @param { Array|Long|ObjectLike|String } src - An instance to convert into Array.
+ * If {-src-} is instance of Array, then routine converts not {-src-}.
  *
  * @example
- * _.arrayFromCoercing( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * let src = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+ * let got = _.arrayFromCoercing( src );
  * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * console.log( got === src );
+ * // log true
  *
  * @example
- * _.arrayFromCoercing( { a : 3, b : 7, c : 13 } );
+ * let src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * let got = _.arrayFromCoercing( src );
+ * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = { a : 3, b : 7, c : 13 };
+ * let got = _.arrayFromCoercing( src );
  * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
  *
  * @example
- * _.arrayFromCoercing( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
+ * let src = "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl";
+ * let got = _.arrayFromCoercing( src );
  * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
  *
- * @example
- * let args = ( function() {
- *   return arguments;
- * } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
- * _.arrayFromCoercing( args );
- * // returns [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ]
- *
- * @returns { Array } Returns an Array.
+ * @returns { Array } - Returns an Array. If {-src-} is Array instance, then routine returns original {-src-}.
  * @function arrayFromCoercing
- * @throws { Error } Will throw an Error if {-srcMap-} is not an object-like.
+ * @throws { Error } If {-src-} is not an Array, not a Long, not object-like, not a String.
  * @memberof wTools
  */
 
@@ -1411,7 +1445,7 @@ function arrayGrow_( dst, src, range, ins )
 /**
  * Routine arrayRelength() changes length of provided array {-src-} by copying it elements to newly created array object
  * using range (range) positions of the original array and value to fill free space after copy (val).
- * Routine can grows and reduses size of Long. The original {-src-} will not be modified.
+ * Routine can grows and reduces size of Long. The original {-src-} will not be modified.
  *
  * @param { Array|Unroll } src - The Array or Unroll from which makes a shallow copy.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
@@ -3483,7 +3517,8 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
   arrayRemovedElementOnce.apply( this, arguments );
-  /* qqq : implement and cover routines arrayRemoveElement*_ returning element, not container? */
+  /* aaa : implement and cover routines arrayRemovedElement*_ returning element, not container? */
+  /* Dmytro : implemented and covered, proposed improvements of routine `arrayRemovedElement` */
   return dstArray;
 }
 
@@ -3521,8 +3556,8 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 {
   let index = _.longLeftIndex.apply( this, arguments );
   let removedElements = 0;
-
-  for( let i = 0; i < dstArray.length; i++ )
+  
+  for( let i = 0; i < dstArray.length; i++ ) /* Dmytro : bad implementation, this cycle run routine longLeftIndex even if it not needs, better implementation commented below */
   {
     if( index !== -1 )
     {
@@ -3530,10 +3565,44 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
       removedElements = removedElements + 1;
       i = i - 1 ;
     }
-    index = _.longLeftIndex.apply( this, arguments );
+    index = _.longLeftIndex.apply( this, arguments ); /* Dmytro : this call uses not offset, it makes routine slower */
   }
 
   return removedElements;
+
+  // let removedElements = 0;
+  // let index = _.longLeftIndex.apply( this, arguments );
+  // evaluator1 = _.numberIs( evaluator1 ) ? undefined : evaluator1;
+  //
+  // while( index !== -1 ) 
+  // {  
+  //   dstArray.splice( index, 1 );
+  //   removedElements = removedElements + 1;
+  //   index = _.longLeftIndex( dstArray, ins, index, evaluator1, evaluator2 );
+  // }
+  //
+  // return removedElements;
+}
+
+//
+
+function arrayRemovedElement_( dstArray, ins, evaluator1, evaluator2 )
+{
+  let removedElement;
+
+  let index = _.longLeftIndex.apply( this, arguments );
+  evaluator1 = _.numberIs( evaluator1 ) ? undefined : evaluator1;
+
+  if( index !== -1 )
+  removedElement = dstArray[ index ];
+
+  while( index !== -1 ) 
+  {  
+    dstArray.splice( index, 1 );
+    index = _.longLeftIndex( dstArray, ins, index, evaluator1, evaluator2 );
+  }
+
+  return removedElement;
 }
 
 //
@@ -3607,6 +3676,21 @@ function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
+function arrayRemovedElementOnce_( dstArray, ins, evaluator1, evaluator2 )
+{
+  let removedElement;
+  let index = _.longLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  {
+    removedElement = dstArray[ index ];
+    dstArray.splice( index, 1 );
+  }
+
+  return removedElement;
+}
+
+//
+
 function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
 
@@ -3623,6 +3707,25 @@ function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
   _.assert( index < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
 
   return result;
+}
+
+//
+
+function arrayRemovedElementOnceStrictly_( dstArray, ins, evaluator1, evaluator2 )
+{
+  let removedElement;
+  let index = _.longLeftIndex.apply( _, arguments );
+  if( index >= 0 )
+  {
+    removedElement = dstArray[ index ];
+    dstArray.splice( index, 1 );
+  }
+  else _.assert( 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
+
+  index = _.longLeftIndex.apply( _, arguments );
+  _.assert( index < 0, () => 'The element ' + _.toStrShort( ins ) + ' is several times in dstArray' );
+
+  return removedElement;
 }
 
 /*
@@ -6121,8 +6224,11 @@ let Extension =
   arrayRemoveElementOnce,
   arrayRemoveElementOnceStrictly,
   arrayRemovedElement,
+  arrayRemovedElement_, /* !!! : use instead of arrayBut, arrayRemovedElement */
   arrayRemovedElementOnce,
+  arrayRemovedElementOnce_, /* !!! : use instead of arrayBut, arrayRemovedElementOnce */
   arrayRemovedElementOnceStrictly,
+  arrayRemovedElementOnceStrictly_, /* !!! : use instead of arrayBut, arrayRemovedElementOnceStrictly */
 
   arrayRemoveArray,
   arrayRemoveArrayOnce,

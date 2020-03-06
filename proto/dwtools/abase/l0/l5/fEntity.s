@@ -486,8 +486,7 @@ let Extension =
   makeEmpty : entityMakeEmpty,
   entityMakeUndefined, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : takes into account longDescriptor, covered */
   makeUndefined : entityMakeUndefined,
-  entityMake, /* qqq2 : should take into account long descriptor, make perfect coverage, please */
-  /* Dmytro : have some question for new feature. Routine takes into account longDescriptor, covered */
+  entityMake, /* aaa2 : should take into account long descriptor, make perfect coverage, please */ /* Dmytro : routine takes into account longDescriptor, covered */
   make : entityMake,
 
   entityEntityEqualize,

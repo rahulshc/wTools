@@ -3756,7 +3756,7 @@ function entityMap_( dst, src, onEach )
     if( _.longIs( src ) )
     {
       if( dst === null )
-      result = _.entityMakeUndefined( src );
+      result = _.entityMakeUndefined( src, src.length );
       else
       _.assert( _.longIs( dst ), '{-dst-} container should be long like' );
 

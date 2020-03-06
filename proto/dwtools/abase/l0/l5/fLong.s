@@ -28,7 +28,9 @@ but                 -                +         negative
 
 function argumentsArrayMake( src )
 {
-  _.assert( arguments.length === 1 );
+  _.assert( arguments.length === 0 || arguments.length === 1 );
+  if( src === undefined || src === null )
+  src = 0;
   _.assert( _.numberIs( src ) || _.longLike( src ) );
   if( _.numberIs( src ) )
   return _argumentsArrayMake.apply( _, Array( src ) );
@@ -159,41 +161,77 @@ function _longMake_functor( onMake )
 //
 
 /**
- * The routine longMake() returns a new Long with the same type as source Long (src). New Long makes from inserted Long (ins)
- * or if (ins) is number, the Long makes from (src) with length equal to (ins). If (ins) is not provided, routine returns copy of (src).
+ * The routine longMake() returns a new Long with the same type as source Long {-src-}. New Long makes from inserted Long {-ins-}
+ * or if {-ins-} is number, the Long makes from {-src-} with length equal to {-ins-}. If {-ins-} is not provided, routine  makes
+ * container with default Long type. New Long contains {-src-} elements.
  *
- * @param { Long } src - Instance of Long or constructor, defines type of returned Long. If null is provided, routine returns empty array.
- * @param { Number|Long } ins - Defines length of new Long. If Long is provided, routine makes new Long from {-ins-} with {-src-} type.
+ * @param { Long|Function|Null } src - Instance of Long or constructor, defines type of returned Long. If null is provided, routine returns 
+ * container with default Long type.
+ * @param { Number|Long|Null } ins - Defines length of new Long. If Long is provided, routine makes new Long from {-ins-} with {-src-} type.
+ * If null is provided, then routine makes container with default Long type.
+ *
+ * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
+ *
+ * @example
+ * _.longMake();
+ * // returns []
  *
  * @example
  * _.longMake( null );
  * // returns []
  *
  * @example
+ * _.longMake( null, null );
+ * // returns []
+ *
+ * @example
+ * _.longMake( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.longMake( 3, null );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
  * _.longMake( [ 1, 2, 3, 4 ] );
  * // returns [ 1, 2, 3, 4 ];
  *
  * @example
- * let src = _.unrollMake( [] );
- * let got = _.longMake( src, [ 1, 2, 3 ] );
+ * _.longMake( [ 1, 2, 3, 4 ], null );
+ * // returns [ 1, 2, 3, 4 ];
+ *
+ * @example
+ * _.longMake( [ 1, 2 ], 4 );
+ * // returns [ 1, 2, undefined, undefined ];
+ *
+ * @example
+ * let got = _.longMake( _.unrollMake( [] ), [ 1, 2, 3 ] );
  * console.log( got );
  * // log [ 1, 2, 3 ];
  * console.log( _.unrollIs( got ) );
  * // log true
  *
  * @example
- * let src = new F32x( [ 1, 2, 3, 4, 5 ] );
- * let got = _.longMake( src, 2 );
+ * let got = _.longMake( new F32x( [ 1, 2, 3 ] ), 1 );
  * console.log( got );
- * // log Float32Array[ 1, 2 ];
- * console.log( _.bufferTypedIs( got ) );
- * // log true
+ * // log Float32Array[ 1 ];
  *
- * @returns { Long } Returns a Long with type of source Long which makes from ins.
+ * @example
+ * let got = _.longMake( Array, null );
+ * console.log( got );
+ * // log [];
+ *
+ * @example
+ * let got = _.longMake( Array, 3 );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined ];
+ *
+ * @returns { Long } - Returns a Long with type of source Long {-src-} which makes from {-ins-}. If {-ins-} is not 
+ * provided, then routine returns container with default Long type.
  * @function longMake
- * @throws { Error } If arguments.length is less than two or more then two.
- * @throws { Error } If {-ins-} is not a number and not a Long.
- * @throws { Error } If {-src-} is not a Long or not a constructor.
+ * @throws { Error } If arguments.length is more then two.
+ * @throws { Error } If {-src-} is not a Long, not a constructor, not null.
+ * @throws { Error } If {-ins-} is not a number, not a Long, not null, not undefined.
  * @throws { Error } If {-ins-} or ins.length has a not finite value.
  * @memberof wTools
  */
@@ -582,48 +620,82 @@ let _longMakeOfLength = _longMake_functor( function( src, ins, length, minLength
 //
 
 /**
- * The routine longMakeUndefined() returns a new Long with the same type as source Long {-src-}. New Long has length equal to {-len-}
- * or it has length of source Long {-src-} if second argument is not provided.
+ * The routine longMakeUndefined() returns a new Long with the same type as source Long {-src-}. New Long has length equal to {-ins-} 
+ * argument. If {-ins-} is not provided, then new container has default Long type and length of source Long {-src-}.
  *
- * @param { Long } ins - Long or constructor, defines type of returned Long. If null is provided, routine returns empty array.
- * @param { Number|Long } len - Defines length of new Long. If Long is provided, routine makes new Long with length equal to ins.length.
+ * @param { Long|Function|Null } src - Long or constructor, defines type of returned Long. If null is provided, then routine returns 
+ * container with default Long type.
+ * @param { Number|Long } ins - Defines length of new Long. If {-ins-} is Long, then routine makes new Long with length equal to ins.length.
+ *
+ * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
+ *
+ * @example
+ * _.longMakeUndefined();
+ * // returns []
  *
  * @example
  * _.longMakeUndefined( null );
  * // returns []
  *
  * @example
+ * _.longMakeUndefined( null, null );
+ * // returns []
+ *
+ * @example
+ * _.longMakeUndefined( 3 );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.longMakeUndefined( 3, undefined );
+ * // returns [ undefined, undefined, undefined ]
+ *
+ * @example
  * _.longMakeUndefined( [ 1, 2, 3, 4 ] );
  * // returns [ undefined, undefined, undefined, undefined ];
  *
  * @example
- * let src = _.unrollMake( [] )
- * let got = _.longMakeUndefined( src, [ 1, 2, 3 ] );
+ * _.longMakeUndefined( [ 1, 2, 3, 4 ], null );
+ * // returns [ undefined, undefined, undefined, undefined ];
+ *
+ * @example
+ * _.longMakeUndefined( [ 1, 2, 3, 4 ], 2 );
+ * // returns [ undefined, undefined ];
+ *
+ * @example
+ * let got = _.longMakeUndefined( _.unrollMake( [] ), [ 1, 2, 3 ] );
  * console.log( got );
  * // log [ undefined, undefined, undefined ];
  * console.log( _.unrollIs( got ) );
  * // log true
  *
  * @example
- * let src = new F32x( [ 1, 2, 3, 4, 5] )
- * let got = _.longMakeUndefined( src, 2 );
+ * let got = _.longMakeUndefined( new F32x( [ 1, 2, 3, 4 ] ), 2 );
  * console.log( got );
  * // log Float32Array[ undefined, undefined ];
- * console.log( _.bufferTypedIs( got ) );
- * // log true
  *
- * @returns { Long } - Returns a Long with type of source Long with a certain length.
+ * @example
+ * let got = _.longMakeUndefined( Array, null );
+ * console.log( got );
+ * // log [];
+ *
+ * @example
+ * let got = _.longMakeUndefined( Array, 3 );
+ * console.log( got );
+ * // log [ undefined, undefined, undefined ];
+ *
+ * @returns { Long } - Returns a Long with type of source Long {-src-} with a certain length defined by {-ins-}.
+ * If {-ins-} is not defined, then routine returns container with default Long type. Length of the new container defines by {-src-}.
  * @function longMakeUndefined
- * @throws { Error } If arguments.length is less than one or more then two.
- * @throws { Error } If the {-ins-} is not a Long or not a constructor.
- * @throws { Error } If the {-len-} is not a number or not a Long.
- * @throws { Error } If the {-len-} or ins.length has a not finite value.
- * @throws { Error } If the {-len-} is undefined and ins.length is not a number.
+ * @throws { Error } If arguments.length is more then two.
+ * @throws { Error } If the {-src-} is not a Long, not a constructor, not null.
+ * @throws { Error } If the {-ins-} is not a number, not a Long, not null, not undefined.
+ * @throws { Error } If the {-ins-} or ins.length has a not finite value.
  * @memberof wTools
  */
 
 /*
-qqq : extend coverage and documentation of longMakeUndefined 
+aaa : extend coverage and documentation of longMakeUndefined 
+Dmytro : extended coverage and documentation
 aaa : longMakeUndefined does not create unrolls, but should 
 Dmytro : longMakeUndefined creates unrolls.
 */
@@ -770,20 +842,32 @@ function longMakeFilling( type, value, length )
 {
   let result;
 
-  _.assert( arguments.length === 2 || arguments.length === 3 );
+  // _.assert( arguments.length === 2 || arguments.length === 3 ); /* Dmytro : double check */ 
 
   if( arguments.length === 2 )
   {
     value = arguments[ 0 ];
     length = arguments[ 1 ];
     if( _.longIs( length ) )
-    type = length.constructor;
+    {
+      if( _.argumentsArrayIs( length ) )
+      type = null;
+      else
+      type = length.constructor;
+    }
     else
-    type = null;
+    {
+      type = null;
+    }
   }
-  else if( arguments.length === 3 )
+  else if( arguments.length !== 3 )
   {
+    _.assert( 0, 'Expects two or three arguments' );
   }
+
+  /* Dmytro : missed */
+  if( _.longIs( length ) )
+  length = length.length;
 
   _.assert( value !== undefined );
   _.assert( _.numberIs( length ) );
@@ -799,17 +883,17 @@ function longMakeFilling( type, value, length )
 //
 
 /**
- * The routine arrayFill() fills all the elements of the given Long in the provided range
- * with a static value.
+ * The routine longFill() fills elements the given Long {-src-} by static value. The range of replaced elements
+ * defines by a parameter {-range-}. If it possible, routine longFill() saves original container {-src-}.
  *
- * @param { Long } result - The source Long.
- * @param { * } value - Any value to fill the elements in the {-result-}.
+ * @param { Long } src - The source Long.
+ * @param { * } value - Any value to fill the elements in the {-src-}.
  * If {-value-} is not provided, the routine fills elements of source Long by 0.
  * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements.
  * If {-range-} is number, then it defines the end index, and the start index is 0.
- * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
+ * If range[ 0 ] < 0, then start index sets to 0, end index increments by absolute value of range[ 0 ].
  * If range[ 1 ] <= range[ 0 ], then routine returns a copy of original Long.
- * If {-range-} is not provided, routine fills all elements of the {-result-}.
+ * If {-range-} is not provided, routine fills all elements of the {-src-}.
  *
  * @example
  * _.longFill( [ 1, 2, 3, 4, 5 ] );
@@ -839,27 +923,27 @@ function longMakeFilling( type, value, length )
  * Otherwise, returns copy of the source Long filled with a static value.
  * @function longFill
  * @throws { Error } If arguments.length is less then one or more then three.
- * @throws { Error } If {-result-} is not a Long.
+ * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-range-} is not a Range or not a Number.
  * @memberof wTools
  */
 
-function longFill( result, value, range )
+function longFill( src, value, range )
 {
 
   if( range === undefined )
-  range = [ 0, result.length ];
+  range = [ 0, src.length ];
   if( _.numberIs( range ) )
   range = [ 0, range ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( _.longIs( result ) );
+  _.assert( _.longIs( src ) );
   _.assert( _.rangeIs( range ) );
 
   if( value === undefined )
   value = 0;
 
-  result = _.longGrowInplace( result, range );
+  src = _.longGrowInplace( src, range );
 
   if( range[ 0 ] < 0 )
   {
@@ -867,17 +951,17 @@ function longFill( result, value, range )
     range[ 0 ] = 0;
   }
 
-  if( _.routineIs( result.fill ) )
+  if( _.routineIs( src.fill ) )
   {
-    result.fill( value, range[ 0 ], range[ 1 ] );
+    src.fill( value, range[ 0 ], range[ 1 ] );
   }
   else
   {
     for( let t = range[ 0 ] ; t < range[ 1 ] ; t++ )
-    result[ t ] = value;
+    src[ t ] = value;
   }
 
-  return result;
+  return src;
 }
 
 //
@@ -1214,32 +1298,45 @@ function longFrom( src )
 //
 
 /**
- * The longFromCoercing() routine converts an object-like {-srcMap-} into Array.
+ * The routine longFromCoercing() returns Long from provided argument {-src-}. The feature of routine is possibility of 
+ * converting an object-like {-src-} into Long. Also, routine longFromCoercing() converts string with number literals
+ * to a Long.
+ * If routine convert {-src-}, then result returns in container with default Long type. 
  *
- * @param { * } src - To convert into Array.
+ * @param { Long|ObjectLike|String } src - An instance to convert into Long.
+ * If {-src-} is a Long and it type is equal to current default Long type, then routine convert not {-src-}.
+ *
+ * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
  *
  * @example
- * _.longFromCoercing( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * let src = [ 3, 7, 13, 'abc', false, undefined, null, {} ];
+ * let got = _.longFromCoercing( src );
  * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * console.log( got === src );
+ * // log true
  *
  * @example
- * _.longFromCoercing( { a : 3, b : 7, c : 13 } );
+ * let src = _.argumentsArrayMake( [ 3, 7, 13, 'abc', false, undefined, null, {} ] );
+ * let got = _.longFromCoercing( src );
+ * // returns [ 3, 7, 13, 'abc', false, undefined, null, {} ]
+ * console.log( got === src );
+ * // log false
+ *
+ * @example
+ * let src = { a : 3, b : 7, c : 13 };
+ * let got = _.longFromCoercing( src );
  * // returns [ [ 'a', 3 ], [ 'b', 7 ], [ 'c', 13 ] ]
  *
  * @example
- * _.longFromCoercing( "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl" );
+ * let src = "3, 7, 13, 3.5abc, 5def, 7.5ghi, 13jkl";
+ * let got = _.longFromCoercing( src );
  * // returns [ 3, 7, 13, 3.5, 5, 7.5, 13 ]
  *
- * @example
- * let args = ( function() {
- *   return arguments;
- * } )( 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
- * _.longFromCoercing( args );
- * // returns [ 3, 7, 13, 'abc', false, undefined, null, { greeting: 'Hello there!' } ]
- *
- * @returns { Array } Returns an Array.
+ * @returns { Long } - Returns a Long. If {-src-} is Long with default Long type, then routine returns original {-src-}.
+ * Otherwise, it makes new container with default Long type.
  * @function longFromCoercing
- * @throws { Error } Will throw an Error if {-srcMap-} is not an object-like.
+ * @throws { Error } If arguments.length is less or more then one.
+ * @throws { Error } If {-src-} is not a Long, not an object-like, not a string.
  * @memberof wTools
  */
 
@@ -1755,81 +1852,177 @@ function _relength_pre( dst, src, range, ins )
 
 //
 
-/* qqq2 : rename arguments. ask */
-function longBut_( dst, array, range, val )
+/* aaa2 : rename arguments. ask */
+
+function longBut_( dst, src, crange, ins )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
+  if( arguments.length < 4 && dst !== null && dst !== src ) 
+  {
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
+  }
 
-  if( _.arrayLikeResizable( array ) && !_.bufferAnyIs( dst ) )
-  return _.arrayBut_.apply( this, arguments ); /* qqq2 : ? */
+  if( crange === undefined )
+  return resultMake( dst, src )
+  else if( _.numberIs( crange ) )
+  crange = [ crange, crange + 1 ];
 
-  if( range === undefined )
-  return returnDst();
+  _.assert( _.longLike( src ) );
+  _.assert( _.rangeIs( crange ) );
+  _.assert( _.longLike( ins ) || ins === undefined || ins === null );
 
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
+  _.rangeClamp( crange, [ 0, src.length ] );
+  if( crange[ 1 ] < crange[ 0 ] )
+  crange[ 1 ] = crange[ 0 ];
 
-  _.assert( _.rangeIs( range ) );
-
-  _.rangeClamp( range, [ 0, array.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  if( range[ 0 ] === range[ 1 ] && val === undefined ) /* qqq2 : ? */
-  return returnDst();
-
-  let d = range[ 1 ] - range[ 0 ];
-  let len = val ? val.length : 0;
-  let d2 = d - len;
-  let l2 = array.length - d2;
+  let delta = crange[ 1 ] - crange[ 0 ];
+  let insLength = ins ? ins.length : 0;
+  let delta2 = delta - insLength;
+  let resultLength = src.length - delta2;
 
   let result;
-  if( _.boolIs( dst ) )
-  result = _.longMakeUndefined( array, l2 );
-  else if( _.arrayLikeResizable( dst ) )
-  result = _.longEmpty( dst ); /* qqq2 : ? */
-  else if( dst.length !== l2 )
-  result = _.longMakeUndefined( dst, l2 );
-  else
-  result = dst;
+  if( dst === null )
+  {
+    result = _.longMakeUndefined( src, resultLength );
+  }
+  else if( dst === src )
+  {
+    if( _.arrayLikeResizable( dst ) )
+    {
+      ins ? dst.splice( crange[ 0 ], delta, ... ins ) : dst.splice( crange[ 0 ], delta );
+      return dst; 
+    }
+    else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
+    {
+      result = _.longMakeUndefined( dst, resultLength );
+    }
+    else
+    {
+      result = dst;
+    }
+  }
+  else if( dst.length !== resultLength )
+  {
+    if( _.arrayLikeResizable( dst ) )
+    {
+      dst.length = resultLength;
+    }
+    else
+    {
+      dst = _.longMakeUndefined( dst, resultLength );
+    }
 
-  for( let i = 0 ; i < range[ 0 ] ; i++ )
-  result[ i ] = array[ i ];
+    result = dst;
+  }
 
-  for( let i = range[ 1 ] ; i < array.length ; i++ )
-  result[ i-d2 ] = array[ i ];
+  /* */
 
-  if( val )
-  for( let i = 0 ; i < val.length ; i++ )
-  result[ range[ 0 ]+i ] = val[ i ];
+  result = resultMake( result, src, ins );
 
   return result;
 
   /* */
 
-  function returnDst() /* qqq2 : ? */
+  function resultMake( dst, src, ins )
   {
-    if( dst.length !== undefined )
+    if( dst !== src )
     {
-      if( _.arrayLikeResizable( dst ) )
-      {
-        return dst.splice( 0, dst.length, ... array );
-      }
-      else
-      {
-        if( dst.length !== array.length )
-        dst = _.longMakeUndefined( dst, array.length );
-
-        for( let i = 0; i < dst.length; i++ )
-        dst[ i ] = array[ i ];
-
-        return dst;
-      }
+      for( let i = 0 ; i < crange[ 0 ] ; i++ )
+      dst[ i ] = src[ i ];
+      
+      for( let i = crange[ 1 ] ; i < src.length ; i++ )
+      dst[ i - delta2 ] = src[ i ];
     }
-    return dst === true ? _.longMake( array ) : array;
+
+    if( ins )
+    for( let i = 0 ; i < ins.length ; i++ )
+    dst[ crange[ 0 ] + i ] = ins[ i ];
+
+    return dst;
   }
 }
+
+//
+
+// /* qqq2 : rename arguments. ask */
+// function longBut_( dst, array, range, val )
+// {
+// 
+//   [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
+// 
+//   if( _.arrayLikeResizable( array ) && !_.bufferAnyIs( dst ) )
+//   return _.arrayBut_.apply( this, arguments ); /* qqq2 : ? */
+// 
+//   if( range === undefined )
+//   return returnDst();
+// 
+//   if( _.numberIs( range ) )
+//   range = [ range, range + 1 ];
+// 
+//   _.assert( _.rangeIs( range ) );
+// 
+//   _.rangeClamp( range, [ 0, array.length ] );
+//   if( range[ 1 ] < range[ 0 ] )
+//   range[ 1 ] = range[ 0 ];
+// 
+//   if( range[ 0 ] === range[ 1 ] && val === undefined ) /* qqq2 : ? */
+//   return returnDst();
+// 
+//   let d = range[ 1 ] - range[ 0 ];
+//   let len = val ? val.length : 0;
+//   let d2 = d - len;
+//   let l2 = array.length - d2;
+// 
+//   let result;
+//   if( _.boolIs( dst ) )
+//   result = _.longMakeUndefined( array, l2 );
+//   else if( _.arrayLikeResizable( dst ) )
+//   result = _.longEmpty( dst ); /* qqq2 : ? */
+//   else if( dst.length !== l2 )
+//   result = _.longMakeUndefined( dst, l2 );
+//   else
+//   result = dst;
+// 
+//   for( let i = 0 ; i < range[ 0 ] ; i++ )
+//   result[ i ] = array[ i ];
+// 
+//   for( let i = range[ 1 ] ; i < array.length ; i++ )
+//   result[ i-d2 ] = array[ i ];
+// 
+//   if( val )
+//   for( let i = 0 ; i < val.length ; i++ )
+//   result[ range[ 0 ]+i ] = val[ i ];
+// 
+//   return result;
+// 
+//   /* */
+// 
+//   function returnDst() /* qqq2 : ? */
+//   {
+//     if( dst.length !== undefined )
+//     {
+//       if( _.arrayLikeResizable( dst ) )
+//       {
+//         return dst.splice( 0, dst.length, ... array );
+//       }
+//       else
+//       {
+//         if( dst.length !== array.length )
+//         dst = _.longMakeUndefined( dst, array.length );
+// 
+//         for( let i = 0; i < dst.length; i++ )
+//         dst[ i ] = array[ i ];
+// 
+//         return dst;
+//       }
+//     }
+//     return dst === true ? _.longMake( array ) : array;
+//   }
+// }
 
 //
 

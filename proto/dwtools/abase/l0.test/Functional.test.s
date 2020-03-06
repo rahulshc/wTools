@@ -23494,16 +23494,16 @@ var Self =
 
     entityOnlyOnlyDst,
     entityOnlyOnlySrc,
-    entityOnlyBothSame, /* qqq : implement | Dmytro : implemented */
-    entityOnlyBoth, /* qqq : implement | Dmytro : implemented, cases with different types of src and dst added */
-    entityOnlyDiffTypes, /* qqq : implement | Dmytro : cases with different types of src and dst added */
+    entityOnlyBothSame, /* aaa : implement */ /* Dmytro : implemented */
+    entityOnlyBoth, /* aaa : implement */ /* Dmytro : implemented, cases with different types of src and dst added */
+    entityOnlyDiffTypes, /* aaa : implement */ /* Dmytro : cases with different types of src and dst added */
     entityOnlyOnlySets,
     entityOnlyOnlyHashMaps,
 
-    entityButOnlyDst, /* qqq : implement | Dmytro : implemented */
-    entityButOnlySrc, /* qqq : implement | Dmytro : implemented */
-    entityButBothSame, /* qqq : implement | Dmytro : implemented */
-    entityButBoth, /* qqq : implement | Dmytro : implemented */
+    entityButOnlyDst, /* aaa : implement */ /* Dmytro : implemented */
+    entityButOnlySrc, /* aaa : implement */ /* Dmytro : implemented */
+    entityButBothSame, /* aaa : implement */ /* Dmytro : implemented */
+    entityButBoth, /* aaa : implement */ /* Dmytro : implemented */
     entityButDiffTypes,
     entityButOnlySets,
     entityButOnlyHashMaps,
@@ -23514,26 +23514,26 @@ value for evaluator       src              dst, src                 dst, src    
 value for dst             dst                dst                    first +                     first +                   dst if positive
 */
 
-    entityAndOnlyDst, /* qqq : implement | Dmytro : implemented */
-    entityAndOnlySrc, /* qqq : implement | Dmytro : implemented */
-    entityAndBothSame, /* qqq : implement | Dmytro : implemented */
-    entityAndBoth, /* qqq : implement | Dmytro : implemented */
+    entityAndOnlyDst, /* aaa : implement */ /* Dmytro : implemented */
+    entityAndOnlySrc, /* aaa : implement */ /* Dmytro : implemented */
+    entityAndBothSame, /* aaa : implement */ /* Dmytro : implemented */
+    entityAndBoth, /* aaa : implement */ /* Dmytro : implemented */
     entityAndDiffTypes,
     entityAndOnlySets,
     entityAndOnlyHashMaps,
 
-    entityOrOnlyDst, /* qqq : implement | Dmytro : implemented */
-    entityOrOnlySrc, /* qqq : implement | Dmytro : implemented */
-    entityOrBothSame, /* qqq : implement | Dmytro : implemented */
-    entityOrBoth, /* qqq : implement | Dmytro : implemented */
+    entityOrOnlyDst, /* aaa : implement */ /* Dmytro : implemented */
+    entityOrOnlySrc, /* aaa : implement */ /* Dmytro : implemented */
+    entityOrBothSame, /* aaa : implement */ /* Dmytro : implemented */
+    entityOrBoth, /* aaa : implement */ /* Dmytro : implemented */
     entityOrDiffTypes,
     entityOrOnlySets,
     entityOrOnlyHashMaps,
 
-    entityXorOnlyDst, /* qqq : implement | Dmytro : implemented */
-    entityXorOnlySrc, /* qqq : implement | Dmytro : implemented */
-    entityXorBothSame, /* qqq : implement | Dmytro : implemented */
-    entityXorBoth, /* qqq : implement | Dmytro : implemented */
+    entityXorOnlyDst, /* aaa : implement */ /* Dmytro : implemented */
+    entityXorOnlySrc, /* aaa : implement */ /* Dmytro : implemented */
+    entityXorBothSame, /* aaa : implement */ /* Dmytro : implemented */
+    entityXorBoth, /* aaa : implement */ /* Dmytro : implemented */
     entityXorDiffTypes,
     entityXorOnlySets,
     entityXorOnlyHashMaps,
