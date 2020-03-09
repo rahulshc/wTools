@@ -72,9 +72,9 @@
 
 <details>
   <summary><a href="./concept/TypeRange.md">
-    Типи <code>Range</code>
+    Тип <code>Range</code>
   </a></summary>
-    <code>Range</code> - тип даних - двоелементний вектор, що задає початок і кінець відліку елементів в контейнері.
+    <code>Range</code> - збірний тип даних - пара чисел, що задає послідовність. 
 </details>
 
 <details>
