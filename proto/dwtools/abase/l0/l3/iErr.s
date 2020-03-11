@@ -203,7 +203,10 @@ function _err( o )
   for( let e in o )
   {
     if( _err.defaults[ e ] === undefined )
-    throw Error( 'Unknown option ' + e );
+    {
+      debugger;
+      throw Error( 'Unknown option ' + e );
+    }
   }
 
   for( let e in _err.defaults )
