@@ -275,6 +275,7 @@ module:
           - ../proto/dwtools/abase/l0.test/Functional.test.s
           - ../proto/dwtools/abase/l0.test/Introspector.test.s
           - ../proto/dwtools/abase/l0.test/Long.test.s
+          - ../proto/dwtools/abase/l0.test/LongDescriptor.test.s
           - ../proto/dwtools/abase/l0.test/Map.test.s
           - ../proto/dwtools/abase/l0.test/Module.test.s
           - ../proto/dwtools/abase/l0.test/Number.test.s
