@@ -627,6 +627,12 @@ let wMaker =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Maker },
 }
 
+let wPuppet =
+{
+  sourcePath : sourcePath( 'atop/puppet/Main.s', 'wpuppet' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.puppet },
+}
+
 // --
 // declare
 // --
@@ -781,6 +787,7 @@ let Modules =
   wBaker,
   wBakerWithFileExecutor,
   wMaker,
+  wPuppet,
 
 }
 
