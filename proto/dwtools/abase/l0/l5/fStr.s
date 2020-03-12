@@ -964,7 +964,7 @@ function strReplaceEnd( src, end, ins )
 *
 */
 
-function strReplace( src, ins, sub )
+function strReplace( src, ins, sub ) /* qqq2 : ask */
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strIs( sub ) || _.longIs( sub ), 'Expects {-sub-} as string/array of strings' );

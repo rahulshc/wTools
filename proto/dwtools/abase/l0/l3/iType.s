@@ -215,16 +215,16 @@ function typeOf( src, constructor )
 
 //
 
-function isPrototypeOf( subPrototype, superPrototype )
+function isPrototypeOf( superPrototype, subPrototype )
 {
   _.assert( arguments.length === 2, 'Expects two arguments, probably you meant routine prototypeOf' );
-  if( subPrototype === superPrototype )
+  if( superPrototype === subPrototype )
   return true;
-  if( !subPrototype )
-  return false;
   if( !superPrototype )
   return false;
-  return Object.isPrototypeOf.call( subPrototype, superPrototype );
+  if( !subPrototype )
+  return false;
+  return Object.isPrototypeOf.call( superPrototype, subPrototype );
 }
 
 //
