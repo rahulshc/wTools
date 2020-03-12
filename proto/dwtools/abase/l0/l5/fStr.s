@@ -996,21 +996,13 @@ function strReplace( src, ins, sub ) /* qqq2 : ask */
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strsAreAll( sub ), 'Expects {-sub-} as string/array of strings' );
 
-  if( _.longIs( ins ) )
-  {
-    if( _.longIs( sub ) )
-    _.assert( ins.length === sub.length );
+  if( _.longIs( ins ) && _.longIs( sub ) )
+  _.assert( ins.length === sub.length );
 
-    for( let i = 0 ; i < ins.length ; i++ )
-    if( ins[ i ] === '' )
-    _.assert( 0, '{-ins-} should be a string with length' );
-  }
-  else 
-  {
-    if( _.longIs( sub ) )
-    _.assert( sub.length === 1, 'Expects single {-sub-}' );
-    ins = _.arrayAs( ins );
-  }
+  ins = _.arrayAs( ins );
+  for( let i = 0 ; i < ins.length ; i++ )
+  if( ins[ i ] === '' )
+  _.assert( 0, '{-ins-} should be a string with length' );
 
   /* */
 
