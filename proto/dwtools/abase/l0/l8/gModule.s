@@ -730,7 +730,7 @@ function _sourceFileResolve( o )
     try
     {
       let filePath = _.path.nativize( _.path.normalize( o.basePath + '/' + sourcePath ) );
-      debugger;
+      // debugger;
       resolved = _.module.__nativeInclude.resolve( filePath );
     }
     catch( err )
