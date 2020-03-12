@@ -6636,8 +6636,10 @@ function strIsolateLeftOrNone( test )
   test.close( 'abababa with regexp' )
 
   /* - */
-
-  test.open( 'quoting' ); /* qqq : extend the group | Dmytro : extended */
+  
+  /* aaa : extend the group */
+  /* Dmytro : extended by new test cases */
+  test.open( 'quoting' ); 
 
   test.case = 'quote - 0';
   var got = _.strIsolateLeftOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 0 } );
@@ -6845,7 +6847,9 @@ function strIsolateLeftOrAll( test )
 
   /* - */
 
-  test.open( 'quoting' ); /* qqq : extend the group | Dmytro : extended */
+  /* aaa : extend the group */
+  /* Dmytro : extended by new test cases */
+  test.open( 'quoting' );
 
   test.case = 'quote - 0';
   var got = _.strIsolateLeftOrAll( { src : '"a b" c "d e"', delimeter : ' ', quote : 0 } );
@@ -7345,7 +7349,9 @@ function strIsolateRightOrNone( test )
 
   /* - */
 
-  test.open( 'quoting' ); /* qqq : extend the group | Dmytro : extended */
+  /* aaa : extend the group */
+  /* Dmytro : extended by new test cases */
+  test.open( 'quoting' ); 
 
   test.case = 'quote - 0';
   var got = _.strIsolateRightOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 0 } );
@@ -7579,7 +7585,9 @@ function strIsolateRightOrAll( test )
 
   /* - */
 
-  test.open( 'quoting' ); /* qqq : extend the group | Dmytro : extended */
+  /* aaa : extend the group */
+  /* Dmytro : extended by new test cases */
+  test.open( 'quoting' );
 
   test.case = 'quote - 0';
   var got = _.strIsolateRightOrAll( { src : '"a b" c "d e"', delimeter : ' ', quote : 0 } );
@@ -13619,8 +13627,8 @@ var Self =
 
     //
 
-    strLeft, /* qqq : update | Dmytro : updated, new option implemented */
-    strRight, /* qqq : update | Dmytro : updated, new option implemented */
+    strLeft, /* aaa : update */ /* Dmytro : updated, new option implemented */
+    strRight, /* aaa : update */ /* Dmytro : updated, new option implemented */
 
     strEquivalent,
     strsEquivalent,
