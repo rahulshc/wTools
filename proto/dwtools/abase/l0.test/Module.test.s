@@ -191,6 +191,23 @@ moduleExportsUndefined.description  =
   Included module returns undefined
 `
 
+//
+
+function resolve( test )
+{
+  let context = this;
+
+  var exp = _.path.nativize( _.path.normalize( __dirname + '/../Layer1.s' ) );
+  var got = _.module.resolve( 'wTools' );
+  test.identical( got, exp );
+
+}
+
+resolve.description  =
+`
+  Routine _.module.resolve return path to include path of the specified module.
+`
+
 // --
 // test suite definition
 // --
@@ -216,7 +233,10 @@ var Self =
 
     withIsIncluded,
     withoutIsIncluded,
-    moduleExportsUndefined
+    moduleExportsUndefined,
+
+    resolve,
+
   }
 
 }
