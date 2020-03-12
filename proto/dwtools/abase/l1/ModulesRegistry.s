@@ -421,6 +421,12 @@ let wPersistent =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.persistent },
 }
 
+let wRemote =
+{
+  sourcePath : sourcePath( 'amid/l3/remote/Include.s', 'wremote' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.remote },
+}
+
 let wNameMapper =
 {
   sourcePath : sourcePath( 'amid/l5_mapper/NameMapper.s', 'wnamemapper' ),
@@ -738,6 +744,7 @@ let Modules =
   wStager,
   wIntrospector,
   wPersistent,
+  wRemote,
 
   wNameMapper,
   wTemplateTreeResolver,

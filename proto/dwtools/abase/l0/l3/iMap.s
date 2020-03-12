@@ -1858,6 +1858,19 @@ function mapSupplementStructureless( dstMap, srcMap )
   return dstMap
 }
 
+//
+
+function mapOptionsApplyDefaults( options, defaults )
+{
+
+  _.assert( arguments.length === 2 );
+  _.assertMapHasOnly( options, defaults, `Does not expect options:` );
+  _.mapSupplementStructureless( options, defaults );
+  _.assertMapHasNoUndefine( options, `Options map should have no undefined fileds, but it does have` );
+
+  return options;
+}
+
 // --
 // fields
 // --
@@ -1945,6 +1958,7 @@ let Routines =
   mapExtend,
   mapSupplement,
   mapSupplementStructureless,
+  mapOptionsApplyDefaults,
 
 }
 

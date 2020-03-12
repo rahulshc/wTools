@@ -666,6 +666,15 @@ _sourceFileResolve.defaults =
 }
 
 // --
+// etc
+// --
+
+function toolsPathGet()
+{
+  return _.path.normalize( __dirname + '/../../../Tools.s' );
+}
+
+// --
 // meta
 // --
 
@@ -772,7 +781,7 @@ var ModuleExtension =
   isIncluded,
   _includedRegister,
 
-  //
+  // resolve
 
   _resolve,
   _resolveFirst,
@@ -780,6 +789,10 @@ var ModuleExtension =
   resolveFirst,
   _modulesToSourcePaths,
   _sourceFileResolve,
+
+  // etc
+
+  toolsPathGet,
 
   // meta
 

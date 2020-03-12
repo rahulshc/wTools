@@ -399,6 +399,7 @@ function routineOptions( routine, args, defaults )
   _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults or defaults in third argument' );
   _.assert( _.objectIs( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'Expects single options map, but got', args.length, 'arguments' );
+
   _.assertMapHasOnly( options, defaults, `Routine ${name} does not expect options:` );
   _.mapSupplementStructureless( options, defaults );
   _.assertMapHasNoUndefine( options, `Options map for routine ${name} should have no undefined fileds, but it does have` );
