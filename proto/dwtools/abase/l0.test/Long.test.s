@@ -13789,32 +13789,32 @@ function longFromRangeWithStepNotDefaultLongDescriptor( test )
 
     /* - */
 
-    if( !Config.debug )
-    return;
+    if( Config.debug )
+    {
+      test.case = 'without arguments';
+      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep() );
 
-    test.case = 'without arguments';
-    test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep() );
+      test.case = 'not enough arguments';
+      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 1, 3 ] ) );
 
-    test.case = 'not enough arguments';
-    test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 1, 3 ] ) );
+      test.case = 'extra arguments';
+      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 1, 3 ], 1, 'extra' ) );
 
-    test.case = 'extra arguments';
-    test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 1, 3 ], 1, 'extra' ) );
+      test.case = 'range[ 0 ] is infinite number';
+      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ Infinity, 2 ], -1 ) );
+      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ -Infinity, 2 ], 1 ) );
 
-    test.case = 'range[ 0 ] is infinite number';
-    test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ Infinity, 2 ], -1 ) );
-    test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ -Infinity, 2 ], 1 ) );
+      test.case = 'range[ 1 ] is infinite number';
+      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, Infinity ], 1 ) );
+      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, -Infinity ], -1 ) );
 
-    test.case = 'range[ 1 ] is infinite number';
-    test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, Infinity ], 1 ) );
-    test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, -Infinity ], -1 ) );
+      test.case = 'step === 0';
+      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, 10 ], 0 ) );
 
-    test.case = 'step === 0';
-    test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, 10 ], 0 ) );
-
-    test.case = 'wrong type of step';
-    test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, 10 ], null ) );
-    test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, 10 ], [] ) );
+      test.case = 'wrong type of step';
+      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, 10 ], null ) );
+      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, 10 ], [] ) );
+    }
   }
 }
 
