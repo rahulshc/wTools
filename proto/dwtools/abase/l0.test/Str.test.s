@@ -5731,8 +5731,8 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'src is palindrom';
-  var got = _.strReplace( 'abcdcba', [ 'd', 'c', 'b', 'a' ], [ '1', '2', '3', '4' ] );
-  var expected = '4321234';
+  var got = _.strReplace( 'aabbccddccbbaa', [ 'd', 'c', 'b', 'a' ], [ 'a', 'b', 'c', 'd' ] );
+  var expected = 'ddccbbaabbccdd';
   test.identical( got, expected );
 
   test.close( 'src - string, ins - array of strings, sub - array of strings' );
