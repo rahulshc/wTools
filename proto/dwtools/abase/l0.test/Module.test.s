@@ -42,11 +42,9 @@ function withIsIncluded( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  debugger;
-  let toolsPath = a.path.nativize( a.path.join( __dirname, '../../Tools.s' ) );
-  debugger;
+  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
   let program1Path = a.program( program1 );
-  let program2Path = a.program({ routine : program2, globals : { toolsPath, program1Path } });
+  let program2Path = a.program({ routine : program2, locals : { _ToolsPath_, program1Path } });
 
   /* */
 
@@ -79,7 +77,7 @@ function withIsIncluded( test )
   function program2()
   {
     console.log( 'program2.begin' );
-    let _ = require( toolsPath );
+    let _ = require( _ToolsPath_ );
     _global_.program2 = true;
     _.module.declare
     ({
@@ -100,9 +98,9 @@ function withoutIsIncluded( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let toolsPath = a.path.nativize( a.path.join( __dirname, '../../Tools.s' ) )
+  let _ToolsPath_ = a.path.nativize( _.module.toolsPathGet() );
   let program1Path = a.program( program1 );
-  let program2Path = a.program({ routine : program2, globals : { toolsPath, program1Path } });
+  let program2Path = a.program({ routine : program2, locals : { _ToolsPath_, program1Path } });
 
   /* */
 
@@ -135,7 +133,7 @@ function withoutIsIncluded( test )
   function program2()
   {
     console.log( 'program2.begin' );
-    let _ = require( toolsPath );
+    let _ = require( _ToolsPath_ );
     _global_.program2 = true;
     _.module.declare
     ({
@@ -155,7 +153,6 @@ function moduleExportsUndefined( test )
 {
   let context = this;
   let a = test.assetFor( false );
-  let toolsPath = a.path.nativize( a.path.join( __dirname, '../../Tools.s' ) )
   let program1Path = a.program( program1 );
   let modulePath = a.path.join( program1Path, '../module.js' )
 
@@ -194,6 +191,23 @@ moduleExportsUndefined.description  =
   Included module returns undefined
 `
 
+//
+
+function resolve( test )
+{
+  let context = this;
+
+  var exp = _.path.nativize( _.path.normalize( __dirname + '/../Layer1.s' ) );
+  var got = _.module.resolve( 'wTools' );
+  test.identical( got, exp );
+
+}
+
+resolve.description  =
+`
+  Routine _.module.resolve return path to include path of the specified module.
+`
+
 // --
 // test suite definition
 // --
@@ -219,7 +233,10 @@ var Self =
 
     withIsIncluded,
     withoutIsIncluded,
-    moduleExportsUndefined
+    moduleExportsUndefined,
+
+    resolve,
+
   }
 
 }
