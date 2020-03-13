@@ -5618,6 +5618,11 @@ function strReplaceSrcIsString( test )
   var expected = 'cba';
   test.identical( got, expected );
 
+  test.case = 'src is palindrom';
+  var got = _.strReplace( 'abcdcba', 'c', 'a' );
+  var expected = 'abadaba';
+  test.identical( got, expected );
+
   test.close( 'src - string, ins - string' );
 
   /* - */
@@ -5669,6 +5674,11 @@ function strReplaceSrcIsString( test )
   var expected = 'cba';
   test.identical( got, expected );
 
+  test.case = 'src is palindrom';
+  var got = _.strReplace( 'abcdcba', [ 'd', 'c', 'b', 'a' ], 'a' );
+  var expected = 'aaaaaaa';
+  test.identical( got, expected );
+
   test.close( 'src - string, ins - array of strings, sub - string' );
 
   /* - */
@@ -5718,6 +5728,11 @@ function strReplaceSrcIsString( test )
   test.case = 'src === ins';
   var got = _.strReplace( 'abc', [ 'adb', 'aab', 'abc' ], [ 'a', 'b', 'cba' ] );
   var expected = 'cba';
+  test.identical( got, expected );
+
+  test.case = 'src is palindrom';
+  var got = _.strReplace( 'abcdcba', [ 'd', 'c', 'b', 'a' ], [ '1', '2', '3', '4' ] );
+  var expected = '4321234';
   test.identical( got, expected );
 
   test.close( 'src - string, ins - array of strings, sub - array of strings' );
@@ -5791,6 +5806,11 @@ function strReplaceSrcIsString( test )
   var expected = 'cba';
   test.identical( got, expected );
 
+  test.case = 'src is palindrom';
+  var got = _.strReplace( 'abcdcba', /c+/, 'a' );
+  var expected = 'abadaba';
+  test.identical( got, expected );
+
   test.close( 'src - string, ins - RegExp' );
 
   /* - */
@@ -5862,6 +5882,11 @@ function strReplaceSrcIsString( test )
   var expected = 'cba';
   test.identical( got, expected );
 
+  test.case = 'src is palindrom';
+  var got = _.strReplace( 'abcdcba', [ /d/, /^a+/, /a$/g, /\s*b/m, /c/ ], 'a' );
+  var expected = 'aaaaaaa';
+  test.identical( got, expected );
+
   test.close( 'src - string, ins - array of strings and RegExp, sub - string' );
 
   /* - */
@@ -5931,6 +5956,11 @@ function strReplaceSrcIsString( test )
   test.case = 'src == ins';
   var got = _.strReplace( 'abc', [ /\s+/, /\s\w/, /\w*/g  ], 'cba' );
   var expected = 'cba';
+  test.identical( got, expected );
+
+  test.case = 'src is palindrom';
+  var got = _.strReplace( 'abcdcba', [ /d/, /^a+/, /a$/g, /\s*b/m, /c/ ], [ '1', '4', '4', '3', '2' ] );
+  var expected = '4321234';
   test.identical( got, expected );
 
   test.close( 'src - string, ins - array of strings and RegExp, sub - array of strings' );
