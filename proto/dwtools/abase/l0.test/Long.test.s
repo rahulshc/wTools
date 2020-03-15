@@ -13427,7 +13427,14 @@ function longFromRange( test )
   });
 
 };
+//
 
+function longFromRange1( test )
+{
+
+  console.log('Hello world');
+
+}
 //
 
 function longToMap( test )
@@ -15643,6 +15650,7 @@ var Self =
 
     longRandom,
     longFromRange,
+    longFromRange1,
 
     // longToMap, // Dmytro : routine longToMap commented in gLong.s
     // longToStr, // Dmytro : routine longToStr commented in gLong.s
