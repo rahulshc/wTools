@@ -13435,7 +13435,6 @@ function longFromRange1( test )
   console.log('Hello world');
 
 }
-
 //
 
 function longToMap( test )
