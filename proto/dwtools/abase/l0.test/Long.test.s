@@ -13429,12 +13429,39 @@ function longFromRange( test )
 };
 //
 
-function longFromRange1( test )
-{
+  function longFromRangeWithStep(test) {
 
-  console.log('Hello world');
+    test.case = 'equal numders of range';
+    var got = _.longFromRangeWithStep([1, 1], 2);
+    var expected = [];
+    test.identical(got, expected);
 
-}
+    test.case = 'valid range with float step';
+    var got = _.longFromRangeWithStep([0, 10], 1.5);
+    var expected = [0, 1.5, 3, 4.5, 6, 7.5, 9];
+    test.identical(got, expected);
+
+    test.case = 'step is undefined';
+    var got = _.longFromRangeWithStep([4, 6], undefined);
+    var expected = [4, 5];
+    test.identical(got, expected);
+
+    test.case = 'step is undefined and first number bigger';
+    var got = _.longFromRangeWithStep([10, 0], undefined);
+    var expected = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+    test.identical(got, expected);
+
+    /**/
+
+    if (!Config.debug)
+      return;
+
+    test.case = 'step < 0 and second number bigger';
+    var got = _.longFromRangeWithStep([3, 2], -1);
+    var expected = [3];
+    test.identical(got, expected);
+
+  }
 //
 
 function longToMap( test )
@@ -15650,7 +15677,7 @@ var Self =
 
     longRandom,
     longFromRange,
-    longFromRange1,
+    longFromRangeWithStep,
 
     // longToMap, // Dmytro : routine longToMap commented in gLong.s
     // longToStr, // Dmytro : routine longToStr commented in gLong.s
