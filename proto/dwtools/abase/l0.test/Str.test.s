@@ -5742,7 +5742,7 @@ function strReplaceSrcIsString( test )
   test.open( 'src - string, ins - RegExp' );
 
   test.case = 'src - empty string, ins - RegExp, sub - empty string';
-  var got = _.strReplace( '', /\w*/, '' );
+  var got = _.strReplace( '', /\w+/, '' );
   var expected = '';
   test.identical( got, expected );
 
@@ -5751,13 +5751,13 @@ function strReplaceSrcIsString( test )
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'src - empty string, ins - RegExp, sub - empty string';
+  test.case = 'src - empty string, ins - RegExp, sub - string';
   var got = _.strReplace( '', /\w/, 'abc' );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'src - empty string, ins - RegExp, one entry, sub - empty string';
-  var got = _.strReplace( '', /(?:)/, 'abc' );
+  test.case = 'src - empty string, ins - RegExp, sub - string';
+  var got = _.strReplace( '', /(?:a)/, 'abc' );
   var expected = '';
   test.identical( got, expected );
 
@@ -5782,18 +5782,18 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - empty string';
-  var got = _.strReplace( 'ca cb cc', /c*/, '' );
+  var got = _.strReplace( 'ca cb cc', /c+/, '' );
   var expected = 'a b ';
   test.identical( got, expected );
 
-  test.case = 'ins - RegExp, a few entries, sub - empty string';
-  var got = _.strReplace( 'ca cb cc', /(?:)/, '' );
+  test.case = 'ins - RegExp, sub - empty string';
+  var got = _.strReplace( 'ca cb cc', /(?:ba)/, '' );
   var expected = 'ca cb cc';
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - string';
-  var got = _.strReplace( 'ca cb cc', /(?:)/, 'd' );
-  var expected = 'cdad dcdbd dcdc';
+  var got = _.strReplace( 'ca cb cc', /(?:ba)/, 'd' );
+  var expected = 'ca cb cc';
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - string';
@@ -5802,7 +5802,7 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'src == ins';
-  var got = _.strReplace( 'abc', /\w*/, 'cba' );
+  var got = _.strReplace( 'abc', /\w+/, 'cba' );
   var expected = 'cba';
   test.identical( got, expected );
 
@@ -5823,7 +5823,7 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'src - empty string, ins - array of RegExps, sub - array of empty strings';
-  var got = _.strReplace( '', [ /a*/, /\w*/, /(?:)/ ], [ '', '', '' ] );
+  var got = _.strReplace( '', [ /a$/, /\w+/, /(?:a)/ ], [ '', '', '' ] );
   var expected = '';
   test.identical( got, expected );
 
@@ -5833,7 +5833,7 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'src - empty string, ins - array of RegExps, sub - array of strings';
-  var got = _.strReplace( '', [ /a*/, /\w*/, /(?:)/ ], [ 'a', 'b', 'c' ] );
+  var got = _.strReplace( '', [ /a+/, /\w$/, /(?:a)/ ], [ 'a', 'b', 'c' ] );
   var expected = '';
   test.identical( got, expected );
 
@@ -5863,7 +5863,7 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'ins - string, a few entries, sub - array of empty string';
-  var got = _.strReplace( 'ca cb cc', [ /(?:)/, /\wd/, /\s\we/, /\s{2}/ ], [ '', '', '', '' ] );
+  var got = _.strReplace( 'ca cb cc', [ /(?:aa)/, /\wd/, /\s\we/, /\s{2}/ ], [ '', '', '', '' ] );
   var expected = 'ca cb cc';
   test.identical( got, expected );
 
@@ -5873,17 +5873,17 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'ins - string, a few entries, sub - array of strings';
-  var got = _.strReplace( 'ca cb cc', [ /(?:)/, /\wd/, /\s\we/, /\s{2}/ ], [ 'd', 'a', 'f', 'k' ] );
-  var expected = 'cdad dcdbd dcdc';
+  var got = _.strReplace( 'ca cb cc', [ /(?:aa)/, /\wd/, /\s\we/, /\s{2}/ ], [ 'd', 'a', 'f', 'k' ] );
+  var expected = 'ca cb cc';
   test.identical( got, expected );
 
   test.case = 'src == ins';
-  var got = _.strReplace( 'abc', [ /\s+/, /\s\w/, /\w*/g  ], [ 'a', 'f', 'cba' ] );
+  var got = _.strReplace( 'abc', [ /\s+/, /\s\w/, /\w+/  ], [ 'a', 'f', 'cba' ] );
   var expected = 'cba';
   test.identical( got, expected );
 
   test.case = 'src is palindrom';
-  var got = _.strReplace( 'abcdcba', [ /d/, /^a+/, /a$/g, /\s*b/m, /c/ ], 'a' );
+  var got = _.strReplace( 'abcdcba', [ /d/, /^a+/, /a$/, /\s*b/m, /c/ ], 'a' );
   var expected = 'aaaaaaa';
   test.identical( got, expected );
 
@@ -5899,7 +5899,7 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'src - empty string, ins - array of RegExps, sub - empty string';
-  var got = _.strReplace( '', [ /a*/, /\w*/, /(?:)/ ], '' );
+  var got = _.strReplace( '', [ /a+/, /\w+/, /(?:a)/ ], '' );
   var expected = '';
   test.identical( got, expected );
 
@@ -5909,7 +5909,7 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'src - empty string, ins - array of RegExps, sub - string';
-  var got = _.strReplace( '', [ /a*/, /\w*/, /(?:)/ ], 'abc' );
+  var got = _.strReplace( '', [ /a+/, /\w+/, /(?:a)/ ], 'abc' );
   var expected = '';
   test.identical( got, expected );
 
@@ -5939,7 +5939,7 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'ins - string, a few entries, sub - empty string';
-  var got = _.strReplace( 'ca cb cc', [ /(?:)/, /\wd/, /\s\we/, /\s{2}/ ], '' );
+  var got = _.strReplace( 'ca cb cc', [ /(?:aa)/, /\wd/, /\s\we/, /\s{2}/ ], '' );
   var expected = 'ca cb cc';
   test.identical( got, expected );
 
@@ -5949,17 +5949,17 @@ function strReplaceSrcIsString( test )
   test.identical( got, expected );
 
   test.case = 'ins - string, a few entries, sub - string';
-  var got = _.strReplace( 'ca cb cc', [ /(?:)/, /\wd/, /\s\we/, /\s{2}/ ], 'd' );
-  var expected = 'cdad dcdbd dcdc';
+  var got = _.strReplace( 'ca cb cc', [ /(?:aa)/, /\wd/, /\s\we/, /\s{2}/ ], 'd' );
+  var expected = 'ca cb cc';
   test.identical( got, expected );
 
   test.case = 'src == ins';
-  var got = _.strReplace( 'abc', [ /\s+/, /\s\w/, /\w*/g  ], 'cba' );
+  var got = _.strReplace( 'abc', [ /\s+/, /\s\w/, /\w+/  ], 'cba' );
   var expected = 'cba';
   test.identical( got, expected );
 
   test.case = 'src is palindrom';
-  var got = _.strReplace( 'abcdcba', [ /d/, /^a+/, /a$/g, /\s*b/m, /c/ ], [ '1', '4', '4', '3', '2' ] );
+  var got = _.strReplace( 'abcdcba', [ /d/, /^a+/, /a$/, /\s*b/m, /c/ ], [ '1', '4', '4', '3', '2' ] );
   var expected = '4321234';
   test.identical( got, expected );
 
@@ -6161,7 +6161,7 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.identical( got, expected );
 
   test.case = 'src - array with empty strings ins - RegExp, sub - empty string';
-  var got = _.strReplace( [ '', '', '' ], /(?:)/, '' );
+  var got = _.strReplace( [ '', '', '' ], /(?:a)/, '' );
   var expected = [ '', '', '' ];
   test.identical( got, expected );
 
@@ -6171,7 +6171,7 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.identical( got, expected );
 
   test.case = 'src - array with empty strings, ins - RegExp, sub - string';
-  var got = _.strReplace( [ '', '', '' ], /(?:)/, 'abc' );
+  var got = _.strReplace( [ '', '', '' ], /(?:a)/, 'abc' );
   var expected = [ '', '', '' ];
   test.identical( got, expected );
 
@@ -6201,7 +6201,7 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - empty string';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], /(?:)/, '' );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], /(?:ee)/, '' );
   var expected = [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ];
   test.identical( got, expected );
 
@@ -6211,8 +6211,8 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - string';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], /(?:)/, 'd' );
-  var expected = [ 'adad dadbd dadcd dadd', 'bdad dbdbd dbdcd dbdd', 'cdad dcdbd dcdcd dcdd' ];
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], /(?:ee)/, 'd' );
+  var expected = [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ];
   test.identical( got, expected );
 
   test.case = 'src == ins';
@@ -6232,7 +6232,7 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.identical( got, expected );
 
   test.case = 'src - array with empty strings ins - array of RegExps, sub - empty string';
-  var got = _.strReplace( [ '', '', '' ], [ /(?:)/, /\w*$/, /\s*/ ], '' );
+  var got = _.strReplace( [ '', '', '' ], [ /(?:a)/, /\w+$/, /\sa*/ ], '' );
   var expected = [ '', '', '' ];
   test.identical( got, expected );
 
@@ -6242,7 +6242,7 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.identical( got, expected );
 
   test.case = 'src - array with empty strings, ins - array of RegExps, sub - string';
-  var got = _.strReplace( [ '', '', '' ], [ /(?:)/, /\w*$/, /\s*/ ], 'abc' );
+  var got = _.strReplace( [ '', '', '' ], [ /(?:a)/, /\w+$/, /\sa*/ ], 'abc' );
   var expected = [ '', '', '' ];
   test.identical( got, expected );
 
@@ -6257,33 +6257,33 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, single entry, sub - empty string';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cD' ], [ /f\s/, /\W*$/, /\s*d/i ], '' );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cD' ], [ /f\s/, /\W$/, /\s*d/i ], '' );
   var expected = [ 'aa ab ac a', 'ba bb bc b', 'ca cb cc c' ];
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, single entry, sub - string';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bD', 'ca cb cc cd' ], [ /f\s/, /\W*$/, /\s*d/i ], 'e' );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bD', 'ca cb cc cd' ], [ /f\s/, /\W+$/, /\s*d/i ], 'e' );
   var expected = [ 'aa ab ac ae', 'ba bb bc be', 'ca cb cc ce' ];
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - empty string';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /c+/, /f*$/, /\s*e/ ], '' );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /c+/, /f+$/, /\s+e/ ], '' );
   var expected = [ 'aa ab a ad', 'ba bb b bd', 'a b  d' ];
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - empty string';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /(?:)/, /f+$/, /e+d/ ], '' );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /(?:ee)/, /f+$/, /e+d/ ], '' );
   var expected = [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ];
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - string';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /\W*$/, /c+/, /\s*e/ ], 'd' );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /\W+$/, /c+/, /\s*e/ ], 'd' );
   var expected = [ 'aa ab ad ad', 'ba bb bd bd', 'da db d dd' ];
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - string';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /(?:)/, /f+/, /\s+e/ ], 'd' );
-  var expected = [ 'adad dadbd dadcd dadd', 'bdad dbdbd dbdcd dbdd', 'cdad dcdbd dcdcd dcdd' ];
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /(?:ee)/, /f+/, /\s+e/ ], 'd' );
+  var expected = [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ];
   test.identical( got, expected );
 
   test.case = 'src == ins';
@@ -6303,7 +6303,7 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.identical( got, expected );
 
   test.case = 'src - array with empty strings ins - array of RegExps, sub - array of empty strings';
-  var got = _.strReplace( [ '', '', '' ], [ /(?:)/, /\w*$/, /\s*/ ], [ '', '', '' ] );
+  var got = _.strReplace( [ '', '', '' ], [ /(?:a)/, /\w$/, /\s+/ ], [ '', '', '' ] );
   var expected = [ '', '', '' ];
   test.identical( got, expected );
 
@@ -6313,7 +6313,7 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.identical( got, expected );
 
   test.case = 'src - array with empty strings, ins - array of RegExps, sub - array of strings';
-  var got = _.strReplace( [ '', '', '' ], [ /(?:)/, /\w*$/, /\s*/ ], [ 'a', 'b', 'c' ] );
+  var got = _.strReplace( [ '', '', '' ], [ /(?:a)/, /\w$/, /\s+/ ], [ 'a', 'b', 'c' ] );
   var expected = [ '', '', '' ];
   test.identical( got, expected );
 
@@ -6328,33 +6328,33 @@ function strReplaceSrcIsArrayOfStrings( test )
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, single entry, sub - array of empty strings';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cD' ], [ /f\s/, /\W*$/, /\s*d/i ], [ '', '', '' ] );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cD' ], [ /f\s/, /\W+$/, /\s*d/i ], [ '', '', '' ] );
   var expected = [ 'aa ab ac a', 'ba bb bc b', 'ca cb cc c' ];
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, single entry, sub - array of strings';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bD', 'ca cb cc cd' ], [ /f\s/, /\W*$/, /\s*d/i ], [ 'a', 'b', 'e' ] );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bD', 'ca cb cc cd' ], [ /f\s/, /\W+$/, /\s*d/i ], [ 'a', 'b', 'e' ] );
   var expected = [ 'aa ab ac ae', 'ba bb bc be', 'ca cb cc ce' ];
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - array of empty strings';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /c+/, /f*$/, /\s*e/ ], [ '', '', '' ] );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /c+/, /f+$/, /\se/ ], [ '', '', '' ] );
   var expected = [ 'aa ab a ad', 'ba bb b bd', 'a b  d' ];
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - array of empty strings';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /(?:)/, /f+$/, /e+d/ ], [ '', '', '' ] );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /(?:ee)/, /f+$/, /e+d/ ], [ '', '', '' ] );
   var expected = [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ];
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - array of strings';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /\W*$/, /c+/, /\s*e/ ], [ 'e', 'd', 'b' ] );
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /\W$/, /c+/, /\s*e/ ], [ 'e', 'd', 'b' ] );
   var expected = [ 'aa ab ad ad', 'ba bb bd bd', 'da db d dd' ];
   test.identical( got, expected );
 
   test.case = 'ins - RegExp, a few entries, sub - string';
-  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /(?:)/, /f+/, /\s+e/ ], [ 'd', 'e', 'f' ] );
-  var expected = [ 'adad dadbd dadcd dadd', 'bdad dbdbd dbdcd dbdd', 'cdad dcdbd dcdcd dcdd' ];
+  var got = _.strReplace( [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ], [ /(?:ee)/, /f+/, /\s+e/ ], [ 'd', 'e', 'f' ] );
+  var expected = [ 'aa ab ac ad', 'ba bb bc bd', 'ca cb cc cd' ];
   test.identical( got, expected );
 
   test.case = 'src === ins';
