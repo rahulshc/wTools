@@ -13427,41 +13427,80 @@ function longFromRange( test )
   });
 
 };
+
 //
 
-  function longFromRangeWithStep(test) {
+function longFromRangeWithStep( test )
+{
+  test.case = 'equal numders of range';
+  var got = _.longFromRangeWithStep( [ 1, 1 ], 2 );
+  var expected = [ ];
+  test.identical( got, expected );
 
-    test.case = 'equal numders of range';
-    var got = _.longFromRangeWithStep([1, 1], 2);
-    var expected = [];
-    test.identical(got, expected);
+  test.case = 'valid range with float step';
+  var got = _.longFromRangeWithStep( [ 0, 10 ], 1.5 );
+  var expected = [ 0, 1.5, 3, 4.5, 6, 7.5, 9 ];
+  test.identical( got, expected );
 
-    test.case = 'valid range with float step';
-    var got = _.longFromRangeWithStep([0, 10], 1.5);
-    var expected = [0, 1.5, 3, 4.5, 6, 7.5, 9];
-    test.identical(got, expected);
+  test.case = 'decrementing range with step < 0';
+  var got = _.longFromRangeWithStep( [ 10, 0 ], -1 );
+  var expected = [ 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 ];
+  test.identical( got, expected );
 
-    test.case = 'step is undefined';
-    var got = _.longFromRangeWithStep([4, 6], undefined);
-    var expected = [4, 5];
-    test.identical(got, expected);
+  test.case = 'step is undefined';
+  var got = _.longFromRangeWithStep( [ 4, 6 ], undefined );
+  var expected = [ 4, 5 ];
+  test.identical( got, expected );
 
-    test.case = 'step is undefined and first number bigger';
-    var got = _.longFromRangeWithStep([10, 0], undefined);
-    var expected = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
-    test.identical(got, expected);
+  test.case = 'step is undefined and first number bigger';
+  var got = _.longFromRangeWithStep( [ 10, 0 ], undefined );
+  var expected = [ 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 ];
+  test.identical( got, expected );
 
-    /**/
+  test.case = 'decrementing range with step < 0';
+  var got = _.longFromRangeWithStep( [ 3, 2 ], -1 );
+  var expected = [ 3 ];
+  test.identical( got, expected );
 
-    if (!Config.debug)
-      return;
+  /**/
 
-    test.case = 'step < 0 and second number bigger';
-    var got = _.longFromRangeWithStep([3, 2], -1);
-    var expected = [3];
-    test.identical(got, expected);
+  if (!Config.debug)
+  return;
 
-  }
+  test.case = 'wrong arguments';
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( 'wrong arguments' ) );
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( undefined ) );
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( null ) );
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep() );
+
+  test.case = 'without step argument'
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ] ) );
+
+  test.case = 'without range argument'
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( 2 ) );
+
+  test.case = 'argument is not array';
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( 1, 3 ) );
+
+  test.case = 'more then 2 arguments'
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ], 1, 2 ) );
+
+  test.case = 'argument is not a number'
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ], notnumber ) );
+
+  test.case = 'one of range is infinity'
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 1, Infinity ], 1 ) );
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ -Infinity, 1 ], 1 ) );
+
+  test.case = 'decrementing range with step > 0';
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 10, 0 ], 2 ) );
+
+  test.case = 'incrementing range with step < 0';
+  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 10 ], -2 ) );
+};
+
 //
 
 function longToMap( test )
