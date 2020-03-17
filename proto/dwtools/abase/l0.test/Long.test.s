@@ -22,19 +22,35 @@ function argumentsArrayMake( test )
   test.equivalent( got, expected );
   test.is( _.argumentsArrayIs( got ) );
 
-  test.case = 'null';
+  test.case = 'src - null';
   var got = _.argumentsArrayMake( null );
   var expected = [];
   test.equivalent( got, expected );
   test.is( _.argumentsArrayIs( got ) );
 
-  test.case = 'undefined';
+  test.case = 'src - undefined';
   var got = _.argumentsArrayMake( undefined );
   var expected = [];
   test.equivalent( got, expected );
   test.is( _.argumentsArrayIs( got ) );
 
-  test.case = 'empty';
+  test.case = 'src - number, zero';
+  var got = _.argumentsArrayMake( 0 );
+  var expected = new Array( 0 );
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - number, src > 0';
+  var got = _.argumentsArrayMake( 3 );
+  var expected = new Array( 3 );
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  /* */
+
+  test.case = 'src - empty array';
   var src = [];
   var got = _.argumentsArrayMake( src );
   var expected = [];
@@ -42,7 +58,7 @@ function argumentsArrayMake( test )
   test.is( _.argumentsArrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'single number';
+  test.case = 'src - array with single element';
   var src = [ 0 ];
   var got = _.argumentsArrayMake( src );
   var expected = [ 0 ];
@@ -50,15 +66,7 @@ function argumentsArrayMake( test )
   test.is( _.argumentsArrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'single string';
-  var src = [ 'a' ];
-  var got = _.argumentsArrayMake( src );
-  var expected = [ 'a' ];
-  test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'several';
+  test.case = 'src - array with several elements';
   var src = [ 1, 2, 3 ];
   var got = _.argumentsArrayMake( src );
   var expected = [ 1, 2, 3 ];
@@ -66,16 +74,80 @@ function argumentsArrayMake( test )
   test.is( _.argumentsArrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'zero length';
-  var got = _.argumentsArrayMake( 0 );
-  var expected = new Array( 0 );
+  /* */
+
+  test.case = 'src - empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.argumentsArrayMake( src );
+  var expected = [];
   test.equivalent( got, expected );
   test.is( _.argumentsArrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'length';
-  var got = _.argumentsArrayMake( 3 );
-  var expected = new Array( 3 );
+  test.case = 'src - unroll with single element';
+  var src = _.unrollMake( [ 0 ] );
+  var got = _.argumentsArrayMake( src );
+  var expected = [ 0 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - unroll with several elements';
+  var src = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.argumentsArrayMake( src );
+  var expected = [ 1, 2, 3 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  /* */
+
+  test.case = 'src - empty argumentsArray';
+  var src = _.argumentsArrayMake( [] );
+  var got = _.argumentsArrayMake( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - argumentsArray with single element';
+  var src = _.argumentsArrayMake( [ 0 ] );
+  var got = _.argumentsArrayMake( src );
+  var expected = [ 0 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - argumentsArray with several elements';
+  var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var got = _.argumentsArrayMake( src );
+  var expected = [ 1, 2, 3 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  /* */
+
+  test.case = 'src - empty BufferTyped';
+  var src = new U8x( [] );
+  var got = _.argumentsArrayMake( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - BufferTyped with single element';
+  var src = new I16x( [ 0 ] );
+  var got = _.argumentsArrayMake( src );
+  var expected = [ 0 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - BufferTyped with several elements';
+  var src = new F32x( [ 1, 2, 3 ] );
+  var got = _.argumentsArrayMake( src );
+  var expected = [ 1, 2, 3 ];
   test.equivalent( got, expected );
   test.is( _.argumentsArrayIs( got ) );
   test.is( src !== got );
@@ -98,46 +170,26 @@ function argumentsArrayMake( test )
 
 function argumentsArrayFrom( test )
 {
-  test.case = 'empty';
-  var src = [];
-  var got = _.argumentsArrayFrom( src );
+  test.case = 'src - null';
+  var got = _.argumentsArrayFrom( null );
   var expected = [];
   test.equivalent( got, expected );
   test.is( _.argumentsArrayIs( got ) );
-  test.is( src !== got );
 
-  test.case = 'single number';
-  var src = [ 0 ];
-  var got = _.argumentsArrayFrom( src );
-  var expected = [ 0 ];
+  test.case = 'src - undefined';
+  var got = _.argumentsArrayFrom( undefined );
+  var expected = [];
   test.equivalent( got, expected );
   test.is( _.argumentsArrayIs( got ) );
-  test.is( src !== got );
 
-  test.case = 'single string';
-  var src = [ 'a' ];
-  var got = _.argumentsArrayFrom( src );
-  var expected = [ 'a' ];
-  test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'several';
-  var src = [ 1, 2, 3 ];
-  var got = _.argumentsArrayFrom( src );
-  var expected = [ 1, 2, 3 ];
-  test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( src !== got );
-
-  test.case = 'zero length';
+  test.case = 'src - number, zero';
   var got = _.argumentsArrayFrom( 0 );
   var expected = new Array( 0 );
   test.equivalent( got, expected );
   test.is( _.argumentsArrayIs( got ) );
   test.is( src !== got );
 
-  test.case = 'length';
+  test.case = 'src - number, src > 0';
   var got = _.argumentsArrayFrom( 3 );
   var expected = new Array( 3 );
   test.equivalent( got, expected );
@@ -146,7 +198,59 @@ function argumentsArrayFrom( test )
 
   /* */
 
-  test.case = 'preserving empty';
+  test.case = 'src - empty array';
+  var src = [];
+  var got = _.argumentsArrayFrom( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - array with single element';
+  var src = [ 0 ];
+  var got = _.argumentsArrayFrom( src );
+  var expected = [ 0 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - array with several elements';
+  var src = [ 1, 2, 3 ];
+  var got = _.argumentsArrayFrom( src );
+  var expected = [ 1, 2, 3 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  /* */
+
+  test.case = 'src - empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.argumentsArrayFrom( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - unroll with single element';
+  var src = _.unrollMake( [ 0 ] );
+  var got = _.argumentsArrayFrom( src );
+  var expected = [ 0 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - unroll with several elements';
+  var src = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.argumentsArrayFrom( src );
+  var expected = [ 1, 2, 3 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  /* */
+
+  test.case = 'src - empty argumentsArray';
   var src = _.argumentsArrayMake( [] );
   var got = _.argumentsArrayFrom( src );
   var expected = [];
@@ -154,7 +258,7 @@ function argumentsArrayFrom( test )
   test.is( _.argumentsArrayIs( got ) );
   test.is( src === got );
 
-  test.case = 'preserving single number';
+  test.case = 'src - argumentsArray with single element';
   var src = _.argumentsArrayMake( [ 0 ] );
   var got = _.argumentsArrayFrom( src );
   var expected = [ 0 ];
@@ -162,15 +266,7 @@ function argumentsArrayFrom( test )
   test.is( _.argumentsArrayIs( got ) );
   test.is( src === got );
 
-  test.case = 'preserving single string';
-  var src = _.argumentsArrayMake( [ 'a' ] );
-  var got = _.argumentsArrayFrom( src );
-  var expected = [ 'a' ];
-  test.equivalent( got, expected );
-  test.is( _.argumentsArrayIs( got ) );
-  test.is( src === got );
-
-  test.case = 'preserving several';
+  test.case = 'src - argumentsArray with several elements';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.argumentsArrayFrom( src );
   var expected = [ 1, 2, 3 ];
@@ -178,38 +274,47 @@ function argumentsArrayFrom( test )
   test.is( _.argumentsArrayIs( got ) );
   test.is( src === got );
 
+  /* */
+
+  test.case = 'src - empty BufferTyped';
+  var src = new U8x( [] );
+  var got = _.argumentsArrayFrom( src );
+  var expected = [];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - BufferTyped with single element';
+  var src = new I16x( [ 0 ] );
+  var got = _.argumentsArrayFrom( src );
+  var expected = [ 0 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  test.case = 'src - BufferTyped with several elements';
+  var src = new F32x( [ 1, 2, 3 ] );
+  var got = _.argumentsArrayFrom( src );
+  var expected = [ 1, 2, 3 ];
+  test.equivalent( got, expected );
+  test.is( _.argumentsArrayIs( got ) );
+  test.is( src !== got );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayFrom();
-  });
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.argumentsArrayFrom() );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayFrom( 1, 3 );
-  });
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.argumentsArrayFrom( 1, 3 ) );
+  test.shouldThrowErrorSync( () => _.argumentsArrayFrom( [], 3 ) );
 
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayFrom( [], 3 );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayFrom( [], [] );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayFrom( {} );
-  });
-
-  test.shouldThrowErrorSync( function()
-  {
-    _.argumentsArrayFrom( '1' );
-  });
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.argumentsArrayFrom( {} ) );
+  test.shouldThrowErrorSync( () => _.argumentsArrayFrom( 'wrong' ) );
 }
 
 //--
@@ -12512,7 +12617,7 @@ function longSwapElements( test )
   test.identical( got, expected );
 
   test.case = 'reverses first index and last index';
-  var got = _.longSwapElements( [ 1, 2, 3, 4, 5 ], 0, 4  );
+  var got = _.longSwapElements( [ 1, 2, 3, 4, 5 ], 0, 4 );
   var expected = [ 5, 2, 3, 4, 1 ];
   test.identical( got, expected );
 
