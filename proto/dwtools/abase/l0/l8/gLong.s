@@ -726,7 +726,7 @@ function longFromRangeWithStep( range, step )
 
     _.assert( step < 0 );
 
-    result = new this.longDescriptor.from( Math.round( range[ 0 ]-range[ 1 ] / step ) );
+    result = new this.longDescriptor.from( Math.abs( Math.round( ( range[ 0 ]-range[ 1 ] ) / step ) ) );
 
     let i = 0;
     while( range[ 0 ] > range[ 1 ] )
