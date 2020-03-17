@@ -13512,6 +13512,8 @@ function longFromRangeWithStep( test )
   test.shouldThrowErrorSync( () => _.longFromRangeWithStep( 'wrong arguments' ) );
   test.shouldThrowErrorSync( () => _.longFromRangeWithStep( undefined ) );
   test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ] ) );
+
+  test.case = 'more then 2 arguments'
   test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ], 1, 2 ) );
 
   test.case = 'without arguments';
@@ -13534,7 +13536,6 @@ function longFromRangeWithStep( test )
   test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ], 'wrong' ) );
   test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 1, 0 ], NaN ) );
   test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 5, 5 ], 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 5, 5 ], NaN ) );
 
   test.case = 'step is zero'
   test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ], 0 ) );
