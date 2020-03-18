@@ -14428,43 +14428,18 @@ function longHasAllWithCallback( test )
 
 //
 
-function longHasNone( test )
+function longHasNoneWithoutCallback( test )
 {
-  /* constructors */
-
-  var array = ( src ) => _.arrayMake( src );
-  var unroll = ( src ) => _.unrollMake( src );
-  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
-  var bufferTyped = function( buf )
-  {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
-  };
-
-  /* lists */
-
-  var listTyped =
+  var list =
   [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake,
     I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
     U16x,
-    // I32x,
-    // U32x,
     F32x,
     F64x,
   ];
-  var list =
-  [
-    array,
-    unroll,
-    argumentsArray,
-  ];
-  for( let i = 0; i < listTyped.length; i++ )
-  list.push( bufferTyped( listTyped[ i ] ) );
-
-  /* tests */
 
   for( let i = 0; i < list.length; i++ )
   {
@@ -14473,100 +14448,70 @@ function longHasNone( test )
     test.close( list[ i ].name );
   }
 
+  /* - */
+
   function testRun( makeLong )
   {
-    /* without evaluator */
-
     test.case = 'src = empty long, one argument';
-    var src = makeLong( [] );
+    var src = new makeLong( [] );
     var got = _.longHasNone( src );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = undefined';
-    var src = makeLong( [] );
+    var src = new makeLong( [] );
     var got = _.longHasNone( src, undefined );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = string';
-    var src = makeLong( [] );
+    var src = new makeLong( [] );
     var got = _.longHasNone( src, 'str' );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = empty long, ins = array';
-    var src = makeLong( [] );
+    var src = new makeLong( [] );
     var got = _.longHasNone( src, [ false, 7 ] );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = number, matches';
-    var src = makeLong( [ 1, 2, 1, false, 5 ] );
+    var src = new makeLong( [ 1, 2, 1, false, 5 ] );
     var got = _.longHasNone( src, 5 );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = string, no matches';
-    var src = makeLong( [ 1, 2, 5, false ] );
+    var src = new makeLong( [ 1, 2, 5, false ] );
     var got = _.longHasNone( src, 'str' );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = array, matches';
-    var src = makeLong( [ 5, null, 42, false ] );
+    var src = new makeLong( [ 5, null, 42, false ] );
     var got = _.longHasNone( src, [ 42, false ] );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = array, no matches';
-    var src = makeLong( [ 5, null, 32, false, 42 ] );
+    var src = new makeLong( [ 5, null, 32, false, 42 ] );
     var got = _.longHasNone( src, [ true, 7 ] );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = long, matches';
-    var src = makeLong( [ 5, null, 42, false ] );
-    var got = _.longHasNone( src, makeLong( [ 42, 12 ] ) );
+    var src = new makeLong( [ 5, null, 42, false ] );
+    var got = _.longHasNone( src, new makeLong( [ 42, 12 ] ) );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'src = long, ins = long, no matches';
-    var src = makeLong( [ 5, null, 42, false ] );
-    var got = _.longHasNone( src, makeLong( [ 30, 12 ] ) );
+    var src = new makeLong( [ 5, null, 42, false ] );
+    var got = _.longHasNone( src, new makeLong( [ 30, 12 ] ) );
     var expected = true;
     test.identical( got, expected );
   }
-
-  /* with evaluator, equalizer */
-
-  test.case = 'with evaluator, matches';
-  var evaluator = ( e ) => e.a;
-  var src = [ { a : 2 }, { a : 5 }, 'str', 42, false ];
-  var got = _.longHasNone( src, [ [ false ], 7, { a : 2 } ], evaluator );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'with evaluator, no matches';
-  var evaluator = ( e ) => e.a;
-  var src = [ { a : 3 }, { a : 5 }, 'str', 42, false ];
-  var got = _.longHasNone( src, [ { a : 2 }, { a : 4 } ], evaluator );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'with equalizer, matches';
-  var equalizer = ( e1, e2 ) => e1.a === e2.a;
-  var src = [ { a : 4 }, { a : 2 }, 42, false ];
-  var got = _.longHasNone( src, [ { a : 2 }, { b : 7 } ], equalizer );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'with equalizer, no matches';
-  var equalizer = ( e1, e2 ) => e1.a === e2.a;
-  var src = [ { a : 4 }, { a : 3 }, 42, false ];
-  var got = _.longHasNone( src, [ { a : 2 }, { a : 7 } ], equalizer );
-  var expected = true;
-  test.identical( got, expected );
 
   /* - */
 
@@ -14585,7 +14530,59 @@ function longHasNone( test )
 
   test.case = 'evaluator is not a routine';
   test.shouldThrowErrorSync( () => _.longHasNone( [ 1, 2, 3, false ], 2, 3 ) );
-};
+}
+
+//
+
+function longHasNoneWithCallback( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake,
+  ];
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    testRun( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'with evaluator, matches';
+    var evaluator = ( e ) => e.a;
+    var src = makeLong( [ { a : 2 }, { a : 5 }, 'str', 42, false ] );
+    var got = _.longHasNone( src, [ [ false ], 7, { a : 2 } ], evaluator );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'with evaluator, no matches';
+    var evaluator = ( e ) => e.a;
+    var src = makeLong( [ { a : 3 }, { a : 5 }, 'str', 42, false ] );
+    var got = _.longHasNone( src, [ { a : 2 }, { a : 4 } ], evaluator );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'with equalizer, matches';
+    var equalizer = ( e1, e2 ) => e1.a === e2.a;
+    var src = makeLong( [ { a : 4 }, { a : 2 }, 42, false ] );
+    var got = _.longHasNone( src, [ { a : 2 }, { b : 7 } ], equalizer );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'with equalizer, no matches';
+    var equalizer = ( e1, e2 ) => e1.a === e2.a;
+    var src = makeLong( [ { a : 4 }, { a : 3 }, 42, false ] );
+    var got = _.longHasNone( src, [ { a : 2 }, { a : 7 } ], equalizer );
+    var expected = true;
+    test.identical( got, expected );
+  }
+}
 
 //
 
@@ -15961,7 +15958,7 @@ var Self =
     // longToMap, // Dmytro : routine longToMap commented in gLong.s
     // longToStr, // Dmytro : routine longToStr commented in gLong.s
 
-    // array checker
+    // long checker
 
     longCompare,
     longIdentical,
@@ -15970,7 +15967,9 @@ var Self =
     longHasAnyWithCallback,
     longHasAllWithoutCallback,
     longHasAllWithCallback,
-    longHasNone,
+    longHasNoneWithoutCallback,
+    longHasNoneWithCallback,
+
     longHasDepth,
 
     // array sequential search
