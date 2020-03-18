@@ -7454,90 +7454,85 @@ function longBut_WithBufferTyped( test )
 
 //
 
-function longShrink( test )
+function longShrinkWithArrayUnrollArgumentsArray( test )
 {
-  /* resizable longs */
-
-  var array = ( src ) => _.arrayMake( src );
-  var unroll = ( src ) => _.unrollMake( src );
-
   /* - */
 
   test.open( 'array' );
-  testRun( array );
+  testRun( _.arrayMake );
   test.close( 'array' );
 
   /* - */
 
   test.open( 'unroll' );
-  testRun( unroll );
+  testRun( _.unrollMake );
   test.close( 'unroll' );
 
   /* - */
 
-  function testRun( make )
+  function testRun( makeLong )
   {
     test.case = 'only dst';
-    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longShrink( dst );
-    var expected = make( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, not a val';
-    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longShrink( dst, [ 0, dst.length + 2 ] );
-    var expected = make( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.identical( got.length, 5 );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, val = number';
-    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longShrink( dst, [ 0, dst.length + 2 ], 0 );
-    var expected = make( [ 1, 2, 3, 4, 5 ] );
+    var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, val = number';
-    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longShrink( dst, [ dst.length - 1, dst.length * 2 ], 0 );
-    var expected = make( [ 5 ] );
+    var expected = makeLong( [ 5 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range < dst.length';
-    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longShrink( dst, [ 0, 3 ] );
-    var expected = make( [ 1, 2, 3 ] );
+    var expected = makeLong( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range < dst.length, val = number';
-    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longShrink( dst, [ 0, 3 ], 0 );
-    var expected = make( [ 1, 2, 3 ] );
+    var expected = makeLong( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'f < 0, not a val';
-    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     got = _.longShrink( dst, [ -1, 3 ] );
-    expected = make( [ 1, 2, 3 ] );
+    expected = makeLong( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'l < 0, not a val';
-    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longShrink( dst, [ 0, -1 ] );
-    var expected = make( [] );
+    var expected = makeLong( [] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'f < 0, val = number';
-    var dst = make( [ 1, 2, 3, 4, 5 ] );
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longShrink( dst, [ -1, 3 ], 0 );
-    var expected = make( [ 1, 2, 3 ] );
+    var expected = makeLong( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
   }
@@ -7623,108 +7618,6 @@ function longShrink( test )
 
   /* - */
 
-  var list =
-  [
-    I8x,
-    U16x,
-    F32x,
-    F64x,
-
-    // I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
-    // U16x,
-    // I32x,
-    // U32x,
-    // F32x,
-    // F64x,
-  ];
-
-  for( var i = 0; i < list.length; i++ )
-  {
-    test.open( list[ i ].name );
-    run2( list[ i ] );
-    test.close( list[ i ].name );
-  }
-
-  function run2( list )
-  {
-    test.case = 'only dst';
-    var dst = new list( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink( dst );
-    var expected = new list( [ 1, 2, 3, 4, 5 ] );
-    test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
-
-    test.case = 'range > dst.length, not a val';
-    var dst = new list( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink( dst, [ 0, dst.length + 2 ] );
-    var expected = new list( [ 1, 2, 3, 4, 5 ] );
-    test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
-
-    test.case = 'range > dst.length, val = number';
-    var dst = new list( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink( dst, [ 0, dst.length + 2 ], 0 );
-    var expected = new list( [ 1, 2, 3, 4, 5 ] );
-    test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
-
-    test.case = 'range > dst.length, val = number';
-    var dst = new list( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink( dst, [ dst.length - 1, dst.length * 2 ], 0 );
-    var expected = new list( [ 5 ] );
-    test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
-
-    test.case = 'range < dst.length';
-    var dst = new list( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink( dst, [ 0, 3 ] );
-    var expected = new list( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
-
-    test.case = 'range < dst.length, val = number';
-    var dst = new list( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink( dst, [ 0, 3 ], 0 );
-    var expected = new list( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
-
-    test.case = 'f < 0, not a val';
-    var dst = new list( [ 1, 2, 3, 4, 5 ] );
-    got = _.longShrink( dst, [ -1, 3 ] );
-    expected = new list( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
-
-    test.case = 'l < 0, not a val';
-    var dst = new list( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink( dst, [ 0, -1 ] );
-    var expected = new list();
-    test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
-
-    test.case = 'f < 0, val = number';
-    var dst = new list( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink( dst, [ -1, 3 ], 0 );
-    var expected = new list( [ 1, 2, 3 ] );
-    test.identical( got, expected );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== dst );
-  }
-
-  /* - */
-
   if( !Config.debug )
   return;
 
@@ -7741,6 +7634,101 @@ function longShrink( test )
   test.case = 'not a range';
   test.shouldThrowErrorSync( () => _.longShrink( [ 1 ], [ 1 ] ) );
   test.shouldThrowErrorSync( () => _.longShrink( [ 1 ], 'str' ) );
+}
+
+//
+
+function longShrinkWithBufferTyped( test )
+{
+  var list =
+  [
+    I8x,
+    U16x,
+    F32x,
+    F64x,
+  ];
+
+  for( var i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    testRun( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  function testRun( makeLong )
+  {
+    test.case = 'only dst';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink( dst );
+    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, not a val';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink( dst, [ 0, dst.length + 2 ] );
+    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, val = number';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink( dst, [ 0, dst.length + 2 ], 0 );
+    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'range > dst.length, val = number';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink( dst, [ dst.length - 1, dst.length * 2 ], 0 );
+    var expected = new makeLong( [ 5 ] );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'range < dst.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink( dst, [ 0, 3 ] );
+    var expected = new makeLong( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'range < dst.length, val = number';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink( dst, [ 0, 3 ], 0 );
+    var expected = new makeLong( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'f < 0, not a val';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink( dst, [ -1, 3 ] );
+    var expected = new makeLong( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'l < 0, not a val';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink( dst, [ 0, -1 ] );
+    var expected = new makeLong();
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs( got ) );
+    test.is( got !== dst );
+
+    test.case = 'f < 0, val = number';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink( dst, [ -1, 3 ], 0 );
+    var expected = new makeLong( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( _.bufferTypedIs( got ) );
+    test.is( got !== dst );
+  }
 }
 
 //
@@ -16124,9 +16112,11 @@ var Self =
     longBut_WithArrayUnrollArgumentsArray,
     longBut_WithBufferTyped,
 
-    longShrink,
+    longShrinkWithArrayUnrollArgumentsArray,
+    longShrinkWithBufferTyped,
     longShrinkInplace,
     longShrink_,
+
     longGrow,
     longGrowInplace,
     longGrow_,
