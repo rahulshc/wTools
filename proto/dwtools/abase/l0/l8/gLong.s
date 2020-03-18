@@ -726,9 +726,8 @@ function longFromRangeWithStep( range, step )
 
     _.assert( step < 0 );
 
-    // result = new this.longDescriptor.from( Math.round( range[ 0 ]-range[ 1 ] / step ) );
-    // Dmytro : missed parentheses in substruction, and swapping range elements in substruction needs multiplying to -1 */
-    result = new this.longDescriptor.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) ); 
+    // result = new this.longDescriptor.from( Math.round( ( range[ 1 ]-range[ 0 ] ) / step ) ); // Dmytro it's more optimal, range[ 0 ] > range[ 1 ] and step < 0 so result will be positive number
+    result = new this.longDescriptor.from( Math.abs( Math.round( ( range[ 0 ]-range[ 1 ] ) / step ) ) );
 
     let i = 0;
     while( range[ 0 ] > range[ 1 ] )
