@@ -1283,7 +1283,9 @@ function longSort( dstLong, srcLong, onEvaluate )
   _.assert( dstLong === null || _.longIs( dstLong ) );
 
   if( dstLong === null )
-  dstLong = _.arrayMake( srcLong )
+  dstLong = _.arrayMake( srcLong );
+  if( _.argumentsArrayIs( dstLong ) ) // Dmytro : missed
+  dstLong = this.longDescriptor.from( dstLong );
 
   if( onEvaluate === undefined )
   {

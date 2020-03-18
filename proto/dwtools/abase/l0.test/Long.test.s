@@ -12838,86 +12838,48 @@ function longExtendScreening( test )
 
 //
 
-function longSort( test )
+function longSortDstIsNull( test )
 {
-  /* constructors */
-
-  var array = ( src ) => _.arrayMake( src );
-  var unroll = ( src ) => _.unrollMake( src );
-  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
-  var bufferTyped = function( buf )
-  {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
-  };
-
-  /* lists */
-
-  var listTyped =
+  var list =
   [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake,
     I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
     U16x,
-    // I32x,
-    // U32x,
     F32x,
-    F64x,
-  ];
-  var listDst =
-  [
-    array,
-    unroll,
-    argumentsArray,
+    F64x
   ];
 
-  for( let i in listTyped )
-  listDst.push( bufferTyped( listTyped[ i ] ) );
-
-  /* dstLong - null */
-
-  for( let d in listDst )
+  for( let d = 0 ; d < list.length ; d++ )
   {
-    test.open( 'dstLong - null, srcLong - ' + listDst[ d ].name );
-    dstLongNull( listDst[ d ] );
-    test.close( 'dstLong - null, srcLong - ' + listDst[ d ].name );
+    test.open( `dst - null, src - ${ list[ d ].name }` );
+    testRun( list[ d ] );
+    test.close( `dst - null, src - ${ list[ d ].name }` );
   }
 
-  /* sort dstLong */
+  /* - */
 
-  for( let d in listDst )
-  {
-    if( listDst[ d ].name === 'argumentsArray' )
-    continue;
-
-    test.open( 'dstLong - ' + listDst[ d ].name );
-    sortDst( listDst[ d ] );
-    test.close( 'dstLong - ' + listDst[ d ].name );
-  }
-
-  /* test routines */
-
-  function dstLongNull( makeSrc )
+  function testRun( makeLong )
   {
     test.case = 'empty container';
     var dst = null;
-    var src = makeSrc( [] );
+    var src = new makeLong( [] );
     var got = _.longSort( dst, src );
     test.identical( got, [] );
 
     test.case = 'not empty container';
-    if( makeSrc.name !== 'Uint8ClampedArray' && makeSrc.name !== 'Uint8Array' && makeSrc.name !== 'Uint16Array' && makeSrc.name !== 'Uint32Array' )
+    if( makeLong.name !== 'Uint8ClampedArray' && makeLong.name !== 'Uint8Array' && makeLong.name !== 'Uint16Array' && makeLong.name !== 'Uint32Array' )
     {
       var dst = null;
-      var src = makeSrc( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
+      var src = new makeLong( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
       var got = _.longSort( dst, src );
       test.identical( got, [ -12, -2, 0, 1, 10, 14, 3, 4, 5 ] );
     }
 
     test.case = 'not empty container, onEvaluate - comparator';
     var dst = null;
-    var src = makeSrc( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
+    var src = new makeLong( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
     var comparator = ( a, b ) =>
     {
       if( a > b )
@@ -12932,67 +12894,88 @@ function longSort( test )
 
     test.case = 'not empty container, onEvaluate - evaluator';
     var dst = null;
-    var src = makeSrc( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
+    var src = new makeLong( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
     var got = _.longSort( dst, src, ( a ) => a );
     test.identical( got, [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] );
   }
 
-  /* */
+}
 
-  function sortDst( makeDst )
+//
+
+function longSortDstIsNotNull( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake,
+    I8x,
+    U16x,
+    F32x,
+    F64x
+  ];
+
+  var comparator = ( a, b ) =>
+  {
+    if( a > b )
+    return 1;
+    else if( a === b )
+    return 0;
+    else
+    return -1;
+  };
+
+  for( let d = 0 ; d < list.length ; d++ )
+  {
+    test.open( `dst - ${ list[ d ].name }` );
+    testRun( list[ d ] );
+    test.close( `dst - ${ list[ d ].name }` );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
   {
     test.case = 'not empty container, onEvaluate - evaluator, negative numbers';
-    if( makeDst.name !== 'Uint8ClampedArray' && makeDst.name !== 'Uint8Array' && makeDst.name !== 'Uint16Array' && makeDst.name !== 'Uint32Array' )
+    if( makeLong.name !== 'Uint8ClampedArray' && makeLong.name !== 'Uint8Array' && makeLong.name !== 'Uint16Array' && makeLong.name !== 'Uint32Array' )
     {
-      var dst = makeDst( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
+      var dst = new makeLong( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
       var got = _.longSort( dst, ( e ) => e );
-      test.is( got === dst );
-      test.identical( got, makeDst( [ -12, -2, 0, 1, 3, 4, 5, 10, 14 ] ) );
+      var exp = _.argumentsArrayIs( dst ) ? [ -12, -2, 0, 1, 3, 4, 5, 10, 14 ] : new makeLong( [ -12, -2, 0, 1, 3, 4, 5, 10, 14 ] );
+      test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
+      test.identical( got, exp );
     }
 
     test.case = 'not empty container, onEvaluate - comparator';
-    var dst = makeDst( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
-     var comparator = ( a, b ) =>
-    {
-      if( a > b )
-      return 1;
-      else if( a === b )
-      return 0;
-      else
-      return -1;
-    };
+    var dst = new makeLong( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
     var got = _.longSort( dst, comparator );
-    test.is( got === dst );
-    test.identical( got, makeDst( [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] ) );
+    var exp = _.argumentsArrayIs( dst ) ? [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] : new makeLong( [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
+    test.identical( got, exp );
 
     test.case = 'not empty container, srcLong - array, onEvaluate - comparator';
-    var dst = makeDst( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
+    var dst = new makeLong( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
     var src = [ 1, 5, 14 ];
-    var comparator = ( a, b ) =>
-    {
-      if( a > b )
-      return 1;
-      else if( a === b )
-      return 0;
-      else
-      return -1;
-    };
     var got = _.longSort( dst, src, comparator );
-    test.is( got === dst );
-    test.identical( got, makeDst( [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] ) );
+    var exp = _.argumentsArrayIs( dst ) ? [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] : new makeLong( [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
+    test.identical( got, exp );
 
     test.case = 'not empty container, onEvaluate - evaluator';
-    var dst = makeDst( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
+    var dst = new makeLong( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
     var got = _.longSort( dst, ( a ) => a );
-    test.is( got === dst );
-    test.identical( got, makeDst( [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] ) );
+    var exp = _.argumentsArrayIs( dst ) ? [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] : new makeLong( [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
+    test.identical( got, exp );
 
     test.case = 'not empty container, srcLong - empty array, onEvaluate - evaluator';
-    var dst = makeDst( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
+    var dst = new makeLong( [ 1, 5, 14, 4, 3, 0, 0, 10, 10 ] );
     var src = [];
     var got = _.longSort( dst, src, ( a ) => a );
-    test.is( got === dst );
-    test.identical( got, makeDst( [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] ) );
+    var exp = _.argumentsArrayIs( dst ) ? [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] : new makeLong( [ 0, 0, 1, 3, 4, 5, 10, 10, 14 ] );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
+    test.identical( got, exp );
   }
 
   /* - */
@@ -15976,7 +15959,8 @@ var Self =
     longSupplement,
     longExtendScreening,
 
-    longSort,
+    longSortDstIsNull,
+    longSortDstIsNotNull,
 
     longRandom,
     longFromRange,
