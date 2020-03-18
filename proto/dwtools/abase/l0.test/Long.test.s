@@ -14827,7 +14827,6 @@ function longHasDepth( test )
 
 function longLeftIndex( test )
 {
-
   test.case = 'nothing';
   var got = _.longLeftIndex( [], 3 );
   var expected = -1;
@@ -15335,43 +15334,18 @@ function longRight( test )
 
 //
 
-function longCountElement( test )
+function longCountElementWithoutCallback( test )
 {
-  /* constructors */
-
-  var array = ( src ) => _.arrayMake( src );
-  var unroll = ( src ) => _.unrollMake( src );
-  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
-  var bufferTyped = function( buf )
-  {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
-  };
-
-  /* lists */
-
-  var listTyped =
+  var list =
   [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake,
     I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
     U16x,
-    // I32x,
-    // U32x,
     F32x,
     F64x,
   ];
-  var list =
-  [
-    array,
-    unroll,
-    argumentsArray,
-  ];
-  for( let i = 0; i < listTyped.length; i++ )
-  list.push( bufferTyped( listTyped[ i ] ) );
-
-  /* tests */
 
   for( let i = 0; i < list.length; i++ )
   {
@@ -15385,86 +15359,41 @@ function longCountElement( test )
   function testRun( makeLong )
   {
     test.case = 'src = empty long, element = number';
-    var src = makeLong( [] );
+    var src = new makeLong( [] );
     var got = _.longCountElement( src, 3 );
     var expected = 0;
     test.identical( got, expected );
 
     test.case = 'src = empty long, element = undefined';
-    var src = makeLong( [] );
+    var src = new makeLong( [] );
     var got = _.longCountElement( src, undefined );
     var expected = 0;
     test.identical( got, expected );
 
     test.case = 'src = empty long, element = null';
-    var src = makeLong( [] );
+    var src = new makeLong( [] );
     var got = _.longCountElement( src, null );
     var expected = 0;
     test.identical( got, expected );
 
     test.case = 'element = string, no matches';
-    var src = makeLong( [ 1, 2, null, 10, 10, true ] );
+    var src = new makeLong( [ 1, 2, null, 10, 10, true ] );
     var got = _.longCountElement( src, 'hi' );
     var expected = 0;
     test.identical( got, expected );
 
     test.case = 'element = number, one matching';
-    var src = makeLong( [ 1, 2, null, 10, 10, true ] );
+    var src = new makeLong( [ 1, 2, null, 10, 10, true ] );
     var got = _.longCountElement( src, 2 );
     var expected = 1;
     test.identical( got, expected );
 
     test.case = 'element = number, four matches';
-    var src = makeLong( [ 1, 2, 'str', 10, 10, true, 2, 2, 10, 10 ] );
+    var src = new makeLong( [ 1, 2, 'str', 10, 10, true, 2, 2, 10, 10 ] );
     var got = _.longCountElement( src, 10 );
     var expected = 4;
     test.identical( got, expected );
-
-    // Evaluators
-
-    if( !_.bufferTypedIs( makeLong( 0 ) ) )
-    {
-      test.case = 'src = complex long, no evaluator, no equalizer';
-      var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
-      var got = _.longCountElement( src, 0 );
-      var expected = 0;
-      test.identical( got, expected );
-
-      test.case = 'src = complex long, one evaluator, no matches';
-      var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
-      var got = _.longCountElement( src, 2, ( e ) => e[ 0 ] );
-      var expected = 0;
-      test.identical( got, expected );
-
-      test.case = 'src = complex long, one evaluator, four matches';
-      var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
-      var got = _.longCountElement( src, 0, ( e ) => e[ 0 ] );
-      var expected = 0;
-      test.identical( got, expected );
-
-      test.case = 'src = complex long, evaluator1 and evaluator2, one matching';
-      var src = makeLong( [ [ 1, 3 ], [ 2, 2 ], [ 3, 1 ] ] );
-      var got = _.longCountElement( src, 1, ( e ) => e[ 1 ], ( e ) => e + 2 );
-      var expected = 1;
-      test.identical( got, expected );
-
-      test.case = 'src = complex long, evaluator1 and evaluator2, four matches';
-      var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
-      var got = _.longCountElement( src, 0, ( e ) => e[ 0 ], ( e ) => e );
-      var expected = 4;
-      test.identical( got, expected );
-
-      test.case = 'element = number, without equalizer, two mathces';
-      var got = _.longCountElement( [ 1, 2, 3, 2, 'str' ], 2 );
-      var expected = 2;
-      test.identical( got, expected );
-
-      test.case = 'element = number, equalizer, four mathces';
-      var got = _.longCountElement( [ 1, 2, 3, 2, 'str' ], 2, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
-      var expected = 4;
-      test.identical( got, expected );
-    }
-  }
+  } 
 
   /* - */
 
@@ -15500,7 +15429,71 @@ function longCountElement( test )
 
   test.case = 'fourth argument is wrong - have two arguments';
   test.shouldThrowErrorSync( () => _.longCountElement( [ 3, 4, 5, true ], 3, ( a ) => a, ( a, b ) => e ) );
-};
+}
+
+//
+
+function longCountElementWithCallback( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake,
+  ];
+
+  for( let i = 0; i < list.length; i++ )
+  {
+    test.open( list[ i ].name );
+    testRun( list[ i ] );
+    test.close( list[ i ].name );
+  }
+
+  /* - */
+
+  function testRun( makeLong )
+  {
+    test.case = 'src = complex long, no evaluator, no equalizer';
+    var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
+    var got = _.longCountElement( src, 0 );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.case = 'src = complex long, one evaluator, no matches';
+    var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
+    var got = _.longCountElement( src, 2, ( e ) => e[ 0 ] );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.case = 'src = complex long, one evaluator, four matches';
+    var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
+    var got = _.longCountElement( src, 0, ( e ) => e[ 0 ] );
+    var expected = 0;
+    test.identical( got, expected );
+
+    test.case = 'src = complex long, evaluator1 and evaluator2, one matching';
+    var src = makeLong( [ [ 1, 3 ], [ 2, 2 ], [ 3, 1 ] ] );
+    var got = _.longCountElement( src, 1, ( e ) => e[ 1 ], ( e ) => e + 2 );
+    var expected = 1;
+    test.identical( got, expected );
+
+    test.case = 'src = complex long, evaluator1 and evaluator2, four matches';
+    var src = makeLong( [ [ 0 ], [ 0 ], [ 0 ], [ 0 ], [ 1 ] ] );
+    var got = _.longCountElement( src, 0, ( e ) => e[ 0 ], ( e ) => e );
+    var expected = 4;
+    test.identical( got, expected );
+
+    test.case = 'element = number, without equalizer, two mathces';
+    var got = _.longCountElement( [ 1, 2, 3, 2, 'str' ], 2 );
+    var expected = 2;
+    test.identical( got, expected );
+
+    test.case = 'element = number, equalizer, four mathces';
+    var got = _.longCountElement( [ 1, 2, 3, 2, 'str' ], 2, ( a, b ) => _.typeOf( a ) === _.typeOf( b ) );
+    var expected = 4;
+    test.identical( got, expected );
+  }
+}
 
 //
 
@@ -15980,7 +15973,8 @@ var Self =
     longLeft,
     longRight,
 
-    longCountElement,
+    longCountElementWithoutCallback,
+    longCountElementWithCallback,
     longCountTotal,
     longCountUnique,
 
