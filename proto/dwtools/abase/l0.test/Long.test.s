@@ -13655,127 +13655,6 @@ function longFromRange( test )
 
 //
 
-function longFromRangeWithStep( test )
-{
-  test.case = 'range[ 0 ] === range[ 1 ], step is positive';
-  var got = _.longFromRangeWithStep( [ 1, 1 ], 2 );
-  var expected = [ ];
-  test.identical( got, expected );
-
-  test.case = 'range[ 0 ] === range[ 1 ], step is negative';
-  var got = _.longFromRangeWithStep( [ 1, 1 ], -2 );
-  var expected = [ ];
-  test.identical( got, expected );
-
-  test.case = 'range[ 0 ] === range[ 1 ], step is undefined';
-  var got = _.longFromRangeWithStep( [ 1, 1 ], undefined );
-  var expected = [ ];
-  test.identical( got, expected );
-
-  test.case = 'range[ 0 ] === range[ 1 ], step is positive float';
-  var got = _.longFromRangeWithStep( [ 1, 1 ], 1.5 );
-  var expected = [ ];
-  test.identical( got, expected );
-
-  test.case = 'range[ 0 ] === range[ 1 ], step is negative float';
-  var got = _.longFromRangeWithStep( [ 1, 1 ], -1.5 );
-  var expected = [ ];
-  test.identical( got, expected );
-
-  /**/
-
-  test.case = 'range[ 0 ] < range[ 1 ], step is positive';
-  var got = _.longFromRangeWithStep( [ 0, 4 ], 1 );
-  var expected = [ 0, 1, 2, 3 ];
-  test.identical( got, expected );
-
-  test.case = 'range[ 0 ] < range[ 1 ], step is undefined';
-  var got = _.longFromRangeWithStep( [ 4, 6 ], undefined );
-  var expected = [ 4, 5 ];
-  test.identical( got, expected );
-
-  test.case = 'range[ 0 ] < range[ 1 ], step is positive float';
-  var got = _.longFromRangeWithStep( [ 3, 6 ], 1.5 );
-  var expected = [ 3, 4.5 ];
-  test.identical( got, expected );
-
-  /**/
-
-  test.case = 'range[ 0 ] > range[ 1 ], step is negative';
-  var got = _.longFromRangeWithStep( [ 3, 2 ], -1 );
-  var expected = [ 3 ];
-  test.identical( got, expected );
-
-  test.case = 'range[ 0 ] > range[ 1 ], step is undefined';
-  var got = _.longFromRangeWithStep( [ 4, 0 ], undefined );
-  var expected = [ 4, 3, 2, 1 ];
-  test.identical( got, expected );
-
-  test.case = 'range[ 0 ] > range[ 1 ], step is negative float';
-  var got = _.longFromRangeWithStep( [ 3, 2 ], -1.5 );
-  var expected = [ 3 ];
-  test.identical( got, expected );
-
-  /**/
-
-  test.case = 'difference of range numbers is much lower than 1, step is positive'
-  var got =  _.longFromRangeWithStep( [ 5, 5.000001 ], 2 );
-  var expected = [ 5 ];
-  test.identical( got, expected );
-
-  test.case = 'difference of range numbers is much lower than 1, step is negative'
-  var got =  _.longFromRangeWithStep( [ 5.000001, 5 ], -2 );
-  var expected = [ 5.000001 ];
-  test.identical( got, expected );
-
-  /**/
-
-  if (!Config.debug)
-  return;
-
-  test.case = 'wrong arguments';
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( 'wrong arguments' ) );
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( undefined ) );
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ] ) );
-
-  test.case = 'more then 2 arguments'
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ], 1, 2 ) );
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep() );
-
-  /**/
-
-  test.case = 'wrong type of range'
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( 'wrong', 2 ) );
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( 1, 3 ) );
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( undefined, 3 ) );
-
-  test.case = 'one of range numbers is infinity'
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 1, Infinity ], 1 ) );
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ -Infinity, 1 ], 1 ) );
-
-  /**/
-
-  test.case = 'wrong type of step'
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ], 'wrong' ) );
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 1, 0 ], NaN ) );
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 5, 5 ], 'wrong' ) );
-
-  test.case = 'step is zero'
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ], 0 ) );
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 1, 0 ], 0 ) );
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 5, 5 ], 0 ) );
-
-  test.case = 'range[ 0 ] > range[ 1 ], step is positive';
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 1, 0 ], 2 ) );
-
-  test.case = 'range[ 0 ] < range[ 1 ], step is negative';
-  test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 0, 1 ], -2 ) );
-};
-
-//
-
 function longFromRangeWithStepDefaultLongDescriptor( test )
 {
   test.case = 'range[ 0 ] === range[ 1 ], step - -1';
@@ -13788,6 +13667,12 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
   /* - */
 
   test.open( 'range[ 0 ] < range[ 1 ]' );
+
+  test.case = 'range[ 0 ] - 0, difference of range numbers is much lower than 1, step - 2'
+  var got =  _.longFromRangeWithStep( [ 0, 0.000001 ], 2 );
+  var expected = [ 0 ];
+  test.identical( got, expected );
+  test.is( got !== range );
 
   test.case = 'range[ 0 ] - 0, step - undefined';
   var range = [ 0, 5 ];
@@ -13803,14 +13688,20 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
   test.identical( got, exp );
   test.is( got !== range );
 
-  test.case = 'range[ 0 ] - 0, step - 3';
+  test.case = 'range[ 0 ] - 0, step - 3.5';
   var range = [ 0, 14 ];
-  var got = _.longFromRangeWithStep( range, 3 );
-  var exp = [ 0, 3, 6, 9, 12 ];
+  var got = _.longFromRangeWithStep( range, 3.5 );
+  var exp = [ 0, 3.5, 7, 10.5 ];
   test.identical( got, exp );
   test.is( got !== range );
 
   /* */
+
+  test.case = 'range[ 0 ] - positive number, difference of range numbers is much lower than 1, step - 2'
+  var got =  _.longFromRangeWithStep( [ 5, 5.000001 ], 2 );
+  var expected = [ 5 ];
+  test.identical( got, expected );
+  test.is( got !== range );
 
   test.case = 'range[ 0 ] - positive number, step - undefined';
   var range = [ 3, 8 ];
@@ -13826,14 +13717,20 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
   test.identical( got, exp );
   test.is( got !== range );
 
-  test.case = 'range[ 0 ] - positive number, step - 3';
+  test.case = 'range[ 0 ] - positive number, step - 3.5';
   var range = [ 2, 16 ];
-  var got = _.longFromRangeWithStep( range, 3 );
-  var exp = [ 2, 5, 8, 11, 14 ];
+  var got = _.longFromRangeWithStep( range, 3.5 );
+  var exp = [ 2, 5.5, 9, 12.5 ];
   test.identical( got, exp );
   test.is( got !== range );
 
   /* */
+
+  test.case = 'range[ 0 ] - negative number, difference of range numbers is much lower than 1, step is positive'
+  var got =  _.longFromRangeWithStep( [ -5.000001, -5 ], 2 );
+  var expected = [ -5.000001 ];
+  test.identical( got, expected );
+  test.is( got !== range );
 
   test.case = 'range[ 0 ] - negative number, step - undefined';
   var range = [ -3, 8 ];
@@ -13849,10 +13746,10 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
   test.identical( got, exp );
   test.is( got !== range );
 
-  test.case = 'range[ 0 ] - negative number, step - 3';
-  var range = [ -2, 16 ];
-  var got = _.longFromRangeWithStep( range, 3 );
-  var exp = [ -2, 1, 4, 7, 10, 13 ];
+  test.case = 'range[ 0 ] - negative number, step - 3.5';
+  var range = [ -2, 8 ];
+  var got = _.longFromRangeWithStep( range, 3.5 );
+  var exp = [ -2, 1.5, 5 ];
   test.identical( got, exp );
   test.is( got !== range );
 
@@ -13861,6 +13758,12 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
   /* - */
 
   test.open( 'range[ 0 ] > range[ 1 ]' );
+
+  test.case = 'range[ 0 ] - 0, difference of range numbers is much lower than 1, step - -2'
+  var got =  _.longFromRangeWithStep( [ 0, -0.000001 ], -2 );
+  var expected = [ 0 ];
+  test.identical( got, expected );
+  test.is( got !== range );
 
   test.case = 'range[ 0 ] - 0, step - undefined';
   var range = [ 0, -5 ];
@@ -13876,14 +13779,20 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
   test.identical( got, exp );
   test.is( got !== range );
 
-  test.case = 'range[ 0 ] - 0, step - 3';
+  test.case = 'range[ 0 ] - 0, step - -3.5';
   var range = [ 0, -14 ];
-  var got = _.longFromRangeWithStep( range, -3 );
-  var exp = [ 0, -3, -6, -9, -12 ];
+  var got = _.longFromRangeWithStep( range, -3.5 );
+  var exp = [ 0, -3.5, -7, -10.5 ];
   test.identical( got, exp );
   test.is( got !== range );
 
   /* */
+
+  test.case = 'range[ 0 ] - positive number, difference of range numbers is much lower than 1, step - -2'
+  var got =  _.longFromRangeWithStep( [ 5.000001, 5 ], -2 );
+  var expected = [ 5.000001 ];
+  test.identical( got, expected );
+  test.is( got !== range );
 
   test.case = 'range[ 0 ] - positive number, step - undefined';
   var range = [ 3, -8 ];
@@ -13899,14 +13808,20 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
   test.identical( got, exp );
   test.is( got !== range );
 
-  test.case = 'range[ 0 ] - positive number, step - -3';
-  var range = [ 2, -16 ];
-  var got = _.longFromRangeWithStep( range, -3 );
-  var exp = [ 2, -1, -4, -7, -10, -13 ];
+  test.case = 'range[ 0 ] - positive number, step - -3.5';
+  var range = [ 2, -8 ];
+  var got = _.longFromRangeWithStep( range, -3.5 );
+  var exp = [ 2, -1.5, -5 ];
   test.identical( got, exp );
   test.is( got !== range );
 
   /* */
+
+  test.case = 'range[ 0 ] - negative number, difference of range numbers is much lower than 1, step - -2'
+  var got =  _.longFromRangeWithStep( [ -5, -5.000001 ], -2 );
+  var expected = [ -5 ];
+  test.identical( got, expected );
+  test.is( got !== range );
 
   test.case = 'range[ 0 ] - negative number, step - undefined';
   var range = [ -3, -8 ];
@@ -13922,10 +13837,10 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
   test.identical( got, exp );
   test.is( got !== range );
 
-  test.case = 'range[ 0 ] - negative number, step - -3';
+  test.case = 'range[ 0 ] - negative number, step - -3.5';
   var range = [ -2, -16 ];
-  var got = _.longFromRangeWithStep( range, -3 );
-  var exp = [ -2, -5, -8, -11, -14 ];
+  var got = _.longFromRangeWithStep( range, -3.5 );
+  var exp = [ -2, -5.5, -9, -12.5 ];
   test.identical( got, exp );
   test.is( got !== range );
 
@@ -13960,213 +13875,6 @@ function longFromRangeWithStepDefaultLongDescriptor( test )
   test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 2, 10 ], null ) );
   test.shouldThrowErrorSync( () => _.longFromRangeWithStep( [ 2, 10 ], [] ) );
 }
-
-//
-
-function longFromRangeWithStepNotDefaultLongDescriptor( test )
-{
-  let times = 4;
-  for( let e in _.LongDescriptors )
-  {
-    let name = _.LongDescriptors[ e ].name;
-    let descriptor = _.withDefaultLong[ name ];
-
-    test.open( `descriptor - ${ name }` );
-    testRun( descriptor );
-    test.close( `descriptor - ${ name }` );
-
-    if( times < 1 )
-    break;
-    times--;
-  } 
-
-  function testRun( descriptor )
-  {
-    test.case = 'range[ 0 ] === range[ 1 ], step - -1';
-    var range = [ 0, 0 ];
-    var got = descriptor.longFromRangeWithStep( range, -1 );
-    var exp = descriptor.longDescriptor.from( [] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    /* - */
-
-    test.open( 'range[ 0 ] < range[ 1 ]' );
-
-    test.case = 'range[ 0 ] - 0, step - undefined';
-    var range = [ 0, 5 ];
-    var got = descriptor.longFromRangeWithStep( range, undefined );
-    var exp = descriptor.longDescriptor.from( [ 0, 1, 2, 3, 4 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - 0, step - 1';
-    var range = [ 0, 5 ];
-    var got = descriptor.longFromRangeWithStep( range, 1 );
-    var exp = descriptor.longDescriptor.from( [ 0, 1, 2, 3, 4 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - 0, step - 3';
-    var range = [ 0, 14 ];
-    var got = descriptor.longFromRangeWithStep( range, 3 );
-    var exp = descriptor.longDescriptor.from( [ 0, 3, 6, 9, 12 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    /* */
-
-    test.case = 'range[ 0 ] - positive number, step - undefined';
-    var range = [ 3, 8 ];
-    var got = descriptor.longFromRangeWithStep( range, undefined );
-    var exp = descriptor.longDescriptor.from( [ 3, 4, 5, 6, 7 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - positive number, step - 1';
-    var range = [ 3, 8 ];
-    var got = descriptor.longFromRangeWithStep( range, 1 );
-    var exp = descriptor.longDescriptor.from( [ 3, 4, 5, 6, 7 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - positive number, step - 3';
-    var range = [ 2, 16 ];
-    var got = descriptor.longFromRangeWithStep( range, 3 );
-    var exp = descriptor.longDescriptor.from( [ 2, 5, 8, 11, 14 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    /* */
-
-    test.case = 'range[ 0 ] - negative number, step - undefined';
-    var range = [ -3, 8 ];
-    var got = descriptor.longFromRangeWithStep( range, undefined );
-    var exp = descriptor.longDescriptor.from( [ -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - negative number, step - 1';
-    var range = [ -3, 8 ];
-    var got = descriptor.longFromRangeWithStep( range, 1 );
-    var exp = descriptor.longDescriptor.from( [ -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - negative number, step - 3';
-    var range = [ -2, 16 ];
-    var got = descriptor.longFromRangeWithStep( range, 3 );
-    var exp = descriptor.longDescriptor.from( [ -2, 1, 4, 7, 10, 13 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.close( 'range[ 0 ] < range[ 1 ]' );
-
-    /* - */
-
-    test.open( 'range[ 0 ] > range[ 1 ]' );
-
-    test.case = 'range[ 0 ] - 0, step - undefined';
-    var range = [ 0, -5 ];
-    var got = descriptor.longFromRangeWithStep( range, undefined );
-    var exp = descriptor.longDescriptor.from( [ 0, -1, -2, -3, -4 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - 0, step - 1';
-    var range = [ 0, -5 ];
-    var got = descriptor.longFromRangeWithStep( range, -1 );
-    var exp = descriptor.longDescriptor.from( [ 0, -1, -2, -3, -4 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - 0, step - 3';
-    var range = [ 0, -14 ];
-    var got = descriptor.longFromRangeWithStep( range, -3 );
-    var exp = descriptor.longDescriptor.from( [ 0, -3, -6, -9, -12 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    /* */
-
-    test.case = 'range[ 0 ] - positive number, step - undefined';
-    var range = [ 3, -8 ];
-    var got = descriptor.longFromRangeWithStep( range, undefined );
-    var exp = descriptor.longDescriptor.from( [ 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - positive number, step - -1';
-    var range = [ 3, -8 ];
-    var got = descriptor.longFromRangeWithStep( range, -1 );
-    var exp = descriptor.longDescriptor.from( [ 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - positive number, step - -3';
-    var range = [ 2, -16 ];
-    var got = descriptor.longFromRangeWithStep( range, -3 );
-    var exp = descriptor.longDescriptor.from( [ 2, -1, -4, -7, -10, -13 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    /* */
-
-    test.case = 'range[ 0 ] - negative number, step - undefined';
-    var range = [ -3, -8 ];
-    var got = descriptor.longFromRangeWithStep( range, undefined );
-    var exp = descriptor.longDescriptor.from( [ -3, -4, -5, -6, -7 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - negative number, step - -1';
-    var range = [ -3, -8 ];
-    var got = descriptor.longFromRangeWithStep( range, -1 );
-    var exp = descriptor.longDescriptor.from( [ -3, -4, -5, -6, -7 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.case = 'range[ 0 ] - negative number, step - -3';
-    var range = [ -2, -16 ];
-    var got = descriptor.longFromRangeWithStep( range, -3 );
-    var exp = descriptor.longDescriptor.from( [ -2, -5, -8, -11, -14 ] );
-    test.identical( got, exp );
-    test.is( got !== range );
-
-    test.close( 'range[ 0 ] > range[ 1 ]' );
-
-    /* - */
-
-    if( Config.debug )
-    {
-      test.case = 'without arguments';
-      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep() );
-
-      test.case = 'not enough arguments';
-      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 1, 3 ] ) );
-
-      test.case = 'extra arguments';
-      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 1, 3 ], 1, 'extra' ) );
-
-      test.case = 'range[ 0 ] is infinite number';
-      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ Infinity, 2 ], -1 ) );
-      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ -Infinity, 2 ], 1 ) );
-
-      test.case = 'range[ 1 ] is infinite number';
-      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, Infinity ], 1 ) );
-      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, -Infinity ], -1 ) );
-
-      test.case = 'step === 0';
-      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, 10 ], 0 ) );
-
-      test.case = 'wrong type of step';
-      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, 10 ], null ) );
-      test.shouldThrowErrorSync( () => descriptor.longFromRangeWithStep( [ 2, 10 ], [] ) );
-    }
-  }
-}
-
-longFromRangeWithStepNotDefaultLongDescriptor.timeOut = 10000;
 
 //
 
@@ -16383,7 +16091,7 @@ var Self =
 
     longRandom,
     longFromRange,
-    longFromRangeWithStep,
+    longFromRangeWithStepDefaultLongDescriptor,
 
     // longToMap, // Dmytro : routine longToMap commented in gLong.s
     // longToStr, // Dmytro : routine longToStr commented in gLong.s
