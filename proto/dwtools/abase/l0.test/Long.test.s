@@ -11846,8 +11846,7 @@ function longMask( test )
   var expected = [ "a", 'b', 5, 'd' ];
   test.identical( got, expected );
 
-  /**/
-
+  /* */
 
   if( !Config.debug )
   return;
@@ -11893,156 +11892,68 @@ function longMask( test )
   {
     _.longMask( [ 1, 2, 3, 4 ], [ undefined, null, 0 ] );
   });
-
 }
 
 //
 
-function longOnce( test )
+function longOnceWithoutCallback( test )
 {
-  /* constructors */
-
-  var array = ( src ) => _.arrayMake( src );
-  var unroll = ( src ) => _.unrollMake( src );
-  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
-  var bufferTyped = function( buf )
-  {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
-  };
-
-  /* callbacks */
-
-  var evaluator = ( e ) => _.mapIs( e ) ? e.v : e;
-  var equalizer = function( e1, e2 )
-  {
-    e1 = _.mapIs( e1 ) ? e1.v : e1;
-    e2 = _.mapIs( e2 ) ? e2.v : e2;
-    return e1 === e2;
-  }
-
-  /* lists */
-
-  var listTyped =
+  var list =
   [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake,
     I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
     U16x,
-    // I32x,
-    // U32x,
     F32x,
-    F64x,
-  ];
-  var listDst =
-  [
-    array,
-    unroll,
-    argumentsArray,
+    F64x
   ];
 
-  for( let i in listTyped )
-  listDst.push( bufferTyped( listTyped[ i ] ) );
-
-  var listOnEvaluate =
-  [
-    evaluator,
-    equalizer,
-  ]
-
-  /* only dst */
-
-  for( let d in listDst )
+  for( let d = 0 ; d < list.length ; d++ )
   {
-    test.open( 'dst = ' + listDst[ d ].name );
-    dstOnly( listDst[ d ] );
-    test.close( 'dst = ' + listDst[ d ].name );
-  }
-
-  /* dst and onEvaluate, src in test cases */
-
-  let i = 0;
-  while( !_.bufferTypedIs( listDst[ i ]( 0 ) ) )
-  {
-    test.open( 'dst = ' + listDst[ i ].name );
-
-    for( let d = 0; d < listOnEvaluate.length; d++ )
-    {
-      test.open( 'onEvaluate = ' + listOnEvaluate[ d ].name );
-      dstAndOnEvaluate( listDst[ i ], listOnEvaluate[ d ] );
-      test.close( 'onEvaluate = ' + listOnEvaluate[ d ].name );
-    }
-
-    test.close( 'dst = ' + listDst[ i ].name );
-
-    i++
-  }
-
-  /* test routines */
-
-  function dstOnly( makeDst )
-  {
-    test.case = 'dst = null';
-    var dst = makeDst( null );
-    var got = _.longOnce( dst );
-    var expected = makeDst( null );
-    test.identical( got, expected );
-    test.is( got === dst );
-
-    test.case = 'dst.length = 0';
-    var dst = makeDst( [] );
-    var got = _.longOnce( dst );
-    var expected = makeDst( [] );
-    test.identical( got, expected );
-    test.is( got === dst );
-
-    test.case = 'dst.length = 1';
-    var dst = makeDst( [ 1 ] );
-    var got = _.longOnce( dst );
-    var expected = makeDst( [ 1 ] );
-    test.identical( got, expected );
-    test.is( got === dst );
-
-    test.case = 'dst.length > 1, no duplicates';
-    var dst = makeDst( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longOnce( dst );
-    var expected = makeDst( [ 1, 2, 3, 4, 5 ] );
-    test.identical( got, expected );
-    test.is( got === dst );
-
-    test.case = 'dst.length > 1, duplicates';
-    var dst = makeDst( [ 1, 2, 2, 1, 5, 3, 4, 5, 5, 3 ] );
-    var got = _.longOnce( dst );
-    var expected = _.argumentsArrayIs( dst ) ? array( [ 1, 2, 5, 3, 4 ] ) : makeDst( [ 1, 2, 5, 3, 4 ] );
-    test.identical( got, expected );
-    if( !_.argumentsArrayIs( dst ) && !_.bufferAnyIs( dst ) )
-    test.is( got === dst );
-
+    test.open( 'dst = ' + list[ d ].name );
+    testRun( list[ d ] );
+    test.close( 'dst = ' + list[ d ].name );
   }
 
   /* - */
 
-  function dstAndOnEvaluate( makeDst, onEvaluate )
+  function testRun( makeLong )
   {
-    var result = ( dst, src ) =>
-
-    test.case = 'dst has duplicates';
-    var dst = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
-    var got = _.longOnce( dst, onEvaluate );
-    var expected = _.argumentsArrayIs( dst ) ?
-    array( [ { v : 1 }, { v : 2 }, { v : 3 } ] ) : makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.case = 'dst = null';
+    var dst = new makeLong( null );
+    var got = _.longOnce( dst );
+    var expected = new makeLong( null );
     test.identical( got, expected );
-    if( !_.argumentsArrayIs( dst ) )
     test.is( got === dst );
 
-    test.case = 'dst has not duplicates';
-    var dst = makeDst( [ 5, 6, { v : 1 }, { v : 2 }, { v : 3 } ] );
-    var got = _.longOnce( dst, onEvaluate );
-    var expected = makeDst( [ 5, 6, { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.case = 'dst.length = 0';
+    var dst = new makeLong( [] );
+    var got = _.longOnce( dst );
+    var expected = new makeLong( [] );
     test.identical( got, expected );
-    if( !_.argumentsArrayIs( dst ) )
     test.is( got === dst );
+
+    test.case = 'dst.length = 1';
+    var dst = new makeLong( [ 1 ] );
+    var got = _.longOnce( dst );
+    var expected = new makeLong( [ 1 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'dst.length > 1, no duplicates';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longOnce( dst );
+    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    test.case = 'dst.length > 1, duplicates';
+    var dst = new makeLong( [ 1, 2, 2, 1, 5, 3, 4, 5, 5, 3 ] );
+    var got = _.longOnce( dst );
+    var expected = _.argumentsArrayIs( dst ) ? [ 1, 2, 5, 3, 4 ] : new makeLong( [ 1, 2, 5, 3, 4 ] );
+    test.identical( got, expected );
+    test.is( !_.argumentsArrayIs( dst ) && !_.bufferAnyIs( dst ) ? got === dst : got !== dst );
   }
 
   /* - */
@@ -12066,6 +11977,72 @@ function longOnce( test )
   test.case = 'onEvaluate is not a routine';
   test.shouldThrowErrorSync( () => _.longOnce( [ 1, 2 ], [ 1, 3 ], 'wrong' ) );
   test.shouldThrowErrorSync( () => _.longOnce( [ 1, 2 ], [ 1, 3 ], [ 1, 2, 3 ] ) );
+}
+
+//
+
+function longOnceWithCallback( test )
+{
+  var list =
+  [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake,
+  ];
+
+  for( let i = 0 ; i < list.length ; i++ )
+  {
+    test.open( 'dst = ' + list[ i ].name );
+    dstAndOnEvaluate( list[ i ] );
+    test.close( 'dst = ' + list[ i ].name );
+  }
+
+  /* - */
+
+  function dstAndOnEvaluate( makeLong )
+  {
+    test.case = 'dst has duplicates, evaluator';
+    var dst = makeLong( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
+    var got = _.longOnce( dst, ( e ) => e.v );
+    var expected = _.argumentsArrayIs( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeLong( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.identical( got, expected );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
+
+    test.case = 'dst has not duplicates, evaluator';
+    var dst = makeLong( [ 5, 6, { v : 1 }, { v : 2 }, { v : 3 } ] );
+    var got = _.longOnce( dst, ( e ) => _.mapIs( e ) ? e.v : e );
+    var expected = makeLong( [ 5, 6, { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+
+    /* */
+
+    test.case = 'dst has duplicates';
+    var equalizer = function( e1, e2 )
+    {
+      e1 = _.mapIs( e1 ) ? e1.v : e1;
+      e2 = _.mapIs( e2 ) ? e2.v : e2;
+      return e1 === e2;
+    }
+    var dst = makeLong( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
+    var got = _.longOnce( dst, equalizer );
+    var expected = _.argumentsArrayIs( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeLong( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.identical( got, expected );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
+
+    test.case = 'dst has not duplicates';
+    var equalizer = function( e1, e2 )
+    {
+      e1 = _.mapIs( e1 ) ? e1.v : e1;
+      e2 = _.mapIs( e2 ) ? e2.v : e2;
+      return e1 === e2;
+    }
+    var dst = makeLong( [ 5, 6, { v : 1 }, { v : 2 }, { v : 3 } ] );
+    var got = _.longOnce( dst, equalizer );
+    var expected = makeLong( [ 5, 6, { v : 1 }, { v : 2 }, { v : 3 } ] );
+    test.identical( got, expected );
+    test.is( got === dst );
+  }
 }
 
 //
@@ -16028,7 +16005,8 @@ var Self =
 
     longMask,
 
-    longOnce,
+    longOnceWithoutCallback,
+    longOnceWithCallback,
     longOnce_,
     longShrinkWithIndices,
 
