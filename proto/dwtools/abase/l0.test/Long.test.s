@@ -15499,41 +15499,16 @@ function longCountElementWithCallback( test )
 
 function longCountTotal( test )
 {
-  /* constructors */
-
-  var array = ( src ) => _.arrayMake( src );
-  var unroll = ( src ) => _.unrollMake( src );
-  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
-  var bufferTyped = function( buf )
-  {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
-  };
-
-  /* lists */
-
-  var listTyped =
+  var list =
   [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake, 
     I8x,
-    // U8x,
-    // U8ClampedX,
-    // I16x,
     U16x,
-    // I32x,
-    // U32x,
     F32x,
     F64x,
   ];
-  var list =
-  [
-    array,
-    unroll,
-    argumentsArray,
-  ];
-  for( let i = 0; i < listTyped.length; i++ )
-  list.push( bufferTyped( listTyped[ i ] ) );
-
-  /* tests */
 
   for( let i = 0; i < list.length; i++ )
   {
@@ -15549,25 +15524,25 @@ function longCountTotal( test )
     /* zero */
 
     test.case = 'empty array';
-    var src = makeLong( [] );
+    var src = new makeLong( [] );
     var got = _.longCountTotal( src );
     var expected = 0;
     test.identical( got, expected );
 
     test.case = 'several nulls';
-    var src = makeLong( [ null, null, null ] );
+    var src = new makeLong( [ null, null, null ] );
     var got = _.longCountTotal( src );
     var expected = 0;
     test.identical( got, expected );
 
     test.case = 'several zeros';
-    var src = makeLong( [ 0, 0, 0, 0 ] );
+    var src = new makeLong( [ 0, 0, 0, 0 ] );
     var got = _.longCountTotal( src );
     var expected = 0;
     test.identical( got, expected );
 
     test.case = 'mix of nulls and zeros';
-    var src = makeLong( [ 0, null, null, 0, 0, 0, null ] );
+    var src = new makeLong( [ 0, null, null, 0, 0, 0, null ] );
     var got = _.longCountTotal( src );
     var expected = 0;
     test.identical( got, expected );
@@ -15575,7 +15550,7 @@ function longCountTotal( test )
     /* array elements are numbers */
 
     test.case = 'sum of no repeated elements';
-    var src = makeLong( [ 1, 3, 5, 7, 9, 1, 3 ] );
+    var src = new makeLong( [ 1, 3, 5, 7, 9, 1, 3 ] );
     var got = _.longCountTotal( src );
     var expected = 29;
     test.identical( got, expected );
@@ -15583,19 +15558,19 @@ function longCountTotal( test )
     /* array elements are booleans */
 
     test.case = 'all true';
-    var src = makeLong( [ true, true, true, true ] );
+    var src = new makeLong( [ true, true, true, true ] );
     var got = _.longCountTotal( src );
     var expected = 4;
     test.identical( got, expected );
 
     test.case = 'all false';
-    var src = makeLong( [ false, false, false, false, false ] );
+    var src = new makeLong( [ false, false, false, false, false ] );
     var got = _.longCountTotal( src );
     var expected = 0;
     test.identical( got, expected );
 
     test.case = 'mix of true and false';
-    var src = makeLong( [ false, false, true, false, true, false, false, true ] );
+    var src = new makeLong( [ false, false, true, false, true, false, false, true ] );
     var got = _.longCountTotal( src );
     var expected = 3;
     test.identical( got, expected );
@@ -15603,35 +15578,35 @@ function longCountTotal( test )
     /* array elements are numbers and booleans */
 
     test.case = 'all true and numbers';
-    var src = makeLong( [ true, 2, 1, true, true, 0, true ] );
+    var src = new makeLong( [ true, 2, 1, true, true, 0, true ] );
     var got = _.longCountTotal( src );
     var expected = 7;
     test.identical( got, expected );
 
     test.case = 'all false and numbers';
-    var src = makeLong( [ 1, false, 0, false, false, 4, 3, false, false ] );
+    var src = new makeLong( [ 1, false, 0, false, false, 4, 3, false, false ] );
     var got = _.longCountTotal( src );
     var expected = 8;
     test.identical( got, expected );
 
     test.case = 'mix of true, false, numbers and null';
-    var src = makeLong( [ null, false, false, 0, true, null, false, 10, true, false, false, true, 2, null ] );
+    var src = new makeLong( [ null, false, false, 0, true, null, false, 10, true, false, false, true, 2, null ] );
     var got = _.longCountTotal( src );
     var expected = 15;
     test.identical( got, expected );
 
     /* array has negative numbers */
 
-    if( !_.bufferTypedIs( makeLong( 0 ) ) )
+    if( !_.bufferTypedIs( new makeLong( 0 ) ) )
     {
       test.case = 'numbers, negative result';
-      var src = makeLong( [ 2, -3, 4, -4, 6, -7 ] );
+      var src = new makeLong( [ 2, -3, 4, -4, 6, -7 ] );
       var got = _.longCountTotal( src );
       var expected = -2;
       test.identical( got, expected );
 
       test.case = 'mix of true, false, numbers and null - negative result';
-      var src = makeLong( [ null, false, false, 0, true, null, -8, false, 10, true, false, -9, false, true, 2, null ] );
+      var src = new makeLong( [ null, false, false, 0, true, null, -8, false, 10, true, false, -9, false, true, 2, null ] );
       var got = _.longCountTotal( src );
       var expected = -2;
       test.identical( got, expected );
@@ -15660,7 +15635,7 @@ function longCountTotal( test )
 
   test.case = 'srcArray contains arrays';
   test.shouldThrowErrorSync( () => _.longCountTotal( [ 1, [ 2 ], 3, [ null ] ] ) );
-};
+}
 
 //
 
