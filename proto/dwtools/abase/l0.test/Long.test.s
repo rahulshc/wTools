@@ -11814,18 +11814,53 @@ function longAreRepeatedProbe( test )
 function longAllAreRepeated( test )
 {
 
+  test.case = 'empty array';
   var got = _.longAllAreRepeated( [] );
-  test.identical( got, true );
+  var expected = true;
+  test.identical( got, expected );
 
+  test.case = 'identical numbers array';
   var got = _.longAllAreRepeated( [ 1, 1 ] );
-  test.identical( got, true );
+  var expected = true;
+  test.identical( got, expected );
 
+  test.case = 'single number array item';
   var got = _.longAllAreRepeated( [ 1 ] );
-  test.identical( got, false );
+  var expected = false;
+  test.identical( got, expected );
 
+  test.case = 'some numbers array are identical';
   var got = _.longAllAreRepeated( [ 1, 2, 2 ] );
-  test.identical( got, false );
+  var expected = false;
+  test.identical( got, expected );
 
+  /**/
+
+  test.case = 'identical strings array items';
+  var got = _.longAllAreRepeated( [ 'string', 'string' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'some strings of array are identical';
+  var got = _.longAllAreRepeated( [ 'string', 'string', 'diff string' ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong argument';
+  test.shouldThrowErrorSync( () => _.longAllAreRepeated( 'wrong arguments' ) );
+  test.shouldThrowErrorSync( () => _.longAllAreRepeated( undefined ) );
+  test.shouldThrowErrorSync( () => _.longAllAreRepeated( {} ) );
+  test.shouldThrowErrorSync( () => _.longAllAreRepeated( 1, 2 ) );
+  test.shouldThrowErrorSync( () => _.longAllAreRepeated( [ 1, 1 ], 2 ) );
+  test.shouldThrowErrorSync( () => _.longAllAreRepeated( [ 1, 1 ], [ 2, 2 ] ) );
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longAllAreRepeated() );
 }
 
 //
@@ -11833,37 +11868,104 @@ function longAllAreRepeated( test )
 function longAnyAreRepeated( test )
 {
 
+  test.case = 'empty array';
   var got = _.longAnyAreRepeated( [] );
-  test.identical( got, false );
+  var expected = false;
+  test.identical( got, expected );
 
+  test.case = 'identical numbers array';
   var got = _.longAnyAreRepeated( [ 1, 1 ] );
-  test.identical( got, true );
+  var expected = true;
+  test.identical( got, expected );
 
+  test.case = 'single number array';
   var got = _.longAnyAreRepeated( [ 1 ] );
-  test.identical( got, false );
+  var expected = false;
+  test.identical( got, expected );
 
+  test.case = 'some numbers array are identical';
   var got = _.longAnyAreRepeated( [ 1, 2, 2 ] );
-  test.identical( got, true );
+  var expected = true;
+  test.identical( got, expected );
 
+  /**/
+
+  test.case = 'identical strings array items'
+  var got = _.longAnyAreRepeated( [ 'string', 'string' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'some strings of array are identical';
+  var got = _.longAnyAreRepeated( [ 'string', 'string', 'diff string' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong argument';
+  test.shouldThrowErrorSync( () => _.longAnyAreRepeated( 'wrong arguments' ) );
+  test.shouldThrowErrorSync( () => _.longAnyAreRepeated( undefined ) );
+  test.shouldThrowErrorSync( () => _.longAnyAreRepeated( {} ) );
+  test.shouldThrowErrorSync( () => _.longAnyAreRepeated( 1, 2 ) );
+  test.shouldThrowErrorSync( () => _.longAnyAreRepeated( [ 1, 1 ], 2 ) );
+  test.shouldThrowErrorSync( () => _.longAnyAreRepeated( [ 1, 1 ], [ 2, 2 ] ) );
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longAnyAreRepeated() );
 }
 
 //
 
 function longNoneAreRepeated( test )
 {
-
+  test.case = 'empty array';
   var got = _.longNoneAreRepeated( [] );
-  test.identical( got, true );
+  var expected = true;
+  test.identical( got, expected );
 
+  test.case = 'identical numbers array';
   var got = _.longNoneAreRepeated( [ 1, 1 ] );
-  test.identical( got, false );
+  var expected = false;
+  test.identical( got, expected );
 
+  test.case = 'single number array item';
   var got = _.longNoneAreRepeated( [ 1 ] );
-  test.identical( got, true );
+  var expected = true;
+  test.identical( got, expected );
 
+  test.case = 'some numbers array are identical';
   var got = _.longNoneAreRepeated( [ 1, 2, 2 ] );
-  test.identical( got, false );
+  var expected = false;
+  test.identical( got, expected );
 
+  /**/
+
+  test.case = 'identical strings array items';
+  var got = _.longNoneAreRepeated( [ 'string', 'string' ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'some strings of array are identical';
+  var got = _.longNoneAreRepeated( [ 'string', 'string', 'diff string' ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong argument';
+  test.shouldThrowErrorSync( () => _.longNoneAreRepeated( 'wrong arguments' ) );
+  test.shouldThrowErrorSync( () => _.longNoneAreRepeated( undefined ) );
+  test.shouldThrowErrorSync( () => _.longNoneAreRepeated( {} ) );
+  test.shouldThrowErrorSync( () => _.longNoneAreRepeated( 1, 2 ) );
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.longNoneAreRepeated() );
 }
 
 //
