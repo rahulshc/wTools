@@ -12605,130 +12605,109 @@ function longPut( test )
 
 function longFill( test )
 {
-  /* constructors */
-
-  var array = ( src ) => _.arrayMake( src );
-  var unroll = ( src ) => _.unrollMake( src );
-  var argumentsArray = ( src ) => src === null ? _.argumentsArrayMake( [] ) : _.argumentsArrayMake( src );
-  var bufferTyped = function( buf )
-  {
-    let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
-  };
-
-  /* lists */
-
-  var listTyped =
+  var list =
   [
+    _.arrayMake,
+    _.unrollMake,
+    _.argumentsArrayMake,
     I8x,
     U16x,
     F32x,
     F64x,
   ];
-  var listDst =
-  [
-    array,
-    unroll,
-    argumentsArray,
-  ];
 
-  for( let i in listTyped )
-  listDst.push( bufferTyped( listTyped[ i ] ) );
-
-  /* dstLong - null */
-
-  for( let d in listDst )
+  for( let d = 0 ; d < list.length ; d++ )
   {
-    test.open( '' + listDst[ d ].name );
-    testRun( listDst[ d ] );
-    test.close( '' + listDst[ d ].name );
+    test.open( list[ d ].name );
+    testRun( list[ d ] );
+    test.close( list[ d ].name );
   }
 
   /* - */
-  function testRun( makeDst )
+
+  function testRun( makeLong )
   {
-    var sameIs = ( got, dst ) => _.arrayIs( dst ) ? got === dst : got !== dst;
     test.case = 'empty container, no value, no range';
-    var dst = makeDst( [] );
+    var dst = new makeLong( [] );
     var got = _.longFill( dst );
-    var expected = makeDst( [] );
+    var expected = new makeLong( [] );
     test.is( got === dst );
     test.identical( got, expected );
 
     test.case = 'dst - empty container, value';
-    var dst = makeDst( [] );
+    var dst = new makeLong( [] );
     var got = _.longFill( dst, 1 );
-    var expected = makeDst( [] );
+    var expected = new makeLong( [] );
     test.is( got === dst );
     test.identical( got, expected );
 
     test.case = 'dst = empty container, value, range[ 1 ] > dst.length';
-    var dst = makeDst( [] );
+    var dst = new makeLong( [] );
     var got = _.longFill( dst, 1, [ 0, 3 ] );
-    var expected = _.argumentsArrayIs( dst ) ? [ 1, 1, 1 ] : makeDst( [ 1, 1, 1 ] );
-    test.is( sameIs( got, dst ) );
+    var expected = _.argumentsArrayIs( dst ) ? [ 1, 1, 1 ] : new makeLong( [ 1, 1, 1 ] );
+    test.is( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
     test.case = 'dst = empty container, value, range[ 0 ] < 0, range[ 1 ] > dst.length';
-    var dst = makeDst( [] );
+    var dst = new makeLong( [] );
     var got = _.longFill( dst, 1, [ -2, 3 ] );
-    var expected = _.argumentsArrayIs( dst ) ? [ 1, 1, 1, 1, 1 ] : makeDst( [ 1, 1, 1, 1, 1 ] );
-    test.is( sameIs( got, dst ) );
+    var expected = _.argumentsArrayIs( dst ) ? [ 1, 1, 1, 1, 1 ] : new makeLong( [ 1, 1, 1, 1, 1 ] );
+    test.is( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
     test.case = 'dst = empty container, value, range[ 1 ] < range[ 0 ]';
-    var dst = makeDst( [] );
+    var dst = new makeLong( [] );
     var got = _.longFill( dst, 1, [ 0, -2 ] );
-    var expected = makeDst( [] );
+    var expected = new makeLong( [] );
     test.is( got === dst );
     test.identical( got, expected );
 
     test.case = 'dst = not empty container, no value, no range';
-    var dst = makeDst( [ 1, 1, 1 ] );
+    var dst = new makeLong( [ 1, 1, 1 ] );
     var got = _.longFill( dst );
-    var expected = makeDst( [ 0, 0, 0 ] );
+    var expected = new makeLong( [ 0, 0, 0 ] );
     test.is( got === dst );
     test.identical( got, expected );
 
     test.case = 'dst = not empty container, value';
-    var dst = makeDst( [ 1, 1, 1 ] );
+    var dst = new makeLong( [ 1, 1, 1 ] );
     var got = _.longFill( dst, 3 );
-    var expected = makeDst( [ 3, 3, 3 ] );
+    var expected = new makeLong( [ 3, 3, 3 ] );
     test.is( got === dst );
     test.identical( got, expected );
 
     test.case = 'dst - not empty container, value, range - number';
-    var dst = makeDst( [ 1, 1, 1 ] );
+    var dst = new makeLong( [ 1, 1, 1 ] );
     var got = _.longFill( dst, 2, 4 );
-    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : makeDst( [ 2, 2, 2, 2 ] );
-    test.is( sameIs( got, dst ) );
+    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : new makeLong( [ 2, 2, 2, 2 ] );
+    test.is( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
     test.case = 'dst = not empty container, value, range';
-    var dst = makeDst( [ 1, 1, 1 ] );
+    var dst = new makeLong( [ 1, 1, 1 ] );
     var got = _.longFill( dst, 4, [ 1, 2 ] );
-    var expected = makeDst( [ 1, 4, 1 ] );
+    var expected = new makeLong( [ 1, 4, 1 ] );
     test.is( got === dst );
     test.identical( got, expected );
 
     test.case = 'dst - not empty container, value, range[ 0 ] < 0';
-    var dst = makeDst( [ 1, 1, 1 ] );
+    var dst = new makeLong( [ 1, 1, 1 ] );
     var got = _.longFill( dst, 2, [ -2, 2 ] );
-    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : makeDst( [ 2, 2, 2, 2 ] );
-    test.is( sameIs( got, dst ) );
+    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : new makeLong( [ 2, 2, 2, 2 ] );
+    test.is( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
     test.case = 'dst - not empty container, value, range[ 1 ] > dst.length';
-    var dst = makeDst( [ 1, 1, 1 ] );
+    var dst = new makeLong( [ 1, 1, 1 ] );
     var got = _.longFill( dst, 2, [ 0, 4 ] );
-    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : makeDst( [ 2, 2, 2, 2 ] );
-    test.is( sameIs( got, dst ) );
+    var expected = _.argumentsArrayIs( dst ) ? [ 2, 2, 2, 2 ] : new makeLong( [ 2, 2, 2, 2 ] );
+    test.is( _.arrayIs( dst ) ? got === dst : got !== dst );
     test.identical( got, expected );
 
     test.case = 'dst - not empty container, value, range[ 1 ] < range[ 0 ]';
-    var dst = makeDst( [ 1, 1, 1 ] );
+    var dst = new makeLong( [ 1, 1, 1 ] );
     var got = _.longFill( dst, 2, [ 2, 1 ] );
-    var expected = makeDst( [ 1, 1, 1 ] );
+    var expected = new makeLong( [ 1, 1, 1 ] );
     test.is( got === dst );
     test.identical( got, expected );
   }
