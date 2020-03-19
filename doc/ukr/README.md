@@ -65,16 +65,16 @@
 
 <details>
   <summary><a href="./concept/Buffer.md">
-    Буфер
+    Буферні типи
   </a></summary>
-    В <code>JavaScript</code>, це спеціальний об'єкт, що призначений для зберігання та обробки необроблених бінарних даних.
+    Сутності, для зберігання та обробки бінарних даних.
 </details>
 
 <details>
   <summary><a href="./concept/TypeRange.md">
     Тип <code>Range</code>
   </a></summary>
-    <code>Range</code> - збірний тип даних - пара чисел, що задає послідовність. 
+    <code>Range</code> - збірний тип даних - пара чисел, що задає послідовність.
 </details>
 
 <details>
