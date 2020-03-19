@@ -6,10 +6,10 @@
 
 Види буферів `JavaScript`:
 
-- [`BufferRaw`]( './BufferRaw.md' ) ( `ArrayBuffer` ) - стандартний нетипізований буфер, буфер необроблених даних, що призначений не для доступу до даних через цей об'єкт напряму, а для використання із `BufferTyped` або `BufferView`.
-- [`BufferTyped`]( './BufferTyped.md' ) ( `TypedArray` ) - стандартні типізовані буфери.
-- [`BufferView`]( './BufferView.md' ) ( `DataView` ) - стандартний нетипізований буфер для доступу до даних.
-- [`BufferNode`]( './BufferNode.md' ) ( `Buffer` ) - нестандартна реалізація `NodeJS` нетипізованого буфера.
+- [`BufferRaw`](BufferRaw.md) ( `ArrayBuffer` ) - стандартний нетипізований буфер, буфер необроблених даних, що призначений не для доступу до даних через цей об'єкт напряму, а для використання із `BufferTyped` або `BufferView`.
+- [`BufferTyped`](BufferTyped.md) ( `TypedArray` ) - стандартні типізовані буфери.
+- [`BufferView`](BufferView.md) ( `DataView` ) - стандартний нетипізований буфер для доступу до даних.
+- [`BufferNode`](BufferNode.md) ( `Buffer` ) - нестандартна реалізація `NodeJS` нетипізованого буфера.
 
 ### `BufferRaw` буфери
 
