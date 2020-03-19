@@ -11781,47 +11781,75 @@ function longAllAreRepeated( test )
   /* Without evaluator */
 
   test.case = 'empty array';
-  var got = _.longAllAreRepeated( [] );
+  var src = [];
+  var got = _.longAllAreRepeated( src );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'identical numbers of array';
-  var got = _.longAllAreRepeated( [ 1, 1 ] );
+  var src = [ 1, 1 ];
+  var got = _.longAllAreRepeated( src );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'identical strings of array';
+  var src = [ 'string', 'string' ];
+  var got = _.longAllAreRepeated( src );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'single number of array';
-  var got = _.longAllAreRepeated( [ 1 ] );
+  var src = [ 1 ];
+  var got = _.longAllAreRepeated( src );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'some numbers of array are identical';
-  var got = _.longAllAreRepeated( [ 1, 2, 2 ] );
+  var src = [ 1, 2, 2 ];
+  var got = _.longAllAreRepeated( src );
   var expected = false;
-  test.identical( got, expected );
-
-  /**/
-
-  test.case = 'identical strings of array';
-  var got = _.longAllAreRepeated( [ 'string', 'string' ] );
-  var expected = true;
   test.identical( got, expected );
 
   test.case = 'some strings of array are identical';
-  var got = _.longAllAreRepeated( [ 'string', 'string', 'diff string' ] );
+  var src = [ 'string', 'string', 'diff string' ];
+  var got = _.longAllAreRepeated( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'complex data of array';
+  var src = [ 1, 2, [ 3 ], 'string', 6, 6 ];
+  var got = _.longAllAreRepeated( src );
   var expected = false;
   test.identical( got, expected );
 
   /**/
 
-  test.case = 'src - empty unroll';
+  test.case = 'unroll empty';
   var src = _.unrollMake( [] );
   var got = _.longAllAreRepeated( src );
   var expected = true;
   test.identical( got, expected );
 
+  test.case = 'unroll, identical numbers';
+  var src = _.unrollMake( [ 1, 1 ] );
+  var got = _.longAllAreRepeated( src );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll, single number';
+  var src = _.unrollMake( [ 1 ] );
+  var got = _.longAllAreRepeated( src );
+  var expected = false;
+  test.identical( got, expected );
+
   test.case = 'unroll, some numbers are identical';
   var src = _.unrollMake( [ 1, 1, 2 ] );
+  var got = _.longAllAreRepeated( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll, complex data';
+  var src = _.unrollMake( [ 1, 2, [ 3 ], 'string', 6, 6 ] );
   var got = _.longAllAreRepeated( src );
   var expected = false;
   test.identical( got, expected );
@@ -11858,9 +11886,23 @@ function longAllAreRepeated( test )
 
   /**/
 
-  test.case = 'empty unroll with evaluator';
+  test.case = 'unroll empty with evaluator';
   var evaluator = ( e ) => e;
   var src = _.unrollMake( [] );
+  var got = _.longAllAreRepeated( src, evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll, single value with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = _.unrollMake( [ { val: 1 } ] );
+  var got = _.longAllAreRepeated( src, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll, identical values with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
   var got = _.longAllAreRepeated( src, evaluator );
   var expected = true;
   test.identical( got, expected );
@@ -11881,6 +11923,20 @@ function longAllAreRepeated( test )
   var expected = true;
   test.identical( got, expected );
 
+  test.case = 'identical numbers of array with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2.val;
+  var src = [ { val: 1 }, { val: 1 } ];
+  var got = _.longAllAreRepeated( src, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'single number of array with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2;
+  var src = [ { val: 1 } ];
+  var got = _.longAllAreRepeated( src, equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
   test.case = 'some values of array are identical with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
   var src = [ { val: 1 }, { val: 1 }, 11, 3 ];
@@ -11890,11 +11946,25 @@ function longAllAreRepeated( test )
 
   /**/
 
-  test.case = 'empty unroll with equalizer';
+  test.case = 'unroll empty with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2;
   var src = _.unrollMake( [] );
   var got = _.longAllAreRepeated( src, equalizer );
   var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll, identical values with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2.val;
+  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
+  var got = _.longAllAreRepeated( src, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll, single value with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2;
+  var src = _.unrollMake( [ { val: 1 } ] );
+  var got = _.longAllAreRepeated( src, equalizer );
+  var expected = false;
   test.identical( got, expected );
 
   test.case = 'unroll, some values are identical with equalizer';
@@ -11903,6 +11973,7 @@ function longAllAreRepeated( test )
   var got = _.longAllAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
+
 
   /**/
 
@@ -11932,37 +12003,48 @@ function longAllAreRepeated( test )
 
 function longAnyAreRepeated( test )
 {
+
   /* Without evaluator */
 
   test.case = 'empty array';
-  var got = _.longAnyAreRepeated( [] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'identical numbers of array';
-  var got = _.longAnyAreRepeated( [ 1, 1 ] );
+  var src = [];
+  var got = _.longNoneAreRepeated( src );
   var expected = true;
   test.identical( got, expected );
 
+  test.case = 'identical numbers of array';
+  var src = [ 1, 1 ];
+  var got = _.longNoneAreRepeated( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'identical strings of array'
+  var src = [ 'string', 'string' ];
+  var got = _.longNoneAreRepeated( src );
+  var expected = false;
+  test.identical( got, expected );
+
   test.case = 'single number of array';
-  var got = _.longAnyAreRepeated( [ 1 ] );
+  var src = [ 1 ];
+  var got = _.longAnyAreRepeated( src );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'some numbers of array are identical';
-  var got = _.longAnyAreRepeated( [ 1, 2, 2 ] );
-  var expected = true;
-  test.identical( got, expected );
-
-  /**/
-
-  test.case = 'identical strings of array'
-  var got = _.longAnyAreRepeated( [ 'string', 'string' ] );
+  var src = [ 1, 2, 2 ];
+  var got = _.longAnyAreRepeated( src );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'some strings of array are identical';
-  var got = _.longAnyAreRepeated( [ 'string', 'string', 'diff string' ] );
+  var src = [ 'string', 'string', 'diff string' ];
+  var got = _.longAnyAreRepeated( src );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'complex data of array';
+  var src = [ 1, 2, [ 3 ], 'string', 6, 6 ];
+  var got = _.longAnyAreRepeated( src );
   var expected = true;
   test.identical( got, expected );
 
@@ -11974,8 +12056,26 @@ function longAnyAreRepeated( test )
   var expected = false;
   test.identical( got, expected );
 
+  test.case = 'unroll, identical numbers';
+  var src = _.unrollMake( [ 1, 1 ] );
+  var got = _.longAnyAreRepeated( [ 1, 1 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll, single number';
+  var src = _.unrollMake( [ 1 ] );
+  var got = _.longAnyAreRepeated( [ 1 ] );
+  var expected = false;
+  test.identical( got, expected );
+
   test.case = 'unroll, some numbers are identical';
   var src = _.unrollMake( [ 1, 1, 2 ] );
+  var got = _.longAnyAreRepeated( src );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll, complex data of array';
+  var src = _.unrollMake( [ 1, 2, [ 3 ], 'string', 6, 6 ] );
   var got = _.longAnyAreRepeated( src );
   var expected = true;
   test.identical( got, expected );
@@ -11989,18 +12089,18 @@ function longAnyAreRepeated( test )
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'single value of array with evaluator';
-  var evaluator = ( e ) => e.val;
-  var src = [ { val: 1 } ];
-  var got = _.longAnyAreRepeated( src, evaluator );
-  var expected = false;
-  test.identical( got, expected );
-
   test.case = 'identical value of array with evaluator';
   var evaluator = ( e ) => e.val;
   var src = [ { val: 1 }, { val: 1 } ];
   var got = _.longAnyAreRepeated( src, evaluator );
   var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'single value of array with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 } ];
+  var got = _.longAnyAreRepeated( src, evaluator );
+  var expected = false;
   test.identical( got, expected );
 
   test.case = 'some value of array are identical with evaluator';
@@ -12012,9 +12112,23 @@ function longAnyAreRepeated( test )
 
   /**/
 
-  test.case = 'empty unroll with evaluator';
+  test.case = 'unroll empty with evaluator';
   var evaluator = ( e ) => e.val;
   var src = _.unrollMake( [] );
+  var got = _.longAnyAreRepeated( src, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll, identical numbers with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
+  var got = _.longAnyAreRepeated( src, evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll, single number with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = _.unrollMake( [ { val: 1 } ] );
   var got = _.longAnyAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -12035,6 +12149,20 @@ function longAnyAreRepeated( test )
   var expected = false;
   test.identical( got, expected );
 
+  test.case = 'identical values of array with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2.val;
+  var src = [ { val: 1 }, { val: 1 } ];
+  var got = _.longAnyAreRepeated( src, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'single values of array with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2;
+  var src = [ { val: 1 } ];
+  var got = _.longAnyAreRepeated( src, equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
   test.case = 'some value of array are identical with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
   var src = [ { val: 1 }, { val: 1 }, 11, 3 ];
@@ -12044,10 +12172,24 @@ function longAnyAreRepeated( test )
 
   /**/
 
-  test.case = 'empty unroll with equalizer';
-  var evaluator = ( e ) => e.val;
+  test.case = 'unroll empty with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2;
   var src = _.unrollMake( [] );
-  var got = _.longAnyAreRepeated( src, evaluator );
+  var got = _.longAnyAreRepeated( src, equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll, identical numbers with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2.val;
+  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
+  var got = _.longAnyAreRepeated( src, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll, single number with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2;
+  var src = _.unrollMake( [ { val: 1 } ] );
+  var got = _.longAnyAreRepeated( src, equalizer );
   var expected = false;
   test.identical( got, expected );
 
@@ -12090,47 +12232,75 @@ function longNoneAreRepeated( test )
   /* Without evaluator */
 
   test.case = 'empty array';
-  var got = _.longNoneAreRepeated( [] );
+  var src = [];
+  var got = _.longNoneAreRepeated( src );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'identical numbers of array';
-  var got = _.longNoneAreRepeated( [ 1, 1 ] );
+  var src = [ 1, 1 ];
+  var got = _.longNoneAreRepeated( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'identical strings of array';
+  var src = [ 'string', 'string' ];
+  var got = _.longNoneAreRepeated( src );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'single number of array';
-  var got = _.longNoneAreRepeated( [ 1 ] );
+  var src = [ 1 ];
+  var got = _.longNoneAreRepeated( src );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'some numbers of array are identical';
-  var got = _.longNoneAreRepeated( [ 1, 2, 2 ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  /**/
-
-  test.case = 'identical strings of array';
-  var got = _.longNoneAreRepeated( [ 'string', 'string' ] );
+  var src = [ 1, 2, 2 ];
+  var got = _.longNoneAreRepeated( src );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'some strings of array are identical';
-  var got = _.longNoneAreRepeated( [ 'string', 'string', 'diff string' ] );
+  var src = [ 'string', 'string', 'diff string' ];
+  var got = _.longNoneAreRepeated( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'complex data of array';
+  var src = [ 1, 2, [ 3 ], 'string', 6, 6 ];
+  var got = _.longNoneAreRepeated( src );
   var expected = false;
   test.identical( got, expected );
 
   /**/
 
-  test.case = 'empty unroll';
+  test.case = 'unroll empty';
   var src = _.unrollMake( [] );
+  var got = _.longNoneAreRepeated( src );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll, identical numbers';
+  var src = _.unrollMake( [ 1, 1 ] )
+  var got = _.longNoneAreRepeated( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll, single number';
+  var src = _.unrollMake( [ 1 ] )
   var got = _.longNoneAreRepeated( src );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'unroll, some numbers are identical';
   var src = _.unrollMake( [ 1, 1, 2 ] );
+  var got = _.longNoneAreRepeated( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll, complex data';
+  var src = _.unrollMake( [ 1, 2, [ 3 ], 'string', 6, 6 ] );
   var got = _.longNoneAreRepeated( src );
   var expected = false;
   test.identical( got, expected );
@@ -12144,18 +12314,18 @@ function longNoneAreRepeated( test )
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'single value of array with evaluator';
-  var evaluator = ( e ) => e.val;
-  var src = [ { val: 1 } ];
-  var got = _.longNoneAreRepeated( src, evaluator );
-  var expected = true;
-  test.identical( got, expected );
-
   test.case = 'identical value of array with evaluator';
   var evaluator = ( e ) => e.val;
   var src = [ { val: 1 }, { val: 1 } ];
   var got = _.longNoneAreRepeated( src, evaluator );
   var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'single value of array with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 } ];
+  var got = _.longNoneAreRepeated( src, evaluator );
+  var expected = true;
   test.identical( got, expected );
 
   test.case = 'some value of array are identical with evaluator';
@@ -12167,9 +12337,23 @@ function longNoneAreRepeated( test )
 
   /**/
 
-  test.case = 'empty unroll with evaluator';
+  test.case = 'unroll empty with evaluator';
   var evaluator = ( e ) => e;
   var src = _.unrollMake( [] );
+  var got = _.longNoneAreRepeated( src, evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'identical value of array with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 }, { val: 1 } ];
+  var got = _.longNoneAreRepeated( src, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll, single value of array with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = _.unrollMake( [ { val: 1 } ] );
   var got = _.longNoneAreRepeated( src, evaluator );
   var expected = true;
   test.identical( got, expected );
@@ -12181,11 +12365,26 @@ function longNoneAreRepeated( test )
   var expected = false;
   test.identical( got, expected );
 
+
   /* With equalizer */
 
   test.case = 'empty array with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2;
   var src = [];
+  var got = _.longNoneAreRepeated( src, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'identical value of array with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2.val;
+  var src = [ { val: 1 }, { val: 1 } ];
+  var got = _.longNoneAreRepeated( src, equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'single value of array with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2;
+  var src = [ { val: 1 } ];
   var got = _.longNoneAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -12197,14 +12396,30 @@ function longNoneAreRepeated( test )
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'empty unroll with equalizer';
+  /**/
+
+  test.case = 'unroll empty  with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2;
   var src = _.unrollMake( [] );
   var got = _.longNoneAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'some value of unroll are identical with equalizer';
+  test.case = 'unroll, identical value with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2.val;
+  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
+  var got = _.longNoneAreRepeated( src, equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll, single value with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2;
+  var src = _.unrollMake( [ { val: 1 } ] );
+  var got = _.longNoneAreRepeated( src, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll, some value are identical with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
   var src = _.unrollMake( [ { val: 1 }, { val: 1 }, 11, 3 ] );
   var got = _.longNoneAreRepeated( src, equalizer );
