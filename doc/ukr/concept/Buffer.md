@@ -21,7 +21,7 @@
 
 ### `BufferView` буфери
 
-[Буфери `BufferView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView) представлені одним класом [`BufferView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView) ( `DataView` ). `BufferView` буфери можуть лише надавати представлення даних `BufferRaw` буферів. `BufferView` є платформонезалежними - для них не важливий `endianness` платформи, тобто, послідовність представлення байт в системі.
+[Буфери `BufferView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView) представлені одним класом `BufferView` ( `DataView` ). `BufferView` буфери можуть лише надавати представлення даних `BufferRaw` буферів. `BufferView` є платформонезалежними - для них не важливий `endianness` платформи, тобто, послідовність представлення байт в системі.
 
 ### `BufferNode` буфери
 
