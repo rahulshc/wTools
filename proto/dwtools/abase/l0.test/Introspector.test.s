@@ -2411,13 +2411,14 @@ var Self =
   tests :
   {
 
-    /* qqq : implement test routine for _.err | Dmytro : implemented */
+    /* aaa : implement test routine for _.err */ 
+    /* Dmytro : implemented, routines in file Err.test.s */
 
     locationFromStackFrameWithoutLocationField,
     locationFromStackFrameWithLocationField,
 
     stackBasic,
-    stack, /* qqq : extend the routine | Dmytro : extended */
+    stack, /* aaa : extend the routine */ /* Dmytro : extended */
 
     stackFilter,
 

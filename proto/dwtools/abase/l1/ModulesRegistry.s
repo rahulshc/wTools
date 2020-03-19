@@ -579,7 +579,7 @@ let wMathGeometric =
 
 let wMathConcepts =
 {
-  sourcePath : sourcePath( 'amath/l8/Concepts.ss', 'wmathconcepts' ),
+  sourcePath : sourcePath( 'amath/l8/Concepts.s', 'wmathconcepts' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.box },
 }
 
