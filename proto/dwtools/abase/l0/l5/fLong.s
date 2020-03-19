@@ -1009,21 +1009,22 @@ function longFill( src, value, range )
 
 function longDuplicate( o )
 {
-  _.assert( arguments.length === 1 || arguments.length === 2 );
+  // _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( arguments.length === 2 )
   {
     o = { src : arguments[ 0 ], numberOfDuplicatesPerElement : arguments[ 1 ] };
   }
-  else
+  else if( arguments.length === 1 )
   {
     if( !_.objectIs( o ) )
     o = { src : o };
   }
+  else _.assert( 0 );
 
   _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
   _.routineOptions( longDuplicate, o );
-  _.assert( _.longIs( o.src ), 'Уxpects o.src as longIs entity' );
+  _.assert( _.longIs( o.src ), 'Expects Long {-o.src-}' );
   _.assert( _.intIs( o.src.length / o.numberOfAtomsPerElement ) );
 
   if( o.numberOfDuplicatesPerElement === 1 )

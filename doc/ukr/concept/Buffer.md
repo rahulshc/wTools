@@ -2,11 +2,9 @@
 
 В  <code>JavaScript</code>, це спеціальний об'єкт, що призначений для зберігання та обробки бінарних даних.
 
-`JavaScript` приховує багато механізмів роботи з даними. Це полегшує роботу розробника і, одночасно з цим, підвищує ресурсоємність продукту та зменшує його швидкодію. Одним із способів підвищення ефективності роботи з даними є використання буферів. Окрім цього, буфери зручні при роботі з потоковими даними, наприклад, аудіо чи відео.
-
 Буфер можна представити рядком бінарних даних, що поміщені в оперативній пам'яті. Кожен буфер має початок, кінець та довжину.
 
-До основних типів буферів `JavaScript` належать:
+Види буферів `JavaScript`:
 - `raw` буфери, буфери необроблених даних;
 - `typed` буфери, типізовані буфери або буфери з типізованим представленням даних;
 - `node` буфери, спеціальні буфери `NodeJS`;
@@ -14,23 +12,25 @@
 
 ### `Raw` буфери
 
-`Raw` буфери надають можливість виділити фіксовану ділянку ініціалізованої пам'яті з для роботи з 'сирими' необробленими даними, але при цьому, не дозволяють безпосередньо з нею працювати. Для обробки даних в `raw` буферах використовується механізм представлення даних - перетворення їх до типу, що можна обробити, наприклад, до `view` буферу або до одного з типізованих буферів.
+`Raw` буфери надають можливість виділити фіксовану ділянку ініціалізованої пам'яті з для роботи з 'сирими' необробленими даними, але при цьому, не дозволяють безпосередньо з нею працювати. Для обробки даних в `raw` буферах використовується механізм представлення даних - перетворення їх до типу, що можна обробити. Наприклад, `raw` буфер можна перетворити до `view` буферу або до одного з типізованих буферів.
 
 `Raw` буфери є двох видів:
 
-- [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer);
-- [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer).
+- [`BufferRaw`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) ( `ArrayBuffer` );
+- [`BufferRawShared`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) ( `SharedArrayBuffer` ).
 
-Кожен з `raw` буферів, `ArrayBuffer` і `SharedArrayBuffer`, займає ділянку пам'яті з бінарними даними. Відмінність заключаються в тому, що `SharedArrayBuffer` може надати доступ до ділянки пам'яті декільком потокам (задачам в операційній системі) одночасно, а `ArrayBuffer` лише одному. При цьому і `ArrayBuffer`, i `SharedArrayBuffer` можуть мати декілька представлень в одному потоці. Зміна буферу, що проведена в одному з представлень відразу відображається в інших.
+Кожен з `raw` буферів, `BufferRaw` і `BufferRawShared`, займає визначену ділянку пам'яті.
 
 ```js
-var buffer = new ArrayBuffer( 15 );
+var raw = new BufferRaw( 15 );
 console.log( buffer.byteLength ); // returns 15
-var shared = new SharedArrayBuffer( 10 );
+var sharedRaw = new BufferRawShared( 10 );
 console.log( shared.byteLength ); // returns 10
 ```
 
-Для створення буферів `ArrayBuffer` i `SharedArrayBuffer` використовуються відповідні конструктори класу. В аргументі конструктору передається довжина буферу в байтах. Відповідно, буфер `buffer` має об'єм в 15 байт, а `shared` - 10 байт.
+Для створення буферів `BufferRaw` і `BufferRawShared` використовуються відповідні конструктори класу. В аргументі конструктору передається довжина буферу в байтах. Відповідно, буфер `raw` має об'єм в 15 байт, а `sharedRaw` - 10 байт.
+
+Відмінність між буферами `BufferRaw` і `BufferRawShared` заключаються в тому, що `BufferRawShared` може надати доступ до ділянки пам'яті декільком потокам одночасно, а `BufferRaw` лише одному. При цьому і `BufferRaw`, і `BufferRawShared` можуть мати декілька представлень в одному потоці. Зміна буферу, що проведена в одному з представлень відразу відображається в інших.
 
 ### `Typed` буфери
 
@@ -38,32 +38,32 @@ console.log( shared.byteLength ); // returns 10
 
 Перелік типізованих буферів:
 
-- `Int8Array`;
-- `Uint8Array`;
-- `Uint8ClampedArray`;
-- `Int16Array`;
-- `Uint16Array`;
-- `Int32Array`;
-- `Uint32Array`;
-- `Float32Array`;
-- `Float64Array`.
+- `I8x` ( `Int8Array` );
+- `U8x` ( `Uint8Array` );
+- `U8ClampedX` ( `Uint8ClampedArray` );
+- `I16x` ( `Int16Array` );
+- `U16x` ( `Uint16Array` );
+- `I32x`, аналогічна назва `Ix` ( `Int32Array` );
+- `U32x`, аналогічна назва `Ux` ( `Uint32Array` );
+- `F32x`, аналогічна назва `Fx` ( `Float32Array` );
+- `F64x` ( `Float64Array` ).
 
 Для створення типізованого буфера потрібно викликати конструктор відповідного класу і передати йому одну з величин: довжину буферу, дані в вигляді масиву чисел або `raw` буфер.
 
 ```js
 // length
-var int8 = new Int8Array( 20 );
+var int8 = new I8x( 20 );
 console.log( int8.length ); // returns 20
 
 // array of data
-var float32 = new Float32Array( [ 1, 2, 10 ] );
+var float32 = new F32x( [ 1, 2, 10 ] );
 console.log( float32.length ); // returns 3
 
 // raw buffer
-var raw = new ArrayBuffer( 32 );
-var view_uint8 = new Uint8Array( raw );
+var raw = new BufferRaw( 32 );
+var view_uint8 = new U8x( raw );
 console.log( view_uint8.length ); // returns 32
-var view_uint16 = new Int16Array( raw );
+var view_uint16 = new I16x( raw );
 console.log( view_uint16.length ); // returns 16
 ```
 
@@ -71,46 +71,46 @@ console.log( view_uint16.length ); // returns 16
 
 При передачі масиву з даними, конструктор створює типізований буфер рівний довжині переданого буферу. Кожен елемент масиву перетворюєтся до типу і розміру вказаного в конструкторі. Для буферу `float32` кожен елемент вхідного масиву перетворено в число з плаваючою комою довжиною чотири байти.
 
-При створенні представлення `raw` буферу з допомогою типізованого, послідовність байтів `raw` буферу ділиться на частини згідно довжини елементу типізованого буфера. Таким чином, в типізованому буфері `view_uint8` знаходиться однакова кількість байтів з буфером `raw`. А при використанні представлення в `int16` типізований буфер має вдвічі меншу довжину тому, що довжина одного елемента типу `Int16Array` складає два восьмибітних числа.
+При створенні представлення `raw` буферу з допомогою типізованого, послідовність байтів `raw` буферу ділиться на частини згідно довжини елементу типізованого буфера. Таким чином, в типізованому буфері `view_uint8` знаходиться однакова кількість байтів з буфером `raw`. А при використанні представлення в `int16` типізований буфер має вдвічі меншу довжину тому, що довжина одного елемента типу `I16x` складає два восьмибітних числа.
 
 При створенні типізованого буферу з `raw` буфера, фактично, типізованому буферу передається посилання на `raw` буфер. Копіювання `raw` буферу не проходить тому, при зміні представлення в типізованому буфері `raw` буфер змінюється також.
 
 ### `Node` буфери
 
-`Node` буфери представлені одним класом [`Buffer`](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html). Клас `Buffer` наслідує властивості від класу `Uint8Array`, а тому дані в ньому представляються в вигляді послідовності восьмибітних беззнакових чисел.
+`Node` буфери представлені одним класом [`BufferNode`](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) ( `Buffer` ). Клас `BufferNode` наслідує властивості від класу `U8x`, а тому дані в ньому представляються в вигляді послідовності восьмибітних беззнакових чисел.
 
 `Node` буфери працюють тільки в середовищі інтерпретатора `NodeJS`, а тому не можуть використовуватись в інших інтерпретаторах. Такі буфери потрібно перетворити до іншого типу.
 
-Для створення буферу використовуються методи класу `from`, `alloc`, `allocUnsafe`. Створення екземпляру класу `Buffer` з використанням `new` [не рекомендується](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html).
+Для створення буферу використовуються методи класу `from`, `alloc`, `allocUnsafe`. Створення екземпляру класу `BufferNode` з використанням `new` [не рекомендується](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html).
 
 ```js
 // length
-var buffer1 = Buffer.alloc( 5 );
+var buffer1 = BufferNode.alloc( 5 );
 console.log( buffer1 );
 // returns <Buffer 00 00 00 00 00>
 
 // length, filled element
-var buffer2 = Buffer.alloc( 5, 1 );
+var buffer2 = BufferNode.alloc( 5, 1 );
 console.log( buffer2 );
 // returns <Buffer 01 01 01 01 01>
 
 // unsafe memory allocation
-var buffer3 = Buffer.allocUnsafe( 5 );
+var buffer3 = BufferNode.allocUnsafe( 5 );
 console.log( buffer3 );
 // returns <Buffer 20 29 0a 20 20>
 
 // from array
-var buffer4 = Buffer.from( [ 1, 2, 3 ] );
+var buffer4 = BufferNode.from( [ 1, 2, 3 ] );
 console.log( buffer4 );
 // returns <Buffer 01 02 03>
 
 // from string
-var buffer5 = Buffer.from('hello, world');
+var buffer5 = BufferNode.from('hello, world');
 console.log( buffer5 );
 // returns <Buffer 68 65 6c 6c 6f 2c 20 77 6f 72 6c 64>
 
 // from string, encoding
-var buffer6 = Buffer.from('hello, world', 'base64');
+var buffer6 = BufferNode.from('hello, world', 'base64');
 console.log( buffer6 );
 //returns <Buffer 85 e9 65 a3 0a 2b 95>
 ```
@@ -121,15 +121,15 @@ console.log( buffer6 );
 
 ### `View` буфери
 
-Буфер `view` надає низькорівневий API для доступу і управління даними `raw` буферів. Буфери `view` представлені одним класом [`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView). Для створення екземпляру буфера `view` в конструктор класа  передається `raw` буфер, зміщення на кількість байтів від початку і кількість байтів для читання. При цьому, фактично передається посилання на відповідну ділянку `raw` буфера, а не створюється її копія. Тому, при зміні початкового `raw` буферу в одному з представлень, змінюється представлення у всіх екземплярах класу `DataView`, котрі використовують даний `raw` буфер.
+Буфери `view` представлені одним класом [`BufferView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView) ( `DataView` ). Для створення екземпляру буфера `view` в конструктор класа  передається `raw` буфер, зміщення на кількість байтів від початку і кількість байтів для читання. При цьому, фактично передається посилання на відповідну ділянку `raw` буфера, а не створюється її копія. Тому, при зміні початкового `raw` буферу в одному з представлень, змінюється представлення у всіх екземплярах класу `BufferView`, котрі використовують даний `raw` буфер.
 
 ```js
 // raw buffer
-var raw = new ArrayBuffer( 20 );
+var raw = new BufferRaw( 20 );
 
 // views
-var view1 = new DataView( raw );
-var view2 = new DataView( raw, 10, 9 );
+var view1 = new BufferView( raw );
+var view2 = new BufferView( raw, 10, 9 );
 
 view1.setInt8( 17, -42 );
 console.log( view1.getInt8( 17 ), view2.getInt8( 7 ) );
