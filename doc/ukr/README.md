@@ -1,4 +1,4 @@
-## Концепції
+# Концепції
 
 <details>
   <summary><a href="./concept/RoutineInput.md#Масив-аргументів">
