@@ -74,7 +74,14 @@
   <summary><a href="./concept/BufferRaw.md">
     <code>BufferRaw</code> буфери
   </a></summary>
-    Стандартні нетипізовані буфери, буфери зберігання необроблених даних.
+    Стандартні нетипізовані буфери, буфери необроблених даних.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferTyped.md">
+    <code>Typed</code> буфери
+  </a></summary>
+    Стандартні типізовані буфери, котрі представляють двійкові дані у вигляді числових форматів.
 </details>
 
 <details>
