@@ -166,9 +166,9 @@ function _bufferMake_functor( onMake )
   return function _bufferMake( src, ins )
   {
     let result;
-    
+
     /* */
-    
+
     let length = ins;
 
     if( _.longIs( length ) || _.bufferNodeIs( length ) )
@@ -184,7 +184,7 @@ function _bufferMake_functor( onMake )
     {
       if( src === null ) /* Dmytro : Do module has default buffer type? */
       {
-        length = 0; 
+        length = 0;
       }
       else if( _.longIs( src ) || _.bufferNodeIs( src ) )
       {
@@ -246,7 +246,7 @@ function _bufferMake_functor( onMake )
     minLength = 0;
 
     /* */
-        
+
     if( _.argumentsArrayIs( src ) )
     src = this.longDescriptor.make;
 
@@ -269,12 +269,12 @@ function _bufferMake_functor( onMake )
 
 /**
  * The routine bufferMake() returns a new buffer with the same type as source buffer {-src-}. New buffer fills by content of insertion buffer {-ins-}. If {-ins-} is
- * a number, the buffer fills by {-src-} content. The length of resulted buffer is equal to {-ins-}. If {-ins-} is not defined, then routine makes default Long type, 
- * length of returned container defines from {-src-}.  
+ * a number, the buffer fills by {-src-} content. The length of resulted buffer is equal to {-ins-}. If {-ins-} is not defined, then routine makes default Long type,
+ * length of returned container defines from {-src-}.
  *
  * @param { BufferAny|Long|Function|Number|Null } src - Instance of any buffer, Long or constructor, defines type of returned buffer. If {-src-} is null,
  * then routine returns instance of default Long.
- * @param { Number|Long|Buffer|Null|Undefined } ins - Defines length and content of new buffer. If {-ins-} is null or undefined, then routine makes new container 
+ * @param { Number|Long|Buffer|Null|Undefined } ins - Defines length and content of new buffer. If {-ins-} is null or undefined, then routine makes new container
  * with default Long type and fills it by {-src-} content.
  *
  * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
@@ -342,8 +342,8 @@ Dmytro : reviewed, improved, covered
 
 let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 {
-  let result; 
-  
+  let result;
+
   /* */
 
   let resultTyped;
@@ -375,13 +375,13 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 // function bufferMake( src, ins )
 // {
 //   let result, length;
-// 
+//
 //   if( _.argumentsArrayIs( src ) )
 //   src = _.arrayMake( src );
-// 
+//
 //   if( _.routineIs( src ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-// 
+//
 //   if( ins === undefined )
 //   {
 //     length = _.definedIs( src.length ) ? src.length : src.byteLength;
@@ -399,11 +399,11 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 //     length = ins;
 //     else _.assert( 0 );
 //   }
-// 
+//
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
 //   _.assert( _.routineIs( src ) || _.longIs( src ) || _.bufferAnyIs( src ), 'unknown type of array', _.strType( src ) );
-// 
+//
 //   if( _.longIs( ins ) || _.bufferAnyIs( ins ) )
 //   {
 //     if( _.routineIs( src ) )
@@ -424,7 +424,7 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 //     result = BufferNode.from( ins );
 //     else
 //     result = new src.constructor( ins );
-// 
+//
 //   }
 //   else
 //   {
@@ -435,7 +435,7 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 //     insert = new U8x( src.buffer );
 //     else
 //     insert = src;
-// 
+//
 //     let resultTyped;
 //     if( _.routineIs( src ) )
 //     resultTyped = new src( length );
@@ -447,31 +447,31 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 //     resultTyped = _.unrollMake( length );
 //     else
 //     resultTyped = new src.constructor( length );
-// 
+//
 //     result = resultTyped;
 //     if( _.bufferRawIs( result ) )
 //     resultTyped = new U8x( result );
 //     if( _.bufferViewIs( result ) )
 //     resultTyped = new U8x( result.buffer );
-// 
+//
 //     let minLen = Math.min( length, insert.length );
 //     for( let i = 0 ; i < minLen ; i++ )
 //     resultTyped[ i ] = insert[ i ];
 //   }
-// 
+//
 //   return result;
 // }
-// 
+//
 // function bufferMake( ins, src )
 // {
 //   let result, length;
-// 
+//
 //   if( _.routineIs( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-// 
+//
 //   if( _.argumentsArrayIs( ins ) )
 //   ins = [];
-// 
+//
 //   if( src === undefined )
 //   {
 //     length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
@@ -486,14 +486,14 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 //     length = src;
 //     else _.assert( 0 );
 //   }
-// 
+//
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
 //   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferRawIs( ins ), 'unknown type of array', _.strType( ins ) );
-// 
+//
 //   if( _.longIs( src ) || _.bufferAnyIs( src ) )
 //   {
-// 
+//
 //     if( ins.constructor === Array )
 //     {
 //       result = new( _.constructorJoin( ins.constructor, src ) );
@@ -507,7 +507,7 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 //     }
 //     else
 //     result = new ins.constructor( src );
-// 
+//
 //   }
 //   else
 //   {
@@ -516,7 +516,7 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 //     else
 //     result = new ins.constructor( length );
 //   }
-// 
+//
 //   return result;
 // }
 
@@ -524,11 +524,11 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 
 /**
  * The routine bufferMakeUndefined() returns a new buffer with the same type as source buffer {-src-}. The length of resulted buffer is equal to {-ins-}.
- * If {-ins-} is not defined, then routine makes default Long type, length of returned container defines from {-src-}.  
+ * If {-ins-} is not defined, then routine makes default Long type, length of returned container defines from {-src-}.
  *
  * @param { BufferAny|Long|Function|Number|Null } src - Instance of any buffer, Long or constructor, defines type of returned buffer. If {-src-} is null,
  * then routine returns instance of default Long.
- * @param { Number|Long|Buffer|Null|Undefined } ins - Defines length of new buffer. If {-ins-} is null or undefined, then routine makes new container 
+ * @param { Number|Long|Buffer|Null|Undefined } ins - Defines length of new buffer. If {-ins-} is null or undefined, then routine makes new container
  * with default Long type and length defined by {-src-}.
  *
  * Note. Default Long type defines by descriptor {-longDescriptor-}. If descriptor not provided directly, then it is Array descriptor.
@@ -591,13 +591,13 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 
 /*
 aaa : review
-Dmytro : reviewed, extended, covered 
+Dmytro : reviewed, extended, covered
 */
 
 let bufferMakeUndefined = _bufferMake_functor( function( src, ins, length, minLength )
 {
-  let result; 
-  
+  let result;
+
   if( _.routineIs( src ) )
   result = new src( length );
   else if( _.bufferNodeIs( src ) )
@@ -615,10 +615,10 @@ let bufferMakeUndefined = _bufferMake_functor( function( src, ins, length, minLe
 // function bufferMakeUndefined( ins, src )
 // {
 //   let result, length;
-// 
+//
 //   if( _.routineIs( ins ) )
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-// 
+//
 //   if( src === undefined )
 //   {
 //     length = _.definedIs( ins.length ) ? ins.length : ins.byteLength;
@@ -633,14 +633,14 @@ let bufferMakeUndefined = _bufferMake_functor( function( src, ins, length, minLe
 //     length = src;
 //     else _.assert( 0 );
 //   }
-// 
+//
 //   if( _.argumentsArrayIs( ins ) )
 //   ins = [];
-// 
+//
 //   _.assert( arguments.length === 1 || arguments.length === 2 );
 //   _.assert( _.numberIsFinite( length ) );
 //   _.assert( _.routineIs( ins ) || _.longIs( ins ) || _.bufferAnyIs( ins ), 'unknown type of array', _.strType( ins ) );
-// 
+//
 //   if( _.routineIs( ins ) )
 //   result = new ins( length );
 //   else if( _.bufferNodeIs( ins ) )
@@ -651,7 +651,7 @@ let bufferMakeUndefined = _bufferMake_functor( function( src, ins, length, minLe
 //   result = _.unrollMake( length );
 //   else
 //   result = new ins.constructor( length );
-// 
+//
 //   return result;
 // }
 //
@@ -3292,6 +3292,24 @@ let Routines =
 
   // buffersSerialize, /* deprecated */
   // buffersDeserialize, /* deprecated */
+
+/*
+
+bufferAnyIs,
+bufferBytesIs,
+constructorIsBuffer,
+
+bufferBytesGet,
+bufferRetype,
+
+bufferMove,
+bufferToStr,
+bufferToDom,
+
+bufferSplit,
+bufferCutOffLeft,
+
+*/
 
   // to replace
 

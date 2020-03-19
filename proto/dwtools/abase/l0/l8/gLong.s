@@ -579,7 +579,8 @@ function longRandom( o )
   if( o.value === null )
   o.value = [ 0, 1 ];
   if( _.numberIs( o.value ) )
-  o.value = [ o.value, o.value ]
+  o.value = [ 0, o.value ]
+  // o.value = [ o.value, o.value ]
 
   if( _.rangeIs( o.length ) )
   o.length = _.intRandom( o.length );
