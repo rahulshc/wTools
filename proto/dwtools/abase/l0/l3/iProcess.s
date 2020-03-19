@@ -14,8 +14,8 @@ function on( o )
 {
 
   o = _.event.on.pre( _.event.on, arguments );
-  o.registeredCallbackMap = _.process._eventCallbackMap;
-  _.event.on( o );
+  // o.ehandler = _.process._ehandler;
+  _.event.on( _.process._ehandler, o );
 
   return o;
 }
@@ -31,8 +31,8 @@ function off( o )
 {
 
   o = _.event.off.pre( _.event.off, arguments );
-  o.registeredCallbackMap = _.process._eventCallbackMap;
-  _.event.off( o );
+  // o.ehandler = _.process._ehandler;
+  _.event.off( _.process._ehandler, o );
 
   return o;
 }
@@ -46,12 +46,10 @@ off.defaults =
 
 function hasEventHandler( o )
 {
-
   o = _.event.hasEventHandler.pre( _.event.hasEventHandler, arguments );
-  o.registeredCallbackMap = _.process._eventCallbackMap;
-  _.event.hasEventHandler( o );
-
-  return o;
+  // o.ehandler = _.process._ehandler;
+  return _.event.hasEventHandler( _.process._ehandler, o );
+  // return o;
 }
 
 hasEventHandler.defaults =
@@ -104,15 +102,20 @@ function entryPointInfo()
 // routines
 // --
 
-let _eventCallbackMap =
+let Events =
 {
   available : [],
+}
+
+let _ehandler =
+{
+  events : Events,
 }
 
 let Extension =
 {
 
-  _eventCallbackMap,
+  _ehandler,
 
   on,
   off,

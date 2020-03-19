@@ -337,6 +337,12 @@ let wCommandsConfig =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsConfig },
 }
 
+let wStxt =
+{
+  sourcePath : sourcePath( 'amid/l1/stxt/Include.s', 'wstxtparser' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.stxt && !!_global.wTools.stxt.Parser },
+}
+
 let wFiles =
 {
   sourcePath : sourcePath( 'amid/files/UseTop.s', 'wFiles' ),
@@ -728,6 +734,7 @@ let Modules =
   wVocabulary,
   wCommandsAggregator,
   wCommandsConfig,
+  wStxt,
 
   wFiles,
   wFilesArchive,

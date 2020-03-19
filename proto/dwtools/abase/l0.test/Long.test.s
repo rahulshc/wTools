@@ -306,7 +306,7 @@ function longMakeWithArrayAndUnroll( test )
     array,
     unroll,
     longConstr,
-  ]; 
+  ];
 
   /* tests */
 
@@ -388,7 +388,7 @@ function longMakeWithArrayAndUnroll( test )
     test.case = 'ins = number, ins > src.length';
     var src = long( [ 1, 2, 3 ] );
     var got = _.longMake( src, 4 );
-    var expected = long( [ 1, 2, 3, undefined ] ) 
+    var expected = long( [ 1, 2, 3, undefined ] )
     test.identical( got, expected );
     test.is( got !== src );
     test.is( _.arrayIs( got ) );
@@ -547,7 +547,7 @@ function longMakeWithArgumentsArray( test )
   test.case = 'ins = number, ins > src.length';
   var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var got = _.longMake( src, 4 );
-  var expected = _.longDescriptor.make( [ 1, 2, 3, undefined ] ) 
+  var expected = _.longDescriptor.make( [ 1, 2, 3, undefined ] )
   test.identical( got, expected );
   test.is( got !== src );
   test.is( _.arrayIs( got ) );
@@ -684,7 +684,7 @@ function longMakeWithBufferTyped( test )
     test.case = 'ins = number, ins > src.length';
     var src = new long( [ 1, 2, 3 ] );
     var got = _.longMake( src, 4 );
-    var expected = new long( [ 1, 2, 3, 0 ] ) 
+    var expected = new long( [ 1, 2, 3, 0 ] )
     test.identical( got, expected );
     test.is( got !== src );
     test.is( _.bufferTypedIs( got ) );
@@ -743,7 +743,7 @@ function longMakeWithBufferTyped( test )
     var expected = new long( 0 );
     test.identical( got, expected );
     test.is( got !== ins );
-  } 
+  }
 }
 
 //
@@ -783,7 +783,7 @@ function longMakeWithArrayAndUnrollLongDescriptor( test )
     if( times < 1 )
     break;
     times--;
-  } 
+  }
 
   /* test subroutine */
 
@@ -856,7 +856,7 @@ function longMakeWithArrayAndUnrollLongDescriptor( test )
     test.case = 'ins = number, ins > src.length';
     var src = long( [ 1, 2, 3 ] );
     var got = descriptor.longMake( src, 4 );
-    var expected = long( [ 1, 2, 3, undefined ] ) 
+    var expected = long( [ 1, 2, 3, undefined ] )
     test.identical( got, expected );
     test.is( got !== src );
     test.is( _.arrayIs( got ) );
@@ -967,7 +967,7 @@ function longMakeWithArgumentsArrayLongDescriptor( test )
   /* - */
 
   function testRun( descriptor )
-  { 
+  {
     test.case = 'src = null, not ins';
     var got = descriptor.longMake( null );
     var expected = descriptor.longDescriptor.make( 0 );
@@ -1028,7 +1028,7 @@ function longMakeWithArgumentsArrayLongDescriptor( test )
     test.case = 'ins = number, ins > src.length';
     var src = _.argumentsArrayMake( [ 1, 2, 3 ] );
     var got = descriptor.longMake( src, 4 );
-    var expected = descriptor.longDescriptor.make( [ 1, 2, 3, undefined ] ) 
+    var expected = descriptor.longDescriptor.make( [ 1, 2, 3, undefined ] )
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -1068,7 +1068,7 @@ function longMakeWithArgumentsArrayLongDescriptor( test )
     test.identical( got, expected );
     test.is( _.bufferTypedIs(  got ) );
     test.is( got !== ins );
-  } 
+  }
 }
 
 longMakeWithArgumentsArrayLongDescriptor.timeOut = 10000;
@@ -1176,7 +1176,7 @@ function longMakeWithBufferTypedLongDescriptor( test )
     test.case = 'ins = number, ins > src.length';
     var src = new long( [ 1, 2, 3 ] );
     var got = descriptor.longMake( src, 4 );
-    var expected = new long( [ 1, 2, 3, 0 ] ) 
+    var expected = new long( [ 1, 2, 3, 0 ] )
     test.identical( got, expected );
     test.is( got !== src );
     test.is( _.bufferTypedIs( got ) );
@@ -1235,7 +1235,7 @@ function longMakeWithBufferTypedLongDescriptor( test )
     var expected = new long( 0 );
     test.identical( got, expected );
     test.is( got !== ins );
-  } 
+  }
 }
 
 longMakeWithBufferTypedLongDescriptor.timeOut = 20000;
@@ -1613,7 +1613,7 @@ function _longMakeOfLengthWithArrayAndUnroll( test )
     array,
     unroll,
     longConstr,
-  ];  
+  ];
 
   /* tests */
 
@@ -1670,7 +1670,7 @@ function _longMakeOfLengthWithArrayAndUnroll( test )
     var expected = long( 3 );
     test.identical( got, expected );
     test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name ); 
+    test.is( src.constructor.name === got.constructor.name );
 
     test.case = 'src = empty long, ins = null';
     var src = long( [] );
@@ -1968,7 +1968,7 @@ function _longMakeOfLengthWithBufferTyped( test )
     var expected = _.longDescriptor.make( 3 );
     test.identical( got, expected );
     test.is( got !== src );
-    test.is( src.constructor.name !== got.constructor.name ); 
+    test.is( src.constructor.name !== got.constructor.name );
 
     test.case = 'src = empty long, ins = null';
     var src = new long( [] );
@@ -2064,7 +2064,7 @@ function _longMakeOfLengthWithArrayAndUnrollLongDescriptor( test )
     array,
     unroll,
     longConstr,
-  ];  
+  ];
 
   /* tests */
 
@@ -2537,7 +2537,7 @@ function _longMakeOfLengthWithBufferTypedLongDescriptor( test )
     test.identical( got, expected );
     test.is( _.arrayIs( got ) );
     test.is( got !== ins );
-  } 
+  }
 }
 
 _longMakeOfLengthWithBufferTypedLongDescriptor.timeOut = 20000;
@@ -2564,7 +2564,7 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     array,
     unroll,
     longConstr,
-  ];  
+  ];
 
   /* tests */
 
@@ -2631,7 +2631,7 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     test.is( got !== src );
     /* aaa : improve this line. make it proepr + redable */
     /* Dmytro : line below not use strange subroutine */
-    test.is( src.constructor.name === got.constructor.name ); 
+    test.is( src.constructor.name === got.constructor.name );
 
     /* aaa : make sure each _.longMake, _.longFrom, _.arrayMake, _.arrayFrom test routine has the same test case */
     /* Dmytro : each test routine that accepts two arguments has this test case */
@@ -2940,7 +2940,7 @@ function longMakeUndefinedWithBufferTyped( test )
     var expected = _.longDescriptor.make( 3 );
     test.identical( got, expected );
     test.is( got !== src );
-    test.is( src.constructor.name !== got.constructor.name ); 
+    test.is( src.constructor.name !== got.constructor.name );
 
     test.case = 'src = empty long, ins = null';
     var src = new long( [] );
@@ -3046,7 +3046,7 @@ function longMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
     array,
     unroll,
     longConstr,
-  ];  
+  ];
 
   /* tests */
 
@@ -3529,7 +3529,7 @@ function longMakeUndefinedWithBufferTypedLongDescriptor( test )
     test.identical( got, expected );
     test.is( _.arrayIs( got ) );
     test.is( got !== ins );
-  } 
+  }
 }
 
 longMakeUndefinedWithBufferTypedLongDescriptor.timeOut = 20000;
@@ -3558,7 +3558,7 @@ function longMakeZeroedWithArrayAndUnroll( test )
     array,
     unroll,
     longConstr,
-  ];  
+  ];
 
   /* tests */
 
@@ -3615,7 +3615,7 @@ function longMakeZeroedWithArrayAndUnroll( test )
     var expected = long( [ 0, 0, 0 ] );
     test.identical( got, expected );
     test.is( got !== src );
-    test.is( src.constructor.name === got.constructor.name ); 
+    test.is( src.constructor.name === got.constructor.name );
 
     test.case = 'src = empty long, ins = null';
     var src = long( [] );
@@ -3913,7 +3913,7 @@ function longMakeZeroedWithBufferTyped( test )
     var expected = _.longDescriptor.make( [ 0, 0, 0 ] );
     test.identical( got, expected );
     test.is( got !== src );
-    test.is( src.constructor.name !== got.constructor.name ); 
+    test.is( src.constructor.name !== got.constructor.name );
 
     test.case = 'src = empty long, ins = null';
     var src = new long( [] );
@@ -4019,7 +4019,7 @@ function longMakeZeroedWithArrayAndUnrollLongDescriptor( test )
     array,
     unroll,
     longConstr,
-  ];  
+  ];
 
   /* tests */
 
@@ -4502,7 +4502,7 @@ function longMakeZeroedWithBufferTypedLongDescriptor( test )
     test.identical( got, expected );
     test.is( _.arrayIs( got ) );
     test.is( got !== ins );
-  } 
+  }
 }
 
 longMakeZeroedWithBufferTypedLongDescriptor.timeOut = 20000;
@@ -4524,7 +4524,7 @@ function longMakeFillingWithArrayAndUnroll( test )
     array,
     unroll,
     longConstr,
-  ];  
+  ];
 
   /* tests */
 
@@ -4801,7 +4801,7 @@ function longMakeFillingWithArrayAndUnrollLongDescriptor( test )
     array,
     unroll,
     longConstr,
-  ];  
+  ];
 
   /* tests */
 
@@ -4821,7 +4821,7 @@ function longMakeFillingWithArrayAndUnrollLongDescriptor( test )
     if( times < 1 )
     break;
     times--;
-  } 
+  }
 
   /* test subroutine */
 
@@ -4936,11 +4936,11 @@ function longMakeFillingWithArgumentsArrayLongDescriptor( test )
     if( times < 1 )
     break;
     times--;
-  } 
+  }
 
   /* test subroutine */
 
-  function testRun( descriptor ) 
+  function testRun( descriptor )
   {
     test.case = 'value - null, length - number';
     var got = descriptor.longMakeFilling( null, 5 );
@@ -5034,7 +5034,7 @@ function longMakeFillingWithBufferTypedLongDescriptor( test )
     if( times < 1 )
     break;
     times--;
-  } 
+  }
 
   /* test subroutine */
 
@@ -5108,7 +5108,7 @@ longMakeFillingWithBufferTypedLongDescriptor.timeOut = 15000;
 
 //
 
-function longFrom( test ) 
+function longFrom( test )
 {
   test.case = 'null';
   var src = null;
@@ -5209,7 +5209,7 @@ function longFrom( test )
 
 //
 
-function longFromLongDescriptor( test ) 
+function longFromLongDescriptor( test )
 {
   let times = 4;
   for( let e in _.LongDescriptors )
@@ -5342,7 +5342,7 @@ function longFromLongDescriptor( test )
 
 //
 
-function longFromCoercing( test ) 
+function longFromCoercing( test )
 {
   test.case = 'string without number literals';
   var src = 'a b c';
@@ -5491,7 +5491,7 @@ function longFromCoercing( test )
 
 //
 
-function longFromCoercingLongDescriptor( test ) 
+function longFromCoercingLongDescriptor( test )
 {
   let times = 4;
   for( let e in _.LongDescriptors )
@@ -5500,7 +5500,7 @@ function longFromCoercingLongDescriptor( test )
     if( name === 'ArgumentsArray' )
     continue;
     let descriptor = _.withDefaultLong[ name ];
-    
+
     test.open( `descriptor - ${ name }` );
     testRun( descriptor );
     test.close( `descriptor - ${ name }` );
@@ -5555,7 +5555,7 @@ function longFromCoercingLongDescriptor( test )
     var exp = descriptor.longDescriptor.make( [] );
     test.identical( got, exp );
     test.is( got instanceof descriptor.longDescriptor.type );
- 
+
     test.case = 'filled map';
     var src = Object.create( null );
     src.a = 1;
@@ -5675,13 +5675,13 @@ function longFromCoercingLongDescriptor( test )
       test.shouldThrowErrorSync( () => descriptor.longFromCoercing( undefined ) );
       test.shouldThrowErrorSync( () => descriptor.longFromCoercing( 2 ) );
       test.shouldThrowErrorSync( () => descriptor.longFromCoercing( new Set() ) );
-    } 
+    }
   }
 }
 
 //
 
-function longFromCoercingArgumentsArrayLongDescriptor( test ) 
+function longFromCoercingArgumentsArrayLongDescriptor( test )
 {
   let descriptor = _.withDefaultLong.ArgumentsArray;
 
@@ -15491,6 +15491,15 @@ function longCountUnique( test )
 
 //
 
+function experiment( test )
+{
+
+}
+
+experiment.experimental = 1;
+
+//
+
 function loggerProblemExperiment( test )
 {
 
@@ -15673,6 +15682,7 @@ var Self =
     //
     // // longSum,
 
+    experiment,
     loggerProblemExperiment,
 
   }
