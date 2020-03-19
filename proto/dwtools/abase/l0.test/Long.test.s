@@ -11846,6 +11846,50 @@ function longAllAreRepeated( test )
   var expected = false;
   test.identical( got, expected );
 
+  /* with evaluator, equalizer */
+
+  test.case = 'empty array with evaluator';
+  var evaluator = ( e ) => e;
+  var src = [];
+  var got = _.longAllAreRepeated( src, evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'empty array with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2;
+  var src = [];
+  var got = _.longAllAreRepeated( src, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'single value of array with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 } ];
+  var got = _.longAllAreRepeated( src, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'identical values of array with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 }, { val: 1 } ];
+  var got = _.longAllAreRepeated( src, evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'some values of array are identical with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 }, { val: 1 }, { val: 3 } ];
+  var got = _.longAllAreRepeated( src, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'some values of array are identical with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2.val;
+  var src = [ { val: 1 }, { val: 1 }, 11, 3 ];
+  var got = _.longAllAreRepeated( src, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
   /**/
 
   if( !Config.debug )
@@ -11855,11 +11899,19 @@ function longAllAreRepeated( test )
   test.shouldThrowErrorSync( () => _.longAllAreRepeated( 'wrong argument' ) );
   test.shouldThrowErrorSync( () => _.longAllAreRepeated( undefined ) );
   test.shouldThrowErrorSync( () => _.longAllAreRepeated( {} ) );
-  test.shouldThrowErrorSync( () => _.longAllAreRepeated( 1, 1 ) );
+  test.shouldThrowErrorSync( () => _.longAllAreRepeated( 1 ) );
+
+  test.case = 'onEvalueate is not a routine';
   test.shouldThrowErrorSync( () => _.longAllAreRepeated( [ 1, 1 ], 'wrong' ) );
 
-  test.case = 'without argument';
+  test.case = 'single onEvalueate argument';
+  test.shouldThrowErrorSync( () => _.longAllAreRepeated( ( e ) => e ) );
+
+  test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.longAllAreRepeated() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longAllAreRepeated( [ 1, 1 ], ( e ) => e, 'extra' ) );
 }
 
 //
@@ -11899,6 +11951,50 @@ function longAnyAreRepeated( test )
   var expected = true;
   test.identical( got, expected );
 
+  /* with evaluator, equalizer */
+
+  test.case = 'empty array with evaluator';
+  var evaluator = ( e ) => e;
+  var src = [];
+  var got = _.longAnyAreRepeated( src, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'empty array with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2;
+  var src = [];
+  var got = _.longAnyAreRepeated( src, equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'single value of array with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 } ];
+  var got = _.longAnyAreRepeated( src, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'identical value of array with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 }, { val: 1 } ];
+  var got = _.longAnyAreRepeated( src, evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'some value of array are identical with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 }, { val: 1 }, { val:3 } ];
+  var got = _.longAnyAreRepeated( src, evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'some value of array are identical with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2.val;
+  var src = [ { val: 1 }, { val: 1 }, 11, 3 ];
+  var got = _.longAnyAreRepeated( src, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
   /**/
 
   if( !Config.debug )
@@ -11908,17 +12004,26 @@ function longAnyAreRepeated( test )
   test.shouldThrowErrorSync( () => _.longAnyAreRepeated( 'wrong argument' ) );
   test.shouldThrowErrorSync( () => _.longAnyAreRepeated( undefined ) );
   test.shouldThrowErrorSync( () => _.longAnyAreRepeated( {} ) );
-  test.shouldThrowErrorSync( () => _.longAnyAreRepeated( 1, 1, 2 ) );
+  test.shouldThrowErrorSync( () => _.longAnyAreRepeated( 1 ) );
+
+  test.case = 'onEvalueate is not a routine';
   test.shouldThrowErrorSync( () => _.longAnyAreRepeated( [ 1, 1, 2 ], 'wrong' ) );
 
-  test.case = 'without argument';
+  test.case = 'single onEvalueate argument';
+  test.shouldThrowErrorSync( () => _.longAnyAreRepeated( ( e ) => e ) );
+
+  test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.longAnyAreRepeated() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longAnyAreRepeated( [ 1, 1, 2 ], ( e ) => e, 'extra' ) )
 }
 
 //
 
 function longNoneAreRepeated( test )
 {
+
   test.case = 'empty array';
   var got = _.longNoneAreRepeated( [] );
   var expected = true;
@@ -11951,6 +12056,50 @@ function longNoneAreRepeated( test )
   var expected = false;
   test.identical( got, expected );
 
+  /* with evaluator, equalizer */
+
+  test.case = 'empty array with evaluator';
+  var evaluator = ( e ) => e;
+  var src = [];
+  var got = _.longNoneAreRepeated( src, evaluator );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'empty array with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2;
+  var src = [];
+  var got = _.longNoneAreRepeated( src, equalizer );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'single value of array with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 } ];
+  var got = _.longAllAreRepeated( src, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'identical value of array with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 }, { val: 1 } ];
+  var got = _.longNoneAreRepeated( src, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'some value of array are identical with evaluator';
+  var evaluator = ( e ) => e.val;
+  var src = [ { val: 1 }, { val: 1 }, { val:3 } ];
+  var got = _.longNoneAreRepeated( src, evaluator );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'some value of array are identical with equalizer';
+  var equalizer = ( e1, e2 ) => e1.val === e2.val;
+  var src = [ { val: 1 }, { val: 1 }, 11, 3 ];
+  var got = _.longNoneAreRepeated( src, equalizer );
+  var expected = false;
+  test.identical( got, expected );
+
   /**/
 
   if( !Config.debug )
@@ -11960,11 +12109,19 @@ function longNoneAreRepeated( test )
   test.shouldThrowErrorSync( () => _.longNoneAreRepeated( 'wrong argument' ) );
   test.shouldThrowErrorSync( () => _.longNoneAreRepeated( undefined ) );
   test.shouldThrowErrorSync( () => _.longNoneAreRepeated( {} ) );
-  test.shouldThrowErrorSync( () => _.longNoneAreRepeated( 1, 2 ) );
+  test.shouldThrowErrorSync( () => _.longNoneAreRepeated( 1 ) );
+
+  test.case = 'onEvalueate is not a routine';
   test.shouldThrowErrorSync( () => _.longNoneAreRepeated( [ 1, 2 ], 'wrong' ) );
+
+  test.case = 'single onEvalueate argument';
+  test.shouldThrowErrorSync( () => _.longNoneAreRepeated( ( e ) => e ) );
 
   test.case = 'without argument';
   test.shouldThrowErrorSync( () => _.longNoneAreRepeated() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longNoneAreRepeated( [ 1, 2 ], ( e ) => e, 'extra' ) );
 }
 
 //
