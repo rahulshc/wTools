@@ -71,6 +71,13 @@
 </details>
 
 <details>
+  <summary><a href="./concept/BufferRaw.md">
+    <code>BufferRaw</code> буфери
+  </a></summary>
+    Стандартні нетипізовані буфери, буфери зберігання необроблених даних.
+</details>
+
+<details>
   <summary><a href="./concept/TypeRange.md">
     Тип <code>Range</code>
   </a></summary>
