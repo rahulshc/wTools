@@ -13,19 +13,19 @@
 
 ### `BufferRaw` буфери
 
-[`BufferRaw` буфери](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) надають можливість виділити фіксовану ділянку ініціалізованої пам'яті, але при цьому, не дають безпосереднього доступу до даних. Для обробки даних що знаходяться в `BufferRaw` буфері використовується механізм представлення даних - через об'єкт чи ряд об'єктів типу `BufferTyped` чи типу `BufferView`. Наприклад, `BufferRaw` буфер можна перетворити до `BufferView` буферу або до одного з типізованих буферів.
+[`BufferRaw` буфери](BufferRaw.md) надають можливість виділити фіксовану ділянку ініціалізованої пам'яті, але при цьому, не дають безпосереднього доступу до даних. Для обробки даних що знаходяться в екземплярі типа `BufferRaw` використовується механізм представлення даних - через об'єкт чи ряд об'єктів типу `BufferTyped` чи типу `BufferView`. Наприклад, `BufferRaw` буфер можна перетворити до `BufferView` буферу або до одного з типізованих буферів.
 
 ### `BufferTyped` буфери
 
-[Типізовані буфери](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) - тип буфера, що представляє бінарні дані у вигляді загальноприйнятих числових форматів таких як  `Int8`, `Uint32`, `Float64` та інших. Типізовані буфери можуть створюватись як незалежні об'єкти, а також використовуватись для представлення даних в `BufferRaw` буфері.
+[Типізовані буфери](BufferTyped.md) - тип буфера, що представляє бінарні дані у вигляді загальноприйнятих числових форматів таких як  `Int8`, `Uint32`, `Float64` та інших. Типізовані буфери можуть створюватись як незалежні об'єкти, а також використовуватись для представлення даних в `BufferRaw` буфері.
 
 ### `BufferView` буфери
 
-[Буфери `BufferView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView) представлені одним класом `BufferView` ( `DataView` ). `BufferView` буфери можуть лише надавати представлення даних `BufferRaw` буферів. `BufferView` є платформонезалежними - для них не важливий `endianness` платформи, тобто, послідовність представлення байт в системі.
+[Буфери `BufferView`](BufferView.md) представлені одним класом `BufferView` ( `DataView` ). `BufferView` буфери можуть лише надавати представлення даних `BufferRaw` буферів. `BufferView` є платформонезалежними - для них не важливий `endianness` платформи, тобто, послідовність представлення байт в системі.
 
 ### `BufferNode` буфери
 
-[`BufferNode` буфери](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) представлені одним класом `BufferNode` ( `Buffer` ). Клас `BufferNode` існує лише в середовищі інтерпретатора `NodeJS`, він наслідує властивості від буферу класу [`U8x`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) типу `BufferTyped`, а тому дані в ньому представляються в вигляді послідовності восьмибітних беззнакових чисел.
+[`BufferNode` буфери](BufferNode.md) представлені одним класом `BufferNode` ( `Buffer` ). Клас `BufferNode` існує лише в середовищі інтерпретатора `NodeJS`, він наслідує властивості від буферу класу [`U8x`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) типу `BufferTyped`, а тому дані в ньому представляються в вигляді послідовності восьмибітних беззнакових чисел.
 
 ### Підсумок
 
