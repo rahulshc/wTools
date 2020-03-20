@@ -592,6 +592,10 @@ function entityFilterDeep( src, onEach )
 
 //
 
+/*
+qqq2 : poor coverage and implementation was wrong!
+*/
+
 function _entityIndex_functor( fop )
 {
 
@@ -663,28 +667,30 @@ function _entityIndex_functor( fop )
 
     /* */
 
-    function extend( res, val )
+    function extend( ext, val )
     {
-      if( res === undefined )
+      if( ext === undefined )
       return;
 
-      // if( _.unrollIs( res ) )
-      // debugger;
-      if( _.unrollIs( res ) )
-      return res.forEach( ( res ) => extend( res, val ) );
+      if( _.unrollIs( ext ) )
+      return ext.forEach( ( ext ) => extend( ext, val ) );
 
       if( extendRoutine === null )
       {
-        // if( res !== undefined ) // Dmytro : it's unnecessary condition, see 10 lines above
-        result[ res ] = val;
+        // if( ext !== undefined ) // Dmytro : it's unnecessary condition, see 10 lines above
+        result[ ext ] = val;
       }
       else
       {
-        if( _.mapLike( res ) )
-        extendRoutine( result, res );
-        // else if( res !== undefined ) // Dmytro : it's unnecessary condition, see 16 lines above
-        else
-        result[ res ] = val;
+        if( !_.mapLike( ext ) )
+        {
+          _.assert( _.primitiveIs( ext ) );
+          ext = { [ ext ] : val }
+        }
+        extendRoutine( result, ext );
+        // // else if( ext !== undefined ) // Dmytro : it's unnecessary condition, see 16 lines above
+        // else
+        // result[ ext ] = val;
       }
 
     }

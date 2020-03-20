@@ -3309,6 +3309,12 @@ bufferToDom,
 bufferSplit,
 bufferCutOffLeft,
 
+strIsolate : _.routineFromPreAndBody( strIsolate_pre, strIsolate_body ),
+strIsolateLeftOrNone : _.routineFromPreAndBody( strIsolate_pre, strIsolateLeftOrNone_body ),
+strIsolateLeftOrAll : _.routineFromPreAndBody( strIsolate_pre, strIsolateLeftOrAll_body ),
+strIsolateRightOrNone : _.routineFromPreAndBody( strIsolate_pre, strIsolateRightOrNone_body ),
+strIsolateRightOrAll : _.routineFromPreAndBody( strIsolate_pre, strIsolateRightOrAll_body ),
+
 */
 
   // to replace
