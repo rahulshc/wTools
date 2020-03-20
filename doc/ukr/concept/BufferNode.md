@@ -2,15 +2,15 @@
 
 Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера.
 
-[`BufferNode` буфери](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) представлені одним класом `BufferNode` ( `Buffer` ). Клас `BufferNode` наслідує властивості від класу [`U8x`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) типу [`BufferTyped`](BufferTyped.md), а тому дані в ньому представляються в вигляді послідовності восьмибітних беззнакових чисел.
+[Тип `BufferNode`](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) представлений одним класом `BufferNode` ( `Buffer` ). Клас `BufferNode` наслідує властивості від класу [`U8x`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) типу [`BufferTyped`](BufferTyped.md), а тому дані в ньому представляються в вигляді послідовності восьмибітних беззнакових чисел.
 
-`BufferNode` буфери працюють тільки в середовищі інтерпретатора `NodeJS`, а тому не можуть використовуватись в інших інтерпретаторах. Такі буфери потрібно перетворити до іншого типу.
+Тип `BufferNode` розроблений для середовища інтерпретатора `NodeJS`, а тому не може використовуватись в інших інтерпретаторах. Для використання в інших інтерпретаторах `BufferNode` потрібно перетворити до іншого типу.
 
-Через недоліки в реалізації `BufferNode` буферів в модулі `Tools` їх використання обмежене.
+Через недоліки в реалізації буферів типу `BufferNode` в модулі `Tools` їх використання обмежене.
 
 ### Приклади
 
-Для створення буферу використовуються методи `from`, `alloc`, `allocUnsafe`. Створення екземпляру класу `BufferNode` з використанням `new` [не рекомендується](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html).
+Для створення екземпляру буферу використовуються методи `from`, `alloc`, `allocUnsafe`. Створення екземпляру класу `BufferNode` з використанням `new` [не рекомендується](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html).
 
 ```js
 var buffer = BufferNode.alloc( 5 );
