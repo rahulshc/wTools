@@ -72,28 +72,28 @@
 
 <details>
   <summary><a href="./concept/BufferRaw.md">
-    <code>BufferRaw</code> буфери
+    Тип <code>BufferRaw</code>
   </a></summary>
-    Стандартні нетипізовані буфери, буфери необроблених даних.
+    Стандартний нетипізований буфер, буфер необроблених даних, що призначений не для доступу до даних через цей об'єкт напряму, а для використання іншими буферами, як контейнера даних.
 </details>
 
 <details>
   <summary><a href="./concept/BufferTyped.md">
-    <code>BufferTyped</code> буфери
+    Тип <code>BufferTyped</code>
   </a></summary>
     Стандартні типізовані буфери, котрі представляють двійкові дані у вигляді числових форматів.
 </details>
 
 <details>
   <summary><a href="./concept/BufferView.md">
-    <code>BufferView</code> буфери
+    Тип <code>BufferView</code>
   </a></summary>
     Cтандартні нетипізовані буфери для доступу до даних.
 </details>
 
 <details>
   <summary><a href="./concept/BufferNode.md">
-    <code>BufferNode</code> буфери
+    Тип <code>BufferNode</code>
   </a></summary>
     Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера.
 </details>
