@@ -1,4 +1,4 @@
-## Концепції
+# Концепції
 
 <details>
   <summary><a href="./concept/RoutineInput.md#Масив-аргументів">
@@ -68,6 +68,34 @@
     Буферні типи
   </a></summary>
     Сутності, для зберігання та обробки бінарних даних.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferRaw.md">
+    <code>BufferRaw</code> буфери
+  </a></summary>
+    Стандартні нетипізовані буфери, буфери необроблених даних.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferTyped.md">
+    <code>BufferTyped</code> буфери
+  </a></summary>
+    Стандартні типізовані буфери, котрі представляють двійкові дані у вигляді числових форматів.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferView.md">
+    <code>BufferView</code> буфери
+  </a></summary>
+    Cтандартні нетипізовані буфери для доступу до даних.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferNode.md">
+    <code>BufferNode</code> буфери
+  </a></summary>
+    Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера.
 </details>
 
 <details>
