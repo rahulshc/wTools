@@ -1400,8 +1400,12 @@ function longFromCoercing( src )
  */
 
 /* qqq2 : review. ask */
-/* qqq2 : implement bufferRepresent_ */
-/* qqq2 : implement longRepresent_ */
+/* qqq2 : implement bufferRepresent_( any buffer )
+should return undefined if cant create representation
+let representation = _.bufferRepresent_( src );
+representation[ 4 ] = x; // src changed too
+*/
+/* qqq2 : implement longRepresent_( src, crange ~ [ first, last ] ) */
 
 function longRepresent( src, begin, end )
 {

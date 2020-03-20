@@ -88,7 +88,7 @@
   <summary><a href="./concept/BufferView.md">
     Тип <code>BufferView</code>
   </a></summary>
-    Cтандартні нетипізовані буфери для доступу до даних.
+    Cтандартний нетипізований буфери для динамічного типізування даних `BufferRaw`.
 </details>
 
 <details>
