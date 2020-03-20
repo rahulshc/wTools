@@ -608,12 +608,12 @@ function bufferMakeWithBuffers( test )
   var typedList =
   [
     I8x,
-    // U16x,
-    // F32x,
-    // F64x,
+    U16x,
+    F32x,
+    F64x,
   ];
-  // var list = [ bufferRaw, bufferView ]; // xxx
-  var list = [];
+  var list = [ bufferRaw, bufferView ];
+  // var list = []; // xxx
 
   for( let i = 0; i < typedList.length; i++ )
   list.push( bufferTyped( typedList[ i ] ) );
