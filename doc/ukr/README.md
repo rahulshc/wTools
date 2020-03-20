@@ -79,9 +79,16 @@
 
 <details>
   <summary><a href="./concept/BufferTyped.md">
-    <code>Typed</code> буфери
+    <code>BufferTyped</code> буфери
   </a></summary>
     Стандартні типізовані буфери, котрі представляють двійкові дані у вигляді числових форматів.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferView.md">
+    <code>BufferView</code> буфери
+  </a></summary>
+    Cтандартні нетипізовані буфери для доступу до даних.
 </details>
 
 <details>
