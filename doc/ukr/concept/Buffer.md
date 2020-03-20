@@ -25,7 +25,7 @@
 
 ### `BufferNode` буфери
 
-`BufferNode` буфери представлені одним класом [`BufferNode`](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) ( `Buffer` ). Клас `BufferNode` існує лише в середовищі інтерпретатора `NodeJS`, він наслідує властивості від буферу класу [`U8x`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) типу `BufferTyped`, а тому дані в ньому представляються в вигляді послідовності восьмибітних беззнакових чисел.
+[`BufferNode` буфери](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) представлені одним класом `BufferNode` ( `Buffer` ). Клас `BufferNode` існує лише в середовищі інтерпретатора `NodeJS`, він наслідує властивості від буферу класу [`U8x`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) типу `BufferTyped`, а тому дані в ньому представляються в вигляді послідовності восьмибітних беззнакових чисел.
 
 ### Підсумок
 

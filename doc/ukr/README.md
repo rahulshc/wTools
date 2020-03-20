@@ -92,6 +92,13 @@
 </details>
 
 <details>
+  <summary><a href="./concept/BufferNode.md">
+    <code>BufferNode</code> буфери
+  </a></summary>
+    Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера.
+</details>
+
+<details>
   <summary><a href="./concept/TypeRange.md">
     Тип <code>Range</code>
   </a></summary>
