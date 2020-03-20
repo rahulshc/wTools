@@ -1,4 +1,4 @@
-# <code>BufferView</code> буфери
+# Тип <code>BufferView</code>
 
 Cтандартні нетипізовані буфери для доступу до даних.
 

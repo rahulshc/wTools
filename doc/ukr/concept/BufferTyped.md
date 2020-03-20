@@ -1,4 +1,4 @@
-# <code>BufferTyped</code> буфери
+# Тип <code>BufferTyped</code>
 
 Стандартні типізовані буфери.
 
