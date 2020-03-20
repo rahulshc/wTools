@@ -1399,7 +1399,11 @@ function longFromCoercing( src )
  * @memberof wTools
  */
 
-function longRepresent( src, begin, end ) /* qqq2 : review. ask */
+/* qqq2 : review. ask */
+/* qqq2 : implement bufferRepresent_ */
+/* qqq2 : implement longRepresent_ */
+
+function longRepresent( src, begin, end )
 {
 
   _.assert( arguments.length <= 3 );

@@ -207,7 +207,7 @@ let Routines =
   lengthOf : entityLength,
 
   uncountableSize,
-  entitySize, 
+  entitySize,
   sizeOf : entitySize,
 
 }
