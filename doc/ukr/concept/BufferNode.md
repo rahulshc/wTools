@@ -1,12 +1,8 @@
 # Тип <code>BufferNode</code>
 
-Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера.
+Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера з вбудованою можливістю доступу до них.
 
-[Тип `BufferNode`](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) представлений одним класом `BufferNode` ( `Buffer` ). Клас `BufferNode` наслідує властивості від класу [`U8x`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) типу [`BufferTyped`](BufferTyped.md), а тому дані в ньому представляються в вигляді послідовності восьмибітних беззнакових чисел.
-
-Тип `BufferNode` розроблений для середовища інтерпретатора `NodeJS`, а тому не може використовуватись в інших інтерпретаторах. Для використання в інших інтерпретаторах `BufferNode` потрібно перетворити до іншого типу.
-
-Через недоліки в реалізації буферів типу `BufferNode` в модулі `Tools` їх використання обмежене.
+[Тип `BufferNode`](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) представлений одним класом `BufferNode` ( `Buffer` ). Клас `BufferNode` існує лише в середовищі інтерпретатора `NodeJS`. Так як тип `BufferNode` розроблений для середовища інтерпретатора `NodeJS` і є не сатндартним то його використання не є обмеженим.
 
 ### Приклади
 
@@ -44,7 +40,7 @@ console.log( buffer );
 Метод `from` може приймати значення у вигляді [`Long`](TypeIndexed.md)-у. Вихідний буфер матиме довжину рівну довжині переданого `Long`-у.
 
 ```js
-var buffer = BufferNode.from('hello, world');
+var buffer = BufferNode.from( 'hello, world' );
 console.log( buffer );
 // returns <Buffer 68 65 6c 6c 6f 2c 20 77 6f 72 6c 64>
 ```
@@ -52,7 +48,7 @@ console.log( buffer );
 Якщо в метод `from` передати рядок, він буде зконвертований у буфер. Кожен знак в рядку конвертується в відповідний байт буферу з кодуванням `ASCII`.
 
 ```js
-var buffer = BufferNode.from('hello, world', 'base64');
+var buffer = BufferNode.from( 'hello, world', 'base64' );
 console.log( buffer );
 //returns <Buffer 85 e9 65 a3 0a 2b 95>
 ```
@@ -61,7 +57,10 @@ console.log( buffer );
 
 ### Підсумок
 
-- `BufferNode` буфери, це реалізація нетипізованого буферу в середовищі інтерпретатора `NodeJS`.
-- `BufferNode` буфери потребують перетворення для використання в інших інтерпретаторах.
+- Тип `BufferNode` реалізує динамічну типізацію.
+- Екземпляр типу `BufferNode` володіє даними.
+- Тип `BufferNode` поєднує в одному класі й контейнер даних, й представлення.
+- Тип `BufferNode` не є стандатрним.
+- Тип `BufferNode` має недоліки.
 
 [Повернутись до змісту](../README.md#Концепції)

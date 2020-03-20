@@ -95,7 +95,7 @@
   <summary><a href="./concept/BufferNode.md">
     Тип <code>BufferNode</code>
   </a></summary>
-    Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера.
+    Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера з вбудованою можливістю доступу до них.
 </details>
 
 <details>
