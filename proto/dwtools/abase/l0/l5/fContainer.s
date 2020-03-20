@@ -284,23 +284,12 @@ function elementGet( container, key, type )
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
 
-  // container = _.entity.elementGet( container, key );
-
   if( type !== false )
   {
     type = _.container.typeOf( container );
     if( type && type._elementGet )
     return type._elementGet( container, key );
   }
-
-  // if( _.setIs( it.src ) )
-  // e = [ ... it.src ][ k ];
-  // else if( _.hashMapIs( it.src ) )
-  // e = it.src.get( k );
-  // else if( it.src )
-  // e = it.src[ k ];
-  // else
-  // e = undefined;
 
   if( container )
   {
@@ -313,19 +302,8 @@ function elementGet( container, key, type )
     {
       return [ ... container ][ key ];
     }
-    // else if( _.setIs( container ) )
-    // {
-    //   debugger; xxx
-    //   if( container.has( it.src ) )
-    //   container = it.src;
-    //   else if( _.containerIs( it.src ) )
-    //   container = undefined;
-    //   else
-    //   container = undefined;
-    // }
     else
     {
-      // _.assert( !_.setLike( container ), 'not implemented' );
       return container[ key ];
     }
   }
@@ -354,16 +332,6 @@ function elementSet( container, key, value )
       container.set( key, value );
       return value;
     }
-    // else if( _.setIs( container ) )
-    // {
-    //   debugger; xxx
-    //   if( container.has( it.src ) )
-    //   container = it.src;
-    //   else if( _.containerIs( it.src ) )
-    //   container = undefined;
-    //   else
-    //   container = undefined;
-    // }
     else
     {
       _.assert( !_.setLike( container ), 'not implemented' );
@@ -388,6 +356,7 @@ let knownTypeFields =
   _elementSet : null,
   _elementGet : null,
   _is : null,
+  _identicalTypes : null, /* qqq : cover please. ask how */
   _while : null,
 }
 
@@ -395,11 +364,6 @@ let knownTypeFields =
 // extension
 // --
 
-// let types;
-// if( _realGlobal_.wTools && _realGlobal_.wTools.container && _realGlobal_.wTools.container.types )
-// types = _realGlobal_.wTools.container.types;
-// else
-// types = Object.create( null );
 let types = _realGlobal_.wTools.container.types;
 
 let Extension =
@@ -426,13 +390,6 @@ let Extension =
 
 _.mapSupplement( Self, Extension );
 _.container.types = types;
-
-// if( !_realGlobal_.wTools )
-// _realGlobal_.wTools = Object.create( null );
-// if( !_realGlobal_.wTools.container )
-// _realGlobal_.wTools.container = Object.create( null );
-// _.assert( _realGlobal_.wTools.container.types === undefined || _realGlobal_.wTools.container.types === types );
-// _realGlobal_.wTools.container.types = types;
 
 // --
 // export

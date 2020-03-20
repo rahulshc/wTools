@@ -608,11 +608,12 @@ function bufferMakeWithBuffers( test )
   var typedList =
   [
     I8x,
-    U16x,
-    F32x,
-    F64x,
+    // U16x,
+    // F32x,
+    // F64x,
   ];
-  var list = [ bufferRaw, bufferView ];
+  // var list = [ bufferRaw, bufferView ]; // xxx
+  var list = [];
 
   for( let i = 0; i < typedList.length; i++ )
   list.push( bufferTyped( typedList[ i ] ) );
@@ -632,13 +633,17 @@ function bufferMakeWithBuffers( test )
 
   function testRun( makeBuffer )
   {
+
     test.case = 'src - empty buffer, not ins';
     var src = makeBuffer( [] );
+    debugger;
     var got = _.bufferMake( src );
+    debugger;
     var expected = _.longDescriptor.make( [] );
     test.identical( got, expected );
     test.is( got !== src );
-    test.is( got instanceof makeBuffer.constructor )
+    test.is( got instanceof makeBuffer.constructor );
+    debugger;
 
     test.case = 'src - empty buffer, ins - null';
     var src = makeBuffer( [] );
