@@ -23,6 +23,38 @@ let Self = _global_.wTools;
 
 //
 
+function bigIntFrom( src )
+{
+  if( _.numberIs( src ) )
+  return BigInt( src );
+  _.assert( _.bigIntIs( src ), 'Cant convert' )
+  return src;
+}
+
+//
+
+function bigIntsFrom( src )
+{
+  if( _.numberIs( src ) )
+  {
+    return BigInt( src );
+  }
+  else if( _.bigIntIs( src ) )
+  {
+    return src;
+  }
+  else if( _.longIs( src ) )
+  {
+    let result = [];
+    for( let i = 0 ; i < src.length ; i++ )
+    result[ i ] = _.bigIntFrom( src[ i ] );
+    return result
+  }
+  else _.assert( 0, 'Cant convert' );
+}
+
+//
+
 function numberClamp( src, low, high )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
@@ -62,6 +94,9 @@ zzz : review and merge with similar routines _.range.*
 
 let Extension =
 {
+
+  bigIntFrom,
+  bigIntsFrom,
 
   // numberInRange,
   numberClamp,

@@ -78,7 +78,7 @@ function strUnquote( o )
   }
 
   let result = o.src;
-  let isolated = _.strIsolateInsideLeft( result, o.quote );
+  let isolated = _.strIsolateInside( result, o.quote );
   if( isolated[ 0 ] === '' && isolated[ 4 ] === '' )
   result = isolated[ 2 ];
 
