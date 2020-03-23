@@ -15600,7 +15600,7 @@ function entityMap( test )
 function entityMapWithoutDst_( test )
 {
   test.open( 'onEach returns element' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityMap_( src, ( e ) => e );
@@ -15680,13 +15680,13 @@ function entityMapWithoutDst_( test )
   var src = new BufferRaw();
   var got = _.entityMap_( src, ( e ) => e );
   test.identical( got, new BufferRaw() );
-  
+
   test.close( 'onEach returns element' );
 
   /* - */
 
   test.open( 'onEach returns key' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityMap_( src, ( e, k ) => k );
@@ -15766,13 +15766,13 @@ function entityMapWithoutDst_( test )
   var src = new BufferRaw();
   var got = _.entityMap_( src, ( e, k ) => String( k ) );
   test.identical( got, 'undefined' );
-  
+
   test.close( 'onEach returns key' );
 
   /* - */
 
   test.open( 'onEach checks container' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
@@ -15852,7 +15852,7 @@ function entityMapWithoutDst_( test )
   var src = new BufferRaw();
   var got = _.entityMap_( src, ( e, k, c ) => c ? k : e );
   test.identical( got, new BufferRaw() );
-  
+
   test.close( 'onEach checks container' );
 
   /* - */
@@ -15897,7 +15897,7 @@ function entityMapWithoutDst_( test )
 function entityMapDstNull_( test )
 {
   test.open( 'onEach returns element' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityMap_( null, src, ( e ) => e );
@@ -15977,13 +15977,13 @@ function entityMapDstNull_( test )
   var src = new BufferRaw();
   var got = _.entityMap_( null, src, ( e ) => e );
   test.identical( got, new BufferRaw() );
-  
+
   test.close( 'onEach returns element' );
 
   /* - */
 
   test.open( 'onEach returns key' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityMap_( null, src, ( e, k ) => k );
@@ -16063,13 +16063,13 @@ function entityMapDstNull_( test )
   var src = new BufferRaw();
   var got = _.entityMap_( null, src, ( e, k ) => String( k ) );
   test.identical( got, 'undefined' );
-  
+
   test.close( 'onEach returns key' );
 
   /* - */
 
   test.open( 'onEach checks container' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
@@ -16149,7 +16149,7 @@ function entityMapDstNull_( test )
   var src = new BufferRaw();
   var got = _.entityMap_( null, src, ( e, k, c ) => c ? k : e );
   test.identical( got, new BufferRaw() );
-  
+
   test.close( 'onEach checks container' );
 }
 
@@ -16158,7 +16158,7 @@ function entityMapDstNull_( test )
 function entityMapDstNotNull_( test )
 {
   test.open( 'onEach returns element' );
-  
+
   test.case = 'dst - argumentsArray, empty array';
   var dst = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var src = [];
@@ -16256,13 +16256,13 @@ function entityMapDstNotNull_( test )
   var got = _.entityMap_( dst, src, ( e ) => [ e ] );
   test.identical( got, { 0 : new BufferRaw() } );
   test.is( got === dst );
-  
+
   test.close( 'onEach returns element' );
 
   /* - */
 
   test.open( 'onEach returns key' );
-  
+
   test.case = 'dst - argumentsArray, empty array';
   var dst = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var src = [];
@@ -16360,13 +16360,13 @@ function entityMapDstNotNull_( test )
   var got = _.entityMap_( dst, src, ( e, k ) => [ k ] );
   test.identical( got, { 0 : undefined } );
   test.is( got === dst );
-  
+
   test.close( 'onEach returns key' );
 
   /* - */
 
   test.open( 'onEach checks container' );
-  
+
   test.case = 'dst - argumentsArray, empty array';
   var dst = _.argumentsArrayMake( [ 1, 2, 3 ] );
   var src = [];
@@ -16464,7 +16464,7 @@ function entityMapDstNotNull_( test )
   var got = _.entityMap_( dst, src, ( e, k, c ) => c ? k : [ e ] );
   test.identical( got, { 0 : new BufferRaw() } );
   test.is( got === dst );
-  
+
   test.close( 'onEach checks container' );
 }
 
@@ -16608,7 +16608,7 @@ function entityFilter( test )
 function entityFilterWithoutDst_( test )
 {
   test.open( 'onEach returns element' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( src, ( e ) => e );
@@ -16684,13 +16684,13 @@ function entityFilterWithoutDst_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( src, ( e ) => e );
   test.identical( got, new BufferRaw() );
-  
+
   test.close( 'onEach returns element' );
 
   /* - */
 
   test.open( 'onEach returns key' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( src, ( e, k ) => k );
@@ -16766,13 +16766,13 @@ function entityFilterWithoutDst_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( src, ( e, k ) => k );
   test.identical( got, null );
-  
+
   test.close( 'onEach returns key' );
 
   /* - */
 
   test.open( 'onEach checks container' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
@@ -16848,13 +16848,13 @@ function entityFilterWithoutDst_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( src, ( e, k, c ) => c ? k : e );
   test.identical( got, new BufferRaw() );
-  
+
   test.close( 'onEach checks container' );
 
   /* - */
 
   test.open( 'onEach returns undefined' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( src, ( e ) => undefined );
@@ -16918,13 +16918,13 @@ function entityFilterWithoutDst_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( src, ( e ) => undefined );
   test.identical( got, undefined );
-  
+
   test.close( 'onEach returns undefined' );
 
   /* - */
 
   test.open( 'onEach is map like' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( src, { a : 1 } );
@@ -16994,13 +16994,13 @@ function entityFilterWithoutDst_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( src, { a : 1 } );
   test.identical( got, undefined );
-  
+
   test.close( 'onEach is map like' );
 
   /* - */
 
   test.open( 'onEach returns unroll' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
@@ -17076,7 +17076,7 @@ function entityFilterWithoutDst_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( src, ( e ) => _.unrollMake( [ e, e ] ) );
   test.identical( got, [ new BufferRaw(), new BufferRaw() ] );
-  
+
   test.close( 'onEach returns unroll' );
 
   /* - */
@@ -17123,7 +17123,7 @@ function entityFilterWithoutDst_( test )
 function entityFilterDstNull_( test )
 {
   test.open( 'onEach returns element' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( null, src, ( e ) => e );
@@ -17198,13 +17198,13 @@ function entityFilterDstNull_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( null, src, ( e ) => e );
   test.identical( got, new BufferRaw() );
-  
+
   test.close( 'onEach returns element' );
 
   /* - */
 
   test.open( 'onEach returns key' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( null, src, ( e, k ) => k );
@@ -17280,13 +17280,13 @@ function entityFilterDstNull_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( null, src, ( e, k ) => k );
   test.identical( got, null );
-  
+
   test.close( 'onEach returns key' );
 
   /* - */
 
   test.open( 'onEach checks container' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
@@ -17362,13 +17362,13 @@ function entityFilterDstNull_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( null, src, ( e, k, c ) => c ? k : e );
   test.identical( got, new BufferRaw() );
-  
+
   test.close( 'onEach checks container' );
 
   /* - */
 
   test.open( 'onEach returns undefined' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( null, src, ( e ) => undefined );
@@ -17437,13 +17437,13 @@ function entityFilterDstNull_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( null, src, ( e ) => undefined );
   test.identical( got, null );
-  
+
   test.close( 'onEach returns undefined' );
 
   /* - */
 
   test.open( 'onEach is map like' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( null, src, { a : 1 } );
@@ -17512,13 +17512,13 @@ function entityFilterDstNull_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( null, src, { a : 1 } );
   test.identical( got, null );
-  
+
   test.close( 'onEach is map like' );
 
   /* - */
 
   test.open( 'onEach returns unroll' );
-  
+
   test.case = 'empty array';
   var src = [];
   var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
@@ -17594,7 +17594,7 @@ function entityFilterDstNull_( test )
   var src = new BufferRaw();
   var got = _.entityFilter_( null, src, ( e ) => _.unrollMake( [ e, e ] ) );
   test.identical( got, [ new BufferRaw(), new BufferRaw() ] );
-  
+
   test.close( 'onEach returns unroll' );
 }
 
@@ -17603,7 +17603,7 @@ function entityFilterDstNull_( test )
 function entityFilterDstNotNull_( test )
 {
   test.open( 'onEach returns element' );
-  
+
   test.case = 'empty array';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
   var src = [];
@@ -17693,13 +17693,13 @@ function entityFilterDstNotNull_( test )
   var got = _.entityFilter_( dst, src, ( e ) => e );
   test.identical( got, [ new BufferRaw() ] );
   test.is( got === dst );
-  
+
   test.close( 'onEach returns element' );
 
   /* - */
 
   test.open( 'onEach returns key' );
-  
+
   test.case = 'empty array';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
   var src = [];
@@ -17789,13 +17789,13 @@ function entityFilterDstNotNull_( test )
   var got = _.entityFilter_( dst, src, ( e, k ) => k );
   test.identical( got, [ null ] );
   test.is( got === dst );
-  
+
   test.close( 'onEach returns key' );
 
   /* - */
 
   test.open( 'onEach checks container' );
-  
+
   test.case = 'empty array';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
   var src = [];
@@ -17885,13 +17885,13 @@ function entityFilterDstNotNull_( test )
   var got = _.entityFilter_( dst, src, ( e, k, c ) => c ? k : e );
   test.identical( got, [ new BufferRaw() ] );
   test.is( got === dst );
-  
+
   test.close( 'onEach checks container' );
 
   /* - */
 
   test.open( 'onEach returns undefined' );
-  
+
   test.case = 'empty array';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
   var src = [];
@@ -17981,13 +17981,13 @@ function entityFilterDstNotNull_( test )
   var got = _.entityFilter_( dst, src, ( e ) => undefined );
   test.identical( got, [] );
   test.is( got === dst );
-  
+
   test.close( 'onEach returns undefined' );
 
   /* - */
 
   test.open( 'onEach is map like' );
-  
+
   test.case = 'empty array';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
   var src = [];
@@ -18079,13 +18079,13 @@ function entityFilterDstNotNull_( test )
   test.identical( got, [] );
   test.is( got === dst );
 
-  
+
   test.close( 'onEach is map like' );
 
   /* - */
 
   test.open( 'onEach returns unroll' );
-  
+
   test.case = 'empty array';
   var dst = [ 7, 7, 7, 7, 7, 7 ];
   var src = [];
@@ -18176,7 +18176,7 @@ function entityFilterDstNotNull_( test )
   test.identical( got, [ [ new BufferRaw(), new BufferRaw() ] ] );
   test.is( got === dst );
 
-  
+
   test.close( 'onEach returns unroll' );
 }
 
@@ -18320,7 +18320,7 @@ function entityFilterDeep( test )
 
 //
 
-function first( test ) 
+function first( test )
 {
   test.open( 'onEach returns element' );
 
@@ -18676,7 +18676,7 @@ function first( test )
 
   test.case = 'boolean - false';
   var got = _.first( false, { a : 1 } );
-  test.identical( got, undefined ); 
+  test.identical( got, undefined );
 
 
   test.close( 'onEach is objectLike' );
@@ -18694,17 +18694,17 @@ function first( test )
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.first( 'str', ( e ) => e, 'extra' ) );
-  
+
   test.case = 'src is undefined';
   test.shouldThrowErrorSync( () => _.first( undefined, ( e ) => e ) );
-  
+
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.first( [ 1, 2, 3 ], 1 ) );
 }
 
 //
 
-function last( test ) 
+function last( test )
 {
   test.open( 'onEach returns element' );
 
@@ -19060,7 +19060,7 @@ function last( test )
 
   test.case = 'boolean - false';
   var got = _.last( false, { a : 1 } );
-  test.identical( got, undefined ); 
+  test.identical( got, undefined );
 
 
   test.close( 'onEach is objectLike' );
@@ -19078,10 +19078,10 @@ function last( test )
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.last( 'str', ( e ) => e, 'extra' ) );
-  
+
   test.case = 'src is undefined';
   test.shouldThrowErrorSync( () => _.last( undefined, ( e ) => e ) );
-  
+
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.last( [ 1, 2, 3 ], 1 ) );
 }
@@ -20193,6 +20193,19 @@ function indexAppending( test )
   /* */
 
 } /* end of function indexAppending */
+
+//
+
+function indexAppendingExperiment( test )
+{
+  test.case = 'src - array, a few nodes with same selection';
+  var exp = { 'a.f1' : [{ f1 : 'a.f1', f2 : 'a.f2' }, { f1 : 'a.f1', f2 : 'a.f2' }, { f1 : 'a.f1', f2 : 'a.f2' } ] };
+  var src = [ { f1 : 'a.f1', f2 : 'a.f2' }, { f1 : 'a.f1', f2 : 'a.f2' }, { f1 : 'a.f1', f2 : 'a.f2' } ];
+  var got = _.indexAppending( src, '*/f1' );
+  test.is( src !== got );
+  test.identical( got, exp );
+}
+indexAppendingExperiment.experimental = 1;
 
 //
 
@@ -21801,7 +21814,7 @@ function remapPrepending( test )
 
 //
 
-function indexInplace( test ) 
+function indexInplace( test )
 {
   test.open( 'no onEach' );
 
@@ -22045,7 +22058,7 @@ function indexInplace( test )
 
 //
 
-function indexInplaceSupplementing( test ) 
+function indexInplaceSupplementing( test )
 {
   test.open( 'no onEach' );
 
@@ -22842,7 +22855,7 @@ function eachSample( test )
   var expected = [ [] ];
   test.identical( got, expected );
   test.identical( src, [] );
-  
+
   test.case = 'sets - empty map';
   var src = {};
   var got = _.eachSample( { sets : src } );
@@ -23574,6 +23587,7 @@ value for dst             dst                dst                    first +     
     indexExtending,
     indexSupplementing,
     indexAppending,
+    indexAppendingExperiment,
     indexPrepending,
 
     remap,
