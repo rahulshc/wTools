@@ -234,7 +234,6 @@ var Self =
     withIsIncluded,
     withoutIsIncluded,
     moduleExportsUndefined,
-
     resolve,
 
   }

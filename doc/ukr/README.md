@@ -1,4 +1,4 @@
-## Концепції
+# Концепції
 
 <details>
   <summary><a href="./concept/RoutineInput.md#Масив-аргументів">
@@ -65,16 +65,44 @@
 
 <details>
   <summary><a href="./concept/Buffer.md">
-    Буфер
+    Буферні типи
   </a></summary>
-    В <code>JavaScript</code>, це спеціальний об'єкт, що призначений для зберігання та обробки необроблених бінарних даних.
+    Сутності, для зберігання та обробки бінарних даних.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferRaw.md">
+    Тип <code>BufferRaw</code>
+  </a></summary>
+    Стандартний нетипізований буфер, буфер необроблених даних, що призначений не для доступу до даних через цей об'єкт напряму, а для використання іншими буферами, як контейнера даних.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferTyped.md">
+    Тип <code>BufferTyped</code>
+  </a></summary>
+    Стандартні типізовані буфери.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferView.md">
+    Тип <code>BufferView</code>
+  </a></summary>
+    Cтандартний нетипізований буфери для динамічного типізування даних `BufferRaw`.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferNode.md">
+    Тип <code>BufferNode</code>
+  </a></summary>
+    Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера з вбудованою можливістю доступу до них.
 </details>
 
 <details>
   <summary><a href="./concept/TypeRange.md">
-    Типи <code>Range</code>
+    Тип <code>Range</code>
   </a></summary>
-    <code>Range</code> - тип даних - двоелементний вектор, що задає початок і кінець відліку елементів в контейнері.
+    <code>Range</code> - збірний тип даних - пара чисел, що задає послідовність.
 </details>
 
 <details>

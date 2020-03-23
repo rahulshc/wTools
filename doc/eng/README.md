@@ -22,6 +22,13 @@
 </details>
 
 <details>
+  <summary><a href="./concept/TypeRange.md">
+    Type <code>Range</code>
+  </a></summary>
+    <code>Range</code> is a complex data type - a pair of numbers that defines a sequence. 
+</details>
+
+<details>
   <summary><a href="./concept/Modularity.md#The-system-and-its-components">
     The system and its components
   </a></summary>

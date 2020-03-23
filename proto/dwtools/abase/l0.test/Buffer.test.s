@@ -613,6 +613,7 @@ function bufferMakeWithBuffers( test )
     F64x,
   ];
   var list = [ bufferRaw, bufferView ];
+  // var list = []; // xxx
 
   for( let i = 0; i < typedList.length; i++ )
   list.push( bufferTyped( typedList[ i ] ) );
@@ -632,12 +633,17 @@ function bufferMakeWithBuffers( test )
 
   function testRun( makeBuffer )
   {
+
     test.case = 'src - empty buffer, not ins';
     var src = makeBuffer( [] );
+    debugger;
     var got = _.bufferMake( src );
+    debugger;
     var expected = _.longDescriptor.make( [] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got instanceof makeBuffer.constructor );
+    debugger;
 
     test.case = 'src - empty buffer, ins - null';
     var src = makeBuffer( [] );
@@ -645,6 +651,7 @@ function bufferMakeWithBuffers( test )
     var expected = _.longDescriptor.make( [] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got instanceof makeBuffer.constructor )
 
     test.case = 'src - empty buffer, ins - undefined';
     var src = makeBuffer( [] );
@@ -652,6 +659,7 @@ function bufferMakeWithBuffers( test )
     var expected = _.longDescriptor.make( [] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got instanceof makeBuffer.constructor )
 
     test.case = 'src - empty buffer, ins - number';
     var src = makeBuffer( [] );
@@ -659,6 +667,7 @@ function bufferMakeWithBuffers( test )
     var expected = makeBuffer( 2 );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got instanceof makeBuffer.constructor )
 
     test.case = 'src - empty buffer, ins - empty array';
     var src = makeBuffer( [] );
@@ -666,6 +675,7 @@ function bufferMakeWithBuffers( test )
     var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got instanceof makeBuffer.constructor )
 
     test.case = 'src - empty buffer, ins - array';
     var src = makeBuffer( [] );
@@ -673,6 +683,7 @@ function bufferMakeWithBuffers( test )
     var expected = makeBuffer( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got instanceof makeBuffer.constructor )
 
     test.case = 'src - filled buffer, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
@@ -680,6 +691,7 @@ function bufferMakeWithBuffers( test )
     var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got instanceof makeBuffer.constructor )
 
     test.case = 'src - filled buffer, ins - number, ins < src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
@@ -687,6 +699,7 @@ function bufferMakeWithBuffers( test )
     var expected = makeBuffer( [ 1, 2 ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got instanceof makeBuffer.constructor )
 
     test.case = 'src - filled buffer, ins - number, ins > src.length';
     var src = makeBuffer( [ 1, 2, 3 ] );
@@ -694,6 +707,7 @@ function bufferMakeWithBuffers( test )
     var expected = makeBuffer( [ 1, 2, 3, 0 ] );
     test.identical( got, expected );
     test.is( got !== src );
+    test.is( got instanceof makeBuffer.constructor )
 
     test.case = 'src - filled buffer, ins - array, ins.length > src.length';
     var src = makeBuffer( [ 0, 1 ] );
@@ -703,6 +717,7 @@ function bufferMakeWithBuffers( test )
     test.identical( got, expected );
     test.is( got !== ins );
     test.is( got !== src );
+    test.is( got instanceof makeBuffer.constructor )
   }
 
   test.case = 'src - null';
@@ -958,7 +973,7 @@ function bufferMakeWithArrayAndUnrollLongDescriptor( test )
       test.case = 'wrong type of ins';
       test.shouldThrowErrorSync( () => descriptor.bufferMake( [ 1, 2, 3 ], 'wrong' ) );
       test.shouldThrowErrorSync( () => descriptor.bufferMake( [ 1, 2, 3 ], Infinity  ) );
-    } 
+    }
   }
 }
 
@@ -2010,7 +2025,7 @@ function bufferMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
       test.case = 'wrong type of ins';
       test.shouldThrowErrorSync( () => descriptor.bufferMakeUndefined( [ 1, 2, 3 ], 'wrong' ) );
       test.shouldThrowErrorSync( () => descriptor.bufferMakeUndefined( [ 1, 2, 3 ], Infinity  ) );
-    } 
+    }
   }
 }
 
