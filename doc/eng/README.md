@@ -50,6 +50,13 @@
 </details>
 
 <details>
+  <summary><a href="./concept/BufferNode.md">
+    Type <code>BufferNode</code>
+  </a></summary>
+    Non-standard implementation of untyped buffer with built-in access to buffer data.
+</details>
+
+<details>
   <summary><a href="./concept/Modularity.md#The-system-and-its-components">
     The system and its components
   </a></summary>

@@ -2,7 +2,7 @@
 
 Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера з вбудованою можливістю доступу до нього.
 
-[Тип `BufferNode`](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) представлений одним класом `BufferNode` ( `Buffer` ). Клас `BufferNode` існує лише в середовищі інтерпретатора `NodeJS`. Так як тип `BufferNode` розроблений для середовища інтерпретатора `NodeJS` і є не сатндартним то його використання не є обмеженим.
+[Тип `BufferNode`](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) представлений одним класом `BufferNode` ( `Buffer` ). Клас `BufferNode` існує лише в середовищі інтерпретатора `NodeJS`. Так як тип `BufferNode` розроблений для середовища інтерпретатора `NodeJS` і є не стандартним то його використання є обмеженим.
 
 ### Приклади
 

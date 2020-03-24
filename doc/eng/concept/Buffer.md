@@ -18,7 +18,7 @@ A buffer can have size and length. The size measures in bytes, and length measur
 
 ### Buffers `BufferNode`
 
-[Type `BufferNode`](BufferNode.md) ( `Buffer` ) is a `NodeJS` non-standard implementation of untyped buffer with built-in access to buffer data. Presented by one class `BufferNode` ( `Buffer` ). The `BufferNode` class exists only in the` NodeJS` interpreter environment.
+[Type `BufferNode`](BufferNode.md) ( `Buffer` ) is a `NodeJS` non-standard implementation of untyped buffer with built-in access to buffer data. Presented by one class `BufferNode` ( `Buffer` ). The `BufferNode` class exists only in the `NodeJS` interpreter environment.
 
 ### Summary
 
