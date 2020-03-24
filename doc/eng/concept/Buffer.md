@@ -6,7 +6,7 @@ A buffer can have size and length. The size measures in bytes, and length measur
 
 ### Buffers `BufferRaw`
 
-[Type `BufferRaw`](BufferRaw.md) ( `ArrayBuffer` ) is a standard untyped buffer, a raw data buffer that is not intended to access data through this object directly but to be used by other buffers as a data container. This type allows allocating memory for the data, but it does not provide the instruments to access the data. For processing data contained in an instance of type `BufferRaw`, the mechanism of data representation is used. It is representation of data through any instance of [typed buffers](./ BufferTyped.md) or by [`BufferView` buffer](./ BufferView.md).
+[Type `BufferRaw`](BufferRaw.md) ( `ArrayBuffer` ) is a standard untyped buffer, a raw data buffer that is not intended to access data by this object directly but to be used by other buffers as a data container. This type allows allocating memory for the data, but it does not provide the instruments to access the data. For processing data contained in an instance of type `BufferRaw`, the mechanism of data representation is used. It is representation of data by any instance of [typed buffers](./ BufferTyped.md) or by [`BufferView` buffer](./ BufferView.md).
 
 ### Buffers `BufferTyped`
 

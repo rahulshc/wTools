@@ -36,6 +36,13 @@
 </details>
 
 <details>
+  <summary><a href="./concept/BufferRaw.md">
+    Type <code>BufferRaw</code>
+  </a></summary>
+    Standard untyped buffer, a raw data buffer that is not intended to access data by this object directly but to be used by other buffers as a data container.
+</details>
+
+<details>
   <summary><a href="./concept/BufferTyped.md">
     Type <code>BufferTyped</code>
   </a></summary>
