@@ -253,22 +253,21 @@ function bufferAnyIs( test )
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check BufferRaw';
-  var src = new U8x( [ 1, 2, 3 ] ).buffer;
-  var got = _.bufferAnyIs( src );
-  var expected = true;
+  /**/
+
+  test.case = 'check BufferRaw constructor';
+  var got = _.bufferAnyIs( BufferRaw );
+  var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check BufferView';
-  var src = new BufferView( new U8x( [ 1, 2, 3 ] ).buffer );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
+  test.case = 'check BufferView constructor';
+  var got = _.bufferAnyIs( BufferView );
+  var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check U8x';
-  var src = new U8x( [ 2, 3 ] );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
+  test.case = 'check U8x constructor';
+  var got = _.bufferAnyIs( U8x );
+  var expected = false;
   test.identical( got, expected );
 
   /* BufferTyped */
@@ -350,7 +349,7 @@ function bufferAnyIs( test )
     test.identical( got, expected );
 
     test.case = 'check BufferNode';
-    var src = new BufferNode.allocUnsafe( 5, 4 );
+    var src = new BufferNode.allocUnsafe( 5 );
     var got = _.bufferAnyIs( src );
     var expected = true;
     test.identical( got, expected );
@@ -438,15 +437,15 @@ function bufferBytesIs( test )
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check U8x';
-  var src = new U8x( [ 2, 3 ] );
-  var got = _.bufferBytesIs( src );
-  var expected = true;
+  /**/
+
+  test.case = 'check U8x constructor';
+  var got = _.bufferBytesIs( U8x );
+  var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check I8x';
-  var src = new I8x( [ 3, 4 ] );
-  var got = _.bufferBytesIs( src );
+  test.case = 'check I8x constructor';
+  var got = _.bufferBytesIs( I8x );
   var expected = false;
   test.identical( got, expected );
 
@@ -527,7 +526,7 @@ function bufferBytesIs( test )
     test.identical( got, expected );
 
     test.case = 'check BufferNode';
-    var src = new BufferNode.allocUnsafe( 5, 4 );
+    var src = new BufferNode.allocUnsafe( 5 );
     var got = _.bufferBytesIs( src );
     var expected = false;
     test.identical( got, expected );
