@@ -629,6 +629,11 @@ function constructorIsBuffer( test )
   var expected = true;
   test.identical( got, expected );
 
+  test.case = 'check empty U8x';
+  var got = _.constructorIsBuffer( new U8x( 3 ) );
+  var expected = false;
+  test.identical( got, expected );
+
   test.case = 'check U8ClampedX';
   var got = _.constructorIsBuffer( U8ClampedX );
   var expected = true;
@@ -706,12 +711,22 @@ function constructorIsBuffer( test )
     var got = _.constructorIsBuffer( BufferNode );
     var expected = false;
     test.identical( got, expected );
+
+    test.case = 'check empty BufferNode';
+    var got = _.constructorIsBuffer( BufferNode.alloc( 3 ) );
+    var expected = false;
+    test.identical( got, expected );
   }
 
   /**/
 
   test.case = 'check BufferRaw';
   var got = _.constructorIsBuffer( BufferRaw );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.constructorIsBuffer( new BufferRaw( 3 ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -724,6 +739,11 @@ function constructorIsBuffer( test )
 
   test.case = 'check BufferView';
   var got = _.constructorIsBuffer( BufferView );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'check BufferView from raw';
+  var got = _.constructorIsBuffer( new BufferView( new BufferRaw( 3 ) ) );
   var expected = false;
   test.identical( got, expected );
 
