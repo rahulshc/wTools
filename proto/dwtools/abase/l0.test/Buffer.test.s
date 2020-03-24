@@ -253,6 +253,24 @@ function bufferAnyIs( test )
   var expected = false;
   test.identical( got, expected );
 
+  test.case = 'check BufferRaw';
+  var src = new U8x( [ 1, 2, 3 ] ).buffer;
+  var got = _.bufferAnyIs( src );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'check BufferView';
+  var src = new BufferView( new U8x( [ 1, 2, 3 ] ).buffer );
+  var got = _.bufferAnyIs( src );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'check U8x';
+  var src = new U8x( [ 2, 3 ] );
+  var got = _.bufferAnyIs( src );
+  var expected = true;
+  test.identical( got, expected );
+
   /* BufferTyped */
 
   test.case = 'check empty U8x';
@@ -275,33 +293,6 @@ function bufferAnyIs( test )
 
   test.case = 'check empty U64x';
   var src = new U64x( 2 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  /**/
-
-  test.case = 'check U8x';
-  var src = new U8x( [ 2, 3 ] );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.identical( got, expected );
-  test.case = 'check U16x';
-  var src = new U16x( [ 2, 3 ] );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'check U32x';
-  var src = new U32x( [ 2, 3 ] );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'check U64x';
-  var src = new U64x( _.bigIntsFrom( [ 2, 3 ] ) );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
@@ -334,40 +325,8 @@ function bufferAnyIs( test )
 
   /**/
 
-  test.case = 'check I8x ';
-  var src = new I8x( [ 2, 3 ] );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'check I16x';
-  var src = new I16x( [ 2, 3 ] );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'check I32x';
-  var src = new I32x( [ 2, 3 ] );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'check I64x';
-  var src = new I64x( _.bigIntsFrom( [ 2, 3 ] ) );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  /**/
-
   test.case = 'check empty F32x';
   var src = new F32x( 5 );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'check F32x';
-  var src = new F32x( [ 2, 3 ] );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
@@ -380,31 +339,25 @@ function bufferAnyIs( test )
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check F64x';
-  var src = new F64x( [ 2, 3 ] );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
   /* BufferNode */
 
   if( Config.interpreter === 'njs' )
   {
     test.case = 'check empty BufferNode';
-    var src = new BufferNode.alloc(5);
-    var got = _.bufferAnyIs(src);
+    var src = new BufferNode.alloc( 5 );
+    var got = _.bufferAnyIs( src );
     var expected = true;
     test.identical( got, expected );
 
     test.case = 'check BufferNode';
-    var src = new BufferNode.alloc(5, 4);
-    var got = _.bufferAnyIs(src);
+    var src = new BufferNode.allocUnsafe( 5, 4 );
+    var got = _.bufferAnyIs( src );
     var expected = true;
-    test.identical(got, expected);
+    test.identical( got, expected );
 
     test.case = 'check BufferNode from string';
-    var src = new BufferNode.from('str');
-    var got = _.bufferAnyIs(src);
+    var src = new BufferNode.from( 'str' );
+    var got = _.bufferAnyIs( src );
     var expected = true;
     test.identical( got, expected );
   }
@@ -417,30 +370,13 @@ function bufferAnyIs( test )
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check BufferRaw';
-  var src = new U8x( [ 1, 2, 3 ] ).buffer;
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
   test.case = 'check BufferRawShared';
   var src = new BufferRawShared( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  /* BufferView */
-
-  test.case = 'check BufferView';
-  var src = new BufferView( new U8x( [ 1, 2, 3 ] ).buffer );
-  var got = _.bufferAnyIs( src );
-  var expected = true;
-  test.identical( got, expected );
-
   /**/
-
-  if( !Config.debug )
-  return;
 
   test.case = 'check without argument';
   var got = _.bufferAnyIs();
@@ -457,7 +393,6 @@ function bufferAnyIs( test )
 
 function bufferBytesIs( test )
 {
-
   test.case = 'check null';
   var got = _.bufferBytesIs( null );
   var expected = false;
@@ -503,22 +438,34 @@ function bufferBytesIs( test )
   var expected = false;
   test.identical( got, expected );
 
-  /* BufferTyped */
-
-  test.case = 'check empty U8x';
-  var src = new U8x( 5 );
+  test.case = 'check U8x';
+  var src = new U8x( [ 2, 3 ] );
   var got = _.bufferBytesIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check empty U16x';
+  test.case = 'check I8x';
+  var src = new I8x( [ 3, 4 ] );
+  var got = _.bufferBytesIs( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* BufferTyped */
+
+  test.case = 'check U8x';
+  var src = new U8x( [ 1, 2 ] );
+  var got = _.bufferBytesIs( src );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'check U16x';
   var src = new U16x( [ 2, 3 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check empty U32x';
-  var src = new U32x( 5 );
+  test.case = 'check U32x';
+  var src = new U32x( [ 1, 2 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
@@ -531,46 +478,20 @@ function bufferBytesIs( test )
 
   /**/
 
-  test.case = 'check U8x';
-  var src = new U8x( [ 2, 3 ] );
-  var got = _.bufferBytesIs( src );
-  var expected = true;
-
-  test.identical( got, expected );
-  test.case = 'check U16x';
-  var src = new U16x( 5 );
-  var got = _.bufferBytesIs( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'check U32x';
-  var src = new U32x( [ 2, 3 ] );
-  var got = _.bufferBytesIs( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'check U64x';
-  var src = new U64x( _.bigIntsFrom( [ 2, 3 ] ) );
-  var got = _.bufferBytesIs( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  /**/
-
   test.case = 'check empty I8x';
   var src = new I8x( 5 );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check empty I16x';
-  var src = new I16x( 5 );
+  test.case = 'check I16x';
+  var src = new I16x( [ 1, 2 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check empty I32x';
-  var src = new I32x( 5 );
+  test.case = 'check I32x';
+  var src = new I32x( [ 1, 2 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
@@ -583,54 +504,14 @@ function bufferBytesIs( test )
 
   /**/
 
-  test.case = 'check I8x ';
-  var src = new I8x( [ 2, 3 ] );
-  var got = _.bufferBytesIs( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'check I16x';
-  var src = new I16x( [ 2, 3 ] );
-  var got = _.bufferBytesIs( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'check I32x';
-  var src = new I32x( [ 2, 3 ] );
-  var got = _.bufferBytesIs( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'check I64x';
-  var src = new I64x( _.bigIntsFrom( [ 2, 3 ] ) );
-  var got = _.bufferBytesIs( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  /**/
-
-  test.case = 'check empty F32x';
-  var src = new F32x( 5 );
-  var got = _.bufferBytesIs( src );
-  var expected = false;
-  test.identical( got, expected );
-
   test.case = 'check F32x';
-  var src = new F32x( [ 2, 3 ] );
+  var src = new F32x( [ 2, 1 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
-
-  /**/
 
   test.case = 'check empty F64x';
   var src = new F32x( 5 );
-  var got = _.bufferBytesIs( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'check F64x';
-  var src = new F64x( [ 2, 3 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
@@ -640,20 +521,20 @@ function bufferBytesIs( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'check empty BufferNode';
-    var src = new BufferNode.alloc(5);
-    var got = _.bufferBytesIs(src);
+    var src = new BufferNode.alloc( 5 );
+    var got = _.bufferBytesIs( src );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'check BufferNode';
-    var src = new BufferNode.alloc(5, 4);
-    var got = _.bufferBytesIs(src);
+    var src = new BufferNode.allocUnsafe( 5, 4 );
+    var got = _.bufferBytesIs( src );
     var expected = false;
     test.identical( got, expected );
 
     test.case = 'check BufferNode from string';
-    var src = new BufferNode.from('str');
-    var got = _.bufferBytesIs(src);
+    var src = new BufferNode.from( 'str' );
+    var got = _.bufferBytesIs( src );
     var expected = false;
     test.identical( got, expected );
   }
@@ -662,12 +543,6 @@ function bufferBytesIs( test )
 
   test.case = 'check empty BufferRaw';
   var src = new BufferRaw( 5 );
-  var got = _.bufferBytesIs( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'check BufferRaw';
-  var src = new U8x( [ 1, 2, 3 ] ).buffer;
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
@@ -687,9 +562,6 @@ function bufferBytesIs( test )
   test.identical( got, expected );
 
   /**/
-
-  if( !Config.debug )
-    return;
 
   test.case = 'check without argument';
   var got = _.bufferBytesIs();
@@ -857,9 +729,6 @@ function constructorIsBuffer( test )
   test.identical( got, expected );
 
   /**/
-
-  if( !Config.debug )
-    return;
 
   test.case = 'check without argument';
   var got = _.constructorIsBuffer();
