@@ -159,6 +159,8 @@ function buffersAreIdentical( src1, src2 )
 
 }
 
+//
+
 function _bufferMake_functor( onMake )
 {
   _.assert( _.routineIs( onMake ) );

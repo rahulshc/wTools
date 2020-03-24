@@ -16,7 +16,7 @@
 - `F32x`, аналогічна назва `Fx` ( `Float32Array` );
 - `F64x` ( `Float64Array` );
 - `I64x` ( `BigInt64Array` );
-- `U64x` ( `BigInt64Array` ).
+- `U64x` ( `BigUint64Array` ).
 
 Тип `BufferTyped` на відміну від [`BufferView`](./BufferView.md) типізує елементи статично.
 
