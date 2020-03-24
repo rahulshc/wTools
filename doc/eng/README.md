@@ -32,7 +32,14 @@
   <summary><a href="./concept/Buffer.md">
     Buffer types
   </a></summary>
-    <code>Range</code> is a complex data type - a pair of numbers that defines a sequence.
+    Entities for storing and processing binary data.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferTyped.md">
+    Type <code>BufferTyped</code>
+  </a></summary>
+    Standard typed buffers.
 </details>
 
 <details>
