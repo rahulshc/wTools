@@ -446,6 +446,9 @@ function numberFromStrMaybe( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.numberFromStrMaybe() );
 
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numberFromStrMaybe( '1', 'extra' ) );
+
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.numberFromStrMaybe( null ) );
   test.shouldThrowErrorSync( () => _.numberFromStrMaybe( [ 1 ] ) );
