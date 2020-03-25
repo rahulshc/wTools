@@ -142,6 +142,70 @@ function bufferTypedIs( test )
 
 //
 
+function bufferViewIs( test )
+{
+  test.case = 'view buffer, BufferRaw';
+  var src = new BufferView( new BufferRaw( [ 10 ] ) );
+  var got = _.bufferViewIs( src );
+  test.identical( got, true );
+  test.isNot( _.bufferRawIs( src ) );
+  test.isNot( _.bufferNodeIs( src ) );
+  test.isNot( _.bufferTypedIs( src ) );
+
+  test.case = 'view buffer, SharedArrayBuffer';
+  var src = new BufferView( new SharedArrayBuffer( [ 10 ] ) );
+  var got = _.bufferViewIs( src );
+  test.identical( got, true );
+  test.isNot( _.bufferRawIs( src ) );
+  test.isNot( _.bufferNodeIs( src ) );
+  test.isNot( _.bufferTypedIs( src ) );
+
+  test.case = 'typed array';
+  var src = new F32x( [ 1, 2 ] );
+  var got = _.bufferViewIs( src );
+  test.identical( got, false );
+
+  var src = new U8ClampedX( 10*10*4 );
+  var got = _.bufferViewIs( src );
+  test.identical( got, false );
+
+  test.case = 'array buffer';
+  var src = new BufferRaw( [ 1, 2 ] );
+  var got = _.bufferViewIs( src );
+  test.identical( got, false );
+
+  test.case = 'shared array buffer';
+  var src = new SharedArrayBuffer( [ 1, 2 ] );
+  var got = _.bufferViewIs( src );
+  test.identical( got, false );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'node buffer';
+    var src = BufferNode.alloc( 10 );
+    var got = _.bufferViewIs( src );
+    test.identical( got, false );
+
+    var src = BufferNode.from( [ 2, 4 ] );
+    var got = _.bufferViewIs( src );
+    test.identical( got, false );
+  }
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  var got = _.bufferViewIs();
+  test.identical( got, false );
+
+  test.case = 'extra arguments';
+  var src = new BufferView( new BufferRaw( [ 1, 2 ] ) );
+  var got = _.bufferViewIs( src, new U8x( 1 ) );
+  test.identical( got, true );
+}
+
+//
+
 function bufferNodeIs( test )
 {
   if( !Config.interpreter === 'njs' )
@@ -467,6 +531,7 @@ function bufferBytesIs( test )
   test.identical( got, expected );
 
   /**/
+
   test.case = 'check I8x constructor';
   var got = _.bufferBytesIs( I8x );
   var expected = false;
@@ -753,70 +818,6 @@ function constructorIsBuffer( test )
   var got = _.constructorIsBuffer( U8x, U16x );
   var expected = true;
   test.identical( got, expected );
-}
-
-//
-
-function bufferViewIs( test )
-{
-  test.case = 'view buffer, BufferRaw';
-  var src = new BufferView( new BufferRaw( [ 10 ] ) );
-  var got = _.bufferViewIs( src );
-  test.identical( got, true );
-  test.isNot( _.bufferRawIs( src ) );
-  test.isNot( _.bufferNodeIs( src ) );
-  test.isNot( _.bufferTypedIs( src ) );
-
-  test.case = 'view buffer, SharedArrayBuffer';
-  var src = new BufferView( new SharedArrayBuffer( [ 10 ] ) );
-  var got = _.bufferViewIs( src );
-  test.identical( got, true );
-  test.isNot( _.bufferRawIs( src ) );
-  test.isNot( _.bufferNodeIs( src ) );
-  test.isNot( _.bufferTypedIs( src ) );
-
-  test.case = 'typed array';
-  var src = new F32x( [ 1, 2 ] );
-  var got = _.bufferViewIs( src );
-  test.identical( got, false );
-
-  var src = new U8ClampedX( 10*10*4 );
-  var got = _.bufferViewIs( src );
-  test.identical( got, false );
-
-  test.case = 'array buffer';
-  var src = new BufferRaw( [ 1, 2 ] );
-  var got = _.bufferViewIs( src );
-  test.identical( got, false );
-
-  test.case = 'shared array buffer';
-  var src = new SharedArrayBuffer( [ 1, 2 ] );
-  var got = _.bufferViewIs( src );
-  test.identical( got, false );
-
-  if( Config.interpreter === 'njs' )
-  {
-  test.case = 'node buffer';
-  var src = BufferNode.alloc( 10 );
-  var got = _.bufferViewIs( src );
-  test.identical( got, false );
-
-  var src = BufferNode.from( [ 2, 4 ] );
-  var got = _.bufferViewIs( src );
-  test.identical( got, false );
-  }
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'no arguments';
-  var got = _.bufferViewIs();
-  test.identical( got, false );
-
-  test.case = 'extra arguments';
-  var src = new BufferView( new BufferRaw( [ 1, 2 ] ) );
-  var got = _.bufferViewIs( src, new U8x( 1 ) );
-  test.identical( got, true );
 }
 
 //
@@ -10930,8 +10931,8 @@ var Self =
 
     bufferRawIs,
     bufferTypedIs,
-    bufferNodeIs,
     bufferViewIs,
+    bufferNodeIs,
     bufferAnyIs,
     bufferBytesIs,
     constructorIsBuffer,
