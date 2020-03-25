@@ -253,44 +253,32 @@ function bufferAnyIs( test )
   var expected = false;
   test.identical( got, expected );
 
-  /**/
-
-  test.case = 'check BufferRaw constructor';
-  var got = _.bufferAnyIs( BufferRaw );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'check BufferView constructor';
-  var got = _.bufferAnyIs( BufferView );
-  var expected = false;
-  test.identical( got, expected );
+  /* BufferTyped */
 
   test.case = 'check U8x constructor';
   var got = _.bufferAnyIs( U8x );
   var expected = false;
   test.identical( got, expected );
 
-  /* BufferTyped */
-
-  test.case = 'check empty U8x';
+  test.case = 'check empty U8x instance';
   var src = new U8x( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check empty U16x';
+  test.case = 'check empty U16x instance';
   var src = new U16x( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check empty U32x';
+  test.case = 'check empty U32x instance';
   var src = new U32x( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check empty U64x';
+  test.case = 'check empty U64x instance';
   var src = new U64x( 2 );
   var got = _.bufferAnyIs( src );
   var expected = true;
@@ -298,25 +286,25 @@ function bufferAnyIs( test )
 
   /**/
 
-  test.case = 'check empty I8x';
+  test.case = 'check empty I8x instance';
   var src = new I8x( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check empty I16x';
+  test.case = 'check empty I16x instance';
   var src = new I16x( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check empty I32x';
+  test.case = 'check empty I32x instance';
   var src = new I32x( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check empty I64x';
+  test.case = 'check empty I64x instance';
   var src = new I64x( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
@@ -324,15 +312,13 @@ function bufferAnyIs( test )
 
   /**/
 
-  test.case = 'check empty F32x';
+  test.case = 'check empty F32x instance';
   var src = new F32x( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  /**/
-
-  test.case = 'check empty F64x';
+  test.case = 'check empty F64x instance';
   var src = new F32x( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
@@ -342,13 +328,13 @@ function bufferAnyIs( test )
 
   if( Config.interpreter === 'njs' )
   {
-    test.case = 'check empty BufferNode';
+    test.case = 'check empty BufferNode instance';
     var src = new BufferNode.alloc( 5 );
     var got = _.bufferAnyIs( src );
     var expected = true;
     test.identical( got, expected );
 
-    test.case = 'check BufferNode';
+    test.case = 'check BufferNode instance';
     var src = new BufferNode.allocUnsafe( 5 );
     var got = _.bufferAnyIs( src );
     var expected = true;
@@ -363,16 +349,28 @@ function bufferAnyIs( test )
 
   /* BufferRaw */
 
-  test.case = 'check empty BufferRaw';
+  test.case = 'check BufferRaw constructor';
+  var got = _.bufferAnyIs( BufferRaw );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'check empty BufferRaw instance';
   var src = new BufferRaw( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check BufferRawShared';
+  test.case = 'check BufferRawShared instance';
   var src = new BufferRawShared( 5 );
   var got = _.bufferAnyIs( src );
   var expected = true;
+  test.identical( got, expected );
+
+  /* BufferView */
+
+  test.case = 'check BufferView constructor';
+  var got = _.bufferAnyIs( BufferView );
+  var expected = false;
   test.identical( got, expected );
 
   /**/
@@ -437,65 +435,62 @@ function bufferBytesIs( test )
   var expected = false;
   test.identical( got, expected );
 
-  /**/
+  /* BufferTyped */
 
   test.case = 'check U8x constructor';
   var got = _.bufferBytesIs( U8x );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check I8x constructor';
-  var got = _.bufferBytesIs( I8x );
-  var expected = false;
-  test.identical( got, expected );
-
-  /* BufferTyped */
-
-  test.case = 'check U8x';
+  test.case = 'check U8x instance';
   var src = new U8x( [ 1, 2 ] );
   var got = _.bufferBytesIs( src );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check U16x';
+  test.case = 'check U16x instance';
   var src = new U16x( [ 2, 3 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check U32x';
+  test.case = 'check U32x instance';
   var src = new U32x( [ 1, 2 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check empty U64x';
+  test.case = 'check empty U64x instance';
   var src = new U64x( 2 );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
   /**/
+  test.case = 'check I8x constructor';
+  var got = _.bufferBytesIs( I8x );
+  var expected = false;
+  test.identical( got, expected );
 
-  test.case = 'check empty I8x';
+  test.case = 'check empty I8x instance';
   var src = new I8x( 5 );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check I16x';
+  test.case = 'check I16x instance';
   var src = new I16x( [ 1, 2 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check I32x';
+  test.case = 'check I32x instance';
   var src = new I32x( [ 1, 2 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check empty I64x';
+  test.case = 'check empty I64x instance';
   var src = new I64x( 5 );
   var got = _.bufferBytesIs( src );
   var expected = false;
@@ -503,13 +498,13 @@ function bufferBytesIs( test )
 
   /**/
 
-  test.case = 'check F32x';
+  test.case = 'check F32x instance';
   var src = new F32x( [ 2, 1 ] );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check empty F64x';
+  test.case = 'check empty F64x instance';
   var src = new F32x( 5 );
   var got = _.bufferBytesIs( src );
   var expected = false;
@@ -519,13 +514,13 @@ function bufferBytesIs( test )
 
   if( Config.interpreter === 'njs' )
   {
-    test.case = 'check empty BufferNode';
+    test.case = 'check empty BufferNode instance';
     var src = new BufferNode.alloc( 5 );
     var got = _.bufferBytesIs( src );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'check BufferNode';
+    test.case = 'check BufferNode instance';
     var src = new BufferNode.allocUnsafe( 5 );
     var got = _.bufferBytesIs( src );
     var expected = false;
@@ -540,13 +535,13 @@ function bufferBytesIs( test )
 
   /* BufferRaw */
 
-  test.case = 'check empty BufferRaw';
+  test.case = 'check empty BufferRaw instance';
   var src = new BufferRaw( 5 );
   var got = _.bufferBytesIs( src );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check BufferRawShared';
+  test.case = 'check BufferRawShared instance';
   var src = new BufferRawShared( 5 );
   var got = _.bufferBytesIs( src );
   var expected = false;
@@ -554,7 +549,7 @@ function bufferBytesIs( test )
 
   /* BufferView */
 
-  test.case = 'check BufferView';
+  test.case = 'check BufferView instance';
   var src = new BufferView( new U8x( [ 1, 2, 3 ] ).buffer );
   var got = _.bufferBytesIs( src );
   var expected = false;
@@ -624,120 +619,120 @@ function constructorIsBuffer( test )
 
   /**/
 
-  test.case = 'check U8x';
-  var got = _.constructorIsBuffer( U8x );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'check empty U8x';
+  test.case = 'check empty U8x instance';
   var got = _.constructorIsBuffer( new U8x( 3 ) );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check U8ClampedX';
+  test.case = 'check U8x constructor';
+  var got = _.constructorIsBuffer( U8x );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'check U8ClampedX constructor';
   var got = _.constructorIsBuffer( U8ClampedX );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check U16x';
+  test.case = 'check U16x constructor';
   var got = _.constructorIsBuffer( U16x );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check U32x';
+  test.case = 'check U32x constructor';
   var got = _.constructorIsBuffer( U32x );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check Ux';
+  test.case = 'check Ux constructor';
   var got = _.constructorIsBuffer( Ux );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check U64x';
+  test.case = 'check U64x constructor';
   var got = _.constructorIsBuffer( U64x );
   var expected = true;
   test.identical( got, expected );
 
   /**/
 
-  test.case = 'check I8x';
+  test.case = 'check I8x constructor';
   var got = _.constructorIsBuffer( I8x );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check I16x';
+  test.case = 'check I16x constructor';
   var got = _.constructorIsBuffer( I16x );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check I32x';
+  test.case = 'check I32x constructor';
   var got = _.constructorIsBuffer( I32x );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check Ix';
+  test.case = 'check Ix constructor';
   var got = _.constructorIsBuffer( Ix );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check I64x';
+  test.case = 'check I64x constructor';
   var got = _.constructorIsBuffer( I64x );
   var expected = true;
   test.identical( got, expected );
 
   /**/
 
-  test.case = 'check F32x';
+  test.case = 'check F32x constructor';
   var got = _.constructorIsBuffer( F32x );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check Fx';
+  test.case = 'check Fx constructor';
   var got = _.constructorIsBuffer( Fx );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'check F64x';
+  test.case = 'check F64x constructor';
   var got = _.constructorIsBuffer( F64x );
   var expected = true;
   test.identical( got, expected );
 
-  /**/
+  /* BufferNode */
 
   if (Config.interpreter === 'njs')
   {
-    test.case = 'check BufferNode';
+    test.case = 'check BufferNode constructor';
     var got = _.constructorIsBuffer( BufferNode );
     var expected = false;
     test.identical( got, expected );
 
-    test.case = 'check empty BufferNode';
+    test.case = 'check empty BufferNode instance';
     var got = _.constructorIsBuffer( BufferNode.alloc( 3 ) );
     var expected = false;
     test.identical( got, expected );
   }
 
-  /**/
+  /* BufferRaw */
 
-  test.case = 'check BufferRaw';
+  test.case = 'check BufferRaw constructor';
   var got = _.constructorIsBuffer( BufferRaw );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check empty BufferRaw';
+  test.case = 'check empty BufferRaw instance';
   var got = _.constructorIsBuffer( new BufferRaw( 3 ) );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'check BufferRawShared';
+  test.case = 'check BufferRawShared constructor';
   var got = _.constructorIsBuffer( BufferRawShared );
   var expected = false;
   test.identical( got, expected );
 
-  /**/
+  /* BufferView */
 
-  test.case = 'check BufferView';
+  test.case = 'check BufferView constructor';
   var got = _.constructorIsBuffer( BufferView );
   var expected = false;
   test.identical( got, expected );
