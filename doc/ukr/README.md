@@ -88,14 +88,14 @@
   <summary><a href="./concept/BufferView.md">
     Тип <code>BufferView</code>
   </a></summary>
-    Cтандартний нетипізований буфери для динамічного типізування даних `BufferRaw`.
+    Cтандартний нетипізований буфер для динамічного типізування даних `BufferRaw`.
 </details>
 
 <details>
   <summary><a href="./concept/BufferNode.md">
     Тип <code>BufferNode</code>
   </a></summary>
-    Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера з вбудованою можливістю доступу до них.
+    Нестандартна реалізація <code>NodeJS</code> нетипізованого буфера з вбудованою можливістю доступу до нього.
 </details>
 
 <details>

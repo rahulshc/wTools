@@ -624,11 +624,16 @@ function _entityIndex_functor( fop )
       {
         return _.select( e, selector );
       }
+      /* Dmytro : Note. Selector selects properties of entities. For example:
+      var got = ( 'str', '\*\/length' );
+      var exp = { 3 : 'str' };
+      test.identical( got, exp );
+      */
     }
 
     _.assert( arguments.length === 1 || arguments.length === 2 );
     _.assert( _.routineIs( onEach ) );
-    _.assert( src !== undefined, 'Expects src' );
+    _.assert( src !== undefined, 'Expects {-src-}' );
 
     /* */
 
