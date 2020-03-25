@@ -968,13 +968,13 @@ function strReplaceEnd( src, end, ins )
 // {
 //   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 //   _.assert( _.strIs( sub ) || _.longIs( sub ), 'Expects {-sub-} as string/array of strings' );
-// 
+//
 //   if( _.longIs( ins ) && _.longIs( sub ) )
 //   _.assert( ins.length === sub.length );
-// 
+//
 //   ins = _.arrayAs( ins );
 //   let result = _.arrayAs( src ).slice();
-// 
+//
 //   for( let k = 0 ; k < result.length ; k++ )
 //   for( let j = 0 ; j < ins.length ; j++ )
 //   if( _.strHas( result[ k ], ins[ j ] ) )
@@ -984,39 +984,39 @@ function strReplaceEnd( src, end, ins )
 //     result[ k ] = result[ k ].replace( ins[ j ], postfix );
 //     break;
 //   }
-// 
+//
 //   if( result.length === 1 && _.strIs( src ) )
 //   return result[ 0 ];
-// 
+//
 //   return result;
 // }
-// 
+//
 // function strReplace( src, ins, sub ) /* qqq2 : ask */
 // {
 //   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 //   _.assert( _.strsAreAll( sub ), 'Expects {-sub-} as string/array of strings' );
-// 
+//
 //   if( _.longIs( ins ) && _.longIs( sub ) )
 //   _.assert( ins.length === sub.length );
-// 
+//
 //   ins = _.arrayAs( ins );
 //   for( let i = 0 ; i < ins.length ; i++ )
 //   _.assert( ins[ i ] !== '', '{-ins-} should be a string with length' );
-// 
+//
 //   /* */
-// 
+//
 //   let result = _.arrayAs( src ).slice();
-// 
+//
 //   for( let k = 0 ; k < result.length ; k++ )
 //   result[ k ] = replaceRecurcive( result[ k ], 0 );
-// 
+//
 //   if( result.length === 1 && _.strIs( src ) )
 //   return result[ 0 ];
-// 
+//
 //   return result;
-// 
+//
 //   /* */
-// 
+//
 //   function replaceRecurcive( src, index )
 //   {
 //     for( let i = index ; i < ins.length ; i++ )
@@ -1024,22 +1024,24 @@ function strReplaceEnd( src, end, ins )
 //       if( _.strHas( src, ins[ i ] ) )
 //       {
 //         let postfix = _.longIs( sub ) ? sub[ i ] : sub;
-//         
+//
 //         let parts = src.split( ins[ i ] )
 //         if( index + 1 < ins.length )
 //         for( let i = 0 ; i < parts.length ; i++ )
 //         parts[ i ] = replaceRecurcive( parts[ i ], index + 1 )
-// 
+//
 //         return parts.join( postfix );
 //       }
 //     }
-//     
-//     return src;  
-//   } 
-// 
+//
+//     return src;
+//   }
+//
 // }
 
-function strReplace( src, ins, sub ) /* qqq2 : ask */
+/* qqq2 : poor implementation */
+
+function strReplace( src, ins, sub )
 {
   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
   _.assert( _.strsAreAll( sub ), 'Expects {-sub-} as string/array of strings' );
@@ -1069,10 +1071,10 @@ function strReplace( src, ins, sub ) /* qqq2 : ask */
         if( _.strIs( container[ l ] ) && _.strHas( container[ l ], insSrc ) )
         {
           let index, ins;
-          if( _.regexpIs( insSrc ) ) 
+          if( _.regexpIs( insSrc ) )
           {
             let entry = insSrc.exec( src ); // Dmytro : single searching of substring
-            index = entry.index;  
+            index = entry.index;
             ins = entry[ 0 ];
           }
           else
@@ -1091,8 +1093,8 @@ function strReplace( src, ins, sub ) /* qqq2 : ask */
 
             if( _.regexpIs( insSrc ) )
             {
-              let entry = insSrc.exec( src ); 
-              index = entry === null ? -1 : entry.index;  
+              let entry = insSrc.exec( src );
+              index = entry === null ? -1 : entry.index;
               ins = entry ? entry[ 0 ] : ins;
               _.assert( ins !== '', '{-ins-} should find string with length' );
             }

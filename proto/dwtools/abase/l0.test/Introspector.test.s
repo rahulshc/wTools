@@ -4,7 +4,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer2.s' );
+  let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
 }
 
@@ -74,7 +74,9 @@ function locationFromStackFrameWithoutLocationField( test )
     'fileName' : 'Introspector.test.s',
     'fileNameLineCol' : 'Introspector.test.s:48:79',
   }
+  debugger;
   var got = _.introspector.locationFromStackFrame( stackCall );
+  debugger;
   test.identical( got, exp );
 
   test.case = 'complex routineName and normalized path in parentheses';
@@ -2411,7 +2413,7 @@ var Self =
   tests :
   {
 
-    /* aaa : implement test routine for _.err */ 
+    /* aaa : implement test routine for _.err */
     /* Dmytro : implemented, routines in file Err.test.s */
 
     locationFromStackFrameWithoutLocationField,

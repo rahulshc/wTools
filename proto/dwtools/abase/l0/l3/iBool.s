@@ -55,6 +55,43 @@ function boolLikeTrue( src )
   return !!src;
 }
 
+//
+
+function fuzzyIs( src )
+{
+  return src === true || src === false || src === _.maybe;
+}
+
+//
+
+function fuzzyLike( src )
+{
+  if( src === _.maybe )
+  return true;
+  let type = Object.prototype.toString.call( src );
+  return type === '[object Boolean]' || type === '[object Number]';
+}
+
+//
+
+function fuzzyLikeFalse( src )
+{
+  if( !_.fuzzyLike( src ) )
+  return false;
+  return !src;
+}
+
+//
+
+function fuzzyLikeTrue( src )
+{
+  if( !_.fuzzyLike( src ) )
+  return false;
+  if( src == _.maybe )
+  return false;
+  return !!src;
+}
+
 // --
 // fields
 // --
@@ -70,10 +107,17 @@ let Fields =
 let Routines =
 {
 
+  /* qqq : cover and document all that ( not Dmytro ) */
+
   boolIs,
   boolLike,
   boolLikeFalse,
   boolLikeTrue,
+
+  fuzzyIs,
+  fuzzyLike,
+  fuzzyLikeFalse,
+  fuzzyLikeTrue,
 
 }
 

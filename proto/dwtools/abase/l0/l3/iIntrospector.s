@@ -7,7 +7,26 @@ let _ = _global_.wTools;
 let Self = _.introspector = _.introspector || Object.create( null );
 
 // --
-//
+// relation
+// --
+
+let Location =
+{
+  original : null,
+  filePath : null,
+  routineName : null,
+  routineAlias : null,
+  internal : null,
+  line : null,
+  col : null,
+  filePathLineCol : null,
+  routineFilePathLineCol : null,
+  fileName : null,
+  fileNameLineCol : null,
+}
+
+// --
+// routines
 // --
 
 function location( o )
@@ -41,7 +60,7 @@ function location( o )
   if( !( arguments.length === 0 || arguments.length === 1 ) )
   throw Error( 'Expects single argument or none' );
 
-  if( !( _.objectIs( o ) ) )
+  if( !_.mapIs( o ) )
   throw Error( 'Expects options map' );
 
   if( !o.level )
@@ -127,39 +146,316 @@ function locationFromStackFrame( o )
   if( !( arguments.length === 1 ) )
   throw Error( 'Expects single argument' );
 
-  if( !( _.objectIs( o ) ) )
+  if( !_.mapIs( o ) )
   throw Error( 'Expects options map' );
 
   if( !( _.strIs( o.stackFrame ) ) )
   throw Error( `Expects string {- stackFrame -}, but fot ${_.strType( o.stackFrame )}` );
+
+  if( o.location && !_.mapIs( o.location ) )
+  {
+    debugger;
+    throw Error( 'Expects map option::locaiotn' );
+  }
 
   /* */
 
   if( !o.location )
   o.location = Object.create( null );
 
-  // Dmytro : maybe it needs assertion :
-  // _.assert( _.mapLike( o.location ) ); // Dmytro : now o.location may be any extensional object, for example arrays
-
-  if( !o.location.original )
+  // if( !o.location.original )
   o.location.original = o.stackFrame;
 
-  let hadPath = !!o.location.filePath;
-  if( !o.location.filePath )
-  o.location.filePath = pathFromStack();
+  _.introspector.locationNormalize( o.location );
+
+  return o.location;
+
+  // let hadPath = !!o.location.filePath;
+  // if( !o.location.filePath )
+  // o.location.filePath = pathFromStack();
+  //
+  // pathCanonize();
+  // routineFromStack();
+  // routineAliasFromStack();
+  // internalForm();
+  //
+  // if( !_.strIs( o.location.filePath ) )
+  // return end();
+  //
+  // if( !_.numberIs( o.location.line ) )
+  // o.location.filePath = lineColFromPath( o.location.filePath );
+  //
+  // if( !_.numberIs( o.location.line ) && hadPath )
+  // {
+  //   let path = pathFromStack();
+  //   if( path )
+  //   lineColFromPath( path );
+  // }
+  //
+  // return end();
+  //
+  // /* */
+  //
+  // function end()
+  // {
+  //   let path = o.location.filePath;
+  //
+  //   /* filePathLineCol */
+  //
+  //   o.location.filePathLineCol = path || '';
+  //   if( _.numberIs( o.location.line ) )
+  //   {
+  //     o.location.filePathLineCol += ':' + o.location.line;
+  //     if( _.numberIs( o.location.col ) )
+  //     o.location.filePathLineCol += ':' + o.location.col;
+  //   }
+  //
+  //   /* routineFilePathLineCol */
+  //
+  //   if( o.location.routineName )
+  //   o.location.routineFilePathLineCol = o.location.routineName + ' @ ' + o.location.filePathLineCol;
+  //
+  //   /* fileName */
+  //
+  //   if( path )
+  //   {
+  //     let fileName = path;
+  //     _.assert( fileName.lastIndexOf );
+  //     let i1 = fileName.lastIndexOf( '/' );
+  //     let i2 = fileName.lastIndexOf( '\\' );
+  //     let i = Math.max( i1, i2 );
+  //     if( i !== -1 )
+  //     fileName = fileName.substr( i+1 );
+  //     o.location.fileName = fileName;
+  //   }
+  //
+  //   /* fileNameLineCol */
+  //
+  //   o.location.fileNameLineCol = o.location.fileName || '';
+  //   if( _.numberIs( o.location.line ) )
+  //   {
+  //     o.location.fileNameLineCol += ':' + o.location.line;
+  //     if( _.numberIs( o.location.col ) )
+  //     o.location.fileNameLineCol += ':' + o.location.col;
+  //   }
+  //
+  //   return o.location;
+  // }
+  //
+  // /* */
+  //
+  // function pathCanonize()
+  // {
+  //   if( !o.location.filePath )
+  //   return;
+  //
+  //   if( _.path && _.path.canonize )
+  //   o.location.filePath = _.path.canonize( o.location.filePath );
+  // }
+  //
+  // /* */
+  //
+  // function routineFromStack()
+  // {
+  //   let routineName;
+  //
+  //   if( o.location.routineName )
+  //   return o.location.routineName;
+  //
+  //   routineName = o.stackFrame;
+  //
+  //   if( !_.strIs( routineName ) ) // Dmytro : it is duplicated condition. The first is if( !_.strIs( o.stackFrame ) ) throw ...
+  //   return '{-anonymous-}';
+  //
+  //   routineName = routineName.replace( /at eval \(eval at/, '' );
+  //   let t = /^\s*(?:at\s+)?([\w\.<>]+)\s*.+/;
+  //   let executed = t.exec( routineName );
+  //   if( executed )
+  //   routineName = executed[ 1 ] || '';
+  //
+  //   routineName = routineName.replace( /<anonymous>/gm, '{-anonymous-}' );
+  //
+  //   if( _.strEnds( routineName, '.' ) )
+  //   routineName += '{-anonymous-}';
+  //
+  //   o.location.routineName = routineName;
+  //   return o.location.routineName;
+  // }
+  //
+  // /* */
+  //
+  // function routineAliasFromStack()
+  // {
+  //   let routineAlias;
+  //
+  //   if( o.location.routineAlias )
+  //   return o.location.routineAlias;
+  //
+  //   routineAlias = null;
+  //
+  //   let t = /\[as ([^\]]*)\]/;
+  //   let executed = t.exec( o.stackFrame );
+  //   if( executed )
+  //   routineAlias = executed[ 1 ] || null;
+  //
+  //   if( routineAlias )
+  //   routineAlias = routineAlias.replace( /<anonymous>/gm, '{-anonymous-}' );
+  //
+  //   o.location.routineAlias = routineAlias;
+  //   return o.location.routineAlias;
+  // }
+  //
+  // /* */
+  //
+  // function internalForm()
+  // {
+  //
+  //   if( _.numberIs( o.location.internal ) )
+  //   return;
+  //   // Dmytro : maybe, it need assertion o.location.internal <= 2
+  //
+  //   o.location.internal = 0;
+  //
+  //   if( o.location.routineName )
+  //   {
+  //     if( o.location.internal < 2 )
+  //     if( _.strBegins( o.location.routineName, '__' ) || o.location.routineName.indexOf( '.__' ) !== -1 )
+  //     o.location.internal = 2;
+  //     if( o.location.internal < 1 )
+  //     if( _.strBegins( o.location.routineName, '_' ) || o.location.routineName.indexOf( '._' ) !== -1 )
+  //     o.location.internal = 1;
+  //   }
+  //
+  //   if( o.location.routineAlias )
+  //   {
+  //     if( o.location.internal < 2 )
+  //     if( _.strBegins( o.location.routineAlias, '__' ) || o.location.routineAlias.indexOf( '.__' ) !== -1 )
+  //     o.location.internal = 2;
+  //     if( o.location.internal < 1 )
+  //     if( _.strBegins( o.location.routineAlias, '_' ) || o.location.routineAlias.indexOf( '._' ) !== -1 )
+  //     o.location.internal = 1;
+  //   }
+  //
+  //   if( o.location.filePath )
+  //   {
+  //     if( o.location.internal < 2 )
+  //     if( _.strBegins( o.location.filePath, 'internal/' ) )
+  //     o.location.internal = 2;
+  //   }
+  //
+  //   // if( o.location.routineAlias )
+  //   // splice |= stack[ 0 ].indexOf( '(vm.js:' ) !== -1;
+  //   // splice |= stack[ 0 ].indexOf( '(module.js:' ) !== -1;
+  //
+  // }
+  //
+  // /* */
+  //
+  // function pathFromStack()
+  // {
+  //   let path = o.stackFrame;
+  //
+  //   if( !_.strIs( path ) )
+  //   return;
+  //
+  //   path = path.replace( /^\s+/, '' );
+  //   path = path.replace( /^\w+@/, '' );
+  //   path = path.replace( /^at/, '' );
+  //   path = path.replace( /^\s+/, '' );
+  //   path = path.replace( /\s+$/, '' );
+  //
+  //   let regexp = /^.*\(([^\)]*)\).*$/;
+  //   var parsed = regexp.exec( path );
+  //   if( parsed )
+  //   path = parsed[ 1 ];
+  //
+  //   return path;
+  // }
+  //
+  // /* line / col number from path */
+  //
+  // function lineColFromPath( path )
+  // {
+  //
+  //   let lineNumber, colNumber;
+  //   let postfix = /(.+?):(\d+)(?::(\d+))?[^:/]*$/;
+  //   let parsed = postfix.exec( path );
+  //
+  //   if( parsed )
+  //   {
+  //     path = parsed[ 1 ];
+  //     lineNumber = parsed[ 2 ];
+  //     colNumber = parsed[ 3 ];
+  //   }
+  //
+  //   lineNumber = parseInt( lineNumber );
+  //   colNumber = parseInt( colNumber );
+  //
+  //   if( isNaN( o.location.line ) && !isNaN( lineNumber ) )
+  //   o.location.line = lineNumber;
+  //
+  //   if( isNaN( o.location.col ) && !isNaN( colNumber ) )
+  //   o.location.col = colNumber;
+  //
+  //   return path;
+  // }
+
+}
+
+locationFromStackFrame.defaults =
+{
+  stackFrame : null,
+  location : null,
+}
+
+//
+
+function locationNormalize( o )
+{
+
+  /* */
+
+  if( locationNormalize.defaults )
+  for( let e in o )
+  {
+    if( locationNormalize.defaults[ e ] === undefined )
+    throw Error( 'Unknown option ' + e );
+  }
+
+  if( locationNormalize.defaults )
+  for( let e in locationNormalize.defaults )
+  {
+    if( o[ e ] === undefined )
+    o[ e ] = locationNormalize.defaults[ e ];
+  }
+
+  if( !( arguments.length === 1 ) )
+  throw Error( 'Expects single argument' );
+
+  if( !_.mapIs( o ) )
+  throw Error( 'Expects options map' );
+
+  /* */
+
+  // if( !o.original )
+  // o.original = o.stackFrame;
+
+  let hadPath = !!o.filePath;
+  if( !o.filePath )
+  o.filePath = pathFromStack();
 
   pathCanonize();
   routineFromStack();
   routineAliasFromStack();
   internalForm();
 
-  if( !_.strIs( o.location.filePath ) )
+  if( !_.strIs( o.filePath ) )
   return end();
 
-  if( !_.numberIs( o.location.line ) )
-  o.location.filePath = lineColFromPath( o.location.filePath );
+  if( !_.numberIs( o.line ) )
+  o.filePath = lineColFromPath( o.filePath );
 
-  if( !_.numberIs( o.location.line ) && hadPath )
+  if( !_.numberIs( o.line ) && hadPath )
   {
     let path = pathFromStack();
     if( path )
@@ -172,22 +468,22 @@ function locationFromStackFrame( o )
 
   function end()
   {
-    let path = o.location.filePath;
+    let path = o.filePath;
 
     /* filePathLineCol */
 
-    o.location.filePathLineCol = path || '';
-    if( _.numberIs( o.location.line ) )
+    o.filePathLineCol = path || '';
+    if( _.numberIs( o.line ) )
     {
-      o.location.filePathLineCol += ':' + o.location.line;
-      if( _.numberIs( o.location.col ) )
-      o.location.filePathLineCol += ':' + o.location.col;
+      o.filePathLineCol += ':' + o.line;
+      if( _.numberIs( o.col ) )
+      o.filePathLineCol += ':' + o.col;
     }
 
     /* routineFilePathLineCol */
 
-    if( o.location.routineName )
-    o.location.routineFilePathLineCol = o.location.routineName + ' @ ' + o.location.filePathLineCol;
+    if( o.routineName )
+    o.routineFilePathLineCol = o.routineName + ' @ ' + o.filePathLineCol;
 
     /* fileName */
 
@@ -200,31 +496,31 @@ function locationFromStackFrame( o )
       let i = Math.max( i1, i2 );
       if( i !== -1 )
       fileName = fileName.substr( i+1 );
-      o.location.fileName = fileName;
+      o.fileName = fileName;
     }
 
     /* fileNameLineCol */
 
-    o.location.fileNameLineCol = o.location.fileName || '';
-    if( _.numberIs( o.location.line ) )
+    o.fileNameLineCol = o.fileName || '';
+    if( _.numberIs( o.line ) )
     {
-      o.location.fileNameLineCol += ':' + o.location.line;
-      if( _.numberIs( o.location.col ) )
-      o.location.fileNameLineCol += ':' + o.location.col;
+      o.fileNameLineCol += ':' + o.line;
+      if( _.numberIs( o.col ) )
+      o.fileNameLineCol += ':' + o.col;
     }
 
-    return o.location;
+    return o;
   }
 
   /* */
 
   function pathCanonize()
   {
-    if( !o.location.filePath )
+    if( !o.filePath )
     return;
 
     if( _.path && _.path.canonize )
-    o.location.filePath = _.path.canonize( o.location.filePath );
+    o.filePath = _.path.canonize( o.filePath );
   }
 
   /* */
@@ -233,10 +529,12 @@ function locationFromStackFrame( o )
   {
     let routineName;
 
-    if( o.location.routineName )
-    return o.location.routineName;
+    if( o.routineName )
+    return o.routineName;
+    if( !o.original )
+    return o.routineName;
 
-    routineName = o.stackFrame;
+    routineName = o.original;
 
     if( !_.strIs( routineName ) ) // Dmytro : it is duplicated condition. The first is if( !_.strIs( o.stackFrame ) ) throw ...
     return '{-anonymous-}';
@@ -252,8 +550,8 @@ function locationFromStackFrame( o )
     if( _.strEnds( routineName, '.' ) )
     routineName += '{-anonymous-}';
 
-    o.location.routineName = routineName;
-    return o.location.routineName;
+    o.routineName = routineName;
+    return o.routineName;
   }
 
   /* */
@@ -262,21 +560,23 @@ function locationFromStackFrame( o )
   {
     let routineAlias;
 
-    if( o.location.routineAlias )
-    return o.location.routineAlias;
+    if( o.routineAlias )
+    return o.routineAlias;
+    if( !o.original )
+    return o.routineAlias;
 
     routineAlias = null;
 
     let t = /\[as ([^\]]*)\]/;
-    let executed = t.exec( o.stackFrame );
+    let executed = t.exec( o.original );
     if( executed )
     routineAlias = executed[ 1 ] || null;
 
     if( routineAlias )
     routineAlias = routineAlias.replace( /<anonymous>/gm, '{-anonymous-}' );
 
-    o.location.routineAlias = routineAlias;
-    return o.location.routineAlias;
+    o.routineAlias = routineAlias;
+    return o.routineAlias;
   }
 
   /* */
@@ -284,40 +584,39 @@ function locationFromStackFrame( o )
   function internalForm()
   {
 
-    if( _.numberIs( o.location.internal ) )
+    if( _.numberIs( o.internal ) )
     return;
-    // Dmytro : maybe, it need assertion o.location.internal <= 2
 
-    o.location.internal = 0;
+    o.internal = 0;
 
-    if( o.location.routineName )
+    if( o.routineName )
     {
-      if( o.location.internal < 2 )
-      if( _.strBegins( o.location.routineName, '__' ) || o.location.routineName.indexOf( '.__' ) !== -1 )
-      o.location.internal = 2;
-      if( o.location.internal < 1 )
-      if( _.strBegins( o.location.routineName, '_' ) || o.location.routineName.indexOf( '._' ) !== -1 )
-      o.location.internal = 1;
+      if( o.internal < 2 )
+      if( _.strBegins( o.routineName, '__' ) || o.routineName.indexOf( '.__' ) !== -1 )
+      o.internal = 2;
+      if( o.internal < 1 )
+      if( _.strBegins( o.routineName, '_' ) || o.routineName.indexOf( '._' ) !== -1 )
+      o.internal = 1;
     }
 
-    if( o.location.routineAlias )
+    if( o.routineAlias )
     {
-      if( o.location.internal < 2 )
-      if( _.strBegins( o.location.routineAlias, '__' ) || o.location.routineAlias.indexOf( '.__' ) !== -1 )
-      o.location.internal = 2;
-      if( o.location.internal < 1 )
-      if( _.strBegins( o.location.routineAlias, '_' ) || o.location.routineAlias.indexOf( '._' ) !== -1 )
-      o.location.internal = 1;
+      if( o.internal < 2 )
+      if( _.strBegins( o.routineAlias, '__' ) || o.routineAlias.indexOf( '.__' ) !== -1 )
+      o.internal = 2;
+      if( o.internal < 1 )
+      if( _.strBegins( o.routineAlias, '_' ) || o.routineAlias.indexOf( '._' ) !== -1 )
+      o.internal = 1;
     }
 
-    if( o.location.filePath )
+    if( o.filePath )
     {
-      if( o.location.internal < 2 )
-      if( _.strBegins( o.location.filePath, 'internal/' ) )
-      o.location.internal = 2;
+      if( o.internal < 2 )
+      if( _.strBegins( o.filePath, 'internal/' ) )
+      o.internal = 2;
     }
 
-    // if( o.location.routineAlias )
+    // if( o.routineAlias )
     // splice |= stack[ 0 ].indexOf( '(vm.js:' ) !== -1;
     // splice |= stack[ 0 ].indexOf( '(module.js:' ) !== -1;
 
@@ -327,7 +626,7 @@ function locationFromStackFrame( o )
 
   function pathFromStack()
   {
-    let path = o.stackFrame;
+    let path = o.original;
 
     if( !_.strIs( path ) )
     return;
@@ -365,21 +664,68 @@ function locationFromStackFrame( o )
     lineNumber = parseInt( lineNumber );
     colNumber = parseInt( colNumber );
 
-    if( isNaN( o.location.line ) && !isNaN( lineNumber ) )
-    o.location.line = lineNumber;
+    if( isNaN( o.line ) || o.line === null )
+    if( !isNaN( lineNumber ) )
+    o.line = lineNumber;
 
-    if( isNaN( o.location.col ) && !isNaN( colNumber ) )
-    o.location.col = colNumber;
+    if( isNaN( o.col ) || o.col === null )
+    if( !isNaN( colNumber ) )
+    o.col = colNumber;
 
     return path;
   }
 
 }
 
-locationFromStackFrame.defaults =
+locationNormalize.defaults =
 {
-  stackFrame : null,
-  location : null,
+  ... Location,
+}
+
+//
+
+function locationToStack( o )
+{
+
+  /* */
+
+  if( locationNormalize.defaults )
+  for( let e in o )
+  {
+    if( locationNormalize.defaults[ e ] === undefined )
+    throw Error( `Location does not have field ${e}` );
+  }
+
+  if( !( arguments.length === 1 ) )
+  throw Error( 'Expects single argument' );
+
+  if( !_.mapIs( o ) )
+  throw Error( 'Expects options map' );
+
+  /* */
+
+  _.assertMapHasOnly( o, locationToStack.defaults );
+  _.introspector.locationNormalize( o );
+
+  // original : null,
+  // filePath : null,
+  // routineName : null,
+  // routineAlias : null,
+  // internal : null,
+  // line : null,
+  // col : null,
+  // filePathLineCol : null,
+  // routineFilePathLineCol : null,
+  // fileName : null,
+  // fileNameLineCol : null,
+
+  debugger; xxx
+
+}
+
+locationToStack.defaults =
+{
+  ... Location,
 }
 
 //
@@ -701,14 +1047,18 @@ function code()
 let Extnesion =
 {
 
-  // stack
+  Location,
 
   location,
   locationFromStackFrame,
+  locationNormalize,
+  locationToStack,
+
   stack,
   stackRemoveLeft,
   stackCondense,
   stackFilter,
+
   code,
 
 }
