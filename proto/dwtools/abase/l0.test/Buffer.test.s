@@ -10770,6 +10770,72 @@ function bufferJoin( test )
 
 //
 
+function bufferMove( test )
+{
+
+  test.case = 'dst - array, src - array';
+  var dst = [ 1, 2, 3, 4 ];
+  var src = [ 1, 2, 3, 4 ];
+  var got = _.bufferMove( dst, src );
+  test.identical( got, src );
+  test.is( got !== src );
+
+  test.case = 'dst - array, src - U8x';
+  var dst = [ 0, 2, 3 ];
+  var src = new U8x( [ 1, 2, 3 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+
+  test.case = 'dst - array, src - U16x';
+  var dst = [ 0, 2, 3 ];
+  var src = new U16x( [ 1, 2, 3 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+
+  test.case = ' identical dst - U16x, src - I16x';
+  var dst = new U16x( [ 1, 2, 3 ] );
+  var src = new I16x( [ 1, 2, 3 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new U16x( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+
+  test.case = 'dst - I16x, src - U16x';
+  var dst = new I16x( [ 1, 2, 3 ] );
+  var src = new U16x( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new I16x( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+
+  test.case = 'dst - U16x, src - I16x';
+  var dst = new U16x( [ 4, 5, 6 ] );
+  var src = new I16x( [ 1, 2, 3 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new U16x( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferMove() );
+
+  test.case = 'extra arguments ';
+  test.shouldThrowErrorSync( () => _.bufferMove( dst, src, 'extra' ) );
+
+  test.case = '"dst" and "src" must have same length';
+  var dst = new BufferRaw( [ 1, 2, 3 ] );
+  var src = [ 1, 2, 3 ];
+  test.shouldThrowErrorSync( () => _.bufferMove( dst, src ) );
+
+}
+
+//
+
 function bufferLeft( test )
 {
   /* constructors */
@@ -10978,6 +11044,7 @@ var Self =
     bufferRetype,
 
     bufferJoin,
+    bufferMove,
 
     bufferLeft,
     bufferRight,
