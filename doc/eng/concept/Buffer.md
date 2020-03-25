@@ -14,7 +14,7 @@ A buffer can have size and length. The size measures in bytes, and length measur
 
 ### Buffers `BufferView`
 
-[Type `BufferView`](BufferView.md) ( `DataView` ) is a standard untyped buffers that types data of `BufferRaw` dynamically. The type `BufferView` has only one implementation, it is `BufferView` (`DataView`). Buffers of the type `BufferView` as well as` BufferTyped` do not have data but represent data that are in the associated buffer `BufferRaw`. Unlike `BufferTyped`, the type `BufferView` does not type elements statically but provides methods for dynamically typing of data into any numeric primitive.
+[Type `BufferView`](BufferView.md) ( `DataView` ) is a standard untyped buffers that type data of `BufferRaw` dynamically. The type `BufferView` has only one implementation, it is `BufferView` (`DataView`). Buffers of the type `BufferView` as well as` BufferTyped` do not have data but represent data that are in the associated buffer `BufferRaw`. Unlike `BufferTyped`, the type `BufferView` does not type elements statically but provides methods for dynamically typing of data into any numeric primitive.
 
 ### Buffers `BufferNode`
 
