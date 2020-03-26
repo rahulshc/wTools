@@ -719,6 +719,9 @@ function locationToStack( o )
   // fileName : null,
   // fileNameLineCol : null,
 
+  if( !o.filePathLineCol )
+  return null;
+
   debugger; xxx
 
 }

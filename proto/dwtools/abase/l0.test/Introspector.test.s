@@ -74,9 +74,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'fileName' : 'Introspector.test.s',
     'fileNameLineCol' : 'Introspector.test.s:48:79',
   }
-  debugger;
   var got = _.introspector.locationFromStackFrame( stackCall );
-  debugger;
   test.identical( got, exp );
 
   test.case = 'complex routineName and normalized path in parentheses';

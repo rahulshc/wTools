@@ -383,16 +383,16 @@ function _err( o )
 
       /* qqq : cover each if-branch. ask how to. *difficult problem* */
 
-      // if( !o.throwenCallsStack )
-      // if( o.throwenLocation )
-      // o.throwenCallsStack = _.introspector.locationToStack( o.throwenLocation );
+      if( !o.throwenCallsStack )
+      if( o.throwenLocation )
+      o.throwenCallsStack = _.introspector.locationToStack( o.throwenLocation );
       if( !o.throwenCallsStack )
       o.throwenCallsStack = _.errOriginalStack( resultError );
       if( !o.throwenCallsStack )
       o.throwenCallsStack = _.introspector.stack([ ( o.level || 0 ) + 1, Infinity ]);
 
-      // if( !o.caughtCallsStack && o.caughtLocation )
-      // o.caughtCallsStack = _.introspector.locationToStack( o.caughtLocation );
+      if( !o.caughtCallsStack && o.caughtLocation )
+      o.caughtCallsStack = _.introspector.locationToStack( o.caughtLocation );
       if( !o.caughtCallsStack )
       o.caughtCallsStack = _.introspector.stack( o.caughtCallsStack, [ ( o.level || 0 ) + 1, Infinity ] );
 
@@ -1162,7 +1162,6 @@ function _errLog( err )
   if( err && err.debugging )
   debugger;
 
-  // debugger;
   if( _.routineIs( err.toString ) )
   {
     let str = err.toString();
