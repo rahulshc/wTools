@@ -20,6 +20,8 @@ function _errUncaughtHandler2( err, kind )
 
   /* */
 
+  debugger;
+
   consoleUnbar();
   attend( err );
 
@@ -52,6 +54,7 @@ function _errUncaughtHandler2( err, kind )
 
   function errLog()
   {
+    debugger;
     try
     {
       err = _.errProcess( err );
@@ -165,18 +168,19 @@ function _setupUncaughtErrorHandler9()
 
   function _errPreBrowser( args )
   {
-    let message, sourcePath, lineno, colno, error = args;
+    let [ message, sourcePath, lineno, colno, error ] = args;
     let err = error || message;
 
+    debugger;
     if( _._err )
     err = _._err
     ({
       args : [ error ],
       level : 1,
       fallBackStack : 'at handleError @ ' + sourcePath + ':' + lineno,
-      location :
+      throwenLocation :
       {
-        path : sourcePath,
+        filePath : sourcePath,
         line : lineno,
         col : colno,
       },

@@ -225,10 +225,6 @@ function _err( o )
   if( o.level === undefined || o.level === null )
   o.level = null;
 
-  if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
-  if( _.debuggerEnabled )
-  debugger;
-
   /* let */
 
   let sections;
@@ -242,6 +238,15 @@ function _err( o )
   let logged = false;
   let beautifiedStack = '';
   let message = null;
+
+  /* debugger */
+
+  if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
+  if( _.debuggerEnabled )
+  debugger;
+  if( _global_.debugger )
+  debugger;
+  debugger;
 
   /* algorithm */
 
@@ -349,7 +354,11 @@ function _err( o )
       try
       {
         debugger;
-        o.throwenLocation = _.introspector.location({ error : arg, location : o.throwenLocation });
+        o.throwenLocation = _.introspector.location
+        ({
+          error : arg,
+          location : o.throwenLocation,
+        });
         debugger;
       }
       catch( err2 )
@@ -372,23 +381,26 @@ function _err( o )
     if( resultError )
     {
 
+      /* qqq : cover each if-branch. ask how to. *difficult problem* */
+
+      if( !o.throwenCallsStack )
+      if( o.throwenLocation )
+      o.throwenCallsStack = _.introspector.locationToStack( o.throwenLocation );
       if( !o.throwenCallsStack )
       o.throwenCallsStack = _.errOriginalStack( resultError );
       if( !o.throwenCallsStack )
       o.throwenCallsStack = _.introspector.stack([ ( o.level || 0 ) + 1, Infinity ]);
 
+      if( !o.caughtCallsStack && o.caughtLocation )
+      o.caughtCallsStack = _.introspector.locationToStack( o.caughtLocation );
       if( !o.caughtCallsStack )
-      {
-        o.caughtCallsStack = _.introspector.stack( o.caughtCallsStack, [ ( o.level || 0 ) + 1, Infinity ] );
-      }
+      o.caughtCallsStack = _.introspector.stack( o.caughtCallsStack, [ ( o.level || 0 ) + 1, Infinity ] );
+
       if( !o.throwenCallsStack && o.caughtCallsStack )
-      {
-        o.throwenCallsStack = o.caughtCallsStack;
-      }
+      o.throwenCallsStack = o.caughtCallsStack;
       if( !o.throwenCallsStack )
-      {
-        o.throwenCallsStack = _.introspector.stack( resultError, [ ( o.level || 0 ) + 1, Infinity ] );
-      }
+      o.throwenCallsStack = _.introspector.stack( resultError, [ ( o.level || 0 ) + 1, Infinity ] );
+
       o.level = 0;
 
     }
@@ -1150,7 +1162,6 @@ function _errLog( err )
   if( err && err.debugging )
   debugger;
 
-  debugger;
   if( _.routineIs( err.toString ) )
   {
     let str = err.toString();

@@ -4,7 +4,7 @@
 
 if( typeof module !== 'undefined' )
 {
-  let _ = require( '../Layer2.s' );
+  let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
 }
 
@@ -2411,7 +2411,7 @@ var Self =
   tests :
   {
 
-    /* aaa : implement test routine for _.err */ 
+    /* aaa : implement test routine for _.err */
     /* Dmytro : implemented, routines in file Err.test.s */
 
     locationFromStackFrameWithoutLocationField,

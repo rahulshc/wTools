@@ -25,7 +25,35 @@
   <summary><a href="./concept/TypeRange.md">
     Type <code>Range</code>
   </a></summary>
-    <code>Range</code> is a complex data type - a pair of numbers that defines a sequence. 
+    <code>Range</code> is a complex data type - a pair of numbers that defines a sequence.
+</details>
+
+<details>
+  <summary><a href="./concept/Buffer.md">
+    Buffer types
+  </a></summary>
+    Entities for storing and processing binary data.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferRaw.md">
+    Type <code>BufferRaw</code>
+  </a></summary>
+    Standard untyped buffer, a raw data buffer that is not intended to access data by this object directly but to be used by other buffers as a data container.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferTyped.md">
+    Type <code>BufferTyped</code>
+  </a></summary>
+    Standard typed buffers.
+</details>
+
+<details>
+  <summary><a href="./concept/BufferNode.md">
+    Type <code>BufferNode</code>
+  </a></summary>
+    Non-standard implementation of untyped buffer with built-in access to buffer data.
 </details>
 
 <details>
