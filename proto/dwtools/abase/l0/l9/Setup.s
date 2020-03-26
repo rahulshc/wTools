@@ -20,6 +20,8 @@ function _errUncaughtHandler2( err, kind )
 
   /* */
 
+  debugger;
+
   consoleUnbar();
   attend( err );
 
@@ -52,6 +54,7 @@ function _errUncaughtHandler2( err, kind )
 
   function errLog()
   {
+    debugger;
     try
     {
       err = _.errProcess( err );
@@ -177,7 +180,7 @@ function _setupUncaughtErrorHandler9()
       fallBackStack : 'at handleError @ ' + sourcePath + ':' + lineno,
       throwenLocation :
       {
-        path : sourcePath,
+        filePath : sourcePath,
         line : lineno,
         col : colno,
       },
