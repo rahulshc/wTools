@@ -10773,48 +10773,337 @@ function bufferJoin( test )
 function bufferMove( test )
 {
 
-  test.case = 'dst - array, src - array';
-  var dst = [ 1, 2, 3, 4 ];
-  var src = [ 1, 2, 3, 4 ];
+  /* Long */
+
+  test.case = 'to dst - empty array from src - empty array';
+  var dst = [ ];
+  var src = [ ];
   var got = _.bufferMove( dst, src );
   test.identical( got, src );
-  test.is( got !== src );
+  test.is( got === dst );
 
-  test.case = 'dst - array, src - U8x';
+  test.case = 'to dst - array from src - array';
+  var dst = [ 1, 2, 3 ];
+  var src = [ 4, 5, 6 ];
+  var got = _.bufferMove( dst, src );
+  var expected = [ 4, 5, 6 ];
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - array from src - unroll';
+  var dst = [ 1, 2, 3 ];
+  var src = _.unrollMake( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  test.is( got === dst );
+
+  test.case = 'to dst - array from src - argumentsArray';
+  var dst = [ 1 ];
+  var src = _.argumentsArrayMake( [ 3 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = [ 3 ];
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /**/
+
+  test.case = 'to dst - array from src - U8x';
   var dst = [ 0, 2, 3 ];
   var src = new U8x( [ 1, 2, 3 ] );
   var got = _.bufferMove( dst, src );
   var expected = [ 1, 2, 3 ];
   test.identical( got, expected );
+  test.is( got === dst );
 
-  test.case = 'dst - array, src - U16x';
+  test.case = 'to dst - array from src - F32x';
   var dst = [ 0, 2, 3 ];
-  var src = new U16x( [ 1, 2, 3 ] );
+  var src = new F32x( [ 1, 2, 3 ] );
   var got = _.bufferMove( dst, src );
   var expected = [ 1, 2, 3 ];
   test.identical( got, expected );
+  test.is( got === dst );
 
-  test.case = ' identical dst - U16x, src - I16x';
-  var dst = new U16x( [ 1, 2, 3 ] );
-  var src = new I16x( [ 1, 2, 3 ] );
+  test.case = 'to dst - array from src - I64x';
+  var dst = [ 0, 2, 3 ];
+  var src = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) ); //1n, 2n, 3n
   var got = _.bufferMove( dst, src );
-  var expected = new U16x( [ 1, 2, 3 ] );
+  var expected = [ 1, 2, 3 ];
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /* unroll */
+
+  test.case = 'to dst - unroll from src - array';
+  var dst = _.unrollMake( [ 1, 2, 3 ] );
+  var src = [ 4, 5, 6 ];
+  var got = _.bufferMove( dst, src );
+  var expected = _.unrollMake( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - empty unroll from src - empty unroll';
+  var dst = _.unrollMake( [ ] );
+  var src = _.unrollMake( [ ] );
+  var got = _.bufferMove( dst, src );
+  var expected = _.unrollMake( [  ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - empty unroll from src - empty unroll';
+  var dst = _.unrollMake( [ ] );
+  var src = _.unrollMake( [ ] );
+  var got = _.bufferMove( dst, src );
+  var expected = _.unrollMake( [ ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - unroll from src - argumentsArray';
+  var dst = _.unrollMake( [ 1, 2, 3 ] );
+  var src = _.argumentsArrayMake( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = _.unrollMake( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /**/
+
+  test.case = 'to dst - unroll from src - U8x';
+  var dst = _.unrollMake( [ 1, 2, 3 ] );
+  var src = new U8x( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = _.unrollMake( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - unroll from src - F32x';
+  var dst = _.unrollMake( [ 1, 2, 3 ] );
+  var src = new F32x( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = _.unrollMake( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - unroll from src - I64x';
+  var dst = _.unrollMake( [ 1, 2, 3 ] );
+  var src = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) ); //1n, 2n, 3n
+  var got = _.bufferMove( dst, src );
+  var expected = _.unrollMake( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /* argumentsArray */
+
+  test.case = 'to dst - argumentsArray from src - array';
+  var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
+  var src = [ 1, 2, 3 ];
+  var got = _.bufferMove( dst, src );
+  var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst argumentsArray from src - unroll';
+  var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
+  var src = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - empty argumentsArray from src - empty argumentsArray';
+  var dst = _.argumentsArrayMake( [ ] );
+  var src = _.argumentsArrayMake( [ ] );
+  var got = _.bufferMove( dst, src );
+  var expected = _.argumentsArrayMake( [ ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /**/
+
+  test.case = 'to dst - argumentsArray array from src - empty U8x';
+  var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
+  var src = new U8x( [ 1, 2, 3 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - argumentsArray from src - U8x';
+  var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
+  var src = new U8x( [ 1, 2, 3 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - argumentsArray from src - F32x';
+  var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
+  var src = new F32x( [ 1, 2, 3 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - argumentsArray from src - I64x';
+  var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
+  var src = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) ); //1n, 2n, 3n
+  var got = _.bufferMove( dst, src );
+  var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /* U8x */
+
+  test.case = 'to dst - U8x from src - array';
+  var dst = new U8x( [ 1, 2, 3 ] );
+  var src = [ 4, 5, 6 ];
+  var got = _.bufferMove( dst, src );
+  var expected = new U8x( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - U8x from src - unroll';
+  var dst = new U8x( [ 1, 2, 3 ] );
+  var src = _.unrollMake( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new U8x( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - U8x from src - argumentsArray';
+  var dst = new U8x( [ 1, 2, 3 ] );
+  var src = _.argumentsArrayMake( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new U8x( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /**/
+
+  test.case = 'to dst - empty U8x from src - empty U8x';
+  var dst = new U8x( [ ] );
+  var src = new U8x( [ ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new U8x( [ ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - U8x from src - F32x';
+  var dst = new U8x( [ 1, 2, 3 ] );
+  var src = new F32x( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new U8x( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - U8x from src - I64x';
+  var dst = new U8x( [ 1, 2, 3 ] );
+  var src = new I64x( _.bigIntsFrom( [ 4, 5, 6 ] ) );
+  var got = _.bufferMove( dst, src );
+  var expected = new U8x( [ 4, 5, 6 ] );
   test.identical( got, expected );
 
-  test.case = 'dst - I16x, src - U16x';
-  var dst = new I16x( [ 1, 2, 3 ] );
-  var src = new U16x( [ 4, 5, 6 ] );
-  var got = _.bufferMove( dst, src );
-  var expected = new I16x( [ 4, 5, 6 ] );
-  test.identical( got, expected );
+  /* F32x */
 
-  test.case = 'dst - U16x, src - I16x';
-  var dst = new U16x( [ 4, 5, 6 ] );
-  var src = new I16x( [ 1, 2, 3 ] );
+  test.case = 'to dst - F32x from src - array';
+  var dst = new F32x( [ 1, 2, 3 ] );
+  var src = [ 4, 5, 6 ];
   var got = _.bufferMove( dst, src );
-  var expected = new U16x( [ 1, 2, 3 ] );
+  var expected = new F32x( [ 4, 5, 6 ] );
   test.identical( got, expected );
+  test.is( got === dst );
 
+  test.case = 'to dst - F32x from src - unroll';
+  var dst = new F32x( [ 1, 2, 3 ] );
+  var src = _.unrollMake( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new F32x( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - F32x from src - argumentsArray';
+  var dst = new F32x( [ 1, 2, 3 ] );
+  var src = _.argumentsArrayMake( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new F32x( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /**/
+
+  test.case = 'to dst - F32x from src - U8x';
+  var dst = new F32x( [ 1, 2, 3 ] );
+  var src = new U8x( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new F32x( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - empty F32x from src - empty F32x';
+  var dst = new F32x( [ ] );
+  var src = new F32x( [ ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new F32x( [ ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - F32x from src - I64x';
+  var dst = new F32x( [ 1, 2, 3 ] );
+  var src = new I64x( _.bigIntsFrom( [ 4, 5, 6 ] ) );
+  var got = _.bufferMove( dst, src );
+  var expected = new F32x( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /* I64x */
+
+  test.case = 'to dst - I64x from src - array';
+  var dst = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
+  var src = [ 4, 5, 6 ];
+  var got = _.bufferMove( dst, src );
+  var expected = new I64x( _.bigIntsFrom( [ 4, 5, 6 ] ) );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - I64x from src - unroll';
+  var dst = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
+  var src = _.unrollMake( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new I64x( _.bigIntsFrom( [ 4, 5, 6 ] ) );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - I64x from src - argumentsArray';
+  var dst = new I64x( [ 1, 2, 3 ] );
+  var src = _.argumentsArrayMake( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new I64x( [ 4, 5, 6 ] );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  /**/
+
+  test.case = 'to dst - I64x from src - U8x';
+  var dst = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
+  var src = new U8x( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new I64x( _.bigIntsFrom( [ 4, 5, 6 ] ) );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - I64x from src - F32x';
+  var dst = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) );
+  var src = new F32x( [ 4, 5, 6 ] );
+  var got = _.bufferMove( dst, src );
+  var expected = new I64x( _.bigIntsFrom( [ 4, 5, 6 ] ) );
+  test.identical( got, expected );
+  test.is( got === dst );
+
+  test.case = 'to dst - empty I64x from src - empty I64x';
+  var dst = new I64x( _.bigIntsFrom( [ ] ) );
+  var src = new I64x( _.bigIntsFrom( [ ] ) );
+  var got = _.bufferMove( dst, src );
+  var expected = new I64x( _.bigIntsFrom( [ ] ) );
+  test.identical( got, expected );
+  test.is( got === dst );
 
   /**/
 
@@ -10828,9 +11117,12 @@ function bufferMove( test )
   test.shouldThrowErrorSync( () => _.bufferMove( dst, src, 'extra' ) );
 
   test.case = '"dst" and "src" must have same length';
-  var dst = new BufferRaw( [ 1, 2, 3 ] );
+  var dst = [ 1, 2, 3, 4 ] ;
   var src = [ 1, 2, 3 ];
   test.shouldThrowErrorSync( () => _.bufferMove( dst, src ) );
+
+  test.case = 'wrong type';
+  test.shouldThrowErrorSync( () => _.bufferMove( 'wrong' ) );
 
 }
 
