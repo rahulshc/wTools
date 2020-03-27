@@ -5909,7 +5909,8 @@ function mapOwnButThreeArguments_( test )
   srcMap.aa = 1;
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
   var got = _.mapOwnBut_( srcMap, screenMap );
-  var expected = { aa : 1 };
+  var expected =Object.create( { bb : 2, cc : 3 } );
+  expected.aa = 1;
   test.identical( got, expected );
   test.is( got === srcMap );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
@@ -5917,19 +5918,20 @@ function mapOwnButThreeArguments_( test )
   test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
-  var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
+  var screenMap = [ { 'a' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOwnBut_( srcMap, screenMap );
-  var expected = { aa : 1 };
+  var expected = Object.create( { bb : 2, cc : 3 } );
+  expected.aa = 1;
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
+  test.identical( screenMap, [ { 'a' : 0 }, { 'bb' : 1 } ] );
 
   test.case = 'srcMap - filled map has not own property, butMap - filled array, not identical keys';
   var srcMap = Object.create( { bb : 2, cc : 3 } );
   srcMap.aa = 1;
   var screenMap = [ { 'aa' : 0 }, { 'bb' : 1 } ];
   var got = _.mapOwnBut_( srcMap, screenMap );
-  var expected = {};
+  var expected = Object.create( { bb : 2, cc : 3 } );
   test.identical( got, expected );
   test.is( got === srcMap );
   test.identical( screenMap, [ { 'aa' : 0 }, { 'bb' : 1 } ] );
@@ -5939,7 +5941,7 @@ function mapOwnButThreeArguments_( test )
   srcMap.a = 1;
   var screenMap = { a : 1, b : 77, c : 3, d : 'name' };
   var got = _.mapOwnBut_( srcMap, screenMap );
-  var expected = {};
+  var expected = Object.create( { bb : 2, cc : 3 } );
   test.identical( got, expected );
   test.is( got === srcMap );
   test.identical( screenMap, { a : 1, b : 77, c : 3, d : 'name' } );
@@ -5949,7 +5951,7 @@ function mapOwnButThreeArguments_( test )
   srcMap.a = 1;
   var screenMap = [ { 'a' : 0 }, { 'b' : 1 } ];
   var got = _.mapOwnBut_( srcMap, screenMap );
-  var expected = {};
+  var expected = Object.create( { bb : 2, cc : 3 } );
   test.identical( got, expected );
   test.is( got === srcMap );
   test.identical( screenMap, [ { 'a' : 0 }, { 'b' : 1 } ] );
