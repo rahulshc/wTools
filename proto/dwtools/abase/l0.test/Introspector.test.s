@@ -1038,16 +1038,6 @@ function locationFromStackFrameWithoutLocationField( test )
 
 function locationFromStackFrameWithLocationField( test )
 {
-  test.case = 'o.location is an array, o.location as not a map';
-  var location = [];
-  var stackCall = 'at Object.stackBasic (C:\\dir\\Introspector.test.s:48:79)';
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
-  test.identical( got.original, 'at Object.stackBasic (C:\\dir\\Introspector.test.s:48:79)' );
-  test.identical( got.filePath, '/C/dir/Introspector.test.s' );
-  test.is( _.arrayIs( got ) );
-
-  /* */
-
   test.case = 'o.location has original field different to stackFrame';
   var location =
   {
@@ -1056,7 +1046,7 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at Object.stackBasic (C:\\dir\\Introspector.test.s:48:79)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/Introspector.test.s)',
+    'original' : 'at Object.stackBasic (C:\\dir\\Introspector.test.s:48:79)',
     'filePath' : '/C/dir/Introspector.test.s',
     'routineName' : 'Object.stackBasic',
     'routineAlias' : null,
@@ -1082,7 +1072,8 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/Introspector.test.s)',
+    // 'original' : 'at stackBasic (/C/dir/Introspector.test.s)',
+    'original' : 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)',
     'filePath' : '/C/dir/Introspector.test.s',
     'routineName' : 'Object.stackBasic',
     'routineAlias' : null,
@@ -1108,7 +1099,8 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at iteration (C:\\dir\\File.js:5:47)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    'original' : 'at iteration (C:\\dir\\File.js:5:47)',
     'filePath' : '/C/dir/(Introspector.test.s)',
     'routineName' : 'iteration',
     'routineAlias' : null,
@@ -1135,7 +1127,8 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at iteration (/C/dir/File.js:5:47)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    'original' : 'at iteration (/C/dir/File.js:5:47)',
     'filePath' : '/C/dir/(Introspector.test.s)',
     'routineName' : 'iteration',
     'routineAlias' : null,
@@ -1162,7 +1155,8 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at _iteration (C:\\dir\\File.js:5:47)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    'original' : 'at _iteration (C:\\dir\\File.js:5:47)',
     'filePath' : '/C/dir/(Introspector.test.s)',
     'routineName' : '_routine',
     'routineAlias' : null,
@@ -1189,7 +1183,8 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at __iteration (C:\\dir\\File.js:5:47)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    'original' : 'at __iteration (C:\\dir\\File.js:5:47)',
     'filePath' : '/C/dir/(Introspector.test.s)',
     'routineName' : '__routine.',
     'routineAlias' : null,
@@ -1216,7 +1211,8 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    'original' : 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)',
     'filePath' : '/C/dir/(Introspector.test.s)',
     'routineName' : '__routine..',
     'routineAlias' : null,
@@ -1242,7 +1238,8 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence._handle_Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    'original' : 'at wConsequence._handle_Now (C:\\dir\\File.js:5:15)',
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence._handle_Now',
     'routineAlias' : null,
@@ -1265,10 +1262,11 @@ function locationFromStackFrameWithLocationField( test )
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
     internal : 0
   }
-  var stackCall ='at wConsequence.__handle_Now (C:\\dir\\File.js:5:15)';
+  var stackCall = 'at wConsequence.__handle_Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    'original' : 'at wConsequence.__handle_Now (C:\\dir\\File.js:5:15)',
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.__handle_Now',
     'routineAlias' : null,
@@ -1294,7 +1292,8 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence.handle__Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    'original' : 'at wConsequence.handle__Now (C:\\dir\\File.js:5:15)',
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.handle__Now',
     'routineAlias' : null,
@@ -1320,7 +1319,8 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
+    'original' : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
     'filePath' : 'internal/index.js',
     'routineName' : 'wConsequence._handle__Now',
     'routineAlias' : null,
@@ -1342,6 +1342,7 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
+    // 'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
     'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.__handle__Now',
@@ -1364,6 +1365,7 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)';
   var exp =
   {
+    // 'original' : 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)',
     'original' : 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)',
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.{-anonymous-}',
@@ -1470,6 +1472,7 @@ function locationFromStackFrameWithLocationField( test )
     'routineAlias' : '_time',
     'internal' : 2,
     'line' : 1,
+    'col' : null,
     'filePathLineCol' : 'internal/timers.js:1',
     'routineFilePathLineCol' : 'Object.__time @ internal/timers.js:1',
     'fileName' : 'timers.js',
@@ -1559,6 +1562,12 @@ function locationFromStackFrameWithLocationField( test )
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
   test.identical( got, exp );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'o.location is an array, o.location as not a map';
+  test.shouldThrowErrorSync( () => _.introspector.locationFromStackFrame( { stackFrame : 'at Object.stackBasic', location : [] } ) );
 }
 
 //
