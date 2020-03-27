@@ -7606,10 +7606,10 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap.a = 'abc';
   var screenMap = {};
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
+  var expected = Object.create( { d : 'name', c : 33 } );
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, {} );
+  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
   test.identical( screenMap, {} );
 
   test.case = 'screenMap - empty array';
@@ -7617,10 +7617,10 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap.a = 'abc';
   var screenMap = [];
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
+  var expected = Object.create( { d : 'name', c : 33 } );
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, {} );
+  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
   test.identical( screenMap, [] );
 
   test.case = 'only srcMap';
@@ -7630,17 +7630,18 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.is( got !== srcMap );
-  test.identical( srcMap, { a : 'abc' } );
+  test.contains( srcMap, { a : 'abc' } );
 
   test.case = 'all keys in srcMap exists in screenMap - map';
   var srcMap = Object.create( { d : 'name', c : 33 } );
   srcMap.a = 'abc';
   var screenMap = { a : 13, b : 77, c : 3, d : 'name' };
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = { a : 'abc' };
+  var expected = Object.create( { d : 'name', c : 33 } );
+  expected.a = 'abc';
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, { a : 'abc' } );
+  test.contains( srcMap, { a : 'abc' } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -7648,10 +7649,11 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap.a = 'abc';
   var screenMap = [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ];
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = { a : 'abc' };
+  var expected = Object.create( { d : 'name', c : 33 } );
+  expected.a = 'abc';
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, { a : 'abc' } );
+  test.contains( srcMap, { a : 'abc' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -7659,10 +7661,10 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap.a = 'abc';
   var screenMap = { aa : 13, bb : 77, cc : 3, dd : 'name' };
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
+  var expected = Object.create( { d : 'name', c : 33 } );
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, {} );
+  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.case = 'none keys in srcMap exists in screenMap - array';
@@ -7670,10 +7672,10 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap.a = 'abc';
   var screenMap = [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ];
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = {};
+  var expected = Object.create( { d : 'name', c : 33 } );
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, {} );
+  test.identical( srcMap, Object.create( { d : 'name', c : 33 } ) );
   test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
@@ -7681,10 +7683,11 @@ function mapOnlyOwnTwoArguments_( test )
   srcMap[ 2 ] = 'abc';
   var screenMap = [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ];
   var got = _.mapOnlyOwn_( srcMap, screenMap );
-  var expected = { 2 : 'abc' };
+  var expected = Object.create( { d : 'name', c : 33 } );
+  expected[ 2 ] = 'abc';
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, { 2 : 'abc' } );
+  test.contains( srcMap, { 2 : 'abc' } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - map' );
@@ -7740,7 +7743,7 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.is( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, {}, {} ] );
+  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
   test.identical( screenMap, {} );
 
   test.case = 'screenMap - empty array';
@@ -7750,7 +7753,7 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.is( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, {}, {} ] );
+  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
   test.identical( screenMap, [] );
 
   test.case = 'only srcMap';
@@ -7759,7 +7762,7 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.is( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, {}, {} ] );
+  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
 
   test.case = 'all keys in srcMap exists in screenMap - map';
   var srcMap = [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ];
@@ -7768,7 +7771,7 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.is( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, {}, {} ] );
+  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -7778,7 +7781,7 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.is( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, {}, {} ] );
+  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -7788,7 +7791,7 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.is( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, {}, {} ] );
+  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
   test.identical( screenMap, { aa : 13, bb : 77, cc : 3, dd : 'name' } );
 
   test.case = 'none keys in srcMap exists in screenMap - array';
@@ -7798,7 +7801,7 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = {};
   test.identical( got, expected );
   test.is( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, {}, {} ] );
+  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
   test.identical( screenMap, [ 'aa', '13', { bb : 77 }, 'cc', '3', { dd : 'name' } ] );
 
   test.case = 'srcMap has numerical keys, screenMap has not primitives';
@@ -7808,7 +7811,7 @@ function mapOnlyOwnTwoArguments_( test )
   var expected = { a : 'abc' };
   test.identical( got, expected );
   test.is( got !== srcMap );
-  test.identical( srcMap, [ { a : 'abc' }, {}, {} ] );
+  test.identical( srcMap, [ { a : 'abc' }, Object.create( { c : 33 } ), Object.create( { d : 'name' } ) ] );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - long' );
