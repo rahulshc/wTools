@@ -308,10 +308,9 @@ function _errArgsHasError( test )
   var o = { args : [ new Error() ], caughtCallsStack : '' };
   var err = _._err( o );
   test.is( _.errIs( err ) );
-  test.identical( o.caughtCallsStack, '' );
   var errStr = String( err );
-  test.identical( _.strCount( errStr, 'Error' ), 3 );
-  test.identical( _.strCount( err.stack, 'Object._errArgsHasError' ), 1 );
+  test.identical( _.strCount( errStr, 'Error' ), 4 );
+  test.identical( _.strCount( err.stack, 'Object._errArgsHasError' ), 2 );
 
   /* */
 
@@ -455,14 +454,13 @@ function _errArgsHasRoutine( test )
   var o = { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], caughtCallsStack : '' };
   var err = _._err( o );
   test.is( _.errIs( err ) );
-  test.identical( o.caughtCallsStack, '' );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'error with unroll' ), 2 );
   test.identical( _.strCount( errStr, 'routine unroll' ), 2 );
   test.identical( _.strCount( errStr, 'Sample' ), 2 );
   test.identical( _.strCount( errStr, 'next' ), 2 );
   test.identical( _.strCount( errStr, 'Error' ), 2 );
-  test.identical( _.strCount( err.stack, 'Object._errArgsHasRoutine' ), 1 );
+  test.identical( _.strCount( err.stack, 'Object._errArgsHasRoutine' ), 2 );
 
   /* */
 
@@ -643,8 +641,8 @@ function _errLocation( test )
   });
   test.is( _.errIs( err ) );
   test.identical( err.location.filePath, 'at @605' );
-  test.identical( err.location.col, undefined );
-  test.identical( err.location.line, undefined );
+  test.identical( err.location.col, null );
+  test.identical( err.location.line, null );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
@@ -662,8 +660,8 @@ function _errLocation( test )
   test.is( _.errIs( err ) );
   test.identical( _.strCount( err.throwsStack, "at @605" ), 1 );
   test.identical( err.location.filePath, 'at @605' );
-  test.identical( err.location.col, undefined );
-  test.identical( err.location.line, undefined );
+  test.identical( err.location.col, null );
+  test.identical( err.location.line, null );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Sample' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 1 );
