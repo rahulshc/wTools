@@ -61,6 +61,6 @@ The encoding can be specified in the second argument. The example above uses `ba
 - An instance of type `BufferNode` has data.
 - Type `BufferNode` combines both data container and view ( representation ) in one class.
 - Type `BufferNode` is non-standard.
-- Type `BufferNode` has disadventages.
+- Type `BufferNode` has disadvantages.
 
 [Back to content](../README.md#Concepts)
