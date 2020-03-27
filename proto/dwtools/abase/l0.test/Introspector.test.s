@@ -49,10 +49,14 @@ function locationFromStackFrameWithoutLocationField( test )
   {
     'original' : '',
     'filePath' : '',
-    'routineName' : '',
+    'routineName' : null,
     'routineAlias' : null,
     'internal' : 0,
+    'line' : null,
+    'col' : null,
     'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
     'fileNameLineCol' : '',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
@@ -528,10 +532,14 @@ function locationFromStackFrameWithoutLocationField( test )
   {
     'original' : '',
     'filePath' : '',
-    'routineName' : '',
+    'routineName' : null,
     'routineAlias' : null,
     'internal' : 0,
+    'line' : null,
+    'col' : null,
     'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
     'fileNameLineCol' : '',
   }
   var got = _.introspector.locationFromStackFrame( stackCall );
