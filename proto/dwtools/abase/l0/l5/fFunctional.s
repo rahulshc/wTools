@@ -18,7 +18,7 @@ let Self = _global_.wTools;
  * If some argument is a Long ( for example array ) then each element of the Long is treated as an argument, not recursively.
  *
  * @function scalarAppend.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function scalarAppend( dst, src )
@@ -252,7 +252,7 @@ function scalarPrependOnce( dst, src )
  * @throws { Error } If type of the first argument is not a number or array.
  * @throws { Error } If the second argument is less than 0.
  * @throws { Error } If (dst.length) is not equal to the (length).
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 // function arrayFromNumber( dst, length )
@@ -612,7 +612,7 @@ _.only( Array::dst, Set::src );
  * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
  * @throws { Error } If onEach.length is more then three.
  * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function entityOnly( dst, src, onEach )
@@ -1171,7 +1171,7 @@ function entityOnly( dst, src, onEach )
  * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
  * @throws { Error } If onEach.length is more then three.
  * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function entityBut( dst, src, onEach )
@@ -1807,7 +1807,7 @@ function entityBut( dst, src, onEach )
  * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
  * @throws { Error } If onEach.length is more then three.
  * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function entityAnd( dst, src, onEach )
@@ -2254,7 +2254,7 @@ function entityAnd( dst, src, onEach )
  * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
  * @throws { Error } If onEach.length is more then three.
  * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function entityOr( dst, src, onEach )
@@ -2744,7 +2744,7 @@ function entityOr( dst, src, onEach )
  * @throws { Error } If {-onEach-} is not undefined, not a routine, not selector.
  * @throws { Error } If onEach.length is more then three.
  * @throws { Error } If {-onEach-} is selector and it does not begin with '*\/'.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function entityXor( dst, src, onEach )
@@ -3579,7 +3579,7 @@ function entityNone( src, onEach )
  * @function _filter_functor
  * @throws {exception} If no argument provided.
  * @throws {exception} If( condition ) is not a Routine or Object.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function _filter_functor( condition, levels )
@@ -3663,7 +3663,7 @@ function _filter_functor( condition, levels )
  * @thorws {Error} If( src ) is not Array or ObjectLike.
  * @thorws {Error} If( onEach ) is not function.
  * @function entityMap
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function entityMap( src, onEach )
@@ -4118,7 +4118,7 @@ function entityLast( src, onEach )
  * @function _entityMost
  * @throws {Exception} If( arguments.length ) is not equal 3.
  * @throws {Exception} If( onEvaluate ) function is not implemented.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 /*
@@ -4521,7 +4521,7 @@ _entityMost.defaults =
  * @function entityMin
  * @throws {Exception} If missed arguments.
  * @throws {Exception} If passed extra arguments.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 // let entityMin = _.routineFromPreAndBody( _entityMost_pre, _entityMost_body );
@@ -4558,7 +4558,7 @@ function entityMin( src, onEach )
  * @function entityMax
  * @throws {Exception} If missed arguments.
  * @throws {Exception} If passed extra arguments.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function entityMax( src, onEach )

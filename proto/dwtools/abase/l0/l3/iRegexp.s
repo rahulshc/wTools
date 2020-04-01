@@ -76,7 +76,7 @@ function regexpEquivalent( src1, src2 )
  * @param {String} src Regexp string
  * @returns {String} Escaped string
  * @function regexpEscape
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function regexpEscape( src )

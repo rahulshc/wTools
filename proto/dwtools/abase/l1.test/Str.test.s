@@ -5594,7 +5594,7 @@ function strLinesIndentation( test )
 
 //
 
-function strLinesBut( test ) 
+function strLinesBut( test )
 {
   test.open( 'src - string, range' );
 
@@ -6491,7 +6491,7 @@ function strLinesBut( test )
 
 //
 
-function strLinesOnly( test ) 
+function strLinesOnly( test )
 {
   test.open( 'src - string, range' );
 
@@ -6594,7 +6594,7 @@ function strLinesOnly( test )
   var got = _.strLinesOnly( src, [ 0, -5 ] );
   test.identical( got, '' );
 
-  test.close( 'src - string, range' ); 
+  test.close( 'src - string, range' );
 
   /* - */
 

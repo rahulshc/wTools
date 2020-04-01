@@ -60,7 +60,8 @@ _.mapExtend( _, ToolsExtension );
 /**
  * @summary Array namespace
  * @namespace "wTools.defaultLong"
- * @memberof wTools
+ * @extends Tools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 _.assert( !_.Array );

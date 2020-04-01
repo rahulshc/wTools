@@ -793,7 +793,7 @@ locationToStack.defaults =
  * @function stack
  * @throws { Error } If arguments.length is more than two.
  * @throws { Error } If {-range-} is not a Range.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function stack( stack, range )

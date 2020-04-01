@@ -334,7 +334,7 @@ function _bufferMake_functor( onMake )
  * @throws { Error } If {-src-} is constructor that returns not a Long, not a buffer value.
  * @throws { Error } If {-ins-} is not a number, not a Long, not a buffer, not null, not undefined.
  * @throws { Error } If {-ins-} or src.length has a not finite value.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 /*
@@ -588,7 +588,7 @@ let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
  * @throws { Error } If {-src-} is constructor that returns not a Long, not a buffer value.
  * @throws { Error } If {-ins-} is not a number, not a Long, not a buffer, not null, not undefined.
  * @throws { Error } If {-ins-} or src.length has a not finite value.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 /*
@@ -875,7 +875,7 @@ bufferFrom.defaults =
  * @function bufferRawFromTyped
  * @throws { Error } Will throw an Error if (arguments.length) is not equal to the 1.
  * @throws { Error } Will throw an Error if (buffer) is not a typed array.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function bufferRawFromTyped( buffer )
@@ -1465,7 +1465,7 @@ function _returnDst( dst, src )
  * @throws { Error } If {-dst-} is not an any buffer, not a Long, not null.
  * @throws { Error } If {-dstArray-} is not an any buffer, not a Long.
  * @throws { Error } If ( range ) is not a Range or not a Number.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function bufferBut_( dst, dstArray, range, srcArray )
@@ -1746,7 +1746,7 @@ function bufferSelectInplace( dstArray, range, srcArray )
  * @throws { Error } If {-dst-} is not an any buffer, not a Long, not null.
  * @throws { Error } If {-dstArray-} is not an any buffer, not a Long.
  * @throws { Error } If ( range ) is not a Range or not a Number.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function bufferSelect_( dst, dstArray, range, srcArray )
@@ -2031,7 +2031,7 @@ function bufferGrowInplace( dstArray, range, srcArray )
  * @throws { Error } If {-dst-} is not an any buffer, not a Long, not null.
  * @throws { Error } If {-dstArray-} is not an any buffer, not a Long.
  * @throws { Error } If ( range ) is not a Range or not a Number.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function bufferGrow_( dst, dstArray, range, srcArray )
@@ -2314,7 +2314,7 @@ function bufferRelengthInplace( dstArray, range, srcArray )
  * @throws { Error } If {-dst-} is not an any buffer, not a Long, not null.
  * @throws { Error } If {-dstArray-} is not an any buffer, not a Long.
  * @throws { Error } If ( range ) is not a Range or not a Number.
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function bufferRelength_( dst, dstArray, range, srcArray )
@@ -2424,7 +2424,7 @@ function bufferRelength_( dst, dstArray, range, srcArray )
  *
  * @returns { typedArray } - Returns a new or the same typed array {-srcMap-} with a new or the same length (len).
  * @function bufferRelen
- * @memberof wTools
+ * @memberof module:Tools/base/Fundamental.wTools
  */
 
 function bufferRelen( src, len )
@@ -2676,7 +2676,7 @@ function bufferBytesGet( src )
    * @function bufferRetype
    * @throws { Error } Will throw an Error if {-srcMap-} is not a typed array object.
    * @throws { Error } Will throw an Error if (bufferType) is not a type of the typed array.
-   * @memberof wTools
+   * @memberof module:Tools/base/Fundamental.wTools
    */
 
 function bufferRetype( src, bufferType )
