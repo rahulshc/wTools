@@ -21716,6 +21716,19 @@ function indexPrepending( test )
 
 //
 
+function indexAppendingExperiment( test )
+{
+  test.case = 'src - array, a few nodes with same selection';
+  var src = [ { f1 : 'a.f1' }, { f1 : 'a.f1' }, { f1 : 'a.f1' } ];
+  var got = _.indexAppending( src, '*/f1' );
+  var exp = { 'a.f1' : [ { f1 : 'a.f1' }, { f1 : 'a.f1' }, { f1 : 'a.f1' } ] };
+  test.is( src !== got );
+  test.identical( got, exp );
+}
+indexAppendingExperiment.experimental = 1;
+
+//
+
 function remap( test )
 {
 
@@ -24808,6 +24821,7 @@ value for dst             dst                dst                    first +     
     indexExtending,
     indexSupplementing,
     indexAppending,
+    indexAppendingExperiment,
     indexPrepending,
 
     remap,

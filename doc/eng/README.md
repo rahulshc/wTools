@@ -8,7 +8,7 @@
 </details>
 
 <details>
-  <summary><a href="./concept/TypePrimitive.md#Тип-string">
+  <summary><a href="./concept/TypePrimitive.md#Type-string">
     Type <code>string</code>
   </a></summary>
     Primitive data type to represent text data.

@@ -13989,9 +13989,9 @@ function longRandom( test )
   var dst = [ 2, 2, 2 ];
   var got = _.longRandom( dst, 5, 3 );
   test.is( got === dst );
-  test.identical( got[ 0 ], 5 );
-  test.identical( got[ 1 ], 5 );
-  test.identical( got[ 2 ], 5 );
+  test.is( got[ 0 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 5 );
+  test.is( got[ 1 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 5 );
+  test.is( got[ 2 ] !== 2 && got[ 0 ] >= 0 && got[ 0 ] <= 5 );
 
   test.case = 'dst, range, length === null';
   var dst = [ 2, 2, 2 ];
@@ -14072,9 +14072,9 @@ function longRandom( test )
     onEach : ( value ) => _.intRandom( value ),
   });
   test.identical( got.length, 3 );
-  test.identical( got[ 0 ], 5 );
-  test.identical( got[ 1 ], 5 );
-  test.identical( got[ 2 ], 5 );
+  test.is( _.intIs( got[ 0 ] ) && got[ 0 ] >= 1 && got[ 0 ] <= 5 );
+  test.is( _.intIs( got[ 1 ] ) && got[ 1 ] >= 1 && got[ 1 ] <= 5 );
+  test.is( _.intIs( got[ 2 ] ) && got[ 2 ] >= 1 && got[ 2 ] <= 5 );
 
   test.case = 'dst, range, onEach, length > dst.length';
   var dst = [ 0, 0 ];
