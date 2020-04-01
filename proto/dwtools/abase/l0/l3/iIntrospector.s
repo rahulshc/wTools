@@ -155,7 +155,7 @@ function locationFromStackFrame( o )
   if( o.location && !_.mapIs( o.location ) )
   {
     debugger;
-    throw Error( 'Expects map option::locaiotn' );
+    throw Error( 'Expects map option::location' );
   }
 
   /* */

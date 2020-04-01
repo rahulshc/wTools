@@ -95,7 +95,7 @@ The routine `name_body` consists of two parts. The first is routine itself, and 
 
 The default settings are defined by the map of option `name_body.defaults`, which contains all options that the routine accepts. So, in the routine `name_body`, this is `path` and `full`.
 
-The routine `routineFromPreAndBody` can combine the` name_pre` and `name_body` routine into one that will accept the path and return the filename.
+The routine `routineFromPreAndBody` can combine the` name_pre` and `name_body` routines into one that will accept the path and return the filename.
 
 <details>
   <summary><u>Code of file <code>Name.js</code></u></summary>
@@ -158,7 +158,7 @@ To use the routine `routineFromPreAndBody`, you need to install the module `Tool
 <details>
     <summary><u>Code of file <code>package.json</code></u></summary>
 
-```json    
+```json
 {
   "dependencies": {
     "wTools": ""
