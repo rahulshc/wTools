@@ -61,7 +61,7 @@ _.mapExtend( _, ToolsExtension );
  * @summary Array namespace
  * @namespace "wTools.defaultLong"
  * @extends Tools
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 _.assert( !_.Array );

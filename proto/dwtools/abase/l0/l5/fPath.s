@@ -86,7 +86,7 @@ function is( path )
  * @param {String} filePath Source path for check
  * @returns {boolean}
  * @function isRefined
- * @memberof module:Tools/PathBasic.wTools.path
+ * @memberof namespace:wTools.path
  */
 
 function isRefined( path )
@@ -113,7 +113,7 @@ function isRefined( path )
 //  * @param {String} filePath Source path for check
 //  * @returns {boolean}
 //  * @function isRefined
-//  * @memberof module:Tools/PathBasic.wTools.path
+//  * @memberof namespace:wTools.path
 //  */
 //
 // function isRefined( path )
@@ -134,7 +134,7 @@ function isRefined( path )
  * @param {String} filePath Source path for check
  * @returns {boolean}
  * @function isNormalized
- * @memberof module:Tools/PathBasic.wTools.path
+ * @memberof namespace:wTools.path
  */
 
 function isNormalized( filePath )
@@ -153,7 +153,7 @@ function isNormalized( filePath )
 //  * @param {String} filePath Source path for check
 //  * @returns {boolean}
 //  * @function isNormalized
-//  * @memberof module:Tools/PathBasic.wTools.path
+//  * @memberof namespace:wTools.path
 //  */
 //
 // function isNormalized( filePath )
@@ -311,7 +311,7 @@ function ends( srcPath,endPath )
   * @throws {Error} If {-arguments.length-} is less or more then one.
   * @throws {Error} If passed argument is not a string.
   * @function refine
-  * @memberof module:Tools/PathBasic.wTools.path
+  * @memberof namespace:wTools.path
   */
 
 function refine( src )
@@ -468,7 +468,7 @@ _normalize.defaults =
  * @param {string} src path for normalization
  * @returns {string}
  * @function normalize
- * @memberof module:Tools/PathBasic.wTools.path
+ * @memberof namespace:wTools.path
  */
 
 function normalize( src )
@@ -681,7 +681,7 @@ function detrail( path )
  * @returns {string}
  * @throws {Error} If argument is not string
  * @function dir
- * @memberof module:Tools/PathBasic.wTools.path
+ * @memberof namespace:wTools.path
  */
 
 function dir_pre( routine, args )

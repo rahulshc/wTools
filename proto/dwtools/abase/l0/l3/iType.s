@@ -241,7 +241,7 @@ function prototypeHas( superPrototype, subPrototype )
  * Is prototype.
  * @function prototypeIs
  * @param {object} src - entity to check
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function prototypeIs( src )
@@ -274,7 +274,7 @@ function prototypeIsStandard( src )
  * Checks if argument( cls ) is a constructor.
  * @function constructorIs
  * @param {Object} cls - entity to check
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function constructorIs( cls )
@@ -289,7 +289,7 @@ function constructorIs( cls )
  * Is instance of a class.
  * @function instanceIs
  * @param {object} src - entity to check
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function instanceIs( src )

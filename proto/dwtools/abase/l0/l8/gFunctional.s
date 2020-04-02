@@ -18,7 +18,7 @@ let Self = _global_.wTools;
  * If some argument is a Long ( for example array ) then each element of the Long is treated as an argument, not recursively.
  *
  * @function scalarAppend.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function scalarAppend( dst, src )
@@ -152,7 +152,7 @@ function scalarAppendOnce( dst, src )
  * @throws { Error } If type of the first argument is not a number or array.
  * @throws { Error } If the second argument is less than 0.
  * @throws { Error } If (dst.length) is not equal to the (length).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 // function arrayFromNumber( dst, length )
@@ -350,7 +350,7 @@ function multipleAll( dsts )
  * @throws {exception} If( o.sets ) is not array or objectLike.
  * @throws {exception} If ( sets ) is mapLike and ( onEach ) not passed.
  * @throws {exception} If( o.base ) or ( o.add) is undefined.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function eachSample( o )
@@ -759,7 +759,7 @@ _entityIndex_functor.defaults =
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 let entityIndex = _entityIndex_functor({ extendRoutine : null });
@@ -820,7 +820,7 @@ let entityIndex = _entityIndex_functor({ extendRoutine : null });
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.mapSupplement });
@@ -881,7 +881,7 @@ let entityIndexSupplementing = _entityIndex_functor({ extendRoutine : _.mapSuppl
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.mapExtend });
@@ -942,7 +942,7 @@ let entityIndexExtending = _entityIndex_functor({ extendRoutine : _.mapExtend })
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 let entityIndexPrepending = _entityIndex_functor({ extendRoutine : _.mapExtendPrepending });
@@ -1003,7 +1003,7 @@ let entityIndexPrepending = _entityIndex_functor({ extendRoutine : _.mapExtendPr
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 let entityIndexAppending = _entityIndex_functor({ extendRoutine : _.mapExtendAppending });
@@ -1164,7 +1164,7 @@ _entityRemap_functor.defaults =
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 let entityRemap = _entityRemap_functor({ extendRoutine : null });
@@ -1226,7 +1226,7 @@ let entityRemap = _entityRemap_functor({ extendRoutine : null });
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 
@@ -1289,7 +1289,7 @@ let entityRemapSupplementing = _entityRemap_functor({ extendRoutine : _.mapSuppl
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 let entityRemapExtending = _entityRemap_functor({ extendRoutine : _.mapExtend });
@@ -1351,7 +1351,7 @@ let entityRemapExtending = _entityRemap_functor({ extendRoutine : _.mapExtend })
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 let entityRemapPrepending = _entityRemap_functor({ extendRoutine : _.mapExtendPrepending });
@@ -1413,7 +1413,7 @@ let entityRemapPrepending = _entityRemap_functor({ extendRoutine : _.mapExtendPr
  * @throws { Error } If {-src-} has value undefined.
  * @throws { Error } If {-onEach-} is not undefined, not a function, not a String.
  * @throws { Error } If {-onEach-} is a String, but has not prefix '*\/' ( asterisk + slash ).
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 let entityRemapAppending = _entityRemap_functor({ extendRoutine : _.mapExtendAppending });

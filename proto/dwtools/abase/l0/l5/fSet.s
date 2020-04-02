@@ -29,7 +29,7 @@ let Self = _;
  * @function arraySetDiff
  * @throws { Error } If arguments count is not 2.
  * @throws { Error } If one or both argument(s) are not longIs entities.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function arraySetDiff( src1, src2 )
@@ -243,7 +243,7 @@ function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
  * @function arraySetBut
  * @throws { Error } If arguments count is not 2.
  * @throws { Error } If one or both argument(s) are not longIs entities.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function arraySetBut( dst )
@@ -377,7 +377,7 @@ function arraySetBut_( dst, src1, src2, onEvaluate1, onEvaluate2 )
  * @returns { Array } Array with elements that are a part of at least one of the provided arrays.
  * @function arraySetIntersection
  * @throws { Error } If one of arguments is not an longIs entity.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function arraySetIntersection( dst )
@@ -670,7 +670,7 @@ function arraySetContainAll( src )
    * @function arraySetContainAll
    * @throws { Error } Will throw an Error if {-srcMap-} is not an array-like.
    * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
-   * @memberof module:Tools/base/Fundamental.wTools
+   * @memberof namespace:wTools
    */
 
 function arraySetContainAll( src )
@@ -790,7 +790,7 @@ function arraySetContainAll_( src1, src2, onEvaluate1, onEvaluate2 )
  * @function arraySetContainAny
  * @throws { Error } Will throw an Error if {-srcMap-} is not an array-like.
  * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function arraySetContainAny( src )
@@ -1013,7 +1013,7 @@ function arraySetContainSetsNone( src1, src2, onEvaluate1, onEvaluate2 )
  * @function arraySetIdentical
  * @throws { Error } If one of arguments is not an ArrayLike entity.
  * @throws { Error } If arguments length is not 2.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function arraySetIdentical( ins1, ins2 )

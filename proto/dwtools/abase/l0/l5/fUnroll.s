@@ -53,7 +53,7 @@ let Self = _global_.wTools;
  * @function unrollMake
  * @throws { Error } If arguments.length is more then one.
  * @throws { Error } If {-src-} is not a number, not a Long, not Set, not null, not undefined.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function unrollMake( src )
@@ -124,7 +124,7 @@ function unrollMake( src )
  * @throws { Error } If arguments.length is less then one or more then two.
  * @throws { Error } If argument {-src-} is not a Long, not null.
  * @throws { Error } If argument {-length-} is not a number, not a Long.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 /* aaa : review */
@@ -216,7 +216,7 @@ function unrollMakeUndefined( src, length )
  * @function unrollFrom
  * @throws { Error } If arguments.length is less or more then one.
  * @throws { Error } If argument {-src-} is not Long, not number, not Set, not null, not undefined.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function unrollFrom( src )
@@ -267,7 +267,7 @@ function unrollFrom( src )
  * @function unrollsFrom
  * @throws { Error } If arguments.length is less then one.
  * @throws { Error } If any of the arguments is not a Long, not a Set, not a Number, not null, not undefined.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function unrollsFrom( srcs )
@@ -320,7 +320,7 @@ function unrollsFrom( srcs )
  * If {-src-} is Unroll or incompatible type, it returns original {-src-}.
  * @function unrollFromMaybe
  * @throws { Error } If arguments.length is less or more then one.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function unrollFromMaybe( src )
@@ -370,7 +370,7 @@ function unrollFromMaybe( src )
  * @function unrollNormalize
  * @throws { Error } If ( arguments.length ) is not equal to one.
  * @throws { Error } If argument ( dstArray ) is not arrayLike.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function unrollNormalize( dstArray )
@@ -461,7 +461,7 @@ function unrollNormalize( dstArray )
  * @throws { Error } If argument {-src-} is not an Array or Unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not a number / undefined.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function unrollSelect( src, range, val )
@@ -573,7 +573,7 @@ function unrollSelect( src, range, val )
  * @function unrollPrepend
  * @throws { Error } An Error if {-dstArray-} is not an Array or not null.
  * @throws { Error } An Error if ( arguments.length ) is less then one.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function unrollPrepend( dstArray )
@@ -665,7 +665,7 @@ function unrollPrepend( dstArray )
  * @function unrollAppend
  * @throws { Error } An Error if {-dstArray-} is not an Array or not null.
  * @throws { Error } An Error if ( arguments.length ) is less then one.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function unrollAppend( dstArray )
@@ -835,7 +835,7 @@ _.unrollAppend( null, [ 1, 2, a1, a2, 10 ] );
  * @function unrollAppend
  * @throws { Error } An Error if {-dstArray-} is not an Array or not null.
  * @throws { Error } An Error if ( arguments.length ) is less then one.
- * @memberof module:Tools/base/Fundamental.wTools
+ * @memberof namespace:wTools
  */
 
 function unrollRemove( dstArray )
