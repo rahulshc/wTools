@@ -1229,7 +1229,7 @@ function errorFunctor( test )
 
   /* */
 
-  a.jsNonThrowing({ execPath : programPath })
+  a.appStartNonThrowing({ execPath : programPath })
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
@@ -1286,7 +1286,7 @@ function uncaughtError( test )
 
   /* */
 
-  a.jsNonThrowing({ execPath : programPath })
+  a.appStartNonThrowing({ execPath : programPath })
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
@@ -1326,7 +1326,7 @@ function sourceCode( test )
 
   /* */
 
-  a.jsNonThrowing({ execPath : programPath })
+  a.appStartNonThrowing({ execPath : programPath })
   .then( ( op ) =>
   {
     test.notIdentical( op.exitCode, 0 );
@@ -1399,7 +1399,7 @@ var Self =
     nameOfFile : _.introspector.location().fileName,
     suiteTempPath : null,
     assetsOriginalSuitePath : null,
-    execJsPath : null,
+    appJsPath : null,
   },
 
   tests :

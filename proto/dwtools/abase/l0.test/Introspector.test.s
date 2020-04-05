@@ -2405,7 +2405,7 @@ var Self =
     // nameOfFile : _.introspector.location().fileName, /* xxx */
     suiteTempPath : null,
     assetsOriginalSuitePath : null,
-    execJsPath : null,
+    appJsPath : null,
   },
 
   tests :

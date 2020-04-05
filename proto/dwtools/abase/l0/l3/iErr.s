@@ -305,7 +305,9 @@ function _err( o )
           }
           catch( err )
           {
-            arg = o.args[ a ] = '!ERROR!'
+            debugger;
+            arg = o.args[ a ] = '!ERROR PROCESSING ERROR!'
+            console.log( String( err ) );
           }
         }
         if( _.unrollIs( arg ) )
@@ -1539,18 +1541,6 @@ function breakpoint( condition )
  * @memberof wTools
  */
 
-function _assertDebugger( condition, args )
-{
-  if( !_.debuggerEnabled )
-  return;
-  let err = _._err
-  ({
-    args : Array.prototype.slice.call( args, 1 ),
-    level : 3,
-  });
-  debugger;
-}
-
 //
 
 function assert( condition )
@@ -1588,6 +1578,18 @@ function assert( condition )
   {
     let type = Object.prototype.toString.call( src );
     return type === '[object Boolean]' || type === '[object Number]';
+  }
+
+  function _assertDebugger( condition, args )
+  {
+    if( !_.debuggerEnabled )
+    return;
+    let err = _._err
+    ({
+      args : Array.prototype.slice.call( args, 1 ),
+      level : 3,
+    });
+    debugger;
   }
 
 }

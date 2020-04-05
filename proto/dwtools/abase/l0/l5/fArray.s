@@ -322,9 +322,9 @@ function arrayFrom( src )
 //
 
 /**
- * The routine arrayFromCoercing() returns Array from provided argument {-src-}. The feature of routine is possibility of 
+ * The routine arrayFromCoercing() returns Array from provided argument {-src-}. The feature of routine is possibility of
  * converting an object-like {-src-} into Array. Also, routine longFromCoercing() converts string with number literals
- * to an Array. 
+ * to an Array.
  *
  * @param { Array|Long|ObjectLike|String } src - An instance to convert into Array.
  * If {-src-} is instance of Array, then routine converts not {-src-}.
@@ -2791,7 +2791,7 @@ function arrayAppend( dstArray, ins )
     arguments[ 0 ] = dstArray;
   }
 
-  arrayAppended.apply( this, arguments );
+  _.arrayAppended.apply( this, arguments );
   return dstArray;
 }
 
@@ -2836,7 +2836,7 @@ function arrayAppendOnce( dstArray, ins, evaluator1, evaluator2 )
     arguments[ 0 ] = dstArray;
   }
 
-  arrayAppendedOnce.apply( this, arguments );
+  _.arrayAppendedOnce.apply( this, arguments );
   return dstArray;
 }
 
@@ -2853,12 +2853,12 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   let result;
   if( Config.debug )
   {
-    result = arrayAppendedOnce.apply( this, arguments );
+    result = _.arrayAppendedOnce.apply( this, arguments );
     _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strShort( ins ) }` );
   }
   else
   {
-    result = arrayAppended.apply( this, [ dstArray, ins ] );
+    result = _.arrayAppended.apply( this, [ dstArray, ins ] );
   }
   return dstArray;
 }
@@ -2895,12 +2895,12 @@ function arrayAppendedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   let result;
   if( Config.debug )
   {
-    result = arrayAppendedOnce.apply( this, arguments );
+    result = _.arrayAppendedOnce.apply( this, arguments );
     _.assert( result >= 0, () => `Array should have only unique elements, but has several ${ _.strShort( ins ) }` );
   }
   else
   {
-    result = arrayAppended.apply( this, [ dstArray, ins ] );
+    result = _.arrayAppended.apply( this, [ dstArray, ins ] );
   }
   return result;
 }
@@ -3078,7 +3078,7 @@ function arrayAppendArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
     arguments[ 0 ] = dstArray;
   }
 
-  arrayAppendedArrayOnce.apply( this, arguments )
+  _.arrayAppendedArrayOnce.apply( this, arguments )
   return dstArray;
 }
 
@@ -3096,7 +3096,7 @@ function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator
   if( Config.debug )
   {
     let insArrayLength = insArray.length
-    result = arrayAppendedArrayOnce.apply( this, arguments )
+    result = _.arrayAppendedArrayOnce.apply( this, arguments )
     _.assert( result === insArrayLength );
   }
   else
@@ -3162,7 +3162,7 @@ function arrayAppendedArrayOnceStrictly( dstArray, ins )
   if( Config.debug )
   {
     let insArrayLength = ins.length;
-    result = arrayAppendedArrayOnce.apply( this, arguments );
+    result = _.arrayAppendedArrayOnce.apply( this, arguments );
     _.assert( result === insArrayLength , 'Array should have only unique elements, but has several', ins );
   }
   else
@@ -3410,7 +3410,7 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
 
 function arrayRemove( dstArray, ins, evaluator1, evaluator2 )
 {
-  arrayRemoved.apply( this, arguments );
+  _.arrayRemoved.apply( this, arguments );
   return dstArray;
 }
 
@@ -3418,7 +3418,7 @@ function arrayRemove( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemoveOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  arrayRemovedOnce.apply( this, arguments );
+  _.arrayRemovedOnce.apply( this, arguments );
   return dstArray;
 }
 
@@ -3426,7 +3426,7 @@ function arrayRemoveOnce( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemoveOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
-  arrayRemoveElementOnceStrictly.apply( this, arguments );
+  _.arrayRemoveElementOnceStrictly.apply( this, arguments );
   return dstArray;
 }
 
@@ -3434,7 +3434,7 @@ function arrayRemoveOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
 {
-  let removedElements = arrayRemovedElement.apply( this, arguments );
+  let removedElements = _.arrayRemovedElement.apply( this, arguments );
   return removedElements;
 }
 
@@ -3475,7 +3475,7 @@ function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 {
-  arrayRemovedElement.apply( this, arguments );
+  _.arrayRemovedElement.apply( this, arguments );
   return dstArray;
 }
 
@@ -3516,7 +3516,7 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
 {
-  arrayRemovedElementOnce.apply( this, arguments );
+  _.arrayRemovedElementOnce.apply( this, arguments );
   /* aaa : implement and cover routines arrayRemovedElement*_ returning element, not container? */
   /* Dmytro : implemented and covered, proposed improvements of routine `arrayRemovedElement` */
   return dstArray;
@@ -3529,14 +3529,14 @@ function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   let result;
   if( Config.debug )
   {
-    let result = arrayRemovedElementOnce.apply( this, arguments );
+    let result = _.arrayRemovedElementOnce.apply( this, arguments );
     let index = _.longLeftIndex.apply( _, arguments );
     _.assert( index < 0 );
     _.assert( result >= 0, () => 'Array does not have element ' + _.toStrShort( ins ) );
   }
   else
   {
-    let result = arrayRemovedElement.apply( this, [ dstArray, ins ] );
+    let result = _.arrayRemovedElement.apply( this, [ dstArray, ins ] );
   }
   return dstArray;
 }
@@ -3556,7 +3556,7 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 {
   let index = _.longLeftIndex.apply( this, arguments );
   let removedElements = 0;
-  
+
   for( let i = 0; i < dstArray.length; i++ ) /* Dmytro : bad implementation, this cycle run routine longLeftIndex even if it not needs, better implementation commented below */
   {
     if( index !== -1 )
@@ -3574,8 +3574,8 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
   // let index = _.longLeftIndex.apply( this, arguments );
   // evaluator1 = _.numberIs( evaluator1 ) ? undefined : evaluator1;
   //
-  // while( index !== -1 ) 
-  // {  
+  // while( index !== -1 )
+  // {
   //   dstArray.splice( index, 1 );
   //   removedElements = removedElements + 1;
   //   index = _.longLeftIndex( dstArray, ins, index, evaluator1, evaluator2 );
@@ -3596,8 +3596,8 @@ function arrayRemovedElement_( dstArray, ins, evaluator1, evaluator2 )
   if( index !== -1 )
   removedElement = dstArray[ index ];
 
-  while( index !== -1 ) 
-  {  
+  while( index !== -1 )
+  {
     dstArray.splice( index, 1 );
     index = _.longLeftIndex( dstArray, ins, index, evaluator1, evaluator2 );
   }
@@ -6124,7 +6124,7 @@ let Extension =
   arrayMakeUndefined,
 
   arrayFrom,
-  arrayFromCoercing, /* aaa : check coverage */ /* Dmytro : coverage extended */ 
+  arrayFromCoercing, /* aaa : check coverage */ /* Dmytro : coverage extended */
   arrayFromStr,
 
   arrayAs,
