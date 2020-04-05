@@ -30,7 +30,7 @@ var src = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
 _.arrayBut_( src, [ 2, 7 ] ); // returns [ 0, 1, 8, 9 ]
 ```
 
-### Тип <code>Lrange</code>
+### Type <code>Lrange</code>
 
 `Lrange` ( from `length range` ) - the first element of the range indicates the index of the element from which the counting of elements begins, and the second indicates the length of elements of the sequence, that is the number of elements in the sequence.
 
@@ -42,7 +42,7 @@ var lrange = [ 3, 5 ];
 
 The variable `lrange` defines the range of type `Lrange`. This range includes next indexes of elements `3`, `4`, `5`, `6`, `7`.
 
-### Чому і для чого
+### Why and for what
 
 `Range` has advantages over the use of separate variables to indicate bounds of the sequence:
 
@@ -52,7 +52,7 @@ The variable `lrange` defines the range of type `Lrange`. This range includes ne
 
 The advantages described above are the reason of use `Range` in the routines of the module. Also, if a parameter of routine named as `Orange`,` Crange`, or `Lrange`, it immediately indicates the value of the second element of the range. It allows the developer to skip searching for a fragment of code or an experiment that determines the value of the second element.
 
-### Theoretical examples 
+### Theoretical examples
 
 |                           | Range type | Range | Indexes of elements in the sequence |
 |---------------------------|------------|-------|-------------------------------------|
@@ -66,10 +66,10 @@ The advantages described above are the reason of use `Range` in the routines of 
 |                           | Crange     | 3..2  | -                                   |
 |                           | Lrange     | 3..2  | 3, 4                                |
 
-### Summary 
+### Summary
 
 - Range is a pair of numbers that defines a sequence.
 - Range is the convenient form for declaring bounds of a sequence. It uses a single variable to denote two arguments.
 - There are three types of ranges: open - `Orange`, closed - `Crange` and length - `Lrange`.
 
-[Back to content](../README.md#Концепції)
+[Back to content](../README.md#Concepts)

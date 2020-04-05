@@ -56,7 +56,7 @@ In this example, errors are thrown by either `callback decrement` or `callback d
 
 ### Uncaught synchronous error
 
-Both browser and Nodejs, as well as most programming environments, provide a mechanism to handle the uncaught error. If `try blocks` fail to process it and there is no `try block` left in the stack, then the error will become uncaught. It generates a special event, and uncaught errors are caught by the handler of uncaught errors.
+Both browser and NodeJS, as well as most programming environments, provide a mechanism to handle the uncaught error. If `try blocks` fail to process it and there is no `try block` left in the stack, then the error will become uncaught. It generates a special event, and uncaught errors are caught by the handler of uncaught errors.
 
 ``` js
 process.on( 'uncaughtException', function( err )
@@ -64,7 +64,7 @@ process.on( 'uncaughtException', function( err )
 })
 ```
 
-Nodejs let developers catch uncaught errors with code above.
+NodeJS let developers catch uncaught errors with code above.
 
 ``` js
 window.onerror = function( err )
