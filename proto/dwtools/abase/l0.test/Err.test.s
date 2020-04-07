@@ -77,6 +77,76 @@ function errArgumentObject( test )
 
 //
 
+function errFromStringedError( test )
+{
+  let context = this;
+  let visited = [];
+
+  var msg =
+`
+Uncaught Error:  = Message of error#1
+No source file found for "W1.js"
+Error including source file /workerEnvironment/Worker.js
+
+ = Beautified calls stack
+at Object._broInclude (http://127.0.0.1:15000/.starter:6144:17)
+at Object._sourceInclude (http://127.0.0.1:15000/.starter:6575:20)
+at SourceFile.Worker_js_naked [as nakedCall] (http://127.0.0.1:15000/workerEnvironment/Worker.js:14:1)
+at Object._sourceIncludeAct (http://127.0.0.1:15000/.starter:6529:19)
+at Worker_js (http://127.0.0.1:15000/workerEnvironment/Worker.js:27:18)
+at http://127.0.0.1:15000/workerEnvironment/Worker.js:28:38
+
+ = Throws stack
+thrown at Object._broInclude @ http://127.0.0.1:15000/.starter:6144:17
+thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
+`;
+  var args = [ msg ];
+  var o =
+  {
+    args,
+    level : 1,
+    fallBackStack : 'at handleError @ http://127.0.0.1:15000/.starter:2918',
+    throwLocation :
+    {
+      filePath : 'http://127.0.0.1:15000/.starter',
+      line : 2918,
+      col : 23,
+    },
+  }
+  var err = _._err( o );
+  test.is( _.errIs( err ) );
+
+  var exp =
+`
+= Message of error#${err.id}
+    Uncaught Error:
+    No source file found for "W1.js"
+    Error including source file /workerEnvironment/Worker.js
+
+ = Beautified calls stack
+    at Object._broInclude (http://127.0.0.1:15000/.starter:6144:17)
+    at Object._sourceInclude (http://127.0.0.1:15000/.starter:6575:20)
+    at SourceFile.Worker_js_naked [as nakedCall] (http://127.0.0.1:15000/workerEnvironment/Worker.js:14:1)
+    at Object._sourceIncludeAct (http://127.0.0.1:15000/.starter:6529:19)
+    at Worker_js (http://127.0.0.1:15000/workerEnvironment/Worker.js:27:18)
+    at http://127.0.0.1:15000/workerEnvironment/Worker.js:28:38
+
+ = Throws stack
+    thrown at Object._broInclude @ http://127.0.0.1:15000/.starter:6144:17
+    thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
+    thrown at Object.errFromStringedError @ /C/pro/web/Dave/git/trunk/builder/include/dwtools/abase/l0.test/Err.test.s:116:15
+
+`
+  var got = String( err );
+  test.equivalent( got, exp ); debugger;
+  test.identical( _.strCount( got, '= Message of error' ), 1 );
+  test.identical( _.strCount( got, '= Beautified calls stack' ), 1 );
+  test.identical( _.strCount( got, '= Throws stack' ), 1 );
+
+}
+
+//
+
 function _errTrowsError( test )
 {
   try
@@ -88,7 +158,7 @@ function _errTrowsError( test )
     test.case = 'without arguments';
     test.is( _.errIs( err ) );
     var errStr = String( err );
-    test.identical( _.strCount( errStr, '_err : Expects single argument' ), 1 );
+    test.identical( _.strCount( errStr, 'Expects single argument : options map' ), 1 );
   }
 
   /* */
@@ -102,7 +172,7 @@ function _errTrowsError( test )
     test.case = 'o.args is not a long';
     test.is( _.errIs( err ) );
     var errStr = String( err );
-    test.identical( _.strCount( errStr, '_err : o.args should be array like' ), 1 );
+    test.identical( _.strCount( errStr, '_err : Expects Long option::args' ), 1 );
   }
 
   /* */
@@ -116,7 +186,7 @@ function _errTrowsError( test )
     test.case = 'map option has unnecessaty fields';
     test.is( _.errIs( err ) );
     var errStr = String( err );
-    test.identical( _.strCount( errStr, 'Unknown option wrong' ), 1 );
+    test.identical( _.strCount( errStr, 'Unknown option::wrong' ), 1 );
   }
 }
 
@@ -156,61 +226,61 @@ function _errEmptyArgs( test )
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
   test.identical( _.strCount( errStr, 'Object._errEmptyArgs' ), 2 );
 
-  test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - undefined, level - 2';
+  test.case = 'empty args, throwCallsStack - undefined, catchCallsStack - undefined, level - 2';
   var err = _._err( { args : [], level : 2 } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
   test.identical( _.strCount( errStr, 'Object._errEmptyArgs' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack - string';
-  var err = _._err( { args : [], throwenCallsStack : 'at program\nat _errTrowsError' } );
+  test.case = 'empty args, throwCallsStack - string';
+  var err = _._err( { args : [], throwCallsStack : 'at program\nat _errTrowsError' } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'at program' ), 1 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - string';
-  var err = _._err( { args : [], caughtCallsStack : 'at program\nat _errTrowsError' } );
+  test.case = 'empty args, throwCallsStack - undefined, catchCallsStack - string';
+  var err = _._err( { args : [], catchCallsStack : 'at program\nat _errTrowsError' } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
   test.identical( _.strCount( errStr, 'at program' ), 1 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack - empty string';
-  var o = { args : [], caughtCallsStack : '' };
+  test.case = 'empty args, throwCallsStack - empty string';
+  var o = { args : [], catchCallsStack : '' };
   var err = _._err( o );
   test.is( _.errIs( err ) );
-  test.identical( o.throwenCallsStack, o.caughtCallsStack );
+  test.identical( o.throwCallsStack, o.catchCallsStack );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
   test.identical( _.strCount( err.stack, 'Object._errEmptyArgs' ), 2 );
 
   /* */
 
-  test.case = 'empty args, throwenCallsStack, stackRemovingBeginIncluding';
-  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginIncluding : /program1/ } );
+  test.case = 'empty args, throwCallsStack, stackRemovingBeginIncluding';
+  var err = _._err( { args : [], throwCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginIncluding : /program1/ } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
   test.identical( _.strCount( errStr, 'at program1' ), 0 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack, stackRemovingBeginExcluding';
-  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginExcluding : /_errTrowsError/ } );
+  test.case = 'empty args, throwCallsStack, stackRemovingBeginExcluding';
+  var err = _._err( { args : [], throwCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginExcluding : /_errTrowsError/ } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
   test.identical( _.strCount( errStr, 'at program1' ), 1 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, stackRemovingBeginIncluding and stackRemovingBeginExcluding';
+  test.case = 'empty args, throwCallsStack, stackRemovingBeginIncluding and stackRemovingBeginExcluding';
   var err = _._err
   ({
       args : [],
-      throwenCallsStack : 'at program1\nat _errTrowsError',
+      throwCallsStack : 'at program1\nat _errTrowsError',
       stackRemovingBeginIncluding : /program1/,
       stackRemovingBeginExcluding : /_errTrowsError/
   });
@@ -222,43 +292,43 @@ function _errEmptyArgs( test )
 
   /* */
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and __';
-  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', 'at @2' ] } );
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - without ".test" and __';
+  var err = _._err( { args : [], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', 'at @2' ] } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
   test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( _.strCount( errStr, 'at @2' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and with __';
-  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '__dirname' ] } );
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - without ".test" and with __';
+  var err = _._err( { args : [], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '__dirname' ] } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
   test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( _.strCount( errStr, '__dirname' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and with *__';
-  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '*__dirname' ] } );
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - without ".test" and with *__';
+  var err = _._err( { args : [], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '*__dirname' ] } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
   test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( _.strCount( errStr, '*__dirname' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test"';
-  var err = _._err( { args : [], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at Err.test.s', '*__dirname' ] } );
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - with ".test"';
+  var err = _._err( { args : [], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at Err.test.s', '*__dirname' ] } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'UnknownError' ), 1 );
   test.identical( _.strCount( errStr, 'at Err.test.s *' ), 1 );
   test.identical( _.strCount( errStr, '*__dirname' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test", stackCondensing - 0';
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - with ".test", stackCondensing - 0';
   var err = _._err
   ({
     args : [],
-    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at Err.test.s', '*__dirname' ],
     stackCondensing : 0
   });
@@ -281,31 +351,31 @@ function _errArgsHasError( test )
   test.identical( _.strCount( errStr, 'Error' ), 4 );
   test.identical( _.strCount( errStr, 'Object._errArgsHasError' ), 2 );
 
-  test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - undefined, level - 2';
+  test.case = 'empty args, throwCallsStack - undefined, catchCallsStack - undefined, level - 2';
   var err = _._err( { args : [ new Error() ], level : 2 } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Error' ), 3 );
   test.identical( _.strCount( errStr, 'Object._errArgsHasError' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack - string';
-  var err = _._err( { args : [ new Error() ], throwenCallsStack : 'at program\nat _errTrowsError' } );
+  test.case = 'empty args, throwCallsStack - string';
+  var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program\nat _errTrowsError' } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'at program' ), 1 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
   test.identical( _.strCount( errStr, 'Error' ), 3 );
 
-  test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - string';
-  var err = _._err( { args : [ new Error() ], caughtCallsStack : 'at program\nat _errTrowsError' } );
+  test.case = 'empty args, throwCallsStack - undefined, catchCallsStack - string';
+  var err = _._err( { args : [ new Error() ], catchCallsStack : 'at program\nat _errTrowsError' } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Error' ), 4 );
   test.identical( _.strCount( errStr, 'at program' ), 1 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack - empty string';
-  var o = { args : [ new Error() ], caughtCallsStack : '' };
+  test.case = 'empty args, throwCallsStack - empty string';
+  var o = { args : [ new Error() ], catchCallsStack : '' };
   var err = _._err( o );
   test.is( _.errIs( err ) );
   var errStr = String( err );
@@ -314,27 +384,27 @@ function _errArgsHasError( test )
 
   /* */
 
-  test.case = 'empty args, throwenCallsStack, stackRemovingBeginIncluding';
-  var err = _._err( { args : [ new Error() ], throwenCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginIncluding : /program1/ } );
+  test.case = 'empty args, throwCallsStack, stackRemovingBeginIncluding';
+  var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginIncluding : /program1/ } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Error' ), 3 );
   test.identical( _.strCount( errStr, 'at program1' ), 0 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack, stackRemovingBeginExcluding';
-  var err = _._err( { args : [ new Error() ], throwenCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginExcluding : /_errTrowsError/ } );
+  test.case = 'empty args, throwCallsStack, stackRemovingBeginExcluding';
+  var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', stackRemovingBeginExcluding : /_errTrowsError/ } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Error' ), 2 );
   test.identical( _.strCount( errStr, 'at program1' ), 1 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, stackRemovingBeginIncluding and stackRemovingBeginExcluding, fallBackStack';
+  test.case = 'empty args, throwCallsStack, stackRemovingBeginIncluding and stackRemovingBeginExcluding, fallBackStack';
   var err = _._err
   ({
       args : [ new Error() ],
-      throwenCallsStack : 'at program1\nat _errTrowsError',
+      throwCallsStack : 'at program1\nat _errTrowsError',
       stackRemovingBeginIncluding : /program1/,
       stackRemovingBeginExcluding : /_errTrowsError/,
       fallBackStack : ''
@@ -347,43 +417,43 @@ function _errArgsHasError( test )
 
   /* */
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and __';
-  var err = _._err( { args : [ new Error() ], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', 'at @2' ] } );
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - without ".test" and __';
+  var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', 'at @2' ] } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Error' ), 3 );
   test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( _.strCount( errStr, 'at @2' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and with __';
-  var err = _._err( { args : [ new Error() ], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '__dirname' ] } );
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - without ".test" and with __';
+  var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '__dirname' ] } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Error' ), 3 );
   test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( _.strCount( errStr, '__dirname' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and with *__';
-  var err = _._err( { args : [ new Error() ], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '*__dirname' ] } );
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - without ".test" and with *__';
+  var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at asyncCallsStack', '*__dirname' ] } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Error' ), 3 );
   test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( _.strCount( errStr, '*__dirname' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test"';
-  var err = _._err( { args : [ new Error() ], throwenCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at Err.test.s', '*__dirname' ] } );
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - with ".test"';
+  var err = _._err( { args : [ new Error() ], throwCallsStack : 'at program1\nat _errTrowsError', asyncCallsStack : [ 'at Err.test.s', '*__dirname' ] } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Error' ), 3 );
   test.identical( _.strCount( errStr, 'at Err.test.s *' ), 1 );
   test.identical( _.strCount( errStr, '*__dirname' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test", stackCondensing - 0';
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - with ".test", stackCondensing - 0';
   var err = _._err
   ({
     args : [ new Error() ],
-    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at Err.test.s', '*__dirname' ],
     stackCondensing : 0
   });
@@ -411,7 +481,7 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'Error' ), 2 );
   test.identical( _.strCount( errStr, 'Object._errArgsHasRoutine' ), 2 );
 
-  test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - undefined, level - 2';
+  test.case = 'empty args, throwCallsStack - undefined, catchCallsStack - undefined, level - 2';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], level : 2 } );
   test.is( _.errIs( err ) );
@@ -423,9 +493,9 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'Error' ), 2 );
   test.identical( _.strCount( errStr, 'Object._errArgsHasRoutine' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack - string';
+  test.case = 'empty args, throwCallsStack - string';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
-  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], throwenCallsStack : 'at program\nat _errTrowsError' } );
+  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], throwCallsStack : 'at program\nat _errTrowsError' } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
@@ -436,9 +506,9 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'at program' ), 1 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack - undefined, caughtCallsStack - string';
+  test.case = 'empty args, throwCallsStack - undefined, catchCallsStack - string';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
-  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], caughtCallsStack : 'at program\nat _errTrowsError' } );
+  var err = _._err( { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], catchCallsStack : 'at program\nat _errTrowsError' } );
   test.is( _.errIs( err ) );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'error with unroll' ), 1 );
@@ -449,9 +519,9 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'at program' ), 0 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack - empty string';
+  test.case = 'empty args, throwCallsStack - empty string';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
-  var o = { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], caughtCallsStack : '' };
+  var o = { args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ], catchCallsStack : '' };
   var err = _._err( o );
   test.is( _.errIs( err ) );
   var errStr = String( err );
@@ -464,12 +534,12 @@ function _errArgsHasRoutine( test )
 
   /* */
 
-  test.case = 'empty args, throwenCallsStack, stackRemovingBeginIncluding';
+  test.case = 'empty args, throwCallsStack, stackRemovingBeginIncluding';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
     args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
-    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwCallsStack : 'at program1\nat _errTrowsError',
     stackRemovingBeginIncluding : /program1/
   });
   test.is( _.errIs( err ) );
@@ -482,12 +552,12 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'at program1' ), 0 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack, stackRemovingBeginExcluding';
+  test.case = 'empty args, throwCallsStack, stackRemovingBeginExcluding';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
     args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
-    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwCallsStack : 'at program1\nat _errTrowsError',
     stackRemovingBeginExcluding : /_errTrowsError/
   });
   test.is( _.errIs( err ) );
@@ -500,12 +570,12 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'at program1' ), 1 );
   test.identical( _.strCount( errStr, 'at _errTrowsError' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, stackRemovingBeginIncluding and stackRemovingBeginExcluding, fallBackStack';
+  test.case = 'empty args, throwCallsStack, stackRemovingBeginIncluding and stackRemovingBeginExcluding, fallBackStack';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
       args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
-      throwenCallsStack : 'at program1\nat _errTrowsError',
+      throwCallsStack : 'at program1\nat _errTrowsError',
       stackRemovingBeginIncluding : /program1/,
       stackRemovingBeginExcluding : /_errTrowsError/,
       fallBackStack : ''
@@ -522,12 +592,12 @@ function _errArgsHasRoutine( test )
 
   /* */
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and __';
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - without ".test" and __';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
     args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
-    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at asyncCallsStack', 'at @2' ]
   });
   test.is( _.errIs( err ) );
@@ -540,12 +610,12 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( _.strCount( errStr, 'at @2' ), 1 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and with __';
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - without ".test" and with __';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
     args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
-    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at asyncCallsStack', '__dirname' ]
   });
   test.is( _.errIs( err ) );
@@ -558,12 +628,12 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( _.strCount( errStr, '__dirname' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - without ".test" and with *__';
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - without ".test" and with *__';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
     args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
-    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at asyncCallsStack', '*__dirname' ]
   });
   test.is( _.errIs( err ) );
@@ -576,12 +646,12 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'at asyncCallsStack' ), 1 );
   test.identical( _.strCount( errStr, '*__dirname' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test"';
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - with ".test"';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
     args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
-    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at Err.test.s', '*__dirname' ]
   });
   test.is( _.errIs( err ) );
@@ -594,12 +664,12 @@ function _errArgsHasRoutine( test )
   test.identical( _.strCount( errStr, 'at Err.test.s *' ), 1 );
   test.identical( _.strCount( errStr, '*__dirname' ), 0 );
 
-  test.case = 'empty args, throwenCallsStack, asyncCallsStack - with ".test", stackCondensing - 0';
+  test.case = 'empty args, throwCallsStack, asyncCallsStack - with ".test", stackCondensing - 0';
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
     args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
-    throwenCallsStack : 'at program1\nat _errTrowsError',
+    throwCallsStack : 'at program1\nat _errTrowsError',
     asyncCallsStack : [ 'at Err.test.s', '*__dirname' ],
     stackCondensing : 0
   });
@@ -618,12 +688,12 @@ function _errArgsHasRoutine( test )
 
 function _errLocation( test )
 {
-  test.case = 'args - Error, caughtCallsStack and caughtLocation';
+  test.case = 'args - Error, catchCallsStack and catchLocation';
   var err = _._err
   ({
     args : [ new Error( 'Sample' ) ],
-    caughtCallsStack : 'at program1\nat _errTrowsError',
-    caughtLocation : { 'filePath' : 'at @605' }
+    catchCallsStack : 'at program1\nat _errTrowsError',
+    catchLocation : { 'filePath' : 'at @605' }
   });
   test.is( _.errIs( err ) );
   test.identical( _.strCount( err.throwsStack, "at @605" ), 1 );
@@ -632,12 +702,12 @@ function _errLocation( test )
   test.identical( _.strCount( errStr, 'Error' ), 2 );
   test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
 
-  test.case = 'args - Error, throwenCallsStack and throwenLocation';
+  test.case = 'args - Error, throwCallsStack and throwLocation';
   var err = _._err
   ({
     args : [ new Error( 'Sample' ) ],
-    throwenCallsStack : 'at program1\nat _errTrowsError',
-    throwenLocation : { 'filePath' : 'at @605' }
+    throwCallsStack : 'at program1\nat _errTrowsError',
+    throwLocation : { 'filePath' : 'at @605' }
   });
   test.is( _.errIs( err ) );
   test.identical( err.location.filePath, 'at @605' );
@@ -648,14 +718,14 @@ function _errLocation( test )
   test.identical( _.strCount( errStr, 'Error' ), 1 );
   test.identical( _.strCount( errStr, 'at Err.test.s *' ), 0 );
 
-  test.case = 'args - Error, caughtCallsStack, caughtLocation,throwenCallsStack, throwenLocation';
+  test.case = 'args - Error, catchCallsStack, catchLocation,throwCallsStack, throwLocation';
   var err = _._err
   ({
     args : [ new Error( 'Sample' ) ],
-    caughtCallsStack : 'at program1\nat _errTrowsError',
-    caughtLocation : { 'filePath' : 'at @605' },
-    throwenCallsStack : 'at program1\nat _errTrowsError',
-    throwenLocation : { 'filePath' : 'at @605' }
+    catchCallsStack : 'at program1\nat _errTrowsError',
+    catchLocation : { 'filePath' : 'at @605' },
+    throwCallsStack : 'at program1\nat _errTrowsError',
+    throwLocation : { 'filePath' : 'at @605' }
   });
   test.is( _.errIs( err ) );
   test.identical( _.strCount( err.throwsStack, "at @605" ), 1 );
@@ -1110,7 +1180,6 @@ function errCatchStackAndMessage( test )
     }
     catch( err )
     {
-      debugger;
       throw _.err( err, '\nFailed to decrement' );
     }
   }
@@ -1176,12 +1245,12 @@ function errErrorWithoutStack( test )
   let err2 = _.err( err1 );
   test.is( err1 === err2 );
 
-  logger.log( err2.throwenCallsStack );
+  logger.log( err2.throwCallsStack );
 
   test.identical( _.strCount( _.strLinesStrip( err2.stack ), _.strLinesStrip( err2.callsStack ) ), 1 );
 
-  test.identical( _.strCount( err2.throwenCallsStack, 'Err.test.s:' ), 1 );
-  test.identical( _.strCount( err2.throwenCallsStack.substring( 0, err2.throwenCallsStack.indexOf( 'Err.test.s:' ) ), 'at ' ), 1 );
+  test.identical( _.strCount( err2.throwCallsStack, 'Err.test.s:' ), 1 );
+  test.identical( _.strCount( err2.throwCallsStack.substring( 0, err2.throwCallsStack.indexOf( 'Err.test.s:' ) ), 'at ' ), 1 );
 
 }
 
@@ -1234,10 +1303,10 @@ function errorFunctor( test )
 
     test.identical( _.strCount( op.output, 'ncaught' ), 0 );
     test.identical( _.strCount( op.output, '= Message' ), 1 );
-    test.identical( _.strCount( op.output, 'program.js:10' ), 2 );
+    test.identical( _.strCount( op.output, 'program.js:9' ), 2 );
     test.identical( _.strCount( op.output, 'program.js:' ), 3 );
     test.identical( _.strCount( op.output, 'arg1 arg2 abc' ), 1 );
-    test.identical( _.strCount( op.output.substring( 0, op.output.indexOf( 'program.js:10' ) ), 'at ' ), 1 );
+    test.identical( _.strCount( op.output.substring( 0, op.output.indexOf( 'program.js:9' ) ), 'at ' ), 1 );
 
     return null;
   });
@@ -1252,14 +1321,12 @@ function errorFunctor( test )
 
     let SomeError = _.error_functor( 'SomeError', _onSomeError );
 
-    debugger;
     try
     {
       throw SomeError( 'abc' );
     }
     catch( err )
     {
-      debugger;
       logger.log( err );
     }
 
@@ -1406,6 +1473,7 @@ var Self =
     diagnosticStructureGenerate,
 
     errArgumentObject,
+    errFromStringedError, /* qqq : extend the test routine. low priority problem */
     _errTrowsError,
     _errEmptyArgs,
     _errArgsWithMap,
