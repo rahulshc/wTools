@@ -501,25 +501,6 @@ _errMake.defaults =
   sourceCode : null,
   reason : null,
 
-  // args : null,
-  // level : 1,
-  // /* to make catch stack work properly level should be 1 by default */
-  // stackRemovingBeginIncluding : null,
-  // stackRemovingBeginExcluding : null,
-  // usingSourceCode : 1,
-  // stackCondensing : 1,
-  // debugging : null,
-  // throwLocation : null,
-  // catchLocation : null,
-  // sourceCode : null,
-  // brief : null,
-  // isProcess : null,
-  // asyncCallsStack : null,
-  // catchCallsStack : null,
-  // fallBackStack : null,
-  //
-  // throws : null,
-  // sections : null,
 }
 
 //
@@ -538,8 +519,6 @@ _errMake.defaults =
  * @memberof wTools
  */
 
-// let _errorCounter = 0;
-// let _errorMaking = false;
 function _err( o )
 {
   let dstError;
@@ -580,14 +559,9 @@ function _err( o )
 
   /* let */
 
-  // let sections;
-  // let id = null;
   let originalMessage = '';
   let fallBackMessage = '';
-  // let sourceCode = null;
   let errors = [];
-  // let attended = false;
-  // let logged = false;
   let beautifiedStack = '';
   let message = null;
 
@@ -635,10 +609,6 @@ function _err( o )
       reason : o.reason,
     });
 
-    // sectionsForm();
-    // messageForm();
-    // fieldsForm();
-
   }
   catch( err2 )
   {
@@ -650,16 +620,6 @@ function _err( o )
   _._errorMaking = false;
 
   return dstError;
-
-  // /* */
-  //
-  // function strLinesIndentation( str, indentation )
-  // {
-  //   if( _.strLinesIndentation )
-  //   return indentation + _.strLinesIndentation( str, indentation );
-  //   else
-  //   return str;
-  // }
 
   /* */
 
@@ -746,9 +706,9 @@ function _err( o )
     if( !o.throwCallsStack )
     o.throwCallsStack = arg.throwCallsStack;
 
-    if( arg.asyncCallsStack )
-    if( !o.asyncCallsStack )
-    o.asyncCallsStack = arg.asyncCallsStack;
+    // if( arg.asyncCallsStack )
+    // if( !o.asyncCallsStack )
+    // o.asyncCallsStack = arg.asyncCallsStack;
 
     if( arg.throwsStack )
     if( o.throwsStack )
@@ -920,32 +880,6 @@ function _err( o )
       debugger;
     }
 
-    // if( o.brief === null || o.brief === undefined )
-    // o.brief = dstError.brief;
-    // o.brief = !!o.brief;
-    //
-    // if( o.isProcess === null || o.isProcess === undefined )
-    // o.isProcess = dstError.isProcess;
-    // o.isProcess = !!o.isProcess;
-    //
-    // if( o.debugging === null || o.debugging === undefined )
-    // o.debugging = dstError.debugging;
-    // o.debugging = !!o.debugging;
-    //
-    // if( o.reason === null || o.reason === undefined )
-    // o.reason = dstError.reason;
-    //
-    // sections = dstError.section || Object.create( null );
-    // if( o.sections )
-    // _.mapExtend( sections, o.sections );
-    //
-    // id = dstError.id;
-    // if( !id )
-    // {
-    //   _._errorCounter += 1;
-    //   id = _._errorCounter;
-    // }
-
   }
 
   /* */
@@ -1091,206 +1025,6 @@ function _err( o )
 
   }
 
-  // /* */
-  //
-  // function sectionsForm()
-  // {
-  //   let result = '';
-  //
-  //   sectionWrite( 'message', `Message of error#${id}`, originalMessage );
-  //   sectionWrite( 'callsStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', beautifiedStack );
-  //   sectionWrite( 'throwsStack', `Throws stack`, o.throwsStack );
-  //
-  //   if( o.isProcess && _.process && _.process.entryPointInfo )
-  //   sectionWrite( 'process', `Process`, _.process.entryPointInfo() );
-  //
-  //   if( sourceCode )
-  //   sectionWrite( 'sourceCode', `Source code from ${sourceCode.path}`, sourceCode.code );
-  //
-  //   for( let s in sections )
-  //   {
-  //     let section = sections[ s ];
-  //     if( !_.strIs( section.head ) )
-  //     {
-  //       debugger;
-  //       logger.error( `Each section of an error should have head, but head of section::${s} is ${_.strType(section.head)}` );
-  //       delete sections[ s ];
-  //     }
-  //     if( !_.strIs( section.body ) )
-  //     {
-  //       debugger;
-  //       logger.error( `Each section of an error should have body, but body of section::${s} is ${_.strType(section.body)}` );
-  //       delete sections[ s ];
-  //     }
-  //   }
-  //
-  //   return result;
-  // }
-  //
-  // /* */
-  //
-  // function sectionWrite( name, head, body )
-  // {
-  //   let section = { head, body };
-  //   sections[ name ] = section;
-  //   return section;
-  // }
-  //
-  // /* */
-  //
-  // function messageForm()
-  // {
-  //   let result = '';
-  //
-  //   if( o.brief )
-  //   {
-  //     result += originalMessage;
-  //   }
-  //   else
-  //   {
-  //
-  //     for( let s in sections )
-  //     {
-  //       let section = sections[ s ];
-  //       let head = section.head || '';
-  //       let body = strLinesIndentation( section.body, '    ' );
-  //       if( !body.trim().length )
-  //       continue;
-  //       result += ` = ${head}\n${body}\n\n`;
-  //     }
-  //
-  //   }
-  //
-  //   message = result;
-  //   return result;
-  // }
-  //
-  // /* */
-  //
-  // function fieldsForm()
-  // {
-  //
-  //   nonenumerable( 'message', message );
-  //   nonenumerable( 'originalMessage', originalMessage );
-  //   logging( 'stack', message );
-  //   nonenumerable( 'reason', o.reason );
-  //
-  //   nonenumerable( 'callsStack', beautifiedStack );
-  //   nonenumerable( 'throwCallsStack', o.throwCallsStack );
-  //   nonenumerable( 'throwsStack', o.throwsStack );
-  //   nonenumerable( 'asyncCallsStack', o.asyncCallsStack );
-  //   nonenumerable( 'catchCounter', dstError.catchCounter ? dstError.catchCounter+1 : 1 );
-  //   nonenumerable( 'attended', attended );
-  //   nonenumerable( 'logged', logged );
-  //   nonenumerable( 'brief', o.brief );
-  //   nonenumerable( 'isProcess', o.isProcess );
-  //
-  //   if( o.throwLocation.line !== undefined )
-  //   nonenumerable( 'lineNumber', o.throwLocation.line );
-  //   if( dstError.throwLocation === undefined )
-  //   nonenumerable( 'location', o.throwLocation );
-  //   nonenumerable( 'sourceCode', sourceCode || null );
-  //   nonenumerable( 'debugging', o.debugging );
-  //   nonenumerable( 'id', id );
-  //
-  //   nonenumerable( 'toString', function() { return this.stack } );
-  //   nonenumerable( 'sections', sections );
-  //
-  //   if( o.debugging )
-  //   debugger;
-  //
-  // }
-  //
-  // /* */
-  //
-  // function nonenumerable( fieldName, value )
-  // {
-  //   try
-  //   {
-  //     Object.defineProperty( dstError, fieldName,
-  //     {
-  //       enumerable : false,
-  //       configurable : true,
-  //       writable : true,
-  //       value : value,
-  //     });
-  //   }
-  //   catch( err2 )
-  //   {
-  //     console.error( err2 );
-  //     debugger;
-  //   }
-  // }
-  //
-  // /* */
-  //
-  // function rw( fieldName, value ) // Dmytro : this routine is not used anywhere, similar routine logging() below
-  // {
-  //   let symbol = Symbol.for( fieldName );
-  //   try
-  //   {
-  //     dstError[ symbol ] = value;
-  //     Object.defineProperty( dstError, fieldName,
-  //     {
-  //       enumerable : false,
-  //       configurable : true,
-  //       get : get,
-  //       set : set,
-  //     });
-  //   }
-  //   catch( err2 )
-  //   {
-  //     console.error( err2 );
-  //     debugger;
-  //   }
-  //   function get()
-  //   {
-  //     logger.log( `${fieldName} get ${this[ symbol ]}` );
-  //     return this[ symbol ];
-  //   }
-  //   function set( src )
-  //   {
-  //     logger.log( `${fieldName} set` );
-  //     this[ symbol ] = src;
-  //     return src;
-  //   }
-  // }
-  //
-  // /* */
-  //
-  // function logging( fieldName, value )
-  // {
-  //   let symbol = Symbol.for( fieldName );
-  //   try
-  //   {
-  //     nonenumerable( symbol, value );
-  //     Object.defineProperty( dstError, fieldName,
-  //     {
-  //       enumerable : false,
-  //       configurable : true,
-  //       get : get,
-  //       set : set,
-  //     });
-  //   }
-  //   catch( err2 )
-  //   {
-  //     console.error( err2 );
-  //     debugger;
-  //   }
-  //   function get()
-  //   {
-  //     _.errLogEnd( this );
-  //     _.errAttend( this );
-  //     return this[ symbol ];
-  //   }
-  //   function set( src )
-  //   {
-  //     debugger;
-  //     this[ symbol ] = src;
-  //     return src;
-  //   }
-  // }
-
 }
 
 _err.defaults =
@@ -1334,10 +1068,6 @@ _err.defaults =
   throws : null,
 
 }
-
-    // args : [ message ],
-    // callsStack,
-    // throwsStack,
 
 //
 
