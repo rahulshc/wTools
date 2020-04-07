@@ -1859,8 +1859,8 @@ defaults.quoting = 1;
 defaults.quotingPrefixes = null;
 defaults.quotingPostfixes = null;
 
-defaults.onDelimeter = null;
-defaults.onQuote = null;
+defaults.onDelimeter = null; /* qqq : cover. seems does not work. ask how it should work */
+defaults.onQuote = null; /* qqq : cover. seems does not work. ask how it should work */
 
 //
 
