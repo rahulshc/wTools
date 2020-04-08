@@ -28,7 +28,7 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
  * @param { * } src.
  * @return { Boolean }.
  * @function objectIs
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function objectIs( src )
@@ -91,7 +91,7 @@ function objectLikeOrRoutine( src )
  *
  * @returns { Boolean } Returns true if {-srcMap-} is an Object, and not inherits through the prototype chain.
  * @function mapIs
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapIs( src )
@@ -389,7 +389,7 @@ _mapKeys.defaults =
  * @function mapKeys
  * @throws { Exception } Throw an exception if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapKeys( srcMap, o )
@@ -445,7 +445,7 @@ mapKeys.defaults =
  * @function mapOwnKeys
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
 */
 
 function mapOwnKeys( srcMap, o )
@@ -495,7 +495,7 @@ mapOwnKeys.defaults =
  * corresponding to the all properties found on the object.
  * @function mapAllKeys
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @memberof namespace:wTools
+ * @namespace Tools
 */
 
 function mapAllKeys( srcMap, o )
@@ -591,7 +591,7 @@ _mapVals.defaults =
  * @function mapVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapVals( srcMap, o )
@@ -647,7 +647,7 @@ mapVals.defaults =
  * @function mapOwnVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapOwnVals( srcMap, o )
@@ -693,7 +693,7 @@ mapOwnVals.defaults =
  * corresponding to the enumerable property values found directly upon object.
  * @function mapAllVals
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapAllVals( srcMap, o )
@@ -782,7 +782,7 @@ _mapPairs.defaults =
  * @function mapPairs
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapPairs( srcMap, o )
@@ -839,7 +839,7 @@ mapPairs.defaults =
  * @function mapOwnPairs
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapOwnPairs( srcMap, o )
@@ -889,7 +889,7 @@ mapOwnPairs.defaults =
  * @returns { array } A list of [ key, value ] pairs.
  * @function mapAllPairs
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapAllPairs( srcMap, o )
@@ -979,7 +979,7 @@ _mapProperties.defaults =
  * @function mapProperties
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapProperties( srcMap, o )
@@ -1037,7 +1037,7 @@ mapProperties.defaults =
  * @function mapOwnProperties
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapOwnProperties( srcMap, o )
@@ -1087,7 +1087,7 @@ mapOwnProperties.defaults =
  * @function mapAllProperties
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapAllProperties( srcMap, o )
@@ -1146,7 +1146,7 @@ mapAllProperties.defaults =
  * @function mapRoutines
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 
@@ -1212,7 +1212,7 @@ mapRoutines.defaults =
  * @function mapOwnRoutines
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapOwnRoutines( srcMap, o )
@@ -1269,7 +1269,7 @@ mapOwnRoutines.defaults =
  * @function mapAllRoutines
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapAllRoutines( srcMap, o )
@@ -1335,7 +1335,7 @@ mapAllRoutines.defaults =
  * @function mapFields
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapFields( srcMap, o )
@@ -1397,7 +1397,7 @@ mapFields.defaults =
  * @function mapOwnFields
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapOwnFields( srcMap, o )
@@ -1457,7 +1457,7 @@ mapOwnFields.defaults =
  * @function mapAllFields
  * @throws { Error } Will throw an Error if {-srcMap-} is not an objectLike entity.
  * @throws { Error } Will throw an Error if unknown option is provided.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapAllFields( srcMap, o )
@@ -1515,7 +1515,7 @@ mapAllFields.defaults =
  * @returns { Array } Returns pair [ key, value ] as array if {-srcMap-} has fields, otherwise, undefined.
  * @function mapFirstPair
  * @throws { Error } Will throw an Error if (arguments.length) less than one, if {-srcMap-} is not an object-like.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapFirstPair( srcMap )
@@ -1586,7 +1586,7 @@ function mapSelect( srcMap, keys )
  * @returns { * } Returns value of {-srcMap-} by corresponding (index).
  * @function mapValWithIndex
  * @throws { Error } Will throw an Error if( arguments.length > 2 ) or {-srcMap-} is not an Object.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapValWithIndex( srcMap, index )
@@ -1626,7 +1626,7 @@ function mapValWithIndex( srcMap, index )
  * @returns { string } Returns key of {-srcMap-} by corresponding (index).
  * @function mapKeyWithIndex
  * @throws { Error } Will throw an Error if( arguments.length > 2 ) or {-srcMap-} is not an Object.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapKeyWithIndex( srcMap, index )
@@ -1753,7 +1753,7 @@ function mapButNulls( srcMap )
  * @function mapExtend
  * @throws { Error } Will throw an error if ( arguments.length < 2 ),
  * if the (dstMap) is not an Object.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapExtend( dstMap, srcMap )
@@ -1802,7 +1802,7 @@ function mapExtend( dstMap, srcMap )
  *
  * @returns { objectLike } Returns an object with unique [ key, value ].
  * @function mapSupplement
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function mapSupplement( dstMap, srcMap )

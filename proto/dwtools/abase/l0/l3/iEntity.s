@@ -64,7 +64,7 @@ function containerLike( src )
  *
  * @return { Boolean } - Returns the boolean value of whether the argument is countable.
  * @function iterableIs
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function iterableIs( src )

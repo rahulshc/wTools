@@ -37,7 +37,7 @@ let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
  *
  * @returns { boolean } Returns true if {-srcMap-} is an array-like or an Array.
  * @function longIs.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function longIs( src )
@@ -264,7 +264,7 @@ function longRightIndex( arr, ins, evaluator1, evaluator2 )
  * @throws { Error } If {-onEvaluate1-} is equalizer and onEvaluate2 provided.
  * @throws { Error } If {-onEvaluate2-} is not a routine.
  * @throws { Error } If {-onEvaluate2-} accepts less or more then one parameter.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function longLeft( arr, ins, fromIndex, evaluator1, evaluator2 )
@@ -341,7 +341,7 @@ function longLeft( arr, ins, fromIndex, evaluator1, evaluator2 )
  * @throws { Error } If {-onEvaluate1-} is equalizer and onEvaluate2 provided.
  * @throws { Error } If {-onEvaluate2-} is not a routine.
  * @throws { Error } If {-onEvaluate2-} accepts less or more then one parameter.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function longRight( arr, ins, fromIndex, evaluator1, evaluator2 )
@@ -385,7 +385,7 @@ function longRight( arr, ins, fromIndex, evaluator1, evaluator2 )
  * Otherwise, it returns the object with property (index), which value is -1.
  * @function longRight
  * @throws { Error } If arguments.length is less then or more then one.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function longLeftDefined( arr )
@@ -420,7 +420,7 @@ function longLeftDefined( arr )
  * Otherwise, it returns the object with property (index) which, value is -1.
  * @function longRight
  * @throws { Error } If arguments.length is less then or more then one.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function longRightDefined( arr )

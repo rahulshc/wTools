@@ -13,8 +13,8 @@
 
 /**
  * wTools - Generic purpose tools of base level for solving problems in Java Script.
- * @namespace wTools
- * @memberof module:Tools/base/Fundamental
+ * @namespace Tools
+ * @module Tools/base/Fundamental
  */
 
 // global

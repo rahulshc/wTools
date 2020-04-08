@@ -31,7 +31,7 @@ let Self = _global_.wTools;
  *
  * @returns { boolean } Returns true if {-src-} is an Unroll.
  * @function unrollIs
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function unrollIs( src )
@@ -62,7 +62,7 @@ function unrollIs( src )
  *
  * @returns { boolean } Returns true if argument ( src ) is an Unroll and has one or more elements ( length ).
  * @function unrollIsPopulated
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function unrollIsPopulated( src )

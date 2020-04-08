@@ -39,7 +39,7 @@ function argumentsArrayIs( src )
  *
  * @returns { boolean } Returns true if {-srcMap-} is an Array.
  * @function arrayIs
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function arrayIs( src )

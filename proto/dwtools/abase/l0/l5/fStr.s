@@ -678,7 +678,7 @@ function strRight( src, ins, range )
  * @throws { Exception } If all arguments are not strings;
  * @throws { Exception } If ( arguments.length ) is not equal 3.
  * @function strInsideOf
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function strInsideOf( src, begin, end )
@@ -764,7 +764,7 @@ function _strRemovedBegin( src, begin )
  * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( prefix ) is not a String.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
- * @memberof namespace:wTools
+ * @namespace Tools
  *
  */
 
@@ -839,7 +839,7 @@ function _strRemovedEnd( src, end )
  * @throws { Exception } Throws a exception if( src ) is not a String.
  * @throws { Exception } Throws a exception if( postfix ) is not a String.
  * @throws { Exception } Throws a exception if( arguments.length ) is not equal 2.
- * @memberof namespace:wTools
+ * @namespace Tools
  *
  */
 
@@ -960,7 +960,7 @@ function strReplaceEnd( src, end, ins )
 * @throws { Exception } Throws a exception if( insStr ) is not a String or a RegExp.
 * @throws { Exception } Throws a exception if( subStr ) is not a String.
 * @throws { Exception } Throws a exception if( arguments.length ) is not equal 3.
-* @memberof namespace:wTools
+* @namespace Tools
 *
 */
 
@@ -1792,7 +1792,7 @@ strSplitFast_body.defaults =
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
- * @memberof namespace:wTools
+ * @namespace Tools
  *
  */
 
@@ -1911,7 +1911,7 @@ defaults.onQuote = null; /* qqq : cover. seems does not work. ask how it should 
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
- * @memberof namespace:wTools
+ * @namespace Tools
  *
  */
 
@@ -2120,7 +2120,7 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
- * @memberof namespace:wTools
+ * @namespace Tools
  *
  */
 

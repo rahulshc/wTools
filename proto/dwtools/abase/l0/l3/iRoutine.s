@@ -86,7 +86,7 @@ function routineWithName( src )
  * @param {object} object - object to check.
  * @return {object} object - name in key/value format.
  * @function _routineJoin
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function _routineJoin( o )
@@ -267,7 +267,7 @@ function constructorJoin( routine, args )
  * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
  * @thorws {Error} If passed arguments more than 3 throws error with text 'Expects 3 or less arguments'
  * @function routineJoin
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function routineJoin( context, routine, args )
@@ -323,7 +323,7 @@ function routineJoin( context, routine, args )
  * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
  * @thorws {Error} If passed arguments more than 3 throws error with text 'Expects 3 or less arguments'
  * @function routineJoin
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function routineJoin( context, routine, args )
@@ -362,7 +362,7 @@ function routineJoin( context, routine, args )
  * @param {Array<*>} args Arguments wrapped into array. Will be used as argument to `routine` function
  * @returns {Function} Result function with sealed context and arguments.
  * @function routineJoin
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function routineSeal( context, routine, args )
@@ -703,7 +703,7 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
  * @throws { Error } Throw an error if dst is not routine or not null.
  * @throws { Error } Throw an error if dst is null and src has not pre and body properties.
  * @throws { Error } Throw an error if src is primitive value.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function routineExtend( dst, src )
@@ -1700,7 +1700,7 @@ vectorizeNone.defaults = Object.create( vectorizeNone_body.defaults );
  * @function vectorizeAccess
  * @throws { Error } If arguments.length is less or more then one.
  * @throws { Error } If {-vector-} is not a Long.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function vectorizeAccess( vector )

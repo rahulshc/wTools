@@ -207,7 +207,7 @@ function extendAppending( dst, src )
  * @throws { Error } If arguments.length is less than one.
  * @throws { Error } If {-dstContainer-} is not a Long, not a Set, not a HashMap, not a MapLike.
  * @throws { Error } If {-dstContainer-} is not a resizable Long, or if it is a WeakSet or WeakMap.
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function empty( dstContainer )

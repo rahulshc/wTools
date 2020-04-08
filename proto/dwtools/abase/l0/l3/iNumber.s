@@ -25,7 +25,7 @@ let Self = _global_.wTools;
  * @param {*} src.
  * @return {Boolean}.
  * @function numberIs
- * @memberof namespace:wTools
+ * @namespace Tools
  */
 
 function numberIs( src )
