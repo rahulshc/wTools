@@ -40,7 +40,7 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
  * has the same values as the first object(src1).
  * @function mapsAreIdentical
  * @throws Will throw an error if ( arguments.length !== 2 ).
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapsAreIdentical( src1, src2 )
@@ -90,7 +90,7 @@ function mapsAreIdentical( src1, src2 )
  * has the same values as the second object(ins).
  * @function mapContain
  * @throws Will throw an error if ( arguments.length !== 2 ).
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapContain( src, ins )
@@ -143,7 +143,7 @@ function mapContain( src, ins )
  * @throws {exception} If( o.template ) is not a Object.
  * @throws {exception} If( o.template ) is not a Routine.
  * @throws {exception} If( o.src ) is undefined.
- * @memberof wTools
+ * @namespace Tools
 */
 
 function objectSatisfy( o )
@@ -272,7 +272,7 @@ function mapHasKey( srcMap, key )
  * @returns { boolean } Returns true if (object) has own property.
  * @function mapOwnKey
  * @throws { mapOwnKey } Will throw an error if the (name) is unknown.
- * @memberof wTools
+ * @namespace Tools
  */
 
 //
@@ -332,7 +332,7 @@ function mapOwnVal( object, val )
  * @function mapHasAll
  * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
  * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapHasAll( src, screen )
@@ -378,7 +378,7 @@ function mapHasAll( src, screen )
  * @function mapHasAny
  * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
  * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapHasAny( src, screen )
@@ -427,7 +427,7 @@ function mapHasAny( src, screen )
  * @function mapHasNone
  * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
  * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapHasNone( src, screen )
@@ -473,7 +473,7 @@ function mapHasNone( src, screen )
  * @function mapOwnAll
  * @throws { Exception } Will throw an error if the ( src ) is not a ObjectLike entity.
  * @throws { Exception } Will throw an error if the ( screen ) is not a ObjectLike entity.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapOwnAll( src, screen )
@@ -522,7 +522,7 @@ function mapOwnAll( src, screen )
  * @function mapOwnAny
  * @throws { Exception } Will throw an error if the ( src ) is not a map.
  * @throws { Exception } Will throw an error if the ( screen ) is not a map.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapOwnAny( src, screen )
@@ -571,7 +571,7 @@ function mapOwnAny( src, screen )
  * @function mapOwnNone
  * @throws { Exception } Will throw an error if the ( src ) is not a map.
  * @throws { Exception } Will throw an error if the ( screen ) is not a map.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapOwnNone( src, screen )
@@ -746,7 +746,7 @@ function mapHasNoUndefine( srcMap )
  * @returns { objectLike } It will return the new object filled by [ key, value ]
  * from one or more source objects.
  * @function mapMake
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapMake( src )
@@ -809,7 +809,7 @@ function mapShallowClone( src )
  * @throws { Error } Will throw an Error if ( o ) is not an Object,
  * if ( arguments.length > 2 ), if (key) is not a String or
  * if {-srcMap-} has not own properties.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapCloneAssigning( o )
@@ -905,7 +905,7 @@ function mapsExtend( dstMap, srcMaps )
  * @function mapExtendConditional
  * @throws { Error } Will throw an Error if ( arguments.length < 3 ), (filter)
  * is not a Function, (result) and (argument) are not the objects.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapExtendConditional( filter, dstMap )
@@ -1223,7 +1223,7 @@ function mapSupplementOwnFromDefinitionStrictlyPrimitives( dstMap, srcMap )
  * @returns { objectLike } - Returns the destination object filled by unique values from source object(s), and if it is possible, replaced undefined
  * values in destination object.
  * @function mapComplement
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapComplement( dstMap, srcMap )
@@ -1712,7 +1712,7 @@ function hashMapExtend( dst, src )
  * @returns { object } A new map with all atomic fields from source {-srcMap-}.
  * @function mapOnlyPrimitives
  * @throws { Error } Will throw an Error if {-srcMap-} is not an Object.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapOnlyPrimitives( srcMap )
@@ -1979,7 +1979,7 @@ mapsFlatten.defaults =
  * @returns { array } Returns a list of [ [ key, value ] ... ] pairs.
  * @function mapToArray
  * @throws { Error } Will throw an Error if( arguments.length !== 1 ) or {-srcMap-} is not an object.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapToArray( src )
@@ -2016,7 +2016,7 @@ function mapToArray( src )
  *
  * @returns { string } Returns a string (result) representing the passed object {-srcMap-}.
  * @function mapToStr
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapToStr( o )
@@ -2074,7 +2074,7 @@ mapToStr.defaults =
  * @returns { object } Returns an object whose (values) are not equal to the arrays or objects.
  * @function mapButConditional
  * @throws { Error } Will throw an Error if {-srcMap-} is not an object.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapButConditional( fieldFilter, srcMap, butMap )
@@ -2223,7 +2223,7 @@ function mapButConditional_( fieldFilter, dstMap, srcMap, butMap )
  *  In debug mode it throws an error if any argument is not object like.
  * @returns { object } Returns new object made by unique keys.
  * @function mapBut
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapBut( srcMap, butMap )
@@ -2425,7 +2425,7 @@ function mapBut_( dstMap, srcMap, butMap )
  *  In debug mode it throws an error if any argument is not object like.
  * @returns { object } Returns new object made by unique keys.
  * @function mapButIgnoringUndefines
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapButIgnoringUndefines( srcMap, butMap )
@@ -2588,7 +2588,7 @@ function mapButIgnoringUndefines_( dstMap, srcMap, butMap )
  * @returns { object } Returns new (result) object with unique own keys.
  * @function mapOwnBut
  * @throws { Error } Will throw an Error if {-srcMap-} is not an object.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapOwnBut( srcMap, butMap )
@@ -2640,7 +2640,7 @@ function mapOwnBut_( dstMap, srcMap, butMap )
  * from others objects.
  * @function mapOnly
  * @throws { Error } Will throw an Error if (arguments.length < 2) or (arguments.length !== 2).
- * @memberof wTools
+ * @namespace Tools
  */
 
 function mapOnly( srcMaps, screenMaps )
@@ -2839,7 +2839,7 @@ function mapOnlyComplementing_( dstMap, srcMaps, screenMaps )
  * @function _mapOnly
  * @throws { Error } Will throw an Error if (options.dstMap or screenMap) are not objects,
  * or if (srcMaps) is not an array
- * @memberof wTools
+ * @namespace Tools
  */
 
 // function _mapOnly( o )
@@ -3192,7 +3192,7 @@ function sureMapOwnExactly( srcMap, screenMaps, msg )
  * @function sureMapHasOnly
  * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains unique property.
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -3299,7 +3299,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
  * @function sureMapOwnOnly
  * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains unique property.
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -3402,7 +3402,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
  * @function sureMapHasAll
  * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -3505,7 +3505,7 @@ function sureMapHasAll( srcMap, all, msg )
  * @function sureMapOwnAll
  * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -3609,7 +3609,7 @@ function sureMapOwnAll( srcMap, all, msg )
  * @function sureMapHasNone
  * @throws {Exception} If no arguments are provided or more than four arguments are provided.
  * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -3746,7 +3746,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
  * @function sureMapHasNoUndefine
  * @throws {Exception} If no arguments passed or than three arguments passed.
  * @throws {Exception} If map {-srcMap-} contains undefined property.
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -3875,7 +3875,7 @@ function assertMapOwnFields( srcMap, screenMaps, msg )
  * @function assertMapHasOnly
  * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} contains unique property.
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -3951,7 +3951,7 @@ function assertMapHasOnly( srcMap, screenMaps, msg )
  * @function assertMapOwnOnly
  * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} contains unique property.
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -4024,7 +4024,7 @@ function assertMapOwnOnly( srcMap, screenMaps, msg )
  * @function assertMapHasNone
  * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} contains some properties from other map(s).
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -4106,7 +4106,7 @@ function assertMapOwnNone( srcMap, screenMaps, msg )
  * @function assertMapHasAll
  * @throws {Exception} If no arguments provided or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -4178,7 +4178,7 @@ function assertMapHasAll( srcMap, all, msg )
  * @function assertMapOwnAll
  * @throws {Exception} If no arguments passed or more than four arguments passed.
  * @throws {Exception} If map {-srcMap-} not contains some properties from argument( all ).
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -4244,7 +4244,7 @@ function assertMapOwnAll( srcMap, all, msg )
  * @function assertMapHasNoUndefine
  * @throws {Exception} If no arguments provided or more than three arguments passed.
  * @throws {Exception} If map {-srcMap-} contains undefined property.
- * @memberof wTools
+ * @namespace Tools
  *
  */
 

@@ -99,7 +99,7 @@ function constructorLikeArray( src )
  *
  * @returns { boolean } Returns true if {-srcMap-} has the property (length).
  * @function hasLength
- * @memberof wTools
+ * @namespace Tools
  */
 
 function hasLength( src )
@@ -166,7 +166,7 @@ function hasLength( src )
  * @function arrayMake
  * @throws { Error } If arguments.length is more then one.
  * @throws { Error } If {-src-} is not a number, not a Long, not Set, not null, not undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayMake( src )
@@ -268,7 +268,7 @@ function arrayMake( src )
  * @throws { Error } If arguments.length is more then two.
  * @throws { Error } If argument {-src-} is not a number, not a Long, not a Set, not null.
  * @throws { Error } If argument {-length-} is not a number, not Long, not null.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /* aaa : can accept zero arguments just like arrayMake */
@@ -356,7 +356,7 @@ function arrayFrom( src )
  * @returns { Array } - Returns an Array. If {-src-} is Array instance, then routine returns original {-src-}.
  * @function arrayFromCoercing
  * @throws { Error } If {-src-} is not an Array, not a Long, not object-like, not a String.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayFromCoercing( src )
@@ -407,7 +407,7 @@ function arrayFromStr( src )
  * @returns { Array } - If passed null or undefined than return the empty array. If passed an array then return it.
  * Otherwise return an array which contains the element from argument.
  * @function arrayAs
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayAs( src )
@@ -482,7 +482,7 @@ function arrayAsShallowing( src )
  * @function arraySlice
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If argument {-srcArray-} is not an array or unroll.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arraySlice( srcArray, f, l )
@@ -639,7 +639,7 @@ function arrayExtendPrepending( dst, src )
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
  * @throws { Error } If argument {-ins-} is not Long / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayBut( src, range, ins )
@@ -736,7 +736,7 @@ function arrayBut( src, range, ins )
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
  * @throws { Error } If argument {-ins-} is not Long / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayButInplace( src, range, ins )
@@ -932,7 +932,7 @@ function arrayBut_( dst, src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayShrink( src, range, ins )
@@ -1027,7 +1027,7 @@ function arrayShrink( src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayShrinkInplace( src, range, ins )
@@ -1182,7 +1182,7 @@ function arrayShrink_( dst, src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayGrow( src, range, ins )
@@ -1302,7 +1302,7 @@ function arrayGrow( src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayGrowInplace( src, range, ins )
@@ -1500,7 +1500,7 @@ function arrayGrow_( dst, src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayRelength( src, range, ins )
@@ -1608,7 +1608,7 @@ function arrayRelength( src, range, ins )
  * @throws { Error } If argument {-src-} is not an array or unroll.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayRelengthInplace( src, range, ins )
@@ -1792,7 +1792,7 @@ function arrayPrepend( dstArray, ins )
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
  * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
@@ -1850,7 +1850,7 @@ function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
  * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
  * @throws { Error } An Error if ( ins ) already exists on( dstArray ).
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
@@ -1928,7 +1928,7 @@ function arrayPrepended( dstArray, ins )
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
  * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
@@ -1984,7 +1984,7 @@ function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
  * @function arrayPrependElement
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( arguments.length ) is less or more than two.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependElement( dstArray, ins )
@@ -2065,7 +2065,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
  * @function arrayPrependedElement
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( arguments.length ) is not equal to two.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependedElement( dstArray, ins )
@@ -2134,7 +2134,7 @@ function arrayPrependedElementOnceStrictly( dstArray, ins, evaluator1, evaluator
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( arguments.length ) is less or more than two.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependArray( dstArray, insArray )
@@ -2181,7 +2181,7 @@ function arrayPrependArray( dstArray, insArray )
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
  * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
@@ -2232,7 +2232,7 @@ function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
  * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
@@ -2288,7 +2288,7 @@ function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluato
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( arguments.length ) is less or more than two.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependedArray( dstArray, insArray )
@@ -2339,7 +2339,7 @@ function arrayPrependedArray( dstArray, insArray )
  * @throws { Error } An Error if ( insArray ) is not an ArrayLike entity.
  * @throws { Error } An Error if ( onEqualize ) is not an Function.
  * @throws { Error } An Error if ( arguments.length ) is not equal two or three.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
@@ -2415,7 +2415,7 @@ function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evalua
  * @function arrayPrependArrays
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if one of ( arguments ) is undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependArrays( dstArray, insArray )
@@ -2456,7 +2456,7 @@ function arrayPrependArrays( dstArray, insArray )
  * @function arrayPrependArraysOnce
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if one of ( arguments ) is undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
@@ -2510,7 +2510,7 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
  * @throws { Error } An Error if ( dstArray ) is not an Array.
  * @throws { Error } An Error if one of ( arguments ) is undefined.
  * @throws { Error } An Error if count of added elements is not equal to count of elements from( arguments )( only first two levels inside of array are counted ).
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
@@ -2603,7 +2603,7 @@ function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
  * @returns { Array } Returns count of added elements.
  * @function arrayPrependedArrays
  * @throws { Error } An Error if ( dstArray ) is not an Array.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependedArrays( dstArray, insArray )
@@ -2667,7 +2667,7 @@ function arrayPrependedArrays( dstArray, insArray )
  * @returns { Array } Returns count of added elements.
  * @function arrayPrependedArraysOnce
  * @throws { Error } An Error if ( dstArray ) is not an Array.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
@@ -2825,7 +2825,7 @@ function arrayAppend( dstArray, ins )
  * @function arrayAppendOnce
  * @throws { Error } Will throw an Error if (dst) is not an Array.
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayAppendOnce( dstArray, ins, evaluator1, evaluator2 )
@@ -3025,7 +3025,7 @@ function arrayAppendedElementOnceStrictly( dstArray, ins )
 * @function arrayAppendArray
 * @throws { Error } If the first argument is not an array.
 * @throws { Error } If type of the argument is equal undefined.
-* @memberof wTools
+* @namespace Tools
 */
 
 function arrayAppendArray( dstArray, insArray )
@@ -3067,7 +3067,7 @@ function arrayAppendArray( dstArray, insArray )
  * @function arrayAppendArrayOnce
  * @throws { Error } If the first argument is not array.
  * @throws { Error } If type of the argument is equal undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayAppendArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
@@ -3511,7 +3511,7 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
  * @throws { Error } If the first argument is not an array.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
@@ -3648,7 +3648,7 @@ function arrayRemovedElement_( dstArray, ins, evaluator1, evaluator2 )
  * @throws { Error } If the first argument is not an array-like.
  * @throws { Error } If passed less than two or more than three arguments.
  * @throws { Error } If the third argument is not a function.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
@@ -3872,7 +3872,7 @@ function arrayRemovedArray( dstArray, insArray )
  * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
  * @throws { Error } Will throw an Error if (insArray) is not an array-like.
  * @throws { Error } Will throw an Error if (arguments.length < 2  || arguments.length > 3).
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
@@ -4132,7 +4132,7 @@ function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluat
  * @throws { Error } If passed arguments is less than one or more than two.
  * @throws { Error } If the first argument is not an array.
  * @throws { Error } If the second argument is not a Function.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayRemoveDuplicates( dstArray, evaluator )
@@ -4204,7 +4204,7 @@ function arrayRemoveDuplicates( dstArray, evaluator )
  * @returns { Array } - Returns an array of the passed argument(s).
  * @function arrayFlatten
  * @throws { Error } If (arguments[...]) is an Array and has an 'undefined' element.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayFlatten( dstArray, insArray )
@@ -5465,7 +5465,7 @@ function arrayReplace( dstArray, ins, sub, evaluator1, evaluator2 )
  * @function arrayReplaceOnce
  * @throws { Error } Will throw an Error if (dstArray) is not an array.
  * @throws { Error } Will throw an Error if (arguments.length) is less than three.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayReplaceOnce( dstArray, ins, sub, evaluator1, evaluator2 )
@@ -6090,7 +6090,7 @@ function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evalua
  * @function arrayUpdate
  * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than three.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )

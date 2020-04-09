@@ -226,7 +226,7 @@ function entityMake( src )
  * @throws { Error } If {-onEvaluate1-} is equalizer and onEvaluate2 provided.
  * @throws { Error } If {-onEvaluate2-} is not a routine.
  * @throws { Error } If {-onEvaluate2-} accepts less or more then one parameter.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
@@ -293,7 +293,7 @@ function entityEntityEqualize( src1, src2, onEvaluate1, onEvaluate2 )
  * @function entityAssign
  * @throws {exception} If( arguments.length ) is not equal to 3 or 2.
  * @throws {exception} If( onRecursive ) is not a Routine.
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -398,7 +398,7 @@ function entityAssign( dst, src, onRecursive )
  *
  * @function entityAssignFieldFromContainer
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
@@ -445,7 +445,7 @@ function entityAssignFieldFromContainer( dstContainer, srcContainer, name, onRec
  *
  * @function entityAssignField
  * @throws {exception} If( arguments.length ) is not equal to 3 or 4.
- * @memberof wTools
+ * @namespace Tools
  *
  */
 
