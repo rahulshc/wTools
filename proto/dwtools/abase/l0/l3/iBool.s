@@ -14,7 +14,7 @@ let Self = _global_.wTools;
  * Returns true if entity ( src ) is a Boolean.
  * @function boolIs
  * @param {} src - entity to check
- * @memberof wTools
+ * @namespace Tools
  */
 
 function boolIs( src )
@@ -28,7 +28,7 @@ function boolIs( src )
  * Returns true if entity ( src ) is a Boolean or Number.
  * @function boolLike
  * @param {} src - entity to check
- * @memberof wTools
+ * @namespace Tools
  */
 
 function boolLike( src )

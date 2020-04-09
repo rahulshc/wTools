@@ -516,7 +516,7 @@ _errMake.defaults =
  * @throws {Error} Expects single argument if pass les or more than one argument
  * @throws {Error} o.args should be array like, if o.args is not array.
  * @function _err
- * @memberof wTools
+ * @namespace Tools
  */
 
 function _err( o )
@@ -1099,7 +1099,7 @@ _err.defaults =
  * @returns {Error} Created Error. If passed existing error as one of parameters, routine modified it and return
  * reference.
  * @function err
- * @memberof wTools
+ * @namespace Tools
  */
 
 function err()
@@ -1483,7 +1483,7 @@ function _errLog( err )
  * @param {...String|Error} msg Accepts list of messeges/errors.
  * @returns {Error} Created Error. If passed existing error as one of parameters, routine modified it and return
  * @function errLog
- * @memberof wTools
+ * @namespace Tools
  */
 
 function errLog()
@@ -1799,7 +1799,7 @@ function breakpoint( condition )
  * //   at <anonymous>:1:1
  * @throws {Error} If passed condition( condition ) fails.
  * @function assert
- * @memberof wTools
+ * @namespace Tools
  */
 
 //
@@ -1917,7 +1917,7 @@ function assertNotTested( src )
  * @param condition Condition to check.
  * @param messages messages to print.
  * @function assertWarn
- * @memberof wTools
+ * @namespace Tools
  */
 
 function assertWarn( condition )
@@ -1969,7 +1969,7 @@ let stackSymbol = Symbol.for( 'stack' );
  * @property {Object} error={}
  * @property {Boolean} debuggerEnabled=!!Config.debug
  * @name ErrFields
- * @memberof wTools
+ * @namespace Tools
  */
 
 let Extension =
