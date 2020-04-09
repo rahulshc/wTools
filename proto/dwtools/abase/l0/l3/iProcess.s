@@ -14,7 +14,6 @@ function on( o )
 {
 
   o = _.event.on.pre( _.event.on, arguments );
-  // o.ehandler = _.process._ehandler;
   _.event.on( _.process._ehandler, o );
 
   return o;
@@ -31,7 +30,6 @@ function off( o )
 {
 
   o = _.event.off.pre( _.event.off, arguments );
-  // o.ehandler = _.process._ehandler;
   _.event.off( _.process._ehandler, o );
 
   return o;
@@ -47,15 +45,43 @@ off.defaults =
 function hasEventHandler( o )
 {
   o = _.event.hasEventHandler.pre( _.event.hasEventHandler, arguments );
-  // o.ehandler = _.process._ehandler;
   return _.event.hasEventHandler( _.process._ehandler, o );
-  // return o;
 }
 
 hasEventHandler.defaults =
 {
   eventName : null,
   eventHandler : null,
+}
+
+//
+
+let Inspector = null;
+function isDebugged()
+{
+  _.assert( arguments.length === 0, 'Expects no arguments' );
+
+  if( typeof process === 'undefined' )
+  return false;
+
+  if( Inspector === null )
+  try
+  {
+    Inspector = require( 'inspector' );
+  }
+  catch( err )
+  {
+    Inspector = false;
+  }
+
+  if( Inspector )
+  return _.strIs( Inspector.url() );
+
+  if( !process.execArgv.length )
+  return false;
+
+  let execArgvString = process.execArgv.join();
+  return _.strHasAny( execArgvString, [ '--inspect', '--inspect-brk', '--debug-brk' ] );
 }
 
 //
@@ -120,6 +146,8 @@ let Extension =
   on,
   off,
   hasEventHandler,
+
+  isDebugged,
 
   entryPointStructure,
   entryPointInfo,

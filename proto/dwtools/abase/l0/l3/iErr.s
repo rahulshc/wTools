@@ -1346,64 +1346,71 @@ function errInStr( errStr )
 
 function errFromStr( errStr )
 {
-  errStr = _.strLinesStrip( errStr );
 
-  let sectionBeginRegexp = /=\s+(.*?)\s*\n/mg;
-  let splits = _.strSplit
-  ({
-    src : errStr,
-    delimeter : sectionBeginRegexp,
-    onDelimeter : function( del )
-    {
-      debugger;
-      return [ del ];
-    }
-  });
-
-  let sectionName;
-  let throwCallsStack = '';
-  let throwsStack = '';
-  let stackCondensing = true;
-  let messages = [];
-  for( let s = 0 ; s < splits.length ; s++ )
+  debugger;
+  try
   {
-    let split = splits[ s ];
-    let sectionNameParsed = sectionBeginRegexp.exec( split + '\n' );
-    if( sectionNameParsed )
+
+    errStr = _.strLinesStrip( errStr );
+
+    let sectionBeginRegexp = /=\s+(.*?)\s*\n/mg;
+    let splits = _.strSplitFast
+    ({
+      src : errStr,
+      delimeter : sectionBeginRegexp,
+    });
+
+    let sectionName;
+    let throwCallsStack = '';
+    let throwsStack = '';
+    let stackCondensing = true;
+    let messages = [];
+    for( let s = 0 ; s < splits.length ; s++ )
     {
-      sectionName = sectionNameParsed[ 1 ];
-      continue;
+      let split = splits[ s ];
+      let sectionNameParsed = sectionBeginRegexp.exec( split + '\n' );
+      if( sectionNameParsed )
+      {
+        sectionName = sectionNameParsed[ 1 ];
+        continue;
+      }
+
+      if( !sectionName )
+      messages.push( split );
+      else if( !sectionName || _.strBegins( sectionName, 'Message of' ) )
+      messages.push( split );
+      else if( _.strBegins( sectionName, 'Beautified calls stack' ) )
+      throwCallsStack = split;
+      else if( _.strBegins( sectionName, 'Throws stack' ) )
+      throwsStack = split;
+
     }
 
-    if( !sectionName )
-    messages.push( split );
-    else if( !sectionName || _.strBegins( sectionName, 'Message of' ) )
-    messages.push( split );
-    else if( _.strBegins( sectionName, 'Beautified calls stack' ) )
-    throwCallsStack = split;
-    else if( _.strBegins( sectionName, 'Throws stack' ) )
-    throwsStack = split;
+    let dstError = new Error();
 
+    let throwLocation = _.introspector.locationFromStackFrame( throwCallsStack || dstError.stack );
+
+    let originalMessage = messages.join( '\n' ); /* xxx : implement routine for joining */
+
+    let result = _._errMake
+    ({
+      dstError : dstError,
+      throwLocation : throwLocation,
+      stackCondensing : stackCondensing,
+      originalMessage : originalMessage,
+      beautifiedStack : throwCallsStack,
+      throwCallsStack : throwCallsStack,
+      throwsStack : throwsStack,
+    });
+
+    return result;
   }
-
-  let dstError = new Error();
-
-  let throwLocation = _.introspector.locationFromStackFrame( throwCallsStack || dstError.stack );
-
-  let originalMessage = messages.join( '\n' ); /* xxx : implement routine for joining */
-
-  let result = _._errMake
-  ({
-    dstError : dstError,
-    throwLocation : throwLocation,
-    stackCondensing : stackCondensing,
-    originalMessage : originalMessage,
-    beautifiedStack : throwCallsStack,
-    throwCallsStack : throwCallsStack,
-    throwsStack : throwsStack,
-  });
-
-  return result;
+  catch( err2 )
+  {
+    console.error( err2 );
+    debugger;
+    return Error( errStr );
+  }
 }
 
 //

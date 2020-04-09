@@ -741,11 +741,11 @@ function bufferFromArrayOfArray( array, options )
 
   if( !array.length ) return new options.BufferType();
 
-  let atomsPerElement = _.numberIs( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
+  let scalarsPerElement = _.numberIs( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
 
-  if( !_.numberIs( atomsPerElement ) ) throw _.err( '_.bufferFromArrayOfArray :', 'cant find out element length' );
+  if( !_.numberIs( scalarsPerElement ) ) throw _.err( '_.bufferFromArrayOfArray :', 'cant find out element length' );
 
-  let length = array.length * atomsPerElement;
+  let length = array.length * scalarsPerElement;
   let result = new options.BufferType( length );
   let i = 0;
 
@@ -753,7 +753,7 @@ function bufferFromArrayOfArray( array, options )
   {
     let element = array[ a ];
 
-    for( let e = 0 ; e < atomsPerElement ; e++ )
+    for( let e = 0 ; e < scalarsPerElement ; e++ )
     {
       result[ i ] = element[ e ];
       i += 1;
@@ -3086,7 +3086,7 @@ function bufferCutOffLeft( src, del )
 //     descriptor.name = name;
 //     descriptor.buffer = buffer;
 //     descriptor.bufferSize = bufferSize;
-//     descriptor.sizeOfAtom = buffer ? buffer.BYTES_PER_ELEMENT : 0;
+//     descriptor.sizeOfScalar = buffer ? buffer.BYTES_PER_ELEMENT : 0;
 //     buffers.push( descriptor );
 //
 //     size += bufferSize;
@@ -3108,7 +3108,7 @@ function bufferCutOffLeft( src, del )
 //
 //   buffers.sort( function( a, b )
 //   {
-//     return b.sizeOfAtom - a.sizeOfAtom;
+//     return b.sizeOfScalar - a.sizeOfScalar;
 //   });
 //
 //   /* store into single buffer */
@@ -3131,7 +3131,7 @@ function bufferCutOffLeft( src, del )
 //     let serialized = store[ 'attributes' ][ name ] =
 //     {
 //       'bufferConstructorName' : buffer ? buffer.constructor.name : 'null',
-//       'sizeOfAtom' : buffer ? buffer.BYTES_PER_ELEMENT : 0,
+//       'sizeOfScalar' : buffer ? buffer.BYTES_PER_ELEMENT : 0,
 //       'offsetInCommonBuffer' : offset,
 //       'size' : bytes.length,
 //     }
@@ -3202,20 +3202,20 @@ function bufferCutOffLeft( src, del )
 //     let bufferConstructor = attribute[ 'bufferConstructorName' ] === 'null' ? null : _global[ attribute[ 'bufferConstructorName' ] ];
 //     let offset = attribute[ 'offsetInCommonBuffer' ];
 //     let size = attribute[ 'size' ];
-//     let sizeOfAtom = attribute[ 'sizeOfAtom' ];
+//     let sizeOfScalar = attribute[ 'sizeOfScalar' ];
 //     let fields = attribute[ 'fields' ];
 //
 //     _.assert( _.routineIs( bufferConstructor ) || bufferConstructor === null, 'unknown attribute\' constructor :', attribute[ 'bufferConstructorName' ] )
 //     _.assert( _.numberIs( offset ), 'unknown attribute\' offset in common buffer :', offset )
 //     _.assert( _.numberIs( size ), 'unknown attribute\' size of buffer :', size )
-//     _.assert( _.numberIs( sizeOfAtom ), 'unknown attribute\' sizeOfAtom of buffer :', sizeOfAtom )
+//     _.assert( _.numberIs( sizeOfScalar ), 'unknown attribute\' sizeOfScalar of buffer :', sizeOfScalar )
 //
 //     if( attribute.offset+size > commonBuffer.byteLength )
 //     throw _.err( 'cant deserialize attribute', '"'+a+'"', 'it is out of common buffer' );
 //
-//     /* logger.log( 'bufferConstructor( ' + commonBuffer + ', ' + offset + ', ' + size / sizeOfAtom + ' )' ); */
+//     /* logger.log( 'bufferConstructor( ' + commonBuffer + ', ' + offset + ', ' + size / sizeOfScalar + ' )' ); */
 //
-//     let buffer = bufferConstructor ? new bufferConstructor( commonBuffer, offset, size / sizeOfAtom ) : null;
+//     let buffer = bufferConstructor ? new bufferConstructor( commonBuffer, offset, size / sizeOfScalar ) : null;
 //
 //     o.onAttribute.call( o.context, fields, buffer, a );
 //

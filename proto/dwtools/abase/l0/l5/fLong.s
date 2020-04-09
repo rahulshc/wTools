@@ -972,9 +972,9 @@ function longFill( src, value, range )
  * @param { objectLike } [ o = {  } ] o - The set of arguments.
  * @param { longIs } o.src - The given initial array.
  * @param { longIs } o.result - To collect all data.
- * @param { Number } [ o.numberOfAtomsPerElement = 1 ] o.numberOfAtomsPerElement - The certain number of times
+ * @param { Number } [ o.numberOfScalarsPerElement = 1 ] o.numberOfScalarsPerElement - The certain number of times
  * to append the next value from (srcArray or o.src) to the (o.result).
- * If (o.numberOfAtomsPerElement) is greater that length of a (srcArray or o.src) it appends the 'undefined'.
+ * If (o.numberOfScalarsPerElement) is greater that length of a (srcArray or o.src) it appends the 'undefined'.
  * @param { Number } [ o.numberOfDuplicatesPerElement = 2 ] o.numberOfDuplicatesPerElement = 2 - The number of duplicates per element.
  *
  * @example
@@ -985,7 +985,7 @@ function longFill( src, value, range )
  * let options = {
  *   src : [ 'abc', 'def' ],
  *   result : [  ],
- *   numberOfAtomsPerElement : 2,
+ *   numberOfScalarsPerElement : 2,
  *   numberOfDuplicatesPerElement : 3
  * };
  * _.longDuplicate( options, {} );
@@ -995,7 +995,7 @@ function longFill( src, value, range )
  * let options = {
  *   src : [ 'abc', 'def' ],
  *   result : [  ],
- *   numberOfAtomsPerElement : 3,
+ *   numberOfScalarsPerElement : 3,
  *   numberOfDuplicatesPerElement : 3
  * };
  * _.longDuplicate( options, { a : 7, b : 13 } );
@@ -1025,7 +1025,7 @@ function longDuplicate( o )
   _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
   _.routineOptions( longDuplicate, o );
   _.assert( _.longIs( o.src ), 'Expects Long {-o.src-}' );
-  _.assert( _.intIs( o.src.length / o.numberOfAtomsPerElement ) );
+  _.assert( _.intIs( o.src.length / o.numberOfScalarsPerElement ) );
 
   if( o.numberOfDuplicatesPerElement === 1 )
   {
@@ -1046,7 +1046,7 @@ function longDuplicate( o )
   }
 
   let length = o.src.length * o.numberOfDuplicatesPerElement;
-  let numberOfElements = o.src.length / o.numberOfAtomsPerElement;
+  let numberOfElements = o.src.length / o.numberOfScalarsPerElement;
 
   if( o.result )
   _.assert( o.result.length >= length );
@@ -1061,10 +1061,10 @@ function longDuplicate( o )
     for( let d = 0, dl = o.numberOfDuplicatesPerElement ; d < dl ; d++ )
     {
 
-      for( let e = 0, el = o.numberOfAtomsPerElement ; e < el ; e++ )
+      for( let e = 0, el = o.numberOfScalarsPerElement ; e < el ; e++ )
       {
-        let indexDst = c*o.numberOfAtomsPerElement*o.numberOfDuplicatesPerElement + d*o.numberOfAtomsPerElement + e;
-        let indexSrc = c*o.numberOfAtomsPerElement+e;
+        let indexDst = c*o.numberOfScalarsPerElement*o.numberOfDuplicatesPerElement + d*o.numberOfScalarsPerElement + e;
+        let indexSrc = c*o.numberOfScalarsPerElement+e;
         o.result[ indexDst ] = o.src[ indexSrc ];
       }
 
@@ -1081,7 +1081,7 @@ longDuplicate.defaults =
 {
   src : null,
   result : null,
-  numberOfAtomsPerElement : 1,
+  numberOfScalarsPerElement : 1,
   numberOfDuplicatesPerElement : 2,
 }
 
