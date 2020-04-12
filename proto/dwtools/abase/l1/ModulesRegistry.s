@@ -579,7 +579,7 @@ let wMathVector =
 
 let wMathMatrix =
 {
-  sourcePath : sourcePath( 'amath/l5_matrix/Include.s', 'wmathmatrix' ),
+  sourcePath : sourcePath( 'amath/l5_matrix/module/full/Include.s', 'wmathmatrix' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Space },
 }
 
