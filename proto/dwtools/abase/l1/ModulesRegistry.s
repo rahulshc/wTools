@@ -343,7 +343,7 @@ let wStager =
 
 let wIntrospector =
 {
-  sourcePath : sourcePath( 'amid/l3/introspector/IncludeMid.s', 'wintrospector' ),
+  sourcePath : sourcePath( 'amid/l3/introspector/module/Full.s', 'wintrospector' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.introspector && !!_global.wTools.thisFile },
 }
 
