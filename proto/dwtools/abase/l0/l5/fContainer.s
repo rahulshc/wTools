@@ -358,6 +358,7 @@ let knownTypeFields =
   _is : null,
   _identicalTypes : null, /* qqq : cover please. ask how */
   _while : null,
+  _coerce : null, /* qqq : cover this callback */
 }
 
 // --
