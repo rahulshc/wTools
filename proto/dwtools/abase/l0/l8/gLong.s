@@ -50,7 +50,7 @@ let _ObjectPropertyIsEumerable = Object.propertyIsEnumerable;
  * @throws { Error } If passed arguments is less than one or more than two.
  * @throws { Error } If the first argument is not an long.
  * @throws { Error } If the second argument is not a Routine.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longOnce( dstLong, onEvaluate )
@@ -365,14 +365,14 @@ function longNoneAreRepeated( src, onEvalutate )
  * @throws { Error } Will throw an Error if (srcArray) is not an array-like.
  * @throws { Error } Will throw an Error if (mask) is not an array-like.
  * @throws { Error } Will throw an Error if length of both (srcArray and mask) is not equal.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longMask( srcArray, mask )
 {
 
-  let atomsPerElement = mask.length;
-  let length = srcArray.length / atomsPerElement;
+  let scalarsPerElement = mask.length;
+  let length = srcArray.length / scalarsPerElement;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.longIs( srcArray ), 'longMask :', 'Expects array-like as srcArray' );
@@ -383,7 +383,7 @@ function longMask( srcArray, mask )
     'longMask :', 'Expects mask that has component for each atom of srcArray',
     _.toStr
     ({
-      'atomsPerElement' : atomsPerElement,
+      'scalarsPerElement' : scalarsPerElement,
       'srcArray.length' : srcArray.length,
     })
   );
@@ -404,7 +404,7 @@ function longMask( srcArray, mask )
   for( let m = 0 ; m < mask.length ; m++ )
   if( mask[ m ] )
   {
-    dstArray[ c ] = srcArray[ i*atomsPerElement + m ];
+    dstArray[ c ] = srcArray[ i*scalarsPerElement + m ];
     c += 1;
   }
 
@@ -428,19 +428,19 @@ function longUnmask( o )
   _.assertMapHasOnly( o, longUnmask.defaults );
   _.assert( _.longIs( o.src ), 'Expects o.src as ArrayLike' );
 
-  let atomsPerElement = o.mask.length;
+  let scalarsPerElement = o.mask.length;
 
-  let atomsPerElementPreserved = 0;
+  let scalarsPerElementPreserved = 0;
   for( let m = 0 ; m < o.mask.length ; m++ )
   if( o.mask[ m ] )
-  atomsPerElementPreserved += 1;
+  scalarsPerElementPreserved += 1;
 
-  let length = o.src.length / atomsPerElementPreserved;
+  let length = o.src.length / scalarsPerElementPreserved;
   if( Math.floor( length ) !== length )
-  throw _.err( 'longMask :', 'Expects mask that has component for each atom of o.src', _.toStr({ 'atomsPerElementPreserved' : atomsPerElementPreserved, 'o.src.length' : o.src.length  }) );
+  throw _.err( 'longMask :', 'Expects mask that has component for each atom of o.src', _.toStr({ 'scalarsPerElementPreserved' : scalarsPerElementPreserved, 'o.src.length' : o.src.length  }) );
 
-  let dstArray = _.longMakeUndefined( o.src, atomsPerElement*length );
-  // let dstArray = new o.src.constructor( atomsPerElement*length );
+  let dstArray = _.longMakeUndefined( o.src, scalarsPerElement*length );
+  // let dstArray = new o.src.constructor( scalarsPerElement*length );
 
   let e = [];
   for( let i = 0 ; i < length ; i++ )
@@ -449,7 +449,7 @@ function longUnmask( o )
     for( let m = 0, p = 0 ; m < o.mask.length ; m++ )
     if( o.mask[ m ] )
     {
-      e[ m ] = o.src[ i*atomsPerElementPreserved + p ];
+      e[ m ] = o.src[ i*scalarsPerElementPreserved + p ];
       p += 1;
     }
     else
@@ -461,7 +461,7 @@ function longUnmask( o )
     o.onEach( e, i );
 
     for( let m = 0 ; m < o.mask.length ; m++ )
-    dstArray[ i*atomsPerElement + m ] = e[ m ];
+    dstArray[ i*scalarsPerElement + m ] = e[ m ];
 
   }
 
@@ -560,7 +560,7 @@ longUnmask.defaults =
  * @throws { Error } If {-range-} or {-o.range-} is not Range or not Number.
  * @throws { Error } If {-length-} or {-o.length-} is not Number or not Range.
  * @throws { Error } If {-o.onEach-} is not routine.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longRandom( o )
@@ -635,7 +635,7 @@ longRandom.defaults =
  * @throws { Error } If passed arguments is less than one or more than one.
  * @throws { Error } If the first argument is not an array-like object.
  * @throws { Error } If the length of the (range) is not equal to the two.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longFromRange( range )
@@ -797,7 +797,7 @@ function longFromRangeWithNumberOfSteps( range , numberOfSteps )
 //  * @returns { Object } Returns an Object.
 //  * @function longToMap
 //  * @throws { Error } Will throw an Error if (array) is not an array-like.
-//  * @memberof wTools
+//  * @namespace Tools
 //  */
 //
 // function longToMap( array )
@@ -836,7 +836,7 @@ function longFromRangeWithNumberOfSteps( range , numberOfSteps )
 //  * If (src.length) is empty, it returns the empty string.
 //  * @function longToStr
 //  * @throws { Error } Will throw an Error If (options.type) is not the number or float.
-//  * @memberof wTools
+//  * @namespace Tools
 //  */
 //
 // function longToStr( src, options )
@@ -901,17 +901,17 @@ function longFromRangeWithNumberOfSteps( range , numberOfSteps )
    If there is no element with necessary index than the value will be undefined.
  * @function longShrinkWithIndices
  * @throws { Error } If passed arguments is not array like object.
- * @throws { Error } If the atomsPerElement property is not equal to 1.
- * @memberof wTools
+ * @throws { Error } If the scalarsPerElement property is not equal to 1.
+ * @namespace Tools
  */
 
 function longShrinkWithIndices( srcArray, indicesArray )
 {
-  let atomsPerElement = 1;
+  let scalarsPerElement = 1;
 
   if( _.objectIs( indicesArray ) )
   {
-    atomsPerElement = indicesArray.atomsPerElement || 1;
+    scalarsPerElement = indicesArray.scalarsPerElement || 1;
     indicesArray = indicesArray.indices;
   }
 
@@ -922,7 +922,7 @@ function longShrinkWithIndices( srcArray, indicesArray )
   // let result = new srcArray.constructor( indicesArray.length );
   let result = _.longMakeUndefined( srcArray, indicesArray.length );
 
-  if( atomsPerElement === 1 )
+  if( scalarsPerElement === 1 )
   for( let i = 0, l = indicesArray.length ; i < l ; i += 1 )
   {
     result[ i ] = srcArray[ indicesArray[ i ] ];
@@ -930,8 +930,8 @@ function longShrinkWithIndices( srcArray, indicesArray )
   else
   for( let i = 0, l = indicesArray.length ; i < l ; i += 1 )
   {
-    for( let a = 0 ; a < atomsPerElement ; a += 1 )
-    result[ i*atomsPerElement+a ] = srcArray[ indicesArray[ i ]*atomsPerElement+a ];
+    for( let a = 0 ; a < scalarsPerElement ; a += 1 )
+    result[ i*scalarsPerElement+a ] = srcArray[ indicesArray[ i ]*scalarsPerElement+a ];
   }
 
   return result;
@@ -993,7 +993,7 @@ function longShuffle( dst, times )
  * @throws { Error } If the first argument in not an array.
  * @throws { Error } If the second argument is less than 0 and more than a length initial array.
  * @throws { Error } If the third argument is less than 0 and more than a length initial array.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longSwapElements( dst, index1, index2 )
@@ -1042,7 +1042,7 @@ function longSwapElements( dst, index1, index2 )
  * @throws { Error } Will throw an Error if (arguments.length) is less than one.
  * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
  * @throws { Error } Will throw an Error if (dstOffset) is not a Number.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longPut( dstArray, dstOffset )
@@ -1105,7 +1105,7 @@ function longPut( dstArray, dstOffset )
  * @function longSupplement
  * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
  * @throws { Error } Will throw an Error if (arguments[...]) is/are not the array-like.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longSupplement( dstArray )
@@ -1185,7 +1185,7 @@ function longSupplement( dstArray )
  * @throws { Error } Will throw an Error if (screenArray) is not an array-like.
  * @throws { Error } Will throw an Error if (dstArray) is not an array-like.
  * @throws { Error } Will throw an Error if (arguments[...]) is/are not an array-like.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longExtendScreening( screenArray, dstArray )
@@ -1266,7 +1266,7 @@ function longExtendScreening( screenArray, dstArray )
  * @throws { Error } If {-dstLong-} is not null or not a Long.
  * @throws { Error } If arguments.length === 3 and {-srcLong-} is not a Long.
  * @throws { Error } If onEvaluate.length is less then one or more then two.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longSort( dstLong, srcLong, onEvaluate )
@@ -1373,7 +1373,7 @@ function longSort( dstLong, srcLong, onEvaluate )
 //  * @throws { Error } If passed arguments is less than one or more than two.
 //  * @throws { Error } If the first argument is not an array-like object.
 //  * @throws { Error } If the second argument is not a Routine.
-//  * @memberof wTools
+//  * @namespace Tools
 //  */
 //
 // function longSum( src, onEvaluate )

@@ -241,7 +241,7 @@ function prototypeHas( superPrototype, subPrototype )
  * Is prototype.
  * @function prototypeIs
  * @param {object} src - entity to check
- * @memberof wTools
+ * @namespace Tools
  */
 
 function prototypeIs( src )
@@ -274,7 +274,7 @@ function prototypeIsStandard( src )
  * Checks if argument( cls ) is a constructor.
  * @function constructorIs
  * @param {Object} cls - entity to check
- * @memberof wTools
+ * @namespace Tools
  */
 
 function constructorIs( cls )
@@ -289,7 +289,7 @@ function constructorIs( cls )
  * Is instance of a class.
  * @function instanceIs
  * @param {object} src - entity to check
- * @memberof wTools
+ * @namespace Tools
  */
 
 function instanceIs( src )
@@ -452,37 +452,6 @@ function processIs( src )
 
 //
 
-let Inspector = null;
-
-function processIsDebugged()
-{
-  _.assert( arguments.length === 0, 'Expects no arguments' );
-
-  if( typeof process === 'undefined' )
-  return false;
-
-  if( Inspector === null )
-  try
-  {
-    Inspector = require( 'inspector' );
-  }
-  catch( err )
-  {
-    Inspector = false;
-  }
-
-  if( Inspector )
-  return _.strIs( Inspector.url() );
-
-  if( !process.execArgv.length )
-  return false;
-
-  let execArgvString = process.execArgv.join();
-  return _.strHasAny( execArgvString, [ '--inspect', '--inspect-brk', '--debug-brk' ] );
-}
-
-//
-
 function procedureIs( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
@@ -571,7 +540,6 @@ let Routines =
   printerLike,
   loggerIs,
   processIs,
-  processIsDebugged,
   procedureIs,
   definitionIs,
   traitIs,

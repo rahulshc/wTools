@@ -22,14 +22,14 @@ function rangeIs( range )
 
 //
 
-function rangeDefined( range )
+function rangeIsValid( range )
 {
   _.assert( arguments.length === 1 );
-  if( range.length !== 2 )
+  if( !_.rangeIs( range ) )
   return false;
-  if( !_.numberDefined( range[ 0 ] ) )
+  if( !_.intIs( range[ 0 ] ) )
   return false;
-  if( !_.numberDefined( range[ 1 ] ) )
+  if( !_.intIs( range[ 1 ] ) )
   return false;
   return true;
 }
@@ -175,7 +175,8 @@ let Routines =
   // range
 
   rangeIs,
-  rangeDefined,
+  rangeIsValid,
+  rangeDefined : rangeIsValid,
   rangeIsEmpty,
   rangeIsPopulated,
 

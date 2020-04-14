@@ -17,7 +17,7 @@ let Self = _global_.wTools;
  * @function boolsAre
  * @param {Array} src - array of entities
  * @throws {Error} If more or less than one argument is provided.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function boolsAre( src )
@@ -37,7 +37,7 @@ function boolsAre( src )
  * @function boolsAllAre
  * @param {Array} src - array of entities
  * @throws {Error} If more or less than one argument is provided.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function boolsAllAre( src )
@@ -57,7 +57,7 @@ function boolsAllAre( src )
  * @function boolsAnyAre
  * @param {Array} src - array of entities
  * @throws {Error} If more or less than one argument is provided.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function boolsAnyAre( src )
@@ -77,7 +77,7 @@ function boolsAnyAre( src )
  * @function boolsAnyAre
  * @param {Array} src - array of entities
  * @throws {Error} If more or less than one argument is provided.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function boolsNoneAre( src )

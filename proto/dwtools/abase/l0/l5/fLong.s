@@ -233,7 +233,7 @@ function _longMake_functor( onMake )
  * @throws { Error } If {-src-} is not a Long, not a constructor, not null.
  * @throws { Error } If {-ins-} is not a number, not a Long, not null, not undefined.
  * @throws { Error } If {-ins-} or ins.length has a not finite value.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /* aaa : extend coverage and documentation of longMake */
@@ -690,7 +690,7 @@ let _longMakeOfLength = _longMake_functor( function( src, ins, length, minLength
  * @throws { Error } If the {-src-} is not a Long, not a constructor, not null.
  * @throws { Error } If the {-ins-} is not a number, not a Long, not null, not undefined.
  * @throws { Error } If the {-ins-} or ins.length has a not finite value.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /*
@@ -925,7 +925,7 @@ function longMakeFilling( type, value, length )
  * @throws { Error } If arguments.length is less then one or more then three.
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-range-} is not a Range or not a Number.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longFill( src, value, range )
@@ -972,9 +972,9 @@ function longFill( src, value, range )
  * @param { objectLike } [ o = {  } ] o - The set of arguments.
  * @param { longIs } o.src - The given initial array.
  * @param { longIs } o.result - To collect all data.
- * @param { Number } [ o.numberOfAtomsPerElement = 1 ] o.numberOfAtomsPerElement - The certain number of times
+ * @param { Number } [ o.numberOfScalarsPerElement = 1 ] o.numberOfScalarsPerElement - The certain number of times
  * to append the next value from (srcArray or o.src) to the (o.result).
- * If (o.numberOfAtomsPerElement) is greater that length of a (srcArray or o.src) it appends the 'undefined'.
+ * If (o.numberOfScalarsPerElement) is greater that length of a (srcArray or o.src) it appends the 'undefined'.
  * @param { Number } [ o.numberOfDuplicatesPerElement = 2 ] o.numberOfDuplicatesPerElement = 2 - The number of duplicates per element.
  *
  * @example
@@ -985,7 +985,7 @@ function longFill( src, value, range )
  * let options = {
  *   src : [ 'abc', 'def' ],
  *   result : [  ],
- *   numberOfAtomsPerElement : 2,
+ *   numberOfScalarsPerElement : 2,
  *   numberOfDuplicatesPerElement : 3
  * };
  * _.longDuplicate( options, {} );
@@ -995,7 +995,7 @@ function longFill( src, value, range )
  * let options = {
  *   src : [ 'abc', 'def' ],
  *   result : [  ],
- *   numberOfAtomsPerElement : 3,
+ *   numberOfScalarsPerElement : 3,
  *   numberOfDuplicatesPerElement : 3
  * };
  * _.longDuplicate( options, { a : 7, b : 13 } );
@@ -1004,7 +1004,7 @@ function longFill( src, value, range )
  * @returns { Array } Returns an array with duplicate values of a certain number of times.
  * @function longDuplicate
  * @throws { Error } Will throw an Error if ( o ) is not an objectLike.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longDuplicate( o )
@@ -1025,7 +1025,7 @@ function longDuplicate( o )
   _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
   _.routineOptions( longDuplicate, o );
   _.assert( _.longIs( o.src ), 'Expects Long {-o.src-}' );
-  _.assert( _.intIs( o.src.length / o.numberOfAtomsPerElement ) );
+  _.assert( _.intIs( o.src.length / o.numberOfScalarsPerElement ) );
 
   if( o.numberOfDuplicatesPerElement === 1 )
   {
@@ -1046,7 +1046,7 @@ function longDuplicate( o )
   }
 
   let length = o.src.length * o.numberOfDuplicatesPerElement;
-  let numberOfElements = o.src.length / o.numberOfAtomsPerElement;
+  let numberOfElements = o.src.length / o.numberOfScalarsPerElement;
 
   if( o.result )
   _.assert( o.result.length >= length );
@@ -1061,10 +1061,10 @@ function longDuplicate( o )
     for( let d = 0, dl = o.numberOfDuplicatesPerElement ; d < dl ; d++ )
     {
 
-      for( let e = 0, el = o.numberOfAtomsPerElement ; e < el ; e++ )
+      for( let e = 0, el = o.numberOfScalarsPerElement ; e < el ; e++ )
       {
-        let indexDst = c*o.numberOfAtomsPerElement*o.numberOfDuplicatesPerElement + d*o.numberOfAtomsPerElement + e;
-        let indexSrc = c*o.numberOfAtomsPerElement+e;
+        let indexDst = c*o.numberOfScalarsPerElement*o.numberOfDuplicatesPerElement + d*o.numberOfScalarsPerElement + e;
+        let indexSrc = c*o.numberOfScalarsPerElement+e;
         o.result[ indexDst ] = o.src[ indexSrc ];
       }
 
@@ -1081,7 +1081,7 @@ longDuplicate.defaults =
 {
   src : null,
   result : null,
-  numberOfAtomsPerElement : 1,
+  numberOfScalarsPerElement : 1,
   numberOfDuplicatesPerElement : 2,
 }
 
@@ -1168,7 +1168,7 @@ function _longClone( src )
  * @throws { Error } If arguments.length is less than one.
  * @throws { Error } If the {-arguments[ 0 ]-} is not a Long or not a Buffer.
  * @throws { Error } If {-arguments-} has undefined value.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /* zzz : review longShallowClone */
@@ -1338,7 +1338,7 @@ function longFrom( src )
  * @function longFromCoercing
  * @throws { Error } If arguments.length is less or more then one.
  * @throws { Error } If {-src-} is not a Long, not an object-like, not a string.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longFromCoercing( src )
@@ -1396,7 +1396,7 @@ function longFromCoercing( src )
  * @function longRepresent
  * @throws { Error } If the passed arguments is more than three.
  * @throws { Error } If the first argument is not an array.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /* qqq2 : review. ask */
@@ -1454,7 +1454,7 @@ function longRepresent( src, begin, end )
  * @throws { Error } Will throw an Error if ( f ) is not a Number.
  * @throws { Error } Will throw an Error if ( l ) is not a Number.
  * @throws { Error } Will throw an Error if no arguments provided.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /* aaa : optimize */
@@ -1614,7 +1614,7 @@ function longEmpty( dstLong )
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
  * @throws { Error } If argument {-val-} is not Long / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /*
@@ -1745,7 +1745,7 @@ function longBut( array, range, val )
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
  * @throws { Error } If argument {-val-} is not long / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /*
@@ -2098,7 +2098,7 @@ function longBut_( dst, src, crange, ins )
  * @throws { Error } If argument {-array-} is not a Long.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /*
@@ -2237,7 +2237,7 @@ function longShrink( array, range, val )
  * @throws { Error } If argument {-array-} is not a Long.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /*
@@ -2472,7 +2472,7 @@ function longShrink_( dst, array, range, val )
  * @throws { Error } If argument {-array-} is not a Long.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /*
@@ -2621,7 +2621,7 @@ function longGrow( array, range, val )
  * @throws { Error } If argument {-array-} is not a Long.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longGrowInplace( array, range, val )
@@ -2883,7 +2883,7 @@ function longGrow_( dst, array, range, val )
  * @throws { Error } If argument {-array-} is not a Long.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longRelength( array, range, val )
@@ -3006,7 +3006,7 @@ function longRelength( array, range, val )
  * @throws { Error } If argument {-array-} is not a Long.
  * @throws { Error } If range.length is less or more then two.
  * @throws { Error } If range elements is not number / undefined.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longRelengthInplace( array, range, val )
@@ -3143,7 +3143,7 @@ function longRelength_( dst, array, range, val )
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
  * @throws { Error } Will throw an Error if (src1 and src2) are not the array-like.
  * @throws { Error } Will throw an Error if (src2.length) is less or not equal to the (src1.length).
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longCompare( src1, src2 )
@@ -3181,7 +3181,7 @@ function longCompare( src1, src2 )
  * @returns { Boolean } - Returns true if all values of the two arrays are equal. Otherwise, returns false.
  * @function longIdentical
  * @throws { Error } Will throw an Error if (arguments.length) is less or more than two.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longIdentical( src1, src2 )
@@ -3270,7 +3270,7 @@ function longHas( array, element, evaluator1, evaluator2 )
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
  * @throws { Error } If {-evaluator-} is not a routine.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longHasAny( src, ins, evaluator )
@@ -3339,7 +3339,7 @@ function longHasAny( src, ins, evaluator )
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
  * @throws { Error } If {-evaluator-} is not a routine.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longHasAll( src, ins, evaluator )
@@ -3409,7 +3409,7 @@ function longHasAll( src, ins, evaluator )
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
  * @throws { Error } If {-evaluator-} is not a routine.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longHasNone( src, ins, evaluator )
@@ -3556,7 +3556,7 @@ function longNone( src )
  * @throws { Error } If the routine in third argument has less than one or more than two arguments.
  * @throws { Error } If the routine in third argument has two arguments and fourth argument is passed into routine longCountElement.
  * @throws { Error } If the routine in fourth argument has less than one or more than one arguments.
- * @memberof wTools
+ * @namespace Tools
  */
 
 /*
@@ -3603,7 +3603,7 @@ function longCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
  * @throws { Error } If passed arguments is different than one.
  * @throws { Error } If the first argument is not a Long.
  * @throws { Error } If {-srcArray-} doesn´t contain number-like elements.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longCountTotal( srcArray )
@@ -3643,7 +3643,7 @@ function longCountTotal( srcArray )
  * @throws { Error } If passed arguments is less than one or more than two.
  * @throws { Error } If the first argument is not an array-like object.
  * @throws { Error } If the second argument is not a Function.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function longCountUnique( src, onEvaluate )

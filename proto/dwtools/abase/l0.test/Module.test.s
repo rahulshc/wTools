@@ -48,7 +48,7 @@ function withIsIncluded( test )
 
   /* */
 
-  a.jsNonThrowing({ execPath : program2Path })
+  a.appStartNonThrowing({ execPath : program2Path })
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
@@ -104,7 +104,7 @@ function withoutIsIncluded( test )
 
   /* */
 
-  a.jsNonThrowing({ execPath : program2Path })
+  a.appStartNonThrowing({ execPath : program2Path })
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
@@ -160,7 +160,7 @@ function moduleExportsUndefined( test )
 
   /* */
 
-  a.jsNonThrowing({ execPath : program1Path })
+  a.appStartNonThrowing({ execPath : program1Path })
   .then( ( op ) =>
   {
     test.identical( op.exitCode, 0 );
@@ -225,7 +225,7 @@ var Self =
   {
     suiteTempPath : null,
     assetsOriginalSuitePath : null,
-    execJsPath : null,
+    appJsPath : null,
   },
 
   tests :

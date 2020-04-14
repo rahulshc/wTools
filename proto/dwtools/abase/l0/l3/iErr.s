@@ -156,8 +156,8 @@ function errOriginalStack( err )
   if( !_.errIs( err ) )
   throw Error( 'errOriginalStack : Expects error' );
 
-  if( err.throwenCallsStack )
-  return err.throwenCallsStack;
+  if( err.throwCallsStack )
+  return err.throwCallsStack;
 
   if( err.callsStack )
   return err.callsStack;
@@ -174,6 +174,337 @@ function errOriginalStack( err )
 
 //
 
+function _errMake( o )
+{
+
+  if( arguments.length !== 1 )
+  throw Error( 'Expects single argument : options map' );
+
+  if( !_.mapIs( o ) )
+  throw Error( 'Expects single argument : options map' );
+
+  for( let e in o )
+  {
+    if( _errMake.defaults[ e ] === undefined )
+    {
+      debugger;
+      throw Error( `Unknown option::${e}` );
+    }
+  }
+
+  for( let e in _errMake.defaults )
+  {
+    if( o[ e ] === undefined )
+    o[ e ] = _errMake.defaults[ e ];
+  }
+
+  if( !_.errIs( o.dstError ) )
+  throw Error( 'Expects option.dstError:Error' );
+
+  if( !_.strIs( o.originalMessage ) )
+  throw Error( 'Expects option.originalMessage:String' );
+
+  if( !_.strIs( o.beautifiedStack ) )
+  throw Error( 'Expects option.beautifiedStack:String' );
+
+  if( !_.strIs( o.throwCallsStack ) )
+  throw Error( 'Expects option.throwCallsStack:String' );
+
+  if( !_.strIs( o.throwsStack ) )
+  throw Error( 'Expects option.throwsStack:String' );
+
+  if( !o.throwLocation )
+  throw Error( 'Expects option.throwLocation:Location' );
+
+  attributesForm();
+  sectionsForm();
+  messageForm();
+  fieldsForm();
+
+  return o.dstError;
+
+  /* */
+
+  function attributesForm()
+  {
+
+    if( o.attended === null || o.attended === undefined )
+    o.attended = o.dstError.attended;
+    o.attended = !!o.attended;
+
+    if( o.logged === null || o.logged === undefined )
+    o.logged = o.dstError.logged;
+    o.logged = !!o.logged;
+
+    if( o.brief === null || o.brief === undefined )
+    o.brief = o.dstError.brief;
+    o.brief = !!o.brief;
+
+    if( o.isProcess === null || o.isProcess === undefined )
+    o.isProcess = o.dstError.isProcess;
+    o.isProcess = !!o.isProcess;
+
+    if( o.debugging === null || o.debugging === undefined )
+    o.debugging = o.dstError.debugging;
+    o.debugging = !!o.debugging;
+
+    if( o.reason === null || o.reason === undefined )
+    o.reason = o.dstError.reason;
+
+    let sections = o.dstError.section || Object.create( null );
+    if( o.sections )
+    _.mapExtend( sections, o.sections );
+    o.sections = sections;
+
+    o.id = o.dstError.id;
+    if( !o.id )
+    {
+      _._errorCounter += 1;
+      o.id = _._errorCounter;
+    }
+
+  }
+
+  /* */
+
+  function sectionsForm()
+  {
+    let result = '';
+
+    sectionWrite( 'message', `Message of error#${o.id}`, o.originalMessage );
+    sectionWrite( 'callsStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', o.beautifiedStack );
+    sectionWrite( 'throwsStack', `Throws stack`, o.throwsStack );
+
+    if( o.isProcess && _.process && _.process.entryPointInfo )
+    sectionWrite( 'process', `Process`, _.process.entryPointInfo() );
+
+    if( o.sourceCode )
+    sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode.code );
+
+    for( let s in o.sections )
+    {
+      let section = o.sections[ s ];
+      if( !_.strIs( section.head ) )
+      {
+        debugger;
+        logger.error( `Each section of an error should have head, but head of section::${s} is ${_.strType(section.head)}` );
+        delete o.sections[ s ];
+      }
+      if( !_.strIs( section.body ) )
+      {
+        debugger;
+        logger.error( `Each section of an error should have body, but body of section::${s} is ${_.strType(section.body)}` );
+        delete o.sections[ s ];
+      }
+    }
+
+    return result;
+  }
+
+  /* */
+
+  function sectionWrite( name, head, body )
+  {
+    let section = { head, body };
+    o.sections[ name ] = section;
+    return section;
+  }
+
+  /* */
+
+  function strLinesIndentation( str, indentation )
+  {
+    if( _.strLinesIndentation )
+    return indentation + _.strLinesIndentation( str, indentation );
+    else
+    return str;
+  }
+
+  /* */
+
+  function messageForm()
+  {
+    let result = '';
+
+    if( o.brief )
+    {
+      result += o.originalMessage;
+    }
+    else
+    {
+
+      for( let s in o.sections )
+      {
+        let section = o.sections[ s ];
+        let head = section.head || '';
+        let body = strLinesIndentation( section.body, '    ' );
+        if( !body.trim().length )
+        continue;
+        result += ` = ${head}\n${body}\n\n`;
+      }
+
+    }
+
+    o.message = result;
+    return result;
+  }
+
+  /* */
+
+  function fieldsForm()
+  {
+
+    nonenumerable( 'message', o.message );
+    nonenumerable( 'originalMessage', o.originalMessage );
+    logging( 'stack', o.message );
+    nonenumerable( 'reason', o.reason );
+
+    nonenumerable( 'callsStack', o.beautifiedStack );
+    nonenumerable( 'throwCallsStack', o.throwCallsStack );
+    nonenumerable( 'asyncCallsStack', o.asyncCallsStack );
+    nonenumerable( 'throwsStack', o.throwsStack );
+    nonenumerable( 'catchCounter', o.dstError.catchCounter ? o.dstError.catchCounter+1 : 1 );
+
+    nonenumerable( 'attended', o.attended );
+    nonenumerable( 'logged', o.logged );
+    nonenumerable( 'brief', o.brief );
+    nonenumerable( 'isProcess', o.isProcess );
+
+    if( o.throwLocation.line !== undefined )
+    nonenumerable( 'lineNumber', o.throwLocation.line );
+    if( o.dstError.throwLocation === undefined )
+    nonenumerable( 'location', o.throwLocation );
+    nonenumerable( 'sourceCode', o.sourceCode || null );
+    nonenumerable( 'debugging', o.debugging );
+    nonenumerable( 'id', o.id );
+
+    nonenumerable( 'toString', function() { return this.stack } );
+    nonenumerable( 'sections', o.sections );
+
+    if( o.debugging )
+    debugger;
+
+  }
+
+  /* */
+
+  function nonenumerable( fieldName, value )
+  {
+    try
+    {
+      Object.defineProperty( o.dstError, fieldName,
+      {
+        enumerable : false,
+        configurable : true,
+        writable : true,
+        value : value,
+      });
+    }
+    catch( err2 )
+    {
+      console.error( err2 );
+      debugger;
+    }
+  }
+
+  /* */
+
+  function rw( fieldName, value ) // Dmytro : this routine is not used anywhere, similar routine logging() below
+  {
+    let symbol = Symbol.for( fieldName );
+    try
+    {
+      o.dstError[ symbol ] = value;
+      Object.defineProperty( o.dstError, fieldName,
+      {
+        enumerable : false,
+        configurable : true,
+        get : get,
+        set : set,
+      });
+    }
+    catch( err2 )
+    {
+      console.error( err2 );
+      debugger;
+    }
+    function get()
+    {
+      logger.log( `${fieldName} get ${this[ symbol ]}` );
+      return this[ symbol ];
+    }
+    function set( src )
+    {
+      logger.log( `${fieldName} set` );
+      this[ symbol ] = src;
+      return src;
+    }
+  }
+
+  /* */
+
+  function logging( fieldName, value )
+  {
+    let symbol = Symbol.for( fieldName );
+    try
+    {
+      nonenumerable( symbol, value );
+      Object.defineProperty( o.dstError, fieldName,
+      {
+        enumerable : false,
+        configurable : true,
+        get : get,
+        set : set,
+      });
+    }
+    catch( err2 )
+    {
+      console.error( err2 );
+      debugger;
+    }
+    function get()
+    {
+      _.errLogEnd( this );
+      _.errAttend( this );
+      return this[ symbol ];
+    }
+    function set( src )
+    {
+      debugger;
+      this[ symbol ] = src;
+      return src;
+    }
+  }
+
+}
+
+_errMake.defaults =
+{
+
+  dstError : null,
+  id : null,
+  throwLocation : null,
+  sections : null,
+
+  attended : null,
+  logged : null,
+  brief : null,
+  isProcess : null,
+  debugging : null,
+  stackCondensing : null,
+
+  originalMessage : null,
+  beautifiedStack : '',
+  throwCallsStack : '',
+  throwsStack : '',
+  asyncCallsStack : '',
+  sourceCode : null,
+  reason : null,
+
+}
+
+//
+
 /**
  * Creates Error object based on passed options.
  * Result error contains in message detailed stack trace and error description.
@@ -185,27 +516,28 @@ function errOriginalStack( err )
  * @throws {Error} Expects single argument if pass les or more than one argument
  * @throws {Error} o.args should be array like, if o.args is not array.
  * @function _err
- * @memberof wTools
+ * @namespace Tools
  */
 
-let _errorCounter = 0;
-let _errorMaking = false;
 function _err( o )
 {
-  let resultError;
+  let dstError;
 
   if( arguments.length !== 1 )
-  throw Error( '_err : Expects single argument' );
+  throw Error( '_err : Expects single argument : options map' );
+
+  if( !_.mapIs( o ) )
+  throw Error( '_err : Expects single argument : options map' );
 
   if( !_.longIs( o.args ) )
-  throw Error( '_err : o.args should be array like' );
+  throw Error( '_err : Expects Long option::args' );
 
   for( let e in o )
   {
     if( _err.defaults[ e ] === undefined )
     {
       debugger;
-      throw Error( 'Unknown option ' + e );
+      throw Error( `Unknown option::${e}` );
     }
   }
 
@@ -215,27 +547,21 @@ function _err( o )
     o[ e ] = _err.defaults[ e ];
   }
 
-  if( _errorMaking )
+  if( _._errorMaking )
   {
     debugger;
     throw Error( '_err : recursive dead lock because of error inside of routine _err!' );
   }
-  _errorMaking = true;
+  _._errorMaking = true;
 
   if( o.level === undefined || o.level === null )
   o.level = null;
 
   /* let */
 
-  let sections;
-  let id = null;
   let originalMessage = '';
   let fallBackMessage = '';
-  let throwsStack = '';
-  let sourceCode = null;
   let errors = [];
-  let attended = false;
-  let logged = false;
   let beautifiedStack = '';
   let message = null;
 
@@ -252,7 +578,8 @@ function _err( o )
   try
   {
 
-    argumentsPreprocess();
+    argumentsPreprocessArguments();
+    argumentsPreprocessErrors();
     locationForm();
     stackAndErrorForm();
     attributesForm();
@@ -260,35 +587,43 @@ function _err( o )
     sourceCodeForm();
     originalMessageForm();
 
-    sectionsForm();
-    messageForm();
-    fieldsForm();
+    dstError = _._errMake
+    ({
+      dstError : dstError,
+      throwLocation : o.throwLocation,
+      sections : o.sections,
+
+      attended : o.attended,
+      logged : o.logged,
+      brief : o.brief,
+      isProcess : o.isProcess,
+      debugging : o.debugging,
+      stackCondensing : o.stackCondensing,
+
+      originalMessage : originalMessage,
+      beautifiedStack : beautifiedStack,
+      throwCallsStack : o.throwCallsStack,
+      throwsStack : o.throwsStack,
+      asyncCallsStack : o.asyncCallsStack,
+      sourceCode : o.sourceCode,
+      reason : o.reason,
+    });
 
   }
   catch( err2 )
   {
     debugger;
-    _errorMaking = false;
+    _._errorMaking = false;
     logger.log( err2.message );
     logger.log( err2.stack );
   }
-  _errorMaking = false;
+  _._errorMaking = false;
 
-  return resultError;
-
-  /* */
-
-  function strLinesIndentation( str, indentation )
-  {
-    if( _.strLinesIndentation )
-    return indentation + _.strLinesIndentation( str, indentation );
-    else
-    return str;
-  }
+  return dstError;
 
   /* */
 
-  function argumentsPreprocess()
+  function argumentsPreprocessArguments()
   {
 
     for( let a = 0 ; a < o.args.length ; a++ )
@@ -305,7 +640,9 @@ function _err( o )
           }
           catch( err )
           {
-            arg = o.args[ a ] = '!ERROR!'
+            debugger;
+            arg = o.args[ a ] = '!ERROR PROCESSING ERROR!'
+            console.log( String( err ) );
           }
         }
         if( _.unrollIs( arg ) )
@@ -316,27 +653,72 @@ function _err( o )
         }
       }
 
+    }
+
+  }
+
+  /* */
+
+  function argumentsPreprocessErrors()
+  {
+
+    for( let a = 0 ; a < o.args.length ; a++ )
+    {
+      let arg = o.args[ a ];
+
       if( _.errIs( arg ) )
       {
 
-        if( !resultError )
-        {
-          resultError = arg;
-          throwsStack = arg.throwsStack || '';
-          sourceCode = arg.sourceCode || null;
-          attended = arg.attended || false;
-          logged = arg.logged || false;
-        }
-
-        if( arg.constructor )
-        fallBackMessage = fallBackMessage || arg.constructor.name;
-        errors.push( arg );
-
+        errProcess( arg );
         o.args[ a ] = _.errOriginalMessage( arg )
+
+      }
+      else if( _.strIs( arg ) && _.errInStr( arg ) )
+      {
+
+        let err = _.errFromStr( arg );
+        errProcess( err );
+        o.args[ a ] = _.errOriginalMessage( err );
 
       }
 
     }
+
+  }
+
+  /* */
+
+  function errProcess( arg )
+  {
+
+    if( !dstError )
+    {
+      dstError = arg;
+      if( !o.sourceCode )
+      o.sourceCode = arg.sourceCode || null;
+      if( o.attended === null )
+      o.attended = arg.attended || false;
+      if( o.logged === null )
+      o.logged = arg.logged || false;
+    }
+
+    if( arg.throwCallsStack )
+    if( !o.throwCallsStack )
+    o.throwCallsStack = arg.throwCallsStack;
+
+    // if( arg.asyncCallsStack )
+    // if( !o.asyncCallsStack )
+    // o.asyncCallsStack = arg.asyncCallsStack;
+
+    if( arg.throwsStack )
+    if( o.throwsStack )
+    o.throwsStack += '\n' + arg.throwsStack;
+    else
+    o.throwsStack = arg.throwsStack;
+
+    if( arg.constructor )
+    fallBackMessage = fallBackMessage || arg.constructor.name;
+    errors.push( arg );
 
   }
 
@@ -345,20 +727,18 @@ function _err( o )
   function locationForm()
   {
 
-    if( !resultError )
+    if( !dstError )
     for( let a = 0 ; a < o.args.length ; a++ )
     {
       let arg = o.args[ a ];
       if( !_.primitiveIs( arg ) && _.objectLike( arg ) )
       try
       {
-        debugger;
-        o.throwenLocation = _.introspector.location
+        o.throwLocation = _.introspector.location
         ({
           error : arg,
-          location : o.throwenLocation,
+          location : o.throwLocation,
         });
-        debugger;
       }
       catch( err2 )
       {
@@ -367,8 +747,8 @@ function _err( o )
       }
     }
 
-    o.throwenLocation = o.throwenLocation || Object.create( null );
-    o.caughtLocation = o.caughtLocation || Object.create( null );
+    o.throwLocation = o.throwLocation || Object.create( null );
+    o.catchLocation = o.catchLocation || Object.create( null );
 
   }
 
@@ -377,28 +757,28 @@ function _err( o )
   function stackAndErrorForm()
   {
 
-    if( resultError )
+    if( dstError )
     {
 
       /* qqq : cover each if-branch. ask how to. *difficult problem* */
 
-      if( !o.throwenCallsStack )
-      if( o.throwenLocation )
-      o.throwenCallsStack = _.introspector.locationToStack( o.throwenLocation );
-      if( !o.throwenCallsStack )
-      o.throwenCallsStack = _.errOriginalStack( resultError );
-      if( !o.throwenCallsStack )
-      o.throwenCallsStack = _.introspector.stack([ ( o.level || 0 ) + 1, Infinity ]);
+      if( !o.throwCallsStack )
+      if( o.throwLocation )
+      o.throwCallsStack = _.introspector.locationToStack( o.throwLocation );
+      if( !o.throwCallsStack )
+      o.throwCallsStack = _.errOriginalStack( dstError );
+      if( !o.throwCallsStack )
+      o.throwCallsStack = _.introspector.stack([ ( o.level || 0 ) + 1, Infinity ]);
 
-      if( !o.caughtCallsStack && o.caughtLocation )
-      o.caughtCallsStack = _.introspector.locationToStack( o.caughtLocation );
-      if( !o.caughtCallsStack )
-      o.caughtCallsStack = _.introspector.stack( o.caughtCallsStack, [ ( o.level || 0 ) + 1, Infinity ] );
+      if( !o.catchCallsStack && o.catchLocation )
+      o.catchCallsStack = _.introspector.locationToStack( o.catchLocation );
+      if( !o.catchCallsStack )
+      o.catchCallsStack = _.introspector.stack( o.catchCallsStack, [ ( o.level || 0 ) + 1, Infinity ] );
 
-      if( !o.throwenCallsStack && o.caughtCallsStack )
-      o.throwenCallsStack = o.caughtCallsStack;
-      if( !o.throwenCallsStack )
-      o.throwenCallsStack = _.introspector.stack( resultError, [ ( o.level || 0 ) + 1, Infinity ] );
+      if( !o.throwCallsStack && o.catchCallsStack )
+      o.throwCallsStack = o.catchCallsStack;
+      if( !o.throwCallsStack )
+      o.throwCallsStack = _.introspector.stack( dstError, [ ( o.level || 0 ) + 1, Infinity ] );
 
       o.level = 0;
 
@@ -406,48 +786,48 @@ function _err( o )
     else
     {
 
-      resultError = new Error( originalMessage + '\n' );
-      if( o.throwenCallsStack )
+      dstError = new Error( originalMessage + '\n' );
+      if( o.throwCallsStack )
       {
-        resultError.stack = o.throwenCallsStack;
-        o.caughtCallsStack = _.introspector.stack( o.caughtCallsStack, [ o.level + 1, Infinity ] );
+        dstError.stack = o.throwCallsStack;
+        o.catchCallsStack = _.introspector.stack( o.catchCallsStack, [ o.level + 1, Infinity ] );
         o.level = 0;
       }
       else
       {
-        if( o.caughtCallsStack )
+        if( o.catchCallsStack )
         {
-          o.throwenCallsStack = resultError.stack = o.caughtCallsStack;
+          o.throwCallsStack = dstError.stack = o.catchCallsStack;
         }
         else
         {
           if( o.level === undefined || o.level === null )
           o.level = 1;
           o.level += 1;
-          o.throwenCallsStack = resultError.stack = _.introspector.stack( resultError.stack, [ o.level, Infinity ] );
+          o.throwCallsStack = dstError.stack = _.introspector.stack( dstError.stack, [ o.level, Infinity ] );
         }
         o.level = 0;
-        if( !o.caughtCallsStack )
-        o.caughtCallsStack = o.throwenCallsStack;
+        if( !o.catchCallsStack )
+        o.catchCallsStack = o.throwCallsStack;
       }
 
     }
 
     _.assert( o.level === 0 );
 
-    if( ( o.stackRemovingBeginIncluding || o.stackRemovingBeginExcluding ) && o.throwenCallsStack )
-    o.throwenCallsStack = _.introspector.stackRemoveLeft( o.throwenCallsStack, o.stackRemovingBeginIncluding || null, o.stackRemovingBeginExcluding || null );
+    if( ( o.stackRemovingBeginIncluding || o.stackRemovingBeginExcluding ) && o.throwCallsStack )
+    o.throwCallsStack = _.introspector.stackRemoveLeft( o.throwCallsStack, o.stackRemovingBeginIncluding || null, o.stackRemovingBeginExcluding || null );
 
-    if( !o.throwenCallsStack )
-    o.throwenCallsStack = resultError.stack = o.fallBackStack;
+    if( !o.throwCallsStack )
+    o.throwCallsStack = dstError.stack = o.fallBackStack;
 
-    beautifiedStack = o.throwenCallsStack;
+    beautifiedStack = o.throwCallsStack;
 
-    _.assert( resultError.asyncCallsStack === undefined || resultError.asyncCallsStack === null || _.arrayIs( resultError.asyncCallsStack ) );
-    if( resultError.asyncCallsStack && resultError.asyncCallsStack.length )
+    _.assert( dstError.asyncCallsStack === undefined || dstError.asyncCallsStack === null || dstError.asyncCallsStack === '' || _.arrayIs( dstError.asyncCallsStack ) );
+    if( dstError.asyncCallsStack && dstError.asyncCallsStack.length )
     {
       o.asyncCallsStack = o.asyncCallsStack || [];
-      _.arrayAppendArray( o.asyncCallsStack, resultError.asyncCallsStack );
+      _.arrayAppendArray( o.asyncCallsStack, dstError.asyncCallsStack );
     }
 
     if( o.asyncCallsStack === null || o.asyncCallsStack === undefined )
@@ -473,10 +853,10 @@ function _err( o )
 
     try
     {
-      o.caughtLocation = _.introspector.location
+      o.catchLocation = _.introspector.location
       ({
-        stack : o.caughtCallsStack,
-        location : o.caughtLocation,
+        stack : o.catchCallsStack,
+        location : o.catchLocation,
       });
     }
     catch( err2 )
@@ -487,43 +867,17 @@ function _err( o )
 
     try
     {
-      o.throwenLocation = _.introspector.location
+      o.throwLocation = _.introspector.location
       ({
-        error : resultError,
-        stack : o.throwenCallsStack,
-        location : o.throwenLocation,
+        error : dstError,
+        stack : o.throwCallsStack,
+        location : o.throwLocation,
       });
     }
     catch( err2 )
     {
       console.error( err2 );
       debugger;
-    }
-
-    if( o.brief === null || o.brief === undefined )
-    o.brief = resultError.brief;
-    o.brief = !!o.brief;
-
-    if( o.isProcess === null || o.isProcess === undefined )
-    o.isProcess = resultError.isProcess;
-    o.isProcess = !!o.isProcess;
-
-    if( o.debugging === null || o.debugging === undefined )
-    o.debugging = resultError.debugging;
-    o.debugging = !!o.debugging;
-
-    if( o.reason === null || o.reason === undefined )
-    o.reason = resultError.reason;
-
-    sections = resultError.section || Object.create( null );
-    if( o.sections )
-    _.mapExtend( sections, o.sections );
-
-    id = resultError.id;
-    if( !id )
-    {
-      _errorCounter += 1;
-      id = _errorCounter;
     }
 
   }
@@ -539,20 +893,20 @@ function _err( o )
       o.throws.forEach( ( c ) =>
       {
         c = _.introspector.locationFromStackFrame( c ).routineFilePathLineCol;
-        if( throwsStack )
-        throwsStack += `\nthrown at ${c}`;
+        if( o.throwsStack )
+        o.throwsStack += `\nthrown at ${c}`;
         else
-        throwsStack = `thrown at ${c}`;
+        o.throwsStack = `thrown at ${c}`;
       });
     }
 
-    _.assert( _.numberIs( o.caughtLocation.internal ) );
-    if( !o.caughtLocation.internal || o.caughtLocation.internal === 1 )
+    _.assert( _.numberIs( o.catchLocation.internal ) );
+    if( !o.catchLocation.internal || o.catchLocation.internal === 1 )
     {
-      if( throwsStack )
-      throwsStack += `\nthrown at ${o.caughtLocation.routineFilePathLineCol}`;
+      if( o.throwsStack )
+      o.throwsStack += `\nthrown at ${o.catchLocation.routineFilePathLineCol}`;
       else
-      throwsStack = `thrown at ${o.caughtLocation.routineFilePathLineCol}`;
+      o.throwsStack = `thrown at ${o.catchLocation.routineFilePathLineCol}`;
     }
 
   }
@@ -562,18 +916,23 @@ function _err( o )
   function sourceCodeForm()
   {
 
-    if( o.usingSourceCode )
-    if( resultError.sourceCode === undefined )
+    if( !o.usingSourceCode )
+    return;
+
+    if( o.sourceCode )
+    return;
+
+    if( dstError.sourceCode === undefined )
     {
       let c = _.introspector.code
       ({
-        location : o.throwenLocation,
+        location : o.throwLocation,
         sourceCode : o.sourceCode,
         asMap : 1,
       });
       if( c && c.code && c.code.length < 400 )
       {
-        sourceCode = c;
+        o.sourceCode = c;
       }
     }
 
@@ -666,230 +1025,48 @@ function _err( o )
 
   }
 
-  /* */
-
-  function sectionsForm()
-  {
-    let result = '';
-
-    sectionWrite( 'message', `Message of error#${id}`, originalMessage );
-    sectionWrite( 'callsStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', beautifiedStack );
-    sectionWrite( 'throwsStack', `Throws stack`, throwsStack );
-
-    if( o.isProcess && _.process && _.process.entryPointInfo )
-    sectionWrite( 'process', `Process`, _.process.entryPointInfo() );
-
-    if( sourceCode )
-    sectionWrite( 'sourceCode', `Source code from ${sourceCode.path}`, sourceCode.code );
-
-    for( let s in sections )
-    {
-      let section = sections[ s ];
-      if( !_.strIs( section.head ) )
-      {
-        debugger;
-        logger.error( `Each section of an error should have head, but head of section::${s} is ${_.strType(section.head)}` );
-        delete sections[ s ];
-      }
-      if( !_.strIs( section.body ) )
-      {
-        debugger;
-        logger.error( `Each section of an error should have body, but body of section::${s} is ${_.strType(section.body)}` );
-        delete sections[ s ];
-      }
-    }
-
-    return result;
-  }
-
-  /* */
-
-  function sectionWrite( name, head, body )
-  {
-    let section = { head, body };
-    sections[ name ] = section;
-    return section;
-  }
-
-  /* */
-
-  function messageForm()
-  {
-    let result = '';
-
-    if( o.brief )
-    {
-      result += originalMessage;
-    }
-    else
-    {
-
-      for( let s in sections )
-      {
-        let section = sections[ s ];
-        let head = section.head || '';
-        let body = strLinesIndentation( section.body, '    ' );
-        if( !body.trim().length )
-        continue;
-        result += ` = ${head}\n${body}\n\n`;
-      }
-
-    }
-
-    message = result;
-    return result;
-  }
-
-  /* */
-
-  function fieldsForm()
-  {
-
-    nonenumerable( 'message', message );
-    nonenumerable( 'originalMessage', originalMessage );
-    logging( 'stack', message );
-    nonenumerable( 'reason', o.reason );
-
-    nonenumerable( 'callsStack', beautifiedStack );
-    nonenumerable( 'throwenCallsStack', o.throwenCallsStack );
-    nonenumerable( 'throwsStack', throwsStack );
-    nonenumerable( 'asyncCallsStack', o.asyncCallsStack );
-    nonenumerable( 'catchCounter', resultError.catchCounter ? resultError.catchCounter+1 : 1 );
-    nonenumerable( 'attended', attended );
-    nonenumerable( 'logged', logged );
-    nonenumerable( 'brief', o.brief );
-    nonenumerable( 'isProcess', o.isProcess );
-
-    if( o.throwenLocation.line !== undefined )
-    nonenumerable( 'lineNumber', o.throwenLocation.line );
-    if( resultError.throwenLocation === undefined )
-    nonenumerable( 'location', o.throwenLocation );
-    nonenumerable( 'sourceCode', sourceCode || null );
-    nonenumerable( 'debugging', o.debugging );
-    nonenumerable( 'id', id );
-
-    nonenumerable( 'toString', function() { return this.stack } );
-    nonenumerable( 'sections', sections );
-
-    if( o.debugging )
-    debugger;
-
-  }
-
-  /* */
-
-  function nonenumerable( fieldName, value )
-  {
-    try
-    {
-      Object.defineProperty( resultError, fieldName,
-      {
-        enumerable : false,
-        configurable : true,
-        writable : true,
-        value : value,
-      });
-    }
-    catch( err2 )
-    {
-      console.error( err2 );
-      debugger;
-    }
-  }
-
-  /* */
-
-  function rw( fieldName, value ) // Dmytro : this routine is not used anywhere, similar routine logging() below
-  {
-    let symbol = Symbol.for( fieldName );
-    try
-    {
-      resultError[ symbol ] = value;
-      Object.defineProperty( resultError, fieldName,
-      {
-        enumerable : false,
-        configurable : true,
-        get : get,
-        set : set,
-      });
-    }
-    catch( err2 )
-    {
-      console.error( err2 );
-      debugger;
-    }
-    function get()
-    {
-      logger.log( `${fieldName} get ${this[ symbol ]}` );
-      return this[ symbol ];
-    }
-    function set( src )
-    {
-      logger.log( `${fieldName} set` );
-      this[ symbol ] = src;
-      return src;
-    }
-  }
-
-  /* */
-
-  function logging( fieldName, value )
-  {
-    let symbol = Symbol.for( fieldName );
-    try
-    {
-      nonenumerable( symbol, value );
-      Object.defineProperty( resultError, fieldName,
-      {
-        enumerable : false,
-        configurable : true,
-        get : get,
-        set : set,
-      });
-    }
-    catch( err2 )
-    {
-      console.error( err2 );
-      debugger;
-    }
-    function get()
-    {
-      _.errLogEnd( this );
-      _.errAttend( this );
-      return this[ symbol ];
-    }
-    function set( src )
-    {
-      debugger;
-      this[ symbol ] = src;
-      return src;
-    }
-  }
-
 }
 
 _err.defaults =
 {
+
+  /**/
+
   args : null,
+  sections : null,
+  level : 1, /* to make catch stack work properly level should be 1 by default */
+
+  /* string */
+
   reason : null,
-  level : 1,
-  /* to make catch stack work properly level should be 1 by default */
-  stackRemovingBeginIncluding : null,
-  stackRemovingBeginExcluding : null,
+  sourceCode : null,
+
+  /* Bolean */
+
+  stackRemovingBeginIncluding : 0,
+  stackRemovingBeginExcluding : 0,
   usingSourceCode : 1,
   stackCondensing : 1,
-  debugging : null,
-  throwenLocation : null,
-  caughtLocation : null,
-  sourceCode : null,
+  attended : null,
+  logged : null,
   brief : null,
   isProcess : null,
+  debugging : null,
+
+  /* Location */
+
+  throwLocation : null,
+  catchLocation : null,
+
+  /* Stack */
+
   asyncCallsStack : null,
-  throwenCallsStack : null,
-  caughtCallsStack : null,
+  throwCallsStack : null,
+  catchCallsStack : null,
   fallBackStack : null,
+  throwsStack : '',
   throws : null,
-  sections : null,
+
 }
 
 //
@@ -922,7 +1099,7 @@ _err.defaults =
  * @returns {Error} Created Error. If passed existing error as one of parameters, routine modified it and return
  * reference.
  * @function err
- * @memberof wTools
+ * @namespace Tools
  */
 
 function err()
@@ -1152,6 +1329,92 @@ function errOnce( err )
 
 //
 
+function errInStr( errStr )
+{
+  _.assert( _.strIs( errStr ) );
+
+  if( !_.strHas( errStr, '= Message of' ) )
+  return false;
+
+  if( !_.strHas( errStr, '= Beautified calls stack' ) )
+  return false;
+
+  return true;
+}
+
+//
+
+function errFromStr( errStr )
+{
+
+  debugger;
+  try
+  {
+
+    errStr = _.strLinesStrip( errStr );
+
+    let sectionBeginRegexp = /=\s+(.*?)\s*\n/mg;
+    let splits = _.strSplitFast
+    ({
+      src : errStr,
+      delimeter : sectionBeginRegexp,
+    });
+
+    let sectionName;
+    let throwCallsStack = '';
+    let throwsStack = '';
+    let stackCondensing = true;
+    let messages = [];
+    for( let s = 0 ; s < splits.length ; s++ )
+    {
+      let split = splits[ s ];
+      let sectionNameParsed = sectionBeginRegexp.exec( split + '\n' );
+      if( sectionNameParsed )
+      {
+        sectionName = sectionNameParsed[ 1 ];
+        continue;
+      }
+
+      if( !sectionName )
+      messages.push( split );
+      else if( !sectionName || _.strBegins( sectionName, 'Message of' ) )
+      messages.push( split );
+      else if( _.strBegins( sectionName, 'Beautified calls stack' ) )
+      throwCallsStack = split;
+      else if( _.strBegins( sectionName, 'Throws stack' ) )
+      throwsStack = split;
+
+    }
+
+    let dstError = new Error();
+
+    let throwLocation = _.introspector.locationFromStackFrame( throwCallsStack || dstError.stack );
+
+    let originalMessage = messages.join( '\n' ); /* xxx : implement routine for joining */
+
+    let result = _._errMake
+    ({
+      dstError : dstError,
+      throwLocation : throwLocation,
+      stackCondensing : stackCondensing,
+      originalMessage : originalMessage,
+      beautifiedStack : throwCallsStack,
+      throwCallsStack : throwCallsStack,
+      throwsStack : throwsStack,
+    });
+
+    return result;
+  }
+  catch( err2 )
+  {
+    console.error( err2 );
+    debugger;
+    return Error( errStr );
+  }
+}
+
+//
+
 function _errLog( err )
 {
   let c = _global.logger || _global.console;
@@ -1220,7 +1483,7 @@ function _errLog( err )
  * @param {...String|Error} msg Accepts list of messeges/errors.
  * @returns {Error} Created Error. If passed existing error as one of parameters, routine modified it and return
  * @function errLog
- * @memberof wTools
+ * @namespace Tools
  */
 
 function errLog()
@@ -1536,20 +1799,8 @@ function breakpoint( condition )
  * //   at <anonymous>:1:1
  * @throws {Error} If passed condition( condition ) fails.
  * @function assert
- * @memberof wTools
+ * @namespace Tools
  */
-
-function _assertDebugger( condition, args )
-{
-  if( !_.debuggerEnabled )
-  return;
-  let err = _._err
-  ({
-    args : Array.prototype.slice.call( args, 1 ),
-    level : 3,
-  });
-  debugger;
-}
 
 //
 
@@ -1588,6 +1839,18 @@ function assert( condition )
   {
     let type = Object.prototype.toString.call( src );
     return type === '[object Boolean]' || type === '[object Number]';
+  }
+
+  function _assertDebugger( condition, args )
+  {
+    if( !_.debuggerEnabled )
+    return;
+    let err = _._err
+    ({
+      args : Array.prototype.slice.call( args, 1 ),
+      level : 3,
+    });
+    debugger;
   }
 
 }
@@ -1654,7 +1917,7 @@ function assertNotTested( src )
  * @param condition Condition to check.
  * @param messages messages to print.
  * @function assertWarn
- * @memberof wTools
+ * @namespace Tools
  */
 
 function assertWarn( condition )
@@ -1696,6 +1959,8 @@ function assertOwnNoConstructor( ins )
 // namespace
 // --
 
+let _errorCounter = 0;
+let _errorMaking = false;
 let stackSymbol = Symbol.for( 'stack' );
 
 /* Error.stackTraceLimit = 99; */
@@ -1704,7 +1969,7 @@ let stackSymbol = Symbol.for( 'stack' );
  * @property {Object} error={}
  * @property {Boolean} debuggerEnabled=!!Config.debug
  * @name ErrFields
- * @memberof wTools
+ * @namespace Tools
  */
 
 let Extension =
@@ -1723,6 +1988,7 @@ let Extension =
   errOriginalMessage,
   errOriginalStack,
 
+  _errMake,
   _err,
   err,
   errBrief,
@@ -1736,6 +2002,8 @@ let Extension =
   errSuspend,
   errRestack,
   errOnce,
+  errInStr,
+  errFromStr,
 
   _errLog,
   errLog,
@@ -1765,6 +2033,9 @@ let Extension =
 
   error : Object.create( null ),
   debuggerEnabled : !!Config.debug,
+
+  _errorCounter,
+  _errorMaking,
 
 }
 

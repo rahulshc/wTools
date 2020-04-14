@@ -86,7 +86,7 @@ function routineWithName( src )
  * @param {object} object - object to check.
  * @return {object} object - name in key/value format.
  * @function _routineJoin
- * @memberof wTools
+ * @namespace Tools
  */
 
 function _routineJoin( o )
@@ -267,7 +267,7 @@ function constructorJoin( routine, args )
  * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
  * @thorws {Error} If passed arguments more than 3 throws error with text 'Expects 3 or less arguments'
  * @function routineJoin
- * @memberof wTools
+ * @namespace Tools
  */
 
 function routineJoin( context, routine, args )
@@ -323,7 +323,7 @@ function routineJoin( context, routine, args )
  * @throws {Error} When second argument is not callable throws error with text 'first argument must be a routine'
  * @thorws {Error} If passed arguments more than 3 throws error with text 'Expects 3 or less arguments'
  * @function routineJoin
- * @memberof wTools
+ * @namespace Tools
  */
 
 function routineJoin( context, routine, args )
@@ -362,7 +362,7 @@ function routineJoin( context, routine, args )
  * @param {Array<*>} args Arguments wrapped into array. Will be used as argument to `routine` function
  * @returns {Function} Result function with sealed context and arguments.
  * @function routineJoin
- * @memberof wTools
+ * @namespace Tools
  */
 
 function routineSeal( context, routine, args )
@@ -440,13 +440,14 @@ function routineOptionsPreservingUndefines( routine, args, defaults )
   let options = args[ 0 ];
   if( options === undefined )
   options = Object.create( null );
-  defaults = defaults || routine.defaults;
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults' );
+  _.assert( _.objectIs( routine.defaults ), 'Expects routine with defined defaults' );
   _.assert( _.objectIs( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got', args.length, 'arguments' );
+
+  defaults = defaults || routine.defaults;
 
   _.assertMapHasOnly( options, defaults );
   _.mapComplementPreservingUndefines( options, defaults );
@@ -703,7 +704,7 @@ routinesCompose.defaults = Object.create( routinesCompose.body.defaults );
  * @throws { Error } Throw an error if dst is not routine or not null.
  * @throws { Error } Throw an error if dst is null and src has not pre and body properties.
  * @throws { Error } Throw an error if src is primitive value.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function routineExtend( dst, src )
@@ -1700,7 +1701,7 @@ vectorizeNone.defaults = Object.create( vectorizeNone_body.defaults );
  * @function vectorizeAccess
  * @throws { Error } If arguments.length is less or more then one.
  * @throws { Error } If {-vector-} is not a Long.
- * @memberof wTools
+ * @namespace Tools
  */
 
 function vectorizeAccess( vector )
