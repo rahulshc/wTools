@@ -50,10 +50,8 @@ function regexpsLike( srcs )
 function regexpIdentical( src1, src2 )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-
   if( !_.regexpIs( src1 ) || !_.regexpIs( src2 ) )
   return false;
-
   return src1.source === src2.source && src1.flags === src2.flags;
 }
 
@@ -61,7 +59,10 @@ function regexpIdentical( src1, src2 )
 
 function regexpEquivalent( src1, src2 )
 {
-  return _.strEquivalent( src1, src2 );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  if( !_.regexpIs( src1 ) || !_.regexpIs( src2 ) )
+  return false;
+  return src1.source === src2.source;
 }
 
 //
@@ -108,8 +109,8 @@ let Routines =
   regexpObjectIs,
   regexpLike,
   regexpsLike,
-  regexpIdentical,
-  regexpEquivalent,
+  regexpIdentical, /* qqq : cover please */
+  regexpEquivalent, /* qqq : cover please */
 
   regexpEscape,
 

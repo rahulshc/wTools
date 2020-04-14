@@ -440,13 +440,14 @@ function routineOptionsPreservingUndefines( routine, args, defaults )
   let options = args[ 0 ];
   if( options === undefined )
   options = Object.create( null );
-  defaults = defaults || routine.defaults;
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects 2 or 3 arguments' );
   _.assert( _.routineIs( routine ), 'Expects routine' );
-  _.assert( _.objectIs( defaults ), 'Expects routine with defined defaults' );
+  _.assert( _.objectIs( routine.defaults ), 'Expects routine with defined defaults' );
   _.assert( _.objectIs( options ), 'Expects object' );
   _.assert( args.length === 0 || args.length === 1, 'routineOptions : expects single options map, but got', args.length, 'arguments' );
+
+  defaults = defaults || routine.defaults;
 
   _.assertMapHasOnly( options, defaults );
   _.mapComplementPreservingUndefines( options, defaults );
