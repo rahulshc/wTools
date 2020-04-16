@@ -2613,11 +2613,12 @@ function mapOwnBut_( dstMap, srcMap, butMap )
 //
 
 /**
- * @namespace
+ * @typedef screenMaps
  * @property { objectLike } screenMaps.screenMap - The first object.
  * @property { ...objectLike } srcMap.arguments[1, ...] -
  * The pseudo array (arguments[]) from the first [1] index to the end.
  * @property { object } dstMap - The empty object.
+ * @namespace Tools
  */
 
 /**
