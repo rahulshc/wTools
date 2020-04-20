@@ -59,7 +59,7 @@ _.mapExtend( _, ToolsExtension );
 
 /**
  * @summary Array namespace
- * @namespace "wTools.defaultLong"
+ * @namespace wTools.defaultLong
  * @extends Tools
  * @namespace Tools
  */
