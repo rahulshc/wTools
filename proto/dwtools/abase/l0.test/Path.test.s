@@ -108,7 +108,9 @@ function is( test )
 
 function isRefined( test )
 {
-  test.case = 'posix path, not refined'; /* */
+  /* */
+
+  test.case = 'posix path, not refined';
 
   var path = '/';
   var expected = true;
@@ -140,7 +142,9 @@ function isRefined( test )
   var got = _.path.isRefined( path );
   test.identical( got, expected );
 
-  test.case = 'posix path, refined'; /* */
+  /* */
+
+  test.case = 'posix path, refined';
 
   var path = '/foo/bar//baz/asdf/quux/..';
   var refined = _.path.refine( path );
@@ -166,7 +170,9 @@ function isRefined( test )
   var got = _.path.isRefined( refined );
   test.identical( got, expected );
 
-  test.case = 'winoows path, not refined'; /* */
+  /* */
+
+  test.case = 'winoows path, not refined';
 
   var path = 'C:\\temp\\\\foo\\bar\\..\\';
   var expected = false;
@@ -198,7 +204,9 @@ function isRefined( test )
   var got = _.path.isRefined( path );
   test.identical( got, expected );
 
-  test.case = 'winoows path, refined'; /* */
+  /* */
+
+  test.case = 'winoows path, refined';
 
   var path = 'C:\\temp\\\\foo\\bar\\..\\';
   var refined = _.path.refine( path );
@@ -336,7 +344,9 @@ function isRefined( test )
   var got = _.path.isRefined( refined );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the middle'; /* */
+  /* */
+
+  test.case = 'path with "." in the middle';
 
   var path = 'foo/./bar/baz';
   var expected = true;
@@ -384,7 +394,9 @@ function isRefined( test )
   var got = _.path.isRefined( refined );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the middle'; /* */
+  /* */
+
+  test.case = 'path with ".." in the middle';
 
   var path = 'foo/../bar/baz';
   var expected = true;
@@ -406,7 +418,9 @@ function isRefined( test )
   var got = _.path.isRefined( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the middle,refined'; /* */
+  /* */
+
+  test.case = 'path with ".." in the middle,refined';
 
   var path = 'foo/../bar/baz';
   var refined = _.path.refine( path );
@@ -432,7 +446,9 @@ function isRefined( test )
   var got = _.path.isRefined( refined );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with ".." in the beginning';
 
   var path = '../foo/bar';
   var expected = true;
@@ -584,7 +600,9 @@ function isRefined( test )
 //
 // function isRefined( test )
 // {
-//   test.case = 'posix path, not refined'; /* */
+//   /* */
+
+   test.case = 'posix path, not refined';
 //
 //   var path = '/';
 //   var expected = true;
@@ -616,7 +634,9 @@ function isRefined( test )
 //   var got = _.path.isRefined( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'posix path, refined'; /* */
+//   /* */
+
+   test.case = 'posix path, refined';
 //
 //   var path = '/foo/bar//baz/asdf/quux/..';
 //   var refined = _.path.refine( path );
@@ -642,7 +662,9 @@ function isRefined( test )
 //   var got = _.path.isRefined( refined );
 //   test.identical( got, expected );
 //
-//   test.case = 'winoows path, not refined'; /* */
+//   /* */
+
+   test.case = 'winoows path, not refined';
 //
 //   var path = 'C:\\temp\\\\foo\\bar\\..\\';
 //   var expected = false;
@@ -674,7 +696,9 @@ function isRefined( test )
 //   var got = _.path.isRefined( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'winoows path, refined'; /* */
+//   /* */
+
+   test.case = 'winoows path, refined';
 //
 //   var path = 'C:\\temp\\\\foo\\bar\\..\\';
 //   var refined = _.path.refine( path );
@@ -812,7 +836,9 @@ function isRefined( test )
 //   var got = _.path.isRefined( refined );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with "." in the middle'; /* */
+//   /* */
+
+   test.case = 'path with "." in the middle';
 //
 //   var path = 'foo/./bar/baz';
 //   var expected = true;
@@ -860,7 +886,9 @@ function isRefined( test )
 //   var got = _.path.isRefined( refined );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with ".." in the middle'; /* */
+//   /* */
+
+   test.case = 'path with ".." in the middle';
 //
 //   var path = 'foo/../bar/baz';
 //   var expected = true;
@@ -882,7 +910,9 @@ function isRefined( test )
 //   var got = _.path.isRefined( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with ".." in the middle,refined'; /* */
+//   /* */
+
+   test.case = 'path with ".." in the middle,refined';
 //
 //   var path = 'foo/../bar/baz';
 //   var refined = _.path.refine( path );
@@ -908,7 +938,9 @@ function isRefined( test )
 //   var got = _.path.isRefined( refined );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with ".." in the beginning'; /* */
+//   /* */
+
+   test.case = 'path with ".." in the beginning';
 //
 //   var path = '../foo/bar';
 //   var expected = true;
@@ -1063,7 +1095,9 @@ function isNormalized( test )
 
   var got;
 
-  test.case = 'posix path'; /* */
+  /* */
+
+  test.case = 'posix path';
 
   // Not normalized
 
@@ -1099,7 +1133,9 @@ function isNormalized( test )
   var got = _.path.isNormalized( path );
   test.identical( got, expected );
 
-  test.case = 'windows path'; /* */
+  /* */
+
+  test.case = 'windows path';
 
   //Not normalized
 
@@ -1145,7 +1181,9 @@ function isNormalized( test )
   var got = _.path.isNormalized( path );
   test.identical( got, expected );
 
-  test.case = 'empty path'; /* */
+  /* */
+
+  test.case = 'empty path';
 
   var path = '';
   var expected = true;
@@ -1179,7 +1217,9 @@ function isNormalized( test )
   debugger;
   test.identical( got, expected );
 
-  test.case = 'path with "." in the middle'; /* */
+  /* */
+
+  test.case = 'path with "." in the middle';
 
   var path = 'foo/./bar/baz';
   var expected = false;
@@ -1196,7 +1236,9 @@ function isNormalized( test )
   var got = _.path.isNormalized( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with "." in the beginning';
 
   var path = './foo/bar';
   var expected = true;
@@ -1228,7 +1270,9 @@ function isNormalized( test )
   var got = _.path.isNormalized( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the end'; /* */
+  /* */
+
+  test.case = 'path with "." in the end';
 
   var path = 'foo/.bar.';
   var expected = true;
@@ -1245,7 +1289,9 @@ function isNormalized( test )
   var got = _.path.isNormalized( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the middle'; /* */
+  /* */
+
+  test.case = 'path with ".." in the middle';
 
   var path = 'foo/../bar/baz';
   var expected = false;
@@ -1267,7 +1313,9 @@ function isNormalized( test )
   var got = _.path.isNormalized( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with ".." in the beginning';
 
   var path = '../../foo/bar';
   var expected = true;
@@ -1284,7 +1332,9 @@ function isNormalized( test )
   var got = _.path.isNormalized( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the end'; /* */
+  /* */
+
+  test.case = 'path with ".." in the end';
 
   var path = 'foo/..bar..';
   var expected = true;
@@ -1301,7 +1351,9 @@ function isNormalized( test )
   var got = _.path.isNormalized( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." and "." combined'; /* */
+  /* */
+
+  test.case = 'path with ".." and "." combined';
 
   var path = '/abc/./.././a/b';
   var expected = false;
@@ -1323,7 +1375,9 @@ function isNormalized( test )
   var got = _.path.isNormalized( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." and "." combined - normalized'; /* */
+  /* */
+
+  test.case = 'path with ".." and "." combined - normalized';
 
   var path = '/abc/./.././a/b';
   var normalized = _.path.normalize( path );
@@ -1343,7 +1397,9 @@ function isNormalized( test )
   var got = _.path.isNormalized( normalized );
   test.identical( got, expected );
 
-  test.case = 'path with ".." and "." combined - normalized and trailed'; /* */
+  /* */
+
+  test.case = 'path with ".." and "." combined - normalized and trailed';
 
   var path = '/abc/./.././a/b';
   var normalized = _.path.normalize( path );
@@ -1409,7 +1465,9 @@ function isNormalized( test )
 //
 //   var got;
 //
-//   test.case = 'posix path'; /* */
+//   /* */
+
+   test.case = 'posix path';
 //
 //   // Not normalized
 //
@@ -1445,7 +1503,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'windows path'; /* */
+//   /* */
+
+   test.case = 'windows path';
 //
 //   //Not normalized
 //
@@ -1491,7 +1551,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'empty path'; /* */
+//   /* */
+
+   test.case = 'empty path';
 //
 //   var path = '';
 //   var expected = true;
@@ -1523,7 +1585,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with "." in the middle'; /* */
+//   /* */
+
+   test.case = 'path with "." in the middle';
 //
 //   var path = 'foo/./bar/baz';
 //   var expected = false;
@@ -1540,7 +1604,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with "." in the beginning'; /* */
+//   /* */
+
+   test.case = 'path with "." in the beginning';
 //
 //   var path = './foo/bar';
 //   var expected = true;
@@ -1567,7 +1633,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with "." in the end'; /* */
+//   /* */
+
+   test.case = 'path with "." in the end';
 //
 //   var path = 'foo/.bar.';
 //   var expected = true;
@@ -1584,7 +1652,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with ".." in the middle'; /* */
+//   /* */
+
+   test.case = 'path with ".." in the middle';
 //
 //   var path = 'foo/../bar/baz';
 //   var expected = false;
@@ -1606,7 +1676,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with ".." in the beginning'; /* */
+//   /* */
+
+   test.case = 'path with ".." in the beginning';
 //
 //   var path = '../../foo/bar';
 //   var expected = true;
@@ -1623,7 +1695,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with ".." in the end'; /* */
+//   /* */
+
+   test.case = 'path with ".." in the end';
 //
 //   var path = 'foo/..bar..';
 //   var expected = true;
@@ -1640,7 +1714,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with ".." and "." combined'; /* */
+//   /* */
+
+   test.case = 'path with ".." and "." combined';
 //
 //   var path = '/abc/./.././a/b';
 //   var expected = false;
@@ -1662,7 +1738,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( path );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with ".." and "." combined - normalized'; /* */
+//   /* */
+
+   test.case = 'path with ".." and "." combined - normalized';
 //
 //   var path = '/abc/./.././a/b';
 //   var normalized = _.path.normalize( path );
@@ -1682,7 +1760,9 @@ function isNormalized( test )
 //   var got = _.path.isNormalized( normalized );
 //   test.identical( got, expected );
 //
-//   test.case = 'path with ".." and "." combined - normalized and trailed'; /* */
+//   /* */
+
+   test.case = 'path with ".." and "." combined - normalized and trailed';
 //
 //   var path = '/abc/./.././a/b';
 //   var normalized = _.path.normalize( path );
@@ -1781,14 +1861,18 @@ function isAbsolute( test )
   var got = _.path.isAbsolute( 'c/work/' );
   test.identical( got, false );
 
-  test.case = 'posix path'; /* */
+  /* */
+
+  test.case = 'posix path';
 
   var path = '/foo/bar/baz/asdf/quux/..';
   var expected = true;
   var got = _.path.isAbsolute( path );
   test.identical( got, expected );
 
-  test.case = 'posix path'; /* */
+  /* */
+
+  test.case = 'posix path';
 
   var path = '/foo/bar//baz/asdf/quux/..';
   var expected = true;
@@ -1800,7 +1884,9 @@ function isAbsolute( test )
   var got = _.path.isAbsolute( path );
   test.identical( got, expected );
 
-  test.case = 'windows path'; /* */
+  /* */
+
+  test.case = 'windows path';
 
   test.open( 'not normalized' );
 
@@ -1839,7 +1925,9 @@ function isAbsolute( test )
 
   test.close( 'normalized' );
 
-  test.case = 'empty path'; /* */
+  /* */
+
+  test.case = 'empty path';
 
   var path = '';
   var expected = false;
@@ -1977,7 +2065,9 @@ function isRelative( test )
   var got = _.path.isRelative( 'c/work/f/' );
   test.identical( got, true );
 
-  test.case = 'posix path'; /* */
+  /* */
+
+  test.case = 'posix path';
 
   var path = '/foo/bar//baz/asdf/quux/..';
   var expected = false;
@@ -1989,7 +2079,9 @@ function isRelative( test )
   var got = _.path.isRelative( path );
   test.identical( got, expected );
 
-  test.case = 'windows path'; /* */
+  /* */
+
+  test.case = 'windows path';
 
   //Not normalized
 
@@ -2046,7 +2138,9 @@ function isRelative( test )
 
   test.close( 'not refined' );
 
-  test.case = 'empty path'; /* */
+  /* */
+
+  test.case = 'empty path';
 
   var path = '';
   var expected = true;
@@ -2179,7 +2273,9 @@ function isGlobal( test )
   var got = _.path.isGlobal( path );
   test.identical( got, expected );
 
-  test.case = 'windows path'; /* */
+  /* */
+
+  test.case = 'windows path';
 
   var path = 'c:/';
   var expected = false;
@@ -2191,7 +2287,9 @@ function isGlobal( test )
   var got = _.path.isGlobal( path );
   test.identical( got, expected );
 
-  test.case = 'windows path'; /* */
+  /* */
+
+  test.case = 'windows path';
   var path = '/C:/temp/foo/bar/../';
   var expected = false;
   var got = _.path.isGlobal( path );
@@ -2251,7 +2349,9 @@ function isGlobal( test )
   var got = _.path.isGlobal( path );
   test.identical( got, expected );
 
-  test.case = 'windows path'; /* */
+  /* */
+
+  test.case = 'windows path';
 
   var path = 'c://';
   var expected = true;
@@ -3124,7 +3224,9 @@ function ends( test )
 function refine( test )
 {
 
-  test.case = 'posix path'; /* */
+  /* */
+
+  test.case = 'posix path';
 
   var path = '/foo/bar//baz/asdf/quux/..';
   var expected = '/foo/bar//baz/asdf/quux/..';
@@ -3146,7 +3248,9 @@ function refine( test )
   var got = _.path.refine( path );
   test.identical( got, expected );
 
-  test.case = 'winoows path'; /* */
+  /* */
+
+  test.case = 'winoows path';
 
   var path = 'C:\\\\';
   var expected = '/C//';
@@ -3254,7 +3358,9 @@ function refine( test )
   var got = _.path.refine( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the middle'; /* */
+  /* */
+
+  test.case = 'path with "." in the middle';
 
   var path = 'foo/./bar/baz';
   var expected = 'foo/./bar/baz';
@@ -3276,7 +3382,9 @@ function refine( test )
   var got = _.path.refine( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with "." in the beginning';
 
   var path = './foo/bar';
   var expected = './foo/bar';
@@ -3308,7 +3416,9 @@ function refine( test )
   var got = _.path.refine( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the end'; /* */
+  /* */
+
+  test.case = 'path with "." in the end';
 
   var path = 'foo/bar.';
   var expected = 'foo/bar.';
@@ -3340,7 +3450,9 @@ function refine( test )
   var got = _.path.refine( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the middle'; /* */
+  /* */
+
+  test.case = 'path with ".." in the middle';
 
   var path = 'foo/../bar/baz';
   var expected = 'foo/../bar/baz';
@@ -3362,7 +3474,9 @@ function refine( test )
   var got = _.path.refine( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with ".." in the beginning';
 
   var path = '../foo/bar';
   var expected = '../foo/bar';
@@ -3394,7 +3508,9 @@ function refine( test )
   var got = _.path.refine( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the end'; /* */
+  /* */
+
+  test.case = 'path with ".." in the end';
 
   var path = 'foo/bar..';
   var expected = 'foo/bar..';
@@ -3426,7 +3542,9 @@ function refine( test )
   var got = _.path.refine( path );
   test.identical( got, expected );
 
-  test.case = 'path with \\'; /* */
+  /* */
+
+  test.case = 'path with \\';
 
   var path = 'foo/bar\\';
   var expected = 'foo/bar/';
@@ -3453,7 +3571,9 @@ function refine( test )
   var got = _.path.refine( path );
   test.identical( got, expected );
 
-  test.case = 'path with \/'; /* */
+  /* */
+
+  test.case = 'path with \/';
 
   var path = 'foo/bar\/';
   var expected = 'foo/bar/';
@@ -3518,7 +3638,9 @@ function refine( test )
 function normalize( test )
 {
 
-  test.case = 'posix path'; /* */
+  /* */
+
+  test.case = 'posix path';
 
   var path = 'a/foo/../b';
   var expected = 'a/b';
@@ -3605,7 +3727,9 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
-  test.case = 'windows path'; /* */
+  /* */
+
+  test.case = 'windows path';
 
   var path = '/C:\\temp\\\\foo\\bar\\..\\';
   var expected = '/C:/temp//foo/';
@@ -3647,7 +3771,9 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
-  test.case = 'empty path'; /* */
+  /* */
+
+  test.case = 'empty path';
 
   var path = '';
   var expected = '';
@@ -3694,7 +3820,9 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the middle'; /* */
+  /* */
+
+  test.case = 'path with "." in the middle';
 
   var path = 'foo/./bar/baz';
   var expected = 'foo/bar/baz';
@@ -3721,7 +3849,9 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with "." in the beginning';
 
   var path = './foo/bar';
   var expected = './foo/bar';
@@ -3763,7 +3893,9 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the end'; /* */
+  /* */
+
+  test.case = 'path with "." in the end';
 
   var path = 'foo/bar.';
   var expected = 'foo/bar.';
@@ -3800,7 +3932,9 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the middle'; /* */
+  /* */
+
+  test.case = 'path with ".." in the middle';
 
   var path = 'foo/../bar/baz';
   var expected = 'bar/baz';
@@ -3862,7 +3996,9 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with ".." in the beginning';
 
   var path = '../foo/bar';
   var expected = '../foo/bar';
@@ -3909,7 +4045,9 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the end'; /* */
+  /* */
+
+  test.case = 'path with ".." in the end';
 
   var path = 'foo/bar..';
   var expected = 'foo/bar..';
@@ -3961,7 +4099,9 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." and "." combined'; /* */
+  /* */
+
+  test.case = 'path with ".." and "." combined';
 
   var path = '/abc/./../a/b';
   var expected = '/a/b';
@@ -4013,7 +4153,9 @@ function normalize( test )
   var got = _.path.normalize( path );
   test.identical( got, expected );
 
-  test.case = 'path with \/'; /* */
+  /* */
+
+  test.case = 'path with \/';
 
   var path = 'foo/bar\/';
   var expected = 'foo/bar/';
@@ -4080,7 +4222,9 @@ function normalize( test )
 function normalizeTolerant( test )
 {
 
-  test.case = 'posix path'; /* */
+  /* */
+
+  test.case = 'posix path';
 
   var path = '/aa/bb/cc/./';
   var expected = '/aa/bb/cc/';
@@ -4127,7 +4271,9 @@ function normalizeTolerant( test )
   var got = _.path.normalizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'winoows path'; /* */
+  /* */
+
+  test.case = 'winoows path';
 
   var path = 'C:\\temp\\\\foo\\bar\\..\\';
   var expected = '/C/temp/foo/';
@@ -4159,7 +4305,9 @@ function normalizeTolerant( test )
   var got = _.path.normalizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'empty path'; /* */
+  /* */
+
+  test.case = 'empty path';
 
   var path = '';
   var expected = '';
@@ -4206,7 +4354,9 @@ function normalizeTolerant( test )
   var got = _.path.normalizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the middle'; /* */
+  /* */
+
+  test.case = 'path with "." in the middle';
 
   var path = 'foo/./bar/baz';
   var expected = 'foo/bar/baz';
@@ -4233,7 +4383,9 @@ function normalizeTolerant( test )
   var got = _.path.normalizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with "." in the beginning';
 
   var path = './foo/bar';
   var expected = './foo/bar';
@@ -4270,7 +4422,9 @@ function normalizeTolerant( test )
   var got = _.path.normalizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the end'; /* */
+  /* */
+
+  test.case = 'path with "." in the end';
 
   var path = 'foo/bar.';
   var expected = 'foo/bar.';
@@ -4307,7 +4461,9 @@ function normalizeTolerant( test )
   var got = _.path.normalizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the middle'; /* */
+  /* */
+
+  test.case = 'path with ".." in the middle';
 
   var path = 'foo/../bar/baz';
   var expected = 'bar/baz';
@@ -4329,7 +4485,9 @@ function normalizeTolerant( test )
   var got = _.path.normalizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with ".." in the beginning';
 
   var path = '../foo/bar';
   var expected = '../foo/bar';
@@ -4361,7 +4519,9 @@ function normalizeTolerant( test )
   var got = _.path.normalizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the end'; /* */
+  /* */
+
+  test.case = 'path with ".." in the end';
 
   var path = 'foo/bar..';
   var expected = 'foo/bar..';
@@ -4408,7 +4568,9 @@ function normalizeTolerant( test )
   var got = _.path.normalizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." and "." combined'; /* */
+  /* */
+
+  test.case = 'path with ".." and "." combined';
 
   var path = '/abc/./../a/b';
   var expected = '/a/b';
@@ -4476,7 +4638,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'posix path'; /* */
+  /* */
+
+  test.case = 'posix path';
 
   var path = '/aa/bb/cc/./';
   var expected = '/aa/bb/cc';
@@ -4528,7 +4692,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'windows path'; /* */
+  /* */
+
+  test.case = 'windows path';
 
   var path = '/C:\\temp\\\\foo\\bar\\..\\';
   var expected = '/C:/temp//foo';
@@ -4575,7 +4741,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'empty path'; /* */
+  /* */
+
+  test.case = 'empty path';
 
   var path = '';
   var expected = '';
@@ -4622,7 +4790,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the middle'; /* */
+  /* */
+
+  test.case = 'path with "." in the middle';
 
   var path = 'foo/./bar/baz';
   var expected = 'foo/bar/baz';
@@ -4649,7 +4819,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with "." in the beginning';
 
   var path = './foo/bar';
   var expected = 'foo/bar';
@@ -4696,7 +4868,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the end'; /* */
+  /* */
+
+  test.case = 'path with "." in the end';
 
   var path = 'foo/bar.';
   var expected = 'foo/bar.';
@@ -4733,7 +4907,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the middle'; /* */
+  /* */
+
+  test.case = 'path with ".." in the middle';
 
   var path = 'foo/../bar/baz';
   var expected = 'bar/baz';
@@ -4755,7 +4931,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with ".." in the beginning';
 
   var path = '../foo/bar';
   var expected = '../foo/bar';
@@ -4787,7 +4965,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the end'; /* */
+  /* */
+
+  test.case = 'path with ".." in the end';
 
   var path = 'foo/bar..';
   var expected = 'foo/bar..';
@@ -4834,7 +5014,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." and "." combined'; /* */
+  /* */
+
+  test.case = 'path with ".." and "." combined';
 
   var path = '/abc/./../a/b';
   var expected = '/a/b';
@@ -4886,7 +5068,9 @@ function canonize( test )
   var got = _.path.canonize( path );
   test.identical( got, expected );
 
-  test.case = 'path with \/'; /* */
+  /* */
+
+  test.case = 'path with \/';
 
   var path = 'foo/bar\/';
   var expected = 'foo/bar';
@@ -4952,7 +5136,9 @@ function canonize( test )
 
 function canonizeTolerant( test )
 {
-  test.case = 'posix path'; /* */
+  /* */
+
+  test.case = 'posix path';
 
   var path = '/aa/bb/cc/./';
   var expected = '/aa/bb/cc';
@@ -4999,7 +5185,9 @@ function canonizeTolerant( test )
   var got = _.path.canonizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'winoows path'; /* */
+  /* */
+
+  test.case = 'winoows path';
 
   var path = 'C:\\temp\\\\foo\\bar\\..\\';
   var expected = '/C/temp/foo';
@@ -5031,7 +5219,9 @@ function canonizeTolerant( test )
   var got = _.path.canonizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'empty path'; /* */
+  /* */
+
+  test.case = 'empty path';
 
   var path = '';
   var expected = '';
@@ -5078,7 +5268,9 @@ function canonizeTolerant( test )
   var got = _.path.canonizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the middle'; /* */
+  /* */
+
+  test.case = 'path with "." in the middle';
 
   var path = 'foo/./bar/baz';
   var expected = 'foo/bar/baz';
@@ -5105,7 +5297,9 @@ function canonizeTolerant( test )
   var got = _.path.canonizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with "." in the beginning';
 
   var path = './foo/bar';
   var expected = 'foo/bar';
@@ -5142,7 +5336,9 @@ function canonizeTolerant( test )
   var got = _.path.canonizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with "." in the end'; /* */
+  /* */
+
+  test.case = 'path with "." in the end';
 
   var path = 'foo/bar.';
   var expected = 'foo/bar.';
@@ -5179,7 +5375,9 @@ function canonizeTolerant( test )
   var got = _.path.canonizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the middle'; /* */
+  /* */
+
+  test.case = 'path with ".." in the middle';
 
   var path = 'foo/../bar/baz';
   var expected = 'bar/baz';
@@ -5201,7 +5399,9 @@ function canonizeTolerant( test )
   var got = _.path.canonizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the beginning'; /* */
+  /* */
+
+  test.case = 'path with ".." in the beginning';
 
   var path = '../foo/bar';
   var expected = '../foo/bar';
@@ -5233,7 +5433,9 @@ function canonizeTolerant( test )
   var got = _.path.canonizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." in the end'; /* */
+  /* */
+
+  test.case = 'path with ".." in the end';
 
   var path = 'foo/bar..';
   var expected = 'foo/bar..';
@@ -5280,7 +5482,9 @@ function canonizeTolerant( test )
   var got = _.path.canonizeTolerant( path );
   test.identical( got, expected );
 
-  test.case = 'path with ".." and "." combined'; /* */
+  /* */
+
+  test.case = 'path with ".." and "." combined';
 
   var path = '/abc/./../a/b';
   var expected = '/a/b';
@@ -5539,7 +5743,9 @@ function dir( test )
   var got = _.path.dir( src );
   test.identical( got, expected );
 
-  test.case = 'absolute path : nested dirs'; /* */
+  /* */
+
+  test.case = 'absolute path : nested dirs';
   var src = '/foo/bar/baz/text.txt';
   var expected = '/foo/bar/baz';
   var got = _.path.dir( src );
@@ -5560,7 +5766,9 @@ function dir( test )
   var got = _.path.dir( src );
   test.identical( got, expected );
 
-  test.case = 'relative path : nested dirs'; /* */
+  /* */
+
+  test.case = 'relative path : nested dirs';
 
   var src = 'aa/bb';
   var expected = 'aa';
@@ -5863,13 +6071,17 @@ function dirFirst( test )
   var got = _.path.dirFirst( src );
   test.identical( got, expected );
 
-  test.case = 'simple absolute path'; /* */
+  /* */
+
+  test.case = 'simple absolute path';
   var src = '/foo';
   var expected2 = '/';
   var got = _.path.dirFirst( src );
   test.identical( got, expected2 );
 
-  test.case = 'absolute path : nested dirs'; /* */
+  /* */
+
+  test.case = 'absolute path : nested dirs';
   var src = '/foo/bar/baz/text.txt';
   var expected = '/foo/bar/baz/';
   var got = _.path.dirFirst( src );
@@ -5890,7 +6102,9 @@ function dirFirst( test )
   var got = _.path.dirFirst( src );
   test.identical( got, expected );
 
-  test.case = 'relative path : nested dirs'; /* */
+  /* */
+
+  test.case = 'relative path : nested dirs';
 
   var src = 'aa/bb';
   var expected = 'aa/';

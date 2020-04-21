@@ -430,25 +430,10 @@ function longRightDefined( arr )
 }
 
 // --
-// fields
-// --
-
-let Fields =
-{
-
-  // ArrayType : Array,
-
-  accuracy : 1e-7,
-  accuracySqrt : 1e-4,
-  accuracySqr : 1e-14,
-
-}
-
-// --
 // routines
 // --
 
-let Routines =
+let Extension =
 {
 
   // long
@@ -469,12 +454,17 @@ let Routines =
   longLeftDefined,
   longRightDefined,
 
+  // fields
+
+  accuracy : 1e-7,
+  accuracySqrt : 1e-4,
+  accuracySqr : 1e-14,
+
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( Self, Extension );
 
 // --
 // export
