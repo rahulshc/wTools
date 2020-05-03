@@ -361,7 +361,7 @@ let wRemote =
 
 let wGitTools =
 {
-  sourcePath : sourcePath( 'amid/l3/git/IncludeMid.s', 'wgittools' ),
+  sourcePath : sourcePath( 'amid/l3/git/entry/Include.s', 'wgittools' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.git },
 }
 
@@ -599,7 +599,7 @@ let wMathConcepts =
 
 let willbe =
 {
-  sourcePath : sourcePath( 'atop/will/MainTop.s', 'willbe' ),
+  sourcePath : sourcePath( 'atop/will/entry/Include.s', 'willbe' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Will },
 }
 
@@ -617,8 +617,8 @@ let wTesting =
 
 let wTranspilationStrategy =
 {
-  sourcePath : sourcePath( 'atop/transpilationStrategy/MainBase.s', 'wtranspilationstrategy' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TranspilationStrategy },
+  sourcePath : sourcePath( 'atop/transpilationStrategy/entry/Include.s', 'wtranspilationstrategy' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.trs },
 }
 
 let wFilesOperationsDirector =
