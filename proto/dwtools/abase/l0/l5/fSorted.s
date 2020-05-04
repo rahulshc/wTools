@@ -18,7 +18,6 @@ function searchFirstIndex( srcArr, ins )
   let r = srcArr.length;
   let m;
   if( srcArr.length )
-  debugger;
 
   do
   {
