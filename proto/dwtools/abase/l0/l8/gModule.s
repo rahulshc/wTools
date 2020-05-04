@@ -132,9 +132,9 @@ function declare( o )
 
   o.sourcePath = _.arrayAs( o.sourcePath );
 
-  if( module.isScript )
-  if( o.name === 'wBlueprint' )
-  debugger;
+  // if( module.isScript )
+  // if( o.name === 'wBlueprint' )
+  // debugger;
 
   // if( !o.basePath )
   // o.basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
@@ -638,9 +638,9 @@ function _resolveFirst( o )
   if( o.basePath === null )
   o.basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
 
-  if( module.isScript )
-  if( o.moduleNames && o.moduleNames.length && o.moduleNames[ 0 ] === 'wBlueprint' )
-  debugger;
+  // if( module.isScript )
+  // if( o.moduleNames && o.moduleNames.length && o.moduleNames[ 0 ] === 'wBlueprint' )
+  // debugger;
 
   let sourcePaths = this._modulesToSourcePaths( o.moduleNames );
   let resolved = this._sourceFileResolve({ sourcePaths, basePath : o.basePath });
