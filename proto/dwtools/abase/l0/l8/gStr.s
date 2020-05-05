@@ -9,7 +9,7 @@ let Self = _global_.wTools;
 let _ArraySlice = Array.prototype.slice;
 let _FunctionBind = Function.prototype.bind;
 let _ObjectToString = Object.prototype.toString;
-let _ObjectHasOwnProperty = Object.hasOwnProperty;
+// let Object.hasOwnProperty = Object.hasOwnProperty;
 
 // --
 // str

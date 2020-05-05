@@ -605,7 +605,7 @@ let willbe =
 
 let wStarter =
 {
-  sourcePath : sourcePath( 'atop/starter/Main.s', 'wstarter' ),
+  sourcePath : sourcePath( 'atop/starter/entry/Main.s', 'wstarter' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StarterMaker },
 }
 

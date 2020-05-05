@@ -6,7 +6,7 @@ let Self = _global_.wTools.field = _global_.wTools.field || Object.create( null 
 let _global = _global_;
 let _ = _global_.wTools;
 
-let _ObjectHasOwnProperty = Object.hasOwnProperty;
+// let Object.hasOwnProperty = Object.hasOwnProperty;
 
 // --
 //
@@ -318,9 +318,9 @@ function dstAndSrcOwn()
 
   let routine = function dstAndSrcOwn( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
-    if( !_ObjectHasOwnProperty.call( dstContainer, key ) )
+    if( !Object.hasOwnProperty.call( dstContainer, key ) )
     return false;
 
     return true;
@@ -490,7 +490,7 @@ function dstNotHasSrcOwn()
 
   let routine = function dstNotHasSrcOwn( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
     if( key in dstContainer )
     return false;
@@ -512,7 +512,7 @@ function dstNotHasSrcOwnAssigning()
 
   let routine = function dstNotHasSrcOwnAssigning( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
     if( key in dstContainer )
     return;
@@ -533,7 +533,7 @@ function dstNotHasSrcOwnRoutines()
 
   let routine = function dstNotHasSrcOwnRoutines( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
     if( !_.routineIs( srcContainer[ key ] ) )
     return false;
@@ -580,7 +580,7 @@ function dstNotOwn()
   let routine = function dstNotOwn( dstContainer, srcContainer, key )
   {
 
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    if( Object.hasOwnProperty.call( dstContainer, key ) )
     return false;
 
     return true;
@@ -599,10 +599,10 @@ function dstNotOwnSrcOwn()
 
   let routine = function dstNotOwnSrcOwn( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
 
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    if( Object.hasOwnProperty.call( dstContainer, key ) )
     return false;
 
     return true;
@@ -621,10 +621,10 @@ function dstNotOwnSrcOwnAssigning()
 
   let routine = function dstNotOwnSrcOwnAssigning( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
 
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    if( Object.hasOwnProperty.call( dstContainer, key ) )
     return;
 
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
@@ -644,7 +644,7 @@ function dstNotOwnOrUndefinedAssigning()
   let routine = function dstNotOwnOrUndefinedAssigning( dstContainer, srcContainer, key )
   {
 
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    if( Object.hasOwnProperty.call( dstContainer, key ) )
     {
 
       if( dstContainer[ key ] !== undefined )
@@ -669,7 +669,7 @@ dstNotOwnOrUndefinedAssigning.functionFamily = 'field-mapper';
 //   let routine = function dstNotOwnAssigning( dstContainer, srcContainer, key )
 //   {
 //
-//     if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+//     if( Object.hasOwnProperty.call( dstContainer, key ) )
 //     {
 //
 //       if( key in dstContainer )
@@ -692,7 +692,7 @@ function dstNotOwnAssigning()
   let routine = function dstNotOwnAssigning( dstContainer, srcContainer, key )
   {
 
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    if( Object.hasOwnProperty.call( dstContainer, key ) )
     return;
 
     let srcElement = srcContainer[ key ];
@@ -723,7 +723,7 @@ function dstNotOwnAppending()
       if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
       _.arrayAppendArray( dstContainer, srcContainer, key );
     }
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    if( Object.hasOwnProperty.call( dstContainer, key ) )
     return;
     dstContainer[ key ] = srcContainer[ key ];
   }
@@ -742,10 +742,10 @@ function dstNotOwnFromDefinition()
   let routine = function dstNotOwnFromDefinition( dstContainer, srcContainer, key )
   {
 
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    if( Object.hasOwnProperty.call( dstContainer, key ) )
     return;
 
-    if( _ObjectHasOwnProperty.call( dstContainer, Symbol.for( key ) ) )
+    if( Object.hasOwnProperty.call( dstContainer, Symbol.for( key ) ) )
     return;
 
     let srcElement = srcContainer[ key ];
@@ -771,10 +771,10 @@ function dstNotOwnFromDefinitionStrictlyPrimitive()
     // if( key === 'downloadPath' )
     // debugger;
 
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    if( Object.hasOwnProperty.call( dstContainer, key ) )
     return;
 
-    if( _ObjectHasOwnProperty.call( dstContainer, Symbol.for( key ) ) )
+    if( Object.hasOwnProperty.call( dstContainer, Symbol.for( key ) ) )
     return;
 
     let srcElement = srcContainer[ key ];
@@ -845,7 +845,7 @@ function dstHasSrcOwn()
   {
     if( !( key in dstContainer ) )
     return false;
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
     return true;
   }
@@ -865,7 +865,7 @@ function dstHasSrcNotOwn()
   {
     if( !( key in dstContainer ) )
     return false;
-    if( _ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
     return true;
   }
@@ -885,7 +885,7 @@ function srcOwn()
 
   let routine = function srcOwn( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
 
     /*dstContainer[ key ] = srcContainer[ key ];*/
@@ -905,7 +905,7 @@ function srcOwnRoutines()
 
   let routine = function srcOwnRoutines( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
     if( !_.routineIs( srcContainer[ key ] ) )
     return false;
@@ -927,7 +927,7 @@ function srcOwnAssigning()
 
   let routine = function assigning( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
 
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
@@ -946,7 +946,7 @@ function srcOwnPrimitive()
 
   let routine = function srcOwnPrimitive( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
     if( !_.primitiveIs( srcContainer[ key ] ) )
     return false;
@@ -968,7 +968,7 @@ function srcOwnNotPrimitiveAssigning()
 
   let routine = function srcOwnNotPrimitiveAssigning( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
     if( _.primitiveIs( srcContainer[ key ] ) )
     return;
@@ -989,7 +989,7 @@ function srcOwnNotPrimitiveAssigningRecursive()
 
   let routine = function srcOwnNotPrimitiveAssigningRecursive( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
     if( _.primitiveIs( srcContainer[ key ] ) )
     return;
@@ -1010,7 +1010,7 @@ function srcOwnAssigningRecursive()
 
   let routine = function srcOwnAssigningRecursive( dstContainer, srcContainer, key )
   {
-    if( !_ObjectHasOwnProperty.call( srcContainer, key ) )
+    if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
 
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key,_.entityAssignFieldFromContainer );

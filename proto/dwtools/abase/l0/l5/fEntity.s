@@ -6,7 +6,7 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
-let _ObjectHasOwnProperty = Object.hasOwnProperty;
+// let Object.hasOwnProperty = Object.hasOwnProperty;
 
 // --
 //
@@ -409,7 +409,7 @@ function entityAssignFieldFromContainer( dstContainer, srcContainer, name, onRec
   _.assert( _.strIs( name ) || _.symbolIs( name ) );
   _.assert( arguments.length === 3 || arguments.length === 4 );
 
-  let dstValue = _ObjectHasOwnProperty.call( dstContainer, name ) ? dstContainer[ name ] : undefined;
+  let dstValue = Object.hasOwnProperty.call( dstContainer, name ) ? dstContainer[ name ] : undefined;
   let srcValue = srcContainer[ name ];
 
   if( onRecursive )

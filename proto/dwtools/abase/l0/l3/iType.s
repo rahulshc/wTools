@@ -6,7 +6,7 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
-let _ObjectHasOwnProperty = Object.hasOwnProperty;
+// let Object.hasOwnProperty = Object.hasOwnProperty;
 
 // --
 // type test
@@ -75,7 +75,7 @@ function vectorAdapterIs( src )
   if( !( '_vectorBuffer' in src ) )
   return false;
 
-  if( _ObjectHasOwnProperty.call( src, 'constructor' ) )
+  if( Object.hasOwnProperty.call( src, 'constructor' ) )
   return false;
 
   return true;
@@ -251,7 +251,7 @@ function prototypeIs( src )
   return false;
   if( _.routineIs( src ) )
   return false;
-  return _ObjectHasOwnProperty.call( src, 'constructor' );
+  return Object.hasOwnProperty.call( src, 'constructor' );
 }
 
 //
@@ -262,7 +262,7 @@ function prototypeIsStandard( src )
   if( !_.prototypeIs( src ) )
   return false;
 
-  if( !_ObjectHasOwnProperty.call( src, 'Composes' ) )
+  if( !Object.hasOwnProperty.call( src, 'Composes' ) )
   return false;
 
   return true;
@@ -299,10 +299,10 @@ function instanceIs( src )
   if( _.primitiveIs( src ) )
   return false;
 
-  if( _ObjectHasOwnProperty.call( src, 'constructor' ) )
+  if( Object.hasOwnProperty.call( src, 'constructor' ) )
   return false;
 
-  // if( _ObjectHasOwnProperty.call( src, 'prototype' ) && src.prototype )
+  // if( Object.hasOwnProperty.call( src, 'prototype' ) && src.prototype )
   // return false;
 
   let prototype = Object.getPrototypeOf( src );
@@ -317,7 +317,7 @@ function instanceIs( src )
   if( _.routineIs( prototype ) )
   return false;
 
-  return _ObjectHasOwnProperty.call( prototype, 'constructor' );
+  return Object.hasOwnProperty.call( prototype, 'constructor' );
 
   // return _.prototypeIs( prototype );
 //

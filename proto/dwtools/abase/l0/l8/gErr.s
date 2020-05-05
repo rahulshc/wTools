@@ -2,7 +2,7 @@
 
 'use strict';
 
-let _ObjectHasOwnProperty = Object.hasOwnProperty;
+// let Object.hasOwnProperty = Object.hasOwnProperty;
 let _global = _global_;
 let _ = _global.wTools;
 let _err = _._err;
@@ -842,7 +842,7 @@ function ownNoConstructor( ins )
 {
   _.assert( _.objectLikeOrRoutine( ins ) );
   _.assert( arguments.length === 1 );
-  let result = !_ObjectHasOwnProperty.call( ins,'constructor' );
+  let result = !Object.hasOwnProperty.call( ins,'constructor' );
   return result;
 }
 
