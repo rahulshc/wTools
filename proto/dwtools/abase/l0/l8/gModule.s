@@ -128,11 +128,16 @@ function declare( o )
   _.routineOptions( declare, arguments );
   _.assert( _.strIs( o.name ) );
   _.assert( !_.module.knownModulesByName.has( o.name ), () => `Module ${o.name} was already registered as known` );
+  _.assert( _.strDefined( o.basePath ), '{-o.basePath-} is mandatory' );
 
   o.sourcePath = _.arrayAs( o.sourcePath );
 
-  if( !o.basePath )
-  o.basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
+  // if( module.isScript )
+  // if( o.name === 'wBlueprint' )
+  // debugger;
+
+  // if( !o.basePath )
+  // o.basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
 
   for( let i = 0 ; i < o.sourcePath.length ; i++ )
   {
@@ -175,39 +180,68 @@ declare.defaults =
 
 //
 
-function declareAll( knowns )
+function declareAll( o )
 {
 
   _.assert( arguments.length === 1 );
-  _.assert( _.mapIs( knowns ) );
+  _.assert( _.mapIs( o.modules ) );
+  _.routineOptions( declareAll, arguments );
 
-  let basePath;
-
-  for( let k in knowns )
+  for( let k in o.modules )
   {
-    let known = knowns[ k ];
-    _.assert( known.name === k || known.name === undefined );
-    _.assert( _.mapIs( known ) );
-    known.name = k;
-    if( !known.basePath )
-    {
-      if( !basePath )
-      {
-        basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
-        /* Transforms global path into local, required to make _.include work in a browser */
-        if( _global_.Config.interpreter === 'browser' )
-        if( typeof _starter_ !== 'undefined' )
-        {
-          basePath = _starter_.uri.parseConsecutive( basePath ).resourcePath;
-          basePath = _.path.normalizeTolerant( basePath );
-        }
-      }
-      known.basePath = basePath;
-    }
-    _.module.declare( known );
+    let module = o.modules[ k ];
+    _.assert( module.name === k || module.name === undefined );
+    _.assert( _.mapIs( module ) );
+    module.name = k;
+    if( !module.basePath )
+    module.basePath = o.basePath;
+    _.module.declare( module );
   }
 
 }
+
+declareAll.defaults =
+{
+  modules : null,
+  basePath : null,
+}
+
+//
+
+// function declareAll( knowns )
+// {
+//
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.mapIs( knowns ) );
+//
+//   let basePath;
+//
+//   for( let k in knowns )
+//   {
+//     let known = knowns[ k ];
+//     _.assert( known.name === k || known.name === undefined );
+//     _.assert( _.mapIs( known ) );
+//     known.name = k;
+//     if( !known.basePath )
+//     {
+//       if( !basePath )
+//       {
+//         basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
+//         /* Transforms global path into local, required to make _.include work in a browser */
+//         if( _global_.Config.interpreter === 'browser' )
+//         debugger;
+//         // if( typeof _starter_ !== 'undefined' )
+//         // {
+//         //   basePath = _starter_.uri.parseConsecutive( basePath ).resourcePath;
+//         //   basePath = _.path.normalizeTolerant( basePath );
+//         // }
+//       }
+//       known.basePath = basePath;
+//     }
+//     _.module.declare( known );
+//   }
+//
+// }
 
 // --
 // include
@@ -604,6 +638,10 @@ function _resolveFirst( o )
   if( o.basePath === null )
   o.basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
 
+  // if( module.isScript )
+  // if( o.moduleNames && o.moduleNames.length && o.moduleNames[ 0 ] === 'wBlueprint' )
+  // debugger;
+
   let sourcePaths = this._modulesToSourcePaths( o.moduleNames );
   let resolved = this._sourceFileResolve({ sourcePaths, basePath : o.basePath });
 
@@ -779,8 +817,9 @@ function _Setup()
   // if( _.module.knownModulesByName )
   // _.module.declareAll( _.module.knownModulesByName );
 
-  if( _.module.lateModules )
-  _.module.declareAll( _.module.lateModules );
+  // debugger;
+  if( _.module.modulesToRegister )
+  _.module.declareAll( _.module.modulesToRegister );
 
   if( typeof require === 'undefined' )
   return;

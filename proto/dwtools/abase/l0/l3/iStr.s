@@ -48,7 +48,7 @@ function strsAreAll( src )
     return true;
   }
 
-  return strIs( src );
+  return _.strIs( src );
 }
 
 //

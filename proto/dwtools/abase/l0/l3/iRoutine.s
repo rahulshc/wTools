@@ -1026,6 +1026,10 @@ function vectorize_body( o )
 
   /* */
 
+  resultRoutine.vectorized = o;
+
+  /* */
+
   _.routineExtend( resultRoutine, routine );
   return resultRoutine;
 

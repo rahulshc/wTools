@@ -6,7 +6,7 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
-let _ObjectHasOwnProperty = Object.hasOwnProperty;
+// let Object.hasOwnProperty = Object.hasOwnProperty;
 
 // --
 // map checker
@@ -255,7 +255,7 @@ function hashMapIsPopulated()
 //   if( own )
 //   {
 //     for( let k in srcMap )
-//     if( _ObjectHasOwnProperty.call( srcMap, k ) )
+//     if( Object.hasOwnProperty.call( srcMap, k ) )
 //     result.push( k );
 //   }
 //   else
@@ -294,7 +294,7 @@ function _mapKeys( o )
     if( o.own )
     {
       for( let k in srcMap )
-      if( _ObjectHasOwnProperty.call( srcMap, k ) )
+      if( Object.hasOwnProperty.call( srcMap, k ) )
       result1.push( k );
     }
     else
@@ -1097,16 +1097,19 @@ function mapAllProperties( srcMap, o )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapAllProperties, o );
 
-  o.srcMap = srcMap;
-  o.own = 0;
-  o.enumerable = 0;
+  o.srcMap = srcMap; /* xxx */
+  // o.own = 0;
+  // o.enumerable = 0;
 
   let result = _._mapProperties( o );
+
   return result;
 }
 
 mapAllProperties.defaults =
 {
+  own : 0,
+  enumerable : 0,
 }
 
 //

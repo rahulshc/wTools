@@ -5,8 +5,8 @@
 let _global = _global_;
 let _ = _global.wTools = _global.wTools || Object.create( null );
 _.module = _.module || Object.create( null );
-_.module.lateModules = _.module.lateModules || Object.create( null );
-let Self = _.module.lateModules;
+_.module.modulesToRegister = _.module.modulesToRegister || Object.create( null );
+let Self = _.module.modulesToRegister;
 
 /*
   Temporary solution.
@@ -361,7 +361,7 @@ let wRemote =
 
 let wGitTools =
 {
-  sourcePath : sourcePath( 'amid/l3/git/IncludeMid.s', 'wgittools' ),
+  sourcePath : sourcePath( 'amid/l3/git/entry/Include.s', 'wgittools' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.git },
 }
 
@@ -411,7 +411,7 @@ let wVocabulary =
 
 let wCommandsAggregator =
 {
-  sourcePath : sourcePath( 'amid/l7/Commands/CommandsAggregator.s', 'wcommandsaggregator' ),
+  sourcePath : sourcePath( 'amid/l7/commands/CommandsAggregator.s', 'wcommandsaggregator' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsAggregator },
 }
 
@@ -599,13 +599,13 @@ let wMathConcepts =
 
 let willbe =
 {
-  sourcePath : sourcePath( 'atop/will/MainTop.s', 'willbe' ),
+  sourcePath : sourcePath( 'atop/will/entry/Include.s', 'willbe' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Will },
 }
 
 let wStarter =
 {
-  sourcePath : sourcePath( 'atop/starter/Main.s', 'wstarter' ),
+  sourcePath : sourcePath( 'atop/starter/entry/Main.s', 'wstarter' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StarterMaker },
 }
 
@@ -617,8 +617,8 @@ let wTesting =
 
 let wTranspilationStrategy =
 {
-  sourcePath : sourcePath( 'atop/transpilationStrategy/MainBase.s', 'wtranspilationstrategy' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TranspilationStrategy },
+  sourcePath : sourcePath( 'atop/transpilationStrategy/entry/Include.s', 'wtranspilationstrategy' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.trs },
 }
 
 let wFilesOperationsDirector =
@@ -821,9 +821,9 @@ let Modules =
 
 }
 
-Object.assign( _.module.lateModules, Modules );
+Object.assign( _.module.modulesToRegister, Modules );
 if( _.module.declareAll )
-_.module.declareAll( _.module.lateModules );
+_.module.declareAll({ modules : _.module.modulesToRegister, basePath : __dirname });
 
 /*
 xxx : remove isIncluded

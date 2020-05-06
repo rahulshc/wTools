@@ -21,7 +21,7 @@ function program()
     con.take( 'timeout1' );
   });
 
-  con.deasyncWait();
+  con.deasync();
   debugger;
 
   console.log( 'sourcePath::program ' + _.procedure.activeProcedure._sourcePath );

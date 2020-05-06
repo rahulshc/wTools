@@ -6,7 +6,7 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
-let _ObjectHasOwnProperty = Object.hasOwnProperty;
+// let Object.hasOwnProperty = Object.hasOwnProperty;
 
 // --
 // map checker
@@ -283,11 +283,11 @@ function mapOwnKey( object, key )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.strIs( key ) )
-  return _ObjectHasOwnProperty.call( object, key );
+  return Object.hasOwnProperty.call( object, key );
   else if( _.mapIs( key ) )
-  return _ObjectHasOwnProperty.call( object, _.nameUnfielded( key ).coded );
+  return Object.hasOwnProperty.call( object, _.nameUnfielded( key ).coded );
   else if( _.symbolIs( key ) )
-  return _ObjectHasOwnProperty.call( object, key );
+  return Object.hasOwnProperty.call( object, key );
 
   _.assert( 0, 'mapOwnKey :', 'unknown type of key :', _.strType( key ) );
 }
@@ -484,9 +484,9 @@ function mapOwnAll( src, screen )
 
   for( let k in screen )
   {
-    if( !_ObjectHasOwnProperty.call( src, k ) )
+    if( !Object.hasOwnProperty.call( src, k ) )
     debugger;
-    if( !_ObjectHasOwnProperty.call( src, k ) )
+    if( !Object.hasOwnProperty.call( src, k ) )
     return false;
   }
 
@@ -533,9 +533,9 @@ function mapOwnAny( src, screen )
 
   for( let k in screen )
   {
-    if( _ObjectHasOwnProperty.call( src, k ) )
+    if( Object.hasOwnProperty.call( src, k ) )
     debugger;
-    if( _ObjectHasOwnProperty.call( src, k ) )
+    if( Object.hasOwnProperty.call( src, k ) )
     return true;
   }
 
@@ -582,9 +582,9 @@ function mapOwnNone( src, screen )
 
   for( let k in screen )
   {
-    if( _ObjectHasOwnProperty.call( src, k ) )
+    if( Object.hasOwnProperty.call( src, k ) )
     debugger;
-    if( _ObjectHasOwnProperty.call( src, k ) )
+    if( Object.hasOwnProperty.call( src, k ) )
     return false;
   }
 
@@ -830,7 +830,7 @@ function mapCloneAssigning( o )
 
   for( let k in o.srcMap )
   {
-    if( _ObjectHasOwnProperty.call( o.srcMap, k ) )
+    if( Object.hasOwnProperty.call( o.srcMap, k ) )
     o.onField( o.dstMap, o.srcMap, k, o.onField );
   }
 
@@ -1231,7 +1231,7 @@ function mapComplement( dstMap, srcMap )
 
   function dstNotOwnOrUndefinedAssigning( dstContainer, srcContainer, key )
   {
-    if( _ObjectHasOwnProperty.call( dstContainer, key ) )
+    if( Object.hasOwnProperty.call( dstContainer, key ) )
     {
       if( dstContainer[ key ] !== undefined )
       return;

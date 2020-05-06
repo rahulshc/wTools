@@ -614,8 +614,8 @@ function _err( o )
   {
     debugger;
     _._errorMaking = false;
-    logger.log( err2.message );
-    logger.log( err2.stack );
+    console.log( err2.message );
+    console.log( err2.stack );
   }
   _._errorMaking = false;
 
