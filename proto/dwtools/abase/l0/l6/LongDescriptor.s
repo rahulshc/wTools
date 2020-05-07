@@ -170,7 +170,7 @@ _longDeclare({ name : 'Ux', secondName : 'Uint32', aliasName : 'U32x', type : _g
 _longDeclare({ name : 'I32x', secondName : 'Int32', type : _global.I32x, isTyped : true });
 _longDeclare({ name : 'I16x', secondName : 'Int16', type : _global.I16x, isTyped : true });
 _longDeclare({ name : 'I8x', secondName : 'Int8', type : _global.I8x, isTyped : true });
-_longDeclare({ name : 'Ix', secondName : 'Int32', aliasName : 'I32x', type :_global.Ix, isTyped : true });
+_longDeclare({ name : 'Ix', secondName : 'Int32', aliasName : 'I32x', type : _global.Ix, isTyped : true });
 
 _longDeclare({ name : 'F32x', secondName : 'Float32', type : _global.F32x, isTyped : true });
 _longDeclare({ name : 'F64x', secondName : 'Float64', type : _global.F64x, isTyped : true });

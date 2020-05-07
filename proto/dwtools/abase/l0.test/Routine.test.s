@@ -1792,7 +1792,12 @@ function routineExtend( test )
   var expectedMap = Object.create( { d : 2 } );
   expectedMap.a = 'str';
   test.identical( got.map, expectedMap );
-  test.identical( got.c, {} );
+  test.equivalent( got.c, {} );
+  test.identical
+  (
+    _.mapBut( _.mapAllProperties( got.c ), [ '__proto__' ] ),
+    _.mapBut( _.mapAllProperties( {} ), [ '__proto__' ] )
+  );
   test.identical( typeof got, 'function' );
 
   test.case = 'dst extends routine1, src extends routine, dst extends src';

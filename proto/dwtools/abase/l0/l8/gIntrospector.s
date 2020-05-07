@@ -91,7 +91,7 @@ function code( o )
     if( o.withPath )
     {
       if( o.asMap )
-      result = { path : o.location.filePathLineCol, code : code };
+      result = { path : o.location.filePathLineCol, codes };
       else
       result = o.location.filePathLineCol + '\n' + code;
     }
@@ -116,22 +116,12 @@ function code( o )
 
   function read( codeProvider, filePath )
   {
-    // if( _codeCache.map[ filePath ] )
-    // return _codeCache.map[ filePath ];
     let result = codeProvider.fileRead
     ({
-      filePath : filePath,
+      filePath,
       sync : 1,
       throwing : 0,
     });
-    // _codeCache.map[ filePath ] = result;
-    // _.arrayRemoveOnce( _codeCache.array, filePath );
-    // _codeCache.array.push( filePath );
-    // if( _codeCache.array.length > _codeCache.limit )
-    // {
-    //   delete _codeCache.map[ _codeCache.array[ 0 ] ];
-    //   _codeCache.array.splice( 0, 1 );
-    // }
     return result;
   }
 

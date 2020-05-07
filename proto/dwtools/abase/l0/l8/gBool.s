@@ -9,7 +9,6 @@ let Self = _global_.wTools;
 let _ArraySlice = Array.prototype.slice;
 let _FunctionBind = Function.prototype.bind;
 let _ObjectToString = Object.prototype.toString;
-// let Object.hasOwnProperty = Object.hasOwnProperty;
 
 // --
 // bool
@@ -44,13 +43,13 @@ function boolFromMaybe( src )
   else if( _.strIs( src ) )
   {
     src = src.toLowerCase();
-    if( src == '0' )
+    if( src === '0' )
     return false;
-    if( src == 'false' )
+    if( src === 'false' )
     return false;
-    if( src == '1' )
+    if( src === '1' )
     return true;
-    if( src == 'true' )
+    if( src === 'true' )
     return true;
     return src;
   }
@@ -67,15 +66,15 @@ function boolFromForce( src )
   if( _.strIs( src ) )
   {
     src = src.toLowerCase();
-    if( src == '0' )
+    if( src === '0' )
     return false;
-    if( src == 'false' )
+    if( src === 'false' )
     return false;
-    if( src == 'null' )
+    if( src === 'null' )
     return false;
-    if( src == 'undefined' )
+    if( src === 'undefined' )
     return false;
-    if( src == '' )
+    if( src === '' )
     return false;
     return true;
   }

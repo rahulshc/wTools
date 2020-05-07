@@ -346,7 +346,7 @@ function multiple( src, times )
 
 function multipleAll( dsts )
 {
-  let length = undefined;
+  let length;
 
   _.assert( arguments.length === 1 );
 
@@ -546,7 +546,7 @@ _.only( Array::dst, Set::src );
 
 /**
  * The routine entityOnly() provides the filtering of elements of destination container
- * {-dst-} by checking values ​​in the source container {-src-}. The routine checks values
+ * {-dst-} by checking values in the source container {-src-}. The routine checks values
  * with the same keys in both containers. If a received {-src-} element has falsy value, then
  * element with the same key deletes from the {-dst-} container.
  *
@@ -1105,7 +1105,7 @@ function entityOnly( dst, src, onEach )
 
 /**
  * The routine entityBut() provides the filtering of elements of destination container
- * {-dst-} by checking values ​​in the source container {-src-}. The routine checks values
+ * {-dst-} by checking values in the source container {-src-}. The routine checks values
  * with the same keys in both containers. If a received {-src-} element has not falsy value, then
  * element with the same key deletes from the {-dst-} container.
  *
@@ -1742,7 +1742,7 @@ function entityBut( dst, src, onEach )
 
 /**
  * The routine entityAnd() provides the filtering of elements of destination container
- * {-dst-} by checking values ​​with the same keys in the {-dst-} and source {-src-} containers.
+ * {-dst-} by checking values with the same keys in the {-dst-} and source {-src-} containers.
  * If one of received values is falsy, then element with deletes from the {-dst-} container.
  *
  * If {-dst-} container is null, routine makes new container with type of {-src-} container, and fill it obtained values.
@@ -2186,7 +2186,7 @@ function entityAnd( dst, src, onEach )
 
 /**
  * The routine entityOr() provides the filtering of elements of destination container
- * {-dst-} by checking values ​​with the same keys in the {-dst-} and source {-src-} containers.
+ * {-dst-} by checking values with the same keys in the {-dst-} and source {-src-} containers.
  * If checking of {-dst-} element returs true, routine save {-dst-} element.
  * If checking of {-dst-} element return false and checking of {-src-} element returns true,
  * routine replace {-dst-} element by {-src-} element.
@@ -2677,7 +2677,7 @@ function entityOr( dst, src, onEach )
 
 /**
  * The routine entityXor() provides the filtering of elements of destination container
- * {-dst-} by checking values ​​with the same keys in the {-dst-} and source {-src-} containers.
+ * {-dst-} by checking values with the same keys in the {-dst-} and source {-src-} containers.
  * If both received values from {-dst-} and {-src-} has the same boolean value, then routine
  * deletes {-dst-} element.
  * Else routine sets in {-dst-} element, which received boolean value is true.
@@ -2942,7 +2942,7 @@ function entityXor( dst, src, onEach )
     }
     else if( _.mapLike( src ) )
     {
-      dst = Object.assign( {}, src );
+      dst = Object.assign( Object.create( null ), src );
       let  unnecessaries = [ null, 0, undefined, false, '' ];
       for( let k of unnecessaries )
       {
@@ -3592,7 +3592,7 @@ function _filter_functor( condition, levels )
   if( _.objectIs( condition ) )
   {
     let template = condition;
-    condition = function selector( e, k, src )
+    condition = function condition( e, k, src )
     {
       _.assert( arguments.length === 3 );
       if( e === template )
@@ -4533,8 +4533,8 @@ function entityMin( src, onEach )
   // return _entityMost( src, onEvaluate, 0 );
   return _entityMost
   ({
-    src : src,
-    onEach : onEach,
+    src,
+    onEach,
     returnMax : 0
   });
 }
@@ -4566,8 +4566,8 @@ function entityMax( src, onEach )
   _.assert( arguments.length === 1 || arguments.length === 2 );
   return _entityMost
   ({
-    src : src,
-    onEach : onEach,
+    src,
+    onEach,
     returnMax : 1
   });
 }

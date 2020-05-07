@@ -135,7 +135,8 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
 
     if( _.routineIs( onEvaluate1 ) || _.routineIs( onEvaluate2 ) )
     {
-      let from = 0, result = 0;
+      let from = 0;
+      let result = 0;
       if( _.numberIs( onEvaluate1 ) )
       {
         from = onEvaluate1;
@@ -361,7 +362,8 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     if( onEvaluate1 || _.routineIs( onEvaluate2 ) )
     {
-      let from = 0, result = 0;
+      let from = 0;
+      let result = 0;
       if( _.numberIs( onEvaluate1 ) )
       {
         from = onEvaluate1;

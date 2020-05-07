@@ -63,7 +63,7 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   // }
   // make = make; // Dmytro : simple assigning methods as a property is able in NodeJs v12 and later. So, I assign this properties after class declaration.
   // static MakeEmpty = MakeEmpty;
-  // MakeEmpty = makeEmpty;  
+  // MakeEmpty = makeEmpty;
   // static Make = Make;
   has( e, onEvaluate1, onEvaluate2 )
   {

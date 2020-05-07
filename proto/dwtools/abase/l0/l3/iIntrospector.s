@@ -108,7 +108,7 @@ function location( o )
   stack = stack.split( '\n' );
   let stackFrame = stack[ o.level ];
 
-  return _.introspector.locationFromStackFrame({ stackFrame : stackFrame, location : o.location });
+  return _.introspector.locationFromStackFrame({ stackFrame, location : o.location });
 }
 
 location.defaults =
@@ -540,7 +540,7 @@ function locationNormalize( o )
     return '{-anonymous-}';
 
     routineName = routineName.replace( /at eval \(eval at/, '' );
-    let t = /^\s*(?:at\s+)?([\w\.<>]+)\s*.+/;
+    let t = /^\s*(?:at\s+)?([\w.<>]+)\s*.+/;
     let executed = t.exec( routineName );
     if( executed )
     routineName = executed[ 1 ] || '';
@@ -637,7 +637,7 @@ function locationNormalize( o )
     path = path.replace( /^\s+/, '' );
     path = path.replace( /\s+$/, '' );
 
-    let regexp = /^.*\(([^\)]*)\).*$/;
+    let regexp = /^.*\(([^)]*)\).*$/;
     var parsed = regexp.exec( path );
     if( parsed )
     path = parsed[ 1 ];

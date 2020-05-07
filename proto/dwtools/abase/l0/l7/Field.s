@@ -6,23 +6,22 @@ let Self = _global_.wTools.field = _global_.wTools.field || Object.create( null 
 let _global = _global_;
 let _ = _global_.wTools;
 
-// let Object.hasOwnProperty = Object.hasOwnProperty;
-
 // --
 //
 // --
 
 function bypass()
 {
+  let routine = bypass;
 
-  let routine = function bypass( dstContainer, srcContainer, key )
+  routine.functionFamily = 'field-filter';
+  return routine;
+
+  function bypass( dstContainer, srcContainer, key )
   {
     /*dstContainer[ key ] = srcContainer[ key ];*/
     return true;
   }
-
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 bypass.functionFamily = 'field-filter';
@@ -31,14 +30,15 @@ bypass.functionFamily = 'field-filter';
 
 function assigning()
 {
+  let routine = assigning;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function assigning( dstContainer, srcContainer, key )
+  function assigning( dstContainer, srcContainer, key )
   {
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 assigning.functionFamily = 'field-mapper';
@@ -47,17 +47,17 @@ assigning.functionFamily = 'field-mapper';
 
 function primitive()
 {
+  let routine = primitive;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function primitive( dstContainer, srcContainer, key )
+  function primitive( dstContainer, srcContainer, key )
   {
     if( !_.primitiveIs( srcContainer[ key ] ) )
     return false;
 
     return true;
   }
-
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 primitive.functionFamily = 'field-filter';
@@ -66,8 +66,12 @@ primitive.functionFamily = 'field-filter';
 
 function hiding()
 {
+  let routine = hiding;
 
-  let routine = function hiding( dstContainer, srcContainer, key )
+  routine.functionFamily = 'field-mapper';
+  return routine;
+
+  function hiding( dstContainer, srcContainer, key )
   {
     Object.defineProperty( dstContainer, key,
     {
@@ -77,8 +81,6 @@ function hiding()
     });
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 hiding.functionFamily = 'field-mapper';
@@ -87,8 +89,12 @@ hiding.functionFamily = 'field-mapper';
 
 function appendingAnything()
 {
+  let routine = appendingAnything;
 
-  let routine = function appendingAnything( dstContainer, srcContainer, key )
+  routine.functionFamily = 'field-mapper';
+  return routine;
+
+  function appendingAnything( dstContainer, srcContainer, key )
   {
     if( dstContainer[ key ] === undefined )
     dstContainer[ key ] = srcContainer[ key ];
@@ -98,8 +104,6 @@ function appendingAnything()
     dstContainer[ key ] = _.arrayAppendArrays( [], [ dstContainer[ key ], srcContainer[ key ] ] );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 appendingAnything.functionFamily = 'field-mapper';
@@ -108,8 +112,12 @@ appendingAnything.functionFamily = 'field-mapper';
 
 function prependingAnything()
 {
+  let routine = prependingAnything;
 
-  let routine = function prependingAnything( dstContainer, srcContainer, key )
+  routine.functionFamily = 'field-mapper';
+  return routine;
+
+  function prependingAnything( dstContainer, srcContainer, key )
   {
     if( dstContainer[ key ] === undefined )
     dstContainer[ key ] = srcContainer[ key ];
@@ -119,8 +127,6 @@ function prependingAnything()
     dstContainer[ key ] = _.arrayPrependArrays( [], [ dstContainer[ key ], srcContainer[ key ] ] );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 prependingAnything.functionFamily = 'field-mapper';
@@ -129,8 +135,12 @@ prependingAnything.functionFamily = 'field-mapper';
 
 function appendingOnlyArrays()
 {
+  let routine = appendingOnlyArrays;
 
-  let routine = function appendingOnlyArrays( dstContainer, srcContainer, key )
+  routine.functionFamily = 'field-mapper';
+  return routine;
+
+  function appendingOnlyArrays( dstContainer, srcContainer, key )
   {
     if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
     _.arrayAppendArray( dstContainer[ key ], srcContainer[ key ] );
@@ -138,8 +148,6 @@ function appendingOnlyArrays()
     dstContainer[ key ] = srcContainer[ key ];
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 appendingOnlyArrays.functionFamily = 'field-mapper';
@@ -148,8 +156,11 @@ appendingOnlyArrays.functionFamily = 'field-mapper';
 
 function appendingOnce()
 {
+  let routine = appendingOnce;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function appendingOnce( dstContainer, srcContainer, key )
+  function appendingOnce( dstContainer, srcContainer, key )
   {
     if( _.arrayIs( dstContainer[ key ] ) && _.arrayIs( srcContainer[ key ] ) )
     _.arrayAppendArrayOnce( dstContainer[ key ], srcContainer[ key ] );
@@ -157,8 +168,6 @@ function appendingOnce()
     dstContainer[ key ] = srcContainer[ key ];
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 appendingOnce.functionFamily = 'field-mapper';
@@ -167,8 +176,11 @@ appendingOnce.functionFamily = 'field-mapper';
 
 function removing()
 {
+  let routine = removing;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function removing( dstContainer, srcContainer, key )
+  function removing( dstContainer, srcContainer, key )
   {
     let dstElement = dstContainer[ key ];
     let srcElement = srcContainer[ key ];
@@ -185,8 +197,6 @@ function removing()
     }
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 removing.functionFamily = 'field-mapper';
@@ -195,8 +205,11 @@ removing.functionFamily = 'field-mapper';
 
 function notPrimitiveAssigning()
 {
+  let routine = notPrimitiveAssigning;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function notPrimitiveAssigning( dstContainer, srcContainer, key )
+  function notPrimitiveAssigning( dstContainer, srcContainer, key )
   {
     if( _.primitiveIs( srcContainer[ key ] ) )
     return;
@@ -204,8 +217,6 @@ function notPrimitiveAssigning()
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 notPrimitiveAssigning.functionFamily = 'field-mapper';
@@ -214,14 +225,15 @@ notPrimitiveAssigning.functionFamily = 'field-mapper';
 
 function assigningRecursive()
 {
+  let routine = assigningRecursive;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function assigningRecursive( dstContainer, srcContainer, key )
+  function assigningRecursive( dstContainer, srcContainer, key )
   {
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key,_.entityAssignFieldFromContainer );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 assigningRecursive.functionFamily = 'field-mapper';
@@ -235,7 +247,12 @@ function drop( dropContainer )
 
   _.assert( _.objectIs( dropContainer ) );
 
-  let routine = function drop( dstContainer, srcContainer, key )
+  let routine = drop;
+
+  routine.functionFamily = 'field-filter';
+  return routine;
+
+  function drop( dstContainer, srcContainer, key )
   {
     if( dropContainer[ key ] !== undefined )
     return false
@@ -244,8 +261,6 @@ function drop( dropContainer )
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 drop.functionFamily = 'field-filter';
@@ -256,16 +271,16 @@ drop.functionFamily = 'field-filter';
 
 function srcDefined()
 {
+  let routine = srcDefined;
+  routine.functionFamily = 'field-filter'; ;
+  return routine;
 
-  let routine = function srcDefined( dstContainer, srcContainer, key )
+  function srcDefined( dstContainer, srcContainer, key )
   {
     if( srcContainer[ key ] === undefined )
     return false;
     return true;
   }
-
-  routine.functionFamily = 'field-filter'; ;
-  return routine;
 }
 
 srcDefined.functionFamily = 'field-filter';
@@ -274,16 +289,16 @@ srcDefined.functionFamily = 'field-filter';
 
 function srcNull()
 {
+  let routine = srcNull;
+  routine.functionFamily = 'field-filter'; ;
+  return routine;
 
-  let routine = function srcNull( dstContainer, srcContainer, key )
+  function srcNull( dstContainer, srcContainer, key )
   {
     if( srcContainer[ key ] !== null )
     return false;
     return true;
   }
-
-  routine.functionFamily = 'field-filter'; ;
-  return routine;
 }
 
 srcNull.functionFamily = 'field-filter';
@@ -294,8 +309,11 @@ srcNull.functionFamily = 'field-filter';
 
 function dstNotConstant()
 {
+  let routine = dstNotConstant;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstNotConstant( dstContainer, srcContainer, key )
+  function dstNotConstant( dstContainer, srcContainer, key )
   {
     let d = Object.getOwnPropertyDescriptor( dstContainer, key );
     if( !d )
@@ -305,8 +323,6 @@ function dstNotConstant()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstAndSrcOwn.functionFamily = 'field-filter';
@@ -315,8 +331,11 @@ dstAndSrcOwn.functionFamily = 'field-filter';
 
 function dstAndSrcOwn()
 {
+  let routine = dstAndSrcOwn;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstAndSrcOwn( dstContainer, srcContainer, key )
+  function dstAndSrcOwn( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -326,8 +345,6 @@ function dstAndSrcOwn()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstAndSrcOwn.functionFamily = 'field-filter';
@@ -336,8 +353,11 @@ dstAndSrcOwn.functionFamily = 'field-filter';
 
 function dstUndefinedSrcNotUndefined()
 {
+  let routine = dstUndefinedSrcNotUndefined;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstUndefinedSrcNotUndefined( dstContainer, srcContainer, key )
+  function dstUndefinedSrcNotUndefined( dstContainer, srcContainer, key )
   {
     if( dstContainer[ key ] !== undefined )
     return false;
@@ -346,8 +366,6 @@ function dstUndefinedSrcNotUndefined()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstUndefinedSrcNotUndefined.functionFamily = 'field-filter';
@@ -358,8 +376,11 @@ dstUndefinedSrcNotUndefined.functionFamily = 'field-filter';
 
 function dstNotHas()
 {
+  let routine = dstNotHas;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstNotHas( dstContainer, srcContainer, key )
+  function dstNotHas( dstContainer, srcContainer, key )
   {
 
     // if( dstContainer[ key ] !== undefined )
@@ -371,8 +392,6 @@ function dstNotHas()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstNotHas.functionFamily = 'field-filter';
@@ -381,8 +400,11 @@ dstNotHas.functionFamily = 'field-filter';
 
 function dstNotHasOrHasNull()
 {
+  let routine = dstNotHasOrHasNull;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstNotHasOrHasNull( dstContainer, srcContainer, key )
+  function dstNotHasOrHasNull( dstContainer, srcContainer, key )
   {
 
     if( key in dstContainer && dstContainer[ key ] !== null )
@@ -391,8 +413,6 @@ function dstNotHasOrHasNull()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstNotHasOrHasNull.functionFamily = 'field-filter';
@@ -401,8 +421,11 @@ dstNotHasOrHasNull.functionFamily = 'field-filter';
 
 function dstNotHasOrHasNil()
 {
+  let routine = dstNotHasOrHasNil;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstNotHasOrHasNil( dstContainer, srcContainer, key )
+  function dstNotHasOrHasNil( dstContainer, srcContainer, key )
   {
 
     if( key in dstContainer && dstContainer[ key ] !== _.nothing )
@@ -411,8 +434,6 @@ function dstNotHasOrHasNil()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstNotHasOrHasNil.functionFamily = 'field-filter';
@@ -421,8 +442,11 @@ dstNotHasOrHasNil.functionFamily = 'field-filter';
 
 function dstNotHasAssigning()
 {
+  let routine = dstNotHasAssigning;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function dstNotHasAssigning( dstContainer, srcContainer, key )
+  function dstNotHasAssigning( dstContainer, srcContainer, key )
   {
     if( dstContainer[ key ] !== undefined )
     return;
@@ -430,8 +454,6 @@ function dstNotHasAssigning()
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 dstNotHasAssigning.functionFamily = 'field-mapper';
@@ -440,8 +462,11 @@ dstNotHasAssigning.functionFamily = 'field-mapper';
 
 function dstNotHasAppending()
 {
+  let routine = dstNotHasAppending;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function dstNotHasAppending( dstContainer, srcContainer, key )
+  function dstNotHasAppending( dstContainer, srcContainer, key )
   {
     if( key in dstContainer )
     {
@@ -453,8 +478,6 @@ function dstNotHasAppending()
     dstContainer[ key ] = srcContainer[ key ];
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 dstNotHasAppending.functionFamily = 'field-mapper';
@@ -463,8 +486,11 @@ dstNotHasAppending.functionFamily = 'field-mapper';
 
 function dstNotHasSrcPrimitive()
 {
+  let routine = dstNotHasSrcPrimitive;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstNotHasSrcPrimitive( dstContainer, srcContainer, key )
+  function dstNotHasSrcPrimitive( dstContainer, srcContainer, key )
   {
     debugger;
     if( key in dstContainer )
@@ -476,9 +502,6 @@ function dstNotHasSrcPrimitive()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-
-  return routine;
 }
 
 dstNotHasSrcPrimitive.functionFamily = 'field-filter';
@@ -487,8 +510,11 @@ dstNotHasSrcPrimitive.functionFamily = 'field-filter';
 
 function dstNotHasSrcOwn()
 {
+  let routine = dstNotHasSrcOwn;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstNotHasSrcOwn( dstContainer, srcContainer, key )
+  function dstNotHasSrcOwn( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -499,8 +525,6 @@ function dstNotHasSrcOwn()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstNotHasSrcOwn.functionFamily = 'field-filter';
@@ -509,8 +533,11 @@ dstNotHasSrcOwn.functionFamily = 'field-filter';
 
 function dstNotHasSrcOwnAssigning()
 {
+  let routine = dstNotHasSrcOwnAssigning;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function dstNotHasSrcOwnAssigning( dstContainer, srcContainer, key )
+  function dstNotHasSrcOwnAssigning( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
@@ -520,8 +547,6 @@ function dstNotHasSrcOwnAssigning()
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 dstNotHasSrcOwnAssigning.functionFamily = 'field-mapper';
@@ -530,8 +555,11 @@ dstNotHasSrcOwnAssigning.functionFamily = 'field-mapper';
 
 function dstNotHasSrcOwnRoutines()
 {
+  let routine = dstNotHasSrcOwnRoutines;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstNotHasSrcOwnRoutines( dstContainer, srcContainer, key )
+  function dstNotHasSrcOwnRoutines( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -545,8 +573,6 @@ function dstNotHasSrcOwnRoutines()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstNotHasSrcOwnRoutines.functionFamily = 'field-filter';
@@ -555,8 +581,11 @@ dstNotHasSrcOwnRoutines.functionFamily = 'field-filter';
 
 function dstNotHasAssigningRecursive()
 {
+  let routine = dstNotHasAssigningRecursive;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function dstNotHasAssigningRecursive( dstContainer, srcContainer, key )
+  function dstNotHasAssigningRecursive( dstContainer, srcContainer, key )
   {
     if( key in dstContainer )
     return;
@@ -564,8 +593,6 @@ function dstNotHasAssigningRecursive()
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key,_.entityAssignFieldFromContainer );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 dstNotHasAssigningRecursive.functionFamily = 'field-mapper';
@@ -576,8 +603,11 @@ dstNotHasAssigningRecursive.functionFamily = 'field-mapper';
 
 function dstNotOwn()
 {
+  let routine = dstNotOwn;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstNotOwn( dstContainer, srcContainer, key )
+  function dstNotOwn( dstContainer, srcContainer, key )
   {
 
     if( Object.hasOwnProperty.call( dstContainer, key ) )
@@ -586,8 +616,6 @@ function dstNotOwn()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstNotOwn.functionFamily = 'field-filter';
@@ -596,8 +624,11 @@ dstNotOwn.functionFamily = 'field-filter';
 
 function dstNotOwnSrcOwn()
 {
+  let routine = dstNotOwnSrcOwn;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstNotOwnSrcOwn( dstContainer, srcContainer, key )
+  function dstNotOwnSrcOwn( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -608,8 +639,6 @@ function dstNotOwnSrcOwn()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstNotOwnSrcOwn.functionFamily = 'field-filter';
@@ -618,8 +647,11 @@ dstNotOwnSrcOwn.functionFamily = 'field-filter';
 
 function dstNotOwnSrcOwnAssigning()
 {
+  let routine = dstNotOwnSrcOwnAssigning;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function dstNotOwnSrcOwnAssigning( dstContainer, srcContainer, key )
+  function dstNotOwnSrcOwnAssigning( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
@@ -630,8 +662,6 @@ function dstNotOwnSrcOwnAssigning()
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 dstNotOwnSrcOwnAssigning.functionFamily = 'field-mapper';
@@ -640,8 +670,11 @@ dstNotOwnSrcOwnAssigning.functionFamily = 'field-mapper';
 
 function dstNotOwnOrUndefinedAssigning()
 {
+  let routine = dstNotOwnOrUndefinedAssigning;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function dstNotOwnOrUndefinedAssigning( dstContainer, srcContainer, key )
+  function dstNotOwnOrUndefinedAssigning( dstContainer, srcContainer, key )
   {
 
     if( Object.hasOwnProperty.call( dstContainer, key ) )
@@ -655,41 +688,19 @@ function dstNotOwnOrUndefinedAssigning()
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 dstNotOwnOrUndefinedAssigning.functionFamily = 'field-mapper';
-
-// //
-//
-// function dstNotOwnAssigning()
-// {
-//
-//   let routine = function dstNotOwnAssigning( dstContainer, srcContainer, key )
-//   {
-//
-//     if( Object.hasOwnProperty.call( dstContainer, key ) )
-//     {
-//
-//       if( key in dstContainer )
-//       return;
-//
-//     }
-//
-//     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
-//   }
-//
-//   routine.functionFamily = 'field-mapper';
-//   return routine;
-// }
 
 //
 
 function dstNotOwnAssigning()
 {
+  let routine = dstNotOwnAssigning;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function dstNotOwnAssigning( dstContainer, srcContainer, key )
+  function dstNotOwnAssigning( dstContainer, srcContainer, key )
   {
 
     if( Object.hasOwnProperty.call( dstContainer, key ) )
@@ -703,8 +714,6 @@ function dstNotOwnAssigning()
 
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 dstNotOwnAssigning.functionFamily = 'field-mapper';
@@ -713,8 +722,11 @@ dstNotOwnAssigning.functionFamily = 'field-mapper';
 
 function dstNotOwnAppending()
 {
+  let routine = dstNotOwnAppending;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function dstNotOwnAppending( dstContainer, srcContainer, key )
+  function dstNotOwnAppending( dstContainer, srcContainer, key )
   {
     debugger;
     if( dstContainer[ key ] !== undefined )
@@ -728,8 +740,6 @@ function dstNotOwnAppending()
     dstContainer[ key ] = srcContainer[ key ];
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 dstNotOwnAppending.functionFamily = 'field-mapper';
@@ -738,8 +748,11 @@ dstNotOwnAppending.functionFamily = 'field-mapper';
 
 function dstNotOwnFromDefinition()
 {
+  let routine = dstNotOwnFromDefinition;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function dstNotOwnFromDefinition( dstContainer, srcContainer, key )
+  function dstNotOwnFromDefinition( dstContainer, srcContainer, key )
   {
 
     if( Object.hasOwnProperty.call( dstContainer, key ) )
@@ -756,16 +769,17 @@ function dstNotOwnFromDefinition()
 
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 //
 
 function dstNotOwnFromDefinitionStrictlyPrimitive()
 {
+  let routine = dstNotOwnFromDefinitionStrictlyPrimitive;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function dstNotOwnFromDefinitionStrictlyPrimitive( dstContainer, srcContainer, key )
+  function dstNotOwnFromDefinitionStrictlyPrimitive( dstContainer, srcContainer, key )
   {
 
     // if( key === 'downloadPath' )
@@ -794,8 +808,6 @@ function dstNotOwnFromDefinitionStrictlyPrimitive()
 
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 // --
@@ -804,16 +816,17 @@ function dstNotOwnFromDefinitionStrictlyPrimitive()
 
 function dstHasMaybeUndefined()
 {
+  let routine = dstHasMaybeUndefined;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstHasMaybeUndefined( dstContainer, srcContainer, key )
+  function dstHasMaybeUndefined( dstContainer, srcContainer, key )
   {
     if( key in dstContainer )
     return true;
     return false;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstHasMaybeUndefined.functionFamily = 'field-filter';
@@ -822,16 +835,17 @@ dstHasMaybeUndefined.functionFamily = 'field-filter';
 
 function dstHasButUndefined()
 {
+  let routine = dstHasButUndefined;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstHasButUndefined( dstContainer, srcContainer, key )
+  function dstHasButUndefined( dstContainer, srcContainer, key )
   {
     if( dstContainer[ key ] === undefined )
     return false;
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstHasButUndefined.functionFamily = 'field-filter';
@@ -840,8 +854,11 @@ dstHasButUndefined.functionFamily = 'field-filter';
 
 function dstHasSrcOwn()
 {
+  let routine = dstHasSrcOwn;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstHasSrcOwn( dstContainer, srcContainer, key )
+  function dstHasSrcOwn( dstContainer, srcContainer, key )
   {
     if( !( key in dstContainer ) )
     return false;
@@ -850,8 +867,6 @@ function dstHasSrcOwn()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstHasSrcOwn.functionFamily = 'field-filter';
@@ -860,8 +875,11 @@ dstHasSrcOwn.functionFamily = 'field-filter';
 
 function dstHasSrcNotOwn()
 {
+  let routine = dstHasSrcNotOwn;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function dstHasSrcNotOwn( dstContainer, srcContainer, key )
+  function dstHasSrcNotOwn( dstContainer, srcContainer, key )
   {
     if( !( key in dstContainer ) )
     return false;
@@ -870,8 +888,6 @@ function dstHasSrcNotOwn()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 dstHasSrcNotOwn.functionFamily = 'field-filter';
@@ -882,8 +898,11 @@ dstHasSrcNotOwn.functionFamily = 'field-filter';
 
 function srcOwn()
 {
+  let routine = srcOwn;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function srcOwn( dstContainer, srcContainer, key )
+  function srcOwn( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -892,8 +911,6 @@ function srcOwn()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 srcOwn.functionFamily = 'field-filter';
@@ -902,8 +919,11 @@ srcOwn.functionFamily = 'field-filter';
 
 function srcOwnRoutines()
 {
+  let routine = srcOwnRoutines;
+  routine.functionFamily = 'field-filter'; ;
+  return routine;
 
-  let routine = function srcOwnRoutines( dstContainer, srcContainer, key )
+  function srcOwnRoutines( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -914,8 +934,6 @@ function srcOwnRoutines()
     return true;
   }
 
-  routine.functionFamily = 'field-filter'; ;
-  return routine;
 }
 
 srcOwnRoutines.functionFamily = 'field-filter';
@@ -924,8 +942,11 @@ srcOwnRoutines.functionFamily = 'field-filter';
 
 function srcOwnAssigning()
 {
+  let routine = assigning;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function assigning( dstContainer, srcContainer, key )
+  function assigning( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
@@ -933,8 +954,6 @@ function srcOwnAssigning()
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 srcOwnAssigning.functionFamily = 'field-mapper';
@@ -943,8 +962,11 @@ srcOwnAssigning.functionFamily = 'field-mapper';
 
 function srcOwnPrimitive()
 {
+  let routine = srcOwnPrimitive;
+  routine.functionFamily = 'field-filter';
+  return routine;
 
-  let routine = function srcOwnPrimitive( dstContainer, srcContainer, key )
+  function srcOwnPrimitive( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return false;
@@ -955,8 +977,6 @@ function srcOwnPrimitive()
     return true;
   }
 
-  routine.functionFamily = 'field-filter';
-  return routine;
 }
 
 srcOwnPrimitive.functionFamily = 'field-filter';
@@ -965,8 +985,11 @@ srcOwnPrimitive.functionFamily = 'field-filter';
 
 function srcOwnNotPrimitiveAssigning()
 {
+  let routine = srcOwnNotPrimitiveAssigning;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function srcOwnNotPrimitiveAssigning( dstContainer, srcContainer, key )
+  function srcOwnNotPrimitiveAssigning( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
@@ -976,8 +999,6 @@ function srcOwnNotPrimitiveAssigning()
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 srcOwnNotPrimitiveAssigning.functionFamily = 'field-mapper';
@@ -986,8 +1007,11 @@ srcOwnNotPrimitiveAssigning.functionFamily = 'field-mapper';
 
 function srcOwnNotPrimitiveAssigningRecursive()
 {
+  let routine = srcOwnNotPrimitiveAssigningRecursive;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function srcOwnNotPrimitiveAssigningRecursive( dstContainer, srcContainer, key )
+  function srcOwnNotPrimitiveAssigningRecursive( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
@@ -997,8 +1021,6 @@ function srcOwnNotPrimitiveAssigningRecursive()
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key,_.entityAssignFieldFromContainer );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 srcOwnNotPrimitiveAssigningRecursive.functionFamily = 'field-mapper';
@@ -1007,8 +1029,11 @@ srcOwnNotPrimitiveAssigningRecursive.functionFamily = 'field-mapper';
 
 function srcOwnAssigningRecursive()
 {
+  let routine = srcOwnAssigningRecursive;
+  routine.functionFamily = 'field-mapper';
+  return routine;
 
-  let routine = function srcOwnAssigningRecursive( dstContainer, srcContainer, key )
+  function srcOwnAssigningRecursive( dstContainer, srcContainer, key )
   {
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
@@ -1016,8 +1041,6 @@ function srcOwnAssigningRecursive()
     _.entityAssignFieldFromContainer( dstContainer, srcContainer, key,_.entityAssignFieldFromContainer );
   }
 
-  routine.functionFamily = 'field-mapper';
-  return routine;
 }
 
 srcOwnAssigningRecursive.functionFamily = 'field-mapper';
@@ -1046,7 +1069,12 @@ function and()
   if( mappers.length > 1 )
   throw _.err( 'can combineMethodUniform only one mapper with any number of filters' );
 
-  let routine = function and( dstContainer, srcContainer, key )
+  let routine = and;
+
+  routine.functionFamily = mappers.length ? 'field-mapper' : 'field-filter';
+  return routine;
+
+  function and( dstContainer, srcContainer, key )
   {
 
     for( let f = 0 ; f < filters.length ; f++ )
@@ -1071,8 +1099,6 @@ function and()
     return mappers.length ? undefined : true;
   }
 
-  routine.functionFamily = mappers.length ? 'field-mapper' : 'field-filter';
-  return routine;
 }
 
 //
@@ -1086,14 +1112,6 @@ function mapperFromFilter( routine )
 
   if( routine.functionFamily === 'field-filter' )
   {
-    function r( dstContainer, srcContainer, key )
-    {
-      let result = routine( dstContainer, srcContainer, key );
-      _.assert( _.boolIs( result ) );
-      if( result === false )
-      return;
-      dstContainer[ key ] = srcContainer[ key ];
-    }
     r.functionFamily = 'field-mapper';
     return r;
   }
@@ -1102,6 +1120,15 @@ function mapperFromFilter( routine )
     return routine;
   }
   else _.assert( 0,'Expects routine.functionFamily' );
+
+  function r( dstContainer, srcContainer, key )
+  {
+    let result = routine( dstContainer, srcContainer, key );
+    _.assert( _.boolIs( result ) );
+    if( result === false )
+    return;
+    dstContainer[ key ] = srcContainer[ key ];
+  }
 
 }
 
