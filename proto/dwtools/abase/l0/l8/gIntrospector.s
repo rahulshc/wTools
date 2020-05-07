@@ -11,10 +11,6 @@ let Self = _.introspector = _.introspector || Object.create( null );
 // --
 
 let _diagnosticCodeExecuting = 0;
-// let _codeCache = Object.create( null );
-// _codeCache.map = Object.create( null );
-// _codeCache.array = [];
-// _codeCache.limit = 3;
 function code( o )
 {
 
@@ -91,7 +87,7 @@ function code( o )
     if( o.withPath )
     {
       if( o.asMap )
-      result = { path : o.location.filePathLineCol, codes };
+      result = { path : o.location.filePathLineCol, code };
       else
       result = o.location.filePathLineCol + '\n' + code;
     }
