@@ -546,7 +546,7 @@ _.only( Array::dst, Set::src );
 
 /**
  * The routine entityOnly() provides the filtering of elements of destination container
- * {-dst-} by checking values ​​in the source container {-src-}. The routine checks values
+ * {-dst-} by checking values in the source container {-src-}. The routine checks values
  * with the same keys in both containers. If a received {-src-} element has falsy value, then
  * element with the same key deletes from the {-dst-} container.
  *
