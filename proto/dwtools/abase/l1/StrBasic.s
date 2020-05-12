@@ -1186,20 +1186,6 @@ function strStrShort( o )
 
     if( o.escaping )
     {
-      function check( s, l )
-      {
-        let temp = _.strEscape( s );
-
-        if( temp.length > l )
-        for( let i = s.length - 1; i >= 0 ; --i )
-        {
-          if( temp.length <= l )
-          break;
-          temp = temp.slice( 0, - ( _.strEscape( s[ i ] ).length ) );
-        }
-
-        return temp;
-      }
 
       begin = check( begin, b );
       end = check( end, e );
@@ -1227,6 +1213,22 @@ function strStrShort( o )
   }
 
   return str;
+
+  function check( s, l )
+  {
+    let temp = _.strEscape( s );
+
+    if( temp.length > l )
+    for( let i = s.length - 1; i >= 0 ; --i )
+    {
+      if( temp.length <= l )
+      break;
+      temp = temp.slice( 0, - ( _.strEscape( s[ i ] ).length ) );
+    }
+
+    return temp;
+  }
+
 }
 
 strStrShort.defaults =
@@ -1239,7 +1241,7 @@ strStrShort.defaults =
 
 //
 
-function strDifference( src1, src2, o )
+function strDifference( src1, src2 )
 {
   _.assert( _.strIs( src1 ) );
   _.assert( _.strIs( src2 ) );
@@ -1247,11 +1249,12 @@ function strDifference( src1, src2, o )
   if( src1 === src2 )
   return false;
 
-  for( var i = 0, l = Math.min( src1.length, src2.length ) ; i < l ; i++ )
+  let l = Math.min( src1.length, src2.length );
+  for( let i = 0 ; i < l ; i++ )
   if( src1[ i ] !== src2[ i ] )
   return src1.substr( 0, i ) + '*';
 
-  return src1.substr( 0, i ) + '*';
+  return src1.substr( 0, l ) + '*';
 }
 
 // --
@@ -1341,22 +1344,22 @@ function strDecapitalize( src )
 function strEscape( o )
 {
 
-    // 007f : ''
-    // . . .
-    // 009f : ''
+  // 007f : ''
+  // . . .
+  // 009f : ''
 
-    // 00ad : '­'
+  // 00ad : '­'
 
-    // \' 	single quote 	byte 0x27 in ASCII encoding
-    // \' 	double quote 	byte 0x22 in ASCII encoding
-    // \\ 	backslash 	byte 0x5c in ASCII encoding
-    // \b 	backspace 	byte 0x08 in ASCII encoding
-    // \f 	form feed - new page 	byte 0x0c in ASCII encoding
-    // \n 	line feed - new line 	byte 0x0a in ASCII encoding
-    // \r 	carriage return 	byte 0x0d in ASCII encoding
-    // \t 	horizontal tab 	byte 0x09 in ASCII encoding
-    // \v 	vertical tab 	byte 0x0b in ASCII encoding
-    // source : http://en.cppreference.com/w/cpp/language/escape
+  // \'   single quote   byte 0x27 in ASCII encoding
+  // \'   double quote   byte 0x22 in ASCII encoding
+  // \\   backslash   byte 0x5c in ASCII encoding
+  // \b   backspace   byte 0x08 in ASCII encoding
+  // \f   form feed - new page   byte 0x0c in ASCII encoding
+  // \n   line feed - new line   byte 0x0a in ASCII encoding
+  // \r   carriage return   byte 0x0d in ASCII encoding
+  // \t   horizontal tab   byte 0x09 in ASCII encoding
+  // \v   vertical tab   byte 0x0b in ASCII encoding
+  // source : http://en.cppreference.com/w/cpp/language/escape
 
   // console.log( _.process.memoryUsageInfo(), o.src.length );
   // if( o.src.length === 111691 )
@@ -1673,10 +1676,11 @@ function strStripLeft( o )
 
 strStripLeft.defaults =
 {
+  ... strStrip.defaults,
   stripper : /^(\s|\n|\0)+/gm,
 }
 
-strStripLeft.defaults.__proto__ = strStrip.defaults;
+// strStripLeft.defaults.__proto__ = strStrip.defaults;
 
 //
 
@@ -1707,10 +1711,11 @@ function strStripRight( o )
 
 strStripRight.defaults =
 {
+  ... strStrip.defaults,
   stripper : /(\s|\n|\0)+$/gm,
 }
 
-strStripRight.defaults.__proto__ = strStrip.defaults;
+// strStripRight.defaults.__proto__ = strStrip.defaults;
 
 //
 
@@ -1837,7 +1842,7 @@ function strSplitStrNumber( src )
   {
     let mstr = src.match(/[^\d]*/);
     result.str = mstr[ 0 ];
-    result.number = _.numberFrom( mnumber[0] );
+    result.number = _.numberFrom( mnumber[ 0 ] );
   }
   else
   {
@@ -3825,6 +3830,8 @@ function strJoin_body( o )
 
   /* */
 
+  /* qqq : investigate */
+
   if( arrayEncountered )
   return result;
   else
@@ -4555,8 +4562,6 @@ function strLinesStrip( src )
   lines = _.strLinesJoin( lines );
   return lines;
 }
-
-
 
 //
 

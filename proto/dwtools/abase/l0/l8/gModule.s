@@ -651,8 +651,8 @@ function _resolveFirst( o )
     debugger;
     throw _.err
     (
-        `Cant resolve module::${_.longSlice( o.moduleNames ).join( ' module' )}.`
-      + `\nLooked at:\n - ${sourcePaths.join( '\n - ' )}`
+      `Cant resolve module::${_.longSlice( o.moduleNames ).join( ' module' )}.` +
+      `\nLooked at:\n - ${sourcePaths.join( '\n - ' )}`
     );
   }
 

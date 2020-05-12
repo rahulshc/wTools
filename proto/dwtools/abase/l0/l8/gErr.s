@@ -193,9 +193,8 @@ function diagnosticProxyFields( o )
 
 diagnosticProxyFields.defaults =
 {
+  ... diagnosticWatchFields.defaults,
 }
-
-diagnosticProxyFields.defaults.__proto__ == diagnosticWatchFields.defaults
 
 //
 
@@ -494,23 +493,23 @@ function diagnosticStructureGenerate_body( o )
       struct[ 'regexp.defined' ] = new RegExp( _.strRandom( o.regexpSize ) );
       else
       struct[ 'regexp.defined' ] = new RegExp( _.strDup( 'a', o.regexpSize ) );
-      struct[ 'regexp.simple1'] = /ab|cd/,
-      struct[ 'regexp.simple2'] = /a[bc]d/,
-      struct[ 'regexp.simple3'] = /ab{1, }bc/,
-      struct[ 'regexp.simple4'] = /\.js$/,
-      struct[ 'regexp.simple5'] = /.reg/
+      struct[ 'regexp.simple1' ] = /ab|cd/;
+      struct[ 'regexp.simple2' ] = /a[bc]d/;
+      struct[ 'regexp.simple3' ] = /ab{1, }bc/;
+      struct[ 'regexp.simple4' ] = /\.js$/;
+      struct[ 'regexp.simple5' ] = /.reg/;
     }
 
     if( o.regexpComplexity >= 3 )
     {
-      struct[ 'regexp.complex0' ] = /^(?:(?!ab|cd).)+$/gm,
-      struct[ 'regexp.complex1' ] = /\/\*[\s\S]*?\*\/|\/\/.*/g,
-      struct[ 'regexp.complex2' ] = /^[1-9]+[0-9]*$/gm,
-      struct[ 'regexp.complex3' ] = /aBc/i,
-      struct[ 'regexp.complex4' ] = /^\d+/gm,
-      struct[ 'regexp.complex5' ] = /^a.*c$/g,
-      struct[ 'regexp.complex6' ] = /[a-z]/m,
-      struct[ 'regexp.complex7' ] = /^[A-Za-z0-9]$/
+      struct[ 'regexp.complex0' ] = /^(?:(?!ab|cd).)+$/gm;
+      struct[ 'regexp.complex1' ] = /\/\*[\s\S]*?\*\/|\/\/.*/g;
+      struct[ 'regexp.complex2' ] = /^[1-9]+[0-9]*$/gm;
+      struct[ 'regexp.complex3' ] = /aBc/i;
+      struct[ 'regexp.complex4' ] = /^\d+/gm;
+      struct[ 'regexp.complex5' ] = /^a.*c$/g;
+      struct[ 'regexp.complex6' ] = /[a-z]/m;
+      struct[ 'regexp.complex7' ] = /^[A-Za-z0-9]$/;
     }
 
     if( o.dateComplexity >= 3 )
@@ -525,13 +524,13 @@ function diagnosticStructureGenerate_body( o )
 
     if( o.bufferNodeComplexity >= 4 )
     if( typeof BufferNode !== 'undefined' )
-    struct[ 'buffer.node'] = BufferNode.from( bufferSrc );
+    struct[ 'buffer.node' ] = BufferNode.from( bufferSrc );
 
     if( o.bufferRawComplexity >= 3 )
-    struct[ 'buffer.raw'] = new U8x( bufferSrc ).buffer;
+    struct[ 'buffer.raw' ] = new U8x( bufferSrc ).buffer;
 
     if( o.bufferBytesComplexity >= 3 )
-    struct[ 'buffer.bytes'] = new U8x( bufferSrc );
+    struct[ 'buffer.bytes' ] = new U8x( bufferSrc );
 
     if( o.arrayComplexity )
     struct[ 'array.simple' ] = _.longFill( [], 0, [ 0, o.arrayLength ] )

@@ -84,7 +84,7 @@ function regexpEscape( src )
 {
   _.assert( _.strIs( src ) );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1" );
+  return src.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1' );
 }
 
 // --

@@ -1,6 +1,6 @@
 ( function _Unroll_test_s_( ) {
 
-'use strict'; 
+'use strict';
 
 if( typeof module !== 'undefined' )
 {
@@ -40,7 +40,7 @@ function unrollIs( test )
 
   test.case = 'not unroll';
 
-  var got = new F32x( [3, 1, 2] );
+  var got = new F32x( [ 3, 1, 2 ] );
   test.identical( _.unrollIs( got ), false );
 
   test.identical( _.unrollIs( [] ), false );
@@ -1437,7 +1437,7 @@ function unrollFrom( test )
 
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.unrollFrom() );
-  
+
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.unrollFrom( 1, 3 ) );
 
@@ -1465,7 +1465,7 @@ function unrollFromLongDescriptor( test )
     break;
     times--;
   }
-  
+
   /* - */
 
   function testRun( descriptor )
@@ -1603,14 +1603,14 @@ function unrollsFrom( test )
 {
   test.case = 'srcs - null';
   var got = _.unrollsFrom( null );
-  test.equivalent( got, [[]] );
+  test.equivalent( got, [ [] ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( _.unrollIs( got[ 0 ] ) );
 
   test.case = 'srcs - undefined';
   var got = _.unrollsFrom( undefined );
-  test.equivalent( got, [[]] );
+  test.equivalent( got, [ [] ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( _.unrollIs( got[ 0 ] ) );
@@ -1628,20 +1628,20 @@ function unrollsFrom( test )
   test.case = 'srcs - empty unroll';
   var src = _.unrollMake( 0 );
   var got = _.unrollsFrom( src );
-  test.identical( got, [[]] );
+  test.identical( got, [ [] ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( _.unrollIs( got[ 0 ] ) );
-  test.is( got !== [[]] );
+  test.is( got !== [ [] ] );
 
   test.case = 'srcs - filled unroll';
   var src = _.unrollMake( [ 1, 'str', 3 ] );
   var got = _.unrollsFrom( src );
-  test.identical( got, [[ 1, 'str', 3 ]] );
+  test.identical( got, [ [ 1, 'str', 3 ] ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( _.unrollIs( got[ 0 ] ) );
-  test.is( got !== [[ 1, 'str', 3 ]] );
+  test.is( got !== [ [ 1, 'str', 3 ] ] );
 
   test.case = 'srcs - several arguments with unroll';
   var src = _.unrollMake( [ 1, 'str', 3 ] );
@@ -1657,7 +1657,7 @@ function unrollsFrom( test )
   test.case = 'srcs - empty F32x buffer';
   var src = new F32x();
   var got = _.unrollsFrom( src );
-  test.equivalent( got, [[]] );
+  test.equivalent( got, [ [] ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( _.unrollIs( got[ 0 ] ) );
@@ -1686,7 +1686,7 @@ function unrollsFrom( test )
   test.case = 'srcs - empty arguments array';
   var src = _.argumentsArrayMake( [] );
   var got = _.unrollsFrom( src );
-  test.equivalent( got, [[]] );
+  test.equivalent( got, [ [] ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
   test.is( _.unrollIs( got[ 0 ] ) );
@@ -1744,7 +1744,7 @@ function unrollsFromLongDescriptor( test )
     if( times < 1 )
     break;
     times--;
-  } 
+  }
 
   /* - */
 
@@ -1752,14 +1752,14 @@ function unrollsFromLongDescriptor( test )
   {
     test.case = 'srcs - null';
     var got = descriptor.unrollsFrom( null );
-    test.equivalent( got, [[]] );
+    test.equivalent( got, [ [] ] );
     test.is( _.arrayIs( got ) );
     test.is( _.unrollIs( got ) );
     test.is( _.unrollIs( got[ 0 ] ) );
 
     test.case = 'srcs - undefined';
     var got = descriptor.unrollsFrom( undefined );
-    test.equivalent( got, [[]] );
+    test.equivalent( got, [ [] ] );
     test.is( _.arrayIs( got ) );
     test.is( _.unrollIs( got ) );
     test.is( _.unrollIs( got[ 0 ] ) );
@@ -1777,20 +1777,20 @@ function unrollsFromLongDescriptor( test )
     test.case = 'srcs - empty unroll';
     var src = _.unrollMake( 0 );
     var got = descriptor.unrollsFrom( src );
-    test.identical( got, [[]] );
+    test.identical( got, [ [] ] );
     test.is( _.arrayIs( got ) );
     test.is( _.unrollIs( got ) );
     test.is( _.unrollIs( got[ 0 ] ) );
-    test.is( got !== [[]] );
+    test.is( got !== [ [] ] );
 
     test.case = 'srcs - filled unroll';
     var src = _.unrollMake( [ 1, 'str', 3 ] );
     var got = descriptor.unrollsFrom( src );
-    test.identical( got, [[ 1, 'str', 3 ]] );
+    test.identical( got, [ [ 1, 'str', 3 ] ] );
     test.is( _.arrayIs( got ) );
     test.is( _.unrollIs( got ) );
     test.is( _.unrollIs( got[ 0 ] ) );
-    test.is( got !== [[ 1, 'str', 3 ]] );
+    test.is( got !== [ [ 1, 'str', 3 ] ] );
 
     test.case = 'srcs - several arguments with unroll';
     var src = _.unrollMake( [ 1, 'str', 3 ] );
@@ -1806,7 +1806,7 @@ function unrollsFromLongDescriptor( test )
     test.case = 'srcs - empty F32x buffer';
     var src = new F32x();
     var got = descriptor.unrollsFrom( src );
-    test.equivalent( got, [[]] );
+    test.equivalent( got, [ [] ] );
     test.is( _.arrayIs( got ) );
     test.is( _.unrollIs( got ) );
     test.is( _.unrollIs( got[ 0 ] ) );
@@ -1835,7 +1835,7 @@ function unrollsFromLongDescriptor( test )
     test.case = 'srcs - empty arguments array';
     var src = _.argumentsArrayMake( [] );
     var got = descriptor.unrollsFrom( src );
-    test.equivalent( got, [[]] );
+    test.equivalent( got, [ [] ] );
     test.is( _.arrayIs( got ) );
     test.is( _.unrollIs( got ) );
     test.is( _.unrollIs( got[ 0 ] ) );
@@ -1953,7 +1953,8 @@ function unrollFromMaybe( test )
   test.is( _.setIs( got ) );
 
   test.case = 'src - instance of constructor';
-  var Constr = function(){ this.x = 1; return this };
+  function Constr(){ this.x = 1; return this };
+  var Constr = Constr;
   var src = new Constr();
   var got = _.unrollFromMaybe( src );
   test.identical( got, new Constr() );
@@ -2147,7 +2148,8 @@ function unrollFromMaybeLongDescriptor( test )
     test.is( _.setIs( got ) );
 
     test.case = 'src - instance of constructor';
-    var Constr = function(){ this.x = 1; return this };
+    function Constr1(){ this.x = 1; return this };
+    var Constr = Constr1;
     var src = new Constr();
     var got = descriptor.unrollFromMaybe( src );
     test.identical( got, new Constr() );
@@ -2297,7 +2299,7 @@ function unrollNormalize( test )
   test.is( _.arrayIs( got ) );
 
   test.case = 'dst is complex unroll';
-  var got = _.unrollNormalize( _.unrollFrom( [ 1, _.unrollFrom ( [2, _.unrollFrom( [ 'str' ] ) ] ) ] ) );
+  var got = _.unrollNormalize( _.unrollFrom( [ 1, _.unrollFrom ( [ 2, _.unrollFrom( [ 'str' ] ) ] ) ] ) );
   test.identical( got, [ 1, 2, 'str' ] );
   test.is( _.arrayIs( got ) );
 
@@ -2354,13 +2356,13 @@ function unrollSelect( test )
 {
   /* constructors */
 
-  var array = ( src ) => _.arrayMake( src );
+  let array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
   var argumentsArray = ( src ) => _.argumentsArrayMake( src );
-  var bufferTyped = function( buf )
+  function bufferTyped( buf )
   {
     let name = buf.name;
-    return { [ name ] : function( src ){ return new buf( src ) } } [ name ];
+    return ({ [ name ] : function( src ){ return new buf( src ) } })[ name ];
   };
 
   /* lists */
@@ -2528,7 +2530,7 @@ function unrollPrepend( test )
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll';
-  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollPrepend( src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
@@ -2559,7 +2561,7 @@ function unrollPrepend( test )
   test.isNot( _.unrollIs( got ) );
 
   test.case = 'dst is null, second arg is complex unroll';
-  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollPrepend( null, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
@@ -2610,7 +2612,7 @@ function unrollPrepend( test )
   test.isNot( _.unrollIs( got ) );
 
   test.case = 'dst is array, second arg is complex unroll';
-  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollPrepend( [ 'str', 3 ], src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 'str', 3 ] );
   test.is( _.arrayIs( got ) );
@@ -2654,7 +2656,7 @@ function unrollPrepend( test )
 
   test.case = 'dst is unroll, second arg is complex unroll';
   var dst = _.unrollMake( [ 1 ] );
-  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1 ] );
   test.is( _.arrayIs( got ) );
@@ -2686,36 +2688,36 @@ function unrollPrepend( test )
   //
 
   test.case = 'dst is complex unroll, second arg is null';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollPrepend( dst, null );
   test.identical( got, [ null, 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is unroll';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollPrepend( dst, _.unrollMake( [ 1, 'str' ] ) );
   test.identical( got, [ 1, 'str', 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is complex unroll';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
-  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
+  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is array';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollPrepend( dst, [ 1, 2, 'str' ] );
   test.identical( got, [ [ 1, 2, 'str' ], 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg makes from F32x';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var src = _.unrollMake( new F32x( [ 1, 2, 3 ] ) );
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 3, 1, 2, 1, [], 'str', 'str2' ] );
@@ -2723,7 +2725,7 @@ function unrollPrepend( test )
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg makes from argumentsArray';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
   var got = _.unrollPrepend( dst, src );
   test.identical( got, [ 1, 2, 'str', 1, 2, 1, [], 'str', 'str2' ] );
@@ -2772,7 +2774,7 @@ function unrollPrepend( test )
   var a1 = _.unrollFrom( [ 3, 4, _.unrollFrom( [ 5, 6 ] ) ] );
   var a2 = [ 7, _.unrollFrom( [ 8, 9 ] ) ];
   var got = _.unrollPrepend( _.unrollFrom( [] ), [ 1, 2 ], a1, [ a2, 10 ] );
-  var expected = [ [ 1, 2 ], 3, 4, 5, 6, [[ 7, 8, 9 ], 10 ] ];
+  var expected = [ [ 1, 2 ], 3, 4, 5, 6, [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
   test.is( _.unrollIs( got ) );
 
@@ -2796,7 +2798,7 @@ function unrollPrepend( test )
   var a1 = _.unrollFrom( [ 3, 4, _.unrollFrom( [ 5, 6 ] ) ] );
   var a2 = [ 7, _.unrollFrom( [ 8, 9 ] ) ];
   var got = _.unrollPrepend( [], [ 1, 2 ], a1, [ a2, 10 ] );
-  var expected = [ [ 1, 2 ], 3, 4, 5, 6, [[ 7, 8, 9 ], 10 ] ];
+  var expected = [ [ 1, 2 ], 3, 4, 5, 6, [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
   test.isNot( _.unrollIs( got ) );
 
@@ -2865,7 +2867,7 @@ function unrollAppend( test )
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll';
-  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollAppend( src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
@@ -2896,7 +2898,7 @@ function unrollAppend( test )
   test.isNot( _.unrollIs( got ) );
 
   test.case = 'dst is null, second arg is complex unroll';
-  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollAppend( null, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
@@ -2947,7 +2949,7 @@ function unrollAppend( test )
   test.isNot( _.unrollIs( got ) );
 
   test.case = 'dst is array, second arg is complex unroll';
-  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollAppend( [ 'str', 3 ], src );
   test.identical( got, [ 'str', 3, 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
@@ -2991,7 +2993,7 @@ function unrollAppend( test )
 
   test.case = 'dst is unroll, second arg is complex unroll';
   var dst = _.unrollMake( [ 1 ] );
-  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 1, 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
@@ -3023,36 +3025,36 @@ function unrollAppend( test )
   //
 
   test.case = 'dst is complex unroll, second arg is null';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollAppend( dst, null );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', null ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is unroll';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollAppend( dst, _.unrollMake( [ 1, 'str' ] ) );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 'str' ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is complex unroll';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
-  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
+  var src = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 2, 1, [], 'str', 'str2' ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg is array';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var got = _.unrollAppend( dst, [ 1, 2, 'str' ] );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', [ 1, 2, 'str' ] ] );
   test.is( _.arrayIs( got ) );
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg makes from F32x';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var src = _.unrollMake( new F32x( [ 1, 2, 3 ] ) );
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 2, 3 ] );
@@ -3060,7 +3062,7 @@ function unrollAppend( test )
   test.is( _.unrollIs( got ) );
 
   test.case = 'dst is complex unroll, second arg makes from argumentsArray';
-  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2'] ) ] ) ] );
+  var dst = _.unrollFrom( [ 1, 2, _.unrollMake( [ 1, [] ] ), _.unrollFrom( [ 'str', _.unrollMake( [ 'str2' ] ) ] ) ] );
   var src = _.unrollMake( _.argumentsArrayMake( [ 1, 2, 'str' ] ) );
   var got = _.unrollAppend( dst, src );
   test.identical( got, [ 1, 2, 1, [], 'str', 'str2', 1, 2, 'str' ] );
@@ -3109,7 +3111,7 @@ function unrollAppend( test )
   var a1 = _.unrollFrom( [ 3, 4, _.unrollFrom( [ 5, 6 ] ) ] );
   var a2 = [ 7, _.unrollFrom( [ 8, 9 ] ) ];
   var got = _.unrollAppend( _.unrollFrom( [] ), [ 1, 2 ], a1, [ a2, 10 ] );
-  var expected = [ [ 1, 2 ], 3, 4, 5, 6, [[ 7, 8, 9 ], 10 ] ];
+  var expected = [ [ 1, 2 ], 3, 4, 5, 6, [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
   test.is( _.unrollIs( got ) );
 
@@ -3133,7 +3135,7 @@ function unrollAppend( test )
   var a1 = _.unrollFrom( [ 3, 4, _.unrollFrom( [ 5, 6 ] ) ] );
   var a2 = [ 7, _.unrollFrom( [ 8, 9 ] ) ];
   var got = _.unrollAppend( [], [ 1, 2 ], a1, [ a2, 10 ] );
-  var expected = [ [ 1, 2 ], 3, 4, 5, 6, [[ 7, 8, 9 ], 10 ] ];
+  var expected = [ [ 1, 2 ], 3, 4, 5, 6, [ [ 7, 8, 9 ], 10 ] ];
   test.identical( got, expected );
   test.isNot( _.unrollIs( got ) );
 

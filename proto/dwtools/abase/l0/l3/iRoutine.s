@@ -61,7 +61,7 @@ function routineIsPure( src )
   if( !src )
   return false;
   let proto = Object.getPrototypeOf( src );
-  if( proto === Function.__proto__ )
+  if( proto === Object.getPrototypeOf( Function ) )
   return true;
   if( proto.constructor.name === 'AsyncFunction' )
   return true;
@@ -624,16 +624,17 @@ function _routinesCompose_body( o )
 
   if( supervisor )
   {
-    function compositionSupervise()
-    {
-      let result = supervisor( this, arguments, act, o );
-      return result;
-    }
     _.routineExtend( compositionSupervise, act );
     return compositionSupervise;
   }
 
   return act;
+
+  function compositionSupervise()
+  {
+    let result = supervisor( this, arguments, act, o );
+    return result;
+  }
 }
 
 _routinesCompose_body.defaults =

@@ -47,26 +47,25 @@ function ready( timeOut, procedure, onReady )
   _.assert( _.intIs( timeOut ) );
   _.assert( _.routineIs( onReady ) || onReady === undefined );
 
-  if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState != 'complete' )
+  if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState !== 'complete' )
   {
     let con = _.Consequence ? new _.Consequence({ tag : 'timeReady' }) : null;
-
-    function handleReady()
-    {
-      if( _.Consequence )
-      return _.time.out( timeOut, procedure, onReady ).finally( con );
-      else if( onReady )
-      _.time.begin( timeOut, procedure, onReady );
-      else _.assert( 0 );
-    }
-
-    window.addEventListener( 'load', handleReady );
+    window.addEventListener( 'load', function() { handleReady( con, ... arguments ) } );
     return con;
   }
   else
   {
     if( _.Consequence )
     return _.time.out( timeOut, procedure, onReady );
+    else if( onReady )
+    _.time.begin( timeOut, procedure, onReady );
+    else _.assert( 0 );
+  }
+
+  function handleReady( con )
+  {
+    if( _.Consequence )
+    return _.time.out( timeOut, procedure, onReady ).finally( con );
     else if( onReady )
     _.time.begin( timeOut, procedure, onReady );
     else _.assert( 0 );

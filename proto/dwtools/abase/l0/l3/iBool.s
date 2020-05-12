@@ -87,7 +87,7 @@ function fuzzyLikeTrue( src )
 {
   if( !_.fuzzyLike( src ) )
   return false;
-  if( src == _.maybe )
+  if( src === _.maybe )
   return false;
   return !!src;
 }

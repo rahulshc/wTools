@@ -6,8 +6,6 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
-// _.err = _.err || Object.create( null );
-
 // --
 // error
 // --
@@ -99,7 +97,7 @@ function errReason( err, reason )
         enumerable : false,
         configurable : true,
         writable : true,
-        value : value,
+        value,
       });
     }
     catch( err2 )
@@ -397,7 +395,7 @@ function _errMake( o )
         enumerable : false,
         configurable : true,
         writable : true,
-        value : value,
+        value,
       });
     }
     catch( err2 )
@@ -419,8 +417,8 @@ function _errMake( o )
       {
         enumerable : false,
         configurable : true,
-        get : get,
-        set : set,
+        get,
+        set,
       });
     }
     catch( err2 )
@@ -453,8 +451,8 @@ function _errMake( o )
       {
         enumerable : false,
         configurable : true,
-        get : get,
-        set : set,
+        get,
+        set,
       });
     }
     catch( err2 )
@@ -589,7 +587,7 @@ function _err( o )
 
     dstError = _._errMake
     ({
-      dstError : dstError,
+      dstError,
       throwLocation : o.throwLocation,
       sections : o.sections,
 
@@ -600,8 +598,8 @@ function _err( o )
       debugging : o.debugging,
       stackCondensing : o.stackCondensing,
 
-      originalMessage : originalMessage,
-      beautifiedStack : beautifiedStack,
+      originalMessage,
+      beautifiedStack,
       throwCallsStack : o.throwCallsStack,
       throwsStack : o.throwsStack,
       asyncCallsStack : o.asyncCallsStack,
@@ -1174,7 +1172,7 @@ function _errFields( args, fields )
   if( args.length !== 1 || !_.errIsStandard( err ) )
   err = _._err
   ({
-    args : args,
+    args,
     level : 2,
   });
 
@@ -1266,7 +1264,7 @@ function errSuspend( err, value )
 //       enumerable : false,
 //       configurable : true,
 //       writable : true,
-//       value : value,
+//       value,
 //     });
 //
 //   }
@@ -1302,7 +1300,7 @@ function errRestack( err, level )
   let err2 = _._err
   ({
     args : [],
-    level : level + 1,
+    levle : level + 1,
   });
 
   return _.err( err2, err );
@@ -1353,7 +1351,7 @@ function errFromStr( errStr )
 
     errStr = _.strLinesStrip( errStr );
 
-    let sectionBeginRegexp = /=\s+(.*?)\s*\n/mg;
+    let sectionBeginRegexp = /[=]\s+(.*?)\s*\n/mg;
     let splits = _.strSplitFast
     ({
       src : errStr,
@@ -1394,13 +1392,13 @@ function errFromStr( errStr )
 
     let result = _._errMake
     ({
-      dstError : dstError,
-      throwLocation : throwLocation,
-      stackCondensing : stackCondensing,
-      originalMessage : originalMessage,
+      dstError,
+      throwLocation,
+      stackCondensing,
+      originalMessage,
       beautifiedStack : throwCallsStack,
-      throwCallsStack : throwCallsStack,
-      throwsStack : throwsStack,
+      throwCallsStack,
+      throwsStack,
     });
 
     return result;

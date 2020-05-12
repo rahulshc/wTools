@@ -3,10 +3,10 @@ root:
   - wTools.out
 consistency:
   wTools.out.will.yml: &ref_0
-    hash: 9a4fb56006b2ac57074c00cd32a20eed
-    size: 47328
+    hash: 80d412f8a83f51ca2fb3da93e4a317d8
+    size: 48088
   ../.ex.will.yml: &ref_1
-    hash: 050a19909baf9c1958e2e8f4237452ef
+    hash: 929dd0ff9220afc144ad11483eb37e23
     size: 2145
   ../.im.will.yml: &ref_2
     hash: e0b9ac504d07fa8723c98f50459f4829
@@ -36,9 +36,9 @@ module:
         - wBase
         - generic
       license: MIT
-      author: Kostiantyn Wandalen <wanalen@willbe.so>
+      author: Kostiantyn Wandalen <wanalen@01.school>
       contributors:
-        - Kostiantyn Wandalen <wanalen@willbe.so>
+        - Kostiantyn Wandalen <wanalen@01.school>
         - Volodymyr M. <volodymyr.migdal@gmail.com>
         - Ihor O. <iostashvxi@gmail.com>
         - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
@@ -1029,9 +1029,9 @@ module:
         - wBase
         - generic
       license: MIT
-      author: Kostiantyn Wandalen <wanalen@willbe.so>
+      author: Kostiantyn Wandalen <wanalen@01.school>
       contributors:
-        - Kostiantyn Wandalen <wanalen@willbe.so>
+        - Kostiantyn Wandalen <wanalen@01.school>
         - Volodymyr M. <volodymyr.migdal@gmail.com>
         - Ihor O. <iostashvxi@gmail.com>
         - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
@@ -1773,9 +1773,11 @@ module:
           - 'build::npm.*=5'
     consistency:
       ../.ex.will.yml:
-        hash: 050a19909baf9c1958e2e8f4237452ef
+        hash: 929dd0ff9220afc144ad11483eb37e23
         size: 2145
       ../.im.will.yml:
         hash: e0b9ac504d07fa8723c98f50459f4829
         size: 5603
-      wTools.out.will.yml: *ref_0
+      wTools.out.will.yml:
+        hash: 80d412f8a83f51ca2fb3da93e4a317d8
+        size: 48088

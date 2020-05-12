@@ -232,6 +232,7 @@ function isPrototypeOf( superPrototype, subPrototype )
 function prototypeHas( superPrototype, subPrototype )
 {
   _.assert( arguments.length === 2, 'Expects two arguments' );
+  // eslint-disable-next-line no-prototype-builtins
   return _.isPrototypeOf( subPrototype, superPrototype );
 }
 

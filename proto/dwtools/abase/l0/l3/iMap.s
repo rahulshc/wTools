@@ -395,9 +395,6 @@ _mapKeys.defaults =
 function mapKeys( srcMap, o )
 {
   let result;
-  // let o = this === Self ? Object.create( null ) : this;
-  /* aaa : review test routine for this and all routines which had been acception option in context. look in this file map* routines of such kind */
-  /* Dmytro : all routines does not use options in context, file l5/fMap.s has routine mapInvert that uses options in context */
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapKeys, o );
@@ -405,9 +402,6 @@ function mapKeys( srcMap, o )
 
   o.srcMap = srcMap;
 
-  // if( o.enumerable )
-  // result = _._mapEnumerableKeys( o.srcMap, o.own );
-  // else
   result = _._mapKeys( o );
 
   return result;
@@ -451,7 +445,6 @@ mapKeys.defaults =
 function mapOwnKeys( srcMap, o )
 {
   let result;
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapOwnKeys, o );
@@ -460,9 +453,6 @@ function mapOwnKeys( srcMap, o )
   o.srcMap = srcMap;
   o.own = 1;
 
-  // if( o.enumerable )
-  // result = _._mapEnumerableKeys( o.srcMap, o.own );
-  // else
   result = _._mapKeys( o );
 
   if( !o.enumerable )
@@ -500,7 +490,6 @@ mapOwnKeys.defaults =
 
 function mapAllKeys( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapAllKeys, o );
@@ -528,17 +517,6 @@ function _mapVals( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( o.selectFilter === null || _.routineIs( o.selectFilter ) );
   _.assert( o.selectFilter === null );
-
-  // let selectFilter = o.selectFilter;
-  //
-  // if( o.selectFilter )
-  // debugger;
-  //
-  // if( !o.selectFilter )
-  // o.selectFilter = function getVal( srcMap, k )
-  // {
-  //   return srcMap[ k ]
-  // }
 
   let result = _._mapKeys( o );
 
@@ -596,7 +574,6 @@ _mapVals.defaults =
 
 function mapVals( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapVals, o );
@@ -652,7 +629,6 @@ mapVals.defaults =
 
 function mapOwnVals( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapOwnVals, o );
@@ -698,7 +674,6 @@ mapOwnVals.defaults =
 
 function mapAllVals( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapAllVals, o );
@@ -734,7 +709,7 @@ function _mapPairs( o )
   debugger;
 
   if( !o.selectFilter )
-  o.selectFilter = function getVal( srcMap, k )
+  o.selectFilter = function selectFilter( srcMap, k )
   {
     return [ k, srcMap[ k ] ];
   }
@@ -787,7 +762,6 @@ _mapPairs.defaults =
 
 function mapPairs( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapPairs, o );
@@ -844,7 +818,6 @@ mapPairs.defaults =
 
 function mapOwnPairs( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapOwnPairs, o );
@@ -894,7 +867,6 @@ mapOwnPairs.defaults =
 
 function mapAllPairs( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapAllPairs, o );
@@ -984,7 +956,6 @@ _mapProperties.defaults =
 
 function mapProperties( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapProperties, o );
@@ -1042,7 +1013,6 @@ mapProperties.defaults =
 
 function mapOwnProperties( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapOwnProperties, o );
@@ -1092,7 +1062,6 @@ mapOwnProperties.defaults =
 
 function mapAllProperties( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapAllProperties, o );
@@ -1155,7 +1124,6 @@ mapAllProperties.defaults =
 
 function mapRoutines( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapRoutines, o );
@@ -1220,7 +1188,6 @@ mapRoutines.defaults =
 
 function mapOwnRoutines( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapOwnRoutines, o );
@@ -1277,7 +1244,6 @@ mapOwnRoutines.defaults =
 
 function mapAllRoutines( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapAllRoutines, o );
@@ -1343,7 +1309,6 @@ mapAllRoutines.defaults =
 
 function mapFields( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapFields, o );
@@ -1405,7 +1370,6 @@ mapFields.defaults =
 
 function mapOwnFields( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapOwnFields, o );
@@ -1465,7 +1429,6 @@ mapOwnFields.defaults =
 
 function mapAllFields( srcMap, o )
 {
-  // let o = this === Self ? Object.create( null ) : this;
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
   o = _.routineOptions( mapAllFields, o );
@@ -1603,7 +1566,8 @@ function mapValWithIndex( srcMap, index )
   let i = 0;
   for( let s in srcMap )
   {
-    if( i == index ) return srcMap[s];
+    if( i === index )
+    return srcMap[ s ];
     i++;
   }
 }
@@ -1644,7 +1608,8 @@ function mapKeyWithIndex( srcMap, index )
   let i = 0;
   for( let s in srcMap )
   {
-    if( i == index ) return s;
+    if( i === index )
+    return s;
     i++;
   }
 
@@ -1929,16 +1894,13 @@ let Routines =
   _mapProperties,
 
   mapProperties,
-  mapProperties,
   mapOwnProperties,
   mapAllProperties,
 
   mapRoutines,
-  mapRoutines,
   mapOwnRoutines,
   mapAllRoutines,
 
-  mapFields,
   mapFields,
   mapOwnFields,
   mapAllFields,

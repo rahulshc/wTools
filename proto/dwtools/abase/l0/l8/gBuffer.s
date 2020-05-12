@@ -2855,7 +2855,7 @@ function bufferToStr( src )
   {
     for( let i = 0 ; i < src.byteLength ; i++ )
     {
-      result += String.fromCharCode( src[i] );
+      result += String.fromCharCode( src[ i ] );
     }
   }
 

@@ -10,23 +10,25 @@ let Self = _global_.wTools;
 // implementation
 // --
 
-function error_functor( name, onMake )
+function error_functor( name, onErrorMake )
 {
 
-  if( _.strIs( onMake ) || _.arrayIs( onMake ) )
+  if( _.strIs( onErrorMake ) || _.arrayIs( onErrorMake ) )
   {
-    let prepend = onMake;
-    onMake = function onErrorMake()
+    let prepend = onErrorMake;
+    onErrorMake = function onErrorMake()
     {
       debugger;
       let arg = _.arrayAppendArrays( [], [ prepend, arguments ] );
       return args;
     }
   }
-  else if( !onMake )
-  onMake = function onErrorMake()
+  else if( !onErrorMake )
   {
-    return arguments;
+    onErrorMake = function onErrorMake()
+    {
+      return arguments;
+    }
   }
 
   let Error =
@@ -36,7 +38,7 @@ function error_functor( name, onMake )
       if( !( this instanceof ErrorConstructor ) )
       {
         let err1 = new ErrorConstructor();
-        let args1 = onMake.apply( err1, arguments );
+        let args1 = onErrorMake.apply( err1, arguments );
         _.assert( _.arrayLike( args1 ) );
         let args2 = _.arrayAppendArrays( [], [ [ err1, ( args1.length ? '\n' : '' ) ], args1 ] );
         let err2 = _._err({ args : args2, level : 2 });

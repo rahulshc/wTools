@@ -818,7 +818,6 @@ let Routines =
 
   // regexp
 
-  regexpArrayMake,
   regexpFrom,
 
   regexpMaybeFrom,

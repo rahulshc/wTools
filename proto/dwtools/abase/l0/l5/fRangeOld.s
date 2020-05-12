@@ -117,7 +117,7 @@ function rangeCountElements( range, increment )
 function rangeFirstGet( range, options )
 {
 
-  var options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
+  options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
   if( options.increment === undefined )
   options.increment = 1;
 
@@ -141,7 +141,7 @@ function rangeFirstGet( range, options )
 function rangeLastGet( range, options )
 {
 
-  var options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
+  options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
   if( options.increment === undefined )
   options.increment = 1;
 
@@ -156,6 +156,7 @@ function rangeLastGet( range, options )
   {
     return range.last
   }
+
   _.assert( 0, 'unexpected type of range',_.strType( range ) );
 
 }

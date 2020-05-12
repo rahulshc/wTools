@@ -383,7 +383,7 @@ function longMask( srcArray, mask )
     'longMask :', 'Expects mask that has component for each atom of srcArray',
     _.toStr
     ({
-      'scalarsPerElement' : scalarsPerElement,
+      scalarsPerElement,
       'srcArray.length' : srcArray.length,
     })
   );
@@ -437,7 +437,12 @@ function longUnmask( o )
 
   let length = o.src.length / scalarsPerElementPreserved;
   if( Math.floor( length ) !== length )
-  throw _.err( 'longMask :', 'Expects mask that has component for each atom of o.src', _.toStr({ 'scalarsPerElementPreserved' : scalarsPerElementPreserved, 'o.src.length' : o.src.length  }) );
+  throw _.err
+  (
+    'longMask :',
+    'Expects mask that has component for each atom of o.src',
+    _.toStr({ scalarsPerElementPreserved, 'o.src.length' : o.src.length  })
+  );
 
   let dstArray = _.longMakeUndefined( o.src, scalarsPerElement*length );
   // let dstArray = new o.src.constructor( scalarsPerElement*length );

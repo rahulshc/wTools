@@ -243,7 +243,7 @@ function _setupLoggerPlaceholder()
     logUp : function logUp() { console.log.apply( console,arguments ); },
     logDown : function logDown() { console.log.apply( console,arguments ); },
     error : function error() { console.error.apply( console,arguments ); },
-    errorUp :  function errorUp() { console.error.apply( console,arguments ); },
+    errorUp : function errorUp() { console.error.apply( console,arguments ); },
     errorDown : function errorDown() { console.error.apply( console,arguments ); },
   }
 

@@ -139,14 +139,16 @@ function _equalizerFromMapper( mapper )
 
   if( mapper.length === 1 )
   {
-    let equalizer = function equalizerFromMapper( a, b )
-    {
-      return mapper( a ) === mapper( b );
-    }
+    let equalizer = equalizerFromMapper;
     return equalizer;
   }
 
   return mapper;
+
+  function equalizerFromMapper( a, b )
+  {
+    return mapper( a ) === mapper( b );
+  }
 }
 
 //
@@ -162,14 +164,16 @@ function _comparatorFromEvaluator( evaluator )
 
   if( evaluator.length === 1 )
   {
-    let comparator = function comparatorFromEvaluator( a, b )
-    {
-      return evaluator( a ) - evaluator( b );
-    }
+    let comparator = comparatorFromEvaluator;
     return comparator;
   }
 
   return evaluator;
+
+  function comparatorFromEvaluator( a, b )
+  {
+    return evaluator( a ) - evaluator( b );
+  }
 }
 
 // --

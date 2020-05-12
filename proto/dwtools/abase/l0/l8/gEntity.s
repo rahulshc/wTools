@@ -102,7 +102,7 @@ function uncountableSize( src )
   return src.byteLength;
 
   if( _.regexpIs( src ) )
-  return _.uncountableSize( src.source ) + src.flags.length * 1;
+  return _.uncountableSize( src.source ) + src.flags.length;
 
   if( !_.iterableIs( src ) )
   return 8;

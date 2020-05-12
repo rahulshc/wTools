@@ -11,7 +11,7 @@ if( typeof module !== 'undefined' )
 var _ = _global_.wTools;
 
 //--
-// 
+//
 //--
 
 function arrayIs( test )
@@ -48,7 +48,7 @@ function arrayIs( test )
   test.identical( got, expected );
 
   test.case = 'function';
-  var got = _.arrayIs( function(){  } );
+  var got = _.arrayIs( function(){} );
   var expected  = false;
   test.identical( got, expected );
 
@@ -2521,7 +2521,7 @@ function arrayFromCoercingLongDescriptor( test )
 
   /* - */
 
-  function testRun( descriptor ) 
+  function testRun( descriptor )
   {
     test.case = 'src - empty array';
     var src = [];
@@ -27634,7 +27634,6 @@ function arraySetBut( test )
   for( var i = 0; i < cases.length; i++ )
   {
     var c = cases[ i ];
-
     if( c.error )
     test.shouldThrowErrorSync( () => _.arraySetBut( c.src, c.but ) );
     else

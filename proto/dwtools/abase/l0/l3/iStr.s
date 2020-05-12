@@ -454,7 +454,8 @@ function strType( src )
   {
     if( Object.getPrototypeOf( src ) === null )
     result = 'Map';
-    else if( src.__proto__ !== Object.__proto__ )
+    else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
+    // else if( src.__proto__ !== Object.__proto__ )
     result = 'Object:>Sub';
   }
 
