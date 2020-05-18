@@ -177,6 +177,7 @@ function entitySize( src )
     return;
 
     /* qqq : does not work anymore! */
+    debugger;
     if( it.down.iterable === 'map-like' || it.down.iterable === 'hash-map-like' )
     {
       result += _.uncountableSize( k );

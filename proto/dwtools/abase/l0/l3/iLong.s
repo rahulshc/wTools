@@ -40,7 +40,8 @@ let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
  * @namespace Tools
  */
 
-function longIs( src )
+let notLongSymbol = Symbol.for( 'notLong' );
+function longIs( src ) /* qqq : check coverage */
 {
   if( _.primitiveIs( src ) )
   return false;
@@ -51,6 +52,11 @@ function longIs( src )
   if( _.strIs( src ) )
   return false;
   if( _.bufferNodeIs( src ) )
+  return false;
+  // if( _.vectorAdapterIs( src ) )
+  // return false;
+
+  if( notLongSymbol in src ) /* qqq : cover please */
   return false;
 
   if( Object.propertyIsEnumerable.call( src, 'length' ) )

@@ -67,7 +67,7 @@ function containerLike( src )
  * @namespace Tools
  */
 
-function iterableIs( src )
+function iterableIs( src ) /* qqq xxx : check. good coverage is required */
 {
   if( !src )
   return false;

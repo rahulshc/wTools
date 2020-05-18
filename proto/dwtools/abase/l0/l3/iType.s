@@ -69,22 +69,24 @@ function bigIntIs( src )
 
 function vectorAdapterIs( src )
 {
-  if( !_.objectIs( src ) )
-  return false;
-
-  if( !( '_vectorBuffer' in src ) )
-  return false;
-
-  if( Object.hasOwnProperty.call( src, 'constructor' ) )
-  return false;
-
-  return true;
+  return Object.prototype.toString.call( src ) === '[object VectorAdapter]';
+  // if( !_.objectIs( src ) )
+  // return false;
+  //
+  // if( !( '_vectorBuffer' in src ) )
+  // return false;
+  //
+  // if( Object.hasOwnProperty.call( src, 'constructor' ) )
+  // return false;
+  //
+  // return true;
 }
 
 //
 
 function vectorIs( src )
 {
+
   if( _.vectorAdapterIs( src ) )
   return true;
 
@@ -513,6 +515,7 @@ let Routines =
   //
 
   vectorAdapterIs,
+  vadIs : vectorAdapterIs,
   vectorIs, /* qqq : cover */
   vectorLike,
 
