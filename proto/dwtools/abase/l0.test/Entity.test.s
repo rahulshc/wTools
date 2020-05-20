@@ -2696,6 +2696,152 @@ function entitySize( test )
 
 //
 
+function iterableIs( test )
+{
+  test.case = 'without argument';
+  var got = _.iterableIs();
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'undefined';
+  var got = _.iterableIs( undefined );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.iterableIs( null );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'false';
+  var got = _.iterableIs( false );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.iterableIs( '' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'zero';
+  var got = _.iterableIs( 0 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'NaN';
+  var got = _.iterableIs( NaN );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a boolean';
+  var got = _.iterableIs( true );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a number';
+  var got = _.iterableIs( 13 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a function';
+  var got = _.iterableIs( function() {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'constructor';
+  var Constr = function( x )
+  {
+    this.x = x;
+    return this;
+  }
+  var got = _.iterableIs( new Constr( 0 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a string';
+  var got = _.iterableIs( 'str' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an array';
+  var got = _.iterableIs( [] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an unroll';
+  var got = _.iterableIs( _.unrollMake( [ 1 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an argumentsArray';
+  var got = _.iterableIs( _.argumentsArrayMake( [ 1 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw';
+  var got = _.iterableIs( new BufferRaw( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferView';
+  var got = _.iterableIs( new BufferView( new BufferRaw( 5 ) ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped';
+  var got = _.iterableIs( new U8x( 5 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'BufferNode';
+    var got = _.iterableIs( BufferNode.alloc( 5 ) );
+    var expected = true;
+    test.identical( got, expected );
+  }
+
+  test.case = 'Set';
+  var got = _.iterableIs( new Set( [ 5 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Map';
+  var got = _.iterableIs( new Map( [ [ 1, 2 ] ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'pure empty map';
+  var got = _.iterableIs( Object.create( null ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.x = 1;
+  var got = _.iterableIs( src );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'map from pure map';
+  var src = Object.create( Object.create( null ) );
+  var got = _.iterableIs( src );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an empty object';
+  var got = _.iterableIs( {} );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an object';
+  var got = _.iterableIs( { a : 7, b : 13 } );
+  var expected = true;
+  test.identical( got, expected );
+}
+
+//
+
 var Self =
 {
 
@@ -2729,6 +2875,7 @@ var Self =
     entityLength,
     uncountableSize,
     entitySize,
+    iterableIs,
 
   }
 

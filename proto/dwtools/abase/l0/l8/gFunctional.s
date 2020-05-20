@@ -511,6 +511,390 @@ eachSample.defaults =
 
 //
 
+function eachPermutation( o )
+{
+
+  _.routineOptions( eachPermutation, arguments );
+
+  if( _.numberIs( o.container ) )
+  {
+    if( o.container < 0 )
+    o.container = 0;
+    let container = Array( o.container );
+    for( let i = o.container-1 ; i >= 0 ; i-- )
+    container[ i ] = i;
+    o.container = container;
+  }
+
+  if( o.returning )
+  if( o.dst === null )
+  o.dst = [];
+
+  const add = o.returning ? append1 : append0;
+  const dst = o.returning ? o.dst : undefined;
+  const container = o.container;
+  const length = o.container.length;
+  const last = length - 1;
+  const plast = length - 2;
+  const slast = length - 3;
+  const onEach = o.onEach;
+  let left = last;
+  let swaps = 0;
+  let iteration = 0;
+
+  if( length <= 1 )
+  {
+    if( length === 1 )
+    {
+      onEach( container, iteration, left, last, swaps );
+      add();
+    }
+    return;
+  }
+
+  let iterations = 1;
+  for( let i = plast-1 ; i >= 0 ; i-- )
+  {
+    iterations *= ( last - i );
+  }
+  iterations *= length;
+
+  let counter = [];
+  for( let i = plast ; i >= 0 ; i-- )
+  counter[ i ] = last-i;
+
+  _.assert( _.longIs( container ) );
+  _.assert( _.routineIs( onEach ) );
+  _.assert( length >= 0 );
+  _.assert( length <= 30 );
+
+  while( iteration < iterations )
+  {
+
+    if( iteration === 5 || iteration === 6 )
+    debugger;
+
+    onEach( container, iteration, left, last, swaps );
+    add();
+    left = plast;
+    next();
+    reverse();
+    iteration += 1;
+  }
+
+  return dst;
+
+  /* */
+
+  function append0()
+  {
+  }
+
+  function append1()
+  {
+    dst.push( container.slice() );
+  }
+
+  function swap( left, right )
+  {
+    _.assert( container[ right ] !== undefined );
+    _.assert( container[ left ] !== undefined );
+    let ex = container[ right ];
+    container[ right ] = container[ left ];
+    container[ left ] = ex;
+  }
+
+  function reverse()
+  {
+    if( left >= slast )
+    {
+      swaps = 1;
+      swap( left, last );
+      counter[ left ] -= 1;
+    }
+    else
+    {
+      swaps = last - left;
+      if( swaps % 2 === 1 )
+      swaps -= 1;
+      swaps /= 2;
+      for( let i = swaps ; i >= 0 ; i-- )
+      swap( left + i, last - i );
+      counter[ left ] -= 1;
+      swaps += 1;
+    }
+  }
+
+  function next()
+  {
+    while( counter[ left ] === 0 && left !== 0 )
+    left -= 1;
+    for( let i = left + 1 ; i < counter.length ; i++ )
+    counter[ i ] = last - i;
+  }
+
+}
+
+eachPermutation.defaults =
+{
+  onEach : null,
+  container : null,
+  dst : null,
+  returning : 0,
+}
+
+/*
+
+== number:3
+
+= log
+
+0 . 2..2 . 0 1 2
+1 . 1..2 . 0 2 1
+2 . 0..2 . 1 2 0
+3 . 1..2 . 1 0 2
+4 . 0..2 . 2 0 1
+5 . 1..2 . 2 1 0
+
+== number:4
+
+= log
+
+0 . 3..3 . 0 1 2 3
+1 . 2..3 . 0 1 3 2
+2 . 1..3 . 0 2 3 1
+3 . 2..3 . 0 2 1 3
+4 . 1..3 . 0 3 1 2
+5 . 2..3 . 0 3 2 1
+
+6 . 0..3 . 1 2 3 0
+7 . 2..3 . 1 2 0 3
+8 . 1..3 . 1 3 0 2
+9 . 2..3 . 1 3 2 0
+10 . 1..3 . 1 0 2 3
+11 . 2..3 . 1 0 3 2
+
+12 . 0..3 . 2 3 0 1
+13 . 2..3 . 2 3 1 0
+14 . 1..3 . 2 0 1 3
+15 . 2..3 . 2 0 3 1
+16 . 1..3 . 2 1 3 0
+17 . 2..3 . 2 1 0 3
+
+18 . 0..3 . 3 0 1 2
+19 . 2..3 . 3 0 2 1
+20 . 1..3 . 3 1 2 0
+21 . 2..3 . 3 1 0 2
+22 . 1..3 . 3 2 0 1
+23 . 2..3 . 3 2 1 0
+
+== number:5
+
+= count
+
+120
+24
+6
+2
+1
+
+4
+3
+2
+
+= log
+
+0 . 4..4 . 0 1 2 3 4
+1 . 3..4 . 0 1 2 4 3
+2 . 2..4 . 0 1 3 4 2
+3 . 3..4 . 0 1 3 2 4
+4 . 2..4 . 0 1 4 2 3
+5 . 3..4 . 0 1 4 3 2
+6 . 1..4 . 0 2 3 4 1
+7 . 3..4 . 0 2 3 1 4
+8 . 2..4 . 0 2 4 1 3
+9 . 3..4 . 0 2 4 3 1
+10 . 2..4 . 0 2 1 3 4
+11 . 3..4 . 0 2 1 4 3
+12 . 1..4 . 0 3 4 1 2
+13 . 3..4 . 0 3 4 2 1
+14 . 2..4 . 0 3 1 2 4
+15 . 3..4 . 0 3 1 4 2
+16 . 2..4 . 0 3 2 4 1
+17 . 3..4 . 0 3 2 1 4
+18 . 1..4 . 0 4 1 2 3
+19 . 3..4 . 0 4 1 3 2
+20 . 2..4 . 0 4 2 3 1
+21 . 3..4 . 0 4 2 1 3
+22 . 2..4 . 0 4 3 1 2
+23 . 3..4 . 0 4 3 2 1
+
+24 . 0..4 . 1 2 3 4 0
+25 . 3..4 . 1 2 3 0 4
+26 . 2..4 . 1 2 4 0 3
+27 . 3..4 . 1 2 4 3 0
+28 . 2..4 . 1 2 0 3 4
+29 . 3..4 . 1 2 0 4 3
+30 . 1..4 . 1 3 4 0 2
+31 . 3..4 . 1 3 4 2 0
+32 . 2..4 . 1 3 0 2 4
+33 . 3..4 . 1 3 0 4 2
+34 . 2..4 . 1 3 2 4 0
+35 . 3..4 . 1 3 2 0 4
+36 . 1..4 . 1 4 0 2 3
+37 . 3..4 . 1 4 0 3 2
+38 . 2..4 . 1 4 2 3 0
+39 . 3..4 . 1 4 2 0 3
+40 . 2..4 . 1 4 3 0 2
+41 . 3..4 . 1 4 3 2 0
+42 . 1..4 . 1 0 2 3 4
+43 . 3..4 . 1 0 2 4 3
+44 . 2..4 . 1 0 3 4 2
+45 . 3..4 . 1 0 3 2 4
+46 . 2..4 . 1 0 4 2 3
+47 . 3..4 . 1 0 4 3 2
+
+48 . 0..4 . 2 3 4 0 1
+49 . 3..4 . 2 3 4 1 0
+50 . 2..4 . 2 3 0 1 4
+51 . 3..4 . 2 3 0 4 1
+52 . 2..4 . 2 3 1 4 0
+53 . 3..4 . 2 3 1 0 4
+54 . 1..4 . 2 4 0 1 3
+55 . 3..4 . 2 4 0 3 1
+56 . 2..4 . 2 4 1 3 0
+57 . 3..4 . 2 4 1 0 3
+58 . 2..4 . 2 4 3 0 1
+59 . 3..4 . 2 4 3 1 0
+60 . 1..4 . 2 0 1 3 4
+61 . 3..4 . 2 0 1 4 3
+62 . 2..4 . 2 0 3 4 1
+63 . 3..4 . 2 0 3 1 4
+64 . 2..4 . 2 0 4 1 3
+65 . 3..4 . 2 0 4 3 1
+66 . 1..4 . 2 1 3 4 0
+67 . 3..4 . 2 1 3 0 4
+68 . 2..4 . 2 1 4 0 3
+69 . 3..4 . 2 1 4 3 0
+70 . 2..4 . 2 1 0 3 4
+71 . 3..4 . 2 1 0 4 3
+72 . 0..4 . 3 4 0 1 2
+73 . 3..4 . 3 4 0 2 1
+74 . 2..4 . 3 4 1 2 0
+75 . 3..4 . 3 4 1 0 2
+76 . 2..4 . 3 4 2 0 1
+77 . 3..4 . 3 4 2 1 0
+78 . 1..4 . 3 0 1 2 4
+79 . 3..4 . 3 0 1 4 2
+80 . 2..4 . 3 0 2 4 1
+81 . 3..4 . 3 0 2 1 4
+82 . 2..4 . 3 0 4 1 2
+83 . 3..4 . 3 0 4 2 1
+84 . 1..4 . 3 1 2 4 0
+85 . 3..4 . 3 1 2 0 4
+86 . 2..4 . 3 1 4 0 2
+87 . 3..4 . 3 1 4 2 0
+88 . 2..4 . 3 1 0 2 4
+89 . 3..4 . 3 1 0 4 2
+90 . 1..4 . 3 2 4 0 1
+91 . 3..4 . 3 2 4 1 0
+92 . 2..4 . 3 2 0 1 4
+93 . 3..4 . 3 2 0 4 1
+94 . 2..4 . 3 2 1 4 0
+95 . 3..4 . 3 2 1 0 4
+96 . 0..4 . 4 0 1 2 3
+97 . 3..4 . 4 0 1 3 2
+98 . 2..4 . 4 0 2 3 1
+99 . 3..4 . 4 0 2 1 3
+100 . 2..4 . 4 0 3 1 2
+101 . 3..4 . 4 0 3 2 1
+102 . 1..4 . 4 1 2 3 0
+103 . 3..4 . 4 1 2 0 3
+104 . 2..4 . 4 1 3 0 2
+105 . 3..4 . 4 1 3 2 0
+106 . 2..4 . 4 1 0 2 3
+107 . 3..4 . 4 1 0 3 2
+108 . 1..4 . 4 2 3 0 1
+109 . 3..4 . 4 2 3 1 0
+110 . 2..4 . 4 2 0 1 3
+111 . 3..4 . 4 2 0 3 1
+112 . 2..4 . 4 2 1 3 0
+113 . 3..4 . 4 2 1 0 3
+114 . 1..4 . 4 3 0 1 2
+115 . 3..4 . 4 3 0 2 1
+116 . 2..4 . 4 3 1 2 0
+117 . 3..4 . 4 3 1 0 2
+118 . 2..4 . 4 3 2 0 1
+119 . 3..4 . 4 3 2 1 0
+
+*/
+
+//
+
+function swapsCount( permutation )
+{
+  let counter = 0;
+  let forward = permutation.slice();
+  let backward = [];
+  for( let i = forward.length-1 ; i >= 0 ; i-- )
+  {
+    backward[ forward[ i ] ] = i;
+  }
+  for( let i = backward.length-1 ; i >= 0 ; i-- )
+  {
+    if( backward[ i ] !== i )
+    {
+      let forward1 = forward[ i ];
+      let backward1 = backward[ i ];
+      forward[ backward1 ] = forward1;
+      backward[ forward1 ] = backward1;
+      counter += 1;
+    }
+  }
+  return counter;
+}
+
+//
+
+/* Calculates the factorial of an integer number ( >= 0 ) */
+
+function _factorial( src )
+{
+  let result = 1;
+  while( src > 1 )
+  {
+    result = result * src;
+    src -= 1;
+  }
+  return result;
+}
+
+//
+
+/**
+ * @summary Returns factorial for number `src`.
+ * @description Number `src`
+ * @param {Number} src Source number. Should be less than 10000.
+ * @function factorial
+ * @namespace Tools
+ * @module wTools
+ */
+
+function factorial( src )
+{
+  _.assert( src < 10000 );
+  _.assert( _.intIs( src ) );
+  _.assert( src >= 0 );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  if( src === 0 )
+  return 1;
+  return _._factorial( src )
+}
+
+// --
+//
+// --
+
 function _entityFilterDeep( o )
 {
 
@@ -1433,7 +1817,11 @@ let Fields =
 let Routines =
 {
 
-  eachSample,
+  eachSample, /* xxx : move out */
+  eachPermutation, /* xxx : move out */
+  swapsCount,
+  _factorial,
+  factorial,
 
   _entityFilterDeep,
   entityFilterDeep,

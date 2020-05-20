@@ -439,27 +439,35 @@ function strPrimitive( src )
  * @namespace Tools
  */
 
-function strType( src )
+function strType( src ) /* qqq : cover please */
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
   if( !_.primitiveIs( src ) )
   if( src.constructor && src.constructor.name )
-  return src.constructor.name;
+  return end( src.constructor.name );
 
   let result = _.strPrimitiveType( src );
 
   if( result === 'Object' )
   {
     if( Object.getPrototypeOf( src ) === null )
-    result = 'Map';
+    result = 'Map.pure';
     else if( Object.getPrototypeOf( src ) !== Object.getPrototypeOf( Object ) )
-    // else if( src.__proto__ !== Object.__proto__ )
-    result = 'Object:>Sub';
+    result = 'Map.prototyped';
   }
 
-  return result;
+  return end( result );
+
+  function end( result )
+  {
+    let translated = _.TranslatedType[ result ];
+    if( translated )
+    result = translated;
+    return result;
+  }
+
 }
 
 //
@@ -847,18 +855,35 @@ function strRemove( srcStr, insStr )
 }
 
 // --
-// fields
-// --
-
-let Fields =
-{
-}
-
-// --
 // routines
 // --
 
-let Routines =
+let TranslatedType =
+{
+
+  'BigUint64Array' : 'U64x',
+  'Uint32Array' : 'U32x',
+  'Uint16Array' : 'U16x',
+  'Uint8Array' : 'U8x',
+  'Uint8ClampedArray' : 'U8ClampedX',
+
+  'BigInt64Array' : 'I64x',
+  'Int32Array' : 'I32x',
+  'Int16Array' : 'I16x',
+  'Int8Array' : 'I8x',
+
+  'Float64Array' : 'F64x',
+  'Float32Array' : 'F32x',
+
+  'Buffer' : 'BufferNode',
+  'ArrayBuffer' : 'BufferRaw',
+  'SharedArrayBuffer' : 'BufferRawShared',
+  'Map' : 'HashMap',
+  'WeakMap' : 'HashMapWeak',
+
+}
+
+let Extension =
 {
 
   // checker
@@ -902,12 +927,15 @@ let Routines =
   strRemoveEnd,
   strRemove,
 
+  // fields
+
+  TranslatedType,
+
 }
 
 //
 
-Object.assign( Self, Routines );
-Object.assign( Self, Fields );
+Object.assign( Self, Extension );
 
 // --
 // export

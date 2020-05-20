@@ -1436,7 +1436,7 @@ let Routines =
 
   longFromRange,
   longFromProgressionArithmetic, /* qqq : light coverage required */
-  longFromRangeWithStep, /* qqq : cover please */
+  longFromRangeWithStep,
   longFromRangeWithNumberOfSteps,
 
   // // array converter

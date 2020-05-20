@@ -296,60 +296,69 @@ function routineLike( test )
 
 //
 
-function routineIsPure( test )
+function routineIsTrivial( test )
 {
 
+  var got = _.routineIsTrivial( 1 );
+  test.identical( got, false )
+
+  var got = _.routineIsTrivial( '' );
+  test.identical( got, false )
+
+  var got = _.routineIsTrivial( {} );
+  test.identical( got, false )
+
+  var got = _.routineIsTrivial( [] );
+  test.identical( got, false )
+
+  var got = _.routineIsTrivial( () => {} );
+  test.identical( got, true )
+
+  var got = _.routineIsTrivial( Object );
+  test.identical( got, true )
+
+  var got = _.routineIsTrivial( function () {} );
+  test.identical( got, true )
+
+  var got = _.routineIsTrivial( function a() {} );
+  test.identical( got, true )
+
+  var got = _.routineIsTrivial( async function () {} );
+  test.identical( got, true )
+
+  var got = _.routineIsTrivial( async () => {} );
+  test.identical( got, true )
+
+  var got = _.routineIsTrivial( async function a() {} );
+  test.identical( got, true )
+
   function sync1(){}
+  var got = _.routineIsTrivial( sync1 );
+  test.identical( got, true )
+
   function sync2(){}
   sync2.map = {};
+  var got = _.routineIsTrivial( sync2 );
+  test.identical( got, true )
+
   function async1(){}
+  var got = _.routineIsTrivial( async1 );
+  test.identical( got, true )
+
   function async2(){}
   async2.map = {};
+  var got = _.routineIsTrivial( async2 );
+  test.identical( got, true )
 
-  var got = _.routineIsPure( 1 );
+  test.case = 'map';
+  var src = Object.create( null );
+  var got = _.routineIsTrivial( src );
   test.identical( got, false )
 
-  var got = _.routineIsPure( '' );
+  test.case = 'prototyped';
+  var src = Object.create( Object.create( null ) );
+  var got = _.routineIsTrivial( src );
   test.identical( got, false )
-
-  var got = _.routineIsPure( {} );
-  test.identical( got, false )
-
-  var got = _.routineIsPure( [] );
-  test.identical( got, false )
-
-  var got = _.routineIsPure( () => {} );
-  test.identical( got, true )
-
-  var got = _.routineIsPure( Object );
-  test.identical( got, true )
-
-  var got = _.routineIsPure( function () {} );
-  test.identical( got, true )
-
-  var got = _.routineIsPure( function a() {} );
-  test.identical( got, true )
-
-  var got = _.routineIsPure( async function () {} );
-  test.identical( got, true )
-
-  var got = _.routineIsPure( async () => {} );
-  test.identical( got, true )
-
-  var got = _.routineIsPure( async function a() {} );
-  test.identical( got, true )
-
-  var got = _.routineIsPure( sync1 );
-  test.identical( got, true )
-
-  var got = _.routineIsPure( sync2 );
-  test.identical( got, true )
-
-  var got = _.routineIsPure( async1 );
-  test.identical( got, true )
-
-  var got = _.routineIsPure( async2 );
-  test.identical( got, true )
 
 }
 
@@ -4024,7 +4033,7 @@ var Self =
     routineLike,
     routineIsSync,
     routineIsAsync,
-    routineIsPure,
+    routineIsTrivial,
 
     /* qqq : tests for constructorJoin, extend tests for routineJoin | Dmytro : coverage is extended */
 

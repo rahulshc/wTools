@@ -56,16 +56,20 @@ function routinesAre( src )
 
 //
 
-function routineIsPure( src )
+function routineIsTrivial( src )
 {
   if( !src )
   return false;
   let proto = Object.getPrototypeOf( src );
   if( proto === Object.getPrototypeOf( Function ) )
   return true;
-  if( proto.constructor.name === 'AsyncFunction' )
-  return true;
+  if( !proto )
   return false;
+  if( !proto.constructor )
+  return false;
+  if( proto.constructor.name !== 'AsyncFunction' )
+  return false;
+  return true;
 }
 
 //
@@ -1806,7 +1810,7 @@ let Routines =
   routineIsSync,
   routineIsAsync,
   routinesAre,
-  routineIsPure,
+  routineIsTrivial,
   routineWithName,
 
   _routineJoin,
