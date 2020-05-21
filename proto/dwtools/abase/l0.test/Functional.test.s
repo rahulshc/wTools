@@ -12972,7 +12972,7 @@ function entityXorBoth( test )
   var got = _.entityXor( dst, src );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str, src - str';
   var exp = undefined;
@@ -13153,7 +13153,7 @@ function entityXorBoth( test )
   var got = _.entityXor( dst, src, ( e, k ) => e );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str, src - str';
   var exp = undefined;
@@ -13388,7 +13388,7 @@ function entityXorBoth( test )
   var got = _.entityXor( dst, src, '*/x' );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   // Dmytro : delimeter '*/length' check length of string as property
 
