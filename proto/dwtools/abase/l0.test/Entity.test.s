@@ -183,7 +183,8 @@ function entityMakeConstructing( test )
   };
   var src = new Constr( 2 );
   var got = _.entityMakeConstructing( src );
-  test.identical( got, new Constr() );
+  test.identical( got.x, 1 );
+  test.is( got !== src );
 
   test.case = 'instance of constructor, length';
   var Constr = function( src )
@@ -193,7 +194,8 @@ function entityMakeConstructing( test )
   };
   var src = new Constr( 2 );
   var got = _.entityMakeConstructing( src, 2 );
-  test.identical( got, new Constr() );
+  test.identical( got.x, 1 );
+  test.is( got !== src );
 
   /* - */
 
