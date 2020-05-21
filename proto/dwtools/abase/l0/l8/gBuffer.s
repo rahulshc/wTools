@@ -2777,14 +2777,24 @@ function bufferMove( dst, src )
     if( dst.length !== src.length )
     throw _.err( '_.bufferMove :', '"dst" and "src" must have same length' );
 
-    if( dst.set )
+    if( dst.set && ( src instanceof U64x || src instanceof I64x ) )
+    {
+      for( let s = 0 ; s < src.length ; s++ )
+      dst[ s ] = Number( src[ s ] );
+    }
+    else if( dst.set && ( dst instanceof U64x || dst instanceof I64x ) )
+    {
+      dst.set( _.bigIntsFrom( src ) );
+    }
+    else if( dst.set )
     {
       dst.set( src );
-      return dst;
     }
-
-    for( let s = 0 ; s < src.length ; s++ )
-    dst[ s ] = src[ s ];
+    else
+    {
+      for( let s = 0 ; s < src.length ; s++ )
+      dst[ s ] = src[ s ];
+    }
 
   }
   else if( arguments.length === 1 )
@@ -2808,14 +2818,24 @@ function bufferMove( dst, src )
 
     options.dstOffset = options.dstOffset || 0;
 
-    if( dst.set )
+    if( dst.set && ( src instanceof U64x || src instanceof I64x ) )
+    {
+      for( let s = 0, d = options.dstOffset ; s < src.length ; s++, d++ )
+      dst[ d ] = Number( src[ s ] );
+    }
+    else if( dst.set && ( dst instanceof U64x || dst instanceof I64x ) )
+    {
+      dst.set( _.bigIntsFrom( src ), options.dstOffset );
+    }
+    else if( dst.set )
     {
       dst.set( src, options.dstOffset );
-      return dst;
     }
-
-    for( let s = 0, d = options.dstOffset ; s < src.length ; s++, d++ )
-    dst[ d ] = src[ s ];
+    else
+    {
+      for( let s = 0, d = options.dstOffset ; s < src.length ; s++, d++ )
+      dst[ d ] = src[ s ];
+    }
 
   }
   else _.assert( 0, 'unexpected' );
