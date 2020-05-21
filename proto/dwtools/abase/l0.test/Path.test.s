@@ -601,8 +601,8 @@ function isRefined( test )
 // function isRefined( test )
 // {
 //   /* */
-
-   test.case = 'posix path, not refined';
+//
+//   test.case = 'posix path, not refined';
 //
 //   var path = '/';
 //   var expected = true;
@@ -635,8 +635,8 @@ function isRefined( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'posix path, refined';
+//
+//   test.case = 'posix path, refined';
 //
 //   var path = '/foo/bar//baz/asdf/quux/..';
 //   var refined = _.path.refine( path );
@@ -663,8 +663,8 @@ function isRefined( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'winoows path, not refined';
+//
+//   test.case = 'winoows path, not refined';
 //
 //   var path = 'C:\\temp\\\\foo\\bar\\..\\';
 //   var expected = false;
@@ -697,8 +697,8 @@ function isRefined( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'winoows path, refined';
+//
+//   test.case = 'winoows path, refined';
 //
 //   var path = 'C:\\temp\\\\foo\\bar\\..\\';
 //   var refined = _.path.refine( path );
@@ -837,8 +837,8 @@ function isRefined( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with "." in the middle';
+//
+//   test.case = 'path with "." in the middle';
 //
 //   var path = 'foo/./bar/baz';
 //   var expected = true;
@@ -887,8 +887,8 @@ function isRefined( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with ".." in the middle';
+//
+//   test.case = 'path with ".." in the middle';
 //
 //   var path = 'foo/../bar/baz';
 //   var expected = true;
@@ -911,8 +911,8 @@ function isRefined( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with ".." in the middle,refined';
+//
+//   test.case = 'path with ".." in the middle,refined';
 //
 //   var path = 'foo/../bar/baz';
 //   var refined = _.path.refine( path );
@@ -939,8 +939,8 @@ function isRefined( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with ".." in the beginning';
+//
+//   test.case = 'path with ".." in the beginning';
 //
 //   var path = '../foo/bar';
 //   var expected = true;
@@ -1466,8 +1466,8 @@ function isNormalized( test )
 //   var got;
 //
 //   /* */
-
-   test.case = 'posix path';
+//
+//   test.case = 'posix path';
 //
 //   // Not normalized
 //
@@ -1504,8 +1504,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'windows path';
+//
+//   test.case = 'windows path';
 //
 //   //Not normalized
 //
@@ -1552,8 +1552,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'empty path';
+//
+//   test.case = 'empty path';
 //
 //   var path = '';
 //   var expected = true;
@@ -1586,8 +1586,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with "." in the middle';
+//
+//   test.case = 'path with "." in the middle';
 //
 //   var path = 'foo/./bar/baz';
 //   var expected = false;
@@ -1605,8 +1605,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with "." in the beginning';
+//
+//   test.case = 'path with "." in the beginning';
 //
 //   var path = './foo/bar';
 //   var expected = true;
@@ -1634,8 +1634,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with "." in the end';
+//
+//   test.case = 'path with "." in the end';
 //
 //   var path = 'foo/.bar.';
 //   var expected = true;
@@ -1653,8 +1653,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with ".." in the middle';
+//
+//   test.case = 'path with ".." in the middle';
 //
 //   var path = 'foo/../bar/baz';
 //   var expected = false;
@@ -1677,8 +1677,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with ".." in the beginning';
+//
+//   test.case = 'path with ".." in the beginning';
 //
 //   var path = '../../foo/bar';
 //   var expected = true;
@@ -1696,8 +1696,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with ".." in the end';
+//
+//   test.case = 'path with ".." in the end';
 //
 //   var path = 'foo/..bar..';
 //   var expected = true;
@@ -1715,8 +1715,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with ".." and "." combined';
+//
+//   test.case = 'path with ".." and "." combined';
 //
 //   var path = '/abc/./.././a/b';
 //   var expected = false;
@@ -1739,8 +1739,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with ".." and "." combined - normalized';
+//
+//   test.case = 'path with ".." and "." combined - normalized';
 //
 //   var path = '/abc/./.././a/b';
 //   var normalized = _.path.normalize( path );
@@ -1761,8 +1761,8 @@ function isNormalized( test )
 //   test.identical( got, expected );
 //
 //   /* */
-
-   test.case = 'path with ".." and "." combined - normalized and trailed';
+//
+//   test.case = 'path with ".." and "." combined - normalized and trailed';
 //
 //   var path = '/abc/./.././a/b';
 //   var normalized = _.path.normalize( path );
@@ -5655,7 +5655,7 @@ function dot( test )
 function undot( test )
 {
   /* aaa : unwrap array and normalize all tests in this test suite */
-  /* Dmytro : unwrapped and normalized this test routine and in all test suite */ 
+  /* Dmytro : unwrapped and normalized this test routine and in all test suite */
 
   test.case = 'src - current directory with slash';
   var src = './';
