@@ -14070,9 +14070,9 @@ function longRandom( test )
     onEach : ( value ) => _.intRandom( value ),
   });
   test.identical( got.length, 3 );
-  test.is( _.intIs( got[ 0 ] ) && got[ 0 ] >= 1 && got[ 0 ] <= 5 );
-  test.is( _.intIs( got[ 1 ] ) && got[ 1 ] >= 1 && got[ 1 ] <= 5 );
-  test.is( _.intIs( got[ 2 ] ) && got[ 2 ] >= 1 && got[ 2 ] <= 5 );
+  test.is( _.intIs( got[ 0 ] ) && got[ 0 ] >= 0 && got[ 0 ] <= 5 );
+  test.is( _.intIs( got[ 1 ] ) && got[ 1 ] >= 0 && got[ 1 ] <= 5 );
+  test.is( _.intIs( got[ 2 ] ) && got[ 2 ] >= 0 && got[ 2 ] <= 5 );
 
   test.case = 'dst, range, onEach, length > dst.length';
   var dst = [ 0, 0 ];
