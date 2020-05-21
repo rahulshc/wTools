@@ -5307,12 +5307,11 @@ function entityButBothSame( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = dst;
   var got = _.entityBut( dst, src, ( e, k ) => undefined );
   test.is( src === got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str';
   var exp = 'dst';
@@ -5439,12 +5438,11 @@ function entityButBothSame( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = dst;
   var got = _.entityBut( dst, src, ( e, k ) => k );
   test.is( src === got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str';
   var exp = 'dst';
