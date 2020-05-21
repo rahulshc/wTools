@@ -10489,22 +10489,20 @@ function entityOrBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - obj';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = new Constructor1();
   var got = _.entityOr( dst, src );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - obj, src - number';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = 0;
   var got = _.entityOr( dst, src );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str, src - str';
   var exp = 'dst';
@@ -10687,13 +10685,12 @@ function entityOrBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - false';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = false;
   var got = _.entityOr( dst, src, ( e, k ) => e );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str, src - str';
   var exp = 'dst';
@@ -10913,13 +10910,12 @@ function entityOrBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - str';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = 'src';
   var got = _.entityOr( dst, src, '*/x' );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   // Dmytro : delimeter '*/length' check length of string as property
 
@@ -11024,13 +11020,12 @@ function entityOrDiffTypes( test )
   ( () =>
   {
     test.case = 'dst - obj, src - map';
-    var exp = new Constructor1();
     var dst = new Constructor1();
     var src = { a : 0 };
     var got = _.entityOr( dst, src, ( e, k ) => e );
     test.is( dst === got );
     test.is( src !== got );
-    test.identical( got, exp );
+    test.identical( got.x, 1 );
   });
 
   test.shouldThrowErrorSync
@@ -11076,13 +11071,12 @@ function entityOrDiffTypes( test )
   ( () =>
   {
     test.case = 'dst - obj, src - map';
-    var exp = new Constructor1();
     var dst = new Constructor1();
     var src = { a : 0 };
     var got = _.entityOr( dst, src, ( e, k ) => k );
     test.is( dst !== got );
     test.is( src !== got );
-    test.identical( got, exp );
+    test.identical( got.x, 1 );
   });
 
   test.shouldThrowErrorSync
@@ -12966,7 +12960,6 @@ function entityXorBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - number';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = 0;
   var got = _.entityXor( dst, src );
@@ -13147,7 +13140,6 @@ function entityXorBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - false';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = false;
   var got = _.entityXor( dst, src, ( e, k ) => e );
@@ -13382,7 +13374,6 @@ function entityXorBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - str';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = 'src';
   var got = _.entityXor( dst, src, '*/x' );
