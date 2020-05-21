@@ -12067,7 +12067,7 @@ function longAllAreRepeated( test )
   var equalizer = ( e1, e2 ) => e1 === e2;
   var src = _.unrollMake( [ 1, 2, 2 ] );
   var got = _.longAllAreRepeated( src, equalizer );
-  var expected = true;
+  var expected = false;
   test.identical( got, expected );
 
   test.case = 'unroll, some values are identical with equalizer';
