@@ -109,83 +109,83 @@ function make( test )
 {
   test.case = 'from empty array';
   var src = [];
-  var exp = _.containerAdapter.make( [] );
+  var exp = [];
   var got = _.containerAdapter.make( src );
   test.is( got !== src );
   test.is( _.arrayIs( got.original ) );
-  test.identical( got, exp );
+  test.identical( got.original, exp );
 
   test.case = 'from array';
   var src = [ 1, 2, '', {}, [], null, undefined ];
-  var exp = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
+  var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
   test.is( got !== src );
   test.is( _.arrayIs( got.original ) );
-  test.identical( got, exp );
+  test.identical( got.original, exp );
 
   test.case = 'from empty unroll';
   var src = _.unrollMake( [] );
-  var exp = _.containerAdapter.make( [] );
+  var exp = [];
   var got = _.containerAdapter.make( src );
   test.is( got !== src );
   test.is( _.arrayIs( got.original ) );
-  test.identical( got, exp );
+  test.identical( got.original, exp );
 
   test.case = 'from unroll';
   var src = _.unrollMake( [ 1, 2, '', {}, [], null, undefined ] );
-  var exp = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
+  var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
   test.is( got !== src );
   test.is( _.arrayIs( got.original ) );
-  test.identical( got, exp );
+  test.identical( got.original, exp );
 
   test.case = 'from empty Set';
   var src = new Set();
-  var exp = _.containerAdapter.make( new Set() );
+  var exp = [];
   var got = _.containerAdapter.make( src );
   test.is( got !== src );
   test.is( _.setIs( got.original ) );
-  test.identical( got, exp );
+  test.identical( [ ... got.original ], exp );
 
   test.case = 'from Set';
   var src = new Set( [ 1, 2, '', {}, [], null, undefined ] );
-  var exp = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
+  var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
   test.is( got !== src );
   test.is( _.setIs( got.original ) );
-  test.identical( got, exp );
+  test.identical( [ ... got.original ], exp );
 
   test.case = 'from empty arrayAdapterContainer';
   var src = _.containerAdapter.make( [] );
-  var exp = _.containerAdapter.make( [] );
+  var exp = [];
   var got = _.containerAdapter.make( src );
   test.is( got !== src );
   test.is( _.arrayIs( got.original ) );
-  test.identical( got, exp );
+  test.identical( got.original, exp );
 
   test.case = 'from arrayAdapterContainer';
   var src = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
-  var exp = _.containerAdapter.make( [ 1, 2, '', {}, [], null, undefined ] );
+  var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
   test.is( got !== src );
   test.is( _.arrayIs( got.original ) );
-  test.identical( got, exp );
+  test.identical( got.original, exp );
 
   test.case = 'from empty setAdapterContainer';
   var src = _.containerAdapter.make( new Set( [] ) );
-  var exp = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
+  var exp = [];
   var got = _.containerAdapter.make( src );
   test.is( got !== src );
   test.is( _.setIs( got.original ) );
-  test.identical( got, exp );
+  test.identical( [ ... got.original ], exp );
 
   test.case = 'from setAdapterContainer';
   var src = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
-  var exp = _.containerAdapter.make( new Set( [ 1, 2, '', {}, [], null, undefined ] ) );
+  var exp = [ 1, 2, '', {}, [], null, undefined ];
   var got = _.containerAdapter.make( src );
   test.is( got !== src );
   test.is( _.setIs( got.original ) );
-  test.identical( got, exp );
+  test.identical( [ ... got.original ], exp );
 
   /* - */
 
