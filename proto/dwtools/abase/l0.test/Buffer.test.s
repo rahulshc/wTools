@@ -1912,21 +1912,21 @@ function bufferMakeUndefinedWithArrayAndUnroll( test )
     test.case = 'src - empty long, not ins';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src );
-    var expected = _.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
     test.case = 'src - empty long, ins - null';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, null );
-    var expected = _.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
     test.case = 'src - empty long, ins - undefined';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, undefined );
-    var expected = _.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -1954,7 +1954,7 @@ function bufferMakeUndefinedWithArrayAndUnroll( test )
     test.case = 'src - filled long, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMakeUndefined( src );
-    var expected = _.longDescriptor.make( 3 );
+    var expected = makeBuffer( 3 );
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -2250,21 +2250,21 @@ function bufferMakeUndefinedWithBuffers( test )
     test.case = 'src - empty buffer, not ins';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src );
-    var expected = _.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
     test.case = 'src - empty buffer, ins - null';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, null );
-    var expected = _.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
     test.case = 'src - empty buffer, ins - undefined';
     var src = makeBuffer( [] );
     var got = _.bufferMakeUndefined( src, undefined );
-    var expected = _.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -2292,7 +2292,7 @@ function bufferMakeUndefinedWithBuffers( test )
     test.case = 'src - filled buffer, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = _.bufferMakeUndefined( src );
-    var expected = _.longDescriptor.make( 3 );
+    var expected = makeBuffer( 3 );
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -2423,21 +2423,21 @@ function bufferMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
     test.case = 'src - empty long, not ins';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
     test.case = 'src - empty long, ins - null';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, null );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
     test.case = 'src - empty long, ins - undefined';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, undefined );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -2465,7 +2465,7 @@ function bufferMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
     test.case = 'src - filled long, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src );
-    var expected = descriptor.longDescriptor.make( 3 );
+    var expected = makeBuffer( 3 );
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -2798,21 +2798,21 @@ function bufferMakeUndefinedWithBuffersLongDescriptor( test )
     test.case = 'src - empty buffer, not ins';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
     test.case = 'src - empty buffer, ins - null';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, null );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
     test.case = 'src - empty buffer, ins - undefined';
     var src = makeBuffer( [] );
     var got = descriptor.bufferMakeUndefined( src, undefined );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = makeBuffer( [] );
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -2840,7 +2840,7 @@ function bufferMakeUndefinedWithBuffersLongDescriptor( test )
     test.case = 'src - filled buffer, not ins';
     var src = makeBuffer( [ 1, 2, 3 ] );
     var got = descriptor.bufferMakeUndefined( src );
-    var expected = descriptor.longDescriptor.make( 3 );
+    var expected = makeBuffer( 3 );
     test.identical( got, expected );
     test.is( got !== src );
 
