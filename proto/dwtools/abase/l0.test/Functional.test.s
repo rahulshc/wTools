@@ -3239,13 +3239,12 @@ function entityOnlyBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - obj';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = new Constructor1();
   var got = _.entityOnly( dst, src );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - obj, src - number';
   var exp = undefined;
