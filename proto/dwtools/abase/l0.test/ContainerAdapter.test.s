@@ -421,10 +421,9 @@ function toOriginal( test )
     return this;
   }
   var src = new Constr();
-  var exp = new Constr();
   var got = _.containerAdapter.toOriginal( src );
   test.is( got === src );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   /* */
 
