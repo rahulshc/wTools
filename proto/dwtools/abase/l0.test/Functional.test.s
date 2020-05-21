@@ -4635,11 +4635,10 @@ function entityButOnlyDst( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var got = _.entityBut( dst, undefined, ( e, k ) => undefined );
   test.is( dst === got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str';
   var exp = 'dst';
@@ -4752,11 +4751,10 @@ function entityButOnlyDst( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var got = _.entityBut( dst, undefined, ( e, k ) => k );
   test.is( dst === got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str';
   var exp = 'dst';
