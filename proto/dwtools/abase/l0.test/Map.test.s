@@ -93,7 +93,7 @@ function mapCloneAssigning( test )
   var got = _.mapCloneAssigning({ srcMap, dstMap });
   var expected = { sex : 'Male', name : 'Peter', age : 27 };
   test.is( dstMap === got );
-  test.identical( got, expected );
+  test.identical( _.mapExtend( null, got ), expected );
 
   /**/
 
