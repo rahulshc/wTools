@@ -5628,13 +5628,12 @@ function entityButBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - number';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = 0;
   var got = _.entityBut( dst, src );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str, src - str';
   var exp = undefined;
@@ -5732,13 +5731,12 @@ function entityButBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - obj';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = new Constructor1();
   var got = _.entityBut( dst, src, ( e, k ) => undefined );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str, src - str';
   var exp = 'dst';
@@ -5819,13 +5817,12 @@ function entityButBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - false';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = false;
   var got = _.entityBut( dst, src, ( e, k ) => e );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str, src - str';
   var exp = undefined;
@@ -5915,13 +5912,12 @@ function entityButBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - false';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = false;
   var got = _.entityBut( dst, src, ( e, k ) => k );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str, src - str';
   var exp = 'dst';
@@ -6038,13 +6034,12 @@ function entityButBoth( test )
   test.identical( got, exp );
 
   test.case = 'dst - obj, src - str';
-  var exp = new Constructor1();
   var dst = new Constructor1();
   var src = 'src';
   var got = _.entityBut( dst, src, '*/x' );
   test.is( dst === got );
   test.is( src !== got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'dst - str, src - 0';
   var exp = 'dst';
