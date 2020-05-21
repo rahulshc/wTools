@@ -2724,7 +2724,7 @@ function longMakeUndefinedWithArrayAndUnroll( test )
     test.case = 'src = empty long, not ins';
     var src = makeLong( [] );
     var got = _.longMakeUndefined( src );
-    var expected = _.longDescriptor.make( [] );
+    var expected = makeLong( [] );
     test.identical( got, expected );
     /* aaa : analyze and fix that */
     /* Dmytro : this test case is the same as above. That is src defines only length, but longDescriptor defines type */
@@ -3038,16 +3038,16 @@ function longMakeUndefinedWithBufferTyped( test )
     test.case = 'src = empty long, not ins';
     var src = new makeLong( [] );
     var got = _.longMakeUndefined( src );
-    var expected = _.longDescriptor.make( [] );
+    var expected = new makeLong( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = new makeLong( [ 1, 2, 3 ] );
     var got = _.longMakeUndefined( src );
-    var expected = _.longDescriptor.make( 3 );
+    var expected = new makeLong( 3 );
     test.identical( got, expected );
     test.is( got !== src );
-    test.is( src.constructor.name !== got.constructor.name );
+    test.is( src.constructor.name === got.constructor.name );
 
     test.case = 'src = empty long, ins = null';
     var src = new makeLong( [] );
@@ -3212,13 +3212,13 @@ function longMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
     test.case = 'src = empty long, not ins';
     var src = makeLong( [] );
     var got = descriptor.longMakeUndefined( src );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = makeLong( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = makeLong( [ 1, 2, 3 ] );
     var got = descriptor.longMakeUndefined( src );
-    var expected = descriptor.longDescriptor.make( 3 );
+    var expected = makeLong( 3 );
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -3542,13 +3542,13 @@ function longMakeUndefinedWithBufferTypedLongDescriptor( test )
     test.case = 'src = empty long, not ins';
     var src = new makeLong( [] );
     var got = descriptor.longMakeUndefined( src );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = new makeLong( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = new makeLong( [ 1, 2, 3 ] );
     var got = descriptor.longMakeUndefined( src );
-    var expected = descriptor.longDescriptor.make( 3 );
+    var expected = new makeLong( 3 );
     test.identical( got, expected );
     test.is( got !== src );
 
