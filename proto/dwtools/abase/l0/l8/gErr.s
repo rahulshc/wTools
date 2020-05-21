@@ -941,7 +941,7 @@ Object.assign( _, ExtendTools );
 // export
 // --
 
-if( typeof module !== 'undefined' && module !== null )
+if( typeof module !== 'undefined' )
 module[ 'exports' ] = _;
 
 })();

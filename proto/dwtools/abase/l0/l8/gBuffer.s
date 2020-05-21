@@ -13,9 +13,14 @@ let Self = _global_.wTools;
 function buffersTypedAreEquivalent( src1, src2, accuracy )
 {
 
-  if( !_.bufferTypedIs( src1 ) )
+  // if( !_.bufferTypedIs( src1 ) )
+  // return false;
+  // if( !_.bufferTypedIs( src2 ) )
+  // return false;
+
+  if( !_.longIs( src1 ) )
   return false;
-  if( !_.bufferTypedIs( src2 ) )
+  if( !_.longIs( src2 ) )
   return false;
 
   if( src1.length !== src2.length )
@@ -66,8 +71,8 @@ function buffersRawAreIdentical( src1, src2 )
   if( !_.bufferRawIs( src2 ) )
   return false;
 
-  if( src1.byteLength !== src2.byteLength )
-  debugger;
+  // if( src1.byteLength !== src2.byteLength )
+  // debugger;
   if( src1.byteLength !== src2.byteLength )
   return false;
 
@@ -91,8 +96,8 @@ function buffersViewAreIdentical( src1, src2 )
   if( !_.bufferViewIs( src2 ) )
   return false;
 
-  if( src1.byteLength !== src2.byteLength )
-  debugger;
+  // if( src1.byteLength !== src2.byteLength )
+  // debugger;
   if( src1.byteLength !== src2.byteLength )
   return false;
 
@@ -3241,8 +3246,8 @@ function bufferCutOffLeft( src, del )
 let Routines =
 {
 
-  buffersTypedAreEquivalent,
-  buffersTypedAreIdentical,
+  buffersTypedAreEquivalent, /* qqq : cover pelase */
+  buffersTypedAreIdentical, /* qqq : cover pelase */
   buffersRawAreIdentical,
   buffersViewAreIdentical,
   buffersNodeAreIdentical,
@@ -3371,7 +3376,7 @@ Object.assign( Self, Routines );
 // export
 // --
 
-if( typeof module !== 'undefined' && module !== null )
+if( typeof module !== 'undefined' )
 module[ 'exports' ] = Self;
 
 })();

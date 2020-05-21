@@ -295,10 +295,13 @@ function elementGet( container, key, type )
   {
     if( _.hashMapLike( container ) )
     {
-      debugger;
       return container.get( key );
     }
     else if( _.setLike( container ) )
+    {
+      return [ ... container ][ key ];
+    }
+    else if( _.numberIs( key ) && _.hasCustomIterator( container ) )
     {
       return [ ... container ][ key ];
     }
@@ -346,6 +349,23 @@ function elementSet( container, key, value )
 
 }
 
+//
+
+function lengthOf( container )
+{
+
+  _.assert( arguments.length === 1 );
+
+  let type = _.container.typeOf( container );
+  if( type && type._lengthGet )
+  return type._lengthGet( container );
+
+  if( _.hasCustomIterator( container ) )
+  return [ ... container ].length;
+
+  return _.lengthOf( container );
+}
+
 // --
 // structure
 // --
@@ -355,6 +375,7 @@ let knownTypeFields =
   name : null,
   _elementSet : null,
   _elementGet : null,
+  _lengthGet : null,
   _is : null,
   _identicalTypes : null, /* qqq : cover please. ask how */
   _while : null,
@@ -380,8 +401,9 @@ let Extension =
   typeOf,
   typeDeclare, /* qqq : cover please. ask how */
   typeUndeclare,
-  elementGet,
+  elementGet, /* qqq : good coverage is required */
   elementSet,
+  lengthOf,
 
   // fields
 
@@ -396,7 +418,7 @@ _.container.types = types;
 // export
 // --
 
-if( typeof module !== 'undefined' && module !== null )
+if( typeof module !== 'undefined' )
 module[ 'exports' ] = Self;
 
 })();

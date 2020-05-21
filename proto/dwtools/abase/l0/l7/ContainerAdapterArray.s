@@ -737,7 +737,7 @@ function ExportTo( dstGlobal, srcGlobal )
   _.assert( _.containerAdapter === srcGlobal.wTools.containerAdapter );
   _.assert( _.mapIs( srcGlobal.wTools.containerAdapter ) );
   // _.containerAdapter = srcGlobal.wTools.containerAdapter;
-  if( typeof module !== 'undefined' && module !== null )
+  if( typeof module !== 'undefined' )
   module[ 'exports' ] = _.containerAdapter;
 }
 
@@ -773,7 +773,7 @@ _.assert( _.containerAdapter === Self );
 // export
 // --
 
-if( typeof module !== 'undefined' && module !== null )
+if( typeof module !== 'undefined' )
 module[ 'exports' ] = Self;
 
 if( _global !== _realGlobal_ )
