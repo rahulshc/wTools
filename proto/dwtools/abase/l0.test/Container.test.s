@@ -381,8 +381,7 @@ function extendReplacingDstNull( test )
   };
   var src = new Constr();
   var got = _.container.extendReplacing( dst, src );
-  var exp = new Constr();
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
   test.is( got === src );
 
   test.close( 'src - not container' );
@@ -1036,7 +1035,7 @@ function extendReplacingDstLongAndSetLike( test )
 
 //
 
-/* qqq : normalize the test, please | Dmytro : normalized, extended coverage */
+/* aaa : normalize the test, please | Dmytro : normalized, extended coverage */
 
 function extendAppendingDstNull( test )
 {
