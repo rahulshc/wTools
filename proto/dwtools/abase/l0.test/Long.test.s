@@ -5274,27 +5274,27 @@ function longFrom( test )
   test.case = 'empty BufferTyped';
   var src = new U8x( [] );
   var got = _.longFrom( src );
-  test.identical( got, [] );
-  test.is( _.arrayIs( got ) );
+  test.identical( got, new U8x( [] ) );
+  test.is( _.bufferTypedIs( got ) );
   test.is( got !== src );
 
   var src = new I16x( [] );
   var got = _.longFrom( src );
-  test.identical( got, [] );
-  test.is( _.arrayIs( got ) );
+  test.identical( got, new I16x( [] ) );
+  test.is( _.bufferTypedIs( got ) );
   test.is( got !== src );
 
   test.case = 'filled BufferTyped';
   var src = new F32x( [ 1, 2, 3, 4, 0 ] );
   var got = _.longFrom( src );
-  test.identical( got, [ 1, 2, 3, 4, 0 ] );
-  test.is( _.arrayIs( got ) );
+  test.identical( got, new F32x([ 1, 2, 3, 4, 0 ]) );
+  test.is( _.bufferTypedIs( got ) );
   test.is( got !== src );
 
   var src = new F64x( [ 1, 2, 3, 4, 0 ] );
   var got = _.longFrom( src );
-  test.identical( got, [ 1, 2, 3, 4, 0 ] );
-  test.is( _.arrayIs( got ) );
+  test.identical( got, new F64x([ 1, 2, 3, 4, 0 ]) );
+  test.is( _.bufferTypedIs( got ) );
   test.is( got !== src );
 
   /* - */
@@ -5354,33 +5354,33 @@ function longFromLongDescriptor( test )
     test.case = 'empty array';
     var src = [];
     var got = descriptor.longFrom( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? [] : descriptor.longDescriptor.make( [] );
+    var exp = [];
     test.identical( got, exp );
-    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( got instanceof Array );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
     test.case = 'filled array';
     var src = [ 1, 2, 3, 4, 0 ];
     var got = descriptor.longFrom( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? [ 1, 2, 3, 4, 0 ] : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    var exp = [ 1, 2, 3, 4, 0 ];
     test.identical( got, exp );
-    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( got instanceof Array );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
     test.case = 'empty unroll';
     var src = _.unrollMake( [] );
     var got = descriptor.longFrom( src );
-    var exp = descriptor.longDescriptor.make( [] );
+    var exp = _.unrollMake( [] );
     test.identical( got, exp );
-    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( got instanceof src.constructor );
     test.is( src !== got );
 
     test.case = 'filled unroll';
     var src = _.unrollMake( [ 1, 2, 3, 4, 0 ] );
     var got = descriptor.longFrom( src );
-    var exp = descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    var exp = _.unrollMake( [ 1, 2, 3, 4, 0 ] );
     test.identical( got, exp );
-    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( got instanceof src.constructor );
     test.is( src !== got );
 
     test.case = 'empty argumentsArray';
@@ -5388,7 +5388,7 @@ function longFromLongDescriptor( test )
     var got = descriptor.longFrom( src );
     var exp = descriptor.longDescriptor.make( [] );
     test.identical( got, exp );
-    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( got instanceof src.constructor );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
     test.case = 'filled argumentsArray';
@@ -5396,37 +5396,37 @@ function longFromLongDescriptor( test )
     var got = descriptor.longFrom( src );
     var exp = src instanceof descriptor.longDescriptor.type ? _.argumentsArrayMake( [ 1, 2, 3, 4, 0 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
     test.identical( got, exp );
-    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( got instanceof src.constructor );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
     test.case = 'empty BufferTyped';
     var src = new U8x( [] );
     var got = descriptor.longFrom( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? new U8x( [] ) : descriptor.longDescriptor.make( [] );
+    var exp = new U8x( [] );
     test.identical( got, exp );
-    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( got instanceof U8x );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
     var src = new I16x( [] );
     var got = descriptor.longFrom( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? new I16x( [] ) : descriptor.longDescriptor.make( [] );;
+    var exp = new I16x( [] );
     test.identical( got, exp );
-    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( got instanceof I16x );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
     test.case = 'filled BufferTyped';
     var src = new F32x( [ 1, 2, 3, 4, 0 ] );
     var got = descriptor.longFrom( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? new F32x( [ 1, 2, 3, 4, 0 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    var exp = new F32x( [ 1, 2, 3, 4, 0 ] );
     test.identical( got, exp );
-    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( got instanceof F32x );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
     var src = new F64x( [ 1, 2, 3, 4, 0 ] );
     var got = descriptor.longFrom( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? new F64x( [ 1, 2, 3, 4, 0 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    var exp = new F64x( [ 1, 2, 3, 4, 0 ] );
     test.identical( got, exp );
-    test.is( got instanceof descriptor.longDescriptor.type );
+    test.is( got instanceof F64x );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
     /* - */
