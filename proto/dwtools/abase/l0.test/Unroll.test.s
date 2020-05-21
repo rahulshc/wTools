@@ -2149,10 +2149,9 @@ function unrollFromMaybeLongDescriptor( test )
 
     test.case = 'src - instance of constructor';
     function Constr1(){ this.x = 1; return this };
-    var Constr = Constr1;
-    var src = new Constr();
+    var src = new Constr1();
     var got = descriptor.unrollFromMaybe( src );
-    test.identical( got, new Constr() );
+    test.identical( got, src );
     test.is( _.objectIs( got ) );
 
     test.case = 'src - null';
