@@ -107,8 +107,8 @@ function longOnce_( dstLong, srcLong, onEvaluate )
   {
     if( _.routineIs( srcLong ) )
     {
-      onEvaluate = srcLong;
-      srcLong = dstLong;
+      onEvaluate = arguments[ 1 ];
+      srcLong = arguments[ 0 ];
     }
   }
   else if( arguments.length !== 3 )
@@ -168,7 +168,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
       result[ i ] = dstLong[ i ]
 
       let offset = dstLong.length;
-      for( let i = dstLong.length; i < result.length;  )
+      for( let i = dstLong.length ; i < result.length && offset >= 0 ;  )
       {
         if( _.longLeftIndex( result, srcLong[ i - offset ], onEvaluate ) === -1 )
         {
