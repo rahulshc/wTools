@@ -184,7 +184,7 @@ function _bufferMake_functor( onMake )
     }
     else if( length === undefined || length === null )
     {
-      if( src === null ) /* Dmytro : Do module has default buffer type? */
+      if( src === null ) /* Dmytro : Does module has default buffer type? */
       {
         length = 0;
       }
@@ -192,19 +192,19 @@ function _bufferMake_functor( onMake )
       {
         length = src.length;
         ins = src;
-        src = null;
+        // src = null;
       }
       else if( _.bufferRawIs( src ) )
       {
         length = src.byteLength;
         ins = new U8x( src );
-        src = null;
+        // src = null;
       }
       else if( _.bufferViewIs( src ) )
       {
         length = src.byteLength;
         ins = new U8x( src.buffer );
-        src = null;
+        // src = null;
       }
       else if( _.numberIs( src ) )
       {
