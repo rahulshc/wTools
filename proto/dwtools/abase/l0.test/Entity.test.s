@@ -1180,7 +1180,7 @@ function entityMakeUndefined( test )
 
   test.case = 'empty BufferTyped - U8x';
   var got = _.entityMakeUndefined( new U8x() );
-  test.identical( got, _.longDescriptor.make( 0 ) );
+  test.identical( got, new U8x( 0 ) );
 
   test.case = 'empty BufferTyped - I16x, length';
   var got = _.entityMakeUndefined( new I16x(), 5 );
@@ -1188,7 +1188,7 @@ function entityMakeUndefined( test )
 
   test.case = 'BufferTyped - F32x';
   var got = _.entityMakeUndefined( new F32x( 5 ) );
-  test.identical( got, _.longDescriptor.make( 5 ) );
+  test.identical( got, new F32x( 5 ) );
 
   test.case = 'BufferTyped - F32x, length';
   var got = _.entityMakeUndefined( new F32x( 10 ), 5 );
@@ -1399,7 +1399,7 @@ function entityMakeUndefinedLongDescriptor( test )
 
     test.case = 'empty BufferTyped - U8x';
     var got = descriptor.entityMakeUndefined( new U8x() );
-    test.identical( got, descriptor.longDescriptor.make( 0 ) );
+    test.identical( got, new U8x( 0 ) );
 
     test.case = 'empty BufferTyped - I16x, length';
     var got = descriptor.entityMakeUndefined( new I16x(), 5 );
@@ -1407,7 +1407,7 @@ function entityMakeUndefinedLongDescriptor( test )
 
     test.case = 'BufferTyped - F32x';
     var got = descriptor.entityMakeUndefined( new F32x( 5 ) );
-    test.identical( got, descriptor.longDescriptor.make( 5 ) );
+    test.identical( got, new F32x( 5 ) );
 
     test.case = 'BufferTyped - F32x, length';
     var got = descriptor.entityMakeUndefined( new F32x( 10 ), 5 );
