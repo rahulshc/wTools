@@ -168,7 +168,7 @@ function longOnce_( dstLong, srcLong, onEvaluate )
       result[ i ] = dstLong[ i ]
 
       let offset = dstLong.length;
-      for( let i = dstLong.length ; i < result.length && offset >= 0 ;  )
+      for( let i = dstLong.length ; i < result.length && offset >= -result.length ;  )
       {
         if( _.longLeftIndex( result, srcLong[ i - offset ], onEvaluate ) === -1 )
         {
