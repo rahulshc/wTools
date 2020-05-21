@@ -1283,7 +1283,6 @@ function longMakeWithBufferTypedLongDescriptor( test )
     test.case = 'ins = number, ins > src.length';
     var src = new makeLong( [ 1, 2, 3 ] );
     var got = descriptor.longMake( src, 4 );
-    // var expected = new long( [ 1, 2, 3, 0 ] )
     var expected = new makeLong( [ 1, 2, 3, 0 ] )
     test.identical( got, expected );
     test.is( got !== src );
@@ -1769,13 +1768,13 @@ function _longMakeOfLengthWithArrayAndUnroll( test )
     test.case = 'src = empty long, not ins';
     var src = makeLong( [] );
     var got = _._longMakeOfLength( src );
-    var expected = _.longDescriptor.make( [] );
+    var expected = makeLong( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = makeLong( [ 1, 2, 3 ] );
     var got = _._longMakeOfLength( src );
-    var expected = makeLong( 3 );
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.is( got !== src );
     test.is( src.constructor.name === got.constructor.name );
@@ -2067,16 +2066,16 @@ function _longMakeOfLengthWithBufferTyped( test )
     test.case = 'src = empty long, not ins';
     var src = new makeLong( [] );
     var got = _._longMakeOfLength( src );
-    var expected = _.longDescriptor.make( [] );
+    var expected = new makeLong( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = new makeLong( [ 1, 2, 3 ] );
     var got = _._longMakeOfLength( src );
-    var expected = _.longDescriptor.make( 3 );
+    var expected = new makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.is( got !== src );
-    test.is( src.constructor.name !== got.constructor.name );
+    test.is( src.constructor.name === got.constructor.name );
 
     test.case = 'src = empty long, ins = null';
     var src = new makeLong( [] );
@@ -2128,7 +2127,7 @@ function _longMakeOfLengthWithBufferTyped( test )
     var src = new makeLong( 5 );
     var ins = [ 1, 2, 3, 4, 5 ];
     var got = _._longMakeOfLength( src, ins );
-    var expected = new makeLong( 5 );
+    var expected = new makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.is( got !== src );
     test.is( src.constructor.name === got.constructor.name );
@@ -2231,13 +2230,13 @@ function _longMakeOfLengthWithArrayAndUnrollLongDescriptor( test )
     test.case = 'src = empty long, not ins';
     var src = makeLong( [] );
     var got = descriptor._longMakeOfLength( src );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = makeLong( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = makeLong( [ 1, 2, 3 ] );
     var got = descriptor._longMakeOfLength( src );
-    var expected = descriptor.longDescriptor.make( 3 );
+    var expected = makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -2561,13 +2560,13 @@ function _longMakeOfLengthWithBufferTypedLongDescriptor( test )
     test.case = 'src = empty long, not ins';
     var src = new makeLong( [] );
     var got = descriptor._longMakeOfLength( src );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = new makeLong( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = new makeLong( [ 1, 2, 3 ] );
     var got = descriptor._longMakeOfLength( src );
-    var expected = descriptor.longDescriptor.make( 3 );
+    var expected = new makeLong([ 1, 2, 3 ]);
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -2621,7 +2620,7 @@ function _longMakeOfLengthWithBufferTypedLongDescriptor( test )
     var src = new makeLong( 5 );
     var ins = [ 1, 2, 3, 4, 5 ];
     var got = descriptor._longMakeOfLength( src, ins );
-    var expected = new makeLong( 5 );
+    var expected = new makeLong([ 1, 2, 3, 4, 5 ]);
     test.identical( got, expected );
     test.is( got !== src );
     test.is( src.constructor.name === got.constructor.name );
