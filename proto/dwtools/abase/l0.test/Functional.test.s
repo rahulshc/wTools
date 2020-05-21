@@ -4973,11 +4973,10 @@ function entityButOnlySrc( test )
   test.identical( got, exp );
 
   test.case = 'src - obj';
-  var exp = new Constructor1();
   var src = new Constructor1();
   var got = _.entityBut( null, src, ( e, k ) => undefined );
   test.is( src === got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'src - str';
   var exp = 'src';
@@ -5090,11 +5089,10 @@ function entityButOnlySrc( test )
   test.identical( got, exp );
 
   test.case = 'src - obj';
-  var exp = new Constructor1();
   var src = new Constructor1();
   var got = _.entityBut( null, src, ( e, k ) => k );
   test.is( src === got );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   test.case = 'src - str';
   var exp = 'src';
