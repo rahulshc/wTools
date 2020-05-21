@@ -6873,57 +6873,55 @@ function butWithoutCallbacks( test )
   {
     test.open( 'without dst' );
 
-    var result = ( src, got ) => _.setIs( src ) || _.setIs( src.original ) ? [ ... got.original ] : got.original;
-
     test.case = 'dst - null';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( null );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
     var src2 = [];
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2 );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
     var src2 = _.containerAdapter.make( [] );
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2 );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var src2 = new Set();
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2 );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
     var src2 = _.containerAdapter.make( new Set() );
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2 );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src );
     var exp = [];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
 
@@ -6936,7 +6934,7 @@ function butWithoutCallbacks( test )
     var got = src.but( null, [] );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
     var dst = [];
@@ -6955,7 +6953,7 @@ function butWithoutCallbacks( test )
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -6973,14 +6971,14 @@ function butWithoutCallbacks( test )
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, [] );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
 
@@ -7006,7 +7004,7 @@ function butWithoutCallbacks( test )
     var exp = [];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7026,7 +7024,7 @@ function butWithoutCallbacks( test )
     var exp = [];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
@@ -7034,7 +7032,7 @@ function butWithoutCallbacks( test )
     var got = src.but( src, src2 );
     var exp = [];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
 
@@ -7060,7 +7058,7 @@ function butWithoutCallbacks( test )
     var exp = [ 1, 5, -15, 2, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7080,7 +7078,7 @@ function butWithoutCallbacks( test )
     var exp = [ 5, -15, 2, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
@@ -7088,7 +7086,7 @@ function butWithoutCallbacks( test )
     var got = src.but( src, src2 );
     var exp = [ 5, -15, 2, -20 ];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
   }
@@ -7114,57 +7112,55 @@ function butOneEvaluator( test )
   {
     test.open( 'without dst' );
 
-    var result = ( src, got ) => _.setIs( src ) || _.setIs( src.original ) ? [ ... got.original ] : got.original;
-
     test.case = 'dst - null';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( null, ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
     var src2 = [];
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e );
-    var exp = makeSrc( [] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
     var src2 = _.containerAdapter.make( [] );
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== dst );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var src2 = new Set();
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
     var src2 = _.containerAdapter.make( new Set() );
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, ( e ) => e );
     var exp = [];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
 
@@ -7177,7 +7173,7 @@ function butOneEvaluator( test )
     var got = src.but( null, [], ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
     var dst = [];
@@ -7196,7 +7192,7 @@ function butOneEvaluator( test )
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7214,14 +7210,14 @@ function butOneEvaluator( test )
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, [], ( e ) => e );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
 
@@ -7247,7 +7243,7 @@ function butOneEvaluator( test )
     var exp = [];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7267,7 +7263,7 @@ function butOneEvaluator( test )
     var exp = [ -20, 5 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
@@ -7275,7 +7271,7 @@ function butOneEvaluator( test )
     var got = src.but( src, src2, ( e ) => e );
     var exp = [];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
 
@@ -7301,7 +7297,7 @@ function butOneEvaluator( test )
     var exp = [ 1, 5, -15, 2, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7331,7 +7327,7 @@ function butOneEvaluator( test )
     var exp = [ 5, -15, 2, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
@@ -7339,7 +7335,7 @@ function butOneEvaluator( test )
     var got = src.but( src, src2, ( e ) => e );
     var exp = [ 5, -15, 2, -20 ];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
   }
@@ -7365,57 +7361,55 @@ function butTwoEvaluators( test )
   {
     test.open( 'without dst' );
 
-    var result = ( src, got ) => _.setIs( src ) || _.setIs( src.original ) ? [ ... got.original ] : got.original;
-
     test.case = 'dst - null';
     var src = makeSrc( [] );
     var got = src.but( null, ( e ) => e, ( ins ) => ins );
     var exp = [];
     test.is( got !== src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
     var src2 = [];
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e, ( ins ) => ins );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
     var src2 = _.containerAdapter.make( [] );
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e, ( ins ) => ins );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var src2 = new Set();
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e, ( ins ) => ins );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
     var src2 = _.containerAdapter.make( new Set() );
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e ) => e, ( ins ) => ins );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, ( e ) => e, ( ins ) => ins );
     var exp = [];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
 
@@ -7426,9 +7420,9 @@ function butTwoEvaluators( test )
     test.case = 'dst - null';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( null, [], ( e ) => e, ( ins ) => ins );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
     var dst = [];
@@ -7444,10 +7438,10 @@ function butTwoEvaluators( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = _.containerAdapter.make( [] );
     var got = src.but( dst, src2, ( e ) => e, ( ins ) => ins );
-    var exp = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7465,14 +7459,14 @@ function butTwoEvaluators( test )
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, [], ( e ) => e, ( ins ) => ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
 
@@ -7498,7 +7492,7 @@ function butTwoEvaluators( test )
     var exp = [];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7518,7 +7512,7 @@ function butTwoEvaluators( test )
     var exp = [ -20, 5, -10, -15, 4, 1, 2, 15, 21, [ 22 ], [ 20 ] ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
@@ -7526,7 +7520,7 @@ function butTwoEvaluators( test )
     var got = src.but( src, src2, ( e ) => e, ( ins ) => ins );
     var exp = [];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
 
@@ -7552,7 +7546,7 @@ function butTwoEvaluators( test )
     var exp = [ 1, 5, -15, 2, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7582,7 +7576,7 @@ function butTwoEvaluators( test )
     var exp = [ 5, -15, 2, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
@@ -7590,7 +7584,7 @@ function butTwoEvaluators( test )
     var got = src.but( src, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ 5, -15, 2, -20 ];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
   }
@@ -7616,57 +7610,55 @@ function butEqualizer( test )
   {
     test.open( 'without dst' );
 
-    var result = ( src, got ) => _.setIs( src ) || _.setIs( src.original ) ? [ ... got.original ] : got.original;
-
     test.case = 'dst - null';
     var src = makeSrc( [] );
     var got = src.but( null, ( e, ins ) => e === ins );
     var exp = [];
     test.is( got !== src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
     var src2 = [];
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e, ins ) => e === ins );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty arrayAdapter';
     var src2 = _.containerAdapter.make( [] );
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e, ins ) => e === ins );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var src2 = new Set();
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e, ins ) => e === ins );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty setAdapter';
     var src2 = _.containerAdapter.make( new Set() );
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src2, ( e, ins ) => e === ins );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src2 );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, ( e, ins ) => e === ins );
     var exp = [];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'without dst' );
 
@@ -7677,9 +7669,9 @@ function butEqualizer( test )
     test.case = 'dst - null';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( null, [], ( e, ins ) => e === ins );
-    var exp = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp =[ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty array';
     var dst = [];
@@ -7695,10 +7687,10 @@ function butEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = _.containerAdapter.make( [] );
     var got = src.but( dst, src2, ( e, ins ) => e === ins );
-    var exp = _.containerAdapter.make( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
+    var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7716,14 +7708,14 @@ function butEqualizer( test )
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var got = src.but( src, [], ( e, ins ) => e === ins );
     var exp = [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 is empty' );
 
@@ -7749,7 +7741,7 @@ function butEqualizer( test )
     var exp = [];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7769,7 +7761,7 @@ function butEqualizer( test )
     var exp = [ -20, 5, -10, -15, 4, 1, 2, 15, 21, [ 22 ], [ 20 ] ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
@@ -7777,7 +7769,7 @@ function butEqualizer( test )
     var got = src.but( src, src2, ( e, ins ) => e === ins );
     var exp = [];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 == dst' );
 
@@ -7800,10 +7792,10 @@ function butEqualizer( test )
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
     var src2 = _.containerAdapter.make( [ -10, 6, -14, 4, 1, 1, 15, 21, -1 ] );
     var got = src.but( dst, src2, ( e, ins ) => e === ins );
-    var exp = _.containerAdapter.make([ 1, 5, -15, 2, -20 ] );
+    var exp = [ 1, 5, -15, 2, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( got, exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - empty Set';
     var dst = new Set();
@@ -7833,7 +7825,7 @@ function butEqualizer( test )
     var exp = [ 5, -15, 2, -20 ];
     test.is( got === dst );
     test.is( got !== src );
-    test.identical( result( dst, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.case = 'dst - src';
     var src = makeSrc( [ -10, 5, -15, 4, 1, 2, 15, 21, -20 ] );
@@ -7841,7 +7833,7 @@ function butEqualizer( test )
     var got = src.but( src, src2, ( e ) => e, ( ins ) => ins );
     var exp = [ 5, -15, 2, -20 ];
     test.is( got === src );
-    test.identical( result( src, got ), exp );
+    test.identical( [ ... got.original ], exp );
 
     test.close( 'src2 != dst' );
   }
