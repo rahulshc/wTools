@@ -2803,8 +2803,8 @@ function bufferMove( dst, src )
     let options = arguments[ 0 ];
     _.assertMapHasOnly( options, bufferMove.defaults );
 
-    let src = options.src;
-    let dst = options.dst;
+    src = options.src;
+    dst = options.dst;
 
     if( _.bufferRawIs( dst ) )
     {
