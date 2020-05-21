@@ -11013,10 +11013,10 @@ function setAdapterMap( test )
 {
   test.case = 'without arguments';
   var src = _.containerAdapter.make( new Set( [] ) );
-  var exp = _.containerAdapter.make( new Set( [] ) );
+  var exp = [];
   var got = src.map( null );
   test.is( got !== src );
-  test.identical( got, exp );
+  test.identical( [ ... got.original ], exp );
 
   /* - */
 
