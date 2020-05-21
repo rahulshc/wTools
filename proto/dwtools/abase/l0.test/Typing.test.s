@@ -676,13 +676,13 @@ function vectorAdapterIs( test )
   var src = Object.create( null );
   src._vectorBuffer = true;
   var got = _.vectorAdapterIs( src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check not empty map';
   var src = Object.create( null );
   src._vectorBuffer = false;
   var got = _.vectorAdapterIs( src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check instance of constructor with not own property "constructor"';
   var Constr = function()
@@ -693,7 +693,7 @@ function vectorAdapterIs( test )
   var src = new Constr();
   src._vectorBuffer = true;
   var got = _.vectorAdapterIs( src );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'check instance of constructor with own property "constructor"';
   var Constr = function()
