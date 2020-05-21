@@ -113,7 +113,7 @@ function _longMake_functor( onMake )
         else
         {
           ins = src;
-          src = null;
+          // src = null;
         }
       }
       else
@@ -502,6 +502,7 @@ let _longMakeOfLength = _longMake_functor( function( src, ins, length, minLength
   }
   else if( _.arrayIs( src ) )
   {
+    debugger;
     if( length === src.length )
     {
       result = new( _.constructorJoin( src.constructor, src ) );
@@ -521,7 +522,7 @@ let _longMakeOfLength = _longMake_functor( function( src, ins, length, minLength
   {
     if( length === src.length )
     {
-      result = new src.constructor( length );
+      result = new src.constructor( ins );
     }
     else
     {

@@ -18,7 +18,7 @@ function isArrayUnrollArgumentsArray( test )
 {
   var descriptorsList = [ 'Array', 'Unroll', 'ArgumentsArray' ];
 
-  for( let i = 0; i < descriptorsList.length; i++ ) 
+  for( let i = 0; i < descriptorsList.length; i++ )
   {
     let descriptor = _.withDefaultLong[ descriptorsList[ i ] ].longDescriptor;
     test.open( descriptorsList[ i ] );
@@ -127,7 +127,7 @@ function isBufferTypedInstance( test )
 {
   var descriptorsList = [ 'U8x', 'U16x', 'U32x', 'Ux', 'I8x', 'I16x', 'I32x', 'Ix', 'F32x', 'F64x', 'Fx' ];
 
-  for( let i = 0; i < descriptorsList.length; i++ ) 
+  for( let i = 0; i < descriptorsList.length; i++ )
   {
     let descriptor = _.withDefaultLong[ descriptorsList[ i ] ].longDescriptor;
     test.open( descriptorsList[ i ] );
@@ -267,7 +267,7 @@ function isBufferTypedInstance( test )
 
       test.case = 'extra arguments';
       test.shouldThrowErrorSync( () => descriptor.is( [], 'extra' ) );
-    }   
+    }
   }
 }
 
@@ -278,7 +278,7 @@ function makeArrayUnrollArgumentsArray( test )
   var descriptorsList = [ 'Array', 'Unroll', 'ArgumentsArray' ];
   var getExpectedLongList = [ _.arrayMake, _.unrollMake, _.argumentsArrayMake ];
 
-  for( let i = 0; i < descriptorsList.length; i++ ) 
+  for( let i = 0; i < descriptorsList.length; i++ )
   {
     let descriptor = _.withDefaultLong[ descriptorsList[ i ] ].longDescriptor;
     let getExpectedLong = getExpectedLongList[ i ];
@@ -502,10 +502,10 @@ function makeArrayUnrollArgumentsArray( test )
 
 function makeBufferTypedInstance( test )
 {
-  var descriptorsList = [ 'U8x', 'U16x', 'U32x', 'Ux', 'I8x', 'I16x', 'I32x', 'Ix', 'F32x', 'F64x', 'Fx' ]; 
+  var descriptorsList = [ 'U8x', 'U16x', 'U32x', 'Ux', 'I8x', 'I16x', 'I32x', 'Ix', 'F32x', 'F64x', 'Fx' ];
   var getExpectedLongList = [ U8x, U16x, U32x, Ux, I8x, I16x, I32x, Ix, F32x, F64x, Fx ];
 
-  for( let i = 0; i < descriptorsList.length; i++ ) 
+  for( let i = 0; i < descriptorsList.length; i++ )
   {
     let descriptor = _.withDefaultLong[ descriptorsList[ i ] ].longDescriptor;
     let getExpectedLong = getExpectedLongList[ i ];
@@ -568,14 +568,14 @@ function makeBufferTypedInstance( test )
 
     test.case = 'src = number, src = 0';
     var got = descriptor.make( 0 );
-    var expected = new getExpectedLong( new Array( 0 ) );
+    var expected = new getExpectedLong( 0 );
     test.equivalent( got, expected );
     test.is( descriptor.is( got ) );
     test.is( src !== got );
 
     test.case = 'src = number, src > 0';
     var got = descriptor.make( 3 );
-    var expected = new getExpectedLong( new Array( 3 ) );
+    var expected = new getExpectedLong( 3 );
     test.equivalent( got, expected );
     test.is( descriptor.is( got ) );
     test.is( src !== got );
@@ -732,7 +732,7 @@ function fromArrayUnrollArgumentsArray( test )
   var descriptorsList = [ 'Array', 'Unroll', 'ArgumentsArray' ];
   var getExpectedLongList = [ _.arrayMake, _.unrollMake, _.argumentsArrayMake ];
 
-  for( let i = 0; i < descriptorsList.length; i++ ) 
+  for( let i = 0; i < descriptorsList.length; i++ )
   {
     let descriptor = _.withDefaultLong[ descriptorsList[ i ] ].longDescriptor;
     let getExpectedLong = getExpectedLongList[ i ];
@@ -953,10 +953,10 @@ function fromArrayUnrollArgumentsArray( test )
 
 function fromBufferTypedInstance( test )
 {
-  var descriptorsList = [ 'U8x', 'U16x', 'U32x', 'Ux', 'I8x', 'I16x', 'I32x', 'Ix', 'F32x', 'F64x', 'Fx' ]; 
+  var descriptorsList = [ 'U8x', 'U16x', 'U32x', 'Ux', 'I8x', 'I16x', 'I32x', 'Ix', 'F32x', 'F64x', 'Fx' ];
   var getExpectedLongList = [ U8x, U16x, U32x, Ux, I8x, I16x, I32x, Ix, F32x, F64x, Fx ];
 
-  for( let i = 0; i < descriptorsList.length; i++ ) 
+  for( let i = 0; i < descriptorsList.length; i++ )
   {
     let descriptor = _.withDefaultLong[ descriptorsList[ i ] ].longDescriptor;
     let getExpectedLong = getExpectedLongList[ i ];
@@ -1019,14 +1019,14 @@ function fromBufferTypedInstance( test )
 
     test.case = 'src = number, src = 0';
     var got = descriptor.from( 0 );
-    var expected = new getExpectedLong( new Array( 0 ) );
+    var expected = new getExpectedLong( 0 );
     test.equivalent( got, expected );
     test.is( descriptor.is( got ) );
     test.is( src !== got );
 
     test.case = 'src = number, src > 0';
     var got = descriptor.from( 3 );
-    var expected = new getExpectedLong( new Array( 3 ) );
+    var expected = new getExpectedLong( 3 );
     test.equivalent( got, expected );
     test.is( descriptor.is( got ) );
     test.is( src !== got );

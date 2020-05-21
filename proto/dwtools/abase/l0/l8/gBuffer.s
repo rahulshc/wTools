@@ -189,7 +189,7 @@ function _bufferMake_functor( onMake )
     }
     else if( length === undefined || length === null )
     {
-      if( src === null ) /* Dmytro : Do module has default buffer type? */
+      if( src === null ) /* Dmytro : Does module has default buffer type? */
       {
         length = 0;
       }
@@ -197,19 +197,19 @@ function _bufferMake_functor( onMake )
       {
         length = src.length;
         ins = src;
-        src = null;
+        // src = null;
       }
       else if( _.bufferRawIs( src ) )
       {
         length = src.byteLength;
         ins = new U8x( src );
-        src = null;
+        // src = null;
       }
       else if( _.bufferViewIs( src ) )
       {
         length = src.byteLength;
         ins = new U8x( src.buffer );
-        src = null;
+        // src = null;
       }
       else if( _.numberIs( src ) )
       {
@@ -2782,14 +2782,24 @@ function bufferMove( dst, src )
     if( dst.length !== src.length )
     throw _.err( '_.bufferMove :', '"dst" and "src" must have same length' );
 
-    if( dst.set )
+    if( dst.set && ( src instanceof U64x || src instanceof I64x ) )
+    {
+      for( let s = 0 ; s < src.length ; s++ )
+      dst[ s ] = Number( src[ s ] );
+    }
+    else if( dst.set && ( dst instanceof U64x || dst instanceof I64x ) )
+    {
+      dst.set( _.bigIntsFrom( src ) );
+    }
+    else if( dst.set )
     {
       dst.set( src );
-      return dst;
     }
-
-    for( let s = 0 ; s < src.length ; s++ )
-    dst[ s ] = src[ s ];
+    else
+    {
+      for( let s = 0 ; s < src.length ; s++ )
+      dst[ s ] = src[ s ];
+    }
 
   }
   else if( arguments.length === 1 )
@@ -2798,8 +2808,8 @@ function bufferMove( dst, src )
     let options = arguments[ 0 ];
     _.assertMapHasOnly( options, bufferMove.defaults );
 
-    let src = options.src;
-    let dst = options.dst;
+    src = options.src;
+    dst = options.dst;
 
     if( _.bufferRawIs( dst ) )
     {
@@ -2813,14 +2823,24 @@ function bufferMove( dst, src )
 
     options.dstOffset = options.dstOffset || 0;
 
-    if( dst.set )
+    if( dst.set && ( src instanceof U64x || src instanceof I64x ) )
+    {
+      for( let s = 0, d = options.dstOffset ; s < src.length ; s++, d++ )
+      dst[ d ] = Number( src[ s ] );
+    }
+    else if( dst.set && ( dst instanceof U64x || dst instanceof I64x ) )
+    {
+      dst.set( _.bigIntsFrom( src ), options.dstOffset );
+    }
+    else if( dst.set )
     {
       dst.set( src, options.dstOffset );
-      return dst;
     }
-
-    for( let s = 0, d = options.dstOffset ; s < src.length ; s++, d++ )
-    dst[ d ] = src[ s ];
+    else
+    {
+      for( let s = 0, d = options.dstOffset ; s < src.length ; s++, d++ )
+      dst[ d ] = src[ s ];
+    }
 
   }
   else _.assert( 0, 'unexpected' );

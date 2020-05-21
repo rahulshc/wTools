@@ -97,25 +97,25 @@ function entityMakeConstructing( test )
   var got = _.entityMakeConstructing( [ null, undefined, 1, 2 ], 2 );
   test.identical( got, [ undefined, undefined ] );
 
-  // test.case = 'empty arguments array';
-  // var got = _.entityMakeConstructing( _.argumentsArrayMake( [] ) );
-  // test.identical( got, [] );
-  // test.is( _.arrayIs( got ) );
-  //
-  // test.case = 'empty arguments array, length';
-  // var got = _.entityMakeConstructing( _.argumentsArrayMake( [] ), 4 );
-  // test.identical( got, [ undefined, undefined, undefined, undefined ] );
-  // test.is( _.arrayIs( got ) );
-  //
-  // test.case = 'not empty argumentsArray';
-  // var got = _.entityMakeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
-  // test.identical( got, [ null, undefined, 1, 2 ] );
-  // test.is( _.arrayIs( got ) );
-  //
-  // test.case = 'not empty argumentsArray, length';
-  // var got = _.entityMakeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
-  // test.identical( got, [ null, undefined ] );
-  // test.is( _.arrayIs( got ) );
+  test.case = 'empty arguments array';
+  var got = _.entityMakeConstructing( _.argumentsArrayMake( [] ) );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'empty arguments array, length';
+  var got = _.entityMakeConstructing( _.argumentsArrayMake( [] ), 4 );
+  test.identical( got, [ undefined, undefined, undefined, undefined ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'not empty argumentsArray';
+  var got = _.entityMakeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+  test.identical( got, [ null, undefined, 1, 2 ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'not empty argumentsArray, length';
+  var got = _.entityMakeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
+  test.identical( got, [ null, undefined ] );
+  test.is( _.arrayIs( got ) );
 
   test.case = 'empty unroll';
   var got = _.entityMakeConstructing( _.unrollMake( [] ) );
@@ -137,13 +137,13 @@ function entityMakeConstructing( test )
   test.identical( got, [ null, undefined ] );
   test.is( !_.unrollIs( got ) && _.arrayIs( got ) );
 
-  // test.case = 'BufferTyped';
-  // var got = _.entityMakeConstructing( new U8x( 10 ) );
-  // test.identical( got, new U8x( 10 ) );
-  //
-  // test.case = 'BufferTyped, length';
-  // var got = _.entityMakeConstructing( new U8x( 10 ), 4 );
-  // test.identical( got, new U8x( 4 ) );
+  test.case = 'BufferTyped';
+  var got = _.entityMakeConstructing( new U8x( 10 ) );
+  test.identical( got, new U8x( 10 ) );
+
+  test.case = 'BufferTyped, length';
+  var got = _.entityMakeConstructing( new U8x( 10 ), 4 );
+  test.identical( got, new U8x( 4 ) );
 
   test.case = 'empty map';
   var got = _.entityMakeConstructing( {} );
@@ -183,7 +183,8 @@ function entityMakeConstructing( test )
   };
   var src = new Constr( 2 );
   var got = _.entityMakeConstructing( src );
-  test.identical( got, new Constr() );
+  test.identical( got.x, 1 );
+  test.is( got !== src );
 
   test.case = 'instance of constructor, length';
   var Constr = function( src )
@@ -193,7 +194,8 @@ function entityMakeConstructing( test )
   };
   var src = new Constr( 2 );
   var got = _.entityMakeConstructing( src, 2 );
-  test.identical( got, new Constr() );
+  test.identical( got.x, 1 );
+  test.is( got !== src );
 
   /* - */
 
@@ -310,16 +312,16 @@ function entityMakeConstructingBufferTyped( test )
     test.case = 'src = empty long, not ins';
     var src = new long( [] );
     var got = _.entityMakeConstructing( src );
-    var expected = _.longDescriptor.make( [] );
+    var expected = new long( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = new long( [ 1, 2, 3 ] );
     var got = _.entityMakeConstructing( src );
-    var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
+    var expected = new long( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== src );
-    test.is( src.constructor.name !== got.constructor.name );
+    test.is( src.constructor.name === got.constructor.name );
 
     test.case = 'src = empty long, ins = null';
     var src = new long( [] );
@@ -531,7 +533,8 @@ function entityMakeConstructingLongDescriptor( test )
     };
     var src = new Constr( 2 );
     var got = descriptor.entityMakeConstructing( src );
-    test.identical( got, new Constr() );
+    test.identical( got.x, 1 );
+    test.is( got !== src );
 
     test.case = 'instance of constructor, length';
     var Constr = function( src )
@@ -541,7 +544,8 @@ function entityMakeConstructingLongDescriptor( test )
     };
     var src = new Constr( 2 );
     var got = descriptor.entityMakeConstructing( src, 2 );
-    test.identical( got, new Constr() );
+    test.identical( got.x, 1 );
+    test.is( got !== src );
 
     /* - */
 
@@ -688,13 +692,13 @@ function entityMakeConstructingBufferTypedLongDescriptor( test )
     test.case = 'src = empty long, not ins';
     var src = new long( [] );
     var got = descriptor.entityMakeConstructing( src );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = new long( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = new long( [ 1, 2, 3 ] );
     var got = descriptor.entityMakeConstructing( src );
-    var expected = descriptor.longDescriptor.make( [ 1, 2, 3 ] );
+    var expected = new long( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== src );
 
@@ -1180,7 +1184,7 @@ function entityMakeUndefined( test )
 
   test.case = 'empty BufferTyped - U8x';
   var got = _.entityMakeUndefined( new U8x() );
-  test.identical( got, _.longDescriptor.make( 0 ) );
+  test.identical( got, new U8x( 0 ) );
 
   test.case = 'empty BufferTyped - I16x, length';
   var got = _.entityMakeUndefined( new I16x(), 5 );
@@ -1188,7 +1192,7 @@ function entityMakeUndefined( test )
 
   test.case = 'BufferTyped - F32x';
   var got = _.entityMakeUndefined( new F32x( 5 ) );
-  test.identical( got, _.longDescriptor.make( 5 ) );
+  test.identical( got, new F32x( 5 ) );
 
   test.case = 'BufferTyped - F32x, length';
   var got = _.entityMakeUndefined( new F32x( 10 ), 5 );
@@ -1399,7 +1403,7 @@ function entityMakeUndefinedLongDescriptor( test )
 
     test.case = 'empty BufferTyped - U8x';
     var got = descriptor.entityMakeUndefined( new U8x() );
-    test.identical( got, descriptor.longDescriptor.make( 0 ) );
+    test.identical( got, new U8x( 0 ) );
 
     test.case = 'empty BufferTyped - I16x, length';
     var got = descriptor.entityMakeUndefined( new I16x(), 5 );
@@ -1407,7 +1411,7 @@ function entityMakeUndefinedLongDescriptor( test )
 
     test.case = 'BufferTyped - F32x';
     var got = descriptor.entityMakeUndefined( new F32x( 5 ) );
-    test.identical( got, descriptor.longDescriptor.make( 5 ) );
+    test.identical( got, new F32x( 5 ) );
 
     test.case = 'BufferTyped - F32x, length';
     var got = descriptor.entityMakeUndefined( new F32x( 10 ), 5 );
@@ -1593,28 +1597,28 @@ function entityMake( test )
   test.case = 'empty BufferTyped - U8x';
   var src = new U8x();
   var got = _.entityMake( src );
-  test.identical( got, _.longDescriptor.make( [] ) );
+  test.identical( got, new U8x( [] ) );
   test.is( got instanceof U8x )
   test.is( got !== src );
 
   test.case = 'not empty BufferTyped - I16x';
   var src = new I16x( 5 );
   var got = _.entityMake( src );
-  test.identical( got, _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+  test.identical( got, new I16x( [ 0, 0, 0, 0, 0 ] ) );
   test.is( got instanceof I16x )
   test.is( got !== src );
 
   test.case = 'not empty BufferTyped - F32x';
   var src = new F32x( 5 );
   var got = _.entityMake( src );
-  test.identical( got, _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+  test.identical( got, new F32x( [ 0, 0, 0, 0, 0 ] ) );
   test.is( got instanceof F32x )
   test.is( got !== src );
 
   test.case = 'not empty BufferTyped - F64x';
   var src = new F64x( 5 );
   var got = _.entityMake( src );
-  test.identical( got, _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+  test.identical( got, new F64x( [ 0, 0, 0, 0, 0 ] ) );
   test.is( got instanceof F64x )
   test.is( got !== src );
 
@@ -1801,19 +1805,19 @@ function entityMakeLongDescriptor( test )
     test.case = 'empty BufferTyped - U8x';
     var src = new U8x();
     var got = descriptor.entityMake( src );
-    test.identical( got, descriptor.longDescriptor.make( [] ) );
+    test.identical( got, new U8x( [] ) );
     test.is( got !== src );
 
     test.case = 'not empty BufferTyped - I16x';
     var src = new I16x( 5 );
     var got = descriptor.entityMake( src );
-    test.identical( got, descriptor.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+    test.identical( got, new I16x( [ 0, 0, 0, 0, 0 ] ) );
     test.is( got !== src );
 
     test.case = 'not empty BufferTyped - F64x';
     var src = new F64x( 5 );
     var got = descriptor.entityMake( src );
-    test.identical( got, descriptor.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+    test.identical( got, new F64x( [ 0, 0, 0, 0, 0 ] ) );
     test.is( got !== src );
 
     test.case = 'empty map';
