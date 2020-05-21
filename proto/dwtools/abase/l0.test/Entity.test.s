@@ -1593,28 +1593,28 @@ function entityMake( test )
   test.case = 'empty BufferTyped - U8x';
   var src = new U8x();
   var got = _.entityMake( src );
-  test.identical( got, _.longDescriptor.make( [] ) );
+  test.identical( got, new U8x( [] ) );
   test.is( got instanceof U8x )
   test.is( got !== src );
 
   test.case = 'not empty BufferTyped - I16x';
   var src = new I16x( 5 );
   var got = _.entityMake( src );
-  test.identical( got, _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+  test.identical( got, new I16x( [ 0, 0, 0, 0, 0 ] ) );
   test.is( got instanceof I16x )
   test.is( got !== src );
 
   test.case = 'not empty BufferTyped - F32x';
   var src = new F32x( 5 );
   var got = _.entityMake( src );
-  test.identical( got, _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+  test.identical( got, new F32x( [ 0, 0, 0, 0, 0 ] ) );
   test.is( got instanceof F32x )
   test.is( got !== src );
 
   test.case = 'not empty BufferTyped - F64x';
   var src = new F64x( 5 );
   var got = _.entityMake( src );
-  test.identical( got, _.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+  test.identical( got, new F64x( [ 0, 0, 0, 0, 0 ] ) );
   test.is( got instanceof F64x )
   test.is( got !== src );
 
@@ -1801,19 +1801,19 @@ function entityMakeLongDescriptor( test )
     test.case = 'empty BufferTyped - U8x';
     var src = new U8x();
     var got = descriptor.entityMake( src );
-    test.identical( got, descriptor.longDescriptor.make( [] ) );
+    test.identical( got, new U8x( [] ) );
     test.is( got !== src );
 
     test.case = 'not empty BufferTyped - I16x';
     var src = new I16x( 5 );
     var got = descriptor.entityMake( src );
-    test.identical( got, descriptor.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+    test.identical( got, new I16x( [ 0, 0, 0, 0, 0 ] ) );
     test.is( got !== src );
 
     test.case = 'not empty BufferTyped - F64x';
     var src = new F64x( 5 );
     var got = descriptor.entityMake( src );
-    test.identical( got, descriptor.longDescriptor.make( [ 0, 0, 0, 0, 0 ] ) );
+    test.identical( got, new F64x( [ 0, 0, 0, 0, 0 ] ) );
     test.is( got !== src );
 
     test.case = 'empty map';
