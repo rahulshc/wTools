@@ -655,10 +655,9 @@ function toOriginals( test )
     return this;
   }
   var src = new Constr();
-  var exp = new Constr();
   var got = _.containerAdapter.toOriginals( src );
   test.is( got === src );
-  test.identical( got, exp );
+  test.identical( got.x, 1 );
 
   /* */
 
@@ -748,9 +747,10 @@ function toOriginals( test )
   test.is( got !== src );
   test.identical( got, exp );
 
+  test.case = 'dsts - constructor, src - primitive';
   var dst = new Constr();
   var src = true;
-  var exp = [ new Constr(), true ];
+  var exp = [ dst, true ];
   var got = _.containerAdapter.toOriginals( dst, src );
   test.is( got !== dst );
   test.is( got !== src );
@@ -758,8 +758,8 @@ function toOriginals( test )
 
   test.case = 'dsts - primitive, src - array';
   var dst = 1;
-  var src = [ [ 2, 'str'], ... new Set( [ new Constr ] ) ];
-  var exp = [ 1, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var src = [ [ 2, 'str'], [ 1 ] ];
+  var exp = [ 1, [ 2, 'str'], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
   test.is( got !== dst );
   test.is( got !== src );
@@ -767,8 +767,8 @@ function toOriginals( test )
 
   test.case = 'dsts - primitive, src - unroll';
   var dst = 1;
-  var src = _.unrollMake( [ [ 2, 'str'], ... new Set( [ new Constr ] ) ] );
-  var exp = [ 1, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var src = _.unrollMake( [ [ 2, 'str'], [ 1 ] ] );
+  var exp = [ 1, [ 2, 'str'], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
   test.is( got !== dst );
   test.is( got !== src );
@@ -776,8 +776,8 @@ function toOriginals( test )
 
   test.case = 'dsts - primitive, src - argumentsArray';
   var dst = 1;
-  var src = _.argumentsArrayMake( [ [ 2, 'str'], ... new Set( [ new Constr ] ) ] );
-  var exp = [ 1, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var src = _.argumentsArrayMake( [ [ 2, 'str'], [ 1 ] ] );
+  var exp = [ 1, [ 2, 'str'], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
   test.is( got !== dst );
   test.is( got !== src );
@@ -785,8 +785,8 @@ function toOriginals( test )
 
   test.case = 'dsts - array, src - array';
   var dst = [ 1, { a : 0 } ];
-  var src = [ [ 2, 'str'], ... new Set( [ new Constr ] ) ];
-  var exp = [ 1, { a : 0 }, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var src = [ [ 2, 'str'], [ 1 ] ];
+  var exp = [ 1, { a : 0 }, [ 2, 'str'], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
   test.is( got === dst );
   test.is( got !== src );
@@ -794,8 +794,8 @@ function toOriginals( test )
 
   test.case = 'dsts - unroll, src - array';
   var dst = _.unrollMake( [ 1, { a : 0 } ] );
-  var src = [ [ 2, 'str'], ... new Set( [ new Constr ] ) ];
-  var exp = [ 1, { a : 0 }, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var src = [ [ 2, 'str'], [ 1 ] ];
+  var exp = [ 1, { a : 0 }, [ 2, 'str'], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
   test.is( got === dst );
   test.is( got !== src );
@@ -803,12 +803,12 @@ function toOriginals( test )
 
   test.case = 'dsts - argumentsArray, src - array';
   var dst = _.argumentsArrayMake( [ 1, { a : 0 } ] );
-  var src = [ [ 2, 'str'], ... new Set( [ new Constr ] ) ];
-  var exp = [ dst, [ 2, 'str'], ... new Set( [ new Constr ] ) ];
+  var src = [ [ 2, 'str'], [ 1 ] ];
+  var exp = [ [ 1, { a : 0 } ], [ 2, 'str'], [ 1 ] ];
   var got = _.containerAdapter.toOriginals( dst, src );
   test.is( got !== dst );
   test.is( got !== src );
-  test.identical( got, exp );
+  test.equivalent( got, exp );
 }
 
 //--
