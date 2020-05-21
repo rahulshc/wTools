@@ -10821,7 +10821,7 @@ function bufferMove( test )
   var dst = [ 0, 2, 3 ];
   var src = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) ); //1n, 2n, 3n
   var got = _.bufferMove( dst, src );
-  var expected = [ 1, 2, 3 ];
+  var expected = [ 1n, 2n, 3n ];
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -10872,10 +10872,10 @@ function bufferMove( test )
   test.is( got === dst );
 
   test.case = 'from src - I64x';
-  var dst = _.unrollMake( [ 1, 2, 3 ] );
+  var dst = _.unrollMake( [ 4, 5, 6 ] );
   var src = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) ); //1n, 2n, 3n
   var got = _.bufferMove( dst, src );
-  var expected = _.unrollMake( [ 4, 5, 6 ] );
+  var expected = _.unrollMake( [ 1n, 2n, 3n ] );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -10937,7 +10937,7 @@ function bufferMove( test )
   var dst = _.argumentsArrayMake( [ 4, 5, 6 ] );
   var src = new I64x( _.bigIntsFrom( [ 1, 2, 3 ] ) ); //1n, 2n, 3n
   var got = _.bufferMove( dst, src );
-  var expected = _.argumentsArrayMake( [ 1, 2, 3 ] );
+  var expected = _.argumentsArrayMake( [ 1n, 2n, 3n ] );
   test.identical( got, expected );
   test.is( got === dst );
 
@@ -11071,10 +11071,10 @@ function bufferMove( test )
   test.is( got === dst );
 
   test.case = 'from src - argumentsArray';
-  var dst = new I64x( [ 1, 2, 3 ] );
+  var dst = new I64x( _.bigIntsFrom([ 1, 2, 3 ]) );
   var src = _.argumentsArrayMake( [ 4, 5, 6 ] );
   var got = _.bufferMove( dst, src );
-  var expected = new I64x( [ 4, 5, 6 ] );
+  var expected = new I64x( _.bigIntsFrom([ 4, 5, 6 ]) );
   test.identical( got, expected );
   test.is( got === dst );
 
