@@ -97,25 +97,25 @@ function entityMakeConstructing( test )
   var got = _.entityMakeConstructing( [ null, undefined, 1, 2 ], 2 );
   test.identical( got, [ undefined, undefined ] );
 
-  // test.case = 'empty arguments array';
-  // var got = _.entityMakeConstructing( _.argumentsArrayMake( [] ) );
-  // test.identical( got, [] );
-  // test.is( _.arrayIs( got ) );
-  //
-  // test.case = 'empty arguments array, length';
-  // var got = _.entityMakeConstructing( _.argumentsArrayMake( [] ), 4 );
-  // test.identical( got, [ undefined, undefined, undefined, undefined ] );
-  // test.is( _.arrayIs( got ) );
-  //
-  // test.case = 'not empty argumentsArray';
-  // var got = _.entityMakeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
-  // test.identical( got, [ null, undefined, 1, 2 ] );
-  // test.is( _.arrayIs( got ) );
-  //
-  // test.case = 'not empty argumentsArray, length';
-  // var got = _.entityMakeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
-  // test.identical( got, [ null, undefined ] );
-  // test.is( _.arrayIs( got ) );
+  test.case = 'empty arguments array';
+  var got = _.entityMakeConstructing( _.argumentsArrayMake( [] ) );
+  test.identical( got, [] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'empty arguments array, length';
+  var got = _.entityMakeConstructing( _.argumentsArrayMake( [] ), 4 );
+  test.identical( got, [ undefined, undefined, undefined, undefined ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'not empty argumentsArray';
+  var got = _.entityMakeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ) );
+  test.identical( got, [ null, undefined, 1, 2 ] );
+  test.is( _.arrayIs( got ) );
+
+  test.case = 'not empty argumentsArray, length';
+  var got = _.entityMakeConstructing( _.argumentsArrayMake( [ null, undefined, 1, 2 ] ), 2 );
+  test.identical( got, [ null, undefined ] );
+  test.is( _.arrayIs( got ) );
 
   test.case = 'empty unroll';
   var got = _.entityMakeConstructing( _.unrollMake( [] ) );
@@ -137,13 +137,13 @@ function entityMakeConstructing( test )
   test.identical( got, [ null, undefined ] );
   test.is( !_.unrollIs( got ) && _.arrayIs( got ) );
 
-  // test.case = 'BufferTyped';
-  // var got = _.entityMakeConstructing( new U8x( 10 ) );
-  // test.identical( got, new U8x( 10 ) );
-  //
-  // test.case = 'BufferTyped, length';
-  // var got = _.entityMakeConstructing( new U8x( 10 ), 4 );
-  // test.identical( got, new U8x( 4 ) );
+  test.case = 'BufferTyped';
+  var got = _.entityMakeConstructing( new U8x( 10 ) );
+  test.identical( got, new U8x( 10 ) );
+
+  test.case = 'BufferTyped, length';
+  var got = _.entityMakeConstructing( new U8x( 10 ), 4 );
+  test.identical( got, new U8x( 4 ) );
 
   test.case = 'empty map';
   var got = _.entityMakeConstructing( {} );
@@ -310,16 +310,16 @@ function entityMakeConstructingBufferTyped( test )
     test.case = 'src = empty long, not ins';
     var src = new long( [] );
     var got = _.entityMakeConstructing( src );
-    var expected = _.longDescriptor.make( [] );
+    var expected = new long( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = new long( [ 1, 2, 3 ] );
     var got = _.entityMakeConstructing( src );
-    var expected = _.longDescriptor.make( [ 1, 2, 3 ] );
+    var expected = new long( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== src );
-    test.is( src.constructor.name !== got.constructor.name );
+    test.is( src.constructor.name === got.constructor.name );
 
     test.case = 'src = empty long, ins = null';
     var src = new long( [] );
@@ -688,13 +688,13 @@ function entityMakeConstructingBufferTypedLongDescriptor( test )
     test.case = 'src = empty long, not ins';
     var src = new long( [] );
     var got = descriptor.entityMakeConstructing( src );
-    var expected = descriptor.longDescriptor.make( [] );
+    var expected = new long( [] );
     test.identical( got, expected );
 
     test.case = 'src = long, not ins';
     var src = new long( [ 1, 2, 3 ] );
     var got = descriptor.entityMakeConstructing( src );
-    var expected = descriptor.longDescriptor.make( [ 1, 2, 3 ] );
+    var expected = new long( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== src );
 
