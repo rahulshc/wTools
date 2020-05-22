@@ -8328,7 +8328,7 @@ function mapOnlyComplementingTwoArguments_( test )
   expected.d = 'name';
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, { a : 'abc', b : undefined, c : 33, d : 'name' } );
+  test.equivalent( srcMap, { a : 'abc', b : undefined, c : 33, d : 'name' } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -8344,7 +8344,7 @@ function mapOnlyComplementingTwoArguments_( test )
   expected.d = 'name';
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, { a : 'abc', b : undefined, c : 33, d : 'name' } );
+  test.equivalent( srcMap, { a : 'abc', b : undefined, c : 33, d : 'name' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -8384,7 +8384,7 @@ function mapOnlyComplementingTwoArguments_( test )
   expected.d = 'name';
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, { 2 : 'abc', b : undefined, c : 33, d : 'name' } );
+  test.equivalent( srcMap, { 2 : 'abc', b : undefined, c : 33, d : 'name' } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - map' );
