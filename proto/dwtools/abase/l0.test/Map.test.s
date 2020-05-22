@@ -2152,7 +2152,7 @@ function mapAllPairs( test )
 {
   test.case = 'empty';
   var got = _.mapAllPairs( {} );
-  test.is( got.length );
+  test.is( got.length !== 0 );
 
   //
 
