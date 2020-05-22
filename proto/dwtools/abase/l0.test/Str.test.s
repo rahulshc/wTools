@@ -2634,7 +2634,7 @@ function strQuotePairsNormalize( test )
   test.identical( got, expected );
 
   test.case = 'quote - boolLike';
-  var got = _.strQuotePairsNormalize( 2 );
+  var got = _.strQuotePairsNormalize( 1 );
   var expected =
   [
     [ '"', '"' ],
@@ -6774,10 +6774,10 @@ function strIsolateLeftOrNone( test )
   test.close( 'abababa with regexp' )
 
   /* - */
-  
+
   /* aaa : extend the group */
   /* Dmytro : extended by new test cases */
-  test.open( 'quoting' ); 
+  test.open( 'quoting' );
 
   test.case = 'quote - 0';
   var got = _.strIsolateLeftOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 0 } );
@@ -7489,7 +7489,7 @@ function strIsolateRightOrNone( test )
 
   /* aaa : extend the group */
   /* Dmytro : extended by new test cases */
-  test.open( 'quoting' ); 
+  test.open( 'quoting' );
 
   test.case = 'quote - 0';
   var got = _.strIsolateRightOrNone( { src : '"a b" c "d e"', delimeter : ' ', quote : 0 } );
@@ -11114,14 +11114,14 @@ function strSplit( test )
 
   /* */
 
-  test.case = 'space in the end'; 
+  test.case = 'space in the end';
   var got = _.strSplit( 'aa b#b cc ', ' ' );
   var expected = [ 'aa', '', 'b#b', '', 'cc', '', '' ];
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'space on the beginning and the end'; 
+  test.case = 'space on the beginning and the end';
   var got = _.strSplit( ' aa b#b cc ', ' ' );
   var expected = [ '', '', 'aa', '', 'b#b', '', 'cc', '', '' ];
   test.identical( got, expected );
@@ -11141,14 +11141,14 @@ function strSplit( test )
 
   /* */
 
-  test.case = 'space in the end'; 
+  test.case = 'space in the end';
   var got = _.strSplit( 'aa b#b cc ', '#' );
   var expected = [ 'aa b', '#', 'b cc' ];
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'space on the beginning and the end'; 
+  test.case = 'space on the beginning and the end';
   var got = _.strSplit( ' aa b#b cc ', '#' );
   var expected = [ 'aa b', '#', 'b cc' ];
   test.identical( got, expected );
@@ -12932,7 +12932,7 @@ function strSplitInlinedDefaultOptions( test )
 
 //
 
-function strSplitInlinedOptionDelimeter( test ) 
+function strSplitInlinedOptionDelimeter( test )
 {
   test.case = 'full split, closing delimeter';
   var srcStr = 'this background:red is background:default text and is not';
@@ -13100,7 +13100,7 @@ function strSplitInlinedOptionStripping( test )
   test.close( 'stripping - 0' );
 
   /* - */
-  
+
   test.open( 'stripping - 1' );
 
   test.case = 'full split, closing delimeter';
@@ -13271,7 +13271,7 @@ function strSplitInlinedOptionQuoting( test )
   test.close( 'quoting - 0' );
 
   /* - */
-  
+
   test.open( 'quoting - 1' );
 
   test.case = 'full split, closing delimeter';
@@ -13279,7 +13279,7 @@ function strSplitInlinedOptionQuoting( test )
   var got = _.strSplitInlined( { src : srcStr, quoting : 1 } );
   var expected =
   [
-   'this "#"background:red"#"is"#"background:default"#" text and is not' 
+   'this "#"background:red"#"is"#"background:default"#" text and is not'
   ];
   test.identical( got, expected );
 
@@ -13288,7 +13288,7 @@ function strSplitInlinedOptionQuoting( test )
   var got = _.strSplitInlined( { src : srcStr, quoting : 1 } );
   var expected =
   [
-   'this "#"background:red"#"is"#"background:default"#" text and "#" is not' 
+   'this "#"background:red"#"is"#"background:default"#" text and "#" is not'
   ];
   test.identical( got, expected );
 
@@ -13297,7 +13297,7 @@ function strSplitInlinedOptionQuoting( test )
   var got = _.strSplitInlined( { src : srcStr, quoting : 1 } );
   var expected =
   [
-   '"#"simple "#" text "#"background:red"#"is"#"background:default"#" text and "#" is not"#"' 
+   '"#"simple "#" text "#"background:red"#"is"#"background:default"#" text and "#" is not"#"'
   ];
   test.identical( got, expected );
 
@@ -13306,7 +13306,7 @@ function strSplitInlinedOptionQuoting( test )
   var got = _.strSplitInlined( { src : srcStr, quoting : 1 } );
   var expected =
   [
-   '"#"background:red"#"i"#"s"#"background:default"#""#"text' 
+   '"#"background:red"#"i"#"s"#"background:default"#""#"text'
   ];
   test.identical( got, expected );
 
@@ -13324,7 +13324,7 @@ function strSplitInlinedOptionQuoting( test )
   var got = _.strSplitInlined( { src : srcStr, quoting : 1 } );
   var expected =
   [
-   '"#""#"ordinary"#"inline2"#"' 
+   '"#""#"ordinary"#"inline2"#"'
   ];
   test.identical( got, expected );
 
@@ -13333,7 +13333,7 @@ function strSplitInlinedOptionQuoting( test )
   var got = _.strSplitInlined( { src : srcStr, quoting : 1 } );
   var expected =
   [
-   '"#"inline1"#"ordinary"#""#"' 
+   '"#"inline1"#"ordinary"#""#"'
   ];
   test.identical( got, expected );
 
@@ -13342,7 +13342,7 @@ function strSplitInlinedOptionQuoting( test )
   var got = _.strSplitInlined( { src : srcStr, quoting : 1 } );
   var expected =
   [
-   '"#"inline1"#""#"inline2"#"' 
+   '"#"inline1"#""#"inline2"#"'
   ];
   test.identical( got, expected );
 
@@ -13357,7 +13357,7 @@ function strSplitInlinedOptionQuoting( test )
 
 //
 
-function strSplitInlinedOptionPreservingEmpty( test ) 
+function strSplitInlinedOptionPreservingEmpty( test )
 {
   test.case = 'full split, closing delimeter';
   var srcStr = 'this #background:red#is#background:default# text and is not';
@@ -13440,7 +13440,7 @@ function strSplitInlinedOptionPreservingEmpty( test )
 
 //
 
-function strSplitInlinedOptionOnInlined( test ) 
+function strSplitInlinedOptionOnInlined( test )
 {
   var onInlined = function( part )
   {
@@ -13535,7 +13535,7 @@ function strSplitInlinedOptionOnInlined( test )
 
 //
 
-function strSplitInlinedCombineOnInlinedAndPreservingEmpty( test ) 
+function strSplitInlinedCombineOnInlinedAndPreservingEmpty( test )
 {
   var onInlined = function( part )
   {
