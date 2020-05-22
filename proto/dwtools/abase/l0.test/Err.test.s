@@ -134,7 +134,7 @@ thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
  = Throws stack
     thrown at Object._broInclude @ http://127.0.0.1:15000/.starter:6144:17
     thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
-    thrown at Object.errFromStringedError @ /C/pro/web/Dave/git/trunk/builder/include/dwtools/abase/l0.test/Err.test.s:116:15
+    thrown at Object.errFromStringedError @ ${ o.catchLocation.filePathLineCol }
 
 `
   var got = String( err );
