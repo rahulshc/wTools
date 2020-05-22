@@ -571,9 +571,6 @@ function eachPermutation( o )
   while( iteration < iterations )
   {
 
-    if( iteration === 5 || iteration === 6 )
-    debugger;
-
     onEach( container, iteration, left, last, swaps );
     add();
     left = plast;
