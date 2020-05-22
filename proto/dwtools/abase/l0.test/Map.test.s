@@ -1905,12 +1905,12 @@ function mapAllVals( test )
   test.case = 'trivial';
 
   var got = _.mapAllVals( {} );
-  test.is( got.length );
+  test.is( got.length !== 0 );
 
   /**/
 
   var got = _.mapAllVals( { a : 7, b : 13 } );
-  test.is( got.length );
+  test.is( got.length !== 0 );
   test.is( got.indexOf( 7 ) !== -1 );
   test.is( got.indexOf( 13 ) !== -1 );
 
