@@ -177,7 +177,6 @@ function entitySize( src )
     return;
 
     /* qqq : does not work anymore! */
-    debugger;
     if( it.down.iterable === 'map-like' || it.down.iterable === 'hash-map-like' )
     {
       result += _.uncountableSize( k );
@@ -223,7 +222,7 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' && module !== null )
+if( typeof module !== 'undefined' )
 module[ 'exports' ] = Self;
 
 })();

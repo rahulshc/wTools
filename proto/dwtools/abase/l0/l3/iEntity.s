@@ -73,7 +73,18 @@ function iterableIs( src ) /* qqq xxx : check. good coverage is required */
   return false;
   if( _.mapLike( src ) )
   return true;
-  if( src[ Symbol.iterator ] )
+  if( _.routineIs( src[ Symbol.iterator ] ) )
+  return true;
+  return false;
+}
+
+//
+
+function hasCustomIterator( src ) /* qqq xxx : check. good coverage is required */
+{
+  if( !src )
+  return false;
+  if( _.routineIs( src[ Symbol.iterator ] ) )
   return true;
   return false;
 }
@@ -98,6 +109,7 @@ let Routines =
   containerIs,
   containerLike,
   iterableIs,
+  hasCustomIterator,
 
 }
 
@@ -110,7 +122,7 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' && module !== null )
+if( typeof module !== 'undefined' )
 module[ 'exports' ] = Self;
 
 })();

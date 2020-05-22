@@ -34,7 +34,7 @@ function boolIs( src )
 function boolLike( src )
 {
   let type = Object.prototype.toString.call( src );
-  return type === '[object Boolean]' || type === '[object Number]';
+  return type === '[object Boolean]' || src === 0 || src === 1;
 }
 
 //
@@ -130,7 +130,7 @@ Object.assign( Self, Fields );
 // export
 // --
 
-if( typeof module !== 'undefined' && module !== null )
+if( typeof module !== 'undefined' )
 module[ 'exports' ] = Self;
 
 })();

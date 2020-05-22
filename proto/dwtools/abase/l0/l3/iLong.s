@@ -179,8 +179,8 @@ function longRightIndex( arr, ins, evaluator1, evaluator2 )
   if( !evaluator1 )
   {
     _.assert( !evaluator2 );
-    if( !_.arrayIs( arr ) )
-    debugger;
+    // if( !_.arrayIs( arr ) )
+    // debugger;
     return _ArrayLastIndexOf.call( arr, ins, fromIndex );
   }
   else if( evaluator1.length === 2 ) /* equalizer */
@@ -476,7 +476,7 @@ Object.assign( Self, Extension );
 // export
 // --
 
-if( typeof module !== 'undefined' && module !== null )
+if( typeof module !== 'undefined' )
 module[ 'exports' ] = Self;
 
 })();
