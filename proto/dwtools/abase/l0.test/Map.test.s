@@ -2741,12 +2741,12 @@ function mapAllRoutines( test )
   test.case = 'empty';
 
   var got = _.mapAllRoutines( {} );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.is( _.routineIs( got.__defineGetter__ ) );
   test.is( _.routineIs( got.__defineSetter__ ) );
 
   var got = _.mapAllRoutines( [] );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.is( _.routineIs( got.__defineGetter__ ) );
   test.is( _.routineIs( got.__defineSetter__ ) );
 
@@ -2755,7 +2755,7 @@ function mapAllRoutines( test )
   test.case = 'trivial';
 
   var got = _.mapAllRoutines( { a : 1, b : function(){} } );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.is( _.routineIs( got.__defineGetter__ ) );
   test.is( _.routineIs( got.__defineSetter__ ) );
   test.is( _.routineIs( got.b ) );
@@ -2763,13 +2763,13 @@ function mapAllRoutines( test )
   var a = [];
   a.a = function(){};
   var got = _.mapAllRoutines( a );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.is( _.routineIs( got.__defineGetter__ ) );
   test.is( _.routineIs( got.__defineSetter__ ) );
   test.is( _.routineIs( got.a ) );
 
   var got = _.mapAllRoutines( new Date() );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.identical( got.constructor.name, 'Date' );
   test.is( _.routineIs( got.getDate ) );
 
