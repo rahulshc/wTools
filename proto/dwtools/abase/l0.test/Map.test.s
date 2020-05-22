@@ -2417,11 +2417,11 @@ function mapAllProperties( test )
   test.case = 'empty';
 
   var got = _.mapAllProperties( {} );
-  test.is( Object.keys( got ).length  )
+  test.is( Object.keys( got ).length !== 0 )
   test.identical( got.constructor.name, 'Object' );
 
   var got = _.mapAllProperties( [] );
-  test.is( Object.keys( got ).length  )
+  test.is( Object.keys( got ).length !== 0 )
   test.identical( got.constructor.name, 'Array' );
 
   //
