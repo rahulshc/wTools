@@ -2288,7 +2288,7 @@ function mapProperties( test )
   /**/
 
   var got = _.mapProperties( new Date(), { enumerable : 0, own : 0 } );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.is( got.constructor.name === 'Date' );
   test.is( _.routineIs( got.getDate ) );
   test.is( !!got.__proto__ );
