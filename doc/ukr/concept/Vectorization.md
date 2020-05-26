@@ -4,7 +4,45 @@
 
 Векторизована рутина - це рутина, яка може виконувати операції над масивом вхідних даних,
 переданих у вигляді [вектора](./Vector.md). Векторизована рутина не повинна втрачати здатність обробляти
-скалярні дані. Автоматично виконати векторизацію можна з домопогою рутини [vectorize](../tutorial/Vectorize.md).
+скалярні дані.
+
+## Автоматична векторизація
+
+Може бути виконати з домопогою рутини [vectorize](../tutorial/Vectorize.md).
+
+Нехай маємо рутину, у яку передається об'єкт user, а повертається його повне імя.
+```js
+function getFullName( user )
+{
+  return `${user.firstName} ${user.lastName}`;
+}
+
+let user = { firstName: 'John', lastName: 'Smith', age: 30 }
+console.log( getFullName( user ) );
+// John Smith
+```
+Після виконання автоматичної векторизації рутини `getFullName`, вона здатна обробляти також вектор із даними.
+
+```js
+let _ = require( 'wTools' );
+
+function getFullName( user )
+{
+  return `${user.firstName} ${user.lastName}`;
+}
+
+let getFullName2 = _.vectorize( getFullName, 1 );
+let user = { firstName: 'John', lastName: 'Smith', age: 30 }
+let users = [
+  { firstName: 'John', lastName: 'Smith', age: 30 },
+  { firstName: 'Samantha', lastName: 'Blum', age: 25 },
+  { firstName: 'Edvard', lastName: 'Pitt', age: 33 }
+];
+console.log( getFullName2( user ) );
+// John Smith
+console.log( getFullName2( users ) );
+// [ 'John Smith', 'Samantha Blum', 'Edvard Pitt' ]
+```  
 
 ## Ручна векторизація
 
@@ -12,15 +50,14 @@
 оскільки він апріорі не може покривати всі можливі випадки.
 В такому разі необхідно виконати векторизацію в ручну.
 
-Для прикладу розглянемо рутину, у яку передається об'єкт user, а повертається його повне імя. 
+Для прикладу розглянемо попередню рутину. 
 ```js
 function getFullName( user )
 {
   return `${user.firstName} ${user.lastName}`;
 }
 ```
-Задача полягає у тому, щоб зробити можливим опрацювання рутиною як одного об'єкту user, так і масиву users,
-для якого буде повернено масив із їх повними іменами в такій же послідовності.
+Задача полягає у тому, щоб зробити можливим опрацювання рутиною як одного об'єкту user, так і масиву об'єктів user.
 Для цього можемо додати перевірку вхідного параметру з метою встановлення чи це скаляр, чи вектор.
 ```js
 function getFullName( user )
