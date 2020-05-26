@@ -15,6 +15,13 @@
 </details>
 
 <details>
+  <summary><a href="./concept/Vectorization.md#Векторизація">
+    Векторизація
+  </a></summary>
+    Це процес перетворення скалярної рутини у векторизовану.
+</details>
+
+<details>
   <summary><a href="./concept/Vector.md">
     Вектор
   </a></summary>
