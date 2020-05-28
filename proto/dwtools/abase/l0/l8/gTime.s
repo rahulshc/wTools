@@ -580,6 +580,73 @@ function once( delay, onBegin, onEnd )
   }
 
 }
+
+//
+
+function debounce( o )
+{
+  _.assert( arguments.length <= 3 );
+
+  if( arguments.length > 1 )
+  {
+    o =
+    {
+      routine : arguments[ 0 ],
+      delay : arguments[ 1 ],
+      immediate : arguments[ 2 ],
+    }
+  }
+
+  _.routineOptions( debounce, o  );
+
+  _.assert( _.routineIs( o.routine ) );
+  _.assert( _.numberIs( o.delay ) );
+
+  let timer,lastCallTime;
+  let routine;
+  let result;
+
+  let debounced = function()
+  {
+    lastCallTime = _.time.now();
+    routine = _.routineJoin( this, o.routine, arguments );
+    let execNow = o.immediate && !timer
+    if( !timer )
+    timer = setTimeout( onDelay, o.delay );
+    if( execNow )
+    result = routine();
+    return result;
+  };
+
+  return debounced;
+
+  /* */
+
+  function onDelay()
+  {
+    var elapsed = _.time.now() - lastCallTime;
+
+    if( elapsed > o.delay )
+    {
+      timer = null;
+      if( !o.immediate )
+      result = routine();
+    }
+    else
+    {
+      timer = setTimeout( onDelay, o.delay - elapsed );
+    }
+  };
+}
+
+debounce.defaults =
+{
+  routine : null,
+  delay : 100,
+  immediate : false
+}
+
+
 // --
 // fields
 // --
@@ -606,6 +673,8 @@ let Routines =
   rarely_functor, /* check */
   // periodic, /* dubious */
   once, /* qqq : cover by light test */
+
+  debounce
 
 }
 
