@@ -606,7 +606,11 @@ function debounce( o )
   let routine;
   let result;
 
-  let debounced = function()
+  return debounced;
+
+  /* */
+
+  function debounced()
   {
     lastCallTime = _.time.now();
     routine = _.routineJoin( this, o.routine, arguments );
@@ -617,10 +621,6 @@ function debounce( o )
     result = routine();
     return result;
   };
-
-  return debounced;
-
-  /* */
 
   function onDelay()
   {
