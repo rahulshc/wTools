@@ -105,36 +105,36 @@ function vectorLike( src )
 
 //
 
-function constructorIsVector( src )
+function constructorIsVectorAdapter( src )
 {
   if( !src )
   return false;
   return '_vectorBuffer' in src.prototype;
 }
 
+// //
 //
-
-function matrixIs( src )
-{
-  if( !src )
-  return false;
-  if( !_.Matrix )
-  return false;
-  if( src instanceof _.Matrix )
-  return true;
-}
-
+// function matrixIs( src )
+// {
+//   if( !src )
+//   return false;
+//   if( !_.Matrix )
+//   return false;
+//   if( src instanceof _.Matrix )
+//   return true;
+// }
 //
-
-function constructorIsMatrix( src )
-{
-  // if( !_.Matrix )
-  // return false;
-  // if( src === _.Matrix )
-  // return true;
-  // return false;
-  return _.Matrix ? src === _.Matrix : false;
-}
+// //
+//
+// function constructorIsMatrix( src )
+// {
+//   // if( !_.Matrix )
+//   // return false;
+//   // if( src === _.Matrix )
+//   // return true;
+//   // return false;
+//   return _.Matrix ? src === _.Matrix : false;
+// }
 
 //
 
@@ -519,9 +519,10 @@ let Routines =
   vectorIs, /* qqq : cover */
   vectorLike,
 
-  constructorIsVector,
-  matrixIs,
-  constructorIsMatrix,
+  constructorIsVectorAdapter,
+  constructorIsVad : constructorIsVectorAdapter,
+  // matrixIs,
+  // constructorIsMatrix,
 
   consequenceIs,
   consequenceLike,

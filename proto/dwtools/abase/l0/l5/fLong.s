@@ -973,10 +973,10 @@ function longFill( src, value, range )
  * @param { objectLike } [ o = {  } ] o - The set of arguments.
  * @param { longIs } o.src - The given initial array.
  * @param { longIs } o.result - To collect all data.
- * @param { Number } [ o.numberOfScalarsPerElement = 1 ] o.numberOfScalarsPerElement - The certain number of times
+ * @param { Number } [ o.nScalarsPerElement = 1 ] o.nScalarsPerElement - The certain number of times
  * to append the next value from (srcArray or o.src) to the (o.result).
- * If (o.numberOfScalarsPerElement) is greater that length of a (srcArray or o.src) it appends the 'undefined'.
- * @param { Number } [ o.numberOfDuplicatesPerElement = 2 ] o.numberOfDuplicatesPerElement = 2 - The number of duplicates per element.
+ * If (o.nScalarsPerElement) is greater that length of a (srcArray or o.src) it appends the 'undefined'.
+ * @param { Number } [ o.nDupsPerElement = 2 ] o.nDupsPerElement = 2 - The number of duplicates per element.
  *
  * @example
  * _.longDuplicate( [ 'a', 'b', 'c' ] );
@@ -986,8 +986,8 @@ function longFill( src, value, range )
  * let options = {
  *   src : [ 'abc', 'def' ],
  *   result : [  ],
- *   numberOfScalarsPerElement : 2,
- *   numberOfDuplicatesPerElement : 3
+ *   nScalarsPerElement : 2,
+ *   nDupsPerElement : 3
  * };
  * _.longDuplicate( options, {} );
  * // returns [ 'abc', 'def', 'abc', 'def', 'abc', 'def' ]
@@ -996,8 +996,8 @@ function longFill( src, value, range )
  * let options = {
  *   src : [ 'abc', 'def' ],
  *   result : [  ],
- *   numberOfScalarsPerElement : 3,
- *   numberOfDuplicatesPerElement : 3
+ *   nScalarsPerElement : 3,
+ *   nDupsPerElement : 3
  * };
  * _.longDuplicate( options, { a : 7, b : 13 } );
  * // returns [ 'abc', 'def', undefined, 'abc', 'def', undefined, 'abc', 'def', undefined ]
@@ -1008,82 +1008,90 @@ function longFill( src, value, range )
  * @namespace Tools
  */
 
-function longDuplicate( o )
+function longDuplicate( o ) /* xxx : review interface */
 {
   // _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( arguments.length === 2 )
-  {
-    o = { src : arguments[ 0 ], numberOfDuplicatesPerElement : arguments[ 1 ] };
-  }
-  else if( arguments.length === 1 )
-  {
-    if( !_.objectIs( o ) )
-    o = { src : o };
-  }
-  else _.assert( 0 );
+  _.assert( _.mapIs( o ) );
 
-  _.assert( _.numberIs( o.numberOfDuplicatesPerElement ) || o.numberOfDuplicatesPerElement === undefined );
+  // if( arguments.length === 2 )
+  // {
+  //   o = { src : arguments[ 0 ], nDupsPerElement : arguments[ 1 ] };
+  // }
+  // else if( arguments.length === 1 )
+  // {
+  //   if( !_.mapIs( o ) )
+  //   o = { src : o };
+  // }
+  // else _.assert( 0 );
+
+  if( o.nScalarsPerElement === 0 )
+  if( o.src.length === 0 )
+  o.nScalarsPerElement = 1;
+  else
+  o.nScalarsPerElement = o.src.length;
+
   _.routineOptions( longDuplicate, o );
+  _.assert( _.numberIs( o.nDupsPerElement ) );
   _.assert( _.longIs( o.src ), 'Expects Long {-o.src-}' );
-  _.assert( _.intIs( o.src.length / o.numberOfScalarsPerElement ) );
+  _.assert( _.intIs( o.src.length / o.nScalarsPerElement ) );
 
-  if( o.numberOfDuplicatesPerElement === 1 )
+  if( o.nDupsPerElement === 1 )
   {
-    if( o.result )
+    if( o.dst )
     {
-      _.assert( _.longIs( o.result ) || _.bufferTypedIs( o.result ), 'Expects o.result as longIs or TypedArray if numberOfDuplicatesPerElement equals 1' );
+      _.assert( _.longIs( o.dst ) || _.bufferTypedIs( o.dst ), 'Expects o.dst as longIs or TypedArray if nDupsPerElement equals 1' );
 
-      if( _.bufferTypedIs( o.result ) )
-      o.result = _.longShallowClone( o.result, o.src );
-      else if( _.longIs( o.result ) )
-      o.result.push.apply( o.result, o.src );
+      if( _.bufferTypedIs( o.dst ) )
+      o.dst = _.longShallowClone( o.dst, o.src );
+      else if( _.longIs( o.dst ) )
+      o.dst.push.apply( o.dst, o.src );
     }
     else
     {
-      o.result = o.src;
+      o.dst = o.src;
     }
-    return o.result;
+    return o.dst;
   }
 
-  let length = o.src.length * o.numberOfDuplicatesPerElement;
-  let numberOfElements = o.src.length / o.numberOfScalarsPerElement;
+  let length = o.src.length * o.nDupsPerElement;
+  let numberOfElements = o.src.length / o.nScalarsPerElement;
 
-  if( o.result )
-  _.assert( o.result.length >= length );
+  if( o.dst )
+  _.assert( o.dst.length >= length );
 
-  o.result = o.result || _.longMakeUndefined( o.src, length );
+  o.dst = o.dst || _.longMakeUndefined( o.src, length );
 
-  let rlength = o.result.length;
+  let rlength = o.dst.length;
 
   for( let c = 0, cl = numberOfElements ; c < cl ; c++ )
   {
 
-    for( let d = 0, dl = o.numberOfDuplicatesPerElement ; d < dl ; d++ )
+    for( let d = 0, dl = o.nDupsPerElement ; d < dl ; d++ )
     {
 
-      for( let e = 0, el = o.numberOfScalarsPerElement ; e < el ; e++ )
+      for( let e = 0, el = o.nScalarsPerElement ; e < el ; e++ )
       {
-        let indexDst = c*o.numberOfScalarsPerElement*o.numberOfDuplicatesPerElement + d*o.numberOfScalarsPerElement + e;
-        let indexSrc = c*o.numberOfScalarsPerElement+e;
-        o.result[ indexDst ] = o.src[ indexSrc ];
+        let indexDst = c*o.nScalarsPerElement*o.nDupsPerElement + d*o.nScalarsPerElement + e;
+        let indexSrc = c*o.nScalarsPerElement+e;
+        o.dst[ indexDst ] = o.src[ indexSrc ];
       }
 
     }
 
   }
 
-  _.assert( o.result.length === rlength );
+  _.assert( o.dst.length === rlength );
 
-  return o.result;
+  return o.dst;
 }
 
-longDuplicate.defaults =
+longDuplicate.defaults = /* qqq : cover. take into account extreme cases */
 {
   src : null,
-  result : null,
-  numberOfScalarsPerElement : 1,
-  numberOfDuplicatesPerElement : 2,
+  dst : null,
+  nScalarsPerElement : 1,
+  nDupsPerElement : 2,
 }
 
 //
@@ -3778,8 +3786,8 @@ let Extension =
   | longGrow_        | _.longGrow_( null, src, range )          | _.longGrow_( src )                                      |
   |                  | _.longGrow_( dst, src, range )           | _.longGrow_( src, range )                               |
   |                  | if dst not resizable and change length   | _.longGrow_( dst, dst )                                 |
-  |                  |                                          | _.longGrow_( dst, dst, range ) if dst is resizable      |
-  |                  |                                          | or dst not change length                                |
+  |                  | qqq2 : should throw error                | _.longGrow_( dst, dst, range ) if dst is resizable      |
+  |                  |  if not resizable                        | or dst not change length                                |
   |                  |                                          | _.longGrow_( dst, src, range ) if dst is resizable      |
   |                  |                                          | or dst not change length                                |
   | ---------------  | ---------------------------------------- | ------------------------------------------------------  |
@@ -3792,6 +3800,8 @@ let Extension =
   |                  |                                          | or dst not change length                                |
   | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
   */
+
+  /* qqq2 : all similar routines should accept _.self as the first argument */
 
 }
 
