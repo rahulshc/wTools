@@ -91,10 +91,12 @@ console.log( getFullName( users ) );
 Необхідно зробити можливим опрацювання рутиною як одного об'єкту user, так і масиву об'єктів user.
 Для цього змінимо операції над вхідними даними наступним чином.
 ```js
+let _ = require( 'wTools' );
+
 // manually vectorized routine
 function getFullName( user )
 {
-  if( Array.isArray( user ) )
+  if( _.arrayIs( user ) )
   {
     const fullNames = [];
     user.forEach( ( u ) => fullNames.push( `${u.firstName} ${u.lastName}` ) )
