@@ -4,7 +4,6 @@ require( 'wPathBasic' );
 var _ = wTools;
 
 
-
 let str = 'exexample';
 let ins = 'ex';
 let sub = '1';
