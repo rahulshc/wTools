@@ -12,13 +12,12 @@
 
 Маємо рутину, у яку передається об'єкт user, а повертається його повне імя.
 ```js
-// scalar routine
+// routine to vectorize
 function getFullName( user )
 {
   return `${user.firstName} ${user.lastName}`;
 }
 
-// scalar
 let user = { firstName: 'John', lastName: 'Smith', age: 30 }
 console.log( getFullName( user ) );
 // John Smith
@@ -28,7 +27,7 @@ console.log( getFullName( user ) );
 ```js
 let _ = require( 'wTools' );
 
-// scalar routine
+// routine to vectorize
 function getFullName( user )
 {
   return `${user.firstName} ${user.lastName}`;
@@ -37,9 +36,8 @@ function getFullName( user )
 // automatically vectorized routine by vectorize( func, n ),
 // func - scalar routine, n - number of parameters for vectorized routine
 let getFullName2 = _.vectorize( getFullName, 1 );
-// scalar
+
 let user = { firstName: 'John', lastName: 'Smith', age: 30 }
-// vector
 let users =
 [
   { firstName: 'John', lastName: 'Smith', age: 30 },
@@ -61,7 +59,7 @@ console.log( getFullName2( users ) );
 Для прикладу розглянемо рутину, яку, насправді, можна легко автоматизувати, проте вона гарно демонструє 
 ручну векторизацію. 
 ```js
-// scalar routine
+// routine to vectorize
 function getFullName( user )
 {
   return `${user.firstName} ${user.lastName}`;
