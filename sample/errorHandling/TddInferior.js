@@ -21,7 +21,8 @@ routine( true );
 
 /*
 In the example above routine has both branches implemented, but developer marked them as "not tested".
-The first time entering the branch developer will become aware of that and will pay attention to test the branch of the routine manually.
+The first time entering the branch developer will become aware of that and will pay attention to test
+the branch of the routine manually.
 It allows postponing the moment of manual testing.
 This practice should be used with caution as test-driven development practice is superior in most cases.
 */

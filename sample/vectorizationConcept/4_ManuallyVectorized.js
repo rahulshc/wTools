@@ -1,7 +1,9 @@
+let _ = require( 'wTools' );
+
 // manually vectorized routine
 function getFullName( user )
 {
-  if( Array.isArray( user ) )
+  if( _.arrayIs( user ) )
   {
     const fullNames = [];
     user.forEach( ( u ) => fullNames.push( `${u.firstName} ${u.lastName}` ) )
