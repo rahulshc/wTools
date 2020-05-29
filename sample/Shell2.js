@@ -16,7 +16,7 @@ con.seal( _, _.process.start )
 .doThen( 'ping www.google.com' )
 /*wConsequence returned as 'consequence' property */
 .consequence
-.doThen( function( err,data )
+.doThen( function( err, data )
 {
   /* handle error if any */
   if( err )

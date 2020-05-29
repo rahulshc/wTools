@@ -17,6 +17,7 @@ function routine( bool )
 routine( true );
 
 /*
-Second branch of the example above has implemented the first branch, but the second has unconditional assertion throwing error "not implemented".
+Second branch of the example above has implemented the first branch, but the second has unconditional
+assertion throwing error "not implemented".
 It will allow to postpone design of the branch and to be sure no silent bug introduced.
 */

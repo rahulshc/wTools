@@ -11,7 +11,7 @@ function program()
   {
     console.log( 'sourcePath::timeout ' + _.procedure.activeProcedure._sourcePath ); debugger;
     throw _.err( 'timeOut1' );
-  });
+  } );
 
   console.log( 'sourcePath::program ' + _.procedure.activeProcedure._sourcePath );
 }
