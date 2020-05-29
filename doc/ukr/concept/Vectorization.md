@@ -12,11 +12,13 @@
 
 Маємо рутину, у яку передається об'єкт user, а повертається його повне імя.
 ```js
+// scalar routine
 function getFullName( user )
 {
   return `${user.firstName} ${user.lastName}`;
 }
 
+// scalar
 let user = { firstName: 'John', lastName: 'Smith', age: 30 }
 console.log( getFullName( user ) );
 // John Smith
@@ -26,18 +28,25 @@ console.log( getFullName( user ) );
 ```js
 let _ = require( 'wTools' );
 
+// scalar routine
 function getFullName( user )
 {
   return `${user.firstName} ${user.lastName}`;
 }
 
+// automatically vectorized routine by vectorize( func, n ),
+// func - scalar routine, n - number of parameters for vectorized routine
 let getFullName2 = _.vectorize( getFullName, 1 );
+// scalar
 let user = { firstName: 'John', lastName: 'Smith', age: 30 }
-let users = [
+// vector
+let users =
+[
   { firstName: 'John', lastName: 'Smith', age: 30 },
   { firstName: 'Samantha', lastName: 'Blum', age: 25 },
   { firstName: 'Edvard', lastName: 'Pitt', age: 33 }
 ];
+
 console.log( getFullName2( user ) );
 // John Smith
 console.log( getFullName2( users ) );
@@ -52,6 +61,7 @@ console.log( getFullName2( users ) );
 Для прикладу розглянемо рутину, яку, насправді, можна легко автоматизувати, проте вона гарно демонструє 
 ручну векторизацію. 
 ```js
+// scalar routine
 function getFullName( user )
 {
   return `${user.firstName} ${user.lastName}`;
@@ -60,6 +70,7 @@ function getFullName( user )
 Необхідно зробити можливим опрацювання рутиною як одного об'єкту user, так і масиву об'єктів user.
 Для цього змінимо операції над вхідними даними наступним чином.
 ```js
+// manually vectorized routine
 function getFullName( user )
 {
   if( Array.isArray( user ) )
