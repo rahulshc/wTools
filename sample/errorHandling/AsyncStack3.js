@@ -14,20 +14,20 @@ function program()
   {
     console.log( 'sourcePath::callback1 ' + _.procedure.activeProcedure._sourcePath );
     return 'callback1';
-  })
+  } )
 
   con.then( function callback2( arg )
   {
     console.log( 'sourcePath::callback2 ' + _.procedure.activeProcedure._sourcePath ); debugger;
     throw _.err( 'callback2' );
     return 'callback2';
-  })
+  } )
 
   _.time.out( 100, function timeOut1()
   {
     console.log( 'sourcePath::timeout ' + _.procedure.activeProcedure._sourcePath );
     con.take( 'timeout1' );
-  });
+  } );
 
   console.log( 'sourcePath::program ' + _.procedure.activeProcedure._sourcePath );
 }

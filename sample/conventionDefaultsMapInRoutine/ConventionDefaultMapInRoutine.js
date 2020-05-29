@@ -7,7 +7,7 @@ function nameFull( path )
   _.assert( arguments.length === 1 );
   _.assert( _.strIs( path ), 'Expects strings {-path-}' );
 
-  let o = { path : path };
+  let o = { path };
   _.routineOptions( nameFull, o );
 
   let i = o.path.lastIndexOf( '/' );
@@ -68,7 +68,7 @@ console.log( name( { path : '/foo/bar/baz.js', full : 1 } ) );
 
 //
 
-  let o = { own : 1 };
+let o = { own : 1 };
 
 var a = { a : 1 }
 var b = { b : 2 }

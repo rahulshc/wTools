@@ -2,7 +2,7 @@ require( 'wTools' );
 
 // original array
 
-let origin = [ 1, 2, 'a', 'b', true, 1,  [ 1 ] ];
+let origin = [ 1, 2, 'a', 'b', true, 1, [ 1 ] ];
 
 // second argument in the routines
 
@@ -16,7 +16,7 @@ let result = wTools.arrayCountElement( srcArray, elem );
 
 console.log( 'The result is:' );
 console.log( result );
-console.log( 'The original array is:');
+console.log( 'The original array is:' );
 console.log( origin );
 console.log( 'srcArray changed to:' );
 console.log( srcArray );
@@ -29,7 +29,7 @@ let result1 = wTools.arrayAppend( dstArray, elem );
 
 console.log( 'The result is:' );
 console.log( result1 );
-console.log( 'The original array is:');
+console.log( 'The original array is:' );
 console.log( origin );
 console.log( 'dstArray changed to:' );
 console.log( dstArray );

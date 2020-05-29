@@ -13,13 +13,13 @@ function program()
   {
     console.log( 'sourcePath::callback1 ' + _.procedure.activeProcedure._sourcePath ); debugger;
     return 'callback1';
-  })
+  } )
 
   _.time.out( 100, function timeOut1()
   {
     console.log( 'sourcePath::timeout ' + _.procedure.activeProcedure._sourcePath ); debugger;
     con.take( 'timeout1' );
-  });
+  } );
 
   con.deasync();
   debugger;

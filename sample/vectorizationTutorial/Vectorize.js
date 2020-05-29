@@ -69,7 +69,7 @@ let selectByKey = _.vectorize( o );
 // log examples
 console.log( selectByKey( [ 0, 1, 2, 'a' ] ) );
 console.log( selectByKey( { a : 2, b : [ 3, 4 ] } ) );
-console.log( selectByKey( { a : [ 5, 4, 3 ], b : [ 1, 2], c : 0 } ) );
+console.log( selectByKey( { a : [ 5, 4, 3 ], b : [ 1, 2 ], c : 0 } ) );
 
 // vectorized routine
 var o =

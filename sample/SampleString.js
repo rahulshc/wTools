@@ -22,7 +22,7 @@ logger.log( s3 )
 let s4 = _.strIsolateEndOrAll( { src : 'sample,string', delimeter : [ ',' ] } );
 logger.log( s4 )
 //returns [ 'sample', 'string' ]
-let s5 = _.strIsolateEndOrAll( { src : 'sample , string', delimeter : [ 's' , 't'] } )
+let s5 = _.strIsolateEndOrAll( { src : 'sample , string', delimeter : [ 's', 't' ] } )
 logger.log( s5 )
 //returns [ 'sample string,name', 'string' ]
 let s6 = _.strIsolateEndOrAll( 'sample, string,name string', 'x' )
