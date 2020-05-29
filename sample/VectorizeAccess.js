@@ -20,8 +20,8 @@ console.log( vectorizedRoutines[ '$' ] );
 //       { routine: [Function: cb2], name: 'second' },
 //       { routine: [Function: cb3], name: 'third' }
 //     ]
-console.log( vectorizedRoutines.routine ); // log [Function]  
-console.log( vectorizedRoutines.name ); // log [ 'first', 'second', 'third' ] 
+console.log( vectorizedRoutines.routine ); // log [Function]
+console.log( vectorizedRoutines.name ); // log [ 'first', 'second', 'third' ]
 
 /* set property */
 
@@ -33,8 +33,8 @@ console.log( vectorizedRoutines[ '$' ] );
 //       { routine: [Function: cb2], name: 'new element' },
 //       { routine: [Function: cb3], name: 'new element' }
 //     ]
-console.log( vectorizedRoutines.routine ); // log [Function]  
-console.log( vectorizedRoutines.name ); // log [ 'new element', 'new element', 'new element' ] 
+console.log( vectorizedRoutines.routine ); // log [Function]
+console.log( vectorizedRoutines.name ); // log [ 'new element', 'new element', 'new element' ]
 
 /* use callback */
 
@@ -52,28 +52,28 @@ var vectorizedRoutines = _.vectorizeAccess( routines );
 
 /* get property */
 
-console.log( vectorizedRoutines[ '$' ] ); 
-// log [ 
-//       [ [Function: cb1], 'first' ], 
-//       [ [Function: cb2], 'second' ], 
-//       [ [Function: cb3], 'third' ] 
-//     ] 
-console.log( vectorizedRoutines[ 0 ] ); // log [Function]  
-console.log( vectorizedRoutines[ 1 ] ); // log [ 'first', 'second', 'third' ] 
+console.log( vectorizedRoutines[ '$' ] );
+// log [
+//       [ [Function: cb1], 'first' ],
+//       [ [Function: cb2], 'second' ],
+//       [ [Function: cb3], 'third' ]
+//     ]
+console.log( vectorizedRoutines[ 0 ] ); // log [Function]
+console.log( vectorizedRoutines[ 1 ] ); // log [ 'first', 'second', 'third' ]
 
 /* set property */
 
 vectorizedRoutines[ 1 ] = 'new element';
 
-console.log( vectorizedRoutines[ '$' ] ); 
-// log 
-//     [ 
-//       [ [Function: cb1], 'new element' ], 
-//       [ [Function: cb2], 'new element' ], 
-//       [ [Function: cb3], 'new element' ] 
-//     ] 
-console.log( vectorizedRoutines[ 0 ] ); // log [Function]  
-console.log( vectorizedRoutines[ 1 ] ); // log [ 'new element', 'new element', 'new element' ] 
+console.log( vectorizedRoutines[ '$' ] );
+// log
+//     [
+//       [ [Function: cb1], 'new element' ],
+//       [ [Function: cb2], 'new element' ],
+//       [ [Function: cb3], 'new element' ]
+//     ]
+console.log( vectorizedRoutines[ 0 ] ); // log [Function]
+console.log( vectorizedRoutines[ 1 ] ); // log [ 'new element', 'new element', 'new element' ]
 
 /* use callback */
 
