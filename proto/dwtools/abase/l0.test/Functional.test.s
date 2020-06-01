@@ -16576,9 +16576,6 @@ function entityFilter( test )
 
   test.case = 'onEach is not routine';
   test.shouldThrowErrorSync( () => _.entityFilter( [ 1,3 ], 'callback' ) );
-
-  test.case = 'src is undefined';
-  test.shouldThrowErrorSync( () => _.entityFilter( undefined, ( e ) => e ) );
 }
 
 //
