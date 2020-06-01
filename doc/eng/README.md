@@ -1,6 +1,14 @@
 ## Concepts
 
 <details>
+  <summary><a href="./concept/Vectorization.md#vectorization">
+    Vectorization
+  </a></summary>
+    Vectorization is the process of converting an algorithm from operating on a single input value at a time
+    to operating on a set of input values(<a href="./concept/Vector.md#vector">vector</a>) at one time.
+</details>
+
+<details>
   <summary><a href="./concept/TypePrimitive.md">
     Type <code>primitive</code>
   </a></summary>

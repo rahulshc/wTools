@@ -1,17 +1,17 @@
-# Векторизація
+# Vectorization
 
-Векторизація - це процес перетворення алгоритму від операцій над одним значенням за раз, до операцій над набором
-значень([вектором](./Vector.md)) за один раз.
+Vectorization is the process of converting an algorithm from operating on a single input value at a time
+to operating on a set of input values([vector](./Vector.md)) at one time.
 
-Векторизована рутина - це рутина, яка може виконувати операції над масивом вхідних даних,
-переданих у вигляді [вектора](./Vector.md). Векторизована рутина не повинна втрачати здатність обробляти
-скалярні дані.
+A vectorized routine is a routine that can perform operations on a set of input values,
+transmitted as a [vector](./Vector.md). The vectorized routine should not lose the ability to process
+scalar data.
 
-### Автоматична векторизація
+### Automatic vectorization
 
-Векторизацію можливо виконати за домопогою рутини [vectorize](../tutorial/Vectorize.md).
+Vectorization can be performed using the routine [vectorize](../tutorial/Vectorize.md).
 
-У рутну `getFullName` передається об'єкт user, а повертається його повне імя у вигляді рядка.
+The user object is passed to the `getFullName` routine, and its full name is returned as a string.
 ```js
 // routine to vectorize
 function getFullName( user )
@@ -32,8 +32,7 @@ console.log( getFullName( user ) );
 console.log( getFullName( users ) );
 // undefined undefined
 ```
-Після виконання автоматичної векторизації рутини `getFullName`, вона здатна обробляти також вектор із даними.
-
+After performing the automatic vectorization of the `getFullName` routine, it can also process the data vector.
 ```js
 let _ = require( 'wTools' );
 
@@ -61,12 +60,13 @@ console.log( getFullName2( users ) );
 // [ 'John Smith', 'Samantha Blum', 'Edvard Pitt' ]
 ```  
 
-### Ручна векторизація
+### Manual vectorization
 
-Операції над даними можуть бути складними і не піддаватись автоматизації або робити її недоцільною. В такому разі можливо векторизувати рутини вручну.
+Data operations can be complex and not be automated or impractical.
+In this case, you need to vectorize the routines manually.
 
-Для прикладу розглянемо рутину, яку, насправді, можна легко автоматизувати, проте вона гарно демонструє
-ручну векторизацію.
+For example, consider a routine that can actually be easily automated, but it demonstrates well
+manual vectorization idea.
 ```js
 // routine to vectorize
 function getFullName( user )
@@ -88,8 +88,8 @@ console.log( getFullName( users ) );
 // undefined undefined
 
 ```
-Необхідно зробити можливим опрацювання рутиною як одного об'єкту user, так і масиву об'єктів user.
-Для цього змінимо операції над вхідними даними наступним чином.
+It is necessary to make it possible to process both one user object and an array of user objects.
+To do this, we can change the operations on the input data as follows.
 ```js
 let _ = require( 'wTools' );
 
@@ -122,4 +122,4 @@ console.log( getFullName( users ) );
 // [ 'John Smith', 'Samantha Blum', 'Edvard Pitt' ]
 ```
 
-[Повернутись до змісту](../README.md#Концепції)
+[Back to content](../README.md#Concepts)
