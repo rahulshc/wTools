@@ -3801,8 +3801,6 @@ let Extension =
   | ---------------  | ---------------------------------------- | ------------------------------------------------------- |
   */
 
-  /* qqq2 : all similar routines should accept _.self as the first argument */
-
 }
 
 _.mapSupplement( _, Extension );
