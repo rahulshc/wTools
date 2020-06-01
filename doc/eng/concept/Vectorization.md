@@ -62,10 +62,10 @@ console.log( getFullName2( users ) );
 
 ### Manual vectorization
 
-Data operations can be complex and not be automated or impractical.
+Data operations can be complex and not be amenable to automatic vectorization or make it inappropriate.
 In this case, you need to vectorize the routines manually.
 
-For example, consider a routine that can actually be easily automated, but it demonstrates well
+For example, consider a routine that can actually be easily automatically vectorized, but it demonstrates well
 manual vectorization idea.
 ```js
 // routine to vectorize
