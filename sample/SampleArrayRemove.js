@@ -28,5 +28,5 @@ var onEqualize = function( a, b )
 {
   return a.num === b.num;
 }
-var got = _.arrayRemoveElement( [ { num : 1 },{ num : 2 },{ num : 3 } ], { num : 2 }, onEqualize );
+var got = _.arrayRemoveElement( [ { num : 1 }, { num : 2 }, { num : 3 } ], { num : 2 }, onEqualize );
 logger.log( 'Use of equalizer', got )

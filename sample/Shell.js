@@ -8,10 +8,10 @@ if( typeof module !== 'undefined' )
 var _ = wTools;
 
 _.process.start( 'mkdir -p sample/temp_dir' )
-.doThen( function( err,code )
+.doThen( function( err, code )
 {
   if( err )
   throw _.errLogOnce( err );
   console.log( '"mkdir" ended with code:', code );
   this.give( code );
-});
+} );

@@ -639,7 +639,7 @@ function _err( o )
           catch( err )
           {
             debugger;
-            arg = o.args[ a ] = '!ERROR PROCESSING ERROR!'
+            arg = o.args[ a ] = '!ERROR IN ERROR FORMATTER!'
             console.log( String( err ) );
           }
         }

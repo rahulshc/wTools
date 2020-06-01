@@ -14,7 +14,7 @@ function program()
     return arg-1;
     else
     throw _.err( 'Example' );
-  });
+  } );
   consequence.take( -1 );
 }
 

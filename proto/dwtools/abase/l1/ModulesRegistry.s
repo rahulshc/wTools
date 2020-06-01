@@ -333,6 +333,12 @@ let wLoggerSocket =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.LoggerSocketReceiver },
 }
 
+let wHttp =
+{
+  sourcePath : sourcePath( 'amid/l1/http/Include.s', 'whttp' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.http },
+}
+
 // mid / l3
 
 let wStager =
@@ -367,7 +373,7 @@ let wGitTools =
 
 let wNpmTools =
 {
-  sourcePath : sourcePath( 'amid/l3/npm/IncludeMid.s', 'wnpmtools' ),
+  sourcePath : sourcePath( 'amid/l3/npm/Include.ss', 'wnpmtools' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.npm },
 }
 
@@ -747,6 +753,7 @@ let Modules =
   wStxt,
 
   wLoggerSocket,
+  wHttp,
 
   // mid / l3
 

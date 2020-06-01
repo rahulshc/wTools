@@ -3814,7 +3814,7 @@ function entityFilter( src, onEach )
   _.assert( arguments.length === 2 );
   // _.assert( _.objectLike( src ) || _.longIs( src ), () => 'Expects objectLike or longIs src, but got ' + _.strType( src ) );
   _.assert( _.routineIs( onEach ) );
-  _.assert( src !== undefined, 'Expects src' );
+  // _.assert( src !== undefined, 'Expects src' ); /* qqq2 : ! */
 
   /* */
 
@@ -3883,7 +3883,7 @@ function entityFilter_( dst, src, onEach )
   onEach = _._filter_functor( onEach, 1 );
 
   _.assert( _.routineIs( onEach ) );
-  _.assert( src !== undefined, 'Expects src' );
+  // _.assert( src !== undefined, 'Expects src' ); qqq2 : !
 
   /* */
 
@@ -3996,7 +3996,7 @@ function entityFirst( src, onEach )
 
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( onEach ) );
-  _.assert( src !== undefined, 'Expects src' );
+  // _.assert( src !== undefined, 'Expects src' ); /* qqq2 : ! */
 
   /* */
 
@@ -4044,7 +4044,7 @@ function entityLast( src, onEach )
 
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( onEach ) );
-  _.assert( src !== undefined, 'Expects src' );
+  // _.assert( src !== undefined, 'Expects src' );
 
   /* */
 
