@@ -18673,9 +18673,6 @@ function first( test )
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.first( 'str', ( e ) => e, 'extra' ) );
 
-  test.case = 'src is undefined';
-  test.shouldThrowErrorSync( () => _.first( undefined, ( e ) => e ) );
-
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.first( [ 1, 2, 3 ], 1 ) );
 }
