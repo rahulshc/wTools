@@ -17073,10 +17073,6 @@ function entityFilterWithoutDst_( test )
   test.shouldThrowErrorSync( () => _.entityFilter_( [ 1, 3 ], [ 1, 2 ], ( e ) => e, 'extra' ) );
   test.shouldThrowErrorSync( () => _.entityFilter_( { a : 1 }, { b : 2 }, ( e ) => e, 'extra' ) );
 
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.entityFilter_( undefined, ( e ) => e ) );
-  test.shouldThrowErrorSync( () => _.entityFilter_( null, undefined, ( e ) => e ) );
-
   test.case = 'src is not resizable long, cannot delete element';
   test.shouldThrowErrorSync( () => _.entityFilter_( _.argumentsArrayMake( [ undefined, undefined ], ( e ) => e ) ) );
 
