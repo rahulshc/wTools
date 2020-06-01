@@ -24,7 +24,7 @@ var got = _.arrayRemoveElement( [ [ 1 ], [ 2 ] ], [ 1 ], ( e ) => e[ 0 ] );
 logger.log( 'Use of evaluator', got )
 
 //equalizer
-var onEqualize = function( a, b )
+function onEqualize( a, b )
 {
   return a.num === b.num;
 }
