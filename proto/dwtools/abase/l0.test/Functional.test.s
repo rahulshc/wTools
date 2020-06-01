@@ -19057,9 +19057,6 @@ function last( test )
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.last( 'str', ( e ) => e, 'extra' ) );
 
-  test.case = 'src is undefined';
-  test.shouldThrowErrorSync( () => _.last( undefined, ( e ) => e ) );
-
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.last( [ 1, 2, 3 ], 1 ) );
 }
