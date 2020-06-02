@@ -212,7 +212,7 @@
   <summary><a href="./tutorial/Vectorize.md">
     Векторизація рутин
   </a></summary>
-    Як використовувати рутину <code>vectorize</code> для векторизації скалярних рутин.
+    Використання рутини <code>vectorize</code> для векторизації скалярних рутин.
 </details>
 
 <details>
