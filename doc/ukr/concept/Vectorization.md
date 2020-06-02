@@ -9,9 +9,9 @@
 
 ### Автоматична векторизація
 
-Векторизацію можливо виконати за домопогою рутини [vectorize](../tutorial/Vectorize.md).
+Векторизацію можливо виконати за допомогою рутини [vectorize](../tutorial/Vectorize.md).
 
-У рутну `getFullName` передається об'єкт user, а повертається його повне імя у вигляді рядка.
+У рутину `getFullName` передається об'єкт user, а повертається його повне ім'я у вигляді рядка.
 ```js
 // routine to vectorize
 function getFullName( user )
@@ -122,4 +122,4 @@ console.log( getFullName( users ) );
 // [ 'John Smith', 'Samantha Blum', 'Edvard Pitt' ]
 ```
 
-[Повернутись до змісту](../README.md#Концепції)
+[Повернутись до змісту](../README.md#концепції)
