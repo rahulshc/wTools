@@ -15,10 +15,11 @@
 </details>
 
 <details>
-  <summary><a href="./concept/Vectorization.md#Векторизація">
+  <summary><a href="./concept/Vectorization.md#векторизація">
     Векторизація
   </a></summary>
-    Це процес перетворення скалярної рутини у векторизовану.
+    Векторизація - це процес перетворення алгоритму від операцій над одним значенням за раз, до операцій над набором
+    значень(<a href="./concept/Vector.md#вектор">вектором</a>) за один раз.
 </details>
 
 <details>
@@ -211,7 +212,7 @@
   <summary><a href="./tutorial/Vectorize.md">
     Векторизація рутин
   </a></summary>
-    Як використовувати рутину <code>vectorize</code> для векторизації скалярних рутин.
+    Використання рутини <code>vectorize</code> для векторизації скалярних рутин.
 </details>
 
 <details>

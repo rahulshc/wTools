@@ -4,7 +4,7 @@ require( 'wTools' );
 
 var _ = wTools;
 
-var onStrip = function( strip )
+function onStrip( strip )
 {
   var allowedKeys = [ 'bg', 'background', 'fg', 'foreground' ];
   var parts = strip.split( ' : ' )

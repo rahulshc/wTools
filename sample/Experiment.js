@@ -4,7 +4,7 @@ require( 'wTools' );
 
 var _ = wTools;
 
-var onStrip = function ( part )
+function onStrip( part )
 {
   var temp = part.split( ':' )
   if( temp.length === 2 )
