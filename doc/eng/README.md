@@ -6,6 +6,12 @@
   </a></summary>
     Vectorization is the process of converting an algorithm from operating on a single input value at a time
     to operating on a set of input values(<a href="./concept/Vector.md#vector">vector</a>) at one time.
+    <summary><a href="./concept/Vectorization.md#automatic-vectorization">
+      Automatic vectorization
+    </a></summary>
+    <summary><a href="./concept/Vectorization.md#manual-vectorization">
+      Manual vectorization
+    </a></summary>
 </details>
 
 <details>
