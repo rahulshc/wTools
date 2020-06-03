@@ -11523,7 +11523,7 @@ function longRepresent( test )
 function longDuplicate( test )
 {
   test.case = 'couple of repeats';
-  var got = _.longDuplicate( [ 'a', 'b', 'c' ] );
+  var got = _.longDuplicate({ src : [ 'a', 'b', 'c' ] });
   var expected = [ 'a', 'a', 'b', 'b', 'c', 'c' ];
   test.identical( got, expected );
 
@@ -11581,11 +11581,11 @@ function longDuplicate( test )
 
   /* */
 
-  test.case = 'result provided';
+  test.case = 'dst provided';
   var options =
   {
     src : [ 10, 20 ],
-    result : [ 1, 1, 1, 1 ],
+    dst : [ 1, 1, 1, 1 ],
     nScalarsPerElement : 1,
     nDupsPerElement : 2
   };
@@ -11599,7 +11599,7 @@ function longDuplicate( test )
   var options =
   {
     src : [ 'abc', 'def' ],
-    result : new Array( 6 ),
+    dst : new Array( 6 ),
     nScalarsPerElement : 2,
     nDupsPerElement : 3
   };
@@ -11613,7 +11613,7 @@ function longDuplicate( test )
   var options =
   {
     src : [ 'abc', 'def' ],
-    result : [],
+    dst : [],
     nScalarsPerElement : 1,
     nDupsPerElement : 1
   };
@@ -11627,7 +11627,7 @@ function longDuplicate( test )
   var options =
   {
     src : [ 'abc', 'def' ],
-    result : [ 1, 2 ],
+    dst : [ 1, 2 ],
     nScalarsPerElement : 1,
     nDupsPerElement : 1
   };
@@ -11643,7 +11643,7 @@ function longDuplicate( test )
   var options =
   {
     src : [ 1, 2 ],
-    result : arr,
+    dst : arr,
     nScalarsPerElement : 1,
     nDupsPerElement : 1
   };
@@ -11690,7 +11690,7 @@ function longDuplicate( test )
   test.case = 'options.src is not provided or "undefined"';
   var options = {
     src : undefined,
-    result : [],
+    dst : [],
     nScalarsPerElement : 3,
     nDupsPerElement : 3
   };
@@ -11699,11 +11699,11 @@ function longDuplicate( test )
     _.longDuplicate( options, { a : 13 } );
   });
 
-  test.case = 'result provided, but not enough length';
+  test.case = 'dst provided, but not enough length';
   var options =
   {
     src : [ 10, 20 ],
-    result : [],
+    dst : [],
     nScalarsPerElement : 1,
     nDupsPerElement : 2
   };

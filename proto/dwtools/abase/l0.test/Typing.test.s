@@ -838,7 +838,7 @@ function constructorIsVad( test )
 
   /* Dmytro : the second part of routine in module wMathVector */
 }
-//
+
 // //
 //
 // function matrixIs( test )
@@ -4611,8 +4611,8 @@ var Self =
 
     vectorAdapterIs,
     constructorIsVad,
-    matrixIs,
-    constructorIsMatrix,
+    // matrixIs, /* Dmytro : commented before */
+    // constructorIsMatrix,
 
     consequenceIs,
     consequenceLike,
