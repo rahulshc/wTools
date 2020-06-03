@@ -251,7 +251,7 @@ let format = _.routineVectorize_functor( _format );
 
 //
 
-function strip( srcStr )
+function _strip( srcStr )
 {
   let result = '';
 
@@ -272,6 +272,8 @@ function strip( srcStr )
 
   return result;
 }
+
+let strip = _.vectorize( _strip );
 
 // --
 // relation
