@@ -5,8 +5,8 @@ otherwise - <code>false</code>. The `equalizer` as a callback function is passed
 
 <!-- xxx : check consistancy -->
 
-The `equalizer` takes two arguments. An `equalizer` is necessary if you want to specify an arbitrary algorithm for comparing
-the elements of the `Long` container, for example for sorting.
+The `equalizer` takes two arguments, as opposed to the [evaluator](./Evaluator.md#evaluator). An `equalizer` is necessary 
+if you want to specify an arbitrary algorithm for comparing the elements of the `Long` container, for example for sorting.
 
 **Example**
 

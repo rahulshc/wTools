@@ -24,6 +24,13 @@
 </details>
 
 <details>
+  <summary><a href="./concept/Evaluator.md#evaluator">
+    Evaluator
+  </a></summary>
+  Some description
+</details>
+
+<details>
   <summary><a href="./concept/Equalizer.md#equalizer">
     Equalizer
   </a></summary>
