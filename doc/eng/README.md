@@ -24,6 +24,14 @@
 </details>
 
 <details>
+  <summary><a href="./concept/Equalizer.md#equalizer">
+    Equalizer
+  </a></summary>
+  This is a routine that compares two elements of an array and returns <code>true</code> if the comparison condition is met, 
+  otherwise - <code>false</code>. The `equalizer` as a callback function is passed to the routines intended for working with arrays.
+</details>
+
+<details>
   <summary><a href="./concept/TypePrimitive.md">
     Type <code>primitive</code>
   </a></summary>
