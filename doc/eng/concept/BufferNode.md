@@ -2,7 +2,7 @@
 
 Non-standard implementation of untyped buffer with built-in access to buffer data.
 
-[Type `BufferNode`](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) presented by one class `BufferNode` ( `Buffer` ). Class `BufferNode` exists only in the `NodeJS` interpreter environment. Since the type `BufferNode` is designed for the `NodeJS` interpreter environment and is not standard, its use is limited.
+[Type `BufferNode`](https://nodejs.org/dist/latest-v12.x/docs/api/buffer.html) presented by one class `BufferNode` ( `Buffer` ). Class `BufferNode` exists only in the `NodeJS` interpreter environment. Since the type `BufferNode` is designed for the `NodeJS` interpreter environment and is not standard, it has limited application.
 
 ### Examples
 

@@ -2,15 +2,15 @@
 
 Entities for storing and processing binary data.
 
-A buffer can have size and length. The size measures in bytes, and length measures in a number of elements. If the buffer element size is one byte, then the size is equal to the length. The buffer may consist of the same type of elements or be untyped. An untyped buffer is simply a byte sequence. A typed buffer is a sequence of elements of some primitive type with a fixed size.
+A buffer can have size and length. The size measures in bytes, and length measures in a number of elements. If the buffer element size is one byte, then the size is equal to the length. The buffer may consist of the same type of elements or be untyped. An untyped buffer is simply a byte sequence. A typed buffer is a sequence of elements of some primitive type of a fixed size.
 
 ### Buffers `BufferRaw`
 
-[Type `BufferRaw`](BufferRaw.md) ( `ArrayBuffer` ) is a standard untyped buffer, a raw data buffer that is not intended to access data by this object directly but to be used by other buffers as a data container. This type allows allocating memory for the data, but it does not provide the instruments to access the data. For processing data contained in an instance of type `BufferRaw`, the mechanism of data representation is used. It is representation of data by any instance of [typed buffers](./ BufferTyped.md) or by [`BufferView` buffer](./ BufferView.md).
+[Type `BufferRaw`](BufferRaw.md) ( `ArrayBuffer` ) is a standard untyped buffer, a raw data buffer that is not intended to access data by this object directly but to be used by other buffers as a data container. This type allows allocating memory for the data, but it does not provide the instruments to access the data. For processing data contained in an instance of type `BufferRaw`, the mechanism of data representation is used. Representation could be done by [typed buffers](./ BufferTyped.md) or by [`BufferView` buffer](./ BufferView.md).
 
 ### Buffers `BufferTyped`
 
-[Type `BufferTyped`](BufferTyped.md) ( `TypedArray` ) presents standard typed buffers. This type of buffer represents `BufferRaw` binary data in the form of numerical primitives such as` Int8`, `Uint32`,` Float64` and others. The typed buffers do not contain real data but are a representation of the real data in `BufferRaw`. Typed buffers implement strategies for accessing to `BufferRaw` data.
+[Type `BufferTyped`](BufferTyped.md) ( `TypedArray` ) presents standard typed buffers. This type of buffer represents `BufferRaw` binary data in the form of numerical primitives such as` Int8`, `Uint32`,` Float64` and others. The typed buffers do not contain real data but are a representation of the data in `BufferRaw`. Typed buffers implement strategies for accessing to `BufferRaw` data.
 
 ### Buffers `BufferView`
 

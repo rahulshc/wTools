@@ -10,7 +10,7 @@ Type `BufferRaw` has two implementations:
 - [`BufferRaw`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) ( `ArrayBuffer` );
 - [`BufferRawShared`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) ( `SharedArrayBuffer` ).
 
-The difference between `BufferRaw` and` BufferRawShared` is that `BufferRawShared` can give access to data for multiple streams ( workers/processes ) at a time, and `BufferRaw` only one. In this case, both `BufferRaw` and` BufferRawShared` can have multiple representation in one thread. Changing the buffer made in one representation is immediately reflected in the other because the representations do not contain real data, but only talk about how to interpret data from an instance of `BufferRaw`.
+The difference between `BufferRaw` and` BufferRawShared` is that `BufferRawShared` can give access to data for multiple procedures ( workers/processes/threads ) at a time, and `BufferRaw` only one. In this case, both `BufferRaw` and` BufferRawShared` can have multiple representation in one thread. Changing the buffer made in one representation is immediately reflected in the other because the representations do not contain real data, but only talk about how to interpret data from an instance of `BufferRaw`.
 
 ### Examples
 

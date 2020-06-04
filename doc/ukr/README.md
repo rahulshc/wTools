@@ -51,8 +51,8 @@
 </details>
 
 <details>
-  <summary><a href="./concept/TypePrimitive.md#Тип-string">
-    Тип <code>string</code>
+  <summary><a href="./concept/TypePrimitive.md#тип-string">
+    Тип string
   </a></summary>
     Примітивний тип даних для представлення текстових даних.
 </details>
