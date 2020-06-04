@@ -20,12 +20,21 @@
   </a></summary>
     Векторизація - це процес перетворення алгоритму від операцій над одним значенням за раз, до операцій над набором
     значень(<a href="./concept/Vector.md#вектор">вектором</a>) за один раз.
-    <summary><a href="./concept/Vectorization.md#автоматична-векторизація">
-      Автоматична векторизація
-    </a></summary>
-    <summary><a href="./concept/Vectorization.md#ручна-векторизація">
-      Ручна векторизація
-    </a></summary>
+</details>
+
+<details>
+  <summary><a href="./concept/Vectorization.md#автоматична-векторизація">
+    Автоматична векторизація
+  </a></summary>
+  Векторизацію можливо виконати за допомогою рутини <a href="./tutorial/Vectorize.md">vectorize</a>.
+</details>
+
+<details>
+  <summary><a href="./concept/Vectorization.md#ручна-векторизація">
+    Ручна векторизація
+  </a></summary>
+  Операції над даними можуть бути складними і не піддаватись автоматичній векторизації або робити її недоцільною.
+  В такому разі можливо векторизувати рутини вручну.
 </details>
 
 <details>
