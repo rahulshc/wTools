@@ -74,13 +74,14 @@
 
 <details>
   <summary><a href="./concept/Long.md">
-    Дескриптор типу <code>long</code>
+    Тип <code>Long</code>
   </a></summary>
     Дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
 </details>
+
 <details>
-  <summary><a href="./concept/Long.md#Впорядковані-типи-даних">
-    Впорядковані типи даних
+  <summary><a href="./concept/Long.md#Дескриптор-типу-Long">
+    Дескриптор типу <code>long</code>
   </a></summary>
     Дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
 </details>
