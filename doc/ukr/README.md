@@ -155,7 +155,7 @@
 
 <details>
   <summary><a href="./tutorial/ConventionNamingInArray.md">
-    Array routines call conventions: naming
+    Конвенції рутин _.array*: найменування рутин
   </a></summary>
     Принципи найменування рутин сімейства <code>Array</code>.
 </details>
