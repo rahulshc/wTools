@@ -73,10 +73,16 @@
 </details>
 
 <details>
-  <summary><a href="./concept/TypeIndexed.md">
+  <summary><a href="./concept/Long.md">
+    Дескриптор типу <code>long</code>
+  </a></summary>
+    Дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
+</details>
+<details>
+  <summary><a href="./concept/Long.md#Впорядковані-типи-даних">
     Впорядковані типи даних
   </a></summary>
-    Комплексні типи даних, що містять множину елементів котрі ідентифікуються за індексом.
+    Дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
 </details>
 
 <details>
@@ -126,13 +132,6 @@
     Тип <code>Range</code>
   </a></summary>
     <code>Range</code> - збірний тип даних - пара чисел, що задає послідовність.
-</details>
-
-<details>
-  <summary><a href="./concept/LongDescriptor.md">
-    Дескриптор типу <code>long</code>
-  </a></summary>
-    Дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
 </details>
 
 ## Туторіали
