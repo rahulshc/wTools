@@ -16576,9 +16576,6 @@ function entityFilter( test )
 
   test.case = 'onEach is not routine';
   test.shouldThrowErrorSync( () => _.entityFilter( [ 1,3 ], 'callback' ) );
-
-  test.case = 'src is undefined';
-  test.shouldThrowErrorSync( () => _.entityFilter( undefined, ( e ) => e ) );
 }
 
 //
@@ -17072,10 +17069,6 @@ function entityFilterWithoutDst_( test )
   test.case = 'extra argument';
   test.shouldThrowErrorSync( () => _.entityFilter_( [ 1, 3 ], [ 1, 2 ], ( e ) => e, 'extra' ) );
   test.shouldThrowErrorSync( () => _.entityFilter_( { a : 1 }, { b : 2 }, ( e ) => e, 'extra' ) );
-
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.entityFilter_( undefined, ( e ) => e ) );
-  test.shouldThrowErrorSync( () => _.entityFilter_( null, undefined, ( e ) => e ) );
 
   test.case = 'src is not resizable long, cannot delete element';
   test.shouldThrowErrorSync( () => _.entityFilter_( _.argumentsArrayMake( [ undefined, undefined ], ( e ) => e ) ) );
@@ -18673,9 +18666,6 @@ function first( test )
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.first( 'str', ( e ) => e, 'extra' ) );
 
-  test.case = 'src is undefined';
-  test.shouldThrowErrorSync( () => _.first( undefined, ( e ) => e ) );
-
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.first( [ 1, 2, 3 ], 1 ) );
 }
@@ -19056,9 +19046,6 @@ function last( test )
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.last( 'str', ( e ) => e, 'extra' ) );
-
-  test.case = 'src is undefined';
-  test.shouldThrowErrorSync( () => _.last( undefined, ( e ) => e ) );
 
   test.case = 'onEach is not a routine';
   test.shouldThrowErrorSync( () => _.last( [ 1, 2, 3 ], 1 ) );

@@ -1905,12 +1905,12 @@ function mapAllVals( test )
   test.case = 'trivial';
 
   var got = _.mapAllVals( {} );
-  test.is( got.length );
+  test.is( got.length !== 0 );
 
   /**/
 
   var got = _.mapAllVals( { a : 7, b : 13 } );
-  test.is( got.length );
+  test.is( got.length !== 0 );
   test.is( got.indexOf( 7 ) !== -1 );
   test.is( got.indexOf( 13 ) !== -1 );
 
@@ -2152,7 +2152,7 @@ function mapAllPairs( test )
 {
   test.case = 'empty';
   var got = _.mapAllPairs( {} );
-  test.is( got.length );
+  test.is( got.length !== 0 );
 
   //
 
@@ -2288,7 +2288,7 @@ function mapProperties( test )
   /**/
 
   var got = _.mapProperties( new Date(), { enumerable : 0, own : 0 } );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.is( got.constructor.name === 'Date' );
   test.is( _.routineIs( got.getDate ) );
   test.is( !!got.__proto__ );
@@ -2417,11 +2417,11 @@ function mapAllProperties( test )
   test.case = 'empty';
 
   var got = _.mapAllProperties( {} );
-  test.is( Object.keys( got ).length  )
+  test.is( Object.keys( got ).length !== 0 )
   test.identical( got.constructor.name, 'Object' );
 
   var got = _.mapAllProperties( [] );
-  test.is( Object.keys( got ).length  )
+  test.is( Object.keys( got ).length !== 0 )
   test.identical( got.constructor.name, 'Array' );
 
   //
@@ -2741,12 +2741,12 @@ function mapAllRoutines( test )
   test.case = 'empty';
 
   var got = _.mapAllRoutines( {} );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.is( _.routineIs( got.__defineGetter__ ) );
   test.is( _.routineIs( got.__defineSetter__ ) );
 
   var got = _.mapAllRoutines( [] );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.is( _.routineIs( got.__defineGetter__ ) );
   test.is( _.routineIs( got.__defineSetter__ ) );
 
@@ -2755,7 +2755,7 @@ function mapAllRoutines( test )
   test.case = 'trivial';
 
   var got = _.mapAllRoutines( { a : 1, b : function(){} } );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.is( _.routineIs( got.__defineGetter__ ) );
   test.is( _.routineIs( got.__defineSetter__ ) );
   test.is( _.routineIs( got.b ) );
@@ -2763,13 +2763,13 @@ function mapAllRoutines( test )
   var a = [];
   a.a = function(){};
   var got = _.mapAllRoutines( a );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.is( _.routineIs( got.__defineGetter__ ) );
   test.is( _.routineIs( got.__defineSetter__ ) );
   test.is( _.routineIs( got.a ) );
 
   var got = _.mapAllRoutines( new Date() );
-  test.is( Object.keys( got ).length );
+  test.is( Object.keys( got ).length !== 0 );
   test.identical( got.constructor.name, 'Date' );
   test.is( _.routineIs( got.getDate ) );
 
@@ -8328,7 +8328,7 @@ function mapOnlyComplementingTwoArguments_( test )
   expected.d = 'name';
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, { a : 'abc', b : undefined, c : 33, d : 'name' } );
+  test.equivalent( srcMap, { a : 'abc', b : undefined, c : 33, d : 'name' } );
   test.identical( screenMap, { a : 13, b : 77, c : 3, d : 'name' } );
 
   test.case = 'all keys in srcMap exists in screenMap - array';
@@ -8344,7 +8344,7 @@ function mapOnlyComplementingTwoArguments_( test )
   expected.d = 'name';
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, { a : 'abc', b : undefined, c : 33, d : 'name' } );
+  test.equivalent( srcMap, { a : 'abc', b : undefined, c : 33, d : 'name' } );
   test.identical( screenMap, [ 'a', '13', { b : 77 }, 'c', '3', { d : 'name' } ] );
 
   test.case = 'none keys in srcMap exists in screenMap - map';
@@ -8384,7 +8384,7 @@ function mapOnlyComplementingTwoArguments_( test )
   expected.d = 'name';
   test.identical( got, expected );
   test.is( got === srcMap );
-  test.identical( srcMap, { 2 : 'abc', b : undefined, c : 33, d : 'name' } );
+  test.equivalent( srcMap, { 2 : 'abc', b : undefined, c : 33, d : 'name' } );
   test.identical( screenMap, [ { a : 13 }, { b : 77 }, { c : 3 }, { d : 'name' } ] );
 
   test.close( 'srcMap - map' );

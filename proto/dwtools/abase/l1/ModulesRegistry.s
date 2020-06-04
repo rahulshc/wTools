@@ -315,6 +315,18 @@ let wGraphTools =
 //   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.LiveSystem },
 // }
 
+let wRegexpObject =
+{
+  sourcePath : sourcePath( 'amid/l1/regexp/RegexpObject.s', 'wRegexpObject' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.RegexpObject; },
+}
+
+let wVocabulary =
+{
+  sourcePath : sourcePath( 'amid/l1/vocabulary/Vocabulary.s', 'wvocabulary' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Vocabulary },
+}
+
 let wSchema =
 {
   sourcePath : sourcePath( 'amid/l1/schema/IncludeMid.s', 'wSchema' ),
@@ -385,12 +397,6 @@ let wYamlTools =
 
 //
 
-let wRegexpObject =
-{
-  sourcePath : sourcePath( 'amid/bclass/RegexpObject.s', 'wRegexpObject' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.RegexpObject; },
-}
-
 let wColor =
 {
   sourcePath : sourcePath( 'amid/color/Color.s', 'wColor' ),
@@ -407,12 +413,6 @@ let wChangeTransactor =
 {
   sourcePath : sourcePath( 'amid/changes/ChangeTransactor.s', 'wChangeTransactor' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.ChangeTransactor },
-}
-
-let wVocabulary =
-{
-  sourcePath : sourcePath( 'amid/bclass/Vocabulary.s', 'wvocabulary' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Vocabulary },
 }
 
 let wCommandsAggregator =
@@ -749,6 +749,8 @@ let Modules =
 
   wGraphBasic,
   wGraphTools,
+  wRegexpObject,
+  wVocabulary,
   wSchema,
   wStxt,
 
@@ -767,11 +769,9 @@ let Modules =
 
   //
 
-  wRegexpObject,
   wColor,
   wColor256,
   wChangeTransactor,
-  wVocabulary,
   wCommandsAggregator,
   wCommandsConfig,
 
