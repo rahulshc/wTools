@@ -23,6 +23,21 @@
 </details>
 
 <details>
+  <summary><a href="./concept/Vectorization.md#автоматична-векторизація">
+    Автоматична векторизація
+  </a></summary>
+  Векторизацію можливо виконати за допомогою рутини <a href="./tutorial/Vectorize.md">vectorize</a>.
+</details>
+
+<details>
+  <summary><a href="./concept/Vectorization.md#ручна-векторизація">
+    Ручна векторизація
+  </a></summary>
+  Операції над даними можуть бути складними і не піддаватись автоматичній векторизації або робити її недоцільною.
+  В такому разі можливо векторизувати рутини вручну.
+</details>
+
+<details>
   <summary><a href="./concept/Vector.md">
     Вектор
   </a></summary>
