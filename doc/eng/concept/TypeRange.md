@@ -54,17 +54,17 @@ The advantages described above are the reason of use `Range` in the routines of 
 
 ### Theoretical examples
 
-|                           | Range type | Range | Indexes of elements in the sequence |
-|---------------------------|------------|-------|-------------------------------------|
-| range[ 0 ] < range[ 1 ]   | Orange     | 3..5  | 3, 4                                |
-|                           | Crange     | 3..5  | 3, 4, 5                             |
-|                           | Lrange     | 3..5  | 3, 4, 5, 6, 7                       |
-| range[ 0 ] === range[ 1 ] | Orange     | 3..3  | -                                   |
-|                           | Crange     | 3..3  | 3                                   |
-|                           | Lrange     | 3..3  | 3, 4, 5                             |
-| range[ 0 ] > range[ 1 ]   | Orange     | 3..2  | -                                   |
-|                           | Crange     | 3..2  | -                                   |
-|                           | Lrange     | 3..2  | 3, 4                                |
+| Range type | Range | Indexes of elements in the sequence |
+|------------|-------|-------------------------------------|
+| Orange     | 3..5  | 3, 4                                |
+|            | 3..3  | -                                   |
+|            | 3..2  | -                                   |
+| Crange     | 3..5  | 3, 4, 5                             |
+|            | 3..3  | 3                                   |
+|            | 3..2  | -                                   |
+| Lrange     | 3..5  | 3, 4, 5, 6, 7                       |
+|            | 3..3  | 3, 4, 5                             |
+|            | 3..2  | 3, 4                                |
 
 ### Summary
 
