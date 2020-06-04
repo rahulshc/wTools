@@ -63,20 +63,7 @@ var result1 = _.unrollNormalize( _.unrollFrom( [ 1, 2, unroll1, unroll2 ] ) );
 // returns [ 1, 2, '5', 'str', 3, [ 4 ] ]
 ```
 
-При використанні рутини `unrollNormalize` вкладені в `unroll-масив` `unroll-масиви` розгортаються. Оригінальний `unroll-масив` при цьому не змінює тип.
-
-Розгортання `unroll-масивів` в звичайному масиві
-
-```js
-var unroll1 = _.unrollMake( [ '5' ] );
-var unroll2 = _.unrollMake( [ 'str', [ 3 ] ] );
-var result2 = _.unrollNormalize( [ 0, 7, unroll1, [ unroll2, unroll1 ] ] );
-// returns [ 0, 7, '5', [ 'str', [ 3 ],  '5' ] ]
-_.unrollIs( result2 );
-// returns false
-```
-
-При використанні рутини `unrollNormalize` вкладені в звичайний масив `unroll-масиви` розгортаються. Оригінальний масив при цьому не змінює тип.
+При використанні рутини `unrollNormalize` вкладені в `unroll-масив` `unroll-масиви` розгортаються. Оригінальний `unroll-масив` при цьому не змінює тип. Якщо `unroll-масиви` поміщені в звичайний масив, то рутина `unrollNormalize` розгортає лише `unroll-масиви`.
 
 ### Підсумок
 
