@@ -18,16 +18,16 @@ function equalize( e1, e2 )
   return e1.val === e2.val;
 }
 
-var compareWith = { val : 5 }
+var compareWithThis = { val : 5 }
 
-var result = _.arrayRemoveElement( dst, compareWith, equalize );
+var result = _.arrayRemoveElement( dst, compareWithThis, equalize );
 
 console.log( result );
 // log : [ { val : 3 }, { val : 0 } ]
 ```
-Рутина `arrayRemoveElement` видалить із масиву `dst` ті елементи, які при порівнянні з `compareWith` задовольнять
+Рутина `arrayRemoveElement` видалить із масиву `dst` ті елементи, які при порівнянні з `compareWithThis` задовольнять
 умову порівняння, тобто рутина `equalize` поверне <code>true</code>. 
-На кожній ітерації `equalize` викликається із двома параметрами - `dst[ i ]` та `compareWith`. 
+На кожній ітерації `equalize` викликається із двома параметрами - `dst[ i ]` та `compareWithThis`. 
 В даному випадку умова порівняння така, що буде повернено <code>true</code> для тієї пари елементів,
 у яких значення властивості `val` рівні.
 Отже, з масиву `dst` буде видалено один елемент - `{ val : 5 }`.
