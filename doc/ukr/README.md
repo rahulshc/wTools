@@ -73,10 +73,17 @@
 </details>
 
 <details>
-  <summary><a href="./concept/TypeIndexed.md">
-    Впорядковані типи даних
+  <summary><a href="./concept/Long.md">
+    Тип <code>Long</code>
   </a></summary>
     Комплексні типи даних, що містять множину елементів котрі ідентифікуються за індексом.
+</details>
+
+<details>
+  <summary><a href="./concept/Long.md#Дескриптор-типу-Long">
+    Дескриптор типу <code>long</code>
+  </a></summary>
+    Дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
 </details>
 
 <details>
@@ -128,13 +135,6 @@
     <code>Range</code> - збірний тип даних - пара чисел, що задає послідовність.
 </details>
 
-<details>
-  <summary><a href="./concept/LongDescriptor.md">
-    Дескриптор типу <code>long</code>
-  </a></summary>
-    Дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
-</details>
-
 ## Туторіали
 
 <!--
@@ -155,7 +155,7 @@
 
 <details>
   <summary><a href="./tutorial/ConventionNamingInArray.md">
-    Array routines call conventions: naming
+    Конвенції рутин _.array*: найменування рутин
   </a></summary>
     Принципи найменування рутин сімейства <code>Array</code>.
 </details>
