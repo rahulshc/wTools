@@ -21,7 +21,7 @@ function onSuiteBegin()
   let self = this;
 
   self.suiteTempPath = path.pathDirTempOpen( path.join( __dirname, '../..'  ), 'err' );
-  self.assetsOriginalSuitePath = path.join( __dirname, '_asset' );
+  self.assetsOriginalPath = path.join( __dirname, '_asset' );
 
 }
 
@@ -1463,7 +1463,7 @@ var Self =
   {
     nameOfFile : _.introspector.location().fileName,
     suiteTempPath : null,
-    assetsOriginalSuitePath : null,
+    assetsOriginalPath : null,
     appJsPath : null,
   },
 

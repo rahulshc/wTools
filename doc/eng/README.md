@@ -130,29 +130,31 @@
     Measurement of algorithms performance to choose the best solution.
 </details>
 
+## Theoretical
+
 <details>
-  <summary><a href="./tutorial/ErrorHandling.md">
+  <summary><a href="./theoretical/ErrorHandling.md">
     Errors handling
   </a></summary>
     The state of the art techniques of handling errors.
 </details>
 
 <details>
-  <summary><a href="./tutorial/ErrorHandling.md">
+  <summary><a href="./theoretical/ErrorHandling.md">
     Mechanisms of catching errors
   </a></summary>
     Describe mechanisms of handling errors, depending on their synchronicity, build, and other circumstances.
 </details>
 
 <details>
-  <summary><a href="./concept/Modularity.md">
+  <summary><a href="./theoretical/Modularity.md">
     Modularity of the system
   </a></summary>
     This article describes differences between modular and monolithic systems, concepts behind it and effects of modularization on the workflow.
 </details>
 
 <details>
-  <summary><a href="./concept/Modularity.md#Effects-of-modularization-on-the-workflow">
+  <summary><a href="./theoretical/Modularity.md#Effects-of-modularization-on-the-workflow">
     Effects of modularization on the workflow
   </a></summary>
     Modularization of the system has several effects on the workflow.

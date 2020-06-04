@@ -3279,7 +3279,7 @@ let Routines =
   bufferMakeUndefined,
 
   bufferFromArrayOfArray,
-  bufferFrom,
+  bufferFrom, /* qqq : cover. seems broken */
   bufferRawFromTyped,
   bufferRawFrom,
   bufferBytesFrom,
