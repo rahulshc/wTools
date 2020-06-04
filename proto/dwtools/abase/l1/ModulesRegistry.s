@@ -243,7 +243,7 @@ let wProcedure =
 
 let wGdf =
 {
-  sourcePath : sourcePath( 'amid/l1/gdf/Converter.s', 'wgdfstrategy' ),
+  sourcePath : sourcePath( 'amid/l1/gdf/Converter.s', 'wgdf' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Gdf },
 }
 
