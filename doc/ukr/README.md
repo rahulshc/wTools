@@ -161,8 +161,8 @@
 </details>
 
 <details>
-  <summary><a href="./tutorial/ConventionCallbecksInArray.md">
-    Array routines call conventions: callbacks
+  <summary><a href="./tutorial/ConventionCallbacksInArray.md">
+    Конвенції рутин _.array*: callbacks
   </a></summary>
     Як використовувати <code>callback</code>-и в рутинах сімейства <code>Array</code>.
 </details>
