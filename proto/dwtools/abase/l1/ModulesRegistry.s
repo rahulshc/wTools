@@ -241,9 +241,9 @@ let wProcedure =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.procedure },
 }
 
-let wGdfStrategy =
+let wGdf =
 {
-  sourcePath : sourcePath( 'abase/l8_gdf/GdfConverter.s', 'wgdfstrategy' ),
+  sourcePath : sourcePath( 'amid/l1/gdf/Converter.s', 'wgdf' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Gdf },
 }
 
@@ -621,9 +621,9 @@ let wTesting =
   isIncluded : function(){ return _realGlobal_.wTester && _realGlobal_.wTester._isReal_; },
 }
 
-let wTranspilationStrategy =
+let wTranspile =
 {
-  sourcePath : sourcePath( 'atop/transpilationStrategy/entry/Include.s', 'wtranspilationstrategy' ),
+  sourcePath : sourcePath( 'atop/transpile/entry/Include.s', 'wtranspile' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.trs },
 }
 
@@ -728,7 +728,7 @@ let Modules =
   // base / l8
 
   wProcedure,
-  wGdfStrategy,
+  wGdf,
 
   // base / l9
 
@@ -818,7 +818,7 @@ let Modules =
   willbe,
   wStarter,
   wTesting,
-  wTranspilationStrategy,
+  wTranspile,
   wFilesOperationsDirector,
   wFilesLinker,
   wBaker,
