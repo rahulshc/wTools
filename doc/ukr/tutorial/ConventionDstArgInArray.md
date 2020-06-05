@@ -34,6 +34,21 @@ console.log( dstArray === result );
 
 Рутина `arrayEmpty` приймає масив `dstArray` ( назву аргумента відповідає назві параметра рутини ) та очищає його від елементів. Приставка `dst` в назві параметра говорить про те, що переданий масив використовується як контейнер призначення і результат виконання операції записується в нього. Вивід консолі свідчить про те, що рутина очистила масив `dstArray`, а змінна `result` є ще одним посиланням на даний масив.
 
+```js
+let dstArray = [ 1, 2 ];
+let srcArray = [ [ 3 ], [ 4 ] ];
+let result = _.arrayFlatten( dstArray, srcArray );
+
+console.log( `The destination array is : ${ dstArray }` );
+// log : The destination array is : [ 1, 2, 3, 4 ]
+console.log( `The source array is : ${ srcArray }` );
+// log : The source array is : [ [ 3 ], [ 4 ] ]
+console.log( dstArray === result );
+// log : true
+```
+
+Рутина одночасно може містити параметри з приставкою `dst` і `src`. В такому разі контейнер призначення завжди записується першим. В приведеному вище прикладі рутина `arrayFlatten` додала до масиву `dstArray` значення з розгорнутого масиву `srcArray`. При цьому масив `srcArray` не змінився.
+
 ### Підсумок
 
 - Опис аргументів рутини визначає її поведінку.

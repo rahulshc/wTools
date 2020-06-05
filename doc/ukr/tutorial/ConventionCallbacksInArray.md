@@ -15,46 +15,46 @@
 ### Виклик без `callback`-ів
 
 ```js
-let arr = [ 1, 2, 'a', 'b', true, 6,  [ 1 ] ];
-let result = _.longCountElement( arr, 1 );
-console.log( `The number of elements 1 : ${ result }` );
-// log : The number of elements 1 : 1
+let arr = [ 1, 2, 3, 1, [ 1 ] ];
+let result = _.arrayRemoveElement( arr, 1 );
+console.log( `The result is : ${ result }` );
+// log : The result is : [ 2, 3, [ 1 ] ]
 ```
 
-Рутина `longCountElement` знайшла одне включення примітиву `1`.
+Рутина `arrayRemoveElement` знайшла два елемента `1` і видалила їх.
 
 ```js
-let arr = [ 1, 2, 'a', 'b', true, 6,  [ 1 ] ];
-let result = _.longCountElement( arr, [ 1 ] );
-console.log( `The number of elements [ 1 ] : ${ result }` );
-// log : The number of elements [ 1 ] : 0
+let arr = [ 1, 2, 3, 1, [ 1 ] ];
+let result = _.arrayRemoveElement( arr, [ 1 ] );
+console.log( `The result is : ${ result }` );
+// log : The result is: [ 1, 2, 3, 1, [ 1 ] ]
 ```
 
-Комплексні типи даних при однаковій формі запису - різні сутності, тому рутина при пошуку не знайшла масив `[ 1 ]` в масиві `arr`. Для порівняння комплексних типів даних використовуються колбеки.
+Комплексні типи даних при однаковій формі запису - різні сутності, тому рутина не змогла видалити елемент `[ 1 ]` в масиві `arr`. Для порівняння комплексних типів даних використовуються колбеки.
 
 ### Виклик з еквалайзером
 
 ```js
-let arr = [ 1, 2, 'a', 'b', true, 6,  [ 1 ] ];
+let arr = [ 1, 2, 3, 1, [ 1 ] ];
 let equalizer = ( elem, arrEl ) => elem[ 0 ] === arrEl[ 0 ];
-let result = _.longCountElement( arr, [ 1 ], equalizer );
-console.log( `The number of elements [ 1 ] : ${ result }` );
-// log : The number of elements [ 1 ] : 1
+let result = _.arrayRemoveElement( arr, [ 1 ], equalizer );
+console.log( `The result is : ${ result }` );
+// log : The result is : [ 1, 2, 3, 1 ]
 ```
 
-В еквалайзер завжди передається два аргумента: елемент для порівняння та поточний елемент масиву. Указаний еквалайзер `equalizer` порівнює перший елемент масиву `[ 1 ]` та поточний елемент масиву `arr`, при співпадінні значень колбек повертає `true` i значення лічильника збільшується. В масиві `arr` знайдено один масив в якому за індексом `0` знаходиться значення `1`.
+В еквалайзер завжди передається два аргумента: елемент для порівняння та поточний елемент масиву. Указаний еквалайзер `equalizer` порівнює перший елемент масиву `[ 1 ]` та поточний елемент масиву `arr`, при співпадінні значень колбек повертає `true` i значення рутина видаляє елемент. В масиві `arr` знайдено один масив в якому за індексом `0` знаходиться значення `1`.
 
 ### Використання евалуатора з однією функцією
 
 ```js
 let arr = [ { v : 1 }, { v : 2 }, { v : 'str' }, { v : 2, e : 'str' } ];
 let evalutor = ( elem ) => elem.v;
-let result = _.longCountElement( arr3, { v : 2 }, evalutor ) );
-console.log( `The number of elements with pair 'v : 2' : ${ result }` );
-// log : The number of elements with pair 'v : 2' : 2
+let result = _.arrayRemoveElement( arr3, { v : 2 }, evalutor ) );
+console.log( `The result is : ${ result }` );
+// log : The result is : [ { v : 1 }, { v : 'str' } ]
 ```
 
-Евалуатор має лише одну функцію, вона по черзі застосовується до елементу масива та до елементу для порівняння. Якщо отримані значення співпадають, то евалуатор повертає `true`. Відповідно, приведений евалуатор шукає однакові значення в мапах за ключем `v`. Масив `arr` містить дві мапи з відповідними парами `ключ-значення`.
+Евалуатор має лише одну функцію, вона по черзі застосовується до елементу масива та до елементу для порівняння. Якщо отримані значення співпадають, то евалуатор повертає `true`. Відповідно, приведений евалуатор шукає однакові значення в мапах за ключем `v`. Масив `arr` містить дві мапи з парами `v : 2`.
 
 ### Використання евалуатора з двома функціями
 
@@ -62,9 +62,9 @@ console.log( `The number of elements with pair 'v : 2' : ${ result }` );
 let arr = [ { v : 1 }, { v : 2 }, { v : 'str' }, { v : 2, e : 'str' } ];
 let evalutor1 = ( arrEl ) => arrEl.v;
 let evalutor2 = ( elem ) => elem;
-let result = _.longCountElement( arr, 'str', evalutor1, evalutor2 ) );
-console.log( `The number of elements with pair "v : 'str'" : ${ result }` );
-//  log : The number of elements with pair "v : 'str'" : 1
+let result = _.arrayRemoveElement( arr, 'str', evalutor1, evalutor2 ) );
+console.log( `The result is : ${ result }` );
+//  log : The result is : [ { v : 1 }, { v : 2 }, { v : 'str' } ]
 ```
 
 Перший евалуатор `evalutor1` застосовується до елемента масива, а другий - `evalutor2` - до елемента для порівняння. Використання двох окремих колбеків може спростити обробку елементів, що потребують перетворень.
@@ -73,23 +73,23 @@ console.log( `The number of elements with pair "v : 'str'" : ${ result }` );
 ### Виклик рутини з заданим зміщенням
 
 ```js
-let arr = [ 1, 1, 'a', 'b', true, 6,  [ 1 ] ];
-let result = _.longCountElement( arr, 1, 2 );
-console.log( `The number of elements 1 : ${ result }` );
-// log : The number of elements 1 : 0
+let arr = [ 1, 2, 3, 1, [ 1 ] ];
+let result = _.arrayRemoveElement( arr, 1, 2 );
+console.log( `The result is: ${ result }` );
+// log : The result is : [ 1, 2, 3, [ 1 ] ]
 ```
 
-Рутина `longCountElement` не знайшла жодного числа `1`, бо пошук ведеться починаючи з індекса `2`. Індекс задано третім аргументом. Після указання зміщення можна передати колбеки `equalizer` або `evalutor`-и.
+Рутина `arrayRemoveElement` видалила лише другий елемент `1`, бо пошук ведеться починаючи з індекса `2`. Стартовий індекс задано третім аргументом. Після указання зміщення можна передати колбеки `equalizer` або `evalutor`-и.
 
 ```js
-let arr = [ 1, [ 1 ], 'a', 'b', true, 6,  [ 1 ] ];
+let arr = [ [ 1 ], 2, 3, 1, [ 1 ] ];
 let equalizer = ( elem, arrEl ) => elem === arrEl[ 0 ];
-let result = _.longCountElement( arr, 1, 2, equalizer );
-console.log( `The number of elements 1 : ${ result }` );
-// log : The number of elements 1 : 1
+let result = _.arrayRemoveElement( arr, 1, 2, equalizer );
+console.log( `The result is : ${ result }` );
+// log : The result is : [ [ 1 ], 2, 3, 1 ]
 ```
 
-Використовуючи колбек `equalizer`, рутина `longCountElement` знайшла один масив, першим елементом якого є `1`.
+Використовуючи колбек `equalizer`, рутина `arrayRemoveElement` знайшла один масив, першим елементом якого є `1`.
 
 ### Підсумок
 
