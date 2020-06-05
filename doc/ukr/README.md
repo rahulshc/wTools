@@ -169,9 +169,9 @@
 
 <details>
   <summary><a href="./tutorial/ConventionDstArgInArray.md">
-    Array routines call conventions: dst argument
+    Конвенції рутин _.array*: аргумент dst
   </a></summary>
-    Про що свідчить використання аргумента <code>dst</code>.
+    Про що свідчить використання аргументів <code>dst</code> і <code>src</code>.
 </details>
 
 <details>
