@@ -175,17 +175,17 @@
 </details>
 
 <details>
-  <summary><a href="./tutorial/ConventionDstNullNew.md">
+  <summary><a href="./tutorial/ConventionDstNull.md">
     Конвенції: dst=null
   </a></summary>
-    Передача значення <code>null</code> в параметр <code>dst</code>.
+    Для чого передається <code>null</code> в параметр <code>dst</code>.
 </details>
 
 <details>
   <summary><a href="./tutorial/ConventionDefaultsMapInRoutine.md">
-    Routines call convention: routine defaults map
+    Конвенції: мапа дефолтних значень
   </a></summary>
-    Як зберігаються та змінюються налаштування за замовчуванням в рутинах.
+    Як зберігаються та змінюються налаштування в рутинах.
 </details>
 
 <details>
