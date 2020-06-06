@@ -1,5 +1,5 @@
 {
-  "name" : "wTools",
+  "name" : "wtools",
   "version" : "0.8.649",
   "engine" : "node >= 8.0.0",
   "enabled" : 1,
