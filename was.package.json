@@ -39,7 +39,8 @@
     "wcloner" : "",
     "wselector" : "",
     "wstringer" : "",
-    "wTesting" : ""
+    "wTesting" : "",
+    "eslint" : "7.1.0"
   },
   "keywords" :
   [
