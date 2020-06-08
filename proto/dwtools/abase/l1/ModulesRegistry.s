@@ -433,6 +433,12 @@ let wFiles =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider },
 }
 
+let wFilesImap =
+{
+  sourcePath : sourcePath( 'amid/files/l5_provider/Imap.ss', 'wfilesimap' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider },
+}
+
 let wFilesArchive =
 {
   sourcePath : sourcePath( 'amid/files/IncludeArchive.s', 'wfilesarchive' ),
@@ -778,6 +784,7 @@ let Modules =
   wFiles,
   wFilesArchive,
   wFilesEncoders,
+  wFilesImap,
   wFilesSvn,
   wFileExecutor,
   wFileExecutorHtmlFormatters,
