@@ -141,7 +141,7 @@ function example( o )
 
   _.routineOptions( example, o );
 
-  // Write main routine code below
+  // Write main routine's code below
   // ...
 }
 
