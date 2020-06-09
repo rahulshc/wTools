@@ -2,6 +2,13 @@ if( typeof module !== 'undefined' )
 require( 'wTools' );
 var _ = wTools;
 
+console.log( mapToStr( { src : { a : 1, b : 2, c : 3 } } ) ) ;
+// log : a:1;b:2;c:3
+console.log( mapToStr( { src : { a : 1, b : 2, c : 3 }, keyValDelimeter : ':' } ) );
+// log : a:1;b:2;c:3
+console.log( mapToStr( { src : { a : 1, b : 2, c : 3 }, keyValDelimeter : ':', entryDelimeter : ';' } ) ) ;
+// log : a:1;b:2;c:3
+
 // Oficated routine
 function mapToStr( o )
 {
@@ -24,10 +31,3 @@ mapToStr.defaults =
   keyValDelimeter : ':',
   entryDelimeter : ';',
 }
-
-console.log( mapToStr( { src : { a : 1, b : 2, c : 3 } } ) ) ;
-// log : a:1;b:2;c:3
-console.log( mapToStr( { src : { a : 1, b : 2, c : 3 }, keyValDelimeter : ':' } ) );
-// log : a:1;b:2;c:3
-console.log( mapToStr( { src : { a : 1, b : 2, c : 3 }, keyValDelimeter : ':', entryDelimeter : ';' } ) ) ;
-// log : a:1;b:2;c:3
