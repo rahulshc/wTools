@@ -5,21 +5,16 @@ var _ = wTools;
 // Oficated routine
 function mapToStr( o )
 {
-
   if( _.strIs( o ) )
   o = { src : o }
-
   _.routineOptions( mapToStr, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
-
   let result = '';
   for( let s in o.src )
   {
     result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
   }
-
   result = result.substr( 0, result.length-o.entryDelimeter.length );
-
   return result
 }
 
