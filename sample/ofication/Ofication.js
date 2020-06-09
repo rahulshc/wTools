@@ -27,7 +27,6 @@ function mapToStr( src, keyValDelimeter, entryDelimeter )
  *  - In the routine's body work with parameters through keys - o.src, etc.
  */
 
-
 // Oficated routine
 
 function mapToStr( o )
@@ -56,6 +55,7 @@ mapToStr.defaults =
   keyValDelimeter : ':',
   entryDelimeter : ';',
 }
+
 
 // OFICATED ROUTINES EXAMPLES:
 
