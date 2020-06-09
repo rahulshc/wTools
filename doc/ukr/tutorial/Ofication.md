@@ -318,7 +318,6 @@ function strLinesSelect( o )
     line[ 0 ] = '* ' + line[ 0 ];
     else
     line[ 0 ] = '  ' + line[ 0 ];
-    // line[ 1 ] = _.strBut( line[ 1 ], 0, '*' );
     return line.join( '' );
   }
 
@@ -348,104 +347,127 @@ strLinesSelect.defaults =
 </details>
 
 <details>
-  <summary><u>Перевіряє що об'єкт <code>o.src</code> має якнайменше одну пару ключ-значення, яка представлена у <code>o.template</code></u></summary>
+  <summary><u>Повертає об'єкт заповнений унікальними <code>[ key, value ]</code> парами з інших об'єктів</u></summary>
 
 ```javascript
 /**
- * Checks if object( o.src ) has at least one key/value pair that is represented in( o.template ).
- * Also works with ( o.template ) as routine that check( o.src ) with own rules.
- * @param {wTools.objectSatisfyOptions} o - Default options {@link wTools.objectSatisfyOptions}.
- * @returns { boolean } Returns true if( o.src ) has same key/value pair(s) with( o.template )
- * or result if ( o.template ) routine call is true.
+ * The _mapOnly() returns an object filled by unique [ key, value]
+ * from others objects.
+ *
+ * The _mapOnly() checks whether there are the keys of
+ * the (screenMap) in the list of (srcMaps).
+ * If true, it calls a provided callback function(filter)
+ * and adds to the (dstMap) all the [ key, value ]
+ * for which callback function returns true.
+ *
+ * @param { function } [options.filter = filter.bypass()] options.filter - The callback function.
+ * @param { objectLike } options.srcMaps - The target object.
+ * @param { objectLike } options.screenMaps - The source object.
+ * @param { Object } [options.dstMap = Object.create( null )] options.dstMap - The empty object.
  *
  * @example
- * _.objectSatisfy( {a : 1, b : 1, c : 1 }, { a : 1, b : 2 } );
- * // returns true
+ * let options = Object.create( null );
+ * options.dstMap = Object.create( null );
+ * options.screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Mikle' };
+ * options.srcMaps = { 'a' : 33, 'd' : 'name', 'name' : 'Mikle', 'c' : 33 };
+ * _mapOnly( options );
+ * // returns { a : 33, c : 33, name : "Mikle" };
  *
  * @example
- * _.objectSatisfy( { template : {a : 1, b : 1, c : 1 }, src : { a : 1, b : 2 } } );
- * // returns true
+ * let options = Object.create( null );
+ * options.dstMap = Object.create( null );
+ * options.screenMaps = { a : 13, b : 77, c : 3, d : 'name' };
+ * options.srcMaps = { d : 'name', c : 33, a : 'abc' };
+ * _mapOnly( options );
+ * // returns { a : "abc", c : 33, d : "name" };
  *
- * @example
- * function routine( src ){ return src.a === 12 }
- * _.objectSatisfy( { template : routine, src : { a : 1, b : 2 } } );
- * // returns false
- *
- * @function objectSatisfy
- * @throws {exception} If( arguments.length ) is not equal to 1 or 2.
- * @throws {exception} If( o.template ) is not a Object.
- * @throws {exception} If( o.template ) is not a Routine.
- * @throws {exception} If( o.src ) is undefined.
+ * @returns { Object } Returns an object filled by unique [ key, value ]
+ * from others objects.
+ * @function _mapOnly
+ * @throws { Error } Will throw an Error if (options.dstMap or screenMap) are not objects,
+ * or if (srcMaps) is not an array
  * @namespace Tools
-*/
+ */
 
-function objectSatisfy( o )
+function _mapOnly( o )
 {
 
-  if( arguments.length === 2 )
-  o = { template : arguments[ 0 ], src : arguments[ 1 ] };
+  let dstMap = o.dstMap || Object.create( null );
+  let screenMap = o.screenMaps;
+  let srcMaps = o.srcMaps;
 
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.objectIs( o.template ) || _.routineIs( o.template ) );
-  _.assert( o.src !== undefined );
-  _.routineOptions( objectSatisfy, o );
+  if( !_.arrayIs( srcMaps ) )
+  srcMaps = [ srcMaps ];
 
-  return _objectSatisfy( o.template, o.src, o.src, o.levels, o.strict );
+  if( !o.filter )
+  o.filter = _.field.mapper.bypass;
 
-  /**/
-
-  function _objectSatisfy( template, src, root, levels, strict )
+  if( Config.debug )
   {
 
-    if( !strict && src === undefined )
-    return true;
+    _.assert( o.filter.functionFamily === 'field-mapper' );
+    _.assert( arguments.length === 1, 'Expects single argument' );
+    _.assert( _.objectLike( dstMap ), 'Expects object-like {-dstMap-}' );
+    _.assert( !_.primitiveIs( screenMap ), 'Expects not primitive {-screenMap-}' );
+    _.assert( _.arrayIs( srcMaps ), 'Expects array {-srcMaps-}' );
+    _.assertMapHasOnly( o, _mapOnly.defaults );
 
-    if( template === src )
-    return true;
+    for( let s = srcMaps.length - 1 ; s >= 0 ; s-- )
+    _.assert( !_.primitiveIs( srcMaps[ s ] ), 'Expects {-srcMaps-}' );
 
-    if( levels === 0 )
-    {
-      if( _.objectIs( template ) && _.objectIs( src ) && _.routineIs( template.identicalWith ) && src.identicalWith === template.identicalWith )
-      return template.identicalWith( src );
-      else
-      return template === src;
-    }
-    else if( levels < 0 )
-    {
-      return false;
-    }
-
-    if( _.routineIs( template ) )
-    return template( src );
-
-    if( !_.objectIs( src ) )
-    return false;
-
-    if( _.objectIs( template ) )
-    {
-      for( let t in template )
-      {
-        let satisfy = false;
-        satisfy = _objectSatisfy( template[ t ], src[ t ], root, levels-1, strict );
-        if( !satisfy )
-        return false;
-      }
-      return true;
-    }
-
-    debugger;
-
-    return false;
   }
 
+  if( _.longIs( screenMap ) )
+  {
+    for( let k in screenMap )
+    {
+
+      if( screenMap[ k ] === undefined )
+      continue;
+
+      let s;
+      for( s = srcMaps.length-1 ; s >= 0 ; s-- )
+      {
+        if( !_.mapIs( screenMap[ k ] ) && screenMap[ k ] in srcMaps[ s ] )
+        {
+          k = screenMap[ k ];
+          break;
+        }
+        if( k in srcMaps[ s ] )
+        {
+          break;
+        }
+      }
+
+      if( s === -1 )
+      continue;
+
+      o.filter.call( this, dstMap, srcMaps[ s ], k );
+
+    }
+  }
+  else
+  {
+    for( let k in screenMap )
+    {
+      if( screenMap[ k ] === undefined )
+      continue;
+
+      for( let s in srcMaps )
+      if( k in srcMaps[ s ] )
+      o.filter.call( this, dstMap, srcMaps[ s ], k );
+    }
+  }
+
+  return dstMap;
 }
 
-objectSatisfy.defaults =
+_mapOnly.defaults =
 {
-  template : null,
-  src : null,
-  levels : 1,
-  strict : 1,
+  dstMap : null,
+  srcMaps : null,
+  screenMaps : null,
+  filter : null,
 }
 ```
 
