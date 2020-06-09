@@ -10,9 +10,7 @@ function mapToStr( o )
   _.routineOptions( mapToStr, o );
   let result = '';
   for( let s in o.src )
-  {
     result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
-  }
   result = result.substr( 0, result.length-o.entryDelimeter.length );
   return result
 }
