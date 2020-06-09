@@ -236,3 +236,10 @@
   </a></summary>
     Як використовувати опції рутини <code>vectorize</code> при створенні векторизованої рутини.
 </details>
+
+<details>
+  <summary><a href="./tutorial/Ofication.md">
+    Офікація рутин
+  </a></summary>
+    Як проводити офікацію рутин та в чому переваги цього підходу.
+</details>
