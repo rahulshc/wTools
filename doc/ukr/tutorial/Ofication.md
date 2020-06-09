@@ -69,6 +69,61 @@ strStrShort.defaults =
 }
 ```
 
+### Приклад офікації рутини
+
+**Маємо рутину:**
+Конвертує об'єкт у строку.
+```javascript
+function mapToStr( src, keyValDelimeter, entryDelimeter)
+{
+  let result = '';
+  for( let s in src )
+  {
+    result += s + keyValDelimeter + src[ s ] + entryDelimeter;
+  }
+
+  result = result.substr( 0, result.length-entryDelimeter.length );
+
+  return result
+}
+```
+*Для офікації потрібно:*
+* Створити єдиний параметр `o`
+* Додати мапу дефолтних опцій
+* Додати перевірки типів даних( в цьому випадку на строку для одного аргумента, та на кількість аргументів)
+* Додати виклик `_.routineOptions( mapToStr, o );`
+* В тілі рутини працювати з параметрами через ключі `o`: `o.src` і т.д.
+
+**Офікована рутина:**
+```javascript
+function mapToStr( o )
+{
+
+  if( _.strIs( o ) )
+  o = { src : o }
+
+  _.routineOptions( mapToStr, o );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  let result = '';
+  for( let s in o.src )
+  {
+    result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
+  }
+
+  result = result.substr( 0, result.length-o.entryDelimeter.length );
+
+  return result
+}
+
+mapToStr.defaults =
+{
+  src : null,
+  keyValDelimeter : ':',
+  entryDelimeter : ';',
+}
+```
+
 ### Додаткові приклади офікованих рутин/методів
 
 <details>
@@ -397,64 +452,148 @@ objectSatisfy.defaults =
 </details>
 
 <details>
-  <summary><u>Конвертує і повертає переданий об'єкт <code>{-srcMap-}</code> як строку</u></summary>
+  <summary><u>Конкатенація елементів масиву<code>srcs</code>.Приймає аргумент <code>srcs</code> та мапу опцій <code>o</code></u></summary>
 
 ```javascript
 /**
- * The mapToStr() routine converts and returns the passed object {-srcMap-} to the string.
+ * The routine strConcat() provides the concatenation of array elements
+ * into a string. Returned string can be formatted by using options in options map.
  *
- * It takes an object and two strings (keyValSep) and (tupleSep),
- * checks if (keyValSep and tupleSep) are strings.
- * If false, it assigns them defaults ( ' : ' ) to the (keyValSep) and
- * ( '; ' ) to the tupleSep.
- * Otherwise, it returns a string representing the passed object {-srcMap-}.
- *
- * @param { objectLike } src - The object to convert to the string.
- * @param { string } [ keyValSep = ' : ' ] keyValSep - colon.
- * @param { string } [ tupleSep = '; ' ] tupleSep - semicolon.
- *
- * @example
- * _.mapToStr( { a : 1, b : 2, c : 3, d : 4 }, ' : ', '; ' );
- * // returns 'a : 1; b : 2; c : 3; d : 4'
+ * @param { ArrayLike|* } srcs - ArrayLike container with elements or single element to make string.
+ * If {-srcs-} is not ArrayLike, routine converts to string provided value.
+ * @param { Object } o - Options map.
+ * @param { String } o.lineDelimter - The line delimeter. Default value is new line symbol '\n'.
+ * If string element of array has not delimeter in the end or next element has not delimeter in the begin, routine insert one space between this elements.
+ * @param { String } o.linePrefix - The prefix that adds to every line. Default value is empty string.
+ * @param { String } o.linePostfix - The postfix that adds to every line. Default value is empty string.
+ * @param { Object } o.optionsForToStr - The options for routine _.toStr that uses for convertion to string. Default value is null.
+ * @param { Routine } o.onToStr - The callback, which uses for convertion to string. Default value is null.
  *
  * @example
- * _.mapToStr( [ 1, 2, 3 ], ' : ', '; ' );
- * // returns '0 : 1; 1 : 2; 2 : 3';
+ * _.strConcat( 'str' );
+ * // returns 'str '
  *
  * @example
- * _.mapToStr( 'abc', ' : ', '; ' );
- * // returns '0 : a; 1 : b; 2 : c';
+ * _.strConcat( 11 );
+ * // returns '11 '
  *
- * @returns { string } Returns a string (result) representing the passed object {-srcMap-}.
- * @function mapToStr
+ * @example
+ * _.strConcat( { a : 'a' } );
+ * // returns '[object Object] '
+ *
+ * @example
+ * _.strConcat( [ 1, 2, 'str', [ 3, 4 ] ] );
+ * // returns '1 2 str 3,4 '
+ *
+ * @example
+ * let options =
+ * {
+ *   linePrefix : '** ',
+ *   linePostfix : ' **'
+ * };
+ * _.strConcat( [ 1, 2, 'str', [ 3, 4 ] ], options );
+ * // returns '** 1 2 str 3,4 **'
+ *
+ * @example
+ * let options =
+ * {
+ *   linePrefix : '** ',
+ *   linePostfix : ' **'
+ * };
+ * _.strConcat( [ 'a\n', 'b\n', 'c\n', 'd\n' ], options );
+ * // returns '** a **
+ *             ** b **
+ *             ** c **
+ *             ** d **'
+ *
+ * @example
+ * let onToStr = ( src ) => String( src ) + '*';
+ * let options = { onToStr };
+ * _.strConcat( [ 'a', 'b', 'c', 'd' ], options );
+ * // returns 'a* b* c* d* '
+ *
+ * @returns { String } - Returns string, which is concatenated from {-srcs-}.
+ * @function strConcat
+ * @throws { Error } If arguments.length is less then one or more than two arguments.
+ * @throws { Error } If routine strConcat does not belong module Tools.
  * @namespace Tools
  */
 
-function mapToStr( o )
+function strConcat( srcs, o )
 {
 
-  if( _.strIs( o ) )
-  o = { src : o }
+  o = _.routineOptions( strConcat, o || Object.create( null ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( this.strConcat === strConcat );
 
-  _.routineOptions( mapToStr, o );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  let result = '';
-  for( let s in o.src )
+  if( o.onToStr === null )
+  o.onToStr = function onToStr( src, op )
   {
-    result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
+    return _.toStr( src, op.optionsForToStr );
   }
 
-  result = result.substr( 0, result.length-o.entryDelimeter.length );
+  let defaultOptionsForToStr =
+  {
+    stringWrapper : '',
+  }
 
-  return result
+  o.optionsForToStr = _.mapSupplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
+
+  if( _.routineIs( srcs ) )
+  srcs = srcs();
+
+  if( !_.arrayLike( srcs ) )
+  srcs = [ srcs ];
+
+  let result = '';
+  if( !srcs.length )
+  return result;
+
+  /* */
+
+  for( let a = 0 ; a < srcs.length ; a++ )
+  {
+    let src = srcs[ a ];
+
+    src = o.onToStr( src, o );
+
+    result = result.replace( /[^\S\n]\s*$/, '' ); 
+
+    if( !result )
+    {
+      result = src;
+    }
+
+    else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
+    {
+      result = result + src;
+    }
+    else
+    {
+      result = result + ' ' + src.replace( /^\s+/, '' );
+    }
+
+  }
+
+  /* */
+
+  if( o.linePrefix || o.linePostfix )
+  {
+    result = result.split( o.lineDelimter );
+    result = o.linePrefix + result.join( o.linePostfix + o.lineDelimter + o.linePrefix ) + o.linePostfix;
+  }
+
+  /* */
+
+  return result;
 }
 
-mapToStr.defaults =
+strConcat.defaults =
 {
-  src : null,
-  keyValDelimeter : ':',
-  entryDelimeter : ';',
+  linePrefix : '',
+  linePostfix : '',
+  lineDelimter : '\n',
+  optionsForToStr : null,
+  onToStr : null,
 }
-
 ```
