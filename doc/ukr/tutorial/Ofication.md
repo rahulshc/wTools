@@ -17,7 +17,7 @@ function mapToStr( src, keyValDelimeter, entryDelimeter)
 {
   let result = '';
   for( let s in src )
-    result += s + keyValDelimeter + src[ s ] + entryDelimeter;
+  result += s + keyValDelimeter + src[ s ] + entryDelimeter;
   result = result.substr( 0, result.length-entryDelimeter.length );
 
   return result
@@ -49,7 +49,7 @@ function mapToStr( o )
 
   let result = '';
   for( let s in o.src )
-    result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
+  result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
   result = result.substr( 0, result.length-o.entryDelimeter.length );
 
   return result
