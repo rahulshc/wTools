@@ -1,6 +1,6 @@
 # Офікація рутин
 
-### Офікація - процес перетворення списку вхідних параметрів рутини або методу в мапу опцій 'о'.
+Офікація - процес перетворення списку вхідних параметрів рутини або методу в мапу опцій 'о'.
 
 **Переваги** 
 * Покращення читабельності коду.
@@ -17,10 +17,7 @@ function mapToStr( src, keyValDelimeter, entryDelimeter)
 {
   let result = '';
   for( let s in src )
-  {
     result += s + keyValDelimeter + src[ s ] + entryDelimeter;
-  }
-
   result = result.substr( 0, result.length-entryDelimeter.length );
 
   return result
@@ -52,10 +49,7 @@ function mapToStr( o )
 
   let result = '';
   for( let s in o.src )
-  {
     result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
-  }
-
   result = result.substr( 0, result.length-o.entryDelimeter.length );
 
   return result
@@ -90,12 +84,7 @@ mapToStr.defaults =
 При відсутності `keyValDelimeter` або `entryDelimeter` будуть застосовуватися дефолтні значення.
 
 
-*Перевірка вхідних значень* - `_.routineOptions` виконує перевірку вхідних даних:
-* Перевіряє, що `mapToStr` є рутиною.
-* Перевіряє, що у рутини `mapToStr` наявна мапа дефолтних значень.
-* Перевіряє, що у рутини `mapToStr` мапа опцій `o` є об'єктом.
-* Перевіряє, що рутина `mapToStr` може приймати мапу опцій `o`.
-* Перевіряє, що у рутині `mapToStr` мапа опцій `o` не містить `undefined` значень.
+*Перевірка вхідних значень* - `_.routineOptions` виконує перевірку вхідних даних: перевіряє, що `mapToStr` є рутиною і у неї наявна мапа дефолтних значень `mapToStr.defaults` та мапа опцій `o`, яка є об'єктом і не містить `undefined` значень. Також, `_.routineOptions` може приймати масив аргументів замість мапи опцій.
 ```javascript
 _.routineOptions( mapToStr, o )
 ```
