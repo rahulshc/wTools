@@ -1,14 +1,10 @@
-if( typeof module !== 'undefined' )
-require( 'wTools' );
-var _ = wTools;
 
 function mapToStr( src, keyValDelimeter, entryDelimeter )
 {
   let result = '';
   for( let s in src )
-    result += s + keyValDelimeter + src[ s ] + entryDelimeter;
+  result += s + keyValDelimeter + src[ s ] + entryDelimeter;
   result = result.substr( 0, result.length-entryDelimeter.length );
-
   return result
 }
 

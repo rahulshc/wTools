@@ -25,7 +25,6 @@ function mapToStr( src, keyValDelimeter, entryDelimeter)
   for( let s in src )
   result += s + keyValDelimeter + src[ s ] + entryDelimeter;
   result = result.substr( 0, result.length-entryDelimeter.length );
-
   return result
 }
 ```
@@ -54,7 +53,6 @@ function mapToStr( o )
 
   if( _.strIs( o ) )
   o = { src : o }
-
   _.routineOptions( mapToStr, o );
   _.assert( arguments.length === 1, 'Expects single argument' );
 

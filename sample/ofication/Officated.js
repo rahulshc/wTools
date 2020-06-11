@@ -3,6 +3,7 @@ require( 'wTools' );
 var _ = wTools;
 
 // Oficated routine
+
 function mapToStr( o )
 {
   if( _.strIs( o ) )
@@ -10,7 +11,7 @@ function mapToStr( o )
   _.routineOptions( mapToStr, o );
   let result = '';
   for( let s in o.src )
-    result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
+  result += s + o.keyValDelimeter + o.src[ s ] + o.entryDelimeter;
   result = result.substr( 0, result.length-o.entryDelimeter.length );
   return result
 }
@@ -24,5 +25,3 @@ mapToStr.defaults =
 
 console.log( mapToStr( { src : { a : 1, b : 2, c : 3 } } ) ) ;
 // log : a:1;b:2;c:3
-
-console.log( _.routineOptions + '' )
