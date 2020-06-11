@@ -8,21 +8,19 @@
 
 Рутини призначені для роботи з `unroll-масивами` можна виконувати над звичайними масивами. Така рутина не змінює тип масиву.
 
-### Приклади
-
-Виконання над `unroll-масивом` операції звичайного масиву
+#### Виконання над `unroll-масивом` операції звичайного масиву
 
 ```js
-// unroll array
-var unroll = _.unrollMake( [ 2, 3, 4 ] );
-
+var unroll = _.unrollMake([ 2, 3, 4 ]);
 var result = _.arrayAppend( unroll, 5 );
 // returns [ 2, 3, 4, 5 ]
 _.unrollIs( result );
 // returns true
 ```
 
-Виконання над звичайним масивом операції для `unroll-масивів`
+В `unroll-масив` додано елемент. Результуючий масив залишився `unroll`-ом.
+
+#### Виконання над звичайним масивом операції для `unroll-масивів`
 
 ```js
 var result = _.unrollAppend( [ 0, 1, 2, 3 ], 4 );
@@ -31,15 +29,20 @@ _.unrollIs( result );
 // returns false
 ```
 
-Додавання елементів до `unroll-масиву` рутиною для роботи з `unroll-масивами`
+Якщо застосувати `unroll-рутину` до звичайного масиву, то буде виконано указану операцію як зі звичайним масивом. При цьому `unroll-рутини` не змінюють тип оригінального масиву.
+
+#### Додавання елементів до `unroll-масиву` рутиною для роботи з `unroll-масивами`
 
 ```js
-var unroll = _.unrollMake( [ 0, 1, 'str' ] );
-var result = _.unrollAppend( unroll, 2, unroll );
-// returns [ 0, 1, 'str', 2, 0, 1, 'str' ]
+var unroll1 = _.unrollMake([ 2 ]);
+var unroll2 = _.unrollMake( [ 0, 1, 'str' ] );
+var result = _.unrollAppend( unroll1, unroll2 );
+// returns [ 2, 0, 1, 'str' ]
 ```
 
-Додавання елементів до звичайного-масиву рутиною для роботи з `unroll-масивами`
+При додаванні `unroll-рутиною` до одного `unroll-масиву` іншого, відбувається розгортання. Результуючий масив `result` містить як елементи першого масиву, так і другого.
+
+#### Додавання елементів до звичайного-масиву рутиною для роботи з `unroll-масивами`
 
 ```js
 var unroll = _.unrollMake( [ 0, 1, 'str' ] );
@@ -47,7 +50,9 @@ var result = _.unrollAppend( [ 7, [ 2 ] ], unroll );
 // returns [ 7, [ 2 ], 0, 1, 'str' ]
 ```
 
-Розгортання `unroll-масивів`
+При додаванні `unroll-рутиною` до одного звичайного масиву `unroll-масиву`, відбувається розгортання. Результуючий масив `result` не змінює типу та включає елементи `unroll-масива`.
+
+#### Розгортання `unroll-масивів` в `unroll-масиві`
 
 ```js
 var unroll1 = _.unrollMake( [ '5' ] );
@@ -56,17 +61,7 @@ var result1 = _.unrollNormalize( _.unrollFrom( [ 1, 2, unroll1, unroll2 ] ) );
 // returns [ 1, 2, '5', 'str', 3, [ 4 ] ]
 ```
 
-Розгортання `unroll-масивів`
-
-```js
-
-var unroll1 = _.unrollMake( [ '5' ] );
-var unroll2 = _.unrollMake( [ 'str', [ 3 ] ] );
-var result2 = _.unrollNormalize( [ 0, 7, unroll1, [ unroll2, unroll1 ] ] );
-// returns [ 0, 7, '5', [ 'str', [ 3 ],  '5' ] ]
-_.unrollIs( result2 );
-// returns false
-```
+При використанні рутини `unrollNormalize` вкладені в `unroll-масив` `unroll-масиви` розгортаються. Оригінальний `unroll-масив` при цьому не змінює тип. Якщо `unroll-масиви` поміщені в звичайний масив, то рутина `unrollNormalize` розгортає лише `unroll-масиви`.
 
 ### Підсумок
 
