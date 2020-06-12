@@ -94,6 +94,13 @@
     Non-standard implementation of untyped buffer with built-in access to buffer data.
 </details>
 
+<details>
+  <summary><a href="./concept/BufferView.md">
+    Type <code>BufferView</code>
+  </a></summary>
+    Standard untyped buffers that type data of `BufferRaw` dynamically.
+</details>
+
 ## Tutorials
 
 <details>
