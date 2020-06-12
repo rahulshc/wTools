@@ -395,6 +395,38 @@ let wYamlTools =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.yaml },
 }
 
+// mid / l3 / image
+
+let wImage =
+{
+  sourcePath : sourcePath( 'amid/l3/image/entry/Image.s', 'wimage' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.image },
+}
+
+let wImageReader =
+{
+  sourcePath : sourcePath( 'amid/l3/image/entry/Reader.s', 'wimagereader' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.image.reader },
+}
+
+let wImageWriter =
+{
+  sourcePath : sourcePath( 'amid/l3/image/entry/Writer.s', 'wimagewriter' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.image.writer },
+}
+
+let wImageReaderPng =
+{
+  sourcePath : sourcePath( 'amid/l3/image/entry/ReaderPng.s', 'wimagereaderpng' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.image.reader.Png },
+}
+
+let wImageReaderPngjs =
+{
+  sourcePath : sourcePath( 'amid/l3/image/entry/ReaderPngjs.s', 'wimagereaderpngjs' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.image.reader.Pngjs },
+}
+
 //
 
 let wColor =
@@ -772,6 +804,14 @@ let Modules =
   wGitTools,
   wNpmTools,
   wYamlTools,
+
+  // mid / l3 / image
+
+  wImage,
+  wImageReader,
+  wImageWriter,
+  wImageReaderPng,
+  wImageReaderPngjs,
 
   //
 
