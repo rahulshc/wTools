@@ -638,6 +638,9 @@ function _resolveFirst( o )
   if( o.basePath === null )
   o.basePath = _.path.dir( _.introspector.location({ level : 1 }).filePath );
 
+  // if( o.moduleNames && o.moduleNames.length && o.moduleNames[ 0 ] === 'wGitTools' )
+  // debugger;
+
   // if( module.isScript )
   // if( o.moduleNames && o.moduleNames.length && o.moduleNames[ 0 ] === 'wBlueprint' )
   // debugger;

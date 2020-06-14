@@ -427,6 +427,62 @@ let wImageReaderPngjs =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.image.reader.Pngjs },
 }
 
+// mid / l4 / files
+
+let wFiles =
+{
+  sourcePath : sourcePath( 'amid/l4_files/entry/Files.s', 'wFiles' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider },
+}
+
+let wFilesArchive =
+{
+  sourcePath : sourcePath( 'amid/l4_files/entry/Archive.s', 'wfilesarchive' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FilesArchive },
+}
+
+let wFilesEncoders =
+{
+  sourcePath : sourcePath( 'amid/l4_files/entry/EncodersExtended.s', 'wfilesencoders' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileReadEncoders && !!_global.wTools.FileReadEncoders.yml },
+}
+
+let wFilesExtract =
+{
+  sourcePath : sourcePath( 'amid/l4_files/entry/Extract.ss', 'wfilesextract' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider.Extract },
+}
+
+let wFilesHardDrive =
+{
+  sourcePath : sourcePath( 'amid/l4_files/entry/HardDrive.ss', 'wfilesharddrive' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider.HardDrive },
+}
+
+let wFilesNpm =
+{
+  sourcePath : sourcePath( 'amid/l4_files/entry/Npm.ss', 'wfilesnpm' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider.Npm },
+}
+
+let wFilesGit =
+{
+  sourcePath : sourcePath( 'amid/l4_files/entry/Git.ss', 'wfilesgit' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider.Git },
+}
+
+let wFilesSvn =
+{
+  sourcePath : sourcePath( 'amid/l4_files/entry/Svn.ss', 'wfilesvn' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider.Svn },
+}
+
+let wFilesImap =
+{
+  sourcePath : sourcePath( 'amid/l4_files/l7_provider/Imap.ss', 'wfilesimap' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider },
+}
+
 //
 
 let wColor =
@@ -457,36 +513,6 @@ let wCommandsConfig =
 {
   sourcePath : sourcePath( 'amid/l7/commands/mixin/CommandsConfig.s', 'wcommandsconfig' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CommandsConfig },
-}
-
-let wFiles =
-{
-  sourcePath : sourcePath( 'amid/files/UseTop.s', 'wFiles' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider },
-}
-
-let wFilesImap =
-{
-  sourcePath : sourcePath( 'amid/files/l5_provider/Imap.ss', 'wfilesimap' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider },
-}
-
-let wFilesArchive =
-{
-  sourcePath : sourcePath( 'amid/files/IncludeArchive.s', 'wfilesarchive' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FilesArchive },
-}
-
-let wFilesEncoders =
-{
-  sourcePath : sourcePath( 'amid/files/l1/EncodersExtended.s', 'wfilesencoders' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileReadEncoders && !!_global.wTools.FileReadEncoders.yml },
-}
-
-let wFilesSvn =
-{
-  sourcePath : sourcePath( 'amid/files/fprovider/pSvn.ss', 'wFilesSvn' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider.Svn },
 }
 
 let wFileExecutor =
@@ -807,11 +833,25 @@ let Modules =
 
   // mid / l3 / image
 
+  /* xxx : move to l4 */
+
   wImage,
   wImageReader,
   wImageWriter,
   wImageReaderPng,
   wImageReaderPngjs,
+
+  // amid / l3 / files
+
+  wFiles,
+  wFilesArchive,
+  wFilesEncoders,
+  wFilesExtract,
+  wFilesHardDrive,
+  wFilesNpm,
+  wFilesGit,
+  wFilesSvn,
+  wFilesImap,
 
   //
 
@@ -821,11 +861,6 @@ let Modules =
   wCommandsAggregator,
   wCommandsConfig,
 
-  wFiles,
-  wFilesArchive,
-  wFilesEncoders,
-  wFilesImap,
-  wFilesSvn,
   wFileExecutor,
   wFileExecutorHtmlFormatters,
   wPathTranslator,
