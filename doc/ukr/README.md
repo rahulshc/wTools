@@ -135,6 +135,13 @@
     <code>Range</code> - збірний тип даних - пара чисел, що задає послідовність.
 </details>
 
+<details>
+  <summary><a href="./concept/Stream.md">
+    Тип <code>Stream</code>
+  </a></summary>
+    <code>Stream</code> - абстрактний інтерфейс для роботи з потоковими даними.
+</details>
+
 ## Туторіали
 
 <!--
