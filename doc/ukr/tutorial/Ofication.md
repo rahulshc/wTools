@@ -110,14 +110,17 @@ _.routineOptions( mapToStr, arguments )
 **Приклади викликів:**
 
 * Виклик неофікованої рутини
+
   ```javascript
   mapToStr( { a : 1, b : 2, c : 3 }, ':', ';' ); // log : a:1;b:2;c:3
   ```
 * Виклик офікованої рутини (підставляються дефолтні значення ```keyValDelimeter``` і ```entryDelimeter```)
+
   ```javascript
   mapToStr( { src : { a : 1, b : 2, c : 3 } } ); // log : a:1;b:2;c:3
   ```
 * Виклик офікованої рутини (всі значення постачаються)
+
   ```javascript
   mapToStr( { src : { a : 1, b : 2, c : 3 }, keyValDelimeter: ':', entryDelimeter: ';' } ); // log : a:1;b:2;c:3
   ```
