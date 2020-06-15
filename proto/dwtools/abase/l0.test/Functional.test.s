@@ -15452,7 +15452,7 @@ function _filter_functor( test )
 
 //
 
-function entityMap( test )
+function entityMap( test ) /* Dmytro : if have a time, improve coverage for different entity types, bad formatting of test cases */
 {
   test.open( 'src is arrayLike' );
 
@@ -15461,32 +15461,32 @@ function entityMap( test )
   test.identical( got,[ 9, 16, 25 ] );
 
   test.case = 'array';
-  var src1 = [ 1, 2, null, 'str' ];
-  var got = _.entityMap( src1, ( v, i, s ) => v + i );
+  var src = [ 1, 2, null, 'str' ];
+  var got = _.entityMap( src, ( v, i, s ) => v + i );
   test.identical( got, [ 1, 3, 2, 'str3' ] );
 
   test.case = 'unroll';
-  var src1 = _.unrollFrom( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
-  var got = _.entityMap( src1, ( v, i, s ) => v + i );
+  var src = _.unrollFrom( [ 1, 2, _.unrollFrom( [ 'str' ] ), 3, 4 ] );
+  var got = _.entityMap( src, ( v, i, s ) => v + i );
   test.identical( got, [ 1, 3, 'str2', 6, 8 ] );
   test.is( _.arrayIs( got ) );
   test.isNot( _.unrollIs( got ) );
 
   test.case = 'argument array';
-  var src1 = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
-  var got = _.entityMap( src1, ( v, i, s ) => v + i );
+  var src = _.argumentsArrayMake( [ 1, 2, [ 'str' ], 3, 4 ] );
+  var got = _.entityMap( src, ( v, i, s ) => v + i );
   test.identical( got, [ 1, 3, 'str2', 6, 8 ] );
   test.is( _.arrayIs( got ) );
 
   test.case = 'Array';
-  var src1 = new Array( 1, 2, [ 'str' ], 3, 4 );
-  var got = _.entityMap( src1, ( v, i, s ) => v + i );
+  var src = new Array( 1, 2, [ 'str' ], 3, 4 );
+  var got = _.entityMap( src, ( v, i, s ) => v + i );
   test.identical( got, [ 1, 3, 'str2', 6, 8 ] );
   test.is( _.arrayIs( got ) );
 
   test.case = 'F32x';
-  var src1 = new F32x( [ 1, 2, [ 8 ], 3, 4 ] );
-  var got = _.entityMap( src1, ( v, i, s ) => v + i );
+  var src = new F32x( [ 1, 2, [ 8 ], 3, 4 ] );
+  var got = _.entityMap( src, ( v, i, s ) => v + i );
   test.equivalent( got, [ 1, 3, 10, 6, 8 ] );
   test.is( _.longIs( got ) );
 
@@ -15501,32 +15501,10 @@ function entityMap( test )
   test.identical( got,{ '3' : 9, '4' : 16, '5' : 25 } );
   test.is( _.mapIs( got ) );
 
-  var src1 = { a : 1, b : 2, c : null, d : 'str' };
-  var got = _.entityMap( src1, ( v, k, s ) => v + k );
+  var src = { a : 1, b : 2, c : null, d : 'str' };
+  var got = _.entityMap( src, ( v, k, s ) => v + k );
   test.identical( got, { a : '1a', b : '2b', c : 'nullc', d : 'strd' } );
   test.is( _.mapIs( got ) );
-
-  test.case = 'object';
-  function constr()
-  {
-    this.a = 1;
-    this.b = 3;
-    this.c = 4;
-  }
-  var got = _.entityMap( new constr(), ( e, i, ent ) => e.b );
-  test.identical( got, 3 );
-
-  // test.case = 'routine constructor';
-  // function constr()
-  // {
-  //   this.a = 1;
-  //   this.b = 3;
-  //   this.c = 4;
-  // }
-  // var got = _.entityMap( new constr(), ( v, i, ent ) => v * v + i );
-  // test.identical( got, { a : '1a', b : '9b', c : '16c' } );
-  // test.is( !( got instanceof constr ) );
-  // test.is( _.mapIs( got ) );
 
   test.case = 'simple test with mapping object by sqr : check callback arguments';
   var callback = function( v, i, ent )
@@ -15546,12 +15524,35 @@ function entityMap( test )
 
   /* - */
 
-  test.case = 'no ArrayLike, no ObjectLike';
+  test.open( 'not longLike, not mapLike' );
+
+  test.case = 'number';
   var got = _.entityMap( 2, ( v, u, u2 ) => v + v );
   test.identical( got, 4 );
 
+  test.case = 'string';
   var got = _.entityMap( 'a', ( v, u, u2 ) => v + v );
   test.identical( got, 'aa' );
+
+  test.case = 'Set';
+  var src = new Set([ 1, 2 ]);
+  var got = _.entityMap( src, ( v, u, u2 ) => v );
+  test.identical( got, src );
+
+  test.case = 'object, onEach returns undefined';
+  function constr()
+  {
+    this.a = 1;
+    this.b = 3;
+    this.c = 4;
+    return this;
+  }
+  var src = new constr();
+  var got = _.entityMap( src, ( e, i, ent ) => undefined );
+  test.identical( got, src );
+  test.is( got === src );
+
+  test.close( 'not longLike, not mapLike' );
 
   /* - */
 
@@ -15564,13 +15565,101 @@ function entityMap( test )
   test.case = 'extra argument';
   test.shouldThrowErrorSync( () => _.entityMap( [ 1,3 ], callback1, callback2 ) );
 
-  test.case = 'passed argument has undefines';
-  test.shouldThrowErrorSync( () => _.entityMap( [ 1, undefined ], ( v, i ) => v ) );
-  test.shouldThrowErrorSync( () => _.entityMap( { a : 2, b : undefined }, ( v, i ) => v ) );
-  test.shouldThrowErrorSync( () => _.entityMap( undefined, ( v, i ) => v ) );
-
   test.case = 'second argument is not routine';
   test.shouldThrowErrorSync( () => _.entityMap( [ 1, 2 ], {} ) );
+}
+
+//
+
+function entityMapDifferentCallbacks( test )
+{
+  test.open( 'longLike' );
+
+  test.case = 'onEach returns element';
+  var src = [ 3, -1, 2 ];
+  var got = _.entityMap( src, ( v, i, ent ) => v );
+  test.identical( got, [ 3, -1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'onEach returns key';
+  var src = [ 3, -1, 2 ];
+  var got = _.entityMap( src, ( v, i, ent ) => i );
+  test.identical( got, [ 0, 1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'onEach checks entity';
+  var src = [ 3, -1, 2 ];
+  var got = _.entityMap( src, ( v, i, ent ) => ent.length > 2 ? v : i );
+  test.identical( got, [ 3, -1, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'onEach returns undefined';
+  var src = [ 3, -1, 2 ];
+  var got = _.entityMap( src, ( v, i, ent ) => undefined );
+  test.identical( got, [ 3, -1, 2 ] );
+  test.is( got !== src );
+
+  test.close( 'longLike' );
+
+  /* - */
+
+  test.open( 'mapLike' );
+
+  test.case = 'onEach returns element';
+  var src = { a : 1, b : 'a', c : -1 };
+  var got = _.entityMap( src, ( v, i, ent ) => v );
+  test.identical( got, { a : 1, b : 'a', c : -1 } );
+  test.is( got !== src );
+
+  test.case = 'onEach returns key';
+  var src = { a : 1, b : 'a', c : -1 };
+  var got = _.entityMap( src, ( v, i, ent ) => i );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+  test.is( got !== src );
+
+  test.case = 'onEach checks entity';
+  var src = { a : 1, b : 'a', c : -1 };
+  var got = _.entityMap( src, ( v, i, ent ) => ent.a > 2 ? v : i );
+  test.identical( got, { a : 'a', b : 'b', c : 'c' } );
+  test.is( got !== src );
+
+  test.case = 'onEach returns undefined';
+  var src = { a : 1, b : 'a', c : -1 };
+  var got = _.entityMap( src, ( v, i, ent ) => undefined );
+  test.identical( got, { a : 1, b : 'a', c : -1 } );
+  test.is( got !== src );
+
+  test.close( 'mapLike' );
+
+  /* - */
+
+  test.open( 'primitive' );
+
+  test.case = 'onEach returns element';
+  var src = 'str';
+  var got = _.entityMap( src, ( v, i, ent ) => v + 1 );
+  test.identical( got, 'str1' );
+  test.is( got !== src );
+
+  test.case = 'onEach returns key';
+  var src = 'str';
+  var got = _.entityMap( src, ( v, i, ent ) => i );
+  test.identical( got, 'str' );
+  test.is( got === src );
+
+  test.case = 'onEach checks entity';
+  var src = 'str';
+  var got = _.entityMap( src, ( v, i, ent ) => ent === undefined ? v : i );
+  test.identical( got, 'str' );
+  test.is( got === src );
+
+  test.case = 'onEach returns undefined';
+  var src = 'str';
+  var got = _.entityMap( src, ( v, i, ent ) => undefined );
+  test.identical( got, 'str' );
+  test.is( got === src );
+
+  test.close( 'primitive' );
 }
 
 //
@@ -25340,6 +25429,7 @@ value for dst             dst                dst                    first +     
     _filter_functor,
 
     entityMap,
+    entityMapDifferentCallbacks,
 
     entityMapWithoutDst_,
     entityMapDstNull_,
