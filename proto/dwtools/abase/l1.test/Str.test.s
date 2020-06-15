@@ -8836,11 +8836,12 @@ ghij
 
 function strLinesNearestReport( test )
 {
-  test.case = 'test'
-  let got = _.strLinesNearestReport({src :'hello', charsRange : [ 1, 2 ], })
-  console.log( got )
-  let expected = 'h'
+  test.case = 'test';
+  let got = _.strLinesNearestReport({ src : 'hello world', charsRange : [ 1, 2 ], gray : 1, numberOfLines : 1 });
+  console.log( got );
+  let expected = 'h';
   test.notIdentical( got, expected );
+
 }
 
 //
