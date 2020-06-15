@@ -1,3 +1,4 @@
+/*eslint-disable */
 ( function _Str_test_s_() {
 
 'use strict';
@@ -8833,6 +8834,15 @@ ghij
   test.close( 'Wrong arg' );
 }
 
+function strLinesNearestReport(test)
+{
+  test.case = 'test'
+  let got = _.strLinesNearestReport({src:'hello', charsRange: [1,2], })
+  console.log(got)
+  let expected = 'h'
+  test.notIdentical(got, expected);
+}
+
 //
 
 function strLinesCount( test )
@@ -9205,6 +9215,7 @@ var Self =
     strLinesSelectHighlighting,
     strLinesSelectZeroLine,
     strLinesNearest,
+    strLinesNearestReport,
     strLinesCount,
     strLinesRangeWithCharRange,
 

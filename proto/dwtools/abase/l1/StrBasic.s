@@ -1,3 +1,4 @@
+/*eslint-disable */
 (function _StrBasic_s_() {
 
 'use strict';
@@ -5100,8 +5101,21 @@ strLinesNearest_body.defaults =
 
 let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearest_body );
 
+
+
 //
 
+/**
+ * Get the nearest ( o.numberOfLines ) with the range ( o.charsRange ) from source string( o.src ).
+ * 
+ * @param { Object } o - Options.
+ * @param { String } [ o.src ] - Source string.
+ * @param { Array|Number } [ o.charsRange ] - Sets range of lines to select from( o.src ) or single line number.
+ * @param { Number } [ o.numberOfLines ] - Sets number of lines to select.
+ * @param { number } [ o.gray ] - 1: Paints searched text in yellow, everything else in gray(1), 0: No highlighting
+ * 
+ * @returns { String } result - the o.charsRange from o.src with o.numberOfLines around
+ */
 function strLinesNearestReport_body( o )
 {
   let result = Object.create( null );
