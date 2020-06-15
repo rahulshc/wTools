@@ -5113,12 +5113,18 @@ let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNear
  * 
  * @param { Object } o - Options.
  * @param { String } [ o.src ] - Source string.
- * @param { Array|Number } [ o.charsRange ] - Sets range of lines to select from( o.src ) or single line number.
+ * @param { Array|Number } [ o.charsRangeLeft ] - Sets range of lines to select from( o.src ) or single line number.
  * @param { Number } [ o.numberOfLines ] - Sets number of lines to select.
  * @param { number } [ o.gray ] - 1: Paints searched text in yellow, everything else in gray(1), 0: No highlighting
  * 
- * @returns { String } result - the o.charsRange from o.src with o.numberOfLines around
- */
+ * @returns { Object } result: result.nearest { Array } - [ o.src.slice( 0, o.charsRangeLeft[ 0 ] ), o.src.slice( o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 1 ] ),  o.src.slice( o.charsRangeLeft[ 1 ], o.src.length ) ]
+ *                             result.report { String } - '1 : ' + o.src
+ * @example
+ * // selecting first 5 letters, next 3 letters and rest letters
+ * _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 5, 8 ], gray : 1, numberOfLines : 1 });
+ * // returns o.nearest = [ 'funct', 'ion', ' add( x,y ) { return x + y }' ];
+ * // returns o.report = '1 : function add( x,y ) { return x + y }';
+*/                             
 function strLinesNearestReport_body( o )
 {
   let result = Object.create( null );

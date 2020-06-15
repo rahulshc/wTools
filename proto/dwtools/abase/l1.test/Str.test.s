@@ -8834,14 +8834,39 @@ ghij
   test.close( 'Wrong arg' );
 }
 
+//
+
 function strLinesNearestReport( test )
 {
-  test.case = 'test';
-  let got = _.strLinesNearestReport({ src : 'hello world', charsRange : [ 1, 2 ], gray : 1, numberOfLines : 1 });
-  console.log( got );
-  let expected = 'h';
-  test.notIdentical( got, expected );
+  let got, expected
+  test.case = 'charsRange[0] one letter';
+  got = _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 1, 7 ], gray : 1, numberOfLines : 1 });
+  // console.log( got );
+  expected = 'f';
+  test.identical( got.nearest[ 0 ], expected );
 
+  test.case = 'charsRange[0] a few letters';
+  got = _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 5, 7 ], gray : 1, numberOfLines : 1 });
+  // console.log( got );
+  expected = 'funct';
+  test.identical( got.nearest[ 0 ], expected );
+
+  test.case = 'charsRange[1] one letter';
+  got = _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 5, 6 ], gray : 1, numberOfLines : 1 });
+  // console.log( got );
+  expected = 'i';
+  test.identical( got.nearest[ 1 ], expected );
+
+  test.case = 'charsRange[1] a few letters';
+  got = _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 5, 8 ], gray : 1, numberOfLines : 1 });
+  // console.log( got );
+  expected = 'ion';
+  test.identical( got.nearest[ 1 ], expected );
+
+  test.case = 'source string in report';
+  got = _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 5, 8 ], gray : 1, numberOfLines : 1 });
+  expected = 'function add( x,y ) { return x + y }';
+  test.identical(got.report, '1 : ' + expected);
 }
 
 //
