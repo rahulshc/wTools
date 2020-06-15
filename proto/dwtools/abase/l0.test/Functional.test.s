@@ -15924,6 +15924,92 @@ function entityMapWithoutDst_( test )
 
   /* - */
 
+  test.open( 'onEach returns undefined' );
+
+  test.case = 'empty array';
+  var src = [];
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, [] );
+  test.is( got === src );
+
+  test.case = 'unroll';
+  var src = _.unrollMake( [ 1, 2, 3 ] );
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, _.unrollMake( [ 1, 2, 3 ] ) );
+  test.is( got === src );
+  test.is( _.unrollIs( got ) );
+
+  test.case = 'argumentsArray';
+  var src = _.argumentsArrayMake( [ 0, 1, 2 ] );
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, _.argumentsArrayMake( [ 0, 1, 2 ] ) );
+  test.is( got === src );
+
+  test.case = 'BufferTyped';
+  var src = new F64x( [ 1, 2, 3 ] );
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, new F64x( [ 1, 2, 3 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'empty map';
+  var src = {};
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, {} );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = { a : 1, b : 2, c : 'str' };
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, { a : 1, b : 2, c : 'str' } );
+  test.is( got === src );
+
+  test.case = 'empty pure map';
+  var src = Object.create( null );
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, Object.create( null ) );
+  test.is( got === src );
+
+  test.case = 'map';
+  var src = Object.create( null );
+  src.a = 1;
+  src.b = 2;
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, { a : 1, b : 2 } );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'null';
+  var src = null;
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, null );
+
+  test.case = 'undefined';
+  var src = undefined;
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, undefined );
+
+  test.case = 'string';
+  var src = 'str';
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, 'str' );
+
+  test.case = 'Set';
+  var src = new Set();
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, new Set() );
+
+  test.case = 'BufferRaw';
+  var src = new BufferRaw();
+  var got = _.entityMap_( src, ( e, k, c ) => undefined );
+  test.identical( got, new BufferRaw() );
+
+  test.close( 'onEach returns undefined' );
+
+  /* - */
+
   if( !Config.debug )
   return;
 
@@ -15937,11 +16023,6 @@ function entityMapWithoutDst_( test )
   test.case = 'extra argument';
   test.shouldThrowErrorSync( () => _.entityMap_( [ 1, 3 ], [ 1, 2 ], ( e ) => e, 'extra' ) );
   test.shouldThrowErrorSync( () => _.entityMap_( { a : 1 }, { b : 2 }, ( e ) => e, 'extra' ) );
-
-  test.case = 'onEach returns undefined';
-  test.shouldThrowErrorSync( () => _.entityMap_( [ 1, undefined ], ( e ) => e ) );
-  test.shouldThrowErrorSync( () => _.entityMap_( { a : 2, b : undefined }, ( e ) => e ) );
-  test.shouldThrowErrorSync( () => _.entityMap_( 1, ( e ) => undefined ) );
 
   test.case = 'wrong type of onEach';
   test.shouldThrowErrorSync( () => _.entityMap_( [ 1, 2 ], {} ) );
