@@ -86,6 +86,13 @@ function isDebugged()
 
 //
 
+function insideTestContainer()
+{
+  return 'CI' in process.env && 'GITHUB_ACTIONS' in process.env;
+}
+
+//
+
 function entryPointStructure()
 {
   let result = Object.create( null );
@@ -147,7 +154,12 @@ let Extension =
   off,
   hasEventHandler,
 
+  // checker
+
   isDebugged,
+  insideTestContainer,
+
+  // entry point
 
   entryPointStructure,
   entryPointInfo,

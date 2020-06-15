@@ -855,6 +855,12 @@ function _Setup()
     {
       result = NjsLoad.apply( this, arguments );
     }
+    catch( err )
+    {
+      err = _.err( err );
+      debugger;
+      // console.error( err );
+    }
     finally
     {
       including = false;
