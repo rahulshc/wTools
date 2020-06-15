@@ -483,6 +483,56 @@ let wFilesImap =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.fileProvider },
 }
 
+// mid / l5
+
+let wCensorBasic =
+{
+  sourcePath : sourcePath( 'amid/l5/censor/entry/CensorBasic.s', 'wcensorbasic' ),
+  isIncluded : function(){ return !!_global.censor && !!_global.censor.replace },
+}
+
+let wBitmask =
+{
+  sourcePath : sourcePath( 'amid/l5_mapper/Bitmask.s', 'wBitmask' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Bitmask },
+}
+
+let wPathTranslator =
+{
+  sourcePath : sourcePath( 'amid/l5_mapper/PathTranslator.s', 'wpathtranslator' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PathTranslator },
+}
+
+let wNameMapper =
+{
+  sourcePath : sourcePath( 'amid/l5_mapper/NameMapper.s', 'wnamemapper' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.NameMapper },
+}
+
+let wTemplateTreeResolver =
+{
+  sourcePath : sourcePath( 'amid/l5_mapper/TemplateTreeAresolver.s', 'wtemplatetreeresolver' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeResolver },
+}
+
+let wTemplateTreeResolver2 =
+{
+  sourcePath : sourcePath( 'amid/l5_mapper/TemplateTreeResolver2.s', 'wtemplatetreeresolver2' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeResolver2 },
+}
+
+let wTemplateTreeEnvironment =
+{
+  sourcePath : sourcePath( 'amid/l5_mapper/TemplateTreeEnvironment.s', 'wtemplatetreeenvironment' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeEnvironment },
+}
+
+let wTemplateFileWriter =
+{
+  sourcePath : sourcePath( 'amid/l5_mapper/TemplateFileWriter.s', 'wtemplatefilewriter' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateFileWriter },
+}
+
 //
 
 let wColor =
@@ -527,12 +577,6 @@ let wFileExecutorHtmlFormatters =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileExecutorHtmlFormatters },
 }
 
-let wPathTranslator =
-{
-  sourcePath : sourcePath( 'amid/l5_mapper/PathTranslator.s', 'wpathtranslator' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PathTranslator },
-}
-
 let wTimeMarker =
 {
   sourcePath : sourcePath( 'amid/amixin/TimeMarker.s', 'wtimemarker' ),
@@ -555,36 +599,6 @@ let wStateSession =
 {
   sourcePath : sourcePath( 'amid/amixin/StateSession.s', 'wstatesession' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.StateSession },
-}
-
-let wNameMapper =
-{
-  sourcePath : sourcePath( 'amid/l5_mapper/NameMapper.s', 'wnamemapper' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.NameMapper },
-}
-
-let wTemplateTreeResolver =
-{
-  sourcePath : sourcePath( 'amid/l5_mapper/TemplateTreeAresolver.s', 'wtemplatetreeresolver' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeResolver },
-}
-
-let wTemplateTreeResolver2 =
-{
-  sourcePath : sourcePath( 'amid/l5_mapper/TemplateTreeResolver2.s', 'wtemplatetreeresolver2' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeResolver2 },
-}
-
-let wTemplateTreeEnvironment =
-{
-  sourcePath : sourcePath( 'amid/l5_mapper/TemplateTreeEnvironment.s', 'wtemplatetreeenvironment' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateTreeEnvironment },
-}
-
-let wTemplateFileWriter =
-{
-  sourcePath : sourcePath( 'amid/l5_mapper/TemplateFileWriter.s', 'wtemplatefilewriter' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.TemplateFileWriter },
 }
 
 let wScriptLauncher =
@@ -617,20 +631,10 @@ let wCollectionOfInstances =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.CollectionOfInstances },
 }
 
-// mid
-
 let wServletTools =
 {
   sourcePath : sourcePath( 'amid/servlet/ServletTools.ss', 'wservlettools' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.servlet },
-}
-
-// mid / l5
-
-let wBitmask =
-{
-  sourcePath : sourcePath( 'amid/l5_mapper/Bitmask.s', 'wBitmask' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Bitmask },
 }
 
 // math
@@ -725,6 +729,12 @@ let wPuppet =
 {
   sourcePath : sourcePath( 'atop/puppet/Main.s', 'wpuppet' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.puppet },
+}
+
+let wCensor =
+{
+  sourcePath : sourcePath( 'atop/censor/entry/Censor.s', 'wcensor' ),
+  isIncluded : function(){ return !!_global.censor && !!_global.censor.Cui },
 }
 
 // --
@@ -841,7 +851,7 @@ let Modules =
   wImageReaderPng,
   wImageReaderPngjs,
 
-  // amid / l3 / files
+  // amid / l4 / files
 
   wFiles,
   wFilesArchive,
@@ -853,6 +863,17 @@ let Modules =
   wFilesSvn,
   wFilesImap,
 
+  // amid / l5
+
+  wCensorBasic,
+  wBitmask,
+  wPathTranslator,
+  wNameMapper,
+  wTemplateTreeResolver,
+  wTemplateTreeResolver2,
+  wTemplateTreeEnvironment,
+  wTemplateFileWriter,
+
   //
 
   wColor,
@@ -863,29 +884,18 @@ let Modules =
 
   wFileExecutor,
   wFileExecutorHtmlFormatters,
-  wPathTranslator,
 
   wTimeMarker,
   wVerbal,
   wStateStorage,
   wStateSession,
 
-  wNameMapper,
-  wTemplateTreeResolver,
-  wTemplateTreeResolver2,
-  wTemplateTreeEnvironment,
-  wTemplateFileWriter,
-
   wScriptLauncher,
   wExchangePoint,
   wCommunicator,
   wIncubator,
   wCollectionOfInstances,
-
-  // amid / l5
-
   wServletTools,
-  wBitmask,
 
   // math
 
@@ -907,6 +917,7 @@ let Modules =
   wBakerWithFileExecutor,
   wMaker,
   wPuppet,
+  wCensor,
 
 }
 
