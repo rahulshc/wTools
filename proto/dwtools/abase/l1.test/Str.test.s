@@ -1,4 +1,3 @@
-/*eslint-disable */
 ( function _Str_test_s_() {
 
 'use strict';

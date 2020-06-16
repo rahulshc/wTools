@@ -20,11 +20,15 @@ const stream = require('stream');
 
 **Приклад записуючого потоку:**
 ```javascript
-let fs = require('fs');
  
-let writer = fs.createWriteStream('helloworld.txt');
+let writer = fs.createWriteStream( 'helloworld.txt' );
  
-writer.write('hello world');
-writer.write('!');
+writer.write( 'hello world' );
+writer.write( '!' );
 writer.end(); // creates file if not exists and writes content into it
 ```
+
+**Ресурси:**
+* [Node.js документація](https://nodejs.org/api/stream.html)
+* [Стаття mozilla.org](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API)
+* [Додаткові приклади](https://www.codota.com/code/javascript/modules/stream)
