@@ -8837,74 +8837,93 @@ ghij
 
 function strLinesNearestReport( test )
 {
-  let got, expected
-  test.case = 'charsRange[0] one letter';
-  got = _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 1, 7 ], gray : 1, numberOfLines : 1 });
-  // console.log( got );
-  expected = 'f';
-  test.identical( got.nearest[ 0 ], expected );
+  test.case = 'one letter to the left';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 1, 7 ], gray : 1, numberOfLines : 1 });
+  var expected =  [ 'f', 'unctio', 'n add( x,y ) { return x + y }' ];
+  test.identical( got.nearest, expected );
 
-  test.case = 'charsRange[0] a few letters';
-  got = _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 5, 7 ], gray : 1, numberOfLines : 1 });
-  // console.log( got );
-  expected = 'funct';
-  test.identical( got.nearest[ 0 ], expected );
+  test.case = 'a few letters to the left';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 5, 7 ], gray : 1, numberOfLines : 1 });
+  var expected = [ 'funct', 'io', 'n add( x,y ) { return x + y }' ];
+  test.identical( got.nearest, expected );
 
-  test.case = 'charsRange[1] one letter';
-  got = _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 5, 6 ], gray : 1, numberOfLines : 1 });
-  // console.log( got );
-  expected = 'i';
-  test.identical( got.nearest[ 1 ], expected );
+  test.case = 'one letter in the range';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 5, 6 ], gray : 1, numberOfLines : 1 });
+  var expected = [ 'funct', 'i', 'on add( x,y ) { return x + y }' ];
+  test.identical( got.nearest, expected );
 
-  test.case = 'charsRange[1] a few letters';
-  got = _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 5, 8 ], gray : 1, numberOfLines : 1 });
-  // console.log( got );
-  expected = 'ion';
-  test.identical( got.nearest[ 1 ], expected );
+  test.case = 'a few letters in the range';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 5, 8 ], gray : 1, numberOfLines : 1 });
+  var expected = [ 'funct', 'ion', ' add( x,y ) { return x + y }' ];
+  test.identical( got.nearest, expected );
+
+  test.case = 'one letter to the right';
+  var src = 'a\nb\nc';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 1, 4 ], gray : 1, numberOfLines : 1 });
+  var expected = [ 'a', '\nb\n', 'c' ];
+  test.identical( got.nearest, expected );
+
+  test.case = 'a few letters to the right';
+  var src = 'a\nb\ncd';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 1, 4 ], gray : 1, numberOfLines : 1 });
+  var expected = [ 'a', '\nb\n', 'cd' ];
+  test.identical( got.nearest, expected );
+
+  /* */
 
   test.case = 'one line report';
-  got = _.strLinesNearestReport({ src : 'function add( x,y ) { return x + y }', charsRangeLeft : [ 5, 8 ], gray : 1, numberOfLines : 1 });
-  expected = 'function add( x,y ) { return x + y }';
-  test.identical( got.report, '1 : ' + expected );
-
-  test.case = 'multiline report';
-  got = _.strLinesNearestReport({ src : 'a\nb\nc\ndef\ng\nk', charsRangeLeft : [ 3, 5 ], gray : 1, numberOfLines : 5 });
-  // console.log( got );
-  expected = '3 : a\n4 : b\n5 : c\n6 : def\n7 : g';
+  var src = 'function add( x,y ) { return x + y }';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 5, 8 ], gray : 1, numberOfLines : 1 });
+  var expected = '1 : function add( x,y ) { return x + y }';
   test.identical( got.report, expected );
 
+  test.case = 'multiline report';
+  var src = 'a\nb\nc\ndef\ng\nk'
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 3, 5 ], gray : 1, numberOfLines : 5 });
+  var expected = '3 : a\n4 : b\n5 : c\n6 : def\n7 : g';
+  test.identical( got.report, expected );
+
+  /* */
+
   test.case = 'number of lines: out of the range';
-  got = _.strLinesNearestReport({ src : 'test0\nfunction add( x,y ) { return x + y }\ntest2\ntest3\ntest4\n test5', charsRangeLeft : [ 5, 8 ], gray : 1, numberOfLines : 2 });
-  // console.log( got );
-  expected = 'nction add( x,y ) { return x + y }';
-  test.identical( got.nearest[ 2 ], expected );
+  var src = 'test0\nfunction add( x,y ) { return x + y }\ntest2\ntest3\ntest4\n test5';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 5, 8 ], gray : 1, numberOfLines : 2 });
+  var expected = [ 'test0', '\nfu', 'nction add( x,y ) { return x + y }' ];
+  test.identical( got.nearest, expected );
 
   test.case = 'number of lines: in the range';
-  got = _.strLinesNearestReport({ src : '0\nabcde\n1\n2\n3', charsRangeLeft : [ 3, 5 ], gray : 1, numberOfLines : 4 });
-  // console.log( got );
-  expected = 'de\n1';
-  test.identical( got.nearest[ 2 ], expected );
+  var src = '0\nabcde\n1\n2\n3';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 3, 5 ], gray : 1, numberOfLines : 4 });
+  var expected = [ '0\na', 'bc', 'de\n1' ];
+  test.identical( got.nearest, expected );
 
-  test.case = 'lines to the left of the range';
-  got = _.strLinesNearestReport({ src : '0\nabcde\n1\n2\n3', charsRangeLeft : [ 3, 5 ], gray : 1, numberOfLines : 4 });
-  // console.log( got );
-  expected = '0\na';
-  test.identical( got.nearest[ 0 ], expected );
+  test.case = 'number of lines: big amount';
+  var got = _.strLinesNearestReport({ src : 'a\nb\nc\ndef\ng\nk', charsRangeLeft : [ 6, 9 ], gray : 1, numberOfLines : 5 });
+  var expected = [ 'b\nc\n', 'def', '\ng\nk' ];
+  test.identical( got.nearest, expected );
 
-  test.case = 'lines to the right of the range';
-  got = _.strLinesNearestReport({ src : '0\nabcde\n1\n2\n3', charsRangeLeft : [ 3, 5 ], gray : 1, numberOfLines : 4 });
-  // console.log( got );
-  expected = 'de\n1';
-  test.identical( got.nearest[ 2 ], expected );
+  /* */
 
-  test.case = 'a lot of lines';
-  got = _.strLinesNearestReport({ src : 'a\nb\nc\ndef\ng\nk', charsRangeLeft : [ 6, 9 ], gray : 1, numberOfLines : 5 });
-  // console.log( got );
-  expected = 'def';
-  test.identical( got.nearest[ 1 ], expected );
-  test.identical( got.nearest[ 0 ], 'b\nc\n' );
-  test.identical( got.nearest[ 2 ], '\ng\nk' );
+  if( !Config.debug )
+  return;
 
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport());
+
+  test.case = 'wrong type of args';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport( 3 ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport( [ 3, 4 ] ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport( 'args' ));
+
+  test.case = 'invalid type of arguments';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport( null ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport( undefined ));
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport( NaN ));
+  
 }
 
 //
