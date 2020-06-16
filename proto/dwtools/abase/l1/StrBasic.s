@@ -5104,20 +5104,19 @@ strLinesNearest_body.defaults =
 let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearest_body );
 
 
-
 //
 
 /**
  * The method strLinesNearestReport returns a report about found string in a text within the range { -o.charsRangeLeft- } surrounded by the amount of lines { -o.numberOfLines- } from the source string { -o.src- }.
- * 
+ *
  * @example
  * // selecting first 5 letters, next 3 letters and rest letters
  * _.strLinesNearestReport
- * ({ 
- *   src : 'function add( x,y ) { return x + y }', 
- *   charsRangeLeft : [ 5, 8 ], 
- *   gray : 1, 
- *   numberOfLines : 1 
+ * ({
+ *   src : 'function add( x,y ) { return x + y }',
+ *   charsRangeLeft : [ 5, 8 ],
+ *   gray : 1,
+ *   numberOfLines : 1
  * });
  * // returns o.nearest = [ 'funct', 'ion', ' add( x,y ) { return x + y }' ];
  * // returns o.report = '1 : function add( x,y ) { return x + y }';
@@ -5127,18 +5126,17 @@ let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNear
  * @param { Array|Number } [ o.charsRangeLeft ] - Sets range of lines to select from( o.src ) or single line number.
  * @param { Number } [ o.numberOfLines ] - Sets number of lines to select.
  * @param { number } [ o.gray ] - 1: Paints searched text in yellow, everything else in gray(1), 0: No highlighting
- * 
- * @returns { Object } result: 
+ * @returns { Object } result:
  *   result.nearest { Array } - 3 elements: 1 - lines to the left of charsRangeLeft (if numberOfLines allows), 2 - chars in range charsRangeLeft, 3 - lines to the right of charsRangeLeft (if numberOfLines allows)
  *   result.report { String } - report about found string along with surrounding lines (numberOfLines)
  *
- * @method strLinesNearestReport
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.charsRangeLeft ) is not a Array or Number.
  * @throws { Exception } Throw an exception if( o ) is extended by unknown property.
+ * @method strLinesNearestReport
  * @namespace Tools
-*/    
+*/
 
 function strLinesNearestReport_body( o )
 {
