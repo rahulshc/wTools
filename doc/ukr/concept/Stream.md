@@ -20,12 +20,20 @@ const stream = require('stream');
 
 **Приклад записуючого потоку:**
 ```javascript
- 
-let writer = fs.createWriteStream( 'helloworld.txt' );
- 
-writer.write( 'hello world' );
-writer.write( '!' );
-writer.end(); // creates file if not exists and writes content into it
+ /**
+ * Pipes a http response to a destination file.
+ * @param { -http.ServerResponse- } response
+ * @param { -string- } destination
+ */
+async function httpResponseToFile( response, destination) 
+{
+  return new Promise( resolve => 
+  {
+    const file = fs.createWriteStream( destination )
+    response.pipe( file )
+    file.on( 'finish', () => file.close( resolve ) )
+  } )
+}
 ```
 
 **Ресурси:**
