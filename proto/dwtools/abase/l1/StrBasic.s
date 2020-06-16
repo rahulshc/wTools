@@ -4990,11 +4990,11 @@ Dmytro : covered
  * and o.splits[ 1 ] contains the substring corresponding to the range.
  * @returns { Array } [ o.spans ] - Array with indexes of begin and end of nearest lines.
  *
- * @method strLinesNearest
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.charsRangeLeft ) is not a Array or Number.
  * @throws { Exception } Throw an exception if( o ) is extended by unknown property.
+ * @method strLinesNearest
  * @namespace Tools
  */
 
@@ -5124,13 +5124,11 @@ let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNear
  * @returns { Object } result:
  *   result.nearest { Array } - 3 elements: 1 - lines to the left of charsRangeLeft (if numberOfLines allows), 2 - chars in range charsRangeLeft, 3 - lines to the right of charsRangeLeft (if numberOfLines allows)
  *   result.report { String } - report about found string along with surrounding lines (numberOfLines)
- *
  * @param { Object } o - Options.
  * @param { String } [ o.src ] - Source string.
  * @param { Array|Number } [ o.charsRangeLeft ] - Sets range of lines to select from( o.src ) or single line number.
  * @param { Number } [ o.numberOfLines ] - Sets number of lines to select.
  * @param { number } [ o.gray ] - 1: Paints searched text in yellow, everything else in gray(1), 0: No highlighting
- *
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if( o.charsRangeLeft ) is not a Array or Number.
