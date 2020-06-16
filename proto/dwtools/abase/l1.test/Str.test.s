@@ -6,7 +6,6 @@ if( typeof module !== 'undefined' )
 {
   let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
-  // _.include( 'wStringer' );
 }
 
 var _global = _global_;
