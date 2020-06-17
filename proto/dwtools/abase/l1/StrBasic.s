@@ -4985,10 +4985,10 @@ Dmytro : covered
  * @param { Array|Number } o.range - Sets range of lines to select from {-o.src-} or single line number.
  * @param { Number } o.numberOfLines - Sets number of lines to select.
  * @returns { MapLike } - Returns object with next fields:
- *    splits - Array with three entries:
- *      o.splits[ 0 ] and o.splits[ 2 ] contains a string with the nearest lines,
- *      and o.splits[ 1 ] contains the substring corresponding to the range.
- *    spans - Array with indexes of begin and end of nearest lines.
+ * splits - Array with three entries:
+ * splits[ 0 ] and splits[ 2 ] contains a string with the nearest lines,
+ * and splits[ 1 ] contains the substring corresponding to the range.
+ * spans - Array with indexes of begin and end of nearest lines.
  *
  * @throws { Exception } Throw an exception if no argument provided.
  * @throws { Exception } Throw an exception if {-o.src-} is not a String.
@@ -5127,7 +5127,7 @@ let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNear
  * @returns { MapLike } - Returns object with next fileds:
  *    nearest { Array } - 3 elements: 1 - lines to the left of charsRangeLeft if {-numberOfLines-} allows, 2 - chars in range {-o.charsRangeLeft-}, 3 - lines to the right of {-o.charsRangeLeft-} if {-numberOfLines-} allows.
  *    report { String } - report about found string along with surrounding lines {-numberOfLines-}
- * @param { Object } o - Options.
+ * @param { MapLike } o - Options.
  * @param { String } o.src - Source string.
  * @param { Array|Number } o.charsRangeLeft - Sets range of lines to select from {-o.src-} or single line number.
  * @param { Number } o.numberOfLines - Sets number of lines to select.
