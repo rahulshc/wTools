@@ -8965,7 +8965,7 @@ function strLinesNearestReport( test )
   test.identical( got.report, expectedReport );
 
   /* NEWLY ADDED: TO BE REVIEWED */
-  test.case = 'wrong range (first > second) - charsRangeLeft: [ 0, 0 ]';
+  test.case = 'wrong range (first === second) - charsRangeLeft: [ 0, 0 ]';
   var src = 'abcdefg';
   var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 0, 0 ], gray : 1, numberOfLines : 5 });
   var expectedNearest = [ '', '', 'abcdefg' ];
