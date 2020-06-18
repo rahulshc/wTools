@@ -8947,8 +8947,7 @@ function strLinesNearestReport( test )
 
   /* */
 
-  // Assuming it's correct to skip nth element in ranges like [ n, n ] and add it to the right, example: nearest = [ '...', '', 'n...' ] 
-  test.case = 'changes - charsRangeLeft: [ 5, 5 ]'
+  test.case = 'wrong range (first === second) - charsRangeLeft: [ 5, 5 ]'
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 5, 5 ], gray : 1, numberOfLines : 5 });
   var expectedNearest = [ '0\n1\na', '', 'bcde\n2\n3' ];
@@ -8956,31 +8955,45 @@ function strLinesNearestReport( test )
   test.identical( got.nearest, expectedNearest );
   test.identical( got.report, expectedReport );
 
-  // Assuming it's correct to start from 0 if range start is negative
-  test.case = 'changes - charsRangeLeft: [ -1, 2 ]'
-  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
-  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ -1, 2 ], gray : 1, numberOfLines : 5 });
-  var expectedNearest = [ '', '0\n', '1\nabcde\n2' ];
-  var expectedReport = '1 : 0\n2 : 1\n3 : abcde\n4 : 2';
+  test.case = 'wrong range (first > second) - charsRangeLeft: [ 1, 0 ]';
+  var src = 'abc';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 1, 0 ], gray : 1, numberOfLines : 5 });
+  var expectedNearest = [ 'a', '', 'bc' ];
+  var expectedReport = '1: abc';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.report, expectedReport );
 
-  // Not sure about what the correct results of 2 calls below must be with ranges like that: [ 5, 3 ], [ 5, -1 ]. Made it pass.
-  test.case = 'changes - charsRangeLeft: [ 5, 3 ]'
-  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  test.case = 'wrong range (first > second) - charsRangeLeft: [ 5, 3 ]';
+  var src = 'abcdefg';
   var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 5, 3 ], gray : 1, numberOfLines : 5 });
-  var expectedNearest = [ '0\n1\na', '\na', '\nabcde\n2' ];
-  var expectedReport = '4 : 0\n5 : 1\n6 : a\n7 : a\n8 : abcde\n9 : 2';
+  var expectedNearest = [ 'abcde', '', 'fg' ];
+  var expectedReport = '1: abcdefg';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.report, expectedReport );
 
-  test.case = 'changes - charsRangeLeft: [ 5, -1 ]'
-  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
-  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 5, -1 ], gray : 1, numberOfLines : 5 });
-  var expectedNearest = [ '0\n1\na', '0\n1\na', '0\n1\nabcde' ];
-  var expectedReport = '3 : 0\n4 : 1\n5 : a0\n6 : 1\n7 : a0\n8 : 1\n9 : abcde';
+  test.case = 'wrong range (first > second) - charsRangeLeft: [ 7, 2 ]';
+  var src = 'abcdefg';
+  var got = _.strLinesNearestReport({ src, charsRangeLeft : [ 7, 2 ], gray : 1, numberOfLines : 5 });
+  var expectedNearest = [ 'abcdefg', '', '' ];
+  var expectedReport = '1: abcdefg';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.report, expectedReport );
+
+  test.case = 'wrong range (negative first) - charsRangeLeft: [ -1, 2 ]';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport({ src, charsRangeLeft : [ -1, 2 ], gray : 1, numberOfLines : 5 }));
+
+  test.case = 'wrong range (negative second) - charsRangeLeft: [ 1, -2 ]';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport({ src, charsRangeLeft : [ 1, -2 ], gray : 1, numberOfLines : 5 }));
+
+  test.case = 'wrong range (first out of the range) - charsRangeLeft: [ 100, 2 ]';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport({ src, charsRangeLeft : [ 100, 2 ], gray : 1, numberOfLines : 5 }));
+
+  test.case = 'wrong range (second out of the range) - charsRangeLeft: [ 1, 200 ]';
+  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestReport({ src, charsRangeLeft : [ 1, 200 ], gray : 1, numberOfLines : 5 }));
 
   test.close( 'multiline' );
 
