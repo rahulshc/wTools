@@ -4632,7 +4632,6 @@ function strLinesNumber( o )
     }
     else if( _.numberIs( o.zeroChar ) )
     {
-      // debugger;
       let src = _.arrayIs( o.src ) ? o.src.join( '\n' ) : o.src;
       o.zeroLine = _.strLinesCount( src.substring( 0, o.zeroChar+1 ) );
     }
@@ -4668,23 +4667,6 @@ function strLinesNumber( o )
     lines[ l ] = ' '.repeat( maxNumLength - numLength ) + ( l + o.zeroLine ) + ' : ' + lines[ l ];
   }
 
-  // if( o.onLine )
-  // for( let l = 0; l < lines.length; l += 1 )
-  // {
-  //   lines[ l ] = o.onLine( [ ( l + o.zeroLine ), ' : ', lines[ l ] ], o.zeroLine + l, o );
-  //   if( lines[ l ] === undefined )
-  //   {
-  //     lines.splice( l, 1 );
-  //     l -= 1;
-  //   }
-  //   _.assert( _.strIs( lines[ l ] ) );
-  // }
-  // else
-  // for( let l = 0; l < lines.length; l += 1 )
-  // {
-  //   lines[ l ] = ( l + o.zeroLine ) + ' : ' + lines[ l ];
-  // }
-
   /* */
 
   return lines.join( '\n' );
@@ -4696,6 +4678,7 @@ strLinesNumber.defaults =
   zeroLine : null,
   zeroChar : null,
   onLine : null,
+  highlighting : '*', /* qqq2 : implement and cover option o.highlighting */
 }
 
 /*
@@ -5144,22 +5127,36 @@ function strLinesNearestReport_body( o )
 {
   let result = Object.create( null );
 
+  _.assert( o.sub === null || _.strIs( o.sub ) );
+
   result.nearest = _.strLinesNearest.body( o ).splits;
 
   result.report = result.nearest.slice();
-  if( !o.gray )
-  result.report[ 1 ] = _.color.strUnescape( _.color.strFormat( result.report[ 1 ], { fg : 'yellow' } ) );
+  if( o.gray )
+  {
+    if( o.sub !== null )
+    result.report[ 1 ] = `{- ${result.report[ 1 ]} -} -> {- ${o.sub} -}`;
+  }
+  else
+  {
+    let str;
+    if( o.sub === null )
+    str = _.color.strFormat( result.report[ 1 ], { fg : 'yellow' } );
+    else
+    str = _.color.strFormat( result.report[ 1 ], { fg : 'red' } ) + _.color.strFormat( o.sub, { fg : 'green' } );
+    result.report[ 1 ] = _.color.strUnescape( str );
+  }
   result.report = result.report.join( '' );
 
   result.report = _.strLinesSplit( result.report );
   if( !o.gray )
   result.report = _.color.strEscape( result.report );
 
-  // let f = _.strLinesCount( o.src.substring( 0, o.charsRangeLeft[ 0 ] ) )-1;
+  let zeroLine = _.strLinesCount( o.src.substring( 0, o.charsRangeLeft[ 0 ] ) ) - 1;
   result.report = _.strLinesNumber
   ({
     src : result.report,
-    zeroChar : o.charsRangeLeft[ 0 ],
+    zeroLine,
     onLine : ( line ) =>
     {
       if( !o.gray )
@@ -5171,13 +5168,13 @@ function strLinesNearestReport_body( o )
     }
   });
 
-  // debugger;
   return result;
 }
 
 strLinesNearestReport_body.defaults =
 {
   src : null,
+  sub : null,
   charsRangeLeft : null,
   numberOfLines : 3,
   gray : 0,
