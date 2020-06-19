@@ -4935,21 +4935,19 @@ Dmytro : covered
 //
 
 /**
+ *
  * Get the nearest ( o.nearestLines ) lines to the range ( o.charsRangeLeft ) from source string( o.src ).
  * Returns object with two elements: .
  * Can be called in two ways:
  * - First by passing all parameters in one options map( o ) ;
  * - Second by passing source string( o.src ) and range( o.range ) as array or number;
- *
- * @param { Object } o - Options.
- * @param { String } [ o.src ] - Source string.
- * @param { Array|Number } [ o.range ] - Sets range of lines to select from( o.src ) or single line number.
- * @param { Number } [ o.nearestLines ] - Sets number of lines to select.
- * @returns { Object } o - Returns object with Options with fields:
- * @returns { Array } [ o.splits ] - Array with three entries:
- * o.splits[ 0 ] and o.splits[ 2 ] contains a string with the nearest lines,
- * and o.splits[ 1 ] contains the substring corresponding to the range.
- * @returns { Array } [ o.spans ] - Array with indexes of begin and end of nearest lines.
+
+ * The routine strLinesNearest returns the nearest {-o.numberOfLines-} lines to the range {-o.charsRangeLeft-} from source string {-o.src-}.
+ * Returns object with two elements: splits - array with a substring & the nearest lines and spans - array of indexes of the nearest lines.
+ * Can be called in two ways:
+ * - First by passing all parameters in one options map {-o-} ;
+ * - Second by passing source string {-o.src-} and range {-o.range-} as array or number;
+
  *
  * @example
  * // selecting single line
@@ -4973,11 +4971,20 @@ Dmytro : covered
  * // returns o.splits = [ 'a\n', 'b', 'c' ];
  * // returns o.spans = [ 1, 3, 4, 5 ];
  *
- * @method strLinesNearest
+ * @returns { MapLike } - Returns object with next fields:
+ * splits - Array with three entries:
+ * splits[ 0 ] and splits[ 2 ] contains a string with the nearest lines,
+ * and splits[ 1 ] contains the substring corresponding to the range.
+ * spans - Array with indexes of begin and end of nearest lines.
+ * @param { MapLike } o - Options.
+ * @param { String } o.src - Source string.
+ * @param { Array|Number } o.range - Sets range of lines to select from {-o.src-} or single line number.
+ * @param { Number } o.numberOfLines - Sets number of lines to select.
  * @throws { Exception } Throw an exception if no argument provided.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.charsRangeLeft ) is not a Array or Number.
- * @throws { Exception } Throw an exception if( o ) is extended by unknown property.
+ * @throws { Exception } Throw an exception if {-o.src-} is not a String.
+ * @throws { Exception } Throw an exception if {-o.charsRangeLeft-} is not a Array or Number.
+ * @throws { Exception } Throw an exception if {-o-} is extended by unknown property.
+ * @function strLinesNearest
  * @namespace Tools
  */
 
@@ -5086,7 +5093,42 @@ strLinesNearest_body.defaults =
 
 let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearest_body );
 
+
 //
+
+/**
+ * The routine strLinesNearestReport returns a report about found string from the source string {-o.src-}.
+ * Returns object with 2 elements: nearest - array with a substring & the nearest lines around, report - string with the found substring & surrounding lines.
+ *
+ * @example
+ * // selecting first 5 letters, next 3 letters and rest letters
+ * _.strLinesNearestReport
+ * ({
+ *   src : 'function add( x,y ) { return x + y }',
+ *   charsRangeLeft : [ 5, 8 ],
+ *   gray : 1,
+ *   numberOfLines : 1
+ * });
+ * // returns {
+ * //           nearest : [ 'funct', 'ion', ' add( x,y ) { return x + y }' ],
+ * //           report : '1 : function add( x,y ) { return x + y }'
+ * //         }
+ *
+ * @returns { MapLike } - Returns object with next fileds:
+ *    nearest { Array } - 3 elements: 1 - lines to the left of charsRangeLeft if {-numberOfLines-} allows, 2 - chars in range {-o.charsRangeLeft-}, 3 - lines to the right of {-o.charsRangeLeft-} if {-numberOfLines-} allows.
+ *    report { String } - report about found string along with surrounding lines {-numberOfLines-}
+ * @param { MapLike } o - Options.
+ * @param { String } o.src - Source string.
+ * @param { Array|Number } o.charsRangeLeft - Sets range of lines to select from {-o.src-} or single line number.
+ * @param { Number } o.numberOfLines - Sets number of lines to select.
+ * @param { Number } o.gray - 0: Paints searched text in yellow, everything else in gray, 1: No highlighting
+ * @throws { Exception } Throw an exception if no argument provided.
+ * @throws { Exception } Throw an exception if {-o.src-} is not a String.
+ * @throws { Exception } Throw an exception if {-o.charsRangeLeft-} is not a Array or Number.
+ * @throws { Exception } Throw an exception if {-o-} is extended by unknown property.
+ * @function strLinesNearestReport
+ * @namespace Tools
+*/
 
 function strLinesNearestLog_body( o )
 {
