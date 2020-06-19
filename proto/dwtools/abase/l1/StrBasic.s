@@ -5093,16 +5093,15 @@ strLinesNearest_body.defaults =
 
 let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearest_body );
 
-
 //
 
 /**
- * The routine strLinesNearestReport returns a report about found string from the source string {-o.src-}.
+ * The routine strLinesNearestLog returns a report about found string from the source string {-o.src-}.
  * Returns object with 2 elements: nearest - array with a substring & the nearest lines around, report - string with the found substring & surrounding lines.
  *
  * @example
  * // selecting first 5 letters, next 3 letters and rest letters
- * _.strLinesNearestReport
+ * _.strLinesNearestLog
  * ({
  *   src : 'function add( x,y ) { return x + y }',
  *   charsRangeLeft : [ 5, 8 ],
@@ -5126,7 +5125,7 @@ let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNear
  * @throws { Exception } Throw an exception if {-o.src-} is not a String.
  * @throws { Exception } Throw an exception if {-o.charsRangeLeft-} is not a Array or Number.
  * @throws { Exception } Throw an exception if {-o-} is extended by unknown property.
- * @function strLinesNearestReport
+ * @function strLinesNearestLog
  * @namespace Tools
 */
 
