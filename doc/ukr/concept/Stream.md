@@ -4,20 +4,13 @@
 
 **"Streaming"** включає в себе ділення ресурсу, який потрібно отримати або відправити, на малі частини та опрацювання їх одна за одною. Дані можуть бути об'ємними, використання потоків дозволяє прочитати/записати перші частини даних та розпочати обробку набагато швидше. Також можливе використання декількох типів потоків, наприклад можна брати дані з читаючого потоку та передавати їх у записуючий.
 
-**Потокові інтерфейси:**
-* Читаючі потоки: 
-  * [ReadableStream](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)
-  * [ReadableStreamDefaultReader](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader)
-  * [ReadableStreamDefaultController](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultController)
-* Записуючі потоки:
-  * [WritableStream](https://developer.mozilla.org/en-US/docs/Web/API/WritableStream)
-  * [WritableStreamDefaultWriter](https://developer.mozilla.org/en-US/docs/Web/API/WritableStreamDefaultWriter)
-  * [WritableStreamDefaultController](https://developer.mozilla.org/en-US/docs/Web/API/WritableStreamDefaultController)
+*Потік* — абстракція, яка використовується для читання чи запису файлів, сокетів тощо в єдиній манері. Потоки є зручним уніфікованим програмним інтерфейсом для читання чи запису файлів (в тому числі спеціальних і, зокрема, пов'язаних із пристроями), сокетів і передачі даних між процесами. При запуску процесу йому надаються так звані стандартні потоки. Можливість перенаправлення потоків дозволяє пов'язувати різні програми, і додає системі гнучкість. 
+Пере­да­вання даних здійснюється не безпосередньо, а через буфер - спеціально виділену область оперативної пам'яті. Буфер виділяється для кожного потоку (файлу) і служить для тимчасового зберігання даних під час їхньої передачі від джерела до приймача інформації. Механізм буферізації дозволяє швидше і ефективніше обмінюватися інформацією
 
 ```stream``` модуль дає доступ до API для реалізації інтерфейсу.
 
 ```javascript
-const stream = require('stream');
+const stream = require( 'stream' );
 ```
 
 **Потоки в NodeJS:**
@@ -28,20 +21,20 @@ const stream = require('stream');
 
 **Приклад читаючого потоку:**
 ```javascript
-const { Readable } = require('stream'); 
+const { Readable } = require( 'stream' ); 
 
 const inStream = new Readable({
-  read(size) {
-    this.push(String.fromCharCode(this.currentCharCode++));
-    if (this.currentCharCode > 90) {
-      this.push(null);
-    }
+  read( size ) 
+  {
+    this.push( String.fromCharCode( this.currentCharCode++ ) );
+    if ( this.currentCharCode > 90 ) 
+    this.push( null );
   }
 });
 
 inStream.currentCharCode = 65;
 
-inStream.pipe(process.stdout);
+inStream.pipe( process.stdout );
 ```
 
 **Ресурси:**
