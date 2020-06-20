@@ -88,7 +88,8 @@ function isDebugged()
 
 function insideTestContainer()
 {
-  return 'CI' in process.env && 'GITHUB_ACTIONS' in process.env;
+  return 'CI' in process.env;
+  // return 'CI' in process.env && 'GITHUB_ACTIONS' in process.env;
 }
 
 //
