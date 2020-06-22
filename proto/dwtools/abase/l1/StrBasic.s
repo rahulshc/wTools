@@ -5160,7 +5160,9 @@ function strLinesNearestLog_body( o )
   if( !o.gray )
   result.log = _.color.strEscape( result.log );
 
-  let zeroLine = _.strLinesCount( o.src.substring( 0, o.charsRangeLeft[ 0 ] ) ) - 1;
+  debugger;
+  let left = o.src.substring( 0, o.charsRangeLeft[ 0 ] );
+  let zeroLine = left ? _.strLinesCount( left ) : 1;
   result.log = _.strLinesNumber
   ({
     src : result.log,
