@@ -5546,6 +5546,7 @@ function canonizeTolerant( test )
 
 function nativize( test )
 {
+
   var src = 'A:\\';
   var got = _.path.nativize( src );
   var expected = 'A:\\';
@@ -5590,8 +5591,137 @@ function nativize( test )
 
 //
 
+function escape( test )
+{
+
+  test.case = `"#`;
+  var src = `"#`;
+  var dst = `"""#"`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var exp =
+  {
+    wasEscaped : true,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = `"!`;
+  var src = `"!`;
+  var dst = `""!`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var got2 = _.path._unescape( got1 );
+  var exp =
+  {
+    wasEscaped : false,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = `#"`;
+  var src = `#"`;
+  var dst = `"#"""`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var exp =
+  {
+    wasEscaped : true,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = `!"`;
+  var src = `!"`;
+  var dst = `!""`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var exp =
+  {
+    wasEscaped : false,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = `"#"`;
+  var src = `"#"`;
+  var dst = `"""#"""`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var exp =
+  {
+    wasEscaped : true,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = `"!"`;
+  var src = `"!"`;
+  var dst = `""!""`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var exp =
+  {
+    wasEscaped : false,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = `""#""`;
+  var src = `""#""`;
+  var dst = `"""""#"""""`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var exp =
+  {
+    wasEscaped : true,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = `""!""`;
+  var src = `""!""`;
+  var dst = `""""!""""`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var exp =
+  {
+    wasEscaped : false,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+}
+
+//
+
 function dot( test )
 {
+
   test.case = 'src - empty path';
   var src = '';
   var got = _.path.dot( src );
@@ -6361,6 +6491,7 @@ var Self =
     canonize,
     canonizeTolerant,
     nativize,
+    escape,
 
     dot,
     undot,

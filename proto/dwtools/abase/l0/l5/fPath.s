@@ -590,9 +590,177 @@ function nativize()
   return this.nativize.apply( this, arguments );
 }
 
+//
+
+// "some@path"
+// ""some"@path"
+// ""some@path""
+
+function escape( filePath )
+{
+  let self = this;
+  let splits = self.split( filePath );
+
+  splits = splits.map( ( split ) =>
+  {
+
+    {
+      let i = 0;
+      while( split[ i ] === '"' )
+      i += 1;
+      if( i > 0 )
+      split = split.substring( 0, i ) + split;
+    }
+
+    {
+      let i = split.length-1;
+      while( split[ i ] === '"' )
+      i -= 1;
+      if( i < split.length-1 )
+      split = split + split.substring( i+1, split.length );
+    }
+
+    if( split.indexOf( '#' ) !== -1 )
+    return `"${split}"`;
+    if( split.indexOf( '@' ) !== -1 )
+    return `"${split}"`;
+    if( split.indexOf( '?' ) !== -1 )
+    return `"${split}"`;
+    return split;
+
+  });
+
+  return splits.join( self._upStr );
+}
+
+//
+
+function _unescape( filePath )
+{
+  let self = this;
+  let splits = self.split( filePath );
+  let result = Object.create( null );
+  result.wasEscaped = false;
+
+  splits = splits.map( ( split ) =>
+  {
+
+    {
+      let i = 0;
+      while( split[ i ] === '"' )
+      i += 1;
+      if( i > 0 )
+      {
+        let c = i;
+        if( c % 2 === 1 )
+        result.wasEscaped = true;
+        let c2 = Math.floor( ( c + 1 ) / 2 );
+        split = split.substring( c2, split.length );
+      }
+    }
+
+    {
+      let i = split.length-1;
+      while( split[ i ] === '"' )
+      i -= 1;
+      if( i < split.length-1 )
+      {
+        let c = split.length - i - 1;
+        if( c % 2 === 1 )
+        result.wasEscaped = true;
+        let c2 = Math.floor( ( c + 1 ) / 2 );
+        split = split.substring( 0, split.length - c2 );
+      }
+    }
+
+    return split;
+
+  });
+
+  result.unescaped = splits.join( self._upStr );
+  return result;
+}
+
+//
+
+function unescape( filePath )
+{
+  let self = this;
+  return self._unescape( filePath ).unescaped;
+}
+
+/* qqq2 : implement test routine _nativizeWindows */
+/* qqq2 : implement test routine _nativizePosix */
+
+/* qqq2 : implement routine _.path.unescape to transform:
+
+`"'some path'"` -> `'some path'`
+`"some path"` -> `some path`
+`""some path""` -> `"some path"`
+`'"some path"'` -> `'"some path"'`
+`'some path'` -> `'some path'`
+
+`some"-"path/t.txt` -> `some"-"path/t.txt`
+`"some"-"path"/'t.txt'` -> `some"-"path/'t.txt'`
+
+*/
+
+/* qqq2 : implement routine _.path.escape
+
+`"'some path'"` -> `""'some path'""`
+`"some path"` -> `""some path""`
+`""some path""` -> `"""some path"""`
+`'"some path"'` -> `'"some path"'`
+`'some path'` -> `'some path'`
+
+`#some'` -> `"#some"`
+`so#me'` -> `"so#me"`
+`some#'` -> `"some#"`
+
+`@some'` -> `"@some"`
+`so@me'` -> `"so@me"`
+`some@'` -> `"some@"`
+
+`?some'` -> `"?some"`
+`so?me'` -> `"so?me"`
+`some?'` -> `"some?"`
+
+=
+
+`"#` -> `"""#"`
+`"!` -> `""!`
+
+`"#"` -> `"""#"""`
+`"!"` -> `""!""`
+
+`""#""` -> `"""""#"""""`
+`""!""` -> `""""!""""`
+
+*/
+
+/* qqq2 : implement routines _.path.nativizeWindows_ _.path.nativizePosix_ using code from _.path.nativize and _.path.escape
+*/
+
 // --
 // transformer
 // --
+
+function _split( path )
+{
+  return path.split( this._upStr );
+}
+
+//
+
+function split( path )
+{
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( path ), 'Expects string' )
+  let result = this._split( this.refine( path ) );
+  return result;
+}
+
+//
 
 function _dot( filePath )
 {
@@ -909,8 +1077,14 @@ let Routines =
   _nativizePosix,
   nativize,
 
+  escape,
+  _unescape,
+  unescape,
+
   // transformer
 
+  _split,
+  split,
   _dot,
   dot,
   undot,
