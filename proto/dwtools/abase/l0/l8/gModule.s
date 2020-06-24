@@ -858,7 +858,8 @@ function _Setup()
     catch( err )
     {
       err = _.err( err );
-      debugger;
+      // debugger;
+      throw err;
       // console.error( err );
     }
     finally

@@ -22,27 +22,20 @@ function Init()
 {
   let self = this;
 
-  _.assert( _.strIs( self._rootStr ) );
-  _.assert( _.strIs( self._upStr ) );
-  _.assert( _.strIs( self._hereStr ) );
-  _.assert( _.strIs( self._downStr ) );
+  _.assert( _.strIs( self.rootToken ) );
+  _.assert( _.strIs( self.upToken ) );
+  _.assert( _.strIs( self.hereToken ) );
+  _.assert( _.strIs( self.downToken ) );
 
-  if( !self._downUpStr )
-  self._downUpStr = self._downStr + self._upStr; /* ../ */
-  if( !self._hereUpStr )
-  self._hereUpStr = self._hereStr + self._upStr; /* ./ */
+  if( !self.downUpToken )
+  self.downUpToken = self.downToken + self.upToken; /* ../ */
+  if( !self.hereUpToken )
+  self.hereUpToken = self.hereToken + self.upToken; /* ./ */
 
-  self._rootRegSource = _.regexpEscape( self._rootStr );
-  self._upRegSource = _.regexpEscape( self._upStr );
-  self._downRegSource = _.regexpEscape( self._downStr );
-  self._hereRegSource = _.regexpEscape( self._hereStr );
-  self._downUpRegSource = _.regexpEscape( self._downUpStr );
-  self._hereUpRegSource = _.regexpEscape( self._hereUpStr );
-
-  let root = self._rootRegSource;
-  let up = self._upRegSource;
-  let down = self._downRegSource;
-  let here = self._hereRegSource;
+  let root = _.regexpEscape( self.rootToken );
+  let up = _.regexpEscape( self.upToken );
+  let down = _.regexpEscape( self.downToken );
+  let here = _.regexpEscape( self.hereToken );
 
   let beginOrChar = '(?:.|^)';
   let butUp = `(?:(?!${up}).)+`;
@@ -171,7 +164,7 @@ function isAbsolute( filePath )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( filePath ), 'Expects string {-filePath-}, but got', _.strType( filePath ) );
   filePath = this.refine( filePath );
-  return _.strBegins( filePath, this._upStr );
+  return _.strBegins( filePath, this.upToken );
 }
 
 //
@@ -198,11 +191,11 @@ function isRoot( filePath )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( filePath ), 'Expects string {-filePath-}, but got', _.strType( filePath ) );
-  if( filePath === this._rootStr )
+  if( filePath === this.rootToken )
   return true;
   if( this.isRelative( filePath ) )
   return false;
-  if( this.normalize( filePath ) === this._rootStr )
+  if( this.normalize( filePath ) === this.rootToken )
   return true;
   return false;
 }
@@ -212,13 +205,13 @@ function isRoot( filePath )
 function _isDotted( srcPath )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  if( srcPath === this._hereStr )
+  if( srcPath === this.hereToken )
   return true;
-  if( srcPath === this._downStr )
+  if( srcPath === this.downToken )
   return true;
-  if( _.strBegins( srcPath, this._hereStr + this._upStr ) )
+  if( _.strBegins( srcPath, this.hereToken + this.upToken ) )
   return true;
-  if( _.strBegins( srcPath, this._downStr + this._upStr ) )
+  if( _.strBegins( srcPath, this.downToken + this.upToken ) )
   return true;
   return false;
 }
@@ -230,9 +223,9 @@ function isDotted( srcPath )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( this._isDotted( srcPath ) )
   return true;
-  if( _.strBegins( srcPath, this._hereStr + '\\' ) )
+  if( _.strBegins( srcPath, this.hereToken + '\\' ) )
   return true;
-  if( _.strBegins( srcPath, this._downStr + '\\' ) )
+  if( _.strBegins( srcPath, this.downToken + '\\' ) )
   return true;
   return false;
 }
@@ -242,9 +235,9 @@ function isDotted( srcPath )
 function isTrailed( srcPath )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
-  if( srcPath === this._rootStr )
+  if( srcPath === this.rootToken )
   return false;
-  return _.strEnds( srcPath,this._upStr );
+  return _.strEnds( srcPath,this.upToken );
 }
 
 //
@@ -270,7 +263,7 @@ function ends( srcPath,endPath )
   return false;
 
   let begin = _.strRemoveEnd( srcPath,endPath );
-  if( begin === '' || _.strEnds( begin,this._upStr ) || _.strEnds( begin,this._hereStr ) )
+  if( begin === '' || _.strEnds( begin,this.upToken ) || _.strEnds( begin,this.hereToken ) )
   return true;
 
   return false;
@@ -368,7 +361,7 @@ function _normalize( o )
   if( o.tolerant )
   {
     /* remove "/" duplicates */
-    result = result.replace( this._delUpDupRegexp, this._upStr );
+    result = result.replace( this._delUpDupRegexp, this.upToken );
   }
 
   let endsWithUp = false;
@@ -376,23 +369,23 @@ function _normalize( o )
 
   /* remove right "/" */
 
-  if( result !== this._upStr && !_.strEnds( result, this._upStr + this._upStr ) && _.strEnds( result, this._upStr ) )
+  if( result !== this.upToken && !_.strEnds( result, this.upToken + this.upToken ) && _.strEnds( result, this.upToken ) )
   {
     endsWithUp = true;
-    result = _.strRemoveEnd( result, this._upStr );
+    result = _.strRemoveEnd( result, this.upToken );
   }
 
   /* undoting */
 
-  while( !_.strBegins( result, this._hereUpStr + this._upStr ) && _.strBegins( result, this._hereUpStr ) )
+  while( !_.strBegins( result, this.hereUpToken + this.upToken ) && _.strBegins( result, this.hereUpToken ) )
   {
     beginsWithHere = true;
-    result = _.strRemoveBegin( result, this._hereUpStr );
+    result = _.strRemoveBegin( result, this.hereUpToken );
   }
 
   /* remove second "." */
 
-  if( result.indexOf( this._hereStr ) !== -1 )
+  if( result.indexOf( this.hereToken ) !== -1 )
   {
 
     while( this._delHereRegexp.test( result ) )
@@ -401,13 +394,13 @@ function _normalize( o )
       return postSlash || '';
     });
     if( result === '' )
-    result = this._upStr;
+    result = this.upToken;
 
   }
 
   /* remove .. */
 
-  if( result.indexOf( this._downStr ) !== -1 )
+  if( result.indexOf( this.downToken ) !== -1 )
   {
 
     while( this._delDownRegexp.test( result ) )
@@ -431,12 +424,12 @@ function _normalize( o )
   /* dot and trail */
 
   if( o.detrailing )
-  if( result !== this._upStr && !_.strEnds( result, this._upStr + this._upStr ) )
-  result = _.strRemoveEnd( result, this._upStr );
+  if( result !== this.upToken && !_.strEnds( result, this.upToken + this.upToken ) )
+  result = _.strRemoveEnd( result, this.upToken );
 
   if( !o.detrailing && endsWithUp )
-  if( result !== this._rootStr )
-  result = result + this._upStr;
+  if( result !== this.rootToken )
+  result = result + this.upToken;
 
   if( !o.undoting && beginsWithHere )
   result = this._dot( result );
@@ -477,12 +470,12 @@ function normalize( src )
 
   _.assert( _.strIs( src ), 'Expects string' );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( result.lastIndexOf( this._upStr + this._hereStr + this._upStr ) === -1 );
-  _.assert( !_.strEnds( result, this._upStr + this._hereStr ) );
+  _.assert( result.lastIndexOf( this.upToken + this.hereToken + this.upToken ) === -1 );
+  _.assert( !_.strEnds( result, this.upToken + this.hereToken ) );
 
   if( Config.debug )
   {
-    let i = result.lastIndexOf( this._upStr + this._downStr + this._upStr );
+    let i = result.lastIndexOf( this.upToken + this.downToken + this.upToken );
     _.assert( i === -1 || !/\w/.test( result.substring( 0, i ) ) );
   }
 
@@ -498,9 +491,9 @@ function normalizeTolerant( src )
   let result = this._normalize({ src, tolerant : true, detrailing : false, undoting : false });
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( result === this._upStr || _.strEnds( result, this._upStr ) || !_.strEnds( result, this._upStr + this._upStr ) );
-  _.assert( result.lastIndexOf( this._upStr + this._hereStr + this._upStr ) === -1 );
-  _.assert( !_.strEnds( result, this._upStr + this._hereStr ) );
+  _.assert( result === this.upToken || _.strEnds( result, this.upToken ) || !_.strEnds( result, this.upToken + this.upToken ) );
+  _.assert( result.lastIndexOf( this.upToken + this.hereToken + this.upToken ) === -1 );
+  _.assert( !_.strEnds( result, this.upToken + this.hereToken ) );
 
   if( Config.debug )
   {
@@ -518,13 +511,13 @@ function canonize( src )
 
   _.assert( _.strIs( src ), 'Expects string' );
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( result === this._upStr || _.strEnds( result, this._upStr + this._upStr ) || !_.strEnds( result, this._upStr ) );
-  _.assert( result.lastIndexOf( this._upStr + this._hereStr + this._upStr ) === -1 );
-  _.assert( !_.strEnds( result, this._upStr + this._hereStr ) );
+  _.assert( result === this.upToken || _.strEnds( result, this.upToken + this.upToken ) || !_.strEnds( result, this.upToken ) );
+  _.assert( result.lastIndexOf( this.upToken + this.hereToken + this.upToken ) === -1 );
+  _.assert( !_.strEnds( result, this.upToken + this.hereToken ) );
 
   if( Config.debug )
   {
-    let i = result.lastIndexOf( this._upStr + this._downStr + this._upStr );
+    let i = result.lastIndexOf( this.upToken + this.downToken + this.upToken );
     _.assert( i === -1 || !/\w/.test( result.substring( 0, i ) ) );
   }
 
@@ -540,9 +533,9 @@ function canonizeTolerant( src )
   let result = this._normalize({ src, tolerant : true, detrailing : true, undoting : true });
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( result === this._upStr || _.strEnds( result, this._upStr ) || !_.strEnds( result, this._upStr + this._upStr ) );
-  _.assert( result.lastIndexOf( this._upStr + this._hereStr + this._upStr ) === -1 );
-  _.assert( !_.strEnds( result, this._upStr + this._hereStr ) );
+  _.assert( result === this.upToken || _.strEnds( result, this.upToken ) || !_.strEnds( result, this.upToken + this.upToken ) );
+  _.assert( result.lastIndexOf( this.upToken + this.hereToken + this.upToken ) === -1 );
+  _.assert( !_.strEnds( result, this.upToken + this.hereToken ) );
 
   if( Config.debug )
   {
@@ -590,17 +583,185 @@ function nativize()
   return this.nativize.apply( this, arguments );
 }
 
+//
+
+// "some@path"
+// ""some"@path"
+// ""some@path""
+
+function escape( filePath )
+{
+  let self = this;
+  let splits = self.split( filePath );
+
+  splits = splits.map( ( split ) =>
+  {
+
+    {
+      let i = 0;
+      while( split[ i ] === '"' )
+      i += 1;
+      if( i > 0 )
+      split = split.substring( 0, i ) + split;
+    }
+
+    {
+      let i = split.length-1;
+      while( split[ i ] === '"' )
+      i -= 1;
+      if( i < split.length-1 )
+      split = split + split.substring( i+1, split.length );
+    }
+
+    if( split.indexOf( '#' ) !== -1 )
+    return `"${split}"`;
+    if( split.indexOf( '@' ) !== -1 )
+    return `"${split}"`;
+    if( split.indexOf( '?' ) !== -1 )
+    return `"${split}"`;
+    return split;
+
+  });
+
+  return splits.join( self.upToken );
+}
+
+//
+
+function _unescape( filePath )
+{
+  let self = this;
+  let splits = self.split( filePath );
+  let result = Object.create( null );
+  result.wasEscaped = false;
+
+  splits = splits.map( ( split ) =>
+  {
+
+    {
+      let i = 0;
+      while( split[ i ] === '"' )
+      i += 1;
+      if( i > 0 )
+      {
+        let c = i;
+        if( c % 2 === 1 )
+        result.wasEscaped = true;
+        let c2 = Math.floor( ( c + 1 ) / 2 );
+        split = split.substring( c2, split.length );
+      }
+    }
+
+    {
+      let i = split.length-1;
+      while( split[ i ] === '"' )
+      i -= 1;
+      if( i < split.length-1 )
+      {
+        let c = split.length - i - 1;
+        if( c % 2 === 1 )
+        result.wasEscaped = true;
+        let c2 = Math.floor( ( c + 1 ) / 2 );
+        split = split.substring( 0, split.length - c2 );
+      }
+    }
+
+    return split;
+
+  });
+
+  result.unescaped = splits.join( self.upToken );
+  return result;
+}
+
+//
+
+function unescape( filePath )
+{
+  let self = this;
+  return self._unescape( filePath ).unescaped;
+}
+
+/* qqq2 : implement test routine _nativizeWindows */
+/* qqq2 : implement test routine _nativizePosix */
+
+/* qqq2 : implement routine _.path.unescape to transform:
+
+`"'some path'"` -> `'some path'`
+`"some path"` -> `some path`
+`""some path""` -> `"some path"`
+`'"some path"'` -> `'"some path"'`
+`'some path'` -> `'some path'`
+
+`some"-"path/t.txt` -> `some"-"path/t.txt`
+`"some"-"path"/'t.txt'` -> `some"-"path/'t.txt'`
+
+*/
+
+/* qqq2 : implement routine _.path.escape
+
+`"'some path'"` -> `""'some path'""`
+`"some path"` -> `""some path""`
+`""some path""` -> `"""some path"""`
+`'"some path"'` -> `'"some path"'`
+`'some path'` -> `'some path'`
+
+`#some'` -> `"#some"`
+`so#me'` -> `"so#me"`
+`some#'` -> `"some#"`
+
+`@some'` -> `"@some"`
+`so@me'` -> `"so@me"`
+`some@'` -> `"some@"`
+
+`?some'` -> `"?some"`
+`so?me'` -> `"so?me"`
+`some?'` -> `"some?"`
+
+=
+
+`"#` -> `"""#"`
+`"!` -> `""!`
+
+`"#"` -> `"""#"""`
+`"!"` -> `""!""`
+
+`""#""` -> `"""""#"""""`
+`""!""` -> `""""!""""`
+
+*/
+
+/* qqq2 : implement routines _.path.nativizeWindows_ _.path.nativizePosix_ using code from _.path.nativize and _.path.escape
+*/
+
 // --
 // transformer
 // --
+
+function _split( path )
+{
+  return path.split( this.upToken );
+}
+
+//
+
+function split( path )
+{
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( path ), 'Expects string' )
+  let result = this._split( this.refine( path ) );
+  return result;
+}
+
+//
 
 function _dot( filePath )
 {
 
   if( !this._isDotted( filePath ) )
   {
-    _.assert( !_.strBegins( filePath, this._upStr ) );
-    filePath = this._hereUpStr + filePath;
+    _.assert( !_.strBegins( filePath, this.upToken ) );
+    filePath = this.hereUpToken + filePath;
   }
 
   return filePath;
@@ -615,7 +776,7 @@ function dot( filePath )
     cant use isAbsolute
   */
 
-  _.assert( !_.strBegins( filePath, this._upStr ) );
+  _.assert( !_.strBegins( filePath, this.upToken ) );
   _.assert( arguments.length === 1 );
 
   /*
@@ -625,11 +786,11 @@ function dot( filePath )
     not begins with ../
   */
 
-  // if( filePath !== this._hereStr && !_.strBegins( filePath, this._hereUpStr ) && filePath !== this._downStr && !_.strBegins( filePath, this._downUpStr ) )
+  // if( filePath !== this.hereToken && !_.strBegins( filePath, this.hereUpToken ) && filePath !== this.downToken && !_.strBegins( filePath, this.downUpToken ) )
   if( !this.isDotted( filePath ) )
   {
-    _.assert( !_.strBegins( filePath, this._upStr ) );
-    filePath = this._hereUpStr + filePath;
+    _.assert( !_.strBegins( filePath, this.upToken ) );
+    filePath = this.hereUpToken + filePath;
   }
 
   return filePath;
@@ -639,9 +800,9 @@ function dot( filePath )
 
 function undot( filePath )
 {
-  if( filePath === this._hereUpStr )
+  if( filePath === this.hereUpToken )
   return filePath
-  return _.strRemoveBegin( filePath, this._hereUpStr );
+  return _.strRemoveBegin( filePath, this.hereUpToken );
 }
 
 //
@@ -651,8 +812,8 @@ function trail( srcPath )
   _.assert( this.is( srcPath ) );
   _.assert( arguments.length === 1 );
 
-  if( !_.strEnds( srcPath,this._upStr ) )
-  return srcPath + this._upStr;
+  if( !_.strEnds( srcPath,this.upToken ) )
+  return srcPath + this.upToken;
 
   return srcPath;
 }
@@ -664,8 +825,8 @@ function detrail( path )
   _.assert( this.is( path ) );
   _.assert( arguments.length === 1 );
 
-  if( path !== this._rootStr )
-  return _.strRemoveEnd( path,this._upStr );
+  if( path !== this.rootToken )
+  return _.strRemoveEnd( path,this.upToken );
 
   return path;
 }
@@ -721,16 +882,16 @@ function dir_body( o )
     {
       if
       (
-        o.filePath === this._rootStr || o.filePath === this._hereStr || o.filePath === this._downStr ||
-        o.filePath === this._hereStr + this._upStr || o.filePath === this._downStr + this._upStr ||
+        o.filePath === this.rootToken || o.filePath === this.hereToken || o.filePath === this.downToken ||
+        o.filePath === this.hereToken + this.upToken || o.filePath === this.downToken + this.upToken ||
         ( o.filePath.match( /\W{3}$/ ) && o.filePath.match( /\W{3}$/ )[ 0 ] === '/..' ) ||
         ( o.filePath.match( /\W{4}$/ ) && o.filePath.match( /\W{4}$/ )[ 0 ] === '/../' )
       )
       {
         if( o.filePath[ o.filePath.length - 1 ] === '/' )
-        o.filePath = o.filePath + this._downStr + ( o.first ? this._upStr : '' );
+        o.filePath = o.filePath + this.downToken + ( o.first ? this.upToken : '' );
         else
-        o.filePath = o.filePath + this._upStr + this._downStr + ( o.first ? this._upStr : '' );
+        o.filePath = o.filePath + this.upToken + this.downToken + ( o.first ? this.upToken : '' );
       }
       else
       {
@@ -765,51 +926,51 @@ function dir_body( o )
   if( isTrailed )
   return o.filePath;
 
-  if( o.filePath === this._rootStr )
+  if( o.filePath === this.rootToken )
   {
-    return o.filePath + this._downStr + ( o.first ? this._upStr : '' );
+    return o.filePath + this.downToken + ( o.first ? this.upToken : '' );
   }
 
-  if( _.strEnds( o.filePath, this._upStr + this._downStr ) || o.filePath === this._downStr )
+  if( _.strEnds( o.filePath, this.upToken + this.downToken ) || o.filePath === this.downToken )
   {
-    return o.filePath + this._upStr + this._downStr + ( o.first ? this._upStr : '' );
+    return o.filePath + this.upToken + this.downToken + ( o.first ? this.upToken : '' );
   }
 
-  let i = o.filePath.lastIndexOf( this._upStr );
+  let i = o.filePath.lastIndexOf( this.upToken );
 
   if( i === 0 )
   {
-    return this._rootStr;
+    return this.rootToken;
   }
 
   if( i === -1 )
   {
     if( o.first )
     {
-      if( o.filePath === this._hereStr )
-      return this._downStr + this._upStr;
+      if( o.filePath === this.hereToken )
+      return this.downToken + this.upToken;
       else
-      return this._hereStr + this._upStr;
+      return this.hereToken + this.upToken;
     }
     else
     {
-      if( o.filePath === this._hereStr )
-      return this._downStr + ( isTrailed ? this._upStr : '' );
+      if( o.filePath === this.hereToken )
+      return this.downToken + ( isTrailed ? this.upToken : '' );
       else
-      return this._hereStr + ( isTrailed ? this._upStr : '' );
+      return this.hereToken + ( isTrailed ? this.upToken : '' );
     }
   }
 
   let result;
 
   if( o.first )
-  result = o.filePath.substr( 0, i + self._upStr.length );
+  result = o.filePath.substr( 0, i + self.upToken.length );
   else
   result = o.filePath.substr( 0, i );
 
   if( !o.first )
   if( isTrailed )
-  result = _.strAppendOnce( result, self._upStr );
+  result = _.strAppendOnce( result, self.upToken );
 
   _.assert( !!result.length )
 
@@ -836,19 +997,12 @@ dirFirst.defaults.first = 1;
 let Parameters =
 {
 
-  _rootStr : '/',
-  _upStr : '/',
-  _hereStr : '.',
-  _downStr : '..',
-  _hereUpStr : null, /* ./ */
-  _downUpStr : null, /* ../ */
-
-  _rootRegSource : null,
-  _upRegSource : null,
-  _downRegSource : null,
-  _hereRegSource : null,
-  _downUpRegSource : null,
-  _hereUpRegSource : null,
+  rootToken : '/',
+  upToken : '/',
+  hereToken : '.',
+  downToken : '..',
+  hereUpToken : null, /* ./ */
+  downUpToken : null, /* ../ */
 
   _delHereRegexp : null,
   _delDownRegexp : null,
@@ -857,19 +1011,7 @@ let Parameters =
 
 }
 
-let Fields =
-{
-
-  Parameters,
-
-  fileProvider : null,
-  path : Self,
-  single : Self,
-  s : null,
-
-}
-
-let Routines =
+let Extension =
 {
 
   // meta
@@ -909,8 +1051,14 @@ let Routines =
   _nativizePosix,
   nativize,
 
+  escape,
+  _unescape,
+  unescape,
+
   // transformer
 
+  _split,
+  split,
   _dot,
   dot,
   undot,
@@ -919,11 +1067,19 @@ let Routines =
   dir,
   dirFirst,
 
+  // fields
+
+  Parameters,
+
+  fileProvider : null,
+  path : Self,
+  single : Self,
+  s : null,
+
 }
 
 _.mapSupplement( Self, Parameters );
-_.mapSupplement( Self, Fields );
-_.mapSupplement( Self, Routines );
+_.mapSupplement( Self, Extension );
 
 Self.Init();
 

@@ -241,12 +241,6 @@ let wProcedure =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.procedure },
 }
 
-let wGdf =
-{
-  sourcePath : sourcePath( 'amid/l1/gdf/Converter.s', 'wgdf' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Gdf },
-}
-
 // base / l9
 
 let wLogger =
@@ -296,6 +290,12 @@ let wDomBaseLayer5 =
 // amid
 
 // amid / l1
+
+let wGdf =
+{
+  sourcePath : sourcePath( 'amid/l1/gdf/entry/Gdf.s', 'wgdf' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Gdf },
+}
 
 let wGraphBasic =
 {
@@ -444,7 +444,7 @@ let wFilesArchive =
 let wFilesEncoders =
 {
   sourcePath : sourcePath( 'amid/l4_files/entry/EncodersExtended.s', 'wfilesencoders' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.FileReadEncoders && !!_global.wTools.FileReadEncoders.yml },
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.files && !!_global.wTools.files.ReadEncoders && !!_global.wTools.files.ReadEncoders.yml },
 }
 
 let wFilesExtract =
@@ -731,10 +731,10 @@ let wPuppet =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.puppet },
 }
 
-let wCensor =
+let wFiler =
 {
-  sourcePath : sourcePath( 'atop/censor/entry/Censor.s', 'wcensor' ),
-  isIncluded : function(){ return !!_global.censor && !!_global.censor.Cui },
+  sourcePath : sourcePath( 'atop/filer/entry/Exec', 'wfiler' ),
+  isIncluded : function(){ return !!_global.filer && !!_global.filer.Cui },
 }
 
 // --
@@ -802,7 +802,6 @@ let Modules =
   // base / l8
 
   wProcedure,
-  wGdf,
 
   // base / l9
 
@@ -821,6 +820,7 @@ let Modules =
 
   // mid / l1
 
+  wGdf,
   wGraphBasic,
   wGraphTools,
   wRegexpObject,
@@ -917,7 +917,7 @@ let Modules =
   wBakerWithFileExecutor,
   wMaker,
   wPuppet,
-  wCensor,
+  wFiler,
 
 }
 
