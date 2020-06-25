@@ -5548,12 +5548,14 @@ function nativize( test )
 {
 
   var src = 'A:\\';
+  debugger;
   var got = _.path.nativize( src );
   var expected = 'A:\\';
   if( process.platform === 'win32' )
   test.identical( got,expected );
   else
   test.identical( got,src );
+  debugger;
 
   var src = '/A/';
   var got = _.path.nativize( src );
@@ -5594,6 +5596,22 @@ function nativize( test )
 function escape( test )
 {
 
+  test.case = `"a`;
+  var src = `"a`;
+  var dst = `""a`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var got2 = _.path._unescape( got1 );
+  var exp =
+  {
+    wasEscaped : false,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
   test.case = `"#`;
   var src = `"#`;
   var dst = `"""#"`
@@ -5611,10 +5629,25 @@ function escape( test )
 
   test.case = `"!`;
   var src = `"!`;
-  var dst = `""!`
+  var dst = `"""!"`
   var got1 = _.path.escape( src );
   test.identical( got1, dst );
   var got2 = _.path._unescape( got1 );
+  var exp =
+  {
+    wasEscaped : true,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = `a"`;
+  var src = `a"`;
+  var dst = `a""`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
   var exp =
   {
     wasEscaped : false,
@@ -5642,7 +5675,22 @@ function escape( test )
 
   test.case = `!"`;
   var src = `!"`;
-  var dst = `!""`
+  var dst = `"!"""`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var exp =
+  {
+    wasEscaped : true,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = `"a"`;
+  var src = `"a"`;
+  var dst = `""a""`
   var got1 = _.path.escape( src );
   test.identical( got1, dst );
   var exp =
@@ -5672,7 +5720,22 @@ function escape( test )
 
   test.case = `"!"`;
   var src = `"!"`;
-  var dst = `""!""`
+  var dst = `"""!"""`
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var exp =
+  {
+    wasEscaped : true,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = `""a""`;
+  var src = `""a""`;
+  var dst = `""""a""""`
   var got1 = _.path.escape( src );
   test.identical( got1, dst );
   var exp =
@@ -5702,12 +5765,27 @@ function escape( test )
 
   test.case = `""!""`;
   var src = `""!""`;
-  var dst = `""""!""""`
+  var dst = `"""""!"""""`
   var got1 = _.path.escape( src );
   test.identical( got1, dst );
   var exp =
   {
-    wasEscaped : false,
+    wasEscaped : true,
+    unescaped : src,
+  }
+  var got2 = _.path._unescape( got1 );
+  test.identical( got2, exp );
+  var got3 = _.path.unescape( got1 );
+  test.identical( got3, src );
+
+  test.case = 'a1#/a2@/a3!/a4?/#a5/@a6/!a7/?a8/File1.txt';
+  var src = 'a1#/a2@/a3!/a4?/#a5/@a6/!a7/?a8/File1.txt';
+  var dst = `"a1#"/"a2@"/"a3!"/"a4?"/"#a5"/"@a6"/"!a7"/"?a8"/File1.txt`;
+  var got1 = _.path.escape( src );
+  test.identical( got1, dst );
+  var exp =
+  {
+    wasEscaped : true,
     unescaped : src,
   }
   var got2 = _.path._unescape( got1 );
