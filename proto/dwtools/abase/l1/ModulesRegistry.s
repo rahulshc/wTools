@@ -329,7 +329,7 @@ let wVocabulary =
 
 let wSchema =
 {
-  sourcePath : sourcePath( 'amid/l1/schema/IncludeMid.s', 'wSchema' ),
+  sourcePath : sourcePath( 'amid/l1/schema/include/Mid.s', 'wschema' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.schema },
 }
 
@@ -663,9 +663,9 @@ let wMathGeometric =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.math.d2TriPointInside },
 }
 
-let wMathConcepts =
+let wMathModels =
 {
-  sourcePath : sourcePath( 'amath/l8/Concepts.s', 'wmathconcepts' ),
+  sourcePath : sourcePath( 'amath/l8/Concepts.s', 'wmathmodels' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.box },
 }
 
@@ -903,7 +903,7 @@ let Modules =
   wMathVector,
   wMathMatrix,
   wMathGeometric,
-  wMathConcepts,
+  wMathModels,
 
   // top
 
