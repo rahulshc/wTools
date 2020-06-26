@@ -551,7 +551,13 @@ function _nativizeWindows( filePath )
 {
   let self = this;
   _.assert( _.strIs( filePath ), 'Expects string' ) ;
-  let result = filePath.replace( /\//g, '\\' );
+
+  let result = filePath;
+
+  _.assert( _.routineIs( self.unescape ) );
+  result = self.unescape( result ); /* yyy */
+
+  result = filePath.replace( /\//g, '\\' );
 
   if( result[ 0 ] === '\\' )
   if( result.length === 2 || result[ 2 ] === ':' || result[ 2 ] === '\\' )
@@ -569,7 +575,13 @@ function _nativizePosix( filePath )
 {
   let self = this;
   _.assert( _.strIs( filePath ), 'Expects string' );
-  return filePath;
+
+  let result = filePath;
+
+  _.assert( _.routineIs( self.unescape ) );
+  result = self.unescape( result ); /* yyy */
+
+  return result;
 }
 
 //
@@ -584,10 +596,6 @@ function nativize()
 }
 
 //
-
-// "some@path"
-// ""some"@path"
-// ""some@path""
 
 function escape( filePath )
 {
@@ -613,11 +621,8 @@ function escape( filePath )
       split = split + split.substring( i+1, split.length );
     }
 
-    if( split.indexOf( '#' ) !== -1 )
-    return `"${split}"`;
-    if( split.indexOf( '@' ) !== -1 )
-    return `"${split}"`;
-    if( split.indexOf( '?' ) !== -1 )
+    let left = _.strLeft( split, self.escapeTokens )
+    if( left.entry )
     return `"${split}"`;
     return split;
 
@@ -631,7 +636,10 @@ function escape( filePath )
 function _unescape( filePath )
 {
   let self = this;
-  let splits = self.split( filePath );
+  // let splits = self.split( filePath );
+  /* xxx : cant use routine self.split because it normalizes path */
+  let splits = filePath.split( self.upToken );
+
   let result = Object.create( null );
   result.wasEscaped = false;
 
@@ -667,7 +675,6 @@ function _unescape( filePath )
     }
 
     return split;
-
   });
 
   result.unescaped = splits.join( self.upToken );
@@ -1003,6 +1010,7 @@ let Parameters =
   downToken : '..',
   hereUpToken : null, /* ./ */
   downUpToken : null, /* ../ */
+  escapeTokens : [ '@', '#', '!', '?' ],
 
   _delHereRegexp : null,
   _delDownRegexp : null,

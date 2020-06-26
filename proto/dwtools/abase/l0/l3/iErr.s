@@ -277,7 +277,14 @@ function _errMake( o )
     sectionWrite( 'process', `Process`, _.process.entryPointInfo() );
 
     if( o.sourceCode )
+    debugger;
+    if( o.sourceCode )
+    if( _.strIs( o.sourceCode ) )
+    sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode );
+    else if( _.strIs( o.sourceCode.code ) )
     sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode.code );
+    else
+    console.error( 'Unknown format of {- o.sourceCode -}' );
 
     for( let s in o.sections )
     {

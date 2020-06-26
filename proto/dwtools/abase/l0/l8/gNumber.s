@@ -100,7 +100,9 @@ function numberFromStrMaybe( src )
   _.assert( _.strIs( src ) || _.numberIs( src ) );
   if( _.numberIs( src ) )
   return src;
-  let parsed = Number( src );
+  if( !src ) /* qqq : cover */
+  return src;
+  let parsed = !src ? NaN : Number( src );
   if( !isNaN( parsed ) )
   return parsed;
   return src;
