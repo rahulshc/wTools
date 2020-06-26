@@ -329,7 +329,7 @@ let wVocabulary =
 
 let wSchema =
 {
-  sourcePath : sourcePath( 'amid/l1/schema/IncludeMid.s', 'wSchema' ),
+  sourcePath : sourcePath( 'amid/l1/schema/include/Mid.s', 'wschema' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.schema },
 }
 
