@@ -946,19 +946,21 @@ function longFill( src, value, range )
 
   src = _.longGrowInplace( src, range );
 
+  let offset = Math.max( -range[ 0 ], 0 );
+
   if( range[ 0 ] < 0 )
   {
-    range[ 1 ] = range[ 1 ] - range[ 0 ];
+    range[ 1 ] -= range[ 0 ];
     range[ 0 ] = 0;
   }
 
   if( _.routineIs( src.fill ) )
   {
-    src.fill( value, range[ 0 ], range[ 1 ] );
+    src.fill( value, range[ 0 ], range[ 1 ] + offset );
   }
   else
   {
-    for( let t = range[ 0 ] ; t < range[ 1 ] ; t++ )
+    for( let t = range[ 0 ] ; t < range[ 1 ] + offset ; t++ )
     src[ t ] = value;
   }
 
@@ -2492,13 +2494,10 @@ function longShrink_( dst, array, range, val )
 
 function longGrow( array, range, val )
 {
-  let result;
-
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
   if( range === undefined )
   return _.longShallowClone( array );
-  // return _.longMake( array );
 
   if( _.numberIs( range ) )
   range = [ 0, range ];
@@ -2508,9 +2507,6 @@ function longGrow( array, range, val )
 
   _.assert( _.longLike( array ) );
   _.assert( _.rangeIs( range ) )
-  // _.assert( _.numberIs( f ) );
-  // _.assert( _.numberIs( l ) );
-  // _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( l < f )
   l = f;
@@ -2521,26 +2517,21 @@ function longGrow( array, range, val )
     f -= f;
   }
 
-  // if( _.bufferTypedIs( array ) )
-  // result = new array.constructor( l-f );
-  // else
-  // result = new Array( l-f );
-
   if( f > 0 )
   f = 0;
   if( l < array.length )
   l = array.length;
 
-  if( l === array.length )
+  if( l === array.length && -range[ 0 ] <= 0 )
   return _.longShallowClone( array );
-  // return _.longMake( array );
-
-  result = _.longMakeUndefined( array, l-f );
 
   /* */
 
   let f2 = Math.max( -range[ 0 ], 0 );
   let l2 = Math.min( array.length, l );
+
+  debugger;
+  let result = _.longMakeUndefined( array, range[ 1 ] > array.length ? l : array.length + f2 );
   for( let r = f2 ; r < l2 + f2 ; r++ )
   result[ r ] = array[ r - f2 ];
 
@@ -2548,14 +2539,10 @@ function longGrow( array, range, val )
 
   if( val !== undefined )
   {
-    for( let r = 0 ; r < -f ; r++ )
-    {
-      result[ r ] = val;
-    }
-    for( let r = l2 - f; r < result.length ; r++ )
-    {
-      result[ r ] = val;
-    }
+    for( let r = 0 ; r < f2 ; r++ )
+    result[ r ] = val;
+    for( let r = l2 + f2; r < result.length ; r++ )
+    result[ r ] = val;
   }
 
   /* */
@@ -2664,7 +2651,7 @@ function longGrowInplace( array, range, val )
   if( l < array.length )
   l = array.length;
 
-  if( l === array.length )
+  if( l === array.length && -range[ 0 ] <= 0 )
   return array;
   else
   return _.longGrow( array, range, val );
