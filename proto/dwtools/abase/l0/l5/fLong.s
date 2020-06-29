@@ -2563,79 +2563,6 @@ function longGrow( array, range, val )
   return result;
 }
 
-// function longGrow( array, range, val )
-// {
-//   let result;
-//
-//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-//
-//   if( range === undefined )
-//   return _.longShallowClone( array );
-//   // return _.longMake( array );
-//
-//   if( _.numberIs( range ) )
-//   range = [ 0, range ];
-//
-//   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-//   let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
-//
-//   _.assert( _.longLike( array ) );
-//   _.assert( _.rangeIs( range ) )
-//   // _.assert( _.numberIs( f ) );
-//   // _.assert( _.numberIs( l ) );
-//   // _.assert( 1 <= arguments.length && arguments.length <= 4 );
-//
-//   if( l < f )
-//   l = f;
-//
-//   if( f < 0 )
-//   {
-//     l -= f;
-//     f -= f;
-//   }
-//
-//   // if( _.bufferTypedIs( array ) )
-//   // result = new array.constructor( l-f );
-//   // else
-//   // result = new Array( l-f );
-//
-//   if( f > 0 )
-//   f = 0;
-//   if( l < array.length )
-//   l = array.length;
-//
-//   if( l === array.length )
-//   return _.longShallowClone( array );
-//   // return _.longMake( array );
-//
-//   result = _.longMakeUndefined( array, l-f );
-//
-//   /* */
-//
-//   let f2 = Math.max( f, 0 );
-//   let l2 = Math.min( array.length, l );
-//   for( let r = f2 ; r < l2 ; r++ )
-//   result[ r-f2 ] = array[ r ];
-//
-//   /* */
-//
-//   if( val !== undefined )
-//   {
-//     for( let r = 0 ; r < -f ; r++ )
-//     {
-//       result[ r ] = val;
-//     }
-//     for( let r = l2 - f; r < result.length ; r++ )
-//     {
-//       result[ r ] = val;
-//     }
-//   }
-//
-//   /* */
-//
-//   return result;
-// }
-
 //
 
 /**
@@ -2741,164 +2668,97 @@ function longGrowInplace( array, range, val )
   return array;
   else
   return _.longGrow( array, range, val );
-
-  // let result;
-  //
-  // _.assert( 1 <= arguments.length && arguments.length <= 3 );   // Dmytro : in previus place some asserts lose its own sense
-  //
-  // if( range === undefined )
-  // return array;
-  //
-  // let f = range ? range[ 0 ] : undefined;
-  // let l = range ? range[ 1 ] : undefined;
-  //
-  // f = f !== undefined ? f : 0;
-  // l = l !== undefined ? l : array.length;
-  //
-  // _.assert( _.longLike( array ) );
-  // _.assert( _.rangeIs( range ) )
-  // // _.assert( _.numberIs( f ) );
-  // // _.assert( _.numberIs( l ) );
-  // // _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  // // // _.assert( 1 <= arguments.length && arguments.length <= 4 );
-  //
-  // if( l < f )
-  // l = f;
-  //
-  // if( f < 0 )
-  // {
-  //   l -= f;
-  //   f -= f;
-  // }
-  //
-  // // if( _.bufferTypedIs( array ) )
-  // // result = new array.constructor( l-f );
-  // // else
-  // // result = new Array( l-f );
-  //
-  // if( f > 0 )
-  // f = 0;
-  // if( l < array.length )
-  // l = array.length;
-  //
-  // if( l === array.length )
-  // return array;
-  //
-  // result = _.longMakeUndefined( array, l-f );
-  //
-  // /* */
-  //
-  // let f2 = Math.max( f, 0 );
-  // let l2 = Math.min( array.length, l );
-  // for( let r = f2 ; r < l2 ; r++ )
-  // result[ r-f ] = array[ r ];
-  //
-  // /* */
-  //
-  // if( val !== undefined )
-  // {
-  //   for( let r = 0 ; r < -f ; r++ )
-  //   {
-  //     result[ r ] = val;
-  //   }
-  //   for( let r = l2 - f; r < result.length ; r++ )
-  //   {
-  //     result[ r ] = val;
-  //   }
-  // }
-  //
-  // /* */
-  //
-  // return result;
 }
 
 //
 
-function longGrow_( dst, array, range, val )
+function longGrow_( dst, src, crange, ins )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
-
-  if( _.arrayLikeResizable( array ) )
-  return this.arrayGrow_.apply( this, arguments );
-
-  if( range === undefined )
-  return returnDst();
-
-  if( _.numberIs( range ) )
-  range = [ 0, range ];
-
-  _.assert( _.rangeIs( range ) );
-
-  range[ 0 ] = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  range[ 1 ] = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
-
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  if( range[ 0 ] < 0 )
+  if( arguments.length < 4 && dst !== null && dst !== src )
   {
-    range[ 1 ] -= range[ 0 ];
-    range[ 0 ] -= range[ 0 ];
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
   }
 
-  if( range[ 0 ] > 0 )
-  range[ 0 ] = 0;
-  if( range[ 1 ] < array.length )
-  range[ 1 ] = array.length;
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
 
-  if( range[ 1 ] === array.length )
-  return returnDst();
+  _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
-  let f2 = Math.max( range[ 0 ], 0 );
-  let l2 = Math.min( array.length, range[ 1 ] );
+  crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length;
+
+  let f = crange[ 0 ];
+  let l = crange[ 1 ];
+
+  if( f < 0 )
+  {
+    l -= f;
+    f -= f;
+  }
+
+  if( l < f )
+  l = f;
+
+  if( f > 0 )
+  f = 0;
+  if( l < src.length - 1 )
+  l = src.length - 1;
+
+  let f2 = Math.max( -crange[ 0 ], 0 );
+  let l2 = Math.min( src.length - 1 + f2, l + f2 );
+
+  let resultLength = l + f2 + 1;
 
   let result;
-  if( _.boolIs( dst ) )
-  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
-  else if( _.arrayLikeResizable( dst ) )
+  if( dst === null )
   {
-    result = dst;
-    result.length = range[ 1 ] - range[ 0 ];
+    result = _.longMakeUndefined( src, resultLength );
   }
-  else if( dst.length !== range[ 1 ] - range[ 0 ] )
-  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
-  else
-  result = dst;
-
-  for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f2 ] = array[ r ];
-
-  if( val !== undefined )
+  else if( dst === src )
   {
-    for( let r = l2 - range[ 0 ]; r < result.length ; r++ )
-    result[ r ] = val;
+    if( dst.length === resultLength )
+    {
+      return dst;
+    }
+    if( _.arrayLikeResizable( dst ) )
+    {
+      dst.splice( f, 0, ... _.dup( ins, f2 ) );
+      dst.splice( l2 + 1, 0, ... _.dup( ins, resultLength <= l2 ? 0 : resultLength - l2 - 1 ) );
+      return dst;
+    }
+    else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
+    {
+      result = _.longMakeUndefined( dst, resultLength );
+    }
+  }
+  else if( dst.length !== resultLength )
+  {
+    dst = _.longMakeUndefined( dst, resultLength );
+    result = dst;
+  }
+
+
+  for( let r = f2 ; r < l2 + 1 ; r++ )
+  result[ r ] = src[ r - f2 ];
+
+  if( ins !== undefined )
+  {
+    for( let r = 0 ; r < f2 ; r++ )
+    result[ r ] = ins;
+
+    for( let r = l2 + 1 ; r < resultLength ; r++ )
+    result[ r ] = ins;
   }
 
   return result;
-
-  /* */
-
-  function returnDst()
-  {
-    if( dst.length !== undefined )
-    {
-      if( _.arrayLikeResizable( dst ) )
-      return dst.splice( 0, dst.length, ... array );
-      else
-      {
-        if( dst.length !== array.length )
-        dst = _.longMakeUndefined( dst, array.length );
-
-        for( let i = 0; i < dst.length; i++ )
-        dst[ i ] = array[ i ];
-
-        return dst;
-      }
-    }
-    return dst === true ? _.longShallowClone( array ) : array;
-    // return dst === true ? _.longMake( array ) : array;
-  }
 }
 
 //
