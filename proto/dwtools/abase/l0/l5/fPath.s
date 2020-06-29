@@ -574,13 +574,10 @@ function _nativizeWindows( filePath )
 function _nativizePosix( filePath )
 {
   let self = this;
-  _.assert( _.strIs( filePath ), 'Expects string' );
-
   let result = filePath;
-
+  _.assert( _.strIs( filePath ), 'Expects string' );
   _.assert( _.routineIs( self.unescape ) );
   result = self.unescape( result ); /* yyy */
-
   return result;
 }
 
