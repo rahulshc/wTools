@@ -1325,14 +1325,14 @@ function arrayGrowInplace( src, range, ins )
   _.assert( _.arrayIs( src ) );
   _.assert( _.rangeIs( range ) )
 
-  if( l < f )
-  l = f;
-
   if( f < 0 )
   {
     l -= f;
     f -= f;
   }
+
+  if( l < f )
+  l = f;
 
   if( f > 0 )
   f = 0;
@@ -1345,18 +1345,14 @@ function arrayGrowInplace( src, range, ins )
   if( !Object.isExtensible( src ) && src.length < l )
   _.assert( 0, 'Array is not extensible, cannot change length of array' );
 
+  let resultLength = l - f;
+  let f2 = Math.max( -range[ 0 ], 0 );
   let l2 = Math.min( src.length, l );
+  l2 += f2;
 
-  let result = src;
-  result.length = l;
-
-  if( ins !== undefined )
-  {
-    for( let r = l2; r < result.length ; r++ )
-    result[ r ] = ins;
-  }
-
-  return result;
+  src.splice( f, 0, ... _.dup( ins, f2 ) );
+  src.splice( l2, 0, ... _.dup( ins, resultLength <= l2 ? 0 : resultLength - l2 ) );
+  return src;
 }
 
 //
