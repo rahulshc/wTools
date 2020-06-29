@@ -284,7 +284,7 @@ let longMake = _longMake_functor( function( src, ins, length, minLength )
   {
     if( ins && length === ins.length )
     {
-      result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) );
+      result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) ); /* Dmytro : needs to improve, maybe remove */
     }
     else
     {
@@ -2539,10 +2539,10 @@ function longGrow( array, range, val )
 
   /* */
 
-  let f2 = Math.max( f, 0 );
+  let f2 = Math.max( -range[ 0 ], 0 );
   let l2 = Math.min( array.length, l );
-  for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f2 ] = array[ r ];
+  for( let r = f2 ; r < l2 + f2 ; r++ )
+  result[ r ] = array[ r - f2 ];
 
   /* */
 
@@ -2562,6 +2562,79 @@ function longGrow( array, range, val )
 
   return result;
 }
+
+// function longGrow( array, range, val )
+// {
+//   let result;
+//
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//
+//   if( range === undefined )
+//   return _.longShallowClone( array );
+//   // return _.longMake( array );
+//
+//   if( _.numberIs( range ) )
+//   range = [ 0, range ];
+//
+//   let f = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+//   let l = range[ 1 ] !== undefined ? range[ 1 ] : array.length;
+//
+//   _.assert( _.longLike( array ) );
+//   _.assert( _.rangeIs( range ) )
+//   // _.assert( _.numberIs( f ) );
+//   // _.assert( _.numberIs( l ) );
+//   // _.assert( 1 <= arguments.length && arguments.length <= 4 );
+//
+//   if( l < f )
+//   l = f;
+//
+//   if( f < 0 )
+//   {
+//     l -= f;
+//     f -= f;
+//   }
+//
+//   // if( _.bufferTypedIs( array ) )
+//   // result = new array.constructor( l-f );
+//   // else
+//   // result = new Array( l-f );
+//
+//   if( f > 0 )
+//   f = 0;
+//   if( l < array.length )
+//   l = array.length;
+//
+//   if( l === array.length )
+//   return _.longShallowClone( array );
+//   // return _.longMake( array );
+//
+//   result = _.longMakeUndefined( array, l-f );
+//
+//   /* */
+//
+//   let f2 = Math.max( f, 0 );
+//   let l2 = Math.min( array.length, l );
+//   for( let r = f2 ; r < l2 ; r++ )
+//   result[ r-f2 ] = array[ r ];
+//
+//   /* */
+//
+//   if( val !== undefined )
+//   {
+//     for( let r = 0 ; r < -f ; r++ )
+//     {
+//       result[ r ] = val;
+//     }
+//     for( let r = l2 - f; r < result.length ; r++ )
+//     {
+//       result[ r ] = val;
+//     }
+//   }
+//
+//   /* */
+//
+//   return result;
+// }
 
 //
 
