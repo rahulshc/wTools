@@ -566,9 +566,6 @@ function _nativizeWindows( filePath )
   if( result.length === 2 && result[ 1 ] === ':' )
   result = result + '\\';
 
-  if( self.isAbsolute( filePath ) )
-  _.assert( /^[a-zA-Z]:\\/.test( result ), `Absolute path should begin from drive letter, but got:"${filePath}"` );
-
   return result;
 }
 
