@@ -24,7 +24,6 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 let _arraySlice = _.longSlice;
 let strType = _.strType;
 
-
 // --
 // checker
 // --
@@ -5160,7 +5159,6 @@ function strLinesNearestLog_body( o )
   if( !o.gray )
   result.log = _.color.strEscape( result.log );
 
-  debugger;
   let left = o.src.substring( 0, o.charsRangeLeft[ 0 ] );
   let zeroLine = left ? _.strLinesCount( left ) : 1;
   result.log = _.strLinesNumber

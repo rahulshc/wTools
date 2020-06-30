@@ -10,17 +10,6 @@ let Self = _global_.wTools;
 // decorator
 // --
 
-// class QuotePair
-// {
-//   constructor( elements )
-//   {
-//     this.elements = elements;
-//     return this;
-//   }
-// }
-
-//
-
 function strQuote( o )
 {
 
@@ -209,7 +198,7 @@ strQuoteAnalyze.defaults =
 }
 
 // --
-//
+// splitter
 // --
 
 // function _strLeftSingle( src, ins, first, last )
@@ -2277,15 +2266,32 @@ strSplitInlinedStereo.defaults =
 }
 
 // --
+// converter
+// --
+
+function strFrom( src )
+{
+
+  if( src === null )
+  return src;
+  if( src === undefined )
+  return src;
+
+  if( _.primitiveIs( src ) )
+  return String( src );
+
+  if( _.bufferAnyIs( src ) )
+  return _.bufferToStr( src );
+
+  return src;
+}
+
+// --
 // extension
 // --
 
 let Extension =
 {
-
-  // relation
-
-  // QuotePair,
 
   // decorator
 
@@ -2294,7 +2300,7 @@ let Extension =
   strQuotePairsNormalize, /* qqq : analyze and write good jsdoc */
   strQuoteAnalyze, /* qqq : analyze and write good jsdoc */
 
-  //
+  // splitter
 
   _strLeftSingle,
   strLeft,
@@ -2334,6 +2340,10 @@ let Extension =
 
   strSplitInlined,
   strSplitInlinedStereo,
+
+  // converter
+
+  strFrom,
 
 }
 

@@ -904,7 +904,7 @@ let Extension =
 
   toStr,
   toStrShort : toStr,
-  strFrom : toStr,
+  // strFrom : toStr,
 
   toStrSimple,
   strShort,
