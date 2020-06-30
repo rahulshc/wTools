@@ -557,7 +557,7 @@ function _nativizeWindows( filePath )
   _.assert( _.routineIs( self.unescape ) );
   result = self.unescape( result ); /* yyy */
 
-  result = filePath.replace( /\//g, '\\' );
+  result = result.replace( /\//g, '\\' );
 
   if( result[ 0 ] === '\\' )
   if( result.length === 2 || result[ 2 ] === ':' || result[ 2 ] === '\\' )
