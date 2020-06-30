@@ -4680,14 +4680,11 @@ strLinesNumber.defaults =
   highlighting : '*', /* qqq2 : implement and cover option o.highlighting */
 }
 
-/*
-aaa : cover zeroLine
-Dmytro : covered
-aaa : cover zeroChar
-Dmytro : covered
-aaa : cover onLine
-Dmytro : covered
-*/
+//   863 : 7 : Last one
+//   864 : + replace 5 in ${ a.abs( 'before/File2.js' ) }
+//   865 : Done 1 action(s). Thrown 0 error(s).
+//   866 : `
+// * 867 :     test.equivalent( op.output, exp );
 
 //
 
