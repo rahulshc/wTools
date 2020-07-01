@@ -1060,7 +1060,7 @@ function bufferNodeFrom( buffer )
   }
   else if( _.strIs( buffer ) )
   {
-    debugger;
+    // debugger;
     result = _.bufferNodeFrom( _.bufferRawFrom( buffer ) );
   }
   else if( buffer.buffer )
