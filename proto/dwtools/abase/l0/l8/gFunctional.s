@@ -1814,7 +1814,7 @@ let Fields =
 let Routines =
 {
 
-  eachSample, /* xxx : move out */
+  eachSample, /* qqq2 : does not work properly if set is empty! */
   eachPermutation, /* xxx : move out */
   swapsCount,
   _factorial,

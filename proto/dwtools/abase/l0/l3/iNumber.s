@@ -92,22 +92,68 @@ function numbersAre( src )
   return false;
 }
 
+// //
+//
+// function numbersAreIdentical( src1, src2 )
+// {
+//   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+//   return Object.is( src1, src2 );
+// }
+//
+// //
+//
+// function numbersAreEquivalent( src1, src2, accuracy )
+// {
+//   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+//   if( accuracy === undefined )
+//   accuracy = _.accuracy;
+//   return Math.abs( src1-src2 ) <= accuracy;
+// }
+
 //
 
-function numbersAreIdentical( src1, src2 )
+function numbersAreIdentical( a, b )
 {
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  return Object.is( src1, src2 );
+  return Object.is( a, b );
 }
 
 //
 
-function numbersAreEquivalent( src1, src2, accuracy )
+function numbersAreIdenticalNotStrictly( a, b )
 {
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+  /*
+  it takes into account -0 === +0 case
+  */
+  return Object.is( a, b ) || a === b;
+}
+
+//
+
+function numbersAreEquivalent( a, b, accuracy )
+{
+
+  if( Object.is( a, b ) )
+  return true;
+
+  if( _.bigIntIs( a ) || _.bigIntIs( b ) )
+  {
+    if( _.intIs( a ) )
+    a = BigInt( a );
+    if( _.intIs( b ) )
+    b = BigInt( b );
+    return a === b;
+  }
+
   if( accuracy === undefined )
-  accuracy = _.accuracy;
-  return Math.abs( src1-src2 ) <= accuracy;
+  accuracy = this.accuracy;
+
+  if( !_.numberIs( a ) )
+  return false;
+
+  if( !_.numberIs( b ) )
+  return false;
+
+  return Math.abs( a - b ) <= accuracy;
 }
 
 //
@@ -190,8 +236,12 @@ let Routines =
   intIs,
 
   numbersAre,
-  numbersAreIdentical,
-  numbersAreEquivalent,
+  // numbersAreIdentical,
+  // numbersAreEquivalent,
+  numbersAreIdentical, /* qqq2 : implement good coverage */
+  numbersAreIdenticalNotStrictly,
+  numbersAreEquivalent, /* qqq2 : implement good coverage */
+
   numbersAreFinite,
   numbersArePositive,
   numbersAreInt,
