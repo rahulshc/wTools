@@ -4678,6 +4678,7 @@ strLinesNumber.defaults =
   zeroChar : null,
   onLine : null,
   highlighting : null,
+  highlightingToken : '*',
 }
 
 /* qqq2 : implement and cover option o.highlighting
