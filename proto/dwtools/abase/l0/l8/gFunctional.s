@@ -400,7 +400,6 @@ function eachSample( o )
       if( _.primitiveIs( set ) )
       set = [ set ];
 
-      if( !breaking )
       if( set.length === 0 )
       breaking = 1;
 
