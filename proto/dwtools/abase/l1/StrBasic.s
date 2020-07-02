@@ -4677,14 +4677,36 @@ strLinesNumber.defaults =
   zeroLine : null,
   zeroChar : null,
   onLine : null,
-  highlighting : '*', /* qqq2 : implement and cover option o.highlighting */
+  highlighting : null,
 }
+
+/* qqq2 : implement and cover option o.highlighting
+
+_.strLinesNumber({ src, highlighting : 867 });
 
 //   863 : 7 : Last one
 //   864 : + replace 5 in ${ a.abs( 'before/File2.js' ) }
 //   865 : Done 1 action(s). Thrown 0 error(s).
 //   866 : `
 // * 867 :     test.equivalent( op.output, exp );
+
+_.strLinesNumber({ src, highlighting : 867, highlightingToken : '-->' });
+
+//     863 : 7 : Last one
+//     864 : + replace 5 in ${ a.abs( 'before/File2.js' ) }
+//     865 : Done 1 action(s). Thrown 0 error(s).
+//     866 : `
+// --> 867 :     test.equivalent( op.output, exp );
+
+_.strLinesNumber({ src, highlighting : [ 865, 867 ] });
+
+//   863 : 7 : Last one
+//   864 : + replace 5 in ${ a.abs( 'before/File2.js' ) }
+// * 865 : Done 1 action(s). Thrown 0 error(s).
+//   866 : `
+// * 867 :     test.equivalent( op.output, exp );
+
+*/
 
 //
 
