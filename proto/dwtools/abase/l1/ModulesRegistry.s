@@ -251,13 +251,13 @@ let wLogger =
 
 let wPrinterToFile =
 {
-  sourcePath : sourcePath( 'abase/l9/logger/top/ToFile.ss', 'wloggertofile' ),
+  sourcePath : sourcePath( 'abase/l9/logger/ToFile.ss', 'wloggertofile' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToFile; },
 }
 
 let wPrinterToJs =
 {
-  sourcePath : sourcePath( 'abase/l9/logger/top/ToJstructure.s', 'wloggertojs' ),
+  sourcePath : sourcePath( 'abase/l9/logger/ToJstructure.s', 'wloggertojs' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToJs; },
 }
 
