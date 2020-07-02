@@ -24218,44 +24218,6 @@ function entityMax( test )
 
 function eachSample( test )
 {
-  test.case = 'sets - empty array';
-  var src = [];
-  var got = _.eachSample( src );
-  var expected = [ [] ];
-  test.identical( got, expected );
-  test.identical( src, [] );
-
-  test.case = 'sets - empty map';
-  var src = {};
-  var got = _.eachSample( { sets : src } );
-  var expected = [ {} ];
-  test.identical( got, expected );
-  test.identical( src, {} );
-
-  test.case = 'sets - empty map, onEach - null';
-  var src = {};
-  var got = _.eachSample( src, null );
-  var expected = [ {} ];
-  test.identical( got, expected );
-  test.identical( src, {} );
-
-  test.case = 'sets - empty unroll';
-  var src = _.unrollMake( [] );
-  var got = _.eachSample( src );
-  var expected = [ [] ];
-  test.identical( got, expected );
-  test.is( _.arrayIs( got ) );
-  test.isNot( _.unrollIs( got ) );
-  test.identical( src, _.unrollMake( [] ) );
-
-  test.case = 'sets - empty argumentsArray';
-  var src = _.argumentsArrayMake( 0 );
-  var got = _.eachSample( src, null );
-  var expected = [ [] ];
-  test.identical( got, expected );
-  test.is( _.arrayIs( got ) );
-  test.identical( src, _.argumentsArrayMake( 0 ) );
-
   /* */
 
   test.case = 'sets - array with single element';
@@ -24301,52 +24263,6 @@ function eachSample( test )
   test.identical( got, expected );
   test.is( _.arrayIs( got ) );
   test.identical( src, _.argumentsArrayMake( [ 1 ] ) );
-
-  /* */
-
-  test.case = 'sets - array with nested empty array';
-  var src = [ [] ];
-  var got = _.eachSample( src );
-  var expected = [ [ undefined ] ];
-  test.identical( got, expected );
-  test.identical( src, [ [] ] );
-
-  test.case = 'sets - map with empty array';
-  var src = { a : [] };
-  var got = _.eachSample( src, null );
-  var expected = [ { a : undefined } ];
-  test.identical( got, expected );
-  test.identical( src, { a : [] } );
-
-  test.case = 'sets - array with several empty arrays';
-  var src = [ [], [], [] ];
-  var got = _.eachSample( src );
-  var expected = [ [ undefined, undefined, undefined ] ];
-  test.identical( got, expected );
-  test.identical( src, [ [], [], [] ] );
-
-  test.case = 'sets - map with several empty arrays';
-  var src = { a : [], b : [], c : [] };
-  var got = _.eachSample( src, null );
-  var expected = [ { a : undefined, b : undefined, c : undefined } ];
-  test.identical( got, expected );
-  test.identical( src, { a : [], b : [], c : [] } );
-
-  test.case = 'sets - unroll with several empty arrays';
-  var src = _.unrollMake( [ [], [] ] );
-  var got = _.eachSample( src );
-  var expected = [ [ undefined, undefined ] ];
-  test.identical( got, expected );
-  test.isNot( _.unrollIs( got ) );
-  test.identical( src, _.unrollMake( [ [], [] ] ) );
-
-  test.case = 'sets - argumentsArray with several empty arrays';
-  var src = _.argumentsArrayMake( [ [], [] ] );
-  var got = _.eachSample( src );
-  var expected = [ [ undefined, undefined ] ];
-  test.identical( got, expected );
-  test.is( _.arrayIs( got ) );
-  test.identical( src, _.argumentsArrayMake( [ [], [] ] ) );
 
   /* */
 
@@ -24808,6 +24724,137 @@ function eachSample( test )
   var o = { sets : [ [ 1, 0 ], [ 2, 3 ] ], add : [ 5 ] };
   test.shouldThrowErrorSync( () => _.eachSample( o ) );
 
+}
+
+//
+
+function eachSampleEmptyContainers( test )
+{
+  test.case = 'sets - empty array';
+  var src = [];
+  var got = _.eachSample( src );
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, [] );
+
+  test.case = 'sets - empty map';
+  var src = {};
+  var got = _.eachSample( { sets : src } );
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, {} );
+
+  test.case = 'sets - empty map, onEach - null';
+  var src = {};
+  var got = _.eachSample( src, null );
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, {} );
+
+  test.case = 'sets - empty unroll';
+  var src = _.unrollMake( [] );
+  var got = _.eachSample( src );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.isNot( _.unrollIs( got ) );
+  test.identical( src, _.unrollMake( [] ) );
+
+  test.case = 'sets - empty argumentsArray';
+  var src = _.argumentsArrayMake( 0 );
+  var got = _.eachSample( src, null );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.identical( src, _.argumentsArrayMake( 0 ) );
+
+  /* */
+
+  test.case = 'sets - array with nested empty array';
+  var src = [ [] ];
+  var got = _.eachSample( src );
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, [ [] ] );
+
+  test.case = 'sets - map with empty array';
+  var src = { a : [] };
+  var got = _.eachSample( src, null );
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, { a : [] } );
+
+  test.case = 'sets - array with several empty arrays';
+  var src = [ [], [], [] ];
+  var got = _.eachSample( src );
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, [ [], [], [] ] );
+
+  test.case = 'sets - map with several empty arrays';
+  var src = { a : [], b : [], c : [] };
+  var got = _.eachSample( src, null );
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, { a : [], b : [], c : [] } );
+
+  test.case = 'sets - unroll with several empty arrays';
+  var src = _.unrollMake( [ [], [] ] );
+  var got = _.eachSample( src );
+  var expected = [];
+  test.identical( got, expected );
+  test.isNot( _.unrollIs( got ) );
+  test.identical( src, _.unrollMake( [ [], [] ] ) );
+
+  test.case = 'sets - argumentsArray with several empty arrays';
+  var src = _.argumentsArrayMake( [ [], [] ] );
+  var got = _.eachSample( src );
+  var expected = [];
+  test.identical( got, expected );
+  test.is( _.arrayIs( got ) );
+  test.identical( src, _.argumentsArrayMake( [ [], [] ] ) );
+
+  /* */
+
+  test.case = 'second set is empty, array';
+  var src = [ [ 0, 1 ], [] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, [ [ 0, 1 ], [] ] );
+
+  test.case = 'second set is empty, map';
+  var src = { a : [ 0, 1 ], b : [] };
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, { a : [ 0, 1 ], b : [] } );
+
+  test.case = 'first set is empty, array';
+  var src = [ [], [ 0, 1 ] ];
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, [ [], [ 0, 1 ] ] );
+
+  test.case = 'first set is empty, map';
+  var src = { a : [ 0, 1 ], b : [] };
+  var got = _.eachSample
+  ({
+    sets : src,
+  });
+  var expected = [];
+  test.identical( got, expected );
+  test.identical( src, { a : [ 0, 1 ], b : [] } );
 }
 
 //
@@ -25554,6 +25601,7 @@ value for dst             dst                dst                    first +     
     // permutation
 
     eachSample,
+    eachSampleEmptyContainers,
     eachSampleExperiment,
     eachPermutationBasic,
     eachPermutationOptions,
