@@ -391,7 +391,7 @@ let wNpmTools =
 
 let wYamlTools =
 {
-  sourcePath : sourcePath( 'amid/l3/yaml/IncludeMid.s', 'wyamltools' ),
+  sourcePath : sourcePath( 'amid/l3/yaml/include/Mid.s', 'wyamltools' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.yaml },
 }
 
