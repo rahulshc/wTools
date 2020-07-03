@@ -731,10 +731,10 @@ let wPuppet =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.puppet },
 }
 
-let wFiler =
+let wCensor =
 {
-  sourcePath : sourcePath( 'atop/filer/entry/Exec', 'wfiler' ),
-  isIncluded : function(){ return !!_global.filer && !!_global.filer.Cui },
+  sourcePath : sourcePath( 'atop/censor/entry/Exec', 'wcensor' ),
+  isIncluded : function(){ return !!_global.censor && !!_global.censor.Cui },
 }
 
 // --
@@ -917,7 +917,7 @@ let Modules =
   wBakerWithFileExecutor,
   wMaker,
   wPuppet,
-  wFiler,
+  wCensor,
 
 }
 
