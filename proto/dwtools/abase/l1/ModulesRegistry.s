@@ -245,19 +245,19 @@ let wProcedure =
 
 let wLogger =
 {
-  sourcePath : sourcePath( 'abase/l9/printer/top/Logger.s', 'wLogger' ),
+  sourcePath : sourcePath( 'abase/l9/logger/entry/Logger.s', 'wLogger' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Logger; },
 }
 
 let wPrinterToFile =
 {
-  sourcePath : sourcePath( 'abase/l9/printer/top/ToFile.ss', 'wloggertofile' ),
+  sourcePath : sourcePath( 'abase/l9/logger/ToFile.ss', 'wloggertofile' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToFile; },
 }
 
 let wPrinterToJs =
 {
-  sourcePath : sourcePath( 'abase/l9/printer/top/ToJstructure.s', 'wloggertojs' ),
+  sourcePath : sourcePath( 'abase/l9/logger/ToJstructure.s', 'wloggertojs' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToJs; },
 }
 
@@ -391,7 +391,7 @@ let wNpmTools =
 
 let wYamlTools =
 {
-  sourcePath : sourcePath( 'amid/l3/yaml/IncludeMid.s', 'wyamltools' ),
+  sourcePath : sourcePath( 'amid/l3/yaml/include/Mid.s', 'wyamltools' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.yaml },
 }
 
