@@ -1846,11 +1846,11 @@ function strSplit_body( o )
   }
   if( o.onDelimeter )
   {
-    let delimeter = _.filter( o.delimeter, function( e, i, c )
+    let delimeter = _.filter( o.delimeter, function( pattern )
     {
-      if( _.regexpIs( e ) )
-      return e.test( o.src ) ? e : null;
-      return e;
+      if( _.regexpIs( pattern ) )
+      return pattern.test( o.src ) ? pattern : null;
+      return pattern;
     });
     for( let i = 0 ; i < o.splits.length ; i++ )
     {
