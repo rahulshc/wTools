@@ -1311,6 +1311,34 @@ function strDecapitalize( src )
 
 //
 
+function strSign( prefix, src )
+{
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 2 );
+  _.assert( prefix.length === 1 );
+  _.assert( prefix.toUpperCase() === prefix );
+
+  let result = _.strDesign( src );
+  result[ 0 ] = result[ 0 ].toUpperCase();
+
+  return result;
+}
+
+//
+
+function strDesign( src )
+{
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  let result = src;
+  if( /^w[A-Z]/.test( result ) )
+  result = result.substring( 1 );
+  return result;
+}
+
+//
+
 /**
  * Disables escaped characters in source string( src ).
  * Example: '\n' -> '\\n', '\u001b' -> '\\u001b' etc.
@@ -5348,7 +5376,9 @@ let Proto =
   // transformer
 
   strCapitalize,
-  strDecapitalize,
+  strDecapitalize, /* qqq : cover and jsdoc */
+  strSign, /* qqq : cover and jsdoc */
+  strDesign,/* qqq : cover and jsdoc */
   strEscape,
   strCodeUnicodeEscape, /* Dmytro : extended documentation */
   strUnicodeEscape, /* aaa : document me */ /* Dmytro : documented */

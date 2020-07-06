@@ -384,6 +384,8 @@ function _errMake( o )
     nonenumerable( 'toString', function() { return this.stack } );
     nonenumerable( 'sections', o.sections );
 
+    o.dstError[ Symbol.for( 'nodejs.util.inspect.custom' ) ] = o.dstError.toString;
+
     if( o.debugging )
     debugger;
 
@@ -521,6 +523,10 @@ _errMake.defaults =
  * @function _err
  * @namespace Tools
  */
+
+/*
+xxx : maybe use customInspectSymbol
+*/
 
 function _err( o )
 {
