@@ -980,7 +980,7 @@ function strReplaceEnd( src, end, ins )
 //   return result;
 // }
 //
-// function strReplace( src, ins, sub ) /* qqq2 : ask */
+// function strReplace( src, ins, sub ) /* aaa2 : ask */ /* Dmytro : implemented. See below, please */
 // {
 //   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 //   _.assert( _.strsAreAll( sub ), 'Expects {-sub-} as string/array of strings' );
@@ -1901,8 +1901,8 @@ defaults.quoting = 1;
 defaults.quotingPrefixes = null;
 defaults.quotingPostfixes = null;
 
-defaults.onDelimeter = null; /* qqq : cover. seems does not work. ask how it should work */
-defaults.onQuote = null; /* qqq : cover. seems does not work. ask how it should work */
+defaults.onDelimeter = null; /* aaa : cover. seems does not work. ask how it should work */ /* Dmytro : implemented and covered */
+defaults.onQuote = null; /* aaa : cover. seems does not work. ask how it should work */ /* Dmytro : implemented and covered */
 
 //
 
