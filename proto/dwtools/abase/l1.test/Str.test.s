@@ -1,5 +1,5 @@
-/* eslint-disable */
-( function _Str_test_s_() {
+( function _Str_test_s_()
+{
 
 'use strict';
 
@@ -32,7 +32,7 @@ function strCount( test )
   test.identical( got, expected );
 
   test.case = 'simple string';
-  var got = _.strCount( 'ababacabacabaaba','aba' );
+  var got = _.strCount( 'ababacabacabaaba', 'aba' );
   var expected = 4;
   test.identical( got, expected );
 
@@ -7062,6 +7062,14 @@ function strLinesNumber( test )
   test.close( 'map' );
 
   /* - */
+  
+  test.open( 'highlighting' );
+
+
+
+  test.close( 'highlighting' );
+
+  /* - */
 
   if( !Config.debug )
   return;
@@ -7077,6 +7085,31 @@ function strLinesNumber( test )
 
   test.case = 'unnacessary options in map';
   test.shouldThrowErrorSync( () => _.strLinesNumber( { src : 'a', unnacessary : 1 } ) );
+}
+
+function testHighlighting( test )
+{
+  test.open( 'highlighting' );
+
+  test.case = 'src - string without new line symbol with highlighting';
+  var got = _.strLinesNumber( { src : 'a', highlighting : 1 } );
+  console.log( got )
+  var expected = '* 1 : a';
+  test.identical( got, expected );
+
+  test.case = 'src - string with new line symbols; with highlighting';
+  var got = _.strLinesNumber( { src : 'abc\ndef\nghi', highlighting : [ 2, 3 ], highlightingToken : '-->',  } );
+  console.log( got )
+  var expected = '    1 : abc\n--> 2 : def\n--> 3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'src - string with new line symbols; with highlighting';
+  var got = _.strLinesNumber( { src : 'abc\ndef\nghi', highlighting : [ 100, 101 ], highlightingToken : '>>>>', zeroLine : 99 } );
+  console.log( got )
+  var expected = '     99 : abc\n>>>> 100 : def\n>>>> 101 : ghi';
+  test.identical( got, expected );
+
+  test.close( 'highlighting' );
 }
 
 //
@@ -9396,6 +9429,7 @@ var Self =
     strLinesNearestLog,
     strLinesCount,
     strLinesRangeWithCharRange,
+    testHighlighting
 
   }
 

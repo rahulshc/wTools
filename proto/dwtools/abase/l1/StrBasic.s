@@ -4693,6 +4693,17 @@ function strLinesNumber( o )
     let numLength = String( l + o.zeroLine ).length;
     lines[ l ] = ' '.repeat( maxNumLength - numLength ) + ( l + o.zeroLine ) + ' : ' + lines[ l ];
   }
+  // console.log( lines );
+
+  if( o.highlightingToken && o.highlighting )
+  lines = lines.map( el =>
+  {
+    let spaces = new Array( o.highlightingToken.length + 2 ).join( ' ' );
+
+    if( _.arrayIs( o.highlighting ) )
+    return o.highlighting.includes( +parseInt( el, 10 ) ) ? '' + o.highlightingToken + ' ' + el : '' + spaces + el;
+
+  } )
 
   /* */
 
