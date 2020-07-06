@@ -24,7 +24,6 @@ let _ObjectHasOwnProperty = Object.hasOwnProperty;
 let _arraySlice = _.longSlice;
 let strType = _.strType;
 
-
 // --
 // checker
 // --
@@ -1308,6 +1307,34 @@ function strDecapitalize( src )
   return src;
 
   return src[ 0 ].toLowerCase() + src.substring( 1 );
+}
+
+//
+
+function strSign( prefix, src )
+{
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 2 );
+  _.assert( prefix.length === 1 );
+  _.assert( prefix.toUpperCase() === prefix );
+
+  let result = _.strDesign( src );
+  result[ 0 ] = result[ 0 ].toUpperCase();
+
+  return result;
+}
+
+//
+
+function strDesign( src )
+{
+  _.assert( _.strIs( src ) );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  let result = src;
+  if( /^w[A-Z]/.test( result ) )
+  result = result.substring( 1 );
+  return result;
 }
 
 //
@@ -4678,16 +4705,36 @@ strLinesNumber.defaults =
   zeroLine : null,
   zeroChar : null,
   onLine : null,
-  highlighting : '*', /* qqq2 : implement and cover option o.highlighting */
+  highlighting : null,
+  highlightingToken : '*', /* qqq : if null then highlighting is off */
 }
 
-/*
-aaa : cover zeroLine
-Dmytro : covered
-aaa : cover zeroChar
-Dmytro : covered
-aaa : cover onLine
-Dmytro : covered
+/* qqq2 : implement and cover option o.highlighting
+
+_.strLinesNumber({ src, highlighting : 867 });
+
+//   863 : 7 : Last one
+//   864 : + replace 5 in ${ a.abs( 'before/File2.js' ) }
+//   865 : Done 1 action(s). Thrown 0 error(s).
+//   866 : `
+// * 867 :     test.equivalent( op.output, exp );
+
+_.strLinesNumber({ src, highlighting : 867, highlightingToken : '-->' });
+
+//     863 : 7 : Last one
+//     864 : + replace 5 in ${ a.abs( 'before/File2.js' ) }
+//     865 : Done 1 action(s). Thrown 0 error(s).
+//     866 : `
+// --> 867 :     test.equivalent( op.output, exp );
+
+_.strLinesNumber({ src, highlighting : [ 865, 867 ] });
+
+//   863 : 7 : Last one
+//   864 : + replace 5 in ${ a.abs( 'before/File2.js' ) }
+// * 865 : Done 1 action(s). Thrown 0 error(s).
+//   866 : `
+// * 867 :     test.equivalent( op.output, exp );
+
 */
 
 //
@@ -5160,7 +5207,6 @@ function strLinesNearestLog_body( o )
   if( !o.gray )
   result.log = _.color.strEscape( result.log );
 
-  debugger;
   let left = o.src.substring( 0, o.charsRangeLeft[ 0 ] );
   let zeroLine = left ? _.strLinesCount( left ) : 1;
   result.log = _.strLinesNumber
@@ -5330,7 +5376,9 @@ let Proto =
   // transformer
 
   strCapitalize,
-  strDecapitalize,
+  strDecapitalize, /* qqq : cover and jsdoc */
+  strSign, /* qqq : cover and jsdoc */
+  strDesign,/* qqq : cover and jsdoc */
   strEscape,
   strCodeUnicodeEscape, /* Dmytro : extended documentation */
   strUnicodeEscape, /* aaa : document me */ /* Dmytro : documented */

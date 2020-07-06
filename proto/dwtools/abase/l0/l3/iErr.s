@@ -277,8 +277,6 @@ function _errMake( o )
     sectionWrite( 'process', `Process`, _.process.entryPointInfo() );
 
     if( o.sourceCode )
-    debugger;
-    if( o.sourceCode )
     if( _.strIs( o.sourceCode ) )
     sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode );
     else if( _.strIs( o.sourceCode.code ) )
@@ -385,6 +383,8 @@ function _errMake( o )
 
     nonenumerable( 'toString', function() { return this.stack } );
     nonenumerable( 'sections', o.sections );
+
+    o.dstError[ Symbol.for( 'nodejs.util.inspect.custom' ) ] = o.dstError.toString;
 
     if( o.debugging )
     debugger;
@@ -524,6 +524,10 @@ _errMake.defaults =
  * @namespace Tools
  */
 
+/*
+xxx : maybe use customInspectSymbol
+*/
+
 function _err( o )
 {
   let dstError;
@@ -564,11 +568,13 @@ function _err( o )
 
   /* let */
 
-  let originalMessage = '';
+  if( !o.message )
+  o.message = '';
+  // let originalMessage = '';
   let fallBackMessage = '';
   let errors = [];
   let beautifiedStack = '';
-  let message = null;
+  // let message = null;
 
   /* debugger */
 
@@ -605,7 +611,7 @@ function _err( o )
       debugging : o.debugging,
       stackCondensing : o.stackCondensing,
 
-      originalMessage,
+      originalMessage : o.message,
       beautifiedStack,
       throwCallsStack : o.throwCallsStack,
       throwsStack : o.throwsStack,
@@ -791,7 +797,7 @@ function _err( o )
     else
     {
 
-      dstError = new Error( originalMessage + '\n' );
+      dstError = new Error( o.message + '\n' );
       if( o.throwCallsStack )
       {
         dstError.stack = o.throwCallsStack;
@@ -950,6 +956,9 @@ function _err( o )
     let multiline = false; // Dmytro : this option is not used in code
     let result = [];
 
+    if( o.message )
+    return;
+
     for( let a = 0 ; a < o.args.length ; a++ )
     {
       let arg = o.args[ a ];
@@ -1005,17 +1014,17 @@ function _err( o )
     {
       let str = result[ a ];
 
-      if( !originalMessage.replace( /\s*/m, '' ) )
+      if( !o.message.replace( /\s*/m, '' ) )
       {
-        originalMessage = str;
+        o.message = str;
       }
-      else if( _.strEnds( originalMessage, '\n' ) || _.strBegins( str, '\n' ) )
+      else if( _.strEnds( o.message, '\n' ) || _.strBegins( str, '\n' ) )
       {
-        originalMessage = originalMessage.replace( /\s+$/m, '' ) + '\n' + str;
+        o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str;
       }
       else
       {
-        originalMessage = originalMessage.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
+        o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
       }
 
     }
@@ -1024,9 +1033,9 @@ function _err( o )
       remove redundant eol from begin and end of message
     */
 
-    originalMessage = originalMessage || fallBackMessage || 'UnknownError';
-    originalMessage = originalMessage.replace( /^\x20*\n/m, '' );
-    originalMessage = originalMessage.replace( /\x20*\n$/m, '' );
+    o.message = o.message || fallBackMessage || 'UnknownError';
+    o.message = o.message.replace( /^\x20*\n/m, '' );
+    o.message = o.message.replace( /\x20*\n$/m, '' );
 
   }
 
@@ -1043,6 +1052,7 @@ _err.defaults =
 
   /* string */
 
+  message : null, /* qqq : cover the option */
   reason : null,
   sourceCode : null,
 

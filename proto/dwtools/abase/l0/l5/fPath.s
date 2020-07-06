@@ -547,6 +547,26 @@ function canonizeTolerant( src )
 
 //
 
+function __nativizeWindows( filePath )
+{
+  let self = this;
+
+  let result = filePath;
+
+  result = result.replace( /\//g, '\\' );
+
+  if( result[ 0 ] === '\\' )
+  if( result.length === 2 || result[ 2 ] === ':' || result[ 2 ] === '\\' )
+  result = result[ 1 ] + ':' + result.substring( 2 );
+
+  if( result.length === 2 && result[ 1 ] === ':' )
+  result = result + '\\';
+
+  return result;
+}
+
+//
+
 function _nativizeWindows( filePath )
 {
   let self = this;
@@ -557,15 +577,18 @@ function _nativizeWindows( filePath )
   _.assert( _.routineIs( self.unescape ) );
   result = self.unescape( result ); /* yyy */
 
-  result = filePath.replace( /\//g, '\\' );
+  result = self.__nativizeWindows( result );
 
-  if( result[ 0 ] === '\\' )
-  if( result.length === 2 || result[ 2 ] === ':' || result[ 2 ] === '\\' )
-  result = result[ 1 ] + ':' + result.substring( 2 );
+  return result;
+}
 
-  if( result.length === 2 && result[ 1 ] === ':' )
-  result = result + '\\';
+//
 
+function __nativizePosix( filePath )
+{
+  let self = this;
+  let result = filePath;
+  _.assert( _.strIs( filePath ), 'Expects string' );
   return result;
 }
 
@@ -589,6 +612,17 @@ function nativize()
   this.nativize = this._nativizeWindows;
   else
   this.nativize = this._nativizePosix;
+  return this.nativize.apply( this, arguments );
+}
+
+//
+
+function nativizeTolerant()
+{
+  if( _global.process && _global.process.platform === 'win32' )
+  this.nativize = this.__nativizeWindows;
+  else
+  this.nativize = this.__nativizePosix;
   return this.nativize.apply( this, arguments );
 }
 
@@ -1052,9 +1086,12 @@ let Extension =
   canonize,
   canonizeTolerant,
 
+  __nativizeWindows,
   _nativizeWindows,
+  __nativizePosix,
   _nativizePosix,
   nativize,
+  nativizeTolerant,
 
   escape,
   _unescape,

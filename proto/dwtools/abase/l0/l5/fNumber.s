@@ -23,7 +23,7 @@ let Self = _global_.wTools;
 
 //
 
-function bigIntFrom( src ) 
+function bigIntFrom( src )
 {
   if( _.strIs( src ) ) /* qqq2 : cover pelase */
   return BigInt( src );

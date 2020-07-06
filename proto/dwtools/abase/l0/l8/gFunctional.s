@@ -357,12 +357,10 @@ function eachSample( o )
 {
 
   if( arguments.length === 2 || _.arrayLike( arguments[ 0 ] ) )
+  o =
   {
-    o =
-    {
-      sets : arguments[ 0 ],
-      onEach : arguments[ 1 ],
-    }
+    sets : arguments[ 0 ],
+    onEach : arguments[ 1 ],
   }
 
   _.routineOptions( eachSample, o );
@@ -381,6 +379,8 @@ function eachSample( o )
   let keys = _.longLike( o.sets ) ? _.longFromRange([ 0, o.sets.length ]) : _.mapKeys( o.sets );
   if( _.boolLikeTrue( o.result ) && !_.arrayIs( o.result ) )
   o.result = [];
+  if( keys.length === 0 )
+  return o.result ? o.result : 0;
   let len = [];
   let indexnd = [];
   let index = 0;
@@ -389,26 +389,37 @@ function eachSample( o )
   /* sets */
 
   let sindex = 0;
+  let breaking = 0;
 
   o.sets = _.filter( o.sets, function( set, k )
   {
     _.assert( _.longIs( set ) || _.primitiveIs( set ) );
 
-    if( _.primitiveIs( set ) )
-    set = [ set ];
+    if( breaking === 0 )
+    {
+      if( _.primitiveIs( set ) )
+      set = [ set ];
 
-    len[ sindex ] = _.entityLength( o.sets[ k ] );
-    indexnd[ sindex ] = 0;
-    sindex += 1;
+      if( set.length === 0 )
+      breaking = 1;
 
+      len[ sindex ] = _.entityLength( o.sets[ k ] );
+      indexnd[ sindex ] = 0;
+      sindex += 1;
+    }
     return set;
+
   });
+
+  if( breaking === 1 )
+  return o.result ? o.result : 0;
 
   /* */
 
   if( !firstSample() )
   return o.result;
 
+  let iterate = o.leftToRight ? iterateLeftToRight : iterateRightToLeft;
   do
   {
     if( o.onEach )
@@ -476,23 +487,42 @@ function eachSample( o )
 
   /* */
 
-  function iterate()
+  function iterateLeftToRight()
   {
-
-    if( o.leftToRight )
     for( let i = 0 ; i < l ; i++ )
-    {
-      if( nextSample( i ) )
-      return 1;
-    }
-    else for( let i = l - 1 ; i >= 0 ; i-- )
-    {
-      if( nextSample( i ) )
-      return 1;
-    }
+    if( nextSample( i ) )
+    return 1;
 
     return 0;
   }
+
+  /* */
+
+  function iterateRightToLeft()
+  {
+    for( let i = l - 1 ; i >= 0 ; i-- )
+    if( nextSample( i ) )
+    return 1;
+
+    return 0;
+  }
+  // function iterate()
+  // {
+  //
+  //   if( o.leftToRight )
+  //   for( let i = 0 ; i < l ; i++ )
+  //   {
+  //     if( nextSample( i ) )
+  //     return 1;
+  //   }
+  //   else for( let i = l - 1 ; i >= 0 ; i-- )
+  //   {
+  //     if( nextSample( i ) )
+  //     return 1;
+  //   }
+  //
+  //   return 0;
+  // }
 
 }
 
@@ -1814,7 +1844,7 @@ let Fields =
 let Routines =
 {
 
-  eachSample, /* xxx : move out */
+  eachSample, /* qqq2 : does not work properly if set is empty! */
   eachPermutation, /* xxx : move out */
   swapsCount,
   _factorial,

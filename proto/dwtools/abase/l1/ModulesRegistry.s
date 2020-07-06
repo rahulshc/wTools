@@ -245,19 +245,19 @@ let wProcedure =
 
 let wLogger =
 {
-  sourcePath : sourcePath( 'abase/l9/printer/top/Logger.s', 'wLogger' ),
+  sourcePath : sourcePath( 'abase/l9/logger/entry/Logger.s', 'wLogger' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Logger; },
 }
 
 let wPrinterToFile =
 {
-  sourcePath : sourcePath( 'abase/l9/printer/top/ToFile.ss', 'wloggertofile' ),
+  sourcePath : sourcePath( 'abase/l9/logger/ToFile.ss', 'wloggertofile' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToFile; },
 }
 
 let wPrinterToJs =
 {
-  sourcePath : sourcePath( 'abase/l9/printer/top/ToJstructure.s', 'wloggertojs' ),
+  sourcePath : sourcePath( 'abase/l9/logger/ToJstructure.s', 'wloggertojs' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.PrinterToJs; },
 }
 
@@ -391,7 +391,7 @@ let wNpmTools =
 
 let wYamlTools =
 {
-  sourcePath : sourcePath( 'amid/l3/yaml/IncludeMid.s', 'wyamltools' ),
+  sourcePath : sourcePath( 'amid/l3/yaml/include/Mid.s', 'wyamltools' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.yaml },
 }
 
@@ -731,10 +731,10 @@ let wPuppet =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.puppet },
 }
 
-let wFiler =
+let wCensor =
 {
-  sourcePath : sourcePath( 'atop/filer/entry/Exec', 'wfiler' ),
-  isIncluded : function(){ return !!_global.filer && !!_global.filer.Cui },
+  sourcePath : sourcePath( 'atop/censor/entry/Exec', 'wcensor' ),
+  isIncluded : function(){ return !!_global.censor && !!_global.censor.Cui },
 }
 
 // --
@@ -917,7 +917,7 @@ let Modules =
   wBakerWithFileExecutor,
   wMaker,
   wPuppet,
-  wFiler,
+  wCensor,
 
 }
 
