@@ -1028,7 +1028,7 @@ function strReplaceEnd( src, end, ins )
 //
 // }
 
-/* qqq2 : poor implementation */
+/* aaa2 : poor implementation */ /* Dmytro : used routine `strSplit` instead of cycles */
 
 function strReplace( src, ins, sub )
 {
@@ -1046,64 +1046,79 @@ function strReplace( src, ins, sub )
 
   let result = _.arrayAs( src ).slice();
 
-  for( let k = 0 ; k < result.length ; k++ )
+  for( let i = 0 ; i < result.length ; i++ )
   {
-    let container = [ result[ k ] ];
-
-    for( let i = 0 ; i < ins.length ; i++ )
-    {
-      for( let l = 0 ; l < container.length ; l++ )
-      {
-        let insSrc = ins[ i ];
-        let src  = container[ l ];
-
-        if( _.strIs( container[ l ] ) && _.strHas( container[ l ], insSrc ) )
-        {
-          let index, ins;
-          if( _.regexpIs( insSrc ) )
-          {
-            let entry = insSrc.exec( src ); // Dmytro : single searching of substring
-            index = entry.index;
-            ins = entry[ 0 ];
-          }
-          else
-          {
-            index = src.indexOf( insSrc );
-            ins = insSrc;
-          }
-
-          _.assert( ins !== '', '{-ins-} should find string with length' );
-
-          while( index !== -1 )
-          {
-            container.splice( l, 1, src.substring( 0, index ), i );
-            src = src.substring( index + ins.length );
-            l += 2;
-
-            if( _.regexpIs( insSrc ) )
-            {
-              let entry = insSrc.exec( src );
-              index = entry === null ? -1 : entry.index;
-              ins = entry ? entry[ 0 ] : ins;
-              _.assert( ins !== '', '{-ins-} should find string with length' );
-            }
-            else
-            {
-              index = src.indexOf( insSrc );
-            }
-          }
-
-          container.splice( l, 0, src );
-        }
-      }
-    }
-
-    for( let j = 0 ; j < container.length ; j++ )
-    if( _.numberIs( container[ j ] ) )
-    container[ j ] = _.longIs( sub ) ? sub[ container[ j ] ] : sub;
-
-    result[ k ] = container.join( '' );
+    result[ i ] = _.strSplit
+    ({
+      src : result[ i ],
+      delimeter : ins,
+      quoting : 0,
+      stripping : 0,
+      preservingEmpty : 1,
+      preservingDelimeters : 1,
+      onDelimeter : ( e, k ) => _.strIs( sub ) ? sub : sub[ k ],
+    });
+    result[ i ] = result[ i ].join( '' );
   }
+
+  // for( let k = 0 ; k < result.length ; k++ )
+  // {
+  //   let container = [ result[ k ] ];
+  //
+  //   for( let i = 0 ; i < ins.length ; i++ )
+  //   {
+  //     for( let l = 0 ; l < container.length ; l++ )
+  //     {
+  //       let insSrc = ins[ i ];
+  //       let src  = container[ l ];
+  //
+  //       if( _.strIs( container[ l ] ) && _.strHas( container[ l ], insSrc ) )
+  //       {
+  //         let index, ins;
+  //         if( _.regexpIs( insSrc ) )
+  //         {
+  //           let entry = insSrc.exec( src ); // Dmytro : single searching of substring
+  //           index = entry.index;
+  //           ins = entry[ 0 ];
+  //         }
+  //         else
+  //         {
+  //           index = src.indexOf( insSrc );
+  //           ins = insSrc;
+  //         }
+  //
+  //         _.assert( ins !== '', '{-ins-} should find string with length' );
+  //
+  //         while( index !== -1 )
+  //         {
+  //           container.splice( l, 1, src.substring( 0, index ), i );
+  //           src = src.substring( index + ins.length );
+  //           l += 2;
+  //
+  //           if( _.regexpIs( insSrc ) )
+  //           {
+  //             let entry = insSrc.exec( src );
+  //             index = entry === null ? -1 : entry.index;
+  //             ins = entry ? entry[ 0 ] : ins;
+  //             _.assert( ins !== '', '{-ins-} should find string with length' );
+  //           }
+  //           else
+  //           {
+  //             index = src.indexOf( insSrc );
+  //           }
+  //         }
+  //
+  //         container.splice( l, 0, src );
+  //       }
+  //     }
+  //   }
+  //
+  //   for( let j = 0 ; j < container.length ; j++ )
+  //   if( _.numberIs( container[ j ] ) )
+  //   container[ j ] = _.longIs( sub ) ? sub[ container[ j ] ] : sub;
+  //
+  //   result[ k ] = container.join( '' );
+  // }
 
   if( result.length === 1 && _.strIs( src ) )
   return result[ 0 ];
@@ -1831,9 +1846,15 @@ function strSplit_body( o )
   }
   if( o.onDelimeter )
   {
+    let delimeter = _.filter( o.delimeter, function( e, i, c )
+    {
+      if( _.regexpIs( e ) )
+      return e.test( o.src ) ? e : null;
+      return e;
+    });
     for( let i = 0 ; i < o.splits.length ; i++ )
     {
-      let index = _.longLeftIndex( o.delimeter, o.splits[ i ], equalizeStrings );
+      let index = _.longLeftIndex( delimeter, o.splits[ i ], equalizeStrings );
       if( index !== -1 )
       o.splits[ i ] = o.onDelimeter( o.splits[ i ], index, o.delimeter );
     }
@@ -1861,7 +1882,9 @@ function strSplit_body( o )
   {
     if( _.strIs( pattern ) )
     return pattern === el;
+    if( pattern !== null )
     return pattern.test( el );
+    return false;
   }
 
 }
