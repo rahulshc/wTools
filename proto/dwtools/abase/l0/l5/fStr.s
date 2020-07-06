@@ -1819,6 +1819,26 @@ function strSplit_body( o )
 
   o.splits = _.strSplitFast.body( fastOptions );
 
+  if( o.quoting && o.onQuote )
+  {
+    let quotes = _.arrayAppendArraysOnce( null, [ o.quotingPrefixes, o.quotingPostfixes ] );
+    for( let i = 0 ; i < o.splits.length ; i++ )
+    {
+      let index = _.longLeftIndex( quotes, o.splits[ i ], equalizeStrings );
+      if( index !== -1 )
+      o.splits[ i ] = o.onQuote( o.splits[ i ], index, quotes );
+    }
+  }
+  if( o.onDelimeter )
+  {
+    for( let i = 0 ; i < o.splits.length ; i++ )
+    {
+      let index = _.longLeftIndex( o.delimeter, o.splits[ i ], equalizeStrings );
+      if( index !== -1 )
+      o.splits[ i ] = o.onDelimeter( o.splits[ i ], index, o.delimeter );
+    }
+  }
+
   if( o.quoting )
   _.strSplitsQuotedRejoin.body( o );
 
@@ -1834,6 +1854,16 @@ function strSplit_body( o )
   /* */
 
   return o.splits;
+
+  /* */
+
+  function equalizeStrings( pattern, el )
+  {
+    if( _.strIs( pattern ) )
+    return pattern === el;
+    return pattern.test( el );
+  }
+
 }
 
 var defaults = strSplit_body.defaults = Object.create( strSplitFast_body.defaults );
