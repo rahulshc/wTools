@@ -303,9 +303,9 @@ function strShort( src )
     else if( _.objectLike( src ) )
     {
 
-      if( _.routineIs( src.exportString ) )
-      result += src.exportString({ verbosity : 1 });
-      else
+      // if( _.routineIs( src.exportString ) )
+      // result += src.exportString({ verbosity : 1 });
+      // else
       result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' -}';
 
     }
