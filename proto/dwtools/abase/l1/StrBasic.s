@@ -4651,7 +4651,7 @@ function strLinesNumber( o )
 
   /* */
 
-  if( o.zeroLine === null  )
+  if( o.zeroLine === null )
   {
     if( o.zeroChar === null )
     {
@@ -4693,19 +4693,33 @@ function strLinesNumber( o )
     let numLength = String( l + o.zeroLine ).length;
     lines[ l ] = ' '.repeat( maxNumLength - numLength ) + ( l + o.zeroLine ) + ' : ' + lines[ l ];
   }
-  // console.log( lines );
 
   if( o.highlightingToken && o.highlighting )
-  lines = lines.map( el =>
   {
-    let spaces = new Array( o.highlightingToken.length + 2 ).join( ' ' );
+    let results;
 
-    if( _.arrayIs( o.highlighting ) )
-    return o.highlighting.includes( +parseInt( el, 10 ) ) ? '' + o.highlightingToken + ' ' + el : '' + spaces + el;
+    _.assert( o.highlighting === null || _.numberIs( o.highlighting ) || _.longIs( o.highlighting ), 'Expects number or array of numbers {-o.highlighting-}' );
 
-  } )
+    if( !_.arrayIs( o.highlighting ) )
+    {
+      if( o.highlighting > o.zeroLine + lines.length - 1 || o.highlighting < o.zeroLine + lines.length - 1 )
+      return lines.join( '\n' );
+    }
 
-  /* */
+    results = lines.map( ( el ) =>
+    {
+      if( _.arrayIs( o.highlighting ) )
+      return o.highlighting.includes( parseInt( el, 10 ) ) ? '' + o.highlightingToken + ' ' + el : '' + ' '.repeat( o.highlightingToken.length + 1 ) + el;
+      else
+      return ( '' + o.highlighting ).includes( parseInt( el, 10 ) ) ? '' + o.highlightingToken + ' ' + el : '' + ' '.repeat( o.highlightingToken.length + 1 ) + el;
+    } )
+
+    if( JSON.stringify( lines ) === JSON.stringify( results.map( ( el ) => el.trim() ) ) )
+    return lines.join( '\n' );
+
+    return results.join( '\n' );
+
+  }
 
   return lines.join( '\n' );
 }
