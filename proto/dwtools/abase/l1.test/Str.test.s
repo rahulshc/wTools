@@ -9471,8 +9471,7 @@ var Self =
     strLinesNearest,
     strLinesNearestLog,
     strLinesCount,
-    strLinesRangeWithCharRange,
-    testHighlighting
+    strLinesRangeWithCharRange
 
   }
 
