@@ -857,6 +857,42 @@ bufferFrom.defaults =
 
 //
 
+function bufferFromStream( o )
+{
+  let result;
+  let tempArray = [];
+  let ready = new _.Consequence();
+
+  _.assert( arguments.length === 1 );
+  _.assert( _.objectIs( o ) );
+  _.assertMapHasOnly( o, bufferFromStream.defaults );
+  _.assert( _.streamIs( o.src ), 'Expects stream as {-o.src-}' );
+
+  o.src
+  .on( 'data', chunk =>
+  {
+    tempArray.push( chunk )
+    // ready.take( chunk );
+  });
+
+
+  o.src
+  .on( 'end', () => 
+  {
+    ready.take( BufferNode.from( result ) )
+  } );
+
+  return ready;
+
+}
+
+bufferFromStream.defaults =
+{
+  src : null,
+}
+
+//
+
 /**
  * The bufferRawFromTyped() routine returns a new BufferRaw from (buffer.byteOffset) to the end of an BufferRaw of a typed array (buffer)
  * or returns the same BufferRaw of the (buffer), if (buffer.byteOffset) is not provided.
@@ -3280,6 +3316,7 @@ let Routines =
 
   bufferFromArrayOfArray,
   bufferFrom, /* qqq : cover. seems broken */
+  bufferFromStream,
   bufferRawFromTyped,
   bufferRawFrom,
   bufferBytesFrom,
