@@ -1,3 +1,4 @@
+/*eslint-disable*/
 ( function _gBuffer_s_() {
 
 'use strict';
@@ -853,42 +854,6 @@ bufferFrom.defaults =
 {
   src : null,
   bufferConstructor : null,
-}
-
-//
-
-function bufferFromStream( o )
-{
-  let result;
-  let tempArray = [];
-  let ready = new _.Consequence();
-
-  _.assert( arguments.length === 1 );
-  _.assert( _.objectIs( o ) );
-  _.assertMapHasOnly( o, bufferFromStream.defaults );
-  _.assert( _.streamIs( o.src ), 'Expects stream as {-o.src-}' );
-
-  o.src
-  .on( 'data', chunk =>
-  {
-    tempArray.push( chunk )
-    // ready.take( chunk );
-  });
-
-
-  o.src
-  .on( 'end', () => 
-  {
-    ready.take( BufferNode.from( result ) )
-  } );
-
-  return ready;
-
-}
-
-bufferFromStream.defaults =
-{
-  src : null,
 }
 
 //
@@ -3316,7 +3281,6 @@ let Routines =
 
   bufferFromArrayOfArray,
   bufferFrom, /* qqq : cover. seems broken */
-  bufferFromStream,
   bufferRawFromTyped,
   bufferRawFrom,
   bufferBytesFrom,
