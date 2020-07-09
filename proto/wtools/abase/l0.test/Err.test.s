@@ -1287,6 +1287,57 @@ function errCustomError( test )
 
 //
 
+function errInStr( test )
+{
+  let context = this;
+
+  test.case = 'basic';
+  var err = _.err( 'Some' );
+  test.is( _.errInStr( String( err ) ) );
+  test.is( _.errInStr( String( err.message ) ) );
+  test.is( err.originalMessage === 'Some' );
+  test.is( !_.errInStr( String( err.originalMessage ) ) );
+
+  test.case = 'wrapped';
+  var src =
+`
+ -> Stderr
+ -  err.logged : false
+ -  err.attended : false
+ -   = Message of error#1
+ -      Routine storageTerminalDel does not expect options: "selector", "locking"
+ -      Failed to delete storage::null at null
+ -
+ -   = Beautified calls stack
+ -      at Object.assertMapHasOnly (/pro/abase/l0/l5/fMap.s:3887:27)
+ -      at Object.routineOptions (/pro/abase/l0/l3/iRoutine.s:407:5)
+ -      at wFileProviderHardDrive.storageTerminalDel (/pro/amid/l4_files/l7/ConfigMixin.s:1070:11)
+ -      at Object.configDel (/pro/amid/l5/censor/l1/Namespace.s:526:20)
+ -< Stderr"
+`
+  test.is( !_.errInStr( src ) );
+
+  test.case = 'non-standard prolog';
+  var src =
+`
+Uncaught Error:  = Message of error#1
+No source file found for "W1.js"
+Error including source file /workerEnvironment/Worker.js
+
+ = Beautified calls stack
+at Object._broInclude (http://127.0.0.1:15000/.starter:6144:17)
+at Object._sourceInclude (http://127.0.0.1:15000/.starter:6575:20)
+at SourceFile.Worker_js_naked [as nakedCall] (http://127.0.0.1:15000/workerEnvironment/Worker.js:14:1)
+at Object._sourceIncludeAct (http://127.0.0.1:15000/.starter:6529:19)
+at Worker_js (http://127.0.0.1:15000/workerEnvironment/Worker.js:27:18)
+at http://127.0.0.1:15000/workerEnvironment/Worker.js:28:38
+`
+  test.is( _.errInStr( src ) );
+
+}
+
+//
+
 function errorFunctor( test )
 {
   let context = this;
@@ -1493,6 +1544,8 @@ var Self =
     errCatchStackAndMessage,
     errErrorWithoutStack,
     errCustomError,
+
+    errInStr,
 
     errorFunctor,
 

@@ -1348,10 +1348,10 @@ function errInStr( errStr )
 {
   _.assert( _.strIs( errStr ) );
 
-  if( !_.strHas( errStr, '= Message of' ) )
+  if( !_.strHas( errStr, /=\s+Message of/m ) )
   return false;
 
-  if( !_.strHas( errStr, '= Beautified calls stack' ) )
+  if( !_.strHas( errStr, /(^|\n)\s*=\s+Beautified calls stack/m ) )
   return false;
 
   return true;
