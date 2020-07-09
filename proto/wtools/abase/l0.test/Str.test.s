@@ -8867,7 +8867,6 @@ function strSplitsDropEmpty( test )
 
 function strSplitFast( test )
 {
-
   test.case = 'trivial';
 
   var got = _.strSplitFast( '', '' );
@@ -10959,7 +10958,6 @@ function strSplit( test )
 
   test.open( 'empty' );
 
-  debugger;
   var got = _.strSplit( '', '' );
   var expected = [];
   test.identical( got, expected );
@@ -12774,6 +12772,684 @@ function strSplit( test )
 
 //
 
+function strSplitOptionOnQuote( test )
+{
+  test.open( 'single empty delimeter, String' );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : '',
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e ) => '#',
+  });
+  var expected = [ '', '#', 'a', '', 'b', '', 'c', '', '', '#', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : '',
+    preservingEmpty : 1,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => String( i ),
+  });
+  var expected = [ '0', 'a', 'b', 'c', '0' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ '#', 'a', 'b', 'c', '#' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ '#', 'a', 'b', 'c', '#' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ '#', 'a', 'b', 'c', '#' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ '#', 'a', 'b', 'c', '#' ];
+  test.identical( got, expected );
+
+  test.close( 'single empty delimeter, String' );
+
+  /* - */
+
+  test.open( 'many delimeters, String' );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => i === 0 ? '0' : ' 1',
+  });
+  var expected = [ '', '0', '', '0', ' ', '#', ' a ', '#', ' ', '0', '', '0', ' ', '#', ' b ', '#', ' ', '0', '', '0', ' ', '#', ' c ', '#', ' ', '0', '', '0', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 1,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => String( i ),
+  });
+  var expected = [ '', '0', '', '0', ' ', ' a ', ' ', '0', '', '0', ' ', ' b ', ' ', '0', '', '0', ' ', ' c ', ' ', '0', '', '0', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ ' ', ' a ', ' ', ' ', ' b ', ' ', ' ', ' c ', ' ' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ ' ', ' a ', ' ', ' ', ' b ', ' ', ' ', ' c ', ' ' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  test.close( 'many delimeters, String' );
+
+  /* - */
+
+  test.open( 'single empty delimeter, RegExp' );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : /(?:)/,
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e ) => '#',
+  });
+  var expected = [ '', '#', 'a', '', 'b', '', 'c', '', '', '#', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : /(?:)/,
+    preservingEmpty : 1,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => String( i ),
+  });
+  var expected = [];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : /(?:)/,
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : /(?:)/,
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : /(?:)/,
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"abc"',
+    delimeter : /(?:)/,
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [];
+  test.identical( got, expected );
+
+  test.close( 'single empty delimeter, RegExp' );
+
+  /* - */
+
+  test.open( 'many delimeters, RegExp' );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => i === 0 ? '0' : ' 1',
+  });
+  var expected = [ '', '0', '', '0', ' ', '#', ' a ', '#', ' ', '0', '', '0', ' ', '#', ' b ', '#', ' ', '0', '', '0', ' ', '#', ' c ', '#', ' ', '0', '', '0', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 1,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => String( i ),
+  });
+  var expected = [ '', '0', '', '0', ' ', ' a ', ' ', '0', '', '0', ' ', ' b ', ' ', '0', '', '0', ' ', ' c ', ' ', '0', '', '0', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ ' ', ' a ', ' ', ' ', ' b ', ' ', ' ', ' c ', ' ' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ ' ', ' a ', ' ', ' ', ' b ', ' ', ' ', ' c ', ' ' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onQuote : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  test.close( 'many delimeters, RegExp' );
+}
+
+//
+
+function strSplitOptionOnDelimeter( test )
+{
+  test.open( 'single empty delimeter, String' );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e ) => '#',
+  });
+  var expected = [ 'a', '#', 'b', '#', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 1,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e, i ) => String( i ),
+  });
+  var expected = [ 'a', '0', 'b', '0', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 0,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : '',
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  test.close( 'single empty delimeter, String' );
+
+  /* - */
+
+  test.open( 'many delimeters, String' );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e, i ) => i === 0 ? '0' : ' 1',
+  });
+  var expected = [ '', ' 1', ' ', '0', ' a ', '0', ' ', ' 1', ' ', '0', ' b ', '0', ' ', ' 1', ' ', '0', ' c ', '0', ' ', ' 1', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 1,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e, i ) => String( i ),
+  });
+  var expected = [ '', '1', ' ', '0', ' a ', '0', ' ', '1', ' ', '0', ' b ', '0', ' ', '1', ' ', '0', ' c ', '0', ' ', '1', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ ' ', ' a ', ' ', ' ', ' b ', ' ', ' ', ' c ', ' ' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ '"" ', ' a ', ' "" ', ' b ', ' "" ', ' c ', ' ""' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 0,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ '#', '""' ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ '""', 'a', '""', 'b', '""', 'c', '""' ];
+  test.identical( got, expected );
+
+  test.close( 'many delimeters, String' );
+
+  /* - */
+
+  test.open( 'single empty delimeter, RegExp' );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : /(?:)/,
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e ) => '#',
+  });
+  var expected = [ '#', '#', '#', '#', '#' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : /(?:)/,
+    preservingEmpty : 1,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e, i ) => String( i ),
+  });
+  var expected = [];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : /(?:)/,
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : /(?:)/,
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : /(?:)/,
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 0,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : 'abc',
+    delimeter : /(?:)/,
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [];
+  test.identical( got, expected );
+
+  test.close( 'single empty delimeter, RegExp' );
+
+  /* - */
+
+  test.open( 'many delimeters, RegExp' );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 1,
+    preservingDelimeters : 1,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e, i ) => i === 0 ? '0' : ' 1',
+  });
+  var expected = [ '', ' 1', ' ', '0', ' a ', '0', ' ', ' 1', ' ', '0', ' b ', '0', ' ', ' 1', ' ', '0', ' c ', '0', ' ', ' 1', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 1,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e, i ) => String( i ),
+  });
+  var expected = [ '', '1', ' ', '0', ' a ', '0', ' ', '1', ' ', '0', ' b ', '0', ' ', '1', ' ', '0', ' c ', '0', ' ', '1', '' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 0,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ ' ', ' a ', ' ', ' ', ' b ', ' ', ' ', ' c ', ' ' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 0,
+    quoting : 1,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ ' a ', ' b ', ' c ' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 0,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  var got = _.strSplit
+  ({
+    src : '"" # a # "" # b # "" # c # ""',
+    delimeter : [ /#/, /\"\"/ ],
+    preservingEmpty : 0,
+    preservingDelimeters : 0,
+    stripping : 1,
+    quoting : 1,
+    onDelimeter : ( e, i ) => e === '' ? '' : '#',
+  });
+  var expected = [ 'a', 'b', 'c' ];
+  test.identical( got, expected );
+
+  test.close( 'many delimeters, RegExp' );
+}
+
+//
+
 function strSplitInlinedDefaultOptions( test )
 {
   test.open( 'arguments' );
@@ -13853,6 +14529,8 @@ var Self =
     strSplitFast,
     strSplitFastRegexp,
     strSplit,
+    strSplitOptionOnQuote,
+    strSplitOptionOnDelimeter,
 
     strSplitInlinedDefaultOptions,
     strSplitInlinedOptionDelimeter,

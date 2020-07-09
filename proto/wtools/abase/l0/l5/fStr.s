@@ -980,7 +980,7 @@ function strReplaceEnd( src, end, ins )
 //   return result;
 // }
 //
-// function strReplace( src, ins, sub ) /* qqq2 : ask */
+// function strReplace( src, ins, sub ) /* aaa2 : ask */ /* Dmytro : implemented. See below, please */
 // {
 //   _.assert( arguments.length === 3, 'Expects exactly three arguments' );
 //   _.assert( _.strsAreAll( sub ), 'Expects {-sub-} as string/array of strings' );
@@ -1028,7 +1028,7 @@ function strReplaceEnd( src, end, ins )
 //
 // }
 
-/* qqq2 : poor implementation */
+/* aaa2 : poor implementation */ /* Dmytro : used routine `strSplit` instead of cycles */
 
 function strReplace( src, ins, sub )
 {
@@ -1046,64 +1046,79 @@ function strReplace( src, ins, sub )
 
   let result = _.arrayAs( src ).slice();
 
-  for( let k = 0 ; k < result.length ; k++ )
+  for( let i = 0 ; i < result.length ; i++ )
   {
-    let container = [ result[ k ] ];
-
-    for( let i = 0 ; i < ins.length ; i++ )
-    {
-      for( let l = 0 ; l < container.length ; l++ )
-      {
-        let insSrc = ins[ i ];
-        let src  = container[ l ];
-
-        if( _.strIs( container[ l ] ) && _.strHas( container[ l ], insSrc ) )
-        {
-          let index, ins;
-          if( _.regexpIs( insSrc ) )
-          {
-            let entry = insSrc.exec( src ); // Dmytro : single searching of substring
-            index = entry.index;
-            ins = entry[ 0 ];
-          }
-          else
-          {
-            index = src.indexOf( insSrc );
-            ins = insSrc;
-          }
-
-          _.assert( ins !== '', '{-ins-} should find string with length' );
-
-          while( index !== -1 )
-          {
-            container.splice( l, 1, src.substring( 0, index ), i );
-            src = src.substring( index + ins.length );
-            l += 2;
-
-            if( _.regexpIs( insSrc ) )
-            {
-              let entry = insSrc.exec( src );
-              index = entry === null ? -1 : entry.index;
-              ins = entry ? entry[ 0 ] : ins;
-              _.assert( ins !== '', '{-ins-} should find string with length' );
-            }
-            else
-            {
-              index = src.indexOf( insSrc );
-            }
-          }
-
-          container.splice( l, 0, src );
-        }
-      }
-    }
-
-    for( let j = 0 ; j < container.length ; j++ )
-    if( _.numberIs( container[ j ] ) )
-    container[ j ] = _.longIs( sub ) ? sub[ container[ j ] ] : sub;
-
-    result[ k ] = container.join( '' );
+    result[ i ] = _.strSplit
+    ({
+      src : result[ i ],
+      delimeter : ins,
+      quoting : 0,
+      stripping : 0,
+      preservingEmpty : 1,
+      preservingDelimeters : 1,
+      onDelimeter : ( e, k ) => _.strIs( sub ) ? sub : sub[ k ],
+    });
+    result[ i ] = result[ i ].join( '' );
   }
+
+  // for( let k = 0 ; k < result.length ; k++ )
+  // {
+  //   let container = [ result[ k ] ];
+  //
+  //   for( let i = 0 ; i < ins.length ; i++ )
+  //   {
+  //     for( let l = 0 ; l < container.length ; l++ )
+  //     {
+  //       let insSrc = ins[ i ];
+  //       let src  = container[ l ];
+  //
+  //       if( _.strIs( container[ l ] ) && _.strHas( container[ l ], insSrc ) )
+  //       {
+  //         let index, ins;
+  //         if( _.regexpIs( insSrc ) )
+  //         {
+  //           let entry = insSrc.exec( src ); // Dmytro : single searching of substring
+  //           index = entry.index;
+  //           ins = entry[ 0 ];
+  //         }
+  //         else
+  //         {
+  //           index = src.indexOf( insSrc );
+  //           ins = insSrc;
+  //         }
+  //
+  //         _.assert( ins !== '', '{-ins-} should find string with length' );
+  //
+  //         while( index !== -1 )
+  //         {
+  //           container.splice( l, 1, src.substring( 0, index ), i );
+  //           src = src.substring( index + ins.length );
+  //           l += 2;
+  //
+  //           if( _.regexpIs( insSrc ) )
+  //           {
+  //             let entry = insSrc.exec( src );
+  //             index = entry === null ? -1 : entry.index;
+  //             ins = entry ? entry[ 0 ] : ins;
+  //             _.assert( ins !== '', '{-ins-} should find string with length' );
+  //           }
+  //           else
+  //           {
+  //             index = src.indexOf( insSrc );
+  //           }
+  //         }
+  //
+  //         container.splice( l, 0, src );
+  //       }
+  //     }
+  //   }
+  //
+  //   for( let j = 0 ; j < container.length ; j++ )
+  //   if( _.numberIs( container[ j ] ) )
+  //   container[ j ] = _.longIs( sub ) ? sub[ container[ j ] ] : sub;
+  //
+  //   result[ k ] = container.join( '' );
+  // }
 
   if( result.length === 1 && _.strIs( src ) )
   return result[ 0 ];
@@ -1819,6 +1834,32 @@ function strSplit_body( o )
 
   o.splits = _.strSplitFast.body( fastOptions );
 
+  if( o.quoting && o.onQuote )
+  {
+    let quotes = _.arrayAppendArraysOnce( null, [ o.quotingPrefixes, o.quotingPostfixes ] );
+    for( let i = 0 ; i < o.splits.length ; i++ )
+    {
+      let index = _.longLeftIndex( quotes, o.splits[ i ], equalizeStrings );
+      if( index !== -1 )
+      o.splits[ i ] = o.onQuote( o.splits[ i ], index, quotes );
+    }
+  }
+  if( o.onDelimeter )
+  {
+    let delimeter = _.filter( o.delimeter, function( pattern )
+    {
+      if( _.regexpIs( pattern ) )
+      return pattern.test( o.src ) ? pattern : null;
+      return pattern;
+    });
+    for( let i = 0 ; i < o.splits.length ; i++ )
+    {
+      let index = _.longLeftIndex( delimeter, o.splits[ i ], equalizeStrings );
+      if( index !== -1 )
+      o.splits[ i ] = o.onDelimeter( o.splits[ i ], index, o.delimeter );
+    }
+  }
+
   if( o.quoting )
   _.strSplitsQuotedRejoin.body( o );
 
@@ -1834,6 +1875,18 @@ function strSplit_body( o )
   /* */
 
   return o.splits;
+
+  /* */
+
+  function equalizeStrings( pattern, el )
+  {
+    if( _.strIs( pattern ) )
+    return pattern === el;
+    if( pattern !== null )
+    return pattern.test( el );
+    return false;
+  }
+
 }
 
 var defaults = strSplit_body.defaults = Object.create( strSplitFast_body.defaults );
@@ -1848,8 +1901,8 @@ defaults.quoting = 1;
 defaults.quotingPrefixes = null;
 defaults.quotingPostfixes = null;
 
-defaults.onDelimeter = null; /* qqq : cover. seems does not work. ask how it should work */
-defaults.onQuote = null; /* qqq : cover. seems does not work. ask how it should work */
+defaults.onDelimeter = null; /* aaa : cover. seems does not work. ask how it should work */ /* Dmytro : implemented and covered */
+defaults.onQuote = null; /* aaa : cover. seems does not work. ask how it should work */ /* Dmytro : implemented and covered */
 
 //
 

@@ -1844,7 +1844,7 @@ let Fields =
 let Routines =
 {
 
-  eachSample, /* qqq2 : does not work properly if set is empty! */
+  eachSample, /* aaa2 : does not work properly if set is empty! */ /* Dmytro : improved, if some set is empty, routine returns empty array. Improved subroutine iterate */
   eachPermutation, /* xxx : move out */
   swapsCount,
   _factorial,
