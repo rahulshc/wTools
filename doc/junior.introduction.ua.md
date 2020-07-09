@@ -54,8 +54,8 @@
 |:----------|:------------------------------------------------------------|:-----------------------------------------------------|
 |[1](#1)    | Безпосередньо через npm                                     | `npm test`                                           |
 |[2.1](#2.1)| Альтернативний спосіб запуску                               | `wtest .run proto/**`                                      |
-|[2.2](#2.2)| Альтернативний спосіб запуску використовуючи файл тест сюіта| `wtest .run proto/**/dwtools/abase/layer1.test/Map.test.s` |
-|[3](#3)    | Використовуючи файл тест сюіта                              | `node proto/dwtools/abase/layer1.test/Map.test.s`  | 
+|[2.2](#2.2)| Альтернативний спосіб запуску використовуючи файл тест сюіта| `wtest .run proto/**/wtools/abase/layer1.test/Map.test.s` |
+|[3](#3)    | Використовуючи файл тест сюіта                              | `node proto/wtools/abase/layer1.test/Map.test.s`  | 
 
 Экран терміналу вищовказаних команд в операційній системі Linux буде виглядати наступним образом:
 
@@ -83,7 +83,7 @@
 
 <a name="3"/>
 
-Результат команди `node proto/dwtools/abase/layer1.test/Map.test.s`, яка дозволяє виконати тестування, використовуючи файл тест сюіта див.визначення [Тест сюіт](#test-suit)
+Результат команди `node proto/wtools/abase/layer1.test/Map.test.s`, яка дозволяє виконати тестування, використовуючи файл тест сюіта див.визначення [Тест сюіт](#test-suit)
 
 ![Результат команди 3](./img/3.png)
 
@@ -171,7 +171,7 @@
 
 ## Розташуванння окремих тест рутин та їх реалізацій
 
-Окремі тест рутини розташовані в директорії `wTools/proto/dwtools/abase`
+Окремі тест рутини розташовані в директорії `wTools/proto/wtools/abase`
 
 Вони мають вигляд (на прикладі Тест рутини mapsAreIdentical):
 
@@ -321,7 +321,7 @@ function mapsAreIdentical( src1,src2 )
 
 3. Твердження
 
-Для прикладу розглянемо слідуючий модульний тест arraySetBut - він розташований в файлі `wTools/proto/dwtools/abase/layer1.test/Array.test.s` :
+Для прикладу розглянемо слідуючий модульний тест arraySetBut - він розташований в файлі `wTools/proto/wtools/abase/layer1.test/Array.test.s` :
 
 ```javascript
   test.description = 'first argument has single extra element, second argument has single extra element either';

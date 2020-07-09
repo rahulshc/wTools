@@ -2,7 +2,7 @@ if( typeof module !== 'undefined' )
 {
   require( 'wTools' );
   require( 'wConsequence' );
-  // require( '../proto/dwtools/abase/layer3/ExecTools.s' );
+  // require( '../proto/wtools/abase/layer3/ExecTools.s' );
 }
 
 var _ = wTools;

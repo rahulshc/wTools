@@ -2,7 +2,7 @@ if( typeof module !== 'undefined' )
 {
   require( 'wTools' );
   require( 'wConsequence' );
-  // require( '../proto/dwtools/abase/akernel/eExecTools.s' );
+  // require( '../proto/wtools/abase/akernel/eExecTools.s' );
 }
 
 var _ = wTools;

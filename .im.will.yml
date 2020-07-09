@@ -71,7 +71,7 @@ path :
       content : prime
 
   entry :
-    path : 'dwtools/abase/Layer2.s'
+    path : 'wtools/abase/Layer2.s'
   entry.proto.no.tests :
     path : 'proto/{path::entry}'
     criterion :

@@ -754,7 +754,7 @@ function _sourceFileResolve( o )
   if( o.basePath )
   {
     o.basePath = _.path.normalize( o.basePath );
-    let index = o.basePath.indexOf( '/dwtools/' );
+    let index = o.basePath.indexOf( '/wtools/' );
     if( index >= 0 )
     o.basePath = o.basePath.substring( 0, index+8 );
   }
@@ -803,7 +803,7 @@ _sourceFileResolve.defaults =
 
 function toolsPathGet()
 {
-  return _.path.normalize( __dirname + '/../../../../dwtools/Tools.s' );
+  return _.path.normalize( __dirname + '/../../../../wtools/Tools.s' );
 }
 
 // --
