@@ -12,11 +12,6 @@ let Self = _.module.modulesToRegister;
   Temporary solution.
 */
 
-/**
- * @typedef {Object} ModulesRegistry - Map that contains info about modules, is uses by {@link wTools.include}.
- * @namespace Tools
- */
-
 // --
 // helper
 // --
@@ -335,7 +330,7 @@ let wSchema =
 
 let wStxt =
 {
-  sourcePath : sourcePath( 'amid/l1/stxt/Include.s', 'wstxtparser' ),
+  sourcePath : sourcePath( 'amid/l1/stxt/entry/Stxt.s', 'wstxt' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.stxt && !!_global.wTools.stxt.Parser },
 }
 
