@@ -620,10 +620,10 @@ function nativize()
 function nativizeTolerant()
 {
   if( _global.process && _global.process.platform === 'win32' )
-  this.nativize = this.__nativizeWindows;
+  this.nativizeTolerant = this.__nativizeWindows;
   else
-  this.nativize = this.__nativizePosix;
-  return this.nativize.apply( this, arguments );
+  this.nativizeTolerant = this.__nativizePosix;
+  return this.nativizeTolerant.apply( this, arguments );
 }
 
 //
