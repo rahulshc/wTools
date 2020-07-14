@@ -2680,7 +2680,7 @@ function longGrow_( dst, src, crange, ins )
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
   crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length;
+  crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
 
   let f = crange[ 0 ];
   let l = crange[ 1 ];
@@ -2691,8 +2691,8 @@ function longGrow_( dst, src, crange, ins )
     f -= f;
   }
 
-  if( l < f )
-  l = f;
+  if( l + 1 < f )
+  l = f - 1;
 
   if( f > 0 )
   f = 0;
@@ -2702,7 +2702,7 @@ function longGrow_( dst, src, crange, ins )
   let f2 = Math.max( -crange[ 0 ], 0 );
   let l2 = Math.min( src.length - 1 + f2, l + f2 );
 
-  let resultLength = l + f2 + 1;
+  let resultLength = l - f + 1;
 
   let result;
   if( dst === null )
