@@ -451,7 +451,7 @@ function arrayMakeNotDefaultDescriptor( test )
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
-    let descriptor = _.withDefaultLong[ name ];
+    let descriptor = _.withDefaultLongType[ name ];
     test.open( `descriptor - ${ name }` );
     run( descriptor );
     test.close( `descriptor - ${ name }` );
@@ -1434,7 +1434,7 @@ function arrayMakeUndefinedNotDefaultDescriptor( test )
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
-    let descriptor = _.withDefaultLong[ name ];
+    let descriptor = _.withDefaultLongType[ name ];
     test.open( `descriptor - ${ name }` );
     run( descriptor );
     test.close( `descriptor - ${ name }` );
@@ -2106,7 +2106,7 @@ function arrayFromLongDescriptor( test )
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
-    let descriptor = _.withDefaultLong[ name ];
+    let descriptor = _.withDefaultLongType[ name ];
 
     test.open( `descriptor - ${ name }` );
     testRun( descriptor );
@@ -2508,7 +2508,7 @@ function arrayFromCoercingLongDescriptor( test )
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
-    let descriptor = _.withDefaultLong[ name ];
+    let descriptor = _.withDefaultLongType[ name ];
 
     test.open( `descriptor - ${ name }` );
     testRun( descriptor );

@@ -4,12 +4,13 @@
 
 let _global = _global_;
 let _ = _global_.wTools;
-let Self = _global_.wTools;
 let _ArrayIndexOf = Array.prototype.indexOf;
 let _ArrayLastIndexOf = Array.prototype.lastIndexOf;
 
+_.long_ = _.long_ || Object.create( null );
+
 // --
-// long
+// checker
 // --
 
 /**
@@ -97,6 +98,20 @@ function longLike( src ) /* qqq : cover please */
   // if( _.bufferNodeIs( src ) )
   // return true;
   return _.longIs( src );
+}
+
+// --
+// getter
+// --
+
+function lengthOf( src )
+{
+  _.assert( _.longLike( src ) );
+
+  if( 'length' in src )
+  return src.length;
+
+  return [ ... src ].length;
 }
 
 // --
@@ -442,11 +457,119 @@ function longRightDefined( arr )
   return _.longRight( arr, true, function( e ){ return e !== undefined; } );
 }
 
+//
+
+function appender( src )
+{
+  _.assert( _.longLike( src ) );
+
+  if( 'append' in src && _.routineIs( src.append ) )
+  return appendWithAppend;
+  else if( 'push' in src && _.routineIs( src.push ) )
+  return appendWithPush;
+  else if( 'add' in src && _.routineIs( src.add ) )
+  return appendWithAdd;
+
+  function appendWithAppend( e )
+  {
+    src.append( e );
+  }
+
+  function appendWithPush( e )
+  {
+    src.push( e );
+  }
+
+  function appendWithAdd( e )
+  {
+    src.add( e );
+  }
+
+}
+
+//
+
+function prepender( src )
+{
+  _.assert( _.longLike( src ) );
+
+  if( 'prepend' in src && _.routineIs( src.prepend ) )
+  return prependWithAppend;
+  else if( 'push' in src && _.routineIs( src.push ) )
+  return prependWithPush;
+  else if( 'add' in src && _.routineIs( src.add ) )
+  return prependWithAdd;
+
+  function prependWithAppend( e )
+  {
+    src.prepend( e );
+  }
+
+  function prependWithPush( e )
+  {
+    src.unshift( e );
+  }
+
+  function prependWithAdd( e )
+  {
+    src.add( e );
+  }
+
+}
+
+//
+
+function eacher( src )
+{
+
+  _.assert( _.longLike( src ) );
+
+  if( _.hasMethodIterator( src ) )
+  return eachOf;
+  else
+  return eachLength;
+
+  /* */
+
+  function eachOf( onEach )
+  {
+    let k = 0;
+    for( let e of src )
+    {
+      onEach( e, k, src );
+      k += 1;
+    }
+    return k;
+  }
+
+  /* */
+
+  function eachLength( onEach )
+  {
+    let k = 0;
+    while( k < src.length )
+    {
+      let e = src[ k ];
+      args2[ 0 ] = e;
+      onEach( e, k, src );
+      k += 1;
+    }
+    return k;
+  }
+
+  /* */
+
+}
+
 // --
-// routines
+// declare
 // --
 
-let Extension =
+let accuracy = 1e-7;
+let accuracySqrt = 1e-4;
+let accuracySqr = 1e-14;
+
+let ToolsExtension =
 {
 
   // long
@@ -469,21 +592,64 @@ let Extension =
 
   // fields
 
-  accuracy : 1e-7,
-  accuracySqrt : 1e-4,
-  accuracySqr : 1e-14,
+  accuracy,
+  accuracySqrt,
+  accuracySqr,
+
+}
+
+Object.assign( _, ToolsExtension );
+
+//
+
+let LongExtension =
+{
+
+  // checker
+
+  is : longIs,
+  isEmpty : longIsEmpty,
+  isPopulated : longIsPopulated,
+  like : longLike,
+
+  // getter
+
+  lengthOf,
+
+  // long sequential search
+
+  leftIndex : longLeftIndex,
+  rightIndex : longRightIndex,
+
+  left : longLeft,
+  right : longRight,
+
+  leftDefined : longLeftDefined,
+  rightDefined : longRightDefined,
+
+  // er
+
+  appender, /* qqq : cover. take into account all types. don't forget about set, arguments array, ContainerAdapterSet, ContainerAdapterLong */
+  prepender, /* qqq : cover. take into account all types. don't forget about set, arguments array, ContainerAdapterSet, ContainerAdapterLong */
+  eacher, /* qqq : cover. take into account all types. don't forget about set, arguments array, ContainerAdapterSet, ContainerAdapterLong */
+
+  // fields
+
+  accuracy,
+  accuracySqrt,
+  accuracySqr,
 
 }
 
 //
 
-Object.assign( Self, Extension );
+Object.assign( _.long_, LongExtension );
 
 // --
 // export
 // --
 
 if( typeof module !== 'undefined' )
-module[ 'exports' ] = Self;
+module[ 'exports' ] = _;
 
 })();

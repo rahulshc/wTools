@@ -455,18 +455,25 @@ function longMakeEmpty( src )
   _.assert( arguments.length === 1 );
 
   if( _.unrollIs( src ) )
-  return _.unrollMake( 0 );
+  {
+    return _.unrollMake( 0 );
+  }
   else if( src === null || _.argumentsArrayIs( src ) )
-  return this.longDescriptor.make( 0 );
+  {
+    return this.longDescriptor.make( 0 );
+  }
   else if( _.arrayIs( src ) || _.bufferTypedIs( src ) )
-  return new src.constructor();
-  else if( _.routineIs( src ) )
+  {
+    return new src.constructor();
+  }
+  // else if( _.routineIs( src ) ) /* qqq : it was covered badly! */
+  else if( _.routineIs( src.constructor ) )
   {
     let result = new src.constructor();
-    _.assert( _.longIs( result ) && result.length === 0, 'Constructor should return empty long' );
+    _.assert( _.long_.lengthOf( result ) === 0, 'Constructor should return empty long' );
     return result;
   }
-  _.assert( 0, 'Unknown how to construct long' );
+  _.assert( 0, `Unknown long subtype ${_.strType( src )}` );
 }
 
 // function longMakeEmpty( src )

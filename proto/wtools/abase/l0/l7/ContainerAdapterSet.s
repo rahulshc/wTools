@@ -54,12 +54,16 @@ function makeEmpty()
 
 class ContainerAdapterSet extends _.containerAdapter.Abstract
 {
-  // constructor( container ) // Dmytro : using constructor and super() method is old syntax, it can be deleted
-  // {
-  //   super( container );
-  //   _.assert( arguments.length === 1 );
-  //   _.assert( _.setIs( container ) );
-  // }
+  // Dmytro : using constructor and super() method is old syntax, it can be deleted
+  // qqq : cover constructors
+  constructor( container )
+  {
+    if( container === undefined )
+    container = new Set;
+    super( container );
+    _.assert( arguments.length === 0 || arguments.length === 1 );
+    _.assert( _.setLike( container ) );
+  }
   // make = make; // Dmytro : simple assigning methods as a property is able in NodeJs v12 and later. So, I assign this properties after class declaration.
   // static MakeEmpty = MakeEmpty;
   // MakeEmpty = makeEmpty;

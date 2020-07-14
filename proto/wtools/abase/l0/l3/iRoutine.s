@@ -1237,14 +1237,71 @@ function vectorize_body( o )
 
     if( _.arrayLike( src ) )
     {
-      let args2 = [ ... args ]; // Dmytro : if args[ 1 ] and next elements is not primitive, then vectorized routine can affects on this elements and array args
-      let result = [];
-      for( let r = 0 ; r < src.length ; r++ )
+      let args2 = [ ... args ];
+      let result = _.longMakeEmpty( src );
+      let append = _.long_.appender( result );
+      let each = _.long_.eacher( src );
+      each( ( e ) =>
       {
-        args2[ 0 ] = src[ r ];
-        result[ r ] = routine.apply( this, args2 );
-      }
+        args2[ 0 ] = e;
+        append( routine.apply( this, args2 ) );
+      });
       return result;
+
+      // debugger;
+      // let args2 = [ ... args ]; // Dmytro : if args[ 1 ] and next elements is not primitive, then vectorized routine can affects on this elements and array args
+      // // let result = [];
+      // let result;
+      // result = _.longMakeEmpty( src ); /* xxx qqq : use this code */
+      // // if( _.argumentsArrayIs( src ) )
+      // // result = [];
+      // // else
+      // // result = new src.constructor();
+      // let append = _.long_.appender( result );
+      // let each = _.long_.eacher( src );
+      // // for( let r = 0 ; r < src.length ; r++ ) /* xxx : replace other */
+      // // let r = 0;
+      // each( ( e ) =>
+      // {
+      //   args2[ 0 ] = e;
+      //   append( routine.apply( this, args2 ) );
+      // });
+      // // // debugger;
+      // // if( _.hasMethodIterator( src ) )
+      // // for( let e of src )
+      // // {
+      // //   // debugger;
+      // //   // let e = src[ r ];
+      // //   args2[ 0 ] = e;
+      // //   append( routine.apply( this, args2 ) );
+      // //   // if( 'eSet' in this )
+      // //   // debugger;
+      // //   // if( 'eSet' in this )
+      // //   // {
+      // //   //   result.eSet( r, routine.apply( this, args2 ) );
+      // //   // }
+      // //   // else
+      // //   // {
+      // //   //   _.assert( result[ r ] === e );
+      // //   //   result[ r ] = routine.apply( this, args2 );
+      // //   // }
+      // //   r += 1;
+      // // }
+      // // else while( r < src.length )
+      // // {
+      // //   let e = src[ r ];
+      // //   args2[ 0 ] = e;
+      // //   append( routine.apply( this, args2 ) );
+      // //   // if( 'eSet' in this )
+      // //   // debugger;
+      // //   // if( 'eSet' in this )
+      // //   // result.eSet( r, routine.apply( this, args2 ) );
+      // //   // else
+      // //   // result[ r ] = routine.apply( this, args2 );
+      // //   r += 1;
+      // // }
+      //
+      // return result;
     }
     else if( _.setLike( src ) ) /* qqq : cover please */
     {
@@ -1288,15 +1345,29 @@ function vectorize_body( o )
 
     if( _.arrayLike( src ) )
     {
+
       let args2 = [ ... args ];
-      let result = [];
-      for( let r = 0 ; r < src.length ; r++ )
+      let result = _.longMakeEmpty( src );
+      let append = _.long_.appender( result );
+      let each = _.long_.eacher( src );
+      each( ( e, r ) =>
       {
+        // args2[ 0 ] = e;
         for( let m = 0 ; m < select ; m++ )
-        args2[ m ] = args[ m ][ r ];
-        result[ r ] = routine.apply( this, args2 );
-      }
+        args2[ m ] = args[ m ][ r ]; /* xxx : use _.long_.get */
+        append( routine.apply( this, args2 ) );
+      });
       return result;
+
+      // let args2 = [ ... args ];
+      // let result = [];
+      // for( let r = 0 ; r < src.length ; r++ )
+      // {
+      //   for( let m = 0 ; m < select ; m++ )
+      //   args2[ m ] = args[ m ][ r ];
+      //   result[ r ] = routine.apply( this, args2 );
+      // }
+      // return result;
     }
 
     return routine.apply( this, args );
@@ -1321,14 +1392,27 @@ function vectorize_body( o )
         args = pre( routine, args );
         _.assert( _.arrayLikeResizable( args ) );
       }
-      let result = [];
-      for( let r = 0 ; r < src.length ; r++ )
+
+      let result = _.longMakeEmpty( src );
+      let append = _.long_.appender( result );
+      let each = _.long_.eacher( src );
+      each( ( e ) =>
       {
         args[ 0 ] = _.mapExtend( null, srcMap );
-        args[ 0 ][ select ] = src[ r ];
-        result[ r ] = routine.apply( this, args );
-      }
+        args[ 0 ][ select ] = e;
+        append( routine.apply( this, args2 ) );
+      });
       return result;
+
+      // let result = [];
+      // for( let r = 0 ; r < src.length ; r++ )
+      // {
+      //   args[ 0 ] = _.mapExtend( null, srcMap );
+      //   args[ 0 ][ select ] = src[ r ];
+      //   result[ r ] = routine.apply( this, args );
+      // }
+      // return result;
+
     }
     else if( _.setLike( src ) ) /* qqq : cover */
     {
@@ -1400,15 +1484,31 @@ function vectorize_body( o )
 
     if( vectorizingArray && _.arrayLike( src ) )
     {
+
       let args2 = [ ... args ];
-      let result = [];
-      for( let r = 0 ; r < src.length ; r++ )
+      let result = _.longMakeEmpty( src );
+      let append = _.long_.appender( result );
+      let each = _.long_.eacher( src );
+      each( ( e, r ) =>
       {
+
         for( let m = 0 ; m < select ; m++ )
-        args2[ m ] = args[ m ][ r ];
-        result[ r ] = routine.apply( this, args2 );
-      }
+        args2[ m ] = args[ m ][ r ]; /* xxx : use _.long_.get? */
+
+        // args2[ 0 ] = e;
+        append( routine.apply( this, args2 ) );
+      });
       return result;
+
+      // let args2 = [ ... args ];
+      // let result = [];
+      // for( let r = 0 ; r < src.length ; r++ )
+      // {
+      //   for( let m = 0 ; m < select ; m++ )
+      //   args2[ m ] = args[ m ][ r ];
+      //   result[ r ] = routine.apply( this, args2 );
+      // }
+      // return result;
     }
     else if( vectorizingMapVals && _.mapIs( src ) )
     {
@@ -1476,21 +1576,42 @@ function vectorize_body( o )
     if( vectorizingArray && _.arrayLike( src ) )
     {
       args = [ ... args ];
-      let result = [];
+      // let result = [];
       throw _.err( 'not tested' ); /* cover please */
-      for( let r = 0 ; r < src.length ; r++ )
+
+      let result = _.longMakeEmpty( src );
+      let append = _.long_.appender( result );
+      let each = _.long_.eacher( src );
+      each( ( e, r ) =>
       {
-        if( fieldFilter( src[ r ], r, src ) )
+        if( fieldFilter( e, r, src ) )
         {
-          args[ 0 ] = src[ r ];
-          result.push( routine.apply( this, args ) );
+          args[ 0 ] = e;
+          append( routine.apply( this, args ) );
         }
         else if( bypassingFilteredOut )
         {
-          result.push( src[ r ] );
+          append( e );
         }
-      }
+
+        args2[ 0 ] = e;
+        append( routine.apply( this, args2 ) );
+      });
       return result;
+
+      // for( let r = 0 ; r < src.length ; r++ )
+      // {
+      //   if( fieldFilter( src[ r ], r, src ) )
+      //   {
+      //     args[ 0 ] = src[ r ];
+      //     result.push( routine.apply( this, args ) );
+      //   }
+      //   else if( bypassingFilteredOut )
+      //   {
+      //     result.push( src[ r ] );
+      //   }
+      // }
+      // return result;
     }
     else if( vectorizingMapVals && _.mapIs( src ) )
     {
@@ -1582,15 +1703,28 @@ function vectorize_body( o )
     }
     else if( vectorizingArray && _.arrayLike( src ) )
     {
-      args2 = [ ... args ];
-      result = [];
-      for( let r = 0 ; r < src.length ; r++ )
+
+      let args2 = [ ... args ];
+      let result = _.longMakeEmpty( src );
+      let append = _.long_.appender( result );
+      let each = _.long_.eacher( src );
+      each( ( e, r ) =>
       {
         for( let m = 0 ; m < select ; m++ )
-        args2[ m ] = args[ m ][ r ];
-        result[ r ] = routine.apply( this, args2 );
-      }
+        args2[ m ] = args[ m ][ r ]; /* xxx : use _.long_.get */
+        append( routine.apply( this, args2 ) );
+      });
       return result;
+
+      // args2 = [ ... args ];
+      // result = [];
+      // for( let r = 0 ; r < src.length ; r++ )
+      // {
+      //   for( let m = 0 ; m < select ; m++ )
+      //   args2[ m ] = args[ m ][ r ];
+      //   result[ r ] = routine.apply( this, args2 );
+      // }
+      // return result;
     }
 
     return routine.apply( this, arguments );
