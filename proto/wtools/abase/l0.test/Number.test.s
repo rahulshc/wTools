@@ -338,7 +338,7 @@ function numberFromStrMaybe( test )
   test.case = 'src - empty string';
   var src = '';
   var got = _.numberFromStrMaybe( src );
-  test.identical( got, 0 );
+  test.identical( got, '' );
 
   test.case = 'src - string with space';
   var src = ' ';

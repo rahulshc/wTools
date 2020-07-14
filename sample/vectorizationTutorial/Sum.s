@@ -18,7 +18,7 @@ function sum_v1( a, b )
 let o =
 {
   routine : sum,
-  select : 0,
+  select : 2,
 }
 // automatically vectorized routine by vectorize()
 let sum_v2 = _.vectorize( o );

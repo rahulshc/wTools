@@ -8841,15 +8841,12 @@ function strLinesNearestLog( test )
 
   test.case = 'changes - charsRangeLeft: one letter to the left';
   var src = 'function add( x,y ) { return x + y }';
-  debugger;
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 7 ], gray : 1, nearestLines : 1 });
-  debugger;
   var expectedNearest =  [ 'f', 'unctio', 'n add( x,y ) { return x + y }' ];
   var expectedLog = '1 : function add( x,y ) { return x + y }';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
-  debugger;
   test.case = 'changes - charsRangeLeft: a few letters to the left';
   var src = 'function add( x,y ) { return x + y }';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 5, 7 ], gray : 1, nearestLines : 1 });
@@ -8910,7 +8907,7 @@ function strLinesNearestLog( test )
   var src = 'a\nb\nc';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 4 ], gray : 1, nearestLines : 1 });
   var expectedNearest = [ 'a', '\nb\n', 'c' ];
-  var expectedLog = '2 : a\n3 : b\n4 : c';
+  var expectedLog = '1 : a\n2 : b\n3 : c';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -8918,7 +8915,7 @@ function strLinesNearestLog( test )
   var src = 'a\nb\ncd';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 4 ], gray : 1, nearestLines : 1 });
   var expectedNearest = [ 'a', '\nb\n', 'cd' ];
-  var expectedLog = '2 : a\n3 : b\n4 : cd';
+  var expectedLog = '1 : a\n2 : b\n3 : cd';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -8928,7 +8925,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 5 });
   var expectedNearest = [ '0\n1', '\na', 'bcde\n2\n3' ];
-  var expectedLog = '3 : 0\n4 : 1\n5 : abcde\n6 : 2\n7 : 3';
+  var expectedLog = '2 : 0\n3 : 1\n4 : abcde\n5 : 2\n6 : 3';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -8936,7 +8933,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 2 });
   var expectedNearest = [ '0\n1', '\na', 'bcde' ];
-  var expectedLog = '3 : 0\n4 : 1\n5 : abcde';
+  var expectedLog = '2 : 0\n3 : 1\n4 : abcde';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -8944,7 +8941,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 10 });
   var expectedNearest = [ '0\n1', '\na', 'bcde\n2\n3\n4\n5' ];
-  var expectedLog = '3 : 0\n4 : 1\n5 : abcde\n6 : 2\n7 : 3\n8 : 4\n9 : 5';
+  var expectedLog = '2 : 0\n3 : 1\n4 : abcde\n5 : 2\n6 : 3\n7 : 4\n8 : 5';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -8972,7 +8969,7 @@ function strLinesNearestLog( test )
   var src = 'abcdefg';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 0, 0 ], gray : 1, nearestLines : 5 });
   var expectedNearest = [ '', '', 'abcdefg' ];
-  var expectedLog = '1: abcdefg';
+  var expectedLog = '1 : abcdefg';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
