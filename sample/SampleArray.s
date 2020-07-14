@@ -7,7 +7,7 @@ var typedArray = new Uint8Array( [ 1, 2, 3, 4, 5, 5 ] );
 // Input element
 var dst =  new Int8Array( [ 1, 2, 3, '4', '4', 1, 2, 1, 5 ] );
 
-var got  = _.longRemoveDuplicates( dst, function( a, b )
+var got  = _.longOnce( dst, function( a, b )
 {
   return a === b;
 } );
