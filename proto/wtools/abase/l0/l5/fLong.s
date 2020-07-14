@@ -2685,12 +2685,6 @@ function longGrow_( dst, src, crange, ins )
   let f = crange[ 0 ];
   let l = crange[ 1 ];
 
-  if( f < 0 )
-  {
-    l -= f;
-    f -= f;
-  }
-
   if( l + 1 < f )
   l = f - 1;
 
@@ -2698,6 +2692,12 @@ function longGrow_( dst, src, crange, ins )
   f = 0;
   if( l < src.length - 1 )
   l = src.length - 1;
+
+  if( f < 0 )
+  {
+    l -= f;
+    f -= f;
+  }
 
   let f2 = Math.max( -crange[ 0 ], 0 );
   let l2 = Math.min( src.length - 1 + f2, l + f2 );
@@ -2711,6 +2711,7 @@ function longGrow_( dst, src, crange, ins )
   }
   else if( dst === src )
   {
+    debugger;
     if( dst.length === resultLength )
     {
       return dst;
