@@ -122,7 +122,7 @@ function strip( test )
   return;
 
   test.case = 'wrong type of srcStr';
-  test.shouldThrowErrorSync( () => _.ct.strip( [] ) );
+  test.shouldThrowErrorSync( () => _.ct.strip( undefined ) );
   test.shouldThrowErrorSync( () => _.ct.strip( {} ) );
 }
 
@@ -143,7 +143,7 @@ var Self =
     // l0/l8/gCt.s
 
     strip,
-     
+
   }
 
 }
