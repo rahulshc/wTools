@@ -87,8 +87,15 @@ function longIsPopulated( src )
 
 //
 
-function longLike( src )
+function longLike( src ) /* qqq : cover please */
 {
+  if( _.primitiveIs( src ) )
+  return false;
+  if( _.hasMethodIterator( src ) ) /* yyy */
+  if( !_.mapIs( src ) && _.objectIs( src ) )
+  return true;
+  // if( _.bufferNodeIs( src ) )
+  // return true;
   return _.longIs( src );
 }
 

@@ -486,7 +486,7 @@ function traitIs( trait )
 {
   if( !_.definitionIs( trait ) )
   return false;
-  return trait.definitionGroup === 'trait';
+  return trait.definitionKind === 'trait';
 }
 
 // --

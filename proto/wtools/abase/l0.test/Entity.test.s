@@ -2288,6 +2288,9 @@ qqq : improve test entityLength, normalize it, please | Dmytro : improved, norma
 
 function entityLength( test )
 {
+
+  /* */
+
   test.case = 'undefined';
   var got = _.entityLength( undefined );
   test.identical( got, 0 );
@@ -2349,8 +2352,12 @@ function entityLength( test )
   test.identical( got, 3 );
 
   test.case = 'BufferTyped';
-  var got = _.entityLength( new U8x( [ 1, 2, 3, 4 ] ) );
-  test.identical( got, 4 );
+  var got = _.entityLength( new U8x([ 1, 2, 3 ]) );
+  test.identical( got, 3 );
+
+  test.case = 'F32x';
+  var got = _.entityLength( new F32x([ 1, 2, 3 ]) );
+  test.identical( got, 3 );
 
   test.case = 'BufferRaw';
   var got = _.entityLength( new BufferRaw( 10 ) );
@@ -2363,8 +2370,8 @@ function entityLength( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'BufferNode';
-    var got = _.entityLength( BufferNode.from( [ 1, 2, 3, 4 ] ) );
-    test.identical( got, 4 );
+    var got = _.entityLength( BufferNode.from([ 1, 2, 3, 4 ]) );
+    test.identical( got, 1 );
   }
 
   test.case = 'Set';
@@ -2383,6 +2390,24 @@ function entityLength( test )
   var got = _.entityLength( function(){} );
   test.identical( got, 1 );
 
+  test.case = 'object';
+  var obj1 = new Obj1({});
+  var got = _.entityLength( obj1 );
+  test.identical( got, 1 );
+
+  test.case = 'object with iterator, empty';
+  var obj1 = new Obj1({ elements : [] });
+  obj1[ Symbol.iterator ] = _iterate;
+  debugger;
+  var got = _.entityLength( obj1 );
+  test.identical( got, 0 );
+
+  test.case = 'object with iterator, empty';
+  var obj1 = new Obj1({ elements : [ 'a', 'b', 'c' ] });
+  obj1[ Symbol.iterator ] = _iterate;
+  var got = _.entityLength( obj1 );
+  test.identical( got, 3 );
+
   test.case = 'instance of class';
   function Constr1()
   {
@@ -2396,28 +2421,65 @@ function entityLength( test )
   }
   Constr1.prototype.c = 99;
   var got = _.entityLength( new Constr1() );
-  test.identical( got, 3 );
+  test.identical( got, 1 );
 
   test.case = 'object, some properties are non enumerable';
   var src = Object.create( null );
   Object.defineProperties( src,
+  {
+    "property1" :
     {
-      "property1" : {
-        value : true,
-        writable : true
-      },
-      "property2" : {
-        value : "Hello",
-        writable : true
-      },
-      "property3" : {
-        enumerable : true,
-        value : "World",
-        writable : true
-      }
+      value : true,
+      writable : true
+    },
+    "property2" : {
+      value : "Hello",
+      writable : true
+    },
+    "property3" :
+    {
+      enumerable : true,
+      value : "World",
+      writable : true
+    }
   });
   var got = _.entityLength( src );
   test.identical( got, 1 );
+
+  /* */
+
+  function Obj1( o )
+  {
+    _.mapExtend( this, o );
+    return this;
+  }
+
+  /* */
+
+  function _iterate()
+  {
+
+    let iterator = Object.create( null );
+    iterator.next = next;
+    iterator.index = 0;
+    iterator.instance = this;
+    return iterator;
+
+    function next()
+    {
+      let result = Object.create( null );
+      result.done = this.index === this.instance.elements.length;
+      if( result.done )
+      return result;
+      result.value = this.instance.elements[ this.index ];
+      this.index += 1;
+      return result;
+    }
+
+  }
+
+  /* */
+
 }
 
 //
