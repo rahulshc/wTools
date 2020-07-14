@@ -8962,6 +8962,13 @@ function longGrow_WithArrayUnrollArgumentsArray( test )
     test.identical( got, expected );
     test.is( got !== dst );
 
+    test.case = 'f < 0, l > src.length, val = number';
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( null, dst, [ -1, 5 ], 0 );
+    var expected = [ 0, 1, 2, 3, 4, 5, 0 ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
     test.close( 'not inplace' );
 
     /* - */
@@ -9037,6 +9044,13 @@ function longGrow_WithArrayUnrollArgumentsArray( test )
     var expected = makeLong( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( got === dst );
+
+    test.case = 'f < 0, l > src.length, val = number';
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ -1, 5 ], 0 );
+    var expected = makeLong( [ 0, 1, 2, 3, 4, 5, 0 ] );
+    test.equivalent( got, expected );
+    test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
     test.close( 'inplace' );
   }
@@ -9178,6 +9192,13 @@ function longGrow_WithBufferTyped( test )
     test.identical( got, expected );
     test.is( got !== dst );
 
+    test.case = 'f < 0, l > src.length, val = number';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( null, dst, [ -1, 5 ], 0 );
+    var expected = new makeLong( [ 0, 1, 2, 3, 4, 5, 0 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
     test.close( 'not inplace' );
 
     /* - */
@@ -9239,6 +9260,13 @@ function longGrow_WithBufferTyped( test )
     var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( got === dst );
+
+    test.case = 'f < 0, l > src.length, val = number';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longGrow_( dst, dst, [ -1, 5 ], 0 );
+    var expected = new makeLong( [ 0, 1, 2, 3, 4, 5, 0 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
 
     test.close( 'inplace' );
   }
