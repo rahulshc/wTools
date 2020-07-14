@@ -8,7 +8,7 @@ let Self = _global.wTools;
 
 _.assert( !_.Array );
 _.assert( !_.defaultLong );
-_.assert( !_.withDefaultLongType );
+_.assert( !_.withDefaultLong );
 
 // --
 //
@@ -202,7 +202,7 @@ _.mapExtend( _, ToolsExtension );
 
 _.assert( !_.Array );
 _.assert( !_.defaultLong );
-_.assert( !_.withDefaultLongType );
+_.assert( !_.withDefaultLong );
 _.assert( !_.Array );
 _.assert( !_.defaultLong );
 

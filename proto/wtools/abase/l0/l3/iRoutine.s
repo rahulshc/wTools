@@ -1400,7 +1400,7 @@ function vectorize_body( o )
       {
         args[ 0 ] = _.mapExtend( null, srcMap );
         args[ 0 ][ select ] = e;
-        append( routine.apply( this, args2 ) );
+        append( routine.apply( this, args ) );
       });
       return result;
 

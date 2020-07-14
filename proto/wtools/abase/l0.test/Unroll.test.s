@@ -257,7 +257,7 @@ function unrollMakeLongDescriptor( test )
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
-    let descriptor = _.withDefaultLongType[ name ];
+    let descriptor = _.withDefaultLong[ name ];
 
     test.open( `descriptor - ${ name }` );
     testRun( descriptor );
@@ -849,7 +849,7 @@ function unrollMakeUndefinedLongDescriptor( test )
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
-    let descriptor = _.withDefaultLongType[ name ];
+    let descriptor = _.withDefaultLong[ name ];
 
     test.open( `descriptor - ${ name }` );
     testRun( descriptor );
@@ -1455,7 +1455,7 @@ function unrollFromLongDescriptor( test )
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
-    let descriptor = _.withDefaultLongType[ name ];
+    let descriptor = _.withDefaultLong[ name ];
 
     test.open( `descriptor - ${ name }` );
     testRun( descriptor );
@@ -1735,7 +1735,7 @@ function unrollsFromLongDescriptor( test )
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
-    let descriptor = _.withDefaultLongType[ name ];
+    let descriptor = _.withDefaultLong[ name ];
 
     test.open( `descriptor - ${ name }` );
     testRun( descriptor );
@@ -2060,7 +2060,7 @@ function unrollFromMaybeLongDescriptor( test )
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
-    let descriptor = _.withDefaultLongType[ name ];
+    let descriptor = _.withDefaultLong[ name ];
 
     test.open( `descriptor - ${ name }` );
     testRun( descriptor );
