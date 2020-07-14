@@ -45,14 +45,16 @@ function entityLength( src )
 {
   if( src === undefined )
   return 0;
-  if( _.longIs( src ) )
+  if( _.mapLike( src ) )
+  return _.mapOwnKeys( src ).length;
+  if( _.objectIs( src ) && _.routineIs( src[ Symbol.iterator ] ) )
+  return [ ... src ].length;
+  if( _.longLike( src ) )
   return src.length;
   if( _.setLike( src ) )
   return src.size;
   if( _.hashMapLike( src ) )
   return src.size;
-  if( _.objectLike( src ) )
-  return _.mapOwnKeys( src ).length;
   return 1;
 }
 

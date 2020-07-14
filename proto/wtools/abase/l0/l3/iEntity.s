@@ -80,11 +80,22 @@ function iterableIs( src ) /* qqq xxx : check. good coverage is required */
 
 //
 
-function hasCustomIterator( src ) /* qqq xxx : check. good coverage is required */
+function hasMethodIterator( src ) /* qqq xxx : check. good coverage is required */
 {
   if( !src )
   return false;
   if( _.routineIs( src[ Symbol.iterator ] ) )
+  return true;
+  return false;
+}
+
+//
+
+function hasMethodEqualer( src ) /* qqq xxx : check. good coverage is required */
+{
+  if( !src )
+  return false;
+  if( _.routineIs( src[ Symbol.for( 'equalAre' ) ] ) )
   return true;
   return false;
 }
@@ -109,7 +120,8 @@ let Routines =
   containerIs,
   containerLike,
   iterableIs,
-  hasCustomIterator,
+  hasMethodIterator,
+  hasMethodEqualer, /* xxx : add other similar routines */
 
 }
 

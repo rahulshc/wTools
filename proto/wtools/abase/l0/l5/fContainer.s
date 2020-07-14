@@ -301,7 +301,7 @@ function elementGet( container, key, type )
     {
       return [ ... container ][ key ];
     }
-    else if( _.numberIs( key ) && _.hasCustomIterator( container ) )
+    else if( _.numberIs( key ) && _.hasMethodIterator( container ) )
     {
       return [ ... container ][ key ];
     }
@@ -360,7 +360,7 @@ function lengthOf( container )
   if( type && type._lengthGet )
   return type._lengthGet( container );
 
-  if( _.hasCustomIterator( container ) )
+  if( _.hasMethodIterator( container ) )
   return [ ... container ].length;
 
   return _.lengthOf( container );
@@ -399,11 +399,11 @@ let Extension =
   empty,
 
   typeOf,
-  typeDeclare, /* qqq : cover please. ask how */
+  typeDeclare, /* qqq : cover please */
   typeUndeclare,
-  elementGet, /* qqq : good coverage is required */
+  elementGet, /* qqq : cover please */
   elementSet,
-  lengthOf,
+  lengthOf, /* qqq : cover please */
 
   // fields
 

@@ -83,6 +83,9 @@ function arrayLike( src )
   return true;
   if( _.argumentsArrayIs( src ) )
   return true;
+  if( _.hasMethodIterator( src ) ) /* yyy */
+  if( !_.mapIs( src ) && _.objectIs( src ) )
+  return true;
   return false;
 }
 
