@@ -3,7 +3,7 @@ program();
 function program()
 {
 
-  let _ = require( '../../Tools.s' );
+  let _ = require( '../../proto/wtools/Tools.s' );
   _.include( 'wFiles' );
   _.include( 'wConsequence' );
 

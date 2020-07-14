@@ -4,7 +4,7 @@ function program()
 {
   function decrement( num, dec )
   {
-    console.log( _.diagnosticStack() );
+    console.log( _.introspector.stack() );
     return num - dec;
   }
 

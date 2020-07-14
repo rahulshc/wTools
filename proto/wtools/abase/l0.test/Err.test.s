@@ -115,14 +115,15 @@ thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
   }
   var err = _._err( o );
   test.is( _.errIs( err ) );
+  var got = String( err );
+
+  test.identical( _.strCount( got, `= Message of error#${err.id}` ), 1 );
+  test.identical( _.strCount( got, 'Uncaught Error:' ), 1 );
+  test.identical( _.strCount( got, 'No source file found for "W1.js"' ), 1 );
+  test.identical( _.strCount( got, 'Error including source file /workerEnvironment/Worker.js' ), 1 );
 
   var exp =
 `
-= Message of error#${err.id}
-    Uncaught Error:
-    No source file found for "W1.js"
-    Error including source file /workerEnvironment/Worker.js
-
  = Beautified calls stack
     at Object._broInclude (http://127.0.0.1:15000/.starter:6144:17)
     at Object._sourceInclude (http://127.0.0.1:15000/.starter:6575:20)
@@ -130,16 +131,18 @@ thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
     at Object._sourceIncludeAct (http://127.0.0.1:15000/.starter:6529:19)
     at Worker_js (http://127.0.0.1:15000/workerEnvironment/Worker.js:27:18)
     at http://127.0.0.1:15000/workerEnvironment/Worker.js:28:38
+`
+  test.is( _.strHas( got, exp ) );
 
+  var exp =
+`
  = Throws stack
     thrown at Object._broInclude @ http://127.0.0.1:15000/.starter:6144:17
     thrown at Object._sourceIncludeAct @ http://127.0.0.1:15000/.starter:6538:15
     thrown at Object.errFromStringedError @ ${ o.catchLocation.filePathLineCol }
 
 `
-  var got = String( err );
-  test.equivalent( got, exp ); debugger;
-  test.identical( _.strCount( got, '= Message of error' ), 1 );
+  test.is( _.strHas( got, exp ) );
   test.identical( _.strCount( got, '= Beautified calls stack' ), 1 );
   test.identical( _.strCount( got, '= Throws stack' ), 1 );
 
