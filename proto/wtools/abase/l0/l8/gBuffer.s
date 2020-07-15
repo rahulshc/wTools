@@ -2768,7 +2768,7 @@ function bufferBytesGet( src )
 {
   _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( src instanceof BufferRaw )
+  if( src instanceof BufferRaw || src instanceof BufferRawShared )
   {
     return new U8x( src );
   }
@@ -2777,6 +2777,10 @@ function bufferBytesGet( src )
     return new U8x( src.buffer, src.byteOffset, src.byteLength );
   }
   else if( _.bufferTypedIs( src ) )
+  {
+    return new U8x( src.buffer, src.byteOffset, src.byteLength );
+  }
+  else if( _.bufferViewIs( src ) )
   {
     return new U8x( src.buffer, src.byteOffset, src.byteLength );
   }
