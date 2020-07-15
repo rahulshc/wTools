@@ -2819,6 +2819,7 @@ function bufferBytesGet( src )
 function bufferRetype( src, bufferType )
 {
 
+  _.assert( arguments.length === 2, 'Expects source buffer {-src-} and constructor of buffer {-bufferTyped-}' );
   _.assert( _.bufferTypedIs( src ) );
   _.assert( _.constructorIsBuffer( bufferType ) );
 
