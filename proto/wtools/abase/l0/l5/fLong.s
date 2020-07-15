@@ -2733,8 +2733,7 @@ function longGrow_( dst, src, crange, ins )
   }
   else if( dst.length !== resultLength )
   {
-    dst = _.longMakeUndefined( dst, resultLength );
-    result = dst;
+    result = _.longMakeUndefined( dst, resultLength );
   }
 
   for( let r = f2 ; r < l2 + 1 ; r++ )
