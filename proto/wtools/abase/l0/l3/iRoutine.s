@@ -1235,7 +1235,8 @@ function vectorize_body( o )
     // args = _.originalsFromAdaptersInplace( args );
     let src = args[ 0 ];
 
-    if( _.arrayLike( src ) )
+    if( _.arrayIs( src ) ) /* Dmytro : arrayLike returns true for instances of containerAdapter */
+    // if( _.arrayLike( src ) )
     {
       let args2 = [ ... args ];
       let result = _.longMakeEmpty( src );

@@ -2039,84 +2039,183 @@ function bufferGrowInplace( dstArray, range, srcArray )
  * @namespace Tools
  */
 
-function bufferGrow_( dst, dstArray, range, srcArray )
+function bufferGrow_( dst, src, crange, ins )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
-
-  if( _.arrayLikeResizable( dstArray ) )
-  return _.arrayGrow_.apply( this, arguments );
-
-  let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
-
-  if( range === undefined )
-  return _returnDst( dst, dstArray );
-
-  if( _.numberIs( range ) )
-  range = [ 0, range ];
-
-  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
-
-  _.assert( _.rangeIs( range ) );
-
-  if( first < 0 )
+  if( arguments.length < 4 && dst !== null && dst !== src )
   {
-    last -= first;
-    first -= first;
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
   }
-  if( last < first )
-  last = first;
-  if( first > 0 )
-  first = 0;
-  if( last < length )
-  last = length;
 
-  if( first === 0 && last === length )
-  return _returnDst( dst, dstArray );
-
-  let newLength = last - first;
   let dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
+  let srcLength = src.length !== undefined ? src.length : src.byteLength;
 
-  let result;
-  if( _.boolIs( dst ) )
-  result = _.bufferMakeUndefined( dstArray, newLength );
-  else if( _.arrayLikeResizable( dst ) )
+  if( crange === undefined )
+  crange = [ 0, srcLength - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
+
+  _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+
+  let f = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let l = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : srcLength - 1;
+
+  if( f > 0 )
+  f = 0;
+  if( l < srcLength - 1 )
+  l = srcLength - 1;
+
+  if( f < 0 )
   {
-    result = dst;
-    result.length = newLength;
+    l -= f;
+    f -= f;
   }
-  else if( _.argumentsArrayIs( dst ) )
-  result = new Array( newLength );
-  else if( dstLength !== newLength )
-  result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
-  else
-  result = dst;
+
+  if( l + 1 < f )
+  l = f - 1;
+
+  let f2 = Math.max( -crange[ 0 ], 0 );
+  let l2 = Math.min( srcLength - 1 + f2, l + f2 );
+
+  let resultLength = l - f + 1;
+
+  let result = dst;
+  if( dst === null )
+  {
+    result = _.bufferMakeUndefined( src, resultLength );
+  }
+  else if( dst === src )
+  {
+    if( dst.length === resultLength )
+    {
+      return dst;
+    }
+    if( _.arrayLikeResizable( dst ) )
+    {
+      _.assert( Object.isExtensible( dst ), 'Array is not extensible, cannot change array' );
+      dst.splice( f, 0, ... _.dup( ins, f2 ) );
+      dst.splice( l2 + 1, 0, ... _.dup( ins, resultLength <= l2 ? 0 : resultLength - l2 - 1 ) );
+      return dst;
+    }
+    else if( dstLength !== resultLength || _.argumentsArrayIs( dst ) )
+    {
+      result = _.bufferMakeUndefined( dst, resultLength );
+    }
+  }
+  else if( dstLength !== resultLength )
+  {
+    result = _.bufferMakeUndefined( dst, resultLength );
+  }
 
   let resultTyped = result;
   if( _.bufferRawIs( result ) )
   resultTyped = new U8x( result );
   else if( _.bufferViewIs( result ) )
   resultTyped = new U8x( result.buffer );
-  let dstArrayTyped = dstArray;
-  if( _.bufferRawIs( dstArray ) )
-  dstArrayTyped = new U8x( dstArray );
-  else if( _.bufferViewIs( dstArray ) )
-  dstArrayTyped = new U8x( dstArray.buffer );
+  let srcTyped = src;
+  if( _.bufferRawIs( src ) )
+  srcTyped = new U8x( src );
+  else if( _.bufferViewIs( src ) )
+  srcTyped = new U8x( src.buffer );
 
-  let first2 = Math.max( first, 0 );
-  let last2 = Math.min( length, last );
-  for( let r = first2 ; r < last2 ; r++ )
-  resultTyped[ r-first2 ] = dstArrayTyped[ r ];
+  for( let r = f2 ; r < l2 + 1 ; r++ )
+  resultTyped[ r ] = srcTyped[ r - f2 ];
 
-  if( srcArray !== undefined )
+  if( ins !== undefined )
   {
-    for( let r = last2; r < newLength; r++ )
-    resultTyped[ r ] = srcArray;
+    for( let r = 0 ; r < f2 ; r++ )
+    resultTyped[ r ] = ins;
+
+    for( let r = l2 + 1 ; r < resultLength ; r++ )
+    resultTyped[ r ] = ins;
   }
 
   return result;
 }
+
+// function bufferGrow_( dst, dstArray, range, srcArray )
+// {
+//
+//   [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
+//
+//   if( _.arrayLikeResizable( dstArray ) )
+//   return _.arrayGrow_.apply( this, arguments );
+//
+//   let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
+//
+//   if( range === undefined )
+//   return _returnDst( dst, dstArray );
+//
+//   if( _.numberIs( range ) )
+//   range = [ 0, range ];
+//
+//   let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
+//   let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+//
+//   _.assert( _.rangeIs( range ) );
+//
+//   if( first < 0 )
+//   {
+//     last -= first;
+//     first -= first;
+//   }
+//   if( last < first )
+//   last = first;
+//   if( first > 0 )
+//   first = 0;
+//   if( last < length )
+//   last = length;
+//
+//   if( first === 0 && last === length )
+//   return _returnDst( dst, dstArray );
+//
+//   let newLength = last - first;
+//   let dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
+//
+//   let result;
+//   if( _.boolIs( dst ) )
+//   result = _.bufferMakeUndefined( dstArray, newLength );
+//   else if( _.arrayLikeResizable( dst ) )
+//   {
+//     result = dst;
+//     result.length = newLength;
+//   }
+//   else if( _.argumentsArrayIs( dst ) )
+//   result = new Array( newLength );
+//   else if( dstLength !== newLength )
+//   result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
+//   else
+//   result = dst;
+//
+//   let resultTyped = result;
+//   if( _.bufferRawIs( result ) )
+//   resultTyped = new U8x( result );
+//   else if( _.bufferViewIs( result ) )
+//   resultTyped = new U8x( result.buffer );
+//   let dstArrayTyped = dstArray;
+//   if( _.bufferRawIs( dstArray ) )
+//   dstArrayTyped = new U8x( dstArray );
+//   else if( _.bufferViewIs( dstArray ) )
+//   dstArrayTyped = new U8x( dstArray.buffer );
+//
+//   let first2 = Math.max( first, 0 );
+//   let last2 = Math.min( length, last );
+//   for( let r = first2 ; r < last2 ; r++ )
+//   resultTyped[ r-first2 ] = dstArrayTyped[ r ];
+//
+//   if( srcArray !== undefined )
+//   {
+//     for( let r = last2; r < newLength; r++ )
+//     resultTyped[ r ] = srcArray;
+//   }
+//
+//   return result;
+// }
 
 //
 

@@ -1357,23 +1357,33 @@ function arrayGrowInplace( src, range, ins )
 
 //
 
-function arrayGrow_( dst, src, range, ins )
+function arrayGrow_( dst, src, crange, ins )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+  if( arguments.length < 4 && dst !== null && dst !== src )
+  {
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
+  }
 
-  if( range === undefined )
-  return returnDst();
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
 
-  if( _.numberIs( range ) )
-  range = [ 0, range ];
-  _.assert( _.rangeIs( range ) || _.numberIs( range ) || range === undefined );
+  _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
-  let f = range[ 0 ] === undefined ?  0 : range[ 0 ];
-  let l = range[ 1 ] === undefined ?  0 : range[ 1 ];
+  let f = crange[ 0 ] === undefined ?  0 : crange[ 0 ];
+  let l = crange[ 1 ] === undefined ?  src.length - 1 : crange[ 1 ];
 
-  if( l < f )
-  l = f;
+  if( f > 0 )
+  f = 0;
+  if( l < src.length - 1 )
+  l = src.length - 1;
 
   if( f < 0 )
   {
@@ -1381,60 +1391,128 @@ function arrayGrow_( dst, src, range, ins )
     f -= f;
   }
 
-  if( f > 0 )
-  f = 0;
-  if( l < src.length )
-  l = src.length;
+  if( l + 1 < f )
+  l = f - 1;
 
-  if( l === src.length )
-  return returnDst();
+  let f2 = Math.max( -crange[ 0 ], 0 );
+  let l2 = Math.min( src.length - 1 + f2, l + f2 );
 
-  let l2 = src.length;
+  let resultLength = l - f + 1;
 
-  let result;
-  if( dst !== false )
+  let result = dst;
+  if( dst === null )
   {
-    if( dst.length !== undefined )
-    result = dst;
-    else
-    result = src.slice();
-
-    if( !Object.isExtensible( dst ) && dst.length < l - f )
-    _.assert( 0, 'Array is not extensible, cannot change array' );
-
-    for( let i = 0; i < l2; i++ )
-    result[ i ] = src[ i ];
+    result = _.arrayMake( resultLength );
   }
-  else
+  else if( dst === src )
   {
-    if( !Object.isExtensible( src ) && src.length < l - f )
-    _.assert( 0, 'Array is not extensible, cannot change array' );
+    if( dst.length === resultLength )
+    return dst;
 
-    result = src;
+    _.assert( Object.isExtensible( dst ), 'Array is not extensible, cannot change array' );
+
+    dst.splice( f, 0, ... _.dup( ins, f2 ) );
+    dst.splice( l2 + 1, 0, ... _.dup( ins, resultLength <= l2 ? 0 : resultLength - l2 - 1 ) );
+    return dst;
+  }
+  else if( dst.length < resultLength && !Object.isExtensible( dst ) )
+  {
+    _.assert( 0, 'Array is not extensible, cannot change array' );
   }
 
-  result.length = l;
+  for( let r = f2 ; r < l2 + 1 ; r++ )
+  result[ r ] = src[ r - f2 ];
 
   if( ins !== undefined )
   {
-    for( let r = l2; r < result.length ; r++ )
+    for( let r = 0 ; r < f2 ; r++ )
+    result[ r ] = ins;
+
+    for( let r = l2 + 1 ; r < resultLength ; r++ )
     result[ r ] = ins;
   }
 
   return result;
-
-  /* */
-
-  function returnDst()
-  {
-    if( dst.length !== undefined )
-    dst.splice( 0, dst.length, ... src );
-    else
-    dst = dst === true ? src.slice() : src;
-
-    return dst;
-  }
 }
+
+// function arrayGrow_( dst, src, range, ins )
+// {
+//
+//   [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
+//
+//   if( range === undefined )
+//   return returnDst();
+//
+//   if( _.numberIs( range ) )
+//   range = [ 0, range ];
+//   _.assert( _.rangeIs( range ) || _.numberIs( range ) || range === undefined );
+//
+//   let f = range[ 0 ] === undefined ?  0 : range[ 0 ];
+//   let l = range[ 1 ] === undefined ?  0 : range[ 1 ];
+//
+//   if( l < f )
+//   l = f;
+//
+//   if( f < 0 )
+//   {
+//     l -= f;
+//     f -= f;
+//   }
+//
+//   if( f > 0 )
+//   f = 0;
+//   if( l < src.length )
+//   l = src.length;
+//
+//   if( l === src.length )
+//   return returnDst();
+//
+//   let l2 = src.length;
+//
+//   let result;
+//   if( dst !== false )
+//   {
+//     if( dst.length !== undefined )
+//     result = dst;
+//     else
+//     result = src.slice();
+//
+//     if( !Object.isExtensible( dst ) && dst.length < l - f )
+//     _.assert( 0, 'Array is not extensible, cannot change array' );
+//
+//     for( let i = 0; i < l2; i++ )
+//     result[ i ] = src[ i ];
+//   }
+//   else
+//   {
+//     if( !Object.isExtensible( src ) && src.length < l - f )
+//     _.assert( 0, 'Array is not extensible, cannot change array' );
+//
+//     result = src;
+//   }
+//
+//   result.length = l;
+//
+//   if( ins !== undefined )
+//   {
+//     for( let r = l2; r < result.length ; r++ )
+//     result[ r ] = ins;
+//   }
+//
+//   return result;
+//
+//   /* */
+//
+//   function returnDst()
+//   {
+//     if( dst.length !== undefined )
+//     dst.splice( 0, dst.length, ... src );
+//     else
+//     dst = dst === true ? src.slice() : src;
+//
+//     return dst;
+//   }
+// }
 
 //
 
