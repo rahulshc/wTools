@@ -1358,7 +1358,7 @@ function longMakeEmptyWithArrayAndUnroll( test )
     if( src )
     return _.longDescriptor.make( src );
     return _.longDescriptor.make( 0 );
-  }
+  };
   var list =
   [
     array,
@@ -1405,6 +1405,11 @@ function longMakeEmptyWithArrayAndUnroll( test )
     test.is( got !== src );
   }
 
+  test.case = 'src - Array, constructor';
+  var got = _.longMakeEmpty( Array );
+  var expected = [];
+  test.identical( got, expected );
+
   /* - */
 
   if( !Config.debug )
@@ -1420,6 +1425,9 @@ function longMakeEmptyWithArrayAndUnroll( test )
   test.shouldThrowErrorSync( () => _.longMakeEmpty( new BufferRaw( 3 ) ) );
   if( Config.interpreter === 'njs' )
   test.shouldThrowErrorSync( () => _.longMakeEmpty( BufferNode.alloc( 3 ) ) );
+
+  test.case = 'src is function without constructor';
+  test.shouldThrowErrorSync( () => _.longMakeEmpty( ( e ) => _.arrayMake( e ) ) );
 }
 
 //
@@ -1499,6 +1507,11 @@ function longMakeEmptyWithBufferTyped( test )
     var expected = new makeLong( 0 );
     test.identical( got, expected );
     test.is( got !== src );
+
+    test.case = 'src - constructor';
+    var got = _.longMakeEmpty( makeLong );
+    var expected = new makeLong( 0 );
+    test.identical( got, expected );
   }
 }
 
@@ -1569,6 +1582,11 @@ function longMakeEmptyWithArrayAndUnrollLongDescriptor( test )
     var expected = makeLong( 0 );
     test.identical( got, expected );
     test.is( got !== src );
+
+    test.case = 'src - Array, constructor';
+    var got = descriptor.longMakeEmpty( Array );
+    var expected = [];
+    test.identical( got, expected );
 
     /* - */
 
@@ -1698,6 +1716,11 @@ function longMakeEmptyWithBufferTypedLongDescriptor( test )
     var expected = new makeLong( 0 );
     test.identical( got, expected );
     test.is( got !== src );
+
+    test.case = 'src - filled long';
+    var got = descriptor.longMakeEmpty( makeLong );
+    var expected = new makeLong( 0 );
+    test.identical( got, expected );
   }
 }
 

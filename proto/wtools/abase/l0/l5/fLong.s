@@ -466,10 +466,11 @@ function longMakeEmpty( src )
   {
     return new src.constructor();
   }
-  // else if( _.routineIs( src ) ) /* qqq : it was covered badly! */
+  // else if( _.routineIs( src ) ) /* aaa : it was covered badly! */ /* Dmytro : coverage is extended */
   else if( _.routineIs( src.constructor ) )
   {
-    let result = new src.constructor();
+    let result = new src();
+    // let result = new src.onstructor(); /* Dmytro : src is a class, it calls without constructor property */
     _.assert( _.long_.lengthOf( result ) === 0, 'Constructor should return empty long' );
     return result;
   }
