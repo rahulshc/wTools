@@ -68,7 +68,7 @@ function withIsIncluded( test )
 
   function program1()
   {
-    console.log( 'program1.begin' ); debugger;
+    console.log( 'program1.begin' );
     let _ = require( toolsPath );
     _global_.program2 = true;
     console.log( 'program1.end' );
@@ -84,6 +84,7 @@ function withIsIncluded( test )
       name : 'program1',
       isIncluded : () => !!_global_.program1,
       sourcePath : program1Path,
+      basePath : '.',
     });
     _.include( 'program1' );
     _.include( 'program1' );
@@ -139,6 +140,7 @@ function withoutIsIncluded( test )
     ({
       name : 'program1',
       sourcePath : program1Path,
+      basePath : '.',
     });
     _.include( 'program1' );
     _.include( 'program1' );

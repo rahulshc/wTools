@@ -8891,7 +8891,7 @@ function strLinesNearestLog( test )
 
   test.case = 'src - empty string';
   var src = '';
-  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 5, 7 ], gray : 1, nearestLines : 1 });
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 0, 0 ], gray : 1, nearestLines : 1 });
   var expectedNearest = [ '', '', '' ];
   var expectedLog = '1 : ';
   test.identical( got.nearest, expectedNearest );
@@ -8955,16 +8955,14 @@ function strLinesNearestLog( test )
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
-  /* NEWLY ADDED: TO BE REVIEWED */
   test.case = 'wrong range (first > second) - charsRangeLeft: [ 1, 0 ]';
   var src = 'abc';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 0 ], gray : 1, nearestLines : 5 });
   var expectedNearest = [ 'a', '', 'bc' ];
-  var expectedLog = '1: abc';
+  var expectedLog = '1 : abc';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
-  /* NEWLY ADDED: TO BE REVIEWED */
   test.case = 'wrong range (first === second) - charsRangeLeft: [ 0, 0 ]';
   var src = 'abcdefg';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 0, 0 ], gray : 1, nearestLines : 5 });
@@ -8973,34 +8971,13 @@ function strLinesNearestLog( test )
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
-  /* NEWLY ADDED: TO BE REVIEWED */
   test.case = 'wrong range (first > second) - charsRangeLeft: [ 7, 2 ]';
   var src = 'abcdefg';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 7, 2 ], gray : 1, nearestLines : 5 });
   var expectedNearest = [ 'abcdefg', '', '' ];
-  var expectedLog = '1: abcdefg';
+  var expectedLog = '1 : abcdefg';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
-
-  /* NEWLY ADDED: TO BE REVIEWED */
-  test.case = 'wrong range (negative first) - charsRangeLeft: [ -1, 2 ]';
-  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
-  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src, charsRangeLeft : [ -1, 2 ], gray : 1, nearestLines : 5 }));
-
-  /* NEWLY ADDED: TO BE REVIEWED */
-  test.case = 'wrong range (negative second) - charsRangeLeft: [ 1, -2 ]';
-  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
-  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src, charsRangeLeft : [ 1, -2 ], gray : 1, nearestLines : 5 }));
-
-  /* NEWLY ADDED: TO BE REVIEWED */
-  test.case = 'wrong range (first out of the range) - charsRangeLeft: [ 100, 2 ]';
-  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
-  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src, charsRangeLeft : [ 100, 2 ], gray : 1, nearestLines : 5 }));
-
-  /* NEWLY ADDED: TO BE REVIEWED */
-  test.case = 'wrong range (second out of the range) - charsRangeLeft: [ 1, 200 ]';
-  var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
-  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 200 ], gray : 1, nearestLines : 5 }));
 
   test.close( 'multiline' );
 
@@ -9015,6 +8992,17 @@ function strLinesNearestLog( test )
   test.case = 'wrong type of args';
   test.shouldThrowErrorSync( () =>  _.strLinesNearestLog( 3 ));
 
+  test.case = 'charsRangeLeft[ 0 ] < 0';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src : 'abcde', charsRangeLeft : [ -1, 2 ], gray : 1, nearestLines : 5 }));
+
+  test.case = 'charsRangeLeft[ 1 ] < 0';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src : 'abcde', charsRangeLeft : [ 1, -2 ], gray : 1, nearestLines : 5 }));
+
+  test.case = 'charsRangeLeft[ 0 ] > src.length';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src : 'abcde', charsRangeLeft : [ 100, 2 ], gray : 1, nearestLines : 5 }));
+
+  test.case = 'charsRangeLeft[ 0 ] > src.length';
+  test.shouldThrowErrorSync( () =>  _.strLinesNearestLog({ src : 'abcde', charsRangeLeft : [ 1, 200 ], gray : 1, nearestLines : 5 }));
 }
 
 //

@@ -55,7 +55,7 @@ function makeEmpty()
 class ContainerAdapterSet extends _.containerAdapter.Abstract
 {
   // Dmytro : using constructor and super() method is old syntax, it can be deleted
-  // qqq : cover constructors
+  // aaa : cover constructors /* Dmytro : covered */
   constructor( container )
   {
     if( container === undefined )

@@ -466,10 +466,11 @@ function longMakeEmpty( src )
   {
     return new src.constructor();
   }
-  // else if( _.routineIs( src ) ) /* qqq : it was covered badly! */
+  // else if( _.routineIs( src ) ) /* aaa : it was covered badly! */ /* Dmytro : coverage is extended */
   else if( _.routineIs( src.constructor ) )
   {
-    let result = new src.constructor();
+    let result = new src();
+    // let result = new src.onstructor(); /* Dmytro : src is a class, it calls without constructor property */
     _.assert( _.long_.lengthOf( result ) === 0, 'Constructor should return empty long' );
     return result;
   }
@@ -2686,11 +2687,13 @@ function longGrow_( dst, src, crange, ins )
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
-  crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+  let f = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let l = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
 
-  let f = crange[ 0 ];
-  let l = crange[ 1 ];
+  if( f > 0 )
+  f = 0;
+  if( l < src.length - 1 )
+  l = src.length - 1;
 
   if( f < 0 )
   {
@@ -2701,17 +2704,12 @@ function longGrow_( dst, src, crange, ins )
   if( l + 1 < f )
   l = f - 1;
 
-  if( f > 0 )
-  f = 0;
-  if( l < src.length - 1 )
-  l = src.length - 1;
-
   let f2 = Math.max( -crange[ 0 ], 0 );
   let l2 = Math.min( src.length - 1 + f2, l + f2 );
 
   let resultLength = l - f + 1;
 
-  let result;
+  let result = dst;
   if( dst === null )
   {
     result = _.longMakeUndefined( src, resultLength );
@@ -2724,6 +2722,7 @@ function longGrow_( dst, src, crange, ins )
     }
     if( _.arrayLikeResizable( dst ) )
     {
+      _.assert( Object.isExtensible( dst ), 'Array is not extensible, cannot change array' );
       dst.splice( f, 0, ... _.dup( ins, f2 ) );
       dst.splice( l2 + 1, 0, ... _.dup( ins, resultLength <= l2 ? 0 : resultLength - l2 - 1 ) );
       return dst;
@@ -2735,10 +2734,8 @@ function longGrow_( dst, src, crange, ins )
   }
   else if( dst.length !== resultLength )
   {
-    dst = _.longMakeUndefined( dst, resultLength );
-    result = dst;
+    result = _.longMakeUndefined( dst, resultLength );
   }
-
 
   for( let r = f2 ; r < l2 + 1 ; r++ )
   result[ r ] = src[ r - f2 ];

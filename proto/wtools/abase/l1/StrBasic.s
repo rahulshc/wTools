@@ -5180,9 +5180,17 @@ function strLinesNearestLog_body( o )
 {
   let result = o;
 
+  _.assert( o.charsRangeLeft[ 0 ] >= 0 && o.charsRangeLeft[ 1 ] >= 0, 'Expects positive ranges' );
+  _.assert
+  (
+    o.charsRangeLeft[ 0 ] <= o.src.length && o.charsRangeLeft[ 1 ] <= o.src.length,
+    'Expects valid range for source string {-o.src-}'
+  );
   _.assert( o.sub === null || _.strIs( o.sub ) );
 
-  // debugger;
+  if( o.charsRangeLeft[ 0 ] > o.charsRangeLeft[ 1 ] )
+  o.charsRangeLeft[ 1 ] = o.charsRangeLeft[ 0 ];
+
   if( !result.nearest )
   result.nearest = _.strLinesNearest.body( o ).splits;
 

@@ -7,7 +7,9 @@ try
 catch( err )
 {
   _.errAttend( err );
+  console.log( `Attended: ${ err }` )
 }
+
 
 /*
   This sample outputs nothing.
