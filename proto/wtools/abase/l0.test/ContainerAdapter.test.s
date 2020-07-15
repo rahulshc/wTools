@@ -1120,13 +1120,13 @@ function isContainer( test )
   var container = _.containerAdapter.make( [ 1, 2 ] );
   var src = _.containerAdapter.make( [] );
   var got = src.IsContainer( container );
-  test.identical( got, false );
+  test.identical( got, true );
 
   test.case = 'setContainerAdapter';
   var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
   var src = _.containerAdapter.make( [] );
   var got = src.IsContainer( container );
-  test.identical( got, false );
+  test.identical( got, true );
 
   test.close( 'arrayContainerAdapter' );
 
@@ -1198,13 +1198,13 @@ function isContainer( test )
   var container = _.containerAdapter.make( [ 1, 2 ] );
   var src = _.containerAdapter.make( new Set() );
   var got = src.IsContainer( container );
-  test.identical( got, false );
+  test.identical( got, true );
 
   test.case = 'setContainerAdapter';
   var container = _.containerAdapter.make( new Set( [ 1, 2 ] ) );
   var src = _.containerAdapter.make( new Set() );
   var got = src.IsContainer( container );
-  test.identical( got, false );
+  test.identical( got, true );
 
   test.close( 'setContainerAdapter' );
 }
