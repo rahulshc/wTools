@@ -20,7 +20,7 @@ function applyTo( dst, def )
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( !!_.LongDescriptors[ def ] );
 
-  dst.withDefaultLong = Object.create( null );
+  dst.withDefaultLong = Object.create( null ); /* xxx */
 
   for( let d in _.LongDescriptors )
   {

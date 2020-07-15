@@ -55,12 +55,14 @@ function Make( src )
 
 class ContainerAdapterArray extends _.containerAdapter.Abstract
 {
-  // constructor( container )
-  // {
-  //   super( container );
-  //   _.assert( arguments.length === 1 );
-  //   _.assert( _.arrayIs( container ) );
-  // }
+  constructor( container )
+  {
+    if( container === undefined )
+    container = new Array;
+    super( container );
+    _.assert( arguments.length === 0 || arguments.length === 1 );
+    _.assert( _.longLike( container ) );
+  }
   // make = make; // Dmytro : simple assigning methods as a property is able in NodeJs v12 and later. So, I assign this properties after class declaration.
   // static MakeEmpty = MakeEmpty;
   // MakeEmpty = makeEmpty;

@@ -139,6 +139,7 @@ function strEquivalent( src1, src2 )
   }
   else if( strIs1 )
   {
+    _.assert( !!src2.exec );
     let matched = src2.exec( src1 );
     if( !matched )
     return false;
