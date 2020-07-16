@@ -282,18 +282,11 @@ let longMake = _longMake_functor( function( src, ins, length, minLength )
   }
   else if( _.arrayIs( src ) )
   {
-    if( ins && length === ins.length )
-    {
-      result = _.unrollIs( src ) ? _.unrollMake( ins ) : new( _.constructorJoin( src.constructor, ins ) ); /* Dmytro : needs to improve, maybe remove */
-    }
-    else
-    {
-      _.assert( length >= 0 );
-      result = _.unrollIs( src ) ? _.unrollMake( length ) : new src.constructor( length );
-      // let minLength = Math.min( length, ins.length );
-      for( let i = 0 ; i < minLength ; i++ )
-      result[ i ] = ins[ i ];
-    }
+    _.assert( length >= 0 );
+    result = _.unrollIs( src ) ? _.unrollMake( length ) : new src.constructor( length );
+    // let minLength = Math.min( length, ins.length );
+    for( let i = 0 ; i < minLength ; i++ )
+    result[ i ] = ins[ i ];
   }
   else
   {
