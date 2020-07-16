@@ -8,7 +8,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-var _ = wTools;
+let _ = wTools;
 
 //--
 // range l0/l3/iRange.s
@@ -2807,7 +2807,7 @@ function toStr( test )
 // declaration
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.base.Range',

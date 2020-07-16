@@ -8,7 +8,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-var _ = _global_.wTools;
+let _ = _global_.wTools;
 
 //--
 // arguments array
@@ -16822,7 +16822,7 @@ function loggerProblemExperiment( test )
 //
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.base.Long',

@@ -8,7 +8,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-var _ = wTools;
+let _ = wTools;
 
 //--
 // l0/l8/gNumber.s
@@ -698,7 +698,7 @@ function intRandom( test )
 // declaration
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.base.Number',

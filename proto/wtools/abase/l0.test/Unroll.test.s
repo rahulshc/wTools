@@ -8,7 +8,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-var _ = _global_.wTools;
+let _ = _global_.wTools;
 
 // --
 // unroll

@@ -1504,7 +1504,7 @@ function assert( test )
 // declare
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.base.Err',

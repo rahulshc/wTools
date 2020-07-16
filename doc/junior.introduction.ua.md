@@ -176,7 +176,7 @@
 Вони мають вигляд (на прикладі Тест рутини mapsAreIdentical):
 
 ```javascript
-var Self =
+let Self =
 {
 
   /* options of the test suit */

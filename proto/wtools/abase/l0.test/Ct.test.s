@@ -8,7 +8,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-var _ = wTools;
+let _ = wTools;
 
 //--
 // l0/l8/gCt.s
@@ -130,7 +130,7 @@ function strip( test )
 // declaration
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.base.Ct',

@@ -8,7 +8,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-var _ = _global_.wTools;
+let _ = _global_.wTools;
 
 //--
 // tests
@@ -1176,7 +1176,7 @@ function fromBufferTypedInstance( test )
 //
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.base.LongDescriptor',

@@ -8,8 +8,8 @@ if( typeof module !== 'undefined' )
   _.include( 'wTesting' );
 }
 
-var _global = _global_;
-var _ = _global_.wTools;
+let _global = _global_;
+let _ = _global_.wTools;
 
 // --
 // context

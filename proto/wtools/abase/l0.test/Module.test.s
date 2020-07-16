@@ -214,7 +214,7 @@ resolve.description  =
 // test suite definition
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.base.Module',

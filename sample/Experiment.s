@@ -2,7 +2,7 @@
 if( typeof module !== 'undefined' )
 require( 'wTools' );
 
-var _ = wTools;
+let _ = wTools;
 
 function onStrip( part )
 {

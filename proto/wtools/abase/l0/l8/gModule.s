@@ -4,8 +4,8 @@
 
 //
 
-var _global = _global_;
-var _ = _global_.wTools;
+let _global = _global_;
+let _ = _global_.wTools;
 
 var Module = null;
 var __nativeInclude;
@@ -857,10 +857,13 @@ function _Setup()
     }
     catch( err )
     {
-      err = _.err( err );
+      // debugger;
+      if( parent && parent.filename )
+      err = _.err( err, `\nScript "${parent.filename}" failed to include "${request}"` );
+      else
+      err = _.err( err, `\nFailed to include "${request}"` );
       // debugger;
       throw err;
-      // console.error( err );
     }
     finally
     {

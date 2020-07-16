@@ -9,7 +9,7 @@ if( typeof module !== 'undefined' )
   _.include( 'wSelector' );
 }
 
-var _ = _global_.wTools;
+let _ = _global_.wTools;
 
 // --
 // base tests
@@ -20145,7 +20145,7 @@ function arrayAdapterLength( test )
 // declaration
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.base.ContainerAdapter',

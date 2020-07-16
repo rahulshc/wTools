@@ -1,6 +1,6 @@
 if( typeof module !== 'undefined' )
 require( 'wTools' );
-var _ = wTools;
+let _ = wTools;
 
 // returns [ 'sample,string', undefined, '' ]
 let s1 = _.strIsolateLeftOrAll( { src : 'sample,string', delimeter : [ '+' ] } );

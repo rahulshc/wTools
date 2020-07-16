@@ -2408,7 +2408,7 @@ function stackFilter( test )
 // declare
 // --
 
-var Self =
+let Self =
 {
 
   name : 'Tools.base.Introspector',
