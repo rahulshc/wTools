@@ -2732,10 +2732,43 @@ function bufferResize_( dst, srcBuffer, size )
 
 //
 
+/**
+ * The routine bufferBytesGet() converts source buffer {-src-} and returns a new instance of buffer U8x ( array of 8-bit unsigned integers ).
+ *
+ * @param { BufferRaw|BufferNode|BufferTyped|BufferView|String } src - Instance of any buffer or string.
+ *
+ * @example
+ * let src = new BufferRaw( 5 );
+ * _.bufferBytesGet(src);
+ * // returns [ 0, 0, 0, 0, 0, ]
+ *
+ * @example
+ * let src = BufferNode.alloc( 5, 'a' );
+ * _.bufferBytesGet(src);
+ * // returns [ 97, 97, 97, 97, 97 ]
+ *
+ * @example
+ * let src = new I32x( [ 5, 6, 7 ] );
+ * _.bufferBytesGet(src);
+ * // returns [ 5, 0, 6, 0, 7, 0 ]
+ *
+ * @example
+ * let src = 'string';
+ * _.bufferBytesGet(src);
+ * // returns [ 115, 116, 114, 105, 110, 103 ]
+ *
+ * @returns { TypedArray } Returns a new instance of U8x constructor.
+ * @function bufferBytesGet
+ * @throws { Error } If arguments.length is less or more than 1.
+ * @throws { Error } If {-src-} is not a instance of any buffer or string.
+ * @memberof wTools
+ */
+
 function bufferBytesGet( src )
 {
+  _.assert( arguments.length === 1, 'Expects single argument' );
 
-  if( src instanceof BufferRaw )
+  if( src instanceof BufferRaw || src instanceof BufferRawShared )
   {
     return new U8x( src );
   }
@@ -2744,6 +2777,10 @@ function bufferBytesGet( src )
     return new U8x( src.buffer, src.byteOffset, src.byteLength );
   }
   else if( _.bufferTypedIs( src ) )
+  {
+    return new U8x( src.buffer, src.byteOffset, src.byteLength );
+  }
+  else if( _.bufferViewIs( src ) )
   {
     return new U8x( src.buffer, src.byteOffset, src.byteLength );
   }
@@ -2786,6 +2823,7 @@ function bufferBytesGet( src )
 function bufferRetype( src, bufferType )
 {
 
+  _.assert( arguments.length === 2, 'Expects source buffer {-src-} and constructor of buffer {-bufferTyped-}' );
   _.assert( _.bufferTypedIs( src ) );
   _.assert( _.constructorIsBuffer( bufferType ) );
 
