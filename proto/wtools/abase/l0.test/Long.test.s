@@ -458,6 +458,27 @@ function longMakeWithArrayAndUnroll( test )
     test.identical( got, expected );
     test.is( got !== src );
 
+    test.case = 'src.length - 1, positive number';
+    var src = makeLong( [ 2 ] );
+    var got = _.longMake( src );
+    var exp = makeLong( [ 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src.length - 1, negative number';
+    var src = makeLong( [ -1 ] );
+    var got = _.longMake( src );
+    var exp = makeLong( [ -1 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'the irrational numbers in src';
+    var src = makeLong( [ 1.5 ] );
+    var got = _.longMake( src );
+    var exp = makeLong( [ 1.5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
     test.case = 'src = long, not ins';
     var src = makeLong([ 1, 2, 3 ]);
     var got = _.longMake( src );
@@ -927,6 +948,27 @@ function longMakeWithArrayAndUnrollLongDescriptor( test )
     test.identical( got, expected );
     test.is( got !== src );
 
+    test.case = 'src.length - 1, positive number';
+    var src = makeLong( [ 2 ] );
+    var got = descriptor.longMake( src );
+    var exp = makeLong( [ 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src.length - 1, negative number';
+    var src = makeLong( [ -1 ] );
+    var got = descriptor.longMake( src );
+    var exp = makeLong( [ -1 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'the irrational numbers in src';
+    var src = makeLong( [ 1.5 ] );
+    var got = descriptor.longMake( src );
+    var exp = makeLong( [ 1.5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
     test.case = 'src = long, not ins';
     var src = makeLong( [ 1, 2, 3 ] );
     var got = descriptor.longMake( src );
@@ -1346,47 +1388,6 @@ function longMakeWithBufferTypedLongDescriptor( test )
 }
 
 longMakeWithBufferTypedLongDescriptor.timeOut = 20000;
-
-//
-
-function longMakeExperiment( test )
-{
-  test.case = 'the integer numbers in src';
-  var src = [ 1 ];
-  var got = _.longMake( src );
-  var exp = [ 1 ]; // now [ undefined ]
-  test.identical( got, exp );
-
-  var src = [ 2 ];
-  var got = _.longMake( src );
-  var exp = [ 2 ]; // now [ undefined, undefined ]
-  test.identical( got, exp );
-
-  var src = [ -1 ];
-  var got = _.longMake( src );
-  var exp = [ -1 ]; // now throws error
-  test.identical( got, exp );
-
-  test.case = 'the irrational numbers in src';
-  var src = [ 1.5 ];
-  var got = _.longMake( src );
-  var exp = [ 1.5 ]; // now throws error
-  test.identical( got, exp );
-}
-
-longMakeExperiment.experimental = 1;
-longMakeExperiment.description =
-`
-  Routine extend constructor of src by routine "constructorJoin".
-  If length of src is 1 and element has integer value,
-  then routine returns undefined in array.
-  If length of src is 1 and element has irrational value,
-  then routine throws error because constructor reads wrong length ( it's problem of interpreter ).
-
-  Solution : remove branch with constructorJoin,
-  the constructing of new array ( unroll ) needs no extension of constructor.
-  Just make array and fill it by data.
-`;
 
 //
 
@@ -16890,7 +16891,6 @@ var Self =
     longMakeWithArrayAndUnrollLongDescriptor,
     longMakeWithArgumentsArrayLongDescriptor,
     longMakeWithBufferTypedLongDescriptor,
-    longMakeExperiment,
 
     longMakeEmptyWithArrayAndUnroll,
     longMakeEmptyWithArgumentsArray,
