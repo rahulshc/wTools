@@ -4313,7 +4313,7 @@ let Extension =
   mapsExtendAppendingOnlyArrays,
   mapExtendByDefined,
   mapsExtendByDefined,
-  mapExtendNulls,
+  mapExtendNulls, /* xxx : check routine mapExtendNulls. seems does not extend undefined fields */
   mapsExtendNulls,
 
   // mapSupplement,
