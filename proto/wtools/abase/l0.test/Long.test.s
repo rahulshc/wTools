@@ -458,6 +458,27 @@ function longMakeWithArrayAndUnroll( test )
     test.identical( got, expected );
     test.is( got !== src );
 
+    test.case = 'src.length - 1, positive number';
+    var src = makeLong( [ 2 ] );
+    var got = _.longMake( src );
+    var exp = makeLong( [ 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src.length - 1, negative number';
+    var src = makeLong( [ -1 ] );
+    var got = _.longMake( src );
+    var exp = makeLong( [ -1 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'the irrational numbers in src';
+    var src = makeLong( [ 1.5 ] );
+    var got = _.longMake( src );
+    var exp = makeLong( [ 1.5 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
     test.case = 'src = long, not ins';
     var src = makeLong([ 1, 2, 3 ]);
     var got = _.longMake( src );
@@ -925,6 +946,27 @@ function longMakeWithArrayAndUnrollLongDescriptor( test )
     var got = descriptor.longMake( src );
     var expected = makeLong( [] );
     test.identical( got, expected );
+    test.is( got !== src );
+
+    test.case = 'src.length - 1, positive number';
+    var src = makeLong( [ 2 ] );
+    var got = descriptor.longMake( src );
+    var exp = makeLong( [ 2 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'src.length - 1, negative number';
+    var src = makeLong( [ -1 ] );
+    var got = descriptor.longMake( src );
+    var exp = makeLong( [ -1 ] );
+    test.identical( got, exp );
+    test.is( got !== src );
+
+    test.case = 'the irrational numbers in src';
+    var src = makeLong( [ 1.5 ] );
+    var got = descriptor.longMake( src );
+    var exp = makeLong( [ 1.5 ] );
+    test.identical( got, exp );
     test.is( got !== src );
 
     test.case = 'src = long, not ins';
