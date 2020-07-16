@@ -9,7 +9,7 @@ function div( a, b )
   return ( a - ( a % b ) ) / b;
 }
 
-console.log( div( 13, 5 ) );
+console.log( `${ div( 13, 5 ) } ` );
 /* output : 2 */
 
 /*
