@@ -9,8 +9,8 @@ function div( a, b )
   return ( a - ( a % b ) ) / b;
 }
 
-console.log( `${ div( 13, 5 ) } ` );
-/* output : 2 */
+console.log( `The result of division : ${ div( 13, 5 ) }` );
+/* output : The result of division : 2 */
 
 /*
 The example above restricts the type of arguments.
