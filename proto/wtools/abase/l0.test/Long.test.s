@@ -1349,6 +1349,47 @@ longMakeWithBufferTypedLongDescriptor.timeOut = 20000;
 
 //
 
+function longMakeExperiment( test )
+{
+  test.case = 'the integer numbers in src';
+  var src = [ 1 ];
+  var got = _.longMake( src );
+  var exp = [ 1 ]; // now [ undefined ]
+  test.identical( got, exp );
+
+  var src = [ 2 ];
+  var got = _.longMake( src );
+  var exp = [ 2 ]; // now [ undefined, undefined ]
+  test.identical( got, exp );
+
+  var src = [ -1 ];
+  var got = _.longMake( src );
+  var exp = [ -1 ]; // now throws error
+  test.identical( got, exp );
+
+  test.case = 'the irrational numbers in src';
+  var src = [ 1.5 ];
+  var got = _.longMake( src );
+  var exp = [ 1.5 ]; // now throws error
+  test.identical( got, exp );
+}
+
+longMakeExperiment.experimental = 1;
+longMakeExperiment.description =
+`
+  Routine extend constructor of src by routine "constructorJoin".
+  If length of src is 1 and element has integer value,
+  then routine returns undefined in array.
+  If length of src is 1 and element has irrational value,
+  then routine throws error because constructor reads wrong length ( it's problem of interpreter ).
+
+  Solution : remove branch with constructorJoin,
+  the constructing of new array ( unroll ) needs no extension of constructor.
+  Just make array and fill it by data.
+`;
+
+//
+
 function longMakeEmptyWithArrayAndUnroll( test )
 {
   var array = ( src ) => _.arrayMake( src );
@@ -16849,6 +16890,7 @@ var Self =
     longMakeWithArrayAndUnrollLongDescriptor,
     longMakeWithArgumentsArrayLongDescriptor,
     longMakeWithBufferTypedLongDescriptor,
+    longMakeExperiment,
 
     longMakeEmptyWithArrayAndUnroll,
     longMakeEmptyWithArgumentsArray,
