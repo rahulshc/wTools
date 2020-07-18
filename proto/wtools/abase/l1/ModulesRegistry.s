@@ -374,7 +374,7 @@ let wRemote =
 
 let wGitTools =
 {
-  sourcePath : sourcePath( 'amid/l3/git/entry/Include.s', 'wgittools' ),
+  sourcePath : sourcePath( 'amid/l3/git/entry/GitTools.ss', 'wgittools' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.git },
 }
 
