@@ -16867,7 +16867,7 @@ function loggerProblemExperiment( test )
 let Self =
 {
 
-  name : 'Tools.base.Long',
+  name : 'Tools.Long',
   silencing : 1,
   enabled : 1,
 

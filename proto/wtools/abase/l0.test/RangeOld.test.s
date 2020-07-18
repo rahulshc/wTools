@@ -2810,7 +2810,7 @@ function rangeToStr( test )
 let Self =
 {
 
-  name : 'Tools.base.RangeOld',
+  name : 'Tools.RangeOld',
   silencing : 1,
   enabled : 1,
 

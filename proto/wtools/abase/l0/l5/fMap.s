@@ -4388,20 +4388,20 @@ let Extension =
   // map logical operator
 
   mapButConditional,
-  mapButConditional_, /* !!! : use instead of mapButConditional */
+  mapButConditional_, /* !!! : use instead of mapButConditional */ /* qqq : make it accept null in the first argument */
   mapBut,
-  mapBut_, /* !!! : use instead of mapBut */
+  mapBut_, /* !!! : use instead of mapBut */ /* qqq : make it accept null in the first argument */
   mapButIgnoringUndefines,
-  mapButIgnoringUndefines_, /* !!! : use instead of mapButIgnoringUndefines */
+  mapButIgnoringUndefines_, /* !!! : use instead of mapButIgnoringUndefines */ /* qqq : make it accept null in the first argument */
   mapOwnBut,
-  mapOwnBut_, /* !!! : use instead of mapOwnBut */
+  mapOwnBut_, /* !!! : use instead of mapOwnBut */ /* qqq : make it accept null in the first argument */
 
   mapOnly,
-  mapOnly_, /* !!! : use instead of mapOnly */
+  mapOnly_, /* !!! : use instead of mapOnly */ /* qqq : make it accept null in the first argument */
   mapOnlyOwn,
-  mapOnlyOwn_, /* !!! : use instead of mapOnlyOwn */
+  mapOnlyOwn_, /* !!! : use instead of mapOnlyOwn */ /* qqq : make it accept null in the first argument */
   mapOnlyComplementing,
-  mapOnlyComplementing_, /* !!! : use instead of mapOnlyComplementing */
+  mapOnlyComplementing_, /* !!! : use instead of mapOnlyComplementing */ /* qqq : make it accept null in the first argument */
   _mapOnly,
   _mapOnly_,
 

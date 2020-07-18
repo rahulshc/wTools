@@ -1507,7 +1507,7 @@ function assert( test )
 let Self =
 {
 
-  name : 'Tools.base.Err',
+  name : 'Tools.Err',
   silencing : 1,
 
   onSuiteBegin,

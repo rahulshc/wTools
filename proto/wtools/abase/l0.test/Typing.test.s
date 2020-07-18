@@ -4595,7 +4595,7 @@ function objectLike( test )
 var Self =
 {
 
-  name : 'Tools.base.Typing',
+  name : 'Tools.Typing',
   silencing : 1,
 
   tests :

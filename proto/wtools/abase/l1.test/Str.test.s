@@ -9290,7 +9290,7 @@ ghij`
 let Self =
 {
 
-  name : 'Tools.base.Str.base',
+  name : 'Tools.Str.base',
   silencing : 1,
   enabled : 1,
 

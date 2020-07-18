@@ -1645,7 +1645,7 @@ function timeOutCancelZeroDelayOutsideOfCallback( test )
 var Self =
 {
 
-  name : 'Tools.base.Time',
+  name : 'Tools.Time',
   silencing : 1,
 
   context :

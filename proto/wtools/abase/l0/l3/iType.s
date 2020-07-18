@@ -400,6 +400,9 @@ function printerIs( src )
   if( !src )
   return false;
 
+  if( _.routineIs( src ) )
+  return false;
+
   let prototype = Object.getPrototypeOf( src );
   if( !prototype )
   return false;

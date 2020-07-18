@@ -25473,7 +25473,7 @@ function swapsCount( test )
 let Self =
 {
 
-  name : 'Tools.base.Functional',
+  name : 'Tools.Functional',
   silencing : 1,
   enabled : 1,
 

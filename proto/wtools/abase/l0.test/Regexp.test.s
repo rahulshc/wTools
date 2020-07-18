@@ -1971,7 +1971,7 @@ function regexpsTestNone( test )
 let Self =
 {
 
-  name : 'Tools.base.l1.Regexp',
+  name : 'Tools.l1.Regexp',
   silencing : 1,
 
   tests :

@@ -1179,7 +1179,7 @@ function fromBufferTypedInstance( test )
 let Self =
 {
 
-  name : 'Tools.base.LongDescriptor',
+  name : 'Tools.LongDescriptor',
   silencing : 1,
 
   tests :

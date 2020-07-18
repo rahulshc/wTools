@@ -133,7 +133,7 @@ function strip( test )
 let Self =
 {
 
-  name : 'Tools.base.Ct',
+  name : 'Tools.Ct',
   silencing : 1,
   enabled : 1,
 

@@ -14469,7 +14469,7 @@ function strSplitInlinedStereo( test )
 var Self =
 {
 
-  name : 'Tools.base.Str',
+  name : 'Tools.Str',
   silencing : 1,
 
   tests :

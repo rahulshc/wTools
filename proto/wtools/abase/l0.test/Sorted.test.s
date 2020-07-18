@@ -121,7 +121,7 @@ function searchFirstIndex( test )
 var Self =
 {
 
-  name : 'Tools.base.Sorted',
+  name : 'Tools.Sorted',
   silencing : 1,
 
   tests :

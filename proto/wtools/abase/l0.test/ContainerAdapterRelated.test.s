@@ -233,7 +233,7 @@ function vectorizeVectorizeArray( test )
 let Self =
 {
 
-  name : 'Tools.base.LongLike',
+  name : 'Tools.LongLike',
   silencing : 1,
 
   tests :

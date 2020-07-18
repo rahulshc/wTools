@@ -4486,7 +4486,7 @@ function vectorizeAccessSpecial( test )
 var Self =
 {
 
-  name : 'Tools.base.Routine',
+  name : 'Tools.Routine',
   silencing : 1,
 
   tests :

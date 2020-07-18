@@ -12047,7 +12047,7 @@ function bufferRight( test )
 let Self =
 {
 
-  name : 'Tools.base.Buffer',
+  name : 'Tools.Buffer',
   silencing : 1,
   enabled : 1,
 

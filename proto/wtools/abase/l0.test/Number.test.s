@@ -701,7 +701,7 @@ function intRandom( test )
 let Self =
 {
 
-  name : 'Tools.base.Number',
+  name : 'Tools.Number',
   silencing : 1,
   enabled : 1,
 

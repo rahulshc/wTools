@@ -2411,7 +2411,7 @@ function stackFilter( test )
 let Self =
 {
 
-  name : 'Tools.base.Introspector',
+  name : 'Tools.Introspector',
   silencing : 1,
 
   onSuiteBegin,

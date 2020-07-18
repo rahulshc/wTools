@@ -12157,7 +12157,7 @@ function assertMapHasNoUndefine( test )
 let Self =
 {
 
-  name : 'Tools.base.Map',
+  name : 'Tools.Map',
   silencing : 1,
 
   tests :

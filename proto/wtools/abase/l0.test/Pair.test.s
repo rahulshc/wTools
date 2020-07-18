@@ -295,7 +295,7 @@ function construct( test )
 let Self =
 {
 
-  name : 'Tools.base.Pair',
+  name : 'Tools.Pair',
   silencing : 1,
 
   tests :

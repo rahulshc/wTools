@@ -20148,7 +20148,7 @@ function arrayAdapterLength( test )
 let Self =
 {
 
-  name : 'Tools.base.ContainerAdapter',
+  name : 'Tools.ContainerAdapter',
   silencing : 1,
 
   tests :

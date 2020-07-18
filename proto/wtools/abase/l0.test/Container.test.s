@@ -2146,7 +2146,7 @@ function empty( test )
 let Self =
 {
 
-  name : 'Tools.base.Container',
+  name : 'Tools.Container',
   silencing : 1,
 
   tests :

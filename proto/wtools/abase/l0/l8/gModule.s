@@ -17,6 +17,7 @@ else if( _global._remoteRequire )
 __nativeInclude = _global._remoteRequire;
 
 let Self = _.module = _.module || Object.create( null );
+_realGlobal_.wTools.module = _realGlobal_.wTools.module || Object.create( null );
 
 // --
 // routines
@@ -254,15 +255,15 @@ function _sourceFileIncludeSingle( src )
   _.assert( _.strIs( src ), 'Expects string' );
 
   if( typeof module !== 'undefined' )
-  try
-  {
+  // try
+  // {
     return _.module.__nativeInclude( _.path.nativize( src ) );
-  }
-  catch( err )
-  {
-    debugger;
-    throw _.err( err, '\n', 'Cant require', src );
-  }
+  // }
+  // catch( err )
+  // {
+  //   debugger;
+  //   throw _.err( err, '\n', 'Cant require', src );
+  // }
   else throw _.err( 'Cant include, routine "require" does not exist.' );
 
 }
@@ -813,14 +814,6 @@ function toolsPathGet()
 function _Setup()
 {
 
-  // yyy : remove
-  // if( _.usePath && typeof __dirname !== 'undefined' )
-  // _.usePath( __dirname + '/../..' );
-
-  // if( _.module.knownModulesByName )
-  // _.module.declareAll( _.module.knownModulesByName );
-
-  // debugger;
   if( _.module.modulesToRegister )
   _.module.declareAll( _.module.modulesToRegister );
 
@@ -831,10 +824,14 @@ function _Setup()
   if( _global_.Config.interpreter === 'browser' )
   return;
 
-  // debugger;
-  let Module = require( 'module' );
-  // debugger;
+  if( _realGlobal_.wTools.module._setupRequireDone )
+  {
+    _.module._setupRequireDone = 1;
+    return;
+  }
+  _realGlobal_.wTools.module._setupRequireDone = 1;
 
+  let Module = require( 'module' );
   let NjsResolveFilename = Module._resolveFilename;
   let NjsLoad = Module._load;
   let including = false;
@@ -857,12 +854,11 @@ function _Setup()
     }
     catch( err )
     {
-      // debugger;
+      debugger;
       if( parent && parent.filename )
       err = _.err( err, `\nScript "${parent.filename}" failed to include "${request}"` );
       else
       err = _.err( err, `\nFailed to include "${request}"` );
-      // debugger;
       throw err;
     }
     finally
@@ -952,6 +948,7 @@ var ModuleExtension =
   knownModulesByPath : new HashMap,
   includedModules : new HashMap,
   includedSourceFiles : new HashMap,
+  _setupRequireDone : null,
 
 }
 

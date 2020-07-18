@@ -6543,7 +6543,7 @@ function dirFirstDepthOption( test )
 let Self =
 {
 
-  name : 'Tools.base.l0.path.Fundamental',
+  name : 'Tools.l0.path.Fundamental',
   silencing : 1,
 
   tests :

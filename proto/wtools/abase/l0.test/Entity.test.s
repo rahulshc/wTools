@@ -2910,7 +2910,7 @@ function iterableIs( test )
 let Self =
 {
 
-  name : 'Tools.base.Entity',
+  name : 'Tools.Entity',
   silencing : 1,
 
   tests :

@@ -217,7 +217,7 @@ resolve.description  =
 let Self =
 {
 
-  name : 'Tools.base.Module',
+  name : 'Tools.Module',
   silencing : 1,
 
   onSuiteBegin,

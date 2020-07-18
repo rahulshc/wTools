@@ -2810,7 +2810,7 @@ function toStr( test )
 let Self =
 {
 
-  name : 'Tools.base.Range',
+  name : 'Tools.Range',
   silencing : 1,
   enabled : 1,
 

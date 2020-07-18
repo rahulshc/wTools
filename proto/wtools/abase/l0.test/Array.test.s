@@ -33701,7 +33701,7 @@ function arraySetRight( test )
 let Self =
 {
 
-  name : 'Tools.base.Array',
+  name : 'Tools.Array',
   silencing : 1,
   enabled : 1,
 
