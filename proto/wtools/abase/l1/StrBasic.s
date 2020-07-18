@@ -5281,6 +5281,39 @@ function strLinesCount( src )
 
 //
 
+function strLinesSize( src )
+{
+  let lines;
+
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( src ) || _.arrayLike( src ) );
+
+  if( _.strIs( src ) )
+  {
+    if( src.length === '' )
+    return [ 0, 0 ];
+    if( src.indexOf( '\n' ) === -1 )
+    return [ 1, src.length ];
+    lines = src.split( '\n' );
+  }
+  else
+  {
+    lines = src;
+    if( lines.length === 0 )
+    return [ 0, 0 ];
+    else if( lines.length === 1 && lines[ 0 ] === '' )
+    return [ 0, 0 ];
+  }
+
+  debugger;
+  let result = lines.reduce( ( accumulator, current ) => Math.max( accumulator, currentValue ), 0 );
+  debugger;
+
+  return result;
+}
+
+//
+
 function strLinesRangeWithCharRange_pre( routine, args )
 {
 
@@ -5452,6 +5485,7 @@ let Proto =
   strLinesNearest, /* aaa : check coverage */ /* Dmytro : checked, improved formatting */
   strLinesNearestLog, /* qqq2 : cover please */
   strLinesCount,
+  strLinesSize, /* xxx : cover */
   strLinesRangeWithCharRange,
 
 }

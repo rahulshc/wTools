@@ -106,7 +106,7 @@ let supervisor =
 // extend
 // --
 
-let Extend =
+let Extension =
 {
 
   chainer,
@@ -114,7 +114,7 @@ let Extend =
 
 }
 
-Object.assign( Self, Extend );
+Object.assign( Self, Extension );
 
 // --
 // export

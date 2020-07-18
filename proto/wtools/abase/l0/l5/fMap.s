@@ -1074,7 +1074,7 @@ function mapsExtendByDefined( dstMap, srcMaps )
 function mapExtendNulls( dstMap )
 {
   let args = _.longSlice( arguments );
-  args.unshift( _.field.mapper.srcNull );
+  args.unshift( _.field.mapper.dstNotHasOrSrcNotNull );
   return _.mapExtendConditional.apply( this, args );
 }
 
@@ -1083,7 +1083,7 @@ function mapExtendNulls( dstMap )
 function mapsExtendNulls( dstMap, srcMaps )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  return _.mapsExtendConditional( _.field.mapper.srcNull, dstMap, srcMaps );
+  return _.mapsExtendConditional( _.field.mapper.dstNotHasOrSrcNotNull, dstMap, srcMaps );
 }
 
 //
@@ -4313,8 +4313,8 @@ let Extension =
   mapsExtendAppendingOnlyArrays,
   mapExtendByDefined,
   mapsExtendByDefined,
-  mapExtendNulls, /* xxx : check routine mapExtendNulls. seems does not extend undefined fields */
-  mapsExtendNulls,
+  mapExtendNulls, /* qqq : cover */ /* xxx : check routine mapExtendNulls. seems does not extend undefined fields */
+  mapsExtendNulls, /* qqq : cover */
 
   // mapSupplement,
   mapSupplementNulls,

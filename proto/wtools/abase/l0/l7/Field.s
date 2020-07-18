@@ -287,21 +287,20 @@ srcDefined.functionFamily = 'field-filter';
 
 //
 
-function srcNull()
+function dstNotHasOrSrcNotNull()
 {
-  let routine = srcNull;
+  let routine = dstNotHasOrSrcNotNull;
   routine.functionFamily = 'field-filter'; ;
   return routine;
-
-  function srcNull( dstContainer, srcContainer, key )
+  function dstNotHasOrSrcNotNull( dstContainer, srcContainer, key )
   {
-    if( srcContainer[ key ] !== null )
+    if( key in dstContainer && srcContainer[ key ] === null )
     return false;
     return true;
   }
 }
 
-srcNull.functionFamily = 'field-filter';
+dstNotHasOrSrcNotNull.functionFamily = 'field-filter';
 
 // --
 // dst
@@ -383,9 +382,6 @@ function dstNotHas()
   function dstNotHas( dstContainer, srcContainer, key )
   {
 
-    // if( dstContainer[ key ] !== undefined )
-    // return false;
-
     if( key in dstContainer )
     return false;
 
@@ -406,10 +402,8 @@ function dstNotHasOrHasNull()
 
   function dstNotHasOrHasNull( dstContainer, srcContainer, key )
   {
-
     if( key in dstContainer && dstContainer[ key ] !== null )
     return false;
-
     return true;
   }
 
@@ -1183,12 +1177,12 @@ function setup()
 
     if( fi.functionFamily === 'field-mapper' )
     {
-      Extend.mapper[ f ] = fi;
+      Extension.mapper[ f ] = fi;
     }
     else if( fi.functionFamily === 'field-filter' )
     {
-      Extend.filter[ f ] = fi;
-      Extend.mapper[ f ] = mapperFromFilter( fi );
+      Extension.filter[ f ] = fi;
+      Extension.mapper[ f ] = mapperFromFilter( fi );
     }
     else _.assert( 0,'unexpected' );
 
@@ -1221,7 +1215,7 @@ let make =
   // src
 
   srcDefined,
-  srcNull,
+  dstNotHasOrSrcNotNull,
 
   // dst
 
@@ -1278,7 +1272,7 @@ let make =
 // extend
 // --
 
-let Extend =
+let Extension =
 {
 
   make,
@@ -1291,7 +1285,7 @@ let Extend =
 
 setup();
 
-Object.assign( Self, Extend );
+Object.assign( Self, Extension );
 
 // --
 // export
