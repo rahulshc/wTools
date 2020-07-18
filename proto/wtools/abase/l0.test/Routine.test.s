@@ -1510,6 +1510,428 @@ function routinesChain( test )
 
 //
 
+function routineExtend_old( test )
+{
+
+  test.open( 'dst is null, src has pre and body properties');
+
+  test.case = 'dst is null, src is routine maked by routineFromPreAndBody';
+  var got = _.routineExtend_old( null, _.routineFromPreAndBody );
+  test.identical( got.pre, _.routineFromPreAndBody.pre );
+  test.identical( got.body, _.routineFromPreAndBody.body );
+  test.identical( typeof got, 'function' );
+
+  var got = _.routineExtend_old( null, _.routinesCompose );
+  test.identical( got.pre, _.routinesCompose.pre );
+  test.identical( got.body, _.routinesCompose.body );
+  test.identical( typeof got, 'function' );
+
+  function f1(){}
+  f1.map1 = {};
+  f1.map1.a = 1;
+  f1.map2 = Object.create( {} );
+  f1.map2.a = 2;
+  f1.str = 'str';
+  f1.number = 13;
+  f1.routine = function r(){};
+
+  var got = _.routineExtend_old( null, f1 );
+  test.equivalent( got.map1, f1.map1 );
+  test.equivalent( got.map2, f1.map2 );
+  test.equivalent( got.str, f1.str );
+  test.equivalent( got.number, f1.number );
+  test.equivalent( got.routine, f1.routine );
+
+  test.case = 'second arg has not pre and body properties';
+  var got = _.routineExtend_old( null, _.unrollIs );
+  test.is( _.routineIs( got ) );
+  test.is( got( _.unrollFrom( [] ) ) );
+
+  test.case = 'dst is null, src is map with pre and body properties';
+  var src =
+  {
+    pre : _.routineFromPreAndBody.pre,
+    body : _.routineFromPreAndBody.body,
+    map : { a : 2 },
+  }
+  var got = _.routineExtend_old( null, src );
+  test.identical( got.pre, _.routineFromPreAndBody.pre );
+  test.identical( got.body, _.routineFromPreAndBody.body );
+  test.equivalent( got.map, { a : 2 } );
+  test.identical( typeof got, 'function' );
+
+  test.case = 'dst is null, src is map with pre and body properties';
+  var src =
+  {
+    pre : _.routineFromPreAndBody.pre,
+    body : _.routineFromPreAndBody.body,
+    map : { a : 2 },
+  };
+  var got = _.routineExtend_old( null, src );
+  test.identical( got.pre, _.routineFromPreAndBody.pre );
+  test.identical( got.body, _.routineFromPreAndBody.body );
+  test.equivalent( got.map, { a : 2 } );
+  test.identical( typeof got, 'function' );
+
+  test.case = 'dst is null, src is map with pre and body properties';
+  var src =
+  {
+    pre : _.routineFromPreAndBody.pre,
+    body : _.routineFromPreAndBody.body,
+    a : [ 1 ],
+    b : 'str',
+    c : { str : 'str' }
+  }
+  var got = _.routineExtend_old( null, src );
+  test.identical( got.pre, _.routineFromPreAndBody.pre );
+  test.identical( got.body, _.routineFromPreAndBody.body );
+  test.identical( got.a, [ 1 ] );
+  test.identical( got.b, 'str' );
+  test.identical( got.c, Object.create( { str : 'str' } ) );
+  test.identical( typeof got, 'function' );
+
+  test.close( 'dst is null, src has pre and body properties');
+
+  /* - */
+
+  test.open( 'single dst');
+
+  test.case = 'single dst';
+  var dst = function( o )
+  {
+  }
+  var got = _.routineExtend_old( dst );
+  test.identical( got, dst );
+  test.identical( typeof got, 'function' );
+
+  test.case = 'single dst is routine, has properties';
+  var dst = function( o )
+  {
+  };
+  dst.a = 0;
+  dst.b = 3;
+  dst.c = 'c';
+  var got = _.routineExtend_old( dst );
+  test.identical( got, dst );
+  test.identical( typeof got, 'function' );
+  test.identical( got.a, 0 );
+  test.identical( got.b, 3 );
+  test.identical( got.c, 'c' );
+
+  test.case = 'single dst is routine, has hiden properties';
+  var dst = function( o )
+  {
+  };
+  Object.defineProperties( dst,
+  {
+    'a' :
+    {
+      value : 0,
+      enumerable : true,
+      writable : false,
+    },
+    'b' :
+    {
+      value : { a : 2 },
+      enumerable : false,
+      writable : false,
+    }
+  });
+  var got = _.routineExtend_old( dst );
+  test.identical( got, dst );
+  test.identical( typeof got, 'function' );
+  test.identical( got.a, 0 );
+  test.identical( got.b, { a : 2 } );
+  var got = Object.getOwnPropertyDescriptor( got, 'b' );
+  test.isNot( got.enumerable );
+
+  test.close( 'single dst');
+
+  test.case = 'dst has properties, src map has different properties';
+  var dst = function( o )
+  {
+  };
+  dst.a = 0;
+  dst.b = 0;
+  var got = _.routineExtend_old( dst, { c : 1, d : 1, e : { s : 1 } } );
+  test.identical( typeof got, 'function' );
+  test.identical( got.a, 0 );
+  test.identical( got.b, 0 );
+  test.identical( got.c, 1 );
+  test.identical( got.e, Object.create( { s : 1 } ) );
+
+  test.case = 'dst has properties, src map has the same properties';
+  var dst = function( o )
+  {
+  };
+  dst.a = 0;
+  dst.b = 0;
+  var got = _.routineExtend_old( dst, { a: 1, b : 1 } );
+  test.identical( typeof got, 'function' );
+  test.identical( got.a, 1 );
+  test.identical( got.b, 1 );
+
+  /* */
+
+  test.case = 'dst has non-writable properties';
+  var dst = function( o )
+  {
+  };
+  Object.defineProperties( dst,
+  {
+    'a' :
+    {
+      enumerable : true,
+      writable : false,
+      value : 0,
+    },
+    'b' :
+    {
+      enumerable : true,
+      writable : false,
+      value : 0,
+    }
+  });
+  var got = _.routineExtend_old( dst, { a: 3, b : 2 } );
+  test.identical( typeof got, 'function' );
+  test.identical( got.a, 0 );
+  test.identical( got.b, 0 );
+
+  test.case = 'src has non-writable properties';
+  var dst = function( o )
+  {
+  };
+  dst.a = 0;
+  dst.b = 0;
+  var src = {};
+  Object.defineProperties( src,
+  {
+    'a' :
+    {
+      enumerable : true,
+      writable : false,
+      value : 3,
+    },
+    'b' :
+    {
+      enumerable : true,
+      writable : false,
+      value : 2,
+    }
+  });
+  var got = _.routineExtend_old( dst, src );
+  test.identical( typeof got, 'function' );
+  test.identical( got.a, 3 );
+  test.identical( got.b, 2 );
+
+  test.case = 'src is an array';
+  test.shouldThrowErrorSync( () =>
+  {
+    var dst = function( o )
+    {
+    };
+    var got = _.routineExtend_old( dst, [ 'a', 1 ] );
+    test.identical( typeof got, 'function' );
+    test.identical( got[ 0 ], 'a' );
+    test.identical( got[ 1 ], 1 );
+  });
+
+  test.open( 'few extends');
+
+  test.case = 'null extends other routine, null extends result';
+  var src = _.routineExtend_old( null, _.routinesCompose );
+  var got = _.routineExtend_old( null, src );
+  test.identical( got.pre, _.routinesCompose.pre );
+  test.identical( got.body, _.routinesCompose.body );
+  test.identical( typeof got, 'function' );
+
+  test.case = 'src extends routine, result extends map ';
+  var src1 =
+  {
+    pre : _.routineFromPreAndBody.pre,
+    body : _.routineFromPreAndBody.body,
+    a : 'str',
+    b : { b : 3 },
+  };
+  var src = _.routineExtend_old( null, _.routinesCompose );
+  var got = _.routineExtend_old( src, src1 );
+  test.identical( got.pre, _.routineFromPreAndBody.pre );
+  test.identical( got.body, _.routineFromPreAndBody.body );
+  test.identical( got.b, Object.create( { b : 3 } ) );
+  test.is( got.a === 'str' );
+  test.identical( typeof got, 'function' );
+
+  test.case = 'dst extends map, dst extends other map';
+  var dst = function()
+  {
+  };
+  var src1 =
+  {
+    pre : _.routinesCompose.pre,
+    body : _.routinesCompose.body,
+    a : ['str'],
+    c : { d : 2 },
+  };
+  var src = _.routineExtend_old( dst, { c : {}, b : 'str' } );
+  var got = _.routineExtend_old( dst, src1 );
+  test.identical( got.pre, _.routinesCompose.pre );
+  test.identical( got.body, _.routinesCompose.body );
+  test.identical( got.a, [ 'str' ] );
+  test.identical( got.b, 'str' );
+  test.identical( got.c, Object.create( { d : 2 } ) );
+  test.identical( typeof got, 'function' );
+
+  test.case = 'dst has map property, dst extends other map';
+  var dst = function()
+  {
+  };
+  dst.map = { a : 'str' };
+  var src1 =
+  {
+    pre : _.routinesCompose.pre,
+    body : _.routinesCompose.body,
+    a : ['str'],
+    map : { d : 2 },
+  };
+  var src = _.routineExtend_old( dst, { c : {} } );
+  var got = _.routineExtend_old( dst, src1 );
+  test.identical( got.pre, _.routinesCompose.pre );
+  test.identical( got.body, _.routinesCompose.body );
+  test.identical( got.a, [ 'str' ] );
+  var expectedMap = Object.create( { d : 2 } );
+  expectedMap.a = 'str';
+  test.identical( got.map, expectedMap );
+  test.equivalent( got.c, {} );
+  test.identical
+  (
+    _.mapBut( _.mapAllProperties( got.c ), [ '__proto__' ] ),
+    _.mapBut( _.mapAllProperties( {} ), [ '__proto__' ] )
+  );
+  test.identical( typeof got, 'function' );
+
+  test.case = 'dst extends routine1, src extends routine, dst extends src';
+  var dst = function()
+  {
+  };
+  var src = function()
+  {
+  };
+  var routine = function()
+  {
+  };
+  routine.a = 0;
+  routine.b = [ 'str' ];
+  var routine1 = function()
+  {
+  };
+  routine1.a = 2;
+  routine1.c = 'str';
+  var src1 = _.routineExtend_old( src, routine );
+  var src2 = _.routineExtend_old( dst, routine1 );
+  var got = _.routineExtend_old( src2, src1 )
+  test.identical( got.a, 0 );
+  test.identical( got.b, [ 'str' ] );
+  test.identical( got.c, 'str' );
+  test.identical( dst.a, got.a );
+  test.identical( dst.b, got.b );
+  test.identical( dst.c, got.c );
+  test.identical( typeof got, 'function' );
+
+  test.case = 'dst extends map, src extends map, dst extends src';
+  var dst = function()
+  {
+  };
+  var src = function()
+  {
+  };
+  var src1 = _.routineExtend_old( src, { o1 : 1, o2 : 'str' } );
+  var src2 = _.routineExtend_old( dst, { o3 : 'o3', o1 : 'map'} );
+  var got = _.routineExtend_old( src2, src1 )
+  test.identical( got.o1, 1 );
+  test.identical( got.o2, 'str' );
+  test.identical( got.o3, 'o3' );
+  test.identical( dst.a, got.a );
+  test.identical( dst.b, got.b );
+  test.identical( dst.c, got.c );
+  test.identical( typeof got, 'function' );
+
+  test.case = 'extend by map';
+  var dst = function()
+  {
+  };
+  Object.defineProperties( dst, {
+    'b' : {
+      value : { a : 2 },
+      enumerable : true,
+      writable : true,
+    }
+  });
+  var got = _.routineExtend_old( dst );
+  test.equivalent( got.b, { a : 2 } );
+
+  test.case = 'extend by map';
+  var dst = function( o )
+  {
+  };
+  dst.b = { map : 2 };
+  var got = _.routineExtend_old( dst, { b : { map : 3 } } );
+  test.equivalent( got.b, { map : 3 } );
+
+  test.close( 'few extends');
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend_old();
+  });
+
+  test.case = 'three arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend_old( null, { a : 1 }, { b : 2 });
+  });
+
+  test.case = 'single dst is null';
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend_old( null );
+  });
+
+  // test.case = 'second arg has not pre and body properties';
+  // test.shouldThrowErrorSync( function()
+  // {
+  //   _.routineExtend_old( null, _.unrollIs );
+  // });
+
+  test.case = 'second arg is primitive';
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend_old( _.unrollIs, 'str' );
+  });
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend_old( _.unrollIs, 1 );
+  });
+
+  test.case = 'dst is not routine or null';
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend_old( 1, { a : 1 } );
+  });
+
+  test.shouldThrowErrorSync( function()
+  {
+    _.routineExtend_old( 'str', { a : 1 } );
+  });
+
+}
+
+//
+
 function routineExtend( test )
 {
 
@@ -1587,7 +2009,7 @@ function routineExtend( test )
   test.identical( got.body, _.routineFromPreAndBody.body );
   test.identical( got.a, [ 1 ] );
   test.identical( got.b, 'str' );
-  test.identical( got.c, Object.create( { str : 'str' } ) );
+  test.identical( got.c, { str : 'str' } );
   test.identical( typeof got, 'function' );
 
   test.close( 'dst is null, src has pre and body properties');
@@ -1658,7 +2080,7 @@ function routineExtend( test )
   test.identical( got.a, 0 );
   test.identical( got.b, 0 );
   test.identical( got.c, 1 );
-  test.identical( got.e, Object.create( { s : 1 } ) );
+  test.identical( got.e, { s : 1 } );
 
   test.case = 'dst has properties, src map has the same properties';
   var dst = function( o )
@@ -1757,7 +2179,7 @@ function routineExtend( test )
   var got = _.routineExtend( src, src1 );
   test.identical( got.pre, _.routineFromPreAndBody.pre );
   test.identical( got.body, _.routineFromPreAndBody.body );
-  test.identical( got.b, Object.create( { b : 3 } ) );
+  test.identical( got.b, { b : 3 } );
   test.is( got.a === 'str' );
   test.identical( typeof got, 'function' );
 
@@ -1778,7 +2200,7 @@ function routineExtend( test )
   test.identical( got.body, _.routinesCompose.body );
   test.identical( got.a, [ 'str' ] );
   test.identical( got.b, 'str' );
-  test.identical( got.c, Object.create( { d : 2 } ) );
+  test.identical( got.c, { d : 2 } );
   test.identical( typeof got, 'function' );
 
   test.case = 'dst has map property, dst extends other map';
@@ -1798,14 +2220,14 @@ function routineExtend( test )
   test.identical( got.pre, _.routinesCompose.pre );
   test.identical( got.body, _.routinesCompose.body );
   test.identical( got.a, [ 'str' ] );
-  var expectedMap = Object.create( { d : 2 } );
+  var expectedMap = { d : 2 };
   expectedMap.a = 'str';
   test.identical( got.map, expectedMap );
   test.equivalent( got.c, {} );
   test.identical
   (
     _.mapBut( _.mapAllProperties( got.c ), [ '__proto__' ] ),
-    _.mapBut( _.mapAllProperties( {} ), [ '__proto__' ] )
+    _.mapBut( _.mapAllProperties( Object.create( null ) ), [ '__proto__' ] )
   );
   test.identical( typeof got, 'function' );
 
@@ -3818,7 +4240,7 @@ function vectorizeNone( test )
 
 //
 
-function vectorizeAccess( test )
+function vectorizeAccessBasic( test )
 {
   test.open( 'get' );
 
@@ -3826,21 +4248,21 @@ function vectorizeAccess( test )
   var vector = [ { a : 1, b : 2 }, { a : 3, b : 4, c : 5 } ];
   var src = _.vectorizeAccess( vector );
   var got = src.a;
-  test.identical( got[ '$' ], [ 1, 3 ] );
+  test.identical( got.$, [ 1, 3 ] );
 
   test.case = 'execute method on number';
   var routine = ( e ) => e;
   var vector = [ { a : routine, b : 2 }, { a : routine, b : 4, c : 5 } ];
   var src = _.vectorizeAccess( vector );
   var got = src.a( 1 );
-  test.identical( got[ '$' ], [ 1, 1 ] );
+  test.identical( got.$, [ 1, 1 ] );
 
   test.case = 'execute method on element of vector';
   var routine = ( e ) => e;
   var vector = [ { a : routine, b : 2 }, { a : routine, b : 4, c : 5 } ];
   var src = _.vectorizeAccess( vector );
   var got = src.a( vector[ 0 ] );
-  test.identical( got[ '$' ], [ { a : routine, b : 2 }, { a : routine, b : 2 } ] );
+  test.identical( got.$, [ { a : routine, b : 2 }, { a : routine, b : 2 } ] );
   test.is( got !== src );
 
   test.case = 'execute method on element of vector, execute new vector';
@@ -3848,22 +4270,24 @@ function vectorizeAccess( test )
   var vector = [ { a : routine, b : 2 }, { a : routine, b : 4, c : 5 } ];
   var src = _.vectorizeAccess( vector );
   var got = src.a( vector[ 0 ] ).a( 1 );
-  test.identical( got[ '$' ], [ 1, 1 ] );
+  test.identical( got.$, [ 1, 1 ] );
 
   test.case = 'passed element of vector, return original proxy';
   var routine = ( e ) => e;
   var vector = [ { a : routine, b : 2 } ];
   var src = _.vectorizeAccess( vector );
   var got = src.a( vector[ 0 ] );
-  test.identical( got[ '$' ], [ { a : routine, b : 2 } ] );
+  test.identical( got.$, [ { a : routine, b : 2 } ] );
+  debugger;
   test.is( got === src );
+  debugger;
 
   /* - */
 
   test.case = 'vector has not nested vectors or objects, key is $';
   var vector = [ 1, 2, 3, 4 ];
   var src = _.vectorizeAccess( vector );
-  var got = src[ '$' ];
+  var got = src.$;
   test.identical( got, [ 1, 2, 3, 4 ] );
   test.is( got === vector );
 
@@ -3871,21 +4295,21 @@ function vectorizeAccess( test )
   var vector = [ [ 1, 2 ], [ 1, 2 ] ];
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ];
-  test.identical( got[ '$' ], [ 1, 1 ] );
+  test.identical( got.$, [ 1, 1 ] );
 
   test.case = 'execute routine in vectors on number';
   var routine = ( e ) => e;
   var vector = [ [ routine, 2 ], [ routine, 3 ] ];
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ]( 1 );
-  test.identical( got[ '$' ], [ 1, 1 ] );
+  test.identical( got.$, [ 1, 1 ] );
 
   test.case = 'execute routine in vectors on element of original vector';
   var routine = ( e ) => e;
   var vector = [ [ routine, 2 ], [ routine, 3 ] ];
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ]( vector[ 0 ] );
-  test.identical( got[ '$' ], [ [ routine, 2 ], [ routine, 2 ] ] );
+  test.identical( got.$, [ [ routine, 2 ], [ routine, 2 ] ] );
   test.is( got !== src );
 
   test.case = 'execute routine in vectors on element of original vector, execute resulted vector on number';
@@ -3893,14 +4317,14 @@ function vectorizeAccess( test )
   var vector = [ [ routine, 2 ], [ routine, 3 ] ];
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ]( vector[ 0 ] )[ 0 ]( 1 );
-  test.identical( got[ '$' ], [ 1, 1 ] );
+  test.identical( got.$, [ 1, 1 ] );
 
   test.case = 'passed element of vector ';
   var routine = ( e ) => e;
   var vector = [ [ routine, 2 ] ];
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ]( vector[ 0 ] );
-  test.identical( got[ '$' ], [ [ routine, 2 ] ] );
+  test.identical( got.$, [ [ routine, 2 ] ] );
   test.is( got === src );
 
   /* - */
@@ -3909,21 +4333,21 @@ function vectorizeAccess( test )
   var vector = [ { 0 : 1, 1 : 2 }, [ 1, 2 ] ];
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ];
-  test.identical( got[ '$' ], [ 1, 1 ] );
+  test.identical( got.$, [ 1, 1 ] );
 
   test.case = 'execute routine in vectors on number';
   var routine = ( e ) => e;
   var vector = [ { 0 : routine, 1 : 2 }, [ routine, 3 ] ];
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ]( 1 );
-  test.identical( got[ '$' ], [ 1, 1 ] );
+  test.identical( got.$, [ 1, 1 ] );
 
   test.case = 'execute routine in vectors on element of original vector';
   var routine = ( e ) => e;
   var vector = [ { 0 : routine, 1 : 2 }, [ routine, 3 ] ];
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ]( vector[ 0 ] );
-  test.identical( got[ '$' ], [ { 0 : routine, 1 : 2 }, { 0 : routine, 1 : 2 } ] );
+  test.identical( got.$, [ { 0 : routine, 1 : 2 }, { 0 : routine, 1 : 2 } ] );
   test.is( got !== src );
 
   test.case = 'execute routine on element of original vector, execute resulted vector on number';
@@ -3931,7 +4355,7 @@ function vectorizeAccess( test )
   var vector = [ { 0 : routine, 1 : 2 }, [ routine, 3 ] ];
   var src = _.vectorizeAccess( vector );
   var got = src[ 0 ]( vector[ 0 ] )[ 0 ]( 1 );
-  test.identical( got[ '$' ], [ 1, 1 ] );
+  test.identical( got.$, [ 1, 1 ] );
 
   test.close( 'get' );
 
@@ -3942,51 +4366,51 @@ function vectorizeAccess( test )
   test.case = 'set property of objects';
   var vector = [ { a : 1, b : 2 }, { a : 3, b : 4, c : 1 }, { a : 5, b : 6 } ];
   var src = _.vectorizeAccess( vector );
-  test.identical( src[ '$' ], [ { a : 1, b : 2 }, { a : 3, b : 4, c : 1 }, { a : 5, b : 6 } ] );
+  test.identical( src.$, [ { a : 1, b : 2 }, { a : 3, b : 4, c : 1 }, { a : 5, b : 6 } ] );
   src.a = 0;
-  test.identical( src[ '$' ], [ { a : 0, b : 2 }, { a : 0, b : 4, c : 1 }, { a : 0, b : 6 } ] );
+  test.identical( src.$, [ { a : 0, b : 2 }, { a : 0, b : 4, c : 1 }, { a : 0, b : 6 } ] );
 
   test.case = 'set method in property of objects';
   var routine = ( e ) => e;
   var vector = [ { a : 1, b : 2 }, { a : 3, b : 4, c : 1 }, { a : 5, b : 6 } ];
   var src = _.vectorizeAccess( vector );
-  test.identical( src[ '$' ], [ { a : 1, b : 2 }, { a : 3, b : 4, c : 1 }, { a : 5, b : 6 } ] );
+  test.identical( src.$, [ { a : 1, b : 2 }, { a : 3, b : 4, c : 1 }, { a : 5, b : 6 } ] );
   src.b = routine;
-  test.identical( src[ '$' ], [ { a : 1, b : routine }, { a : 3, b : routine, c : 1 }, { a : 5, b : routine } ] );
+  test.identical( src.$, [ { a : 1, b : routine }, { a : 3, b : routine, c : 1 }, { a : 5, b : routine } ] );
 
   /* */
 
   test.case = 'set property of vectors';
   var vector = [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ];
   var src = _.vectorizeAccess( vector );
-  test.identical( src[ '$' ], [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ] );
+  test.identical( src.$, [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ] );
   src[ 0 ] = 0;
-  test.identical( src[ '$' ], [ [ 0, 2 ], [ 0, 4, 1 ], [ 0, 6 ] ] );
+  test.identical( src.$, [ [ 0, 2 ], [ 0, 4, 1 ], [ 0, 6 ] ] );
 
   test.case = 'set method in property of objects';
   var routine = ( e ) => e;
   var vector = [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ];
   var src = _.vectorizeAccess( vector );
-  test.identical( src[ '$' ], [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ] );
+  test.identical( src.$, [ [ 1, 2 ], [ 3, 4, 1 ], [ 5, 6 ] ] );
   src[ 1 ] = routine;
-  test.identical( src[ '$' ], [ [ 1, routine ], [ 3, routine, 1 ], [ 5, routine ] ] );
+  test.identical( src.$, [ [ 1, routine ], [ 3, routine, 1 ], [ 5, routine ] ] );
 
   /* */
 
   test.case = 'set property of vectors';
   var vector = [ { 0 : 1, 1 : 2 }, [ 3, 4, 1 ], [ 5, 6 ] ];
   var src = _.vectorizeAccess( vector );
-  test.identical( src[ '$' ], [ { 0 : 1, 1 : 2 }, [ 3, 4, 1 ], [ 5, 6 ] ] );
+  test.identical( src.$, [ { 0 : 1, 1 : 2 }, [ 3, 4, 1 ], [ 5, 6 ] ] );
   src[ 0 ] = 0;
-  test.identical( src[ '$' ], [ { 0 : 0, 1 : 2 }, [ 0, 4, 1 ], [ 0, 6 ] ] );
+  test.identical( src.$, [ { 0 : 0, 1 : 2 }, [ 0, 4, 1 ], [ 0, 6 ] ] );
 
   test.case = 'set method in property of objects';
   var routine = ( e ) => e;
   var vector = [ { 0 : 1, 1 : 2 }, [ 3, 4, 1 ], [ 5, 6 ] ];
   var src = _.vectorizeAccess( vector );
-  test.identical( src[ '$' ], [ { 0 : 1, 1 : 2 }, [ 3, 4, 1 ], [ 5, 6 ] ] );
+  test.identical( src.$, [ { 0 : 1, 1 : 2 }, [ 3, 4, 1 ], [ 5, 6 ] ] );
   src[ 1 ] = routine;
-  test.identical( src[ '$' ], [ { 0 : 1, 1 : routine }, [ 3, routine, 1 ], [ 5, routine ] ] );
+  test.identical( src.$, [ { 0 : 1, 1 : routine }, [ 3, routine, 1 ], [ 5, routine ] ] );
 
   test.close( 'set' );
 
@@ -4014,6 +4438,45 @@ function vectorizeAccess( test )
     var src = _.vectorizeAccess( [ { a : 1 }, { b : 1 } ] );
     src.a = 2;
   } );
+}
+
+//
+
+function vectorizeAccessSpecial( test )
+{
+
+  var cb1 = ( e ) => e;
+  var cb2 = ( e ) => e ** 2;
+  var cb3 = ( e ) => Math.sqrt( e );
+  var elements = [ { routine : cb1, name : 'first' }, { routine : cb2, name : 'second' }, { routine : cb3, name : 'third' } ];
+  var vectorized = _.vectorizeAccess( elements );
+
+  test.description = 'get';
+  test.identical( vectorized.$, elements );
+  test.is( _.routineIs( vectorized.routine ) );
+
+  test.description = 'does not exist';
+  test.identical( vectorized.haveNo, undefined );
+
+  var exp = [ 'first', 'second', 'third' ];
+  var name = vectorized.name;
+  console.log( name.$ );
+  console.log( _.longIs( name.$ ) );
+  test.identical( name.$, exp );
+
+  test.description = 'set';
+  vectorized.name = 'new value';
+  console.log( vectorized.$ );
+  test.identical( vectorized.$, elements );
+  test.is( _.routineIs( vectorized.routine ) );
+  var exp = [ 'new value', 'new value', 'new value' ];
+  test.identical( vectorized.name.$, exp );
+
+  test.description = 'call';
+  var exp = [ 2, 4, Math.sqrt( 2 ) ];
+  var got = vectorized.routine( 2 ).$;
+  test.identical( got, exp );
+
 }
 
 // --
@@ -4047,6 +4510,7 @@ var Self =
     routinesComposeAllReturningLast,
     routinesChain,
 
+    routineExtend_old,
     routineExtend,
     routineDefaults,
 
@@ -4063,7 +4527,8 @@ var Self =
     vectorizeAny, /* qqq : extend please */
     vectorizeNone, /* qqq : extend please */
 
-    vectorizeAccess,
+    vectorizeAccessBasic,
+    vectorizeAccessSpecial,
 
   }
 

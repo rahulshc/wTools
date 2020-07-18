@@ -664,7 +664,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
 //
 
 /**
- * The routineExtend() is used to copy the values of all properties
+ * The routineExtend_old() is used to copy the values of all properties
  * from source routine to a target routine.
  *
  * It takes first routine (dst), and shallow clone each destination property of type map.
@@ -673,7 +673,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  * if descriptor (writable) of dst property is set.
  *
  * If the first routine (dst) is null then
- * routine routineExtend() makes a routine from routines pre and body
+ * routine routineExtend_old() makes a routine from routines pre and body
  * @see {@link wTools.routineFromPreAndBody} - Automatic routine generating
  * from preparation routine and main routine (body).
  *
@@ -687,24 +687,24 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  *   body : _.routinesCompose.body,
  *   someOption : 1,
  * }
- * var got = _.routineExtend( null, src );
+ * var got = _.routineExtend_old( null, src );
  * // returns [ routine routinesCompose ], got.option === 1
  *
  * @example
- * _.routineExtend( null, _.routinesCompose );
+ * _.routineExtend_old( null, _.routinesCompose );
  * // returns [ routine routinesCompose ]
  *
  * @example
- * _.routineExtend( _.routinesCompose, { someOption : 1 } );
+ * _.routineExtend_old( _.routinesCompose, { someOption : 1 } );
  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
  *
  * @example
  * _.routinesComposes.someOption = 22;
- * _.routineExtend( _.routinesCompose, { someOption : 1 } );
+ * _.routineExtend_old( _.routinesCompose, { someOption : 1 } );
  * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
  *
  * @returns { routine } It will return the target routine with extended properties.
- * @function routineExtend
+ * @function routineExtend_old
  * @throws { Error } Throw an error if arguments.length < 1 or arguments.length > 2.
  * @throws { Error } Throw an error if dst is not routine or not null.
  * @throws { Error } Throw an error if dst is null and src has not pre and body properties.
@@ -712,7 +712,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  * @namespace Tools
  */
 
-function routineExtend( dst, src )
+function routineExtend_old( dst, src )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
@@ -789,6 +789,55 @@ function routineExtend( dst, src )
 }
 
 //
+
+/**
+ * The routineExtend() is used to copy the values of all properties
+ * from source routine to a target routine.
+ *
+ * It takes first routine (dst), and shallow clone each destination property of type map.
+ * Then it checks properties of source routine (src) and extends dst by source properties.
+ * The dst properties can be owerwriten by values of source routine
+ * if descriptor (writable) of dst property is set.
+ *
+ * If the first routine (dst) is null then
+ * routine routineExtend() makes a routine from routines pre and body
+ * @see {@link wTools.routineFromPreAndBody} - Automatic routine generating
+ * from preparation routine and main routine (body).
+ *
+ * @param{ routine } dst - The target routine or null.
+ * @param{ * } src - The source routine or object to copy.
+ *
+ * @example
+ * var src =
+ * {
+ *   pre : _.routinesCompose.pre,
+ *   body : _.routinesCompose.body,
+ *   someOption : 1,
+ * }
+ * var got = _.routineExtend( null, src );
+ * // returns [ routine routinesCompose ], got.option === 1
+ *
+ * @example
+ * _.routineExtend( null, _.routinesCompose );
+ * // returns [ routine routinesCompose ]
+ *
+ * @example
+ * _.routineExtend( _.routinesCompose, { someOption : 1 } );
+ * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
+ *
+ * @example
+ * _.routinesComposes.someOption = 22;
+ * _.routineExtend( _.routinesCompose, { someOption : 1 } );
+ * // returns [ routine routinesCompose ], routinesCompose.someOption === 1
+ *
+ * @returns { routine } It will return the target routine with extended properties.
+ * @function routineExtend
+ * @throws { Error } Throw an error if arguments.length < 1 or arguments.length > 2.
+ * @throws { Error } Throw an error if dst is not routine or not null.
+ * @throws { Error } Throw an error if dst is null and src has not pre and body properties.
+ * @throws { Error } Throw an error if src is primitive value.
+ * @namespace Tools
+ */
 
 function routineExtend_( dst, src )
 {
@@ -1931,73 +1980,83 @@ function vectorizeAccess( vector )
 
   let handler =
   {
-    get : function( back, key, context )
-    {
-      if( key === '$' )
-      {
-        debugger;
-        return vector;
-      }
-
-      let routineIs = vector.some( ( scalar ) => _.routineIs( scalar[ key ] ) );
-
-      vector.map( ( scalar ) =>
-      {
-        _.assert( scalar[ key ] !== undefined, `One or several element(s) of vector does not have ${key}` );
-      });
-
-      if( routineIs )
-      return function()
-      {
-        let self = this;
-        let args = arguments;
-        let revectorizing = false;
-        let result = vector.map( ( scalar ) =>
-        {
-          let r = scalar[ key ].apply( scalar, args );
-          if( r !== scalar )
-          revectorizing = true;
-          return r; // Dmytro : it returns result in vector, if it not exists, then result has only undefined => [ undefined, undefined, undefined ]
-        });
-        if( revectorizing )
-        {
-          debugger;
-          return vectorizeAccess( result );
-        }
-        else
-        {
-          return proxy;
-        }
-      }
-
-      debugger;
-      let result = vector.map( ( scalar ) =>
-      {
-        return scalar[ key ];
-      });
-      return vectorizeAccess( result );
-
-    },
-    set : function( back, key, val, context )
-    {
-
-      vector.map( ( scalar ) =>
-      {
-        _.assert( scalar[ key ] !== undefined, `One or several element(s) of vector does not have ${key}` );
-      });
-
-      vector.map( ( scalar ) =>
-      {
-        scalar[ key ] = val;
-      });
-
-      return true;
-    },
+    get,
+    set,
   };
 
   let proxy = new Proxy( vector, handler );
 
   return proxy;
+
+  /* */
+
+  function set( back, key, val, context )
+  {
+
+    vector.map( ( scalar ) =>
+    {
+      _.assert( scalar[ key ] !== undefined, `One or several element(s) of vector does not have ${key}` );
+    });
+
+    vector.map( ( scalar ) =>
+    {
+      scalar[ key ] = val;
+    });
+
+    return true;
+  }
+
+  /* */
+
+  function get( back, key, context )
+  {
+    if( key === '$' )
+    {
+      return vector;
+    }
+
+    let routineIs = vector.some( ( scalar ) => _.routineIs( scalar[ key ] ) );
+
+    if( !routineIs )
+    if( _.all( vector, ( scalar ) => scalar[ key ] === undefined ) )
+    return;
+
+    vector.map( ( scalar ) =>
+    {
+      _.assert( scalar[ key ] !== undefined, `One or several element(s) of vector does not have ${String( key )}` );
+    });
+
+    if( routineIs )
+    return function()
+    {
+      let self = this;
+      let args = arguments;
+      let revectorizing = false;
+      let result = vector.map( ( scalar ) =>
+      {
+        let r = scalar[ key ].apply( scalar, args );
+        if( r !== scalar )
+        revectorizing = true;
+        return r; // Dmytro : it returns result in vector, if it not exists, then result has only undefined => [ undefined, undefined, undefined ]
+      });
+      if( revectorizing )
+      {
+        return vectorizeAccess( result );
+      }
+      else
+      {
+        return proxy;
+      }
+    }
+
+    let result = vector.map( ( scalar ) =>
+    {
+      return scalar[ key ];
+    });
+
+    return vectorizeAccess( result );
+  }
+
 }
 
 // --
@@ -2035,8 +2094,9 @@ let Routines =
   routineOptionsFromThis,
 
   routinesCompose,
-  routineExtend, /* xxx : deprecate */
+  routineExtend_old, /* xxx : deprecate */
   routineExtend_,
+  routineExtend : routineExtend_,
   routineDefaults,
   routineFromPreAndBody,
 
@@ -2046,7 +2106,7 @@ let Routines =
   vectorizeAny,
   vectorizeNone,
 
-  vectorizeAccess, /* qqq : cover | Dmytro : covered */
+  vectorizeAccess,
 
 }
 
