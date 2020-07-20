@@ -12,7 +12,7 @@ let elem = 1;
 
 let srcArray = wTools.longSlice( origin );
 
-let result = wTools.arrayCountElement( srcArray, elem );
+let result = wTools.longCountElement( srcArray, elem );
 
 console.log( 'The result is:' );
 console.log( result );

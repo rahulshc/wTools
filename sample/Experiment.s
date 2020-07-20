@@ -2,7 +2,7 @@
 if( typeof module !== 'undefined' )
 require( 'wTools' );
 
-var _ = wTools;
+let _ = wTools;
 
 function onStrip( part )
 {
@@ -15,10 +15,10 @@ function onStrip( part )
 }
 
 var src = 'this #background:red#is#background:default# text1 and # text2 # and text3';
-var result = _.strExtractStrips( src, { onStrip } );
+var result = _.ct.strip( src, { onStrip } );
 
 var src1 = 'this #background:red#is#background:default# #text1';
-var result2 = _.strExtractStrips( src1, { onStrip } );
+var result2 = _.ct.strip( src1, { onStrip } );
 
 console.log( result );
 console.log( result2 );

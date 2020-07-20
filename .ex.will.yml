@@ -26,7 +26,7 @@ about :
   - 'Ihor O. <iostashvxi@gmail.com>'
   - 'Pablo Garcimartin <pablogarcimartinruiz@gmail.com>'
   - 'Dmytro Kryvoruchko <dm.vict.kr@gmail.com>'
-  npm.name : 'wtools.experiment'
+  npm.name : 'wTools'
   npm.scripts :
     test : 'wtest .run proto/**'
     docgen : 'wdocgen .build proto'
