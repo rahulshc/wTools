@@ -4693,7 +4693,6 @@ function strLinesNumber( o )
     let numLength = String( l + o.zeroLine ).length;
     lines[ l ] = ' '.repeat( maxNumLength - numLength ) + ( l + o.zeroLine ) + ' : ' + lines[ l ];
   }
-
   if( o.highlightingToken && o.highlighting )
   {
     let results;
@@ -4702,7 +4701,7 @@ function strLinesNumber( o )
 
     if( !_.arrayIs( o.highlighting ) )
     {
-      if( o.highlighting > o.zeroLine + lines.length - 1 || o.highlighting < o.zeroLine + lines.length - 1 )
+      if( o.highlighting > o.zeroLine + lines.length - 1 || o.highlighting < o.zeroLine )
       return lines.join( '\n' );
     }
 
