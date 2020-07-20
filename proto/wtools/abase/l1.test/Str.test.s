@@ -9002,7 +9002,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 5 });
   var expectedNearest = [ '0\n1', '\na', 'bcde\n2\n3' ];
-  var expectedLog = '2 : 0\n3 : 1\n4 : abcde\n5 : 2\n6 : 3';
+  var expectedLog = '1 : 0\n2 : 1\n3 : abcde\n4 : 2\n5 : 3';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -9010,7 +9010,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 2 });
   var expectedNearest = [ '0\n1', '\na', 'bcde' ];
-  var expectedLog = '2 : 0\n3 : 1\n4 : abcde';
+  var expectedLog = '1 : 0\n2 : 1\n3 : abcde';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -9018,7 +9018,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 10 });
   var expectedNearest = [ '0\n1', '\na', 'bcde\n2\n3\n4\n5' ];
-  var expectedLog = '2 : 0\n3 : 1\n4 : abcde\n5 : 2\n6 : 3\n7 : 4\n8 : 5';
+  var expectedLog = '1 : 0\n2 : 1\n3 : abcde\n4 : 2\n5 : 3\n6 : 4\n7 : 5';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -9057,6 +9057,61 @@ function strLinesNearestLog( test )
   test.identical( got.log, expectedLog );
 
   test.close( 'multiline' );
+
+  /* - */
+
+  test.open( 'check-fix test' );
+
+  test.case = 'start at 1';
+  var src = 'ab\ncd\nef\ngh';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 6, 8 ], gray : 1, nearestLines : 5 });
+  var expectedNearest = [ 'ab\ncd\n', 'ef', '\ngh' ];
+  var expectedLog = '1 : ab\n2 : cd\n3 : ef\n4 : gh';
+  test.identical( got.nearest, expectedNearest
+ );
+  test.identical( got.log, expectedLog );
+
+  test.case = 'start at 1 & one line';
+  var src = 'ab\ncd\nef\ngh';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 6, 8 ], gray : 1, nearestLines : 1 });
+  var expectedNearest = [ '', 'ef', '' ];
+  var expectedLog = '3 : ef';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.case = 'start at 2';
+  var src = 'ab\ncd\nef\ngh';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 6, 8 ], gray : 1, nearestLines : 3 });
+  var expectedNearest = [ 'cd\n', 'ef', '\ngh' ];
+  var expectedLog = '2 : cd\n3 : ef\n4 : gh';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.case = 'start at 2 & one line';
+  var src = 'ab\ncd\nef\ngh';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 6, 8 ], gray : 1, nearestLines : 1 });
+  var expectedNearest = [ '', 'ef', '' ];
+  var expectedLog = '3 : ef';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.case = 'start at 3';
+  var src = 'ab\ncd\nef\ngh\nik\nlm';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 9, 11 ], gray : 1, nearestLines : 3 });
+  var expectedNearest = [ 'ef\n', 'gh', '\nik' ];
+  var expectedLog = '3 : ef\n4 : gh\n5 : ik';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.case = 'start at 3 & one line';
+  var src = 'ab\ncd\nef\ngh\nik\nlm';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 9, 11 ], gray : 1, nearestLines : 1 });
+  var expectedNearest = [ '', 'gh', '' ];
+  var expectedLog = '4 : gh';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.close( 'check-fix test' );
 
   /* - */
 

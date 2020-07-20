@@ -5241,7 +5241,26 @@ function strLinesNearestLog_body( o )
   result.log = _.color.strEscape( result.log );
 
   let left = o.src.substring( 0, o.charsRangeLeft[ 0 ] );
-  let zeroLine = left ? _.strLinesCount( left ) : 1;
+  // ---- BUG
+  // let zeroLine = left ? _.strLinesCount( left ) : 1;
+  // ----
+
+  // ---- FIX (Yevhen S.)
+  let zeroLine;
+  if( left )
+  {
+    let linesNum = _.strLinesCount( left )
+    if( linesNum <= 1 )
+    zeroLine = 1;
+    else
+    zeroLine = linesNum - ( Math.floor( o.nearestLines / 2 ) ) <= 0 ? 1 : linesNum - ( Math.floor( o.nearestLines / 2 ) );
+  }
+  else
+  {
+    zeroLine = 1
+  }
+  // ----
+
   result.log = _.strLinesNumber
   ({
     src : result.log,
