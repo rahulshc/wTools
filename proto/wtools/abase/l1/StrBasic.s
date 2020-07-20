@@ -5305,11 +5305,9 @@ function strLinesSize( src )
     return [ 0, 0 ];
   }
 
-  debugger;
-  let result = lines.reduce( ( accumulator, current ) => Math.max( accumulator, currentValue ), 0 );
-  debugger;
+  let w = lines.reduce( ( a, e ) => Math.max( a, e.length ), 1 );
 
-  return result;
+  return [ lines.length, w ];
 }
 
 //
