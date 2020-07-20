@@ -8983,27 +8983,16 @@ function strLinesNearestLog( test )
   test.case = 'changes - src: one letter to the right';
   var src = 'a\nb\nc';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 4 ], gray : 1, nearestLines : 1 });
-<<<<<<< HEAD:proto/dwtools/abase/l1.test/Str.test.s
-  var expectedNearest = [ '', '\nb\n', '' ];
-  var expectedLog = '2 : b';
-=======
   var expectedNearest = [ 'a', '\nb\n', 'c' ];
   var expectedLog = '1 : a\n2 : b\n3 : c';
->>>>>>> 5f4e1c69b80ba1455a2c291b4f03c4fc84480aa2:proto/wtools/abase/l1.test/Str.test.s
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
   test.case = 'changes - src: a few letters to the right';
   var src = 'a\nb\ncd';
-<<<<<<< HEAD:proto/dwtools/abase/l1.test/Str.test.s
-  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 4 ], gray : 1, nearestLines : 3 });
-  var expectedNearest = [ '', '\nb\n', '' ];
-  var expectedLog = '2 : b';
-=======
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 1, 4 ], gray : 1, nearestLines : 1 });
   var expectedNearest = [ 'a', '\nb\n', 'cd' ];
   var expectedLog = '1 : a\n2 : b\n3 : cd';
->>>>>>> 5f4e1c69b80ba1455a2c291b4f03c4fc84480aa2:proto/wtools/abase/l1.test/Str.test.s
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -9012,26 +9001,16 @@ function strLinesNearestLog( test )
   test.case = 'changes - nearestLines: multiline report';
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 5 });
-<<<<<<< HEAD:proto/dwtools/abase/l1.test/Str.test.s
-  var expectedNearest = [ '0\n1', '\na', 'bcde\n2' ];
-  var expectedLog = '1 : 0\n2 : 1\n3 : abcde\n4 : 2';
-=======
   var expectedNearest = [ '0\n1', '\na', 'bcde\n2\n3' ];
   var expectedLog = '2 : 0\n3 : 1\n4 : abcde\n5 : 2\n6 : 3';
->>>>>>> 5f4e1c69b80ba1455a2c291b4f03c4fc84480aa2:proto/wtools/abase/l1.test/Str.test.s
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
   test.case = 'changes - nearestLines: out of the range';
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 2 });
-<<<<<<< HEAD:proto/dwtools/abase/l1.test/Str.test.s
-  var expectedNearest = [ '', '\na', 'bcde' ];
-  var expectedLog = '3 : abcde';
-=======
   var expectedNearest = [ '0\n1', '\na', 'bcde' ];
   var expectedLog = '2 : 0\n3 : 1\n4 : abcde';
->>>>>>> 5f4e1c69b80ba1455a2c291b4f03c4fc84480aa2:proto/wtools/abase/l1.test/Str.test.s
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -9039,11 +9018,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 10 });
   var expectedNearest = [ '0\n1', '\na', 'bcde\n2\n3\n4\n5' ];
-<<<<<<< HEAD:proto/dwtools/abase/l1.test/Str.test.s
-  var expectedLog = '1 : 0\n2 : 1\n3 : abcde\n4 : 2\n5 : 3\n6 : 4\n7 : 5';
-=======
   var expectedLog = '2 : 0\n3 : 1\n4 : abcde\n5 : 2\n6 : 3\n7 : 4\n8 : 5';
->>>>>>> 5f4e1c69b80ba1455a2c291b4f03c4fc84480aa2:proto/wtools/abase/l1.test/Str.test.s
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
