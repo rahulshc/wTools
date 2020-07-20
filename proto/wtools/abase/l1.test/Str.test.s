@@ -7068,27 +7068,27 @@ function strLinesNumber( test )
   test.open( 'single line' )
 
   test.case = '1 line with highlighting';
-  var got = _.strLinesNumber( { src : 'a', highlighting : 1 } );
+  var got = _.strLinesNumber({ src : 'a', highlighting : 1 });
   var expected = '* 1 : a';
   test.identical( got, expected );
 
   test.case = '1 line with long highlighting';
-  var got = _.strLinesNumber( { src : 'a', highlighting : 1, highlightingToken : '-->' } );
+  var got = _.strLinesNumber({ src : 'a', highlighting : 1, highlightingToken : '-->' });
   var expected = '--> 1 : a';
   test.identical( got, expected );
 
   test.case = '1 line with highlighting, with numbers in the line';
-  var got = _.strLinesNumber( { src : '123', highlighting : 1 } );
+  var got = _.strLinesNumber({ src : '123', highlighting : 1 });
   var expected = '* 1 : 123';
   test.identical( got, expected );
 
   test.case = '1 line with highlighting, wrong highlighting - negative';
-  var got = _.strLinesNumber( { src : 'a', highlighting : -5 } );
+  var got = _.strLinesNumber({ src : 'a', highlighting : -5 });
   var expected = '1 : a';
   test.identical( got, expected );
 
   test.case = '1 line with highlighting, wrong highlighting - out of the range';
-  var got = _.strLinesNumber( { src : 'a', highlighting : 15 } );
+  var got = _.strLinesNumber({ src : 'a', highlighting : 15 });
   var expected = '1 : a';
   test.identical( got, expected );
 
@@ -7099,37 +7099,37 @@ function strLinesNumber( test )
   test.open( 'multiline' )
 
   test.case = 'a few lines with highlighting';
-  var got = _.strLinesNumber( { src : 'abc\ndef\nghi', highlighting : [ 2, 3 ], highlightingToken : '-->',  } );
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 2, 3 ], highlightingToken : '-->' });
   var expected = '    1 : abc\n--> 2 : def\n--> 3 : ghi';
   test.identical( got, expected );
 
   test.case = 'a few lines with highlighting, numbers in the line';
-  var got = _.strLinesNumber( { src : '123\n456\n789', highlighting : [ 2, 3 ], highlightingToken : '-->',  } );
+  var got = _.strLinesNumber({ src : '123\n456\n789', highlighting : [ 2, 3 ], highlightingToken : '-->' });
   var expected = '    1 : 123\n--> 2 : 456\n--> 3 : 789';
   test.identical( got, expected );
 
   test.case = 'a few lines with highlighting: 1 element of an array highlighting is out of range';
-  var got = _.strLinesNumber( { src : 'abc\ndef\nghi', highlighting : [ 2, 600 ], highlightingToken : '-->',  } );
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 2, 600 ], highlightingToken : '-->' });
   var expected = '    1 : abc\n--> 2 : def\n    3 : ghi';
   test.identical( got, expected );
 
   test.case = 'a few lines with highlighting: all elements of an array highlighting is out of range';
-  var got = _.strLinesNumber( { src : 'abc\ndef\nghi', highlighting : [ 20, 30 ], highlightingToken : '-->',  } );
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 20, 30 ], highlightingToken : '-->' });
   var expected = '1 : abc\n2 : def\n3 : ghi';
   test.identical( got, expected );
 
   test.case = '2 digit number : without highlighting and 3 digit numbers : all with highlighting';
-  var got = _.strLinesNumber( { src : 'abc\ndef\nghi', highlighting : [ 100, 101 ], highlightingToken : '>>>>', zeroLine : 99 } );
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 100, 101 ], highlightingToken : '>>>>', zeroLine : 99 });
   var expected = '      99 : abc\n>>>> 100 : def\n>>>> 101 : ghi';
   test.identical( got, expected );
 
   test.case = '2 digit numbers : all with highlighting and 3 digit numbers : one with highlighting';
-  var got = _.strLinesNumber( { src : 'abc\ndef\nghi\nklm\nopq', highlighting : [ 98,  99, 101 ], highlightingToken : '>>>>', zeroLine : 98 } );
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm\nopq', highlighting : [ 98,  99, 101 ], highlightingToken : '>>>>', zeroLine : 98 });
   var expected = '>>>>  98 : abc\n>>>>  99 : def\n     100 : ghi\n>>>> 101 : klm\n     102 : opq';
   test.identical( got, expected );
 
   test.case = '2 digit numbers: one with highlighting and 3 digit numbers: one with highlighting';
-  var got = _.strLinesNumber( { src : 'abc\ndef\nghi\nklm\nopq', highlighting : [ 98, 101 ], highlightingToken : '>>>>', zeroLine : 98 } );
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm\nopq', highlighting : [ 98, 101 ], highlightingToken : '>>>>', zeroLine : 98 });
   var expected = '>>>>  98 : abc\n      99 : def\n     100 : ghi\n>>>> 101 : klm\n     102 : opq';
   test.identical( got, expected );
 
@@ -7152,7 +7152,7 @@ function strLinesNumber( test )
   test.shouldThrowErrorSync( () => _.strLinesNumber( 13 ) );
 
   test.case = 'unnacessary options in map';
-  test.shouldThrowErrorSync( () => _.strLinesNumber( { src : 'a', unnacessary : 1 } ) );
+  test.shouldThrowErrorSync( () => _.strLinesNumber({ src : 'a', unnacessary : 1 }) );
 }
 
 //
