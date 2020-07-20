@@ -7063,7 +7063,26 @@ function strLinesNumber( test )
 
   /* - */
 
-  test.open( 'highlighting' );
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strLinesNumber() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strLinesNumber( 'str', 2, 'extra' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.strLinesNumber( 13 ) );
+
+  test.case = 'unnacessary options in map';
+  test.shouldThrowErrorSync( () => _.strLinesNumber({ src : 'a', unnacessary : 1 }) );
+}
+
+//
+
+function strLinesNumberWithHighlighting( test )
+{
 
   test.open( 'single line' )
 
@@ -7124,7 +7143,7 @@ function strLinesNumber( test )
   test.identical( got, expected );
 
   test.case = '2 digit numbers : all with highlighting and 3 digit numbers : one with highlighting';
-  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm\nopq', highlighting : [ 98,  99, 101 ], highlightingToken : '>>>>', zeroLine : 98 });
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm\nopq', highlighting : [ 98, 99, 101 ], highlightingToken : '>>>>', zeroLine : 98 });
   var expected = '>>>>  98 : abc\n>>>>  99 : def\n     100 : ghi\n>>>> 101 : klm\n     102 : opq';
   test.identical( got, expected );
 
@@ -7133,26 +7152,25 @@ function strLinesNumber( test )
   var expected = '>>>>  98 : abc\n      99 : def\n     100 : ghi\n>>>> 101 : klm\n     102 : opq';
   test.identical( got, expected );
 
+  /* */
+
+  test.case = '4 lines: first with highlighting';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm', highlighting : [ 1 ] });
+  var expected = '* 1 : abc\n  2 : def\n  3 : ghi\n  4 : klm';
+  test.identical( got, expected );
+
+  test.case = '4 lines: middle with highlighting, two digit numbers';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm', highlighting : [ 91 ], zeroLine : 90 });
+  var expected = '  90 : abc\n* 91 : def\n  92 : ghi\n  93 : klm';
+  test.identical( got, expected );
+
+  test.case = '4 lines: middle with highlighting, two digit and three digit numbers';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm', highlighting : [ 100 ], zeroLine : 98 });
+  var expected = '   98 : abc\n   99 : def\n* 100 : ghi\n  101 : klm';
+  test.identical( got, expected );
+
   test.close( 'multiline' )
 
-  test.close( 'highlighting' );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.strLinesNumber() );
-
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strLinesNumber( 'str', 2, 'extra' ) );
-
-  test.case = 'wrong type of src';
-  test.shouldThrowErrorSync( () => _.strLinesNumber( 13 ) );
-
-  test.case = 'unnacessary options in map';
-  test.shouldThrowErrorSync( () => _.strLinesNumber({ src : 'a', unnacessary : 1 }) );
 }
 
 //
@@ -9502,6 +9520,7 @@ let Self =
     strLinesOnly,
     strLinesStrip,
     strLinesNumber,
+    strLinesNumberWithHighlighting,
     strLinesNumberZeroLine,
     strLinesNumberZeroChar,
     strLinesNumberOnLine,
