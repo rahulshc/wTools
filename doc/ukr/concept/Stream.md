@@ -22,11 +22,12 @@ const stream = require( 'stream' );
 ```javascript
 const { Readable } = require( 'stream' ); 
 
-const inStream = new Readable({
+const inStream = new Readable
+({
   read( size ) 
   {
     this.push( String.fromCharCode( this.currentCharCode++ ) );
-    if ( this.currentCharCode > 90 ) 
+    if( this.currentCharCode > 90 ) 
     this.push( null );
   }
 });
