@@ -1,4 +1,3 @@
-/*eslint-disable*/
 ( function _gBuffer_s_() {
 
 'use strict';
