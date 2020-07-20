@@ -7081,7 +7081,7 @@ function strLinesNumber( test )
 
 //
 
-function strLinesNumberWithHighlighting( test )
+function strLinesNumberOptionHighlighting( test )
 {
 
   test.open( 'single line' )
@@ -7152,22 +7152,26 @@ function strLinesNumberWithHighlighting( test )
   var expected = '>>>>  98 : abc\n      99 : def\n     100 : ghi\n>>>> 101 : klm\n     102 : opq';
   test.identical( got, expected );
 
-  /* */
+  /* - */
 
-  test.case = '4 lines: first with highlighting';
+  test.open( '4 lines & 1 with highlighting' )
+
+  test.case = 'first with highlighting';
   var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm', highlighting : [ 1 ] });
   var expected = '* 1 : abc\n  2 : def\n  3 : ghi\n  4 : klm';
   test.identical( got, expected );
 
-  test.case = '4 lines: middle with highlighting, two digit numbers';
+  test.case = 'middle with highlighting, two digit numbers';
   var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm', highlighting : [ 91 ], zeroLine : 90 });
   var expected = '  90 : abc\n* 91 : def\n  92 : ghi\n  93 : klm';
   test.identical( got, expected );
 
-  test.case = '4 lines: middle with highlighting, two digit and three digit numbers';
+  test.case = 'middle with highlighting, two digit and three digit numbers';
   var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm', highlighting : [ 100 ], zeroLine : 98 });
   var expected = '   98 : abc\n   99 : def\n* 100 : ghi\n  101 : klm';
   test.identical( got, expected );
+
+  test.close( '4 lines & 1 with highlighting' )
 
   test.close( 'multiline' )
 
@@ -9085,8 +9089,7 @@ function strLinesNearestLog( test )
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 6, 8 ], gray : 1, nearestLines : 5 });
   var expectedNearest = [ 'ab\ncd\n', 'ef', '\ngh' ];
   var expectedLog = '1 : ab\n2 : cd\n3 : ef\n4 : gh';
-  test.identical( got.nearest, expectedNearest
- );
+  test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
   test.case = 'start at 1 & one line';
@@ -9520,7 +9523,7 @@ let Self =
     strLinesOnly,
     strLinesStrip,
     strLinesNumber,
-    strLinesNumberWithHighlighting,
+    strLinesNumberOptionHighlighting,
     strLinesNumberZeroLine,
     strLinesNumberZeroChar,
     strLinesNumberOnLine,
@@ -9530,7 +9533,7 @@ let Self =
     strLinesNearest,
     strLinesNearestLog,
     strLinesCount,
-    strLinesRangeWithCharRange
+    strLinesRangeWithCharRange,
 
   }
 
