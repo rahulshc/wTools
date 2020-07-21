@@ -1198,11 +1198,7 @@ function strStrShort( o )
   let lengthWithoutFix = o.limit - fixLength;
   // src = escape( src );
 
-<<<<<<< HEAD
-  if( src.length + fixLength > o.limit )
-=======
-  if( o.limit > 0 && lengthOf( src ) + fixLength > o.limit )
->>>>>>> 85705d2c165b836310b893fdc669ae2fae3e1175
+  if( lengthOf( src ) + fixLength > o.limit )
   {
     let b = Math.max( 0, Math.ceil( lengthWithoutFix / 2 ) );
     let e = Math.max( 0, lengthWithoutFix - b );
