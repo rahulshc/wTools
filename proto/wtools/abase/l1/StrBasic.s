@@ -1195,7 +1195,7 @@ function strStrShort( o )
   if( o.infix )
   fixLength += lengthOf( o.infix );
   let lengthWithoutFix = o.limit - fixLength;
-  src = _.strEscape( src );
+  src = o.onEscape( src );
 
   if( o.limit > 0 && src.length + fixLength > o.limit )
   {
@@ -1230,7 +1230,7 @@ function strStrShort( o )
 
   function short( src, limit, begin )
   {
-    let result = _.strEscape( src );
+    let result = o.onEscape( src );
     let length = lengthOf( src );
 
     if( length < limit )
@@ -1241,9 +1241,9 @@ function strStrShort( o )
     {
       l2 += 1;
       if( begin )
-      result = _.strEscape( src.slice( 0, l2 ) );
+      result = o.onEscape( src.slice( 0, l2 ) );
       else
-      result = _.strEscape( src.slice( result.length-l2, result.length ) );
+      result = o.onEscape( src.slice( result.length-l2, result.length ) );
       length = lengthOf( result );
     }
     while( length < limit && l2 < src.length );
@@ -1252,9 +1252,9 @@ function strStrShort( o )
     {
       l2 -= 1;
       if( begin )
-      result = _.strEscape( src.slice( 0, l2 ) );
+      result = o.onEscape( src.slice( 0, l2 ) );
       else
-      result = _.strEscape( src.slice( result.length-l2, result.length ) );
+      result = o.onEscape( src.slice( result.length-l2, result.length ) );
       length = lengthOf( result );
     }
 
