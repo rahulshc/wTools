@@ -1,4 +1,5 @@
-( function _Str_test_s_() {
+( function _Str_test_s_()
+{
 
 'use strict';
 
@@ -31,7 +32,7 @@ function strCount( test )
   test.identical( got, expected );
 
   test.case = 'simple string';
-  var got = _.strCount( 'ababacabacabaaba','aba' );
+  var got = _.strCount( 'ababacabacabaaba', 'aba' );
   var expected = 4;
   test.identical( got, expected );
 
@@ -7075,7 +7076,239 @@ function strLinesNumber( test )
   test.shouldThrowErrorSync( () => _.strLinesNumber( 13 ) );
 
   test.case = 'unnacessary options in map';
-  test.shouldThrowErrorSync( () => _.strLinesNumber( { src : 'a', unnacessary : 1 } ) );
+  test.shouldThrowErrorSync( () => _.strLinesNumber({ src : 'a', unnacessary : 1 }) );
+}
+
+//
+
+function strLinesNumberOptionHighlighting( test )
+{
+
+  test.open( 'single line' )
+
+  test.open( 'change src' )
+
+  test.case = '1 letter with highlighting';
+  var got = _.strLinesNumber({ src : 'a', highlighting : 1 });
+  var expected = '* 1 : a';
+  test.identical( got, expected );
+
+  test.case = '1 line with highlighting';
+  var got = _.strLinesNumber({ src : 'abcde', highlighting : 1 });
+  var expected = '* 1 : abcde';
+  test.identical( got, expected );
+
+  test.case = '1 line of numbers with highlighting';
+  var got = _.strLinesNumber({ src : '123', highlighting : 1 });
+  var expected = '* 1 : 123';
+  test.identical( got, expected );
+
+  test.close( 'change src' )
+
+  /* - */
+
+  test.open( 'change highlighting & highlighting token' )
+
+  test.case = '1 line with array highlighting ';
+  var got = _.strLinesNumber({ src : 'a', highlighting : [ 1 ] });
+  var expected = '* 1 : a';
+  test.identical( got, expected );
+
+  test.case = '1 line with long highlighting, ';
+  var got = _.strLinesNumber({ src : 'a', highlighting : 1, highlightingToken : '-->' });
+  var expected = '--> 1 : a';
+  test.identical( got, expected );
+
+
+  test.close( 'change highlighting & highlighting token' )
+
+  /* - */
+
+  test.open( 'wrong highligting option' )
+
+  test.case = '1 line with highlighting, wrong highlighting - negative';
+  var got = _.strLinesNumber({ src : 'a', highlighting : -5 });
+  var expected = '1 : a';
+  test.identical( got, expected );
+
+  test.case = '1 line with highlighting, wrong highlighting - out of the range';
+  var got = _.strLinesNumber({ src : 'a', highlighting : 15 });
+  var expected = '1 : a';
+  test.identical( got, expected );
+
+  test.case = '1 line with highlighting, wrong array highlighting - out of the range';
+  var got = _.strLinesNumber({ src : 'a', highlighting : [ 15 ] });
+  var expected = '1 : a';
+  test.identical( got, expected );
+
+  test.case = '1 line with highlighting, wrong array highlighting: one\'s in and one\'s out of the range';
+  var got = _.strLinesNumber({ src : 'a', highlighting : [ 1, 15 ] });
+  var expected = '* 1 : a';
+  test.identical( got, expected );
+
+  test.close( 'wrong highligting option' )
+
+  test.close( 'single line' )
+
+  /* - */
+
+  test.open( 'multiline' )
+
+  test.open( 'change src' )
+
+  test.case = 'a few lines';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : 2 });
+  var expected = '  1 : abc\n* 2 : def\n  3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'a few lines of numbers';
+  var got = _.strLinesNumber({ src : '123\n456\n789', highlighting : 2 });
+  var expected = '  1 : 123\n* 2 : 456\n  3 : 789';
+  test.identical( got, expected );
+
+  test.case = 'a few lines of numbers, letters with highlighting';
+  var got = _.strLinesNumber({ src : '12a\nbcd\n3ef', highlighting : 2 });
+  var expected = '  1 : 12a\n* 2 : bcd\n  3 : 3ef';
+  test.identical( got, expected );
+
+  test.case = 'a few lines, different amount of letters in lines';
+  var got = _.strLinesNumber({ src : '1\nbcd\n3ef\naaaaaa', highlighting : 2 });
+  var expected = '  1 : 1\n* 2 : bcd\n  3 : 3ef\n  4 : aaaaaa';
+  test.identical( got, expected );
+
+  test.close( 'change src' )
+
+  /* - */
+
+  test.open( 'change highlighting & highlighting token' )
+
+  test.case = 'a few lines, one with highlighting, array highlighting';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 2 ] });
+  var expected = '  1 : abc\n* 2 : def\n  3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'a few lines, two with highlighting';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 2, 3 ] });
+  var expected = '  1 : abc\n* 2 : def\n* 3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'a few lines, all with highlighting';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 1, 2, 3 ] });
+  var expected = '* 1 : abc\n* 2 : def\n* 3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'a few lines, changed highlightingToken';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : 2, highlightingToken : '-->' });
+  var expected = '    1 : abc\n--> 2 : def\n    3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'a few lines, changed to long highlightingToken';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : 2, highlightingToken : '----------->' });
+  var expected = '             1 : abc\n-----------> 2 : def\n             3 : ghi';
+  test.identical( got, expected );
+
+  test.close( 'change highlighting & highlighting token' )
+
+  /* - */
+
+  test.open( 'change zeroLine' );
+
+  test.case = 'middle with highlighting, two digit numbers';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm', highlighting : 91, zeroLine : 90 });
+  var expected = '  90 : abc\n* 91 : def\n  92 : ghi\n  93 : klm';
+  test.identical( got, expected );
+
+  test.case = 'middle with highlighting, three digit numbers';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm', highlighting : 101, zeroLine : 100 });
+  var expected = '  100 : abc\n* 101 : def\n  102 : ghi\n  103 : klm';
+  test.identical( got, expected );
+
+  test.case = 'middle with highlighting, two ( with highlighting ) and three digit numbers';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm', highlighting : 99, zeroLine : 98 });
+  var expected = '   98 : abc\n*  99 : def\n  100 : ghi\n  101 : klm';
+  test.identical( got, expected );
+
+  test.case = 'middle with highlighting, two and three ( with highlighting ) digit numbers';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm', highlighting : 101, zeroLine : 98 });
+  var expected = '   98 : abc\n   99 : def\n  100 : ghi\n* 101 : klm';
+  test.identical( got, expected );
+
+  test.close( 'change zeroLine' )
+
+  /* - */
+
+  test.open( 'combinations of options' )
+
+  test.case = 'two with highlighting, changed highlightingToken';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 2, 3 ], highlightingToken : '-->' });
+  var expected = '    1 : abc\n--> 2 : def\n--> 3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'src with numbers, two with highlighting, changed highlightingToken';
+  var got = _.strLinesNumber({ src : '123\n456\n789', highlighting : [ 2, 3 ], highlightingToken : '-->' });
+  var expected = '    1 : 123\n--> 2 : 456\n--> 3 : 789';
+  test.identical( got, expected );
+
+  test.case = 'src with letters and numbers, two with highlighting, changed highlightingToken';
+  var got = _.strLinesNumber({ src : '123\n4ab\nc56', highlighting : [ 2, 3 ], highlightingToken : '-->' });
+  var expected = '    1 : 123\n--> 2 : 4ab\n--> 3 : c56';
+  test.identical( got, expected );
+
+  test.case = '2 digit number : without highlighting and 3 digit numbers : all with highlighting, changed highlightingToken';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 100, 101 ], highlightingToken : '>>>>', zeroLine : 99 });
+  var expected = '      99 : abc\n>>>> 100 : def\n>>>> 101 : ghi';
+  test.identical( got, expected );
+
+  test.case = '2 digit numbers : all with highlighting and 3 digit numbers : without highlighting, changed highlightingToken';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm\nopq', highlighting : [ 98, 99 ], highlightingToken : '>>>>', zeroLine : 98 });
+  var expected = '>>>>  98 : abc\n>>>>  99 : def\n     100 : ghi\n     101 : klm\n     102 : opq';
+  test.identical( got, expected );
+
+  test.case = '2 digit numbers : all with highlighting and 3 digit numbers : one with highlighting, changed highlightingToken';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm\nopq', highlighting : [ 98, 99, 101 ], highlightingToken : '>>>>', zeroLine : 98 });
+  var expected = '>>>>  98 : abc\n>>>>  99 : def\n     100 : ghi\n>>>> 101 : klm\n     102 : opq';
+  test.identical( got, expected );
+
+  test.case = '2 digit numbers: one with highlighting and 3 digit numbers: all with highlighting, changed highlightingToken';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi\nklm\nopq', highlighting : [ 98, 100, 101, 102 ], highlightingToken : '>>>>', zeroLine : 98 });
+  var expected = '>>>>  98 : abc\n      99 : def\n>>>> 100 : ghi\n>>>> 101 : klm\n>>>> 102 : opq';
+  test.identical( got, expected );
+
+  test.close( 'combinations of options' )
+
+  /* - */
+
+  test.open( 'wrong highligting option' )
+
+  test.case = 'wrong highlighting - negative';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : -5 });
+  var expected = '1 : abc\n2 : def\n3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'wrong highlighting - out of the range';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : 15 });
+  var expected = '1 : abc\n2 : def\n3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'wrong array highlighting - one out of the range';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 15 ] });
+  var expected = '1 : abc\n2 : def\n3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'wrong array highlighting - all elements of an array highlighting are out of range';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 20, 30 ] });
+  var expected = '1 : abc\n2 : def\n3 : ghi';
+  test.identical( got, expected );
+
+  test.case = 'wrong array highlighting: one\'s in and one\'s out of the range';
+  var got = _.strLinesNumber({ src : 'abc\ndef\nghi', highlighting : [ 1, 15 ] });
+  var expected = '* 1 : abc\n  2 : def\n  3 : ghi';
+  test.identical( got, expected );
+
+  test.close( 'wrong highligting option' )
+
+  test.close( 'multiline' )
+
 }
 
 //
@@ -8925,7 +9158,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 5 });
   var expectedNearest = [ '0\n1', '\na', 'bcde\n2\n3' ];
-  var expectedLog = '2 : 0\n3 : 1\n4 : abcde\n5 : 2\n6 : 3';
+  var expectedLog = '1 : 0\n2 : 1\n3 : abcde\n4 : 2\n5 : 3';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -8933,7 +9166,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 2 });
   var expectedNearest = [ '0\n1', '\na', 'bcde' ];
-  var expectedLog = '2 : 0\n3 : 1\n4 : abcde';
+  var expectedLog = '1 : 0\n2 : 1\n3 : abcde';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -8941,7 +9174,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 3, 5 ], gray : 1, nearestLines : 10 });
   var expectedNearest = [ '0\n1', '\na', 'bcde\n2\n3\n4\n5' ];
-  var expectedLog = '2 : 0\n3 : 1\n4 : abcde\n5 : 2\n6 : 3\n7 : 4\n8 : 5';
+  var expectedLog = '1 : 0\n2 : 1\n3 : abcde\n4 : 2\n5 : 3\n6 : 4\n7 : 5';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -8951,7 +9184,7 @@ function strLinesNearestLog( test )
   var src = '0\n1\nabcde\n2\n3\n4\n5\n6';
   var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 5, 5 ], gray : 1, nearestLines : 5 });
   var expectedNearest = [ '0\n1\na', '', 'bcde\n2\n3' ];
-  var expectedLog = '3 : 0\n4 : 1\n5 : abcde\n6 : 2\n7 : 3';
+  var expectedLog = '1 : 0\n2 : 1\n3 : abcde\n4 : 2\n5 : 3';
   test.identical( got.nearest, expectedNearest );
   test.identical( got.log, expectedLog );
 
@@ -8980,6 +9213,60 @@ function strLinesNearestLog( test )
   test.identical( got.log, expectedLog );
 
   test.close( 'multiline' );
+
+  /* - */
+
+  test.open( 'check-fix test' );
+
+  test.case = 'start at 1';
+  var src = 'ab\ncd\nef\ngh';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 6, 8 ], gray : 1, nearestLines : 5 });
+  var expectedNearest = [ 'ab\ncd\n', 'ef', '\ngh' ];
+  var expectedLog = '1 : ab\n2 : cd\n3 : ef\n4 : gh';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.case = 'start at 1 & one line';
+  var src = 'ab\ncd\nef\ngh';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 6, 8 ], gray : 1, nearestLines : 1 });
+  var expectedNearest = [ '', 'ef', '' ];
+  var expectedLog = '3 : ef';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.case = 'start at 2';
+  var src = 'ab\ncd\nef\ngh';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 6, 8 ], gray : 1, nearestLines : 3 });
+  var expectedNearest = [ 'cd\n', 'ef', '\ngh' ];
+  var expectedLog = '2 : cd\n3 : ef\n4 : gh';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.case = 'start at 2 & one line';
+  var src = 'ab\ncd\nef\ngh';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 6, 8 ], gray : 1, nearestLines : 1 });
+  var expectedNearest = [ '', 'ef', '' ];
+  var expectedLog = '3 : ef';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.case = 'start at 3';
+  var src = 'ab\ncd\nef\ngh\nik\nlm';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 9, 11 ], gray : 1, nearestLines : 3 });
+  var expectedNearest = [ 'ef\n', 'gh', '\nik' ];
+  var expectedLog = '3 : ef\n4 : gh\n5 : ik';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.case = 'start at 3 & one line';
+  var src = 'ab\ncd\nef\ngh\nik\nlm';
+  var got = _.strLinesNearestLog({ src, charsRangeLeft : [ 9, 11 ], gray : 1, nearestLines : 1 });
+  var expectedNearest = [ '', 'gh', '' ];
+  var expectedLog = '4 : gh';
+  test.identical( got.nearest, expectedNearest );
+  test.identical( got.log, expectedLog );
+
+  test.close( 'check-fix test' );
 
   /* - */
 
@@ -9370,6 +9657,7 @@ let Self =
     strLinesOnly,
     strLinesStrip,
     strLinesNumber,
+    strLinesNumberOptionHighlighting,
     strLinesNumberZeroLine,
     strLinesNumberZeroChar,
     strLinesNumberOnLine,
