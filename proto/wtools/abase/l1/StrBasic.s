@@ -1180,6 +1180,7 @@ function strStrShort( o )
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
+  _.assert( o.limit >= 0, '{-limit-} must be greater or equal to zero' );
   // _.assert( _.routineIs( o.onEscape ) );
   _.assert( o.prefix === null || _.strIs( o.prefix ) || _.boolLikeFalse( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) || _.boolLikeFalse( o.postfix ) );
@@ -1189,15 +1190,15 @@ function strStrShort( o )
   let src = o.src;
   let fixLength = 0;
   if( o.prefix )
-  fixLength += o.prefix ? lengthOf( o.prefix ) : 0;
+  fixLength += lengthOf( o.prefix );
   if( o.postfix )
-  fixLength += o.postfix ? lengthOf( o.postfix ) : 0;
+  fixLength += lengthOf( o.postfix );
   if( o.infix )
   fixLength += lengthOf( o.infix );
   let lengthWithoutFix = o.limit - fixLength;
   // src = escape( src );
 
-  if( o.limit > 0 && src.length + fixLength > o.limit )
+  if( src.length + fixLength > o.limit )
   {
     let b = Math.max( 0, Math.ceil( lengthWithoutFix / 2 ) );
     let e = Math.max( 0, lengthWithoutFix - b );
@@ -1289,12 +1290,15 @@ strStrShort.defaults =
   prefix : null,
   postfix : null,
   infix : null,
+  escaping : 1, // whether to put escape characters at the returned
+  onEscape : null,
+  onLength : null,
+  cutting : 'center',
   // prefix : '{- \'',
   // postfix : '\' -}',
   // infix : ' ... ',
   // escaping : 1,
   // onEscape : null,
-  onLength : null,
 }
 
 //

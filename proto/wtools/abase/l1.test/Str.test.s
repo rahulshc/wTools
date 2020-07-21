@@ -1944,58 +1944,167 @@ function strForRange( test )
 
 function strStrShort( test )
 {
+  test.open( 'change src' );
 
-  test.case = 'simple string';
-  var limit = 16;
-  var got = _.strStrShort( 'string', limit );
-  var expected = '\'st\' ... \'ng\'';
+  test.case = 'src is empty string';
+  var src = { src : '', limit : 4 }
+  var got = _.strStrShort( src );
+  var expected = '';
   test.identical( got, expected );
-  test.identical( got.length, limit );
+  test.identical( got.length, src.src.length );
 
-  test.case = 'string with escaping';
-  var got = _.strStrShort( 's\ntring', 16 );
-  var expected = '\'s\' ... \'ng\'';
+  test.case = 'src length > limit';
+  var src = { src : 'string', limit : 4 }
+  var got = _.strStrShort( src );
+  var expected = 'stng';
   test.identical( got, expected );
+  test.identical( got.length, src.limit );
 
-  test.case = 'limit 0';
-  var got = _.strStrShort( 'string', 0 );
-  var expected = 'string';
+  test.case = 'src length < limit';
+  var src = { src : 'pie', limit : 4 }
+  var got = _.strStrShort( src );
+  var expected = 'pie';
   test.identical( got, expected );
+  test.identical( got.length, src.src.length );
 
-  test.case = 'limit 1';
-  var got = _.strStrShort( 'string', 1 );
-  var expected = '\'s\'';
+  test.case = 'src length = limit';
+  var src = { src : 'pie', limit : 4 }
+  var got = _.strStrShort( src );
+  var expected = 'pie';
   test.identical( got, expected );
+  test.identical( got.length, src.src.length );
 
-  test.case = 'string wih spaces';
-  var got = _.strStrShort( 'source and', 16 );
-  var expected = '\'sou\' ... \'nd\'';
-  test.identical( got, expected );
+  test.close( 'change src' );
 
-  test.case = 'one argument call';
-  var got = _.strStrShort( { src : 'string', limit : 4, prefix : "<", postfix : ">" } );
-  var expected = "'st' ... 'ng'";
-  test.identical( got, expected );
+  /* - */
 
-  test.case = 'string with whitespaces';
-  var got = _.strStrShort( { src : '  simple string   ', limit : 4, prefix : "<", postfix : ">" } );
-  var expected = "'  ' ... '  '";
-  test.identical( got, expected );
+  test.open( 'change limit' );
 
-  test.case = 'wrap 0';
-  var got = _.strStrShort( { src : 'simple', limit : 4, prefix : 0, postfix : 0 } );
-  var expected = "si ... le";
+  test.case = 'limit = 0';
+  var src = { src : 'string', limit : 0 }
+  var got = _.strStrShort( src );
+  var expected = '';
   test.identical( got, expected );
+  test.identical( got.length, src.limit );
 
-  test.case = 'escaping 0';
-  var got = _.strStrShort( { src : 'si\x01mple', limit : 9, prefix : "<", postfix : ">", onEscape : 0 } );
-  var expected = '"si\x01" ... "le"';
+  test.case = 'src length > limit & src length is odd, limit = 1';
+  var src = { src : 'pie', limit : 1 }
+  var got = _.strStrShort( src );
+  var expected = 'p';
   test.identical( got, expected );
+  test.identical( got.length, src.limit );
 
-  test.case = 'escaping 1';
-  var got = _.strStrShort( { src : 's\u001btring', limit : 9, prefix : "<", postfix : ">", onEscape : 1 } );
-  var expected = '"s" ... "ng"';
+  test.case = 'src length > limit & src length is even, limit = 1';
+  var src = { src : 'apie', limit : 1 }
+  var got = _.strStrShort( src );
+  var expected = 'a';
   test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'src length > limit, limit = 3';
+  var src = { src : 'string', limit : 3 }
+  var got = _.strStrShort( src );
+  var expected = 'stg';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.close( 'change limit' );
+
+  // test.case = 'simple string';
+  // var src = { src : 'string', limit : 4 }
+  // var got = _.strStrShort( src );
+  // console.log( got )
+  // var expected = '\'st\' ... \'ng\'';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.limit );
+  // console.log( '-------------------' )
+  // test.case = 'simple string';
+  // var src = { src : 'string', limit : 4, prefix : '<' }
+  // var got = _.strStrShort( src );
+  // console.log( got )
+  // var expected = '\'st\' ... \'ng\'';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.limit );
+  // console.log( '-------------------' )
+  // test.case = 'simple string';
+  // var src = { src : 'string', limit : 4, postfix : '>' }
+  // var got = _.strStrShort( src );
+  // console.log( got )
+  // var expected = '\'st\' ... \'ng\'';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.limit );
+  // console.log( '-------------------' )
+  // test.case = 'simple string';
+  // var limit = 16;
+  // var src = { src : 'string', limit : 4, postfix : '>', prefix : '<' }
+  // var got = _.strStrShort( src );
+  // console.log( got )
+  // var expected = '\'st\' ... \'ng\'';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.limit );
+  // console.log( '-------------------' )
+  // test.case = 'simple string';
+  // var limit = 16;
+  // var src = { src : 'string', limit : 4, postfix : '>', prefix : '<', infix : '..' }
+  // var got = _.strStrShort( src );
+  // console.log( got )
+  // var expected = '\'st\' ... \'ng\'';
+  // test.identical( got, expected );
+  // test.identical( got.length, src.limit );
+
+  // test.case = 'string with escaping';
+  // var got = _.strStrShort( 's\ntring', 16 );
+  // var expected = '\'s\' ... \'ng\'';
+  // test.identical( got, expected );
+  // test.identical( got.length, limit );
+
+  // test.case = 'limit 0';
+  // var got = _.strStrShort( 'string', 0 );
+  // var expected = 'string';
+  // test.identical( got, expected );
+  // test.identical( got.length, limit );
+
+  // test.case = 'limit 1';
+  // var got = _.strStrShort( 'string', 1 );
+  // var expected = '\'s\'';
+  // test.identical( got, expected );
+  // test.identical( got.length, limit );
+
+  // test.case = 'string wih spaces';
+  // var got = _.strStrShort( 'source and', 16 );
+  // var expected = '\'sou\' ... \'nd\'';
+  // test.identical( got, expected );
+  // test.identical( got.length, limit );
+
+  // test.case = 'one argument call';
+  // var got = _.strStrShort( { src : 'string', limit : 4, prefix : "<", postfix : ">" } );
+  // var expected = "'st' ... 'ng'";
+  // test.identical( got, expected );
+  // test.identical( got.length, limit );
+
+  // test.case = 'string with whitespaces';
+  // var got = _.strStrShort( { src : '  simple string   ', limit : 4, prefix : "<", postfix : ">" } );
+  // var expected = "'  ' ... '  '";
+  // test.identical( got, expected );
+  // test.identical( got.length, limit );
+
+  // test.case = 'wrap 0';
+  // var got = _.strStrShort( { src : 'simple', limit : 4, prefix : 0, postfix : 0 } );
+  // var expected = "si ... le";
+  // test.identical( got, expected );
+  // test.identical( got.length, limit );
+
+  // test.case = 'escaping 0';
+  // var got = _.strStrShort( { src : 'si\x01mple', limit : 9, prefix : "<", postfix : ">", onEscape : 0 } );
+  // var expected = '"si\x01" ... "le"';
+  // test.identical( got, expected );
+  // test.identical( got.length, limit );
+
+  // test.case = 'escaping 1';
+  // var got = _.strStrShort( { src : 's\u001btring', limit : 9, prefix : "<", postfix : ">", onEscape : 1 } );
+  // var expected = '"s" ... "ng"';
+  // test.identical( got, expected );
+  // test.identical( got.length, limit );
 
   /**/
 
@@ -2023,10 +2132,23 @@ function strStrShort( test )
   test.case = 'unknown property provided';
   test.shouldThrowErrorSync( function()
   {
-    _.strStrShort( { src : 'string', limit : 4, wrap : 0, fixed : 5 } );
+    _.strStrShort( { src : 'string', limit : 4, fixed : 5 } );
   });
 
 }
+
+//
+
+function strStrShortOptionsPrefixPostfix( test )
+{
+
+  test.open( 'change prefix' )
+
+  test.close( 'change prefix' )
+
+}
+
+//
 
 //--
 // transformer
@@ -9615,8 +9737,8 @@ let Self =
     // formatter
 
     strForRange,
-    // strStrShort, /* qqq : rewrite and enable */
-
+    strStrShort, /* qqq : rewrite and enable */
+    strStrShortOptionsPrefixPostfix,
     // transformer
 
     strCapitalize,
