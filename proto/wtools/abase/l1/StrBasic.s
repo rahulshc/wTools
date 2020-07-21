@@ -4717,7 +4717,7 @@ function strLinesNumber( o )
 
   /* */
 
-  if( o.zeroLine === null  )
+  if( o.zeroLine === null )
   {
     if( o.zeroChar === null )
     {
@@ -4759,8 +4759,32 @@ function strLinesNumber( o )
     let numLength = String( l + o.zeroLine ).length;
     lines[ l ] = ' '.repeat( maxNumLength - numLength ) + ( l + o.zeroLine ) + ' : ' + lines[ l ];
   }
+  if( o.highlightingToken && o.highlighting )
+  {
+    let results;
 
-  /* */
+    _.assert( o.highlighting === null || _.numberIs( o.highlighting ) || _.longIs( o.highlighting ), 'Expects number or array of numbers {-o.highlighting-}' );
+
+    if( !_.arrayIs( o.highlighting ) )
+    {
+      if( o.highlighting > o.zeroLine + lines.length - 1 || o.highlighting < o.zeroLine )
+      return lines.join( '\n' );
+    }
+
+    results = lines.map( ( el ) =>
+    {
+      if( _.arrayIs( o.highlighting ) )
+      return o.highlighting.includes( parseInt( el, 10 ) ) ? '' + o.highlightingToken + ' ' + el : '' + ' '.repeat( o.highlightingToken.length + 1 ) + el;
+      else
+      return ( '' + o.highlighting ).includes( parseInt( el, 10 ) ) ? '' + o.highlightingToken + ' ' + el : '' + ' '.repeat( o.highlightingToken.length + 1 ) + el;
+    } )
+
+    if( JSON.stringify( lines ) === JSON.stringify( results.map( ( el ) => el.trim() ) ) )
+    return lines.join( '\n' );
+
+    return results.join( '\n' );
+
+  }
 
   return lines.join( '\n' );
 }
@@ -5282,7 +5306,26 @@ function strLinesNearestLog_body( o )
   result.log = _.color.strEscape( result.log );
 
   let left = o.src.substring( 0, o.charsRangeLeft[ 0 ] );
-  let zeroLine = left ? _.strLinesCount( left ) : 1;
+  // ---- BUG
+  // let zeroLine = left ? _.strLinesCount( left ) : 1;
+  // ----
+
+  // ---- FIX (Yevhen S.)
+  let zeroLine;
+  if( left )
+  {
+    let linesNum = _.strLinesCount( left )
+    if( linesNum <= 1 )
+    zeroLine = 1;
+    else
+    zeroLine = linesNum - ( Math.floor( o.nearestLines / 2 ) ) <= 0 ? 1 : linesNum - ( Math.floor( o.nearestLines / 2 ) );
+  }
+  else
+  {
+    zeroLine = 1
+  }
+  // ----
+
   result.log = _.strLinesNumber
   ({
     src : result.log,
