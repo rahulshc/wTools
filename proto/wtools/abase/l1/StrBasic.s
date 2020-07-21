@@ -5387,33 +5387,45 @@ function strLinesCount( src )
 
 //
 
-function strLinesSize( src )
+function strLinesSize( o )
 {
   let lines;
 
-  _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.strIs( src ) || _.arrayLike( src ) );
+  if( !_.mapIs( o ) )
+  o = { src : arguments[ 0 ] }
 
-  if( _.strIs( src ) )
+  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( o.src ) || _.arrayLike( o.src ) );
+  _.routineOptions( strLinesSize, o );
+  if( o.onLength === null )
+  o.onLength = ( src ) => src.length;
+
+  if( _.strIs( o.src ) )
   {
-    if( src.length === '' )
+    if( o.onLength( o.src ) === '' )
     return [ 0, 0 ];
-    if( src.indexOf( '\n' ) === -1 )
-    return [ 1, src.length ];
-    lines = src.split( '\n' );
+    if( o.src.indexOf( '\n' ) === -1 )
+    return [ 1, o.onLength( o.src ) ];
+    lines = o.src.split( '\n' );
   }
   else
   {
-    lines = src;
+    lines = o.src;
     if( lines.length === 0 )
     return [ 0, 0 ];
     else if( lines.length === 1 && lines[ 0 ] === '' )
     return [ 0, 0 ];
   }
 
-  let w = lines.reduce( ( a, e ) => Math.max( a, e.length ), 1 );
+  let w = lines.reduce( ( a, e ) => Math.max( a, o.onLength( e ) ), 1 );
 
   return [ lines.length, w ];
+}
+
+strLinesSize.defaults =
+{
+  src : null,
+  onLength : null,
 }
 
 //
@@ -5589,7 +5601,7 @@ let Proto =
   strLinesNearest, /* aaa : check coverage */ /* Dmytro : checked, improved formatting */
   strLinesNearestLog, /* qqq2 : cover please */
   strLinesCount,
-  strLinesSize, /* xxx : cover */
+  strLinesSize, /* qqq2 : cover */
   strLinesRangeWithCharRange,
 
 }
