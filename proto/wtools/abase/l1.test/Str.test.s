@@ -2302,6 +2302,13 @@ function strStrShortOptionCutting( test )
 
 //
 
+function strStrShortOptionsCombination( test )
+{
+
+}
+
+//
+
 //--
 // transformer
 //--
@@ -9894,6 +9901,7 @@ let Self =
     strStrShortOptionInfix,
     strStrShortOptionsOnEscapeOnLength,
     strStrShortOptionCutting,
+    strStrShortOptionsCombination,
 
     // transformer
 
