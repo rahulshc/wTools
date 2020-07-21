@@ -1170,8 +1170,8 @@ function strStrShort( o )
 
   _.routineOptions( strStrShort, o );
 
-  if( _.boolLike( o.onEscape ) || o.onEscape === null )
-  o.onEscape = o.onEscape ? _.strEscape : ( src ) => src;
+  // if( _.boolLike( o.onEscape ) || o.onEscape === null )
+  // o.onEscape = o.onEscape ? _.strEscape : ( src ) => src;
 
   if( !o.infix )
   o.infix = '';
@@ -1180,7 +1180,7 @@ function strStrShort( o )
 
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
-  _.assert( _.routineIs( o.onEscape ) );
+  // _.assert( _.routineIs( o.onEscape ) );
   _.assert( o.prefix === null || _.strIs( o.prefix ) || _.boolLikeFalse( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) || _.boolLikeFalse( o.postfix ) );
   _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeFalse( o.infix ) );
@@ -1195,7 +1195,7 @@ function strStrShort( o )
   if( o.infix )
   fixLength += lengthOf( o.infix );
   let lengthWithoutFix = o.limit - fixLength;
-  src = o.onEscape( src );
+  // src = escape( src );
 
   if( o.limit > 0 && src.length + fixLength > o.limit )
   {
@@ -1220,6 +1220,13 @@ function strStrShort( o )
 
   /* */
 
+  function escape( src )
+  {
+    return o.onEscape ? o.onEscape( src ) : src;
+  }
+
+  /* */
+
   function lengthOfEscaped( src )
   {
     let l = o.onLength ? o.onLength( src ) : src.length;
@@ -1230,7 +1237,8 @@ function strStrShort( o )
 
   function lengthOf( src )
   {
-    let escaped = o.onEscape( src );
+    // let escaped = escape( src );
+    let escaped = src;
     return lengthOfEscaped( src );
   }
 
@@ -1238,7 +1246,8 @@ function strStrShort( o )
 
   function short( src, limit, begin )
   {
-    let result = o.onEscape( src );
+    // let result = escape( src );
+    let result = src;
     let length = lengthOfEscaped( src );
 
     if( length < limit )
@@ -1249,9 +1258,9 @@ function strStrShort( o )
     {
       l2 += 1;
       if( begin )
-      result = o.onEscape( src.slice( 0, l2 ) );
+      result = escape( src.slice( 0, l2 ) );
       else
-      result = o.onEscape( src.slice( result.length-l2, result.length ) );
+      result = escape( src.slice( result.length-l2, result.length ) );
       length = lengthOf( result );
     }
     while( length < limit && l2 < src.length );
@@ -1260,9 +1269,9 @@ function strStrShort( o )
     {
       l2 -= 1;
       if( begin )
-      result = o.onEscape( src.slice( 0, l2 ) );
+      result = escape( src.slice( 0, l2 ) );
       else
-      result = o.onEscape( src.slice( result.length-l2, result.length ) );
+      result = escape( src.slice( result.length-l2, result.length ) );
       length = lengthOf( result );
     }
 
@@ -1284,7 +1293,7 @@ strStrShort.defaults =
   // postfix : '\' -}',
   // infix : ' ... ',
   // escaping : 1,
-  onEscape : null,
+  // onEscape : null,
   onLength : null,
 }
 
