@@ -1161,7 +1161,6 @@ function strForCall( nameOfRoutine, args, ret, o )
 
 function strStrShort( o )
 {
-  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( arguments.length === 2 )
   o = { src : arguments[ 0 ], limit : arguments[ 1 ] };
@@ -1170,63 +1169,126 @@ function strStrShort( o )
   o = { src : arguments[ 0 ] };
 
   _.routineOptions( strStrShort, o );
+
+  if( _.boolLike( o.onEscape ) || o.onEscape === null )
+  o.onEscape = o.onEscape ? _.strEscape : ( src ) => src;
+
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
+  _.assert( _.routineIs( o.onEscape ) );
+  _.assert( o.prefix === null || _.strIs( o.prefix ) || _.boolLikeFalse( o.prefix ) );
+  _.assert( o.postfix === null || _.strIs( o.postfix ) || _.boolLikeFalse( o.postfix ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  let str = o.src;
+  // if( o.onEscape === null )
+  // o.onEscape = o.escaping ? _.strEscape : ( src ) => src;
 
-  if( str.length > o.limit && o.limit > 0  )
+  // let src = o.src;
+  // let src = short( o.src );
+  let src = o.src;
+  let fixLength = 0;
+  if( o.prefix )
+  fixLength += o.prefix ? lengthOf( o.prefix ) : 0;
+  if( o.postfix )
+  fixLength += o.postfix ? lengthOf( o.postfix ) : 0;
+  if( o.infix )
+  fixLength += lengthOf( o.infix );
+  let lengthWithoutFix = o.limit - fixLength;
+  // if( o.escaping )
+  src = _.strEscape( src );
+
+  // if( src.length > o.limit && o.limit > 0  )
+  if( o.limit > 0 && src.length + fixLength > o.limit )
   {
-    let b = Math.ceil( o.limit / 2 );
-    let e = o.limit - b;
+    let b = Math.max( 0, Math.ceil( lengthWithoutFix / 2 ) );
+    let e = Math.max( 0, lengthWithoutFix - b );
 
-    let begin = str.substr( 0, b );
-    let end = str.slice( -e );
+    // let begin = src.substr( 0, b );
+    // let end = src.slice( -e );
+    //
+    // if( o.escaping )
+    // {
+    //   begin = short( begin, b, true );
+    //   end = short( end, e, false );
+    // }
 
-    if( o.escaping )
-    {
+    let begin = short( o.src, b, true );
+    let end = short( o.src, e, false );
 
-      begin = check( begin, b );
-      end = check( end, e );
+    if( o.prefix )
+    begin = o.prefix + begin;
+    if( o.postfix )
+    end = end + o.postfix;
 
-    }
-
-    if( o.wrap )
-    {
-      _.assert( _.strIs( o.wrap ) );
-
-      begin = o.wrap + begin + o.wrap;
-      end = o.wrap + end + o.wrap;
-    }
-
-    if( o.limit === 1 )
-    str = begin;
-    else
-    str = begin + ' ... ' +  end ;
+    // if( o.limit >= fixLength )
+    src = begin + o.infix + end;
+    // else
+    // src = begin;
 
   }
   else
   {
-    if( o.escaping )
-    str = _.strEscape( str );
+    // if( o.escaping )
+    // src = _.strEscape( src );
   }
 
-  return str;
+  return src;
 
-  function check( s, l )
+  /* */
+
+  function lengthOf( src )
   {
-    let temp = _.strEscape( s );
+    let l = o.onLength ? o.onLength( src ) : src.length;
+    // if( o.wrap )
+    // l += o.wrap.length*2;
+    return l;
+  }
 
-    if( temp.length > l )
-    for( let i = s.length - 1; i >= 0 ; --i )
+  /* */
+
+  function short( src, limit, begin )
+  {
+    let result = _.strEscape( src );
+    let length = lengthOf( src );
+
+    if( length < limit )
+    return result;
+
+    debugger;
+
+    let l2 = limit-1;
+    do
     {
-      if( temp.length <= l )
-      break;
-      temp = temp.slice( 0, - ( _.strEscape( s[ i ] ).length ) );
+      l2 += 1;
+      if( begin )
+      result = _.strEscape( src.slice( 0, l2 ) );
+      else
+      result = _.strEscape( src.slice( result.length-l2, result.length ) );
+      length = lengthOf( result );
+    }
+    while( length < limit && l2 < src.length );
+
+    while( length > limit && result.length > 0 )
+    {
+      l2 -= 1;
+      if( begin )
+      result = _.strEscape( src.slice( 0, l2 ) );
+      else
+      result = _.strEscape( src.slice( result.length-l2, result.length ) );
+      length = lengthOf( result );
     }
 
-    return temp;
+    // for( let i = s.length - 1; i >= 0 ; --i )
+    // {
+    //   if( length <= limit )
+    //   break;
+    //   result = result.slice( 0, - ( _.strEscape( s[ i ] ).length ) );
+    // }
+
+    return result;
   }
+
+  /* */
 
 }
 
@@ -1234,8 +1296,12 @@ strStrShort.defaults =
 {
   src : null,
   limit : 40,
-  wrap : '\'',
-  escaping : 1
+  prefix : '{- \'',
+  postfix : '\' -}',
+  infix : ' ... ',
+  // escaping : 1,
+  onEscape : null,
+  onLength : null,
 }
 
 //
@@ -5409,7 +5475,7 @@ let Proto =
 
   strForRange, /* xxx : investigate */
   strForCall, /* xxx : investigate */
-  strStrShort, /* xxx : investigate */
+  strStrShort, /* qqq2 : cover please. update jsdoc */
   strDifference,
 
   // transformer
