@@ -1220,7 +1220,7 @@ function strStrShort( o )
 
   /* */
 
-  function lengthOf( src )
+  function lengthOfEscaped( src )
   {
     let l = o.onLength ? o.onLength( src ) : src.length;
     return l;
@@ -1228,10 +1228,18 @@ function strStrShort( o )
 
   /* */
 
+  function lengthOf( src )
+  {
+    let escaped = o.onEscape( src );
+    return lengthOfEscaped( src );
+  }
+
+  /* */
+
   function short( src, limit, begin )
   {
     let result = o.onEscape( src );
-    let length = lengthOf( src );
+    let length = lengthOfEscaped( src );
 
     if( length < limit )
     return result;
