@@ -1938,7 +1938,27 @@ function strForRange( test )
     _.strForRange( [ 1, 10 ], 'redundant argument' );
   } );
 
-};
+}
+
+//
+
+function strStrShortSpecial( test )
+{
+
+  test.case = 'no cutting';
+  var src = 'a13';
+  var limit = 1;
+  var got = _.strStrShort({ src, onLength, limit });
+  var expected = 'a13';
+  test.identical( got, expected );
+
+  function onLength( src )
+  {
+    src = src.replace( /13/mg, '' );
+    return src.length;
+  }
+
+}
 
 //
 
@@ -9615,6 +9635,9 @@ let Self =
     // formatter
 
     strForRange,
+
+    strStrShortSpecial,
+
     // strStrShort, /* qqq : rewrite and enable */
 
     // transformer
