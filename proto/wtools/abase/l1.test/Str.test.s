@@ -1960,6 +1960,20 @@ function strStrShort( test )
   test.identical( got, expected );
   test.identical( got.length, src.limit );
 
+  test.case = 'src length > limit & src length is odd, limit = 1';
+  var src = { src : 'pie', limit : 1 }
+  var got = _.strStrShort( src );
+  var expected = 'p';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'src length > limit & src length is even, limit = 1';
+  var src = { src : 'apie', limit : 1 }
+  var got = _.strStrShort( src );
+  var expected = 'a';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
   test.case = 'src length < limit';
   var src = { src : 'pie', limit : 4 }
   var got = _.strStrShort( src );
@@ -1984,20 +1998,6 @@ function strStrShort( test )
   var src = { src : 'string', limit : 0 }
   var got = _.strStrShort( src );
   var expected = '';
-  test.identical( got, expected );
-  test.identical( got.length, src.limit );
-
-  test.case = 'src length > limit & src length is odd, limit = 1';
-  var src = { src : 'pie', limit : 1 }
-  var got = _.strStrShort( src );
-  var expected = 'p';
-  test.identical( got, expected );
-  test.identical( got.length, src.limit );
-
-  test.case = 'src length > limit & src length is even, limit = 1';
-  var src = { src : 'apie', limit : 1 }
-  var got = _.strStrShort( src );
-  var expected = 'a';
   test.identical( got, expected );
   test.identical( got.length, src.limit );
 
@@ -2144,7 +2144,159 @@ function strStrShortOptionsPrefixPostfix( test )
 
   test.open( 'change prefix' )
 
+  test.case = 'prefix is empty string';
+  var src = { src : 'string', limit : 5, prefix : '' }
+  var got = _.strStrShort( src );
+  var expected = 'strng';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'prefix < limit';
+  var src = { src : 'string', limit : 5, prefix : '<' }
+  var got = _.strStrShort( src );
+  var expected = '<stng';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'prefix = limit + 1';
+  var src = { src : 'string', limit : 5, prefix : '<<<<' }
+  var got = _.strStrShort( src );
+  var expected = '<<<<s';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'prefix = limit';
+  var src = { src : 'string', limit : 5, prefix : '<<<<<' }
+  var got = _.strStrShort( src );
+  var expected = '<<<<<';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'prefix > limit';
+  var src = { src : 'string', limit : 5, prefix : '<<<<<<<<<<' }
+  var got = _.strStrShort( src );
+  var expected = '<<<<<';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
   test.close( 'change prefix' )
+
+  /* - */
+
+  test.open( 'change postfix' )
+
+  test.case = 'postfix is empty string';
+  var src = { src : 'string', limit : 5, postfix : '' }
+  var got = _.strStrShort( src );
+  var expected = 'strng';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'postfix < limit';
+  var src = { src : 'string', limit : 5, postfix : '>' }
+  var got = _.strStrShort( src );
+  var expected = 'stng>';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'postfix = limit + 1';
+  var src = { src : 'string', limit : 5, postfix : '>>>>' }
+  var got = _.strStrShort( src );
+  var expected = 's>>>>';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'postfix = limit';
+  var src = { src : 'string', limit : 5, postfix : '>>>>>' }
+  var got = _.strStrShort( src );
+  var expected = '>>>>>';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'postfix > limit';
+  var src = { src : 'string', limit : 5, postfix : '>>>>>>>>>>' }
+  var got = _.strStrShort( src );
+  var expected = '>>>>>';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.close( 'change postfix' )
+
+}
+
+//
+
+function strStrShortOptionInfix( test )
+{
+
+  test.open( 'change infix' )
+
+  test.case = 'infix is empty string';
+  var src = { src : 'string', limit : 5, infix : '' }
+  var got = _.strStrShort( src );
+  var expected = 'strng';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'infix < limit';
+  var src = { src : 'string', limit : 5, infix : '.' }
+  var got = _.strStrShort( src );
+  var expected = 'st.ng';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'infix < limit, even length in the output';
+  var src = { src : 'string', limit : 4, infix : '.' }
+  var got = _.strStrShort( src );
+  var expected = 'st.g';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'infix = limit + 1';
+  var src = { src : 'string', limit : 5, infix : '....' }
+  var got = _.strStrShort( src );
+  var expected = 's....';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'infix = limit';
+  var src = { src : 'string', limit : 5, infix : '.....' }
+  var got = _.strStrShort( src );
+  var expected = '.....';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'infix > limit';
+  var src = { src : 'string', limit : 5, infix : '..........' }
+  var got = _.strStrShort( src );
+  var expected = '.....';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.close( 'change infix' )
+
+}
+
+//
+
+function strStrShortOptionsOnEscapeOnLength( test )
+{
+
+}
+
+//
+
+function strStrShortOptionCutting( test )
+{
+  test.open( 'cutting : left' )
+
+  test.close( 'cutting : left' )
+
+  /* - */
+
+  test.open( 'cutting : right' )
+
+  test.close( 'cutting : right' )
 
 }
 
@@ -9739,6 +9891,10 @@ let Self =
     strForRange,
     strStrShort, /* qqq : rewrite and enable */
     strStrShortOptionsPrefixPostfix,
+    strStrShortOptionInfix,
+    strStrShortOptionsOnEscapeOnLength,
+    strStrShortOptionCutting,
+
     // transformer
 
     strCapitalize,
