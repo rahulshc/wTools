@@ -1186,11 +1186,6 @@ function strStrShort( o )
   _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeFalse( o.infix ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  // if( o.onEscape === null )
-  // o.onEscape = o.escaping ? _.strEscape : ( src ) => src;
-
-  // let src = o.src;
-  // let src = short( o.src );
   let src = o.src;
   let fixLength = 0;
   if( o.prefix )
@@ -1200,24 +1195,12 @@ function strStrShort( o )
   if( o.infix )
   fixLength += lengthOf( o.infix );
   let lengthWithoutFix = o.limit - fixLength;
-  // if( o.escaping )
   src = _.strEscape( src );
 
-  // if( src.length > o.limit && o.limit > 0  )
   if( o.limit > 0 && src.length + fixLength > o.limit )
   {
     let b = Math.max( 0, Math.ceil( lengthWithoutFix / 2 ) );
     let e = Math.max( 0, lengthWithoutFix - b );
-
-    // let begin = src.substr( 0, b );
-    // let end = src.slice( -e );
-    //
-    // if( o.escaping )
-    // {
-    //   begin = short( begin, b, true );
-    //   end = short( end, e, false );
-    // }
-
     let begin = short( o.src, b, true );
     let end = short( o.src, e, false );
 
@@ -1226,16 +1209,11 @@ function strStrShort( o )
     if( o.postfix )
     end = end + o.postfix;
 
-    // if( o.limit >= fixLength )
     src = begin + o.infix + end;
-    // else
-    // src = begin;
 
   }
   else
   {
-    // if( o.escaping )
-    // src = _.strEscape( src );
   }
 
   return src;
@@ -1245,8 +1223,6 @@ function strStrShort( o )
   function lengthOf( src )
   {
     let l = o.onLength ? o.onLength( src ) : src.length;
-    // if( o.wrap )
-    // l += o.wrap.length*2;
     return l;
   }
 
@@ -1259,8 +1235,6 @@ function strStrShort( o )
 
     if( length < limit )
     return result;
-
-    debugger;
 
     let l2 = limit-1;
     do
@@ -1283,13 +1257,6 @@ function strStrShort( o )
       result = _.strEscape( src.slice( result.length-l2, result.length ) );
       length = lengthOf( result );
     }
-
-    // for( let i = s.length - 1; i >= 0 ; --i )
-    // {
-    //   if( length <= limit )
-    //   break;
-    //   result = result.slice( 0, - ( _.strEscape( s[ i ] ).length ) );
-    // }
 
     return result;
   }

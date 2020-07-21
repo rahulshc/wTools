@@ -9615,7 +9615,7 @@ let Self =
     // formatter
 
     strForRange,
-    strStrShort, /* qqq : rewrite and enable */
+    // strStrShort, /* qqq : rewrite and enable */
 
     // transformer
 
