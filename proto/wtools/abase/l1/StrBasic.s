@@ -1173,11 +1173,17 @@ function strStrShort( o )
   if( _.boolLike( o.onEscape ) || o.onEscape === null )
   o.onEscape = o.onEscape ? _.strEscape : ( src ) => src;
 
+  if( !o.infix )
+  o.infix = '';
+  else if( _.boolLikeTrue( o.infix ) )
+  o.infix = ' ... ';
+
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
   _.assert( _.routineIs( o.onEscape ) );
   _.assert( o.prefix === null || _.strIs( o.prefix ) || _.boolLikeFalse( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) || _.boolLikeFalse( o.postfix ) );
+  _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeFalse( o.infix ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   // if( o.onEscape === null )
@@ -1296,9 +1302,12 @@ strStrShort.defaults =
 {
   src : null,
   limit : 40,
-  prefix : '{- \'',
-  postfix : '\' -}',
-  infix : ' ... ',
+  prefix : null,
+  postfix : null,
+  infix : null,
+  // prefix : '{- \'',
+  // postfix : '\' -}',
+  // infix : ' ... ',
   // escaping : 1,
   onEscape : null,
   onLength : null,
