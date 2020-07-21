@@ -7171,7 +7171,7 @@ function strLinesNumberOptionHighlighting( test )
   var expected = '  1 : 12a\n* 2 : bcd\n  3 : 3ef';
   test.identical( got, expected );
 
-  test.case = 'a few lines, amount of letters in lines';
+  test.case = 'a few lines, different amount of letters in lines';
   var got = _.strLinesNumber({ src : '1\nbcd\n3ef\naaaaaa', highlighting : 2 });
   var expected = '  1 : 1\n* 2 : bcd\n  3 : 3ef\n  4 : aaaaaa';
   test.identical( got, expected );
