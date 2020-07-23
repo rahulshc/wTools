@@ -10066,7 +10066,7 @@ function strLinesSize( test )
   var got  = _.strLinesSize( src );
   test.identical( got, expected );
 
-  test.case = '3 lines with different amount of letters';
+  test.case = '3 lines with different amount of letters and numbers';
   var src = { src : 'ab\ncde\nfghk5678' };
   var expected = [ 3, 8 ];
   var got  = _.strLinesSize( src );
