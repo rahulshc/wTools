@@ -10078,11 +10078,47 @@ function strLinesSize( test )
 
   test.open( 'change onLength' )
 
-  // test.case = '3 lines with different amount of letters';
-  // var src = { src : 'ab\ncde\nfghk' };
-  // var expected = [ 3, 4 ];
-  // var got  = _.strLinesSize( src );
-  // test.identical( got, expected );
+  test.case = 'true length is smaller';
+  var src = 
+  { 
+  src : 'ab\ncde\nfghk',
+  onLength: ( src ) =>
+  {
+    src = src.replace( /fghk/mg, 'a' );
+    return src.length;
+  }
+  };
+  var expected = [ 3, 3 ];
+  var got  = _.strLinesSize( src );
+  test.identical( got, expected );
+
+  test.case = 'true length is the same';
+  var src = 
+  { 
+  src : 'ab\ncde\nfghk',
+  onLength: ( src ) =>
+  {
+    src = src.replace( /fghk/mg, 'aaaa' );
+    return src.length;
+  }
+  };
+  var expected = [ 3, 4 ];
+  var got  = _.strLinesSize( src );
+  test.identical( got, expected );
+
+  test.case = 'true length is bigger';
+  var src = 
+  { 
+  src : 'ab\ncde\nfghk',
+  onLength: ( src ) =>
+  {
+    src = src.replace( /ab/mg, 'aaaaaa' );
+    return src.length;
+  }
+  };
+  var expected = [ 3, 6 ];
+  var got  = _.strLinesSize( src );
+  test.identical( got, expected );
 
   test.close( 'change onLength' )
 }
