@@ -2330,17 +2330,23 @@ function strStrShortOptionInfix( test )
 
 //
 
-function strStrShortOptionsOnEscapeOnLength( test )
+function strStrShortOptionsOnLength( test )
 {
-  test.open( 'change onEscape' )
+  test.case = 'test';
+  var src = { src : 'a\nb', limit : 3 }
+  var got = _.strStrShort( src );
+  var expected = 'a\nb';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
 
-  test.close( 'change onEscape' )
+  test.case = 'test 2';
+  var src = { src : 'a', limit : 1, prefix : '<', infix : '.', postfix : '>' }
+  var got = _.strStrShort( src )
+  console.log( got )
+  var expected = '<>';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
 
-  /* - */
-
-  test.open( 'change onEscape' )
-
-  test.close( 'change onEscape' )
 }
 
 //
@@ -2419,7 +2425,7 @@ function strStrShortOptionCutting( test )
 
 function strStrShortOptionsCombination( test )
 {
-  // EXTEND
+
   test.open( 'prefix, postfix, infix' )
 
   test.case = 'prefix & postfix & infix < limit';
@@ -2448,43 +2454,80 @@ function strStrShortOptionsCombination( test )
   /* - */
 
   test.open( 'src is empty, prefix or postfix or infix or all' )
-  // Can we create a string with empty src if limit allows it ?
+
   test.case = 'src is empty, prefix < limit'
   var src = { src : '', limit : 3, prefix : '<' }
   var got = _.strStrShort( src );
   var expected = '<';
   test.identical( got, expected );
-  test.identical( got.length, src.limit );
+  test.identical( got.length, 1 );
 
   test.case = 'src is empty, postfix < limit'
   var src = { src : '', limit : 3, postfix : '>' }
   var got = _.strStrShort( src );
   var expected = '>';
   test.identical( got, expected );
-  test.identical( got.length, src.limit );
+  test.identical( got.length, 1 );
 
   test.case = 'src is empty, infix < limit'
   var src = { src : '', limit : 3, infix : '.' }
   var got = _.strStrShort( src );
-  var expected = '.';
+  var expected = '';
   test.identical( got, expected );
-  test.identical( got.length, src.limit );
+  test.identical( got.length, 0 );
 
   test.case = 'src is empty, prefix, postfix, infix < limit'
   var src = { src : '', limit : 4, prefix : '<', postfix : '>', infix : '.' }
   var got = _.strStrShort( src );
-  var expected = '<.>';
+  var expected = '<>';
   test.identical( got, expected );
-  test.identical( got.length, src.limit );
+  test.identical( got.length, 2 );
 
   test.case = 'src is empty, prefix, postfix, infix > limit'
   var src = { src : '', limit : 2, prefix : '<', postfix : '>', infix : '.' }
   var got = _.strStrShort( src );
   var expected = '<>';
   test.identical( got, expected );
-  test.identical( got.length, src.limit );
+  test.identical( got.length, 2 );
 
   test.close( 'src is empty, prefix or postfix or infix or all' )
+
+  /* - */
+
+  test.open( 'change cutting, prefix, infix, postfix' )
+
+  test.case = 'cut left, with prefix';
+  var src = { src : 'string', limit : 4, cutting : 'left', prefix : '<' }
+  var got = _.strStrShort( src );
+  var expected = '<ing';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'cut left, with prefix, postfix, infix';
+  var src = { src : 'string', limit : 5, cutting : 'left', prefix : '<', postfix : '>', infix : '.' }
+  var got = _.strStrShort( src );
+  var expected = '<.ng>';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  //
+
+  test.case = 'cut left, with prefix';
+  var src = { src : 'string', limit : 4, cutting : 'right', prefix : '<' }
+  var got = _.strStrShort( src );
+  var expected = '<str';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.case = 'cut left, with prefix, postfix, infix';
+  var src = { src : 'string', limit : 5, cutting : 'right', prefix : '<', postfix : '>', infix : '.' }
+  var got = _.strStrShort( src );
+  var expected = '<st.>';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
+  test.close( 'change cutting, prefix, infix, postfix' )
+
 
 }
 
@@ -10083,7 +10126,7 @@ let Self =
     strStrShort, /* qqq : rewrite and enable */
     strStrShortOptionsPrefixPostfix,
     strStrShortOptionInfix,
-    strStrShortOptionsOnEscapeOnLength,
+    strStrShortOptionsOnLength,
     strStrShortOptionCutting,
     strStrShortOptionsCombination,
 
