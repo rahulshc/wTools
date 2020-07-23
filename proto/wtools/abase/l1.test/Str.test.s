@@ -2034,102 +2034,6 @@ function strStrShort( test )
 
   test.close( 'change limit' );
 
-  // test.case = 'simple string';
-  // var src = { src : 'string', limit : 4 }
-  // var got = _.strStrShort( src );
-  // console.log( got )
-  // var expected = '\'st\' ... \'ng\'';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.limit );
-  // console.log( '-------------------' )
-  // test.case = 'simple string';
-  // var src = { src : 'string', limit : 4, prefix : '<' }
-  // var got = _.strStrShort( src );
-  // console.log( got )
-  // var expected = '\'st\' ... \'ng\'';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.limit );
-  // console.log( '-------------------' )
-  // test.case = 'simple string';
-  // var src = { src : 'string', limit : 4, postfix : '>' }
-  // var got = _.strStrShort( src );
-  // console.log( got )
-  // var expected = '\'st\' ... \'ng\'';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.limit );
-  // console.log( '-------------------' )
-  // test.case = 'simple string';
-  // var limit = 16;
-  // var src = { src : 'string', limit : 4, postfix : '>', prefix : '<' }
-  // var got = _.strStrShort( src );
-  // console.log( got )
-  // var expected = '\'st\' ... \'ng\'';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.limit );
-  // console.log( '-------------------' )
-  // test.case = 'simple string';
-  // var limit = 16;
-  // var src = { src : 'string', limit : 4, postfix : '>', prefix : '<', infix : '..' }
-  // var got = _.strStrShort( src );
-  // console.log( got )
-  // var expected = '\'st\' ... \'ng\'';
-  // test.identical( got, expected );
-  // test.identical( got.length, src.limit );
-
-  // test.case = 'string with escaping';
-  // var got = _.strStrShort( 's\ntring', 16 );
-  // var expected = '\'s\' ... \'ng\'';
-  // test.identical( got, expected );
-  // test.identical( got.length, limit );
-
-  // test.case = 'limit 0';
-  // var got = _.strStrShort( 'string', 0 );
-  // var expected = 'string';
-  // test.identical( got, expected );
-  // test.identical( got.length, limit );
-
-  // test.case = 'limit 1';
-  // var got = _.strStrShort( 'string', 1 );
-  // var expected = '\'s\'';
-  // test.identical( got, expected );
-  // test.identical( got.length, limit );
-
-  // test.case = 'string wih spaces';
-  // var got = _.strStrShort( 'source and', 16 );
-  // var expected = '\'sou\' ... \'nd\'';
-  // test.identical( got, expected );
-  // test.identical( got.length, limit );
-
-  // test.case = 'one argument call';
-  // var got = _.strStrShort( { src : 'string', limit : 4, prefix : "<", postfix : ">" } );
-  // var expected = "'st' ... 'ng'";
-  // test.identical( got, expected );
-  // test.identical( got.length, limit );
-
-  // test.case = 'string with whitespaces';
-  // var got = _.strStrShort( { src : '  simple string   ', limit : 4, prefix : "<", postfix : ">" } );
-  // var expected = "'  ' ... '  '";
-  // test.identical( got, expected );
-  // test.identical( got.length, limit );
-
-  // test.case = 'wrap 0';
-  // var got = _.strStrShort( { src : 'simple', limit : 4, prefix : 0, postfix : 0 } );
-  // var expected = "si ... le";
-  // test.identical( got, expected );
-  // test.identical( got.length, limit );
-
-  // test.case = 'escaping 0';
-  // var got = _.strStrShort( { src : 'si\x01mple', limit : 9, prefix : "<", postfix : ">", onEscape : 0 } );
-  // var expected = '"si\x01" ... "le"';
-  // test.identical( got, expected );
-  // test.identical( got.length, limit );
-
-  // test.case = 'escaping 1';
-  // var got = _.strStrShort( { src : 's\u001btring', limit : 9, prefix : "<", postfix : ">", onEscape : 1 } );
-  // var expected = '"s" ... "ng"';
-  // test.identical( got, expected );
-  // test.identical( got.length, limit );
-
   /**/
 
   if( !Config.debug )
@@ -2332,20 +2236,54 @@ function strStrShortOptionInfix( test )
 
 function strStrShortOptionsOnLength( test )
 {
-  test.case = 'test';
-  var src = { src : 'a\nb', limit : 3 }
-  var got = _.strStrShort( src );
-  var expected = 'a\nb';
+
+  test.case = 'true length is smaller';
+  var src =
+  {
+    src : '202020',
+    limit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '1' );
+      return src.length;
+    }
+  }
+  var got = _.strStrShort( src )
+  var expected = '202020';
+  test.identical( got, expected );
+  test.identical( got.length, 6 );
+
+  test.case = 'true length is the same';
+  var src =
+  {
+    src : '202020',
+    limit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '10' );
+      return src.length;
+    }
+  }
+  var got = _.strStrShort( src )
+  var expected = '200';
   test.identical( got, expected );
   test.identical( got.length, src.limit );
 
-  test.case = 'test 2';
-  var src = { src : 'a', limit : 1, prefix : '<', infix : '.', postfix : '>' }
+  test.case = 'true length is bigger';
+  var src =
+  {
+    src : '202020',
+    limit : 3,
+    onLength : ( src ) =>
+    {
+      src = src.replace( /20/mg, '100' );
+      return src.length;
+    }
+  }
   var got = _.strStrShort( src )
-  console.log( got )
-  var expected = '<>';
+  var expected = '20';
   test.identical( got, expected );
-  test.identical( got.length, src.limit );
+  test.identical( got.length, 2 );
 
 }
 
@@ -2528,10 +2466,7 @@ function strStrShortOptionsCombination( test )
 
   test.close( 'change cutting, prefix, infix, postfix' )
 
-
 }
-
-//
 
 //--
 // transformer

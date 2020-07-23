@@ -1155,7 +1155,9 @@ function strForCall( nameOfRoutine, args, ret, o )
  * @throws { Exception } If( o ) is extended with unknown property.
  * @throws { Exception } If( o.src ) is not a String.
  * @throws { Exception } If( o.limit ) is not a Number.
- * @throws { Exception } If( o.wrap ) is not a String.
+ * @throws { Exception } If( o.prefix ) is not a String or null.
+ * @throws { Exception } If( o.infix ) is not a String or null.
+ * @throws { Exception } If( o.postfix ) is not a String or null.
  *
  * @namespace Tools
  *
@@ -1171,6 +1173,14 @@ function strStrShort( o )
   o = { src : arguments[ 0 ] };
 
   _.routineOptions( strStrShort, o );
+
+  _.assert( _.strIs( o.src ) );
+  _.assert( _.numberIs( o.limit ) );
+  _.assert( o.limit >= 0, '{-limit-} must be greater or equal to zero' );
+  _.assert( o.prefix === null || _.strIs( o.prefix ) );
+  _.assert( o.postfix === null || _.strIs( o.postfix ) );
+  _.assert( o.infix === null || _.strIs( o.infix ) );
+  _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( !o.infix || o.limit >= o.src.length )
   o.infix = '';
@@ -1191,24 +1201,15 @@ function strStrShort( o )
 
   if( o.prefix.length + o.postfix.length + o.infix.length > o.limit )
   {
-    o.src = o.prefix + o.src + o.infix + o.postfix;
+    o.src = o.prefix + o.infix + o.postfix;
     o.prefix = '';
     o.postfix = '';
     o.infix = '';
   }
 
-  _.assert( _.strIs( o.src ) );
-  _.assert( _.numberIs( o.limit ) );
-  _.assert( o.limit >= 0, '{-limit-} must be greater or equal to zero' );
-  _.assert( o.prefix === null || _.strIs( o.prefix ) || _.boolLikeFalse( o.prefix ) );
-  _.assert( o.postfix === null || _.strIs( o.postfix ) || _.boolLikeFalse( o.postfix ) );
-  _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeFalse( o.infix ) );
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
   let src = o.src;
   let fixLength = 0;
   fixLength += lengthOf( o.prefix ) + lengthOf( o.postfix ) + lengthOf( o.infix );
-  // let lengthWithoutFix = o.limit - fixLength;
 
   if( o.cutting === 'left' )
   {
@@ -1232,39 +1233,16 @@ function strStrShort( o )
   {
     if ( lengthOf( src ) + fixLength <= o.limit )
     return o.prefix + src + o.postfix;
-    debugger
     let begin = '';
     let end = '';
     while( lengthOf( src ) + fixLength > o.limit )
     {
-      debugger
-      // if ( +o.src.length % 2 !== 0 )
       begin = src.slice( 0, Math.floor( src.length / 2 ) );
       end = src.slice( Math.floor( src.length / 2 ) + 1 );
       src = begin + end;
-      // else
-      // src  = src.slice( 0, Math.floor( src.length / 2 )) + src.slice( Math.ceil( src.length / 2 ) + 1 )
-      debugger;
     }
-    debugger
     return o.prefix + begin + o.infix + end + o.postfix;
   }
-
-  // if( lengthOf( src ) + fixLength > o.limit )
-  // {
-  //   let b = Math.max( 0, Math.ceil( lengthWithoutFix / 2 ) );
-  //   let e = Math.max( 0, lengthWithoutFix - b );
-  //   let begin = short( o.src, b, true );
-  //   let end = short( o.src, e, false );
-
-  //   begin = o.prefix + begin;
-  //   end = end + o.postfix;
-
-  //   src = begin + o.infix + end;
-
-  // }
-
-  // return src
 
   /* */
 
@@ -1274,42 +1252,6 @@ function strStrShort( o )
     return l;
   }
 
-  /* */
-
-  // function short( src, limit, begin )
-  // {
-  //   let result = src;
-  //   let length = lengthOf( src );
-
-  //   if( length < limit )
-  //   return result;
-
-  //   let l2 = limit-1;
-  //   do
-  //   {
-  //     l2 += 1;
-  //     if( begin )
-  //     result = src.slice( 0, l2 );
-  //     else
-  //     result = src.slice( result.length-l2, result.length );
-  //     length = lengthOf( result );
-  //   }
-  //   while( length < limit && l2 < src.length );
-
-  //   while( length > limit && result.length > 0 )
-  //   {
-  //     l2 -= 1;
-  //     if( begin )
-  //     result = src.slice( 0, l2 );
-  //     else
-  //     result = src.slice( result.length-l2, result.length );
-  //     length = lengthOf( result );
-  //   }
-
-  //   return result;
-  // }
-
-  /* */
 
 }
 
@@ -1320,7 +1262,6 @@ strStrShort.defaults =
   prefix : null,
   postfix : null,
   infix : null,
-  escaping : 1, // whether to put escape characters at the returned
   onLength : null,
   cutting : 'center',
 }
