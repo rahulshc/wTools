@@ -2060,7 +2060,7 @@ function strStrShort( test )
   test.case = 'unknown property provided';
   test.shouldThrowErrorSync( function()
   {
-    _.strStrShort( { src : 'string', limit : 4, fixed : 5 } );
+    _.strStrShort({ src : 'string', limit : 4, fixed : 5 });
   });
 
 }
