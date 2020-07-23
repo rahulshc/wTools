@@ -1945,12 +1945,16 @@ function strForRange( test )
 function strStrShortSpecial( test )
 {
 
+  /* */
+
   test.case = 'no cutting';
   var src = 'a13';
   var limit = 1;
   var got = _.strStrShort({ src, onLength, limit });
   var expected = 'a13';
   test.identical( got, expected );
+
+  /* */
 
   function onLength( src )
   {
