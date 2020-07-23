@@ -5382,7 +5382,7 @@ function strLinesSize( o )
     return [ 0, 0 ];
   }
 
-  let w = lines.reduce( ( a, e ) => Math.max( a, o.onLength( e ) ), 1 );
+  let w = lines.reduce( ( a, e ) => Math.max( a, o.onLength( e ) ), 0 );
 
   return [ lines.length, w ];
 }

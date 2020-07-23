@@ -10012,6 +10012,81 @@ ghij`
 
 }
 
+//
+
+function strLinesSize( test )
+{
+  test.open( 'change src' )
+
+  test.case = 'src is empty';
+  var src = { src : '' };
+  var expected = [ 1, 0 ];
+  var got  = _.strLinesSize( src );
+
+  test.case = 'src is a sequence of linebreaks';
+  var src = { src : '\n\n' };
+  var expected = [ 3, 0 ];
+  var got  = _.strLinesSize( src );
+
+  test.identical( got, expected );
+
+  test.case = '1 letter';
+  var src = { src : 's' };
+  var expected = [ 1, 1 ];
+  var got  = _.strLinesSize( src );
+  test.identical( got, expected );
+
+  test.case = 'a few letters, one line';
+  var src = { src : 'string' };
+  var expected = [ 1, 6 ];
+  var got  = _.strLinesSize( src );
+  test.identical( got, expected );
+
+  test.case = '3 lines with 1 letter each';
+  var src = { src : 'a\nb\nc' };
+  var expected = [ 3, 1 ];
+  var got  = _.strLinesSize( src );
+  test.identical( got, expected );
+
+  test.case = '3 lines with 2 letters each';
+  var src = { src : 'ab\ncd\nef' };
+  var expected = [ 3, 2 ];
+  var got  = _.strLinesSize( src );
+  test.identical( got, expected );
+
+  test.case = '3 lines with different amount of letters';
+  var src = { src : 'ab\ncde\nfghk' };
+  var expected = [ 3, 4 ];
+  var got  = _.strLinesSize( src );
+  test.identical( got, expected );
+
+  test.case = '3 lines with different amount of letters';
+  var src = { src : 'ab\ncde\nfghk' };
+  var expected = [ 3, 4 ];
+  var got  = _.strLinesSize( src );
+  test.identical( got, expected );
+
+  test.case = '3 lines with different amount of letters';
+  var src = { src : 'ab\ncde\nfghk5678' };
+  var expected = [ 3, 8 ];
+  var got  = _.strLinesSize( src );
+  test.identical( got, expected );
+
+  test.close( 'change src' )
+
+  /* - */
+
+  test.open( 'change onLength' )
+
+  // test.case = '3 lines with different amount of letters';
+  // var src = { src : 'ab\ncde\nfghk' };
+  // var expected = [ 3, 4 ];
+  // var got  = _.strLinesSize( src );
+  // test.identical( got, expected );
+
+  test.close( 'change onLength' )
+}
+
 // --
 // test suite definition
 // --
@@ -10118,6 +10193,7 @@ let Self =
     strLinesNearestLog,
     strLinesCount,
     strLinesRangeWithCharRange,
+    strLinesSize,
 
   }
 
