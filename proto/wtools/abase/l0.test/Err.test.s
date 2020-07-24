@@ -195,28 +195,28 @@ function _errTrowsError( test )
 
 //
 
-// function _errArgsWithMap( test )
-// {
-//   test.case = 'map in args, without Error';
-//   var err = _._err( { args : [ { 'location' : { 'filePath' : 'at program1' }, 'line' : 10, 'col' : 5 } ] } );
-//   test.is( _.errIs( err ) );
-//   test.identical( err.location.filePath, 'at program1' );
-//   test.identical( err.location.line, 10 );
-//   test.identical( err.location.col, 5 );
-//   var errStr = String( err );
-//   test.identical( _.strCount( errStr, 'Error' ), 0 );
-//   test.identical( _.strCount( errStr, 'Object._errArgsWithMap' ), 2 );
+function _errArgsWithMap( test )
+{
+  test.case = 'map in args, without Error';
+  var err = _._err( { args : [ { 'location' : { 'filePath' : 'at program1' }, 'line' : 10, 'col' : 5 } ] } );
+  test.is( _.errIs( err ) );
+  test.identical( err.location.filePath, 'at program1' );
+  test.identical( err.location.line, 10 );
+  test.identical( err.location.col, 5 );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'Error' ), 0 );
+  test.identical( _.strCount( errStr, 'Object._errArgsWithMap' ), 2 );
 
-//   test.case = 'map in args, with Error';
-//   var err = _._err( { args : [ { 'location' : { 'filePath' : 'at program1' }, 'line' : 10, 'col' : 5 }, new Error( 'Error' ) ] } );
-//   test.is( _.errIs( err ) );
-//   test.notIdentical( err.location.filePath, 'at program1' );
-//   test.notIdentical( err.location.line, 10 );
-//   test.notIdentical( err.location.col, 5 );
-//   var errStr = String( err );
-//   test.identical( _.strCount( errStr, 'Error' ), 4 );
-//   test.identical( _.strCount( errStr, 'Object._errArgsWithMap' ), 2 );
-// }
+  test.case = 'map in args, with Error';
+  var err = _._err( { args : [ { 'location' : { 'filePath' : 'at program1' }, 'line' : 10, 'col' : 5 }, new Error( 'Error' ) ] } );
+  test.is( _.errIs( err ) );
+  test.notIdentical( err.location.filePath, 'at program1' );
+  test.notIdentical( err.location.line, 10 );
+  test.notIdentical( err.location.col, 5 );
+  var errStr = String( err );
+  test.identical( _.strCount( errStr, 'Error' ), 4 );
+  test.identical( _.strCount( errStr, 'Object._errArgsWithMap' ), 2 );
+}
 
 //
 
@@ -880,51 +880,51 @@ function _errOptionReason( test )
 
 //
 
-// function _errOptionSections( test )
-// {
-//   test.case = 'args - Error, without sections option';
-//   var srcErr = new Error( 'Sample' );
-//   var err = _._err
-//   ({
-//     args : [ srcErr ],
-//   });
-//   test.is( _.errIs( err ) );
-//   test.identical( err.sections, srcErr.sections );
-//   test.identical( _.mapKeys( err.sections ), [ 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+function _errOptionSections( test )
+{
+  test.case = 'args - Error, without sections option';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.sections, srcErr.sections );
+  test.identical( _.mapKeys( err.sections ), [ 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
 
-//   test.case = 'args - Error with sections option, has not head and body';
-//   var srcErr = new Error( 'Sample' );
-//   srcErr.section = { 'location' : 'head and body' };
-//   var err = _._err
-//   ({
-//     args : [ srcErr ],
-//   });
-//   test.is( _.errIs( err ) );
-//   test.identical( err.sections, srcErr.sections );
-//   test.identical( _.mapKeys( err.sections ), [ 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+  test.case = 'args - Error with sections option, has not head and body';
+  var srcErr = new Error( 'Sample' );
+  srcErr.section = { 'location' : 'head and body' };
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.sections, srcErr.sections );
+  test.identical( _.mapKeys( err.sections ), [ 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
 
-//   test.case = 'args - Error with sections option';
-//   var srcErr = new Error( 'Sample' );
-//   srcErr.section = { 'location' : { head : 'location', body : 'at @123' } };
-//   var err = _._err
-//   ({
-//     args : [ srcErr ],
-//   });
-//   test.is( _.errIs( err ) );
-//   test.identical( err.sections, srcErr.sections );
-//   test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+  test.case = 'args - Error with sections option';
+  var srcErr = new Error( 'Sample' );
+  srcErr.section = { 'location' : { head : 'location', body : 'at @123' } };
+  var err = _._err
+  ({
+    args : [ srcErr ],
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.sections, srcErr.sections );
+  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
 
-//   test.case = 'args - Error, sections option';
-//   var srcErr = new Error( 'Sample' );
-//   var err = _._err
-//   ({
-//     args : [ srcErr ],
-//     sections : { 'location' : { head : 'location', body : 'at @123' } }
-//   });
-//   test.is( _.errIs( err ) );
-//   test.identical( err.sections, srcErr.sections );
-//   test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
-// }
+  test.case = 'args - Error, sections option';
+  var srcErr = new Error( 'Sample' );
+  var err = _._err
+  ({
+    args : [ srcErr ],
+    sections : { 'location' : { head : 'location', body : 'at @123' } }
+  });
+  test.is( _.errIs( err ) );
+  test.identical( err.sections, srcErr.sections );
+  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+}
 
 //
 
