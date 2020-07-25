@@ -72,7 +72,7 @@ function errArgumentObject( test )
   var errStr = String( err );
   console.log( errStr );
   test.identical( _.strCount( errStr, 'at Object.errArgumentObject' ), 2 );
-  test.identical( _.strCount( errStr, '* 68 :   var err = _._err({ args });' ), 1 );
+  test.identical( _.strCount( errStr, '* 69 :   var err = _._err({ args });' ), 1 );
 
 }
 
