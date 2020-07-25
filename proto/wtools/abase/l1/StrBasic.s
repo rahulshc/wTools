@@ -1110,7 +1110,7 @@ function strForCall( nameOfRoutine, args, ret, o )
  * For example: src : 'string', limit : 4, result -> 'stng'.
  * Function can be called in two ways:
  * - First to pass only source string and limit;
- * - Second to pass all options map. Example: ({ src : 'string', limit : 5, prefix : '<', infix : '...', postfix : '>' }).
+ * - Second to pass all options map. Example: ({ src : 'string', limit : 5, prefix : '<', infix : '.', postfix : '>' }).
  *
  * @param {string|object} o - String to parse or object with options.
  * @param {string} [ o.src=null ] - Source string.
@@ -1118,7 +1118,7 @@ function strForCall( nameOfRoutine, args, ret, o )
  * @param {string} [ o.prefix=null ] - The leftmost part to be added to the returned string.
  * @param {string} [ o.postfix=null ] - The rightmost part to be added to the returned string.
  * @param {string} [ o.infix=null ] - The middle part to fill the reduced characters, if boolLikeTrue - the default ( '...' ) is used.
- * @param {function} [ o.onLength=null ] - callback function that calculates the true length ( counting unvisible characters ).
+ * @param {function} [ o.onLength=null ] - callback function that calculates a length based on .
  * @returns {string} Returns simplified source string.
  *
  * @example
@@ -1134,20 +1134,24 @@ function strForCall( nameOfRoutine, args, ret, o )
  * // returns ''
  *
  * @example
- * _.strStrShort( { src : 'string', limit : 4 } );
+ * _.strStrShort({ src : 'string', limit : 4 });
  * // returns 'stng'
  *
  * @example
- *  _.strStrShort( { src : 'simple', limit : 4, prefix : '<' } );
+ *  _.strStrShort({ src : 'simple', limit : 4, prefix : '<' });
  * // returns '<ile'
  *
  * @example
- *  _.strStrShort( { src : 'string', limit : 5, infix : '.' } );
+ *  _.strStrShort({ src : 'string', limit : 5, infix : '.' });
  * // returns 'st.ng'
  *
  * @example
- *  _.strStrShort( { src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' } );
+ *  _.strStrShort({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
  * // returns '<s.g>'
+ *
+ * @example
+ *  _.strStrShort({ src : 'string', limit : 3, cutting : 'right' });
+ * // returns 'str'
  *
  * @method strStrShort
  * @throws { Exception } If no argument provided.
@@ -1156,7 +1160,7 @@ function strForCall( nameOfRoutine, args, ret, o )
  * @throws { Exception } If( o.src ) is not a String.
  * @throws { Exception } If( o.limit ) is not a Number.
  * @throws { Exception } If( o.prefix ) is not a String or null.
- * @throws { Exception } If( o.infix ) is not a String or null.
+ * @throws { Exception } If( o.infix ) is not a String or null or boolLikeTrue.
  * @throws { Exception } If( o.postfix ) is not a String or null.
  *
  * @namespace Tools
