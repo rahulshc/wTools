@@ -2193,6 +2193,13 @@ function strStrShortOptionInfix( test )
   test.identical( got, expected );
   test.identical( got.length, src.limit );
 
+  test.case = 'infix is default';
+  var src = { src : 'string', limit : 5, infix : 1 }
+  var got = _.strStrShort( src );
+  var expected = 's...g';
+  test.identical( got, expected );
+  test.identical( got.length, src.limit );
+
   test.case = 'infix < limit';
   var src = { src : 'string', limit : 5, infix : '.' }
   var got = _.strStrShort( src );

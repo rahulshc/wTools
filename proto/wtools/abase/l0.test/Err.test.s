@@ -6,6 +6,7 @@ if( typeof module !== 'undefined' )
 {
   let _ = require( '../Layer1.s' );
   _.include( 'wTesting' );
+  _.include( 'wConsequence' );
 }
 
 let _ = _global_.wTools;

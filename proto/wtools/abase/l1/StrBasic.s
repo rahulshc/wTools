@@ -1117,7 +1117,7 @@ function strForCall( nameOfRoutine, args, ret, o )
  * @param {number} [ o.limit=40 ] - Limit of characters in output.
  * @param {string} [ o.prefix=null ] - The leftmost part to be added to the returned string.
  * @param {string} [ o.postfix=null ] - The rightmost part to be added to the returned string.
- * @param {string} [ o.infix=null ] - The middle part to fill the reduced characters.
+ * @param {string} [ o.infix=null ] - The middle part to fill the reduced characters, if boolLikeTrue - the default ( '...' ) is used.
  * @param {function} [ o.onLength=null ] - callback function that calculates the true length ( counting unvisible characters ).
  * @returns {string} Returns simplified source string.
  *
@@ -1179,7 +1179,7 @@ function strStrShort( o )
   _.assert( o.limit >= 0, '{-limit-} must be greater or equal to zero' );
   _.assert( o.prefix === null || _.strIs( o.prefix ) );
   _.assert( o.postfix === null || _.strIs( o.postfix ) );
-  _.assert( o.infix === null || _.strIs( o.infix ) );
+  _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeTrue( o.infix ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( !o.infix || o.limit >= o.src.length )
@@ -1206,6 +1206,9 @@ function strStrShort( o )
     o.postfix = '';
     o.infix = '';
   }
+
+  if( _.boolLikeTrue( o.infix ) )
+  o.infix = '...';
 
   let src = o.src;
   let fixLength = 0;
