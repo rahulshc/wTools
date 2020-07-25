@@ -1186,7 +1186,7 @@ function strStrShort( o )
   _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeTrue( o.infix ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
-  if( !o.infix || o.limit >= o.src.length )
+  if(!o.infix)
   o.infix = '';
   if( !o.prefix )
   o.prefix = '';
@@ -1200,7 +1200,13 @@ function strStrShort( o )
     o.prefix = '';
     o.postfix = '';
   }
-  if( o.prefix.length + o.postfix.length + o.infix.length === o.limit )
+  if( _.boolLikeTrue( o.infix ) )
+  o.infix = '...';
+
+  if ( !o.onLength )
+  o.onLength = ( src ) => src.length;
+
+  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.limit )
   return o.prefix + o.infix + o.postfix;
 
   if( o.prefix.length + o.postfix.length + o.infix.length > o.limit )
@@ -1211,11 +1217,6 @@ function strStrShort( o )
     o.infix = '';
   }
 
-  if( _.boolLikeTrue( o.infix ) )
-  o.infix = '...';
-
-  if ( !o.onLength )
-  o.onLength = ( src ) => src.length;
 
   let src = o.src;
   let fixLength = 0;

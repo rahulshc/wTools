@@ -2457,19 +2457,28 @@ function strStrShortOptionsCombination( test )
 
   //
 
-  test.case = 'cut left, with prefix';
+  test.case = 'cut right, with prefix';
   var src = { src : 'string', limit : 4, cutting : 'right', prefix : '<' }
   var got = _.strStrShort( src );
   var expected = '<str';
   test.identical( got, expected );
   test.identical( got.length, src.limit );
 
-  test.case = 'cut left, with prefix, postfix, infix';
+  test.case = 'cut right, with prefix, postfix, infix';
   var src = { src : 'string', limit : 5, cutting : 'right', prefix : '<', postfix : '>', infix : '.' }
   var got = _.strStrShort( src );
   var expected = '<st.>';
   test.identical( got, expected );
   test.identical( got.length, src.limit );
+
+  //
+
+  test.case = 'src = limit - 1, infix length = 1';
+  var src = { src : 'string', limit : 7, infix : '.' }
+  var got = _.strStrShort( src );
+  var expected = 'string';
+  test.identical( got, expected );
+  test.identical( got.length, src.src.length );
 
   test.close( 'change cutting, prefix, infix, postfix' )
 
