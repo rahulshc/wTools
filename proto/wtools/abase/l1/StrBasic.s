@@ -1214,13 +1214,16 @@ function strStrShort( o )
   if( _.boolLikeTrue( o.infix ) )
   o.infix = '...';
 
+  if ( !o.onLength )
+  o.onLength = ( src ) => src.length;
+
   let src = o.src;
   let fixLength = 0;
-  fixLength += lengthOf( o.prefix ) + lengthOf( o.postfix ) + lengthOf( o.infix );
+  fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
 
   if( o.cutting === 'left' )
   {
-    while( lengthOf( src ) + fixLength > o.limit )
+    while( o.onLength( src ) + fixLength > o.limit )
     {
       src = src.slice( 1 );
     }
@@ -1229,7 +1232,7 @@ function strStrShort( o )
   }
   else if( o.cutting === 'right' )
   {
-    while( lengthOf( src ) + fixLength > o.limit )
+    while( o.onLength( src ) + fixLength > o.limit )
     {
       src = src.slice( 0, src.length - 1 );
     }
@@ -1238,11 +1241,11 @@ function strStrShort( o )
   }
   else
   {
-    if ( lengthOf( src ) + fixLength <= o.limit )
+    if ( o.onLength( src ) + fixLength <= o.limit )
     return o.prefix + src + o.postfix;
     let begin = '';
     let end = '';
-    while( lengthOf( src ) + fixLength > o.limit )
+    while( o.onLength( src ) + fixLength > o.limit )
     {
       begin = src.slice( 0, Math.floor( src.length / 2 ) );
       end = src.slice( Math.floor( src.length / 2 ) + 1 );
@@ -1250,15 +1253,6 @@ function strStrShort( o )
     }
     return o.prefix + begin + o.infix + end + o.postfix;
   }
-
-  /* */
-
-  function lengthOf( src )
-  {
-    let l = o.onLength ? o.onLength( src ) : src.length;
-    return l;
-  }
-
 
 }
 
