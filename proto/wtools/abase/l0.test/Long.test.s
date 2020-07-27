@@ -588,6 +588,7 @@ function longMakeWithArrayAndUnroll( test )
 
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.longMake( 'wrong argument', 1 ) );
+  test.shouldThrowErrorSync( () => _.longMake( -1 ) );
   test.shouldThrowErrorSync( () => _.longMake( 1, 1 ) );
   test.shouldThrowErrorSync( () => _.longMake( new BufferRaw( 3 ), 2 ) );
   test.shouldThrowErrorSync( () => _.longMake( ( e ) => { return { [ e ] : e } }, 5 ) );
@@ -9932,43 +9933,43 @@ function longRelength_WithArrayUnrollArgumentsArray( test )
 
     test.case = 'range > dst.length, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( null, dst, [ 0, dst.length + 2 ] );
+    var got = _.longRelength_( null, dst, [ 0, 6 ] );
     var expected = [ 1, 2, 3, 4, 5, undefined, undefined ];
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( null, dst, [ 0, dst.length + 2 ], 0 );
+    var got = _.longRelength_( null, dst, [ 0, 6 ], 0 );
     var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( null, dst, [ dst.length - 1, dst.length * 2 ], 0 );
+    var got = _.longRelength_( null, dst, [ 4, 9 ], 0 );
     var expected = [ 5, 0, 0, 0, 0, 0 ];
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range < dst.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( null, dst, [ 0, 3 ] );
+    var got = _.longRelength_( null, dst, [ 0, 2 ] );
     var expected = [ 1, 2, 3 ];
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range < dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( null, dst, [ 0, 3 ], 0 );
+    var got = _.longRelength_( null, dst, [ 0, 2 ], 0 );
     var expected = [ 1, 2, 3 ];
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'f < 0, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( null, dst, [ -1, 3 ] );
-    var expected = [ 1, 2, 3 ];
+    var got = _.longRelength_( null, dst, [ -1, 2 ] );
+    var expected = [ undefined, 1, 2, 3 ];
     test.identical( got, expected );
     test.is( got !== dst );
 
@@ -9981,8 +9982,15 @@ function longRelength_WithArrayUnrollArgumentsArray( test )
 
     test.case = 'f < 0, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( null, dst, [ -1, 3 ], 0 );
-    var expected = [ 1, 2, 3 ];
+    var got = _.longRelength_( null, dst, [ -1, 2 ], 0 );
+    var expected = [ 0, 1, 2, 3 ];
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'f > 0, l < src.length';
+    var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longRelength_( null, dst, [ 1, 2 ], 0 );
+    var expected = [ 2, 3 ];
     test.identical( got, expected );
     test.is( got !== dst );
 
@@ -10008,50 +10016,50 @@ function longRelength_WithArrayUnrollArgumentsArray( test )
 
     test.case = 'range > dst.length, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, dst, [ 0, dst.length + 2 ] );
+    var got = _.longRelength_( dst, dst, [ 0, 6 ] );
     var expected = [ 1, 2, 3, 4, 5, undefined, undefined ];
     test.identical( got, expected );
     test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, dst, [ 0, dst.length + 2 ], 0 );
+    var got = _.longRelength_( dst, dst, [ 0, 6 ], 0 );
     var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
     test.identical( got, expected );
     test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, [ 0, dst.length + 2 ], 0 );
+    var got = _.longRelength_( dst, [ 0, 6 ], 0 );
     var expected = [ 1, 2, 3, 4, 5, 0, 0 ];
     test.identical( got, expected );
     test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, dst, [ dst.length - 1, dst.length * 2 ], 0 );
+    var got = _.longRelength_( dst, dst, [ 4, 9 ], 0 );
     var expected = [ 5, 0, 0, 0, 0, 0 ];
     test.identical( got, expected );
     test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
     test.case = 'range < dst.length';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, dst, [ 0, 3 ] );
+    var got = _.longRelength_( dst, dst, [ 0, 2 ] );
     var expected = [ 1, 2, 3 ];
     test.identical( got, expected );
     test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
     test.case = 'range < dst.length, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, dst, [ 0, 3 ], 0 );
+    var got = _.longRelength_( dst, dst, [ 0, 2 ], 0 );
     var expected = [ 1, 2, 3 ];
     test.identical( got, expected );
     test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
     test.case = 'f < 0, not a val';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, dst, [ -1, 3 ] );
-    var expected = [ 1, 2, 3 ];
+    var got = _.longRelength_( dst, dst, [ -1, 2 ] );
+    var expected = [ undefined, 1, 2, 3 ];
     test.identical( got, expected );
     test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
@@ -10064,8 +10072,8 @@ function longRelength_WithArrayUnrollArgumentsArray( test )
 
     test.case = 'f < 0, val = number';
     var dst = makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, dst, [ -1, 3 ], 0 );
-    var expected = [ 1, 2, 3 ];
+    var got = _.longRelength_( dst, dst, [ -1, 2 ], 0 );
+    var expected = [ 0, 1, 2, 3 ];
     test.identical( got, expected );
     test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
@@ -10125,43 +10133,43 @@ function longRelength_WithBufferTyped( test )
 
     test.case = 'range > dst.length, not a val';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, [ 0, dst.length + 2 ] );
+    var got = _.longRelength_( dst, [ 0, 6 ] );
     var expected = new makeLong( [ 1, 2, 3, 4, 5, 0, 0 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, [ 0, dst.length + 2 ], 0 );
+    var got = _.longRelength_( dst, [ 0, 6 ], 0 );
     var expected = new makeLong( [ 1, 2, 3, 4, 5, 0, 0 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range > dst.length, val = number';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, [ dst.length - 1, dst.length * 2 ], 0 );
+    var got = _.longRelength_( dst, [ 4, 9 ], 0 );
     var expected = new makeLong( [ 5, 0, 0, 0, 0, 0 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range < dst.length';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, [ 0, 3 ] );
+    var got = _.longRelength_( dst, [ 0, 2 ] );
     var expected = new makeLong( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'range < dst.length, val = number';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, [ 0, 3 ], 0 );
+    var got = _.longRelength_( dst, [ 0, 2 ], 0 );
     var expected = new makeLong( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'f < 0, not a val';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, [ -1, 3 ] );
-    var expected = new makeLong( [ 1, 2, 3 ] );
+    var got = _.longRelength_( dst, [ -1, 2 ] );
+    var expected = new makeLong( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
@@ -10174,8 +10182,8 @@ function longRelength_WithBufferTyped( test )
 
     test.case = 'f < 0, val = number';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, [ -1, 3 ], 0 );
-    var expected = new makeLong( [ 1, 2, 3 ] );
+    var got = _.longRelength_( dst, [ -1, 2 ], 0 );
+    var expected = new makeLong( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
@@ -10184,21 +10192,21 @@ function longRelength_WithBufferTyped( test )
     test.case = 'l < 0, not a val';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
     var got = _.longRelength_( null, dst, [ 0, -1 ] );
-    var expected = new makeLong();
+    var expected = new makeLong( [] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'f < 0, val = number';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( null, dst, [ -1, 3 ], 0 );
-    var expected = new makeLong( [ 1, 2, 3 ] );
+    var got = _.longRelength_( null, dst, [ -1, 2 ], 0 );
+    var expected = new makeLong( [ 0, 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
     test.case = 'f < 0, val = number';
     var src = new U8x( [ 0, 1, 0, 1, 0 ] );
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( src, dst, [ 0, 5 ], 0 );
+    var got = _.longRelength_( src, dst, [ 0, 4 ], 0 );
     var expected = new U8x( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( got !== dst );
@@ -10219,7 +10227,7 @@ function longRelength_WithBufferTyped( test )
 
     test.case = 'range === dst.length, not a val';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longRelength_( dst, dst, [ 0, 5 ] );
+    var got = _.longRelength_( dst, dst, [ 0, 4 ] );
     var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
     test.identical( got, expected );
     test.is( got === dst );
