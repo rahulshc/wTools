@@ -2489,9 +2489,9 @@ function longShrink_( dst, array, range, val )
  */
 
 /*
-  qqq : extend documentation and test coverage of longGrowInplace | Dmytro : extended documentation, covered routine longGrow, longGrowInplace
-  qqq : implement arrayGrow | Dmytro : implemented
-  qqq : implement arrayGrowInplace | Dmytro : implemented
+  aaa : extend documentation and test coverage of longGrowInplace | Dmytro : extended documentation, covered routine longGrow, longGrowInplace
+  aaa : implement arrayGrow | Dmytro : implemented
+  aaa : implement arrayGrowInplace | Dmytro : implemented
 */
 
 function longGrow( array, range, val )
@@ -2681,27 +2681,27 @@ function longGrow_( dst, src, crange, ins )
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
-  let f = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let l = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
 
-  if( f > 0 )
-  f = 0;
-  if( l < src.length - 1 )
-  l = src.length - 1;
+  if( first > 0 )
+  first = 0;
+  if( last < src.length - 1 )
+  last = src.length - 1;
 
-  if( f < 0 )
+  if( first < 0 )
   {
-    l -= f;
-    f -= f;
+    last -= first;
+    first -= first;
   }
 
-  if( l + 1 < f )
-  l = f - 1;
+  if( last + 1 < first )
+  last = first - 1;
 
-  let f2 = Math.max( -crange[ 0 ], 0 );
-  let l2 = Math.min( src.length - 1 + f2, l + f2 );
+  let first2 = Math.max( -crange[ 0 ], 0 );
+  let last2 = Math.min( src.length - 1 + first2, last + first2 );
 
-  let resultLength = l - f + 1;
+  let resultLength = last - first + 1;
 
   let result = dst;
   if( dst === null )
@@ -2717,8 +2717,8 @@ function longGrow_( dst, src, crange, ins )
     if( _.arrayLikeResizable( dst ) )
     {
       _.assert( Object.isExtensible( dst ), 'Array is not extensible, cannot change array' );
-      dst.splice( f, 0, ... _.dup( ins, f2 ) );
-      dst.splice( l2 + 1, 0, ... _.dup( ins, resultLength <= l2 ? 0 : resultLength - l2 - 1 ) );
+      dst.splice( 0, 0, ... _.dup( ins, first2 ) );
+      dst.splice( last2 + 1, 0, ... _.dup( ins, resultLength <= last2 ? 0 : resultLength - last2 - 1 ) );
       return dst;
     }
     else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
@@ -2731,15 +2731,15 @@ function longGrow_( dst, src, crange, ins )
     result = _.longMakeUndefined( dst, resultLength );
   }
 
-  for( let r = f2 ; r < l2 + 1 ; r++ )
-  result[ r ] = src[ r - f2 ];
+  for( let r = first2 ; r < last2 + 1 ; r++ )
+  result[ r ] = src[ r - first2 ];
 
   if( ins !== undefined )
   {
-    for( let r = 0 ; r < f2 ; r++ )
+    for( let r = 0 ; r < first2 ; r++ )
     result[ r ] = ins;
 
-    for( let r = l2 + 1 ; r < resultLength ; r++ )
+    for( let r = last2 + 1 ; r < resultLength ; r++ )
     result[ r ] = ins;
   }
 
@@ -2749,9 +2749,9 @@ function longGrow_( dst, src, crange, ins )
 //
 
 /**
- * Routine longRelength() changes length of provided Long {-array-} by copying it elements to newly created Long of the same
- * type using range {-range-} positions of the original Long and value to fill free space after copy {-val-}.
- * Routine can grows and reduses size of Long. The original {-array-} will not be modified.
+ * Routine longRelength() changes length of provided Long {-array-} by copying its elements to newly created Long of the same
+ * type as source Long. Routine uses range {-range-} positions of the original Long and value {-val-} to fill free space after copy.
+ * Routine can grows and reduces size of Long. The original {-array-} will not be modified.
  *
  * @param { Long } array - The Long from which makes a shallow copy.
  * @param { Range } The two-element array that defines the start index and the end index for copying elements.
@@ -2971,84 +2971,105 @@ function longRelengthInplace( array, range, val )
 
 //
 
-function longRelength_( dst, array, range, val )
+function longRelength_( dst, src, crange, ins )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
-
-  if( _.arrayLikeResizable( array ) )
-  return _.arrayRelength_.apply( this, arguments );
-
-  if( range === undefined )
-  return returnDst();
-
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
-
-  _.assert( _.rangeIs( range ) );
-
-  range[ 0 ] = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  range[ 1 ] = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
-
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-  if( range[ 0 ] > array.length )
-  range[ 0 ] = array.length
-
-  if( range[ 0 ] < 0 )
-  range[ 0 ] = 0;
-
-  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
-  return returnDst();
-
-  let f2 = Math.max( range[ 0 ], 0 );
-  let l2 = Math.min( array.length, range[ 1 ] );
-
-  let result;
-  if( _.boolIs( dst ) )
-  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
-  else if( _.arrayLikeResizable( dst ) )
+  if( arguments.length < 4 && dst !== null && dst !== src )
   {
-    result = dst;
-    result.length = range[ 1 ] - range[ 0 ];
-  }
-  else if( dst.length !== range[ 1 ] - range[ 0 ] )
-  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
-  else
-  result = dst;
-
-  for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f2 ] = array[ r ];
-
-  if( val !== undefined )
-  {
-    for( let r = l2 - range[ 0 ]; r < result.length; r++ )
-    result[ r ] = val;
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
   }
 
-  return result;
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
 
-  /* */
+  _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
-  function returnDst()
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+
+  if( last < first )
+  last = first - 1;
+
+  if( first < 0 )
   {
-    if( dst.length !== undefined )
+    last -= first;
+    first -= first;
+  }
+
+  let first2 = Math.max( Math.abs( crange[ 0 ] ), 0 );
+  let last2 = Math.min( src.length - 1, last );
+
+  let resultLength = last - first + 1;
+
+  let result = dst;
+  if( dst === null )
+  {
+    result = _.longMakeUndefined( src, resultLength );
+  }
+  else if( dst === src )
+  {
+    if( dst.length === resultLength && first === 0 )
     {
-      if( _.arrayLikeResizable( dst ) )
-      return dst.splice( 0, dst.length, ... array );
+      return dst;
+    }
+    if( _.arrayLikeResizable( dst ) )
+    {
+      _.assert( Object.isExtensible( dst ), 'src is not extensible, cannot change src' );
+      if( crange[ 0 ] < 0 )
+      {
+        dst.splice( first, 0, ... _.dup( ins, first2 ) );
+        dst.splice( last2 + 1, src.length - last2, ... _.dup( ins, last - last2 ) );
+        return dst;
+      }
       else
       {
-        if( dst.length !== array.length )
-        dst = _.longMakeUndefined( dst, array.length );
-
-        for( let i = 0; i < dst.length; i++ )
-        dst[ i ] = array[ i ];
-
+        dst.splice( 0, first );
+        dst.splice( last2 + 1 - first2, src.length - last2, ... _.dup( ins, last - last2 ) );
         return dst;
       }
     }
-    return dst === true ? _.longMake( array ) : array;
+    else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
+    {
+      result = _.longMakeUndefined( dst, resultLength );
+    }
   }
+  else if( dst.length !== resultLength )
+  {
+    result = _.longMakeUndefined( dst, resultLength );
+  }
+
+  /* */
+
+  if( crange[ 0 ] < 0 )
+  {
+    for( let r = first2 ; r < last2 + 1 ; r++ )
+    result[ r ] = src[ r - first2 ];
+    if( ins !== undefined )
+    {
+      for( let r = 0 ; r < first2 ; r++ )
+      result[ r ] = ins;
+
+      for( let r = last2 + 1 ; r < resultLength ; r++ )
+      result[ r ] = ins;
+    }
+  }
+  else
+  {
+    for( let r = first2 ; r < last2 + 1 ; r++ )
+    result[ r - first2 ] = src[ r ];
+    if( ins !== undefined )
+    for( let r = last2 + 1 ; r < last + 1 ; r++ )
+    result[ r - first2 ] = ins;
+  }
+
+  return result;
 }
 
 // --
