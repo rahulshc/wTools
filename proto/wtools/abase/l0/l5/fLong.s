@@ -1,4 +1,5 @@
-( function _fLong_s_() {
+( function _fLong_s_()
+{
 
 'use strict';
 
@@ -794,8 +795,10 @@ let longMakeZeroed = _longMake_functor( function( src, ins, length, minLength )
   result = new src.constructor( length );
 
   if( !_.bufferTypedIs( result ) )
-  for( let i = 0 ; i < length ; i++ )
-  result[ i ] = 0;
+  {
+    for( let i = 0 ; i < length ; i++ )
+    result[ i ] = 0;
+  }
 
   return result;
 })
@@ -1217,8 +1220,7 @@ function longShallowClone()
 
   /* make result */
 
-  let result;
-  let bufferDst;
+  let result, bufferDst;
   let offset = 0;
 
   if( _.bufferRawIs( arguments[ 0 ] ) )
@@ -1679,8 +1681,10 @@ function longBut( array, range, val )
   result[ i-d2 ] = array[ i ];
 
   if( val )
-  for( let i = 0 ; i < val.length ; i++ )
-  result[ range[ 0 ]+i ] = val[ i ];
+  {
+    for( let i = 0 ; i < val.length ; i++ )
+    result[ range[ 0 ]+i ] = val[ i ];
+  }
 
   return result;
 }
@@ -1961,8 +1965,10 @@ function longBut_( dst, src, crange, ins )
     }
 
     if( ins )
-    for( let i = 0 ; i < ins.length ; i++ )
-    dst[ crange[ 0 ] + i ] = ins[ i ];
+    {
+      for( let i = 0 ; i < ins.length ; i++ )
+      dst[ crange[ 0 ] + i ] = ins[ i ];
+    }
 
     return dst;
   }
@@ -3069,9 +3075,12 @@ function longRelength_( dst, src, crange, ins )
   {
     for( let r = first2 ; r < last2 + 1 ; r++ )
     result[ r - first2 ] = src[ r ];
+
     if( ins !== undefined )
-    for( let r = last2 + 1 ; r < last + 1 ; r++ )
-    result[ r - first2 ] = ins;
+    {
+      for( let r = last2 + 1 ; r < last + 1 ; r++ )
+      result[ r - first2 ] = ins;
+    }
   }
 
   return result;
