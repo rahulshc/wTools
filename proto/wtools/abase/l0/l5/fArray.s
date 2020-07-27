@@ -1,4 +1,5 @@
-( function _fArray_s_() {
+( function _fArray_s_()
+{
 
 'use strict';
 
@@ -386,7 +387,8 @@ function arrayFromStr( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ) );
 
-  return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
+  // return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } ); /* Dmytro : eslint rules require new line for return statement */
+  return src.split(/[, ]+/).map( ( s ) => s.length ? parseFloat( s ) : undefined );
 }
 
 //
@@ -1955,7 +1957,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   }
 
   let result;
-  if ( Config.debug )
+  if( Config.debug )
   {
     debugger;
     result = arrayPrependedOnce.apply( this, arguments );
@@ -2043,7 +2045,7 @@ function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
 function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
   let result;
-  if ( Config.debug )
+  if( Config.debug )
   {
     debugger;
     result = arrayPrependedOnce.apply( this, arguments );
@@ -2117,7 +2119,7 @@ function arrayPrependElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
   }
 
   let result;
-  if ( Config.debug )
+  if( Config.debug )
   {
     result = arrayPrependedElementOnce.apply( this, arguments );
     _.assert( result !== undefined, 'Array should have only unique elements, but has several', ins );
@@ -2192,7 +2194,7 @@ function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 function arrayPrependedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
   let result;
-  if ( Config.debug )
+  if( Config.debug )
   {
     debugger;
     result = arrayPrependedElementOnce.apply( this, arguments );
@@ -2467,19 +2469,19 @@ function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
- let result;
- if( Config.debug )
- {
-   let insArrayLength = insArray.length;
-   result = arrayPrependedArrayOnce.apply( this, arguments );
-   _.assert( result === insArrayLength );
- }
- else
- {
-   result = arrayPrependedArray.apply( this, [ dstArray, insArray ] );
- }
+  let result;
+  if( Config.debug )
+  {
+    let insArrayLength = insArray.length;
+    result = arrayPrependedArrayOnce.apply( this, arguments );
+    _.assert( result === insArrayLength );
+  }
+  else
+  {
+    result = arrayPrependedArray.apply( this, [ dstArray, insArray ] );
+  }
 
- return result;
+  return result;
 }
 
 //
@@ -2814,38 +2816,38 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
- let result;
- if( Config.debug )
- {
-   let expected = 0;
-   let insIsDst = 0;
-   for( let i = insArray.length - 1; i >= 0; i-- )
-   {
-     if( _.longLike( insArray[ i ] ) )
-     {
-       expected += insArray[ i ].length
+  let result;
+  if( Config.debug )
+  {
+    let expected = 0;
+    let insIsDst = 0;
+    for( let i = insArray.length - 1; i >= 0; i-- )
+    {
+      if( _.longLike( insArray[ i ] ) )
+      {
+        expected += insArray[ i ].length
 
-       if( insArray[ i ] === dstArray )
-       {
-         insIsDst += 1;
-         if( insIsDst > 1 )
-         expected += insArray[ i ].length
-       }
-     }
-     else
-     expected += 1;
-   }
+        if( insArray[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += insArray[ i ].length
+        }
+      }
+      else
+      expected += 1;
+    }
 
-   result = arrayPrependedArraysOnce.apply( this, arguments );
+    result = arrayPrependedArraysOnce.apply( this, arguments );
 
-   _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
- }
- else
- {
-   result = arrayPrependedArrays.apply( this, [ dstArray, insArray ] );
- }
+    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
+  }
+  else
+  {
+    result = arrayPrependedArrays.apply( this, [ dstArray, insArray ] );
+  }
 
- return result;
+  return result;
 }
 
 // --
@@ -3256,7 +3258,7 @@ function arrayAppendedArrayOnceStrictly( dstArray, ins )
   {
     let insArrayLength = ins.length;
     result = _.arrayAppendedArrayOnce.apply( this, arguments );
-    _.assert( result === insArrayLength , 'Array should have only unique elements, but has several', ins );
+    _.assert( result === insArrayLength, 'Array should have only unique elements, but has several', ins );
   }
   else
   {
