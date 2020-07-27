@@ -2361,68 +2361,76 @@ function longShrinkInplace( array, range, val )
 
 //
 
-function longShrink_( dst, array, range, val )
+function longShrink_( dst, src, crange )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects not {-ins-} element' );
 
-  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
+  if( arguments.length < 3 && dst !== null && dst !== src )
+  {
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+  }
 
-  if( _.arrayLikeResizable( array ) )
-  return _.arrayShrink_.apply( this, arguments );
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
 
-  if( range === undefined )
-  return returnDst();
+  _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
 
-  _.assert( _.rangeIs( range ) )
+  if( first < 0 )
+  first = 0;
+  if( last > src.length - 1 )
+  last = src.length - 1;
 
-  _.rangeClamp( range, [ 0, array.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
+  if( last + 1 < first )
+  last = first - 1;
 
-  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
-  return returnDst();
+  let first2 = Math.max( first, 0 );
+  let last2 = Math.min( src.length - 1, last );
 
-  let f2 = Math.max( range[ 0 ], 0 );
-  let l2 = Math.min( array.length, range[ 1 ] );
+  let resultLength = last - first + 1;
 
-  let result;
-  if( _.boolIs( dst ) )
-  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
-  else if( _.arrayLikeResizable( dst ) )
-  result = _.longEmpty( dst );
-  else if( dst.length !== range[ 1 ] - range[ 0 ] )
-  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
-  else
-  result = dst;
+  let result = dst;
+  if( dst === null )
+  {
+    result = _.longMakeUndefined( src, resultLength );
+  }
+  else if( dst === src )
+  {
+    if( dst.length === resultLength )
+    {
+      return dst;
+    }
+    if( _.arrayLikeResizable( dst ) )
+    {
+      _.assert( Object.isExtensible( dst ), 'Array is not extensible, cannot change array' );
+      if( resultLength === 0 )
+      return _.longEmpty( dst );
 
-  for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f2 ] = array[ r ];
+      dst.splice( last2 + 1, dst.length - last + 1 );
+      dst.splice( 0, first2 );
+      return dst;
+    }
+    else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
+    {
+      result = _.longMakeUndefined( dst, resultLength );
+    }
+  }
+  else if( dst.length !== resultLength )
+  {
+    result = _.longMakeUndefined( dst, resultLength );
+  }
+
+  for( let r = first2 ; r < last2 + 1 ; r++ )
+  result[ r - first2 ] = src[ r ];
 
   return result;
-
-  /* */
-
-  function returnDst()
-  {
-    if( dst.length !== undefined )
-    {
-      if( _.arrayLikeResizable( dst ) )
-      return dst.splice( 0, dst.length, ... array );
-      else
-      {
-        if( dst.length !== array.length )
-        dst = _.longMakeUndefined( dst, array.length );
-
-        for( let i = 0; i < dst.length; i++ )
-        dst[ i ] = array[ i ];
-
-        return dst;
-      }
-    }
-    return dst === true ? _.longMake( array ) : array;
-  }
 }
 
 //
