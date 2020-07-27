@@ -1,4 +1,5 @@
-( function _gBuffer_s_() {
+( function _gBuffer_s_()
+{
 
 'use strict';
 
@@ -129,7 +130,7 @@ function buffersAreEquivalent( src1, src2, accuracy )
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
   if( _.bufferTypedIs( src1 ) )
-  return _.buffersTypedAreEquivalent( src1 , src2, accuracy );
+  return _.buffersTypedAreEquivalent( src1, src2, accuracy );
   else if( _.bufferRawIs( src1 ) )
   return _.buffersRawAreIdentical( src1, src2 );
   else if( _.bufferViewIs( src1 ) )
@@ -349,23 +350,20 @@ Dmytro : reviewed, improved, covered
 
 let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
 {
-  let result;
-
-  /* */
 
   let resultTyped;
   if( _.routineIs( src ) )
   resultTyped = new src( length );
   else if( _.bufferNodeIs( src ) )
   resultTyped = BufferNode.alloc( length );
-  else if ( _.bufferViewIs( src ) )
+  else if( _.bufferViewIs( src ) )
   resultTyped = new BufferView( new BufferRaw( length ) );
   else if( _.unrollIs( src ) )
   resultTyped = _.unrollMake( length );
   else
   resultTyped = new src.constructor( length );
 
-  result = resultTyped;
+  let result = resultTyped;
   if( _.bufferRawIs( result ) )
   resultTyped = new U8x( result );
   if( _.bufferViewIs( result ) )
@@ -742,13 +740,16 @@ function bufferFromArrayOfArray( array, options )
 
   if( options.BufferType === undefined ) options.BufferType = F32x;
   if( options.sameLength === undefined ) options.sameLength = 1;
-  if( !options.sameLength ) throw _.err( '_.bufferFromArrayOfArray :', 'different length of arrays is not implemented' );
+  if( !options.sameLength )
+  throw _.err( '_.bufferFromArrayOfArray :', 'different length of arrays is not implemented' );
 
-  if( !array.length ) return new options.BufferType();
+  if( !array.length )
+  return new options.BufferType();
 
   let scalarsPerElement = _.numberIs( array[ 0 ].length ) ? array[ 0 ].length : array[ 0 ].len;
 
-  if( !_.numberIs( scalarsPerElement ) ) throw _.err( '_.bufferFromArrayOfArray :', 'cant find out element length' );
+  if( !_.numberIs( scalarsPerElement ) )
+  throw _.err( '_.bufferFromArrayOfArray :', 'cant find out element length' );
 
   let length = array.length * scalarsPerElement;
   let result = new options.BufferType( length );
@@ -834,7 +835,7 @@ function bufferFrom( o )
   {
     result = new o.bufferConstructor( o.src );
   }
-  else if ( _.longIs( o.src ) )
+  else if( _.longIs( o.src ) )
   {
     result = new o.bufferConstructor( o.src );
     throw _.err( 'not tested' );
@@ -908,11 +909,11 @@ function bufferRawFrom( buffer )
 {
   let result;
 
-/*
-aaa : should do not copying when possible! |
-aaa Dmytro : not copying if it possible
-zzz
-*/
+  /*
+  aaa : should do not copying when possible! |
+  aaa Dmytro : not copying if it possible
+  zzz
+  */
 
   _.assert( arguments.length === 1, 'Expects single argument' );
 
@@ -1152,12 +1153,16 @@ function bufferBut( dstArray, range, srcArray )
   let dstArrayTyped = _.bufferRawIs( dstArray ) ? new U8x( dstArray ) : dstArray;
 
   if( first > 0 )
-  for( let i = 0; i < first; ++i )
-  result[ i ] = dstArrayTyped[ i ];
+  {
+    for( let i = 0; i < first; ++i )
+    result[ i ] = dstArrayTyped[ i ];
+  }
 
   if( srcArray )
-  for( let i = first, j = 0; j < srcArrayLength; )
-  result[ i++ ] = srcArray[ j++ ];
+  {
+    for( let i = first, j = 0; j < srcArrayLength; )
+    result[ i++ ] = srcArray[ j++ ];
+  }
 
   for( let j = last, i = first + srcArrayLength; j < length; )
   result[ i++ ] = dstArrayTyped[ j++ ];
@@ -1542,12 +1547,16 @@ function bufferBut_( dst, dstArray, range, srcArray )
   dstArrayTyped = new U8x( dstArray.buffer );
 
   if( first > 0 )
-  for( let i = 0; i < first; i++ )
-  resultTyped[ i ] = dstArrayTyped[ i ];
+  {
+    for( let i = 0; i < first; i++ )
+    resultTyped[ i ] = dstArrayTyped[ i ];
+  }
 
   if( srcArray )
-  for( let i = first, j = 0; j < srcArrayLength; i++, j++ )
-  resultTyped[ i ] = srcArray[ j ];
+  {
+    for( let i = first, j = 0; j < srcArrayLength; i++, j++ )
+    resultTyped[ i ] = srcArray[ j ];
+  }
 
   for( let j = last, i = first + srcArrayLength; j < length; i++, j++ )
   resultTyped[ i ] = dstArrayTyped[ j ];
@@ -2531,8 +2540,10 @@ function bufferRelength_( dst, src, crange, ins )
     for( let r = first2 ; r < last2 + 1 ; r++ )
     resultTyped[ r - first2 ] = srcTyped[ r ];
     if( ins !== undefined )
-    for( let r = last2 + 1 ; r < last + 1 ; r++ )
-    resultTyped[ r - first2 ] = ins;
+    {
+      for( let r = last2 + 1 ; r < last + 1 ; r++ )
+      resultTyped[ r - first2 ] = ins;
+    }
   }
 
   return result;
@@ -2840,28 +2851,28 @@ function bufferBytesGet( src )
 
 //
 
-  /**
-   * The bufferRetype() routine converts and returns a new instance of (bufferType) constructor.
-   *
-   * @param { typedArray } src - The typed array.
-   * @param { typedArray } bufferType - The type of typed array.
-   *
-   * @example
-   * let view1 = new I8x( [ 1, 2, 3, 4, 5, 6 ] );
-   * _.bufferRetype(view1, I16x);
-   * // returns [ 513, 1027, 1541 ]
-   *
-   * @example
-   * let view2 = new I16x( [ 513, 1027, 1541 ] );
-   * _.bufferRetype(view2, I8x);
-   * // returns [ 1, 2, 3, 4, 5, 6 ]
-   *
-   * @returns { typedArray } Returns a new instance of (bufferType) constructor.
-   * @function bufferRetype
-   * @throws { Error } Will throw an Error if {-srcMap-} is not a typed array object.
-   * @throws { Error } Will throw an Error if (bufferType) is not a type of the typed array.
-   * @namespace Tools
-   */
+/**
+ * The bufferRetype() routine converts and returns a new instance of (bufferType) constructor.
+ *
+ * @param { typedArray } src - The typed array.
+ * @param { typedArray } bufferType - The type of typed array.
+ *
+ * @example
+ * let view1 = new I8x( [ 1, 2, 3, 4, 5, 6 ] );
+ * _.bufferRetype(view1, I16x);
+ * // returns [ 513, 1027, 1541 ]
+ *
+ * @example
+ * let view2 = new I16x( [ 513, 1027, 1541 ] );
+ * _.bufferRetype(view2, I8x);
+ * // returns [ 1, 2, 3, 4, 5, 6 ]
+ *
+ * @returns { typedArray } Returns a new instance of (bufferType) constructor.
+ * @function bufferRetype
+ * @throws { Error } Will throw an Error if {-srcMap-} is not a typed array object.
+ * @throws { Error } Will throw an Error if (bufferType) is not a type of the typed array.
+ * @namespace Tools
+ */
 
 function bufferRetype( src, bufferType )
 {
@@ -2938,10 +2949,14 @@ function bufferJoin()
   {
     let src = srcs[ s ];
     if( resultBytes.set )
-    resultBytes.set( src , offset );
+    {
+      resultBytes.set( src, offset );
+    }
     else
-    for( let i = 0 ; i < src.length ; i++ )
-    resultBytes[ offset+i ] = src[ i ];
+    {
+      for( let i = 0 ; i < src.length ; i++ )
+      resultBytes[ offset+i ] = src[ i ];
+    }
     offset += src.byteLength;
   }
 
@@ -3069,8 +3084,8 @@ function bufferToStr( src )
 
 //
 
-function bufferToDom( xmlBuffer ) {
-
+function bufferToDom( xmlBuffer )
+{
   let result;
 
   if( typeof DOMParser !== 'undefined' && DOMParser.prototype.parseFromBuffer )
@@ -3500,29 +3515,29 @@ let Routines =
   // buffersSerialize, /* deprecated */
   // buffersDeserialize, /* deprecated */
 
-/*
+  /*
 
-bufferAnyIs,
-bufferBytesIs,
-constructorIsBuffer,
+  bufferAnyIs,
+  bufferBytesIs,
+  constructorIsBuffer,
 
-bufferBytesGet,
-bufferRetype,
+  bufferBytesGet,
+  bufferRetype,
 
-bufferMove,
-bufferToStr,
-bufferToDom,
+  bufferMove,
+  bufferToStr,
+  bufferToDom,
 
-bufferSplit,
-bufferCutOffLeft,
+  bufferSplit,
+  bufferCutOffLeft,
 
-strIsolate : _.routineFromPreAndBody( strIsolate_pre, strIsolate_body ),
-strIsolateLeftOrNone
-strIsolateLeftOrAll
-strIsolateRightOrNone
-strIsolateRightOrAll
+  strIsolate : _.routineFromPreAndBody( strIsolate_pre, strIsolate_body ),
+  strIsolateLeftOrNone
+  strIsolateLeftOrAll
+  strIsolateRightOrNone
+  strIsolateRightOrAll
 
-*/
+  */
 
   // to replace
 
