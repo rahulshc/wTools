@@ -1939,28 +1939,27 @@ function bufferGrowInplace( dstArray, range, srcArray )
 //
 
 /**
- * Routine bufferGrow_() changes length of provided container {-dstArray-} by copying it elements to newly created container of the same
- * type using range {-range-} positions of the original containers and value to fill free space after copy {-srcArray-}.
- * Routine can only grows size of container.
+ * Routine bufferGrow_() grows provided container {-dst-} by copying elements of source buffer to it.
+ * Routine uses crange {-crange-} positions of the source container and value {-ins-} to fill destination buffer.
+ * Routine can only grows size of source container.
  *
  * If first and second provided arguments is containers, then fisrs argument is destination
  * container {-dst-} and second argument is source container {-dstArray-}. All data in {-dst-}
  * will be cleared. If {-dst-} container is not resizable and resulted container length
- * is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ * is not equal to original {-src-} length, then routine makes new container with {-dst-} type.
  *
  * If first argument and second argument is the same container, routine will try change container inplace.
  *
- * If {-dst-} is not provided routine makes new container of {-dstArray-} type.
+ * If {-dst-} is not provided routine makes new container with {-src-} type.
  *
  * @param { BufferAny|Long|Null } dst - The destination container.
- * @param { BufferAny|Long } dstArray - The container from which makes a shallow copy.
- * @param { Range|Number } range - The two-element array that defines the start index and the end index for copying elements from {-dstArray-} and adding {-srcArray-}.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Range|Number } crange - The two-element array that defines the start index and the end index for copying elements from {-src-} and adding {-ins-}.
  * If {-range-} is number, then it defines the end index, and the start index is 0.
  * If range[ 0 ] < 0, then start index sets to 0, end index incrementes by absolute value of range[ 0 ].
  * If range[ 0 ] > 0, then start index sets to 0.
- * If range[ 1 ] > dstArray.length, end index sets to dstArray.length.
- * If range[ 1 ] <= range[ 0 ], then routine returns a copy of original container.
- * @param { * } srcArray - The object of any type for insertion.
+ * If range[ 1 ] < range[ 0 ], then routine returns a copy of original container.
+ * @param { * } ins - The object of any type for insertion.
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
@@ -1968,7 +1967,7 @@ function bufferGrowInplace( dstArray, range, srcArray )
  * console.log( got );
  * // log Uint8Array[ 1, 2, 3, 4 ]
  * console.log( got === buffer );
- * // log false
+ * // log true
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
@@ -1980,7 +1979,7 @@ function bufferGrowInplace( dstArray, range, srcArray )
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
- * let got = _.bufferGrow_( buffer, buffer );
+ * let got = _.bufferGrow_( buffer, buffer, [ 0, 3 ] );
  * console.log( got );
  * // log Uint8Array[ 1, 2, 3, 4 ]
  * console.log( got === buffer );
@@ -1989,7 +1988,7 @@ function bufferGrowInplace( dstArray, range, srcArray )
  * @example
  * let dst = [ 0, 0 ]
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
- * let got = _.bufferGrow_( dst, buffer );
+ * let got = _.bufferGrow_( dst, buffer, [ 0, 3 ] );
  * console.log( got );
  * // log [ 1, 2, 3, 4 ]
  * console.log( got === dst );
@@ -1997,11 +1996,11 @@ function bufferGrowInplace( dstArray, range, srcArray )
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
- * let got = _.bufferGrow_( buffer, [ 1, 6 ], 0 );
+ * let got = _.bufferGrow_( buffer, [ 1, 5 ], 0 );
  * console.log( got );
- * // log Uint8Array[ 2, 3, 4, 0, 0 ]
+ * // log Uint8Array[ 1, 2, 3, 4, 0, 0 ]
  * console.log( got === buffer );
- * // log false
+ * // log true
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
@@ -2022,19 +2021,19 @@ function bufferGrowInplace( dstArray, range, srcArray )
  * @example
  * let dst = [ 0, 0 ];
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
- * let got = _.bufferGrow_( dst, buffer, [ 1, 6 ], [ 0, 0, 0 ] );
+ * let got = _.bufferGrow_( dst, buffer, [ 1, 5 ], 1 );
  * console.log( got );
- * // log [ 2, 3, 4, [ 0, 0, 0 ], [ 0, 0, 0 ] ]
+ * // log [ 1, 2, 3, 4, 1, 1 ]
  * console.log( got === dst );
  * // log true
  *
- * @returns { BufferAny|Long } If {-dst-} is provided, routine returns container of {-dst-} type.
- * Otherwise, routine returns container of {-dstArray-} type.
- * If {-dst-} and {-dstArray-} is the same container, routine tries to return original container.
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} is the same container, routine tries to return original container.
  * @function bufferGrow_
  * @throws { Error } If arguments.length is less then one or more then four.
  * @throws { Error } If {-dst-} is not an any buffer, not a Long, not null.
- * @throws { Error } If {-dstArray-} is not an any buffer, not a Long.
+ * @throws { Error } If {-src-} is not an any buffer, not a Long.
  * @throws { Error } If ( range ) is not a Range or not a Number.
  * @namespace Tools
  */
@@ -2062,27 +2061,27 @@ function bufferGrow_( dst, src, crange, ins )
   _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
-  let f = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let l = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : srcLength - 1;
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : srcLength - 1;
 
-  if( f > 0 )
-  f = 0;
-  if( l < srcLength - 1 )
-  l = srcLength - 1;
+  if( first > 0 )
+  first = 0;
+  if( last < srcLength - 1 )
+  last = srcLength - 1;
 
-  if( f < 0 )
+  if( first < 0 )
   {
-    l -= f;
-    f -= f;
+    last -= first;
+    first -= first;
   }
 
-  if( l + 1 < f )
-  l = f - 1;
+  if( last + 1 < first )
+  last = first - 1;
 
-  let f2 = Math.max( -crange[ 0 ], 0 );
-  let l2 = Math.min( srcLength - 1 + f2, l + f2 );
+  let first2 = Math.max( -crange[ 0 ], 0 );
+  let last2 = Math.min( srcLength - 1 + first2, last + first2 );
 
-  let resultLength = l - f + 1;
+  let resultLength = last - first + 1;
 
   let result = dst;
   if( dst === null )
@@ -2098,8 +2097,8 @@ function bufferGrow_( dst, src, crange, ins )
     if( _.arrayLikeResizable( dst ) )
     {
       _.assert( Object.isExtensible( dst ), 'Array is not extensible, cannot change array' );
-      dst.splice( f, 0, ... _.dup( ins, f2 ) );
-      dst.splice( l2 + 1, 0, ... _.dup( ins, resultLength <= l2 ? 0 : resultLength - l2 - 1 ) );
+      dst.splice( first, 0, ... _.dup( ins, first2 ) );
+      dst.splice( last2 + 1, 0, ... _.dup( ins, resultLength <= last2 ? 0 : resultLength - last2 - 1 ) );
       return dst;
     }
     else if( dstLength !== resultLength || _.argumentsArrayIs( dst ) )
@@ -2123,15 +2122,15 @@ function bufferGrow_( dst, src, crange, ins )
   else if( _.bufferViewIs( src ) )
   srcTyped = new U8x( src.buffer );
 
-  for( let r = f2 ; r < l2 + 1 ; r++ )
-  resultTyped[ r ] = srcTyped[ r - f2 ];
+  for( let r = first2 ; r < last2 + 1 ; r++ )
+  resultTyped[ r ] = srcTyped[ r - first2 ];
 
   if( ins !== undefined )
   {
-    for( let r = 0 ; r < f2 ; r++ )
+    for( let r = 0 ; r < first2 ; r++ )
     resultTyped[ r ] = ins;
 
-    for( let r = l2 + 1 ; r < resultLength ; r++ )
+    for( let r = last2 + 1 ; r < resultLength ; r++ )
     resultTyped[ r ] = ins;
   }
 
@@ -2421,75 +2420,119 @@ function bufferRelengthInplace( dstArray, range, srcArray )
  * @namespace Tools
  */
 
-function bufferRelength_( dst, dstArray, range, srcArray )
+function bufferRelength_( dst, src, crange, ins )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  [ dst, dstArray, range, srcArray ] = _argumentsOnlyBuffer.apply( this, arguments );
+  if( arguments.length < 4 && dst !== null && dst !== src )
+  {
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
+  }
 
-  if( _.arrayLikeResizable( dstArray ) )
-  return _.arrayRelength_.apply( this, arguments );
+  let dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
+  let srcLength = src.length !== undefined ? src.length : src.byteLength;
 
-  let length = dstArray.length !== undefined ? dstArray.length : dstArray.byteLength;
+  if( crange === undefined )
+  crange = [ 0, srcLength - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
 
-  if( range === undefined )
-  return _returnDst( dst, dstArray );
+  _.assert( _.bufferAnyIs( dst ) || _.longIs( dst ) || dst === null, 'Expects {-dst-} of any buffer type, long or null' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
-  if( _.numberIs( range ) )
-  range = [ range, length ];
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : srcLength - 1;
 
-  let first = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  let last = range[ 1 ] !== undefined ? range[ 1 ] : length;
+  if( last < first )
+  last = first - 1;
 
-  _.assert( _.rangeIs( range ) );
+  if( crange[ 1 ] < 0 && crange[ 0 ] < 0 )
+  crange[ 0 ] -= crange[ 1 ] + 1;
 
   if( first < 0 )
-  first = 0;
-  if( first > length )
-  first = length;
-  if( last < first )
-  last = first;
-
-  if( first === 0 && last === length )
-  return _returnDst( dst, dstArray );
-
-  let newLength = last - first;
-  let dstLength = dst.length !== undefined ? dst.length : dst.byteLength;
-
-  let result;
-  if( _.boolIs( dst ) )
-  result = _.bufferMakeUndefined( dstArray, newLength );
-  else if( _.arrayLikeResizable( dst ) )
   {
-    result = dst;
-    result.length = newLength;
+    last -= first;
+    first -= first;
   }
-  else if( _.argumentsArrayIs( dst ) )
-  result = new Array( newLength );
-  else if( dstLength !== newLength )
-  result = _.bufferViewIs( dst ) ? new BufferView( new BufferRaw( newLength ) ) : new dst.constructor( newLength );
-  else
-  result = dst;
+
+  let first2 = Math.max( Math.abs( crange[ 0 ] ), 0 );
+  let last2 = Math.min( srcLength - 1, last );
+
+  let resultLength = last - first + 1;
+
+  let result = dst;
+  if( dst === null )
+  {
+    result = _.bufferMakeUndefined( src, resultLength );
+  }
+  else if( dst === src )
+  {
+    if( dstLength === resultLength && crange[ 0 ] === 0 )
+    {
+      return dst;
+    }
+    if( _.arrayLikeResizable( dst ) )
+    {
+      _.assert( Object.isExtensible( dst ), 'dst is not extensible, cannot change dst' );
+      if( crange[ 0 ] < 0 )
+      {
+        dst.splice( first, 0, ... _.dup( ins, first2 ) );
+        dst.splice( last2 + 1, src.length - last2, ... _.dup( ins, last - last2 ) );
+      }
+      else
+      {
+        dst.splice( 0, first );
+        dst.splice( last2 + 1 - first2, src.length - last2, ... _.dup( ins, last - last2 ) );
+      }
+      return dst;
+    }
+    else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
+    {
+      result = _.bufferMakeUndefined( dst, resultLength );
+    }
+  }
+  else if( dst.length !== resultLength )
+  {
+    result = _.bufferMakeUndefined( dst, resultLength );
+  }
 
   let resultTyped = result;
   if( _.bufferRawIs( result ) )
   resultTyped = new U8x( result );
   else if( _.bufferViewIs( result ) )
   resultTyped = new U8x( result.buffer );
-  let dstArrayTyped = dstArray;
-  if( _.bufferRawIs( dstArray ) )
-  dstArrayTyped = new U8x( dstArray );
-  else if( _.bufferViewIs( dstArray ) )
-  dstArrayTyped = new U8x( dstArray.buffer );
+  let srcTyped = src;
+  if( _.bufferRawIs( src ) )
+  srcTyped = new U8x( src );
+  else if( _.bufferViewIs( src ) )
+  srcTyped = new U8x( src.buffer );
 
-  let first2 = Math.max( first, 0 );
-  let last2 = Math.min( length, last );
-  for( let r = first2 ; r < last2 ; r++ )
-  resultTyped[ r-first2 ] = dstArrayTyped[ r ];
-
-  if( srcArray !== undefined )
+  if( resultLength === 0 )
   {
-    for( let r = last2 -first2; r < newLength ; r++ )
-    resultTyped[ r ] = srcArray;
+    return result;
+  }
+  if( crange[ 0 ] < 0 )
+  {
+    for( let r = first2 ; r < ( last2 + 1 + first2 ) && r < resultLength ; r++ )
+    resultTyped[ r ] = srcTyped[ r - first2 ];
+    if( ins !== undefined )
+    {
+      for( let r = 0 ; r < first2 ; r++ )
+      resultTyped[ r ] = ins;
+      for( let r = last2 + 1 + first2 ; r < resultLength ; r++ )
+      resultTyped[ r ] = ins;
+    }
+  }
+  else
+  {
+    for( let r = first2 ; r < last2 + 1 ; r++ )
+    resultTyped[ r - first2 ] = srcTyped[ r ];
+    if( ins !== undefined )
+    for( let r = last2 + 1 ; r < last + 1 ; r++ )
+    resultTyped[ r - first2 ] = ins;
   }
 
   return result;

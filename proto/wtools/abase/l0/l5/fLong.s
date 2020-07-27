@@ -2997,6 +2997,9 @@ function longRelength_( dst, src, crange, ins )
   if( last < first )
   last = first - 1;
 
+  if( crange[ 1 ] < 0 && crange[ 0 ] < 0 )
+  crange[ 0 ] -= crange[ 1 ] + 1;
+
   if( first < 0 )
   {
     last -= first;
@@ -3048,18 +3051,17 @@ function longRelength_( dst, src, crange, ins )
 
   if( resultLength === 0 )
   {
-    return _.longEmpty( result );
+    return result;
   }
   if( crange[ 0 ] < 0 )
   {
-    for( let r = first2 ; r < last2 + 1 ; r++ )
+    for( let r = first2 ; r < ( last2 + 1 + first2 ) && r < resultLength ; r++ )
     result[ r ] = src[ r - first2 ];
     if( ins !== undefined )
     {
       for( let r = 0 ; r < first2 ; r++ )
       result[ r ] = ins;
-
-      for( let r = last2 + 1 ; r < resultLength ; r++ )
+      for( let r = last2 + 1 + first2 ; r < resultLength ; r++ )
       result[ r ] = ins;
     }
   }
