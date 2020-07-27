@@ -3015,25 +3015,24 @@ function longRelength_( dst, src, crange, ins )
   }
   else if( dst === src )
   {
-    if( dst.length === resultLength && first === 0 )
+    if( dst.length === resultLength && crange[ 0 ] === 0 )
     {
       return dst;
     }
     if( _.arrayLikeResizable( dst ) )
     {
-      _.assert( Object.isExtensible( dst ), 'src is not extensible, cannot change src' );
+      _.assert( Object.isExtensible( dst ), 'dst is not extensible, cannot change dst' );
       if( crange[ 0 ] < 0 )
       {
         dst.splice( first, 0, ... _.dup( ins, first2 ) );
         dst.splice( last2 + 1, src.length - last2, ... _.dup( ins, last - last2 ) );
-        return dst;
       }
       else
       {
         dst.splice( 0, first );
         dst.splice( last2 + 1 - first2, src.length - last2, ... _.dup( ins, last - last2 ) );
-        return dst;
       }
+      return dst;
     }
     else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
     {
@@ -3047,6 +3046,10 @@ function longRelength_( dst, src, crange, ins )
 
   /* */
 
+  if( resultLength === 0 )
+  {
+    return _.longEmpty( result );
+  }
   if( crange[ 0 ] < 0 )
   {
     for( let r = first2 ; r < last2 + 1 ; r++ )

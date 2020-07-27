@@ -1735,78 +1735,97 @@ function arrayRelengthInplace( src, range, ins )
 
 //
 
-function arrayRelength_( dst, src, range, ins )
+function arrayRelength_( dst, src, crange, ins )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
-
-  if( range === undefined )
-  return returnDst();
-
-  if( _.numberIs( range ) )
-  range = [ range, src.length ];
-
-  let f = range[ 0 ] === undefined ?  0 : range[ 0 ];
-  let l = range[ 1 ] === undefined ?  0 : range[ 1 ];
-
-  _.assert( _.rangeIs( range ) );
-
-  if( l < f )
-  l = f;
-
-  if( f < 0 )
-  f = 0;
-
-  if( f === 0 && l === src.length )
-  return returnDst();
-
-  let f2 = Math.max( f, 0 );
-  let l2 = Math.min( src.length, l );
-
-  let result;
-  if( dst !== false )
+  if( arguments.length < 4 && dst !== null && dst !== src )
   {
-    if( dst.length !== undefined )
-    result = dst;
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
+  }
+
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
+
+  _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+
+  if( last < first )
+  last = first - 1;
+
+  if( first < 0 )
+  {
+    last -= first;
+    first -= first;
+  }
+
+  let first2 = Math.max( Math.abs( crange[ 0 ] ), 0 );
+  let last2 = Math.min( src.length - 1, last );
+
+  let resultLength = last - first + 1;
+
+  let result = dst;
+  if( dst === null )
+  {
+    result = _.arrayMakeUndefined( src, resultLength );
+  }
+  else if( dst === src )
+  {
+    if( dst.length === resultLength && crange[ 0 ] === 0 )
+    {
+      return dst;
+    }
+    if( resultLength === 0 )
+    {
+      return _.arrayEmpty( dst );
+    }
+
+    if( dst.length < resultLength )
+    _.assert( Object.isExtensible( dst ), 'dst is not extensible, cannot change dst' );
+
+    if( crange[ 0 ] < 0 )
+    {
+      dst.splice( first, 0, ... _.dup( ins, first2 ) );
+      dst.splice( last2 + 1, src.length - last2, ... _.dup( ins, last - last2 ) );
+    }
     else
-    result = [];
-
-    if( !Object.isExtensible( dst ) && dst.length < l - f )
-    _.assert( 0, 'Array is not extensible, cannot change array' );
-
-    for( let i = f; i < l2; i++ )
-    result[ i - f ] = src[ i ];
+    {
+      dst.splice( 0, first );
+      dst.splice( last2 + 1 - first2, dst.length - last2, ... _.dup( ins, last - last2 ) );
+    }
+    return dst;
   }
-  else
-  {
-    if( !Object.isExtensible( src ) && src.length < l - f )
-    _.assert( 0, 'Array is not extensible, cannot change array' );
-
-    result = src;
-    result.splice( 0, f );
-  }
-
-  result.length = l - f;
-
-  if( ins !== undefined )
-  {
-    for( let r = l2 - f; r < result.length ; r++ )
-    result[ r ] = ins;
-  }
-
-  return result;
 
   /* */
 
-  function returnDst()
-  {
-    if( dst.length !== undefined )
-    dst.splice( 0, dst.length, ... src );
-    else
-    dst = dst === true ? src.slice() : src;
+  if( result.length < resultLength )
+  _.assert( Object.isExtensible( result ), 'dst is not extensible, cannot change dst' );
 
-    return dst;
+  if( resultLength === 0 )
+  {
+    return _.arrayEmpty( result );
   }
+  if( crange[ 0 ] < 0 )
+  {
+    result.splice( 0, first2, ... _.dup( ins, first2 ) );
+    result.splice( first2, last2 - first2, ... src.slice( 0, last2 + 1 - first2 ) );
+    result.splice( last2 + 1, result.length - last2, ... _.dup( ins, last - last2 ) );
+  }
+  else
+  {
+    result.splice( 0, last2 + 1, ... src.slice( first2, last2 + 1 ));
+    result.splice( last2 + 1 - first2, result.length - last2, ... _.dup( ins, last - last2 ) );
+  }
+
+  return result;
 }
 
 // --
