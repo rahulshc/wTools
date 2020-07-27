@@ -8407,64 +8407,126 @@ function longShrink_WithBufferTyped( test )
 
     test.case = 'only dst';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst );
+    var got = _.longShrink_( null, dst );
     var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    test.identical( got, expected );
-    test.is( got === dst );
-
-    test.case = 'range > dst.length, not a val';
-    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst, [ 0, dst.length + 2 ] );
-    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    test.identical( got, expected );
-    test.is( got === dst );
-
-    test.case = 'range > dst.length, val = number';
-    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst, [ 0, dst.length + 2 ], 0 );
-    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    test.identical( got, expected );
-    test.is( got === dst );
-
-    test.case = 'range > dst.length, val = number';
-    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst, [ dst.length - 1, dst.length * 2 ], 0 );
-    var expected = new makeLong( [ 5 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
-    test.case = 'range < dst.length';
+    test.case = 'dst, range - number < 0';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst, [ 0, 3 ] );
+    var got = _.longShrink_( null, dst, -1 );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range - number === 0';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, 0 );
+    var expected = new makeLong( [ 1 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range - number < src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, 2 );
     var expected = new makeLong( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
-    test.case = 'range < dst.length, val = number';
+    test.case = 'dst, range - number > src.length';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst, [ 0, 3 ], 0 );
+    var got = _.longShrink_( null, dst, 2 );
     var expected = new makeLong( [ 1, 2, 3 ] );
     test.identical( got, expected );
     test.is( got !== dst );
 
-    test.case = 'f < 0, not a val';
+    /* */
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < range[ 0 ]';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    got = _.longShrink_( dst, [ -1, 3 ] );
-    expected = new makeLong( [ 1, 2, 3 ] );
+    var got = _.longShrink_( null, dst, [ -1, -3 ] );
+    var expected = new makeLong( [] );
     test.identical( got, expected );
     test.is( got !== dst );
 
-    test.case = 'l < 0, not a val';
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst, [ 0, -1 ] );
-    var expected = new makeLong();
+    var got = _.longShrink_( null, dst, [ -1, -1 ] );
+    var expected = new makeLong( [] );
     test.identical( got, expected );
     test.is( got !== dst );
 
-    test.case = 'f < 0, val = number';
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst, [ -1, 3 ], 0 );
+    var got = _.longShrink_( null, dst, [ -1, 0 ] );
+    var expected = new makeLong( [ 1 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, [ -1, 2 ] );
     var expected = new makeLong( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, [ -1, 5 ] );
+    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, [ 1, 0 ] );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, [ 1, 1 ] );
+    var expected = new makeLong( [ 2 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, [ 1, 2 ] );
+    var expected = new makeLong( [ 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, [ 1, 5 ] );
+    var expected = new makeLong( [ 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] < range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, [ 5, 4 ] );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, [ 5, 5 ] );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( null, dst, [ 5, 7 ] );
+    var expected = new makeLong( [] );
     test.identical( got, expected );
     test.is( got !== dst );
 
@@ -8476,24 +8538,128 @@ function longShrink_WithBufferTyped( test )
 
     test.case = 'only dst';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst, dst );
-    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst );
+    var expected = new makeLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, expected );
     test.is( got === dst );
 
-    test.case = 'range > dst.length, not a val';
+    test.case = 'dst, range - number < 0';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst, dst, [ 0, dst.length + 2 ] );
-    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, -1 );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range - number === 0';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, 0 );
+    var expected = new makeLong( [ 1 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range - number < src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, 2 );
+    var expected = new makeLong( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range - number > src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, 2 );
+    var expected = new makeLong( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ -1, -3 ] );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ -1, -1 ] );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] === 0';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ -1, 0 ] );
+    var expected = new makeLong( [ 1 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] < src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ -1, 2 ] );
+    var expected = new makeLong( [ 1, 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] < 0, range[ 1 ] > src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ -1, 5 ] );
+    var expected = new makeLong( new makeLong( [ 1, 2, 3, 4, 5 ] ) );
     test.identical( got, expected );
     test.is( got === dst );
 
-    test.case = 'range > dst.length, val = number';
+    /* */
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < range[ 0 ]';
     var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShrink_( dst, dst, [ 0, dst.length + 2 ], 0 );
-    var expected = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ 1, 0 ] );
+    var expected = new makeLong( [] );
     test.identical( got, expected );
-    test.is( got === dst );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] === range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ 1, 1 ] );
+    var expected = new makeLong( [ 2 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] < src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ 1, 2 ] );
+    var expected = new makeLong( [ 2, 3 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > 0, range[ 1 ] > src.length';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ 1, 5 ] );
+    var expected = new makeLong( [ 2, 3, 4, 5 ] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    /* */
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] < range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ 5, 4 ] );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] === range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ 5, 5 ] );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
+
+    test.case = 'dst, range[ 0 ] > src.length, range[ 1 ] > range[ 0 ]';
+    var dst = new makeLong( [ 1, 2, 3, 4, 5 ] );
+    var got = _.longShrink_( dst, [ 5, 7 ] );
+    var expected = new makeLong( [] );
+    test.identical( got, expected );
+    test.is( got !== dst );
 
     test.close( 'inplace' );
   }
