@@ -3120,12 +3120,12 @@ function longHas( array, element, evaluator1, evaluator2 )
 //
 
 /**
- * The routine longHasAny() checks if the {-src-} array has at least one element of the argument {-ins-}.
+ * The routine longHasAny() checks if the source long {-src-} has at least one element of the long {-ins-}.
  * It can take equalizer or evaluators for the routine equalities.
  *
- * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
+ * It iterates over source long {-src-} each element of the long {-ins-} by the routine
  * [longLeftIndex()]{@link wTools.longLeftIndex}
- * Checks, if {-src-} array has at least one element of the {-ins-} array.
+ * Checks, if {-src-} has at least one element of the {-ins-}.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
@@ -3133,7 +3133,8 @@ function longHas( array, element, evaluator1, evaluator2 )
  *
  * @param { Long } src - The source array.
  * @param  { Long|Primitive } ins - The elements to check in the source array.
- * @param { Function } evaluator - A collback function.
+ * @param { Function } evaluator1 - A callback function. Can be an equalizer or evaluator.
+ * @param { Function } evaluator2 - A callback function. Uses only as second evaluator.
  *
  * @example
  * _.longHasAny( [ 5, 'str', 42, false ], 7 );
@@ -3152,12 +3153,27 @@ function longHas( array, element, evaluator1, evaluator2 )
  * _.longHasAny( [ { a : 2 }, 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
  * // returns true
  *
+ * @example
+ * var evaluator1 = ( e ) => e.a;
+ * var evaluator2 = ( e ) => e.b;
+ * _.longHasAny( [ { a : 2 }, 'str', 42, false ], [ { b : 2 }, { b : 3 } ], evaluator1, evaluator2 );
+ * // returns true
+ *
+ * @example
+ * var equalizer = ( eSrc, eIns ) => eSrc.a === eIns.b;
+ * _.longHasAny( [ { a : 2 }, 'str', 42, false ], [ { b : 2 }, { b : 3 } ], equalizer );
+ * // returns true
+ *
  * @returns { Boolean } - Returns true, if {-src-} has at least one element of {-ins-}, otherwise false is returned.
  * @function longHasAny
- * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If arguments.length is less then one or more then four.
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
- * @throws { Error } If {-evaluator-} is not a routine.
+ * @throws { Error } If {-evaluator1-} is not a routine.
+ * @throws { Error } If {-evaluator1-} is an evaluator and accepts less or more than one argument.
+ * @throws { Error } If {-evaluator1-} is an equalizer and accepts less or more than two argument.
+ * @throws { Error } If {-evaluator2-} is not a routine.
+ * @throws { Error } If {-evaluator2-} is an evaluator and accepts less or more than one argument.
  * @namespace Tools
  */
 
@@ -3185,31 +3201,6 @@ function longHasAny( src, ins, evaluator1, evaluator2 )
   return true;
   return false;
 }
-
-// function longHasAny( src, ins, evaluator )
-// {
-//
-//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
-//   _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
-//   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
-//
-//   if( _.primitiveIs( ins ) )
-//   ins = [ ins ];
-//
-//   let i = 0;
-//   let result;
-//
-//   do
-//   {
-//     result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
-//     i++;
-//   }
-//   while( result < 0 && i < ins.length )
-//
-//   if( result !== -1 )
-//   return true;
-//   return false;
-// }
 
 //
 
