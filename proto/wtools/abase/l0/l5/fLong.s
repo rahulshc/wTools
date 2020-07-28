@@ -3161,11 +3161,11 @@ function longHas( array, element, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function longHasAny( src, ins, evaluator )
+function longHasAny( src, ins, evaluator1, evaluator2 )
 {
 
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.longLike( src ), `Expects array, but got ${ _.strType( src ) }` );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
@@ -3176,7 +3176,7 @@ function longHasAny( src, ins, evaluator )
 
   do
   {
-    result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
+    result = _.longLeftIndex( src, ins[ i ], 0, evaluator1, evaluator2 );
     i++;
   }
   while( result < 0 && i < ins.length )
@@ -3185,6 +3185,31 @@ function longHasAny( src, ins, evaluator )
   return true;
   return false;
 }
+
+// function longHasAny( src, ins, evaluator )
+// {
+//
+//   _.assert( 1 <= arguments.length && arguments.length <= 3 );
+//   _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
+//   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
+//
+//   if( _.primitiveIs( ins ) )
+//   ins = [ ins ];
+//
+//   let i = 0;
+//   let result;
+//
+//   do
+//   {
+//     result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
+//     i++;
+//   }
+//   while( result < 0 && i < ins.length )
+//
+//   if( result !== -1 )
+//   return true;
+//   return false;
+// }
 
 //
 
