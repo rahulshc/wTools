@@ -15780,6 +15780,14 @@ function longHasAllWithCallback( test )
     var expected = false;
     test.identical( got, expected );
 
+    test.case = 'src = empty array, ins = number, with two evaluators';
+    var evaluator1 = ( e ) => e.a;
+    var evaluator2 = ( e ) => e;
+    var src = makeLong( [] );
+    var got = _.longHasAll( src, 42, evaluator1, evaluator2 );
+    var expected = false;
+    test.identical( got, expected );
+
     test.case = 'src = empty array, ins = number, with equalizer';
     var equalizer = ( e1, e2 ) => e1.a === e2;
     var src = makeLong( [] );
@@ -15794,6 +15802,14 @@ function longHasAllWithCallback( test )
     var expected = true;
     test.identical( got, expected );
 
+    test.case = 'src = empty array, ins = empty array, with two evaluators';
+    var evaluator1 = ( e ) => e.a;
+    var evaluator2 = ( e ) => e;
+    var src = makeLong( [] );
+    var got = _.longHasAll( src, [], evaluator1, evaluator2 );
+    var expected = true;
+    test.identical( got, expected );
+
     test.case = 'src = empty array, ins = empty array, with equalizer';
     var equalizer = ( e1, e2 ) => e1.a === e2;
     var src = makeLong( [] );
@@ -15805,6 +15821,14 @@ function longHasAllWithCallback( test )
     var evaluator = ( e ) => e;
     var src = makeLong( [] );
     var got = _.longHasAll( src, [ 1, 2 ], evaluator );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'src = empty array, ins = array, with two evaluators';
+    var evaluator1 = ( e ) => e.a;
+    var evaluator2 = ( e ) => e;
+    var src = makeLong( [] );
+    var got = _.longHasAll( src, [ 1, 2 ], evaluator1, evaluator2 );
     var expected = false;
     test.identical( got, expected );
 
@@ -15828,6 +15852,22 @@ function longHasAllWithCallback( test )
     var evaluator = ( e ) => e;
     var src = makeLong( [ { a : 3 }, { a : 5 }, 'str', 42, false ] );
     var got = _.longHasAll( src, 4, evaluator );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'with two evaluators, matches';
+    var evaluator1 = ( e ) => e;
+    var evaluator2 = ( e ) => e + 2;
+    var src = makeLong( [ 42, 42, 42, 42, 42 ] );
+    var got = _.longHasAll( src, 40, evaluator1, evaluator2 );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'with two evaluators, no matches';
+    var evaluator1 = ( e ) => e;
+    var evaluator2 = ( e ) => e + 2;
+    var src = makeLong( [ { a : 3 }, { a : 5 }, 'str', 42, false ] );
+    var got = _.longHasAll( src, 4, evaluator1, evaluator2 );
     var expected = false;
     test.identical( got, expected );
 
@@ -15856,6 +15896,22 @@ function longHasAllWithCallback( test )
     var evaluator = ( e ) => e.a;
     var src = makeLong( [ { a : 3 }, { a : 5 }, 'str', 42, false ] );
     var got = _.longHasAll( src, [ { a : 2 }, { a : 4 } ], evaluator );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'with two evaluators, matches';
+    var evaluator1 = ( e ) => e.a;
+    var evaluator2 = ( e ) => e.b;
+    var src = makeLong( [ { a : 2 }, { a : 5 }, 'str', 42, false ] );
+    var got = _.longHasAll( src, [ [ false ], 7, { b : 2 } ], evaluator1, evaluator2 );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'with two evaluators, no matches';
+    var evaluator1 = ( e ) => e.a;
+    var evaluator2 = ( e ) => e.b;
+    var src = makeLong( [ { a : 3 }, { a : 5 }, 'str', 42, false ] );
+    var got = _.longHasAll( src, [ { b : 2 }, { b : 4 } ], evaluator1, evaluator2 );
     var expected = false;
     test.identical( got, expected );
 
