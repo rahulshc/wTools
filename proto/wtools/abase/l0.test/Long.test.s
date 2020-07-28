@@ -15509,6 +15509,9 @@ function longHasAnyWithoutCallback( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.longHasAny() );
 
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longHasAny( [ 1 ], [ 1 ], ( e ) => e, ( eIns ) => eIns, 'extra' ) );
+
   test.case = 'src has wrong type';
   test.shouldThrowErrorSync( () => _.longHasAny( 'wrong argument', false ) );
   test.shouldThrowErrorSync( () => _.longHasAny( 1, false ) );
@@ -15516,8 +15519,11 @@ function longHasAnyWithoutCallback( test )
   test.case = 'ins has wrong type';
   test.shouldThrowErrorSync( () => _.longHasAny( [ 1, 2, 3, false ], new BufferRaw( 2 ) ) );
 
-  test.case = 'evaluator is not a routine';
-  test.shouldThrowErrorSync( () => _.longHasAny( [ 1, 2, 3, false ], 2, 3 ) );
+  test.case = 'equalizer ( evaluator ) is not a routine';
+  test.shouldThrowErrorSync( () => _.longHasAny( [ 1, 2, 3, false ], 2, [] ) );
+
+  test.case = 'evaluator2 is not a routine';
+  test.shouldThrowErrorSync( () => _.longHasAny( [ 1, 2, 3, false ], 2, ( e ) => e, [] ) );
 };
 
 //
@@ -15742,15 +15748,21 @@ function longHasAllWithoutCallback( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.longHasAll() );
 
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longHasAll( [ 1 ], [ 1 ], ( e ) => e, ( eIns ) => eIns, 'extra' ) );
+
   test.case = 'src has wrong type';
-  test.shouldThrowErrorSync( () => _.longHasAll( 'wrong argument', false ) );
-  test.shouldThrowErrorSync( () => _.longHasAll( 1, false ) );
+  test.shouldThrowErrorSync( () => _.longHasAll( 'wrong argument', 1 ) );
+  test.shouldThrowErrorSync( () => _.longHasAll( 1, 1 ) );
 
   test.case = 'ins has wrong type';
   test.shouldThrowErrorSync( () => _.longHasAll( [ 1, 2, 3, false ], new BufferRaw( 2 ) ) );
 
-  test.case = 'evaluator is not a routine';
-  test.shouldThrowErrorSync( () => _.longHasAll( [ 1, 2, 3, false ], 2, 3 ) );
+  test.case = 'equalizer ( evaluator ) is not a routine';
+  test.shouldThrowErrorSync( () => _.longHasAll( [ 1, 2, 3, false ], 2, [] ) );
+
+  test.case = 'evaluator2 is not a routine';
+  test.shouldThrowErrorSync( () => _.longHasAll( [ 1, 2, 3, false ], 2, ( e ) => e, [] ) );
 }
 
 //

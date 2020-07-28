@@ -3121,7 +3121,7 @@ function longHas( array, element, evaluator1, evaluator2 )
 
 /**
  * The routine longHasAny() checks if the source long {-src-} has at least one element of the long {-ins-}.
- * It can take equalizer or evaluators for the routine equalities.
+ * It can take equalizer or evaluators for comparing elements.
  *
  * It iterates over source long {-src-} each element of the long {-ins-} by the routine
  * [longLeftIndex()]{@link wTools.longLeftIndex}
@@ -3205,12 +3205,12 @@ function longHasAny( src, ins, evaluator1, evaluator2 )
 //
 
 /**
- * The routine longHasAll() checks if the {-src-} array has all elements of the argument {-ins-}.
- * It can take equalizer or evaluators for the routine equalities.
+ * The routine longHasAll() checks if the source long {-src-} has all elements of the long {-ins-}.
+ * It can take equalizer or evaluators for comparing elements.
  *
- * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
+ * It iterates over source long {-src-} each element of the long {-ins-} by the routine
  * [longLeftIndex()]{@link wTools.longLeftIndex}
- * Checks, if {-src-} array has all elements of the {-ins-} array.
+ * Checks, if {-src-} has all elements of the {-ins-}.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
@@ -3218,7 +3218,8 @@ function longHasAny( src, ins, evaluator1, evaluator2 )
  *
  * @param { Long } src - The source array.
  * @param  { Long|Primitive } ins - The elements to check in the source array.
- * @param { Function } evaluator - A collback function.
+ * @param { Function } evaluator1 - A callback function. Can be an equalizer or evaluator.
+ * @param { Function } evaluator2 - A callback function. Uses only as second evaluator.
  *
  * @example
  * _.longHasAll( [ 5, 'str', 42, false ], 7 );
@@ -3235,6 +3236,17 @@ function longHasAny( src, ins, evaluator1, evaluator2 )
  * @example
  * var evaluator = ( e ) => e.a;
  * _.longHasAny( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
+ * // returns true
+ *
+ * @example
+ * var evaluator1 = ( eSrc ) => eSrc.a;
+ * var evaluator2 = ( eIns ) => eIns.b;
+ * _.longHasAny( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { b : 2 }, { b : 3 } ], evaluator1, evaluator2 );
+ * // returns true
+ *
+ * @example
+ * var equalizer = ( eSrc, eIns ) => eSrc.a === eIns.b;
+ * _.longHasAny( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { b : 2 }, { b : 3 } ], evaluator1, evaluator2 );
  * // returns true
  *
  * @returns { Boolean } - Returns true, if {-src-} has all elements of {-ins-}, otherwise false is returned.
