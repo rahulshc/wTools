@@ -1,4 +1,5 @@
-( function _Long_test_s_() {
+( function _Long_test_s_()
+{
 
 'use strict';
 
@@ -400,7 +401,7 @@ function longMakeWithArrayAndUnroll( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -880,7 +881,7 @@ function longMakeWithArrayAndUnrollLongDescriptor( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -1396,7 +1397,7 @@ function longMakeEmptyWithArrayAndUnroll( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -1564,7 +1565,7 @@ function longMakeEmptyWithArrayAndUnrollLongDescriptor( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -1775,7 +1776,7 @@ function _longMakeOfLengthWithArrayAndUnroll( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -2226,7 +2227,7 @@ function _longMakeOfLengthWithArrayAndUnrollLongDescriptor( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -2726,7 +2727,7 @@ function longMakeUndefinedWithArrayAndUnroll( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -3208,7 +3209,7 @@ function longMakeUndefinedWithArrayAndUnrollLongDescriptor( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -3720,7 +3721,7 @@ function longMakeZeroedWithArrayAndUnroll( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -4181,7 +4182,7 @@ function longMakeZeroedWithArrayAndUnrollLongDescriptor( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -4686,7 +4687,7 @@ function longMakeFillingWithArrayAndUnroll( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -4963,7 +4964,7 @@ function longMakeFillingWithArrayAndUnrollLongDescriptor( test )
 {
   var array = ( src ) => _.arrayMake( src );
   var unroll = ( src ) => _.unrollMake( src );
-  var longConstr = function( src )
+  var longConstr = ( src ) =>
   {
     if( src )
     return _.longDescriptor.make( src );
@@ -5460,7 +5461,9 @@ function longFromLongDescriptor( test )
     test.case = 'filled argumentsArray';
     var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 0 ] );
     var got = descriptor.longFrom( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? _.argumentsArrayMake( [ 1, 2, 3, 4, 0 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    var exp = descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    if( src instanceof descriptor.longDescriptor.type )
+    exp = _.argumentsArrayMake( [ 1, 2, 3, 4, 0 ] );
     test.identical( got, exp );
     test.is( got instanceof src.constructor );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
@@ -5563,14 +5566,22 @@ function longFromCoercing( test )
   test.is( _.arrayIs( got ) );
 
   test.case = 'empty object from constructor';
-  var Constr = function(){ return this };
+  var Constr = function()
+  {
+    return this;
+  };
   var src = new Constr();
   var got = _.longFromCoercing( src );
   test.identical( got, [] );
   test.is( _.arrayIs( got ) );
 
   test.case = 'object with properties, from constructor';
-  var Constr = function(){ this.a = 2; this.b = 3; return this };
+  var Constr = function()
+  {
+    this.a = 2;
+    this.b = 3;
+    return this;
+  };
   var src = new Constr();
   var got = _.longFromCoercing( src );
   test.identical( got, [ [ 'a', 2 ], [ 'b', 3 ] ] );
@@ -5690,7 +5701,9 @@ function longFromCoercingLongDescriptor( test )
     test.case = 'string without number literals';
     var src = 'a b c';
     var got = descriptor.longFromCoercing( src );
-    var exp = _.bufferTypedIs( got ) ? descriptor.longDescriptor.make( [ 0, 0, 0 ] ) : descriptor.longDescriptor.make( [ NaN, NaN, NaN ] );
+    var exp = descriptor.longDescriptor.make( [ NaN, NaN, NaN ] );
+    if( _.bufferTypedIs( got ) )
+    exp = descriptor.longDescriptor.make( [ 0, 0, 0 ] );
     test.identical( got, exp );
     test.is( got instanceof descriptor.longDescriptor.type );
 
@@ -5704,7 +5717,9 @@ function longFromCoercingLongDescriptor( test )
     test.case = 'string with number literals, has not number literals';
     var src = '0 12, 345 a5678';
     var got = descriptor.longFromCoercing( src );
-    var exp = _.bufferTypedIs( got ) ? descriptor.longDescriptor.make( [ 0, 12, 345, 0 ] ) : descriptor.longDescriptor.make( [ 0, 12, 345, NaN ] );
+    var exp = descriptor.longDescriptor.make( [ 0, 12, 345, NaN ] );
+    if( _.bufferTypedIs( got ) )
+    exp = descriptor.longDescriptor.make( [ 0, 12, 345, 0 ] );
     test.identical( got, exp );
     test.is( got instanceof descriptor.longDescriptor.type );
 
@@ -5718,7 +5733,9 @@ function longFromCoercingLongDescriptor( test )
     test.case = 'filled map';
     var src = { a : 1, b : 2, 3 : 'd' };
     var got = descriptor.longFromCoercing( src );
-    var exp = _.bufferTypedIs( got ) ? descriptor.longDescriptor.make( [ 0, 0, 0 ] ) : descriptor.longDescriptor.make( [ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ] );
+    var exp = descriptor.longDescriptor.make( [ [ '3', 'd' ], [ 'a', 1 ], [ 'b', 2 ] ] );
+    if( _.bufferTypedIs( got ) )
+    exp = descriptor.longDescriptor.make( [ 0, 0, 0 ] );
     test.identical( got, exp );
     test.is( got instanceof descriptor.longDescriptor.type );
 
