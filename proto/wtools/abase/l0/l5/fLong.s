@@ -1766,7 +1766,7 @@ function longBut( array, range, val )
  */
 
 /*
-qqq : routine longButInplace requires good test coverage and documentation | Dmytro : implemented and covered routine longButInplace, documented
+aaa : routine longButInplace requires good test coverage and documentation | Dmytro : implemented and covered routine longButInplace, documented
  */
 
 function longButInplace( array, range, val )
@@ -1774,7 +1774,6 @@ function longButInplace( array, range, val )
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
-  // if( _.arrayIs( array ) )
   if( _.arrayLikeResizable( array ) )
   return _.arrayButInplace( array, range, val );
 
@@ -1793,7 +1792,7 @@ function longButInplace( array, range, val )
   if( range[ 0 ] === range[ 1 ] && val === undefined )
   return array;
   else
-  return _.longBut( array, range, val ); // Dmytro : not resizable longs should be processed by longBut algorithm. If it need, I'll make copy of code.
+  return _.longBut( array, range, val );
 
   // let result;
   //
@@ -1831,50 +1830,50 @@ function longButInplace( array, range, val )
 
 //
 
-function _relength_pre( dst, src, range, ins )
-{
-  _.assert( 1 <= arguments.length && arguments.length <= 4 );
-
-  /* qqq : suspicious */
-
-  if( dst === null )
-  {
-    dst = true;
-  }
-  else if( dst === src )
-  {
-    dst = false;
-  }
-  else if( arguments.length === 4 )
-  {
-    _.assert( _.longLike( dst ), '{-dst-} should be Long' );
-  }
-  else
-  {
-    /* qqq2 : wrong. src could pass check rangeIs if length is 2 */
-    /* Dmytro : this check means: if length > 1 and second argument is not a range, then it is source container, and third argument is range */
-    // if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
-    // {
-    //   _.assert( _.longLike( dst ) );
-    // }
-    // else
-    // {
-    //   ins = range;
-    //   range = src;
-    //   src = dst;
-    //   dst = false;
-    // }
-
-    ins = range;
-    range = src;
-    src = dst;
-    dst = false;
-  }
-
-  _.assert( _.longLike( src ) );
-
-  return [ dst, src, range, ins ];
-}
+// function _relength_pre( dst, src, range, ins )
+// {
+//   _.assert( 1 <= arguments.length && arguments.length <= 4 );
+//
+//   /* aaa : suspicious */ /* Dmytro : removed */
+//
+//   if( dst === null )
+//   {
+//     dst = true;
+//   }
+//   else if( dst === src )
+//   {
+//     dst = false;
+//   }
+//   else if( arguments.length === 4 )
+//   {
+//     _.assert( _.longLike( dst ), '{-dst-} should be Long' );
+//   }
+//   else
+//   {
+//     /* aaa2 : wrong. src could pass check rangeIs if length is 2 */
+//     /* Dmytro : this check means: if length > 1 and second argument is not a range, then it is source container, and third argument is range */
+//     // if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
+//     // {
+//     //   _.assert( _.longLike( dst ) );
+//     // }
+//     // else
+//     // {
+//     //   ins = range;
+//     //   range = src;
+//     //   src = dst;
+//     //   dst = false;
+//     // }
+//
+//     ins = range;
+//     range = src;
+//     src = dst;
+//     dst = false;
+//   }
+//
+//   _.assert( _.longLike( src ) );
+//
+//   return [ dst, src, range, ins ];
+// }
 
 //
 
@@ -1893,164 +1892,80 @@ function longBut_( dst, src, crange, ins )
   }
 
   if( crange === undefined )
-  return resultMake( dst, src )
+  {
+    crange = [ 0, -1 ];
+    ins = undefined;
+  }
   else if( _.numberIs( crange ) )
-  crange = [ crange, crange + 1 ];
+  {
+    crange = [ crange, crange ];
+  }
 
-  _.assert( _.longLike( src ) );
-  _.assert( _.rangeIs( crange ) );
-  _.assert( _.longLike( ins ) || ins === undefined || ins === null );
+  _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.longLike( ins ) || ins === undefined || ins === null, 'Expects array for insertion {-ins-}' );
 
-  _.rangeClamp( crange, [ 0, src.length ] );
-  if( crange[ 1 ] < crange[ 0 ] )
-  crange[ 1 ] = crange[ 0 ];
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
 
-  let delta = crange[ 1 ] - crange[ 0 ];
+  if( first < 0 )
+  first = 0;
+  if( first > src.length )
+  first = src.length;
+  if( last > src.length - 1 )
+  last = src.length - 1;
+
+  if( last + 1 < first )
+  last = first - 1;
+
+  let delta = last - first + 1;
   let insLength = ins ? ins.length : 0;
   let delta2 = delta - insLength;
   let resultLength = src.length - delta2;
 
-  let result;
+  let result = dst;
   if( dst === null )
   {
     result = _.longMakeUndefined( src, resultLength );
   }
   else if( dst === src )
   {
+    if( ( dst.length === resultLength ) && delta === 0 )
+    {
+      return dst;
+    }
     if( _.arrayLikeResizable( dst ) )
     {
-      ins ? dst.splice( crange[ 0 ], delta, ... ins ) : dst.splice( crange[ 0 ], delta );
+      ins ? dst.splice( first, delta, ... ins ) : dst.splice( first, delta );
       return dst;
     }
     else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
     {
       result = _.longMakeUndefined( dst, resultLength );
     }
-    else
-    {
-      result = dst;
-    }
   }
   else if( dst.length !== resultLength )
   {
-    if( _.arrayLikeResizable( dst ) )
-    {
-      dst.length = resultLength;
-    }
-    else
-    {
-      dst = _.longMakeUndefined( dst, resultLength );
-    }
-
-    result = dst;
+    dst = _.longMakeUndefined( dst, resultLength );
   }
 
   /* */
 
-  result = resultMake( result, src, ins );
+  for( let i = 0 ; i < first ; i++ )
+  result[ i ] = src[ i ];
+
+  for( let i = last + 1 ; i < src.length ; i++ )
+  result[ i - delta2 ] = src[ i ];
+
+  if( ins )
+  {
+    for( let i = 0 ; i < ins.length ; i++ )
+    result[ first + i ] = ins[ i ];
+  }
 
   return result;
-
-  /* */
-
-  function resultMake( dst, src, ins )
-  {
-    if( dst !== src )
-    {
-      for( let i = 0 ; i < crange[ 0 ] ; i++ )
-      dst[ i ] = src[ i ];
-
-      for( let i = crange[ 1 ] ; i < src.length ; i++ )
-      dst[ i - delta2 ] = src[ i ];
-    }
-
-    if( ins )
-    {
-      for( let i = 0 ; i < ins.length ; i++ )
-      dst[ crange[ 0 ] + i ] = ins[ i ];
-    }
-
-    return dst;
-  }
 }
-
-//
-
-// /* qqq2 : rename arguments. ask */
-// function longBut_( dst, array, range, val )
-// {
-//
-//   [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
-//
-//   if( _.arrayLikeResizable( array ) && !_.bufferAnyIs( dst ) )
-//   return _.arrayBut_.apply( this, arguments ); /* qqq2 : ? */
-//
-//   if( range === undefined )
-//   return returnDst();
-//
-//   if( _.numberIs( range ) )
-//   range = [ range, range + 1 ];
-//
-//   _.assert( _.rangeIs( range ) );
-//
-//   _.rangeClamp( range, [ 0, array.length ] );
-//   if( range[ 1 ] < range[ 0 ] )
-//   range[ 1 ] = range[ 0 ];
-//
-//   if( range[ 0 ] === range[ 1 ] && val === undefined ) /* qqq2 : ? */
-//   return returnDst();
-//
-//   let d = range[ 1 ] - range[ 0 ];
-//   let len = val ? val.length : 0;
-//   let d2 = d - len;
-//   let l2 = array.length - d2;
-//
-//   let result;
-//   if( _.boolIs( dst ) )
-//   result = _.longMakeUndefined( array, l2 );
-//   else if( _.arrayLikeResizable( dst ) )
-//   result = _.longEmpty( dst ); /* qqq2 : ? */
-//   else if( dst.length !== l2 )
-//   result = _.longMakeUndefined( dst, l2 );
-//   else
-//   result = dst;
-//
-//   for( let i = 0 ; i < range[ 0 ] ; i++ )
-//   result[ i ] = array[ i ];
-//
-//   for( let i = range[ 1 ] ; i < array.length ; i++ )
-//   result[ i-d2 ] = array[ i ];
-//
-//   if( val )
-//   for( let i = 0 ; i < val.length ; i++ )
-//   result[ range[ 0 ]+i ] = val[ i ];
-//
-//   return result;
-//
-//   /* */
-//
-//   function returnDst() /* qqq2 : ? */
-//   {
-//     if( dst.length !== undefined )
-//     {
-//       if( _.arrayLikeResizable( dst ) )
-//       {
-//         return dst.splice( 0, dst.length, ... array );
-//       }
-//       else
-//       {
-//         if( dst.length !== array.length )
-//         dst = _.longMakeUndefined( dst, array.length );
-//
-//         for( let i = 0; i < dst.length; i++ )
-//         dst[ i ] = array[ i ];
-//
-//         return dst;
-//       }
-//     }
-//     return dst === true ? _.longMake( array ) : array;
-//   }
-// }
 
 //
 
@@ -3693,7 +3608,6 @@ let Extension =
 
   longBut,
   longButInplace,
-  _relength_pre,
   longBut_, /* !!! : use instead of longBut, longButInplace */
   longShrink,
   longShrink_, /* !!! : use instead of longShrink, longShrinkInplace */

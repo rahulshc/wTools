@@ -1083,7 +1083,7 @@ function arrayShrink_( dst, src, crange )
   crange = [ 0, crange ];
 
   _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
-  _.assert( _.longIs( src ) || src === null, 'Expects {-dst-} of Array type or null' );
+  _.assert( _.arrayIs( src ), 'Expects {-src-} of Array type' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
   let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
@@ -1379,7 +1379,8 @@ function arrayGrow_( dst, src, crange, ins )
   if( _.numberIs( crange ) )
   crange = [ 0, crange ];
 
-  _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
+  _.assert( _.arrayIs( src ), 'Expects {-src-} of Array type' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
   let f = crange[ 0 ] === undefined ?  0 : crange[ 0 ];
@@ -1758,6 +1759,7 @@ function arrayRelength_( dst, src, crange, ins )
   crange = [ 0, crange ];
 
   _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
+  _.assert( _.arrayIs( src ), 'Expects {-src-} of Array type' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
   let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
