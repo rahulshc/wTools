@@ -1107,45 +1107,51 @@ function strForCall( nameOfRoutine, args, ret, o )
 
 /**
  * Returns source string( src ) with limited number( limit ) of characters.
- * For example: src : 'string', limit : 4, result -> ''st'...'ng''.
+ * For example: src : 'string', limit : 4, result -> 'stng'.
  * Function can be called in two ways:
  * - First to pass only source string and limit;
- * - Second to pass all options map. Example: ( { src : 'string', limit : 4, wrap : 0, escaping : 0 } ).
+ * - Second to pass all options map. Example: ({ src : 'string', limit : 5, prefix : '<', infix : '.', postfix : '>' }).
  *
  * @param {string|object} o - String to parse or object with options.
  * @param {string} [ o.src=null ] - Source string.
  * @param {number} [ o.limit=40 ] - Limit of characters in output.
- * @param {string} [ o.wrap='\'' ] - String wrapper. Use zero or false to disable.
- * @param {string} [ o.escaping=1 ] - Escaping characters appears in output.
+ * @param {string} [ o.prefix=null ] - The leftmost part to be added to the returned string.
+ * @param {string} [ o.postfix=null ] - The rightmost part to be added to the returned string.
+ * @param {string} [ o.infix=null ] - The middle part to fill the reduced characters, if boolLikeTrue - the default ( '...' ) is used.
+ * @param {function} [ o.onLength=null ] - callback function that calculates a length based on .
  * @returns {string} Returns simplified source string.
  *
  * @example
  * _.strStrShort( 'string', 4 );
- * // returns ''st' ... 'ng''
+ * // returns 'stng'
  *
  * @example
- * _.strStrShort( 's\ntring', 4 );
- * // returns ''s' ... 'ng''
+ * _.strStrShort( 'a\nb', 3 );
+ * // returns 'a\nb'
  *
  * @example
  * _.strStrShort( 'string', 0 );
- * // returns 'string'
+ * // returns ''
  *
  * @example
- * _.strStrShort( { src : 'string', limit : 4, wrap : '\'' } );
- * // returns ''st' ... 'ng''
+ * _.strStrShort({ src : 'string', limit : 4 });
+ * // returns 'stng'
  *
  * @example
- *  _.strStrShort( { src : 'simple', limit : 4, wrap : 0 } );
- * // returns 'si ... le'
+ *  _.strStrShort({ src : 'simple', limit : 4, prefix : '<' });
+ * // returns '<ile'
  *
  * @example
- *  _.strStrShort( { src : 'si\x01mple', limit : 5, wrap : '\'' } );
- * // returns ''si' ... 'le''
+ *  _.strStrShort({ src : 'string', limit : 5, infix : '.' });
+ * // returns 'st.ng'
  *
  * @example
- *  _.strStrShort( 's\x01t\x01ing string string', 14 );
- * // returns ''s\u0001' ... ' string''
+ *  _.strStrShort({ src : 'string', limit : 5, prefix : '<', postfix : '>', infix : '.' });
+ * // returns '<s.g>'
+ *
+ * @example
+ *  _.strStrShort({ src : 'string', limit : 3, cutting : 'right' });
+ * // returns 'str'
  *
  * @method strStrShort
  * @throws { Exception } If no argument provided.
@@ -1153,7 +1159,9 @@ function strForCall( nameOfRoutine, args, ret, o )
  * @throws { Exception } If( o ) is extended with unknown property.
  * @throws { Exception } If( o.src ) is not a String.
  * @throws { Exception } If( o.limit ) is not a Number.
- * @throws { Exception } If( o.wrap ) is not a String.
+ * @throws { Exception } If( o.prefix ) is not a String or null.
+ * @throws { Exception } If( o.infix ) is not a String or null or boolLikeTrue.
+ * @throws { Exception } If( o.postfix ) is not a String or null.
  *
  * @namespace Tools
  *
@@ -1170,115 +1178,82 @@ function strStrShort( o )
 
   _.routineOptions( strStrShort, o );
 
-  // if( _.boolLike( o.onEscape ) || o.onEscape === null )
-  // o.onEscape = o.onEscape ? _.strEscape : ( src ) => src;
-
-  if( !o.infix )
-  o.infix = '';
-  else if( _.boolLikeTrue( o.infix ) )
-  o.infix = ' ... ';
-
   _.assert( _.strIs( o.src ) );
   _.assert( _.numberIs( o.limit ) );
-  // _.assert( _.routineIs( o.onEscape ) );
-  _.assert( o.prefix === null || _.strIs( o.prefix ) || _.boolLikeFalse( o.prefix ) );
-  _.assert( o.postfix === null || _.strIs( o.postfix ) || _.boolLikeFalse( o.postfix ) );
-  _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeFalse( o.infix ) );
+  _.assert( o.limit >= 0, '{-limit-} must be greater or equal to zero' );
+  _.assert( o.prefix === null || _.strIs( o.prefix ) );
+  _.assert( o.postfix === null || _.strIs( o.postfix ) );
+  _.assert( o.infix === null || _.strIs( o.infix ) || _.boolLikeTrue( o.infix ));
   _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  if(!o.infix)
+  o.infix = '';
+  if( !o.prefix )
+  o.prefix = '';
+  if( !o.postfix )
+  o.postfix = '';
+  if( o.src.length < 1 )
+  {
+    if ( o.prefix.length + o.postfix.length <= o.limit )
+    return o.prefix + o.postfix
+    o.src = o.prefix + o.postfix;
+    o.prefix = '';
+    o.postfix = '';
+  }
+  if( _.boolLikeTrue( o.infix ) )
+  o.infix = '...';
+
+  if ( !o.onLength )
+  o.onLength = ( src ) => src.length;
+
+  if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.limit )
+  return o.prefix + o.infix + o.postfix;
+
+  if( o.prefix.length + o.postfix.length + o.infix.length > o.limit )
+  {
+    o.src = o.prefix + o.infix + o.postfix;
+    o.prefix = '';
+    o.postfix = '';
+    o.infix = '';
+  }
+
 
   let src = o.src;
   let fixLength = 0;
-  if( o.prefix )
-  fixLength += o.prefix ? lengthOf( o.prefix ) : 0;
-  if( o.postfix )
-  fixLength += o.postfix ? lengthOf( o.postfix ) : 0;
-  if( o.infix )
-  fixLength += lengthOf( o.infix );
-  let lengthWithoutFix = o.limit - fixLength;
-  // src = escape( src );
+  fixLength += o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix );
 
-  if( o.limit > 0 && lengthOf( src ) + fixLength > o.limit )
+  if( o.cutting === 'left' )
   {
-    let b = Math.max( 0, Math.ceil( lengthWithoutFix / 2 ) );
-    let e = Math.max( 0, lengthWithoutFix - b );
-    let begin = short( o.src, b, true );
-    let end = short( o.src, e, false );
+    while( o.onLength( src ) + fixLength > o.limit )
+    {
+      src = src.slice( 1 );
+    }
 
-    if( o.prefix )
-    begin = o.prefix + begin;
-    if( o.postfix )
-    end = end + o.postfix;
+    return o.prefix + o.infix + src + o.postfix;
+  }
+  else if( o.cutting === 'right' )
+  {
+    while( o.onLength( src ) + fixLength > o.limit )
+    {
+      src = src.slice( 0, src.length - 1 );
+    }
 
-    src = begin + o.infix + end;
-
+    return o.prefix + src + o.infix + o.postfix;
   }
   else
   {
-  }
-
-  return src;
-
-  /* */
-
-  function escape( src )
-  {
-    return o.onEscape ? o.onEscape( src ) : src;
-  }
-
-  /* */
-
-  function lengthOfEscaped( src )
-  {
-    let l = o.onLength ? o.onLength( src ) : src.length;
-    return l;
-  }
-
-  /* */
-
-  function lengthOf( src )
-  {
-    // let escaped = escape( src );
-    let escaped = src;
-    return lengthOfEscaped( src );
-  }
-
-  /* */
-
-  function short( src, limit, begin )
-  {
-    // let result = escape( src );
-    let result = src;
-    let length = lengthOfEscaped( src );
-
-    if( length < limit )
-    return result;
-
-    let l2 = limit-1;
-    do
+    if ( o.onLength( src ) + fixLength <= o.limit )
+    return o.prefix + src + o.postfix;
+    let begin = '';
+    let end = '';
+    while( o.onLength( src ) + fixLength > o.limit )
     {
-      l2 += 1;
-      if( begin )
-      result = escape( src.slice( 0, l2 ) );
-      else
-      result = escape( src.slice( result.length-l2, result.length ) );
-      length = lengthOf( result );
+      begin = src.slice( 0, Math.floor( src.length / 2 ) );
+      end = src.slice( Math.floor( src.length / 2 ) + 1 );
+      src = begin + end;
     }
-    while( length < limit && l2 < src.length );
-
-    while( length > limit && result.length > 0 )
-    {
-      l2 -= 1;
-      if( begin )
-      result = escape( src.slice( 0, l2 ) );
-      else
-      result = escape( src.slice( result.length-l2, result.length ) );
-      length = lengthOf( result );
-    }
-
-    return result;
+    return o.prefix + begin + o.infix + end + o.postfix;
   }
-
-  /* */
 
 }
 
@@ -1289,12 +1264,8 @@ strStrShort.defaults =
   prefix : null,
   postfix : null,
   infix : null,
-  // prefix : '{- \'',
-  // postfix : '\' -}',
-  // infix : ' ... ',
-  // escaping : 1,
-  // onEscape : null,
   onLength : null,
+  cutting : 'center',
 }
 
 //
@@ -5413,7 +5384,7 @@ function strLinesSize( o )
     return [ 0, 0 ];
   }
 
-  let w = lines.reduce( ( a, e ) => Math.max( a, o.onLength( e ) ), 1 );
+  let w = lines.reduce( ( a, e ) => Math.max( a, o.onLength( e ) ), 0 );
 
   return [ lines.length, w ];
 }
