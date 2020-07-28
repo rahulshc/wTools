@@ -3181,7 +3181,7 @@ function longHasAny( src, ins, evaluator1, evaluator2 )
 {
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.longLike( src ), `Expects array, but got ${ _.strType( src ) }` );
+  _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
@@ -3266,7 +3266,7 @@ function longHasAll( src, ins, evaluator1, evaluator2 )
 {
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
@@ -3352,7 +3352,7 @@ function longHasNone( src, ins, evaluator1, evaluator2 )
 {
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
-  _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
