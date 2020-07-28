@@ -3251,10 +3251,14 @@ function longHasAny( src, ins, evaluator1, evaluator2 )
  *
  * @returns { Boolean } - Returns true, if {-src-} has all elements of {-ins-}, otherwise false is returned.
  * @function longHasAll
- * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If arguments.length is less then one or more then four.
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
- * @throws { Error } If {-evaluator-} is not a routine.
+ * @throws { Error } If {-evaluator1-} is not a routine.
+ * @throws { Error } If {-evaluator1-} is an evaluator and accepts less or more than one argument.
+ * @throws { Error } If {-evaluator1-} is an equalizer and accepts less or more than two argument.
+ * @throws { Error } If {-evaluator2-} is not a routine.
+ * @throws { Error } If {-evaluator2-} is an evaluator and accepts less or more than one argument.
  * @namespace Tools
  */
 
@@ -3328,10 +3332,10 @@ function longHasAll( src, ins, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function longHasNone( src, ins, evaluator )
+function longHasNone( src, ins, evaluator1, evaluator2 )
 {
 
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
   _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
@@ -3343,7 +3347,7 @@ function longHasNone( src, ins, evaluator )
 
   do
   {
-    result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
+    result = _.longLeftIndex( src, ins[ i ], 0, evaluator1, evaluator2 );
     i++;
   }
   while( result < 0 && i < ins.length )
@@ -3355,7 +3359,7 @@ function longHasNone( src, ins, evaluator )
 
 //
 
-/* qqq : cover please | Dmytro : covered*/
+/* aaa : cover please | Dmytro : covered */
 
 function longHasDepth( arr, level = 1 )
 {
