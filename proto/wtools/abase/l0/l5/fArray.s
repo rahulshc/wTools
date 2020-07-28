@@ -782,92 +782,79 @@ function arrayButInplace( src, range, ins )
 
 //
 
-function _argumentsOnlyArray( dst, src, range, ins )
+function arrayBut_( dst, src, crange, ins )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  if( dst === null )
-  dst = true;
-  else if( dst === src )
-  dst = false;
-  else if( arguments.length === 4 )
-  _.assert( _.arrayLikeResizable( dst ) );
-  else
+  if( arguments.length < 4 && dst !== null && dst !== src )
   {
-    if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
-    _.assert( _.arrayLikeResizable( dst ) );
-    else
-    {
-      ins = range;
-      range = src;
-      src = dst;
-      dst = false;
-    }
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
   }
 
-  _.assert( _.arrayLikeResizable( src ) );
-
-  return [ dst, src, range, ins ];
-}
-
-//
-
-function arrayBut_( dst, src, range, ins )
-{
-
-  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
-
-  if( range === undefined )
+  if( crange === undefined )
   {
-    if( dst.length !== undefined )
-    dst.splice( 0, dst.length, ... src );
-    else
-    dst = dst === true ? src.slice() : src;
+    crange = [ 0, -1 ];
+    ins = undefined;
+  }
+  else if( _.numberIs( crange ) )
+  {
+    crange = [ crange, crange ];
+  }
 
+  _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
+  _.assert( _.longIs( src ), 'Expects {-src-} of Array type' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.longLike( ins ) || ins === undefined || ins === null, 'Expects long {-ins-} for insertion' );
+
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+
+  if( first < 0 )
+  first = 0;
+  if( first > src.length )
+  first = src.length;
+  if( last > src.length - 1 )
+  last = src.length - 1;
+
+  if( last + 1 < first )
+  last = first - 1;
+
+  let delta = last - first + 1;
+  let insLength = ins ? ins.length : 0;
+  let delta2 = delta - insLength;
+  let resultLength = src.length - delta2;
+
+  let result = dst;
+  if( dst === null )
+  {
+    result = _.arrayMakeUndefined( resultLength );
+  }
+  else if( dst === src )
+  {
+    if( !( ( dst.length === resultLength ) && delta === 0 ) )
+    ins ? dst.splice( first, delta, ... ins ) : dst.splice( first, delta );
     return dst;
   }
-
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
-
-  _.assert( _.rangeIs( range ) );
-  _.assert( ins === undefined || _.longLike( ins ) );
-
-  _.rangeClamp( range, [ 0, src.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  let result;
-  if( dst !== false )
+  else if( dst.length !== resultLength )
   {
-    if( dst.length !== undefined )
-    {
-      if( !Object.isExtensible( dst ) && dst.length < src.length - range[ 1 ] + range[ 0 ] + ins.length ? ins.length : 0 )
-      _.assert( 0, '{-dst-} array is not extensible, cannot change {-dst-} array' );
-
-      result = _.longEmpty( dst );
-    }
-    else
-    {
-      result = [];
-    }
-
-    for( let i = 0; i < range[ 0 ]; i++ )
-    result[ i ] = src[ i ];
-
-    if( ins )
-    result.push( ... ins );
-
-    for( let j = range[ 1 ]; j < src.length; j++ )
-    result.push( src[ j ] );
+    if( dst.length < resultLength )
+    _.assert( Object.isExtensible( result ), 'Expects extensible array {-dst-}' );
+    dst.length = resultLength;
   }
-  else
+
+  for( let i = 0 ; i < first ; i++ )
+  result[ i ] = src[ i ];
+
+  for( let i = last + 1 ; i < src.length ; i++ )
+  result[ i - delta2 ] = src[ i ];
+
+  if( ins )
   {
-    result = src
-    if( ins )
-    result.splice.apply( result, [ range[ 0 ], range[ 1 ] - range[ 0 ], ... ins ] );
-    else
-    result.splice.apply( result, [ range[ 0 ], range[ 1 ] - range[ 0 ] ] );
+    for( let i = 0 ; i < ins.length ; i++ )
+    result[ first + i ] = ins[ i ];
   }
 
   return result;
@@ -6239,7 +6226,6 @@ let Extension =
 
   arrayBut,
   arrayButInplace,
-  _argumentsOnlyArray,
   arrayBut_, /* !!! : use instead of arrayBut, arrayButInplace */
   arrayShrink,
   arrayShrinkInplace,
