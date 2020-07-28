@@ -15552,6 +15552,22 @@ function longHasAnyWithCallback( test )
     test.case = 'with evaluator, no matches';
     var evaluator = ( e ) => e.a;
     var src = makeLong( [ { a : 3 }, { a : 5 }, 'str', 42, false ] );
+    var got = _.longHasAny( src, [ { a : 2 }, { a : 4 } ], evaluator1, evaluator2 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'with two evaluators, matches';
+    var evaluator1 = ( e ) => e.a;
+    var evaluator2 = ( e ) => e.b;
+    var src = makeLong( [ { a : 2 }, { a : 5 }, 'str', 42, false ] );
+    var got = _.longHasAny( src, [ [ false ], 7, { b : 2 } ], evaluator1, evaluator2 );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'with evaluators, no matches';
+    var evaluator1 = ( e ) => e.a;
+    var evaluator2 = ( e ) => e.a;
+    var src = makeLong( [ { a : 3 }, { a : 5 }, 'str', 42, false ] );
     var got = _.longHasAny( src, [ { a : 2 }, { a : 4 } ], evaluator );
     var expected = false;
     test.identical( got, expected );
