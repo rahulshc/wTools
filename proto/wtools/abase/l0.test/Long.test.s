@@ -8402,7 +8402,6 @@ function longShrink_WithArrayUnrollArgumentsArray( test )
 
 function longShrink_WithBufferTyped( test )
 {
-
   var list =
   [
     I8x,

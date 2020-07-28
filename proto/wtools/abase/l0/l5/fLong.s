@@ -2378,6 +2378,7 @@ function longShrink_( dst, src, crange )
   crange = [ 0, crange ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
   let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
@@ -2693,6 +2694,7 @@ function longGrow_( dst, src, crange, ins )
   crange = [ 0, crange ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
   let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
@@ -3003,6 +3005,7 @@ function longRelength_( dst, src, crange, ins )
   crange = [ 0, crange ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
   let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
