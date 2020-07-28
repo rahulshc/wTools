@@ -16038,6 +16038,9 @@ function longHasNoneWithoutCallback( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.longHasNone() );
 
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.longHasNone( [ 1 ], [ 1 ], ( e ) => e, ( eIns ) => eIns, 'extra' ) );
+
   test.case = 'src has wrong type';
   test.shouldThrowErrorSync( () => _.longHasNone( 'wrong argument', false ) );
   test.shouldThrowErrorSync( () => _.longHasNone( 1, false ) );
@@ -16045,8 +16048,11 @@ function longHasNoneWithoutCallback( test )
   test.case = 'ins has wrong type';
   test.shouldThrowErrorSync( () => _.longHasNone( [ 1, 2, 3, false ], new BufferRaw( 2 ) ) );
 
-  test.case = 'evaluator is not a routine';
-  test.shouldThrowErrorSync( () => _.longHasNone( [ 1, 2, 3, false ], 2, 3 ) );
+  test.case = 'equalizer ( evaluator ) is not a routine';
+  test.shouldThrowErrorSync( () => _.longHasNone( [ 1, 2, 3, false ], 2, [] ) );
+
+  test.case = 'evaluator2 is not a routine';
+  test.shouldThrowErrorSync( () => _.longHasNone( [ 1, 2, 3, false ], 2, ( e ) => e, [] ) );
 }
 
 //
@@ -16082,6 +16088,22 @@ function longHasNoneWithCallback( test )
     var evaluator = ( e ) => e.a;
     var src = makeLong( [ { a : 3 }, { a : 5 }, 'str', 42, false ] );
     var got = _.longHasNone( src, [ { a : 2 }, { a : 4 } ], evaluator );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'with two evaluators, matches';
+    var evaluator1 = ( e ) => e.a;
+    var evaluator2 = ( e ) => e.b;
+    var src = makeLong( [ { a : 2 }, { a : 5 }, 'str', 42, false ] );
+    var got = _.longHasNone( src, [ [ false ], 7, { b : 2 } ], evaluator1, evaluator2 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'with two evaluators, no matches';
+    var evaluator1 = ( e ) => e.a;
+    var evaluator2 = ( e ) => e.b;
+    var src = makeLong( [ { a : 3 }, { a : 5 }, 'str', 42, false ] );
+    var got = _.longHasNone( src, [ { b : 2 }, { b : 4 } ], evaluator1, evaluator2 );
     var expected = true;
     test.identical( got, expected );
 
