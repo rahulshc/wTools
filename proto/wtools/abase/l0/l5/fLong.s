@@ -3246,10 +3246,10 @@ function longHasAny( src, ins, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function longHasAll( src, ins, evaluator )
+function longHasAll( src, ins, evaluator1, evaluator2 )
 {
 
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
   _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
@@ -3263,7 +3263,7 @@ function longHasAll( src, ins, evaluator )
   let result = 0;
   while( result >= 0 && i < ins.length )
   {
-    result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
+    result = _.longLeftIndex( src, ins[ i ], 0, evaluator1, evaluator2 );
     i++;
   }
 
