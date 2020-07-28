@@ -1376,29 +1376,28 @@ function _returnDst( dst, src )
 //
 
 /**
- * Routine bufferBut_() returns a shallow copy of provided container {-dstArray-}.
- * Routine removes range {-range-} of elements from {-dstArray-} and inserts elements from
- * {-srcArray-} at the start position of provided {-range-}.
+ * Routine bufferBut_() copies elements from source buffer {-src-} to destination buffer {-dst-}.
+ * Routine copies all elements excluding elements in range {-crange-}, its elements replaces by elements
+ * from insertion buffer {-ins-}.
  *
  * If first and second provided arguments is containers, then fisrs argument is destination
- * container {-dst-} and second argument is source container {-dstArray-}. All data in {-dst-}
- * will be cleared. If {-dst-} container is not resizable and resulted container length
- * is not equal to original {-dst-} length, then routine makes new container of {-dst-} type.
+ * container {-dst-} and second argument is source container {-src-}. All data in {-dst-} cleares. If {-dst-} container
+ * is not resizable and resulted length of destination container is not equal to original {-dst-} length, then routine
+ * makes new container of {-dst-} type.
  *
- * If first argument and second argument is the same container, routine will try change container inplace.
+ * If first argument and second argument are the same container, routine tries to change container inplace.
  *
- * If {-dst-} is not provided routine makes new container of {-dstArray-} type.
+ * If {-dst-} is not provided then routine tries to change container inplace.
  *
  * @param { BufferAny|Long|Null } dst - The destination container.
- * @param { BufferAny|Long } dstArray - The container from which makes a shallow copy.
- * @param { Range|Number } range - The two-element array that defines the start index and the end index for removing elements.
- * If {-range-} is number, then it defines the start index, and the end index is start index incremented by one.
- * If {-range-} is undefined, routine returns copy of {-dstArray-} or original {-dstArray-} if {-dst-} and {-dstArray-} is the same container.
+ * @param { BufferAny|Long } src - The container from which makes a shallow copy.
+ * @param { Range|Number } crange - The two-element array that defines the start index and the end index for removing elements.
+ * If {-crange-} is a Number, then it defines the index of removed element.
+ * If {-crange-} is undefined and {-dst-} is null, then routine returns copy of {-src-}, otherwise, routine returns original {-src-}.
  * If range[ 0 ] < 0, then start index sets to 0.
- * If range[ 1 ] > dstArray.length, end index sets to dstArray.length.
- * If range[ 1 ] <= range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
- * @param { BufferAny|Long } srcArray - The container with elements for insertion. Inserting begins at start index.
- * If quantity of removed elements is not equal to srcArray.length, then returned container will have length different to dstArray.length.
+ * If range[ 1 ] > src.length, end index sets to ( src.length - 1 ).
+ * If range[ 1 ] < range[ 0 ], then routine removes not elements, the insertion of elements begins at start index.
+ * @param { BufferAny|Long } ins - The container with elements for insertion. Inserting begins at start index.
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
@@ -1406,7 +1405,7 @@ function _returnDst( dst, src )
  * console.log( got );
  * // log Uint8Array[ 1, 2, 3, 4 ]
  * console.log( got === buffer );
- * // log false
+ * // log true
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
@@ -1435,46 +1434,46 @@ function _returnDst( dst, src )
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
- * let src = new I32x( [ 0, 0, 0 ] );
- * let got = _.bufferBut_( buffer, [ 1, 3 ], src );
+ * let ins = new I32x( [ 0, 0 ] );
+ * let got = _.bufferBut_( buffer, [ 1, 2 ], ins );
  * console.log( got );
- * // log Uint8Array[ 1, 0, 0, 0, 4 ]
+ * // log Uint8Array[ 1, 0, 0, 4 ]
+ * console.log( got === buffer );
+ * // log true
+ *
+ * @example
+ * let buffer = new U8x( [ 1, 2, 3, 4 ] );
+ * let got = _.bufferBut_( null, buffer, 1, [ 0, 0 ] );
+ * console.log( got );
+ * // log Uint8Array[ 0, 0, 2, 3, 4 ]
  * console.log( got === buffer );
  * // log false
  *
  * @example
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
- * let got = _.bufferBut_( null, buffer, 1, [ 0, 0, 0 ] );
+ * let got = _.bufferBut_( buffer, buffer, [ 1, 2 ], [ 0, 0 ] );
  * console.log( got );
- * // log Uint8Array[ 1, 0, 0, 0, 3, 4 ]
+ * // log Uint8Array[ 1, 0, 0, 4 ]
  * console.log( got === buffer );
- * // log false
- *
- * @example
- * let buffer = new U8x( [ 1, 2, 3, 4 ] );
- * let got = _.bufferBut_( buffer, buffer, [ 1, 3 ], [ 0, 0, 0 ] );
- * console.log( got );
- * // log Uint8Array[ 1, 0, 0, 0, 4 ]
- * console.log( got === buffer );
- * // log false
+ * // log true
  *
  * @example
  * let dst = [ 0, 0 ]
  * let buffer = new U8x( [ 1, 2, 3, 4 ] );
- * let got = _.bufferBut_( dst, buffer, [ 1, 3 ], [ 0, 0, 0 ] );
+ * let got = _.bufferBut_( dst, buffer, [ 1, 2 ], [ 0, 0 ] );
  * console.log( got );
- * // log [ 1, 0, 0, 0, 4 ]
+ * // log [ 1, 0, 0, 4 ]
  * console.log( got === dst );
  * // log true
  *
- * @returns { BufferAny|Long } If {-dst-} is provided, routine returns container of {-dst-} type.
- * Otherwise, routine returns container of {-dstArray-} type.
- * If {-dst-} and {-dstArray-} is the same container, routine tries to return original container.
+ * @returns { BufferAny|Long } - If {-dst-} is provided, routine returns container of {-dst-} type.
+ * Otherwise, routine returns container of {-src-} type.
+ * If {-dst-} and {-src-} are the same container, routine tries to return original container.
  * @function bufferBut_
  * @throws { Error } If arguments.length is less then one or more then four.
- * @throws { Error } If {-dst-} is not an any buffer, not a Long, not null.
- * @throws { Error } If {-dstArray-} is not an any buffer, not a Long.
- * @throws { Error } If ( range ) is not a Range or not a Number.
+ * @throws { Error } If {-dst-} is not a buffer, not a Long, not null.
+ * @throws { Error } If {-src-} is not an any buffer, not a Long.
+ * @throws { Error } If {-crange-} is not a Range or not a Number.
  * @namespace Tools
  */
 
