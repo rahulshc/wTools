@@ -20,15 +20,15 @@ var arguments = { 0 : 'value 1', 1 : 'value 2', 2 : 'value 3', length : 3 };
 function arrayFromArguments()
 {
   console.log( arguments );
-  // log : [Arguments] { '0': 'hello', '1': 'world' }
+  /* log : [Arguments] { '0': 'hello', '1': 'world' } */
   console.log( arguments instanceof Array );
-  // log : false
+  /* log : false */
 
   let argumentsArr = Array.from( arguments );
   console.log( argumentsArr );
-  // log : [ 'hello', 'world' ]
+  /* log : [ 'hello', 'world' ] */
   console.log( argumentsArr instanceof Array );
-  // log : true
+  /* log : true */
 }
 arrayFromArguments( 'hello', 'world' );
 ```
@@ -51,13 +51,13 @@ function logMsgs( msg1, msg2 )
 }
 
 logMsgs( 'one' );
-// log : one
+/* log : one */
 logMsgs( null, 'two' );
-// log : two two
+/* log : two two */
 logMsgs( null, undefined, 'three' );
-// log : three
+/* log : three */
 logMsgs( 'one', 'two', 'three', 'four', 'five' );
-// log : three
+/* log : three */
 ```
 
 Для коректної роботи рутини, аргументи повинні передаватись у правильній послідовності. Це створює незручності для розробника, змушує щоразу дізнаватись ( навіть запам'ятовувати ) правильний порядок аргументів для кожної рутини. Ця проблема вирішується з допомогою [мапи опцій](#мапа-опцій).
@@ -78,7 +78,7 @@ function someFunction1( optionsMap )
   console.log( 'option2' );
 }
 someFunction1( { option1 : 1, option2 : 2 } );
-// log : option1
+/* log : option1 */
 ```
 
 В приведеному вище спрощеному прикладі рутина `someFunction1` приймає як аргумент мапу опцій. Цей спосіб передачі вхідних даних
@@ -123,9 +123,9 @@ arrayOfRandomInts.defaults =
 }
 
 console.log( arrayOfRandomInts( {} ) );
-// log array with 1 random integer : [ 23 ]
+/* log array with 1 random integer : [ 23 ] */
 console.log( arrayOfRandomInts({ times : 2 }) );
-// log array with 2 random integers : [ -57, 93 ]
+/* log array with 2 random integers : [ -57, 93 ] */
 ```
 
 У приведеному вище спрощеному прикладі рутина `arrayOfRandomInts` за замовчуванням повертає масив із одним випадковим цілим числом. Якщо потрібен масив із `times` випадкових цілих чисел, можна вказати опцію `times` котра за це відповідає.

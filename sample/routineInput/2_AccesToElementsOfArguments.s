@@ -11,11 +11,11 @@ function logMsgs( msg1, msg2 )
 }
 
 logMsgs( 'one' );
-// log : one
+/* log : one */
 logMsgs( null, 'two' );
-// log : two two
+/* log : two two */
 logMsgs( null, undefined, 'three' );
-// log : three
+/* log : three */
 logMsgs( 'one', 'two', 'three', 'four', 'five' );
-// log : three
+/* log : three */
 

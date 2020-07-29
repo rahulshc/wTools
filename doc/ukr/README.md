@@ -239,7 +239,7 @@
 
 <details>
   <summary><a href="./tutorial/VectorizeOptions.md">
-    Налаштування рутин при векторизації
+    Опції векторизації
   </a></summary>
     Як використовувати опції рутини <code>vectorize</code> при створенні векторизованої рутини.
 </details>

@@ -9,13 +9,13 @@
 var unroll = _.unrollMake([ 2, 3, 4 ]);
 
 var result = _.arrayAppend( unroll, 5 );
-// returns : [ 2, 3, 4, 5 ]
+/* returns : [ 2, 3, 4, 5 ] */
 console.log( _.unrollIs( result ) );
-// log : true
+/* log : true */
 
 unroll.push( 'str' );
 console.log( _.unrollIs( unroll ) );
-// log : true
+/* log : true */
 ```
 
 Для створення  `unroll-масива` використовується рутина `unrollMake`. Після виконання рутини `arrayAppend` i метода `push`, що працюють зі звичайними масивами, `unroll-масив` `unroll` зберіг свій тип.
@@ -26,9 +26,9 @@ console.log( _.unrollIs( unroll ) );
 var arr = [ 0, 1, 2, 3 ];
 
 var result = _.unrollPrepend( arr, 4 );
-// returns : [ 4, 0, 1, 2, 3 ]
+/* returns : [ 4, 0, 1, 2, 3 ] */
 console.log( _.unrollIs( result ) );
-// log : false
+/* log : false */
 ```
 
 Рутина `unrollPrepend` додала елемент до масиву `arr`. Масив `arr` зберіг тип `Array`.
@@ -40,9 +40,9 @@ var unroll1 = _.unrollMake([ 7, [ 2 ] ]);
 var unroll2 = _.unrollMake([ 0, 1, 'str' ]);
 
 var result = _.unrollAppend( unroll1, unroll2 );
-// returns : [ 7, [ 2 ], 0, 1, 'str' ]
+/* returns : [ 7, [ 2 ], 0, 1, 'str' ] */
 console.log( _.unrollIs( result ) );
-// log : true
+/* log : true */
 ```
 
 Елементи двох `unroll-масивів` `unroll1` i `unroll2` стали елементами єдиного `unroll-масива` `result`. При цьому було розгорнуто `unroll-масив` `unroll2`, елементи якого було додано до `unroll1`.
@@ -53,9 +53,9 @@ var unroll2 = _.unrollMake([ 's', 3, [ 4 ] ]);
 
 // creating an unroll-array from a given array
 var result = _.unrollFrom([ 1, 2, unroll1, unroll2 ]);
-// returns : [ 1, 2, '5', 's', 3, [ 4 ] ]
+/* returns : [ 1, 2, '5', 's', 3, [ 4 ] ] */
 console.log( _.unrollIs( result ) );
-// log : true
+/* log : true */
 ```
 
 При створенні нового `unroll-масива` вкладені `unroll-масиви` розгорнулись. Новий `unroll-масив` `result` містить елементи `unroll-масивів` `unroll1` i `unroll2`.
@@ -66,9 +66,9 @@ var unroll2 = _.unrollMake([ 'str', [ 3 ] ]);
 
 // unrolling elements of the given array that are unroll-array
 var result = _.unrollNormalize([ 0, 7, unroll1, [ unroll2, unroll1 ] ]);
-// returns : [ 0, 7, '5', [ 'str', [ 3 ],  '5' ] ]
+/* returns : [ 0, 7, '5', [ 'str', [ 3 ],  '5' ] ] */
 console.log( _.unrollIs( result ) );
-// log : false
+/* log : false */
 ```
 
 Рутина `unrollNormalize` дозволяє нормалізувати ( розгорнути ) вкладені `unroll-масиви` зберігаючи тип контейнера. Нормалізований масив `result` зберіг тип `Array`.
@@ -81,9 +81,9 @@ var unroll2 = _.unrollMake( [ 3, 4 ] );
 unroll1[ 2 ] = unroll2;
 
 console.log( unroll1 );
-// log : [ 1, 2, [ 3, 4 ] ]
+/* log : [ 1, 2, [ 3, 4 ] ] */
 console.log( unroll2 );
-// log : [ 3, 4 ]
+/* log : [ 3, 4 ] */
 
 var result = _.unrollNormalize( [ unroll1, unroll2 ] );
 console.log( result );

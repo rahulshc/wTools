@@ -19,7 +19,7 @@ arrayOfRandomInts.defaults =
 }
 
 console.log( arrayOfRandomInts( {} ) );
-// log array with 1 random integer : [ 23 ]
+/* log array with 1 random integer : [ 23 ] */
 console.log( arrayOfRandomInts({ times : 2 }) );
-// log array with 2 random integers : [ -57, 93 ]
+/* log array with 2 random integers : [ -57, 93 ] */
 

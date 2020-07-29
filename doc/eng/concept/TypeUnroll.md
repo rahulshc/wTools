@@ -9,13 +9,13 @@ When performing operations on the `unroll-array` that are intended for a regular
 var unroll = _.unrollMake([ 2, 3, 4 ]);
 
 var result = _.arrayAppend( unroll, 5 );
-// returns : [ 2, 3, 4, 5 ]
+/* returns : [ 2, 3, 4, 5 ] */
 console.log( _.unrollIs( result ) );
-// log : true
+/* log : true */
 
 unroll.push( 'str' );
 console.log( _.unrollIs( unroll ) );
-// log : true
+/* log : true */
 ```
 
 The routine `unrollMake` is used to create an` unroll-array`. After performing the routine `arrayAppend` and the method `push` which work with regular arrays, the `unroll-array` `unroll` retained its type.
@@ -26,9 +26,9 @@ Routines designed to work with `unroll-arrays` can be applied to regular arrays,
 var arr = [ 0, 1, 2, 3 ];
 
 var result = _.unrollPrepend( arr, 4 );
-// returns : [ 4, 0, 1, 2, 3 ]
+/* returns : [ 4, 0, 1, 2, 3 ] */
 console.log( _.unrollIs( result ) );
-// log : false
+/* log : false */
 ```
 
 The routine `unrollPrepend` added the element to the array `arr`. The array `arr` has retained the type `Array`.
@@ -41,9 +41,9 @@ var unroll1 = _.unrollMake([ 7, [ 2 ] ]);
 var unroll2 = _.unrollMake([ 0, 1, 'str' ]);
 
 var result = _.unrollAppend( unroll1, unroll2 );
-// returns : [ 7, [ 2 ], 0, 1, 'str' ]
+/* returns : [ 7, [ 2 ], 0, 1, 'str' ] */
 console.log( _.unrollIs( result ) );
-// log : true
+/* log : true */
 ```
 
 Elements of two `unroll-arrays` `unroll1` and `unroll2` became elements of a single `unroll-array` `result`. The `unroll-array` `unroll2` was unrolled and its elements were added to `unroll1`.
@@ -54,9 +54,9 @@ var unroll2 = _.unrollMake([ 's', 3, [ 4 ] ]);
 
 // creating an unroll-array from a given array
 var result = _.unrollFrom([ 1, 2, unroll1, unroll2 ]);
-// returns : [ 1, 2, '5', 's', 3, [ 4 ] ]
+/* returns : [ 1, 2, '5', 's', 3, [ 4 ] ] */
 console.log( _.unrollIs( result ) );
-// log : true
+/* log : true */
 ```
 
 When a new `unroll-array` is created, then nested` unroll-arrays` unrolled. The new `unroll-array` `result` contains elements of `unroll-arrays` `unroll1` and `unroll2`.
@@ -67,9 +67,9 @@ var unroll2 = _.unrollMake([ 'str', [ 3 ] ]);
 
 // unrolling elements of the given array that are unroll-array
 var result = _.unrollNormalize([ 0, 7, unroll1, [ unroll2, unroll1 ] ]);
-// returns : [ 0, 7, '5', [ 'str', [ 3 ],  '5' ] ]
+/* returns : [ 0, 7, '5', [ 'str', [ 3 ],  '5' ] ] */
 console.log( _.unrollIs( result ) );
-// log : false
+/* log : false */
 ```
 
 The routine `unrollNormalize` normalizes ( unrolls ) nested `unroll-arrays` and retains the type of container. The normalized array `result` retained the type `Array`.
@@ -82,9 +82,9 @@ var unroll2 = _.unrollMake( [ 3, 4 ] );
 unroll1[ 2 ] = unroll2;
 
 console.log( unroll1 );
-// log : [ 1, 2, [ 3, 4 ] ]
+/* log : [ 1, 2, [ 3, 4 ] ] */
 console.log( unroll2 );
-// log : [ 3, 4 ]
+/* log : [ 3, 4 ] */
 
 var result = _.unrollNormalize( [ unroll1, unroll2 ] );
 console.log( result );

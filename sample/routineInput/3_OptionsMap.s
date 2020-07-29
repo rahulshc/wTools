@@ -7,5 +7,5 @@ function someFunction1( optionsMap )
   console.log( 'option2' );
 }
 someFunction1( { option1 : 1, option2 : 2 } );
-// log : option1
+/* log : option1 */
 

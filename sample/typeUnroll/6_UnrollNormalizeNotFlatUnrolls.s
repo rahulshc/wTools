@@ -7,9 +7,9 @@ var unroll2 = _.unrollMake( [ 3, 4 ] );
 unroll1[ 2 ] = unroll2;
 
 console.log( unroll1 );
-// log : [ 1, 2, [ 3, 4 ] ]
+/* log : [ 1, 2, [ 3, 4 ] ] */
 console.log( unroll2 );
-// log : [ 3, 4 ]
+/* log : [ 3, 4 ] */
 
 var result = _.unrollNormalize( [ unroll1, unroll2 ] );
 console.log( result );
