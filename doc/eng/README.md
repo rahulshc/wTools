@@ -27,7 +27,7 @@
   <summary><a href="./concept/Evaluator.md#evaluator">
     Evaluator
   </a></summary>
-    This is a routine or pair of routines that allow you to arbitrarily convert array elements before comparing them.
+    This is a routine or pair of routines that allow you to arbitrarily convert array elements before comparing them. If the obtained values match - the evaluator returns <code>true</code>, otherwise - <code>false</code>. The evaluator as a callback function is passed to the routines intended for working with [Long](./concept/Long.md) types.
 </details>
 
 <details>

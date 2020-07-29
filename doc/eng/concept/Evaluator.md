@@ -1,8 +1,6 @@
 # Evaluator
 
-This is a routine or pair of routines that allow you to arbitrarily convert array elements before comparing them.
-
-If the obtained values match - the evaluator returns <code>true</code>, otherwise - <code>false</code>. The evaluator as a callback function is passed to the routines intended for working with [Long](./Long.md) types.
+This is a routine or pair of routines that allow you to arbitrarily convert array elements before comparing them. If the obtained values match - the evaluator returns <code>true</code>, otherwise - <code>false</code>. The evaluator as a callback function is passed to the routines intended for working with [Long](./Long.md) types.
 
 The evaluator accepts one argument, as opposed to [equalizer](./Equalizer.md).
 If the evaluator consists of one routine, it applies to both the container elements passed in the first argument and the container elements passed in the second argument.
