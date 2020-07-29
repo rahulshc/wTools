@@ -109,7 +109,7 @@ function someFunction2( mapOptions )
 function arrayOfRandomInts( o )
 {
   if( !o.times )
-  o.times = arrayOfRandoms.defaults.times;
+  o.times = arrayOfRandomInts.defaults.times;
 
   let result = [];
   for( let i = 0; i < o.times; i++ )
@@ -117,15 +117,15 @@ function arrayOfRandomInts( o )
 
   return result;
 }
-someFunction.defaults =
+arrayOfRandomInts.defaults =
 {
   times : 1
 }
 
-someFunction( {} );
-// returns array with 1 random integer : [ 23 ]
-someFunction({ randomTotal : 2 });
-// returns array with 2 random integers : [ 57, 93 ]
+console.log( arrayOfRandomInts( {} ) );
+// log array with 1 random integer : [ 23 ]
+console.log( arrayOfRandomInts({ times : 2 }) );
+// log array with 2 random integers : [ -57, 93 ]
 ```
 
 У приведеному вище спрощеному прикладі рутина `arrayOfRandomInts` за замовчуванням повертає масив із одним випадковим цілим числом. Якщо потрібен масив із `times` випадкових цілих чисел, можна вказати опцію `times` котра за це відповідає.
