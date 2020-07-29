@@ -56,7 +56,7 @@
   <summary><a href="./concept/TypeUnroll.md">
     Type <code>unroll</code>
   </a></summary>
-    <code>Unroll</code> - data type, it is a special kind of array, capable to be unrolled in another array when performing operations on it.
+    Data type <code>unroll</code> - a special type of array that can be unrolled in another array when performing an operation on it.
 </details>
 
 <details>
