@@ -30,7 +30,8 @@ console.log( result );
 Другий аргумент може бути і скаляром, як у прикладі нижче.
 
 ```js
-_.arrayRemoveElement( dst, 0, ( e ) => e.val );
+var dst = [ { val : 3 }, { val : 0 }, { val : 5 } ];
+var result = _.arrayRemoveElement( dst, 0, ( e ) => e.val );
 console.log( result );
 /* log : [ { val : 3 }, { val : 0 }, { val : 5 } ] */
 ```
@@ -48,7 +49,7 @@ var evalutor1 = ( e ) => e.val;
 var evalutor2 = ( e ) => e;
 var result = _.arrayRemoveElement( dst, 0, evalutor1, evalutor2 );
 console.log( result );
-/* log: [ { val : 3 }, { val : 5 } ] */
+/* log : [ { val : 3 }, { val : 5 } ] */
 ```
 Після виконання програми в контейнері `dst` не залишиться елемента `{ val : 0 }` попри те, що другий аргумент `0`.
 

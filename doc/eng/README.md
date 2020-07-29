@@ -27,7 +27,7 @@
   <summary><a href="./concept/Evaluator.md#evaluator">
     Evaluator
   </a></summary>
-  Some description
+    This is a routine or pair of routines that allow you to arbitrarily convert array elements before comparing them.
 </details>
 
 <details>
