@@ -81,7 +81,7 @@
 
 <details>
   <summary><a href="./concept/Long.md#Дескриптор-типу-Long">
-    Дескриптор типу <code>long</code>
+    Дескриптор типу <code>Long</code>
   </a></summary>
     Дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
 </details>
