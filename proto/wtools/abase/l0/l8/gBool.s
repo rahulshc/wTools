@@ -19,6 +19,7 @@ let _ObjectToString = Object.prototype.toString;
  * @function boolFrom
  * @param {*} src - entity to convert
  * @namespace Tools
+ * @throws Exception if cannot convert.
  */
 
 function boolFrom( src )
@@ -29,6 +30,13 @@ function boolFrom( src )
 }
 
 //
+
+/**
+ * @summary Converts argument( src ) to boolean or return src.
+ * @function boolFrom
+ * @param {*} src - entity to convert
+ * @namespace Tools
+ */
 
 function boolFromMaybe( src )
 {
@@ -60,6 +68,13 @@ function boolFromMaybe( src )
 }
 
 //
+
+/**
+ * @summary Converts argument( src ) to boolean.
+ * @function boolFrom
+ * @param {*} src - entity to convert
+ * @namespace Tools
+ */
 
 function boolFromForce( src )
 {
@@ -96,9 +111,9 @@ let Fields =
 let Routines =
 {
 
-  boolFrom, /* qqq : cover please ( not Dmytro ) */
-  boolFromMaybe, /* qqq : cover please ( not Dmytro ) */
-  boolFromForce, /* qqq : cover please ( not Dmytro ) */
+  boolFrom, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
+  boolFromMaybe, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
+  boolFromForce, /* qqq : cover please ( not Dmytro ) | aaa : Done. Yevhen S.*/
 
 }
 
