@@ -41,7 +41,7 @@ function boolLike( src )
 
 /**
  * Returns true if entity ( src ) is false or 0.
- * @function boolLike
+ * @function boolLikeFalse
  * @param {*} src - entity to check
  * @namespace Tools
  */
@@ -57,7 +57,7 @@ function boolLikeFalse( src )
 
 /**
  * Returns true if entity ( src ) is true or 1.
- * @function boolLike
+ * @function boolLikeTrue
  * @param {*} src - entity to check
  * @namespace Tools
  */
@@ -73,7 +73,7 @@ function boolLikeTrue( src )
 
 /**
  * Returns true if entity ( src ) is a Boolean or Symbol(maybe).
- * @function boolLike
+ * @function fuzzyIs
  * @param {*} src - entity to check
  * @namespace Tools
  */
@@ -87,7 +87,7 @@ function fuzzyIs( src )
 
 /**
  * Returns true if entity ( src ) is a Boolean or a Number or Symbol(maybe).
- * @function boolLike
+ * @function fuzzyLike
  * @param {*} src - entity to check
  * @namespace Tools
  */
@@ -102,6 +102,13 @@ function fuzzyLike( src )
 
 //
 
+/**
+ * Returns true if entity ( src ) is false or 0.
+ * @function fuzzyLikeFalse
+ * @param {*} src - entity to check
+ * @namespace Tools
+ */
+
 function fuzzyLikeFalse( src )
 {
   if( !_.fuzzyLike( src ) )
@@ -110,6 +117,13 @@ function fuzzyLikeFalse( src )
 }
 
 //
+
+/**
+ * Returns true if entity ( src ) is true or a Number which is not 0.
+ * @function fuzzyLikeFalse
+ * @param {*} src - entity to check
+ * @namespace Tools
+ */
 
 function fuzzyLikeTrue( src )
 {
