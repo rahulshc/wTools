@@ -25,7 +25,7 @@ function boolIs( src )
 //
 
 /**
- * Returns true if entity ( src ) is a Boolean or Number.
+ * Returns true if entity ( src ) is a Boolean or Number 1 or 0.
  * @function boolLike
  * @param {*} src - entity to check
  * @namespace Tools
@@ -39,6 +39,13 @@ function boolLike( src )
 
 //
 
+/**
+ * Returns true if entity ( src ) is false or 0.
+ * @function boolLike
+ * @param {*} src - entity to check
+ * @namespace Tools
+ */
+
 function boolLikeFalse( src )
 {
   if( !_.boolLike( src ) )
@@ -47,6 +54,13 @@ function boolLikeFalse( src )
 }
 
 //
+
+/**
+ * Returns true if entity ( src ) is true or 1.
+ * @function boolLike
+ * @param {*} src - entity to check
+ * @namespace Tools
+ */
 
 function boolLikeTrue( src )
 {
@@ -57,12 +71,26 @@ function boolLikeTrue( src )
 
 //
 
+/**
+ * Returns true if entity ( src ) is a Boolean or Symbol(maybe).
+ * @function boolLike
+ * @param {*} src - entity to check
+ * @namespace Tools
+ */
+
 function fuzzyIs( src )
 {
   return src === true || src === false || src === _.maybe;
 }
 
 //
+
+/**
+ * Returns true if entity ( src ) is a Boolean or a Number.
+ * @function boolLike
+ * @param {*} src - entity to check
+ * @namespace Tools
+ */
 
 function fuzzyLike( src )
 {
