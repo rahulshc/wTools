@@ -86,7 +86,7 @@ function fuzzyIs( src )
 //
 
 /**
- * Returns true if entity ( src ) is a Boolean or a Number.
+ * Returns true if entity ( src ) is a Boolean or a Number or Symbol(maybe).
  * @function boolLike
  * @param {*} src - entity to check
  * @namespace Tools

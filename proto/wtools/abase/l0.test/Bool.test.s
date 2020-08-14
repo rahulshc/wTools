@@ -104,7 +104,7 @@ function boolLike( test )
   test.identical( got, false );
 
   test.case = 'number positive input'
-  var got = _.boolIs( 10 );
+  var got = _.boolLike( 10 );
   test.identical( got, false );
 
   //
@@ -167,7 +167,7 @@ function boolLikeFalse ( test )
   test.identical( got, false );
 
   test.case = 'number positive input'
-  var got = _.boolIs( 10 );
+  var got = _.boolLikeFalse( 10 );
   test.identical( got, false );
 
   //
@@ -230,7 +230,7 @@ function boolLikeTrue ( test )
   test.identical( got, false );
 
   test.case = 'number positive input'
-  var got = _.boolIs( 10 );
+  var got = _.boolLikeTrue( 10 );
   test.identical( got, false );
 
   //
@@ -293,7 +293,7 @@ function fuzzyIs( test )
   test.identical( got, false );
 
   test.case = 'number positive input'
-  var got = _.boolIs( 10 );
+  var got = _.fuzzyIs( 10 );
   test.identical( got, false );
 
   //
@@ -339,7 +339,73 @@ function fuzzyIs( test )
 
 function fuzzyLike( test )
 {
+  test.case = 'string empty input';
+  var got = _.fuzzyLike( '' );
+  test.identical( got, false );
 
+  test.case = 'string input'
+  var got = _.fuzzyLike( 'hello' );
+  test.identical( got, false );
+
+  test.case = 'string number'
+  var got = _.fuzzyLike( '1' );
+  test.identical( got, false );
+
+  //
+
+  test.case = 'number 1 input'
+  var got = _.fuzzyLike( 1 );
+  test.identical( got, true );
+
+  test.case = 'number 0 input'
+  var got = _.fuzzyLike( 0 );
+  test.identical( got, true );
+
+  test.case = 'number negative input'
+  var got = _.fuzzyLike( -10 );
+  test.identical( got, true );
+
+  test.case = 'number positive input'
+  var got = _.fuzzyLike( 10 );
+  test.identical( got, true );
+
+  //
+
+  test.case = 'empty object input'
+  var got = _.fuzzyLike( {} );
+  test.identical( got, false );
+
+  test.case = 'object input'
+  var got = _.fuzzyLike( { name : 'a', age : 99 } );
+  test.identical( got, false );
+
+  test.case = 'empty array input'
+  var got = _.fuzzyLike( [] );
+  test.identical( got, false );
+
+  test.case = 'array input'
+  var got = _.fuzzyLike( [ 1, 2, 3 ] );
+  test.identical( got, false );
+
+  //
+
+  test.case = 'bool false input'
+  var got = _.fuzzyLike( false );
+  test.identical( got, true );
+
+  test.case = 'bool true input'
+  var got = _.fuzzyLike( true );
+  test.identical( got, true );
+
+  //
+
+  test.case = 'bool true input'
+  var got = _.fuzzyLike( Symbol.for( 'maybe' ) );
+  test.identical( got, true );
+
+  test.case = 'bool true input'
+  var got = _.fuzzyLike( Symbol.for( 'another' ) );
+  test.identical( got, false );
 }
 
 //
