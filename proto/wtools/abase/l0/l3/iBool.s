@@ -107,7 +107,7 @@ let Fields =
 let Routines =
 {
 
-  /* qqq : cover and document all that ( not Dmytro ) */
+  /* qqq : cover and document all that ( not Dmytro ) | Working on it. Yevhen S.  */
 
   boolIs,
   boolLike,
