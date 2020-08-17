@@ -129,16 +129,30 @@ function numbersAreIdenticalNotStrictly( a, b )
   /*
   it takes into account -0 === +0 case
   */
+
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( _.numbersAreAll( [ a, b ] ) )
   return Object.is( a, b ) || a === b;
+
+  return false;
 }
 
 //
 
 function numbersAreEquivalent( a, b, accuracy )
 {
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
-  if( Object.is( a, b ) )
-  return true;
+  if( _.numbersAreAll( [ a, b ] ) )
+  {
+    if( Object.is( a, b ) )
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 
   if( _.bigIntIs( a ) || _.bigIntIs( b ) )
   {
@@ -149,16 +163,18 @@ function numbersAreEquivalent( a, b, accuracy )
     return a === b;
   }
 
+
   if( accuracy === undefined )
   accuracy = this.accuracy;
+  // console.log( '-----------------' );
+  // console.log( 'ACC: ', accuracy )
+  // console.log( 'DIFF: ', Math.abs( a - b ) )
+  // console.log( 'ACC2: ', +( Math.abs( a - b ) ).toFixed( 10 ) )
+  // console.log( 'DIFF2: ', +( accuracy ).toFixed( 10 ) )
+  // console.log( '-----------------' );
+  // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
 
-  if( !_.numberIs( a ) )
-  return false;
-
-  if( !_.numberIs( b ) )
-  return false;
-
-  return Math.abs( a - b ) <= accuracy;
+  return Math.abs( a - b ) <= accuracy
 }
 
 //
@@ -243,7 +259,7 @@ let Routines =
   numbersAreAll,
   // numbersAreIdentical,
   // numbersAreEquivalent,
-  numbersAreIdentical, /* qqq2 : implement good coverage */
+  numbersAreIdentical, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
   numbersAreIdenticalNotStrictly,
   numbersAreEquivalent, /* qqq2 : implement good coverage */
 

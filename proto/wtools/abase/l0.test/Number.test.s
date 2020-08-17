@@ -860,6 +860,243 @@ function numbersAreIdentical( test )
   test.case = 'numbers NaN and NaN ';
   var got = _.numbersAreIdentical( NaN, NaN );
   test.identical( got, true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreIdentical() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreIdentical( 1, 2, 'extra' ) );
+}
+
+//
+
+function numbersAreIdenticalNotStrictly( test )
+{
+  test.case = 'empty strings';
+  var got = _.numbersAreIdenticalNotStrictly( '', '' );
+  test.identical( got, false );
+
+  test.case = 'equal string numbers';
+  var got = _.numbersAreIdenticalNotStrictly( '1', '1' );
+  test.identical( got, false );
+
+  test.case = 'string number and number';
+  var got = _.numbersAreIdenticalNotStrictly( '1', 1 );
+  test.identical( got, false );
+
+  /* - */
+
+  test.case = 'numbers 1 and 1';
+  var got = _.numbersAreIdenticalNotStrictly( 1, 1 );
+  test.identical( got, true );
+
+  test.case = 'numbers 1.00 and 1';
+  var got = _.numbersAreIdenticalNotStrictly( 1.00, 1 );
+  test.identical( got, true );
+
+  test.case = 'numbers 1.00000000000001 and 1';
+  var got = _.numbersAreIdenticalNotStrictly( 1.00000000000001, 1 );
+  test.identical( got, false );
+
+  test.case = 'numbers 1.2 and 1';
+  var got = _.numbersAreIdenticalNotStrictly( 1.2, 1 );
+  test.identical( got, false );
+
+  test.case = 'numbers 1.00 and 1.00';
+  var got = _.numbersAreIdenticalNotStrictly( 1.00, 1.00 );
+  test.identical( got, true );
+
+  test.case = 'numbers 0 and 0';
+  var got = _.numbersAreIdenticalNotStrictly( 0, 0 );
+  test.identical( got, true );
+
+  test.case = 'numbers +0 and +0';
+  var got = _.numbersAreIdenticalNotStrictly( +0, +0 );
+  test.identical( got, true );
+
+  test.case = 'numbers -0 and -0 ';
+  var got = _.numbersAreIdenticalNotStrictly( -0, -0 );
+  test.identical( got, true );
+
+  test.case = 'numbers +0 and -0';
+  var got = _.numbersAreIdenticalNotStrictly( +0, -0 );
+  test.identical( got, true );
+
+  test.case = 'numbers NaN and NaN';
+  var got = _.numbersAreIdenticalNotStrictly( NaN, NaN );
+  test.identical( got, true );
+
+  test.case = 'numbers Infinity and Infinity';
+  var got = _.numbersAreIdenticalNotStrictly( Infinity, Infinity );
+  test.identical( got, true );
+
+  test.case = 'numbers -Infinity and -Infinity';
+  var got = _.numbersAreIdenticalNotStrictly( -Infinity, -Infinity );
+  test.identical( got, true );
+
+  test.case = 'numbers -Infinity and +Infinity';
+  var got = _.numbersAreIdenticalNotStrictly( -Infinity, +Infinity );
+  test.identical( got, false );
+
+  test.case = 'numbers NaN and NaN';
+  var got = _.numbersAreIdenticalNotStrictly( NaN, NaN );
+  test.identical( got, true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreIdenticalNotStrictly() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreIdenticalNotStrictly( 1, 2, 'extra' ) );
+}
+
+//
+
+function numbersAreEquivalentBasic( test )
+{
+
+  test.case = 'empty strings';
+  var got = _.numbersAreEquivalent( '', '' );
+  test.identical( got, false );
+
+  test.case = 'equal string numbers';
+  var got = _.numbersAreEquivalent( '1', '1' );
+  test.identical( got, false );
+
+  test.case = 'string number and number';
+  var got = _.numbersAreEquivalent( '1', 1 );
+  test.identical( got, false );
+
+  /* - */
+
+  test.case = 'numbers 1 and 1 ';
+  var got = _.numbersAreEquivalent( 1, 1 );
+  test.identical( got, true );
+
+  test.case = 'numbers 1.00 and 1 ';
+  var got = _.numbersAreEquivalent( 1.00, 1 );
+  test.identical( got, true );
+
+  test.case = 'numbers 1.00000000000001 and 1 ';
+  var got = _.numbersAreEquivalent( 1.00000000000001, 1 );
+  test.identical( got, true );
+
+  test.case = 'numbers 1.2 and 1 ';
+  var got = _.numbersAreEquivalent( 1.2, 1 );
+  test.identical( got, false );
+
+  test.case = 'numbers 1.00 and 1.00 ';
+  var got = _.numbersAreEquivalent( 1.00, 1.00 );
+  test.identical( got, true );
+
+  test.case = 'numbers 0 and 0 ';
+  var got = _.numbersAreEquivalent( 0, 0 );
+  test.identical( got, true );
+
+  test.case = 'numbers +0 and +0 ';
+  var got = _.numbersAreEquivalent( +0, +0 );
+  test.identical( got, true );
+
+  test.case = 'numbers -0 and -0 ';
+  var got = _.numbersAreEquivalent( -0, -0 );
+  test.identical( got, true );
+
+  test.case = 'numbers +0 and -0 ';
+  var got = _.numbersAreEquivalent( +0, -0 );
+  test.identical( got, true );
+
+  test.case = 'numbers NaN and NaN ';
+  var got = _.numbersAreEquivalent( NaN, NaN );
+  test.identical( got, true );
+
+  test.case = 'numbers Infinity and Infinity ';
+  var got = _.numbersAreEquivalent( Infinity, Infinity );
+  test.identical( got, true );
+
+  test.case = 'numbers -Infinity and -Infinity ';
+  var got = _.numbersAreEquivalent( -Infinity, -Infinity );
+  test.identical( got, true );
+
+  test.case = 'numbers -Infinity and +Infinity ';
+  var got = _.numbersAreEquivalent( -Infinity, +Infinity );
+  test.identical( got, false );
+
+  test.case = 'numbers NaN and NaN ';
+  var got = _.numbersAreEquivalent( NaN, NaN );
+  test.identical( got, true );
+
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreEquivalent() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreEquivalent( 1, 2, 0.7, 'extra' ) );
+}
+
+//
+
+function numbersAreEquivalentOptionAccuracy( test )
+{
+  test.case = 'numbers 1.00 and 1.05, acc = 0.05 ';
+  var got = _.numbersAreEquivalent( 1.00, 1.05, 0.05 );
+  test.identical( got, true );
+
+  test.case = 'numbers 1 and 1.05, acc = 0.05 ';
+  var got = _.numbersAreEquivalent( 1, 1.05, 0.05 );
+  test.identical( got, true );
+
+  //
+
+  test.case = 'numbers 1 and 2, acc = 1 ';
+  var got = _.numbersAreEquivalent( 1, 2, 1 );
+  test.identical( got, true );
+
+  test.case = 'numbers 10 and 20, acc = 11 ';
+  var got = _.numbersAreEquivalent( 10, 20, 11 );
+  test.identical( got, true );
+
+  //
+
+  test.case = 'numbers 0.999 and 0.998, acc = 0.001 ';
+  var got = _.numbersAreEquivalent( 0.999, 0.998, 0.001 );
+  test.identical( got, true );
+
+  test.case = 'numbers 0.999 and 0.998, acc = 0.0001 ';
+  var got = _.numbersAreEquivalent( 0.999, 0.998, 0.0001 );
+  test.identical( got, false );
+
+  test.case = 'numbers 0.999 and 0.998, acc = 0.0001 ';
+  var got = _.numbersAreEquivalent( 0.999999, 0.999998, 0.000001 );
+  test.identical( got, true );
+
+  test.case = 'numbers 0.999 and 0.998, acc = 0.0001 ';
+  var got = _.numbersAreEquivalent( 0.999999, 0.999998, 0.0000001 );
+  test.identical( got, false );
+
+  //
+
+  test.case = 'numbers 0.99999999999 and 0.99999999998, acc = 0.00000000001 ';
+  var got = _.numbersAreEquivalent( 0.99999999999, 0.99999999998, 0.00000000001 );
+  test.identical( got, false );
+
+  test.case = 'numbers 0.9999999999 and 0.9999999998, acc = 0.0000000001 ';
+  var got = _.numbersAreEquivalent( 0.9999999999, 0.9999999998, 0.0000000001 );
+  test.identical( got, true );
+
 }
 
 //
@@ -1571,6 +1808,9 @@ let Self =
     intIs,
     numbersAreAll,
     numbersAreIdentical,
+    numbersAreIdenticalNotStrictly,
+    numbersAreEquivalentBasic,
+    numbersAreEquivalentOptionAccuracy,
 
     // l0/l8/gNumber.s
 
