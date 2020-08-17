@@ -1,4 +1,5 @@
-( function _Number_test_s() {
+( function _Number_test_s()
+{
 
 'use strict';
 
@@ -9,6 +10,151 @@ if( typeof module !== 'undefined' )
 }
 
 let _ = wTools;
+
+//--
+// l0/l3/iNumber.s
+//--
+
+function numberIs( test )
+{
+  test.case = 'null';
+  var got = _.numberIs( null );
+  test.identical( got, false );
+
+  test.case = 'undefined';
+  var got = _.numberIs( undefined );
+  test.identical( got, false );
+
+  //
+
+  test.case = 'false';
+  var got = _.numberIs( false );
+  test.identical( got, false );
+
+  test.case = 'true';
+  var got = _.numberIs( true );
+  test.identical( got, false );
+
+  //
+
+  test.case = 'Positive Number';
+  var got = _.numberIs( 2 );
+  test.identical( got, true );
+
+  test.case = 'Negative Number';
+  var got = _.numberIs( -2 );
+  test.identical( got, true );
+
+  test.case = 'Zero Number';
+  var got = _.numberIs( 0 );
+  test.identical( got, true );
+
+  test.case = '-Zero Number';
+  var got = _.numberIs( -0 );
+  test.identical( got, true );
+
+  test.case = '+Zero Number';
+  var got = _.numberIs( +0 );
+  test.identical( got, true );
+
+  test.case = 'NaN';
+  var got = _.numberIs( NaN );
+  test.identical( got, true );
+
+  test.case = 'Infinity';
+  var got = _.numberIs( Infinity );
+  test.identical( got, true );
+
+  test.case = 'Positive Infinity';
+  var got = _.numberIs( +Infinity );
+  test.identical( got, true );
+
+  test.case = 'Negative Infinity';
+  var got = _.numberIs( -Infinity );
+  test.identical( got, true );
+
+  //
+
+  test.case = 'empty string';
+  var got = _.numberIs( '' );
+  test.identical( got, false );
+
+  test.case = 'string with literal symbols';
+  var got = _.numberIs( 'abc' );
+  test.identical( got, false );
+
+  //
+
+  test.case = 'String positive Number';
+  var got = _.numberIs( '2' );
+  test.identical( got, false );
+
+  test.case = 'String negative Number';
+  var got = _.numberIs( '-2' );
+  test.identical( got, false );
+
+  test.case = 'String zero Number';
+  var got = _.numberIs( '0' );
+  test.identical( got, false );
+
+  test.case = 'String +zero Number';
+  var got = _.numberIs( '+0' );
+  test.identical( got, false );
+
+  test.case = 'String -zero Number';
+  var got = _.numberIs( '-0' );
+  test.identical( got, false );
+
+  test.case = 'String Infinity Number';
+  var got = _.numberIs( 'Infinity' );
+  test.identical( got, false );
+
+  test.case = 'String Positive Infinity Number';
+  var got = _.numberIs( '+Infinity' );
+  test.identical( got, false );
+
+  test.case = 'String Negative Infinity Number';
+  var got = _.numberIs( '-Infinity' );
+  test.identical( got, false );
+
+  test.case = 'String Number with literals';
+  var got = _.numberIs( '2abc' );
+  test.identical( got, false );
+
+  test.case = 'String literals with number';
+  var got = _.numberIs( 'abc2' );
+  test.identical( got, false );
+
+  //
+
+  test.case = 'Set';
+  var got = _.numberIs( new Set() );
+  test.identical( got, false );
+
+  test.case = 'HashMap';
+  var got = _.numberIs( new Map() );
+  test.identical( got, false );
+
+  test.case = 'Object';
+  var got = _.numberIs( {} );
+  test.identical( got, false );
+
+  test.case = 'Array';
+  var got = _.numberIs( [] );
+  test.identical( got, false );
+
+  test.case = 'function';
+  var got = _.numberIs( function(){} );
+  test.identical( got, false );
+}
+
+//
+
+function numberIsNotNan( test )
+{
+
+}
+
 
 //--
 // l0/l8/gNumber.s
@@ -219,7 +365,7 @@ function numbersFrom( test )
 
   test.open( 'instance of constructor' );
 
-  var Constr = function()
+  function Constr()
   {
     this.x = arguments[ 0 ];
     this.y = arguments[ 1 ];
@@ -299,14 +445,14 @@ function numberFromStrMaybe( test )
   test.identical( got, -1.01 );
 
   test.case = 'src - number float without 0 before dot';
-  var src = .01;
+  var src = 0.01;
   var got = _.numberFromStrMaybe( src );
   test.identical( got, 0.01 );
 
   test.case = 'src - number negative float without 0 before dot';
-  var src = -.01;
+  var src = -0.01;
   var got = _.numberFromStrMaybe( src );
-  test.identical( got, -.01 );
+  test.identical( got, -0.01 );
 
   test.case = 'src - number NaN';
   var src = NaN;
@@ -413,7 +559,7 @@ function numberFromStrMaybe( test )
   test.case = 'src - string negative float without 0 before dot';
   var src = '-.01';
   var got = _.numberFromStrMaybe( src );
-  test.identical( got, -.01 );
+  test.identical( got, -0.01 );
 
   test.case = 'src - number NaN';
   var src = 'NaN';
@@ -707,6 +853,11 @@ let Self =
 
   tests :
   {
+
+    // l0/l3/iNumber.s
+
+    numberIs,
+    numberIsNotNan,
 
     // l0/l8/gNumber.s
 

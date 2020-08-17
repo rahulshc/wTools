@@ -606,6 +606,9 @@ function boolFrom( test )
 
   //
 
+  if( !Config.debug )
+  return;
+
   test.case = 'empty object input'
   test.shouldThrowErrorSync( () => _.boolFrom( {} ) );
 
