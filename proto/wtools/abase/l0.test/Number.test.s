@@ -25,7 +25,7 @@ function numberIs( test )
   var got = _.numberIs( undefined );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'false';
   var got = _.numberIs( false );
@@ -35,7 +35,7 @@ function numberIs( test )
   var got = _.numberIs( true );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Positive Number';
   var got = _.numberIs( 2 );
@@ -73,7 +73,7 @@ function numberIs( test )
   var got = _.numberIs( -Infinity );
   test.identical( got, true );
 
-  //
+  /* - */
 
   test.case = 'empty string';
   var got = _.numberIs( '' );
@@ -83,7 +83,7 @@ function numberIs( test )
   var got = _.numberIs( 'abc' );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'String positive Number';
   var got = _.numberIs( '2' );
@@ -125,7 +125,7 @@ function numberIs( test )
   var got = _.numberIs( 'abc2' );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Set';
   var got = _.numberIs( new Set() );
@@ -160,7 +160,7 @@ function numberIsNotNan( test )
   var got = _.numberIsNotNan( undefined );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'false';
   var got = _.numberIsNotNan( false );
@@ -170,7 +170,7 @@ function numberIsNotNan( test )
   var got = _.numberIsNotNan( true );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Positive Number';
   var got = _.numberIsNotNan( 2 );
@@ -208,7 +208,7 @@ function numberIsNotNan( test )
   var got = _.numberIsNotNan( -Infinity );
   test.identical( got, true );
 
-  //
+  /* - */
 
   test.case = 'empty string';
   var got = _.numberIsNotNan( '' );
@@ -218,7 +218,7 @@ function numberIsNotNan( test )
   var got = _.numberIsNotNan( 'abc' );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'String positive Number';
   var got = _.numberIsNotNan( '2' );
@@ -260,7 +260,7 @@ function numberIsNotNan( test )
   var got = _.numberIsNotNan( 'abc2' );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Set';
   var got = _.numberIsNotNan( new Set() );
@@ -295,7 +295,7 @@ function numberIsFinite( test )
   var got = _.numberIsFinite( undefined );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'false';
   var got = _.numberIsFinite( false );
@@ -305,7 +305,7 @@ function numberIsFinite( test )
   var got = _.numberIsFinite( true );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Positive Number';
   var got = _.numberIsFinite( 2 );
@@ -343,7 +343,7 @@ function numberIsFinite( test )
   var got = _.numberIsFinite( -Infinity );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'empty string';
   var got = _.numberIsFinite( '' );
@@ -353,7 +353,7 @@ function numberIsFinite( test )
   var got = _.numberIsFinite( 'abc' );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'String positive Number';
   var got = _.numberIsFinite( '2' );
@@ -395,7 +395,7 @@ function numberIsFinite( test )
   var got = _.numberIsFinite( 'abc2' );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Set';
   var got = _.numberIsFinite( new Set() );
@@ -430,7 +430,7 @@ function numberIsInfinite( test )
   var got = _.numberIsInfinite( undefined );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'false';
   var got = _.numberIsInfinite( false );
@@ -440,7 +440,7 @@ function numberIsInfinite( test )
   var got = _.numberIsInfinite( true );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Positive Number';
   var got = _.numberIsInfinite( 2 );
@@ -478,7 +478,7 @@ function numberIsInfinite( test )
   var got = _.numberIsInfinite( -Infinity );
   test.identical( got, true );
 
-  //
+  /* - */
 
   test.case = 'empty string';
   var got = _.numberIsInfinite( '' );
@@ -488,7 +488,7 @@ function numberIsInfinite( test )
   var got = _.numberIsInfinite( 'abc' );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'String positive Number';
   var got = _.numberIsInfinite( '2' );
@@ -530,7 +530,7 @@ function numberIsInfinite( test )
   var got = _.numberIsInfinite( 'abc2' );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Set';
   var got = _.numberIsInfinite( new Set() );
@@ -565,7 +565,7 @@ function intIs( test )
   var got = _.intIs( undefined );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'false';
   var got = _.intIs( false );
@@ -575,7 +575,7 @@ function intIs( test )
   var got = _.intIs( true );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Positive Number';
   var got = _.intIs( 2 );
@@ -585,7 +585,7 @@ function intIs( test )
   var got = _.intIs( -2 );
   test.identical( got, true );
 
-  //
+  /* - */
 
   test.case = '2.00 Number';
   var got = _.intIs( 2.00 );
@@ -619,7 +619,7 @@ function intIs( test )
   var got = _.intIs( -2.51 );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Negative Number';
   var got = _.intIs( -2 );
@@ -653,7 +653,7 @@ function intIs( test )
   var got = _.intIs( -Infinity );
   test.identical( got, true );
 
-  //
+  /* - */
 
   test.case = 'empty string';
   var got = _.intIs( '' );
@@ -663,7 +663,7 @@ function intIs( test )
   var got = _.intIs( 'abc' );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'String positive Number';
   var got = _.intIs( '2' );
@@ -705,7 +705,7 @@ function intIs( test )
   var got = _.intIs( 'abc2' );
   test.identical( got, false );
 
-  //
+  /* - */
 
   test.case = 'Set';
   var got = _.intIs( new Set() );
@@ -728,6 +728,139 @@ function intIs( test )
   test.identical( got, false );
 }
 
+/* - */
+
+function numbersAreAll( test )
+{
+  test.case = 'empty array';
+  var got = _.numbersAreAll( [] );
+  test.identical( got, false );
+
+  /* - */
+
+  test.case = 'array of stings';
+  var got = _.numbersAreAll( [ 'a', 'b' ] );
+  test.identical( got, false );
+
+  test.case = 'array of stings of numbers';
+  var got = _.numbersAreAll( [ '1', '2' ] );
+  test.identical( got, false );
+
+  test.case = 'array of stings and numbers';
+  var got = _.numbersAreAll( [ 'a', 1 ] );
+  test.identical( got, false );
+
+  /* - */
+
+  test.case = 'array of integers';
+  var got = _.numbersAreAll( [ 1, 2 ] );
+  test.identical( got, true );
+
+  test.case = 'array of floats';
+  var got = _.numbersAreAll( [ 1.00, 2.22 ] );
+  test.identical( got, true );
+
+  test.case = 'array of special number values';
+  var got = _.numbersAreAll( [ Infinity, -Infinity, NaN ] );
+  test.identical( got, true );
+
+  /* - */
+
+  test.case = 'Typed array';
+  var got = _.numbersAreAll( new I8x([ 1, 2 ]) );
+  test.identical( got, true );
+
+  test.case = 'Object of numbers';
+  var got = _.numbersAreAll({ '0' : 1, '1' : 2 });
+  test.identical( got, false );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreAll() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreAll( [ 1, 2 ], 'extra' ) );
+
+}
+
+//
+
+function numbersAreIdentical( test )
+{
+  test.case = 'empty strings';
+  var got = _.numbersAreIdentical( '', '' );
+  test.identical( got, false );
+
+  test.case = 'equal string numbers';
+  var got = _.numbersAreIdentical( '1', '1' );
+  test.identical( got, false );
+
+  test.case = 'string number and number';
+  var got = _.numbersAreIdentical( '1', 1 );
+  test.identical( got, false );
+
+  /* - */
+
+  test.case = 'numbers 1 and 1 ';
+  var got = _.numbersAreIdentical( 1, 1 );
+  test.identical( got, true );
+
+  test.case = 'numbers 1.00 and 1 ';
+  var got = _.numbersAreIdentical( 1.00, 1 );
+  test.identical( got, true );
+
+  test.case = 'numbers 1.00000000000001 and 1 ';
+  var got = _.numbersAreIdentical( 1.00000000000001, 1 );
+  test.identical( got, false );
+
+  test.case = 'numbers 1.2 and 1 ';
+  var got = _.numbersAreIdentical( 1.2, 1 );
+  test.identical( got, false );
+
+  test.case = 'numbers 1.00 and 1.00 ';
+  var got = _.numbersAreIdentical( 1.00, 1.00 );
+  test.identical( got, true );
+
+  test.case = 'numbers 0 and 0 ';
+  var got = _.numbersAreIdentical( 0, 0 );
+  test.identical( got, true );
+
+  test.case = 'numbers +0 and +0 ';
+  var got = _.numbersAreIdentical( +0, +0 );
+  test.identical( got, true );
+
+  test.case = 'numbers -0 and -0 ';
+  var got = _.numbersAreIdentical( -0, -0 );
+  test.identical( got, true );
+
+  test.case = 'numbers +0 and -0 ';
+  var got = _.numbersAreIdentical( +0, -0 );
+  test.identical( got, false );
+
+  test.case = 'numbers NaN and NaN ';
+  var got = _.numbersAreIdentical( NaN, NaN );
+  test.identical( got, true );
+
+  test.case = 'numbers Infinity and Infinity ';
+  var got = _.numbersAreIdentical( Infinity, Infinity );
+  test.identical( got, true );
+
+  test.case = 'numbers -Infinity and -Infinity ';
+  var got = _.numbersAreIdentical( -Infinity, -Infinity );
+  test.identical( got, true );
+
+  test.case = 'numbers -Infinity and +Infinity ';
+  var got = _.numbersAreIdentical( -Infinity, +Infinity );
+  test.identical( got, false );
+
+  test.case = 'numbers NaN and NaN ';
+  var got = _.numbersAreIdentical( NaN, NaN );
+  test.identical( got, true );
+}
 
 //
 
@@ -1436,6 +1569,8 @@ let Self =
     numberIsFinite,
     numberIsInfinite,
     intIs,
+    numbersAreAll,
+    numbersAreIdentical,
 
     // l0/l8/gNumber.s
 

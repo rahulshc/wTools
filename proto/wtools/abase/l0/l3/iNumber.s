@@ -81,7 +81,7 @@ function numbersAreAll( src )
   if( _.bufferTypedIs( src ) )
   return true;
 
-  if( _.arrayLike( src ) )
+  if( _.arrayLike( src ) & !_.arrayIsEmpty( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
     if( !_.numberIs( src[ s ] ) )
@@ -114,7 +114,12 @@ function numbersAreAll( src )
 
 function numbersAreIdentical( a, b )
 {
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( _.numbersAreAll( [ a, b ] ) )
   return Object.is( a, b );
+
+  return false;
 }
 
 //
