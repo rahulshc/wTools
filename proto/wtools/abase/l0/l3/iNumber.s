@@ -87,6 +87,7 @@ function numbersAreAll( src )
     for( let s = 0 ; s < src.length ; s++ )
     if( !_.numberIs( src[ s ] ) )
     return false;
+
     return true;
   }
 
@@ -185,10 +186,9 @@ function numbersAreFinite( src )
     for( let s = 0 ; s < src.length ; s++ )
     if( !_.numberIsFinite( src[ s ] ) )
     return false;
-    return true;
   }
 
-  return false;
+  return true;
 }
 
 //
@@ -205,11 +205,9 @@ function numbersArePositive( src )
     for( let s = 0 ; s < src.length ; s++ )
     if( src[ s ] < 0 || !_.numberIsNotNan( src[ s ] ) )
     return false;
-
-    return true;
   }
 
-  return false;
+  return true;
 }
 
 //
