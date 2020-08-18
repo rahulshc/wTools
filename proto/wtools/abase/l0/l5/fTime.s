@@ -11,6 +11,9 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 // --
 
 let _TimeInfinity = Math.pow( 2, 31 )-1;
+
+//
+
 function _begin( delay, onTime, onCancel )
 {
   let original;
@@ -152,6 +155,8 @@ function _periodic( delay, onTime, onCancel )
     }
     finally
     {
+      if( timer.result === undefined || timer.result === _.dont ) /* Dmytro : change if needs any other stop value */
+      return timer.cancel();
       timer.state = 2;
     }
   }
