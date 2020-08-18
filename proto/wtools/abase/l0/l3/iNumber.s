@@ -1,4 +1,5 @@
-( function _iNumbers_s_() {
+( function _iNumbers_s_()
+{
 
 'use strict';
 
@@ -164,17 +165,17 @@ function numbersAreEquivalent( a, b, accuracy )
   }
 
 
-  if( accuracy === undefined )
+  if( accuracy === undefined || accuracy < 0 )
   accuracy = this.accuracy;
+
   // console.log( '-----------------' );
   // console.log( 'ACC: ', accuracy )
   // console.log( 'DIFF: ', Math.abs( a - b ) )
   // console.log( 'ACC2: ', +( Math.abs( a - b ) ).toFixed( 10 ) )
   // console.log( 'DIFF2: ', +( accuracy ).toFixed( 10 ) )
   // console.log( '-----------------' );
-  // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
+  return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
 
-  return Math.abs( a - b ) <= accuracy
 }
 
 //

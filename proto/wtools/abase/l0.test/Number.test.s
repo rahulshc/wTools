@@ -1051,6 +1051,8 @@ function numbersAreEquivalentBasic( test )
 
 function numbersAreEquivalentOptionAccuracy( test )
 {
+  test.open( 'positive numbers, positive accuracy' )
+
   test.case = 'numbers 1.00 and 1.05, acc = 0.05 ';
   var got = _.numbersAreEquivalent( 1.00, 1.05, 0.05 );
   test.identical( got, true );
@@ -1079,24 +1081,141 @@ function numbersAreEquivalentOptionAccuracy( test )
   var got = _.numbersAreEquivalent( 0.999, 0.998, 0.0001 );
   test.identical( got, false );
 
-  test.case = 'numbers 0.999 and 0.998, acc = 0.0001 ';
+  test.case = 'numbers 0.999999 and 0.999998, acc = 0.000001 ';
   var got = _.numbersAreEquivalent( 0.999999, 0.999998, 0.000001 );
   test.identical( got, true );
 
-  test.case = 'numbers 0.999 and 0.998, acc = 0.0001 ';
+  test.case = 'numbers 0.999999 and 0.999998, acc = 0.0000001 ';
   var got = _.numbersAreEquivalent( 0.999999, 0.999998, 0.0000001 );
   test.identical( got, false );
 
   //
 
-  test.case = 'numbers 0.99999999999 and 0.99999999998, acc = 0.00000000001 ';
-  var got = _.numbersAreEquivalent( 0.99999999999, 0.99999999998, 0.00000000001 );
-  test.identical( got, false );
-
   test.case = 'numbers 0.9999999999 and 0.9999999998, acc = 0.0000000001 ';
   var got = _.numbersAreEquivalent( 0.9999999999, 0.9999999998, 0.0000000001 );
   test.identical( got, true );
 
+  test.case = 'numbers 0.9999999999 and 0.9999999998, acc = 0.00000000001 ';
+  var got = _.numbersAreEquivalent( 0.9999999999, 0.9999999998, 0.00000000001 );
+  test.identical( got, false );
+
+  test.case = 'more than 10 digit after dot, numbers 0.99999999999 and 0.99999999998, acc = 0.00000000001 ';
+  var got = _.numbersAreEquivalent( 0.99999999999, 0.99999999998, 0.00000000001 );
+  test.identical( got, true );
+
+  //
+
+  test.case = 'numbers 0.999 and 0.998, acc = 0 ';
+  var got = _.numbersAreEquivalent( 0.999, 0.998, 0 );
+  test.identical( got, false );
+
+  test.case = 'numbers 0.999 and 0.999, acc = 0 ';
+  var got = _.numbersAreEquivalent( 0.999, 0.999, 0 );
+  test.identical( got, true );
+
+  test.case = 'numbers 999 and 999, acc = 0 ';
+  var got = _.numbersAreEquivalent( 999, 999, 0 );
+  test.identical( got, true );
+
+  test.close( 'positive numbers, positive accuracy' );
+
+  /* - */
+
+  test.open( 'negative numbers, positive accuracy' )
+
+  test.case = 'numbers -1.00 and -1.05, acc = 0.05 ';
+  var got = _.numbersAreEquivalent( -1.00, -1.05, 0.05 );
+  test.identical( got, true );
+
+  test.case = 'numbers -1 and -1.05, acc = 0.05 ';
+  var got = _.numbersAreEquivalent( -1, -1.05, 0.05 );
+  test.identical( got, true );
+
+  //
+
+  test.case = 'numbers -1 and -2, acc = 1 ';
+  var got = _.numbersAreEquivalent( -1, -2, 1 );
+  test.identical( got, true );
+
+  test.case = 'numbers -10 and -20, acc = 11 ';
+  var got = _.numbersAreEquivalent( -10, -20, 11 );
+  test.identical( got, true );
+
+  //
+
+  test.case = 'numbers -0.999 and -0.998, acc = 0.001 ';
+  var got = _.numbersAreEquivalent( -0.999, -0.998, 0.001 );
+  test.identical( got, true );
+
+  test.case = 'numbers -0.999 and -0.998, acc = 0.0001 ';
+  var got = _.numbersAreEquivalent( -0.999, -0.998, 0.0001 );
+  test.identical( got, false );
+
+  test.case = 'numbers -0.999999 and -0.999998, acc = 0.000001 ';
+  var got = _.numbersAreEquivalent( -0.999999, -0.999998, 0.000001 );
+  test.identical( got, true );
+
+  test.case = 'numbers -0.999999 and -0.999998, acc = 0.0000001 ';
+  var got = _.numbersAreEquivalent( -0.999999, -0.999998, 0.0000001 );
+  test.identical( got, false );
+
+  //
+
+  test.case = 'numbers -0.9999999999 and -0.9999999998, acc = 0.0000000001 ';
+  var got = _.numbersAreEquivalent( -0.9999999999, -0.9999999998, 0.0000000001 );
+  test.identical( got, true );
+
+  test.case = 'numbers -0.9999999999 and -0.9999999998, acc = 0.00000000001 ';
+  var got = _.numbersAreEquivalent( -0.9999999999, -0.9999999998, 0.00000000001 );
+  test.identical( got, false );
+
+  test.case = 'more than 10 digit after dot, numbers -0.99999999999 and -0.99999999998, acc = 0.00000000001 ';
+  var got = _.numbersAreEquivalent( -0.99999999999, -0.99999999998, 0.00000000001 );
+  test.identical( got, true );
+
+  test.close( 'negative numbers, positive accuracy' )
+
+  /* - */
+
+  test.open( 'negative and positive numbers, positive accuracy' )
+
+  test.case = 'numbers 10 and -20, acc = 30 ';
+  var got = _.numbersAreEquivalent( 10, -20, 30 );
+  test.identical( got, true );
+
+  test.case = 'numbers 10 and -20, acc = 10 ';
+  var got = _.numbersAreEquivalent( 10, -20, 10 );
+  test.identical( got, false );
+
+  test.close( 'negative and positive numbers, positive accuracy' )
+
+  /* - */
+
+  test.open( 'positive numbers, negative accuracy' )
+
+  test.case = 'numbers 1.00 and 1.05, acc = -0.05 ';
+  var got = _.numbersAreEquivalent( 1.00, 1.05, -0.05 );
+  test.identical( got, false );
+
+  test.case = 'numbers 1 and 1.05, acc = -0.05 ';
+  var got = _.numbersAreEquivalent( 1, 1.05, -0.05 );
+  test.identical( got, false );
+
+  //
+
+  test.case = 'numbers 1 and 2, acc = -1 ';
+  var got = _.numbersAreEquivalent( 1, 2, -1 );
+  test.identical( got, false );
+
+  test.case = 'numbers 10 and 20, acc = -11 ';
+  var got = _.numbersAreEquivalent( 10, 20, -11 );
+  test.identical( got, false );
+
+  test.case = 'numbers 1 and 1, acc = -1 ';
+  var got = _.numbersAreEquivalent( 1, 1.0000001, -1 );
+  test.identical( got, true );
+
+  test.close( 'positive numbers, negative accuracy' )
 }
 
 //
