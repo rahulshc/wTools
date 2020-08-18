@@ -1177,7 +1177,9 @@ function _periodic( test )
       {
         result.push( 1 );
         times--;
+        return true;
       }
+      return undefined;
     };
 
     var timer = _.time._periodic( 0, onTime );
@@ -1186,11 +1188,11 @@ function _periodic( test )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
+      test.identical( got.state, -2 );
       test.identical( got.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      clearTimeout( got.original )
+      _.time.cancel( timer );
 
       return null;
     });
@@ -1207,7 +1209,9 @@ function _periodic( test )
       {
         result.push( 1 );
         times--;
+        return true;
       }
+      return _.dont;
     };
 
     var timer = _.time._periodic( 0, onTime );
@@ -1216,11 +1220,11 @@ function _periodic( test )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( got.state, -2 );
+      test.identical( got.result, _.dont );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      clearTimeout( got.original )
+      _.time.cancel( timer );
 
       return null;
     });
@@ -1237,7 +1241,9 @@ function _periodic( test )
       {
         result.push( 1 );
         times--;
+        return true;
       }
+      return undefined;
     };
 
     var timer = _.time._periodic( 0, onTime, onCancel );
@@ -1246,11 +1252,11 @@ function _periodic( test )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( got.state, -2 );
+      test.identical( got.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      clearTimeout( got.original )
+      _.time.cancel( timer );
 
       return null;
     });
@@ -1267,6 +1273,7 @@ function _periodic( test )
       {
         result.push( 1 );
         times--;
+        return true;
       }
     };
 
@@ -1276,8 +1283,8 @@ function _periodic( test )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( got.state, -2 );
+      test.identical( got.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -1289,7 +1296,7 @@ function _periodic( test )
       test.identical( got.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      clearTimeout( got.original );
+      _.time.cancel( timer );
 
       return null;
     });
@@ -1319,6 +1326,7 @@ function _periodic( test )
       {
         result.push( 1 );
         times--;
+        return true;
       }
     };
 
@@ -1328,11 +1336,11 @@ function _periodic( test )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, undefined );
-      test.is( got.state === 2 || got.state === 1 );
+      test.is( got.state === -2 );
       test.identical( got.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      clearTimeout( got.original )
+      _.time.cancel( timer );
 
       return null;
     });
@@ -1349,7 +1357,9 @@ function _periodic( test )
       {
         result.push( 1 );
         times--;
+        return true;
       }
+      return _.dont;
     };
 
     var timer = _.time._periodic( 5, onTime );
@@ -1358,11 +1368,11 @@ function _periodic( test )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( got.state, -2 );
+      test.identical( got.result, _.dont );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      clearTimeout( got.original )
+      _.time.cancel( timer );
 
       return null;
     });
@@ -1379,6 +1389,7 @@ function _periodic( test )
       {
         result.push( 1 );
         times--;
+        return true;
       }
     };
 
@@ -1388,11 +1399,11 @@ function _periodic( test )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, onCancel );
-      test.is( got.state === 2 || got.state === 1 );
-      test.identical( got.result, undefined );
+      test.is( got.state === -2 );
+      test.identical( got.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      clearTimeout( got.original )
+      _.time.cancel( timer );
 
       return null;
     });
@@ -1409,6 +1420,7 @@ function _periodic( test )
       {
         result.push( 1 );
         times--;
+        return true;
       }
     };
 
@@ -1418,8 +1430,8 @@ function _periodic( test )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( got.state, -2 );
+      test.identical( got.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -1431,7 +1443,7 @@ function _periodic( test )
       test.identical( got.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      clearTimeout( got.original );
+      _.time.cancel( timer );
 
       return null;
     });
