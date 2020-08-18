@@ -1189,7 +1189,7 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt3, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
@@ -1221,7 +1221,7 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt3, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
@@ -1253,7 +1253,7 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 0, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt3, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
@@ -1284,7 +1284,7 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 0, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt3, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
@@ -1337,7 +1337,7 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt4*2, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
@@ -1369,7 +1369,7 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt4*2, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
@@ -1400,7 +1400,7 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( context.dt1/2, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt4*2, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
@@ -1431,7 +1431,7 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( context.dt1/2, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt4*2, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
