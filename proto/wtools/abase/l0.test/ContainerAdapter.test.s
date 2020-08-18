@@ -13471,6 +13471,7 @@ function setAdapterReduceRight( test )
 
 function setAdapterAll( test )
 {
+
   test.case = 'src - empty container, onEach returns element';
   var src = _.containerAdapter.make( new Set() );
   var got = src.all( ( e ) => e );
@@ -13510,6 +13511,7 @@ function setAdapterAll( test )
   var src = _.containerAdapter.make( new Set( [ false, null, 0, '', undefined ] ) );
   var got = src.all( ( e ) => undefined  );
   test.identical( got, false );
+
 }
 
 //
@@ -20369,6 +20371,7 @@ let Self =
 
   tests :
   {
+
     // containerAdapter
 
     is,
