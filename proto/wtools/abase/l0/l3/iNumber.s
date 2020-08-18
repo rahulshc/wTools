@@ -252,8 +252,6 @@ let Routines =
   intIs,
 
   numbersAreAll,
-  // numbersAreIdentical,
-  // numbersAreEquivalent,
   numbersAreIdentical, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
   numbersAreIdenticalNotStrictly,
   numbersAreEquivalent, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
