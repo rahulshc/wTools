@@ -28,7 +28,8 @@ function _begin( delay, onTime, onCancel )
   _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
 
   if( delay > 0 )
-  original = setTimeout( time, delay );
+  original = setTimeout( _time, delay );
+  // original = setTimeout( time, delay ); /* Dmytro : it is intended for user call, _time - for setTimeout call */
   else
   original = soon( timeNonCancelable ) || null;
 
@@ -49,6 +50,11 @@ function _begin( delay, onTime, onCancel )
 
   function _time()
   {
+    if( timer.state === 1 || timer.state === -1 )
+    return;
+    if( timer.state === 2 || timer.state === -2 )
+    _.assert( timer.state === 0, 'Cannot change state of timer.' );
+
     timer.state = 1;
     try
     {
@@ -66,8 +72,11 @@ function _begin( delay, onTime, onCancel )
 
   function _cancel()
   {
-    if( timer.state !== 0 )
+    if( timer.state === 1 || timer.state === -1 )
     return;
+    if( timer.state === 2 || timer.state === -2 )
+    _.assert( 0, 'Cannot change state of timer.' );
+
     timer.state = -1;
     clearTimeout( timer.original );
     try
@@ -95,7 +104,9 @@ function _begin( delay, onTime, onCancel )
 
   function time()
   {
-    return timer._time();
+    timer._time();
+    clearTimeout( timer.original );
+    return timer;
   }
 
   /* */
