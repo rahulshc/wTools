@@ -2096,8 +2096,6 @@ _strSplitInlined_body.defaults =
 
   src : null,
   delimeter : null,
-  // delimeterLeft : null,
-  // delimeterRight : null,
   stripping : 0,
   quoting : 0,
 
@@ -2166,95 +2164,6 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  *
  */
 
-// function _strSplitInlinedStereo_body( o )
-// {
-//
-//   _.assert( arguments.length === 1, 'Expects single options map argument' );
-//
-//   let splitArray = _.strSplit
-//   ({
-//     src : o.src,
-//     delimeter : o.prefix,
-//     stripping : o.stripping,
-//     quoting : o.quoting,
-//     preservingEmpty : 1,
-//     preservingDelimeters : 0,
-//   });
-//
-//   if( splitArray.length <= 1 )
-//   {
-//     if( !o.preservingEmpty )
-//     if( splitArray[ 0 ] === '' )
-//     splitArray.splice( 0, 1 );
-//     return splitArray;
-//   }
-//
-//   let result = [];
-//
-//   /* */
-//
-//   if( splitArray[ 0 ] )
-//   result.push( splitArray[ 0 ] );
-//
-//   /* */
-//
-//   for( let i = 1; i < splitArray.length; i++ )
-//   {
-//     let halfs = _.strIsolateLeftOrNone( splitArray[ i ], o.postfix );
-//
-//     _.assert( halfs.length === 3 );
-//
-//     let inlined = halfs[ 2 ];
-//
-//     if( halfs[ 1 ] ) // yyy
-//     inlined = o.onInlined ? o.onInlined( inlined ) : inlined;
-//
-//     if( halfs[ 1 ] && inlined !== undefined )
-//     {
-//       result.push( halfs[ 0 ] );
-//       result.push( inlined );
-//       // if( inlined[ 2 ] )
-//       // result.push( inlined[ 2 ] );
-//     }
-//     else
-//     {
-//       if( result.length )
-//       debugger;
-//       else
-//       debugger;
-//       if( result.length )
-//       result[ result.length-1 ] += o.prefix + splitArray[ i ];
-//       else
-//       result.push( o.prefix + splitArray[ i ] );
-//     }
-//
-//   }
-//
-//   return result;
-// }
-//
-// _strSplitInlinedStereo_body.defaults =
-// {
-//   src : null,
-//
-//   prefix : '#',
-//   postfix : '#',
-//   stripping : 0,
-//   quoting : 0,
-//
-//   // onInlined : null,
-//   onOrdinary : null,
-//   onInlined : ( e ) => [ e ],
-//
-//   preservingEmpty : 1,
-//   preservingDelimeters : 0,
-//   preservingOrdinary : 1,
-//   preservingInlined : 1,
-//
-// }
-//
-// let strSplitInlinedStereo = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInlinedStereo_body );
-
 function strSplitInlinedStereo( o )
 {
 
@@ -2315,6 +2224,8 @@ strSplitInlinedStereo.defaults =
   src : null,
   prefix : '#',
   postfix : '#',
+  // prefix : '❮',
+  // postfix : '❯',
   onInlined : null,
 }
 
