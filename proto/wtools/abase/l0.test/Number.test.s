@@ -643,15 +643,15 @@ function intIs( test )
 
   test.case = 'Infinity';
   var got = _.intIs( Infinity );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'Positive Infinity';
   var got = _.intIs( +Infinity );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'Negative Infinity';
   var got = _.intIs( -Infinity );
-  test.identical( got, true );
+  test.identical( got, false );
 
   /* - */
 
@@ -1219,6 +1219,162 @@ function numbersAreEquivalentOptionAccuracy( test )
 }
 
 //
+
+function numbersAreFinite( test )
+{
+
+  test.case = 'empty array';
+  var got = _.numbersAreFinite([]);
+  test.identical( got, false );
+
+  test.open( 'strings, numbers' )
+
+  test.case = 'numbers 1, 1, string 1 ';
+  var got = _.numbersAreFinite([ 1, 1, '1' ]);
+  test.identical( got, false );
+
+  test.case = 'strings 1, 1, -1 ';
+  var got = _.numbersAreFinite([ '1', '1', '-1' ]);
+  test.identical( got, false );
+
+  test.close( 'strings, numbers' )
+
+  /* - */
+
+  test.open( 'numbers' )
+
+  test.case = 'array 1, 1, -1 ';
+  var got = _.numbersAreFinite([ 1, 1, -1 ]);
+  test.identical( got, true );
+
+  test.case = 'array 1.2, 0.9999, -1 ';
+  var got = _.numbersAreFinite([ 1.2, 0.9999, -1 ]);
+  test.identical( got, true );
+
+  test.case = 'array 1, 1, NaN ';
+  var got = _.numbersAreFinite([ 1, 1, NaN ]);
+  test.identical( got, false );
+
+  test.case = 'array NaN, NaN, NaN ';
+  var got = _.numbersAreFinite([ NaN, NaN, NaN ]);
+  test.identical( got, false );
+
+  test.case = 'array 1, 1, Infinity ';
+  var got = _.numbersAreFinite([ 1, 1, Infinity ]);
+  test.identical( got, false );
+
+  test.case = 'array 1, 1, -Infinity ';
+  var got = _.numbersAreFinite([ 1, 1, -Infinity ]);
+  test.identical( got, false );
+
+  test.close( 'numbers' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreFinite() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreFinite( [ 1, 2, 0.7 ], 'extra' ) );
+}
+
+//
+
+function numbersArePositive( test )
+{
+  test.case = '1 1 1';
+  var got = _.numbersArePositive([ 1, 1, 1 ]);
+  test.identical( got, true );
+
+  test.case = '-1 1 1';
+  var got = _.numbersArePositive([ -1, 1, 1 ]);
+  test.identical( got, false );
+
+  test.case = '1 1 -Infinity';
+  var got = _.numbersArePositive([ 1, 1, -Infinity ]);
+  test.identical( got, false );
+
+  test.case = '1 1 Infinity';
+  var got = _.numbersArePositive([ 1, 1, Infinity ]);
+  test.identical( got, true );
+
+  test.case = '1 1 -0 ';
+  var got = _.numbersArePositive([ 1, 1, -0 ]);
+  test.identical( got, true );
+
+  test.case = '1 1 0 ';
+  var got = _.numbersArePositive([ 1, 1, 0 ]);
+  test.identical( got, true );
+
+  test.case = '-0.000000000000000000001 1 0 ';
+  var got = _.numbersArePositive([ -0.000000000000000000001, 1, 0 ]);
+  test.identical( got, false );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersArePositive() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersArePositive( [ 1, 2, 0.7 ], 'extra' ) );
+}
+
+//
+
+function numbersAreInt( test )
+{
+  var got = _.numbersAreInt([ 1, 1, 1 ]);
+  test.identical( got, true );
+  debugger;
+  test.case = '-1 1 1';
+  var got = _.numbersAreInt([ -1, 1, 1 ]);
+  test.identical( got, true );
+
+  //
+
+  test.case = '1 1 -Infinity';
+  var got = _.numbersAreInt([ 1, 1, -Infinity ]);
+  test.identical( got, false );
+
+  test.case = '1 1 Infinity';
+  var got = _.numbersAreInt([ 1, 1, Infinity ]);
+  test.identical( got, false );
+
+  test.case = '1 1 NaN';
+  var got = _.numbersAreInt([ 1, 1, NaN ]);
+  test.identical( got, false );
+
+  //
+
+  test.case = '1.00 1 0.00 ';
+  var got = _.numbersAreInt([ 1.00, 1, 0.00 ]);
+  test.identical( got, true );
+
+  test.case = '1.1 1 0 ';
+  var got = _.numbersAreInt([ 1.1, 1, 0 ]);
+  test.identical( got, false );
+
+  test.case = '0.000000000000000000001 1 0 ';
+  var got = _.numbersAreInt([ 0.000000000000000000001, 1, 0 ]);
+  test.identical( got, false );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreInt() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersAreInt( [ 1, 2, 0.7 ], 'extra' ) );
+}
 
 //--
 // l0/l8/gNumber.s
@@ -1930,6 +2086,9 @@ let Self =
     numbersAreIdenticalNotStrictly,
     numbersAreEquivalentBasic,
     numbersAreEquivalentOptionAccuracy,
+    numbersAreFinite,
+    numbersArePositive,
+    numbersAreInt,
 
     // l0/l8/gNumber.s
 

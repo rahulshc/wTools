@@ -1,4 +1,5 @@
-( function _gNumber_s_() {
+( function _gNumber_s_()
+{
 
 'use strict';
 
@@ -110,11 +111,11 @@ function numberFromStrMaybe( src )
 
 //
 
-function numbersSlice( src,f,l )
+function numbersSlice( src, f, l )
 {
   if( _.numberIs( src ) )
   return src;
-  return _.longSlice( src,f,l );
+  return _.longSlice( src, f, l );
 }
 
 //
@@ -261,10 +262,10 @@ function intRandomBut( range )
   let attempts = 50;
 
   if( _.numberIs( range ) )
-  range = [ 0,range ];
+  range = [ 0, range ];
   else if( _.arrayIs( range ) )
   range = range;
-  else throw _.err( 'intRandom','unexpected argument' );
+  else throw _.err( 'intRandom', 'unexpected argument' );
 
   for( let attempt = 0 ; attempt < attempts ; attempt++ )
   {
@@ -300,7 +301,7 @@ function intRandomBut( range )
 
 //
 
-function numbersMake( src,length )
+function numbersMake( src, length )
 {
   let result;
 
@@ -329,7 +330,7 @@ function numbersMake( src,length )
 
 //
 
-function numbersFromNumber( src,length )
+function numbersFromNumber( src, length )
 {
 
   if( _.vectorAdapterIs( src ) )
@@ -354,11 +355,11 @@ function numbersFromNumber( src,length )
 
 //
 
-function numbersFromInt( dst,length )
+function numbersFromInt( dst, length )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
-  _.assert( _.intIs( dst ) || _.arrayIs( dst ),'Expects array of number as argument' );
+  _.assert( _.intIs( dst ) || _.arrayIs( dst ), 'Expects array of number as argument' );
   _.assert( length >= 0 );
 
   if( _.numberIs( dst ) )
@@ -370,8 +371,8 @@ function numbersFromInt( dst,length )
   else
   {
     for( let i = 0 ; i < dst.length ; i++ )
-    _.assert( _.intIs( dst[ i ] ),'Expects integer, but got',dst[ i ] );
-    _.assert( dst.length === length,'Expects array of length',length,'but got',dst );
+    _.assert( _.intIs( dst[ i ] ), 'Expects integer, but got', dst[ i ] );
+    _.assert( dst.length === length, 'Expects array of length', length, 'but got', dst );
   }
 
   return dst;
@@ -388,7 +389,7 @@ function numbersMake_functor( length )
 
   function numbersMake( src )
   {
-    return _.numbersMake( src,length );
+    return _.numbersMake( src, length );
   }
 
   return numbersMake;
@@ -405,7 +406,7 @@ function numbersFrom_functor( length )
 
   function numbersFromNumber( src )
   {
-    return _.numbersFromNumber( src,length );
+    return _.numbersFromNumber( src, length );
   }
 
   return numbersFrom;

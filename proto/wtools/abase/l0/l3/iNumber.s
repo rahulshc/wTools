@@ -67,7 +67,7 @@ function numberIsInfinite( src )
 function intIs( src )
 {
 
-  if( !_.numberIs( src ) )
+  if( !_.numberIs( src ) || !_.numberIsFinite( src ) )
   return false;
 
   return Math.floor( src ) === src;
@@ -168,71 +168,67 @@ function numbersAreEquivalent( a, b, accuracy )
   if( accuracy === undefined || accuracy < 0 )
   accuracy = this.accuracy;
 
-  // console.log( '-----------------' );
-  // console.log( 'ACC: ', accuracy )
-  // console.log( 'DIFF: ', Math.abs( a - b ) )
-  // console.log( 'ACC2: ', +( Math.abs( a - b ) ).toFixed( 10 ) )
-  // console.log( 'DIFF2: ', +( accuracy ).toFixed( 10 ) )
-  // console.log( '-----------------' );
   return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
-
 }
 
 //
 
 function numbersAreFinite( src )
 {
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+
+  if( !_.numbersAreAll( src ) )
+  return false;
 
   if( _.longIs( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( !numbersAreFinite( src[ s ] ) )
+    if( !_.numberIsFinite( src[ s ] ) )
     return false;
     return true;
   }
 
-  if( !_.numberIs( src ) )
   return false;
-
-  return isFinite( src );
 }
 
 //
 
 function numbersArePositive( src )
 {
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+
+  if( !_.numbersAreAll( src ) )
+  return false;
 
   if( _.longIs( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( !numbersArePositive( src[ s ] ) )
+    if( src[ s ] < 0 || !_.numberIsNotNan( src[ s ] ) )
     return false;
+
     return true;
   }
 
-  if( !_.numberIs( src ) )
   return false;
-
-  return src >= 0;
 }
 
 //
 
 function numbersAreInt( src )
 {
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+
+  if( !_.numbersAreAll( src ) )
+  return false;
 
   if( _.longIs( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( !numbersAreInt( src[ s ] ) )
+    if( !_.intIs( src[ s ] ) )
     return false;
-    return true;
   }
 
-  if( !_.numberIs( src ) )
-  return false;
-
-  return Math.floor( src ) === src;
+  return true;
 }
 
 // --
@@ -262,7 +258,7 @@ let Routines =
   // numbersAreEquivalent,
   numbersAreIdentical, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
   numbersAreIdenticalNotStrictly,
-  numbersAreEquivalent, /* qqq2 : implement good coverage */
+  numbersAreEquivalent, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
 
   numbersAreFinite,
   numbersArePositive,
