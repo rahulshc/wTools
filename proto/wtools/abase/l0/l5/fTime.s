@@ -27,6 +27,7 @@ function _begin( delay, onTime, onCancel )
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.numberIs( delay ) );
   _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
+  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
   if( delay > 0 )
   original = setTimeout( _time, delay );
