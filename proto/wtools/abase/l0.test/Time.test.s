@@ -139,6 +139,7 @@ function timerIs( test )
   var src = { type : 'timer', time : true, cancel : true, original : true  };
   var got = _.timerIs( src );
   test.identical( got, true );
+
 }
 
 //
