@@ -1,4 +1,5 @@
-( function _fTime_s_() {
+( function _fTime_s_()
+{
 
 'use strict';
 
@@ -164,8 +165,8 @@ function _periodic( delay, onTime, onCancel )
     _.assert( 0, 'Illegal call, timer is canceled. Please, use new timer.' );
 
     timer.state = 1;
-  //   if( r === _.dont )
-  //   _.time.cancel( timer );
+    // if( r === _.dont )
+    // _.time.cancel( timer );
     try
     {
       if( onTime )
@@ -174,7 +175,8 @@ function _periodic( delay, onTime, onCancel )
     finally
     {
       if( timer.result === undefined || timer.result === _.dont ) /* Dmytro : if it needs, change to any other stop value */
-      return timer.cancel();
+      timer.cancel();
+      else
       timer.state = 2;
     }
   }
@@ -267,7 +269,6 @@ function _cancel( timer )
 
 function timerIsBegun( timer )
 {
-  debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === 0;
 }
@@ -286,7 +287,6 @@ function timerIsCancelBegun( timer )
 
 function timerIsCancelEnded( timer )
 {
-  debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === -2;
 }
@@ -295,7 +295,6 @@ function timerIsCancelEnded( timer )
 
 function timerIsUpBegun( timer )
 {
-  debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === 1;
 }
@@ -304,7 +303,6 @@ function timerIsUpBegun( timer )
 
 function timerIsUpEnded( timer )
 {
-  debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === 2;
 }
