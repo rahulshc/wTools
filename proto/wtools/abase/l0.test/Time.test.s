@@ -758,7 +758,7 @@ function _finally( test )
 
   .then( function()
   {
-    test.case = 'onTime, execute onTime';
+    test.case = 'onTime, execute method time';
     var timer = _.time._finally( undefined, onTime );
     timer.time()
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
@@ -775,9 +775,9 @@ function _finally( test )
 
   .then( function()
   {
-    test.case = 'onTime, execute onCancel';
+    test.case = 'onTime, execute method cancel';
     var timer = _.time._finally( undefined, onTime );
-    _.time.cancel( timer );
+    timer.cancel();
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .finally( function( err, got )
     {
@@ -789,24 +789,6 @@ function _finally( test )
       return null;
     });
   })
-
-  .then( function()
-  {
-    test.case = 'onTime, execution of callbacks';
-    var timer = _.time._finally( undefined, onTime );
-    timer.time();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .finally( function( err, got )
-    {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
-
-      return null;
-    });
-  })
-
 
   ready.finally( () =>
   {
@@ -856,8 +838,9 @@ function _finally( test )
 
   .then( function()
   {
-    test.case = 'onTime';
+    test.case = 'onTime, execute method time';
     var timer = _.time._finally( 0, onTime );
+    timer.time();
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .finally( function( err, got )
     {
@@ -872,31 +855,15 @@ function _finally( test )
 
   .then( function()
   {
-    test.case = 'onTime, execute onCancel';
+    test.case = 'onTime, execute method cancel';
     var timer = _.time._finally( 0, onTime );
-    _.time.cancel( timer );
+    timer.cancel();
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
       test.identical( got.onCancel, onTime );
       test.identical( got.state, -2 );
-      test.identical( got.result, 0 );
-
-      return null;
-    });
-  })
-
-  .then( function()
-  {
-    test.case = 'onTime, onCancel, execution of callbacks';
-    var timer = _.time._finally( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .finally( function( err, got )
-    {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
       test.identical( got.result, 0 );
 
       return null;
@@ -1015,9 +982,9 @@ function _finally( test )
 
   .then( function()
   {
-    test.case = 'onTime, timeout > check time, execute onCancel';
+    test.case = 'onTime, timeout > check time, execute method cancel';
     var timer = _.time._finally( context.dt3, onTime );
-    _.time.cancel( timer );
+    timer.cancel();
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .finally( function( err, got )
     {
@@ -1049,26 +1016,10 @@ function _finally( test )
 
   .then( function()
   {
-    test.case = 'onTime, timeout > check time, execute onTime';
+    test.case = 'onTime, timeout > check time, execute method time';
     var timer = _.time._finally( context.dt3, onTime );
     timer.time()
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .finally( function( err, got )
-    {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
-
-      return null;
-    });
-  })
-
-  .then( function()
-  {
-    test.case = 'onTime, onCancel, execution of callbacks';
-    var timer = _.time._finally( context.dt1, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt3, () => timer )
     .finally( function( err, got )
     {
       test.identical( got.onTime, onTime );
@@ -1116,6 +1067,96 @@ function _finally( test )
     if( err )
     throw err;
     return arg;
+  });
+
+  /* - */
+
+  ready.then( () =>
+  {
+    test.case = 'executes method time twice, should throw error';
+    var timer = _.time._finally( undefined, onTime );
+    timer.time();
+
+    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
+    .finally( ( err, arg ) =>
+    {
+      if( arg )
+      {
+        test.is( false );
+      }
+      else
+      {
+        _.errAttend( err );
+        test.is( true );
+      }
+      return null;
+    });
+  });
+
+  ready.then( () =>
+  {
+    test.case = 'executes method cancel twice, should throw error';
+    var timer = _.time._finally( undefined, onTime );
+    timer.cancel();
+
+    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    .finally( ( err, arg ) =>
+    {
+      if( arg )
+      {
+        test.is( false );
+      }
+      else
+      {
+        _.errAttend( err );
+        test.is( true );
+      }
+      return null;
+    });
+  });
+
+  ready.then( () =>
+  {
+    test.case = 'executes method time and then method cancel, should throw error';
+    var timer = _.time._finally( undefined, onTime );
+    timer.time();
+
+    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    .finally( ( err, arg ) =>
+    {
+      if( arg )
+      {
+        test.is( false );
+      }
+      else
+      {
+        _.errAttend( err );
+        test.is( true );
+      }
+      return null;
+    });
+  });
+
+  ready.then( () =>
+  {
+    test.case = 'executes method time and then method cancel, should throw error';
+    var timer = _.time._finally( undefined, onTime );
+    timer.cancel();
+
+    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
+    .finally( ( err, arg ) =>
+    {
+      if( arg )
+      {
+        test.is( false );
+      }
+      else
+      {
+        _.errAttend( err );
+        test.is( true );
+      }
+      return null;
+    });
   });
 
   /* */
