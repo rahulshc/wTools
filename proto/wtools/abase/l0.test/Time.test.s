@@ -1207,7 +1207,6 @@ function _periodic( test )
       test.identical( got.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      _.time.cancel( timer );
 
       return null;
     });
@@ -1239,7 +1238,6 @@ function _periodic( test )
       test.identical( got.result, _.dont );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      _.time.cancel( timer );
 
       return null;
     });
@@ -1271,47 +1269,6 @@ function _periodic( test )
       test.identical( got.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      _.time.cancel( timer );
-
-      return null;
-    });
-  })
-
-  .then( function()
-  {
-    test.case = 'onTime, onCancel, execution of callbacks';
-    var times = 5;
-    var result = [];
-    var onTime = function()
-    {
-      if( times > 0 )
-      {
-        result.push( 1 );
-        times--;
-        return true;
-      }
-    };
-
-    var timer = _.time._periodic( 0, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
-    .finally( function( err, got )
-    {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
-      test.identical( times, 0 );
-      test.identical( result, [ 1, 1, 1, 1, 1 ] );
-
-      _.time.cancel( got );
-
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
-      test.identical( times, 0 );
-      test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      _.time.cancel( timer );
 
       return null;
     });
@@ -1355,7 +1312,6 @@ function _periodic( test )
       test.identical( got.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      _.time.cancel( timer );
 
       return null;
     });
@@ -1387,7 +1343,6 @@ function _periodic( test )
       test.identical( got.result, _.dont );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      _.time.cancel( timer );
 
       return null;
     });
@@ -1418,47 +1373,6 @@ function _periodic( test )
       test.identical( got.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      _.time.cancel( timer );
-
-      return null;
-    });
-  })
-
-  .then( function()
-  {
-    test.case = 'onTime, onCancel, execution of callbacks';
-    var times = 5;
-    var result = [];
-    var onTime = function()
-    {
-      if( times > 0 )
-      {
-        result.push( 1 );
-        times--;
-        return true;
-      }
-    };
-
-    var timer = _.time._periodic( context.dt1/2, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt4*2, () => timer )
-    .finally( function( err, got )
-    {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
-      test.identical( times, 0 );
-      test.identical( result, [ 1, 1, 1, 1, 1 ] );
-
-      _.time.cancel( got );
-
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
-      test.identical( times, 0 );
-      test.identical( result, [ 1, 1, 1, 1, 1 ] );
-      _.time.cancel( timer );
 
       return null;
     });
@@ -1473,6 +1387,56 @@ function _periodic( test )
     if( err )
     throw err;
     return arg;
+  });
+
+  /* - */
+
+  ready.then( () =>
+  {
+    test.case = 'executes method cancel twice, should throw error';
+    var timer = _.time._periodic( 1000, () => 1, () => -1 );
+    timer.cancel();
+
+    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    .finally( ( err, arg ) =>
+    {
+      if( arg )
+      {
+        test.is( false );
+      }
+      else
+      {
+        _.errAttend( err );
+        test.is( true );
+      }
+      return null;
+    });
+  });
+
+  ready.then( () =>
+  {
+    test.case = 'executes method time inside of method cancel, should throw error';
+    var timer = _.time._periodic( 1000, () => 1, onCancel );
+    function onCancel()
+    {
+      timer.time();
+      return -1;
+    };
+
+    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    .finally( ( err, arg ) =>
+    {
+      if( arg )
+      {
+        test.is( false );
+      }
+      else
+      {
+        _.errAttend( err );
+        test.is( true );
+      }
+      return null;
+    });
   });
 
   /* */
@@ -1585,7 +1549,6 @@ function timeOutCancelInsideOfCallback( test )
   var timer = _.time.begin( 1, () =>
   {
     visited.push( 'v1' );
-    debugger;
     _.time.cancel( timer );
     visited.push( 'v2' );
   });
