@@ -1,4 +1,5 @@
-( function _fString_s_() {
+( function _fString_s_()
+{
 
 'use strict';
 
@@ -886,7 +887,7 @@ function strReplaceBegin( src, begin, ins )
   {
     let prefix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( prefix ) );
-    result[ k ] = prefix + _.strRemoveBegin( result[ k ] , begin[ j ] );
+    result[ k ] = prefix + _.strRemoveBegin( result[ k ], begin[ j ] );
     break;
   }
 
@@ -914,7 +915,7 @@ function strReplaceEnd( src, end, ins )
   {
     let postfix = _.longIs( ins ) ? ins[ j ] : ins;
     _.assert( _.strIs( postfix ) );
-    result[ k ] = _.strRemoveEnd( result[ k ] , end[ j ] ) + postfix;
+    result[ k ] = _.strRemoveEnd( result[ k ], end[ j ] ) + postfix;
     break;
   }
 
@@ -1568,13 +1569,13 @@ function strSplitFast_pre( routine, args )
 
 function strSplitFast_body( o )
 {
-  let result;
-  let closests;
-  let position;
-  let closestPosition;
-  let closestIndex;
-  let hasEmptyDelimeter;
-  let delimeter
+  let result,
+    closests,
+    position,
+    closestPosition,
+    closestIndex,
+    hasEmptyDelimeter,
+    delimeter
 
   o.delimeter = _.arrayAs( o.delimeter );
 
@@ -1957,7 +1958,14 @@ defaults.onQuote = null; /* aaa : cover. seems does not work. ask how it should 
  *
  */
 
-let pre = [ strSplitFast.pre, strSplitsQuotedRejoin.pre, strSplitsDropDelimeters.pre, strSplitsStrip.pre, strSplitsDropEmpty.pre ];
+let pre =
+[
+  strSplitFast.pre,
+  strSplitsQuotedRejoin.pre,
+  strSplitsDropDelimeters.pre,
+  strSplitsStrip.pre,
+  strSplitsDropEmpty.pre
+];
 let strSplit = _.routineFromPreAndBody( pre, strSplit_body );
 
 _.assert( strSplit.pre !== strSplitFast.pre );
