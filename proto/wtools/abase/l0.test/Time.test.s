@@ -139,7 +139,6 @@ function timerIs( test )
   var src = { type : 'timer', time : true, cancel : true, original : true  };
   var got = _.timerIs( src );
   test.identical( got, true );
-
 }
 
 //
@@ -379,7 +378,7 @@ function _begin( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -571,7 +570,7 @@ function _begin( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -944,7 +943,7 @@ function _finally( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -1105,7 +1104,7 @@ function _finally( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -1255,7 +1254,7 @@ function _periodic( test )
     test.case = 'onTime';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -1286,7 +1285,7 @@ function _periodic( test )
     test.case = 'onTime, execute onTime';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -1317,7 +1316,7 @@ function _periodic( test )
     test.case = 'onTime, onCancel';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -1361,7 +1360,7 @@ function _periodic( test )
     test.case = 'onTime';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -1391,7 +1390,7 @@ function _periodic( test )
     test.case = 'onTime, execute onTime';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -1422,7 +1421,7 @@ function _periodic( test )
     test.case = 'onTime, onCancel';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -1812,7 +1811,7 @@ function begin( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -1971,7 +1970,7 @@ function begin( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -2416,7 +2415,7 @@ function finally_( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -2576,7 +2575,7 @@ function finally_( test )
     test.case = 'only one execution';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -2783,7 +2782,7 @@ function periodic( test )
     test.case = 'onTime';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -2814,7 +2813,7 @@ function periodic( test )
     test.case = 'onTime, execute onTime';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -2845,7 +2844,7 @@ function periodic( test )
     test.case = 'onTime, onCancel';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -2889,7 +2888,7 @@ function periodic( test )
     test.case = 'onTime';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -2919,7 +2918,7 @@ function periodic( test )
     test.case = 'onTime, execute onTime';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
@@ -2950,7 +2949,7 @@ function periodic( test )
     test.case = 'onTime, onCancel';
     var times = 5;
     var result = [];
-    var onTime = function()
+    var onTime = () =>
     {
       if( times > 0 )
       {
