@@ -138,9 +138,10 @@ function _finally( delay, onTime )
 function _periodic( delay, onTime, onCancel )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
   _.assert( _.numberIs( delay ) );
   _.assert( _.routineIs( onTime ) );
+  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
   let original = setInterval( time, delay );
 
