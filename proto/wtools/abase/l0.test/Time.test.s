@@ -704,6 +704,77 @@ function _begin( test )
 
 //
 
+function _beginTimerInsideOfCallback( test )
+{
+  let context = this;
+
+  var onCancel = () => -1;
+  var ready = new _testerGlobal_.wTools.Consequence().take( null );
+
+  /* - */
+
+  ready.then( () =>
+  {
+    test.case = 'single unlinked timer';
+    var result = [];
+    var onTime = () =>
+    {
+      result.push( 1 );
+      _.time.begin( context.dt1, () => result.push( 2 ) );
+      return 1;
+    };
+    var timer = _.time._begin( context.dt1, onTime );
+
+    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
+    .then( ( got ) =>
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 2 );
+      test.identical( got.result, 1 );
+      test.identical( result, [ 1, 2 ] );
+
+      return null;
+    });
+  });
+
+  /* - */
+
+  ready.then( () =>
+  {
+    test.case = 'a periodical timer from simple timer';
+    var result = [];
+    var timer = _.time._begin( context.dt1, onTime );
+    function onTime()
+    {
+      if( result.length < 3 )
+      {
+        result.push( 1 );
+        timer = _.time.begin( context.dt1, onTime );
+        return 1;
+      }
+      result.push( -1 );
+      return -1;
+    }
+
+    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
+    .then( ( got ) =>
+    {
+      test.identical( got.onTime, onTime );
+      test.identical( got.onCancel, undefined );
+      test.identical( got.state, 2 );
+      test.identical( got.result, -1 );
+      test.identical( result, [ 1, 1, 1, -1 ] );
+
+      return null;
+    });
+  });
+
+  return ready;
+}
+
+//
+
 function _finally( test )
 {
   let context = this;
@@ -1652,6 +1723,7 @@ var Self =
     timerIs,
 
     _begin,
+    _beginTimerInsideOfCallback,
     _finally,
     _periodic,
     _cancel,
