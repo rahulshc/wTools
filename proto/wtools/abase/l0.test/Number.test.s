@@ -1380,6 +1380,173 @@ function numbersAreInt( test )
 // l0/l8/gNumber.s
 //--
 
+function numbersTotal( test )
+{
+
+  test.case = 'empty array';
+  var got = _.numbersTotal([]);
+  test.identical( got, 0 );
+
+  /* - */
+
+  test.open( 'number input' )
+
+  test.case = 'input 1, 2, 3';
+  var got = _.numbersTotal([ 1, 2, 3 ]);
+  test.identical( got, 6 );
+
+  test.case = 'input 1000, 200, 3';
+  var got = _.numbersTotal([ 1000, 200, 3 ]);
+  test.identical( got, 1203 );
+
+  test.case = 'input 1.00, 2.00, 3.00';
+  var got = _.numbersTotal([ 1.00, 2.00, 3.00 ]);
+  test.identical( got, 6 );
+
+  test.case = 'input 1.50, 2.50, 3';
+  var got = _.numbersTotal([ 1.50, 2.50, 3 ]);
+  test.identical( got, 7 );
+
+  test.case = 'input 1.55, 2.55, 3.05';
+  var got = _.numbersTotal([ 1.55, 2.55, 3.05 ]);
+  test.et( got, 7.15 );
+
+  test.case = 'input 1.555, 2.555, 3.111';
+  var got = _.numbersTotal([ 1.555, 2.555, 3.111 ]);
+  test.identical( got, 7.221 );
+
+  test.case = 'input 1.5555, 2.555, 3.11';
+  var got = _.numbersTotal([ 1.5555, 2.555, 3.11 ]);
+  test.et( got, 7.2205 );
+
+  test.case = 'input 1, 1, 0.99999999999999999999999';
+  var got = _.numbersTotal([ 1, 1, 0.99999999999999999999999 ]);
+  test.et( got, 2.99999999999999999999999 );
+
+  test.close( 'number input' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersTotal() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersTotal( [ 1, 2, 0.7 ], 'extra' ) );
+
+  test.case = 'input : \'a\', \'b\'';
+  test.shouldThrowErrorSync( () => _.numbersTotal([ 'a', 'b' ] ) );
+
+  test.case = 'input : \'1\', \'2\', \'3\'';
+  test.shouldThrowErrorSync( () => _.numbersTotal([ '1', '2', '3' ]) );
+
+  test.case = 'input : 1, 2, \'3\'';
+  test.shouldThrowErrorSync( () => _.numbersTotal([ 1, 2, '3' ]) );
+}
+
+//
+
+function numberFrom( test )
+{
+  test.case = 'null';
+  var got = _.numberFrom( null );
+  test.identical( got, 0 );
+
+  test.case = 'undefined';
+  var got = _.numberFrom( undefined );
+  test.identical( got, NaN );
+
+  test.case = 'false';
+  var got = _.numberFrom( false );
+  test.identical( got, 0 );
+
+  test.case = 'true';
+  var got = _.numberFrom( true );
+  test.identical( got, 1 );
+
+  test.case = 'Number';
+  var got = _.numberFrom( 2 );
+  test.identical( got, 2 );
+
+  test.case = 'NaN';
+  var got = _.numberFrom( NaN );
+  test.identical( got, NaN );
+
+  test.case = 'Infinity';
+  var got = _.numberFrom( Infinity );
+  test.identical( got, Infinity );
+
+  test.case = 'empty string';
+  var got = _.numberFrom( '' );
+  test.identical( got, NaN );
+
+  test.case = 'string with literal symbols';
+  var got = _.numberFrom( 'abc' );
+  test.identical( got, NaN );
+
+  test.case = 'string with digit symbols';
+  var got = _.numberFrom( '12' );
+  test.identical( got, 12 );
+
+  test.case = 'string with floating point digit symbols';
+  var got = _.numberFrom( '12.33' );
+  test.identical( got, 12.33 );
+
+  test.case = 'Set';
+  var got = _.numberFrom( new Set() );
+  test.identical( got, NaN );
+
+  test.case = 'HashMap';
+  var got = _.numberFrom( new Map() );
+  test.identical( got, NaN );
+
+  test.case = 'function';
+  var got = _.numberFrom( function(){} );
+  test.identical( got, NaN );
+
+  /* */
+
+  test.case = 'empty array';
+  var src = [];
+  var got = _.numberFrom( src );
+  test.identical( got, 0 );
+
+  test.case = 'empty object';
+  var src = {};
+  var got = _.numberFrom( src );
+  test.identical( got, NaN );
+
+  test.case = 'array with numbers';
+  var src = [ 1, 2, 3 ];
+  var got = _.numberFrom( src );
+  test.identical( got, NaN );
+
+  /* */
+
+  test.case = 'empty bufferTyped';
+  var src = new U8x( [] );
+  var got = _.numberFrom( src );
+  test.identical( got, 0 );
+
+  test.case = 'bufferTyped with numbers';
+  var src = new U8x( [ 1, 2, 3 ] );
+  var got = _.numberFrom( src );
+  test.identical( got, NaN );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numberFrom() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numberFrom( [ 1, 2, 0.7 ], 'extra' ) );
+}
+
+//
+
 function numbersFrom( test )
 {
   test.case = 'null';
@@ -2092,6 +2259,8 @@ let Self =
 
     // l0/l8/gNumber.s
 
+    numbersTotal,
+    numberFrom,
     numbersFrom,
     numberFromStrMaybe,
 
