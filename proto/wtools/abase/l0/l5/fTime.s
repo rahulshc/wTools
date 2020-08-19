@@ -30,8 +30,7 @@ function _begin( delay, onTime, onCancel )
   _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
   if( delay > 0 )
-  original = setTimeout( _time, delay );
-  // original = setTimeout( time, delay ); /* Dmytro : it is intended for user call, _time - for setTimeout call */
+  original = setTimeout( time, delay );
   else
   original = soon( timeNonCancelable ) || null;
 
