@@ -160,6 +160,9 @@ function _periodic( delay, onTime, onCancel )
 
   function _time()
   {
+    if( timer.state === -1 || timer.state === -2 )
+    _.assert( 0, 'Illegal call, timer is canceled. Please, use new timer.' );
+
     timer.state = 1;
   //   if( r === _.dont )
   //   _.time.cancel( timer );
@@ -170,7 +173,7 @@ function _periodic( delay, onTime, onCancel )
     }
     finally
     {
-      if( timer.result === undefined || timer.result === _.dont ) /* Dmytro : change if needs any other stop value */
+      if( timer.result === undefined || timer.result === _.dont ) /* Dmytro : if it needs, change to any other stop value */
       return timer.cancel();
       timer.state = 2;
     }
@@ -180,6 +183,11 @@ function _periodic( delay, onTime, onCancel )
 
   function _cancel()
   {
+    if( timer.state === 1 )
+    logger.log( 'Timer is canceled when callback {-onTime-} was executing.' );
+    if( timer.state === -1 || timer.state === -2 )
+    _.assert( 0, 'Illegal call, timer is canceled.' );
+
     timer.state = -1;
     clearInterval( timer.original );
     try
