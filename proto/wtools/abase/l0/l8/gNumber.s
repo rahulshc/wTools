@@ -113,6 +113,9 @@ function numberFromStrMaybe( src )
 
 function numbersSlice( src, f, l )
 {
+  if( _.arrayLike( src ) )
+  _.assert( _.numbersAreAll( src ) )
+
   if( _.numberIs( src ) )
   return src;
   return _.longSlice( src, f, l );

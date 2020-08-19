@@ -1809,6 +1809,125 @@ function numbersFrom( test )
 
 //
 
+function numberFromStr( test )
+{
+  test.case = 'src - empty string';
+  var src = '';
+  var got = _.numberFromStr( src );
+  test.identical( got, NaN );
+
+  test.case = 'src - string with space';
+  var src = ' ';
+  var got = _.numberFromStr( src );
+  test.identical( got, NaN );
+
+  test.case = 'src - string integer';
+  var src = '1';
+  var got = _.numberFromStr( src );
+  test.identical( got, 1 );
+
+  test.case = 'src - string integer with other literals';
+  var src = '1 a';
+  var got = _.numberFromStr( src );
+  test.identical( got, 1 );
+
+  test.case = 'src - string integer with other literals';
+  var src = '1aa';
+  var got = _.numberFromStr( src );
+  test.identical( got, 1 );
+
+  test.case = 'src - string';
+  var src = 'a';
+  var got = _.numberFromStr( src );
+  test.identical( got, NaN );
+
+  test.case = 'src - string';
+  var src = 'a1';
+  var got = _.numberFromStr( src );
+  test.identical( got, NaN );
+
+  test.case = 'src - string integer with space after';
+  var src = '1 ';
+  var got = _.numberFromStr( src );
+  test.identical( got, 1 );
+
+  test.case = 'src - string integer with space before';
+  var src = ' 1';
+  var got = _.numberFromStr( src );
+  test.identical( got, 1 );
+
+  test.case = 'src - string integer with spaces';
+  var src = '  1  ';
+  var got = _.numberFromStr( src );
+  test.identical( got, 1 );
+
+  test.case = 'src - string negative integer';
+  var src = '-1';
+  var got = _.numberFromStr( src );
+  test.identical( got, -1 );
+
+  test.case = 'src - string float';
+  var src = '1.01';
+  var got = _.numberFromStr( src );
+  test.identical( got, 1.01 );
+
+  test.case = 'src - string negative float';
+  var src = '-1.01';
+  var got = _.numberFromStr( src );
+  test.identical( got, -1.01 );
+
+  test.case = 'src - string float without 0 before dot';
+  var src = '.01';
+  var got = _.numberFromStr( src );
+  test.identical( got, 0.01 );
+
+  test.case = 'src - string negative float without 0 before dot';
+  var src = '-.01';
+  var got = _.numberFromStr( src );
+  test.identical( got, -0.01 );
+
+  test.case = 'src - number NaN';
+  var src = 'NaN';
+  var got = _.numberFromStr( src );
+  test.identical( got, NaN );
+
+  test.case = 'src - string +0';
+  var src = '+0';
+  var got = _.numberFromStr( src );
+  test.identical( got, +0 );
+
+  test.case = 'src - string -0';
+  var src = '-0';
+  var got = _.numberFromStr( src );
+  test.identical( got, -0 );
+
+  test.case = 'src - string Infinity';
+  var src = 'Infinity';
+  var got = _.numberFromStr( src );
+  test.identical( got, Infinity );
+
+  test.case = 'src - string -Infinity';
+  var src = '-Infinity';
+  var got = _.numberFromStr( src );
+  test.identical( got, -Infinity );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numberFromStr() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numberFromStr( '1', 'extra' ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.numberFromStr( null ) );
+  test.shouldThrowErrorSync( () => _.numberFromStr( [ 1 ] ) );
+  test.shouldThrowErrorSync( () => _.numberFromStr( 1 ) );
+}
+
+//
+
 function numberFromStrMaybe( test )
 {
   test.case = 'src - number integer';
@@ -1985,6 +2104,85 @@ function numberFromStrMaybe( test )
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.numberFromStrMaybe( null ) );
   test.shouldThrowErrorSync( () => _.numberFromStrMaybe( [ 1 ] ) );
+}
+
+//
+
+function numbersSlice( test )
+{
+
+  test.open( 'number' )
+
+  test.case = 'src - number 100';
+  var src = 100;
+  var got = _.numbersSlice( src );
+  test.identical( got, 100 );
+
+  test.case = 'src - number 1.00';
+  var src = 1.00;
+  var got = _.numbersSlice( src );
+  test.identical( got, 1.00 );
+
+  test.case = 'src - number 1.99';
+  var src = 1.99;
+  var got = _.numbersSlice( src );
+  test.identical( got, 1.99 );
+
+  test.close( 'number' )
+
+  /* - */
+
+  test.open( 'array' )
+
+  test.case = 'src - array [ 1, 2, 3 ], no range';
+  var src = [ 1, 2, 3 ];
+  var got = _.numbersSlice( src );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'src - array [ 1, 2, 3, 4, 5 ] with range [ 1, 3 ]';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.numbersSlice( src, 1, 3 );
+  test.identical( got, [ 2, 3 ] );
+
+  test.case = 'src - array [ 1, 2, 3, 4, 5 ], with range [ 1, undefined ]';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.numbersSlice( src, 1 );
+  test.identical( got, [ 2, 3, 4, 5 ] );
+
+  test.case = 'src - array [ 1, 2, 3, 4, 5 ], with range [ undefined, 3 ]';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.numbersSlice( src, undefined, 3 );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'src - array [ 1, 2, 3, 4, 5 ], with range [ 0, 0 ]';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.numbersSlice( src, 0, 0 );
+  test.identical( got, [] );
+
+  test.case = 'src - array [ 1, 2, 3, 4, 5 ], with range [ -1, 2 ]';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.numbersSlice( src, -1, 2 );
+  test.identical( got, [] );
+
+  test.case = 'src - array [ 1, 2, 3, 4, 5 ], with range [ -1, -2 ]';
+  var src = [ 1, 2, 3, 4, 5 ];
+  var got = _.numbersSlice( src, -1, -2 );
+  test.identical( got, [] );
+
+  test.close( 'array' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersSlice() );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.numbersSlice( null ) );
+  test.shouldThrowErrorSync( () => _.numbersSlice( '1' ) );
+  test.shouldThrowErrorSync( () => _.numbersSlice( [ 1, 2, '3' ] ) );
 }
 
 //
@@ -2262,7 +2460,10 @@ let Self =
     numbersTotal,
     numberFrom,
     numbersFrom,
+    numberFromStr,
     numberFromStrMaybe,
+
+    numbersSlice,
 
     numberRandom,
     intRandom,
