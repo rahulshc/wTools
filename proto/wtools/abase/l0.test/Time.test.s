@@ -118,13 +118,13 @@ function timerIs( test )
   test.identical( got, false );
 
   test.case = 'check _begin timer';
-  var src = _.time._begin( undefined );
+  var src = _.time._begin( Infinity );
   var got = _.timerIs( src );
   test.identical( got, true );
   _.time.cancel( src );
 
   test.case = 'check _finally timer';
-  var src = _.time._finally( undefined, undefined );
+  var src = _.time._finally( Infinity, undefined );
   var got = _.timerIs( src );
   test.identical( got, true );
   _.time.cancel( src );
@@ -155,14 +155,14 @@ function _begin( test )
 
   ready.finally( () =>
   {
-    test.open( 'delay - undefined' );
+    test.open( 'delay - Infinity' );
     return null;
   })
 
   .then( function()
   {
     test.case = 'without callbacks';
-    var timer = _.time._begin( undefined );
+    var timer = _.time._begin( Infinity );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -179,7 +179,7 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime';
-    var timer = _.time._begin( undefined, onTime );
+    var timer = _.time._begin( Infinity, onTime );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -196,7 +196,7 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime, execute method time';
-    var timer = _.time._begin( undefined, onTime );
+    var timer = _.time._begin( Infinity, onTime );
     timer.time();
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
@@ -213,7 +213,7 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onCancel';
-    var timer = _.time._begin( undefined, undefined, onCancel );
+    var timer = _.time._begin( Infinity, undefined, onCancel );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -230,7 +230,7 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onCancel, execute method cancel';
-    var timer = _.time._begin( undefined, undefined, onCancel );
+    var timer = _.time._begin( Infinity, undefined, onCancel );
     timer.cancel();
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer ) /* aaa : parametrize all time outs in the test suite */ /* Dmytro : add parametrized variables */
     .then( ( got ) =>
@@ -247,7 +247,7 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime, onCancel';
-    var timer = _.time._begin( undefined, onTime, onCancel );
+    var timer = _.time._begin( Infinity, onTime, onCancel );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -263,7 +263,7 @@ function _begin( test )
 
   ready.finally( () =>
   {
-    test.close( 'delay - undefined' );
+    test.close( 'delay - Infinity' );
     return null;
   });
 
@@ -608,7 +608,7 @@ function _begin( test )
   ready.then( () =>
   {
     test.case = 'executes method time twice, should throw error';
-    var timer = _.time._begin( undefined, onTime, onCancel );
+    var timer = _.time._begin( Infinity, onTime, onCancel );
     timer.time();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
@@ -634,7 +634,7 @@ function _begin( test )
   ready.then( () =>
   {
     test.case = 'executes method cancel twice, should throw error';
-    var timer = _.time._begin( undefined, onTime, onCancel );
+    var timer = _.time._begin( Infinity, onTime, onCancel );
     timer.cancel();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
@@ -656,7 +656,7 @@ function _begin( test )
   ready.then( () =>
   {
     test.case = 'executes method time and then method cancel, should throw error';
-    var timer = _.time._begin( undefined, onTime, onCancel );
+    var timer = _.time._begin( Infinity, onTime, onCancel );
     timer.time();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
@@ -678,7 +678,7 @@ function _begin( test )
   ready.then( () =>
   {
     test.case = 'executes method time and then method cancel, should throw error';
-    var timer = _.time._begin( undefined, onTime, onCancel );
+    var timer = _.time._begin( Infinity, onTime, onCancel );
     timer.cancel();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
@@ -786,14 +786,14 @@ function _finally( test )
 
   ready.finally( () =>
   {
-    test.open( 'delay - undefined' );
+    test.open( 'delay - Infinity' );
     return null;
   })
 
   .then( function()
   {
     test.case = 'without callbacks';
-    var timer = _.time._finally( undefined, undefined );
+    var timer = _.time._finally( Infinity, undefined );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -810,7 +810,7 @@ function _finally( test )
   .then( function()
   {
     test.case = 'onTime';
-    var timer = _.time._finally( undefined, onTime );
+    var timer = _.time._finally( Infinity, onTime );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -827,7 +827,7 @@ function _finally( test )
   .then( function()
   {
     test.case = 'onTime, execute method time';
-    var timer = _.time._finally( undefined, onTime );
+    var timer = _.time._finally( Infinity, onTime );
     timer.time()
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
@@ -844,7 +844,7 @@ function _finally( test )
   .then( function()
   {
     test.case = 'onTime, execute method cancel';
-    var timer = _.time._finally( undefined, onTime );
+    var timer = _.time._finally( Infinity, onTime );
     timer.cancel();
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
@@ -860,7 +860,7 @@ function _finally( test )
 
   ready.finally( () =>
   {
-    test.close( 'delay - undefined' );
+    test.close( 'delay - Infinity' );
     return null;
   });
 
@@ -1142,7 +1142,7 @@ function _finally( test )
   ready.then( () =>
   {
     test.case = 'executes method time twice, should throw error';
-    var timer = _.time._finally( undefined, onTime );
+    var timer = _.time._finally( Infinity, onTime );
     timer.time();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
@@ -1164,7 +1164,7 @@ function _finally( test )
   ready.then( () =>
   {
     test.case = 'executes method cancel twice, should throw error';
-    var timer = _.time._finally( undefined, onTime );
+    var timer = _.time._finally( Infinity, onTime );
     timer.cancel();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
@@ -1186,7 +1186,7 @@ function _finally( test )
   ready.then( () =>
   {
     test.case = 'executes method time and then method cancel, should throw error';
-    var timer = _.time._finally( undefined, onTime );
+    var timer = _.time._finally( Infinity, onTime );
     timer.time();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
@@ -1208,7 +1208,7 @@ function _finally( test )
   ready.then( () =>
   {
     test.case = 'executes method time and then method cancel, should throw error';
-    var timer = _.time._finally( undefined, onTime );
+    var timer = _.time._finally( Infinity, onTime );
     timer.cancel();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
@@ -1520,36 +1520,36 @@ function _cancel( test )
 
   test.open( 'timer - _begin' );
 
-  test.case = 'delay - undefined';
-  var timer = _.time._begin( undefined );
+  test.case = 'delay - Infinity';
+  var timer = _.time._begin( Infinity );
   var got = _.time._cancel( timer );
   test.identical( got.onTime, undefined );
   test.identical( got.onCancel, undefined );
   test.identical( got.state, -2 );
   test.identical( got.result, undefined );
 
-  test.case = 'delay - undefined, onTime';
+  test.case = 'delay - Infinity, onTime';
   var onTime = () => 0;
-  var timer = _.time._begin( undefined, onTime );
+  var timer = _.time._begin( Infinity, onTime );
   var got = _.time._cancel( timer );
   test.identical( got.onTime, onTime );
   test.identical( got.onCancel, undefined );
   test.identical( got.state, -2 );
   test.identical( got.result, undefined );
 
-  test.case = 'delay - undefined, onCancel';
+  test.case = 'delay - Infinity, onCancel';
   var onCancel = () => -1;
-  var timer = _.time._begin( undefined, undefined, onCancel );
+  var timer = _.time._begin( Infinity, undefined, onCancel );
   var got = _.time._cancel( timer );
   test.identical( got.onTime, undefined );
   test.identical( got.onCancel, onCancel );
   test.identical( got.state, -2 );
   test.identical( got.result, -1 );
 
-  test.case = 'delay - undefined, onTime, onCancel';
+  test.case = 'delay - Infinity, onTime, onCancel';
   var onTime = () => 0;
   var onCancel = () => -1;
-  var timer = _.time._begin( undefined, onTime, onCancel );
+  var timer = _.time._begin( Infinity, onTime, onCancel );
   var got = _.time._cancel( timer );
   test.identical( got.onTime, onTime );
   test.identical( got.onCancel, onCancel );
@@ -1562,17 +1562,17 @@ function _cancel( test )
 
   test.open( 'timer - _finally' );
 
-  test.case = 'delay - undefined';
-  var timer = _.time._finally( undefined, undefined );
+  test.case = 'delay - Infinity';
+  var timer = _.time._finally( Infinity, undefined );
   var got = _.time._cancel( timer );
   test.identical( got.onTime, undefined );
   test.identical( got.onCancel, undefined );
   test.identical( got.state, -2 );
   test.identical( got.result, undefined );
 
-  test.case = 'delay - undefined, onTime';
+  test.case = 'delay - Infinity, onTime';
   var onTime = () => 0;
-  var timer = _.time._finally( undefined, onTime );
+  var timer = _.time._finally( Infinity, onTime );
   var got = _.time._cancel( timer );
   test.identical( got.onTime, onTime );
   test.identical( got.onCancel, onTime );
@@ -1621,14 +1621,14 @@ function begin( test )
 
   ready.finally( () =>
   {
-    test.open( 'delay - undefined' );
+    test.open( 'delay - Infinity' );
     return null;
   })
 
   .then( function()
   {
     test.case = 'onTime';
-    var timer = _.time.begin( undefined, onTime );
+    var timer = _.time.begin( Infinity, onTime );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -1645,7 +1645,7 @@ function begin( test )
   .then( function()
   {
     test.case = 'onTime, execute method time';
-    var timer = _.time.begin( undefined, onTime );
+    var timer = _.time.begin( Infinity, onTime );
     timer.time();
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
@@ -1662,7 +1662,7 @@ function begin( test )
   .then( function()
   {
     test.case = 'onCancel';
-    var timer = _.time.begin( undefined, undefined, onCancel );
+    var timer = _.time.begin( Infinity, undefined, onCancel );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -1679,7 +1679,7 @@ function begin( test )
   .then( function()
   {
     test.case = 'onCancel, execute method cancel';
-    var timer = _.time.begin( undefined, undefined, onCancel );
+    var timer = _.time.begin( Infinity, undefined, onCancel );
     timer.cancel();
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer ) /* aaa : parametrize all time outs in the test suite */ /* Dmytro : add parametrized variables */
     .then( ( got ) =>
@@ -1696,7 +1696,7 @@ function begin( test )
   .then( function()
   {
     test.case = 'onTime, onCancel';
-    var timer = _.time.begin( undefined, onTime, onCancel );
+    var timer = _.time.begin( Infinity, onTime, onCancel );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -1712,7 +1712,7 @@ function begin( test )
 
   ready.finally( () =>
   {
-    test.close( 'delay - undefined' );
+    test.close( 'delay - Infinity' );
     return null;
   });
 
@@ -2084,7 +2084,7 @@ function begin( test )
   ready.then( () =>
   {
     test.case = 'executes method time twice, should throw error';
-    var timer = _.time.begin( undefined, onTime, onCancel );
+    var timer = _.time.begin( Infinity, onTime, onCancel );
     timer.time();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
@@ -2106,7 +2106,7 @@ function begin( test )
   ready.then( () =>
   {
     test.case = 'executes method cancel twice, should throw error';
-    var timer = _.time.begin( undefined, onTime, onCancel );
+    var timer = _.time.begin( Infinity, onTime, onCancel );
     timer.cancel();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
@@ -2128,7 +2128,7 @@ function begin( test )
   ready.then( () =>
   {
     test.case = 'executes method time and then method cancel, should throw error';
-    var timer = _.time.begin( undefined, onTime, onCancel );
+    var timer = _.time.begin( Infinity, onTime, onCancel );
     timer.time();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
@@ -2150,7 +2150,7 @@ function begin( test )
   ready.then( () =>
   {
     test.case = 'executes method time and then method cancel, should throw error';
-    var timer = _.time.begin( undefined, onTime, onCancel );
+    var timer = _.time.begin( Infinity, onTime, onCancel );
     timer.cancel();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
@@ -2258,14 +2258,14 @@ function finally_( test )
 
   ready.finally( () =>
   {
-    test.open( 'delay - undefined' );
+    test.open( 'delay - Infinity' );
     return null;
   })
 
   .then( function()
   {
     test.case = 'without callbacks';
-    var timer = _.time.finally( undefined, undefined );
+    var timer = _.time.finally( Infinity, undefined );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -2282,7 +2282,7 @@ function finally_( test )
   .then( function()
   {
     test.case = 'onTime';
-    var timer = _.time.finally( undefined, onTime );
+    var timer = _.time.finally( Infinity, onTime );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -2299,7 +2299,7 @@ function finally_( test )
   .then( function()
   {
     test.case = 'onTime, execute method time';
-    var timer = _.time.finally( undefined, onTime );
+    var timer = _.time.finally( Infinity, onTime );
     timer.time()
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
@@ -2316,7 +2316,7 @@ function finally_( test )
   .then( function()
   {
     test.case = 'onTime, execute method cancel';
-    var timer = _.time.finally( undefined, onTime );
+    var timer = _.time.finally( Infinity, onTime );
     timer.cancel();
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
@@ -2332,7 +2332,7 @@ function finally_( test )
 
   ready.finally( () =>
   {
-    test.close( 'delay - undefined' );
+    test.close( 'delay - Infinity' );
     return null;
   });
 
@@ -2670,7 +2670,7 @@ function finally_( test )
   ready.then( () =>
   {
     test.case = 'executes method time twice, should throw error';
-    var timer = _.time.finally( undefined, onTime );
+    var timer = _.time.finally( Infinity, onTime );
     timer.time();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
@@ -2692,7 +2692,7 @@ function finally_( test )
   ready.then( () =>
   {
     test.case = 'executes method cancel twice, should throw error';
-    var timer = _.time.finally( undefined, onTime );
+    var timer = _.time.finally( Infinity, onTime );
     timer.cancel();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
@@ -2714,7 +2714,7 @@ function finally_( test )
   ready.then( () =>
   {
     test.case = 'executes method time and then method cancel, should throw error';
-    var timer = _.time.finally( undefined, onTime );
+    var timer = _.time.finally( Infinity, onTime );
     timer.time();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
@@ -2736,7 +2736,7 @@ function finally_( test )
   ready.then( () =>
   {
     test.case = 'executes method time and then method cancel, should throw error';
-    var timer = _.time.finally( undefined, onTime );
+    var timer = _.time.finally( Infinity, onTime );
     timer.cancel();
 
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
@@ -3124,36 +3124,36 @@ function cancel( test )
 
   test.open( 'timer - _begin' );
 
-  test.case = 'delay - undefined';
-  var timer = _.time._begin( undefined );
+  test.case = 'delay - Infinity';
+  var timer = _.time._begin( Infinity );
   var got = _.time.cancel( timer );
   test.identical( got.onTime, undefined );
   test.identical( got.onCancel, undefined );
   test.identical( got.state, -2 );
   test.identical( got.result, undefined );
 
-  test.case = 'delay - undefined, onTime';
+  test.case = 'delay - Infinity, onTime';
   var onTime = () => 0;
-  var timer = _.time._begin( undefined, onTime );
+  var timer = _.time._begin( Infinity, onTime );
   var got = _.time.cancel( timer );
   test.identical( got.onTime, onTime );
   test.identical( got.onCancel, undefined );
   test.identical( got.state, -2 );
   test.identical( got.result, undefined );
 
-  test.case = 'delay - undefined, onCancel';
+  test.case = 'delay - Infinity, onCancel';
   var onCancel = () => -1;
-  var timer = _.time._begin( undefined, undefined, onCancel );
+  var timer = _.time._begin( Infinity, undefined, onCancel );
   var got = _.time.cancel( timer );
   test.identical( got.onTime, undefined );
   test.identical( got.onCancel, onCancel );
   test.identical( got.state, -2 );
   test.identical( got.result, -1 );
 
-  test.case = 'delay - undefined, onTime, onCancel';
+  test.case = 'delay - Infinity, onTime, onCancel';
   var onTime = () => 0;
   var onCancel = () => -1;
-  var timer = _.time._begin( undefined, onTime, onCancel );
+  var timer = _.time._begin( Infinity, onTime, onCancel );
   var got = _.time.cancel( timer );
   test.identical( got.onTime, onTime );
   test.identical( got.onCancel, onCancel );
@@ -3166,17 +3166,17 @@ function cancel( test )
 
   test.open( 'timer - _finally' );
 
-  test.case = 'delay - undefined';
-  var timer = _.time._finally( undefined, undefined );
+  test.case = 'delay - Infinity';
+  var timer = _.time._finally( Infinity, undefined );
   var got = _.time.cancel( timer );
   test.identical( got.onTime, undefined );
   test.identical( got.onCancel, undefined );
   test.identical( got.state, -2 );
   test.identical( got.result, undefined );
 
-  test.case = 'delay - undefined, onTime';
+  test.case = 'delay - Infinity, onTime';
   var onTime = () => 0;
-  var timer = _.time._finally( undefined, onTime );
+  var timer = _.time._finally( Infinity, onTime );
   var got = _.time.cancel( timer );
   test.identical( got.onTime, onTime );
   test.identical( got.onCancel, onTime );
