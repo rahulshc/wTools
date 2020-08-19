@@ -3118,6 +3118,101 @@ function periodic( test )
 
 //
 
+function cancel( test )
+{
+  let context = this;
+
+  test.open( 'timer - _begin' );
+
+  test.case = 'delay - undefined';
+  var timer = _.time._begin( undefined );
+  var got = _.time.cancel( timer );
+  test.identical( got.onTime, undefined );
+  test.identical( got.onCancel, undefined );
+  test.identical( got.state, -2 );
+  test.identical( got.result, undefined );
+
+  test.case = 'delay - undefined, onTime';
+  var onTime = () => 0;
+  var timer = _.time._begin( undefined, onTime );
+  var got = _.time.cancel( timer );
+  test.identical( got.onTime, onTime );
+  test.identical( got.onCancel, undefined );
+  test.identical( got.state, -2 );
+  test.identical( got.result, undefined );
+
+  test.case = 'delay - undefined, onCancel';
+  var onCancel = () => -1;
+  var timer = _.time._begin( undefined, undefined, onCancel );
+  var got = _.time.cancel( timer );
+  test.identical( got.onTime, undefined );
+  test.identical( got.onCancel, onCancel );
+  test.identical( got.state, -2 );
+  test.identical( got.result, -1 );
+
+  test.case = 'delay - undefined, onTime, onCancel';
+  var onTime = () => 0;
+  var onCancel = () => -1;
+  var timer = _.time._begin( undefined, onTime, onCancel );
+  var got = _.time.cancel( timer );
+  test.identical( got.onTime, onTime );
+  test.identical( got.onCancel, onCancel );
+  test.identical( got.state, -2 );
+  test.identical( got.result, -1 );
+
+  test.close( 'timer - _begin' );
+
+  /* - */
+
+  test.open( 'timer - _finally' );
+
+  test.case = 'delay - undefined';
+  var timer = _.time._finally( undefined, undefined );
+  var got = _.time.cancel( timer );
+  test.identical( got.onTime, undefined );
+  test.identical( got.onCancel, undefined );
+  test.identical( got.state, -2 );
+  test.identical( got.result, undefined );
+
+  test.case = 'delay - undefined, onTime';
+  var onTime = () => 0;
+  var timer = _.time._finally( undefined, onTime );
+  var got = _.time.cancel( timer );
+  test.identical( got.onTime, onTime );
+  test.identical( got.onCancel, onTime );
+  test.identical( got.state, -2 );
+  test.identical( got.result, 0 );
+
+  test.close( 'timer - _finally' );
+
+  /* - */
+
+  test.open( 'timer - _periodic' );
+
+  test.case = 'delay - 0, onTime';
+  var onTime = () => 0;
+  var timer = _.time._periodic( context.dt5, onTime ) ;
+  var got = _.time.cancel( timer );
+  test.identical( got.onTime, onTime );
+  test.identical( got.onCancel, undefined );
+  test.identical( got.state, -2 );
+  test.identical( got.result, undefined );
+
+  test.case = 'delay - 0, onTime, onCancel';
+  var onTime = () => 0;
+  var onCancel = () => -1;
+  var timer = _.time._periodic( context.dt5, onTime, onCancel ) ;
+  var got = _.time.cancel( timer );
+  test.identical( got.onTime, onTime );
+  test.identical( got.onCancel, onCancel );
+  test.identical( got.state, -2 );
+  test.identical( got.result, -1 );
+
+  test.close( 'timer - _periodic' );
+}
+
+//
+
 function timeOutCancelInsideOfCallback( test )
 {
   let context = this;
@@ -3247,6 +3342,7 @@ var Self =
     beginTimerInsideOfCallback,
     finally : finally_,
     periodic,
+    cancel,
 
     timeOutCancelInsideOfCallback,
     timeOutCancelOutsideOfCallback,
