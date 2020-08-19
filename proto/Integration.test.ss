@@ -178,7 +178,7 @@ let Self =
 {
 
   name : 'Integration',
-  routineTimeOut : 3000000,
+  routineTimeOut : 1500000,
   silencing : 0,
 
   tests :
