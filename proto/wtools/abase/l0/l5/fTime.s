@@ -19,8 +19,8 @@ function _begin( delay, onTime, onCancel )
 {
   let original;
 
-  if( delay === undefined )
-  delay = Infinity;
+  // if( delay === undefined ) /* Dmytro : it is deprecated feature, feature is not consistent with module Procedure */
+  // delay = Infinity;
   if( delay >= _TimeInfinity )
   delay = _TimeInfinity;
 
