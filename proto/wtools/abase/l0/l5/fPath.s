@@ -845,6 +845,20 @@ function undot( filePath )
 
 //
 
+function absolute( filePath )
+{
+  return this.join( this.rootToken, filePath );
+}
+
+//
+
+function unabsolute( filePath )
+{
+  return _.strRemoveBegin( filePath, this.rootToken );
+}
+
+//
+
 function trail( srcPath )
 {
   _.assert( this.is( srcPath ) );
@@ -1104,6 +1118,8 @@ let Extension =
   _dot,
   dot,
   undot,
+  absolute, /* qqq : cover */
+  unabsolute, /* qqq : cover */
   trail,
   detrail,
   dir,
