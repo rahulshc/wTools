@@ -2425,6 +2425,111 @@ function intRandom( test )
   test.shouldThrowErrorSync( () => _.intRandom( [ 1, 2, 3 ] ) );
 }
 
+//
+
+function numbersMake( test )
+{
+  test.open( '2 numbers input' )
+
+  test.case = 'num = 1, len = 0';
+  var got = _.numbersMake( 1, 0 );
+  test.identical( got, [] );
+
+  test.case = 'num = 1, len = 2';
+  var got = _.numbersMake( 1, 2 );
+  test.identical( got, [ 1, 1 ] );
+
+  test.case = 'num = 1.00, len = 2';
+  var got = _.numbersMake( 1.00, 2 );
+  test.identical( got, [ 1.00, 1.00 ] );
+
+  test.case = 'num = 1.99, len = 2';
+  var got = _.numbersMake( 1.99, 2 );
+  test.identical( got, [ 1.99, 1.99 ] );
+
+  test.case = 'num = -1.99999999, len = 3';
+  var got = _.numbersMake( -1.99999999, 3 );
+  test.identical( got, [ -1.99999999, -1.99999999, -1.99999999 ] );
+
+  test.case = 'num = NaN, len = 3';
+  var got = _.numbersMake( NaN, 3 );
+  test.identical( got, [ NaN, NaN, NaN ] );
+
+  test.case = 'num = Infinity, len = 3';
+  var got = _.numbersMake( Infinity, 3 );
+  test.identical( got, [ Infinity, Infinity, Infinity ] );
+
+  test.case = 'num = -Infinity, len = 3';
+  var got = _.numbersMake( -Infinity, 3 );
+  test.identical( got, [ -Infinity, -Infinity, -Infinity ] );
+
+
+  test.close( '2 numbers input' )
+
+  /* - */
+
+  test.open( 'array and number input' )
+
+  test.case = 'arr = [], len = 0';
+  var got = _.numbersMake( [], 0 );
+  test.identical( got, [] );
+
+  test.case = 'arr = [ 1, 1, 1 ], len = 3';
+  var got = _.numbersMake( [ 1, 1, 1 ], 3 );
+  test.identical( got, [ 1, 1, 1 ] );
+
+  test.case = 'arr = [ 1, 2, 3 ], len = 3';
+  var got = _.numbersMake( [ 1, 2, 3 ], 3 );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'arr = [ 1.00, 2.01, -3 ], len = 3';
+  var got = _.numbersMake( [ 1.00, 2.01, -3 ], 3 );
+  test.identical( got, [ 1.00, 2.01, -3 ] );
+
+  test.case = 'arr = [ NaN, NaN, NaN ], len = 3';
+  var got = _.numbersMake( [ NaN, NaN, NaN ], 3 );
+  test.identical( got, [ NaN, NaN, NaN ] );
+
+  test.case = 'arr = [ Infinity, Infinity, Infinity ], len = 3';
+  var got = _.numbersMake( [ Infinity, Infinity, Infinity ], 3 );
+  test.identical( got, [ Infinity, Infinity, Infinity ] );
+
+  test.case = 'arr = [ -Infinity, -Infinity, -Infinity ], len = 3';
+  var got = _.numbersMake( [ -Infinity, -Infinity, -Infinity ], 3 );
+  test.identical( got, [ -Infinity, -Infinity, -Infinity ] );
+
+  test.case = 'arr = [ NaN, Infinity, -Infinity ], len = 3';
+  var got = _.numbersMake( [ NaN, Infinity, -Infinity ], 3 );
+  test.identical( got, [ NaN, Infinity, -Infinity ] );
+
+  test.close( 'array and number input' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersMake() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersMake( 0, 2, 'extra' ) );
+
+  test.case = 'len < size of an array';
+  test.shouldThrowErrorSync( () => _.numbersMake( [ 1, 1, 1 ], 2 ) );
+
+  test.case = 'len > size of an array';
+  test.shouldThrowErrorSync( () => _.numbersMake( [ 1, 1, 1 ], 4 ) );
+
+  test.case = 'not number in array';
+  test.shouldThrowErrorSync( () => _.numbersMake( [ '1', 1, 1 ], 4 ) );
+
+  test.case = 'not number';
+  test.shouldThrowErrorSync( () => _.numbersMake( '1', 4 ) );
+}
+
+//
+
 // --
 // declaration
 // --
@@ -2467,6 +2572,8 @@ let Self =
 
     numberRandom,
     intRandom,
+
+    numbersMake,
 
   }
 
