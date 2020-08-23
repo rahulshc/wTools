@@ -41,8 +41,16 @@ function numberIs( test )
   var got = _.numberIs( 2 );
   test.identical( got, true );
 
+  test.case = 'Positive float Number';
+  var got = _.numberIs( 2.33 );
+  test.identical( got, true );
+
   test.case = 'Negative Number';
   var got = _.numberIs( -2 );
+  test.identical( got, true );
+
+  test.case = 'Negative float Number';
+  var got = _.numberIs( -2.33 );
   test.identical( got, true );
 
   test.case = 'Zero Number';
@@ -83,46 +91,8 @@ function numberIs( test )
   var got = _.numberIs( 'abc' );
   test.identical( got, false );
 
-  /* - */
-
   test.case = 'String positive Number';
   var got = _.numberIs( '2' );
-  test.identical( got, false );
-
-  test.case = 'String negative Number';
-  var got = _.numberIs( '-2' );
-  test.identical( got, false );
-
-  test.case = 'String zero Number';
-  var got = _.numberIs( '0' );
-  test.identical( got, false );
-
-  test.case = 'String +zero Number';
-  var got = _.numberIs( '+0' );
-  test.identical( got, false );
-
-  test.case = 'String -zero Number';
-  var got = _.numberIs( '-0' );
-  test.identical( got, false );
-
-  test.case = 'String Infinity Number';
-  var got = _.numberIs( 'Infinity' );
-  test.identical( got, false );
-
-  test.case = 'String Positive Infinity Number';
-  var got = _.numberIs( '+Infinity' );
-  test.identical( got, false );
-
-  test.case = 'String Negative Infinity Number';
-  var got = _.numberIs( '-Infinity' );
-  test.identical( got, false );
-
-  test.case = 'String Number with literals';
-  var got = _.numberIs( '2abc' );
-  test.identical( got, false );
-
-  test.case = 'String literals with number';
-  var got = _.numberIs( 'abc2' );
   test.identical( got, false );
 
   /* - */
@@ -591,16 +561,20 @@ function intIs( test )
   var got = _.intIs( 2.00 );
   test.identical( got, true );
 
-  test.case = '2.49 Number';
-  var got = _.intIs( 2.49 );
-  test.identical( got, false );
-
   test.case = '2.50 Number';
   var got = _.intIs( 2.50 );
   test.identical( got, false );
 
-  test.case = '2.51 Number';
-  var got = _.intIs( 2.51 );
+  test.case = '2.49 Number';
+  var got = _.intIs( 2.49 );
+  test.identical( got, false );
+
+  test.case = '2.00000000001 Number';
+  var got = _.intIs( 2.00000000001 );
+  test.identical( got, false );
+
+  test.case = '-2.00000000001 Number';
+  var got = _.intIs( -2.00000000001 );
   test.identical( got, false );
 
   test.case = '-2.00 Number';
@@ -675,34 +649,6 @@ function intIs( test )
 
   test.case = 'String zero Number';
   var got = _.intIs( '0' );
-  test.identical( got, false );
-
-  test.case = 'String +zero Number';
-  var got = _.intIs( '+0' );
-  test.identical( got, false );
-
-  test.case = 'String -zero Number';
-  var got = _.intIs( '-0' );
-  test.identical( got, false );
-
-  test.case = 'String Infinity Number';
-  var got = _.intIs( 'Infinity' );
-  test.identical( got, false );
-
-  test.case = 'String Positive Infinity Number';
-  var got = _.intIs( '+Infinity' );
-  test.identical( got, false );
-
-  test.case = 'String Negative Infinity Number';
-  var got = _.intIs( '-Infinity' );
-  test.identical( got, false );
-
-  test.case = 'String Number with literals';
-  var got = _.intIs( '2abc' );
-  test.identical( got, false );
-
-  test.case = 'String literals with number';
-  var got = _.intIs( 'abc2' );
   test.identical( got, false );
 
   /* - */
@@ -1045,13 +991,19 @@ function numbersAreEquivalentBasic( test )
 
   test.case = 'extra arguments';
   test.shouldThrowErrorSync( () => _.numbersAreEquivalent( 1, 2, 0.7, 'extra' ) );
+
+  test.case = 'negative accuracy';
+  test.shouldThrowErrorSync( () => _.numbersAreEquivalent( 1, 1, -0.5 ) );
+
+  test.case = 'not a number accuracy';
+  test.shouldThrowErrorSync( () => _.numbersAreEquivalent( 1, 1, '-0.5' ) );
 }
 
 //
 
 function numbersAreEquivalentOptionAccuracy( test )
 {
-  test.open( 'positive numbers, positive accuracy' )
+  test.open( 'positive numbers' )
 
   test.case = 'numbers 1.00 and 1.05, acc = 0.05 ';
   var got = _.numbersAreEquivalent( 1.00, 1.05, 0.05 );
@@ -1117,11 +1069,11 @@ function numbersAreEquivalentOptionAccuracy( test )
   var got = _.numbersAreEquivalent( 999, 999, 0 );
   test.identical( got, true );
 
-  test.close( 'positive numbers, positive accuracy' );
+  test.close( 'positive numbers' );
 
   /* - */
 
-  test.open( 'negative numbers, positive accuracy' )
+  test.open( 'negative numbers' )
 
   test.case = 'numbers -1.00 and -1.05, acc = 0.05 ';
   var got = _.numbersAreEquivalent( -1.00, -1.05, 0.05 );
@@ -1173,11 +1125,11 @@ function numbersAreEquivalentOptionAccuracy( test )
   var got = _.numbersAreEquivalent( -0.99999999999, -0.99999999998, 0.00000000001 );
   test.identical( got, true );
 
-  test.close( 'negative numbers, positive accuracy' )
+  test.close( 'negative numbers' )
 
   /* - */
 
-  test.open( 'negative and positive numbers, positive accuracy' )
+  test.open( 'negative and positive numbers' )
 
   test.case = 'numbers 10 and -20, acc = 30 ';
   var got = _.numbersAreEquivalent( 10, -20, 30 );
@@ -1187,35 +1139,8 @@ function numbersAreEquivalentOptionAccuracy( test )
   var got = _.numbersAreEquivalent( 10, -20, 10 );
   test.identical( got, false );
 
-  test.close( 'negative and positive numbers, positive accuracy' )
+  test.close( 'negative and positive numbers' )
 
-  /* - */
-
-  test.open( 'positive numbers, negative accuracy' )
-
-  test.case = 'numbers 1.00 and 1.05, acc = -0.05 ';
-  var got = _.numbersAreEquivalent( 1.00, 1.05, -0.05 );
-  test.identical( got, false );
-
-  test.case = 'numbers 1 and 1.05, acc = -0.05 ';
-  var got = _.numbersAreEquivalent( 1, 1.05, -0.05 );
-  test.identical( got, false );
-
-  //
-
-  test.case = 'numbers 1 and 2, acc = -1 ';
-  var got = _.numbersAreEquivalent( 1, 2, -1 );
-  test.identical( got, false );
-
-  test.case = 'numbers 10 and 20, acc = -11 ';
-  var got = _.numbersAreEquivalent( 10, 20, -11 );
-  test.identical( got, false );
-
-  test.case = 'numbers 1 and 1, acc = -1 ';
-  var got = _.numbersAreEquivalent( 1, 1.0000001, -1 );
-  test.identical( got, true );
-
-  test.close( 'positive numbers, negative accuracy' )
 }
 
 //
@@ -1329,9 +1254,10 @@ function numbersArePositive( test )
 
 function numbersAreInt( test )
 {
+  test.case = '1 1 1';
   var got = _.numbersAreInt([ 1, 1, 1 ]);
   test.identical( got, true );
-  debugger;
+
   test.case = '-1 1 1';
   var got = _.numbersAreInt([ -1, 1, 1 ]);
   test.identical( got, true );

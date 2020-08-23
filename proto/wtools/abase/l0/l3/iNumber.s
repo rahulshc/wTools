@@ -23,7 +23,7 @@ let Self = _global_.wTools;
  * numberIs( 'song' );
  * // returns false
  *
- * @param {*} src.
+ * @param { * } src.
  * @return {Boolean}.
  * @function numberIs
  * @namespace Tools
@@ -146,6 +146,9 @@ function numbersAreEquivalent( a, b, accuracy )
 {
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
+  if( accuracy !== undefined )
+  _.assert( _.numberIs( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
+
   if( _.numbersAreAll( [ a, b ] ) )
   {
     if( Object.is( a, b ) )
@@ -165,8 +168,7 @@ function numbersAreEquivalent( a, b, accuracy )
     return a === b;
   }
 
-
-  if( accuracy === undefined || accuracy < 0 )
+  if( accuracy === undefined )
   accuracy = this.accuracy;
 
   return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );

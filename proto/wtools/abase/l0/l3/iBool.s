@@ -1,4 +1,5 @@
-( function _iBool_s_() {
+( function _iBool_s_()
+{
 
 'use strict';
 
@@ -11,10 +12,31 @@ let Self = _global_.wTools;
 // --
 
 /**
- * Returns true if entity ( src ) is a Boolean.
+ * Returns true if entity ( src ) is a Boolean values - true and false.
  * @function boolIs
- * @param {*} src - entity to check
+ * @param { * } src - An entity to check.
  * @namespace Tools
+ *
+ * @example
+ * var got = _.boolIs( '' );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.boolIs( 1 );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.boolIs( true );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.boolIs( false );
+ * console.log( got )
+ * // log true
+ *
  */
 
 function boolIs( src )
@@ -25,10 +47,36 @@ function boolIs( src )
 //
 
 /**
- * Returns true if entity ( src ) is a Boolean or Number 1 or 0.
+ * Routine boolLike() returns true if entity ( src ) is a Boolean values - true and false or Numbers 1 and 0.
  * @function boolLike
- * @param {*} src - entity to check
+ * @param { * } src - An entity to check.
  * @namespace Tools
+ *
+ * @example
+ * var got = _.boolLike( false );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.boolLike( true );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.boolLike( 1 );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.boolLike( 0 );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.boolLike( '0' );
+ * console.log( got )
+ * // log false
+ *
  */
 
 function boolLike( src )
@@ -40,10 +88,31 @@ function boolLike( src )
 //
 
 /**
- * Returns true if entity ( src ) is false or 0.
+ * Returns true if entity ( src ) is Boolean value - false or Number - 0.
  * @function boolLikeFalse
- * @param {*} src - entity to check
+ * @param { * } src - An entity to check.
  * @namespace Tools
+ *
+ * @example
+ * var got = _.boolLikeFalse( 0 );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.boolLikeFalse( 1 );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.boolLikeFalse( false );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.boolLikeFalse( true );
+ * console.log( got )
+ * // log false
+ *
  */
 
 function boolLikeFalse( src )
@@ -56,10 +125,31 @@ function boolLikeFalse( src )
 //
 
 /**
- * Returns true if entity ( src ) is true or 1.
+ * Returns true if entity ( src ) is Boolean value - true or Number - 1.
  * @function boolLikeTrue
- * @param {*} src - entity to check
+ * @param { * } src - An entity to check.
  * @namespace Tools
+ *
+ * @example
+ * var got = _.boolLikeTrue( 0 );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.boolLikeTrue( 1 );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.boolLikeTrue( false );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.boolLikeTrue( true );
+ * console.log( got )
+ * // log true
+ *
  */
 
 function boolLikeTrue( src )
@@ -72,10 +162,31 @@ function boolLikeTrue( src )
 //
 
 /**
- * Returns true if entity ( src ) is a Boolean or Symbol(maybe).
+ * Returns true if entity ( src ) is a Boolean values - true and false or Symbol(maybe).
  * @function fuzzyIs
- * @param {*} src - entity to check
+ * @param { * } src - An entity to check.
  * @namespace Tools
+ *
+ * @example
+ * var got = _.fuzzyIs( true );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyIs( false );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyIs( _.maybe );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyIs( '1' );
+ * console.log( got )
+ * // log false
+ *
  */
 
 function fuzzyIs( src )
@@ -88,8 +199,33 @@ function fuzzyIs( src )
 /**
  * Returns true if entity ( src ) is a Boolean or a Number or Symbol(maybe).
  * @function fuzzyLike
- * @param {*} src - entity to check
+ * @param { * } src - An entity to check.
  * @namespace Tools
+ *
+ * @example
+ * var got = _.fuzzyLike( true );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyLike( false );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyLike( _.maybe );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyLike( 1 );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyLike( '1' );
+ * console.log( got )
+ * // log false
  */
 
 function fuzzyLike( src )
@@ -105,8 +241,34 @@ function fuzzyLike( src )
 /**
  * Returns true if entity ( src ) is false or 0.
  * @function fuzzyLikeFalse
- * @param {*} src - entity to check
+ * @param { * } src - An entity to check.
  * @namespace Tools
+ *
+ * @example
+ * var got = _.fuzzyLikeFalse( true );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.fuzzyLikeFalse( false );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyLikeFalse( _.maybe );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.fuzzyLikeFalse( 0 );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyLikeFalse( '1' );
+ * console.log( got )
+ * // log false
+ *
  */
 
 function fuzzyLikeFalse( src )
@@ -120,9 +282,35 @@ function fuzzyLikeFalse( src )
 
 /**
  * Returns true if entity ( src ) is true or a Number which is not 0.
- * @function fuzzyLikeFalse
- * @param {*} src - entity to check
+ * @function fuzzyLikeTrue
+ * @param { * } src - An entity to check.
  * @namespace Tools
+ *
+ *  @example
+ * var got = _.fuzzyLikeTrue( true );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyLikeTrue( false );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.fuzzyLikeTrue( _.maybe );
+ * console.log( got )
+ * // log true
+ *
+ * @example
+ * var got = _.fuzzyLikeTrue( 0 );
+ * console.log( got )
+ * // log false
+ *
+ * @example
+ * var got = _.fuzzyLikeTrue( 10 );
+ * console.log( got )
+ * // log true
+ *
  */
 
 function fuzzyLikeTrue( src )
