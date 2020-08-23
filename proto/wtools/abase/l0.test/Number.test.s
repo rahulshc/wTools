@@ -2530,6 +2530,177 @@ function numbersMake( test )
 
 //
 
+function numbersFromNumber( test )
+{
+  test.open( '2 numbers input' )
+
+  test.case = 'num = 1, len = 0';
+  var got = _.numbersFromNumber( 1, 0 );
+  test.identical( got, [] );
+
+  test.case = 'num = 1, len = 2';
+  var got = _.numbersFromNumber( 1, 2 );
+  test.identical( got, [ 1, 1 ] );
+
+  test.case = 'num = 1.00, len = 2';
+  var got = _.numbersFromNumber( 1.00, 2 );
+  test.identical( got, [ 1.00, 1.00 ] );
+
+  test.case = 'num = 1.99, len = 2';
+  var got = _.numbersFromNumber( 1.99, 2 );
+  test.identical( got, [ 1.99, 1.99 ] );
+
+  test.case = 'num = -1.99999999, len = 3';
+  var got = _.numbersFromNumber( -1.99999999, 3 );
+  test.identical( got, [ -1.99999999, -1.99999999, -1.99999999 ] );
+
+  test.case = 'num = NaN, len = 3';
+  var got = _.numbersFromNumber( NaN, 3 );
+  test.identical( got, [ NaN, NaN, NaN ] );
+
+  test.case = 'num = Infinity, len = 3';
+  var got = _.numbersFromNumber( Infinity, 3 );
+  test.identical( got, [ Infinity, Infinity, Infinity ] );
+
+  test.case = 'num = -Infinity, len = 3';
+  var got = _.numbersFromNumber( -Infinity, 3 );
+  test.identical( got, [ -Infinity, -Infinity, -Infinity ] );
+
+
+  test.close( '2 numbers input' )
+
+  /* - */
+
+  test.open( 'array and number input' )
+
+  test.case = 'arr = [], len = 0';
+  var got = _.numbersFromNumber( [], 0 );
+  test.identical( got, [] );
+
+  test.case = 'arr = [ 1, 1, 1 ], len = 3';
+  var got = _.numbersFromNumber( [ 1, 1, 1 ], 3 );
+  test.identical( got, [ 1, 1, 1 ] );
+
+  test.case = 'arr = [ 1, 2, 3 ], len = 3';
+  var got = _.numbersFromNumber( [ 1, 2, 3 ], 3 );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'arr = [ 1.00, 2.01, -3 ], len = 3';
+  var got = _.numbersFromNumber( [ 1.00, 2.01, -3 ], 3 );
+  test.identical( got, [ 1.00, 2.01, -3 ] );
+
+  test.case = 'arr = [ NaN, NaN, NaN ], len = 3';
+  var got = _.numbersFromNumber( [ NaN, NaN, NaN ], 3 );
+  test.identical( got, [ NaN, NaN, NaN ] );
+
+  test.case = 'arr = [ Infinity, Infinity, Infinity ], len = 3';
+  var got = _.numbersFromNumber( [ Infinity, Infinity, Infinity ], 3 );
+  test.identical( got, [ Infinity, Infinity, Infinity ] );
+
+  test.case = 'arr = [ -Infinity, -Infinity, -Infinity ], len = 3';
+  var got = _.numbersFromNumber( [ -Infinity, -Infinity, -Infinity ], 3 );
+  test.identical( got, [ -Infinity, -Infinity, -Infinity ] );
+
+  test.case = 'arr = [ NaN, Infinity, -Infinity ], len = 3';
+  var got = _.numbersFromNumber( [ NaN, Infinity, -Infinity ], 3 );
+  test.identical( got, [ NaN, Infinity, -Infinity ] );
+
+  test.close( 'array and number input' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersFromNumber() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersFromNumber( 0, 2, 'extra' ) );
+
+  test.case = 'len < size of an array';
+  test.shouldThrowErrorSync( () => _.numbersFromNumber( [ 1, 1, 1 ], 2 ) );
+
+  test.case = 'len > size of an array';
+  test.shouldThrowErrorSync( () => _.numbersFromNumber( [ 1, 1, 1 ], 4 ) );
+
+  test.case = 'not number in array';
+  test.shouldThrowErrorSync( () => _.numbersFromNumber( [ '1', 1, 1 ], 4 ) );
+
+  test.case = 'not number';
+  test.shouldThrowErrorSync( () => _.numbersFromNumber( '1', 4 ) );
+}
+
+//
+
+function numbersFromInt( test )
+{
+  test.open( '2 numbers input' )
+
+  test.case = 'num = 1, len = 0';
+  var got = _.numbersFromInt( 1, 0 );
+  test.identical( got, [] );
+
+  test.case = 'num = 1, len = 2';
+  var got = _.numbersFromInt( 1, 2 );
+  test.identical( got, [ 1, 1 ] );
+
+  test.case = 'num = 1.00, len = 2';
+  var got = _.numbersFromInt( 1.00, 2 );
+  test.identical( got, [ 1.00, 1.00 ] );
+
+  test.close( '2 numbers input' )
+
+  /* - */
+
+  test.open( 'array and number input' )
+
+  test.case = 'arr = [], len = 0';
+  var got = _.numbersFromInt( [], 0 );
+  test.identical( got, [] );
+
+  test.case = 'arr = [ 1, 1, 1 ], len = 3';
+  var got = _.numbersFromInt( [ 1, 1, 1 ], 3 );
+  test.identical( got, [ 1, 1, 1 ] );
+
+  test.case = 'arr = [ 1, 2, 3 ], len = 3';
+  var got = _.numbersFromInt( [ 1, 2, 3 ], 3 );
+  test.identical( got, [ 1, 2, 3 ] );
+
+  test.case = 'arr = [ 1.00, 2.00, -3 ], len = 3';
+  var got = _.numbersFromInt( [ 1.00, 2.00, -3 ], 3 );
+  test.identical( got, [ 1.00, 2.00, -3 ] );
+
+  test.close( 'array and number input' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.numbersFromInt() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.numbersFromInt( 0, 2, 'extra' ) );
+
+  test.case = 'len < size of an array';
+  test.shouldThrowErrorSync( () => _.numbersFromInt( [ 1, 1, 1 ], 2 ) );
+
+  test.case = 'len > size of an array';
+  test.shouldThrowErrorSync( () => _.numbersFromInt( [ 1, 1, 1 ], 4 ) );
+
+  test.case = 'not number in array';
+  test.shouldThrowErrorSync( () => _.numbersFromInt( [ '1', 1, 1 ], 4 ) );
+
+  test.case = 'not a number';
+  test.shouldThrowErrorSync( () => _.numbersFromInt( '1', 4 ) );
+
+  test.case = 'not an integer';
+  test.shouldThrowErrorSync( () => _.numbersFromInt( 1.99, 2 ) );
+}
+
+
 // --
 // declaration
 // --
@@ -2574,6 +2745,8 @@ let Self =
     intRandom,
 
     numbersMake,
+    numbersFromNumber,
+    numbersFromInt,
 
   }
 

@@ -393,6 +393,66 @@ function numbersMake( src, length )
 
 //
 
+/**
+ * The routine numbersFromNumber() returns an array of numbers with a length of {-length-} .
+ *
+ * @param { src|Number|Array } src - source number or array of numbers.
+ * If {-src-} is a Number, routine generates an array of length {-length-} filled with {-src-}.
+ * If {-src-} is an Array of numbers and {-src-}.length === {-length-}, the routine returns {-src-}.
+ *
+ * @param { length|Number } length - the size of the returned array.
+ *
+ * @example
+ * let got = _.numbersFromNumber( 1, 0 );
+ * // returns an empty array
+ * console.log( got )
+ * // log []
+ *
+ * @example
+ * let got = _.numbersFromNumber( 1, 3 );
+ * // returns an array of size 3 filled with ones
+ * console.log( got )
+ * // log [ 1, 1, 1 ]
+ *
+ * @example
+ * let got = _.numbersFromNumber( -5.22, 3 );
+ * // returns an array of size 3 filled with -5.22
+ * console.log( got )
+ * // log [ -5.22, -5.22, -5.22 ]
+ *
+ * @example
+ * let got = _.numbersFromNumber( NaN, 3 );
+ * // returns an array of size 3 filled with NaN
+ * console.log( got )
+ * // log [ NaN, NaN, NaN ]
+ *
+ * @example
+ * let got = _.numbersFromNumber( [ 1, 2, 3 ], 3 );
+ * // returns source array
+ * console.log( got )
+ * // log [ 1, 2, 3 ]
+ *
+ * @example
+ * let got = _.numbersFromNumber( [ 1.00, -2.777, 3.00 ], 3 );
+ * // returns source array
+ * console.log( got )
+ * // log [ 1.00, -2.777, 3.00 ]
+ *
+ * @example
+ * let got = _.numbersFromNumber( [ NaN, Infinity, -Infinity ], 3 );
+ * // returns source array
+ * console.log( got )
+ * // log [ NaN, Infinity, -Infinity ]
+ *
+ * @returns { Array } - Returns an array of numbers.
+ * @function numbersFromNumber
+ * @throws { Error } If {-src-} is array and {-src-}.length !== {-length-}.
+ * @throws { Error } If {-src-} is array and {-src-} contains not a number.
+ * @throws { Error } If {-src-} is not an array or a Number.
+ * @throws { Error } arguments.length === 0 or arguments.length > 2.
+ * @namespace Tools
+ */
+
 function numbersFromNumber( src, length )
 {
 
@@ -417,6 +477,48 @@ function numbersFromNumber( src, length )
 }
 
 //
+
+/**
+ * The routine numbersFromInt() returns an array of integers with a length of {-length-} .
+ *
+ * @param { src|Number|Array } src - source number or array of integers.
+ * If {-src-} is an integer Number, routine generates an array of length {-length-} filled with {-src-}.
+ * If {-src-} is an Array of integers and {-src-}.length === {-length-}, the routine returns {-src-}.
+ *
+ * @param { length|Number } length - the size of the returned array.
+ *
+ * @example
+ * let got = _.numbersFromInt( 1, 0 );
+ * // returns an empty array
+ * console.log( got )
+ * // log []
+ *
+ * @example
+ * let got = _.numbersFromInt( 1, 3 );
+ * // returns an array of size 3 filled with ones
+ * console.log( got )
+ * // log [ 1, 1, 1 ]
+ *
+ * @example
+ * let got = _.numbersFromInt( [ 1, 2, 3 ], 3 );
+ * // returns source array
+ * console.log( got )
+ * // log [ 1, 2, 3 ]
+ *
+ * @example
+ * let got = _.numbersFromInt( [ 1.00, -2.00, 3.00 ], 3 );
+ * // returns source array
+ * console.log( got )
+ * // log [ 1.00, -2.00, 3.00 ]
+ *
+ * @returns { Array } - Returns an array of integers.
+ * @function numbersFromInt
+ * @throws { Error } If {-src-} is array and {-src-}.length !== {-length-}.
+ * @throws { Error } If {-src-} is array and {-src-} contains not an integer Number.
+ * @throws { Error } If {-src-} is not an array or an integer.
+ * @throws { Error } arguments.length === 0 or arguments.length > 2.
+ * @namespace Tools
+ */
 
 function numbersFromInt( dst, length )
 {
