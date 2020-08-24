@@ -1986,6 +1986,11 @@ defaults.preservingDelimeters = 0;
 
 function _strSplitInlined_body( o )
 {
+  /*
+    New delimiter.
+    was : this #background:red#is#background:default# text and is not.
+    need to be : this ❮background:red❯is❮background:default❯ text and is not.
+  */
 
   _.assert( arguments.length === 1, 'Expects single options map' );
 
