@@ -300,7 +300,7 @@ function intRandomBut( range )
 
 //
 
-function numbersMake( src,length )
+function numbersMake( src, length )
 {
   let result;
 
@@ -329,7 +329,7 @@ function numbersMake( src,length )
 
 //
 
-function numbersFromNumber( src,length )
+function numbersFromNumber( src, length )
 {
 
   if( _.vectorAdapterIs( src ) )
