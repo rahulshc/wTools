@@ -13695,6 +13695,16 @@ function strSplitInlinedOptionDelimeter( test )
 
 function strSplitInlinedOptionDelimeterArray( test )
 {
+
+  test.case = 'no styles';
+  var srcStr = 'this background:red is background:default text and is not';
+  var got = _.strSplitInlined( { src : srcStr, delimeter : [ '❮', '❯' ] } );
+  var expected =
+  [
+    'this background:red is background:default text and is not'
+  ];
+  test.identical( got, expected );
+  debugger;
   test.case = 'two styles';
   var srcStr = 'this ❮background:red❯is❮background:default❯ text and is not';
   var got = _.strSplitInlined( { src : srcStr, delimeter : [ '❮', '❯' ] } );
@@ -13820,18 +13830,66 @@ function strSplitInlinedOptionDelimeterArray( test )
   test.case = 'same open and close delimeter ❮';
   var srcStr = '❮inline1❮ inline2';
   var got = _.strSplitInlined( { src : srcStr, delimeter : [ '❮', '❯' ] } );
+  console.log( 'src: ', srcStr )
+  console.log( 'got: ', got )
   var expected =
   [
-    '', [ 'inline1' ], ' inline2'
+    '❮inline1❮ inline2'
   ];
   test.identical( got, expected );
 
   test.case = 'same open and close delimeter ❯';
   var srcStr = '❯inline1❯ inline2';
   var got = _.strSplitInlined( { src : srcStr, delimeter : [ '❮', '❯' ] } );
+  console.log( 'src: ', srcStr )
+  console.log( 'got: ', got )
   var expected =
   [
-    '', [ 'inline1' ], ' inline2'
+    '❯inline1❯ inline2'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'reverse open and close delimeters ❯';
+  var srcStr = '❯inline1❮ inline2';
+  var got = _.strSplitInlined( { src : srcStr, delimeter : [ '❮', '❯' ] } );
+  console.log( 'src: ', srcStr )
+  console.log( 'got: ', got )
+  var expected =
+  [
+    '❯inline1❮ inline2'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'odd number of delimeters - 2 opening';
+  var srcStr = '❮inline1 ❮inline2❯';
+  var got = _.strSplitInlined( { src : srcStr, delimeter : [ '❮', '❯' ] } );
+  console.log( 'src: ', srcStr )
+  console.log( 'got: ', got )
+  var expected =
+  [
+    '❮inline1 ', [ 'inline2' ]
+  ];
+  test.identical( got, expected );
+
+  test.case = 'odd number of delimeters - 2 closing';
+  var srcStr = '❮inline1❯ inline2❯';
+  var got = _.strSplitInlined( { src : srcStr, delimeter : [ '❮', '❯' ] } );
+  console.log( 'src: ', srcStr )
+  console.log( 'got: ', got )
+  var expected =
+  [
+    '', [ 'inline1' ], ' inline2❯'
+  ];
+  test.identical( got, expected );
+
+  test.case = '2 open, 2 closing delimeters';
+  var srcStr = '❮❮inline1❯❯ inline2';
+  var got = _.strSplitInlined( { src : srcStr, delimeter : [ '❮', '❯' ] } );
+  console.log( 'src: ', srcStr )
+  console.log( 'got: ', got );
+  var expected =
+  [
+    '❮', [ 'inline1' ], '❯ inline2'
   ];
   test.identical( got, expected );
   

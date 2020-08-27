@@ -1750,6 +1750,76 @@ strSplitFast_body.defaults =
 
 //
 
+// function strSplitWithDefaultDelimeter( o )
+// {
+//   // ❮❯
+//   // <  >>>
+//   // << >>
+//   // <aa<bb>>
+//   // <a>ff<b<a<c><
+//   let result = [];
+//   let next = 0;
+//   let src = o.src.slice();
+
+//   let delimLeftPosition = getNextPos( src, o.delimeter[ 0 ] );
+//   let delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
+//   debugger;
+//   console.log(`l: ${delimLeftPosition}, r:${delimRightPosition}`)
+
+//   let delimLeftCount = _.strCount( o.src, o.delimeter[ 0 ] );
+//   let delimRightCount = _.strCount( o.src, o.delimeter[ 1 ] );
+//   let delimCount = delimLeftCount + delimRightCount;
+
+//   if( delimLeftPosition === -1 || delimRightPosition === -1 )
+//   return [ o.src ];
+
+//   debugger
+//   for( ; src.length > 0 ; )
+//   {
+//     if( delimLeftPosition === -1 && delimRightPosition === -1 )
+//     break;
+
+//     if( delimLeftPosition < delimRightPosition )
+//     {
+//       result.push( src.slice( 0, delimLeftPosition ) )
+//       // src = src.slice( delimLeftPosition + 1 );
+
+//       // delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
+
+//       result.push([ src.slice( delimLeftPosition + 1, delimRightPosition ) ]);
+//       src = src.slice( delimRightPosition + 1 );
+
+//     }
+//     else
+//     {
+//       result.push( src );
+//       src = '';
+//     }
+
+//     delimLeftPosition = getNextPos( src, o.delimeter[ 0 ] );
+//     delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
+//   }
+
+//   return result;
+
+//   /* - */
+
+//   function getNextPos( str, delim )
+//   {
+//     return str.indexOf( delim );
+//   }
+// }
+
+// strSplitWithDefaultDelimeter.defaults =
+// {
+//   src : null,
+//   delimeter : [ '❮', '❯' ],
+//   // preservingEmpty : 1,
+//   // preservingDelimeters : 0,
+// }
+
+//
+
 /**
  * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
  * If( o.stripping ) is true - removes leading and trailing whitespace characters.
@@ -1986,11 +2056,6 @@ defaults.preservingDelimeters = 0;
 
 function _strSplitInlined_body( o )
 {
-  /*
-    New delimiter.
-    was : this #background:red#is#background:default# text and is not.
-    need to be : this ❮background:red❯is❮background:default❯ text and is not.
-  */
 
   _.assert( arguments.length === 1, 'Expects single options map' );
 
@@ -2179,6 +2244,22 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
 
 function strSplitInlinedStereo( o )
 {
+  /*
+    New delimiter.
+    was : this #background:red#is#background:default# text and is not.
+    need to be : this ❮background:red❯is❮background:default❯ text and is not.
+
+
+    Edge cases that are not covered:
+    - same opening and closing: '<text< text2'
+    - same opening and closing: '>text> text2'
+    - reverse opening and closing: '>text< text2'
+    - 2 opening and 1 closing: '<text<text2>' - text2 is choosen
+    - 1 opening and 2 closing: '<text>text2>' - text1 is choosen - works
+    - <<text>>
+    - <<<text>>
+
+  */
 
   if( _.strIs( o ) )
   o = { src : o };
@@ -2314,6 +2395,7 @@ let Extension =
   strSplitFast,
   strSplit,
   strSplitNonPreserving,
+  strSplitWithDefaultDelimeter,
 
   strSplitInlined,
   strSplitInlinedStereo,
