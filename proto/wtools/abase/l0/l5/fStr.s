@@ -1750,76 +1750,6 @@ strSplitFast_body.defaults =
 
 //
 
-// function strSplitWithDefaultDelimeter( o )
-// {
-//   // ❮❯
-//   // <  >>>
-//   // << >>
-//   // <aa<bb>>
-//   // <a>ff<b<a<c><
-//   let result = [];
-//   let next = 0;
-//   let src = o.src.slice();
-
-//   let delimLeftPosition = getNextPos( src, o.delimeter[ 0 ] );
-//   let delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
-//   debugger;
-//   console.log(`l: ${delimLeftPosition}, r:${delimRightPosition}`)
-
-//   let delimLeftCount = _.strCount( o.src, o.delimeter[ 0 ] );
-//   let delimRightCount = _.strCount( o.src, o.delimeter[ 1 ] );
-//   let delimCount = delimLeftCount + delimRightCount;
-
-//   if( delimLeftPosition === -1 || delimRightPosition === -1 )
-//   return [ o.src ];
-
-//   debugger
-//   for( ; src.length > 0 ; )
-//   {
-//     if( delimLeftPosition === -1 && delimRightPosition === -1 )
-//     break;
-
-//     if( delimLeftPosition < delimRightPosition )
-//     {
-//       result.push( src.slice( 0, delimLeftPosition ) )
-//       // src = src.slice( delimLeftPosition + 1 );
-
-//       // delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
-
-//       result.push([ src.slice( delimLeftPosition + 1, delimRightPosition ) ]);
-//       src = src.slice( delimRightPosition + 1 );
-
-//     }
-//     else
-//     {
-//       result.push( src );
-//       src = '';
-//     }
-
-//     delimLeftPosition = getNextPos( src, o.delimeter[ 0 ] );
-//     delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
-//   }
-
-//   return result;
-
-//   /* - */
-
-//   function getNextPos( str, delim )
-//   {
-//     return str.indexOf( delim );
-//   }
-// }
-
-// strSplitWithDefaultDelimeter.defaults =
-// {
-//   src : null,
-//   delimeter : [ '❮', '❯' ],
-//   // preservingEmpty : 1,
-//   // preservingDelimeters : 0,
-// }
-
-//
-
 /**
  * Divides source string( o.src ) into parts using delimeter provided by argument( o.delimeter ).
  * If( o.stripping ) is true - removes leading and trailing whitespace characters.
@@ -2214,6 +2144,9 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
  * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
  * @param {string} [ o.onInlined = null ] - function called on each splitted part of a source string
+ * @param {string} [ o.stripping ] - if true removes leading and trailing whitespace characters.
+ * @param {string} [ o.preservingEmpty ] - if true empty lines are saved in the result array.
+ * @param {string} [ o.preservingDelimeters ] - if true leaves word delimeters in result array, otherwise removes them.
  * @returns {object} Returns an array of strings separated by( o.delimeter ).
  *
  * @example
@@ -2247,18 +2180,7 @@ function strSplitInlinedStereo( o )
   /*
     New delimiter.
     was : this #background:red#is#background:default# text and is not.
-    need to be : this ❮background:red❯is❮background:default❯ text and is not.
-
-
-    Edge cases that are not covered:
-    - same opening and closing: '<text< text2'
-    - same opening and closing: '>text> text2'
-    - reverse opening and closing: '>text< text2'
-    - 2 opening and 1 closing: '<text<text2>' - text2 is choosen
-    - 1 opening and 2 closing: '<text>text2>' - text1 is choosen - works
-    - <<text>>
-    - <<<text>>
-
+    is: this ❮background:red❯is❮background:default❯ text and is not.
   */
 
   if( _.strIs( o ) )
@@ -2271,57 +2193,196 @@ function strSplitInlinedStereo( o )
   _.routineOptions( strSplitInlinedStereo, o );
 
   let result = [];
+  let src = o.src.slice();
+
+  let delimLeftPosition = getNextPos( src, o.prefix );
+  let delimRightPosition = getNextPos( src, o.postfix );
+
+  if( delimLeftPosition === -1 || delimRightPosition === -1 )
+  return [ o.src ];
+
   let splitted = o.src.split( o.prefix );
 
   if( splitted.length === 1 )
   return splitted;
 
-  /* */
-
   if( splitted[ 0 ] )
   result.push( splitted[ 0 ] );
 
-  /* */
-
   for( let i = 1; i < splitted.length; i++ )
   {
+    debugger
     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
+    if( halfs[ 1 ] === undefined )
+    {
+      // cases <<text>, < <text>, <<<text>abc<<<text2>>, etc.
+      if
+      (
+        result[ i - 2 ]
+        && !_.arrayLike( result[ i - 2 ] )
+        && ( result[ i - 2 ].trim() === o.prefix || result[ i - 2 ].trim().substr( -1 ) === o.prefix )
+      )
+      {
+        result[ i - 2 ] = result[ i - 2 ] + o.prefix + halfs[ 2 ];
+        continue;
+      }
+
+      // case >text<
+      if( result[ i - 1 ] !== undefined )
+      result[ i - 1 ] = result[ i - 1 ] + o.prefix + halfs[ 2 ];
+      else
+      result[ i - 1 ] = o.prefix + halfs[ 2 ];
+
+      continue;
+    }
     let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
+    let ordinary = o.onOrdinary ? o.onOrdinary( halfs[ 2 ] ) : halfs[ 2 ];
 
     _.assert( halfs.length === 3 );
 
     if( strip !== undefined )
     {
-      result.push( strip );
-      if( halfs[ 2 ] )
-      result.push( halfs[ 2 ] );
+      if( o.preservingDelimeters )
+      result.push( [ o.prefix + strip + o.postfix ] );
+      else
+      result.push( [ strip ] );
+
+      if( ordinary )
+      {
+        if( o.stripping )
+        result.push( ordinary.trim() );
+        else
+        result.push( ordinary );
+      }
     }
     else
-    {
-      if( result.length )
-      debugger;
-      else
-      debugger;
+    { // to look
       if( result.length )
       result[ result.length-1 ] += o.prefix + splitted[ i ];
       else
       result.push( o.prefix + splitted[ i ] );
     }
+  }
+
+
+  if( o.preservingEmpty )
+  {
+    if( _.arrayLike( result[ 0 ] ) )
+    result.unshift( '' );
+    if( _.arrayLike( result[ result.length-1 ] ) )
+    result.push( '' );
+    let len = result.length;
+    for( let i = 0; i < len; i++ )
+    {
+      if( _.arrayLike( result[ i ] ) )
+      if( _.arrayLike( result[ i + 1 ] ) )
+      result.splice( i + 1, 0, '' );
+    }
 
   }
 
   return result;
+
+  /* - */
+
+  function getNextPos( str, delim )
+  {
+    return str.indexOf( delim );
+  }
+
 }
 
 strSplitInlinedStereo.defaults =
 {
   src : null,
-  prefix : '#',
-  postfix : '#',
-  // prefix : '❮',
-  // postfix : '❯',
+  prefix : '❮',
+  postfix : '❯',
   onInlined : null,
+
+  // new
+  stripping : 0, //done
+  quoting : 0,
+
+  onOrdinary : null, //done
+  // onInlined : ( e ) => [ e ],
+
+  preservingEmpty : 1, //done
+  preservingDelimeters : 0, //done
+  preservingOrdinary : 1,
+  preservingInlined : 1,
 }
+
+//
+
+// function strSplitWithDefaultDelimeter( o )
+// {
+//   // ❮❯
+//   // <  >>>
+//   // << >>
+//   // <aa<bb>>
+//   // <a>ff<b<a<c><
+//   let result = [];
+//   let next = 0;
+//   let src = o.src.slice();
+
+//   let delimLeftPosition = getNextPos( src, o.delimeter[ 0 ] );
+//   let delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
+//   debugger;
+//   console.log(`l: ${delimLeftPosition}, r:${delimRightPosition}`)
+
+//   let delimLeftCount = _.strCount( o.src, o.delimeter[ 0 ] );
+//   let delimRightCount = _.strCount( o.src, o.delimeter[ 1 ] );
+//   let delimCount = delimLeftCount + delimRightCount;
+
+//   if( delimLeftPosition === -1 || delimRightPosition === -1 )
+//   return [ o.src ];
+
+//   debugger
+//   for( ; src.length > 0 ; )
+//   {
+//     if( delimLeftPosition === -1 && delimRightPosition === -1 )
+//     break;
+
+//     if( delimLeftPosition < delimRightPosition )
+//     {
+//       result.push( src.slice( 0, delimLeftPosition ) )
+//       // src = src.slice( delimLeftPosition + 1 );
+
+//       // delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
+
+//       result.push([ src.slice( delimLeftPosition + 1, delimRightPosition ) ]);
+//       src = src.slice( delimRightPosition + 1 );
+
+//     }
+//     else
+//     {
+//       result.push( src );
+//       src = '';
+//     }
+
+//     delimLeftPosition = getNextPos( src, o.delimeter[ 0 ] );
+//     delimRightPosition = getNextPos( src, o.delimeter[ 1 ] );
+//   }
+
+//   return result;
+
+//   /* - */
+
+//   function getNextPos( str, delim )
+//   {
+//     return str.indexOf( delim );
+//   }
+// }
+
+// strSplitWithDefaultDelimeter.defaults =
+// {
+//   src : null,
+//   delimeter : [ '❮', '❯' ],
+//   // preservingEmpty : 1,
+//   // preservingDelimeters : 0,
+// }
+
+//
 
 // --
 // converter
@@ -2395,7 +2456,7 @@ let Extension =
   strSplitFast,
   strSplit,
   strSplitNonPreserving,
-  strSplitWithDefaultDelimeter,
+  // strSplitWithDefaultDelimeter,
 
   strSplitInlined,
   strSplitInlinedStereo,
