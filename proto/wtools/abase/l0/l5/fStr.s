@@ -2207,11 +2207,17 @@ function strSplitInlinedStereo( o )
   return splitted;
 
   if( splitted[ 0 ] )
-  result.push( splitted[ 0 ] );
+  {
+    if( o.stripping )
+    result.push( splitted[ 0 ].trim() );
+    else
+    result.push( splitted[ 0 ] );
+
+  }
 
   for( let i = 1; i < splitted.length; i++ )
   {
-    debugger
+    // debugger
     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
     if( halfs[ 1 ] === undefined )
     {
@@ -2227,12 +2233,20 @@ function strSplitInlinedStereo( o )
         continue;
       }
 
-      // case >text<
-      if( result[ i - 1 ] !== undefined )
-      result[ i - 1 ] = result[ i - 1 ] + o.prefix + halfs[ 2 ];
+      if( result[ result.length - 1 ] !== undefined )
+      {
+        if( o.stripping )
+        result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + halfs[ 2 ].trimEnd();
+        else
+        result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + halfs[ 2 ];
+      }
       else
-      result[ i - 1 ] = o.prefix + halfs[ 2 ];
-
+      {
+        if( o.stripping )
+        result[ 0 ] = o.prefix + halfs[ 2 ].trim();
+        else
+        result[ 0 ] = o.prefix + halfs[ 2 ];
+      }
       continue;
     }
     let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
@@ -2243,20 +2257,41 @@ function strSplitInlinedStereo( o )
     if( strip !== undefined )
     {
       if( o.preservingDelimeters )
-      result.push( [ o.prefix + strip + o.postfix ] );
+      {
+        if( o.stripping )
+        result.push( [ o.prefix + strip.trim() + o.postfix ] );
+        else
+        result.push( [ o.prefix + strip + o.postfix ] );
+      }
       else
-      result.push( [ strip ] );
+      {
+        if( o.stripping )
+        result.push( [ strip.trim() ] );
+        else
+        result.push( [ strip ] )
+      }
 
       if( ordinary )
       {
         if( o.stripping )
-        result.push( ordinary.trim() );
+        {
+          if( splitted[ i + 1 ] && _.strIsolateLeftOrNone( splitted[ i + 1 ], o.postfix )[ 1 ] !== undefined )
+          {
+            result.push( ordinary.trim() );
+          }
+          else
+          {
+            splitted[ i + 1 ] !== undefined ? result.push( ordinary.trimStart() ) : result.push( ordinary.trim() )
+          }
+        }
         else
-        result.push( ordinary );
+        {
+          result.push( ordinary );
+        }
       }
     }
     else
-    { // to look
+    {
       if( result.length )
       result[ result.length-1 ] += o.prefix + splitted[ i ];
       else
@@ -2311,6 +2346,74 @@ strSplitInlinedStereo.defaults =
   preservingOrdinary : 1,
   preservingInlined : 1,
 }
+
+//
+
+// Previous version of the routine
+// function strSplitInlinedStereo( o )
+// {
+
+//   if( _.strIs( o ) )
+//   o = { src : o };
+
+//   _.assert( this === _ );
+//   _.assert( _.strIs( o.src ) );
+//   _.assert( _.objectIs( o ) );
+//   _.assert( arguments.length === 1, 'Expects single argument' );
+//   _.routineOptions( strSplitInlinedStereo, o );
+
+//   let result = [];
+//   let splitted = o.src.split( o.prefix );
+
+//   if( splitted.length === 1 )
+//   return splitted;
+
+//   /* */
+
+//   if( splitted[ 0 ] )
+//   result.push( splitted[ 0 ] );
+
+//   /* */
+
+//   for( let i = 1; i < splitted.length; i++ )
+//   {
+//     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
+//     let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
+
+//     _.assert( halfs.length === 3 );
+
+//     if( strip !== undefined )
+//     {
+//       result.push( strip );
+//       if( halfs[ 2 ] )
+//       result.push( halfs[ 2 ] );
+//     }
+//     else
+//     {
+//       if( result.length )
+//       debugger;
+//       else
+//       debugger;
+//       if( result.length )
+//       result[ result.length-1 ] += o.prefix + splitted[ i ];
+//       else
+//       result.push( o.prefix + splitted[ i ] );
+//     }
+
+//   }
+
+//   return result;
+// }
+
+// strSplitInlinedStereo.defaults =
+// {
+//   src : null,
+//   prefix : '#',
+//   postfix : '#',
+//   // prefix : '❮',
+//   // postfix : '❯',
+//   onInlined : null,
+// }
 
 //
 
