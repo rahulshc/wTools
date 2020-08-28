@@ -14887,6 +14887,377 @@ function strSplitInlinedStereoOptionStripping( test )
   test.close( 'stripping - 1' );
 }
 
+//
+
+function strSplitInlinedStereoOptionPreservingEmpty( test )
+{
+  test.case = 'full split, closing delimeter';
+  var srcStr = 'this ❮background:red❯is❮background:default❯ text and is not';
+  var got = _.strSplitInlinedStereo( { src : srcStr, preservingEmpty : 0 } );
+  var expected =
+  [
+    'this ', [ 'background:red' ], 'is', [ 'background:default' ], ' text and is not'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'openning delimeter ❮ does not have closing';
+  var srcStr = 'this ❮background:red❯is❮background:default❯ text and ❮ is not';
+  var got = _.strSplitInlinedStereo( { src : srcStr, preservingEmpty : 0 } );
+  var expected =
+  [
+    'this ', [ 'background:red' ], 'is', [ 'background:default' ], ' text and ❮ is not'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'two inlined substrings is not in fact inlined';
+  var srcStr = '❮simple ❯ text ❮background:red❯is❮background:default❯ text and ❮ is not❯';
+  var got = _.strSplitInlinedStereo( { src : srcStr, preservingEmpty : 0 } );
+  var expected =
+  [
+    [ 'simple ' ], ' text ', [ 'background:red' ], 'is', [ 'background:default' ], ' text and ', [ ' is not' ]
+  ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and false inlined';
+  var srcStr = '❮background:red❯i❮s❯background:default❮❯text';
+  var got = _.strSplitInlinedStereo( { src : srcStr, preservingEmpty : 0 } );
+  var expected =
+  [
+    [ 'background:red' ], 'i', [ 's' ], 'background:default', [ '' ], 'text'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and the end';
+  var srcStr = '❮background:red❯i❮s❯background:default❮';
+  var got = _.strSplitInlinedStereo( { src : srcStr, preservingEmpty : 0 } );
+  var expected =
+  [
+    [ 'background:red' ], 'i', [ 's' ], 'background:default❮',
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string left';
+  var srcStr = '❮❯ordinary❮inline2❯';
+  var got = _.strSplitInlinedStereo( { src : srcStr, preservingEmpty : 0 } );
+  var expected =
+  [
+    [ '' ], 'ordinary', [ 'inline2' ],
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string right';
+  var srcStr = '❮inline1❯ordinary❮❯';
+  var got = _.strSplitInlinedStereo( { src : srcStr, preservingEmpty : 0 } );
+  var expected =
+  [
+    [ 'inline1' ], 'ordinary', [ '' ]
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string middle';
+  var srcStr = '❮inline1❯❮inline2❯';
+  var got = _.strSplitInlinedStereo( { src : srcStr, preservingEmpty : 0 } );
+  var expected =
+  [
+    [ 'inline1' ], [ 'inline2' ],
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty all';
+  var srcStr = '❮❯❮❯';
+  var got = _.strSplitInlinedStereo( { src : srcStr, preservingEmpty : 0 } );
+  var expected = [ [ '' ], [ '' ] ];
+  test.identical( got, expected );
+}
+
+//
+
+function strSplitInlinedStereoOptionPrefixPostfix( test )
+{
+  test.open( 'prefix, postfix are different' )
+
+  test.case = 'full split, closing delimeter';
+  var srcStr = 'this<background:red>is<background:default>text<and>is not';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '<', postfix : '>' } );
+  var expected =
+  [
+    'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text', [ 'and' ], 'is not'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'openning delimeter < does not have closing';
+  var srcStr = 'this<background:red>is<background:default>text<and>is<not>';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '<', postfix : '>' } );
+  var expected =
+  [
+    'this', [ 'background:red' ], 'is', [ 'background:default' ], 'text', [ 'and' ], 'is', [ 'not' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'two inlined substrings is not in fact inlined';
+  var srcStr = '<simple>text<background:red>is<background:default>text<and>is<not>';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '<', postfix : '>' } );
+  var expected =
+  [
+    '', [ 'simple' ], 'text', [ 'background:red' ], 'is', [ 'background:default' ], 'text', [ 'and' ], 'is', [ 'not' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and false inlined';
+  var srcStr = '<background:red>i<s>background:default<>text';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '<', postfix : '>' } );
+  var expected =
+  [
+    '', [ 'background:red' ], 'i', [ 's' ], 'background:default', [ '' ], 'text'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and the end';
+  var srcStr = '{background:red}i{s}background:default ';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '{', postfix : '}' } );
+  var expected =
+  [
+    '', [ 'background:red' ], 'i', [ 's' ], 'background:default ',
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string left';
+  var srcStr = '<>ordinary<inline2>';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '<', postfix : '>' } );
+  var expected =
+  [
+    '', [ '' ], 'ordinary', [ 'inline2' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string right';
+  var srcStr = '<inline1>ordinary<>';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '<', postfix : '>' } );
+  var expected =
+  [
+    '', [ 'inline1' ], 'ordinary', [ '' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string middle';
+  var srcStr = '<inline1><inline2>';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '<', postfix : '>' } );
+  var expected =
+  [
+    '', [ 'inline1' ], '', [ 'inline2' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty all';
+  var srcStr = '<><>';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '<', postfix : '>' } );
+  var expected = [ '', [ '' ], '', [ '' ], '' ];
+  test.identical( got, expected );
+
+  test.close( 'prefix, postfix are different' );
+
+  /* - */
+
+  test.open( 'prefix, postfix are the same' )
+
+  test.case = 'no styles';
+  var srcStr = 'this background:red is background:default text and is not';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    'this background:red is background:default text and is not'
+  ];
+  test.identical( got, expected );
+  debugger;
+  test.case = 'two styles';
+  var srcStr = 'this #background:red#is#background:default# text and is not';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    'this ', [ 'background:red' ], 'is', [ 'background:default' ], ' text and is not'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'full split, closing delimeter';
+  var srcStr = 'this #background:red# is #background:default# text #and# is not';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    'this ', [ 'background:red' ], ' is ', [ 'background:default' ], ' text ', [ 'and' ], ' is not'
+  ];
+  test.identical( got, expected );
+
+  test.case = 'four styles';
+  var srcStr = 'this #background:red# is #background:default# text #and# is #not#';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    'this ', [ 'background:red' ], ' is ', [ 'background:default' ], ' text ', [ 'and' ], ' is ', [ 'not' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'two inlined substrings is not in fact inlined';
+  var srcStr = '#simple# text #background:red# is #background:default# text #and# is #not# ';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    '', [ 'simple' ], ' text ', [ 'background:red' ], ' is ', [ 'background:default' ], ' text ', [ 'and' ], ' is ', [ 'not' ], ' '
+  ];
+  test.identical( got, expected );
+
+  test.case = 'inlined at the beginning and the end';
+  var srcStr = ' #background:red# i #s# background:default ';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    ' ', [ 'background:red' ], ' i ', [ 's' ], ' background:default ',
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string left';
+  var srcStr = '## ordinary #inline2# ';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    '', [ '' ], ' ordinary ', [ 'inline2' ], ' '
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string right';
+  var srcStr = ' #inline1# ordinary ##';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    ' ', [ 'inline1' ], ' ordinary ', [ '' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty string middle';
+  var srcStr = ' #inline1##inline2# ';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    ' ', [ 'inline1' ], '', [ 'inline2' ], ' '
+  ];
+  test.identical( got, expected );
+
+  test.case = 'empty all';
+  var srcStr = '####';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected = [ '', [ '' ], '', [ '' ], '' ];
+  test.identical( got, expected );
+
+  /* - */
+
+  test.open( 'single delimiter' )
+
+  test.case = '# at the start';
+  var srcStr = '#inline1 inline2';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    '#inline1 inline2'
+  ];
+  test.identical( got, expected );
+
+  test.case = '# at the end';
+  var srcStr = 'inline1 inline2#';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    'inline1 inline2#'
+  ];
+  test.identical( got, expected );
+
+  test.case = '# at the start';
+  var srcStr = '#inline1 inline2';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    '#inline1 inline2'
+  ];
+  test.identical( got, expected );
+
+  test.case = '# at the end';
+  var srcStr = 'inline1 inline2#';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    'inline1 inline2#'
+  ];
+  test.identical( got, expected );
+
+  test.close( 'single delimiter' )
+
+  /* - */
+
+  test.open( 'wrong delimiter enclosing' )
+
+  test.case = '3 delimeters';
+  var srcStr = '#inline1 #inline2#';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    '', [ 'inline1 ' ], 'inline2#'
+  ];
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = '4 delimeters';
+  var srcStr = '##inline1## inline2';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    '', [ '' ], 'inline1', [ '' ], ' inline2'
+  ];
+  test.identical( got, expected );
+
+  test.case = '4 delimeters with spaces';
+  var srcStr = '# #inline1# # inline2';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    '', [ ' ' ], 'inline1', [ ' ' ], ' inline2'
+  ];
+  test.identical( got, expected );
+
+  test.case = '5 delimeters';
+  var srcStr = '###inline1## inline2';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    '', [ '' ], '', [ 'inline1' ], '# inline2'
+  ];
+  test.identical( got, expected );
+
+  test.case = '5 delimeters with spaces';
+  var srcStr = '# # #inline1# # inline2';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    '', [ ' ' ], ' ', [ 'inline1' ], ' # inline2'
+  ];
+  test.identical( got, expected );
+
+  test.case = '5 + 5 delimeters';
+  var srcStr = '##inline1### inline2 ###inline1##';
+  var got = _.strSplitInlinedStereo( { src : srcStr, prefix : '#', postfix : '#' } );
+  var expected =
+  [
+    '', [ '' ], 'inline1', [ '' ], '',  [ ' inline2 '], '', [ '' ], 'inline1', [ '' ], ''
+  ];
+  test.identical( got, expected );
+
+  test.close( 'wrong delimiter enclosing' )
+
+  /* - */
+
+  test.close( 'prefix, postfix are the same' )
+}
+
+//
+
 // --
 // test suite
 // --
@@ -14967,7 +15338,9 @@ var Self =
 
     // strSplitInlinedStereo,
     strSplitInlinedStereoBasic,
+    strSplitInlinedStereoOptionPrefixPostfix,
     strSplitInlinedStereoOptionStripping,
+    strSplitInlinedStereoOptionPreservingEmpty,
 
   }
 

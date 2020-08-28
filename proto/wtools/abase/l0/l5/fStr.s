@@ -2141,21 +2141,21 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  *
  * @param {string} src - Source string.
  * @param {object} o - Options map.
- * @param {string} [ o.prefix = '#' ] - delimeter that marks begining of enclosed string
- * @param {string} [ o.postfix = '#' ] - delimeter that marks ending of enclosed string
- * @param {string} [ o.onInlined = null ] - function called on each splitted part of a source string
+ * @param {string} [ o.prefix = '❮' ] - delimeter that marks begining of enclosed string.
+ * @param {string} [ o.postfix = '❯' ] - delimeter that marks ending of enclosed string.
+ * @param {string} [ o.onInlined = null ] - function called on each splitted part of a source string.
  * @param {string} [ o.stripping ] - if true removes leading and trailing whitespace characters.
  * @param {string} [ o.preservingEmpty ] - if true empty lines are saved in the result array.
  * @param {string} [ o.preservingDelimeters ] - if true leaves word delimeters in result array, otherwise removes them.
  * @returns {object} Returns an array of strings separated by( o.delimeter ).
  *
  * @example
- * _.strSplitInlinedStereo( '#abc#' );
- * // returns [ '', 'abc', '' ]
+ * _.strSplitInlinedStereo( '❮abc❯' );
+ * // returns [ '', [ 'abc' ], '' ]
  *
  * @example
  * _.strSplitInlinedStereo.call( { prefix : '#', postfix : '$' }, '#abc$' );
- * // returns [ 'abc' ]
+ * // returns [ '', [ 'abc' ], '' ]
  *
  * @example
  * function onInlined( strip )
@@ -2164,12 +2164,13 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  *   return strip.toUpperCase();
  * }
  * _.strSplitInlinedStereo.call( { postfix : '$', onInlined }, '#abc$' );
- * // returns [ 'ABC' ]
+ * // returns [ '', [ 'ABC' ], '' ]
  *
  * @method strSplitInlinedStereo
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.delimeter ) is not a String or an Array.
+ * @throws { Exception } Throw an exception if( o.prefix ) is not a String.
+ * @throws { Exception } Throw an exception if( o.postfix ) is not a String.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
  * @namespace Tools
  *
@@ -2179,8 +2180,8 @@ function strSplitInlinedStereo( o )
 {
   /*
     New delimiter.
-    was : this #background:red#is#background:default# text and is not.
-    is: this ❮background:red❯is❮background:default❯ text and is not.
+    was : 'this #background:red#is#background:default# text and is not'.
+    is  : 'this ❮background:red❯is❮background:default❯ text and is not'.
   */
 
   if( _.strIs( o ) )
@@ -2192,6 +2193,15 @@ function strSplitInlinedStereo( o )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.routineOptions( strSplitInlinedStereo, o );
 
+  if( o.prefix === o.postfix )
+  {
+    o.delimeter = o.prefix;
+    o.onInlined = ( el ) => [ el ];
+    delete o.prefix;
+    delete o.postfix;
+    return _.strSplitInlined( o );
+  }
+
   let result = [];
   let src = o.src.slice();
 
@@ -2201,7 +2211,7 @@ function strSplitInlinedStereo( o )
   if( delimLeftPosition === -1 || delimRightPosition === -1 )
   return [ o.src ];
 
-  let splitted = o.src.split( o.prefix );
+  let splitted = src.split( o.prefix );
 
   if( splitted.length === 1 )
   return splitted;
@@ -2391,7 +2401,7 @@ strSplitInlinedStereo.defaults =
 //     else
 //     {
 //       if( result.length )
-//       debugger;
+// debugger;
 //       else
 //       debugger;
 //       if( result.length )
