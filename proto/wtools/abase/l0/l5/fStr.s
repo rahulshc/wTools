@@ -2204,6 +2204,8 @@ function strSplitInlinedStereo( o )
 
   let result = [];
   let src = o.src.slice();
+  let splitted = [];
+  let replacementForQuotes = '\u{20331}';
 
   let delimLeftPosition = getNextPos( src, o.prefix );
   let delimRightPosition = getNextPos( src, o.postfix );
@@ -2211,10 +2213,27 @@ function strSplitInlinedStereo( o )
   if( delimLeftPosition === -1 || delimRightPosition === -1 )
   return [ o.src ];
 
-  let splitted = src.split( o.prefix );
+  if( o.quoting )
+  {
+    src = src.replace( /"❮"/g, replacementForQuotes );
+    splitted = src.split( o.prefix );
+  }
+  else
+  {
+    splitted = src.split( o.prefix );
+  }
 
   if( splitted.length === 1 )
-  return splitted;
+  {
+    if( o.quoting )
+    {
+      return [ o.src ];
+    }
+    else
+    {
+      return splitted;
+    }
+  }
 
   if( splitted[ 0 ] )
   {
@@ -2323,8 +2342,66 @@ function strSplitInlinedStereo( o )
       if( _.arrayLike( result[ i + 1 ] ) )
       result.splice( i + 1, 0, '' );
     }
-
   }
+
+  if( o.quoting )
+  {
+    handleQuoting()
+  }
+
+  // if( o.quoting )
+  // {
+  //   o.splits = result.slice();
+
+  //   o.quotingPrefixes = o.prefix;
+  //   o.quotingPostfixes = o.postfix;
+
+  //   // o.quotingPrefixes = '\"';
+  //   // o.quotingPostfixes = '\"';
+  //   _.strSplitsQuotedRejoin.body( _.mapOnly( o, _.strSplitsQuotedRejoin.defaults ) );
+  //   return o.splits;
+  // }
+
+  // if( !o.preservingDelimeters )
+  // _.strSplitsDropDelimeters.body( o );
+
+  // if( o.stripping )
+  // _.strSplitsStrip.body( o );
+
+  // if( !o.preservingEmpty )
+  // _.strSplitsDropEmpty.body( o );
+
+  // if( o.quoting )
+  // {
+  //   result = result.map( ( el, i ) =>
+  //   {
+  //     if( _.arrayLike( el ) && el[ 0 ].slice( 0, 1 ) === '"' && el[ 0 ].substr( -1 ) === '"' )
+  //     {
+  //       return o.prefix + '"' + el[ 0 ].slice( 1, el[ 0 ].length - 2 ) + '"' + o.postfix + '"';
+  //     }
+  //     else
+  //     {
+  //       return el;
+  //     }
+  //     // str.replace( /"/g )
+  //   } )
+
+  //   let final = [];
+  //   let str = '';
+
+  //   for( let i = 0; i < result.length; i++ )
+  //   {
+  //     if( !_.arrayLike( result[ i ] ) )
+  //     str += result[ i ];
+  //     else
+  //     final.push( result[ i ] )
+  //     if( _.arrayLike( result[ i + 1 ] ) )
+  //     final.push( str );
+
+  //   }
+
+  //   result = final;
+  // }
 
   return result;
 
@@ -2335,6 +2412,22 @@ function strSplitInlinedStereo( o )
     return str.indexOf( delim );
   }
 
+  /* - */
+
+  function handleQuoting()
+  {
+    let reg = new RegExp( replacementForQuotes, 'g' );
+
+    result = result.map( ( el ) =>
+    {
+      if( !_.arrayLike( el ) )
+      {
+        if( el.indexOf( replacementForQuotes ) !== -1 )
+        return el.replace( reg, '"❮"' )
+      }
+      return el;
+    } )
+  }
 }
 
 strSplitInlinedStereo.defaults =
@@ -2346,7 +2439,7 @@ strSplitInlinedStereo.defaults =
 
   // new
   stripping : 0, //done /tested
-  quoting : 0,
+  quoting : 0, //done /tested
 
   onOrdinary : null, //done
   // onInlined : ( e ) => [ e ],
