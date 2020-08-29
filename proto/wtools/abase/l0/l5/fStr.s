@@ -2301,7 +2301,7 @@ function strSplitInlinedStereo( o )
       }
     }
     else
-    {
+    { // case when onInlined returns undefined
       if( result.length )
       result[ result.length-1 ] += o.prefix + splitted[ i ];
       else
@@ -2339,20 +2339,20 @@ function strSplitInlinedStereo( o )
 
 strSplitInlinedStereo.defaults =
 {
-  src : null,
-  prefix : '❮',
-  postfix : '❯',
-  onInlined : null,
+  src : null, //done /tested
+  prefix : '❮', //done /tested
+  postfix : '❯', //done /tested
+  onInlined : null, //done
 
   // new
-  stripping : 0, //done
+  stripping : 0, //done /tested
   quoting : 0,
 
   onOrdinary : null, //done
   // onInlined : ( e ) => [ e ],
 
-  preservingEmpty : 1, //done
-  preservingDelimeters : 0, //done
+  preservingEmpty : 1, //done /tested
+  preservingDelimeters : 0, //done /tested
   preservingOrdinary : 1,
   preservingInlined : 1,
 }
