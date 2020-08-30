@@ -15740,7 +15740,7 @@ function strSplitInlinedStereoOptionOnInlined( test )
   var got = _.strSplitInlinedStereo( { src : srcStr, onInlined : onInlined } );
   var expected =
   [
-    '❮simple # text ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and ❮ is not❯'
+    '❮simple ❯ text ', [ 'background', 'red' ], 'is', [ 'background', 'default' ], ' text and ❮ is not❯'
   ];
   test.identical( got, expected );
 

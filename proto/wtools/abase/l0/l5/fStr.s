@@ -2196,15 +2196,15 @@ function strSplitInlinedStereo( o )
   if( o.prefix === o.postfix )
   {
     o.delimeter = o.prefix;
-    o.onInlined = ( el ) => [ el ];
+    // o.onInlined = ( el ) => [ el ];
     delete o.prefix;
     delete o.postfix;
     return _.strSplitInlined( o );
   }
 
   let result = [];
-  let src = o.src.slice();
   let splitted = [];
+  let src = o.src.slice();
   let replacementForQuotes = '\u{20331}';
 
   let delimLeftPosition = getNextPos( src, o.prefix );
@@ -2265,9 +2265,19 @@ function strSplitInlinedStereo( o )
       if( result[ result.length - 1 ] !== undefined )
       {
         if( o.stripping )
-        result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + halfs[ 2 ].trimEnd();
+        {
+          if( !_.arrayLike( result[ result.length - 1 ] ) )
+          result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + halfs[ 2 ].trimEnd();
+          else
+          result.push( o.prefix + halfs[ 2 ].trimEnd() )
+        }
         else
-        result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + halfs[ 2 ];
+        {
+          if( !_.arrayLike( result[ result.length - 1 ] ) )
+          result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + halfs[ 2 ];
+          else
+          result.push( o.prefix + halfs[ 2 ] )
+        }
       }
       else
       {
@@ -2288,16 +2298,16 @@ function strSplitInlinedStereo( o )
       if( o.preservingDelimeters )
       {
         if( o.stripping )
-        result.push( [ o.prefix + strip.trim() + o.postfix ] );
+        result.push( strip.map( ( el ) => o.prefix + el.trim() + o.postfix ) );
         else
-        result.push( [ o.prefix + strip + o.postfix ] );
+        result.push( strip.map( ( el ) => o.prefix + el + o.postfix ) );
       }
       else
       {
         if( o.stripping )
-        result.push( [ strip.trim() ] );
+        result.push( strip.map( ( el ) => el.trim() ) );
         else
-        result.push( [ strip ] )
+        result.push( strip )
       }
 
       if( ordinary )
@@ -2402,7 +2412,6 @@ function strSplitInlinedStereo( o )
 
   //   result = final;
   // }
-
   return result;
 
   /* - */
@@ -2435,7 +2444,7 @@ strSplitInlinedStereo.defaults =
   src : null, //done /tested
   prefix : '❮', //done /tested
   postfix : '❯', //done /tested
-  onInlined : null, //done
+  onInlined : ( e ) => [ e ], //done
 
   // new
   stripping : 0, //done /tested
