@@ -2141,13 +2141,13 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  *
  * @param {string} src - Source string.
  * @param {object} o - Options map.
- * @param {string} [ o.prefix = '❮' ] - delimeter that marks begining of enclosed string.
- * @param {string} [ o.postfix = '❯' ] - delimeter that marks ending of enclosed string.
- * @param {string} [ o.onInlined = null ] - function called on each splitted part of a source string.
- * @param {string} [ o.stripping ] - if true removes leading and trailing whitespace characters.
- * @param {string} [ o.preservingEmpty ] - if true empty lines are saved in the result array.
- * @param {string} [ o.preservingDelimeters ] - if true leaves word delimeters in result array, otherwise removes them.
- * @returns {object} Returns an array of strings separated by( o.delimeter ).
+ * @param {string} [ o.prefix = '❮' ] - A delimeter that marks begining of enclosed string.
+ * @param {string} [ o.postfix = '❯' ] - A ddelimeter that marks ending of enclosed string.
+ * @param {string} [ o.onInlined = null ] - Function called on each splitted part of a source string.
+ * @param {string} [ o.stripping ] - If true removes leading and trailing whitespace characters.
+ * @param {string} [ o.preservingEmpty ] - If true empty lines are saved in the result array.
+ * @param {string} [ o.preservingDelimeters ] - If true leaves word delimeters in result array, otherwise removes them.
+ * @returns {object} Returns an array of strings separated by {- o.prefix -} and {- o.postfix -}.
  *
  * @example
  * _.strSplitInlinedStereo( '❮abc❯' );
@@ -2169,8 +2169,6 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  * @method strSplitInlinedStereo
  * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.prefix ) is not a String.
- * @throws { Exception } Throw an exception if( o.postfix ) is not a String.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
  * @namespace Tools
  *
@@ -2196,7 +2194,6 @@ function strSplitInlinedStereo( o )
   if( o.prefix === o.postfix )
   {
     o.delimeter = o.prefix;
-    // o.onInlined = ( el ) => [ el ];
     delete o.prefix;
     delete o.postfix;
     return _.strSplitInlined( o );
@@ -2359,59 +2356,6 @@ function strSplitInlinedStereo( o )
     handleQuoting()
   }
 
-  // if( o.quoting )
-  // {
-  //   o.splits = result.slice();
-
-  //   o.quotingPrefixes = o.prefix;
-  //   o.quotingPostfixes = o.postfix;
-
-  //   // o.quotingPrefixes = '\"';
-  //   // o.quotingPostfixes = '\"';
-  //   _.strSplitsQuotedRejoin.body( _.mapOnly( o, _.strSplitsQuotedRejoin.defaults ) );
-  //   return o.splits;
-  // }
-
-  // if( !o.preservingDelimeters )
-  // _.strSplitsDropDelimeters.body( o );
-
-  // if( o.stripping )
-  // _.strSplitsStrip.body( o );
-
-  // if( !o.preservingEmpty )
-  // _.strSplitsDropEmpty.body( o );
-
-  // if( o.quoting )
-  // {
-  //   result = result.map( ( el, i ) =>
-  //   {
-  //     if( _.arrayLike( el ) && el[ 0 ].slice( 0, 1 ) === '"' && el[ 0 ].substr( -1 ) === '"' )
-  //     {
-  //       return o.prefix + '"' + el[ 0 ].slice( 1, el[ 0 ].length - 2 ) + '"' + o.postfix + '"';
-  //     }
-  //     else
-  //     {
-  //       return el;
-  //     }
-  //     // str.replace( /"/g )
-  //   } )
-
-  //   let final = [];
-  //   let str = '';
-
-  //   for( let i = 0; i < result.length; i++ )
-  //   {
-  //     if( !_.arrayLike( result[ i ] ) )
-  //     str += result[ i ];
-  //     else
-  //     final.push( result[ i ] )
-  //     if( _.arrayLike( result[ i + 1 ] ) )
-  //     final.push( str );
-
-  //   }
-
-  //   result = final;
-  // }
   return result;
 
   /* - */
@@ -2445,13 +2389,10 @@ strSplitInlinedStereo.defaults =
   prefix : '❮', //done /tested
   postfix : '❯', //done /tested
   onInlined : ( e ) => [ e ], //done
+  onOrdinary : null, //done
 
-  // new
   stripping : 0, //done /tested
   quoting : 0, //done /tested
-
-  onOrdinary : null, //done
-  // onInlined : ( e ) => [ e ],
 
   preservingEmpty : 1, //done /tested
   preservingDelimeters : 0, //done /tested
