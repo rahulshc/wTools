@@ -2234,11 +2234,22 @@ function strSplitInlinedStereo( o )
 
   if( splitted[ 0 ] )
   {
+    // let res = o.onOrdinary ? o.onOrdinary( splitted[ 0 ] ) : splitted[ 0 ];
+
+    // if( res !== undefined )
+    // {
+    //   if( o.stripping )
+    //   result.push( res.trim() );
+    //   else
+    //   result.push( res )
+    // }
+    // else
+    // {
     if( o.stripping )
     result.push( splitted[ 0 ].trim() );
     else
     result.push( splitted[ 0 ] );
-
+    // }
   }
 
   for( let i = 1; i < splitted.length; i++ )
@@ -2286,7 +2297,8 @@ function strSplitInlinedStereo( o )
       continue;
     }
     let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
-    let ordinary = o.onOrdinary ? o.onOrdinary( halfs[ 2 ] ) : halfs[ 2 ];
+    // let ordinary = o.onOrdinary ? o.onOrdinary( halfs[ 2 ] ) : halfs[ 2 ];
+    let ordinary = halfs[ 2 ];
 
     _.assert( halfs.length === 3 );
 
@@ -2335,26 +2347,14 @@ function strSplitInlinedStereo( o )
     }
   }
 
-
   if( o.preservingEmpty )
-  {
-    if( _.arrayLike( result[ 0 ] ) )
-    result.unshift( '' );
-    if( _.arrayLike( result[ result.length-1 ] ) )
-    result.push( '' );
-    let len = result.length;
-    for( let i = 0; i < len; i++ )
-    {
-      if( _.arrayLike( result[ i ] ) )
-      if( _.arrayLike( result[ i + 1 ] ) )
-      result.splice( i + 1, 0, '' );
-    }
-  }
+  handleEmptyLines()
 
   if( o.quoting )
-  {
-    handleQuoting()
-  }
+  handleQuoting()
+
+  if( o.onOrdinary )
+  handleOnOrdinary()
 
   return result;
 
@@ -2381,6 +2381,45 @@ function strSplitInlinedStereo( o )
       return el;
     } )
   }
+
+  /* - */
+
+  function handleOnOrdinary()
+  {
+    result = result.map( ( el ) =>
+    {
+      if( !_.arrayLike( el ) )
+      {
+        let res = o.onOrdinary( el );
+        if( res !== undefined )
+        return res;
+        else
+        return el;
+      }
+      else
+      {
+        return el;
+      }
+    } )
+  }
+
+  /* - */
+
+  function handleEmptyLines()
+  {
+    if( _.arrayLike( result[ 0 ] ) )
+    result.unshift( '' );
+    if( _.arrayLike( result[ result.length-1 ] ) )
+    result.push( '' );
+    let len = result.length;
+    for( let i = 0; i < len; i++ )
+    {
+      if( _.arrayLike( result[ i ] ) )
+      if( _.arrayLike( result[ i + 1 ] ) )
+      result.splice( i + 1, 0, '' );
+    }
+  }
+
 }
 
 strSplitInlinedStereo.defaults =
