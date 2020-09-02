@@ -3534,6 +3534,25 @@ bufferIsolateLeftOrAll_body.defaults =
 let bufferIsolateLeftOrAll = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateLeftOrAll_body );
 
 //
+
+function bufferIsolateRightOrNone_body( o )
+{
+  o.left = 0;
+  o.none = 1;
+  let result = _.bufferIsolate.body( o );
+  return result;
+}
+
+bufferIsolateRightOrNone_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  times : 1,
+};
+
+let bufferIsolateRightOrNone = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateRightOrNone_body );
+
+//
 //
 // function buffersSerialize( o )
 // {
@@ -3781,6 +3800,7 @@ let Routines =
   bufferIsolate,
   bufferIsolateLeftOrNone,
   bufferIsolateLeftOrAll,
+  bufferIsolateRightOrNone,
 
   // buffersSerialize, /* deprecated */
   // buffersDeserialize, /* deprecated */
