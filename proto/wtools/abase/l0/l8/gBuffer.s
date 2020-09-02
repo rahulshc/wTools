@@ -3383,16 +3383,18 @@ function bufferIsolate_body( o )
         }
         else
         {
+          let del = delimeter;
           result.push( new o.src.constructor( o.src.buffer, o.src.byteOffset, index ) );
-          result.push( new o.src.constructor( delimeter.buffer, delimeter.byteOffset, delimeter.byteLength / ( o.src.BYTES_PER_ELEMENT || 1 ) ) );
+          result.push( new o.src.constructor( del.buffer, del.byteOffset, del.byteLength / ( o.src.BYTES_PER_ELEMENT || 1 ) ) );
           let secondOffset = src.byteOffset + index * ( o.src.BYTES_PER_ELEMENT || 1 ) + delimeter.length;
           result.push( new o.src.constructor( o.src.buffer, secondOffset, o.src.byteOffset + src.byteLength - secondOffset ) );
         }
       }
       else
       {
+        let del = delimeter;
         result.push( o.src.subarray( 0, index ) );
-        result.push( new o.src.constructor( delimeter.buffer, delimeter.byteOffset, delimeter.byteLength / ( o.src.BYTES_PER_ELEMENT || 1 ) ) );
+        result.push( new o.src.constructor( del.buffer, del.byteOffset, del.byteLength / ( o.src.BYTES_PER_ELEMENT || 1 ) ) );
         result.push( o.src.subarray( index + delimeter.length ) );
       }
       return result;
