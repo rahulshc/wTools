@@ -12484,6 +12484,105 @@ function bufferIsolateWithStrings( test )
   test.close( 'src - string, delimeter - buffer' );
 }
 
+//
+
+function bufferIsolateCallWithMap( test )
+{
+  test.open( 'without entries' );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, default values';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 8 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 1, left : 1, none : 1 });
+  test.identical( got, [ new U8x( [] ), undefined, new U8x([ 1, 2, 3, 2, 4 ]) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, times > 1';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 8 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 2, left : 1, none : 1 });
+  test.identical( got, [ new U8x( [] ), undefined, new U8x([ 1, 2, 3, 2, 4 ]) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, times - 0';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 8 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 0, left : 1, none : 1 });
+  test.identical( got, [ new U8x( [] ), undefined, new U8x([ 1, 2, 3, 2, 4 ]) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, times - 0, left - 0';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 8 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 0, left : 0, none : 1 });
+  test.identical( got, [ new U8x([ 1, 2, 3, 2, 4 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, left - 0';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 8 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 1, left : 0, none : 1 });
+  test.identical( got, [ new U8x([ 1, 2, 3, 2, 4 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, none - 0';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 8 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 1, left : 1, none : 0 });
+  test.identical( got, [ new U8x([ 1, 2, 3, 2, 4 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, left - 0, none - 0';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 8 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 1, left : 0, none : 0 });
+  test.identical( got, [ new U8x([]), undefined, new U8x([ 1, 2, 3, 2, 4 ]) ] );
+
+  test.close( 'without entries' );
+
+  /* - */
+
+  test.open( 'few entries' );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, default values';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 2 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 1, left : 1, none : 1 });
+  test.identical( got, [ new U8x([ 1 ]), new U8x([ 2 ]), new U8x([ 3, 2, 4 ]) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, times > 1';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 2 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 2, left : 1, none : 1 });
+  test.identical( got, [ new U8x([ 1, 2, 3 ]), new U8x([ 2 ]), new U8x([ 4 ]) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, times - 0';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 2 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 0, left : 1, none : 1 });
+  test.identical( got, [ new U8x( [] ), undefined, new U8x([ 1, 2, 3, 2, 4 ]) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, times - 0, left - 0';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 2 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 0, left : 0, none : 1 });
+  test.identical( got, [ new U8x([ 1, 2, 3, 2, 4 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, left - 0';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 2 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 1, left : 0, none : 1 });
+  test.identical( got, [ new U8x([ 1, 2, 3 ]), new U8x([ 2 ]), new U8x([ 4 ]) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, none - 0';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 2 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 1, left : 1, none : 0 });
+  test.identical( got, [ new U8x([ 1 ]), new U8x([ 2 ]), new U8x([ 3, 2, 4 ]) ] );
+
+  test.case = 'src - U8x, delimeter - U8x, few entries, left - 0, none - 0';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 2 ]);
+  var got = _.bufferIsolate({ src, delimeter : del, times : 1, left : 0, none : 0 });
+  test.identical( got, [ new U8x([ 1, 2, 3 ]), new U8x([ 2 ]), new U8x([ 4 ]) ] );
+
+  test.close( 'few entries' );
+}
+
 // --
 // declaration
 // --
@@ -12566,6 +12665,7 @@ let Self =
     bufferIsolateWithTypedBuffers,
     bufferIsolateWithBufferRaw,
     bufferIsolateWithStrings,
+    bufferIsolateCallWithMap,
 
   }
 
