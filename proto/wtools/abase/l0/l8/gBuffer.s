@@ -3553,6 +3553,25 @@ bufferIsolateRightOrNone_body.defaults =
 let bufferIsolateRightOrNone = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateRightOrNone_body );
 
 //
+
+function bufferIsolateRightOrAll_body( o )
+{
+  o.left = 0;
+  o.none = 0;
+  let result = _.bufferIsolate.body( o );
+  return result;
+}
+
+bufferIsolateRightOrAll_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  times : 1,
+};
+
+let bufferIsolateRightOrAll = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateRightOrAll_body );
+
+//
 //
 // function buffersSerialize( o )
 // {
@@ -3801,6 +3820,7 @@ let Routines =
   bufferIsolateLeftOrNone,
   bufferIsolateLeftOrAll,
   bufferIsolateRightOrNone,
+  bufferIsolateRightOrAll,
 
   // buffersSerialize, /* deprecated */
   // buffersDeserialize, /* deprecated */
@@ -3821,11 +3841,11 @@ let Routines =
   bufferSplit,
   bufferCutOffLeft,
 
-  strIsolate : _.routineFromPreAndBody( strIsolate_pre, strIsolate_body ),
-  strIsolateLeftOrNone
-  strIsolateLeftOrAll
-  strIsolateRightOrNone
-  strIsolateRightOrAll
+  bufferIsolate : _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolate_body ), // Dmytro : implemented, covered
+  bufferIsolateLeftOrNone, // Dmytro : implemented, covered
+  bufferIsolateLeftOrAll, // Dmytro : implemented
+  bufferIsolateRightOrNone, // Dmytro : implemented
+  bufferIsolateRightOrAll, // Dmytro : implemented
 
   */
 
