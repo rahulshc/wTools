@@ -3375,15 +3375,24 @@ function bufferIsolate_body( o )
     {
       if( o.src.constructor !== src.constructor )
       {
-        result.push( new o.src.constructor( o.src.buffer, o.src.byteOffset, index ) );
-        result.push( new o.src.constructor( delimeter.buffer, delimeter.byteOffset, delimeter.byteLength / o.src.BYTES_PER_ELEMENT ) );
-        let secondOffset = src.byteOffset + index * o.src.BYTES_PER_ELEMENT + delimeter.length;
-        result.push( new o.src.constructor( o.src.buffer, secondOffset, o.src.byteOffset + src.byteLength - secondOffset ) );
+        if( o.src.constructor === BufferRaw )
+        {
+          result.push( o.src.slice( 0, index ) );
+          result.push( delimeter.buffer.slice( delimeter.byteOffset, delimeter.byteOffset + delimeter.byteLength ) );
+          result.push( o.src.slice( index + delimeter.length, src.byteLength ) );
+        }
+        else
+        {
+          result.push( new o.src.constructor( o.src.buffer, o.src.byteOffset, index ) );
+          result.push( new o.src.constructor( delimeter.buffer, delimeter.byteOffset, delimeter.byteLength / ( o.src.BYTES_PER_ELEMENT || 1 ) ) );
+          let secondOffset = src.byteOffset + index * ( o.src.BYTES_PER_ELEMENT || 1 ) + delimeter.length;
+          result.push( new o.src.constructor( o.src.buffer, secondOffset, o.src.byteOffset + src.byteLength - secondOffset ) );
+        }
       }
       else
       {
         result.push( o.src.subarray( 0, index ) );
-        result.push( new o.src.constructor( delimeter.buffer, delimeter.byteOffset, delimeter.byteLength / o.src.BYTES_PER_ELEMENT ) );
+        result.push( new o.src.constructor( delimeter.buffer, delimeter.byteOffset, delimeter.byteLength / ( o.src.BYTES_PER_ELEMENT || 1 ) ) );
         result.push( o.src.subarray( index + delimeter.length ) );
       }
       return result;
@@ -3424,7 +3433,8 @@ function bufferIsolate_body( o )
 
   function everything( side )
   {
-    return ( side ) ? [ o.src, undefined, new o.src.constructor( 0 ) ] : [ new o.src.constructor( 0 ), undefined, o.src ];
+    let empty = new U8x( 0 ).buffer;
+    return ( side ) ? [ o.src, undefined, new o.src.constructor( empty ) ] : [ new o.src.constructor( empty ), undefined, o.src ];
   }
 
   /* */
