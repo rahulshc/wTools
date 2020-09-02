@@ -3341,6 +3341,8 @@ function bufferIsolate_body( o )
   _.assertRoutineOptions( bufferIsolate_body, arguments );
 
   let src = o.src;
+  if( _.strIs( o.src ) )
+  src = o.src = _.bufferBytesGet( o.src );
   if( !_.bufferTypedIs( o.src ) )
   src = _.bufferBytesGet( o.src );
 
