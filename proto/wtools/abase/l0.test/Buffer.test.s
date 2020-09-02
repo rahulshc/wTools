@@ -12033,7 +12033,7 @@ function bufferRight( test )
 
 //
 
-function bufferIsolate( test )
+function bufferIsolateWitTypedBuffers( test )
 {
   var list =
   [
@@ -12102,7 +12102,120 @@ function bufferIsolate( test )
     var del = new makeBuffer([ 2 ]);
     var got = _.bufferIsolate( src, del, 2 );
     test.identical( got, [ new makeBuffer([ 1, 2, 3 ]), undefined, new makeBuffer( [] ) ] );
+
+    test.case = 'filled src, delimeter, few entries';
+    var src = new makeBuffer([ 1, 2, 3, 2, 4 ]);
+    var del = new makeBuffer([ 2 ]);
+    var got = _.bufferIsolate( src, del );
+    test.identical( got, [ new makeBuffer([ 1 ]), new makeBuffer([ 2 ]), new makeBuffer([ 3, 2, 4 ]) ] );
+
+    test.case = 'filled src, delimeter, few entries, times > 1, times === entries';
+    var src = new makeBuffer([ 1, 2, 3, 2, 4 ]);
+    var del = new makeBuffer([ 2 ]);
+    var got = _.bufferIsolate( src, del, 2 );
+    test.identical( got, [ new makeBuffer([ 1, 2, 3 ]), new makeBuffer([ 2 ]), new makeBuffer([ 4 ]) ] );
+
+    test.case = 'filled src, delimeter, few entries, times > 1, times > entries';
+    var src = new makeBuffer([ 1, 2, 3, 2, 4 ]);
+    var del = new makeBuffer([ 2 ]);
+    var got = _.bufferIsolate( src, del, 3 );
+    test.identical( got, [ new makeBuffer([ 1, 2, 3, 2, 4 ]), undefined, new makeBuffer( [] ) ] );
   }
+
+  /* */
+
+  test.open( 'different types of src and delimeter' );
+
+  test.case = 'src - empty U8x, delimeter - empty line';
+  var src = new U8x( [] );
+  var del = '';
+  var got = _.bufferIsolate( src, del );
+  test.identical( got, [ new U8x( [] ), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - empty I16x, delimeter - empty U8x, times > 1';
+  var src = new I16x( [] );
+  var del = new U8x( [] );
+  var got = _.bufferIsolate( src, del, 2 );
+  test.identical( got, [ new I16x( [] ), undefined, new I16x( [] ) ] );
+
+  test.case = 'src - F32x, delimeter - empty I8x';
+  var src = new F32x([ 1, 2, 3 ]);
+  var del = new I8x( [] );
+  var got = _.bufferIsolate( src, del );
+  test.identical( got, [ new F32x( [] ), undefined, new F32x([ 1, 2, 3 ]) ] );
+
+  test.case = 'src - F64x, delimeter - empty U32x, times > 1';
+  var src = new F64x([ 1, 2, 3 ]);
+  var del = new F32x( [] );
+  var got = _.bufferIsolate( src, del, 2 );
+  test.identical( got, [ new F64x( [] ), undefined, new F64x([ 1, 2, 3 ]) ] );
+
+  test.case = 'src - I16x, delimeter - I8x, not entry';
+  var src = new I16x([ 1, 2, 3 ]);
+  var del = new I8x([ 8, 0 ]);
+  var got = _.bufferIsolate( src, del );
+  test.identical( got, [ new I16x( [] ), undefined, new I16x([ 1, 2, 3 ]) ] );
+
+  test.case = 'src - U8x, delimeter - U16x, not entry, times > 1';
+  var src = new U8x([ 0, 1, 2, 3 ]);
+  var del = new U16x([ 8 ]);
+  var got = _.bufferIsolate( src, del, 2 );
+  test.identical( got, [ new U8x( [] ), undefined, new U8x([ 0, 1, 2, 3 ]) ] );
+
+  test.case = 'src - U8x, delimeter - string-space, entry';
+  var src = new U8x([ 1, 0, 32, 0, 3 ]);
+  var del = ' ';
+  var got = _.bufferIsolate( src, del );
+  test.identical( got, [ new U8x([ 1, 0 ]), new U8x([ 32 ]), new U8x([ 0, 3 ]) ] );
+
+  test.case = 'src - U16x, delimeter - U8x, entry, times > 1, times > entry';
+  var src = new U16x([ 1, 2, 3 ]);
+  var del = new U8x([ 2, 0 ]);
+  var got = _.bufferIsolate( src, del, 2 );
+  test.identical( got, [ new U16x([ 1, 2, 3 ]), undefined, new U16x( [] ) ] );
+
+  test.case = 'src - I16x, delimeter - U8x, few entries';
+  var src = new I16x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 2, 0 ]);
+  var got = _.bufferIsolate( src, del );
+  test.identical( got, [ new I16x([ 1 ]), new I16x([ 2 ]), new I16x([ 3, 2, 4 ]) ] );
+
+  test.case = 'src - I16x, delimeter - U8x, few entries, times > 1, times === entries';
+  var src = new I16x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 2, 0 ]);
+  var got = _.bufferIsolate( src, del, 2 );
+  test.identical( got, [ new I16x([ 1, 2, 3 ]), new I16x([ 2 ]), new I16x([ 4 ]) ] );
+
+  test.case = 'src - I16x, delimeter - U8x, few entries, times > 1, times > entries';
+  var src = new I16x([ 1, 2, 3, 2, 4 ]);
+  var del = new U8x([ 2, 0 ]);
+  var got = _.bufferIsolate( src, del, 3 );
+  test.identical( got, [ new I16x([ 1, 2, 3, 2, 4 ]), undefined, new I16x( [] ) ] );
+
+  test.close( 'different types of src and delimeter' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferIsolate() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.bufferIsolate( new U8x( 3 ), new U16x( 1 ), 1, 2 ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.bufferIsolate( [ 'wrong' ], new U8x([ 32 ]) ) );
+
+  test.case = 'wrong type of delimeter';
+  test.shouldThrowErrorSync( () => _.bufferIsolate( new U8x([ 32 ]), [ 'wrong' ] ) );
+
+  test.case = 'wrong type of map o';
+  test.shouldThrowErrorSync( () => _.bufferIsolate( new U8x() ) );
+
+  test.case = 'unknown options in map o';
+  test.shouldThrowErrorSync( () => _.bufferIsolate({ src : new U8x(), unknown : 1, times : 1 }) );
 }
 
 // --
@@ -12184,7 +12297,7 @@ let Self =
     bufferLeft,
     bufferRight,
 
-    bufferIsolate,
+    bufferIsolateWitTypedBuffers,
 
   }
 
