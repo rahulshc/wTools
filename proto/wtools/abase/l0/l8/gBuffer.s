@@ -3410,7 +3410,7 @@ function bufferIsolate_body( o )
     }
     else
     {
-      index = index + delimeter.length - 1;
+      index = index - 1;
       if( index <= 0 )
       break;
     }
