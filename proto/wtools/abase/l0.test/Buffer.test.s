@@ -12776,6 +12776,169 @@ function bufferIsolateLeftOrNoneWithBufferTyped( test )
   test.shouldThrowErrorSync( () => _.bufferIsolateLeftOrNone({ src : new U8x(), none : 1, times : 1 }) );
 }
 
+//
+
+function bufferIsolateLeftOrNoneWithBufferRaw( test )
+{
+  var bufferRaw = ( src ) => new U8x( src ).buffer;
+  var bufferView = ( src ) => new BufferView( new U8x( src ).buffer );
+
+  /* - */
+
+  test.open( 'src - bufferRaw, delimeter - bufferRaw' );
+  testRun( bufferRaw );
+  test.close( 'src - bufferRaw, delimeter - bufferRaw' );
+
+  /* - */
+
+  test.open( 'src - bufferView, delimeter - bufferView' );
+  testRun( bufferView );
+  test.close( 'src - bufferView, delimeter - bufferView' );
+
+  /* - */
+
+  function testRun( makeBuffer)
+  {
+    test.case = 'empty src, empty delimeter';
+    var src = makeBuffer( [] );
+    var del = makeBuffer( [] );
+    var got = _.bufferIsolateLeftOrNone( src, del );
+    test.identical( got, [ makeBuffer( [] ), undefined, makeBuffer( [] ) ] );
+
+    test.case = 'empty src, empty delimeter, times > 1';
+    var src = makeBuffer( [] );
+    var del = makeBuffer( [] );
+    var got = _.bufferIsolateLeftOrNone( src, del, 2 );
+    test.identical( got, [ makeBuffer( [] ), undefined, makeBuffer( [] ) ] );
+
+    test.case = 'filled src, empty delimeter';
+    var src = makeBuffer([ 1, 2, 3 ]);
+    var del = makeBuffer( [] );
+    var got = _.bufferIsolateLeftOrNone( src, del );
+    test.identical( got, [ makeBuffer( [] ), undefined, makeBuffer([ 1, 2, 3 ]) ] );
+
+    test.case = 'filled src, empty delimeter, times > 1';
+    var src = makeBuffer([ 1, 2, 3 ]);
+    var del = makeBuffer( [] );
+    var got = _.bufferIsolateLeftOrNone( src, del, 2 );
+    test.identical( got, [ makeBuffer( [] ), undefined, makeBuffer([ 1, 2, 3 ]) ] );
+
+    test.case = 'filled src, delimeter, not entry';
+    var src = makeBuffer([ 1, 2, 3 ]);
+    var del = makeBuffer([ 8 ]);
+    var got = _.bufferIsolateLeftOrNone( src, del );
+    test.identical( got, [ makeBuffer( [] ), undefined, makeBuffer([ 1, 2, 3 ]) ] );
+
+    test.case = 'filled src, delimeter, not entry, times > 1';
+    var src = makeBuffer([ 1, 2, 3 ]);
+    var del = makeBuffer([ 8 ]);
+    var got = _.bufferIsolateLeftOrNone( src, del, 2 );
+    test.identical( got, [ makeBuffer( [] ), undefined, makeBuffer([ 1, 2, 3 ]) ] );
+
+    test.case = 'filled src, delimeter, entry';
+    var src = makeBuffer([ 1, 2, 3 ]);
+    var del = makeBuffer([ 2 ]);
+    var got = _.bufferIsolateLeftOrNone( src, del );
+    test.identical( got, [ makeBuffer([ 1 ]), makeBuffer([ 2 ]), makeBuffer([ 3 ]) ] );
+
+    test.case = 'filled src, delimeter, entry, times > 1, times > entry';
+    var src = makeBuffer([ 1, 2, 3 ]);
+    var del = makeBuffer([ 2 ]);
+    var got = _.bufferIsolateLeftOrNone( src, del, 2 );
+    test.identical( got, [ makeBuffer([ 1, 2, 3 ]), undefined, makeBuffer( [] ) ] );
+
+    test.case = 'filled src, delimeter, few entries';
+    var src = makeBuffer([ 1, 2, 3, 2, 4 ]);
+    var del = makeBuffer([ 2 ]);
+    var got = _.bufferIsolateLeftOrNone( src, del );
+    test.identical( got, [ makeBuffer([ 1 ]), makeBuffer([ 2 ]), makeBuffer([ 3, 2, 4 ]) ] );
+
+    test.case = 'filled src, delimeter, few entries, times > 1, times === entries';
+    var src = makeBuffer([ 1, 2, 3, 2, 4 ]);
+    var del = makeBuffer([ 2 ]);
+    var got = _.bufferIsolateLeftOrNone( src, del, 2 );
+    test.identical( got, [ makeBuffer([ 1, 2, 3 ]), makeBuffer([ 2 ]), makeBuffer([ 4 ]) ] );
+
+    test.case = 'filled src, delimeter, few entries, times > 1, times > entries';
+    var src = makeBuffer([ 1, 2, 3, 2, 4 ]);
+    var del = makeBuffer([ 2 ]);
+    var got = _.bufferIsolateLeftOrNone( src, del, 3 );
+    test.identical( got, [ makeBuffer([ 1, 2, 3, 2, 4 ]), undefined, makeBuffer( [] ) ] );
+  }
+
+  /* */
+
+  test.open( 'different types of src and delimeter' );
+
+  test.case = 'src - empty BufferRaw, delimeter - empty line';
+  var src = new BufferRaw( 0 );
+  var del = '';
+  var got = _.bufferIsolateLeftOrNone( src, del );
+  test.identical( got, [ new BufferRaw( 0 ), undefined, new BufferRaw( 0 ) ] );
+
+  test.case = 'src - empty BufferView, delimeter - empty U8x, times > 1';
+  var src = new BufferView( new BufferRaw( 0 ) );
+  var del = new U8x( [] );
+  var got = _.bufferIsolateLeftOrNone( src, del, 2 );
+  test.identical( got, [ new BufferView( new BufferRaw( 0 ) ), undefined, new BufferView( new BufferRaw( 0 ) ) ] );
+
+  test.case = 'src - BufferRaw, delimeter - empty I8x';
+  var src = new U8x([ 1, 2, 3 ]).buffer;
+  var del = new I8x( [] );
+  var got = _.bufferIsolateLeftOrNone( src, del );
+  test.identical( got, [ new BufferRaw( 0 ), undefined, new U8x([ 1, 2, 3 ]).buffer ] );
+
+  test.case = 'src - BufferView, delimeter - empty U32x, times > 1';
+  var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
+  var del = new F32x( [] );
+  var got = _.bufferIsolateLeftOrNone( src, del, 2 );
+  test.identical( got, [ new BufferView( new BufferRaw( 0 ) ), undefined, new BufferView( new U8x([ 1, 2, 3 ]).buffer ) ] );
+
+  test.case = 'src - BufferRaw, delimeter - I8x, not entry';
+  var src = new U8x([ 1, 2, 3 ]).buffer;
+  var del = new I8x([ 8, 0 ]);
+  var got = _.bufferIsolateLeftOrNone( src, del );
+  test.identical( got, [ new BufferRaw( 0 ), undefined, new U8x([ 1, 2, 3 ]).buffer ] );
+
+  test.case = 'src - BufferRaw, delimeter - U16x, not entry, times > 1';
+  var src = new U8x([ 0, 1, 2, 3 ]).buffer;
+  var del = new U16x([ 8 ]);
+  var got = _.bufferIsolateLeftOrNone( src, del, 2 );
+  test.identical( got, [ new BufferRaw( 0 ), undefined, new U8x([ 0, 1, 2, 3 ]).buffer ] );
+
+  test.case = 'src - BufferView, delimeter - string-space, entry';
+  var src = new BufferView( new U8x([ 1, 0, 32, 0, 3 ]).buffer );
+  var del = ' ';
+  var got = _.bufferIsolateLeftOrNone( src, del );
+  test.identical( got, [ new BufferView( new U8x([ 1, 0 ]).buffer ), new BufferView( new U8x([ 32 ]).buffer ), new BufferView( new U8x([ 0, 3 ]).buffer ) ] );
+
+  test.case = 'src - BufferView, delimeter - U8x, entry, times > 1, times > entry';
+  var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
+  var del = new U8x([ 2 ]);
+  var got = _.bufferIsolateLeftOrNone( src, del, 2 );
+  test.identical( got, [ new BufferView( new U8x([ 1, 2, 3 ]).buffer ), undefined, new BufferView( new BufferRaw( 0 ) ) ] );
+
+  test.case = 'src - BufferRaw, delimeter - BufferView, few entries';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]).buffer;
+  var del = new BufferView( new U8x([ 2 ]).buffer );
+  var got = _.bufferIsolateLeftOrNone( src, del );
+  test.identical( got, [ new U8x([ 1 ]).buffer, new U8x([ 2 ]).buffer, new U8x([ 3, 2, 4 ]).buffer ] );
+
+  test.case = 'src - BufferRaw, delimeter - BufferView, few entries, times > 1, times === entries';
+  var src = new U8x([ 1, 2, 3, 2, 4 ]).buffer;
+  var del = new BufferView( new U8x([ 2 ]).buffer );
+  var got = _.bufferIsolateLeftOrNone( src, del, 2 );
+  test.identical( got, [ new U8x([ 1, 2, 3 ]).buffer, new U8x([ 2 ]).buffer, new U8x([ 4 ]).buffer ] );
+
+  test.case = 'src - BufferView, delimeter - U8x, few entries, times > 1, times > entries';
+  var src = new BufferView( new U8x([ 1, 2, 3, 2, 4 ]).buffer );
+  var del = new U8x([ 2 ]);
+  var got = _.bufferIsolateLeftOrNone( src, del, 3 );
+  test.identical( got, [ new BufferView( new U8x([ 1, 2, 3, 2, 4 ]).buffer ), undefined, new BufferView( new BufferRaw( 0 ) ) ] );
+
+  test.close( 'different types of src and delimeter' );
+}
+
 // --
 // declaration
 // --
@@ -12861,6 +13024,7 @@ let Self =
     bufferIsolateCallWithMap,
 
     bufferIsolateLeftOrNoneWithBufferTyped,
+    bufferIsolateLeftOrNoneWithBufferRaw,
 
   }
 
