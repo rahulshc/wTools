@@ -3512,9 +3512,26 @@ bufferIsolateLeftOrNone_body.defaults =
   times : 1,
 };
 
+let bufferIsolateLeftOrNone = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateLeftOrNone_body );
+
 //
 
-let bufferIsolateLeftOrNone = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateLeftOrNone_body );
+function bufferIsolateLeftOrAll_body( o )
+{
+  o.left = 1;
+  o.none = 0;
+  let result = _.bufferIsolate.body( o );
+  return result;
+}
+
+bufferIsolateLeftOrAll_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  times : 1,
+};
+
+let bufferIsolateLeftOrAll = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateLeftOrAll_body );
 
 //
 //
@@ -3763,6 +3780,7 @@ let Routines =
 
   bufferIsolate,
   bufferIsolateLeftOrNone,
+  bufferIsolateLeftOrAll,
 
   // buffersSerialize, /* deprecated */
   // buffersDeserialize, /* deprecated */
