@@ -3309,6 +3309,200 @@ function bufferCutOffLeft( src, del )
 }
 
 //
+
+function bufferIsolate_pre( routine, args )
+{
+  let o;
+
+  if( args.length > 1 )
+  {
+    o = { src : args[ 0 ], delimeter : args[ 1 ], times : args[ 2 ] };
+  }
+  else
+  {
+    o = args[ 0 ];
+    _.assert( args.length === 1, 'Expects single argument' );
+  }
+
+  _.routineOptions( routine, o );
+  _.assert( 1 <= args.length && args.length <= 3 );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( _.bufferAnyIs( o.src ) || _.strIs( o.src ) );
+  _.assert( _.bufferAnyIs( o.delimeter ) || _.strIs( o.delimeter ) );
+  _.assert( _.numberIs( o.times ) );
+
+  return o;
+}
+
+//
+
+function bufferIsolate_body( o )
+{
+  _.assertRoutineOptions( bufferIsolate_body, arguments );
+
+  let src = o.src;
+  if( !_.bufferTypedIs( o.src ) )
+  src = _.bufferBytesGet( o.src );
+
+  let delimeter = o.delimeter;
+  if( _.strIs( o.delimeter ) || !_.bufferTypedIs( o.delimeter ) )
+  delimeter = _.bufferBytesGet( o.delimeter );
+
+  delimeter = _.bufferRetype( delimeter, src.constructor );
+
+  _.assert( src.indexOf );
+  _.assert( delimeter.indexOf );
+
+  let result = [];
+  let times = o.times;
+  let index = o.left ? 0 : src.length;
+  let more = o.left ? bufferLeft : bufferRight;
+
+  /* */
+
+  while( times > 0 )
+  {
+    index = more( index );
+
+    if( index === -1 )
+    break;
+
+    times -= 1;
+
+    if( times === 0 )
+    {
+      if( o.src.constructor !== src.constructor )
+      {
+        result.push( new o.src.constructor( o.src.buffer, o.src.byteOffset, index ) );
+        result.push( new o.src.constructor( delimeter.buffer, delimeter.byteOffset, delimeter.byteLength / o.src.BYTES_PER_ELEMENT ) );
+        let secondOffset = src.byteOffset + index * o.src.BYTES_PER_ELEMENT + delimeter.length;
+        result.push( new o.src.constructor( o.src.buffer, secondOffset, o.src.byteOffset + src.byteLength - secondOffset ) );
+      }
+      else
+      {
+        result.push( o.src.subarray( 0, index ) );
+        result.push( new o.src.constructor( delimeter.buffer, delimeter.byteOffset, delimeter.byteLength / o.src.BYTES_PER_ELEMENT ) );
+        result.push( o.src.subarray( index + delimeter.length ) );
+      }
+      return result;
+    }
+
+    /* */
+
+    if( o.left )
+    {
+      index = index + 1;
+      if( index >= src.length )
+      break;
+    }
+    else
+    {
+      index = index + delimeter.length - 1;
+      if( index <= 0 )
+      break;
+    }
+
+  }
+
+  /* */
+
+  if( !result.length )
+  {
+    if( o.times === 0 )
+    return everything( !o.left );
+    else if( times === o.times )
+    return everything( o.left ^ o.none );
+    else
+    return everything( o.left );
+  }
+
+  return result;
+
+  /* */
+
+  function everything( side )
+  {
+    return ( side ) ? [ o.src, undefined, new o.src.constructor( 0 ) ] : [ new o.src.constructor( 0 ), undefined, o.src ];
+  }
+
+  /* */
+
+  function bufferLeft( index )
+  {
+    index = src.indexOf( delimeter[ 0 ], index );
+    while( index !== -1 )
+    {
+      let i = 0;
+      for( ; i < delimeter.length; i++ )
+      if( src[ index + i ] !== delimeter[ i ] )
+      break;
+
+      if( i === delimeter.length )
+      return index;
+
+      index += 1;
+      index = src.indexOf( delimeter[ 0 ], index );
+    }
+    return index;
+  }
+
+  /* */
+
+  function bufferRight( index )
+  {
+    index = src.lastIndexOf( delimeter[ 0 ], index );
+    while( index !== -1 )
+    {
+      let i = 0;
+      for( ; i < delimeter.length; i++ )
+      if( src[ index + i ] !== delimeter[ i ] )
+      break;
+
+      if( i === delimeter.length )
+      return index;
+
+      index -= 1;
+      index = src.lastIndexOf( delimeter[ 0 ], index );
+    }
+    return index;
+  }
+}
+
+bufferIsolate_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  left : 1,
+  times : 1,
+  none : 1,
+};
+
+//
+
+let bufferIsolate = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolate_body );
+
+//
+
+function bufferIsolateLeftOrNone_body( o )
+{
+  o.left = 1;
+  o.none = 1;
+  let result = _.bufferIsolate.body( o );
+  return result;
+}
+
+bufferIsolateLeftOrNone_body.defaults =
+{
+  src : null,
+  delimeter : ' ',
+  times : 1,
+};
+
+//
+
+let bufferIsolateLeftOrNone = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateLeftOrNone_body );
+
+//
 //
 // function buffersSerialize( o )
 // {
@@ -3552,6 +3746,9 @@ let Routines =
   bufferRight,
   bufferSplit,
   bufferCutOffLeft,
+
+  bufferIsolate,
+  bufferIsolateLeftOrNone,
 
   // buffersSerialize, /* deprecated */
   // buffersDeserialize, /* deprecated */
