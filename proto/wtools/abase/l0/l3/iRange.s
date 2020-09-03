@@ -13,9 +13,9 @@ let Self = _global_.wTools;
 function rangeIs( range )
 {
   _.assert( arguments.length === 1 );
-  if( !_.numbersAreAll( range ) )
-  return false;
   if( range.length !== 2 )
+  return false;
+  if( !_.numbersAreAll( range ) )
   return false;
   return true;
 }
