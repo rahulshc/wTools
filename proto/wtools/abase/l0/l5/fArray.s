@@ -1,4 +1,5 @@
-( function _fArray_s_() {
+( function _fArray_s_()
+{
 
 'use strict';
 
@@ -386,7 +387,8 @@ function arrayFromStr( src )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( src ) );
 
-  return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } );
+  // return src.split(/[, ]+/).map( function( s ){ if( s.length ) return parseFloat(s); } ); /* Dmytro : eslint rules require new line for return statement */
+  return src.split(/[, ]+/).map( ( s ) => s.length ? parseFloat( s ) : undefined );
 }
 
 //
@@ -780,92 +782,79 @@ function arrayButInplace( src, range, ins )
 
 //
 
-function _argumentsOnlyArray( dst, src, range, ins )
+function arrayBut_( dst, src, crange, ins )
 {
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  if( dst === null )
-  dst = true;
-  else if( dst === src )
-  dst = false;
-  else if( arguments.length === 4 )
-  _.assert( _.arrayLikeResizable( dst ) );
-  else
+  if( arguments.length < 4 && dst !== null && dst !== src )
   {
-    if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
-    _.assert( _.arrayLikeResizable( dst ) );
-    else
-    {
-      ins = range;
-      range = src;
-      src = dst;
-      dst = false;
-    }
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
   }
 
-  _.assert( _.arrayLikeResizable( src ) );
-
-  return [ dst, src, range, ins ];
-}
-
-//
-
-function arrayBut_( dst, src, range, ins )
-{
-
-  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
-
-  if( range === undefined )
+  if( crange === undefined )
   {
-    if( dst.length !== undefined )
-    dst.splice( 0, dst.length, ... src );
-    else
-    dst = dst === true ? src.slice() : src;
+    crange = [ 0, -1 ];
+    ins = undefined;
+  }
+  else if( _.numberIs( crange ) )
+  {
+    crange = [ crange, crange ];
+  }
 
+  _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
+  _.assert( _.longIs( src ), 'Expects {-src-} of Array type' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.longLike( ins ) || ins === undefined || ins === null, 'Expects long {-ins-} for insertion' );
+
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+
+  if( first < 0 )
+  first = 0;
+  if( first > src.length )
+  first = src.length;
+  if( last > src.length - 1 )
+  last = src.length - 1;
+
+  if( last + 1 < first )
+  last = first - 1;
+
+  let delta = last - first + 1;
+  let insLength = ins ? ins.length : 0;
+  let delta2 = delta - insLength;
+  let resultLength = src.length - delta2;
+
+  let result = dst;
+  if( dst === null )
+  {
+    result = _.arrayMakeUndefined( resultLength );
+  }
+  else if( dst === src )
+  {
+    if( !( ( dst.length === resultLength ) && delta === 0 ) )
+    ins ? dst.splice( first, delta, ... ins ) : dst.splice( first, delta );
     return dst;
   }
-
-  if( _.numberIs( range ) )
-  range = [ range, range + 1 ];
-
-  _.assert( _.rangeIs( range ) );
-  _.assert( ins === undefined || _.longLike( ins ) );
-
-  _.rangeClamp( range, [ 0, src.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  let result;
-  if( dst !== false )
+  else if( dst.length !== resultLength )
   {
-    if( dst.length !== undefined )
-    {
-      if( !Object.isExtensible( dst ) && dst.length < src.length - range[ 1 ] + range[ 0 ] + ins.length ? ins.length : 0 )
-      _.assert( 0, '{-dst-} array is not extensible, cannot change {-dst-} array' );
-
-      result = _.longEmpty( dst );
-    }
-    else
-    {
-      result = [];
-    }
-
-    for( let i = 0; i < range[ 0 ]; i++ )
-    result[ i ] = src[ i ];
-
-    if( ins )
-    result.push( ... ins );
-
-    for( let j = range[ 1 ]; j < src.length; j++ )
-    result.push( src[ j ] );
+    if( dst.length < resultLength )
+    _.assert( Object.isExtensible( result ), 'Expects extensible array {-dst-}' );
+    dst.length = resultLength;
   }
-  else
+
+  for( let i = 0 ; i < first ; i++ )
+  result[ i ] = src[ i ];
+
+  for( let i = last + 1 ; i < src.length ; i++ )
+  result[ i - delta2 ] = src[ i ];
+
+  if( ins )
   {
-    result = src
-    if( ins )
-    result.splice.apply( result, [ range[ 0 ], range[ 1 ] - range[ 0 ], ... ins ] );
-    else
-    result.splice.apply( result, [ range[ 0 ], range[ 1 ] - range[ 0 ] ] );
+    for( let i = 0 ; i < ins.length ; i++ )
+    result[ first + i ] = ins[ i ];
   }
 
   return result;
@@ -1064,60 +1053,63 @@ function arrayShrinkInplace( src, range, ins )
 
 //
 
-function arrayShrink_( dst, src, range, ins )
+function arrayShrink_( dst, src, crange )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects not {-ins-} argument' );
 
-  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
-
-  if( range === undefined )
-  return returnDst();
-
-  if( _.numberIs( range ) )
-  range = [ range, src.length ];
-
-  _.assert( _.rangeIs( range ) );
-
-  _.rangeClamp( range, [ 0, src.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-
-  if( range[ 0 ] === 0 && range[ 1 ] === src.length )
-  return returnDst();
-
-  let f2 = Math.max( range[ 0 ], 0 );
-  let l2 = Math.min( src.length, range[ 1 ] );
-
-  let result
-  if( dst !== false )
+  if( arguments.length < 3 && dst !== null && dst !== src )
   {
-    if( dst.length !== undefined )
-    result = _.longEmpty( dst );
-    else
-    result = [];
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+  }
 
-    for( let i = f2; i < l2; i++ )
-    result.push( src[ i ] );
-  }
-  else
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
+
+  _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
+  _.assert( _.arrayIs( src ), 'Expects {-src-} of Array type' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+
+  if( first < 0 )
+  first = 0;
+  if( last > src.length - 1 )
+  last = src.length - 1;
+
+  if( last + 1 < first )
+  last = first - 1;
+
+  let first2 = Math.max( first, 0 );
+  let last2 = Math.min( src.length - 1, last );
+
+  let resultLength = last - first + 1;
+
+  let result = dst;
+  if( dst === null )
   {
-    result = src;
-    result.splice.apply( result, [ 0, f2 ] );
-    result.length = range[ 1 ] - range[ 0 ];
+    result = _.arrayMakeUndefined( resultLength );
   }
+  else if( dst === src )
+  {
+    result.splice.apply( result, [ 0, first2 ] );
+    result.length = resultLength;
+    return result;
+  }
+  else if( dst.length < resultLength )
+  {
+    _.assert( Object.isExtensible( dst ), 'Array is not extensible, cannot change array' );
+    result.length = resultLength;
+  }
+
+  for( let i = first2 ; i < last2 + 1 ; i++ )
+  result[ i - first2 ] = src[ i ];
 
   return result;
-
-  /* */
-
-  function returnDst()
-  {
-    if( dst.length !== undefined )
-    dst.splice( 0, dst.length, ... src );
-    else
-    dst = dst === true ? src.slice() : src;
-
-    return dst;
-  }
 }
 
 //
@@ -1374,7 +1366,8 @@ function arrayGrow_( dst, src, crange, ins )
   if( _.numberIs( crange ) )
   crange = [ 0, crange ];
 
-  _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
+  _.assert( _.arrayIs( src ), 'Expects {-src-} of Array type' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
   let f = crange[ 0 ] === undefined ?  0 : crange[ 0 ];
@@ -1735,78 +1728,98 @@ function arrayRelengthInplace( src, range, ins )
 
 //
 
-function arrayRelength_( dst, src, range, ins )
+function arrayRelength_( dst, src, crange, ins )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  [ dst, src, range, ins ] = _argumentsOnlyArray.apply( this, arguments );
-
-  if( range === undefined )
-  return returnDst();
-
-  if( _.numberIs( range ) )
-  range = [ range, src.length ];
-
-  let f = range[ 0 ] === undefined ?  0 : range[ 0 ];
-  let l = range[ 1 ] === undefined ?  0 : range[ 1 ];
-
-  _.assert( _.rangeIs( range ) );
-
-  if( l < f )
-  l = f;
-
-  if( f < 0 )
-  f = 0;
-
-  if( f === 0 && l === src.length )
-  return returnDst();
-
-  let f2 = Math.max( f, 0 );
-  let l2 = Math.min( src.length, l );
-
-  let result;
-  if( dst !== false )
+  if( arguments.length < 4 && dst !== null && dst !== src )
   {
-    if( dst.length !== undefined )
-    result = dst;
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
+  }
+
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
+
+  _.assert( _.arrayIs( dst ) || dst === null, 'Expects {-dst-} of Array type or null' );
+  _.assert( _.arrayIs( src ), 'Expects {-src-} of Array type' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+
+  if( last < first )
+  last = first - 1;
+
+  if( first < 0 )
+  {
+    last -= first;
+    first -= first;
+  }
+
+  let first2 = Math.max( Math.abs( crange[ 0 ] ), 0 );
+  let last2 = Math.min( src.length - 1, last );
+
+  let resultLength = last - first + 1;
+
+  let result = dst;
+  if( dst === null )
+  {
+    result = _.arrayMakeUndefined( src, resultLength );
+  }
+  else if( dst === src )
+  {
+    if( dst.length === resultLength && crange[ 0 ] === 0 )
+    {
+      return dst;
+    }
+    if( resultLength === 0 )
+    {
+      return _.arrayEmpty( dst );
+    }
+
+    if( dst.length < resultLength )
+    _.assert( Object.isExtensible( dst ), 'dst is not extensible, cannot change dst' );
+
+    if( crange[ 0 ] < 0 )
+    {
+      dst.splice( first, 0, ... _.dup( ins, first2 ) );
+      dst.splice( last2 + 1, src.length - last2, ... _.dup( ins, last - last2 ) );
+    }
     else
-    result = [];
-
-    if( !Object.isExtensible( dst ) && dst.length < l - f )
-    _.assert( 0, 'Array is not extensible, cannot change array' );
-
-    for( let i = f; i < l2; i++ )
-    result[ i - f ] = src[ i ];
+    {
+      dst.splice( 0, first );
+      dst.splice( last2 + 1 - first2, dst.length - last2, ... _.dup( ins, last - last2 ) );
+    }
+    return dst;
   }
-  else
-  {
-    if( !Object.isExtensible( src ) && src.length < l - f )
-    _.assert( 0, 'Array is not extensible, cannot change array' );
-
-    result = src;
-    result.splice( 0, f );
-  }
-
-  result.length = l - f;
-
-  if( ins !== undefined )
-  {
-    for( let r = l2 - f; r < result.length ; r++ )
-    result[ r ] = ins;
-  }
-
-  return result;
 
   /* */
 
-  function returnDst()
-  {
-    if( dst.length !== undefined )
-    dst.splice( 0, dst.length, ... src );
-    else
-    dst = dst === true ? src.slice() : src;
+  if( result.length < resultLength )
+  _.assert( Object.isExtensible( result ), 'dst is not extensible, cannot change dst' );
 
-    return dst;
+  if( resultLength === 0 )
+  {
+    return _.arrayEmpty( result );
   }
+  if( crange[ 0 ] < 0 )
+  {
+    result.splice( 0, first2, ... _.dup( ins, first2 ) );
+    result.splice( first2, last2 - first2, ... src.slice( 0, last2 + 1 - first2 ) );
+    result.splice( last2 + 1, result.length - last2, ... _.dup( ins, last - last2 ) );
+  }
+  else
+  {
+    result.splice( 0, last2 + 1, ... src.slice( first2, last2 + 1 ));
+    result.splice( last2 + 1 - first2, result.length - last2, ... _.dup( ins, last - last2 ) );
+  }
+
+  return result;
 }
 
 // --
@@ -1936,7 +1949,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
   }
 
   let result;
-  if ( Config.debug )
+  if( Config.debug )
   {
     debugger;
     result = arrayPrependedOnce.apply( this, arguments );
@@ -2024,7 +2037,7 @@ function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
 function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
   let result;
-  if ( Config.debug )
+  if( Config.debug )
   {
     debugger;
     result = arrayPrependedOnce.apply( this, arguments );
@@ -2098,7 +2111,7 @@ function arrayPrependElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
   }
 
   let result;
-  if ( Config.debug )
+  if( Config.debug )
   {
     result = arrayPrependedElementOnce.apply( this, arguments );
     _.assert( result !== undefined, 'Array should have only unique elements, but has several', ins );
@@ -2173,7 +2186,7 @@ function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 function arrayPrependedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 {
   let result;
-  if ( Config.debug )
+  if( Config.debug )
   {
     debugger;
     result = arrayPrependedElementOnce.apply( this, arguments );
@@ -2448,19 +2461,19 @@ function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
- let result;
- if( Config.debug )
- {
-   let insArrayLength = insArray.length;
-   result = arrayPrependedArrayOnce.apply( this, arguments );
-   _.assert( result === insArrayLength );
- }
- else
- {
-   result = arrayPrependedArray.apply( this, [ dstArray, insArray ] );
- }
+  let result;
+  if( Config.debug )
+  {
+    let insArrayLength = insArray.length;
+    result = arrayPrependedArrayOnce.apply( this, arguments );
+    _.assert( result === insArrayLength );
+  }
+  else
+  {
+    result = arrayPrependedArray.apply( this, [ dstArray, insArray ] );
+  }
 
- return result;
+  return result;
 }
 
 //
@@ -2795,38 +2808,38 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
 {
- let result;
- if( Config.debug )
- {
-   let expected = 0;
-   let insIsDst = 0;
-   for( let i = insArray.length - 1; i >= 0; i-- )
-   {
-     if( _.longLike( insArray[ i ] ) )
-     {
-       expected += insArray[ i ].length
+  let result;
+  if( Config.debug )
+  {
+    let expected = 0;
+    let insIsDst = 0;
+    for( let i = insArray.length - 1; i >= 0; i-- )
+    {
+      if( _.longLike( insArray[ i ] ) )
+      {
+        expected += insArray[ i ].length
 
-       if( insArray[ i ] === dstArray )
-       {
-         insIsDst += 1;
-         if( insIsDst > 1 )
-         expected += insArray[ i ].length
-       }
-     }
-     else
-     expected += 1;
-   }
+        if( insArray[ i ] === dstArray )
+        {
+          insIsDst += 1;
+          if( insIsDst > 1 )
+          expected += insArray[ i ].length
+        }
+      }
+      else
+      expected += 1;
+    }
 
-   result = arrayPrependedArraysOnce.apply( this, arguments );
+    result = arrayPrependedArraysOnce.apply( this, arguments );
 
-   _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
- }
- else
- {
-   result = arrayPrependedArrays.apply( this, [ dstArray, insArray ] );
- }
+    _.assert( result === expected, '{-dstArray-} should have none element from {-insArray-}' );
+  }
+  else
+  {
+    result = arrayPrependedArrays.apply( this, [ dstArray, insArray ] );
+  }
 
- return result;
+  return result;
 }
 
 // --
@@ -3237,7 +3250,7 @@ function arrayAppendedArrayOnceStrictly( dstArray, ins )
   {
     let insArrayLength = ins.length;
     result = _.arrayAppendedArrayOnce.apply( this, arguments );
-    _.assert( result === insArrayLength , 'Array should have only unique elements, but has several', ins );
+    _.assert( result === insArrayLength, 'Array should have only unique elements, but has several', ins );
   }
   else
   {
@@ -6213,7 +6226,6 @@ let Extension =
 
   arrayBut,
   arrayButInplace,
-  _argumentsOnlyArray,
   arrayBut_, /* !!! : use instead of arrayBut, arrayButInplace */
   arrayShrink,
   arrayShrinkInplace,
