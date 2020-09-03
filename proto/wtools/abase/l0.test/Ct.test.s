@@ -1,4 +1,5 @@
-( function _Ct_test_s() {
+( function _Ct_test_s()
+{
 
 'use strict';
 
@@ -19,9 +20,6 @@ function strip( test )
   test.open( 'without space symbols' );
 
   test.case = 'full split, closing delimeter';
-  var got = _.ct.strip( 'this❮background:red❯is❮background:default❮text' );
-  var expected = 'thisistext';
-  test.identical( got, expected );
   var got = _.ct.strip( 'this❮background:red❯is❮background:default❯text' );
   var expected = 'thisistext';
   test.identical( got, expected );
@@ -39,45 +37,45 @@ function strip( test )
   var expected = 'textistext';
   test.identical( got, expected );
   var got = _.ct.strip( '❯simple❮text❮background:red❯is❮background:default❯text❯is❮' );
-  var expected = 'textistext';
+  var expected = '❯simple❮textistext❯is❮';
   test.identical( got, expected );
 
   test.case = 'inlined at the beginning and false inlined';
   var got = _.ct.strip( '❮background:red❯i❮s❮background:default❯❮text' );
-  var expected = 'ibackground:defaulttext';
+  var expected = 'i❮s❮text';
   test.identical( got, expected );
   var got = _.ct.strip( '❮background:red❯i❯s❮background:default❯❮text' );
-  var expected = 'ibackground:defaulttext';
+  var expected = 'i❯s❮text';
   test.identical( got, expected );
 
   test.case = 'inlined at the beginning and the end';
   var got = _.ct.strip( '❮background:red❯i❮s❮background:default❯' );
-  var expected = 'ibackground:default❮';
+  var expected = 'i❮s';
   test.identical( got, expected );
   var got = _.ct.strip( '❮background:red❯i❯s❮background:default❯' );
-  var expected = 'ibackground:default❯';
+  var expected = 'i❯s';
   test.identical( got, expected );
 
-  test.case = 'empty string left';
+  test.case = 'wrong enclosing';
   var got = _.ct.strip( '❯❯ordinary❯inline2❯' );
-  var expected = 'ordinary';
+  var expected = '❯❯ordinary❯inline2❯';
   test.identical( got, expected );
   var got = _.ct.strip( '❮❮ordinary❯inline2❮' );
-  var expected = 'ordinary';
+  var expected = '❮inline2❮';
   test.identical( got, expected );
   var got = _.ct.strip( '❯❮ordinary❯inline2❮' );
-  var expected = 'ordinary';
+  var expected = '❯inline2❮';
   test.identical( got, expected );
 
   test.case = 'empty string right';
   var got = _.ct.strip( '❯inline1❮ordinary❮❯' );
-  var expected = 'ordinary';
+  var expected = '❯inline1❮ordinary';
   test.identical( got, expected );
   var got = _.ct.strip( '❮inline1❯ordinary❮❯' );
   var expected = 'ordinary';
   test.identical( got, expected );
   var got = _.ct.strip( '❮inline1❮ordinary❯❮' );
-  var expected = 'ordinary';
+  var expected = '❮inline1❮';
   test.identical( got, expected );
 
   test.case = 'empty string middle';
@@ -87,7 +85,7 @@ function strip( test )
 
   test.case = 'empty all';
   var got = _.ct.strip( '❯❮❮❯' );
-  var expected = '';
+  var expected = '❯❮';
   test.identical( got, expected );
   var got = _.ct.strip( '❮❯❮❯' );
   var expected = '';
@@ -111,17 +109,17 @@ function strip( test )
 
   test.case = 'two inlined substrings is not in fact inlined';
   var got = _.ct.strip( '\n❮\n\t simple  ❯ \n\t\rtext ❮  background:red  ❯  is  ❮  background:default  ❯ text and ❯ is not   ❯' );
-  var expected = '\n \n\t\rtext   is   text and ';
+  var expected = '\n \n\t\rtext   is   text and ❯ is not   ❯';
   test.identical( got, expected );
 
   test.case = 'inlined at the beginning and false inlined';
   var got = _.ct.strip( '   ❮ \t\tbackground:red  ❯ \n\ni  ❮  s  ❮background:default  ❯\n\r\t  ❯  text\n' );
-  var expected = '    \n\ni  background:default    text\n';
+  var expected = '    \n\ni  ❮  s  \n\r\t  ❯  text\n';
   test.identical( got, expected );
 
   test.case = 'inlined at the beginning and the end';
   var got = _.ct.strip( '  ❮  background:red  ❯  i  ❯  s  ❮   background:default  ❯  ' );
-  var expected = '    i     background:default  ❯  ';
+  var expected = '    i  ❯  s    ';
   test.identical( got, expected );
 
   test.case = 'empty string left';
@@ -136,7 +134,7 @@ function strip( test )
 
   test.case = 'empty string middle';
   var got = _.ct.strip( '  ❯  inline1  ❮  ❯  inline2  ❮' );
-  var expected = '    ';
+  var expected = '  ❯  inline1    inline2  ❮';
   test.identical( got, expected );
 
   test.case = 'empty all';
@@ -165,7 +163,7 @@ let Self =
 
   name : 'Tools.Ct',
   silencing : 1,
-  enabled : 0,
+  enabled : 1,
 
   tests :
   {

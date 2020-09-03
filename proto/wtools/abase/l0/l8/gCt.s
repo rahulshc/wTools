@@ -258,7 +258,7 @@ function _strip( srcStr )
 
   _.assert( _.strIs( srcStr ) );
 
-  let splitted = _.strSplitInlined
+  let splitted = _.strSplitInlinedStereo_
   ({
     src : srcStr,
     preservingEmpty : 0,
