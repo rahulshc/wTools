@@ -2940,131 +2940,326 @@ bufferMakeUndefinedWithBuffersLongDescriptor.timeOut = 15000;
 
 function bufferFrom( test )
 {
-  /*src: number, str, array, raw, typed, node */
-  /*bufferConstructor: typed, raw, node */
+  test.open( 'src - null' );
 
-  /* typed buffer */
+  test.case = 'bufferConstructor - BufferRaw';
+  var got = _.bufferFrom({ src : null, bufferConstructor : BufferRaw });
+  test.identical( got, new BufferRaw( 0 ) );
 
-  test.case = 'src:number, bufferConstructor:typed buffer';
-  var src = 1;
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
-  var expected = new U8x( [ src ] );
-  test.identical( got, expected );
+  test.case = 'bufferConstructor - BufferView';
+  var got = _.bufferFrom({ src : null, bufferConstructor : BufferView });
+  test.identical( got, new BufferView( new BufferRaw( 0 ) ) );
 
-  test.case = 'src:str, bufferConstructor:typed buffer';
-  var src = 'abc';
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
-  var expected = new U8x( [ 97, 98, 99 ] );
-  test.identical( got, expected );
+  test.case = 'bufferConstructor - bufferTyped, U8x';
+  var got = _.bufferFrom({ src : null, bufferConstructor : U8x });
+  test.identical( got, new U8x( 0 ) );
 
-  test.case = 'src:array, bufferConstructor:typed buffer';
-  var src = [ 97, 98, 99 ];
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
-  var expected = new U8x( [ 97, 98, 99 ] );
-  test.identical( got, expected );
-
-  test.case = 'src:raw buffer, bufferConstructor:typed buffer';
-  var src = new BufferRaw( 3 );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
-  var expected = new U8x( [ 0, 0, 0 ] );
-  test.identical( got, expected );
-
-  test.case = 'src:typed, bufferConstructor:typed buffer';
-  var src = new I32x( [ 97, 98, 99 ] );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : U8x });
-  var expected = new U8x( [ 97, 98, 99 ] );
-  test.identical( got, expected );
+  test.case = 'bufferConstructor - bufferTyped, Fx';
+  var got = _.bufferFrom({ src : null, bufferConstructor : Fx });
+  test.identical( got, new F32x( 0 ) );
 
   if( Config.interpreter === 'njs' )
   {
-    test.case = 'src:node buffer, bufferConstructor:typed buffer';
-    var src1 = BufferNode.from( [ 97, 98, 99 ] );
-    var got1 = _.bufferFrom({ /*ttt*/src : src1, bufferConstructor : U8x });
-    var expected1 = new U8x( [ 97, 98, 99 ] );
-    test.identical( got1, expected1 );
+    test.case = 'bufferConstructor - BufferNode';
+    var got0 = _.bufferFrom({ src : null, bufferConstructor : BufferNode });
+    test.identical( got0, BufferNode.alloc( 0 ) );
   }
 
-  /* raw buffer */
+  test.close( 'src - null' );
 
-  test.case = 'src:number, bufferConstructor:raw buffer';
-  var src = 1;
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-  var expected = new U8x( 1 ).buffer;
-  test.identical( got, expected );
+  /* - */
 
-  test.case = 'src:str, bufferConstructor:raw buffer';
-  var src = 'abc';
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-  var expected = new U8x().buffer;
-  test.identical( got, expected );
+  test.open( 'src - number' );
 
-  test.case = 'src:array, bufferConstructor:raw buffer';
-  var src = [ 97, 98, 99 ];
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-  var expected = new U8x().buffer;
-  test.identical( got, expected );
+  test.case = 'bufferConstructor - BufferRaw';
+  var got = _.bufferFrom({ src : 2, bufferConstructor : BufferRaw });
+  test.identical( got, new BufferRaw( 2 ) );
 
-  test.case = 'src:raw buffer, bufferConstructor:raw buffer';
-  var src = new BufferRaw( 3 );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-  var expected = new U8x( 3 ).buffer;
-  test.identical( got, expected );
+  test.case = 'bufferConstructor - BufferView';
+  var got = _.bufferFrom({ src : 2, bufferConstructor : BufferView });
+  test.identical( got, new BufferView( new BufferRaw( 2 ) ) );
 
-  test.case = 'src:typed, bufferConstructor:raw buffer';
-  var src = new I32x( [ 97, 98, 99 ] );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferRaw });
-  var expected = new I32x().buffer;
-  test.identical( got, expected );
+  test.case = 'bufferConstructor - bufferTyped, U8x';
+  var got = _.bufferFrom({ src : 2, bufferConstructor : U8x });
+  test.identical( got, new U8x( 2 ) );
+
+  test.case = 'bufferConstructor - bufferTyped, Fx';
+  var got = _.bufferFrom({ src : 2, bufferConstructor : Fx });
+  test.identical( got, new F32x( 2 ) );
 
   if( Config.interpreter === 'njs' )
   {
-    test.case = 'src:node buffer, bufferConstructor:raw buffer';
-    var src2 = BufferNode.from( [ 97, 98, 99 ] );
-    var got2 = _.bufferFrom({ /*ttt*/src : src2, bufferConstructor : BufferRaw });
-    var expected2 = new U8x().buffer;
-    test.identical( got2, expected2 );
+    test.case = 'bufferConstructor - BufferNode';
+    var got1 = _.bufferFrom({ src : 2, bufferConstructor : BufferNode });
+    test.identical( got1, BufferNode.alloc( 2 ) );
   }
 
-  if( !Config.interpreter === 'njs' )
+  test.close( 'src - number' );
+
+  /* - */
+
+  test.open( 'src - string' );
+
+  test.case = 'bufferConstructor - BufferRaw';
+  var got = _.bufferFrom({ src : 'abc', bufferConstructor : BufferRaw });
+  test.identical( got, new U8x([ 97, 98, 99 ]).buffer );
+
+  test.case = 'bufferConstructor - BufferView';
+  var got = _.bufferFrom({ src : 'abc', bufferConstructor : BufferView });
+  test.identical( got, new BufferView( new U8x([ 97, 98, 99 ]).buffer ) );
+
+  test.case = 'bufferConstructor - bufferTyped, U8x';
+  var got = _.bufferFrom({ src : 'abc', bufferConstructor : U8x });
+  test.identical( got, new U8x([ 97, 98, 99 ]) );
+
+  test.case = 'bufferConstructor - bufferTyped, Fx';
+  var got = _.bufferFrom({ src : 'abc', bufferConstructor : Fx });
+  test.identical( got, new F32x([ 97, 98, 99 ]) );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'bufferConstructor - BufferNode';
+    var got1 = _.bufferFrom({ src : 'abc', bufferConstructor : BufferNode });
+    test.identical( got1, BufferNode.from([ 97, 98, 99 ]) );
+  }
+
+  test.close( 'src - string' );
+
+  /* - */
+
+  test.open( 'src - BufferRaw' );
+
+  test.case = 'bufferConstructor - BufferRaw';
+  var src = new U8x([ 1, 2, 3 ]).buffer;
+  var got = _.bufferFrom({ src, bufferConstructor : BufferRaw });
+  test.identical( got, new U8x([ 1, 2, 3 ]).buffer );
+  test.is( got === src );
+
+  test.case = 'bufferConstructor - BufferView';
+  var src = new U8x([ 1, 2, 3 ]).buffer;
+  var got = _.bufferFrom({ src, bufferConstructor : BufferView });
+  test.identical( got, new BufferView( new U8x([ 1, 2, 3 ]).buffer ) );
+
+  test.case = 'bufferConstructor - bufferTyped, U8x';
+  var src = new U8x([ 1, 2, 3 ]).buffer;
+  var got = _.bufferFrom({ src, bufferConstructor : U8x });
+  test.identical( got, new U8x([ 1, 2, 3 ]) );
+
+  test.case = 'bufferConstructor - bufferTyped, Fx';
+  var src = new F32x([ 1, 2, 3 ]).buffer;
+  var got = _.bufferFrom({ src, bufferConstructor : Fx });
+  test.identical( got, new F32x([ 1, 2, 3 ]) );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'bufferConstructor - BufferNode';
+    var src = new U8x([ 1, 2, 3 ]).buffer;
+    var got2 = _.bufferFrom({ src, bufferConstructor : BufferNode });
+    test.identical( got2, BufferNode.from([ 1, 2, 3 ]) );
+  }
+
+  test.close( 'src - BufferRaw' );
+
+  /* - */
+
+  test.open( 'src - BufferView' );
+
+  test.case = 'bufferConstructor - BufferRaw';
+  var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
+  var got = _.bufferFrom({ src, bufferConstructor : BufferRaw });
+  test.identical( got, new U8x([ 1, 2, 3 ]).buffer );
+
+  test.case = 'bufferConstructor - BufferView';
+  var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
+  var got = _.bufferFrom({ src, bufferConstructor : BufferView });
+  test.identical( got, new BufferView( new U8x([ 1, 2, 3 ]).buffer ) );
+  test.is( got === src );
+
+  test.case = 'bufferConstructor - bufferTyped, U8x';
+  var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
+  var got = _.bufferFrom({ src, bufferConstructor : U8x });
+  test.identical( got, new U8x([ 1, 2, 3 ]) );
+
+  test.case = 'bufferConstructor - bufferTyped, Fx';
+  var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
+  var got = _.bufferFrom({ src, bufferConstructor : Fx });
+  test.identical( got, new F32x([ 1, 2, 3 ]) );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'bufferConstructor - BufferNode';
+    var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
+    var got2 = _.bufferFrom({ src, bufferConstructor : BufferNode });
+    test.identical( got2, BufferNode.from([ 1, 2, 3 ]) );
+  }
+
+  test.close( 'src - BufferView' );
+
+  /* - */
+
+  test.open( 'src - Long' );
+
+  test.case = 'bufferConstructor - BufferRaw';
+  var src = [ 1, 2, 3 ];
+  var got = _.bufferFrom({ src, bufferConstructor : BufferRaw });
+  test.identical( got, new U8x([ 1, 2, 3 ]).buffer );
+
+  test.case = 'bufferConstructor - BufferView';
+  var src = _.unrollMake([ 1, 2, 3 ]);
+  var got = _.bufferFrom({ src, bufferConstructor : BufferView });
+  test.identical( got, new BufferView( new U8x([ 1, 2, 3 ]).buffer ) );
+
+  test.case = 'bufferConstructor - bufferTyped, U8x';
+  var src = _.argumentsArrayMake([ 1, 2, 3 ]);
+  var got = _.bufferFrom({ src, bufferConstructor : U8x });
+  test.identical( got, new U8x([ 1, 2, 3 ]) );
+
+  test.case = 'bufferConstructor - bufferTyped, Fx';
+  var src = [ 1, 2, 3 ];
+  var got = _.bufferFrom({ src, bufferConstructor : Fx });
+  test.identical( got, new F32x([ 1, 2, 3 ]) );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'bufferConstructor - BufferNode';
+    var src = _.unrollMake([ 1, 2, 3 ]);
+    var got2 = _.bufferFrom({ src, bufferConstructor : BufferNode });
+    test.identical( got2, BufferNode.from([ 1, 2, 3 ]) );
+  }
+
+  test.close( 'src - Long' );
+
+  /* - */
+
+  test.open( 'src - bufferTyped' );
+
+  test.case = 'bufferConstructor - BufferRaw';
+  var src = new I16x([ 1, 2, 3 ]);
+  var got = _.bufferFrom({ src, bufferConstructor : BufferRaw });
+  test.identical( got, new U8x([ 1, 2, 3 ]).buffer );
+
+  test.case = 'bufferConstructor - BufferView';
+  var src = new F32x([ 1, 2, 3 ]);
+  var got = _.bufferFrom({ src, bufferConstructor : BufferView });
+  test.identical( got, new BufferView( new U8x([ 1, 2, 3 ]).buffer ) );
+
+  test.case = 'bufferConstructor - bufferTyped, U8x';
+  var src = new U8x([ 1, 2, 3 ]);
+  var got = _.bufferFrom({ src, bufferConstructor : U8x });
+  test.identical( got, new U8x([ 1, 2, 3 ]) );
+  test.is( got === src );
+
+  test.case = 'bufferConstructor - bufferTyped, Fx';
+  var src = new U16x([ 1, 2, 3 ]);
+  var got = _.bufferFrom({ src, bufferConstructor : Fx });
+  test.identical( got, new F32x([ 1, 2, 3 ]) );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'bufferConstructor - BufferNode';
+    var src = new I32x([ 1, 2, 3 ]);
+    var got2 = _.bufferFrom({ src, bufferConstructor : BufferNode });
+    test.identical( got2, BufferNode.from([ 1, 2, 3 ]) );
+  }
+
+  test.close( 'src - bufferTyped' );
+
+  /* - */
+
+  test.open( 'bufferConstructor - BufferRawShared' );
+
+  test.case = 'src - BufferRaw';
+  var src = new U8x([ 1, 2, 3 ]).buffer;
+  var got = _.bufferFrom({ src, bufferConstructor : BufferRawShared });
+  test.equivalent( got, new U8x([ 1, 2, 3 ]).buffer );
+
+  test.case = 'src - BufferView';
+  var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
+  var got = _.bufferFrom({ src, bufferConstructor : BufferRawShared });
+  test.equivalent( got, new U8x([ 1, 2, 3 ]).buffer );
+
+  test.case = 'bufferConstructor - bufferTyped, U8x';
+  var src = new U8x([ 1, 2, 3 ]);
+  var got = _.bufferFrom({ src, bufferConstructor : BufferRawShared });
+  test.equivalent( got, new U8x([ 1, 2, 3 ]).buffer );
+
+  test.case = 'bufferConstructor - bufferTyped, Fx';
+  var src = new F32x([ 1, 2, 3 ]);
+  var got = _.bufferFrom({ src, bufferConstructor : BufferRawShared });
+  test.equivalent( got, new U8x([ 1, 2, 3 ]).buffer );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'bufferConstructor - BufferNode';
+    var src = BufferNode.from([ 1, 2, 3 ]);
+    var got2 = _.bufferFrom({ src, bufferConstructor : BufferRawShared });
+    test.equivalent( got2, new U8x([ 1, 2, 3 ]).buffer );
+  }
+
+  test.close( 'bufferConstructor - BufferRawShared' );
+
+  /* - */
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.open( 'src - BufferNode' );
+
+    test.case = 'bufferConstructor - BufferRaw';
+    var src = BufferNode.from([ 1, 2, 3 ]);
+    var got = _.bufferFrom({ src, bufferConstructor : BufferRaw });
+    test.identical( got, new U8x([ 1, 2, 3 ]).buffer );
+
+    test.case = 'bufferConstructor - BufferView';
+    var src = BufferNode.from([ 1, 2, 3 ]);
+    var got = _.bufferFrom({ src, bufferConstructor : BufferView });
+    test.identical( got, new BufferView( new U8x([ 1, 2, 3 ]).buffer ) );
+
+    test.case = 'bufferConstructor - bufferTyped, U8x';
+    var src = BufferNode.from([ 1, 2, 3 ]);
+    var got = _.bufferFrom({ src, bufferConstructor : U8x });
+    test.identical( got, new U8x([ 1, 2, 3 ]) );
+
+    test.case = 'bufferConstructor - bufferTyped, Fx';
+    var src = BufferNode.from([ 1, 2, 3 ]);
+    var got = _.bufferFrom({ src, bufferConstructor : Fx });
+    test.identical( got, new F32x([ 1, 2, 3 ]) );
+
+    test.case = 'bufferConstructor - BufferNode';
+    var src = BufferNode.from([ 1, 2, 3 ]);
+    var got2 = _.bufferFrom({ src, bufferConstructor : BufferNode });
+    test.identical( got2, BufferNode.from([ 1, 2, 3 ]) );
+    test.is( got2 === src );
+
+    test.close( 'src - BufferNode' );
+  }
+
+  /* - */
+
+  if( !Config.debug )
   return;
 
-  /* node buffer */
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bufferFrom() );
 
-  test.case = 'src:number, bufferConstructor:node buffer';
-  var src = 1;
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
-  var expected = BufferNode.from( [ src ] );
-  test.identical( got, expected );
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.bufferFrom( { src : 2, bufferConstructor : U8x }, 'extra' ) );
 
-  test.case = 'src:str, bufferConstructor:node buffer';
-  var src = 'abc';
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
-  var expected = BufferNode.from( src );
-  test.identical( got, expected );
+  test.case = 'wrong type of options map o';
+  test.shouldThrowErrorSync( () => _.bufferFrom( [] ) );
+  test.shouldThrowErrorSync( () => _.bufferFrom( null ) );
 
-  test.case = 'src:array, bufferConstructor:node buffer';
-  var src = [ 97, 98, 99 ];
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
-  var expected = BufferNode.from( src );
-  test.identical( got, expected );
+  test.case = 'wrong type of o.src';
+  test.shouldThrowErrorSync( () => _.bufferFrom({ src : {}, bufferConstructor : U8x }) );
 
-  test.case = 'src:raw buffer, bufferConstructor:node buffer';
-  var src = new BufferRaw( 3 );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
-  var expected = BufferNode.from( src );
-  test.identical( got, expected );
+  test.case = 'wrong type of o.bufferConstructor';
+  test.shouldThrowErrorSync( () => _.bufferFrom({ src : new U8x( 3 ), bufferConstructor : 'wrong' }) );
 
-  test.case = 'src:typed, bufferConstructor:node buffer';
-  var src = new I32x( [ 97, 98, 99 ] );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
-  var expected = BufferNode.from( src );
-  test.identical( got, expected );
+  test.case = 'options map has not all options';
+  test.shouldThrowErrorSync( () => _.bufferFrom({ src : new U8x( 3 ) }) );
+  test.shouldThrowErrorSync( () => _.bufferFrom({ bufferConstructor : U8x }) );
 
-  test.case = 'src:node buffer, bufferConstructor:node buffer';
-  var src = BufferNode.from( [ 97, 98, 99 ] );
-  var got = _.bufferFrom({ /*ttt*/src, bufferConstructor : BufferNode });
-  var expected = src;
-  test.identical( got, expected );
+  test.case = 'unknown field in options map';
+  test.shouldThrowErrorSync( () => _.bufferFrom({ src : new U8x( 3 ), bufferConstructor : U8x, unknown : 1 }) );
 
 }
 
