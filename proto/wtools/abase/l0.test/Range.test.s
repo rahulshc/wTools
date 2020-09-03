@@ -1443,19 +1443,19 @@ function fromLeft( test )
   var src = [ undefined, 1 ];
   var got = _.range.fromLeft( src );
   test.identical( got, [ 0, 1 ] );
-  test.is( got !== src );
+  test.is( got === src );
 
   test.case = 'range[ 1 ] - undefined';
   var src = [ 1, undefined ];
   var got = _.range.fromLeft( src );
   test.identical( got, [ 1, Infinity ] );
-  test.is( got !== src );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
   var src = [ undefined, undefined ];
   var got = _.range.fromLeft( src );
-  test.identical( got, [ 0, undefined ] );
-  test.is( got !== src );
+  test.identical( got, [ 0, Infinity ] );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
   var src = [ 1, 5 ];
@@ -1475,19 +1475,19 @@ function fromLeft( test )
   var src = _.unrollMake( [ undefined, 1 ] );
   var got = _.range.fromLeft( src );
   test.identical( got, [ 0, 1 ] );
-  test.is( got !== src );
+  test.is( got === src );
 
   test.case = 'range[ 1 ] - undefined';
   var src = _.unrollMake( [ 1, undefined ] );
   var got = _.range.fromLeft( src );
   test.identical( got, [ 1, Infinity ] );
-  test.is( got !== src );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
   var src = _.unrollMake( [ undefined, undefined ] );
   var got = _.range.fromLeft( src );
-  test.identical( got, [ 0, undefined ] );
-  test.is( got !== src );
+  test.identical( got, [ 0, Infinity ] );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
   var src = _.unrollMake( [ 1, 5 ] );
@@ -1506,20 +1506,20 @@ function fromLeft( test )
   test.case = 'range[ 0 ] - undefined';
   var src = _.argumentsArrayMake( [ undefined, 1 ] );
   var got = _.range.fromLeft( src );
-  test.identical( got, [ 0, 1 ] );
-  test.is( got !== src );
+  test.identical( got, _.argumentsArrayMake([ 0, 1 ]) );
+  test.is( got === src );
 
   test.case = 'range[ 1 ] - undefined';
   var src = _.argumentsArrayMake( [ 1, undefined ] );
   var got = _.range.fromLeft( src );
-  test.identical( got, [ 1, Infinity ] );
-  test.is( got !== src );
+  test.identical( got, _.argumentsArrayMake([ 1, Infinity ]) );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
   var src = _.argumentsArrayMake( [ undefined, undefined ] );
   var got = _.range.fromLeft( src );
-  test.identical( got, [ 0, undefined ] );
-  test.is( got !== src );
+  test.identical( got, _.argumentsArrayMake([ 0, Infinity ]) );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
   var src = _.argumentsArrayMake( [ 1, 5 ] );
@@ -1583,19 +1583,19 @@ function fromRight( test )
   var src = [ undefined, 1 ];
   var got = _.range.fromRight( src );
   test.identical( got, [ 0, 1 ] );
-  test.is( got !== src );
+  test.is( got === src );
 
   test.case = 'range[ 1 ] - undefined';
   var src = [ 1, undefined ];
   var got = _.range.fromRight( src );
   test.identical( got, [ 1, Infinity ] );
-  test.is( got !== src );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
   var src = [ undefined, undefined ];
   var got = _.range.fromRight( src );
-  test.identical( got, [ 0, undefined ] );
-  test.is( got !== src );
+  test.identical( got, [ 0, Infinity ] );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
   var src = [ 1, 5 ];
@@ -1615,19 +1615,19 @@ function fromRight( test )
   var src = _.unrollMake( [ undefined, 1 ] );
   var got = _.range.fromRight( src );
   test.identical( got, [ 0, 1 ] );
-  test.is( got !== src );
+  test.is( got === src );
 
   test.case = 'range[ 1 ] - undefined';
   var src = _.unrollMake( [ 1, undefined ] );
   var got = _.range.fromRight( src );
   test.identical( got, [ 1, Infinity ] );
-  test.is( got !== src );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
   var src = _.unrollMake( [ undefined, undefined ] );
   var got = _.range.fromRight( src );
-  test.identical( got, [ 0, undefined ] );
-  test.is( got !== src );
+  test.identical( got, [ 0, Infinity ] );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
   var src = _.unrollMake( [ 1, 5 ] );
@@ -1646,20 +1646,20 @@ function fromRight( test )
   test.case = 'range[ 0 ] - undefined';
   var src = _.argumentsArrayMake( [ undefined, 1 ] );
   var got = _.range.fromRight( src );
-  test.identical( got, [ 0, 1 ] );
-  test.is( got !== src );
+  test.identical( got, _.argumentsArrayMake([ 0, 1 ]) );
+  test.is( got === src );
 
   test.case = 'range[ 1 ] - undefined';
   var src = _.argumentsArrayMake( [ 1, undefined ] );
   var got = _.range.fromRight( src );
-  test.identical( got, [ 1, Infinity ] );
-  test.is( got !== src );
+  test.identical( got, _.argumentsArrayMake([ 1, Infinity ]) );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
   var src = _.argumentsArrayMake( [ undefined, undefined ] );
   var got = _.range.fromRight( src );
-  test.identical( got, [ 0, undefined ] );
-  test.is( got !== src );
+  test.identical( got, _.argumentsArrayMake([ 0, Infinity ]) );
+  test.is( got === src );
 
   test.case = 'range[ 0 ] - number, range[ 1 ] - number';
   var src = _.argumentsArrayMake( [ 1, 5 ] );
@@ -2817,7 +2817,7 @@ let Self =
   tests :
   {
 
-    // 
+    //
 
     is,
     isEmpty,
