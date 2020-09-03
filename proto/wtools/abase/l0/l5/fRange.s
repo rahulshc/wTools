@@ -15,18 +15,46 @@ let _ = _global_.wTools;
 function fromLeft( range )
 {
   _.assert( arguments.length === 1 );
+
   if( _.numberIs( range ) )
   return [ range, Infinity ];
+
   _.assert( _.longIs( range ) );
-  _.assert( range.length === 1 || range.length === 2 );
-  _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
-  _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
-  if( range[ 0 ] === undefined )
-  return [ 0, range[ 1 ] ];
-  if( range[ 1 ] === undefined )
-  return [ range[ 0 ], Infinity ];
+
+  if( range.length === 1 )
+  range = [ range[ 0 ], Infinity ];
+  else
+  _.assert( range.length === 2 );
+
+  if( !_.numberIs( range[ 0 ] ) )
+  {
+    _.assert( range[ 0 ] === undefined );
+    range[ 0 ] = 0;
+  }
+  if( !_.numberIs( range[ 1 ] ) )
+  {
+    _.assert( range[ 1 ] === undefined );
+    range[ 1 ] = Infinity;
+  }
+
   return range;
 }
+
+// function fromLeft( range )
+// {
+//   _.assert( arguments.length === 1 );
+//   if( _.numberIs( range ) )
+//   return [ range, Infinity ];
+//   _.assert( _.longIs( range ) );
+//   _.assert( range.length === 1 || range.length === 2 );
+//   _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
+//   _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
+//   if( range[ 0 ] === undefined )
+//   return [ 0, range[ 1 ] ];
+//   if( range[ 1 ] === undefined )
+//   return [ range[ 0 ], Infinity ];
+//   return range;
+// }
 
 //
 
@@ -37,18 +65,46 @@ function fromLeft( range )
 function fromRight( range )
 {
   _.assert( arguments.length === 1 );
+
   if( _.numberIs( range ) )
   return [ 0, range ];
+
   _.assert( _.longIs( range ) );
-  _.assert( range.length === 1 || range.length === 2 );
-  _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
-  _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
-  if( range[ 0 ] === undefined )
-  return [ 0, range[ 1 ] ];
-  if( range[ 1 ] === undefined )
-  return [ range[ 0 ], Infinity ];
+
+  if( range.length === 1 )
+  range = [ range[ 0 ], Infinity ];
+  else
+  _.assert( range.length === 2 );
+
+  if( !_.numberIs( range[ 0 ] ) )
+  {
+    _.assert( range[ 0 ] === undefined );
+    range[ 0 ] = 0;
+  }
+  if( !_.numberIs( range[ 1 ] ) )
+  {
+    _.assert( range[ 1 ] === undefined );
+    range[ 1 ] = Infinity;
+  }
+
   return range;
 }
+
+// function fromRight( range )
+// {
+//   _.assert( arguments.length === 1 );
+//   if( _.numberIs( range ) )
+//   return [ 0, range ];
+//   _.assert( _.longIs( range ) );
+//   _.assert( range.length === 1 || range.length === 2 );
+//   _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
+//   _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
+//   if( range[ 0 ] === undefined )
+//   return [ 0, range[ 1 ] ];
+//   if( range[ 1 ] === undefined )
+//   return [ range[ 0 ], Infinity ];
+//   return range;
+// }
 
 //
 
