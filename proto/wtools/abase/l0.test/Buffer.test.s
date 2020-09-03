@@ -13792,6 +13792,109 @@ function bufferIsolateRightOrNoneWithBufferRaw( test )
   test.close( 'different types of src and delimeter' );
 }
 
+//
+
+function bufferIsolateRightOrNoneWithStrings( test )
+{
+  test.open( 'src - string, delimeter - string' );
+
+  test.case = 'src - empty string, delimeter - empty string';
+  var got = _.bufferIsolateRightOrNone( '', '' );
+  test.identical( got, [ new U8x( [] ), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - empty string, delimeter - empty string, times > 1';
+  var got = _.bufferIsolateRightOrNone( '', '', 2 );
+  test.identical( got, [ new U8x( [] ), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - filled string, delimeter - empty string';
+  var got = _.bufferIsolateRightOrNone( 'a b c', '' );
+  test.identical( got, [ new U8x([ 97, 32, 98, 32, 99 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - filled string, delimeter - empty string, times > 1';
+  var got = _.bufferIsolateRightOrNone( 'a b c', '', 2 );
+  test.identical( got, [ new U8x([ 97, 32, 98, 32, 99 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - filled string, delimeter - string, not entry';
+  var got = _.bufferIsolateRightOrNone( 'a b c', 'd' );
+  test.identical( got, [ new U8x([ 97, 32, 98, 32, 99 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - filled string, delimeter - string, not entry, times > 1';
+  var got = _.bufferIsolateRightOrNone( 'a b c', 'd', 2 );
+  test.identical( got, [ new U8x([ 97, 32, 98, 32, 99 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - filled string, delimeter - string, entry';
+  var got = _.bufferIsolateRightOrNone( 'a b c', 'b' );
+  test.identical( got, [ new U8x([ 97, 32 ]), new U8x([ 98 ]), new U8x([ 32, 99 ]) ] );
+
+  test.case = 'src - filled string, delimeter - string, entry, times > 1';
+  var got = _.bufferIsolateRightOrNone( 'a b c', 'b', 2 );
+  test.identical( got, [ new U8x( [] ), undefined, new U8x([ 97, 32, 98, 32, 99 ]) ] );
+
+  test.case = 'src - filled string, delimeter - string, few entries';
+  var got = _.bufferIsolateRightOrNone( 'a b c', ' ' );
+  test.identical( got, [ new U8x([ 97, 32, 98 ]), new U8x([ 32 ]), new U8x([ 99 ]) ] );
+
+  test.case = 'src - filled string, delimeter - string, few entries, times > 1, times === entries';
+  var got = _.bufferIsolateRightOrNone( 'a b c', ' ', 2 );
+  test.identical( got, [ new U8x([ 97 ]), new U8x([ 32 ]), new U8x([ 98, 32, 99 ]) ] );
+
+  test.case = 'src - filled string, delimeter - string, few entries, times > 1, times === entries';
+  var got = _.bufferIsolateRightOrNone( 'a b c', ' ', 3 );
+  test.identical( got, [ new U8x( [] ), undefined, new U8x([ 97, 32, 98, 32, 99 ]) ] );
+
+  test.close( 'src - string, delimeter - string' );
+
+  /* - */
+
+  test.open( 'src - string, delimeter - buffer' );
+
+  test.case = 'src - empty string, delimeter - empty I8x';
+  var got = _.bufferIsolateRightOrNone( '', new I8x( [] ) );
+  test.identical( got, [ new U8x( [] ), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - empty string, delimeter - empty F32x, times > 1';
+  var got = _.bufferIsolateRightOrNone( '', new F32x( [] ), 2 );
+  test.identical( got, [ new U8x( [] ), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - filled string, delimeter - empty U8x';
+  var got = _.bufferIsolateRightOrNone( 'a b c', new U8x( [] ) );
+  test.identical( got, [ new U8x([ 97, 32, 98, 32, 99 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - filled string, delimeter - empty U32x, times > 1';
+  var got = _.bufferIsolateRightOrNone( 'a b c', new U32x( [] ), 2 );
+  test.identical( got, [ new U8x([ 97, 32, 98, 32, 99 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - filled string, delimeter - I8x, not entry';
+  var got = _.bufferIsolateRightOrNone( 'a b c', new I8x([ 106 ]) );
+  test.identical( got, [ new U8x([ 97, 32, 98, 32, 99 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - filled string, delimeter - U16x, not entry, times > 1';
+  var got = _.bufferIsolateRightOrNone( 'a b c', new U16x([ 106 ]), 2 );
+  test.identical( got, [ new U8x([ 97, 32, 98, 32, 99 ]), undefined, new U8x( [] ) ] );
+
+  test.case = 'src - filled string, delimeter - U8x, entry';
+  var got = _.bufferIsolateRightOrNone( 'a b c', new U8x([ 98 ]) );
+  test.identical( got, [ new U8x([ 97, 32 ]), new U8x([ 98 ]), new U8x([ 32, 99 ]) ] );
+
+  test.case = 'src - filled string, delimeter - U8x, entry, times > 1';
+  var got = _.bufferIsolateRightOrNone( 'a b c', new U8x([ 98 ]), 2 );
+  test.identical( got, [ new U8x( [] ), undefined, new U8x([ 97, 32, 98, 32, 99 ]) ] );
+
+  test.case = 'src - filled string, delimeter - I8x, few entries';
+  var got = _.bufferIsolateRightOrNone( 'a b c', new I8x([ 32 ]) );
+  test.identical( got, [ new U8x([ 97, 32, 98 ]), new U8x([ 32 ]), new U8x([ 99 ]) ] );
+
+  test.case = 'src - filled string, delimeter - I8x, few entries, times > 1, times === entries';
+  var got = _.bufferIsolateRightOrNone( 'a b c', new I8x([ 32 ]), 2 );
+  test.identical( got, [ new U8x([ 97 ]), new U8x([ 32 ]), new U8x([ 98, 32, 99 ]) ] );
+
+  test.case = 'src - filled string, delimeter - I8x, few entries, times > 1, times === entries';
+  var got = _.bufferIsolateRightOrNone( 'a b c', new I8x([ 32 ]), 3 );
+  test.identical( got, [ new U8x( [] ), undefined, new U8x([ 97, 32, 98, 32, 99 ]) ] );
+
+  test.close( 'src - string, delimeter - buffer' );
+}
+
 // --
 // declaration
 // --
@@ -13888,6 +13991,7 @@ let Self =
 
     bufferIsolateRightOrNoneWithBufferTyped,
     bufferIsolateRightOrNoneWithBufferRaw,
+    bufferIsolateRightOrNoneWithStrings,
 
   }
 
