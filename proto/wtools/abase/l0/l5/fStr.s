@@ -1569,13 +1569,7 @@ function strSplitFast_pre( routine, args )
 
 function strSplitFast_body( o )
 {
-  let result,
-    closests,
-    position,
-    closestPosition,
-    closestIndex,
-    hasEmptyDelimeter,
-    delimeter
+  let result, closests, position, closestPosition, closestIndex, hasEmptyDelimeter, delimeter
 
   o.delimeter = _.arrayAs( o.delimeter );
 
@@ -2368,15 +2362,16 @@ function strSplitInlinedStereo_( o )
     {
       if( result[ result.length - 1 ] !== undefined )
       {
-          if( !_.arrayLike( result[ result.length - 1 ] ) )
-          {
-            result[ result.length - 1 ] =
-            result[ result.length - 1 ] + o.prefix + ( o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ] );
-          }
-          else
-          {
-            result.push( o.prefix + ( o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ] ) );
-          }
+        let tempStr = o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ];
+
+        if( !_.arrayLike( result[ result.length - 1 ] ) )
+        {
+          result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + tempStr;
+        }
+        else
+        {
+          result.push( o.prefix + tempStr );
+        }
       }
       else
       {
