@@ -1,4 +1,5 @@
-( function _fTime_s_() {
+( function _fTime_s_()
+{
 
 'use strict';
 
@@ -11,18 +12,22 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 // --
 
 let _TimeInfinity = Math.pow( 2, 31 )-1;
+
+//
+
 function _begin( delay, onTime, onCancel )
 {
   let original;
 
-  if( delay === undefined )
-  delay = Infinity;
+  // if( delay === undefined ) /* Dmytro : it is deprecated feature, feature is not consistent with module Procedure */
+  // delay = Infinity;
   if( delay >= _TimeInfinity )
   delay = _TimeInfinity;
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
   _.assert( _.numberIs( delay ) );
   _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
+  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
   if( delay > 0 )
   original = setTimeout( time, delay );
@@ -46,6 +51,13 @@ function _begin( delay, onTime, onCancel )
 
   function _time()
   {
+    if( timer.state === 1 || timer.state === -1 )
+    return;
+    if( timer.state === -2 )
+    _.assert( 0, 'Cannot change state of timer.' );
+    if( timer.state === 2 )
+    _.assert( 0, 'Timer can be executed only one time.' );
+
     timer.state = 1;
     try
     {
@@ -63,8 +75,13 @@ function _begin( delay, onTime, onCancel )
 
   function _cancel()
   {
-    if( timer.state !== 0 )
+    if( timer.state === 1 || timer.state === -1 )
     return;
+    if( timer.state === 2 )
+    _.assert( 0, 'Cannot change state of timer.' );
+    if( timer.state === -2 )
+    _.assert( 0, 'Timer can be canceled only one time.' );
+
     timer.state = -1;
     clearTimeout( timer.original );
     try
@@ -92,7 +109,9 @@ function _begin( delay, onTime, onCancel )
 
   function time()
   {
-    return timer._time();
+    timer._time();
+    clearTimeout( timer.original );
+    return timer;
   }
 
   /* */
@@ -118,9 +137,10 @@ function _finally( delay, onTime )
 function _periodic( delay, onTime, onCancel )
 {
 
-  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
   _.assert( _.numberIs( delay ) );
   _.assert( _.routineIs( onTime ) );
+  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
   let original = setInterval( time, delay );
 
@@ -142,9 +162,12 @@ function _periodic( delay, onTime, onCancel )
 
   function _time()
   {
+    if( timer.state === -1 || timer.state === -2 )
+    _.assert( 0, 'Illegal call, timer is canceled. Please, use new timer.' );
+
     timer.state = 1;
-  //   if( r === _.dont )
-  //   _.time.cancel( timer );
+    // if( r === _.dont )
+    // _.time.cancel( timer );
     try
     {
       if( onTime )
@@ -152,6 +175,9 @@ function _periodic( delay, onTime, onCancel )
     }
     finally
     {
+      if( timer.result === undefined || timer.result === _.dont ) /* Dmytro : if it needs, change to any other stop value */
+      timer.cancel();
+      else
       timer.state = 2;
     }
   }
@@ -160,6 +186,11 @@ function _periodic( delay, onTime, onCancel )
 
   function _cancel()
   {
+    if( timer.state === 1 )
+    logger.log( 'Timer is canceled when callback {-onTime-} was executing.' );
+    if( timer.state === -1 || timer.state === -2 )
+    _.assert( 0, 'Illegal call, timer is canceled.' );
+
     timer.state = -1;
     clearInterval( timer.original );
     try
@@ -239,7 +270,6 @@ function _cancel( timer )
 
 function timerIsBegun( timer )
 {
-  debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === 0;
 }
@@ -258,7 +288,6 @@ function timerIsCancelBegun( timer )
 
 function timerIsCancelEnded( timer )
 {
-  debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === -2;
 }
@@ -267,7 +296,6 @@ function timerIsCancelEnded( timer )
 
 function timerIsUpBegun( timer )
 {
-  debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === 1;
 }
@@ -276,7 +304,6 @@ function timerIsUpBegun( timer )
 
 function timerIsUpEnded( timer )
 {
-  debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === 2;
 }
