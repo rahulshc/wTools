@@ -1,0 +1,10 @@
+{
+  "editor.autoIndent": "none",
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": false,
+    "source.organizeImports": false
+  },
+  "files.eol": "\n"
+}

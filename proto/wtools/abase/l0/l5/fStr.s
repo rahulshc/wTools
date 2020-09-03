@@ -2020,7 +2020,7 @@ function _strSplitInlined_body( o )
   let first = 0;
   let result = [];
   let i = 0;
-  for( ; i < splitArray.length ; i += 4 )
+  for( ; i < splitArray.length; i += 4 )
   {
 
     if( splitArray.length-i >= 4 )
@@ -2144,9 +2144,13 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  * @param {string} [ o.prefix = '❮' ] - A delimeter that marks begining of enclosed string.
  * @param {string} [ o.postfix = '❯' ] - A ddelimeter that marks ending of enclosed string.
  * @param {string} [ o.onInlined = null ] - Function called on each splitted part of a source string.
- * @param {string} [ o.stripping ] - If true removes leading and trailing whitespace characters.
- * @param {string} [ o.preservingEmpty ] - If true empty lines are saved in the result array.
- * @param {string} [ o.preservingDelimeters ] - If true leaves word delimeters in result array, otherwise removes them.
+ * @param {string} [ o.onOrdinary = null ] - Function called on each ordinary part of a source string.
+ * @param {string} [ o.stripping = 0 ] - If true removes leading and trailing whitespace characters.
+ * @param {string} [ o.quoting = 0 ] - If true prefixes and postfixes surounded by quotes are treated as ordinary text.
+ * @param {string} [ o.preservingEmpty = 1 ] - If true empty lines are saved in the result array.
+ * @param {string} [ o.preservingDelimeters = 0 ] - If true leaves word delimeters in result array, otherwise removes them.
+ * @param {string} [ o.preservingOrdinary = 1 ] - If true ordinary text is saved in the result array.
+ * @param {string} [ o.preservingInlined = 1 ] - If true splitted text are saved in the result array.
  * @returns {object} Returns an array of strings separated by {- o.prefix -} and {- o.postfix -}.
  *
  * @example
@@ -2163,11 +2167,11 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  *   if( strip.length )
  *   return strip.toUpperCase();
  * }
- * _.strSplitInlinedStereo.call( { postfix : '$', onInlined }, '#abc$' );
+ * _.strSplitInlinedStereo.call( { prefix : '<', postfix : '>', onInlined }, '<abc>' );
  * // returns [ '', [ 'ABC' ], '' ]
  *
  * @method strSplitInlinedStereo
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1 or 2.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
  * @throws { Exception } Throw an exception if( o.src ) is not a String.
  * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
  * @namespace Tools
@@ -2208,7 +2212,13 @@ function strSplitInlinedStereo( o )
   let delimRightPosition = getNextPos( src, o.postfix );
 
   if( delimLeftPosition === -1 || delimRightPosition === -1 )
-  return [ o.src ];
+  {
+    if( !o.preservingOrdinary )
+    return [];
+    else
+    return [ o.src ];
+  }
+
 
   if( o.quoting )
   {
@@ -2222,70 +2232,42 @@ function strSplitInlinedStereo( o )
 
   if( splitted.length === 1 )
   {
-    if( o.quoting )
-    {
-      return [ o.src ];
-    }
+    if( !o.preservingOrdinary )
+    return [];
     else
-    {
-      return splitted;
-    }
+    return [ o.src ];
   }
 
   if( splitted[ 0 ] )
-  {
-    if( o.stripping )
-    result.push( splitted[ 0 ].trim() );
-    else
-    result.push( splitted[ 0 ] );
-  }
+  result.push( ( o.stripping ? splitted[ 0 ].trim() : splitted[ 0 ] ) );
 
   for( let i = 1; i < splitted.length; i++ )
   {
-    // debugger
+
     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
+
     if( halfs[ 1 ] === undefined )
     {
-      // cases <<text>, < <text>, <<<text>abc<<<text2>>, etc.
-      if
-      (
-        result[ i - 2 ]
-        && !_.arrayLike( result[ i - 2 ] )
-        && ( result[ i - 2 ].trim() === o.prefix || result[ i - 2 ].trim().substr( -1 ) === o.prefix )
-      )
-      {
-        result[ i - 2 ] = result[ i - 2 ] + o.prefix + halfs[ 2 ];
-        continue;
-      }
-
       if( result[ result.length - 1 ] !== undefined )
       {
-        if( o.stripping )
-        {
           if( !_.arrayLike( result[ result.length - 1 ] ) )
-          result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + halfs[ 2 ].trimEnd();
+          {
+            result[ result.length - 1 ] =
+            result[ result.length - 1 ] + o.prefix + ( o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ] );
+          }
           else
-          result.push( o.prefix + halfs[ 2 ].trimEnd() )
-        }
-        else
-        {
-          if( !_.arrayLike( result[ result.length - 1 ] ) )
-          result[ result.length - 1 ] = result[ result.length - 1 ] + o.prefix + halfs[ 2 ];
-          else
-          result.push( o.prefix + halfs[ 2 ] )
-        }
+          {
+            result.push( o.prefix + ( o.stripping ? halfs[ 2 ].trimEnd() : halfs[ 2 ] ) );
+          }
       }
       else
       {
-        if( o.stripping )
-        result[ 0 ] = o.prefix + halfs[ 2 ].trim();
-        else
-        result[ 0 ] = o.prefix + halfs[ 2 ];
+        result[ 0 ] = o.prefix + ( o.stripping ? halfs[ 2 ].trim() : halfs[ 2 ] );
       }
       continue;
     }
+
     let strip = o.onInlined ? o.onInlined( halfs[ 0 ] ) : halfs[ 0 ];
-    // let ordinary = o.onOrdinary ? o.onOrdinary( halfs[ 2 ] ) : halfs[ 2 ];
     let ordinary = halfs[ 2 ];
 
     _.assert( halfs.length === 3 );
@@ -2327,7 +2309,7 @@ function strSplitInlinedStereo( o )
       }
     }
     else
-    { // case when onInlined returns undefined
+    {
       if( result.length )
       result[ result.length-1 ] += o.prefix + splitted[ i ];
       else
@@ -2335,14 +2317,20 @@ function strSplitInlinedStereo( o )
     }
   }
 
-  if( o.preservingEmpty )
-  handleEmptyLines()
-
   if( o.quoting )
-  handleQuoting()
+  handleQuoting();
 
-  if( o.onOrdinary )
-  handleOnOrdinary()
+  if( o.preservingOrdinary && o.onOrdinary )
+  handleOnOrdinary();
+
+  if( !o.preservingInlined )
+  handleNonPreservingInlined();
+
+  if( !o.preservingOrdinary )
+  handleNonPreservingOrdinary();
+
+  if( o.preservingEmpty )
+  handleEmptyLines();
 
   return result;
 
@@ -2404,8 +2392,25 @@ function strSplitInlinedStereo( o )
     {
       if( _.arrayLike( result[ i ] ) )
       if( _.arrayLike( result[ i + 1 ] ) )
-      result.splice( i + 1, 0, '' );
+      {
+        result.splice( i + 1, 0, '' );
+        len++;
+      }
     }
+  }
+
+  /* - */
+
+  function handleNonPreservingInlined()
+  {
+    result = result.filter( ( el ) => !_.arrayLike( el ) && el !== '' );
+  }
+
+  /* - */
+
+  function handleNonPreservingOrdinary()
+  {
+    result = result.filter( ( el ) => _.arrayLike( el ) );
   }
 
 }
