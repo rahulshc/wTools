@@ -2234,22 +2234,10 @@ function strSplitInlinedStereo( o )
 
   if( splitted[ 0 ] )
   {
-    // let res = o.onOrdinary ? o.onOrdinary( splitted[ 0 ] ) : splitted[ 0 ];
-
-    // if( res !== undefined )
-    // {
-    //   if( o.stripping )
-    //   result.push( res.trim() );
-    //   else
-    //   result.push( res )
-    // }
-    // else
-    // {
     if( o.stripping )
     result.push( splitted[ 0 ].trim() );
     else
     result.push( splitted[ 0 ] );
-    // }
   }
 
   for( let i = 1; i < splitted.length; i++ )
@@ -2427,8 +2415,8 @@ strSplitInlinedStereo.defaults =
   src : null, //done /tested
   prefix : '❮', //done /tested
   postfix : '❯', //done /tested
-  onInlined : ( e ) => [ e ], //done
-  onOrdinary : null, //done
+  onInlined : ( e ) => [ e ], //done /tested
+  onOrdinary : null, //done /tested
 
   stripping : 0, //done /tested
   quoting : 0, //done /tested
