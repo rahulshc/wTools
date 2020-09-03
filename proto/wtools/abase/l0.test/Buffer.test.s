@@ -3081,9 +3081,9 @@ function bufferFrom( test )
   test.identical( got, new U8x([ 1, 2, 3 ]) );
 
   test.case = 'bufferConstructor - bufferTyped, Fx';
-  var src = new BufferView( new U8x([ 1, 2, 3 ]).buffer );
+  var src = new BufferView( new F32x([ 1, 2, 3 ]).buffer );
   var got = _.bufferFrom({ src, bufferConstructor : Fx });
-  test.identical( got, new F32x([ 1, 2, 3 ]) );
+  test.identical( got, new Fx([ 1, 2, 3 ]) );
 
   if( Config.interpreter === 'njs' )
   {

@@ -801,7 +801,7 @@ function bufferFrom( o )
   /* */
 
   if( _.bufferViewIs( o.src ) )
-  o.src = _.bufferBytesFrom( o.src );
+  o.src = o.src.buffer.slice( o.src.byteOffset, o.src.byteLength );
 
   if( _.constructorIsBuffer( o.bufferConstructor ) )
   return new o.bufferConstructor( o.src );
