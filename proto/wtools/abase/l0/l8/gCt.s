@@ -26,8 +26,8 @@ function _formatAffixesBackground( color )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( color ) );
 
-  result.pre = `#background : ${color}#`;
-  result.post = `#background : default#`;
+  result.pre = `❮background : ${color}❯`;
+  result.post = `❮background : default❯`;
 
   return result;
 }
@@ -44,7 +44,7 @@ function formatBackground( srcStr, color )
   _.assert( _.strIs( srcStr ), 'Expects string {-srcStr-}' );
   _.assert( _.strIs( color ), 'Expects string {-color-}' );
 
-  return `#background : ${color}#${srcStr}#background : default#`;
+  return `❮background : ${color}❯${srcStr}❮background : default❯`;
 }
 
 //
@@ -56,8 +56,8 @@ function _formatAffixesForeground( color )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( color ) );
 
-  result.pre = `#foreground : ${color}#`;
-  result.post = `#foreground : default#`;
+  result.pre = `❮foreground : ${color}❯`;
+  result.post = `❮foreground : default❯`;
 
   return result;
 }
@@ -74,7 +74,7 @@ function formatForeground( srcStr, color )
   _.assert( _.strIs( srcStr ), 'Expects string {-srcStr-}' );
   _.assert( _.strIs( color ), 'Expects string {-color-}' );
 
-  return `#foreground : ${color}#${srcStr}#foreground : default#`;
+  return `❮foreground : ${color}❯${srcStr}❮foreground : default❯`;
 }
 
 //
@@ -86,7 +86,7 @@ function _strEscape( srcStr )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( result ), 'Expects string got', _.strType( result ) );
-  return '#inputRaw:1#' + srcStr + '#inputRaw:0#'
+  return '❮inputRaw:1❯' + srcStr + '❮inputRaw:0❯'
 }
 
 let escape = _.routineVectorize_functor( _strEscape );
@@ -100,7 +100,7 @@ function _strUnescape( srcStr )
   result = result + '';
   _.assert( arguments.length === 1 || arguments.length === 2 );
   _.assert( _.strIs( result ), 'Expects string got', _.strType( result ) );
-  return '#inputRaw:0#' + srcStr + '#inputRaw:1#'
+  return '❮inputRaw:0❯' + srcStr + '❮inputRaw:1❯'
 }
 
 let unescape = _.routineVectorize_functor( _strUnescape );
@@ -254,7 +254,7 @@ let format = _.routineVectorize_functor( _format );
 
 function _strip( srcStr )
 {
-  let result = '';
+  // let result = '';
 
   _.assert( _.strIs( srcStr ) );
 
@@ -263,15 +263,18 @@ function _strip( srcStr )
     src : srcStr,
     preservingEmpty : 0,
     stripping : 0,
+    preservingInlined : 0
   });
 
-  for( let i = 0 ; i < splitted.length ; i++ )
-  {
-    if( _.strIs( splitted[ i ] ) )
-    result += splitted[ i ];
-  }
+  return splitted.join( '' );
 
-  return result;
+  // for( let i = 0 ; i < splitted.length ; i++ )
+  // {
+  //   if( _.strIs( splitted[ i ] ) )
+  //   result += splitted[ i ];
+  // }
+
+  // return result;
 }
 
 let strip = _.vectorize( _strip );
