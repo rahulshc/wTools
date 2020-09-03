@@ -27,15 +27,14 @@
   <summary><a href="./concept/Evaluator.md#evaluator">
     Evaluator
   </a></summary>
-  Some description
+    This is a routine or pair of routines that allow you to arbitrarily convert array elements before comparing them. If the obtained values match - the evaluator returns <code>true</code>, otherwise - <code>false</code>. The evaluator as a callback function is passed to the routines intended for working with [Long](./concept/Long.md) types.
 </details>
 
 <details>
   <summary><a href="./concept/Equalizer.md#equalizer">
     Equalizer
   </a></summary>
-  This is a routine that compares two elements of an array and returns <code>true</code> if the comparison condition is met,
-  otherwise - <code>false</code>. The `equalizer` as a callback function is passed to the routines intended for working with arrays.
+  This is a routine that compares two elements of an array and returns <code>true</code> if the comparison condition is met, otherwise - <code>false</code>. The `equalizer` as a callback function is passed to the routines intended for working with [Long](./concept/Long.md) types.
 </details>
 
 <details>
@@ -56,7 +55,7 @@
   <summary><a href="./concept/TypeUnroll.md">
     Type <code>unroll</code>
   </a></summary>
-    <code>Unroll</code> - data type, it is a special kind of array, capable to be unrolled in another array when performing operations on it.
+    Data type <code>unroll</code> - a special type of array that can be unrolled in another array when performing an operation on it.
 </details>
 
 <details>

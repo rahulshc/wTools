@@ -1,4 +1,4 @@
-# Тип <code>Long</code>
+## Тип <code>Long</code>
 
 Комплексні типи даних, що містять множину елементів котрі ідентифікуються за індексом.
 
@@ -8,42 +8,44 @@
 
 ```js
 let array1 = [ 1, 2, 'str' ];
-let array2 = new Array( [ 1, 2, 'str' ] );
-console.log( _.arrayIs( array1 ) ); // true
-console.log( _.arrayIs( array2 ) ); // true
+let array2 = new Array([ 1, 2, 'str' ]);
+console.log( _.arrayIs( array1 ) );
+/* log : true */
+console.log( _.arrayIs( array2 ) );
+/* log : true */
 ```
 
 `Unroll` - особливий масивоподібний тип даних, що здатний розгортатись в іншому масиві, анролі чи елементі типу `ArgumentsArray`.
 
 ```js
-let unroll1 = _.unrollMake( [ 1, 2, 'str' ] );
-let unroll2 = _.unrollsFrom( [ 1, 2, 'str' ] );
-console.log( _.unrollIs( unroll1 ) ); // true
-console.log( _.arrayIs( unroll1 ) ); // false
-console.log( _.unrollIs( unroll2 ) ); // true
+let unroll = _.unrollMake([ 1, 2, 'str' ]);
+console.log( _.unrollIs( unroll ) );
+/* log : true */
 ```
 
 `ArgumentsArray` - незалежний масивоподібний тип даних, що позначає вхідні дані рутини, як і тип `Unroll` може розгортатись в інших масивах та анролах.
 
 ```js
-let argumentsArray1 = _.argumentsArrayMake( [ 1, 2, 'str' ] );
-let argumentsArray2 = _.argumentsArrayFrom( [ 1, 2, 'str' ] );
-console.log( _.argumentsArrayIs( argumentsArray1 ) ); // true
-console.log( _.arrayIs( argumentsArray1 ) ); // false
-console.log( _.argumentsArrayIs( argumentsArray2 ) ); // true
+let argumentsArray = _.argumentsArrayMake([ 1, 2, 'str' ]);
+console.log( _.argumentsArrayIs( argumentsArray ) );
+/* log : true */
 ```
 
 `Long` - збірний тип, що збирає в собі всі інші типи, властивостями котрих є  довжина і елементи. Включає: `Array`, `Unroll`, `ArgumentsArray`, `BufferTyped`.
 
 ```js
 let array = [ 1, 2, 'str' ];
-let unroll = _.unrollMake( [ 1, 2, 'str' ] );
-let argumentsArray = _.argumentsArrayFrom( [ 1, 2, 'str' ] );
+let unroll = _.unrollMake([ 1, 2, 'str' ]);
+let argumentsArray = _.argumentsArrayFrom([ 1, 2, 'str' ]);
 let bufferTyped = new U8x( 10 );
-console.log( _.longIs( array ) ); // true
-console.log( _.longIs( unroll ) ); // true
-console.log( _.longIs( argumentsArray ) ); // true
-console.log( _.longIs( bufferTyped ) ); // true
+console.log( _.longIs( array ) );
+/* log : true */
+console.log( _.longIs( unroll ) );
+/* log : true */
+console.log( _.longIs( argumentsArray ) );
+/* log : true */
+console.log( _.longIs( bufferTyped ) );
+/* log : true */
 ```
 
 ### Перелік буферів
@@ -52,28 +54,32 @@ console.log( _.longIs( bufferTyped ) ); // true
 
 ```js
 let arrayBuffer = new ArrayBuffer( 10 );
+console.log( _.bufferRawIs( arrayBuffer ) );
+/* log : true */
+
 let sharedArrayBuffer = new SharedArrayBuffer( 10 ) );
-console.log( _.bufferRawIs( arrayBuffer ) ); // true
-console.log( _.bufferRawIs( sharedArrayBuffer ) ); // true
+console.log( _.bufferRawIs( sharedArrayBuffer ) );
+/* log : true */
 ```
 
 `BufferView` - буфер для представлення даних буферу `BufferRaw`, який не містить елементів. Може змінювати представлення динамічно - для того щоб по-різному інтерпретувати одні й ті ж дані достатньо використати інший метод доступу.
 
 ```js
-let buffer = new ArrayBuffer( 20 );
-let bufferView = new DataView( buffer );
-console.log( _.bufferRawIs( buffer ) ); // true
-console.log( _.bufferViewIs( bufferView ) ); // true
-console.log( _.bufferViewIs( buffer ) ); // false
+let bufferView = new DataView( new ArrayBuffer( 20 ) );
+console.log( _.bufferViewIs( bufferView ) );
+/* log : true */
 ```
 
 `BufferNode` - буфер інтерпретатора `NodeJS`. Подібно буферу `BufferView` не має визначених елементів та використовується для динамічного представлення двійкових даних. Одночасно з цим має властивості `BufferTyped` i `BufferRaw`.
 
 ```js
-let bufferNode2 = Buffer.alloc( 20 );
+let bufferNode1 = Buffer.alloc( 20 );
+console.log( _.bufferNodeIs( bufferNode1 ) );
+/* log : true */
+
 let bufferNode2 = Buffer.from( [ 1, 2 ] );
-console.log( _.bufferNodeIs( bufferNode1 ) ); // true
-console.log( _.bufferNodeIs( bufferNode2 ) ); // true
+console.log( _.bufferNodeIs( bufferNode2 ) );
+/* log : true */
 ```
 
 `BufferTyped` - збірний тип даних, що збирає в собі сукупність типів для представлення послідовності двійкових даних у обраному числовому форматі - у вигляді беззнакових чисел, чисел зі знаком, та чисел з плаваючою комою. Включає наступні типи: `U32x`, `U16x`, `U8x`, `U8ClampedArrayx`, `Ux`, `I32x`, `I16x`, `I8x`, `Ix`, `F64x`, `F32x`, `Fx`.
@@ -84,13 +90,20 @@ console.log( _.bufferNodeIs( bufferNode2 ) ); // true
 
 ```js
 let bufferRaw = new ArrayBuffer( 20 );
+console.log( _.bufferAnyIs( bufferRaw ) );
+/* log : true */
+
 let bufferView = new DataView( bufferRaw );
+console.log( _.bufferAnyIs( bufferView ) );
+/* log : true */
+
 let bufferNode = Buffer.alloc( 100 );
+console.log( _.bufferAnyIs( bufferNode ) );
+/* log : true */
+
 let bufferTyped = new U8x( bufferRaw );
-console.log( _.bufferAnyIs( bufferRaw ) ); // true
-console.log( _.bufferAnyIs( bufferView ) ); // true
-console.log( _.bufferAnyIs( bufferNode ) ); // true
-console.log( _.bufferAnyIs( bufferTyped ) ); // true
+console.log( _.bufferAnyIs( bufferTyped ) );
+/* log : true */
 ```
 
 ### Типізовані буфери
@@ -120,82 +133,106 @@ console.log( _.bufferAnyIs( bufferTyped ) ); // true
 `Fx` - альтернативний тип даних для `F32x`.
 
 ```js
-let u32x = new U32x( [ 1, 2, 100 ] );
-let i16x = new I16x( [ 1, 2, 15 ] );
-let f32x = new Fx( [ 1, 2, 34 ] );
-console.log( _.bufferTypedIs( u32x ) ); // true
-console.log( _.bufferTypedIs( I16x ) ); // true
-console.log( _.bufferTypedIs( Fx ) ); // true
+let u32x = new U32x([ 1, 2, 100 ]);
+console.log( _.bufferTypedIs( u32x ) );
+/* log : true */
+
+let f32x = new Fx([ 1, 2, 34 ]);
+console.log( _.bufferTypedIs( Fx ) );
+/* log : true */
 ```
 
+При застосуванні указаних конструкторів створюються інстанси типу `BufferTyped`.
 
-qqq : переписати з нуля
+<!-- aaa : переписати з нуля | Dmytro : переписано -->
 
-Модуль містить [збірний тип `long`]( './TypeIndexed.md' ) та рутини, що працюють з цим типом. Назва таких рутин починається з `long`. Більшість вказаних рутин при обробці `long`-у не змінює тип контейнеру. Виключення становить тип `ArgumentsArray`, котрий завжди перетворюється на інший тип. Новий тип контейнеру, визначає дескриптор `longDescriptor`.
+## Дескриптор типу <code>Long</code>
 
-### Дескриптор типу `Long`
+Дескриптор, що визначає тип контейнеру при створенні лонгу, якщо тип не вказано явно.
 
-Дескриптор, що визначає тип контейнеру при створенні лонгу.
-Існують дексриптори для таких типів:
+Якщо рутина при створенні нового лонгу не знає якого типу повинен бути вихідний контейнер, то створений лонг матиме тип дескриптора `longDescriptor`.
+Рутини не знають про тип призначення якщо :
+
+- замість інстанса лонга ( або конструктора ) передано `null`;
+- інстанс має тип `ArgumentsArray`.
+
+### Створення `Long`-а за замовчуванням
+
+```js
+var long = _.longMake( null );
+/* returns : [] */
+_.arrayIs( long );
+/* returns : true */
+```
+
+Створений лонг контейнер `long` має тип `Array`. Це дефолтний тип лонгів.
+
+```js
+var argumentsArray = _.argumentsArrayMake([ 1, 2, 3 ]);
+var newLong = _.longMake( argumentsArray, 2 );
+/* returns : [ 1, 2 ] */
+_.argumentsArrayIs( newLong );
+/* returns : false */
+_.arrayIs( newLong );
+/* returns : true */
+```
+
+Рутина `longMake` перетворила лонг `argumentsArray` до типу `Array`.
+
+### Створення `Long`-a з указаним типом
+
+Для того, щоб змінити тип дескриптору на інший використовується спеціальне поле `withDefaultLong`.
+
+```js
+var newLong = _.withDefaultLong.Unroll.longMake( null );
+/* returns : [] */
+_.unrollIs( newLong );
+/* returns : true */
+```
+
+Новий лонг має тип `Unroll`. Це було вказано в дескрипторі.
+
+```js
+var _ = _.withDefaultLong.U8x;
+var argumentsArray = _.argumentsArrayMake([ 1, 2, 3 ]);
+_.argumentsArrayIs( argumentsArray );
+/* returns : true */
+var newLong = _.longMake( argumentsArray, 2 );
+/* returns : Uint8Array [ 1, 2 ] */
+_.BufferTypedIs( newLong );
+/* returns : true */
+```
+
+Перший рядок позначає шорткат, що включає дескриптор `U8x`.
+
+Як видно з приведеного прикладу контейнер `argumentsArray` має тип `ArgumentsArray`. Таким чином, указання дескриптора не впливає на поведінку рутин, що створюють інстанси визначеного типу.
+
+Після створення нового лонга `newLong` його тип - `U8x` позначений в шорткаті.
+
+### Перелік дескрипторів
+
+Доступні дескриптори зберігаються в мапі `_.LongDescriptors`. До них належать:
 
 - `Array` - дескриптор за замовчуванням, створює масиви.
-- `Unroll` - створення `unroll` масивів.
-- `ArgumentsArray` - створення типу `ArgumentsArray`.
-- `U8x` - створення типізованого буферу `Uint8Array`.
-- `U16x` - створення типізованого буферу `Uint16Array`.
-- `U32x` - створення типізованого буферу `Uint32Array`.
-- `Ux` - створення типізованого буферу `Uint32Array`.
-- `I8x` - створення типізованого буферу `Int8Array`.
-- `I16x` - створення типізованого буферу `Int16Array`.
-- `I32x` - створення типізованого буферу `Int32Array`.
-- `Ix` - створення типізованого буферу `Int32Array`.
-- `F32x` - створення типізованого буферу `Float32Array`.
-- `F64x` - створення типізованого буферу `Float64Array`.
-- `Fx` - створення типізованого буферу `Float32Array`.
-
-Доступні дескриптори зберігаються в мапі `_.LongDescriptors`.
-
-### Як змінити тип Long за замовчуванням
-
-```js
-var argumentsArray = _.argumentsArrayMake( [ 1, 2, 3 ] );
-_.argumentsArrayIs( argumentsArray ); // returns true
-var newContainer = _.longMake( argumentsArray, 2 );
-_.argumentsArrayIs( newContainer ); // returns false
-_.arrayIs( newContainer ); // returns true
-```
-
-В останньому рядку перевіряється чи являється отриманий контейнер масивом. Перевірка проходить, бо дефолтний дескриптор - `Array`. Тобто, створюється звичайний масив. Для того, щоб змінити тип дескриптору на інший використовується спеціальне поле `withDefaultLong`.
-
-```js
-var argumentsArray = _.argumentsArrayMake( [ 1, 2, 3 ] );
-var newContainer = _.withDefaultLong.U8x.longMake( argumentsArray, 2 );
-_.argumentsArrayIs( newContainer ); // returns false
-_.BufferTypedIs( newContainer ); // returns true
-```
-
-Повний виклик з позначенням дескриптору виглядає як приведено вище: `wTools.withDefaultLong.[ name of descriptor ].routine( [ arguments ] )`.
-
-Зміна типу контейнеру також можлива, якщо рутині явно не вказано тип вихідного контейнеру. Наприклад, рутина `longMake` приймає два параметри. Перший - тип контейнеру і вміст, другий довжину. Якщо передано лише один аргумент, то тип задається через `longDescriptor`
-
-```js
-var u8x = new U8x( [ 1, 2, 3 ] );
-var newContainer1 = _.longMake( u8x );
-_.bufferTypedIs( newContainer1 ); // returns false
-_.arrayIs( newContainer1 ); // returns true
-
-var i16x = new I16x( [ 1, 2, 3 ] );
-var newContainer2 = _.longMake( i16x, 2 );
-_.bufferTypedIs( newContainer2 ); // returns true
-_.arrayIs( newContainer2 ); // returns false
-```
-
-В першому випадку рутина `longMake` не могла визначити тип вихідного масиву, тому створила дефолтний. В другому випадку тип вихідного контейнеру указаний явно.
+- `Unroll` - створює `unroll`-масиви.
+- `ArgumentsArray` - створює контейнер типу `ArgumentsArray`.
+- `U8x` - створює типізований буфер `Uint8Array`.
+- `U16x` - створює типізований буфер `Uint16Array`.
+- `U32x` - створює типізований буфер `Uint32Array`.
+- `Ux` - створює типізований буфер `Uint32Array`.
+- `I8x` - створює типізований буфер `Int8Array`.
+- `I16x` - створює типізований буфер `Int16Array`.
+- `I32x` - створює типізований буфер `Int32Array`.
+- `Ix` - створює типізований буфер `Int32Array`.
+- `F32x` - створює типізований буфер `Float32Array`.
+- `F64x` - створює типізований буфер `Float64Array`.
+- `Fx` - створює типізований буфер `Float32Array`.
 
 ### Підсумок
 
-- `longDescriptor` - дескриптор типу для створення нового `long`-контейнеру.
-- Рутини створюють новий контейнеру з типом визначеним в `longDescriptor` якщо рутина не може визначити тип вихідного контейнеру.
-- Рутини створюють новий контейнеру з типом визначеним в `longDescriptor` якщо рутина приймає аргументом `ArgumentsArray` контейнер.
+- Рутини створюють новий лонг з типом визначеним в `longDescriptor`, якщо рутина не може визначити тип вихідного контейнера.
+- Рутини створюють новий лонг з типом визначеним в `longDescriptor`, якщо рутина приймає аргументом контейнер типу `ArgumentsArray`.
+- Повний виклик з позначенням дескриптору виглядає: `wTools.withDefaultLong.[ name of descriptor ].[ routine ]( arguments )`.
 
 [Повернутись до змісту](../README.md#Концепції)
+

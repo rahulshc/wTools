@@ -1,4 +1,5 @@
-( function _fLong_s_() {
+( function _fLong_s_()
+{
 
 'use strict';
 
@@ -794,8 +795,10 @@ let longMakeZeroed = _longMake_functor( function( src, ins, length, minLength )
   result = new src.constructor( length );
 
   if( !_.bufferTypedIs( result ) )
-  for( let i = 0 ; i < length ; i++ )
-  result[ i ] = 0;
+  {
+    for( let i = 0 ; i < length ; i++ )
+    result[ i ] = 0;
+  }
 
   return result;
 })
@@ -1217,8 +1220,7 @@ function longShallowClone()
 
   /* make result */
 
-  let result;
-  let bufferDst;
+  let result, bufferDst;
   let offset = 0;
 
   if( _.bufferRawIs( arguments[ 0 ] ) )
@@ -1679,8 +1681,10 @@ function longBut( array, range, val )
   result[ i-d2 ] = array[ i ];
 
   if( val )
-  for( let i = 0 ; i < val.length ; i++ )
-  result[ range[ 0 ]+i ] = val[ i ];
+  {
+    for( let i = 0 ; i < val.length ; i++ )
+    result[ range[ 0 ]+i ] = val[ i ];
+  }
 
   return result;
 }
@@ -1762,7 +1766,7 @@ function longBut( array, range, val )
  */
 
 /*
-qqq : routine longButInplace requires good test coverage and documentation | Dmytro : implemented and covered routine longButInplace, documented
+aaa : routine longButInplace requires good test coverage and documentation | Dmytro : implemented and covered routine longButInplace, documented
  */
 
 function longButInplace( array, range, val )
@@ -1770,7 +1774,6 @@ function longButInplace( array, range, val )
 
   _.assert( 1 <= arguments.length && arguments.length <= 3 );
 
-  // if( _.arrayIs( array ) )
   if( _.arrayLikeResizable( array ) )
   return _.arrayButInplace( array, range, val );
 
@@ -1789,7 +1792,7 @@ function longButInplace( array, range, val )
   if( range[ 0 ] === range[ 1 ] && val === undefined )
   return array;
   else
-  return _.longBut( array, range, val ); // Dmytro : not resizable longs should be processed by longBut algorithm. If it need, I'll make copy of code.
+  return _.longBut( array, range, val );
 
   // let result;
   //
@@ -1827,54 +1830,54 @@ function longButInplace( array, range, val )
 
 //
 
-function _relength_pre( dst, src, range, ins )
-{
-  _.assert( 1 <= arguments.length && arguments.length <= 4 );
-
-  /* qqq : suspicious */
-
-  if( dst === null )
-  {
-    dst = true;
-  }
-  else if( dst === src )
-  {
-    dst = false;
-  }
-  else if( arguments.length === 4 )
-  {
-    _.assert( _.longLike( dst ), '{-dst-} should be Long' );
-  }
-  else
-  {
-    /* qqq2 : wrong. src could pass check rangeIs if length is 2 */
-    /* Dmytro : this check means: if length > 1 and second argument is not a range, then it is source container, and third argument is range */
-    // if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
-    // {
-    //   _.assert( _.longLike( dst ) );
-    // }
-    // else
-    // {
-    //   ins = range;
-    //   range = src;
-    //   src = dst;
-    //   dst = false;
-    // }
-
-    ins = range;
-    range = src;
-    src = dst;
-    dst = false;
-  }
-
-  _.assert( _.longLike( src ) );
-
-  return [ dst, src, range, ins ];
-}
+// function _relength_pre( dst, src, range, ins )
+// {
+//   _.assert( 1 <= arguments.length && arguments.length <= 4 );
+//
+//   /* aaa : suspicious */ /* Dmytro : removed */
+//
+//   if( dst === null )
+//   {
+//     dst = true;
+//   }
+//   else if( dst === src )
+//   {
+//     dst = false;
+//   }
+//   else if( arguments.length === 4 )
+//   {
+//     _.assert( _.longLike( dst ), '{-dst-} should be Long' );
+//   }
+//   else
+//   {
+//     /* aaa2 : wrong. src could pass check rangeIs if length is 2 */
+//     /* Dmytro : this check means: if length > 1 and second argument is not a range, then it is source container, and third argument is range */
+//     // if( arguments.length > 1 && !_.rangeIs( src ) && !_.numberIs( src ) )
+//     // {
+//     //   _.assert( _.longLike( dst ) );
+//     // }
+//     // else
+//     // {
+//     //   ins = range;
+//     //   range = src;
+//     //   src = dst;
+//     //   dst = false;
+//     // }
+//
+//     ins = range;
+//     range = src;
+//     src = dst;
+//     dst = false;
+//   }
+//
+//   _.assert( _.longLike( src ) );
+//
+//   return [ dst, src, range, ins ];
+// }
 
 //
 
-/* aaa2 : rename arguments. ask */
+/* aaa2 : rename arguments. ask */ /* Dmytro : renamed and standardized for each routine */
 
 function longBut_( dst, src, crange, ins )
 {
@@ -1889,162 +1892,80 @@ function longBut_( dst, src, crange, ins )
   }
 
   if( crange === undefined )
-  return resultMake( dst, src )
+  {
+    crange = [ 0, -1 ];
+    ins = undefined;
+  }
   else if( _.numberIs( crange ) )
-  crange = [ crange, crange + 1 ];
+  {
+    crange = [ crange, crange ];
+  }
 
-  _.assert( _.longLike( src ) );
-  _.assert( _.rangeIs( crange ) );
-  _.assert( _.longLike( ins ) || ins === undefined || ins === null );
+  _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+  _.assert( _.longLike( ins ) || ins === undefined || ins === null, 'Expects long {-ins-} for insertion' );
 
-  _.rangeClamp( crange, [ 0, src.length ] );
-  if( crange[ 1 ] < crange[ 0 ] )
-  crange[ 1 ] = crange[ 0 ];
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
 
-  let delta = crange[ 1 ] - crange[ 0 ];
+  if( first < 0 )
+  first = 0;
+  if( first > src.length )
+  first = src.length;
+  if( last > src.length - 1 )
+  last = src.length - 1;
+
+  if( last + 1 < first )
+  last = first - 1;
+
+  let delta = last - first + 1;
   let insLength = ins ? ins.length : 0;
   let delta2 = delta - insLength;
   let resultLength = src.length - delta2;
 
-  let result;
+  let result = dst;
   if( dst === null )
   {
     result = _.longMakeUndefined( src, resultLength );
   }
   else if( dst === src )
   {
+    if( ( dst.length === resultLength ) && delta === 0 )
+    {
+      return dst;
+    }
     if( _.arrayLikeResizable( dst ) )
     {
-      ins ? dst.splice( crange[ 0 ], delta, ... ins ) : dst.splice( crange[ 0 ], delta );
+      ins ? dst.splice( first, delta, ... ins ) : dst.splice( first, delta );
       return dst;
     }
     else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
     {
       result = _.longMakeUndefined( dst, resultLength );
     }
-    else
-    {
-      result = dst;
-    }
   }
   else if( dst.length !== resultLength )
   {
-    if( _.arrayLikeResizable( dst ) )
-    {
-      dst.length = resultLength;
-    }
-    else
-    {
-      dst = _.longMakeUndefined( dst, resultLength );
-    }
-
-    result = dst;
+    dst = _.longMakeUndefined( dst, resultLength );
   }
 
   /* */
 
-  result = resultMake( result, src, ins );
+  for( let i = 0 ; i < first ; i++ )
+  result[ i ] = src[ i ];
+
+  for( let i = last + 1 ; i < src.length ; i++ )
+  result[ i - delta2 ] = src[ i ];
+
+  if( ins )
+  {
+    for( let i = 0 ; i < ins.length ; i++ )
+    result[ first + i ] = ins[ i ];
+  }
 
   return result;
-
-  /* */
-
-  function resultMake( dst, src, ins )
-  {
-    if( dst !== src )
-    {
-      for( let i = 0 ; i < crange[ 0 ] ; i++ )
-      dst[ i ] = src[ i ];
-
-      for( let i = crange[ 1 ] ; i < src.length ; i++ )
-      dst[ i - delta2 ] = src[ i ];
-    }
-
-    if( ins )
-    for( let i = 0 ; i < ins.length ; i++ )
-    dst[ crange[ 0 ] + i ] = ins[ i ];
-
-    return dst;
-  }
 }
-
-//
-
-// /* qqq2 : rename arguments. ask */
-// function longBut_( dst, array, range, val )
-// {
-//
-//   [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
-//
-//   if( _.arrayLikeResizable( array ) && !_.bufferAnyIs( dst ) )
-//   return _.arrayBut_.apply( this, arguments ); /* qqq2 : ? */
-//
-//   if( range === undefined )
-//   return returnDst();
-//
-//   if( _.numberIs( range ) )
-//   range = [ range, range + 1 ];
-//
-//   _.assert( _.rangeIs( range ) );
-//
-//   _.rangeClamp( range, [ 0, array.length ] );
-//   if( range[ 1 ] < range[ 0 ] )
-//   range[ 1 ] = range[ 0 ];
-//
-//   if( range[ 0 ] === range[ 1 ] && val === undefined ) /* qqq2 : ? */
-//   return returnDst();
-//
-//   let d = range[ 1 ] - range[ 0 ];
-//   let len = val ? val.length : 0;
-//   let d2 = d - len;
-//   let l2 = array.length - d2;
-//
-//   let result;
-//   if( _.boolIs( dst ) )
-//   result = _.longMakeUndefined( array, l2 );
-//   else if( _.arrayLikeResizable( dst ) )
-//   result = _.longEmpty( dst ); /* qqq2 : ? */
-//   else if( dst.length !== l2 )
-//   result = _.longMakeUndefined( dst, l2 );
-//   else
-//   result = dst;
-//
-//   for( let i = 0 ; i < range[ 0 ] ; i++ )
-//   result[ i ] = array[ i ];
-//
-//   for( let i = range[ 1 ] ; i < array.length ; i++ )
-//   result[ i-d2 ] = array[ i ];
-//
-//   if( val )
-//   for( let i = 0 ; i < val.length ; i++ )
-//   result[ range[ 0 ]+i ] = val[ i ];
-//
-//   return result;
-//
-//   /* */
-//
-//   function returnDst() /* qqq2 : ? */
-//   {
-//     if( dst.length !== undefined )
-//     {
-//       if( _.arrayLikeResizable( dst ) )
-//       {
-//         return dst.splice( 0, dst.length, ... array );
-//       }
-//       else
-//       {
-//         if( dst.length !== array.length )
-//         dst = _.longMakeUndefined( dst, array.length );
-//
-//         for( let i = 0; i < dst.length; i++ )
-//         dst[ i ] = array[ i ];
-//
-//         return dst;
-//       }
-//     }
-//     return dst === true ? _.longMake( array ) : array;
-//   }
-// }
 
 //
 
@@ -2355,68 +2276,77 @@ function longShrinkInplace( array, range, val )
 
 //
 
-function longShrink_( dst, array, range, val )
+function longShrink_( dst, src, crange )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 3, 'Expects not {-ins-} element' );
 
-  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
+  if( arguments.length < 3 && dst !== null && dst !== src )
+  {
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+  }
 
-  if( _.arrayLikeResizable( array ) )
-  return _.arrayShrink_.apply( this, arguments );
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
 
-  if( range === undefined )
-  return returnDst();
+  _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
 
-  _.assert( _.rangeIs( range ) )
+  if( first < 0 )
+  first = 0;
+  if( last > src.length - 1 )
+  last = src.length - 1;
 
-  _.rangeClamp( range, [ 0, array.length ] );
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
+  if( last + 1 < first )
+  last = first - 1;
 
-  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
-  return returnDst();
+  let first2 = Math.max( first, 0 );
+  let last2 = Math.min( src.length - 1, last );
 
-  let f2 = Math.max( range[ 0 ], 0 );
-  let l2 = Math.min( array.length, range[ 1 ] );
+  let resultLength = last - first + 1;
 
-  let result;
-  if( _.boolIs( dst ) )
-  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
-  else if( _.arrayLikeResizable( dst ) )
-  result = _.longEmpty( dst );
-  else if( dst.length !== range[ 1 ] - range[ 0 ] )
-  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
-  else
-  result = dst;
+  let result = dst;
+  if( dst === null )
+  {
+    result = _.longMakeUndefined( src, resultLength );
+  }
+  else if( dst === src )
+  {
+    if( dst.length === resultLength )
+    {
+      return dst;
+    }
+    if( _.arrayLikeResizable( dst ) )
+    {
+      _.assert( Object.isExtensible( dst ), 'Array is not extensible, cannot change array' );
+      if( resultLength === 0 )
+      return _.longEmpty( dst );
 
-  for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f2 ] = array[ r ];
+      dst.splice( last2 + 1, dst.length - last + 1 );
+      dst.splice( 0, first2 );
+      return dst;
+    }
+    else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
+    {
+      result = _.longMakeUndefined( dst, resultLength );
+    }
+  }
+  else if( dst.length !== resultLength )
+  {
+    result = _.longMakeUndefined( dst, resultLength );
+  }
+
+  for( let r = first2 ; r < last2 + 1 ; r++ )
+  result[ r - first2 ] = src[ r ];
 
   return result;
-
-  /* */
-
-  function returnDst()
-  {
-    if( dst.length !== undefined )
-    {
-      if( _.arrayLikeResizable( dst ) )
-      return dst.splice( 0, dst.length, ... array );
-      else
-      {
-        if( dst.length !== array.length )
-        dst = _.longMakeUndefined( dst, array.length );
-
-        for( let i = 0; i < dst.length; i++ )
-        dst[ i ] = array[ i ];
-
-        return dst;
-      }
-    }
-    return dst === true ? _.longMake( array ) : array;
-  }
 }
 
 //
@@ -2489,9 +2419,9 @@ function longShrink_( dst, array, range, val )
  */
 
 /*
-  qqq : extend documentation and test coverage of longGrowInplace | Dmytro : extended documentation, covered routine longGrow, longGrowInplace
-  qqq : implement arrayGrow | Dmytro : implemented
-  qqq : implement arrayGrowInplace | Dmytro : implemented
+  aaa : extend documentation and test coverage of longGrowInplace | Dmytro : extended documentation, covered routine longGrow, longGrowInplace
+  aaa : implement arrayGrow | Dmytro : implemented
+  aaa : implement arrayGrowInplace | Dmytro : implemented
 */
 
 function longGrow( array, range, val )
@@ -2679,29 +2609,30 @@ function longGrow_( dst, src, crange, ins )
   crange = [ 0, crange ];
 
   _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
   _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
 
-  let f = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
-  let l = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
 
-  if( f > 0 )
-  f = 0;
-  if( l < src.length - 1 )
-  l = src.length - 1;
+  if( first > 0 )
+  first = 0;
+  if( last < src.length - 1 )
+  last = src.length - 1;
 
-  if( f < 0 )
+  if( first < 0 )
   {
-    l -= f;
-    f -= f;
+    last -= first;
+    first -= first;
   }
 
-  if( l + 1 < f )
-  l = f - 1;
+  if( last + 1 < first )
+  last = first - 1;
 
-  let f2 = Math.max( -crange[ 0 ], 0 );
-  let l2 = Math.min( src.length - 1 + f2, l + f2 );
+  let first2 = Math.max( -crange[ 0 ], 0 );
+  let last2 = Math.min( src.length - 1 + first2, last + first2 );
 
-  let resultLength = l - f + 1;
+  let resultLength = last - first + 1;
 
   let result = dst;
   if( dst === null )
@@ -2717,8 +2648,8 @@ function longGrow_( dst, src, crange, ins )
     if( _.arrayLikeResizable( dst ) )
     {
       _.assert( Object.isExtensible( dst ), 'Array is not extensible, cannot change array' );
-      dst.splice( f, 0, ... _.dup( ins, f2 ) );
-      dst.splice( l2 + 1, 0, ... _.dup( ins, resultLength <= l2 ? 0 : resultLength - l2 - 1 ) );
+      dst.splice( 0, 0, ... _.dup( ins, first2 ) );
+      dst.splice( last2 + 1, 0, ... _.dup( ins, resultLength <= last2 ? 0 : resultLength - last2 - 1 ) );
       return dst;
     }
     else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
@@ -2731,15 +2662,15 @@ function longGrow_( dst, src, crange, ins )
     result = _.longMakeUndefined( dst, resultLength );
   }
 
-  for( let r = f2 ; r < l2 + 1 ; r++ )
-  result[ r ] = src[ r - f2 ];
+  for( let r = first2 ; r < last2 + 1 ; r++ )
+  result[ r ] = src[ r - first2 ];
 
   if( ins !== undefined )
   {
-    for( let r = 0 ; r < f2 ; r++ )
+    for( let r = 0 ; r < first2 ; r++ )
     result[ r ] = ins;
 
-    for( let r = l2 + 1 ; r < resultLength ; r++ )
+    for( let r = last2 + 1 ; r < resultLength ; r++ )
     result[ r ] = ins;
   }
 
@@ -2749,9 +2680,9 @@ function longGrow_( dst, src, crange, ins )
 //
 
 /**
- * Routine longRelength() changes length of provided Long {-array-} by copying it elements to newly created Long of the same
- * type using range {-range-} positions of the original Long and value to fill free space after copy {-val-}.
- * Routine can grows and reduses size of Long. The original {-array-} will not be modified.
+ * Routine longRelength() changes length of provided Long {-array-} by copying its elements to newly created Long of the same
+ * type as source Long. Routine uses range {-range-} positions of the original Long and value {-val-} to fill free space after copy.
+ * Routine can grows and reduces size of Long. The original {-array-} will not be modified.
  *
  * @param { Long } array - The Long from which makes a shallow copy.
  * @param { Range } The two-element array that defines the start index and the end index for copying elements.
@@ -2971,84 +2902,114 @@ function longRelengthInplace( array, range, val )
 
 //
 
-function longRelength_( dst, array, range, val )
+function longRelength_( dst, src, crange, ins )
 {
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
-  [ dst, array, range, val ] = _relength_pre.apply( this, arguments );
-
-  if( _.arrayLikeResizable( array ) )
-  return _.arrayRelength_.apply( this, arguments );
-
-  if( range === undefined )
-  return returnDst();
-
-  if( _.numberIs( range ) )
-  range = [ range, array.length ];
-
-  _.assert( _.rangeIs( range ) );
-
-  range[ 0 ] = range[ 0 ] !== undefined ? range[ 0 ] : 0;
-  range[ 1 ] = range[ 1 ] !== undefined ? range[ 1 ] : src.length;
-
-  if( range[ 1 ] < range[ 0 ] )
-  range[ 1 ] = range[ 0 ];
-  if( range[ 0 ] > array.length )
-  range[ 0 ] = array.length
-
-  if( range[ 0 ] < 0 )
-  range[ 0 ] = 0;
-
-  if( range[ 0 ] === 0 && range[ 1 ] === array.length )
-  return returnDst();
-
-  let f2 = Math.max( range[ 0 ], 0 );
-  let l2 = Math.min( array.length, range[ 1 ] );
-
-  let result;
-  if( _.boolIs( dst ) )
-  result = _.longMakeUndefined( array, range[ 1 ] - range[ 0 ] );
-  else if( _.arrayLikeResizable( dst ) )
+  if( arguments.length < 4 && dst !== null && dst !== src )
   {
-    result = dst;
-    result.length = range[ 1 ] - range[ 0 ];
-  }
-  else if( dst.length !== range[ 1 ] - range[ 0 ] )
-  result = _.longMakeUndefined( dst, range[ 1 ] - range[ 0 ] );
-  else
-  result = dst;
-
-  for( let r = f2 ; r < l2 ; r++ )
-  result[ r-f2 ] = array[ r ];
-
-  if( val !== undefined )
-  {
-    for( let r = l2 - range[ 0 ]; r < result.length; r++ )
-    result[ r ] = val;
+    dst = arguments[ 0 ];
+    src = arguments[ 0 ];
+    crange = arguments[ 1 ];
+    ins = arguments[ 2 ];
   }
 
-  return result;
+  if( crange === undefined )
+  crange = [ 0, src.length - 1 ];
+  if( _.numberIs( crange ) )
+  crange = [ 0, crange ];
+
+  _.assert( _.longIs( dst ) || dst === null, 'Expects {-dst-} of any long type or null' );
+  _.assert( _.longIs( src ), 'Expects {-src-} of any long type' );
+  _.assert( _.rangeIs( crange ), 'Expects crange {-crange-}' );
+
+  let first = crange[ 0 ] = crange[ 0 ] !== undefined ? crange[ 0 ] : 0;
+  let last = crange[ 1 ] = crange[ 1 ] !== undefined ? crange[ 1 ] : src.length - 1;
+
+  if( last < first )
+  last = first - 1;
+
+  if( crange[ 1 ] < 0 && crange[ 0 ] < 0 )
+  crange[ 0 ] -= crange[ 1 ] + 1;
+
+  if( first < 0 )
+  {
+    last -= first;
+    first -= first;
+  }
+
+  let first2 = Math.max( Math.abs( crange[ 0 ] ), 0 );
+  let last2 = Math.min( src.length - 1, last );
+
+  let resultLength = last - first + 1;
+
+  let result = dst;
+  if( dst === null )
+  {
+    result = _.longMakeUndefined( src, resultLength );
+  }
+  else if( dst === src )
+  {
+    if( dst.length === resultLength && crange[ 0 ] === 0 )
+    {
+      return dst;
+    }
+    if( _.arrayLikeResizable( dst ) )
+    {
+      _.assert( Object.isExtensible( dst ), 'dst is not extensible, cannot change dst' );
+      if( crange[ 0 ] < 0 )
+      {
+        dst.splice( first, 0, ... _.dup( ins, first2 ) );
+        dst.splice( last2 + 1, src.length - last2, ... _.dup( ins, last - last2 ) );
+      }
+      else
+      {
+        dst.splice( 0, first );
+        dst.splice( last2 + 1 - first2, src.length - last2, ... _.dup( ins, last - last2 ) );
+      }
+      return dst;
+    }
+    else if( dst.length !== resultLength || _.argumentsArrayIs( dst ) )
+    {
+      result = _.longMakeUndefined( dst, resultLength );
+    }
+  }
+  else if( dst.length !== resultLength )
+  {
+    result = _.longMakeUndefined( dst, resultLength );
+  }
 
   /* */
 
-  function returnDst()
+  if( resultLength === 0 )
   {
-    if( dst.length !== undefined )
-    {
-      if( _.arrayLikeResizable( dst ) )
-      return dst.splice( 0, dst.length, ... array );
-      else
-      {
-        if( dst.length !== array.length )
-        dst = _.longMakeUndefined( dst, array.length );
-
-        for( let i = 0; i < dst.length; i++ )
-        dst[ i ] = array[ i ];
-
-        return dst;
-      }
-    }
-    return dst === true ? _.longMake( array ) : array;
+    return result;
   }
+  if( crange[ 0 ] < 0 )
+  {
+    for( let r = first2 ; r < ( last2 + 1 + first2 ) && r < resultLength ; r++ )
+    result[ r ] = src[ r - first2 ];
+    if( ins !== undefined )
+    {
+      for( let r = 0 ; r < first2 ; r++ )
+      result[ r ] = ins;
+      for( let r = last2 + 1 + first2 ; r < resultLength ; r++ )
+      result[ r ] = ins;
+    }
+  }
+  else
+  {
+    for( let r = first2 ; r < last2 + 1 ; r++ )
+    result[ r - first2 ] = src[ r ];
+
+    if( ins !== undefined )
+    {
+      for( let r = last2 + 1 ; r < last + 1 ; r++ )
+      result[ r - first2 ] = ins;
+    }
+  }
+
+  return result;
 }
 
 // --
@@ -3159,12 +3120,12 @@ function longHas( array, element, evaluator1, evaluator2 )
 //
 
 /**
- * The routine longHasAny() checks if the {-src-} array has at least one element of the argument {-ins-}.
- * It can take equalizer or evaluators for the routine equalities.
+ * The routine longHasAny() checks if the source long {-src-} has at least one element of the long {-ins-}.
+ * It can take equalizer or evaluators for comparing elements.
  *
- * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
+ * It iterates over source long {-src-} each element of the long {-ins-} by the routine
  * [longLeftIndex()]{@link wTools.longLeftIndex}
- * Checks, if {-src-} array has at least one element of the {-ins-} array.
+ * Checks, if {-src-} has at least one element of the {-ins-}.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
@@ -3172,7 +3133,8 @@ function longHas( array, element, evaluator1, evaluator2 )
  *
  * @param { Long } src - The source array.
  * @param  { Long|Primitive } ins - The elements to check in the source array.
- * @param { Function } evaluator - A collback function.
+ * @param { Function } evaluator1 - A callback function. Can be an equalizer or evaluator.
+ * @param { Function } evaluator2 - A callback function. Uses only as second evaluator.
  *
  * @example
  * _.longHasAny( [ 5, 'str', 42, false ], 7 );
@@ -3191,20 +3153,35 @@ function longHas( array, element, evaluator1, evaluator2 )
  * _.longHasAny( [ { a : 2 }, 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
  * // returns true
  *
+ * @example
+ * var evaluator1 = ( e ) => e.a;
+ * var evaluator2 = ( e ) => e.b;
+ * _.longHasAny( [ { a : 2 }, 'str', 42, false ], [ { b : 2 }, { b : 3 } ], evaluator1, evaluator2 );
+ * // returns true
+ *
+ * @example
+ * var equalizer = ( eSrc, eIns ) => eSrc.a === eIns.b;
+ * _.longHasAny( [ { a : 2 }, 'str', 42, false ], [ { b : 2 }, { b : 3 } ], equalizer );
+ * // returns true
+ *
  * @returns { Boolean } - Returns true, if {-src-} has at least one element of {-ins-}, otherwise false is returned.
  * @function longHasAny
- * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If arguments.length is less then one or more then four.
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
- * @throws { Error } If {-evaluator-} is not a routine.
+ * @throws { Error } If {-evaluator1-} is not a routine.
+ * @throws { Error } If {-evaluator1-} is an evaluator and accepts less or more than one argument.
+ * @throws { Error } If {-evaluator1-} is an equalizer and accepts less or more than two argument.
+ * @throws { Error } If {-evaluator2-} is not a routine.
+ * @throws { Error } If {-evaluator2-} is an evaluator and accepts less or more than one argument.
  * @namespace Tools
  */
 
-function longHasAny( src, ins, evaluator )
+function longHasAny( src, ins, evaluator1, evaluator2 )
 {
 
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
@@ -3215,7 +3192,7 @@ function longHasAny( src, ins, evaluator )
 
   do
   {
-    result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
+    result = _.longLeftIndex( src, ins[ i ], 0, evaluator1, evaluator2 );
     i++;
   }
   while( result < 0 && i < ins.length )
@@ -3228,12 +3205,12 @@ function longHasAny( src, ins, evaluator )
 //
 
 /**
- * The routine longHasAll() checks if the {-src-} array has all elements of the argument {-ins-}.
- * It can take equalizer or evaluators for the routine equalities.
+ * The routine longHasAll() checks if the source long {-src-} has all elements of the long {-ins-}.
+ * It can take equalizer or evaluators for comparing elements.
  *
- * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
+ * It iterates over source long {-src-} each element of the long {-ins-} by the routine
  * [longLeftIndex()]{@link wTools.longLeftIndex}
- * Checks, if {-src-} array has all elements of the {-ins-} array.
+ * Checks, if {-src-} has all elements of the {-ins-}.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
@@ -3241,7 +3218,8 @@ function longHasAny( src, ins, evaluator )
  *
  * @param { Long } src - The source array.
  * @param  { Long|Primitive } ins - The elements to check in the source array.
- * @param { Function } evaluator - A collback function.
+ * @param { Function } evaluator1 - A callback function. Can be an equalizer or evaluator.
+ * @param { Function } evaluator2 - A callback function. Uses only as second evaluator.
  *
  * @example
  * _.longHasAll( [ 5, 'str', 42, false ], 7 );
@@ -3260,20 +3238,35 @@ function longHasAny( src, ins, evaluator )
  * _.longHasAny( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { a : 2 }, { a : 3 } ], evaluator );
  * // returns true
  *
+ * @example
+ * var evaluator1 = ( eSrc ) => eSrc.a;
+ * var evaluator2 = ( eIns ) => eIns.b;
+ * _.longHasAny( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { b : 2 }, { b : 3 } ], evaluator1, evaluator2 );
+ * // returns true
+ *
+ * @example
+ * var equalizer = ( eSrc, eIns ) => eSrc.a === eIns.b;
+ * _.longHasAny( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { b : 2 }, { b : 3 } ], equalizer );
+ * // returns true
+ *
  * @returns { Boolean } - Returns true, if {-src-} has all elements of {-ins-}, otherwise false is returned.
  * @function longHasAll
- * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If arguments.length is less then one or more then four.
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
- * @throws { Error } If {-evaluator-} is not a routine.
+ * @throws { Error } If {-evaluator1-} is not a routine.
+ * @throws { Error } If {-evaluator1-} is an evaluator and accepts less or more than one argument.
+ * @throws { Error } If {-evaluator1-} is an equalizer and accepts less or more than two argument.
+ * @throws { Error } If {-evaluator2-} is not a routine.
+ * @throws { Error } If {-evaluator2-} is an evaluator and accepts less or more than one argument.
  * @namespace Tools
  */
 
-function longHasAll( src, ins, evaluator )
+function longHasAll( src, ins, evaluator1, evaluator2 )
 {
 
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
@@ -3286,7 +3279,7 @@ function longHasAll( src, ins, evaluator )
   let result = 0;
   while( result >= 0 && i < ins.length )
   {
-    result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
+    result = _.longLeftIndex( src, ins[ i ], 0, evaluator1, evaluator2 );
     i++;
   }
 
@@ -3298,12 +3291,12 @@ function longHasAll( src, ins, evaluator )
 //
 
 /**
- * The routine longHasNone() checks if the {-src-} array has no one element of the argument {-ins-}.
- * It can take equalizer or evaluators for the routine equalities.
+ * The routine longHasNone() checks if the source long {-src-} has no one element of the long {-ins-}.
+ * It can take equalizer or evaluators for the comparing elements.
  *
- * It iterates over array-like {-src-} copies each element of the array {-ins-} by the routine
+ * It iterates over source long {-src-} each element of the long {-ins-} by the routine
  * [longLeftIndex()]{@link wTools.longLeftIndex}
- * Checks, if {-src-} array has no one elements of the {-ins-} array.
+ * Checks, if {-src-} has no one elements of the {-ins-}.
  * If true, it returns true.
  * Otherwise, it returns false.
  *
@@ -3311,7 +3304,8 @@ function longHasAll( src, ins, evaluator )
  *
  * @param { Long } src - The source array.
  * @param  { Long|Primitive } ins - The elements to check in the source array.
- * @param { Function } evaluator - A collback function.
+ * @param { Function } evaluator1 - A callback function. Can be an equalizer or evaluator.
+ * @param { Function } evaluator2 - A callback function. Uses only as second evaluator.
  *
  * @example
  * _.longHasNone( [ 5, 'str', 42, false ], 7 );
@@ -3330,20 +3324,35 @@ function longHasAll( src, ins, evaluator )
  * _.longHasNone( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { a : 2 }, { a : 4 } ], evaluator );
  * // returns false
  *
+ * @example
+ * var evaluator1 = ( eSrc ) => eSrc.a;
+ * var evaluator2 = ( eIns ) => eIns.b;
+ * _.longHasNone( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { b : 2 }, { b : 4 } ], evaluator1, evaluator2 );
+ * // returns false
+ *
+ * @example
+ * var equalizer = ( eSrc, eIns ) => eSrc.a === eIns.b;
+ * _.longHasNone( [ { a : 2 }, { a : 3 } 'str', 42, false ], [ { b : 2 }, { b : 4 } ], equalizer );
+ * // returns false
+ *
  * @returns { Boolean } - Returns true, if {-src-} has no one element of {-ins-}, otherwise false is returned.
  * @function longHasAll
- * @throws { Error } If arguments.length is less then one or more then three.
+ * @throws { Error } If arguments.length is less then one or more then four.
  * @throws { Error } If {-src-} is not a Long.
  * @throws { Error } If {-ins-} is not a Long, not a primitive.
- * @throws { Error } If {-evaluator-} is not a routine.
+ * @throws { Error } If {-evaluator1-} is not a routine.
+ * @throws { Error } If {-evaluator1-} is an evaluator and accepts less or more than one argument.
+ * @throws { Error } If {-evaluator1-} is an equalizer and accepts less or more than two argument.
+ * @throws { Error } If {-evaluator2-} is not a routine.
+ * @throws { Error } If {-evaluator2-} is an evaluator and accepts less or more than one argument.
  * @namespace Tools
  */
 
-function longHasNone( src, ins, evaluator )
+function longHasNone( src, ins, evaluator1, evaluator2 )
 {
 
-  _.assert( 1 <= arguments.length && arguments.length <= 3 );
-  _.assert( _.longLike( src ), 'Expects array, but got ' + _.strType( src ) );
+  _.assert( 1 <= arguments.length && arguments.length <= 4 );
+  _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
   _.assert( _.longLike( ins ) || _.primitiveIs( ins ) );
 
   if( _.primitiveIs( ins ) )
@@ -3354,7 +3363,7 @@ function longHasNone( src, ins, evaluator )
 
   do
   {
-    result = _.longLeftIndex( src, ins[ i ], 0, evaluator );
+    result = _.longLeftIndex( src, ins[ i ], 0, evaluator1, evaluator2 );
     i++;
   }
   while( result < 0 && i < ins.length )
@@ -3366,7 +3375,7 @@ function longHasNone( src, ins, evaluator )
 
 //
 
-/* qqq : cover please | Dmytro : covered*/
+/* aaa : cover please | Dmytro : covered */
 
 function longHasDepth( arr, level = 1 )
 {
@@ -3647,7 +3656,6 @@ let Extension =
 
   longBut,
   longButInplace,
-  _relength_pre,
   longBut_, /* !!! : use instead of longBut, longButInplace */
   longShrink,
   longShrink_, /* !!! : use instead of longShrink, longShrinkInplace */
