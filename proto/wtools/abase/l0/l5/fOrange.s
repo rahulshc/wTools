@@ -275,7 +275,7 @@ function lastGet( orange, options )
 
 class Orange
 {
-  static [ Symbol.hasInstance ]( instance )
+  static[ Symbol.hasInstance ]( instance )
   {
     return is( instance );
   }

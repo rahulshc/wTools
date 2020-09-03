@@ -1,4 +1,5 @@
-( function _fRange_s_() {
+( function _fRange_s_()
+{
 
 'use strict';
 
@@ -199,7 +200,7 @@ function firstGet( range, options )
   {
     return range.first
   }
-  _.assert( 0, 'unexpected type of range',_.strType( range ) );
+  _.assert( 0, 'unexpected type of range', _.strType( range ) );
 
 }
 
@@ -223,7 +224,7 @@ function lastGet( range, options )
   {
     return range.last
   }
-  _.assert( 0, 'unexpected type of range',_.strType( range ) );
+  _.assert( 0, 'unexpected type of range', _.strType( range ) );
 
 }
 
@@ -242,7 +243,7 @@ function toStr( range )
 
 class Range
 {
-  static [ Symbol.hasInstance ]( instance )
+  static[ Symbol.hasInstance ]( instance )
   {
     return is( instance );
   }
