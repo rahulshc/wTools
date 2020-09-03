@@ -2158,7 +2158,7 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  * // returns [ '', [ 'abc' ], '' ]
  *
  * @example
- * _.strSplitInlinedStereo.call( { prefix : '#', postfix : '$' }, '#abc$' );
+ * _.strSplitInlinedStereo({ src : '#abc$', prefix : '#', postfix : '$' });
  * // returns [ '', [ 'abc' ], '' ]
  *
  * @example
@@ -2167,7 +2167,7 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  *   if( strip.length )
  *   return strip.toUpperCase();
  * }
- * _.strSplitInlinedStereo.call( { prefix : '<', postfix : '>', onInlined }, '<abc>' );
+ * _.strSplitInlinedStereo({ src : '<abc>', prefix : '<', postfix : '>', onInlined });
  * // returns [ '', [ 'ABC' ], '' ]
  *
  * @method strSplitInlinedStereo
@@ -2207,6 +2207,7 @@ function strSplitInlinedStereo( o )
   let splitted = [];
   let src = o.src.slice();
   let replacementForQuotes = '\u{20331}';
+  let positionsInlined = [];
 
   let delimLeftPosition = getNextPos( src, o.prefix );
   let delimRightPosition = getNextPos( src, o.postfix );
@@ -2219,6 +2220,8 @@ function strSplitInlinedStereo( o )
     return [ o.src ];
   }
 
+  if( !o.preservingOrdinary && !o.preservingInlined )
+  return [];
 
   if( o.quoting )
   {
@@ -2243,7 +2246,6 @@ function strSplitInlinedStereo( o )
 
   for( let i = 1; i < splitted.length; i++ )
   {
-
     let halfs = _.strIsolateLeftOrNone( splitted[ i ], o.postfix );
 
     if( halfs[ 1 ] === undefined )
@@ -2277,17 +2279,25 @@ function strSplitInlinedStereo( o )
       if( o.preservingDelimeters )
       {
         if( o.stripping )
-        result.push( strip.map( ( el ) => o.prefix + el.trim() + o.postfix ) );
+        result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+        {
+          return o.prefix + el.trim() + o.postfix;
+        } ) : o.prefix + strip + o.postfix );
         else
-        result.push( strip.map( ( el ) => o.prefix + el + o.postfix ) );
+        result.push( _.arrayLike( strip ) ? strip.map( ( el ) =>
+        {
+          return o.prefix + el + o.postfix;
+        } ) : o.prefix + strip + o.postfix );
       }
       else
       {
         if( o.stripping )
-        result.push( strip.map( ( el ) => el.trim() ) );
+        result.push( _.arrayLike( strip ) ? strip.map( ( el ) => el.trim() ) : strip.trim() );
         else
-        result.push( strip )
+        result.push( strip );
       }
+
+      positionsInlined.push( result.length - 1 );
 
       if( ordinary )
       {
@@ -2324,7 +2334,7 @@ function strSplitInlinedStereo( o )
   handleOnOrdinary();
 
   if( !o.preservingInlined )
-  handleNonPreservingInlined();
+  removeInlined();
 
   if( !o.preservingOrdinary )
   handleNonPreservingOrdinary();
@@ -2401,33 +2411,33 @@ function strSplitInlinedStereo( o )
 
   /* - */
 
-  function handleNonPreservingInlined()
+  function removeInlined()
   {
-    result = result.filter( ( el ) => !_.arrayLike( el ) && el !== '' );
+    result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) === -1 && el !== '' );
   }
 
   /* - */
 
   function handleNonPreservingOrdinary()
   {
-    result = result.filter( ( el ) => _.arrayLike( el ) );
+    result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) !== -1 );
   }
 
 }
 
 strSplitInlinedStereo.defaults =
 {
-  src : null, //done /tested
-  prefix : '❮', //done /tested
-  postfix : '❯', //done /tested
-  onInlined : ( e ) => [ e ], //done /tested
-  onOrdinary : null, //done /tested
+  src : null,
+  prefix : '❮',
+  postfix : '❯',
+  onInlined : ( e ) => [ e ],
+  onOrdinary : null,
 
-  stripping : 0, //done /tested
-  quoting : 0, //done /tested
+  stripping : 0,
+  quoting : 0,
 
-  preservingEmpty : 1, //done /tested
-  preservingDelimeters : 0, //done /tested
+  preservingEmpty : 1,
+  preservingDelimeters : 0,
   preservingOrdinary : 1,
   preservingInlined : 1,
 }
