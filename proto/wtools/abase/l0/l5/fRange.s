@@ -132,24 +132,33 @@ function fromSingle( range )
 
 //
 
-/* qqq : teach to accept number in second argument */
+/* aaa : teach to accept number in second argument */ /* Dmytro : done */
 
 function clamp( dstRange, clampRange )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.rangeIs( dstRange ) );
-  _.assert( _.rangeIs( clampRange ) );
 
-  if( dstRange[ 0 ] < clampRange[ 0 ] )
-  dstRange[ 0 ] = clampRange[ 0 ];
-  else if( dstRange[ 0 ] > clampRange[ 1 ] )
-  dstRange[ 0 ] = clampRange[ 1 ];
+  if( _.numberIs( clampRange ) )
+  {
+    dstRange[ 0 ] = clampRange;
+    dstRange[ 1 ] = clampRange;
+  }
+  else
+  {
+    _.assert( _.rangeIs( clampRange ) );
 
-  if( dstRange[ 1 ] < clampRange[ 0 ] )
-  dstRange[ 1 ] = clampRange[ 0 ];
-  else if( dstRange[ 1 ] > clampRange[ 1 ] )
-  dstRange[ 1 ] = clampRange[ 1 ];
+    if( dstRange[ 0 ] < clampRange[ 0 ] )
+    dstRange[ 0 ] = clampRange[ 0 ];
+    else if( dstRange[ 0 ] > clampRange[ 1 ] )
+    dstRange[ 0 ] = clampRange[ 1 ];
+
+    if( dstRange[ 1 ] < clampRange[ 0 ] )
+    dstRange[ 1 ] = clampRange[ 0 ];
+    else if( dstRange[ 1 ] > clampRange[ 1 ] )
+    dstRange[ 1 ] = clampRange[ 1 ];
+  }
 
   return dstRange;
 }
