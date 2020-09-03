@@ -16527,7 +16527,14 @@ function strSplitInlinedStereoOptionsCombined( test )
   test.identical( got, expected );
 
   test.case = 'prefix : \'❮❮\', postfix : \'❯❯\', pe : 0, s : 1';
-  var src = { src : '❮❮inline1❯❯ ❮inline2❯', prefix : '❮❮', postfix : '❯❯', preservingEmpty : 0, stripping : 1 };
+  var src =
+  { 
+    src : '❮❮inline1❯❯ ❮inline2❯',
+    prefix : '❮❮',
+    postfix : '❯❯',
+    preservingEmpty : 0,
+    stripping : 1
+  };
   var got = _.strSplitInlinedStereo( src );
   var expected =
   [
@@ -16535,189 +16542,105 @@ function strSplitInlinedStereoOptionsCombined( test )
   ];
   test.identical( got, expected );
 
-  // test.case = 'empty string left';
-  // var src = '❮❯ ordinary ❮inline2❯ ';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '', [ '' ], ' ordinary ', [ 'inline2' ], ' '
-  // ];
-  // test.identical( got, expected );
+  test.case = 'src : ❮inline1 inline2, pre : ❮, post : inline1 inline2, pe : 0, s : 1';
+  var src =
+  { 
+    src : '❮inline1 inline2',
+    prefix : '❮',
+    postfix : 'inline1 inline2',
+    preservingEmpty : 0,
+    stripping : 1
+  };
+  var got = _.strSplitInlinedStereo( src );
+  var expected =
+  [
+    [ '' ]
+  ];
+  test.identical( got, expected );
 
-  // test.case = 'empty string right';
-  // var src = ' ❮inline1❯ ordinary ❮❯';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   ' ', [ 'inline1' ], ' ordinary ', [ '' ], ''
-  // ];
-  // test.identical( got, expected );
+  test.case = 'src : ❮inline1 inline2, pre : ❮, post : inline1 inline2, pe : 1, s : 1';
+  var src =
+  { 
+    src : '❮inline1 inline2',
+    prefix : '❮',
+    postfix : 'inline1 inline2',
+    preservingEmpty : 1,
+    stripping : 1
+  };
+  var got = _.strSplitInlinedStereo( src );
+  var expected =
+  [
+    '', [ '' ], ''
+  ];
+  test.identical( got, expected );
 
-  // test.case = 'empty string middle';
-  // var src = ' ❮inline1❯❮inline2❯ ';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   ' ', [ 'inline1' ], '', [ 'inline2' ], ' '
-  // ];
-  // test.identical( got, expected );
+  test.case = 'src : a❮❮❮inline1 inline2❯❯, pre : ❮❮, post : ❯, pe : 1, s : 1';
+  var src =
+  { 
+    src : 'a❮❮❮inline1 inline2❯❯',
+    prefix : '❮❮',
+    postfix : '❯',
+    preservingEmpty : 1,
+    stripping : 1
+  };
+  var got = _.strSplitInlinedStereo( src );
+  var expected =
+  [
+    'a', [ '❮inline1 inline2' ], '❯'
+  ];
+  test.identical( got, expected );
 
-  // test.case = 'empty all';
-  // var src = '❮❯❮❯';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected = [ '', [ '' ], '', [ '' ], '' ];
-  // test.identical( got, expected );
+  test.case = 'src : a❮❮❮inline1 inline2❯❯, pre : ❮❮, post : ❯, pe : 1, s : 1, po : 0';
+  var src =
+  { 
+    src : 'a❮❮❮inline1 inline2❯❯',
+    prefix : '❮❮',
+    postfix : '❯',
+    preservingEmpty : 1,
+    preservingOrdinary : 0,
+    stripping : 1
+  };
+  var got = _.strSplitInlinedStereo( src );
+  var expected =
+  [
+    '', [ '❮inline1 inline2' ], ''
+  ];
+  test.identical( got, expected );
 
-  // /* - */
+  test.case = 'src : a❮❮❮inline1 inline2❯❯, pre : ❮❮, post : ❯, pe : 0, s : 1, po : 0';
+  var src =
+  { 
+    src : 'a❮❮❮inline1 inline2❯❯',
+    prefix : '❮❮',
+    postfix : '❯',
+    preservingEmpty : 0,
+    preservingOrdinary : 0,
+    stripping : 1
+  };
+  var got = _.strSplitInlinedStereo( src );
+  var expected =
+  [
+    [ '❮inline1 inline2' ]
+  ];
+  test.identical( got, expected );
 
-  // test.open( 'single delimiter' )
+  test.case = 'src : a❮❮❮inline1 inline2❯❯, pre : ❮❮, post : ❯, pe : 1, s : 1, pi : 0';
+  var src =
+  { 
+    src : 'a❮❮❮inline1 inline2❯❯',
+    prefix : '❮❮',
+    postfix : '❯',
+    preservingEmpty : 1,
+    preservingInlined : 0,
+    stripping : 1,
+  };
+  var got = _.strSplitInlinedStereo( src );
+  var expected =
+  [
+    'a', '❯'
+  ];
+  test.identical( got, expected );
 
-  // test.case = '❮ at the start';
-  // var src = '❮inline1 inline2';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❮inline1 inline2'
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = '❮ at the end';
-  // var src = 'inline1 inline2❮';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   'inline1 inline2❮'
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = '❯ at the start';
-  // var src = '❯inline1 inline2';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❯inline1 inline2'
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = '❯ at the end';
-  // var src = 'inline1 inline2❯';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   'inline1 inline2❯'
-  // ];
-  // test.identical( got, expected );
-
-  // test.close( 'single delimiter' )
-
-  // /* - */
-
-  // test.open( 'wrong delimiter enclosing' )
-
-  // test.case = 'same open and close delimeter ❮';
-  // var src = '❮inline1❮ inline2';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❮inline1❮ inline2'
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = 'same open and close delimeter ❯';
-  // var src = '❯inline1❯ inline2';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❯inline1❯ inline2'
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = 'reverse open and close delimeters';
-  // var src = '❯inline1❮ inline2';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❯inline1❮ inline2'
-  // ];
-  // test.identical( got, expected );
-
-  // /* - */
-
-  // test.case = 'odd number of delimeters - 2 opening';
-  // var src = '❮inline1 ❮inline2❯';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❮inline1 ', [ 'inline2' ], ''
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = 'odd number of delimeters - 2 closing';
-  // var src = '❮inline1❯ inline2❯';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '', [ 'inline1' ], ' inline2❯'
-  // ];
-  // test.identical( got, expected );
-
-  // /* - */
-
-  // test.case = '2 open, 2 closing delimeters';
-  // var src = '❮❮inline1❯❯ inline2';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❮', [ 'inline1' ], '❯ inline2'
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = '2 open, 2 closing delimeters with spaces';
-  // var src = '❮ ❮inline1❯ ❯ inline2';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❮ ', [ 'inline1' ], ' ❯ inline2'
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = '3 open, 2 closing delimeters';
-  // var src = '❮❮❮inline1❯❯ inline2';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❮❮', [ 'inline1' ], '❯ inline2'
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = '3 open, 2 closing delimeters with spaces';
-  // var src = '❮ ❮ ❮inline1❯ ❯ inline2';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❮ ❮ ', [ 'inline1' ], ' ❯ inline2'
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = '2 open, 3 closing delimeters';
-  // var src = '❮❮inline1❯❯❯ inline2';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❮', [ 'inline1' ], '❯❯ inline2'
-  // ];
-  // test.identical( got, expected );
-
-  // test.case = '2 open, 3 closing & 3 open 2 closing delimeters';
-  // var src = '❮❮inline1❯❯❯ inline2 ❮❮❮inline1❯❯';
-  // var got = _.strSplitInlinedStereo( src );
-  // var expected =
-  // [
-  //   '❮', [ 'inline1' ], '❯❯ inline2 ❮❮', [ 'inline1' ], '❯'
-  // ];
-  // test.identical( got, expected );
-
-  // test.close( 'wrong delimiter enclosing' )
 }
 
 // --

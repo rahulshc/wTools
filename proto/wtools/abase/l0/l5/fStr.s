@@ -2337,7 +2337,7 @@ function strSplitInlinedStereo( o )
   removeInlined();
 
   if( !o.preservingOrdinary )
-  handleNonPreservingOrdinary();
+  removeOrdinary();
 
   if( o.preservingEmpty )
   handleEmptyLines();
@@ -2418,7 +2418,7 @@ function strSplitInlinedStereo( o )
 
   /* - */
 
-  function handleNonPreservingOrdinary()
+  function removeOrdinary()
   {
     result = result.filter( ( el, i ) => positionsInlined.indexOf( i ) !== -1 );
   }
