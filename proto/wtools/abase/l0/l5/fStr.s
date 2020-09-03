@@ -2143,7 +2143,7 @@ let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInline
  * @param {object} o - Options map.
  * @param {string} [ o.prefix = '❮' ] - A delimeter that marks begining of enclosed string.
  * @param {string} [ o.postfix = '❯' ] - A ddelimeter that marks ending of enclosed string.
- * @param {string} [ o.onInlined = null ] - Function called on each splitted part of a source string.
+ * @param {string} [ o.onInlined = ( el ) => [ el ] ] - Function called on each splitted part of a source string.
  * @param {string} [ o.onOrdinary = null ] - Function called on each ordinary part of a source string.
  * @param {string} [ o.stripping = 0 ] - If true removes leading and trailing whitespace characters.
  * @param {string} [ o.quoting = 0 ] - If true prefixes and postfixes surounded by quotes are treated as ordinary text.
