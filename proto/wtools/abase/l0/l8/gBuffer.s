@@ -776,79 +776,134 @@ function bufferFrom( o )
   let result;
 
   _.assert( arguments.length === 1 );
-  _.assert( _.objectIs( o ) );
   _.assert( _.routineIs( o.bufferConstructor ), 'Expects bufferConstructor' );
   _.assertMapHasOnly( o, bufferFrom.defaults );
 
-  /* same */
+  if( o.src === null || _.numberIs( o.src ) )
+  {
+    if( o.bufferConstructor.name === 'Buffer' )
+    return o.bufferConstructor.alloc( o.src ? o.src : 0 );
+    else if( o.bufferConstructor.name === 'DataView' )
+    return new o.bufferConstructor( new U8x( o.src ).buffer )
+    return new o.bufferConstructor( o.src );
+  }
 
-  if( o.src.constructor )
-  if( o.src.constructor === o.bufferConstructor  )
-  return o.src;
+  _.assert( _.bufferAnyIs( o.src ) || _.longIs( o.src ) || _.strIs( o.src ) );
 
-  /* number */
-
-  if( _.numberIs( o.src ) )
-  o.src = [ o.src ];
-
-  if( o.bufferConstructor.name === 'BufferRaw' )
-  return _.bufferRawFrom( o.src );
-
-  if( o.bufferConstructor.name === 'BufferNode' )
-  return _.bufferNodeFrom( o.src );
-
-  /* str / buffer.node / buffer.raw */
-
-  if( _.strIs( o.src ) || _.bufferNodeIs( o.src ) || _.bufferRawIs( o.src ) )
+  if( _.strIs( o.src ) )
   o.src = _.bufferBytesFrom( o.src );
 
-  /* buffer.typed */
+  /* */
 
-  if( _.bufferTypedIs( o.src ) )
+  if( o.src.constructor === o.bufferConstructor )
+  return o.src;
+
+  /* */
+
+  if( _.bufferViewIs( o.src ) )
+  o.src = _.bufferBytesFrom( o.src );
+
+  if( _.constructorIsBuffer( o.bufferConstructor ) )
+  return new o.bufferConstructor( o.src );
+
+  if( o.bufferConstructor.name === 'Buffer' )
+  return o.bufferConstructor.from( o.src );
+
+  if( o.bufferConstructor.name === 'DataView' )
+  return new o.bufferConstructor( new U8x( o.src ).buffer );
+
+  if( o.bufferConstructor.name === 'ArrayBuffer' )
+  return new U8x( o.src ).buffer;
+
+  if( o.bufferConstructor.name === 'SharedArrayBuffer' )
   {
-    if( o.src.constructor === o.bufferConstructor  )
-    return o.src;
-
-    result = new o.bufferConstructor( o.src );
+    let srcTyped = _.bufferRawIs( o.src ) ? new U8x( o.src ) : o.src;
+    let result = new BufferRawShared( srcTyped.length );
+    let resultTyped = new U8x( result );
+    for( let i = 0; i < srcTyped.length; i++ )
+    resultTyped[ i ] = srcTyped[ i ];
     return result;
   }
-
-  /* verification */
-
-  _.assert( _.objectLike( o.src ) || _.longIs( o.src ), 'bufferFrom expects object-like or array-like as o.src' );
-
-  /* length */
-
-  let length = o.src.length;
-  if( !_.numberIs( length ) )
-  {
-
-    let length = 0;
-    while( o.src[ length ] !== undefined )
-    length += 1;
-
-  }
-
-  /* make */
-
-  if( _.arrayIs( o.src ) )
-  {
-    result = new o.bufferConstructor( o.src );
-  }
-  else if( _.longIs( o.src ) )
-  {
-    result = new o.bufferConstructor( o.src );
-    throw _.err( 'not tested' );
-  }
-  else
-  {
-    result = new o.bufferConstructor( length );
-    for( let i = 0 ; i < length ; i++ )
-    result[ i ] = o.src[ i ];
-  }
-
-  return result;
 }
+
+// function bufferFrom( o )
+// {
+//   let result;
+//
+//   _.assert( arguments.length === 1 );
+//   _.assert( _.objectIs( o ) );
+//   _.assert( _.routineIs( o.bufferConstructor ), 'Expects bufferConstructor' );
+//   _.assertMapHasOnly( o, bufferFrom.defaults );
+//
+//   /* same */
+//
+//   if( o.src.constructor )
+//   if( o.src.constructor === o.bufferConstructor  )
+//   return o.src;
+//
+//   /* number */
+//
+//   if( _.numberIs( o.src ) )
+//   o.src = [ o.src ];
+//
+//   if( o.bufferConstructor.name === 'BufferRaw' )
+//   return _.bufferRawFrom( o.src );
+//
+//   if( o.bufferConstructor.name === 'BufferNode' )
+//   return _.bufferNodeFrom( o.src );
+//
+//   /* str / buffer.node / buffer.raw */
+//
+//   if( _.strIs( o.src ) || _.bufferNodeIs( o.src ) || _.bufferRawIs( o.src ) )
+//   o.src = _.bufferBytesFrom( o.src );
+//
+//   /* buffer.typed */
+//
+//   if( _.bufferTypedIs( o.src ) )
+//   {
+//     if( o.src.constructor === o.bufferConstructor  )
+//     return o.src;
+//
+//     result = new o.bufferConstructor( o.src );
+//     return result;
+//   }
+//
+//   /* verification */
+//
+//   _.assert( _.objectLike( o.src ) || _.longIs( o.src ), 'bufferFrom expects object-like or array-like as o.src' );
+//
+//   /* length */
+//
+//   let length = o.src.length;
+//   if( !_.numberIs( length ) )
+//   {
+//
+//     let length = 0;
+//     while( o.src[ length ] !== undefined )
+//     length += 1;
+//
+//   }
+//
+//   /* make */
+//
+//   if( _.arrayIs( o.src ) )
+//   {
+//     result = new o.bufferConstructor( o.src );
+//   }
+//   else if ( _.longIs( o.src ) )
+//   {
+//     result = new o.bufferConstructor( o.src );
+//     throw _.err( 'not tested' );
+//   }
+//   else
+//   {
+//     result = new o.bufferConstructor( length );
+//     for( let i = 0 ; i < length ; i++ )
+//     result[ i ] = o.src[ i ];
+//   }
+//
+//   return result;
+// }
 
 bufferFrom.defaults =
 {
