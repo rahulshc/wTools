@@ -163,7 +163,7 @@ let Self =
 
   name : 'Tools.Ct',
   silencing : 1,
-  enabled : 0,
+  enabled : 1,
 
   tests :
   {
