@@ -204,7 +204,24 @@ function countElements( orange, increment )
 
   _.assert( _.numberIs( increment ), 'Increment should has a number value' );
 
-  return increment ? ( orange[ 1 ] - orange[ 0 ] ) / increment : 0;
+  if( increment )
+  {
+    let result = ( orange[ 1 ] - orange[ 0 ] ) / increment;
+    if( result > 0 )
+    {
+      if( result < 1 )
+      return 1;
+      return Math.floor( result );
+    }
+    else if( result < 0 )
+    {
+      if( result > -1 )
+      return -1;
+      return Math.ceil( result );
+    }
+  }
+
+  return 0;
 }
 
 //

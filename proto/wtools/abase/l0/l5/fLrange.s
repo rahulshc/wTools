@@ -204,7 +204,7 @@ function countElements( lrange, increment )
 
   _.assert( _.numberIs( increment ), 'Increment should has a number value' );
 
-  return increment ? lrange[ 1 ] / increment : 0;
+  return increment ? Math.floor( lrange[ 1 ] / increment ) : 0;
 }
 
 //
