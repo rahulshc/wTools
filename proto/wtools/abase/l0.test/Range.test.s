@@ -2212,6 +2212,48 @@ function crangeSureInRange( test )
   test.shouldThrowErrorSync( () => _.crange.sureInRange( 7, [ 2, 5 ], undefined ) );
 }
 
+//
+
+function crangeAssertInRange( test )
+{
+  test.case = 'two arguments, src - number, in crange';
+  var got = _.crange.assertInRange( 3, [ 1, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'two arguments, src - array, in crange';
+  var got = _.crange.assertInRange( 3, [ 1, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'more then two arguments, src - number, in crange';
+  var got = _.crange.assertInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'more then two arguments, src - array, in crange';
+  var got = _.crange.assertInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.crange.assertInRange() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.crange.assertInRange( 2 ) );
+
+  test.case = 'src out of crange';
+  test.shouldThrowErrorSync( () => _.crange.assertInRange( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.crange.assertInRange( 6, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.crange.assertInRange( 7, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.crange.assertInRange( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.crange.assertInRange( 6, [ 2, 5 ], {} ) );
+  test.shouldThrowErrorSync( () => _.crange.assertInRange( 7, [ 2, 5 ], undefined ) );
+}
+
 // --
 // lrange
 // --
@@ -4604,25 +4646,25 @@ function orangeSureInRange( test )
 
 //
 
-function assertInRange( test )
+function orangeAssertInRange( test )
 {
-  test.case = 'two arguments, src - number, in range';
-  var got = _.range.assertInRange( 3, [ 1, 5 ] );
+  test.case = 'two arguments, src - number, in orange';
+  var got = _.orange.assertInRange( 3, [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'two arguments, src - array, in range';
-  var got = _.range.assertInRange( 3, [ 1, 5 ] );
+  test.case = 'two arguments, src - array, in orange';
+  var got = _.orange.assertInRange( 3, [ 1, 5 ] );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'more then two arguments, src - number, in range';
-  var got = _.range.assertInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  test.case = 'more then two arguments, src - number, in orange';
+  var got = _.orange.assertInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'more then two arguments, src - array, in range';
-  var got = _.range.assertInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  test.case = 'more then two arguments, src - array, in orange';
+  var got = _.orange.assertInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
   var expected = true;
   test.identical( got, expected );
 
@@ -4630,18 +4672,18 @@ function assertInRange( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.range.assertInRange() );
+  test.shouldThrowErrorSync( () => _.orange.assertInRange() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.range.assertInRange( 2 ) );
+  test.shouldThrowErrorSync( () => _.orange.assertInRange( 2 ) );
 
-  test.case = 'src out of range';
-  test.shouldThrowErrorSync( () => _.range.assertInRange( 1, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.range.assertInRange( 5, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.range.assertInRange( 7, [ 2, 5 ] ) );
-  test.shouldThrowErrorSync( () => _.range.assertInRange( 1, [ 2, 5 ], [] ) );
-  test.shouldThrowErrorSync( () => _.range.assertInRange( 5, [ 2, 5 ], {} ) );
-  test.shouldThrowErrorSync( () => _.range.assertInRange( 7, [ 2, 5 ], undefined ) );
+  test.case = 'src out of orange';
+  test.shouldThrowErrorSync( () => _.orange.assertInRange( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.orange.assertInRange( 5, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.orange.assertInRange( 7, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.orange.assertInRange( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.orange.assertInRange( 5, [ 2, 5 ], {} ) );
+  test.shouldThrowErrorSync( () => _.orange.assertInRange( 7, [ 2, 5 ], undefined ) );
 }
 
 //
@@ -5494,6 +5536,7 @@ let Self =
     crangeInInclusiveLeft,
     crangeInInclusiveRight,
     crangeSureInRange,
+    crangeAssertInRange,
 
     // lrange
 
@@ -5514,7 +5557,7 @@ let Self =
     orangeInInclusiveLeft,
     orangeInInclusiveRight,
     orangeSureInRange,
-    assertInRange,
+    orangeAssertInRange,
 
     fromSingle,
     clamp,
