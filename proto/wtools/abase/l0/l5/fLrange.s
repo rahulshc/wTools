@@ -245,7 +245,7 @@ function lastGet( lrange, options )
   if( _.longIs( lrange ) )
   {
     _.assert( _.rangeIs( lrange ) );
-    return lrange[ 0 ] + lrange[ 1 ];
+    return lrange[ 0 ] + lrange[ 1 ] - 1;
   }
   else if( _.mapIs( lrange ) )
   {

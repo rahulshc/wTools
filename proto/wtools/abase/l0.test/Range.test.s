@@ -4937,6 +4937,263 @@ function lrangeCountElements( test )
   test.shouldThrowErrorSync( () => _.lrange.countElements( [ 1, 2 ], 'wrong' ) );
 }
 
+//
+
+function lrangeLastGet( test )
+{
+  test.open( 'lrange - array' );
+
+  test.case = 'without options';
+  var got = _.lrange.lastGet( [ 2, 3 ] );
+  test.identical( got, 4 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.lrange.lastGet( [ 2, 3 ], options );
+  test.identical( got, 4 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.lrange.lastGet( [ 2, 3 ], options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.lrange.lastGet( [ 2, 3 ], options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.lrange.lastGet( [ 2, 3 ], options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'lrange - array' );
+
+  /* - */
+
+  test.open( 'lrange - unroll' );
+
+  test.case = 'without options';
+  var got = _.lrange.lastGet( _.unrollMake( [ 2, 3 ] ) );
+  test.identical( got, 4 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.lrange.lastGet( _.unrollMake( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.lrange.lastGet( _.unrollMake( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.lrange.lastGet( _.unrollMake( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.lrange.lastGet( _.unrollMake( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'lrange - unroll' );
+
+  /* - */
+
+  test.open( 'lrange - argumentsArray' );
+
+  test.case = 'without options';
+  var got = _.lrange.lastGet( _.argumentsArrayMake( [ 2, 3 ] ) );
+  test.identical( got, 4 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.lrange.lastGet( _.argumentsArrayMake( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.lrange.lastGet( _.argumentsArrayMake( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.lrange.lastGet( _.argumentsArrayMake( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.lrange.lastGet( _.argumentsArrayMake( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'lrange - argumentsArray' );
+
+  /* - */
+
+  test.open( 'lrange - BufferTyped' );
+
+  test.case = 'without options';
+  var got = _.lrange.lastGet( new U8x( [ 2, 3 ] ) );
+  test.identical( got, 4 );
+
+  test.case = 'options - undefined';
+  var options = undefined;
+  var got = _.lrange.lastGet( new I16x( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, undefined );
+
+  test.case = 'options - empty map';
+  var options = {};
+  var got = _.lrange.lastGet( new F32x( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment';
+  var options = { increment : 2 };
+  var got = _.lrange.lastGet( new F64x( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment - undefined';
+  var options = { increment : undefined };
+  var got = _.lrange.lastGet( new I8x( [ 2, 3 ] ), options );
+  test.identical( got, 4 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'lrange - BufferTyped' );
+
+  /* - */
+
+  test.open( 'lrange - map' );
+
+  test.case = 'without options, last - undefined';
+  var got = _.lrange.lastGet( { first : undefined, last : undefined } );
+  test.identical( got, undefined );
+
+  test.case = 'without options, last - not exists';
+  var got = _.lrange.lastGet( { first : undefined } );
+  test.identical( got, undefined );
+
+  test.case = 'without options, last - number';
+  var got = _.lrange.lastGet( { first : 1, last : 2 } );
+  test.identical( got, 2 );
+
+  /* */
+
+  test.case = 'options - undefined, last - undefined';
+  var options = undefined;
+  var got = _.lrange.lastGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, undefined );
+
+  test.case = 'options - undefined, last - not exists';
+  var options = undefined;
+  var got = _.lrange.lastGet( { first : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, undefined );
+
+  test.case = 'options - undefined, last - number';
+  var options = undefined;
+  var got = _.lrange.lastGet( { first : 1, last : 2 }, options );
+  test.identical( got, 2 );
+  test.identical( options, undefined );
+
+  /* */
+
+  test.case = 'options - empty map, last - undefined';
+  var options = {};
+  var got = _.lrange.lastGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - empty map, last - not exists';
+  var options = {};
+  var got = _.lrange.lastGet( { first : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - empty map, last - number';
+  var options = {};
+  var got = _.lrange.lastGet( { first : 1, last : 2 }, options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  /* */
+
+  test.case = 'options - map with own field increment, last - undefined';
+  var options = { increment : 2 };
+  var got = _.lrange.lastGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment, last - not exists';
+  var options = { increment : 2 };
+  var got = _.lrange.lastGet( { first : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 2 } );
+
+  test.case = 'options - map with own field increment, last - number';
+  var options = { increment : 2 };
+  var got = _.lrange.lastGet( { first : 1, last : 2 }, options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 2 } );
+
+  /* */
+
+  test.case = 'options - map with own field increment - undefined, last - undefined';
+  var options = { increment : undefined };
+  var got = _.lrange.lastGet( { first : undefined, last : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment - undefined, last - not exists';
+  var options = { increment : undefined };
+  var got = _.lrange.lastGet( { first : undefined }, options );
+  test.identical( got, undefined );
+  test.identical( options, { increment : 1 } );
+
+  test.case = 'options - map with own field increment - undefined, last - number';
+  var options = { increment : undefined };
+  var got = _.lrange.lastGet( { first : 1, last : 2 }, options );
+  test.identical( got, 2 );
+  test.identical( options, { increment : 1 } );
+
+  test.close( 'lrange - map' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.lrange.lastGet() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.lrange.lastGet( [ 2, 3 ], {}, 'extra' ) );
+
+  test.case = 'lrange is a long, but is not a lrange';
+  test.shouldThrowErrorSync( () => _.lrange.lastGet( [ 1, 2, 3 ] ) );
+  test.shouldThrowErrorSync( () => _.lrange.lastGet( [ 1, 'wrong' ] ) );
+  test.shouldThrowErrorSync( () => _.lrange.lastGet( [ undefined, 1 ] ) );
+
+  test.case = 'wrong type of lrange';
+  test.shouldThrowErrorSync( () => _.lrange.lastGet( new Set( [ 1, 2 ] ) ) );
+  test.shouldThrowErrorSync( () => _.lrange.lastGet( new Map( [ [ 1, 2 ] ] ) ) );
+}
+
 // --
 // orange
 // --
@@ -6978,6 +7235,7 @@ let Self =
     lrangeFromSingle,
     lrangeClamp,
     lrangeCountElements,
+    lrangeLastGet,
 
     // orange
 
