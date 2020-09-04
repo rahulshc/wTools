@@ -185,11 +185,18 @@ function countElements( range, increment )
 function firstGet( range, options )
 {
 
-  options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
-  if( options.increment === undefined )
-  options.increment = 1;
-
   _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  // options = options || Object.create( null ); /* Dmytro : I don't know why routine makes this side effect */
+  // if( options.increment === undefined )       /* The creating of new map has no sense, improved below */
+  // options.increment = 1;
+
+  if( options )
+  {
+    _.assert( _.mapLike( options ) );
+    if( options.increment === undefined )
+    options.increment = 1;
+  }
 
   if( _.longIs( range ) )
   {
@@ -198,10 +205,9 @@ function firstGet( range, options )
   }
   else if( _.mapIs( range ) )
   {
-    return range.first
+    return range.first;
   }
   _.assert( 0, 'unexpected type of range', _.strType( range ) );
-
 }
 
 //

@@ -209,37 +209,6 @@ function countElements( orange, increment )
 
 //
 
-function firstGet( orange, options )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-
-  // options = options || Object.create( null ); /* Dmytro : I don't know why routine makes this side effect */
-  // if( options.increment === undefined )       /* The creating of new map has no sense, improved below */
-  // options.increment = 1;
-
-  if( options )
-  {
-    _.assert( _.objectLike( options ) );
-    if( options.increment === undefined )
-    options.increment = 1;
-  }
-
-  if( _.longIs( orange ) )
-  {
-    _.assert( _.rangeIs( orange ) );
-    return orange[ 0 ];
-  }
-  else if( _.mapIs( orange ) )
-  {
-    return orange.first;
-  }
-  _.assert( 0, 'unexpected type of orange', _.strType( orange ) );
-
-}
-
-//
-
 function lastGet( orange, options )
 {
 
@@ -324,7 +293,7 @@ let Extension =
 
   clamp,
   countElements,
-  firstGet,
+  firstGet : _.range.firstGet,
   lastGet,
 
   toStr : _.range.toStr,
