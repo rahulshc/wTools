@@ -1,4 +1,5 @@
-( function _Range_test_s( ) {
+( function _Range_test_s()
+{
 
 'use strict';
 
@@ -62,7 +63,7 @@ function is( test )
   test.identical( got, expected );
 
   test.case = 'constructor';
-  var Constr = function( x )
+  function Constr( x )
   {
     this.x = x;
     return this;
@@ -85,14 +86,6 @@ function is( test )
   var got = _.range.is( new BufferView( new BufferRaw( 5 ) ) );
   var expected = false;
   test.identical( got, expected );
-
-  if( Config.interpreter = 'njs' )
-  {
-    test.case = 'BufferNode';
-    var got = _.range.is( BufferNode.alloc( 5 ) );
-    var expected = false;
-    test.identical( got, expected );
-  }
 
   test.case = 'Set';
   var got = _.range.is( new Set( [ 5 ] ) );
@@ -291,7 +284,7 @@ function isEmpty( test )
   test.identical( got, expected );
 
   test.case = 'constructor';
-  var Constr = function( x )
+  function Constr( x )
   {
     this.x = x;
     return this;
@@ -314,14 +307,6 @@ function isEmpty( test )
   var got = _.range.isEmpty( new BufferView( new BufferRaw( 5 ) ) );
   var expected = false;
   test.identical( got, expected );
-
-  if( Config.interpreter = 'njs' )
-  {
-    test.case = 'BufferNode';
-    var got = _.range.isEmpty( BufferNode.alloc( 5 ) );
-    var expected = false;
-    test.identical( got, expected );
-  }
 
   test.case = 'Set';
   var got = _.range.isEmpty( new Set( [ 5 ] ) );
@@ -540,7 +525,7 @@ function isPopulated( test )
   test.identical( got, expected );
 
   test.case = 'constructor';
-  var Constr = function( x )
+  function Constr( x )
   {
     this.x = x;
     return this;
@@ -563,14 +548,6 @@ function isPopulated( test )
   var got = _.range.isPopulated( new BufferView( new BufferRaw( 5 ) ) );
   var expected = false;
   test.identical( got, expected );
-
-  if( Config.interpreter = 'njs' )
-  {
-    test.case = 'BufferNode';
-    var got = _.range.isPopulated( BufferNode.alloc( 5 ) );
-    var expected = false;
-    test.identical( got, expected );
-  }
 
   test.case = 'Set';
   var got = _.range.isPopulated( new Set( [ 5 ] ) );
@@ -2817,9 +2794,11 @@ let Self =
   tests :
   {
 
-    //
+    // common
 
     is,
+
+
     isEmpty,
     isPopulated,
 
