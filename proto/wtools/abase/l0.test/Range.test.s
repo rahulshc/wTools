@@ -383,6 +383,165 @@ function isValid( test )
 
 //
 
+function fromLeft( test )
+{
+  let namespaces =
+  [
+    'crange',
+    'lrange',
+    'orange',
+  ];
+
+  for( let i = 0 ; i < namespaces.length ; i++ )
+  {
+    test.open( `namespace - ${ namespaces[ i ] }` );
+    testRun( namespaces[ i ] );
+    test.close( `namespace - ${ namespaces[ i ] }` );
+  }
+
+  /* - */
+
+  function testRun( namespace )
+  {
+    test.case = 'range - number';
+    var got = _[ namespace ].fromLeft( 1 );
+    test.identical( got, [ 1, Infinity ] );
+
+    /* */
+
+    test.case = 'range.length === 1';
+    var src = [ 1 ];
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 1, Infinity ] );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] - undefined';
+    var src = [ undefined, 1 ];
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 0, 1 ] );
+    test.is( got === src );
+
+    test.case = 'range[ 1 ] - undefined';
+    var src = [ 1, undefined ];
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 1, Infinity ] );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+    var src = [ undefined, undefined ];
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 0, Infinity ] );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+    var src = [ 1, 5 ];
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 1, 5 ] );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'range.length === 1';
+    var src = _.unrollMake( [ 1 ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 1, Infinity ] );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] - undefined';
+    var src = _.unrollMake( [ undefined, 1 ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 0, 1 ] );
+    test.is( got === src );
+
+    test.case = 'range[ 1 ] - undefined';
+    var src = _.unrollMake( [ 1, undefined ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 1, Infinity ] );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+    var src = _.unrollMake( [ undefined, undefined ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 0, Infinity ] );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+    var src = _.unrollMake( [ 1, 5 ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, _.unrollMake( [ 1, 5 ] ) );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'range.length === 1';
+    var src = _.argumentsArrayMake( [ 1 ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 1, Infinity ] );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] - undefined';
+    var src = _.argumentsArrayMake( [ undefined, 1 ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, _.argumentsArrayMake([ 0, 1 ]) );
+    test.is( got === src );
+
+    test.case = 'range[ 1 ] - undefined';
+    var src = _.argumentsArrayMake( [ 1, undefined ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, _.argumentsArrayMake([ 1, Infinity ]) );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+    var src = _.argumentsArrayMake( [ undefined, undefined ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, _.argumentsArrayMake([ 0, Infinity ]) );
+    test.is( got === src );
+
+    test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+    var src = _.argumentsArrayMake( [ 1, 5 ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, _.argumentsArrayMake( [ 1, 5 ] ) );
+    test.is( got === src );
+
+    /* */
+
+    test.case = 'range.length === 1';
+    var src = new U8x( [ 1 ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, [ 1, Infinity ] );
+    test.is( got !== src );
+
+    test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+    var src = new I16x( [ 1, 5 ] );
+    var got = _[ namespace ].fromLeft( src );
+    test.identical( got, new I16x( [ 1, 5 ] ) );
+    test.is( got === src );
+
+    /* - */
+
+    if( !Config.debug )
+    return;
+
+    test.case = 'without arguments';
+    test.shouldThrowErrorSync( () => _[ namespace ].fromLeft() );
+
+    test.case = 'extra arguments';
+    test.shouldThrowErrorSync( () => _[ namespace ].fromLeft( [ 1, 2 ], 1 ) );
+
+    test.case = 'wrong type of range';
+    test.shouldThrowErrorSync( () => _[ namespace ].fromLeft( { 0 : 1, 1 : 2 } ) );
+
+    test.case = 'wrong range length';
+    test.shouldThrowErrorSync( () => _[ namespace ].fromLeft( [ 0, 1, 2 ] ) );
+
+    test.case = 'wrong elements in range';
+    test.shouldThrowErrorSync( () => _[ namespace ].fromLeft( [ null, 2 ] ) );
+    test.shouldThrowErrorSync( () => _[ namespace ].fromLeft( [ 2, 'abc' ] ) );
+  }
+}
+
+//
+
 function isEmpty( test )
 {
   test.case = 'undefined';
@@ -1545,146 +1704,6 @@ function assertInRange( test )
   test.shouldThrowErrorSync( () => _.range.assertInRange( 1, [ 2, 5 ], [] ) );
   test.shouldThrowErrorSync( () => _.range.assertInRange( 5, [ 2, 5 ], {} ) );
   test.shouldThrowErrorSync( () => _.range.assertInRange( 7, [ 2, 5 ], undefined ) );
-}
-
-//
-
-function fromLeft( test )
-{
-  test.case = 'range - number';
-  var got = _.range.fromLeft( 1 );
-  test.identical( got, [ 1, Infinity ] );
-
-  /* */
-
-  test.case = 'range.length === 1';
-  var src = [ 1 ];
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 1, Infinity ] );
-  test.is( got !== src );
-
-  test.case = 'range[ 0 ] - undefined';
-  var src = [ undefined, 1 ];
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 0, 1 ] );
-  test.is( got === src );
-
-  test.case = 'range[ 1 ] - undefined';
-  var src = [ 1, undefined ];
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 1, Infinity ] );
-  test.is( got === src );
-
-  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
-  var src = [ undefined, undefined ];
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 0, Infinity ] );
-  test.is( got === src );
-
-  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
-  var src = [ 1, 5 ];
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 1, 5 ] );
-  test.is( got === src );
-
-  /* */
-
-  test.case = 'range.length === 1';
-  var src = _.unrollMake( [ 1 ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 1, Infinity ] );
-  test.is( got !== src );
-
-  test.case = 'range[ 0 ] - undefined';
-  var src = _.unrollMake( [ undefined, 1 ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 0, 1 ] );
-  test.is( got === src );
-
-  test.case = 'range[ 1 ] - undefined';
-  var src = _.unrollMake( [ 1, undefined ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 1, Infinity ] );
-  test.is( got === src );
-
-  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
-  var src = _.unrollMake( [ undefined, undefined ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 0, Infinity ] );
-  test.is( got === src );
-
-  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
-  var src = _.unrollMake( [ 1, 5 ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, _.unrollMake( [ 1, 5 ] ) );
-  test.is( got === src );
-
-  /* */
-
-  test.case = 'range.length === 1';
-  var src = _.argumentsArrayMake( [ 1 ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 1, Infinity ] );
-  test.is( got !== src );
-
-  test.case = 'range[ 0 ] - undefined';
-  var src = _.argumentsArrayMake( [ undefined, 1 ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, _.argumentsArrayMake([ 0, 1 ]) );
-  test.is( got === src );
-
-  test.case = 'range[ 1 ] - undefined';
-  var src = _.argumentsArrayMake( [ 1, undefined ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, _.argumentsArrayMake([ 1, Infinity ]) );
-  test.is( got === src );
-
-  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
-  var src = _.argumentsArrayMake( [ undefined, undefined ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, _.argumentsArrayMake([ 0, Infinity ]) );
-  test.is( got === src );
-
-  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
-  var src = _.argumentsArrayMake( [ 1, 5 ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, _.argumentsArrayMake( [ 1, 5 ] ) );
-  test.is( got === src );
-
-  /* */
-
-  test.case = 'range.length === 1';
-  var src = new U8x( [ 1 ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, [ 1, Infinity ] );
-  test.is( got !== src );
-
-  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
-  var src = new I16x( [ 1, 5 ] );
-  var got = _.range.fromLeft( src );
-  test.identical( got, new I16x( [ 1, 5 ] ) );
-  test.is( got === src );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.range.fromLeft() );
-
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.range.fromLeft( [ 1, 2 ], 1 ) );
-
-  test.case = 'wrong type of range';
-  test.shouldThrowErrorSync( () => _.range.fromLeft( { 0 : 1, 1 : 2 } ) );
-
-  test.case = 'wrong range length';
-  test.shouldThrowErrorSync( () => _.range.fromLeft( [ 0, 1, 2 ] ) );
-
-  test.case = 'wrong elements in range';
-  test.shouldThrowErrorSync( () => _.range.fromLeft( [ null, 2 ] ) );
-  test.shouldThrowErrorSync( () => _.range.fromLeft( [ 2, 'abc' ] ) );
 }
 
 //
@@ -2945,7 +2964,13 @@ let Self =
 
     is,
     isValid,
+    fromLeft,
 
+    // crange
+
+    // lrange
+
+    // orange
 
     isEmpty,
     isPopulated,
@@ -2960,7 +2985,6 @@ let Self =
 
     // range, l0/l5/fRange.s
 
-    fromLeft,
     fromRight, /* qqq : fix */
     fromSingle,
 
