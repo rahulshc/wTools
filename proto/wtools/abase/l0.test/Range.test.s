@@ -3518,6 +3518,46 @@ function lrangeSureInRange( test )
   test.shouldThrowErrorSync( () => _.lrange.sureInRange( 8, [ 2, 5 ], undefined ) );
 }
 
+//
+
+function lrangeAssertInRange( test )
+{
+  test.case = 'two arguments, src - number, in lrange';
+  var got = _.lrange.assertInRange( 3, [ 1, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'two arguments, src - array, in lrange';
+  var got = _.lrange.assertInRange( 3, [ 1, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'more then two arguments, src - number, in lrange';
+  var got = _.lrange.assertInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'more then two arguments, src - array, in lrange';
+  var got = _.lrange.assertInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.lrange.assertInRange() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.lrange.assertInRange( 2 ) );
+
+  test.case = 'src out of lrange';
+  test.shouldThrowErrorSync( () => _.lrange.assertInRange( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.lrange.assertInRange( 7, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.lrange.assertInRange( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.lrange.assertInRange( 7, [ 2, 5 ], undefined ) );
+}
+
 // --
 // orange
 // --
@@ -5547,6 +5587,7 @@ let Self =
     lrangeInInclusiveLeft,
     lrangeInInclusiveRight,
     lrangeSureInRange,
+    lrangeAssertInRange,
 
     // orange
 
