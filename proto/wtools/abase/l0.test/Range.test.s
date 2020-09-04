@@ -2254,6 +2254,146 @@ function crangeAssertInRange( test )
   test.shouldThrowErrorSync( () => _.crange.assertInRange( 7, [ 2, 5 ], undefined ) );
 }
 
+//
+
+function crangeFromSingle( test )
+{
+  test.case = 'crange - number';
+  var got = _.crange.fromSingle( 1 );
+  test.identical( got, [ 1, 1 ] );
+
+  /* */
+
+  test.case = 'crange.length === 1';
+  var src = [ 1 ];
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 1, 1 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - undefined';
+  var src = [ undefined, 2 ];
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 2, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 1 ] - undefined';
+  var src = [ 1, undefined ];
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 1, 1 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - undefined, crange[ 1 ] - undefined';
+  var src = [ undefined, undefined ];
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 0, 0 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - number, crange[ 1 ] - number';
+  var src = [ 1, 5 ];
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 1, 5 ] );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'crange.length === 1';
+  var src = _.unrollMake( [ 1 ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 1, 1 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - undefined';
+  var src = _.unrollMake( [ undefined, 2 ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 2, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 1 ] - undefined';
+  var src = _.unrollMake( [ 1, undefined ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 1, 1 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - undefined, crange[ 1 ] - undefined';
+  var src = _.unrollMake( [ undefined, undefined ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 0, 0 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - number, crange[ 1 ] - number';
+  var src = _.unrollMake( [ 1, 5 ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, _.unrollMake( [ 1, 5 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'crange.length === 1';
+  var src = _.argumentsArrayMake( [ 1 ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 1, 1 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - undefined';
+  var src = _.argumentsArrayMake( [ undefined, 2 ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 2, 2 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 1 ] - undefined';
+  var src = _.argumentsArrayMake( [ 1, undefined ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 1, 1 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - undefined, crange[ 1 ] - undefined';
+  var src = _.argumentsArrayMake( [ undefined, undefined ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 0, 0 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - number, crange[ 1 ] - number';
+  var src = _.argumentsArrayMake( [ 1, 5 ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, _.argumentsArrayMake( [ 1, 5 ] ) );
+  test.is( got === src );
+
+  /* */
+
+  test.case = 'crange.length === 1';
+  var src = new U8x( [ 1 ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, [ 1, 1 ] );
+  test.is( got !== src );
+
+  test.case = 'crange[ 0 ] - number, crange[ 1 ] - number';
+  var src = new I16x( [ 1, 5 ] );
+  var got = _.crange.fromSingle( src );
+  test.identical( got, new I16x( [ 1, 5 ] ) );
+  test.is( got === src );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.crange.fromSingle() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.crange.fromSingle( [ 1, 2 ], 1 ) );
+
+  test.case = 'wrong type of crange';
+  test.shouldThrowErrorSync( () => _.crange.fromSingle( { 0 : 1, 1 : 2 } ) );
+
+  test.case = 'wrong crange length';
+  test.shouldThrowErrorSync( () => _.crange.fromSingle( [ 0, 1, 2 ] ) );
+
+  test.case = 'wrong elements in crange';
+  test.shouldThrowErrorSync( () => _.crange.fromSingle( [ null, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.crange.fromSingle( [ 2, 'abc' ] ) );
+}
+
 // --
 // lrange
 // --
@@ -4728,119 +4868,119 @@ function orangeAssertInRange( test )
 
 //
 
-function fromSingle( test )
+function orangeFromSingle( test )
 {
-  test.case = 'range - number';
-  var got = _.range.fromSingle( 1 );
+  test.case = 'orange - number';
+  var got = _.orange.fromSingle( 1 );
   test.identical( got, [ 1, 2 ] );
 
   /* */
 
-  test.case = 'range.length === 1';
+  test.case = 'orange.length === 1';
   var src = [ 1 ];
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 0 ] - undefined';
+  test.case = 'orange[ 0 ] - undefined';
   var src = [ undefined, 2 ];
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 1 ] - undefined';
+  test.case = 'orange[ 1 ] - undefined';
   var src = [ 1, undefined ];
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  test.case = 'orange[ 0 ] - undefined, orange[ 1 ] - undefined';
   var src = [ undefined, undefined ];
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 0, 1 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+  test.case = 'orange[ 0 ] - number, orange[ 1 ] - number';
   var src = [ 1, 5 ];
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 5 ] );
   test.is( got === src );
 
   /* */
 
-  test.case = 'range.length === 1';
+  test.case = 'orange.length === 1';
   var src = _.unrollMake( [ 1 ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 0 ] - undefined';
+  test.case = 'orange[ 0 ] - undefined';
   var src = _.unrollMake( [ undefined, 2 ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 1 ] - undefined';
+  test.case = 'orange[ 1 ] - undefined';
   var src = _.unrollMake( [ 1, undefined ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  test.case = 'orange[ 0 ] - undefined, orange[ 1 ] - undefined';
   var src = _.unrollMake( [ undefined, undefined ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 0, 1 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+  test.case = 'orange[ 0 ] - number, orange[ 1 ] - number';
   var src = _.unrollMake( [ 1, 5 ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, _.unrollMake( [ 1, 5 ] ) );
   test.is( got === src );
 
   /* */
 
-  test.case = 'range.length === 1';
+  test.case = 'orange.length === 1';
   var src = _.argumentsArrayMake( [ 1 ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 0 ] - undefined';
+  test.case = 'orange[ 0 ] - undefined';
   var src = _.argumentsArrayMake( [ undefined, 2 ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 1 ] - undefined';
+  test.case = 'orange[ 1 ] - undefined';
   var src = _.argumentsArrayMake( [ 1, undefined ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 0 ] - undefined, range[ 1 ] - undefined';
+  test.case = 'orange[ 0 ] - undefined, orange[ 1 ] - undefined';
   var src = _.argumentsArrayMake( [ undefined, undefined ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 0, 1 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+  test.case = 'orange[ 0 ] - number, orange[ 1 ] - number';
   var src = _.argumentsArrayMake( [ 1, 5 ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, _.argumentsArrayMake( [ 1, 5 ] ) );
   test.is( got === src );
 
   /* */
 
-  test.case = 'range.length === 1';
+  test.case = 'orange.length === 1';
   var src = new U8x( [ 1 ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, [ 1, 2 ] );
   test.is( got !== src );
 
-  test.case = 'range[ 0 ] - number, range[ 1 ] - number';
+  test.case = 'orange[ 0 ] - number, orange[ 1 ] - number';
   var src = new I16x( [ 1, 5 ] );
-  var got = _.range.fromSingle( src );
+  var got = _.orange.fromSingle( src );
   test.identical( got, new I16x( [ 1, 5 ] ) );
   test.is( got === src );
 
@@ -4850,20 +4990,20 @@ function fromSingle( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.range.fromSingle() );
+  test.shouldThrowErrorSync( () => _.orange.fromSingle() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.range.fromSingle( [ 1, 2 ], 1 ) );
+  test.shouldThrowErrorSync( () => _.orange.fromSingle( [ 1, 2 ], 1 ) );
 
-  test.case = 'wrong type of range';
-  test.shouldThrowErrorSync( () => _.range.fromSingle( { 0 : 1, 1 : 2 } ) );
+  test.case = 'wrong type of orange';
+  test.shouldThrowErrorSync( () => _.orange.fromSingle( { 0 : 1, 1 : 2 } ) );
 
-  test.case = 'wrong range length';
-  test.shouldThrowErrorSync( () => _.range.fromSingle( [ 0, 1, 2 ] ) );
+  test.case = 'wrong orange length';
+  test.shouldThrowErrorSync( () => _.orange.fromSingle( [ 0, 1, 2 ] ) );
 
-  test.case = 'wrong elements in range';
-  test.shouldThrowErrorSync( () => _.range.fromSingle( [ null, 2 ] ) );
-  test.shouldThrowErrorSync( () => _.range.fromSingle( [ 2, 'abc' ] ) );
+  test.case = 'wrong elements in orange';
+  test.shouldThrowErrorSync( () => _.orange.fromSingle( [ null, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.orange.fromSingle( [ 2, 'abc' ] ) );
 }
 
 //
@@ -5578,6 +5718,8 @@ let Self =
     crangeSureInRange,
     crangeAssertInRange,
 
+    crangeFromSingle,
+
     // lrange
 
     lrangeIsEmpty,
@@ -5600,7 +5742,7 @@ let Self =
     orangeSureInRange,
     orangeAssertInRange,
 
-    fromSingle,
+    orangeFromSingle,
     clamp,
     countElements,
     lastGet,
