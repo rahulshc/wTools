@@ -2020,6 +2020,156 @@ function crangeInInclusiveLeft( test )
   test.shouldThrowErrorSync( () => _.crange.inInclusiveLeft( [ 1, 2 ], 'wrong' ) );
 }
 
+//
+
+function crangeInInclusiveRight( test )
+{
+  test.case = 'srcNumber - number, srcNumber < crange[ 0 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], 1 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - number, srcNumber = crange[ 0 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], 2 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - number, srcNumber > crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], 7 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - number, srcNumber = crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], 5 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - number, crange[ 0 ] < srcNumber < crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], 4 );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - array, srcNumber < crange[ 0 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], [ 0 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - array, srcNumber = crange[ 0 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], [ 0, 0 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - array, srcNumber > crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], [ 0, 0, 0, 0, 0, 0, 0 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - array, srcNumber = crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], [ 0, 0, 0, 0, 0 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - array, crange[ 0 ] < srcNumber < crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], [ 0, 0, 0, 0 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - unroll, srcNumber < crange[ 0 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - unroll, srcNumber = crange[ 0 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - unroll, srcNumber > crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - unroll, srcNumber = crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - unroll, crange[ 0 ] < srcNumber < crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - argumentsArray, srcNumber < crange[ 0 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - argumentsArray, srcNumber = crange[ 0 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - argumentsArray, srcNumber > crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - argumentsArray, srcNumber = crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - argumentsArray, crange[ 0 ] < srcNumber < crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, srcNumber < crange[ 0 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], new I8x( [ 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, srcNumber = crange[ 0 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], new I8x( [ 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, srcNumber > crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], new U16x( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, srcNumber = crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], new U16x( [ 0, 0, 0, 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, crange[ 0 ] < srcNumber < crange[ 1 ]';
+  var got = _.crange.inInclusiveRight( [ 2, 5 ], new F32x( [ 0, 0, 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.crange.inInclusiveRight() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.crange.inInclusiveRight( [ 1, 2 ] ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.crange.inInclusiveRight( [ 1, 2 ], 3, 'extra' ) );
+
+  test.case = 'crange is not crange';
+  test.shouldThrowErrorSync( () => _.crange.inInclusiveRight( 'wrong', 3 ) );
+
+  test.case = 'srcNumber is not Long, not Number';
+  test.shouldThrowErrorSync( () => _.crange.inInclusiveRight( [ 1, 2 ], 'wrong' ) );
+}
+
 // --
 // lrange
 // --
@@ -4005,130 +4155,130 @@ function orangeInInclusiveLeft( test )
 
 //
 
-function inInclusiveRight( test )
+function orangeInInclusiveRight( test )
 {
-  test.case = 'srcNumber - number, srcNumber < range[ 0 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], 1 );
+  test.case = 'srcNumber - number, srcNumber < orange[ 0 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], 1 );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - number, srcNumber = range[ 0 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], 2 );
+  test.case = 'srcNumber - number, srcNumber = orange[ 0 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], 2 );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - number, srcNumber > range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], 7 );
+  test.case = 'srcNumber - number, srcNumber > orange[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], 7 );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - number, srcNumber = range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], 4 );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'srcNumber - number, range[ 0 ] < srcNumber < range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], 4 );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'srcNumber - array, srcNumber < range[ 0 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], [ 0 ] );
+  test.case = 'srcNumber - number, srcNumber = orange[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], 5 );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - array, srcNumber = range[ 0 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], [ 0, 0 ] );
+  test.case = 'srcNumber - number, orange[ 0 ] < srcNumber < range[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], 4 );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - array, srcNumber > range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], [ 0, 0, 0, 0, 0, 0, 0 ] );
+  test.case = 'srcNumber - array, srcNumber < orange[ 0 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], [ 0 ] );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - array, srcNumber = range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], [ 0, 0 ] );
+  test.case = 'srcNumber - array, srcNumber = orange[ 0 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], [ 0, 0 ] );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - array, range[ 0 ] < srcNumber < range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], [ 0, 0, 0, 0 ] );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'srcNumber - unroll, srcNumber < range[ 0 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0 ] ) );
+  test.case = 'srcNumber - array, srcNumber > orange[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], [ 0, 0, 0, 0, 0, 0, 0 ] );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - unroll, srcNumber = range[ 0 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0 ] ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'srcNumber - unroll, srcNumber > range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  test.case = 'srcNumber - array, srcNumber = orange[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], [ 0, 0, 0, 0, 0 ] );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - unroll, srcNumber = range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0 ] ) );
+  test.case = 'srcNumber - array, orange[ 0 ] < srcNumber < range[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], [ 0, 0, 0, 0 ] );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - unroll, range[ 0 ] < srcNumber < range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0 ] ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'srcNumber - argumentsArray, srcNumber < range[ 0 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
+  test.case = 'srcNumber - unroll, srcNumber < orange[ 0 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0 ] ) );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - argumentsArray, srcNumber = range[ 0 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
+  test.case = 'srcNumber - unroll, srcNumber = orange[ 0 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0 ] ) );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - argumentsArray, srcNumber > range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  test.case = 'srcNumber - unroll, srcNumber > orange[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - argumentsArray, srcNumber = range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'srcNumber - argumentsArray, range[ 0 ] < srcNumber < range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'srcNumber - BufferTyped, srcNumber < range[ 0 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], new I8x( [ 0 ] ) );
+  test.case = 'srcNumber - unroll, srcNumber = orange[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0, 0 ] ) );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - BufferTyped, srcNumber = range[ 0 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], new I8x( [ 0, 0 ] ) );
+  test.case = 'srcNumber - unroll, orange[ 0 ] < srcNumber < range[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], _.unrollMake( [ 0, 0, 0, 0 ] ) );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - BufferTyped, srcNumber > range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], new U16x( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  test.case = 'srcNumber - argumentsArray, srcNumber < orange[ 0 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0 ] ) );
   var expected = false;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - BufferTyped, srcNumber = range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], new U16x( [ 0, 0, 0, 0 ] ) );
+  test.case = 'srcNumber - argumentsArray, srcNumber = orange[ 0 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0 ] ) );
   var expected = true;
   test.identical( got, expected );
 
-  test.case = 'srcNumber - BufferTyped, range[ 0 ] < srcNumber < range[ 1 ]';
-  var got = _.range.inInclusiveRight( [ 2, 5 ], new F32x( [ 0, 0, 0, 0 ] ) );
+  test.case = 'srcNumber - argumentsArray, srcNumber > orange[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - argumentsArray, srcNumber = orange[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - argumentsArray, orange[ 0 ] < srcNumber < range[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], _.argumentsArrayMake( [ 0, 0, 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, srcNumber < orange[ 0 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], new I8x( [ 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, srcNumber = orange[ 0 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], new I8x( [ 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, srcNumber > orange[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], new U16x( [ 0, 0, 0, 0, 0, 0, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, srcNumber = orange[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], new U16x( [ 0, 0, 0, 0, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'srcNumber - BufferTyped, orange[ 0 ] < srcNumber < range[ 1 ]';
+  var got = _.orange.inInclusiveRight( [ 2, 5 ], new F32x( [ 0, 0, 0, 0 ] ) );
   var expected = true;
   test.identical( got, expected );
 
@@ -4138,19 +4288,19 @@ function inInclusiveRight( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.range.inInclusiveRight() );
+  test.shouldThrowErrorSync( () => _.orange.inInclusiveRight() );
 
   test.case = 'not enough arguments';
-  test.shouldThrowErrorSync( () => _.range.inInclusiveRight( [ 1, 2 ] ) );
+  test.shouldThrowErrorSync( () => _.orange.inInclusiveRight( [ 1, 2 ] ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.range.inInclusiveRight( [ 1, 2 ], 3, 'extra' ) );
+  test.shouldThrowErrorSync( () => _.orange.inInclusiveRight( [ 1, 2 ], 3, 'extra' ) );
 
-  test.case = 'range is not Range';
-  test.shouldThrowErrorSync( () => _.range.inInclusiveRight( 'wrong', 3 ) );
+  test.case = 'orange is not Range';
+  test.shouldThrowErrorSync( () => _.orange.inInclusiveRight( 'wrong', 3 ) );
 
   test.case = 'srcNumber is not Long, not Number';
-  test.shouldThrowErrorSync( () => _.range.inInclusiveRight( [ 1, 2 ], 'wrong' ) );
+  test.shouldThrowErrorSync( () => _.orange.inInclusiveRight( [ 1, 2 ], 'wrong' ) );
 }
 
 //
@@ -5085,6 +5235,7 @@ let Self =
     crangeInInclusive,
     crangeInExclusive,
     crangeInInclusiveLeft,
+    crangeInInclusiveRight,
 
     // lrange
 
@@ -5101,7 +5252,7 @@ let Self =
     orangeInInclusive,
     orangeInExclusive,
     orangeInInclusiveLeft,
-    inInclusiveRight,
+    orangeInInclusiveRight,
     sureInRange,
     assertInRange,
 
