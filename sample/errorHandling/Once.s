@@ -10,10 +10,10 @@ function decrement( i )
   }
   catch( err )
   {
-    err = _.err( err, '\nFailed to decrement' );
-    if( _.errOnce( err ) )
-    console.log( err );
-    throw err;
+    let error = _.err( err, '\nFailed to decrement' );
+    if( _.errOnce( error ) )
+    console.log( error );
+    throw error;
   }
 }
 
@@ -27,10 +27,10 @@ function divide( i )
   }
   catch( err )
   {
-    err = _.err( err );
-    if( _.errOnce( err ) )
-    console.log( err );
-    throw err;
+    let error = _.err( err );
+    if( _.errOnce( error ) )
+    console.log( error );
+    throw error;
   }
 }
 
@@ -40,9 +40,9 @@ try
 }
 catch( err )
 {
-  err = _.err( err );
-  if( _.errOnce( err ) )
-  console.log( err );
+  let error = _.err( err );
+  if( _.errOnce( error ) )
+  console.log( error );
 }
 
 /*

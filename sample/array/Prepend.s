@@ -2,7 +2,6 @@ if( typeof module !== 'undefined' )
 require( 'wTools' );
 let _ = wTools;
 
-
 // Input element
 var got = _.arrayPrependElement( [ 1, 2, 3, 3, 4 ], 3 );
 logger.log( 'Element prepended', got )
