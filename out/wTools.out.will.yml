@@ -2,13 +2,10 @@ format: outwillfile-2.0
 root:
   - wTools.out
 consistency:
-  wTools.out.will.yml: &ref_0
-    hash: b03a328f6e2fe7a895b8ce7c24f1792f
-    size: 47089
-  ../.ex.will.yml: &ref_1
-    hash: 88195cb382f1e5c750154219ecf7070e
-    size: 2135
-  ../.im.will.yml: &ref_2
+  ../.ex.will.yml: &ref_0
+    hash: 349ff2e8b6504ea27d65b18daa7694d7
+    size: 2099
+  ../.im.will.yml: &ref_1
     hash: 35d99250d7149c5ee037134d48a387b7
     size: 5602
 module:
@@ -22,11 +19,11 @@ module:
         in conjunction with another module of such kind.
       enabled: 1
       version: 0.9.0
-      interpreters:
+      interpreters: &ref_2
         - njs >= 10.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
-      keywords:
+      keywords: &ref_3
         - base
         - basic
         - core
@@ -37,14 +34,14 @@ module:
         - generic
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors:
+      contributors: &ref_4
         - Kostiantyn Wandalen <wanalen@01.school>
         - Volodymyr M. <volodymyr.migdal@gmail.com>
         - Ihor O. <iostashvxi@gmail.com>
         - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
         - Dmytro Kryvoruchko <dm.vict.kr@gmail.com>
       npm.name: wTools
-      npm.scripts:
+      npm.scripts: &ref_5
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -76,13 +73,13 @@ module:
         criterion:
           predefined: 1
       repository:
-        path: 'git+https:///github.com/Wandalen/wModuleForTesting1.git'
+        path: 'git+https:///github.com/Wandalen/wTools.git'
       origins:
         path:
-          - 'git+https:///github.com/Wandalen/wModuleForTesting1.git'
+          - 'git+https:///github.com/Wandalen/wTools.git'
           - 'npm:///wtools.experiment'
       bugtracker:
-        path: 'https:///github.com/Wandalen/wModuleForTesting1/issues'
+        path: 'https:///github.com/Wandalen/wTools/issues'
       in:
         path: .
       out:
@@ -221,6 +218,7 @@ module:
           - ../proto/wtools/abase/l0/l5/fMap.s
           - ../proto/wtools/abase/l0/l5/fModule.s
           - ../proto/wtools/abase/l0/l5/fNumber.s
+          - ../proto/wtools/abase/l0/l5/fOrange.s
           - ../proto/wtools/abase/l0/l5/fPath.s
           - ../proto/wtools/abase/l0/l5/fProcess.s
           - ../proto/wtools/abase/l0/l5/fRange.s
@@ -856,24 +854,6 @@ module:
           content: prime
         inherit:
           - files.transpile
-      exported.proto.export:
-        opts:
-          filePath: 'reflector::exported.proto.export'
-        criterion:
-          generated: 1
-          content: proto
-          export: 1
-        inherit:
-          - files.reflect
-      exported.files.proto.export:
-        opts:
-          filePath: 'reflector::exported.files.proto.export'
-        criterion:
-          generated: 1
-          content: proto
-          export: 1
-        inherit:
-          - files.reflect
     build:
       proto.export:
         steps:
@@ -984,9 +964,8 @@ module:
           content: proto
           export: 1
     consistency:
-      wTools.out.will.yml: *ref_0
-      ../.ex.will.yml: *ref_1
-      ../.im.will.yml: *ref_2
+      ../.ex.will.yml: *ref_0
+      ../.im.will.yml: *ref_1
   ../:
     about:
       name: wTools
@@ -997,31 +976,13 @@ module:
         in conjunction with another module of such kind.
       enabled: 1
       version: 0.9.0
-      interpreters:
-        - njs >= 10.0.0
-        - chrome >= 60.0.0
-        - firefox >= 60.0.0
-      keywords:
-        - base
-        - basic
-        - core
-        - platform
-        - tools
-        - wTools
-        - wBase
-        - generic
+      interpreters: *ref_2
+      keywords: *ref_3
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors:
-        - Kostiantyn Wandalen <wanalen@01.school>
-        - Volodymyr M. <volodymyr.migdal@gmail.com>
-        - Ihor O. <iostashvxi@gmail.com>
-        - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
-        - Dmytro Kryvoruchko <dm.vict.kr@gmail.com>
+      contributors: *ref_4
       npm.name: wTools
-      npm.scripts:
-        test: wtest .run proto/**
-        docgen: wdocgen .build proto
+      npm.scripts: *ref_5
     path:
       module.willfiles:
         criterion:
@@ -1051,13 +1012,13 @@ module:
         criterion:
           predefined: 1
       repository:
-        path: 'git+https:///github.com/Wandalen/wModuleForTesting1.git'
+        path: 'git+https:///github.com/Wandalen/wTools.git'
       origins:
         path:
-          - 'git+https:///github.com/Wandalen/wModuleForTesting1.git'
+          - 'git+https:///github.com/Wandalen/wTools.git'
           - 'npm:///wtools.experiment'
       bugtracker:
-        path: 'https:///github.com/Wandalen/wModuleForTesting1/issues'
+        path: 'https:///github.com/Wandalen/wTools/issues'
       in:
         path: .
       out:
@@ -1737,9 +1698,8 @@ module:
           - 'build::npm.*=5'
     consistency:
       ../.ex.will.yml:
-        hash: 88195cb382f1e5c750154219ecf7070e
-        size: 2135
+        hash: 349ff2e8b6504ea27d65b18daa7694d7
+        size: 2099
       ../.im.will.yml:
         hash: 35d99250d7149c5ee037134d48a387b7
         size: 5602
-      wTools.out.will.yml: *ref_0
