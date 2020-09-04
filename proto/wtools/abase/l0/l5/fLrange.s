@@ -204,7 +204,24 @@ function countElements( lrange, increment )
 
   _.assert( _.numberIs( increment ), 'Increment should has a number value' );
 
-  return increment ? Math.floor( lrange[ 1 ] / increment ) : 0;
+  if( increment )
+  {
+    let result = lrange[ 1 ] / increment;
+    if( result > 0 )
+    {
+      if( result < 1 )
+      return 1;
+      return Math.floor( result );
+    }
+    else if( result < 0 )
+    {
+      if( result > -1 )
+      return -1;
+      return Math.ceil( result );
+    }
+  }
+
+  return 0;
 }
 
 //
