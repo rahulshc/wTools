@@ -1284,6 +1284,267 @@ function crangeIsEmpty( test )
   test.shouldThrowErrorSync( () => _.crange.isEmpty( [ 1, 2 ], 'extra' ) );
 }
 
+//
+
+function crangeIsPopulated( test )
+{
+  test.case = 'undefined';
+  var got = _.crange.isPopulated( undefined );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.crange.isPopulated( null );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'false';
+  var got = _.crange.isPopulated( false );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.crange.isPopulated( '' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'zero';
+  var got = _.crange.isPopulated( 0 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'NaN';
+  var got = _.crange.isPopulated( NaN );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a boolean';
+  var got = _.crange.isPopulated( true );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a number';
+  var got = _.crange.isPopulated( 13 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a function';
+  var got = _.crange.isPopulated( function() {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'constructor';
+  function Constr( x )
+  {
+    this.x = x;
+    return this;
+  }
+  var got = _.crange.isPopulated( new Constr( 0 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a string';
+  var got = _.crange.isPopulated( 'str' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw';
+  var got = _.crange.isPopulated( new BufferRaw( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferView';
+  var got = _.crange.isPopulated( new BufferView( new BufferRaw( 5 ) ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Set';
+  var got = _.crange.isPopulated( new Set( [ 5 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Map';
+  var got = _.crange.isPopulated( new Map( [ [ 1, 2 ] ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure empty map';
+  var got = _.crange.isPopulated( Object.create( null ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.x = 1;
+  var got = _.crange.isPopulated( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'map from pure map';
+  var src = Object.create( Object.create( null ) );
+  var got = _.crange.isPopulated( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an empty object';
+  var got = _.crange.isPopulated( {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an object';
+  var got = _.crange.isPopulated( { a : 7, b : 13 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'array.length = 0';
+  var got = _.crange.isPopulated( [] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 1';
+  var got = _.crange.isPopulated( [ 1 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, different numbers';
+  var got = _.crange.isPopulated( [ 1, 2 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, equal numbers';
+  var got = _.crange.isPopulated( [ 1, 1 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, range[ 0 ] - range[ 1 ] === 1';
+  var got = _.crange.isPopulated( [ 1, 0 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, number and undefined';
+  var got = _.crange.isPopulated( [ 1, undefined ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length > 2';
+  var got = _.crange.isPopulated( [ 1, 2, 3 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 0';
+  var got = _.crange.isPopulated( _.unrollMake( [] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 1';
+  var got = _.crange.isPopulated( _.unrollMake( [ 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, different numbers';
+  var got = _.crange.isPopulated( _.unrollMake( [ 1, 2 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, equal numbers';
+  var got = _.crange.isPopulated( _.unrollMake( [ 10, 10 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, range[ 0 ] - range[ 1 ] === 1';
+  var got = _.crange.isPopulated( _.unrollMake( [ 10, 9 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, number and undefined';
+  var got = _.crange.isPopulated( _.unrollMake( [ 1, undefined ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length > 2';
+  var got = _.crange.isPopulated( _.unrollMake( [ 1, 2, 3 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 0';
+  var got = _.crange.isPopulated( _.argumentsArrayMake( [] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 1';
+  var got = _.crange.isPopulated( _.argumentsArrayMake( [ 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, different numbers';
+  var got = _.crange.isPopulated( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, equal numbers';
+  var got = _.crange.isPopulated( _.argumentsArrayMake( [ -2, -2 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, range[ 0 ] - range[ 1 ] === 1';
+  var got = _.crange.isPopulated( _.argumentsArrayMake( [ -1, -2 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, number and undefined';
+  var got = _.crange.isPopulated( _.argumentsArrayMake( [ 1, undefined ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length > 2';
+  var got = _.crange.isPopulated( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 0';
+  var got = _.crange.isPopulated( new U8x() );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 1';
+  var got = _.crange.isPopulated( new I16x( 1 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 2, different numbers';
+  var got = _.crange.isPopulated( new F32x( [ 1, 3 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 2, equal numbers';
+  var got = _.crange.isPopulated( new F32x( [ 1, 1 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 2, range[ 0 ] - range[ 1 ] === 1';
+  var got = _.crange.isPopulated( new F32x( [ 1, 0 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length > 2';
+  var got = _.crange.isPopulated( new F32x( 4 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.crange.isPopulated() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.crange.isPopulated( [ 1, 2 ], 'extra' ) );
+}
+
 // --
 // lrange
 // --
@@ -1792,50 +2053,50 @@ function orangeIsEmpty( test )
 
 //
 
-function isPopulated( test )
+function orangeIsPopulated( test )
 {
   test.case = 'undefined';
-  var got = _.range.isPopulated( undefined );
+  var got = _.orange.isPopulated( undefined );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'null';
-  var got = _.range.isPopulated( null );
+  var got = _.orange.isPopulated( null );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'false';
-  var got = _.range.isPopulated( false );
+  var got = _.orange.isPopulated( false );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'empty string';
-  var got = _.range.isPopulated( '' );
+  var got = _.orange.isPopulated( '' );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'zero';
-  var got = _.range.isPopulated( 0 );
+  var got = _.orange.isPopulated( 0 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'NaN';
-  var got = _.range.isPopulated( NaN );
+  var got = _.orange.isPopulated( NaN );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a boolean';
-  var got = _.range.isPopulated( true );
+  var got = _.orange.isPopulated( true );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a number';
-  var got = _.range.isPopulated( 13 );
+  var got = _.orange.isPopulated( 13 );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a function';
-  var got = _.range.isPopulated( function() {} );
+  var got = _.orange.isPopulated( function() {} );
   var expected = false;
   test.identical( got, expected );
 
@@ -1845,177 +2106,177 @@ function isPopulated( test )
     this.x = x;
     return this;
   }
-  var got = _.range.isPopulated( new Constr( 0 ) );
+  var got = _.orange.isPopulated( new Constr( 0 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'a string';
-  var got = _.range.isPopulated( 'str' );
+  var got = _.orange.isPopulated( 'str' );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'BufferRaw';
-  var got = _.range.isPopulated( new BufferRaw( 5 ) );
+  var got = _.orange.isPopulated( new BufferRaw( 5 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'BufferView';
-  var got = _.range.isPopulated( new BufferView( new BufferRaw( 5 ) ) );
+  var got = _.orange.isPopulated( new BufferView( new BufferRaw( 5 ) ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'Set';
-  var got = _.range.isPopulated( new Set( [ 5 ] ) );
+  var got = _.orange.isPopulated( new Set( [ 5 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'Map';
-  var got = _.range.isPopulated( new Map( [ [ 1, 2 ] ] ) );
+  var got = _.orange.isPopulated( new Map( [ [ 1, 2 ] ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'pure empty map';
-  var got = _.range.isPopulated( Object.create( null ) );
+  var got = _.orange.isPopulated( Object.create( null ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'pure map';
   var src = Object.create( null );
   src.x = 1;
-  var got = _.range.isPopulated( src );
+  var got = _.orange.isPopulated( src );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'map from pure map';
   var src = Object.create( Object.create( null ) );
-  var got = _.range.isPopulated( src );
+  var got = _.orange.isPopulated( src );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an empty object';
-  var got = _.range.isPopulated( {} );
+  var got = _.orange.isPopulated( {} );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.range.isPopulated( { a : 7, b : 13 } );
+  var got = _.orange.isPopulated( { a : 7, b : 13 } );
   var expected = false;
   test.identical( got, expected );
 
   /* */
 
   test.case = 'array.length = 0';
-  var got = _.range.isPopulated( [] );
+  var got = _.orange.isPopulated( [] );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'array.length = 1';
-  var got = _.range.isPopulated( [ 1 ] );
+  var got = _.orange.isPopulated( [ 1 ] );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'array.length = 2, different numbers';
-  var got = _.range.isPopulated( [ 1, 2 ] );
+  var got = _.orange.isPopulated( [ 1, 2 ] );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'array.length = 2, equal numbers';
-  var got = _.range.isPopulated( [ 1, 1 ] );
+  var got = _.orange.isPopulated( [ 1, 1 ] );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'array.length = 2, number and undefined';
-  var got = _.range.isPopulated( [ 1, undefined ] );
+  var got = _.orange.isPopulated( [ 1, undefined ] );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'array.length > 2';
-  var got = _.range.isPopulated( [ 1, 2, 3 ] );
+  var got = _.orange.isPopulated( [ 1, 2, 3 ] );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'unroll.length = 0';
-  var got = _.range.isPopulated( _.unrollMake( [] ) );
+  var got = _.orange.isPopulated( _.unrollMake( [] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'unroll.length = 1';
-  var got = _.range.isPopulated( _.unrollMake( [ 1 ] ) );
+  var got = _.orange.isPopulated( _.unrollMake( [ 1 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'unroll.length = 2, different numbers';
-  var got = _.range.isPopulated( _.unrollMake( [ 1, 2 ] ) );
+  var got = _.orange.isPopulated( _.unrollMake( [ 1, 2 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'unroll.length = 2, equal numbers';
-  var got = _.range.isPopulated( _.unrollMake( [ 10, 10 ] ) );
+  var got = _.orange.isPopulated( _.unrollMake( [ 10, 10 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'unroll.length = 2, number and undefined';
-  var got = _.range.isPopulated( _.unrollMake( [ 1, undefined ] ) );
+  var got = _.orange.isPopulated( _.unrollMake( [ 1, undefined ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'unroll.length > 2';
-  var got = _.range.isPopulated( _.unrollMake( [ 1, 2, 3 ] ) );
+  var got = _.orange.isPopulated( _.unrollMake( [ 1, 2, 3 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 0';
-  var got = _.range.isPopulated( _.argumentsArrayMake( [] ) );
+  var got = _.orange.isPopulated( _.argumentsArrayMake( [] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 1';
-  var got = _.range.isPopulated( _.argumentsArrayMake( [ 1 ] ) );
+  var got = _.orange.isPopulated( _.argumentsArrayMake( [ 1 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, different numbers';
-  var got = _.range.isPopulated( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var got = _.orange.isPopulated( _.argumentsArrayMake( [ 1, 2 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, equal numbers';
-  var got = _.range.isPopulated( _.argumentsArrayMake( [ -2, -2 ] ) );
+  var got = _.orange.isPopulated( _.argumentsArrayMake( [ -2, -2 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length = 2, number and undefined';
-  var got = _.range.isPopulated( _.argumentsArrayMake( [ 1, undefined ] ) );
+  var got = _.orange.isPopulated( _.argumentsArrayMake( [ 1, undefined ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'argumentsArray.length > 2';
-  var got = _.range.isPopulated( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  var got = _.orange.isPopulated( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'BufferTyped.length = 0';
-  var got = _.range.isPopulated( new U8x() );
+  var got = _.orange.isPopulated( new U8x() );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'BufferTyped.length = 1';
-  var got = _.range.isPopulated( new I16x( 1 ) );
+  var got = _.orange.isPopulated( new I16x( 1 ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'BufferTyped.length = 2, different numbers';
-  var got = _.range.isPopulated( new F32x( [ 1, 3 ] ) );
+  var got = _.orange.isPopulated( new F32x( [ 1, 3 ] ) );
   var expected = true;
   test.identical( got, expected );
 
   test.case = 'BufferTyped.length = 2, equal numbers';
-  var got = _.range.isPopulated( new F32x( [ 1, 1 ] ) );
+  var got = _.orange.isPopulated( new F32x( [ 1, 1 ] ) );
   var expected = false;
   test.identical( got, expected );
 
   test.case = 'BufferTyped.length > 2';
-  var got = _.range.isPopulated( new F32x( 4 ) );
+  var got = _.orange.isPopulated( new F32x( 4 ) );
   var expected = false;
   test.identical( got, expected );
 
@@ -2025,10 +2286,10 @@ function isPopulated( test )
   return;
 
   test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.range.isPopulated() );
+  test.shouldThrowErrorSync( () => _.orange.isPopulated() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.range.isPopulated( [ 1, 2 ], 'extra' ) );
+  test.shouldThrowErrorSync( () => _.orange.isPopulated( [ 1, 2 ], 'extra' ) );
 }
 
 //
@@ -3559,6 +3820,7 @@ let Self =
     // crange
 
     crangeIsEmpty,
+    crangeIsPopulated,
 
     // lrange
 
@@ -3567,7 +3829,7 @@ let Self =
     // orange
 
     orangeIsEmpty,
-    isPopulated,
+    orangeIsPopulated,
     inInclusive,
     inExclusive,
     inInclusiveLeft,
