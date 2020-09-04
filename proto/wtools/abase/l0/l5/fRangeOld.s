@@ -1,4 +1,5 @@
-( function _fRangeOld_s_() {
+( function _fRangeOld_s_()
+{
 
 'use strict';
 
@@ -132,7 +133,7 @@ function rangeFirstGet( range, options )
   {
     return range.first
   }
-  _.assert( 0, 'unexpected type of range',_.strType( range ) );
+  _.assert( 0, 'unexpected type of range', _.strType( range ) );
 
 }
 
@@ -157,7 +158,7 @@ function rangeLastGet( range, options )
     return range.last
   }
 
-  _.assert( 0, 'unexpected type of range',_.strType( range ) );
+  _.assert( 0, 'unexpected type of range', _.strType( range ) );
 
 }
 

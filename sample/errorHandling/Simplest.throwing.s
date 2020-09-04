@@ -8,7 +8,8 @@ try
 }
 catch( err )
 {
-  throw err;
+  let error = err;
+  throw error;
 }
 
 /*
