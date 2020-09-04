@@ -1,4 +1,5 @@
-( function _fCt_s_() {
+( function _fCt_s_()
+{
 
 'use strict';
 
