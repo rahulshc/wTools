@@ -255,6 +255,134 @@ function is( test )
 
 //
 
+function isValid( test )
+{
+  let namespaces =
+  [
+    'crange',
+    'lrange',
+    'orange',
+  ];
+
+  for( let i = 0 ; i < namespaces.length ; i++ )
+  {
+    test.open( `namespace - ${ namespaces[ i ] }` );
+    testRun( namespaces[ i ] );
+    test.close( `namespace - ${ namespaces[ i ] }` );
+  }
+
+  /* - */
+
+  function testRun( namespace )
+  {
+    test.case = 'not a range, long with 1 element';
+    var got = _[ namespace ].isValid([ 1 ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'not a range, long with 3 elements';
+    var got = _[ namespace ].isValid([ 1, 2, 3 ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'range, elements isValid undefined';
+    var got = _[ namespace ].isValid([ undefined, undefined ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'range, first element isValid undefined';
+    var got = _[ namespace ].isValid([ undefined, 2 ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'range, second element isValid undefined';
+    var got = _[ namespace ].isValid([ 2, undefined ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'range, two NaN';
+    var got = _[ namespace ].isValid([ NaN, NaN ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'range, first element isValid NaN';
+    var got = _[ namespace ].isValid([ NaN, 2 ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'range, second element isValid NaN';
+    var got = _[ namespace ].isValid([ 2, NaN ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'range, two not integer numbers';
+    var got = _[ namespace ].isValid([ 2.01, 10/3 ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'range, first element isValid not an integer';
+    var got = _[ namespace ].isValid([ 2.01, 2 ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'range, second element isValid not an integer';
+    var got = _[ namespace ].isValid([ 2, 10/3 ]);
+    var expected = false;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'range, two Infinity';
+    var got = _[ namespace ].isValid([ Infinity, Infinity ]);
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'range, first element isValid Infinity';
+    var got = _[ namespace ].isValid([ Infinity, 2 ]);
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'range, second element isValid Infinity';
+    var got = _[ namespace ].isValid([ 2, Infinity ]);
+    var expected = true;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'range, two positive integer';
+    var got = _[ namespace ].isValid([ 2, 10 ]);
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'range, two negative integer';
+    var got = _[ namespace ].isValid([ -2, -10 ]);
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'range, first element +0';
+    var got = _[ namespace ].isValid([ +0, -10 ]);
+    var expected = true;
+    test.identical( got, expected );
+
+    /* - */
+
+    if( !Config.debug )
+    return;
+
+    test.case = 'without arguments';
+    test.shouldThrowErrorSync( () => _[ namespace ].isValid() );
+
+    test.case = 'extra arguments';
+    test.shouldThrowErrorSync( () => _[ namespace ].isValid( [ 1, 2 ], 'extra' ) );
+  }
+}
+
+//
+
 function isEmpty( test )
 {
   test.case = 'undefined';
@@ -2816,6 +2944,7 @@ let Self =
     // common
 
     is,
+    isValid,
 
 
     isEmpty,
