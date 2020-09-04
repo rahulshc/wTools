@@ -975,6 +975,54 @@ function firstGet( test )
 
 //
 
+function toStr( test )
+{
+  let namespaces =
+  [
+    'crange',
+    'lrange',
+    'orange',
+  ];
+
+  for( let i = 0 ; i < namespaces.length ; i++ )
+  {
+    test.open( `namespace - ${ namespaces[ i ] }` );
+    testRun( namespaces[ i ] );
+    test.close( `namespace - ${ namespaces[ i ] }` );
+  }
+
+  /* - */
+
+  function testRun( namespace )
+  {
+    test.case = 'range';
+    var got = _[ namespace ].toStr( [ 1, 2 ] );
+    test.identical( got, '1..2' );
+
+    test.case = 'range with negative numbers';
+    var got = _[ namespace ].toStr( [ -1, -2 ] );
+    test.identical( got, '-1..-2' );
+
+    /* - */
+
+    if( !Config.debug )
+    return;
+
+    test.case = 'without arguments';
+    test.shouldThrowErrorSync( () => _[ namespace ].toStr() );
+
+    test.case = 'extra arguments';
+    test.shouldThrowErrorSync( () => _[ namespace ].toStr( [ 1, 2 ], [ 1, 2 ] ) );
+
+    test.case = 'range is not a range';
+    test.shouldThrowErrorSync( () => _[ namespace ].toStr( [ 1, 2, 3 ] ) );
+    test.shouldThrowErrorSync( () => _[ namespace ].toStr( [ 1, 'wrong' ] ) );
+    test.shouldThrowErrorSync( () => _[ namespace ].toStr( [ undefined, 1 ] ) );
+  }
+}
+
+//
+
 function isEmpty( test )
 {
   test.case = 'undefined';
@@ -2955,35 +3003,6 @@ function lastGet( test )
   test.shouldThrowErrorSync( () => _.range.lastGet( new Map( [ [ 1, 2 ] ] ) ) );
 }
 
-//
-
-function toStr( test )
-{
-  test.case = 'range';
-  var got = _.range.toStr( [ 1, 2 ] );
-  test.identical( got, '1..2' );
-
-  test.case = 'range with negative numbers';
-  var got = _.range.toStr( [ -1, -2 ] );
-  test.identical( got, '-1..-2' );
-
-  /* - */
-
-  if( !Config.debug )
-  return;
-
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.range.toStr() );
-
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.range.toStr( [ 1, 2 ], [ 1, 2 ] ) );
-
-  test.case = 'range is not a range';
-  test.shouldThrowErrorSync( () => _.range.toStr( [ 1, 2, 3 ] ) );
-  test.shouldThrowErrorSync( () => _.range.toStr( [ 1, 'wrong' ] ) );
-  test.shouldThrowErrorSync( () => _.range.toStr( [ undefined, 1 ] ) );
-}
-
 // --
 // declaration
 // --
@@ -3005,6 +3024,7 @@ let Self =
     fromLeft,
     fromRight, /* aaa : fix */ /* Dmytro : fixed */
     firstGet,
+    toStr,
 
     // crange
 
@@ -3014,24 +3034,17 @@ let Self =
 
     isEmpty,
     isPopulated,
-
     inInclusive,
     inExclusive,
     inInclusiveLeft,
     inInclusiveRight,
-
     sureInRange,
     assertInRange,
 
-    //
-
     fromSingle,
-
     clamp,
     countElements,
     lastGet,
-    toStr,
-
 
   }
 
