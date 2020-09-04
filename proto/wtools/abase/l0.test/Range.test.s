@@ -1285,6 +1285,269 @@ function crangeIsEmpty( test )
 }
 
 // --
+// lrange
+// --
+
+function lrangeIsEmpty( test )
+{
+  test.case = 'undefined';
+  var got = _.lrange.isEmpty( undefined );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.lrange.isEmpty( null );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'false';
+  var got = _.lrange.isEmpty( false );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.lrange.isEmpty( '' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'zero';
+  var got = _.lrange.isEmpty( 0 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'NaN';
+  var got = _.lrange.isEmpty( NaN );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a boolean';
+  var got = _.lrange.isEmpty( true );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a number';
+  var got = _.lrange.isEmpty( 13 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a function';
+  var got = _.lrange.isEmpty( function() {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'constructor';
+  function Constr( x )
+  {
+    this.x = x;
+    return this;
+  }
+  var got = _.lrange.isEmpty( new Constr( 0 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a string';
+  var got = _.lrange.isEmpty( 'str' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw';
+  var got = _.lrange.isEmpty( new BufferRaw( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferView';
+  var got = _.lrange.isEmpty( new BufferView( new BufferRaw( 5 ) ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Set';
+  var got = _.lrange.isEmpty( new Set( [ 5 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Map';
+  var got = _.lrange.isEmpty( new Map( [ [ 1, 2 ] ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure empty map';
+  var got = _.lrange.isEmpty( Object.create( null ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.x = 1;
+  var got = _.lrange.isEmpty( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'map from pure map';
+  var src = Object.create( Object.create( null ) );
+  var got = _.lrange.isEmpty( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an empty object';
+  var got = _.lrange.isEmpty( {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an object';
+  var got = _.lrange.isEmpty( { a : 7, b : 13 } );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'array.length = 0';
+  var got = _.lrange.isEmpty( [] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 1';
+  var got = _.lrange.isEmpty( [ 1 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, different numbers';
+  var got = _.lrange.isEmpty( [ 1, 2 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, equal numbers';
+  var got = _.lrange.isEmpty( [ 1, 1 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, range[ 0 ] - range[ 1 ] === 1';
+  var got = _.lrange.isEmpty( [ 1, 0 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'array.length = 2, number and undefined';
+  var got = _.lrange.isEmpty( [ 1, undefined ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'array.length > 2';
+  var got = _.lrange.isEmpty( [ 1, 2, 3 ] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 0';
+  var got = _.lrange.isEmpty( _.unrollMake( [] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 1';
+  var got = _.lrange.isEmpty( _.unrollMake( [ 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, different numbers';
+  var got = _.lrange.isEmpty( _.unrollMake( [ 1, 2 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, equal numbers';
+  var got = _.lrange.isEmpty( _.unrollMake( [ 10, 10 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, range[ 1 ] === 0';
+  var got = _.lrange.isEmpty( _.unrollMake( [ 10, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length = 2, number and undefined';
+  var got = _.lrange.isEmpty( _.unrollMake( [ 1, undefined ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'unroll.length > 2';
+  var got = _.lrange.isEmpty( _.unrollMake( [ 1, 2, 3 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 0';
+  var got = _.lrange.isEmpty( _.argumentsArrayMake( [] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 1';
+  var got = _.lrange.isEmpty( _.argumentsArrayMake( [ 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, different numbers';
+  var got = _.lrange.isEmpty( _.argumentsArrayMake( [ 1, 2 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, equal numbers';
+  var got = _.lrange.isEmpty( _.argumentsArrayMake( [ -2, -2 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, range[ 1 ] === 0';
+  var got = _.lrange.isEmpty( _.argumentsArrayMake( [ -1, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length = 2, number and undefined';
+  var got = _.lrange.isEmpty( _.argumentsArrayMake( [ 1, undefined ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'argumentsArray.length > 2';
+  var got = _.lrange.isEmpty( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 0';
+  var got = _.lrange.isEmpty( new U8x() );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 1';
+  var got = _.lrange.isEmpty( new I16x( 1 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 2, different numbers';
+  var got = _.lrange.isEmpty( new F32x( [ 1, 3 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 2, equal numbers';
+  var got = _.lrange.isEmpty( new F32x( [ 1, 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length = 2, range[ 1 ] === 0';
+  var got = _.lrange.isEmpty( new F32x( [ 0, 0 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped.length > 2';
+  var got = _.lrange.isEmpty( new F32x( 4 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.lrange.isEmpty() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.lrange.isEmpty( [ 1, 2 ], 'extra' ) );
+}
+
+// --
 // orange
 // --
 
@@ -3298,6 +3561,8 @@ let Self =
     crangeIsEmpty,
 
     // lrange
+
+    lrangeIsEmpty,
 
     // orange
 
