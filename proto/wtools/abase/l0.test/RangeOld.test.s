@@ -1,4 +1,5 @@
-( function _Range_test_s( ) {
+( function _Range_test_s()
+{
 
 'use strict';
 
@@ -62,7 +63,7 @@ function rangeIs( test )
   test.identical( got, expected );
 
   test.case = 'constructor';
-  var Constr = function( x )
+  function Constr( x )
   {
     this.x = x;
     return this;
@@ -85,14 +86,6 @@ function rangeIs( test )
   var got = _.rangeIs( new BufferView( new BufferRaw( 5 ) ) );
   var expected = false;
   test.identical( got, expected );
-
-  if( Config.interpreter = 'njs' )
-  {
-    test.case = 'BufferNode';
-    var got = _.rangeIs( BufferNode.alloc( 5 ) );
-    var expected = false;
-    test.identical( got, expected );
-  }
 
   test.case = 'Set';
   var got = _.rangeIs( new Set( [ 5 ] ) );
@@ -291,7 +284,7 @@ function rangeIsEmpty( test )
   test.identical( got, expected );
 
   test.case = 'constructor';
-  var Constr = function( x )
+  function Constr( x )
   {
     this.x = x;
     return this;
@@ -314,14 +307,6 @@ function rangeIsEmpty( test )
   var got = _.rangeIsEmpty( new BufferView( new BufferRaw( 5 ) ) );
   var expected = false;
   test.identical( got, expected );
-
-  if( Config.interpreter = 'njs' )
-  {
-    test.case = 'BufferNode';
-    var got = _.rangeIsEmpty( BufferNode.alloc( 5 ) );
-    var expected = false;
-    test.identical( got, expected );
-  }
 
   test.case = 'Set';
   var got = _.rangeIsEmpty( new Set( [ 5 ] ) );
@@ -540,7 +525,7 @@ function rangeIsPopulated( test )
   test.identical( got, expected );
 
   test.case = 'constructor';
-  var Constr = function( x )
+  function Constr( x )
   {
     this.x = x;
     return this;
@@ -563,14 +548,6 @@ function rangeIsPopulated( test )
   var got = _.rangeIsPopulated( new BufferView( new BufferRaw( 5 ) ) );
   var expected = false;
   test.identical( got, expected );
-
-  if( Config.interpreter = 'njs' )
-  {
-    test.case = 'BufferNode';
-    var got = _.rangeIsPopulated( BufferNode.alloc( 5 ) );
-    var expected = false;
-    test.identical( got, expected );
-  }
 
   test.case = 'Set';
   var got = _.rangeIsPopulated( new Set( [ 5 ] ) );

@@ -1,4 +1,5 @@
-( function _fRange_s_() {
+( function _fRange_s_()
+{
 
 'use strict';
 
@@ -15,18 +16,46 @@ let _ = _global_.wTools;
 function fromLeft( range )
 {
   _.assert( arguments.length === 1 );
+
   if( _.numberIs( range ) )
   return [ range, Infinity ];
+
   _.assert( _.longIs( range ) );
-  _.assert( range.length === 1 || range.length === 2 );
-  _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
-  _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
-  if( range[ 0 ] === undefined )
-  return [ 0, range[ 1 ] ];
-  if( range[ 1 ] === undefined )
-  return [ range[ 0 ], Infinity ];
+
+  if( range.length === 1 )
+  range = [ range[ 0 ], Infinity ];
+  else
+  _.assert( range.length === 2 );
+
+  if( !_.numberIs( range[ 0 ] ) )
+  {
+    _.assert( range[ 0 ] === undefined );
+    range[ 0 ] = 0;
+  }
+  if( !_.numberIs( range[ 1 ] ) )
+  {
+    _.assert( range[ 1 ] === undefined );
+    range[ 1 ] = Infinity;
+  }
+
   return range;
 }
+
+// function fromLeft( range )
+// {
+//   _.assert( arguments.length === 1 );
+//   if( _.numberIs( range ) )
+//   return [ range, Infinity ];
+//   _.assert( _.longIs( range ) );
+//   _.assert( range.length === 1 || range.length === 2 );
+//   _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
+//   _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
+//   if( range[ 0 ] === undefined )
+//   return [ 0, range[ 1 ] ];
+//   if( range[ 1 ] === undefined )
+//   return [ range[ 0 ], Infinity ];
+//   return range;
+// }
 
 //
 
@@ -37,18 +66,46 @@ function fromLeft( range )
 function fromRight( range )
 {
   _.assert( arguments.length === 1 );
+
   if( _.numberIs( range ) )
   return [ 0, range ];
+
   _.assert( _.longIs( range ) );
-  _.assert( range.length === 1 || range.length === 2 );
-  _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
-  _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
-  if( range[ 0 ] === undefined )
-  return [ 0, range[ 1 ] ];
-  if( range[ 1 ] === undefined )
-  return [ range[ 0 ], Infinity ];
+
+  if( range.length === 1 )
+  range = [ range[ 0 ], Infinity ];
+  else
+  _.assert( range.length === 2 );
+
+  if( !_.numberIs( range[ 0 ] ) )
+  {
+    _.assert( range[ 0 ] === undefined );
+    range[ 0 ] = 0;
+  }
+  if( !_.numberIs( range[ 1 ] ) )
+  {
+    _.assert( range[ 1 ] === undefined );
+    range[ 1 ] = Infinity;
+  }
+
   return range;
 }
+
+// function fromRight( range )
+// {
+//   _.assert( arguments.length === 1 );
+//   if( _.numberIs( range ) )
+//   return [ 0, range ];
+//   _.assert( _.longIs( range ) );
+//   _.assert( range.length === 1 || range.length === 2 );
+//   _.assert( range[ 0 ] === undefined || _.numberIs( range[ 0 ] ) );
+//   _.assert( range[ 1 ] === undefined || _.numberIs( range[ 1 ] ) );
+//   if( range[ 0 ] === undefined )
+//   return [ 0, range[ 1 ] ];
+//   if( range[ 1 ] === undefined )
+//   return [ range[ 0 ], Infinity ];
+//   return range;
+// }
 
 //
 
@@ -76,24 +133,33 @@ function fromSingle( range )
 
 //
 
-/* qqq : teach to accept number in second argument */
+/* aaa : teach to accept number in second argument */ /* Dmytro : done */
 
 function clamp( dstRange, clampRange )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.rangeIs( dstRange ) );
-  _.assert( _.rangeIs( clampRange ) );
 
-  if( dstRange[ 0 ] < clampRange[ 0 ] )
-  dstRange[ 0 ] = clampRange[ 0 ];
-  else if( dstRange[ 0 ] > clampRange[ 1 ] )
-  dstRange[ 0 ] = clampRange[ 1 ];
+  if( _.numberIs( clampRange ) )
+  {
+    dstRange[ 0 ] = clampRange;
+    dstRange[ 1 ] = clampRange;
+  }
+  else
+  {
+    _.assert( _.rangeIs( clampRange ) );
 
-  if( dstRange[ 1 ] < clampRange[ 0 ] )
-  dstRange[ 1 ] = clampRange[ 0 ];
-  else if( dstRange[ 1 ] > clampRange[ 1 ] )
-  dstRange[ 1 ] = clampRange[ 1 ];
+    if( dstRange[ 0 ] < clampRange[ 0 ] )
+    dstRange[ 0 ] = clampRange[ 0 ];
+    else if( dstRange[ 0 ] > clampRange[ 1 ] )
+    dstRange[ 0 ] = clampRange[ 1 ];
+
+    if( dstRange[ 1 ] < clampRange[ 0 ] )
+    dstRange[ 1 ] = clampRange[ 0 ];
+    else if( dstRange[ 1 ] > clampRange[ 1 ] )
+    dstRange[ 1 ] = clampRange[ 1 ];
+  }
 
   return dstRange;
 }
@@ -119,11 +185,18 @@ function countElements( range, increment )
 function firstGet( range, options )
 {
 
-  options = options || Object.create( null ); // Dmytro : it's unnecessary to create new container.
-  if( options.increment === undefined )
-  options.increment = 1;
-
   _.assert( arguments.length === 1 || arguments.length === 2 );
+
+  // options = options || Object.create( null ); /* Dmytro : I don't know why routine makes this side effect */
+  // if( options.increment === undefined )       /* The creating of new map has no sense, improved below */
+  // options.increment = 1;
+
+  if( options )
+  {
+    _.assert( _.mapLike( options ) );
+    if( options.increment === undefined )
+    options.increment = 1;
+  }
 
   if( _.longIs( range ) )
   {
@@ -132,10 +205,9 @@ function firstGet( range, options )
   }
   else if( _.mapIs( range ) )
   {
-    return range.first
+    return range.first;
   }
-  _.assert( 0, 'unexpected type of range',_.strType( range ) );
-
+  _.assert( 0, 'unexpected type of range', _.strType( range ) );
 }
 
 //
@@ -158,7 +230,7 @@ function lastGet( range, options )
   {
     return range.last
   }
-  _.assert( 0, 'unexpected type of range',_.strType( range ) );
+  _.assert( 0, 'unexpected type of range', _.strType( range ) );
 
 }
 
@@ -177,7 +249,7 @@ function toStr( range )
 
 class Range
 {
-  static [ Symbol.hasInstance ]( instance )
+  static[ Symbol.hasInstance ]( instance )
   {
     return is( instance );
   }
