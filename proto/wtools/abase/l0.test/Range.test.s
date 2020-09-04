@@ -338,17 +338,17 @@ function isValid( test )
 
     test.case = 'range, two Infinity';
     var got = _[ namespace ].isValid([ Infinity, Infinity ]);
-    var expected = true;
+    var expected = false;
     test.identical( got, expected );
 
     test.case = 'range, first element isValid Infinity';
     var got = _[ namespace ].isValid([ Infinity, 2 ]);
-    var expected = true;
+    var expected = false;
     test.identical( got, expected );
 
     test.case = 'range, second element isValid Infinity';
     var got = _[ namespace ].isValid([ 2, Infinity ]);
-    var expected = true;
+    var expected = false;
     test.identical( got, expected );
 
     /* */
