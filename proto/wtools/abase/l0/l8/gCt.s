@@ -1,4 +1,5 @@
-( function _gCt_s_() {
+( function _gCt_s_()
+{
 
 'use strict';
 
@@ -176,7 +177,7 @@ function _formatAffixes( styles )
   styles = _.arrayAs( styles );
 
   _.assert( arguments.length === 1, 'Expects single argument' );
-  _.assert( _.arrayIs( styles ) , 'Expects string or array of strings {- styles -}' );
+  _.assert( _.arrayIs( styles ), 'Expects string or array of strings {- styles -}' );
 
   for( let s = 0 ; s < styles.length ; s++ )
   {
@@ -197,7 +198,7 @@ function _formatAffixes( styles )
       continue;
     }
 
-    _.assert( _.strIs( style ) , 'Expects string or array of strings { style }' );
+    _.assert( _.strIs( style ), 'Expects string or array of strings { style }' );
 
     let styleObject = _.ct.styleObjectFor( style );
     _.assert( !!styleObject, 'Unknown style', _.strQuote( style ) );
@@ -208,8 +209,8 @@ function _formatAffixes( styles )
     // if( styleObject.bg )
     // result = join( result, _.ct._formatAffixesBackground( styleObject.bg ) );
 
-      let affixes = _.ct._formatAffixesForStyleObject( styleObject );
-      _.ct._affixesJoin( result, affixes );
+    let affixes = _.ct._formatAffixesForStyleObject( styleObject );
+    _.ct._affixesJoin( result, affixes );
 
   }
 

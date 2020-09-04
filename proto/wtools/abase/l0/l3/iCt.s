@@ -1,4 +1,5 @@
-( function _iCt_s_() {
+( function _iCt_s_()
+{
 
 'use strict';
 

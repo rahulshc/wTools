@@ -1,4 +1,5 @@
-( function _iNumbers_s_() {
+( function _iNumbers_s_()
+{
 
 'use strict';
 
@@ -22,7 +23,7 @@ let Self = _global_.wTools;
  * numberIs( 'song' );
  * // returns false
  *
- * @param {*} src.
+ * @param { * } src.
  * @return {Boolean}.
  * @function numberIs
  * @namespace Tools
@@ -66,7 +67,7 @@ function numberIsInfinite( src )
 function intIs( src )
 {
 
-  if( !_.numberIs( src ) )
+  if( !_.numberIs( src ) || !_.numberIsFinite( src ) )
   return false;
 
   return Math.floor( src ) === src;
@@ -81,11 +82,12 @@ function numbersAreAll( src )
   if( _.bufferTypedIs( src ) )
   return true;
 
-  if( _.arrayLike( src ) )
+  if( _.arrayLike( src ) & !_.arrayIsEmpty( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
     if( !_.numberIs( src[ s ] ) )
     return false;
+
     return true;
   }
 
@@ -114,7 +116,12 @@ function numbersAreAll( src )
 
 function numbersAreIdentical( a, b )
 {
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( _.numbersAreAll( [ a, b ] ) )
   return Object.is( a, b );
+
+  return false;
 }
 
 //
@@ -124,16 +131,33 @@ function numbersAreIdenticalNotStrictly( a, b )
   /*
   it takes into account -0 === +0 case
   */
+
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+
+  if( _.numbersAreAll( [ a, b ] ) )
   return Object.is( a, b ) || a === b;
+
+  return false;
 }
 
 //
 
 function numbersAreEquivalent( a, b, accuracy )
 {
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
-  if( Object.is( a, b ) )
-  return true;
+  if( accuracy !== undefined )
+  _.assert( _.numberIs( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
+
+  if( _.numbersAreAll( [ a, b ] ) )
+  {
+    if( Object.is( a, b ) )
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 
   if( _.bigIntIs( a ) || _.bigIntIs( b ) )
   {
@@ -147,70 +171,64 @@ function numbersAreEquivalent( a, b, accuracy )
   if( accuracy === undefined )
   accuracy = this.accuracy;
 
-  if( !_.numberIs( a ) )
-  return false;
-
-  if( !_.numberIs( b ) )
-  return false;
-
-  return Math.abs( a - b ) <= accuracy;
+  return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
 }
 
 //
 
 function numbersAreFinite( src )
 {
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+
+  if( !_.numbersAreAll( src ) )
+  return false;
 
   if( _.longIs( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( !numbersAreFinite( src[ s ] ) )
+    if( !_.numberIsFinite( src[ s ] ) )
     return false;
-    return true;
   }
 
-  if( !_.numberIs( src ) )
-  return false;
-
-  return isFinite( src );
+  return true;
 }
 
 //
 
 function numbersArePositive( src )
 {
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+
+  if( !_.numbersAreAll( src ) )
+  return false;
 
   if( _.longIs( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( !numbersArePositive( src[ s ] ) )
+    if( src[ s ] < 0 || !_.numberIsNotNan( src[ s ] ) )
     return false;
-    return true;
   }
 
-  if( !_.numberIs( src ) )
-  return false;
-
-  return src >= 0;
+  return true;
 }
 
 //
 
 function numbersAreInt( src )
 {
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+
+  if( !_.numbersAreAll( src ) )
+  return false;
 
   if( _.longIs( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
-    if( !numbersAreInt( src[ s ] ) )
+    if( !_.intIs( src[ s ] ) )
     return false;
-    return true;
   }
 
-  if( !_.numberIs( src ) )
-  return false;
-
-  return Math.floor( src ) === src;
+  return true;
 }
 
 // --
@@ -236,11 +254,9 @@ let Routines =
   intIs,
 
   numbersAreAll,
-  // numbersAreIdentical,
-  // numbersAreEquivalent,
-  numbersAreIdentical, /* qqq2 : implement good coverage */
+  numbersAreIdentical, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
   numbersAreIdenticalNotStrictly,
-  numbersAreEquivalent, /* qqq2 : implement good coverage */
+  numbersAreEquivalent, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
 
   numbersAreFinite,
   numbersArePositive,
