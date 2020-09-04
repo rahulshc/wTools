@@ -3436,6 +3436,46 @@ function lrangeInInclusiveRight( test )
   test.shouldThrowErrorSync( () => _.lrange.inInclusiveRight( [ 1, 2 ], 'wrong' ) );
 }
 
+//
+
+function lrangeSureInRange( test )
+{
+  test.case = 'two arguments, src - number, in lrange';
+  var got = _.lrange.sureInRange( 3, [ 1, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'two arguments, src - array, in lrange';
+  var got = _.lrange.sureInRange( 3, [ 1, 5 ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'more then two arguments, src - number, in lrange';
+  var got = _.lrange.sureInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'more then two arguments, src - array, in lrange';
+  var got = _.lrange.sureInRange( 3, [ 1, 5 ], 'extra', [ 'next' ] );
+  var expected = true;
+  test.identical( got, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.lrange.sureInRange() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.lrange.sureInRange( 2 ) );
+
+  test.case = 'src out of lrange';
+  test.shouldThrowErrorSync( () => _.lrange.sureInRange( 1, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.lrange.sureInRange( 8, [ 2, 5 ] ) );
+  test.shouldThrowErrorSync( () => _.lrange.sureInRange( 1, [ 2, 5 ], [] ) );
+  test.shouldThrowErrorSync( () => _.lrange.sureInRange( 8, [ 2, 5 ], undefined ) );
+}
+
 // --
 // orange
 // --
@@ -5463,6 +5503,7 @@ let Self =
     lrangeInExclusive,
     lrangeInInclusiveLeft,
     lrangeInInclusiveRight,
+    lrangeSureInRange,
 
     // orange
 
