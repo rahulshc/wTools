@@ -37,6 +37,7 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/fBool.s' );
   require( './l0/l5/fBuffer.s' );
   require( './l0/l5/fContainer.s' );
+  require( './l0/l5/fCrange.s' );
   require( './l0/l5/fCt.s' );
   require( './l0/l5/fEntity.s' );
   require( './l0/l5/fErr.s' );
@@ -44,9 +45,11 @@ if( typeof module !== 'undefined' )
   require( './l0/l5/fFunctional.s' );
   require( './l0/l5/fIntrospector.s' );
   require( './l0/l5/fLong.s' );
+  require( './l0/l5/fLrange.s' );
   require( './l0/l5/fMap.s' );
   require( './l0/l5/fModule.s' );
   require( './l0/l5/fNumber.s' );
+  require( './l0/l5/fOrange.s' );
   require( './l0/l5/fPath.s' );
   require( './l0/l5/fProcess.s' );
   require( './l0/l5/fRange.s' );
