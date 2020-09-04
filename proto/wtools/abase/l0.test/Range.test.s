@@ -17,221 +17,240 @@ let _ = wTools;
 
 function is( test )
 {
-  test.case = 'undefined';
-  var got = _.range.is( undefined );
-  var expected = false;
-  test.identical( got, expected );
+  let namespaces =
+  [
+    'crange',
+    'lrange',
+    'orange',
+  ];
 
-  test.case = 'null';
-  var got = _.range.is( null );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'false';
-  var got = _.range.is( false );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'empty string';
-  var got = _.range.is( '' );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'zero';
-  var got = _.range.is( 0 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'NaN';
-  var got = _.range.is( NaN );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a boolean';
-  var got = _.range.is( true );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a number';
-  var got = _.range.is( 13 );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a function';
-  var got = _.range.is( function() {} );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'constructor';
-  function Constr( x )
+  for( let i = 0 ; i < namespaces.length ; i++ )
   {
-    this.x = x;
-    return this;
+    test.open( `namespace - ${ namespaces[ i ] }` );
+    testRun( namespaces[ i ] );
+    test.close( `namespace - ${ namespaces[ i ] }` );
   }
-  var got = _.range.is( new Constr( 0 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'a string';
-  var got = _.range.is( 'str' );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'BufferRaw';
-  var got = _.range.is( new BufferRaw( 5 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'BufferView';
-  var got = _.range.is( new BufferView( new BufferRaw( 5 ) ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'Set';
-  var got = _.range.is( new Set( [ 5 ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'Map';
-  var got = _.range.is( new Map( [ [ 1, 2 ] ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'pure empty map';
-  var got = _.range.is( Object.create( null ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'pure map';
-  var src = Object.create( null );
-  src.x = 1;
-  var got = _.range.is( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'map from pure map';
-  var src = Object.create( Object.create( null ) );
-  var got = _.range.is( src );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an empty object';
-  var got = _.range.is( {} );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'an object';
-  var got = _.range.is( { a : 7, b : 13 } );
-  var expected = false;
-  test.identical( got, expected );
-
-  /* */
-
-  test.case = 'array.length = 0';
-  var got = _.range.is( [] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'array.length = 1';
-  var got = _.range.is( [ 1 ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'array.length = 2, numbers';
-  var got = _.range.is( [ 1, 2 ] );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'array.length = 2, number and undefined';
-  var got = _.range.is( [ 1, undefined ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'array.length > 2';
-  var got = _.range.is( [ 1, 2, 3 ] );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'unroll.length = 0';
-  var got = _.range.is( _.unrollMake( [] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'unroll.length = 1';
-  var got = _.range.is( _.unrollMake( [ 1 ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'unroll.length = 2, numbers';
-  var got = _.range.is( _.unrollMake( [ 1, 2 ] ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'unroll.length = 2, number and undefined';
-  var got = _.range.is( _.unrollMake( [ 1, undefined ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'unroll.length > 2';
-  var got = _.range.is( _.unrollMake( [ 1, 2, 3 ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'argumentsArray.length = 0';
-  var got = _.range.is( _.argumentsArrayMake( [] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'argumentsArray.length = 1';
-  var got = _.range.is( _.argumentsArrayMake( [ 1 ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'argumentsArray.length = 2, numbers';
-  var got = _.range.is( _.argumentsArrayMake( [ 1, 2 ] ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'argumentsArray.length = 2, number and undefined';
-  var got = _.range.is( _.argumentsArrayMake( [ 1, undefined ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'argumentsArray.length > 2';
-  var got = _.range.is( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'BufferTyped.length = 0';
-  var got = _.range.is( new U8x() );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'BufferTyped.length = 1';
-  var got = _.range.is( new I16x( 1 ) );
-  var expected = false;
-  test.identical( got, expected );
-
-  test.case = 'BufferTyped.length = 2';
-  var got = _.range.is( new F32x( 2 ) );
-  var expected = true;
-  test.identical( got, expected );
-
-  test.case = 'BufferTyped.length > 2';
-  var got = _.range.is( new F32x( 4 ) );
-  var expected = false;
-  test.identical( got, expected );
 
   /* - */
 
-  if( !Config.debug )
-  return;
+  function testRun( namespace )
+  {
+    test.case = 'undefined';
+    var got = _[ namespace ].is( undefined );
+    var expected = false;
+    test.identical( got, expected );
 
-  test.case = 'without arguments';
-  test.shouldThrowErrorSync( () => _.range.is() );
+    test.case = 'null';
+    var got = _[ namespace ].is( null );
+    var expected = false;
+    test.identical( got, expected );
 
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.range.is( [ 1, 2 ], 'extra' ) );
+    test.case = 'false';
+    var got = _[ namespace ].is( false );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'empty string';
+    var got = _[ namespace ].is( '' );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'zero';
+    var got = _[ namespace ].is( 0 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'NaN';
+    var got = _[ namespace ].is( NaN );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'a boolean';
+    var got = _[ namespace ].is( true );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'a number';
+    var got = _[ namespace ].is( 13 );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'a function';
+    var got = _[ namespace ].is( function() {} );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'constructor';
+    function Constr( x )
+    {
+      this.x = x;
+      return this;
+    }
+    var got = _[ namespace ].is( new Constr( 0 ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'a string';
+    var got = _[ namespace ].is( 'str' );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'BufferRaw';
+    var got = _[ namespace ].is( new BufferRaw( 5 ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'BufferView';
+    var got = _[ namespace ].is( new BufferView( new BufferRaw( 5 ) ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'Set';
+    var got = _[ namespace ].is( new Set( [ 5 ] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'Map';
+    var got = _[ namespace ].is( new Map( [ [ 1, 2 ] ] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'pure empty map';
+    var got = _[ namespace ].is( Object.create( null ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'pure map';
+    var src = Object.create( null );
+    src.x = 1;
+    var got = _[ namespace ].is( src );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'map from pure map';
+    var src = Object.create( Object.create( null ) );
+    var got = _[ namespace ].is( src );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'an empty object';
+    var got = _[ namespace ].is( {} );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'an object';
+    var got = _[ namespace ].is( { a : 7, b : 13 } );
+    var expected = false;
+    test.identical( got, expected );
+
+    /* */
+
+    test.case = 'array.length = 0';
+    var got = _[ namespace ].is( [] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'array.length = 1';
+    var got = _[ namespace ].is( [ 1 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'array.length = 2, numbers';
+    var got = _[ namespace ].is( [ 1, 2 ] );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'array.length = 2, number and undefined';
+    var got = _[ namespace ].is( [ 1, undefined ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'array.length > 2';
+    var got = _[ namespace ].is( [ 1, 2, 3 ] );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'unroll.length = 0';
+    var got = _[ namespace ].is( _.unrollMake( [] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'unroll.length = 1';
+    var got = _[ namespace ].is( _.unrollMake( [ 1 ] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'unroll.length = 2, numbers';
+    var got = _[ namespace ].is( _.unrollMake( [ 1, 2 ] ) );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'unroll.length = 2, number and undefined';
+    var got = _[ namespace ].is( _.unrollMake( [ 1, undefined ] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'unroll.length > 2';
+    var got = _[ namespace ].is( _.unrollMake( [ 1, 2, 3 ] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'argumentsArray.length = 0';
+    var got = _[ namespace ].is( _.argumentsArrayMake( [] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'argumentsArray.length = 1';
+    var got = _[ namespace ].is( _.argumentsArrayMake( [ 1 ] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'argumentsArray.length = 2, numbers';
+    var got = _[ namespace ].is( _.argumentsArrayMake( [ 1, 2 ] ) );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'argumentsArray.length = 2, number and undefined';
+    var got = _[ namespace ].is( _.argumentsArrayMake( [ 1, undefined ] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'argumentsArray.length > 2';
+    var got = _[ namespace ].is( _.argumentsArrayMake( [ 1, 2, 3 ] ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'BufferTyped.length = 0';
+    var got = _[ namespace ].is( new U8x() );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'BufferTyped.length = 1';
+    var got = _[ namespace ].is( new I16x( 1 ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    test.case = 'BufferTyped.length = 2';
+    var got = _[ namespace ].is( new F32x( 2 ) );
+    var expected = true;
+    test.identical( got, expected );
+
+    test.case = 'BufferTyped.length > 2';
+    var got = _[ namespace ].is( new F32x( 4 ) );
+    var expected = false;
+    test.identical( got, expected );
+
+    /* - */
+
+    if( !Config.debug )
+    return;
+
+    test.case = 'without arguments';
+    test.shouldThrowErrorSync( () => _[ namespace ].is() );
+
+    test.case = 'extra arguments';
+    test.shouldThrowErrorSync( () => _[ namespace ].is( [ 1, 2 ], 'extra' ) );
+  }
 }
 
 //
