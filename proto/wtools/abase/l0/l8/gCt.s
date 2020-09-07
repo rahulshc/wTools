@@ -279,6 +279,30 @@ function _strip( srcStr )
 
 let strip = _.vectorize( _strip );
 
+//
+
+function parse( o )
+{
+  return _.strSplitInlinedStereo_( o );
+}
+
+parse.defaults =
+{
+  src : null,
+  prefix : '❮',
+  postfix : '❯',
+  onInlined : ( e ) => [ e ],
+  onOrdinary : null,
+
+  stripping : 0,
+  quoting : 0,
+
+  preservingEmpty : 1,
+  preservingDelimeters : 0,
+  preservingOrdinary : 1,
+  preservingInlined : 1,
+}
+
 // --
 // relation
 // --
@@ -343,7 +367,7 @@ let Extension =
   formatFinal : format,
 
   strip,
-  // parse, /* qqq : implement */
+  parse, /* qqq : implement | Done. Yevhen S.*/
 
   // fields
 
