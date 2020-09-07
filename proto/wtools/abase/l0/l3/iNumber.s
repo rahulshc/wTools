@@ -82,7 +82,7 @@ function numbersAreAll( src )
   if( _.bufferTypedIs( src ) )
   return true;
 
-  if( _.arrayLike( src ) & !_.arrayIsEmpty( src ) )
+  if( _.arrayLike( src ) && !_.arrayIsEmpty( src ) )
   {
     for( let s = 0 ; s < src.length ; s++ )
     if( !_.numberIs( src[ s ] ) )

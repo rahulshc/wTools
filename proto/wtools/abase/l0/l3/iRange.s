@@ -177,17 +177,17 @@ let Routines =
   rangeIs,
   rangeIsValid,
   rangeDefined : rangeIsValid,
-  rangeIsEmpty,
-  rangeIsPopulated,
+  rangeIsEmpty, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  rangeIsPopulated, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
 
-  rangeInInclusive,
-  rangeInExclusive,
-  rangeInInclusiveLeft,
-  rangeInInclusiveRight,
-  rangeIn : rangeInInclusiveLeft,
+  rangeInInclusive, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  rangeInExclusive, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  rangeInInclusiveLeft, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  rangeInInclusiveRight, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  rangeIn : rangeInInclusiveLeft, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
 
-  sureInRange,
-  assertInRange,
+  sureInRange, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  assertInRange, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
 
 }
 

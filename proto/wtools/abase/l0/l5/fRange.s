@@ -289,12 +289,12 @@ let Extension =
 
   fromLeft,
   fromRight,
-  fromSingle,
+  fromSingle, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
 
-  clamp,
-  countElements,
+  clamp, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
+  countElements, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
   firstGet,
-  lastGet,
+  lastGet, /* !!! : remove later */ /* Dmytro : implemented for each namespace */
 
   toStr,
 
