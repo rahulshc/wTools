@@ -1,4 +1,4 @@
-( function _fOrange_s_()
+( function _fCrange_s_()
 {
 
 'use strict';
@@ -12,39 +12,39 @@ require( './fRange.s' );
 // checker
 // --
 
-function isEmpty( orange )
+function isEmpty( crange )
 {
   _.assert( arguments.length === 1 );
-  if( !_.rangeIs( orange ) )
+  if( !_.rangeIs( crange ) )
   return false;
-  return orange[ 0 ] === orange[ 1 ];
+  return crange[ 0 ] === crange[ 1 ] + 1;
 }
 
 //
 
-function isPopulated( orange )
+function isPopulated( crange )
 {
   _.assert( arguments.length === 1 );
-  if( !_.rangeIs( orange ) )
+  if( !_.rangeIs( crange ) )
   return false;
-  return orange[ 0 ] !== orange[ 1 ];
+  return crange[ 0 ] !== crange[ 1 ] + 1;
 }
 
 //
 
-function inInclusive( orange, srcNumber )
+function inInclusive( crange, srcNumber )
 {
 
   if( _.longIs( srcNumber ) )
   srcNumber = srcNumber.length;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( crange ) );
   _.assert( _.numberIs( srcNumber ) );
 
-  if( srcNumber < orange[ 0 ] )
+  if( srcNumber < crange[ 0 ] )
   return false;
-  if( srcNumber >= orange[ 1 ] )
+  if( srcNumber >= crange[ 1 ] + 1 )
   return false;
 
   return true;
@@ -52,18 +52,18 @@ function inInclusive( orange, srcNumber )
 
 //
 
-function inExclusive( orange, srcNumber )
+function inExclusive( crange, srcNumber )
 {
   if( _.longIs( srcNumber ) )
   srcNumber = srcNumber.length;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( crange ) );
   _.assert( _.numberIs( srcNumber ) );
 
-  if( srcNumber <= orange[ 0 ] )
+  if( srcNumber <= crange[ 0 ] )
   return false;
-  if( srcNumber > orange[ 1 ] )
+  if( srcNumber > crange[ 1 ] + 1 )
   return false;
 
   return true;
@@ -71,18 +71,18 @@ function inExclusive( orange, srcNumber )
 
 //
 
-function inInclusiveLeft( orange, srcNumber )
+function inInclusiveLeft( crange, srcNumber )
 {
   if( _.longIs( srcNumber ) )
   srcNumber = srcNumber.length;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( crange ) );
   _.assert( _.numberIs( srcNumber ) );
 
-  if( srcNumber < orange[ 0 ] )
+  if( srcNumber < crange[ 0 ] )
   return false;
-  if( srcNumber >= orange[ 1 ] )
+  if( srcNumber >= crange[ 1 ] + 1 )
   return false;
 
   return true;
@@ -90,18 +90,18 @@ function inInclusiveLeft( orange, srcNumber )
 
 //
 
-function inInclusiveRight( orange, srcNumber )
+function inInclusiveRight( crange, srcNumber )
 {
   if( _.longIs( srcNumber ) )
   srcNumber = srcNumber.length;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( crange ) );
   _.assert( _.numberIs( srcNumber ) );
 
-  if( srcNumber < orange[ 0 ] )
+  if( srcNumber < crange[ 0 ] )
   return false;
-  if( srcNumber >= orange[ 1 ] )
+  if( srcNumber >= crange[ 1 ] + 1 )
   return false;
 
   return true;
@@ -109,20 +109,20 @@ function inInclusiveRight( orange, srcNumber )
 
 //
 
-function sureInRange( src, orange )
+function sureInRange( src, crange )
 {
   _.assert( arguments.length >= 2 );
-  let args = _.unrollFrom([ _.orange.in( orange, src ), () => 'Out of orange' + _.rangeToStr( orange ), _.unrollSelect( arguments, 2 ) ]);
+  let args = _.unrollFrom([ _.crange.in( crange, src ), () => 'Out of crange' + _.rangeToStr( crange ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
 }
 
 //
 
-function assertInRange( src, orange )
+function assertInRange( src, crange )
 {
   _.assert( arguments.length >= 2 );
-  let args = _.unrollFrom([ _.orange.in( orange, src ), () => 'Out of orange' + _.rangeToStr( orange ), _.unrollSelect( arguments, 2 ) ]);
+  let args = _.unrollFrom([ _.crange.in( crange, src ), () => 'Out of crange' + _.rangeToStr( crange ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
 }
@@ -131,33 +131,33 @@ function assertInRange( src, orange )
 // maker
 // --
 
-function fromSingle( orange )
+function fromSingle( crange )
 {
   _.assert( arguments.length === 1 );
 
-  if( _.numberIs( orange ) )
-  return [ orange, orange + 1 ];
+  if( _.numberIs( crange ) )
+  return [ crange, crange ];
 
-  _.assert( _.longIs( orange ) );
-  _.assert( orange.length === 1 || orange.length === 2 );
+  _.assert( _.longIs( crange ) );
+  _.assert( crange.length === 1 || crange.length === 2 );
 
-  if( orange[ 0 ] === undefined )
+  if( crange[ 0 ] === undefined )
   {
-    if( orange[ 1 ] === undefined )
-    return [ 0, 1 ];
+    if( crange[ 1 ] === undefined )
+    return [ 0, 0 ];
 
-    _.assert( _.numberIs( orange[ 1 ] ) );
-    return [ orange[ 1 ] - 1, orange[ 1 ] ];
+    _.assert( _.numberIs( crange[ 1 ] ) );
+    return [ crange[ 1 ], crange[ 1 ] ];
   }
 
-  _.assert( _.numberIs( orange[ 0 ] ) );
+  _.assert( _.numberIs( crange[ 0 ] ) );
 
-  if( orange[ 1 ] === undefined )
-  return [ orange[ 0 ], orange[ 0 ] + 1 ];
+  if( crange[ 1 ] === undefined )
+  return [ crange[ 0 ], crange[ 0 ] ];
 
-  _.assert( _.numberIs( orange[ 1 ] ) );
+  _.assert( _.numberIs( crange[ 1 ] ) );
 
-  return orange;
+  return crange;
 }
 
 //
@@ -193,10 +193,10 @@ function clamp( dstRange, clampRange )
 
 //
 
-function countElements( orange, increment )
+function countElements( crange, increment )
 {
 
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( crange ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( increment === undefined )
@@ -206,7 +206,7 @@ function countElements( orange, increment )
 
   if( increment )
   {
-    let result = ( orange[ 1 ] - orange[ 0 ] ) / increment;
+    let result = ( crange[ 1 ] - crange[ 0 ] + 1 ) / increment;
     if( result > 0 )
     {
       if( result < 1 )
@@ -226,7 +226,7 @@ function countElements( orange, increment )
 
 //
 
-function lastGet( orange, options )
+function lastGet( crange, options )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -242,16 +242,16 @@ function lastGet( orange, options )
     options.increment = 1;
   }
 
-  if( _.longIs( orange ) )
+  if( _.longIs( crange ) )
   {
-    _.assert( _.rangeIs( orange ) );
-    return orange[ 1 ] - 1;
+    _.assert( _.rangeIs( crange ) );
+    return crange[ 1 ];
   }
-  else if( _.mapIs( orange ) )
+  else if( _.mapIs( crange ) )
   {
-    return orange.last;
+    return crange.last;
   }
-  _.assert( 0, 'unexpected type of orange', _.strType( orange ) );
+  _.assert( 0, 'unexpected type of crange', _.strType( crange ) );
 
 }
 
@@ -259,7 +259,7 @@ function lastGet( orange, options )
 // define
 // --
 
-class Orange
+class Crange
 {
   static[ Symbol.hasInstance ]( instance )
   {
@@ -271,12 +271,12 @@ let Handler =
 {
   construct( original, args )
   {
-    return Orange.fromLeft( ... args );
+    return Crange.fromLeft( ... args );
   }
 };
 
-let Self = new Proxy( Orange, Handler );
-Self.original = Orange;
+let Self = new Proxy( Crange, Handler );
+Self.original = Crange;
 
 // --
 // routines
@@ -320,8 +320,8 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-_.assert( _.orange === undefined );
-_.orange = Self;
+_.assert( _.crange === undefined );
+_.crange = Self;
 
 // --
 // export
