@@ -782,8 +782,13 @@ function arrayButInplace( src, range, ins )
 
 //
 
-function arrayBut_( dst, src, crange, ins )
+function arrayBut_( /* dst, src, crange, ins */ )
 {
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let crange = arguments[ 2 ];
+  let ins = arguments[ 3 ];
+
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( arguments.length < 4 && dst !== null && dst !== src )
@@ -1349,8 +1354,13 @@ function arrayGrowInplace( src, range, ins )
 
 //
 
-function arrayGrow_( dst, src, crange, ins )
+function arrayGrow_( /* dst, src, crange, ins */ )
 {
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let crange = arguments[ 2 ];
+  let ins = arguments[ 3 ];
+
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( arguments.length < 4 && dst !== null && dst !== src )
@@ -1728,8 +1738,13 @@ function arrayRelengthInplace( src, range, ins )
 
 //
 
-function arrayRelength_( dst, src, crange, ins )
+function arrayRelength_( /* dst, src, crange, ins */ )
 {
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let crange = arguments[ 2 ];
+  let ins = arguments[ 3 ];
+
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( arguments.length < 4 && dst !== null && dst !== src )
@@ -1882,8 +1897,13 @@ function arrayPrepend( dstArray, ins )
  * @namespace Tools
  */
 
-function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayPrependOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -1940,8 +1960,13 @@ function arrayPrependOnce( dstArray, ins, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayPrependOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -1967,7 +1992,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayPrepended( dstArray, ins )
 {
-  _.assert( arguments.length === 2  );
+  _.assert( arguments.length === 2 );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   dstArray.unshift( ins );
@@ -2018,8 +2043,13 @@ function arrayPrepended( dstArray, ins )
  * @namespace Tools
  */
 
-function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayPrependedOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   let i = _.longLeftIndex.apply( _, arguments );
@@ -2034,8 +2064,13 @@ function arrayPrependedOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayPrependedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayPrependedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result;
   if( Config.debug )
   {
@@ -2088,8 +2123,13 @@ function arrayPrependElement( dstArray, ins )
 
 //
 
-function arrayPrependElementOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayPrependElementOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -2102,8 +2142,13 @@ function arrayPrependElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayPrependElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayPrependElementOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -2157,7 +2202,7 @@ function arrayPrependOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayPrependedElement( dstArray, ins )
 {
-  _.assert( arguments.length === 2  );
+  _.assert( arguments.length === 2 );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   dstArray.unshift( ins );
@@ -2167,8 +2212,13 @@ function arrayPrependedElement( dstArray, ins )
 
 //
 
-function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayPrependedElementOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
 
   let i = _.longLeftIndex.apply( _, arguments );
@@ -2183,8 +2233,13 @@ function arrayPrependedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayPrependedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayPrependedElementOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result;
   if( Config.debug )
   {
@@ -2271,8 +2326,13 @@ function arrayPrependArray( dstArray, insArray )
  * @namespace Tools
  */
 
-function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayPrependArrayOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -2322,8 +2382,13 @@ function arrayPrependArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function arrayPrependArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayPrependArrayOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -2429,8 +2494,13 @@ function arrayPrependedArray( dstArray, insArray )
  * @namespace Tools
  */
 
-function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayPrependedArrayOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
   _.assert( _.longLike( insArray ) );
@@ -2459,8 +2529,13 @@ function arrayPrependedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayPrependedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayPrependedArrayOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result;
   if( Config.debug )
   {
@@ -2546,8 +2621,13 @@ function arrayPrependArrays( dstArray, insArray )
  * @namespace Tools
  */
 
-function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayPrependArraysOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -2600,8 +2680,13 @@ function arrayPrependArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function arrayPrependArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayPrependArraysOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -2757,8 +2842,13 @@ function arrayPrependedArrays( dstArray, insArray )
  * @namespace Tools
  */
 
-function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayPrependedArraysOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ), 'arrayPrependedArraysOnce :', 'Expects array' );
   _.assert( _.longLike( insArray ), 'arrayPrependedArraysOnce :', 'Expects longLike entity' );
@@ -2806,8 +2896,13 @@ function arrayPrependedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayPrependedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayPrependedArraysOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result;
   if( Config.debug )
   {
@@ -2915,8 +3010,13 @@ function arrayAppend( dstArray, ins )
  * @namespace Tools
  */
 
-function arrayAppendOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayAppendOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -2929,8 +3029,13 @@ function arrayAppendOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayAppendOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -2954,7 +3059,7 @@ function arrayAppendOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 function arrayAppended( dstArray, ins )
 {
-  _.assert( arguments.length === 2  );
+  _.assert( arguments.length === 2 );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
   dstArray.push( ins );
   return dstArray.length - 1;
@@ -2962,8 +3067,13 @@ function arrayAppended( dstArray, ins )
 
 //
 
-function arrayAppendedOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayAppendedOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let i = _.longLeftIndex.apply( _, arguments );
 
   if( i === -1 )
@@ -2977,8 +3087,13 @@ function arrayAppendedOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayAppendedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayAppendedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result;
   if( Config.debug )
   {
@@ -3048,7 +3163,7 @@ function arrayAppendElementOnceStrictly( dstArray, ins )
 
 function arrayAppendedElement( dstArray, ins )
 {
-  _.assert( arguments.length === 2  );
+  _.assert( arguments.length === 2 );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
   dstArray.push( ins );
   return dstArray.length - 1;
@@ -3157,8 +3272,13 @@ function arrayAppendArray( dstArray, insArray )
  * @namespace Tools
  */
 
-function arrayAppendArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayAppendArrayOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -3171,8 +3291,13 @@ function arrayAppendArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayAppendArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayAppendArrayOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -3217,10 +3342,14 @@ function arrayAppendedArray( dstArray, insArray )
 
 //
 
-function arrayAppendedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayAppendedArrayOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.assert( _.longLike( insArray ) );
-  // _.assert( dstArray !== insArray );
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
   let result = 0;
@@ -3283,8 +3412,12 @@ function arrayAppendArrays( dstArray, insArray )
 
 //
 
-function arrayAppendArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayAppendArraysOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
 
   if( dstArray === null )
   {
@@ -3312,8 +3445,13 @@ function arrayAppendArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayAppendArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayAppendArraysOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -3402,8 +3540,12 @@ function arrayAppendedArrays( dstArray, insArray )
 
 //
 
-function arrayAppendedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayAppendedArraysOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
 
@@ -3495,31 +3637,46 @@ function arrayAppendedArraysOnceStrictly( dstArray, ins )
  * arrayRemoveElement, arrayRemoveElementOnce, arrayRemoveElementOnceStrictly and arrayRemovedElement.
  */
 
-function arrayRemove( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemove( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.arrayRemoved.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayRemoveOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemoveOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.arrayRemovedOnce.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayRemoveOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemoveOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.arrayRemoveElementOnceStrictly.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemoved( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
   let removedElements = _.arrayRemovedElement.apply( this, arguments );
   return removedElements;
@@ -3532,8 +3689,13 @@ function arrayRemoved( dstArray, ins, evaluator1, evaluator2 )
  * but return the index of the removed element, instead of the removed element
  */
 
-function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let index = _.longLeftIndex.apply( _, arguments );
   if( index >= 0 )
   dstArray.splice( index, 1 );
@@ -3543,8 +3705,13 @@ function arrayRemovedOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let index = _.longLeftIndex.apply( _, arguments );
   if( index >= 0 )
   {
@@ -3560,8 +3727,13 @@ function arrayRemovedOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemoveElement( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.arrayRemovedElement.apply( this, arguments );
   return dstArray;
 }
@@ -3601,8 +3773,13 @@ function arrayRemoveElement( dstArray, ins, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemoveElementOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.arrayRemovedElementOnce.apply( this, arguments );
   /* aaa : implement and cover routines arrayRemovedElement*_ returning element, not container? */
   /* Dmytro : implemented and covered, proposed improvements of routine `arrayRemovedElement` */
@@ -3611,8 +3788,13 @@ function arrayRemoveElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemoveElementOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result;
   if( Config.debug )
   {
@@ -3639,8 +3821,13 @@ function arrayRemoveElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedElement( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let index = _.longLeftIndex.apply( this, arguments );
   let removedElements = 0;
 
@@ -3673,8 +3860,13 @@ function arrayRemovedElement( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayRemovedElement_( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedElement_( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let removedElement;
 
   let index = _.longLeftIndex.apply( this, arguments );
@@ -3738,8 +3930,12 @@ function arrayRemovedElement_( dstArray, ins, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedElementOnce( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
 
   let index = _.longLeftIndex.apply( _, arguments );
   if( index >= 0 )
@@ -3763,8 +3959,13 @@ function arrayRemovedElementOnce( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayRemovedElementOnce_( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedElementOnce_( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let removedElement;
   let index = _.longLeftIndex.apply( _, arguments );
   if( index >= 0 )
@@ -3778,8 +3979,12 @@ function arrayRemovedElementOnce_( dstArray, ins, evaluator1, evaluator2 )
 
 //
 
-function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedElementOnceStrictly( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
 
   let result;
   let index = _.longLeftIndex.apply( _, arguments );
@@ -3798,8 +4003,13 @@ function arrayRemovedElementOnceStrictly( dstArray, ins, evaluator1, evaluator2 
 
 //
 
-function arrayRemovedElementOnceStrictly_( dstArray, ins, evaluator1, evaluator2 )
+function arrayRemovedElementOnceStrictly_( /* dstArray, ins, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let removedElement;
   let index = _.longLeftIndex.apply( _, arguments );
   if( index >= 0 )
@@ -3842,16 +4052,26 @@ function arrayRemoveArray( dstArray, insArray )
 
 //
 
-function arrayRemoveArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayRemoveArrayOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   arrayRemovedArrayOnce.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayRemoveArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayRemoveArrayOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result;
   if( Config.debug )
   {
@@ -3962,8 +4182,13 @@ function arrayRemovedArray( dstArray, insArray )
  * @namespace Tools
  */
 
-function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayRemovedArrayOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ), () => `Expects array as the first argument {-dstArray-} but got "${ dstArray }"` );
   _.assert( _.longLike( insArray ) );
@@ -3991,8 +4216,13 @@ function arrayRemovedArrayOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayRemovedArrayOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayRemovedArrayOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result;
   if( Config.debug )
   {
@@ -4024,16 +4254,26 @@ function arrayRemoveArrays( dstArray, insArray )
 
 //
 
-function arrayRemoveArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayRemoveArraysOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   arrayRemovedArraysOnce.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayRemoveArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayRemoveArraysOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result;
   if( Config.debug )
   {
@@ -4126,8 +4366,13 @@ function arrayRemovedArrays( dstArray, insArray )
 
 //
 
-function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayRemovedArraysOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( dstArray ), 'arrayRemovedArraysOnce :', 'Expects array' );
   _.assert( _.longLike( insArray ), 'arrayRemovedArraysOnce :', 'Expects longLike entity' );
@@ -4171,8 +4416,13 @@ function arrayRemovedArraysOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayRemovedArraysOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayRemovedArraysOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result;
   if( Config.debug )
   {
@@ -4309,8 +4559,13 @@ function arrayFlatten( dstArray, insArray )
 
 //
 
-function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayFlattenOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -4323,8 +4578,13 @@ function arrayFlattenOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayFlattenOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayFlattenOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.arrayFlattenedOnceStrictly.apply( this, arguments );
   return dstArray;
 }
@@ -4446,8 +4706,13 @@ function arrayFlattened( dstArray, src )
 
 //
 
-function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayFlattenedOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result = 0;
   let length = dstArray.length;
   let visited = [];
@@ -4631,8 +4896,13 @@ function arrayFlattenedOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayFlattenedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayFlattenedOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result = 0;
   let visited = [];
 
@@ -4855,8 +5125,13 @@ function arrayFlattenDefined( dstArray, insArray )
 
 //
 
-function arrayFlattenDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayFlattenDefinedOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   if( dstArray === null )
   {
     dstArray = [];
@@ -4869,8 +5144,13 @@ function arrayFlattenDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayFlattenDefinedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayFlattenDefinedOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   arrayFlattenedDefinedOnceStrictly.apply( this, arguments );
   return dstArray;
 }
@@ -5075,8 +5355,13 @@ function arrayFlattenedDefined( dstArray, src )
 
 //
 
-function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
+function arrayFlattenedDefinedOnce( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result = 0;
   let length = dstArray.length;
   let visited = [];
@@ -5273,8 +5558,13 @@ function arrayFlattenedDefinedOnce( dstArray, insArray, evaluator1, evaluator2 )
 
 //
 
-function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, evaluator2 )
+function arrayFlattenedDefinedOnceStrictly( /* dstArray, insArray, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let insArray = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let result = 0;
   let visited = [];
 
@@ -5499,8 +5789,14 @@ function arrayFlattenedDefinedOnceStrictly( dstArray, insArray, evaluator1, eval
 
 //
 
-function arrayReplace( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplace( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   let index = -1;
@@ -5555,16 +5851,28 @@ function arrayReplace( dstArray, ins, sub, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function arrayReplaceOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplaceOnce( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   arrayReplacedOnce.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayReplaceOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplaceOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   let result;
   if( Config.debug )
   {
@@ -5591,8 +5899,14 @@ function arrayReplaceOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplaced( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplaced( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   let index = -1;
@@ -5612,8 +5926,14 @@ function arrayReplaced( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplacedOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplacedOnce( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   if( _.longLike( ins ) )
@@ -5634,10 +5954,15 @@ function arrayReplacedOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplacedOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
-  let result;
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
 
+  let result;
   if( Config.debug )
   {
     result = arrayReplacedOnce.apply( this, arguments );
@@ -5655,8 +5980,14 @@ function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplaceElement( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplaceElement( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   let index = -1;
@@ -5676,16 +6007,28 @@ function arrayReplaceElement( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplaceElementOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplaceElementOnce( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   arrayReplacedElementOnce.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayReplaceElementOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplaceElementOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   let result;
   if( Config.debug )
   {
@@ -5703,8 +6046,14 @@ function arrayReplaceElementOnceStrictly( dstArray, ins, sub, evaluator1, evalua
 
 //
 
-function arrayReplacedElement( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplacedElement( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   let index = -1;
@@ -5724,8 +6073,14 @@ function arrayReplacedElement( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplacedElementOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplacedElementOnce( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   if( _.longLike( ins ) )
@@ -5748,8 +6103,14 @@ function arrayReplacedElementOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplacedElementOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplacedElementOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   let result;
   if( Config.debug )
   {
@@ -5777,24 +6138,42 @@ function arrayReplacedOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplaceArray( dstArray, ins, sub, evaluator1, evaluator2  )
+function arrayReplaceArray( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   arrayReplacedArray.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayReplaceArrayOnce( dstArray, ins, sub, evaluator1, evaluator2  )
+function arrayReplaceArrayOnce( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   arrayReplacedArrayOnce.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
+function arrayReplaceArrayOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   let result;
   if( Config.debug )
   {
@@ -5819,7 +6198,7 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
 }
 
 /*
-function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
+function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2 )
 {
   let result = arrayReplacedArrayOnce.apply( this, arguments );
   _.assert( result === ins.length, '{-dstArray-} should have each element of {-insArray-}' );
@@ -5830,12 +6209,18 @@ function arrayReplaceArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluato
 
 //
 
-function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplacedArray( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longLike( ins ) );
   _.assert( _.longLike( sub ) );
-  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
 
   let result = 0;
   let index = -1;
@@ -5879,11 +6264,17 @@ function arrayReplacedArray( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplacedArrayOnce( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   _.assert( _.longLike( ins ) );
   _.assert( _.longLike( sub ) );
-  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
 
   let index = -1;
@@ -5909,8 +6300,14 @@ function arrayReplacedArrayOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplacedArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
+function arrayReplacedArrayOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   let result;
   if( Config.debug )
   {
@@ -5935,24 +6332,42 @@ function arrayReplacedArrayOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
 
 //
 
-function arrayReplaceArrays( dstArray, ins, sub, evaluator1, evaluator2  )
+function arrayReplaceArrays( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   arrayReplacedArrays.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayReplaceArraysOnce( dstArray, ins, sub, evaluator1, evaluator2  )
+function arrayReplaceArraysOnce( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   arrayReplacedArraysOnce.apply( this, arguments );
   return dstArray;
 }
 
 //
 
-function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
+function arrayReplaceArraysOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   let result;
   if( Config.debug )
   {
@@ -5987,18 +6402,29 @@ function arrayReplaceArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluat
 
 //
 
-function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplacedArrays( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
   _.assert( _.arrayIs( dstArray ), 'arrayReplacedArrays :', 'Expects array' );
   _.assert( _.longLike( sub ), 'arrayReplacedArrays :', 'Expects longLike entity' );
   _.assert( _.longLike( ins ), 'arrayReplacedArrays :', 'Expects longLike entity' );
-  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
 
   let result = 0;
 
-  function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
+  function _replace( /* dstArray, argument, subValue, evaluator1, evaluator2 */ )
   {
+    let dstArray = arguments[ 0 ];
+    let argument = arguments[ 1 ];
+    let subValue = arguments[ 2 ];
+    let evaluator1 = arguments[ 3 ];
+    let evaluator2 = arguments[ 4 ];
     // let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
     let index = _.longLeftIndex( dstArray, argument, evaluator1, evaluator2 );
@@ -6043,7 +6469,7 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
       let subArray = sub[ a ] || subCopy[ a ];
 
       for( let i = 0, len2 = insArray.length; i < len2; i++ )
-      _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
+      _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2 );
     }
     else
     {
@@ -6056,19 +6482,30 @@ function arrayReplacedArrays( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayReplacedArraysOnce( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   _.assert( 3 <= arguments.length && arguments.length <= 5 );
   _.assert( _.arrayIs( dstArray ), 'arrayReplacedArrays :', 'Expects array' );
   _.assert( _.longLike( sub ), 'arrayReplacedArrays :', 'Expects longLike entity' );
   _.assert( _.longLike( ins ), 'arrayReplacedArrays :', 'Expects longLike entity' );
-  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has'  );
+  _.assert( ins.length === sub.length, '{-subArray-} should have the same length {-insArray-} has' );
 
   let result = 0;
   // let oldDstArray = dstArray.slice();  // Array with src values stored
 
-  function _replace( dstArray, argument, subValue, evaluator1, evaluator2  )
+  function _replace( /* dstArray, argument, subValue, evaluator1, evaluator2 */ )
   {
+    let dstArray = arguments[ 0 ];
+    let argument = arguments[ 1 ];
+    let subValue = arguments[ 2 ];
+    let evaluator1 = arguments[ 3 ];
+    let evaluator2 = arguments[ 4 ];
     // let dstArray2 = oldDstArray.slice();
     //let index = dstArray.indexOf( argument );
     // let index = _.longLeftIndex( dstArray2, argument, evaluator1, evaluator2 );
@@ -6090,7 +6527,7 @@ function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
       let subArray = sub[ a ];
 
       for( let i = 0, len2 = insArray.length; i < len2; i++ )
-      _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2   );
+      _replace( dstArray, insArray[ i ], subArray[ i ], evaluator1, evaluator2 );
     }
     else
     {
@@ -6103,8 +6540,14 @@ function arrayReplacedArraysOnce( dstArray, ins, sub, evaluator1, evaluator2 )
 
 //
 
-function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evaluator2  )
+function arrayReplacedArraysOnceStrictly( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   let result;
   if( Config.debug )
   {
@@ -6180,8 +6623,14 @@ function arrayReplacedArraysOnceStrictly( dstArray, ins, sub, evaluator1, evalua
  * @namespace Tools
  */
 
-function arrayUpdate( dstArray, ins, sub, evaluator1, evaluator2 )
+function arrayUpdate( /* dstArray, ins, sub, evaluator1, evaluator2 */ )
 {
+  let dstArray = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let sub = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   let index = arrayReplacedOnce.apply( this, arguments );
 
   if( index === -1 )

@@ -242,10 +242,14 @@ function _longMake_functor( onMake )
 /* aaa : longMake does not create unrolls, but should */
 /* Dmytro : longMake creates unrolls */
 
-let longMake = _longMake_functor( function( src, ins, length, minLength )
+let longMake = _longMake_functor( function( /* src, ins, length, minLength */ )
 {
-  let result;
+  let src = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let length = arguments[ 2 ];
+  let minLength = arguments[ 3 ];
 
+  let result;
   if( _.routineIs( src ) )
   {
     if( ins && ins.length === length )
@@ -495,10 +499,14 @@ function longMakeEmpty( src )
 
 //
 
-let _longMakeOfLength = _longMake_functor( function( src, ins, length, minLength )
+let _longMakeOfLength = _longMake_functor( function( /* src, ins, length, minLength */ )
 {
-  let result;
+  let src = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let length = arguments[ 2 ];
+  let minLength = arguments[ 3 ];
 
+  let result;
   if( _.routineIs( src ) )
   {
     result = new src( length );
@@ -704,10 +712,14 @@ aaa : longMakeUndefined does not create unrolls, but should
 Dmytro : longMakeUndefined creates unrolls.
 */
 
-let longMakeUndefined = _longMake_functor( function( src, ins, length, minLength )
+let longMakeUndefined = _longMake_functor( function( /* src, ins, length, minLength */ )
 {
-  let result;
+  let src = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let length = arguments[ 2 ];
+  let minLength = arguments[ 3 ];
 
+  let result;
   if( _.routineIs( src ) )
   result = new src( length );
   else if( _.unrollIs( src ) )
@@ -781,10 +793,14 @@ let longMakeUndefined = _longMake_functor( function( src, ins, length, minLength
 /* aaa3 : relevant to all routines longMake* of such kind */
 /* Dmytro : all requirements implemented and covered */
 
-let longMakeZeroed = _longMake_functor( function( src, ins, length, minLength )
+let longMakeZeroed = _longMake_functor( function( /* src, ins, length, minLength */ )
 {
-  let result;
+  let src = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let length = arguments[ 2 ];
+  let minLength = arguments[ 3 ];
 
+  let result;
   if( _.routineIs( src ) )
   result = new src( length );
   else if( _.unrollIs( src ) )
@@ -1879,8 +1895,13 @@ function longButInplace( array, range, val )
 
 /* aaa2 : rename arguments. ask */ /* Dmytro : renamed and standardized for each routine */
 
-function longBut_( dst, src, crange, ins )
+function longBut_( /* dst, src, crange, ins */ )
 {
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let crange = arguments[ 2 ];
+  let ins = arguments[ 3 ];
+
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( arguments.length < 4 && dst !== null && dst !== src )
@@ -2591,8 +2612,13 @@ function longGrowInplace( array, range, val )
 
 //
 
-function longGrow_( dst, src, crange, ins )
+function longGrow_( /* dst, src, crange, ins */ )
 {
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let crange = arguments[ 2 ];
+  let ins = arguments[ 3 ];
+
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( arguments.length < 4 && dst !== null && dst !== src )
@@ -2902,8 +2928,13 @@ function longRelengthInplace( array, range, val )
 
 //
 
-function longRelength_( dst, src, crange, ins )
+function longRelength_( /* dst, src, crange, ins */ )
 {
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let crange = arguments[ 2 ];
+  let ins = arguments[ 3 ];
+
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( arguments.length < 4 && dst !== null && dst !== src )
@@ -3098,8 +3129,13 @@ function longIdentical( src1, src2 )
 
 //
 
-function longHas( array, element, evaluator1, evaluator2 )
+function longHas( /* array, element, evaluator1, evaluator2 */ )
 {
+  let array = arguments[ 0 ];
+  let element = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayLike( array ) );
 
@@ -3177,8 +3213,12 @@ function longHas( array, element, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function longHasAny( src, ins, evaluator1, evaluator2 )
+function longHasAny( /* src, ins, evaluator1, evaluator2 */ )
 {
+  let src = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
   _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
@@ -3262,8 +3302,12 @@ function longHasAny( src, ins, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function longHasAll( src, ins, evaluator1, evaluator2 )
+function longHasAll( /* src, ins, evaluator1, evaluator2 */ )
 {
+  let src = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
   _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
@@ -3348,8 +3392,12 @@ function longHasAll( src, ins, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function longHasNone( src, ins, evaluator1, evaluator2 )
+function longHasNone( /* src, ins, evaluator1, evaluator2 */ )
 {
+  let src = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
 
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
   _.assert( _.longLike( src ), `Expects long, but got ${ _.strType( src ) }` );
@@ -3496,11 +3544,16 @@ function longNone( src )
  */
 
 /*
-qqq : are all combinations of call of routine arrayCountElement covered? | Dmytro : yes, all combinations of call is implemented
+aaa : are all combinations of call of routine arrayCountElement covered? | Dmytro : yes, all combinations of call is implemented
 */
 
-function longCountElement( srcArray, element, onEvaluate1, onEvaluate2 )
+function longCountElement( /* srcArray, element, onEvaluate1, onEvaluate2 */ )
 {
+  let srcArray = arguments[ 0 ];
+  let element = arguments[ 1 ];
+  let onEvaluate1 = arguments[ 2 ];
+  let onEvaluate2 = arguments[ 3 ];
+
   let result = 0;
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
