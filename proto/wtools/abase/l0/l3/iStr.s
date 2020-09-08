@@ -1,4 +1,5 @@
-( function _iString_s_() {
+( function _iString_s_()
+{
 
 'use strict';
 
