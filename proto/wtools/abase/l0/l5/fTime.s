@@ -186,11 +186,10 @@ function _periodic( delay, onTime, onCancel )
 
   function _cancel()
   {
-    if( timer.state === 1 )
-    logger.log( 'Timer is canceled when callback {-onTime-} was executing.' );
+    // if( timer.state === 1 )
+    // logger.log( 'Timer is canceled when callback {-onTime-} was executing.' );
     if( timer.state === -1 || timer.state === -2 )
     _.assert( 0, 'Illegal call, timer is canceled.' );
-
     timer.state = -1;
     clearInterval( timer.original );
     try

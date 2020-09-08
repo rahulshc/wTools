@@ -2,10 +2,13 @@ format: outwillfile-2.0
 root:
   - wTools.out
 consistency:
-  ../.ex.will.yml: &ref_0
+  wTools.out.will.yml: &ref_0
+    hash: cd67f1973bd25808d089bccf7572d24d
+    size: 46995
+  ../.ex.will.yml: &ref_1
     hash: 349ff2e8b6504ea27d65b18daa7694d7
     size: 2099
-  ../.im.will.yml: &ref_1
+  ../.im.will.yml: &ref_2
     hash: 35d99250d7149c5ee037134d48a387b7
     size: 5602
 module:
@@ -19,11 +22,11 @@ module:
         in conjunction with another module of such kind.
       enabled: 1
       version: 0.9.0
-      interpreters: &ref_2
+      interpreters:
         - njs >= 10.0.0
         - chrome >= 60.0.0
         - firefox >= 60.0.0
-      keywords: &ref_3
+      keywords:
         - base
         - basic
         - core
@@ -34,14 +37,14 @@ module:
         - generic
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: &ref_4
+      contributors:
         - Kostiantyn Wandalen <wanalen@01.school>
         - Volodymyr M. <volodymyr.migdal@gmail.com>
         - Ihor O. <iostashvxi@gmail.com>
         - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
         - Dmytro Kryvoruchko <dm.vict.kr@gmail.com>
       npm.name: wTools
-      npm.scripts: &ref_5
+      npm.scripts:
         test: wtest .run proto/**
         docgen: wdocgen .build proto
     path:
@@ -208,6 +211,7 @@ module:
           - ../proto/wtools/abase/l0/l5/fBool.s
           - ../proto/wtools/abase/l0/l5/fBuffer.s
           - ../proto/wtools/abase/l0/l5/fContainer.s
+          - ../proto/wtools/abase/l0/l5/fCrange.s
           - ../proto/wtools/abase/l0/l5/fCt.s
           - ../proto/wtools/abase/l0/l5/fEntity.s
           - ../proto/wtools/abase/l0/l5/fErr.s
@@ -215,6 +219,7 @@ module:
           - ../proto/wtools/abase/l0/l5/fFunctional.s
           - ../proto/wtools/abase/l0/l5/fIntrospector.s
           - ../proto/wtools/abase/l0/l5/fLong.s
+          - ../proto/wtools/abase/l0/l5/fLrange.s
           - ../proto/wtools/abase/l0/l5/fMap.s
           - ../proto/wtools/abase/l0/l5/fModule.s
           - ../proto/wtools/abase/l0/l5/fNumber.s
@@ -265,6 +270,7 @@ module:
           - ../proto/wtools/abase/l0/l9/Setup.s
           - ../proto/wtools/abase/l0.test
           - ../proto/wtools/abase/l0.test/Array.test.s
+          - ../proto/wtools/abase/l0.test/Bool.test.s
           - ../proto/wtools/abase/l0.test/Buffer.test.s
           - ../proto/wtools/abase/l0.test/Container.test.s
           - ../proto/wtools/abase/l0.test/ContainerAdapter.test.s
@@ -854,6 +860,24 @@ module:
           content: prime
         inherit:
           - files.transpile
+      exported.proto.export:
+        opts:
+          filePath: 'reflector::exported.proto.export'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
+      exported.files.proto.export:
+        opts:
+          filePath: 'reflector::exported.files.proto.export'
+        criterion:
+          generated: 1
+          content: proto
+          export: 1
+        inherit:
+          - files.reflect
     build:
       proto.export:
         steps:
@@ -964,8 +988,9 @@ module:
           content: proto
           export: 1
     consistency:
-      ../.ex.will.yml: *ref_0
-      ../.im.will.yml: *ref_1
+      wTools.out.will.yml: *ref_0
+      ../.ex.will.yml: *ref_1
+      ../.im.will.yml: *ref_2
   ../:
     about:
       name: wTools
@@ -976,13 +1001,31 @@ module:
         in conjunction with another module of such kind.
       enabled: 1
       version: 0.9.0
-      interpreters: *ref_2
-      keywords: *ref_3
+      interpreters:
+        - njs >= 10.0.0
+        - chrome >= 60.0.0
+        - firefox >= 60.0.0
+      keywords:
+        - base
+        - basic
+        - core
+        - platform
+        - tools
+        - wTools
+        - wBase
+        - generic
       license: MIT
       author: Kostiantyn Wandalen <wanalen@01.school>
-      contributors: *ref_4
+      contributors:
+        - Kostiantyn Wandalen <wanalen@01.school>
+        - Volodymyr M. <volodymyr.migdal@gmail.com>
+        - Ihor O. <iostashvxi@gmail.com>
+        - Pablo Garcimartin <pablogarcimartinruiz@gmail.com>
+        - Dmytro Kryvoruchko <dm.vict.kr@gmail.com>
       npm.name: wTools
-      npm.scripts: *ref_5
+      npm.scripts:
+        test: wtest .run proto/**
+        docgen: wdocgen .build proto
     path:
       module.willfiles:
         criterion:
@@ -1703,3 +1746,4 @@ module:
       ../.im.will.yml:
         hash: 35d99250d7149c5ee037134d48a387b7
         size: 5602
+      wTools.out.will.yml: *ref_0
