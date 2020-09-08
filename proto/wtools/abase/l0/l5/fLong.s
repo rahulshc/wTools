@@ -3647,7 +3647,7 @@ let Extension =
   _longClone,
   longShallowClone,
 
-  longFrom, /* aaa2 : cover please | Dmytro : covered*/
+  longFrom, /* aaa2 : cover please | Dmytro : covered */
   longFromCoercing, /* aaa2 : cover please | Dmytro : covered */
 
   longRepresent, /* qqq2 : review. ask */
