@@ -1,4 +1,4 @@
-( function _fOrange_s_()
+( function _fLrange_s_()
 {
 
 'use strict';
@@ -12,39 +12,39 @@ require( './fRange.s' );
 // checker
 // --
 
-function isEmpty( orange )
+function isEmpty( lrange )
 {
   _.assert( arguments.length === 1 );
-  if( !_.rangeIs( orange ) )
+  if( !_.rangeIs( lrange ) )
   return false;
-  return orange[ 0 ] === orange[ 1 ];
+  return lrange[ 1 ] === 0;
 }
 
 //
 
-function isPopulated( orange )
+function isPopulated( lrange )
 {
   _.assert( arguments.length === 1 );
-  if( !_.rangeIs( orange ) )
+  if( !_.rangeIs( lrange ) )
   return false;
-  return orange[ 0 ] !== orange[ 1 ];
+  return lrange[ 1 ] !== 0;
 }
 
 //
 
-function inInclusive( orange, srcNumber )
+function inInclusive( lrange, srcNumber )
 {
 
   if( _.longIs( srcNumber ) )
   srcNumber = srcNumber.length;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( lrange ) );
   _.assert( _.numberIs( srcNumber ) );
 
-  if( srcNumber < orange[ 0 ] )
+  if( srcNumber < lrange[ 0 ] )
   return false;
-  if( srcNumber >= orange[ 1 ] )
+  if( srcNumber >= lrange[ 0 ] + lrange[ 1 ] )
   return false;
 
   return true;
@@ -52,18 +52,18 @@ function inInclusive( orange, srcNumber )
 
 //
 
-function inExclusive( orange, srcNumber )
+function inExclusive( lrange, srcNumber )
 {
   if( _.longIs( srcNumber ) )
   srcNumber = srcNumber.length;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( lrange ) );
   _.assert( _.numberIs( srcNumber ) );
 
-  if( srcNumber <= orange[ 0 ] )
+  if( srcNumber <= lrange[ 0 ] )
   return false;
-  if( srcNumber > orange[ 1 ] )
+  if( srcNumber > lrange[ 0 ] + lrange[ 1 ] )
   return false;
 
   return true;
@@ -71,18 +71,18 @@ function inExclusive( orange, srcNumber )
 
 //
 
-function inInclusiveLeft( orange, srcNumber )
+function inInclusiveLeft( lrange, srcNumber )
 {
   if( _.longIs( srcNumber ) )
   srcNumber = srcNumber.length;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( lrange ) );
   _.assert( _.numberIs( srcNumber ) );
 
-  if( srcNumber < orange[ 0 ] )
+  if( srcNumber < lrange[ 0 ] )
   return false;
-  if( srcNumber >= orange[ 1 ] )
+  if( srcNumber >= lrange[ 0 ] + lrange[ 1 ] )
   return false;
 
   return true;
@@ -90,18 +90,18 @@ function inInclusiveLeft( orange, srcNumber )
 
 //
 
-function inInclusiveRight( orange, srcNumber )
+function inInclusiveRight( lrange, srcNumber )
 {
   if( _.longIs( srcNumber ) )
   srcNumber = srcNumber.length;
 
   _.assert( arguments.length === 2 );
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( lrange ) );
   _.assert( _.numberIs( srcNumber ) );
 
-  if( srcNumber < orange[ 0 ] )
+  if( srcNumber < lrange[ 0 ] )
   return false;
-  if( srcNumber >= orange[ 1 ] )
+  if( srcNumber >= lrange[ 0 ] + lrange[ 1 ] )
   return false;
 
   return true;
@@ -109,20 +109,20 @@ function inInclusiveRight( orange, srcNumber )
 
 //
 
-function sureInRange( src, orange )
+function sureInRange( src, lrange )
 {
   _.assert( arguments.length >= 2 );
-  let args = _.unrollFrom([ _.orange.in( orange, src ), () => 'Out of orange' + _.rangeToStr( orange ), _.unrollSelect( arguments, 2 ) ]);
+  let args = _.unrollFrom([ _.lrange.in( lrange, src ), () => 'Out of lrange' + _.rangeToStr( lrange ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
 }
 
 //
 
-function assertInRange( src, orange )
+function assertInRange( src, lrange )
 {
   _.assert( arguments.length >= 2 );
-  let args = _.unrollFrom([ _.orange.in( orange, src ), () => 'Out of orange' + _.rangeToStr( orange ), _.unrollSelect( arguments, 2 ) ]);
+  let args = _.unrollFrom([ _.lrange.in( lrange, src ), () => 'Out of lrange' + _.rangeToStr( lrange ), _.unrollSelect( arguments, 2 ) ]);
   _.assert.apply( _, args );
   return true;
 }
@@ -131,33 +131,33 @@ function assertInRange( src, orange )
 // maker
 // --
 
-function fromSingle( orange )
+function fromSingle( lrange )
 {
   _.assert( arguments.length === 1 );
 
-  if( _.numberIs( orange ) )
-  return [ orange, orange + 1 ];
+  if( _.numberIs( lrange ) )
+  return [ lrange, 1 ];
 
-  _.assert( _.longIs( orange ) );
-  _.assert( orange.length === 1 || orange.length === 2 );
+  _.assert( _.longIs( lrange ) );
+  _.assert( lrange.length === 1 || lrange.length === 2 );
 
-  if( orange[ 0 ] === undefined )
+  if( lrange[ 0 ] === undefined )
   {
-    if( orange[ 1 ] === undefined )
+    if( lrange[ 1 ] === undefined )
     return [ 0, 1 ];
 
-    _.assert( _.numberIs( orange[ 1 ] ) );
-    return [ orange[ 1 ] - 1, orange[ 1 ] ];
+    _.assert( lrange[ 1 ] === 1, 'Expects length of 1' );
+    return [ 0, 1 ];
   }
 
-  _.assert( _.numberIs( orange[ 0 ] ) );
+  _.assert( _.numberIs( lrange[ 0 ] ) );
 
-  if( orange[ 1 ] === undefined )
-  return [ orange[ 0 ], orange[ 0 ] + 1 ];
+  if( lrange[ 1 ] === undefined )
+  return [ lrange[ 0 ], 1 ];
 
-  _.assert( _.numberIs( orange[ 1 ] ) );
+  _.assert( _.numberIs( lrange[ 1 ] ) );
 
-  return orange;
+  return lrange;
 }
 
 //
@@ -171,19 +171,19 @@ function clamp( dstRange, clampRange )
   if( _.numberIs( clampRange ) )
   {
     dstRange[ 0 ] = clampRange;
-    dstRange[ 1 ] = clampRange;
+    dstRange[ 1 ] = 0;
   }
   else
   {
     _.assert( _.rangeIs( clampRange ) );
 
-    if( dstRange[ 0 ] < clampRange[ 0 ] )
+    if( dstRange[ 0 ] < 0 )
+    dstRange[ 0 ] = 0;
+    else if( dstRange[ 0 ] > clampRange[ 0 ] )
     dstRange[ 0 ] = clampRange[ 0 ];
-    else if( dstRange[ 0 ] > clampRange[ 1 ] )
-    dstRange[ 0 ] = clampRange[ 1 ];
 
-    if( dstRange[ 1 ] < clampRange[ 0 ] )
-    dstRange[ 1 ] = clampRange[ 0 ];
+    if( dstRange[ 1 ] < 0 )
+    dstRange[ 1 ] = 0;
     else if( dstRange[ 1 ] > clampRange[ 1 ] )
     dstRange[ 1 ] = clampRange[ 1 ];
   }
@@ -193,10 +193,10 @@ function clamp( dstRange, clampRange )
 
 //
 
-function countElements( orange, increment )
+function countElements( lrange, increment )
 {
 
-  _.assert( _.rangeIs( orange ) );
+  _.assert( _.rangeIs( lrange ) );
   _.assert( arguments.length === 1 || arguments.length === 2 );
 
   if( increment === undefined )
@@ -206,7 +206,7 @@ function countElements( orange, increment )
 
   if( increment )
   {
-    let result = ( orange[ 1 ] - orange[ 0 ] ) / increment;
+    let result = lrange[ 1 ] / increment;
     if( result > 0 )
     {
       if( result < 1 )
@@ -226,7 +226,7 @@ function countElements( orange, increment )
 
 //
 
-function lastGet( orange, options )
+function lastGet( lrange, options )
 {
 
   _.assert( arguments.length === 1 || arguments.length === 2 );
@@ -242,16 +242,16 @@ function lastGet( orange, options )
     options.increment = 1;
   }
 
-  if( _.longIs( orange ) )
+  if( _.longIs( lrange ) )
   {
-    _.assert( _.rangeIs( orange ) );
-    return orange[ 1 ] - 1;
+    _.assert( _.rangeIs( lrange ) );
+    return lrange[ 0 ] + lrange[ 1 ] - 1;
   }
-  else if( _.mapIs( orange ) )
+  else if( _.mapIs( lrange ) )
   {
-    return orange.last;
+    return lrange.last;
   }
-  _.assert( 0, 'unexpected type of orange', _.strType( orange ) );
+  _.assert( 0, 'unexpected type of lrange', _.strType( lrange ) );
 
 }
 
@@ -259,7 +259,7 @@ function lastGet( orange, options )
 // define
 // --
 
-class Orange
+class Lrange
 {
   static[ Symbol.hasInstance ]( instance )
   {
@@ -271,12 +271,12 @@ let Handler =
 {
   construct( original, args )
   {
-    return Orange.fromLeft( ... args );
+    return Lrange.fromLeft( ... args );
   }
 };
 
-let Self = new Proxy( Orange, Handler );
-Self.original = Orange;
+let Self = new Proxy( Lrange, Handler );
+Self.original = Lrange;
 
 // --
 // routines
@@ -320,8 +320,8 @@ let Extension =
 //
 
 _.mapSupplement( Self, Extension );
-_.assert( _.orange === undefined );
-_.orange = Self;
+_.assert( _.lrange === undefined );
+_.lrange = Self;
 
 // --
 // export
