@@ -107,6 +107,47 @@ function strQuotePairsNormalize( quote )
 
 //
 
+/**
+ * The routine `strQuoteAnalyze` analyzes source string and quotes within it.
+ * Returns a map with 2 arrays:
+ * ranges - indexes of quotes in a source string,
+ * quotes - types of quotes used in a source string.
+ *
+ * @param { Object } o - Options map.
+ * @param { String } src - Source string to analyze.
+ * @param { String } quote - Quotes to be found in a source string.
+ *
+ * @example
+ * _.strQuoteAnalyze( 'a b c' );
+ * // returns { ranges : [], quotes : [] }
+ *
+ * @example
+ * _.strQuoteAnalyze( '"a b" c' );
+ * // returns { ranges : [ 0, 4 ], quotes : [ '"' ] }
+ *
+ * @example
+ * _.strQuoteAnalyze( '`a `"b c"`' );
+ * // returns { ranges : [ 0, 3, 4, 8 ], quotes : [ '`', '"' ] }
+ *
+ * @example
+ * _.strQuoteAnalyze('""`a `"""b c"``""' );
+ * // returns { ranges : [ 0, 1, 2, 5, 6, 7, 8, 12, 13, 14, 15, 16 ], quotes : [ '"', '`', '"', '"', '`', '"' ] }
+ *
+ * @example
+ * _.strQuoteAnalyze( "a', b'`,c` \"", [ [ '\'', '\'' ], '`' ] )
+ * // returns { ranges : [ 1, 5, 6, 9 ], quotes : [ "'", "`" ] }
+ *
+ * @example
+ * _.strQuoteAnalyze( "--aa-- --bb--``''\"\",,cc,,", '--' )
+ * // returns { ranges : [ 0, 4, 7, 11 ], quotes : [ '--', '--' ] }
+ *
+ * @returns { Object } Returns a map with 2 arrays: ranges, quotes.
+ * @throws { Exception } If redundant arguments are provided.
+ * @throws { Exception } If ( arguments.length ) is not equal 1 or 2.
+ * @function strQuoteAnalyze
+ * @namespace Tools
+ */
+
 function strQuoteAnalyze( o )
 {
   let i = -1;
