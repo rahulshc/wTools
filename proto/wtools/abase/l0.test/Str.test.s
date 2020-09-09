@@ -2267,6 +2267,90 @@ function strPrimitive( test )
 
 //
 
+function strType( test )
+{
+  test.case = 'undefined';
+  var src = undefined;
+  var expected = 'Undefined';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var src = null;
+  var expected = 'Null';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'number int';
+  var src = 13;
+  var expected = 'Number';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'number NaN';
+  var src = 13;
+  var expected = 'Number';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'number Infinity';
+  var src = Infinity;
+  var expected = 'Number';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'boolean';
+  var src = false;
+  var expected = 'Boolean';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var src = 'abc';
+  var expected = 'String';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'object';
+  var src = { a : 1, b : 2, c : 3 };
+  var expected = 'Object';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'array';
+  var src = [ 1, 2, 3 ];
+  var expected = 'Array';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'function';
+  var src = function a(){};
+  var expected = 'Function';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'symbol';
+  var src = Symbol( 'id' );
+  var expected = 'Symbol';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'map';
+  var src = new Map();
+  var expected = 'HashMap';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'set';
+  var src = new Set();
+  var expected = 'Set';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+}
+
+//
+
 function strQuote( test )
 {
   test.open( 'default quote' );
@@ -16670,6 +16754,7 @@ var Self =
 
     strShort,
     strPrimitive,
+    strType,
 
     strQuote,
     strUnquote,
