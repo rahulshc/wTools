@@ -5651,6 +5651,64 @@ function strReplaceEnd( test )
   test.shouldThrowErrorSync( () => _.strReplaceEnd( null, null ) );
 }
 
+function strSplitsUngroupedJoin( test )
+{
+
+  test.case = 'empty array';
+  var got = _.strSplitsUngroupedJoin( [] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.case = 'array of empty string';
+  var got = _.strSplitsUngroupedJoin( [ '' ] );
+  var expected = [ '' ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ \'abc\' ]';
+  var got = _.strSplitsUngroupedJoin( [ 'abc' ] );
+  var expected = [ 'abc' ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ \'abc\', \'bca\', \'cab\' ]';
+  var got = _.strSplitsUngroupedJoin( [ 'abc', 'bca', 'cab' ] );
+  var expected = [ 'abcbcacab' ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ 2 ]';
+  var got = _.strSplitsUngroupedJoin( [ 2 ] );
+  var expected = [ 2 ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ \'a\', \'b\', \'c\', 1 ]';
+  var got = _.strSplitsUngroupedJoin( [ 'a', 'b', 'c', 1 ] );
+  var expected = [ 'abc', 1 ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ \'a\', \'b\', 1, \'c\' ]';
+  var got = _.strSplitsUngroupedJoin( [ 'a', 'b', 1, 'c' ] );
+  var expected = [ 'ab', 1, 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ \'a\', \'b\', 1, \'c\', null, \'d\', \'e\', \'f\' ]';
+  var got = _.strSplitsUngroupedJoin( [ 'a', 'b', 1, 'c', null, 'd', 'e', 'f' ] );
+  var expected = [ 'ab', 1, 'c', null, 'def' ];
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strSplitsUngroupedJoin() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strSplitsUngroupedJoin( { splits : [ 'a', 'b' ], a : 1 } ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.strSplitsUngroupedJoin( '' ) );
+}
+
 //
 
 function strReplaceSrcIsString( test )
@@ -16769,6 +16827,7 @@ var Self =
 
     strReplaceBegin,
     strReplaceEnd,
+    strSplitsUngroupedJoin,
 
     strReplaceSrcIsString,
     strReplaceSrcIsArrayOfStrings,
