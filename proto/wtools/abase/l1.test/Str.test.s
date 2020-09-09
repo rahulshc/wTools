@@ -2605,6 +2605,69 @@ function strDecapitalize( test )
 
 //
 
+function strDesign( test )
+{
+  test.case = 'src = \'\'';
+  var got = _.strDesign( '' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src = a';
+  var got = _.strDesign( 'a' );
+  var expected = 'a';
+  test.identical( got, expected );
+
+  test.case = 'src = wa';
+  var got = _.strDesign( 'wa' );
+  var expected = 'wa';
+  test.identical( got, expected );
+
+  test.case = 'src = w123';
+  var got = _.strDesign( 'w123' );
+  var expected = 'w123';
+  test.identical( got, expected );
+
+  test.case = 'src = wA';
+  var got = _.strDesign( 'wA' );
+  var expected = 'A';
+  test.identical( got, expected );
+
+  test.case = 'src = wTools';
+  var got = _.strDesign( 'wTools' );
+  var expected = 'Tools';
+  test.identical( got, expected );
+
+  test.case = 'src = Module wTools';
+  var got = _.strDesign( 'Module wTools' );
+  var expected = 'Module wTools';
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDecapitalize( 777 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDecapitalize();
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDecapitalize( 'object', 'redundant argument' );
+  } );
+}
+
+//
+
 function strUnicodeEscape( test )
 {
 
@@ -10251,6 +10314,7 @@ let Self =
 
     strCapitalize,
     strDecapitalize,
+    strDesign,
     strUnicodeEscape,
 
     // stripper

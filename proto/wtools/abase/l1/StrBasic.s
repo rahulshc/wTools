@@ -1378,6 +1378,34 @@ function strSign( prefix, src )
 
 //
 
+/**
+ * The routine `strDesign` removes 'w' character if it's placed before uppercase letter in a source string.
+ * @param { String } src - Source string.
+ * @returns { String } Returns string with removed 'w' character.
+ *
+ * @example
+ * _.strDesign( 'wa' );
+ * // returns 'wa'
+ *
+ * @example
+ * _.strDesign( 'wTools' );
+ * // returns 'Tools'
+ *
+ * @example
+ * _.strDesign( 'w123 );
+ * // returns 'w123'
+ *
+ * @example
+ * _.strDesign( '' );
+ * // returns ''
+ *
+ * @method strDesign
+ * @throws { Exception } If( src ) is not a String.
+ * @throws { Exception } If( arguments.length ) is not equal to 1.
+ * @namespace Tools
+ *
+ */
+
 function strDesign( src )
 {
   _.assert( _.strIs( src ) );
