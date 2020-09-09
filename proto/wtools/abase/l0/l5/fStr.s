@@ -2697,7 +2697,7 @@ let Extension =
   strQuote,
   strUnquote,
   strQuotePairsNormalize, /* qqq : analyze and write good jsdoc */
-  strQuoteAnalyze, /* qqq : analyze and write good jsdoc */
+  strQuoteAnalyze, /* qqq : analyze and write good jsdoc | aaa : Done. Yevhen S. */
 
   // splitter
 
