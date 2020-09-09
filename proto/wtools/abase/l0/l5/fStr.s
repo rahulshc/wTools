@@ -2792,7 +2792,7 @@ let Extension =
   // split
 
   strSplitsCoupledGroup,
-  strSplitsUngroupedJoin, /* qqq : light coverage required */
+  strSplitsUngroupedJoin, /* qqq : light coverage required | aaa : Done. Yevhen S. */
   strSplitsQuotedRejoin, /* qqq : light coverage required */
   strSplitsDropDelimeters, /* qqq : light coverage required */
   strSplitsStrip,

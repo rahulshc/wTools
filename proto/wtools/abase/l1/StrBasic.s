@@ -1328,6 +1328,28 @@ function strCapitalize( src )
 
 //
 
+/**
+ * The routine `strDecapitalize` returns string with first letter converted to lower case.
+ * Expects one object: the string to be formatted.
+ *
+ * @param {string} src - Source string.
+ * @returns {String} Returns a string with the first letter lowercased.
+ *
+ * @example
+ * _.strCapitalize( 'Test string' );
+ * // returns test string
+ *
+ * @example
+ * _.strCapitalize( 'Another_test_string' );
+ * // returns another_test_string
+ *
+ * @method strDecapitalize
+ * @throws { Exception } Throw an exception if( src ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @namespace Tools
+ *
+ */
+
 function strDecapitalize( src )
 {
   _.assert( _.strIs( src ) );
@@ -5500,9 +5522,9 @@ let Proto =
   // transformer
 
   strCapitalize,
-  strDecapitalize, /* qqq : cover and jsdoc */
+  strDecapitalize, /* qqq : cover and jsdoc | aaa : Done. Yevhen S. */
   strSign, /* qqq : cover and jsdoc */
-  strDesign,/* qqq : cover and jsdoc */
+  strDesign, /* qqq : cover and jsdoc */
   strEscape,
   strCodeUnicodeEscape, /* Dmytro : extended documentation */
   strUnicodeEscape, /* aaa : document me */ /* Dmytro : documented */

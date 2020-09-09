@@ -2550,6 +2550,61 @@ function strCapitalize( test )
 
 //
 
+function strDecapitalize( test )
+{
+
+  test.case = 'empty string';
+  var got = _.strDecapitalize( '' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'single word';
+  var got = _.strDecapitalize( 'One' );
+  var expected = 'one';
+  test.identical( got, expected );
+
+  test.case = 'two words';
+  var got = _.strDecapitalize( 'One two' );
+  var expected = 'one two';
+  test.identical( got, expected );
+
+  test.case = 'two words, first letter is lowercase';
+  var got = _.strDecapitalize( 'one two' );
+  var expected = 'one two';
+  test.identical( got, expected );
+
+  test.case = 'string number';
+  var got = _.strDecapitalize( '1' );
+  var expected = '1';
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDecapitalize( 777 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDecapitalize();
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDecapitalize( 'object', 'redundant argument' );
+  } );
+
+}
+
+//
+
 function strUnicodeEscape( test )
 {
 
@@ -10195,6 +10250,7 @@ let Self =
     // transformer
 
     strCapitalize,
+    strDecapitalize,
     strUnicodeEscape,
 
     // stripper
