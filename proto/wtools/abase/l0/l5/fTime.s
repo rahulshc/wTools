@@ -313,8 +313,13 @@ let soon = typeof process === 'undefined' ? function( h ){ return setTimeout( h,
 
 //
 
-function begin( delay, procedure, onTime, onCancel )
+function begin( /* delay, procedure, onTime, onCancel */ )
 {
+  let delay = arguments[ 0 ];
+  let procedure = arguments[ 1 ];
+  let onTime = arguments[ 2 ];
+  let onCancel = arguments[ 3 ];
+
   if( !_.procedureIs( procedure ) )
   {
     onTime = arguments[ 1 ];
@@ -337,8 +342,13 @@ function finally_( delay, procedure, onTime )
 
 //
 
-function periodic( delay, procedure, onTime, onCancel )
+function periodic( /* delay, procedure, onTime, onCancel */ )
 {
+  let delay = arguments[ 0 ];
+  let procedure = arguments[ 1 ];
+  let onTime = arguments[ 2 ];
+  let onCancel = arguments[ 3 ];
+
   if( !_.procedureIs( procedure ) )
   {
     onTime = arguments[ 1 ];
