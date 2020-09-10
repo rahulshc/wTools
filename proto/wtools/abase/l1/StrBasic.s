@@ -5623,8 +5623,8 @@ let Proto =
 
   strCapitalize,
   strDecapitalize, /* qqq : cover and jsdoc | aaa : Done. Yevhen S. */
-  strSign, /* qqq : cover and jsdoc */
-  strDesign, /* qqq : cover and jsdoc */
+  strSign, /* qqq : cover and jsdoc | aaa : Done. Yevhen S. */
+  strDesign, /* qqq : cover and jsdoc | aaa : Done. Yevhen S. */
   strIsSigned,
   strEscape,
   strCodeUnicodeEscape, /* Dmytro : extended documentation */
