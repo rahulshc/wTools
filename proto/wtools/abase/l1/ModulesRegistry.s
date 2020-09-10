@@ -292,7 +292,7 @@ let wGdf =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Gdf },
 }
 
-let wgraphbasic =
+let wGraphBasic =
 {
   sourcePath : sourcePath( 'amid/l1/graphBasic/IncludeTop.s', 'wgraphbasic' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.graph && !!_global.wTools.graph.AbstractGraphSystem },
@@ -816,7 +816,7 @@ let Modules =
   // mid / l1
 
   wGdf,
-  wgraphbasic,
+  wGraphBasic,
   wGraphTools,
   wRegexpObject,
   wVocabulary,
