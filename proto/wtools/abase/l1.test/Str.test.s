@@ -2605,41 +2605,37 @@ function strDecapitalize( test )
 
 //
 
-function strDesign( test )
+function strSignBasic( test )
 {
-  test.case = 'src = \'\'';
-  var got = _.strDesign( '' );
-  var expected = '';
+
+  test.case = 'src = A';
+  var got = _.strSign( 'A' );
+  var expected = 'wA';
   test.identical( got, expected );
 
-  test.case = 'src = a';
-  var got = _.strDesign( 'a' );
-  var expected = 'a';
+  test.case = 'src = Tools';
+  var got = _.strSign( 'Tools' );
+  var expected = 'wTools';
   test.identical( got, expected );
 
-  test.case = 'src = wa';
-  var got = _.strDesign( 'wa' );
-  var expected = 'wa';
-  test.identical( got, expected );
-
-  test.case = 'src = w123';
-  var got = _.strDesign( 'w123' );
-  var expected = 'w123';
-  test.identical( got, expected );
-
-  test.case = 'src = wA';
-  var got = _.strDesign( 'wA' );
-  var expected = 'A';
-  test.identical( got, expected );
-
-  test.case = 'src = wTools';
-  var got = _.strDesign( 'wTools' );
-  var expected = 'Tools';
+  test.case = 'src = tools';
+  var got = _.strSign( 'tools' );
+  var expected = 'wTools';
   test.identical( got, expected );
 
   test.case = 'src = Module wTools';
-  var got = _.strDesign( 'Module wTools' );
-  var expected = 'Module wTools';
+  var got = _.strSign( 'Module wTools' );
+  var expected = 'wModule wTools';
+  test.identical( got, expected );
+
+  test.case = 'src = w';
+  var got = _.strSign( 'w' );
+  var expected = 'wW';
+  test.identical( got, expected );
+
+  test.case = 'src = W';
+  var got = _.strSign( 'W' );
+  var expected = 'wW';
   test.identical( got, expected );
 
   /* - */
@@ -2650,20 +2646,206 @@ function strDesign( test )
   test.case = 'wrong type of argument';
   test.shouldThrowErrorSync( function()
   {
-    _.strDecapitalize( 777 );
+    _.strSign( 777 );
   });
 
   test.case = 'no arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.strDecapitalize();
+    _.strSign();
   } );
 
   test.case = 'too many arguments';
   test.shouldThrowErrorSync( function()
   {
-    _.strDecapitalize( 'object', 'redundant argument' );
+    _.strSign( 'Object', 'w', 1 );
   } );
+
+  test.case = 'Signed string';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSign( 'wObject', 'w' );
+  } );
+
+  test.case = 'prefix.length > 1';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSign( 'Object', 'wa' );
+  } );
+}
+
+
+//
+
+function strDesignBasic( test )
+{
+  test.case = 'src = wA';
+  var got = _.strDesign( 'wA' );
+  var expected = 'A';
+  test.identical( got, expected );
+
+  test.case = 'src = wTools';
+  var got = _.strDesign( 'wTools' );
+  var expected = 'Tools';
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDesign( 777 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDesign();
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDesign( 'wObject', 'w', 1 );
+  } );
+
+  test.case = 'Not signed string';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDesign( 'Object', 'w' );
+  } );
+
+  test.case = 'prefix.length > 1';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDesign( 'Object', 'wa' );
+  } );
+}
+
+//
+
+function strIsSignedBasic( test )
+{
+  test.open( 'signed' )
+
+  test.case = 'src = wA';
+  var got = _.strIsSigned( 'wA' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = wTools';
+  var got = _.strIsSigned( 'wTools' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = wModule wTools';
+  var got = _.strIsSigned( 'wModule wTools' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = wW';
+  var got = _.strIsSigned( 'wW' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'signed' )
+
+  /* - */
+
+  test.open( 'unsigned' )
+
+  test.case = 'src = A';
+  var got = _.strIsSigned( 'A' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = Tools';
+  var got = _.strIsSigned( 'Tools' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = wtools';
+  var got = _.strIsSigned( 'wtools' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = Module wTools';
+  var got = _.strIsSigned( 'Module wTools' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = w';
+  var got = _.strIsSigned( 'w' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = W';
+  var got = _.strIsSigned( 'W' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.close( 'unsigned' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strIsSigned( 777 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strIsSigned();
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strIsSigned( 'Object', 'w', 1 );
+  } );
+
+  test.case = 'prefix.length > 1';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strIsSigned( 'Object', 'wa' );
+  } );
+
+}
+
+//
+
+function strSignOptionPrefix( test )
+{
+
+}
+
+//
+
+function strDesignOptionPrefix( test )
+{
+
+}
+
+//
+
+function strIsSignedOptionPrefix( test )
+{
+
+}
+
+//
+
+function strSignDesign( test )
+{
+
 }
 
 //
@@ -10314,7 +10496,14 @@ let Self =
 
     strCapitalize,
     strDecapitalize,
-    strDesign,
+    strSignBasic,
+    strDesignBasic,
+    strIsSignedBasic,
+    // strSignOptionPrefix,
+    // strDesignOptionPrefix,
+    // strIsSignedOptionPrefix,
+    // strSignDesign,
+
     strUnicodeEscape,
 
     // stripper

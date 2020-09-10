@@ -1363,61 +1363,137 @@ function strDecapitalize( src )
 
 //
 
-function strSign( prefix, src )
+/**
+ * The routine `strSign` adds {- prefix -} to a source string.
+ * @param { String } src - Source string.
+ * @param { String } prefix - String to be added.
+ * @returns { String } Returns string with added {- prefix -} character.
+ *
+ * @example
+ * _.strSign( 'a' );
+ * // returns 'wA'
+ *
+ * @example
+ * _.strSign( 'Tools' );
+ * // returns 'wTools'
+ *
+ * @example
+ * _.strSign( 'A', 'q' );
+ * // returns 'qA'
+ *
+ * @method strSign
+ * @throws { Exception } If( src ) is not a String.
+ * @throws { Exception } If( arguments.length ) is not equal to 1.
+ * @throws { Exception } If( {- prefix -}.length ) is not equal to 1.
+ * @namespace Tools
+ *
+ */
+
+function strSign( src, prefix )
 {
-  _.assert( _.strIs( src ) );
-  _.assert( arguments.length === 2 );
+  _.assert( _.strIs( src ) && src.length > 0, '{- src -} must be non empty string');
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
+
+  if( !prefix )
+  prefix = 'w';
+
   _.assert( prefix.length === 1 );
-  _.assert( prefix.toUpperCase() === prefix );
+  _.assert( !_.strIsSigned( src, prefix ), 'Expects signed string' );
 
-  let result = _.strDesign( src );
-  result[ 0 ] = result[ 0 ].toUpperCase();
-
-  return result;
+  return prefix + src[ 0 ].toUpperCase() + src.substring( 1 );
 }
 
 //
 
 /**
- * The routine `strDesign` removes 'w' character if it's placed before uppercase letter in a source string.
+ * The routine `strDesign` removes {- prefix -} character if it's placed before uppercase letter in a source string.
  * @param { String } src - Source string.
- * @returns { String } Returns string with removed 'w' character.
+ * @param { String } prefix - String to be removed.
+ * @returns { String } Returns string with removed {- prefix -} character.
  *
  * @example
- * _.strDesign( 'wa' );
- * // returns 'wa'
+ * _.strDesign( 'wA' );
+ * // returns 'A'
  *
  * @example
  * _.strDesign( 'wTools' );
  * // returns 'Tools'
  *
  * @example
- * _.strDesign( 'w123 );
- * // returns 'w123'
- *
- * @example
- * _.strDesign( '' );
- * // returns ''
+ * _.strDesign( 'qA', 'q' );
+ * // returns 'A'
  *
  * @method strDesign
  * @throws { Exception } If( src ) is not a String.
  * @throws { Exception } If( arguments.length ) is not equal to 1.
+ * @throws { Exception } If( {- prefix -}.length ) is not equal to 1.
  * @namespace Tools
  *
  */
 
-function strDesign( src )
+function strDesign( src, prefix )
 {
-  _.assert( _.strIs( src ) );
-  _.assert( arguments.length === 1, 'Expects single argument' );
+  _.assert( _.strIs( src ) && src.length > 0, '{- src -} must be non empty string');
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
+
+  if( !prefix )
+  prefix = 'w';
+
+  _.assert( prefix.length === 1 );
+  _.assert( _.strIsSigned( src, prefix ), 'Expects signed string' );
 
   let result = src;
-  if( /^w[A-Z]/.test( result ) )
+  let regexp = new RegExp( `^${prefix}[A-Z]` );
+  if( regexp.test( result ) )
   result = result.substring( 1 );
   return result;
 }
 
 //
+
+/**
+ * The routine `strIsSigned` checks a source string to be signed.
+ * @param { String } src - Source string.
+ * @param { String } prefix - string to be checked.
+ * @returns { String } Returns true if string has {- prefix -} as the first character and a capital letter as the second, otherwise - returns false
+ *
+ * @example
+ * _.strIsSigned( 'wa' );
+ * // returns false
+ *
+ * @example
+ * _.strIsSigned( 'wTools' );
+ * // returns true
+ *
+ * @example
+ * _.strIsSigned( 'w123' );
+ * // returns false
+ *
+ * @example
+ * _.strIsSigned( 'qA', 'q' );
+ * // returns true
+ *
+ * @method strIsSigned
+ * @throws { Exception } If( src ) is not a String.
+ * @throws { Exception } If( arguments.length ) is not equal to 1.
+ * @throws { Exception } If( {- prefix -}.length ) is not equal to 1.
+ * @namespace Tools
+ *
+ */
+
+function strIsSigned( src, prefix )
+{
+  _.assert( _.strIs( src ) && src.length > 0, '{- src -} must be non empty string');
+  _.assert( arguments.length === 1 || arguments.length === 2, 'Expects one or two arguments' );
+
+  if( !prefix )
+  prefix = 'w';
+
+  _.assert( prefix.length === 1 );
+
+  return new RegExp( `^${prefix}[A-Z]` ).test( src );
+
+}
 
 /**
  * Disables escaped characters in source string( src ).
@@ -5553,6 +5629,7 @@ let Proto =
   strDecapitalize, /* qqq : cover and jsdoc | aaa : Done. Yevhen S. */
   strSign, /* qqq : cover and jsdoc */
   strDesign, /* qqq : cover and jsdoc */
+  strIsSigned,
   strEscape,
   strCodeUnicodeEscape, /* Dmytro : extended documentation */
   strUnicodeEscape, /* aaa : document me */ /* Dmytro : documented */
