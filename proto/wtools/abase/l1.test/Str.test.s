@@ -2751,11 +2751,16 @@ function strIsSignedBasic( test )
   var expected = true;
   test.identical( got, expected );
 
+  test.case = 'src = w123';
+  var got = _.strIsSigned( 'w123' );
+  var expected = true;
+  test.identical( got, expected );
+
   test.close( 'signed' )
 
   /* - */
 
-  test.open( 'unsigned' )
+  test.open( 'not signed' )
 
   test.case = 'src = A';
   var got = _.strIsSigned( 'A' );
@@ -2787,7 +2792,7 @@ function strIsSignedBasic( test )
   var expected = false;
   test.identical( got, expected );
 
-  test.close( 'unsigned' )
+  test.close( 'not signed' )
 
   /* - */
 
@@ -2824,13 +2829,65 @@ function strIsSignedBasic( test )
 
 function strSignOptionPrefix( test )
 {
+  test.case = 'src = A, prefix = w';
+  var got = _.strSign( 'A', 'w' );
+  var expected = 'wA';
+  test.identical( got, expected );
 
+  test.case = 'src = Tools, prefix = a';
+  var got = _.strSign( 'Tools', 'a' );
+  var expected = 'aTools';
+  test.identical( got, expected );
+
+  test.case = 'src = wtools, prefix = \'2\'';
+  var got = _.strSign( 'wtools', '2' );
+  var expected = '2Wtools';
+  test.identical( got, expected );
+
+  test.case = 'src = module wTools, prefix = r';
+  var got = _.strSign( 'module wTools', 'r' );
+  var expected = 'rModule wTools';
+  test.identical( got, expected );
+
+  test.case = 'src = a, prefix = a';
+  var got = _.strSign( 'a', 'a' );
+  var expected = 'aA';
+  test.identical( got, expected );
+
+  test.case = 'src = W, prefix = q';
+  var got = _.strSign( 'W', 'q' );
+  var expected = 'qW';
+  test.identical( got, expected );
+
+  test.case = 'src = 2be, prefix = q';
+  var got = _.strSign( '2be', 'q' );
+  var expected = 'q2be';
+  test.identical( got, expected );
 }
 
 //
 
 function strDesignOptionPrefix( test )
 {
+  test.case = 'src = wA, prefix = w';
+  var got = _.strDesign( 'wA', 'w' );
+  var expected = 'A';
+  test.identical( got, expected );
+
+  test.case = 'src = Tools, prefix = a';
+  var got = _.strDesign( 'aTools', 'a' );
+  var expected = 'Tools';
+  test.identical( got, expected );
+
+  test.case = 'src = wtools, prefix = \'2\'';
+  var got = _.strDesign( '2Wtools', '2' );
+  var expected = 'Wtools';
+  test.identical( got, expected );
+
+  test.case = 'src = rModule wTools, prefix = r';
+  var got = _.strDesign( 'rModule wTools', 'r' );
+  var expected = 'Module wTools';
+  test.identical( got, expected );
 
 }
 
@@ -2838,14 +2895,125 @@ function strDesignOptionPrefix( test )
 
 function strIsSignedOptionPrefix( test )
 {
+  test.open( 'signed' );
 
+  test.case = 'src = wA, prefix = w';
+  var got = _.strIsSigned( 'wA', 'w' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = aTools, prefix = a';
+  var got = _.strIsSigned( 'aTools', 'a' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = 2Wtools, prefix = \'2\'';
+  var got = _.strIsSigned( '2Wtools', '2' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = rModule wTools, prefix = r';
+  var got = _.strIsSigned( 'rModule wTools', 'r' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = qW, prefix = q';
+  var got = _.strIsSigned( 'qW', 'q' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'signed' );
+
+  /* - */
+
+  test.open( 'not signed' );
+
+  test.case = 'src = A, prefix = w';
+  var got = _.strIsSigned( 'A', 'w' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = Tools, prefix = a';
+  var got = _.strIsSigned( 'Tools', 'a' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = wtools, prefix = \'2\'';
+  var got = _.strIsSigned( 'wtools', '2' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = module wTools, prefix = r';
+  var got = _.strIsSigned( 'module wTools', 'r' );
+  var expected =  false;
+  test.identical( got, expected );
+
+  test.case = 'src = module wTools, prefix = m';
+  var got = _.strIsSigned( 'module wTools', 'm' );
+  var expected =  false;
+  test.identical( got, expected );
+
+  test.case = 'src = a, prefix = a';
+  var got = _.strIsSigned( 'a', 'a' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = 2be, prefix = q';
+  var got = _.strIsSigned( 'wTools', 'q' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.close( 'not signed' );
 }
 
 //
 
-function strSignDesign( test )
+function strSignDesignCombination( test )
 {
+  test.open( 'sign then design' );
 
+  test.case = 'src = Tools';
+  var src = 'Tools';
+  var gotSigned = _.strSign( src );
+  var gotDesigned = _.strDesign( gotSigned );
+  test.identical( gotSigned, 'wTools' );
+  test.identical( gotDesigned, src );
+
+  test.case = 'src = tools';
+  var src = 'tools';
+  var gotSigned = _.strSign( src );
+  var gotDesigned = _.strDesign( gotSigned );
+  test.identical( gotSigned, 'wTools' );
+  test.identical( gotDesigned, 'Tools' );
+
+  test.case = 'src = 123';
+  var src = '123';
+  var gotSigned = _.strSign( src );
+  var gotDesigned = _.strDesign( gotSigned );
+  test.identical( gotSigned, 'w123' );
+  test.identical( gotDesigned, src );
+
+  test.close( 'sign then design' );
+
+  /* - */
+
+  test.open( 'design then sign' );
+
+  test.case = 'src = wTools';
+  var src = 'wTools';
+  var gotDesigned = _.strDesign( src );
+  var gotSigned = _.strSign( gotDesigned );
+  test.identical( gotSigned, src );
+  test.identical( gotDesigned, 'Tools' );
+
+  test.case = 'src = w123';
+  var src = 'w123';
+  var gotDesigned = _.strDesign( src );
+  var gotSigned = _.strSign( gotDesigned );
+  test.identical( gotSigned, src );
+  test.identical( gotDesigned, '123' );
+
+  test.close( 'design then sign' );
 }
 
 //
@@ -10499,10 +10667,10 @@ let Self =
     strSignBasic,
     strDesignBasic,
     strIsSignedBasic,
-    // strSignOptionPrefix,
-    // strDesignOptionPrefix,
-    // strIsSignedOptionPrefix,
-    // strSignDesign,
+    strSignOptionPrefix,
+    strDesignOptionPrefix,
+    strIsSignedOptionPrefix,
+    strSignDesignCombination,
 
     strUnicodeEscape,
 

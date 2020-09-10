@@ -1398,7 +1398,7 @@ function strSign( src, prefix )
   prefix = 'w';
 
   _.assert( prefix.length === 1 );
-  _.assert( !_.strIsSigned( src, prefix ), 'Expects signed string' );
+  _.assert( !_.strIsSigned( src, prefix ), 'Expects not signed string' );
 
   return prefix + src[ 0 ].toUpperCase() + src.substring( 1 );
 }
@@ -1442,11 +1442,7 @@ function strDesign( src, prefix )
   _.assert( prefix.length === 1 );
   _.assert( _.strIsSigned( src, prefix ), 'Expects signed string' );
 
-  let result = src;
-  let regexp = new RegExp( `^${prefix}[A-Z]` );
-  if( regexp.test( result ) )
-  result = result.substring( 1 );
-  return result;
+  return src.substring( 1 );
 }
 
 //
@@ -1491,7 +1487,7 @@ function strIsSigned( src, prefix )
 
   _.assert( prefix.length === 1 );
 
-  return new RegExp( `^${prefix}[A-Z]` ).test( src );
+  return new RegExp( `^${prefix}[A-Z0-9]` ).test( src );
 
 }
 
