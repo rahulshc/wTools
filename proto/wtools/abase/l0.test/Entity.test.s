@@ -2907,6 +2907,300 @@ function iterableIs( test )
 
 //
 
+function hasMethodIterator( test )
+{
+  test.case = 'without argument';
+  var got = _.hasMethodIterator();
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'undefined';
+  var got = _.hasMethodIterator( undefined );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.hasMethodIterator( null );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'false';
+  var got = _.hasMethodIterator( false );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.hasMethodIterator( '' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'zero';
+  var got = _.hasMethodIterator( 0 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'NaN';
+  var got = _.hasMethodIterator( NaN );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a boolean';
+  var got = _.hasMethodIterator( true );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a number';
+  var got = _.hasMethodIterator( 13 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a function';
+  var got = _.hasMethodIterator( function() {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'constructor';
+  var Constr = constr;
+  function constr( x )
+  {
+    this.x = x;
+    return this;
+  }
+  var got = _.hasMethodIterator( new Constr( 0 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a string';
+  var got = _.hasMethodIterator( 'str' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an array';
+  var got = _.hasMethodIterator( [] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an unroll';
+  var got = _.hasMethodIterator( _.unrollMake( [ 1 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an argumentsArray';
+  var got = _.hasMethodIterator( _.argumentsArrayMake( [ 1 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw';
+  var got = _.hasMethodIterator( new BufferRaw( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferView';
+  var got = _.hasMethodIterator( new BufferView( new BufferRaw( 5 ) ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped';
+  var got = _.hasMethodIterator( new U8x( 5 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'BufferNode';
+    let got = _.hasMethodIterator( BufferNode.alloc( 5 ) );
+    let expected = true;
+    test.identical( got, expected );
+  }
+
+  test.case = 'Set';
+  var got = _.hasMethodIterator( new Set( [ 5 ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'Map';
+  var got = _.hasMethodIterator( new Map( [ [ 1, 2 ] ] ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'pure empty map';
+  var got = _.hasMethodIterator( Object.create( null ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.x = 1;
+  var got = _.hasMethodIterator( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'map from pure map';
+  var src = Object.create( Object.create( null ) );
+  var got = _.hasMethodIterator( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an empty object';
+  var got = _.hasMethodIterator( {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an object';
+  var got = _.hasMethodIterator( { a : 7, b : 13 } );
+  var expected = false;
+  test.identical( got, expected );
+}
+
+//
+
+function hasMethodEqualer( test )
+{
+  test.case = 'without argument';
+  var got = _.hasMethodEqualer();
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'undefined';
+  var got = _.hasMethodEqualer( undefined );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.hasMethodEqualer( null );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'false';
+  var got = _.hasMethodEqualer( false );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'empty string';
+  var got = _.hasMethodEqualer( '' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'zero';
+  var got = _.hasMethodEqualer( 0 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'NaN';
+  var got = _.hasMethodEqualer( NaN );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a boolean';
+  var got = _.hasMethodEqualer( true );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a number';
+  var got = _.hasMethodEqualer( 13 );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a function';
+  var got = _.hasMethodEqualer( function() {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'constructor';
+  var Constr = constr;
+  function constr( x )
+  {
+    this.x = x;
+    return this;
+  }
+  var got = _.hasMethodEqualer( new Constr( 0 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'a string';
+  var got = _.hasMethodEqualer( 'str' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an array';
+  var got = _.hasMethodEqualer( [] );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an unroll';
+  var got = _.hasMethodEqualer( _.unrollMake( [ 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an argumentsArray';
+  var got = _.hasMethodEqualer( _.argumentsArrayMake( [ 1 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferRaw';
+  var got = _.hasMethodEqualer( new BufferRaw( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferView';
+  var got = _.hasMethodEqualer( new BufferView( new BufferRaw( 5 ) ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'BufferTyped';
+  var got = _.hasMethodEqualer( new U8x( 5 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  if( Config.interpreter === 'njs' )
+  {
+    test.case = 'BufferNode';
+    let got = _.hasMethodEqualer( BufferNode.alloc( 5 ) );
+    let expected = false;
+    test.identical( got, expected );
+  }
+
+  test.case = 'Set';
+  var got = _.hasMethodEqualer( new Set( [ 5 ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'Map';
+  var got = _.hasMethodEqualer( new Map( [ [ 1, 2 ] ] ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure empty map';
+  var got = _.hasMethodEqualer( Object.create( null ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'pure map';
+  var src = Object.create( null );
+  src.x = 1;
+  var got = _.hasMethodEqualer( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'map from pure map';
+  var src = Object.create( Object.create( null ) );
+  var got = _.hasMethodEqualer( src );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an empty object';
+  var got = _.hasMethodEqualer( {} );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'an object';
+  var got = _.hasMethodEqualer( { a : 7, b : 13 } );
+  var expected = false;
+  test.identical( got, expected );
+}
+
+//
+
 let Self =
 {
 
@@ -2941,6 +3235,8 @@ let Self =
     uncountableSize,
     entitySize,
     iterableIs,
+    hasMethodIterator,
+    hasMethodEqualer,
 
   }
 
