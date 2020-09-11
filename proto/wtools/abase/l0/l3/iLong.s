@@ -1,4 +1,5 @@
-( function _iLong_s_() {
+( function _iLong_s_()
+{
 
 'use strict';
 
