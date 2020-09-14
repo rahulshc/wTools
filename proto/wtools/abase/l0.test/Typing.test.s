@@ -1,4 +1,5 @@
-( function _Typing_test_s_( ) {
+( function _Typing_test_s_()
+{
 
 'use strict';
 
@@ -50,7 +51,7 @@ function nothingIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.nothingIs( Symbol() );
+  var got = _.nothingIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -97,10 +98,6 @@ function nothingIs( test )
   var got = _.nothingIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.nothingIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.nothingIs( 'str' );
   test.identical( got, false );
@@ -114,7 +111,7 @@ function nothingIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -161,7 +158,7 @@ function definedIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.definedIs( Symbol() );
+  var got = _.definedIs( Symbol( 'a' ) );
   test.identical( got, true );
 
   test.case = 'check empty array';
@@ -208,10 +205,6 @@ function definedIs( test )
   var got = _.definedIs( 1n );
   test.identical( got, true );
 
-  test.case = 'check object Number';
-  var got = _.definedIs( new Number( 2 ) );
-  test.identical( got, true );
-
   test.case = 'check string';
   var got = _.definedIs( 'str' );
   test.identical( got, true );
@@ -225,7 +218,7 @@ function definedIs( test )
   test.identical( got, true );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -272,7 +265,7 @@ function primitiveIs( test )
   test.identical( got, true );
 
   test.case = 'check Symbol';
-  var got = _.primitiveIs( Symbol() );
+  var got = _.primitiveIs( Symbol( 'a' ) );
   test.identical( got, true );
 
   test.case = 'check empty array';
@@ -319,10 +312,6 @@ function primitiveIs( test )
   var got = _.primitiveIs( 1n );
   test.identical( got, true );
 
-  test.case = 'check object Number';
-  var got = _.primitiveIs( new Number( 2 ) );
-  test.identical( got, true );
-
   test.case = 'check string';
   var got = _.primitiveIs( 'str' );
   test.identical( got, true );
@@ -336,7 +325,7 @@ function primitiveIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -383,7 +372,7 @@ function symbolIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.symbolIs( Symbol() );
+  var got = _.symbolIs( Symbol( 'a' ) );
   test.identical( got, true );
 
   test.case = 'check empty array';
@@ -430,10 +419,6 @@ function symbolIs( test )
   var got = _.symbolIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.symbolIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.symbolIs( 'str' );
   test.identical( got, false );
@@ -447,7 +432,7 @@ function symbolIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -494,7 +479,7 @@ function bigIntIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.bigIntIs( Symbol() );
+  var got = _.bigIntIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -541,10 +526,6 @@ function bigIntIs( test )
   var got = _.bigIntIs( 1n );
   test.identical( got, true );
 
-  test.case = 'check object Number';
-  var got = _.bigIntIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.bigIntIs( 'str' );
   test.identical( got, false );
@@ -558,7 +539,7 @@ function bigIntIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -607,7 +588,7 @@ function vectorAdapterIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.vectorAdapterIs( Symbol() );
+  var got = _.vectorAdapterIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -654,10 +635,6 @@ function vectorAdapterIs( test )
   var got = _.vectorAdapterIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.vectorAdapterIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.vectorAdapterIs( 'str' );
   test.identical( got, false );
@@ -685,51 +662,51 @@ function vectorAdapterIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor with not own property "constructor"';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src._vectorBuffer = true;
   var got = _.vectorAdapterIs( src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor with own property "constructor"';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
-  src.constructor = Constr;
+  var src = new Constr2();
+  src.constructor = Constr2;
   src._vectorBuffer = true;
   var got = _.vectorAdapterIs( src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor prototyped by another instance with _vectorBuffer property';
-  var Constr = function()
+  function Constr3()
   {
     this.x = 1;
     return this;
   };
-  var proto = new Constr();
+  var proto = new Constr3();
   proto._vectorBuffer = true;
-  var src = new Constr();
+  var src = new Constr3();
   src.prototype = proto;
   var got = _.vectorAdapterIs( src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor prototyped by another instance with _vectorBuffer and own "constructor" properties';
-  var Constr = function()
+  function Constr4()
   {
     this.x = 1;
     return this;
   };
-  var proto = new Constr();
+  var proto = new Constr4();
   proto._vectorBuffer = true;
-  proto.constructor = Constr;
-  var src = new Constr();
+  proto.constructor = Constr4;
+  var src = new Constr4();
   src.prototype = proto;
   var got = _.vectorAdapterIs( src );
   test.identical( got, false );
@@ -789,40 +766,40 @@ function constructorIsVad( test )
   /* */
 
   test.case = 'check instance of constructor prototyped by another instance without _vectorBuffer property';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var proto = new Constr();
-  var src = new Constr();
+  var proto = new Constr1();
+  var src = new Constr1();
   src.prototype = proto;
   var got = _.constructorIsVad( src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor prototyped by another instance with _vectorBuffer property';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var proto = new Constr();
+  var proto = new Constr2();
   proto._vectorBuffer = true;
-  var src = new Constr();
+  var src = new Constr2();
   src.prototype = proto;
   var got = _.constructorIsVad( src );
   test.identical( got, true );
 
   test.case = 'check instance of constructor prototyped by another instance with _vectorBuffer and own "constructor" properties';
-  var Constr = function()
+  function Constr3()
   {
     this.x = 1;
     return this;
   };
-  var proto = new Constr();
+  var proto = new Constr3();
   proto._vectorBuffer = true;
-  proto.constructor = Constr;
-  var src = new Constr();
+  proto.constructor = Constr3;
+  var src = new Constr3();
   src.prototype = proto;
   var got = _.constructorIsVad( src );
   test.identical( got, true );
@@ -876,7 +853,7 @@ function constructorIsVad( test )
 //   test.identical( got, false );
 //
 //   test.case = 'check Symbol';
-//   var got = _.matrixIs( Symbol() );
+//   var got = _.matrixIs( Symbol( 'a' ) );
 //   test.identical( got, false );
 //
 //   test.case = 'check empty array';
@@ -923,10 +900,6 @@ function constructorIsVad( test )
 //   var got = _.matrixIs( 1n );
 //   test.identical( got, false );
 //
-//   test.case = 'check object Number';
-//   var got = _.matrixIs( new Number( 2 ) );
-//   test.identical( got, false );
-//
 //   test.case = 'check string';
 //   var got = _.matrixIs( 'str' );
 //   test.identical( got, false );
@@ -951,7 +924,7 @@ function constructorIsVad( test )
 //   test.identical( got, false );
 //
 //   test.case = 'check instance of constructor with not own property "constructor"';
-//   var Constr = function()
+//   function Constr()
 //   {
 //     this.x = 1;
 //     return this;
@@ -1000,7 +973,7 @@ function constructorIsVad( test )
 //   test.identical( got, false );
 //
 //   test.case = 'check Symbol';
-//   var got = _.constructorIsMatrix( Symbol() );
+//   var got = _.constructorIsMatrix( Symbol( 'a' ) );
 //   test.identical( got, false );
 //
 //   test.case = 'check empty array';
@@ -1047,10 +1020,6 @@ function constructorIsVad( test )
 //   var got = _.constructorIsMatrix( 1n );
 //   test.identical( got, false );
 //
-//   test.case = 'check object Number';
-//   var got = _.constructorIsMatrix( new Number( 2 ) );
-//   test.identical( got, false );
-//
 //   test.case = 'check string';
 //   var got = _.constructorIsMatrix( 'str' );
 //   test.identical( got, false );
@@ -1075,7 +1044,7 @@ function constructorIsVad( test )
 //   test.identical( got, false );
 //
 //   test.case = 'check instance of constructor with not own property "constructor"';
-//   var Constr = function()
+//   function Constr()
 //   {
 //     this.x = 1;
 //     return this;
@@ -1124,7 +1093,7 @@ function consequenceIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.consequenceIs( Symbol() );
+  var got = _.consequenceIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -1171,10 +1140,6 @@ function consequenceIs( test )
   var got = _.consequenceIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.consequenceIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.consequenceIs( 'str' );
   test.identical( got, false );
@@ -1199,7 +1164,7 @@ function consequenceIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor with not own property "constructor"';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -1253,7 +1218,7 @@ function consequenceLike( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.consequenceLike( Symbol() );
+  var got = _.consequenceLike( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -1300,10 +1265,6 @@ function consequenceLike( test )
   var got = _.consequenceLike( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.consequenceLike( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.consequenceLike( 'str' );
   test.identical( got, false );
@@ -1328,7 +1289,7 @@ function consequenceLike( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor with not own property "constructor"';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -1382,7 +1343,7 @@ function promiseIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.promiseIs( Symbol() );
+  var got = _.promiseIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -1429,10 +1390,6 @@ function promiseIs( test )
   var got = _.promiseIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.promiseIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.promiseIs( 'str' );
   test.identical( got, false );
@@ -1457,7 +1414,7 @@ function promiseIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor with not own property "constructor"';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -1472,7 +1429,7 @@ function promiseIs( test )
   test.identical( got, true );
 
   test.case = 'function _Promise';
-  var _Promise = function Promise(){};
+  function _Promise(){}
   var src = new _Promise();
   var got = _.promiseIs( src );
   test.identical( got, false );
@@ -1515,7 +1472,7 @@ function promiseLike( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.promiseLike( Symbol() );
+  var got = _.promiseLike( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -1562,10 +1519,6 @@ function promiseLike( test )
   var got = _.promiseLike( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.promiseLike( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.promiseLike( 'str' );
   test.identical( got, false );
@@ -1590,7 +1543,7 @@ function promiseLike( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor with not own property "constructor"';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -1605,7 +1558,7 @@ function promiseLike( test )
   test.identical( got, true );
 
   test.case = 'function _Promise';
-  var _Promise = function Promise(){};
+  function _Promise(){}
   var src = new _Promise();
   var got = _.promiseLike( src );
   test.identical( got, false );
@@ -1699,14 +1652,8 @@ function typeOf( test )
   test.identical( got, src.constructor );
   test.identical( got.name, 'Uint8Array' );
 
-  test.case = 'check object Number';
-  var src = new Number( 2 );
-  var got = _.typeOf( src );
-  test.identical( got, src.constructor );
-  test.identical( got.name, 'Number' );
-
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -1723,7 +1670,8 @@ function typeOf( test )
   test.identical( got.name, 'Promise' );
 
   test.case = 'function _Promise';
-  var _Promise = function Promise(){};
+  var _Promise = Promise;
+  function Promise(){}
   var src = new _Promise();
   var got = _.typeOf( src );
   test.identical( got, src.constructor );
@@ -1818,14 +1766,8 @@ function typeOf( test )
   var got = _.typeOf( src, src1.constructor );
   test.identical( got, true );
 
-  test.case = 'check object Number';
-  var src = new Number( 2 );
-  var src1 = 2;
-  var got = _.typeOf( src, src1.constructor );
-  test.identical( got, true );
-
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -1841,7 +1783,7 @@ function typeOf( test )
   test.identical( got, true );
 
   test.case = 'function _Promise';
-  var _Promise = function Promise(){};
+  function _Promise(){}
   var src = new _Promise();
   var src1 = new _Promise();
   var got = _.typeOf( src, src1.constructor );
@@ -1858,7 +1800,7 @@ function typeOf( test )
   test.shouldThrowErrorSync( () => _.typeOf() );
 
   test.case = 'src - Symbol';
-  test.shouldThrowErrorSync( () => _.typeOf( Symbol() ) );
+  test.shouldThrowErrorSync( () => _.typeOf( Symbol( 'a' ) ) );
 
   test.case = 'src - BigInt';
   test.shouldThrowErrorSync( () => _.typeOf( 1n ) );
@@ -1870,106 +1812,103 @@ function isPrototypeOf( test )
 {
   test.open( 'subPrototype === superPrototype' );
 
+  var prototypeOf = _.isPrototypeOf;
+
   test.case = 'check null';
   var src = null;
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check undefined';
   var src = undefined;
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check zero';
   var src = 0;
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check false';
   var src = false;
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check NaN';
   var src = NaN;
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, false );
 
   test.case = 'check array';
   var src = [ 1, 2 ];
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check empty arguments array';
   var src = _.argumentsArrayMake( [] );
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check empty unroll';
   var src = _.unrollMake( [] );
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check map';
   var src = { a : 2 };
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check pure map';
   var src = Object.create( null );
   src.a = 2;
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check Set';
   var src = new Set( [] );
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check HashMap';
   var src = new Map( [ [ 1, 1 ] ] );
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check BufferRaw';
   var src = new BufferRaw( 10 );
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check BufferTyped';
   var src = new U8x( [ 1, 2 ] );
-  var got = _.isPrototypeOf( src, src );
-  test.identical( got, true );
-
-  test.case = 'check object Number';
-  var src = new Number( 2 );
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check BigIng';
   var src = 1n;
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
   };
   var src = new Constr();
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'instance of Promise';
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.case = 'function _Promise';
-  var _Promise = function Promise(){};
+  function _Promise(){}
   var src = new _Promise();
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, true );
 
   test.close( 'subPrototype === superPrototype' );
@@ -1980,104 +1919,99 @@ function isPrototypeOf( test )
 
   test.case = 'check null';
   var src = null;
-  var got = _.isPrototypeOf( src, undefined );
+  var got = prototypeOf( src, undefined );
   test.identical( got, false );
 
   test.case = 'check undefined';
   var src = undefined;
-  var got = _.isPrototypeOf( src, null );
+  var got = prototypeOf( src, null );
   test.identical( got, false );
 
   test.case = 'check zero';
   var src = 0;
-  var got = _.isPrototypeOf( false, src );
+  var got = prototypeOf( false, src );
   test.identical( got, false );
 
   test.case = 'check false';
   var src = false;
-  var got = _.isPrototypeOf( undefined, src );
+  var got = prototypeOf( undefined, src );
   test.identical( got, false );
 
   test.case = 'check NaN';
   var src = NaN;
-  var got = _.isPrototypeOf( src, src );
+  var got = prototypeOf( src, src );
   test.identical( got, false );
 
   test.case = 'check array';
   var src = [ 1, 2 ];
-  var got = _.isPrototypeOf( false, src );
+  var got = prototypeOf( false, src );
   test.identical( got, false );
 
   test.case = 'check empty arguments array';
   var src = _.argumentsArrayMake( [] );
-  var got = _.isPrototypeOf( src, null );
+  var got = prototypeOf( src, null );
   test.identical( got, false );
 
   test.case = 'check empty unroll';
   var src = _.unrollMake( [] );
-  var got = _.isPrototypeOf( 0, src );
+  var got = prototypeOf( 0, src );
   test.identical( got, false );
 
   test.case = 'check map';
   var src = { a : 2 };
-  var got = _.isPrototypeOf( src, undefined );
+  var got = prototypeOf( src, undefined );
   test.identical( got, false );
 
   test.case = 'check pure map';
   var src = Object.create( null );
   src.a = 2;
-  var got = _.isPrototypeOf( null, src );
+  var got = prototypeOf( null, src );
   test.identical( got, false );
 
   test.case = 'check Set';
   var src = new Set( [] );
-  var got = _.isPrototypeOf( src, false );
+  var got = prototypeOf( src, false );
   test.identical( got, false );
 
   test.case = 'check HashMap';
   var src = new Map( [ [ 1, 1 ] ] );
-  var got = _.isPrototypeOf( null, src );
+  var got = prototypeOf( null, src );
   test.identical( got, false );
 
   test.case = 'check BufferRaw';
   var src = new BufferRaw( 10 );
-  var got = _.isPrototypeOf( src, undefined );
+  var got = prototypeOf( src, undefined );
   test.identical( got, false );
 
   test.case = 'check BufferTyped';
   var src = new U8x( [ 1, 2 ] );
-  var got = _.isPrototypeOf( false, src );
-  test.identical( got, false );
-
-  test.case = 'check object Number';
-  var src = new Number( 2 );
-  var got = _.isPrototypeOf( src, false );
+  var got = prototypeOf( false, src );
   test.identical( got, false );
 
   test.case = 'check BigIng';
   var src = 1n;
-  var got = _.isPrototypeOf( null, src );
+  var got = prototypeOf( null, src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
   };
   var src = new Constr();
-  var got = _.isPrototypeOf( src, undefined );
+  var got = prototypeOf( src, undefined );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
   var src = new Promise( ( resolve, reject ) => { return resolve( 0 ) } );
-  var got = _.isPrototypeOf( false, src );
+  var got = prototypeOf( false, src );
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var _Promise = function Promise(){};
+  function _Promise(){}
   var src = new _Promise();
-  var got = _.isPrototypeOf( undefined, src );
+  var got = prototypeOf( undefined, src );
   test.identical( got, false );
 
 
@@ -2089,122 +2023,122 @@ function isPrototypeOf( test )
 
   test.case = 'subPrototype - Object.prototype, superPrototype - simple map';
   var src = {};
-  var got = _.isPrototypeOf( Object.prototype, src );
+  var got = prototypeOf( Object.prototype, src );
   test.identical( got, true );
 
   test.case = 'subPrototype - simple map, superPrototype - Object.prototype';
   var src = {};
-  var got = _.isPrototypeOf( src, Object.prototype );
+  var got = prototypeOf( src, Object.prototype );
   test.identical( got, false );
 
   test.case = 'subPrototype - simple map, superPrototype - simple map';
   var src = {};
-  var got = _.isPrototypeOf( src, {} );
+  var got = prototypeOf( src, {} );
   test.identical( got, false );
 
   test.case = 'subPrototype - simple map, superPrototype - pure map';
   var src = {};
-  var got = _.isPrototypeOf( src, Object.create( null ) );
+  var got = prototypeOf( src, Object.create( null ) );
   test.identical( got, false );
 
   test.case = 'subPrototype - pure map, superPrototype - simple map';
   var src = {};
-  var got = _.isPrototypeOf( Object.create( null ), src );
+  var got = prototypeOf( Object.create( null ), src );
   test.identical( got, false );
 
   test.case = 'subPrototype - pure map, superPrototype - Object.prototype';
   var src = Object.create( null );
-  var got = _.isPrototypeOf( src, Object.prototype );
+  var got = prototypeOf( src, Object.prototype );
   test.identical( got, false );
 
   test.case = 'subPrototype - Object.prototype, superPrototype - pure map';
   var src = Object.create( null );
-  var got = _.isPrototypeOf( Object.prototype, src );
+  var got = prototypeOf( Object.prototype, src );
   test.identical( got, false );
 
   test.case = 'subPrototype - pure map, superPrototype - simple map';
   var src = Object.create( null );
-  var got = _.isPrototypeOf( src, {} );
+  var got = prototypeOf( src, {} );
   test.identical( got, false );
 
   test.case = 'subPrototype - pure map, superPrototype - simple map';
   var src = Object.create( null );
-  var got = _.isPrototypeOf( {}, src );
+  var got = prototypeOf( {}, src );
   test.identical( got, false );
 
   test.case = 'subPrototype - pure map, superPrototype - pure map';
   var src = Object.create( null );
-  var got = _.isPrototypeOf( src, Object.create( null ) );
+  var got = prototypeOf( src, Object.create( null ) );
   test.identical( got, false );
 
   test.case = 'subPrototype - pure map, superPrototype - pure map from subPrototype';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
-  var got = _.isPrototypeOf( prototype, src );
+  var got = prototypeOf( prototype, src );
   test.identical( got, true );
 
   test.case = 'subPrototype - pure map from superPrototype, superPrototype - pure map';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
-  var got = _.isPrototypeOf( src, prototype );
+  var got = prototypeOf( src, prototype );
   test.identical( got, false );
 
   test.case = 'subPrototype - pure map from prototype, superPrototype - Object.prototype';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
-  var got = _.isPrototypeOf( src, Object.prototype );
+  var got = prototypeOf( src, Object.prototype );
   test.identical( got, false );
 
   test.case = 'subPrototype - Object.prototype, superPrototype - pure map from prototype';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
-  var got = _.isPrototypeOf( Object.prototype, src );
+  var got = prototypeOf( Object.prototype, src );
   test.identical( got, false );
 
   test.case = 'subPrototype - pure map from prototype, superPrototype - simple map';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
-  var got = _.isPrototypeOf( src, {} );
+  var got = prototypeOf( src, {} );
   test.identical( got, false );
 
   test.case = 'subPrototype - simple map, superPrototype - pure map from prototype';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
-  var got = _.isPrototypeOf( {}, src );
+  var got = prototypeOf( {}, src );
   test.identical( got, false );
 
   test.case = 'subPrototype - pure map from prototype, superPrototype - pure map';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
-  var got = _.isPrototypeOf( src, Object.create( null ) );
+  var got = prototypeOf( src, Object.create( null ) );
   test.identical( got, false );
 
   test.case = 'subPrototype - pure map, superPrototype - pure map from prototype';
   var prototype = Object.create( null );
   var src = Object.create( prototype );
-  var got = _.isPrototypeOf( Object.create( null ), src );
+  var got = prototypeOf( Object.create( null ), src );
   test.identical( got, false );
 
   /* */
 
   test.case = 'one constructor prototyped by another, not prototype';
-  var proto1 = function(){ this.a = 0; return this };
-  var proto2 = function(){ this.x = 1; return this };
-  proto2.prototype = new proto1();
-  var prototyped = function(){ this.y = 1; return this };
-  prototyped.prototype = new proto2();
-  var src = new prototyped();
-  var got = _.isPrototypeOf( src, proto2.prototype );
+  function proto01(){ this.a = 0; return this };
+  function proto02(){ this.x = 1; return this };
+  proto02.prototype = new proto01();
+  function prototyped0(){ this.y = 1; return this };
+  prototyped0.prototype = new proto02();
+  var src = new prototyped0();
+  var got = prototypeOf( src, proto02.prototype );
   test.identical( got, false );
 
   test.case = 'one constructor prototyped by another, prototype';
-  var proto1 = function(){ this.a = 0; return this };
-  var proto2 = function(){ this.x = 1; return this };
-  proto2.prototype = new proto1();
-  var prototyped = function(){ this.y = 1; return this };
-  prototyped.prototype = new proto2();
-  var src = new prototyped();
-  var got = _.isPrototypeOf( proto2.prototype, src );
+  function proto11(){ this.a = 0; return this };
+  function proto12(){ this.x = 1; return this };
+  proto12.prototype = new proto11();
+  function prototyped1(){ this.y = 1; return this };
+  prototyped1.prototype = new proto12();
+  var src = new prototyped1();
+  var got = prototypeOf( proto12.prototype, src );
   test.identical( got, true );
 
   test.close( 'two objects' );
@@ -2287,18 +2221,13 @@ function prototypeHas( test )
   var got = _.prototypeHas( src, src );
   test.identical( got, true );
 
-  test.case = 'check object Number';
-  var src = new Number( 2 );
-  var got = _.prototypeHas( src, src );
-  test.identical( got, true );
-
   test.case = 'check BigIng';
   var src = 1n;
   var got = _.prototypeHas( src, src );
   test.identical( got, true );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -2313,7 +2242,7 @@ function prototypeHas( test )
   test.identical( got, true );
 
   test.case = 'function _Promise';
-  var _Promise = function Promise(){};
+  function _Promise(){}
   var src = new _Promise();
   var got = _.prototypeHas( src, src );
   test.identical( got, true );
@@ -2395,18 +2324,13 @@ function prototypeHas( test )
   var got = _.prototypeHas( false, src );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var src = new Number( 2 );
-  var got = _.prototypeHas( src, false );
-  test.identical( got, false );
-
   test.case = 'check BigIng';
   var src = 1n;
   var got = _.prototypeHas( null, src );
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -2421,7 +2345,7 @@ function prototypeHas( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var _Promise = function Promise(){};
+  function _Promise(){}
   var src = new _Promise();
   var got = _.prototypeHas( undefined, src );
   test.identical( got, false );
@@ -2534,23 +2458,23 @@ function prototypeHas( test )
   /* */
 
   test.case = 'one constructor prototyped by another, has prototype';
-  var proto1 = function(){ this.a = 0; return this };
-  var proto2 = function(){ this.x = 1; return this };
-  proto2.prototype = new proto1();
-  var prototyped = function(){ this.y = 1; return this };
-  prototyped.prototype = new proto2();
-  var src = new prototyped();
-  var got = _.prototypeHas( src, proto2.prototype );
+  function proto01(){ this.a = 0; return this };
+  function proto02(){ this.x = 1; return this };
+  proto02.prototype = new proto01();
+  function prototyped0(){ this.y = 1; return this };
+  prototyped0.prototype = new proto02();
+  var src = new prototyped0();
+  var got = _.prototypeHas( src, proto02.prototype );
   test.identical( got, true );
 
   test.case = 'one constructor prototyped by another, has not prototype';
-  var proto1 = function(){ this.a = 0; return this };
-  var proto2 = function(){ this.x = 1; return this };
-  proto2.prototype = new proto1();
-  var prototyped = function(){ this.y = 1; return this };
-  prototyped.prototype = new proto2();
-  var src = new prototyped();
-  var got = _.prototypeHas( proto2.prototype, src );
+  function proto11(){ this.a = 0; return this };
+  function proto12(){ this.x = 1; return this };
+  proto12.prototype = new proto11();
+  function prototyped1(){ this.y = 1; return this };
+  prototyped1.prototype = new proto12();
+  var src = new prototyped1();
+  var got = _.prototypeHas( proto12.prototype, src );
   test.identical( got, false  );
 
   test.close( 'two objects' );
@@ -2603,7 +2527,7 @@ function prototypeIs( test ) /* qqq : merge test wProto/prototypeIs in this one 
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.prototypeIs( Symbol() );
+  var got = _.prototypeIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -2648,10 +2572,6 @@ function prototypeIs( test ) /* qqq : merge test wProto/prototypeIs in this one 
 
   test.case = 'check bigInt';
   var got = _.prototypeIs( 1n );
-  test.identical( got, false );
-
-  test.case = 'check object Number';
-  var got = _.prototypeIs( new Number( 2 ) );
   test.identical( got, false );
 
   test.case = 'check string';
@@ -2731,25 +2651,25 @@ function prototypeIs( test ) /* qqq : merge test wProto/prototypeIs in this one 
   test.identical( got, true );
 
   test.case = 'check instance of constructor with own property "constructor"';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   var got = _.prototypeIs( src );
   test.identical( got, true );
 
   test.case = 'check instance of constructor with not own property "constructor"';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
   var proto = { constructor : true };
-  Constr.prototype = proto;
-  var src = new Constr();
+  Constr2.prototype = proto;
+  var src = new Constr2();
   var got = _.prototypeIs( src );
   test.identical( src.constructor, true );
   test.identical( got, false );
@@ -2760,7 +2680,8 @@ function prototypeIs( test ) /* qqq : merge test wProto/prototypeIs in this one 
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.prototypeIs( src );
   test.identical( got, false );
 
@@ -2809,7 +2730,7 @@ function prototypeIsStandard( test )  /* qqq : merge test wProto/prototypeIsStan
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.prototypeIsStandard( Symbol() );
+  var got = _.prototypeIsStandard( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -2854,10 +2775,6 @@ function prototypeIsStandard( test )  /* qqq : merge test wProto/prototypeIsStan
 
   test.case = 'check bigInt';
   var got = _.prototypeIsStandard( 1n );
-  test.identical( got, false );
-
-  test.case = 'check object Number';
-  var got = _.prototypeIsStandard( new Number( 2 ) );
   test.identical( got, false );
 
   test.case = 'check string';
@@ -2948,26 +2865,26 @@ function prototypeIsStandard( test )  /* qqq : merge test wProto/prototypeIsStan
   test.identical( got, true );
 
   test.case = 'check instance of constructor with own properties constructor and Composes';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.prototypeIsStandard( src );
   test.identical( got, true );
 
   test.case = 'check instance of constructor with not own properties constructor and Composes';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
   var proto = { constructor : true, Composes : true };
-  Constr.prototype = proto;
-  var src = new Constr();
+  Constr2.prototype = proto;
+  var src = new Constr2();
   var got = _.prototypeIsStandard( src );
   test.identical( src.constructor, true );
   test.identical( got, false );
@@ -2978,7 +2895,8 @@ function prototypeIsStandard( test )  /* qqq : merge test wProto/prototypeIsStan
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.prototypeIsStandard( src );
   test.identical( got, false );
 }
@@ -3016,7 +2934,7 @@ function constructorIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.constructorIs( Symbol() );
+  var got = _.constructorIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -3063,10 +2981,6 @@ function constructorIs( test )
   var got = _.constructorIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.constructorIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.constructorIs( 'str' );
   test.identical( got, false );
@@ -3097,24 +3011,24 @@ function constructorIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor with own properties constructor and Composes';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.constructorIs( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.constructorIs( Constr );
+  var got = _.constructorIs( Constr2 );
   test.identical( got, true );
 
   test.case = 'instance of Promise';
@@ -3123,7 +3037,8 @@ function constructorIs( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.constructorIs( src );
   test.identical( got, true );
 }
@@ -3161,7 +3076,7 @@ function instanceIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.instanceIs( Symbol() );
+  var got = _.instanceIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -3208,10 +3123,6 @@ function instanceIs( test )
   var got = _.instanceIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.instanceIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.instanceIs( 'str' );
   test.identical( got, false );
@@ -3242,24 +3153,24 @@ function instanceIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor with own properties constructor and Composes';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.instanceIs( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.instanceIs( Constr );
+  var got = _.instanceIs( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
@@ -3268,7 +3179,8 @@ function instanceIs( test )
   test.identical( got, true );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.instanceIs( src );
   test.identical( got, false );
 }
@@ -3306,7 +3218,7 @@ function instanceLike( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.instanceLike( Symbol() );
+  var got = _.instanceLike( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -3353,10 +3265,6 @@ function instanceLike( test )
   var got = _.instanceLike( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.instanceLike( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.instanceLike( 'str' );
   test.identical( got, false );
@@ -3387,24 +3295,24 @@ function instanceLike( test )
   test.identical( got, true );
 
   test.case = 'check instance of constructor with own properties constructor and Composes';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.instanceLike( src );
   test.identical( got, true );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.instanceLike( Constr );
+  var got = _.instanceLike( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
@@ -3413,7 +3321,8 @@ function instanceLike( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.instanceLike( src );
   test.identical( got, false );
 }
@@ -3451,7 +3360,7 @@ function consoleIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.consoleIs( Symbol() );
+  var got = _.consoleIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -3498,10 +3407,6 @@ function consoleIs( test )
   var got = _.consoleIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.consoleIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.consoleIs( 'str' );
   test.identical( got, false );
@@ -3522,24 +3427,24 @@ function consoleIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.consoleIs( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.consoleIs( Constr );
+  var got = _.consoleIs( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
@@ -3548,7 +3453,8 @@ function consoleIs( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.consoleIs( src );
   test.identical( got, false );
 
@@ -3604,7 +3510,7 @@ function printerIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.printerIs( Symbol() );
+  var got = _.printerIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -3651,10 +3557,6 @@ function printerIs( test )
   var got = _.printerIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.printerIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.printerIs( 'str' );
   test.identical( got, false );
@@ -3675,24 +3577,24 @@ function printerIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.printerIs( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.printerIs( Constr );
+  var got = _.printerIs( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
@@ -3701,7 +3603,8 @@ function printerIs( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.printerIs( src );
   test.identical( got, false );
 
@@ -3746,7 +3649,7 @@ function printerLike( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.printerLike( Symbol() );
+  var got = _.printerLike( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -3793,10 +3696,6 @@ function printerLike( test )
   var got = _.printerLike( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.printerLike( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.printerLike( 'str' );
   test.identical( got, false );
@@ -3817,24 +3716,24 @@ function printerLike( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.printerLike( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.printerLike( Constr );
+  var got = _.printerLike( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
@@ -3843,7 +3742,8 @@ function printerLike( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.printerLike( src );
   test.identical( got, false );
 
@@ -3888,7 +3788,7 @@ function loggerIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.loggerIs( Symbol() );
+  var got = _.loggerIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -3935,10 +3835,6 @@ function loggerIs( test )
   var got = _.loggerIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.loggerIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.loggerIs( 'str' );
   test.identical( got, false );
@@ -3959,24 +3855,24 @@ function loggerIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.loggerIs( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.loggerIs( Constr );
+  var got = _.loggerIs( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
@@ -3985,7 +3881,8 @@ function loggerIs( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.loggerIs( src );
   test.identical( got, false );
 
@@ -4030,7 +3927,7 @@ function processIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.processIs( Symbol() );
+  var got = _.processIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -4077,10 +3974,6 @@ function processIs( test )
   var got = _.processIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.processIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.processIs( 'str' );
   test.identical( got, false );
@@ -4101,24 +3994,24 @@ function processIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.processIs( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.processIs( Constr );
+  var got = _.processIs( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
@@ -4127,7 +4020,8 @@ function processIs( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.processIs( src );
   test.identical( got, false );
 
@@ -4170,7 +4064,7 @@ function procedureIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.procedureIs( Symbol() );
+  var got = _.procedureIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -4217,10 +4111,6 @@ function procedureIs( test )
   var got = _.procedureIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.procedureIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.procedureIs( 'str' );
   test.identical( got, false );
@@ -4241,24 +4131,24 @@ function procedureIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.procedureIs( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.procedureIs( Constr );
+  var got = _.procedureIs( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
@@ -4267,7 +4157,8 @@ function procedureIs( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.procedureIs( src );
   test.identical( got, false );
 
@@ -4312,7 +4203,7 @@ function definitionIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.definitionIs( Symbol() );
+  var got = _.definitionIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -4359,10 +4250,6 @@ function definitionIs( test )
   var got = _.definitionIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.definitionIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.definitionIs( 'str' );
   test.identical( got, false );
@@ -4383,24 +4270,24 @@ function definitionIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.definitionIs( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.definitionIs( Constr );
+  var got = _.definitionIs( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
@@ -4409,7 +4296,8 @@ function definitionIs( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.definitionIs( src );
   test.identical( got, false );
 
@@ -4457,7 +4345,7 @@ function traitIs( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.traitIs( Symbol() );
+  var got = _.traitIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check empty array';
@@ -4504,10 +4392,6 @@ function traitIs( test )
   var got = _.traitIs( 1n );
   test.identical( got, false );
 
-  test.case = 'check object Number';
-  var got = _.traitIs( new Number( 2 ) );
-  test.identical( got, false );
-
   test.case = 'check string';
   var got = _.traitIs( 'str' );
   test.identical( got, false );
@@ -4528,24 +4412,24 @@ function traitIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr1()
   {
     this.x = 1;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   src.constructor = true;
   src.Composes = true;
   var got = _.traitIs( src );
   test.identical( got, false );
 
   test.case = 'check constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.x = 1;
     return this;
   };
-  var got = _.traitIs( Constr );
+  var got = _.traitIs( Constr2 );
   test.identical( got, false );
 
   test.case = 'instance of Promise';
@@ -4554,7 +4438,8 @@ function traitIs( test )
   test.identical( got, false );
 
   test.case = 'function _Promise';
-  var src = function Promise(){};
+  function Promise(){}
+  var src = Promise;
   var got = _.traitIs( src );
   test.identical( got, false );
 
@@ -4572,20 +4457,19 @@ function objectLike( test )
 {
   test.description = 'array-like entities should not overlap with array-like entities set';
 
-  test.identical( _.objectLike( new ArrayBuffer( 10 ) ),false );
-  test.identical( _.objectLike( new Float32Array( 10 ) ),false );
-  test.identical( _.objectLike( new Int32Array( 10 ) ),false );
-  test.identical( _.objectLike( new DataView( new ArrayBuffer( 10 ) ) ),false );
-  test.identical( _.objectLike( new Array( 10 ) ),false );
-  test.identical( _.objectLike( [ 1,2,3 ] ),false );
-  test.identical( _.objectLike( new Map ),false );
+  test.identical( _.objectLike( new ArrayBuffer( 10 ) ), false );
+  test.identical( _.objectLike( new Float32Array( 10 ) ), false );
+  test.identical( _.objectLike( new Int32Array( 10 ) ), false );
+  test.identical( _.objectLike( new DataView( new ArrayBuffer( 10 ) ) ), false );
+  test.identical( _.objectLike( new Array( 10 ) ), false );
+  test.identical( _.objectLike( [ 1, 2, 3 ] ), false );
+  test.identical( _.objectLike( new Map ), false );
 
   test.description = 'this entities are object-like';
 
-  test.identical( _.objectLike( _global_ ),true );
-  test.identical( _.objectLike( new Object() ),true );
-  test.identical( _.objectLike( {} ),true );
-  test.identical( _.objectLike( Object.create( null ) ),true );
+  test.identical( _.objectLike( _global_ ), true );
+  test.identical( _.objectLike( {} ), true );
+  test.identical( _.objectLike( Object.create( null ) ), true );
 }
 
 // --
