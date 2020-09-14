@@ -976,25 +976,25 @@ function streamIs( test )
 
   test.open( 'stream' )
 
-  let Stream = require( 'stream' );
+  let stream = require( 'stream' );
 
   test.case = 'read stream';
-  var src = new Stream.Readable();
+  var src = new stream.Readable();
   var got = _.streamIs( src );
   test.identical( got, true );
 
   test.case = 'read stream';
-  var src = new Stream.Writable();
+  var src = new stream.Writable();
   var got = _.streamIs( src );
   test.identical( got, true );
 
   test.case = 'read stream';
-  var src = new Stream.Duplex();
+  var src = new stream.Duplex();
   var got = _.streamIs( src );
   test.identical( got, true );
 
   test.case = 'read stream';
-  var src = new Stream.Transform();
+  var src = new stream.Transform();
   var got = _.streamIs( src );
   test.identical( got, true );
 
