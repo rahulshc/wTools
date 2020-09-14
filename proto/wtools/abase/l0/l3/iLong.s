@@ -89,7 +89,7 @@ function longIsPopulated( src )
 
 //
 
-function longLike( src ) /* qqq : cover please */
+function longLike( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
 {
   if( _.primitiveIs( src ) )
   return false;

@@ -384,6 +384,106 @@ function longIs( test )
   var expected  = false;
   test.identical( got, expected );
 
+  test.case = 'object with fields and iteraor method';
+  var src = new function()
+  {
+    this[ Symbol.iterator ] = function ()
+    {
+      return { next() { return { done : true } } }
+    }
+  }
+  var got = _.longIs( src );
+  var expected  = false;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+}
+
+//
+
+function longLike( test )
+{
+  test.case = 'an empty array';
+  var got = _.longLike( [] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an array';
+  var got = _.longLike( [ 1, 2, 3 ] );
+  var expected  = true;
+  test.identical( got, expected );
+
+  test.case = 'a pseudo array';
+  var got = _.longLike( arguments );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'raw array buffer';
+  var got = _.longLike( new BufferRaw( 10 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'typed array buffer';
+  var got = _.longLike( new F32x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'no argument';
+  var got = _.longLike();
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.longLike( null );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'function';
+  var got = _.longLike( function() {} );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var got = _.longLike( 'x' );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'number';
+  var got = _.longLike( 1 );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'boolean';
+  var got = _.longLike( true );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'empty object';
+  var got = _.longLike( {} );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'object with fields';
+  var got = _.longLike( { 0 : 1, 1 : 2, length : 2 } );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'object with fields and iteraor method';
+  var src = new function()
+  {
+    this[ Symbol.iterator ] = function ()
+    {
+      return { next() { return { done : true } } }
+    }
+  }
+
+  var got = _.longLike( src );
+  var expected  = true;
+  test.identical( got, expected );
+
   /* - */
 
   if( !Config.debug )
@@ -17342,6 +17442,7 @@ let Self =
     // long l0/l3
 
     longIs,
+    longLike,
 
     // long, l0/l5
 
