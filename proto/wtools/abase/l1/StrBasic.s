@@ -1,4 +1,5 @@
-(function _StrBasic_s_() {
+(function _StrBasic_s_()
+{
 
 'use strict';
 
@@ -216,7 +217,7 @@ function strCount( src, ins )
 
 function strStripCount( src, ins )
 {
-  return _.strCount( _.strLinesStrip( src ) , _.strLinesStrip( ins ) );
+  return _.strCount( _.strLinesStrip( src ), _.strLinesStrip( ins ) );
 }
 
 // //
@@ -510,10 +511,14 @@ function strRemove( srcStr, insStr )
   _.assert( _.longIs( srcStr ) || _.strLike( srcStr ), () => 'Expects string or array of strings {-srcStr-}, but got ' + _.strType( srcStr ) );
 
   if( _.longIs( insStr ) )
-  for( let i = 0 ; i < insStr.length ; i++ )
-  _.assert( _.strIs( insStr[ i ] ) || _.regexpIs( insStr[ i ] ), () => 'Expects string/regexp or array of strings/regexps' );
+  {
+    for( let i = 0 ; i < insStr.length ; i++ )
+    _.assert( _.strIs( insStr[ i ] ) || _.regexpIs( insStr[ i ] ), () => 'Expects string/regexp or array of strings/regexps' );
+  }
   else
-  _.assert( _.strIs( insStr ) || _.regexpIs( insStr ), () => 'Expects string/regexp or array of strings/regexps' );
+  {
+    _.assert( _.strIs( insStr ) || _.regexpIs( insStr ), () => 'Expects string/regexp or array of strings/regexps' );
+  }
   //_.assert( _.longIs( insStr ) || _.strLike( insStr ), () => 'Expects string/regexp or array of strings/regexps {-begin-}' );
 
   let result = [];
@@ -1072,8 +1077,13 @@ function strForRange( range )
 
 //
 
-function strForCall( nameOfRoutine, args, ret, o )
+function strForCall( /* nameOfRoutine, args, ret, o */ )
 {
+  let nameOfRoutine = arguments[ 0 ];
+  let args = arguments[ 1 ];
+  let ret = arguments[ 2 ];
+  let o = arguments[ 3 ];
+
   let result = nameOfRoutine + '( ';
   let first = true;
 
@@ -1194,7 +1204,7 @@ function strStrShort( o )
   o.postfix = '';
   if( o.src.length < 1 )
   {
-    if ( o.prefix.length + o.postfix.length <= o.limit )
+    if( o.prefix.length + o.postfix.length <= o.limit )
     return o.prefix + o.postfix
     o.src = o.prefix + o.postfix;
     o.prefix = '';
@@ -1203,7 +1213,7 @@ function strStrShort( o )
   if( _.boolLikeTrue( o.infix ) )
   o.infix = '...';
 
-  if ( !o.onLength )
+  if( !o.onLength )
   o.onLength = ( src ) => src.length;
 
   if( o.onLength( o.prefix ) + o.onLength( o.postfix ) + o.onLength( o.infix ) === o.limit )
@@ -1242,7 +1252,7 @@ function strStrShort( o )
   }
   else
   {
-    if ( o.onLength( src ) + fixLength <= o.limit )
+    if( o.onLength( src ) + fixLength <= o.limit )
     return o.prefix + src + o.postfix;
     let begin = '';
     let end = '';
@@ -1456,40 +1466,39 @@ function strEscape( o )
     else switch( code )
     {
 
-      case 0x5c /* '\\' */ :
-        result += '\\\\';
-        break;
+    case 0x5c /* '\\' */ :
+      result += '\\\\';
+      break;
 
-      case 0x08 /* '\b' */ :
-        result += '\\b';
-        break;
+    case 0x08 /* '\b' */ :
+      result += '\\b';
+      break;
 
-      case 0x0c /* '\f' */ :
-        result += '\\f';
-        break;
+    case 0x0c /* '\f' */ :
+      result += '\\f';
+      break;
 
-      case 0x0a /* '\n' */ :
-        result += '\\n';
-        break;
+    case 0x0a /* '\n' */ :
+      result += '\\n';
+      break;
 
-      case 0x0d /* '\r' */ :
-        result += '\\r';
-        break;
+    case 0x0d /* '\r' */ :
+      result += '\\r';
+      break;
 
-      case 0x09 /* '\t' */ :
-        result += '\\t';
-        break;
+    case 0x09 /* '\t' */ :
+      result += '\\t';
+      break;
 
-      default :
-
-        if( code < 32 )
-        {
-          result += _.strCodeUnicodeEscape( code );
-        }
-        else
-        {
-          result += String.fromCharCode( code );
-        }
+    default :
+      if( code < 32 )
+      {
+        result += _.strCodeUnicodeEscape( code );
+      }
+      else
+      {
+        result += String.fromCharCode( code );
+      }
 
     }
 
@@ -1678,7 +1687,9 @@ function strStrip( o )
 
     if( Config.debug )
     for( let s of o.stripper )
-    _.assert( _.strIs( s, 'Expects string {-stripper[ * ]-}' ) );
+    {
+      _.assert( _.strIs( s, 'Expects string {-stripper[ * ]-}' ) );
+    }
 
     let b = 0;
     for( ; b < o.src.length ; b++ )
@@ -3286,17 +3297,17 @@ function strSplitCamel( src )
 function strOnlySingle( srcStr, range )
 {
 
-/*
-aaa : reference point of negative is length. implement and cover please
-Dmytro : implemented a time ago
-*/
+  /*
+  aaa : reference point of negative is length. implement and cover please
+  Dmytro : implemented a time ago
+  */
 
-// xxx
-// _.strOnly( 'abc', [ -2, -1 ] ) => 'b'
-// _.strOnly( 'abc', [ 1, 2 ] ) => 'b'
-//
-// 3-2 = 1
-// 3-1 = 2
+  // xxx
+  // _.strOnly( 'abc', [ -2, -1 ] ) => 'b'
+  // _.strOnly( 'abc', [ 1, 2 ] ) => 'b'
+  //
+  // 3-2 = 1
+  // 3-1 = 2
 
   if( _.numberIs( range ) )
   {
@@ -3446,10 +3457,10 @@ let strOnly = _.vectorize( strOnlySingle );
 function strButSingle( srcStr, range, ins )
 {
 
-/*
-aaa : reference point of negative is length. implement and cover please
-Dmytro : implemented a time ago
-*/
+  /*
+  aaa : reference point of negative is length. implement and cover please
+  Dmytro : implemented a time ago
+  */
 
   if( _.numberIs( range ) )
   {
@@ -3649,7 +3660,7 @@ function strUnjoin( srcStr, maskArray )
   function checkMask( mask )
   {
 
-    _.assert( _.strIs( mask ) || mask === strUnjoin.any , 'Expects string or strUnjoin.any, got' , _.strType( mask ) );
+    _.assert( _.strIs( mask ) || mask === strUnjoin.any, 'Expects string or strUnjoin.any, got', _.strType( mask ) );
 
     if( _.strIs( mask ) )
     {
@@ -3980,8 +3991,10 @@ function strJoinPath( srcs, joiner )
     {
 
       if( arrayEncountered === 0 )
-      for( let s = 1 ; s < src.length ; s++ )
-      result[ s ] = result[ 0 ];
+      {
+        for( let s = 1 ; s < src.length ; s++ )
+        result[ s ] = result[ 0 ];
+      }
 
       _.assert( arrayLength === undefined || arrayLength === src.length, 'All arrays should have the same length' );
       arrayLength = src.length;
@@ -4303,9 +4316,9 @@ function strLinesIndentation( src, tab )
 
   }
 
-/*
-  should be no tab in prolog
-*/
+  /*
+    should be no tab in prolog
+  */
 
   let result = src.join( '\n' + tab );
   // let result = tab + src.join( '\n' + tab );
@@ -5148,12 +5161,12 @@ function strLinesNearest_body( o )
   }
   result.spans[ 0 ] = i;
 
-/*
-  // 0 -> 0 + 0 = 0
-  // 1 -> 1 + 1 = 2
-  // 2 -> 2 + 1 = 3
-  // 3 -> 2 + 2 = 4
-*/
+  /*
+    // 0 -> 0 + 0 = 0
+    // 1 -> 1 + 1 = 2
+    // 2 -> 2 + 1 = 3
+    // 3 -> 2 + 2 = 4
+  */
 
   /* */
 
@@ -5502,7 +5515,7 @@ let Proto =
   strCapitalize,
   strDecapitalize, /* qqq : cover and jsdoc */
   strSign, /* qqq : cover and jsdoc */
-  strDesign,/* qqq : cover and jsdoc */
+  strDesign, /* qqq : cover and jsdoc */
   strEscape,
   strCodeUnicodeEscape, /* Dmytro : extended documentation */
   strUnicodeEscape, /* aaa : document me */ /* Dmytro : documented */
