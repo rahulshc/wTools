@@ -5798,6 +5798,297 @@ function escape( test )
 
 //
 
+function _nativizeWindows( test )
+{
+  test.case = '\'\'';
+  var src = '';
+  var expected = '';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  test.case = '.';
+  var src = '.';
+  var expected = '.';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  test.case = './';
+  var src = './';
+  var expected = '.\\';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  test.case = 'a/b';
+  var src = 'a/b';
+  var expected = 'a\\b';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  test.case = 'a/b/';
+  var src = 'a/b/';
+  var expected = 'a\\b\\';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'simple absolute path';
+  var src = '/foo';
+  var expected = '\\foo';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'absolute path : nested dirs';
+  var src = '/foo/bar/baz/text.txt';
+  var expected = '\\foo\\bar\\baz\\text.txt';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  var src = '/aa/bb';
+  var expected = '\\aa\\bb';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  var src = '/aa';
+  var expected = '\\aa';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  var src = '/';
+  var expected = '\\';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'relative path';
+
+  var src = 'aa/bb';
+  var expected = 'aa\\bb';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  var src = 'aa';
+  var expected = 'aa';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  var src = 'aa/.';
+  var expected = 'aa\\.';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  var src = '.';
+  var expected = '.';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  var src = '..';
+  var expected = '..';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.open( 'already native path' );
+
+  test.case = 'simple absolute path';
+  var src = '\\foo';
+  var expected = '\\foo';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'absolute path : nested dirs';
+  var src = '\\foo\\bar\\baz\\text.txt';
+  var expected = '\\foo\\bar\\baz\\text.txt';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  var src = '\\aa\\bb';
+  var expected = '\\aa\\bb';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  var src = '\\aa';
+  var expected = '\\aa';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  var src = '\\';
+  var expected = '\\';
+  var got = _.path._nativizeWindows( src );
+  test.identical( got, expected );
+
+  test.close( 'already native path' );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( () => _.path._nativizeWindows( 1 ) );
+}
+
+//
+
+function _nativizePosix( test )
+{
+  test.case = '\'\'';
+  var src = '';
+  var expected = '';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = '.';
+  var src = '.';
+  var expected = '.';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = '..';
+  var src = '..';
+  var expected = '..';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = './';
+  var src = './';
+  var expected = './';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = 'a/b';
+  var src = 'a/b';
+  var expected = 'a/b';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = './a/b';
+  var src = './a/b';
+  var expected = './a/b';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = 'a/b/';
+  var src = 'a/b/';
+  var expected = 'a/b/';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = './a/b/';
+  var src = './a/b/';
+  var expected = './a/b/';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'simple absolute path';
+  var src = '/foo';
+  var expected = '/foo';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = 'absolute path : nested dirs';
+  var src = '/foo/bar/baz/text.txt';
+  var expected = '/foo/bar/baz/text.txt';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  var src = '/aa/bb';
+  var expected = '/aa/bb';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  var src = '/';
+  var expected = '/';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = '.';
+  var src = '.';
+  var expected = '.';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = '..';
+  var src = '..';
+  var expected = '..';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.open( 'windows native path' );
+
+  test.case = '.\\';
+  var src = '.\\';
+  var expected = './';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = 'a\\b';
+  var src = 'a\\b';
+  var expected = 'a/b';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = 'a/b/';
+  var src = 'a\\b\\';
+  var expected = 'a/b/';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.case = 'simple absolute path';
+  var src = '\\foo';
+  var expected = '/foo';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  /* */
+
+  test.case = 'absolute path : nested dirs';
+  var src = '\\foo\\bar\\baz\\text.txt';
+  var expected = '/foo/bar/baz/text.txt';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  var src = '\\aa\\bb';
+  var expected = '/aa/bb';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  var src = '\\aa';
+  var expected = '/aa';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  var src = '\\';
+  var expected = '/';
+  var got = _.path._nativizePosix( src );
+  test.identical( got, expected );
+
+  test.close( 'windows native path' );
+
+  /* - */
+
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( () => _.path._nativizePosix( 1 ) );
+}
+
+_nativizePosix.experimental = true;
+
+//
+
 function dot( test )
 {
 
@@ -6745,6 +7036,9 @@ let Self =
     canonizeTolerant,
     nativize,
     escape,
+
+    _nativizeWindows,
+    _nativizePosix,
 
     dot,
     undot,
