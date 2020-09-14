@@ -1302,6 +1302,74 @@ function numbersAreInt( test )
   test.shouldThrowErrorSync( () => _.numbersAreInt( [ 1, 2, 0.7 ], 'extra' ) );
 }
 
+
+//--
+// l0/l5/fNumber.s
+//--
+
+function bigIntFrom( test )
+{
+  test.open( 'numbers' );
+
+  test.case = '1';
+  var got = _.bigIntFrom( 1 );
+  test.identical( got, 1n );
+
+  test.case = '-1';
+  var got = _.bigIntFrom( -1 );
+  test.identical( got, -1n );
+
+  test.case = '-10000000000';
+  var got = _.bigIntFrom( -10000000000 );
+  test.identical( got, -10000000000n );
+
+  test.case = '1e5';
+  var got = _.bigIntFrom( 1e5 );
+  test.identical( got, 100000n );
+
+  test.case = '100000000000000000000';
+  var got = _.bigIntFrom( 100000000000000000000 );
+  test.identical( got, 100000000000000000000n );
+
+  test.case = '1e10';
+  var got = _.bigIntFrom( 1e10 );
+  test.identical( got, 10000000000n );
+
+  test.close( 'numbers' );
+
+  /* - */
+
+  test.open( 'string' );
+
+  test.case = '1';
+  var got = _.bigIntFrom( '1' );
+  test.identical( got, 1n );
+
+  test.case = '100000';
+  var got = _.bigIntFrom( '100000' );
+  test.identical( got, 100000n );
+
+  test.case = '-10000';
+  var got = _.bigIntFrom( '-10000' );
+  test.identical( got, -10000n );
+
+  test.close( 'string' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.bigIntFrom() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.bigIntFrom( 1, 'extra' ) );
+
+  test.case = 'not a number or string argument';
+  test.shouldThrowErrorSync( () => _.bigIntFrom( {} ) );
+}
+
 //--
 // l0/l8/gNumber.s
 //--
@@ -2656,6 +2724,9 @@ let Self =
     numbersAreFinite,
     numbersArePositive,
     numbersAreInt,
+
+    // l0/l8/gNumber.s
+    bigIntFrom,
 
     // l0/l8/gNumber.s
 
