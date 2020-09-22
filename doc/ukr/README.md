@@ -136,6 +136,27 @@
 </details>
 
 <details>
+  <summary><a href="./concept/TypeRange.md#Тип-Orange">
+    Тип <code>Orange</code>
+  </a></summary>
+    <code>Orange</code> ( від <code>open range</code> ) - перший елемент ренжа позначає індекс елемента з якого починається відлік елементів, а другий - на індекс останнього елемента відліку та не включає його.
+</details>
+
+<details>
+  <summary><a href="./concept/TypeRange.md#Тип-Crange">
+    Тип <code>Crange</code>
+  </a></summary>
+    <code>Crange</code> ( від <code>closed range</code> ) - перший елемент ренжа позначає індекс елемента з якого починається відлік елементів, а другий - на індекс останнього елемента відліку включаючи його.
+</details>
+
+<details>
+  <summary><a href="./concept/TypeRange.md#Тип-Lrange">
+    Тип <code>Lrange</code>
+  </a></summary>
+    <code>Lrange</code> ( від <code>length range</code> ) - перший елемент ренжа позначає індекс елемента з якого починається відлік, а другий позначає довжину - кількість елементів, що потрбно перебрати.
+</details>
+
+<details>
   <summary><a href="./concept/Stream.md">
     Тип <code>Stream</code>
   </a></summary>
