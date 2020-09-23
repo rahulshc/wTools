@@ -1,4 +1,5 @@
-( function _fNumbers_s_() {
+( function _fNumbers_s_()
+{
 
 'use strict';
 
@@ -25,7 +26,8 @@ let Self = _global_.wTools;
 
 function bigIntFrom( src )
 {
-  if( _.strIs( src ) ) /* qqq2 : cover pelase */
+  _.assert( arguments.length === 1, 'Expects exactly one argument' );
+  if( _.strIs( src ) ) /* qqq2 : cover pelase | aaa : Done. Yevhen S. */
   return BigInt( src );
   if( _.numberIs( src ) )
   return BigInt( src );

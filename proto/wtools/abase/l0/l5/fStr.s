@@ -83,6 +83,71 @@ strUnquote.defaults =
 
 //
 
+/**
+ * The routine `strQuotePairsNormalize` analyzes source String or Array and creates an Array of arrays of pairs of quotes.
+ * Returns an array with arrays of pairs of quotes.
+ *
+ * @param { String|Array|_.boolLikeTrue } quote -
+ * String : String to add matching pairs to.
+ * _.boolLikeTrue : Returnes an array of arrays of 2 elements ( 3 types of quotes: ', ", ` ).
+ * Array of strings : Creates matching quotes for strings.
+ * Array of arrays of strings : Checks to be exactly 2 elements in array & adds them to the result array.
+ *
+ * @example
+ * _.strQuotePairsNormalize( true );
+ * // returns
+ * [
+ *   [ '"', '"' ],
+ *   [ '`', '`' ],
+ *   [ '\'', '\'' ]
+ * ]
+ *
+ * @example
+ * _.strQuotePairsNormalize( '' );
+ * // returns [ [ '', '' ] ]
+ *
+ * @example
+ * _.strQuotePairsNormalize( 'str' );
+ * // returns [ [ 'str', 'str' ] ]
+ *
+ * @example
+ * _.strQuotePairsNormalize( [ '', ' ', '\n', 'str' ] );
+ * // returns
+ * [
+ *   [ '', '' ],
+ *   [ ' ', ' ' ],
+ *   [ '\n', '\n' ],
+ *   [ 'str', 'str' ]
+ * ]
+ *
+ * @example
+ * _.strQuotePairsNormalize( [ [ '', '' ], [ ' ',  ' ' ], [ '\n', '\n' ], [ 'str', 'str' ] ] )
+ * // returns
+ * [
+ *   [ '', '' ],
+ *   [ ' ', ' ' ],
+ *   [ '\n', '\n' ],
+ *   [ 'str', 'str' ]
+ * ]
+ *
+ * @example
+ * _.strQuotePairsNormalize( [ [ '', '' ], '', [ ' ',  ' ' ], '""', [ '\n', '\n' ], '\t', [ 'str', 'str' ], 'src' ] )
+ * // returns
+ * [
+ *   [ '', '' ], [ '', '' ],
+ *   [ ' ', ' ' ], [ '""', '""' ],
+ *   [ '\n', '\n' ], [ '\t', '\t' ],
+ *   [ 'str', 'str' ], [ 'src', 'src' ]
+ * ]
+ *
+ * @returns { Array } Returns an array of arrays with pair of quotes.
+ * @throws { Exception } If { -quote- } is not of String or Array type.
+ * @throws { Exception } If { -quote- } is of Array type and includes an array with not exactly 2 elements.
+ * @throws { Exception } If ( arguments.length ) is not exactly equals 1.
+ * @function strQuotePairsNormalize
+ * @namespace Tools
+ */
+
 function strQuotePairsNormalize( quote )
 {
 
@@ -106,6 +171,47 @@ function strQuotePairsNormalize( quote )
 }
 
 //
+
+/**
+ * The routine `strQuoteAnalyze` analyzes source string and quotes within it.
+ * Returns a map with 2 arrays:
+ * ranges - indexes of quotes in a source string,
+ * quotes - types of quotes used in a source string.
+ *
+ * @param { Object } o - Options map.
+ * @param { String } src - Source string to analyze.
+ * @param { String } quote - Quotes to be found in a source string.
+ *
+ * @example
+ * _.strQuoteAnalyze( 'a b c' );
+ * // returns { ranges : [], quotes : [] }
+ *
+ * @example
+ * _.strQuoteAnalyze( '"a b" c' );
+ * // returns { ranges : [ 0, 4 ], quotes : [ '"' ] }
+ *
+ * @example
+ * _.strQuoteAnalyze( '`a `"b c"`' );
+ * // returns { ranges : [ 0, 3, 4, 8 ], quotes : [ '`', '"' ] }
+ *
+ * @example
+ * _.strQuoteAnalyze('""`a `"""b c"``""' );
+ * // returns { ranges : [ 0, 1, 2, 5, 6, 7, 8, 12, 13, 14, 15, 16 ], quotes : [ '"', '`', '"', '"', '`', '"' ] }
+ *
+ * @example
+ * _.strQuoteAnalyze( "a', b'`,c` \"", [ [ '\'', '\'' ], '`' ] )
+ * // returns { ranges : [ 1, 5, 6, 9 ], quotes : [ "'", "`" ] }
+ *
+ * @example
+ * _.strQuoteAnalyze( "--aa-- --bb--``''\"\",,cc,,", '--' )
+ * // returns { ranges : [ 0, 4, 7, 11 ], quotes : [ '--', '--' ] }
+ *
+ * @returns { Object } Returns a map with 2 arrays: ranges, quotes.
+ * @throws { Exception } If redundant arguments are provided.
+ * @throws { Exception } If ( arguments.length ) is not equal 1 or 2.
+ * @function strQuoteAnalyze
+ * @namespace Tools
+ */
 
 function strQuoteAnalyze( o )
 {
@@ -2655,8 +2761,8 @@ let Extension =
 
   strQuote,
   strUnquote,
-  strQuotePairsNormalize, /* qqq : analyze and write good jsdoc */
-  strQuoteAnalyze, /* qqq : analyze and write good jsdoc */
+  strQuotePairsNormalize, /* qqq : analyze and write good jsdoc | aaa : Done. Yevhen S.*/
+  strQuoteAnalyze, /* qqq : analyze and write good jsdoc | aaa : Done. Yevhen S. */
 
   // splitter
 
@@ -2686,7 +2792,7 @@ let Extension =
   // split
 
   strSplitsCoupledGroup,
-  strSplitsUngroupedJoin, /* qqq : light coverage required */
+  strSplitsUngroupedJoin, /* qqq : light coverage required | aaa : Done. Yevhen S. */
   strSplitsQuotedRejoin, /* qqq : light coverage required */
   strSplitsDropDelimeters, /* qqq : light coverage required */
   strSplitsStrip,

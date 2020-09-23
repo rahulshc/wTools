@@ -542,7 +542,7 @@ let Routines =
   instanceLike,
 
   workerIs,
-  streamIs, /* qqq : cover */
+  streamIs, /* qqq : cover | aaa : Done. Yevhen S. */
   consoleIs,
   printerIs,
   printerLike,
