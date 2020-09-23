@@ -384,6 +384,106 @@ function longIs( test )
   var expected  = false;
   test.identical( got, expected );
 
+  test.case = 'object with fields and iteraor method';
+  var src = new function()
+  {
+    this[ Symbol.iterator ] = function ()
+    {
+      return { next() { return { done : true } } }
+    }
+  }
+  var got = _.longIs( src );
+  var expected  = false;
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+}
+
+//
+
+function longLike( test )
+{
+  test.case = 'an empty array';
+  var got = _.longLike( [] );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'an array';
+  var got = _.longLike( [ 1, 2, 3 ] );
+  var expected  = true;
+  test.identical( got, expected );
+
+  test.case = 'a pseudo array';
+  var got = _.longLike( arguments );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'raw array buffer';
+  var got = _.longLike( new BufferRaw( 10 ) );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'typed array buffer';
+  var got = _.longLike( new F32x( 10 ) );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'no argument';
+  var got = _.longLike();
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var got = _.longLike( null );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'function';
+  var got = _.longLike( function() {} );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var got = _.longLike( 'x' );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'number';
+  var got = _.longLike( 1 );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'boolean';
+  var got = _.longLike( true );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'empty object';
+  var got = _.longLike( {} );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'object with fields';
+  var got = _.longLike( { 0 : 1, 1 : 2, length : 2 } );
+  var expected  = false;
+  test.identical( got, expected );
+
+  test.case = 'object with fields and iteraor method';
+  var src = new function()
+  {
+    this[ Symbol.iterator ] = function ()
+    {
+      return { next() { return { done : true } } }
+    }
+  }
+
+  var got = _.longLike( src );
+  var expected  = true;
+  test.identical( got, expected );
+
   /* - */
 
   if( !Config.debug )
@@ -5566,23 +5666,23 @@ function longFromCoercing( test )
   test.is( _.arrayIs( got ) );
 
   test.case = 'empty object from constructor';
-  var Constr = function()
+  function Constr1()
   {
     return this;
   };
-  var src = new Constr();
+  var src = new Constr1();
   var got = _.longFromCoercing( src );
   test.identical( got, [] );
   test.is( _.arrayIs( got ) );
 
   test.case = 'object with properties, from constructor';
-  var Constr = function()
+  function Constr2()
   {
     this.a = 2;
     this.b = 3;
     return this;
   };
-  var src = new Constr();
+  var src = new Constr2();
   var got = _.longFromCoercing( src );
   test.identical( got, [ [ 'a', 2 ], [ 'b', 3 ] ] );
   test.is( _.arrayIs( got ) );
@@ -5757,16 +5857,16 @@ function longFromCoercingLongDescriptor( test )
     test.is( got instanceof descriptor.longDescriptor.type );
 
     test.case = 'empty object from constructor';
-    var Constr = function(){ return this };
-    var src = new Constr();
+    function Constr1(){ return this };
+    var src = new Constr1();
     var got = descriptor.longFromCoercing( src );
     var exp = descriptor.longDescriptor.make( [] );
     test.identical( got, exp );
     test.is( got instanceof descriptor.longDescriptor.type );
 
     test.case = 'object with properties, from constructor';
-    var Constr = function(){ this.a = 2; this.b = 3; return this };
-    var src = new Constr();
+    function Constr2(){ this.a = 2; this.b = 3; return this };
+    var src = new Constr2();
     var got = descriptor.longFromCoercing( src );
     var exp = _.bufferTypedIs( got ) ? descriptor.longDescriptor.make( [ 0, 0 ] ) : descriptor.longDescriptor.make( [ [ 'a', 2 ], [ 'b', 3 ] ] );
     test.identical( got, exp );
@@ -5783,7 +5883,8 @@ function longFromCoercingLongDescriptor( test )
     test.case = 'filled array';
     var src = [ 1, 2, 3, 4, 0 ];
     var got = descriptor.longFromCoercing( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? [ 1, 2, 3, 4, 0 ] : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    var exp =
+    src instanceof descriptor.longDescriptor.type ? [ 1, 2, 3, 4, 0 ] : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
     test.identical( got, exp );
     test.is( got instanceof descriptor.longDescriptor.type );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
@@ -5813,9 +5914,11 @@ function longFromCoercingLongDescriptor( test )
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
     test.case = 'filled argumentsArray';
-    var src = _.argumentsArrayMake( [ 1, 2, 3, 4, 0 ] );
+    var arr = [ 1, 2, 3 ];
+    var src = _.argumentsArrayMake( arr );
     var got = descriptor.longFromCoercing( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? _.argumentsArrayMake( [ 1, 2, 3, 4, 0 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    var exp =
+    src instanceof descriptor.longDescriptor.type ? _.argumentsArrayMake( arr ) : descriptor.longDescriptor.make( arr );
     test.identical( got, exp );
     test.is( got instanceof descriptor.longDescriptor.type );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
@@ -5830,22 +5933,24 @@ function longFromCoercingLongDescriptor( test )
 
     var src = new I16x( [] );
     var got = descriptor.longFromCoercing( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? new I16x( [] ) : descriptor.longDescriptor.make( [] );;
+    var exp = src instanceof descriptor.longDescriptor.type ? new I16x( [] ) : descriptor.longDescriptor.make( [] );
     test.identical( got, exp );
     test.is( got instanceof descriptor.longDescriptor.type );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
     test.case = 'filled BufferTyped';
-    var src = new F32x( [ 1, 2, 3, 4, 0 ] );
+    var src = new F32x( [ 1, 2, 3 ] );
     var got = descriptor.longFromCoercing( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? new F32x( [ 1, 2, 3, 4, 0 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    var exp =
+    src instanceof descriptor.longDescriptor.type ? new F32x( [ 1, 2, 3 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3 ] );
     test.identical( got, exp );
     test.is( got instanceof descriptor.longDescriptor.type );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
 
-    var src = new F64x( [ 1, 2, 3, 4, 0 ] );
+    var src = new F64x( [ 1, 2, 3 ] );
     var got = descriptor.longFromCoercing( src );
-    var exp = src instanceof descriptor.longDescriptor.type ? new F64x( [ 1, 2, 3, 4, 0 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3, 4, 0 ] );
+    var exp =
+    src instanceof descriptor.longDescriptor.type ? new F64x( [ 1, 2, 3 ] ) : descriptor.longDescriptor.make( [ 1, 2, 3 ] );
     test.identical( got, exp );
     test.is( got instanceof descriptor.longDescriptor.type );
     test.is( src instanceof descriptor.longDescriptor.type ? src === got : src !== got );
@@ -5930,16 +6035,16 @@ function longFromCoercingArgumentsArrayLongDescriptor( test )
   test.is( got instanceof descriptor.longDescriptor.type );
 
   test.case = 'empty object from constructor';
-  var Constr = function(){ return this };
-  var src = new Constr();
+  function Constr1(){ return this };
+  var src = new Constr1();
   var got = descriptor.longFromCoercing( src );
   var exp = [];
   test.identical( got, exp );
   test.is( got instanceof descriptor.longDescriptor.type );
 
   test.case = 'object with properties, from constructor';
-  var Constr = function(){ this.a = 2; this.b = 3; return this };
-  var src = new Constr();
+  function Constr2(){ this.a = 2; this.b = 3; return this };
+  var src = new Constr2();
   var got = descriptor.longFromCoercing( src );
   var exp = [ [ 'a', 2 ], [ 'b', 3 ] ];
   test.identical( got, exp );
@@ -10731,20 +10836,20 @@ function longShallowCloneOneArgument( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'empty BufferNode';
-    var src = BufferNode.alloc( 0 );
-    var got = _.longShallowClone( src );
-    var exp = BufferNode.alloc( 0 );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src );
+    var src1 = BufferNode.alloc( 0 );
+    var got1 = _.longShallowClone( src1 );
+    var exp1 = BufferNode.alloc( 0 );
+    test.identical( got1, exp1 );
+    test.is( _.bufferNodeIs( got1 ) );
+    test.is( got1 !== src1 );
 
     test.case = 'filled BufferNode';
-    var src = BufferNode.from( [ 1, 2, 3, 4, 5 ] );
-    var got = _.longShallowClone( src );
-    var exp = BufferNode.from( [ 1, 2, 3, 4, 5 ] );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src );
+    var src1 = BufferNode.from( [ 1, 2, 3, 4, 5 ] );
+    var got1 = _.longShallowClone( src1 );
+    var exp1 = BufferNode.from( [ 1, 2, 3, 4, 5 ] );
+    test.identical( got1, exp1 );
+    test.is( _.bufferNodeIs( got1 ) );
+    test.is( got1 !== src1 );
   }
 
   test.close( 'single argument' );
@@ -10882,16 +10987,16 @@ function longShallowCloneFirstArrayLike( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'first - filled array, other - BufferNode';
-    var src1 = [ [ 1 ], null ];
-    var src2 = BufferNode.from( [ 1, 2 ] );
-    var src3 = BufferNode.alloc( 2 );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = [ [ 1 ], null, 1, 2, 0, 0 ];
-    test.identical( got, exp );
-    test.is( _.arrayIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src11 = [ [ 1 ], null ];
+    var src21 = BufferNode.from( [ 1, 2 ] );
+    var src31 = BufferNode.alloc( 2 );
+    var got1 = _.longShallowClone( src11, src21, src31 );
+    var exp1 = [ [ 1 ], null, 1, 2, 0, 0 ];
+    test.identical( got1, exp1 );
+    test.is( _.arrayIs( got1 ) );
+    test.is( got1 !== src11 );
+    test.is( got1 !== src21 );
+    test.is( got1 !== src31 );
   }
 
   test.close( 'first argument - array' );
@@ -11011,16 +11116,16 @@ function longShallowCloneFirstArrayLike( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'first - filled argumentsArray, other - BufferNode';
-    var src1 = _.argumentsArrayMake( [ [ 1 ], null ] );
-    var src2 = BufferNode.from( [ 1, 2 ] );
-    var src3 = BufferNode.alloc( 2 );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = [ [ 1 ], null, 1, 2, 0, 0 ];
-    test.identical( got, exp );
-    test.is( _.arrayIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src12 = _.argumentsArrayMake( [ [ 1 ], null ] );
+    var src22 = BufferNode.from( [ 1, 2 ] );
+    var src32 = BufferNode.alloc( 2 );
+    var got2 = _.longShallowClone( src12, src22, src32 );
+    var exp2 = [ [ 1 ], null, 1, 2, 0, 0 ];
+    test.identical( got2, exp2 );
+    test.is( _.arrayIs( got2 ) );
+    test.is( got2 !== src12 );
+    test.is( got2 !== src22 );
+    test.is( got2 !== src32 );
   }
 
   test.close( 'first argument - argumentsArray' );
@@ -11140,16 +11245,16 @@ function longShallowCloneFirstArrayLike( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'first - filled unroll, other - BufferNode';
-    var src1 = _.unrollMake( [ [ 1 ], null ] );
-    var src2 = BufferNode.from( [ 1, 2 ] );
-    var src3 = BufferNode.alloc( 2 );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = [ [ 1 ], null, 1, 2, 0, 0 ];
-    test.identical( got, exp );
-    test.is( _.unrollIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src13 = _.unrollMake( [ [ 1 ], null ] );
+    var src23 = BufferNode.from( [ 1, 2 ] );
+    var src33 = BufferNode.alloc( 2 );
+    var got3 = _.longShallowClone( src13, src23, src33 );
+    var exp3 = [ [ 1 ], null, 1, 2, 0, 0 ];
+    test.identical( got3, exp3 );
+    test.is( _.unrollIs( got3 ) );
+    test.is( got3 !== src13 );
+    test.is( got3 !== src23 );
+    test.is( got3 !== src33 );
   }
 
   test.close( 'first argument - unroll' );
@@ -11272,16 +11377,16 @@ function longShallowCloneFirstBuffer( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'first - filled BufferRaw, other - BufferNode';
-    var src1 = new U8x( [ 1, 2 ] ).buffer;
-    var src2 = BufferNode.from( [ 1, 2 ] );
-    var src3 = BufferNode.from( [ 0, 0 ] );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new U8x( [ 1, 2, 1, 2, 0, 0 ] ).buffer;
-    test.identical( got, exp );
-    test.is( _.bufferRawIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src10 = new U8x( [ 1, 2 ] ).buffer;
+    var src20 = BufferNode.from( [ 1, 2 ] );
+    var src30 = BufferNode.from( [ 0, 0 ] );
+    var got0 = _.longShallowClone( src10, src20, src30 );
+    var exp0 = new U8x( [ 1, 2, 1, 2, 0, 0 ] ).buffer;
+    test.identical( got0, exp0 );
+    test.is( _.bufferRawIs( got0 ) );
+    test.is( got0 !== src10 );
+    test.is( got0 !== src20 );
+    test.is( got0 !== src30 );
   }
 
   test.close( 'first argument - BufferRaw' );
@@ -11401,16 +11506,16 @@ function longShallowCloneFirstBuffer( test )
   if( Config.interpreter === 'njs' )
   {
     test.case = 'first - filled BufferView, other - BufferNode';
-    var src1 = new BufferView( new U8x( [ 1, 2 ] ).buffer );
-    var src2 = BufferNode.from( [ 1, 2 ] );
-    var src3 = BufferNode.alloc( 2 );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new BufferView( new U8x( [ 1, 2, 1, 2, 0, 0 ] ).buffer );
-    test.identical( got, exp );
-    test.is( _.bufferViewIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src11 = new BufferView( new U8x( [ 1, 2 ] ).buffer );
+    var src21 = BufferNode.from( [ 1, 2 ] );
+    var src31 = BufferNode.alloc( 2 );
+    var got1 = _.longShallowClone( src11, src21, src31 );
+    var exp1 = new BufferView( new U8x( [ 1, 2, 1, 2, 0, 0 ] ).buffer );
+    test.identical( got1, exp1 );
+    test.is( _.bufferViewIs( got1 ) );
+    test.is( got1 !== src11 );
+    test.is( got1 !== src21 );
+    test.is( got1 !== src31 );
   }
 
   test.close( 'first argument - BufferView' );
@@ -11429,126 +11534,126 @@ function longShallowCloneFirstBuffer( test )
     test.open( 'first argument - ' + bufferTyped[ i ].name  );
 
     test.case = 'first - empty ' + bufferTyped[ i ].name + ', other - not containers';
-    var src1 = new bufferTyped[ i ]();
-    var src2 = 1;
-    var src3 = 2;
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new bufferTyped[ i ]( [ 1, 2 ] );
-    test.identical( got, exp );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src13 = new bufferTyped[ i ]();
+    var src23 = 1;
+    var src33 = 2;
+    var got3 = _.longShallowClone( src13, src23, src33 );
+    var exp3 = new bufferTyped[ i ]( [ 1, 2 ] );
+    test.identical( got3, exp3 );
+    test.is( _.bufferTypedIs( got3 ) );
+    test.is( got3 !== src13 );
+    test.is( got3 !== src23 );
+    test.is( got3 !== src33 );
 
     test.case = 'first - ' + bufferTyped[ i ].name + ' with length, other - not containers';
-    var src1 = new bufferTyped[ i ]( 2 );
-    var src2 = 1;
-    var src3 = 2;
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new bufferTyped[ i ]( [ 0, 0, 1, 2 ] );
-    test.identical( got, exp );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src13 = new bufferTyped[ i ]( 2 );
+    var src23 = 1;
+    var src33 = 2;
+    var got3 = _.longShallowClone( src13, src23, src33 );
+    var exp3 = new bufferTyped[ i ]( [ 0, 0, 1, 2 ] );
+    test.identical( got3, exp3 );
+    test.is( _.bufferTypedIs( got3 ) );
+    test.is( got3 !== src13 );
+    test.is( got3 !== src23 );
+    test.is( got3 !== src33 );
 
     test.case = 'empty ' + bufferTyped[ i ].name;
-    var src1 = new bufferTyped[ i ]();
-    var src2 = new bufferTyped[ i ]();
-    var src3 = new bufferTyped[ i ]();
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new bufferTyped[ i ]();
-    test.identical( got, exp );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src13 = new bufferTyped[ i ]();
+    var src23 = new bufferTyped[ i ]();
+    var src33 = new bufferTyped[ i ]();
+    var got3 = _.longShallowClone( src13, src23, src33 );
+    var exp3 = new bufferTyped[ i ]();
+    test.identical( got3, exp3 );
+    test.is( _.bufferTypedIs( got3 ) );
+    test.is( got3 !== src13 );
+    test.is( got3 !== src23 );
+    test.is( got3 !== src33 );
 
     test.case = 'first - empty ' + bufferTyped[ i ].name + ', other - empty containers';
-    var src1 = new bufferTyped[ i ]();
-    var src2 = _.argumentsArrayMake( [] );
-    var src3 = _.unrollMake( 0 );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new bufferTyped[ i ]();
-    test.identical( got, exp );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src13 = new bufferTyped[ i ]();
+    var src23 = _.argumentsArrayMake( [] );
+    var src33 = _.unrollMake( 0 );
+    var got3 = _.longShallowClone( src13, src23, src33 );
+    var exp3 = new bufferTyped[ i ]();
+    test.identical( got3, exp3 );
+    test.is( _.bufferTypedIs( got3 ) );
+    test.is( got3 !== src13 );
+    test.is( got3 !== src23 );
+    test.is( got3 !== src33 );
 
     test.case = 'first - empty ' + bufferTyped[ i ].name + ', other - filled ' + bufferTyped[ i ].name;
-    var src1 = new bufferTyped[ i ]();
-    var src2 = new U8x( [ 1, 2 ] ).buffer;
-    var src3 = new U8x( [ 3, 4 ] ).buffer;
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new bufferTyped[ i ]( [ 1, 2, 3, 4 ] );
-    test.identical( got, exp );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src13 = new bufferTyped[ i ]();
+    var src23 = new U8x( [ 1, 2 ] ).buffer;
+    var src33 = new U8x( [ 3, 4 ] ).buffer;
+    var got3 = _.longShallowClone( src13, src23, src33 );
+    var exp3 = new bufferTyped[ i ]( [ 1, 2, 3, 4 ] );
+    test.identical( got3, exp3 );
+    test.is( _.bufferTypedIs( got3 ) );
+    test.is( got3 !== src13 );
+    test.is( got3 !== src23 );
+    test.is( got3 !== src33 );
 
     test.case = 'first - ' + bufferTyped[ i ].name + ' with length, other - filled arrays';
-    var src1 = new bufferTyped[ i ]( 2 );
-    var src2 = [ 1, 2 ];
-    var src3 = [ 3, 4 ];
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new bufferTyped[ i ]( [ 0, 0, 1, 2, 3, 4 ] );
-    test.identical( got, exp );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src13 = new bufferTyped[ i ]( 2 );
+    var src23 = [ 1, 2 ];
+    var src33 = [ 3, 4 ];
+    var got3 = _.longShallowClone( src13, src23, src33 );
+    var exp3 = new bufferTyped[ i ]( [ 0, 0, 1, 2, 3, 4 ] );
+    test.identical( got3, exp3 );
+    test.is( _.bufferTypedIs( got3 ) );
+    test.is( got3 !== src13 );
+    test.is( got3 !== src23 );
+    test.is( got3 !== src33 );
 
     test.case = 'first - ' + bufferTyped[ i ].name + ' with length, other - unroll and argumentsArray';
-    var src1 = new bufferTyped[ i ]( [ 1, 2 ] );
-    var src2 = _.unrollMake( [ 1, 2 ] );
-    var src3 = _.argumentsArrayMake( [ 3, 4 ] );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new bufferTyped[ i ]( [ 1, 2, 1, 2, 3, 4 ] );
-    test.identical( got, exp );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src13 = new bufferTyped[ i ]( [ 1, 2 ] );
+    var src23 = _.unrollMake( [ 1, 2 ] );
+    var src33 = _.argumentsArrayMake( [ 3, 4 ] );
+    var got3 = _.longShallowClone( src13, src23, src33 );
+    var exp3 = new bufferTyped[ i ]( [ 1, 2, 1, 2, 3, 4 ] );
+    test.identical( got3, exp3 );
+    test.is( _.bufferTypedIs( got3 ) );
+    test.is( got3 !== src13 );
+    test.is( got3 !== src23 );
+    test.is( got3 !== src33 );
 
     test.case = 'first - ' + bufferTyped[ i ].name + ' with length, other - BufferView and argumentsArray';
-    var src1 = new bufferTyped[ i ]( [ 1, 2 ] );
-    var src2 = new BufferView( new U8x( [ 1, 2 ] ).buffer );
-    var src3 = _.argumentsArrayMake( [ 3, 4 ] );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new bufferTyped[ i ]( [ 1, 2, 1, 2, 3, 4 ] );
-    test.identical( got, exp );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src13 = new bufferTyped[ i ]( [ 1, 2 ] );
+    var src23 = new BufferView( new U8x( [ 1, 2 ] ).buffer );
+    var src33 = _.argumentsArrayMake( [ 3, 4 ] );
+    var got3 = _.longShallowClone( src13, src23, src33 );
+    var exp3 = new bufferTyped[ i ]( [ 1, 2, 1, 2, 3, 4 ] );
+    test.identical( got3, exp3 );
+    test.is( _.bufferTypedIs( got3 ) );
+    test.is( got3 !== src13 );
+    test.is( got3 !== src23 );
+    test.is( got3 !== src33 );
 
     test.case = 'first - ' + bufferTyped[ i ].name + ' with length, other - BufferRaw';
-    var src1 = new bufferTyped[ i ]( [ 1, 2 ] );
-    var src2 = new U8x( [ 1, 2 ] ).buffer;
-    var src3 = new U8x( [ 2, 3 ] ).buffer;
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = new bufferTyped[ i ]( [ 1, 2, 1, 2, 2, 3 ] );
-    test.identical( got, exp );
-    test.is( _.bufferTypedIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src13 = new bufferTyped[ i ]( [ 1, 2 ] );
+    var src23 = new U8x( [ 1, 2 ] ).buffer;
+    var src33 = new U8x( [ 2, 3 ] ).buffer;
+    var got3 = _.longShallowClone( src13, src23, src33 );
+    var exp3 = new bufferTyped[ i ]( [ 1, 2, 1, 2, 2, 3 ] );
+    test.identical( got3, exp3 );
+    test.is( _.bufferTypedIs( got3 ) );
+    test.is( got3 !== src13 );
+    test.is( got3 !== src23 );
+    test.is( got3 !== src33 );
 
     if( Config.interpreter === 'njs' )
     {
       test.case = 'first - ' + bufferTyped[ i ].name + ' with length, other - BufferNode';
-      var src1 = new bufferTyped[ i ]( [ 1, 2 ] );
-      var src2 = BufferNode.from( [ 1, 2 ] );
-      var src3 = BufferNode.from( [ 0, 0 ] );
-      var got = _.longShallowClone( src1, src2, src3 );
-      var exp = new bufferTyped[ i ]( [ 1, 2, 1, 2, 0, 0 ] );
-      test.identical( got, exp );
-      test.is( _.bufferTypedIs( got ) );
-      test.is( got !== src1 );
-      test.is( got !== src2 );
-      test.is( got !== src3 );
+      var src13a = new bufferTyped[ i ]( [ 1, 2 ] );
+      var src23a = BufferNode.from( [ 1, 2 ] );
+      var src33a = BufferNode.from( [ 0, 0 ] );
+      var gota = _.longShallowClone( src13a, src23a, src33a );
+      var expa = new bufferTyped[ i ]( [ 1, 2, 1, 2, 0, 0 ] );
+      test.identical( gota, expa );
+      test.is( _.bufferTypedIs( gota ) );
+      test.is( got3 !== src13a );
+      test.is( got3 !== src23a );
+      test.is( got3 !== src33a );
     }
 
     test.close( 'first argument - ' + bufferTyped[ i ].name );
@@ -11561,124 +11666,124 @@ function longShallowCloneFirstBuffer( test )
     test.open( 'first argument - BufferNode' );
 
     test.case = 'first - empty BufferRaw, other - not containers';
-    var src1 = BufferNode.alloc( 0 );
-    var src2 = 1;
-    var src3 = 2;
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = BufferNode.from( [ 1, 2 ] );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src14 = BufferNode.alloc( 0 );
+    var src24 = 1;
+    var src34 = 2;
+    var got4 = _.longShallowClone( src14, src24, src34 );
+    var exp4 = BufferNode.from( [ 1, 2 ] );
+    test.identical( got4, exp4 );
+    test.is( _.bufferNodeIs( got4 ) );
+    test.is( got4 !== src14 );
+    test.is( got4 !== src24 );
+    test.is( got4 !== src34 );
 
     test.case = 'first - BufferNode with length, other - not containers';
-    var src1 = BufferNode.alloc( 2 );
-    var src2 = 1;
-    var src3 = 2;
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = BufferNode.from( [ 0, 0, 1, 2 ] );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src14 = BufferNode.alloc( 2 );
+    var src24 = 1;
+    var src34 = 2;
+    var got4 = _.longShallowClone( src14, src24, src34 );
+    var exp4 = BufferNode.from( [ 0, 0, 1, 2 ] );
+    test.identical( got4, exp4 );
+    test.is( _.bufferNodeIs( got4 ) );
+    test.is( got4 !== src14 );
+    test.is( got4 !== src24 );
+    test.is( got4 !== src34 );
 
     test.case = 'first - empty BufferNode, empty BufferNode';
-    var src1 = BufferNode.alloc( 0 );
-    var src2 = BufferNode.alloc( 0 );
-    var src3 = BufferNode.alloc( 0 );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = BufferNode.alloc( 0 );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src14 = BufferNode.alloc( 0 );
+    var src24 = BufferNode.alloc( 0 );
+    var src34 = BufferNode.alloc( 0 );
+    var got4 = _.longShallowClone( src14, src24, src34 );
+    var exp4 = BufferNode.alloc( 0 );
+    test.identical( got4, exp4 );
+    test.is( _.bufferNodeIs( got4 ) );
+    test.is( got4 !== src14 );
+    test.is( got4 !== src24 );
+    test.is( got4 !== src34 );
 
     test.case = 'first - empty BufferNode, other - empty containers';
-    var src1 = BufferNode.alloc( 0 );
-    var src2 = _.argumentsArrayMake( [] );
-    var src3 = new U8x();
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = BufferNode.alloc( 0 );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src14 = BufferNode.alloc( 0 );
+    var src24 = _.argumentsArrayMake( [] );
+    var src34 = new U8x();
+    var got4 = _.longShallowClone( src14, src24, src34 );
+    var exp4 = BufferNode.alloc( 0 );
+    test.identical( got4, exp4 );
+    test.is( _.bufferNodeIs( got4 ) );
+    test.is( got4 !== src14 );
+    test.is( got4 !== src24 );
+    test.is( got4 !== src34 );
 
     test.case = 'first - empty BufferNode, other - filled BufferNode';
-    var src1 = BufferNode.alloc( 0 );
-    var src2 = BufferNode.from( [ 1, 2 ] );
-    var src3 = BufferNode.from( [ 3, 4 ] );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = BufferNode.from( [ 1, 2, 3, 4 ] );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src14 = BufferNode.alloc( 0 );
+    var src24 = BufferNode.from( [ 1, 2 ] );
+    var src34 = BufferNode.from( [ 3, 4 ] );
+    var got4 = _.longShallowClone( src14, src24, src34 );
+    var exp4 = BufferNode.from( [ 1, 2, 3, 4 ] );
+    test.identical( got4, exp4 );
+    test.is( _.bufferNodeIs( got4 ) );
+    test.is( got4 !== src14 );
+    test.is( got4 !== src24 );
+    test.is( got4 !== src34 );
 
     test.case = 'first - BufferNode with length, filled arrays';
-    var src1 = BufferNode.alloc( 2 );
-    var src2 = [ 1, 2 ];
-    var src3 = [ 3, 4 ];
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = BufferNode.from( [ 0, 0, 1, 2, 3, 4 ] );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src14 = BufferNode.alloc( 2 );
+    var src24 = [ 1, 2 ];
+    var src34 = [ 3, 4 ];
+    var got4 = _.longShallowClone( src14, src24, src34 );
+    var exp4 = BufferNode.from( [ 0, 0, 1, 2, 3, 4 ] );
+    test.identical( got4, exp4 );
+    test.is( _.bufferNodeIs( got4 ) );
+    test.is( got4 !== src14 );
+    test.is( got4 !== src24 );
+    test.is( got4 !== src34 );
 
     test.case = 'first - filled BufferNode, other - unroll and argumentsArray';
-    var src1 = BufferNode.from( [ 1, 2 ] );
-    var src2 = _.unrollMake( [ 1, 2 ] );
-    var src3 = _.argumentsArrayMake( [ 3, 4 ] );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = BufferNode.from( [ 1, 2, 1, 2, 3, 4 ] );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src14 = BufferNode.from( [ 1, 2 ] );
+    var src24 = _.unrollMake( [ 1, 2 ] );
+    var src34 = _.argumentsArrayMake( [ 3, 4 ] );
+    var got4 = _.longShallowClone( src14, src24, src34 );
+    var exp4 = BufferNode.from( [ 1, 2, 1, 2, 3, 4 ] );
+    test.identical( got4, exp4 );
+    test.is( _.bufferNodeIs( got4 ) );
+    test.is( got4 !== src14 );
+    test.is( got4 !== src24 );
+    test.is( got4 !== src34 );
 
     test.case = 'first - filled BufferNode, other - BufferView and argumentsArray';
-    var src1 = BufferNode.from( [ 1, 2 ] );
-    var src2 = new BufferView( new U8x( [ 1, 2 ] ).buffer );
-    var src3 = _.argumentsArrayMake( [ 3, 4 ] );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = BufferNode.from( [ 1, 2, 1, 2, 3, 4 ] );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src14 = BufferNode.from( [ 1, 2 ] );
+    var src24 = new BufferView( new U8x( [ 1, 2 ] ).buffer );
+    var src34 = _.argumentsArrayMake( [ 3, 4 ] );
+    var got4 = _.longShallowClone( src14, src24, src34 );
+    var exp4 = BufferNode.from( [ 1, 2, 1, 2, 3, 4 ] );
+    test.identical( got4, exp4 );
+    test.is( _.bufferNodeIs( got4 ) );
+    test.is( got4 !== src14 );
+    test.is( got4 !== src24 );
+    test.is( got4 !== src34 );
 
     test.case = 'first - filled BufferNode, other - BufferTyped';
-    var src1 = BufferNode.from( [ 1, 2 ] );
-    var src2 = new U8x( [ 1, 2 ] );
-    var src3 = new I32x( [ 2, 3 ] );
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = BufferNode.from( [ 1, 2, 1, 2, 2, 3 ] );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src14 = BufferNode.from( [ 1, 2 ] );
+    var src24 = new U8x( [ 1, 2 ] );
+    var src34 = new I32x( [ 2, 3 ] );
+    var got4 = _.longShallowClone( src14, src24, src34 );
+    var exp4 = BufferNode.from( [ 1, 2, 1, 2, 2, 3 ] );
+    test.identical( got4, exp4 );
+    test.is( _.bufferNodeIs( got4 ) );
+    test.is( got4 !== src14 );
+    test.is( got4 !== src24 );
+    test.is( got4 !== src34 );
 
     test.case = 'first - filled BufferNode, other - BufferRaw';
-    var src1 = BufferNode.from( [ 1, 2 ] );
-    var src2 = new U8x( [ 1, 2 ] ).buffer;
-    var src3 = new U8x( 2 ).buffer;
-    var got = _.longShallowClone( src1, src2, src3 );
-    var exp = BufferNode.from( [ 1, 2, 1, 2, 0, 0 ] );
-    test.identical( got, exp );
-    test.is( _.bufferNodeIs( got ) );
-    test.is( got !== src1 );
-    test.is( got !== src2 );
-    test.is( got !== src3 );
+    var src14 = BufferNode.from( [ 1, 2 ] );
+    var src24 = new U8x( [ 1, 2 ] ).buffer;
+    var src34 = new U8x( 2 ).buffer;
+    var got4 = _.longShallowClone( src14, src24, src34 );
+    var exp4 = BufferNode.from( [ 1, 2, 1, 2, 0, 0 ] );
+    test.identical( got4, exp4 );
+    test.is( _.bufferNodeIs( got4 ) );
+    test.is( got4 !== src14 );
+    test.is( got4 !== src24 );
+    test.is( got4 !== src34 );
 
     test.close( 'first argument - BufferNode' );
   }
@@ -12095,7 +12200,7 @@ function longDuplicate( test )
     nDupsPerElement : 1
   };
   var got = _.longDuplicate( options );
-  var expected = [ 'abc', 'def', ];
+  var expected = [ 'abc', 'def' ];
   test.identical( got, expected );
 
   /* */
@@ -12109,7 +12214,7 @@ function longDuplicate( test )
     nDupsPerElement : 1
   };
   var got = _.longDuplicate( options );
-  var expected = [ 1, 2, 'abc', 'def', ];
+  var expected = [ 1, 2, 'abc', 'def' ];
   test.identical( got, expected );
 
   /* */
@@ -12347,7 +12452,7 @@ function longAllAreRepeated( test )
 
   test.case = 'identical values of array with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = [ { val: 1 }, { val: 1 } ];
+  var src = [ { val : 1 }, { val : 1 } ];
   var got = _.longAllAreRepeated( src, evaluator );
   var expected = true;
   test.identical( got, expected );
@@ -12361,7 +12466,7 @@ function longAllAreRepeated( test )
 
   test.case = 'single value of array with evaluator';
   var evaluator = ( e ) => e;
-  var src = [ { val: 1 } ];
+  var src = [ { val : 1 } ];
   var got = _.longAllAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -12375,7 +12480,7 @@ function longAllAreRepeated( test )
 
   test.case = 'some values of array are identical with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = [ { val: 1 }, { val: 1 }, { val: 3 } ];
+  var src = [ { val : 1 }, { val : 1 }, { val : 3 } ];
   var got = _.longAllAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -12405,7 +12510,7 @@ function longAllAreRepeated( test )
 
   test.case = 'unroll, identical values with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 } ] );
   var got = _.longAllAreRepeated( src, evaluator );
   var expected = true;
   test.identical( got, expected );
@@ -12419,7 +12524,7 @@ function longAllAreRepeated( test )
 
   test.case = 'unroll, single value with evaluator';
   var evaluator = ( e ) => e;
-  var src = _.unrollMake( [ { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 } ] );
   var got = _.longAllAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -12433,7 +12538,7 @@ function longAllAreRepeated( test )
 
   test.case = 'unroll, some values are identical with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 }, { val: 3 } ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 }, { val : 3 } ] );
   var got = _.longAllAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -12463,7 +12568,7 @@ function longAllAreRepeated( test )
 
   test.case = 'identical values of array with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = [ { val: 1 }, { val: 1 } ];
+  var src = [ { val : 1 }, { val : 1 } ];
   var got = _.longAllAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -12477,7 +12582,7 @@ function longAllAreRepeated( test )
 
   test.case = 'single value of array with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = [ { val: 1 } ];
+  var src = [ { val : 1 } ];
   var got = _.longAllAreRepeated( src, equalizer );
   var expected = false;
   test.identical( got, expected );
@@ -12491,7 +12596,7 @@ function longAllAreRepeated( test )
 
   test.case = 'some values of array are identical with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = [ { val: 1 }, { val: 1 }, 11, 3 ];
+  var src = [ { val : 1 }, { val : 1 }, 11, 3 ];
   var got = _.longAllAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -12521,7 +12626,7 @@ function longAllAreRepeated( test )
 
   test.case = 'unroll, identical values with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 } ] );
   var got = _.longAllAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -12535,7 +12640,7 @@ function longAllAreRepeated( test )
 
   test.case = 'unroll, single value with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = _.unrollMake( [ { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 } ] );
   var got = _.longAllAreRepeated( src, equalizer );
   var expected = false;
   test.identical( got, expected );
@@ -12549,7 +12654,7 @@ function longAllAreRepeated( test )
 
   test.case = 'unroll, some values are identical with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 }, 11, 3 ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 }, 11, 3 ] );
   var got = _.longAllAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -12684,7 +12789,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'identical values of array with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = [ { val: 1 }, { val: 1 } ];
+  var src = [ { val : 1 }, { val : 1 } ];
   var got = _.longAnyAreRepeated( src, evaluator );
   var expected = true;
   test.identical( got, expected );
@@ -12698,7 +12803,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'single value of array with evaluator';
   var evaluator = ( e ) => e;
-  var src = [ { val: 1 } ];
+  var src = [ { val : 1 } ];
   var got = _.longAnyAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -12712,7 +12817,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'some values of array are identical with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = [ { val: 1 }, { val: 1 }, { val: 3 } ];
+  var src = [ { val : 1 }, { val : 1 }, { val : 3 } ];
   var got = _.longAnyAreRepeated( src, evaluator );
   var expected = true;
   test.identical( got, expected );
@@ -12742,7 +12847,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'unroll, identical values with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 } ] );
   var got = _.longAnyAreRepeated( src, evaluator );
   var expected = true;
   test.identical( got, expected );
@@ -12756,7 +12861,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'unroll, single value with evaluator';
   var evaluator = ( e ) => e;
-  var src = _.unrollMake( [ { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 } ] );
   var got = _.longAnyAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -12770,7 +12875,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'unroll, some values are identical with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 }, { val: 3 } ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 }, { val : 3 } ] );
   var got = _.longAnyAreRepeated( src, evaluator );
   var expected = true;
   test.identical( got, expected );
@@ -12800,7 +12905,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'identical values of array with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = [ { val: 1 }, { val: 1 } ];
+  var src = [ { val : 1 }, { val : 1 } ];
   var got = _.longAnyAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -12814,7 +12919,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'single value of array with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = [ { val: 1 } ];
+  var src = [ { val : 1 } ];
   var got = _.longAnyAreRepeated( src, equalizer );
   var expected = false;
   test.identical( got, expected );
@@ -12828,7 +12933,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'some values of array are identical with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = [ { val: 1 }, { val: 1 }, 11, 3 ];
+  var src = [ { val : 1 }, { val : 1 }, 11, 3 ];
   var got = _.longAnyAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -12858,7 +12963,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'unroll, identical values with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 } ] );
   var got = _.longAnyAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -12872,7 +12977,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'unroll, single value with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = _.unrollMake( [ { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 } ] );
   var got = _.longAnyAreRepeated( src, equalizer );
   var expected = false;
   test.identical( got, expected );
@@ -12886,7 +12991,7 @@ function longAnyAreRepeated( test )
 
   test.case = 'unroll, some values are identical with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 }, 11, 3 ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 }, 11, 3 ] );
   var got = _.longAnyAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -13021,7 +13126,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'identical values of array with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = [ { val: 1 }, { val: 1 } ];
+  var src = [ { val : 1 }, { val : 1 } ];
   var got = _.longNoneAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -13035,7 +13140,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'single value of array with evaluator';
   var evaluator = ( e ) => e;
-  var src = [ { val: 1 } ];
+  var src = [ { val : 1 } ];
   var got = _.longNoneAreRepeated( src, evaluator );
   var expected = true;
   test.identical( got, expected );
@@ -13049,7 +13154,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'some values of array are identical with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = [ { val: 1 }, { val: 1 }, { val: 3 } ];
+  var src = [ { val : 1 }, { val : 1 }, { val : 3 } ];
   var got = _.longNoneAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -13079,7 +13184,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'unroll, identical values with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 } ] );
   var got = _.longNoneAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -13093,7 +13198,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'unroll, single value with evaluator';
   var evaluator = ( e ) => e;
-  var src = _.unrollMake( [ { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 } ] );
   var got = _.longNoneAreRepeated( src, evaluator );
   var expected = true;
   test.identical( got, expected );
@@ -13107,7 +13212,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'unroll, some values are identical with evaluator';
   var evaluator = ( e ) => e.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 }, { val: 3 } ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 }, { val : 3 } ] );
   var got = _.longNoneAreRepeated( src, evaluator );
   var expected = false;
   test.identical( got, expected );
@@ -13137,7 +13242,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'identical values of array with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = [ { val: 1 }, { val: 1 } ];
+  var src = [ { val : 1 }, { val : 1 } ];
   var got = _.longNoneAreRepeated( src, equalizer );
   var expected = false;
   test.identical( got, expected );
@@ -13151,7 +13256,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'single value of array with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = [ { val: 1 } ];
+  var src = [ { val : 1 } ];
   var got = _.longNoneAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -13165,7 +13270,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'some values of array are identical with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = [ { val: 1 }, { val: 1 }, 11, 3 ];
+  var src = [ { val : 1 }, { val : 1 }, 11, 3 ];
   var got = _.longNoneAreRepeated( src, equalizer );
   var expected = false;
   test.identical( got, expected );
@@ -13195,7 +13300,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'unroll, identical values with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 } ] );
   var got = _.longNoneAreRepeated( src, equalizer );
   var expected = false;
   test.identical( got, expected );
@@ -13209,7 +13314,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'unroll, single value with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = _.unrollMake( [ { val: 1 } ] );
+  var src = _.unrollMake( [ { val : 1 } ] );
   var got = _.longNoneAreRepeated( src, equalizer );
   var expected = true;
   test.identical( got, expected );
@@ -13223,7 +13328,7 @@ function longNoneAreRepeated( test )
 
   test.case = 'unroll, some values are identical with equalizer';
   var equalizer = ( e1, e2 ) => e1.val === e2.val;
-  var src = _.unrollMake( [ { val: 1 }, { val: 1 }, 11, 3 ] );
+  var src = _.unrollMake( [ { val : 1 }, { val : 1 }, 11, 3 ] );
   var got = _.longNoneAreRepeated( src, equalizer );
   var expected = false;
   test.identical( got, expected );
@@ -13271,12 +13376,12 @@ function longMask( test )
 
   test.case = 'adds last three values';
   var got = _.longMask( [ 'a', 'b', 'c', 4, 5 ], [ 0, '', 1, 2, 3 ] );
-  var expected = [ "c", 4, 5 ];
+  var expected = [ 'c', 4, 5 ];
   test.identical( got, expected );
 
   test.case = 'adds the certain values';
   var got = _.longMask( [ 'a', 'b', 'c', 4, 5, 'd' ], [ 3, 7, 0, '', 13, 33 ] );
-  var expected = [ "a", 'b', 5, 'd' ];
+  var expected = [ 'a', 'b', 5, 'd' ];
   test.identical( got, expected );
 
   /* */
@@ -13437,7 +13542,8 @@ function longOnceWithCallback( test )
     test.case = 'dst has duplicates, evaluator';
     var dst = makeLong( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
     var got = _.longOnce( dst, ( e ) => e.v );
-    var expected = _.argumentsArrayIs( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeLong( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    var expected =
+    _.argumentsArrayIs( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeLong( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
@@ -13451,7 +13557,7 @@ function longOnceWithCallback( test )
     /* */
 
     test.case = 'dst has duplicates';
-    var equalizer = function( e1, e2 )
+    var equalizer = ( e1, e2 ) =>
     {
       e1 = _.mapIs( e1 ) ? e1.v : e1;
       e2 = _.mapIs( e2 ) ? e2.v : e2;
@@ -13459,12 +13565,13 @@ function longOnceWithCallback( test )
     }
     var dst = makeLong( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
     var got = _.longOnce( dst, equalizer );
-    var expected = _.argumentsArrayIs( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeLong( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    var expected =
+    _.argumentsArrayIs( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeLong( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
 
     test.case = 'dst has not duplicates';
-    var equalizer = function( e1, e2 )
+    var equalizer = ( e1, e2 ) =>
     {
       e1 = _.mapIs( e1 ) ? e1.v : e1;
       e2 = _.mapIs( e2 ) ? e2.v : e2;
@@ -13657,7 +13764,7 @@ function longOnce_WithCallback( test )
   ];
 
   var evaluator = ( e ) => _.mapIs( e ) ? e.v : e;
-  var equalizer = function( e1, e2 )
+  var equalizer = ( e1, e2 ) =>
   {
     e1 = _.mapIs( e1 ) ? e1.v : e1;
     e2 = _.mapIs( e2 ) ? e2.v : e2;
@@ -13687,12 +13794,11 @@ function longOnce_WithCallback( test )
 
   function testRun( makeDst, onEvaluate )
   {
-    var result = ( dst, src ) =>
-
     test.case = 'dst has duplicates, src - undefined';
     var dst = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
     var got = _.longOnce_( dst, onEvaluate );
-    var expected = _.argumentsArrayIs( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
+    var expected =
+    _.argumentsArrayIs( dst ) ? [ { v : 1 }, { v : 2 }, { v : 3 } ] : makeDst( [ { v : 1 }, { v : 2 }, { v : 3 } ] );
     test.identical( got, expected );
     test.is( _.arrayIs( dst ) ? got === dst : got !== dst );
 
@@ -13779,10 +13885,10 @@ function longOnce_WithCallback( test )
     test.is( _.arrayIs( dst ) ? got === dst : got !== dst );
 
     test.case = 'dst - ' + makeDst.name + ' with, duplicates, src - ' + makeDst.name + ' with duplicates';
-    var dst = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
-    var src = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 4 } ] );
+    var dst = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 } ] );
+    var src = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 4 } ] );
     var got = _.longOnce_( dst, src, onEvaluate );
-    var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 }, { v : 4 } ] );
+    var expected = makeDst( [ { v : 1 }, { v : 2 }, { v : 1 }, { v : 3 }, { v : 4 } ] );
     test.equivalent( got, expected );
     test.is( _.arrayIs( dst ) ? got === dst : got !== dst );
   }
@@ -14304,10 +14410,10 @@ function longSortDstIsNull( test )
     test.case = 'not empty container';
     if( makeLong.name !== 'Uint8ClampedArray' && makeLong.name !== 'Uint8Array' && makeLong.name !== 'Uint16Array' && makeLong.name !== 'Uint32Array' )
     {
-      var dst = null;
-      var src = new makeLong( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
-      var got = _.longSort( dst, src );
-      test.identical( got, [ -12, -2, 0, 1, 10, 14, 3, 4, 5 ] );
+      var dst1 = null;
+      var src1 = new makeLong( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
+      var got1 = _.longSort( dst1, src1 );
+      test.identical( got1, [ -12, -2, 0, 1, 10, 14, 3, 4, 5 ] );
     }
 
     test.case = 'not empty container, onEvaluate - comparator';
@@ -14373,11 +14479,12 @@ function longSortDstIsNotNull( test )
     test.case = 'not empty container, onEvaluate - evaluator, negative numbers';
     if( makeLong.name !== 'Uint8ClampedArray' && makeLong.name !== 'Uint8Array' && makeLong.name !== 'Uint16Array' && makeLong.name !== 'Uint32Array' )
     {
-      var dst = new makeLong( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
-      var got = _.longSort( dst, ( e ) => e );
-      var exp = _.argumentsArrayIs( dst ) ? [ -12, -2, 0, 1, 3, 4, 5, 10, 14 ] : new makeLong( [ -12, -2, 0, 1, 3, 4, 5, 10, 14 ] );
-      test.is( _.argumentsArrayIs( dst ) ? got !== dst : got === dst );
-      test.identical( got, exp );
+      var dst1 = new makeLong( [ 1, 5, 14, 4, 3, 0, -2, 10, -12 ] );
+      var got1 = _.longSort( dst1, ( e ) => e );
+      var exp1 =
+      _.argumentsArrayIs( dst1 ) ? [ -12, -2, 0, 1, 3, 4, 5, 10, 14 ] : new makeLong( [ -12, -2, 0, 1, 3, 4, 5, 10, 14 ] );
+      test.is( _.argumentsArrayIs( dst1 ) ? got1 !== dst1 : got1 === dst1 );
+      test.identical( got1, exp1 );
     }
 
     test.case = 'not empty container, onEvaluate - comparator';
@@ -14555,7 +14662,7 @@ function longRandom( test )
   var dst = [ 0, 0 ];
   var got = _.longRandom
   ({
-    dst : dst,
+    dst,
     length : 4,
     value : [ 1, 9 ],
     onEach : ( value ) => _.intRandom( value ),
@@ -14571,7 +14678,7 @@ function longRandom( test )
   var dst = _.unrollMake( [ 0, 0 ] );
   var got = _.longRandom
   ({
-    dst : dst,
+    dst,
     length : 4,
     value : [ 1, 9 ],
     onEach : ( value ) => _.intRandom( value ),
@@ -14588,7 +14695,7 @@ function longRandom( test )
   var dst = [ 0, 0, 0, 0 ];
   var got = _.longRandom
   ({
-    dst : dst,
+    dst,
     length : 2,
     value : [ 1, 9 ],
     onEach : ( value ) => _.intRandom( value ),
@@ -14604,7 +14711,7 @@ function longRandom( test )
   var dst = _.unrollMake( [ 0, 0, 0, 0 ] );
   var got = _.longRandom
   ({
-    dst : dst,
+    dst,
     length : 2,
     value : [ 1, 9 ],
     onEach : ( value ) => _.intRandom( value ),
@@ -14621,7 +14728,7 @@ function longRandom( test )
   var dst = [ 0, 0, 0 ];
   var got = _.longRandom
   ({
-    dst : dst,
+    dst,
     value : [ 1, 9 ],
     onEach : ( value ) => _.intRandom( value ),
   });
@@ -15181,11 +15288,12 @@ function longToMap( test )
   test.identical( got, expected );
 
   test.case = 'arguments[...]';
-  var args = ( function() {
+  var args = ( function()
+  {
     return arguments;
-  } )( 3, 'abc', false, undefined, null, { greeting: 'Hello there!' } );
+  } )( 3, 'abc', false, undefined, null, { greeting : 'Hello there!' } );
   var got = _.longToMap( args );
-  var expected = { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting: 'Hello there!' } };
+  var expected = { '0' : 3, '1' : 'abc', '2' : false, '3' : undefined, '4' : null, '5' : { greeting : 'Hello there!' } };
   test.identical( got, expected );
 
   test.case = 'longIs';
@@ -15220,22 +15328,22 @@ function longToStr( test )
 
   test.case = 'nothing';
   var got = _.longToStr( [] );
-  var expected = "";
+  var expected = '';
   test.identical( got, expected );
 
   test.case = 'returns the string';
   var got = _.longToStr( 'abcdefghijklmnopqrstuvwxyz', { type : 'int' } );
-  var expected = "a b c d e f g h i j k l m n o p q r s t u v w x y z ";
+  var expected = 'a b c d e f g h i j k l m n o p q r s t u v w x y z ';
   test.identical( got, expected );
 
   test.case = 'returns a single string representing the integer values';
   var got = _.longToStr( [ 1, 2, 3 ], { type : 'int' } );
-  var expected = "1 2 3 ";
+  var expected = '1 2 3 ';
   test.identical( got, expected );
 
   test.case = 'returns a single string representing the float values';
   var got = _.longToStr( [ 3.5, 13.77, 7.33 ], { type : 'float', precission : 4 } );
-  var expected = "3.500 13.77 7.330";
+  var expected = '3.500 13.77 7.330';
   test.identical( got, expected );
 
   /**/
@@ -15303,10 +15411,12 @@ function longCompare( test )
   test.identical( got, expected );
 
   test.case = 'array-like arguments';
-  var src1 = function src1() {
+  var src1 = function src1()
+  {
     return arguments;
   }( 1, 5 );
-  var src2 = function src2() {
+  var src2 = function src2()
+  {
     return arguments;
   }( 1, 2 );
   var got = _.longCompare( src1, src2 );
@@ -15370,10 +15480,12 @@ function longIdentical( test )
   test.identical( got, expected );
 
   test.case = 'array-like arguments';
-  function src1() {
+  function src1()
+  {
     return arguments;
   };
-  function src2() {
+  function src2()
+  {
     return arguments;
   };
   var got = _.longIdentical( src1( 3, 7, 33 ), src2( 3, 7, 13 ) );
@@ -15731,12 +15843,12 @@ function longHasAllWithoutCallback( test )
 
     if( !_.bufferTypedIs( src ) )
     {
-      test.case = 'src has udefined, ins has null';
-      var src = new makeLong( [ undefined, undefined, undefined ] );
-      var ins = new makeLong( [ null, null, null ] );
-      var got = _.longHasAll( src, ins );
-      var expected = false;
-      test.identical( got, expected );
+      test.case = 'src1 has udefined, ins has null';
+      var src1 = new makeLong( [ undefined, undefined, undefined ] );
+      var ins1 = new makeLong( [ null, null, null ] );
+      var got1 = _.longHasAll( src1, ins1 );
+      var expected1 = false;
+      test.identical( got1, expected1 );
     }
   }
 
@@ -16148,7 +16260,7 @@ function longHasDepth( test )
   test.identical( got, false );
 
   test.case = 'check Symbol';
-  var got = _.longHasDepth( Symbol() );
+  var got = _.longHasDepth( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'check map';
@@ -16192,7 +16304,7 @@ function longHasDepth( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function()
+  function Constr()
   {
     this.x = 1;
     return this;
@@ -16200,13 +16312,6 @@ function longHasDepth( test )
   var src = new Constr();
   var got = _.longHasDepth( src );
   test.identical( got, false );
-
-  if( Config.interpreter === 'njs' )
-  {
-    test.case = 'BufferNode';
-    var got = _.longHasDepth( BufferNode.alloc( 0 ) );
-    test.identical( got, false );
-  }
 
   /* - */
 
@@ -16535,13 +16640,13 @@ function longRightIndex( test )
   test.identical( got, expected );
 
   test.case = 'fromIndex + evaluator';
-  var got = _.longRightIndex( [ 1, 1, 2, 2, 3, 3 ], 3, 4, function( el, ins ) { return el < ins } );
+  var got = _.longRightIndex( [ 1, 1, 2, 2, 3, 3 ], 3, 4, ( el, ins ) => el < ins );
   var expected = 3;
   test.identical( got, expected );
 
   test.case = 'fromIndex + evaluator x2';
-  var evaluator1 = function( el ) { return el + 1 }
-  var evaluator2 = function( ins ) { return ins * 2 }
+  var evaluator1 = ( el ) => el + 1;
+  var evaluator2 = ( ins ) => ins * 2;
   var got = _.longRightIndex( [ 6, 6, 5, 5 ], 3, 2, evaluator1, evaluator2 );
   var expected = 2;
   test.identical( got, expected );
@@ -16958,10 +17063,10 @@ function longCountElementWithoutCallback( test )
   test.shouldThrowErrorSync( () => _.longCountElement( [ 3, 4, 5, true ], 3, () => 3 ) );
 
   test.case = 'evaluator is wrong - have three arguments';
-  test.shouldThrowErrorSync( () => _.longCountElement( [ 3, 4, 5, true ], 3, ( a, b, c ) => _.typeOf( a ) === _.typeOf( b ) === _.typeOf( c ) ) );
+  test.shouldThrowErrorSync( () => _.longCountElement( [ 3, 4, 5, true ], 3, ( a, b, c ) => a === b && b === c ) );
 
   test.case = 'evaluator2 is unnacessary';
-  test.shouldThrowErrorSync( () => _.longCountElement( [ 3, 4, 5, true ], 3, ( a, b ) => _.typeOf( a ) === _.typeOf( b ), ( e ) => e ) );
+  test.shouldThrowErrorSync( () => _.longCountElement( [ 3, 4, 5, true ], 3, ( a, b ) => a === b, ( e ) => e ) );
 
   test.case = 'evaluator2 is wrong - have no arguments';
   test.shouldThrowErrorSync( () => _.longCountElement( [ 3, 4, 5, true ], 3, ( a ) => a, () => e ) );
@@ -17139,16 +17244,16 @@ function longCountTotal( test )
     if( !_.bufferTypedIs( new makeLong( 0 ) ) )
     {
       test.case = 'numbers, negative result';
-      var src = new makeLong( [ 2, -3, 4, -4, 6, -7 ] );
-      var got = _.longCountTotal( src );
-      var expected = -2;
-      test.identical( got, expected );
+      var src1 = new makeLong( [ 2, -3, 4, -4, 6, -7 ] );
+      var got1 = _.longCountTotal( src1 );
+      var expected1 = -2;
+      test.identical( got1, expected1 );
 
       test.case = 'mix of true, false, numbers and null - negative result';
-      var src = new makeLong( [ null, false, false, 0, true, null, -8, false, 10, true, false, -9, false, true, 2, null ] );
-      var got = _.longCountTotal( src );
-      var expected = -2;
-      test.identical( got, expected );
+      var src1 = new makeLong( [ null, false, false, 0, true, null, -8, false, 10, true, false, -9, false, true, 2, null ] );
+      var got1 = _.longCountTotal( src1 );
+      var expected1 = -2;
+      test.identical( got1, expected1 );
     }
   }
 
@@ -17342,6 +17447,7 @@ let Self =
     // long l0/l3
 
     longIs,
+    longLike,
 
     // long, l0/l5
 

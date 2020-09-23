@@ -88,6 +88,72 @@ function regexpIdentical( test )
 
 //
 
+function regexpEquivalent( test )
+{
+  test.case = 'null';
+  var expected = false;
+  var got = _.regexpEquivalent( null, null );
+  test.identical( got, expected );
+
+  test.case = 'null and regexp';
+  var expected = false;
+  var got = _.regexpEquivalent( /x/, null );
+  test.identical( got, expected );
+
+  test.case = 'same string';
+  var expected = false;
+  var got = _.regexpEquivalent( 'x', 'x' );
+  test.identical( got, expected );
+
+  test.case = 'same regexp';
+  var expected = true;
+  var got = _.regexpEquivalent( /abc/iy, /abc/yi );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'identical regexp, first with flag';
+  var expected = true;
+  var got = _.regexpEquivalent( /abc/i, /abc/ );
+  test.identical( got, expected );
+
+  test.case = 'identical regexp, different flags';
+  var expected = true;
+  var got = _.regexpEquivalent( /abc/i, /abc/g );
+  test.identical( got, expected );
+
+  test.case = 'identical regexp, second with flag';
+  var expected = true;
+  var got = _.regexpEquivalent( /abc/, /abc/g );
+  test.identical( got, expected );
+
+  /* - */
+
+  test.case = 'not identical regexp, different source';
+  var expected = false;
+  var got = _.regexpEquivalent( /abcd/i, /abc/i );
+  test.identical( got, expected );
+
+  test.case = 'not identical regexp, different source & flags';
+  var expected = false;
+  var got = _.regexpEquivalent( /abcd/y, /abc/i );
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'none argument';
+  test.shouldThrowErrorSync( () => _.regexpIdentical() );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( () => _.regexpIdentical( /abc/i, /def/i, /a/i ) );
+
+}
+
+//
+
 function regexpMaybeFrom( test ) 
 {
   test.open( 'default options, without options map' );
@@ -1978,6 +2044,7 @@ let Self =
   {
 
     regexpIdentical,
+    regexpEquivalent,
 
     regexpMaybeFrom,
 

@@ -110,7 +110,7 @@ let Routines =
   regexpLike,
   regexpsLike,
   regexpIdentical, /* qqq : cover please */
-  regexpEquivalent, /* qqq : cover please */
+  regexpEquivalent, /* qqq : cover please | Done. Yevhen S. */
 
   regexpEscape,
 
