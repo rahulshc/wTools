@@ -1,4 +1,5 @@
-( function _ModulesRegistry_s_() {
+( function _ModulesRegistry_s_()
+{
 
 'use strict';
 
@@ -115,7 +116,10 @@ let wProcess =
 let wUriBasic =
 {
   sourcePath : sourcePath( 'abase/l5/Uris.s', 'wuribasic' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.uri && !!_global.wTools.uri.s && !!_global.wTools.uri.s.parse },
+  isIncluded : function()
+  {
+    return !!_global.wTools && !!_global.wTools.uri && !!_global.wTools.uri.s && !!_global.wTools.uri.s.parse
+  },
 }
 
 let wTraverser =
@@ -439,7 +443,11 @@ let wFilesArchive =
 let wFilesEncoders =
 {
   sourcePath : sourcePath( 'amid/l4_files/entry/EncodersExtended.s', 'wfilesencoders' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.files && !!_global.wTools.files.ReadEncoders && !!_global.wTools.files.ReadEncoders.yml },
+  isIncluded : function()
+  {
+    return !!_global.wTools && !!_global.wTools.files
+    && !!_global.wTools.files.ReadEncoders && !!_global.wTools.files.ReadEncoders.yml
+  },
 }
 
 let wFilesExtract =
@@ -539,7 +547,11 @@ let wColor =
 let wColor256 =
 {
   sourcePath : sourcePath( 'amid/color/Color256.s', 'wColor256' ),
-  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.color && !!_global.wTools.color.ColorMap && Object.keys( _global.wTools.color.ColorMap ).length > 100 },
+  isIncluded : function()
+  {
+    return !!_global.wTools && !!_global.wTools.color
+    && !!_global.wTools.color.ColorMap && Object.keys( _global.wTools.color.ColorMap ).length > 100
+  },
 }
 
 let wChangeTransactor =

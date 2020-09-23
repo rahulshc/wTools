@@ -1,4 +1,5 @@
-( function _Unroll_test_s_( ) {
+( function _Unroll_test_s_( )
+{
 
 'use strict';
 
@@ -1731,7 +1732,7 @@ function unrollsFrom( test )
 
 function unrollsFromLongDescriptor( test )
 {
-   let times = 4;
+  let times = 4;
   for( let e in _.LongDescriptors )
   {
     let name = _.LongDescriptors[ e ].name;
@@ -2118,7 +2119,7 @@ function unrollFromMaybeLongDescriptor( test )
     var src = Object.create( null );
     src.a = 0;
     src.b = 'str'
-      var got = descriptor.unrollFromMaybe( src );
+    var got = descriptor.unrollFromMaybe( src );
     test.identical( got, { a : 0, b : 'str' } );
     test.is( _.mapIs( got ) );
 

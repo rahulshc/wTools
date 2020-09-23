@@ -1,4 +1,5 @@
-( function _NameTools_s_() {
+( function _NameTools_s_()
+{
 
 'use strict';
 

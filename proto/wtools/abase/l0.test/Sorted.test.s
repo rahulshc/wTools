@@ -1,4 +1,5 @@
-( function _Sorted_test_s_( ) {
+( function _Sorted_test_s_()
+{
 
 'use strict';
 
