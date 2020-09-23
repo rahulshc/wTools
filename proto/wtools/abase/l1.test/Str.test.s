@@ -889,11 +889,11 @@ function strRemove( test )
   test.shouldThrowErrorSync( () => _.strRemove() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strRemove( 'abcd','a','a', 'extra' ) );
+  test.shouldThrowErrorSync( () => _.strRemove( 'abcd', 'a', 'a', 'extra' ) );
 
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.strRemove( 1, '' ) );
-  test.shouldThrowErrorSync( () => _.strRemove( /\w*/,'2' ) );
+  test.shouldThrowErrorSync( () => _.strRemove( /\w*/, '2' ) );
   test.shouldThrowErrorSync( () => _.strRemove( [ 'str', 1 ], '2' ) );
   test.shouldThrowErrorSync( () => _.strRemove( [ 'str', /ex/ ], '2' ) );
 
@@ -1431,12 +1431,12 @@ function strReplaceWords( test )
 {
 
   test.case = 'simple string';
-  var got = _.strReplaceWords( 'a b c d',[ 'b', 'c' ], [ 'x', 'y' ] );
+  var got = _.strReplaceWords( 'a b c d', [ 'b', 'c' ], [ 'x', 'y' ] );
   var expected = 'a x y d';
   test.identical( got, expected );
 
   test.case = 'escaping string';
-  var got = _.strReplaceWords( '\na b \n c d',[ 'b', 'c' ], [ 'x', 'y' ] );
+  var got = _.strReplaceWords( '\na b \n c d', [ 'b', 'c' ], [ 'x', 'y' ] );
   var expected = '\na x \n y d';
   test.identical( got, expected );
 
@@ -1454,19 +1454,19 @@ function strReplaceWords( test )
   test.case = 'invalid argument type';
   test.shouldThrowErrorSync( function()
   {
-    _.strReplaceWords( 123,[],[] );
+    _.strReplaceWords( 123, [], [] );
   });
 
   test.case = 'invalid arrays length';
   test.shouldThrowErrorSync( function()
   {
-    _.strReplaceWords( 'one two',[ 'one' ],[ 'one', 'two' ] );
+    _.strReplaceWords( 'one two', [ 'one' ], [ 'one', 'two' ] );
   });
 
   test.case = 'invalid second arg type';
   test.shouldThrowErrorSync( function()
   {
-    _.strReplaceWords( 'one two',5,[ 'one', 'two' ] );
+    _.strReplaceWords( 'one two', 5, [ 'one', 'two' ] );
   });
 
   test.case = 'no arguments';
@@ -1569,7 +1569,7 @@ function strCommonLeft( test )
   test.case = 'ins is array';
   test.shouldThrowErrorSync( function( )
   {
-    _.strCommonLeft( ['a','b','c'], 'abd', 'abc', 'ada' );
+    _.strCommonLeft( [ 'a', 'b', 'c' ], 'abd', 'abc', 'ada' );
   });
 
   test.case = 'ins is number';
@@ -1706,7 +1706,7 @@ function strCommonRight( test )
   test.case = 'ins is array';
   test.shouldThrowErrorSync( function( )
   {
-    _.strCommonRight( ['a','b','c'], 'abd', 'abc', 'ada' );
+    _.strCommonRight( [ 'a', 'b', 'c' ], 'abd', 'abc', 'ada' );
   });
 
   test.case = 'ins is number';
@@ -1773,7 +1773,7 @@ function strRandom( test )
   test.case = 'range';
   for( let i = 0 ; i < 10 ; i++ )
   {
-    var got = _.strRandom( [ 1, 3 ] );
+    let got = _.strRandom( [ 1, 3 ] );
     test.ge( got.length, 1 );
     test.lt( got.length, 3 );
     test.is( _.strHas( _.strAlphabetFromRange( [ 'a', 'z' ] ), got[ 0 ] ) );
@@ -1782,7 +1782,7 @@ function strRandom( test )
   test.case = 'options';
   for( let i = 0 ; i < 5 ; i++ )
   {
-    var got = _.strRandom({ length : [ 1, 5 ], alphabet : _.strAlphabetFromRange( [ 33, 130 ] ) });
+    let got = _.strRandom({ length : [ 1, 5 ], alphabet : _.strAlphabetFromRange( [ 33, 130 ] ) });
     test.ge( got.length, 1 );
     test.lt( got.length, 5 );
     test.is( _.strHas( _.strAlphabetFromRange( [ 33, 130 ] ), got[ 0 ] ) );
@@ -2513,7 +2513,7 @@ function strCapitalize( test )
   test.case = 'invalid arguments length';
   test.shouldThrowErrorSync( function()
   {
-    _.strCapitalize( 'first','wrond argument' );
+    _.strCapitalize( 'first', 'wrond argument' );
   });
 
   test.case = 'wrong type of argument';
@@ -2550,22 +2550,490 @@ function strCapitalize( test )
 
 //
 
+function strDecapitalize( test )
+{
+
+  test.case = 'empty string';
+  var got = _.strDecapitalize( '' );
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'single word';
+  var got = _.strDecapitalize( 'One' );
+  var expected = 'one';
+  test.identical( got, expected );
+
+  test.case = 'two words';
+  var got = _.strDecapitalize( 'One two' );
+  var expected = 'one two';
+  test.identical( got, expected );
+
+  test.case = 'two words, first letter is lowercase';
+  var got = _.strDecapitalize( 'one two' );
+  var expected = 'one two';
+  test.identical( got, expected );
+
+  test.case = 'string number';
+  var got = _.strDecapitalize( '1' );
+  var expected = '1';
+  test.identical( got, expected );
+
+  /**/
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDecapitalize( 777 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDecapitalize();
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDecapitalize( 'object', 'redundant argument' );
+  } );
+
+}
+
+//
+
+function strSignBasic( test )
+{
+
+  test.case = 'src = A';
+  var got = _.strSign( 'A' );
+  var expected = 'wA';
+  test.identical( got, expected );
+
+  test.case = 'src = Tools';
+  var got = _.strSign( 'Tools' );
+  var expected = 'wTools';
+  test.identical( got, expected );
+
+  test.case = 'src = tools';
+  var got = _.strSign( 'tools' );
+  var expected = 'wTools';
+  test.identical( got, expected );
+
+  test.case = 'src = Module wTools';
+  var got = _.strSign( 'Module wTools' );
+  var expected = 'wModule wTools';
+  test.identical( got, expected );
+
+  test.case = 'src = w';
+  var got = _.strSign( 'w' );
+  var expected = 'wW';
+  test.identical( got, expected );
+
+  test.case = 'src = W';
+  var got = _.strSign( 'W' );
+  var expected = 'wW';
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSign( 777 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSign();
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSign( 'Object', 'w', 1 );
+  } );
+
+  test.case = 'Signed string';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSign( 'wObject', 'w' );
+  } );
+
+  test.case = 'prefix.length > 1';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSign( 'Object', 'wa' );
+  } );
+}
+
+
+//
+
+function strDesignBasic( test )
+{
+  test.case = 'src = wA';
+  var got = _.strDesign( 'wA' );
+  var expected = 'A';
+  test.identical( got, expected );
+
+  test.case = 'src = wTools';
+  var got = _.strDesign( 'wTools' );
+  var expected = 'Tools';
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDesign( 777 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDesign();
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDesign( 'wObject', 'w', 1 );
+  } );
+
+  test.case = 'Not signed string';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDesign( 'Object', 'w' );
+  } );
+
+  test.case = 'prefix.length > 1';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strDesign( 'Object', 'wa' );
+  } );
+}
+
+//
+
+function strIsSignedBasic( test )
+{
+  test.open( 'signed' )
+
+  test.case = 'src = wA';
+  var got = _.strIsSigned( 'wA' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = wTools';
+  var got = _.strIsSigned( 'wTools' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = wModule wTools';
+  var got = _.strIsSigned( 'wModule wTools' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = wW';
+  var got = _.strIsSigned( 'wW' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = w123';
+  var got = _.strIsSigned( 'w123' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'signed' )
+
+  /* - */
+
+  test.open( 'not signed' )
+
+  test.case = 'src = A';
+  var got = _.strIsSigned( 'A' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = Tools';
+  var got = _.strIsSigned( 'Tools' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = wtools';
+  var got = _.strIsSigned( 'wtools' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = Module wTools';
+  var got = _.strIsSigned( 'Module wTools' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = w';
+  var got = _.strIsSigned( 'w' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = W';
+  var got = _.strIsSigned( 'W' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.close( 'not signed' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'wrong type of argument';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strIsSigned( 777 );
+  });
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strIsSigned();
+  } );
+
+  test.case = 'too many arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strIsSigned( 'Object', 'w', 1 );
+  } );
+
+  test.case = 'prefix.length > 1';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strIsSigned( 'Object', 'wa' );
+  } );
+
+}
+
+//
+
+function strSignOptionPrefix( test )
+{
+  test.case = 'src = A, prefix = w';
+  var got = _.strSign( 'A', 'w' );
+  var expected = 'wA';
+  test.identical( got, expected );
+
+  test.case = 'src = Tools, prefix = a';
+  var got = _.strSign( 'Tools', 'a' );
+  var expected = 'aTools';
+  test.identical( got, expected );
+
+  test.case = 'src = wtools, prefix = \'2\'';
+  var got = _.strSign( 'wtools', '2' );
+  var expected = '2Wtools';
+  test.identical( got, expected );
+
+  test.case = 'src = module wTools, prefix = r';
+  var got = _.strSign( 'module wTools', 'r' );
+  var expected = 'rModule wTools';
+  test.identical( got, expected );
+
+  test.case = 'src = a, prefix = a';
+  var got = _.strSign( 'a', 'a' );
+  var expected = 'aA';
+  test.identical( got, expected );
+
+  test.case = 'src = W, prefix = q';
+  var got = _.strSign( 'W', 'q' );
+  var expected = 'qW';
+  test.identical( got, expected );
+
+  test.case = 'src = 2be, prefix = q';
+  var got = _.strSign( '2be', 'q' );
+  var expected = 'q2be';
+  test.identical( got, expected );
+}
+
+//
+
+function strDesignOptionPrefix( test )
+{
+  test.case = 'src = wA, prefix = w';
+  var got = _.strDesign( 'wA', 'w' );
+  var expected = 'A';
+  test.identical( got, expected );
+
+  test.case = 'src = Tools, prefix = a';
+  var got = _.strDesign( 'aTools', 'a' );
+  var expected = 'Tools';
+  test.identical( got, expected );
+
+  test.case = 'src = wtools, prefix = \'2\'';
+  var got = _.strDesign( '2Wtools', '2' );
+  var expected = 'Wtools';
+  test.identical( got, expected );
+
+  test.case = 'src = rModule wTools, prefix = r';
+  var got = _.strDesign( 'rModule wTools', 'r' );
+  var expected = 'Module wTools';
+  test.identical( got, expected );
+
+}
+
+//
+
+function strIsSignedOptionPrefix( test )
+{
+  test.open( 'signed' );
+
+  test.case = 'src = wA, prefix = w';
+  var got = _.strIsSigned( 'wA', 'w' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = aTools, prefix = a';
+  var got = _.strIsSigned( 'aTools', 'a' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = 2Wtools, prefix = \'2\'';
+  var got = _.strIsSigned( '2Wtools', '2' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = rModule wTools, prefix = r';
+  var got = _.strIsSigned( 'rModule wTools', 'r' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.case = 'src = qW, prefix = q';
+  var got = _.strIsSigned( 'qW', 'q' );
+  var expected = true;
+  test.identical( got, expected );
+
+  test.close( 'signed' );
+
+  /* - */
+
+  test.open( 'not signed' );
+
+  test.case = 'src = A, prefix = w';
+  var got = _.strIsSigned( 'A', 'w' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = Tools, prefix = a';
+  var got = _.strIsSigned( 'Tools', 'a' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = wtools, prefix = \'2\'';
+  var got = _.strIsSigned( 'wtools', '2' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = module wTools, prefix = r';
+  var got = _.strIsSigned( 'module wTools', 'r' );
+  var expected =  false;
+  test.identical( got, expected );
+
+  test.case = 'src = module wTools, prefix = m';
+  var got = _.strIsSigned( 'module wTools', 'm' );
+  var expected =  false;
+  test.identical( got, expected );
+
+  test.case = 'src = a, prefix = a';
+  var got = _.strIsSigned( 'a', 'a' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.case = 'src = 2be, prefix = q';
+  var got = _.strIsSigned( 'wTools', 'q' );
+  var expected = false;
+  test.identical( got, expected );
+
+  test.close( 'not signed' );
+}
+
+//
+
+function strSignDesignCombination( test )
+{
+  test.open( 'sign then design' );
+
+  test.case = 'src = Tools';
+  var src = 'Tools';
+  var gotSigned = _.strSign( src );
+  var gotDesigned = _.strDesign( gotSigned );
+  test.identical( gotSigned, 'wTools' );
+  test.identical( gotDesigned, src );
+
+  test.case = 'src = tools';
+  var src = 'tools';
+  var gotSigned = _.strSign( src );
+  var gotDesigned = _.strDesign( gotSigned );
+  test.identical( gotSigned, 'wTools' );
+  test.identical( gotDesigned, 'Tools' );
+
+  test.case = 'src = 123';
+  var src = '123';
+  var gotSigned = _.strSign( src );
+  var gotDesigned = _.strDesign( gotSigned );
+  test.identical( gotSigned, 'w123' );
+  test.identical( gotDesigned, src );
+
+  test.close( 'sign then design' );
+
+  /* - */
+
+  test.open( 'design then sign' );
+
+  test.case = 'src = wTools';
+  var src = 'wTools';
+  var gotDesigned = _.strDesign( src );
+  var gotSigned = _.strSign( gotDesigned );
+  test.identical( gotSigned, src );
+  test.identical( gotDesigned, 'Tools' );
+
+  test.case = 'src = w123';
+  var src = 'w123';
+  var gotDesigned = _.strDesign( src );
+  var gotSigned = _.strSign( gotDesigned );
+  test.identical( gotSigned, src );
+  test.identical( gotDesigned, '123' );
+
+  test.close( 'design then sign' );
+}
+
+//
+
 function strUnicodeEscape( test )
 {
 
   test.case = 'simple string';
   var got = _.strUnicodeEscape( 'prefix' );
-  var expected = "\\u0070\\u0072\\u0065\\u0066\\u0069\\u0078";
+  var expected = '\\u0070\\u0072\\u0065\\u0066\\u0069\\u0078';
   test.identical( got, expected );
 
   test.case = 'escaping';
   var got = _.strUnicodeEscape( '\npostfix//' );
-  var expected = "\\u000a\\u0070\\u006f\\u0073\\u0074\\u0066\\u0069\\u0078\\u002f\\u002f";
+  var expected = '\\u000a\\u0070\\u006f\\u0073\\u0074\\u0066\\u0069\\u0078\\u002f\\u002f';
   test.identical( got, expected );
 
   test.case = 'empty string';
   var got = _.strUnicodeEscape( '' );
-  var expected = "";
+  var expected = '';
   test.identical( got, expected );
 
   /**/
@@ -2744,7 +3212,7 @@ function strStrip( test )
       'axbxc',
       'x\nx'
     ],
-    stripper : new RegExp( 'x' )
+    stripper : /x/
   });
   var expected =
   [
@@ -2790,14 +3258,14 @@ function strStrip( test )
     ],
     stripper : /[abc]/g
   });
-  var expected = [ '','','', '', '', '' ];
+  var expected = [ '', '', '', '', '', '' ];
   test.identical( got, expected );
 
   test.case = 'src string, stripper array of strings';
   var got = _.strStrip
   ({
     src : 'xxyy',
-    stripper : [ 'x', 'y', ]
+    stripper : [ 'x', 'y' ]
   });
   var expected = '';
   test.identical( got, expected );
@@ -2806,7 +3274,7 @@ function strStrip( test )
   var got = _.strStrip
   ({
     src : 'jjkk',
-    stripper : [ 'x', 'y', ]
+    stripper : [ 'x', 'y' ]
   });
   var expected = 'jjkk';
   test.identical( got, expected );
@@ -4203,7 +4671,7 @@ function strButSingle( test )
   test.shouldThrowErrorSync( () => _.strButSingle( 'abc' ) );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strButSingle( 'abc', [ 1, 2 ], ' some ','extra' ) );
+  test.shouldThrowErrorSync( () => _.strButSingle( 'abc', [ 1, 2 ], ' some ', 'extra' ) );
 
   test.case = 'wrong type of srcStr';
   test.shouldThrowErrorSync( () => _.strButSingle( 123, [ 0, 1 ] ) );
@@ -4829,18 +5297,18 @@ function strUnjoin( test )
   var any = _.strUnjoin.any;
 
   test.case = 'case 1';
-  var got = _.strUnjoin( 'prefix_something_postfix',[ 'prefix', any, 'postfix' ] );
-  var expected = [ "prefix", "_something_", "postfix" ];
+  var got = _.strUnjoin( 'prefix_something_postfix', [ 'prefix', any, 'postfix' ] );
+  var expected = [ 'prefix', '_something_', 'postfix' ];
   test.identical( got, expected );
 
   test.case = 'case 2a';
-  var got = _.strUnjoin( 'prefix_something_postfix',[ any, 'something', 'postfix' ] );
+  var got = _.strUnjoin( 'prefix_something_postfix', [ any, 'something', 'postfix' ] );
   var expected = undefined;
   test.identical( got, expected );
 
   test.case = 'case 2b';
-  var got = _.strUnjoin( 'prefix_something_postfix',[ any, 'something', any, 'postfix' ] );
-  var expected = [ "prefix_", "something", '_', "postfix" ];
+  var got = _.strUnjoin( 'prefix_something_postfix', [ any, 'something', any, 'postfix' ] );
+  var expected = [ 'prefix_', 'something', '_', 'postfix' ];
   test.identical( got, expected );
 
   test.case = 'case 3a';
@@ -4850,17 +5318,17 @@ function strUnjoin( test )
 
   test.case = 'case 3b';
   var got = _.strUnjoin( 'prefix_something_postfix', [ any, 'something', any, 'postfix', any ] );
-  var expected = [ "prefix_","something","_", "postfix", "" ];
+  var expected = [ 'prefix_', 'something', '_', 'postfix', '' ];
   test.identical( got, expected );
 
   test.case = 'case 4';
   var got = _.strUnjoin( 'abc', [ any ] );
-  var expected = [ "abc" ];
+  var expected = [ 'abc' ];
   test.identical( got, expected );
 
   test.case = 'case 5';
   var got = _.strUnjoin( 'abc', [ 'a', any ] );
-  var expected = [ "a", "bc" ];
+  var expected = [ 'a', 'bc' ];
   test.identical( got, expected );
 
   test.case = 'case 5b';
@@ -4880,7 +5348,7 @@ function strUnjoin( test )
 
   test.case = 'case 7';
   var got = _.strUnjoin( 'abc', [ any, 'c' ] );
-  var expected = [ "ab", "c" ];
+  var expected = [ 'ab', 'c' ];
   test.identical( got, expected );
 
   test.case = 'case 7b';
@@ -5311,12 +5779,12 @@ function strJoin( test )
 
   test.case = 'different types';
   var got = _.strJoin([ 1, '2', [ '3', 4 ], 5, '6' ]);
-  var expected = [ "12356", "12456" ];
+  var expected = [ '12356', '12456' ];
   test.identical( got, expected );
 
   test.case = 'different types with two arrays';
   var got = _.strJoin([ '1', 2, [ 3, 4, 5 ], [ 6, 7, 8 ] ]);
-  var expected = [ "1236", "1247", "1258" ];
+  var expected = [ '1236', '1247', '1258' ];
   test.identical( got, expected );
 
   test.close( 'single argument' );
@@ -5346,7 +5814,7 @@ function strJoin( test )
   test.identical( got, expected );
 
   test.case = 'join arrays and joiner';
-  var got = _.strJoin( [ 0, [ '1', '2' ], [ 'a', 'b'] ], '-' );
+  var got = _.strJoin( [ 0, [ '1', '2' ], [ 'a', 'b' ] ], '-' );
   var expected = [ '0-1-a', '0-2-b' ];
   test.identical( got, expected );
 
@@ -5498,7 +5966,7 @@ function strJoinPath( test )
   test.identical( got, expected );
 
   test.case = 'join arrays and joiner';
-  var got = _.strJoinPath( [ '0', [ '1', '2' ], [ 'a', 'b'] ], '-' );
+  var got = _.strJoinPath( [ '0', [ '1', '2' ], [ 'a', 'b' ] ], '-' );
   var expected = [ '0-1-a', '0-2-b' ];
   test.identical( got, expected );
 
@@ -5520,7 +5988,7 @@ function strJoinPath( test )
   test.case = 'arrays with different lengths in array';
   var src = [ [ [ 1, [ 2 ] ], 2 ],  [ 3, 4 ], 2 ];
   var got = _.strJoinPath( src, '/' );
-  var expected = [ '1,2/3/2', '2/4/2'];
+  var expected = [ '1,2/3/2', '2/4/2' ];
   test.identical( got, expected );
 
   /* Joiner in src strings */
@@ -5575,11 +6043,11 @@ function strJoinPath( test )
   test.case = 'srcs is array, has nested unrolls';
   var srcs = [ 'he', '.llo.', _.unrollMake( [ ',', 'world', '!' ] ) ];
   var got = _.strJoinPath( srcs, '.' );
-  test.identical( got, ['he.llo.,', 'he.llo.world', 'he.llo.!' ] );
+  test.identical( got, [ 'he.llo.,', 'he.llo.world', 'he.llo.!' ] );
 
   var srcs = [ _.unrollFrom( [ 'he', '.llo.' ] ), _.unrollMake( [ ',', 'world' ] ) ];
   var got = _.strJoinPath( srcs, '.' );
-  test.identical( got, ['he.,', '.llo.world' ] );
+  test.identical( got, [ 'he.,', '.llo.world' ] );
 
   /* - */
 
@@ -5803,7 +6271,7 @@ function strConcat( test )
   test.case = 'onToStr';
   let onToStr = ( src ) => String( src ) + 1;
   var srcs = [ 1, 2, 3, 4 ];
-  var o = { onToStr : onToStr };
+  var o = { onToStr };
   var got = _.strConcat( srcs, o );
   test.identical( got, '11 21 31 41' );
 
@@ -5888,7 +6356,7 @@ function strLinesIndentation( test )
   test.identical( got, expected );
 
   test.case = 'tab - special symbol';
-  var got = _.strLinesIndentation( 'a\nb\nc','\t' );
+  var got = _.strLinesIndentation( 'a\nb\nc', '\t' );
   var expected = 'a\n\tb\n\tc';
   test.identical( got, expected );
 
@@ -5980,7 +6448,7 @@ function strLinesIndentation( test )
   test.identical( got, expected );
 
   test.case = 'tab - special symbol';
-  var got = _.strLinesIndentation( [ 'a', 'b', 'c' ],'\t' );
+  var got = _.strLinesIndentation( [ 'a', 'b', 'c' ], '\t' );
   var expected = 'a\n\tb\n\tc';
   test.identical( got, expected );
 
@@ -6041,7 +6509,7 @@ function strLinesIndentation( test )
   test.shouldThrowErrorSync( () => _.strLinesIndentation() );
 
   test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.strLinesIndentation( 'one','two','three' ) );
+  test.shouldThrowErrorSync( () => _.strLinesIndentation( 'one', 'two', 'three' ) );
 
   test.case = 'wrong type of src';
   test.shouldThrowErrorSync( () => _.strLinesIndentation( 12, 'two' ) );
@@ -6247,7 +6715,7 @@ function strLinesBut( test )
 
   test.case = 'src - string with new lines, range - negative number';
   var src = 'abc\ndef\nghi';
-  var got = _.strLinesBut( src, -2 , undefined);
+  var got = _.strLinesBut( src, -2, undefined);
   test.identical( got, 'abc\nghi' );
 
   test.case = 'src - string with new lines, range - negative range[ 0 ]';
@@ -6357,7 +6825,7 @@ function strLinesBut( test )
 
   test.case = 'src - string with new lines, range - negative number';
   var src = 'abc\ndef\nghi';
-  var got = _.strLinesBut( src, -2 , 'str' );
+  var got = _.strLinesBut( src, -2, 'str' );
   test.identical( got, 'abc\nstr\nghi' );
 
   test.case = 'src - string with new lines, range - negative range[ 0 ]';
@@ -6467,7 +6935,7 @@ function strLinesBut( test )
 
   test.case = 'src - string with new lines, range - negative number';
   var src = 'abc\ndef\nghi';
-  var got = _.strLinesBut( src, -2 , [ 'str', 'new', 'one' ] );
+  var got = _.strLinesBut( src, -2, [ 'str', 'new', 'one' ] );
   test.identical( got, 'abc\nstr\nnew\none\nghi' );
 
   test.case = 'src - string with new lines, range - negative range[ 0 ]';
@@ -6677,7 +7145,7 @@ function strLinesBut( test )
 
   test.case = 'src - array with a few string, range - negative number';
   var src = [ 'abc', 'def', 'ghi' ];
-  var got = _.strLinesBut( src, -2 , undefined);
+  var got = _.strLinesBut( src, -2, undefined);
   test.identical( got, 'abc\nghi' );
 
   test.case = 'src - array with a few string, range - negative range[ 0 ]';
@@ -6787,7 +7255,7 @@ function strLinesBut( test )
 
   test.case = 'src - array with a few string, range - negative number';
   var src = [ 'abc', 'def', 'ghi' ];
-  var got = _.strLinesBut( src, -2 , 'str' );
+  var got = _.strLinesBut( src, -2, 'str' );
   test.identical( got, 'abc\nstr\nghi' );
 
   test.case = 'src - array with a few string, range - negative range[ 0 ]';
@@ -6897,7 +7365,7 @@ function strLinesBut( test )
 
   test.case = 'src - array with a few string, range - negative number';
   var src = [ 'abc', 'def', 'ghi' ];
-  var got = _.strLinesBut( src, -2 , [ 'str', 'new', 'one' ] );
+  var got = _.strLinesBut( src, -2, [ 'str', 'new', 'one' ] );
   test.identical( got, 'abc\nstr\nnew\none\nghi' );
 
   test.case = 'src - array with a few string, range - negative range[ 0 ]';
@@ -7318,7 +7786,7 @@ function strLinesStrip( test )
   test.open( 'several arguments' );
 
   test.case = 'several strings';
-  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n',' World \t\r\n! \r\n\t', ' \nHow are you?  ' );
+  var got = _.strLinesStrip( '\n\tHello  \r\n\t\t\r\n', ' World \t\r\n! \r\n\t', ' \nHow are you?  ' );
   var expected = [ 'Hello', 'World\n!', 'How are you?' ] ;
   test.identical( got, expected );
   test.is( _.unrollIs( got ) );
@@ -8027,9 +8495,7 @@ function strLinesNumberOnLine( test )
   test.case = 'src - array of lines with new line symbols, onLine returns undefined';
   got = _.strLinesNumber( { src : [ 'line\n', 'line\n', 'line\n' ], onLine : ( e, k ) => k > 1 ? undefined : e.join( '' ) } );
   expected =
-  [
-    '1 : line\n',
-  ].join( '\n' );
+  [ '1 : line\n' ].join( '\n' );
   test.identical( got, expected );
 
   test.case = 'src - string, number of strings has different rank, onLine checks container';
@@ -8094,10 +8560,7 @@ function strLinesNumberOnLine( test )
 
   test.case = 'src - array of lines with new line symbols, onLine returns undefined, zeroLine - 2';
   got = _.strLinesNumber( { src : [ 'line\n', 'line\n', 'line\n' ], zeroLine : 2, onLine : ( e, k ) => k > 2 ? undefined : e.join( '' ) } );
-  expected =
-  [
-    '2 : line\n',
-  ].join( '\n' );
+  expected =[ '2 : line\n' ].join( '\n' );
   test.identical( got, expected );
 
   test.case = 'src - string, number of strings has different rank, onLine checks container, zeroLine - 2';
@@ -8162,10 +8625,7 @@ function strLinesNumberOnLine( test )
 
   test.case = 'src - array of lines with new line symbols, onLine returns undefined, zeroChar - 5';
   got = _.strLinesNumber( { src : [ 'line\n', 'line\n', 'line\n' ], zeroChar : 5, onLine : ( e, k ) => k > 3 ? undefined : e.join( '' ) } );
-  expected =
-  [
-    '3 : line\n',
-  ].join( '\n' );
+  expected = [ '3 : line\n' ].join( '\n' );
   test.identical( got, expected );
 
   test.case = 'src - string, number of strings has different rank, onLine checks container, zeroChar - 2';
@@ -8573,7 +9033,7 @@ function strLinesSelect( test )
   var src = 'a b c d';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     range : [ 1, 3 ],
     delimteter : ' '
   });
@@ -8584,7 +9044,7 @@ function strLinesSelect( test )
   var src = 'a b c d';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     range : [ 1, 3 ],
     delimteter : 'x'
   });
@@ -8648,7 +9108,7 @@ function strLinesSelect( test )
   test.identical( got, expected );
 
   test.case = 'incorrect range';
-  var got = _.strLinesSelect( { src :  src, range : [ 2, 1 ] } );
+  var got = _.strLinesSelect( { src, range : [ 2, 1 ] } );
   var expected = '';
   test.identical( got, expected );
 
@@ -8681,7 +9141,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     numbering : 0,
   });
   var expected = 'a\nb\nc\nd';
@@ -8691,7 +9151,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     numbering : 1,
   });
   var expected = '  0 : a\n  1 : b\n* 2 : c\n  3 : d';
@@ -8703,7 +9163,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     numbering : 0,
     highlighting : 0,
   });
@@ -8714,7 +9174,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     numbering : 1,
     highlighting : 0
   });
@@ -8727,7 +9187,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     numbering : 0,
     highlighting : 1,
   });
@@ -8738,7 +9198,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     numbering : 1,
     highlighting : 1
   });
@@ -8749,7 +9209,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 9,
     numbering : 1,
     highlighting : 1
@@ -8761,7 +9221,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 10,
     numbering : 1,
     highlighting : 1
@@ -8773,7 +9233,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     nearestLines : 2,
     line : 9,
     numbering : 1,
@@ -8786,7 +9246,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     range : [ 1, 4 ],
     line : 2,
     numbering : 1,
@@ -8799,7 +9259,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     nearestLines : 3,
     line : 10,
     numbering : 1,
@@ -8813,7 +9273,7 @@ function strLinesSelectHighlighting( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     nearestLines : 2,
     line : 7,
     numbering : 1,
@@ -8832,7 +9292,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 2,
   });
   var expected = 'a\nb\nc';
@@ -8846,7 +9306,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 2,
     zeroLine : 1
   });
@@ -8857,7 +9317,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 5,
     zeroLine : 4
   });
@@ -8868,7 +9328,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 3,
     zeroLine : 4
   });
@@ -8879,7 +9339,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 3,
     zeroLine : 4,
     selectMode : 'begin'
@@ -8891,7 +9351,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 3,
     zeroLine : 4,
     selectMode : 'end'
@@ -8909,7 +9369,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 2,
     zeroLine : 1,
     numbering : 1
@@ -8921,7 +9381,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 5,
     zeroLine : 4,
     numbering : 1
@@ -8933,7 +9393,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 3,
     zeroLine : 4,
     numbering : 1
@@ -8945,7 +9405,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 3,
     zeroLine : 4,
     numbering : 1,
@@ -8958,7 +9418,7 @@ function strLinesSelectZeroLine( test )
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 3,
     zeroLine : 4,
     numbering : 1,
@@ -8983,8 +9443,7 @@ bc
 def
 ghij
 
-`
-;
+`;
 
   /* - */
 
@@ -9274,7 +9733,7 @@ ghij
   test.case = 'nearestLines : 4';
 
   var crange = [ 6, 9 ];
-  var sub = _.strOnly( srcStr,crange );
+  var sub = _.strOnly( srcStr, crange );
 
   var expectedSplits =
   [
@@ -9393,7 +9852,7 @@ ghij
   /* */
 
   test.case = 'nearestLines : 4';
-  var crange = [ 4,11 ];
+  var crange = [ 4, 11 ];
 
   var expectedSplits =
   [
@@ -10195,6 +10654,15 @@ let Self =
     // transformer
 
     strCapitalize,
+    strDecapitalize,
+    strSignBasic,
+    strDesignBasic,
+    strIsSignedBasic,
+    strSignOptionPrefix,
+    strDesignOptionPrefix,
+    strIsSignedOptionPrefix,
+    strSignDesignCombination,
+
     strUnicodeEscape,
 
     // stripper

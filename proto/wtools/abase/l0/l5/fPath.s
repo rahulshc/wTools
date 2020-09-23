@@ -1,4 +1,5 @@
-( function _fPath_s_() {
+( function _fPath_s_()
+{
 
 'use strict';
 
@@ -56,7 +57,7 @@ function CloneExtending( o )
 {
   _.assert( arguments.length === 1 );
   let result = Object.create( this )
-  _.mapExtend( result, Parameters,o );
+  _.mapExtend( result, Parameters, o );
   result.Init();
   return result;
 }
@@ -237,33 +238,33 @@ function isTrailed( srcPath )
   _.assert( arguments.length === 1, 'Expects single argument' );
   if( srcPath === this.rootToken )
   return false;
-  return _.strEnds( srcPath,this.upToken );
+  return _.strEnds( srcPath, this.upToken );
 }
 
 //
 
-function begins( srcPath,beginPath )
+function begins( srcPath, beginPath )
 {
   _.assert( arguments.length === 2, 'Expects two arguments' );
   _.assert( _.strIs( srcPath ), 'Expects string {-srcPath-}, but got', _.strType( srcPath ) );
   _.assert( _.strIs( beginPath ), 'Expects string {-beginPath-}, but got', _.strType( beginPath ) );
   if( srcPath === beginPath )
   return true;
-  return _.strBegins( srcPath,this.trail( beginPath ) );
+  return _.strBegins( srcPath, this.trail( beginPath ) );
 }
 
 //
 
-function ends( srcPath,endPath )
+function ends( srcPath, endPath )
 {
   _.assert( arguments.length === 2, 'Expects two arguments' );
   endPath = this.undot( endPath );
 
-  if( !_.strEnds( srcPath,endPath ) )
+  if( !_.strEnds( srcPath, endPath ) )
   return false;
 
-  let begin = _.strRemoveEnd( srcPath,endPath );
-  if( begin === '' || _.strEnds( begin,this.upToken ) || _.strEnds( begin,this.hereToken ) )
+  let begin = _.strRemoveEnd( srcPath, endPath );
+  if( begin === '' || _.strEnds( begin, this.upToken ) || _.strEnds( begin, this.hereToken ) )
   return true;
 
   return false;
@@ -486,7 +487,7 @@ function normalize( src )
 
 function normalizeTolerant( src )
 {
-  _.assert( _.strIs( src ),'Expects string' );
+  _.assert( _.strIs( src ), 'Expects string' );
 
   let result = this._normalize({ src, tolerant : true, detrailing : false, undoting : false });
 
@@ -528,7 +529,7 @@ function canonize( src )
 
 function canonizeTolerant( src )
 {
-  _.assert( _.strIs( src ),'Expects string' );
+  _.assert( _.strIs( src ), 'Expects string' );
 
   let result = this._normalize({ src, tolerant : true, detrailing : true, undoting : true });
 
@@ -864,7 +865,7 @@ function trail( srcPath )
   _.assert( this.is( srcPath ) );
   _.assert( arguments.length === 1 );
 
-  if( !_.strEnds( srcPath,this.upToken ) )
+  if( !_.strEnds( srcPath, this.upToken ) )
   return srcPath + this.upToken;
 
   return srcPath;
@@ -878,7 +879,7 @@ function detrail( path )
   _.assert( arguments.length === 1 );
 
   if( path !== this.rootToken )
-  return _.strRemoveEnd( path,this.upToken );
+  return _.strRemoveEnd( path, this.upToken );
 
   return path;
 }
@@ -934,10 +935,10 @@ function dir_body( o )
     {
       if
       (
-        o.filePath === this.rootToken || o.filePath === this.hereToken || o.filePath === this.downToken ||
-        o.filePath === this.hereToken + this.upToken || o.filePath === this.downToken + this.upToken ||
-        ( o.filePath.match( /\W{3}$/ ) && o.filePath.match( /\W{3}$/ )[ 0 ] === '/..' ) ||
-        ( o.filePath.match( /\W{4}$/ ) && o.filePath.match( /\W{4}$/ )[ 0 ] === '/../' )
+        o.filePath === this.rootToken || o.filePath === this.hereToken || o.filePath === this.downToken
+        || o.filePath === this.hereToken + this.upToken || o.filePath === this.downToken + this.upToken
+        || ( o.filePath.match( /\W{3}$/ ) && o.filePath.match( /\W{3}$/ )[ 0 ] === '/..' )
+        || ( o.filePath.match( /\W{4}$/ ) && o.filePath.match( /\W{4}$/ )[ 0 ] === '/../' )
       )
       {
         if( o.filePath[ o.filePath.length - 1 ] === '/' )
@@ -1119,7 +1120,7 @@ let Extension =
   dot,
   undot,
   absolute, /* qqq : cover */
-  unabsolute, /* qqq : cover */
+  unabsolute, /* qqq : cover | Yevhen S. : Done*/
   trail,
   detrail,
   dir,

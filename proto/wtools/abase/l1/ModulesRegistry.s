@@ -644,6 +644,12 @@ let wServletTools =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.servlet },
 }
 
+let wDocParser =
+{
+  sourcePath : sourcePath( 'amid/docparser/entry/DocParser.s', 'wdocparser' ),
+  isIncluded : function(){ return !!_global.wTools && !!_global.wTools.docgen && !!_global.wTools.docgen.ParserJsdoc },
+}
+
 // math
 
 let wMathScalar =
@@ -903,6 +909,7 @@ let Modules =
   wIncubator,
   wCollectionOfInstances,
   wServletTools,
+  wDocParser,
 
   // math
 

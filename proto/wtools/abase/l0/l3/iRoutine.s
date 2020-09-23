@@ -1,4 +1,5 @@
-( function _iRoutine_s_() {
+( function _iRoutine_s_()
+{
 
 'use strict';
 
@@ -112,24 +113,24 @@ function _routineJoin( o )
     _.mapExtend( result, routine );
 
     Object.defineProperty( result, 'originalRoutine',
-    {
-      value : routine,
-      enumerable : false,
-    });
+      {
+        value : routine,
+        enumerable : false,
+      });
 
     if( context !== undefined )
     Object.defineProperty( result, 'boundContext',
-    {
-      value : context,
-      enumerable : false,
-    });
+      {
+        value : context,
+        enumerable : false,
+      });
 
     if( args !== undefined )
     Object.defineProperty( result, 'boundArguments',
-    {
-      value : args,
-      enumerable : false,
-    });
+      {
+        value : args,
+        enumerable : false,
+      });
 
   }
 
@@ -1162,12 +1163,12 @@ function vectorize_body( o )
   _.routineExtend( resultRoutine, routine );
   return resultRoutine;
 
-/*
-  vectorizeWithFilters : multiply + array/map vectorizing + filter
-  vectorizeArray : array vectorizing
-  vectorizeArrayMultiplying :  multiply + array vectorizing
-  vectorizeMapOrArray :  multiply +  array/map vectorizing
-*/
+  /*
+    vectorizeWithFilters : multiply + array/map vectorizing + filter
+    vectorizeArray : array vectorizing
+    vectorizeArrayMultiplying :  multiply + array vectorizing
+    vectorizeMapOrArray :  multiply +  array/map vectorizing
+  */
 
   /* - */
 
@@ -1207,8 +1208,7 @@ function vectorize_body( o )
 
   function multiplyReally( args )
   {
-    let length;
-    let keys;
+    let length, keys;
 
     args = [ ... args ];
 
@@ -1696,11 +1696,7 @@ function vectorize_body( o )
     // let args = multiply( _.originalsFromAdaptersInplace( arguments ) );
     let args = multiply( arguments );
     let src = args[ 0 ];
-    let args2;
-    let result;
-    let map;
-    let mapIndex;
-    let arr;
+    let args2, result, map, mapIndex, arr;
 
     _.assert( args.length === select, () => 'Expects ' + select + ' arguments but got : ' + args.length );
 

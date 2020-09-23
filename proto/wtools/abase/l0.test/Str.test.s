@@ -2268,6 +2268,90 @@ function strPrimitive( test )
 
 //
 
+function strType( test )
+{
+  test.case = 'undefined';
+  var src = undefined;
+  var expected = 'Undefined';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'null';
+  var src = null;
+  var expected = 'Null';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'number int';
+  var src = 13;
+  var expected = 'Number';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'number NaN';
+  var src = 13;
+  var expected = 'Number';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'number Infinity';
+  var src = Infinity;
+  var expected = 'Number';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'boolean';
+  var src = false;
+  var expected = 'Boolean';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'string';
+  var src = 'abc';
+  var expected = 'String';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'object';
+  var src = { a : 1, b : 2, c : 3 };
+  var expected = 'Object';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'array';
+  var src = [ 1, 2, 3 ];
+  var expected = 'Array';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'function';
+  var src = function a(){};
+  var expected = 'Function';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'symbol';
+  var src = Symbol( 'id' );
+  var expected = 'Symbol';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'map';
+  var src = new Map();
+  var expected = 'HashMap';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+  test.case = 'set';
+  var src = new Set();
+  var expected = 'Set';
+  var got = _.strType( src );
+  test.identical( got, expected );
+
+}
+
+//
+
 function strQuote( test )
 {
   test.open( 'default quote' );
@@ -5566,6 +5650,64 @@ function strReplaceEnd( test )
   test.case = 'invalid type of arguments';
   test.shouldThrowErrorSync( () => _.strReplaceEnd( undefined, undefined ) );
   test.shouldThrowErrorSync( () => _.strReplaceEnd( null, null ) );
+}
+
+function strSplitsUngroupedJoin( test )
+{
+
+  test.case = 'empty array';
+  var got = _.strSplitsUngroupedJoin( [] );
+  var expected = [];
+  test.identical( got, expected );
+
+  test.case = 'array of empty string';
+  var got = _.strSplitsUngroupedJoin( [ '' ] );
+  var expected = [ '' ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ \'abc\' ]';
+  var got = _.strSplitsUngroupedJoin( [ 'abc' ] );
+  var expected = [ 'abc' ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ \'abc\', \'bca\', \'cab\' ]';
+  var got = _.strSplitsUngroupedJoin( [ 'abc', 'bca', 'cab' ] );
+  var expected = [ 'abcbcacab' ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ 2 ]';
+  var got = _.strSplitsUngroupedJoin( [ 2 ] );
+  var expected = [ 2 ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ \'a\', \'b\', \'c\', 1 ]';
+  var got = _.strSplitsUngroupedJoin( [ 'a', 'b', 'c', 1 ] );
+  var expected = [ 'abc', 1 ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ \'a\', \'b\', 1, \'c\' ]';
+  var got = _.strSplitsUngroupedJoin( [ 'a', 'b', 1, 'c' ] );
+  var expected = [ 'ab', 1, 'c' ];
+  test.identical( got, expected );
+
+  test.case = 'src = [ \'a\', \'b\', 1, \'c\', null, \'d\', \'e\', \'f\' ]';
+  var got = _.strSplitsUngroupedJoin( [ 'a', 'b', 1, 'c', null, 'd', 'e', 'f' ] );
+  var expected = [ 'ab', 1, 'c', null, 'def' ];
+  test.identical( got, expected );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strSplitsUngroupedJoin() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strSplitsUngroupedJoin( { splits : [ 'a', 'b' ], a : 1 } ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.strSplitsUngroupedJoin( '' ) );
 }
 
 //
@@ -15873,6 +16015,7 @@ var Self =
 
     strShort,
     strPrimitive,
+    strType,
 
     strQuote,
     strUnquote,
@@ -15887,6 +16030,7 @@ var Self =
 
     strReplaceBegin,
     strReplaceEnd,
+    strSplitsUngroupedJoin,
 
     strReplaceSrcIsString,
     strReplaceSrcIsArrayOfStrings,

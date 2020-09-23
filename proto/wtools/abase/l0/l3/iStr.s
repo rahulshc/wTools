@@ -1,4 +1,5 @@
-( function _iString_s_() {
+( function _iString_s_()
+{
 
 'use strict';
 
@@ -440,7 +441,7 @@ function strPrimitive( src )
  * @namespace Tools
  */
 
-function strType( src ) /* qqq : cover please */
+function strType( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
 {
 
   _.assert( arguments.length === 1, 'Expects single argument' );

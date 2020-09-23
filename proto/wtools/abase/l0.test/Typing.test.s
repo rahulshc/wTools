@@ -816,6 +816,184 @@ function constructorIsVad( test )
   /* Dmytro : the second part of routine in module wMathVector */
 }
 
+//
+
+function streamIs( test )
+{
+
+  test.open( 'not stream' )
+
+  test.case = 'check null';
+  var got = _.streamIs( null );
+  test.identical( got, false );
+
+  test.case = 'check undefined';
+  var got = _.streamIs( undefined );
+  test.identical( got, false );
+
+  test.case = 'check _.nothing';
+  var got = _.streamIs( _.nothing );
+  test.identical( got, false );
+
+  test.case = 'check zero';
+  var got = _.streamIs( 0 );
+  test.identical( got, false );
+
+  test.case = 'check empty string';
+  var got = _.streamIs( '' );
+  test.identical( got, false );
+
+  test.case = 'check false';
+  var got = _.streamIs( false );
+  test.identical( got, false );
+
+  test.case = 'check NaN';
+  var got = _.streamIs( NaN );
+  test.identical( got, false );
+
+  test.case = 'check Symbol';
+  var got = _.streamIs( Symbol( '' ) );
+  test.identical( got, false );
+
+  test.case = 'check empty array';
+  var got = _.streamIs( [] );
+  test.identical( got, false );
+
+  test.case = 'check empty arguments array';
+  var got = _.streamIs( _.argumentsArrayMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty unroll';
+  var got = _.streamIs( _.unrollMake( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty map';
+  var got = _.streamIs( {} );
+  test.identical( got, false );
+
+  test.case = 'check empty pure map';
+  var got = _.streamIs( Object.create( null ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Set';
+  var got = _.streamIs( new Set( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty Map';
+  var got = _.streamIs( new Map( [] ) );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferRaw';
+  var got = _.streamIs( new BufferRaw() );
+  test.identical( got, false );
+
+  test.case = 'check empty BufferTyped';
+  var got = _.streamIs( new U8x() );
+  test.identical( got, false );
+
+  test.case = 'check number';
+  var got = _.streamIs( 3 );
+  test.identical( got, false );
+
+  test.case = 'check bigInt';
+  var got = _.streamIs( 1n );
+  test.identical( got, false );
+
+  test.case = 'check string';
+  var got = _.streamIs( 'str' );
+  test.identical( got, false );
+
+  test.case = 'check not empty array';
+  var got = _.streamIs( [ null ] );
+  test.identical( got, false );
+
+  test.case = 'check not empty map';
+  var got = _.streamIs( { '' : null } );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'check not empty map';
+  var src = Object.create( null );
+  src._vectorBuffer = true;
+  var got = _.streamIs( src );
+  test.identical( got, false );
+
+  /* - */
+
+  test.case = 'check instance of constructor';
+  var src = new function()
+  {
+    this.x = 1;
+  };
+  var got = _.streamIs( src );
+  test.identical( got, false );
+
+  test.case = 'check instance of constructor with pipe field';
+  var src = new function()
+  {
+    this.x = 1;
+    this.pipe = 13;
+  };
+  var got = _.streamIs( src );
+  test.identical( got, false );
+
+  test.case = 'IMPORTANT! check instance of constructor with pipe method';
+  var src = new function()
+  {
+    this.x = 1;
+    this.pipe = () => '';
+  };
+  var got = _.streamIs( src );
+  test.identical( got, false );
+
+  test.close( 'not stream' );
+
+  /* - */
+
+  test.open( 'stream' )
+
+  let stream = require( 'stream' );
+
+  test.case = 'read stream';
+  var src = new stream.Readable();
+  var got = _.streamIs( src );
+  test.identical( got, true );
+
+  test.case = 'read stream';
+  var src = new stream.Writable();
+  var got = _.streamIs( src );
+  test.identical( got, true );
+
+  test.case = 'read stream';
+  var src = new stream.Duplex();
+  var got = _.streamIs( src );
+  test.identical( got, true );
+
+  test.case = 'read stream';
+  var src = new stream.Transform();
+  var got = _.streamIs( src );
+  test.identical( got, true );
+
+  test.close( 'stream' )
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.streamIs() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.streamIs( 1, 2 ) );
+
+}
+
+streamIs.experimental = true;
+
+//
+
 // //
 //
 // function matrixIs( test )
@@ -4495,6 +4673,7 @@ var Self =
 
     vectorAdapterIs,
     constructorIsVad,
+    streamIs,
     // matrixIs, /* Dmytro : commented before */
     // constructorIsMatrix,
 

@@ -1,4 +1,5 @@
-( function _iEntity_s_() {
+( function _iEntity_s_()
+{
 
 'use strict';
 
@@ -80,7 +81,7 @@ function iterableIs( src ) /* qqq xxx : check. good coverage is required */
 
 //
 
-function hasMethodIterator( src ) /* qqq xxx : check. good coverage is required */
+function hasMethodIterator( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
 {
   if( !src )
   return false;
@@ -91,7 +92,7 @@ function hasMethodIterator( src ) /* qqq xxx : check. good coverage is required 
 
 //
 
-function hasMethodEqualer( src ) /* qqq xxx : check. good coverage is required */
+function hasMethodEqualer( src ) /* qqq xxx : check. good coverage is required | aaa : Done. Yevhen S. */
 {
   if( !src )
   return false;
