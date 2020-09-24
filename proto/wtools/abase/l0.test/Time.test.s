@@ -3219,25 +3219,25 @@ function sleep( test )
   var start = _.time.now();
   _.time.sleep( 0 );
   var got = _.time.now() - start;
-  test.is( 0 <= got && got <= 3 );
+  test.is( 0 <= got && got <= 100 );
 
-  test.case = 'delay - 1';
+  test.case = 'delay - 2';
   var start = _.time.now();
-  _.time.sleep( 1 );
+  _.time.sleep( 2 );
   var got = _.time.now() - start;
-  test.is( 1 <= got && got <= 4 );
+  test.is( 2 <= got && got <= 100 );
 
   test.case = 'delay - 100';
   var start = _.time.now();
   _.time.sleep( 100 );
   var got = _.time.now() - start;
-  test.is( 100 <= got && got <= 103 );
+  test.is( 100 <= got && got <= 200 );
 
   test.case = 'delay - 2000';
   var start = _.time.now();
   _.time.sleep( 2000 );
   var got = _.time.now() - start;
-  test.is( 2000 <= got && got <= 2008 );
+  test.is( 2000 <= got && got <= 4000 );
 
   /* - */
 
@@ -3262,6 +3262,7 @@ function sleep( test )
   test.case = 'delay has NaN value';
   test.shouldThrowErrorSync( () => _.time.sleep( NaN ) );
 }
+
 
 //
 
