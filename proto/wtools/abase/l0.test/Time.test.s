@@ -3237,7 +3237,7 @@ function sleep( test )
   var start = _.time.now();
   _.time.sleep( 2000 );
   var got = _.time.now() - start;
-  test.is( 2000 <= got && got <= 2004 );
+  test.is( 2000 <= got && got <= 2008 );
 
   /* - */
 
