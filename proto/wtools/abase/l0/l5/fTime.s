@@ -267,6 +267,22 @@ function _cancel( timer )
 
 //
 
+function _sleep( delay, procedure )
+{
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.procedureIs( procedure ) || !procedure, 'Should be passed a Procedure {-procedure-} or undefined.' );
+  _.assert( _.numberIs( delay ) && delay >= 0, 'Specify valid value {-delay-}.' );
+  _.assert( _.numberIsFinite( delay ), 'Delay should have finite value.' );
+
+  let now = _.time.now();
+
+  while( ( _.time.now() - now ) < delay )
+  {
+  }
+}
+
+//
+
 function timerIsBegun( timer )
 {
   _.assert( _.timerIs( timer ) );
@@ -365,20 +381,9 @@ function cancel( timer )
   return _.time._cancel( ... arguments );
 }
 
-//
-
 function sleep( delay, procedure )
 {
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.procedureIs( procedure ) || !procedure, 'Should be passed a Procedure {-procedure-} or undefined.' );
-  _.assert( _.numberIs( delay ) && delay >= 0, 'Specify valid value {-delay-}.' );
-  _.assert( _.numberIsFinite( delay ), 'Delay should have finite value.' );
-
-  let now = _.time.now();
-
-  while( ( _.time.now() - now ) < delay )
-  {
-  }
+  _.time._sleep.apply( this, arguments );
 }
 
 //
@@ -485,6 +490,7 @@ let Extension =
   _finally,
   _periodic,
   _cancel,
+  _sleep,
 
   timerIsBegun,
   timerIsCancelBegun,
