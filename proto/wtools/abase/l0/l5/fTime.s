@@ -365,6 +365,8 @@ function cancel( timer )
   return _.time._cancel( ... arguments );
 }
 
+//
+
 function sleep( delay, procedure )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
