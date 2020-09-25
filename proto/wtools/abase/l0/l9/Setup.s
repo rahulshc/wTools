@@ -1,4 +1,5 @@
-(function _Setup_s_() {
+( function _Setup_s_()
+{
 
 'use strict';
 
@@ -233,18 +234,18 @@ function _setupLoggerPlaceholder()
   if( !_global.console.debug )
   _global.console.debug = function debug()
   {
-    this.log.apply( this,arguments );
+    this.log.apply( this, arguments );
   }
 
   if( !_global.logger )
   _global.logger =
   {
-    log : function log() { console.log.apply( console,arguments ); },
-    logUp : function logUp() { console.log.apply( console,arguments ); },
-    logDown : function logDown() { console.log.apply( console,arguments ); },
-    error : function error() { console.error.apply( console,arguments ); },
-    errorUp : function errorUp() { console.error.apply( console,arguments ); },
-    errorDown : function errorDown() { console.error.apply( console,arguments ); },
+    log : function log() { console.log.apply( console, arguments ); },
+    logUp : function logUp() { console.log.apply( console, arguments ); },
+    logDown : function logDown() { console.log.apply( console, arguments ); },
+    error : function error() { console.error.apply( console, arguments ); },
+    errorUp : function errorUp() { console.error.apply( console, arguments ); },
+    errorDown : function errorDown() { console.error.apply( console, arguments ); },
   }
 
 }
@@ -267,11 +268,11 @@ function _setupTesterPlaceholder()
     if( !testSuit.suiteFileLocation )
     testSuit.suiteFileLocation = _.introspector.location( 1 ).fileNameLineCol;
 
-    _.assert( _.strDefined( testSuit.suiteFileLocation ),'Test suit expects a mandatory option ( suiteFileLocation )' );
+    _.assert( _.strDefined( testSuit.suiteFileLocation ), 'Test suit expects a mandatory option ( suiteFileLocation )' );
     _.assert( _.objectIs( testSuit ) );
 
     if( !testSuit.abstract )
-    _.assert( !_realGlobal_.wTests[ testSuit.name ],'Test suit with name "' + testSuit.name + '" already registered!' );
+    _.assert( !_realGlobal_.wTests[ testSuit.name ], 'Test suit with name "' + testSuit.name + '" already registered!' );
     _realGlobal_.wTests[ testSuit.name ] = testSuit;
 
     testSuit.inherit = function inherit()
@@ -313,8 +314,16 @@ function _setupTesterPlaceholder()
 function _setupProcedure()
 {
 
-  if( _realGlobal_ !== _global && _realGlobal_.wTools && _realGlobal_.wTools.setup && _realGlobal_.wTools.setup._entryProcedureStack )
-  Self._entryProcedureStack =  _realGlobal_.wTools.setup._entryProcedureStack;
+  if
+  (
+    _realGlobal_ !== _global
+    && _realGlobal_.wTools
+    && _realGlobal_.wTools.setup
+    && _realGlobal_.wTools.setup._entryProcedureStack
+  )
+  {
+    Self._entryProcedureStack =  _realGlobal_.wTools.setup._entryProcedureStack;
+  }
 
   if( Self._entryProcedureStack )
   return;
