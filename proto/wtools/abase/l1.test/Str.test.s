@@ -73,7 +73,7 @@ function strCount( test )
   test.identical( got, expected );
 
   test.case = 'empty ins';
-  var got = _.strCount( 'abc', RegExp( '' ) );
+  var got = _.strCount( 'abc', /(?:)/ );
   var expected = 3;
   test.identical( got, expected );
 
@@ -10237,10 +10237,12 @@ function strLinesCount( test )
   test.identical( got, expected );
 
   test.case = 'multiline  text test';
-  var got = _.strLinesCount( `one
-                             two
-                             three`
-                          );
+  var got = _.strLinesCount
+  (
+    `one
+     two
+     three`
+  );
   var expected = 3;
   test.identical( got, expected );
 
@@ -10307,97 +10309,96 @@ bc
 def
 ghij
 
-`
-;
+`;
 
   /* */
 
   test.case = 'single line in the middle';
 
-  var crange = [ 3,5 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 3, 5 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 2,3 ] );
+  test.identical( lrange, [ 2, 3 ] );
   test.identical( sub, 'bc' );
 
   /* */
 
   test.case = 'line in the middle with NL';
 
-  var crange = [ 3,6 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 3, 6 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 2,4 ] );
+  test.identical( lrange, [ 2, 4 ] );
   test.identical( sub, 'bc\n' );
 
   /* */
 
   test.case = 'single line in the beginning';
 
-  var crange = [ 1,2 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 1, 2 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 1,2 ] );
+  test.identical( lrange, [ 1, 2 ] );
   test.identical( sub, 'a' );
 
   /* */
 
   test.case = 'line in the beginning with NL';
 
-  var crange = [ 1,3 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 1, 3 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 1,3 ] );
+  test.identical( lrange, [ 1, 3 ] );
   test.identical( sub, 'a\n' );
 
   /* */
 
   test.case = 'single line in the end';
 
-  var crange = [ 10,14 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 10, 14 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 4,5 ] );
+  test.identical( lrange, [ 4, 5 ] );
   test.identical( sub, 'ghij' );
 
   /* */
 
   test.case = 'line in the end with NL';
 
-  var crange = [ 10,15 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 10, 15 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 4,6 ] );
+  test.identical( lrange, [ 4, 6 ] );
   test.identical( sub, 'ghij\n' );
 
   /* */
 
   test.case = 'not aligned range with multiple lines';
 
-  var crange = [ 4,11 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 4, 11 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 2,5 ] );
+  test.identical( lrange, [ 2, 5 ] );
   test.identical( sub, 'c\ndef\ng' );
 
   /* */
 
   test.case = 'empty line in the beginning';
 
-  var crange = [ 0,0 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 0, 0 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 0,1 ] );
+  test.identical( lrange, [ 0, 1 ] );
   test.identical( sub, '' );
 
   /* */
 
   test.case = 'empty line in the end';
 
-  var crange = [ 15,15 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 15, 15 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 5,6 ] );
+  test.identical( lrange, [ 5, 6 ] );
   test.identical( sub, '' );
 
   test.close( 'embraced by empty lines' );
@@ -10410,77 +10411,76 @@ ghij
 `a
 bc
 def
-ghij`
-;
+ghij`;
 
   /* */
 
   test.case = 'single line in the middle';
 
-  var crange = [ 2,4 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 2, 4 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 1,2 ] );
+  test.identical( lrange, [ 1, 2 ] );
   test.identical( sub, 'bc' );
 
   /* */
 
   test.case = 'line in the middle with NL';
 
-  var crange = [ 2,5 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 2, 5 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 1,3 ] );
+  test.identical( lrange, [ 1, 3 ] );
   test.identical( sub, 'bc\n' );
 
   /* */
 
   test.case = 'single line in the beginning';
 
-  var crange = [ 0,1 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 0, 1 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 0,1 ] );
+  test.identical( lrange, [ 0, 1 ] );
   test.identical( sub, 'a' );
 
   /* */
 
   test.case = 'line in the beginning with NL';
 
-  var crange = [ 0,2 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 0, 2 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 0,2 ] );
+  test.identical( lrange, [ 0, 2 ] );
   test.identical( sub, 'a\n' );
 
   /* */
 
   test.case = 'single line in the end';
 
-  var crange = [ 9,13 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 9, 13 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 3,4 ] );
+  test.identical( lrange, [ 3, 4 ] );
   test.identical( sub, 'ghij' );
 
   /* */
 
   test.case = 'line in the end with NL';
 
-  var crange = [ 9,14 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 9, 14 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 3,4 ] );
+  test.identical( lrange, [ 3, 4 ] );
   test.identical( sub, 'ghij' );
 
   /* */
 
   test.case = 'not aligned range with multiple lines';
 
-  var crange = [ 3,10 ];
-  var sub = _.strOnly( srcStr,crange );
+  var crange = [ 3, 10 ];
+  var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
-  test.identical( lrange, [ 1,4 ] );
+  test.identical( lrange, [ 1, 4 ] );
   test.identical( sub, 'c\ndef\ng' );
 
   test.close( 'not embraced by empty lines' );
@@ -10554,42 +10554,42 @@ function strLinesSize( test )
   test.open( 'change onLength' )
 
   test.case = 'true length is smaller';
-  var src = 
-  { 
-  src : 'ab\ncde\nfghk',
-  onLength: ( src ) =>
+  var src =
   {
-    src = src.replace( /fghk/mg, 'a' );
-    return src.length;
-  }
+    src : 'ab\ncde\nfghk',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /fghk/mg, 'a' );
+      return src.length;
+    }
   };
   var expected = [ 3, 3 ];
   var got  = _.strLinesSize( src );
   test.identical( got, expected );
 
   test.case = 'true length is the same';
-  var src = 
-  { 
-  src : 'ab\ncde\nfghk',
-  onLength: ( src ) =>
+  var src =
   {
-    src = src.replace( /fghk/mg, 'aaaa' );
-    return src.length;
-  }
+    src : 'ab\ncde\nfghk',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /fghk/mg, 'aaaa' );
+      return src.length;
+    }
   };
   var expected = [ 3, 4 ];
   var got  = _.strLinesSize( src );
   test.identical( got, expected );
 
   test.case = 'true length is bigger';
-  var src = 
-  { 
-  src : 'ab\ncde\nfghk',
-  onLength: ( src ) =>
+  var src =
   {
-    src = src.replace( /ab/mg, 'aaaaaa' );
-    return src.length;
-  }
+    src : 'ab\ncde\nfghk',
+    onLength : ( src ) =>
+    {
+      src = src.replace( /ab/mg, 'aaaaaa' );
+      return src.length;
+    }
   };
   var expected = [ 3, 6 ];
   var got  = _.strLinesSize( src );

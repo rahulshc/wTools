@@ -1,4 +1,5 @@
-( function _gString_s_() {
+( function _gString_s_()
+{
 
 'use strict';
 

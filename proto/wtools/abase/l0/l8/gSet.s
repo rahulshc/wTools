@@ -1,4 +1,5 @@
-( function _gSet_s_() {
+( function _gSet_s_()
+{
 
 'use strict';
 
