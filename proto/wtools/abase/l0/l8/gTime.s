@@ -1,4 +1,5 @@
-( function _gTime_s_() {
+( function _gTime_s_()
+{
 
 'use strict';
 
@@ -164,8 +165,7 @@ function readyJoin( context, routine, args )
 
 function out_pre( routine, args )
 {
-  let o;
-  let procedure;
+  let o, procedure;
 
   _.assert( arguments.length === 2 );
   _.assert( !!args );
@@ -415,13 +415,16 @@ function _errTimeOut( o )
   });
 
   if( o.consequnce )
-  Object.defineProperty( err, 'consequnce',
   {
-    enumerable : false,
-    configurable : false,
-    writable : false,
-    value : o.consequnce,
-  });
+    let properties =
+    {
+      enumerable : false,
+      configurable : false,
+      writable : false,
+      value : o.consequnce,
+    };
+    Object.defineProperty( err, 'consequnce', properties );
+  }
 
   return err;
 }
@@ -583,7 +586,7 @@ function once( delay, onBegin, onEnd )
 
 //
 
-function debounce( o )
+function debounce( o ) /* Dmytro : routine returns routine. Is it valid result? */
 {
   _.assert( arguments.length <= 3 );
 
@@ -602,9 +605,7 @@ function debounce( o )
   _.assert( _.routineIs( o.routine ) );
   _.assert( _.numberIs( o.delay ) );
 
-  let timer,lastCallTime;
-  let routine;
-  let result;
+  let timer, lastCallTime, routine, result;
 
   return debounced;
 
