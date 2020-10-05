@@ -10,13 +10,23 @@ let Self = _.process = _.process || Object.create( null );
 // implementation
 // --
 
+function eventGive()
+{
+  return _.event.eventGive( _.process._ehandler, ... arguments );
+}
+
+eventGive.defaults =
+{
+  ... _.event.eventGive.defaults,
+}
+
 // --
 // declaration
 // --
 
 let Extension =
 {
-
+  eventGive,
 }
 
 _.mapExtend( Self, Extension );

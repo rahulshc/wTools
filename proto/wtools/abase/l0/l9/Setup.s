@@ -121,6 +121,7 @@ function _errUncaughtHandler2( err, kind )
 
   function processUncaughtErrorEvent()
   {
+    if( _.process.eventGive )
     _.process.eventGive({ event : 'uncaughtError', args : [ c ] });
   }
 
