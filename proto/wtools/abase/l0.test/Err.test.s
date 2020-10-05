@@ -1501,6 +1501,137 @@ function assert( test )
 
 }
 
+//
+
+function _errUncaughtHandlerRethrowingError( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+  let ready = new _testerGlobal_.wTools.Consequence();
+
+  /* */
+
+  a.appStartNonThrowing({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.case = 'rethrowing of error with added message';
+    test.notIdentical( op.exitCode, 0 );
+    test.is( _.strHas( op.output, 'Channel closed' ) );
+    test.is( _.strHas( op.output, 'Added message' ) );
+    test.isNot( _.strHas( op.output, 'Error is handled' ) );
+    return null;
+  });
+
+  return a.ready;
+
+  /* */
+
+  function program()
+  {
+    let _ = require( toolsPath );
+
+    _.process.on( 'uncaughtError', ( e ) =>
+    {
+      _.errAttend( e.err );
+      throw _.err( e.err, 'Added message' );
+
+    });
+
+    throw _.err( 'Channel closed' );
+
+    console.log( 'Error is handled' );
+
+  }
+
+}
+
+//
+
+function _errUncaughtHandlerNotHandledError( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+  let ready = new _testerGlobal_.wTools.Consequence();
+
+  /* */
+
+  a.appStartNonThrowing({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.case = 'not handled error';
+    test.notIdentical( op.exitCode, 0 );
+    test.is( _.strHas( op.output, 'Channel closed' ) );
+    test.is( _.strHas( op.output, 'Error is unhandled' ) );
+    test.isNot( _.strHas( op.output, 'Error is handled' ) );
+    return null;
+  });
+
+  return a.ready;
+
+  /* */
+
+  function program()
+  {
+    let _ = require( toolsPath );
+
+    _.process.on( 'uncaughtError', ( e ) =>
+    {
+      console.log( 'Error is unhandled' )
+    });
+
+    throw _.err( 'Channel closed' );
+
+    console.log( 'Error is handled' );
+
+  }
+
+}
+
+//
+
+function _errUncaughtHandlerHandledErrorAndCodeExecution( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+  let ready = new _testerGlobal_.wTools.Consequence();
+
+  /* */
+
+  a.appStart({ execPath : programPath })
+  .then( ( op ) =>
+  {
+    test.case = 'handled error';
+    test.identical( op.exitCode, 0 );
+    test.isNot( _.strHas( op.output, 'Channel closed' ) );
+    test.isNot( _.strHas( op.output, 'Error is unhandled' ) );
+    test.is( _.strHas( op.output, 'Error is handled' ) );
+    return null;
+  });
+
+  return a.ready;
+
+  /* */
+
+  function program()
+  {
+    let _ = require( toolsPath );
+
+    _.process.on( 'uncaughtError', ( e ) =>
+    {
+      _.errAttend( e.err );
+      console.log( 'Error is handled' );
+    });
+
+    throw _.err( 'Channel closed' );
+
+
+  }
+
+}
+
 // --
 // declare
 // --
@@ -1556,6 +1687,10 @@ let Self =
     uncaughtError,
     sourceCode,
     assert,
+
+    _errUncaughtHandlerRethrowingError,
+    _errUncaughtHandlerNotHandledError,
+    _errUncaughtHandlerHandledErrorAndCodeExecution,
 
   }
 
