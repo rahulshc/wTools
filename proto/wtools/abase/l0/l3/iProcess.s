@@ -91,7 +91,6 @@ function insideTestContainer()
   if( !_global_.process )
   return false;
   return 'CI' in _global_.process.env;
-  // return 'CI' in process.env && 'GITHUB_ACTIONS' in process.env;
 }
 
 //
@@ -140,7 +139,11 @@ function entryPointInfo()
 
 let Events =
 {
-  available : [],
+  'available' : [],
+  'uncaughtError' : [],
+  /* qqq :
+
+  */
 }
 
 let _ehandler =

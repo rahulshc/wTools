@@ -13,11 +13,14 @@ let Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
 
 function _errUncaughtHandler2( err, kind )
 {
-  if( !kind )
-  kind = 'uncaught error';
-  let prefix = `--------------- ${kind} --------------->\n`;
-  let postfix = `--------------- ${kind} ---------------<\n`;
-  let logger = _global.logger || _global.console;
+  let c = Object.create( null );
+  c.err = err;
+  c.kind = kind;
+  if( !c.kind )
+  c.kind = 'uncaught error';
+  let prefix = `--------------- ${c.kind} --------------->\n`;
+  let postfix = `--------------- ${c.kind} ---------------<\n`;
+  c.logger = _global.logger || _global.console;
 
   /* xxx qqq : resolve issue in browser
     if file has syntax error then unachught error should not ( probably ) be throwen
@@ -25,15 +28,15 @@ function _errUncaughtHandler2( err, kind )
     avoid duplication of errors in log
   */
 
-  if( _.errIsAttended( err ) )
-  return;
+  processUncaughtErrorEvent();
 
-  // debugger;
+  if( _.errIsAttended( c.err ) )
+  return;
 
   /* */
 
   consoleUnbar();
-  attend( err );
+  attend( c.err );
 
   console.error( prefix );
 
@@ -66,17 +69,17 @@ function _errUncaughtHandler2( err, kind )
   {
     try
     {
-      err = _.errProcess( err );
+      c.err = _.errProcess( c.err );
       if( _.errLog )
-      _.errLog( err );
+      _.errLog( c.err );
       else
-      console.error( err );
+      console.error( c.err );
     }
     catch( err2 )
     {
       debugger;
       console.error( err2 );
-      console.error( err );
+      console.error( c.err );
     }
   }
 
@@ -84,10 +87,10 @@ function _errUncaughtHandler2( err, kind )
 
   function errLogFields()
   {
-    if( !err.originalMessage && _.objectLike && _.objectLike( err ) )
+    if( !c.err.originalMessage && _.objectLike && _.objectLike( c.err ) )
     try
     {
-      let serr = _.toStr && _.field ? _.toStr.fields( err, { errorAsMap : 1 } ) : err;
+      let serr = _.toStr && _.field ? _.toStr.fields( c.err, { errorAsMap : 1 } ) : c.err;
       console.error( serr );
     }
     catch( err2 )
@@ -116,13 +119,20 @@ function _errUncaughtHandler2( err, kind )
 
   /* */
 
+  function processUncaughtErrorEvent()
+  {
+    _.process.eventGive({ event : 'uncaughtError', args : [ c ] });
+  }
+
+  /* */
+
   function processExit()
   {
     if( _.process && _.process.exit )
     try
     {
       _.process.exitCode( -1 );
-      _.process.exitReason( err );
+      _.process.exitReason( c.err );
       _.process.exit();
     }
     catch( err2 )
@@ -139,7 +149,7 @@ function _errUncaughtHandler2( err, kind )
         process.exitCode = -1;
       }
     }
-    catch( err )
+    catch( err2 )
     {
     }
   }

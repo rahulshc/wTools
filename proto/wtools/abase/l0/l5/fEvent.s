@@ -17,12 +17,6 @@ function _chainGenerate( args )
   _.assert( arguments.length === 1 );
   _.assert( _.longIs( args ) );
 
-  // if( _.mapIs( args[ args.length-1 ] ) )
-  // {
-  //   let opt = args[ args.length-1 ];
-  //   _.mapExtend( o, _.mapBut( opt, { name : null } ) );
-  // }
-
   for( let a = 0 ; a < args.length-2 ; a++ ) (function( a )
   {
     let e1 = _.event.nameValueFrom( args[ a ] );
@@ -167,15 +161,13 @@ function on( ehandler, o )
   _.assert( _.mapIs( o.callbackMap ) );
   _.assert( _.objectIs( ehandler ) );
   _.assert( _.objectIs( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events );
+  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   for( let c in o.callbackMap )
   {
     let callback = o.callbackMap[ c ];
 
-    // if( _.longIs( callback ) )
-    // debugger;
     if( _.longIs( callback ) )
     callback = _.event._chainToCallback( [ c, ... callback ] );
 
@@ -189,37 +181,12 @@ function on( ehandler, o )
   }
 
   return o;
-
-  // function callbackMapFromChain( args )
-  // {
-  //
-  //   let callbackMap = Object.create( null );
-  //
-  //   let chain = _.event._chainGenerate( args );
-  //   let first = chain[ 0 ];
-  //
-  //   if( _.strIs( first[ 0 ] ) )
-  //   {
-  //     callbackMap[ first[ 0 ] ] = first[ 1 ];
-  //   }
-  //   else
-  //   {
-  //     debugger;
-  //     _.assert( _.strIs( first[ 0 ].name ) );
-  //     _.assert( 0, 'not tested' );
-  //     callbackMap[ first[ 0 ].name ] = first[ 1 ];
-  //   }
-  //
-  //   return callbackMap;
-  // }
-
 }
 
 on.pre = on_pre;
 on.defaults =
 {
   callbackMap : null,
-  // ehandler : null,
   first : 0,
 }
 
@@ -252,7 +219,7 @@ function off( ehandler, o )
   _.assert( _.mapIs( o.callbackMap ) );
   _.assert( _.objectIs( ehandler ) );
   _.assert( _.objectIs( ehandler.events ) );
-  _.assertMapHasOnly( o.callbackMap, ehandler.events );
+  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
   _.assert( arguments.length === 2 );
 
   for( let c in o.callbackMap )
@@ -270,7 +237,6 @@ off.pre = off_pre;
 off.defaults =
 {
   callbackMap : null,
-  // ehandler : null,
 }
 
 //
@@ -320,7 +286,6 @@ hasEventHandler.defaults =
 {
   eventName : null,
   eventHandler : null,
-  // ehandler : null,
 }
 
 //
