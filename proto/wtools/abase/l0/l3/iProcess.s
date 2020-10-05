@@ -56,6 +56,18 @@ hasEventHandler.defaults =
 
 //
 
+function eventGive()
+{
+  return _.event.eventGive( _.process._ehandler, ... arguments );
+}
+
+// eventGive.defaults =
+// {
+//   ... _.event.eventGive.defaults,
+// }
+
+//
+
 let Inspector = null;
 function isDebugged()
 {
@@ -158,7 +170,8 @@ let Extension =
 
   on,
   off,
-  hasEventHandler,
+  hasEventHandler, /* xxx : rename */
+  eventGive,
 
   // checker
 
