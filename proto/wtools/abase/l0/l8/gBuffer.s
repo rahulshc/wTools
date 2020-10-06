@@ -1071,7 +1071,7 @@ function bufferBytesFrom( buffer )
 
 //
 
-function bufferBytesFromNode( src )
+function bufferBytesFromNode( src ) /* Dmytro : what does this code do? */
 {
   _.assert( _.bufferNodeIs( src ) );
   let result = new U8x( buffer );
@@ -2939,7 +2939,7 @@ function bufferBytesGet( src )
     if( _global_.BufferNode )
     return new U8x( _.bufferRawFrom( BufferNode.from( src, 'utf8' ) ) );
     else
-    return new U8x( _.encode.utf8ToBuffer( src ) );
+    return new U8x( _.encode.utf8ToBuffer( src ) ); /* Dmytro : maybe it should have some improvement, base module should not use higher level modules */
   }
   else _.assert( 0, 'wrong argument' );
 

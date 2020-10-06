@@ -1,4 +1,5 @@
-( function _iType_s_() {
+( function _iType_s_()
+{
 
 'use strict';
 

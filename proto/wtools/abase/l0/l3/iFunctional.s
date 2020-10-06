@@ -1,4 +1,5 @@
-( function _iFunctional_s_() {
+( function _iFunctional_s_()
+{
 
 'use strict';
 

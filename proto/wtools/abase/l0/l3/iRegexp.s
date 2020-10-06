@@ -1,4 +1,5 @@
-( function _iRegexp_s_() {
+( function _iRegexp_s_()
+{
 
 'use strict';
 

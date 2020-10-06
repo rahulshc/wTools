@@ -1,4 +1,5 @@
-( function _iBuffer_s_() {
+( function _iBuffer_s_()
+{
 
 'use strict';
 

@@ -1,4 +1,5 @@
-( function _iRange_s_() {
+( function _iRange_s_()
+{
 
 'use strict';
 

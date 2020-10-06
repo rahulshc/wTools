@@ -1,4 +1,5 @@
-( function _iSet_s_() {
+( function _iSet_s_()
+{
 
 'use strict';
 

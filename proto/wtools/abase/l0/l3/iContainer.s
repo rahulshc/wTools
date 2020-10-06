@@ -1,4 +1,5 @@
-( function _iContainer_s_() {
+( function _iContainer_s_()
+{
 
 'use strict';
 
@@ -39,7 +40,7 @@ _realGlobal_.wTools.container.types = types;
 
 class Container
 {
-  static [ Symbol.hasInstance ]( instance )
+  static[ Symbol.hasInstance ]( instance )
   {
     return is( instance );
   }

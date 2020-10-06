@@ -77,9 +77,38 @@ function location( o )
   {
     let location2 = o.error.location || Object.create( null );
 
-    o.location.filePath = _.longLeftDefined([ location2.filePath, o.location.filePath, o.error.filename, o.error.fileName ]).element;
-    o.location.line = _.longLeftDefined([ location2.line, o.location.line, o.error.line, o.error.linenumber, o.error.lineNumber, o.error.lineNo, o.error.lineno ]).element;
-    o.location.col = _.longLeftDefined([ location2.col, o.location.col, o.error.col, o.error.colnumber, o.error.colNumber, o.error.colNo, o.error.colno ]).element;
+    var args0 =
+    [
+      location2.filePath,
+      o.location.filePath,
+      o.error.filename,
+      o.error.fileName
+    ];
+    o.location.filePath = _.longLeftDefined( args0 ).element;
+
+    var args1 =
+    [
+      location2.line,
+      o.location.line,
+      o.error.line,
+      o.error.linenumber,
+      o.error.lineNumber,
+      o.error.lineNo,
+      o.error.lineno
+    ];
+    o.location.line = _.longLeftDefined( args1 ).element;
+
+    var args2 =
+    [
+      location2.col,
+      o.location.col,
+      o.error.col,
+      o.error.colnumber,
+      o.error.colNumber,
+      o.error.colNo,
+      o.error.colno
+    ];
+    o.location.col = _.longLeftDefined( args2 ).element;
 
   }
 

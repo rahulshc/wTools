@@ -1,4 +1,5 @@
-( function _iMap_s_() {
+( function _iMap_s_()
+{
 
 'use strict';
 
@@ -1558,10 +1559,11 @@ function mapSelect( srcMap, keys )
 function mapValWithIndex( srcMap, index )
 {
 
- _.assert( arguments.length === 2, 'Expects exactly two arguments' );
- _.assert( !_.primitiveIs( srcMap ) );
+  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  _.assert( !_.primitiveIs( srcMap ) );
 
-  if( index < 0 ) return;
+  if( index < 0 )
+  return;
 
   let i = 0;
   for( let s in srcMap )
