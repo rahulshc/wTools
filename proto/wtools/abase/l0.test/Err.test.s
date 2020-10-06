@@ -1094,10 +1094,10 @@ function _errOriginalMessageForm( test )
     args : [ new Error( '\n\n   Sample     ' ), '\n\nstr   \n', undefined, '', null, false ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strLinesCount( err.originalMessage ), 7 );
   test.identical( _.strCount( err.originalMessage, '\n\n   Sample     \n\nstr   \n' ), 0 );
-  test.identical( _.strCount( err.originalMessage, 'Sample\nstr' ), 1 );
-  test.identical( _.strCount( err.originalMessage, 'str\nundefined' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'Sample     \n\nstr' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'str   \n\nundefined' ), 1 );
 
   test.case = 'Error without description, without fallBackMessage';
   var err = _._err
