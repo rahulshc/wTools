@@ -1342,6 +1342,59 @@ at http://127.0.0.1:15000/workerEnvironment/Worker.js:28:38
 
 //
 
+function errWithMultilineMessage( test )
+{
+  test.case = 'multiline error with new line symbols at the begin';
+  var got = _.err
+  (
+    `Error :`,
+    `\n    Exec :`,
+    `\n\n`,
+    `end of message`
+  );
+  var exp =
+`Error :
+    Exec :
+
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiline error with new line symbols at the end';
+  var got = _.err
+  (
+    `Error :\n`,
+    `    Exec :\n\n`,
+    `end of message`
+  );
+  var exp =
+`Error :
+    Exec :
+
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiline error with new line symbols, mixed';
+  var got = _.err
+  (
+    `Error :`,
+    `\n    Exec :\n`,
+    `\nend of message`
+  );
+  var exp =
+`Error :
+    Exec :
+
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+}
+
+//
+
 function errorFunctor( test )
 {
   let context = this;
@@ -1681,6 +1734,7 @@ let Self =
     errCustomError,
 
     errInStr,
+    errWithMultilineMessage,
 
     errorFunctor,
 
