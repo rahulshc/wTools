@@ -1037,6 +1037,8 @@ function _err( o )
     o.message = o.message || fallBackMessage || 'UnknownError';
     // o.message = o.message.replace( /^\x20*\n/m, '' ); /* Dmytro : this is task, this lines affect manual formatting of error message */
     // o.message = o.message.replace( /\x20*\n$/m, '' );
+    o.message = o.message.replace( /^\x20*/m, '' );
+    o.message = o.message.replace( /\x20*$/m, '' );
 
   }
 
