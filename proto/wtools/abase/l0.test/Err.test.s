@@ -1,4 +1,5 @@
-( function _Err_test_s_( ) {
+( function _Err_test_s_()
+{
 
 'use strict';
 
@@ -72,7 +73,7 @@ function errArgumentObject( test )
   var errStr = String( err );
   console.log( errStr );
   test.identical( _.strCount( errStr, 'at Object.errArgumentObject' ), 2 );
-  test.identical( _.strCount( errStr, '* 69 :   var err = _._err({ args });' ), 1 );
+  test.identical( _.strCount( errStr, /\* \d+ :   var err = _\._err\({ args }\);/ ), 1 );
 
 }
 
@@ -155,42 +156,39 @@ function _errTrowsError( test )
 {
   try
   {
-    var err = _._err();
+    _._err();
   }
   catch( err )
   {
     test.case = 'without arguments';
     test.is( _.errIs( err ) );
-    var errStr = String( err );
-    test.identical( _.strCount( errStr, 'Expects single argument : options map' ), 1 );
+    test.identical( _.strCount( String( err ), 'Expects single argument : options map' ), 1 );
   }
 
   /* */
 
   try
   {
-    var err = _._err( { args : 'wrong' } );
+    _._err( { args : 'wrong' } );
   }
   catch( err )
   {
     test.case = 'o.args is not a long';
     test.is( _.errIs( err ) );
-    var errStr = String( err );
-    test.identical( _.strCount( errStr, '_err : Expects Long option::args' ), 1 );
+    test.identical( _.strCount( String( err ), '_err : Expects Long option::args' ), 1 );
   }
 
   /* */
 
   try
   {
-    var err = _._err( { args : [ 'arg' ], wrong : 1 } );
+    _._err( { args : [ 'arg' ], wrong : 1 } );
   }
   catch( err )
   {
     test.case = 'map option has unnecessaty fields';
     test.is( _.errIs( err ) );
-    var errStr = String( err );
-    test.identical( _.strCount( errStr, 'Unknown option::wrong' ), 1 );
+    test.identical( _.strCount( String( err ), 'Unknown option::wrong' ), 1 );
   }
 }
 
@@ -283,10 +281,10 @@ function _errEmptyArgs( test )
   test.case = 'empty args, throwCallsStack, stackRemovingBeginIncluding and stackRemovingBeginExcluding';
   var err = _._err
   ({
-      args : [],
-      throwCallsStack : 'at program1\nat _errTrowsError',
-      stackRemovingBeginIncluding : /program1/,
-      stackRemovingBeginExcluding : /_errTrowsError/
+    args : [],
+    throwCallsStack : 'at program1\nat _errTrowsError',
+    stackRemovingBeginIncluding : /program1/,
+    stackRemovingBeginExcluding : /_errTrowsError/
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
@@ -407,11 +405,11 @@ function _errArgsHasError( test )
   test.case = 'empty args, throwCallsStack, stackRemovingBeginIncluding and stackRemovingBeginExcluding, fallBackStack';
   var err = _._err
   ({
-      args : [ new Error() ],
-      throwCallsStack : 'at program1\nat _errTrowsError',
-      stackRemovingBeginIncluding : /program1/,
-      stackRemovingBeginExcluding : /_errTrowsError/,
-      fallBackStack : ''
+    args : [ new Error() ],
+    throwCallsStack : 'at program1\nat _errTrowsError',
+    stackRemovingBeginIncluding : /program1/,
+    stackRemovingBeginExcluding : /_errTrowsError/,
+    fallBackStack : ''
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
@@ -578,11 +576,11 @@ function _errArgsHasRoutine( test )
   var unroll = () => _.unrollMake( [ 'error with unroll', 'routine unroll' ] );
   var err = _._err
   ({
-      args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
-      throwCallsStack : 'at program1\nat _errTrowsError',
-      stackRemovingBeginIncluding : /program1/,
-      stackRemovingBeginExcluding : /_errTrowsError/,
-      fallBackStack : ''
+    args : [ unroll,  new Error( 'Sample' ), new Error( 'next' ) ],
+    throwCallsStack : 'at program1\nat _errTrowsError',
+    stackRemovingBeginIncluding : /program1/,
+    stackRemovingBeginExcluding : /_errTrowsError/,
+    fallBackStack : ''
   });
   test.is( _.errIs( err ) );
   var errStr = String( err );
@@ -700,7 +698,7 @@ function _errLocation( test )
     catchLocation : { 'filePath' : 'at @605' }
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strCount( err.throwsStack, "at @605" ), 1 );
+  test.identical( _.strCount( err.throwsStack, 'at @605' ), 1 );
   var errStr = String( err );
   test.identical( _.strCount( errStr, 'Sample' ), 2 );
   test.identical( _.strCount( errStr, 'Error' ), 2 );
@@ -732,7 +730,7 @@ function _errLocation( test )
     throwLocation : { 'filePath' : 'at @605' }
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strCount( err.throwsStack, "at @605" ), 1 );
+  test.identical( _.strCount( err.throwsStack, 'at @605' ), 1 );
   test.identical( err.location.filePath, 'at @605' );
   test.identical( err.location.col, null );
   test.identical( err.location.line, null );
@@ -1035,7 +1033,7 @@ function _errOriginalMessageForm( test )
   test.identical( _.strCount( err.originalMessage, 'null false 1' ), 1 );
 
   test.case = 'args - different, routine returns routine';
-  var abc = function()
+  var abc = () =>
   {
     return () => '#1';
   }
@@ -1050,7 +1048,7 @@ function _errOriginalMessageForm( test )
   // test.identical( _.strCount( err.originalMessage, "() => '#1'" ), 1 ); // Dmytro : affects in group testing but has no reason for it
 
   test.case = 'args - different, routine returns map with toStr';
-  var a = function()
+  var a = () =>
   {
     return { toStr : () => '#1' }
   }
@@ -1483,7 +1481,7 @@ function uncaughtError( test )
   function program()
   {
     require( toolsPath );
-    throw 'Uncaught error'
+    throw Error( 'Uncaught error' )
   }
 
 }
@@ -1527,15 +1525,15 @@ function assert( test )
   var err;
 
   test.case = 'assert pass condition';
-  var got = _.assert( 5 === 5 );
+  var got = _.assert( 5 !== 4 );
   test.identical( got, true );
 
   test.case = 'passed failure condition : should generates exception';
   try
   {
-    _.assert( 5 != 5 )
+    _.assert( 5 === 4 )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -1546,7 +1544,7 @@ function assert( test )
   {
     _.assert( false, 'short error description' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
