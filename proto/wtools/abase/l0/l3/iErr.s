@@ -1020,7 +1020,8 @@ function _err( o )
       }
       else if( _.strEnds( o.message, '\n' ) || _.strBegins( str, '\n' ) )
       {
-        o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str;
+        // o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str; /* Dmytro : this is task, this line affects manual formatting of error message */
+        o.message += str;
       }
       else
       {
@@ -1034,8 +1035,8 @@ function _err( o )
     */
 
     o.message = o.message || fallBackMessage || 'UnknownError';
-    o.message = o.message.replace( /^\x20*\n/m, '' );
-    o.message = o.message.replace( /\x20*\n$/m, '' );
+    // o.message = o.message.replace( /^\x20*\n/m, '' ); /* Dmytro : this is task, this lines affect manual formatting of error message */
+    // o.message = o.message.replace( /\x20*\n$/m, '' );
 
   }
 
