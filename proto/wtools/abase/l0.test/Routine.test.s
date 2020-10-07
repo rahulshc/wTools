@@ -1,4 +1,5 @@
-( function _Routine_test_s_( ) {
+( function _Routine_test_s_()
+{
 
 'use strict';
 
@@ -17,7 +18,7 @@ let _ = _global_.wTools;
 
 function testFunction1( x, y )
 {
-  return x + y
+  return x + y;
 }
 
 function testFunction2( x, y )
@@ -73,7 +74,7 @@ function routineIs( test )
   test.identical( got, false );
 
   test.case = 'Symbol';
-  var got = _.routineIs( Symbol() );
+  var got = _.routineIs( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'array';
@@ -129,14 +130,14 @@ function routineIs( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function(){ this.x = 1; return this };
+  function Constr(){ this.x = 1; return this };
   var src = new Constr();
   var got = _.routineIs( src );
   test.identical( got, false );
 
   test.case = 'check instance constructor';
-  var Constr = function(){ this.x = 1; return this };
-  var src = new Constr();
+  function Constr1(){ this.x = 1; return this };
+  var src = new Constr1();
   var got = _.routineIs( src.constructor );
   test.identical( got, true );
 
@@ -198,7 +199,7 @@ function routineLike( test )
   test.identical( got, false );
 
   test.case = 'Symbol';
-  var got = _.routineLike( Symbol() );
+  var got = _.routineLike( Symbol( 'a' ) );
   test.identical( got, false );
 
   test.case = 'array';
@@ -254,14 +255,14 @@ function routineLike( test )
   test.identical( got, false );
 
   test.case = 'check instance of constructor';
-  var Constr = function(){ this.x = 1; return this };
+  function Constr(){ this.x = 1; return this };
   var src = new Constr();
   var got = _.routineLike( src );
   test.identical( got, false );
 
   test.case = 'check instance constructor';
-  var Constr = function(){ this.x = 1; return this };
-  var src = new Constr();
+  function Constr1(){ this.x = 1; return this };
+  var src = new Constr1();
   var got = _.routineLike( src.constructor );
   test.identical( got, true );
 
@@ -485,74 +486,76 @@ function routineIsAsync( test )
 function _routineJoin( test )
 {
 
-  var testParam1 = 2,
-    testParam2 = 4,
-    options1 =
-    {
-      sealing : false,
-      routine : testFunction1,
-      args : [ testParam2 ], // x
-      extending : true
-    },
-    options2 =
-    {
-      sealing : true,
-      routine : testFunction2,
-      args : [ testParam2 ], // x
-      extending : true
-    },
+  var testParam1 = 2;
+  var testParam2 = 4;
+  var options1 =
+  {
+    sealing : false,
+    routine : testFunction1,
+    args : [ testParam2 ], // x
+    extending : true
+  };
+  var options2 =
+  {
+    sealing : true,
+    routine : testFunction2,
+    args : [ testParam2 ], // x
+    extending : true
+  };
 
-    options3 =
-    {
-      sealing : false,
-      routine : testFunction3,
-      args : [ testParam2 ], // x
-      context : context3,
-      extending : true
-    },
-    options4 =
-    {
-      sealing : false,
-      routine : testFunction4,
-      args : [ testParam2 ], // x
-      context : context3,
-      extending : true
-    },
+  var options3 =
+  {
+    sealing : false,
+    routine : testFunction3,
+    args : [ testParam2 ], // x
+    context : context3,
+    extending : true
+  };
+  var options4 =
+  {
+    sealing : false,
+    routine : testFunction4,
+    args : [ testParam2 ], // x
+    context : context3,
+    extending : true
+  };
 
-    options5 =
-    {
-      sealing : true,
-      routine : testFunction3,
-      args : [ testParam1, testParam2 ], // x
-      context : context3,
-      extending : true
-    },
+  var options5 =
+  {
+    sealing : true,
+    routine : testFunction3,
+    args : [ testParam1, testParam2 ], // x
+    context : context3,
+    extending : true
+  };
 
-    wrongOpt1 = {
-      sealing : true,
-      routine : {},
-      args : [ testParam1, testParam2 ], // x
-      context : context3,
-      extending : true
-    },
+  var wrongOpt1 =
+  {
+    sealing : true,
+    routine : {},
+    args : [ testParam1, testParam2 ], // x
+    context : context3,
+    extending : true
+  };
 
-    wrongOpt2 = {
-      sealing : true,
-      routine : testFunction3,
-      args : 'wrong', // x
-      context : context3,
-      extending : true
-    },
+  var wrongOpt2 =
+  {
+    sealing : true,
+    routine : testFunction3,
+    args : 'wrong', // x
+    context : context3,
+    extending : true
+  };
 
-    expected1 = 6,
-    expected2 = undefined,
-    expected3 = 21,
-    expected5 = 21;
+  var expected1 = 6;
+  var expected2 = undefined;
+  var expected3 = 21;
+  var expected5 = 21;
 
   test.case = 'simple function without context with arguments bind without seal : result check';
   var gotfn = _._routineJoin( options1 );
   var got = gotfn( testParam1 );
-  test.identical( got,expected1 );
+  test.identical( got, expected1 );
 
   test.case = 'simple function without context and seal : context test';
   var gotfn = _._routineJoin(options2);
@@ -576,7 +579,7 @@ function _routineJoin( test )
 
   test.case = 'simple function with context and arguments : result check, seal == true ';
   var gotfn = _._routineJoin(options5);
-  var got = gotfn( 0,0 );
+  var got = gotfn( 0, 0 );
   test.identical( got, expected5 );
 
   test.case = 'extending';
@@ -630,7 +633,7 @@ function _routineJoin( test )
 //   test.case = 'simple function without context with arguments bind : result check';
 //   var gotfn = _.routineBind( testFunction1, undefined, [ testParam2 ]);
 //   var got = gotfn( testParam1 );
-//   test.identical( got,expected1 );
+//   test.identical( got, expected1 );
 //
 //   test.case = 'simple function without /*ttt*/context test';
 //   var gotfn = _.routineBind(testFunction2, undefined, [ testParam2 ]);
@@ -997,7 +1000,7 @@ function routineJoin( test )
   /* - */
 
   test.case = 'extending'
-  var srcRoutine = function(){};
+  var srcRoutine = () => {};
   srcRoutine.defaults = { a : 10 };
   var gotfn = _.routineJoin( undefined, srcRoutine, [] );
   test.identical( gotfn.defaults, srcRoutine.defaults );
@@ -1027,35 +1030,35 @@ function routineJoin( test )
 function routineSeal(test)
 {
 
-  var testParam1 = 2,
-    testParam2 = 4,
-    expected1 = 6,
-    expected2 = undefined,
-    expected3 = 21;
+  var testParam1 = 2;
+  var testParam2 = 4;
+  var expected1 = 6;
+  var expected2 = undefined;
+  var expected3 = 21;
 
   test.case = 'simple function with seal arguments : result check';
-  var gotfn = _.routineSeal(undefined, testFunction1, [testParam1, testParam2]);
+  var gotfn = _.routineSeal(undefined, testFunction1, [ testParam1, testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got, expected1 );
 
   test.case = 'simple function with seal arguments : context check';
-  var gotfn = _.routineSeal(undefined, testFunction2, [testParam1, testParam2]);
+  var gotfn = _.routineSeal(undefined, testFunction2, [ testParam1, testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got, expected2 );
 
   test.case = 'simple function with seal context and arguments : result check';
-  var gotfn = _.routineSeal(context3, testFunction3, [testParam1, testParam2]);
+  var gotfn = _.routineSeal(context3, testFunction3, [ testParam1, testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got, expected3 );
 
   test.case = 'simple function with seal context and arguments : context check';
-  var gotfn = _.routineSeal(context3, testFunction4, [testParam1, testParam2]);
+  var gotfn = _.routineSeal(context3, testFunction4, [ testParam1, testParam2 ]);
   var got = gotfn( testParam1 );
   test.identical( got instanceof contextConstructor3, true );
 
   test.case = 'simple function with seal context and arguments : result check';
-  var gotfn = _.routineSeal(context3, testFunction3, [testParam1, testParam2]);
-  var got = gotfn( 0,0 );
+  var gotfn = _.routineSeal(context3, testFunction3, [ testParam1, testParam2 ]);
+  var got = gotfn( 0, 0 );
   test.identical( got, expected3 );
 
   test.case = 'extending';
@@ -1129,8 +1132,12 @@ function routinesCompose( test )
     return _.dont;
   }
 
-  function chainer1( args, result, o, k )
+  function chainer1( /* args, result, o, k */ )
   {
+    let args = arguments[ 0 ];
+    let result = arguments[ 1 ];
+    let o = arguments[ 2 ];
+    let k = arguments[ 3 ];
     return result;
   }
 
@@ -1141,7 +1148,7 @@ function routinesCompose( test )
   var counter = 0;
   var routines = [];
   var composition = _.routinesCompose( routines );
-  var got = composition( 1,2,3 );
+  var got = composition( 1, 2, 3 );
   var expected = [];
   test.identical( got, expected );
   test.identical( counter, 0 );
@@ -1157,8 +1164,8 @@ function routinesCompose( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, r2, null ];
   var composition = _.routinesCompose( routines );
-  var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16,128 ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16, 128 ];
   test.identical( got, expected );
   test.identical( counter, 128 );
 
@@ -1169,8 +1176,8 @@ function routinesCompose( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, r2, null ];
   var composition = _.routinesCompose( routines, chainer1 );
-  var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16,160 ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16, 160 ];
   test.identical( got, expected );
   test.identical( counter, 160 );
 
@@ -1181,8 +1188,8 @@ function routinesCompose( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _break, null, r2, null ];
   var composition = _.routinesCompose( routines, chainer1 );
-  var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16,_.dont ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16, _.dont ];
   test.identical( got, expected );
   test.identical( counter, 16 );
 
@@ -1201,8 +1208,8 @@ function routinesCompose( test )
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, r2, null ];
   var composition = _.routinesCompose( routines );
-  var got = composition( 1,2,3 );
-  var expected = [ [ 1,2,3,16 ], 128 ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ [ 1, 2, 3, 16 ], 128 ];
   test.identical( got, expected );
   test.identical( counter, 128 );
 
@@ -1213,8 +1220,8 @@ function routinesCompose( test )
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, r2, null ];
   var composition = _.routinesCompose( routines, chainer1 );
-  var got = composition( 1,2,3 );
-  var expected = [ [ 1,2,3,16 ], 160 ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ [ 1, 2, 3, 16 ], 160 ];
   test.identical( got, expected );
   test.identical( counter, 160 );
 
@@ -1225,8 +1232,8 @@ function routinesCompose( test )
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, _break, null, r2, null ];
   var composition = _.routinesCompose( routines, chainer1 );
-  var got = composition( 1,2,3 );
-  var expected = [ [ 1,2,3,16 ],_.dont ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ [ 1, 2, 3, 16 ], _.dont ];
   test.identical( got, expected );
   test.identical( counter, 16 );
 
@@ -1292,8 +1299,8 @@ function routinesComposeAll( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, r2, null ];
   var composition = _.routinesComposeAll( routines );
-  var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16,128 ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16, 128 ];
   test.identical( got, expected );
   test.identical( counter, 128 );
 
@@ -1302,8 +1309,8 @@ function routinesComposeAll( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing ];
   var composition = _.routinesComposeAll( routines );
-  var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16 ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16 ];
   test.identical( got, expected );
   test.identical( counter, 16 );
 
@@ -1312,8 +1319,8 @@ function routinesComposeAll( test )
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, _nothing ];
   var composition = _.routinesComposeAll( routines );
-  var got = composition( 1,2,3 );
-  var expected = [ [ 1,2,3,16 ] ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ [ 1, 2, 3, 16 ] ];
   test.identical( got, expected );
   test.identical( counter, 16 );
 
@@ -1322,7 +1329,7 @@ function routinesComposeAll( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
   var composition = _.routinesComposeAll( routines );
-  var got = composition( 1,2,3 );
+  var got = composition( 1, 2, 3 );
   var expected = false;
   test.identical( got, expected );
   test.identical( counter, 16 );
@@ -1384,7 +1391,7 @@ function routinesComposeAllReturningLast( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, r2, null ];
   var composition = _.routinesComposeAllReturningLast( routines );
-  var got = composition( 1,2,3 );
+  var got = composition( 1, 2, 3 );
   var expected = 128;
   test.identical( got, expected );
   test.identical( counter, 128 );
@@ -1394,7 +1401,7 @@ function routinesComposeAllReturningLast( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing ];
   var composition = _.routinesComposeAllReturningLast( routines );
-  var got = composition( 1,2,3 );
+  var got = composition( 1, 2, 3 );
   var expected = 16;
   test.identical( got, expected );
   test.identical( counter, 16 );
@@ -1404,8 +1411,8 @@ function routinesComposeAllReturningLast( test )
   var counter = 0;
   var routines = [ null, routineNotUnrolling, null, _nothing ];
   var composition = _.routinesComposeAllReturningLast( routines );
-  var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16 ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16 ];
   test.identical( got, expected );
   test.identical( counter, 16 );
 
@@ -1414,7 +1421,7 @@ function routinesComposeAllReturningLast( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _nothing, null, _dont, null, r2, null ];
   var composition = _.routinesComposeAllReturningLast( routines );
-  var got = composition( 1,2,3 );
+  var got = composition( 1, 2, 3 );
   var expected = _.dont;
   test.identical( got, expected );
   test.identical( counter, 16 );
@@ -1468,8 +1475,8 @@ function routinesChain( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, r2, null ];
   var composition = _.routinesChain( routines );
-  var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16,160 ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16, 160 ];
   test.identical( got, expected );
   test.identical( counter, 160 );
 
@@ -1480,8 +1487,8 @@ function routinesChain( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, _break, null, r2, null ];
   var composition = _.routinesChain( routines );
-  var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16 ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16 ];
   test.identical( got, expected );
   test.identical( counter, 16 );
 
@@ -1492,8 +1499,8 @@ function routinesChain( test )
   var counter = 0;
   var routines = [ null, routineUnrolling, null, dontInclude, null, r2, null ];
   var composition = _.routinesChain( routines );
-  var got = composition( 1,2,3 );
-  var expected = [ 1,2,3,16, 160 ];
+  var got = composition( 1, 2, 3 );
+  var expected = [ 1, 2, 3, 16, 160 ];
   test.identical( got, expected );
   test.identical( counter, 160 );
 
@@ -1597,7 +1604,7 @@ function routineExtend_old( test )
   test.open( 'single dst');
 
   test.case = 'single dst';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   }
   var got = _.routineExtend_old( dst );
@@ -1605,7 +1612,7 @@ function routineExtend_old( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'single dst is routine, has properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
   dst.a = 0;
@@ -1619,10 +1626,10 @@ function routineExtend_old( test )
   test.identical( got.c, 'c' );
 
   test.case = 'single dst is routine, has hiden properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
-  Object.defineProperties( dst,
+  var props =
   {
     'a' :
     {
@@ -1636,7 +1643,8 @@ function routineExtend_old( test )
       enumerable : false,
       writable : false,
     }
-  });
+  };
+  Object.defineProperties( dst, props );
   var got = _.routineExtend_old( dst );
   test.identical( got, dst );
   test.identical( typeof got, 'function' );
@@ -1648,7 +1656,7 @@ function routineExtend_old( test )
   test.close( 'single dst');
 
   test.case = 'dst has properties, src map has different properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
   dst.a = 0;
@@ -1661,12 +1669,12 @@ function routineExtend_old( test )
   test.identical( got.e, Object.create( { s : 1 } ) );
 
   test.case = 'dst has properties, src map has the same properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
   dst.a = 0;
   dst.b = 0;
-  var got = _.routineExtend_old( dst, { a: 1, b : 1 } );
+  var got = _.routineExtend_old( dst, { a : 1, b : 1 } );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 1 );
   test.identical( got.b, 1 );
@@ -1674,10 +1682,10 @@ function routineExtend_old( test )
   /* */
 
   test.case = 'dst has non-writable properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
-  Object.defineProperties( dst,
+  var props =
   {
     'a' :
     {
@@ -1691,20 +1699,21 @@ function routineExtend_old( test )
       writable : false,
       value : 0,
     }
-  });
-  var got = _.routineExtend_old( dst, { a: 3, b : 2 } );
+  };
+  Object.defineProperties( dst, props );
+  var got = _.routineExtend_old( dst, { a : 3, b : 2 } );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 0 );
   test.identical( got.b, 0 );
 
   test.case = 'src has non-writable properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
   dst.a = 0;
   dst.b = 0;
   var src = {};
-  Object.defineProperties( src,
+  var props =
   {
     'a' :
     {
@@ -1718,7 +1727,8 @@ function routineExtend_old( test )
       writable : false,
       value : 2,
     }
-  });
+  };
+  Object.defineProperties( src, props );
   var got = _.routineExtend_old( dst, src );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 3 );
@@ -1727,7 +1737,7 @@ function routineExtend_old( test )
   test.case = 'src is an array';
   test.shouldThrowErrorSync( () =>
   {
-    var dst = function( o )
+    var dst = ( o ) =>
     {
     };
     var got = _.routineExtend_old( dst, [ 'a', 1 ] );
@@ -1762,14 +1772,14 @@ function routineExtend_old( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'dst extends map, dst extends other map';
-  var dst = function()
+  var dst = () =>
   {
   };
   var src1 =
   {
     pre : _.routinesCompose.pre,
     body : _.routinesCompose.body,
-    a : ['str'],
+    a : [ 'str' ],
     c : { d : 2 },
   };
   var src = _.routineExtend_old( dst, { c : {}, b : 'str' } );
@@ -1782,7 +1792,7 @@ function routineExtend_old( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'dst has map property, dst extends other map';
-  var dst = function()
+  var dst = () =>
   {
   };
   dst.map = { a : 'str' };
@@ -1790,7 +1800,7 @@ function routineExtend_old( test )
   {
     pre : _.routinesCompose.pre,
     body : _.routinesCompose.body,
-    a : ['str'],
+    a : [ 'str' ],
     map : { d : 2 },
   };
   var src = _.routineExtend_old( dst, { c : {} } );
@@ -1810,18 +1820,18 @@ function routineExtend_old( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'dst extends routine1, src extends routine, dst extends src';
-  var dst = function()
+  var dst = () =>
   {
   };
-  var src = function()
+  var src = () =>
   {
   };
-  var routine = function()
+  var routine = () =>
   {
   };
   routine.a = 0;
   routine.b = [ 'str' ];
-  var routine1 = function()
+  var routine1 = () =>
   {
   };
   routine1.a = 2;
@@ -1838,14 +1848,14 @@ function routineExtend_old( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'dst extends map, src extends map, dst extends src';
-  var dst = function()
+  var dst = () =>
   {
   };
-  var src = function()
+  var src = () =>
   {
   };
   var src1 = _.routineExtend_old( src, { o1 : 1, o2 : 'str' } );
-  var src2 = _.routineExtend_old( dst, { o3 : 'o3', o1 : 'map'} );
+  var src2 = _.routineExtend_old( dst, { o3 : 'o3', o1 : 'map' } );
   var got = _.routineExtend_old( src2, src1 )
   test.identical( got.o1, 1 );
   test.identical( got.o2, 'str' );
@@ -1856,7 +1866,7 @@ function routineExtend_old( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'extend by map';
-  var dst = function()
+  var dst = () =>
   {
   };
   Object.defineProperties( dst, {
@@ -1870,7 +1880,7 @@ function routineExtend_old( test )
   test.equivalent( got.b, { a : 2 } );
 
   test.case = 'extend by map';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
   dst.b = { map : 2 };
@@ -2019,7 +2029,7 @@ function routineExtend( test )
   test.open( 'single dst');
 
   test.case = 'single dst';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   }
   var got = _.routineExtend( dst );
@@ -2027,7 +2037,7 @@ function routineExtend( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'single dst is routine, has properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
   dst.a = 0;
@@ -2041,10 +2051,10 @@ function routineExtend( test )
   test.identical( got.c, 'c' );
 
   test.case = 'single dst is routine, has hiden properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
-  Object.defineProperties( dst,
+  var props =
   {
     'a' :
     {
@@ -2058,7 +2068,8 @@ function routineExtend( test )
       enumerable : false,
       writable : false,
     }
-  });
+  };
+  Object.defineProperties( dst, props );
   var got = _.routineExtend( dst );
   test.identical( got, dst );
   test.identical( typeof got, 'function' );
@@ -2070,7 +2081,7 @@ function routineExtend( test )
   test.close( 'single dst');
 
   test.case = 'dst has properties, src map has different properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
   dst.a = 0;
@@ -2083,12 +2094,12 @@ function routineExtend( test )
   test.identical( got.e, { s : 1 } );
 
   test.case = 'dst has properties, src map has the same properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
   dst.a = 0;
   dst.b = 0;
-  var got = _.routineExtend( dst, { a: 1, b : 1 } );
+  var got = _.routineExtend( dst, { a : 1, b : 1 } );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 1 );
   test.identical( got.b, 1 );
@@ -2096,10 +2107,10 @@ function routineExtend( test )
   /* */
 
   test.case = 'dst has non-writable properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
-  Object.defineProperties( dst,
+  var props =
   {
     'a' :
     {
@@ -2113,20 +2124,21 @@ function routineExtend( test )
       writable : false,
       value : 0,
     }
-  });
-  var got = _.routineExtend( dst, { a: 3, b : 2 } );
+  };
+  Object.defineProperties( dst, props );
+  var got = _.routineExtend( dst, { a : 3, b : 2 } );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 0 );
   test.identical( got.b, 0 );
 
   test.case = 'src has non-writable properties';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
   dst.a = 0;
   dst.b = 0;
   var src = {};
-  Object.defineProperties( src,
+  var props =
   {
     'a' :
     {
@@ -2140,7 +2152,8 @@ function routineExtend( test )
       writable : false,
       value : 2,
     }
-  });
+  };
+  Object.defineProperties( src, props );
   var got = _.routineExtend( dst, src );
   test.identical( typeof got, 'function' );
   test.identical( got.a, 3 );
@@ -2149,7 +2162,7 @@ function routineExtend( test )
   test.case = 'src is an array';
   test.shouldThrowErrorSync( () =>
   {
-    var dst = function( o )
+    var dst = ( o ) =>
     {
     };
     var got = _.routineExtend( dst, [ 'a', 1 ] );
@@ -2184,14 +2197,14 @@ function routineExtend( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'dst extends map, dst extends other map';
-  var dst = function()
+  var dst = () =>
   {
   };
   var src1 =
   {
     pre : _.routinesCompose.pre,
     body : _.routinesCompose.body,
-    a : ['str'],
+    a : [ 'str' ],
     c : { d : 2 },
   };
   var src = _.routineExtend( dst, { c : {}, b : 'str' } );
@@ -2204,7 +2217,7 @@ function routineExtend( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'dst has map property, dst extends other map';
-  var dst = function()
+  var dst = () =>
   {
   };
   dst.map = { a : 'str' };
@@ -2212,7 +2225,7 @@ function routineExtend( test )
   {
     pre : _.routinesCompose.pre,
     body : _.routinesCompose.body,
-    a : ['str'],
+    a : [ 'str' ],
     map : { d : 2 },
   };
   var src = _.routineExtend( dst, { c : {} } );
@@ -2232,18 +2245,18 @@ function routineExtend( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'dst extends routine1, src extends routine, dst extends src';
-  var dst = function()
+  var dst = () =>
   {
   };
-  var src = function()
+  var src = () =>
   {
   };
-  var routine = function()
+  var routine = () =>
   {
   };
   routine.a = 0;
   routine.b = [ 'str' ];
-  var routine1 = function()
+  var routine1 = () =>
   {
   };
   routine1.a = 2;
@@ -2260,14 +2273,14 @@ function routineExtend( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'dst extends map, src extends map, dst extends src';
-  var dst = function()
+  var dst = () =>
   {
   };
-  var src = function()
+  var src = () =>
   {
   };
   var src1 = _.routineExtend( src, { o1 : 1, o2 : 'str' } );
-  var src2 = _.routineExtend( dst, { o3 : 'o3', o1 : 'map'} );
+  var src2 = _.routineExtend( dst, { o3 : 'o3', o1 : 'map' } );
   var got = _.routineExtend( src2, src1 )
   test.identical( got.o1, 1 );
   test.identical( got.o2, 'str' );
@@ -2278,7 +2291,7 @@ function routineExtend( test )
   test.identical( typeof got, 'function' );
 
   test.case = 'extend by map';
-  var dst = function()
+  var dst = () =>
   {
   };
   Object.defineProperties( dst, {
@@ -2292,7 +2305,7 @@ function routineExtend( test )
   test.equivalent( got.b, { a : 2 } );
 
   test.case = 'extend by map';
-  var dst = function( o )
+  var dst = ( o ) =>
   {
   };
   dst.b = { map : 2 };
@@ -2435,12 +2448,13 @@ function routineDefaults( test )
 
 function vectorizeVectorizeArray( test )
 {
-  var srcRoutine = function()
+  function routine()
   {
     if( arguments.length === 0 )
     return null;
     return _.longSlice( arguments );
   };
+  var srcRoutine = routine;
 
   /* */
 
@@ -2487,7 +2501,7 @@ function vectorizeVectorizeArray( test )
 
   test.case = 'multiple argument';
 
-  var src = [ 1, 2 ,3 ];
+  var src = [ 1, 2, 3 ];
   var got = routine( src, 2 );
   test.identical( got, [ [ 1, 2 ], [ 2, 2 ], [ 3, 2 ] ] );
   test.is( got !== src );
@@ -2722,10 +2736,11 @@ function vectorizeVectorizeArray( test )
 
 function vectorizeOriginalRoutine( test )
 {
-  var srcRoutine = function()
+  function routine()
   {
     return _.longSlice( arguments );
   }
+  var srcRoutine = routine;
 
   /* */
 
@@ -2752,12 +2767,13 @@ function vectorizeOriginalRoutine( test )
 
 function vectorizeVectorizeMapOrArray( test )
 {
-  var srcRoutine = function()
+  function routine()
   {
     if( arguments.length === 0 )
     return null;
     return _.longSlice( arguments );
   }
+  var srcRoutine = routine;
 
   /* - */
 
@@ -2797,7 +2813,7 @@ function vectorizeVectorizeMapOrArray( test )
 
   var src = { 1 : 1, 2 : 2, 3 : 3 };
   var got = routine( src );
-  test.identical( got, { 1 : [ 1 ] , 2 : [ 2 ], 3 : [ 3 ] } );
+  test.identical( got, { 1 : [ 1 ], 2 : [ 2 ], 3 : [ 3 ] } );
   test.is( got !== src );
 
   test.case = 'multiple argument';
@@ -2819,7 +2835,7 @@ function vectorizeVectorizeMapOrArray( test )
 
   var src = [ 1, 2 ];
   var got = routine( src, [ 1, 2 ] );
-  test.identical( got, [ [ 1,2 ], [ 1,2 ] ] );
+  test.identical( got, [ [ 1, 2 ], [ 1, 2 ] ] );
   test.is( got !== src );
 
   var src = { a : 1 };
@@ -2890,7 +2906,7 @@ function vectorizeVectorizeMapOrArray( test )
 
   var src = [ 1, 2 ];
   var got = routine( src, [ 1, 2 ] );
-  test.identical( got, [ [ 1,2 ], [ 1,2 ] ] );
+  test.identical( got, [ [ 1, 2 ], [ 1, 2 ] ] );
   test.is( got !== src );
 
   var src = { a : 1 };
@@ -2980,7 +2996,7 @@ function vectorizeVectorizeMapOrArray( test )
 
   var src = { 1 : 1, 2 : 2, 3 : 3 };
   var got = routine( src );
-  test.identical( got, { 1 : [ 1 ] , 2 : [ 2 ], 3 : [ 3 ] } );
+  test.identical( got, { 1 : [ 1 ], 2 : [ 2 ], 3 : [ 3 ] } );
   test.is( got !== src );
 
   test.case = 'multiple argument';
@@ -3102,7 +3118,7 @@ function vectorizeVectorizeMapOrArray( test )
 
   var src = { a : 1, b : 1 };
   var got = routine( src, { b : 2, a : 2 } );
-  test.identical( got, { a : [ 1,2 ], b : [ 1,2 ] } );
+  test.identical( got, { a : [ 1, 2 ], b : [ 1, 2 ] } );
   test.is( got !== src );
 
   test.close( 'vectorizingArray : 1, vectorizingMapVals : 1, select : 2' );
@@ -3128,10 +3144,11 @@ function vectorizeVectorizeMapOrArray( test )
 
 function vectorizeVectorizeForOptionsMap( test )
 {
-  var srcRoutine = function()
+  function routine()
   {
     return _.longSlice( arguments );
   }
+  var srcRoutine = routine;
 
   /* - */
 
@@ -3251,12 +3268,13 @@ function vectorizeVectorizeForOptionsMap( test )
 
 function vectorizeVectorizeForOptionsMapForKeys( test )
 {
-  var srcRoutine = function()
+  function routine()
   {
     if( arguments.length === 0 )
     return null;
     return _.longSlice( arguments );
   }
+  var srcRoutine = routine;
 
   //
 
@@ -3295,32 +3313,24 @@ function vectorizeVectorizeForOptionsMapForKeys( test )
         b : [ 1 ]
       }
     ],
-    [
-      [
-        { a : 0, b : 1 }
-      ]
-    ]
+    [ [ { a : 0, b : 1 } ] ]
   ]
   test.identical( got, expected );
 
   /**/
 
-  var got = routine({ a : 0, b : [ 1,2 ] });
+  var got = routine({ a : 0, b : [ 1, 2 ] });
   var expected =
   [
     [
       {
         a : 0,
-        b : [ 1,2 ]
+        b : [ 1, 2 ]
       }
     ],
     [
-      [
-        { a : 0, b : 1 }
-      ],
-      [
-        { a : 0, b : 2 }
-      ]
+      [ { a : 0, b : 1 } ],
+      [ { a : 0, b : 2 } ]
     ],
 
   ]
@@ -3336,14 +3346,14 @@ function vectorizeVectorizeForOptionsMapForKeys( test )
 
 function vectorize( test )
 {
-  function srcRoutine( a,b )
+  function srcRoutine( a, b )
   {
     return _.longSlice( arguments );
   }
 
   //
 
-  test.open( 'vectorizingArray : 1,select : 2' );
+  test.open( 'vectorizingArray : 1, select : 2' );
 
   var o =
   {
@@ -3354,32 +3364,32 @@ function vectorize( test )
   o.routine = srcRoutine;
   var routine = _.vectorize( o );
 
-  test.identical( routine( [ 1,2 ], 1 ), [ [ 1,1 ], [ 2,1 ] ] );
-  test.identical( routine( 1, [ 1,2 ] ), [ [ 1,1 ], [ 1,2 ] ] );
-  test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1,1 ], [ 2,2 ] ] );
-  test.identical( routine( 1,2 ), [ 1,2 ] );
+  test.identical( routine( [ 1, 2 ], 1 ), [ [ 1, 1 ], [ 2, 1 ] ] );
+  test.identical( routine( 1, [ 1, 2 ] ), [ [ 1, 1 ], [ 1, 2 ] ] );
+  test.identical( routine( [ 1, 2 ], [ 1, 2 ] ), [ [ 1, 1 ], [ 2, 2 ] ] );
+  test.identical( routine( 1, 2 ), [ 1, 2 ] );
 
   test.identical( routine( { a : 1 }, 1 ), [ { a : 1 }, 1 ] );
-  test.identical( routine( 1, { a : 1 } ), [ 1, { a : 1 }] );
+  test.identical( routine( 1, { a : 1 } ), [ 1, { a : 1 } ] );
   test.identical( routine( { a : 1 }, { b : 2 } ), [ { a : 1 }, { b : 2 } ] );
 
   test.identical( routine( [ 1 ], { a : 2 } ), [ [ 1, { a : 2 } ] ] );
-  test.identical( routine( [ 1,2 ], { a : 3 } ), [ [ 1, { a : 3 } ], [ 2, { a : 3 } ] ] );
-  test.identical( routine( { a : 3 }, [ 1,2 ] ), [ [ { a : 3 }, 1  ], [ { a : 3 }, 2 ] ] );
+  test.identical( routine( [ 1, 2 ], { a : 3 } ), [ [ 1, { a : 3 } ], [ 2, { a : 3 } ] ] );
+  test.identical( routine( { a : 3 }, [ 1, 2 ] ), [ [ { a : 3 }, 1  ], [ { a : 3 }, 2 ] ] );
 
   if( Config.debug )
   {
     test.shouldThrowErrorSync( () => routine( 1 ) );
-    test.shouldThrowErrorSync( () => routine( 1,2,3 ) );
-    test.shouldThrowErrorSync( () => routine( [ 1,2 ], [ 1,2,3 ] ) );
+    test.shouldThrowErrorSync( () => routine( 1, 2, 3 ) );
+    test.shouldThrowErrorSync( () => routine( [ 1, 2 ], [ 1, 2, 3 ] ) );
     test.shouldThrowErrorSync( () => routine( [ 1 ], [ 2 ], [ 3 ] ) );
   }
 
-  test.close( 'vectorizingArray : 1,select : 2' );
+  test.close( 'vectorizingArray : 1, select : 2' );
 
   //
 
-  test.open( 'vectorizingArray : 1, vectorizingMapVals : 1,select : 2' );
+  test.open( 'vectorizingArray : 1, vectorizingMapVals : 1, select : 2' );
 
   var o =
   {
@@ -3390,20 +3400,20 @@ function vectorize( test )
   o.routine = srcRoutine;
   var routine = _.vectorize( o );
 
-  test.identical( routine( [ 1,2 ], 3 ), [ [ 1,3 ], [ 2,3 ] ] );
-  test.identical( routine( 1, [ 1,2 ] ), [ [ 1,1 ], [ 1,2 ] ] );
-  test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1,1 ], [ 2,2 ] ] );
-  test.identical( routine( 1,2 ), [ 1,2 ] );
+  test.identical( routine( [ 1, 2 ], 3 ), [ [ 1, 3 ], [ 2, 3 ] ] );
+  test.identical( routine( 1, [ 1, 2 ] ), [ [ 1, 1 ], [ 1, 2 ] ] );
+  test.identical( routine( [ 1, 2 ], [ 1, 2 ] ), [ [ 1, 1 ], [ 2, 2 ] ] );
+  test.identical( routine( 1, 2 ), [ 1, 2 ] );
 
   test.identical( routine( { a : 1 }, 1 ), { a : [ 1, 1 ] } );
   test.identical( routine( 1, { a : 1 } ), { a : [ 1, 1 ] } );
-  test.identical( routine( { a : 1 }, { a : 2 } ), { a : [ 1,2 ] } );
-  test.identical( routine( { a : 1, b : 1 }, { b : 2, a : 2 } ), { a : [ 1,2 ], b : [ 1,2 ] } );
+  test.identical( routine( { a : 1 }, { a : 2 } ), { a : [ 1, 2 ] } );
+  test.identical( routine( { a : 1, b : 1 }, { b : 2, a : 2 } ), { a : [ 1, 2 ], b : [ 1, 2 ] } );
 
   if( Config.debug )
   {
-    test.shouldThrowErrorSync( () => routine( [ 1,2 ], [ 1,2,3 ] ) )
-    test.shouldThrowErrorSync( () => routine( 1,2,3 ) );
+    test.shouldThrowErrorSync( () => routine( [ 1, 2 ], [ 1, 2, 3 ] ) )
+    test.shouldThrowErrorSync( () => routine( 1, 2, 3 ) );
     test.shouldThrowErrorSync( () => routine( { a : 1 }, { b : 1 } ) );
     test.shouldThrowErrorSync( () => routine( [ 1 ], { b : 1 } ) );
     test.shouldThrowErrorSync( () => routine( { b : 1 }, [ 1 ] ) );
@@ -3413,7 +3423,7 @@ function vectorize( test )
     test.shouldThrowErrorSync( () => routine( { b : 1 }, [ 1 ], 1 ) );
   }
 
-  test.close( 'vectorizingArray : 1, vectorizingMapVals : 1,select : 2' );
+  test.close( 'vectorizingArray : 1, vectorizingMapVals : 1, select : 2' );
 
   test.open( ' vectorizingMapKeys : 1' );
 
@@ -3456,7 +3466,7 @@ function vectorize( test )
   test.identical( routine( { b : 1, c : 2 }, [ 'a' ] ), { 'b,a' : 1, 'c,a' : 2 } );
 
   if( Config.debug )
-  test.shouldThrowErrorSync( () => routine( 1,2,3 ) );
+  test.shouldThrowErrorSync( () => routine( 1, 2, 3 ) );
 
   test.close( 'vectorizingMapKeys : 1, select : 2' );
 
@@ -3472,10 +3482,10 @@ function vectorize( test )
   o.routine = srcRoutine;
   var routine = _.vectorize( o );
 
-  test.identical( routine( [ 1,2 ], 3 ), [ [ 1,3 ], [ 2,3 ] ] );
-  test.identical( routine( 1, [ 1,2 ] ), [ [ 1,1 ], [ 1,2 ] ] );
-  test.identical( routine( [ 1,2 ], [ 1,2 ] ), [ [ 1,1 ], [ 2,2 ] ] );
-  test.identical( routine( 1,2 ), [ 1,2 ] );
+  test.identical( routine( [ 1, 2 ], 3 ), [ [ 1, 3 ], [ 2, 3 ] ] );
+  test.identical( routine( 1, [ 1, 2 ] ), [ [ 1, 1 ], [ 1, 2 ] ] );
+  test.identical( routine( [ 1, 2 ], [ 1, 2 ] ), [ [ 1, 1 ], [ 2, 2 ] ] );
+  test.identical( routine( 1, 2 ), [ 1, 2 ] );
 
   test.identical( routine( { a : 1 }, 'b' ), { 'a,b' : 1 } );
   test.identical( routine( 'a', { b : 1, c : 2 } ), { 'a,b' : 1, 'a,c' : 2 } );
@@ -3484,11 +3494,11 @@ function vectorize( test )
   test.identical( routine( 1, { b : 1, c : 2 } ), { '1,b' : 1, '1,c' : 2 } );
 
   test.identical( routine( [ 1 ], { b : true } ), { '1,b' : true } );
-  test.identical( routine( [ 1,2 ], { b : true } ), { '1,b' : true, '2,b' : true } );
+  test.identical( routine( [ 1, 2 ], { b : true } ), { '1,b' : true, '2,b' : true } );
 
   if( Config.debug )
   {
-    test.shouldThrowErrorSync( () => routine( 1,2,3 ) );
+    test.shouldThrowErrorSync( () => routine( 1, 2, 3 ) );
     test.shouldThrowErrorSync( () => routine( { a : 1 }, { b : 1 } ) );
     // test.shouldThrowErrorSync( () => routine( [ 1 ], { b : 1 } ) );
     // test.shouldThrowErrorSync( () => routine( { b : 1 }, [ 1 ] ) );
@@ -3515,11 +3525,11 @@ function vectorize( test )
   test.identical( routine( [ 1 ], { b : true }, 'c' ), { '1,b,c' : true } );
   test.identical( routine( [ 1 ], { b : true }, [ 'c' ] ), { '1,b,c' : true } );
   test.identical( routine( [ 1 ], { b : true, c : false }, 'd' ), { '1,b,d' : true, '1,c,d' : false } );
-  test.identical( routine( [ 1,2 ], { b : true }, 'c' ), { '1,b,c' : true, '2,b,c' : true } );
+  test.identical( routine( [ 1, 2 ], { b : true }, 'c' ), { '1,b,c' : true, '2,b,c' : true } );
 
   //
 
-  var got =  routine( [ 1,2 ], { b : true, c : false }, [ 'd', 'e' ] );
+  var got =  routine( [ 1, 2 ], { b : true, c : false }, [ 'd', 'e' ] );
   var expected =
   {
     '1,b,d' : true,
@@ -3531,7 +3541,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( [ 1,2 ], [ 'd', 'e' ], { b : true, c : false } );
+  var got =  routine( [ 1, 2 ], [ 'd', 'e' ], { b : true, c : false } );
   var expected =
   {
     '1,d,b' : true,
@@ -3543,7 +3553,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( { b : true, c : false }, [ 1,2 ], [ 'd', 'e' ]  );
+  var got =  routine( { b : true, c : false }, [ 1, 2 ], [ 'd', 'e' ]  );
   var expected =
   {
     'b,1,d' : true,
@@ -3555,7 +3565,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( [ 1,2 ], { b : true, c : false, d : true }, [ 'e', 'f' ] );
+  var got =  routine( [ 1, 2 ], { b : true, c : false, d : true }, [ 'e', 'f' ] );
   var expected =
   {
     '1,b,e' : true,
@@ -3569,7 +3579,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( [ 1,2 ], [ 'e', 'f' ], { b : true, c : false, d : true } );
+  var got =  routine( [ 1, 2 ], [ 'e', 'f' ], { b : true, c : false, d : true } );
   var expected =
   {
     '1,e,b' : true,
@@ -3583,7 +3593,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( { b : true, c : false, d : true }, [ 1,2 ], [ 'e', 'f' ] );
+  var got =  routine( { b : true, c : false, d : true }, [ 1, 2 ], [ 'e', 'f' ] );
   var expected =
   {
     'b,1,e' : true,
@@ -3630,7 +3640,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( [ 1,2 ], { b : true }, 'c' );
+  var got =  routine( [ 1, 2 ], { b : true }, 'c' );
   var expected =
   {
     '1,b,c' : true,
@@ -3640,7 +3650,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( { b : true }, [ 1,2 ], 'c' );
+  var got =  routine( { b : true }, [ 1, 2 ], 'c' );
   var expected =
   {
     'b,1,c' : true,
@@ -3650,7 +3660,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( [ 1,2 ], 'c', { b : true } );
+  var got =  routine( [ 1, 2 ], 'c', { b : true } );
   var expected =
   {
     '1,c,b' : true,
@@ -3660,7 +3670,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( [ 1,2 ], { b : true, c : false }, 'd' );
+  var got =  routine( [ 1, 2 ], { b : true, c : false }, 'd' );
   var expected =
   {
     '1,b,d' : true,
@@ -3672,7 +3682,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( { b : true, c : false }, [ 1,2 ], 'd' );
+  var got =  routine( { b : true, c : false }, [ 1, 2 ], 'd' );
   var expected =
   {
     'b,1,d' : true,
@@ -3684,7 +3694,7 @@ function vectorize( test )
 
   //
 
-  var got =  routine( [ 1,2 ], 'd', { b : true, c : false } );
+  var got =  routine( [ 1, 2 ], 'd', { b : true, c : false } );
   var expected =
   {
     '1,d,b' : true,
@@ -3721,8 +3731,8 @@ function vectorize( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), [ 2 ] );
-  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2 , 21 : 3, 31 : 4 } );
+  test.identical( routine( [ 1, 2, 3 ] ), [ 2, 3, 4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2, 21 : 3, 31 : 4 } );
 
   test.close( 'vectorizingMapKeys : 1, vectorizingArray : 1, vectorizingMapVals : 1, select : 1' );
 }
@@ -3862,8 +3872,8 @@ function vectorizeBypassingEmpty( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), '11' );
-  test.identical( routine( [ 1,2,3 ] ), '1,2,31' );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2 , 2 : 3, 3 : 4 } );
+  test.identical( routine( [ 1, 2, 3 ] ), '1,2,31' );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2, 2 : 3, 3 : 4 } );
 
   test.close( 'vectorizingMapVals:1, bypassingEmpty:1' );
 
@@ -3886,8 +3896,8 @@ function vectorizeBypassingEmpty( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), '11' );
-  test.identical( routine( [ 1,2,3 ] ), '1,2,31' );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2 , 2 : 3, 3 : 4 } );
+  test.identical( routine( [ 1, 2, 3 ] ), '1,2,31' );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2, 2 : 3, 3 : 4 } );
 
   test.close( 'vectorizingMapVals:1, bypassingEmpty:0' );
 
@@ -3912,8 +3922,8 @@ function vectorizeBypassingEmpty( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), [ 2 ] );
-  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2 , 2 : 3, 3 : 4 } );
+  test.identical( routine( [ 1, 2, 3 ] ), [ 2, 3, 4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2, 2 : 3, 3 : 4 } );
 
   test.close( 'vectorizingArray:1, vectorizingMapVals:1, bypassingEmpty:1' );
 
@@ -3936,8 +3946,8 @@ function vectorizeBypassingEmpty( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), [ 2 ] );
-  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2 , 2 : 3, 3 : 4 } );
+  test.identical( routine( [ 1, 2, 3 ] ), [ 2, 3, 4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 1 : 2, 2 : 3, 3 : 4 } );
 
   test.close( 'vectorizingArray:1, vectorizingMapVals:1, bypassingEmpty:0' );
 
@@ -3962,8 +3972,8 @@ function vectorizeBypassingEmpty( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), '11' );
-  test.identical( routine( [ 1,2,3 ] ), '1,2,31' );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1 , 21 : 2, 31 : 3 } );
+  test.identical( routine( [ 1, 2, 3 ] ), '1,2,31' );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1, 21 : 2, 31 : 3 } );
 
   test.close( 'vectorizingMapKeys:1, bypassingEmpty:1' );
 
@@ -3986,8 +3996,8 @@ function vectorizeBypassingEmpty( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), '11' );
-  test.identical( routine( [ 1,2,3 ] ), '1,2,31' );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1 , 21 : 2, 31 : 3 } );
+  test.identical( routine( [ 1, 2, 3 ] ), '1,2,31' );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1, 21 : 2, 31 : 3 } );
 
   test.close( 'vectorizingMapKeys:1, bypassingEmpty:0' );
 
@@ -4012,8 +4022,8 @@ function vectorizeBypassingEmpty( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), [ 2 ] );
-  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1 , 21 : 2, 31 : 3 } );
+  test.identical( routine( [ 1, 2, 3 ] ), [ 2, 3, 4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1, 21 : 2, 31 : 3 } );
 
   test.close( 'vectorizingArray:1, vectorizingMapKeys:1, bypassingEmpty:1' );
 
@@ -4036,8 +4046,8 @@ function vectorizeBypassingEmpty( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), [ 2 ] );
-  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1 , 21 : 2, 31 : 3 } );
+  test.identical( routine( [ 1, 2, 3 ] ), [ 2, 3, 4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 1, 21 : 2, 31 : 3 } );
 
   test.close( 'vectorizingArray:1, vectorizingMapKeys:1, bypassingEmpty:0' );
 
@@ -4062,8 +4072,8 @@ function vectorizeBypassingEmpty( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), [ 2 ] );
-  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2 , 21 : 3, 31 : 4 } );
+  test.identical( routine( [ 1, 2, 3 ] ), [ 2, 3, 4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2, 21 : 3, 31 : 4 } );
 
   test.close( 'vectorizingArray:1, vectorizingMapKeys:1, vectorizingMapVals : 1, bypassingEmpty:1' );
 
@@ -4086,8 +4096,8 @@ function vectorizeBypassingEmpty( test )
 
   test.identical( routine( 1 ), 2 );
   test.identical( routine( [ 1 ] ), [ 2 ] );
-  test.identical( routine( [ 1,2,3 ] ), [ 2,3,4 ] );
-  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2 , 21 : 3, 31 : 4 } );
+  test.identical( routine( [ 1, 2, 3 ] ), [ 2, 3, 4 ] );
+  test.identical( routine( { 1 : 1, 2 : 2, 3 : 3 } ), { 11 : 2, 21 : 3, 31 : 4 } );
 
   test.close( 'vectorizingArray:1, vectorizingMapKeys:1, vectorizingMapVals : 1, bypassingEmpty:0' );
 
