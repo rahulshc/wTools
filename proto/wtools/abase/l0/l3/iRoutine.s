@@ -961,8 +961,13 @@ function routineFromPreAndBody_body( o )
 
   if( !_.routineIs( o.pre ) )
   {
-    let _pre = _.routinesCompose( o.pre, function( args, result, op, k )
+    let _pre = _.routinesCompose( o.pre, function( /* args, result, op, k */ )
     {
+      let args = arguments[ 0 ];
+      let result = arguments[ 1 ];
+      let op = arguments[ 2 ];
+      let k = arguments[ 3 ];
+
       _.assert( arguments.length === 4 );
       _.assert( !_.unrollIs( result ) );
       _.assert( _.objectIs( result ) );
@@ -1986,8 +1991,12 @@ function vectorizeAccess( vector )
 
   /* */
 
-  function set( back, key, val, context )
+  function set( /* back, key, val, context */ )
   {
+    let back = arguments[ 0 ];
+    let key = arguments[ 1 ];
+    let val = arguments[ 2 ];
+    let context = arguments[ 3 ];
 
     vector.map( ( scalar ) =>
     {

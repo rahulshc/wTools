@@ -119,8 +119,13 @@ function lengthOf( src )
 // long sequential search
 // --
 
-function longLeftIndex( arr, ins, evaluator1, evaluator2 )
+function longLeftIndex( /* arr, ins, evaluator1, evaluator2 */ )
 {
+  let arr = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
+
   let fromIndex = 0;
 
   if( _.numberIs( arguments[ 2 ] ) )
@@ -180,8 +185,12 @@ function longLeftIndex( arr, ins, evaluator1, evaluator2 )
 
 //
 
-function longRightIndex( arr, ins, evaluator1, evaluator2 )
+function longRightIndex( /* arr, ins, evaluator1, evaluator2 */ )
 {
+  let arr = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let evaluator1 = arguments[ 2 ];
+  let evaluator2 = arguments[ 3 ];
 
   let fromIndex = arr.length-1;
 
@@ -296,8 +305,14 @@ function longRightIndex( arr, ins, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function longLeft( arr, ins, fromIndex, evaluator1, evaluator2 )
+function longLeft( /* arr, ins, fromIndex, evaluator1, evaluator2 */ )
 {
+  let arr = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let fromIndex = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   let result = Object.create( null );
   let i = _.longLeftIndex( arr, ins, fromIndex, evaluator1, evaluator2 );
 
@@ -373,8 +388,14 @@ function longLeft( arr, ins, fromIndex, evaluator1, evaluator2 )
  * @namespace Tools
  */
 
-function longRight( arr, ins, fromIndex, evaluator1, evaluator2 )
+function longRight( /* arr, ins, fromIndex, evaluator1, evaluator2 */ )
 {
+  let arr = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let fromIndex = arguments[ 2 ];
+  let evaluator1 = arguments[ 3 ];
+  let evaluator2 = arguments[ 4 ];
+
   let result = Object.create( null );
   let i = _.longRightIndex( arr, ins, fromIndex, evaluator1, evaluator2 );
 

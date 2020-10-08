@@ -1,4 +1,5 @@
-( function _iModule_s_() {
+( function _iModule_s_()
+{
 
 'use strict';
 

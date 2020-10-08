@@ -1,4 +1,5 @@
-( function _iTime_s_() {
+( function _iTime_s_()
+{
 
 'use strict';
 

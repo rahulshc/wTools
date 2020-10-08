@@ -2233,6 +2233,299 @@ function stack( test )
 
 //
 
+function stackRelative( test )
+{
+
+  test.case = 'without arguments';
+  var got = _.introspector.stackRelative();
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+  /* */
+
+  test.open( 'stack - null' );
+
+  test.case = 'without delta';
+  var got = _.introspector.stackRelative( null );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - undefined';
+  var got = _.introspector.stackRelative( null, undefined );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 0';
+  var got = _.introspector.stackRelative( null, 0 );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 1';
+  var got = _.introspector.stackRelative( null, 1 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( null, 2 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.close( 'stack - null' );
+
+  /* */
+
+  test.open( 'stack - undefined' );
+
+  test.case = 'without delta';
+  var got = _.introspector.stackRelative( undefined );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - undefined';
+  var got = _.introspector.stackRelative( undefined, undefined );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 0';
+  var got = _.introspector.stackRelative( undefined, 0 );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 1';
+  var got = _.introspector.stackRelative( undefined, 1 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( undefined, 2 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.close( 'stack - undefined' );
+
+  /* */
+
+  test.open( 'stack - true' );
+
+  test.case = 'without delta';
+  var got = _.introspector.stackRelative( true );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - true';
+  var got = _.introspector.stackRelative( true, undefined );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 0';
+  var got = _.introspector.stackRelative( true, 0 );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 1';
+  var got = _.introspector.stackRelative( true, 1 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( true, 2 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.close( 'stack - true' );
+
+  /* */
+
+  test.open( 'stack - false' );
+
+  test.case = 'without delta';
+  var got = _.introspector.stackRelative( false );
+  test.identical( got, '' );
+
+  test.case = 'delta - false';
+  var got = _.introspector.stackRelative( false, undefined );
+  test.identical( got, '' );
+
+  test.case = 'delta - 0';
+  var got = _.introspector.stackRelative( false, 0 );
+  test.identical( got, '' );
+
+  test.case = 'delta - 1';
+  var got = _.introspector.stackRelative( false, 1 );
+  test.identical( got, '' );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( false, 2 );
+  test.identical( got, '' );
+
+  test.close( 'stack - false' );
+
+  /* */
+
+  test.open( 'stack - 0' );
+
+  test.case = 'without delta';
+  var got = _.introspector.stackRelative( 0 );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 0';
+  var got = _.introspector.stackRelative( 0, undefined );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 0';
+  var got = _.introspector.stackRelative( 0, 0 );
+  test.is( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 1';
+  var got = _.introspector.stackRelative( 0, 1 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( 0, 2 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.close( 'stack - 0' );
+
+  /* */
+
+  test.open( 'stack - 1' );
+
+  test.case = 'without delta';
+  var got = _.introspector.stackRelative( 1 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 1';
+  var got = _.introspector.stackRelative( 1, undefined );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 1';
+  var got = _.introspector.stackRelative( 1, 0 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.is( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 1';
+  var got = _.introspector.stackRelative( 1, 1 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( 1, 2 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.isNot( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.close( 'stack - 1' );
+
+  /* */
+
+  test.open( 'stack - 2' );
+
+  test.case = 'without delta';
+  var got = _.introspector.stackRelative( 2 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( 2, undefined );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( 2, 0 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.is( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( 2, 1 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.isNot( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( 2, 2 );
+  test.isNot( _.strHas( got, 'at Object.stackRelative '  ) );
+  test.isNot( _.strHas( got, 'at Proxy._run'  ) );
+  test.isNot( _.strHas( got, 'at wConsequence.<anonymous> '  ) );
+
+  test.close( 'stack - 2' );
+
+  /* */
+
+  test.open( 'stack - string' );
+
+  test.case = 'without delta';
+  var got = _.introspector.stackRelative( 'some\nat@\nb\nc\nd' );
+  test.identical( got, 'some\nat@\nb\nc\nd' );
+
+  test.case = 'delta - undefined';
+  var got = _.introspector.stackRelative( 'some\nat@\nb\nc\nd', undefined );
+  test.identical( got, 'some\nat@\nb\nc\nd' );
+
+  test.case = 'delta - 0';
+  var got = _.introspector.stackRelative( 'some\nat@\nb\nc\nd', 0 );
+  test.identical( got, 'some\nat@\nb\nc\nd' );
+
+  test.case = 'delta - 1';
+  var got = _.introspector.stackRelative( 'some\nat@\nb\nc\nd', 1 );
+  test.identical( got, 'some\nat@\nb\nc\nd' );
+
+  test.case = 'delta - 2';
+  var got = _.introspector.stackRelative( 'some\nat@\nb\nc\nd', 2 );
+  test.identical( got, 'some\nat@\nb\nc\nd' );
+
+  test.close( 'stack - string' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.introspector.stackRelative( null, [ 1, 2 ], 'extra' ) );
+
+  test.case = 'wrong type of stack';
+  test.shouldThrowErrorSync( () => _.introspector.stackRelative( [ 'at @' ] ) );
+
+  test.case = 'wrong type of delta';
+  test.shouldThrowErrorSync( () => _.introspector.stackRelative( null, [] ) );
+}
+
+//
+
 function stackFilter( test )
 {
   test.open( 'onEach returns element' );
@@ -2436,6 +2729,7 @@ let Self =
 
     stackBasic,
     stack, /* aaa : extend the routine */ /* Dmytro : extended */
+    stackRelative,
 
     stackFilter,
 

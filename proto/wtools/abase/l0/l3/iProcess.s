@@ -1,4 +1,5 @@
-( function _iProcess_s_() {
+( function _iProcess_s_()
+{
 
 'use strict';
 

@@ -1,4 +1,5 @@
-( function _iErr_s_() {
+( function _iErr_s_()
+{
 
 'use strict';
 
@@ -92,13 +93,14 @@ function errReason( err, reason )
   {
     try
     {
-      Object.defineProperty( err, fieldName,
+      let o =
       {
         enumerable : false,
         configurable : true,
         writable : true,
         value,
-      });
+      };
+      Object.defineProperty( err, fieldName, o );
     }
     catch( err2 )
     {
@@ -397,13 +399,14 @@ function _errMake( o )
   {
     try
     {
-      Object.defineProperty( o.dstError, fieldName,
+      let o2 =
       {
         enumerable : false,
         configurable : true,
         writable : true,
         value,
-      });
+      };
+      Object.defineProperty( o.dstError, fieldName, o2 );
     }
     catch( err2 )
     {
@@ -420,13 +423,14 @@ function _errMake( o )
     try
     {
       o.dstError[ symbol ] = value;
-      Object.defineProperty( o.dstError, fieldName,
+      let o2 =
       {
         enumerable : false,
         configurable : true,
         get,
         set,
-      });
+      };
+      Object.defineProperty( o.dstError, fieldName, o2 );
     }
     catch( err2 )
     {
@@ -453,14 +457,15 @@ function _errMake( o )
     let symbol = Symbol.for( fieldName );
     try
     {
-      nonenumerable( symbol, value );
-      Object.defineProperty( o.dstError, fieldName,
+      let o2 =
       {
         enumerable : false,
         configurable : true,
         get,
         set,
-      });
+      };
+      nonenumerable( symbol, value );
+      Object.defineProperty( o.dstError, fieldName, o2 );
     }
     catch( err2 )
     {
@@ -827,14 +832,23 @@ function _err( o )
     _.assert( o.level === 0 );
 
     if( ( o.stackRemovingBeginIncluding || o.stackRemovingBeginExcluding ) && o.throwCallsStack )
-    o.throwCallsStack = _.introspector.stackRemoveLeft( o.throwCallsStack, o.stackRemovingBeginIncluding || null, o.stackRemovingBeginExcluding || null );
+    o.throwCallsStack = _.introspector.stackRemoveLeft
+    (
+      o.throwCallsStack, o.stackRemovingBeginIncluding || null, o.stackRemovingBeginExcluding || null
+    );
 
     if( !o.throwCallsStack )
     o.throwCallsStack = dstError.stack = o.fallBackStack;
 
     beautifiedStack = o.throwCallsStack;
 
-    _.assert( dstError.asyncCallsStack === undefined || dstError.asyncCallsStack === null || dstError.asyncCallsStack === '' || _.arrayIs( dstError.asyncCallsStack ) );
+    _.assert
+    (
+      dstError.asyncCallsStack === undefined
+      || dstError.asyncCallsStack === null
+      || dstError.asyncCallsStack === ''
+      || _.arrayIs( dstError.asyncCallsStack )
+    );
     if( dstError.asyncCallsStack && dstError.asyncCallsStack.length )
     {
       o.asyncCallsStack = o.asyncCallsStack || [];
@@ -1020,7 +1034,8 @@ function _err( o )
       }
       else if( _.strEnds( o.message, '\n' ) || _.strBegins( str, '\n' ) )
       {
-        o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str;
+        // o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str; /* Dmytro : this is task, this line affects manual formatting of error message */
+        o.message += str;
       }
       else
       {
@@ -1034,8 +1049,10 @@ function _err( o )
     */
 
     o.message = o.message || fallBackMessage || 'UnknownError';
-    o.message = o.message.replace( /^\x20*\n/m, '' );
-    o.message = o.message.replace( /\x20*\n$/m, '' );
+    // o.message = o.message.replace( /^\x20*\n/m, '' ); /* Dmytro : this is task, this lines affect manual formatting of error message */
+    // o.message = o.message.replace( /\x20*\n$/m, '' );
+    o.message = o.message.replace( /^\x20*/m, '' );
+    o.message = o.message.replace( /\x20*$/m, '' );
 
   }
 
@@ -1200,13 +1217,14 @@ function _errFields( args, fields )
 
     for( let f in fields )
     {
-      Object.defineProperty( err, f,
+      let o =
       {
         enumerable : false,
         configurable : true,
         writable : true,
         value : fields[ f ],
-      });
+      };
+      Object.defineProperty( err, f, o );
     }
 
   }
@@ -1348,7 +1366,7 @@ function errInStr( errStr )
 {
   _.assert( _.strIs( errStr ) );
 
-  if( !_.strHas( errStr, /=\s+Message of/m ) )
+  if( !_.strHas( errStr, /\=\s+Message of/m ) )
   return false;
 
   if( !_.strHas( errStr, /(^|\n)\s*=\s+Beautified calls stack/m ) )
@@ -1912,7 +1930,7 @@ function assertNotTested( src )
 
   if( _.debuggerEnabled )
   debugger;
-  _.assert( false,'not tested : ' + stack( 1 ) );
+  _.assert( false, 'not tested : ' + stack( 1 ) );
 
 }
 
@@ -1943,7 +1961,7 @@ function assertWarn( condition )
 
   if( !condition || !_.boolLike( condition ) )
   {
-    console.warn.apply( console,[].slice.call( arguments,1 ) );
+    console.warn.apply( console, [].slice.call( arguments, 1 ) );
   }
 
 }

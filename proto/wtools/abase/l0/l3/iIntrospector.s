@@ -77,9 +77,38 @@ function location( o )
   {
     let location2 = o.error.location || Object.create( null );
 
-    o.location.filePath = _.longLeftDefined([ location2.filePath, o.location.filePath, o.error.filename, o.error.fileName ]).element;
-    o.location.line = _.longLeftDefined([ location2.line, o.location.line, o.error.line, o.error.linenumber, o.error.lineNumber, o.error.lineNo, o.error.lineno ]).element;
-    o.location.col = _.longLeftDefined([ location2.col, o.location.col, o.error.col, o.error.colnumber, o.error.colNumber, o.error.colNo, o.error.colno ]).element;
+    var args0 =
+    [
+      location2.filePath,
+      o.location.filePath,
+      o.error.filename,
+      o.error.fileName
+    ];
+    o.location.filePath = _.longLeftDefined( args0 ).element;
+
+    var args1 =
+    [
+      location2.line,
+      o.location.line,
+      o.error.line,
+      o.error.linenumber,
+      o.error.lineNumber,
+      o.error.lineNo,
+      o.error.lineno
+    ];
+    o.location.line = _.longLeftDefined( args1 ).element;
+
+    var args2 =
+    [
+      location2.col,
+      o.location.col,
+      o.error.col,
+      o.error.colnumber,
+      o.error.colNumber,
+      o.error.colNo,
+      o.error.colno
+    ];
+    o.location.col = _.longLeftDefined( args2 ).element;
 
   }
 
@@ -931,6 +960,34 @@ function stack( stack, range )
 
 //
 
+function stackRelative( stack, delta )
+{
+  _.assert( delta === undefined || _.numberIs( delta ) );
+  _.assert( stack === undefined || stack === null || _.boolIs( stack ) || _.numberIs( stack ) || _.strIs( stack ) );
+  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+
+  if( _.strIs( stack ) )
+  return stack;
+  if( stack === false )
+  return '';
+
+  if( stack === undefined || stack === null || stack === true )
+  stack = 1;
+  else if( _.numberIs( stack ) )
+  stack += 1;
+
+  if( delta )
+  stack += delta;
+  if( _.numberIs( stack ) )
+  stack = _.introspector.stack([ stack, Infinity ]);
+
+  _.assert( _.strIs( stack ) );
+
+  return stack;
+}
+
+//
+
 function stackRemoveLeft( stack, include, exclude )
 {
   if( arguments.length !== 3 )
@@ -1058,6 +1115,7 @@ let Extnesion =
   locationToStack,
 
   stack,
+  stackRelative,
   stackRemoveLeft,
   stackCondense,
   stackFilter,
