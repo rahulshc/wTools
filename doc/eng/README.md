@@ -116,7 +116,7 @@
     Measurement of algorithms performance to choose the best solution.
 </details>
 
-## Theoretical
+## Research
 
 <details>
   <summary><a href="./research/Modularity.md#The-system-and-its-components">
