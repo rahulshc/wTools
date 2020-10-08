@@ -960,6 +960,34 @@ function stack( stack, range )
 
 //
 
+function stackRelative( stack, delta )
+{
+  _.assert( delta === undefined || _.numberIs( delta ) );
+  _.assert( stack === undefined || stack === null || _.boolIs( stack ) || _.numberIs( stack ) || _.strIs( stack ) );
+  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 );
+
+  if( _.strIs( stack ) )
+  return stack;
+  if( stack === false )
+  return '';
+
+  if( stack === undefined || stack === null || stack === true )
+  stack = 1;
+  else if( _.numberIs( stack ) )
+  stack += 1;
+
+  if( delta )
+  stack += delta;
+  if( _.numberIs( stack ) )
+  stack = _.introspector.stack([ stack, Infinity ]);
+
+  _.assert( _.strIs( stack ) );
+
+  return stack;
+}
+
+//
+
 function stackRemoveLeft( stack, include, exclude )
 {
   if( arguments.length !== 3 )
@@ -1087,6 +1115,7 @@ let Extnesion =
   locationToStack,
 
   stack,
+  stackRelative,
   stackRemoveLeft,
   stackCondense,
   stackFilter,
