@@ -119,63 +119,63 @@
 ## Theoretical
 
 <details>
-  <summary><a href="./theoretical/Modularity.md#The-system-and-its-components">
+  <summary><a href="./research/Modularity.md#The-system-and-its-components">
     The system and its components
   </a></summary>
     A system is a group of interacting or interrelated entities that form a unified whole.
 </details>
 
 <details>
-  <summary><a href="./theoretical/Modularity.md#Interface">
+  <summary><a href="./research/Modularity.md#Interface">
     Interface
   </a></summary>
     Interface is a shared boundary between system components.
 </details>
 
 <details>
-  <summary><a href="./theoretical/Modularity.md#Documentation">
+  <summary><a href="./research/Modularity.md#Documentation">
     Documentation
   </a></summary>
     Documentation is a set of documents to describe interface, its components or concepts behind the system.
 </details>
 
 <details>
-  <summary><a href="./theoretical/Modularity.md#Test">
+  <summary><a href="./research/Modularity.md#Test">
     Test
   </a></summary>
     Test is code or procedures which ensure that variation of input of the interface of the system produces expected output.
 </details>
 
 <details>
-  <summary><a href="./theoretical/Modularity.md#Modularization">
+  <summary><a href="./research/Modularity.md#Modularization">
     Modularization
   </a></summary>
     Modularization is the architectural design process of replacing a monolithic system by several modules which are interrelated somehow.
 </details>
 
 <details>
-  <summary><a href="./theoretical/ErrorHandling.md">
+  <summary><a href="./research/ErrorHandling.md">
     Errors handling
   </a></summary>
     The state of the art techniques of handling errors.
 </details>
 
 <details>
-  <summary><a href="./theoretical/ErrorHandling.md">
+  <summary><a href="./research/ErrorHandling.md">
     Mechanisms of catching errors
   </a></summary>
     Describe mechanisms of handling errors, depending on their synchronicity, build, and other circumstances.
 </details>
 
 <details>
-  <summary><a href="./theoretical/Modularity.md">
+  <summary><a href="./research/Modularity.md">
     Modularity of the system
   </a></summary>
     This article describes differences between modular and monolithic systems, concepts behind it and effects of modularization on the workflow.
 </details>
 
 <details>
-  <summary><a href="./theoretical/Modularity.md#Effects-of-modularization-on-the-workflow">
+  <summary><a href="./research/Modularity.md#Effects-of-modularization-on-the-workflow">
     Effects of modularization on the workflow
   </a></summary>
     Modularization of the system has several effects on the workflow.
