@@ -388,7 +388,7 @@ function _begin( test )
     };
 
     var timer = _.time._begin( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt3, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
     .then( ( got ) =>
     {
       test.identical( got.onTime, onTime );
@@ -435,7 +435,7 @@ function _begin( test )
   .then( function()
   {
     test.case = 'without callbacks, timeout > check time';
-    var timer = _.time._begin( context.dt3 );
+    var timer = _.time._begin( context.dt4 );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -468,7 +468,7 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time';
-    var timer = _.time._begin( context.dt3, onTime );
+    var timer = _.time._begin( context.dt4, onTime );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -485,7 +485,7 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time, execute method time';
-    var timer = _.time._begin( context.dt3, onTime );
+    var timer = _.time._begin( context.dt4, onTime );
     timer.time()
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
@@ -551,7 +551,7 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime, onCancel, timeout > check time';
-    var timer = _.time._begin( context.dt3, onTime, onCancel );
+    var timer = _.time._begin( context.dt4, onTime, onCancel );
     return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
     .then( ( got ) =>
     {
@@ -580,7 +580,7 @@ function _begin( test )
     };
 
     var timer = _.time._begin( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt3, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt4, () => timer )
     .then( ( got ) =>
     {
       test.identical( got.onTime, onTime );
@@ -1511,6 +1511,8 @@ function _periodic( test )
 
   return ready;
 }
+
+_periodic.timeOut = 10000;
 
 //
 
@@ -3115,6 +3117,8 @@ function periodic( test )
 
   return ready;
 }
+
+periodic.timeOut = 10000;
 
 //
 
