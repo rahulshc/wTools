@@ -1,4 +1,5 @@
-( function _gFunctional_s_() {
+( function _gFunctional_s_()
+{
 
 'use strict';
 

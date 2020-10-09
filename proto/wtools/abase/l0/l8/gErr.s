@@ -1,4 +1,5 @@
-(function _gErr_s_() {
+( function _gErr_s_()
+{
 
 'use strict';
 
@@ -113,13 +114,14 @@ function diagnosticWatchFields( o )
 
     if( o.verbosity > 1 )
     console.log( 'watching for', fieldName, 'in', o.target );
-    Object.defineProperty( o.target, fieldName,
+    let properties =
     {
       enumerable : true,
       configurable : true,
       get : read,
       set : write,
-    });
+    };
+    Object.defineProperty( o.target, fieldName, properties );
 
   })();
 
@@ -626,46 +628,46 @@ function diagnosticStructureGenerate_body( o )
   //   return 0;
   // }
 
-/*
+  /*
 
-  if( o.booleanComplexity || o.primitiveComplexity )
-  currentLevel[ 'booleanComplexity' ] = true;
+    if( o.booleanComplexity || o.primitiveComplexity )
+    currentLevel[ 'booleanComplexity' ] = true;
 
-  if( o.numberComplexity || o.primitiveComplexity )
-  currentLevel[ 'numberComplexity' ] = 0;
+    if( o.numberComplexity || o.primitiveComplexity )
+    currentLevel[ 'numberComplexity' ] = 0;
 
-  if( o.numberSignedZeroComplexity || o.primitiveComplexity > 2 )
-  {
-    currentLevel[ '-0' ] = -0;
-    currentLevel[ '+0' ] = +0;
-  }
+    if( o.numberSignedZeroComplexity || o.primitiveComplexity > 2 )
+    {
+      currentLevel[ '-0' ] = -0;
+      currentLevel[ '+0' ] = +0;
+    }
 
-  if( o.string || o.primitiveComplexity )
-  currentLevel[ 'string' ] = string;
+    if( o.string || o.primitiveComplexity )
+    currentLevel[ 'string' ] = string;
 
-  if( o.nullComplexity || o.primitiveComplexity > 1 )
-  currentLevel[ 'null' ] = null;
+    if( o.nullComplexity || o.primitiveComplexity > 1 )
+    currentLevel[ 'null' ] = null;
 
-  if( o.numberInfinityComplexity || o.primitiveComplexity > 1 )
-  {
-    currentLevel[ '+numberInfinityComplexity' ] = +Infinity;
-    currentLevel[ '-numberInfinityComplexity' ] = -Infinity;
-  }
+    if( o.numberInfinityComplexity || o.primitiveComplexity > 1 )
+    {
+      currentLevel[ '+numberInfinityComplexity' ] = +Infinity;
+      currentLevel[ '-numberInfinityComplexity' ] = -Infinity;
+    }
 
-  if( o.numberNanComplexity || o.primitiveComplexity > 1 )
-  currentLevel[ 'numberNanComplexity' ] = NaN;
+    if( o.numberNanComplexity || o.primitiveComplexity > 1 )
+    currentLevel[ 'numberNanComplexity' ] = NaN;
 
-  if( o.undefinedComplexity || o.primitiveComplexity > 2 )
-  currentLevel[ 'undefined' ] = undefined;
+    if( o.undefinedComplexity || o.primitiveComplexity > 2 )
+    currentLevel[ 'undefined' ] = undefined;
 
-  if( o.dateComplexity || o.primitiveComplexity > 2 )
-  currentLevel[ 'dateComplexity' ] = new Date();
+    if( o.dateComplexity || o.primitiveComplexity > 2 )
+    currentLevel[ 'dateComplexity' ] = new Date();
 
-  if( o.bigIntComplexity || o.primitiveComplexity > 2 )
-  if( typeof BigInt !== 'undefined' )
-  currentLevel[ 'bigInt' ] = BigInt( 1 );
+    if( o.bigIntComplexity || o.primitiveComplexity > 2 )
+    if( typeof BigInt !== 'undefined' )
+    currentLevel[ 'bigInt' ] = BigInt( 1 );
 
-*/
+  */
 
 }
 
@@ -827,10 +829,10 @@ function isInstanceOrClass( _constructor, _this )
   debugger;
   let result =
   (
-    _this === _constructor ||
-    _this instanceof _constructor ||
-    Object.isPrototypeOf.call( _constructor,_this ) ||
-    Object.isPrototypeOf.call( _constructor,_this.prototype )
+    _this === _constructor
+    || _this instanceof _constructor
+    || Object.isPrototypeOf.call( _constructor, _this )
+    || Object.isPrototypeOf.call( _constructor, _this.prototype )
   );
   return result;
 }
@@ -841,7 +843,7 @@ function ownNoConstructor( ins )
 {
   _.assert( _.objectLikeOrRoutine( ins ) );
   _.assert( arguments.length === 1 );
-  let result = !Object.hasOwnProperty.call( ins,'constructor' );
+  let result = !Object.hasOwnProperty.call( ins, 'constructor' );
   return result;
 }
 
