@@ -1,4 +1,5 @@
-(function _gIntrospector_s_() {
+( function _gIntrospector_s_()
+{
 
 'use strict';
 

@@ -1,4 +1,5 @@
-( function _gLong_s_() {
+( function _gLong_s_()
+{
 
 'use strict';
 
@@ -156,7 +157,11 @@ function longOnce_( dstLong, srcLong, onEvaluate )
       let length = srcLong.length + dstLong.length;
 
       for( let i = 0; i < srcLong.length; i++ )
-      if( _.longLeftIndex( dstLong, srcLong[ i ], onEvaluate ) !== -1 || _.longLeftIndex( srcLong, srcLong[ i ], i + 1, onEvaluate ) !== -1 )
+      if
+      (
+        _.longLeftIndex( dstLong, srcLong[ i ], onEvaluate ) !== -1
+        || _.longLeftIndex( srcLong, srcLong[ i ], i + 1, onEvaluate ) !== -1
+      )
       length--;
 
       if( length === dstLong.length )
@@ -750,7 +755,7 @@ function longFromRangeWithStep( range, step )
 
 //
 
-function longFromRangeWithNumberOfSteps( range , numberOfSteps )
+function longFromRangeWithNumberOfSteps( range, numberOfSteps )
 {
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -772,7 +777,7 @@ function longFromRangeWithNumberOfSteps( range , numberOfSteps )
   else
   step = ( range[ 0 ]-range[ 1 ] ) / (numberOfSteps-1);
 
-  return this.longFromRangeWithStep( range , step );
+  return this.longFromRangeWithStep( range, step );
 }
 
 // --
@@ -1212,7 +1217,8 @@ function longExtendScreening( screenArray, dstArray )
 
     let a;
     for( a = arguments.length-1 ; a >= 2 ; a-- )
-    if( k in arguments[ a ] ) break;
+    if( k in arguments[ a ] )
+    break;
     if( a === 1 )
     continue;
 
@@ -1307,9 +1313,13 @@ function longSort( dstLong, srcLong, onEvaluate )
     {
       a = onEvaluate( a );
       b = onEvaluate( b );
-      if( a > b ) return +1;
-      else if( a < b ) return -1;
-      else return 0;
+
+      if( a > b )
+      return +1;
+      else if( a < b )
+      return -1;
+      else
+      return 0;
     });
   }
   else _.assert( 0, 'Expects signle-argument evaluator or two-argument comparator' );
