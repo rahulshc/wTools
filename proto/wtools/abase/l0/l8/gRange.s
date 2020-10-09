@@ -1,4 +1,5 @@
-( function _gRange_s_() {
+( function _gRange_s_()
+{
 
 'use strict';
 

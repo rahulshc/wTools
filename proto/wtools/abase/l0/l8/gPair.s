@@ -1,4 +1,5 @@
-( function _gPair_s_() {
+( function _gPair_s_()
+{
 
 'use strict';
 
@@ -73,7 +74,7 @@ function make( src )
 
 class Pair
 {
-  static [ Symbol.hasInstance ]( instance )
+  static[ Symbol.hasInstance ]( instance )
   {
     return is( instance );
   }

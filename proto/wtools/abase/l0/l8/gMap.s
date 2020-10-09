@@ -1,4 +1,5 @@
-( function _gMap_s_() {
+( function _gMap_s_()
+{
 
 'use strict';
 
