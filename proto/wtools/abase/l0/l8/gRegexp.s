@@ -1,4 +1,5 @@
-( function _gRegexp_s_() {
+( function _gRegexp_s_()
+{
 
 'use strict';
 
@@ -58,7 +59,7 @@ let _floor = Math.floor;
 //
 // //
 //
-// function regexpIdentical( src1,src2 )
+// function regexpIdentical( src1, src2 )
 // {
 //   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 //
@@ -217,7 +218,7 @@ function regexpFrom( src, flags )
 
   _.assert( _.strIs( src ) );
 
-  return new RegExp( _.regexpEscape( src ),flags );
+  return new RegExp( _.regexpEscape( src ), flags );
 }
 
 //
@@ -261,7 +262,7 @@ function regexpMaybeFrom( o )
       {
         strip = _.regexpEscape( strip );
         if( o.toleratingSpaces )
-        strip = strip.replace( /\s+/g,'\\s*' );
+        strip = strip.replace( /\s+/g, '\\s*' );
       }
 
       strips[ s ] = strip;
@@ -491,7 +492,7 @@ regexpsAtLeastFirst.defaults =
  * // returns /^(?:(?!yellow|red|green).)*$/
  *
  * @param {Object} [options] options for generate regexp. If this argument omitted then default options will be used
- * @param {String[]} [options.but=null] a list of words,from each will consist regexp
+ * @param {String[]} [options.but=null] a list of words, from each will consist regexp
  * @param {boolean} [options.atLeastOne=true] indicates whether search matches at least once
  * @param {...String} [words] a list of words, from each will consist regexp. This arguments can be used instead
  * options map.
@@ -642,7 +643,7 @@ function regexpArrayMake( src )
 
     if( e === null )
     {
-      src.splice( k,1 );
+      src.splice( k, 1 );
       continue;
     }
 
@@ -675,7 +676,7 @@ function regexpArrayMake( src )
  * @namespace Tools
  */
 
-function regexpArrayIndex( arr,ins )
+function regexpArrayIndex( arr, ins )
 {
   _.assert( _.arrayIs( arr ) );
   _.assert( _.strIs( ins ) );

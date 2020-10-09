@@ -1,4 +1,5 @@
-( function _gRoutine_s_() {
+( function _gRoutine_s_()
+{
 
 'use strict';
 
@@ -10,8 +11,13 @@ let Self = _global_.wTools;
 // routine
 // --
 
-function routineCallButOnly( context, routine, o, but, only )
+function routineCallButOnly( /* context, routine, o, but, only */ )
 {
+  let context = arguments[ 0 ];
+  let routine = arguments[ 1 ];
+  let o = arguments[ 2 ];
+  let but = arguments[ 3 ];
+  let only = arguments[ 4 ];
 
   if( _.routineIs( routine ) || _.strIs( routine ) )
   {

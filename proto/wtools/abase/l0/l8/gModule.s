@@ -1,4 +1,5 @@
-( function _gModule_s_() {
+( function _gModule_s_()
+{
 
 'use strict';
 
@@ -106,16 +107,20 @@ function _usePathGloballyChildren( _module, paths, visited )
   visited.push( _module );
 
   for( let p = 0 ; p < paths.length ; p++ )
-  if( _module.paths.indexOf( paths[ p ] ) === -1 )
-  _module.paths.push( paths[ p ] );
+  {
+    if( _module.paths.indexOf( paths[ p ] ) === -1 )
+    _module.paths.push( paths[ p ] );
+  }
 
   // [].push.apply( _module.paths, paths );
 
   /* patch parents */
 
   if( _module.children )
-  for( var c = 0 ; c < _module.children.length ; c++ )
-  _usePathGloballyChildren( _module.children[ c ], paths, visited );
+  {
+    for( var c = 0 ; c < _module.children.length ; c++ )
+    _usePathGloballyChildren( _module.children[ c ], paths, visited );
+  }
 
 }
 
@@ -144,7 +149,10 @@ function declare( o )
   {
     let sourcePath = o.sourcePath[ i ];
     let was = _.module.knownModulesByPath.get( sourcePath );
-    _.assert( !was || was === o, () => `Module ${o.name} is trying to register path registered by ${was.name}\nPath : ${sourcePath}` );
+    _.assert
+    (
+      !was || was === o, () => `Module ${o.name} is trying to register path registered by ${was.name}\nPath : ${sourcePath}`
+    );
     _.assert( _.strIs( sourcePath ), `Expects string, but got ${_.strType( sourcePath )}` );
   }
 
@@ -655,8 +663,8 @@ function _resolveFirst( o )
     debugger;
     throw _.err
     (
-      `Cant resolve module::${_.longSlice( o.moduleNames ).join( ' module' )}.` +
-      `\nLooked at:\n - ${sourcePaths.join( '\n - ' )}`
+      `Cant resolve module::${_.longSlice( o.moduleNames ).join( ' module' )}.`
+      + `\nLooked at:\n - ${sourcePaths.join( '\n - ' )}`
     );
   }
 
@@ -837,8 +845,13 @@ function _Setup()
   let including = false;
   let resolvedPath = null;
 
-  Module._resolveFilename = function _resolveFilename( request, parent, isMain, options )
+  Module._resolveFilename = function _resolveFilename( /* request, parent, isMain, options */ )
   {
+    let request = arguments[ 0 ];
+    let parent = arguments[ 1 ];
+    let isMain = arguments[ 2 ];
+    let options = arguments[ 3 ];
+
     let result = NjsResolveFilename.apply( this, arguments );
     resolvedPath = result;
     return result;
@@ -855,11 +868,12 @@ function _Setup()
     catch( err )
     {
       // debugger; /**/
+      let error;
       if( parent && parent.filename )
-      err = _.err( err, `\nScript "${parent.filename}" failed to include "${request}"` );
+      error = _.err( err, `\nScript "${parent.filename}" failed to include "${request}"` );
       else
-      err = _.err( err, `\nFailed to include "${request}"` );
-      throw err;
+      error = _.err( err, `\nFailed to include "${request}"` );
+      throw error;
     }
     finally
     {
