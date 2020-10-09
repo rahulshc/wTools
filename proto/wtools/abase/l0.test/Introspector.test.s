@@ -1,4 +1,5 @@
-( function _Introspector_test_s_( ) {
+( function _Introspector_test_s_()
+{
 
 'use strict';
 
@@ -1058,7 +1059,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Introspector.test.s',
     'fileNameLineCol' : 'Introspector.test.s:48:79',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1085,7 +1086,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Introspector.test.s',
     'fileNameLineCol' : 'Introspector.test.s:48:79',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1112,7 +1113,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : '(Introspector.test.s)',
     'fileNameLineCol' : '(Introspector.test.s):5:47'
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1140,7 +1141,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : '(Introspector.test.s)',
     'fileNameLineCol' : '(Introspector.test.s):5:47'
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1168,7 +1169,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : '(Introspector.test.s)',
     'fileNameLineCol' : '(Introspector.test.s):5:47',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1196,7 +1197,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : '(Introspector.test.s)',
     'fileNameLineCol' : '(Introspector.test.s):5:47',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1224,7 +1225,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : '(Introspector.test.s)',
     'fileNameLineCol' : '(Introspector.test.s):5:15',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1251,7 +1252,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'File.js',
     'fileNameLineCol' : 'File.js:5:15',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1278,7 +1279,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'File.js',
     'fileNameLineCol' : 'File.js:5:15',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1305,7 +1306,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'File.js',
     'fileNameLineCol' : 'File.js:5:15',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1332,7 +1333,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'index.js',
     'fileNameLineCol' : 'index.js:5:15',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1355,7 +1356,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'File.js',
     'fileNameLineCol' : 'File.js:5:15',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1378,7 +1379,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'File.js',
     'fileNameLineCol' : 'File.js:9:15',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1400,7 +1401,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'File.js',
     'fileNameLineCol' : 'File.js:9:15',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1426,7 +1427,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Procedure.s',
     'fileNameLineCol' : 'Procedure.s:1503:20',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1452,7 +1453,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'Procedure.s',
     'fileNameLineCol' : 'Procedure.s:1503:20',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1478,7 +1479,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'timers.js',
     'fileNameLineCol' : 'timers.js:1',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   /* */
@@ -1503,7 +1504,7 @@ function locationFromStackFrameWithLocationField( test )
     'fileName' : 'timers.js',
     'fileNameLineCol' : 'timers.js:531:17',
   }
-  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location : location } );
+  var got = _.introspector.locationFromStackFrame( { stackFrame : stackCall, location } );
   test.identical( got, exp );
 
   test.case = 'eval and <anonymous> in path';
