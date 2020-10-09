@@ -1,4 +1,5 @@
-( function _gContainer_s_() {
+( function _gContainer_s_()
+{
 
 'use strict';
 

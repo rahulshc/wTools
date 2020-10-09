@@ -1,4 +1,5 @@
-( function _gEntity_s_() {
+( function _gEntity_s_()
+{
 
 'use strict';
 
