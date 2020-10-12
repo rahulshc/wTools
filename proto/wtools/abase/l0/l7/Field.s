@@ -1,4 +1,5 @@
-( function _Field_s_() {
+( function _Field_s_()
+{
 
 'use strict';
 
@@ -73,12 +74,13 @@ function hiding()
 
   function hiding( dstContainer, srcContainer, key )
   {
-    Object.defineProperty( dstContainer, key,
+    let properties =
     {
       value : srcContainer[ key ],
       enumerable : false,
       configurable : true,
-    });
+    };
+    Object.defineProperty( dstContainer, key, properties );
   }
 
 }
@@ -231,7 +233,7 @@ function assigningRecursive()
 
   function assigningRecursive( dstContainer, srcContainer, key )
   {
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key,_.entityAssignFieldFromContainer );
+    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
   }
 
 }
@@ -584,7 +586,7 @@ function dstNotHasAssigningRecursive()
     if( key in dstContainer )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key,_.entityAssignFieldFromContainer );
+    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
   }
 
 }
@@ -1012,7 +1014,7 @@ function srcOwnNotPrimitiveAssigningRecursive()
     if( _.primitiveIs( srcContainer[ key ] ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key,_.entityAssignFieldFromContainer );
+    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
   }
 
 }
@@ -1032,7 +1034,7 @@ function srcOwnAssigningRecursive()
     if( !Object.hasOwnProperty.call( srcContainer, key ) )
     return;
 
-    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key,_.entityAssignFieldFromContainer );
+    _.entityAssignFieldFromContainer( dstContainer, srcContainer, key, _.entityAssignFieldFromContainer );
   }
 
 }
@@ -1113,7 +1115,7 @@ function mapperFromFilter( routine )
   {
     return routine;
   }
-  else _.assert( 0,'Expects routine.functionFamily' );
+  else _.assert( 0, 'Expects routine.functionFamily' );
 
   function r( dstContainer, srcContainer, key )
   {
@@ -1184,7 +1186,7 @@ function setup()
       Extension.filter[ f ] = fi;
       Extension.mapper[ f ] = mapperFromFilter( fi );
     }
-    else _.assert( 0,'unexpected' );
+    else _.assert( 0, 'unexpected' );
 
   }
 

@@ -1,4 +1,5 @@
-( function _gArray_s_() {
+( function _gArray_s_()
+{
 
 'use strict';
 

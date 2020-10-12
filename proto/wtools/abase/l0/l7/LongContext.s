@@ -1,4 +1,5 @@
-(function _LongContext_s_() {
+( function _LongContext_s_()
+{
 
 'use strict';
 

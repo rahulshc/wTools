@@ -1,4 +1,5 @@
-( function _gBool_s_() {
+( function _gBool_s_()
+{
 
 'use strict';
 
