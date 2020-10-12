@@ -348,8 +348,14 @@ aaa : review
 Dmytro : reviewed, improved, covered
 */
 
-let bufferMake = _bufferMake_functor( function( src, ins, length, minLength )
+let bufferMake = _bufferMake_functor( function( /* src, ins, length, minLength */ )
 {
+  let src = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let length = arguments[ 2 ];
+  let minLength = arguments[ 3 ];
+
+  /* */
 
   let resultTyped;
   if( _.routineIs( src ) )
@@ -599,10 +605,16 @@ aaa : review
 Dmytro : reviewed, extended, covered
 */
 
-let bufferMakeUndefined = _bufferMake_functor( function( src, ins, length, minLength )
+let bufferMakeUndefined = _bufferMake_functor( function( /* src, ins, length, minLength */ )
 {
-  let result;
+  let src = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let length = arguments[ 2 ];
+  let minLength = arguments[ 3 ];
 
+  /* */
+
+  let result;
   if( _.routineIs( src ) )
   result = new src( length );
   else if( _.bufferNodeIs( src ) )
@@ -1364,8 +1376,13 @@ function bufferButInplace( dstArray, range, srcArray )
 
 //
 
-function _argumentsOnlyBuffer( dst, src, range, ins )
+function _argumentsOnlyBuffer( /* dst, src, range, ins */ )
 {
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let crange = arguments[ 2 ];
+  let ins = arguments[ 3 ];
+
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( dst === null )
@@ -1532,8 +1549,13 @@ function _returnDst( dst, src )
  * @namespace Tools
  */
 
-function bufferBut_( dst, src, crange, ins )
+function bufferBut_( /* dst, src, crange, ins */ )
 {
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let crange = arguments[ 2 ];
+  let ins = arguments[ 3 ];
+
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( arguments.length < 4 && dst !== null && dst !== src )
@@ -2137,8 +2159,13 @@ function bufferGrowInplace( dstArray, range, srcArray )
  * @namespace Tools
  */
 
-function bufferGrow_( dst, src, crange, ins )
+function bufferGrow_( /* dst, src, crange, ins */ )
 {
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let crange = arguments[ 2 ];
+  let ins = arguments[ 3 ];
+
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( arguments.length < 4 && dst !== null && dst !== src )
@@ -2522,8 +2549,13 @@ function bufferRelengthInplace( dstArray, range, srcArray )
  * @namespace Tools
  */
 
-function bufferRelength_( dst, src, crange, ins )
+function bufferRelength_( /* dst, src, crange, ins */ )
 {
+  let dst = arguments[ 0 ];
+  let src = arguments[ 1 ];
+  let crange = arguments[ 2 ];
+  let ins = arguments[ 3 ];
+
   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
   if( arguments.length < 4 && dst !== null && dst !== src )
