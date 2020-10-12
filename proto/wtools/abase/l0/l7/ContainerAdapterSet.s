@@ -266,12 +266,19 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
   {
     container = this.ToOriginal( container );
     if( _.longIs( container ) )
-    for( let k = 0, l = container.length ; k < l ; k++ )
-    this.original.add( container[ k ] );
+    {
+      for( let k = 0, l = container.length ; k < l ; k++ )
+      this.original.add( container[ k ] );
+    }
     else if( _.setIs( container ) )
-    for( let e of container )
-    this.original.add( e );
-    else _.assert( 0, 'Unexpected data type' );
+    {
+      for( let e of container )
+      this.original.add( e );
+    }
+    else
+    {
+      _.assert( 0, 'Unexpected data type' );
+    }
     return this;
   }
   appendContainerOnce( container, onEvaluate1, onEvaluate2 )
@@ -890,7 +897,9 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     else
     {
       for( let e of container )
-      return e;
+      {
+        return e;
+      }
     }
   }
   last( onEach )
@@ -1056,13 +1065,23 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     }
     return true;
   }
-  left( element, fromIndex, onEvaluate1, onEvaluate2 )
+  left( /* element, fromIndex, onEvaluate1, onEvaluate2 */ )
   {
-   _.assert( 1 <= arguments.length && arguments.length <= 4 );
-   return _.arraySetLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
+    let element = arguments[ 0 ];
+    let fromIndex = arguments[ 1 ];
+    let onEvaluate1 = arguments[ 2 ];
+    let onEvaluate2 = arguments[ 3 ];
+
+    _.assert( 1 <= arguments.length && arguments.length <= 4 );
+    return _.arraySetLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
-  right( element, fromIndex, onEvaluate1, onEvaluate2 )
+  right( /* element, fromIndex, onEvaluate1, onEvaluate2 */ )
   {
+    let element = arguments[ 0 ];
+    let fromIndex = arguments[ 1 ];
+    let onEvaluate1 = arguments[ 2 ];
+    let onEvaluate2 = arguments[ 3 ];
+
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.arraySetRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
