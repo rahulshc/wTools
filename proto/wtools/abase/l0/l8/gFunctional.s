@@ -605,7 +605,7 @@ function eachPermutation( o )
     onEach( container, iteration, left, last, swaps );
     add();
     left = plast;
-    next();
+    nextCounter();
     reverse();
     iteration += 1;
   }
@@ -653,7 +653,7 @@ function eachPermutation( o )
     }
   }
 
-  function next()
+  function nextCounter()
   {
     while( counter[ left ] === 0 && left !== 0 )
     left -= 1;
