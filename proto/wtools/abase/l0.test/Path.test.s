@@ -5594,10 +5594,10 @@ function nativize( test )
 
 //
 
-function nativizeTolerant( test )
+function nativizeEscaping( test )
 {
   var src = '/A/b/';
-  var got = _.path.nativizeTolerant( src );
+  var got = _.path.nativizeEscaping( src );
   var expected = 'A:\\b\\';
   if( process.platform === 'win32' )
   test.identical( got, expected );
@@ -5605,7 +5605,7 @@ function nativizeTolerant( test )
   test.identical( got, src );
 
   var src = '"/A/b/"';
-  var got = _.path.nativizeTolerant( src );
+  var got = _.path.nativizeEscaping( src );
   var expected = '"A:\\b\\"';
   if( process.platform === 'win32' )
   test.identical( got, expected );
@@ -5613,7 +5613,7 @@ function nativizeTolerant( test )
   test.identical( got, src );
 
   var src = '"/A/b c/"';
-  var got = _.path.nativizeTolerant( src );
+  var got = _.path.nativizeEscaping( src );
   var expected = '"A:\\b c\\"';
   if( process.platform === 'win32' )
   test.identical( got, expected );
@@ -5621,7 +5621,7 @@ function nativizeTolerant( test )
   test.identical( got, src );
 
   var src = '"/A/b';
-  var got = _.path.nativizeTolerant( src );
+  var got = _.path.nativizeEscaping( src );
   var expected = '"A:\\b';
   if( process.platform === 'win32' )
   test.identical( got, expected );
@@ -5631,25 +5631,25 @@ function nativizeTolerant( test )
 
 //
 
-function _nativizeTolerantWindows( test )
+function _nativizeEscapingWindows( test )
 {
   var src = '/A/b/';
-  var got = _.path._nativizeTolerantWindows( src );
+  var got = _.path._nativizeEscapingWindows( src );
   var expected = 'A:\\b\\';
   test.identical( got, expected );
 
   var src = '"/A/b/"';
-  var got = _.path._nativizeTolerantWindows( src );
+  var got = _.path._nativizeEscapingWindows( src );
   var expected = '"A:\\b\\"';
   test.identical( got, expected );
 
   var src = '"/A/b c/"';
-  var got = _.path._nativizeTolerantWindows( src );
+  var got = _.path._nativizeEscapingWindows( src );
   var expected = '"A:\\b c\\"';
   test.identical( got, expected );
 
   var src = '"/A/b';
-  var got = _.path._nativizeTolerantWindows( src );
+  var got = _.path._nativizeEscapingWindows( src );
   var expected = '"A:\\b';
   test.identical( got, expected );
 }
@@ -7097,8 +7097,8 @@ let Self =
     canonize,
     canonizeTolerant,
     nativize,
-    nativizeTolerant,
-    _nativizeTolerantWindows,
+    nativizeEscaping,
+    _nativizeEscapingWindows,
     escape,
 
     _nativizeWindows,
