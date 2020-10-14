@@ -5594,6 +5594,68 @@ function nativize( test )
 
 //
 
+function nativizeTolerant( test )
+{
+  var src = '/A/b/';
+  var got = _.path.nativizeTolerant( src );
+  var expected = 'A:\\b\\';
+  if( process.platform === 'win32' )
+  test.identical( got, expected );
+  else
+  test.identical( got, src );
+
+  var src = '"/A/b/"';
+  var got = _.path.nativizeTolerant( src );
+  var expected = '"A:\\b\\"';
+  if( process.platform === 'win32' )
+  test.identical( got, expected );
+  else
+  test.identical( got, src );
+
+  var src = '"/A/b c/"';
+  var got = _.path.nativizeTolerant( src );
+  var expected = '"A:\\b c\\"';
+  if( process.platform === 'win32' )
+  test.identical( got, expected );
+  else
+  test.identical( got, src );
+
+  var src = '"/A/b';
+  var got = _.path.nativizeTolerant( src );
+  var expected = '"A:\\b';
+  if( process.platform === 'win32' )
+  test.identical( got, expected );
+  else
+  test.identical( got, src );
+}
+
+//
+
+function _nativizeTolerantWindows( test )
+{
+  var src = '/A/b/';
+  var got = _.path._nativizeTolerantWindows( src );
+  var expected = 'A:\\b\\';
+  test.identical( got, expected );
+
+  var src = '"/A/b/"';
+  var got = _.path._nativizeTolerantWindows( src );
+  var expected = '"A:\\b\\"';
+  test.identical( got, expected );
+
+  var src = '"/A/b c/"';
+  var got = _.path._nativizeTolerantWindows( src );
+  var expected = '"A:\\b c\\"';
+  test.identical( got, expected );
+
+  var src = '"/A/b';
+  var got = _.path._nativizeTolerantWindows( src );
+  var expected = '"A:\\b';
+  test.identical( got, expected );
+}
+
+//
+
 function escape( test )
 {
 
@@ -7035,6 +7097,8 @@ let Self =
     canonize,
     canonizeTolerant,
     nativize,
+    nativizeTolerant,
+    _nativizeTolerantWindows,
     escape,
 
     _nativizeWindows,
