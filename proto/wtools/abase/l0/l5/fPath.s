@@ -646,9 +646,9 @@ function nativize()
 function nativizeMinimal()
 {
   if( _global.process && _global.process.platform === 'win32' )
-  this.nativizeMinimal = this.__nativizeWindows;
+  this.nativizeMinimal = this._nativizeMinimalWindows;
   else
-  this.nativizeMinimal = this.__nativizePosix;
+  this.nativizeMinimal = this._nativizeMinimalPosix;
   return this.nativizeMinimal.apply( this, arguments );
 }
 
