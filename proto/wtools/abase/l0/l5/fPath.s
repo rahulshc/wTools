@@ -1144,10 +1144,7 @@ let Extension =
   _nativizeEscapingPosix,
   nativize,
   nativizeMinimal,
-<<<<<<< HEAD
   nativizeEscaping,
-=======
->>>>>>> f9bedddace16e11296e3590895f8ee35f15623bd
 
   escape,
   _unescape,
