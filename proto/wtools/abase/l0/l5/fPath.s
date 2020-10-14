@@ -548,7 +548,7 @@ function canonizeTolerant( src )
 
 //
 
-function __nativizeWindows( filePath )
+function _nativizeMinimalWindows( filePath )
 {
   let self = this;
 
@@ -578,14 +578,14 @@ function _nativizeWindows( filePath )
   _.assert( _.routineIs( self.unescape ) );
   result = self.unescape( result ); /* yyy */
 
-  result = self.__nativizeWindows( result );
+  result = self._nativizeMinimalWindows( result );
 
   return result;
 }
 
 //
 
-function __nativizePosix( filePath )
+function _nativizeMinimalPosix( filePath )
 {
   let self = this;
   let result = filePath;
@@ -618,13 +618,13 @@ function nativize()
 
 //
 
-function nativizeTolerant()
+function nativizeMinimal()
 {
   if( _global.process && _global.process.platform === 'win32' )
-  this.nativizeTolerant = this.__nativizeWindows;
+  this.nativizeMinimal = this._nativizeMinimalWindows;
   else
-  this.nativizeTolerant = this.__nativizePosix;
-  return this.nativizeTolerant.apply( this, arguments );
+  this.nativizeMinimal = this._nativizeMinimalPosix;
+  return this.nativizeMinimal.apply( this, arguments );
 }
 
 //
@@ -1101,12 +1101,12 @@ let Extension =
   canonize,
   canonizeTolerant,
 
-  __nativizeWindows,
+  _nativizeMinimalWindows,
   _nativizeWindows,
-  __nativizePosix,
+  _nativizeMinimalPosix,
   _nativizePosix,
   nativize,
-  nativizeTolerant,
+  nativizeMinimal,
 
   escape,
   _unescape,
