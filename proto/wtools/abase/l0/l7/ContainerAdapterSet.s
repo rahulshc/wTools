@@ -271,18 +271,17 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     if( _.longIs( container ) )
     {
       for( let k = 0, l = container.length ; k < l ; k++ )
-      {
-        this.original.add( container[ k ] );
-      }
+      this.original.add( container[ k ] );
     }
     else if( _.setIs( container ) )
     {
       for( let e of container )
-      {
-        this.original.add( e );
-      }
+      this.original.add( e );
     }
-    else _.assert( 0, 'Unexpected data type' );
+    else
+    {
+      _.assert( 0, 'Unexpected data type' );
+    }
     return this;
   }
   appendContainerOnce( container, onEvaluate1, onEvaluate2 )
