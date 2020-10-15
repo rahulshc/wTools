@@ -4,7 +4,7 @@
 'use strict';
 
 /**
- * @summary Collection of routines to operate paths reliably and consistently.
+ * @summary Collection of cross-platform routines to operate paths reliably and consistently.
  * @namespace wTools.path
  * @extends Tools
  */
@@ -612,7 +612,7 @@ function _nativizeEscapingWindows( filePath )
   let self = this;
   let unescapeResult = self._unescape( filePath )
 
-  let result = self.__nativizeWindows( unescapeResult.unescaped );
+  let result = self._nativizeMinimalWindows( unescapeResult.unescaped );
 
   if( unescapeResult.wasEscaped )
   result = filePath.replace( unescapeResult.unescaped, result );
@@ -933,7 +933,7 @@ function detrail( path )
  * @namespace Tools.path
  */
 
-function dir_pre( routine, args )
+function dir_head( routine, args )
 {
   let o = args[ 0 ];
   if( _.strIs( o ) )
@@ -1072,10 +1072,10 @@ dir_body.defaults =
   depth : 1,
 }
 
-let dir = _.routineFromPreAndBody( dir_pre, dir_body );
+let dir = _.routineUnite( dir_head, dir_body );
 dir.defaults.first = 0;
 
-let dirFirst = _.routineFromPreAndBody( dir_pre, dir_body );
+let dirFirst = _.routineUnite( dir_head, dir_body );
 dirFirst.defaults.first = 1;
 
 // --

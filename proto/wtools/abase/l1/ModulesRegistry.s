@@ -61,9 +61,9 @@ let wPathBasic =
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.path && !!_global.wTools.path.s },
 }
 
-let wRoutineBasic =
+let wIntrospectorBasic =
 {
-  sourcePath : sourcePath( 'abase/l2/RoutineBasic.s', 'wroutinebasic' ),
+  sourcePath : sourcePath( 'abase/l2/Introspector.s', 'wintrospectorbasic' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.exec },
 }
 
@@ -262,7 +262,7 @@ let wPrinterToJs =
 
 let wConsequence =
 {
-  sourcePath : sourcePath( 'abase/l9/consequence/Consequence.s', 'wConsequence' ),
+  sourcePath : sourcePath( 'abase/l9/consequence/Namespace.s', 'wConsequence' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequence; },
 }
 
@@ -767,7 +767,7 @@ let Modules =
   wEntityBasic,
   wLooker,
   wPathBasic,
-  wRoutineBasic,
+  wIntrospectorBasic,
 
   // base / l3
 
@@ -963,7 +963,7 @@ module[ 'exports' ] = _;
 - wprocess -> wprocess
 - wentitybasic -> wentitybasic
 - wweburibasic -> wweburibasic
-- wroutinebasic -> wroutinebasic
+- wintrospectorbasic -> wintrospectorbasic
 - wdombasic -> wdombasic
 
 - wEqualer -> wEqualer
@@ -972,6 +972,6 @@ module[ 'exports' ] = _;
 - wProcess -> wProcessBasic
 - wEntityBasic -> wEntityBasic
 - wWebUriBasic -> wWebUriBasic
-- wRoutineBasic -> wRoutineBasic
+- wIntrospectorBasic -> wIntrospectorBasic
 - wDomBasic -> wDomBasic
 */

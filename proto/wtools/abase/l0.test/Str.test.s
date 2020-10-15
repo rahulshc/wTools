@@ -14323,7 +14323,7 @@ function strSplitInlinedStereo( test )
 
   test.case = 'with options';
 
-  /* pre/post are same */
+  /* head/post are same */
 
   got = _.strSplitInlinedStereo( { prefix : '/', postfix : '/', src : '/abc/' } );
   expected = [ '', 'abc', '' ];
@@ -14335,7 +14335,7 @@ function strSplitInlinedStereo( test )
   expected = [ '', '', 'abc', '', '' ];
   test.identical( got, expected );
 
-  /* different pre/post */
+  /* different head/post */
 
   got = _.strSplitInlinedStereo( { prefix : '/#', postfix : '#', src : '/#abc#' } );
   expected = [ 'abc' ];
@@ -15899,7 +15899,7 @@ function strSplitInlinedStereo_OptionsCombined( test )
   var expected = [ [ 'inline1' ], '❮inline2❯' ];
   test.identical( got, expected );
 
-  test.case = 'src : ❮inline1 inline2, pre : ❮, post : inline1 inline2, pe : 0, s : 1';
+  test.case = 'src : ❮inline1 inline2, head : ❮, post : inline1 inline2, pe : 0, s : 1';
   var src =
   {
     src : '❮inline1 inline2',
@@ -15912,7 +15912,7 @@ function strSplitInlinedStereo_OptionsCombined( test )
   var expected = [ [ '' ] ];
   test.identical( got, expected );
 
-  test.case = 'src : ❮inline1 inline2, pre : ❮, post : inline1 inline2, pe : 1, s : 1';
+  test.case = 'src : ❮inline1 inline2, head : ❮, post : inline1 inline2, pe : 1, s : 1';
   var src =
   {
     src : '❮inline1 inline2',
@@ -15925,7 +15925,7 @@ function strSplitInlinedStereo_OptionsCombined( test )
   var expected = [ '', [ '' ], '' ];
   test.identical( got, expected );
 
-  test.case = 'src : a❮❮❮inline1 inline2❯❯, pre : ❮❮, post : ❯, pe : 1, s : 1';
+  test.case = 'src : a❮❮❮inline1 inline2❯❯, head : ❮❮, post : ❯, pe : 1, s : 1';
   var src =
   {
     src : 'a❮❮❮inline1 inline2❯❯',
@@ -15938,7 +15938,7 @@ function strSplitInlinedStereo_OptionsCombined( test )
   var expected = [ 'a', [ '❮inline1 inline2' ], '❯' ];
   test.identical( got, expected );
 
-  test.case = 'src : a❮❮❮inline1 inline2❯❯, pre : ❮❮, post : ❯, pe : 1, s : 1, po : 0';
+  test.case = 'src : a❮❮❮inline1 inline2❯❯, head : ❮❮, post : ❯, pe : 1, s : 1, po : 0';
   var src =
   {
     src : 'a❮❮❮inline1 inline2❯❯',
@@ -15952,7 +15952,7 @@ function strSplitInlinedStereo_OptionsCombined( test )
   var expected = [ '', [ '❮inline1 inline2' ], '' ];
   test.identical( got, expected );
 
-  test.case = 'src : a❮❮❮inline1 inline2❯❯, pre : ❮❮, post : ❯, pe : 0, s : 1, po : 0';
+  test.case = 'src : a❮❮❮inline1 inline2❯❯, head : ❮❮, post : ❯, pe : 0, s : 1, po : 0';
   var src =
   {
     src : 'a❮❮❮inline1 inline2❯❯',
@@ -15966,7 +15966,7 @@ function strSplitInlinedStereo_OptionsCombined( test )
   var expected = [ [ '❮inline1 inline2' ] ];
   test.identical( got, expected );
 
-  test.case = 'src : a❮❮❮inline1 inline2❯❯, pre : ❮❮, post : ❯, pe : 1, s : 1, pi : 0';
+  test.case = 'src : a❮❮❮inline1 inline2❯❯, head : ❮❮, post : ❯, pe : 1, s : 1, pi : 0';
   var src =
   {
     src : 'a❮❮❮inline1 inline2❯❯',

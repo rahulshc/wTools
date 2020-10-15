@@ -522,7 +522,7 @@ function routineOptionsFromThis( routine, _this, constructor )
 
 //
 
-function _routinesCompose_pre( routine, args )
+function _routinesCompose_head( routine, args )
 {
   let o = args[ 0 ];
 
@@ -653,12 +653,12 @@ _routinesCompose_body.defaults =
 
 function routinesCompose()
 {
-  let o = _.routinesCompose.pre( routinesCompose, arguments );
+  let o = _.routinesCompose.head( routinesCompose, arguments );
   let result = _.routinesCompose.body( o );
   return result;
 }
 
-routinesCompose.pre = _routinesCompose_pre;
+routinesCompose.head = _routinesCompose_head;
 routinesCompose.body = _routinesCompose_body;
 routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose.body.defaults );
 
@@ -674,8 +674,8 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  * if descriptor (writable) of dst property is set.
  *
  * If the first routine (dst) is null then
- * routine routineExtend_old() makes a routine from routines pre and body
- * @see {@link wTools.routineFromPreAndBody} - Automatic routine generating
+ * routine routineExtend_old() makes a routine from routines head and body
+ * @see {@link wTools.routineUnite} - Automatic routine generating
  * from preparation routine and main routine (body).
  *
  * @param{ routine } dst - The target routine or null.
@@ -684,7 +684,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  * @example
  * var src =
  * {
- *   pre : _.routinesCompose.pre,
+ *   head : _.routinesCompose.head,
  *   body : _.routinesCompose.body,
  *   someOption : 1,
  * }
@@ -708,7 +708,7 @@ routinesCompose.defaults = Object.assign( Object.create( null ), routinesCompose
  * @function routineExtend_old
  * @throws { Error } Throw an error if arguments.length < 1 or arguments.length > 2.
  * @throws { Error } Throw an error if dst is not routine or not null.
- * @throws { Error } Throw an error if dst is null and src has not pre and body properties.
+ * @throws { Error } Throw an error if dst is null and src has not head and body properties.
  * @throws { Error } Throw an error if src is primitive value.
  * @namespace Tools
  */
@@ -734,9 +734,9 @@ function routineExtend_old( dst, src )
       _.mapExtend( dstMap, src )
     }
 
-    if( dstMap.pre && dstMap.body )
+    if( dstMap.head && dstMap.body )
     {
-      dst = _.routineFromPreAndBody( dstMap.pre, dstMap.body );
+      dst = _.routineUnite( dstMap.head, dstMap.body );
     }
     else
     {
@@ -801,8 +801,8 @@ function routineExtend_old( dst, src )
  * if descriptor (writable) of dst property is set.
  *
  * If the first routine (dst) is null then
- * routine routineExtend() makes a routine from routines pre and body
- * @see {@link wTools.routineFromPreAndBody} - Automatic routine generating
+ * routine routineExtend() makes a routine from routines head and body
+ * @see {@link wTools.routineUnite} - Automatic routine generating
  * from preparation routine and main routine (body).
  *
  * @param{ routine } dst - The target routine or null.
@@ -811,7 +811,7 @@ function routineExtend_old( dst, src )
  * @example
  * var src =
  * {
- *   pre : _.routinesCompose.pre,
+ *   head : _.routinesCompose.head,
  *   body : _.routinesCompose.body,
  *   someOption : 1,
  * }
@@ -835,7 +835,7 @@ function routineExtend_old( dst, src )
  * @function routineExtend
  * @throws { Error } Throw an error if arguments.length < 1 or arguments.length > 2.
  * @throws { Error } Throw an error if dst is not routine or not null.
- * @throws { Error } Throw an error if dst is null and src has not pre and body properties.
+ * @throws { Error } Throw an error if dst is null and src has not head and body properties.
  * @throws { Error } Throw an error if src is primitive value.
  * @namespace Tools
  */
@@ -861,9 +861,9 @@ function routineExtend_( dst, src )
       _.mapExtend( dstMap, src )
     }
 
-    if( dstMap.pre && dstMap.body )
+    if( dstMap.head && dstMap.body )
     {
-      dst = _.routineFromPreAndBody( dstMap.pre, dstMap.body );
+      dst = _.routineUnite( dstMap.head, dstMap.body );
     }
     else
     {
@@ -933,19 +933,19 @@ function routineDefaults( dst, src, defaults )
 
 //
 
-function routineFromPreAndBody_pre( routine, args )
+function routineUnite_head( routine, args )
 {
   let o = args[ 0 ];
 
   if( args[ 1 ] !== undefined )
   {
-    o = { pre : args[ 0 ], body : args[ 1 ], name : args[ 2 ] };
+    o = { head : args[ 0 ], body : args[ 1 ], name : args[ 2 ] };
   }
 
   _.routineOptions( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2 );
-  _.assert( _.routineIs( o.pre ) || _.routinesAre( o.pre ), 'Expects routine or routines {-o.pre-}' );
+  _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ), 'Expects routine or routines {-o.head-}' );
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
@@ -954,14 +954,14 @@ function routineFromPreAndBody_pre( routine, args )
 
 //
 
-function routineFromPreAndBody_body( o )
+function routineUnite_body( o )
 {
 
   _.assert( arguments.length === 1 );
 
-  if( !_.routineIs( o.pre ) )
+  if( !_.routineIs( o.head ) )
   {
-    let _pre = _.routinesCompose( o.pre, function( /* args, result, op, k */ )
+    let _head = _.routinesCompose( o.head, function( /* args, result, op, k */ )
     {
       let args = arguments[ 0 ];
       let result = arguments[ 1 ];
@@ -973,16 +973,16 @@ function routineFromPreAndBody_body( o )
       _.assert( _.objectIs( result ) );
       return _.unrollAppend([ callPreAndBody, [ result ] ]);
     });
-    _.assert( _.routineIs( _pre ) );
-    o.pre = function pre()
+    _.assert( _.routineIs( _head ) );
+    o.head = function head()
     {
 
-      let result = _pre.apply( this, arguments );
+      let result = _head.apply( this, arguments );
       return result[ result.length-1 ];
     }
   }
 
-  let pre = o.pre;
+  let head = o.head;
   let body = o.body;
 
   if( !o.name )
@@ -998,7 +998,7 @@ function routineFromPreAndBody_body( o )
     [ o.name ] : function()
     {
       let result;
-      let o = pre.call( this, callPreAndBody, arguments );
+      let o = head.call( this, callPreAndBody, arguments );
       _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
       if( _.unrollIs( o ) )
       result = body.apply( this, o );
@@ -1014,35 +1014,35 @@ function routineFromPreAndBody_body( o )
 
   _.routineExtend_( callPreAndBody, o.body );
 
-  callPreAndBody.pre = o.pre;
+  callPreAndBody.head = o.head;
   callPreAndBody.body = o.body;
 
   return callPreAndBody;
 }
 
-routineFromPreAndBody_body.defaults =
+routineUnite_body.defaults =
 {
-  pre : null,
+  head : null,
   body : null,
   name : null,
 }
 
 //
 
-function routineFromPreAndBody()
+function routineUnite()
 {
-  let o = routineFromPreAndBody.pre.call( this, routineFromPreAndBody, arguments );
-  let result = routineFromPreAndBody.body.call( this, o );
+  let o = routineUnite.head.call( this, routineUnite, arguments );
+  let result = routineUnite.body.call( this, o );
   return result;
 }
 
-routineFromPreAndBody.pre = routineFromPreAndBody_pre;
-routineFromPreAndBody.body = routineFromPreAndBody_body;
-routineFromPreAndBody.defaults = Object.create( routineFromPreAndBody_body.defaults );
+routineUnite.head = routineUnite_head;
+routineUnite.body = routineUnite_body;
+routineUnite.defaults = { ... routineUnite_body.defaults };
 
 //
 
-function vectorize_pre( routine, args )
+function vectorize_head( routine, args )
 {
   let o = args[ 0 ];
 
@@ -1083,7 +1083,7 @@ function vectorize_body( o )
   let vectorizingMapKeys = o.vectorizingMapKeys;
   let vectorizingContainerAdapter = o.vectorizingContainerAdapter;
   let unwrapingContainerAdapter = o.unwrapingContainerAdapter;
-  let pre = null;
+  let head = null;
   let select = o.select === null ? 1 : o.select;
   let selectAll = o.select === Infinity;
   let multiply = select > 1 ? multiplyReally : multiplyNo;
@@ -1129,9 +1129,9 @@ function vectorize_body( o )
   else
   {
     _.assert( multiply === multiplyNo );
-    if( routine.pre )
+    if( routine.head )
     {
-      pre = routine.pre;
+      head = routine.head;
       routine = routine.body;
     }
     if( fieldFilter )
@@ -1442,9 +1442,9 @@ function vectorize_body( o )
 
     if( _.arrayLike( src ) )
     {
-      if( pre )
+      if( head )
       {
-        args = pre( routine, args );
+        args = head( routine, args );
         _.assert( _.arrayLikeResizable( args ) );
       }
 
@@ -1472,9 +1472,9 @@ function vectorize_body( o )
     else if( _.setLike( src ) ) /* qqq : cover */
     {
       debugger;
-      if( pre )
+      if( head )
       {
-        args = pre( routine, args );
+        args = head( routine, args );
         _.assert( _.arrayLikeResizable( args ) );
       }
       let result = new Set;
@@ -1489,9 +1489,9 @@ function vectorize_body( o )
     else if( vectorizingContainerAdapter && _.containerAdapter.is( src ) ) /* qqq : cover */
     {
       debugger;
-      if( pre )
+      if( head )
       {
-        args = pre( routine, args );
+        args = head( routine, args );
         _.assert( _.arrayLikeResizable( args ) );
       }
       result = src.filter( ( e ) =>
@@ -1807,14 +1807,14 @@ vectorize_body.defaults =
 
 function vectorize()
 {
-  let o = vectorize.pre.call( this, vectorize, arguments );
+  let o = vectorize.head.call( this, vectorize, arguments );
   let result = vectorize.body.call( this, o );
   return result;
 }
 
-vectorize.pre = vectorize_pre;
+vectorize.head = vectorize_head;
 vectorize.body = vectorize_body;
-vectorize.defaults = Object.create( vectorize_body.defaults );
+vectorize.defaults = { ... vectorize_body.defaults };
 
 //
 
@@ -1836,20 +1836,20 @@ function vectorizeAll_body( o )
 
 }
 
-vectorizeAll_body.defaults = Object.create( vectorize_body.defaults );
+vectorizeAll_body.defaults = { ... vectorize_body.defaults };
 
 //
 
 function vectorizeAll()
 {
-  let o = vectorizeAll.pre.call( this, vectorizeAll, arguments );
+  let o = vectorizeAll.head.call( this, vectorizeAll, arguments );
   let result = vectorizeAll.body.call( this, o );
   return result;
 }
 
-vectorizeAll.pre = vectorize_pre;
+vectorizeAll.head = vectorize_head;
 vectorizeAll.body = vectorizeAll_body;
-vectorizeAll.defaults = Object.create( vectorizeAll_body.defaults );
+vectorizeAll.defaults = { ... vectorizeAll_body.defaults };
 
 //
 
@@ -1870,20 +1870,20 @@ function vectorizeAny_body( o )
 
 }
 
-vectorizeAny_body.defaults = Object.create( vectorize_body.defaults );
+vectorizeAny_body.defaults = { ... vectorize_body.defaults };
 
 //
 
 function vectorizeAny()
 {
-  let o = vectorizeAny.pre.call( this, vectorizeAny, arguments );
+  let o = vectorizeAny.head.call( this, vectorizeAny, arguments );
   let result = vectorizeAny.body.call( this, o );
   return result;
 }
 
-vectorizeAny.pre = vectorize_pre;
+vectorizeAny.head = vectorize_head;
 vectorizeAny.body = vectorizeAny_body;
-vectorizeAny.defaults = Object.create( vectorizeAny_body.defaults );
+vectorizeAny.defaults = { ... vectorizeAny_body.defaults };
 
 //
 
@@ -1904,20 +1904,20 @@ function vectorizeNone_body( o )
 
 }
 
-vectorizeNone_body.defaults = Object.create( vectorize_body.defaults );
+vectorizeNone_body.defaults = { ... vectorize_body.defaults };
 
 //
 
 function vectorizeNone()
 {
-  let o = vectorizeNone.pre.call( this, vectorizeNone, arguments );
+  let o = vectorizeNone.head.call( this, vectorizeNone, arguments );
   let result = vectorizeNone.body.call( this, o );
   return result;
 }
 
-vectorizeNone.pre = vectorize_pre;
+vectorizeNone.head = vectorize_head;
 vectorizeNone.body = vectorizeNone_body;
-vectorizeNone.defaults = Object.create( vectorizeNone_body.defaults );
+vectorizeNone.defaults = { ... vectorizeNone_body.defaults };
 
 //
 
@@ -2103,7 +2103,7 @@ let Routines =
   routineExtend_,
   routineExtend : routineExtend_,
   routineDefaults,
-  routineFromPreAndBody,
+  routineUnite,
 
   routineVectorize_functor : vectorize,
   vectorize,

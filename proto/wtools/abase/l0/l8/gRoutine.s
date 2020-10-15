@@ -57,9 +57,9 @@ function routineCallButOnly( /* context, routine, o, but, only */ )
 
 //
 
-function _routinesComposeWithSingleArgument_pre( routine, args )
+function _routinesComposeWithSingleArgument_head( routine, args )
 {
-  let o = _.routinesCompose.pre.call( this, routine, args );
+  let o = _.routinesCompose.head.call( this, routine, args );
 
   _.assert( args.length === 1 );
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
@@ -71,12 +71,12 @@ function _routinesComposeWithSingleArgument_pre( routine, args )
 
 function routinesComposeReturningLast()
 {
-  let o = _.routinesComposeReturningLast.pre( routinesComposeReturningLast, arguments );
+  let o = _.routinesComposeReturningLast.head( routinesComposeReturningLast, arguments );
   let result = _.routinesComposeReturningLast.body( o );
   return result;
 }
 
-routinesComposeReturningLast.pre = _.routinesCompose.pre;
+routinesComposeReturningLast.head = _.routinesCompose.head;
 routinesComposeReturningLast.body = _.routinesCompose.body;
 routinesComposeReturningLast.defaults = Object.create( _.routinesCompose.defaults );
 
@@ -84,12 +84,12 @@ routinesComposeReturningLast.defaults.supervisor = _.compose.supervisor.returnin
 
 function routinesComposeAll()
 {
-  let o = _.routinesComposeAll.pre( routinesComposeAll, arguments );
+  let o = _.routinesComposeAll.head( routinesComposeAll, arguments );
   let result = _.routinesComposeAll.body( o );
   return result;
 }
 
-routinesComposeAll.pre = _routinesComposeWithSingleArgument_pre;
+routinesComposeAll.head = _routinesComposeWithSingleArgument_head;
 routinesComposeAll.body = _.routinesCompose.body;
 
 var defaults = routinesComposeAll.defaults = Object.create( _.routinesCompose.defaults );
@@ -103,12 +103,12 @@ _.assert( _.routineIs( _.compose.supervisor.composeAll ) );
 
 function routinesComposeAllReturningLast()
 {
-  let o = _.routinesComposeAllReturningLast.pre( routinesComposeAllReturningLast, arguments );
+  let o = _.routinesComposeAllReturningLast.head( routinesComposeAllReturningLast, arguments );
   let result = _.routinesComposeAllReturningLast.body( o );
   return result;
 }
 
-routinesComposeAllReturningLast.pre = _routinesComposeWithSingleArgument_pre;
+routinesComposeAllReturningLast.head = _routinesComposeWithSingleArgument_head;
 routinesComposeAllReturningLast.body = _.routinesCompose.body;
 
 var defaults = routinesComposeAllReturningLast.defaults = Object.create( _.routinesCompose.defaults );
@@ -119,12 +119,12 @@ defaults.supervisor = _.compose.supervisor.returningLast;
 
 function routinesChain()
 {
-  let o = _.routinesChain.pre( routinesChain, arguments );
+  let o = _.routinesChain.head( routinesChain, arguments );
   let result = _.routinesChain.body( o );
   return result;
 }
 
-routinesChain.pre = _routinesComposeWithSingleArgument_pre;
+routinesChain.head = _routinesComposeWithSingleArgument_head;
 routinesChain.body = _.routinesCompose.body;
 
 var defaults = routinesChain.defaults = Object.create( _.routinesCompose.defaults );

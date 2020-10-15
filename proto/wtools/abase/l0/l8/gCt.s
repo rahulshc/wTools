@@ -26,7 +26,7 @@ function _formatAffixesBackground( color )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( color ) );
 
-  result.pre = `❮background : ${color}❯`;
+  result.head = `❮background : ${color}❯`;
   result.post = `❮background : default❯`;
 
   return result;
@@ -56,7 +56,7 @@ function _formatAffixesForeground( color )
   _.assert( arguments.length === 1, 'Expects single argument' );
   _.assert( _.strIs( color ) );
 
-  result.pre = `❮foreground : ${color}❯`;
+  result.head = `❮foreground : ${color}❯`;
   result.post = `❮foreground : default❯`;
 
   return result;
@@ -128,7 +128,7 @@ function _affixesJoin()
 
   for( let a = 1 ; a < arguments.length ; a++ )
   {
-    arguments[ 0 ].pre = arguments[ a ].pre + arguments[ 0 ].pre;
+    arguments[ 0 ].head = arguments[ a ].head + arguments[ 0 ].head;
     arguments[ 0 ].post = arguments[ 0 ].post + arguments[ a ].post;
   }
 
@@ -140,7 +140,7 @@ function _affixesJoin()
 function _formatAffixesForStyleObject( styleObject )
 {
   let result = Object.create( null );
-  result.pre = '';
+  result.head = '';
   result.post = '';
 
   _.assertMapHasOnly( styleObject, _formatAffixesForStyleObject.defaults );
@@ -165,7 +165,7 @@ _formatAffixesForStyleObject.defaults =
 function _formatAffixes( styles )
 {
   let result = Object.create( null );
-  result.pre = '';
+  result.head = '';
   result.post = '';
 
   // let StyleObjectOptions =
@@ -222,7 +222,7 @@ function _formatAffixes( styles )
   // {
   //   for( let a = 1 ; a < arguments.length ; a++ )
   //   {
-  //     arguments[ 0 ].pre = arguments[ a ].pre + arguments[ 0 ].pre;
+  //     arguments[ 0 ].head = arguments[ a ].head + arguments[ 0 ].head;
   //     arguments[ 0 ].post = arguments[ 0 ].post + arguments[ a ].post;
   //   }
   //   return arguments[ 0 ];
@@ -243,7 +243,7 @@ function _format( srcStr, style )
 
   let r = _.ct._formatAffixes( style );
 
-  result = r.pre + result + r.post;
+  result = r.head + result + r.post;
 
   return result;
 }
