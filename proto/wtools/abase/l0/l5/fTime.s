@@ -125,10 +125,6 @@ function _begin( delay, onTime, onCancel )
 function _finally( delay, onTime )
 {
   _.assert( arguments.length === 2 );
-
-  _.assert( _.numberIs( delay ) );
-  _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
-
   let timer = _.time._begin( delay, onTime, onTime );
   return timer;
 }
@@ -326,8 +322,8 @@ function begin( /* delay, procedure, onTime, onCancel */ )
     onTime = arguments[ 1 ];
     onCancel = arguments[ 2 ]
   }
-  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
 
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
   _.assert( _.numberIs( delay ) );
   _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
   _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
@@ -342,7 +338,11 @@ function finally_( delay, procedure, onTime )
   if( arguments.length === 2 )
   if( !_.procedureIs( procedure ) )
   onTime = arguments[ 1 ];
+
   _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.numberIs( delay ) );
+  _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
+
   return this._finally( delay, onTime );
 }
 
@@ -355,16 +355,17 @@ function periodic( /* delay, procedure, onTime, onCancel */ )
   let onTime = arguments[ 2 ];
   let onCancel = arguments[ 3 ];
 
-  _.assert( _.numberIs( delay ) );
-  _.assert( _.routineIs( onTime ) );
-  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
-
   if( !_.procedureIs( procedure ) )
   {
     onTime = arguments[ 1 ];
     onCancel = arguments[ 2 ]
   }
+
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
+  _.assert( _.numberIs( delay ) );
+  _.assert( _.routineIs( onTime ) );
+  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
+
   return this._periodic( delay, onTime, onCancel );
 }
 
