@@ -16,7 +16,7 @@ let _ObjectToString = Object.prototype.toString;
 // str
 // --
 
-function strIsolate_pre( routine, args )
+function strIsolate_head( routine, args )
 {
   let o;
 
@@ -817,11 +817,11 @@ let Routines =
 {
 
 
-  strIsolate : _.routineFromPreAndBody( strIsolate_pre, strIsolate_body ),
-  strIsolateLeftOrNone : _.routineFromPreAndBody( strIsolate_pre, strIsolateLeftOrNone_body ),
-  strIsolateLeftOrAll : _.routineFromPreAndBody( strIsolate_pre, strIsolateLeftOrAll_body ),
-  strIsolateRightOrNone : _.routineFromPreAndBody( strIsolate_pre, strIsolateRightOrNone_body ),
-  strIsolateRightOrAll : _.routineFromPreAndBody( strIsolate_pre, strIsolateRightOrAll_body ),
+  strIsolate : _.routineUnite( strIsolate_head, strIsolate_body ),
+  strIsolateLeftOrNone : _.routineUnite( strIsolate_head, strIsolateLeftOrNone_body ),
+  strIsolateLeftOrAll : _.routineUnite( strIsolate_head, strIsolateLeftOrAll_body ),
+  strIsolateRightOrNone : _.routineUnite( strIsolate_head, strIsolateRightOrNone_body ),
+  strIsolateRightOrAll : _.routineUnite( strIsolate_head, strIsolateRightOrAll_body ),
 
   // strIsolateInsideOrNoneSingle,
   // strIsolateInsideOrNone,

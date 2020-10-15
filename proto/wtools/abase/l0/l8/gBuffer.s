@@ -3397,7 +3397,7 @@ function bufferCutOffLeft( src, del )
 
 //
 
-function bufferIsolate_pre( routine, args )
+function bufferIsolate_head( routine, args )
 {
   let o;
 
@@ -3580,7 +3580,7 @@ bufferIsolate_body.defaults =
 
 //
 
-let bufferIsolate = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolate_body );
+let bufferIsolate = _.routineUnite( bufferIsolate_head, bufferIsolate_body );
 
 //
 
@@ -3599,7 +3599,7 @@ bufferIsolateLeftOrNone_body.defaults =
   times : 1,
 };
 
-let bufferIsolateLeftOrNone = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateLeftOrNone_body );
+let bufferIsolateLeftOrNone = _.routineUnite( bufferIsolate_head, bufferIsolateLeftOrNone_body );
 
 //
 
@@ -3618,7 +3618,7 @@ bufferIsolateLeftOrAll_body.defaults =
   times : 1,
 };
 
-let bufferIsolateLeftOrAll = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateLeftOrAll_body );
+let bufferIsolateLeftOrAll = _.routineUnite( bufferIsolate_head, bufferIsolateLeftOrAll_body );
 
 //
 
@@ -3637,7 +3637,7 @@ bufferIsolateRightOrNone_body.defaults =
   times : 1,
 };
 
-let bufferIsolateRightOrNone = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateRightOrNone_body );
+let bufferIsolateRightOrNone = _.routineUnite( bufferIsolate_head, bufferIsolateRightOrNone_body );
 
 //
 
@@ -3656,7 +3656,7 @@ bufferIsolateRightOrAll_body.defaults =
   times : 1,
 };
 
-let bufferIsolateRightOrAll = _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolateRightOrAll_body );
+let bufferIsolateRightOrAll = _.routineUnite( bufferIsolate_head, bufferIsolateRightOrAll_body );
 
 //
 //
@@ -3928,7 +3928,7 @@ let Routines =
   bufferSplit,
   bufferCutOffLeft,
 
-  bufferIsolate : _.routineFromPreAndBody( bufferIsolate_pre, bufferIsolate_body ), // Dmytro : implemented, covered
+  bufferIsolate : _.routineUnite( bufferIsolate_head, bufferIsolate_body ), // Dmytro : implemented, covered
   bufferIsolateLeftOrNone, // Dmytro : implemented, covered
   bufferIsolateLeftOrAll, // Dmytro : implemented
   bufferIsolateRightOrNone, // Dmytro : implemented

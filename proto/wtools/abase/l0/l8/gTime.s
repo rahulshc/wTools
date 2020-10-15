@@ -163,7 +163,7 @@ function readyJoin( context, routine, args )
  * @namespace Tools
  */
 
-function out_pre( routine, args )
+function out_head( routine, args )
 {
   let o, procedure;
 
@@ -305,7 +305,7 @@ out_body.defaults =
   isFinally : false,
 }
 
-let out = _.routineFromPreAndBody( out_pre, out_body );
+let out = _.routineUnite( out_head, out_body );
 
 //
 
@@ -392,7 +392,7 @@ function outError_body( o )
 
 outError_body.defaults = Object.create( out_body.defaults );
 
-let outError = _.routineFromPreAndBody( out_pre, outError_body );
+let outError = _.routineUnite( out_head, outError_body );
 
 //
 

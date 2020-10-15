@@ -1846,7 +1846,7 @@ function longButInplace( array, range, val )
 
 //
 
-// function _relength_pre( dst, src, range, ins )
+// function _relength_head( dst, src, range, ins )
 // {
 //   _.assert( 1 <= arguments.length && arguments.length <= 4 );
 //
