@@ -139,9 +139,9 @@ function _periodic( delay, onTime, onCancel )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
-  _.assert( _.numberIs( delay ) );
-  _.assert( _.routineIs( onTime ) );
-  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
+  // _.assert( _.numberIs( delay ) );
+  // _.assert( _.routineIs( onTime ) );
+  // _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
   let native = setInterval( time, delay );
 
@@ -354,6 +354,10 @@ function periodic( /* delay, procedure, onTime, onCancel */ )
   let procedure = arguments[ 1 ];
   let onTime = arguments[ 2 ];
   let onCancel = arguments[ 3 ];
+
+  _.assert( _.numberIs( delay ) );
+  _.assert( _.routineIs( onTime ) );
+  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
   if( !_.procedureIs( procedure ) )
   {
