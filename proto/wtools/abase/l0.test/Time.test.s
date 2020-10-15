@@ -3379,6 +3379,7 @@ var Self =
     dt4 : 200,
     dt5 : 1000,
   },
+  /* qqq xxx : minimize number of time parameters. too many of such */
 
   tests :
   {

@@ -262,7 +262,7 @@ let wPrinterToJs =
 
 let wConsequence =
 {
-  sourcePath : sourcePath( 'abase/l9/consequence/Consequence.s', 'wConsequence' ),
+  sourcePath : sourcePath( 'abase/l9/consequence/Namespace.s', 'wConsequence' ),
   isIncluded : function(){ return !!_global.wTools && !!_global.wTools.Consequence; },
 }
 
