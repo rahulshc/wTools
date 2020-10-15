@@ -1038,7 +1038,7 @@ function routineUnite()
 
 routineUnite.head = routineUnite_head;
 routineUnite.body = routineUnite_body;
-routineUnite.defaults = Object.create( routineUnite_body.defaults );
+routineUnite.defaults = { ... routineUnite_body.defaults };
 
 //
 
@@ -1814,7 +1814,7 @@ function vectorize()
 
 vectorize.head = vectorize_head;
 vectorize.body = vectorize_body;
-vectorize.defaults = Object.create( vectorize_body.defaults );
+vectorize.defaults = { ... vectorize_body.defaults };
 
 //
 
@@ -1836,7 +1836,7 @@ function vectorizeAll_body( o )
 
 }
 
-vectorizeAll_body.defaults = Object.create( vectorize_body.defaults );
+vectorizeAll_body.defaults = { ... vectorize_body.defaults };
 
 //
 
@@ -1849,7 +1849,7 @@ function vectorizeAll()
 
 vectorizeAll.head = vectorize_head;
 vectorizeAll.body = vectorizeAll_body;
-vectorizeAll.defaults = Object.create( vectorizeAll_body.defaults );
+vectorizeAll.defaults = { ... vectorizeAll_body.defaults };
 
 //
 
@@ -1870,7 +1870,7 @@ function vectorizeAny_body( o )
 
 }
 
-vectorizeAny_body.defaults = Object.create( vectorize_body.defaults );
+vectorizeAny_body.defaults = { ... vectorize_body.defaults };
 
 //
 
@@ -1883,7 +1883,7 @@ function vectorizeAny()
 
 vectorizeAny.head = vectorize_head;
 vectorizeAny.body = vectorizeAny_body;
-vectorizeAny.defaults = Object.create( vectorizeAny_body.defaults );
+vectorizeAny.defaults = { ... vectorizeAny_body.defaults };
 
 //
 
@@ -1904,7 +1904,7 @@ function vectorizeNone_body( o )
 
 }
 
-vectorizeNone_body.defaults = Object.create( vectorize_body.defaults );
+vectorizeNone_body.defaults = { ... vectorize_body.defaults };
 
 //
 
@@ -1917,7 +1917,7 @@ function vectorizeNone()
 
 vectorizeNone.head = vectorize_head;
 vectorizeNone.body = vectorizeNone_body;
-vectorizeNone.defaults = Object.create( vectorizeNone_body.defaults );
+vectorizeNone.defaults = { ... vectorizeNone_body.defaults };
 
 //
 
