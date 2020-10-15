@@ -612,7 +612,7 @@ function _nativizeEscapingWindows( filePath )
   let self = this;
   let unescapeResult = self._unescape( filePath )
 
-  let result = self.__nativizeWindows( unescapeResult.unescaped );
+  let result = self._nativizeMinimalWindows( unescapeResult.unescaped );
 
   if( unescapeResult.wasEscaped )
   result = filePath.replace( unescapeResult.unescaped, result );
