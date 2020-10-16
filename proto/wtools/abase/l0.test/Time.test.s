@@ -773,6 +773,8 @@ function _beginTimerInsideOfCallback( test )
   return ready;
 }
 
+_beginTimerInsideOfCallback.timeOut = 10000;
+
 //
 
 function _finally( test )
@@ -2246,6 +2248,8 @@ function beginTimerInsideOfCallback( test )
 
   return ready;
 }
+
+beginTimerInsideOfCallback.timeOut = 10000;
 
 //
 
