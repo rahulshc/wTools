@@ -3377,7 +3377,7 @@ var Self =
     dt2 : 100,
     dt3 : 1000,
   },
-  /* qqq xxx : minimize number of time parameters. too many of such */
+  /* aaa xxx : minimize number of time parameters. too many of such */ /* Dmytro : minimized, the step is power of 10 */
 
   tests :
   {
