@@ -245,8 +245,8 @@
 </details>
 
 <details>
-  <summary><a href="./tutorial/RoutineFromPreAndBody.md">
-    Рутина routineFromPreAndBody
+  <summary><a href="./tutorial/RoutineUnite.md">
+    Рутина routineUnite
   </a></summary>
     Автоматичне об'єднання рутини підготовки даних і рутини для їх обробки.
 </details>
