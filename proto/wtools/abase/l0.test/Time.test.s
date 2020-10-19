@@ -704,6 +704,35 @@ function _begin( test )
 
 //
 
+function _beginWithProcedure( test )
+{
+  let context = this;
+
+  test.case = 'Procedure as callback, should throw error';
+  let ready = new _testerGlobal_.wTools.Consequence();
+  ready.Try( () =>
+  {
+    var procedure = _testerGlobal_.wTools.Procedure( 2 )
+    var nProceduresBefore = _testerGlobal_.wTools.Procedure.Counter;
+    var timer = _.time._begin( context.dt1, procedure );
+    var nProceduresAfter = _testerGlobal_.wTools.Procedure.Counter;
+    return _testerGlobal_.wTools.time.out( context.dt2, () => timer );
+  })
+  ready.finally( ( err, arg ) =>
+  {
+    if( err )
+    _.errAttend( err );
+
+    return test.isNot( !!err );
+  })
+
+  return ready;
+}
+
+_beginWithProcedure.experimental = 1;
+
+//
+
 function _beginTimerInsideOfCallback( test )
 {
   let context = this;
