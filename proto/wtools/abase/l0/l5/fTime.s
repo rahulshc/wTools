@@ -274,8 +274,8 @@ function timerIsBegun( timer )
 
 function timerIsCancelBegun( timer )
 {
-  if( timer.state === -1 )
-  debugger;
+  // if( timer.state === -1 )
+  // debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === -1;
 }
@@ -497,11 +497,11 @@ let Extension =
   _periodic,
   _cancel,
 
-  timerIsBegun,
-  timerIsCancelBegun,
-  timerIsCancelEnded,
-  timerIsUpBegun,
-  timerIsUpEnded,
+  timerIsBegun, /* qqq : cover */
+  timerIsCancelBegun, /* qqq : cover */
+  timerIsCancelEnded, /* qqq : cover */
+  timerIsUpBegun, /* qqq : cover */
+  timerIsUpEnded, /* qqq : cover */
 
   soon,
   begin,
