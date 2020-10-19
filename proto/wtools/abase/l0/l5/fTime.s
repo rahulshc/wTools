@@ -476,6 +476,24 @@ function timerIsUpEnded( timer )
 
 //
 
+/**
+ * The routine soon() execute routine {-h-} asynchronously as soon as possible. In NodeJS interpreter it 
+ * executes on nextTick, in another interpreters in async queue.
+ *
+ * @example
+ * let result = [ _.time.now() ];
+ * _.time.soon( () => result.push( _.time.now() ) );
+ * // the delta ( result[ 1 ] - result[ 0 ] ) is small as possible 
+ *
+ * @param { Function } h - The routine to execute.
+ * @returns { Undefined } - Returns undefined, executes routine {-h-}.
+ * @function soon 
+ * @throws { Error } If arguments is not provided.
+ * @throws { Error } If {-h-} is not a Function.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 let soon = typeof process === 'undefined' ? function( h ){ return setTimeout( h, 0 ) } : process.nextTick;
 
 //
