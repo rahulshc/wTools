@@ -1797,20 +1797,20 @@ function timerIsCancelBegun( test )
 
   test.case = 'timer - begin';
   var timer = _.time.begin( context.dt3 * 5, () => 1 );
-  var got = _.time.timerIsCancelBegun( timer );
   _.time.cancel( timer );
+  var got = _.time.timerIsCancelBegun( timer );
   test.identical( got, false );
 
   test.case = 'timer - finally';
   var timer = _.time.finally( context.dt3 * 5, () => 1 );
-  var got = _.time.timerIsCancelBegun( timer );
   _.time.cancel( timer );
+  var got = _.time.timerIsCancelBegun( timer );
   test.identical( got, false );
 
   test.case = 'timer - periodic';
   var timer = _.time.periodic( context.dt3 * 5, () => 1 );
-  var got = _.time.timerIsCancelBegun( timer );
   _.time.cancel( timer );
+  var got = _.time.timerIsCancelBegun( timer );
   test.identical( got, false );
 
 
@@ -1825,6 +1825,109 @@ function timerIsCancelBegun( test )
 
     test.case = 'wront type of timer';
     test.shouldThrowErrorSync( () => _.time.timerIsCancelBegun( 'timer' ) );
+  }
+}
+
+//
+
+function timerIsCancelEnded( test )
+{
+  let context = this;
+
+  /* - */
+
+  test.open( 'timer is begun, init state not changed' );
+
+  test.case = 'timer - begin';
+  var timer = _.time.begin( context.dt3 * 5, () => 1 );
+  var got = _.time.timerIsCancelEnded( timer );
+  test.identical( got, false );
+  _.time.cancel( timer );
+
+  test.case = 'timer - finally';
+  var timer = _.time.finally( context.dt3 * 5, () => 1 );
+  var got = _.time.timerIsCancelEnded( timer );
+  test.identical( got, false );
+  _.time.cancel( timer );
+
+  test.case = 'timer - periodic';
+  var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+  var got = _.time.timerIsCancelEnded( timer );
+  test.identical( got, false );
+  _.time.cancel( timer );
+
+  test.close( 'timer is begun, init state not changed' );
+
+  /* - */
+
+  test.open( 'timer canceling, not finished' );
+
+  test.case = 'timer - begin, check state inside of callback onCancel';
+  var timer = _.time.begin( context.dt3 * 5, () => 1, onCancel );
+  _.time.cancel( timer );
+  var onCancel = () =>
+  {
+    var got = _.time.timerIsCancelEnded( timer );
+    test.identical( got, false );
+    return got;
+  }
+
+  test.case = 'timer - finally, check state inside of callback onCancel';
+  var timer = _.time.finally( context.dt3 * 5, onCancel );
+  _.time.cancel( timer );
+  var onCancel = () =>
+  {
+    var got = _.time.timerIsCancelEnded( timer );
+    test.identical( got, false );
+    return got;
+  }
+
+  test.case = 'timer - periodic, check state inside of callback onCancel';
+  var timer = _.time.periodic( context.dt1, () => 1, onCancel );
+  _.time.cancel( timer );
+  var onCancel = () =>
+  {
+    var got = _.time.timerIsCancelEnded( timer );
+    test.identical( got, false );
+    return got;
+  }
+
+  test.close( 'timer canceling, not finished' );
+
+  /* - */
+
+  test.open( 'timer is canceled' );
+
+  test.case = 'timer - begin';
+  var timer = _.time.begin( context.dt3 * 5, () => 1 );
+  _.time.cancel( timer );
+  var got = _.time.timerIsCancelEnded( timer );
+  test.identical( got, true );
+
+  test.case = 'timer - finally';
+  var timer = _.time.finally( context.dt3 * 5, () => 1 );
+  _.time.cancel( timer );
+  var got = _.time.timerIsCancelEnded( timer );
+  test.identical( got, true );
+
+  test.case = 'timer - periodic';
+  var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+  _.time.cancel( timer );
+  var got = _.time.timerIsCancelEnded( timer );
+  test.identical( got, true );
+
+
+  test.close( 'timer is canceled' );
+
+  /* - */
+
+  if( Config.debug )
+  {
+    test.case = 'without arguments';
+    test.shouldThrowErrorSync( () => _.time.timerIsCancelEnded() );
+
+    test.case = 'wront type of timer';
+    test.shouldThrowErrorSync( () => _.time.timerIsCancelEnded( 'timer' ) );
   }
 }
 
@@ -3619,6 +3722,7 @@ var Self =
 
     timerIsBegun,
     timerIsCancelBegun,
+    timerIsCancelEnded,
 
     begin,
     beginTimerInsideOfCallback,
