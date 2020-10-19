@@ -704,6 +704,17 @@ function _begin( test )
 
 //
 
+function _beginWithProcedure( test )
+{
+  test.case = 'Procedure as callback, should throw error';
+  var procedure = _testerGlobal_.wTools.Procedure( 2 )
+  test.shouldThrowErrorSync( () => _.time._begin( 10, procedure ) );
+}
+
+_beginWithProcedure.experimental = 1;
+
+//
+
 function _beginTimerInsideOfCallback( test )
 {
   let context = this;
@@ -4752,6 +4763,7 @@ var Self =
     // private
 
     _begin,
+    _beginWithProcedure,
     _beginTimerInsideOfCallback,
     _finally,
     _periodic,
