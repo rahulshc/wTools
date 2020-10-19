@@ -500,7 +500,7 @@ let soon = typeof process === 'undefined' ? function( h ){ return setTimeout( h,
 
 /**
  * The routine begin() make new timer for procedure {-procedure-}. The timer executes callback {-onTime-} only once.
- * Callback {-onTime-} executes when time delay {-delay-} is elapsed. If the times is canceled, then the callback
+ * Callback {-onTime-} executes when time delay {-delay-} is elapsed. If the timer is canceled, then the callback
  * {-onCancel-} is executed.
  *
  * @example
@@ -556,6 +556,41 @@ function begin( /* delay, procedure, onTime, onCancel */ )
 }
 
 //
+
+/**
+ * The routine finally() make new timer for procedure {-procedure-}. The timer executes callback {-onTime-} only once.
+ * Callback {-onTime-} executes when time delay {-delay-} is elapsed or if the timer is canceled.
+ *
+ * @example
+ * let timer = _.time.finally( 500, () => 'executed' );
+ * _.time.out( 1000, () =>
+ * {
+ *  console.log( timer.result );
+ *  // log : 'executed'
+ *  return null;
+ * });
+ * console.log( timer.result );
+ * // log : undefined
+ *
+ * @example
+ * let timer = _.time.finally( 500, () => 'executed', () => 'canceled' );
+ * _.time.cancel( timer );
+ * console.log( timer.result );
+ * // log : 'executed'
+ *
+ * @param { Number } delay - The time delay.
+ * @param { Procedure|Undefined } procedure - The procedure for timer.
+ * @param { Function|Undefined|Null } onTime - The callback to execute when time is elapsed.
+ * @param { Function|Undefined|Null } onCancel - The callback to execute when timer is canceled.
+ * @returns { Timer } - Returns timer.
+ * @function finally
+ * @throws { Error } If arguments.length is less than 2 or great than 3.
+ * @throws { Error } If {-delay-} is not a Number.
+ * @throws { Error } If {-onTime-} neither is a Function, nor undefined, nor null.
+ * @throws { Error } If {-onCancel-} neither is a Function, nor undefined, nor null.
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function finally_( delay, procedure, onTime )
 {
