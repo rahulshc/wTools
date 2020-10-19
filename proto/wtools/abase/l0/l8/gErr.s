@@ -309,7 +309,7 @@ diagnosticEachElementComparator.defaults =
 
 //
 
-function diagnosticStructureGenerate_pre( routine, args )
+function diagnosticStructureGenerate_head( routine, args )
 {
   _.assert( args.length === 0 || args.length === 1 );
 
@@ -817,7 +817,7 @@ diagnosticStructureGenerate_body.defaults =
  * @namespace Tools
  */
 
-let diagnosticStructureGenerate = _.routineFromPreAndBody( diagnosticStructureGenerate_pre, diagnosticStructureGenerate_body );
+let diagnosticStructureGenerate = _.routineUnite( diagnosticStructureGenerate_head, diagnosticStructureGenerate_body );
 
 // --
 // checker

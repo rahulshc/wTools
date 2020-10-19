@@ -4,7 +4,7 @@
 'use strict';
 
 /**
- * @summary Collection of routines to operate paths reliably and consistently.
+ * @summary Collection of cross-platform routines to operate paths reliably and consistently.
  * @namespace wTools.path
  * @extends Tools
  */
@@ -548,7 +548,7 @@ function canonizeTolerant( src )
 
 //
 
-function __nativizeWindows( filePath )
+function _nativizeMinimalWindows( filePath )
 {
   let self = this;
 
@@ -578,14 +578,14 @@ function _nativizeWindows( filePath )
   _.assert( _.routineIs( self.unescape ) );
   result = self.unescape( result ); /* yyy */
 
-  result = self.__nativizeWindows( result );
+  result = self._nativizeMinimalWindows( result );
 
   return result;
 }
 
 //
 
-function __nativizePosix( filePath )
+function _nativizeMinimalPosix( filePath )
 {
   let self = this;
   let result = filePath;
@@ -607,6 +607,31 @@ function _nativizePosix( filePath )
 
 //
 
+function _nativizeEscapingWindows( filePath )
+{
+  let self = this;
+  let unescapeResult = self._unescape( filePath )
+
+  let result = self._nativizeMinimalWindows( unescapeResult.unescaped );
+
+  if( unescapeResult.wasEscaped )
+  result = filePath.replace( unescapeResult.unescaped, result );
+
+  return result;
+}
+
+//
+
+function _nativizeEscapingPosix( filePath )
+{
+  let self = this;
+  let result = filePath;
+  _.assert( _.strIs( filePath ), 'Expects string' );
+  return result;
+}
+
+//
+
 function nativize()
 {
   if( _global.process && _global.process.platform === 'win32' )
@@ -618,15 +643,25 @@ function nativize()
 
 //
 
-function nativizeTolerant()
+function nativizeMinimal()
 {
   if( _global.process && _global.process.platform === 'win32' )
-  this.nativizeTolerant = this.__nativizeWindows;
+  this.nativizeMinimal = this._nativizeMinimalWindows;
   else
-  this.nativizeTolerant = this.__nativizePosix;
-  return this.nativizeTolerant.apply( this, arguments );
+  this.nativizeMinimal = this._nativizeMinimalPosix;
+  return this.nativizeMinimal.apply( this, arguments );
 }
 
+//
+
+function nativizeEscaping()
+{
+  if( _global.process && _global.process.platform === 'win32' )
+  this.nativizeEscaping = this._nativizeEscapingWindows;
+  else
+  this.nativizeEscaping = this._nativizeEscapingPosix;
+  return this.nativizeEscaping.apply( this, arguments );
+}
 //
 
 function escape( filePath )
@@ -898,7 +933,7 @@ function detrail( path )
  * @namespace Tools.path
  */
 
-function dir_pre( routine, args )
+function dir_head( routine, args )
 {
   let o = args[ 0 ];
   if( _.strIs( o ) )
@@ -1037,10 +1072,10 @@ dir_body.defaults =
   depth : 1,
 }
 
-let dir = _.routineFromPreAndBody( dir_pre, dir_body );
+let dir = _.routineUnite( dir_head, dir_body );
 dir.defaults.first = 0;
 
-let dirFirst = _.routineFromPreAndBody( dir_pre, dir_body );
+let dirFirst = _.routineUnite( dir_head, dir_body );
 dirFirst.defaults.first = 1;
 
 // --
@@ -1101,12 +1136,15 @@ let Extension =
   canonize,
   canonizeTolerant,
 
-  __nativizeWindows,
+  _nativizeMinimalWindows,
   _nativizeWindows,
-  __nativizePosix,
+  _nativizeMinimalPosix,
   _nativizePosix,
+  _nativizeEscapingWindows,
+  _nativizeEscapingPosix,
   nativize,
-  nativizeTolerant,
+  nativizeMinimal,
+  nativizeEscaping,
 
   escape,
   _unescape,

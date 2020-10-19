@@ -17,7 +17,7 @@ let _TimeInfinity = Math.pow( 2, 31 )-1;
 
 function _begin( delay, onTime, onCancel )
 {
-  let original;
+  let native;
 
   // if( delay === undefined ) /* Dmytro : it is deprecated feature, feature is not consistent with module Procedure */
   // delay = Infinity;
@@ -25,26 +25,23 @@ function _begin( delay, onTime, onCancel )
   delay = _TimeInfinity;
 
   _.assert( arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-  _.assert( _.numberIs( delay ) );
-  _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
-  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
   if( delay > 0 )
-  original = setTimeout( time, delay );
+  native = setTimeout( time, delay );
   else
-  original = soon( timeNonCancelable ) || null;
+  native = soon( timeNonCancelable ) || null;
 
   let timer = Object.create( null );
   timer.onTime = onTime;
   timer.onCancel = onCancel;
   timer._time = _time;
   timer._cancel = _cancel;
-  timer.time = original === null ? timeNonCancelable : time;
+  timer.time = native === null ? timeNonCancelable : time;
   timer.cancel = cancel;
   timer.state = 0;
-  timer.kind = _begin;
+  // timer.kind = _begin;
   timer.type = 'timer';
-  timer.original = original;
+  timer.native = native;
   return timer;
 
   /* */
@@ -81,7 +78,7 @@ function _begin( delay, onTime, onCancel )
     _.assert( timer.state !== -2, 'Timer can be canceled only one time.' );
 
     timer.state = -1;
-    clearTimeout( timer.original );
+    clearTimeout( timer.native );
     try
     {
       if( onCancel )
@@ -108,7 +105,7 @@ function _begin( delay, onTime, onCancel )
   function time()
   {
     timer._time();
-    clearTimeout( timer.original );
+    clearTimeout( timer.native );
     return timer;
   }
 
@@ -136,11 +133,11 @@ function _periodic( delay, onTime, onCancel )
 {
 
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects exactly two or three arguments' );
-  _.assert( _.numberIs( delay ) );
-  _.assert( _.routineIs( onTime ) );
-  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
+  // _.assert( _.numberIs( delay ) );
+  // _.assert( _.routineIs( onTime ) );
+  // _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
 
-  let original = setInterval( time, delay );
+  let native = setInterval( time, delay );
 
   let timer = Object.create( null );
   timer.onTime = onTime;
@@ -150,10 +147,10 @@ function _periodic( delay, onTime, onCancel )
   timer.time = time;
   timer.cancel = cancel;
   timer.state = 0;
-  // timer.kind = 'periodic';
-  timer.kind = _periodic;
-  timer.type = 'timer';
-  timer.original = original;
+  // timer.type = 'timer';
+  timer.type = 'periodic';
+  // timer.kind = _periodic;
+  timer.native = native;
   return timer;
 
   /* */
@@ -189,7 +186,7 @@ function _periodic( delay, onTime, onCancel )
     _.assert( timer.state !== -1 && timer.state !== -2, 'Illegal call, timer is canceled.' );
 
     timer.state = -1;
-    clearInterval( timer.original );
+    clearInterval( timer.native );
     try
     {
       if( onCancel )
@@ -227,7 +224,7 @@ function _periodic( delay, onTime, onCancel )
   // function cancel()
   // {
   //   timer.state = -1;
-  //   clearInterval( timer.original );
+  //   clearInterval( timer.native );
   //   if( onCancel )
   //   onCancel( r );
   // }
@@ -241,9 +238,9 @@ function _cancel( timer )
   _.assert( _.timerIs( timer ) );
 
   // if( timer.kind === 'finallable' || timer.kind === 'cancelable' )
-  // clearTimeout( timer.original );
+  // clearTimeout( timer.native );
   // else
-  // clearInterval( timer.original );
+  // clearInterval( timer.native );
 
   timer.cancel();
 
@@ -275,8 +272,8 @@ function timerIsBegun( timer )
 
 function timerIsCancelBegun( timer )
 {
-  if( timer.state === -1 )
-  debugger;
+  // if( timer.state === -1 )
+  // debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === -1;
 }
@@ -323,7 +320,12 @@ function begin( /* delay, procedure, onTime, onCancel */ )
     onTime = arguments[ 1 ];
     onCancel = arguments[ 2 ]
   }
+
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
+  _.assert( _.numberIs( delay ) );
+  _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
+  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
+
   return this._begin( delay, onTime, onCancel );
 }
 
@@ -334,7 +336,11 @@ function finally_( delay, procedure, onTime )
   if( arguments.length === 2 )
   if( !_.procedureIs( procedure ) )
   onTime = arguments[ 1 ];
+
   _.assert( arguments.length === 2 || arguments.length === 3 );
+  _.assert( _.numberIs( delay ) );
+  _.assert( _.routineIs( onTime ) || onTime === undefined || onTime === null );
+
   return this._finally( delay, onTime );
 }
 
@@ -352,7 +358,12 @@ function periodic( /* delay, procedure, onTime, onCancel */ )
     onTime = arguments[ 1 ];
     onCancel = arguments[ 2 ]
   }
+
   _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4 );
+  _.assert( _.numberIs( delay ) );
+  _.assert( _.routineIs( onTime ) );
+  _.assert( _.routineIs( onCancel ) || onCancel === undefined || onCancel === null );
+
   return this._periodic( delay, onTime, onCancel );
 }
 
@@ -484,11 +495,11 @@ let Extension =
   _periodic,
   _cancel,
 
-  timerIsBegun,
-  timerIsCancelBegun,
-  timerIsCancelEnded,
-  timerIsUpBegun,
-  timerIsUpEnded,
+  timerIsBegun, /* qqq : cover */
+  timerIsCancelBegun, /* qqq : cover */
+  timerIsCancelEnded, /* qqq : cover */
+  timerIsUpBegun, /* qqq : cover */
+  timerIsUpEnded, /* qqq : cover */
 
   soon,
   begin,

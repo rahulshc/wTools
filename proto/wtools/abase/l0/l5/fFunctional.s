@@ -4150,7 +4150,7 @@ qqq : refactor routine _entityMost | Dmytro : routine accepts options map, and c
 - make it accept evaluator or comparator( not in the same call )
 */
 
-// function _entityMost_pre( routine, args )
+// function _entityMost_head( routine, args )
 // {
 //   _.assert( args.length === 1 || args.length === 2 );
 //
@@ -4302,7 +4302,7 @@ qqq : refactor routine _entityMost | Dmytro : routine accepts options map, and c
 //
 // //
 //
-// let _entityMost = _.routineFromPreAndBody( _entityMost_pre, _entityMost_body );
+// let _entityMost = _.routineUnite( _entityMost_head, _entityMost_body );
 
 //
 
@@ -4547,7 +4547,7 @@ _entityMost.defaults =
  * @namespace Tools
  */
 
-// let entityMin = _.routineFromPreAndBody( _entityMost_pre, _entityMost_body );
+// let entityMin = _.routineUnite( _entityMost_head, _entityMost_body );
 // entityMin.defaults.returnMax = 0;
 
 function entityMin( src, onEach )

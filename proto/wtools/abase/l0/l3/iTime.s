@@ -15,7 +15,7 @@ function timerIs( src )
 {
   if( !src )
   return false;
-  return src.type === 'timer' && !!src.time && !!src.cancel && src.original !== undefined;
+  return _.strIs( src.type ) && !!src.time && !!src.cancel;
 }
 
 //

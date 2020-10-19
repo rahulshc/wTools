@@ -2319,7 +2319,7 @@ strSplitChunks.defaults =
 //
 // //
 //
-// function strSplitsQuotedRejoin_pre( routine, args )
+// function strSplitsQuotedRejoin_head( routine, args )
 // {
 //   let o = args[ 0 ];
 //
@@ -2442,13 +2442,13 @@ strSplitChunks.defaults =
 //
 // //
 //
-// let strSplitsQuotedRejoin = _.routineFromPreAndBody( strSplitsQuotedRejoin_pre, strSplitsQuotedRejoin_body );
+// let strSplitsQuotedRejoin = _.routineUnite( strSplitsQuotedRejoin_head, strSplitsQuotedRejoin_body );
 //
 // // --
 // //
 // // --
 //
-// function strSplitsDropDelimeters_pre( routine, args )
+// function strSplitsDropDelimeters_head( routine, args )
 // {
 //   let o = args[ 0 ];
 //
@@ -2503,13 +2503,13 @@ strSplitChunks.defaults =
 //
 // //
 //
-// let strSplitsDropDelimeters = _.routineFromPreAndBody( strSplitsDropDelimeters_pre, strSplitsDropDelimeters_body );
+// let strSplitsDropDelimeters = _.routineUnite( strSplitsDropDelimeters_head, strSplitsDropDelimeters_body );
 //
 // // --
 // //
 // // --
 //
-// function strSplitsStrip_pre( routine, args )
+// function strSplitsStrip_head( routine, args )
 // {
 //   let o = args[ 0 ];
 //
@@ -2558,13 +2558,13 @@ strSplitChunks.defaults =
 //
 // //
 //
-// let strSplitsStrip = _.routineFromPreAndBody( strSplitsStrip_pre, strSplitsStrip_body );
+// let strSplitsStrip = _.routineUnite( strSplitsStrip_head, strSplitsStrip_body );
 //
 // // --
 // //
 // // --
 //
-// function strSplitsDropEmpty_pre( routine, args )
+// function strSplitsDropEmpty_head( routine, args )
 // {
 //   let o = args[ 0 ];
 //
@@ -2609,13 +2609,13 @@ strSplitChunks.defaults =
 //
 // //
 //
-// let strSplitsDropEmpty = _.routineFromPreAndBody( strSplitsDropEmpty_pre, strSplitsDropEmpty_body );
+// let strSplitsDropEmpty = _.routineUnite( strSplitsDropEmpty_head, strSplitsDropEmpty_body );
 //
 // // --
 // //
 // // --
 //
-// function strSplitFast_pre( routine, args )
+// function strSplitFast_head( routine, args )
 // {
 //   let o = args[ 0 ];
 //
@@ -2870,9 +2870,9 @@ strSplitChunks.defaults =
 //  *
 //  */
 //
-// let strSplitFast = _.routineFromPreAndBody( strSplitFast_pre, strSplitFast_body );
+// let strSplitFast = _.routineUnite( strSplitFast_head, strSplitFast_body );
 //
-// _.assert( strSplitFast.pre === strSplitFast_pre );
+// _.assert( strSplitFast.head === strSplitFast_head );
 // _.assert( strSplitFast.body === strSplitFast_body );
 // _.assert( _.objectIs( strSplitFast.defaults ) );
 //
@@ -2989,17 +2989,17 @@ strSplitChunks.defaults =
 //  *
 //  */
 //
-// let pre = [ strSplitFast.pre, strSplitsQuotedRejoin.pre, strSplitsDropDelimeters.pre, strSplitsStrip.pre, strSplitsDropEmpty.pre ];
-// let strSplit = _.routineFromPreAndBody( pre, strSplit_body );
+// let head = [ strSplitFast.head, strSplitsQuotedRejoin.head, strSplitsDropDelimeters.head, strSplitsStrip.head, strSplitsDropEmpty.head ];
+// let strSplit = _.routineUnite( head, strSplit_body );
 //
-// _.assert( strSplit.pre !== strSplitFast.pre );
-// _.assert( _.routineIs( strSplit.pre ) );
+// _.assert( strSplit.head !== strSplitFast.head );
+// _.assert( _.routineIs( strSplit.head ) );
 // _.assert( strSplit.body === strSplit_body );
 // _.assert( _.objectIs( strSplit.defaults ) );
 //
 // //
 //
-// let strSplitNonPreserving = _.routineFromPreAndBody( strSplit.pre, strSplit.body );
+// let strSplitNonPreserving = _.routineUnite( strSplit.head, strSplit.body );
 //
 // var defaults = strSplitNonPreserving.defaults;
 //
@@ -3145,7 +3145,7 @@ strSplitChunks.defaults =
 //
 // //
 //
-// let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInlined_body );
+// let strSplitInlined = _.routineUnite( strSplitFast_head, _strSplitInlined_body );
 //
 // //
 //
@@ -3233,7 +3233,7 @@ strSplitChunks.defaults =
 //
 // }
 //
-// let strSplitInlinedStereo = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInlinedStereo_body );
+// let strSplitInlinedStereo = _.routineUnite( strSplitFast_head, _strSplitInlinedStereo_body );
 //
 // // //
 // //
@@ -3286,7 +3286,7 @@ strSplitChunks.defaults =
 // //  *
 // //  */
 // //
-// // // let strSplitInlinedStereo = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInlinedStereo_body );
+// // // let strSplitInlinedStereo = _.routineUnite( strSplitFast_head, _strSplitInlinedStereo_body );
 // //
 // // function strSplitInlinedStereo( o )
 // // {
@@ -3905,7 +3905,7 @@ function _strDup( s, times )
  *
  */
 
-function strJoin_pre( routine, args )
+function strJoin_head( routine, args )
 {
 
   let o = args[ 0 ];
@@ -4046,7 +4046,7 @@ strJoin_body.defaults =
   str : _.strPrimitive,
 }
 
-let strJoin = _.routineFromPreAndBody( strJoin_pre, strJoin_body );
+let strJoin = _.routineUnite( strJoin_head, strJoin_body );
 
 //
 
@@ -5224,7 +5224,7 @@ Dmytro : covered
  * @namespace Tools
  */
 
-function strLinesNearest_pre( routine, args )
+function strLinesNearest_head( routine, args )
 {
 
   let o = args[ 0 ];
@@ -5327,7 +5327,7 @@ strLinesNearest_body.defaults =
   // outputFormat : 'map',
 }
 
-let strLinesNearest = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearest_body );
+let strLinesNearest = _.routineUnite( strLinesNearest_head, strLinesNearest_body );
 
 //
 
@@ -5453,7 +5453,7 @@ strLinesNearestLog_body.defaults =
   gray : 0,
 }
 
-let strLinesNearestLog = _.routineFromPreAndBody( strLinesNearest_pre, strLinesNearestLog_body );
+let strLinesNearestLog = _.routineUnite( strLinesNearest_head, strLinesNearestLog_body );
 
 //
 
@@ -5532,7 +5532,7 @@ strLinesSize.defaults =
 
 //
 
-function strLinesRangeWithCharRange_pre( routine, args )
+function strLinesRangeWithCharRange_head( routine, args )
 {
 
   let o = args[ 0 ];
@@ -5553,11 +5553,11 @@ function strLinesRangeWithCharRange_pre( routine, args )
 function strLinesRangeWithCharRange_body( o )
 {
 
-  let pre = o.src.substring( 0, o.charsRangeLeft[ 0 ] );
+  let head = o.src.substring( 0, o.charsRangeLeft[ 0 ] );
   let mid = o.src.substring( o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 1 ] );
   let result = []
 
-  result[ 0 ] = _.strLinesCount( pre )-1;
+  result[ 0 ] = _.strLinesCount( head )-1;
   result[ 1 ] = result[ 0 ] + _.strLinesCount( mid );
 
   return result;
@@ -5569,7 +5569,7 @@ strLinesRangeWithCharRange_body.defaults =
   charsRangeLeft : null,
 }
 
-let strLinesRangeWithCharRange = _.routineFromPreAndBody( strLinesRangeWithCharRange_pre, strLinesRangeWithCharRange_body );
+let strLinesRangeWithCharRange = _.routineUnite( strLinesRangeWithCharRange_head, strLinesRangeWithCharRange_body );
 
 // --
 // declare

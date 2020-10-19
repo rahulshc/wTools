@@ -117,7 +117,7 @@ Name.prototype = Object.create( null );
 
 //
 
-function on_pre( routine, args )
+function on_head( routine, args )
 {
   let o;
 
@@ -183,7 +183,7 @@ function on( ehandler, o )
   return o;
 }
 
-on.pre = on_pre;
+on.head = on_head;
 on.defaults =
 {
   callbackMap : null,
@@ -192,7 +192,7 @@ on.defaults =
 
 //
 
-function off_pre( routine, args )
+function off_head( routine, args )
 {
 
   _.assert( _.longIs( args ) );
@@ -233,7 +233,7 @@ function off( ehandler, o )
   return o;
 }
 
-off.pre = off_pre;
+off.head = off_head;
 off.defaults =
 {
   callbackMap : null,
@@ -241,7 +241,7 @@ off.defaults =
 
 //
 
-function hasEventHandler_pre( routine, args )
+function hasEventHandler_head( routine, args )
 {
   let o;
 
@@ -281,7 +281,7 @@ function hasEventHandler( ehandler, o )
   return _.longHas( ehandler.events[ o.eventName ], o.eventHandler );
 }
 
-hasEventHandler.pre = hasEventHandler_pre;
+hasEventHandler.head = hasEventHandler_head;
 hasEventHandler.defaults =
 {
   eventName : null,

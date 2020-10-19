@@ -130,13 +130,13 @@ function timerIs( test )
   _.time.cancel( src );
 
   test.case = 'check _periodic timer';
-  var src = _.time._periodic( 0, ( t ) => t.original );
+  var src = _.time._periodic( 0, ( t ) => t.native );
   var got = _.timerIs( src );
   test.identical( got, true );
   _.time.cancel( src );
 
   test.case = 'check imitation of timer';
-  var src = { type : 'timer', time : true, cancel : true, original : true  };
+  var src = { type : 'timer', time : true, cancel : true };
   var got = _.timerIs( src );
   test.identical( got, true );
 }
@@ -3379,6 +3379,7 @@ var Self =
     dt4 : 200,
     dt5 : 1000,
   },
+  /* qqq xxx : minimize number of time parameters. too many of such */
 
   tests :
   {

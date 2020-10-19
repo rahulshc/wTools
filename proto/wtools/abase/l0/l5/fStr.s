@@ -711,7 +711,7 @@ function strRight( src, ins, range )
 
 // //
 //
-// function _strCutOff_pre( routine, args )
+// function _strCutOff_head( routine, args )
 // {
 //   let o;
 //
@@ -1356,7 +1356,7 @@ strSplitsUngroupedJoin.defaults =
 
 //
 
-function strSplitsQuotedRejoin_pre( routine, args )
+function strSplitsQuotedRejoin_head( routine, args )
 {
   let o = args[ 0 ];
 
@@ -1479,13 +1479,13 @@ strSplitsQuotedRejoin_body.defaults =
 
 //
 
-let strSplitsQuotedRejoin = _.routineFromPreAndBody( strSplitsQuotedRejoin_pre, strSplitsQuotedRejoin_body );
+let strSplitsQuotedRejoin = _.routineUnite( strSplitsQuotedRejoin_head, strSplitsQuotedRejoin_body );
 
 // --
 //
 // --
 
-function strSplitsDropDelimeters_pre( routine, args )
+function strSplitsDropDelimeters_head( routine, args )
 {
   let o = args[ 0 ];
 
@@ -1540,13 +1540,13 @@ strSplitsDropDelimeters_body.defaults =
 
 //
 
-let strSplitsDropDelimeters = _.routineFromPreAndBody( strSplitsDropDelimeters_pre, strSplitsDropDelimeters_body );
+let strSplitsDropDelimeters = _.routineUnite( strSplitsDropDelimeters_head, strSplitsDropDelimeters_body );
 
 // --
 //
 // --
 
-function strSplitsStrip_pre( routine, args )
+function strSplitsStrip_head( routine, args )
 {
   let o = args[ 0 ];
 
@@ -1595,13 +1595,13 @@ strSplitsStrip_body.defaults =
 
 //
 
-let strSplitsStrip = _.routineFromPreAndBody( strSplitsStrip_pre, strSplitsStrip_body );
+let strSplitsStrip = _.routineUnite( strSplitsStrip_head, strSplitsStrip_body );
 
 // --
 //
 // --
 
-function strSplitsDropEmpty_pre( routine, args )
+function strSplitsDropEmpty_head( routine, args )
 {
   let o = args[ 0 ];
 
@@ -1646,13 +1646,13 @@ strSplitsDropEmpty_body.defaults =
 
 //
 
-let strSplitsDropEmpty = _.routineFromPreAndBody( strSplitsDropEmpty_pre, strSplitsDropEmpty_body );
+let strSplitsDropEmpty = _.routineUnite( strSplitsDropEmpty_head, strSplitsDropEmpty_body );
 
 // --
 //
 // --
 
-function strSplitFast_pre( routine, args )
+function strSplitFast_head( routine, args )
 {
   let o = args[ 0 ];
 
@@ -1901,9 +1901,9 @@ strSplitFast_body.defaults =
  *
  */
 
-let strSplitFast = _.routineFromPreAndBody( strSplitFast_pre, strSplitFast_body );
+let strSplitFast = _.routineUnite( strSplitFast_head, strSplitFast_body );
 
-_.assert( strSplitFast.pre === strSplitFast_pre );
+_.assert( strSplitFast.head === strSplitFast_head );
 _.assert( strSplitFast.body === strSplitFast_body );
 _.assert( _.objectIs( strSplitFast.defaults ) );
 
@@ -2058,24 +2058,24 @@ defaults.onQuote = null; /* aaa : cover. seems does not work. ask how it should 
  *
  */
 
-let pre =
+let head =
 [
-  strSplitFast.pre,
-  strSplitsQuotedRejoin.pre,
-  strSplitsDropDelimeters.pre,
-  strSplitsStrip.pre,
-  strSplitsDropEmpty.pre
+  strSplitFast.head,
+  strSplitsQuotedRejoin.head,
+  strSplitsDropDelimeters.head,
+  strSplitsStrip.head,
+  strSplitsDropEmpty.head
 ];
-let strSplit = _.routineFromPreAndBody( pre, strSplit_body );
+let strSplit = _.routineUnite( head, strSplit_body );
 
-_.assert( strSplit.pre !== strSplitFast.pre );
-_.assert( _.routineIs( strSplit.pre ) );
+_.assert( strSplit.head !== strSplitFast.head );
+_.assert( _.routineIs( strSplit.head ) );
 _.assert( strSplit.body === strSplit_body );
 _.assert( _.objectIs( strSplit.defaults ) );
 
 //
 
-let strSplitNonPreserving = _.routineFromPreAndBody( strSplit.pre, strSplit.body );
+let strSplitNonPreserving = _.routineUnite( strSplit.head, strSplit.body );
 
 var defaults = strSplitNonPreserving.defaults;
 
@@ -2219,7 +2219,7 @@ _strSplitInlined_body.defaults =
 
 //
 
-let strSplitInlined = _.routineFromPreAndBody( strSplitFast_pre, _strSplitInlined_body );
+let strSplitInlined = _.routineUnite( strSplitFast_head, _strSplitInlined_body );
 
 //
 
