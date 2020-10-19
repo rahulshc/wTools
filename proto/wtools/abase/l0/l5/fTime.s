@@ -434,6 +434,40 @@ function timerIsUpBegun( timer )
 
 //
 
+/**
+ * The routine timerIsUpEnded() checks the state of timer {-timer-}. If {-timer-} finished executing of callback
+ * {-onTime-}, then routine returns true. Otherwise, false is returned.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.timerIsUpEnded( timer );
+ * // returns : false
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', onCancel );
+ * _.time.cancel( timer );
+ * function onCancel()
+ * {
+ *   _.time.timerIsUpEnded( timer );
+ *   // returns : false
+ *   return 'canceled';
+ * }
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.out( 2000, () => _.time.timerIsUpEnded( timer ) );
+ * // returns : true
+ *
+ * @param { Timer } timer - The timer to check.
+ * @returns { Boolean } - Returns true if timer finished executing of callback {-onTime-}.
+ * Otherwise, false is returned.
+ * @function timerIsUpEnded
+ * @throws { Error } If arguments is not provided.
+ * @throws { Error } If {-timer-} is not a Timer.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 function timerIsUpEnded( timer )
 {
   _.assert( _.timerIs( timer ) );
@@ -633,11 +667,11 @@ let Extension =
   _periodic,
   _cancel,
 
-  timerIsBegun, /* aaa : cover */ /* Dmytro : covered */
-  timerIsCancelBegun, /* aaa : cover */ /* Dmytro : covered */
-  timerIsCancelEnded, /* aaa : cover */ /* Dmytro : covered */
-  timerIsUpBegun, /* aaa : cover */ /* Dmytro : covered */
-  timerIsUpEnded, /* aaa : cover */ /* Dmytro : covered */
+  timerIsBegun, /* aaa : cover */ /* Dmytro : covered, documented */
+  timerIsCancelBegun, /* aaa : cover */ /* Dmytro : covered, documented */
+  timerIsCancelEnded, /* aaa : cover */ /* Dmytro : covered, documented */
+  timerIsUpBegun, /* aaa : cover */ /* Dmytro : covered, documented */
+  timerIsUpEnded, /* aaa : cover */ /* Dmytro : covered, documented */
 
   soon,
   begin,
