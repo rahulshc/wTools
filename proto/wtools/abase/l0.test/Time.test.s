@@ -969,7 +969,6 @@ function _finally( test )
     });
   })
 
-
   .finally( () =>
   {
     test.close( 'delay - 0' );
@@ -1797,8 +1796,8 @@ function timerIsCancelBegun( test )
 
   test.case = 'timer - begin';
   var timer = _.time.begin( context.dt3 * 5, () => 1 );
-  _.time.cancel( timer );
   var got = _.time.timerIsCancelBegun( timer );
+  _.time.cancel( timer );
   test.identical( got, false );
 
   test.case = 'timer - finally';
@@ -1812,7 +1811,6 @@ function timerIsCancelBegun( test )
   _.time.cancel( timer );
   var got = _.time.timerIsCancelBegun( timer );
   test.identical( got, false );
-
 
   test.close( 'timer is canceled' );
 
@@ -1916,7 +1914,6 @@ function timerIsCancelEnded( test )
   var got = _.time.timerIsCancelEnded( timer );
   test.identical( got, true );
 
-
   test.close( 'timer is canceled' );
 
   /* - */
@@ -1929,6 +1926,225 @@ function timerIsCancelEnded( test )
     test.case = 'wront type of timer';
     test.shouldThrowErrorSync( () => _.time.timerIsCancelEnded( 'timer' ) );
   }
+}
+
+//
+
+function timerIsUpBegun( test )
+{
+  let context = this;
+  let ready = new _testerGlobal_.wTools.Consequence().take( null );
+
+  /* - */
+
+  ready.then( () =>
+  {
+    test.open( 'timer is begun, init state not changed' );
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - begin';
+    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var got = _.time.timerIsUpBegun( timer );
+    test.identical( got, false );
+    _.time.cancel( timer );
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - finally';
+    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var got = _.time.timerIsUpBegun( timer );
+    test.identical( got, false );
+    _.time.cancel( timer );
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - periodic';
+    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var got = _.time.timerIsUpBegun( timer );
+    test.identical( got, false );
+    _.time.cancel( timer );
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.close( 'timer is begun, init state not changed' );
+    return null;
+  })
+
+  /* - */
+
+  ready.then( () =>
+  {
+    test.open( 'timer canceling, not finished' );
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - begin, check state inside of callback onCancel';
+    var timer = _.time.begin( context.dt3 * 5, () => 1, onCancel );
+    _.time.cancel( timer );
+    function onCancel()
+    {
+      var got = _.time.timerIsUpBegun( timer );
+      test.identical( got, false );
+      return got;
+    }
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - finally, check state inside of callback onCancel';
+    var timer = _.time.finally( context.dt3 * 5, onCancel );
+    _.time.cancel( timer );
+    function onCancel()
+    {
+      var got = _.time.timerIsUpBegun( timer );
+      test.identical( got, false );
+      return got;
+    }
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - periodic, check state inside of callback onCancel';
+    var timer = _.time.periodic( context.dt1, () => 1, onCancel );
+    _.time.cancel( timer );
+    function onCancel()
+    {
+      var got = _.time.timerIsUpBegun( timer );
+      test.identical( got, false );
+      return got;
+    }
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.close( 'timer canceling, not finished' );
+    return null;
+  })
+
+
+  /* - */
+
+  ready.then( () =>
+  {
+    test.open( 'timer is up, not ended' );
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - begin';
+    var timer = _.time.begin( context.dt1, onTime );
+    function onTime()
+    {
+      var got = _.time.timerIsUpBegun( timer );
+      test.identical( got, true );
+      return got;
+    }
+    return _testerGlobal_.wTools.time.out( context.dt2 );
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - finally';
+    var timer = _.time.finally( context.dt1, onTime );
+    function onTime()
+    {
+      var got = _.time.timerIsUpBegun( timer );
+      test.identical( got, true );
+      return got;
+    }
+    return _testerGlobal_.wTools.time.out( context.dt2 );
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - periodic';
+    var timer = _.time.periodic( context.dt1, onTime );
+    function onTime()
+    {
+      var got = _.time.timerIsUpBegun( timer );
+      test.identical( got, true );
+      return undefined;
+    }
+    return _testerGlobal_.wTools.time.out( context.dt2 );
+  })
+
+  ready.then( () =>
+  {
+    test.close( 'timer is up, not ended' );
+    return null;
+  })
+
+  /* - */
+
+  ready.then( () =>
+  {
+    test.open( 'timer is canceled' );
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - begin';
+    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    _.time.cancel( timer );
+    var got = _.time.timerIsUpBegun( timer );
+    test.identical( got, false );
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - finally';
+    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    _.time.cancel( timer );
+    var got = _.time.timerIsUpBegun( timer );
+    test.identical( got, false );
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.case = 'timer - periodic';
+    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    _.time.cancel( timer );
+    var got = _.time.timerIsUpBegun( timer );
+    test.identical( got, false );
+    return null;
+  })
+
+  ready.then( () =>
+  {
+    test.close( 'timer is canceled' );
+    return null;
+  })
+
+  /* - */
+
+  if( Config.debug )
+  {
+    test.case = 'without arguments';
+    test.shouldThrowErrorSync( () => _.time.timerIsUpBegun() );
+
+    test.case = 'wront type of timer';
+    test.shouldThrowErrorSync( () => _.time.timerIsUpBegun( 'timer' ) );
+  }
+
+  return ready;
 }
 
 //
@@ -3723,6 +3939,7 @@ var Self =
     timerIsBegun,
     timerIsCancelBegun,
     timerIsCancelEnded,
+    timerIsUpBegun,
 
     begin,
     beginTimerInsideOfCallback,
