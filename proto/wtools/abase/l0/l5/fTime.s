@@ -587,7 +587,6 @@ function begin( /* delay, procedure, onTime, onCancel */ )
  * @throws { Error } If arguments.length is less than 2 or great than 3.
  * @throws { Error } If {-delay-} is not a Number.
  * @throws { Error } If {-onTime-} neither is a Function, nor undefined, nor null.
- * @throws { Error } If {-onCancel-} neither is a Function, nor undefined, nor null.
  * @namespace wTools.time
  * @extends Tools
  */
@@ -606,6 +605,63 @@ function finally_( delay, procedure, onTime )
 }
 
 //
+
+/**
+ * The routine periodic() make new periodic timer for procedure {-procedure-}. The timer executes callback {-onTime-}
+ * periodically with time interval {-delay-}. If callback {-onTime-} returns undefined or Symbol _.dont, then the
+ * callback {-onCancel-} executes and timer stops.
+ * If the times is canceled, then the callback {-onCancel-} is executed.
+ *
+ * @example
+ * let result = [];
+ * function onTime()
+ * {
+ *   if( result.length < 3 )
+ *   return result.push( 1 );
+ *   else
+ *   return undefined;
+ * }
+ * let timer = _.time.periodic( 500, onTime, () => 'canceled' );
+ * _.time.out( 3000, () =>
+ * {
+ *   console.log( result );
+ *   // log : [ 1, 1, 1 ]
+ *   console.log( timer.result );
+ *   // log : 'canceled'
+ *   return null;
+ * });
+ * console.log( timer.result );
+ * // log : undefined
+ *
+ * @example
+ * let result = [];
+ * function onTime()
+ * {
+ *   if( result.length < 3 )
+ *   return result.push( 1 );
+ *   else
+ *   return undefined;
+ * }
+ * let timer = _.time.periodic( 500, onTime, () => 'canceled' );
+ * _.time.cancel( timer );
+ * console.log( result );
+ * // log : []
+ * console.log( timer.result );
+ * // log : 'canceled'
+ *
+ * @param { Number } delay - The time delay.
+ * @param { Procedure|Undefined } procedure - The procedure for timer.
+ * @param { Function } onTime - The callback to execute when time is elapsed.
+ * @param { Function|Undefined|Null } onCancel - The callback to execute when timer is canceled.
+ * @returns { Timer } - Returns periodic timer.
+ * @function begin
+ * @throws { Error } If arguments.length is less than 2 or great than 4.
+ * @throws { Error } If {-delay-} is not a Number.
+ * @throws { Error } If {-onTime-} is not a Function.
+ * @throws { Error } If {-onCancel-} neither is a Function, nor undefined, nor null.
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function periodic( /* delay, procedure, onTime, onCancel */ )
 {
