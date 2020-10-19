@@ -477,17 +477,17 @@ function timerIsUpEnded( timer )
 //
 
 /**
- * The routine soon() execute routine {-h-} asynchronously as soon as possible. In NodeJS interpreter it 
+ * The routine soon() execute routine {-h-} asynchronously as soon as possible. In NodeJS interpreter it
  * executes on nextTick, in another interpreters in async queue.
  *
  * @example
  * let result = [ _.time.now() ];
  * _.time.soon( () => result.push( _.time.now() ) );
- * // the delta ( result[ 1 ] - result[ 0 ] ) is small as possible 
+ * // the delta ( result[ 1 ] - result[ 0 ] ) is small as possible
  *
  * @param { Function } h - The routine to execute.
  * @returns { Undefined } - Returns undefined, executes routine {-h-}.
- * @function soon 
+ * @function soon
  * @throws { Error } If arguments is not provided.
  * @throws { Error } If {-h-} is not a Function.
  * @namespace wTools.time
@@ -497,6 +497,42 @@ function timerIsUpEnded( timer )
 let soon = typeof process === 'undefined' ? function( h ){ return setTimeout( h, 0 ) } : process.nextTick;
 
 //
+
+/**
+ * The routine begin() make new timer for procedure {-procedure-}. The timer executes callback {-onTime-} only once.
+ * Callback {-onTime-} executes when time delay {-delay-} is elapsed. If the times is canceled, then the callback
+ * {-onCancel-} is executed.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.out( 1000, () =>
+ * {
+ *  console.log( timer.result );
+ *  // log : 'executed'
+ *  return null;
+ * });
+ * console.log( timer.result );
+ * // log : undefined
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.cancel( timer );
+ * console.log( timer.result );
+ * // log : 'canceled'
+ *
+ * @param { Number } delay - The time delay.
+ * @param { Procedure|Undefined } procedure - The procedure for timer.
+ * @param { Function|Undefined|Null } onTime - The callback to execute when time is elapsed.
+ * @param { Function|Undefined|Null } onCancel - The callback to execute when timer is canceled.
+ * @returns { Timer } - Returns timer.
+ * @function begin
+ * @throws { Error } If arguments.length is less than 2 or great than 4.
+ * @throws { Error } If {-delay-} is not a Number.
+ * @throws { Error } If {-onTime-} neither is a Function, nor undefined, nor null.
+ * @throws { Error } If {-onCancel-} neither is a Function, nor undefined, nor null.
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function begin( /* delay, procedure, onTime, onCancel */ )
 {
