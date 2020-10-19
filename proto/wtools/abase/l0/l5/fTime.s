@@ -300,7 +300,7 @@ function timerIsBegun( timer )
 //
 
 /**
- * The routine timerIsCancelBegun() checks the state of timer {-timer-}. If {-timer-} starts execute callback
+ * The routine timerIsCancelBegun() checks the state of timer {-timer-}. If {-timer-} starts executing of callback
  * {-onCancel-} and not finished it, then routine returns true. Otherwise, false is returned.
  *
  * @example
@@ -324,7 +324,7 @@ function timerIsBegun( timer )
  * // returns : false
  *
  * @param { Timer } timer - The timer to check.
- * @returns { Boolean } - Returns true if timer starts canceling itself and not finished it.
+ * @returns { Boolean } - Returns true if timer starts canceling and not finished it.
  * Otherwise, false is returned.
  * @function timerIsCancelBegun
  * @throws { Error } If arguments is not provided.
@@ -342,7 +342,7 @@ function timerIsCancelBegun( timer )
 //
 
 /**
- * The routine timerIsCancelEnded() checks the state of timer {-timer-}. If {-timer-} finished executing of 
+ * The routine timerIsCancelEnded() checks the state of timer {-timer-}. If {-timer-} finished executing of
  * callback {-onCancel-}, then routine returns true. Otherwise, false is returned.
  *
  * @example
@@ -368,12 +368,12 @@ function timerIsCancelBegun( timer )
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
  * _.time.cancel( timer );
- * // returns : true 
+ * // returns : true
  *
  * @param { Timer } timer - The timer to check.
- * @returns { Boolean } - Returns true if timer starts canceling itself and not finished it.
+ * @returns { Boolean } - Returns true if timer starts canceling and finished it.
  * Otherwise, false is returned.
- * @function timerIsCancelEnded 
+ * @function timerIsCancelEnded
  * @throws { Error } If arguments is not provided.
  * @throws { Error } If {-timer-} is not a Timer.
  * @namespace wTools.time
@@ -387,6 +387,44 @@ function timerIsCancelEnded( timer )
 }
 
 //
+
+/**
+ * The routine timerIsUpBegun() checks the state of timer {-timer-}. If {-timer-} starts executing of callback
+ * {-onTime-} and not finished it, then routine returns true. Otherwise, false is returned.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.timerIsUpBegun( timer );
+ * // returns : false
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', onCancel );
+ * _.time.cancel( timer );
+ * function onCancel()
+ * {
+ *   _.time.timerIsUpBegun( timer );
+ *   // returns : false
+ *   return 'canceled';
+ * }
+ *
+ * @example
+ * let timer = _.time.begin( 500, onTime, () => 'canceled' );
+ * function onTime()
+ * {
+ *  _.time.timerIsUpBegun( timer );
+ *  // returns : true
+ *  return 'executed';
+ * }
+ *
+ * @param { Timer } timer - The timer to check.
+ * @returns { Boolean } - Returns true if timer starts executing of callback {-onTime-} and not finished it.
+ * Otherwise, false is returned.
+ * @function timerIsUpBegun
+ * @throws { Error } If arguments is not provided.
+ * @throws { Error } If {-timer-} is not a Timer.
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function timerIsUpBegun( timer )
 {
