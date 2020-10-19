@@ -1616,7 +1616,6 @@ function _cancel( test )
 function timerIsBegun( test )
 {
   let context = this;
-  let ready = new _testerGlobal_.wTools.Consequence().take( null );
 
   /* - */
 
@@ -1644,13 +1643,14 @@ function timerIsBegun( test )
 
   /* - */
 
-  test.open( 'timer has another state' );
+  test.open( 'timer is finished' );
+
+  let ready = new _testerGlobal_.wTools.Consequence().take( null );
 
   ready.then( () =>
   {
     test.case = 'timer - begin, return consequence with time out';
-    var timer = _.time.begin( 0, () => _testerGlobal_.wTools.time.out( context.dt3, () => 1 ) );
-
+    var timer = _.time.begin( 0, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt2, () =>
     {
       var got = _.time.timerIsBegun( timer );
@@ -1662,8 +1662,8 @@ function timerIsBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - finally, return consequence with time out';
-    var timer = _.time.finally( 0, () => _testerGlobal_.wTools.time.out( context.dt3, () => 1 ) );
-
+    var timer = _.time.finally( 0, () => 1 );
+    var got = _.time.timerIsBegun( timer );
     return _testerGlobal_.wTools.time.out( context.dt2, () =>
     {
       var got = _.time.timerIsBegun( timer );
@@ -1676,17 +1676,40 @@ function timerIsBegun( test )
   {
     test.case = 'timer - periodic, return consequence with time out';
     var timer = _.time.periodic( context.dt1, () => 1 );
-
-    return _testerGlobal_.wTools.time.out( context.dt2, () =>
+    return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
       var got = _.time.timerIsBegun( timer );
       test.identical( got, false );
       _.time.cancel( timer );
       return null;
     })
-  });
+  })
 
-  test.close( 'timer has another state' );
+  test.close( 'timer is finished' );
+
+  /* - */
+
+  test.open( 'timer is canceled' );
+
+  test.case = 'timer - begin';
+  var timer = _.time.begin( context.dt3 * 5, () => 1 );
+  _.time.cancel( timer );
+  var got = _.time.timerIsBegun( timer );
+  test.identical( got, false );
+
+  test.case = 'timer - finally';
+  var timer = _.time.finally( context.dt3 * 5, () => 1 );
+  _.time.cancel( timer );
+  var got = _.time.timerIsBegun( timer );
+  test.identical( got, false );
+
+  test.case = 'timer - periodic';
+  var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+  _.time.cancel( timer );
+  var got = _.time.timerIsBegun( timer );
+  test.identical( got, false );
+
+  test.close( 'timer is canceled' );
 
   /* - */
 
@@ -1698,8 +1721,6 @@ function timerIsBegun( test )
     test.case = 'wront type of timer';
     test.shouldThrowErrorSync( () => _.time.timerIsBegun( 'timer' ) );
   }
-
-  /* - */
 
   return ready;
 }
