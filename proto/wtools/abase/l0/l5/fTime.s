@@ -794,6 +794,21 @@ function now_functor()
 
 //
 
+/**
+ * The routine from() returns the time since 01.01.1970 in ms.
+ *
+ * @example
+ * let date = new Date();
+ * console.log( _.time.from( date ) );
+ * // log : 1603174830154
+ *
+ * @param { Number|Date|String } time - The time to convert.
+ * @returns { Number } - Returns time since 01.01.1970.
+ * @function from 
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 function from( time )
 {
 
