@@ -4753,6 +4753,42 @@ function timeOutCancelZeroDelayOutsideOfCallback( test )
   });
 }
 
+//
+
+function from( test )
+{
+  test.case = 'from number';
+  var got = _.time.from( 1024 );
+  test.identical( got, 1024 );
+
+  test.case = 'from Date';
+  var date = new Date();
+  var got = _.time.from( date );
+  var exp = date.getTime();
+  test.identical( got, exp );
+
+  test.case = 'from String with date';
+  var date = new Date();
+  date = date.toString();
+  var got = _.time.from( date );
+  var exp = Date.parse( date );
+  test.identical( got, exp );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.time.from() );
+
+  test.case = 'wrong type of time';
+  test.shouldThrowErrorSync( () => _.time.from( [] ) );
+
+  test.case = 'wrong string date';
+  test.shouldThrowErrorSync( () => _.time.from( 'some' ) );
+}
+
 // --
 // declaration
 // --
@@ -4807,6 +4843,10 @@ var Self =
 
     timeOutCancelZeroDelayInsideOfCallback,
     timeOutCancelZeroDelayOutsideOfCallback,
+
+    //
+
+    from,
 
   }
 
