@@ -686,6 +686,33 @@ function periodic( /* delay, procedure, onTime, onCancel */ )
 
 //
 
+/**
+ * The routine cancel() cancels timer {-timer-}.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * let canceled = _.time.cancel( timer );
+ * console.log( timer.result );
+ * // log : 'canceled'
+ * console.log( timer === canceled );
+ * // log : true
+ *
+ * @example
+ * let timer = _.time.periodic( 500, () => 'executed', () => 'canceled' );
+ * let canceled = _.time.cancel( timer );
+ * console.log( timer.result );
+ * // log : 'canceled'
+ * console.log( timer === canceled );
+ * // log : true
+ *
+ * @param { Timer } timer - The timer to cancel.
+ * @returns { Timer } - Returns canceled timer.
+ * @function cancel
+ * @throws { Error } If {-timer-} is not a Timer.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 function cancel( timer )
 {
   return _.time._cancel( ... arguments );

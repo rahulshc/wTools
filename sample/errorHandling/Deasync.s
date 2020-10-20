@@ -28,5 +28,5 @@ function program()
 }
 
 /*
-  Deasync pause current procedure and resule it only after consequence get a resource.
+  Deasync pause current procedure and resolve it only after consequence get a resource.
 */
