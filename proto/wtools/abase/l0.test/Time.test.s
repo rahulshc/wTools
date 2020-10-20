@@ -4788,7 +4788,6 @@ var Self =
     // private
 
     _begin,
-    _beginWithProcedure,
     _beginTimerInsideOfCallback,
     _finally,
     _periodic,
