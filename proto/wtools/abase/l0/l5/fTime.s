@@ -804,7 +804,9 @@ function now_functor()
  *
  * @param { Number|Date|String } time - The time to convert.
  * @returns { Number } - Returns time since 01.01.1970.
- * @function from 
+ * @function from
+ * @throws { Error } If arguments.length is not equal to 1.
+ * @throws { Error } If {-time-} neither is a Number, nor a Date, nor a valid time String.
  * @namespace wTools.time
  * @extends Tools
  */
@@ -872,6 +874,22 @@ function spentFormat( spent )
 }
 
 //
+
+/**
+ * The routine dateToStr() converts Date object {-date-} to formatted string.
+ * The format is : YYYY.MM.DD
+ *
+ * @example
+ * let date = new Date();
+ * console.log( _.time.dateToStr( date ) );
+ * // log : '2020.10.20'
+ *
+ * @param { Date } date - The date to convert.
+ * @returns { String } - Returns date in string format.
+ * @function dateToStr
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function dateToStr( date )
 {
