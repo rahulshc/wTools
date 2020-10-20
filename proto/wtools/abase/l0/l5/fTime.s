@@ -837,6 +837,29 @@ function from( time )
 
 //
 
+/**
+ * The routine spent() calculate spent time from time {-time-} and converts
+ * the value to formatted string with seconds. If the description {-description-}
+ * is provided, then routine prepend description to resulted string.
+ *
+ * @example
+ * let now = _time.now();
+ * _.time.sleep( 500 );
+ * let spent = _.time.spent( 'Spent : ', now );
+ * console.log( spent );
+ * // log : 'Spent : 0.5s'
+ *
+ * @param { String } description - The description for spent time. Optional parameter.
+ * @param { Number } time - The start time.
+ * @returns { Number } - Returns string with spent seconds.
+ * @function spent
+ * @throws { Error } If arguments.length is less than 1 or greater than 2.
+ * @throws { Error } If {-description-} is not a String.
+ * @throws { Error } If {-time-} is not a Number.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 function spent( description, time )
 {
   let now = _.time.now();
