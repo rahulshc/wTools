@@ -757,10 +757,26 @@ function sleep( delay )
   while( ( _.time.now() - now ) < delay )
   {
   }
-
 }
 
 //
+
+/**
+ * The routine now_functor() make the better function to get current time in ms.
+ * The returned function depends on environment.
+ *
+ * @example
+ * let now = _.time.now_functor();
+ * console.log( _.routineIs( now ) );
+ * // log : true
+ * console.log( now() );
+ * // log : 1603172830154
+ *
+ * @returns { Function } - Returns function to get current time in ms.
+ * @function now_functor
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function now_functor()
 {
