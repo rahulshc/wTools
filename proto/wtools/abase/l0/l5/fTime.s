@@ -861,9 +861,28 @@ function spent( description, time )
 
 //
 
+/**
+ * The routine spentFormat() converts spent time in milliseconds to seconds.
+ * Routine returns string with seconds.
+ *
+ * @example
+ * let now = _time.now();
+ * _.time.sleep( 500 );
+ * let spent = _.time.now() - now;
+ * console.log( _.time.spentFormat( spent ) );
+ * // log : '0.5s'
+ *
+ * @param { Number } spent - The time to convert, in ms.
+ * @returns { Number } - Returns string with spent seconds.
+ * @function spentFormat
+ * @throws { Error } If arguments.length is not equal to 1.
+ * @throws { Error } If {-spent-} is not a Number.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 function spentFormat( spent )
 {
-  let now = _.time.now();
 
   _.assert( 1 === arguments.length );
   _.assert( _.numberIs( spent ) );
