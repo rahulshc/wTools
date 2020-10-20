@@ -809,7 +809,7 @@ function from( time )
   }
   if( _.strIs( time ) )
   {
-    let time = Date.parse( time );
+    time = Date.parse( time );
     if( !isNaN( time ) )
     return time;
     else
