@@ -82,7 +82,7 @@ function readyJoin( context, routine, args )
     let args = arguments;
     let procedure = _.Procedure({ _stack : 1, _name : 'timeReadyJoin' });
     let joinedRoutine2 = _.routineSeal( this, joinedRoutine, args );
-    return _.time.ready( procedure, joinedRoutine2 );
+    return _.time.ready({ procedure, onReady : joinedRoutine2 });
   }
 }
 
