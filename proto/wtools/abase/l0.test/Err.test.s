@@ -1425,7 +1425,7 @@ function errorFunctor( test )
   {
     let _ = require( toolsPath );
 
-    let SomeError = _.error_functor( 'SomeError', _onSomeError );
+    let SomeError = _.error.error_functor( 'SomeError', _onSomeError );
 
     try
     {
@@ -1554,72 +1554,265 @@ function assert( test )
 
 //
 
-function _errUncaughtHandlerRethrowingError( test )
+function eventUncaughtErrorBasic( test )
 {
   let context = this;
   let a = test.assetFor( false );
   let programPath = a.program( program );
-  let ready = new _testerGlobal_.wTools.Consequence();
+  let ready = _testerGlobal_.wTools.take( null );
+
+  ready.then( () => run( 'sync' ) );
+  ready.then( () => run( 'timer' ) );
+  ready.then( () => run( 'promise' ) );
+  ready.then( () => run( 'consequence' ) );
+
+  return ready;
 
   /* */
 
-  a.appStartNonThrowing({ execPath : programPath })
-  .then( ( op ) =>
+  function run( throwing )
   {
-    test.case = 'rethrowing of error with added message';
-    test.notIdentical( op.exitCode, 0 );
-    test.is( _.strHas( op.output, 'Channel closed' ) );
-    test.is( _.strHas( op.output, 'Added message' ) );
-    test.isNot( _.strHas( op.output, 'Error is handled' ) );
-    return null;
-  });
+    let ready = _testerGlobal_.wTools.take( null );
 
-  return a.ready;
+    ready.then( () =>
+    {
+
+      test.case = `throwing:${throwing} rethrowing:0 attending:0`;
+      a.forkNonThrowing({ execPath : programPath, args : [ `throwing:${throwing}`, 'rethrowing:0', 'attending:0' ] })
+      .then( ( op ) =>
+      {
+        test.notIdentical( op.exitCode, 0 );
+        test.identical( _.strCount( op.output, 'ErrorSync' ), throwing === 'sync' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'ErrorTimer' ), throwing === 'timer' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'ErrorPromise' ), throwing === 'promise' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'ErrorConsequence' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'Error2' ), 0 );
+        test.identical( _.strCount( op.output, 'Error on handing event uncaughtError' ), 0 );
+        test.identical( _.strCount( op.output, 'uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 3 : 0 );
+        test.identical( _.strCount( op.output, 'uncaught promise error' ), throwing === 'promise' ? 3 : 0 );
+        test.identical( _.strCount( op.output, 'uncaught asynchronous error' ), throwing === 'consequence' ? 3 : 0 );
+        test.identical( _.strCount( op.output, 'errIs:true' ), 1 );
+        test.identical( _.strCount( op.output, 'errIsAttended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'errIsWary:false' ), throwing === 'consequence' ? 0 : 1 );
+        test.identical( _.strCount( op.output, 'errIsWary:true' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'errIsSuspended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'origination:uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'origination:uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'origination:uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
+        return null;
+      });
+
+      return a.ready;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+
+      test.case = `throwing:${throwing} rethrowing:1 attending:0`;
+      a.forkNonThrowing({ execPath : programPath, args : [ `throwing:${throwing}`, 'rethrowing:1', 'attending:0' ] })
+      .then( ( op ) =>
+      {
+        test.notIdentical( op.exitCode, 0 );
+        test.identical( _.strCount( op.output, 'ErrorSync' ), throwing === 'sync' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'ErrorTimer' ), throwing === 'timer' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'ErrorPromise' ), throwing === 'promise' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'ErrorConsequence' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'Error2' ), 1 );
+        test.identical( _.strCount( op.output, 'Error on handing event uncaughtError' ), 1 );
+        test.identical( _.strCount( op.output, 'uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 3 : 0 );
+        test.identical( _.strCount( op.output, 'uncaught promise error' ), throwing === 'promise' ? 3 : 0 );
+        test.identical( _.strCount( op.output, 'uncaught asynchronous error' ), throwing === 'consequence' ? 3 : 0 );
+        test.identical( _.strCount( op.output, 'errIs:true' ), 1 );
+        test.identical( _.strCount( op.output, 'errIsAttended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'errIsWary:false' ), throwing === 'consequence' ? 0 : 1 );
+        test.identical( _.strCount( op.output, 'errIsWary:true' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'errIsSuspended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'origination:uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'origination:uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'origination:uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
+        return null;
+      });
+
+      return a.ready;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+
+      test.case = `throwing:${throwing} rethrowing:0 attending:1`;
+      a.forkNonThrowing({ execPath : programPath, args : [ `throwing:${throwing}`, 'rethrowing:0', 'attending:1' ] })
+      .then( ( op ) =>
+      {
+        test.identical( op.exitCode, 0 );
+        test.identical( _.strCount( op.output, 'ErrorSync' ), 0 );
+        test.identical( _.strCount( op.output, 'ErrorTimer' ), 0 );
+        test.identical( _.strCount( op.output, 'ErrorPromise' ), 0 );
+        test.identical( _.strCount( op.output, 'ErrorConsequence' ), 0 );
+        test.identical( _.strCount( op.output, 'Error2' ), 0 );
+        test.identical( _.strCount( op.output, 'Error on handing event uncaughtError' ), 0 );
+        test.identical( _.strCount( op.output, 'uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'errIs:true' ), 1 );
+        test.identical( _.strCount( op.output, 'errIsAttended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'errIsWary:false' ), throwing === 'consequence' ? 0 : 1 );
+        test.identical( _.strCount( op.output, 'errIsWary:true' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'errIsSuspended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'origination:uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'origination:uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'origination:uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
+        return null;
+      });
+
+      return a.ready;
+    });
+
+    /* */
+
+    ready.then( () =>
+    {
+
+      test.case = `throwing:${throwing} rethrowing:1 attending:1`;
+      a.forkNonThrowing({ execPath : programPath, args : [ `throwing:${throwing}`, 'rethrowing:1', 'attending:1' ] })
+      .then( ( op ) =>
+      {
+        test.notIdentical( op.exitCode, 0 );
+        test.identical( _.strCount( op.output, 'ErrorSync' ), 0 );
+        test.identical( _.strCount( op.output, 'ErrorTimer' ), 0 );
+        test.identical( _.strCount( op.output, 'ErrorPromise' ), 0 );
+        test.identical( _.strCount( op.output, 'ErrorConsequence' ), 0 );
+        test.identical( _.strCount( op.output, 'Error2' ), 1 );
+        test.identical( _.strCount( op.output, 'Error on handing event uncaughtError' ), 1 );
+        test.identical( _.strCount( op.output, 'uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'errIs:true' ), 1 );
+        test.identical( _.strCount( op.output, 'errIsAttended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'errIsWary:false' ), throwing === 'consequence' ? 0 : 1 );
+        test.identical( _.strCount( op.output, 'errIsWary:true' ), throwing === 'consequence' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'errIsSuspended:false' ), 1 );
+        test.identical( _.strCount( op.output, 'origination:uncaught error' ), ( throwing === 'sync' || throwing === 'timer' ) ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'origination:uncaught promise error' ), throwing === 'promise' ? 1 : 0 );
+        test.identical( _.strCount( op.output, 'origination:uncaught asynchronous error' ), throwing === 'consequence' ? 1 : 0 );
+        return null;
+      });
+
+      return a.ready;
+    });
+
+    /* */
+
+    return ready;
+  }
 
   /* */
 
   function program()
   {
     let _ = require( toolsPath );
+    let rethrowing = process.argv.includes( 'rethrowing:1' );
+    let attending = process.argv.includes( 'attending:1' );
+    let throwingSync = process.argv.includes( `throwing:sync` );
+    let throwingTimer = process.argv.includes( `throwing:timer` );
+    let throwingPromise = process.argv.includes( `throwing:promise` );
+    let throwingConsequence = process.argv.includes( `throwing:consequence` );
+
+    if( throwingConsequence )
+    _.include( 'wConsequence' );
 
     _.process.on( 'uncaughtError', ( e ) =>
     {
-      _.errAttend( e.err );
-      throw _.err( e.err, 'Added message' );
 
+      console.log( 'errIs:' + _.errIs( e.err ) );
+      console.log( 'errIsAttended:' + _.errIsAttended( e.err ) );
+      console.log( 'errIsWary:' + _.errIsWary( e.err ) );
+      console.log( 'errIsSuspended:' + _.errIsSuspended( e.err ) );
+      console.log( 'origination:' + e.origination );
+
+      if( attending )
+      _.errAttend( e.err );
+
+      if( rethrowing )
+      throw 'Error2';
     });
 
-    throw _.err( 'Channel closed' );
+    if( throwingSync )
+    throw 'ErrorSync';
 
-    console.log( 'Error is handled' );
+    if( throwingTimer )
+    setTimeout( () =>
+    {
+      throw 'ErrorTimer'
+    }, 1 );
+
+    if( throwingPromise )
+    {
+      var promise1 = new Promise( ( take, error ) =>
+      {
+        error( 'ErrorPromise' );
+      });
+    }
+
+    if( throwingConsequence )
+    {
+      _.Consequence().error( 'ErrorConsequence' );
+    }
 
   }
 
 }
 
+eventUncaughtErrorBasic.timeOut = 60000;
+
 //
 
-function _errUncaughtHandlerNotHandledError( test )
+function eventUncaughtErrorOnce( test )
 {
   let context = this;
   let a = test.assetFor( false );
   let programPath = a.program( program );
-  let ready = new _testerGlobal_.wTools.Consequence();
+  let ready = _testerGlobal_.wTools.take( null );
+
+  // ready.then( () => run( 'once' ) );
+  ready.then( () => run( 'off' ) );
+
+  return ready;
 
   /* */
 
-  a.appStartNonThrowing({ execPath : programPath })
-  .then( ( op ) =>
+  function run( how )
   {
-    test.case = 'not handled error';
-    test.notIdentical( op.exitCode, 0 );
-    test.is( _.strHas( op.output, 'Channel closed' ) );
-    test.is( _.strHas( op.output, 'Error is unhandled' ) );
-    test.isNot( _.strHas( op.output, 'Error is handled' ) );
-    return null;
-  });
+    let ready = _testerGlobal_.wTools.take( null );
 
-  return a.ready;
+    ready.then( () =>
+    {
+
+      test.case = `how:${how}`;
+      a.forkNonThrowing({ execPath : programPath, args : [ `how:${how}` ] })
+      .then( ( op ) =>
+      {
+        test.notIdentical( op.exitCode, 0 );
+        test.identical( _.strCount( op.output, 'ErrorTimer1' ), 0 );
+        test.identical( _.strCount( op.output, 'ErrorTimer2' ), 1 );
+        test.identical( _.strCount( op.output, 'Error on handing event uncaughtError' ), 0 );
+        test.identical( _.strCount( op.output, 'Unknown' ), 0 );
+        test.identical( _.strCount( op.output, 'uncaught error' ), 2 );
+        test.identical( _.strCount( op.output, 'is not a function' ), 0 );
+
+        return null;
+      });
+
+      return a.ready;
+    });
+
+    /* */
+
+    return ready;
+  }
 
   /* */
 
@@ -1627,58 +1820,91 @@ function _errUncaughtHandlerNotHandledError( test )
   {
     let _ = require( toolsPath );
 
-    _.process.on( 'uncaughtError', ( e ) =>
+    let once = process.argv.includes( 'how:once' );
+    let off = process.argv.includes( 'how:off' );
+
+    if( once )
+    _.process.once( 'uncaughtError', ( e ) => /* xxx qqq : implement routine _.process.once() */
     {
-      console.log( 'Error is unhandled' )
+      _.errAttend( e.err );
     });
 
-    throw _.err( 'Channel closed' );
+    if( off )
+    _.process.on( 'uncaughtError', handle );
 
-    console.log( 'Error is handled' );
+    setTimeout( () =>
+    {
+      throw 'ErrorTimer1'
+    }, 1 );
 
+    setTimeout( () =>
+    {
+      throw 'ErrorTimer2'
+    }, 10 );
+
+    function handle( e )
+    {
+      _.errAttend( e.err );
+      _.process.off( 'uncaughtError', handle );
+    }
   }
 
 }
 
-//
+// xxx
 
-function _errUncaughtHandlerHandledErrorAndCodeExecution( test )
+function AndTake( test )
 {
   let context = this;
-  let a = test.assetFor( false );
-  let programPath = a.program( program );
-  let ready = new _testerGlobal_.wTools.Consequence();
+  let track;
+  let ready = new _.Consequence().take( null )
 
   /* */
 
-  a.appStart({ execPath : programPath })
-  .then( ( op ) =>
+  .then( function( arg )
   {
-    test.case = 'handled error';
-    test.identical( op.exitCode, 0 );
-    test.isNot( _.strHas( op.output, 'Channel closed' ) );
-    test.isNot( _.strHas( op.output, 'Error is unhandled' ) );
-    test.is( _.strHas( op.output, 'Error is handled' ) );
-    return null;
-  });
+    test.case = 'take take';
+    let t = context.t1;
+    let track = [];
+    let con1 = new _.Consequence({ tag : 'con1' });
+    let con2 = new _.Consequence({ tag : 'con2' });
+    let con = _.Consequence.AndTake( con1, con2 );
 
-  return a.ready;
-
-  /* */
-
-  function program()
-  {
-    let _ = require( toolsPath );
-
-    _.process.on( 'uncaughtError', ( e ) =>
+    con.tap( function( err, got )
     {
-      _.errAttend( e.err );
-      console.log( 'Error is handled' );
+      track.push( 'con.tap' );
+      test.identical( got, undefined );
+      test.is( err === err1 );
+      test.identical( con.resourcesGet(), [ { 'error' : err1, 'argument' : undefined } ] );
+      test.identical( con.competitorsCount(), 0 );
+      test.identical( con1.resourcesGet(), [] );
+      test.identical( con1.competitorsEarlyGet().length, 1 );
+      test.identical( con2.resourcesGet(), [] );
+      test.identical( con2.competitorsEarlyGet().length, 1 );
+      test.is( !_.errIsAttended( err ) );
+      test.is( _.errIsWary( err ) );
+      test.is( !_.errIsSuspended( err ) );
+      _.errAttend( err );
     });
 
-    throw _.err( 'Channel closed' );
+    // _.process.on( 'uncaughtError', uncaughtError_functor( mode ) );
 
+  })
 
+  /* */
+
+  return ready;
+
+  function uncaughtError_functor( mode )
+  {
+    return function uncaughtError( e )
+    {
+      var exp = `xxx`;
+      test.equivalent( e.err.originalMessage, exp )
+      _.errAttend( e.err );
+      track.push( 'uncaughtError' );
+      _.process.off( 'uncaughtError', uncaughtError ); /* xxx : cover in module::Tools */
+    }
   }
 
 }
@@ -1740,9 +1966,8 @@ let Self =
     sourceCode,
     assert,
 
-    _errUncaughtHandlerRethrowingError,
-    _errUncaughtHandlerNotHandledError,
-    _errUncaughtHandlerHandledErrorAndCodeExecution,
+    eventUncaughtErrorBasic,
+    eventUncaughtErrorOnce,
 
   }
 
