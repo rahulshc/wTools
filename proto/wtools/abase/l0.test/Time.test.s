@@ -4846,7 +4846,7 @@ function ready( test )
   test.shouldThrowErrorSync( () => _.time.ready( Infinity, () => 'ready' ) );
 
   test.case = 'wrong type of onReady';
-  test.shouldThrowErrorSync( () => _.time.ready( 'wrong', () => 'ready' ) );
+  test.shouldThrowErrorSync( () => _.time.ready( 0, null ) );
   test.shouldThrowErrorSync( () => _.time.ready( 10, 'wrong' ) );
 
   test.case = 'not allowed options procedure';
