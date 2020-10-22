@@ -41,6 +41,8 @@ function ready_head( routine, args )
   return o;
 }
 
+//
+
 function ready_body( o )
 {
 
@@ -62,7 +64,7 @@ function ready_body( o )
 ready_body.defaults =
 {
   timeOut : 0,
-  onReady : undefined,
+  onReady : null,
 };
 
 //
