@@ -4850,7 +4850,7 @@ function ready( test )
   test.shouldThrowErrorSync( () => _.time.ready( 10, 'wrong' ) );
 
   test.case = 'not allowed options procedure';
-  test.shouldThrowErrorSync( () => _.time.ready({ timeOut : 10, procedure : _.Procedure( 2 ), onReady : () => 'ready' }) );
+  test.shouldThrowErrorSync( () => _.time.ready({ timeOut : 10, procedure : 'procedure', onReady : () => 'ready' }) );
 
   return ready;
 }
