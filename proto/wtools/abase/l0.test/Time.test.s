@@ -4760,6 +4760,101 @@ function from( test )
   test.shouldThrowErrorSync( () => _.time.from( 'some' ) );
 }
 
+//
+
+function ready( test )
+{
+  let context = this;
+  let ready =  new _testerGlobal_.wTools.Consequence().take( null );
+
+  /* */
+
+  ready.then( () =>
+  {
+    test.case = 'only onReady, no timeOut';
+    var arr = [];
+    var onReady = () => arr.push( 1 );
+    _.time.ready( onReady );
+
+    return _testerGlobal_.wTools.time.out( context.dt2, () =>
+    {
+      test.identical( arr, [ 1 ] );
+      return null;
+    });
+  });
+
+  ready.then( () =>
+  {
+    test.case = 'timeOut and onReady';
+    var arr = [];
+    var onReady = () => arr.push( 1 );
+    _.time.ready( context.dt2, onReady );
+    test.identical( arr, [] );
+
+    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () =>
+    {
+      test.identical( arr, [ 1 ] );
+      return null;
+    });
+  });
+
+  /* */
+
+  ready.then( () =>
+  {
+    test.case = 'only onReady, no timeOut';
+    var arr = [];
+    var onReady = () => arr.push( 1 );
+    _.time.ready({ onReady });
+
+    return _testerGlobal_.wTools.time.out( context.dt2, () =>
+    {
+      test.identical( arr, [ 1 ] );
+      return null;
+    });
+  });
+
+  ready.then( () =>
+  {
+    test.case = 'timeOut and onReady';
+    var arr = [];
+    var onReady = () => arr.push( 1 );
+    _.time.ready({ timeOut : context.dt2, onReady });
+    test.identical( arr, [] );
+
+    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () =>
+    {
+      test.identical( arr, [ 1 ] );
+      return null;
+    });
+  });
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without argument';
+  test.shouldThrowErrorSync( () => _.time.ready() );
+
+  test.case = 'single arg is not a routine';
+  test.shouldThrowErrorSync( () => _.time.ready( 1 ) );
+
+  test.case = 'wrong type of timeOut';
+  test.shouldThrowErrorSync( () => _.time.ready( 'wrong', () => 'ready' ) );
+  test.shouldThrowErrorSync( () => _.time.ready( 10.5, () => 'ready' ) );
+  test.shouldThrowErrorSync( () => _.time.ready( Infinity, () => 'ready' ) );
+
+  test.case = 'wrong type of onReady';
+  test.shouldThrowErrorSync( () => _.time.ready( 'wrong', () => 'ready' ) );
+  test.shouldThrowErrorSync( () => _.time.ready( 10, 'wrong' ) );
+
+  test.case = 'not allowed options procedure';
+  test.shouldThrowErrorSync( () => _.time.ready({ timeOut : 10, procedure : _.Procedure( 2 ), onReady : () => 'ready' }) );
+
+  return ready;
+}
+
 // --
 // declaration
 // --
@@ -4817,6 +4912,8 @@ var Self =
     //
 
     from,
+
+    ready,
 
   }
 
