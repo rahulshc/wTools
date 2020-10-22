@@ -36,7 +36,7 @@ function ready_head( routine, args )
 
   _.assert( 0 <= args.length || args.length <= 2 );
   _.assert( _.intIs( o.timeOut ) );
-  _.assert( _.routineIs( o.onReady ) || o.onReady === undefined );
+  _.assert( _.routineIs( o.onReady ) || o.onReady === null || o.onReady === undefined );
 
   return o;
 }
