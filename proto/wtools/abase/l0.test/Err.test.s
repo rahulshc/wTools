@@ -1851,64 +1851,6 @@ function eventUncaughtErrorOnce( test )
 
 }
 
-// xxx
-
-function AndTake( test )
-{
-  let context = this;
-  let track;
-  let ready = new _.Consequence().take( null )
-
-  /* */
-
-  .then( function( arg )
-  {
-    test.case = 'take take';
-    let t = context.t1;
-    let track = [];
-    let con1 = new _.Consequence({ tag : 'con1' });
-    let con2 = new _.Consequence({ tag : 'con2' });
-    let con = _.Consequence.AndTake( con1, con2 );
-
-    con.tap( function( err, got )
-    {
-      track.push( 'con.tap' );
-      test.identical( got, undefined );
-      test.is( err === err1 );
-      test.identical( con.resourcesGet(), [ { 'error' : err1, 'argument' : undefined } ] );
-      test.identical( con.competitorsCount(), 0 );
-      test.identical( con1.resourcesGet(), [] );
-      test.identical( con1.competitorsEarlyGet().length, 1 );
-      test.identical( con2.resourcesGet(), [] );
-      test.identical( con2.competitorsEarlyGet().length, 1 );
-      test.is( !_.errIsAttended( err ) );
-      test.is( _.errIsWary( err ) );
-      test.is( !_.errIsSuspended( err ) );
-      _.errAttend( err );
-    });
-
-    // _.process.on( 'uncaughtError', uncaughtError_functor( mode ) );
-
-  })
-
-  /* */
-
-  return ready;
-
-  function uncaughtError_functor( mode )
-  {
-    return function uncaughtError( e )
-    {
-      var exp = `xxx`;
-      test.equivalent( e.err.originalMessage, exp )
-      _.errAttend( e.err );
-      track.push( 'uncaughtError' );
-      _.process.off( 'uncaughtError', uncaughtError ); /* xxx : cover in module::Tools */
-    }
-  }
-
-}
-
 // --
 // declare
 // --
