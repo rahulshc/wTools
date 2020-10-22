@@ -11,68 +11,63 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 // implementation
 // --
 
-function ready( timeOut, procedure, onReady )
+function ready_head( routine, args )
 {
-
-  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-
-  if( _.numberIs( arguments[ 0 ] ) )
+  let o = args[ 0 ];
+  if( !_.mapIs( o ) )
   {
-    timeOut = arguments[ 0 ];
-    if( !_.procedureIs( arguments[ 1 ] ) )
+    o = Object.create( null );
+
+    if( args.length === 2 )
     {
-      onReady = arguments[ 1 ];
-      procedure = undefined;
+      o.timeOut = args[ 0 ];
+      o.onReady = args[ 1 ];
+    }
+    else
+    {
+      o.onReady = args[ 0 ];
     }
   }
-  else if( _.procedureIs( arguments[ 0 ] ) )
-  {
-    procedure = arguments[ 0 ];
-    onReady = arguments[ 1 ];
-    timeOut = undefined;
-  }
-  else
-  {
-    onReady = arguments[ 0 ];
-    procedure = undefined;
-    timeOut = undefined;
-  }
 
-  if( !timeOut )
-  timeOut = 0;
+  _.routineOptions( routine, o );
 
-  if( !procedure )
-  procedure = _.Procedure({ _stack : 1, _name : 'timeReady' });
+  if( !o.timeOut )
+  o.timeOut = 0;
 
-  _.assert( _.procedureIs( procedure ) );
-  _.assert( _.intIs( timeOut ) );
-  _.assert( _.routineIs( onReady ) || onReady === undefined );
+  _.assert( 0 <= args.length || args.length <= 2 );
+  _.assert( _.intIs( o.timeOut ) );
+  _.assert( _.routineIs( o.onReady ) || o.onReady === undefined );
+
+  return o;
+}
+
+function ready_body( o )
+{
+
+  _.assert( o.onReady, 'Expects routine {-o.onReady-}.' );
 
   if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState !== 'complete' )
-  {
-    let con = _.Consequence ? new _.Consequence({ tag : 'timeReady' }) : null;
-    window.addEventListener( 'load', function() { handleReady( con, ... arguments ) } );
-    return con;
-  }
+  window.addEventListener( 'load', handleReady );
   else
-  {
-    if( _.Consequence )
-    return _.time.out( timeOut, procedure, onReady );
-    else if( onReady )
-    _.time.begin( timeOut, procedure, onReady );
-    else _.assert( 0 );
-  }
+  handleReady();
 
-  function handleReady( con )
-  {
-    if( _.Consequence )
-    return _.time.out( timeOut, procedure, onReady ).finally( con );
-    else if( onReady )
-    _.time.begin( timeOut, procedure, onReady );
-    else _.assert( 0 );
-  }
+  /* */
 
+  function handleReady()
+  {
+    _.time.begin( o.timeOut, o.onReady );
+  }
 }
+
+ready_body.defaults =
+{
+  timeOut : 0,
+  onReady : undefined,
+};
+
+//
+
+let ready = _.routineUnite( ready_head, ready_body );
 
 //
 
