@@ -107,18 +107,18 @@ let ready = _.routineUnite( ready_head, ready_body );
 
 //
 
-function readyJoin( context, routine, args )
-{
-  let joinedRoutine = _.routineJoin( context, routine, args );
-  return _timeReady;
-  function _timeReady()
-  {
-    let args = arguments;
-    let procedure = _.Procedure({ _stack : 1, _name : 'timeReadyJoin' });
-    let joinedRoutine2 = _.routineSeal( this, joinedRoutine, args );
-    return _.time.ready({ procedure, onReady : joinedRoutine2 });
-  }
-}
+// function readyJoin( context, routine, args )
+// {
+//   let joinedRoutine = _.routineJoin( context, routine, args );
+//   return _timeReady;
+//   function _timeReady()
+//   {
+//     let args = arguments;
+//     let procedure = _.Procedure({ _stack : 1, _name : 'timeReadyJoin' });
+//     let joinedRoutine2 = _.routineSeal( this, joinedRoutine, args );
+//     return _.time.ready({ procedure, onReady : joinedRoutine2 });
+//   }
+// }
 
 //
 
@@ -347,7 +347,7 @@ let Routines =
 {
 
   ready,
-  readyJoin,
+  // readyJoin,
 
   // out,
   // outError,
