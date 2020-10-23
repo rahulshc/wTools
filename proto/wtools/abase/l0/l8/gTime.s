@@ -40,6 +40,7 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
  * @throws { Error } If arguments.length is less than 1 or greater than 2.
  * @throws { Error } If single argument call is provided without callback {-onReady-} or options
  * map {-o-} has no option {-o.onReady-}.
+ * @throws { Error } If {-timeOut-} has defined non integer value or not finite value.
  * @namespace wTools.time
  * @extends Tools
  */
