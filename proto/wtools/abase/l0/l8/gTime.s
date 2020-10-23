@@ -36,9 +36,9 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
  * @param { Number } o.timeOut - The time delay.
  * @param { Function } o.onReady - Callback to execute.
  * @returns { Undefined } - Returns not a value, executes callback when a web-page is ready.
- * @function ready 
- * @throws { Error } If arguments.length is less than 1 or more than 2.
- * @throws { Error } If single argument call is previded without callback {-onReady-} or options 
+ * @function ready
+ * @throws { Error } If arguments.length is less than 1 or greater than 2.
+ * @throws { Error } If single argument call is provided without callback {-onReady-} or options
  * map {-o-} has no option {-o.onReady-}.
  * @namespace wTools.time
  * @extends Tools

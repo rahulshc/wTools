@@ -353,20 +353,20 @@ function routineJoin( context, routine, args )
  * Return new function with sealed context and arguments.
  *
  * @example
- * let o = { z: 5 };
- * function sum(x, y)
+ * let o = { z : 5 };
+ * function sum( x, y )
  * {
  *   return x + y + this.z;
  * }
  * let newSum = _.routineSeal( o, sum, [ 3, 4 ] );
- * newSum( y );
- * // returns 12
+ * newSum();
+ * // returns : 12
  *
- * @param {Object} context The value that will be set as 'this' keyword in new function
- * @param {Function} routine Function which will be used as base for result function.
- * @param {Array<*>} args Arguments wrapped into array. Will be used as argument to `routine` function
- * @returns {Function} Result function with sealed context and arguments.
- * @function routineJoin
+ * @param { Object } context - The value that will be set as 'this' keyword in new function
+ * @param { Function } routine - Function which will be used as base for result function.
+ * @param { Array } args - Arguments wrapped into array. Will be used as argument to `routine` function
+ * @returns { Function } - Result function with sealed context and arguments.
+ * @function routineSeal
  * @namespace Tools
  */
 
