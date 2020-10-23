@@ -10,17 +10,8 @@ let Self = _global_.wTools.error;
 // implementation
 // --
 
-// function _handleUncaught2( err, origination )
 function _handleUncaught2( o )
 {
-  // let o = Object.create( null );
-  // o.err = err;
-  // o.origination = origination;
-  // if( !o.origination )
-  // o.origination = 'uncaught error';
-  // let prefix = `--------------- ${o.origination} --------------->\n`;
-  // let postfix = `--------------- ${o.origination} ---------------<\n`;
-  // o.logger = _global.logger || _global.console;
 
   optionsRefine();
 
@@ -53,9 +44,6 @@ function _handleUncaught2( o )
   function optionsRefine()
   {
 
-    debugger;
-    // o.err = err;
-    // o.origination = origination;
     if( !o.origination )
     o.origination = 'uncaught error';
 
