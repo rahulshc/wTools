@@ -11,6 +11,39 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 // implementation
 // --
 
+/**
+ * The routine ready() executes callback {-onReady-} when web-page is loaded.
+ * If routine is executed in browser environment, then callback can be executed after
+ * loading page with specified delay {-timeOut-}.
+ * If routine is executed in NodeJS environment, then the callback is executed after
+ * specified delay {-timeOut-}.
+ *
+ * @example
+ * let result = [];
+ * _.time.ready( () => result.push( 'ready' ) );
+ * // when a page is loaded routine will push 'ready' in array `result` immediatelly
+ *
+ * @example
+ * let result = [];
+ * _.time.ready( 500, () => result.push( 'ready' ) );
+ * // when a page is loaded routine will push 'ready' in array `result` after time out
+ *
+ * First parameter set :
+ * @param { Number } timeOut - The time delay.
+ * @param { Function } onReady - Callback to execute.
+ * Second parameter set :
+ * @param { Map|MapLike } o - Options map.
+ * @param { Number } o.timeOut - The time delay.
+ * @param { Function } o.onReady - Callback to execute.
+ * @returns { Undefined } - Returns not a value, executes callback when a web-page is ready.
+ * @function ready 
+ * @throws { Error } If arguments.length is less than 1 or more than 2.
+ * @throws { Error } If single argument call is previded without callback {-onReady-} or options 
+ * map {-o-} has no option {-o.onReady-}.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 function ready_head( routine, args )
 {
   let o = args[ 0 ];
