@@ -187,10 +187,15 @@ function numbersAreEquivalent( a, b, accuracy )
   float   float    int
   float   float    float
   float   float    bigint   ?
-  bigint  int      int, float -> bigint
-  bigint  float    int, float -> bigint
-  bigint  bigint   int, float -> bigint
-  ...
+  bigint  int      int -> bigint
+  bigint  int      float -> bigint
+  bigint  int      bigint
+  bigint  float    int -> bigint
+  bigint  float    float -> bigint
+  bigint  float    bigint
+  bigint  bigint   int -> bigint
+  bigint  bigint   float -> bigint
+  bigint  bigint   bigint
   */
 
   if( accuracy === undefined )
