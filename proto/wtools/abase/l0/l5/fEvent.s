@@ -236,11 +236,6 @@ on.defaults =
  * _.event.once( ehandler, { callbackMap : { end : onEnd } } );
  * _.event.eventGive( ehandler, 'begin' );
  * console.log( ehandler.events.begin.length );
- * // log : 1
- * console.log( result );
- * // log : [ 0 ]
- * _.event.eventGive( ehandler, 'begin' );
- * console.log( ehandler.events.begin.length );
  * // log : 0
  * console.log( result );
  * // log : [ 0, 2 ]
@@ -310,6 +305,46 @@ once.defaults =
 };
 
 //
+
+/**
+ * The routine off() removes callback of some kind in event handler {-ehandler-}.
+ *
+ * @example
+ * let onBegin = () => result.push( result.length );
+ * let onBegin2 = () => result.push( result.length );
+ * let ehandler = { events : { begin : [ onBegin, onBegin2 ] } };
+ * _.event.off( ehandler, { callbackMap : { begin : onBegin } } );
+ * console.log( ehandler.events.begin.length );
+ * // log : 1
+ * console.log( ehandler.events.begin[ 0 ] === onBegin2 );
+ * // log : true
+ *
+ * @example
+ * let onBegin = () => result.push( result.length );
+ * let onBegin2 = () => result.push( result.length );
+ * let ehandler = { events : { begin : [ onBegin, onBegin2 ] } };
+ * _.event.off( ehandler, { callbackMap : { begin : null } } );
+ * console.log( ehandler.events.begin.length );
+ * // log : 0
+ *
+ * @param { Object } ehandler - The events handler with map of available events.
+ * @param { Map|MapLike } o - Options map.
+ * @param { Map } o.callbackMap - Map with pairs: [ eventName ] : [ callback ]. The value
+ * [ callback ] can be a Function or Null. If null is provided, routine removes all callbacks.
+ * @returns { Map|MapLike } - Returns options map {-o-}.
+ * @function off
+ * @throws { Error } If arguments.length is not equal to 2.
+ * @throws { Error } If {-ehandler-} is not an Object.
+ * @throws { Error } If {-ehandler.events-} is not an Object.
+ * @throws { Error } If {-o-} has incompatible type.
+ * @throws { Error } If {-o-} has extra options.
+ * @throws { Error } If {-o.callbackMap-} is not a Map.
+ * @throws { Error } If {-o.callbackMap-} has events than does not exist in map {-ehandler.events-}.
+ * @throws { Error } If {-ehandler.events-} callback queue has a few callbacks
+ * which should be removed separately.
+ * @namespace wTools.event
+ * @extends Tools
+ */
 
 function off_head( routine, args )
 {
