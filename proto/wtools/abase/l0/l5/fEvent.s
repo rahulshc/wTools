@@ -199,6 +199,74 @@ on.defaults =
 
 //
 
+/**
+ * The routine once() registers callback of some kind in event handler {-ehandler-}.
+ *
+ * @example
+ * let ehandler = { events : { begin : [] } };
+ * let result = [];
+ * let onBegin = () => result.push( result.length );
+ * console.log( ehandler.events.begin.length );
+ * // log : 0
+ * _.event.once( ehandler, { callbackMap : { begin : onBegin } } );
+ * console.log( ehandler.events.begin.length );
+ * // log : 1
+ * console.log( result );
+ * // log : []
+ *
+ * @example
+ * let ehandler = { events : { begin : [] } };
+ * let result = [];
+ * let onBegin = () => result.push( result.length );
+ * _.event.once( ehandler, { callbackMap : { begin : onBegin } } );
+ * _.event.eventGive( ehandler, 'begin' );
+ * console.log( ehandler.events.begin.length );
+ * // log : 0
+ * console.log( result );
+ * // log : [ 0 ]
+ *
+ * @example
+ * let ehandler = { events : { begin : [], end : [] } };
+ * let result = [];
+ * let onBegin = () => result.push( result.length );
+ * let onBegin2 = () => result.push( result.length + 1 );
+ * let onEnd = result.splice();
+ * _.event.once( ehandler, { callbackMap : { begin : onBegin } } );
+ * _.event.once( ehandler, { callbackMap : { begin : onBegin2 } } );
+ * _.event.once( ehandler, { callbackMap : { end : onEnd } } );
+ * _.event.eventGive( ehandler, 'begin' );
+ * console.log( ehandler.events.begin.length );
+ * // log : 1
+ * console.log( result );
+ * // log : [ 0 ]
+ * _.event.eventGive( ehandler, 'begin' );
+ * console.log( ehandler.events.begin.length );
+ * // log : 0
+ * console.log( result );
+ * // log : [ 0, 2 ]
+ * _.event.eventGive( ehandler, 'end' );
+ * console.log( result );
+ * // log : []
+ *
+ * @param { Object } ehandler - The events handler with map of available events.
+ * @param { Map|MapLike } o - Options map.
+ * @param { Map } o.callbackMap - Map with pairs: [ eventName ] : [ callback ]. The value
+ * [ callback ] can be a Function or Array with callbacks.
+ * @param { Boolean|BoolLike } o.first - If it has value `true`, then callback prepends to callback queue.
+ * Otherwise, callback appends to callback queue.
+ * @returns { Map|MapLike } - Returns options map {-o-}.
+ * @function once
+ * @throws { Error } If arguments.length is not equal to 2.
+ * @throws { Error } If {-ehandler-} is not an Object.
+ * @throws { Error } If {-ehandler.events-} is not an Object.
+ * @throws { Error } If {-o-} has incompatible type.
+ * @throws { Error } If {-o-} has extra options.
+ * @throws { Error } If {-o.callbackMap-} is not a Map.
+ * @throws { Error } If {-o.callbackMap-} has events than does not exist in map {-ehandler.events-}.
+ * @namespace wTools.event
+ * @extends Tools
+ */
+
 function once( ehandler, o )
 {
 
