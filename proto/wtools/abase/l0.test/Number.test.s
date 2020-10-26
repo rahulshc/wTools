@@ -907,6 +907,7 @@ function numbersAreIdenticalNotStrictly( test )
 
 //
 
+/* qqq for Yevhen : bad! ask */
 function numbersAreEquivalentBasic( test )
 {
 
@@ -921,8 +922,6 @@ function numbersAreEquivalentBasic( test )
   test.case = 'string number and number';
   var got = _.numbersAreEquivalent( '1', 1 );
   test.identical( got, false );
-
-  /* - */
 
   test.case = 'numbers 1 and 1 ';
   var got = _.numbersAreEquivalent( 1, 1 );
@@ -980,6 +979,14 @@ function numbersAreEquivalentBasic( test )
   var got = _.numbersAreEquivalent( NaN, NaN );
   test.identical( got, true );
 
+  /* qqq for Yevhen : extend */
+
+  test.case = 'number 3 and big int 3';
+  var got = _.numbersAreEquivalent( 3, 3n );
+  test.identical( got, true );
+  debugger;
+  var got = _.numbersAreEquivalent( 3n, 3 );
+  test.identical( got, true );
 
   /* - */
 
@@ -1001,16 +1008,18 @@ function numbersAreEquivalentBasic( test )
 
 //
 
-function numbersAreEquivalentOptionAccuracy( test )
+/* qqq for Yevhen : use `/ * * /` as delimeter between cases or nothing, not `//` */
+
+function numbersAreEquivalentOptionAccuracy( test ) /* qqq for Yevhen : bad name, not option, it's argument! */
 {
   test.open( 'positive numbers' )
 
-  test.case = 'numbers 1.00 and 1.05, acc = 0.05 ';
-  var got = _.numbersAreEquivalent( 1.00, 1.05, 0.05 );
+  test.case = 'numbers 1.00 and 1.04999, acc = 0.05 ';
+  var got = _.numbersAreEquivalent( 1.00, 1.04999, 0.05 );
   test.identical( got, true );
 
-  test.case = 'numbers 1 and 1.05, acc = 0.05 ';
-  var got = _.numbersAreEquivalent( 1, 1.05, 0.05 );
+  test.case = 'numbers 1 and 1.04999, acc = 0.05 ';
+  var got = _.numbersAreEquivalent( 1, 1.04999, 0.05 );
   test.identical( got, true );
 
   //
@@ -1025,8 +1034,8 @@ function numbersAreEquivalentOptionAccuracy( test )
 
   //
 
-  test.case = 'numbers 0.999 and 0.998, acc = 0.001 ';
-  var got = _.numbersAreEquivalent( 0.999, 0.998, 0.001 );
+  test.case = 'numbers 0.999 and 0.998001, acc = 0.001 ';
+  var got = _.numbersAreEquivalent( 0.999, 0.9980001, 0.001 );
   test.identical( got, true );
 
   test.case = 'numbers 0.999 and 0.998, acc = 0.0001 ';
@@ -1043,16 +1052,20 @@ function numbersAreEquivalentOptionAccuracy( test )
 
   //
 
+  test.case = 'numbers 0.9999999999 and 0.999999999801, acc = 0.0000000001 ';
+  var got = _.numbersAreEquivalent( 0.9999999999, 0.999999999801, 0.0000000001 );
+  test.identical( got, true );
+
   test.case = 'numbers 0.9999999999 and 0.9999999998, acc = 0.0000000001 ';
   var got = _.numbersAreEquivalent( 0.9999999999, 0.9999999998, 0.0000000001 );
-  test.identical( got, true );
+  test.identical( got, false );
 
   test.case = 'numbers 0.9999999999 and 0.9999999998, acc = 0.00000000001 ';
   var got = _.numbersAreEquivalent( 0.9999999999, 0.9999999998, 0.00000000001 );
   test.identical( got, false );
 
-  test.case = 'more than 10 digit after dot, numbers 0.99999999999 and 0.99999999998, acc = 0.00000000001 ';
-  var got = _.numbersAreEquivalent( 0.99999999999, 0.99999999998, 0.00000000001 );
+  test.case = 'more than 10 digit after dot, numbers 0.99999999999 and 0.99999999998001, acc = 0.00000000001 ';
+  var got = _.numbersAreEquivalent( 0.99999999999, 0.99999999998001, 0.00000000001 );
   test.identical( got, true );
 
   //
@@ -1075,12 +1088,12 @@ function numbersAreEquivalentOptionAccuracy( test )
 
   test.open( 'negative numbers' )
 
-  test.case = 'numbers -1.00 and -1.05, acc = 0.05 ';
-  var got = _.numbersAreEquivalent( -1.00, -1.05, 0.05 );
+  test.case = 'numbers -1.0001 and -1.05, acc = 0.05 ';
+  var got = _.numbersAreEquivalent( -1.0001, -1.05, 0.05 );
   test.identical( got, true );
 
-  test.case = 'numbers -1 and -1.05, acc = 0.05 ';
-  var got = _.numbersAreEquivalent( -1, -1.05, 0.05 );
+  test.case = 'numbers -1.0001 and -1.05, acc = 0.05 ';
+  var got = _.numbersAreEquivalent( -1.0001, -1.05, 0.05 );
   test.identical( got, true );
 
   //
@@ -1095,8 +1108,8 @@ function numbersAreEquivalentOptionAccuracy( test )
 
   //
 
-  test.case = 'numbers -0.999 and -0.998, acc = 0.001 ';
-  var got = _.numbersAreEquivalent( -0.999, -0.998, 0.001 );
+  test.case = 'numbers -0.999 and -0.9980001, acc = 0.001 ';
+  var got = _.numbersAreEquivalent( -0.999, -0.9980001, 0.001 );
   test.identical( got, true );
 
   test.case = 'numbers -0.999 and -0.998, acc = 0.0001 ';
@@ -1113,16 +1126,16 @@ function numbersAreEquivalentOptionAccuracy( test )
 
   //
 
-  test.case = 'numbers -0.9999999999 and -0.9999999998, acc = 0.0000000001 ';
-  var got = _.numbersAreEquivalent( -0.9999999999, -0.9999999998, 0.0000000001 );
+  test.case = 'numbers -0.9999999999 and -0.99999999980001, acc = 0.0000000001 ';
+  var got = _.numbersAreEquivalent( -0.9999999999, -0.99999999980001, 0.0000000001 );
   test.identical( got, true );
 
   test.case = 'numbers -0.9999999999 and -0.9999999998, acc = 0.00000000001 ';
   var got = _.numbersAreEquivalent( -0.9999999999, -0.9999999998, 0.00000000001 );
   test.identical( got, false );
 
-  test.case = 'more than 10 digit after dot, numbers -0.99999999999 and -0.99999999998, acc = 0.00000000001 ';
-  var got = _.numbersAreEquivalent( -0.99999999999, -0.99999999998, 0.00000000001 );
+  test.case = 'more than 10 digit after dot, numbers -0.99999999999 and -0.999999999980001, acc = 0.00000000001 ';
+  var got = _.numbersAreEquivalent( -0.99999999999, -0.999999999980001, 0.00000000001 );
   test.identical( got, true );
 
   test.close( 'negative numbers' )
@@ -1140,6 +1153,20 @@ function numbersAreEquivalentOptionAccuracy( test )
   test.identical( got, false );
 
   test.close( 'negative and positive numbers' )
+
+  /* - */
+
+  test.open( 'big int' )
+
+  /* qqq for Yevhen : extend */
+
+  // test.case = 'number 3.01 and big int 3';
+  // var got = _.numbersAreEquivalent( 3.1, 3n, 0.10001 );
+  // test.identical( got, true );
+  // var got = _.numbersAreEquivalent( 3n, 3.1, 0.10001 );
+  // test.identical( got, true );
+
+  test.close( 'big int' )
 
 }
 

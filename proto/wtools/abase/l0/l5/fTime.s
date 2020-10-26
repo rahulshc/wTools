@@ -40,7 +40,7 @@ function _begin( delay, onTime, onCancel )
   timer.cancel = cancel;
   timer.state = 0;
   // timer.kind = _begin;
-  timer.type = 'timer';
+  timer.type = 'delay';
   timer.native = native;
   return timer;
 
@@ -212,23 +212,6 @@ function _periodic( delay, onTime, onCancel )
     return timer._cancel();
   }
 
-  /* */
-
-  // function time()
-  // {
-  //   let r = onTime( r );
-  //   if( r === _.dont )
-  //   _.time.cancel( timer );
-  // }
-  //
-  // function cancel()
-  // {
-  //   timer.state = -1;
-  //   clearInterval( timer.native );
-  //   if( onCancel )
-  //   onCancel( r );
-  // }
-
 }
 
 //
@@ -237,61 +220,50 @@ function _cancel( timer )
 {
   _.assert( _.timerIs( timer ) );
 
-  // if( timer.kind === 'finallable' || timer.kind === 'cancelable' )
-  // clearTimeout( timer.native );
-  // else
-  // clearInterval( timer.native );
-
   timer.cancel();
-
-  // if( timer && timer.state === 0 )
-  // {
-  //   if( timer.kind === 'finallable' )
-  //   {
-  //     timer.state = 2;
-  //     timer.result = timer.onTime();
-  //   }
-  //   else
-  //   {
-  //     timer.state = -1;
-  //   }
-  // }
 
   return timer;
 }
 
 //
 
+function timerIs( timer )
+{
+  return _.timerIs( timer );
+}
+
+//
+
 /**
- * The routine timerIsBegun() checks the state of timer {-timer-}. If {-timer-} is created and
+ * The routine timerInBegin() checks the state of timer {-timer-}. If {-timer-} is created and
  * timer methods is not executed, then routine returns true. Otherwise, false is returned.
  *
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
- * _.time.timerIsBegun( timer );
+ * _.time.timerInBegin( timer );
  * // returns : true
  *
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
  * _.time.cancel( timer );
- * _.time.timerIsBegun( timer );
+ * _.time.timerInBegin( timer );
  * // returns : false
  *
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
- * _.time.out( 2000, () => _.time.timerIsBegun( timer ) );
+ * _.time.out( 2000, () => _.time.timerInBegin( timer ) );
  * // returns : false
  *
  * @param { Timer } timer - The timer to check.
  * @returns { Boolean } - Returns true if timer methods is not executed. Otherwise, false is returned.
- * @function timerIsBegun
+ * @function timerInBegin
  * @throws { Error } If arguments is not provided.
  * @throws { Error } If {-timer-} is not a Timer.
  * @namespace wTools.time
  * @extends Tools
  */
 
-function timerIsBegun( timer )
+function timerInBegin( timer )
 {
   _.assert( _.timerIs( timer ) );
   return timer.state === 0;
@@ -300,12 +272,12 @@ function timerIsBegun( timer )
 //
 
 /**
- * The routine timerIsCancelBegun() checks the state of timer {-timer-}. If {-timer-} starts executing of callback
+ * The routine timerInCancelBegun() checks the state of timer {-timer-}. If {-timer-} starts executing of callback
  * {-onCancel-} and not finished it, then routine returns true. Otherwise, false is returned.
  *
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
- * _.time.timerIsCancelBegun( timer );
+ * _.time.timerInCancelBegun( timer );
  * // returns : false
  *
  * @example
@@ -313,27 +285,27 @@ function timerIsBegun( timer )
  * _.time.cancel( timer );
  * function onCancel()
  * {
- *   _.time.timerIsCancelBegun( timer );
+ *   _.time.timerInCancelBegun( timer );
  *   // returns : true
  *   return 'canceled';
  * }
  *
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
- * _.time.out( 2000, () => _.time.timerIsCancelBegun( timer ) );
+ * _.time.out( 2000, () => _.time.timerInCancelBegun( timer ) );
  * // returns : false
  *
  * @param { Timer } timer - The timer to check.
  * @returns { Boolean } - Returns true if timer starts canceling and not finished it.
  * Otherwise, false is returned.
- * @function timerIsCancelBegun
+ * @function timerInCancelBegun
  * @throws { Error } If arguments is not provided.
  * @throws { Error } If {-timer-} is not a Timer.
  * @namespace wTools.time
  * @extends Tools
  */
 
-function timerIsCancelBegun( timer )
+function timerInCancelBegun( timer )
 {
   _.assert( _.timerIs( timer ) );
   return timer.state === -1;
@@ -342,12 +314,12 @@ function timerIsCancelBegun( timer )
 //
 
 /**
- * The routine timerIsCancelEnded() checks the state of timer {-timer-}. If {-timer-} finished executing of
+ * The routine timerInCancelEnded() checks the state of timer {-timer-}. If {-timer-} finished executing of
  * callback {-onCancel-}, then routine returns true. Otherwise, false is returned.
  *
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
- * _.time.timerIsCancelEnded( timer );
+ * _.time.timerInCancelEnded( timer );
  * // returns : false
  *
  * @example
@@ -355,14 +327,14 @@ function timerIsCancelBegun( timer )
  * _.time.cancel( timer );
  * function onCancel()
  * {
- *   _.time.timerIsCancelEnded( timer );
+ *   _.time.timerInCancelEnded( timer );
  *   // returns : false
  *   return 'canceled';
  * }
  *
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
- * _.time.out( 2000, () => _.time.timerIsCancelEnded( timer ) );
+ * _.time.out( 2000, () => _.time.timerInCancelEnded( timer ) );
  * // returns : false
  *
  * @example
@@ -373,14 +345,14 @@ function timerIsCancelBegun( timer )
  * @param { Timer } timer - The timer to check.
  * @returns { Boolean } - Returns true if timer starts canceling and finished it.
  * Otherwise, false is returned.
- * @function timerIsCancelEnded
+ * @function timerInCancelEnded
  * @throws { Error } If arguments is not provided.
  * @throws { Error } If {-timer-} is not a Timer.
  * @namespace wTools.time
  * @extends Tools
  */
 
-function timerIsCancelEnded( timer )
+function timerInCancelEnded( timer )
 {
   _.assert( _.timerIs( timer ) );
   return timer.state === -2;
@@ -388,13 +360,21 @@ function timerIsCancelEnded( timer )
 
 //
 
+function timerIsCanceled( timer )
+{
+  _.assert( _.timerIs( timer ) );
+  return timer.state === -1 || timer.state === -2;
+}
+
+//
+
 /**
- * The routine timerIsUpBegun() checks the state of timer {-timer-}. If {-timer-} starts executing of callback
+ * The routine timerInEndBegun() checks the state of timer {-timer-}. If {-timer-} starts executing of callback
  * {-onTime-} and not finished it, then routine returns true. Otherwise, false is returned.
  *
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
- * _.time.timerIsUpBegun( timer );
+ * _.time.timerInEndBegun( timer );
  * // returns : false
  *
  * @example
@@ -402,7 +382,7 @@ function timerIsCancelEnded( timer )
  * _.time.cancel( timer );
  * function onCancel()
  * {
- *   _.time.timerIsUpBegun( timer );
+ *   _.time.timerInEndBegun( timer );
  *   // returns : false
  *   return 'canceled';
  * }
@@ -411,7 +391,7 @@ function timerIsCancelEnded( timer )
  * let timer = _.time.begin( 500, onTime, () => 'canceled' );
  * function onTime()
  * {
- *  _.time.timerIsUpBegun( timer );
+ *  _.time.timerInEndBegun( timer );
  *  // returns : true
  *  return 'executed';
  * }
@@ -419,14 +399,14 @@ function timerIsCancelEnded( timer )
  * @param { Timer } timer - The timer to check.
  * @returns { Boolean } - Returns true if timer starts executing of callback {-onTime-} and not finished it.
  * Otherwise, false is returned.
- * @function timerIsUpBegun
+ * @function timerInEndBegun
  * @throws { Error } If arguments is not provided.
  * @throws { Error } If {-timer-} is not a Timer.
  * @namespace wTools.time
  * @extends Tools
  */
 
-function timerIsUpBegun( timer )
+function timerInEndBegun( timer )
 {
   _.assert( _.timerIs( timer ) );
   return timer.state === 1;
@@ -435,12 +415,12 @@ function timerIsUpBegun( timer )
 //
 
 /**
- * The routine timerIsUpEnded() checks the state of timer {-timer-}. If {-timer-} finished executing of callback
+ * The routine timerInEndEnded() checks the state of timer {-timer-}. If {-timer-} finished executing of callback
  * {-onTime-}, then routine returns true. Otherwise, false is returned.
  *
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
- * _.time.timerIsUpEnded( timer );
+ * _.time.timerInEndEnded( timer );
  * // returns : false
  *
  * @example
@@ -448,27 +428,27 @@ function timerIsUpBegun( timer )
  * _.time.cancel( timer );
  * function onCancel()
  * {
- *   _.time.timerIsUpEnded( timer );
+ *   _.time.timerInEndEnded( timer );
  *   // returns : false
  *   return 'canceled';
  * }
  *
  * @example
  * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
- * _.time.out( 2000, () => _.time.timerIsUpEnded( timer ) );
+ * _.time.out( 2000, () => _.time.timerInEndEnded( timer ) );
  * // returns : true
  *
  * @param { Timer } timer - The timer to check.
  * @returns { Boolean } - Returns true if timer finished executing of callback {-onTime-}.
  * Otherwise, false is returned.
- * @function timerIsUpEnded
+ * @function timerInEndEnded
  * @throws { Error } If arguments is not provided.
  * @throws { Error } If {-timer-} is not a Timer.
  * @namespace wTools.time
  * @extends Tools
  */
 
-function timerIsUpEnded( timer )
+function timerInEndEnded( timer )
 {
   _.assert( _.timerIs( timer ) );
   return timer.state === 2;
@@ -956,11 +936,13 @@ let Extension =
   _periodic,
   _cancel,
 
-  timerIsBegun, /* aaa : cover */ /* Dmytro : covered, documented */
-  timerIsCancelBegun, /* aaa : cover */ /* Dmytro : covered, documented */
-  timerIsCancelEnded, /* aaa : cover */ /* Dmytro : covered, documented */
-  timerIsUpBegun, /* aaa : cover */ /* Dmytro : covered, documented */
-  timerIsUpEnded, /* aaa : cover */ /* Dmytro : covered, documented */
+  timerIs, /* qqq : cover */
+  timerInBegin, /* qqq : cover */
+  timerInCancelBegun, /* qqq : cover */
+  timerInCancelEnded, /* qqq : cover */
+  timerIsCanceled, /* qqq : cover */
+  timerInEndBegun, /* qqq : cover */
+  timerInEndEnded, /* qqq : cover */
 
   soon,
   begin,

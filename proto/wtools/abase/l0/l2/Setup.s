@@ -3,39 +3,66 @@
 'use strict';
 
 let _global = _global_;
-let _realGlobal = _global._realGlobal_
 let _ = _global.wTools;
+
 let Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
+_global.wTools.error = _global.wTools.error || Object.create( null );
+_global.wTools.process = _global.wTools.process || Object.create( null );
 
 // --
 // setup
 // --
 
-function _errUncaughtHandler1()
+function _handleUncaught1()
 {
 
-  let args = _.setup._errUncaughtPre( arguments );
-  let result = _.setup._errUncaughtHandler2.apply( this, args );
+  let args = _.error._handleUncaughtHead( arguments );
+  let result = _.error._handleUncaught2.apply( this, args );
 
-  if( _.setup._errUncaughtHandler0 )
-  _.setup._errUncaughtHandler0.apply( this, arguments );
+  if( _.error._handleUncaught0 )
+  _.error._handleUncaught0.apply( this, arguments );
 
   return result;
 }
 
 //
 
-function _errUncaughtHandler2( err, kind )
+function _handleUncaughtPromise1( err, promise )
 {
-  if( !kind )
-  kind = 'uncaught error';
-  let prefix = `--------------- ${kind} --------------->\n`;
-  let postfix = `--------------- ${kind} ---------------<\n`;
-  let errStr = err.toString();
+
+  console.log( '_handleUncaughtPromise1' );
+  debugger;
+  let o = Object.create( null );
+  o.promise = promise;
+  o.err = err;
+  o.origination = 'uncaught promise error';
+  let result = _.error._handleUncaught2.call( this, o );
+
+  return result;
+}
+
+//
+
+// function _handleUncaught2( err, origination )
+function _handleUncaught2( o )
+{
+  return _.error._handleUncaught2Minimal( o );
+}
+
+//
+
+// function _handleUncaught2Minimal( err, origination )
+function _handleUncaught2Minimal( o )
+{
+  if( !o.origination )
+  o.origination = 'uncaught error';
+  o.prefix = `--------------- ${o.origination} --------------->\n`;
+  o.postfix = `--------------- ${o.origination} ---------------<\n`;
+  let errStr = o.err.toString();
 
   try
   {
-    errStr = err.toString();
+    errStr = o.err.toString();
   }
   catch( err2 )
   {
@@ -43,10 +70,13 @@ function _errUncaughtHandler2( err, kind )
     console.error( err2 );
   }
 
-  console.error( prefix );
+  console.error( o.prefix );
   console.error( errStr );
-  console.error( err ? err.stack : '' );
-  console.error( postfix );
+  console.error( '' );
+  console.error( `_realGlobal_._setupUncaughtErrorHandlerDone : ${_realGlobal_._setupUncaughtErrorHandlerDone}` );
+  console.error( '' );
+  console.error( o.err ? o.err.stack : '' );
+  console.error( o.postfix );
 
   processExit();
 
@@ -62,7 +92,7 @@ function _errUncaughtHandler2( err, kind )
         process.exitCode = -1;
       }
     }
-    catch( err )
+    catch( err2 )
     {
     }
   }
@@ -74,36 +104,43 @@ function _errUncaughtHandler2( err, kind )
 function _setupUncaughtErrorHandler2()
 {
 
-  if( _global._setupUncaughtErrorHandlerDone )
+  if( _realGlobal_._setupUncaughtErrorHandlerDone )
   return;
 
-  _global._setupUncaughtErrorHandlerDone = 1;
+  _realGlobal_._setupUncaughtErrorHandlerDone = 1;
 
-  _.setup._errUncaughtHandler1 = _errUncaughtHandler1;
-  if( _global.process && typeof _global.process.on === 'function' )
+  if( _realGlobal_.process && typeof _realGlobal_.process.on === 'function' )
   {
-    _global.process.on( 'uncaughtException', _.setup._errUncaughtHandler1 );
-    _.setup._errUncaughtPre = _errPreNode;
+
+    _realGlobal_.process.on( 'uncaughtException', _.error._handleUncaught1 );
+    _realGlobal_.process.on( 'unhandledRejection', _.error._handleUncaughtPromise1 );
+    _.error._handleUncaughtHead = _handleUncaughtHeadNode;
+
   }
-  else if( Object.hasOwnProperty.call( _global, 'onerror' ) )
+  else if( Object.hasOwnProperty.call( _realGlobal_, 'onerror' ) )
   {
-    _.setup._errUncaughtHandler0 = _global.onerror;
-    _global.onerror = _.setup._errUncaughtHandler1;
-    _.setup._errUncaughtPre = _errPreBrowser;
-  }
-
-  /* */
-
-  function _errPreBrowser( args )
-  {
-    return [ new Error( args[ 0 ] ) ];
+    _.error._handleUncaught0 = _realGlobal_.onerror;
+    _realGlobal_.onerror = _.error._handleUncaught1;
+    _.error._handleUncaughtHead = _handleUncaughtHeadBrowser;
   }
 
   /* */
 
-  function _errPreNode( args )
+  function _handleUncaughtHeadBrowser( args )
   {
-    return args;
+    debugger;
+    let [ message, sourcePath, lineno, colno, error ] = args;
+    let err = error || message;
+    return [ { err : new Error( args[ 0 ] ), args : args } ];
+    // return [ new Error( args[ 0 ] ) ];
+  }
+
+  /* */
+
+  function _handleUncaughtHeadNode( args )
+  {
+    return [ { err : args[ 0 ], args : args } ];
+    // return args;
   }
 
   /* */
@@ -115,9 +152,7 @@ function _setupUncaughtErrorHandler2()
 function _Setup2()
 {
 
-  _.process = _.process || Object.create( null );
-
-  _.setup._setupUncaughtErrorHandler2();
+  _.error._setupUncaughtErrorHandler2();
 
 }
 
@@ -125,27 +160,32 @@ function _Setup2()
 // extend
 // --
 
-let Fields =
+let ErrorExtension =
 {
 
-  _setupUncaughtErrorHandlerDone : 0,
+  _handleUncaughtHead : null,
+  _handleUncaught0 : null,
+  _handleUncaught1,
+  _handleUncaughtPromise1,
+  _handleUncaught2,
+  _handleUncaught2Minimal,
+  _setupUncaughtErrorHandler2,
+
+  // _setupUncaughtErrorHandlerDone : 0,
 
 }
 
-let Routines =
+let SetupExtension =
 {
 
-  _errUncaughtPre : null,
-  _errUncaughtHandler0 : null,
-  _errUncaughtHandler1,
-  _errUncaughtHandler2,
-  _setupUncaughtErrorHandler2,
   _Setup2,
 
+  // _setupUncaughtErrorHandlerDone : 0,
+
 }
 
-Object.assign( Self, Fields );
-Object.assign( Self, Routines );
+Object.assign( _.error, ErrorExtension );
+Object.assign( _.setup, SetupExtension );
 
 Self._Setup2();
 

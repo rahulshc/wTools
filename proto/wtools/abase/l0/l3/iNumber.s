@@ -149,29 +149,89 @@ function numbersAreEquivalent( a, b, accuracy )
   if( accuracy !== undefined )
   _.assert( _.numberIs( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
 
-  if( _.numbersAreAll( [ a, b ] ) )
+  /* qqq for Yevhen : bad! */
+
+  if( _.numberIs( a ) && _.numberIs( b ) )
   {
     if( Object.is( a, b ) )
     return true;
   }
-  else
-  {
-    return false;
-  }
 
-  if( _.bigIntIs( a ) || _.bigIntIs( b ) )
-  {
-    if( _.intIs( a ) )
-    a = BigInt( a );
-    if( _.intIs( b ) )
-    b = BigInt( b );
-    return a === b;
-  }
+  if( !_.numberIs( a ) && !_.bigIntIs( a ) )
+  return false;
+
+  if( !_.numberIs( b ) && !_.bigIntIs( b ) )
+  return false;
+
+  /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine */
+
+  // else
+  // {
+  //   return false;
+  // }
 
   if( accuracy === undefined )
   accuracy = this.accuracy;
 
-  return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
+  if( _.bigIntIs( a ) )
+  {
+    if( _.intIs( b ) )
+    {
+      b = BigInt( b );
+    }
+    // else
+    // {
+    //   a = Number( a );
+    //   if( a === +Infinity || a === -Infinity )
+    //   return false;
+    // }
+  }
+
+  if( _.bigIntIs( b ) )
+  {
+    if( _.intIs( a ) )
+    {
+      a = BigInt( a );
+    }
+    // else
+    // {
+    //   b = Number( b );
+    //   if( b === +Infinity || b === -Infinity )
+    //   return false;
+    // }
+  }
+
+  if( Object.is( a, b ) )
+  return true;
+
+  if( _.bigIntIs( a ) && _.bigIntIs( b ) )
+  {
+    if( _.intIs( accuracy ) )
+    {
+      return BigIntMath.abs( a - b ) <= BigInt( accuracy );
+    }
+    else
+    {
+      let diff = BigIntMath.abs( a - b );
+      if( diff <= BigInt( Math.floor( accuracy ) ) )
+      return true;
+      if( diff > BigInt( Math.ceil( accuracy ) ) )
+      return false;
+      diff = Number( diff );
+      if( diff === Infinity || diff === -Infinity )
+      return false;
+      return Math.abs( diff ) <= accuracy;
+    }
+  }
+
+  // if( !_.numberIs( a ) )
+  // return false;
+  //
+  // if( !_.numberIs( b ) )
+  // return false;
+
+  return Math.abs( a - b ) <= accuracy;
+  // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
 }
 
 //
