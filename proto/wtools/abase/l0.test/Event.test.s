@@ -79,7 +79,6 @@ function once( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  debugger;
   _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
   _.event.eventGive( ehandler, 'event' );
   _.event.eventGive( ehandler, 'event' );
@@ -277,7 +276,6 @@ function onceWithChain( test )
   var ehandler = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  debugger;
   _.event.once( ehandler, { 'callbackMap' : { 'event' : [ onEvent ] } } );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0 ] );
@@ -290,11 +288,9 @@ function onceWithChain( test )
   var ehandler = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  debugger;
   _.event.once( ehandler, { 'callbackMap' : { 'event' : [ 'event2', onEvent ] } } );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
-  debugger;
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
   _.event.eventGive( ehandler, 'event2' );

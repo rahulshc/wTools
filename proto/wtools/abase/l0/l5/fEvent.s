@@ -1,4 +1,5 @@
-( function _fEvent_s_() {
+( function _fEvent_s_()
+{
 
 'use strict';
 
@@ -17,27 +18,40 @@ function _chainGenerate( args )
   _.assert( arguments.length === 1 );
   _.assert( _.longIs( args ) );
 
-  for( let a = 0 ; a < args.length-2 ; a++ ) (function( a )
-  {
-    let e1 = _.event.nameValueFrom( args[ a ] );
-    let e2 = _.event.nameValueFrom( args[ a+1 ] );
-    chain.push([ e1, on ]);
-    function on()
-    {
-      let next = chain[ a+1 ];
-      this.on( next[ 0 ], next[ 1 ] );
-      if( this.eventHasHandler( e1, on ) )
-      {
-        this.off( e1, on );
-      }
-    }
-  })( a );
+  for( let a = 0 ; a < args.length-2 ; a++ )
+  chainMake( a );
 
   chain.push([ _.event.nameValueFrom( args[ args.length-2 ] ), args[ args.length-1 ] ]);
 
   _.assert( _.routineIs( args[ args.length-1 ] ) );
 
-  return chain
+  return chain;
+
+  /* */
+
+  function chainMake( a )
+  {
+    let e1 = _.event.nameValueFrom( args[ a ] );
+    // let e2 = _.event.nameValueFrom( args[ a+1 ] ); /* Dmytro : the variable is not used in scope */
+    chain.push([ e1, on ]);
+    function on()
+    {
+      let ehandler = this;
+      let next = chain[ a + 1 ];
+
+      let o = _.event.on.head( _.event.on, next );
+      _.event.on( ehandler, o );
+
+      if( _.event.eventHasHandler( ehandler, { eventName : e1, eventHandler : on } ) )
+      _.event.off( ehandler, { callbackMap : { [ e1 ] : on } } );
+
+      // this.on( next[ 0 ], next[ 1 ] ); /* Dmytro : previous implementation, use routines of _.process */
+      // if( this.eventHasHandler( e1, on ) )
+      // {
+      //   this.off( e1, on );
+      // }
+    }
+  }
 }
 
 //
@@ -99,12 +113,12 @@ function nameIs( name )
 
 //
 
-  /* xxx qqq for Dmytro : introduce mini-class _.event.Chain()
-  _.process.on( 'available', _.event.Name( 'exit' ), _.event.Name( 'exit' ), _.procedure._eventProcessExitHandle )
-  ->
-  _.process.on( _.event.Chain( 'available', 'exit', 'exit' ), _.procedure._eventProcessExitHandle )
-  qqq for Dmytro : restrict routines _.*.on() to accept 2 arguments
-  */
+/* xxx qqq for Dmytro : introduce mini-class _.event.Chain()
+_.process.on( 'available', _.event.Name( 'exit' ), _.event.Name( 'exit' ), _.procedure._eventProcessExitHandle )
+->
+_.process.on( _.event.Chain( 'available', 'exit', 'exit' ), _.procedure._eventProcessExitHandle )
+qqq for Dmytro : restrict routines _.*.on() to accept 2 arguments
+*/
 
 function Name( name )
 {
@@ -277,24 +291,45 @@ function once( ehandler, o )
     let callback = o.callbackMap[ c ];
 
     if( _.longIs( callback ) )
-    callback = _.event._chainToCallback( [ c, ... callback ] );
+    {
+      _.assert( _.routineIs( callback[ callback.length - 1 ] ), 'Expects routine to execute.' );
+
+      let length = callback.length;
+      let name = callback[ length - 2 ] || c;
+      callback[ length - 1 ] = callbackOnceMake( name, callback[ length - 1 ] );
+      callback = _.event._chainToCallback( [ c, ... callback ] );
+    }
+    else
+    {
+      callback = callbackOnceMake( c, callback );
+    }
 
     _.assert( _.routineIs( callback ) );
 
-    let callbackOnce = () =>
-    {
-      let result = callback.apply( this, arguments );
-      _.event.off( ehandler, { callbackMap : { [ c ] : callbackOnce } } );
-      return result;
-    }
-
-    if( o.first )
-    _.arrayPrepend( ehandler.events[ c ], callbackOnce );
-    else
-    _.arrayAppend( ehandler.events[ c ], callbackOnce );
+    callbackAdd( ehandler, c, callback );
   }
 
   return o;
+
+  /* */
+
+  function callbackOnceMake( name, callback )
+  {
+    return function callbackOnce()
+    {
+      let result = callback.apply( this, arguments );
+      _.event.off( ehandler, { callbackMap : { [ name ] : callbackOnce } } );
+      return result;
+    }
+  }
+
+  function callbackAdd( handler, name, callback )
+  {
+    if( o.first )
+    _.arrayPrepend( handler.events[ name ], callback );
+    else
+    _.arrayAppend( handler.events[ name ], callback );
+  }
 }
 
 once.head = on_head;
@@ -476,7 +511,8 @@ function eventGive( ehandler, o )
       visited.push( callback );
       try
       {
-        callback.apply( _.process, o.args );
+        // callback.apply( _.process, o.args ); /* Dmytro : it allows use different handlers instead of _.process._ehandler */
+        callback.apply( ehandler, o.args );
       }
       catch( err )
       {
