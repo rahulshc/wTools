@@ -149,6 +149,9 @@ function numbersAreEquivalent( a, b, accuracy )
   if( accuracy !== undefined )
   _.assert( _.numberIs( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
 
+  let bigIntIsA = _.bigIntIs( a );
+  let bigIntIsB = _.bigIntIs( b );
+
   /* qqq for Yevhen : bad! */
 
   if( _.numberIs( a ) && _.numberIs( b ) )
@@ -157,62 +160,32 @@ function numbersAreEquivalent( a, b, accuracy )
     return true;
   }
 
-  if( !_.numberIs( a ) && !_.bigIntIs( a ) )
+  if( !_.numberIs( a ) && !bigIntIsA )
   return false;
 
-  if( !_.numberIs( b ) && !_.bigIntIs( b ) )
+  if( !_.numberIs( b ) && !bigIntIsB )
   return false;
 
-  /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine */
+  /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine | aaa : Done */
 
-  // else
-  // {
-  //   return false;
-  // }
+  /* case : accuracy is float && a or b or both are bigint? */
+
 
   if( accuracy === undefined )
   accuracy = this.accuracy;
 
-  if( _.bigIntIs( a ) )
-  {
-    if( _.intIs( b ) )
-    {
-      b = BigInt( b );
-    }
-    // else
-    // {
-    //   a = Number( a );
-    //   if( a === +Infinity || a === -Infinity )
-    //   return false;
-    // }
-  }
-
-  if( _.bigIntIs( b ) )
-  {
-    if( _.intIs( a ) )
-    {
-      a = BigInt( a );
-    }
-    // else
-    // {
-    //   b = Number( b );
-    //   if( b === +Infinity || b === -Infinity )
-    //   return false;
-    // }
-  }
-
-  if( Object.is( a, b ) )
-  return true;
-
-  if( _.bigIntIs( a ) && _.bigIntIs( b ) )
+  if( bigIntIsA && bigIntIsB )
   {
     if( _.intIs( accuracy ) )
     {
-      return BigIntMath.abs( a - b ) <= BigInt( accuracy );
+      /* BigIntMath is ? */
+      // return BigIntMath.abs( a - b ) <= BigInt( accuracy );
+      return abs( a - b ) <= BigInt( accuracy );
     }
     else
-    {
-      let diff = BigIntMath.abs( a - b );
+    { /* NOT IMPLEMENTED */
+      // let diff = BigIntMath.abs( a - b );
+      let diff = abs( a - b );
       if( diff <= BigInt( Math.floor( accuracy ) ) )
       return true;
       if( diff > BigInt( Math.ceil( accuracy ) ) )
@@ -224,14 +197,49 @@ function numbersAreEquivalent( a, b, accuracy )
     }
   }
 
-  // if( !_.numberIs( a ) )
-  // return false;
-  //
-  // if( !_.numberIs( b ) )
-  // return false;
+  if( bigIntIsA )
+  {
+    if( _.intIs( b ) )
+    {
+      b = BigInt( b );
+    }
+  }
 
+  if( bigIntIsB )
+  {
+    if( _.intIs( a ) )
+    {
+      a = BigInt( a );
+    }
+  }
+
+  if( Object.is( a, b ) )
+  return true;
+
+  if( _.numberIs( a ) && _.numberIs( b ) )
   return Math.abs( a - b ) <= accuracy;
-  // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
+  else
+  return abs( a - b ) <= accuracy;
+
+  /* - */
+
+  function sign( value )
+  {
+    if( value > 0n )
+    return 1n;
+    if( value < 0n )
+    return -1n;
+
+    return 0n;
+  }
+
+  function abs( value )
+  {
+    if( sign( value ) === -1n )
+    return -value;
+
+    return value;
+  }
 }
 
 //
