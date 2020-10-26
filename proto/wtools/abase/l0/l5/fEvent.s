@@ -195,7 +195,51 @@ on.defaults =
 {
   callbackMap : null,
   first : 0,
+};
+
+//
+
+function once( ehandler, o )
+{
+
+  _.routineOptions( once, o );
+  _.assert( _.mapIs( o.callbackMap ) );
+  _.assert( _.objectIs( ehandler ) );
+  _.assert( _.objectIs( ehandler.events ) );
+  _.assertMapHasOnly( o.callbackMap, ehandler.events, 'Unknown kind of event' );
+  _.assert( arguments.length === 2 );
+
+  for( let c in o.callbackMap )
+  {
+    let callback = o.callbackMap[ c ];
+
+    if( _.longIs( callback ) )
+    callback = _.event._chainToCallback( [ c, ... callback ] );
+
+    _.assert( _.routineIs( callback ) );
+
+    let callbackOnce = () =>
+    {
+      let result = callback.apply( this, arguments );
+      _.event.off( ehandler, { callbackMap : { [ c ] : callbackOnce } } );
+      return result;
+    }
+
+    if( o.first )
+    _.arrayPrepend( ehandler.events[ c ], callbackOnce );
+    else
+    _.arrayAppend( ehandler.events[ c ], callbackOnce );
+  }
+
+  return o;
 }
+
+once.head = on_head;
+once.defaults =
+{
+  callbackMap : null,
+  first : 0,
+};
 
 //
 
@@ -370,6 +414,7 @@ let Extension =
   Name,
 
   on, /* qqq : cover please, take into accout chain case */
+  once,
   off, /* qqq : cover please */
   eventHasHandler, /* qqq : cover please */
   eventGive, /* qqq : cover please */
