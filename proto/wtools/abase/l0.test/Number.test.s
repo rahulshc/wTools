@@ -1033,7 +1033,7 @@ function numbersAreEquivalentBasic( test )
 
 //
 
-/* qqq for Yevhen : use `/ * * /` as delimeter between cases or nothing, not `//` */
+/* qqq for Yevhen : use `/ * * /` as delimeter between cases or nothing, not `//` | aaa : Changed */
 
 function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad name, not option, it's argument! | aaa : Fixed */
 {
@@ -1213,7 +1213,7 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
 
   test.open( 'big int' )
 
-  /* qqq for Yevhen : extend */
+  /* qqq for Yevhen : extend | aaa : Done*/
 
   test.case = 'number 3.01 and big int 3, acc 0.10001';
   var got = _.numbersAreEquivalent( 3n, 3.1, 0.10001 );
@@ -1269,7 +1269,7 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
 
   /* */
 
-  /* ASK */
+  /* ASK : float round? floor? ceil? -> int -> bigint */
   test.case = 'bigint 4 and float 3.49, acc bigint 1';
   var got = _.numbersAreEquivalent( 4n, 3.49, 1n );
   test.identical( got, true );
@@ -1281,7 +1281,6 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
   test.case = 'bigint 4 and float 3.51, acc int 0';
   var got = _.numbersAreEquivalent( 4n, 3.51, 0 );
   test.identical( got, true );
-  /* */
 
   test.close( 'big int' )
 
