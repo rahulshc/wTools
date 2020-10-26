@@ -168,8 +168,30 @@ function numbersAreEquivalent( a, b, accuracy )
 
   /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine | aaa : Done */
 
-  /* case : accuracy is float && a or b or both are bigint? */
+  /*
+  cases :
+  a : int, float, bigint,
+  b : int, float, bigint,
+  accuracy : int, float, bigint
 
+  a : bigint, b : bigint( int, float ), acc float -> int( floor or ceil ? ) -> bigint
+  a : int, b : int, accuracy - bigInt ? error
+
+  a       b       accuracy              covered ?
+  int     int      int
+  int     int      float
+  int     int      bigint   ?
+  int     float    int
+  int     float    float
+  int     float    bigint   ?
+  float   float    int
+  float   float    float
+  float   float    bigint   ?
+  bigint  int      int, float -> bigint
+  bigint  float    int, float -> bigint
+  bigint  bigint   int, float -> bigint
+  ...
+  */
 
   if( accuracy === undefined )
   accuracy = this.accuracy;

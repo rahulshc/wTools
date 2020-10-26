@@ -1181,11 +1181,11 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
 
   /* qqq for Yevhen : extend */
 
-  // test.case = 'number 3.01 and big int 3';
-  // var got = _.numbersAreEquivalent( 3.1, 3n, 0.10001 );
-  // test.identical( got, true );
-  // var got = _.numbersAreEquivalent( 3n, 3.1, 0.10001 );
-  // test.identical( got, true );
+  test.case = 'number 3.01 and big int 3, acc 0.10001';
+  var got = _.numbersAreEquivalent( 3.1, 3n, 0.10001 );
+  test.identical( got, true );
+  var got = _.numbersAreEquivalent( 3n, 3.1, 0.10001 );
+  test.identical( got, true );
 
   test.close( 'big int' )
 
