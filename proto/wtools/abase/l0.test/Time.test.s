@@ -1612,7 +1612,7 @@ function _cancel( test )
 
 //
 
-function timerIsBegun( test )
+function timerInBegin( test )
 {
   let context = this;
   let ready = new _testerGlobal_.wTools.Consequence().take( null );
@@ -1629,7 +1629,7 @@ function timerIsBegun( test )
   {
     test.case = 'timer - begin';
     var timer = _.time.begin( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsBegun( timer );
+    var got = _.time.timerInBegin( timer );
     test.identical( got, true );
     _.time.cancel( timer );
     return null;
@@ -1639,7 +1639,7 @@ function timerIsBegun( test )
   {
     test.case = 'timer - finally';
     var timer = _.time.finally( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsBegun( timer );
+    var got = _.time.timerInBegin( timer );
     test.identical( got, true );
     _.time.cancel( timer );
     return null;
@@ -1649,7 +1649,7 @@ function timerIsBegun( test )
   {
     test.case = 'timer - periodic';
     var timer = _.time.periodic( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsBegun( timer );
+    var got = _.time.timerInBegin( timer );
     test.identical( got, true );
     _.time.cancel( timer );
     return null;
@@ -1676,7 +1676,7 @@ function timerIsBegun( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsBegun( timer );
+      var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return got;
     }
@@ -1690,7 +1690,7 @@ function timerIsBegun( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsBegun( timer );
+      var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return got;
     }
@@ -1704,7 +1704,7 @@ function timerIsBegun( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsBegun( timer );
+      var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return got;
     }
@@ -1732,7 +1732,7 @@ function timerIsBegun( test )
     var timer = _.time.begin( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsBegun( timer );
+      var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return got;
     }
@@ -1745,7 +1745,7 @@ function timerIsBegun( test )
     var timer = _.time.finally( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsBegun( timer );
+      var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return got;
     }
@@ -1758,7 +1758,7 @@ function timerIsBegun( test )
     var timer = _.time.periodic( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsBegun( timer );
+      var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return undefined;
     }
@@ -1784,7 +1784,7 @@ function timerIsBegun( test )
     test.case = 'timer - begin';
     var timer = _.time.begin( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsBegun( timer );
+    var got = _.time.timerInBegin( timer );
     test.identical( got, false );
     return null;
   })
@@ -1794,7 +1794,7 @@ function timerIsBegun( test )
     test.case = 'timer - finally';
     var timer = _.time.finally( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsBegun( timer );
+    var got = _.time.timerInBegin( timer );
     test.identical( got, false );
     return null;
   })
@@ -1804,7 +1804,7 @@ function timerIsBegun( test )
     test.case = 'timer - periodic';
     var timer = _.time.periodic( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsBegun( timer );
+    var got = _.time.timerInBegin( timer );
     test.identical( got, false );
     return null;
   })
@@ -1830,7 +1830,7 @@ function timerIsBegun( test )
 
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsBegun( timer );
+      var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return null;
     })
@@ -1842,7 +1842,7 @@ function timerIsBegun( test )
     var timer = _.time.finally( context.dt1, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsBegun( timer );
+      var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return null;
     })
@@ -1854,7 +1854,7 @@ function timerIsBegun( test )
     var timer = _.time.periodic( context.dt2, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsBegun( timer );
+      var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       _.time.cancel( timer );
       return null;
@@ -1873,10 +1873,10 @@ function timerIsBegun( test )
   if( Config.debug )
   {
     test.case = 'without arguments';
-    test.shouldThrowErrorSync( () => _.time.timerIsBegun() );
+    test.shouldThrowErrorSync( () => _.time.timerInBegin() );
 
     test.case = 'wront type of timer';
-    test.shouldThrowErrorSync( () => _.time.timerIsBegun( 'timer' ) );
+    test.shouldThrowErrorSync( () => _.time.timerInBegin( 'timer' ) );
   }
 
   return ready;
@@ -1884,7 +1884,7 @@ function timerIsBegun( test )
 
 //
 
-function timerIsCancelBegun( test )
+function timerInCancelBegun( test )
 {
   let context = this;
   let ready = new _testerGlobal_.wTools.Consequence().take( null );
@@ -1901,7 +1901,7 @@ function timerIsCancelBegun( test )
   {
     test.case = 'timer - begin';
     var timer = _.time.begin( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsCancelBegun( timer );
+    var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -1911,7 +1911,7 @@ function timerIsCancelBegun( test )
   {
     test.case = 'timer - finally';
     var timer = _.time.finally( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsCancelBegun( timer );
+    var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -1921,7 +1921,7 @@ function timerIsCancelBegun( test )
   {
     test.case = 'timer - periodic';
     var timer = _.time.periodic( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsCancelBegun( timer );
+    var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -1948,7 +1948,7 @@ function timerIsCancelBegun( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsCancelBegun( timer );
+      var got = _.time.timerInCancelBegun( timer );
       test.identical( got, true );
       return got;
     }
@@ -1962,7 +1962,7 @@ function timerIsCancelBegun( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsCancelBegun( timer );
+      var got = _.time.timerInCancelBegun( timer );
       test.identical( got, true );
       return got;
     }
@@ -1976,7 +1976,7 @@ function timerIsCancelBegun( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsCancelBegun( timer );
+      var got = _.time.timerInCancelBegun( timer );
       test.identical( got, true );
       return got;
     }
@@ -2004,7 +2004,7 @@ function timerIsCancelBegun( test )
     var timer = _.time.begin( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsCancelBegun( timer );
+      var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
       return got;
     }
@@ -2017,7 +2017,7 @@ function timerIsCancelBegun( test )
     var timer = _.time.finally( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsCancelBegun( timer );
+      var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
       return got;
     }
@@ -2030,7 +2030,7 @@ function timerIsCancelBegun( test )
     var timer = _.time.periodic( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsCancelBegun( timer );
+      var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
       return undefined;
     }
@@ -2056,7 +2056,7 @@ function timerIsCancelBegun( test )
     test.case = 'timer - begin';
     var timer = _.time.begin( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsCancelBegun( timer );
+    var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
     return null;
   })
@@ -2066,7 +2066,7 @@ function timerIsCancelBegun( test )
     test.case = 'timer - finally';
     var timer = _.time.finally( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsCancelBegun( timer );
+    var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
     return null;
   })
@@ -2076,7 +2076,7 @@ function timerIsCancelBegun( test )
     test.case = 'timer - periodic';
     var timer = _.time.periodic( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsCancelBegun( timer );
+    var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
     return null;
   })
@@ -2102,7 +2102,7 @@ function timerIsCancelBegun( test )
 
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsCancelBegun( timer );
+      var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
       return null;
     })
@@ -2114,7 +2114,7 @@ function timerIsCancelBegun( test )
     var timer = _.time.finally( context.dt1, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsCancelBegun( timer );
+      var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
       return null;
     })
@@ -2126,7 +2126,7 @@ function timerIsCancelBegun( test )
     var timer = _.time.periodic( context.dt2, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsCancelBegun( timer );
+      var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
       _.time.cancel( timer );
       return null;
@@ -2145,10 +2145,10 @@ function timerIsCancelBegun( test )
   if( Config.debug )
   {
     test.case = 'without arguments';
-    test.shouldThrowErrorSync( () => _.time.timerIsCancelBegun() );
+    test.shouldThrowErrorSync( () => _.time.timerInCancelBegun() );
 
     test.case = 'wront type of timer';
-    test.shouldThrowErrorSync( () => _.time.timerIsCancelBegun( 'timer' ) );
+    test.shouldThrowErrorSync( () => _.time.timerInCancelBegun( 'timer' ) );
   }
 
   return ready;
@@ -2156,7 +2156,7 @@ function timerIsCancelBegun( test )
 
 //
 
-function timerIsCancelEnded( test )
+function timerInCancelEnded( test )
 {
   let context = this;
   let ready = new _testerGlobal_.wTools.Consequence().take( null );
@@ -2173,7 +2173,7 @@ function timerIsCancelEnded( test )
   {
     test.case = 'timer - begin';
     var timer = _.time.begin( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsCancelEnded( timer );
+    var got = _.time.timerInCancelEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -2183,7 +2183,7 @@ function timerIsCancelEnded( test )
   {
     test.case = 'timer - finally';
     var timer = _.time.finally( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsCancelEnded( timer );
+    var got = _.time.timerInCancelEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -2193,7 +2193,7 @@ function timerIsCancelEnded( test )
   {
     test.case = 'timer - periodic';
     var timer = _.time.periodic( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsCancelEnded( timer );
+    var got = _.time.timerInCancelEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -2220,7 +2220,7 @@ function timerIsCancelEnded( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsCancelEnded( timer );
+      var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return got;
     }
@@ -2234,7 +2234,7 @@ function timerIsCancelEnded( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsCancelEnded( timer );
+      var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return got;
     }
@@ -2248,7 +2248,7 @@ function timerIsCancelEnded( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsCancelEnded( timer );
+      var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return got;
     }
@@ -2276,7 +2276,7 @@ function timerIsCancelEnded( test )
     var timer = _.time.begin( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsCancelEnded( timer );
+      var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return got;
     }
@@ -2289,7 +2289,7 @@ function timerIsCancelEnded( test )
     var timer = _.time.finally( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsCancelEnded( timer );
+      var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return got;
     }
@@ -2302,7 +2302,7 @@ function timerIsCancelEnded( test )
     var timer = _.time.periodic( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsCancelEnded( timer );
+      var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return undefined;
     }
@@ -2328,7 +2328,7 @@ function timerIsCancelEnded( test )
     test.case = 'timer - begin';
     var timer = _.time.begin( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsCancelEnded( timer );
+    var got = _.time.timerInCancelEnded( timer );
     test.identical( got, true );
     return null;
   })
@@ -2338,7 +2338,7 @@ function timerIsCancelEnded( test )
     test.case = 'timer - finally';
     var timer = _.time.finally( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsCancelEnded( timer );
+    var got = _.time.timerInCancelEnded( timer );
     test.identical( got, true );
     return null;
   })
@@ -2348,7 +2348,7 @@ function timerIsCancelEnded( test )
     test.case = 'timer - periodic';
     var timer = _.time.periodic( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsCancelEnded( timer );
+    var got = _.time.timerInCancelEnded( timer );
     test.identical( got, true );
     return null;
   })
@@ -2374,7 +2374,7 @@ function timerIsCancelEnded( test )
 
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsCancelEnded( timer );
+      var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return null;
     })
@@ -2386,7 +2386,7 @@ function timerIsCancelEnded( test )
     var timer = _.time.finally( context.dt1, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsCancelEnded( timer );
+      var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return null;
     })
@@ -2398,7 +2398,7 @@ function timerIsCancelEnded( test )
     var timer = _.time.periodic( context.dt2, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsCancelEnded( timer );
+      var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       _.time.cancel( timer );
       return null;
@@ -2417,10 +2417,10 @@ function timerIsCancelEnded( test )
   if( Config.debug )
   {
     test.case = 'without arguments';
-    test.shouldThrowErrorSync( () => _.time.timerIsCancelEnded() );
+    test.shouldThrowErrorSync( () => _.time.timerInCancelEnded() );
 
     test.case = 'wront type of timer';
-    test.shouldThrowErrorSync( () => _.time.timerIsCancelEnded( 'timer' ) );
+    test.shouldThrowErrorSync( () => _.time.timerInCancelEnded( 'timer' ) );
   }
 
   return ready;
@@ -2428,7 +2428,7 @@ function timerIsCancelEnded( test )
 
 //
 
-function timerIsUpBegun( test )
+function timerInEndBegun( test )
 {
   let context = this;
   let ready = new _testerGlobal_.wTools.Consequence().take( null );
@@ -2445,7 +2445,7 @@ function timerIsUpBegun( test )
   {
     test.case = 'timer - begin';
     var timer = _.time.begin( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsUpBegun( timer );
+    var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -2455,7 +2455,7 @@ function timerIsUpBegun( test )
   {
     test.case = 'timer - finally';
     var timer = _.time.finally( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsUpBegun( timer );
+    var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -2465,7 +2465,7 @@ function timerIsUpBegun( test )
   {
     test.case = 'timer - periodic';
     var timer = _.time.periodic( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsUpBegun( timer );
+    var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -2492,7 +2492,7 @@ function timerIsUpBegun( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsUpBegun( timer );
+      var got = _.time.timerInEndBegun( timer );
       test.identical( got, false );
       return got;
     }
@@ -2506,7 +2506,7 @@ function timerIsUpBegun( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsUpBegun( timer );
+      var got = _.time.timerInEndBegun( timer );
       test.identical( got, false );
       return got;
     }
@@ -2520,7 +2520,7 @@ function timerIsUpBegun( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsUpBegun( timer );
+      var got = _.time.timerInEndBegun( timer );
       test.identical( got, false );
       return got;
     }
@@ -2548,7 +2548,7 @@ function timerIsUpBegun( test )
     var timer = _.time.begin( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsUpBegun( timer );
+      var got = _.time.timerInEndBegun( timer );
       test.identical( got, true );
       return got;
     }
@@ -2561,7 +2561,7 @@ function timerIsUpBegun( test )
     var timer = _.time.finally( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsUpBegun( timer );
+      var got = _.time.timerInEndBegun( timer );
       test.identical( got, true );
       return got;
     }
@@ -2574,7 +2574,7 @@ function timerIsUpBegun( test )
     var timer = _.time.periodic( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsUpBegun( timer );
+      var got = _.time.timerInEndBegun( timer );
       test.identical( got, true );
       return undefined;
     }
@@ -2600,7 +2600,7 @@ function timerIsUpBegun( test )
     test.case = 'timer - begin';
     var timer = _.time.begin( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsUpBegun( timer );
+    var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
     return null;
   })
@@ -2610,7 +2610,7 @@ function timerIsUpBegun( test )
     test.case = 'timer - finally';
     var timer = _.time.finally( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsUpBegun( timer );
+    var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
     return null;
   })
@@ -2620,7 +2620,7 @@ function timerIsUpBegun( test )
     test.case = 'timer - periodic';
     var timer = _.time.periodic( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsUpBegun( timer );
+    var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
     return null;
   })
@@ -2646,7 +2646,7 @@ function timerIsUpBegun( test )
 
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsUpBegun( timer );
+      var got = _.time.timerInEndBegun( timer );
       test.identical( got, false );
       return null;
     })
@@ -2658,7 +2658,7 @@ function timerIsUpBegun( test )
     var timer = _.time.finally( context.dt1, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsUpBegun( timer );
+      var got = _.time.timerInEndBegun( timer );
       test.identical( got, false );
       return null;
     })
@@ -2670,7 +2670,7 @@ function timerIsUpBegun( test )
     var timer = _.time.periodic( context.dt2, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsUpBegun( timer );
+      var got = _.time.timerInEndBegun( timer );
       test.identical( got, false );
       _.time.cancel( timer );
       return null;
@@ -2689,10 +2689,10 @@ function timerIsUpBegun( test )
   if( Config.debug )
   {
     test.case = 'without arguments';
-    test.shouldThrowErrorSync( () => _.time.timerIsUpBegun() );
+    test.shouldThrowErrorSync( () => _.time.timerInEndBegun() );
 
     test.case = 'wront type of timer';
-    test.shouldThrowErrorSync( () => _.time.timerIsUpBegun( 'timer' ) );
+    test.shouldThrowErrorSync( () => _.time.timerInEndBegun( 'timer' ) );
   }
 
   return ready;
@@ -2700,7 +2700,7 @@ function timerIsUpBegun( test )
 
 //
 
-function timerIsUpEnded( test )
+function timerInEndEnded( test )
 {
   let context = this;
   let ready = new _testerGlobal_.wTools.Consequence().take( null );
@@ -2717,7 +2717,7 @@ function timerIsUpEnded( test )
   {
     test.case = 'timer - begin';
     var timer = _.time.begin( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsUpEnded( timer );
+    var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -2727,7 +2727,7 @@ function timerIsUpEnded( test )
   {
     test.case = 'timer - finally';
     var timer = _.time.finally( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsUpEnded( timer );
+    var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -2737,7 +2737,7 @@ function timerIsUpEnded( test )
   {
     test.case = 'timer - periodic';
     var timer = _.time.periodic( context.dt3 * 5, () => 1 );
-    var got = _.time.timerIsUpEnded( timer );
+    var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
     return null;
@@ -2764,7 +2764,7 @@ function timerIsUpEnded( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsUpEnded( timer );
+      var got = _.time.timerInEndEnded( timer );
       test.identical( got, false );
       return got;
     }
@@ -2778,7 +2778,7 @@ function timerIsUpEnded( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsUpEnded( timer );
+      var got = _.time.timerInEndEnded( timer );
       test.identical( got, false );
       return got;
     }
@@ -2792,7 +2792,7 @@ function timerIsUpEnded( test )
     _.time.cancel( timer );
     function onCancel()
     {
-      var got = _.time.timerIsUpEnded( timer );
+      var got = _.time.timerInEndEnded( timer );
       test.identical( got, false );
       return got;
     }
@@ -2820,7 +2820,7 @@ function timerIsUpEnded( test )
     var timer = _.time.begin( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsUpEnded( timer );
+      var got = _.time.timerInEndEnded( timer );
       test.identical( got, false );
       return got;
     }
@@ -2833,7 +2833,7 @@ function timerIsUpEnded( test )
     var timer = _.time.finally( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsUpEnded( timer );
+      var got = _.time.timerInEndEnded( timer );
       test.identical( got, false );
       return got;
     }
@@ -2846,7 +2846,7 @@ function timerIsUpEnded( test )
     var timer = _.time.periodic( context.dt1, onTime );
     function onTime()
     {
-      var got = _.time.timerIsUpEnded( timer );
+      var got = _.time.timerInEndEnded( timer );
       test.identical( got, false );
       return undefined;
     }
@@ -2872,7 +2872,7 @@ function timerIsUpEnded( test )
     test.case = 'timer - begin';
     var timer = _.time.begin( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsUpEnded( timer );
+    var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
     return null;
   })
@@ -2882,7 +2882,7 @@ function timerIsUpEnded( test )
     test.case = 'timer - finally';
     var timer = _.time.finally( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsUpEnded( timer );
+    var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
     return null;
   })
@@ -2892,7 +2892,7 @@ function timerIsUpEnded( test )
     test.case = 'timer - periodic';
     var timer = _.time.periodic( context.dt3 * 5, () => 1 );
     _.time.cancel( timer );
-    var got = _.time.timerIsUpEnded( timer );
+    var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
     return null;
   })
@@ -2918,7 +2918,7 @@ function timerIsUpEnded( test )
 
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsUpEnded( timer );
+      var got = _.time.timerInEndEnded( timer );
       test.identical( got, true );
       return null;
     })
@@ -2930,7 +2930,7 @@ function timerIsUpEnded( test )
     var timer = _.time.finally( context.dt1, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsUpEnded( timer );
+      var got = _.time.timerInEndEnded( timer );
       test.identical( got, true );
       return null;
     })
@@ -2942,7 +2942,7 @@ function timerIsUpEnded( test )
     var timer = _.time.periodic( context.dt2, () => 1 );
     return _testerGlobal_.wTools.time.out( context.dt3, () =>
     {
-      var got = _.time.timerIsUpEnded( timer );
+      var got = _.time.timerInEndEnded( timer );
       test.identical( got, true );
       _.time.cancel( timer );
       return null;
@@ -2961,10 +2961,10 @@ function timerIsUpEnded( test )
   if( Config.debug )
   {
     test.case = 'without arguments';
-    test.shouldThrowErrorSync( () => _.time.timerIsUpEnded() );
+    test.shouldThrowErrorSync( () => _.time.timerInEndEnded() );
 
     test.case = 'wront type of timer';
-    test.shouldThrowErrorSync( () => _.time.timerIsUpEnded( 'timer' ) );
+    test.shouldThrowErrorSync( () => _.time.timerInEndEnded( 'timer' ) );
   }
 
   return ready;
@@ -4890,11 +4890,11 @@ var Self =
 
     // public
 
-    timerIsBegun,
-    timerIsCancelBegun,
-    timerIsCancelEnded,
-    timerIsUpBegun,
-    timerIsUpEnded,
+    timerInBegin,
+    timerInCancelBegun,
+    timerInCancelEnded,
+    timerInEndBegun,
+    timerInEndEnded,
 
     begin,
     beginTimerInsideOfCallback,

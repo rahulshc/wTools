@@ -937,12 +937,12 @@ let Extension =
   _cancel,
 
   timerIs, /* qqq : cover */
-  timerInBegin, /* qqq : cover */
-  timerInCancelBegun, /* qqq : cover */
-  timerInCancelEnded, /* qqq : cover */
+  timerInBegin, /* aaa : cover */ /* Dmytro : covered */
+  timerInCancelBegun, /* aaa : cover */ /* Dmytro : covered */
+  timerInCancelEnded, /* aaa : cover */ /* Dmytro : covered */
   timerIsCanceled, /* qqq : cover */
-  timerInEndBegun, /* qqq : cover */
-  timerInEndEnded, /* qqq : cover */
+  timerInEndBegun, /* aaa : cover */ /* Dmytro : covered */
+  timerInEndEnded, /* aaa : cover */ /* Dmytro : covered */
 
   soon,
   begin,
