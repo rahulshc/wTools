@@ -907,7 +907,7 @@ function numbersAreIdenticalNotStrictly( test )
 
 //
 
-/* qqq for Yevhen : bad! ask */
+/* qqq for Yevhen : bad! ask |*/
 function numbersAreEquivalentBasic( test )
 {
 
