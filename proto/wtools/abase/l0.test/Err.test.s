@@ -889,7 +889,7 @@ function _errOptionSections( test )
   });
   test.is( _.errIs( err ) );
   test.identical( err.sections, srcErr.sections );
-  test.identical( _.mapKeys( err.sections ), [ 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+  test.identical( _.mapKeys( err.sections ), [ 'message', 'combinedStack', 'throwsStack', 'sourceCode' ] );
 
   test.case = 'args - Error with sections option, has not head and body';
   var srcErr = new Error( 'Sample' );
@@ -900,7 +900,7 @@ function _errOptionSections( test )
   });
   test.is( _.errIs( err ) );
   test.identical( err.sections, srcErr.sections );
-  test.identical( _.mapKeys( err.sections ), [ 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+  test.identical( _.mapKeys( err.sections ), [ 'message', 'combinedStack', 'throwsStack', 'sourceCode' ] );
 
   test.case = 'args - Error with sections option';
   var srcErr = new Error( 'Sample' );
@@ -911,7 +911,7 @@ function _errOptionSections( test )
   });
   test.is( _.errIs( err ) );
   test.identical( err.sections, srcErr.sections );
-  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'combinedStack', 'throwsStack', 'sourceCode' ] );
 
   test.case = 'args - Error, sections option';
   var srcErr = new Error( 'Sample' );
@@ -922,7 +922,7 @@ function _errOptionSections( test )
   });
   test.is( _.errIs( err ) );
   test.identical( err.sections, srcErr.sections );
-  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'callsStack', 'throwsStack', 'sourceCode' ] );
+  test.identical( _.mapKeys( err.sections ), [ 'location', 'message', 'combinedStack', 'throwsStack', 'sourceCode' ] );
 }
 
 //
@@ -1217,10 +1217,10 @@ function errCatchStackAndMessage( test )
     test.identical( _.strCount( err.throwsStack, 'thrown at divide @' ), 1 );
     test.identical( _.strCount( err.throwsStack, `${context.nameOfFile}:` ), 3 );
 
-    test.description = 'callsStack';
-    test.identical( _.strCount( err.callsStack, 'decrement' ), 1 );
-    test.identical( _.strCount( err.callsStack, 'divide' ), 1 );
-    test.identical( _.strCount( err.callsStack, `${context.nameOfFile}:` ), 3 );
+    test.description = 'combinedStack';
+    test.identical( _.strCount( err.combinedStack, 'decrement' ), 1 );
+    test.identical( _.strCount( err.combinedStack, 'divide' ), 1 );
+    test.identical( _.strCount( err.combinedStack, `${context.nameOfFile}:` ), 3 );
 
     visited.push( 'catch1' );
   }
@@ -1249,7 +1249,7 @@ function errErrorWithoutStack( test )
 
   logger.log( err2.throwCallsStack );
 
-  test.identical( _.strCount( _.strLinesStrip( err2.stack ), _.strLinesStrip( err2.callsStack ) ), 1 );
+  test.identical( _.strCount( _.strLinesStrip( err2.stack ), _.strLinesStrip( err2.combinedStack ) ), 1 );
 
   test.identical( _.strCount( err2.throwCallsStack, 'Err.test.s:' ), 1 );
   test.identical( _.strCount( err2.throwCallsStack.substring( 0, err2.throwCallsStack.indexOf( 'Err.test.s:' ) ), 'at ' ), 1 );

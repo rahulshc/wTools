@@ -2747,6 +2747,7 @@ function strFrom( src )
   if( _.bufferAnyIs( src ) )
   return _.bufferToStr( src );
 
+  _.assert( _.strIs( src ) );
   return src;
 }
 
