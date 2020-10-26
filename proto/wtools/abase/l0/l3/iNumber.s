@@ -175,17 +175,17 @@ function numbersAreEquivalent( a, b, accuracy )
   accuracy : int, float, bigint
 
   a : bigint, b : bigint( int, float ), acc float -> int( floor or ceil ? ) -> bigint
-  a : int, b : int, accuracy - bigInt ? error
+  a : int, b : int, accuracy - bigInt ? error or convert a and b to bigint
 
   a       b       accuracy              covered ?
-  int     int      int
-  int     int      float
+  int     int      int                     +
+  int     int      float                   +
   int     int      bigint   ?
   int     float    int
   int     float    float
   int     float    bigint   ?
   float   float    int
-  float   float    float
+  float   float    float                    +
   float   float    bigint   ?
   bigint  int      int -> bigint
   bigint  int      float -> bigint
