@@ -188,12 +188,100 @@ function once( test )
   if( !Config.debug )
   return;
 
-  test.case = 'give not known event';
-  var ehandler =
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.event.once() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.event.once( { events : { begin : [] } } ) );
+
+  test.case = 'wrong type of ehandler';
+  test.shouldThrowErrorSync( () => _.event.once( 'wrong', { callbackMap : { begin : () => true } } ) );
+
+  test.case = 'wrong type of ehandler.events';
+  test.shouldThrowErrorSync( () => _.event.once( { events : null }, { callbackMap : { begin : () => true } } ) );
+
+  test.case = 'wrong type of options map o';
+  test.shouldThrowErrorSync( () => _.event.once( { events : { begin : [] } }, 'wrong' ) );
+
+  test.case = 'extra options in options map o';
+  test.shouldThrowErrorSync( () => _.event.once( { events : { begin : [] } }, { wrong : {} } ) );
+
+  test.case = 'not known event in callbackMap';
+  test.shouldThrowErrorSync( () =>
   {
-    events : { 'event' : [], 'event2' : [] },
-  };
-  test.shouldThrowErrorSync( () => ehandler.once( 'notKnown' ) );
+    _.event.once( { events : { begin : [] } }, { callbackMap : { unknown : () => 'unknown' } } );
+  });
+}
+
+//
+
+function onceWithChain( test )
+{
+  test.open( 'method on' );
+
+  test.case = 'chain with single callback';
+  // var ehandler = { events : { 'uncaughtError' : [], 'available' : [] } };
+  var ehandler = _.process._ehandler;
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'available' : [ onEvent ] } } );
+  _.event.eventGive( ehandler, 'available' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'available' );
+  test.identical( result, [ 0, 1 ] );
+  _.event.off( ehandler, { 'callbackMap' : { 'available' : onEvent } } );
+
+  test.case = 'chain with few callbacks';
+  // var ehandler = { events : { 'uncaughtError' : [], 'available' : [] } };
+  debugger;
+  var ehandler = _.process._ehandler;
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'available' : [ 'uncaughtError', onEvent ] } } );
+  debugger;
+  _.event.eventGive( ehandler, 'uncaughtError' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'available' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'uncaughtError' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'uncaughtError' );
+  test.identical( result, [ 0, 1 ] );
+  _.event.off( ehandler, { 'callbackMap' : { 'uncaughtError' : onEvent } } );
+
+  test.close( 'method on' );
+
+  /* - */
+
+  test.open( 'method once' );
+
+  test.case = 'chain with single callback';
+  // var ehandler = { events : { 'uncaughtError' : [], 'available' : [] } };
+  var ehandler = _.process._ehandler;
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  _.event.once( ehandler, { 'callbackMap' : { 'available' : [ onEvent ] } } );
+  _.event.eventGive( ehandler, 'available' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'available' );
+  test.identical( result, [ 0 ] );
+
+  test.case = 'chain with few callbacks';
+  // var ehandler = { events : { 'uncaughtError' : [], 'available' : [] } };
+  var ehandler = _.process._ehandler;
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'available' : [ 'uncaughtError', onEvent ] } } );
+  _.event.eventGive( ehandler, 'uncaughtError' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'available' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'uncaughtError' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'uncaughtError' );
+  test.identical( result, [ 0, 1 ] );
+
+  test.close( 'method once' );
 }
 
 // --
@@ -211,6 +299,7 @@ var Self =
   {
 
     once,
+    onceWithChain,
 
   }
 
