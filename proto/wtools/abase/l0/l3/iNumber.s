@@ -226,10 +226,7 @@ function numbersAreEquivalent( a, b, accuracy )
     if( _.bigIntIs( accuracy ) )
     {
       let diff = abs( a - b );
-      if( diff <= accuracy )
-      return true;
-      if( diff > accuracy )
-      return false;
+      return diff <= accuracy;
     }
     else
     {

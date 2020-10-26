@@ -1039,6 +1039,10 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
 {
   test.open( 'positive numbers' )
 
+  test.case = 'numbers 1 and 1.0, acc = 0 ';
+  var got = _.numbersAreEquivalent( 1, 1.0, 0 );
+  test.identical( got, true );
+
   test.case = 'numbers 1.00 and 1.04999, acc = 0.05 ';
   var got = _.numbersAreEquivalent( 1.00, 1.04999, 0.05 );
   test.identical( got, true );
@@ -1270,13 +1274,14 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
   var got = _.numbersAreEquivalent( 4n, 3.49, 1n );
   test.identical( got, true );
 
-  test.case = 'bigint 4 and float 3.49, acc int 0.6';
+  test.case = 'bigint 4 and float 3.49, acc float 0.6';
   var got = _.numbersAreEquivalent( 4n, 3.49, 0.6 );
   test.identical( got, false );
 
   test.case = 'bigint 4 and float 3.51, acc int 0';
   var got = _.numbersAreEquivalent( 4n, 3.51, 0 );
-  test.identical( got, false );
+  test.identical( got, true );
+  /* */
 
   test.close( 'big int' )
 
