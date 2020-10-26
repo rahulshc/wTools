@@ -147,7 +147,7 @@ function numbersAreEquivalent( a, b, accuracy )
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
   if( accuracy !== undefined )
-  _.assert( _.numberIs( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
+  _.assert( ( _.numberIs( accuracy ) || _.bigIntIs( accuracy ) ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
 
   let bigIntIsA = _.bigIntIs( a );
   let bigIntIsB = _.bigIntIs( b );
@@ -169,33 +169,32 @@ function numbersAreEquivalent( a, b, accuracy )
   /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine | aaa : Done */
 
   /*
-  cases :
+  Cases :
   a : int, float, bigint,
   b : int, float, bigint,
   accuracy : int, float, bigint
 
-  a : bigint, b : bigint( int, float ), acc float -> int( floor or ceil ? ) -> bigint
-  a : int, b : int, accuracy - bigInt ? error or convert a and b to bigint
-
-  a       b       accuracy              covered ?
+  a       b       accuracy              covered
   int     int      int                     +
   int     int      float                   +
-  int     int      bigint   ?
-  int     float    int
-  int     float    float
-  int     float    bigint   ?
-  float   float    int
-  float   float    float                    +
-  float   float    bigint   ?
-  bigint  int      int -> bigint
-  bigint  int      float -> bigint
-  bigint  int      bigint
-  bigint  float    int -> bigint
-  bigint  float    float -> bigint
-  bigint  float    bigint
-  bigint  bigint   int -> bigint
-  bigint  bigint   float -> bigint
-  bigint  bigint   bigint
+  int     int      bigint                  +
+  int     float    int                     +
+  int     float    float                   +
+  int     float    bigint                  +
+  float   float    int                     +
+  float   float    float                   +
+  float   float    bigint                  +
+  bigint  int      int                     +
+  bigint  int      float                   +
+  bigint  int      bigint                  +
+  bigint  float    int                     +
+  bigint  float    float                   +
+  bigint  float    bigint                  +
+  bigint  bigint   int                     +
+  bigint  bigint   float                   +
+  bigint  bigint   bigint                  +
+
+  Overall : 19
   */
 
   if( accuracy === undefined )
@@ -203,24 +202,38 @@ function numbersAreEquivalent( a, b, accuracy )
 
   if( bigIntIsA && bigIntIsB )
   {
-    if( _.intIs( accuracy ) )
+    /*
+    BigIntMath doesn't exist;
+    `Math` methods are not available for bigint
+    diff = Number( diff ); diff can be bigger than Number can represent ( > 2 ^ 53 -1 )
+    */
+    // if( _.intIs( accuracy ) )
+    // {
+    //   return BigIntMath.abs( a - b ) <= BigInt( accuracy );
+    // }
+    // else
+    // {
+    //   let diff = BigIntMath.abs( a - b );
+    //   if( diff <= BigInt( Math.floor( accuracy ) ) )
+    //   return true;
+    //   if( diff > BigInt( Math.ceil( accuracy ) ) )
+    //   return false;
+    //   diff = Number( diff );
+    //   if( diff === Infinity || diff === -Infinity )
+    //   return false;
+    //   return Math.abs( diff ) <= accuracy;
+    // }
+    if( _.bigIntIs( accuracy ) )
     {
-      /* BigIntMath is ? */
-      // return BigIntMath.abs( a - b ) <= BigInt( accuracy );
-      return abs( a - b ) <= BigInt( accuracy );
+      let diff = abs( a - b );
+      if( diff <= accuracy )
+      return true;
+      if( diff > accuracy )
+      return false;
     }
     else
-    { /* NOT IMPLEMENTED */
-      // let diff = BigIntMath.abs( a - b );
-      let diff = abs( a - b );
-      if( diff <= BigInt( Math.floor( accuracy ) ) )
-      return true;
-      if( diff > BigInt( Math.ceil( accuracy ) ) )
-      return false;
-      diff = Number( diff );
-      if( diff === Infinity || diff === -Infinity )
-      return false;
-      return Math.abs( diff ) <= accuracy;
+    {
+      return abs( a - b ) <= accuracy;
     }
   }
 
@@ -230,6 +243,11 @@ function numbersAreEquivalent( a, b, accuracy )
     {
       b = BigInt( b );
     }
+    else
+    {
+      /* round, ceil, floor ? */
+      b = BigInt( Math.round( b ) );
+    }
   }
 
   if( bigIntIsB )
@@ -237,6 +255,11 @@ function numbersAreEquivalent( a, b, accuracy )
     if( _.intIs( a ) )
     {
       a = BigInt( a );
+    }
+    else
+    {
+      /* round, ceil, floor ? */
+      a = BigInt( Math.round( a ) );
     }
   }
 

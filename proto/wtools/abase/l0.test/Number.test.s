@@ -993,6 +993,10 @@ function numbersAreEquivalentBasic( test )
   var got = _.numbersAreEquivalent( 3n, 4 );
   test.identical( got, false );
 
+  test.case = 'bigint 3 and number 4.0';
+  var got = _.numbersAreEquivalent( 3n, 4.0 );
+  test.identical( got, false );
+
   test.case = 'big int 3 and big int 3';
   var got = _.numbersAreEquivalent( 3n, 3n );
   test.identical( got, true );
@@ -1051,6 +1055,32 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
 
   test.case = 'numbers 10 and 20, acc = 11 ';
   var got = _.numbersAreEquivalent( 10, 20, 11 );
+  test.identical( got, true );
+
+  /* */
+
+  test.case = 'numbers 10 and 20.0, acc = 11 ';
+  var got = _.numbersAreEquivalent( 10, 20.0, 11 );
+  test.identical( got, true );
+
+  test.case = 'numbers 10.0 and 20, acc = 11 ';
+  var got = _.numbersAreEquivalent( 10.0, 20, 11 );
+  test.identical( got, true );
+
+  test.case = 'numbers 1 and 1.9, acc = 0.9 ';
+  var got = _.numbersAreEquivalent( 1, 1.9, 0.9 );
+  test.identical( got, true );
+
+  test.case = 'numbers 10 and 20, acc = 11.50 ';
+  var got = _.numbersAreEquivalent( 10, 20, 10.00 );
+  test.identical( got, true );
+
+  test.case = 'numbers 1 and 0.9, acc = 0.1';
+  var got = _.numbersAreEquivalent( 1, 0.9, 0.1 );
+  test.identical( got, true );
+
+  test.case = 'numbers 2.5 and 1.5, acc = 1';
+  var got = _.numbersAreEquivalent( 2.5, 1.5, 1 );
   test.identical( got, true );
 
   /* */
@@ -1182,10 +1212,71 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
   /* qqq for Yevhen : extend */
 
   test.case = 'number 3.01 and big int 3, acc 0.10001';
-  var got = _.numbersAreEquivalent( 3.1, 3n, 0.10001 );
-  test.identical( got, true );
   var got = _.numbersAreEquivalent( 3n, 3.1, 0.10001 );
   test.identical( got, true );
+
+  test.case = 'bigint 4 and int 3, acc int 1';
+  var got = _.numbersAreEquivalent( 4n, 3, 1 );
+  test.identical( got, true );
+
+  test.case = 'bigint 4 and float 3.0, acc int 1';
+  var got = _.numbersAreEquivalent( 4n, 3.0, 1 );
+  test.identical( got, true );
+
+  test.case = 'bigint 4 and float 3.0, acc bigint 1';
+  var got = _.numbersAreEquivalent( 4n, 3.0, 1n );
+  test.identical( got, true );
+
+  test.case = 'bigint 4 and bigint 3, acc int 1';
+  var got = _.numbersAreEquivalent( 4n, 3n, 1 );
+  test.identical( got, true );
+
+  test.case = 'bigint 4 and bigint 3, acc float 1.0';
+  var got = _.numbersAreEquivalent( 4n, 3n, 1.01 );
+  test.identical( got, true );
+
+  test.case = 'bigint 4 and float 3.5, acc float 0.5';
+  var got = _.numbersAreEquivalent( 4n, 3.5, 0.5 );
+  test.identical( got, true );
+
+  test.case = 'bigint 4 and int 3, acc float 1.01';
+  var got = _.numbersAreEquivalent( 4n, 3, 1.01 );
+  test.identical( got, true );
+
+  test.case = 'bigint 4 and int 3, acc bigint 1';
+  var got = _.numbersAreEquivalent( 4n, 3, 1n );
+  test.identical( got, true );
+
+  test.case = 'int 4 and int 3, acc bigint 1';
+  var got = _.numbersAreEquivalent( 4, 3, 1n );
+  test.identical( got, true );
+
+  test.case = 'int 4 and float 3.0, acc bigint 1';
+  var got = _.numbersAreEquivalent( 4, 3.0, 1n );
+  test.identical( got, true );
+
+  test.case = 'float 4.5 and float 3.5, acc bigint 1';
+  var got = _.numbersAreEquivalent( 4.5, 3.5, 1n );
+  test.identical( got, true );
+
+  test.case = 'bigint 4 and bigint 3, acc bigint 1.0';
+  var got = _.numbersAreEquivalent( 4n, 3n, 1n );
+  test.identical( got, true );
+
+  /* */
+
+  /* ASK */
+  test.case = 'bigint 4 and float 3.49, acc bigint 1';
+  var got = _.numbersAreEquivalent( 4n, 3.49, 1n );
+  test.identical( got, true );
+
+  test.case = 'bigint 4 and float 3.49, acc int 0.6';
+  var got = _.numbersAreEquivalent( 4n, 3.49, 0.6 );
+  test.identical( got, false );
+
+  test.case = 'bigint 4 and float 3.51, acc int 0';
+  var got = _.numbersAreEquivalent( 4n, 3.51, 0 );
+  test.identical( got, false );
 
   test.close( 'big int' )
 
