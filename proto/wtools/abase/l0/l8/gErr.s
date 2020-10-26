@@ -893,7 +893,7 @@ function assertOwnNoConstructor( ins )
 // errrors
 // --
 
-let ErrorAbort = _.error_functor( 'ErrorAbort' );
+let ErrorAbort = _.error.error_functor( 'ErrorAbort' );
 
 // --
 // declare
@@ -901,12 +901,12 @@ let ErrorAbort = _.error_functor( 'ErrorAbort' );
 
 /* zzz : move into independent module or namespace */
 
-let error =
+let ErrorExtension =
 {
   ErrorAbort,
 }
 
-let ExtendTools =
+let ToolsExtension =
 {
 
   // diagnosticCode,
@@ -936,8 +936,8 @@ let ExtendTools =
 
 }
 
-Object.assign( _.error, error );
-Object.assign( _, ExtendTools );
+Object.assign( _.error, ErrorExtension );
+Object.assign( _, ToolsExtension );
 
 // --
 // export

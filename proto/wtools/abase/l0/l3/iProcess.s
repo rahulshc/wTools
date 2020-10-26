@@ -43,13 +43,13 @@ off.defaults =
 
 //
 
-function hasEventHandler( o )
+function eventHasHandler( o )
 {
-  o = _.event.hasEventHandler.head( _.event.hasEventHandler, arguments );
-  return _.event.hasEventHandler( _.process._ehandler, o );
+  o = _.event.eventHasHandler.head( _.event.eventHasHandler, arguments );
+  return _.event.eventHasHandler( _.process._ehandler, o );
 }
 
-hasEventHandler.defaults =
+eventHasHandler.defaults =
 {
   eventName : null,
   eventHandler : null,
@@ -142,9 +142,6 @@ let Events =
 {
   'available' : [],
   'uncaughtError' : [],
-  /* qqq :
-
-  */
 }
 
 let _ehandler =
@@ -159,7 +156,7 @@ let Extension =
 
   on,
   off,
-  hasEventHandler, /* xxx : rename */
+  eventHasHandler,
 
   // checker
 

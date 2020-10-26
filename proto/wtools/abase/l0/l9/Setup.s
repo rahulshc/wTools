@@ -6,220 +6,11 @@
 let _global = _global_;
 let _ = _global.wTools;
 let Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
+_global.wTools.error = _global.wTools.error || Object.create( null );
 
 // --
 // setup
 // --
-
-function _errUncaughtHandler2( err, kind )
-{
-  let c = Object.create( null );
-  c.err = err;
-  c.kind = kind;
-  if( !c.kind )
-  c.kind = 'uncaught error';
-  let prefix = `--------------- ${c.kind} --------------->\n`;
-  let postfix = `--------------- ${c.kind} ---------------<\n`;
-  c.logger = _global.logger || _global.console;
-
-  /* xxx qqq : resolve issue in browser
-    if file has syntax error then unachught error should not ( probably ) be throwen
-    because browser thows uncontrolled information about syntax error after that
-    avoid duplication of errors in log
-  */
-
-  processUncaughtErrorEvent();
-
-  if( _.errIsAttended( c.err ) )
-  return;
-
-  /* */
-
-  consoleUnbar();
-  attend( c.err );
-
-  console.error( prefix );
-
-  errLogFields();
-  errLog();
-
-  console.error( postfix );
-
-  processExit();
-
-  /* */
-
-  function consoleUnbar()
-  {
-    try
-    {
-      if( _.Logger && _.Logger.ConsoleBar && _.Logger.ConsoleIsBarred( console ) )
-      _.Logger.ConsoleBar({ on : 0 });
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.error( err2 );
-    }
-  }
-
-  /* */
-
-  function errLog()
-  {
-    try
-    {
-      c.err = _.errProcess( c.err );
-      if( _.errLog )
-      _.errLog( c.err );
-      else
-      console.error( c.err );
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.error( err2 );
-      console.error( c.err );
-    }
-  }
-
-  /* */
-
-  function errLogFields()
-  {
-    if( !c.err.originalMessage && _.objectLike && _.objectLike( c.err ) )
-    try
-    {
-      let serr = _.toStr && _.field ? _.toStr.fields( c.err, { errorAsMap : 1 } ) : c.err;
-      console.error( serr );
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.error( err2 );
-    }
-  }
-
-  /* */
-
-  function attend( err )
-  {
-    try
-    {
-      _.errProcess( err );
-      if( _.errIsAttended( err ) )
-      return
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.error( err2 );
-    }
-  }
-
-  /* */
-
-  function processUncaughtErrorEvent()
-  {
-    if( _.process.eventGive )
-    _.process.eventGive({ event : 'uncaughtError', args : [ c ] });
-  }
-
-  /* */
-
-  function processExit()
-  {
-    if( _.process && _.process.exit )
-    try
-    {
-      _.process.exitCode( -1 );
-      _.process.exitReason( c.err );
-      _.process.exit();
-    }
-    catch( err2 )
-    {
-      debugger;
-      console.log( err2 );
-    }
-    else
-    try
-    {
-      if( _global.process )
-      {
-        if( !process.exitCode )
-        process.exitCode = -1;
-      }
-    }
-    catch( err2 )
-    {
-    }
-  }
-
-}
-
-//
-
-function _setupUncaughtErrorHandler9()
-{
-
-  if( !_global._setupUncaughtErrorHandlerDone )
-  {
-    debugger;
-    throw Error( 'setup0 should be called first' );
-  }
-
-  if( _global._setupUncaughtErrorHandlerDone > 1 )
-  return;
-
-  _global._setupUncaughtErrorHandlerDone = 2;
-
-  /* */
-
-  if( _global.process && _.routineIs( _global.process.on ) )
-  {
-    _.setup._errUncaughtPre = _errPreNode;
-  }
-  else if( Object.hasOwnProperty.call( _global, 'onerror' ) )
-  {
-    _.setup._errUncaughtPre = _errPreBrowser;
-  }
-
-  /* */
-
-  function _errPreBrowser( args )
-  {
-    let [ message, sourcePath, lineno, colno, error ] = args;
-    let err = error || message;
-
-    if( _._err )
-    err = _._err
-    ({
-      args : [ error || message ],
-      level : 1,
-      fallBackStack : 'at handleError @ ' + sourcePath + ':' + lineno,
-      throwLocation :
-      {
-        filePath : sourcePath,
-        line : lineno,
-        col : colno,
-      },
-    });
-
-    return [ err ];
-  }
-
-  /* */
-
-  function _errPreNode( args )
-  {
-    return [ args[ 0 ] ];
-  }
-
-  /* */
-
-}
-
-//
 
 function _setupConfig()
 {
@@ -357,6 +148,16 @@ function _setupProcedure()
 
 //
 
+function _setupTime()
+{
+
+  _.assert( !!_.time && !!_.time.now );
+  _.setup.startTime = _.time.now();
+
+}
+
+//
+
 function _Setup9()
 {
 
@@ -365,15 +166,12 @@ function _Setup9()
   if( _global._WTOOLS_SETUP_EXPECTED_ !== false )
   {
     _.setup._setupConfig();
-    _.setup._setupUncaughtErrorHandler9();
+    _.error._setupUncaughtErrorHandler9();
     _.setup._setupLoggerPlaceholder();
     _.setup._setupTesterPlaceholder();
     _.setup._setupProcedure();
+    _.setup._setupTime();
   }
-
-  _.assert( !!_.time && !!_.time.now );
-
-  _.setup.startTime = _.time.now();
 
 }
 
@@ -381,16 +179,25 @@ function _Setup9()
 // routines
 // --
 
-let Extension =
-{
+// let ErrorExtension =
+// {
+//
+//   _handleUncaught2,
+//   _handleUncaughtAsync,
+//   _setupUncaughtErrorHandler9,
+//
+//   uncaughtDelayTime : 100,
+//
+// }
 
-  _errUncaughtHandler2,
-  _setupUncaughtErrorHandler9,
+let SetupExtension =
+{
 
   _setupConfig,
   _setupLoggerPlaceholder,
   _setupTesterPlaceholder,
   _setupProcedure,
+  _setupTime,
 
   _Setup9,
 
@@ -401,7 +208,8 @@ let Extension =
 
 }
 
-Object.assign( Self, Extension );
+// Object.assign( _.error, ErrorExtension );
+Object.assign( _.setup, SetupExtension );
 Self._Setup9();
 
 // --

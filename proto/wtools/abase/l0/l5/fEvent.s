@@ -26,7 +26,7 @@ function _chainGenerate( args )
     {
       let next = chain[ a+1 ];
       this.on( next[ 0 ], next[ 1 ] );
-      if( this.hasEventHandler( e1, on ) )
+      if( this.eventHasHandler( e1, on ) )
       {
         this.off( e1, on );
       }
@@ -98,6 +98,13 @@ function nameIs( name )
 }
 
 //
+
+  /* xxx qqq for Dmytro : introduce mini-class _.event.Chain()
+  _.process.on( 'available', _.event.Name( 'exit' ), _.event.Name( 'exit' ), _.procedure._eventProcessExitHandle )
+  ->
+  _.process.on( _.event.Chain( 'available', 'exit', 'exit' ), _.procedure._eventProcessExitHandle )
+  qqq for Dmytro : restrict routines _.*.on() to accept 2 arguments
+  */
 
 function Name( name )
 {
@@ -241,7 +248,7 @@ off.defaults =
 
 //
 
-function hasEventHandler_head( routine, args )
+function eventHasHandler_head( routine, args )
 {
   let o;
 
@@ -268,10 +275,10 @@ function hasEventHandler_head( routine, args )
 //
 
 /* xxx */
-function hasEventHandler( ehandler, o )
+function eventHasHandler( ehandler, o )
 {
 
-  _.routineOptions( hasEventHandler, o );
+  _.routineOptions( eventHasHandler, o );
   _.assert( _.strIs( o.eventName ) );
   _.assert( _.routineIs( o.eventHandler ) );
   _.assert( _.mapIs( ehandler ) );
@@ -281,8 +288,8 @@ function hasEventHandler( ehandler, o )
   return _.longHas( ehandler.events[ o.eventName ], o.eventHandler );
 }
 
-hasEventHandler.head = hasEventHandler_head;
-hasEventHandler.defaults =
+eventHasHandler.head = eventHasHandler_head;
+eventHasHandler.defaults =
 {
   eventName : null,
   eventHandler : null,
@@ -364,7 +371,7 @@ let Extension =
 
   on, /* qqq : cover please, take into accout chain case */
   off, /* qqq : cover please */
-  hasEventHandler, /* qqq : cover please */
+  eventHasHandler, /* qqq : cover please */
   eventGive, /* qqq : cover please */
 
 }

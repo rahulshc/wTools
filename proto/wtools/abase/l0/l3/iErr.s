@@ -7,6 +7,8 @@ let _global = _global_;
 let _ = _global_.wTools;
 let Self = _global_.wTools;
 
+_global.wTools.error = _global.wTools.error || Object.create( null );
+
 // --
 // error
 // --
@@ -50,6 +52,15 @@ function errIsSuspended( src )
   if( _.errIs( src ) === false )
   return false;
   return !!src.suspended;
+}
+
+//
+
+function errIsWary( src )
+{
+  if( _.errIs( src ) === false )
+  return false;
+  return !!src.wary;
 }
 
 //
@@ -259,8 +270,8 @@ function _errMake( o )
     o.id = o.dstError.id;
     if( !o.id )
     {
-      _._errorCounter += 1;
-      o.id = _._errorCounter;
+      _.error._errorCounter += 1;
+      o.id = _.error._errorCounter;
     }
 
   }
@@ -474,7 +485,7 @@ function _errMake( o )
     }
     function get()
     {
-      _.errLogEnd( this );
+      _.errLogged( this );
       _.errAttend( this );
       return this[ symbol ];
     }
@@ -561,12 +572,12 @@ function _err( o )
     o[ e ] = _err.defaults[ e ];
   }
 
-  if( _._errorMaking )
+  if( _.error._errorMaking )
   {
     debugger;
-    throw Error( '_err : recursive dead lock because of error inside of routine _err!' );
+    throw Error( 'Recursive dead lock because of error inside of routine _err()!' );
   }
-  _._errorMaking = true;
+  _.error._errorMaking = true;
 
   if( o.level === undefined || o.level === null )
   o.level = null;
@@ -584,7 +595,7 @@ function _err( o )
   /* debugger */
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
-  if( _.debuggerEnabled )
+  if( _.error.breakpointEnabled )
   debugger;
   if( _global_.debugger )
   debugger;
@@ -629,11 +640,11 @@ function _err( o )
   catch( err2 )
   {
     debugger;
-    _._errorMaking = false;
+    _.error._errorMaking = false;
     console.log( err2.message );
     console.log( err2.stack );
   }
-  _._errorMaking = false;
+  _.error._errorMaking = false;
 
   return dstError;
 
@@ -1205,6 +1216,13 @@ function _errFields( args, fields )
   args = [ args ];
 
   let err = args[ 0 ];
+
+  if( _.symbolIs( err ) )
+  {
+    _.assert( args.length === 1 );
+    return err;
+  }
+
   if( args.length !== 1 || !_.errIsStandard( err ) )
   err = _._err
   ({
@@ -1232,21 +1250,13 @@ function _errFields( args, fields )
   }
   catch( err )
   {
-    logger.warn( `Cant assign "${f}" property to error\n` + err.toString() );
+    console.error( `Cant assign "${f}" property to error\n` + err.toString() );
   }
 
   /* */
 
   return err;
 }
-
-// //
-//
-// function _errAttend( args, value )
-// {
-//   _.assert( arguments.length === 2 );
-//   return _._errFields( args, { attended : value } );
-// }
 
 //
 
@@ -1261,7 +1271,7 @@ function errAttend( err, value )
 
 //
 
-function errLogEnd( err, value )
+function errLogged( err, value )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   if( value === undefined )
@@ -1271,12 +1281,43 @@ function errLogEnd( err, value )
 
 //
 
-function errSuspend( err, value )
+function errSuspend( err, owner, value )
+{
+  _.assert( arguments.length === 3 );
+  _.assert( !!owner );
+
+  /*
+  cant suspend/resume suspended by another owner error
+  */
+
+  if( err.suspended && err.suspended !== owner )
+  return _._errFields( err, {} );
+
+  let value2 = err.suspended;
+  if( value === undefined )
+  value = true;
+  let result = _._errFields( err, { suspended : value ? owner : false } );
+
+  /*
+  resuming of suspended wary error object should resume _handleUncaughtAsync
+  */
+
+  if( value2 && !value && err.wary )
+  {
+    _.error._handleUncaughtAsync( err );
+  }
+
+  return result
+}
+
+//
+
+function errWary( err, value )
 {
   _.assert( arguments.length === 1 || arguments.length === 2 );
   if( value === undefined )
   value = true;
-  return _._errFields( err, { suspended : value } );
+  return _._errFields( err, { wary : value } );
 }
 
 // {
@@ -1450,9 +1491,9 @@ function errFromStr( errStr )
 
 //
 
-function _errLog( err )
+function _errLog( err, logger )
 {
-  let c = _global.logger || _global.console;
+  logger = logger || _global.logger || _global.console;
 
   /* */
 
@@ -1464,21 +1505,18 @@ function _errLog( err )
     let str = err.toString();
     if( _.color && _.color.strFormat )
     str = _.color.strFormat( str, 'negative' );
-    if( _.loggerIs( c ) )
-    c.error( str )
-    else
-    c.error( str );
+    logger.error( str )
   }
   else
   {
     debugger;
-    c.error( 'Error does not have toString' );
-    c.error( err );
+    logger.error( 'Error does not have toString' );
+    logger.error( err );
   }
 
   /* */
 
-  _.errLogEnd( err );
+  _.errLogged( err );
   _.errAttend( err );
 
   /* */
@@ -1610,7 +1648,7 @@ function tryCatchDebug( routine )
 
 function _sureDebugger( condition )
 {
-  if( _.debuggerEnabled )
+  if( _.error.breakpointEnabled )
   debugger;
 }
 
@@ -1878,7 +1916,7 @@ function assert( condition )
 
   function _assertDebugger( condition, args )
   {
-    if( !_.debuggerEnabled )
+    if( !_.error.breakpointEnabled )
     return;
     let err = _._err
     ({
@@ -1930,7 +1968,7 @@ function assertWithoutBreakpoint( condition )
 function assertNotTested( src )
 {
 
-  if( _.debuggerEnabled )
+  if( _.error.breakpointEnabled )
   debugger;
   _.assert( false, 'not tested : ' + stack( 1 ) );
 
@@ -1994,21 +2032,32 @@ function assertOwnNoConstructor( ins )
 // namespace
 // --
 
-let _errorCounter = 0;
-let _errorMaking = false;
+// let _errorCounter = 0;
+// let _errorMaking = false;
 let stackSymbol = Symbol.for( 'stack' );
 
 /* Error.stackTraceLimit = 99; */
 
 /**
  * @property {Object} error={}
- * @property {Boolean} debuggerEnabled=!!Config.debug
+ * @property {Boolean} breakpointEnabled=!!Config.debug
  * @name ErrFields
  * @namespace Tools
  */
 
-let Extension =
+let ErrorExtension =
 {
+
+  breakpointEnabled : !!Config.debug,
+  _errorCounter : 0,
+  _errorMaking : false,
+
+}
+
+let ToolsExtension =
+{
+
+  /* xxx : make migration of routines to namespace */
 
   // error
 
@@ -2019,6 +2068,7 @@ let Extension =
   errIsProcess,
   errIsLogged,
   errIsSuspended,
+  errIsWary,
   errReason,
   errOriginalMessage,
   errOriginalStack,
@@ -2031,10 +2081,10 @@ let Extension =
   errProcess,
   errUnprocess,
   _errFields,
-  // _errAttend,
   errAttend,
-  errLogEnd,
-  errSuspend,
+  errLogged,
+  errSuspend, /* qqq : cover, please. should work okay with symbols */
+  errWary,
   errRestack,
   errOnce,
   errInStr,
@@ -2066,17 +2116,18 @@ let Extension =
 
   // fields
 
-  error : Object.create( null ),
-  debuggerEnabled : !!Config.debug,
-
-  _errorCounter,
-  _errorMaking,
+  // error : Object.create( null ),
+  // breakpointEnabled : !!Config.debug,
+  //
+  // _errorCounter,
+  // _errorMaking,
 
 }
 
 //
 
-Object.assign( _, Extension );
+Object.assign( _.error, ErrorExtension );
+Object.assign( _, ToolsExtension );
 
 /* zzz : improve formatting of stack with table */
 
