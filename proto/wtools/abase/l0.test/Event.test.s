@@ -79,6 +79,7 @@ function once( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
+  debugger;
   _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
   _.event.eventGive( ehandler, 'event' );
   _.event.eventGive( ehandler, 'event' );
@@ -157,7 +158,7 @@ function once( test )
   var result = [];
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent }, first : 1 } );
+  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent }, 'first' : 1 } );
   _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0, -1 ] );
@@ -175,7 +176,7 @@ function once( test )
   var onEvent = () => result.push( result.length );
   var onEvent2 = () => result.push( -1 * result.length );
   _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
-  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent }, first : 1 } );
+  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent }, 'first' : 1 } );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0, -1 ] );
   _.event.eventGive( ehandler, 'event' );
@@ -219,35 +220,52 @@ function onceWithChain( test )
 {
   test.open( 'method on' );
 
-  test.case = 'chain with single callback';
-  // var ehandler = { events : { 'uncaughtError' : [], 'available' : [] } };
-  var ehandler = _.process._ehandler;
+  test.case = 'chain with single step';
+  var ehandler = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'available' : [ onEvent ] } } );
-  _.event.eventGive( ehandler, 'available' );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : [ onEvent ] } } );
+  _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'available' );
+  _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0, 1 ] );
-  _.event.off( ehandler, { 'callbackMap' : { 'available' : onEvent } } );
 
-  test.case = 'chain with few callbacks';
-  // var ehandler = { events : { 'uncaughtError' : [], 'available' : [] } };
-  debugger;
-  var ehandler = _.process._ehandler;
+  /* */
+
+  test.case = 'chain with two steps';
+  var ehandler = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'available' : [ 'uncaughtError', onEvent ] } } );
-  debugger;
-  _.event.eventGive( ehandler, 'uncaughtError' );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : [ 'event2', onEvent ] } } );
+  _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'available' );
+  _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'uncaughtError' );
+  _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'uncaughtError' );
+  _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0, 1 ] );
-  _.event.off( ehandler, { 'callbackMap' : { 'uncaughtError' : onEvent } } );
+
+  /* */
+
+  test.case = 'chain with three steps';
+  var ehandler = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : [ 'event3', 'event2', onEvent ] } } );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event3' );
+  test.identical( result, [] );
+
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event3' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0, 1 ] );
 
   test.close( 'method on' );
 
@@ -255,31 +273,55 @@ function onceWithChain( test )
 
   test.open( 'method once' );
 
-  test.case = 'chain with single callback';
-  // var ehandler = { events : { 'uncaughtError' : [], 'available' : [] } };
-  var ehandler = _.process._ehandler;
+  test.case = 'chain with single step';
+  var ehandler = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.once( ehandler, { 'callbackMap' : { 'available' : [ onEvent ] } } );
-  _.event.eventGive( ehandler, 'available' );
+  debugger;
+  _.event.once( ehandler, { 'callbackMap' : { 'event' : [ onEvent ] } } );
+  _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'available' );
+  _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0 ] );
 
-  test.case = 'chain with few callbacks';
-  // var ehandler = { events : { 'uncaughtError' : [], 'available' : [] } };
-  var ehandler = _.process._ehandler;
+  /* */
+
+  test.case = 'chain with few steps';
+  var ehandler = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
   var onEvent = () => result.push( result.length );
-  _.event.on( ehandler, { 'callbackMap' : { 'available' : [ 'uncaughtError', onEvent ] } } );
-  _.event.eventGive( ehandler, 'uncaughtError' );
+  debugger;
+  _.event.once( ehandler, { 'callbackMap' : { 'event' : [ 'event2', onEvent ] } } );
+  _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'available' );
+  debugger;
+  _.event.eventGive( ehandler, 'event' );
   test.identical( result, [] );
-  _.event.eventGive( ehandler, 'uncaughtError' );
+  _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
-  _.event.eventGive( ehandler, 'uncaughtError' );
-  test.identical( result, [ 0, 1 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+
+  /* */
+
+  test.case = 'chain with three steps';
+  var ehandler = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  _.event.once( ehandler, { 'callbackMap' : { 'event' : [ 'event3', 'event2', onEvent ] } } );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event3' );
+  test.identical( result, [] );
+
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event3' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
 
   test.close( 'method once' );
 }
