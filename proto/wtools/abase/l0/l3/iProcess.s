@@ -27,6 +27,22 @@ on.defaults =
 
 //
 
+function once( o )
+{
+
+  o = _.event.once.head( _.event.once, arguments );
+  _.event.once( _.process._ehandler, o );
+
+  return o;
+}
+
+once.defaults =
+{
+  callbackMap : null,
+};
+
+//
+
 function off( o )
 {
 
@@ -155,6 +171,7 @@ let Extension =
   _ehandler,
 
   on,
+  once,
   off,
   eventHasHandler,
 

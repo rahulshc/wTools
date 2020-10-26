@@ -1,4 +1,4 @@
-( function _Event_test_s_( )
+( function _Event_test_s_()
 {
 
 'use strict';
