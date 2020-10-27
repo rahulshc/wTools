@@ -147,7 +147,11 @@ function numbersAreEquivalent( a, b, accuracy )
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
   if( accuracy !== undefined )
-  _.assert( ( _.numberIs( accuracy ) || _.bigIntIs( accuracy ) ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
+  _.assert
+  (
+    ( _.numberIs( accuracy ) || _.bigIntIs( accuracy ) ) && accuracy >= 0 && accuracy !== Infinity,
+    'Accuracy has to be a finite Number >= 0'
+  );
 
   let bigIntIsA = _.bigIntIs( a );
   let bigIntIsB = _.bigIntIs( b );
@@ -166,6 +170,8 @@ function numbersAreEquivalent( a, b, accuracy )
     return true;
   }
 
+  // Number.MIN_SAFE_INTEGER
+  // Number.MAX_SAFE_INTEGER
 
   /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine | aaa : Done */
 
@@ -175,21 +181,23 @@ function numbersAreEquivalent( a, b, accuracy )
   b : BIF/BOF/FIB/FOB;
   accuracy : BIF/BOF/FIB/FOB;
 
-  a       b            accuracy            covered                                   abs( a - b )?
+  a       b            accuracy           implemented                covered                     abs( a - b )?
 
-  BIF     BIF       BIF/BOF/FIB/FOB          -
-  BIF     BOF       BIF/BOF/FIB/FOB          -
-  BIF     FIB       BIF/BOF/FIB/FOB          -
-  BIF     FOB       BIF/BOF/FIB/FOB          -
+  BIF     BIF       BIF/BOF/FIB/FOB            +                        +
+  BIF     BOF       BIF/BOF/FIB/FOB            +                        -
+  BIF     FIB       BIF/BOF/FIB/FOB            -                        -
+  BIF     FOB       BIF/BOF/FIB/FOB            -                        -
 
-  BOF     BOF       BIF/BOF/FIB/FOB          -
-  BOF     FIB       BIF/BOF/FIB/FOB          -
-  BOF     FOB       BIF/BOF/FIB/FOB          -
+  BOF     BOF       BIF/BOF/FIB/FOB            +                        -
+  BOF     FIB       BIF/BOF/FIB/FOB            -                        -
+  BOF     FOB       BIF/BOF/FIB/FOB            -                        -
 
-  FIB     FIB       BIF/BOF/FIB/FOB          -
-  FIB     FOB       BIF/BOF/FIB/FOB          -
+  FIB     FIB       BIF/BOF/FIB/FOB            -                        -
+  FIB     FOB       BIF/BOF/FIB/FOB            -                        -
 
-  FOB     FOB       BIF/BOF/FIB/FOB          -
+  FOB     FOB       BIF/BOF/FIB/FOB            -                        -
+  Overall : 10 cases ( 40 test cases )
+  Done : 3/10 ( 4/40 )
 
   Definitions :
   BIF = bigint inside range of float ( 0n, 3n, BigInt( Math.pow( 2, 52 ) ) )
@@ -204,27 +212,7 @@ function numbersAreEquivalent( a, b, accuracy )
 
   if( bigIntIsA && bigIntIsB )
   {
-    /*
-    BigIntMath doesn't exist;
-    `Math` methods are not available for bigint
-    diff = Number( diff ); diff can be bigger than Number can represent ( > 2 ^ 53 -1 )
-    */
-    // if( _.intIs( accuracy ) )
-    // {
-    //   return BigIntMath.abs( a - b ) <= BigInt( accuracy );
-    // }
-    // else
-    // {
-    //   let diff = BigIntMath.abs( a - b );
-    //   if( diff <= BigInt( Math.floor( accuracy ) ) )
-    //   return true;
-    //   if( diff > BigInt( Math.ceil( accuracy ) ) )
-    //   return false;
-    //   diff = Number( diff );
-    //   if( diff === Infinity || diff === -Infinity )
-    //   return false;
-    //   return Math.abs( diff ) <= accuracy;
-    // }
+    /* a : BIF/BOF, b : BIF/BOF */
     return abs( a - b ) <= accuracy;
   }
 
