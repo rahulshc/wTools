@@ -223,15 +223,7 @@ function numbersAreEquivalent( a, b, accuracy )
     //   return false;
     //   return Math.abs( diff ) <= accuracy;
     // }
-    if( _.bigIntIs( accuracy ) )
-    {
-      let diff = abs( a - b );
-      return diff <= accuracy;
-    }
-    else
-    {
-      return abs( a - b ) <= accuracy;
-    }
+    return abs( a - b ) <= accuracy;
   }
 
   if( bigIntIsA )
@@ -260,6 +252,7 @@ function numbersAreEquivalent( a, b, accuracy )
     }
   }
 
+  /* Can be removed? */
   if( Object.is( a, b ) )
   return true;
 

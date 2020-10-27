@@ -1284,6 +1284,10 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
   var got = _.numbersAreEquivalent( 4n, 3.51, 0 );
   test.identical( got, true );
 
+  test.case = 'bigint 4 and bigint 20, acc Infinity';
+  var got = _.numbersAreEquivalent( 4n, 20n, Infinity );
+  test.identical( got, true );
+
   test.close( 'big int' )
 
 }
