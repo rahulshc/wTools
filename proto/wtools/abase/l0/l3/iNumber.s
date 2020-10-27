@@ -154,57 +154,48 @@ function numbersAreEquivalent( a, b, accuracy )
 
   /* qqq for Yevhen : bad! */
 
-  if( _.numberIs( a ) && _.numberIs( b ) )
-  {
-    if( Object.is( a, b ) )
-    return true;
-  }
-
   if( !_.numberIs( a ) && !bigIntIsA )
   return false;
 
   if( !_.numberIs( b ) && !bigIntIsB )
   return false;
 
+  if( _.numberIs( a ) && _.numberIs( b ) )
+  {
+    if( Object.is( a, b ) )
+    return true;
+  }
+
+
   /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine | aaa : Done */
 
   /*
   Cases :
-  a : int, float, bigint,
-  b : int, float, bigint,
-  accuracy : int, float, bigint
+  a : BIF/BOF/FIB/FOB;
+  b : BIF/BOF/FIB/FOB;
+  accuracy : BIF/BOF/FIB/FOB;
 
-  a       b       accuracy              covered                                   abs( a - b )?
-  int     int      int                     +
-  int     int      float                   +
-  int     int      bigint                  +
-  int     float    int                     +
-  int     float    float                   +
-  int     float    bigint                  +
-  float   float    int                     +
-  float   float    float                   +
-  float   float    bigint                  +
-  bigint  int      int                     +
-  bigint  int      float                   +
-  bigint  int      bigint                  +
+  a       b            accuracy            covered                                   abs( a - b )?
 
-  //bigint  float    int                   +
-  //bigint  float    float                 +
-  //bigint  float    bigint                +
+  BIF     BIF       BIF/BOF/FIB/FOB          -
+  BIF     BOF       BIF/BOF/FIB/FOB          -
+  BIF     FIB       BIF/BOF/FIB/FOB          -
+  BIF     FOB       BIF/BOF/FIB/FOB          -
 
-  BIF     FIB      int/float/bigint        -
-  BOF     FIB      int/float/bigint        -
-  BIF     FOB      int/float/bigint        -
-  BOF     FOB      int/float/bigint        -
+  BOF     BOF       BIF/BOF/FIB/FOB          -
+  BOF     FIB       BIF/BOF/FIB/FOB          -
+  BOF     FOB       BIF/BOF/FIB/FOB          -
 
-  bigint  bigint   int                     +
-  bigint  bigint   float                   +
-  bigint  bigint   bigint                  +
+  FIB     FIB       BIF/BOF/FIB/FOB          -
+  FIB     FOB       BIF/BOF/FIB/FOB          -
 
-  bignint inside range of float = BIF ( 0n, 3n, BigInt( Math.pow( 2, 52 ) ) )
-  bigint outside range of float = BOF ( BigInt( Math.pow( 2, 54 ) ) )
-  float inside range of bigint =  FIB ( 5, 30 )
-  float outside range of bigint = FOB ( 5.5, 30.1 )
+  FOB     FOB       BIF/BOF/FIB/FOB          -
+
+  Definitions :
+  BIF = bigint inside range of float ( 0n, 3n, BigInt( Math.pow( 2, 52 ) ) )
+  BOF = bigint outside range of float ( BigInt( Math.pow( 2, 54 ) ) )
+  FIB = float inside range of bigint ( 5, 30 )
+  FOB = float outside range of bigint ( 5.5, 30.1 )
 
   */
 
@@ -243,11 +234,11 @@ function numbersAreEquivalent( a, b, accuracy )
     {
       b = BigInt( b );
     }
-    else
-    {
-      /* round, ceil, floor ? */
-      b = BigInt( Math.round( b ) );
-    }
+    // else
+    // {
+    //   /* round, ceil, floor ? */
+    //   b = BigInt( Math.round( b ) );
+    // }
   }
 
   if( bigIntIsB )
@@ -256,11 +247,11 @@ function numbersAreEquivalent( a, b, accuracy )
     {
       a = BigInt( a );
     }
-    else
-    {
-      /* round, ceil, floor ? */
-      a = BigInt( Math.round( a ) );
-    }
+    // else
+    // {
+    //   /* round, ceil, floor ? */
+    //   a = BigInt( Math.round( a ) );
+    // }
   }
 
   /* Can be removed? */
@@ -268,7 +259,7 @@ function numbersAreEquivalent( a, b, accuracy )
   return true;
 
   if( _.numberIs( a ) && _.numberIs( b ) )
-  return Math.abs( a - b ) <= accuracy;
+  return Math.abs( a - b ) <= accuracy; /* */
   else
   return abs( a - b ) <= accuracy;
 
