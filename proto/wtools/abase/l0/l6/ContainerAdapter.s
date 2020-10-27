@@ -1,4 +1,5 @@
-( function _ContainerAdapter_s_() {
+( function _ContainerAdapter_s_()
+{
 
 'use strict';
 
@@ -208,8 +209,13 @@ class ContainerAdapterAbstract
     dst = this.From( dst );
     return [ dst, onEach ];
   }
-  _onlyArguments( dst, src2, onEvaluate1, onEvaluate2 )
+  _onlyArguments( /* dst, src2, onEvaluate1, onEvaluate2 */ )
   {
+    let dst = arguments[ 0 ];
+    let src2 = arguments[ 1 ];
+    let onEvaluate1 = arguments[ 2 ];
+    let onEvaluate2 = arguments[ 3 ];
+
     if( _.routineIs( src2 ) || src2 === undefined )
     {
       if( dst === undefined )
@@ -348,8 +354,13 @@ class ContainerAdapterAbstract
     else
     return self.filter( dst, ( e ) => e === max ? e : undefined );
   }
-  only( dst, src2, onEvaluate1, onEvaluate2 )
+  only( /* dst, src2, onEvaluate1, onEvaluate2 */ )
   {
+    let dst = arguments[ 0 ];
+    let src2 = arguments[ 1 ];
+    let onEvaluate1 = arguments[ 2 ];
+    let onEvaluate2 = arguments[ 3 ];
+
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
     let self = this;
@@ -383,8 +394,13 @@ class ContainerAdapterAbstract
 
     return dst;
   }
-  but( dst, src2, onEvaluate1, onEvaluate2 )
+  but( /* dst, src2, onEvaluate1, onEvaluate2 */ )
   {
+    let dst = arguments[ 0 ];
+    let src2 = arguments[ 1 ];
+    let onEvaluate1 = arguments[ 2 ];
+    let onEvaluate2 = arguments[ 3 ];
+
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
 
     let self = this;
@@ -455,7 +471,7 @@ function ExportTo( dstGlobal, srcGlobal )
 
 class ContainerAdapterNamespace
 {
-  static [ Symbol.hasInstance ]( instance )
+  static[ Symbol.hasInstance ]( instance )
   {
     return is( instance );
   }

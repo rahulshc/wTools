@@ -62,8 +62,6 @@ function isDebugged()
 {
   _.assert( arguments.length === 0, 'Expects no arguments' );
 
-  return false; /* xxx */
-
   if( typeof process === 'undefined' )
   return false;
 

@@ -11,83 +11,114 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 // implementation
 // --
 
-function ready( timeOut, procedure, onReady )
+/**
+ * The routine ready() executes callback {-onReady-} when web-page is loaded.
+ * If routine is executed in browser environment, then callback can be executed after
+ * loading page with specified delay {-timeOut-}.
+ * If routine is executed in NodeJS environment, then the callback is executed after
+ * specified delay {-timeOut-}.
+ *
+ * @example
+ * let result = [];
+ * _.time.ready( () => result.push( 'ready' ) );
+ * // when a page is loaded routine will push 'ready' in array `result` immediatelly
+ *
+ * @example
+ * let result = [];
+ * _.time.ready( 500, () => result.push( 'ready' ) );
+ * // when a page is loaded routine will push 'ready' in array `result` after time out
+ *
+ * First parameter set :
+ * @param { Number } timeOut - The time delay.
+ * @param { Function } onReady - Callback to execute.
+ * Second parameter set :
+ * @param { Map|MapLike } o - Options map.
+ * @param { Number } o.timeOut - The time delay.
+ * @param { Function } o.onReady - Callback to execute.
+ * @returns { Undefined } - Returns not a value, executes callback when a web-page is ready.
+ * @function ready
+ * @throws { Error } If arguments.length is less than 1 or greater than 2.
+ * @throws { Error } If single argument call is provided without callback {-onReady-} or options
+ * map {-o-} has no option {-o.onReady-}.
+ * @throws { Error } If {-timeOut-} has defined non integer value or not finite value.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
+function ready_head( routine, args )
 {
-
-  _.assert( arguments.length === 0 || arguments.length === 1 || arguments.length === 2 || arguments.length === 3 );
-
-  if( _.numberIs( arguments[ 0 ] ) )
+  let o = args[ 0 ];
+  if( !_.mapIs( o ) )
   {
-    timeOut = arguments[ 0 ];
-    if( !_.procedureIs( arguments[ 1 ] ) )
+    o = Object.create( null );
+
+    if( args.length === 2 )
     {
-      onReady = arguments[ 1 ];
-      procedure = undefined;
+      o.timeOut = args[ 0 ];
+      o.onReady = args[ 1 ];
+    }
+    else
+    {
+      o.onReady = args[ 0 ];
     }
   }
-  else if( _.procedureIs( arguments[ 0 ] ) )
-  {
-    procedure = arguments[ 0 ];
-    onReady = arguments[ 1 ];
-    timeOut = undefined;
-  }
-  else
-  {
-    onReady = arguments[ 0 ];
-    procedure = undefined;
-    timeOut = undefined;
-  }
 
-  if( !timeOut )
-  timeOut = 0;
+  _.routineOptions( routine, o );
 
-  if( !procedure )
-  procedure = _.Procedure({ _stack : 1, _name : 'timeReady' });
+  if( !o.timeOut )
+  o.timeOut = 0;
 
-  _.assert( _.procedureIs( procedure ) );
-  _.assert( _.intIs( timeOut ) );
-  _.assert( _.routineIs( onReady ) || onReady === undefined );
+  _.assert( 0 <= args.length || args.length <= 2 );
+  _.assert( _.intIs( o.timeOut ) );
+  _.assert( _.routineIs( o.onReady ) || o.onReady === null || o.onReady === undefined );
 
-  if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState !== 'complete' )
-  {
-    let con = _.Consequence ? new _.Consequence({ tag : 'timeReady' }) : null;
-    window.addEventListener( 'load', function() { handleReady( con, ... arguments ) } );
-    return con;
-  }
-  else
-  {
-    if( _.Consequence )
-    return _.time.out( timeOut, procedure, onReady );
-    else if( onReady )
-    _.time.begin( timeOut, procedure, onReady );
-    else _.assert( 0 );
-  }
-
-  function handleReady( con )
-  {
-    if( _.Consequence )
-    return _.time.out( timeOut, procedure, onReady ).finally( con );
-    else if( onReady )
-    _.time.begin( timeOut, procedure, onReady );
-    else _.assert( 0 );
-  }
-
+  return o;
 }
 
 //
 
-function readyJoin( context, routine, args )
+function ready_body( o )
 {
-  let joinedRoutine = _.routineJoin( context, routine, args );
-  return _timeReady;
-  function _timeReady()
+
+  _.assert( o.onReady, 'Expects routine {-o.onReady-}.' );
+
+  if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState !== 'complete' )
+  window.addEventListener( 'load', handleReady );
+  else
+  handleReady();
+
+  /* */
+
+  function handleReady()
   {
-    let args = arguments;
-    let procedure = _.Procedure({ _stack : 1, _name : 'timeReadyJoin' });
-    let joinedRoutine2 = _.routineSeal( this, joinedRoutine, args );
-    return _.time.ready( procedure, joinedRoutine2 );
+    _.time.begin( o.timeOut, o.onReady );
   }
 }
+
+ready_body.defaults =
+{
+  timeOut : 0,
+  onReady : null,
+};
+
+//
+
+let ready = _.routineUnite( ready_head, ready_body );
+
+//
+
+// function readyJoin( context, routine, args )
+// {
+//   let joinedRoutine = _.routineJoin( context, routine, args );
+//   return _timeReady;
+//   function _timeReady()
+//   {
+//     let args = arguments;
+//     let procedure = _.Procedure({ _stack : 1, _name : 'timeReadyJoin' });
+//     let joinedRoutine2 = _.routineSeal( this, joinedRoutine, args );
+//     return _.time.ready({ procedure, onReady : joinedRoutine2 });
+//   }
+// }
 
 //
 
@@ -316,7 +347,7 @@ let Routines =
 {
 
   ready,
-  readyJoin,
+  // readyJoin,
 
   // out,
   // outError,
