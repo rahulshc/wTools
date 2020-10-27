@@ -286,6 +286,7 @@ module:
           - ../proto/wtools/abase/l0.test/Number.test.s
           - ../proto/wtools/abase/l0.test/Pair.test.s
           - ../proto/wtools/abase/l0.test/Path.test.s
+          - ../proto/wtools/abase/l0.test/Process.test.s
           - ../proto/wtools/abase/l0.test/Range.test.s
           - ../proto/wtools/abase/l0.test/RangeOld.test.s
           - ../proto/wtools/abase/l0.test/Regexp.test.s
