@@ -99,7 +99,7 @@ function _setupTesterPlaceholder()
       _.assert( arguments.length === 0 || arguments.length === 1 );
       _.assert( _.strIs( testSuitName ) || testSuitName === undefined, 'test : expects string {-testSuitName-}' );
       debugger;
-      _.time.ready( function()
+      _.process.ready( function()
       {
         debugger;
         if( _realGlobal_.wTester.test === test )

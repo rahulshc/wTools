@@ -36,7 +36,7 @@ eventGive.defaults =
  * @example
  * let result = [];
  * let onReady = () => result.push( 'ready' );
- * _.time.ready( 500, onReady );
+ * _.process.ready( 500, onReady );
  * // the code will continue execution when the page is loaded and simultaneously routine adds delayed
  * // execution of callback `onReady`
  *
