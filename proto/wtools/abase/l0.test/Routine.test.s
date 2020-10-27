@@ -2446,6 +2446,232 @@ function routineDefaults( test )
 
 //
 
+function routineUnite( test )
+{
+  function headObject( rotine, args )
+  {
+    let o = Object.create( null );
+    o.args = args;
+    return o;
+  }
+
+  function headUnroll( rotine, args )
+  {
+    return _.unrollMake( args );
+  }
+
+  function headComposeObject( routine, args )
+  {
+    let o = Object.create( null );
+    o.args = args[ 0 ].args;
+    return o;
+  }
+
+  function bodyObject( o )
+  {
+    return _.arrayMake( o.args );
+  }
+  bodyObject.defaults =
+  {
+    args : null,
+  }
+
+  function bodyUnroll()
+  {
+    return _.arrayMake( arguments );
+  }
+  bodyUnroll.defaults = bodyObject.defaults;
+
+  function tail( result )
+  {
+    result[ 0 ] += 1;
+    return result;
+  }
+
+  /* - */
+
+  test.open( 'call with arguments' );
+
+  test.case = 'head and body, with map';
+  var routine = _.routineUnite( headObject, bodyObject );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'head, body and tail, with map';
+  var routine = _.routineUnite( headObject, bodyObject, tail );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 2, 2 ] );
+
+  test.case = 'compose head and body, with map';
+  var routine = _.routineUnite( [ headObject, headComposeObject ], bodyObject );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'compose head, body and tail, with map';
+  var routine = _.routineUnite( [ headObject, headComposeObject ], bodyObject, tail );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 2, 2 ] );
+
+  /* */
+
+  test.case = 'only head and body, with unroll';
+  var routine = _.routineUnite( headUnroll, bodyUnroll );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'head, body and tail, with unroll';
+  var routine = _.routineUnite( headUnroll, bodyUnroll, tail );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 2, 2 ] );
+
+  test.close( 'call with arguments' );
+
+  /* - */
+
+  test.open( 'call with map' );
+
+  test.case = 'head and body, with map';
+  var routine = _.routineUnite({ head : headObject, body : bodyObject });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'head, body and tail, with map';
+  var routine = _.routineUnite({ head : headObject, body : bodyObject, tail });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 2, 2 ] );
+
+  test.case = 'compose head and body, with map';
+  var routine = _.routineUnite({ head : [ headObject, headComposeObject ], body : bodyObject });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'compose head, body and tail, with map';
+  var routine = _.routineUnite({ head : [ headObject, headComposeObject ], body : bodyObject, tail });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 2, 2 ] );
+
+  /* */
+
+  test.case = 'only head and body, with unroll';
+  var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'head, body and tail, with unroll';
+  var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll, tail });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 2, 2 ] );
+
+  test.close( 'call with map' );
+
+  /* - */
+
+  test.open( 'names' );
+
+  test.case = 'name defined by field, head and body';
+  var routine = _.routineUnite({ head : headObject, body : bodyObject, name : 'someName' });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'someName' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'name defined by field, head, body and tail, with map';
+  var routine = _.routineUnite({ head : headObject, body : bodyObject, tail, name : 'someName' });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'someName' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 2, 2 ] );
+
+  /* */
+
+  test.case = 'routine body name has postfix `_body`';
+  function someRoutine_body( o )
+  {
+    return _.arrayMake( o.args );
+  }
+  someRoutine_body.defaults = { args : null };
+
+  var routine = _.routineUnite( headObject, someRoutine_body );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'someRoutine' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+
+  test.close( 'names' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.routineUnite() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.routineUnite( headObject ) );
+
+  test.case = 'wrong type of head routine';
+  test.shouldThrowErrorSync( () => _.routineUnite( null, bodyObject ) );
+
+  test.case = 'wrong type of body routine';
+  test.shouldThrowErrorSync( () => _.routineUnite( headObject, null ) );
+
+  test.case = 'wrong type of tail routine';
+  test.shouldThrowErrorSync( () => _.routineUnite( headObject, bodyObject, 'tail' ) );
+
+  test.case = 'body routine without defaults';
+  function bodyWithoutDefaults( o )
+  {
+    return o.args;
+  }
+  test.shouldThrowErrorSync( () => _.routineUnite( headObject, bodyWithoutDefaults ) );
+
+  test.case = 'body routine has no name';
+  test.shouldThrowErrorSync( () => _.routineUnite( headObject, ( o ) => o.args ) );
+}
+
+//
+
 function vectorizeVectorizeArray( test )
 {
   function routine()
@@ -4508,7 +4734,7 @@ var Self =
     routineIsAsync,
     routineIsTrivial,
 
-    /* qqq : tests for constructorJoin, extend tests for routineJoin | Dmytro : coverage is extended */
+    /* aaa : tests for constructorJoin, extend tests for routineJoin | Dmytro : coverage is extended */
 
     _routineJoin,
     constructorJoin,
@@ -4523,6 +4749,7 @@ var Self =
     routineExtend_old,
     routineExtend,
     routineDefaults,
+    routineUnite,
 
     vectorizeVectorizeArray,
     vectorizeOriginalRoutine,
@@ -4548,4 +4775,4 @@ Self = wTestSuite( Self );
 if( typeof module !== 'undefined' && !module.parent )
 wTester.test( Self.name );
 
-} )( );
+})();

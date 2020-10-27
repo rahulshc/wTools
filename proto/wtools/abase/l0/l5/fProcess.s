@@ -1,4 +1,5 @@
-( function _fProcess_s_() {
+( function _fProcess_s_()
+{
 
 'use strict';
 

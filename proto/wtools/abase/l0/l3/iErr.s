@@ -170,8 +170,8 @@ function errOriginalStack( err )
   if( err.throwCallsStack )
   return err.throwCallsStack;
 
-  if( err.callsStack )
-  return err.callsStack;
+  if( err.combinedStack )
+  return err.combinedStack;
 
   if( err[ stackSymbol ] )
   return err[ stackSymbol ];
@@ -215,8 +215,11 @@ function _errMake( o )
   if( !_.strIs( o.originalMessage ) )
   throw Error( 'Expects option.originalMessage:String' );
 
-  if( !_.strIs( o.beautifiedStack ) )
-  throw Error( 'Expects option.beautifiedStack:String' );
+  // if( !_.strIs( o.beautifiedStack ) )
+  // throw Error( 'Expects option.beautifiedStack:String' );
+
+  if( !_.strIs( o.combinedStack ) )
+  throw Error( 'Expects option.combinedStack:String' );
 
   if( !_.strIs( o.throwCallsStack ) )
   throw Error( 'Expects option.throwCallsStack:String' );
@@ -274,6 +277,11 @@ function _errMake( o )
       o.id = _.error._errorCounter;
     }
 
+    // if( !o.callsStack )
+    // o.callsStack = o.beautifiedStack;
+    // if( !o.beautifiedStack )
+    // o.beautifiedStack = o.callsStack;
+
   }
 
   /* */
@@ -283,7 +291,8 @@ function _errMake( o )
     let result = '';
 
     sectionWrite( 'message', `Message of error#${o.id}`, o.originalMessage );
-    sectionWrite( 'callsStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', o.beautifiedStack );
+    sectionWrite( 'combinedStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', o.combinedStack );
+    // sectionWrite( 'callsStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', o.beautifiedStack );
     sectionWrite( 'throwsStack', `Throws stack`, o.throwsStack );
 
     if( o.isProcess && _.process && _.process.entryPointInfo )
@@ -375,7 +384,8 @@ function _errMake( o )
     logging( 'stack', o.message );
     nonenumerable( 'reason', o.reason );
 
-    nonenumerable( 'callsStack', o.beautifiedStack );
+    nonenumerable( 'combinedStack', o.combinedStack );
+    // nonenumerable( 'callsStack', o.beautifiedStack ); /* yyy */
     nonenumerable( 'throwCallsStack', o.throwCallsStack );
     nonenumerable( 'asyncCallsStack', o.asyncCallsStack );
     nonenumerable( 'throwsStack', o.throwsStack );
@@ -428,41 +438,6 @@ function _errMake( o )
 
   /* */
 
-  function rw( fieldName, value ) // Dmytro : this routine is not used anywhere, similar routine logging() below
-  {
-    let symbol = Symbol.for( fieldName );
-    try
-    {
-      o.dstError[ symbol ] = value;
-      let o2 =
-      {
-        enumerable : false,
-        configurable : true,
-        get,
-        set,
-      };
-      Object.defineProperty( o.dstError, fieldName, o2 );
-    }
-    catch( err2 )
-    {
-      console.error( err2 );
-      debugger;
-    }
-    function get()
-    {
-      logger.log( `${fieldName} get ${this[ symbol ]}` );
-      return this[ symbol ];
-    }
-    function set( src )
-    {
-      logger.log( `${fieldName} set` );
-      this[ symbol ] = src;
-      return src;
-    }
-  }
-
-  /* */
-
   function logging( fieldName, value )
   {
     let symbol = Symbol.for( fieldName );
@@ -485,6 +460,11 @@ function _errMake( o )
     }
     function get()
     {
+      // if( this.id === 1 )
+      // {
+      //   console.log( `logging error#${this.id}` );
+      //   console.log( _.introspector.stack() );
+      // }
       _.errLogged( this );
       _.errAttend( this );
       return this[ symbol ];
@@ -515,7 +495,8 @@ _errMake.defaults =
   stackCondensing : null,
 
   originalMessage : null,
-  beautifiedStack : '',
+  combinedStack : '',
+  // beautifiedStack : '',
   throwCallsStack : '',
   throwsStack : '',
   asyncCallsStack : '',
@@ -589,7 +570,7 @@ function _err( o )
   // let originalMessage = '';
   let fallBackMessage = '';
   let errors = [];
-  let beautifiedStack = '';
+  let combinedStack = '';
   // let message = null;
 
   /* debugger */
@@ -628,7 +609,7 @@ function _err( o )
       stackCondensing : o.stackCondensing,
 
       originalMessage : o.message,
-      beautifiedStack,
+      combinedStack : combinedStack,
       throwCallsStack : o.throwCallsStack,
       throwsStack : o.throwsStack,
       asyncCallsStack : o.asyncCallsStack,
@@ -851,7 +832,7 @@ function _err( o )
     if( !o.throwCallsStack )
     o.throwCallsStack = dstError.stack = o.fallBackStack;
 
-    beautifiedStack = o.throwCallsStack;
+    combinedStack = o.throwCallsStack;
 
     _.assert
     (
@@ -873,12 +854,12 @@ function _err( o )
     _.assert( o.asyncCallsStack === null || _.arrayIs( o.asyncCallsStack ) );
     if( o.asyncCallsStack && o.asyncCallsStack.length )
     {
-      beautifiedStack += '\n\n' + o.asyncCallsStack.join( '\n\n' );
+      combinedStack += '\n\n' + o.asyncCallsStack.join( '\n\n' );
     }
 
-    _.assert( _.strIs( beautifiedStack ) );
+    _.assert( _.strIs( combinedStack ) );
     if( o.stackCondensing )
-    beautifiedStack = _.introspector.stackCondense( beautifiedStack );
+    combinedStack = _.introspector.stackCondense( combinedStack );
 
   }
 
@@ -1039,6 +1020,8 @@ function _err( o )
     {
       let str = result[ a ];
 
+      debugger;
+
       if( !o.message.replace( /\s*/m, '' ) )
       {
         o.message = str;
@@ -1050,20 +1033,21 @@ function _err( o )
       }
       else
       {
-        o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
+        o.message = o.message.replace( /\x20+$/m, '' ) + ' ' + str.replace( /^\x20+/m, '' );
+        // o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
       }
 
     }
 
     /*
-      remove redundant eol from begin and end of message
+      remove redundant spaces at the begin and the end of lines
     */
 
     o.message = o.message || fallBackMessage || 'UnknownError';
     // o.message = o.message.replace( /^\x20*\n/m, '' ); /* Dmytro : this is task, this lines affect manual formatting of error message */
     // o.message = o.message.replace( /\x20*\n$/m, '' );
-    o.message = o.message.replace( /^\x20*/m, '' );
-    o.message = o.message.replace( /\x20*$/m, '' );
+    o.message = o.message.replace( /^\x20*/gm, '' );
+    o.message = o.message.replace( /\x20*$/gm, '' );
 
   }
 
@@ -1472,7 +1456,7 @@ function errFromStr( errStr )
       throwLocation,
       stackCondensing,
       originalMessage,
-      beautifiedStack : throwCallsStack,
+      combinedStack : throwCallsStack,
       throwCallsStack,
       throwsStack,
     });

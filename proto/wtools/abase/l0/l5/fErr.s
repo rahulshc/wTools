@@ -232,7 +232,7 @@ function _handleUncaughtAsync( err )
     if( _.errIsSuspended( err ) )
     return;
 
-    // if( !_.time.timerIsCancelBegun( timer ) && _.errIsSuspended( err ) ) /* yyy */
+    // if( !_.time.timerInCancelBegun( timer ) && _.errIsSuspended( err ) ) /* yyy */
     // return;
 
     _.error._handleUncaught2({ err, origination : 'uncaught asynchronous error' });

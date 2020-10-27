@@ -1,4 +1,5 @@
-( function _fSet_s_() {
+( function _fSet_s_()
+{
 
 'use strict';
 
@@ -57,8 +58,13 @@ function arraySetDiff( src1, src2 )
 
 //
 
-function _arraySetHas( src, e, onEvaluate1, onEvaluate2 )
+function _arraySetHas( /* src, e, onEvaluate1, onEvaluate2 */ )
 {
+  let src = arguments[ 0 ];
+  let e = arguments[ 1 ];
+  let onEvaluate1 = arguments[ 2 ];
+  let onEvaluate2 = arguments[ 3 ];
+
   _.assert( onEvaluate2 === undefined || _.routineIs( onEvaluate2 ) );
 
   let fromIndex = 0;
@@ -128,8 +134,14 @@ function _arraySetHas( src, e, onEvaluate1, onEvaluate2 )
 
 //
 
-function arraySetDiff_( dst, src1, src2, onEvaluate1, onEvaluate2 )
+function arraySetDiff_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let dst = arguments[ 0 ];
+  let src1 = arguments[ 1 ];
+  let src2 = arguments[ 2 ];
+  let onEvaluate1 = arguments[ 3 ];
+  let onEvaluate2 = arguments[ 4 ];
+
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
   _.assert( _.longIs( dst ) || _.setIs( dst ) || dst === null );
   _.assert( _.longIs( src1 ) || _.setIs( src1 ) );
@@ -285,8 +297,13 @@ function arraySetBut( dst )
 
 //
 
-function arraySetBut_( dst, src1, src2, onEvaluate1, onEvaluate2 )
+function arraySetBut_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let dst = arguments[ 0 ];
+  let src1 = arguments[ 1 ];
+  let src2 = arguments[ 2 ];
+  let onEvaluate1 = arguments[ 3 ];
+  let onEvaluate2 = arguments[ 4 ];
 
   if( arguments.length === 1 )
   {
@@ -420,8 +437,14 @@ function arraySetIntersection( dst )
 
 //
 
-function arraySetIntersection_( dst, src1, src2, onEvaluate1, onEvaluate2 )
+function arraySetIntersection_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let dst = arguments[ 0 ];
+  let src1 = arguments[ 1 ];
+  let src2 = arguments[ 2 ];
+  let onEvaluate1 = arguments[ 3 ];
+  let onEvaluate2 = arguments[ 4 ];
+
   if( arguments.length === 1 )
   {
     if( dst === null )
@@ -529,8 +552,14 @@ function arraySetUnion( dst )
 
 //
 
-function arraySetUnion_( dst, src1, src2, onEvaluate1, onEvaluate2 )
+function arraySetUnion_( /* dst, src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let dst = arguments[ 0 ];
+  let src1 = arguments[ 1 ];
+  let src2 = arguments[ 2 ];
+  let onEvaluate1 = arguments[ 3 ];
+  let onEvaluate2 = arguments[ 4 ];
+
   if( arguments.length === 1 )
   {
     if( dst === null )
@@ -647,31 +676,33 @@ function arraySetContainAll( src )
   return true;
 }
 */
+
 //
-  /**
-   * The arraySetContainAll() routine returns true, if at least one of the following arrays (arguments[...]),
-   * contains all the same values as in the {-srcMap-} array.
-   *
-   * @param { longIs } src - The source array.
-   * @param { ...longIs } arguments[...] - The target array.
-   *
-   * @example
-   * _.arraySetContainAll( [ 1, 'b', 'c', 4 ], [ 1, 2, 3, 4, 5, 'b', 'c' ] );
-   * // returns true
-   *
-   * @example
-   * _.arraySetContainAll( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
-   * // returns false
-   *
-   * @returns { boolean } Returns true, if at least one of the following arrays (arguments[...]),
-   * contains all the same values as in the {-srcMap-} array.
-   * If length of the {-srcMap-} is more than the next argument, it returns false.
-   * Otherwise, it returns false.
-   * @function arraySetContainAll
-   * @throws { Error } Will throw an Error if {-srcMap-} is not an array-like.
-   * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
-   * @namespace Tools
-   */
+
+/**
+ * The arraySetContainAll() routine returns true, if at least one of the following arrays (arguments[...]),
+ * contains all the same values as in the {-srcMap-} array.
+ *
+ * @param { longIs } src - The source array.
+ * @param { ...longIs } arguments[...] - The target array.
+ *
+ * @example
+ * _.arraySetContainAll( [ 1, 'b', 'c', 4 ], [ 1, 2, 3, 4, 5, 'b', 'c' ] );
+ * // returns true
+ *
+ * @example
+ * _.arraySetContainAll( [ 'abc', 'def', true, 26 ], [ 1, 2, 3, 4 ], [ 26, 'abc', 'def', true ] );
+ * // returns false
+ *
+ * @returns { boolean } Returns true, if at least one of the following arrays (arguments[...]),
+ * contains all the same values as in the {-srcMap-} array.
+ * If length of the {-srcMap-} is more than the next argument, it returns false.
+ * Otherwise, it returns false.
+ * @function arraySetContainAll
+ * @throws { Error } Will throw an Error if {-srcMap-} is not an array-like.
+ * @throws { Error } Will throw an Error if (arguments[...]) is not an array-like.
+ * @namespace Tools
+ */
 
 function arraySetContainAll( src )
 {
@@ -696,17 +727,22 @@ function arraySetContainAll( src )
 
 //
 
-function arraySetContainAll_( src1, src2, onEvaluate1, onEvaluate2 )
+function arraySetContainAll_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let src1 = arguments[ 0 ];
+  let src2 = arguments[ 1 ];
+  let onEvaluate1 = arguments[ 2 ];
+  let onEvaluate2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
 
+  let result = true;
   if( _.arrayIs( src1 ) )
   {
     for( let e of src2 )
     if( _.longLeftIndex( src1, e, onEvaluate1, onEvaluate2 ) === -1 )
-    return false;
+    result = false;
   }
   else if( _.setIs( src1 ) )
   {
@@ -721,7 +757,6 @@ function arraySetContainAll_( src1, src2, onEvaluate1, onEvaluate2 )
     if( !src1.size && ( src2.length || src2.size ) )
     return false;
 
-    let result;
     for( let e of src2 )
     {
       if( result === false )
@@ -732,25 +767,7 @@ function arraySetContainAll_( src1, src2, onEvaluate1, onEvaluate2 )
       {
         let from = startFrom;
         result = undefined;
-        for( let el of src1 )
-        {
-          if( from === 0 )
-          {
-            if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
-            {
-              result = true;
-              break;
-            }
-            else
-            {
-              result = false
-            }
-          }
-          else
-          {
-            from--;
-          }
-        }
+        setElementsCheck( from, e );
       }
     }
     return result === undefined ? true : result;
@@ -760,7 +777,32 @@ function arraySetContainAll_( src1, src2, onEvaluate1, onEvaluate2 )
     _.assert( 0, '{-src1-} should be instance of Array or Set' );
   }
 
-  return true;
+  return result;
+
+  /* */
+
+  function setElementsCheck( from, e )
+  {
+    for( let el of src1 )
+    {
+      if( from === 0 )
+      {
+        if( _.entityEntityEqualize( el, e, onEvaluate1, onEvaluate2 ) )
+        {
+          result = true;
+          break;
+        }
+        else
+        {
+          result = false
+        }
+      }
+      else
+      {
+        from--;
+      }
+    }
+  }
 }
 
 //
@@ -823,8 +865,12 @@ function arraySetContainAny( src )
 
 //
 
-function arraySetContainAny_( src1, src2, onEvaluate1, onEvaluate2 )
+function arraySetContainAny_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let src1 = arguments[ 0 ];
+  let src2 = arguments[ 1 ];
+  let onEvaluate1 = arguments[ 2 ];
+  let onEvaluate2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
@@ -898,8 +944,12 @@ function arraySetContainNone( src )
 
 //
 
-function arraySetContainNone_( src1, src2, onEvaluate1, onEvaluate2 )
+function arraySetContainNone_( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let src1 = arguments[ 0 ];
+  let src2 = arguments[ 1 ];
+  let onEvaluate1 = arguments[ 2 ];
+  let onEvaluate2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( src2 ) || _.setIs( src2 ) );
@@ -947,8 +997,12 @@ function arraySetContainNone_( src1, src2, onEvaluate1, onEvaluate2 )
 
 //
 
-function arraySetContainSetsAll( src1, src2, onEvaluate1, onEvaluate2 )
+function arraySetContainSetsAll( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let src1 = arguments[ 0 ];
+  let src2 = arguments[ 1 ];
+  let onEvaluate1 = arguments[ 2 ];
+  let onEvaluate2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( src1 ) || _.setIs( src1 ) );
@@ -963,8 +1017,12 @@ function arraySetContainSetsAll( src1, src2, onEvaluate1, onEvaluate2 )
 
 //
 
-function arraySetContainSetsAny( src1, src2, onEvaluate1, onEvaluate2 )
+function arraySetContainSetsAny( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let src1 = arguments[ 0 ];
+  let src2 = arguments[ 1 ];
+  let onEvaluate1 = arguments[ 2 ];
+  let onEvaluate2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( src1 ) || _.setIs( src1 ) );
@@ -979,8 +1037,12 @@ function arraySetContainSetsAny( src1, src2, onEvaluate1, onEvaluate2 )
 
 //
 
-function arraySetContainSetsNone( src1, src2, onEvaluate1, onEvaluate2 )
+function arraySetContainSetsNone( /* src1, src2, onEvaluate1, onEvaluate2 */ )
 {
+  let src1 = arguments[ 0 ];
+  let src2 = arguments[ 1 ];
+  let onEvaluate1 = arguments[ 2 ];
+  let onEvaluate2 = arguments[ 3 ];
 
   _.assert( 2 <= arguments.length && arguments.length <= 4 );
   _.assert( _.arrayIs( src1 ) || _.setIs( src1 ) );
@@ -1033,8 +1095,14 @@ function arraySetIdentical( ins1, ins2 )
 
 //
 
-function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
+function arraySetLeft( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
 {
+  let arr = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let fromIndex = arguments[ 2 ];
+  let onEvaluate1 = arguments[ 3 ];
+  let onEvaluate2 = arguments[ 4 ];
+
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
 
   if( _.setLike( arr ) )
@@ -1085,8 +1153,14 @@ function arraySetLeft( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
 
 //
 
-function arraySetRight( arr, ins, fromIndex, onEvaluate1, onEvaluate2 )
+function arraySetRight( /* arr, ins, fromIndex, onEvaluate1, onEvaluate2 */ )
 {
+  let arr = arguments[ 0 ];
+  let ins = arguments[ 1 ];
+  let fromIndex = arguments[ 2 ];
+  let onEvaluate1 = arguments[ 3 ];
+  let onEvaluate2 = arguments[ 4 ];
+
   _.assert( 2 <= arguments.length && arguments.length <= 5 );
 
   if( _.setLike( arr ) )

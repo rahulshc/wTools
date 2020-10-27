@@ -1,4 +1,5 @@
-( function _ContainerAdapterSet_s_() {
+( function _ContainerAdapterSet_s_()
+{
 
 'use strict';
 
@@ -182,7 +183,9 @@ class ContainerAdapterSet extends _.containerAdapter.Abstract
     {
       self.empty();
       for( let e of src )
-      self.append( e )
+      {
+        self.append( e );
+      }
     }
     else
     {

@@ -40,7 +40,7 @@ function _begin( delay, onTime, onCancel )
   timer.cancel = cancel;
   timer.state = 0;
   // timer.kind = _begin;
-  timer.type = 'timer';
+  timer.type = 'delay';
   timer.native = native;
   return timer;
 
@@ -50,10 +50,9 @@ function _begin( delay, onTime, onCancel )
   {
     if( timer.state === 1 || timer.state === -1 )
     return;
-    if( timer.state === -2 )
-    _.assert( 0, 'Cannot change state of timer.' );
-    if( timer.state === 2 )
-    _.assert( 0, 'Timer can be executed only one time.' );
+
+    _.assert( timer.state > -2, 'Cannot change state of timer.' );
+    _.assert( timer.state < 2, 'Timer can be executed only one time.' );
 
     timer.state = 1;
     try
@@ -74,10 +73,9 @@ function _begin( delay, onTime, onCancel )
   {
     if( timer.state === 1 || timer.state === -1 )
     return;
-    if( timer.state === 2 )
-    _.assert( 0, 'Cannot change state of timer.' );
-    if( timer.state === -2 )
-    _.assert( 0, 'Timer can be canceled only one time.' );
+
+    _.assert( timer.state < 2, 'Cannot change state of timer.' );
+    _.assert( timer.state > -2, 'Timer can be canceled only one time.' );
 
     timer.state = -1;
     clearTimeout( timer.native );
@@ -159,8 +157,7 @@ function _periodic( delay, onTime, onCancel )
 
   function _time()
   {
-    if( timer.state === -1 || timer.state === -2 )
-    _.assert( 0, 'Illegal call, timer is canceled. Please, use new timer.' );
+    _.assert( timer.state !== -1 && timer.state !== -2, 'Illegal call, timer is canceled. Please, use new timer.' );
 
     timer.state = 1;
     // if( r === _.dont )
@@ -185,8 +182,9 @@ function _periodic( delay, onTime, onCancel )
   {
     // if( timer.state === 1 )
     // logger.log( 'Timer is canceled when callback {-onTime-} was executing.' );
-    if( timer.state === -1 || timer.state === -2 )
-    _.assert( 0, 'Illegal call, timer is canceled.' );
+
+    _.assert( timer.state !== -1 && timer.state !== -2, 'Illegal call, timer is canceled.' );
+
     timer.state = -1;
     clearInterval( timer.native );
     try
@@ -214,23 +212,6 @@ function _periodic( delay, onTime, onCancel )
     return timer._cancel();
   }
 
-  /* */
-
-  // function time()
-  // {
-  //   let r = onTime( r );
-  //   if( r === _.dont )
-  //   _.time.cancel( timer );
-  // }
-  //
-  // function cancel()
-  // {
-  //   timer.state = -1;
-  //   clearInterval( timer.native );
-  //   if( onCancel )
-  //   onCancel( r );
-  // }
-
 }
 
 //
@@ -239,32 +220,50 @@ function _cancel( timer )
 {
   _.assert( _.timerIs( timer ) );
 
-  // if( timer.kind === 'finallable' || timer.kind === 'cancelable' )
-  // clearTimeout( timer.native );
-  // else
-  // clearInterval( timer.native );
-
   timer.cancel();
-
-  // if( timer && timer.state === 0 )
-  // {
-  //   if( timer.kind === 'finallable' )
-  //   {
-  //     timer.state = 2;
-  //     timer.result = timer.onTime();
-  //   }
-  //   else
-  //   {
-  //     timer.state = -1;
-  //   }
-  // }
 
   return timer;
 }
 
 //
 
-function timerIsBegun( timer )
+function timerIs( timer )
+{
+  return _.timerIs( timer );
+}
+
+//
+
+/**
+ * The routine timerInBegin() checks the state of timer {-timer-}. If {-timer-} is created and
+ * timer methods is not executed, then routine returns true. Otherwise, false is returned.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.timerInBegin( timer );
+ * // returns : true
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.cancel( timer );
+ * _.time.timerInBegin( timer );
+ * // returns : false
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.out( 2000, () => _.time.timerInBegin( timer ) );
+ * // returns : false
+ *
+ * @param { Timer } timer - The timer to check.
+ * @returns { Boolean } - Returns true if timer methods is not executed. Otherwise, false is returned.
+ * @function timerInBegin
+ * @throws { Error } If arguments is not provided.
+ * @throws { Error } If {-timer-} is not a Timer.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
+function timerInBegin( timer )
 {
   _.assert( _.timerIs( timer ) );
   return timer.state === 0;
@@ -272,17 +271,88 @@ function timerIsBegun( timer )
 
 //
 
-function timerIsCancelBegun( timer )
+/**
+ * The routine timerInCancelBegun() checks the state of timer {-timer-}. If {-timer-} starts executing of callback
+ * {-onCancel-} and not finished it, then routine returns true. Otherwise, false is returned.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.timerInCancelBegun( timer );
+ * // returns : false
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', onCancel );
+ * _.time.cancel( timer );
+ * function onCancel()
+ * {
+ *   _.time.timerInCancelBegun( timer );
+ *   // returns : true
+ *   return 'canceled';
+ * }
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.out( 2000, () => _.time.timerInCancelBegun( timer ) );
+ * // returns : false
+ *
+ * @param { Timer } timer - The timer to check.
+ * @returns { Boolean } - Returns true if timer starts canceling and not finished it.
+ * Otherwise, false is returned.
+ * @function timerInCancelBegun
+ * @throws { Error } If arguments is not provided.
+ * @throws { Error } If {-timer-} is not a Timer.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
+function timerInCancelBegun( timer )
 {
-  // if( timer.state === -1 )
-  // debugger;
   _.assert( _.timerIs( timer ) );
   return timer.state === -1;
 }
 
 //
 
-function timerIsCancelEnded( timer )
+/**
+ * The routine timerInCancelEnded() checks the state of timer {-timer-}. If {-timer-} finished executing of
+ * callback {-onCancel-}, then routine returns true. Otherwise, false is returned.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.timerInCancelEnded( timer );
+ * // returns : false
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', onCancel );
+ * _.time.cancel( timer );
+ * function onCancel()
+ * {
+ *   _.time.timerInCancelEnded( timer );
+ *   // returns : false
+ *   return 'canceled';
+ * }
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.out( 2000, () => _.time.timerInCancelEnded( timer ) );
+ * // returns : false
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.cancel( timer );
+ * // returns : true
+ *
+ * @param { Timer } timer - The timer to check.
+ * @returns { Boolean } - Returns true if timer starts canceling and finished it.
+ * Otherwise, false is returned.
+ * @function timerInCancelEnded
+ * @throws { Error } If arguments is not provided.
+ * @throws { Error } If {-timer-} is not a Timer.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
+function timerInCancelEnded( timer )
 {
   _.assert( _.timerIs( timer ) );
   return timer.state === -2;
@@ -290,7 +360,53 @@ function timerIsCancelEnded( timer )
 
 //
 
-function timerIsUpBegun( timer )
+function timerIsCanceled( timer )
+{
+  _.assert( _.timerIs( timer ) );
+  return timer.state === -1 || timer.state === -2;
+}
+
+//
+
+/**
+ * The routine timerInEndBegun() checks the state of timer {-timer-}. If {-timer-} starts executing of callback
+ * {-onTime-} and not finished it, then routine returns true. Otherwise, false is returned.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.timerInEndBegun( timer );
+ * // returns : false
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', onCancel );
+ * _.time.cancel( timer );
+ * function onCancel()
+ * {
+ *   _.time.timerInEndBegun( timer );
+ *   // returns : false
+ *   return 'canceled';
+ * }
+ *
+ * @example
+ * let timer = _.time.begin( 500, onTime, () => 'canceled' );
+ * function onTime()
+ * {
+ *  _.time.timerInEndBegun( timer );
+ *  // returns : true
+ *  return 'executed';
+ * }
+ *
+ * @param { Timer } timer - The timer to check.
+ * @returns { Boolean } - Returns true if timer starts executing of callback {-onTime-} and not finished it.
+ * Otherwise, false is returned.
+ * @function timerInEndBegun
+ * @throws { Error } If arguments is not provided.
+ * @throws { Error } If {-timer-} is not a Timer.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
+function timerInEndBegun( timer )
 {
   _.assert( _.timerIs( timer ) );
   return timer.state === 1;
@@ -298,7 +414,41 @@ function timerIsUpBegun( timer )
 
 //
 
-function timerIsUpEnded( timer )
+/**
+ * The routine timerInEndEnded() checks the state of timer {-timer-}. If {-timer-} finished executing of callback
+ * {-onTime-}, then routine returns true. Otherwise, false is returned.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.timerInEndEnded( timer );
+ * // returns : false
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', onCancel );
+ * _.time.cancel( timer );
+ * function onCancel()
+ * {
+ *   _.time.timerInEndEnded( timer );
+ *   // returns : false
+ *   return 'canceled';
+ * }
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.out( 2000, () => _.time.timerInEndEnded( timer ) );
+ * // returns : true
+ *
+ * @param { Timer } timer - The timer to check.
+ * @returns { Boolean } - Returns true if timer finished executing of callback {-onTime-}.
+ * Otherwise, false is returned.
+ * @function timerInEndEnded
+ * @throws { Error } If arguments is not provided.
+ * @throws { Error } If {-timer-} is not a Timer.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
+function timerInEndEnded( timer )
 {
   _.assert( _.timerIs( timer ) );
   return timer.state === 2;
@@ -306,9 +456,63 @@ function timerIsUpEnded( timer )
 
 //
 
+/**
+ * The routine soon() execute routine {-h-} asynchronously as soon as possible. In NodeJS interpreter it
+ * executes on nextTick, in another interpreters in async queue.
+ *
+ * @example
+ * let result = [ _.time.now() ];
+ * _.time.soon( () => result.push( _.time.now() ) );
+ * // the delta ( result[ 1 ] - result[ 0 ] ) is small as possible
+ *
+ * @param { Function } h - The routine to execute.
+ * @returns { Undefined } - Returns undefined, executes routine {-h-}.
+ * @function soon
+ * @throws { Error } If arguments is not provided.
+ * @throws { Error } If {-h-} is not a Function.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 let soon = typeof process === 'undefined' ? function( h ){ return setTimeout( h, 0 ) } : process.nextTick;
 
 //
+
+/**
+ * The routine begin() make new timer for procedure {-procedure-}. The timer executes callback {-onTime-} only once.
+ * Callback {-onTime-} executes when time delay {-delay-} is elapsed. If the timer is canceled, then the callback
+ * {-onCancel-} is executed.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.out( 1000, () =>
+ * {
+ *  console.log( timer.result );
+ *  // log : 'executed'
+ *  return null;
+ * });
+ * console.log( timer.result );
+ * // log : undefined
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * _.time.cancel( timer );
+ * console.log( timer.result );
+ * // log : 'canceled'
+ *
+ * @param { Number } delay - The time delay.
+ * @param { Procedure|Undefined } procedure - The procedure for timer.
+ * @param { Function|Undefined|Null } onTime - The callback to execute when time is elapsed.
+ * @param { Function|Undefined|Null } onCancel - The callback to execute when timer is canceled.
+ * @returns { Timer } - Returns timer.
+ * @function begin
+ * @throws { Error } If arguments.length is less than 2 or great than 4.
+ * @throws { Error } If {-delay-} is not a Number.
+ * @throws { Error } If {-onTime-} neither is a Function, nor undefined, nor null.
+ * @throws { Error } If {-onCancel-} neither is a Function, nor undefined, nor null.
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function begin( /* delay, procedure, onTime, onCancel */ )
 {
@@ -333,6 +537,40 @@ function begin( /* delay, procedure, onTime, onCancel */ )
 
 //
 
+/**
+ * The routine finally() make new timer for procedure {-procedure-}. The timer executes callback {-onTime-} only once.
+ * Callback {-onTime-} executes when time delay {-delay-} is elapsed or if the timer is canceled.
+ *
+ * @example
+ * let timer = _.time.finally( 500, () => 'executed' );
+ * _.time.out( 1000, () =>
+ * {
+ *  console.log( timer.result );
+ *  // log : 'executed'
+ *  return null;
+ * });
+ * console.log( timer.result );
+ * // log : undefined
+ *
+ * @example
+ * let timer = _.time.finally( 500, () => 'executed', () => 'canceled' );
+ * _.time.cancel( timer );
+ * console.log( timer.result );
+ * // log : 'executed'
+ *
+ * @param { Number } delay - The time delay.
+ * @param { Procedure|Undefined } procedure - The procedure for timer.
+ * @param { Function|Undefined|Null } onTime - The callback to execute when time is elapsed.
+ * @param { Function|Undefined|Null } onCancel - The callback to execute when timer is canceled.
+ * @returns { Timer } - Returns timer.
+ * @function finally
+ * @throws { Error } If arguments.length is less than 2 or great than 3.
+ * @throws { Error } If {-delay-} is not a Number.
+ * @throws { Error } If {-onTime-} neither is a Function, nor undefined, nor null.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 function finally_( delay, procedure, onTime )
 {
   if( arguments.length === 2 )
@@ -347,6 +585,63 @@ function finally_( delay, procedure, onTime )
 }
 
 //
+
+/**
+ * The routine periodic() make new periodic timer for procedure {-procedure-}. The timer executes callback {-onTime-}
+ * periodically with time interval {-delay-}. If callback {-onTime-} returns undefined or Symbol _.dont, then the
+ * callback {-onCancel-} executes and timer stops.
+ * If the times is canceled, then the callback {-onCancel-} is executed.
+ *
+ * @example
+ * let result = [];
+ * function onTime()
+ * {
+ *   if( result.length < 3 )
+ *   return result.push( 1 );
+ *   else
+ *   return undefined;
+ * }
+ * let timer = _.time.periodic( 500, onTime, () => 'canceled' );
+ * _.time.out( 3000, () =>
+ * {
+ *   console.log( result );
+ *   // log : [ 1, 1, 1 ]
+ *   console.log( timer.result );
+ *   // log : 'canceled'
+ *   return null;
+ * });
+ * console.log( timer.result );
+ * // log : undefined
+ *
+ * @example
+ * let result = [];
+ * function onTime()
+ * {
+ *   if( result.length < 3 )
+ *   return result.push( 1 );
+ *   else
+ *   return undefined;
+ * }
+ * let timer = _.time.periodic( 500, onTime, () => 'canceled' );
+ * _.time.cancel( timer );
+ * console.log( result );
+ * // log : []
+ * console.log( timer.result );
+ * // log : 'canceled'
+ *
+ * @param { Number } delay - The time delay.
+ * @param { Procedure|Undefined } procedure - The procedure for timer.
+ * @param { Function } onTime - The callback to execute when time is elapsed.
+ * @param { Function|Undefined|Null } onCancel - The callback to execute when timer is canceled.
+ * @returns { Timer } - Returns periodic timer.
+ * @function begin
+ * @throws { Error } If arguments.length is less than 2 or great than 4.
+ * @throws { Error } If {-delay-} is not a Number.
+ * @throws { Error } If {-onTime-} is not a Function.
+ * @throws { Error } If {-onCancel-} neither is a Function, nor undefined, nor null.
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function periodic( /* delay, procedure, onTime, onCancel */ )
 {
@@ -371,12 +666,65 @@ function periodic( /* delay, procedure, onTime, onCancel */ )
 
 //
 
+/**
+ * The routine cancel() cancels timer {-timer-}.
+ *
+ * @example
+ * let timer = _.time.begin( 500, () => 'executed', () => 'canceled' );
+ * let canceled = _.time.cancel( timer );
+ * console.log( timer.result );
+ * // log : 'canceled'
+ * console.log( timer === canceled );
+ * // log : true
+ *
+ * @example
+ * let timer = _.time.periodic( 500, () => 'executed', () => 'canceled' );
+ * let canceled = _.time.cancel( timer );
+ * console.log( timer.result );
+ * // log : 'canceled'
+ * console.log( timer === canceled );
+ * // log : true
+ *
+ * @param { Timer } timer - The timer to cancel.
+ * @returns { Timer } - Returns canceled timer.
+ * @function cancel
+ * @throws { Error } If {-timer-} is not a Timer.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 function cancel( timer )
 {
   return _.time._cancel( ... arguments );
 }
 
 //
+
+/**
+ * The routine sleep() suspends program execution on time delay {-delay-}.
+ *
+ * @example
+ * let result = [];
+ * let periodic = _.time.periodic( 100, () => result.length < 10 ? result.push( 1 ) : undefined );
+ * let before = _.time.now();
+ *  _.time.sleep( 500 );
+ * console.log( result.length <= 1 );
+ * // log : true
+ * let after = _.time.now();
+ * let delta = after - before;
+ * console.log( delta <= 550 );
+ * // log : true
+ *
+ * @param { Number } delay - The delay to suspend program.
+ * @returns { Undefined } - Returns not a value, suspends program.
+ * @function sleep
+ * @throws { Error } If arguments.length is less then 1 or great then 2.
+ * @throws { Error } If {-delay-} is not a Number.
+ * @throws { Error } If {-delay-} is less then zero.
+ * @throws { Error } If {-delay-} has not finite value.
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function sleep( delay )
 {
@@ -389,10 +737,26 @@ function sleep( delay )
   while( ( _.time.now() - now ) < delay )
   {
   }
-
 }
 
 //
+
+/**
+ * The routine now_functor() make the better function to get current time in ms.
+ * The returned function depends on environment.
+ *
+ * @example
+ * let now = _.time.now_functor();
+ * console.log( _.routineIs( now ) );
+ * // log : true
+ * console.log( now() );
+ * // log : 1603172830154
+ *
+ * @returns { Function } - Returns function to get current time in ms.
+ * @function now_functor
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function now_functor()
 {
@@ -410,6 +774,23 @@ function now_functor()
 
 //
 
+/**
+ * The routine from() returns the time since 01.01.1970 in ms.
+ *
+ * @example
+ * let date = new Date();
+ * console.log( _.time.from( date ) );
+ * // log : 1603174830154
+ *
+ * @param { Number|Date|String } time - The time to convert.
+ * @returns { Number } - Returns time since 01.01.1970.
+ * @function from
+ * @throws { Error } If arguments.length is not equal to 1.
+ * @throws { Error } If {-time-} neither is a Number, nor a Date, nor a valid time String.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 function from( time )
 {
 
@@ -425,7 +806,7 @@ function from( time )
   }
   if( _.strIs( time ) )
   {
-    let time = Date.parse( time );
+    time = Date.parse( time );
     if( !isNaN( time ) )
     return time;
     else
@@ -435,6 +816,29 @@ function from( time )
 }
 
 //
+
+/**
+ * The routine spent() calculate spent time from time {-time-} and converts
+ * the value to formatted string with seconds. If the description {-description-}
+ * is provided, then routine prepend description to resulted string.
+ *
+ * @example
+ * let now = _time.now();
+ * _.time.sleep( 500 );
+ * let spent = _.time.spent( 'Spent : ', now );
+ * console.log( spent );
+ * // log : 'Spent : 0.5s'
+ *
+ * @param { String } description - The description for spent time. Optional parameter.
+ * @param { Number } time - The start time.
+ * @returns { Number } - Returns string with spent seconds.
+ * @function spent
+ * @throws { Error } If arguments.length is less than 1 or greater than 2.
+ * @throws { Error } If {-description-} is not a String.
+ * @throws { Error } If {-time-} is not a Number.
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function spent( description, time )
 {
@@ -460,9 +864,28 @@ function spent( description, time )
 
 //
 
+/**
+ * The routine spentFormat() converts spent time in milliseconds to seconds.
+ * Routine returns string with seconds.
+ *
+ * @example
+ * let now = _time.now();
+ * _.time.sleep( 500 );
+ * let spent = _.time.now() - now;
+ * console.log( _.time.spentFormat( spent ) );
+ * // log : '0.5s'
+ *
+ * @param { Number } spent - The time to convert, in ms.
+ * @returns { Number } - Returns string with spent seconds.
+ * @function spentFormat
+ * @throws { Error } If arguments.length is not equal to 1.
+ * @throws { Error } If {-spent-} is not a Number.
+ * @namespace wTools.time
+ * @extends Tools
+ */
+
 function spentFormat( spent )
 {
-  let now = _.time.now();
 
   _.assert( 1 === arguments.length );
   _.assert( _.numberIs( spent ) );
@@ -473,6 +896,22 @@ function spentFormat( spent )
 }
 
 //
+
+/**
+ * The routine dateToStr() converts Date object {-date-} to formatted string.
+ * The format is : YYYY.MM.DD
+ *
+ * @example
+ * let date = new Date();
+ * console.log( _.time.dateToStr( date ) );
+ * // log : '2020.10.20'
+ *
+ * @param { Date } date - The date to convert.
+ * @returns { String } - Returns date in string format.
+ * @function dateToStr
+ * @namespace wTools.time
+ * @extends Tools
+ */
 
 function dateToStr( date )
 {
@@ -497,11 +936,13 @@ let Extension =
   _periodic,
   _cancel,
 
-  timerIsBegun, /* qqq : cover */
-  timerIsCancelBegun, /* qqq : cover */
-  timerIsCancelEnded, /* qqq : cover */
-  timerIsUpBegun, /* qqq : cover */
-  timerIsUpEnded, /* qqq : cover */
+  timerIs, /* qqq : cover */
+  timerInBegin, /* aaa : cover */ /* Dmytro : covered */
+  timerInCancelBegun, /* aaa : cover */ /* Dmytro : covered */
+  timerInCancelEnded, /* aaa : cover */ /* Dmytro : covered */
+  timerIsCanceled, /* qqq : cover */
+  timerInEndBegun, /* aaa : cover */ /* Dmytro : covered */
+  timerInEndEnded, /* aaa : cover */ /* Dmytro : covered */
 
   soon,
   begin,

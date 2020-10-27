@@ -17,7 +17,6 @@ function _handleUncaught1()
 {
 
   let args = _.error._handleUncaughtHead( arguments );
-  debugger;
   let result = _.error._handleUncaught2.apply( this, args );
 
   if( _.error._handleUncaught0 )

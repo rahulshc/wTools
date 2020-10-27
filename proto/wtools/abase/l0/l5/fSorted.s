@@ -1,4 +1,5 @@
-( function _fSorted_s_() {
+( function _fSorted_s_()
+{
 
 'use strict';
 

@@ -1,4 +1,5 @@
-( function _Compose_s_() {
+( function _Compose_s_()
+{
 
 'use strict';
 
@@ -10,16 +11,26 @@ let Self = _global_.wTools.compose = _global_.wTools.compose || Object.create( n
 // chainer
 // --
 
-function originaChainer( args, result, op, k )
+function originaChainer( /* args, result, op, k */ )
 {
+  let args = arguments[ 0 ];
+  let result = arguments[ 1 ];
+  let op = arguments[ 2 ];
+  let k = arguments[ 3 ];
+
   _.assert( result !== false );
   return args;
 }
 
 //
 
-function originalWithDontChainer( args, result, op, k )
+function originalWithDontChainer( /* args, result, op, k */ )
 {
+  let args = arguments[ 0 ];
+  let result = arguments[ 1 ];
+  let op = arguments[ 2 ];
+  let k = arguments[ 3 ];
+
   _.assert( result !== false );
   if( result === _.dont )
   return _.dont;
@@ -28,8 +39,13 @@ function originalWithDontChainer( args, result, op, k )
 
 //
 
-function composeAllChainer( args, result, op, k )
+function composeAllChainer( /* args, result, op, k */ )
 {
+  let args = arguments[ 0 ];
+  let result = arguments[ 1 ];
+  let op = arguments[ 2 ];
+  let k = arguments[ 3 ];
+
   _.assert( result !== false );
   if( result === _.dont )
   return _.dont;
@@ -38,8 +54,13 @@ function composeAllChainer( args, result, op, k )
 
 //
 
-function chainingChainer( args, result, op, k )
+function chainingChainer( /* args, result, op, k */ )
 {
+  let args = arguments[ 0 ];
+  let result = arguments[ 1 ];
+  let op = arguments[ 2 ];
+  let k = arguments[ 3 ];
+
   _.assert( result !== false );
   if( result === undefined )
   return args;
@@ -52,16 +73,26 @@ function chainingChainer( args, result, op, k )
 // supervisor
 // --
 
-function returningLastSupervisor( self, args, act, op )
+function returningLastSupervisor( /* self, args, act, op */ )
 {
+  let self = arguments[ 0 ];
+  let args = arguments[ 1 ];
+  let act = arguments[ 2 ];
+  let op = arguments[ 3 ];
+
   let result = act.apply( self, args );
   return result[ result.length-1 ];
 }
 
 //
 
-function composeAllSupervisor( self, args, act, op )
+function composeAllSupervisor( /* self, args, act, op */ )
 {
+  let self = arguments[ 0 ];
+  let args = arguments[ 1 ];
+  let act = arguments[ 2 ];
+  let op = arguments[ 3 ];
+
   let result = act.apply( self, args );
   _.assert( !!result );
   if( !result.length )
@@ -75,8 +106,13 @@ function composeAllSupervisor( self, args, act, op )
 
 //
 
-function chainingSupervisor( self, args, act, op )
+function chainingSupervisor( /* self, args, act, op */ )
 {
+  let self = arguments[ 0 ];
+  let args = arguments[ 1 ];
+  let act = arguments[ 2 ];
+  let op = arguments[ 3 ];
+
   let result = act.apply( self, args );
   if( result[ result.length-1 ] === _.dont )
   result.pop();
