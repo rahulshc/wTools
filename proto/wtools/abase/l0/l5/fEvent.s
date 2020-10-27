@@ -215,6 +215,7 @@ on.defaults =
 
 /**
  * The routine once() registers callback of some kind in event handler {-ehandler-}.
+ * Registered callback executes once and deleted from queue.
  *
  * @example
  * let ehandler = { events : { begin : [] } };
@@ -292,9 +293,9 @@ function once( ehandler, o )
 
     if( _.longIs( callback ) )
     {
-      _.assert( _.routineIs( callback[ callback.length - 1 ] ), 'Expects routine to execute.' );
-
       let length = callback.length;
+      _.assert( _.routineIs( callback[ length - 1 ] ), 'Expects routine to execute.' );
+
       let name = callback[ length - 2 ] || c;
       callback[ length - 1 ] = callbackOnceMake( name, callback[ length - 1 ] );
       callback = _.event._chainToCallback( [ c, ... callback ] );
@@ -315,12 +316,15 @@ function once( ehandler, o )
 
   function callbackOnceMake( name, callback )
   {
-    return function callbackOnce()
+    function callbackOnce()
     {
       let result = callback.apply( this, arguments );
       _.event.off( ehandler, { callbackMap : { [ name ] : callbackOnce } } );
       return result;
     }
+    callbackOnce.native = callback; /* Dmytro : this solution does not affects original callback and interfaces of calls. And simultaneously it slow down searching in routine `off` */
+
+    return callbackOnce;
   }
 
   function callbackAdd( handler, name, callback )
@@ -416,10 +420,17 @@ function off( ehandler, o )
     if( o.callbackMap[ c ] === null )
     _.arrayEmpty( ehandler.events[ c ] );
     else
-    _.arrayRemoveOnceStrictly( ehandler.events[ c ], o.callbackMap[ c ] );
+    _.arrayRemoveOnceStrictly( ehandler.events[ c ], o.callbackMap[ c ], callbackEqualize );
   }
 
   return o;
+
+  /* */
+
+  function callbackEqualize( callback, handler )
+  {
+    return handler === callback || handler === callback.native;
+  }
 }
 
 off.head = off_head;
