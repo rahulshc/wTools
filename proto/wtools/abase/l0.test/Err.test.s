@@ -1352,7 +1352,7 @@ function errWithMultilineMessage( test )
   );
   var exp =
 `Error :
-    Exec :
+Exec :
 
 end of message`;
   test.identical( got.originalMessage, exp );
@@ -1368,7 +1368,7 @@ end of message`;
   );
   var exp =
 `Error :
-    Exec :
+Exec :
 
 end of message`;
   test.identical( got.originalMessage, exp );
@@ -1384,7 +1384,7 @@ end of message`;
   );
   var exp =
 `Error :
-    Exec :
+Exec :
 
 end of message`;
   test.identical( got.originalMessage, exp );
@@ -1404,8 +1404,8 @@ function errMessageWithSpaces( test )
     `end of message    `
   );
   var exp =
-`   Error :
-    Exec :
+`Error :
+Exec :
 
 end of message`;
   test.identical( got.originalMessage, exp );
@@ -1422,7 +1422,7 @@ end of message`;
   );
   var exp =
 `Error :
-    Exec :
+Exec :
 
 end of message`;
   test.identical( got.originalMessage, exp );
@@ -1438,10 +1438,10 @@ end of message`;
     `  end of message`
   );
   var exp =
-`  Error :
-      Exec :
+`Error :
+Exec :
 
-  end of message`;
+end of message`;
   test.identical( got.originalMessage, exp );
 
   /* */
@@ -1456,7 +1456,7 @@ end of message`;
   );
   var exp =
 `Error :
-    Exec :
+Exec :
 
 end of message`;
   test.identical( got.originalMessage, exp );
@@ -1476,7 +1476,7 @@ end of message`;
 `Error
 
 
-    Exec :
+Exec :
 
 
 

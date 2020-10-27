@@ -1059,12 +1059,13 @@ function _err( o )
     }
 
     /*
-      remove redundant spaces at the end of lines
+      remove redundant spaces at the begin and the end of lines
     */
 
     o.message = o.message || fallBackMessage || 'UnknownError';
     // o.message = o.message.replace( /^\x20*\n/m, '' ); /* Dmytro : this is task, this lines affect manual formatting of error message */
     // o.message = o.message.replace( /\x20*\n$/m, '' );
+    o.message = o.message.replace( /^\x20*/gm, '' );
     o.message = o.message.replace( /\x20*$/gm, '' );
 
   }
