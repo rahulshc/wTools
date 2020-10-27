@@ -185,25 +185,37 @@ function numbersAreEquivalent( a, b, accuracy )
 
   BIF     BIF       BIF/BOF/FIB/FOB            +                        +
   BIF     BOF       BIF/BOF/FIB/FOB            +                        -
-  BIF     FIB       BIF/BOF/FIB/FOB            -                        -
-  BIF     FOB       BIF/BOF/FIB/FOB            -                        -
+  BIF     FIB       BIF/BOF/FIB/FOB            +                        -
+  BIF     FOB       BIF/BOF/FIB/FOB            ?                        -
 
   BOF     BOF       BIF/BOF/FIB/FOB            +                        -
-  BOF     FIB       BIF/BOF/FIB/FOB            -                        -
-  BOF     FOB       BIF/BOF/FIB/FOB            -                        -
+  BOF     FIB       BIF/BOF/FIB/FOB            +                        -
+  BOF     FOB       BIF/BOF/FIB/FOB            ?                        -
 
-  FIB     FIB       BIF/BOF/FIB/FOB            -                        -
-  FIB     FOB       BIF/BOF/FIB/FOB            -                        -
+  FIB     FIB       BIF/BOF/FIB/FOB            +                        -
+  FIB     FOB       BIF/BOF/FIB/FOB            +                        -
 
-  FOB     FOB       BIF/BOF/FIB/FOB            -                        -
+  FOB     FOB       BIF/BOF/FIB/FOB            +                        -
   Overall : 10 cases ( 40 test cases )
-  Done : 3/10 ( 4/40 )
+  Done : 6/10 ( 4/40 )
 
   Definitions :
   BIF = bigint inside range of float ( 0n, 3n, BigInt( Math.pow( 2, 52 ) ) )
   BOF = bigint outside range of float ( BigInt( Math.pow( 2, 54 ) ) )
   FIB = float inside range of bigint ( 5, 30 )
   FOB = float outside range of bigint ( 5.5, 30.1 )
+
+  Special cases:
+  1. a : BIF, b : BIF, accuracy : BOF -> always true
+  2. a : BIF, b : BOF, accuracy :
+  3. a : BIF, b : FIB, accuracy :
+  4. a : BIF, b : FOB, accuracy :
+  5. a : BOF, b : BOF, accuracy :
+  6. a : BOF, b : FIB, accuracy :
+  7. a : BOF, b : FOB, accuracy :
+  8. a : FIB, b : FIB, accuracy :
+  9. a : FIB, b : FOB, accuracy :
+ 10. a : FOB, b : FOB, accuracy :
 
   */
 
@@ -212,12 +224,13 @@ function numbersAreEquivalent( a, b, accuracy )
 
   if( bigIntIsA && bigIntIsB )
   {
-    /* a : BIF/BOF, b : BIF/BOF */
+    /* a : BIF/BOF, b : BIF/BOF , accuracy : BIF/BOF/FIB/FOB  */
     return abs( a - b ) <= accuracy;
   }
 
   if( bigIntIsA )
   {
+    /* a : BIF/BOF, b : FIB , accuracy : BIF/BOF/FIB/FOB */
     if( _.intIs( b ) )
     {
       b = BigInt( b );
@@ -231,6 +244,7 @@ function numbersAreEquivalent( a, b, accuracy )
 
   if( bigIntIsB )
   {
+    /* a : FIB, b : BIF/BOF , accuracy : BIF/BOF/FIB/FOB */
     if( _.intIs( a ) )
     {
       a = BigInt( a );
@@ -246,8 +260,9 @@ function numbersAreEquivalent( a, b, accuracy )
   if( Object.is( a, b ) )
   return true;
 
+  /* a : FIB/FOB, b : FIB/FOB, accuracy : BIF/BOF/FIB/FOB */
   if( _.numberIs( a ) && _.numberIs( b ) )
-  return Math.abs( a - b ) <= accuracy; /* */
+  return Math.abs( a - b ) <= accuracy;
   else
   return abs( a - b ) <= accuracy;
 

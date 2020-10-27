@@ -1222,6 +1222,8 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
   // var got = _.numbersAreEquivalent( 3n, 3.1, 0.10001 );
   // test.identical( got, true );
 
+  /* */
+
   test.case = 'BIF 3n and BIF 2n, acc BIF 1n';
   var got = _.numbersAreEquivalent( 3n, 2n, 1n );
   test.identical( got, true );
@@ -1238,6 +1240,9 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
   test.case = 'BIF 3n and BIF 2n, acc FOB 1.01';
   var got = _.numbersAreEquivalent( 3n, 2n, 1.01 );
   test.identical( got, true );
+
+  /* */
+
 
   // test.case = 'bigint 4 and int 3, acc int 1';
   // var got = _.numbersAreEquivalent( 4n, 3, 1 );
