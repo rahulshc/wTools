@@ -939,7 +939,7 @@ function routineUnite_head( routine, args )
 
   if( args[ 1 ] !== undefined )
   {
-    o = { head : args[ 0 ], body : args[ 1 ], name : args[ 2 ] };
+    o = { head : args[ 0 ], body : args[ 1 ], tail : args[ 2 ] };
   }
 
   _.routineOptions( routine, o );
@@ -947,6 +947,7 @@ function routineUnite_head( routine, args )
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ), 'Expects routine or routines {-o.head-}' );
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
+  _.assert( !o.tail || _.routineIs( o.tail ), 'Expects routine {-o.tail-}' );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
@@ -984,6 +985,7 @@ function routineUnite_body( o )
 
   let head = o.head;
   let body = o.body;
+  let tail = o.tail;
 
   if( !o.name )
   {
@@ -999,11 +1001,17 @@ function routineUnite_body( o )
     {
       let result;
       let o = head.call( this, callPreAndBody, arguments );
+
       _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+
       if( _.unrollIs( o ) )
       result = body.apply( this, o );
       else
       result = body.call( this, o );
+
+      if( tail )
+      result = tail.call( this, result );
+
       return result;
     }
   }
@@ -1016,6 +1024,8 @@ function routineUnite_body( o )
 
   callPreAndBody.head = o.head;
   callPreAndBody.body = o.body;
+  if( o.tail )
+  callPreAndBody.tail = o.tail;
 
   return callPreAndBody;
 }
@@ -1024,6 +1034,7 @@ routineUnite_body.defaults =
 {
   head : null,
   body : null,
+  tail : null,
   name : null,
 }
 

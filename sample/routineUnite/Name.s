@@ -37,9 +37,9 @@ name_body.defaults =
   full : 0,
 }
 
-let name = _.routineFromPreAndBody( name_pre, name_body );
+let name = _.routineUnite( name_pre, name_body );
 
-let nameFull = _.routineFromPreAndBody( name_pre, name_body );
+let nameFull = _.routineUnite( name_pre, name_body );
 nameFull.defaults.full = 1;
 
 console.log( name( './a/b/c/File.js' ) );
