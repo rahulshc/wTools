@@ -252,21 +252,18 @@ function numbersAreEquivalent( a, b, accuracy )
 
   if( bigIntIsB ) /* a : FIB/FOB, b : BIF/BOF , accuracy : BIF/BOF/FIB/FOB */
   {
-    /* a : FIB, b : BIF/BOF, accuracy : BIF/BOF/FIB/FOB */
-    if( _.intIs( a ) )
+    if( _.intIs( a ) ) /* a : FIB, b : BIF/BOF, accuracy : BIF/BOF/FIB/FOB */
     {
       a = BigInt( a );
     }
     else
     {
-      if( b >= Number.MIN_SAFE_INTEGER && b <= Number.MAX_SAFE_INTEGER )
+      if( b >= Number.MIN_SAFE_INTEGER && b <= Number.MAX_SAFE_INTEGER ) /* a : FOB, b : BIF, accuracy : BIF/BOF/FIB/FOB */
       {
-        /* a : FOB, b : BIF, accuracy : BIF/BOF/FIB/FOB */
         b = Number( b );
       }
-      else
+      else /* a : FOB, b : BOF , accuracy : BIF/BOF/FIB/FOB */
       {
-        /* a : FOB, b : BOF , accuracy : BIF/BOF/FIB/FOB */
       }
     }
   }
