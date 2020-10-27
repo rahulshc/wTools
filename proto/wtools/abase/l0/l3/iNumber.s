@@ -170,9 +170,6 @@ function numbersAreEquivalent( a, b, accuracy )
     return true;
   }
 
-  // Number.MIN_SAFE_INTEGER
-  // Number.MAX_SAFE_INTEGER
-
   /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine | aaa : Done */
 
   /*
@@ -181,12 +178,12 @@ function numbersAreEquivalent( a, b, accuracy )
   b : BIF/BOF/FIB/FOB;
   accuracy : BIF/BOF/FIB/FOB;
 
-  a       b            accuracy           implemented                covered                     abs( a - b )?
+  a       b            accuracy           implemented                covered                   abs( a - b )?
 
   BIF     BIF       BIF/BOF/FIB/FOB            +                        +
   BIF     BOF       BIF/BOF/FIB/FOB            +                        -
   BIF     FIB       BIF/BOF/FIB/FOB            +                        -
-  BIF     FOB       BIF/BOF/FIB/FOB            ?                        -
+  BIF     FOB       BIF/BOF/FIB/FOB            +                        -
 
   BOF     BOF       BIF/BOF/FIB/FOB            +                        -
   BOF     FIB       BIF/BOF/FIB/FOB            +                        -
@@ -196,8 +193,9 @@ function numbersAreEquivalent( a, b, accuracy )
   FIB     FOB       BIF/BOF/FIB/FOB            +                        -
 
   FOB     FOB       BIF/BOF/FIB/FOB            +                        -
+
   Overall : 10 cases ( 40 test cases )
-  Done : 6/10 ( 4/40 )
+  Done : 9/10 ( 4/40 )
 
   Definitions :
   BIF = bigint inside range of float ( 0n, 3n, BigInt( Math.pow( 2, 52 ) ) )
@@ -222,46 +220,58 @@ function numbersAreEquivalent( a, b, accuracy )
   if( accuracy === undefined )
   accuracy = this.accuracy;
 
-  if( bigIntIsA && bigIntIsB )
+  if( bigIntIsA && bigIntIsB ) /* a : BIF/BOF, b : BIF/BOF , accuracy : BIF/BOF/FIB/FOB  3 */
   {
-    /* a : BIF/BOF, b : BIF/BOF , accuracy : BIF/BOF/FIB/FOB  */
     return abs( a - b ) <= accuracy;
   }
 
-  if( bigIntIsA )
+  if( bigIntIsA ) /* a : BIF/BOF, b : FIB/FOB , accuracy : BIF/BOF/FIB/FOB 4 */
   {
-    /* a : BIF/BOF, b : FIB , accuracy : BIF/BOF/FIB/FOB */
     if( _.intIs( b ) )
     {
       b = BigInt( b );
     }
-    // else
-    // {
-    //   /* round, ceil, floor ? */
-    //   b = BigInt( Math.round( b ) );
-    // }
+    else
+    {
+      if( a >= Number.MIN_SAFE_INTEGER && a <= Number.MAX_SAFE_INTEGER ) /* a : BIF, b : FOB, accuracy : BIF/BOF/FIB/FOB */
+      {
+        a = Number( a );
+      }
+      else /* a : BOF, b : FOB, accuracy : BIF/BOF/FIB/FOB */
+      {
+        // a 0.01
+        // b 2^55
+      }
+      // b = BigInt( Math.round( b ) );
+    }
   }
 
-  if( bigIntIsB )
+  if( bigIntIsB ) /* a : FIB/FOB, b : BIF/BOF , accuracy : BIF/BOF/FIB/FOB */
   {
-    /* a : FIB, b : BIF/BOF , accuracy : BIF/BOF/FIB/FOB */
+    /* a : FIB, b : BIF/BOF, accuracy : BIF/BOF/FIB/FOB */
     if( _.intIs( a ) )
     {
       a = BigInt( a );
     }
-    // else
-    // {
-    //   /* round, ceil, floor ? */
-    //   a = BigInt( Math.round( a ) );
-    // }
+    else
+    {
+      if( b >= Number.MIN_SAFE_INTEGER && b <= Number.MAX_SAFE_INTEGER )
+      {
+        /* a : FOB, b : BIF, accuracy : BIF/BOF/FIB/FOB */
+        b = Number( b );
+      }
+      else
+      {
+        /* a : FOB, b : BOF , accuracy : BIF/BOF/FIB/FOB */
+      }
+    }
   }
 
-  /* Can be removed? */
   if( Object.is( a, b ) )
   return true;
 
-  /* a : FIB/FOB, b : FIB/FOB, accuracy : BIF/BOF/FIB/FOB */
-  if( _.numberIs( a ) && _.numberIs( b ) )
+
+  if( _.numberIs( a ) && _.numberIs( b ) ) /* a : FIB/FOB, b : FIB/FOB, accuracy : BIF/BOF/FIB/FOB 3 */
   return Math.abs( a - b ) <= accuracy;
   else
   return abs( a - b ) <= accuracy;
