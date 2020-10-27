@@ -1092,10 +1092,10 @@ function _errOriginalMessageForm( test )
     args : [ new Error( '\n\n   Sample     ' ), '\n\nstr   \n', undefined, '', null, false ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 7 );
+  test.identical( _.strLinesCount( err.originalMessage ), 8 );
   test.identical( _.strCount( err.originalMessage, '\n\n   Sample     \n\nstr   \n' ), 0 );
-  test.identical( _.strCount( err.originalMessage, 'Sample     \n\nstr' ), 1 );
-  test.identical( _.strCount( err.originalMessage, 'str   \n\nundefined' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'Sample\n\nstr' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'str\n\nundefined' ), 1 );
 
   test.case = 'Error without description, without fallBackMessage';
   var err = _._err
@@ -1352,7 +1352,7 @@ function errWithMultilineMessage( test )
   );
   var exp =
 `Error :
-    Exec :
+Exec :
 
 end of message`;
   test.identical( got.originalMessage, exp );
@@ -1368,7 +1368,7 @@ end of message`;
   );
   var exp =
 `Error :
-    Exec :
+Exec :
 
 end of message`;
   test.identical( got.originalMessage, exp );
@@ -1384,11 +1384,104 @@ end of message`;
   );
   var exp =
 `Error :
-    Exec :
+Exec :
 
 end of message`;
   test.identical( got.originalMessage, exp );
 
+}
+
+//
+
+function errMessageWithSpaces( test )
+{
+  test.case = 'spaces at the begin of message';
+  var got = _.err
+  (
+    `   Error :`,
+    `\n    Exec :`,
+    `\n\n`,
+    `end of message    `
+  );
+  var exp =
+`Error :
+Exec :
+
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'spaces at the end of message';
+  var got = _.err
+  (
+    `Error :`,
+    `\n    Exec :`,
+    `\n\n`,
+    `end of message    `
+  );
+  var exp =
+`Error :
+Exec :
+
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'spaces at the begin of each line';
+  var got = _.err
+  (
+    `  Error :`,
+    `\n      Exec :`,
+    `\n  \n`,
+    `  end of message`
+  );
+  var exp =
+`Error :
+Exec :
+
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'spaces at the end of each line';
+  var got = _.err
+  (
+    `Error :  `,
+    `\n    Exec :  `,
+    `\n  \n`,
+    `end of message    `
+  );
+  var exp =
+`Error :
+Exec :
+
+end of message`;
+  test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'spaces between new line symbols';
+  var got = _.err
+  (
+    `Error\n `,
+    `\n   \n    Exec :  `,
+    `\n   \n`,
+    `\n   \n`,
+    `end of message    `
+  );
+  var exp =
+`Error
+
+
+Exec :
+
+
+
+end of message`;
+  test.identical( got.originalMessage, exp );
 }
 
 //
@@ -1901,6 +1994,7 @@ let Self =
 
     errInStr,
     errWithMultilineMessage,
+    errMessageWithSpaces,
 
     errorFunctor,
 

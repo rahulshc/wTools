@@ -1,4 +1,5 @@
-( function _ContainerAdapterArray_s_() {
+( function _ContainerAdapterArray_s_()
+{
 
 'use strict';
 
@@ -124,11 +125,20 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
   {
     container = this.ToOriginal( container );
     if( _.longIs( container ) )
-    _.arrayAppendArray( this.original, container );
+    {
+      _.arrayAppendArray( this.original, container );
+    }
     else if( _.setIs( container ) )
-    for( let e of container )
-    this.original.push( e );
-    else _.assert( 0, 'Unexpected data type' );
+    {
+      for( let e of container )
+      {
+        this.original.push( e );
+      }
+    }
+    else
+    {
+      _.assert( 0, 'Unexpected data type' );
+    }
     return this;
   }
   appendContainerOnce( container, onEvaluate1, onEvaluate2 )
@@ -478,10 +488,14 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     [ dst, dst, onEvaluate1, onEvaluate2 ] = this._onlyArguments( null, dst, onEvaluate1, onEvaluate2 );
 
     if( this._same( dst ) )
-    _.longOnce( container, onEvaluate1, onEvaluate2 );
+    {
+      _.longOnce( container, onEvaluate1, onEvaluate2 );
+    }
     else
-    for( let i = container.length - 1; i >= 0; i-- )
-    dst.appendOnce( container[ i ], onEvaluate1, onEvaluate2 );
+    {
+      for( let i = container.length - 1; i >= 0; i-- )
+      dst.appendOnce( container[ i ], onEvaluate1, onEvaluate2 );
+    }
 
     return dst;
   }
@@ -654,13 +668,23 @@ class ContainerAdapterArray extends _.containerAdapter.Abstract
     }
     return true;
   }
-  left( element, fromIndex, onEvaluate1, onEvaluate2 )
+  left( /* element, fromIndex, onEvaluate1, onEvaluate2 */ )
   {
+    let element = arguments[ 0 ];
+    let fromIndex = arguments[ 1 ];
+    let onEvaluate1 = arguments[ 2 ];
+    let onEvaluate2 = arguments[ 3 ];
+
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longLeft( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }
-  right( element, fromIndex, onEvaluate1, onEvaluate2 )
+  right( /* element, fromIndex, onEvaluate1, onEvaluate2 */ )
   {
+    let element = arguments[ 0 ];
+    let fromIndex = arguments[ 1 ];
+    let onEvaluate1 = arguments[ 2 ];
+    let onEvaluate2 = arguments[ 3 ];
+
     _.assert( 1 <= arguments.length && arguments.length <= 4 );
     return _.longRight( this.original, element, fromIndex, onEvaluate1, onEvaluate2 );
   }

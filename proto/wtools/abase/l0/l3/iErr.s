@@ -1020,6 +1020,8 @@ function _err( o )
     {
       let str = result[ a ];
 
+      debugger;
+
       if( !o.message.replace( /\s*/m, '' ) )
       {
         o.message = str;
@@ -1031,20 +1033,21 @@ function _err( o )
       }
       else
       {
-        o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
+        o.message = o.message.replace( /\x20+$/m, '' ) + ' ' + str.replace( /^\x20+/m, '' );
+        // o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
       }
 
     }
 
     /*
-      remove redundant eol from begin and end of message
+      remove redundant spaces at the begin and the end of lines
     */
 
     o.message = o.message || fallBackMessage || 'UnknownError';
     // o.message = o.message.replace( /^\x20*\n/m, '' ); /* Dmytro : this is task, this lines affect manual formatting of error message */
     // o.message = o.message.replace( /\x20*\n$/m, '' );
-    o.message = o.message.replace( /^\x20*/m, '' );
-    o.message = o.message.replace( /\x20*$/m, '' );
+    o.message = o.message.replace( /^\x20*/gm, '' );
+    o.message = o.message.replace( /\x20*$/gm, '' );
 
   }
 

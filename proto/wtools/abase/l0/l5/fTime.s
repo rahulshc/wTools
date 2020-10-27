@@ -50,10 +50,9 @@ function _begin( delay, onTime, onCancel )
   {
     if( timer.state === 1 || timer.state === -1 )
     return;
-    if( timer.state === -2 )
-    _.assert( 0, 'Cannot change state of timer.' );
-    if( timer.state === 2 )
-    _.assert( 0, 'Timer can be executed only one time.' );
+
+    _.assert( timer.state > -2, 'Cannot change state of timer.' );
+    _.assert( timer.state < 2, 'Timer can be executed only one time.' );
 
     timer.state = 1;
     try
@@ -74,10 +73,9 @@ function _begin( delay, onTime, onCancel )
   {
     if( timer.state === 1 || timer.state === -1 )
     return;
-    if( timer.state === 2 )
-    _.assert( 0, 'Cannot change state of timer.' );
-    if( timer.state === -2 )
-    _.assert( 0, 'Timer can be canceled only one time.' );
+
+    _.assert( timer.state < 2, 'Cannot change state of timer.' );
+    _.assert( timer.state > -2, 'Timer can be canceled only one time.' );
 
     timer.state = -1;
     clearTimeout( timer.native );
@@ -159,8 +157,7 @@ function _periodic( delay, onTime, onCancel )
 
   function _time()
   {
-    if( timer.state === -1 || timer.state === -2 )
-    _.assert( 0, 'Illegal call, timer is canceled. Please, use new timer.' );
+    _.assert( timer.state !== -1 && timer.state !== -2, 'Illegal call, timer is canceled. Please, use new timer.' );
 
     timer.state = 1;
     // if( r === _.dont )
@@ -185,8 +182,9 @@ function _periodic( delay, onTime, onCancel )
   {
     // if( timer.state === 1 )
     // logger.log( 'Timer is canceled when callback {-onTime-} was executing.' );
-    if( timer.state === -1 || timer.state === -2 )
-    _.assert( 0, 'Illegal call, timer is canceled.' );
+
+    _.assert( timer.state !== -1 && timer.state !== -2, 'Illegal call, timer is canceled.' );
+
     timer.state = -1;
     clearInterval( timer.native );
     try

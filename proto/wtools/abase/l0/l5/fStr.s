@@ -1409,17 +1409,24 @@ function strSplitsQuotedRejoin_body( o )
 
   /* quoting */
 
+  let s = 1;
   if( o.quoting )
-  for( let s = 1 ; s < o.splits.length ; s += 1 )
   {
-    let split = o.splits[ s ];
-    let s2;
+    for( s ; s < o.splits.length ; s += 1 )
+    splitsQuote( o.splits[ s ], s );
+  }
 
+  return o.splits;
+
+  function splitsQuote( split, i )
+  {
+    let s2;
     let q = o.quotingPrefixes.indexOf( split );
+
     if( q >= 0 )
     {
       let postfix = o.quotingPostfixes[ q ];
-      for( s2 = s+2 ; s2 < o.splits.length ; s2 += 1 )
+      for( s2 = i+2 ; s2 < o.splits.length ; s2 += 1 )
       {
         let split2 = o.splits[ s2 ];
         if( split2 === postfix )
@@ -1460,10 +1467,7 @@ function strSplitsQuotedRejoin_body( o )
       {
       }
     }
-
   }
-
-  return o.splits;
 }
 
 strSplitsQuotedRejoin_body.defaults =

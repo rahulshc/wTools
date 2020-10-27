@@ -407,7 +407,7 @@ function routineOptions( routine, args, defaults )
 
   _.assertMapHasOnly( options, defaults, `Routine ${name} does not expect options:` );
   _.mapSupplementStructureless( options, defaults );
-  _.assertMapHasNoUndefine( options, `Options map for routine ${name} should have no undefined fileds, but it does have` );
+  _.assertMapHasNoUndefine( options, `Options map for routine ${name} should have no undefined fields, but it does have` );
 
   return options;
 }

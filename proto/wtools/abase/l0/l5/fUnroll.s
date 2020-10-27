@@ -1,4 +1,5 @@
-( function _fUnroll_s_() {
+( function _fUnroll_s_()
+{
 
 'use strict';
 
