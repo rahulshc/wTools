@@ -174,7 +174,7 @@ function numbersAreEquivalent( a, b, accuracy )
   b : int, float, bigint,
   accuracy : int, float, bigint
 
-  a       b       accuracy              covered
+  a       b       accuracy              covered                                   abs( a - b )?
   int     int      int                     +
   int     int      float                   +
   int     int      bigint                  +
@@ -187,14 +187,25 @@ function numbersAreEquivalent( a, b, accuracy )
   bigint  int      int                     +
   bigint  int      float                   +
   bigint  int      bigint                  +
-  bigint  float    int                     +
-  bigint  float    float                   +
-  bigint  float    bigint                  +
+
+  //bigint  float    int                   +
+  //bigint  float    float                 +
+  //bigint  float    bigint                +
+
+  BIF     FIB      int/float/bigint        -
+  BOF     FIB      int/float/bigint        -
+  BIF     FOB      int/float/bigint        -
+  BOF     FOB      int/float/bigint        -
+
   bigint  bigint   int                     +
   bigint  bigint   float                   +
   bigint  bigint   bigint                  +
 
-  Overall : 19
+  bignint inside range of float = BIF ( 0n, 3n, BigInt( Math.pow( 2, 52 ) ) )
+  bigint outside range of float = BOF ( BigInt( Math.pow( 2, 54 ) ) )
+  float inside range of bigint =  FIB ( 5, 30 )
+  float outside range of bigint = FOB ( 5.5, 30.1 )
+
   */
 
   if( accuracy === undefined )
@@ -280,6 +291,93 @@ function numbersAreEquivalent( a, b, accuracy )
 
     return value;
   }
+
+  /* ORIGINAL */
+  /* qqq for Yevhen : bad! */
+
+  if( _.numberIs( a ) && _.numberIs( b ) )
+  {
+    if( Object.is( a, b ) )
+    return true;
+  }
+
+  if( !_.numberIs( a ) && !_.bigIntIs( a ) )
+  return false;
+
+  if( !_.numberIs( b ) && !_.bigIntIs( b ) )
+  return false;
+
+  /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine */
+
+  // else
+  // {
+  //   return false;
+  // }
+
+  if( accuracy === undefined )
+  accuracy = this.accuracy;
+
+  if( _.bigIntIs( a ) )
+  {
+    if( _.intIs( b ) )
+    {
+      b = BigInt( b );
+    }
+    // else
+    // {
+    //   a = Number( a );
+    //   if( a === +Infinity || a === -Infinity )
+    //   return false;
+    // }
+  }
+
+  if( _.bigIntIs( b ) )
+  {
+    if( _.intIs( a ) )
+    {
+      a = BigInt( a );
+    }
+    // else
+    // {
+    //   b = Number( b );
+    //   if( b === +Infinity || b === -Infinity )
+    //   return false;
+    // }
+  }
+
+  if( Object.is( a, b ) )
+  return true;
+
+  if( _.bigIntIs( a ) && _.bigIntIs( b ) )
+  {
+    if( _.intIs( accuracy ) )
+    {
+      return BigIntMath.abs( a - b ) <= BigInt( accuracy );
+    }
+    else
+    {
+      let diff = BigIntMath.abs( a - b );
+      if( diff <= BigInt( Math.floor( accuracy ) ) )
+      return true;
+      if( diff > BigInt( Math.ceil( accuracy ) ) )
+      return false;
+      diff = Number( diff );
+      if( diff === Infinity || diff === -Infinity )
+      return false;
+      return Math.abs( diff ) <= accuracy;
+    }
+  }
+
+  // if( !_.numberIs( a ) )
+  // return false;
+  //
+  // if( !_.numberIs( b ) )
+  // return false;
+
+  return Math.abs( a - b ) <= accuracy;
+  // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
+
+
 }
 
 //
