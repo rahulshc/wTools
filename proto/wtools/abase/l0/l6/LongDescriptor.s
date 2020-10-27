@@ -1,4 +1,5 @@
-(function _LongDescriptor_s_() {
+( function _LongDescriptor_s_()
+{
 
 'use strict';
 

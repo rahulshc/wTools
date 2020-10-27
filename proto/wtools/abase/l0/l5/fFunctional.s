@@ -1,4 +1,5 @@
-( function _fFunctional_s_() {
+( function _fFunctional_s_()
+{
 
 'use strict';
 
@@ -645,15 +646,15 @@ function entityOnly( dst, src, onEach )
 
   /* */
 
-/*
+  /*
 
-  let srcHas = null;
-  if ...
-  srcHas = srcHasMap;
-  else ...
-  srcHas = srcHasSet;
+    let srcHas = null;
+    if ...
+    srcHas = srcHasMap;
+    else ...
+    srcHas = srcHasSet;
 
-*/
+  */
 
   /* */
 
@@ -753,7 +754,7 @@ function entityOnly( dst, src, onEach )
   {
     dst = new Map( src );
 
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     {
       let res = onEach( value, key, src );
       if( !res )
@@ -767,7 +768,7 @@ function entityOnly( dst, src, onEach )
   {
     dst = new Map( src );
 
-    for ( let [ key, value ] of dst )
+    for( let [ key, value ] of dst )
     if( !value )
     dst.delete( key );
   }
@@ -880,7 +881,7 @@ function entityOnly( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     {
       let res = onEach( value, key, src )
       if( !res )
@@ -892,7 +893,7 @@ function entityOnly( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     if( !value )
     dst.delete( key );
   }
@@ -1291,7 +1292,7 @@ function entityBut( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     {
       let res = onEach( value, key, src );
       if( !res )
@@ -1305,7 +1306,7 @@ function entityBut( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     if( !value )
     dst.set( key, value );
   }
@@ -1417,7 +1418,7 @@ function entityBut( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     {
       let res = onEach( value, key, src )
       if( res )
@@ -1429,7 +1430,7 @@ function entityBut( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     if( value )
     dst.delete( key );
   }
@@ -1921,7 +1922,7 @@ function entityAnd( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     {
       let res = onEach( value, key, src );
       if( res )
@@ -1935,7 +1936,7 @@ function entityAnd( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     if( value )
     dst.set( key, value );
   }
@@ -2056,7 +2057,7 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of dst )
+    for( let [ key, value ] of dst )
     {
       let res1, res2;
       res1 = onEach( value, key, dst )
@@ -2072,7 +2073,7 @@ function entityAnd( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for ( let [ key, value ] of dst )
+    for( let [ key, value ] of dst )
     if( !value || !src.get( key ) )
     dst.delete( key );
   }
@@ -2368,7 +2369,7 @@ function entityOr( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     {
       let res = onEach( value, key, src );
       if( res )
@@ -2382,7 +2383,7 @@ function entityOr( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     if( value )
     dst.set( key, value );
   }
@@ -2500,7 +2501,7 @@ function entityOr( dst, src, onEach )
 
   function hashMapWithRoutineDeleting()
   {
-    for ( let [ key, value ] of dst )
+    for( let [ key, value ] of dst )
     {
       let res1, res2
       res1 = onEach( value, key, dst )
@@ -2522,7 +2523,7 @@ function entityOr( dst, src, onEach )
 
   function hashMapWithoutRoutineDeleting()
   {
-    for ( let [ key, value ] of dst )
+    for( let [ key, value ] of dst )
     {
       if( !value )
       {
@@ -2859,7 +2860,7 @@ function entityXor( dst, src, onEach )
   {
     dst = new Map( null );
 
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     {
       let res1 = onEach( undefined, undefined, dst );
       let res2 = onEach( value, key, src );
@@ -3040,7 +3041,7 @@ function entityXor( dst, src, onEach )
     for( let [ key, value ] of dst )
     if( !value )
     dst.delete( key );
-    for ( let [ key, value ] of src )
+    for( let [ key, value ] of src )
     {
       let res1 = dst.get( key );
       let res2 = value;
@@ -3645,9 +3646,9 @@ function _filter_functor( condition, levels )
  *     l = src.length,
  *     j;
  *
- *   for ( j = 0; j < l; j++ )
+ *   for( j = 0; j < l; j++ )
  *   {
- *     if ( i === j ) continue;
+ *     if( i === j ) continue;
  *     sumOthers += src[ j ];
  *   }
  *   return v < sumOthers;
@@ -3723,7 +3724,7 @@ function entityMap_( dst, src, onEach )
   }
   else
   {
-    _.assert( arguments.length === 3 , 'Expects two or three arguments' );
+    _.assert( arguments.length === 3, 'Expects two or three arguments' );
   }
   _.assert( _.routineIs( onEach ) );
 

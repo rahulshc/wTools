@@ -1,4 +1,5 @@
-( function _Map_test_s( ) {
+( function _Map_test_s()
+{
 
 'use strict';
 
@@ -84,7 +85,8 @@ function mapCloneAssigning( test )
 {
 
   test.case = 'an Example';
-  function Example() {
+  function Example()
+  {
     this.name = 'Peter';
     this.age = 27;
   };
@@ -132,7 +134,7 @@ function mapExtendConditional( test )
 {
 
   test.case = 'an unique object';
-  var got = _.mapExtendConditional( _.field.mapper.dstNotHas, { a : 1, b : 2 }, { a : 1 , c : 3 } );
+  var got = _.mapExtendConditional( _.field.mapper.dstNotHas, { a : 1, b : 2 }, { a : 1, c : 3 } );
   var expected = { a : 1, b : 2, c : 3 };
   test.identical( got, expected );
 
@@ -484,7 +486,7 @@ function mapComplement( test )
 {
 
   test.case = 'an object';
-  var got = _.mapComplement( { a : 1, b : 'ab' }, { a : 12 , c : 3 } );
+  var got = _.mapComplement( { a : 1, b : 'ab' }, { a : 12, c : 3 } );
   var expected = { a : 1, b : 'ab', c : 3 };
   test.identical( got, expected );
 
@@ -1070,7 +1072,7 @@ function mapsFlatten( test )
 
   test.case = 'trivial';
   var src = [ { a : 1, b : { c : 1, d : 1 } }, { e : 2, f : { g : { h : 2 } } } ];
-  var expected = { a : 1, 'b/c' : 1, 'b/d' : 1, e : 2, 'f/g/h' : 2 }
+  var expected = { 'a' : 1, 'b/c' : 1, 'b/d' : 1, 'e' : 2, 'f/g/h' : 2 }
   var got = _.mapsFlatten( src );
   test.identical( got, expected );
 
@@ -1233,21 +1235,22 @@ function mapValWithIndex( test )
 
   test.case = 'a list of arrays';
   var got = _.mapValWithIndex( { 0 : [ 'a', 3 ], 1 : [ 'b', 13 ], 2 : [ 'c', 7 ] }, 2 );
-  var expected = ['c', 7];
+  var expected = [ 'c', 7 ];
   test.identical( got, expected );
 
   test.case = 'a list of objects';
   var got = _.mapValWithIndex( { 0 : { a : 3 }, 1 : { b : 13 }, 2 : { c : 7 } }, 2 );
-  var expected = {c: 7};
+  var expected = { c : 7 };
   test.identical( got, expected );
 
-  /**/
+  /* - */
 
   if( !Config.debug )
   return;
 
   test.case = 'no arguments';
-  test.shouldThrowErrorSync( function() {
+  test.shouldThrowErrorSync( function()
+  {
     _.mapValWithIndex();
   });
 
@@ -1260,7 +1263,7 @@ function mapValWithIndex( test )
   test.case = 'first the four argument not wrapped into array';
   test.shouldThrowErrorSync( function()
   {
-    _.mapValWithIndex( 3, 13, 'c', 7 , 2 );
+    _.mapValWithIndex( 3, 13, 'c', 7, 2 );
   });
 
   test.case = 'redundant argument';
@@ -1283,7 +1286,7 @@ function mapKeyWithIndex( test )
 {
 
   test.case = 'last key';
-  var got = _.mapKeyWithIndex( { 'a': 3, 'b': 13, 'c': 7 }, 2 );
+  var got = _.mapKeyWithIndex( { 'a' : 3, 'b' : 13, 'c' : 7 }, 2 );
   var expected = 'c';
   test.identical( got, expected );
 
@@ -1412,7 +1415,7 @@ function mapToStr( test )
 {
 
   test.case = 'returns an empty string';
-  var got = _.mapToStr({ src : [  ], keyValDelimeter : ' : ',  entryDelimeter : '; '});
+  var got = _.mapToStr({ src : [], keyValDelimeter : ' : ',  entryDelimeter : '; ' });
   var expected = '';
   test.identical( got, expected );
 
@@ -1488,7 +1491,7 @@ function mapKeys( test )
   var expected = [ '3', '7', '13' ];
   test.identical( got, expected );
 
-  var f = function(){};
+  var f = () => {};
   Object.setPrototypeOf( f, String );
   f.a = 1;
   var got = _.mapKeys( f );
@@ -1703,7 +1706,7 @@ function mapAllKeys( test )
   Object.defineProperty( b, 'y', { enumerable : 0 } );
   var got = _.mapAllKeys( a );
   var expected = _expected.slice();
-  expected = expected.concat( [ 'a','b','k','y' ] );
+  expected = expected.concat( [ 'a', 'b', 'k', 'y' ] );
   test.identical( got.sort(), expected.sort() );
 
   //
@@ -2291,7 +2294,7 @@ function mapProperties( test )
   test.is( Object.keys( got ).length !== 0 );
   test.is( got.constructor.name === 'Date' );
   test.is( _.routineIs( got.getDate ) );
-  test.is( !!got.__proto__ );
+  test.is( _.routineIs( got.toString ) );
 
   /**/
 
@@ -3178,7 +3181,7 @@ function hashMapExtend( test )
 
   test.case = 'dst - null, src - filled simple map';
   var dst = null;
-  var src = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var src = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var got = _.hashMapExtend( dst, src );
   var exp = new Map( [ [ '1', 1 ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -3260,7 +3263,7 @@ function hashMapExtend( test )
 
   test.case = 'dst - empty, src - filled';
   var dst = new Map();
-  var src = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false, [ 1 ] : [ 1 ] };
+  var src = { 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false, '1' : [ 1 ] };
   var got = _.hashMapExtend( dst, src );
   var exp = new Map( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -3269,7 +3272,7 @@ function hashMapExtend( test )
 
   test.case = 'dst - filled, src - filled';
   var dst = new Map( [ [ { a : 1 }, { a : 1 } ] ] );
-  var src = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false, [ 1 ] : [ 1 ] };
+  var src = { 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false, '1' : [ 1 ] };
   var got = _.hashMapExtend( dst, src );
   var exp = new Map( [ [ { a : 1 }, { a : 1 } ], [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -3278,7 +3281,7 @@ function hashMapExtend( test )
 
   test.case = 'dst and src - almost identical';
   var dst = new Map( [ [ 1, [ 1 ] ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ] ] );
-  var src = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false, [ 1 ] : [ 1 ] };
+  var src = { 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false, '1' : [ 1 ] };
   var got = _.hashMapExtend( dst, src );
   var exp = new Map( [ [ 1, [ 1 ] ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ '1', [ 1 ] ], [ 'null', null ], [ 'undefined', undefined ], [ 'false', false ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -3287,7 +3290,7 @@ function hashMapExtend( test )
 
   test.case = 'dst and src have identical keys';
   var dst = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', 'str' ], [ undefined, undefined ], [ '', '' ], [ false, false ], [ [ 1 ], [ 1 ] ] ] );
-  var src = { 1 : 1, null : undefined, 'str' : '', undefined : null, '' : 'str', false : true, [ 1 ] : 2 };
+  var src = { 'null' : undefined, 'str' : '', 'undefined' : null, '' : 'str', 'false' : true, '1' : 2 };
   var got = _.hashMapExtend( dst, src );
   var exp = new Map( [ [ 1, 1 ], [ null, null ], [ 'str', '' ], [ undefined, undefined ], [ '', 'str' ], [ false, false ], [ [ 1 ], [ 1 ] ], [ '1', 2 ], [ 'null', undefined ], [ 'undefined', null ], [ 'false', true ] ] );
   test.identical( [ ... got.entries() ], [ ... exp.entries() ] );
@@ -3313,7 +3316,7 @@ function hashMapExtend( test )
   var dst = {};
   var src = new Map( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   var got = _.hashMapExtend( dst, src );
-  var exp = { 1 : [ 1 ], null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var exp = { '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.is( got === dst );
   test.is( got !== src );
@@ -3322,25 +3325,25 @@ function hashMapExtend( test )
   var dst = { a : 1 };
   var src = new Map( [ [ '1', [ 1 ] ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   var got = _.hashMapExtend( dst, src );
-  var exp = { a : 1, 1 : [ 1 ], null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var exp = { 'a' : 1, '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.is( got === dst );
   test.is( got !== src );
 
   test.case = 'dst and src - almost identical';
-  var dst = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var src = new Map( [ [ '1', 1 ], [ 'null', null ], [ 'str', 'str' ], [ 'undefined', undefined ], [ '', '' ], [ 'false', false ] ] );
   var got = _.hashMapExtend( dst, src );
-  var exp = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var exp = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.is( got === dst );
   test.is( got !== src );
 
   test.case = 'dst and src have identical keys';
-  var dst = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var src = new Map( [ [ '1', [ 1 ] ], [ 'null', undefined ], [ 'str', '' ], [ 'undefined', null ], [ '', 'str' ], [ 'false', true ] ] );
   var got = _.hashMapExtend( dst, src );
-  var exp = { 1 : [ 1 ], null : undefined, 'str' : '', undefined : null, '' : 'str', false : true };
+  var exp = { '1' : [ 1 ], 'null' : undefined, 'str' : '', 'undefined' : null, '' : 'str', 'false' : true };
   test.identical( got, exp );
   test.is( got === dst );
   test.is( got !== src );
@@ -3362,45 +3365,45 @@ function hashMapExtend( test )
 
   test.case = 'dst - empty, src - filled';
   var dst = {};
-  var src = { 1 : [ 1 ], null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var src = { '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var got = _.hashMapExtend( dst, src );
-  var exp = { 1 : [ 1 ], null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var exp = { '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.is( got === dst );
   test.is( got !== src );
 
   test.case = 'dst - filled, src - filled';
   var dst = { a : 1 };
-  var src = { 1 : [ 1 ], null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var src = { '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var got = _.hashMapExtend( dst, src );
-  var exp = { a : 1, 1 : [ 1 ], null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var exp = { 'a' : 1, '1' : [ 1 ], 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.is( got === dst );
   test.is( got !== src );
 
   test.case = 'dst and src - almost identical';
-  var dst = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
-  var src = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
+  var src = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var got = _.hashMapExtend( dst, src );
-  var exp = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var exp = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.is( got === dst );
   test.is( got !== src );
 
   test.case = 'dst and src have identical keys';
-  var dst = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
-  var src = { 1 : [ 1 ], null : undefined, 'str' : '', undefined : null, '' : 'str', false : true };
+  var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
+  var src = { '1' : [ 1 ], 'null' : undefined, 'str' : '', 'undefined' : null, '' : 'str', 'false' : true };
   var got = _.hashMapExtend( dst, src );
-  var exp = { 1 : [ 1 ], null : undefined, 'str' : '', undefined : null, '' : 'str', false : true };
+  var exp = { '1' : [ 1 ], 'null' : undefined, 'str' : '', 'undefined' : null, '' : 'str', 'false' : true };
   test.identical( got, exp );
   test.is( got === dst );
   test.is( got !== src );
 
   test.case = 'dst === src';
-  var dst = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var dst = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   var src = dst;
   var got = _.hashMapExtend( dst, src );
-  var exp = { 1 : 1, null : null, 'str' : 'str', undefined : undefined, '' : '', false : false };
+  var exp = { '1' : 1, 'null' : null, 'str' : 'str', 'undefined' : undefined, '' : '', 'false' : false };
   test.identical( got, exp );
   test.is( got === dst );
   test.is( got === src );
@@ -3548,7 +3551,7 @@ function mapButConditional( test )
 
 function mapButConditionalThreeArguments_( test )
 {
-  var filter = function ( dstContainer, srcContainer, key )
+  var filter = ( dstContainer, srcContainer, key ) =>
   {
     if( !_.primitiveIs( srcContainer[ key ] ) )
     return false;
@@ -3805,7 +3808,7 @@ function mapButConditionalThreeArguments_( test )
 
 function mapButConditionalDstMapNull_( test )
 {
-  var filter = function ( dstContainer, srcContainer, key )
+  var filter = ( dstContainer, srcContainer, key ) =>
   {
     if( !_.primitiveIs( srcContainer[ key ] ) )
     return false;
@@ -3996,7 +3999,7 @@ function mapButConditionalDstMapNull_( test )
 
 function mapButConditionalDstMapMap_( test )
 {
-  var filter = function ( dstContainer, srcContainer, key )
+  var filter = ( dstContainer, srcContainer, key ) =>
   {
     if( !_.primitiveIs( srcContainer[ key ] ) )
     return false;
@@ -5627,13 +5630,13 @@ function mapButIgnoringUndefinesDstMapMap_( test )
   test.case = 'dstMap - has identical keys, srcMap - filled map has undefined, butMap - filled array, has identical keys';
   var dstMap = { 0 : 'some', 2 : 'key', a : 1 };
   var srcMap = [ undefined, 0, undefined, 1 ];
-  var screenMap = [ { 0 : 1 }, [ '3', 'b', '1', '3'] ];
+  var screenMap = [ { 0 : 1 }, [ '3', 'b', '1', '3' ] ];
   var got = _.mapButIgnoringUndefines_( dstMap, srcMap, screenMap );
   var expected = { 0 : 'some', 2 : 'key', a : 1 };
   test.identical( got, expected );
   test.is( got === dstMap );
   test.identical( srcMap, [ undefined, 0, undefined, 1 ] );
-  test.identical( screenMap, [ { 0 : 1 }, [ '3', 'b', '1', '3'] ] );
+  test.identical( screenMap, [ { 0 : 1 }, [ '3', 'b', '1', '3' ] ] );
 
   test.close( 'srcMap - array' );
 }
@@ -5654,7 +5657,7 @@ function mapOwnBut( test )
   test.identical( got, expected );
 
   test.case = 'an object';
-  var got = _.mapOwnBut( { a : 7, 'toString' : 5 }, { b : 33, c : 77 } );
+  var got = _.mapOwnBut( { a : 7, toString : 5 }, { b : 33, c : 77 } );
   var expected = { a : 7 };
   test.identical( got, expected );
 
@@ -5878,7 +5881,7 @@ function mapOwnButThreeArguments_( test )
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
   var got = _.mapOwnBut_( srcMap, screenMap );
-  var expected = { 2 : 'b', 3 : 1, };
+  var expected = { 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
@@ -6081,7 +6084,7 @@ function mapOwnButDstMapNull_( test )
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
   var got = _.mapOwnBut_( null, srcMap, screenMap );
-  var expected = { 2 : 'b', 3 : 1, };
+  var expected = { 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
@@ -6277,7 +6280,7 @@ function mapOwnButDstMapMap_( test )
   var srcMap = [ 'a', 0, 'b', 1 ];
   var screenMap = [ { 0 : 1 }, { 1 : 2 } ];
   var got = _.mapOwnBut_( dstMap, srcMap, screenMap );
-  var expected = { aa : 1, bb : 2, 2 : 'b', 3 : 1, };
+  var expected = { aa : 1, bb : 2, 2 : 'b', 3 : 1 };
   test.identical( got, expected );
   test.is( got !== srcMap );
   test.identical( srcMap, [ 'a', 0, 'b', 1 ] );
@@ -9113,7 +9116,7 @@ function mapsAreIdentical( test )
   test.identical( got, expected );
 
   test.case = 'not the same values in'
-  var got = _.mapsAreIdentical( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b': 14 } );
+  var got = _.mapsAreIdentical( { 'a' : 7, 'b' : 13 }, { 'a' : 7, 'b' : 14 } );
   var expected = false;
   test.identical( got, expected );
 
@@ -9162,19 +9165,19 @@ function mapsAreIdentical( test )
   });
   test.shouldThrowErrorSync( function()
   {
-    _.mapsAreIdentical( 'a','b' );
+    _.mapsAreIdentical( 'a', 'b' );
   });
   test.shouldThrowErrorSync( function()
   {
-    _.mapsAreIdentical( 1,3 );
+    _.mapsAreIdentical( 1, 3 );
   });
   test.shouldThrowErrorSync( function()
   {
-    _.mapsAreIdentical( null,null );
+    _.mapsAreIdentical( null, null );
   });
   test.shouldThrowErrorSync( function()
   {
-    _.mapsAreIdentical( undefined,undefined );
+    _.mapsAreIdentical( undefined, undefined );
   });
 
   test.case = 'too few arguments';
@@ -9280,8 +9283,8 @@ function objectSatisfy( test )
 
   test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
   var identicalWith = () => true;
-  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
+  var template = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith }, b : 2, c : 3 };
   var got = _.objectSatisfy( template, src );
   test.identical( got, true );
 
@@ -9290,44 +9293,44 @@ function objectSatisfy( test )
   test.case = 'template === src, values - undefined';
   var template = { a : undefined, b : undefined, c : undefined };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src } );
+  var got = _.objectSatisfy( { template, src } );
   test.identical( got, true );
 
   test.case = 'template === src';
   var template = { a : 1, b : 2, c : 3 };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src } );
+  var got = _.objectSatisfy( { template, src } );
   test.identical( got, true );
 
   test.case = 'src is not an object';
   var template = { a : 1, b : 2, c : 3 };
   var src = 'wrong';
-  var got = _.objectSatisfy( { template : template, src : src } );
+  var got = _.objectSatisfy( { template, src } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src } );
+  var got = _.objectSatisfy( { template, src } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : undefined, d : 3 };
-  var got = _.objectSatisfy( { template : template, src : src } );
+  var got = _.objectSatisfy( { template, src } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
   var template = { a : { val : 1 }, b : 2, c : 3 };
   var src = { a : { val : 1 }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src } );
+  var got = _.objectSatisfy( { template, src } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
   var identicalWith = () => true;
-  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src } );
+  var template = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template, src } );
   test.identical( got, true );
 
   test.close( 'default option' );
@@ -9339,50 +9342,50 @@ function objectSatisfy( test )
   test.case = 'template === src, values - undefined';
   var template = { a : undefined, b : undefined, c : undefined };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0 } );
   test.identical( got, true );
 
   test.case = 'template === src';
   var template = { a : 1, b : 2, c : 3 };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0 } );
   test.identical( got, true );
 
   test.case = 'src is not an object';
   var template = { a : 1, b : 2, c : 3 };
   var src = 'wrong';
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : undefined, d : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
-  var template = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var src = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  var template = { a : 1, b : 2, c : 3, identicalWith };
+  var src = { a : 1, b : 2, c : 3, identicalWith };
+  var got = _.objectSatisfy( { template, src, levels : 0 } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
   var template = { a : { val : 1 }, b : 2, c : 3 };
   var src = { a : { val : 1 }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
   var identicalWith = () => true;
-  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0 } );
+  var template = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template, src, levels : 0 } );
   test.identical( got, false );
 
   test.close( 'levels - 0' );
@@ -9394,50 +9397,50 @@ function objectSatisfy( test )
   test.case = 'template === src, values - undefined';
   var template = { a : undefined, b : undefined, c : undefined };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  var got = _.objectSatisfy( { template, src, levels : -1 } );
   test.identical( got, true );
 
   test.case = 'template === src';
   var template = { a : 1, b : 2, c : 3 };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  var got = _.objectSatisfy( { template, src, levels : -1 } );
   test.identical( got, true );
 
   test.case = 'src is not an object';
   var template = { a : 1, b : 2, c : 3 };
   var src = 'wrong';
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  var got = _.objectSatisfy( { template, src, levels : -1 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  var got = _.objectSatisfy( { template, src, levels : -1 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : undefined, d : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  var got = _.objectSatisfy( { template, src, levels : -1 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
-  var template = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var src = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  var template = { a : 1, b : 2, c : 3, identicalWith };
+  var src = { a : 1, b : 2, c : 3, identicalWith };
+  var got = _.objectSatisfy( { template, src, levels : -1 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
   var template = { a : { val : 1 }, b : 2, c : 3 };
   var src = { a : { val : 1 }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  var got = _.objectSatisfy( { template, src, levels : -1 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
   var identicalWith = () => true;
-  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1 } );
+  var template = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template, src, levels : -1 } );
   test.identical( got, false );
 
   test.close( 'levels - -1' );
@@ -9449,50 +9452,50 @@ function objectSatisfy( test )
   test.case = 'template === src, values - undefined';
   var template = { a : undefined, b : undefined, c : undefined };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  var got = _.objectSatisfy( { template, src, levels : 2 } );
   test.identical( got, true );
 
   test.case = 'template === src';
   var template = { a : 1, b : 2, c : 3 };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  var got = _.objectSatisfy( { template, src, levels : 2 } );
   test.identical( got, true );
 
   test.case = 'src is not an object';
   var template = { a : 1, b : 2, c : 3 };
   var src = 'wrong';
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  var got = _.objectSatisfy( { template, src, levels : 2 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  var got = _.objectSatisfy( { template, src, levels : 2 } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : undefined, d : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  var got = _.objectSatisfy( { template, src, levels : 2 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
-  var template = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var src = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  var template = { a : 1, b : 2, c : 3, identicalWith };
+  var src = { a : 1, b : 2, c : 3, identicalWith };
+  var got = _.objectSatisfy( { template, src, levels : 2 } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
   var template = { a : { val : 1 }, b : 2, c : 3 };
   var src = { a : { val : 1 }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  var got = _.objectSatisfy( { template, src, levels : 2 } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
   var identicalWith = () => true;
-  var template = { a : { val : { identicalWith : identicalWith } }, b : 2, c : 3 };
-  var src = { a : { val : { identicalWith : identicalWith } }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2 } );
+  var template = { a : { val : { identicalWith } }, b : 2, c : 3 };
+  var src = { a : { val : { identicalWith } }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template, src, levels : 2 } );
   test.identical( got, true );
 
   test.close( 'levels - 2' );
@@ -9526,44 +9529,44 @@ function objectSatisfyOptionStrict( test )
   test.case = 'template === src, values - undefined';
   var template = { a : undefined, b : undefined, c : undefined };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template === src';
   var template = { a : 1, b : 2, c : 3 };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'src is not an object';
   var template = { a : 1, b : 2, c : 3 };
   var src = 'wrong';
-  var got = _.objectSatisfy( { template : template, src : src, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : undefined, d : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
   var template = { a : { val : 1 }, b : 2, c : 3 };
   var src = { a : { val : 1 }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
   var identicalWith = () => true;
-  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, strict : 0 } );
+  var template = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template, src, strict : 0 } );
   test.identical( got, true );
 
   test.close( 'default option levels' );
@@ -9575,50 +9578,50 @@ function objectSatisfyOptionStrict( test )
   test.case = 'template === src, values - undefined';
   var template = { a : undefined, b : undefined, c : undefined };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template === src';
   var template = { a : 1, b : 2, c : 3 };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'src is not an object';
   var template = { a : 1, b : 2, c : 3 };
   var src = 'wrong';
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : undefined, d : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
-  var template = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var src = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0, strict : 0 } );
+  var template = { a : 1, b : 2, c : 3, identicalWith };
+  var src = { a : 1, b : 2, c : 3, identicalWith };
+  var got = _.objectSatisfy( { template, src, levels : 0, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
   var template = { a : { val : 1 }, b : 2, c : 3 };
   var src = { a : { val : 1 }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 0, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
   var identicalWith = () => true;
-  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 0, strict : 0 } );
+  var template = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template, src, levels : 0, strict : 0 } );
   test.identical( got, false );
 
   test.close( 'levels - 0' );
@@ -9630,50 +9633,50 @@ function objectSatisfyOptionStrict( test )
   test.case = 'template === src, values - undefined';
   var template = { a : undefined, b : undefined, c : undefined };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : -1, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template === src';
   var template = { a : 1, b : 2, c : 3 };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : -1, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'src is not an object';
   var template = { a : 1, b : 2, c : 3 };
   var src = 'wrong';
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : -1, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : -1, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : undefined, d : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : -1, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
-  var template = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var src = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1, strict : 0 } );
+  var template = { a : 1, b : 2, c : 3, identicalWith };
+  var src = { a : 1, b : 2, c : 3, identicalWith };
+  var got = _.objectSatisfy( { template, src, levels : -1, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
   var template = { a : { val : 1 }, b : 2, c : 3 };
   var src = { a : { val : 1 }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : -1, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
   var identicalWith = () => true;
-  var template = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var src = { a : { val : 1, identicalWith : identicalWith }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : -1, strict : 0 } );
+  var template = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var src = { a : { val : 1, identicalWith }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template, src, levels : -1, strict : 0 } );
   test.identical( got, false );
 
   test.close( 'levels - -1' );
@@ -9685,50 +9688,50 @@ function objectSatisfyOptionStrict( test )
   test.case = 'template === src, values - undefined';
   var template = { a : undefined, b : undefined, c : undefined };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 2, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template === src';
   var template = { a : 1, b : 2, c : 3 };
   var src = template;
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 2, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'src is not an object';
   var template = { a : 1, b : 2, c : 3 };
   var src = 'wrong';
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 2, strict : 0 } );
   test.identical( got, false );
 
   test.case = 'template is object, src identical to template, without identicalWith';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 2, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template';
   var template = { a : 1, b : 2, c : 3 };
   var src = { a : 1, b : 2, c : undefined, d : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 2, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template is object, src identical to template, without identicalWith';
-  var template = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var src = { a : 1, b : 2, c : 3, identicalWith : identicalWith };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2, strict : 0 } );
+  var template = { a : 1, b : 2, c : 3, identicalWith };
+  var src = { a : 1, b : 2, c : 3, identicalWith };
+  var got = _.objectSatisfy( { template, src, levels : 2, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template, values is objects, without identicalWith';
   var template = { a : { val : 1 }, b : 2, c : 3 };
   var src = { a : { val : 1 }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2, strict : 0 } );
+  var got = _.objectSatisfy( { template, src, levels : 2, strict : 0 } );
   test.identical( got, true );
 
   test.case = 'template is object, src not identical to template, values is objects, with identicalWith';
   var identicalWith = () => true;
-  var template = { a : { val : { identicalWith : identicalWith } }, b : 2, c : 3 };
-  var src = { a : { val : { identicalWith : identicalWith } }, b : 2, c : 3 };
-  var got = _.objectSatisfy( { template : template, src : src, levels : 2, strict : 0 } );
+  var template = { a : { val : { identicalWith } }, b : 2, c : 3 };
+  var src = { a : { val : { identicalWith } }, b : 2, c : 3 };
+  var got = _.objectSatisfy( { template, src, levels : 2, strict : 0 } );
   test.identical( got, true );
 
   test.close( 'levels - 2' );
@@ -9750,7 +9753,8 @@ function mapOwnKey( test )
   test.identical( got, expected );
 
   test.case = 'second argument is symbol';
-  var symbol = Symbol( 'b' ), obj = { a : 7, [ symbol ] : 13 };
+  var symbol = Symbol( 'b' );
+  var obj = { a : 7, [ symbol ] : 13 };
   var got = _.mapOwnKey( obj, symbol );
   var expected = true;
   test.identical( got, expected );
@@ -9833,7 +9837,7 @@ function mapHasAll( test )
 
   test.case = 'src has enumerable';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapHasAll( a, { a : 1 } );
   test.is( got );
@@ -9846,13 +9850,13 @@ function mapHasAll( test )
   /* for..in skips enumerable */
   var src = { a : 1 };
   var screen = {};
-  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  Object.defineProperty( screen, 'a', { enumerable : 0, value : 3 } );
   var got = _.mapHasAll( src, screen );
   test.is( got );
 
   test.case = 'screen has undefined';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapHasAll( a, { a : undefined } );
   test.is( got );
@@ -9925,12 +9929,12 @@ function mapHasAny( test )
   test.is( got );
 
   test.case = 'has no one';
-  var got = _.mapHasAny( { a : 1, b : 2 }, { x : 1, y : 1} );
+  var got = _.mapHasAny( { a : 1, b : 2 }, { x : 1, y : 1 } );
   test.is( !got );
 
   test.case = 'src has enumerable';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapHasAny( a, { a : 1 } );
   test.is( got );
@@ -9943,13 +9947,13 @@ function mapHasAny( test )
   /* for..in skips enumerable */
   var src = { a : 1 };
   var screen = {};
-  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  Object.defineProperty( screen, 'a', { enumerable : 0, value : 3 } );
   var got = _.mapHasAny( src, screen );
   test.is( !got );
 
   test.case = 'screen has undefined';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapHasAny( a, { a : undefined } );
   test.is( got );
@@ -10022,12 +10026,12 @@ function mapHasNone( test )
   test.is( !got );
 
   test.case = 'has no one';
-  var got = _.mapHasNone( { a : 1, b : 2 }, { x : 1, y : 1} );
+  var got = _.mapHasNone( { a : 1, b : 2 }, { x : 1, y : 1 } );
   test.is( got );
 
   test.case = 'src has non enumerable';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapHasNone( a, { a : 1 } );
   test.is( !got );
@@ -10040,13 +10044,13 @@ function mapHasNone( test )
   /* for..in skips enumerable */
   var src = { a : 1 };
   var screen = {};
-  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  Object.defineProperty( screen, 'a', { enumerable : 0, value : 3 } );
   var got = _.mapHasNone( src, screen );
   test.is( got );
 
   test.case = 'screen has undefined';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapHasNone( a, { a : undefined } );
   test.is( !got );
@@ -10123,12 +10127,12 @@ function mapOwnAll( test )
   test.is( !got );
 
   test.case = 'has no one';
-  var got = _.mapOwnAll( { a : 1, b : 2 }, { x : 1, y : 1} );
+  var got = _.mapOwnAll( { a : 1, b : 2 }, { x : 1, y : 1 } );
   test.is( !got );
 
   test.case = 'src has enumerable';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapOwnAll( a, { a : 1 } );
   test.is( got );
@@ -10141,13 +10145,13 @@ function mapOwnAll( test )
   /* for..in skips enumerable */
   var src = { a : 1 };
   var screen = {};
-  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  Object.defineProperty( screen, 'a', { enumerable : 0, value : 3 } );
   var got = _.mapOwnAll( src, screen );
   test.is( got );
 
   test.case = 'screen has undefined';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapOwnAll( a, { a : undefined } );
   test.is( got );
@@ -10187,7 +10191,7 @@ function mapOwnAll( test )
       var a = {};
       var b = { a : 1 };
       Object.setPrototypeOf( a, b )
-      _.mapOwnAll( a,{ a : 1 } );
+      _.mapOwnAll( a, { a : 1 } );
     });
 
     test.case = 'screen is not a map';
@@ -10231,12 +10235,12 @@ function mapOwnAny( test )
   test.is( got );
 
   test.case = 'has no one';
-  var got = _.mapOwnAny( { a : 1, b : 2 }, { x : 1, y : 1} );
+  var got = _.mapOwnAny( { a : 1, b : 2 }, { x : 1, y : 1 } );
   test.is( !got );
 
   test.case = 'src has enumerable';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapOwnAny( a, { a : 1 } );
   test.is( got );
@@ -10249,13 +10253,13 @@ function mapOwnAny( test )
   /* for..in skips enumerable */
   var src = { a : 1 };
   var screen = {};
-  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  Object.defineProperty( screen, 'a', { enumerable : 0, value : 3 } );
   var got = _.mapOwnAny( src, screen );
   test.is( !got );
 
   test.case = 'screen has undefined';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapOwnAny( a, { a : undefined } );
   test.is( got );
@@ -10295,7 +10299,7 @@ function mapOwnAny( test )
       var a = {};
       var b = { a : 1 };
       Object.setPrototypeOf( a, b )
-      _.mapOwnAny( a,{ a : 1 } );
+      _.mapOwnAny( a, { a : 1 } );
     });
 
     test.case = 'screen is not a map';
@@ -10339,12 +10343,12 @@ function mapOwnNone( test )
   test.is( !got );
 
   test.case = 'has no one';
-  var got = _.mapOwnNone( { a : 1, b : 2 }, { x : 1, y : 1} );
+  var got = _.mapOwnNone( { a : 1, b : 2 }, { x : 1, y : 1 } );
   test.is( got );
 
   test.case = 'src has enumerable';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapOwnNone( a, { a : 1 } );
   test.is( !got );
@@ -10357,13 +10361,13 @@ function mapOwnNone( test )
   /* for..in skips enumerable */
   var src = { a : 1 };
   var screen = {};
-  Object.defineProperty( screen, 'a',{ enumerable : 0, value : 3 } );
+  Object.defineProperty( screen, 'a', { enumerable : 0, value : 3 } );
   var got = _.mapOwnNone( src, screen );
   test.is( got );
 
   test.case = 'screen has undefined';
   var a = {};
-  Object.defineProperty( a, 'a',{ enumerable : 0 } );
+  Object.defineProperty( a, 'a', { enumerable : 0 } );
 
   var got = _.mapOwnNone( a, { a : undefined } );
   test.is( !got );
@@ -10403,7 +10407,7 @@ function mapOwnNone( test )
       var a = {};
       var b = { a : 1 };
       Object.setPrototypeOf( a, b )
-      _.mapOwnNone( a,{ a : 1 } );
+      _.mapOwnNone( a, { a : 1 } );
     });
 
     test.case = 'screen is not a map';
@@ -10429,7 +10433,7 @@ function sureMapHasExactly( test )
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.sureMapHasExactly( srcMap, screenMap ), true );
   test.identical( _.sureMapHasExactly( srcMap, screenMap, msg ), true );
   test.identical( _.sureMapHasExactly( srcMap, screenMap, msg, 'msg' ), true );
@@ -10442,7 +10446,7 @@ function sureMapHasExactly( test )
   {
     _.sureMapHasExactly( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10452,12 +10456,12 @@ function sureMapHasExactly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasExactly( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10467,12 +10471,12 @@ function sureMapHasExactly( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasExactly( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10482,12 +10486,12 @@ function sureMapHasExactly( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasExactly( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10497,12 +10501,12 @@ function sureMapHasExactly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasExactly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10512,12 +10516,12 @@ function sureMapHasExactly( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasExactly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10534,7 +10538,7 @@ function sureMapOwnExactly( test )
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.sureMapOwnExactly( srcMap, screenMap ), true );
   test.identical( _.sureMapOwnExactly( srcMap, screenMap, msg ), true );
   test.identical( _.sureMapOwnExactly( srcMap, screenMap, msg, 'msg' ), true );
@@ -10547,7 +10551,7 @@ function sureMapOwnExactly( test )
   {
     _.sureMapOwnExactly( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10557,12 +10561,12 @@ function sureMapOwnExactly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnExactly( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10572,12 +10576,12 @@ function sureMapOwnExactly( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnExactly( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10587,12 +10591,12 @@ function sureMapOwnExactly( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnExactly( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10602,12 +10606,12 @@ function sureMapOwnExactly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnExactly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10617,12 +10621,12 @@ function sureMapOwnExactly( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnExactly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10639,7 +10643,7 @@ function sureMapHasOnly( test )
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.sureMapHasOnly( srcMap, screenMap ), true );
   test.identical( _.sureMapHasOnly( srcMap, screenMap, msg ), true );
   test.identical( _.sureMapHasOnly( srcMap, screenMap, msg, 'msg' ), true );
@@ -10648,14 +10652,14 @@ function sureMapHasOnly( test )
   test.case = 'check error message, no msg';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
   try
   {
     _.sureMapHasOnly( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10665,12 +10669,12 @@ function sureMapHasOnly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasOnly( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10680,12 +10684,12 @@ function sureMapHasOnly( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasOnly( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10695,12 +10699,12 @@ function sureMapHasOnly( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasOnly( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10710,12 +10714,12 @@ function sureMapHasOnly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10725,12 +10729,12 @@ function sureMapHasOnly( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10747,7 +10751,7 @@ function sureMapOwnOnly( test )
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.sureMapOwnOnly( srcMap, screenMap ), true );
   test.identical( _.sureMapOwnOnly( srcMap, screenMap, msg ), true );
   test.identical( _.sureMapOwnOnly( srcMap, screenMap, msg, 'msg' ), true );
@@ -10760,7 +10764,7 @@ function sureMapOwnOnly( test )
   {
     _.sureMapOwnOnly( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10770,12 +10774,12 @@ function sureMapOwnOnly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnOnly( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10785,12 +10789,12 @@ function sureMapOwnOnly( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnOnly( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10800,12 +10804,12 @@ function sureMapOwnOnly( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnOnly( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10815,12 +10819,12 @@ function sureMapOwnOnly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10830,12 +10834,12 @@ function sureMapOwnOnly( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10852,7 +10856,7 @@ function sureMapHasAll( test )
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.sureMapHasAll( srcMap, screenMap ), true );
   test.identical( _.sureMapHasAll( srcMap, screenMap, msg ), true );
   test.identical( _.sureMapHasAll( srcMap, screenMap, msg, 'msg' ), true );
@@ -10865,7 +10869,7 @@ function sureMapHasAll( test )
   {
     _.sureMapHasAll( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10875,12 +10879,12 @@ function sureMapHasAll( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasAll( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10890,12 +10894,12 @@ function sureMapHasAll( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasAll( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10905,12 +10909,12 @@ function sureMapHasAll( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasAll( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10920,12 +10924,12 @@ function sureMapHasAll( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10935,12 +10939,12 @@ function sureMapHasAll( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasAll( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10957,7 +10961,7 @@ function sureMapOwnAll( test )
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.sureMapOwnAll( srcMap, screenMap ), true );
   test.identical( _.sureMapOwnAll( srcMap, screenMap, msg ), true );
   test.identical( _.sureMapOwnAll( srcMap, screenMap, msg, 'msg' ), true );
@@ -10970,7 +10974,7 @@ function sureMapOwnAll( test )
   {
     _.sureMapOwnAll( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10980,12 +10984,12 @@ function sureMapOwnAll( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnAll( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -10995,12 +10999,12 @@ function sureMapOwnAll( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnAll( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11010,12 +11014,12 @@ function sureMapOwnAll( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnAll( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11025,12 +11029,12 @@ function sureMapOwnAll( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnAll( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11040,12 +11044,12 @@ function sureMapOwnAll( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnAll( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11062,7 +11066,7 @@ function sureMapHasNone( test )
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'e' : 13, 'f' : 77, 'g' : 3, 'h' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.sureMapHasNone( srcMap, screenMap ), true );
   test.identical( _.sureMapHasNone( srcMap, screenMap, msg ), true );
   test.identical( _.sureMapHasNone( srcMap, screenMap, msg, 'msg' ), true );
@@ -11075,7 +11079,7 @@ function sureMapHasNone( test )
   {
     _.sureMapHasNone( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11085,12 +11089,12 @@ function sureMapHasNone( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasNone( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11100,12 +11104,12 @@ function sureMapHasNone( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasNone( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11115,12 +11119,12 @@ function sureMapHasNone( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasNone( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11130,12 +11134,12 @@ function sureMapHasNone( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11145,12 +11149,12 @@ function sureMapHasNone( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapHasNone( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11167,7 +11171,7 @@ function sureMapOwnNone( test )
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'e' : 13, 'f' : 77, 'g' : 3, 'h' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.sureMapOwnNone( srcMap, screenMap ), true );
   test.identical( _.sureMapOwnNone( srcMap, screenMap, msg ), true );
   test.identical( _.sureMapOwnNone( srcMap, screenMap, msg, 'msg' ), true );
@@ -11180,7 +11184,7 @@ function sureMapOwnNone( test )
   {
     _.sureMapOwnNone( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11190,12 +11194,12 @@ function sureMapOwnNone( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnNone( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11205,12 +11209,12 @@ function sureMapOwnNone( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnNone( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11220,12 +11224,12 @@ function sureMapOwnNone( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnNone( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11235,12 +11239,12 @@ function sureMapOwnNone( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11250,12 +11254,12 @@ function sureMapOwnNone( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.sureMapOwnNone( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11271,19 +11275,12 @@ function assertMapHasFields( test )
 {
   var err;
 
-  // in normal mode this test should throw error. The routine return true when Config.debug === false
-  if( !Config.debug )
-  {
-    test.case = 'Config.debug === false';
-    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-    test.identical( _.assertMapHasFields( srcMap, screenMaps ), true );
-  }
+  /* */
 
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.assertMapHasFields( srcMap, screenMap ), true );
   test.identical( _.assertMapHasFields( srcMap, screenMap, msg ), true );
   test.identical( _.assertMapHasFields( srcMap, screenMap, msg, 'msg' ), true );
@@ -11296,7 +11293,7 @@ function assertMapHasFields( test )
   {
     _.assertMapHasFields( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11306,12 +11303,12 @@ function assertMapHasFields( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasFields( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11321,12 +11318,12 @@ function assertMapHasFields( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasFields( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11336,12 +11333,12 @@ function assertMapHasFields( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasFields( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11351,12 +11348,12 @@ function assertMapHasFields( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasFields( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11366,17 +11363,27 @@ function assertMapHasFields( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasFields( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Config.debug === false';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  test.shouldThrowErrorSync( () => _.assertMapHasFields( srcMap, screenMaps ) );
 }
 
 //
@@ -11385,18 +11392,12 @@ function assertMapOwnFields( test )
 {
   var err;
 
-// in normal mode this test should throw error. The routine return true when Config.debug === false
-  if( !Config.debug )
-  {
-    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-    test.identical( _.assertMapOwnFields( srcMap, screenMaps ), true );
-  }
+  /* */
 
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.assertMapOwnFields( srcMap, screenMap ), true );
   test.identical( _.assertMapOwnFields( srcMap, screenMap, msg ), true );
   test.identical( _.assertMapOwnFields( srcMap, screenMap, msg, 'msg' ), true );
@@ -11409,7 +11410,7 @@ function assertMapOwnFields( test )
   {
     _.assertMapOwnFields( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11419,12 +11420,12 @@ function assertMapOwnFields( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnFields( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11434,12 +11435,12 @@ function assertMapOwnFields( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnFields( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11449,12 +11450,12 @@ function assertMapOwnFields( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnFields( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11464,12 +11465,12 @@ function assertMapOwnFields( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnFields( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11479,17 +11480,27 @@ function assertMapOwnFields( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnFields( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'different values';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  test.shouldThrowErrorSync( () => _.assertMapOwnFields( srcMap, screenMaps ) );
 }
 
 //
@@ -11498,19 +11509,12 @@ function assertMapHasOnly( test )
 {
   var err;
 
-// in normal mode this test should throw error. The routine return true when Config.debug === false
-  if( !Config.debug )
-  {
-    test.case = 'Config.debug === false';
-    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-    test.identical( _.assertMapHasOnly( srcMap, screenMaps ), true );
-  }
+  /* */
 
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.assertMapHasOnly( srcMap, screenMap ), true );
   test.identical( _.assertMapHasOnly( srcMap, screenMap, msg ), true );
   test.identical( _.assertMapHasOnly( srcMap, screenMap, msg, 'msg' ), true );
@@ -11523,7 +11527,7 @@ function assertMapHasOnly( test )
   {
     _.assertMapHasOnly( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11533,12 +11537,12 @@ function assertMapHasOnly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasOnly( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11548,12 +11552,12 @@ function assertMapHasOnly( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasOnly( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11563,12 +11567,12 @@ function assertMapHasOnly( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasOnly( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11578,12 +11582,12 @@ function assertMapHasOnly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11593,17 +11597,27 @@ function assertMapHasOnly( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Config.debug === false';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  test.shouldThrowErrorSync( () => _.assertMapHasOnly( srcMap, screenMaps ) );
 }
 
 //
@@ -11612,19 +11626,12 @@ function assertMapOwnOnly( test )
 {
   var err;
 
-// in normal mode this test should throw error. The routine return true when Config.debug === false
-  if( !Config.debug )
-  {
-    test.case = 'Config.debug === false';
-    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-    test.identical( _.assertMapOwnOnly( srcMap, screenMaps ), true );
-  }
+  /* */
 
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.assertMapOwnOnly( srcMap, screenMap ), true );
   test.identical( _.assertMapOwnOnly( srcMap, screenMap, msg ), true );
   test.identical( _.assertMapOwnOnly( srcMap, screenMap, msg, 'msg' ), true );
@@ -11637,7 +11644,7 @@ function assertMapOwnOnly( test )
   {
     _.assertMapOwnOnly( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11647,12 +11654,12 @@ function assertMapOwnOnly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnOnly( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11662,12 +11669,12 @@ function assertMapOwnOnly( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnOnly( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11677,12 +11684,12 @@ function assertMapOwnOnly( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnOnly( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11692,12 +11699,12 @@ function assertMapOwnOnly( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnOnly( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11707,17 +11714,27 @@ function assertMapOwnOnly( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnOnly( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Config.debug === false';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  test.shouldThrowErrorSync( () => _.assertMapOwnOnly( srcMap, screenMaps ) );
 }
 
 //
@@ -11726,19 +11743,12 @@ function assertMapHasNone( test )
 {
   var err;
 
-// in normal mode this test should throw error. The routine return true when Config.debug === false
-  if( !Config.debug )
-  {
-    test.case = 'Config.debug === false';
-    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-    test.identical( _.assertMapHasNone( srcMap, screenMaps ), true );
-  }
+  /* - */
 
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'e' : 13, 'f' : 77, 'g' : 3, 'h' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.assertMapHasNone( srcMap, screenMap ), true );
   test.identical( _.assertMapHasNone( srcMap, screenMap, msg ), true );
   test.identical( _.assertMapHasNone( srcMap, screenMap, msg, 'msg' ), true );
@@ -11751,7 +11761,7 @@ function assertMapHasNone( test )
   {
     _.assertMapHasNone( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11761,12 +11771,12 @@ function assertMapHasNone( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasNone( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11776,12 +11786,12 @@ function assertMapHasNone( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasNone( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11791,12 +11801,12 @@ function assertMapHasNone( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasNone( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11806,12 +11816,12 @@ function assertMapHasNone( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11821,17 +11831,27 @@ function assertMapHasNone( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapHasNone( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Config.debug === false';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  test.shouldThrowErrorSync( () => _.assertMapHasNone( srcMap, screenMaps ) );
 }
 
 //
@@ -11840,19 +11860,12 @@ function assertMapOwnNone( test )
 {
   var err;
 
-// in normal mode this test should throw error. The routine return true when Config.debug === false
-  if( !Config.debug )
-  {
-    test.case = 'Config.debug === false';
-    var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-    var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-    test.identical( _.assertMapOwnNone( srcMap, screenMaps ), true );
-  }
+  /* */
 
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMap = { 'e' : 13, 'f' : 77, 'g' : 3, 'h' : 'Mikle' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   test.identical( _.assertMapOwnNone( srcMap, screenMap ), true );
   test.identical( _.assertMapOwnNone( srcMap, screenMap, msg ), true );
   test.identical( _.assertMapOwnNone( srcMap, screenMap, msg, 'msg' ), true );
@@ -11865,7 +11878,7 @@ function assertMapOwnNone( test )
   {
     _.assertMapOwnNone( srcMap, screenMaps )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11875,12 +11888,12 @@ function assertMapOwnNone( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnNone( srcMap, screenMaps, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11890,12 +11903,12 @@ function assertMapOwnNone( test )
   test.case = 'check error message, msg string';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnNone( srcMap, screenMaps, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11905,12 +11918,12 @@ function assertMapOwnNone( test )
   test.case = 'check error message, msg string & msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnNone( srcMap, screenMaps, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11920,12 +11933,12 @@ function assertMapOwnNone( test )
   test.case = 'check error message, msg routine';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnNone( srcMap, screenMaps, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11935,17 +11948,27 @@ function assertMapOwnNone( test )
   test.case = 'check error message, five or more arguments';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
   var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
-  var msg = function(){ return srcMap.a + screenMaps.b };
+  var msg = () => { return srcMap.a + screenMaps.b };
   try
   {
     _.assertMapOwnNone( srcMap, screenMaps, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects two, three or four arguments' ), true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'Config.debug === false';
+  var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
+  var screenMaps = { 'a' : 13, 'b' : 77, 'c' : 3, 'name' : 'Hello' };
+  test.shouldThrowErrorSync( () => _.assertMapOwnNone( srcMap, screenMaps ) );
 }
 
 //
@@ -11956,7 +11979,7 @@ function sureMapHasNoUndefine( test )
 
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + srcMap.b };
+  var msg = () => { return srcMap.a + srcMap.b };
   test.identical( _.sureMapHasNoUndefine( srcMap), true );
   test.identical( _.sureMapHasNoUndefine( srcMap, msg ), true );
   test.identical( _.sureMapHasNoUndefine( srcMap, msg, 'msg' ), true );
@@ -11968,7 +11991,7 @@ function sureMapHasNoUndefine( test )
   {
     _.sureMapHasNoUndefine( otherMap )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11977,12 +12000,12 @@ function sureMapHasNoUndefine( test )
 
   test.case = 'check error message, msg routine';
   var otherMap = { 'd' : undefined };
-  var msg = function(){ return srcMap.a + srcMap.b };
+  var msg = () => { return srcMap.a + srcMap.b };
   try
   {
     _.sureMapHasNoUndefine( otherMap, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -11995,7 +12018,7 @@ function sureMapHasNoUndefine( test )
   {
     _.sureMapHasNoUndefine( otherMap, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -12004,12 +12027,12 @@ function sureMapHasNoUndefine( test )
 
   test.case = 'check error message, msg string & msg routine';
   var otherMap = { 'd' : undefined };
-  var msg = function(){ return srcMap.a + srcMap.b };
+  var msg = () => { return srcMap.a + srcMap.b };
   try
   {
     _.sureMapHasNoUndefine( otherMap, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -12018,12 +12041,12 @@ function sureMapHasNoUndefine( test )
 
   test.case = 'check error message, msg routine';
   var otherMap = { 'd' : undefined };
-  var msg = function(){ return srcMap.a + srcMap.b };
+  var msg = () => { return srcMap.a + srcMap.b };
   try
   {
     _.sureMapHasNoUndefine( otherMap, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -12032,12 +12055,12 @@ function sureMapHasNoUndefine( test )
 
   test.case = 'check error message, four or more arguments';
   var otherMap = { 'd' : undefined };
-  var msg = function(){ return srcMap.a + srcMap.b };
+  var msg = () => { return srcMap.a + srcMap.b };
   try
   {
     _.sureMapHasNoUndefine( srcMap, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -12051,17 +12074,11 @@ function assertMapHasNoUndefine( test )
 {
   var err;
 
-// in normal mode this test should throw error. The routine return true when Config.debug === false
-  if( !Config.debug )
-  {
-    test.case = 'Config.debug === false';
-    var otherMap = { 'd' : undefined };
-    test.identical( _.assertMapHasNoUndefine( otherMap ), true );
-  }
+  /* */
 
   test.case = 'correct input';
   var srcMap = { 'a' : 13, 'b' : 77, 'c' : 3, 'd' : 'Mikle' };
-  var msg = function(){ return srcMap.a + srcMap.b };
+  var msg = () => { return srcMap.a + srcMap.b };
   test.identical( _.assertMapHasNoUndefine( srcMap), true );
   test.identical( _.assertMapHasNoUndefine( srcMap, msg ), true );
   test.identical( _.assertMapHasNoUndefine( srcMap, msg, 'msg' ), true );
@@ -12073,7 +12090,7 @@ function assertMapHasNoUndefine( test )
   {
     _.assertMapHasNoUndefine( otherMap )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -12082,12 +12099,12 @@ function assertMapHasNoUndefine( test )
 
   test.case = 'check error message, msg routine';
   var otherMap = { 'd' : undefined };
-  var msg = function(){ return srcMap.a + srcMap.b };
+  var msg = () => { return srcMap.a + srcMap.b };
   try
   {
     _.assertMapHasNoUndefine( otherMap, msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -12100,7 +12117,7 @@ function assertMapHasNoUndefine( test )
   {
     _.assertMapHasNoUndefine( otherMap, 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -12109,12 +12126,12 @@ function assertMapHasNoUndefine( test )
 
   test.case = 'check error message, msg string & msg routine';
   var otherMap = { 'd' : undefined };
-  var msg = function(){ return srcMap.a + srcMap.b };
+  var msg = () => { return srcMap.a + srcMap.b };
   try
   {
     _.assertMapHasNoUndefine( otherMap, 'msg', msg )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -12123,12 +12140,12 @@ function assertMapHasNoUndefine( test )
 
   test.case = 'check error message, msg routine';
   var otherMap = { 'd' : undefined };
-  var msg = function(){ return srcMap.a + srcMap.b };
+  var msg = () => { return srcMap.a + srcMap.b };
   try
   {
     _.assertMapHasNoUndefine( otherMap, () => 'This is ' + 'explanation' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
@@ -12137,17 +12154,25 @@ function assertMapHasNoUndefine( test )
 
   test.case = 'check error message, four or more arguments';
   var otherMap = { 'd' : undefined };
-  var msg = function(){ return srcMap.a + srcMap.b };
+  var msg = () => { return srcMap.a + srcMap.b };
   try
   {
     _.assertMapHasNoUndefine( srcMap, msg, 'msg', 'msg' )
   }
-  catch ( e )
+  catch( e )
   {
     err = e;
   }
   test.identical( err instanceof Error, true );
   test.identical( _.strHas( err.message, 'Expects one, two or three arguments' ), true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'map with undefined';
+  test.shouldThrowErrorSync( () => _.assertMapHasNoUndefine( { 'd' : undefined } ) );
 }
 
 // --
