@@ -180,22 +180,22 @@ function numbersAreEquivalent( a, b, accuracy )
 
   a       b            accuracy           implemented                covered                   abs( a - b )?
 
-  BIF     BIF       BIF/BOF/FIB/FOB            +                        +
-  BIF     BOF       BIF/BOF/FIB/FOB            +                        -
-  BIF     FIB       BIF/BOF/FIB/FOB            +                        -
-  BIF     FOB       BIF/BOF/FIB/FOB            +                        -
+  BIF     BIF       BIF/BOF/FIB/FOB            +                       ++++
+  BIF     BOF       BIF/BOF/FIB/FOB            +                       --+-
+  BIF     FIB       BIF/BOF/FIB/FOB            +                       --+-
+  BIF     FOB       BIF/BOF/FIB/FOB            +                       ---+
 
-  BOF     BOF       BIF/BOF/FIB/FOB            +                        -
-  BOF     FIB       BIF/BOF/FIB/FOB            +                        -
-  BOF     FOB       BIF/BOF/FIB/FOB            ?                        -
+  BOF     BOF       BIF/BOF/FIB/FOB            +                       --+-
+  BOF     FIB       BIF/BOF/FIB/FOB            +                       --+-
+  BOF     FOB       BIF/BOF/FIB/FOB            ?                       ----
 
-  FIB     FIB       BIF/BOF/FIB/FOB            +                        -
-  FIB     FOB       BIF/BOF/FIB/FOB            +                        -
+  FIB     FIB       BIF/BOF/FIB/FOB            +                       --+-
+  FIB     FOB       BIF/BOF/FIB/FOB            +                       ---+
 
-  FOB     FOB       BIF/BOF/FIB/FOB            +                        -
+  FOB     FOB       BIF/BOF/FIB/FOB            +                       ---+
 
   Overall : 10 cases ( 40 test cases )
-  Done : 9/10 ( 4/40 )
+  Done : 9/10 ( 12/40 )
 
   Definitions :
   BIF = bigint inside range of float ( 0n, 3n, BigInt( Math.pow( 2, 52 ) ) )
@@ -214,6 +214,10 @@ function numbersAreEquivalent( a, b, accuracy )
   8. a : FIB, b : FIB, accuracy :
   9. a : FIB, b : FOB, accuracy :
  10. a : FOB, b : FOB, accuracy :
+
+  _.numbersAreEquivalent( 4n, 3.51, 0 ); // false
+  _.numbersAreEquivalent( 3n, 3.95, 0 ); // false
+  _.numbersAreEquivalent( 4n, 3.1, 0 );  // false
 
   */
 
