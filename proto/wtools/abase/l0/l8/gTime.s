@@ -11,117 +11,6 @@ let Self = _global_.wTools.time = _global_.wTools.time || Object.create( null );
 // implementation
 // --
 
-/**
- * The routine ready() executes callback {-onReady-} when web-page is loaded.
- * If routine is executed in browser environment, then callback can be executed after
- * loading page with specified delay {-timeOut-}.
- * If routine is executed in NodeJS environment, then the callback is executed after
- * specified delay {-timeOut-}.
- *
- * @example
- * let result = [];
- * _.time.ready( () => result.push( 'ready' ) );
- * // when a page is loaded routine will push 'ready' in array `result` immediatelly
- *
- * @example
- * let result = [];
- * _.time.ready( 500, () => result.push( 'ready' ) );
- * // when a page is loaded routine will push 'ready' in array `result` after time out
- *
- * First parameter set :
- * @param { Number } timeOut - The time delay.
- * @param { Function } onReady - Callback to execute.
- * Second parameter set :
- * @param { Map|MapLike } o - Options map.
- * @param { Number } o.timeOut - The time delay.
- * @param { Function } o.onReady - Callback to execute.
- * @returns { Undefined } - Returns not a value, executes callback when a web-page is ready.
- * @function ready
- * @throws { Error } If arguments.length is less than 1 or greater than 2.
- * @throws { Error } If single argument call is provided without callback {-onReady-} or options
- * map {-o-} has no option {-o.onReady-}.
- * @throws { Error } If {-timeOut-} has defined non integer value or not finite value.
- * @namespace wTools.time
- * @extends Tools
- */
-
-function ready_head( routine, args )
-{
-  let o = args[ 0 ];
-  if( !_.mapIs( o ) )
-  {
-    o = Object.create( null );
-
-    if( args.length === 2 )
-    {
-      o.timeOut = args[ 0 ];
-      o.onReady = args[ 1 ];
-    }
-    else
-    {
-      o.onReady = args[ 0 ];
-    }
-  }
-
-  _.routineOptions( routine, o );
-
-  if( !o.timeOut )
-  o.timeOut = 0;
-
-  _.assert( 0 <= args.length || args.length <= 2 );
-  _.assert( _.intIs( o.timeOut ) );
-  _.assert( _.routineIs( o.onReady ) || o.onReady === null || o.onReady === undefined );
-
-  return o;
-}
-
-//
-
-function ready_body( o )
-{
-
-  _.assert( o.onReady, 'Expects routine {-o.onReady-}.' );
-
-  if( typeof window !== 'undefined' && typeof document !== 'undefined' && document.readyState !== 'complete' )
-  window.addEventListener( 'load', handleReady );
-  else
-  handleReady();
-
-  /* */
-
-  function handleReady()
-  {
-    _.time.begin( o.timeOut, o.onReady );
-  }
-}
-
-ready_body.defaults =
-{
-  timeOut : 0,
-  onReady : null,
-};
-
-//
-
-let ready = _.routineUnite( ready_head, ready_body );
-
-//
-
-// function readyJoin( context, routine, args )
-// {
-//   let joinedRoutine = _.routineJoin( context, routine, args );
-//   return _timeReady;
-//   function _timeReady()
-//   {
-//     let args = arguments;
-//     let procedure = _.Procedure({ _stack : 1, _name : 'timeReadyJoin' });
-//     let joinedRoutine2 = _.routineSeal( this, joinedRoutine, args );
-//     return _.time.ready({ procedure, onReady : joinedRoutine2 });
-//   }
-// }
-
-//
-
 function rarely_functor( perTime, routine )
 {
   let lastTime = _.time.now() - perTime;
@@ -346,8 +235,8 @@ let Fields =
 let Routines =
 {
 
-  ready,
-  // readyJoin,
+  // ready, /* Dmytro : moved to gProcess.s */
+  // readyJoin, /* Dmytro : moved to module Consequence */
 
   // out,
   // outError,
