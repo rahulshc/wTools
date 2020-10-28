@@ -113,6 +113,27 @@ function nameIs( name )
 
 //
 
+/**
+ * The routine chainIs() checks of whether the passed value {-src-} is an instance of wTools.event.Chain.
+ *
+ * @example
+ * var chain = { chain : [ 'event1', 'event2' ] };
+ * console.log( _.event.chainIs( chain ) );
+ * // log : false
+ *
+ * @example
+ * var chain = _.event.chain( 'event1', 'event2' );
+ * console.log( _.event.chainIs( chain ) );
+ * // log : true
+ *
+ * @param { * } src - The value to check.
+ * @returns { Boolean } - Returns true if {-src-} is an instance of class wTools.event.Chain.
+ * Otherwise, routine returns false.
+ * @function chainIs
+ * @namespace wTools.event
+ * @extends Tools
+ */
+
 function chainIs( src )
 {
   return src instanceof Chain;
@@ -571,7 +592,7 @@ function eventGive( ehandler, o )
     o.args[ 0 ].event = o.event;
   }
 
-  _.assert( !!ehandler.events[ o.event ], `Unknown evnet ${o.event}` );
+  _.assert( !!ehandler.events[ o.event ], `Unknown event ${o.event}` );
   _.assert( _.longIs( o.args ) );
   _.assert( arguments.length === 2 );
 
