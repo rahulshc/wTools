@@ -227,8 +227,6 @@ function numbersAreEquivalent( a, b, accuracy )
       }
       else /* a : BOF, b : FOB, accuracy : BIF/BOF/FIB/FOB */
       {
-        /* NOT IMPLEMENTED */
-        _.assert( false, 'not implemented' )
         // b : 2^53( 9007199254740991 ) + 2   -> 9007199254740993n can't convert to FIB
         // a : 2^53( 9007199254740991 ) - 1.5 -> 9007199254740989.5 can't convert to BIF directly
         // accuracy : 3.5 -> true
@@ -248,7 +246,14 @@ function numbersAreEquivalent( a, b, accuracy )
 
         // let decimal = b % 1;
         // b = BigInt( Math.floor( a ) )
+        for( ;a >= Number.MIN_SAFE_INTEGER && a <= Number.MAX_SAFE_INTEGER; )
+        {
+          a = a / 100n;
+          b = b / 100;
+          accuracy = _.bigIntIs( accuracy ) ? accuracy / 100n : accuracy / 100
+        }
 
+        a = Number( a );
         // return abs( a - b ) <= accuracy + decimal;
 
       }
@@ -269,8 +274,14 @@ function numbersAreEquivalent( a, b, accuracy )
       }
       else /* a : FOB, b : BOF , accuracy : BIF/BOF/FIB/FOB */
       {
-        /* NOT IMPLEMENTED */
-        _.assert( false, 'not implemented' )
+        for( ;( b >= Number.MIN_SAFE_INTEGER && b <= Number.MAX_SAFE_INTEGER ); )
+        {
+          a = a / 100;
+          b = b / 100n;
+          accuracy = _.bigIntIs( accuracy ) ? accuracy / 100n : accuracy / 100
+        }
+
+        b = Number( b );
       }
     }
   }

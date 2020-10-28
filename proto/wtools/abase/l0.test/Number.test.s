@@ -1337,11 +1337,41 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
   /* */
 
   /* BOF and FOB */
-  // test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 52 ) - 1.5 ), acc FOB 1.5';
-  // debugger
-  //                                   /*        9007199254740992n        */ /* 4503599627370494.5 */ /* 9007199254740992n - 4503599627370494.5 */
-  // var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 52 ) - 1.5, 4503599627370497.5 /* BECOMES ROUNDED UP 4503599627370498*/);
-  // test.identical( got, true );
+
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 53 ) - 1.5, acc BIF 2';
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 53 ) - 1.5 /* BECOMES -2 */, 2n );
+  test.identical( got, true );
+
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB -1.1 acc BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 3n';
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, -1.1, BigInt( Math.pow( 2, 53 ) - 1 ) + 3n );
+  test.identical( got, true );
+
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB -1.1 acc BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 2n';
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, -1.1, BigInt( Math.pow( 2, 53 ) - 1 ) + 2n );
+  test.identical( got, false );
+
+  // BigInt(Number.MAX_VALUE)
+
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 53 ) - 1.5, acc FIB 2 ';
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 53 ) - 1.5 /* BECOMES -2 */, 2 );
+  test.identical( got, true );
+
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 53 ) - 1.5, acc FOB 1.5 ';
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 53 ) - 1.5/* BECOMES -2 */, 1.5 );
+  test.identical( got, false );
+
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 53 ) - 1.5, acc FOB 1.5 ';
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 53 ) - 1.5 /* BECOMES -2 */, 2.000001 );
+  test.identical( got, true );
+
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 52 ) - 1.5, acc FOB 4503599627370497.5';
+                                    /*        9007199254740992n        */ /* 4503599627370494.5 */ /* 9007199254740992n - 4503599627370494.5 */
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 52 ) - 1.5, 4503599627370497.5 /* BECOMES ROUNDED UP 4503599627370498*/);
+  test.identical( got, true );
+
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 52 ) - 1.5, acc FOB 4503599627370496.5';
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 52 ) - 1.5, 4503599627370496.5 /* BECOMES ROUNDED UP 4503599627370497*/);
+  test.identical( got, false );
 
   /* ----------- */
 
