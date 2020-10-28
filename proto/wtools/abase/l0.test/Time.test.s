@@ -3364,7 +3364,52 @@ function begin( test )
     return _testerGlobal_.wTools.time.out( 0, () => _.time.begin( 0, () => 1, [] ) )
     .finally( ( err, arg ) =>
     {
-      debugger;
+      if( arg )
+      {
+        test.is( false );
+      }
+      else
+      {
+        _.errAttend( err );
+        test.is( true );
+      }
+      return null;
+    });
+  });
+
+  ready.then( () =>
+  {
+    test.case = 'executes method cancel twice, should throw error';
+    var timer = _.time.begin( Infinity, onTime, onCancel );
+    timer.cancel();
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
+    .finally( ( err, arg ) =>
+    {
+      if( arg )
+      {
+        test.is( false );
+      }
+      else
+      {
+        _.errAttend( err );
+        test.is( true );
+      }
+      return null;
+    });
+  });
+
+  ready.then( () =>
+  {
+    test.case = 'executes method time and then method cancel, should throw error';
+    var timer = _.time.begin( Infinity, onTime, onCancel );
+    timer.time();
+
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
+    {
+      timer.cancel()
+    })
+    .finally( ( err, arg ) =>
+    {
       if( arg )
       {
         test.is( false );
