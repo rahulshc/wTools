@@ -189,8 +189,8 @@ function numbersAreEquivalent( a, b, accuracy )
   BOF     FIB       BIF/BOF/FIB/FOB            +                       ++++
   BOF     FOB       BIF/BOF/FIB/FOB            ?                       ----
 
-  FIB     FIB       BIF/BOF/FIB/FOB            +                       --+-
-  FIB     FOB       BIF/BOF/FIB/FOB            +                       ---+
+  FIB     FIB       BIF/BOF/FIB/FOB            +                       ++++
+  FIB     FOB       BIF/BOF/FIB/FOB            +                       ++++
 
   FOB     FOB       BIF/BOF/FIB/FOB            +                       ---+
 
