@@ -15,6 +15,51 @@ let _ = _global_.wTools;
 // chain
 // --
 
+function chainIs( test )
+{
+  test.case = 'without arguments';
+  var got = _.event.chainIs();
+  test.identical( got, false );
+
+  test.case = 'src - null';
+  var got = _.event.chainIs( null );
+  test.identical( got, false );
+
+  test.case = 'src - string';
+  var got = _.event.chainIs( 'begin' );
+  test.identical( got, false );
+
+  test.case = 'src - array of strings';
+  var got = _.event.chainIs([ 'begin', 'end' ]);
+  test.identical( got, false );
+
+  test.case = 'src - object with field `chain`';
+  var src = Object.create( null );
+  src.chain = [ 'begin', 'end' ];
+  var got = _.event.chainIs( src );
+  test.identical( got, false );
+
+  test.case = 'src - instance of class with field `chain`';
+  function Chain()
+  {
+    this.chain = arguments;
+    return this;
+  }
+  var src = new Chain( 'begin', 'end' );
+  var got = _.event.chainIs( src );
+  test.identical( got, false );
+
+  test.case = 'src - instance of _.event.Name';
+  var got = _.event.chainIs( _.event.Name( 'begin' ) );
+  test.identical( got, false );
+
+  test.case = 'src - instance of _.event.Chain';
+  var got = _.event.chainIs( _.event.Chain( 'begin' ) );
+  test.identical( got, true );
+}
+
+//
+
 function Chain( test )
 {
   test.case = 'single string';
@@ -404,6 +449,7 @@ var Self =
 
     // chain
 
+    chainIs,
     Chain,
 
     // event

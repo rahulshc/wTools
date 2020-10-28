@@ -113,9 +113,9 @@ function nameIs( name )
 
 //
 
-function chainIs( chain )
+function chainIs( src )
 {
-  return chain instanceof Chain;
+  return src instanceof Chain;
 }
 
 //
