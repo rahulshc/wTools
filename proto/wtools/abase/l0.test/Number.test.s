@@ -1,4 +1,3 @@
-/* eslint-disable */
 ( function _Number_test_s()
 {
 
