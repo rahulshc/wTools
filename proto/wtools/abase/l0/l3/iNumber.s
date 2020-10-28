@@ -178,7 +178,7 @@ function numbersAreEquivalent( a, b, accuracy )
   b : BIF/BOF/FIB/FOB;
   accuracy : BIF/BOF/FIB/FOB;
 
-  a       b            accuracy           implemented                covered                   abs( a - b )?
+  a       b            accuracy           implemented                covered
 
   BIF     BIF       BIF/BOF/FIB/FOB            +                       ++++
   BIF     BOF       BIF/BOF/FIB/FOB            +                       ++++
@@ -187,15 +187,12 @@ function numbersAreEquivalent( a, b, accuracy )
 
   BOF     BOF       BIF/BOF/FIB/FOB            +                       ++++
   BOF     FIB       BIF/BOF/FIB/FOB            +                       ++++
-  BOF     FOB       BIF/BOF/FIB/FOB            +?                      ++++
+  BOF     FOB       BIF/BOF/FIB/FOB            +                       ++++
 
   FIB     FIB       BIF/BOF/FIB/FOB            +                       ++++
   FIB     FOB       BIF/BOF/FIB/FOB            +                       ++++
 
   FOB     FOB       BIF/BOF/FIB/FOB            +                       ++++
-
-  Overall : 10 cases ( 40 test cases )
-  Done : 9/10 ( 36/40 )
 
   Definitions :
   BIF = bigint inside range of float ( 0n, 3n, BigInt( Math.pow( 2, 52 ) ) )
@@ -235,55 +232,29 @@ function numbersAreEquivalent( a, b, accuracy )
         }
         else /* a : BOF, b : FOB, accuracy : BIF/BOF */
         {
+          /*
+          `a` ( bigint outside float ) : -2^53-1 > a > 2^53-1
+          `b` ( float outside bigint ) : 2^53-0.(9) <= b >= -2^53-0.(9)
+
+          Example :
+          a : BigInt( 2^53-1 ) + 1n  |
+          b : 2^53-1.5               | => true
+          accuarcy : 1.5             |
+
+          */
+
           /* EASY WAY : max loss of precision 0.5(1) */
           b = BigInt( Math.round( b ) );
+
+          /* HARD WAY ( NOT IMPLEMENTED ) : without loss of precision
+          Posibilities:
+          1.BOF -> BIF. In loop reduce `a` until it's within the range of BIF, then a = Number( a )
+            problems :
+            - reducing by dividing - loss of precision at each division : 5n / 2n = 2n
+            - reducing by substracting - no way to choose an optimal value,
+              either substractions could possibly go on unreasonably long or BIF range is skipped at some point.
+          */
         }
-
-        /* HARD WAY ( NOT IMPLEMENTED ) : without loss of precision
-        Posibilities:
-        1. BOF -> BIF. In loop reduce `a` until it's within the range of BIF, then a = Number( a )
-          problems : reducing by dividing - loss of precision at each division : 5n / 2n = 2n
-                     reducing by substracting - no way to choose an optimal value,
-                     either substractions could possibly go on unreasonably long or BIF range is skipped at some point.
-        */
-
-        // b : 2^53( 9007199254740991 ) + 2   -> 9007199254740993n can't convert to FIB
-        // a : 2^53( 9007199254740991 ) - 1.5 -> 9007199254740989.5 can't convert to BIF directly
-        // accuracy : 3.5 -> true
-        // ( Math.pow( 2, 53 ) - 1 ) - ( Math.pow( 2, 52 ) - 1 )
-        // 4503599627370496
-
-        // a ( bigint outside float ) : -2^53-1 > a > 2^53-1
-        // b ( float outside bigint ) : 2^53-0.(9) <= b >= -2^53-0.(9)
-
-        // ex
-        //    a : BigInt( 2^53-1 ) + 1n  |
-        //    b : 2^53-1.5               | => true
-        //    accuarcy : 1.5             |
-        // problems :
-        //   2^53 - 1 = 9007199254740991, but 9007199254740991 - 1.5 = 9007199254740990
-        //
-
-        // let decimal = b % 1;
-        // b = BigInt( Math.floor( a ) )
-        // for( ;a <= Number.MIN_SAFE_INTEGER || a >= Number.MAX_SAFE_INTEGER; )
-        // {
-        //   //
-        //   let len = a.toString().length;
-        //   a = a - BigInt( Math.pow( 10, len - 2 ) );
-        //   // b = b / 10;
-        //   accuracy = _.bigIntIs( accuracy ) ? accuracy - BigInt( Math.pow( 10, len - 2 ) ) : accuracy - Math.pow( 10, len - 2 )
-        // }
-
-        // a = a / BigInt( 1e308 );
-        // b = b / 1e308;
-        // accuracy = _.bigIntIs( accuracy ) ? accuracy / BigInt( 1e308 ) : accuracy / 1e308
-
-        // a = Number( a );
-        // console.log( 'diff : ', a - b )
-        // console.log( 'acc  : ', accuracy )
-        // return abs( a - b ) <= accuracy + decimal;
-
       }
     }
   }
@@ -318,10 +289,6 @@ function numbersAreEquivalent( a, b, accuracy )
     }
   }
 
-  if( Object.is( a, b ) )
-  return true;
-
-
   if( _.numberIs( a ) && _.numberIs( b ) ) /* a : FIB/FOB, b : FIB/FOB, accuracy : BIF/BOF/FIB/FOB 3 */
   return Math.abs( a - b ) <= accuracy;
   else
@@ -350,87 +317,87 @@ function numbersAreEquivalent( a, b, accuracy )
   /* ORIGINAL */
   /* qqq for Yevhen : bad! */
 
-  if( _.numberIs( a ) && _.numberIs( b ) )
-  {
-    if( Object.is( a, b ) )
-    return true;
-  }
-
-  if( !_.numberIs( a ) && !_.bigIntIs( a ) )
-  return false;
-
-  if( !_.numberIs( b ) && !_.bigIntIs( b ) )
-  return false;
-
-  /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine */
-
-  // else
+  // if( _.numberIs( a ) && _.numberIs( b ) )
   // {
-  //   return false;
+  //   if( Object.is( a, b ) )
+  //   return true;
   // }
 
-  if( accuracy === undefined )
-  accuracy = this.accuracy;
-
-  if( _.bigIntIs( a ) )
-  {
-    if( _.intIs( b ) )
-    {
-      b = BigInt( b );
-    }
-    // else
-    // {
-    //   a = Number( a );
-    //   if( a === +Infinity || a === -Infinity )
-    //   return false;
-    // }
-  }
-
-  if( _.bigIntIs( b ) )
-  {
-    if( _.intIs( a ) )
-    {
-      a = BigInt( a );
-    }
-    // else
-    // {
-    //   b = Number( b );
-    //   if( b === +Infinity || b === -Infinity )
-    //   return false;
-    // }
-  }
-
-  if( Object.is( a, b ) )
-  return true;
-
-  if( _.bigIntIs( a ) && _.bigIntIs( b ) )
-  {
-    if( _.intIs( accuracy ) )
-    {
-      return BigIntMath.abs( a - b ) <= BigInt( accuracy );
-    }
-    else
-    {
-      let diff = BigIntMath.abs( a - b );
-      if( diff <= BigInt( Math.floor( accuracy ) ) )
-      return true;
-      if( diff > BigInt( Math.ceil( accuracy ) ) )
-      return false;
-      diff = Number( diff );
-      if( diff === Infinity || diff === -Infinity )
-      return false;
-      return Math.abs( diff ) <= accuracy;
-    }
-  }
-
-  // if( !_.numberIs( a ) )
-  // return false;
-  //
-  // if( !_.numberIs( b ) )
+  // if( !_.numberIs( a ) && !_.bigIntIs( a ) )
   // return false;
 
-  return Math.abs( a - b ) <= accuracy;
-  // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
+  // if( !_.numberIs( b ) && !_.bigIntIs( b ) )
+  // return false;
+
+  // /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine */
+
+  // // else
+  // // {
+  // //   return false;
+  // // }
+
+  // if( accuracy === undefined )
+  // accuracy = this.accuracy;
+
+  // if( _.bigIntIs( a ) )
+  // {
+  //   if( _.intIs( b ) )
+  //   {
+  //     b = BigInt( b );
+  //   }
+  //   // else
+  //   // {
+  //   //   a = Number( a );
+  //   //   if( a === +Infinity || a === -Infinity )
+  //   //   return false;
+  //   // }
+  // }
+
+  // if( _.bigIntIs( b ) )
+  // {
+  //   if( _.intIs( a ) )
+  //   {
+  //     a = BigInt( a );
+  //   }
+  //   // else
+  //   // {
+  //   //   b = Number( b );
+  //   //   if( b === +Infinity || b === -Infinity )
+  //   //   return false;
+  //   // }
+  // }
+
+  // if( Object.is( a, b ) )
+  // return true;
+
+  // if( _.bigIntIs( a ) && _.bigIntIs( b ) )
+  // {
+  //   if( _.intIs( accuracy ) )
+  //   {
+  //     return BigIntMath.abs( a - b ) <= BigInt( accuracy );
+  //   }
+  //   else
+  //   {
+  //     let diff = BigIntMath.abs( a - b );
+  //     if( diff <= BigInt( Math.floor( accuracy ) ) )
+  //     return true;
+  //     if( diff > BigInt( Math.ceil( accuracy ) ) )
+  //     return false;
+  //     diff = Number( diff );
+  //     if( diff === Infinity || diff === -Infinity )
+  //     return false;
+  //     return Math.abs( diff ) <= accuracy;
+  //   }
+  // }
+
+  // // if( !_.numberIs( a ) )
+  // // return false;
+  // //
+  // // if( !_.numberIs( b ) )
+  // // return false;
+
+  // return Math.abs( a - b ) <= accuracy;
+  // // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
 
 
 }
