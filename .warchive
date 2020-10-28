@@ -1,8 +1,8 @@
 {
   "/pro/module/wTools" : 
   {
-    "mtime" : 1603783524810, 
-    "ctime" : 1603783524810, 
+    "mtime" : 1603808512106, 
+    "ctime" : 1603808512106, 
     "birthtime" : 1588224078785, 
     "absolutePath" : `/pro/module/wTools`
   }, 
@@ -63,12 +63,12 @@
   }, 
   "/pro/module/wTools/.warchive" : 
   {
-    "mtime" : 1603808482844, 
-    "ctime" : 1603808482844, 
+    "mtime" : 1603881857229, 
+    "ctime" : 1603881857229, 
     "birthtime" : 1595248077934, 
     "absolutePath" : `/pro/module/wTools/.warchive`, 
-    "size" : 123369n, 
-    "hash" : `09ea2d24f5c1292fa8ef9c076ea81109`, 
+    "size" : 123746n, 
+    "hash" : `e2bc6a3dc013174814a0eca593641880`, 
     "hashOfStat" : 2228762n, 
     "nlink" : 1n
   }, 
@@ -96,13 +96,13 @@
   }, 
   "/pro/module/wTools/package.json" : 
   {
-    "mtime" : 1603783528640, 
-    "ctime" : 1603783528640, 
-    "birthtime" : 1603783524766, 
+    "mtime" : 1603808518260, 
+    "ctime" : 1603808518260, 
+    "birthtime" : 1603808512078, 
     "absolutePath" : `/pro/module/wTools/package.json`, 
     "size" : 1566n, 
-    "hash" : `ed68435cacc8cf6483a19041927f9cae`, 
-    "hashOfStat" : 2236324n, 
+    "hash" : `0a07d6ac5716da515172f65bc3e194fa`, 
+    "hashOfStat" : 2237687n, 
     "nlink" : 1n
   }, 
   "/pro/module/wTools/package2.json" : 
@@ -118,23 +118,23 @@
   }, 
   "/pro/module/wTools/README.md" : 
   {
-    "mtime" : 1597514245470, 
-    "ctime" : 1597514245470, 
+    "mtime" : 1603879811991, 
+    "ctime" : 1603879811991, 
     "birthtime" : 1591258038932, 
     "absolutePath" : `/pro/module/wTools/README.md`, 
-    "size" : 2111n, 
-    "hash" : `36be956a7307a15f6662809e8a08ba45`, 
+    "size" : 1034n, 
+    "hash" : `1401ea0ef47baaab8bea1dddadd43eed`, 
     "hashOfStat" : 2231314n, 
     "nlink" : 1n
   }, 
   "/pro/module/wTools/was.package.json" : 
   {
-    "mtime" : 1603783512039, 
-    "ctime" : 1603783512039, 
+    "mtime" : 1603808505192, 
+    "ctime" : 1603808505192, 
     "birthtime" : 1594830425315, 
     "absolutePath" : `/pro/module/wTools/was.package.json`, 
     "size" : 1541n, 
-    "hash" : `a1a242bd4ce8e7fb819f0f6d21d8ea77`, 
+    "hash" : `a85809819d58aacb9f56615ca93fa11b`, 
     "hashOfStat" : 2228740n, 
     "nlink" : 1n
   }, 
@@ -1653,12 +1653,12 @@
   }, 
   "/pro/module/wTools/out/wTools.out.will.yml" : 
   {
-    "mtime" : 1603783524286, 
-    "ctime" : 1603783524286, 
+    "mtime" : 1603808511798, 
+    "ctime" : 1603808511798, 
     "birthtime" : 1588224078797, 
     "absolutePath" : `/pro/module/wTools/out/wTools.out.will.yml`, 
-    "size" : 48256n, 
-    "hash" : `9e4b6389fc30de15dcb4e16a77b6a857`, 
+    "size" : 48313n, 
+    "hash" : `b48999d881230ed11f64bc060a68ab7e`, 
     "hashOfStat" : 2236323n, 
     "nlink" : 1n
   }, 
@@ -2438,8 +2438,8 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l8" : 
   {
-    "mtime" : 1603808485603, 
-    "ctime" : 1603808485603, 
+    "mtime" : 1603808503014, 
+    "ctime" : 1603808503014, 
     "birthtime" : 1588224081731, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l8`
   }, 
@@ -2599,14 +2599,14 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l8/gProcess.s" : 
   {
-    "mtime" : 1603808485603, 
-    "ctime" : 1603808485603, 
-    "birthtime" : 1603808485599, 
+    "mtime" : 1603808502922, 
+    "ctime" : 1603808502942, 
+    "birthtime" : 1588219626502, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l8/gProcess.s`, 
     "size" : 2710n, 
     "hash" : `e42c90dc37ccef86dab2d4dab29e167c`, 
-    "hashOfStat" : 2360679n, 
-    "nlink" : 1n
+    "hashOfStat" : 24775688n, 
+    "nlink" : 5n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l8/gRange.s" : 
   {
@@ -2665,37 +2665,37 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l8/gTime.s" : 
   {
-    "mtime" : 1603808485603, 
-    "ctime" : 1603808485603, 
-    "birthtime" : 1603808485603, 
+    "mtime" : 1603808502970, 
+    "ctime" : 1603808502990, 
+    "birthtime" : 1588219626490, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l8/gTime.s`, 
     "size" : 5012n, 
     "hash" : `1f21e9818a4df0442501f851c1ac438b`, 
-    "hashOfStat" : 2360681n, 
-    "nlink" : 1n
+    "hashOfStat" : 24775680n, 
+    "nlink" : 5n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l9" : 
   {
-    "mtime" : 1603808485603, 
-    "ctime" : 1603808485603, 
+    "mtime" : 1603808503062, 
+    "ctime" : 1603808503062, 
     "birthtime" : 1588224081759, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l9`
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l9/Setup.s" : 
   {
-    "mtime" : 1603808485603, 
-    "ctime" : 1603808485603, 
-    "birthtime" : 1603808485603, 
+    "mtime" : 1603808503022, 
+    "ctime" : 1603808503034, 
+    "birthtime" : 1588219626510, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l9/Setup.s`, 
     "size" : 4699n, 
     "hash" : `a1eaaf134ec324eb59c9209cbb3cb12d`, 
-    "hashOfStat" : 2360684n, 
-    "nlink" : 1n
+    "hashOfStat" : 24775690n, 
+    "nlink" : 4n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0.test" : 
   {
-    "mtime" : 1603808485599, 
-    "ctime" : 1603808485599, 
+    "mtime" : 1603881859502, 
+    "ctime" : 1603881859502, 
     "birthtime" : 1588224081767, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0.test`
   }, 
@@ -2965,13 +2965,13 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0.test/Time.test.s" : 
   {
-    "mtime" : 1603808485599, 
-    "ctime" : 1603808485599, 
-    "birthtime" : 1603808485599, 
+    "mtime" : 1603881859506, 
+    "ctime" : 1603881859506, 
+    "birthtime" : 1603881859502, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0.test/Time.test.s`, 
-    "size" : 108291n, 
-    "hash" : `3ba45ba2d9afd4b1b552986ce77463d1`, 
-    "hashOfStat" : 2360678n, 
+    "size" : 106051n, 
+    "hash" : `1f8fb3a3c55a119519db6435bedf7526`, 
+    "hashOfStat" : 2360709n, 
     "nlink" : 1n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0.test/Typing.test.s" : 
