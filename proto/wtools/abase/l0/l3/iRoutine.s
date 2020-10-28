@@ -947,7 +947,7 @@ function routineUnite_head( routine, args )
   _.assert( arguments.length === 2 );
   _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ), 'Expects routine or routines {-o.head-}' );
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
-  _.assert( !o.tail || _.routineIs( o.tail ), 'Expects routine {-o.tail-}' );
+  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.strType( o.tail )}` );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
