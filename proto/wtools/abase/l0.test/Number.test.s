@@ -1220,7 +1220,7 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
 
   /* qqq for Yevhen : extend | aaa : Done*/
 
-  test.case = 'number 3.01 and big int 3, acc 0.10001';
+  test.case = 'number 3.1 and big int 3, acc 0.10001';
   var got = _.numbersAreEquivalent( 3.1, 3n, 0.10001 );
   test.identical( got, true );
   var got = _.numbersAreEquivalent( 3n, 3.1, 0.10001 );
@@ -1337,10 +1337,11 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
   /* */
 
   /* BOF and FOB */
-
-  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 52 ) - 1.5 ), acc FOB 1.5';
-  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 10n, Math.pow( 2, 53 ) - 1, 1.5 );
-  test.identical( got, true );
+  // test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 52 ) - 1.5 ), acc FOB 1.5';
+  // debugger
+  //                                   /*        9007199254740992n        */ /* 4503599627370494.5 */ /* 9007199254740992n - 4503599627370494.5 */
+  // var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 52 ) - 1.5, 4503599627370497.5 /* BECOMES ROUNDED UP 4503599627370498*/);
+  // test.identical( got, true );
 
   /* ----------- */
 
@@ -1399,6 +1400,18 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
   test.identical( got, true );
 
   /* */
+
+  test.case = 'BIF 4 and FOB 3.51, acc FIB 0';
+  var got = _.numbersAreEquivalent( 4n, 3.51, 0 );
+  test.identical( got, false );
+
+  test.case = 'BIF 4 and FOB 3.95, acc FIB 0';
+  var got = _.numbersAreEquivalent( 3n, 3.95, 0 );
+  test.identical( got, false );
+
+  test.case = 'BIF 4 and FOB 3.1, acc FIB 0';
+  var got = _.numbersAreEquivalent( 4n, 3.1, 0 );
+  test.identical( got, false );
 
   /* Additional */
 

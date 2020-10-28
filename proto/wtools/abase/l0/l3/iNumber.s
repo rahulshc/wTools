@@ -203,10 +203,6 @@ function numbersAreEquivalent( a, b, accuracy )
   FIB = float inside range of bigint ( 5, 30 )
   FOB = float outside range of bigint ( 5.5, 30.1 )
 
-  _.numbersAreEquivalent( 4n, 3.51, 0 ); // false
-  _.numbersAreEquivalent( 3n, 3.95, 0 ); // false
-  _.numbersAreEquivalent( 4n, 3.1, 0 );  // false
-
   */
 
   if( accuracy === undefined )
@@ -231,10 +227,31 @@ function numbersAreEquivalent( a, b, accuracy )
       }
       else /* a : BOF, b : FOB, accuracy : BIF/BOF/FIB/FOB */
       {
-        // a 0.01
-        // b 2^55
+        /* NOT IMPLEMENTED */
+        _.assert( false, 'not implemented' )
+        // b : 2^53( 9007199254740991 ) + 2   -> 9007199254740993n can't convert to FIB
+        // a : 2^53( 9007199254740991 ) - 1.5 -> 9007199254740989.5 can't convert to BIF directly
+        // accuracy : 3.5 -> true
+        // ( Math.pow( 2, 53 ) - 1 ) - ( Math.pow( 2, 52 ) - 1 )
+        // 4503599627370496
+
+        // a ( bigint outside float ) : [ ... > 2^53-1 ]
+        // b ( float outside bigint ) : [ ... 0.(0)1 ; 2^53-1.(0)1 ]
+
+        // ex
+        //    a : BigInt( 2^53-1 ) + 1n  |
+        //    b : 2^53-1.5               | => true
+        //    accuarcy : 1.5             |
+        // problems :
+        //   2^53 - 1 = 9007199254740991, but 9007199254740991 - 1.5 = 9007199254740990
+        //
+
+        // let decimal = b % 1;
+        // b = BigInt( Math.floor( a ) )
+
+        // return abs( a - b ) <= accuracy + decimal;
+
       }
-      // b = BigInt( Math.round( b ) );
     }
   }
 
@@ -252,6 +269,8 @@ function numbersAreEquivalent( a, b, accuracy )
       }
       else /* a : FOB, b : BOF , accuracy : BIF/BOF/FIB/FOB */
       {
+        /* NOT IMPLEMENTED */
+        _.assert( false, 'not implemented' )
       }
     }
   }
