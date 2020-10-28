@@ -246,7 +246,8 @@ function numbersAreEquivalent( a, b, accuracy )
 
         // let decimal = b % 1;
         // b = BigInt( Math.floor( a ) )
-        for( ;a >= Number.MIN_SAFE_INTEGER && a <= Number.MAX_SAFE_INTEGER; )
+
+        for( ;a <= Number.MIN_SAFE_INTEGER || a >= Number.MAX_SAFE_INTEGER; )
         {
           a = a / 100n;
           b = b / 100;
@@ -274,7 +275,7 @@ function numbersAreEquivalent( a, b, accuracy )
       }
       else /* a : FOB, b : BOF , accuracy : BIF/BOF/FIB/FOB */
       {
-        for( ;( b >= Number.MIN_SAFE_INTEGER && b <= Number.MAX_SAFE_INTEGER ); )
+        for( ;b <= Number.MIN_SAFE_INTEGER || b >= Number.MAX_SAFE_INTEGER; )
         {
           a = a / 100;
           b = b / 100n;
