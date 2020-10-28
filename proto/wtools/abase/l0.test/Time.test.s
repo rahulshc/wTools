@@ -3560,7 +3560,7 @@ function beginTimerInsideOfCallback( test )
     };
     var timer = _.time.begin( context.dt1, onTime );
 
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt2 * 4, () => timer )
     .then( ( got ) =>
     {
       test.identical( got.onTime, onTime );
@@ -3592,7 +3592,7 @@ function beginTimerInsideOfCallback( test )
       return -1;
     }
 
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
+    return _testerGlobal_.wTools.time.out( context.dt2 * 4, () => timer )
     .then( ( got ) =>
     {
       test.identical( got.onTime, onTime );
