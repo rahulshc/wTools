@@ -181,12 +181,12 @@ function numbersAreEquivalent( a, b, accuracy )
   a       b            accuracy           implemented                covered                   abs( a - b )?
 
   BIF     BIF       BIF/BOF/FIB/FOB            +                       ++++
-  BIF     BOF       BIF/BOF/FIB/FOB            +                       --+-
-  BIF     FIB       BIF/BOF/FIB/FOB            +                       --+-
-  BIF     FOB       BIF/BOF/FIB/FOB            +                       ---+
+  BIF     BOF       BIF/BOF/FIB/FOB            +                       ++++
+  BIF     FIB       BIF/BOF/FIB/FOB            +                       ++++
+  BIF     FOB       BIF/BOF/FIB/FOB            +                       ++++
 
-  BOF     BOF       BIF/BOF/FIB/FOB            +                       --+-
-  BOF     FIB       BIF/BOF/FIB/FOB            +                       --+-
+  BOF     BOF       BIF/BOF/FIB/FOB            +                       ++++
+  BOF     FIB       BIF/BOF/FIB/FOB            +                       ++++
   BOF     FOB       BIF/BOF/FIB/FOB            ?                       ----
 
   FIB     FIB       BIF/BOF/FIB/FOB            +                       --+-
@@ -202,18 +202,6 @@ function numbersAreEquivalent( a, b, accuracy )
   BOF = bigint outside range of float ( BigInt( Math.pow( 2, 54 ) ) )
   FIB = float inside range of bigint ( 5, 30 )
   FOB = float outside range of bigint ( 5.5, 30.1 )
-
-  Special cases:
-  1. a : BIF, b : BIF, accuracy : BOF -> always true
-  2. a : BIF, b : BOF, accuracy :
-  3. a : BIF, b : FIB, accuracy :
-  4. a : BIF, b : FOB, accuracy :
-  5. a : BOF, b : BOF, accuracy :
-  6. a : BOF, b : FIB, accuracy :
-  7. a : BOF, b : FOB, accuracy :
-  8. a : FIB, b : FIB, accuracy :
-  9. a : FIB, b : FOB, accuracy :
- 10. a : FOB, b : FOB, accuracy :
 
   _.numbersAreEquivalent( 4n, 3.51, 0 ); // false
   _.numbersAreEquivalent( 3n, 3.95, 0 ); // false
