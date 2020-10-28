@@ -145,6 +145,40 @@ Name.prototype = Object.create( null );
 
 //
 
+/**
+ * The routine Chain() implements class Chain. The instance of the class holds chain of event names.
+ *
+ * @example
+ * var chain = _.event.chain( 'event1', 'event2' );
+ * console.log( _.event.chainIs( chain ) );
+ * // log : true
+ * console.log( chain.chain );
+ * // log : [ 'event1', 'event2' ]
+ *
+ * @example
+ * var name1 = _.event.Name( 'event1' );
+ * var name2 = _.event.Name( 'event2' );
+ * var chain = _.event.chain( name1, name2 );
+ * console.log( _.event.chainIs( chain ) );
+ * // log : true
+ * console.log( chain.chain.length );
+ * // log : 2
+ * console.log( chain.chain[ 0 ] === name1 );
+ * // log : true
+ * console.log( chain.chain[ 1 ] === name2 );
+ * // log : true
+ *
+ * @param { String|wTools.event.Name|wTools.event.Chain } ... arguments - The set of event names of single instance of Chain.
+ * @returns { wTools.event.Chain } - Returns instance of class.
+ * @function Chain
+ * @class wTools.event.Chain
+ * @throws { Error } If arguments.length is less than 1.
+ * @throws { Error } If arguments have incompatible type.
+ * @throws { Error } If arguments contain instance of Chain and another elements.
+ * @namespace wTools.event
+ * @extends Tools
+ */
+
 function Chain()
 {
   if( !( _.event.chainIs( this ) ) )
