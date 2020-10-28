@@ -187,7 +187,7 @@ function numbersAreEquivalent( a, b, accuracy )
 
   BOF     BOF       BIF/BOF/FIB/FOB            +                       ++++
   BOF     FIB       BIF/BOF/FIB/FOB            +                       ++++
-  BOF     FOB       BIF/BOF/FIB/FOB            ?                       ----
+  BOF     FOB       BIF/BOF/FIB/FOB            +?                      ++++
 
   FIB     FIB       BIF/BOF/FIB/FOB            +                       ++++
   FIB     FOB       BIF/BOF/FIB/FOB            +                       ++++
@@ -227,14 +227,34 @@ function numbersAreEquivalent( a, b, accuracy )
       }
       else /* a : BOF, b : FOB, accuracy : BIF/BOF/FIB/FOB */
       {
+        if( accuracy >= Number.MIN_SAFE_INTEGER && accuracy <= Number.MAX_SAFE_INTEGER ) /* a : BOF, b : FOB, accuracy : FIB/FOB */
+        {
+          let decimal = b % 1;
+          b = BigInt( Math.floor( b ) )
+          return abs( a - b ) <= accuracy + decimal;
+        }
+        else /* a : BOF, b : FOB, accuracy : BIF/BOF */
+        {
+          /* EASY WAY : max loss of precision 0.5(1) */
+          b = BigInt( Math.round( b ) );
+        }
+
+        /* HARD WAY ( NOT IMPLEMENTED ) : without loss of precision
+        Posibilities:
+        1. BOF -> BIF. In loop reduce `a` until it's within the range of BIF, then a = Number( a )
+          problems : reducing by dividing - loss of precision at each division : 5n / 2n = 2n
+                     reducing by substracting - no way to choose an optimal value,
+                     either substractions could possibly go on unreasonably long or BIF range is skipped at some point.
+        */
+
         // b : 2^53( 9007199254740991 ) + 2   -> 9007199254740993n can't convert to FIB
         // a : 2^53( 9007199254740991 ) - 1.5 -> 9007199254740989.5 can't convert to BIF directly
         // accuracy : 3.5 -> true
         // ( Math.pow( 2, 53 ) - 1 ) - ( Math.pow( 2, 52 ) - 1 )
         // 4503599627370496
 
-        // a ( bigint outside float ) : [ ... > 2^53-1 ]
-        // b ( float outside bigint ) : [ ... 0.(0)1 ; 2^53-1.(0)1 ]
+        // a ( bigint outside float ) : -2^53-1 > a > 2^53-1
+        // b ( float outside bigint ) : 2^53-0.(9) <= b >= -2^53-0.(9)
 
         // ex
         //    a : BigInt( 2^53-1 ) + 1n  |
@@ -246,15 +266,22 @@ function numbersAreEquivalent( a, b, accuracy )
 
         // let decimal = b % 1;
         // b = BigInt( Math.floor( a ) )
+        // for( ;a <= Number.MIN_SAFE_INTEGER || a >= Number.MAX_SAFE_INTEGER; )
+        // {
+        //   //
+        //   let len = a.toString().length;
+        //   a = a - BigInt( Math.pow( 10, len - 2 ) );
+        //   // b = b / 10;
+        //   accuracy = _.bigIntIs( accuracy ) ? accuracy - BigInt( Math.pow( 10, len - 2 ) ) : accuracy - Math.pow( 10, len - 2 )
+        // }
 
-        for( ;a <= Number.MIN_SAFE_INTEGER || a >= Number.MAX_SAFE_INTEGER; )
-        {
-          a = a / 100n;
-          b = b / 100;
-          accuracy = _.bigIntIs( accuracy ) ? accuracy / 100n : accuracy / 100
-        }
+        // a = a / BigInt( 1e308 );
+        // b = b / 1e308;
+        // accuracy = _.bigIntIs( accuracy ) ? accuracy / BigInt( 1e308 ) : accuracy / 1e308
 
-        a = Number( a );
+        // a = Number( a );
+        // console.log( 'diff : ', a - b )
+        // console.log( 'acc  : ', accuracy )
         // return abs( a - b ) <= accuracy + decimal;
 
       }
@@ -275,14 +302,18 @@ function numbersAreEquivalent( a, b, accuracy )
       }
       else /* a : FOB, b : BOF , accuracy : BIF/BOF/FIB/FOB */
       {
-        for( ;b <= Number.MIN_SAFE_INTEGER || b >= Number.MAX_SAFE_INTEGER; )
+        if( accuracy >= Number.MIN_SAFE_INTEGER && accuracy <= Number.MAX_SAFE_INTEGER ) /* a : FOB, b : BOF, accuracy : FIB/FOB */
         {
-          a = a / 100;
-          b = b / 100n;
-          accuracy = _.bigIntIs( accuracy ) ? accuracy / 100n : accuracy / 100
+          let decimal = a % 1;
+          a = BigInt( Math.floor( a ) )
+          return abs( a - b ) <= accuracy + decimal;
         }
-
-        b = Number( b );
+        else /* a : FOB, b : BOF, accuracy : BIF/BOF */
+        {
+          /* EASY WAY : max loss of precision 0.5(1) */
+          a = BigInt( Math.round( a ) );
+        }
+        /* HARD WAY ( NOT IMPLEMENTED ) : without loss of precision */
       }
     }
   }

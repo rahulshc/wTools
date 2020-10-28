@@ -1342,27 +1342,29 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
   var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 53 ) - 1.5 /* BECOMES -2 */, 2n );
   test.identical( got, true );
 
-  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB -1.1 acc BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 5n';
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB -1.1 acc BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 2n';
   debugger;
-  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, -1.1, BigInt( Math.pow( 2, 53 ) - 1 ) + 4n /* ??? 3.5 difference -> 4 */ );
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, -1.1 /* -1n */, BigInt( Math.pow( 2, 53 ) - 1 ) + 2n /* -1.1 => -1n, 2n difference */ );
   test.identical( got, true );
 
-  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB -1.1 acc BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 3n';
-  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, -1.1, BigInt( Math.pow( 2, 53 ) - 1 ) + 3n );
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB -1.1 acc BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 2n';
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, -1.1, BigInt( Math.pow( 2, 53 ) - 1 ) + 1n );
   test.identical( got, false );
 
-  /* SPECIAL CASE */
-  // test.case = 'BOF BigInt( Number.MAX_VALUE ) and FOB 0.1, acc BigInt( Number.MAX_VALUE )';
-  // var got = _.numbersAreEquivalent( BigInt( Number.MAX_VALUE ) - 1n, 0.1, BigInt( Number.MAX_VALUE ) );
-  // test.identical( got, true );
+  /* - SPECIAL CASES - */
+  test.case = 'BOF BigInt( Number.MAX_VALUE ) and FOB 0.1, acc BOF BigInt( Number.MAX_VALUE )';
+  var got = _.numbersAreEquivalent( BigInt( Number.MAX_VALUE ) - 1n, 0.1, BigInt( Number.MAX_VALUE ) );
+  test.identical( got, true );
 
-  // test.case = 'BOF BigInt( Number.MAX_VALUE ) and FOB 0.1, acc BigInt( Number.MAX_VALUE ) - 1n';
-  // var got = _.numbersAreEquivalent( BigInt( Number.MAX_VALUE ) - 1n, 0.1, BigInt( Number.MAX_VALUE ) - 1n );
-  // test.identical( got, false );
+  test.case = 'BOF BigInt( Number.MAX_VALUE ) and FOB 0.1, acc BigInt( Number.MAX_VALUE ) - 1n';
+  debugger
+  var got = _.numbersAreEquivalent( BigInt( Number.MAX_VALUE ) - 1n, 0.1, BigInt( Number.MAX_VALUE ) - 2n );
+  test.identical( got, false );
 
-  // test.case = 'BOF BigInt( Number.MAX_VALUE ) and FOB 0.1, acc BigInt( Number.MAX_VALUE ) - 1n';
-  // var got = _.numbersAreEquivalent( BigInt( Number.MAX_VALUE ), -0.9, BigInt( Number.MAX_VALUE ) - 1n);
-  // test.identical( got, false );
+  test.case = 'BOF BigInt( Number.MAX_VALUE ) and FOB 0.1, acc BigInt( Number.MAX_VALUE ) - 1n';
+  var got = _.numbersAreEquivalent( BigInt( Number.MAX_VALUE ), -0.9, BigInt( Number.MAX_VALUE ) - 1n);
+  test.identical( got, false );
+  /* - - */
 
   test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 53 ) - 1.5, acc FIB 2 ';
   var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 53 ) - 1.5 /* BECOMES -2 */, 2 );
@@ -1378,12 +1380,12 @@ function numbersAreEquivalentArgumentAccuracy( test ) /* qqq for Yevhen : bad na
 
   test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 52 ) - 1.5, acc FOB 4503599627370497.5';
                                     /*        9007199254740992n        */ /* 4503599627370494.5 */ /* 9007199254740992n - 4503599627370494.5 */
-  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 52 ) - 1.5, 4503599627370497.5 /* BECOMES ROUNDED UP 4503599627370498*/);
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 52 ) - 1.5, 4503599627370497 /* BECOMES ROUNDED UP 4503599627370498*/);
   test.identical( got, true );
 
-  // test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 52 ) - 1.5, acc FOB 4503599627370496.5';
-  // var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 52 ) - 1.5, 4503599627370496.5 /* BECOMES ROUNDED UP 4503599627370497*/);
-  // test.identical( got, false );
+  test.case = 'BOF BigInt( Math.pow( 2, 53 ) - 1 ) + 1n and FOB Math.pow( 2, 52 ) - 1.5, acc FOB 4503599627370496.5';
+  var got = _.numbersAreEquivalent( BigInt( Math.pow( 2, 53 ) - 1 ) + 1n, Math.pow( 2, 52 ) - 1.5, 4503599627370496.5 /* BECOMES ROUNDED UP 4503599627370497*/);
+  test.identical( got, false );
 
   /* ----------- */
 
