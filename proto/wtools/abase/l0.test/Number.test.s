@@ -998,6 +998,10 @@ function numbersAreEquivalentBasic( test )
   var got = _.numbersAreEquivalent( 3n, 4.0 );
   test.identical( got, false );
 
+  test.case = 'bigint 3 and number 3.0';
+  var got = _.numbersAreEquivalent( 3n, 3.0 );
+  test.identical( got, true );
+
   test.case = 'big int 3 and big int 3';
   var got = _.numbersAreEquivalent( 3n, 3n );
   test.identical( got, true );

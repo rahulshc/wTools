@@ -192,10 +192,10 @@ function numbersAreEquivalent( a, b, accuracy )
   FIB     FIB       BIF/BOF/FIB/FOB            +                       ++++
   FIB     FOB       BIF/BOF/FIB/FOB            +                       ++++
 
-  FOB     FOB       BIF/BOF/FIB/FOB            +                       ---+
+  FOB     FOB       BIF/BOF/FIB/FOB            +                       ++++
 
   Overall : 10 cases ( 40 test cases )
-  Done : 9/10 ( 27/40 )
+  Done : 9/10 ( 36/40 )
 
   Definitions :
   BIF = bigint inside range of float ( 0n, 3n, BigInt( Math.pow( 2, 52 ) ) )
