@@ -163,13 +163,12 @@ function _begin( test )
   {
     test.case = 'without callbacks';
     var timer = _.time._begin( Infinity );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -180,13 +179,12 @@ function _begin( test )
   {
     test.case = 'onTime';
     var timer = _.time._begin( Infinity, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -198,13 +196,12 @@ function _begin( test )
     test.case = 'onTime, execute method time';
     var timer = _.time._begin( Infinity, onTime );
     timer.time();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -214,13 +211,12 @@ function _begin( test )
   {
     test.case = 'onCancel';
     var timer = _.time._begin( Infinity, undefined, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -232,13 +228,12 @@ function _begin( test )
     test.case = 'onCancel, execute method cancel';
     var timer = _.time._begin( Infinity, undefined, onCancel );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer ) /* aaa : parametrize all time outs in the test suite */ /* Dmytro : add parametrized variables */
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, -1 );
 
       return null;
     });
@@ -248,13 +243,12 @@ function _begin( test )
   {
     test.case = 'onTime, onCancel';
     var timer = _.time._begin( Infinity, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -279,13 +273,12 @@ function _begin( test )
   {
     test.case = 'without callbacks';
     var timer = _.time._begin( 0 );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
 
       return null;
     });
@@ -295,13 +288,12 @@ function _begin( test )
   {
     test.case = 'onTime';
     var timer = _.time._begin( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -312,13 +304,12 @@ function _begin( test )
     test.case = 'onTime, execute method time';
     var timer = _.time._begin( 0, onTime );
     timer.time()
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -328,13 +319,12 @@ function _begin( test )
   {
     test.case = 'onCancel';
     var timer = _.time._begin( 0, undefined, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
 
       return null;
     });
@@ -345,13 +335,12 @@ function _begin( test )
     test.case = 'onCancel, execute method cancel';
     var timer = _.time._begin( 0, undefined, onCancel );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, -1 );
 
       return null;
     });
@@ -361,13 +350,12 @@ function _begin( test )
   {
     test.case = 'onTime, onCancel';
     var timer = _.time._begin( 0, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -388,13 +376,12 @@ function _begin( test )
     };
 
     var timer = _.time._begin( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 20, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 4 );
       test.identical( result, [ 1 ] );
 
@@ -419,14 +406,13 @@ function _begin( test )
   .then( function()
   {
     test.case = 'without callbacks, timeout < check time';
-    var timer = _.time._begin( context.dt1/2 );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._begin( context.t1/2 );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
 
       return null;
     });
@@ -435,14 +421,13 @@ function _begin( test )
   .then( function()
   {
     test.case = 'without callbacks, timeout > check time';
-    var timer = _.time._begin( context.dt2 * 2 );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._begin( context.t1 * 20 );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -452,14 +437,13 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime, timeout < check time';
-    var timer = _.time._begin( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._begin( context.t1/2, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -468,14 +452,13 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time';
-    var timer = _.time._begin( context.dt2 * 2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._begin( context.t1 * 20, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -485,15 +468,14 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time, execute method time';
-    var timer = _.time._begin( context.dt2 * 2, onTime );
+    var timer = _.time._begin( context.t1 * 20, onTime );
     timer.time()
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -502,14 +484,13 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onCancel, timeout < check time';
-    var timer = _.time._begin( context.dt1/2, undefined, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._begin( context.t1/2, undefined, onCancel );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
 
       return null;
     });
@@ -518,15 +499,14 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onCancel, timeout < check time, execute method cancel';
-    var timer = _.time._begin( context.dt1/2, undefined, onCancel );
+    var timer = _.time._begin( context.t1/2, undefined, onCancel );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, -1 );
 
       return null;
     });
@@ -535,14 +515,13 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime, onCancel, timeout < check time';
-    var timer = _.time._begin( context.dt1/2, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._begin( context.t1/2, onTime, onCancel );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -551,14 +530,13 @@ function _begin( test )
   .then( function()
   {
     test.case = 'onTime, onCancel, timeout > check time';
-    var timer = _.time._begin( context.dt2 * 2, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._begin( context.t1 * 20, onTime, onCancel );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -579,14 +557,13 @@ function _begin( test )
       }
     };
 
-    var timer = _.time._begin( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._begin( context.t1/2, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1 * 20, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 4 );
       test.identical( result, [ 1 ] );
 
@@ -611,7 +588,7 @@ function _begin( test )
     var timer = _.time._begin( Infinity, onTime, onCancel );
     timer.time();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.time() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -637,7 +614,7 @@ function _begin( test )
     var timer = _.time._begin( Infinity, onTime, onCancel );
     timer.cancel();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -659,7 +636,7 @@ function _begin( test )
     var timer = _.time._begin( Infinity, onTime, onCancel );
     timer.time();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -681,7 +658,7 @@ function _begin( test )
     var timer = _.time._begin( Infinity, onTime, onCancel );
     timer.cancel();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.time() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -720,18 +697,17 @@ function _beginTimerInsideOfCallback( test )
     var onTime = () =>
     {
       result.push( 1 );
-      _.time._begin( context.dt1, () => result.push( 2 ) );
+      _.time._begin( context.t1, () => result.push( 2 ) );
       return 1;
     };
-    var timer = _.time._begin( context.dt1, onTime );
+    var timer = _.time._begin( context.t1, onTime );
 
-    return _testerGlobal_.wTools.time.out( context.dt2 * 4, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 100, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 1 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 1 );
       test.identical( result, [ 1, 2 ] );
 
       return null;
@@ -742,28 +718,27 @@ function _beginTimerInsideOfCallback( test )
 
   ready.then( () =>
   {
-    test.case = 'a periodical timer from simple timer';
+    test.case = 'a interval timer from simple timer';
     var result = [];
-    var timer = _.time._begin( context.dt1, onTime );
+    var timer = _.time._begin( context.t1, onTime );
     function onTime()
     {
       if( result.length < 3 )
       {
         result.push( 1 );
-        timer = _.time._begin( context.dt1, onTime );
+        timer = _.time._begin( context.t1, onTime );
         return 1;
       }
       result.push( -1 );
       return -1;
     }
 
-    return _testerGlobal_.wTools.time.out( context.dt2 * 4, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 100, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, -1 );
       test.identical( result, [ 1, 1, 1, -1 ] );
 
       return null;
@@ -796,13 +771,12 @@ function _finally( test )
   {
     test.case = 'without callbacks';
     var timer = _.time._finally( Infinity, undefined );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -813,13 +787,12 @@ function _finally( test )
   {
     test.case = 'onTime';
     var timer = _.time._finally( Infinity, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -831,13 +804,12 @@ function _finally( test )
     test.case = 'onTime, execute method time';
     var timer = _.time._finally( Infinity, onTime );
     timer.time()
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -848,13 +820,12 @@ function _finally( test )
     test.case = 'onTime, execute method cancel';
     var timer = _.time._finally( Infinity, onTime );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, -2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -878,13 +849,12 @@ function _finally( test )
   {
     test.case = 'without callbacks';
     var timer = _.time._finally( 0, undefined );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
 
       return null;
     });
@@ -894,13 +864,12 @@ function _finally( test )
   {
     test.case = 'onTime';
     var timer = _.time._finally( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -911,13 +880,12 @@ function _finally( test )
     test.case = 'onTime, execute method time';
     var timer = _.time._finally( 0, onTime );
     timer.time();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -928,13 +896,12 @@ function _finally( test )
     test.case = 'onTime, execute method cancel';
     var timer = _.time._finally( 0, onTime );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, -2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -955,13 +922,12 @@ function _finally( test )
     };
 
     var timer = _.time._finally( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 10, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 4 );
       test.identical( result, [ 1 ] );
 
@@ -986,14 +952,13 @@ function _finally( test )
   .then( function()
   {
     test.case = 'without callbacks, timeout < check time';
-    var timer = _.time._finally( context.dt1/2, undefined );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._finally( context.t1/2, undefined );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
 
       return null;
     });
@@ -1002,14 +967,13 @@ function _finally( test )
   .then( function()
   {
     test.case = 'without callbacks, timeout > check time';
-    var timer = _.time._finally( context.dt2, undefined );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._finally( context.t1 * 10, undefined );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -1019,14 +983,13 @@ function _finally( test )
   .then( function()
   {
     test.case = 'onTime, timeout < check time';
-    var timer = _.time._finally( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._finally( context.t1/2, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -1035,14 +998,13 @@ function _finally( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time';
-    var timer = _.time._finally( context.dt2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._finally( context.t1 * 10, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -1052,15 +1014,14 @@ function _finally( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time, execute method cancel';
-    var timer = _.time._finally( context.dt2, onTime );
+    var timer = _.time._finally( context.t1 * 10, onTime );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, -2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -1069,14 +1030,13 @@ function _finally( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time';
-    var timer = _.time._finally( context.dt2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._finally( context.t1 * 10, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -1086,15 +1046,14 @@ function _finally( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time, execute method time';
-    var timer = _.time._finally( context.dt2, onTime );
+    var timer = _.time._finally( context.t1 * 10, onTime );
     timer.time()
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -1115,13 +1074,12 @@ function _finally( test )
     };
 
     var timer = _.time._finally( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 10, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 4 );
       test.identical( result, [ 1 ] );
 
@@ -1146,7 +1104,7 @@ function _finally( test )
     var timer = _.time._finally( Infinity, onTime );
     timer.time();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.time() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -1168,7 +1126,7 @@ function _finally( test )
     var timer = _.time._finally( Infinity, onTime );
     timer.cancel();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -1190,7 +1148,7 @@ function _finally( test )
     var timer = _.time._finally( Infinity, onTime );
     timer.time();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -1212,7 +1170,7 @@ function _finally( test )
     var timer = _.time._finally( Infinity, onTime );
     timer.cancel();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.time() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -1267,13 +1225,12 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 20, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, -2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -1298,13 +1255,12 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 20, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, -2 );
-      test.identical( got.result, _.dont );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, _.dont );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -1329,13 +1285,12 @@ function _periodic( test )
     };
 
     var timer = _.time._periodic( 0, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 20, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -1371,14 +1326,13 @@ function _periodic( test )
       }
     };
 
-    var timer = _.time._periodic( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2*4, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._periodic( context.t1/2, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1 * 40, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.is( got.state === -2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.is( timer.state === -2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -1402,14 +1356,13 @@ function _periodic( test )
       return _.dont;
     };
 
-    var timer = _.time._periodic( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2*4, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._periodic( context.t1/2, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1 * 40, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, -2 );
-      test.identical( got.result, _.dont );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, _.dont );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -1432,14 +1385,13 @@ function _periodic( test )
       }
     };
 
-    var timer = _.time._periodic( context.dt1/2, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt2*4, () => timer )
-    .then( ( got ) =>
+    var timer = _.time._periodic( context.t1/2, onTime, onCancel );
+    return _testerGlobal_.wTools.time.out( context.t1 * 40, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.is( got.state === -2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.is( timer.state === -2 );
+      test.identical( timer.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -1466,7 +1418,7 @@ function _periodic( test )
     var timer = _.time._periodic( 1000, () => 1, () => -1 );
     timer.cancel();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -1492,7 +1444,7 @@ function _periodic( test )
       return -1;
     };
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -1590,7 +1542,7 @@ function _cancel( test )
 
   test.case = 'delay - 0, onTime';
   var onTime = () => 0;
-  var timer = _.time._periodic( context.dt3, onTime ) ;
+  var timer = _.time._periodic( context.t2, onTime ) ;
   var got = _.time._cancel( timer );
   test.identical( got.onTime, onTime );
   test.identical( got.onCancel, undefined );
@@ -1600,7 +1552,7 @@ function _cancel( test )
   test.case = 'delay - 0, onTime, onCancel';
   var onTime = () => 0;
   var onCancel = () => -1;
-  var timer = _.time._periodic( context.dt3, onTime, onCancel ) ;
+  var timer = _.time._periodic( context.t2, onTime, onCancel ) ;
   var got = _.time._cancel( timer );
   test.identical( got.onTime, onTime );
   test.identical( got.onCancel, onCancel );
@@ -1628,7 +1580,7 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var timer = _.time.begin( context.t2 * 5, () => 1 );
     var got = _.time.timerInBegin( timer );
     test.identical( got, true );
     _.time.cancel( timer );
@@ -1638,7 +1590,7 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var timer = _.time.finally( context.t2 * 5, () => 1 );
     var got = _.time.timerInBegin( timer );
     test.identical( got, true );
     _.time.cancel( timer );
@@ -1648,7 +1600,7 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var timer = _.time.periodic( context.t2 * 5, () => 1 );
     var got = _.time.timerInBegin( timer );
     test.identical( got, true );
     _.time.cancel( timer );
@@ -1672,7 +1624,7 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - begin, check state inside of callback onCancel';
-    var timer = _.time.begin( context.dt3 * 5, () => 1, onCancel );
+    var timer = _.time.begin( context.t2 * 5, () => 1, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -1686,7 +1638,7 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - finally, check state inside of callback onCancel';
-    var timer = _.time.finally( context.dt3 * 5, onCancel );
+    var timer = _.time.finally( context.t2 * 5, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -1700,7 +1652,7 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic, check state inside of callback onCancel';
-    var timer = _.time.periodic( context.dt1, () => 1, onCancel );
+    var timer = _.time.periodic( context.t1, () => 1, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -1729,40 +1681,40 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt1, onTime );
+    var timer = _.time.begin( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return got;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt1, onTime );
+    var timer = _.time.finally( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return got;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt1, onTime );
+    var timer = _.time.periodic( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInBegin( timer );
       test.identical( got, false );
       return undefined;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
@@ -1782,7 +1734,7 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var timer = _.time.begin( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInBegin( timer );
     test.identical( got, false );
@@ -1792,7 +1744,7 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var timer = _.time.finally( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInBegin( timer );
     test.identical( got, false );
@@ -1802,7 +1754,7 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var timer = _.time.periodic( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInBegin( timer );
     test.identical( got, false );
@@ -1826,9 +1778,9 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt1, () => 1 );
+    var timer = _.time.begin( context.t1, () => 1 );
 
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInBegin( timer );
       test.identical( got, false );
@@ -1839,8 +1791,8 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt1, () => 1 );
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    var timer = _.time.finally( context.t1, () => 1 );
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInBegin( timer );
       test.identical( got, false );
@@ -1851,8 +1803,8 @@ function timerInBegin( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt2, () => 1 );
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    var timer = _.time.periodic( context.t2 / 10, () => 1 );
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInBegin( timer );
       test.identical( got, false );
@@ -1900,7 +1852,7 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var timer = _.time.begin( context.t2 * 5, () => 1 );
     var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -1910,7 +1862,7 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var timer = _.time.finally( context.t2 * 5, () => 1 );
     var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -1920,7 +1872,7 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var timer = _.time.periodic( context.t2 * 5, () => 1 );
     var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -1944,7 +1896,7 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - begin, check state inside of callback onCancel';
-    var timer = _.time.begin( context.dt3 * 5, () => 1, onCancel );
+    var timer = _.time.begin( context.t2 * 5, () => 1, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -1958,7 +1910,7 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - finally, check state inside of callback onCancel';
-    var timer = _.time.finally( context.dt3 * 5, onCancel );
+    var timer = _.time.finally( context.t2 * 5, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -1972,7 +1924,7 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic, check state inside of callback onCancel';
-    var timer = _.time.periodic( context.dt1, () => 1, onCancel );
+    var timer = _.time.periodic( context.t1, () => 1, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -2001,40 +1953,40 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt1, onTime );
+    var timer = _.time.begin( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
       return got;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt1, onTime );
+    var timer = _.time.finally( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
       return got;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt1, onTime );
+    var timer = _.time.periodic( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
       return undefined;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
@@ -2054,7 +2006,7 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var timer = _.time.begin( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
@@ -2064,7 +2016,7 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var timer = _.time.finally( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
@@ -2074,7 +2026,7 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var timer = _.time.periodic( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInCancelBegun( timer );
     test.identical( got, false );
@@ -2098,9 +2050,9 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt1, () => 1 );
+    var timer = _.time.begin( context.t1, () => 1 );
 
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
@@ -2111,8 +2063,8 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt1, () => 1 );
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    var timer = _.time.finally( context.t1, () => 1 );
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
@@ -2123,8 +2075,8 @@ function timerInCancelBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt2, () => 1 );
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    var timer = _.time.periodic( context.t2 / 10, () => 1 );
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInCancelBegun( timer );
       test.identical( got, false );
@@ -2172,7 +2124,7 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var timer = _.time.begin( context.t2 * 5, () => 1 );
     var got = _.time.timerInCancelEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -2182,7 +2134,7 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var timer = _.time.finally( context.t2 * 5, () => 1 );
     var got = _.time.timerInCancelEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -2192,7 +2144,7 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var timer = _.time.periodic( context.t2 * 5, () => 1 );
     var got = _.time.timerInCancelEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -2216,7 +2168,7 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - begin, check state inside of callback onCancel';
-    var timer = _.time.begin( context.dt3 * 5, () => 1, onCancel );
+    var timer = _.time.begin( context.t2 * 5, () => 1, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -2230,7 +2182,7 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - finally, check state inside of callback onCancel';
-    var timer = _.time.finally( context.dt3 * 5, onCancel );
+    var timer = _.time.finally( context.t2 * 5, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -2244,7 +2196,7 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic, check state inside of callback onCancel';
-    var timer = _.time.periodic( context.dt1, () => 1, onCancel );
+    var timer = _.time.periodic( context.t1, () => 1, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -2273,40 +2225,40 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt1, onTime );
+    var timer = _.time.begin( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return got;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt1, onTime );
+    var timer = _.time.finally( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return got;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt1, onTime );
+    var timer = _.time.periodic( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
       return undefined;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
@@ -2326,7 +2278,7 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var timer = _.time.begin( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInCancelEnded( timer );
     test.identical( got, true );
@@ -2336,7 +2288,7 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var timer = _.time.finally( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInCancelEnded( timer );
     test.identical( got, true );
@@ -2346,7 +2298,7 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var timer = _.time.periodic( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInCancelEnded( timer );
     test.identical( got, true );
@@ -2370,9 +2322,9 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt1, () => 1 );
+    var timer = _.time.begin( context.t1, () => 1 );
 
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
@@ -2383,8 +2335,8 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt1, () => 1 );
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    var timer = _.time.finally( context.t1, () => 1 );
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
@@ -2395,8 +2347,8 @@ function timerInCancelEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt2, () => 1 );
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    var timer = _.time.periodic( context.t2 / 10, () => 1 );
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInCancelEnded( timer );
       test.identical( got, false );
@@ -2444,7 +2396,7 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var timer = _.time.begin( context.t2 * 5, () => 1 );
     var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -2454,7 +2406,7 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var timer = _.time.finally( context.t2 * 5, () => 1 );
     var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -2464,7 +2416,7 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var timer = _.time.periodic( context.t2 * 5, () => 1 );
     var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -2488,7 +2440,7 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - begin, check state inside of callback onCancel';
-    var timer = _.time.begin( context.dt3 * 5, () => 1, onCancel );
+    var timer = _.time.begin( context.t2 * 5, () => 1, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -2502,7 +2454,7 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - finally, check state inside of callback onCancel';
-    var timer = _.time.finally( context.dt3 * 5, onCancel );
+    var timer = _.time.finally( context.t2 * 5, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -2516,7 +2468,7 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic, check state inside of callback onCancel';
-    var timer = _.time.periodic( context.dt1, () => 1, onCancel );
+    var timer = _.time.periodic( context.t1, () => 1, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -2545,40 +2497,40 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt1, onTime );
+    var timer = _.time.begin( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInEndBegun( timer );
       test.identical( got, true );
       return got;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt1, onTime );
+    var timer = _.time.finally( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInEndBegun( timer );
       test.identical( got, true );
       return got;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt1, onTime );
+    var timer = _.time.periodic( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInEndBegun( timer );
       test.identical( got, true );
       return undefined;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
@@ -2598,7 +2550,7 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var timer = _.time.begin( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
@@ -2608,7 +2560,7 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var timer = _.time.finally( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
@@ -2618,7 +2570,7 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var timer = _.time.periodic( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInEndBegun( timer );
     test.identical( got, false );
@@ -2642,9 +2594,9 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt1, () => 1 );
+    var timer = _.time.begin( context.t1, () => 1 );
 
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInEndBegun( timer );
       test.identical( got, false );
@@ -2655,8 +2607,8 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt1, () => 1 );
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    var timer = _.time.finally( context.t1, () => 1 );
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInEndBegun( timer );
       test.identical( got, false );
@@ -2667,8 +2619,8 @@ function timerInEndBegun( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt2, () => 1 );
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    var timer = _.time.periodic( context.t2 / 10, () => 1 );
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInEndBegun( timer );
       test.identical( got, false );
@@ -2716,7 +2668,7 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var timer = _.time.begin( context.t2 * 5, () => 1 );
     var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -2726,7 +2678,7 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var timer = _.time.finally( context.t2 * 5, () => 1 );
     var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -2736,7 +2688,7 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var timer = _.time.periodic( context.t2 * 5, () => 1 );
     var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
     _.time.cancel( timer );
@@ -2760,7 +2712,7 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - begin, check state inside of callback onCancel';
-    var timer = _.time.begin( context.dt3 * 5, () => 1, onCancel );
+    var timer = _.time.begin( context.t2 * 5, () => 1, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -2774,7 +2726,7 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - finally, check state inside of callback onCancel';
-    var timer = _.time.finally( context.dt3 * 5, onCancel );
+    var timer = _.time.finally( context.t2 * 5, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -2788,7 +2740,7 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic, check state inside of callback onCancel';
-    var timer = _.time.periodic( context.dt1, () => 1, onCancel );
+    var timer = _.time.periodic( context.t1, () => 1, onCancel );
     _.time.cancel( timer );
     function onCancel()
     {
@@ -2817,40 +2769,40 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt1, onTime );
+    var timer = _.time.begin( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInEndEnded( timer );
       test.identical( got, false );
       return got;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt1, onTime );
+    var timer = _.time.finally( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInEndEnded( timer );
       test.identical( got, false );
       return got;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt1, onTime );
+    var timer = _.time.periodic( context.t1, onTime );
     function onTime()
     {
       var got = _.time.timerInEndEnded( timer );
       test.identical( got, false );
       return undefined;
     }
-    return _testerGlobal_.wTools.time.out( context.dt2 );
+    return _testerGlobal_.wTools.time.out( context.t2 / 10 );
   })
 
   ready.then( () =>
@@ -2870,7 +2822,7 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt3 * 5, () => 1 );
+    var timer = _.time.begin( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
@@ -2880,7 +2832,7 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt3 * 5, () => 1 );
+    var timer = _.time.finally( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
@@ -2890,7 +2842,7 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt3 * 5, () => 1 );
+    var timer = _.time.periodic( context.t2 * 5, () => 1 );
     _.time.cancel( timer );
     var got = _.time.timerInEndEnded( timer );
     test.identical( got, false );
@@ -2914,9 +2866,9 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - begin';
-    var timer = _.time.begin( context.dt1, () => 1 );
+    var timer = _.time.begin( context.t1, () => 1 );
 
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInEndEnded( timer );
       test.identical( got, true );
@@ -2927,8 +2879,8 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - finally';
-    var timer = _.time.finally( context.dt1, () => 1 );
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    var timer = _.time.finally( context.t1, () => 1 );
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInEndEnded( timer );
       test.identical( got, true );
@@ -2939,8 +2891,8 @@ function timerInEndEnded( test )
   ready.then( () =>
   {
     test.case = 'timer - periodic';
-    var timer = _.time.periodic( context.dt2, () => 1 );
-    return _testerGlobal_.wTools.time.out( context.dt3, () =>
+    var timer = _.time.periodic( context.t2 / 10, () => 1 );
+    return _testerGlobal_.wTools.time.out( context.t2, () =>
     {
       var got = _.time.timerInEndEnded( timer );
       test.identical( got, true );
@@ -2992,13 +2944,12 @@ function begin( test )
   {
     test.case = 'onTime';
     var timer = _.time.begin( Infinity, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -3010,13 +2961,12 @@ function begin( test )
     test.case = 'onTime, execute method time';
     var timer = _.time.begin( Infinity, onTime );
     timer.time();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3026,13 +2976,12 @@ function begin( test )
   {
     test.case = 'onCancel';
     var timer = _.time.begin( Infinity, undefined, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -3044,13 +2993,12 @@ function begin( test )
     test.case = 'onCancel, execute method cancel';
     var timer = _.time.begin( Infinity, undefined, onCancel );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer ) /* aaa : parametrize all time outs in the test suite */ /* Dmytro : add parametrized variables */
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, -1 );
 
       return null;
     });
@@ -3060,13 +3008,12 @@ function begin( test )
   {
     test.case = 'onTime, onCancel';
     var timer = _.time.begin( Infinity, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -3091,13 +3038,12 @@ function begin( test )
   {
     test.case = 'onTime';
     var timer = _.time.begin( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3108,13 +3054,12 @@ function begin( test )
     test.case = 'onTime, execute method time';
     var timer = _.time.begin( 0, onTime );
     timer.time()
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3124,13 +3069,12 @@ function begin( test )
   {
     test.case = 'onCancel';
     var timer = _.time.begin( 0, undefined, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
 
       return null;
     });
@@ -3141,13 +3085,12 @@ function begin( test )
     test.case = 'onCancel, execute method cancel';
     var timer = _.time.begin( 0, undefined, onCancel );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, -1 );
 
       return null;
     });
@@ -3157,13 +3100,12 @@ function begin( test )
   {
     test.case = 'onTime, onCancel';
     var timer = _.time.begin( 0, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3184,13 +3126,12 @@ function begin( test )
     };
 
     var timer = _.time.begin( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 10, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 4 );
       test.identical( result, [ 1 ] );
 
@@ -3215,14 +3156,13 @@ function begin( test )
   .then( function()
   {
     test.case = 'onTime, timeout < check time';
-    var timer = _.time.begin( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.begin( context.t1/2, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3231,14 +3171,13 @@ function begin( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time';
-    var timer = _.time.begin( context.dt2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.begin( context.t1 * 10, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -3248,15 +3187,14 @@ function begin( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time, execute method time';
-    var timer = _.time.begin( context.dt2, onTime );
+    var timer = _.time.begin( context.t1 * 10, onTime );
     timer.time()
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3265,14 +3203,13 @@ function begin( test )
   .then( function()
   {
     test.case = 'onCancel, timeout < check time';
-    var timer = _.time.begin( context.dt1/2, undefined, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.begin( context.t1/2, undefined, onCancel );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
 
       return null;
     });
@@ -3281,15 +3218,14 @@ function begin( test )
   .then( function()
   {
     test.case = 'onCancel, timeout < check time, execute method cancel';
-    var timer = _.time.begin( context.dt1/2, undefined, onCancel );
+    var timer = _.time.begin( context.t1/2, undefined, onCancel );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, -1 );
 
       return null;
     });
@@ -3298,14 +3234,13 @@ function begin( test )
   .then( function()
   {
     test.case = 'onTime, onCancel, timeout < check time';
-    var timer = _.time.begin( context.dt1/2, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.begin( context.t1/2, onTime, onCancel );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3314,14 +3249,13 @@ function begin( test )
   .then( function()
   {
     test.case = 'onTime, onCancel, timeout > check time';
-    var timer = _.time.begin( context.dt2, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.begin( context.t1 * 10, onTime, onCancel );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -3342,14 +3276,13 @@ function begin( test )
       }
     };
 
-    var timer = _.time.begin( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.begin( context.t1/2, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1 * 10, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 4 );
       test.identical( result, [ 1 ] );
 
@@ -3446,33 +3379,57 @@ function begin( test )
 
   ready.then( () =>
   {
+    test.case = 'executes method cancel twice, should throw error';
+    var timer = _.time.begin( Infinity, onTime, onCancel );
+    timer.cancel();
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
+    .finally( ( err, arg ) =>
+    {
+      if( arg )
+      {
+        test.is( false );
+      }
+      else
+      {
+        _.errAttend( err );
+        test.is( true );
+      }
+      return null;
+    });
+  });
+
+  ready.then( () =>
+  {
+    test.case = 'executes method time and then method cancel, should throw error';
+    var timer = _.time.begin( Infinity, onTime, onCancel );
+    timer.time();
+
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
+    {
+      timer.cancel()
+    })
+    .finally( ( err, arg ) =>
+    {
+      if( arg )
+      {
+        test.is( false );
+      }
+      else
+      {
+        _.errAttend( err );
+        test.is( true );
+      }
+      return null;
+    });
+  });
+
+  ready.then( () =>
+  {
     test.case = 'executes method time twice, should throw error';
     var timer = _.time.begin( Infinity, onTime, onCancel );
     timer.time();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
-    .finally( ( err, arg ) =>
-    {
-      if( arg )
-      {
-        test.is( false );
-      }
-      else
-      {
-        _.errAttend( err );
-        test.is( true );
-      }
-      return null;
-    });
-  });
-
-  ready.then( () =>
-  {
-    test.case = 'executes method cancel twice, should throw error';
-    var timer = _.time.begin( Infinity, onTime, onCancel );
-    timer.cancel();
-
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.time() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -3491,32 +3448,10 @@ function begin( test )
   ready.then( () =>
   {
     test.case = 'executes method time and then method cancel, should throw error';
-    var timer = _.time.begin( Infinity, onTime, onCancel );
-    timer.time();
-
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
-    .finally( ( err, arg ) =>
-    {
-      if( arg )
-      {
-        test.is( false );
-      }
-      else
-      {
-        _.errAttend( err );
-        test.is( true );
-      }
-      return null;
-    });
-  });
-
-  ready.then( () =>
-  {
-    test.case = 'executes method time and then method cancel, should throw error';
-    var timer = _.time.begin( Infinity, onTime, onCancel );
+    var timer = _testerGlobal_.wTools.time.begin( Infinity, onTime, onCancel );
     timer.cancel();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
+    return _.time.out( context.t1, () => timer.time() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -3555,18 +3490,17 @@ function beginTimerInsideOfCallback( test )
     var onTime = () =>
     {
       result.push( 1 );
-      _.time.begin( context.dt1, () => result.push( 2 ) );
+      _.time.begin( context.t1, () => result.push( 2 ) );
       return 1;
     };
-    var timer = _.time.begin( context.dt1, onTime );
+    var timer = _.time.begin( context.t1, onTime );
 
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 100, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 1 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 1 );
       test.identical( result, [ 1, 2 ] );
 
       return null;
@@ -3577,28 +3511,27 @@ function beginTimerInsideOfCallback( test )
 
   ready.then( () =>
   {
-    test.case = 'a periodical timer from simple timer';
+    test.case = 'a interval timer from simple timer';
     var result = [];
-    var timer = _.time.begin( context.dt1, onTime );
+    var timer = _.time.begin( context.t1, onTime );
     function onTime()
     {
       if( result.length < 3 )
       {
         result.push( 1 );
-        timer = _.time.begin( context.dt1, onTime );
+        timer = _.time.begin( context.t1, onTime );
         return 1;
       }
       result.push( -1 );
       return -1;
     }
 
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 100, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, -1 );
       test.identical( result, [ 1, 1, 1, -1 ] );
 
       return null;
@@ -3631,13 +3564,12 @@ function finally_( test )
   {
     test.case = 'without callbacks';
     var timer = _.time.finally( Infinity, undefined );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -3648,13 +3580,12 @@ function finally_( test )
   {
     test.case = 'onTime';
     var timer = _.time.finally( Infinity, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -3666,13 +3597,12 @@ function finally_( test )
     test.case = 'onTime, execute method time';
     var timer = _.time.finally( Infinity, onTime );
     timer.time()
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3683,13 +3613,12 @@ function finally_( test )
     test.case = 'onTime, execute method cancel';
     var timer = _.time.finally( Infinity, onTime );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, -2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3713,13 +3642,12 @@ function finally_( test )
   {
     test.case = 'without callbacks';
     var timer = _.time.finally( 0, undefined );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
 
       return null;
     });
@@ -3729,13 +3657,12 @@ function finally_( test )
   {
     test.case = 'onTime';
     var timer = _.time.finally( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3746,13 +3673,12 @@ function finally_( test )
     test.case = 'onTime, execute method time';
     var timer = _.time.finally( 0, onTime );
     timer.time();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3763,13 +3689,12 @@ function finally_( test )
     test.case = 'onTime, execute method cancel';
     var timer = _.time.finally( 0, onTime );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, -2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3790,13 +3715,12 @@ function finally_( test )
     };
 
     var timer = _.time.finally( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 10, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 4 );
       test.identical( result, [ 1 ] );
 
@@ -3821,14 +3745,13 @@ function finally_( test )
   .then( function()
   {
     test.case = 'without callbacks, timeout < check time';
-    var timer = _.time.finally( context.dt1/2, undefined );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.finally( context.t1/2, undefined );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
 
       return null;
     });
@@ -3837,14 +3760,13 @@ function finally_( test )
   .then( function()
   {
     test.case = 'without callbacks, timeout > check time';
-    var timer = _.time.finally( context.dt2, undefined );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.finally( context.t1 * 10, undefined );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, undefined );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, undefined );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -3854,14 +3776,13 @@ function finally_( test )
   .then( function()
   {
     test.case = 'onTime, timeout < check time';
-    var timer = _.time.finally( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.finally( context.t1/2, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3870,14 +3791,13 @@ function finally_( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time';
-    var timer = _.time.finally( context.dt2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.finally( context.t1 * 10, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -3887,15 +3807,14 @@ function finally_( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time, execute method cancel';
-    var timer = _.time.finally( context.dt2, onTime );
+    var timer = _.time.finally( context.t1 * 10, onTime );
     timer.cancel();
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, -2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3904,14 +3823,13 @@ function finally_( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time';
-    var timer = _.time.finally( context.dt2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.finally( context.t1 * 10, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 0 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 0 );
+      test.identical( timer.result, undefined );
       _.time.cancel( timer );
 
       return null;
@@ -3921,15 +3839,14 @@ function finally_( test )
   .then( function()
   {
     test.case = 'onTime, timeout > check time, execute method time';
-    var timer = _.time.finally( context.dt2, onTime );
+    var timer = _.time.finally( context.t1 * 10, onTime );
     timer.time()
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, 0 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, 0 );
 
       return null;
     });
@@ -3950,13 +3867,12 @@ function finally_( test )
     };
 
     var timer = _.time.finally( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 10, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onTime );
-      test.identical( got.state, 2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onTime );
+      test.identical( timer.state, 2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 4 );
       test.identical( result, [ 1 ] );
 
@@ -4038,7 +3954,7 @@ function finally_( test )
     var timer = _.time.finally( Infinity, onTime );
     timer.time();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.time() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -4060,7 +3976,7 @@ function finally_( test )
     var timer = _.time.finally( Infinity, onTime );
     timer.cancel();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -4082,7 +3998,7 @@ function finally_( test )
     var timer = _.time.finally( Infinity, onTime );
     timer.time();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -4104,7 +4020,7 @@ function finally_( test )
     var timer = _.time.finally( Infinity, onTime );
     timer.cancel();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.time() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.time() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -4159,13 +4075,12 @@ function periodic( test )
     };
 
     var timer = _.time.periodic( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 20, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, -2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -4190,13 +4105,12 @@ function periodic( test )
     };
 
     var timer = _.time.periodic( 0, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 20, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, -2 );
-      test.identical( got.result, _.dont );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, _.dont );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -4221,13 +4135,12 @@ function periodic( test )
     };
 
     var timer = _.time.periodic( 0, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt2 * 2, () => timer )
-    .then( ( got ) =>
+    return _testerGlobal_.wTools.time.out( context.t1 * 20, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.identical( got.state, -2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -4263,14 +4176,13 @@ function periodic( test )
       }
     };
 
-    var timer = _.time.periodic( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2*4, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.periodic( context.t1/2, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1 * 40, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.is( got.state === -2 );
-      test.identical( got.result, undefined );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.is( timer.state === -2 );
+      test.identical( timer.result, undefined );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -4294,14 +4206,13 @@ function periodic( test )
       return _.dont;
     };
 
-    var timer = _.time.periodic( context.dt1/2, onTime );
-    return _testerGlobal_.wTools.time.out( context.dt2*4, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.periodic( context.t1/2, onTime );
+    return _testerGlobal_.wTools.time.out( context.t1 * 40, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, undefined );
-      test.identical( got.state, -2 );
-      test.identical( got.result, _.dont );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, undefined );
+      test.identical( timer.state, -2 );
+      test.identical( timer.result, _.dont );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -4324,14 +4235,13 @@ function periodic( test )
       }
     };
 
-    var timer = _.time.periodic( context.dt1/2, onTime, onCancel );
-    return _testerGlobal_.wTools.time.out( context.dt2*4, () => timer )
-    .then( ( got ) =>
+    var timer = _.time.periodic( context.t1/2, onTime, onCancel );
+    return _testerGlobal_.wTools.time.out( context.t1 * 40, () =>
     {
-      test.identical( got.onTime, onTime );
-      test.identical( got.onCancel, onCancel );
-      test.is( got.state === -2 );
-      test.identical( got.result, -1 );
+      test.identical( timer.onTime, onTime );
+      test.identical( timer.onCancel, onCancel );
+      test.is( timer.state === -2 );
+      test.identical( timer.result, -1 );
       test.identical( times, 0 );
       test.identical( result, [ 1, 1, 1, 1, 1 ] );
 
@@ -4431,10 +4341,10 @@ function periodic( test )
   ready.then( () =>
   {
     test.case = 'executes method cancel twice, should throw error';
-    var timer = _.time.periodic( 1000, () => 1, () => -1 );
+    var timer = _.time.periodic( context.t1 * 100, () => 1, () => -1 );
     timer.cancel();
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -4453,14 +4363,14 @@ function periodic( test )
   ready.then( () =>
   {
     test.case = 'executes method time inside of method cancel, should throw error';
-    var timer = _.time.periodic( 1000, () => 1, onCancel );
+    var timer = _.time.periodic( context.t1 * 100, () => 1, onCancel );
     function onCancel()
     {
       timer.time();
       return -1;
     };
 
-    return _testerGlobal_.wTools.time.out( context.dt1, () => timer.cancel() )
+    return _testerGlobal_.wTools.time.out( context.t1, () => timer.cancel() )
     .finally( ( err, arg ) =>
     {
       if( arg )
@@ -4558,7 +4468,7 @@ function cancel( test )
 
   test.case = 'delay - 0, onTime';
   var onTime = () => 0;
-  var timer = _.time._periodic( context.dt3, onTime ) ;
+  var timer = _.time._periodic( context.t2, onTime ) ;
   var got = _.time.cancel( timer );
   test.identical( got.onTime, onTime );
   test.identical( got.onCancel, undefined );
@@ -4568,7 +4478,7 @@ function cancel( test )
   test.case = 'delay - 0, onTime, onCancel';
   var onTime = () => 0;
   var onCancel = () => -1;
-  var timer = _.time._periodic( context.dt3, onTime, onCancel ) ;
+  var timer = _.time._periodic( context.t2, onTime, onCancel ) ;
   var got = _.time.cancel( timer );
   test.identical( got.onTime, onTime );
   test.identical( got.onCancel, onCancel );
@@ -4649,7 +4559,7 @@ function timeOutCancelInsideOfCallback( test )
 
   visited.push( 'v0' );
 
-  return _testerGlobal_.wTools.time.out( context.dt1*15 ).then( () =>
+  return _testerGlobal_.wTools.time.out( context.t1*15 ).then( () =>
   {
     test.identical( visited, [ 'v0', 'v1', 'v2' ] );
     return null;
@@ -4663,7 +4573,7 @@ function timeOutCancelOutsideOfCallback( test )
   let context = this;
   let visited = [];
 
-  var timer = _.time.begin( context.dt1*3, () =>
+  var timer = _.time.begin( context.t1*3, () =>
   {
     visited.push( 'v1' );
   });
@@ -4671,7 +4581,7 @@ function timeOutCancelOutsideOfCallback( test )
   _.time.cancel( timer );
   visited.push( 'v0' );
 
-  return _testerGlobal_.wTools.time.out( context.dt1*15 ).then( () =>
+  return _testerGlobal_.wTools.time.out( context.t1*15 ).then( () =>
   {
     test.identical( visited, [ 'v0' ] );
     return null;
@@ -4694,7 +4604,7 @@ function timeOutCancelZeroDelayInsideOfCallback( test )
 
   visited.push( 'v0' );
 
-  return _testerGlobal_.wTools.time.out( context.dt1*15 ).then( () =>
+  return _testerGlobal_.wTools.time.out( context.t1*15 ).then( () =>
   {
     test.identical( visited, [ 'v0', 'v1', 'v2' ] );
     return null;
@@ -4716,7 +4626,7 @@ function timeOutCancelZeroDelayOutsideOfCallback( test )
   _.time.cancel( timer );
   visited.push( 'v0' );
 
-  return _testerGlobal_.wTools.time.out( context.dt1*15 ).then( () =>
+  return _testerGlobal_.wTools.time.out( context.t1*15 ).then( () =>
   {
     test.identical( visited, [ 'v0' ] );
     return null;
@@ -4771,9 +4681,8 @@ var Self =
 
   context :
   {
-    dt1 : 10,
-    dt2 : 100,
-    dt3 : 1000,
+    t1 : 10,
+    t2 : 1000,
   },
   /* aaa xxx : minimize number of time parameters. too many of such */ /* Dmytro : minimized, the step is power of 10 */
 
