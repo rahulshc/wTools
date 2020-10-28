@@ -113,6 +113,13 @@ function nameIs( name )
 
 //
 
+function chainIs( chain )
+{
+  return chain instanceof Chain;
+}
+
+//
+
 /* xxx qqq for Dmytro : introduce mini-class _.event.Chain()
 _.process.on( 'available', _.event.Name( 'exit' ), _.event.Name( 'exit' ), _.procedure._eventProcessExitHandle )
 ->
@@ -135,6 +142,31 @@ function Name( name )
 }
 
 Name.prototype = Object.create( null );
+
+//
+
+function Chain()
+{
+  if( !( _.event.chainIs( this ) ) )
+  {
+    if( _.event.chainIs( arguments[ 0 ] ) )
+    {
+      _.assert( arguments.length === 1, 'Expects single Chain or set of event names' );
+      return arguments[ 0 ];
+    }
+
+    return new Chain( ... arguments );
+  }
+
+  _.assert( arguments.length >= 1, 'Expects events names' );
+  for( let i = 0; i < arguments.length; i++ )
+  _.assert( _.strIs( arguments[ i ] ) || _.event.nameIs( arguments[ i ] ), 'Expects string or instance of Name' );
+
+  this.chain = arguments;
+  return this;
+}
+
+Chain.prototype = Object.create( null );
 
 //
 
@@ -561,7 +593,9 @@ let Extension =
 
   nameValueFrom,
   nameIs,
+  chainIs,
   Name,
+  Chain,
 
   on, /* qqq : cover please, take into accout chain case */
   once,
