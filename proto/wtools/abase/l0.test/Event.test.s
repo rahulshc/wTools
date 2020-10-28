@@ -12,6 +12,72 @@ if( typeof module !== 'undefined' )
 let _ = _global_.wTools;
 
 // --
+// chain
+// --
+
+function Chain( test )
+{
+  test.case = 'single string';
+  var got = _.event.Chain( 'begin' );
+  test.is( _.event.chainIs( got ) );
+  test.is( _.longIs( got.chain ) );
+  test.identical( got.chain.length, 1 );
+  test.identical( got.chain[ 0 ], 'begin' );
+
+  test.case = 'single Name';
+  var name = _.event.Name( 'begin' );
+  var got = _.event.Chain( name );
+  test.is( _.event.chainIs( got ) );
+  test.is( _.longIs( got.chain ) );
+  test.identical( got.chain.length, 1 );
+  test.identical( got.chain[ 0 ], name );
+
+  test.case = 'single Chain';
+  var name = _.event.Name( 'begin' );
+  var chain = _.event.Chain( name, 'end' );
+  var got = _.event.Chain( chain );
+  test.is( _.event.chainIs( got ) );
+  test.is( got === chain );
+  test.is( _.longIs( got.chain ) );
+  test.identical( got.chain.length, 2 );
+  test.equivalent( got.chain, [ name, 'end' ] );
+
+  /* */
+
+  test.case = 'a few strings';
+  var got = _.event.Chain( 'begin', 'end', 'error' );
+  test.is( _.event.chainIs( got ) );
+  test.is( _.longIs( got.chain ) );
+  test.identical( got.chain.length, 3 );
+  test.equivalent( got.chain, [ 'begin', 'end', 'error' ] );
+
+  test.case = 'a few Names';
+  var name1 = _.event.Name( 'begin' );
+  var name2 = _.event.Name( 'end' );
+  var name3 = _.event.Name( 'error' );
+  var got = _.event.Chain( name1, name2, name3 );
+  test.is( _.event.chainIs( got ) );
+  test.is( _.longIs( got.chain ) );
+  test.identical( got.chain.length, 3 );
+  test.equivalent( got.chain, [ name1, name2, name3 ] );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.event.Chain() );
+
+  test.case = 'wrong type of element';
+  test.shouldThrowErrorSync( () => _.event.Chain( null ) );
+  test.shouldThrowErrorSync( () => _.event.Chain( 'begin', _.event.Name( 'err' ), undefined ) );
+
+  test.case = 'first argument is a Chain, arguments.length > 1';
+  test.shouldThrowErrorSync( () => _.event.Chain( _.event.Chain( 'begin' ), 'end' ) );
+}
+
+// --
 // event
 // --
 
@@ -335,6 +401,12 @@ var Self =
 
   tests :
   {
+
+    // chain
+
+    Chain,
+
+    // event
 
     once,
     onceWithChain,
