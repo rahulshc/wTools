@@ -147,6 +147,101 @@ function numbersAreEquivalent( a, b, accuracy )
   _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
 
   if( accuracy !== undefined )
+  _.assert( _.numberIs( accuracy ) && accuracy >= 0, 'Accuracy has to be a number >= 0' );
+
+  /* qqq for Yevhen : bad! */
+
+  if( _.numberIs( a ) && _.numberIs( b ) )
+  {
+    if( Object.is( a, b ) )
+    return true;
+  }
+
+  if( !_.numberIs( a ) && !_.bigIntIs( a ) )
+  return false;
+
+  if( !_.numberIs( b ) && !_.bigIntIs( b ) )
+  return false;
+
+  /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine */
+
+  // else
+  // {
+  //   return false;
+  // }
+
+  if( accuracy === undefined )
+  accuracy = this.accuracy;
+
+  if( _.bigIntIs( a ) )
+  {
+    if( _.intIs( b ) )
+    {
+      b = BigInt( b );
+    }
+    // else
+    // {
+    //   a = Number( a );
+    //   if( a === +Infinity || a === -Infinity )
+    //   return false;
+    // }
+  }
+
+  if( _.bigIntIs( b ) )
+  {
+    if( _.intIs( a ) )
+    {
+      a = BigInt( a );
+    }
+    // else
+    // {
+    //   b = Number( b );
+    //   if( b === +Infinity || b === -Infinity )
+    //   return false;
+    // }
+  }
+
+  if( Object.is( a, b ) )
+  return true;
+
+  if( _.bigIntIs( a ) && _.bigIntIs( b ) )
+  {
+    if( _.intIs( accuracy ) )
+    {
+      return BigIntMath.abs( a - b ) <= BigInt( accuracy );
+    }
+    else
+    {
+      let diff = BigIntMath.abs( a - b );
+      if( diff <= BigInt( Math.floor( accuracy ) ) )
+      return true;
+      if( diff > BigInt( Math.ceil( accuracy ) ) )
+      return false;
+      diff = Number( diff );
+      if( diff === Infinity || diff === -Infinity )
+      return false;
+      return Math.abs( diff ) <= accuracy;
+    }
+  }
+
+  // if( !_.numberIs( a ) )
+  // return false;
+  //
+  // if( !_.numberIs( b ) )
+  // return false;
+
+  return Math.abs( a - b ) <= accuracy;
+  // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
+}
+
+
+//
+
+function numbersAreEquivalent2( a, b, accuracy )
+{
+  _.assert( arguments.length === 2 || arguments.length === 3, 'Expects two or three arguments' );
+
+  if( accuracy !== undefined )
   _.assert
   (
     ( _.numberIs( accuracy ) || _.bigIntIs( accuracy ) ) && accuracy >= 0 && accuracy !== Infinity,
@@ -313,93 +408,6 @@ function numbersAreEquivalent( a, b, accuracy )
 
     return value;
   }
-
-  /* ORIGINAL */
-  /* qqq for Yevhen : bad! */
-
-  // if( _.numberIs( a ) && _.numberIs( b ) )
-  // {
-  //   if( Object.is( a, b ) )
-  //   return true;
-  // }
-
-  // if( !_.numberIs( a ) && !_.bigIntIs( a ) )
-  // return false;
-
-  // if( !_.numberIs( b ) && !_.bigIntIs( b ) )
-  // return false;
-
-  // /* qqq for Yevhen : cache results of *Is calls at the beginning of the routine */
-
-  // // else
-  // // {
-  // //   return false;
-  // // }
-
-  // if( accuracy === undefined )
-  // accuracy = this.accuracy;
-
-  // if( _.bigIntIs( a ) )
-  // {
-  //   if( _.intIs( b ) )
-  //   {
-  //     b = BigInt( b );
-  //   }
-  //   // else
-  //   // {
-  //   //   a = Number( a );
-  //   //   if( a === +Infinity || a === -Infinity )
-  //   //   return false;
-  //   // }
-  // }
-
-  // if( _.bigIntIs( b ) )
-  // {
-  //   if( _.intIs( a ) )
-  //   {
-  //     a = BigInt( a );
-  //   }
-  //   // else
-  //   // {
-  //   //   b = Number( b );
-  //   //   if( b === +Infinity || b === -Infinity )
-  //   //   return false;
-  //   // }
-  // }
-
-  // if( Object.is( a, b ) )
-  // return true;
-
-  // if( _.bigIntIs( a ) && _.bigIntIs( b ) )
-  // {
-  //   if( _.intIs( accuracy ) )
-  //   {
-  //     return BigIntMath.abs( a - b ) <= BigInt( accuracy );
-  //   }
-  //   else
-  //   {
-  //     let diff = BigIntMath.abs( a - b );
-  //     if( diff <= BigInt( Math.floor( accuracy ) ) )
-  //     return true;
-  //     if( diff > BigInt( Math.ceil( accuracy ) ) )
-  //     return false;
-  //     diff = Number( diff );
-  //     if( diff === Infinity || diff === -Infinity )
-  //     return false;
-  //     return Math.abs( diff ) <= accuracy;
-  //   }
-  // }
-
-  // // if( !_.numberIs( a ) )
-  // // return false;
-  // //
-  // // if( !_.numberIs( b ) )
-  // // return false;
-
-  // return Math.abs( a - b ) <= accuracy;
-  // // return +( Math.abs( a - b ) ).toFixed( 10 ) <= +( accuracy ).toFixed( 10 );
-
-
 }
 
 //
@@ -485,6 +493,7 @@ let Routines =
   numbersAreIdentical, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
   numbersAreIdenticalNotStrictly,
   numbersAreEquivalent, /* qqq2 : implement good coverage | aaa : Done. Yevhen S. */
+  numbersAreEquivalent2,
 
   numbersAreFinite,
   numbersArePositive,
