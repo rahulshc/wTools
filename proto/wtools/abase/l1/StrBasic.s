@@ -5116,11 +5116,13 @@ function strLinesSelect( o )
 
   /* numbering */
 
-  if( o.numbering )
+  let zeroLine = o.range[ 0 ] <= 0 ? 1 : o.range[ 0 ];
+
+  if( o.numbering && result.length )
   result = _.strLinesNumber
   ({
     src : result,
-    zeroLine : o.range[ 0 ],
+    zeroLine,
     onLine : lineHighlight,
   });
 
