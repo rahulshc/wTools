@@ -5077,10 +5077,12 @@ function strLinesSelect( o )
     o.line = o.range[ 0 ];
     else if( o.selectMode === 'end' )
     o.line = o.range[ 1 ] - 1;
+
+    o.line = o.line > 0 ? o.line : 1;
   }
 
   _.assert( _.longIs( o.range ) );
-  _.assert( _.intIs( o.line ) );
+  _.assert( _.intIs( o.line ) && o.line >= 0, 'Expects positive integer {-o.line-}.' );
 
   /* */
 
@@ -5116,7 +5118,7 @@ function strLinesSelect( o )
 
   /* numbering */
 
-  let zeroLine = o.range[ 0 ] <= 0 ? 1 : o.range[ 0 ];
+  let zeroLine = o.range[ 0 ] <= 0 ? o.zeroLine : o.range[ 0 ];
 
   if( o.numbering && result.length )
   result = _.strLinesNumber
