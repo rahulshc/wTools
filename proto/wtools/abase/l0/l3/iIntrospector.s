@@ -908,6 +908,8 @@ function stack( stack, range )
   if( !_.arrayIs( stack ) )
   stack = stack.split( '\n' );
 
+  // debugger;
+
   /* remove redundant lines */
 
   while( stack.length )
@@ -977,6 +979,7 @@ function stackRelative( stack, delta )
   else if( _.numberIs( stack ) )
   stack += 1;
 
+  debugger;
   if( delta )
   stack += delta;
   if( _.numberIs( stack ) )
