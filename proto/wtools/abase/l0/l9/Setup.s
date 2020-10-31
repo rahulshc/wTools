@@ -130,9 +130,7 @@ function _setupProcedure()
   if( Self._entryProcedureStack )
   return;
 
-  debugger;
   let stack = _.introspector.stack().split( '\n' );
-  debugger;
   for( let s = stack.length-1 ; s >= 0 ; s-- )
   {
     let call = stack[ s ];
