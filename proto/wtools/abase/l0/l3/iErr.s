@@ -921,8 +921,8 @@ function _err( o )
       });
     }
 
-    _.assert( _.numberIs( o.catchLocation.internal ) );
-    if( !o.catchLocation.internal || o.catchLocation.internal === 1 )
+    _.assert( _.numberIs( o.catchLocation.abstraction ) );
+    if( !o.catchLocation.abstraction || o.catchLocation.abstraction === 1 )
     {
       if( o.throwsStack )
       o.throwsStack += `\nthrown at ${o.catchLocation.routineFilePathLineCol}`;

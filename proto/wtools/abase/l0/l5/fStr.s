@@ -777,26 +777,76 @@ function strRight( src, ins, range )
  * @namespace Tools
  */
 
-function strInsideOf( src, begin, end )
+function strInsideOf_head( routine, args )
 {
 
-  _.assert( _.strIs( src ), 'Expects string {-src-}' );
-  _.assert( arguments.length === 3, 'Expects exactly three arguments' );
+  let o = args[ 0 ]
+  if( _.mapIs( o ) )
+  {
+    _.assert( args.length === 1, 'Expects exactly one argument' );
+  }
+  else
+  {
+    o = Object.create( null );
+    o.src = args[ 0 ];
+    o.begin = args[ 1 ];
+    o.end = args[ 2 ];
+    _.assert( args.length === 3, 'Expects exactly three arguments' );
+  }
 
+  _.routineOptions( routine, o );
+  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
+
+  if( _.longIs( o.begin ) && o.begin.length === 1 )
+  o.begin = o.begin[ 0 ];
+  if( _.longIs( o.end ) && o.end.length === 1 )
+  o.end = o.end[ 0 ];
+  if( _.longIs( o.begin || _.longIs( o.end )) )
+  {
+    o.begin = _.arrayAs( o.begin );
+    o.end = _.arrayAs( o.end );
+  }
+
+  _.assert
+  (
+    !o.pairing || !_.longIs( o.begin ) || o.begin.length === o.end.length,
+    `If option::o.paring is true then length of o.begin should be equal to length of o.end`
+  );
+
+  return o;
+}
+
+// function strInsideOf_body( src, begin, end )
+function strInsideOf_body( o )
+{
   let beginOf, endOf;
 
-  beginOf = _.strBeginOf( src, begin );
-  if( beginOf === false )
-  return false;
+  beginOf = _.strBeginOf( o.src, o.begin );
+  if( beginOf === undefined )
+  return undefined;
 
-  endOf = _.strEndOf( src, end );
-  if( endOf === false )
-  return false;
+  endOf = _.strEndOf( o.src, o.end );
+  if( endOf === undefined )
+  return undefined;
 
-  let result = src.substring( beginOf.length, src.length - endOf.length );
+  if( o.pairing )
+  if( beginOf !== endOf )
+  return undefined;
+
+  let result = o.src.substring( beginOf.length, o.src.length - endOf.length );
 
   return result;
 }
+
+strInsideOf_body.defaults =
+{
+  src : null,
+  begin : null,
+  end : null,
+  pairing : 0, /* xxx : set to 1? */
+}
+
+let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body );
 
 //
 
@@ -809,12 +859,12 @@ function strOutsideOf( src, begin, end )
   let beginOf, endOf;
 
   beginOf = _.strBeginOf( src, begin );
-  if( beginOf === false )
-  return false;
+  if( beginOf === undefined )
+  return undefined;
 
   endOf = _.strEndOf( src, end );
-  if( endOf === false )
-  return false;
+  if( endOf === undefined )
+  return undefined;
 
   let result = beginOf + endOf;
 
@@ -832,7 +882,7 @@ function _strRemovedBegin( src, begin )
 
   let result = src;
   let beginOf = _._strBeginOf( result, begin );
-  if( beginOf !== false )
+  if( beginOf !== undefined )
   result = result.substr( beginOf.length, result.length );
 
   return result;
@@ -880,15 +930,15 @@ function strRemoveBegin( src, begin )
   begin = _.arrayAs( begin );
   for( let s = 0, slen = src.length ; s < slen ; s++ )
   {
-    let beginOf = false;
+    let beginOf = undefined;
     let src1 = src[ s ]
     for( let b = 0, blen = begin.length ; b < blen ; b++ )
     {
       beginOf = _._strBeginOf( src1, begin[ b ] );
-      if( beginOf !== false )
+      if( beginOf !== undefined )
       break;
     }
-    if( beginOf !== false )
+    if( beginOf !== undefined )
     src1 = src1.substr( beginOf.length, src1.length );
     result[ s ] = src1;
   }
@@ -908,7 +958,7 @@ function _strRemovedEnd( src, end )
 
   let result = src;
   let endOf = _._strEndOf( result, end );
-  if( endOf !== false )
+  if( endOf !== undefined )
   result = result.substr( 0, result.length - endOf.length );
 
   return result;
@@ -956,15 +1006,15 @@ function strRemoveEnd( src, end )
 
   for( let s = 0, slen = src.length ; s < slen ; s++ )
   {
-    let endOf = false;
+    let endOf = undefined;
     let src1 = src[ s ]
     for( let b = 0, blen = end.length ; b < blen ; b++ )
     {
       endOf = _._strEndOf( src1, end[ b ] );
-      if( endOf !== false )
+      if( endOf !== undefined )
       break;
     }
-    if( endOf !== false )
+    if( endOf !== undefined )
     src1 = src1.substr( 0, src1.length - endOf.length );
     result[ s ] = src1;
   }
@@ -2780,7 +2830,7 @@ let Extension =
   strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
   strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ),
 
-  strInsideOf,
+  strInsideOf, /* qqq for Dmytro : implement perfect coverage */
   strOutsideOf,
 
   // replacers
