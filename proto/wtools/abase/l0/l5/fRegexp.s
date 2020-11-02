@@ -1,4 +1,5 @@
-( function _fRegexp_s_() {
+( function _fRegexp_s_()
+{
 
 'use strict';
 

@@ -1,4 +1,5 @@
-( function _fModule_s_() {
+( function _fModule_s_()
+{
 
 'use strict';
 
