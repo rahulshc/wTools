@@ -305,7 +305,7 @@ function strEntityShort( src )
       result += '{- ' + strType( src ) + ' with ' + _.entityLength( src ) + ' elements' + ' -}';
       if( _.routineIs( src.exportString ) )
       {
-        _.assert( 0, 'not tesed' );
+        _.assert( 0, 'not tesed' ); /* qqq : test please */
         result = src.exportString({ verbosity : 1 });
         result = _.strStrShort( result );
       }
