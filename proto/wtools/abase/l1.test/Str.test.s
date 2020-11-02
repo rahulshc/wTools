@@ -9218,21 +9218,21 @@ function strLinesSelectHighlighting( test )
 
   /* - */
 
-  test.open( 'numbering - 1, highlighting - 1' );
+  test.open( 'numbering - 1, highlighting - 1, line - variable' );
 
   test.case = 'defaults';
-  var src = 'a\nb\nc\nd\ne';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     numbering : 1,
     highlighting : 1
   });
-  var expected = '  1 : a\n* 2 : b\n  3 : c\n  4 : d';
+  var expected = '  1 : a\n* 2 : b\n  3 : c';
   test.identical( got, expected );
 
   test.case = 'line - 0';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
@@ -9243,50 +9243,50 @@ function strLinesSelectHighlighting( test )
   var expected = '  1 : a';
   test.identical( got, expected );
 
-  test.case = 'line - 9';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'line - 3';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
-    line : 9,
+    line : 3,
     numbering : 1,
     highlighting : 1
   });
-  var expected = '   8 : h\n*  9 : i\n  10 : j';
+  var expected = '  2 : b\n* 3 : c\n  4 : d';
   test.identical( got, expected );
 
-  test.case = 'line - 10, numbering - 1, highlighting - 1';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'line - 4, numbering - 1, highlighting - 1';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
-    line : 10,
+    line : 4,
     numbering : 1,
     highlighting : 1
   });
-  var expected = '   9 : i\n* 10 : j';
+  var expected = '  3 : c\n* 4 : d';
   test.identical( got, expected );
 
-  test.case = 'line - 11, numbering - 1, highlighting - 1';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'line - 5, numbering - 1, highlighting - 1';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
-    line : 11,
+    line : 5,
     numbering : 1,
     highlighting : 1
   });
-  var expected = '  10 : j';
+  var expected = '  4 : d';
   test.identical( got, expected );
 
-  test.close( 'numbering - 1, highlighting - 1' );
+  test.close( 'numbering - 1, highlighting - 1, line - variable' );
 
   /* - */
 
   test.open( 'numbering - 1, highlighting - 1, not default options' );
 
   test.case = 'line - 0, nearestLines - 2';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
@@ -9298,36 +9298,36 @@ function strLinesSelectHighlighting( test )
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'line - 9, nearestLines - 2';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'line - 3, nearestLines - 2';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     nearestLines : 2,
-    line : 9,
+    line : 3,
     numbering : 1,
     highlighting : 1
   });
-  var expected = '  8 : h\n* 9 : i';
+  var expected = '  2 : b\n* 3 : c';
   test.identical( got, expected );
 
-  test.case = 'line - 11, nearestLines - 2';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'line - 5, nearestLines - 2';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     nearestLines : 2,
-    line : 11,
+    line : 5,
     numbering : 1,
     highlighting : 1
   });
-  var expected = '  10 : j';
+  var expected = '  4 : d';
   test.identical( got, expected );
 
   /* */
 
   test.case = 'line - 0, nearestLines - 3, selectMode - end';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
@@ -9340,18 +9340,18 @@ function strLinesSelectHighlighting( test )
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'line - 10, nearestLines - 3, selectMode - end';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'line - 4, nearestLines - 3, selectMode - end';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
     nearestLines : 3,
-    line : 10,
+    line : 4,
     numbering : 1,
     highlighting : 1,
     selectMode : 'end'
   });
-  var expected = '   8 : h\n   9 : i\n* 10 : j';
+  var expected = '  2 : b\n  3 : c\n* 4 : d';
   test.identical( got, expected );
 
   test.case = 'line - 11, nearestLines - 3, selectMode - end';
@@ -9416,10 +9416,10 @@ function strLinesSelectHighlighting( test )
 
   /* - */
 
-  test.open( 'numbering - 1, highlighting - 1, range' );
+  test.open( 'numbering - 1, highlighting - 1, range - const, line - variable' );
 
-  test.case = 'line - 2, range - [ 1, 4 ]';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'line - 2, inside of range';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
@@ -9431,8 +9431,8 @@ function strLinesSelectHighlighting( test )
   var expected = '  1 : a\n* 2 : b\n  3 : c';
   test.identical( got, expected );
 
-  test.case = 'line - 0, range - [ 1, 4 ]';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'line - 0, line < range[ 0 ]';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
@@ -9444,8 +9444,8 @@ function strLinesSelectHighlighting( test )
   var expected = '  1 : a\n  2 : b\n  3 : c';
   test.identical( got, expected );
 
-  test.case = 'line - 5, range - [ 1, 4 ]';
-  var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
+  test.case = 'line - 5, line > range[ 1 ]';
+  var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
   ({
     src,
@@ -9457,7 +9457,7 @@ function strLinesSelectHighlighting( test )
   var expected = '  1 : a\n  2 : b\n  3 : c';
   test.identical( got, expected );
 
-  test.close( 'numbering - 1, highlighting - 1, range' );
+  test.close( 'numbering - 1, highlighting - 1, range - const, line - variable' );
 }
 
 //
