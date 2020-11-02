@@ -8906,9 +8906,8 @@ function strLinesSelect( test )
 
 //
 
-function strLinesSelectSelectMode( test )
+function strLinesSelectOptionSelectMode( test )
 {
-
   test.open('selectMode : center' );
 
   test.case = 'line - 2, nearestLines - 3';
@@ -9192,7 +9191,7 @@ function strLinesSelectSelectMode( test )
 
 //
 
-function strLinesSelectHighlighting( test )
+function strLinesSelectOptionHighlighting( test )
 {
   test.open( 'highlighting - default' );
 
@@ -9503,7 +9502,7 @@ function strLinesSelectHighlighting( test )
 
 //
 
-function strLinesSelectNumbering( test )
+function strLinesSelectOptionNumbering( test )
 {
   test.case = 'line - 0, nearestLines - 5, src - 2 lines, selectMode - center';
   var src = 'a\nb';
@@ -9629,7 +9628,7 @@ function strLinesSelectNumbering( test )
 
 //
 
-function strLinesSelectZeroLine( test )
+function strLinesSelectOptionZeroLine( test )
 {
   test.case = 'zeroLine - default, line - 2';
   var src = 'a\nb\nc\nd\ne\nf\ng\nh\ni\nj';
@@ -9883,7 +9882,7 @@ function strLinesSelectZeroLine( test )
 
 //
 
-function strLinesSelectDelimeter( test )
+function strLinesSelectOptionDelimeter( test )
 {
   test.case = 'src - empty line, delimteter - x';
   var src = '';
@@ -11196,11 +11195,11 @@ let Self =
     strLinesNumberOnLine,
 
     strLinesSelect,
-    strLinesSelectSelectMode,
-    strLinesSelectHighlighting,
-    strLinesSelectNumbering,
-    strLinesSelectZeroLine,
-    strLinesSelectDelimeter,
+    strLinesSelectOptionSelectMode,
+    strLinesSelectOptionHighlighting,
+    strLinesSelectOptionNumbering,
+    strLinesSelectOptionZeroLine,
+    strLinesSelectOptionDelimeter,
 
     strLinesNearest,
     strLinesNearestLog,
