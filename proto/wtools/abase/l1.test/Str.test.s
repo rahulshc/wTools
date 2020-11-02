@@ -9608,7 +9608,7 @@ function strLinesSelectNumberedLines( test )
   var src = 'a\nb';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 0,
     nearestLines : 5,
     numbering : 1,
@@ -9621,7 +9621,7 @@ function strLinesSelectNumberedLines( test )
   var src = 'a\nb';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 0,
     nearestLines : 5,
     numbering : 1,
@@ -9634,7 +9634,7 @@ function strLinesSelectNumberedLines( test )
   var src = 'a\nb';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 0,
     nearestLines : 5,
     numbering : 1,
@@ -9649,7 +9649,7 @@ function strLinesSelectNumberedLines( test )
   var src = 'a\nb';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 2,
     nearestLines : 5,
     numbering : 1,
@@ -9662,7 +9662,7 @@ function strLinesSelectNumberedLines( test )
   var src = 'a\nb';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 2,
     nearestLines : 5,
     numbering : 1,
@@ -9675,7 +9675,7 @@ function strLinesSelectNumberedLines( test )
   var src = 'a\nb';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 2,
     nearestLines : 5,
     numbering : 1,
@@ -9690,7 +9690,7 @@ function strLinesSelectNumberedLines( test )
   var src = 'a\nb';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 3,
     nearestLines : 5,
     numbering : 1,
@@ -9703,7 +9703,7 @@ function strLinesSelectNumberedLines( test )
   var src = 'a\nb';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 3,
     nearestLines : 5,
     numbering : 1,
@@ -9716,7 +9716,7 @@ function strLinesSelectNumberedLines( test )
   var src = 'a\nb';
   var got = _.strLinesSelect
   ({
-    src : src,
+    src,
     line : 3,
     nearestLines : 5,
     numbering : 1,

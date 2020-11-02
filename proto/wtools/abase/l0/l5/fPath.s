@@ -405,8 +405,14 @@ function _normalize( o )
   {
 
     while( this._delDownRegexp.test( result ) )
-    result = result.replace( this._delDownRegexp, ( match, notBegin, split, preSlash, postSlash ) =>
+    result = result.replace( this._delDownRegexp, ( /* match, notBegin, split, preSlash, postSlash */ ) =>
     {
+      let match = arguments[ 0 ];
+      let notBegin = arguments[ 1 ];
+      let split = arguments[ 2 ];
+      let preSlash = arguments[ 3 ];
+      let postSlash = arguments[ 4 ];
+
       if( preSlash === '' )
       return notBegin;
       if( !notBegin )
