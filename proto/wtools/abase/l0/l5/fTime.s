@@ -700,6 +700,19 @@ function cancel( timer )
 
 //
 
+function _sleep( delay )
+{
+  _.assert( _.intIs( delay ) && delay >= 0, 'Specify valid value {-delay-}.' );
+
+  let now = _.time.now();
+
+  while( ( _.time.now() - now ) < delay )
+  {
+  }
+}
+
+//
+
 /**
  * The routine sleep() suspends program execution on time delay {-delay-}.
  *
@@ -728,15 +741,10 @@ function cancel( timer )
 
 function sleep( delay )
 {
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.numberIs( delay ) && delay >= 0, 'Specify valid value {-delay-}.' );
+  _.assert( arguments.length === 1 );
   _.assert( _.numberIsFinite( delay ), 'Delay should have finite value.' );
 
-  let now = _.time.now();
-
-  while( ( _.time.now() - now ) < delay )
-  {
-  }
+  _.time._sleep.apply( this, arguments );
 }
 
 //
@@ -949,6 +957,7 @@ let Extension =
   finally : finally_,
   periodic,
   cancel,
+  _sleep,
   sleep,
 
   now_functor,
