@@ -4525,9 +4525,6 @@ function _sleep( test )
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.time._sleep() );
 
-  test.case = 'extra arguments';
-  test.shouldThrowErrorSync( () => _.time._sleep( 10, new _.Procedure(), 10 ) );
-
   test.case = 'wrong type of delay';
   test.shouldThrowErrorSync( () => _.time._sleep( '10' ) );
 

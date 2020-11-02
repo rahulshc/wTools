@@ -742,7 +742,6 @@ function _sleep( delay )
 function sleep( delay )
 {
   _.assert( arguments.length === 1 );
-  _.assert( _.numberIsFinite( delay ), 'Delay should have finite value.' );
 
   _.time._sleep.apply( this, arguments );
 }
