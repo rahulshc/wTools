@@ -962,7 +962,7 @@ function routineUnite_body( o )
 
   if( !_.routineIs( o.head ) )
   {
-    let _head = _.routinesCompose( o.head, function( /* args, result, op, k */ )
+    let _head = _.routinesCompose( o.head, function()
     {
       let args = arguments[ 0 ];
       let result = arguments[ 1 ];
@@ -1000,7 +1000,7 @@ function routineUnite_body( o )
     [ o.name ] : function()
     {
       let result;
-      let o = head.call( this, callPreAndBody, arguments );
+      let o = head.call( this, callPreAndBody, arguments ); /* qqq for Dmytro : head is optional */
 
       _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
 
@@ -1011,6 +1011,7 @@ function routineUnite_body( o )
 
       if( tail )
       result = tail.call( this, result );
+      /* qqq for Dmytro : not optimal!!! */
 
       return result;
     }

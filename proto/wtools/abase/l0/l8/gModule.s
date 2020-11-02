@@ -570,7 +570,7 @@ function _resolve( moduleName )
       let r = _.module._resolveFirst
       ({
         moduleNames : [ moduleName ],
-        basePath : _.path.dir( _.introspector.location({ level : 1 }).filePath ),
+        basePath : _.path.dir( _.introspector.location({ level : 1 }).filePath ), /* xxx : optimize for relase build */
         throwing : 0,
       });
       if( r !== undefined )

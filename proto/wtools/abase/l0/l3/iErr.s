@@ -215,9 +215,6 @@ function _errMake( o )
   if( !_.strIs( o.originalMessage ) )
   throw Error( 'Expects option.originalMessage:String' );
 
-  // if( !_.strIs( o.beautifiedStack ) )
-  // throw Error( 'Expects option.beautifiedStack:String' );
-
   if( !_.strIs( o.combinedStack ) )
   throw Error( 'Expects option.combinedStack:String' );
 
@@ -277,11 +274,6 @@ function _errMake( o )
       o.id = _.error._errorCounter;
     }
 
-    // if( !o.callsStack )
-    // o.callsStack = o.beautifiedStack;
-    // if( !o.beautifiedStack )
-    // o.beautifiedStack = o.callsStack;
-
   }
 
   /* */
@@ -292,15 +284,17 @@ function _errMake( o )
 
     sectionWrite( 'message', `Message of error#${o.id}`, o.originalMessage );
     sectionWrite( 'combinedStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', o.combinedStack );
-    // sectionWrite( 'callsStack', o.stackCondensing ? 'Beautified calls stack' : 'Calls stack', o.beautifiedStack );
     sectionWrite( 'throwsStack', `Throws stack`, o.throwsStack );
 
+    /* xxx : remove isProcess */
     if( o.isProcess && _.process && _.process.entryPointInfo )
     sectionWrite( 'process', `Process`, _.process.entryPointInfo() );
 
     if( o.sourceCode )
     if( _.strIs( o.sourceCode ) )
-    sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode );
+    sectionWrite( 'sourceCode', `Source code`, o.sourceCode );
+    else if( _.routineIs( o.sourceCode.read ) )
+    sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode.read );
     else if( _.strIs( o.sourceCode.code ) )
     sectionWrite( 'sourceCode', `Source code from ${o.sourceCode.path}`, o.sourceCode.code );
     else
@@ -385,7 +379,6 @@ function _errMake( o )
     nonenumerable( 'reason', o.reason );
 
     nonenumerable( 'combinedStack', o.combinedStack );
-    // nonenumerable( 'callsStack', o.beautifiedStack ); /* yyy */
     nonenumerable( 'throwCallsStack', o.throwCallsStack );
     nonenumerable( 'asyncCallsStack', o.asyncCallsStack );
     nonenumerable( 'throwsStack', o.throwsStack );
@@ -496,7 +489,6 @@ _errMake.defaults =
 
   originalMessage : null,
   combinedStack : '',
-  // beautifiedStack : '',
   throwCallsStack : '',
   throwsStack : '',
   asyncCallsStack : '',
@@ -648,9 +640,21 @@ function _err( o )
           }
           catch( err )
           {
+            let original = arg;
+            arg = o.args[ a ] = 'Error throwen by callback for formatting of error string';
+            console.error( String( err ) );
             debugger;
-            arg = o.args[ a ] = '!ERROR IN ERROR FORMATTER!'
-            console.log( String( err ) );
+            if( _.strLinesSelect ) /* qqq xxx : make sure it works and cover */
+            console.error( _.strLinesSelect
+            ({
+              src : original.toString(),
+              line : 0,
+              nearestLines : 5,
+              numbering : 1,
+            }));
+            else
+            console.error( original.toString() );
+            debugger;
           }
         }
         if( _.unrollIs( arg ) )
@@ -917,8 +921,8 @@ function _err( o )
       });
     }
 
-    _.assert( _.numberIs( o.catchLocation.internal ) );
-    if( !o.catchLocation.internal || o.catchLocation.internal === 1 )
+    _.assert( _.numberIs( o.catchLocation.abstraction ) );
+    if( !o.catchLocation.abstraction || o.catchLocation.abstraction === 1 )
     {
       if( o.throwsStack )
       o.throwsStack += `\nthrown at ${o.catchLocation.routineFilePathLineCol}`;
@@ -1019,8 +1023,6 @@ function _err( o )
     for( let a = 0 ; a < result.length ; a++ )
     {
       let str = result[ a ];
-
-      debugger;
 
       if( !o.message.replace( /\s*/m, '' ) )
       {
@@ -1780,12 +1782,12 @@ function breakpoint( condition )
 
   if( !condition )
   {
-    let err = _err
-    ({
-      args : Array.prototype.slice.call( arguments, 1 ),
-      level : 2,
-    });
-    logger.log( err );
+    // let err = _err
+    // ({
+    //   args : Array.prototype.slice.call( arguments, 1 ),
+    //   level : 2,
+    // });
+    logger.log( _.introspector.stack() );
     debugger;
     return false;
   }
@@ -2030,6 +2032,7 @@ let stackSymbol = Symbol.for( 'stack' );
 let ErrorExtension =
 {
 
+  breakpoint,
   breakpointEnabled : !!Config.debug,
   _errorCounter : 0,
   _errorMaking : false,
@@ -2090,7 +2093,6 @@ let ToolsExtension =
 
   // assert
 
-  breakpoint,
   assert,
   assertWithoutBreakpoint,
   assertNotTested,

@@ -1870,7 +1870,7 @@ function eventUncaughtErrorOnce( test )
   let programPath = a.program( program );
   let ready = _testerGlobal_.wTools.take( null );
 
-  // ready.then( () => run( 'once' ) );
+  // ready.then( () => run( 'once' ) ); /* xxx qqq : switch on later */
   ready.then( () => run( 'off' ) );
 
   return ready;
@@ -1944,6 +1944,57 @@ function eventUncaughtErrorOnce( test )
 
 }
 
+//
+
+function entryProcedureStack( test )
+{
+  let context = this;
+  let a = test.assetFor( false );
+  let programPath = a.program( program );
+  let ready = _testerGlobal_.wTools.take( null );
+  ready.then( () => run() );
+  return ready;
+
+  /* */
+
+  function run( how )
+  {
+    let ready = _testerGlobal_.wTools.take( null );
+
+    ready.then( () =>
+    {
+
+      test.case = `basic`;
+      a.forkNonThrowing({ execPath : programPath, args : [ `how:${how}` ] })
+      .then( ( op ) =>
+      {
+        test.identical( op.exitCode, 0 );
+        test.identical( _.strCount( op.output, 'ncaught' ), 0 );
+        test.identical( _.strCount( op.output, 'rror' ), 0 );
+        test.identical( _.strCount( op.output, 'program.js' ), 1 );
+        test.identical( _.strCount( op.output, 'program.js:9' ), 1 );
+        test.identical( _.strCount( op.output, 'at ' ), 1 );
+        return null;
+      });
+
+      return a.ready;
+    });
+
+    /* */
+
+    return ready;
+  }
+
+  /* */
+
+  function program()
+  {
+    let _ = require( toolsPath );
+    console.log( _.setup._entryProcedureStack );
+  }
+
+}
+
 // --
 // declare
 // --
@@ -1959,7 +2010,7 @@ let Self =
 
   context :
   {
-    nameOfFile : _.introspector.location().fileName,
+    nameOfFile : _.introspector.location().fileName, /* xxx : introduce option in utility::Testing */
     suiteTempPath : null,
     assetsOriginalPath : null,
     appJsPath : null,
@@ -2004,6 +2055,7 @@ let Self =
 
     eventUncaughtErrorBasic,
     eventUncaughtErrorOnce,
+    entryProcedureStack,
 
   }
 

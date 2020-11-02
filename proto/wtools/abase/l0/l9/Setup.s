@@ -135,7 +135,7 @@ function _setupProcedure()
   {
     let call = stack[ s ];
     let location = _.introspector.locationFromStackFrame( call );
-    if( !location.internal )
+    if( !location.internal && !location.abstraction )
     {
       stack.splice( s+1, stack.length );
       stack.splice( 0, s );

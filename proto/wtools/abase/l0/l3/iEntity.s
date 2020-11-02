@@ -101,6 +101,56 @@ function hasMethodEqualer( src ) /* qqq xxx : check. good coverage is required |
   return false;
 }
 
+//
+
+/**
+ * Returns "length" of entity( src ). Representation of "length" depends on type of( src ):
+ *  - For object returns number of it own enumerable properties;
+ *  - For array or array-like object returns value of length property;
+ *  - For undefined returns 0;
+ *  - In other cases returns 1.
+ *
+ * @param { * } src - Source entity.
+ *
+ * @example
+ * _.entityLength( [ 1, 2, 3 ] );
+ * // returns 3
+ *
+ * @example
+ * _.entityLength( 'string' );
+ * // returns 1
+ *
+ * @example
+ * _.entityLength( { a : 1, b : 2 } );
+ * // returns 2
+ *
+ * @example
+ * let src = undefined;
+ * _.entityLength( src );
+ * // returns 0
+ *
+ * @returns {number} Returns "length" of entity.
+ * @function entityLength
+ * @namespace Tools
+*/
+
+function entityLength( src )
+{
+  if( src === undefined )
+  return 0;
+  if( _.mapLike( src ) )
+  return _.mapOwnKeys( src ).length;
+  if( _.objectIs( src ) && _.routineIs( src[ Symbol.iterator ] ) )
+  return [ ... src ].length;
+  if( _.longLike( src ) )
+  return src.length;
+  if( _.setLike( src ) )
+  return src.size;
+  if( _.hashMapLike( src ) )
+  return src.size;
+  return 1;
+}
+
 // --
 // fields
 // --
@@ -123,6 +173,9 @@ let Routines =
   iterableIs,
   hasMethodIterator,
   hasMethodEqualer, /* xxx : add other similar routines */
+
+  entityLength,
+  lengthOf : entityLength,
 
 }
 
