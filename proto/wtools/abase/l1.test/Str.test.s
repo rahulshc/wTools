@@ -8778,28 +8778,6 @@ function strLinesSelect( test )
 
   /* - */
 
-  test.case = 'new line, delimteter exists';
-  var src = 'a b c d';
-  var got = _.strLinesSelect
-  ({
-    src,
-    range : [ 1, 3 ],
-    delimteter : ' '
-  });
-  var expected = 'a b';
-  test.identical( got, expected );
-
-  test.case = 'new line, delimteter not exists';
-  var src = 'a b c d';
-  var got = _.strLinesSelect
-  ({
-    src,
-    range : [ 1, 3 ],
-    delimteter : 'x'
-  });
-  var expected = 'a b c d';
-  test.identical( got, expected );
-
   test.case = 'numbering';
   var src = 'a\nb\nc\nd';
   var got = _.strLinesSelect
@@ -9799,6 +9777,44 @@ function strLinesSelectNumberedLines( test )
     selectMode : 'end',
   });
   var expected = '  1 : a\n  2 : b';
+  test.identical( got, expected );
+}
+
+//
+
+function strLinesSelectDelimeter( test )
+{
+  test.case = 'src - empty line, delimteter - x';
+  var src = '';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    delimteter : 'x',
+  });
+  var expected = '';
+  test.identical( got, expected );
+
+  test.case = 'src, delimteter - x, not exists';
+  var src = 'a b c d';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    delimteter : 'x'
+  });
+  var expected = 'a b c d';
+  test.identical( got, expected );
+
+  test.case = 'src, delimteter - x, exists';
+  var src = 'axbxcxd';
+  var got = _.strLinesSelect
+  ({
+    src,
+    line : 2,
+    delimteter : 'x'
+  });
+  var expected = 'axbxc';
   test.identical( got, expected );
 }
 
@@ -11077,11 +11093,14 @@ let Self =
     strLinesNumberZeroLine,
     strLinesNumberZeroChar,
     strLinesNumberOnLine,
+
     strLinesSelect,
     strLinesSelectSelectMode,
     strLinesSelectHighlighting,
     strLinesSelectZeroLine,
     strLinesSelectNumberedLines,
+    strLinesSelectDelimeter,
+
     strLinesNearest,
     strLinesNearestLog,
     strLinesCount,
