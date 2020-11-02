@@ -1,8 +1,8 @@
 {
   "/pro/module/wTools" : 
   {
-    "mtime" : 1604150103897, 
-    "ctime" : 1604150103897, 
+    "mtime" : 1604314881310, 
+    "ctime" : 1604314881310, 
     "birthtime" : 1588224078785, 
     "absolutePath" : `/pro/module/wTools`
   }, 
@@ -63,12 +63,12 @@
   }, 
   "/pro/module/wTools/.warchive" : 
   {
-    "mtime" : 1604314839447, 
-    "ctime" : 1604314839447, 
+    "mtime" : 1604316667050, 
+    "ctime" : 1604316667050, 
     "birthtime" : 1595248077934, 
     "absolutePath" : `/pro/module/wTools/.warchive`, 
     "size" : 123747n, 
-    "hash" : `44f59121b77ed4e465decf79a855b469`, 
+    "hash" : `61e5c115541836a702dab83ae6f889ab`, 
     "hashOfStat" : 2228762n, 
     "nlink" : 1n
   }, 
@@ -96,13 +96,13 @@
   }, 
   "/pro/module/wTools/package.json" : 
   {
-    "mtime" : 1604150106401, 
-    "ctime" : 1604150106401, 
-    "birthtime" : 1604150103853, 
+    "mtime" : 1604314887733, 
+    "ctime" : 1604314887733, 
+    "birthtime" : 1604314881278, 
     "absolutePath" : `/pro/module/wTools/package.json`, 
     "size" : 1566n, 
-    "hash" : `bbf85c2685d142b82d1b7ba1374be3d8`, 
-    "hashOfStat" : 2241211n, 
+    "hash" : `81688e615d29e89d1da1718cd8159079`, 
+    "hashOfStat" : 2237739n, 
     "nlink" : 1n
   }, 
   "/pro/module/wTools/package2.json" : 
@@ -129,12 +129,12 @@
   }, 
   "/pro/module/wTools/was.package.json" : 
   {
-    "mtime" : 1604150091726, 
-    "ctime" : 1604150091726, 
+    "mtime" : 1604314872325, 
+    "ctime" : 1604314872325, 
     "birthtime" : 1594830425315, 
     "absolutePath" : `/pro/module/wTools/was.package.json`, 
     "size" : 1541n, 
-    "hash" : `9c8fbd4d73a8aa62ca2d02299839ebd3`, 
+    "hash" : `481319047fed981c24b8266c53fcaf31`, 
     "hashOfStat" : 2228740n, 
     "nlink" : 1n
   }, 
@@ -1653,8 +1653,8 @@
   }, 
   "/pro/module/wTools/out/wTools.out.will.yml" : 
   {
-    "mtime" : 1604150103388, 
-    "ctime" : 1604150103388, 
+    "mtime" : 1604314880926, 
+    "ctime" : 1604314880926, 
     "birthtime" : 1588224078797, 
     "absolutePath" : `/pro/module/wTools/out/wTools.out.will.yml`, 
     "size" : 48313n, 
@@ -2032,8 +2032,8 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5" : 
   {
-    "mtime" : 1604314841520, 
-    "ctime" : 1604314841520, 
+    "mtime" : 1604316669104, 
+    "ctime" : 1604316669104, 
     "birthtime" : 1588224081683, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l5`
   }, 
@@ -2149,14 +2149,14 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5/fIntrospector.s" : 
   {
-    "mtime" : 1594837668479, 
-    "ctime" : 1594898317437, 
-    "birthtime" : 1588219626554, 
+    "mtime" : 1604316669104, 
+    "ctime" : 1604316669104, 
+    "birthtime" : 1604316669104, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l5/fIntrospector.s`, 
-    "size" : 382n, 
-    "hash" : `2377470b0e852a8d60d0fc30850052af`, 
-    "hashOfStat" : 24775715n, 
-    "nlink" : 6n
+    "size" : 383n, 
+    "hash" : `0c5df7552537b1266e5bc2930014dd07`, 
+    "hashOfStat" : 2360987n, 
+    "nlink" : 1n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5/fLong.s" : 
   {
@@ -2193,14 +2193,14 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5/fModule.s" : 
   {
-    "mtime" : 1594837668835, 
-    "ctime" : 1594898317437, 
-    "birthtime" : 1588219626526, 
+    "mtime" : 1604316669104, 
+    "ctime" : 1604316669104, 
+    "birthtime" : 1604316669104, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l5/fModule.s`, 
     "size" : 355n, 
-    "hash" : `b97e998fd7ac95bad84d2e7241d991ce`, 
-    "hashOfStat" : 24775699n, 
-    "nlink" : 6n
+    "hash" : `963285a1ae4eeba51bfd8f9d9ef6e56a`, 
+    "hashOfStat" : 2360988n, 
+    "nlink" : 1n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5/fNumber.s" : 
   {
@@ -2226,14 +2226,14 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5/fPath.s" : 
   {
-    "mtime" : 1602751722296, 
-    "ctime" : 1602751722296, 
-    "birthtime" : 1588219626554, 
+    "mtime" : 1604316669104, 
+    "ctime" : 1604316669104, 
+    "birthtime" : 1604316669104, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l5/fPath.s`, 
-    "size" : 26257n, 
-    "hash" : `a1d780fbb6ae5dee078ddacff798e2d9`, 
-    "hashOfStat" : 24775716n, 
-    "nlink" : 5n
+    "size" : 26449n, 
+    "hash" : `545641a756afe39c5276e123127717cc`, 
+    "hashOfStat" : 2360989n, 
+    "nlink" : 1n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5/fProcess.s" : 
   {
@@ -2270,14 +2270,14 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5/fRegexp.s" : 
   {
-    "mtime" : 1594837669511, 
-    "ctime" : 1594898317437, 
-    "birthtime" : 1588219626542, 
+    "mtime" : 1604316669104, 
+    "ctime" : 1604316669104, 
+    "birthtime" : 1604316669104, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l5/fRegexp.s`, 
     "size" : 2822n, 
-    "hash" : `b8efa417264a55cd6f6b9599152a33ba`, 
-    "hashOfStat" : 24775708n, 
-    "nlink" : 6n
+    "hash" : `bdb01f986be52780e54878bc992593f1`, 
+    "hashOfStat" : 2360990n, 
+    "nlink" : 1n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5/fRoutine.s" : 
   {
@@ -2325,14 +2325,14 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5/fTime.s" : 
   {
-    "mtime" : 1604314841520, 
-    "ctime" : 1604314841520, 
-    "birthtime" : 1604314841520, 
+    "mtime" : 1604314862528, 
+    "ctime" : 1604314862556, 
+    "birthtime" : 1588219626546, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0/l5/fTime.s`, 
     "size" : 24541n, 
     "hash" : `82091d2aed61d28129e2b1bd01fd88af`, 
-    "hashOfStat" : 2360988n, 
-    "nlink" : 1n
+    "hashOfStat" : 24775711n, 
+    "nlink" : 5n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0/l5/fUnroll.s" : 
   {
@@ -2694,8 +2694,8 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0.test" : 
   {
-    "mtime" : 1604314841520, 
-    "ctime" : 1604314841520, 
+    "mtime" : 1604314862676, 
+    "ctime" : 1604314862676, 
     "birthtime" : 1588224081767, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0.test`
   }, 
@@ -2965,14 +2965,14 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0.test/Time.test.s" : 
   {
-    "mtime" : 1604314841520, 
-    "ctime" : 1604314841520, 
-    "birthtime" : 1604314841520, 
+    "mtime" : 1604314862612, 
+    "ctime" : 1604314862636, 
+    "birthtime" : 1588219626802, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l0.test/Time.test.s`, 
     "size" : 107210n, 
     "hash" : `051af832d7d78e5f92b50475c23aa0e3`, 
-    "hashOfStat" : 2360987n, 
-    "nlink" : 1n
+    "hashOfStat" : 24775809n, 
+    "nlink" : 5n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l0.test/Typing.test.s" : 
   {
@@ -2998,8 +2998,8 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l1" : 
   {
-    "mtime" : 1600868620351, 
-    "ctime" : 1600868620351, 
+    "mtime" : 1604316669108, 
+    "ctime" : 1604316669108, 
     "birthtime" : 1588224081815, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l1`
   }, 
@@ -3027,32 +3027,32 @@
   }, 
   "/pro/module/wTools/proto/wtools/abase/l1/StrBasic.s" : 
   {
-    "mtime" : 1604299002931, 
-    "ctime" : 1604299002931, 
-    "birthtime" : 1588219626822, 
+    "mtime" : 1604316669108, 
+    "ctime" : 1604316669108, 
+    "birthtime" : 1604316669108, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l1/StrBasic.s`, 
-    "size" : 103537n, 
-    "hash" : `c5a676a323ee6740af709cdbade167f0`, 
-    "hashOfStat" : 24775815n, 
-    "nlink" : 5n
+    "size" : 103698n, 
+    "hash" : `78554e23e91735d576bbfef2e5fe7e0a`, 
+    "hashOfStat" : 2360992n, 
+    "nlink" : 1n
   }, 
   "/pro/module/wTools/proto/wtools/abase/l1.test" : 
   {
-    "mtime" : 1601044128482, 
-    "ctime" : 1601044128482, 
+    "mtime" : 1604316669104, 
+    "ctime" : 1604316669104, 
     "birthtime" : 1588224081631, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l1.test`
   }, 
   "/pro/module/wTools/proto/wtools/abase/l1.test/Str.test.s" : 
   {
-    "mtime" : 1604134291186, 
-    "ctime" : 1604134291186, 
-    "birthtime" : 1588219626810, 
+    "mtime" : 1604316669108, 
+    "ctime" : 1604316669108, 
+    "birthtime" : 1604316669104, 
     "absolutePath" : `/pro/module/wTools/proto/wtools/abase/l1.test/Str.test.s`, 
-    "size" : 307491n, 
-    "hash" : `f224e7c8b0762b90487f9c02852b9823`, 
-    "hashOfStat" : 24775811n, 
-    "nlink" : 5n
+    "size" : 317308n, 
+    "hash" : `7dc20a4565fda33188b869472d0683dd`, 
+    "hashOfStat" : 2360991n, 
+    "nlink" : 1n
   }, 
   "/pro/module/wTools/proto/wtools/amid" : 
   {
