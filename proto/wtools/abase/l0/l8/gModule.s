@@ -850,7 +850,7 @@ function _Setup()
     let parent = arguments[ 1 ];
     let isMain = arguments[ 2 ];
     let options = arguments[ 3 ];
-
+    // console.log( `_resolveFilename : ${request}` );
     let result = NjsResolveFilename.apply( this, arguments );
     resolvedPath = result;
     return result;
