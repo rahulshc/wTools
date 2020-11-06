@@ -4378,7 +4378,7 @@ let Extension =
 
   // map transformer
 
-  mapInvert,
+  mapInvert, /* qqq : write _mapInvert accepting o-map */
   mapInvertDroppingDuplicates,
   mapsFlatten,
 
