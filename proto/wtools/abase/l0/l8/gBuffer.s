@@ -2402,7 +2402,6 @@ function bufferRelength( dstArray, range, srcArray )
     }
   }
 
-  //
   if( _.bufferRawIs( dstArray ) )
   return result.buffer;
   if( _.bufferNodeIs( dstArray ) )
@@ -3881,7 +3880,7 @@ let Routines =
   bufferGrow,
   bufferGrowInplace,
   bufferGrow_, /* !!! : use instead of bufferGrow, bufferGrowInplace */
-  bufferRelength,
+  bufferRelength, /* qqq fro Dmytro : dont understand. explain how what it does. ask */
   bufferRelengthInplace,
   bufferRelength_, /* !!! : use instead of bufferRelength, bufferRelengthInplace */
   bufferRelen,
