@@ -846,7 +846,7 @@ strInsideOf_body.defaults =
   pairing : 0, /* xxx : set to 1? */
 }
 
-let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body );
+let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body ); /* qqq2 for Dmytro : cover please */
 
 //
 

@@ -1633,6 +1633,35 @@ function locationFromStackFrameWithLocationField( test )
 
 //
 
+function locationNormalize( test )
+{
+
+  test.case = 'basic';
+  var o1 = { original : "at node:internal/main/run_main_module:17:47" }
+  var got = _.introspector.locationNormalize( o1 );
+  test.is( got === o1 );
+  var exp =
+  {
+    'original' : 'at node:internal/main/run_main_module:17:47',
+    'filePath' : 'node:internal/main/run_main_module',
+    'routineName' : 'node',
+    'routineAlias' : null,
+    'internal' : 2,
+    'abstraction' : 0,
+    'line' : 17,
+    'col' : 47,
+    'filePathLineCol' : 'node:internal/main/run_main_module:17:47',
+    'routineFilePathLineCol' : 'node @ node:internal/main/run_main_module:17:47',
+    'fileName' : 'run_main_module',
+    'fileNameLineCol' : 'run_main_module:17:47',
+  }
+  test.identical( got, exp );
+  // debugger; xxx
+
+}
+
+//
+
 function stackBasic( test )
 {
 
@@ -2810,35 +2839,6 @@ function stackFilter( test )
 
   test.case = 'onEach returns object, original field is not a string';
   test.shouldThrowErrorSync( () => _.introspector.stackFilter( 'at routine stackFilter\n at @233', ( e, k ) => { return { original : e, key : k } } ) );
-}
-
-//
-
-function locationNormalize( test )
-{
-
-  test.case = 'basic';
-  var o1 = { original : "at node:internal/main/run_main_module:17:47" }
-  var got = _.introspector.locationNormalize( o1 );
-  test.is( got === o1 );
-  var exp =
-  {
-    'original' : 'at node:internal/main/run_main_module:17:47',
-    'filePath' : 'node:internal/main/run_main_module',
-    'routineName' : 'node',
-    'routineAlias' : null,
-    'internal' : 2,
-    'abstraction' : 0,
-    'line' : 17,
-    'col' : 47,
-    'filePathLineCol' : 'node:internal/main/run_main_module:17:47',
-    'routineFilePathLineCol' : 'node @ node:internal/main/run_main_module:17:47',
-    'fileName' : 'run_main_module',
-    'fileNameLineCol' : 'run_main_module:17:47',
-  }
-  test.identical( got, exp );
-  // debugger; xxx
-
 }
 
 // --

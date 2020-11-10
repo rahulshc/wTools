@@ -168,7 +168,8 @@ function _handleUncaught2( o )
   {
     try
     {
-      if( process0.eventGive )
+      // if( process0.eventGive ) /* xxx : cover in starter not catching uncaught error */
+      if( process0 && process0.eventGive )
       process0.eventGive({ event : 'uncaughtError', args : [ o ] });
       for( let g in _realGlobal_._globals_ )
       {
