@@ -116,7 +116,6 @@ function errReason( err, reason )
     catch( err2 )
     {
       console.error( err2 );
-      debugger;
     }
   }
 
@@ -198,7 +197,6 @@ function _errMake( o )
   {
     if( _errMake.defaults[ e ] === undefined )
     {
-      debugger;
       throw Error( `Unknown option::${e}` );
     }
   }
@@ -305,13 +303,11 @@ function _errMake( o )
       let section = o.sections[ s ];
       if( !_.strIs( section.head ) )
       {
-        debugger;
         logger.error( `Each section of an error should have head, but head of section::${s} is ${_.strType(section.head)}` );
         delete o.sections[ s ];
       }
       if( !_.strIs( section.body ) )
       {
-        debugger;
         logger.error( `Each section of an error should have body, but body of section::${s} is ${_.strType(section.body)}` );
         delete o.sections[ s ];
       }
@@ -425,7 +421,6 @@ function _errMake( o )
     catch( err2 )
     {
       console.error( err2 );
-      debugger;
     }
   }
 
@@ -449,7 +444,6 @@ function _errMake( o )
     catch( err2 )
     {
       console.error( err2 );
-      debugger;
     }
     function get()
     {
@@ -464,7 +458,6 @@ function _errMake( o )
     }
     function set( src )
     {
-      debugger;
       this[ symbol ] = src;
       return src;
     }
@@ -534,7 +527,6 @@ function _err( o )
   {
     if( _err.defaults[ e ] === undefined )
     {
-      debugger;
       throw Error( `Unknown option::${e}` );
     }
   }
@@ -547,7 +539,6 @@ function _err( o )
 
   if( _.error._errorMaking )
   {
-    debugger;
     throw Error( 'Recursive dead lock because of error inside of routine _err()!' );
   }
   _.error._errorMaking = true;
@@ -564,8 +555,6 @@ function _err( o )
   let errors = [];
   let combinedStack = '';
   // let message = null;
-
-  /* debugger */
 
   if( o.args[ 0 ] === 'not implemented' || o.args[ 0 ] === 'not tested' || o.args[ 0 ] === 'unexpected' )
   if( _.error.breakpointEnabled )
@@ -612,7 +601,6 @@ function _err( o )
   }
   catch( err2 )
   {
-    debugger;
     _.error._errorMaking = false;
     console.log( err2.message );
     console.log( err2.stack );
@@ -643,7 +631,6 @@ function _err( o )
             let original = arg;
             arg = o.args[ a ] = 'Error throwen by callback for formatting of error string';
             console.error( String( err ) );
-            debugger;
             if( _.strLinesSelect ) /* qqq xxx : make sure it works and cover */
             console.error( _.strLinesSelect
             ({
@@ -654,7 +641,6 @@ function _err( o )
             }));
             else
             console.error( original.toString() );
-            debugger;
           }
         }
         if( _.unrollIs( arg ) )
@@ -755,7 +741,6 @@ function _err( o )
       catch( err2 )
       {
         console.error( err2 );
-        debugger;
       }
     }
 
@@ -883,7 +868,6 @@ function _err( o )
     catch( err2 )
     {
       console.error( err2 );
-      debugger;
     }
 
     try
@@ -898,7 +882,6 @@ function _err( o )
     catch( err2 )
     {
       console.error( err2 );
-      debugger;
     }
 
   }
@@ -1110,11 +1093,11 @@ function _err( o )
 
     if( _.strEnds( str, /\n\s*/ ) )
     {
-      let splitsBefore = _.strIsolateRightOrAll( str, /\S/ );
-      if( splitsBefore[ 1 ] )
+      let splitsBefore = _.strIsolate( str, /\s*$/ );
+      if( splitsBefore[ 0 ] )
       {
-        let splitsAfter = _.strIsolateLeftOrAll( splitsBefore[ 2 ], /\n+/ );
-        str = splitsBefore[ 0 ] + splitsBefore[ 1 ] + splitsAfter[ 1 ];
+        let splitsAfter = _.strIsolateLeftOrAll( splitsBefore[ 1 ], /\n+/ );
+        str = splitsBefore[ 0 ] + splitsAfter[ 1 ];
       }
       else
       {
@@ -1491,7 +1474,6 @@ function errInStr( errStr )
 function errFromStr( errStr )
 {
 
-  // debugger;
   try
   {
 
@@ -1552,7 +1534,6 @@ function errFromStr( errStr )
   catch( err2 )
   {
     console.error( err2 );
-    debugger;
     return Error( errStr );
   }
 }
@@ -1577,7 +1558,6 @@ function _errLog( err, logger )
   }
   else
   {
-    debugger;
     logger.error( 'Error does not have toString' );
     logger.error( err );
   }
@@ -1664,14 +1644,12 @@ function tryCatch( routine )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( routine ) )
-  debugger;
   try
   {
     return routine();
   }
   catch( err )
   {
-    debugger;
     throw _._err({ args : [ err ] });
   }
 }
@@ -1682,14 +1660,13 @@ function tryCatchBrief( routine )
 {
   _.assert( arguments.length === 1 );
   _.assert( _.routineIs( routine ) )
-  debugger;
+
   try
   {
     return routine();
   }
   catch( err )
   {
-    debugger;
     throw _._err({ args : [ err ], brief : 1 });
   }
 }
@@ -1872,7 +1849,7 @@ function breakpoint( condition )
     //   level : 2,
     // });
     logger.log( _.introspector.stack() );
-    debugger;
+
     return false;
   }
 
@@ -1991,7 +1968,6 @@ function assert( condition )
       args : Array.prototype.slice.call( args, 1 ),
       level : 3,
     });
-    debugger;
   }
 
 }
