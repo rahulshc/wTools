@@ -1064,8 +1064,8 @@ function _err( o )
     // o.message = o.message.replace( /\x20*\n$/m, '' );
 
     // o.message = o.message.replace( /^\x20*/gm, '' );
-    // o.message = o.message.replace( /\x20*$/gm, '' );
     o.message = o.message.replace( /^\s*/, '' );
+    o.message = o.message.replace( /\x20*$/gm, '' );
     o.message = o.message.replace( /\s*$/, '' );
 
   }

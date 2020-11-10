@@ -1752,6 +1752,27 @@ Exec :
 
 program`;
   test.identical( got.originalMessage, exp );
+
+  /* */
+
+  test.case = 'multiline message has spaces at the end of inner lines';
+  var got = _.err
+  (
+    `\n\nError :   \n new \n`,
+    `\n\n       \n`,
+    `  Exec :  `,
+    `    `,
+    `program`,
+    `\n \n\n`
+  );
+  var exp =
+`Error :
+ new
+
+Exec :
+
+program`;
+  test.identical( got.originalMessage, exp );
 }
 
 //
