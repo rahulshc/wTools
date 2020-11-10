@@ -1742,13 +1742,13 @@ function strSplitCamel( src )
 function _strOnlySingle( srcStr, range )
 {
 
-/*
-  _.strOnly( 'abc', [ -2, -1 ] ) => 'b'
-  _.strOnly( 'abc', [ 1, 2 ] ) => 'b'
+  /*
+    _.strOnly( 'abc', [ -2, -1 ] ) => 'b'
+    _.strOnly( 'abc', [ 1, 2 ] ) => 'b'
 
-  3-2 = 1
-  3-1 = 2
-*/
+    3-2 = 1
+    3-1 = 2
+  */
 
   if( _.numberIs( range ) )
   {

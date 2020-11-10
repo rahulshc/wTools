@@ -668,7 +668,8 @@ function strBegins( src, begin )
   if( !_.longIs( begin ) )
   {
     let result = _._strBeginOf( src, begin );
-    return result === undefined ? false : true;
+    return !( result === undefined );
+    // return result === undefined ? false : true;
   }
 
   for( let b = 0, blen = begin.length ; b < blen; b++ )
@@ -714,7 +715,8 @@ function strEnds( src, end )
   if( !_.longIs( end ) )
   {
     let result = _._strEndOf( src, end );
-    return result === undefined ? false : true;
+    return !( result === undefined );
+    // return result === undefined ? false : true;
   }
 
   for( let b = 0, blen = end.length ; b < blen; b++ )

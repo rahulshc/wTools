@@ -1,4 +1,5 @@
-( function _fMap_s_() {
+( function _fMap_s_()
+{
 
 'use strict';
 
@@ -97,10 +98,10 @@ function mapContain( src, ins )
 {
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
-/*
-  if( Object.keys( src ).length < Object.keys( ins ).length )
-  return false;
-*/
+  /*
+    if( Object.keys( src ).length < Object.keys( ins ).length )
+    return false;
+  */
 
   for( let s in ins )
   {
@@ -161,8 +162,13 @@ function objectSatisfy( o )
 
   /**/
 
-  function _objectSatisfy( template, src, root, levels, strict )
+  function _objectSatisfy( /* template, src, root, levels, strict */ )
   {
+    let template = arguments[ 0 ];
+    let src = arguments[ 1 ];
+    let root = arguments[ 2 ];
+    let levels = arguments[ 3 ];
+    let strict = arguments[ 4 ];
 
     if( !strict && src === undefined )
     return true;
@@ -172,7 +178,13 @@ function objectSatisfy( o )
 
     if( levels === 0 )
     {
-      if( _.objectIs( template ) && _.objectIs( src ) && _.routineIs( template.identicalWith ) && src.identicalWith === template.identicalWith )
+      if
+      (
+        _.objectIs( template )
+        && _.objectIs( src )
+        && _.routineIs( template.identicalWith )
+        && src.identicalWith === template.identicalWith
+      )
       return template.identicalWith( src );
       else
       return template === src;
@@ -2123,8 +2135,13 @@ function mapButConditional( fieldFilter, srcMap, butMap )
   return result;
 }
 
-function mapButConditional_( fieldFilter, dstMap, srcMap, butMap )
+function mapButConditional_( /* fieldFilter, dstMap, srcMap, butMap */ )
 {
+  let fieldFilter = arguments[ 0 ];
+  let dstMap = arguments[ 1 ];
+  let srcMap = arguments[ 2 ];
+  let butMap = arguments[ 3 ];
+
   if( dstMap === null )
   {
     dstMap = Object.create( null );
@@ -3216,7 +3233,7 @@ function sureMapHasOnly( srcMap, screenMaps, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3322,7 +3339,7 @@ function sureMapOwnOnly( srcMap, screenMaps, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3426,7 +3443,7 @@ function sureMapHasAll( srcMap, all, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3529,7 +3546,7 @@ function sureMapOwnAll( srcMap, all, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3617,7 +3634,7 @@ function sureMapOwnAll( srcMap, all, msg )
 function sureMapHasNone( srcMap, screenMaps, msg )
 {
 
- _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
+  _.assert( arguments.length === 2 || arguments.length === 3 || arguments.length === 4, 'Expects two, three or four arguments' );
 
   let but = Object.keys( _.mapOnly( srcMap, screenMaps ) );
 
@@ -3633,7 +3650,7 @@ function sureMapHasNone( srcMap, screenMaps, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3673,7 +3690,7 @@ function sureMapOwnNone( srcMap, screenMaps, msg )
     else
     {
       let arr = [];
-      for ( let i = 2; i < arguments.length; i++ )
+      for( let i = 2; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
@@ -3774,7 +3791,7 @@ function sureMapHasNoUndefine( srcMap, msg )
     else
     {
       let arr = [];
-      for ( let i = 1; i < arguments.length; i++ )
+      for( let i = 1; i < arguments.length; i++ )
       {
         if( _.routineIs( arguments[ i ] ) )
         arguments[ i ] = ( arguments[ i ] )();
