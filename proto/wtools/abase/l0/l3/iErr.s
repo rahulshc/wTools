@@ -601,7 +601,7 @@ function _err( o )
       stackCondensing : o.stackCondensing,
 
       originalMessage : o.message,
-      combinedStack : combinedStack,
+      combinedStack,
       throwCallsStack : o.throwCallsStack,
       throwsStack : o.throwsStack,
       asyncCallsStack : o.asyncCallsStack,
@@ -1020,26 +1020,57 @@ function _err( o )
 
     }
 
-    for( let a = 0 ; a < result.length ; a++ )
-    {
-      let str = result[ a ];
+    // for( let a = 0 ; a < result.length ; a++ )
+    // {
+    //   let str = result[ a ];
+    //
+    //   if( !o.message.replace( /\s*/m, '' ) )
+    //   {
+    //     o.message = str;
+    //   }
+    //   else if( _.strEnds( o.message, '\n' ) || _.strBegins( str, '\n' ) )
+    //   {
+    //     // o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str; /* Dmytro : this is task, this line affects manual formatting of error message */
+    //     o.message += str;
+    //   }
+    //   else
+    //   {
+    //     o.message = o.message.replace( /\x20+$/m, '' ) + ' ' + str.replace( /^\x20+/m, '' );
+    //     // o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
+    //   }
+    //
+    // }
 
-      if( !o.message.replace( /\s*/m, '' ) )
+    let a = 0;
+    while( !o.message.replace( /\s*/m, '' ) && a < result.length ) /* Dmytro : to remove redundant statement 'if' in main loop */
+    {
+      o.message = errStrFormat( result[ a ] );
+      a += 1;
+    }
+
+    for( ; a < result.length ; a++ )
+    {
+      let str = errStrFormat( result[ a ] );
+
+      if( str === '' )
+      str = '\n\n';
+
+      if( _.strEnds( o.message, '\n' ) )
       {
-        o.message = str;
-      }
-      else if( _.strEnds( o.message, '\n' ) || _.strBegins( str, '\n' ) )
-      {
-        // o.message = o.message.replace( /\s+$/m, '' ) + '\n' + str; /* Dmytro : this is task, this line affects manual formatting of error message */
+        if( !_.strBegins( str, '\n' ) )
         o.message += str;
+        else
+        o.message = strConcatenateCounting( o.message, str );
       }
       else
       {
-        o.message = o.message.replace( /\x20+$/m, '' ) + ' ' + str.replace( /^\x20+/m, '' );
-        // o.message = o.message.replace( /\s+$/m, '' ) + ' ' + str.replace( /^\s+/m, '' );
+        if( _.strBegins( str, '\n' ) )
+        o.message += str;
+        else
+        o.message += '\n' + str;
       }
-
     }
+
 
     /*
       remove redundant spaces at the begin and the end of lines
@@ -1048,11 +1079,64 @@ function _err( o )
     o.message = o.message || fallBackMessage || 'UnknownError';
     // o.message = o.message.replace( /^\x20*\n/m, '' ); /* Dmytro : this is task, this lines affect manual formatting of error message */
     // o.message = o.message.replace( /\x20*\n$/m, '' );
-    o.message = o.message.replace( /^\x20*/gm, '' );
+
+    // o.message = o.message.replace( /^\x20*/gm, '' );
+    o.message = o.message.replace( /^\s*/, '' );
     o.message = o.message.replace( /\x20*$/gm, '' );
+    o.message = o.message.replace( /\s*$/, '' );
 
   }
 
+  /* */
+
+  function errStrFormat( str )
+  {
+    if( _.strBegins( str, /\x20/ ) )
+    str = _.strRemoveBegin( str, /\x20+/ );
+
+    if( _.strBegins( str, /\n/ ) )
+    {
+      let splitsAfter = _.strIsolateLeftOrAll( str, /\S/ );
+      if( splitsAfter[ 1 ] )
+      {
+        let splitsBefore = _.strIsolateRightOrAll( splitsAfter[ 0 ], /\n+/ );
+        str = splitsBefore[ 1 ] + splitsBefore[ 2 ] + splitsAfter[ 1 ] + splitsAfter[ 2 ];
+      }
+      else
+      {
+        str = '';
+      }
+    }
+
+    if( _.strEnds( str, /\n\s*/ ) )
+    {
+      let splitsBefore = _.strIsolateRightOrAll( str, /\S/ );
+      if( splitsBefore[ 1 ] )
+      {
+        let splitsAfter = _.strIsolateLeftOrAll( splitsBefore[ 2 ], /\n+/ );
+        str = splitsBefore[ 0 ] + splitsBefore[ 1 ] + splitsAfter[ 1 ];
+      }
+      else
+      {
+        str = '';
+      }
+    }
+
+    return str;
+  }
+
+  /* */
+
+  function strConcatenateCounting( src1, src2 )
+  {
+    let right = _.strIsolateRightOrAll( src1, /\n+$/ );
+    let left = _.strIsolateLeftOrAll( src2, /\n+/ );
+
+    let result = right[ 0 ];
+    result += right[ 1 ].length > left[ 1 ].length ? right[ 1 ] : left[ 1 ];
+    result += left[ 2 ];
+    return result;
+  }
 }
 
 _err.defaults =
