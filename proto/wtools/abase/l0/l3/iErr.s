@@ -1050,7 +1050,7 @@ function _err( o )
         if( _.strBegins( str, '\n' ) )
         o.message += str;
         else
-        o.message += '\n' + str;
+        o.message += ' ' + str;
       }
     }
 
@@ -1076,6 +1076,8 @@ function _err( o )
   {
     if( _.strBegins( str, /\x20/ ) )
     str = _.strRemoveBegin( str, /\x20+/ );
+    if( _.strEnds( str, /\x20$/ ) )
+    str = _.strRemoveEnd( str, /\x20+$/ );
 
     if( _.strBegins( str, /\n/ ) )
     {
@@ -1091,7 +1093,7 @@ function _err( o )
       }
     }
 
-    if( _.strEnds( str, /\n\s*/ ) )
+    if( _.strEnds( str, /\n/ ) )
     {
       let splitsBefore = _.strIsolate( str, /\s*$/ );
       if( splitsBefore[ 0 ] )

@@ -1027,10 +1027,10 @@ function _errOriginalMessageForm( test )
     args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, () => 1 ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 7 );
-  test.identical( _.strCount( err.originalMessage, 'Sample\nstr' ), 1 );
+  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
-  test.identical( _.strCount( err.originalMessage, 'null\nfalse\n1' ), 1 );
+  test.identical( _.strCount( err.originalMessage, 'null false 1' ), 1 );
 
   test.case = 'args - different, routine returns routine';
   var abc = () =>
@@ -1042,8 +1042,8 @@ function _errOriginalMessageForm( test )
     args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, abc ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 7 );
-  test.identical( _.strCount( err.originalMessage, 'Sample\nstr' ), 1 );
+  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
   test.identical( _.strCount( err.originalMessage, "() => '#1'" ), 1 ); // Dmytro : affects in group testing but has no reason for it
 
@@ -1057,8 +1057,8 @@ function _errOriginalMessageForm( test )
     args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, a ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 7 );
-  test.identical( _.strCount( err.originalMessage, 'Sample\nstr' ), 1 );
+  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
   test.identical( _.strCount( err.originalMessage, '#1' ), 1 );
 
@@ -1070,8 +1070,8 @@ function _errOriginalMessageForm( test )
     args : [ srcErr, 'str', undefined, '', null, false ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 6 );
-  test.identical( _.strCount( err.originalMessage, 'New error\nstr' ), 1 );
+  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strCount( err.originalMessage, 'New error str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
 
   test.case = 'args - different, Error with message';
@@ -1082,8 +1082,8 @@ function _errOriginalMessageForm( test )
     args : [ srcErr, 'str', undefined, '', null, false ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 6 );
-  test.identical( _.strCount( err.originalMessage, 'New error\nstr' ), 1 );
+  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strCount( err.originalMessage, 'New error str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
 
   test.case = 'args - many spaces and new lines';
@@ -1092,7 +1092,7 @@ function _errOriginalMessageForm( test )
     args : [ new Error( '\n\n   Sample     ' ), '\n\nstr   \n', undefined, '', null, false ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 7 );
+  test.identical( _.strLinesCount( err.originalMessage ), 6 );
   test.identical( _.strCount( err.originalMessage, '\n\n   Sample     \n\nstr   \n' ), 0 );
   test.identical( _.strCount( err.originalMessage, 'Sample\n\nstr' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'str\nundefined' ), 1 );
@@ -1130,9 +1130,9 @@ function _errMessageForm( test )
   test.identical( _.strCount( err.message, 'Message of error#' ), 1 );
   test.identical( _.strCount( err.message, 'Beautified calls stack' ), 1 );
   test.identical( _.strCount( err.message, 'Throws stack' ), 1 );
-  test.identical( _.strCount( err.message, /Sample\n\s+str/ ), 1 );
+  test.identical( _.strCount( err.message, 'Sample str' ), 1 );
   test.identical( _.strCount( err.message, 'undefined' ), 2 );
-  test.identical( _.strCount( err.message, /null\n\s+false\n\s+1/ ), 1 );
+  test.identical( _.strCount( err.message, 'null false 1' ), 1 );
 
   test.case = 'without option brief, option stackCondensing - false';
   var err = _._err
@@ -1145,9 +1145,9 @@ function _errMessageForm( test )
   test.identical( _.strCount( err.message, 'Message of error#' ), 1 );
   test.identical( _.strCount( err.message, 'Calls stack' ), 1 );
   test.identical( _.strCount( err.message, 'Throws stack' ), 1 );
-  test.identical( _.strCount( err.message, /Sample\n\s+str/ ), 1 );
+  test.identical( _.strCount( err.message, 'Sample str' ), 1 );
   test.identical( _.strCount( err.message, 'undefined' ), 2 );
-  test.identical( _.strCount( err.message, /null\n\s+false\n\s+1/ ), 1 );
+  test.identical( _.strCount( err.message, 'null false 1' ), 1 );
 
   test.case = 'with option brief';
   var err = _._err
@@ -1156,13 +1156,13 @@ function _errMessageForm( test )
     brief : 1
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.message ), 7 );
+  test.identical( _.strLinesCount( err.message ), 4 );
   test.identical( _.strCount( err.message, 'Message of error#' ), 0 );
   test.identical( _.strCount( err.message, 'Beautified calls stack' ), 0 );
   test.identical( _.strCount( err.message, 'Throws stack' ), 0 );
-  test.identical( _.strCount( err.message, 'Sample\nstr' ), 1 );
+  test.identical( _.strCount( err.message, 'Sample str' ), 1 );
   test.identical( _.strCount( err.message, 'undefined' ), 1 );
-  test.identical( _.strCount( err.message, 'null\nfalse\n1' ), 1 );
+  test.identical( _.strCount( err.message, 'null false 1' ), 1 );
 }
 
 //
@@ -1401,10 +1401,7 @@ function errMessageWithSpacesAndNewLines( test )
     `Exec :`,
     `end of message`
   );
-  var exp =
-`Error :
-Exec :
-end of message`;
+  var exp = `Error : Exec : end of message`;
   test.identical( got.originalMessage, exp );
 
   /* - */
@@ -1418,10 +1415,7 @@ end of message`;
     `  Exec :`,
     `  end of message`
   );
-  var exp =
-`Error :
-Exec :
-end of message`;
+  var exp = `Error : Exec : end of message`;
   test.identical( got.originalMessage, exp );
 
   /* */
@@ -1433,10 +1427,7 @@ end of message`;
     `Exec :  `,
     `end of message  `
   );
-  var exp =
-`Error :
-Exec :
-end of message`;
+  var exp = `Error : Exec : end of message`;
   test.identical( got.originalMessage, exp );
 
   /* */
@@ -1448,10 +1439,7 @@ end of message`;
     `  Exec :  `,
     `  end of message  `
   );
-  var exp =
-`Error :
-Exec :
-end of message`;
+  var exp = `Error : Exec : end of message`;
   test.identical( got.originalMessage, exp );
 
   test.close( 'only spaces' );
