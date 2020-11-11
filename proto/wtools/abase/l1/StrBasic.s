@@ -2588,7 +2588,7 @@ function strConcat( srcs, o )
   let defaultOptionsForToStr =
   {
     stringWrapper : '',
-  }
+  };
 
   o.optionsForToStr = _.mapSupplement( o.optionsForToStr, defaultOptionsForToStr, strConcat.defaults.optionsForToStr );
 
@@ -2617,19 +2617,14 @@ function strConcat( srcs, o )
   for( ; a < srcs.length ; a++ )
   {
     let src = srcs[ a ];
-
     src = o.onToStr( src, o );
 
     result = result.replace( /[^\S\n]\s*$/, '' );
 
     if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
-    {
-      result = concatenatePairWithLineDelimeter( result, src );
-    }
+    result = concatenatePairWithLineDelimeter( result, src );
     else
-    {
-      result = result + ' ' + src.replace( /^\s+/, '' );
-    }
+    result = result + ' ' + src.replace( /^\s+/, '' );
   }
 
   // for( let a = 0 ; a < srcs.length ; a++ )
