@@ -625,7 +625,7 @@ function _strEndOf( src, end )
     // let matched = end.exec( src );
     let newEnd = RegExp( end.toString().slice(1, -1) + '$' );
     let matched = newEnd.exec( src );
-    debugger;
+
     //if( matched && matched.index === 0 )
     if( matched && matched.index + matched[ 0 ].length === src.length )
     return matched[ 0 ];

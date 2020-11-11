@@ -2602,36 +2602,64 @@ function strConcat( srcs, o )
   if( !srcs.length )
   return result;
 
+  let concatenatePairWithLineDelimeter = o.onPairWithDelimeter ? o.onPairWithDelimeter : concatenateSimple;
+
   /* */
 
-  for( let a = 0 ; a < srcs.length ; a++ )
+  let a = 0;
+
+  while( !result && a < srcs.length )
+  {
+    result = o.onToStr( srcs[ a ], o );
+    ++a;
+  }
+
+  for( ; a < srcs.length ; a++ )
   {
     let src = srcs[ a ];
 
     src = o.onToStr( src, o );
 
-    result = result.replace( /[^\S\n]\s*$/, '' ); /* Dmytro : this regExp remove not \n symbol in the end of string, only spaces */
-    // result = result.replace( /\s*$/m, '' );
+    result = result.replace( /[^\S\n]\s*$/, '' );
 
-    if( !result )
+    if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
     {
-      result = src;
-    }
-    // else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
-    // {
-    //   result = result + o.lineDelimter + src; /* Dmytro : if delimeter exists, it's not need  */
-    // }
-    else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
-    {
-      result = result + src;
+      result = concatenatePairWithLineDelimeter( result, src );
     }
     else
     {
       result = result + ' ' + src.replace( /^\s+/, '' );
-      // result = result + ' ' + src.replace( /^\s+/m, '' ); /* Dmytro : flag 'm' - multiline, but no global, so routine replace first inclusion */
     }
-
   }
+
+  // for( let a = 0 ; a < srcs.length ; a++ )
+  // {
+  //   let src = srcs[ a ];
+  //
+  //   src = o.onToStr( src, o );
+  //
+  //   result = result.replace( /[^\S\n]\s*$/, '' ); /* Dmytro : this regExp remove not \n symbol in the end of string, only spaces */
+  //   // result = result.replace( /\s*$/m, '' );
+  //
+  //   if( !result )
+  //   {
+  //     result = src;
+  //   }
+  //   // else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
+  //   // {
+  //   //   result = result + o.lineDelimter + src; /* Dmytro : if delimeter exists, it's not need  */
+  //   // }
+  //   else if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
+  //   {
+  //     result = result + src;
+  //   }
+  //   else
+  //   {
+  //     result = result + ' ' + src.replace( /^\s+/, '' );
+  //     // result = result + ' ' + src.replace( /^\s+/m, '' ); /* Dmytro : flag 'm' - multiline, but no global, so routine replace first inclusion */
+  //   }
+  //
+  // }
 
   // let nl = 1;
   // for( let a = 0 ; a < srcs.length ; a++ )
@@ -2670,6 +2698,13 @@ function strConcat( srcs, o )
   /* */
 
   return result;
+
+  /* */
+
+  function concatenateSimple( src1, src2 )
+  {
+    return src1 + src2;
+  }
 }
 
 strConcat.defaults =
@@ -2679,7 +2714,8 @@ strConcat.defaults =
   lineDelimter : '\n',
   // delimeter : ' ',
   optionsForToStr : null,
-  onToStr : null,
+  onToStr : null, /* Dmytro : maybe it should have name onEach */
+  onPairWithDelimeter : null,
 }
 
 // --
