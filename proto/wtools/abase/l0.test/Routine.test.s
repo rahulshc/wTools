@@ -2460,13 +2460,6 @@ function routineUnite( test )
     return _.unrollMake( args );
   }
 
-  function headComposeObject( routine, args )
-  {
-    let o = Object.create( null );
-    o.args = args[ 0 ].args;
-    return o;
-  }
-
   function bodyObject( o )
   {
     return _.arrayMake( o.args );
@@ -2490,15 +2483,171 @@ function routineUnite( test )
 
   /* - */
 
-  test.open( 'call with arguments' );
+  test.open( 'only body' );
 
-  test.case = 'head and body, with map';
+  test.case = 'head - undefined, body expects map';
+  var routine = _.routineUnite( undefined, bodyObject );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'head - undefined, body expects unroll';
+  var routine = _.routineUnite( undefined, bodyUnroll );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( _.unrollMake([ 1, 2 ]) );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'head - null, body expects map';
+  var routine = _.routineUnite( null, bodyObject );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'head - null, body expects unroll';
+  var routine = _.routineUnite( null, bodyUnroll );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( _.unrollMake([ 1, 2 ]) );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 1, 2 ] );
+
+  /* */
+
+  test.case = 'head - null';
+  var routine = _.routineUnite({ head : null, body : bodyUnroll });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( _.unrollMake([ 1, 2 ]) );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'head - undefined';
+  var routine = _.routineUnite({ head : undefined, body : bodyUnroll });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( _.unrollMake([ 1, 2 ]) );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 1, 2 ] );
+
+  test.close( 'only body' );
+
+  /* - */
+
+  test.open( 'head and body' );
+
+  test.case = 'make from arguments, routine expects map';
   var routine = _.routineUnite( headObject, bodyObject );
   test.is( _.routineIs( routine ) );
   test.identical( routine.name, 'bodyObject' );
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
   test.identical( got, [ 1, 2 ] );
+
+  test.case = 'make from arguments, routine expects unroll';
+  var routine = _.routineUnite( headUnroll, bodyUnroll );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  /* */
+
+  test.case = 'make from map, routine expects map';
+  var routine = _.routineUnite({ head : headObject, body : bodyObject });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'make from map, routine expects unroll';
+  var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.close( 'head and body' );
+
+  /* - */
+
+  test.open( 'body and tail' );
+
+  test.case = 'head - undefined, body expects map';
+  var routine = _.routineUnite( undefined, bodyObject, tail );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 2, 2 ] );
+
+  test.case = 'head - undefined, body expects unroll';
+  var routine = _.routineUnite( undefined, bodyUnroll, tail );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( _.unrollMake([ 1, 2 ]) );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 2, 2 ] );
+
+  test.case = 'head - null, body expects map';
+  var routine = _.routineUnite( null, bodyObject, tail );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine({ args : _.argumentsArrayMake([ 1, 2 ]) });
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 2, 2 ] );
+
+  test.case = 'head - null, body expects unroll';
+  var routine = _.routineUnite( null, bodyUnroll, tail );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( _.unrollMake([ 1, 2 ]) );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 2, 2 ] );
+
+  /* */
+
+  test.case = 'head - null';
+  var routine = _.routineUnite({ head : null, body : bodyUnroll, tail });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( _.unrollMake([ 1, 2 ]) );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 2, 2 ] );
+
+  test.case = 'head - undefined';
+  var routine = _.routineUnite({ head : undefined, body : bodyUnroll, tail });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( _.unrollMake([ 1, 2 ]) );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 2, 2 ] );
+
+  test.close( 'body and tail' );
+
+  /* - */
+
+  test.open( 'head, body and tail' );
 
   test.case = 'head, body and tail, with map';
   var routine = _.routineUnite( headObject, bodyObject, tail );
@@ -2508,32 +2657,6 @@ function routineUnite( test )
   var got = routine( 1, 2 );
   test.identical( got, [ 2, 2 ] );
 
-  test.case = 'compose head and body, with map';
-  var routine = _.routineUnite( [ headObject, headComposeObject ], bodyObject );
-  test.is( _.routineIs( routine ) );
-  test.identical( routine.name, 'bodyObject' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( 1, 2 );
-  test.identical( got, [ 1, 2 ] );
-
-  test.case = 'compose head, body and tail, with map';
-  var routine = _.routineUnite( [ headObject, headComposeObject ], bodyObject, tail );
-  test.is( _.routineIs( routine ) );
-  test.identical( routine.name, 'bodyObject' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( 1, 2 );
-  test.identical( got, [ 2, 2 ] );
-
-  /* */
-
-  test.case = 'only head and body, with unroll';
-  var routine = _.routineUnite( headUnroll, bodyUnroll );
-  test.is( _.routineIs( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( 1, 2 );
-  test.identical( got, [ 1, 2 ] );
-
   test.case = 'head, body and tail, with unroll';
   var routine = _.routineUnite( headUnroll, bodyUnroll, tail );
   test.is( _.routineIs( routine ) );
@@ -2542,19 +2665,7 @@ function routineUnite( test )
   var got = routine( 1, 2 );
   test.identical( got, [ 2, 2 ] );
 
-  test.close( 'call with arguments' );
-
-  /* - */
-
-  test.open( 'call with map' );
-
-  test.case = 'head and body, with map';
-  var routine = _.routineUnite({ head : headObject, body : bodyObject });
-  test.is( _.routineIs( routine ) );
-  test.identical( routine.name, 'bodyObject' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( 1, 2 );
-  test.identical( got, [ 1, 2 ] );
+  /* */
 
   test.case = 'head, body and tail, with map';
   var routine = _.routineUnite({ head : headObject, body : bodyObject, tail });
@@ -2564,32 +2675,6 @@ function routineUnite( test )
   var got = routine( 1, 2 );
   test.identical( got, [ 2, 2 ] );
 
-  test.case = 'compose head and body, with map';
-  var routine = _.routineUnite({ head : [ headObject, headComposeObject ], body : bodyObject });
-  test.is( _.routineIs( routine ) );
-  test.identical( routine.name, 'bodyObject' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( 1, 2 );
-  test.identical( got, [ 1, 2 ] );
-
-  test.case = 'compose head, body and tail, with map';
-  var routine = _.routineUnite({ head : [ headObject, headComposeObject ], body : bodyObject, tail });
-  test.is( _.routineIs( routine ) );
-  test.identical( routine.name, 'bodyObject' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( 1, 2 );
-  test.identical( got, [ 2, 2 ] );
-
-  /* */
-
-  test.case = 'only head and body, with unroll';
-  var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll });
-  test.is( _.routineIs( routine ) );
-  test.identical( routine.name, 'bodyUnroll' );
-  test.identical( routine.defaults, { args : null } );
-  var got = routine( 1, 2 );
-  test.identical( got, [ 1, 2 ] );
-
   test.case = 'head, body and tail, with unroll';
   var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll, tail });
   test.is( _.routineIs( routine ) );
@@ -2598,7 +2683,7 @@ function routineUnite( test )
   var got = routine( 1, 2 );
   test.identical( got, [ 2, 2 ] );
 
-  test.close( 'call with map' );
+  test.close( 'head, body and tail' );
 
   /* - */
 
@@ -2636,8 +2721,54 @@ function routineUnite( test )
   var got = routine( 1, 2 );
   test.identical( got, [ 1, 2 ] );
 
-
   test.close( 'names' );
+
+  /* - */
+
+  test.open( 'composed head' );
+
+  function headComposeObject( routine, args )
+  {
+    let o = Object.create( null );
+    o.args = args[ 0 ].args;
+    return o;
+  }
+
+  test.case = 'compose head and body, with map';
+  var routine = _.routineUnite( [ headObject, headComposeObject ], bodyObject );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'compose head, body and tail, with map';
+  var routine = _.routineUnite( [ headObject, headComposeObject ], bodyObject, tail );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 2, 2 ] );
+
+  /* */
+
+  test.case = 'compose head and body, with map';
+  var routine = _.routineUnite({ head : [ headObject, headComposeObject ], body : bodyObject });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 1, 2 ] );
+
+  test.case = 'compose head, body and tail, with map';
+  var routine = _.routineUnite({ head : [ headObject, headComposeObject ], body : bodyObject, tail });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.identical( got, [ 2, 2 ] );
+
+  test.close( 'composed head' );
 
   /* - */
 
@@ -2650,11 +2781,11 @@ function routineUnite( test )
   test.case = 'not enough arguments';
   test.shouldThrowErrorSync( () => _.routineUnite( headObject ) );
 
-  test.case = 'wrong type of head routine';
-  test.shouldThrowErrorSync( () => _.routineUnite( null, bodyObject ) );
-
   test.case = 'wrong type of body routine';
   test.shouldThrowErrorSync( () => _.routineUnite( headObject, null ) );
+
+  test.case = 'wrong type of head';
+  test.shouldThrowErrorSync( () => _.routineUnite( 1, bodyObject ) );
 
   test.case = 'wrong type of tail routine';
   test.shouldThrowErrorSync( () => _.routineUnite( headObject, bodyObject, 'tail' ) );
