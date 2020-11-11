@@ -156,23 +156,7 @@ function locationFromStackFrame( o )
 {
 
   if( _.strIs( o ) )
-  o = { stackFrame : o }
-
-  /* */
-
-  if( locationFromStackFrame.defaults )
-  for( let e in o )
-  {
-    if( locationFromStackFrame.defaults[ e ] === undefined )
-    throw Error( 'Unknown option ' + e );
-  }
-
-  if( locationFromStackFrame.defaults )
-  for( let e in locationFromStackFrame.defaults )
-  {
-    if( o[ e ] === undefined )
-    o[ e ] = locationFromStackFrame.defaults[ e ];
-  }
+  o = { stackFrame : o };
 
   if( !( arguments.length === 1 ) )
   throw Error( 'Expects single argument' );
@@ -180,14 +164,29 @@ function locationFromStackFrame( o )
   if( !_.mapIs( o ) )
   throw Error( 'Expects options map' );
 
+  /* */
+
+  if( locationFromStackFrame.defaults ) /* Dmytro : maybe it is the redundant condition, the routine has defaults */
+  for( let e in o )
+  {
+    if( locationFromStackFrame.defaults[ e ] === undefined )
+    throw Error( 'Unknown option : ' + e );
+  }
+
+  if( locationFromStackFrame.defaults ) /* Dmytro : maybe it is the redundant condition, the routine has defaults */
+  for( let e in locationFromStackFrame.defaults )
+  {
+    if( o[ e ] === undefined )
+    o[ e ] = locationFromStackFrame.defaults[ e ];
+  }
+
+  /* */
+
   if( !( _.strIs( o.stackFrame ) ) )
   throw Error( `Expects string {- stackFrame -}, but fot ${_.strType( o.stackFrame )}` );
 
   if( o.location && !_.mapIs( o.location ) )
-  {
-    debugger;
-    throw Error( 'Expects map option::location' );
-  }
+  throw Error( 'Expects map option::location' );
 
   /* */
 
@@ -202,12 +201,18 @@ locationFromStackFrame.defaults =
 {
   stackFrame : null,
   location : null,
-}
+};
 
 //
 
 function locationNormalize( o )
 {
+
+  if( !( arguments.length === 1 ) )
+  throw Error( 'Expects single argument' );
+
+  if( !_.mapIs( o ) )
+  throw Error( 'Expects options map' );
 
   /* */
 
@@ -224,12 +229,6 @@ function locationNormalize( o )
     if( o[ e ] === undefined )
     o[ e ] = locationNormalize.defaults[ e ];
   }
-
-  if( !( arguments.length === 1 ) )
-  throw Error( 'Expects single argument' );
-
-  if( !_.mapIs( o ) )
-  throw Error( 'Expects options map' );
 
   /* */
 
@@ -330,19 +329,25 @@ function locationNormalize( o )
 
     routineName = o.original;
 
+    // if( !_.strIs( routineName ) ) // xxx Dmytro : it is duplicated condition. The first is if( !_.strIs( o.stackFrame ) ) throw ...
+    // return '{-anonymous-}';
     if( !_.strIs( routineName ) ) // xxx Dmytro : it is duplicated condition. The first is if( !_.strIs( o.stackFrame ) ) throw ...
-    return '{-anonymous-}';
+    {
+      routineName = '{-anonymous-}';
+    }
+    else
+    {
+      routineName = routineName.replace( /at eval \(eval at/, '' );
+      let t = /^\s*(?:at\s+)?([\w.<>]+)\s*.+/;
+      let executed = t.exec( routineName );
+      if( executed )
+      routineName = executed[ 1 ] || '';
 
-    routineName = routineName.replace( /at eval \(eval at/, '' );
-    let t = /^\s*(?:at\s+)?([\w.<>]+)\s*.+/;
-    let executed = t.exec( routineName );
-    if( executed )
-    routineName = executed[ 1 ] || '';
+      routineName = routineName.replace( /<anonymous>/gm, '{-anonymous-}' );
 
-    routineName = routineName.replace( /<anonymous>/gm, '{-anonymous-}' );
-
-    if( _.strEnds( routineName, '.' ) )
-    routineName += '{-anonymous-}';
+      if( _.strEnds( routineName, '.' ) )
+      routineName += '{-anonymous-}';
+    }
 
     o.routineName = routineName;
     return o.routineName;
@@ -378,7 +383,7 @@ function locationNormalize( o )
   function internalForm()
   {
 
-    if( _.numberIs( o.internal ) )
+    if( _.numberIs( o.internal ) ) /* Dmytro : maybe it is better to use routine numberDefined - case : o.internal === Infinity */
     return;
 
     o.internal = 0;
@@ -402,7 +407,7 @@ function locationNormalize( o )
   function abstractionForm()
   {
 
-    if( _.numberIs( o.abstraction ) )
+    if( _.numberIs( o.abstraction ) ) /* Dmytro : maybe it is better to use routine numberDefined - case : o.abstraction === Infinity */
     return;
 
     o.abstraction = 0;
@@ -471,11 +476,11 @@ function locationNormalize( o )
     lineNumber = parseInt( lineNumber );
     colNumber = parseInt( colNumber );
 
-    if( isNaN( o.line ) || o.line === null )
+    if( isNaN( o.line ) || o.line === null ) /* Dmytro : maybe it is better to use routine numberDefined - case : o.line === 'str' */
     if( !isNaN( lineNumber ) )
     o.line = lineNumber;
 
-    if( isNaN( o.col ) || o.col === null )
+    if( isNaN( o.col ) || o.col === null ) /* Dmytro : maybe it is better to use routine numberDefined - case : o.col === 'str' */
     if( !isNaN( colNumber ) )
     o.col = colNumber;
 
