@@ -945,8 +945,9 @@ function routineUnite_head( routine, args )
   _.routineOptions( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2 );
-  _.assert( args[ 0 ] !== undefined );
-  _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ), 'Expects routine or routines {-o.head-}' );
+  // _.assert( args[ 0 ] !== undefined );
+  // _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ), 'Expects routine or routines {-o.head-}' );
+  _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ) || o.head === null, 'Expects routine or routines {-o.head-}' ); /* Dmytro : o.head - optional */
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
   _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.strType( o.tail )}` );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
@@ -961,9 +962,9 @@ function routineUnite_body( o )
 
   _.assert( arguments.length === 1 );
 
-  if( !_.routineIs( o.head ) )
+  if( !_.routineIs( o.head ) && o.head !== null ) /* Dmytro : o.head - optional */
   {
-    let _head = _.routinesCompose( o.head, function()
+    let _head = _.routinesCompose( o.head, function( /* args, result, op, k */ )
     {
       let args = arguments[ 0 ];
       let result = arguments[ 1 ];
@@ -996,12 +997,34 @@ function routineUnite_body( o )
     o.name = o.name.substring( 0, o.name.length-5 );
   }
 
-  let r =
+  /* routines */
+
+  let rBody =
   {
     [ o.name ] : function()
     {
       let result;
-      let o = head.call( this, callPreAndBody, arguments ); /* qqq for Dmytro : head is optional */
+      let o = arguments[ 0 ];
+
+      _.assert( arguments.length === 1, 'Expects single argument {-o-}.' );
+
+      if( _.unrollIs( o ) )
+      result = body.apply( this, o );
+      else if( _.mapIs( o ) )
+      result = body.call( this, o );
+      else
+      _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
+
+      return result;
+    }
+  };
+
+  let rHeadAndBody =
+  {
+    [ o.name ] : function()
+    {
+      let result;
+      let o = head.call( this, callPreAndBody, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
 
       _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
 
@@ -1010,15 +1033,62 @@ function routineUnite_body( o )
       else
       result = body.call( this, o );
 
-      if( tail )
+      return result;
+    }
+  };
+
+  let rBodyAndTail =
+  {
+    [ o.name ] : function()
+    {
+      let result;
+      let o = arguments[ 0 ];
+
+      _.assert( arguments.length === 1, 'Expects single argument {-o-}.' );
+
+      if( _.unrollIs( o ) )
+      result = body.apply( this, o );
+      else if( _.mapIs( o ) )
+      result = body.call( this, o );
+      else
+      _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
+
       result = tail.call( this, result );
-      /* qqq for Dmytro : not optimal!!! */
+      /* aaa for Dmytro : not optimal!!! */ /* Dmytro : optimized */
 
       return result;
     }
-  }
+  };
 
-  let callPreAndBody = r[ o.name ];
+  let rHeadBodyAndTail =
+  {
+    [ o.name ] : function()
+    {
+      let result;
+      let o = head.call( this, callPreAndBody, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
+
+      _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+
+      if( _.unrollIs( o ) )
+      result = body.apply( this, o );
+      else
+      result = body.call( this, o );
+
+      result = tail.call( this, result );
+
+      return result;
+    }
+  };
+
+  /* make routine */
+
+  let arrayOfRoutines = [ rBody, rHeadAndBody, rBodyAndTail, rHeadBodyAndTail ];
+
+  let bodyIndex = 0;
+  let headIndex = head ? 1 : 0;
+  let tailIndex = tail ? 2 : 0;
+
+  let callPreAndBody = arrayOfRoutines[ bodyIndex + headIndex + tailIndex ][ o.name ];
 
   _.assert( _.strDefined( callPreAndBody.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
 
@@ -1038,7 +1108,7 @@ routineUnite_body.defaults =
   body : null,
   tail : null,
   name : null,
-}
+};
 
 //
 
