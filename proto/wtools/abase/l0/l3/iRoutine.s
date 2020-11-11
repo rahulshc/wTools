@@ -997,98 +997,15 @@ function routineUnite_body( o )
     o.name = o.name.substring( 0, o.name.length-5 );
   }
 
-  /* routines */
-
-  let rBody =
-  {
-    [ o.name ] : function()
-    {
-      let result;
-      let o = arguments[ 0 ];
-
-      _.assert( arguments.length === 1, 'Expects single argument {-o-}.' );
-
-      if( _.unrollIs( o ) )
-      result = body.apply( this, o );
-      else if( _.mapIs( o ) )
-      result = body.call( this, o );
-      else
-      _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
-
-      return result;
-    }
-  };
-
-  let rHeadAndBody =
-  {
-    [ o.name ] : function()
-    {
-      let result;
-      let o = head.call( this, callPreAndBody, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
-
-      _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
-
-      if( _.unrollIs( o ) )
-      result = body.apply( this, o );
-      else
-      result = body.call( this, o );
-
-      return result;
-    }
-  };
-
-  let rBodyAndTail =
-  {
-    [ o.name ] : function()
-    {
-      let result;
-      let o = arguments[ 0 ];
-
-      _.assert( arguments.length === 1, 'Expects single argument {-o-}.' );
-
-      if( _.unrollIs( o ) )
-      result = body.apply( this, o );
-      else if( _.mapIs( o ) )
-      result = body.call( this, o );
-      else
-      _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
-
-      result = tail.call( this, result );
-      /* aaa for Dmytro : not optimal!!! */ /* Dmytro : optimized */
-
-      return result;
-    }
-  };
-
-  let rHeadBodyAndTail =
-  {
-    [ o.name ] : function()
-    {
-      let result;
-      let o = head.call( this, callPreAndBody, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
-
-      _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
-
-      if( _.unrollIs( o ) )
-      result = body.apply( this, o );
-      else
-      result = body.call( this, o );
-
-      result = tail.call( this, result );
-
-      return result;
-    }
-  };
-
   /* make routine */
 
-  let arrayOfRoutines = [ rBody, rHeadAndBody, rBodyAndTail, rHeadBodyAndTail ];
+  let arrayOfNames = [ 'body', 'headAndBody', 'bodyAndTail', 'headBodyAndTail' ];
 
   let bodyIndex = 0;
   let headIndex = head ? 1 : 0;
   let tailIndex = tail ? 2 : 0;
 
-  let callPreAndBody = arrayOfRoutines[ bodyIndex + headIndex + tailIndex ][ o.name ];
+  let callPreAndBody = routineUnite_functor( arrayOfNames[ bodyIndex + headIndex + tailIndex ] )[ o.name ];
 
   _.assert( _.strDefined( callPreAndBody.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
 
@@ -1100,6 +1017,96 @@ function routineUnite_body( o )
   callPreAndBody.tail = o.tail;
 
   return callPreAndBody;
+
+  /* */
+
+  function routineUnite_functor( name )
+  {
+    let routinesMap = Object.create( null );
+
+    routinesMap.body =
+    {
+      [ o.name ] : function()
+      {
+        let result;
+        let o = arguments[ 0 ];
+
+        _.assert( arguments.length === 1, 'Expects single argument {-o-}.' );
+
+        if( _.unrollIs( o ) )
+        result = body.apply( this, o );
+        else if( _.mapIs( o ) )
+        result = body.call( this, o );
+        else
+        _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
+
+        return result;
+      }
+    };
+
+    routinesMap.headAndBody =
+    {
+      [ o.name ] : function()
+      {
+        let result;
+        let o = head.call( this, callPreAndBody, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
+
+        _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+
+        if( _.unrollIs( o ) )
+        result = body.apply( this, o );
+        else
+        result = body.call( this, o );
+
+        return result;
+      }
+    };
+
+    routinesMap.bodyAndTail =
+    {
+      [ o.name ] : function()
+      {
+        let result;
+        let o = arguments[ 0 ];
+
+        _.assert( arguments.length === 1, 'Expects single argument {-o-}.' );
+
+        if( _.unrollIs( o ) )
+        result = body.apply( this, o );
+        else if( _.mapIs( o ) )
+        result = body.call( this, o );
+        else
+        _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
+
+        result = tail.call( this, result );
+        /* aaa for Dmytro : not optimal!!! */ /* Dmytro : optimized */
+
+        return result;
+      }
+    };
+
+    routinesMap.headBodyAndTail =
+    {
+      [ o.name ] : function()
+      {
+        let result;
+        let o = head.call( this, callPreAndBody, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
+
+        _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
+
+        if( _.unrollIs( o ) )
+        result = body.apply( this, o );
+        else
+        result = body.call( this, o );
+
+        result = tail.call( this, result );
+
+        return result;
+      }
+    };
+
+    return routinesMap[ name ];
+  }
 }
 
 routineUnite_body.defaults =
