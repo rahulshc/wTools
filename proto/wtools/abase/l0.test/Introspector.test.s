@@ -2132,6 +2132,278 @@ function locationNormalizeOptionFilePath( test )
 
 //
 
+function locationNormalizeOptionsRoutineNameAndRoutineAlias( test )
+{
+  test.open( 'field routineName' );
+
+  test.case = 'only field routineName - empty string';
+  var o = { routineName : '' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : '',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field routineName - simple name';
+  var o = { routineName : 'routine' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : 'routine',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : 'routine @ ',
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field routineName - name has <anonymous>';
+  var o = { routineName : '<anonymous>' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : '<anonymous>',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : '<anonymous> @ ',
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field routineName - complex name with dot';
+  var o = { routineName : 'Object.routine' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : 'Object.routine',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : 'Object.routine @ ',
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'routineName - empty string, options map has original';
+  var o =
+  {
+    original : 'at iteration (/C/dir/File.js:5:47)',
+    routineName : '',
+  };
+  var exp =
+  {
+    'original' : 'at iteration (/C/dir/File.js:5:47)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'iteration',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : 5,
+    'col' : 47,
+    'filePathLineCol' : '/C/dir/File.js:5:47',
+    'routineFilePathLineCol' : 'iteration @ /C/dir/File.js:5:47',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:47'
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'routineName - string with underscore';
+  var o =
+  {
+    original : 'at _iteration (C:\\dir\\File.js:5:47)',
+    filePath : '/C/dir/(Introspector.test.s)',
+    routineName : '_routine',
+  };
+  var exp =
+  {
+    'original' : 'at _iteration (C:\\dir\\File.js:5:47)',
+    'filePath' : '/C/dir/(Introspector.test.s)',
+    'routineName' : '_routine',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 1,
+    'line' : 5,
+    'col' : 47,
+    'filePathLineCol' : '/C/dir/(Introspector.test.s):5:47',
+    'routineFilePathLineCol' : '_routine @ /C/dir/(Introspector.test.s):5:47',
+    'fileName' : '(Introspector.test.s)',
+    'fileNameLineCol' : '(Introspector.test.s):5:47',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'routineName - string, which ends by one dot';
+  var o =
+  {
+    original : 'at __iteration (C:\\dir\\File.js:5:47)',
+    filePath : '/C/dir/(Introspector.test.s)',
+    routineName : '__routine.',
+  };
+  var exp =
+  {
+    'original' : 'at __iteration (C:\\dir\\File.js:5:47)',
+    'filePath' : '/C/dir/(Introspector.test.s)',
+    'routineName' : '__routine.',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 2,
+    'line' : 5,
+    'col' : 47,
+    'filePathLineCol' : '/C/dir/(Introspector.test.s):5:47',
+    'routineFilePathLineCol' : '__routine. @ /C/dir/(Introspector.test.s):5:47',
+    'fileName' : '(Introspector.test.s)',
+    'fileNameLineCol' : '(Introspector.test.s):5:47',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'routineName - string, which ends by two dots';
+  var o =
+  {
+    original : 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)',
+    filePath : '/C/dir/(Introspector.test.s)',
+    routineName : '__routine..',
+  };
+  var exp =
+  {
+    'original' : 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/(Introspector.test.s)',
+    'routineName' : '__routine..',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 2,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/(Introspector.test.s):5:15',
+    'routineFilePathLineCol' : '__routine.. @ /C/dir/(Introspector.test.s):5:15',
+    'fileName' : '(Introspector.test.s)',
+    'fileNameLineCol' : '(Introspector.test.s):5:15',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  test.close( 'field routineName' );
+
+  /* - */
+
+  test.open( 'field routineAlias' );
+
+  test.case = 'only field routineAlias - empty string';
+  var o = { routineAlias : '' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : '',
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field routineAlias - simple name';
+  var o = { routineAlias : 'routine' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : 'routine',
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field routineAlias - name has <anonymous>';
+  var o = { routineAlias : '<anonymous>' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : '<anonymous>',
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  test.close( 'field routineAlias' );
+}
+
+//
+
 function stackBasic( test )
 {
 
@@ -3338,7 +3610,8 @@ let Self =
     locationFromStackFrameWithLocationField,
     /* qqq for Dmytro : redo tests ( redistribute please ). ask how to */
     locationNormalize, /* qqq for Dmytro : implement full coverage */
-    locationNormalizeOptionFilePath, /* qqq for Dmytro : implement full coverage */
+    locationNormalizeOptionFilePath,
+    locationNormalizeOptionsRoutineNameAndRoutineAlias,
 
     stackBasic,
     stack,
