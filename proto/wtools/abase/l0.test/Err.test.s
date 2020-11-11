@@ -1027,7 +1027,7 @@ function _errOriginalMessageForm( test )
     args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, () => 1 ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strLinesCount( err.originalMessage ), 3 );
   test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'null false 1' ), 1 );
@@ -1042,7 +1042,7 @@ function _errOriginalMessageForm( test )
     args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, abc ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strLinesCount( err.originalMessage ), 3 );
   test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
   test.identical( _.strCount( err.originalMessage, "() => '#1'" ), 1 ); // Dmytro : affects in group testing but has no reason for it
@@ -1057,7 +1057,7 @@ function _errOriginalMessageForm( test )
     args : [ new Error( 'Sample' ), 'str', undefined, '', null, false, a ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strLinesCount( err.originalMessage ), 3 );
   test.identical( _.strCount( err.originalMessage, 'Sample str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
   test.identical( _.strCount( err.originalMessage, '#1' ), 1 );
@@ -1070,7 +1070,7 @@ function _errOriginalMessageForm( test )
     args : [ srcErr, 'str', undefined, '', null, false ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strLinesCount( err.originalMessage ), 3 );
   test.identical( _.strCount( err.originalMessage, 'New error str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
 
@@ -1082,7 +1082,7 @@ function _errOriginalMessageForm( test )
     args : [ srcErr, 'str', undefined, '', null, false ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 4 );
+  test.identical( _.strLinesCount( err.originalMessage ), 3 );
   test.identical( _.strCount( err.originalMessage, 'New error str' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'undefined' ), 1 );
 
@@ -1092,7 +1092,7 @@ function _errOriginalMessageForm( test )
     args : [ new Error( '\n\n   Sample     ' ), '\n\nstr   \n', undefined, '', null, false ],
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.originalMessage ), 6 );
+  test.identical( _.strLinesCount( err.originalMessage ), 5 );
   test.identical( _.strCount( err.originalMessage, '\n\n   Sample     \n\nstr   \n' ), 0 );
   test.identical( _.strCount( err.originalMessage, 'Sample\n\nstr' ), 1 );
   test.identical( _.strCount( err.originalMessage, 'str\nundefined' ), 1 );
@@ -1156,7 +1156,7 @@ function _errMessageForm( test )
     brief : 1
   });
   test.is( _.errIs( err ) );
-  test.identical( _.strLinesCount( err.message ), 4 );
+  test.identical( _.strLinesCount( err.message ), 3 );
   test.identical( _.strCount( err.message, 'Message of error#' ), 0 );
   test.identical( _.strCount( err.message, 'Beautified calls stack' ), 0 );
   test.identical( _.strCount( err.message, 'Throws stack' ), 0 );
@@ -1348,12 +1348,12 @@ function errWithMultilineMessage( test )
     `Error :`,
     `\n    Exec :`,
     `\n\n`,
-    `end of message`
+    `program`,
+    `\nend of message`
   );
   var exp =
 `Error :
-    Exec :
-
+    Exec : program
 end of message`;
   test.identical( got.originalMessage, exp );
 
@@ -1557,11 +1557,10 @@ end of message`;
   (
     `Error :`,
     `\n`,
-    `Exec :`,
+    `\nExec :`,
   );
   var exp =
 `Error :
-
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1572,11 +1571,10 @@ Exec :`;
   (
     `Error :`,
     `\n\n\n`,
-    `Exec :`,
+    `\nExec :`,
   );
   var exp =
 `Error :
-
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1590,9 +1588,7 @@ Exec :`;
     `Exec :`,
   );
   var exp =
-`Error :
-
-Exec :`;
+`Error : Exec :`;
   test.identical( got.originalMessage, exp );
 
   /* */
@@ -1605,9 +1601,7 @@ Exec :`;
     `Exec :`,
   );
   var exp =
-`Error :
-
-Exec :`;
+`Error : Exec :`;
   test.identical( got.originalMessage, exp );
 
   /* */
@@ -1620,9 +1614,7 @@ Exec :`;
     `Exec :`,
   );
   var exp =
-`Error :
-
-Exec :`;
+`Error : Exec :`;
   test.identical( got.originalMessage, exp );
 
   /* */
@@ -1636,7 +1628,6 @@ Exec :`;
   );
   var exp =
 `Error :
-
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1651,7 +1642,6 @@ Exec :`;
   );
   var exp =
 `Error :
-
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1666,7 +1656,6 @@ Exec :`;
   );
   var exp =
 `Error :
-
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1681,7 +1670,6 @@ Exec :`;
   );
   var exp =
 `Error :
-
 Exec :`;
   test.identical( got.originalMessage, exp );
 
@@ -1747,10 +1735,7 @@ Exec :`;
   );
   var exp =
 `Error :
-
-Exec :
-
-program`;
+Exec : program`;
   test.identical( got.originalMessage, exp );
 
   /* */
@@ -1768,10 +1753,7 @@ program`;
   var exp =
 `Error :
  new
-
-Exec :
-
-program`;
+Exec : program`;
   test.identical( got.originalMessage, exp );
 }
 

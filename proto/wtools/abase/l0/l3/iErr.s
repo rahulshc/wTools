@@ -1036,7 +1036,7 @@ function _err( o )
       let str = errStrFormat( result[ a ] );
 
       if( str === '' )
-      str = '\n\n';
+      continue;
 
       if( _.strEnds( o.message, '\n' ) )
       {
