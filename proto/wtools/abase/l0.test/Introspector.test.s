@@ -1680,21 +1680,21 @@ function locationNormalize( test )
   test.is( got === o );
 
   test.case = 'stack frame line with posix path';
-  var o = { original : "at node:internal/main/run_main_module:17:47" };
+  var o = { original : "at node (/home/user/file.txt)" };
   var exp =
   {
-    'original' : 'at node:internal/main/run_main_module:17:47',
-    'filePath' : 'node:internal/main/run_main_module',
+    'original' : 'at node (/home/user/file.txt)',
+    'filePath' : '/home/user/file.txt',
     'routineName' : 'node',
     'routineAlias' : null,
-    'internal' : 2,
+    'internal' : 0,
     'abstraction' : 0,
-    'line' : 17,
-    'col' : 47,
-    'filePathLineCol' : 'node:internal/main/run_main_module:17:47',
-    'routineFilePathLineCol' : 'node @ node:internal/main/run_main_module:17:47',
-    'fileName' : 'run_main_module',
-    'fileNameLineCol' : 'run_main_module:17:47',
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '/home/user/file.txt',
+    'routineFilePathLineCol' : 'node @ /home/user/file.txt',
+    'fileName' : 'file.txt',
+    'fileNameLineCol' : 'file.txt',
   };
   var got = _.introspector.locationNormalize( o );
   test.identical( got, exp );
@@ -1718,28 +1718,6 @@ function locationNormalize( test )
     'routineFilePathLineCol' : 'Object.stackBasic @ /C/dir/Introspector.test.s:48:79',
     'fileName' : 'Introspector.test.s',
     'fileNameLineCol' : 'Introspector.test.s:48:79',
-  };
-  var got = _.introspector.locationNormalize( o );
-  test.identical( got, exp );
-
-  /* */
-
-  test.case = 'stack frame has double underscore in routineName at the start and in the middle, windows path';
-  var o = { original :'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
-  var exp =
-  {
-    'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
-    'filePath' : '/C/dir/File.js',
-    'routineName' : 'wConsequence.__handle__Now',
-    'routineAlias' : null,
-    'internal' : 0,
-    'abstraction' : 2,
-    'line' : 5,
-    'col' : 15,
-    'filePathLineCol' : '/C/dir/File.js:5:15',
-    'routineFilePathLineCol' : 'wConsequence.__handle__Now @ /C/dir/File.js:5:15',
-    'fileName' : 'File.js',
-    'fileNameLineCol' : 'File.js:5:15',
   };
   var got = _.introspector.locationNormalize( o );
   test.identical( got, exp );
@@ -1922,26 +1900,113 @@ function locationNormalize( test )
 
   /* */
 
-  test.case = 'original - not a string';
-  var o = { original : [ 'at Object.routine (/some/path)' ] };
+  test.case = 'routineName has two underscores, abstraction - 2';
+  var o = { original :'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
   var exp =
   {
-    'original' : [ 'at Object.routine (/some/path)' ],
-    'filePath' : undefined,
-    'routineName' : '{-anonymous-}',
+    'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence.__handle__Now',
     'routineAlias' : null,
     'internal' : 0,
-    'abstraction' : 0,
-    'line' : null,
-    'col' : null,
-    'filePathLineCol' : '',
-    'routineFilePathLineCol' : '{-anonymous-} @ ',
-    'fileName' : null,
-    'fileNameLineCol' : '',
+    'abstraction' : 2,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence.__handle__Now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
   };
   var got = _.introspector.locationNormalize( o );
   test.identical( got, exp );
-  test.is( got === o );
+
+  /* */
+
+  test.case = 'routineName has single underscore, abstraction - 1';
+  var o = { original :'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)' };
+  var exp =
+  {
+    'original' : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence._handle__Now',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 1,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence._handle__Now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'routineName has two underscores, abstraction - 2';
+  var o = { original :'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)' };
+  var exp =
+  {
+    'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence.__handle__Now',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 2,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence.__handle__Now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'routineAlias has single underscore, abstraction - 1';
+  var o = { original : 'at wConsequence.now [as _now] (C:\\dir\\File.js:5:15)' };
+  var exp =
+  {
+    'original' : 'at wConsequence.now [as _now] (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence.now',
+    'routineAlias' : '_now',
+    'internal' : 0,
+    'abstraction' : 1,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence.now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'routineAlias has two underscores, abstraction - 2';
+  var o = { original : 'at wConsequence.now [as __now] (C:\\dir\\File.js:5:15)' };
+  var exp =
+  {
+    'original' : 'at wConsequence.now [as __now] (C:\\dir\\File.js:5:15)',
+    'filePath' : '/C/dir/File.js',
+    'routineName' : 'wConsequence.now',
+    'routineAlias' : '__now',
+    'internal' : 0,
+    'abstraction' : 2,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : '/C/dir/File.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence.now @ /C/dir/File.js:5:15',
+    'fileName' : 'File.js',
+    'fileNameLineCol' : 'File.js:5:15',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
 
   /* - */
 
@@ -2277,7 +2342,7 @@ function locationNormalizeOptionsRoutineNameAndRoutineAlias( test )
 
   /* */
 
-  test.case = 'routineName - string, which ends by one dot';
+  test.case = 'routineName - string with two underscores, ends by one dot';
   var o =
   {
     original : 'at __iteration (C:\\dir\\File.js:5:47)',
@@ -2399,7 +2464,354 @@ function locationNormalizeOptionsRoutineNameAndRoutineAlias( test )
   var got = _.introspector.locationNormalize( o );
   test.identical( got, exp );
 
+  /* */
+
+  test.case = 'only field routineAlias - name has single underscore, abstraction - 1';
+  var o = { routineAlias : '_now' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : '_now',
+    'internal' : 0,
+    'abstraction' : 1,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field routineAlias - name has two underscores, abstraction - 2';
+  var o = { routineAlias : '__now' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : '__now',
+    'internal' : 0,
+    'abstraction' : 2,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
   test.close( 'field routineAlias' );
+}
+
+//
+
+function locationNormalizeWithOtherOptions( test )
+{
+  test.open( 'field internal' );
+
+  test.case = 'only field internal - number';
+  var o = { internal : 10 };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 10,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field internal - number, not defined, maybe should be changed';
+  var o = { internal : NaN };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : NaN,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  test.close( 'field internal' );
+
+  /* - */
+
+  test.open( 'field abstraction' );
+
+  test.case = 'only field abstraction - number';
+  var o = { abstraction : 10 };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 10,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field abstraction - number, not defined, maybe should be changed';
+  var o = { abstraction : NaN };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : NaN,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  test.close( 'field abstraction' );
+
+  /* - */
+
+  test.open( 'field line' );
+
+  test.case = 'only field line - number';
+  var o = { line : 10 };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : 10,
+    'col' : null,
+    'filePathLineCol' : ':10',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : ':10',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field line - number, not defined, maybe should be changed';
+  var o = { line : NaN };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : NaN,
+    'col' : null,
+    'filePathLineCol' : ':NaN',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : ':NaN',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field line - string, maybe should be changed';
+  var o = { line : 'str' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : 'str',
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  test.close( 'field line' );
+
+  /* - */
+
+  test.open( 'field col' );
+
+  test.case = 'only field col - number';
+  var o = { col : 10 };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : 10,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field col - number, not defined, maybe should be changed';
+  var o = { col : NaN };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : NaN,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field col - string, maybe should be changed';
+  var o = { col : 'str' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : 'str',
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  test.case = 'col - number, line - number';
+  var o = { col : 10, line : 1 };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : 1,
+    'col' : 10,
+    'filePathLineCol' : ':1:10',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : ':1:10',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field col - number, not defined, line - number, maybe should be changed';
+  var o = { col : NaN, line : 1 };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : 1,
+    'col' : NaN,
+    'filePathLineCol' : ':1:NaN',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : ':1:NaN',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field col - string, line - number, maybe should be changed';
+  var o = { col : 'str', line : 1 };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : 1,
+    'col' : 'str',
+    'filePathLineCol' : ':1',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : ':1',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  test.close( 'field col' );
 }
 
 //
@@ -3607,11 +4019,12 @@ let Self =
   {
 
     locationFromStackFrameWithoutLocationField,
-    locationFromStackFrameWithLocationField,
-    /* qqq for Dmytro : redo tests ( redistribute please ). ask how to */
+    locationFromStackFrameWithLocationField, /* qqq for Dmytro : redo tests ( redistribute please ). ask how to */
+
     locationNormalize, /* qqq for Dmytro : implement full coverage */
     locationNormalizeOptionFilePath,
     locationNormalizeOptionsRoutineNameAndRoutineAlias,
+    locationNormalizeWithOtherOptions,
 
     stackBasic,
     stack,
