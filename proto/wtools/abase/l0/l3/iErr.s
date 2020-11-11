@@ -960,11 +960,12 @@ function _err( o )
       if( arg && !_.primitiveIs( arg ) )
       {
 
-        if( _.primitiveIs( arg ) ) // Dmytro : unnecessary condition, see above
-        {
-          str = String( arg );
-        }
-        else if( _.routineIs( arg.toStr ) )
+        // if( _.primitiveIs( arg ) ) // Dmytro : unnecessary condition, see above
+        // {
+        //   str = String( arg );
+        // }
+        // else if( _.routineIs( arg.toStr ) )
+        if( _.routineIs( arg.toStr ) )
         {
           str = arg.toStr();
         }
@@ -974,9 +975,10 @@ function _err( o )
         }
         else if( _.errIs( arg ) )
         {
-          if( _.strIs( arg.originalMessage ) ) // Dmytro : duplicates condition above
-          str = arg.originalMessage;
-          else if( _.strIs( arg.message ) )
+          // if( _.strIs( arg.originalMessage ) ) // Dmytro : duplicates condition above
+          // str = arg.originalMessage;
+          // else if( _.strIs( arg.message ) )
+          if( _.strIs( arg.message ) )
           str = arg.message;
           else
           str = _.toStr( arg );
@@ -1024,36 +1026,12 @@ function _err( o )
     //
     // }
 
-    let a = 0;
-    while( !o.message.replace( /\s*/m, '' ) && a < result.length ) /* Dmytro : to remove redundant statement 'if' in main loop */
+    let o2 =
     {
-      o.message = errStrFormat( result[ a ] );
-      a += 1;
-    }
-
-    for( ; a < result.length ; a++ )
-    {
-      let str = errStrFormat( result[ a ] );
-
-      if( str === '' )
-      continue;
-
-      if( _.strEnds( o.message, '\n' ) )
-      {
-        if( !_.strBegins( str, '\n' ) )
-        o.message += str;
-        else
-        o.message = strConcatenateCounting( o.message, str );
-      }
-      else
-      {
-        if( _.strBegins( str, '\n' ) )
-        o.message += str;
-        else
-        o.message += ' ' + str;
-      }
-    }
-
+      onToStr : eachMessageFormat,
+      onPairWithDelimeter : strConcatenateCounting
+    };
+    o.message = _.strConcat( result, o2 );
 
     /*
       remove redundant spaces at the begin and the end of lines
@@ -1072,7 +1050,7 @@ function _err( o )
 
   /* */
 
-  function errStrFormat( str )
+  function eachMessageFormat( str )
   {
     if( _.strBegins( str, /\x20/ ) )
     str = _.strRemoveBegin( str, /\x20+/ );
@@ -1114,12 +1092,20 @@ function _err( o )
 
   function strConcatenateCounting( src1, src2 )
   {
-    let right = _.strIsolateRightOrAll( src1, /\n+$/ );
-    let left = _.strIsolateLeftOrAll( src2, /\n+/ );
+    let result;
+    if( _.strEnds( src1, '\n' ) && _.strBegins( src2, '\n' ) )
+    {
+      let right = _.strIsolateRightOrAll( src1, /\n+$/ );
+      let left = _.strIsolateLeftOrAll( src2, /\n+/ );
 
-    let result = right[ 0 ];
-    result += right[ 1 ].length > left[ 1 ].length ? right[ 1 ] : left[ 1 ];
-    result += left[ 2 ];
+      result = right[ 0 ];
+      result += right[ 1 ].length > left[ 1 ].length ? right[ 1 ] : left[ 1 ];
+      result += left[ 2 ];
+    }
+    else
+    {
+      result = src1 + src2;
+    }
     return result;
   }
 }
