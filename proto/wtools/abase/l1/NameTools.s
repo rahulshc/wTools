@@ -11,8 +11,6 @@ var _ArraySlice = Array.prototype.slice;
 var _FunctionBind = Function.prototype.bind;
 var _ObjectToString = Object.prototype.toString;
 var _ObjectHasOwnProperty = Object.hasOwnProperty;
-
-// var __assert = _.assert;
 var _arraySlice = _.longSlice;
 
 // --
@@ -288,6 +286,7 @@ var Proto =
 
   // name and symbol
 
+  /* xxx : remove */
   nameFielded, /* experimental */
   nameUnfielded, /* experimental */
   namesCoded, /* experimental */

@@ -1862,22 +1862,22 @@ function strBeginOf( test )
 
   test.case = 'begin - char';
   var got = _.strBeginOf( 'abc', 'c' );
-  var expected = false;
+  var expected = undefined;
   test.identical( got, expected )
 
   test.case = 'begin - two chars';
   var got = _.strBeginOf( 'abc', 'bc' );
-  var expected = false;
+  var expected = undefined;
   test.identical( got, expected )
 
   test.case = 'begin.length > src.length';
   var got = _.strBeginOf( 'abc', 'abcd' );
-  var expected = false;
+  var expected = undefined;
   test.identical( got, expected )
 
   test.case = 'begin.length === src.length, not equal';
   var got = _.strBeginOf( 'abc', 'cba' );
-  var expected = false;
+  var expected = undefined;
   test.identical( got, expected )
 
   test.case = 'begin.length === src.length, equal';
@@ -1887,7 +1887,7 @@ function strBeginOf( test )
 
   test.case = 'begin - empty array';
   var got = _.strBeginOf( 'abc', [] );
-  var expected = false;
+  var expected = undefined;
   test.identical( got, expected )
 
   test.case = 'begin - array with empty string';
@@ -1897,7 +1897,7 @@ function strBeginOf( test )
 
   test.case = 'begin - array strings, not begins';
   var got = _.strBeginOf( 'abccc', [ 'c', 'ccc' ] );
-  var expected = false;
+  var expected = undefined;
   test.identical( got, expected )
 
   test.case = 'begin - array strings, begins';
@@ -1907,7 +1907,7 @@ function strBeginOf( test )
 
   test.case = 'begin - array strings, not begins';
   var got = _.strBeginOf( 'abc', [ 'x', 'y', 'c' ] );
-  var expected = false;
+  var expected = undefined;
   test.identical( got, expected )
 
   /* - */
@@ -1935,8 +1935,6 @@ function strEndOf( test )
 {
   var got, expected;
 
-  //
-
   test.case = 'strEndOf';
 
   /**/
@@ -1948,31 +1946,31 @@ function strEndOf( test )
   /**/
 
   got = _.strEndOf( 'abc', 'a' );
-  expected = false;
+  expected = undefined;
   test.identical( got, expected )
 
   /**/
 
   got = _.strEndOf( 'abc', 'ab' );
-  expected = false;
+  expected = undefined;
   test.identical( got, expected )
 
   /**/
 
   got = _.strEndOf( 'abc', ' a' );
-  expected = false;
+  expected = undefined;
   test.identical( got, expected )
 
   /* end.length > src.length */
 
   got = _.strEndOf( 'abc', 'abcd' );
-  expected = false;
+  expected = undefined;
   test.identical( got, expected )
 
   /* same length */
 
   got = _.strEndOf( 'abc', 'cba' );
-  expected = false;
+  expected = undefined;
   test.identical( got, expected )
 
   /* equal */
@@ -1984,7 +1982,7 @@ function strEndOf( test )
   /* array */
 
   got = _.strEndOf( 'abc', [] );
-  expected = false;
+  expected = undefined;
   test.identical( got, expected )
 
   /**/
@@ -1996,7 +1994,7 @@ function strEndOf( test )
   /**/
 
   got = _.strEndOf( 'abccc', [ 'a', 'ab' ] );
-  expected = false;
+  expected = undefined;
   test.identical( got, expected )
 
   /**/
@@ -2008,13 +2006,13 @@ function strEndOf( test )
   /**/
 
   got = _.strEndOf( 'abc', [ 'x', 'y', 'a' ] );
-  expected = false;
+  expected = undefined;
   test.identical( got, expected )
 
   /**/
 
   got = _.strEndOf( 'abc', [ 'x', 'y', 'z' ] );
-  expected = false;
+  expected = undefined;
   test.identical( got, expected )
 
   if( !Config.debug )
@@ -2033,8 +2031,6 @@ function strEndOf( test )
 function strBegins( test )
 {
   var got, expected;
-
-  //
 
   test.case = 'strBegins';
 
@@ -2119,8 +2115,6 @@ function strEnds( test )
 {
   var got, expected;
 
-  //
-
   test.case = 'strEnds';
 
   /**/
@@ -2194,37 +2188,37 @@ function strEnds( test )
 // converter
 // --
 
-function strShort( test )
+function strEntityShort( test )
 {
 
   test.case = 'undefined';
   var src = undefined;
   var expected = 'undefined';
-  var got = _.strShort( src );
+  var got = _.strEntityShort( src );
   test.identical( got, expected );
 
   test.case = 'null';
   var src = null;
   var expected = 'null';
-  var got = _.strShort( src );
+  var got = _.strEntityShort( src );
   test.identical( got, expected );
 
   test.case = 'number';
   var src = 13;
   var expected = '13';
-  var got = _.strShort( src );
+  var got = _.strEntityShort( src );
   test.identical( got, expected );
 
   test.case = 'boolean';
   var src = false;
   var expected = 'false';
-  var got = _.strShort( src );
+  var got = _.strEntityShort( src );
   test.identical( got, expected );
 
   test.case = 'string';
   var src = 'abc';
   var expected = 'abc';
-  var got = _.strShort( src );
+  var got = _.strEntityShort( src );
   test.identical( got, expected );
 
 }
@@ -3024,15 +3018,15 @@ function strInsideOf( test )
 
   test.case = 'src - empty string, begin - empty string, end - !!!';
   var got = _.strInsideOf( '', '', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - empty string';
   var got = _.strInsideOf( '', '!!!', '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - !!!';
   var got = _.strInsideOf( '', '!!!', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -3042,15 +3036,15 @@ function strInsideOf( test )
 
   test.case = 'src - string, begin - empty string, end - !!!, not equal';
   var got = _.strInsideOf( 'str', '', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - !!!, not equal, end - empty string';
   var got = _.strInsideOf( 'str', '!!!', '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - !!!, not equal, end - !!!, not equal';
   var got = _.strInsideOf( 'str', '!!!', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -3070,29 +3064,29 @@ function strInsideOf( test )
 
   test.case = 'src - string, little difference, begin - empty string, end - !!!';
   var got = _.strInsideOf( '!!str!!', '', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, little difference, begin - !!!, end - empty string';
   var got = _.strInsideOf( '!!str!!', '!!!', '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, little difference, begin - !!!, end - !!!';
   var got = _.strInsideOf( '!!str!!', '!!!', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
   test.case = 'src - string, equals inside string, begin - empty string, end - !!!';
   var got = _.strInsideOf( 'str!!!str!!!str', '', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, equals inside string, begin - !!!, end - empty string';
   var got = _.strInsideOf( 'str!!!str!!!str', '!!!', '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, equals inside string, begin - !!!, end - !!!';
   var got = _.strInsideOf( 'str!!!str!!!str', '!!!', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.close( 'string' );
 
@@ -3106,15 +3100,15 @@ function strInsideOf( test )
 
   test.case = 'src - empty string, begin - empty strings, end - !!!';
   var got = _.strInsideOf( '', [ '', '' ], [ '!!!', '!!!' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - empty strings';
   var got = _.strInsideOf( '', [ '!!!', '!!!' ], [ '', '' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - !!!';
   var got = _.strInsideOf( '', [ '!!!', '!!!' ], [ '!!!', '!!!' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -3124,15 +3118,15 @@ function strInsideOf( test )
 
   test.case = 'src - string, begin - empty string, end - mixed, not equal';
   var got = _.strInsideOf( 'str', [ '' ], [ '!!!', 'q', 'b' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - mixed, not equal, end - empty string';
   var got = _.strInsideOf( 'str', [ '!!!', 'q', 'b' ], [ '' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - mixed, not equal, end - mixed, not equal';
   var got = _.strInsideOf( 'str', [ '!!!', 'q', 'b' ], [ '!!!', 'q', 'b' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -3188,29 +3182,29 @@ function strInsideOf( test )
 
   test.case = 'src - empty string, begin - empty string, end - !!!';
   var got = _.strInsideOf( '', '', [ '!!!', '!!!' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - empty string';
   var got = _.strInsideOf( '', [ '!!!', '!!!' ], '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - !!!';
   var got = _.strInsideOf( '', [ '!!!', '!!!' ], '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
   test.case = 'src - string, begin - empty string, end - mixed, not equal';
   var got = _.strInsideOf( 'str', '', [ '!!!', 'q', 'b' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - mixed, not equal, end - empty string';
   var got = _.strInsideOf( 'str', [ '!!!', 'q', 'b' ], '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - mixed, not equal, end - string, not equal';
   var got = _.strInsideOf( 'str', [ '!!!', 'q', 'b' ], 'q' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -3252,7 +3246,7 @@ function strInsideOf( test )
 
   test.case = 'src - string, equals inside string, begin - mixed, end - string';
   var got = _.strInsideOf( 'str!!!str!!!str', [ '!!!', 'str' ], '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.close( 'mixed' );
 
@@ -3286,15 +3280,15 @@ function strOutsideOf( test )
 
   test.case = 'src - empty string, begin - empty string, end - !!!';
   var got = _.strOutsideOf( '', '', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - empty string';
   var got = _.strOutsideOf( '', '!!!', '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - !!!';
   var got = _.strOutsideOf( '', '!!!', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -3304,15 +3298,15 @@ function strOutsideOf( test )
 
   test.case = 'src - string, begin - empty string, end - !!!, not equal';
   var got = _.strOutsideOf( 'str', '', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - !!!, not equal, end - empty string';
   var got = _.strOutsideOf( 'str', '!!!', '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - !!!, not equal, end - !!!, not equal';
   var got = _.strOutsideOf( 'str', '!!!', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -3332,29 +3326,29 @@ function strOutsideOf( test )
 
   test.case = 'src - string, little difference, begin - empty string, end - !!!';
   var got = _.strOutsideOf( '!!str!!', '', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, little difference, begin - !!!, end - empty string';
   var got = _.strOutsideOf( '!!str!!', '!!!', '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, little difference, begin - !!!, end - !!!';
   var got = _.strOutsideOf( '!!str!!', '!!!', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
   test.case = 'src - string, equals inside string, begin - empty string, end - !!!';
   var got = _.strOutsideOf( 'str!!!str!!!str', '', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, equals inside string, begin - !!!, end - empty string';
   var got = _.strOutsideOf( 'str!!!str!!!str', '!!!', '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, equals inside string, begin - !!!, end - !!!';
   var got = _.strOutsideOf( 'str!!!str!!!str', '!!!', '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.close( 'string' );
 
@@ -3368,15 +3362,15 @@ function strOutsideOf( test )
 
   test.case = 'src - empty string, begin - empty strings, end - !!!';
   var got = _.strOutsideOf( '', [ '', '' ], [ '!!!', '!!!' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - empty strings';
   var got = _.strOutsideOf( '', [ '!!!', '!!!' ], [ '', '' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - !!!';
   var got = _.strOutsideOf( '', [ '!!!', '!!!' ], [ '!!!', '!!!' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -3386,15 +3380,15 @@ function strOutsideOf( test )
 
   test.case = 'src - string, begin - empty string, end - mixed, not equal';
   var got = _.strOutsideOf( 'str', [ '' ], [ '!!!', 'q', 'b' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - mixed, not equal, end - empty string';
   var got = _.strOutsideOf( 'str', [ '!!!', 'q', 'b' ], [ '' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - mixed, not equal, end - mixed, not equal';
   var got = _.strOutsideOf( 'str', [ '!!!', 'q', 'b' ], [ '!!!', 'q', 'b' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -3450,29 +3444,29 @@ function strOutsideOf( test )
 
   test.case = 'src - empty string, begin - empty string, end - !!!';
   var got = _.strOutsideOf( '', '', [ '!!!', '!!!' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - empty string';
   var got = _.strOutsideOf( '', [ '!!!', '!!!' ], '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - empty string, begin - !!!, end - !!!';
   var got = _.strOutsideOf( '', [ '!!!', '!!!' ], '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
   test.case = 'src - string, begin - empty string, end - mixed, not equal';
   var got = _.strOutsideOf( 'str', '', [ '!!!', 'q', 'b' ] );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - mixed, not equal, end - empty string';
   var got = _.strOutsideOf( 'str', [ '!!!', 'q', 'b' ], '' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.case = 'src - string, begin - mixed, not equal, end - string, not equal';
   var got = _.strOutsideOf( 'str', [ '!!!', 'q', 'b' ], 'q' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   /* */
 
@@ -3514,7 +3508,7 @@ function strOutsideOf( test )
 
   test.case = 'src - string, equals inside string, begin - mixed, end - string';
   var got = _.strOutsideOf( 'str!!!str!!!str', [ '!!!', 'str' ], '!!!' );
-  test.identical( got, false );
+  test.identical( got, undefined );
 
   test.close( 'mixed' );
 
@@ -16013,7 +16007,7 @@ var Self =
 
     // converter
 
-    strShort,
+    strEntityShort,
     strPrimitive,
     strType,
 

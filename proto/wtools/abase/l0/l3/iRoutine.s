@@ -945,9 +945,10 @@ function routineUnite_head( routine, args )
   _.routineOptions( routine, o );
   _.assert( args.length === 1 || args.length === 2 || args.length === 3 );
   _.assert( arguments.length === 2 );
+  _.assert( args[ 0 ] !== undefined );
   _.assert( _.routineIs( o.head ) || _.routinesAre( o.head ), 'Expects routine or routines {-o.head-}' );
   _.assert( _.routineIs( o.body ), 'Expects routine {-o.body-}' );
-  _.assert( !o.tail || _.routineIs( o.tail ), 'Expects routine {-o.tail-}' );
+  _.assert( !o.tail || _.routineIs( o.tail ), () => `Expects routine {-o.tail-}, but got ${_.strType( o.tail )}` );
   _.assert( o.body.defaults !== undefined, 'Body should have defaults' );
 
   return o;
@@ -962,7 +963,7 @@ function routineUnite_body( o )
 
   if( !_.routineIs( o.head ) )
   {
-    let _head = _.routinesCompose( o.head, function( /* args, result, op, k */ )
+    let _head = _.routinesCompose( o.head, function()
     {
       let args = arguments[ 0 ];
       let result = arguments[ 1 ];
@@ -1000,7 +1001,7 @@ function routineUnite_body( o )
     [ o.name ] : function()
     {
       let result;
-      let o = head.call( this, callPreAndBody, arguments );
+      let o = head.call( this, callPreAndBody, arguments ); /* qqq for Dmytro : head is optional */
 
       _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
 
@@ -1011,6 +1012,7 @@ function routineUnite_body( o )
 
       if( tail )
       result = tail.call( this, result );
+      /* qqq for Dmytro : not optimal!!! */
 
       return result;
     }

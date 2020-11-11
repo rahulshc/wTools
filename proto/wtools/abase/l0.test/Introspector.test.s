@@ -53,6 +53,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : null,
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : null,
     'col' : null,
     'filePathLineCol' : '',
@@ -72,6 +73,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'Object.stackBasic',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 48,
     'col' : 79,
     'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
@@ -91,6 +93,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'Object.stackBasic',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 48,
     'col' : 79,
     'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
@@ -110,6 +113,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'iteration',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
@@ -130,6 +134,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'iteration',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
@@ -148,7 +153,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : '_iteration',
     'routineAlias' : null,
-    'internal' : 1,
+    'internal' : 0,
+    'abstraction' : 1,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
@@ -167,7 +173,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : '__iteration',
     'routineAlias' : null,
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
@@ -187,6 +194,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence.handle_Now',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -205,7 +213,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence._handle_Now',
     'routineAlias' : null,
-    'internal' : 1,
+    'internal' : 0,
+    'abstraction' : 1,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -224,7 +233,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.__handle_Now',
     'routineAlias' : null,
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -244,6 +254,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence.handle__Now',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -262,7 +273,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence._handle__Now',
     'routineAlias' : null,
-    'internal' : 1,
+    'internal' : 0,
+    'abstraction' : 1,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -281,7 +293,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.__handle__Now',
     'routineAlias' : null,
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -301,6 +314,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence.{-anonymous-}',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 9,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
@@ -320,6 +334,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence..{-anonymous-}',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 9,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
@@ -339,6 +354,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence.{-anonymous-}',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 9,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
@@ -358,6 +374,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence.{-anonymous-}.{-anonymous-}',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 9,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
@@ -377,6 +394,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'Object.time',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 1503,
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
@@ -396,7 +414,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/Procedure.s',
     'routineName' : 'Object.time',
     'routineAlias' : '_time',
-    'internal' : 1,
+    'internal' : 0,
+    'abstraction' : 1,
     'line' : 1503,
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
@@ -415,7 +434,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/Procedure.s',
     'routineName' : 'Object.time',
     'routineAlias' : '__time',
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 1503,
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
@@ -434,7 +454,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/Procedure.s',
     'routineName' : 'Object.__time',
     'routineAlias' : '_time',
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 1503,
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
@@ -454,6 +475,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'listOnTimeout',
     'routineAlias' : null,
     'internal' : 2,
+    'abstraction' : 0,
     'line' : 531,
     'col' : 17,
     'filePathLineCol' : 'internal/timers.js:531:17',
@@ -473,6 +495,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'eval',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 1,
     'col' : 16,
     'filePathLineCol' : '<anonymous>:1:16',
@@ -492,6 +515,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'program2',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 13,
     'col' : 5,
     'filePathLineCol' : '/C/basic/program2.js:13:5',
@@ -511,6 +535,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'program2',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 13,
     'col' : 5,
     'filePathLineCol' : '/C/basic/program2.js:13:5',
@@ -536,6 +561,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : null,
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : null,
     'col' : null,
     'filePathLineCol' : '',
@@ -555,6 +581,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'Object.stackBasic',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 48,
     'col' : 79,
     'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
@@ -574,6 +601,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'Object.stackBasic',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 48,
     'col' : 79,
     'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
@@ -593,6 +621,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'iteration',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
@@ -612,6 +641,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'iteration',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
@@ -630,7 +660,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : '_iteration',
     'routineAlias' : null,
-    'internal' : 1,
+    'internal' : 0,
+    'abstraction' : 1,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
@@ -649,7 +680,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : '__iteration',
     'routineAlias' : null,
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/File.js:5:47',
@@ -669,6 +701,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence.handle_Now',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -687,7 +720,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence._handle_Now',
     'routineAlias' : null,
-    'internal' : 1,
+    'internal' : 0,
+    'abstraction' : 1,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -706,7 +740,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.__handle_Now',
     'routineAlias' : null,
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -726,6 +761,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence.handle__Now',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -744,7 +780,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence._handle__Now',
     'routineAlias' : null,
-    'internal' : 1,
+    'internal' : 0,
+    'abstraction' : 1,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -763,7 +800,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.__handle__Now',
     'routineAlias' : null,
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -783,6 +821,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence.{-anonymous-}',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 9,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
@@ -802,6 +841,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence..{-anonymous-}',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 9,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
@@ -821,6 +861,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence.{-anonymous-}',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 9,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
@@ -840,6 +881,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'wConsequence.{-anonymous-}.{-anonymous-}',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 9,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
@@ -859,6 +901,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'Object.time',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 1503,
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
@@ -877,7 +920,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/Procedure.s',
     'routineName' : 'Object.time',
     'routineAlias' : '_time',
-    'internal' : 1,
+    'internal' : 0,
+    'abstraction' : 1,
     'line' : 1503,
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
@@ -896,7 +940,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/Procedure.s',
     'routineName' : 'Object.time',
     'routineAlias' : '__time',
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 1503,
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
@@ -915,7 +960,8 @@ function locationFromStackFrameWithoutLocationField( test )
     'filePath' : '/C/dir/Procedure.s',
     'routineName' : 'Object.__time',
     'routineAlias' : '_time',
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 1503,
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
@@ -935,6 +981,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'listOnTimeout',
     'routineAlias' : null,
     'internal' : 2,
+    'abstraction' : 0,
     'line' : 531,
     'col' : 17,
     'filePathLineCol' : 'internal/timers.js:531:17',
@@ -954,6 +1001,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'eval',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 1,
     'col' : 16,
     'filePathLineCol' : '<anonymous>:1:16',
@@ -973,6 +1021,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'program2',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 13,
     'col' : 5,
     'filePathLineCol' : '/C/basic/program2.js:13:5',
@@ -992,6 +1041,7 @@ function locationFromStackFrameWithoutLocationField( test )
     'routineName' : 'program2',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 13,
     'col' : 5,
     'filePathLineCol' : '/C/basic/program2.js:13:5',
@@ -1052,6 +1102,7 @@ function locationFromStackFrameWithLocationField( test )
     'routineName' : 'Object.stackBasic',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 48,
     'col' : 79,
     'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
@@ -1073,12 +1124,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)';
   var exp =
   {
-    // 'original' : 'at stackBasic (/C/dir/Introspector.test.s)',
     'original' : 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)',
     'filePath' : '/C/dir/Introspector.test.s',
     'routineName' : 'Object.stackBasic',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 48,
     'col' : 79,
     'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
@@ -1100,12 +1151,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at iteration (C:\\dir\\File.js:5:47)';
   var exp =
   {
-    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
     'original' : 'at iteration (C:\\dir\\File.js:5:47)',
     'filePath' : '/C/dir/(Introspector.test.s)',
     'routineName' : 'iteration',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/(Introspector.test.s):5:47',
@@ -1128,12 +1179,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at iteration (/C/dir/File.js:5:47)';
   var exp =
   {
-    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
     'original' : 'at iteration (/C/dir/File.js:5:47)',
     'filePath' : '/C/dir/(Introspector.test.s)',
     'routineName' : 'iteration',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/(Introspector.test.s):5:47',
@@ -1156,12 +1207,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at _iteration (C:\\dir\\File.js:5:47)';
   var exp =
   {
-    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
     'original' : 'at _iteration (C:\\dir\\File.js:5:47)',
     'filePath' : '/C/dir/(Introspector.test.s)',
     'routineName' : '_routine',
     'routineAlias' : null,
-    'internal' : 1,
+    'internal' : 0,
+    'abstraction' : 1,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/(Introspector.test.s):5:47',
@@ -1184,12 +1235,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at __iteration (C:\\dir\\File.js:5:47)';
   var exp =
   {
-    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
     'original' : 'at __iteration (C:\\dir\\File.js:5:47)',
     'filePath' : '/C/dir/(Introspector.test.s)',
     'routineName' : '__routine.',
     'routineAlias' : null,
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 5,
     'col' : 47,
     'filePathLineCol' : '/C/dir/(Introspector.test.s):5:47',
@@ -1212,12 +1263,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
     'original' : 'at wConsequence.handle_Now (C:\\dir\\File.js:5:15)',
     'filePath' : '/C/dir/(Introspector.test.s)',
     'routineName' : '__routine..',
     'routineAlias' : null,
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/(Introspector.test.s):5:15',
@@ -1239,12 +1290,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence._handle_Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
     'original' : 'at wConsequence._handle_Now (C:\\dir\\File.js:5:15)',
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence._handle_Now',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 1,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -1266,12 +1317,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence.__handle_Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
     'original' : 'at wConsequence.__handle_Now (C:\\dir\\File.js:5:15)',
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.__handle_Now',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 2,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -1288,17 +1339,18 @@ function locationFromStackFrameWithLocationField( test )
   var location =
   {
     original : 'at stackBasic (/C/dir/(Introspector.test.s))',
-    internal : 3
+    internal : 31,
+    abstraction : 13,
   }
   var stackCall = 'at wConsequence.handle__Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
     'original' : 'at wConsequence.handle__Now (C:\\dir\\File.js:5:15)',
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.handle__Now',
     'routineAlias' : null,
-    'internal' : 3,
+    'internal' : 31,
+    'abstraction' : 13,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -1320,12 +1372,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    // 'original' : 'at stackBasic (/C/dir/(Introspector.test.s))',
     'original' : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
     'filePath' : 'internal/index.js',
     'routineName' : 'wConsequence._handle__Now',
     'routineAlias' : null,
     'internal' : 2,
+    'abstraction' : 1,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : 'internal/index.js:5:15',
@@ -1343,12 +1395,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)';
   var exp =
   {
-    // 'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
     'original' : 'at wConsequence.__handle__Now (C:\\dir\\File.js:5:15)',
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.__handle__Now',
     'routineAlias' : null,
-    'internal' : 2,
+    'internal' : 0,
+    'abstraction' : 2,
     'line' : 5,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:5:15',
@@ -1366,12 +1418,12 @@ function locationFromStackFrameWithLocationField( test )
   var stackCall = 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)';
   var exp =
   {
-    // 'original' : 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)',
     'original' : 'at wConsequence.<anonymous> (C:\\dir\\File.js:9:15)',
     'filePath' : '/C/dir/File.js',
     'routineName' : 'wConsequence.{-anonymous-}',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 9,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
@@ -1394,6 +1446,7 @@ function locationFromStackFrameWithLocationField( test )
     'routineName' : 'wConsequence.{-anonymous-}.{-anonymous-}',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 9,
     'col' : 15,
     'filePathLineCol' : '/C/dir/File.js:9:15',
@@ -1420,6 +1473,7 @@ function locationFromStackFrameWithLocationField( test )
     'routineName' : 'Object.time',
     'routineAlias' : '_time',
     'internal' : 2,
+    'abstraction' : 1,
     'line' : 1503,
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
@@ -1446,6 +1500,7 @@ function locationFromStackFrameWithLocationField( test )
     'routineName' : 'Object.time',
     'routineAlias' : '__routine',
     'internal' : 0,
+    'abstraction' : 2,
     'line' : 1503,
     'col' : 20,
     'filePathLineCol' : '/C/dir/Procedure.s:1503:20',
@@ -1472,6 +1527,7 @@ function locationFromStackFrameWithLocationField( test )
     'routineName' : 'Object.__time',
     'routineAlias' : '_time',
     'internal' : 2,
+    'abstraction' : 2,
     'line' : 1,
     'col' : null,
     'filePathLineCol' : 'internal/timers.js:1',
@@ -1497,6 +1553,7 @@ function locationFromStackFrameWithLocationField( test )
     'routineName' : 'listOnTimeout',
     'routineAlias' : null,
     'internal' : 2,
+    'abstraction' : 0,
     'line' : 531,
     'col' : 17,
     'filePathLineCol' : 'internal/timers.js:531:17',
@@ -1516,6 +1573,7 @@ function locationFromStackFrameWithLocationField( test )
     'routineName' : 'eval',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 1,
     'col' : 16,
     'filePathLineCol' : '<anonymous>:1:16',
@@ -1535,6 +1593,7 @@ function locationFromStackFrameWithLocationField( test )
     'routineName' : 'program2',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 13,
     'col' : 5,
     'filePathLineCol' : '/C/basic/program2.js:13:5',
@@ -1554,6 +1613,7 @@ function locationFromStackFrameWithLocationField( test )
     'routineName' : 'program2',
     'routineAlias' : null,
     'internal' : 0,
+    'abstraction' : 0,
     'line' : 13,
     'col' : 5,
     'filePathLineCol' : '/C/basic/program2.js:13:5',
@@ -1569,6 +1629,35 @@ function locationFromStackFrameWithLocationField( test )
 
   test.case = 'o.location is an array, o.location as not a map';
   test.shouldThrowErrorSync( () => _.introspector.locationFromStackFrame( { stackFrame : 'at Object.stackBasic', location : [] } ) );
+}
+
+//
+
+function locationNormalize( test )
+{
+
+  test.case = 'basic';
+  var o1 = { original : "at node:internal/main/run_main_module:17:47" }
+  var got = _.introspector.locationNormalize( o1 );
+  test.is( got === o1 );
+  var exp =
+  {
+    'original' : 'at node:internal/main/run_main_module:17:47',
+    'filePath' : 'node:internal/main/run_main_module',
+    'routineName' : 'node',
+    'routineAlias' : null,
+    'internal' : 2,
+    'abstraction' : 0,
+    'line' : 17,
+    'col' : 47,
+    'filePathLineCol' : 'node:internal/main/run_main_module:17:47',
+    'routineFilePathLineCol' : 'node @ node:internal/main/run_main_module:17:47',
+    'fileName' : 'run_main_module',
+    'fileNameLineCol' : 'run_main_module:17:47',
+  }
+  test.identical( got, exp );
+  // debugger; xxx
+
 }
 
 //
@@ -2767,7 +2856,6 @@ let Self =
 
   context :
   {
-    // nameOfFile : _.introspector.location().fileName, /* xxx */
     suiteTempPath : null,
     assetsOriginalPath : null,
     appJsPath : null,
@@ -2776,14 +2864,14 @@ let Self =
   tests :
   {
 
-    /* aaa : implement test routine for _.err */
-    /* Dmytro : implemented, routines in file Err.test.s */
-
     locationFromStackFrameWithoutLocationField,
     locationFromStackFrameWithLocationField,
+    /* qqq for Dmytro : redo tests ( redistribute please ). ask how to */
+    locationNormalize,
+    /* qqq for Dmytro : implement full coverage */
 
     stackBasic,
-    stack, /* aaa : extend the routine */ /* Dmytro : extended */
+    stack,
     stackRelative,
 
     stackFilter,

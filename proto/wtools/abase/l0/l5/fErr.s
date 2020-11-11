@@ -13,6 +13,8 @@ let Self = _global_.wTools.error;
 function _handleUncaught2( o )
 {
 
+  let process0 = processNamespaceGet();
+
   optionsRefine();
 
   /* xxx qqq : resolve issue in browser
@@ -28,6 +30,7 @@ function _handleUncaught2( o )
   if( _.errIsAttended( o.err ) )
   return;
 
+  debugger;
   consoleUnbar();
 
   console.error( o.prefix );
@@ -63,10 +66,11 @@ function _handleUncaught2( o )
 
   function consoleUnbar()
   {
+    let Logger = loggerClassGet();
     try
     {
-      if( _.Logger && _.Logger.ConsoleBar && _.Logger.ConsoleIsBarred( console ) )
-      _.Logger.ConsoleBar({ on : 0 });
+      if( Logger && Logger.ConsoleBar && Logger.ConsoleIsBarred( console ) )
+      Logger.ConsoleBar({ on : 0 });
     }
     catch( err2 )
     {
@@ -128,12 +132,52 @@ function _handleUncaught2( o )
 
   /* */
 
+  function processNamespaceGet()
+  {
+    let result;
+    if( !result && _.process && _.process.exitReason )
+    result = _.process;
+    if( !result && _realGlobal_ && _realGlobal_.wTools && _realGlobal_.wTools.process && _realGlobal_.wTools.process.exitReason )
+    result = _realGlobal_.wTools.process;
+    // xxx : use _globals_
+    if( !result && _realGlobal_._testerGlobal_ && _testerGlobal_.wTools && _testerGlobal_.wTools.process && _testerGlobal_.wTools.process.exitReason )
+    result = _testerGlobal_.wTools.process;
+    if( !result )
+    result = _.process;
+    return result;
+  }
+
+  /* */
+
+  function loggerClassGet()
+  {
+    let result;
+    if( !result && _.Logger && _.Logger.ConsoleBar )
+    result = _.Logger;
+    if( !result && _realGlobal_ && _realGlobal_.wTools && _realGlobal_.wTools.Logger && _realGlobal_.wTools.Logger.ConsoleBar )
+    result = _realGlobal_.wTools.Logger;
+    // xxx : use _globals_
+    if( !result && _realGlobal_._testerGlobal_ && _testerGlobal_.wTools && _testerGlobal_.wTools.Logger && _testerGlobal_.wTools.Logger.ConsoleBar )
+    result = _testerGlobal_.wTools.Logger;
+    return result;
+  }
+
+  /* */
+
   function processUncaughtErrorEvent()
   {
     try
     {
-      if( _.process.eventGive )
-      _.process.eventGive({ event : 'uncaughtError', args : [ o ] });
+      // if( process0.eventGive ) /* xxx : cover in starter not catching uncaught error */
+      if( process0 && process0.eventGive )
+      process0.eventGive({ event : 'uncaughtError', args : [ o ] });
+      for( let g in _realGlobal_._globals_ )
+      {
+        let _global = _realGlobal_._globals_[ g ];
+        if( _global.wTools && _global.wTools.process && _global.wTools.process.eventGive )
+        if( _global.wTools.process !== process0 )
+        _global.wTools.process.eventGive({ event : 'uncaughtError', args : [ o ] });
+      }
     }
     catch( err2 )
     {
@@ -148,12 +192,14 @@ function _handleUncaught2( o )
   function exitError( err, rewriting )
   {
     let set = false;
-    if( _.process && _.process.exit )
+    debugger;
+    if( process0 && process0.exit )
     try
     {
-      _.process.exitCode( -1 );
-      if( rewriting && !_.process.exitReason() )
-      _.process.exitReason( err );
+      process0.exitCode( -1 );
+      // if( rewriting || !process0.exitReason() )
+      if( !process0.exitReason() )
+      process0.exitReason( err );
       set = true;
     }
     catch( err2 )
@@ -181,10 +227,10 @@ function _handleUncaught2( o )
   function processExit()
   {
     exitError( o.err, true );
-    if( _.process && _.process.exit )
+    if( process0 && process0.exit )
     try
     {
-      _.process.exit();
+      process0.exit();
     }
     catch( err2 )
     {

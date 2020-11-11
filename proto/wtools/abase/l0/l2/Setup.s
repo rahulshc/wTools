@@ -29,15 +29,11 @@ function _handleUncaught1()
 
 function _handleUncaughtPromise1( err, promise )
 {
-
-  console.log( '_handleUncaughtPromise1' );
-  debugger;
   let o = Object.create( null );
   o.promise = promise;
   o.err = err;
   o.origination = 'uncaught promise error';
   let result = _.error._handleUncaught2.call( this, o );
-
   return result;
 }
 
