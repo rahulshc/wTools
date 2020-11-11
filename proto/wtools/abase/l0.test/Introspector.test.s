@@ -1963,6 +1963,175 @@ function locationNormalize( test )
 
 //
 
+function locationNormalizeOptionFilePath( test )
+{
+  test.case = 'only field filePath - empty string';
+  var o = { filePath : '' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field filePath - simple path';
+  var o = { filePath : '/C/dir/Introspector.test.s' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : '/C/dir/Introspector.test.s',
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : '/C/dir/Introspector.test.s',
+    'routineFilePathLineCol' : null,
+    'fileName' : 'Introspector.test.s',
+    'fileNameLineCol' : 'Introspector.test.s',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field filePath - internal path';
+  var o = { filePath : 'internal/event' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : 'internal/event',
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 2,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : 'internal/event',
+    'routineFilePathLineCol' : null,
+    'fileName' : 'event',
+    'fileNameLineCol' : 'event',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field filePath - internal path';
+  var o = { filePath : 'node:internal/event' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : 'node:internal/event',
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 2,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : null,
+    'filePathLineCol' : 'node:internal/event',
+    'routineFilePathLineCol' : null,
+    'fileName' : 'event',
+    'fileNameLineCol' : 'event',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'field filePath - empty string, options map with original';
+  var o =
+  {
+    original : 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)',
+    filePath : '',
+  };
+  var exp =
+  {
+    'original' : 'at Object.stackBasic (/C/dir/Introspector.test.s:48:79)',
+    'filePath' : '/C/dir/Introspector.test.s',
+    'routineName' : 'Object.stackBasic',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : 48,
+    'col' : 79,
+    'filePathLineCol' : '/C/dir/Introspector.test.s:48:79',
+    'routineFilePathLineCol' : 'Object.stackBasic @ /C/dir/Introspector.test.s:48:79',
+    'fileName' : 'Introspector.test.s',
+    'fileNameLineCol' : 'Introspector.test.s:48:79',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'field filePath - path to file, options map has field original';
+  var o =
+  {
+    original : 'at iteration (C:\\dir\\File.js:5:47)',
+    filePath : '/C/dir/(Introspector.test.s)',
+  };
+  var exp =
+  {
+    'original' : 'at iteration (C:\\dir\\File.js:5:47)',
+    'filePath' : '/C/dir/(Introspector.test.s)',
+    'routineName' : 'iteration',
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : 5,
+    'col' : 47,
+    'filePathLineCol' : '/C/dir/(Introspector.test.s):5:47',
+    'routineFilePathLineCol' : 'iteration @ /C/dir/(Introspector.test.s):5:47',
+    'fileName' : '(Introspector.test.s)',
+    'fileNameLineCol' : '(Introspector.test.s):5:47'
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'filePath - relative path, options map has field original';
+  var o =
+  {
+    original : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
+    filePath : 'internal/index.js'
+  };
+  var exp =
+  {
+    'original' : 'at wConsequence._handle__Now (C:\\dir\\File.js:5:15)',
+    'filePath' : 'internal/index.js',
+    'routineName' : 'wConsequence._handle__Now',
+    'routineAlias' : null,
+    'internal' : 2,
+    'abstraction' : 1,
+    'line' : 5,
+    'col' : 15,
+    'filePathLineCol' : 'internal/index.js:5:15',
+    'routineFilePathLineCol' : 'wConsequence._handle__Now @ internal/index.js:5:15',
+    'fileName' : 'index.js',
+    'fileNameLineCol' : 'index.js:5:15',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+}
+
+//
+
 function stackBasic( test )
 {
 
@@ -3168,8 +3337,8 @@ let Self =
     locationFromStackFrameWithoutLocationField,
     locationFromStackFrameWithLocationField,
     /* qqq for Dmytro : redo tests ( redistribute please ). ask how to */
-    locationNormalize,
-    /* qqq for Dmytro : implement full coverage */
+    locationNormalize, /* qqq for Dmytro : implement full coverage */
+    locationNormalizeOptionFilePath, /* qqq for Dmytro : implement full coverage */
 
     stackBasic,
     stack,
