@@ -2643,6 +2643,35 @@ function routineUnite( test )
   test.is( _.arrayIs( got ) );
   test.identical( got, [ 2, 2 ] );
 
+  /* */
+
+  var tailUseOptions = ( result, o ) =>
+  {
+    result[ 0 ] += 1;
+    _.arrayAppend( result, o );
+    return result;
+  }
+
+  test.case = 'head - null, tail use options map';
+  var routine = _.routineUnite( null, bodyObject, tailUseOptions );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var o = { args : _.argumentsArrayMake([ 1, 2 ]) };
+  var got = routine( o );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 2, 2, o ] );
+
+  test.case = 'head - null, tail use options map';
+  var routine = _.routineUnite({ head : null, body : bodyUnroll, tail : tailUseOptions });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var o = _.unrollMake([ 1, 2 ]);
+  var got = routine( o );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 2, 2, o ] );
+
   test.close( 'body and tail' );
 
   /* - */
@@ -2682,6 +2711,33 @@ function routineUnite( test )
   test.identical( routine.defaults, { args : null } );
   var got = routine( 1, 2 );
   test.identical( got, [ 2, 2 ] );
+
+  /* */
+
+  var tailUseOptions = ( result, o ) =>
+  {
+    result[ 0 ] += 1;
+    _.arrayAppend( result, o );
+    return result;
+  }
+
+  test.case = 'head - null, tail use options map';
+  var routine = _.routineUnite( headObject, bodyObject, tailUseOptions );
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyObject' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 2, 2, { args : _.argumentsArrayMake([ 1, 2 ]) } ] );
+
+  test.case = 'head - null, tail use options map';
+  var routine = _.routineUnite({ head : headUnroll, body : bodyUnroll, tail : tailUseOptions });
+  test.is( _.routineIs( routine ) );
+  test.identical( routine.name, 'bodyUnroll' );
+  test.identical( routine.defaults, { args : null } );
+  var got = routine( 1, 2 );
+  test.is( _.arrayIs( got ) );
+  test.identical( got, [ 2, 2, _.unrollMake([ 1, 2 ]) ] );
 
   test.close( 'head, body and tail' );
 

@@ -1078,7 +1078,7 @@ function routineUnite_body( o )
         else
         _.assert( 0, 'Unexpected type of {-o-}, expects options map or unroll.' );
 
-        result = tail.call( this, result );
+        result = tail.call( this, result, o );
         /* aaa for Dmytro : not optimal!!! */ /* Dmytro : optimized */
 
         return result;
@@ -1099,7 +1099,7 @@ function routineUnite_body( o )
         else
         result = body.call( this, o );
 
-        result = tail.call( this, result );
+        result = tail.call( this, result, o );
 
         return result;
       }
