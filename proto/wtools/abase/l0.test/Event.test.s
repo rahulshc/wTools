@@ -126,6 +126,215 @@ function Chain( test )
 // event
 // --
 
+function on( test )
+{
+  var self = this;
+
+  /* - */
+
+  test.open( 'option first - 0' );
+
+  test.case = 'no callback for events';
+  var ehandler =
+  {
+    events : { 'event' : [], 'event2' : [] },
+  };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [] );
+
+  /* */
+
+  test.case = 'single callback for single event, single event is given';
+  var ehandler =
+  {
+    events : { 'event' : [], 'event2' : [] },
+  };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+  test.is( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
+  test.isNot( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+
+  /* */
+
+  test.case = 'single callback for single event, a few events are given';
+  var ehandler =
+  {
+    events : { 'event' : [], 'event2' : [] },
+  };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0, 1 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0, 1 ] );
+  test.is( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
+  test.isNot( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+
+  /* */
+
+  test.case = 'single callback for each events in event handler, a few events are given';
+  var ehandler =
+  {
+    events : { 'event' : [], 'event2' : [] },
+  };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0, 1 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0, 1, -2, -3 ] );
+  test.is( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
+  test.is( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+
+  /* */
+
+  test.case = 'several events handler with similar events, events are given in second handler';
+  var ehandler =
+  {
+    events : { 'event' : [], 'event2' : [] },
+  };
+  var ehandler2 =
+  {
+    events : { 'event' : [], 'event2' : [] },
+  };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent, 'event2' : onEvent2 } } );
+  _.event.eventGive( ehandler2, 'event' );
+  _.event.eventGive( ehandler2, 'event' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler2, 'event2' );
+  _.event.eventGive( ehandler2, 'event2' );
+  test.identical( result, [] );
+
+  /* */
+
+  test.case = 'event handler has a few handlers for different events - once and regular';
+  var ehandler =
+  {
+    events : { 'event' : [], 'event2' : [] },
+  };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  _.event.once( ehandler, { 'callbackMap' : { 'event2' : onEvent2 } } );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0, 1 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0, 1, -2 ] );
+
+  test.case = 'event handler has a few handlers for single event - once and regular';
+  var ehandler =
+  {
+    events : { 'event' : [], 'event2' : [] },
+  };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent2 } } );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0, -1 ] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0, -1, 2 ] );
+
+  test.close( 'option first - 0' );
+
+  /* - */
+
+  test.open( 'option first - 1' );
+
+  test.case = 'callback for once added before other callback';
+  var ehandler =
+  {
+    events : { 'event' : [], 'event2' : [] },
+  };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent2 }, 'first' : 1 } );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ -0, 1 ] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ -0, 1, 2 ] );
+
+  /* */
+
+  test.case = 'callback for once added after other callback';
+  var ehandler =
+  {
+    events : { 'event' : [], 'event2' : [] },
+  };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : onEvent2 }, 'first' : 1 } );
+  _.event.once( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ -0, 1 ] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ -0, 1, -2 ] );
+
+  test.close( 'option first - 1' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.event.on() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.event.on( { events : { begin : [] } } ) );
+
+  test.case = 'wrong type of ehandler';
+  test.shouldThrowErrorSync( () => _.event.on( 'wrong', { callbackMap : { begin : () => true } } ) );
+
+  test.case = 'wrong type of ehandler.events';
+  test.shouldThrowErrorSync( () => _.event.on( { events : null }, { callbackMap : { begin : () => true } } ) );
+
+  test.case = 'wrong type of options map o';
+  test.shouldThrowErrorSync( () => _.event.on( { events : { begin : [] } }, 'wrong' ) );
+
+  test.case = 'extra options in options map o';
+  test.shouldThrowErrorSync( () => _.event.on( { events : { begin : [] } }, { wrong : {} } ) );
+
+  test.case = 'not known event in callbackMap';
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.on( { events : { begin : [] } }, { callbackMap : { unknown : () => 'unknown' } } );
+  });
+}
+
+//
+
 function once( test )
 {
   var self = this;
@@ -582,6 +791,8 @@ var Self =
     Chain,
 
     // event
+
+    on,
 
     once,
     onceCheckDescriptorMethod,
