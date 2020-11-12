@@ -2186,7 +2186,7 @@ function locationNormalizeWithOtherOptions( test )
 
   /* */
 
-  test.case = 'only field internal - number, not defined, maybe should be changed';
+  test.case = 'only field internal - number, not defined';
   var o = { internal : NaN };
   var exp =
   {
@@ -2234,7 +2234,7 @@ function locationNormalizeWithOtherOptions( test )
 
   /* */
 
-  test.case = 'only field abstraction - number, not defined, maybe should be changed';
+  test.case = 'only field abstraction - number, not defined';
   var o = { abstraction : NaN };
   var exp =
   {
@@ -2282,7 +2282,7 @@ function locationNormalizeWithOtherOptions( test )
 
   /* */
 
-  test.case = 'only field line - number, not defined, maybe should be changed';
+  test.case = 'only field line - number, not defined';
   var o = { line : NaN };
   var exp =
   {
@@ -2304,7 +2304,7 @@ function locationNormalizeWithOtherOptions( test )
 
   /* */
 
-  test.case = 'only field line - string, maybe should be changed';
+  test.case = 'only field line - string';
   var o = { line : 'str' };
   var exp =
   {
@@ -2320,6 +2320,28 @@ function locationNormalizeWithOtherOptions( test )
     'routineFilePathLineCol' : null,
     'fileName' : null,
     'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field line - string-number';
+  var o = { line : '2' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : 2,
+    'col' : null,
+    'filePathLineCol' : ':2',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : ':2',
   };
   var got = _.introspector.locationNormalize( o );
   test.identical( got, exp );
@@ -2352,7 +2374,7 @@ function locationNormalizeWithOtherOptions( test )
 
   /* */
 
-  test.case = 'only field col - number, not defined, maybe should be changed';
+  test.case = 'only field col - number, not defined';
   var o = { col : NaN };
   var exp =
   {
@@ -2374,7 +2396,7 @@ function locationNormalizeWithOtherOptions( test )
 
   /* */
 
-  test.case = 'only field col - string, maybe should be changed';
+  test.case = 'only field col - string';
   var o = { col : 'str' };
   var exp =
   {
@@ -2386,6 +2408,28 @@ function locationNormalizeWithOtherOptions( test )
     'abstraction' : 0,
     'line' : null,
     'col' : null,
+    'filePathLineCol' : '',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : '',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'only field col - string-number';
+  var o = { col : '1' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : null,
+    'col' : 1,
     'filePathLineCol' : '',
     'routineFilePathLineCol' : null,
     'fileName' : null,
@@ -2416,7 +2460,7 @@ function locationNormalizeWithOtherOptions( test )
 
   /* */
 
-  test.case = 'only field col - number, not defined, line - number, maybe should be changed';
+  test.case = 'col - number, not defined, line - number';
   var o = { col : NaN, line : 1 };
   var exp =
   {
@@ -2427,7 +2471,7 @@ function locationNormalizeWithOtherOptions( test )
     'internal' : 0,
     'abstraction' : 0,
     'line' : 1,
-    'col' : NaN,
+    'col' : null,
     'filePathLineCol' : ':1',
     'routineFilePathLineCol' : null,
     'fileName' : null,
@@ -2438,7 +2482,7 @@ function locationNormalizeWithOtherOptions( test )
 
   /* */
 
-  test.case = 'only field col - string, line - number, maybe should be changed';
+  test.case = 'col - string, line - number';
   var o = { col : 'str', line : 1 };
   var exp =
   {
@@ -2449,11 +2493,33 @@ function locationNormalizeWithOtherOptions( test )
     'internal' : 0,
     'abstraction' : 0,
     'line' : 1,
-    'col' : 'str',
+    'col' : null,
     'filePathLineCol' : ':1',
     'routineFilePathLineCol' : null,
     'fileName' : null,
     'fileNameLineCol' : ':1',
+  };
+  var got = _.introspector.locationNormalize( o );
+  test.identical( got, exp );
+
+  /* */
+
+  test.case = 'col - string-number, line - string-number';
+  var o = { col : '20.1', line : '1' };
+  var exp =
+  {
+    'original' : null,
+    'filePath' : undefined,
+    'routineName' : null,
+    'routineAlias' : null,
+    'internal' : 0,
+    'abstraction' : 0,
+    'line' : 1,
+    'col' : 20,
+    'filePathLineCol' : ':1:20',
+    'routineFilePathLineCol' : null,
+    'fileName' : null,
+    'fileNameLineCol' : ':1:20',
   };
   var got = _.introspector.locationNormalize( o );
   test.identical( got, exp );

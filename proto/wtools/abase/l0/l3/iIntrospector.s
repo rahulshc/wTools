@@ -245,7 +245,7 @@ function locationNormalize( o )
   // if( !_.strIs( o.filePath ) )
   // return end();
 
-  if( !_.numberDefined( o.line ) )
+  if( !_.numberDefined( o.line ) || !_.numberDefined( o.col ) )
   o.filePath = lineColFromPath( o.filePath );
 
   if( !_.numberIs( o.line ) && hadPath )
