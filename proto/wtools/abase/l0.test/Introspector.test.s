@@ -2292,7 +2292,7 @@ function locationNormalizeWithOtherOptions( test )
     'routineAlias' : null,
     'internal' : 0,
     'abstraction' : 0,
-    'line' : NaN,
+    'line' : null,
     'col' : null,
     'filePathLineCol' : '',
     'routineFilePathLineCol' : null,
