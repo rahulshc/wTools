@@ -19,23 +19,29 @@
 // global
 
 let _global = undefined;
-if( !_global && typeof Global !== 'undefined' && Global.Global === Global ) _global = Global;
-if( !_global && typeof global !== 'undefined' && global.global === global ) _global = global;
-if( !_global && typeof window !== 'undefined' && window.window === window ) _global = window;
-if( !_global && typeof self   !== 'undefined' && self.self === self ) _global = self;
+if( typeof _global_ !== 'undefined' && _global_._global_ === _global_ )
+_global = _global_;
+else if( typeof globalThis !== 'undefined' && globalThis.globalThis === globalThis )
+_global = globalThis;
+else if( typeof Global !== 'undefined' && Global.Global === Global )
+_global = Global;
+else if( typeof global !== 'undefined' && global.global === global )
+_global = global;
+else if( typeof window !== 'undefined' && window.window === window )
+_global = window;
+else if( typeof self   !== 'undefined' && self.self === self )
+_global = self;
 if( !_global._globals_ )
 {
   _global._globals_ = Object.create( null );
   _global._globals_.real = _global;
+  _global._realGlobal_ = _global;
+  _global._global_ = _global;
 }
-let _realGlobal = _global._realGlobal_ = _global;
-let _wasGlobal = _global._global_ || _global;
-_global = _wasGlobal;
-_global._global_ = _wasGlobal;
 
 // verification
 
-if( _global_.__GLOBAL_WHICH__ === 'real' )
+if( _global_.__GLOBAL_NAME__ === 'real' )
 {
 
   if( _global_.wBase )
@@ -48,42 +54,45 @@ if( _global_.__GLOBAL_WHICH__ === 'real' )
 
 // config
 
-if( _realGlobal.__GLOBAL_WHICH__ === undefined )
-_realGlobal.__GLOBAL_WHICH__ = 'real';
+if( _realGlobal_.__GLOBAL_NAME__ === undefined )
+_realGlobal_.__GLOBAL_NAME__ = 'real';
 
-if( !_realGlobal.Config )
-_realGlobal.Config = { debug : true }
-if( _realGlobal.Config.debug === undefined )
-_realGlobal.Config.debug = true;
-if( _realGlobal.Config.interpreter === undefined )
+if( !_realGlobal_.Config )
+_realGlobal_.Config = { debug : true }
+if( _realGlobal_.Config.debug === undefined )
+_realGlobal_.Config.debug = true;
+if( _realGlobal_.Config.interpreter === undefined )
 if( ( ( typeof module !== 'undefined' ) && ( typeof process !== 'undefined' ) ) )
-_realGlobal.Config.interpreter = 'njs';
+_realGlobal_.Config.interpreter = 'njs';
 else
-_realGlobal.Config.interpreter = 'browser';
-if( _realGlobal.Config.isWorker === undefined )
+_realGlobal_.Config.interpreter = 'browser';
+if( _realGlobal_.Config.isWorker === undefined )
 if( typeof self !== 'undefined' && self.self === self && typeof importScripts !== 'undefined' )
-_realGlobal.Config.isWorker = true;
+_realGlobal_.Config.isWorker = true;
 else
-_realGlobal.Config.isWorker = false;
+_realGlobal_.Config.isWorker = false;
 
 if( !_global_.Config )
 _global_.Config = { debug : true }
 if( _global_.Config.debug === undefined )
 _global_.Config.debug = true;
 if( _global_.Config.interpreter === undefined )
-_global_.Config.interpreter = _realGlobal.Config.interpreter;
+_global_.Config.interpreter = _realGlobal_.Config.interpreter;
 if( _global_.Config.isWorker === undefined )
-_global_.Config.isWorker = _realGlobal.Config.isWorker
+_global_.Config.isWorker = _realGlobal_.Config.isWorker
 
-if( _global_.__GLOBAL_WHICH__ === 'real' )
+if( _global_.__GLOBAL_NAME__ === 'real' )
 if( _global_._ )
 {
   _global_.Underscore = _global_._;
   delete _global_._;
 }
 
-if( Object.hasOwnProperty.call( _global, 'wTools' ) && _global !== _realGlobal_ )
-throw Error( 'wTools was already defined' );
+// if( Object.hasOwnProperty.call( _global, 'wTools' ) && _global !== _realGlobal_ )
+// {
+//   debugger;
+//   throw Error( 'wTools was already defined' );
+// }
 
 //
 
@@ -92,7 +101,7 @@ _realGlobal_.wTools = _realGlobal_.wTools || Object.create( null );
 let Self = _global.wTools;
 let _ = Self;
 
-Self.__GLOBAL_WHICH__ = _global.__GLOBAL_WHICH__;
+Self.__GLOBAL_NAME__ = _global.__GLOBAL_NAME__;
 
 // special tokens
 
