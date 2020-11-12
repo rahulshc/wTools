@@ -484,6 +484,7 @@ function locationNormalize( o )
       lineNumber = numberFromToInt( lineNumber );
       colNumber = numberFromToInt( colNumber );
 
+      if( !_.numberDefined( o.line ) )
       if( _.numberDefined( lineNumber ) )
       o.line = lineNumber;
 
