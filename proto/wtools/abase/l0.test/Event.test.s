@@ -341,8 +341,8 @@ function onceCheckDescriptorMethod( test )
   test.identical( descriptor.callbackMap, { 'event' : onEvent, 'event2' : onEvent2 } );
   test.identical( descriptor.enabled, true );
   test.is( _.routineIs( descriptor.off ) );
-  test.isNot( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
-  test.isNot( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
+  test.is( _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } ) );
+  test.is( _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } ) );
   _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0 ] );
   _.event.eventGive( ehandler, 'event2' );
