@@ -2580,10 +2580,7 @@ function strConcat( srcs, o )
   _.assert( this.strConcat === strConcat );
 
   if( o.onToStr === null )
-  o.onToStr = function onToStr( src, op )
-  {
-    return _.toStr( src, op.optionsForToStr );
-  }
+  o.onToStr = onToStr;
 
   let defaultOptionsForToStr =
   {
@@ -2622,7 +2619,7 @@ function strConcat( srcs, o )
     result = result.replace( /[^\S\n]\s*$/, '' );
 
     if( _.strEnds( result, o.lineDelimter ) || _.strBegins( src, o.lineDelimter ) )
-    result = concatenatePairWithLineDelimeter( result, src );
+    result = concatenatePairWithLineDelimeter( result, src, o );
     else
     result = result + ' ' + src.replace( /^\s+/, '' );
   }
@@ -2693,6 +2690,13 @@ function strConcat( srcs, o )
   /* */
 
   return result;
+
+  /* */
+
+  function onToStr( src, op )
+  {
+    return _.toStr( src, op.optionsForToStr );
+  }
 
   /* */
 
