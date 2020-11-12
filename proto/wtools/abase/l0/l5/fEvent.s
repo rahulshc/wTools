@@ -281,6 +281,8 @@ function on( ehandler, o )
 
     _.assert( _.routineIs( callback ) );
 
+    callback = callbackOn_functor( callback );
+
     if( o.first )
     _.arrayPrepend( ehandler.events[ c ], callback );
     else
@@ -288,7 +290,26 @@ function on( ehandler, o )
 
   }
 
+  o.off = off_functor( ehandler, o.callbackMap );
+  o.enabled = true;
+
   return o;
+
+  /* */
+
+  function callbackOn_functor( callback )
+  {
+    function callbackOn()
+    {
+      let result;
+      if( o.enabled )
+      result = callback.apply( this, arguments );
+      return result;
+    }
+    callbackOn.native = callback;
+
+    return callbackOn;
+  }
 }
 
 on.head = on_head;
@@ -384,12 +405,12 @@ function once( ehandler, o )
       _.assert( _.routineIs( callback[ length - 1 ] ), 'Expects routine to execute.' );
 
       let name = callback[ length - 2 ] || c;
-      callback[ length - 1 ] = callbackOnceMake( name, callback[ length - 1 ] );
+      callback[ length - 1 ] = callbackOnce_functor( name, callback[ length - 1 ] );
       callback = _.event._chainToCallback( [ c, ... callback ] );
     }
     else
     {
-      callback = callbackOnceMake( c, callback );
+      callback = callbackOnce_functor( c, callback );
     }
 
     _.assert( _.routineIs( callback ) );
@@ -397,16 +418,23 @@ function once( ehandler, o )
     callbackAdd( ehandler, c, callback );
   }
 
+  o.off = off_functor( ehandler, o.callbackMap );
+  o.enabled = true;
+
   return o;
 
   /* */
 
-  function callbackOnceMake( name, callback )
+  function callbackOnce_functor( name, callback )
   {
     function callbackOnce()
     {
-      let result = callback.apply( this, arguments );
-      _.event.off( ehandler, { callbackMap : { [ name ] : callbackOnce } } );
+      let result;
+      if( o.enabled )
+      {
+        callback.apply( this, arguments );
+        _.event.off( ehandler, { callbackMap : { [ name ] : callbackOnce } } );
+      }
       return result;
     }
     callbackOnce.native = callback; /* Dmytro : this solution does not affects original callback and interfaces of calls. And simultaneously it slow down searching in routine `off` */
@@ -434,11 +462,11 @@ once.defaults =
 // let descriptor = _.procedure.on( 'terminationBegin', _handleProcedureTerminationBegin );
 // descriptor.off();
 // descriptor.enabled = false;
-// _.procedure.evenHas( descriptor ); /* true */
-// _.procedure.evenHas( descriptor.callback ); /* true */
+// _.procedure.eventHas( descriptor ); /* true */
+// _.procedure.eventHas( descriptor.callback ); /* true */
 // descriptoro.enabled = true;
-// _.procedure.evenHas( descriptor ); /* true */
-// _.procedure.evenHas( descriptor.callback ); /* true */
+// _.procedure.eventHas( descriptor ); /* true */
+// _.procedure.eventHas( descriptor.callback ); /* true */
 
 //
 
@@ -538,6 +566,33 @@ off.defaults =
 
 //
 
+function off_functor( ehandler, o )
+{
+  return function( o2 )
+  {
+    _.assert( arguments.length === 0 || arguments.length === 1, 'Expects single options map {-o-} or no arguments.' );
+
+    if( o2 === undefined )
+    {
+      o2 = { callbackMap : o };
+    }
+    else if( _.strIs( o2 ) )
+    {
+      let callback = o[ o2 ];
+      _.assert( _.routineIs( callback ) );
+      o2 = { callbackMap : { [ o2 ] : callback } };
+    }
+    else if( !_.mapIs( o2 ) )
+    {
+      _.assert( 0, 'Expects options map {-o-} or event name.' );
+    }
+
+    return _.event.off( ehandler, o2 );
+  }
+}
+
+//
+
 function eventHasHandler_head( routine, args )
 {
   let o;
@@ -575,7 +630,14 @@ function eventHasHandler( ehandler, o )
   _.assert( _.mapIs( ehandler.events ) );
   _.assert( arguments.length === 2 );
 
-  return _.longHas( ehandler.events[ o.eventName ], o.eventHandler );
+  return _.longHas( ehandler.events[ o.eventName ], o.eventHandler, handlerEqualize );
+
+  /* */
+
+  function handlerEqualize( callback, handler )
+  {
+    return handler === callback || handler === callback.native;
+  }
 }
 
 eventHasHandler.head = eventHasHandler_head;
