@@ -2489,34 +2489,20 @@ function strJoinPath( srcs, joiner )
 //
 
 /**
- * The routine strConcat() provides the concatenation of array elements
- * into a string. Returned string can be formatted by using options in options map.
- *
- * @param { ArrayLike|* } srcs - ArrayLike container with elements or single element to make string.
- * If {-srcs-} is not ArrayLike, routine converts to string provided value.
- * @param { Object } o - Options map.
- * @param { String } o.lineDelimter - The line delimeter. Default value is new line symbol '\n'.
- * If string element of array has not delimeter in the end or next element has not delimeter in the begin, routine insert one space between this elements.
- * @param { String } o.linePrefix - The prefix that adds to every line. Default value is empty string.
- * @param { String } o.linePostfix - The postfix that adds to every line. Default value is empty string.
- * @param { Object } o.optionsForToStr - The options for routine _.toStr that uses for convertion to string. Default value is null.
- * @param { Routine } o.onToStr - The callback, which uses for convertion to string. Default value is null.
+ * The routine strConcat() provides the concatenation of array of elements ( or single element )
+ * into a String. Returned string can be formatted by using options in options map {-o-}.
  *
  * @example
  * _.strConcat( 'str' );
- * // returns 'str '
+ * // returns : 'str'
  *
  * @example
  * _.strConcat( 11 );
- * // returns '11 '
+ * // returns : '11'
  *
  * @example
- * _.strConcat( { a : 'a' } );
- * // returns '[object Object] '
- *
- * @example
- * _.strConcat( [ 1, 2, 'str', [ 3, 4 ] ] );
- * // returns '1 2 str 3,4 '
+ * _.strConcat([ 1, 2, 'str', [ 3, 4 ] ]);
+ * // returns : '1 2 str 3,4 '
  *
  * @example
  * let options =
@@ -2525,7 +2511,7 @@ function strJoinPath( srcs, joiner )
  *   linePostfix : ' **'
  * };
  * _.strConcat( [ 1, 2, 'str', [ 3, 4 ] ], options );
- * // returns '** 1 2 str 3,4 **'
+ * // returns : '** 1 2 str 3,4 **'
  *
  * @example
  * let options =
@@ -2533,21 +2519,45 @@ function strJoinPath( srcs, joiner )
  *   linePrefix : '** ',
  *   linePostfix : ' **'
  * };
- * _.strConcat( [ 'a\n', 'b\n', 'c\n', 'd\n' ], options );
- * // returns '** a **
- *             ** b **
- *             ** c **
- *             ** d **'
+ * _.strConcat( [ 'a\n', 'b\n', 'c' ], options );
+ * // returns :
+ * // `** a **
+ * // ** b **
+ * // ** c **
  *
  * @example
  * let onToStr = ( src ) => String( src ) + '*';
  * let options = { onToStr };
- * _.strConcat( [ 'a', 'b', 'c', 'd' ], options );
- * // returns 'a* b* c* d* '
+ * _.strConcat( [ 'a', 'b', 'c' ], options );
+ * // returns : 'a* b* c*'
  *
- * @returns { String } - Returns string, which is concatenated from {-srcs-}.
+ * @example
+ * let onPairWithDelimeter = ( src1, src2 ) => src1 + ' ..' + src2;
+ * let options = { onPairWithDelimeter };
+ * _.strConcat( [ 'a\n', 'b\n', 'c' ], options );
+ * // returns :
+ * // `a ..
+ * // b ..
+ * // c`
+ *
+ * @param { ArrayLike|* } srcs - ArrayLike container with elements or single element to make string.
+ * If {-srcs-} is not ArrayLike, routine converts to string provided instance.
+ * @param { Map } o - Options map.
+ * @param { String } o.lineDelimter - The line delimeter. Default value is new line symbol '\n'.
+ * If an element of array has not delimeter at the end or next element has not delimeter at the begin,
+ * then routine inserts one space between this elements.
+ * @param { String } o.linePrefix - The prefix, which is added to each line. Default value is empty string.
+ * @param { String } o.linePostfix - The postfix, which is added to each line. Default value is empty string.
+ * @param { Map } o.optionsForToStr - The options for routine _.toStr that uses as default callback {-o.onToStr-}. Default value is null.
+ * @param { Function } o.onToStr - The callback, which uses for conversion of each element of {-srcs-}. Accepts element {-src-} and options map {-o-}.
+ * @param { Function } o.onPairWithDelimeter - The callback, which uses for concatenation of two strings.
+ * The callback calls if first string {-src1-} end with line delimeter {-o.lineDelimter-} or second string {-src2-}
+ * begins with line delimeter. Additionally accepts options map {-o-}.
+ * @returns { String } - Returns concatenated string.
  * @function strConcat
- * @throws { Error } If arguments.length is less then one or more than two arguments.
+ * @throws { Error } If arguments.length is less then one or greater than two.
+ * @throws { Error } If options map {-o-} has unknown property.
+ * @throws { Error } If property {-o.optionsForToStr-} is not a MapLike.
  * @throws { Error } If routine strConcat does not belong module Tools.
  * @namespace Tools
  */
