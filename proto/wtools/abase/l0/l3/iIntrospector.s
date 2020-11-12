@@ -242,8 +242,8 @@ function locationNormalize( o )
   internalForm();
   abstractionForm();
 
-  if( !_.strIs( o.filePath ) )
-  return end();
+  // if( !_.strIs( o.filePath ) )
+  // return end();
 
   if( !_.numberIs( o.line ) )
   o.filePath = lineColFromPath( o.filePath );
@@ -266,10 +266,10 @@ function locationNormalize( o )
     /* filePathLineCol */
 
     o.filePathLineCol = path || '';
-    if( _.numberIs( o.line ) )
+    if( _.numberDefined( o.line ) )
     {
       o.filePathLineCol += ':' + o.line;
-      if( _.numberIs( o.col ) )
+      if( _.numberDefined( o.col ) )
       o.filePathLineCol += ':' + o.col;
     }
 
@@ -295,10 +295,10 @@ function locationNormalize( o )
     /* fileNameLineCol */
 
     o.fileNameLineCol = o.fileName || '';
-    if( _.numberIs( o.line ) )
+    if( _.numberDefined( o.line ) )
     {
       o.fileNameLineCol += ':' + o.line;
-      if( _.numberIs( o.col ) )
+      if( _.numberDefined( o.col ) )
       o.fileNameLineCol += ':' + o.col;
     }
 
@@ -329,9 +329,9 @@ function locationNormalize( o )
 
     routineName = o.original;
 
-    // if( !_.strIs( routineName ) ) // xxx Dmytro : it is duplicated condition. The first is if( !_.strIs( o.stackFrame ) ) throw ...
+    // if( !_.strIs( routineName ) ) // xxx /* Dmytro : deprecated comment, delete with label, please */
     // return '{-anonymous-}';
-    if( !_.strIs( routineName ) ) // xxx Dmytro : it is duplicated condition. The first is if( !_.strIs( o.stackFrame ) ) throw ...
+    if( !_.strIs( routineName ) ) // xxx /* Dmytro : deprecated comment, delete with label, please */
     {
       routineName = '{-anonymous-}';
     }
@@ -383,7 +383,7 @@ function locationNormalize( o )
   function internalForm()
   {
 
-    if( _.numberIs( o.internal ) ) /* Dmytro : maybe it is better to use routine numberDefined - case : o.internal === Infinity */
+    if( _.numberDefined( o.internal ) )
     return;
 
     o.internal = 0;
@@ -407,7 +407,7 @@ function locationNormalize( o )
   function abstractionForm()
   {
 
-    if( _.numberIs( o.abstraction ) ) /* Dmytro : maybe it is better to use routine numberDefined - case : o.abstraction === Infinity */
+    if( _.numberDefined( o.abstraction ) )
     return;
 
     o.abstraction = 0;
@@ -461,30 +461,55 @@ function locationNormalize( o )
 
   function lineColFromPath( path )
   {
-
-    let lineNumber, colNumber;
-    let postfix = /(.+?):(\d+)(?::(\d+))?[^:/]*$/;
-    let parsed = postfix.exec( path );
-
-    if( parsed )
+    if( !path )
     {
-      path = parsed[ 1 ];
-      lineNumber = parsed[ 2 ];
-      colNumber = parsed[ 3 ];
+      if( o.line )
+      o.line = numberFromToInt( o.line );
+      if( o.col )
+      o.col = numberFromToInt( o.col )
+    }
+    else
+    {
+      let lineNumber, colNumber;
+      let postfix = /(.+?):(\d+)(?::(\d+))?[^:/]*$/;
+      let parsed = postfix.exec( path );
+
+      if( parsed )
+      {
+        path = parsed[ 1 ];
+        lineNumber = parsed[ 2 ];
+        colNumber = parsed[ 3 ];
+      }
+
+      lineNumber = numberFromToInt( lineNumber );
+      colNumber = numberFromToInt( colNumber );
+
+      if( _.numberDefined( lineNumber ) )
+      o.line = lineNumber;
+
+      if( !_.numberDefined( o.col ) )
+      if( _.numberDefined( colNumber ) )
+      o.col = colNumber;
     }
 
-    lineNumber = parseInt( lineNumber );
-    colNumber = parseInt( colNumber );
-
-    if( isNaN( o.line ) || o.line === null ) /* Dmytro : maybe it is better to use routine numberDefined - case : o.line === 'str' */
-    if( !isNaN( lineNumber ) )
-    o.line = lineNumber;
-
-    if( isNaN( o.col ) || o.col === null ) /* Dmytro : maybe it is better to use routine numberDefined - case : o.col === 'str' */
-    if( !isNaN( colNumber ) )
-    o.col = colNumber;
+    if( !_.numberDefined( o.line ) )
+    o.line = null;
+    if( !_.numberDefined( o.col ) )
+    o.col = null;
 
     return path;
+  }
+
+  /* */
+
+  function numberFromToInt( src )
+  {
+    if( _.strIs( src ) )
+    src = parseInt( src );
+    else
+    src = Math.floor( Number( src ) );
+
+    return src;
   }
 
 }
@@ -896,7 +921,7 @@ let Extnesion =
 
   location,
   locationFromStackFrame,
-  locationNormalize, /* qqq for Dmytro : write good test */
+  locationNormalize, /* aaa for Dmytro : write good test */ /* Dmytro : covered */
   locationToStack,
 
   stack,
