@@ -897,6 +897,129 @@ function onceWithChain( test )
 
 //
 
+function eventHasHandler( test )
+{
+  test.case = 'handler has no callbacks';
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  var ehandler =
+  {
+    events : { 'event' : [] },
+  };
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, false );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'handler has single callback for event';
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  var ehandler =
+  {
+    events : { 'event' : [ onEvent ] },
+  };
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, true );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'handler has several callbacks for event';
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  var ehandler =
+  {
+    events : { 'event' : [ onEvent, onEvent2 ] },
+  };
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, true );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, true );
+
+  /* */
+
+  test.case = 'several events in event handler, different callbacks for each event';
+  var onEvent = () => result.push( result.length );
+  var onEvent2 = () => result.push( -1 * result.length );
+  var ehandler =
+  {
+    events : { 'event' : [ onEvent ], 'event2' : [ onEvent2 ] },
+  };
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, true );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, false );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent } );
+  test.identical( got, false );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } );
+  test.identical( got, true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.eventHasHandler() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.eventHasHandler({ events : { event : [] } }) );
+
+  test.case = 'extra arguments';
+  var onEvent = () => true;
+  test.shouldThrowErrorSync( () =>
+  {
+    _.eventHasHandler( { events : { event : [] } }, { eventName : 'event', eventHandler : onEvent }, { extra : {} } );
+  });
+
+  test.case = 'wrong type of ehandler';
+  var onEvent = () => true;
+  var handler = { events : { event : [] } };
+  test.shouldThrowErrorSync( () =>
+  {
+    _.eventHasHandler( [ handler ], { eventName : 'event', eventHandler : onEvent } );
+  });
+
+  test.case = 'wrong type of ehandler.events';
+  var onEvent = () => true;
+  test.shouldThrowErrorSync( () =>
+  {
+    _.eventHasHandler( { events : [ { event : [] } ] }, { eventName : 'event', eventHandler : onEvent } );
+  });
+
+  test.case = 'unknown event';
+  var onEvent = () => true;
+  test.shouldThrowErrorSync( () =>
+  {
+    _.eventHasHandler( { events : { event : [] } }, { eventName : 'e1', eventHandler : onEvent } );
+  });
+
+  test.case = 'unknown property in options map';
+  var onEvent = () => true;
+  test.shouldThrowErrorSync( () =>
+  {
+    _.eventHasHandler( { events : { event : [] } }, { eventName : 'event', eventHandler : onEvent, unknown : true } );
+  });
+
+  test.case = 'wrong type of o.eventName';
+  var onEvent = () => true;
+  test.shouldThrowErrorSync( () =>
+  {
+    _.eventHasHandler( { events : { event : [] } }, { eventName : [ 'event' ], eventHandler : onEvent } );
+  });
+
+  test.case = 'wrong type of o.eventHandler';
+  test.shouldThrowErrorSync( () =>
+  {
+    _.eventHasHandler( { events : { event : [] } }, { eventName : 'event', eventHandler : 'onEvent' } );
+  });
+}
+
+//
+
 function eventGive( test )
 {
   test.open( 'event type - on' );
@@ -1190,7 +1313,7 @@ function eventGive( test )
   ( err, arg ) =>
   {
     test.is( _.errIs( err ) );
-    test.identical( _.strCount( err.message, 'Error on handing event' ), 1 );
+    test.identical( _.strCount( err.message, 'Error on handing event event\n' ), 1 );
   });
 }
 
@@ -1223,6 +1346,7 @@ var Self =
     onceCheckDescriptorMethod,
     onceWithChain,
 
+    eventHasHandler,
     eventGive,
 
   }
