@@ -1180,6 +1180,18 @@ function eventGive( test )
 
   test.case = 'wrong type of o.args';
   test.shouldThrowErrorSync( () => _.event.eventGive( { events : { 'event' : [] } }, { event : 'event', args : 'wrong' } ) );
+
+  test.case = 'callback throws error';
+  test.shouldThrowErrorSync( () =>
+  {
+    var handler = { events : { event : [ () => { throw _.err( 'err' ) } ] } };
+    _.event.eventGive( handler, 'event' );
+  },
+  ( err, arg ) =>
+  {
+    test.is( _.errIs( err ) );
+    test.identical( _.strCount( err.message, 'Error on handing event' ), 1 );
+  });
 }
 
 // --
