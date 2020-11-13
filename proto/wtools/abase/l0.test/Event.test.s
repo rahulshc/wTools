@@ -897,11 +897,211 @@ function onceWithChain( test )
 
 //
 
+function off( test )
+{
+  test.case = 'off all callbacks in event, events not exist';
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
+  var ehandler =
+  {
+    events : { 'event' : [] },
+  };
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, false );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, false );
+
+  _.event.off( ehandler, { 'callbackMap' : { 'event' : null } } );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, false );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'off all callbacks in event, events exist';
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
+  var ehandler =
+  {
+    events : { 'event' : [ onEvent, onEvent2 ] },
+  };
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, true );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, true );
+
+  _.event.off( ehandler, { 'callbackMap' : { 'event' : null } } );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, false );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'off individual callback from event';
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
+  var ehandler =
+  {
+    events : { 'event' : [ onEvent, onEvent2 ] },
+  };
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, true );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, true );
+
+  _.event.off( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, false );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, true );
+
+  /* */
+
+  test.case = 'off individual callback added by routine on';
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
+  var ehandler =
+  {
+    events : { 'event' : [] },
+  };
+  _.event.on( ehandler, { callbackMap : { 'event' : onEvent } } )
+  _.event.on( ehandler, { callbackMap : { 'event' : onEvent2 } } )
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, true );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, true );
+
+  _.event.off( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, false );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, true );
+
+  /* */
+
+  test.case = 'off individual callback added by routine once';
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
+  var ehandler =
+  {
+    events : { 'event' : [] },
+  };
+  _.event.once( ehandler, { callbackMap : { 'event' : onEvent } } )
+  _.event.once( ehandler, { callbackMap : { 'event' : onEvent2 } } )
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, true );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, true );
+
+  _.event.off( ehandler, { 'callbackMap' : { 'event' : onEvent } } );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, false );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, true );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.event.off() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.event.off({ events : { event : [] } }) );
+
+  test.case = 'extra arguments';
+  var onEvent = () => true;
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.off( { events : { event : [ onEvent ] } }, { callbackMap : { event : onEvent } }, { extra : true } );
+  });
+
+  test.case = 'wrong type of ehandler';
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.off( [ { events : { event : [ onEvent ] } } ], { callbackMap : { event : onEvent } } );
+  });
+
+  test.case = 'wrong type of ehandler.events';
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.off( { events : [ { event : [ onEvent ] } ] }, { callbackMap : { event : onEvent } } );
+  });
+
+  test.case = 'unknown event';
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.off( { events : { event : [ onEvent ] } }, { callbackMap : { e1 : onEvent } } );
+  });
+
+  test.case = 'event added twice and try to remove once strictly';
+  var onEvent = () => true;
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.off( { events : { event : [ onEvent, onEvent ] } }, { callbackMap : { event : onEvent } } );
+  });
+
+  test.case = 'try to remove not existed callback';
+  var onEvent = () => true;
+  var onEvent2 = () => false;
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.off( { events : { event : [ onEvent, onEvent ] } }, { callbackMap : { event : onEvent2 } } );
+  });
+
+  test.case = 'event added twice by routine on, try to remove once strictly';
+  var onEvent = () => true;
+  var handler = { events : { event : [] } };
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.on( handler, { callbackMap : { event : onEvent } } );
+    _.event.on( handler, { callbackMap : { event : onEvent } } );
+    _.event.off( handler, { callbackMap : { event : onEvent } } );
+  });
+
+  test.case = 'event added twice by routine on, try to remove once strictly';
+  var onEvent = () => true;
+  var handler = { events : { event : [] } };
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.once( handler, { callbackMap : { event : onEvent } } );
+    _.event.once( handler, { callbackMap : { event : onEvent } } );
+    _.event.off( handler, { callbackMap : { event : onEvent } } );
+  });
+
+  test.case = 'event added twice by routine on and once, try to remove once strictly';
+  var onEvent = () => true;
+  var handler = { events : { event : [] } };
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.on( handler, { callbackMap : { event : onEvent } } );
+    _.event.once( handler, { callbackMap : { event : onEvent } } );
+    _.event.off( handler, { callbackMap : { event : onEvent } } );
+  });
+
+  test.case = 'wrong type of options map';
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.off( { events : { event : [ onEvent ] } }, [ { callbackMap : { event : onEvent } } ] );
+  });
+
+  test.case = 'wrong type of o.callbackMap';
+  test.shouldThrowErrorSync( () =>
+  {
+    _.event.off( { events : { event : [ onEvent ] } }, { callbackMap : [ { event : onEvent } ] } );
+  });
+}
+
+//
+
 function eventHasHandler( test )
 {
   test.case = 'handler has no callbacks';
-  var onEvent = () => result.push( result.length );
-  var onEvent2 = () => result.push( -1 * result.length );
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
   var ehandler =
   {
     events : { 'event' : [] },
@@ -914,8 +1114,8 @@ function eventHasHandler( test )
   /* */
 
   test.case = 'handler has single callback for event';
-  var onEvent = () => result.push( result.length );
-  var onEvent2 = () => result.push( -1 * result.length );
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
   var ehandler =
   {
     events : { 'event' : [ onEvent ] },
@@ -928,8 +1128,8 @@ function eventHasHandler( test )
   /* */
 
   test.case = 'handler has several callbacks for event';
-  var onEvent = () => result.push( result.length );
-  var onEvent2 = () => result.push( -1 * result.length );
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
   var ehandler =
   {
     events : { 'event' : [ onEvent, onEvent2 ] },
@@ -942,8 +1142,8 @@ function eventHasHandler( test )
   /* */
 
   test.case = 'several events in event handler, different callbacks for each event';
-  var onEvent = () => result.push( result.length );
-  var onEvent2 = () => result.push( -1 * result.length );
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
   var ehandler =
   {
     events : { 'event' : [ onEvent ], 'event2' : [ onEvent2 ] },
@@ -956,6 +1156,36 @@ function eventHasHandler( test )
   test.identical( got, false );
   var got = _.event.eventHasHandler( ehandler, { eventName : 'event2', eventHandler : onEvent2 } );
   test.identical( got, true );
+
+  /* */
+
+  test.case = 'event added by routine on';
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
+  var ehandler =
+  {
+    events : { 'event' : [] },
+  };
+  _.event.on( ehandler, { callbackMap : { event : onEvent } } )
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, true );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, false );
+
+  /* */
+
+  test.case = 'event added by routine once';
+  var onEvent = () => 'true';
+  var onEvent2 = () => 'false';
+  var ehandler =
+  {
+    events : { 'event' : [] },
+  };
+  _.event.once( ehandler, { callbackMap : { event : onEvent } } )
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent } );
+  test.identical( got, true );
+  var got = _.event.eventHasHandler( ehandler, { eventName : 'event', eventHandler : onEvent2 } );
+  test.identical( got, false );
 
   /* - */
 
@@ -1345,6 +1575,8 @@ var Self =
     once,
     onceCheckDescriptorMethod,
     onceWithChain,
+
+    off,
 
     eventHasHandler,
     eventGive,

@@ -145,7 +145,7 @@ function chainIs( src )
 _.process.on( 'available', _.event.Name( 'exit' ), _.event.Name( 'exit' ), _.procedure._eventProcessExitHandle )
 ->
 _.process.on( _.event.Chain( 'available', 'exit', 'exit' ), _.procedure._eventProcessExitHandle )
-qqq for Dmytro : restrict routines _.*.on() to accept 2 arguments
+qqq for Dmytro : restrict routines _.*.on() to accept 2 arguments // Dmytro : restricted before I'v seen this task
 */
 
 function Name( name )
@@ -458,7 +458,7 @@ once.defaults =
   first : 0,
 };
 
-//  qqq for Dmytro : implement
+//  aaa for Dmytro : implement /* Dmytro : implemented */
 // let descriptor = _.procedure.on( 'terminationBegin', _handleProcedureTerminationBegin );
 // descriptor.off();
 // descriptor.enabled = false;
@@ -728,8 +728,10 @@ let Extension =
 
   on, /* aaa : cover please, take into accout chain case */ /* Dmytro : covered */
   once,
-  off, /* qqq : cover please */
-  eventHasHandler, /* qqq : cover please */
+  off, /* aaa : cover please */ /* Dmytro : covered */
+  off_functor,
+
+  eventHasHandler, /* aaa : cover please */ /* Dmytro : covered */
   eventGive, /* aaa : cover please */ /* Dmytro : covered */
 
 }
