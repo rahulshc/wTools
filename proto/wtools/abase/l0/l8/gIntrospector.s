@@ -45,8 +45,8 @@ function code( o )
       return end();
 
       let codeProvider = _.codeProvider || _.fileProvider;
-      if( !codeProvider && _global_._testerGlobal_ && _global_._testerGlobal_.wTools )
-      codeProvider = _global_._testerGlobal_.wTools.codeProvider || _global_._testerGlobal_.wTools.fileProvider;
+      if( !codeProvider && _global_._globals_.testing && _global_._globals_.testing.wTools )
+      codeProvider = _global_._globals_.testing.wTools.codeProvider || _global_._globals_.testing.wTools.fileProvider;
 
       if( !codeProvider )
       return end();

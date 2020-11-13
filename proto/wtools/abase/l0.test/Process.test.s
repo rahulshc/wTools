@@ -18,7 +18,7 @@ let _ = _global_.wTools;
 function ready( test )
 {
   let t1 = 100;
-  let ready =  new _testerGlobal_.wTools.Consequence().take( null );
+  let ready =  new _globals_.testing.wTools.Consequence().take( null );
 
   /* */
 
@@ -38,7 +38,7 @@ function ready( test )
     var onReady = () => arr.push( 1 );
     _.process.ready( onReady );
 
-    return _testerGlobal_.wTools.time.out( t1, () =>
+    return _globals_.testing.wTools.time.out( t1, () =>
     {
       test.identical( arr, [ 1 ] );
       return null;
@@ -52,7 +52,7 @@ function ready( test )
     _.process.ready( t1, null );
     test.identical( arr, [] );
 
-    return _testerGlobal_.wTools.time.out( t1 * 2, () =>
+    return _globals_.testing.wTools.time.out( t1 * 2, () =>
     {
       test.identical( arr, [] );
       return null;
@@ -67,7 +67,7 @@ function ready( test )
     _.process.ready( t1, onReady );
     test.identical( arr, [] );
 
-    return _testerGlobal_.wTools.time.out( t1 * 2, () =>
+    return _globals_.testing.wTools.time.out( t1 * 2, () =>
     {
       test.identical( arr, [ 1 ] );
       return null;
@@ -83,7 +83,7 @@ function ready( test )
     var onReady = () => arr.push( 1 );
     _.process.ready({ onReady });
 
-    return _testerGlobal_.wTools.time.out( t1, () =>
+    return _globals_.testing.wTools.time.out( t1, () =>
     {
       test.identical( arr, [ 1 ] );
       return null;
@@ -98,7 +98,7 @@ function ready( test )
     _.process.ready({ timeOut : t1, onReady });
     test.identical( arr, [] );
 
-    return _testerGlobal_.wTools.time.out( t1 * 2, () =>
+    return _globals_.testing.wTools.time.out( t1 * 2, () =>
     {
       test.identical( arr, [ 1 ] );
       return null;

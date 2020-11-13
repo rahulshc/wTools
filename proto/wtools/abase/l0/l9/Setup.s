@@ -15,7 +15,7 @@ _global.wTools.error = _global.wTools.error || Object.create( null );
 function _setupConfig()
 {
 
-  if( _global.__GLOBAL_WHICH__ !== 'real' )
+  if( _global.__GLOBAL_NAME__ !== 'real' )
   return;
 
   if( !_global.Config )

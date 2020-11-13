@@ -11,7 +11,7 @@ if( typeof module !== 'undefined' )
 }
 
 let _ = _global_.wTools;
-let fileProvider = _testerGlobal_.wTools.fileProvider;
+let fileProvider = _globals_.testing.wTools.fileProvider;
 let path = fileProvider.path;
 
 // --
@@ -1652,7 +1652,7 @@ function eventUncaughtErrorBasic( test )
   let context = this;
   let a = test.assetFor( false );
   let programPath = a.program( program );
-  let ready = _testerGlobal_.wTools.take( null );
+  let ready = _globals_.testing.wTools.take( null );
 
   ready.then( () => run( 'sync' ) );
   ready.then( () => run( 'timer' ) );
@@ -1665,7 +1665,7 @@ function eventUncaughtErrorBasic( test )
 
   function run( throwing )
   {
-    let ready = _testerGlobal_.wTools.take( null );
+    let ready = _globals_.testing.wTools.take( null );
 
     ready.then( () =>
     {
@@ -1868,7 +1868,7 @@ function eventUncaughtErrorOnce( test )
   let context = this;
   let a = test.assetFor( false );
   let programPath = a.program( program );
-  let ready = _testerGlobal_.wTools.take( null );
+  let ready = _globals_.testing.wTools.take( null );
 
   // ready.then( () => run( 'once' ) ); /* xxx qqq : switch on later */
   ready.then( () => run( 'off' ) );
@@ -1879,7 +1879,7 @@ function eventUncaughtErrorOnce( test )
 
   function run( how )
   {
-    let ready = _testerGlobal_.wTools.take( null );
+    let ready = _globals_.testing.wTools.take( null );
 
     ready.then( () =>
     {
@@ -1951,7 +1951,7 @@ function entryProcedureStack( test )
   let context = this;
   let a = test.assetFor( false );
   let programPath = a.program( program );
-  let ready = _testerGlobal_.wTools.take( null );
+  let ready = _globals_.testing.wTools.take( null );
   ready.then( () => run() );
   return ready;
 
@@ -1959,7 +1959,7 @@ function entryProcedureStack( test )
 
   function run( how )
   {
-    let ready = _testerGlobal_.wTools.take( null );
+    let ready = _globals_.testing.wTools.take( null );
 
     ready.then( () =>
     {

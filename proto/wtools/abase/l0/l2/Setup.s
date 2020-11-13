@@ -6,8 +6,8 @@ let _global = _global_;
 let _ = _global.wTools;
 
 let Self = _global.wTools.setup = _global.wTools.setup || Object.create( null );
-_global.wTools.error = _global.wTools.error || Object.create( null );
-_global.wTools.process = _global.wTools.process || Object.create( null );
+_.error = _.error || Object.create( null );
+_.process = _.process || Object.create( null );
 
 // --
 // setup
@@ -16,6 +16,7 @@ _global.wTools.process = _global.wTools.process || Object.create( null );
 function _handleUncaught1()
 {
 
+  debugger;
   let args = _.error._handleUncaughtHead( arguments );
   let result = _.error._handleUncaught2.apply( this, args );
 
@@ -128,7 +129,6 @@ function _setupUncaughtErrorHandler2()
     let [ message, sourcePath, lineno, colno, error ] = args;
     let err = error || message;
     return [ { err : new Error( args[ 0 ] ), args : args } ];
-    // return [ new Error( args[ 0 ] ) ];
   }
 
   /* */
@@ -136,7 +136,6 @@ function _setupUncaughtErrorHandler2()
   function _handleUncaughtHeadNode( args )
   {
     return [ { err : args[ 0 ], args : args } ];
-    // return args;
   }
 
   /* */
@@ -145,7 +144,7 @@ function _setupUncaughtErrorHandler2()
 
 //
 
-function _Setup2()
+function _setup2()
 {
 
   _.error._setupUncaughtErrorHandler2();
@@ -165,25 +164,21 @@ let ErrorExtension =
   _handleUncaughtPromise1,
   _handleUncaught2,
   _handleUncaught2Minimal,
-  _setupUncaughtErrorHandler2,
 
-  // _setupUncaughtErrorHandlerDone : 0,
+  _setupUncaughtErrorHandler2,
+  _setup2,
 
 }
 
 let SetupExtension =
 {
 
-  _Setup2,
-
-  // _setupUncaughtErrorHandlerDone : 0,
-
 }
 
 Object.assign( _.error, ErrorExtension );
 Object.assign( _.setup, SetupExtension );
 
-Self._Setup2();
+_.error._setup2();
 
 // --
 // export
