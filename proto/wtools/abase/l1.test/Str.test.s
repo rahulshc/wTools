@@ -6128,7 +6128,6 @@ function strJoinPath( test )
 
 function strConcat( test )
 {
-
   test.case = 'srcs - empty array';
   var srcs = [];
   var got = _.strConcat( srcs );
@@ -6144,6 +6143,10 @@ function strConcat( test )
   var got = _.strConcat( srcs );
   test.identical( got, 'str' );
 
+  /* - */
+
+  test.open( 'type of src is not the String' );
+
   test.case = 'srcs - number';
   var srcs = 1;
   var got = _.strConcat( srcs );
@@ -6154,7 +6157,7 @@ function strConcat( test )
   var got = _.strConcat( srcs );
   test.identical( got, 'str' );
 
-  test.case = 'srcs - object';
+  test.case = 'srcs - map';
   var srcs = { a : 2 };
   var got = _.strConcat( srcs );
   if( _.toStrFine )
@@ -6178,17 +6181,6 @@ function strConcat( test )
   else
   test.identical( got, '1,2,3' );
 
-  test.case = 'srcs - array of strings, new line symbol in the string';
-  var srcs =
-  [
-    'b',
-    `variant:: : #83
-    path::local
-    module::module-a`
-  ];
-  var got = _.strConcat( srcs );
-  test.identical( got, 'b variant:: : #83\n    path::local\n    module::module-a' );
-
   test.case = 'srcs - array';
   var srcs = [ 1, 2, 'str', 3, [ 2 ] ];
   var got = _.strConcat( srcs );
@@ -6205,75 +6197,117 @@ function strConcat( test )
   else
   test.identical( got, '1 2 str 3 2' );
 
-  test.case = 'srcs - array of strings, strings begin with spaces';
+  test.close( 'type of src is not the String' );
+
+  /* - */
+
+  test.open( 'srcs - array of strings, common cases' );
+
+  test.case = 'new line symbol in the string';
+  var srcs =
+  [
+    'b',
+    'variant:: : #83\n  path::local'
+  ];
+  var got = _.strConcat( srcs );
+  test.identical( got, 'b variant:: : #83\n  path::local' );
+
+  test.case = 'strings begin with spaces';
   var srcs = [ '  b', '    a:: : c', '    d::e' ];
   var got = _.strConcat( srcs );
   test.identical( got, '  b a:: : c d::e' );
 
-  test.case = 'srcs - array of strings, strings end with spaces';
+  test.case = 'strings end with spaces';
   var srcs = [ 'b    ', 'variant:: : #83    ', 'path::local    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, 'b variant:: : #83 path::local    ' );
 
-  test.case = 'srcs - array of strings, strings begin and end with spaces';
+  test.case = 'strings begin and end with spaces';
   var srcs = [ '    b    ', '    variant:: : #83    ', '    path::local    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, '    b variant:: : #83 path::local    ' );
 
-  test.case = 'srcs - array of strings, strings begin with spaces, end with new line symbol';
+  test.case = 'strings begin with spaces, end with new line symbol';
   var srcs = [ '  b\n', '  variant:: : #83\n', '  path::local' ];
   var got = _.strConcat( srcs );
   test.identical( got, '  b\n  variant:: : #83\n  path::local' );
 
-  test.case = 'srcs - array of strings, strings begin with new line symbol, end with spaces';
+  test.case = 'strings begin with new line symbol, end with spaces';
   var srcs = [ '\nb    ', '\nvariant:: : #83    ', '\npath::local    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, '\nb\nvariant:: : #83\npath::local    ' );
 
-  test.case = 'srcs - array of strings, strings begin and end with new line symbol';
+  test.case = 'strings begin and end with new line symbol';
   var srcs = [ '\nb\n', '\nvariant:: : #83\n', '\npath::local\n' ];
   var got = _.strConcat( srcs );
   test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n' );
 
-  test.case = 'srcs - array of strings, strings begin and end with new line symbol';
+  test.case = 'strings begin and end with new line symbol';
   var srcs = [ '\nb\n', '\nvariant:: : #83\n', '\npath::local\n' ];
   var got = _.strConcat( srcs );
   test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n' );
 
-  test.case = 'srcs - array of strings, strings begin with new line symbol, end with new line symbol and spaces';
+  test.case = 'strings begin with new line symbol, end with new line symbol and spaces';
   var srcs = [ '\nb\n    ', '\nvariant:: : #83\n    ', '\npath::local\n    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, '\nb\n\nvariant:: : #83\n\npath::local\n    ' );
 
-  test.case = 'srcs - array of strings, strings begin with new line symbol and spaces, end with new line symbol';
+  test.case = 'strings begin with new line symbol and spaces, end with new line symbol';
   var srcs = [ '    \nb\n', '    \nvariant:: : #83\n', '    \npath::local\n' ];
   var got = _.strConcat( srcs );
   test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n' );
 
-  test.case = 'srcs - array of strings, strings begin with new line symbol and spaces, end with new line symbol';
+  test.case = 'strings begin with new line symbol and spaces, end with new line symbol';
   var srcs = [ '    \nb\n', '    \nvariant:: : #83\n', '    \npath::local\n' ];
   var got = _.strConcat( srcs );
   test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n' );
 
-  test.case = 'srcs - array of strings, strings begin with new line symbol and spaces, end with new line symbol and spaces';
+  test.case = 'strings begin with new line symbol and spaces, end with new line symbol and spaces';
   var srcs = [ '    \nb\n    ', '    \nvariant:: : #83\n    ', '    \npath::local\n    ' ];
   var got = _.strConcat( srcs );
   test.identical( got, '    \nb\n    \nvariant:: : #83\n    \npath::local\n    ' );
 
-  /* */
+  test.close( 'srcs - array of strings, common cases' );
 
-  test.case = 'users lineDelimter';
-  var srcs = [ 'a ||', 'b ||', 'c ||', 'd' ];
+  /* - */
+
+  test.case = 'lineDelimter - not default, lineDelimter at the end of lines, the spaces after lineDelimter';
+  var srcs = [ 'a || ', 'b || ', 'c || ', 'd' ];
   var o = { lineDelimter : '||' };
   var got = _.strConcat( srcs, o );
   test.identical( got, 'a ||b ||c ||d' );
 
-  test.case = 'onToStr';
-  let onToStr = ( src ) => String( src ) + 1;
+  test.case = 'lineDelimter - not default, the spaces after lineDelimter';
+  var srcs = [ ' || a', '    || b', '  || c', '|d' ];
+  var o = { lineDelimter : '||' };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, ' || a || b || c |d' );
+
+  /* */
+
+  test.case = 'onToStr - not default, not uses options';
+  var onToStr = ( src ) => String( src ) + 1;
   var srcs = [ 1, 2, 3, 4 ];
   var o = { onToStr };
   var got = _.strConcat( srcs, o );
   test.identical( got, '11 21 31 41' );
+
+  test.case = 'onToStr - not default, uses options';
+  var onToStr = ( src, o ) => String( src ) + o.lineDelimter;
+  var srcs = [ 1, 2, 3, 4 ];
+  var o = { onToStr };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '1\n2\n3\n4\n' );
+
+  test.case = 'onToStr - not default, uses options from o.optionsForToStr';
+  var onToStr = ( src, o ) => String( src ) + o.optionsForToStr.postfix;
+  var srcs = [ 1, 2, 3, 4 ];
+  var optionsForToStr = { postfix : '...' }
+  var o = { onToStr, optionsForToStr };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '1... 2... 3... 4...' );
+
+  /* */
 
   test.case = 'linePrefix, not uses lineDelimter';
   var srcs = [ 'a', 'b', 'c', 'd' ];
@@ -6310,6 +6344,84 @@ function strConcat( test )
   var o = { linePostfix : ' ||', linePrefix : '|| ' };
   var got = _.strConcat( srcs, o );
   test.identical( got, '|| a ||\n|| b ||\n|| c ||\n|| d ||\n||  ||' );
+
+  /* */
+
+  test.case = 'onPairWithDelimeter - not default, lines without lineDelimter';
+  var srcs = [ 'a', 'b', 'c', 'd' ];
+  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
+  var o = { onPairWithDelimeter };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a b c d' );
+
+  test.case = 'onPairWithDelimeter - not default, lines with lineDelimter at the end of line';
+  var srcs = [ 'a\n', 'b\n', 'c' ];
+  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
+  var o = { onPairWithDelimeter };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a\n ... b\n ... c' );
+
+  test.case = 'onPairWithDelimeter - not default, lines with lineDelimter at the begin of line';
+  var srcs = [ '\na', '\nb', '\nc' ];
+  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
+  var o = { onPairWithDelimeter };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '\na ... \nb ... \nc' );
+
+  test.case = 'onPairWithDelimeter - not default, lines with lineDelimter at the begin and the end of line';
+  var srcs = [ '\na\n', '\nb\n', '\nc\n' ];
+  var onPairWithDelimeter = ( src1, src2 ) => src1 + ' ... ' + src2;
+  var o = { onPairWithDelimeter };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '\na\n ... \nb\n ... \nc\n' );
+
+  test.case = 'onPairWithDelimeter - not default, use options map, lines without lineDelimter';
+  var srcs = [ 'a', 'b', 'c', 'd' ];
+  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a b c d' );
+
+  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the end of line';
+  var srcs = [ 'a\n', 'b\n', 'c' ];
+  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, 'a\n .. b\n .. c' );
+
+  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the begin of line';
+  var srcs = [ '\na', '\nb', '\nc' ];
+  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '\na .. \nb .. \nc' );
+
+  test.case = 'onPairWithDelimeter - not default, use options map, lines with lineDelimter at the begin and the end of line';
+  var srcs = [ '\na\n', '\nb\n', '\nc\n' ];
+  var onPairWithDelimeter = ( src1, src2, o ) => src1 + o.optionsForToStr.prefix + src2;
+  var o = { onPairWithDelimeter, optionsForToStr : { prefix : ' .. ' } };
+  var got = _.strConcat( srcs, o );
+  test.identical( got, '\na\n .. \nb\n .. \nc\n' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strConcat() );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], { lineDelimter : '\n' }, 'extra' ) );
+
+  test.case = 'wrong type of options map o';
+  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], 'wrong' ) );
+
+  test.case = 'unknown property in options map o';
+  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], { unknown : 1 } ) );
+
+  test.case = 'property optionsForToStr in not a MapLike';
+  test.shouldThrowErrorSync( () => _.strConcat( [ 'a' ], { optionsForToStr : 1 } ) );
 }
 
 //--
