@@ -692,6 +692,8 @@ function eventGive( ehandler, o )
   }
   while( was !== visited.length );
 
+  /* */
+
   function onError( err, o )
   {
     throw _.err( `Error on handing event ${o.event}\n`, err );
@@ -724,11 +726,11 @@ let Extension =
   Name,
   Chain,
 
-  on, /* qqq : cover please, take into accout chain case */
+  on, /* aaa : cover please, take into accout chain case */ /* Dmytro : covered */
   once,
   off, /* qqq : cover please */
   eventHasHandler, /* qqq : cover please */
-  eventGive, /* qqq : cover please */
+  eventGive, /* aaa : cover please */ /* Dmytro : covered */
 
 }
 
