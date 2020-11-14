@@ -398,6 +398,10 @@ function _errMake( o )
 
     o.dstError[ Symbol.for( 'nodejs.util.inspect.custom' ) ] = o.dstError.toString;
 
+    if( o.fields )
+    for( let k in o.fields )
+    nonenumerable( k, o.fields[ k ] );
+
     if( o.debugging )
     debugger;
 
@@ -447,11 +451,6 @@ function _errMake( o )
     }
     function get()
     {
-      // if( this.id === 1 )
-      // {
-      //   console.log( `logging error#${this.id}` );
-      //   console.log( _.introspector.stack() );
-      // }
       _.errLogged( this );
       _.errAttend( this );
       return this[ symbol ];
@@ -471,7 +470,8 @@ _errMake.defaults =
   dstError : null,
   id : null,
   throwLocation : null,
-  sections : null,
+  sections : null, /* qqq : cover please */
+  fields : null, /* qqq : cover please */
 
   attended : null,
   logged : null,
@@ -1117,15 +1117,16 @@ _err.defaults =
 
   args : null,
   sections : null,
+  fields : null,
   level : 1, /* to make catch stack work properly level should be 1 by default */
 
-  /* string */
+  /* String */
 
   message : null, /* qqq : cover the option */
   reason : null,
   sourceCode : null,
 
-  /* Bolean */
+  /* Boolean */
 
   stackRemovingBeginIncluding : 0,
   stackRemovingBeginExcluding : 0,
