@@ -68,11 +68,11 @@ function _chainToCallback( args )
 function _chainValidate( chain )
 {
 
-  for( let i = 0 ; i < chain.length-1 ; i++ )
+  for( let i = 0 ; i < chain.length - 1 ; i++ )
   {
     _.assert( _.event.nameIs( chain[ i ] ) );
   }
-  _.assert( _.routineIs( chain[ chain.length-1 ] ) );
+  _.assert( _.routineIs( chain[ chain.length - 1 ] ) );
 
   return true;
 }
@@ -213,11 +213,12 @@ function Chain()
     return new Chain( ... arguments );
   }
 
+  let result = _.arrayMake( arguments.length );
   _.assert( arguments.length >= 1, 'Expects events names' );
-  for( let i = 0; i < arguments.length; i++ )
-  _.assert( _.strIs( arguments[ i ] ) || _.event.nameIs( arguments[ i ] ), 'Expects string or instance of Name' );
+  for( let i = 0 ; i < arguments.length ; i++ )
+  result[ i ] = _.event.Name( arguments[ i ] );
 
-  this.chain = arguments;
+  this.chain = result;
   return this;
 }
 
@@ -231,20 +232,50 @@ function on_head( routine, args )
 
   _.assert( _.longIs( args ) );
   _.assert( arguments.length === 2 );
-  _.assert( args.length >= 1 );
 
-  if( args.length > 1 )
+  // _.assert( args.length >= 1 );
+
+  // if( args.length > 1 ) /* Dmytro : deprecated feature, should be deleted */
+  // {
+  //   _.assert( _.strIs( args[ 0 ] ) );
+  //   o = Object.create( null );
+  //   o.callbackMap = Object.create( null );
+  //   o.callbackMap[ args[ 0 ] ] = _.longShrink( args, 1 );
+  // }
+  if( args.length === 2 )
   {
-    _.assert( _.strIs( args[ 0 ] ) );
+    _.assert( _.routineIs( args[ 1 ] ) );
+
     o = Object.create( null );
     o.callbackMap = Object.create( null );
-    o.callbackMap[ args[ 0 ] ] = _.longShrink( args, 1 );
+
+    if( _.event.chainIs( args[ 0 ] ) )
+    {
+      let chain = args[ 0 ].chain;
+      o.callbackMap[ chain[ 0 ].value ] = _.longShrink( chain, 1 );
+      o.callbackMap[ chain[ 0 ].value ].push( args[ 1 ] );
+    }
+    else if( _.strIs( args[ 0 ] ) )
+    {
+      o.callbackMap[ args[ 0 ] ] = args[ 1 ];
+    }
+    else if( _.event.nameIs( args[ 0 ] ) )
+    {
+      o.callbackMap[ args[ 0 ].value ] = args[ 1 ];
+    }
+    else
+    {
+      _.assert( 0, 'Expects Chain with names or single name of event.' );
+    }
   }
   else if( args.length === 1 )
   {
     o = args[ 0 ];
   }
-  else _.assert( 0 );
+  else
+  {
+    _.assert( 0, 'Expects single options map {-o-} or events Chain and callback as arguments.' );
+  }
 
   if( Config.debug )
   {
