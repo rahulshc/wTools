@@ -436,6 +436,7 @@ function once( ehandler, o )
       _.assert( _.routineIs( callback[ length - 1 ] ), 'Expects routine to execute.' );
 
       let name = callback[ length - 2 ] || c;
+      name = name.value !== undefined ? name.value : name;
       callback[ length - 1 ] = callbackOnce_functor( name, callback[ length - 1 ] );
       callback = _.event._chainToCallback( [ c, ... callback ] );
     }

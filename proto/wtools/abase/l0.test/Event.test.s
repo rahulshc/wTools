@@ -466,6 +466,8 @@ function onCheckDescriptorMethod( test )
 
 function onWithChain( test )
 {
+  test.open( 'with string names' );
+
   test.case = 'chain with single step';
   var ehandler = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
@@ -512,6 +514,48 @@ function onWithChain( test )
   test.identical( result, [ 0 ] );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0, 1 ] );
+
+  test.close( 'with string names' );
+
+  /* - */
+
+  test.open( 'with instances of Name' );
+
+  test.case = 'chain with two steps';
+  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event2' ), onEvent ] } } );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0, 1 ] );
+
+  /* */
+
+  test.case = 'chain with three steps';
+  var ehandler = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  _.event.on( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event3' ), _.event.Name( 'event2' ), onEvent ] } } );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event3' );
+  test.identical( result, [] );
+
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event3' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0, 1 ] );
+  test.close( 'with instances of Name' );
 }
 
 //
@@ -878,6 +922,8 @@ function onceCheckDescriptorMethod( test )
 
 function onceWithChain( test )
 {
+  test.open( 'with string names' );
+
   test.case = 'chain with single step';
   var ehandler = { events : { 'event' : [], 'event2' : [] } };
   var result = [];
@@ -923,6 +969,79 @@ function onceWithChain( test )
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0 ] );
   _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+
+  test.close( 'with string names' );
+
+  /* - */
+
+  test.open( 'with instances of Name' );
+
+  test.case = 'chain with few steps';
+  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  _.event.once( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event2' ), onEvent ] } } );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+
+  /* */
+
+  test.case = 'chain with three steps';
+  var ehandler = { events : { 'event' : [], 'event2' : [], 'event3' : [] } };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  _.event.once( ehandler, { 'callbackMap' : { 'event' : [ _.event.Name( 'event3' ), _.event.Name( 'event2' ), onEvent ] } } );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event3' );
+  test.identical( result, [] );
+
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event3' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [ 0 ] );
+  test.close( 'with instances of Name' );
+}
+
+//
+
+function onceCallWithHeadRoutine( test )
+{
+  test.case = 'head calls with options map';
+  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var o = _.event.on.head( _.event.on, [ { 'callbackMap' : { 'event' : onEvent } } ] );
+  _.event.once( ehandler, o );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0 ] );
+
+  test.case = 'head calls with chain and callback';
+  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var chain = _.event.Chain( 'event2', 'event' );
+  var o = _.event.on.head( _.event.on, [ chain, onEvent ] )
+  _.event.once( ehandler, o );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [] );
+
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event' );
   test.identical( result, [ 0 ] );
 }
 
@@ -1607,6 +1726,7 @@ var Self =
     once,
     onceCheckDescriptorMethod,
     onceWithChain,
+    onceCallWithHeadRoutine,
 
     off,
 
