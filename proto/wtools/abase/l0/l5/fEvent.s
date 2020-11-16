@@ -36,14 +36,29 @@ function _chainGenerate( args )
     chain.push([ e1, on ]);
     function on()
     {
-      let ehandler = this;
+      let self = this;
       let next = chain[ a + 1 ];
 
-      let o = _.event.on.head( _.event.on, next );
-      _.event.on( ehandler, o );
+      if( _.routineIs( self.on ) )
+      {
+        /*
+            Dmytro : it is strange code because the owners of ehandler can be classes like Process.
+            And this solution allows direct call of callbacks when the routine eventGive is not used :
+            https://github.com/Wandalen/wProcess/blob/master/proto/wtools/abase/l4_process/Basic.s#L210
+            https://github.com/Wandalen/wProcedure/blob/master/proto/wtools/abase/l8_procedure/Namespace.s#L59
+        */
+        self.on( next[ 0 ], next[ 1 ] );
+        if( self.eventHasHandler( e1, on ) )
+        self.off( e1, on );
+      }
+      else
+      {
+        let o = _.event.on.head( _.event.on, next );
+        _.event.on( self, o );
 
-      if( _.event.eventHasHandler( ehandler, { eventName : e1, eventHandler : on } ) )
-      _.event.off( ehandler, { callbackMap : { [ e1 ] : on } } );
+        if( _.event.eventHasHandler( self, { eventName : e1, eventHandler : on } ) )
+        _.event.off( self, { callbackMap : { [ e1 ] : on } } );
+      }
 
       // this.on( next[ 0 ], next[ 1 ] ); /* Dmytro : previous implementation, use routines of _.process */
       // if( this.eventHasHandler( e1, on ) )
@@ -141,11 +156,11 @@ function chainIs( src )
 
 //
 
-/* xxx qqq for Dmytro : introduce mini-class _.event.Chain()
+/* xxx aaa for Dmytro : introduce mini-class _.event.Chain() // Dmytro : introduced, covered
 _.process.on( 'available', _.event.Name( 'exit' ), _.event.Name( 'exit' ), _.procedure._eventProcessExitHandle )
 ->
 _.process.on( _.event.Chain( 'available', 'exit', 'exit' ), _.procedure._eventProcessExitHandle )
-qqq for Dmytro : restrict routines _.*.on() to accept 2 arguments // Dmytro : restricted before I'v seen this task
+aaa for Dmytro : restrict routines _.*.on() to accept 2 arguments // Dmytro : restricted for _.event before I'd seen this task, improved routine on_head for another namespaces
 */
 
 function Name( name )
