@@ -67,7 +67,7 @@ function Chain( test )
   test.is( _.event.chainIs( got ) );
   test.is( _.longIs( got.chain ) );
   test.identical( got.chain.length, 1 );
-  test.identical( got.chain[ 0 ], 'begin' );
+  test.identical( got.chain[ 0 ], _.event.Name( 'begin' ) );
 
   test.case = 'single Name';
   var name = _.event.Name( 'begin' );
@@ -85,7 +85,7 @@ function Chain( test )
   test.is( got === chain );
   test.is( _.longIs( got.chain ) );
   test.identical( got.chain.length, 2 );
-  test.equivalent( got.chain, [ name, 'end' ] );
+  test.equivalent( got.chain, [ name, _.event.Name( 'end' ) ] );
 
   /* */
 
@@ -94,7 +94,7 @@ function Chain( test )
   test.is( _.event.chainIs( got ) );
   test.is( _.longIs( got.chain ) );
   test.identical( got.chain.length, 3 );
-  test.equivalent( got.chain, [ 'begin', 'end', 'error' ] );
+  test.equivalent( got.chain, [ _.event.Name( 'begin' ), _.event.Name( 'end' ), _.event.Name( 'error' ) ] );
 
   test.case = 'a few Names';
   var name1 = _.event.Name( 'begin' );
@@ -512,6 +512,37 @@ function onWithChain( test )
   test.identical( result, [ 0 ] );
   _.event.eventGive( ehandler, 'event2' );
   test.identical( result, [ 0, 1 ] );
+}
+
+//
+
+function onCallWithHeadRoutine( test )
+{
+  test.case = 'head calls with options map';
+  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var o = _.event.on.head( _.event.on, [ { 'callbackMap' : { 'event' : onEvent } } ] );
+  _.event.on( ehandler, o );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0 ] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0, 1 ] );
+
+  test.case = 'head calls with chain and callback';
+  var ehandler = { events : { 'event' : [], 'event2' : [] } };
+  var result = [];
+  var onEvent = () => result.push( result.length );
+  var chain = _.event.Chain( 'event2', 'event' );
+  var o = _.event.on.head( _.event.on, [ chain, onEvent ] )
+  _.event.on( ehandler, o );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [] );
+
+  _.event.eventGive( ehandler, 'event2' );
+  test.identical( result, [] );
+  _.event.eventGive( ehandler, 'event' );
+  test.identical( result, [ 0 ] );
 }
 
 //
@@ -1571,6 +1602,7 @@ var Self =
     on,
     onCheckDescriptorMethod,
     onWithChain,
+    onCallWithHeadRoutine,
 
     once,
     onceCheckDescriptorMethod,
