@@ -843,7 +843,7 @@ strInsideOf_body.defaults =
   src : null,
   begin : null,
   end : null,
-  pairing : 0, /* xxx : set to 1? */
+  pairing : 0, /* xxx : set to 1 */
 }
 
 let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body ); /* qqq2 for Dmytro : cover please */
@@ -1284,6 +1284,269 @@ function strReplace( src, ins, sub )
 }
 
 // --
+// stripper
+// --
+
+/**
+ * Removes leading and trailing characters occurrences from source string( o.src ) finded by mask( o.stripper ).
+ * If( o.stripper ) is not defined function removes leading and trailing whitespaces and escaped characters from( o.src ).
+ * Function can be called in two ways:
+ * - First to pass only source string and use default options;
+ * - Second to pass map like ({ src : ' acb ', stripper : ' ' }).
+ *
+ * @param {string|object} o - Source string to parse or map with source( o.src ) and options.
+ * @param {string} [ o.src=null ]- Source string to strip.
+ * @param {string|array} [ o.stripper=' ' ]- Contains characters to remove.
+ * @returns {string} Returns result of removement in a string.
+ *
+ * @example
+ * _.strStrip( { src : 'aabaa', stripper : 'a' } );
+ * // returns 'b'
+ *
+ * @example
+ * _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } )
+ * // returns 'b'
+ *
+ * @example
+ * _.strStrip( { src : '   b  \n' } )
+ * // returns 'b'
+ *
+ * @method strStrip
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @throws { Exception } Throw an exception if( o ) is not Map.
+ * @throws { Exception } Throw an exception if( o.src ) is not a String.
+ * @throws { Exception } Throw an exception if( o.stripper ) is not a String or Array.
+ * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
+ * @namespace Tools
+ *
+ */
+
+function strStrip( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStrip, o );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  if( _.arrayIs( o.src ) )
+  {
+    let result = [];
+    for( let s = 0 ; s < o.src.length ; s++ )
+    {
+      let optionsForStrip = _.mapExtend( null, o );
+      optionsForStrip.src = optionsForStrip.src[ s ];
+      result[ s ] = strStrip( optionsForStrip );
+    }
+    return result;
+  }
+
+  if( _.boolLikeTrue( o.stripper ) )
+  {
+    o.stripper = strStrip.defaults.stripper;
+  }
+
+  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.strType( o.src ) );
+  _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
+
+  if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
+  {
+    let exp = o.stripper;
+    if( _.strIs( exp ) )
+    {
+      exp = _.regexpEscape( exp );
+      exp = new RegExp( exp, 'g' );
+    }
+    return o.src.replace( exp, '' );
+  }
+  else
+  {
+
+    _.assert( _.arrayIs( o.stripper ) );
+
+    if( Config.debug )
+    for( let s of o.stripper )
+    {
+      _.assert( _.strIs( s, 'Expects string {-stripper[ * ]-}' ) );
+    }
+
+    let b = 0;
+    for( ; b < o.src.length ; b++ )
+    if( o.stripper.indexOf( o.src[ b ] ) === -1 )
+    break;
+
+    let e = o.src.length-1;
+    for( ; e >= 0 ; e-- )
+    if( o.stripper.indexOf( o.src[ e ] ) === -1 )
+    break;
+
+    if( b >= e )
+    return '';
+
+    return o.src.substring( b, e+1 );
+  }
+
+}
+
+strStrip.defaults =
+{
+  src : null,
+  stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,
+}
+
+//
+
+/**
+ * Same as _.strStrip with one difference:
+ * If( o.stripper ) is not defined, function removes only leading whitespaces and escaped characters from( o.src ).
+ *
+ * @example
+ * _.strStripLeft( ' a ' )
+ * // returns 'a '
+ *
+ * @method strStripLeft
+ * @namespace Tools
+ *
+ */
+
+function strStripLeft( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStripLeft, o );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  return _.strStrip( o );
+}
+
+strStripLeft.defaults =
+{
+  ... strStrip.defaults,
+  stripper : /^(\s|\n|\0)+/gm,
+}
+
+//
+
+/**
+ * Same as _.strStrip with one difference:
+ * If( o.stripper ) is not defined, function removes only trailing whitespaces and escaped characters from( o.src ).
+ *
+ * @example
+ * _.strStripRight( ' a ' )
+ * // returns ' a'
+ *
+ * @method strStripRight
+ * @namespace Tools
+ *
+ */
+
+function strStripRight( o )
+{
+
+  if( _.strIs( o ) || _.arrayIs( o ) )
+  o = { src : o };
+
+  _.routineOptions( strStripRight, o );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  return _.strStrip( o );
+}
+
+strStripRight.defaults =
+{
+  ... strStrip.defaults,
+  stripper : /(\s|\n|\0)+$/gm,
+}
+
+//
+
+/**
+ * Removes whitespaces from source( src ).
+ * If argument( sub ) is defined, function replaces whitespaces with it.
+ *
+ * @param {string} src - Source string to parse.
+ * @param {string} sub - Substring that replaces whitespaces.
+ * @returns {string} Returns a string with removed whitespaces.
+ *
+ * @example
+ * _.strRemoveAllSpaces( 'a b c d e' );
+ * // returns abcde
+ *
+ * @example
+ * _.strRemoveAllSpaces( 'a b c d e', '*' );
+ * // returns a*b*c*d*e
+ *
+ * @method strRemoveAllSpaces
+ * @namespace Tools
+ *
+*/
+
+function _strRemoveAllSpaces( src, sub )
+{
+
+  _.assert( arguments.length === 1 || arguments.length === 2 );
+  _.assert( _.strIs( src ) );
+
+  if( sub === undefined )
+  sub = '';
+
+  return src.replace( /\s/g, sub );
+}
+
+//
+
+/**
+ * Removes empty lines from the string passed by argument( srcStr ).
+ *
+ * @param {string} srcStr - Source string to parse.
+ * @returns {string} Returns a string with empty lines removed.
+ *
+ * @example
+ * _.strStripEmptyLines( 'first\n\nsecond' );
+ * // returns
+ * // first
+ * // second
+ *
+ * @example
+ * _.strStripEmptyLines( 'zero\n\nfirst\n\nsecond' );
+ * // returns
+ * // zero
+ * // first
+ * // second
+ *
+ * @method strStripEmptyLines
+ * @throws { Exception } Throw an exception if( srcStr ) is not a String.
+ * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
+ * @namespace Tools
+ *
+ */
+
+function _strStripEmptyLines( srcStr )
+{
+  let result = '';
+  let lines = srcStr.split( '\n' );
+
+  _.assert( _.strIs( srcStr ) );
+  _.assert( arguments.length === 1, 'Expects single argument' );
+
+  for( let l = 0; l < lines.length; l += 1 )
+  {
+    let line = lines[ l ];
+
+    if( !_.strStrip( line ) )
+    continue;
+
+    result += line + '\n';
+  }
+
+  result = result.substring( 0, result.length - 1 );
+  return result;
+}
+
+// --
 // split
 // --
 
@@ -1497,6 +1760,9 @@ function strSplitsQuotedRejoin_body( o )
             splitNew.splice( splitNew.length-1-eextra, 1 );
           }
           splitNew = splitNew.join( '' );
+          if( o.onQuoting )
+          o.splits[ s ] = o.onQuoting( splitNew, o );
+          else
           o.splits[ s ] = splitNew;
           s2 = s;
           break;
@@ -1529,6 +1795,7 @@ strSplitsQuotedRejoin_body.defaults =
   inliningQuoting : 1,
   splits : null,
   delimeter : null,
+  onQuoting : null, /* qqq : cover */
 }
 
 //
@@ -1572,7 +1839,7 @@ function strSplitsDropDelimeters_body( o )
   {
     let split = o.splits[ s ];
 
-    if( _.regexpsTestAny( o.delimeter, split ) )
+    if( _.regexpsTestAny( o.delimeter, split ) ) /* xxx qqq : ? */
     o.splits.splice( s, 1 );
 
     // if( _.longHas( o.delimeter, split ) )
@@ -1625,17 +1892,19 @@ function strSplitsStrip_body( o )
   _.assert( arguments.length === 1 );
   _.assert( _.arrayIs( o.splits ) );
 
+  if( !o.stripping )
+  return o.splits;
+
   /* stripping */
 
   for( let s = 0 ; s < o.splits.length ; s++ )
   {
     let split = o.splits[ s ];
 
-    if( o.stripping )
+    if( _.strIs( split ) )
     split = _.strStrip({ src : split, stripper : o.stripping });
 
     o.splits[ s ] = split;
-
   }
 
   return o.splits;
@@ -2367,10 +2636,6 @@ function strSplitInlinedStereo( o )
     else
     {
       if( result.length )
-      debugger;
-      else
-      debugger;
-      if( result.length )
       result[ result.length-1 ] += o.prefix + splitted[ i ];
       else
       result.push( o.prefix + splitted[ i ] );
@@ -2711,6 +2976,9 @@ strSplitInlinedStereo_.defaults =
   preservingDelimeters : 0,
   preservingOrdinary : 1,
   preservingInlined : 1,
+
+  /* qqq for Yevhen : ? */
+
 }
 
 // function strSplitWithDefaultDelimeter( o )
@@ -2822,9 +3090,9 @@ let Extension =
   // splitter
 
   _strLeftSingle,
-  strLeft,
+  strLeft, /* qqq for Dmytro : implement and cover strLeft_ with proper ranges */
   _strRightSingle,
-  strRight,
+  strRight, /* qqq for Dmytro : implement and cover strRight_ with proper ranges */
 
   strsEquivalentAll : _.vectorizeAll( _.strEquivalent, 2 ),
   strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
@@ -2843,6 +3111,16 @@ let Extension =
   strReplaceBegin,
   strReplaceEnd,
   strReplace,
+
+  // stripper
+
+  strStrip, /* qqq for Dmytro : does not look working. fix, please */
+  strStripLeft,
+  strStripRight,
+  _strRemoveAllSpaces,
+  strRemoveAllSpaces : _.vectorize( _strRemoveAllSpaces ),
+  _strStripEmptyLines,
+  strStripEmptyLines : _.vectorize( _strStripEmptyLines ),
 
   // split
 

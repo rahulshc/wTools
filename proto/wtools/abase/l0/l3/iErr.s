@@ -1954,11 +1954,7 @@ function assert( condition )
   {
     if( !_.error.breakpointEnabled )
     return;
-    let err = _._err
-    ({
-      args : Array.prototype.slice.call( args, 1 ),
-      level : 3,
-    });
+    debugger;
   }
 
 }

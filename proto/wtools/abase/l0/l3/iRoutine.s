@@ -974,7 +974,7 @@ function routineUnite_body( o )
       _.assert( arguments.length === 4 );
       _.assert( !_.unrollIs( result ) );
       _.assert( _.objectIs( result ) );
-      return _.unrollAppend([ callPreAndBody, [ result ] ]);
+      return _.unrollAppend([ unitedRoutine, [ result ] ]);
     });
     _.assert( _.routineIs( _head ) );
     o.head = function head()
@@ -1005,18 +1005,18 @@ function routineUnite_body( o )
   let headIndex = head ? 1 : 0;
   let tailIndex = tail ? 2 : 0;
 
-  let callPreAndBody = routineUnite_functor( arrayOfNames[ bodyIndex + headIndex + tailIndex ] )[ o.name ];
+  let unitedRoutine = routineUnite_functor( arrayOfNames[ bodyIndex + headIndex + tailIndex ] )[ o.name ];
 
-  _.assert( _.strDefined( callPreAndBody.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
+  _.assert( _.strDefined( unitedRoutine.name ), 'Looks like your interpreter does not support dynamic naming of functions. Please use ES2015 or later interpreter.' );
 
-  _.routineExtend_( callPreAndBody, o.body );
+  _.routineExtend_( unitedRoutine, o.body );
 
-  callPreAndBody.head = o.head;
-  callPreAndBody.body = o.body;
+  unitedRoutine.head = o.head;
+  unitedRoutine.body = o.body;
   if( o.tail )
-  callPreAndBody.tail = o.tail;
+  unitedRoutine.tail = o.tail;
 
-  return callPreAndBody;
+  return unitedRoutine;
 
   /* */
 
@@ -1049,7 +1049,7 @@ function routineUnite_body( o )
       [ o.name ] : function()
       {
         let result;
-        let o = head.call( this, callPreAndBody, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
+        let o = head.call( this, unitedRoutine, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
 
         _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
 
@@ -1090,7 +1090,7 @@ function routineUnite_body( o )
       [ o.name ] : function()
       {
         let result;
-        let o = head.call( this, callPreAndBody, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
+        let o = head.call( this, unitedRoutine, arguments ); /* aaa for Dmytro : head is optional */ /* Dmytro : head is optional */
 
         _.assert( !_.argumentsArrayIs( o ), 'does not expect arguments array' );
 
@@ -1099,7 +1099,7 @@ function routineUnite_body( o )
         else
         result = body.call( this, o );
 
-        result = tail.call( this, result, o );
+        result = tail.call( this, result, o ); /* xxx qqq for Dmytro : 3rd argument is unitedRoutine */
 
         return result;
       }

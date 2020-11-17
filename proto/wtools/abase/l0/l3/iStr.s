@@ -512,6 +512,31 @@ function strPrimitive( src )
 //
 
 /**
+ * Return primitive type of src.
+ *
+ * @example
+ * let str = _.strPrimitiveType( 'testing' );
+ *
+ * @param {*} src
+ *
+ * @return {string}
+ * string name of type src
+ * @function strPrimitiveType
+ * @namespace Tools
+ */
+
+function strPrimitiveType( src )
+{
+
+  let name = Object.prototype.toString.call( src );
+  let result = /\[(\w+) (\w+)\]/.exec( name );
+  _.assert( !!result, 'unknown type', name );
+  return result[ 2 ];
+}
+
+//
+
+/**
  * Return type of src.
  *
  * @example
@@ -558,38 +583,11 @@ function strType( src ) /* qqq : cover please | aaa : Done. Yevhen S. */
 
 //
 
-/**
- * Return primitive type of src.
- *
- * @example
- * let str = _.strPrimitiveType( 'testing' );
- *
- * @param {*} src
- *
- * @return {string}
- * string name of type src
- * @function strPrimitiveType
- * @namespace Tools
- */
-
-function strPrimitiveType( src )
-{
-
-  let name = Object.prototype.toString.call( src );
-  let result = /\[(\w+) (\w+)\]/.exec( name );
-
-  if( !result )
-  throw _.err( 'strType :', 'unknown type', name );
-  return result[ 2 ];
-}
-
-//
-
 function _strBeginOf( src, begin )
 {
 
-  _.assert( _.strIs( src ), 'Expects string' );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  // _.assert( _.strIs( src ), 'Expects string' );
+  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.strIs( begin ) )
   {
@@ -612,8 +610,8 @@ function _strBeginOf( src, begin )
 function _strEndOf( src, end )
 {
 
-  _.assert( _.strIs( src ), 'Expects string' );
-  _.assert( arguments.length === 2, 'Expects exactly two arguments' );
+  // _.assert( _.strIs( src ), 'Expects string' );
+  // _.assert( arguments.length === 2, 'Expects exactly two arguments' );
 
   if( _.strIs( end ) )
   {
@@ -996,8 +994,8 @@ let Extension =
   strEntityShort,
   strStrShort,
   strPrimitive,
-  strType,
   strPrimitiveType,
+  strType,
 
   //
 
