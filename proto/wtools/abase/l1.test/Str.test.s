@@ -3860,32 +3860,32 @@ function _strOnly( test )
   /* */
 
   test.case = 'srcStr - empty string';
-  var got = _._strOnly( '', [ 2, 3 ] );
+  var got = _._strOnly( '', [ 2, 2 ] );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _._strOnly( 'Hello', [ 1, 1 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ]';
+  var got = _._strOnly( 'Hello', [ 1, 0 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _._strOnly( 'Hello', [ 0, 5 ] );
+  var got = _._strOnly( 'Hello', [ 0, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length';
-  var got = _._strOnly( 'Hello', [ 0, 8 ] );
+  var got = _._strOnly( 'Hello', [ 0, 7 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString';
-  var got = _._strOnly( 'Hello', [ 2, 3 ] );
+  var got = _._strOnly( 'Hello', [ 2, 2 ] );
   var expected = 'l';
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _._strOnly( 'Hello', [ 3, 5 ] );
+  var got = _._strOnly( 'Hello', [ 3, 4 ] );
   var expected = 'lo';
   test.identical( got, expected );
 
@@ -3896,33 +3896,33 @@ function _strOnly( test )
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _._strOnly( 'Hello', [ -2, -2 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _._strOnly( 'Hello', [ -2, -1 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _._strOnly( 'Hello', [ -5, 5 ] );
+  var got = _._strOnly( 'Hello', [ -5, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  var got = _._strOnly( 'Hello', [ -7, 5 ] );
+  var got = _._strOnly( 'Hello', [ -7, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _._strOnly( 'Hello', [ -3, -2 ] );
+  var got = _._strOnly( 'Hello', [ -3, -3 ] );
   var expected = 'l';
   test.identical( got, expected );
 
   test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  var got = _._strOnly( 'Hello', [ -5, -4 ] );
+  var got = _._strOnly( 'Hello', [ -5, -5 ] );
   var expected = 'H';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _._strOnly( 'Hello', [ -2, -3 ] );
+  var got = _._strOnly( 'Hello', [ -2, -2 ] );
   var expected = 'l';
   test.identical( got, expected );
 
@@ -4002,17 +4002,17 @@ function strOnly( test )
   /* */
 
   test.case = 'srcStr - empty string';
-  var got = _.strOnly( '', [ 2, 3 ] );
+  var got = _.strOnly( '', [ 2, 2 ] );
   var expected = '';
   test.identical( got, expected );
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strOnly( 'Hello', [ 1, 1 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ]';
+  var got = _.strOnly( 'Hello', [ 1, 0 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _.strOnly( 'Hello', [ 0, 5 ] );
+  var got = _.strOnly( 'Hello', [ 0, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
@@ -4022,49 +4022,49 @@ function strOnly( test )
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString';
-  var got = _.strOnly( 'Hello', [ 2, 3 ] );
+  var got = _.strOnly( 'Hello', [ 2, 2 ] );
   var expected = 'l';
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _.strOnly( 'Hello', [ 3, 5 ] );
+  var got = _.strOnly( 'Hello', [ 3, 4 ] );
   var expected = 'lo';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed';
   var got = _.strOnly( 'Hello', [ 4, 0 ] );
-  var expected = 'Hell';
+  var expected = '';
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strOnly( 'Hello', [ -2, -2 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _.strOnly( 'Hello', [ -2, -3 ] );
   var expected = '';
   test.identical( got, expected );
 
   test.case = 'srcStr, get all, range[ 0 ] < 0';
-  var got = _.strOnly( 'Hello', [ -5, 5 ] );
+  var got = _.strOnly( 'Hello', [ -5, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length, range[ 0 ] < 0';
-  var got = _.strOnly( 'Hello', [ -7, 5 ] );
+  var got = _.strOnly( 'Hello', [ -7, 4 ] );
   var expected = 'Hello';
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnly( 'Hello', [ -3, -2 ] );
+  var got = _.strOnly( 'Hello', [ -3, -3 ] );
   var expected = 'l';
   test.identical( got, expected );
 
   test.case = 'srcStr, get start of string, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnly( 'Hello', [ -5, -4 ] );
+  var got = _.strOnly( 'Hello', [ -5, -5 ] );
   var expected = 'H';
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnly( 'Hello', [ -2, -3 ] );
+  var got = _.strOnly( 'Hello', [ -2, -2 ] );
   var expected = 'l';
   test.identical( got, expected );
 
@@ -4123,40 +4123,40 @@ function strOnly( test )
   var expected = [ '', '', '' ];
   test.identical( got, expected );
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ]';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 1, 1 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ]';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 1, 0 ] );
   var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get all';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 0, 5 ] );
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 0, 4 ] );
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, range bigger than length';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 0, 8 ] );
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 0, 7 ] );
   var expected = [ 'Hello', 'world', 'abc', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get subString';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 2, 3 ] );
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 2, 2 ] );
   var expected = [ 'l', 'r', 'c', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, get end of string';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 3, 5 ] );
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 3, 4 ] );
   var expected = [ 'lo', 'ld', '', '' ];
   test.identical( got, expected );
 
   test.case = 'srcStr, range reversed';
   var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ 4, 0 ] );
-  var expected = [ 'Hell', 'worl', 'abc', '' ];
+  var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
   /* */
 
-  test.case = 'srcStr, range[ 0 ] === range[ 1 ], range[ 0 ] < 0';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -2, -2 ] );
+  test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ] );
   var expected = [ '', '', '', '' ];
   test.identical( got, expected );
 
@@ -4172,7 +4172,7 @@ function strOnly( test )
   // test.identical( got, expected );
 
   test.case = 'srcStr, get subString, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -3, -2 ] );
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -3, -3 ] );
   var expected = [ 'l', 'r', 'c', '' ];
   test.identical( got, expected );
 
@@ -4182,13 +4182,16 @@ function strOnly( test )
   // test.identical( got, expected );
 
   test.case = 'srcStr, range reversed, range[ 0 ] and range[ 1 ] < 0';
-  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -2, -3 ] );
+  var got = _.strOnly( [ 'Hello', 'world', 'abc', '' ], [ -3, -3 ] );
   var expected = [ 'l', 'r', 'c', '' ];
   test.identical( got, expected );
 
   test.close( 'vectorized' );
 
   /* - */
+
+  if( !Config.debug )
+  return;
 
   test.case = 'without arguments';
   test.shouldThrowErrorSync( () => _.strOnly() );
