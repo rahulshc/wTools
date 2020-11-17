@@ -1647,8 +1647,7 @@ function _strBut( srcStr, crange, ins )
   {
     if( crange < 0 )
     crange = srcStr.length + crange;
-    crange = [ crange, crange ]; /* Dmytro : should delete only 1 symbol */
-    // crange = [ crange, crange+1 ];
+    crange = [ crange, crange ];
   }
   else
   {
@@ -1660,14 +1659,11 @@ function _strBut( srcStr, crange, ins )
 
   if( crange[ 0 ] > crange[ 1 ] )
   crange[ 1 ] = crange[ 0 ] - 1;
-  // crange[ 1 ] = crange[ 0 ]; /* Dmytro : for crange corrects right range */
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( srcStr ) );
-  // _.assert( _.crange.rangeDefined( crange ) ); /* Dmytro : new namespace for crange */
   _.assert( _.crange.defined( crange ) );
   _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
-  _.assert( !_.longIs( ins ), 'not implemented' );
 
   /*
      aaa : implement for case ins is long
@@ -1675,18 +1671,26 @@ function _strBut( srcStr, crange, ins )
      qqq for Dmytro : no really
   */
 
-  // if( _.longIs( ins ) )
-  // return srcStr.substring( 0, crange[ 0 ] ) + ins.join( ' ' ) + srcStr.substring( crange[ 1 ]+1, srcStr.length );
-  if( ins )
-  return srcStr.substring( 0, crange[ 0 ] ) + ins + srcStr.substring( crange[ 1 ]+1, srcStr.length );
+  let result;
+  if( _.longIs( ins ) )
+  {
+    result = _.arrayMake( ins.length );
+    for( let i = 0 ; i < ins.length ; i++ )
+    result[ i ] = _strConcat( srcStr, crange, ins[ i ] );
+  }
   else
-  return srcStr.substring( 0, crange[ 0 ] ) + srcStr.substring( crange[ 1 ]+1, srcStr.length );
-  // if( _.longIs( ins ) ) /* Dmytro : all types of ranges includes left range and has different usage of right range */
-  // return srcStr.substring( 0, crange[ 0 ]+1 ) + ins.join( ' ' ) + srcStr.substring( crange[ 1 ], srcStr.length );
-  // else if( ins )
-  // return srcStr.substring( 0, crange[ 0 ]+1 ) + ins + srcStr.substring( crange[ 1 ], srcStr.length );
-  // else
-  // return srcStr.substring( 0, crange[ 0 ]+1 ) + srcStr.substring( crange[ 1 ], srcStr.length );
+  {
+    result = _strConcat( srcStr, crange, ins ? ins : '' );
+  }
+
+  return result;
+
+  /* */
+
+  function _strConcat( src, range, insertion )
+  {
+    return src.substring( 0, range[ 0 ] ) + insertion + src.substring( range[ 1 ] + 1, src.length );
+  }
 }
 
 //
