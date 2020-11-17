@@ -1495,6 +1495,8 @@ function _strOnly( srcStr, crange )
   }
   else
   {
+    crange = _.longMake( crange ); /* Dmytro : vectorized routine should not change original range */
+
     if( crange[ 1 ] < -1 )
     crange[ 1 ] = srcStr.length + crange[ 1 ];
     if( crange[ 0 ] < 0 )
@@ -1506,7 +1508,6 @@ function _strOnly( srcStr, crange )
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
-  // _.assert( _.rangeDefined( crange ) );
   _.assert( _.crange.defined( crange ) );
 
   return srcStr.substring( crange[ 0 ], crange[ 1 ] + 1 );
@@ -1630,6 +1631,7 @@ let strOnly = _.vectorize( _strOnly );
 function _strBut( srcStr, crange, ins )
 {
 
+
   /*
   aaa : reference point of negative is length. implement and cover please
   Dmytro : implemented a time ago
@@ -1643,6 +1645,8 @@ function _strBut( srcStr, crange, ins )
   }
   else
   {
+    crange = _.longMake( crange ); /* Dmytro : vectorized routine should not change original range */
+
     if( crange[ 1 ] < -1 )
     crange[ 1 ] = srcStr.length + crange[ 1 ];
     if( crange[ 0 ] < 0 )
