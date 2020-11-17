@@ -1643,7 +1643,8 @@ function _strBut( srcStr, crange, ins )
   {
     if( crange < 0 )
     crange = srcStr.length + crange;
-    crange = [ crange, crange + 1 ];
+    crange = [ crange, crange ]; /* Dmytro : should delete only 1 symbol */
+    // crange = [ crange, crange+1 ];
   }
   else
   {
@@ -1654,11 +1655,13 @@ function _strBut( srcStr, crange, ins )
   }
 
   if( crange[ 0 ] > crange[ 1 ] )
-  crange[ 1 ] = crange[ 0 ];
+  crange[ 1 ] = crange[ 0 ] - 1;
+  // crange[ 1 ] = crange[ 0 ]; /* Dmytro : for crange corrects right range */
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( srcStr ) );
-  _.assert( _.rangeDefined( crange ) );
+  // _.assert( _.crange.rangeDefined( crange ) ); /* Dmytro : new namespace for crange */
+  _.assert( _.crange.defined( crange ) );
   _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
   _.assert( !_.longIs( ins ), 'not implemented' );
 
@@ -1669,11 +1672,17 @@ function _strBut( srcStr, crange, ins )
   */
 
   if( _.longIs( ins ) )
-  return srcStr.substring( 0, crange[ 0 ]+1 ) + ins.join( ' ' ) + srcStr.substring( crange[ 1 ], srcStr.length );
+  return srcStr.substring( 0, crange[ 0 ] ) + ins.join( ' ' ) + srcStr.substring( crange[ 1 ]+1, srcStr.length );
   else if( ins )
-  return srcStr.substring( 0, crange[ 0 ]+1 ) + ins + srcStr.substring( crange[ 1 ], srcStr.length );
+  return srcStr.substring( 0, crange[ 0 ] ) + ins + srcStr.substring( crange[ 1 ]+1, srcStr.length );
   else
-  return srcStr.substring( 0, crange[ 0 ]+1 ) + srcStr.substring( crange[ 1 ], srcStr.length );
+  return srcStr.substring( 0, crange[ 0 ] ) + srcStr.substring( crange[ 1 ]+1, srcStr.length );
+  // if( _.longIs( ins ) ) /* Dmytro : all types of ranges includes left range and has different usage of right range */
+  // return srcStr.substring( 0, crange[ 0 ]+1 ) + ins.join( ' ' ) + srcStr.substring( crange[ 1 ], srcStr.length );
+  // else if( ins )
+  // return srcStr.substring( 0, crange[ 0 ]+1 ) + ins + srcStr.substring( crange[ 1 ], srcStr.length );
+  // else
+  // return srcStr.substring( 0, crange[ 0 ]+1 ) + srcStr.substring( crange[ 1 ], srcStr.length );
 }
 
 //
