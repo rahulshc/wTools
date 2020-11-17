@@ -1476,7 +1476,7 @@ function strSplitCamel( src )
  * @namespace Tools
  */
 
-function _strOnly( srcStr, range )
+function _strOnly( srcStr, crange )
 {
 
   /*
@@ -1487,25 +1487,29 @@ function _strOnly( srcStr, range )
     3-1 = 2
   */
 
-  if( _.numberIs( range ) )
+  if( _.numberIs( crange ) )
   {
-    if( range < 0 )
-    range = srcStr.length + range;
-    range = [ range, range + 1 ];
+    if( crange < 0 )
+    crange = srcStr.length + crange;
+    crange = [ crange, crange ];
   }
   else
   {
-    if( range[ 1 ] < 0 )
-    range[ 1 ] = srcStr.length + range[ 1 ];
-    if( range[ 0 ] < 0 )
-    range[ 0 ] = srcStr.length + range[ 0 ];
+    if( crange[ 1 ] < 0 )
+    crange[ 1 ] = srcStr.length + crange[ 1 ];
+    if( crange[ 0 ] < 0 )
+    crange[ 0 ] = srcStr.length + crange[ 0 ];
   }
+
+  if( crange[ 0 ] > crange[ 1 ] )
+  crange[ 1 ] = crange[ 0 ] - 1;
 
   _.assert( arguments.length === 2, 'Expects exactly two arguments' );
   _.assert( _.strIs( srcStr ) );
-  _.assert( _.rangeDefined( range ) );
+  // _.assert( _.rangeDefined( crange ) );
+  _.assert( _.crange.defined( crange ) );
 
-  return srcStr.substring( range[ 0 ], range[ 1 ] + 1 );
+  return srcStr.substring( crange[ 0 ], crange[ 1 ] + 1 );
 }
 
 //
@@ -1671,9 +1675,9 @@ function _strBut( srcStr, crange, ins )
      qqq for Dmytro : no really
   */
 
-  if( _.longIs( ins ) )
-  return srcStr.substring( 0, crange[ 0 ] ) + ins.join( ' ' ) + srcStr.substring( crange[ 1 ]+1, srcStr.length );
-  else if( ins )
+  // if( _.longIs( ins ) )
+  // return srcStr.substring( 0, crange[ 0 ] ) + ins.join( ' ' ) + srcStr.substring( crange[ 1 ]+1, srcStr.length );
+  if( ins )
   return srcStr.substring( 0, crange[ 0 ] ) + ins + srcStr.substring( crange[ 1 ]+1, srcStr.length );
   else
   return srcStr.substring( 0, crange[ 0 ] ) + srcStr.substring( crange[ 1 ]+1, srcStr.length );
