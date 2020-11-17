@@ -16067,7 +16067,8 @@ var Self =
     strSplitInlinedStereo_OptionOnOrdinary,
     strSplitInlinedStereo_OptionPreservingOrdinary,
     strSplitInlinedStereo_OptionPreservingInlined,
-    strSplitInlinedStereo_OptionsCombined
+    strSplitInlinedStereo_OptionsCombined,
+    /* qqq for Yevhen : no "_" in names. "_" in names has special meaning */
 
   }
 

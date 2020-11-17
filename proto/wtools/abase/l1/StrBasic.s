@@ -1206,269 +1206,6 @@ function strReverse( srcStr )
 }
 
 // --
-// stripper
-// --
-
-/**
- * Removes leading and trailing characters occurrences from source string( o.src ) finded by mask( o.stripper ).
- * If( o.stripper ) is not defined function removes leading and trailing whitespaces and escaped characters from( o.src ).
- * Function can be called in two ways:
- * - First to pass only source string and use default options;
- * - Second to pass map like ({ src : ' acb ', stripper : ' ' }).
- *
- * @param {string|object} o - Source string to parse or map with source( o.src ) and options.
- * @param {string} [ o.src=null ]- Source string to strip.
- * @param {string|array} [ o.stripper=' ' ]- Contains characters to remove.
- * @returns {string} Returns result of removement in a string.
- *
- * @example
- * _.strStrip( { src : 'aabaa', stripper : 'a' } );
- * // returns 'b'
- *
- * @example
- * _.strStrip( { src : 'xaabaax', stripper : [ 'a', 'x' ] } )
- * // returns 'b'
- *
- * @example
- * _.strStrip( { src : '   b  \n' } )
- * // returns 'b'
- *
- * @method strStrip
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
- * @throws { Exception } Throw an exception if( o ) is not Map.
- * @throws { Exception } Throw an exception if( o.src ) is not a String.
- * @throws { Exception } Throw an exception if( o.stripper ) is not a String or Array.
- * @throws { Exception } Throw an exception if object( o ) has been extended by invalid property.
- * @namespace Tools
- *
- */
-
-function strStrip( o )
-{
-
-  if( _.strIs( o ) || _.arrayIs( o ) )
-  o = { src : o };
-
-  _.routineOptions( strStrip, o );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  if( _.arrayIs( o.src ) )
-  {
-    let result = [];
-    for( let s = 0 ; s < o.src.length ; s++ )
-    {
-      let optionsForStrip = _.mapExtend( null, o );
-      optionsForStrip.src = optionsForStrip.src[ s ];
-      result[ s ] = strStrip( optionsForStrip );
-    }
-    return result;
-  }
-
-  _.assert( _.strIs( o.src ), 'Expects string or array o.src, got', _.strType( o.src ) );
-  _.assert( _.strIs( o.stripper ) || _.arrayIs( o.stripper ) || _.regexpIs( o.stripper ), 'Expects string or array or regexp ( o.stripper )' );
-
-  if( _.strIs( o.stripper ) || _.regexpIs( o.stripper ) )
-  {
-    let exp = o.stripper;
-    if( _.strIs( exp ) )
-    {
-      exp = _.regexpEscape( exp );
-      exp = new RegExp( exp, 'g' );
-    }
-
-    return o.src.replace( exp, '' );
-  }
-  else
-  {
-
-    _.assert( _.arrayIs( o.stripper ) );
-
-    if( Config.debug )
-    for( let s of o.stripper )
-    {
-      _.assert( _.strIs( s, 'Expects string {-stripper[ * ]-}' ) );
-    }
-
-    let b = 0;
-    for( ; b < o.src.length ; b++ )
-    if( o.stripper.indexOf( o.src[ b ] ) === -1 )
-    break;
-
-    let e = o.src.length-1;
-    for( ; e >= 0 ; e-- )
-    if( o.stripper.indexOf( o.src[ e ] ) === -1 )
-    break;
-
-    if( b >= e )
-    return '';
-
-    return o.src.substring( b, e+1 );
-  }
-
-}
-
-strStrip.defaults =
-{
-  src : null,
-  stripper : /^(\s|\n|\0)+|(\s|\n|\0)+$/gm,
-}
-
-//
-
-/**
- * Same as _.strStrip with one difference:
- * If( o.stripper ) is not defined, function removes only leading whitespaces and escaped characters from( o.src ).
- *
- * @example
- * _.strStripLeft( ' a ' )
- * // returns 'a '
- *
- * @method strStripLeft
- * @namespace Tools
- *
- */
-
-function strStripLeft( o )
-{
-
-  if( _.strIs( o ) || _.arrayIs( o ) )
-  o = { src : o };
-
-  _.routineOptions( strStripLeft, o );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  return _.strStrip( o );
-}
-
-strStripLeft.defaults =
-{
-  ... strStrip.defaults,
-  stripper : /^(\s|\n|\0)+/gm,
-}
-
-// strStripLeft.defaults.__proto__ = strStrip.defaults;
-
-//
-
-/**
- * Same as _.strStrip with one difference:
- * If( o.stripper ) is not defined, function removes only trailing whitespaces and escaped characters from( o.src ).
- *
- * @example
- * _.strStripRight( ' a ' )
- * // returns ' a'
- *
- * @method strStripRight
- * @namespace Tools
- *
- */
-
-function strStripRight( o )
-{
-
-  if( _.strIs( o ) || _.arrayIs( o ) )
-  o = { src : o };
-
-  _.routineOptions( strStripRight, o );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  return _.strStrip( o );
-}
-
-strStripRight.defaults =
-{
-  ... strStrip.defaults,
-  stripper : /(\s|\n|\0)+$/gm,
-}
-
-// strStripRight.defaults.__proto__ = strStrip.defaults;
-
-//
-
-/**
- * Removes whitespaces from source( src ).
- * If argument( sub ) is defined, function replaces whitespaces with it.
- *
- * @param {string} src - Source string to parse.
- * @param {string} sub - Substring that replaces whitespaces.
- * @returns {string} Returns a string with removed whitespaces.
- *
- * @example
- * _.strRemoveAllSpaces( 'a b c d e' );
- * // returns abcde
- *
- * @example
- * _.strRemoveAllSpaces( 'a b c d e', '*' );
- * // returns a*b*c*d*e
- *
- * @method strRemoveAllSpaces
- * @namespace Tools
- *
-*/
-
-function _strRemoveAllSpaces( src, sub )
-{
-
-  _.assert( arguments.length === 1 || arguments.length === 2 );
-  _.assert( _.strIs( src ) );
-
-  if( sub === undefined )
-  sub = '';
-
-  return src.replace( /\s/g, sub );
-}
-
-//
-
-/**
- * Removes empty lines from the string passed by argument( srcStr ).
- *
- * @param {string} srcStr - Source string to parse.
- * @returns {string} Returns a string with empty lines removed.
- *
- * @example
- * _.strStripEmptyLines( 'first\n\nsecond' );
- * // returns
- * // first
- * // second
- *
- * @example
- * _.strStripEmptyLines( 'zero\n\nfirst\n\nsecond' );
- * // returns
- * // zero
- * // first
- * // second
- *
- * @method strStripEmptyLines
- * @throws { Exception } Throw an exception if( srcStr ) is not a String.
- * @throws { Exception } Throw an exception if( arguments.length ) is not equal 1.
- * @namespace Tools
- *
- */
-
-function _strStripEmptyLines( srcStr )
-{
-  let result = '';
-  let lines = srcStr.split( '\n' );
-
-  _.assert( _.strIs( srcStr ) );
-  _.assert( arguments.length === 1, 'Expects single argument' );
-
-  for( let l = 0; l < lines.length; l += 1 )
-  {
-    let line = lines[ l ];
-
-    if( !_.strStrip( line ) )
-    continue;
-
-    result += line + '\n';
-  }
-
-  result = result.substring( 0, result.length - 1 );
-  return result;
-}
-
-// --
 // splitter
 // --
 
@@ -1704,7 +1441,7 @@ function strSplitCamel( src )
 // --
 
 /**
- * Routine _strOnlySingle() gets substring out of source string {-srcStr-} according to a given range {-range-}.
+ * Routine _strOnly() gets substring out of source string {-srcStr-} according to a given range {-range-}.
  * The end value of the range is not included in the substring.
  *
  * @param { String } srcStr - Source string.
@@ -1712,26 +1449,26 @@ function strSplitCamel( src )
  * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
  *
  * @example
- * _._strOnlySingle( '', [ 0, 2 ] );
+ * _._strOnly( '', [ 0, 2 ] );
  * // returns ''
  *
  * @example
- * _._strOnlySingle( 'first', [ 0, 7 ] );
+ * _._strOnly( 'first', [ 0, 7 ] );
  * // returns 'first'
  *
  * @example
- * _._strOnlySingle( 'first', [ 0, 2 ] );
+ * _._strOnly( 'first', [ 0, 2 ] );
  * // returns 'fi'
  *
  * @example
- * _._strOnlySingle( 'first', [ -2, 5 ] );
+ * _._strOnly( 'first', [ -2, 5 ] );
  * // returns 'st'
  *
  * @example
- * _._strOnlySingle( 'first', [ 2, 2 ] );
+ * _._strOnly( 'first', [ 2, 2 ] );
  * // returns ''
  *
- * @function _strOnlySingle
+ * @function _strOnly
  * @returns { String } - Returns substring from source string.
  * @throws { Error } If arguments.length is less or more then two.
  * @throws { Error } If {-srcStr-} is not a String.
@@ -1739,7 +1476,7 @@ function strSplitCamel( src )
  * @namespace Tools
  */
 
-function _strOnlySingle( srcStr, range )
+function _strOnly( srcStr, range )
 {
 
   /*
@@ -1768,7 +1505,7 @@ function _strOnlySingle( srcStr, range )
   _.assert( _.strIs( srcStr ) );
   _.assert( _.rangeDefined( range ) );
 
-  return srcStr.substring( range[ 0 ], range[ 1 ] );
+  return srcStr.substring( range[ 0 ], range[ 1 ] + 1 );
 }
 
 //
@@ -1782,39 +1519,39 @@ function _strOnlySingle( srcStr, range )
  * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
  *
  * @example
- * _.strOnly( '', [ 0, 2 ] );
+ * _.strOnly( '', [ 0, 1 ] );
  * // returns ''
  *
  * @example
- * _.strOnly( 'first', [ 0, 7 ] );
+ * _.strOnly( 'first', [ 0, 6 ] );
  * // returns 'first'
  *
  * @example
- * _.strOnly( 'first', [ 0, 2 ] );
+ * _.strOnly( 'first', [ 0, 1 ] );
  * // returns 'fi'
  *
  * @example
- * _.strOnly( 'first', [ -2, 5 ] );
+ * _.strOnly( 'first', [ -2, 4 ] );
  * // returns 'st'
  *
  * @example
- * _.strOnly( 'first', [ 2, 2 ] );
+ * _.strOnly( 'first', [ 2, 1 ] );
  * // returns ''
  *
  * @example
- * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 0, 2 ] );
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 0, 1 ] );
  * // returns [ '', 'a', 'ab', 'ab' ]
  *
  * @example
- * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 0, 7 ] );
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 0, 6 ] );
  * // returns [ '', 'a', 'ab', 'abcde' ]
  *
  * @example
- * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ -2, 5 ] );
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ -2, 4 ] );
  * // returns [ '', 'a', 'ab', 'de' ]
  *
  * @example
- * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 2, 2 ] );
+ * _.strOnly( [ '', 'a', 'ab', 'abcde' ], [ 2, 1 ] );
  * // returns[ '', '', '', '' ]
  *
  * @function strOnly
@@ -1826,7 +1563,7 @@ function _strOnlySingle( srcStr, range )
  * @namespace Tools
  */
 
-let strOnly = _.vectorize( _strOnlySingle );
+let strOnly = _.vectorize( _strOnly );
 
 //
 
@@ -1835,7 +1572,7 @@ let strOnly = _.vectorize( _strOnlySingle );
 // srcStr:[ * str ] ins:[ * str ] -> [ * str ]
 
 /**
- * Routine _strButSingle() gets substring out of source string {-srcStr-} according to a given range {-range-}
+ * Routine _strBut() gets substring out of source string {-srcStr-} according to a given range {-range-}
  * and replaces it to new string {-ins-}.
  * The end value of the range is not included in the substring.
  *
@@ -1847,46 +1584,46 @@ let strOnly = _.vectorize( _strOnlySingle );
  * If {-ins-} is not provided or if it is undefined, then routine removes substring from source string to a given range.
  *
  * @example
- * _._strButSingle( '', [ 0, 2 ] );
+ * _._strBut( '', [ 0, 2 ] );
  * // returns ''
  *
  * @example
- * _._strButSingle( 'first', [ 0, 7 ] );
+ * _._strBut( 'first', [ 0, 7 ] );
  * // returns ''
  *
  * @example
- * _._strButSingle( 'first', [ 0, 2 ] );
+ * _._strBut( 'first', [ 0, 2 ] );
  * // returns 'rst'
  *
  * @example
- * _._strButSingle( 'first', [ -2, 5 ] );
+ * _._strBut( 'first', [ -2, 5 ] );
  * // returns 'fir'
  *
  * @example
- * _._strButSingle( 'first', [ 2, 2 ] );
+ * _._strBut( 'first', [ 2, 2 ] );
  * // returns 'first'
  *
  * @example
- * _._strButSingle( '', [ 0, 2 ], 'abc' );
+ * _._strBut( '', [ 0, 2 ], 'abc' );
  * // returns 'abc'
  *
  * @example
- * _._strButSingle( 'first', [ 0, 7 ], [ 'a', 'b', 'c' ] );
+ * _._strBut( 'first', [ 0, 7 ], [ 'a', 'b', 'c' ] );
  * // returns 'a b c'
  *
  * @example
- * _._strButSingle( 'first', [ 0, 2 ], 'abc' );
+ * _._strBut( 'first', [ 0, 2 ], 'abc' );
  * // returns 'abcrst'
  *
  * @example
- * _._strButSingle( 'first', [ -2, 5 ], [ 'a', 'b', 'c' ] );
+ * _._strBut( 'first', [ -2, 5 ], [ 'a', 'b', 'c' ] );
  * // returns 'fira b c'
  *
  * @example
- * _._strButSingle( 'first', [ 2, 2 ], 'abc' );
+ * _._strBut( 'first', [ 2, 2 ], 'abc' );
  * // returns 'fiabcrst'
  *
- * @function _strButSingle
+ * @function _strBut
  * @returns { String } - Returns source string, part of which replaced to the new value.
  * @throws { Error } If arguments.length is less then two or more then three.
  * @throws { Error } If {-srcStr-} is not a String.
@@ -1895,7 +1632,7 @@ let strOnly = _.vectorize( _strOnlySingle );
  * @namespace Tools
  */
 
-function _strButSingle( srcStr, range, ins )
+function _strBut( srcStr, range, ins )
 {
 
   /*
@@ -1917,8 +1654,6 @@ function _strButSingle( srcStr, range, ins )
     range[ 0 ] = srcStr.length + range[ 0 ];
   }
 
-  // if( _.numberIs( range ) )
-  // range = [ range, range + 1 ];
   if( range[ 0 ] > range[ 1 ] )
   range[ 1 ] = range[ 0 ];
 
@@ -1926,19 +1661,20 @@ function _strButSingle( srcStr, range, ins )
   _.assert( _.strIs( srcStr ) );
   _.assert( _.rangeDefined( range ) );
   _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
-  // _.assert( !_.longIs( ins ), 'not implemented' );
+  _.assert( !_.longIs( ins ), 'not implemented' );
 
   /*
      aaa : implement for case ins is long
      Dmytro : implemented, elements of long joins by spaces
+     qqq for Dmytro : no really
   */
 
   if( _.longIs( ins ) )
-  return srcStr.substring( 0, range[ 0 ] ) + ins.join( ' ' ) + srcStr.substring( range[ 1 ], srcStr.length );
+  return srcStr.substring( 0, range[ 0 ]+1 ) + ins.join( ' ' ) + srcStr.substring( range[ 1 ], srcStr.length );
   else if( ins )
-  return srcStr.substring( 0, range[ 0 ] ) + ins + srcStr.substring( range[ 1 ], srcStr.length );
+  return srcStr.substring( 0, range[ 0 ]+1 ) + ins + srcStr.substring( range[ 1 ], srcStr.length );
   else
-  return srcStr.substring( 0, range[ 0 ] ) + srcStr.substring( range[ 1 ], srcStr.length );
+  return srcStr.substring( 0, range[ 0 ]+1 ) + srcStr.substring( range[ 1 ], srcStr.length );
 }
 
 //
@@ -1997,7 +1733,7 @@ function _strButSingle( srcStr, range, ins )
  * @namespace Tools
  */
 
-let strBut = _.vectorize( _strButSingle );
+let strBut = _.vectorize( _strBut );
 
 //
 
@@ -4003,17 +3739,6 @@ let Proto =
   strUnicodeEscape,
   strReverse,
 
-  // stripper
-
-  strStrip,
-  strsStrip : _.vectorize( strStrip ),
-  strStripLeft,
-  strsStripLeft : _.vectorize( strStripLeft ),
-  strStripRight,
-  strsStripRight : _.vectorize( strStripRight ),
-  strRemoveAllSpaces : _.vectorize( _strRemoveAllSpaces ),
-  strStripEmptyLines : _.vectorize( _strStripEmptyLines ),
-
   // splitter
 
   strSplitStrNumber, /* experimental */
@@ -4023,9 +3748,9 @@ let Proto =
 
   // extractor
 
-  _strOnlySingle,
+  _strOnly,
   strOnly,
-  _strButSingle,
+  _strBut,
   strBut,
   strUnjoin,
 
