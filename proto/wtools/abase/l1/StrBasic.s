@@ -1576,13 +1576,6 @@ let strOnly = _.vectorize( _strOnly );
  * and replaces it to new string {-ins-}.
  * The end value of the range is not included in the substring.
  *
- * @param { String } srcStr - Source string.
- * @param { Range } range - Range to get substring.
- * If range[ 0 ] or range[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
- * @param { String|Long } ins - Inserted string or array with inserted elements.
- * If {-ins-} is a Long, then routine concatenates string from elements of Long. The delimeter is single space.
- * If {-ins-} is not provided or if it is undefined, then routine removes substring from source string to a given range.
- *
  * @example
  * _._strBut( '', [ 0, 2 ] );
  * // returns ''
@@ -1592,15 +1585,15 @@ let strOnly = _.vectorize( _strOnly );
  * // returns ''
  *
  * @example
- * _._strBut( 'first', [ 0, 2 ] );
+ * _._strBut( 'first', [ 0, 1 ] );
  * // returns 'rst'
  *
  * @example
- * _._strBut( 'first', [ -2, 5 ] );
+ * _._strBut( 'first', [ -2, 4 ] );
  * // returns 'fir'
  *
  * @example
- * _._strBut( 'first', [ 2, 2 ] );
+ * _._strBut( 'first', [ 2, 1 ] );
  * // returns 'first'
  *
  * @example
@@ -1612,17 +1605,23 @@ let strOnly = _.vectorize( _strOnly );
  * // returns 'a b c'
  *
  * @example
- * _._strBut( 'first', [ 0, 2 ], 'abc' );
+ * _._strBut( 'first', [ 0, 1 ], 'abc' );
  * // returns 'abcrst'
  *
  * @example
- * _._strBut( 'first', [ -2, 5 ], [ 'a', 'b', 'c' ] );
+ * _._strBut( 'first', [ -2, 4 ], [ 'a', 'b', 'c' ] );
  * // returns 'fira b c'
  *
  * @example
- * _._strBut( 'first', [ 2, 2 ], 'abc' );
+ * _._strBut( 'first', [ 2, 1 ], 'abc' );
  * // returns 'fiabcrst'
  *
+ * @param { String } srcStr - Source string.
+ * @param { Crange } crange - Closed range to get substring.
+ * If crange[ 0 ] or crange[ 1 ] is less then 0, then reference point is length of source string {-srcStr-}.
+ * @param { String|Long } ins - Inserted string or array with inserted elements.
+ * If {-ins-} is a Long, then routine concatenates string from elements of Long. The delimeter is single space.
+ * If {-ins-} is not provided or if it is undefined, then routine removes substring from source string to a given range.
  * @function _strBut
  * @returns { String } - Returns source string, part of which replaced to the new value.
  * @throws { Error } If arguments.length is less then two or more then three.
@@ -1632,7 +1631,7 @@ let strOnly = _.vectorize( _strOnly );
  * @namespace Tools
  */
 
-function _strBut( srcStr, range, ins )
+function _strBut( srcStr, crange, ins )
 {
 
   /*
@@ -1640,26 +1639,26 @@ function _strBut( srcStr, range, ins )
   Dmytro : implemented a time ago
   */
 
-  if( _.numberIs( range ) )
+  if( _.numberIs( crange ) )
   {
-    if( range < 0 )
-    range = srcStr.length + range;
-    range = [ range, range + 1 ];
+    if( crange < 0 )
+    crange = srcStr.length + crange;
+    crange = [ crange, crange + 1 ];
   }
   else
   {
-    if( range[ 1 ] < 0 )
-    range[ 1 ] = srcStr.length + range[ 1 ];
-    if( range[ 0 ] < 0 )
-    range[ 0 ] = srcStr.length + range[ 0 ];
+    if( crange[ 1 ] < 0 )
+    crange[ 1 ] = srcStr.length + crange[ 1 ];
+    if( crange[ 0 ] < 0 )
+    crange[ 0 ] = srcStr.length + crange[ 0 ];
   }
 
-  if( range[ 0 ] > range[ 1 ] )
-  range[ 1 ] = range[ 0 ];
+  if( crange[ 0 ] > crange[ 1 ] )
+  crange[ 1 ] = crange[ 0 ];
 
   _.assert( arguments.length === 2 || arguments.length === 3 );
   _.assert( _.strIs( srcStr ) );
-  _.assert( _.rangeDefined( range ) );
+  _.assert( _.rangeDefined( crange ) );
   _.assert( ins === undefined || _.strIs( ins ) || _.longIs( ins ) );
   _.assert( !_.longIs( ins ), 'not implemented' );
 
@@ -1670,11 +1669,11 @@ function _strBut( srcStr, range, ins )
   */
 
   if( _.longIs( ins ) )
-  return srcStr.substring( 0, range[ 0 ]+1 ) + ins.join( ' ' ) + srcStr.substring( range[ 1 ], srcStr.length );
+  return srcStr.substring( 0, crange[ 0 ]+1 ) + ins.join( ' ' ) + srcStr.substring( crange[ 1 ], srcStr.length );
   else if( ins )
-  return srcStr.substring( 0, range[ 0 ]+1 ) + ins + srcStr.substring( range[ 1 ], srcStr.length );
+  return srcStr.substring( 0, crange[ 0 ]+1 ) + ins + srcStr.substring( crange[ 1 ], srcStr.length );
   else
-  return srcStr.substring( 0, range[ 0 ]+1 ) + srcStr.substring( range[ 1 ], srcStr.length );
+  return srcStr.substring( 0, crange[ 0 ]+1 ) + srcStr.substring( crange[ 1 ], srcStr.length );
 }
 
 //
