@@ -1576,49 +1576,41 @@ let strOnly = _.vectorize( _strOnly );
 // srcStr:[ * str ] ins:[ * str ] -> [ * str ]
 
 /**
- * Routine _strBut() gets substring out of source string {-srcStr-} according to a given range {-range-}
- * and replaces it to new string {-ins-}.
- * The end value of the range is not included in the substring.
+ * Routine _strBut() replaces substring from source string {-srcStr-} to new value {-ins-}
+ * The ranges of substring defines according to a given range {-crange-}.
+ * The end value of the range is included in the substring.
  *
  * @example
  * _._strBut( '', [ 0, 2 ] );
- * // returns ''
+ * // returns : ''
  *
  * @example
  * _._strBut( 'first', [ 0, 7 ] );
- * // returns ''
+ * // returns : ''
  *
  * @example
  * _._strBut( 'first', [ 0, 1 ] );
- * // returns 'rst'
+ * // returns : 'rst'
  *
  * @example
  * _._strBut( 'first', [ -2, 4 ] );
- * // returns 'fir'
+ * // returns : 'firt'
  *
  * @example
  * _._strBut( 'first', [ 2, 1 ] );
- * // returns 'first'
- *
- * @example
- * _._strBut( '', [ 0, 2 ], 'abc' );
- * // returns 'abc'
- *
- * @example
- * _._strBut( 'first', [ 0, 7 ], [ 'a', 'b', 'c' ] );
- * // returns 'a b c'
+ * // returns : 'first'
  *
  * @example
  * _._strBut( 'first', [ 0, 1 ], 'abc' );
- * // returns 'abcrst'
+ * // returns : 'abcrst'
  *
  * @example
- * _._strBut( 'first', [ -2, 4 ], [ 'a', 'b', 'c' ] );
- * // returns 'fira b c'
+ * _._strBut( 'first', [ 0, 1 ], [ 'a', 'b', 'c' ] );
+ * // returns : [ 'arst', 'brst', 'crst' ]
  *
  * @example
  * _._strBut( 'first', [ 2, 1 ], 'abc' );
- * // returns 'fiabcrst'
+ * // returns : [ 'fiarst', 'fibrst', 'ficrst' ]
  *
  * @param { String } srcStr - Source string.
  * @param { Crange } crange - Closed range to get substring.
