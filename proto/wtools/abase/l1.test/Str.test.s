@@ -3891,13 +3891,13 @@ function _strOnly( test )
 
   test.case = 'srcStr, range reversed';
   var got = _._strOnly( 'Hello', [ 4, 0 ] );
-  var expected = 'Hell';
+  var expected = '';
   test.identical( got, expected );
 
   /* */
 
   test.case = 'srcStr, range[ 0 ] > range[ 1 ], range[ 0 ] < 0';
-  var got = _._strOnly( 'Hello', [ -2, -1 ] );
+  var got = _._strOnly( 'Hello', [ -2, -3 ] );
   var expected = '';
   test.identical( got, expected );
 
@@ -10923,7 +10923,7 @@ ghij
 
   test.case = 'single line in the middle';
 
-  var crange = [ 3, 5 ];
+  var crange = [ 3, 4 ];
   var sub = _.strOnly( srcStr, crange );
   var lrange = _.strLinesRangeWithCharRange( srcStr, crange );
   test.identical( lrange, [ 2, 3 ] );
