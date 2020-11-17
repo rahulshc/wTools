@@ -1495,7 +1495,7 @@ function _strOnly( srcStr, crange )
   }
   else
   {
-    if( crange[ 1 ] < 0 )
+    if( crange[ 1 ] < -1 )
     crange[ 1 ] = srcStr.length + crange[ 1 ];
     if( crange[ 0 ] < 0 )
     crange[ 0 ] = srcStr.length + crange[ 0 ];
@@ -1652,7 +1652,7 @@ function _strBut( srcStr, crange, ins )
   }
   else
   {
-    if( crange[ 1 ] < 0 )
+    if( crange[ 1 ] < -1 )
     crange[ 1 ] = srcStr.length + crange[ 1 ];
     if( crange[ 0 ] < 0 )
     crange[ 0 ] = srcStr.length + crange[ 0 ];
@@ -3670,7 +3670,7 @@ function strLinesRangeWithCharRange_body( o )
 {
 
   let head = o.src.substring( 0, o.charsRangeLeft[ 0 ] );
-  let mid = o.src.substring( o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 1 ] );
+  let mid = o.src.substring( o.charsRangeLeft[ 0 ], o.charsRangeLeft[ 1 ] + 1 );
   let result = []
 
   result[ 0 ] = _.strLinesCount( head )-1;
