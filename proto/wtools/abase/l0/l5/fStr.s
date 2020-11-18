@@ -737,42 +737,49 @@ function strRight( src, ins, range )
 //
 
 /**
- * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
- * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
+ * Routine strInsideOf() returns part of a source string {-src-} between first occurrence of {-begin-} and last occurrence of {-end-}.
+ * Returns result if {-begin-} and {-end-} exists in the {-src-} and index of {-end-} is bigger the index of {-begin-}.
  * Otherwise returns undefined.
  *
- * @param { String } src - The source string.
- * @param { String } begin - String to find from begin of source.
- * @param { String } end - String to find from end source.
+ * @example
+ * _.strInsideOf({ src : 'abcd', begin : 'a', end : 'd', pairing : 0 });
+ * // returns : 'bc'
  *
  * @example
- * _.strInsideOf( 'abcd', 'a', 'd' );
- * // returns 'bc'
- *
- * @example
- * _.strInsideOf( 'aabcc', 'a', 'c' );
- * // returns 'aabcc'
- *
- * @example
- * _.strInsideOf( 'aabcc', 'a', 'a' );
- * // returns 'a'
- *
- * @example
- * _.strInsideOf( 'abc', 'a', 'a' );
- * // returns undefined
- *
- * @example
- * _.strInsideOf( 'abcd', 'x', 'y' )
- * // returns undefined
+ * _.strInsideOf({ src : 'abcd', begin : 'a', end : 'd', pairing : 1 });
+ * // returns : undefined 
  *
  * @example
  * // index of begin is bigger then index of end
  * _.strInsideOf( 'abcd', 'c', 'a' )
- * // returns undefined
+ * // returns : undefined
  *
- * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
- * @throws { Exception } If all arguments are not strings;
- * @throws { Exception } If ( arguments.length ) is not equal 3.
+ * @example
+ * _.strInsideOf( 'abc', 'a', 'a' );
+ * // returns : undefined
+ *
+ * @example
+ * _.strInsideOf( 'abcd', 'x', 'y' )
+ * // returns : undefined
+ *
+ * @example
+ * _.strInsideOf( 'aabcc', 'a', 'a' );
+ * // returns : 'a'
+ *
+ * Basic parameter set :
+ * @param { String } src - The source string.
+ * @param { String } begin - String to find from begin of source.
+ * @param { String } end - String to find from end source.
+ * Alternative parameter set :
+ * @param { String } o - Options map.
+ * @param { String } o.src - The source string.
+ * @param { String } o.begin - String to find from begin of source.
+ * @param { String } o.end - String to find from end source.
+ * @param { String } o.pairing - Enables .
+ * @returns { String|Undefined } - Returns part of source string between {-begin-} and {-end-} or undefined.
+ * @throws { Exception } If arguments.length is 1 and argument is not an options map {-o-}.
+ * @throws { Exception } If arguments.length is 3 and any of arguments is not a String.
+ * @throws { Exception } If arguments.length neither is 1 nor 3.
  * @function strInsideOf
  * @namespace Tools
  */
