@@ -3652,6 +3652,35 @@ function strInsideOf_OptionPairingIs0( test )
   test.identical( got, [ undefined, undefined, undefined ] );
 
   test.close( 'src - string, begin !== end' );
+
+  /* - */
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'without arguments';
+  test.shouldThrowErrorSync( () => _.strInsideOf_() );
+
+  test.case = 'not enough arguments';
+  test.shouldThrowErrorSync( () => _.strInsideOf_( 'str', 's' ) );
+
+  test.case = 'extra arguments';
+  test.shouldThrowErrorSync( () => _.strInsideOf_( 'str', 's', '', 1 ) );
+
+  test.case = 'wrong type of src';
+  test.shouldThrowErrorSync( () => _.strInsideOf_( 1, '', '' ) );
+
+  test.case = 'wrong type of begin';
+  test.shouldThrowErrorSync( () => _.strInsideOf_( 'str', 1, '' ) );
+
+  test.case = 'wrong type of end';
+  test.shouldThrowErrorSync( () => _.strInsideOf_( 'str', '', 1 ) );
+
+  test.case = 'wrong type of options map';
+  test.shouldThrowErrorSync( () => _.strInsideOf_( 'str' ) );
+
+  test.case = 'unknown property in options map';
+  test.shouldThrowErrorSync( () => _.strInsideOf_({ src : 'str', begin : '', end : '', unknown : 1 }) );
 }
 
 //
