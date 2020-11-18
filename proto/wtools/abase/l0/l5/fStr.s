@@ -823,7 +823,6 @@ function strInsideOf_head( routine, args )
   return o;
 }
 
-// function strInsideOf_body( src, begin, end )
 function strInsideOf_body( o )
 {
   let beginOf, endOf;
@@ -853,7 +852,69 @@ strInsideOf_body.defaults =
   pairing : 0, /* xxx : set to 1 */
 }
 
+//
+
 let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body ); /* aaa2 for Dmytro : cover please */ /* Dmytro : covered */
+
+//
+
+function strInsideOf__head( routine, args )
+{
+
+  let o = args[ 0 ];
+  if( _.mapIs( o ) )
+  {
+    _.assert( args.length === 1, 'Expects exactly one argument' );
+  }
+  else
+  {
+    o = Object.create( null );
+    o.src = args[ 0 ];
+    o.begin = args[ 1 ];
+    o.end = args[ 2 ];
+    _.assert( args.length === 3, 'Expects exactly three arguments' );
+  }
+
+  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
+  _.routineOptions( routine, o );
+
+  if( _.longIs( o.begin ) && o.begin.length === 1 )
+  o.begin = o.begin[ 0 ];
+  if( _.longIs( o.end ) && o.end.length === 1 )
+  o.end = o.end[ 0 ];
+
+  return o;
+}
+
+function strInsideOf__body( o )
+{
+
+  let begin = _.strBeginOf( o.src, o.begin );
+  if( begin === undefined )
+  return [ undefined, undefined, undefined ];
+
+  let end = _.strEndOf( o.src, o.end );
+  if( end === undefined )
+  return [ undefined, undefined, undefined ];
+
+  if( o.pairing )
+  if( begin !== end )
+  return [ undefined, undefined, undefined ];
+
+  let mid = o.src.substring( begin.length, o.src.length - end.length );
+
+  return [ begin, mid, end ];
+}
+
+strInsideOf__body.defaults =
+{
+  src : null,
+  begin : null,
+  end : null,
+  pairing : 0, /* xxx : set to 1 */
+}
+
+let strInsideOf_ = _.routineUnite( strInsideOf__head, strInsideOf__body );
 
 //
 
@@ -3105,7 +3166,8 @@ let Extension =
   strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
   strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ),
 
-  strInsideOf, /* qqq for Dmytro : implement perfect coverage */
+  strInsideOf, /* aaa for Dmytro : implement perfect coverage */ /* Dmytro : covered */
+  strInsideOf_, /* !!! use instead of strInsideOf */ /* Dmytro : covered, routine returns result in format : [ begin, mid, end ] */
   strOutsideOf,
 
   // replacers
