@@ -747,7 +747,7 @@ function strRight( src, ins, range )
  *
  * @example
  * _.strInsideOf({ src : 'abcd', begin : 'a', end : 'd', pairing : 1 });
- * // returns : undefined 
+ * // returns : undefined
  *
  * @example
  * // index of begin is bigger then index of end
@@ -853,7 +853,7 @@ strInsideOf_body.defaults =
   pairing : 0, /* xxx : set to 1 */
 }
 
-let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body ); /* qqq2 for Dmytro : cover please */
+let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body ); /* aaa2 for Dmytro : cover please */ /* Dmytro : covered */
 
 //
 

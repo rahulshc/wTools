@@ -3034,6 +3034,14 @@ function strInsideOf( test )
   var got = _.strInsideOf( 'str', '', '' );
   test.identical( got, 'str' );
 
+  test.case = 'src - string, begin - empty string, end - empty string';
+  var got = _.strInsideOf( 'str', 's', 'r' );
+  test.identical( got, 't' );
+
+  test.case = 'src - string, begin - empty string, end - empty string';
+  var got = _.strInsideOf( 'sstrr', 's', 'r' );
+  test.identical( got, 'str' );
+
   test.case = 'src - string, begin - empty string, end - !!!, not equal';
   var got = _.strInsideOf( 'str', '', '!!!' );
   test.identical( got, undefined );
@@ -3115,6 +3123,22 @@ function strInsideOf( test )
   test.case = 'src - string, begin - empty strings, end - empty strings';
   var got = _.strInsideOf( 'str', [ '', '', '' ], [ '', '', '' ] );
   test.identical( got, 'str' );
+
+  test.case = 'src - string, begin - strings, end - strings, partial occurrence';
+  var got = _.strInsideOf( 'str', [ 's', 't', 'r' ], [ 'r', 't', 's' ] );
+  test.identical( got, 't' );
+
+  test.case = 'src - string, begin - strings, end - strings, partial occurrence';
+  var got = _.strInsideOf( 'str', [ 'str', 't', 'r' ], [ 'tr', 't', 's' ] );
+  test.identical( got, 'tr' );
+
+  test.case = 'src - string, begin - strings, end - strings full occurrence';
+  var got = _.strInsideOf( 'str', [ 'str', 't', 'r' ], [ 'str', 't', 's' ], );
+  test.identical( got, 'str' );
+
+  test.case = 'src - string, begin - empty strings, end - empty strings';
+  var got = _.strInsideOf( 'str', [ 'str', 't', 'r' ], [ 'tr', 't', 's' ] );
+  test.identical( got, 'tr' );
 
   test.case = 'src - string, begin - empty string, end - mixed, not equal';
   var got = _.strInsideOf( 'str', [ '' ], [ '!!!', 'q', 'b' ] );
@@ -3266,6 +3290,141 @@ function strInsideOf( test )
   test.shouldThrowErrorSync( () => _.strInsideOf( 1, '', '' ) );
   test.shouldThrowErrorSync( () => _.strInsideOf( 'str', 1, '' ) );
   test.shouldThrowErrorSync( () => _.strInsideOf( 'str', '', 1 ) );
+}
+
+//
+
+function strInsideOfOptionPairing( test )
+{
+  test.open( 'src - empty string, pairing - 0' );
+
+  test.case = 'begin - empty string, end - empty string';
+  var got = _.strInsideOf({ src : '', begin : '', end : '', pairing : 0 });
+  test.identical( got, '' );
+
+  test.case = 'begin - string, end - empty string';
+  var got = _.strInsideOf({ src : '', begin : 'a', end : '', pairing : 0 });
+  test.identical( got, undefined );
+
+  test.case = 'begin - empty string, end - string';
+  var got = _.strInsideOf({ src : '', begin : '', end : 'a', pairing : 0 });
+  test.identical( got, undefined );
+
+  test.case = 'begin - string, end - string';
+  var got = _.strInsideOf({ src : '', begin : 'a', end : 'a', pairing : 0 });
+  test.identical( got, undefined );
+
+  test.close( 'src - empty string, pairing - 0' );
+
+  /* - */
+
+  test.open( 'src - string, begin === end, pairing - 0' );
+
+  test.case = 'begin - empty string, end - empty string';
+  var got = _.strInsideOf({ src : 'abba', begin : '', end : '', pairing : 0 });
+  test.identical( got, 'abba' );
+
+  test.case = 'begin - string, end - empty string';
+  var got = _.strInsideOf({ src : 'abba', begin : 'a', end : '', pairing : 0 });
+  test.identical( got, 'bba' );
+
+  test.case = 'begin - empty string, end - string';
+  var got = _.strInsideOf({ src : 'abba', begin : '', end : 'a', pairing : 0 });
+  test.identical( got, 'abb' );
+
+  test.case = 'begin - string, end - string';
+  var got = _.strInsideOf({ src : 'abba', begin : 'a', end : 'a', pairing : 0 });
+  test.identical( got, 'bb' );
+
+  test.close( 'src - string, begin === end, pairing - 0' );
+
+  /* - */
+
+  test.open( 'src - string, begin !== end, pairing - 0' );
+
+  test.case = 'begin - empty string, end - empty string';
+  var got = _.strInsideOf({ src : 'abcd', begin : '', end : '', pairing : 0 });
+  test.identical( got, 'abcd' );
+
+  test.case = 'begin - string, end - empty string';
+  var got = _.strInsideOf({ src : 'abcd', begin : 'a', end : '', pairing : 0 });
+  test.identical( got, 'bcd' );
+
+  test.case = 'begin - empty string, end - string';
+  var got = _.strInsideOf({ src : 'abcd', begin : '', end : 'd', pairing : 0 });
+  test.identical( got, 'abc' );
+
+  test.case = 'begin - string, end - string';
+  var got = _.strInsideOf({ src : 'abba', begin : 'a', end : 'd', pairing : 0 });
+  test.identical( got, undefined );
+
+  test.close( 'src - string, begin !== end, pairing - 0' );
+
+  /* - */
+
+  test.open( 'src - empty string, pairing - 1' );
+
+  test.case = 'begin - empty string, end - empty string';
+  var got = _.strInsideOf({ src : '', begin : '', end : '', pairing : 1 });
+  test.identical( got, '' );
+
+  test.case = 'begin - string, end - empty string';
+  var got = _.strInsideOf({ src : '', begin : 'a', end : '', pairing : 1 });
+  test.identical( got, undefined );
+
+  test.case = 'begin - empty string, end - string';
+  var got = _.strInsideOf({ src : '', begin : '', end : 'a', pairing : 1 });
+  test.identical( got, undefined );
+
+  test.case = 'begin - string, end - string';
+  var got = _.strInsideOf({ src : '', begin : 'a', end : 'a', pairing : 1 });
+  test.identical( got, undefined );
+
+  test.close( 'src - empty string, pairing - 1' );
+
+  /* - */
+
+  test.open( 'src - string, begin === end, pairing - 1' );
+
+  test.case = 'begin - empty string, end - empty string';
+  var got = _.strInsideOf({ src : 'abba', begin : '', end : '', pairing : 1 });
+  test.identical( got, 'abba' );
+
+  test.case = 'begin - string, end - empty string';
+  var got = _.strInsideOf({ src : 'abba', begin : 'a', end : '', pairing : 1 });
+  test.identical( got, undefined );
+
+  test.case = 'begin - empty string, end - string';
+  var got = _.strInsideOf({ src : 'abba', begin : '', end : 'a', pairing : 1 });
+  test.identical( got, undefined );
+
+  test.case = 'begin - string, end - string';
+  var got = _.strInsideOf({ src : 'abba', begin : 'a', end : 'a', pairing : 1 });
+  test.identical( got, 'bb' );
+
+  test.close( 'src - string, begin === end, pairing - 1' );
+
+  /* - */
+
+  test.open( 'src - string, begin !== end, pairing - 1' );
+
+  test.case = 'begin - empty string, end - empty string';
+  var got = _.strInsideOf({ src : 'abcd', begin : '', end : '', pairing : 1 });
+  test.identical( got, 'abcd' );
+
+  test.case = 'begin - string, end - empty string';
+  var got = _.strInsideOf({ src : 'abcd', begin : 'a', end : '', pairing : 1 });
+  test.identical( got, undefined );
+
+  test.case = 'begin - empty string, end - string';
+  var got = _.strInsideOf({ src : 'abcd', begin : '', end : 'd', pairing : 1 });
+  test.identical( got, undefined );
+
+  test.case = 'begin - string, end - string';
+  var got = _.strInsideOf({ src : 'abba', begin : 'a', end : 'd', pairing : 1 });
+  test.identical( got, undefined );
+
+  test.close( 'src - string, begin !== end, pairing - 1' );
 }
 
 //
@@ -16017,6 +16176,7 @@ var Self =
     strQuoteAnalyze,
 
     strInsideOf,
+    strInsideOfOptionPairing,
     strOutsideOf,
 
     strRemoveBegin,
