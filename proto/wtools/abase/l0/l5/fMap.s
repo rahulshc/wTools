@@ -3026,91 +3026,97 @@ function _mapOnly_( o )
 
   if( o.dstMap === o.srcMaps || o.dstMap === o.srcMaps[ 0 ] )
   {
-
     if( _.longIs( screenMap ) )
-    {
-      for( let s in srcMaps )
-      {
-        let srcMap = srcMaps[ s ];
-
-        for( let k in srcMap )
-        {
-          let m;
-          for( m = 0 ; m < screenMap.length ; m++ )
-          {
-            if( k === String( m ) )
-            break;
-            if( k === screenMap[ m ] )
-            break;
-            if( _.mapLike( screenMap[ m ] ) && k in screenMap[ m ] )
-            break;
-          }
-
-          if( m === screenMap.length )
-          delete srcMap[ k ];
-          else
-          o.filter.call( this, dstMap, srcMap, k );
-        }
-      }
-    }
+    _mapsFilterWithLongScreenMap.call( this, mapsIdenticalFilterWithLong );
     else
-    {
-      for( let s in srcMaps )
-      {
-        let srcMap = srcMaps[ s ];
-
-        for( let k in srcMap )
-        if( !( k in screenMap ) )
-        delete srcMap[ k ];
-        else
-        o.filter.call( this, dstMap, srcMaps[ s ], k );
-      }
-    }
-
+    _mapsIdenticalFilter.call( this );
   }
   else
   {
-
     if( _.longIs( screenMap ) )
-    {
-      for( let s in srcMaps )
-      {
-        let srcMap = srcMaps[ s ];
-
-        for( let k in srcMap )
-        {
-          let m;
-          for( m = 0 ; m < screenMap.length ; m++ )
-          {
-            if( k === String( m ) )
-            break;
-            if( k === screenMap[ m ] )
-            break;
-            if( _.mapLike( screenMap[ m ] ) && k in screenMap[ m ] )
-            break;
-          }
-
-          if( m !== screenMap.length )
-          o.filter.call( this, dstMap, srcMaps[ s ], k );
-        }
-      }
-    }
+    _mapsFilterWithLongScreenMap.call( this, mapsNotIdenticalFilterWithLong );
     else
-    {
-      for( let k in screenMap )
-      {
-        if( screenMap[ k ] === undefined )
-        continue;
-
-        for( let s in srcMaps )
-        if( k in srcMaps[ s ] )
-        o.filter.call( this, dstMap, srcMaps[ s ], k );
-      }
-    }
-
+    _mapsNotIdenticalFilter.call( this )
   }
 
   return dstMap;
+
+  /* */
+
+  function _mapsFilterWithLongScreenMap( filterCallback )
+  {
+    for( let s in srcMaps )
+    {
+      let srcMap = srcMaps[ s ];
+
+      for( let k in srcMap )
+      {
+        let m;
+        for( m = 0 ; m < screenMap.length ; m++ )
+        {
+          if( k === String( m ) )
+          break;
+          if( k === screenMap[ m ] )
+          break;
+          if( _.mapLike( screenMap[ m ] ) && k in screenMap[ m ] )
+          break;
+        }
+
+        filterCallback.call( this, srcMap, m, k );
+      }
+    }
+  }
+
+  /* */
+
+  function mapsIdenticalFilterWithLong( src, index, key )
+  {
+    if( index === screenMap.length )
+    delete src[ key ];
+    else
+    o.filter.call( this, dstMap, src, key );
+  }
+
+  /* */
+
+  function mapsNotIdenticalFilterWithLong( src, index, key )
+  {
+    if( index !== screenMap.length )
+    o.filter.call( this, dstMap, src, key );
+  }
+
+  /* */
+
+  function _mapsIdenticalFilter()
+  {
+    for( let s in srcMaps )
+    {
+      let srcMap = srcMaps[ s ];
+
+      for( let k in srcMap )
+      {
+        if( !( k in screenMap ) )
+        delete srcMap[ k ];
+        else
+        o.filter.call( this, dstMap, srcMap, k );
+      }
+    }
+  }
+
+  /* */
+
+  function _mapsNotIdenticalFilter()
+  {
+    for( let k in screenMap )
+    {
+      if( screenMap[ k ] === undefined )
+      continue;
+
+      for( let s in srcMaps )
+      if( k in srcMaps[ s ] )
+      o.filter.call( this, dstMap, srcMaps[ s ], k );
+    }
+  }
 }
 
 _mapOnly_.defaults =

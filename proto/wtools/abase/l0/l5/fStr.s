@@ -737,42 +737,53 @@ function strRight( src, ins, range )
 //
 
 /**
- * Returns part of a source string( src ) between first occurrence of( begin ) and last occurrence of( end ).
- * Returns result if ( begin ) and ( end ) exists in source( src ) and index of( end ) is bigger the index of( begin ).
+ * Routine strInsideOf() returns part of a source string {-src-} between first occurrence of {-begin-} and last occurrence of {-end-}.
+ * Returns result if {-begin-} and {-end-} exists in the {-src-} and index of {-end-} is bigger the index of {-begin-}.
  * Otherwise returns undefined.
  *
- * @param { String } src - The source string.
- * @param { String } begin - String to find from begin of source.
- * @param { String } end - String to find from end source.
+ * @example
+ * _.strInsideOf({ src : 'abcd', begin : 'a', end : 'd', pairing : 0 });
+ * // returns : 'bc'
  *
  * @example
- * _.strInsideOf( 'abcd', 'a', 'd' );
- * // returns 'bc'
- *
- * @example
- * _.strInsideOf( 'aabcc', 'a', 'c' );
- * // returns 'aabcc'
- *
- * @example
- * _.strInsideOf( 'aabcc', 'a', 'a' );
- * // returns 'a'
- *
- * @example
- * _.strInsideOf( 'abc', 'a', 'a' );
- * // returns undefined
- *
- * @example
- * _.strInsideOf( 'abcd', 'x', 'y' )
- * // returns undefined
+ * _.strInsideOf({ src : 'abcd', begin : 'a', end : 'd', pairing : 1 });
+ * // returns : undefined
  *
  * @example
  * // index of begin is bigger then index of end
  * _.strInsideOf( 'abcd', 'c', 'a' )
- * // returns undefined
+ * // returns : undefined
  *
- * @returns { string } Returns part of source string between ( begin ) and ( end ) or undefined.
- * @throws { Exception } If all arguments are not strings;
- * @throws { Exception } If ( arguments.length ) is not equal 3.
+ * @example
+ * _.strInsideOf( 'abc', 'a', 'a' );
+ * // returns : undefined
+ *
+ * @example
+ * _.strInsideOf( 'abcd', 'x', 'y' )
+ * // returns : undefined
+ *
+ * @example
+ * _.strInsideOf( 'a', 'a', 'a' );
+ * // returns : 'a'
+ *
+ * Basic parameter set :
+ * @param { String } src - The source string.
+ * @param { String|Array } begin - String or array of strings to find from begin of source.
+ * @param { String|Array } end - String or array of strings to find from end source.
+ * Alternative parameter set :
+ * @param { String } o - Options map.
+ * @param { String } o.src - The source string.
+ * @param { String|Array } o.begin - String or array of strings to find from begin of source.
+ * @param { String|Array } o.end - String or array of strings to find from end source.
+ * @param { BoolLike } o.pairing - If option is enabled and {-begin-} ( or {-end-} ) is an Array of strings, then
+ * both containerized {-begin-} and {-end-} should have equivalent lengths.
+ * @returns { String|Undefined } - Returns part of source string between {-begin-} and {-end-} or undefined.
+ * @throws { Exception } If arguments.length is 1 and argument is not an options map {-o-}.
+ * @throws { Exception } If arguments.length is 3 and any of arguments is not a String.
+ * @throws { Exception } If arguments.length neither is 1 nor 3.
+ * @throws { Exception } If {-o.pairing-} is true like and containerized version of {-o.begin-} and {-o.end-}
+ * have different length.
+ * @throws { Exception } If options map {-o-} has unknown properties.
  * @function strInsideOf
  * @namespace Tools
  */
@@ -816,7 +827,6 @@ function strInsideOf_head( routine, args )
   return o;
 }
 
-// function strInsideOf_body( src, begin, end )
 function strInsideOf_body( o )
 {
   let beginOf, endOf;
@@ -846,7 +856,122 @@ strInsideOf_body.defaults =
   pairing : 0, /* xxx : set to 1 */
 }
 
-let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body ); /* qqq2 for Dmytro : cover please */
+//
+
+let strInsideOf = _.routineUnite( strInsideOf_head, strInsideOf_body ); /* aaa2 for Dmytro : cover please */ /* Dmytro : covered */
+
+//
+
+/**
+ * Routine strInsideOf_() founds parts of a source string {-src-} between first occurrence of {-begin-} at the begin of {-src-}
+ * and first occurrence of {-end-} at the end of {-src-}.
+ * Returns result if {-begin-} and {-end-} exists in the {-src-} and index of {-end-} is bigger the index of {-begin-}.
+ * The format of returned value : [ begin, mid, end ].
+ * If {-src-} has not {-begin-} or {-end-} routine returns : [ undefined, undefined, undefined ].
+ * If option {-o.pairing-} is true and founded {-begin-} is not equivalent to founded {-end-},
+ * then routine returns : [ undefined, undefined, undefined ].
+ *
+ * @example
+ * _.strInsideOf_( 'abc', 'a', 'a' );
+ * // returns :[ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.strInsideOf_( 'abcd', 'x', 'y' )
+ * // returns : [ undefined, undefined, undefined ]
+ *
+ * @example
+ * _.strInsideOf_( 'abc', 'abc', 'abc' );
+ * // returns : 'abc'
+ *
+ * @example
+ * _.strInsideOf_({ src : 'abcd', begin : 'a', end : 'd', pairing : 0 });
+ * // returns : [ 'a', 'bc', 'd' ]
+ *
+ * @example
+ * _.strInsideOf_({ src : 'abcd', begin : 'a', end : 'd', pairing : 1 });
+ * // returns : [ undefined, undefined, undefined ]
+ *
+ * Basic parameter set :
+ * @param { String } src - The source string.
+ * @param { String|Array } begin - String or array of strings to find from begin of source.
+ * @param { String|Array } end - String or array of strings to find from end source.
+ * Alternative parameter set :
+ * @param { String } o - Options map.
+ * @param { String } o.src - The source string.
+ * @param { String|Array } o.begin - String or array of strings to find from begin of source.
+ * @param { String|Array } o.end - String or array of strings to find from end source.
+ * @param { BoolLike } o.pairing - If option is enabled, then founded begin of {-src-} and
+ * founded end of {-src-} should be identical.
+ * @returns { Array } - Returns array with parts of source string {-src-} in format : [ begin, mid, end ].
+ * If any of part has no entry, routine returns array : [ undefined, undefined, undefined ].
+ * If pairing is enabled, and founded begin and end is not equivalent, then routine returns : [ undefined, undefined, undefined ].
+ * @throws { Exception } If arguments.length is 1 and argument is not an options map {-o-}.
+ * @throws { Exception } If arguments.length is 3 and any of arguments is not a String.
+ * @throws { Exception } If arguments.length neither is 1 nor 3.
+ * @throws { Exception } If {-src-} ( {-o.src-} ) is not a String.
+ * @throws { Exception } If any of {-begin-} ( {-o.begin-} ) or {-end-} ( {-o.end-} ) is not a String or array of Strings.
+ * @throws { Exception } If options map {-o-} has unknown properties.
+ * @function strInsideOf_
+ * @namespace Tools
+ */
+
+function strInsideOf__head( routine, args )
+{
+
+  let o = args[ 0 ];
+  if( _.mapIs( o ) )
+  {
+    _.assert( args.length === 1, 'Expects exactly one argument' );
+  }
+  else
+  {
+    o = Object.create( null );
+    o.src = args[ 0 ];
+    o.begin = args[ 1 ];
+    o.end = args[ 2 ];
+    _.assert( args.length === 3, 'Expects exactly three arguments' );
+  }
+
+  _.assert( _.strIs( o.src ), 'Expects string {-o.src-}' );
+  _.routineOptions( routine, o );
+
+  if( _.longIs( o.begin ) && o.begin.length === 1 )
+  o.begin = o.begin[ 0 ];
+  if( _.longIs( o.end ) && o.end.length === 1 )
+  o.end = o.end[ 0 ];
+
+  return o;
+}
+
+function strInsideOf__body( o )
+{
+
+  let begin = _.strBeginOf( o.src, o.begin );
+  if( begin === undefined )
+  return [ undefined, undefined, undefined ];
+
+  let end = _.strEndOf( o.src, o.end );
+  if( end === undefined )
+  return [ undefined, undefined, undefined ];
+
+  if( o.pairing )
+  if( begin !== end )
+  return [ undefined, undefined, undefined ];
+
+  let mid = o.src.substring( begin.length, o.src.length - end.length );
+
+  return [ begin, mid, end ];
+}
+
+strInsideOf__body.defaults =
+{
+  src : null,
+  begin : null,
+  end : null,
+  pairing : 0, /* xxx : set to 1 */
+}
+
+let strInsideOf_ = _.routineUnite( strInsideOf__head, strInsideOf__body );
 
 //
 
@@ -3098,7 +3223,8 @@ let Extension =
   strsEquivalentAny : _.vectorizeAny( _.strEquivalent, 2 ),
   strsEquivalentNone : _.vectorizeNone( _.strEquivalent, 2 ),
 
-  strInsideOf, /* qqq for Dmytro : implement perfect coverage */
+  strInsideOf, /* aaa for Dmytro : implement perfect coverage */ /* Dmytro : covered */
+  strInsideOf_, /* !!! use instead of strInsideOf */ /* Dmytro : covered, routine returns result in format : [ begin, mid, end ] */
   strOutsideOf,
 
   // replacers
