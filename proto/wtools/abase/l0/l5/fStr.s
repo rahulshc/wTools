@@ -1904,6 +1904,11 @@ function strSplitsQuotedRejoin_body( o )
       {
         let splitNew = o.splits.splice( s, 2 ).join( '' );
         o.splits[ s-1 ] = o.splits[ s-1 ] + splitNew;
+        // let splitNew = o.splits.splice( s, 2 ).join( '' );
+        // if( o.onQuoting )
+        // o.splits[ s-1 ] = o.onQuoting( splitNew, o );
+        // else
+        // o.splits[ s-1 ] = o.splits[ s-1 ] + splitNew;
       }
       else
       {

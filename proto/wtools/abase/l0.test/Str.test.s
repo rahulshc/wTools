@@ -9668,24 +9668,216 @@ function strSplitsQuotedRejoin( test )
   var expected = [ `<r1>`, `<r2>` ];
   test.identical( splits, expected );
 
-  test.case = 'basic2';
+  /* */
 
-  var delimeter = [ '-', '+' ];
-  var splits = [ `-`, `r1`, `+`, `-`, `r2`, `+` ];
-  debugger;
+  test.case = 'basic, preservingQuoting : 0';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `<`, `r1`, `>`, `<`, `r2`, `>` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 0,
+    inliningQuoting : 0,
+  });
+  var expected = [ `r1`, `r2` ];
+
+  /* */
+
+  test.case = 'prefix & postfix are the same';
+
+  var delimeter = [ '-' ];
+  var splits = [ `-`, `r1`, `-`, `-`, `r2`, `-` ];
   _.strSplitsQuotedRejoin
   ({
     splits,
     delimeter,
     quoting : 1,
     quotingPrefixes : [ '-' ],
-    quotingPostfixes : [ '+' ],
+    quotingPostfixes : [ '-' ],
     preservingQuoting : 1,
     inliningQuoting : 0,
   });
-  debugger;
-  var expected = [ `-r1+`, `-r2+` ];
+  var expected = [ `-r1-`, `-r2-` ];
   test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'prefix & postfix are different, 2 prefixes';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `<`, `<`, `r1`, `>`, `<`, `r2`, `>` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<<r1>`, `<r2>` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'prefix & postfix are different, 2 postfixes';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `<`, `r1`, `>`, `>`, `<`, `r2`, `>` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<r1>`, `>`, `<r2>` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'prefix & postfix are different, no matching postfix first';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `<`, `r1`, `<`, `r2`, `>` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<r1<r2>` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'prefix & postfix are different, no matching postfix last';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `<`, `r1`, `>`, `<`, `r2` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<r1>`, `<`, `r2` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'prefix & postfix are different, no matching postfix first, with delimiter';
+
+  var delimeter = [ '|' ];
+  var splits = [ `<`, `r1`, `|`, `<`, `r2`, `>` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<r1|<r2>` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'prefix & postfix are different, no matching postfix last, with delimiter';
+
+  var delimeter = [ '|' ];
+  var splits = [ `<`, `r1`, `>`, `|`, `<`, `r2` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<r1>`, `|<r2` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'prefix & postfix are different, postfix before prefix';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `>`, `r1`, `<` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `>`, `r1`, `<` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = 'prefix & postfix are different, only prefix in splits';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [ `<` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<` ];
+  test.identical( splits, expected );
+
+  if( !Config.debug )
+  return;
+
+  test.case = 'no arguments';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSplitsQuotedRejoin();
+  });
+
+  test.case = 'argument is wrong';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSplitsQuotedRejoin([]);
+  });
+
+  test.case = 'argument is wrong';
+  test.shouldThrowErrorSync( function()
+  {
+    _.strSplitsQuotedRejoin( 13 );
+  });
+
 
 }
 
