@@ -1824,8 +1824,6 @@ function strSplitsQuotedRejoin_head( routine, args )
     }
     else _.assert( 0, 'unexpected type of {-o.quoting-}' );
 
-    _.assert( _.boolLike( o.pairing ), 'option::o.pairing must be BoolLike' );
-
     _.assert
     (
       !o.pairing || o.quotingPrefixes.length === o.quotingPostfixes.length,
