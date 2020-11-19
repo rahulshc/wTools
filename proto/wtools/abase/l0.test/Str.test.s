@@ -9765,7 +9765,7 @@ function strSplitsQuotedRejoin( test )
   ({
     splits,
     quoting : 1,
-    quotingPrefixes : [ '<<', ],
+    quotingPrefixes : [ '<<' ],
     quotingPostfixes : [ '>>>' ],
     preservingQuoting : 1,
     inliningQuoting : 0,
@@ -9923,6 +9923,23 @@ function strSplitsQuotedRejoin( test )
     inliningQuoting : 0,
   });
   var expected = [ `>`, `r1`, `<` ];
+  test.identical( splits, expected );
+
+  /* */
+
+  test.case = `quotingPrefixes : [ '{', '<' ], quotingPostfixes : [ '>', '}' ]`;
+
+  var splits = [ `{`, `r1`, `>`, `<`, `r2`, `}` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    quoting : 1,
+    quotingPrefixes : [ '{', '<' ],
+    quotingPostfixes : [ '>', '}' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `{r1>`, `<r2}` ];
   test.identical( splits, expected );
 
   /* */
