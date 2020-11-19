@@ -9668,6 +9668,25 @@ function strSplitsQuotedRejoin( test )
   var expected = [ `<r1>`, `<r2>` ];
   test.identical( splits, expected );
 
+  test.case = 'basic2';
+
+  var delimeter = [ '-', '+' ];
+  var splits = [ `-`, `r1`, `+`, `-`, `r2`, `+` ];
+  debugger;
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '-' ],
+    quotingPostfixes : [ '+' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  debugger;
+  var expected = [ `-r1+`, `-r2+` ];
+  test.identical( splits, expected );
+
 }
 
 // --
