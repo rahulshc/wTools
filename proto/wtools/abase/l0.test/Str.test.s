@@ -9649,6 +9649,25 @@ function strSplitsUngroupedJoin( test )
 function strSplitsQuotedRejoin( test )
 {
 
+  test.case = 'empty splits';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [];
+  test.identical( splits, expected );
+
+  /* */
+
   test.case = 'basic';
 
   var delimeter = [ '<', '>' ];
@@ -9924,6 +9943,25 @@ function strSplitsQuotedRejoin( test )
 
 function strSplitsQuotedRejoinOptionOnQuoting( test )
 {
+
+  test.case = 'empty splits, return +';
+
+  var delimeter = [ '<', '>' ];
+  var splits = [];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    delimeter,
+    quoting : 1,
+    quotingPrefixes : [ '<' ],
+    quotingPostfixes : [ '>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+    onQuoting : ( el, o ) => '+'
+  });
+  var expected = [];
+  test.identical( splits, expected );
+
   test.case = 'basic, add strings';
 
   var delimeter = [ '<', '>' ];
