@@ -1722,7 +1722,8 @@ function strSplitsQuotedRejoin_body( o )
 
   /* quoting */
 
-  let s = 1;
+  // let s = 1; // why was it 1??
+  let s = 0;
   if( o.quoting )
   {
     for( s ; s < o.splits.length ; s += 1 )

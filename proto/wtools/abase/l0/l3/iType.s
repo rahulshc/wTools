@@ -13,6 +13,24 @@ let Self = _global_.wTools;
 // type test
 // --
 
+function undefinedIs( src )
+{
+  if( src === undefined )
+  return true;
+  return false;
+}
+
+//
+
+function nullIs( src )
+{
+  if( src === null )
+  return true;
+  return false;
+}
+
+//
+
 function nothingIs( src )
 {
   if( src === null )
@@ -510,6 +528,8 @@ let Routines =
 
   // primitive
 
+  undefinedIs,
+  nullIs,
   nothingIs,
   definedIs,
   primitiveIs,
