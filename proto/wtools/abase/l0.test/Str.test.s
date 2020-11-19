@@ -9666,7 +9666,7 @@ function strSplitsQuotedRejoin( test )
 
   /* */
 
-  test.case = 'default quotingPrefixes, quotingPostfixes; no delimeter';
+  test.case = 'default quotingPrefixes, quotingPostfixes';
 
   var splits = [ `"`, `r1`, `"`, `"`, `r2`, `"` ];
   _.strSplitsQuotedRejoin
@@ -9755,6 +9755,23 @@ function strSplitsQuotedRejoin( test )
     inliningQuoting : 0,
   });
   var expected = [ `r1`, `r2` ];
+
+  /* */
+
+  test.case = 'basic, prefix and postfix have different lengths';
+
+  var splits = [ `<<`, `r1`, `>>>`, `<<`, `r2`, `>>>` ];
+  _.strSplitsQuotedRejoin
+  ({
+    splits,
+    quoting : 1,
+    quotingPrefixes : [ '<<', ],
+    quotingPostfixes : [ '>>>' ],
+    preservingQuoting : 1,
+    inliningQuoting : 0,
+  });
+  var expected = [ `<<r1>>>`, `<<r2>>>` ];
+  test.identical( splits, expected );
 
   /* */
 
